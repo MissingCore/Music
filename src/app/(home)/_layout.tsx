@@ -1,10 +1,9 @@
-import React from "react";
 import { Link, Stack, usePathname } from "expo-router";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 import Colors from "@/constants/Colors";
 
-export default function TabLayout() {
+export default function HomeLayout() {
   return (
     <>
       <NavigationBar />
@@ -19,39 +18,38 @@ export default function TabLayout() {
   );
 }
 
+/** @description List of routes we'll display buttons for on the "home" page. */
+const NavRoutes = [
+  { href: "/", label: "HOME" },
+  { href: "/playlist", label: "PLAYLISTS" },
+  { href: "/track", label: "TRACKS" },
+  { href: "/album", label: "ALBUMS" },
+  { href: "/artist", label: "ARTISTS" },
+] as const;
+
 /** @description Custom navigation bar for "home" screen. */
 function NavigationBar() {
+  const pathname = usePathname();
   return (
     <View style={styles.navbarContainer}>
       <ScrollView
         contentContainerStyle={styles.navbar}
         horizontal
         showsHorizontalScrollIndicator={false}
+        overScrollMode="never"
       >
-        <Link href="/" style={navLinkStyle("/")}>
-          HOME
-        </Link>
-        <Link href="/playlist" style={navLinkStyle("/playlist")}>
-          PLAYLISTS
-        </Link>
-        <Link href="/track" style={navLinkStyle("/track")}>
-          TRACKS
-        </Link>
-        <Link href="/album" style={navLinkStyle("/album")}>
-          ALBUMS
-        </Link>
-        <Link href="/artist" style={navLinkStyle("/artist")}>
-          ARTISTS
-        </Link>
+        {NavRoutes.map(({ href, label }) => (
+          <Link
+            key={href}
+            href={href}
+            style={[styles.navLink, pathname === href && styles.activeLink]}
+          >
+            {label}
+          </Link>
+        ))}
       </ScrollView>
     </View>
   );
-}
-
-/** @description Applies active style. */
-function navLinkStyle(href: string) {
-  const pathname = usePathname();
-  return [styles.navLink, pathname === href && { color: Colors.accent }];
 }
 
 const styles = StyleSheet.create({
@@ -65,8 +63,11 @@ const styles = StyleSheet.create({
   },
   navLink: {
     padding: 8,
-    fontFamily: "GeistMono",
+    fontFamily: "GeistMonoLight",
     fontSize: 20,
     color: Colors.foreground,
+  },
+  activeLink: {
+    color: Colors.accent,
   },
 });
