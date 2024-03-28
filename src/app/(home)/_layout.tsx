@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
   navbar: {
     marginLeft: 8,
-    paddingRight: 64,
+    paddingRight: "25%",
   },
   navLink: {
     padding: 8,
