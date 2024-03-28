@@ -75,7 +75,7 @@ function RootLayoutNav() {
             ),
           }}
         />
-        <Stack.Screen name="setting" options={{ presentation: "modal" }} />
+        <Stack.Screen name="(overlay)" options={{ headerShown: false }} />
       </Stack>
     </ThemeProvider>
   );
