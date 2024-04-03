@@ -75,7 +75,12 @@ function RootLayoutNav() {
             ),
           }}
         />
-        <Stack.Screen name="(overlay)" options={{ headerShown: false }} />
+        <Stack.Screen name="(current)" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="current-track"
+          options={{ animation: "slide_from_bottom" }}
+        />
+        <Stack.Screen name="setting" />
       </Stack>
     </ThemeProvider>
   );

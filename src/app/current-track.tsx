@@ -1,15 +1,11 @@
-import { Link } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 
 import Colors from "@/constants/Colors";
 
-export default function AlbumScreen() {
+export default function CurrentTrackScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Album Screen</Text>
-      <Link href={`/album/${"trench"}`} style={{ color: "white" }}>
-        View Album
-      </Link>
+      <Text style={styles.title}>Current Playing Track</Text>
     </View>
   );
 }

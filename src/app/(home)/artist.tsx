@@ -1,3 +1,4 @@
+import { Link } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 
 import Colors from "@/constants/Colors";
@@ -6,6 +7,9 @@ export default function ArtistScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Artist Screen</Text>
+      <Link href={`/artist/${"twenty_one_pilots"}`} style={{ color: "white" }}>
+        View Artist
+      </Link>
     </View>
   );
 }

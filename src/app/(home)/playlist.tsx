@@ -1,3 +1,4 @@
+import { Link } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 
 import Colors from "@/constants/Colors";
@@ -6,6 +7,9 @@ export default function PlaylistScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Playlist Screen</Text>
+      <Link href={`/playlist/${"good_vibes"}`} style={{ color: "white" }}>
+        View Playlist
+      </Link>
     </View>
   );
 }
