@@ -6,7 +6,7 @@ export default function CurrentAlbumScreen() {
 
   return (
     <View className="flex-1 items-center justify-center">
-      <Text className="font-geistMonoMedium text-foreground">
+      <Text className="font-geistMonoMedium text-foreground50">
         Current Album Screen: {id}
       </Text>
     </View>

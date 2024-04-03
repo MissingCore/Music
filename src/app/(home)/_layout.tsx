@@ -42,8 +42,8 @@ function NavigationBar() {
           <Link
             key={href}
             href={href}
-            className={cn("p-2 font-geistMonoLight text-lg text-foreground", {
-              "text-accent": pathname === href,
+            className={cn("p-2 font-geistMonoLight text-lg text-foreground50", {
+              "text-accent500": pathname === href,
             })}
           >
             {label}

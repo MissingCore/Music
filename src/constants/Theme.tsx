@@ -5,12 +5,12 @@ import Colors from "./Colors";
 const NavigationTheme: Theme = {
   dark: true,
   colors: {
-    primary: Colors.accent,
+    primary: Colors.accent500,
     background: Colors.canvas,
     card: Colors.canvas,
-    text: Colors.foreground,
+    text: Colors.foreground50,
     border: Colors.canvas,
-    notification: Colors.accent,
+    notification: Colors.accent500,
   },
 };
 

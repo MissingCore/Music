@@ -24,7 +24,7 @@ export default function HomeScreen() {
       showsVerticalScrollIndicator={false}
       contentContainerClassName="mt-5 pb-16"
     >
-      <Text className="mb-4 px-4 font-geistMonoMedium text-subtitle text-foreground">
+      <Text className="mb-4 px-4 font-geistMonoMedium text-subtitle text-foreground50">
         RECENTLY PLAYED
       </Text>
       <ScrollView
@@ -49,8 +49,7 @@ export default function HomeScreen() {
           imgSize={colWidthSmall}
           type="playlist"
           title="Playlist Name"
-          subTitle="Artist Name"
-          extra="| 8 Tracks"
+          subTitle="8 Tracks"
         />
         <MediaCard
           imgSize={colWidthSmall}
@@ -63,14 +62,16 @@ export default function HomeScreen() {
       </ScrollView>
 
       <View className="px-4">
-        <Text className="mb-4 mt-8 font-geistMonoMedium text-subtitle text-foreground">
+        <Text className="mb-4 mt-8 font-geistMonoMedium text-subtitle text-foreground50">
           FAVORITES
         </Text>
         <View className="w-full flex-row flex-wrap gap-4">
           <View style={{ maxWidth: colWidth }} className="w-full">
-            <View className="aspect-square items-center justify-center rounded-lg bg-accent">
-              <Text className="font-ndot57 text-title text-foreground">10</Text>
-              <Text className="font-ndot57 text-title text-foreground">
+            <View className="aspect-square items-center justify-center rounded-lg bg-accent500">
+              <Text className="font-ndot57 text-title text-foreground50">
+                10
+              </Text>
+              <Text className="font-ndot57 text-title text-foreground50">
                 SONGS
               </Text>
             </View>
@@ -80,8 +81,7 @@ export default function HomeScreen() {
             imgSize={colWidth}
             type="playlist"
             title="Extra long playlist name"
-            subTitle="Duper long artist name"
-            extra="| 8 Tracks"
+            subTitle="12 Tracks"
           />
           <MediaCard
             imgSize={colWidth}

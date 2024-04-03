@@ -67,7 +67,7 @@ function RootLayoutNav() {
                     <Ionicons
                       name="settings-outline"
                       size={24}
-                      color={Colors.foreground}
+                      color={Colors.foreground50}
                       style={{ opacity: pressed ? 0.5 : 1 }}
                     />
                   )}

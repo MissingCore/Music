@@ -32,25 +32,25 @@ export default function MediaCard({ imgSize, imgSrc, type, ...text }: Props) {
             : require("@/assets/images/glyph/music.png")
         }
         contentFit="cover"
-        className={cn("aspect-square w-full rounded-lg bg-surfaceDim", {
-          "bg-surface": isSong,
+        className={cn("aspect-square w-full rounded-lg bg-surface800", {
+          "bg-surface500": isSong,
           "rounded-full": isArtist,
         })}
       />
       <View className="px-1">
         <MediaText
           content={text.title}
-          className="mt-0.5 font-geistMono text-base text-foreground"
+          className="mt-0.5 font-geistMono text-base text-foreground50"
         />
         <View className="flex-row justify-between gap-1">
           <MediaText
             content={text.subTitle}
-            className="flex-1 font-geistMonoLight text-xs text-foregroundSoft"
+            className="flex-1 font-geistMonoLight text-xs text-foreground100"
           />
           <MediaText
             noPlaceholder
             content={text.extra}
-            className="shrink-0 font-geistMonoLight text-xs text-foregroundSoft"
+            className="shrink-0 font-geistMonoLight text-xs text-foreground100"
           />
         </View>
       </View>
