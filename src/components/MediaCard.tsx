@@ -1,8 +1,12 @@
-import type { DimensionValue, StyleProp, TextStyle } from "react-native";
-import { StyleSheet, Text, View } from "react-native";
-import { Image } from "expo-image";
+import type { DimensionValue } from "react-native";
+import { Text, View } from "react-native";
+import { Image as ExpoImage } from "expo-image";
+import { cssInterop } from "nativewind";
 
-import Colors from "@/constants/Colors";
+import { cn } from "@/lib/style";
+
+// https://www.nativewind.dev/v4/api/css-interop
+const Image = cssInterop(ExpoImage, { className: "style" });
 
 type Props = {
   type: "artist" | "album" | "playlist" | "song";
@@ -19,7 +23,7 @@ export default function MediaCard({ imgSize, imgSrc, type, ...text }: Props) {
   const isSong = type === "song";
 
   return (
-    <View style={{ width: "100%", maxWidth: imgSize }}>
+    <View style={{ maxWidth: imgSize }} className="w-full">
       <Image
         source={imgSrc}
         placeholder={
@@ -28,21 +32,25 @@ export default function MediaCard({ imgSize, imgSrc, type, ...text }: Props) {
             : require("@/assets/images/glyph/music.png")
         }
         contentFit="cover"
-        style={{
-          aspectRatio: "1 / 1",
-          width: "100%",
-          backgroundColor: isSong ? Colors.surface : Colors.surfaceDim,
-          borderRadius: isArtist ? 999 : 16,
-        }}
+        className={cn("aspect-square w-full rounded-lg bg-surfaceDim", {
+          "bg-surface": isSong,
+          "rounded-full": isArtist,
+        })}
       />
-      <View style={{ paddingHorizontal: 4 }}>
-        <MediaText style={styles.title} content={text.title} />
-        <View style={styles.subTextContainer}>
-          <MediaText style={styles.subTitle} content={text.subTitle} />
+      <View className="px-1">
+        <MediaText
+          content={text.title}
+          className="mt-0.5 font-geistMono text-base text-foreground"
+        />
+        <View className="flex-row justify-between gap-1">
           <MediaText
-            style={styles.extraText}
-            content={text.extra}
+            content={text.subTitle}
+            className="flex-1 font-geistMonoLight text-xs text-foregroundSoft"
+          />
+          <MediaText
             noPlaceholder
+            content={text.extra}
+            className="shrink-0 font-geistMonoLight text-xs text-foregroundSoft"
           />
         </View>
       </View>
@@ -52,42 +60,16 @@ export default function MediaCard({ imgSize, imgSrc, type, ...text }: Props) {
 
 type MediaTextProps = {
   content?: string;
-  style?: StyleProp<TextStyle>;
+  className?: string;
   noPlaceholder?: boolean;
 };
 
 /** @description Renders text with placeholder. */
-function MediaText({ content, style, noPlaceholder }: MediaTextProps) {
+function MediaText({ content, className, noPlaceholder }: MediaTextProps) {
   if (!content && noPlaceholder) return null;
   return (
-    <Text numberOfLines={1} style={style}>
+    <Text numberOfLines={1} className={className}>
       {content || "Nothing"}
     </Text>
   );
 }
-
-const styles = StyleSheet.create({
-  title: {
-    marginTop: 2,
-    fontFamily: "GeistMono",
-    fontSize: 16,
-    color: Colors.foreground,
-  },
-  subTextContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    gap: 4,
-  },
-  subTitle: {
-    flex: 1,
-    flexShrink: 1,
-    fontFamily: "GeistMonoLight",
-    fontSize: 12,
-    color: Colors.foregroundSoft,
-  },
-  extraText: {
-    fontFamily: "GeistMonoLight",
-    fontSize: 12,
-    color: Colors.foregroundSoft,
-  },
-});

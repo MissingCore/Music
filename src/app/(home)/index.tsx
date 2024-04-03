@@ -1,8 +1,7 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
 import { useGetColumnWidth } from "@/hooks/layout";
 
-import Colors from "@/constants/Colors";
 import MediaCard from "@/components/MediaCard";
 
 export default function HomeScreen() {
@@ -22,17 +21,17 @@ export default function HomeScreen() {
 
   return (
     <ScrollView
-      contentContainerStyle={styles.container}
       showsVerticalScrollIndicator={false}
+      contentContainerClassName="mt-5 pb-16"
     >
-      <Text style={[styles.title, { paddingHorizontal: 16, marginTop: 0 }]}>
+      <Text className="mb-4 px-4 font-geistMonoMedium text-subtitle text-foreground">
         RECENTLY PLAYED
       </Text>
       <ScrollView
-        contentContainerStyle={{ gap: 16, paddingHorizontal: 16 }}
         horizontal
         showsHorizontalScrollIndicator={false}
         overScrollMode="never"
+        contentContainerClassName="gap-4 px-4"
       >
         <MediaCard
           imgSize={colWidthSmall}
@@ -63,13 +62,17 @@ export default function HomeScreen() {
         <MediaCard imgSize={colWidthSmall} type="song" />
       </ScrollView>
 
-      <View style={{ paddingHorizontal: 16 }}>
-        <Text style={styles.title}>FAVORITES</Text>
-        <View style={styles.gridContainer}>
-          <View style={{ width: "100%", maxWidth: colWidth }}>
-            <View style={styles.favSongContainer}>
-              <Text style={styles.favSongText}>10</Text>
-              <Text style={styles.favSongText}>SONGS</Text>
+      <View className="px-4">
+        <Text className="mb-4 mt-8 font-geistMonoMedium text-subtitle text-foreground">
+          FAVORITES
+        </Text>
+        <View className="w-full flex-row flex-wrap gap-4">
+          <View style={{ maxWidth: colWidth }} className="w-full">
+            <View className="aspect-square items-center justify-center rounded-lg bg-accent">
+              <Text className="font-ndot57 text-title text-foreground">10</Text>
+              <Text className="font-ndot57 text-title text-foreground">
+                SONGS
+              </Text>
             </View>
           </View>
 
@@ -92,35 +95,3 @@ export default function HomeScreen() {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 20,
-    paddingBottom: 64,
-  },
-  title: {
-    marginTop: 32,
-    marginBottom: 16,
-    fontFamily: "GeistMonoMedium",
-    fontSize: 28,
-    color: Colors.foreground,
-  },
-  gridContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 16,
-    width: "100%",
-  },
-  favSongContainer: {
-    aspectRatio: "1 / 1",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 16,
-    backgroundColor: Colors.accent,
-  },
-  favSongText: {
-    fontFamily: "Ndot57",
-    fontSize: 32,
-    color: Colors.foreground,
-  },
-});

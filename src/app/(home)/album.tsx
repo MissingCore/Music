@@ -1,28 +1,18 @@
 import { Link } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
-
-import Colors from "@/constants/Colors";
+import { Text, View } from "react-native";
 
 export default function AlbumScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Album Screen</Text>
-      <Link href={`/album/${"trench"}`} style={{ color: "white" }}>
+    <View className="flex-1 items-center justify-center">
+      <Text className="font-geistMonoMedium text-lg text-foreground">
+        Album Screen
+      </Text>
+      <Link
+        href={`/album/${"trench"}`}
+        className="font-geistMonoMedium text-foregroundSoft"
+      >
         View Album
       </Link>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: Colors.foreground,
-  },
-});

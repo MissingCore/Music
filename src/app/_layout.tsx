@@ -7,6 +7,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
+import "@/assets/global.css";
 import Colors from "@/constants/Colors";
 import NavigationTheme from "@/constants/Theme";
 

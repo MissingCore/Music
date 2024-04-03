@@ -1,28 +1,18 @@
 import { Link } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
-
-import Colors from "@/constants/Colors";
+import { Text, View } from "react-native";
 
 export default function PlaylistScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Playlist Screen</Text>
-      <Link href={`/playlist/${"good_vibes"}`} style={{ color: "white" }}>
+    <View className="flex-1 items-center justify-center">
+      <Text className="font-geistMonoMedium text-lg text-foreground">
+        Playlist Screen
+      </Text>
+      <Link
+        href={`/playlist/${"good_vibes"}`}
+        className="font-geistMonoMedium text-foregroundSoft"
+      >
         View Playlist
       </Link>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: Colors.foreground,
-  },
-});

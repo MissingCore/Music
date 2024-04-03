@@ -1,24 +1,11 @@
-import { StyleSheet, Text, View } from "react-native";
-
-import Colors from "@/constants/Colors";
+import { Text, View } from "react-native";
 
 export default function CurrentTrackScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Current Playing Track</Text>
+    <View className="flex-1 items-center justify-center">
+      <Text className="font-geistMonoMedium text-foreground">
+        Current Playing Track
+      </Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: Colors.foreground,
-  },
-});

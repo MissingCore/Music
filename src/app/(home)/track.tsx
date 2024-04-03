@@ -1,28 +1,18 @@
 import { Link } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
-
-import Colors from "@/constants/Colors";
+import { Text, View } from "react-native";
 
 export default function TrackScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Track Screen</Text>
-      <Link href="/current-track" style={{ color: "white" }}>
+    <View className="flex-1 items-center justify-center">
+      <Text className="font-geistMonoMedium text-lg text-foreground">
+        Track Screen
+      </Text>
+      <Link
+        href="/current-track"
+        className="font-geistMonoMedium text-foregroundSoft"
+      >
         View Current Playing Track
       </Link>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: Colors.foreground,
-  },
-});
