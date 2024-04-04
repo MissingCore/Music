@@ -1,5 +1,8 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import type { Config } from "tailwindcss";
+
+import Colors from "./src/constants/Colors";
+
+export default {
   content: [
     "./src/app/**/*.{js,jsx,ts,tsx}",
     "./src/components/**/*.{js,jsx,ts,tsx}",
@@ -14,21 +17,7 @@ module.exports = {
       lg: "16px",
       full: "9999px",
     },
-    colors: {
-      canvas: "#000000",
-
-      accent50: "#F28D91",
-      accent500: "#D71921",
-
-      tertiary500: "#1D3557",
-
-      foreground50: "#F0F2F2",
-      foreground100: "#C1C4C4",
-
-      surface50: "#E7E9E9",
-      surface500: "#484949",
-      surface800: "#1B1D1F",
-    },
+    colors: Colors,
     fontSize: {
       title: "32px",
       subtitle: "28px",
@@ -47,4 +36,4 @@ module.exports = {
     extend: {},
   },
   plugins: [],
-};
+} satisfies Config;

@@ -4,6 +4,8 @@ const Colors = {
   accent50: "#F28D91",
   accent500: "#D71921",
 
+  tertiary500: "#1D3557",
+
   foreground50: "#F0F2F2",
   foreground100: "#C1C4C4",
 
