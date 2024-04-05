@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "1c558165-c45f-43c4-a795-47b190426452",
+  "id": "79b65891-e383-46bb-8604-c33c89ec31c8",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "albums": {
@@ -153,6 +153,13 @@
           "notNull": false,
           "autoincrement": false,
           "default": false
+        },
+        "uri": {
+          "name": "uri",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {},

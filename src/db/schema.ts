@@ -26,5 +26,6 @@ export const tracks = sqliteTable("tracks", {
   track: integer("track").default(-1), // Track number in album if available
   duration: integer("duration").notNull(), // Track duration in seconds
   isFavorite: integer("isFavorite", { mode: "boolean" }).default(false),
+  uri: text("uri").notNull(),
 });
 export type Track = InferSelectModel<typeof tracks>;

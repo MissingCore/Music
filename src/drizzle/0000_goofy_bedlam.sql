@@ -22,6 +22,7 @@ CREATE TABLE `tracks` (
 	`track` integer DEFAULT -1,
 	`duration` integer NOT NULL,
 	`isFavorite` integer DEFAULT false,
+	`uri` text NOT NULL,
 	FOREIGN KEY (`artistId`) REFERENCES `artists`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`albumId`) REFERENCES `albums`(`id`) ON UPDATE no action ON DELETE no action
 );
