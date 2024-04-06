@@ -3,12 +3,18 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 
+import { useIndexAudio } from "./useIndexAudio";
+
 import { db } from "@/db";
 import migrations from "@/drizzle/migrations";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
+/**
+ * @description Makes splash screen visible until all initialization
+ *  tasks are complete.
+ */
 export function useLoadAssets() {
   const [fontsLoaded, fontsError] = useFonts({
     GeistMonoLight: require("../assets/fonts/GeistMono-Light.ttf"),
@@ -17,6 +23,7 @@ export function useLoadAssets() {
     Ndot57: require("../assets/fonts/Ndot-57.ttf"),
   });
   const { success: dbSuccess, error: dbError } = useMigrations(db, migrations);
+  const { isComplete: audioIndexingStatus } = useIndexAudio();
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
@@ -25,10 +32,10 @@ export function useLoadAssets() {
   }, [fontsError, dbError]);
 
   useEffect(() => {
-    if (fontsLoaded && dbSuccess) {
+    if (fontsLoaded && dbSuccess && audioIndexingStatus) {
       SplashScreen.hideAsync();
     }
-  }, [fontsLoaded && dbSuccess]);
+  }, [fontsLoaded, dbSuccess, audioIndexingStatus]);
 
-  return { isLoaded: fontsLoaded && dbSuccess };
+  return { isLoaded: fontsLoaded && dbSuccess && audioIndexingStatus };
 }

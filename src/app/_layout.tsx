@@ -5,6 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { useLoadAssets } from "@/hooks/useLoadAssets";
+import { Polyfill } from "@/components/Polyfill";
 
 import "@/assets/global.css";
 import Colors from "@/constants/Colors";
@@ -28,37 +29,40 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   return (
-    <ThemeProvider value={NavigationTheme}>
-      <StatusBar style="light" />
-      <Stack>
-        <Stack.Screen
-          name="(home)"
-          options={{
-            title: "MUSIC",
-            headerTitleStyle: { fontFamily: "Ndot57", fontSize: 32 },
-            headerRight: () => (
-              <Link href="/setting" asChild>
-                <Pressable>
-                  {({ pressed }) => (
-                    <Ionicons
-                      name="settings-outline"
-                      size={24}
-                      color={Colors.foreground50}
-                      style={{ opacity: pressed ? 0.5 : 1 }}
-                    />
-                  )}
-                </Pressable>
-              </Link>
-            ),
-          }}
-        />
-        <Stack.Screen name="(current)" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="current-track"
-          options={{ animation: "slide_from_bottom" }}
-        />
-        <Stack.Screen name="setting" />
-      </Stack>
-    </ThemeProvider>
+    <>
+      <Polyfill />
+      <ThemeProvider value={NavigationTheme}>
+        <StatusBar style="light" />
+        <Stack>
+          <Stack.Screen
+            name="(home)"
+            options={{
+              title: "MUSIC",
+              headerTitleStyle: { fontFamily: "Ndot57", fontSize: 32 },
+              headerRight: () => (
+                <Link href="/setting" asChild>
+                  <Pressable>
+                    {({ pressed }) => (
+                      <Ionicons
+                        name="settings-outline"
+                        size={24}
+                        color={Colors.foreground50}
+                        style={{ opacity: pressed ? 0.5 : 1 }}
+                      />
+                    )}
+                  </Pressable>
+                </Link>
+              ),
+            }}
+          />
+          <Stack.Screen name="(current)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="current-track"
+            options={{ animation: "slide_from_bottom" }}
+          />
+          <Stack.Screen name="setting" />
+        </Stack>
+      </ThemeProvider>
+    </>
   );
 }
