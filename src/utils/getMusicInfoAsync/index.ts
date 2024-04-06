@@ -1,8 +1,8 @@
-import { decode as atob, encode as btoa } from "base-64";
 import * as FileSystem from "expo-file-system";
 
-import Buffer from "./Buffer";
-import { arrayIncludes } from "../array";
+import { arrayIncludes } from "@/utils/array";
+import Buffer, { type Encoding } from "./Buffer";
+import InvalidFileException from "./InvalidFileException";
 
 /*
   References:
@@ -63,7 +63,7 @@ class ID3Reader {
     });
     // Convert base64 to Typed Array (byte array).
     //  - Uint8Array is better for runtime performance
-    this.buffer.setBuffer(Uint8Array.from(atob(data), (c) => c.charCodeAt(0)));
+    this.buffer.setBuffer(Buffer.base64ToBuffer(data));
     this.filePosition += BUFFER_SIZE;
   }
 
@@ -136,11 +136,11 @@ class ID3Reader {
   async processHeader() {
     // First 3 bytes of the header should encode the string "ID3".
     let chunk = await this.read(3);
-    if (this.bytesToString(chunk) !== "ID3") throw new InvalidFileException();
+    if (Buffer.bytesToString(chunk) !== "ID3") throw new InvalidFileException();
 
     // Next 2 bytes encodes the major version & revision of the ID3 specification.
     chunk = await this.read(2);
-    this.version = this.bytesToInt([chunk[0]]);
+    this.version = Buffer.bytesToInt([chunk[0]]);
     if (this.version === 2) throw new InvalidFileException(); // Throw error for ID3v2.2
 
     // Next byte is treated as flags.
@@ -149,14 +149,14 @@ class ID3Reader {
     // Last 4 bytes in header gives the total size of the tag excluding
     // the header (stored as a 32 bit synchsafe integer).
     chunk = await this.read(4);
-    this.dataSize = this.bytesToInt(chunk, 7);
+    this.dataSize = Buffer.bytesToInt(chunk, 7);
   }
 
   /** Process a frame (tag data is divided into frames). */
   async processFrame() {
     // First 4 bytes is frame header.
     let chunk = await this.read(4);
-    const frameId = this.bytesToString(chunk);
+    const frameId = Buffer.bytesToString(chunk);
 
     // We hit the "padding" in the tag data when we get a `null` byte
     // where we expect a frame identifier.
@@ -164,7 +164,12 @@ class ID3Reader {
     else {
       // Next 4 bytes is the frame size (excludes the 10 bytes in frame header).
       chunk = await this.read(4);
-      const frameSize = this.bytesToSize(chunk);
+      // ID3v2.3 frame size isn't stored as a 32 bit synchsafe integer (unlike ID3v2.4).
+      //  - https://hydrogenaud.io/index.php/topic,67145.msg602034.html#msg602034
+      const frameSize =
+        this.version === 3
+          ? Buffer.bytesToInt(chunk)
+          : Buffer.bytesToInt(chunk, 7);
 
       // Next 2 bytes are treated as flags.
       await this.skip(2);
@@ -186,19 +191,19 @@ class ID3Reader {
   /** Returns a string represented by the contents of a text frame. */
   async processTextFrame(frameId: TextFrameId, frameSize: number) {
     // First byte indicates text encoding.
-    await this.skip(1);
+    const encoding = (await this.read(1))[0] as Encoding;
     const chunk = await this.read(frameSize - 1);
-    this.frames[frameId] = this.bytesToString(chunk);
+    this.frames[frameId] = Buffer.bytesToString(chunk, encoding);
   }
 
   /** Returns the description & base64 representation of the image. */
   async processPictureFrame(frameSize: number) {
     // First byte indicates text encoding.
-    await this.skip(1);
+    await this.skip(1); // Will be `0`
 
     // Get MIME Type (field is of unknown length & ends with a `null`)
     let chunk = await this.readTilNull();
-    const mimeType = this.bytesToString(chunk);
+    const mimeType = Buffer.bytesToString(chunk);
 
     // Next byte indicates picture type
     await this.skip(1);
@@ -210,7 +215,7 @@ class ID3Reader {
     pictureDataSize -= chunk.length;
 
     const pictureData = await this.read(pictureDataSize);
-    this.frames.APIC = `data:${mimeType};base64,${this.bytesToBase64(pictureData)}`;
+    this.frames.APIC = `data:${mimeType};base64,${Buffer.bytesToBase64(pictureData)}`;
   }
 
   /** Boolean whether we finished reading all data in the file. */
@@ -218,40 +223,5 @@ class ID3Reader {
     if (this.filePosition < this.dataSize) return false;
     this.finished = true;
     return true;
-  }
-
-  /* Helpful conversion functions for byte arrays. */
-  bytesToString(bytes: number[]) {
-    // Include a limited set of characters from the ASCII table (ie: ignore `NUL`).
-    return String.fromCharCode(...bytes.filter((b) => b >= 32 && b <= 126));
-  }
-
-  bytesToInt(bytes: number[], bitsUsed = 8) {
-    return bytes
-      .toReversed()
-      .reduce((num, byte, idx) => (num |= byte << (idx * bitsUsed)), 0);
-  }
-
-  bytesToSize(bytes: number[]) {
-    // ID3v2.3 frame size isn't stored as a 32 bit synchsafe integer (unlike ID3v2.4).
-    //  - https://hydrogenaud.io/index.php/topic,67145.msg602034.html#msg602034
-    if (this.version == 3) return this.bytesToInt(bytes);
-    else return this.bytesToInt(bytes, 7);
-  }
-
-  bytesToBase64(bytes: number[]) {
-    return btoa(bytes.reduce((s, byte) => s + String.fromCharCode(byte), ""));
-  }
-}
-
-/**
- * @description Class representing error thrown when we get an invalid
- *  audio file or a file where the ID3 tag doesn't start at the beginning.
- */
-class InvalidFileException extends Error {
-  constructor() {
-    super();
-    this.name = "InvalidFileException";
-    this.message = "Invalid file format.";
   }
 }

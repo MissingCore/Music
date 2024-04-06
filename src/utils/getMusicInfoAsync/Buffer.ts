@@ -1,4 +1,15 @@
-/** @description Subclass of Uint8Array. */
+import { decode as atob, encode as btoa } from "base-64";
+
+/**
+ * @description List of character set encodings
+ *  - `0`: `ISO-8859-1`
+ *  - `1`: `UTF-16` w/ BOM
+ *  - `2`: `UTF-16BE` w/o BOM
+ *  - `3`: `UTF-8`
+ */
+export type Encoding = 0 | 1 | 2 | 3;
+
+/** @description Subclass of Uint8Array (unsigned bytes). */
 export default class Buffer {
   #buffer: Uint8Array = new Uint8Array();
   #cursor = 0;
@@ -46,4 +57,55 @@ export default class Buffer {
     const start = this.#cursor;
     return this.#buffer.slice(start, start + this.move(length));
   }
+
+  /** Convert a base64 string to a buffer. */
+  static base64ToBuffer(base64: string) {
+    return Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
+  }
+
+  /** Convert bytes into a base64 string. */
+  static bytesToBase64(bytes: number[]) {
+    return btoa(bytes.reduce((s, byte) => s + String.fromCharCode(byte), ""));
+  }
+
+  /**
+   * Convert bytes into an integer, allows for limiting the numbers of
+   * bits read in a byte (ie: `7` would read as a synchsafe integer).
+   */
+  static bytesToInt(bytes: number[], bitsUsed = 8) {
+    return bytes
+      .toReversed()
+      .reduce((num, byte, idx) => (num |= byte << (idx * bitsUsed)), 0);
+  }
+
+  /** Convert bytes into a string based on an encoding. */
+  static bytesToString(bytes: number[], encoding: Encoding = 0) {
+    switch (encoding) {
+      /* [UTF-16 w/ BOM] — Big Endian if starts with [0xFE, 0xFF] or [254, 255] */
+      case 1:
+        const isBE = bytes[0] == 0xfe && bytes[1] == 0xff;
+        return String.fromCharCode(...getDoubleBytes(bytes.slice(2), isBE));
+      /* [UTF-16BE w/o BOM] — Always Big Endian */
+      case 2:
+        return String.fromCharCode(...getDoubleBytes(bytes, true));
+      /* [UTF-8] */
+      case 3:
+        throw new Error("UTF-8 encoding not implemented.");
+      /* [ISO-8859-1] — Only ASCII printable characters */
+      default:
+        return String.fromCharCode(...bytes.filter((b) => b >= 32 && b <= 126));
+    }
+  }
+}
+
+/** @description Join 2 unsigned bytes together based on endianness. */
+function getDoubleBytes(bytes: number[], isBigEndian = false) {
+  const [offset1, offset2] = isBigEndian ? [0, 1] : [1, 0];
+  const doubleBytes = [];
+  for (let i = 0; i < bytes.length; i += 2) {
+    // Since we're joining unsigned numbers, we don't need to add `& 0xFF`
+    // to the bytes before we do any operations.
+    doubleBytes.push((bytes[i + offset1] << 8) | bytes[i + offset2]);
+  }
+  return doubleBytes;
 }
