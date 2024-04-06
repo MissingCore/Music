@@ -25,6 +25,7 @@ const FrameTypes = {
 } as const;
 
 type TextFrameId = (typeof FrameTypes.text)[number];
+type PictureFrameId = (typeof FrameTypes.picture)[number];
 
 /**
  * @description Get metadata for MP3 files using ID3v2.3 & ID3v2.4 without
@@ -43,9 +44,7 @@ class ID3Reader {
   dataSize = 0;
 
   buffer = new Buffer();
-  frames = {} as Record<TextFrameId, string | undefined> & {
-    APIC: { description: string; pictureData: string } | undefined;
-  };
+  frames = {} as Record<TextFrameId | PictureFrameId, string | undefined>;
 
   filePosition = 0;
   version = 0; // The minor version of the spec (should be `3` or `4`).
@@ -205,17 +204,13 @@ class ID3Reader {
     await this.skip(1);
 
     let pictureDataSize = frameSize - chunk.length - 2;
-
     // Get description (field is of unknown length & ends with a `null`)
+    //  - We won't use this value
     chunk = await this.readTilNull();
-    const description = this.bytesToString(chunk);
     pictureDataSize -= chunk.length;
 
     const pictureData = await this.read(pictureDataSize);
-    this.frames.APIC = {
-      description: description,
-      pictureData: `data:${mimeType};base64,${this.bytesToBase64(pictureData)}`,
-    };
+    this.frames.APIC = `data:${mimeType};base64,${this.bytesToBase64(pictureData)}`;
   }
 
   /** Boolean whether we finished reading all data in the file. */
