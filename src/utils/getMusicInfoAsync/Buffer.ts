@@ -59,7 +59,10 @@ export default class Buffer {
     return this.#buffer.slice(start, start + this.move(length));
   }
 
-  /** Convert a base64 string to a buffer. */
+  /**
+   * Convert a base64 string to a Typed Array (unsigned byte array).
+   *  - Uint8Array is better for runtime performance
+   */
   static base64ToBuffer(base64: string) {
     return Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
   }
