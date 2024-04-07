@@ -88,18 +88,28 @@ export default class Buffer {
       /* [UTF-16 w/ BOM] — Big Endian if starts with [0xFE, 0xFF] */
       case 1:
         const isBE = bytes[0] == 0xfe && bytes[1] == 0xff;
-        return String.fromCharCode(...getDoubleBytes(bytes.slice(2), isBE));
+        return _bytesToStr(getDoubleBytes(bytes.slice(2), isBE));
       /* [UTF-16BE w/o BOM] — Always Big Endian */
       case 2:
-        return String.fromCharCode(...getDoubleBytes(bytes, true));
+        return _bytesToStr(getDoubleBytes(bytes, true));
       /* [UTF-8] */
       case 3:
         return decode(Uint8Array.from(bytes));
       /* [ISO-8859-1] — Only ASCII printable characters */
       default:
-        return String.fromCharCode(...bytes.filter((b) => b >= 32 && b <= 126));
+        return _bytesToStr(bytes);
     }
   }
+}
+
+/** @description Turn an array of bytes into a string. */
+function _bytesToStr(bytes: number[]) {
+  let str = "";
+  for (let i = 0; i < bytes.length; i++) {
+    if (bytes[i] === 0) break;
+    str += String.fromCharCode(bytes[i]);
+  }
+  return str;
 }
 
 /** @description Join 2 unsigned bytes together based on endianness. */
