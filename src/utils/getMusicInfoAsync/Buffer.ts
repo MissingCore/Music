@@ -1,11 +1,12 @@
 import { decode as atob, encode as btoa } from "base-64";
+import { decode } from "fastestsmallesttextencoderdecoder";
 
 /**
- * @description List of character set encodings
+ * @description List of character set encodings.
  *  - `0`: `ISO-8859-1`
- *  - `1`: `UTF-16` w/ BOM
- *  - `2`: `UTF-16BE` w/o BOM
- *  - `3`: `UTF-8`
+ *  - `1`: `UTF-16 w/ BOM`
+ *  - `2`: `UTF-16BE w/o BOM` (used in ID3v2.4)
+ *  - `3`: `UTF-8` (used in ID3v2.4)
  */
 export type Encoding = 0 | 1 | 2 | 3;
 
@@ -81,7 +82,7 @@ export default class Buffer {
   /** Convert bytes into a string based on an encoding. */
   static bytesToString(bytes: number[], encoding: Encoding = 0) {
     switch (encoding) {
-      /* [UTF-16 w/ BOM] — Big Endian if starts with [0xFE, 0xFF] or [254, 255] */
+      /* [UTF-16 w/ BOM] — Big Endian if starts with [0xFE, 0xFF] */
       case 1:
         const isBE = bytes[0] == 0xfe && bytes[1] == 0xff;
         return String.fromCharCode(...getDoubleBytes(bytes.slice(2), isBE));
@@ -90,7 +91,7 @@ export default class Buffer {
         return String.fromCharCode(...getDoubleBytes(bytes, true));
       /* [UTF-8] */
       case 3:
-        throw new Error("UTF-8 encoding not implemented.");
+        return decode(Uint8Array.from(bytes));
       /* [ISO-8859-1] — Only ASCII printable characters */
       default:
         return String.fromCharCode(...bytes.filter((b) => b >= 32 && b <= 126));

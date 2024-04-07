@@ -62,6 +62,9 @@ dependencies:
   expo-web-browser:
     specifier: ~12.8.2
     version: 12.8.2(expo@50.0.14)
+  fastestsmallesttextencoderdecoder:
+    specifier: ^1.0.22
+    version: 1.0.22
   nativewind:
     specifier: ^4.0.36
     version: 4.0.36(@babel/core@7.24.3)(react-native-reanimated@3.6.3)(react-native-safe-area-context@4.8.2)(react-native@0.73.6)(react@18.2.0)(tailwindcss@3.4.3)
@@ -98,6 +101,9 @@ devDependencies:
     specifier: ^7.20.0
     version: 7.24.3
   '@types/base-64':
+    specifier: ^1.0.2
+    version: 1.0.2
+  '@types/fastestsmallesttextencoderdecoder':
     specifier: ^1.0.2
     version: 1.0.2
   '@types/react':
@@ -3379,6 +3385,10 @@ packages:
     resolution: {integrity: sha512-XW/Aa8APYr6jSVVA1y/DEIZX0/GMKLEVekNG727R8cs56ahETkRAy/3DR7+fJyh7oUgGwNQaRfXCun0+KbWY7Q==}
     dev: false
 
+  /@types/fastestsmallesttextencoderdecoder@1.0.2:
+    resolution: {integrity: sha512-0Md9qUxGnQ9uJ0NjsA70Y0NHIl3NwfBO1d8CGXK0zhczRL85CXJ3M0JZsmCNQ0WcAbt08FuT4U1G1mWQqgOsUg==}
+    dev: true
+
   /@types/graceful-fs@4.1.9:
     resolution: {integrity: sha512-olP3sd1qOEe5dXTSaFvQG+02VdRXcdytWLAZsAq1PecU8uqQAhkrnbli7DagjtXKW/Bl7YJbUsa8MPcuc8LHEQ==}
     dependencies:
@@ -5445,6 +5455,10 @@ packages:
     hasBin: true
     dependencies:
       strnum: 1.0.5
+    dev: false
+
+  /fastestsmallesttextencoderdecoder@1.0.22:
+    resolution: {integrity: sha512-Pb8d48e+oIuY4MaM64Cd7OW1gt4nxCHs7/ddPPZ/Ic3sg8yVGM7O9wDvZ7us6ScaUupzM+pfBolwtYhN1IxBIw==}
     dev: false
 
   /fastq@1.17.1:
