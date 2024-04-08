@@ -176,6 +176,8 @@ export function useIndexAudio() {
       ),
     );
 
+    await cleanUpTracks(new Set(mp3Files.map(({ id }) => id)));
+
     setIsComplete(true);
     console.log(`Finished in ${Date.now() - start}ms.`);
   }
@@ -222,13 +224,67 @@ async function addAlbum(
 /** @description Helper to save images to device. */
 async function saveBase64Img(base64Img: string) {
   const [dataMime, base64] = base64Img.split(";base64,");
-  const ext = dataMime.slice(11);
+  const ext = dataMime.slice(11).toLowerCase();
 
-  const filename = FileSystem.documentDirectory + `${createId()}.${ext}`;
-  await FileSystem.writeAsStringAsync(filename, base64, {
+  const fileUri = FileSystem.documentDirectory + `${createId()}.${ext}`;
+  await FileSystem.writeAsStringAsync(fileUri, base64, {
     encoding: FileSystem.EncodingType.Base64,
   });
-  await MediaLibrary.saveToLibraryAsync(filename);
+  return fileUri;
+}
 
-  return filename;
+/**
+ * @description Remove any tracks in our database that we didn't find w/
+ *  Expo Media Library.
+ */
+async function cleanUpTracks(usedTrackIds: Set<string>) {
+  const allTracks = await db.query.tracks.findMany({ columns: { id: true } });
+  const allInvalidTracks = await db.query.invalidTracks.findMany({
+    columns: { id: true },
+  });
+  // Delete track entries.
+  await Promise.allSettled(
+    [...allTracks.map(({ id }) => id), ...allInvalidTracks.map(({ id }) => id)]
+      .filter((id) => !usedTrackIds.has(id))
+      .map(async (id) => {
+        await db.delete(invalidTracks).where(eq(invalidTracks.id, id));
+        const [deletedTrack] = await db
+          .delete(tracks)
+          .where(eq(tracks.id, id))
+          .returning({ coverSrc: tracks.coverSrc });
+        if (deletedTrack && deletedTrack.coverSrc)
+          await FileSystem.deleteAsync(deletedTrack.coverSrc);
+      }),
+  );
+
+  // Remove Albums with no tracks.
+  const allAlbums = await db.query.albums.findMany({
+    columns: { id: true },
+    with: { tracks: { columns: { id: true } } },
+  });
+  await Promise.allSettled(
+    allAlbums
+      .filter(({ tracks }) => tracks.length === 0)
+      .map(async ({ id }) => {
+        const [deletedAlbum] = await db
+          .delete(albums)
+          .where(eq(albums.id, id))
+          .returning({ coverSrc: albums.coverSrc });
+        if (deletedAlbum && deletedAlbum.coverSrc)
+          await FileSystem.deleteAsync(deletedAlbum.coverSrc);
+      }),
+  );
+
+  // Remove Artists with no tracks.
+  const allArtists = await db.query.artists.findMany({
+    columns: { id: true },
+    with: { tracks: { columns: { id: true } } },
+  });
+  await Promise.allSettled(
+    allArtists
+      .filter(({ tracks }) => tracks.length === 0)
+      .map(async ({ id }) => {
+        await db.delete(artists).where(eq(artists.id, id));
+      }),
+  );
 }

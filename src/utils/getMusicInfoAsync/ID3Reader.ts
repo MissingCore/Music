@@ -128,7 +128,7 @@ export class ID3Reader extends MediaFileReader {
   /** Returns the base64 representation of the image. */
   async processPictureFrame(frameSize: number) {
     // First byte indicates text encoding.
-    await this.skip(1); // Will be `0`
+    await this.skip(1);
 
     // Get MIME Type (field is of unknown length & ends with a `null`)
     let chunk = await this.readTilNull();
