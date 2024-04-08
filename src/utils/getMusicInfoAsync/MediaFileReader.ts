@@ -44,15 +44,15 @@ export default class MediaFileReader {
 
   /** Returns an array of bytes from the buffer. */
   async read(length: number) {
-    const chunk = Array.from(this.buffer.readBytes(length));
-    let chunkConcat: Array<number> | null = null;
-    const remaining = length - chunk.length;
-    if (remaining > 0 && !this.trulyFinished) {
-      await this.loadFileToBuffer();
-      // To prevent "maximum call stack size exceeded"
-      chunkConcat = chunk.concat(Array.from(this.buffer.readBytes(remaining)));
+    const chunk: number[] = [];
+    for (let i = 0; i < length; i++) {
+      if (this.buffer.eof) {
+        if (this.trulyFinished) break;
+        await this.loadFileToBuffer();
+      }
+      chunk.push(this.buffer.readUInt8());
     }
-    return chunkConcat || chunk;
+    return chunk;
   }
 
   /** Read buffer until we hit a `null`. */
