@@ -1,7 +1,6 @@
 import { arrayIncludes } from "@/utils/array";
 import Buffer, { type Encoding } from "./Buffer";
 import MediaFileReader from "./MediaFileReader";
-import InvalidFileException from "./InvalidFileException";
 
 /*
   Logic Based on the Following References:
@@ -47,17 +46,18 @@ export class ID3Reader extends MediaFileReader {
 
       // Return the results.
       const { APIC, TALB, TDRC, TIT2, TPE1, TRCK, TYER } = this.frames;
+      if (!TIT2) throw new Error("Has no name.");
+      if (!TPE1) throw new Error("Has no artist.");
       return {
-        title: TIT2,
+        name: TIT2,
         artist: TPE1,
-        album: TALB,
-        track: Number(TRCK) || undefined,
-        year: Number(TYER || TDRC?.slice(0, 4)) || undefined,
-        cover: APIC,
+        album: TALB || null,
+        track: Number(TRCK) || null,
+        year: Number(TYER || TDRC?.slice(0, 4)) || null,
+        cover: APIC || null,
       };
     } catch (err) {
-      if (err instanceof InvalidFileException) return null;
-      else throw err;
+      throw err;
     }
   }
 
@@ -65,12 +65,13 @@ export class ID3Reader extends MediaFileReader {
   async processHeader() {
     // First 3 bytes of the header should encode the string "ID3".
     let chunk = await this.read(3);
-    if (Buffer.bytesToString(chunk) !== "ID3") throw new InvalidFileException();
+    if (Buffer.bytesToString(chunk) !== "ID3")
+      throw new Error("Invalid file format.");
 
     // Next 2 bytes encodes the major version & revision of the ID3 specification.
     chunk = await this.read(2);
     this.version = Buffer.bytesToInt([chunk[0]]);
-    if (this.version === 2) throw new InvalidFileException(); // Throw error for ID3v2.2
+    if (this.version === 2) throw new Error("Unsupported ID3 version.");
 
     // Next byte is treated as flags.
     await this.skip(1);

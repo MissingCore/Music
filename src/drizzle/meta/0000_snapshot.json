@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "79b65891-e383-46bb-8604-c33c89ec31c8",
+  "id": "8dc968c3-3742-49f5-8663-1d9d1223d6c2",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "albums": {
@@ -18,7 +18,7 @@
           "name": "artistId",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "name": {
@@ -46,7 +46,7 @@
           "name": "isFavorite",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false,
           "default": false
         }
@@ -93,6 +93,36 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "invalidTracks": {
+      "name": "invalidTracks",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "uri": {
+          "name": "uri",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "modificationTime": {
+          "name": "modificationTime",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "tracks": {
       "name": "tracks",
       "columns": {
@@ -107,7 +137,7 @@
           "name": "artistId",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "albumId": {
@@ -135,7 +165,7 @@
           "name": "track",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false,
           "default": -1
         },
@@ -150,13 +180,20 @@
           "name": "isFavorite",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false,
           "default": false
         },
         "uri": {
           "name": "uri",
           "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "modificationTime": {
+          "name": "modificationTime",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
