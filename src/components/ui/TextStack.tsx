@@ -9,7 +9,7 @@ import TextLine from "./TextLine";
  *  display 2 pieces of text next to each other in the 2nd row.
  */
 export default function TextStack(props: {
-  content: [string, string] | [string, string, string | undefined];
+  content: [string, string] | [string, string, string | undefined | null];
   wrapperClassName?: string;
   colors?: { row1: TextColor; row2: TextColor };
 }) {
