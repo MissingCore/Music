@@ -163,7 +163,8 @@ export function useIndexAudio() {
           const isRetriedTrack = retryTracks.has(id);
 
           if (modifiedTracks.has(id) && !isRetriedTrack) {
-            // Update track.
+            // Delete old cover image if defined before updating track.
+            await deleteFile(allTracks.find(({ id }) => id)!.coverSrc);
             await db.update(tracks).set(newTrackData).where(eq(tracks.id, id));
           } else {
             // Save new track.
@@ -233,16 +234,21 @@ async function saveBase64Img(base64Img: string) {
   return fileUri;
 }
 
+/** @description Helper to delete a file if it's defined. */
+async function deleteFile(uri: string | undefined | null) {
+  if (uri) await FileSystem.deleteAsync(uri);
+}
+
 /**
  * @description Remove any tracks in our database that we didn't find w/
  *  Expo Media Library.
  */
 async function cleanUpTracks(usedTrackIds: Set<string>) {
+  // Delete track entries.
   const allTracks = await db.query.tracks.findMany({ columns: { id: true } });
   const allInvalidTracks = await db.query.invalidTracks.findMany({
     columns: { id: true },
   });
-  // Delete track entries.
   await Promise.allSettled(
     [...allTracks.map(({ id }) => id), ...allInvalidTracks.map(({ id }) => id)]
       .filter((id) => !usedTrackIds.has(id))
@@ -252,8 +258,7 @@ async function cleanUpTracks(usedTrackIds: Set<string>) {
           .delete(tracks)
           .where(eq(tracks.id, id))
           .returning({ coverSrc: tracks.coverSrc });
-        if (deletedTrack && deletedTrack.coverSrc)
-          await FileSystem.deleteAsync(deletedTrack.coverSrc);
+        await deleteFile(deletedTrack.coverSrc);
       }),
   );
 
@@ -270,8 +275,7 @@ async function cleanUpTracks(usedTrackIds: Set<string>) {
           .delete(albums)
           .where(eq(albums.id, id))
           .returning({ coverSrc: albums.coverSrc });
-        if (deletedAlbum && deletedAlbum.coverSrc)
-          await FileSystem.deleteAsync(deletedAlbum.coverSrc);
+        await deleteFile(deletedAlbum.coverSrc);
       }),
   );
 
