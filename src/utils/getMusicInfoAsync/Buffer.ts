@@ -56,7 +56,7 @@ export default class Buffer {
   /** Read the specified number of bytes, or the amount until we hit the `eof`. */
   readBytes(length: number) {
     const start = this.#cursor;
-    return this.#buffer.slice(start, start + this.move(length));
+    return [...this.#buffer.slice(start, start + this.move(length))];
   }
 
   /**
