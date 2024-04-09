@@ -1,8 +1,8 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Pressable } from "react-native";
 
 import Colors from "@/constants/Colors";
-import TextStack, { type OptString } from "@/components/ui/TextStack";
+import ActionButton from "@/components/ui/ActionButton";
+import type { OptString } from "@/components/ui/TextStack";
 import MediaImage from "../media/MediaImage";
 import TrackDuration from "./TrackDuration";
 
@@ -18,29 +18,30 @@ export default function TrackCard(props: {
   duration: number;
 }) {
   return (
-    <Pressable
+    <ActionButton
       onPress={() =>
         console.log(
           `Now playing: ${props.textContent[0]} by ${props.textContent[1]}`,
         )
       }
-      className="flex-row items-center gap-2 rounded-sm border border-surface500 p-1"
-    >
-      <MediaImage
-        type="track"
-        imgSize={48}
-        imgSrc={props.coverSrc}
-        className="shrink-0 rounded-sm"
-      />
-      <TextStack content={props.textContent} wrapperClassName="flex-1" />
-      <TrackDuration duration={props.duration} />
-      <Pressable onPress={() => console.log("View Track Options")}>
+      textContent={props.textContent}
+      image={
+        <MediaImage
+          type="track"
+          imgSize={48}
+          imgSrc={props.coverSrc}
+          className="shrink-0 rounded-sm"
+        />
+      }
+      asideContent={<TrackDuration duration={props.duration} />}
+      icon={
         <Ionicons
           name="ellipsis-vertical"
           size={24}
           color={Colors.foreground100}
         />
-      </Pressable>
-    </Pressable>
+      }
+      iconOnPress={() => console.log("View Track Options")}
+    />
   );
 }
