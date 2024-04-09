@@ -44,11 +44,12 @@ export class ID3Reader extends MediaFileReader {
       const { APIC, TALB, TDRC, TIT2, TPE1, TRCK, TYER } = this.frames;
       if (!TIT2) throw new Error("Has no name.");
       if (!TPE1) throw new Error("Has no artist.");
+      const trackNumber = TRCK ? Number(TRCK.split("/")[0]) : null;
       return {
         name: TIT2,
         artist: TPE1,
         album: TALB ?? null,
-        track: Number(TRCK) || null,
+        track: trackNumber,
         year: Number(TYER ?? TDRC?.slice(0, 4)) || null,
         cover: APIC ?? null,
       };
