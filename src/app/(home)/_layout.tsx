@@ -31,7 +31,7 @@ const NavRoutes = [
 function NavigationBar() {
   const pathname = usePathname();
   return (
-    <View className="mb-2 mt-4">
+    <View className="mt-4">
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -42,9 +42,10 @@ function NavigationBar() {
           <Link
             key={href}
             href={href}
-            className={cn("p-2 font-geistMonoLight text-lg text-foreground50", {
-              "text-accent500": pathname === href,
-            })}
+            className={cn(
+              "px-2 py-4 font-geistMonoLight text-lg text-foreground50",
+              { "text-accent500": pathname === href },
+            )}
           >
             {label}
           </Link>

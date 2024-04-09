@@ -31,10 +31,6 @@ export class ID3Reader extends MediaFileReader {
   frames = {} as Record<TextFrameId | PictureFrameId, string | undefined>;
   version = 0; // The minor version of the spec (should be `3` or `4`).
 
-  constructor(uri: string) {
-    super(uri);
-  }
-
   /** Get MP3 metadata. */
   async getMetadata() {
     await this.init();
@@ -51,10 +47,10 @@ export class ID3Reader extends MediaFileReader {
       return {
         name: TIT2,
         artist: TPE1,
-        album: TALB || null,
+        album: TALB ?? null,
         track: Number(TRCK) || null,
-        year: Number(TYER || TDRC?.slice(0, 4)) || null,
-        cover: APIC || null,
+        year: Number(TYER ?? TDRC?.slice(0, 4)) || null,
+        cover: APIC ?? null,
       };
     } catch (err) {
       throw err;
@@ -114,7 +110,7 @@ export class ID3Reader extends MediaFileReader {
       }
 
       // Exit early as we got all the data we needed.
-      if (Object.keys(this.frames).length == 6) this.finished = true;
+      if (Object.keys(this.frames).length === 6) this.finished = true;
     }
   }
 

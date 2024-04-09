@@ -1,6 +1,6 @@
 import Buffer from "../Buffer";
 
-const textExample = "Good Morning ☀️";
+// Text Representation: "Good Morning ☀️"
 const textBase64 = "R29vZCBNb3JuaW5nIOKYgO+4jw==";
 const textBuffer = Uint8Array.from([
   71, 111, 111, 100, 32, 77, 111, 114, 110, 105, 110, 103, 32, 226, 152, 128,

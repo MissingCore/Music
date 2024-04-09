@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { eq } from "drizzle-orm";
 import * as FileSystem from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
@@ -18,7 +18,7 @@ export function useIndexAudio() {
   const [permissionResponse, requestPermission] = MediaLibrary.usePermissions();
   const [isComplete, setIsComplete] = useState(false);
 
-  async function readMusicLibrary() {
+  const readMusicLibrary = useCallback(async () => {
     const start = Date.now();
 
     // Make sure we have permissions.
@@ -61,7 +61,7 @@ export function useIndexAudio() {
       if (!currTrack && !invalidTrack) return; // If we have a new track.
 
       // Considered "modified" if `modificationTime` is newer/greater.
-      if (modificationTime > (currTrack || invalidTrack)!.modificationTime) {
+      if (modificationTime > (currTrack ?? invalidTrack)!.modificationTime) {
         modifiedTracks.add(id);
         if (invalidTrack) retryTracks.add(id);
       } else unmodifiedTracks.add(id);
@@ -181,11 +181,11 @@ export function useIndexAudio() {
 
     setIsComplete(true);
     console.log(`Finished in ${Date.now() - start}ms.`);
-  }
+  }, [permissionResponse, requestPermission]);
 
   useEffect(() => {
     if (permissionResponse && !isComplete) readMusicLibrary();
-  }, [permissionResponse, isComplete]);
+  }, [permissionResponse, isComplete, readMusicLibrary]);
 
   return {
     /** The status of audio indexing — does not necessarily mean we have permissions. */

@@ -86,9 +86,10 @@ export default class Buffer {
   static bytesToString(bytes: number[], encoding: Encoding = 0) {
     switch (encoding) {
       /* [UTF-16 w/ BOM] — Big Endian if starts with [0xFE, 0xFF] */
-      case 1:
-        const isBE = bytes[0] == 0xfe && bytes[1] == 0xff;
+      case 1: {
+        const isBE = bytes[0] === 0xfe && bytes[1] === 0xff;
         return _bytesToStr(getDoubleBytes(bytes.slice(2), isBE));
+      }
       /* [UTF-16BE w/o BOM] — Always Big Endian */
       case 2:
         return _bytesToStr(getDoubleBytes(bytes, true));

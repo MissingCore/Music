@@ -3,7 +3,7 @@ import * as WebBrowser from "expo-web-browser";
 import { Platform } from "react-native";
 
 export function ExternalLink(
-  props: Omit<React.ComponentProps<typeof Link>, "href"> & { href: string }
+  props: Omit<React.ComponentProps<typeof Link>, "href"> & { href: string },
 ) {
   return (
     <Link
