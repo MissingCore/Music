@@ -1,5 +1,5 @@
 import type { PressableProps } from "react-native";
-import { Pressable } from "react-native";
+import { Pressable, View } from "react-native";
 
 import TextStack, { type OptString } from "@/components/ui/TextStack";
 
@@ -25,11 +25,14 @@ export default function ActionButton(props: {
       {props.image}
       <TextStack content={props.textContent} wrapperClassName="flex-1" />
       {props.asideContent}
-      {!!props.icon && (
-        <Pressable onPress={props.iconOnPress} className="shrink-0">
-          {props.icon}
-        </Pressable>
-      )}
+      {!!props.icon &&
+        (props.iconOnPress ? (
+          <Pressable onPress={props.iconOnPress} className="shrink-0">
+            {props.icon}
+          </Pressable>
+        ) : (
+          <View className="shrink-0">{props.icon}</View>
+        ))}
     </Pressable>
   );
 }
