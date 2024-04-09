@@ -1,11 +1,12 @@
-import { Pressable } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { ThemeProvider } from "@react-navigation/native";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Link, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { Pressable } from "react-native";
 
-import { useLoadAssets } from "@/hooks/useLoadAssets";
 import { Polyfill } from "@/components/Polyfill";
+import { useLoadAssets } from "@/hooks/useLoadAssets";
 
 import "@/assets/global.css";
 import Colors from "@/constants/Colors";
@@ -21,6 +22,9 @@ export const unstable_settings = {
   initialRouteName: "(home)",
 };
 
+// Create TanStack Query client
+const queryClient = new QueryClient();
+
 export default function RootLayout() {
   const { isLoaded } = useLoadAssets();
   if (!isLoaded) return null;
@@ -29,7 +33,7 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <Polyfill />
       <ThemeProvider value={NavigationTheme}>
         <StatusBar style="light" />
@@ -63,6 +67,6 @@ function RootLayoutNav() {
           <Stack.Screen name="setting" />
         </Stack>
       </ThemeProvider>
-    </>
+    </QueryClientProvider>
   );
 }

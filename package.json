@@ -18,6 +18,7 @@
     "@expo/vector-icons": "^14.0.0",
     "@paralleldrive/cuid2": "^2.2.2",
     "@react-navigation/native": "^6.1.17",
+    "@tanstack/react-query": "^5.29.0",
     "babel-plugin-inline-import": "^3.0.0",
     "base-64": "^1.0.0",
     "clsx": "^2.1.0",
@@ -49,6 +50,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.24.4",
+    "@tanstack/eslint-plugin-query": "^5.28.11",
     "@types/base-64": "^1.0.2",
     "@types/fastestsmallesttextencoderdecoder": "^1.0.2",
     "@types/jest": "^29.5.12",

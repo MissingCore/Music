@@ -1,7 +1,12 @@
 /** @type {import("eslint").Linter.Config} */
 const config = {
   root: true,
-  extends: ["universe/native", "universe/shared/typescript-analysis"],
+  plugins: ["@tanstack/query"],
+  extends: [
+    "universe/native",
+    "universe/shared/typescript-analysis",
+    "plugin:@tanstack/eslint-plugin-query/recommended",
+  ],
   rules: {
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
     "import/order": "off",
@@ -16,7 +21,7 @@ const config = {
       parserOptions: { project: "./tsconfig.json" },
     },
   ],
-  ignorePatterns: ["metro.config.js", "src/drizzle"],
+  ignorePatterns: ["expo-env.d.ts", "metro.config.js", "src/drizzle"],
 };
 
 module.exports = config;

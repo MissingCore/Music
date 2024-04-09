@@ -58,7 +58,7 @@ export default class MediaFileReader {
   /** Read buffer until we hit a `null`. */
   async readTilNull() {
     let byte: number | null = null;
-    const chunk = [];
+    const chunk: number[] = [];
     while (byte !== 0) {
       if (this.buffer.eof) {
         if (this.trulyFinished) break;
