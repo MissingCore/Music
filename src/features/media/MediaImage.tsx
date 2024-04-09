@@ -1,6 +1,6 @@
-import type { DimensionValue } from "react-native";
 import { Image as ExpoImage } from "expo-image";
 import { cssInterop } from "nativewind";
+import type { DimensionValue } from "react-native";
 
 import { cn } from "@/lib/style";
 import type { MediaType } from "./types";
@@ -16,7 +16,7 @@ export default function MediaImage(props: {
   className?: string;
 }) {
   const isArtist = props.type === "artist";
-  const isSong = props.type === "song";
+  const isTrack = props.type === "track";
   return (
     <Image
       source={props.imgSrc}
@@ -29,7 +29,7 @@ export default function MediaImage(props: {
       style={{ maxWidth: props.imgSize }}
       className={cn(
         "aspect-square w-full rounded-lg bg-surface800",
-        { "bg-surface500": isSong, "rounded-full": isArtist },
+        { "bg-surface500": isTrack, "rounded-full": isArtist },
         props.className,
       )}
     />

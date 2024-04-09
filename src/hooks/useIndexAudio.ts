@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
 import { eq } from "drizzle-orm";
 import * as FileSystem from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
+import { useCallback, useEffect, useState } from "react";
 
 import { db } from "@/db";
 import { artists, albums, tracks, invalidTracks } from "@/db/schema";
@@ -77,8 +77,8 @@ export function useIndexAudio() {
             return { id, uri, duration, modificationTime, ...metaData };
           } catch (err) {
             if (!(err instanceof Error))
-              console.log(`[Song ${id}] Rejected for unknown reasons.`);
-            else console.log(`[Song ${id}] ${err.message}`);
+              console.log(`[Track ${id}] Rejected for unknown reasons.`);
+            else console.log(`[Track ${id}] ${err.message}`);
             throw new Error(id);
           }
         }),

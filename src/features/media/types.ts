@@ -1,1 +1,1 @@
-export type MediaType = "artist" | "album" | "playlist" | "song";
+export type MediaType = "artist" | "album" | "playlist" | "track";

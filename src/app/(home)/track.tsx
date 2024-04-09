@@ -1,18 +1,43 @@
-import { Link } from "expo-router";
-import { Text, View } from "react-native";
+import { useQuery } from "@tanstack/react-query";
+import { ActivityIndicator, FlatList, Text } from "react-native";
 
+import { getTracks } from "@/lib/api";
+
+import Colors from "@/constants/Colors";
+import TrackCard from "@/features/track/TrackCard";
+
+/** @description Screen for `/track` route. */
 export default function TrackScreen() {
+  const { isPending, data } = useQuery({
+    queryKey: ["all-tracks"],
+    queryFn: getTracks,
+  });
+
   return (
-    <View className="flex-1 items-center justify-center">
-      <Text className="font-geistMonoMedium text-lg text-foreground50">
-        Track Screen
-      </Text>
-      <Link
-        href="/current-track"
-        className="font-geistMonoMedium text-foreground100"
-      >
-        View Current Playing Track
-      </Link>
-    </View>
+    <FlatList
+      data={data}
+      keyExtractor={({ id }) => id}
+      renderItem={({ item: { id, name, coverSrc, artistName, duration } }) => (
+        <TrackCard
+          {...{ id, coverSrc, duration }}
+          textContent={[name, artistName]}
+        />
+      )}
+      showsVerticalScrollIndicator={false}
+      ListEmptyComponent={
+        isPending ? (
+          <ActivityIndicator
+            size="large"
+            color={Colors.surface500}
+            className="mx-auto"
+          />
+        ) : (
+          <Text className="mx-auto text-center font-geistMono text-base text-foreground100">
+            No Tracks Found
+          </Text>
+        )
+      }
+      contentContainerClassName="mt-5 w-full gap-2 px-4 pb-16"
+    />
   );
 }

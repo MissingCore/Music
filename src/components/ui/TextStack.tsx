@@ -4,12 +4,14 @@ import type { TextColor } from "@/lib/style";
 import { cn } from "@/lib/style";
 import TextLine from "./TextLine";
 
+export type OptString = string | undefined | null;
+
 /**
  * @description Design for having 2 rows of text — we can optionally
  *  display 2 pieces of text next to each other in the 2nd row.
  */
 export default function TextStack(props: {
-  content: [string, string] | [string, string, string | undefined | null];
+  content: [string, OptString] | [string, string, OptString];
   wrapperClassName?: string;
   colors?: { row1: TextColor; row2: TextColor };
 }) {
@@ -30,7 +32,7 @@ export default function TextStack(props: {
             props.colors?.row2,
           )}
         >
-          {props.content[1]}
+          {props.content[1] ?? ""}
         </TextLine>
         {!!props.content[2] && (
           <TextLine

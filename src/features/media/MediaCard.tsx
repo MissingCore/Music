@@ -9,7 +9,7 @@ type Props = Omit<React.ComponentProps<typeof MediaImage>, "className"> & {
   extra?: string | null;
 };
 
-/** @description Displays an Album, Artist, Playlist, or Song card. */
+/** @description Displays an Album, Artist, Playlist, or Track card. */
 export default function MediaCard({ type, imgSize, imgSrc, ...text }: Props) {
   return (
     <View style={{ maxWidth: imgSize }} className="w-full">
