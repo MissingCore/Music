@@ -164,7 +164,7 @@ export function useIndexAudio() {
 
           if (modifiedTracks.has(id) && !isRetriedTrack) {
             // Delete old cover image if defined before updating track.
-            await deleteFile(allTracks.find(({ id }) => id)!.coverSrc);
+            await deleteFile(allTracks.find((t) => t.id === id)!.coverSrc);
             await db.update(tracks).set(newTrackData).where(eq(tracks.id, id));
           } else {
             // Save new track.
@@ -207,17 +207,12 @@ async function addAlbum(
   releaseYear: number | null,
 ) {
   // Create new cover image if exists.
-  let coverSrc: string | undefined = undefined;
+  let coverSrc: string | null = null;
   if (coverImg) coverSrc = await saveBase64Img(coverImg);
 
   const [newAlbum] = await db
     .insert(albums)
-    .values({
-      name,
-      artistId,
-      ...(coverSrc ? { coverSrc } : {}),
-      ...(releaseYear ? { releaseYear } : {}),
-    })
+    .values({ name, artistId, coverSrc, releaseYear })
     .returning();
   return newAlbum;
 }
