@@ -24,7 +24,8 @@ export function ActionButton(props: {
     <Pressable
       onPress={props.onPress}
       className={cn(
-        "flex-row items-center gap-2 rounded-sm border border-surface500 p-1",
+        "flex-row items-center gap-2 rounded border border-surface500 p-1",
+        "active:bg-surface800",
         props.wrapperClassName,
       )}
     >
