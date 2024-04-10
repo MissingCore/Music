@@ -1,8 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
 import { Link } from "expo-router";
 import { ActivityIndicator, FlatList, Text } from "react-native";
 
-import { getAlbums } from "@/lib/api";
+import { useFormattedAlbums } from "@/features/album/api/getAlbums";
 import { useGetColumnWidth } from "@/hooks/layout";
 
 import Colors from "@/constants/Colors";
@@ -11,12 +10,7 @@ import { trackCountStr } from "@/features/track/utils";
 
 /** @description Screen for `/album` route. */
 export default function AlbumScreen() {
-  const { isPending, data } = useQuery({
-    queryKey: ["all-albums"],
-    queryFn: getAlbums,
-    staleTime: Infinity,
-    gcTime: Infinity,
-  });
+  const { isPending, data } = useFormattedAlbums();
   const colWidth = useGetColumnWidth({
     cols: 2,
     gap: 16,

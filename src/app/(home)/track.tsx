@@ -1,20 +1,17 @@
-import { useQuery } from "@tanstack/react-query";
 import { ActivityIndicator, FlatList, Text } from "react-native";
 
-import { getTracks } from "@/lib/api";
+import { useFormattedTracks } from "@/features/track/api/getTracks";
 
 import Colors from "@/constants/Colors";
 import TrackCard from "@/features/track/TrackCard";
 
 /** @description Screen for `/track` route. */
 export default function TrackScreen() {
-  const { isPending, data } = useQuery({
-    queryKey: ["all-tracks"],
-    queryFn: getTracks,
-  });
+  const { isPending, data } = useFormattedTracks();
 
   return (
     <FlatList
+      initialNumToRender={15}
       data={data}
       keyExtractor={({ id }) => id}
       renderItem={({ item: { id, name, coverSrc, artistName, duration } }) => (
