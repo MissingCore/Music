@@ -1,6 +1,7 @@
 import type { PressableProps } from "react-native";
 import { Pressable, View } from "react-native";
 
+import { cn } from "@/lib/style";
 import TextStack, { type OptString } from "@/components/ui/TextStack";
 
 /**
@@ -16,11 +17,15 @@ export default function ActionButton(props: {
   asideContent?: React.JSX.Element;
   icon?: React.JSX.Element;
   iconOnPress?: PressableProps["onPress"];
+  wrapperClassName?: string;
 }) {
   return (
     <Pressable
       onPress={props.onPress}
-      className="flex-row items-center gap-2 rounded-sm border border-surface500 p-1"
+      className={cn(
+        "flex-row items-center gap-2 rounded-sm border border-surface500 p-1",
+        props.wrapperClassName,
+      )}
     >
       {props.image}
       <TextStack content={props.textContent} wrapperClassName="flex-1" />

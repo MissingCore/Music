@@ -1,7 +1,7 @@
 import { asc } from "drizzle-orm";
 
 import { db } from "@/db";
-import { albums, tracks } from "@/db/schema";
+import { albums, artists, tracks } from "@/db/schema";
 
 /** @description Return all albums w/ their artist name & track count. */
 export async function getAlbums() {
@@ -14,6 +14,17 @@ export async function getAlbums() {
   });
   return allAlbums.map(({ tracks, artist, ...rest }) => {
     return { ...rest, numTracks: tracks.length, artistName: artist.name };
+  });
+}
+
+/** @description Return all artists w/ track count. */
+export async function getArtists() {
+  const allArtists = await db.query.artists.findMany({
+    with: { tracks: { columns: { id: true } } },
+    orderBy: [asc(artists.name)],
+  });
+  return allArtists.map(({ tracks, ...rest }) => {
+    return { ...rest, numTracks: tracks.length };
   });
 }
 

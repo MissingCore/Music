@@ -41,8 +41,8 @@ export default function HomeScreen() {
         />
         <MediaCard
           imgSize={colWidthSmall}
-          type="song"
-          title="Song Name"
+          type="track"
+          title="Track Name"
           subTitle="Artist Name"
         />
         <MediaCard
@@ -60,8 +60,8 @@ export default function HomeScreen() {
         />
         <MediaCard
           imgSize={colWidthSmall}
-          type="song"
-          title="Song Name"
+          type="track"
+          title="Track Name"
           subTitle="Artist Name"
         />
       </ScrollView>

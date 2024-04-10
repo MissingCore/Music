@@ -7,6 +7,7 @@ import { useGetColumnWidth } from "@/hooks/layout";
 
 import Colors from "@/constants/Colors";
 import MediaCard from "@/features/media/MediaCard";
+import { trackCountStr } from "@/features/track/utils";
 
 /** @description Screen for `/album` route. */
 export default function AlbumScreen() {
@@ -35,7 +36,7 @@ export default function AlbumScreen() {
             type="album"
             title={name}
             subTitle={artistName}
-            extra={`| ${numTracks} Track${numTracks !== 1 ? "s" : ""}`}
+            extra={`| ${trackCountStr(numTracks)}`}
           />
         </Link>
       )}
