@@ -5,7 +5,7 @@ import { useFormattedAlbums } from "@/features/album/api/getAlbums";
 import { useGetColumnWidth } from "@/hooks/layout";
 
 import Colors from "@/constants/Colors";
-import MediaCard from "@/features/media/MediaCard";
+import { MediaCard } from "@/components/media/MediaCard";
 import { trackCountStr } from "@/features/track/utils";
 
 /** @description Screen for `/album` route. */

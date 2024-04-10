@@ -1,7 +1,7 @@
 import { Text } from "react-native";
 
 /** @description Display seconds in `hh:mm:ss` format. */
-export default function TrackDuration({ duration }: { duration: number }) {
+export function TrackDuration({ duration }: { duration: number }) {
   let timeStr = new Date(Math.ceil(duration) * 1000)
     .toISOString()
     .substring(11, 19);

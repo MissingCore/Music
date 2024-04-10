@@ -1,16 +1,20 @@
-import { View } from "react-native";
+import { Text, View } from "react-native";
 
 import type { TextColor } from "@/lib/style";
 import { cn } from "@/lib/style";
-import TextLine from "./TextLine";
 
 export type OptString = string | undefined | null;
+
+/** @description Shorthand for `<Text numberOfLines={1} />`. */
+export function TextLine(props: Text["props"]) {
+  return <Text numberOfLines={1} {...props} />;
+}
 
 /**
  * @description Design for having 2 rows of text — we can optionally
  *  display 2 pieces of text next to each other in the 2nd row.
  */
-export default function TextStack(props: {
+export function TextStack(props: {
   content: [string, OptString] | [string, string, OptString];
   wrapperClassName?: string;
   colors?: { row1: TextColor; row2: TextColor };

@@ -1,17 +1,17 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import Colors from "@/constants/Colors";
-import ActionButton from "@/components/ui/ActionButton";
-import type { OptString } from "@/components/ui/TextStack";
-import MediaImage from "../media/MediaImage";
-import TrackDuration from "./TrackDuration";
+import { MediaImage } from "@/components/media/MediaImage";
+import { ActionButton } from "@/components/ui/ActionButton";
+import type { OptString } from "@/components/ui/Text";
+import { TrackDuration } from "./TrackDuration";
 
 /**
  * @description Displays information about the current track with 2
  *  different press scenarios (pressing the icon or the whole card will
  *  do different actions).
  */
-export default function TrackCard(props: {
+export function TrackCard(props: {
   id: string;
   textContent: [string, OptString];
   coverSrc?: string | null;

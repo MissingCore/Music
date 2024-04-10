@@ -5,7 +5,7 @@ import { ActivityIndicator, SectionList, Text } from "react-native";
 import { useGroupedArtists } from "@/features/artist/api/getArtists";
 
 import Colors from "@/constants/Colors";
-import ActionButton from "@/components/ui/ActionButton";
+import { ActionButton } from "@/components/ui/ActionButton";
 import { trackCountStr } from "@/features/track/utils";
 
 /** @description Screen for `/artist` route. */

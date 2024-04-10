@@ -2,14 +2,15 @@ import type { PressableProps } from "react-native";
 import { Pressable, View } from "react-native";
 
 import { cn } from "@/lib/style";
-import TextStack, { type OptString } from "@/components/ui/TextStack";
+import type { OptString } from "@/components/ui/Text";
+import { TextStack } from "@/components/ui/Text";
 
 /**
  * @description Button displaying up to 2 lines of text, with up to 2
  *  different press scenarios (pressing the whole card or the optional
  *  icon will do different actions).
  */
-export default function ActionButton(props: {
+export function ActionButton(props: {
   onPress: PressableProps["onPress"];
   textContent: [string, OptString];
   image?: React.JSX.Element;

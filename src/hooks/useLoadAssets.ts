@@ -1,7 +1,7 @@
-import { useEffect } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
+import { useEffect } from "react";
 
 import { useIndexAudio } from "./useIndexAudio";
 

@@ -9,7 +9,7 @@ import type { MediaType } from "./types";
 const Image = cssInterop(ExpoImage, { className: "style" });
 
 /** @description Displays an image representing a media type. */
-export default function MediaImage(props: {
+export function MediaImage(props: {
   type: MediaType;
   imgSize: DimensionValue;
   imgSrc?: string | null;

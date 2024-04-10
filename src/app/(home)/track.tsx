@@ -3,7 +3,7 @@ import { ActivityIndicator, FlatList, Text } from "react-native";
 import { useFormattedTracks } from "@/features/track/api/getTracks";
 
 import Colors from "@/constants/Colors";
-import TrackCard from "@/features/track/TrackCard";
+import { TrackCard } from "@/features/track/components/TrackCard";
 
 /** @description Screen for `/track` route. */
 export default function TrackScreen() {

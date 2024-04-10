@@ -2,7 +2,7 @@ import { ScrollView, Text, View } from "react-native";
 
 import { useGetColumnWidth } from "@/hooks/layout";
 
-import MediaCard from "@/features/media/MediaCard";
+import { MediaCard } from "@/components/media/MediaCard";
 
 export default function HomeScreen() {
   const colWidth = useGetColumnWidth({

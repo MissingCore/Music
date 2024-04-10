@@ -1,7 +1,7 @@
 import { View } from "react-native";
 
-import TextStack from "@/components/ui/TextStack";
-import MediaImage from "./MediaImage";
+import { TextStack } from "@/components/ui/Text";
+import { MediaImage } from "./MediaImage";
 
 type Props = Omit<React.ComponentProps<typeof MediaImage>, "className"> & {
   title: string;
@@ -10,7 +10,7 @@ type Props = Omit<React.ComponentProps<typeof MediaImage>, "className"> & {
 };
 
 /** @description Displays an Album, Artist, Playlist, or Track card. */
-export default function MediaCard({ type, imgSize, imgSrc, ...text }: Props) {
+export function MediaCard({ type, imgSize, imgSrc, ...text }: Props) {
   return (
     <View style={{ maxWidth: imgSize }} className="w-full">
       <MediaImage {...{ type, imgSize, imgSrc }} />
