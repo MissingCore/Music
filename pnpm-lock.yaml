@@ -112,6 +112,9 @@ devDependencies:
   '@types/base-64':
     specifier: ^1.0.2
     version: 1.0.2
+  '@types/core-js':
+    specifier: ^2.5.8
+    version: 2.5.8
   '@types/fastestsmallesttextencoderdecoder':
     specifier: ^1.0.2
     version: 1.0.2
@@ -3520,6 +3523,10 @@ packages:
   /@types/cookie@0.4.1:
     resolution: {integrity: sha512-XW/Aa8APYr6jSVVA1y/DEIZX0/GMKLEVekNG727R8cs56ahETkRAy/3DR7+fJyh7oUgGwNQaRfXCun0+KbWY7Q==}
     dev: false
+
+  /@types/core-js@2.5.8:
+    resolution: {integrity: sha512-VgnAj6tIAhJhZdJ8/IpxdatM8G4OD3VWGlp6xIxUGENZlpbob9Ty4VVdC1FIEp0aK6DBscDDjyzy5FB60TuNqg==}
+    dev: true
 
   /@types/fastestsmallesttextencoderdecoder@1.0.2:
     resolution: {integrity: sha512-0Md9qUxGnQ9uJ0NjsA70Y0NHIl3NwfBO1d8CGXK0zhczRL85CXJ3M0JZsmCNQ0WcAbt08FuT4U1G1mWQqgOsUg==}
