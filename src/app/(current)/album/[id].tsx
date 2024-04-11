@@ -1,13 +1,14 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Link, useLocalSearchParams, useNavigation } from "expo-router";
 import { useEffect } from "react";
-import { ActivityIndicator, Pressable, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 import { useFormattedAlbum } from "@/features/album/api/getAlbum";
 
 import Colors from "@/constants/Colors";
 import { MediaList, MediaListHeader } from "@/components/media/MediaList";
 import { ActionButton } from "@/components/ui/ActionButton";
+import { Spinner } from "@/components/ui/Spinner";
 import { TrackDuration } from "@/features/track/components/TrackDuration";
 
 /** @description Screen for `/album/[id]` route. */
@@ -33,13 +34,7 @@ export default function CurrentAlbumScreen() {
 
   return (
     <View className="w-full flex-1 px-4">
-      {isPending && (
-        <ActivityIndicator
-          size="large"
-          color={Colors.surface500}
-          className="mx-auto mt-5"
-        />
-      )}
+      {isPending && <Spinner className="mt-5" />}
       {(!!error || !data) && (
         <Text className="mx-auto text-center font-geistMono text-base text-accent50">
           Error: Album not found

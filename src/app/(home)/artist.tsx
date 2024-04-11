@@ -1,11 +1,11 @@
 import { router } from "expo-router";
-import { ActivityIndicator, SectionList, Text } from "react-native";
+import { SectionList, Text } from "react-native";
 
 import { ArrowRight } from "@/assets/svgs/ArrowRight";
 import { useGroupedArtists } from "@/features/artist/api/getArtists";
 
-import Colors from "@/constants/Colors";
 import { ActionButton } from "@/components/ui/ActionButton";
+import { Spinner } from "@/components/ui/Spinner";
 import { trackCountStr } from "@/features/track/utils";
 
 /** @description Screen for `/artist` route. */
@@ -32,11 +32,7 @@ export default function ArtistScreen() {
       showsVerticalScrollIndicator={false}
       ListEmptyComponent={
         isPending ? (
-          <ActivityIndicator
-            size="large"
-            color={Colors.surface500}
-            className="mx-auto"
-          />
+          <Spinner />
         ) : (
           <Text className="mx-auto text-center font-geistMono text-base text-foreground100">
             No Artists Found

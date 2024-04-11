@@ -1,10 +1,10 @@
 import { useLocalSearchParams } from "expo-router";
-import { ActivityIndicator, Text, View } from "react-native";
+import { Text, View } from "react-native";
 
 import { useFormattedArtist } from "@/features/artist/api/getArtist";
 
-import Colors from "@/constants/Colors";
 import { MediaList, MediaListHeader } from "@/components/media/MediaList";
+import { Spinner } from "@/components/ui/Spinner";
 import { TrackCard } from "@/features/track/components/TrackCard";
 
 /** @description Screen for `/artist/[id]` route. */
@@ -14,13 +14,7 @@ export default function CurrentArtistScreen() {
 
   return (
     <View className="w-full flex-1 px-4">
-      {isPending && (
-        <ActivityIndicator
-          size="large"
-          color={Colors.surface500}
-          className="mx-auto mt-5"
-        />
-      )}
+      {isPending && <Spinner className="mt-5" />}
       {(!!error || !data) && (
         <Text className="mx-auto text-center font-geistMono text-base text-accent50">
           Error: Artist not found

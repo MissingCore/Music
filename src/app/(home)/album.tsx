@@ -1,11 +1,11 @@
 import { Link } from "expo-router";
-import { ActivityIndicator, FlatList, Pressable, Text } from "react-native";
+import { FlatList, Pressable, Text } from "react-native";
 
 import { useFormattedAlbums } from "@/features/album/api/getAlbums";
 import { useGetColumnWidth } from "@/hooks/layout";
 
-import Colors from "@/constants/Colors";
 import { MediaCard } from "@/components/media/MediaCard";
+import { Spinner } from "@/components/ui/Spinner";
 import { trackCountStr } from "@/features/track/utils";
 
 /** @description Screen for `/album` route. */
@@ -39,11 +39,7 @@ export default function AlbumScreen() {
       showsVerticalScrollIndicator={false}
       ListEmptyComponent={
         isPending ? (
-          <ActivityIndicator
-            size="large"
-            color={Colors.surface500}
-            className="mx-auto"
-          />
+          <Spinner />
         ) : (
           <Text className="mx-auto text-center font-geistMono text-base text-foreground100">
             No Albums Found

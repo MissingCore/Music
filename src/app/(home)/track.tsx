@@ -1,8 +1,8 @@
-import { ActivityIndicator, FlatList, Text } from "react-native";
+import { FlatList, Text } from "react-native";
 
 import { useFormattedTracks } from "@/features/track/api/getTracks";
 
-import Colors from "@/constants/Colors";
+import { Spinner } from "@/components/ui/Spinner";
 import { TrackCard } from "@/features/track/components/TrackCard";
 
 /** @description Screen for `/track` route. */
@@ -23,11 +23,7 @@ export default function TrackScreen() {
       showsVerticalScrollIndicator={false}
       ListEmptyComponent={
         isPending ? (
-          <ActivityIndicator
-            size="large"
-            color={Colors.surface500}
-            className="mx-auto"
-          />
+          <Spinner />
         ) : (
           <Text className="mx-auto text-center font-geistMono text-base text-foreground100">
             No Tracks Found
