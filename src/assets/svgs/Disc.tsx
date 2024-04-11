@@ -1,7 +1,15 @@
 import Svg, { Circle } from "react-native-svg";
 
-/** @description Thinner Feather icon "disc". */
-export function Disc({ size, color }: { size: number; color: string }) {
+import Colors from "@/constants/Colors";
+
+/** @description Thinner Feather "disc" icon. */
+export function Disc({
+  size,
+  color = Colors.foreground50,
+}: {
+  size: number;
+  color?: string;
+}) {
   return (
     <Svg
       width={size}

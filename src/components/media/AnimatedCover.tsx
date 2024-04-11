@@ -3,7 +3,6 @@ import Animated, { SlideInLeft, clamp } from "react-native-reanimated";
 
 import { Disc } from "@/assets/svgs/Disc";
 
-import Colors from "@/constants/Colors";
 import { cn } from "@/lib/style";
 import { MediaImage } from "./MediaImage";
 
@@ -33,7 +32,7 @@ export function AnimatedCover({ imgSrc, className }: Props) {
         }).duration(500)}
         className="absolute left-0 top-0 translate-x-1/2"
       >
-        <Disc size={imgSize} color={Colors.foreground50} />
+        <Disc size={imgSize} />
       </Animated.View>
       <MediaImage
         type="track"

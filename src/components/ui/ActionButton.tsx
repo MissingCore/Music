@@ -1,6 +1,8 @@
 import type { PressableProps } from "react-native";
 import { Pressable, View } from "react-native";
 
+import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
+
 import { cn } from "@/lib/style";
 import type { OptString } from "@/components/ui/Text";
 import { TextStack } from "@/components/ui/Text";
@@ -20,6 +22,8 @@ export function ActionButton(props: {
   iconOnPress?: PressableProps["onPress"];
   wrapperClassName?: string;
 }) {
+  const icon = props.icon ?? <EllipsisVertical size={24} />;
+
   return (
     <Pressable
       onPress={props.onPress}
@@ -32,14 +36,13 @@ export function ActionButton(props: {
       {props.image}
       <TextStack content={props.textContent} wrapperClassName="flex-1" />
       {props.asideContent}
-      {!!props.icon &&
-        (props.iconOnPress ? (
-          <Pressable onPress={props.iconOnPress} className="shrink-0">
-            {props.icon}
-          </Pressable>
-        ) : (
-          <View className="shrink-0">{props.icon}</View>
-        ))}
+      {props.iconOnPress ? (
+        <Pressable onPress={props.iconOnPress} className="shrink-0">
+          {icon}
+        </Pressable>
+      ) : (
+        <View className="shrink-0">{icon}</View>
+      )}
     </Pressable>
   );
 }

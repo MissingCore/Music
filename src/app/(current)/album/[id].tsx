@@ -73,13 +73,6 @@ export default function CurrentAlbumScreen() {
                   track > 0 ? `Track ${`${track}`.padStart(2, "0")}` : "Track",
                 ]}
                 asideContent={<TrackDuration duration={duration} />}
-                icon={
-                  <Ionicons
-                    name="ellipsis-vertical"
-                    size={24}
-                    color={Colors.foreground100}
-                  />
-                }
                 iconOnPress={() => console.log("View Track Options")}
                 wrapperClassName="h-14 px-2"
               />

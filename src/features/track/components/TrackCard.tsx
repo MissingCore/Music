@@ -1,6 +1,3 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
-
-import Colors from "@/constants/Colors";
 import { MediaImage } from "@/components/media/MediaImage";
 import { ActionButton } from "@/components/ui/ActionButton";
 import type { OptString } from "@/components/ui/Text";
@@ -34,13 +31,6 @@ export function TrackCard(props: {
         />
       }
       asideContent={<TrackDuration duration={props.duration} />}
-      icon={
-        <Ionicons
-          name="ellipsis-vertical"
-          size={24}
-          color={Colors.foreground100}
-        />
-      }
       iconOnPress={() => console.log("View Track Options")}
     />
   );

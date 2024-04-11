@@ -1,7 +1,7 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
 import { ActivityIndicator, SectionList, Text } from "react-native";
 
+import { ArrowRight } from "@/assets/svgs/ArrowRight";
 import { useGroupedArtists } from "@/features/artist/api/getArtists";
 
 import Colors from "@/constants/Colors";
@@ -21,13 +21,7 @@ export default function ArtistScreen() {
         <ActionButton
           onPress={() => router.navigate(`/artist/${id}`)}
           textContent={[name, trackCountStr(numTracks)]}
-          icon={
-            <Ionicons
-              name="arrow-forward-sharp"
-              size={24}
-              color={Colors.foreground100}
-            />
-          }
+          icon={<ArrowRight size={24} />}
           wrapperClassName="h-14 px-2"
         />
       )}
