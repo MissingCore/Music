@@ -1,5 +1,5 @@
 import { View, useWindowDimensions } from "react-native";
-import Animated, { SlideInLeft, clamp } from "react-native-reanimated";
+import Animated, { Keyframe, clamp } from "react-native-reanimated";
 
 import { Disc } from "@/assets/svgs/Disc";
 
@@ -27,10 +27,12 @@ export function AnimatedCover({ imgSrc, className }: Props) {
       className={cn("aspect-square w-full", className)}
     >
       <Animated.View
-        entering={SlideInLeft.withInitialValues({
-          originX: -imgSize / 2,
-        }).duration(500)}
-        className="absolute left-0 top-0 translate-x-1/2"
+        entering={new Keyframe({
+          0: { opacity: 0, translateX: 0 },
+          1: { opacity: 1, translateX: 0 },
+          100: { opacity: 1, translateX: imgSize / 2 },
+        }).duration(300)}
+        className="absolute left-0 top-0 opacity-0"
       >
         <Disc size={imgSize} />
       </Animated.View>

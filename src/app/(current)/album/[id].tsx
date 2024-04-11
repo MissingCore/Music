@@ -8,7 +8,6 @@ import { useFormattedAlbum } from "@/features/album/api/getAlbum";
 import Colors from "@/constants/Colors";
 import { MediaList, MediaListHeader } from "@/components/media/MediaList";
 import { ActionButton } from "@/components/ui/ActionButton";
-import { Spinner } from "@/components/ui/Spinner";
 import { TrackDuration } from "@/features/track/components/TrackDuration";
 
 /** @description Screen for `/album/[id]` route. */
@@ -32,49 +31,48 @@ export default function CurrentAlbumScreen() {
     });
   }, [navigation, data?.isFavorite]);
 
-  return (
-    <View className="w-full flex-1 px-4">
-      {isPending && <Spinner className="mt-5" />}
-      {(!!error || !data) && (
+  if (isPending) return <View className="w-full flex-1 px-4" />;
+  else if (!!error || !data) {
+    return (
+      <View className="w-full flex-1 px-4">
         <Text className="mx-auto text-center font-geistMono text-base text-accent50">
           Error: Album not found
         </Text>
-      )}
+      </View>
+    );
+  }
 
-      {data && (
-        <>
-          <MediaListHeader
-            imgSrc={data.coverSrc}
-            title={data.name}
-            subtitleComponent={
-              <Link
-                href={`/artist/${data.artist.id}`}
-                numberOfLines={1}
-                className="font-geistMonoLight text-xs text-accent50"
-              >
-                {data.artist.name}
-              </Link>
-            }
-            metadata={data.metadata}
+  return (
+    <View className="w-full flex-1 px-4">
+      <MediaListHeader
+        imgSrc={data.coverSrc}
+        title={data.name}
+        subtitleComponent={
+          <Link
+            href={`/artist/${data.artist.id}`}
+            numberOfLines={1}
+            className="font-geistMonoLight text-xs text-accent50"
+          >
+            {data.artist.name}
+          </Link>
+        }
+        metadata={data.metadata}
+      />
+      <MediaList
+        data={data.tracks}
+        renderItem={({ item: { name, track, duration } }) => (
+          <ActionButton
+            onPress={() => console.log(`Now playing: ${name}`)}
+            textContent={[
+              name,
+              track > 0 ? `Track ${`${track}`.padStart(2, "0")}` : "Track",
+            ]}
+            asideContent={<TrackDuration duration={duration} />}
+            iconOnPress={() => console.log("View Track Options")}
+            wrapperClassName="h-14 px-2"
           />
-
-          <MediaList
-            data={data.tracks}
-            renderItem={({ item: { name, track, duration } }) => (
-              <ActionButton
-                onPress={() => console.log(`Now playing: ${name}`)}
-                textContent={[
-                  name,
-                  track > 0 ? `Track ${`${track}`.padStart(2, "0")}` : "Track",
-                ]}
-                asideContent={<TrackDuration duration={duration} />}
-                iconOnPress={() => console.log("View Track Options")}
-                wrapperClassName="h-14 px-2"
-              />
-            )}
-          />
-        </>
-      )}
+        )}
+      />
     </View>
   );
 }
