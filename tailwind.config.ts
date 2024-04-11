@@ -5,6 +5,7 @@ import Colors from "./src/constants/Colors";
 export default {
   content: [
     "./src/app/**/*.{js,jsx,ts,tsx}",
+    "./src/assets/**/*.{js,jsx,ts,tsx}",
     "./src/components/**/*.{js,jsx,ts,tsx}",
     "./src/features/**/*.{js,jsx,ts,tsx}",
   ],

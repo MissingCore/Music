@@ -1,4 +1,4 @@
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
 import { ActivityIndicator, SectionList, Text } from "react-native";
 
 import { ArrowRight } from "@/assets/svgs/ArrowRight";
@@ -10,7 +10,6 @@ import { trackCountStr } from "@/features/track/utils";
 
 /** @description Screen for `/artist` route. */
 export default function ArtistScreen() {
-  const router = useRouter();
   const { isPending, data } = useGroupedArtists();
 
   return (

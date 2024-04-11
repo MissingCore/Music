@@ -7,6 +7,7 @@ import { useLoadAssets } from "@/hooks/useLoadAssets";
 import "@/assets/global.css";
 import Colors from "@/constants/Colors";
 import { AppProvider } from "@/providers/app";
+import { BackButton } from "@/components/BackButton";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -52,9 +53,9 @@ function RootLayoutNav() {
         <Stack.Screen name="(current)" options={{ headerShown: false }} />
         <Stack.Screen
           name="current-track"
-          options={{ animation: "slide_from_bottom" }}
+          options={{ animation: "slide_from_bottom", headerLeft: BackButton }}
         />
-        <Stack.Screen name="setting" />
+        <Stack.Screen name="setting" options={{ headerLeft: BackButton }} />
       </Stack>
     </AppProvider>
   );
