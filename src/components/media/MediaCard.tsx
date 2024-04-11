@@ -5,7 +5,7 @@ import { MediaImage } from "./MediaImage";
 
 type Props = Omit<React.ComponentProps<typeof MediaImage>, "className"> & {
   title: string;
-  subTitle: string;
+  subtitle: string;
   extra?: string | null;
 };
 
@@ -15,7 +15,7 @@ export function MediaCard({ type, imgSize, imgSrc, ...text }: Props) {
     <View style={{ maxWidth: imgSize }} className="w-full">
       <MediaImage {...{ type, imgSize, imgSrc }} />
       <TextStack
-        content={[text.title, text.subTitle, text.extra]}
+        content={[text.title, text.subtitle, text.extra]}
         wrapperClassName="mt-0.5 px-1"
       />
     </View>

@@ -6,7 +6,7 @@ import type { ExtractFnReturnType } from "@/lib/react-query";
 import { getPlayTime } from "@/components/media/utils";
 import { trackCountStr } from "@/features/track/utils";
 
-/** @description Fetch all albums with their relations from database. */
+/** @description Fetch current album with their relations from database. */
 export async function getAlbum(albumId: string) {
   return await db.query.albums.findFirst({
     where: (fields, { eq }) => eq(fields.id, albumId),

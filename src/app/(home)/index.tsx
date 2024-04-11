@@ -34,35 +34,40 @@ export default function HomeScreen() {
         contentContainerClassName="gap-4 px-4"
       >
         <MediaCard
+          imgSrc={null}
           imgSize={colWidthSmall}
           type="artist"
           title="Artist Name"
-          subTitle="24 Tracks"
+          subtitle="24 Tracks"
         />
         <MediaCard
+          imgSrc={null}
           imgSize={colWidthSmall}
           type="track"
           title="Track Name"
-          subTitle="Artist Name"
+          subtitle="Artist Name"
         />
         <MediaCard
+          imgSrc={null}
           imgSize={colWidthSmall}
           type="playlist"
           title="Playlist Name"
-          subTitle="8 Tracks"
+          subtitle="8 Tracks"
         />
         <MediaCard
+          imgSrc={null}
           imgSize={colWidthSmall}
           type="album"
           title="Album Name"
-          subTitle="Artist Name"
+          subtitle="Artist Name"
           extra="| 10 Tracks"
         />
         <MediaCard
+          imgSrc={null}
           imgSize={colWidthSmall}
           type="track"
           title="Track Name"
-          subTitle="Artist Name"
+          subtitle="Artist Name"
         />
       </ScrollView>
 
@@ -83,16 +88,18 @@ export default function HomeScreen() {
           </View>
 
           <MediaCard
+            imgSrc={null}
             imgSize={colWidth}
             type="playlist"
             title="Extra long playlist name"
-            subTitle="12 Tracks"
+            subtitle="12 Tracks"
           />
           <MediaCard
+            imgSrc={null}
             imgSize={colWidth}
             type="album"
             title="Album Name"
-            subTitle="Artist Name"
+            subtitle="Artist Name"
             extra="| 10 Tracks"
           />
         </View>

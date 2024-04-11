@@ -1,21 +1,13 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Link, useLocalSearchParams, useNavigation } from "expo-router";
 import { useEffect } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  Pressable,
-  Text,
-  View,
-} from "react-native";
+import { ActivityIndicator, Pressable, Text, View } from "react-native";
 
 import { useFormattedAlbum } from "@/features/album/api/getAlbum";
 
 import Colors from "@/constants/Colors";
-import { AnimatedCover } from "@/components/media/AnimatedCover";
-import { MediaControl } from "@/components/media/MediaControls";
+import { MediaList, MediaListHeader } from "@/components/media/MediaList";
 import { ActionButton } from "@/components/ui/ActionButton";
-import { TextLine } from "@/components/ui/Text";
 import { TrackDuration } from "@/features/track/components/TrackDuration";
 
 /** @description Screen for `/album/[id]` route. */
@@ -56,30 +48,23 @@ export default function CurrentAlbumScreen() {
 
       {data && (
         <>
-          <View className="border-b border-b-surface50 px-1 pb-2">
-            <AnimatedCover imgSrc={data.coverSrc} className="mb-2" />
-            <TextLine className="font-geistMono text-lg text-foreground50">
-              {data.name}
-            </TextLine>
-            <Link
-              href={`/artist/${data.artist.id}`}
-              numberOfLines={1}
-              className="mb-1 font-geistMonoLight text-xs text-accent50"
-            >
-              {data.artist.name}
-            </Link>
-            <View className="flex-row items-center gap-8">
-              <TextLine className="flex-1 font-geistMonoLight text-xs text-foreground100">
-                {data.metadata.join(" • ")}
-              </TextLine>
-              <MediaControl />
-            </View>
-          </View>
+          <MediaListHeader
+            imgSrc={data.coverSrc}
+            title={data.name}
+            subtitleComponent={
+              <Link
+                href={`/artist/${data.artist.id}`}
+                numberOfLines={1}
+                className="font-geistMonoLight text-xs text-accent50"
+              >
+                {data.artist.name}
+              </Link>
+            }
+            metadata={data.metadata}
+          />
 
-          <FlatList
-            initialNumToRender={15}
+          <MediaList
             data={data.tracks}
-            keyExtractor={({ id }) => id}
             renderItem={({ item: { name, track, duration } }) => (
               <ActionButton
                 onPress={() => console.log(`Now playing: ${name}`)}
@@ -99,8 +84,6 @@ export default function CurrentAlbumScreen() {
                 wrapperClassName="h-14 px-2"
               />
             )}
-            showsVerticalScrollIndicator={false}
-            contentContainerClassName="gap-2 px-1 pb-12 pt-4"
           />
         </>
       )}

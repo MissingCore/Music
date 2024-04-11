@@ -14,7 +14,7 @@ import { TrackDuration } from "./TrackDuration";
 export function TrackCard(props: {
   id: string;
   textContent: [string, OptString];
-  coverSrc?: string | null;
+  coverSrc: string | null;
   duration: number;
 }) {
   return (

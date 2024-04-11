@@ -30,7 +30,7 @@ export default function AlbumScreen() {
               imgSize={colWidth}
               type="album"
               title={name}
-              subTitle={artistName}
+              subtitle={artistName}
               extra={`| ${trackCountStr(numTracks)}`}
             />
           </Pressable>

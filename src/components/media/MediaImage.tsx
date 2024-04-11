@@ -12,7 +12,7 @@ const Image = cssInterop(ExpoImage, { className: "style" });
 export function MediaImage(props: {
   type: MediaType;
   imgSize: DimensionValue;
-  imgSrc?: string | null;
+  imgSrc: string | null;
   className?: string;
 }) {
   const isArtist = props.type === "artist";

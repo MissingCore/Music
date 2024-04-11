@@ -7,7 +7,10 @@ import Colors from "@/constants/Colors";
 import { cn } from "@/lib/style";
 import { MediaImage } from "./MediaImage";
 
-type Props = { imgSrc?: string | null; className?: string };
+type Props = {
+  imgSrc: React.ComponentProps<typeof MediaImage>["imgSrc"];
+  className?: string;
+};
 
 /** @description Simple pulling of viynl out of record animation. */
 export function AnimatedCover({ imgSrc, className }: Props) {
