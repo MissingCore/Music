@@ -63,6 +63,7 @@ export default function CurrentAlbumScreen() {
             </TextLine>
             <Link
               href={`/artist/${data.artist.id}`}
+              numberOfLines={1}
               className="mb-1 font-geistMonoLight text-xs text-accent50"
             >
               {data.artist.name}
@@ -82,7 +83,10 @@ export default function CurrentAlbumScreen() {
             renderItem={({ item: { name, track, duration } }) => (
               <ActionButton
                 onPress={() => console.log(`Now playing: ${name}`)}
-                textContent={[name, track > 0 ? `Track ${track}` : "Track"]}
+                textContent={[
+                  name,
+                  track > 0 ? `Track ${`${track}`.padStart(2, "0")}` : "Track",
+                ]}
                 asideContent={<TrackDuration duration={duration} />}
                 icon={
                   <Ionicons

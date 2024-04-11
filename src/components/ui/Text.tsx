@@ -29,7 +29,7 @@ export function TextStack(props: {
       >
         {props.content[0]}
       </TextLine>
-      <View className="flex-row justify-between gap-1">
+      <View className="flex-row gap-1">
         <TextLine
           className={cn(
             "flex-1 font-geistMonoLight text-xs text-foreground100",
