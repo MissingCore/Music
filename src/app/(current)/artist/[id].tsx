@@ -1,7 +1,7 @@
 import { useLocalSearchParams } from "expo-router";
 import { Text, View } from "react-native";
 
-import { useFormattedArtist } from "@/features/artist/api/getArtist";
+import { useArtist } from "@/features/artist/api/getArtist";
 
 import { MediaList, MediaListHeader } from "@/components/media/MediaList";
 import { TrackCard } from "@/features/track/components/TrackCard";
@@ -9,7 +9,7 @@ import { TrackCard } from "@/features/track/components/TrackCard";
 /** @description Screen for `/artist/[id]` route. */
 export default function CurrentArtistScreen() {
   const { id } = useLocalSearchParams();
-  const { isPending, error, data } = useFormattedArtist(id as string);
+  const { isPending, error, data } = useArtist(id as string);
 
   if (isPending) return <View className="w-full flex-1 px-4" />;
   else if (!!error || !data) {
@@ -27,10 +27,10 @@ export default function CurrentArtistScreen() {
       <MediaListHeader title={data.name} metadata={data.metadata} />
       <MediaList
         data={data.tracks}
-        renderItem={({ item: { id, name, coverSrc, duration, album } }) => (
+        renderItem={({ item: { id, name, coverSrc, duration, albumName } }) => (
           <TrackCard
             {...{ id, coverSrc, duration }}
-            textContent={[name, album?.name ?? "Single"]}
+            textContent={[name, albumName ?? "Single"]}
           />
         )}
       />

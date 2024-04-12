@@ -42,6 +42,7 @@ export function MediaList<TData extends { id: string }>(props: {
 }) {
   return (
     <FlatList
+      initialNumToRender={12}
       data={props.data}
       keyExtractor={({ id }) => id}
       renderItem={props.renderItem}

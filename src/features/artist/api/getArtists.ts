@@ -1,73 +1,49 @@
 import { useQuery } from "@tanstack/react-query";
-import { asc } from "drizzle-orm";
-import { useMemo } from "react";
 
 import { db } from "@/db";
-import { artists } from "@/db/schema";
 
 import type { ExtractFnReturnType } from "@/lib/react-query";
+import { artistKeys } from "./queryKeys";
 
-/** @description Fetch all artists with their relations from database. */
-export async function getArtists() {
+async function getArtists() {
   return await db.query.artists.findMany({
-    with: { tracks: true },
-    orderBy: [asc(artists.name)],
+    with: { tracks: { with: { album: true } } },
   });
 }
 
 type QueryFnType = typeof getArtists;
 type QueryFnData = ExtractFnReturnType<QueryFnType>;
 
-/** @description Gets all artists with its relations, unmodified. */
-export const useArtistsQuery = <TData = QueryFnData>(
-  select?: (data: QueryFnData) => TData,
-) =>
+/** @description Gets all artists with its relations. */
+export const useArtists = () =>
   useQuery({
-    queryKey: ["all-artists"],
+    queryKey: artistKeys.all,
     queryFn: getArtists,
-    select,
-    staleTime: Infinity,
-    gcTime: Infinity,
+    // Data returned from `select` doesn't get saved to the cache.
+    select: groupArtists,
   });
 
-/** @description Return all artists w/ their track count. */
-export const useFormattedArtists = () =>
-  useArtistsQuery((data: QueryFnData) =>
-    data.map(({ tracks, ...rest }) => ({ ...rest, numTracks: tracks.length })),
-  );
+/** @description Group the data by the first character of the artist name. */
+function groupArtists(data: QueryFnData) {
+  // Group artists by their 1st character.
+  const groupedArtists: Record<string, typeof data> = {};
+  data.forEach((artist) => {
+    const key = /[a-zA-Z]/.test(artist.name.charAt(0))
+      ? artist.name.charAt(0).toUpperCase()
+      : "#";
+    if (Object.hasOwn(groupedArtists, key)) groupedArtists[key].push(artist);
+    else groupedArtists[key] = [artist];
+  });
 
-/** @description Group artists by their 1st character for `<SectionList />`. */
-export const useGroupedArtists = () => {
-  const { isPending, error, data } = useFormattedArtists();
-
-  return {
-    isPending,
-    error,
-    data: useMemo(() => {
-      // By default, return an empty array since `<SectionList />`'s
-      // `sections` prop doesn't like `undefined`.
-      if (!data) return [];
-
-      // Group artists by their 1st character.
-      const groupedArtists: Record<string, typeof data> = {};
-      data.forEach((artist) => {
-        const key = /[a-zA-Z]/.test(artist.name.charAt(0))
-          ? artist.name.charAt(0).toUpperCase()
-          : "#";
-        if (Object.hasOwn(groupedArtists, key))
-          groupedArtists[key].push(artist);
-        else groupedArtists[key] = [artist];
-      });
-
-      // Convert object to array, sort by character key and artist name.
-      return Object.entries(groupedArtists)
-        .map(([key, arts]) => ({
-          title: key,
-          data: arts.toSorted((a, b) =>
-            a.name.localeCompare(b.name, undefined, { caseFirst: "upper" }),
-          ),
-        }))
-        .sort((a, b) => a.title.localeCompare(b.title));
-    }, [data]),
-  };
-};
+  // Convert object to array, sort by character key and artist name.
+  return Object.entries(groupedArtists)
+    .map(([key, arts]) => ({
+      title: key,
+      data: arts
+        .toSorted((a, b) =>
+          a.name.localeCompare(b.name, undefined, { caseFirst: "upper" }),
+        )
+        .map(({ tracks, ...rest }) => ({ ...rest, numTracks: tracks.length })),
+    }))
+    .sort((a, b) => a.title.localeCompare(b.title));
+}

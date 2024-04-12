@@ -1,54 +1,64 @@
-import { useQuery } from "@tanstack/react-query";
+import type { QueryFunctionContext } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { db } from "@/db";
 
 import type { ExtractFnReturnType } from "@/lib/react-query";
+import { compareAsc } from "@/utils/string";
 import { getPlayTime } from "@/components/media/utils";
 import { trackCountStr } from "@/features/track/utils";
+import { artistKeys } from "./queryKeys";
 
-/** @description Fetch current artist with their relations from database. */
-export async function getArtist(artistId: string) {
-  return await db.query.artists.findFirst({
-    where: (fields, { eq }) => eq(fields.id, artistId),
-    with: {
-      tracks: {
-        with: { album: true },
-        orderBy: (fields, { asc }) => [asc(fields.name)],
-      },
-    },
+type QueryKeyType = ReturnType<typeof artistKeys.detail>;
+type QueryFnOpts = QueryFunctionContext<QueryKeyType>;
+
+async function getArtist({ queryKey: [{ id }] }: QueryFnOpts) {
+  const currentArtist = await db.query.artists.findFirst({
+    where: (fields, { eq }) => eq(fields.id, id),
+    with: { tracks: { with: { album: true } } },
   });
+  if (!currentArtist) throw new Error(`Artist with id (${id}) does not exist.`);
+  return currentArtist;
 }
 
 type QueryFnType = typeof getArtist;
 type QueryFnData = ExtractFnReturnType<QueryFnType>;
 
 /** @description Gets specified artist. */
-export const useArtistQuery = <TData = QueryFnData>(
-  artistId: string,
-  select?: (data: QueryFnData) => TData,
-) =>
-  useQuery({
-    queryKey: ["artist", artistId],
-    queryFn: () => getArtist(artistId),
-    select,
+export const useArtist = (artistId: string) => {
+  const queryClient = useQueryClient();
+
+  return useQuery({
+    queryKey: artistKeys.detail(artistId),
+    queryFn: getArtist,
+    placeholderData: () => {
+      return queryClient
+        .getQueryData<QueryFnData[]>(artistKeys.all)
+        ?.find((d) => d?.id === artistId);
+    },
+    // Data returned from `select` doesn't get saved to the cache.
+    select: formatArtistTracks,
   });
+};
 
-/** @description Format the artist; grouping the metadata. */
-export const useFormattedArtist = (artistId: string) =>
-  useArtistQuery(artistId, (data: QueryFnData) => {
-    if (!data) return undefined;
-    const metadata = [
-      trackCountStr(data.tracks.length),
-      getPlayTime(
-        data.tracks.reduce((total, curr) => total + curr.duration, 0),
-      ),
-    ];
+/** @description Formats the tracks the artist created. */
+function formatArtistTracks(data: QueryFnData) {
+  const metadata = [
+    trackCountStr(data.tracks.length),
+    getPlayTime(data.tracks.reduce((total, curr) => total + curr.duration, 0)),
+  ];
 
-    // Make sure track `coverSrc` is inherited from its album.
-    const formattedTracks = data.tracks.map(({ coverSrc, ...rest }) => ({
+  // Make sure track `coverSrc` is inherited from its album.
+  const formattedTracks = data.tracks
+    .map(({ album, coverSrc, ...rest }) => ({
       ...rest,
-      coverSrc: rest.album ? rest.album.coverSrc : coverSrc,
-    }));
+      coverSrc: album ? album.coverSrc : coverSrc,
+      albumName: album?.name,
+    }))
+    .toSorted(
+      (a, b) =>
+        compareAsc(a.albumName, b.albumName) || compareAsc(a.name, b.name),
+    );
 
-    return { ...data, tracks: formattedTracks, metadata };
-  });
+  return { ...data, tracks: formattedTracks, metadata };
+}

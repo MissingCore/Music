@@ -2,7 +2,7 @@ import { router } from "expo-router";
 import { SectionList, Text } from "react-native";
 
 import { ArrowRight } from "@/assets/svgs/ArrowRight";
-import { useGroupedArtists } from "@/features/artist/api/getArtists";
+import { useArtists } from "@/features/artist/api/getArtists";
 
 import { ActionButton } from "@/components/ui/ActionButton";
 import { Spinner } from "@/components/ui/Spinner";
@@ -10,11 +10,11 @@ import { trackCountStr } from "@/features/track/utils";
 
 /** @description Screen for `/artist` route. */
 export default function ArtistScreen() {
-  const { isPending, data } = useGroupedArtists();
+  const { isPending, data } = useArtists();
 
   return (
     <SectionList
-      sections={data}
+      sections={data ?? []}
       keyExtractor={({ id }) => id}
       renderItem={({ item: { id, name, numTracks } }) => (
         <ActionButton
