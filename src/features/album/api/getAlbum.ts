@@ -1,51 +1,69 @@
-import { useQuery } from "@tanstack/react-query";
+import type { QueryFunctionContext } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { db } from "@/db";
 
 import type { ExtractFnReturnType } from "@/lib/react-query";
 import { getPlayTime } from "@/components/media/utils";
 import { trackCountStr } from "@/features/track/utils";
+import { albumKeys } from "./queryKeys";
 
-/** @description Fetch current album with their relations from database. */
-export async function getAlbum(albumId: string) {
-  return await db.query.albums.findFirst({
-    where: (fields, { eq }) => eq(fields.id, albumId),
-    with: {
-      artist: true,
-      tracks: {
-        orderBy: (fields, { asc }) => [asc(fields.track)],
-      },
-    },
+type QueryKeyType = ReturnType<typeof albumKeys.detail>;
+type QueryFnOpts = QueryFunctionContext<QueryKeyType>;
+
+async function getAlbum({ queryKey: [{ id }] }: QueryFnOpts) {
+  const currentAlbum = await db.query.albums.findFirst({
+    where: (fields, { eq }) => eq(fields.id, id),
+    with: { artist: true, tracks: true },
   });
+  if (!currentAlbum) throw new Error(`Album with id (${id}) does not exist.`);
+  return currentAlbum;
 }
 
 type QueryFnType = typeof getAlbum;
 type QueryFnData = ExtractFnReturnType<QueryFnType>;
 
 /** @description Gets specified album. */
-export const useAlbumQuery = <TData = QueryFnData>(
-  albumId: string,
-  select?: (data: QueryFnData) => TData,
-) =>
-  useQuery({
-    queryKey: ["album", albumId],
-    queryFn: () => getAlbum(albumId),
-    select,
+export const useAlbum = (albumId: string) => {
+  const queryClient = useQueryClient();
+
+  return useQuery({
+    queryKey: albumKeys.detail(albumId),
+    queryFn: getAlbum,
+    placeholderData: () => {
+      return queryClient
+        .getQueryData<QueryFnData[]>(albumKeys.all)
+        ?.find((d) => d?.id === albumId);
+    },
+    // Data returned from `select` doesn't get saved to the cache.
+    select: formatAlbumTracks,
+    staleTime: Infinity,
   });
+};
 
-/** @description Format the album; grouping the metadata. */
-export const useFormattedAlbum = (albumId: string) =>
-  useAlbumQuery(albumId, (data: QueryFnData) => {
-    if (!data) return undefined;
-    const metadata = [];
+/** @description Formats the tracks associated with the album. */
+function formatAlbumTracks({
+  id,
+  name,
+  coverSrc,
+  isFavorite,
+  ...rest
+}: QueryFnData) {
+  const metadata = [];
+  if (rest.releaseYear) metadata.push(String(rest.releaseYear));
+  metadata.push(trackCountStr(rest.tracks.length));
+  metadata.push(
+    getPlayTime(rest.tracks.reduce((total, curr) => total + curr.duration, 0)),
+  );
 
-    if (data.releaseYear) metadata.push(String(data.releaseYear));
-    metadata.push(trackCountStr(data.tracks.length));
-    metadata.push(
-      getPlayTime(
-        data.tracks.reduce((total, curr) => total + curr.duration, 0),
-      ),
-    );
-
-    return { ...data, metadata };
-  });
+  return {
+    ...{ id, name, coverSrc, isFavorite },
+    artist: { id: rest.artist.id, name: rest.artist.name },
+    tracks: rest.tracks
+      .toSorted((a, b) => a.track - b.track)
+      .map(({ id, name, duration, uri, track }) => {
+        return { id, name, duration, uri, track };
+      }),
+    metadata,
+  };
+}

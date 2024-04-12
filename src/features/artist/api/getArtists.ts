@@ -46,5 +46,5 @@ function groupArtists(data: QueryFnData) {
         )
         .map(({ tracks, ...rest }) => ({ ...rest, numTracks: tracks.length })),
     }))
-    .sort((a, b) => a.title.localeCompare(b.title));
+    .toSorted((a, b) => a.title.localeCompare(b.title));
 }

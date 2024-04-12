@@ -1,13 +1,13 @@
 import { FlatList, Text } from "react-native";
 
-import { useFormattedTracks } from "@/features/track/api/getTracks";
+import { useTracks } from "@/features/track/api/getTracks";
 
 import { Spinner } from "@/components/ui/Spinner";
 import { TrackCard } from "@/features/track/components/TrackCard";
 
 /** @description Screen for `/track` route. */
 export default function TrackScreen() {
-  const { isPending, data } = useFormattedTracks();
+  const { isPending, data } = useTracks();
 
   return (
     <FlatList

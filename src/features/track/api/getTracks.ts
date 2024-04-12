@@ -1,38 +1,36 @@
 import { useQuery } from "@tanstack/react-query";
-import { asc } from "drizzle-orm";
 
 import { db } from "@/db";
-import { tracks } from "@/db/schema";
 
 import type { ExtractFnReturnType } from "@/lib/react-query";
+import { trackKeys } from "./queryKeys";
 
-/** @description Fetch all tracks with their relations from database. */
-export async function getTracks() {
+async function getTracks() {
   return await db.query.tracks.findMany({
     with: { artist: true, album: true },
-    orderBy: [asc(tracks.name)],
   });
 }
 
 type QueryFnType = typeof getTracks;
 type QueryFnData = ExtractFnReturnType<QueryFnType>;
 
-/** @description Gets all tracks with its relations, unmodified. */
-export const useTracksQuery = <TData = QueryFnData>(
-  select?: (data: QueryFnData) => TData,
-) =>
+/** @description Gets all tracks with its relations. */
+export const useTracks = () =>
   useQuery({
-    queryKey: ["all-tracks"],
+    queryKey: trackKeys.all,
     queryFn: getTracks,
-    select,
+    // Data returned from `select` doesn't get saved to the cache.
+    select: formatTracks,
+    staleTime: Infinity,
   });
 
-/** @description Return all tracks w/ their artist name & cover inherited from its album. */
-export const useFormattedTracks = () =>
-  useTracksQuery((data: QueryFnData) =>
-    data.map(({ artist, album, coverSrc, ...rest }) => ({
-      ...rest,
-      artistName: artist.name,
-      coverSrc: album?.coverSrc ?? coverSrc,
-    })),
-  );
+/** @description Summarize information about each track. */
+function formatTracks(data: QueryFnData) {
+  return data
+    .map(({ id, name, duration, uri, ...rest }) => ({
+      ...{ id, name, duration, uri },
+      artistName: rest.artist.name,
+      coverSrc: rest.album?.coverSrc ?? rest.coverSrc,
+    }))
+    .toSorted((a, b) => a.name.localeCompare(b.name));
+}

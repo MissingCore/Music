@@ -3,7 +3,7 @@ import { Link, useLocalSearchParams, useNavigation } from "expo-router";
 import { useEffect } from "react";
 import { Pressable, Text, View } from "react-native";
 
-import { useFormattedAlbum } from "@/features/album/api/getAlbum";
+import { useAlbum } from "@/features/album/api/getAlbum";
 
 import Colors from "@/constants/Colors";
 import { MediaList, MediaListHeader } from "@/components/media/MediaList";
@@ -14,7 +14,7 @@ import { TrackDuration } from "@/features/track/components/TrackDuration";
 export default function CurrentAlbumScreen() {
   const { id } = useLocalSearchParams();
   const navigation = useNavigation();
-  const { isPending, error, data } = useFormattedAlbum(id as string);
+  const { isPending, error, data } = useAlbum(id as string);
 
   useEffect(() => {
     if (data?.isFavorite === undefined) return;

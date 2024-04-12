@@ -43,23 +43,22 @@ export const useArtist = (artistId: string) => {
 };
 
 /** @description Formats the tracks the artist created. */
-function formatArtistTracks(data: QueryFnData) {
-  const metadata = [
-    trackCountStr(data.tracks.length),
-    getPlayTime(data.tracks.reduce((total, curr) => total + curr.duration, 0)),
-  ];
-
-  // Make sure track `coverSrc` is inherited from its album.
-  const formattedTracks = data.tracks
-    .map(({ id, name, duration, uri, album, coverSrc, ..._ }) => ({
-      ...{ id, name, duration, uri },
-      coverSrc: album ? album.coverSrc : coverSrc,
-      albumName: album?.name,
-    }))
-    .toSorted(
-      (a, b) =>
-        compareAsc(a.albumName, b.albumName) || compareAsc(a.name, b.name),
-    );
-
-  return { ...data, tracks: formattedTracks, metadata };
+function formatArtistTracks({ id, name, tracks }: QueryFnData) {
+  return {
+    ...{ id, name },
+    tracks: tracks
+      .map(({ id, name, duration, uri, album, coverSrc }) => ({
+        ...{ id, name, duration, uri },
+        coverSrc: album ? album.coverSrc : coverSrc,
+        albumName: album?.name,
+      }))
+      .toSorted(
+        (a, b) =>
+          compareAsc(a.albumName, b.albumName) || compareAsc(a.name, b.name),
+      ),
+    metadata: [
+      trackCountStr(tracks.length),
+      getPlayTime(tracks.reduce((total, curr) => total + curr.duration, 0)),
+    ],
+  };
 }

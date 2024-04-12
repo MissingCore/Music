@@ -1,7 +1,7 @@
 import { Link } from "expo-router";
 import { FlatList, Pressable, Text } from "react-native";
 
-import { useFormattedAlbums } from "@/features/album/api/getAlbums";
+import { useAlbums } from "@/features/album/api/getAlbums";
 import { useGetColumnWidth } from "@/hooks/layout";
 
 import { MediaCard } from "@/components/media/MediaCard";
@@ -10,7 +10,7 @@ import { trackCountStr } from "@/features/track/utils";
 
 /** @description Screen for `/album` route. */
 export default function AlbumScreen() {
-  const { isPending, data } = useFormattedAlbums();
+  const { isPending, data } = useAlbums();
   const colWidth = useGetColumnWidth({
     cols: 2,
     gap: 16,
