@@ -1,6 +1,8 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { useEffect } from "react";
 
 import { useIndexAudio } from "./useIndexAudio";
@@ -21,6 +23,8 @@ export function useLoadAssets() {
     GeistMono: require("../assets/fonts/GeistMono-Regular.ttf"),
     GeistMonoMedium: require("../assets/fonts/GeistMono-Medium.ttf"),
     Ndot57: require("../assets/fonts/Ndot-57.ttf"),
+    ...Ionicons.font,
+    ...MaterialIcons.font,
   });
   const { success: dbSuccess, error: dbError } = useMigrations(db, migrations);
   const { isComplete: audioIndexingStatus } = useIndexAudio();

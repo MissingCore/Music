@@ -1,5 +1,5 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import Materialicons from "@expo/vector-icons/MaterialIcons";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Pressable, View } from "react-native";
 
 import Colors from "@/constants/Colors";
@@ -18,7 +18,7 @@ export function MediaControl() {
         onPress={() => console.log("Pressed `Play` button.")}
         className="rounded-full bg-accent500 p-1"
       >
-        <Materialicons
+        <MaterialIcons
           name="play-arrow"
           size={24}
           color={Colors.foreground50}
