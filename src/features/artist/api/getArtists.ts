@@ -21,6 +21,7 @@ export const useArtists = () =>
     queryFn: getArtists,
     // Data returned from `select` doesn't get saved to the cache.
     select: groupArtists,
+    staleTime: Infinity,
   });
 
 /** @description Group the data by the first character of the artist name. */

@@ -38,6 +38,7 @@ export const useArtist = (artistId: string) => {
     },
     // Data returned from `select` doesn't get saved to the cache.
     select: formatArtistTracks,
+    staleTime: Infinity,
   });
 };
 
@@ -50,8 +51,8 @@ function formatArtistTracks(data: QueryFnData) {
 
   // Make sure track `coverSrc` is inherited from its album.
   const formattedTracks = data.tracks
-    .map(({ album, coverSrc, ...rest }) => ({
-      ...rest,
+    .map(({ id, name, duration, uri, album, coverSrc, ..._ }) => ({
+      ...{ id, name, duration, uri },
       coverSrc: album ? album.coverSrc : coverSrc,
       albumName: album?.name,
     }))
