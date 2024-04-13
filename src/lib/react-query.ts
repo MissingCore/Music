@@ -1,6 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 
-// Create TanStack Query client
+// Create TanStack Query client.
 export const queryClient = new QueryClient();
 
 /** @description Get the type of the value returned from a promise. */

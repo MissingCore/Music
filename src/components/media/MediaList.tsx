@@ -3,8 +3,8 @@ import { FlashList } from "@shopify/flash-list";
 import { View } from "react-native";
 
 import { AnimatedCover } from "@/components/media/AnimatedCover";
-import { MediaControl } from "@/components/media/MediaControls";
 import { TextLine } from "@/components/ui/Text";
+import { MediaControls } from "@/features/playback/components/MediaControls";
 
 /** @description Header component seen on the `(current)` pages. */
 export function MediaListHeader(props: {
@@ -30,7 +30,7 @@ export function MediaListHeader(props: {
         <TextLine className="flex-1 font-geistMonoLight text-xs text-foreground100">
           {props.metadata.join(" • ")}
         </TextLine>
-        <MediaControl />
+        <MediaControls />
       </View>
     </View>
   );
