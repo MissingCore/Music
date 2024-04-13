@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "8dc968c3-3742-49f5-8663-1d9d1223d6c2",
+  "id": "5b82fb78-66e0-4594-8eb7-0a9a20a658f8",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "albums": {
@@ -14,8 +14,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "artistId": {
-          "name": "artistId",
+        "artistName": {
+          "name": "artistName",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -53,15 +53,15 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "albums_artistId_artists_id_fk": {
-          "name": "albums_artistId_artists_id_fk",
+        "albums_artistName_artists_name_fk": {
+          "name": "albums_artistName_artists_name_fk",
           "tableFrom": "albums",
           "tableTo": "artists",
           "columnsFrom": [
-            "artistId"
+            "artistName"
           ],
           "columnsTo": [
-            "id"
+            "name"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -73,17 +73,10 @@
     "artists": {
       "name": "artists",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
         "name": {
           "name": "name",
           "type": "text",
-          "primaryKey": false,
+          "primaryKey": true,
           "notNull": true,
           "autoincrement": false
         }
@@ -133,8 +126,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "artistId": {
-          "name": "artistId",
+        "artistName": {
+          "name": "artistName",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -201,15 +194,15 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "tracks_artistId_artists_id_fk": {
-          "name": "tracks_artistId_artists_id_fk",
+        "tracks_artistName_artists_name_fk": {
+          "name": "tracks_artistName_artists_name_fk",
           "tableFrom": "tracks",
           "tableTo": "artists",
           "columnsFrom": [
-            "artistId"
+            "artistName"
           ],
           "columnsTo": [
-            "id"
+            "name"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"

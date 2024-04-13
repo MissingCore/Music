@@ -27,10 +27,9 @@ export const useAlbums = () =>
 /** @description Summarize information about each album. */
 function formatAlbums(data: QueryFnData) {
   return data
-    .map(({ id, name, coverSrc, tracks, artist }) => ({
-      ...{ id, name, coverSrc },
+    .map(({ id, name, artistName, coverSrc, tracks }) => ({
+      ...{ id, name, artistName, coverSrc },
       numTracks: tracks.length,
-      artistName: artist.name,
     }))
     .toSorted((a, b) => a.name.localeCompare(b.name));
 }

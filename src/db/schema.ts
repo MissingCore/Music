@@ -5,10 +5,8 @@ import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createId } from "@/lib/cuid2";
 
 export const artists = sqliteTable("artists", {
-  id: text("id")
-    .primaryKey()
-    .$defaultFn(() => createId()),
-  name: text("name").notNull(),
+  name: text("name").primaryKey(),
+  // FIXME: Potentially add `logo` field in the future.
 });
 export type Artist = InferSelectModel<typeof artists>;
 
@@ -21,9 +19,9 @@ export const albums = sqliteTable("albums", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => createId()),
-  artistId: text("artistId")
+  artistName: text("artistName")
     .notNull()
-    .references(() => artists.id),
+    .references(() => artists.name),
   name: text("name").notNull(),
   coverSrc: text("coverSrc"),
   releaseYear: integer("releaseYear"),
@@ -34,15 +32,18 @@ export const albums = sqliteTable("albums", {
 export type Album = InferSelectModel<typeof albums>;
 
 export const albumsRelations = relations(albums, ({ one, many }) => ({
-  artist: one(artists, { fields: [albums.artistId], references: [artists.id] }),
+  artist: one(artists, {
+    fields: [albums.artistName],
+    references: [artists.name],
+  }),
   tracks: many(tracks),
 }));
 
 export const tracks = sqliteTable("tracks", {
   id: text("id").primaryKey(),
-  artistId: text("artistId")
+  artistName: text("artistName")
     .notNull()
-    .references(() => artists.id),
+    .references(() => artists.name),
   albumId: text("albumId").references(() => albums.id),
   name: text("name").notNull(),
   coverSrc: text("coverSrc"),
@@ -57,7 +58,10 @@ export const tracks = sqliteTable("tracks", {
 export type Track = InferSelectModel<typeof tracks>;
 
 export const tracksRelations = relations(tracks, ({ one }) => ({
-  artist: one(artists, { fields: [tracks.artistId], references: [artists.id] }),
+  artist: one(artists, {
+    fields: [tracks.artistName],
+    references: [artists.name],
+  }),
   album: one(albums, { fields: [tracks.albumId], references: [albums.id] }),
 }));
 

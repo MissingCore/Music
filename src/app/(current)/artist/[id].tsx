@@ -9,7 +9,9 @@ import { TrackCard } from "@/features/track/components/TrackCard";
 /** @description Screen for `/artist/[id]` route. */
 export default function CurrentArtistScreen() {
   const { id } = useLocalSearchParams();
-  const { isPending, error, data } = useArtist(id as string);
+  const { isPending, error, data } = useArtist(
+    decodeURIComponent(id as string),
+  );
 
   if (isPending) return <View className="w-full flex-1 px-4" />;
   else if (!!error || !data) {

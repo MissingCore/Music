@@ -16,7 +16,7 @@ async function getAlbum({ queryKey: [{ id }] }: QueryFnOpts) {
     where: (fields, { eq }) => eq(fields.id, id),
     with: { artist: true, tracks: true },
   });
-  if (!currentAlbum) throw new Error(`Album with id (${id}) does not exist.`);
+  if (!currentAlbum) throw new Error(`Album (${id}) does not exist.`);
   return currentAlbum;
 }
 
@@ -43,23 +43,21 @@ export const useAlbum = (albumId: string) => {
 
 /** @description Formats the tracks associated with the album. */
 function formatAlbumTracks({
-  id,
-  name,
-  coverSrc,
-  isFavorite,
+  releaseYear,
+  tracks,
+  artist: _,
   ...rest
 }: QueryFnData) {
   const metadata = [];
-  if (rest.releaseYear) metadata.push(String(rest.releaseYear));
-  metadata.push(trackCountStr(rest.tracks.length));
+  if (releaseYear) metadata.push(String(releaseYear));
+  metadata.push(trackCountStr(tracks.length));
   metadata.push(
-    getPlayTime(rest.tracks.reduce((total, curr) => total + curr.duration, 0)),
+    getPlayTime(tracks.reduce((total, curr) => total + curr.duration, 0)),
   );
 
   return {
-    ...{ id, name, coverSrc, isFavorite },
-    artist: { id: rest.artist.id, name: rest.artist.name },
-    tracks: rest.tracks
+    ...rest,
+    tracks: tracks
       .toSorted((a, b) => a.track - b.track)
       .map(({ id, name, duration, uri, track }) => {
         return { id, name, duration, uri, track };

@@ -49,11 +49,11 @@ export default function CurrentAlbumScreen() {
         title={data.name}
         subtitleComponent={
           <Link
-            href={`/artist/${data.artist.id}`}
+            href={`/artist/${encodeURIComponent(data.artistName)}`}
             numberOfLines={1}
             className="font-geistMonoLight text-xs text-accent50"
           >
-            {data.artist.name}
+            {data.artistName}
           </Link>
         }
         metadata={data.metadata}

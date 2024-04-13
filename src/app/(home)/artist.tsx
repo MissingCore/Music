@@ -15,10 +15,10 @@ export default function ArtistScreen() {
   return (
     <SectionList
       sections={data ?? []}
-      keyExtractor={({ id }) => id}
-      renderItem={({ item: { id, name, numTracks } }) => (
+      keyExtractor={({ name }) => name}
+      renderItem={({ item: { name, numTracks } }) => (
         <ActionButton
-          onPress={() => router.navigate(`/artist/${id}`)}
+          onPress={() => router.navigate(`/artist/${encodeURIComponent(name)}`)}
           textContent={[name, trackCountStr(numTracks)]}
           icon={<ArrowRight size={24} />}
         />

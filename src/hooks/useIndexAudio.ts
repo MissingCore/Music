@@ -46,7 +46,6 @@ export function useIndexAudio() {
     ).assets.filter((a) => a.filename.endsWith(".mp3"));
 
     // Get the entries that exist in our database.
-    const allArtists = await db.query.artists.findMany();
     const allAlbums = await db.query.albums.findMany();
     const allTracks = await db.query.tracks.findMany();
     const allInvalidTracks = await db.query.invalidTracks.findMany();
@@ -83,13 +82,20 @@ export function useIndexAudio() {
           }
         }),
     );
+    console.log(`Got metadata in ${(Date.now() - start) / 1000}s.`);
 
     // Add rejected tracks in "incomingTrackData" to `InvalidTracks` table.
     await Promise.allSettled(
       incomingTrackData.filter(isRejected).map(async ({ reason }) => {
         const trackId = reason as string;
-        // Exclude tracks that already exist (ie: use old data).
-        if (modifiedTracks.has(trackId) && !retryTracks.has(trackId)) return;
+        // Delete existing rejected track as we failed to modify it.
+        if (modifiedTracks.has(trackId) && !retryTracks.has(trackId)) {
+          const [deletedTrack] = await db
+            .delete(tracks)
+            .where(eq(tracks.id, trackId))
+            .returning({ coverSrc: tracks.coverSrc });
+          await deleteFile(deletedTrack.coverSrc);
+        }
 
         const { id, uri, modificationTime } = mp3Files.find(
           ({ id }) => id === trackId,
@@ -110,14 +116,11 @@ export function useIndexAudio() {
       .map(({ value }) => value);
 
     // Add new artists to database.
-    const artistNames = new Set(validTrackData.map(({ artist }) => artist));
-    const artistIdMap: Record<string, string> = {};
     await Promise.allSettled(
-      [...artistNames].map(async (name) => {
-        let exists = allArtists.find((a) => a.name === name);
-        if (!exists) exists = await addArtist(name);
-        artistIdMap[name] = exists.id;
-      }),
+      [...new Set(validTrackData.map(({ artist }) => artist))].map(
+        async (name) =>
+          await db.insert(artists).values({ name }).onConflictDoNothing(),
+      ),
     );
 
     // Add new albums to database (albums may have the same name, but different artists).
@@ -143,11 +146,10 @@ export function useIndexAudio() {
     await Promise.allSettled(
       [...newAlbums].map(async (albumArtistKey) => {
         const { album, artist, cover, year } = albumInfoMap[albumArtistKey];
-        const artistId = artistIdMap[artist];
         let exists = allAlbums.find(
-          (a) => a.name === album && a.artistId === artistId,
+          (a) => a.name === album && a.artistName === artist,
         );
-        if (!exists) exists = await addAlbum(album, artistId, cover, year);
+        if (!exists) exists = await addAlbum(album, artist, cover, year);
         albumIdMap[albumArtistKey] = exists.id;
       }),
     );
@@ -156,14 +158,12 @@ export function useIndexAudio() {
     await Promise.allSettled(
       validTrackData.map(
         async ({ year: _, artist, album, cover, track, id, ...rest }) => {
-          const artistId = artistIdMap[artist];
           const albumId = album ? albumIdMap[`${album} ${artist}`] : null;
-
           let coverSrc: string | null = null;
           if (!albumId && cover) coverSrc = await saveBase64Img(cover);
 
           const newTrackData = {
-            ...{ ...rest, id, artistId, albumId, coverSrc },
+            ...{ ...rest, id, artistName: artist, albumId, coverSrc },
             ...(track ? { track } : {}),
           };
           const isRetriedTrack = retryTracks.has(id);
@@ -186,7 +186,7 @@ export function useIndexAudio() {
     await cleanUpTracks(new Set(mp3Files.map(({ id }) => id)));
 
     setIsComplete(true);
-    console.log(`Finished in ${Date.now() - start}ms.`);
+    console.log(`Finished in ${(Date.now() - start) / 1000}s.`);
   }, [permissionResponse, requestPermission]);
 
   useEffect(() => {
@@ -199,16 +199,10 @@ export function useIndexAudio() {
   };
 }
 
-/** @description Helper to create and return a new artist. */
-async function addArtist(name: string) {
-  const [newArtist] = await db.insert(artists).values({ name }).returning();
-  return newArtist;
-}
-
 /** @description Helper to create and return a new album. */
 async function addAlbum(
   name: string,
-  artistId: string,
+  artistName: string,
   coverImg: string | null,
   releaseYear: number | null,
 ) {
@@ -218,7 +212,7 @@ async function addAlbum(
 
   const [newAlbum] = await db
     .insert(albums)
-    .values({ name, artistId, coverSrc, releaseYear })
+    .values({ name, artistName, coverSrc, releaseYear })
     .returning();
   return newAlbum;
 }
@@ -265,31 +259,27 @@ async function cleanUpTracks(usedTrackIds: Set<string>) {
 
   // Remove Albums with no tracks.
   const allAlbums = await db.query.albums.findMany({
-    columns: { id: true },
+    columns: { id: true, coverSrc: true },
     with: { tracks: { columns: { id: true } } },
   });
   await Promise.allSettled(
     allAlbums
       .filter(({ tracks }) => tracks.length === 0)
-      .map(async ({ id }) => {
-        const [deletedAlbum] = await db
-          .delete(albums)
-          .where(eq(albums.id, id))
-          .returning({ coverSrc: albums.coverSrc });
-        await deleteFile(deletedAlbum.coverSrc);
+      .map(async ({ id, coverSrc }) => {
+        await deleteFile(coverSrc);
+        await db.delete(albums).where(eq(albums.id, id));
       }),
   );
 
   // Remove Artists with no tracks.
   const allArtists = await db.query.artists.findMany({
-    columns: { id: true },
     with: { tracks: { columns: { id: true } } },
   });
   await Promise.allSettled(
     allArtists
       .filter(({ tracks }) => tracks.length === 0)
-      .map(async ({ id }) => {
-        await db.delete(artists).where(eq(artists.id, id));
+      .map(async ({ name }) => {
+        await db.delete(artists).where(eq(artists.name, name));
       }),
   );
 }
