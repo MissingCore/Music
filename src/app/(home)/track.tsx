@@ -1,7 +1,8 @@
-import { FlatList, Text } from "react-native";
+import { Text } from "react-native";
 
 import { useTracks } from "@/features/track/api/getTracks";
 
+import { MediaList } from "@/components/media/MediaList";
 import { Spinner } from "@/components/ui/Spinner";
 import { TrackCard } from "@/features/track/components/TrackCard";
 
@@ -10,17 +11,14 @@ export default function TrackScreen() {
   const { isPending, data } = useTracks();
 
   return (
-    <FlatList
-      initialNumToRender={15}
+    <MediaList
       data={data}
-      keyExtractor={({ id }) => id}
       renderItem={({ item: { id, name, coverSrc, artistName, duration } }) => (
         <TrackCard
           {...{ id, coverSrc, duration }}
           textContent={[name, artistName]}
         />
       )}
-      showsVerticalScrollIndicator={false}
       ListEmptyComponent={
         isPending ? (
           <Spinner />
@@ -30,7 +28,7 @@ export default function TrackScreen() {
           </Text>
         )
       }
-      contentContainerClassName="mt-5 w-full gap-2 px-4 pb-16"
+      contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 20 }}
     />
   );
 }

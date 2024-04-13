@@ -69,7 +69,6 @@ export default function CurrentAlbumScreen() {
             ]}
             asideContent={<TrackDuration duration={duration} />}
             iconOnPress={() => console.log("View Track Options")}
-            wrapperClassName="h-14 px-2"
           />
         )}
       />

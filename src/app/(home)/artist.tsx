@@ -21,7 +21,6 @@ export default function ArtistScreen() {
           onPress={() => router.navigate(`/artist/${id}`)}
           textContent={[name, trackCountStr(numTracks)]}
           icon={<ArrowRight size={24} />}
-          wrapperClassName="h-14 px-2"
         />
       )}
       renderSectionHeader={({ section: { title } }) => (

@@ -1,5 +1,6 @@
-import type { ListRenderItem } from "react-native";
-import { FlatList, View } from "react-native";
+import type { ContentStyle, ListRenderItem } from "@shopify/flash-list";
+import { FlashList } from "@shopify/flash-list";
+import { View } from "react-native";
 
 import { AnimatedCover } from "@/components/media/AnimatedCover";
 import { MediaControl } from "@/components/media/MediaControls";
@@ -35,19 +36,32 @@ export function MediaListHeader(props: {
   );
 }
 
-/** @description Lists out tracks on the `(current)` pages. */
+/**
+ * @description Lists out tracks on the `(current)` pages. This should
+ *  render `<ActionButton />` components.
+ */
 export function MediaList<TData extends { id: string }>(props: {
-  data: ArrayLike<TData> | undefined | null;
+  data: readonly TData[] | undefined | null;
   renderItem: ListRenderItem<TData> | undefined | null;
+  ListEmptyComponent?: React.ComponentProps<
+    typeof FlashList
+  >["ListEmptyComponent"];
+  contentContainerStyle?: ContentStyle;
 }) {
   return (
-    <FlatList
-      initialNumToRender={12}
+    <FlashList
+      estimatedItemSize={66} // 58px Height + 8px Margin Bottom
       data={props.data}
       keyExtractor={({ id }) => id}
       renderItem={props.renderItem}
       showsVerticalScrollIndicator={false}
-      contentContainerClassName="gap-2 px-1 pb-12 pt-4"
+      ListEmptyComponent={props.ListEmptyComponent}
+      contentContainerStyle={{
+        paddingBottom: 36,
+        paddingHorizontal: 4,
+        paddingTop: 16,
+        ...props.contentContainerStyle,
+      }}
     />
   );
 }
