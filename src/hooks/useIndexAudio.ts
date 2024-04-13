@@ -120,29 +120,35 @@ export function useIndexAudio() {
       }),
     );
 
-    // Add new albums to database.
+    // Add new albums to database (albums may have the same name, but different artists).
     const albumInfoMap: Record<
       string,
-      { artist: string; cover: string | null; year: number | null }
+      {
+        album: string;
+        artist: string;
+        cover: string | null;
+        year: number | null;
+      }
     > = {};
     const newAlbums = new Set(
       validTrackData
         .map(({ album, artist, cover, year }) => {
-          if (album) albumInfoMap[album] = { artist, cover, year };
-          return album;
+          const key = `${album} ${artist}`;
+          if (album) albumInfoMap[key] = { album, artist, cover, year };
+          return key;
         })
         .filter((a) => !!a) as string[],
     );
     const albumIdMap: Record<string, string> = {};
     await Promise.allSettled(
-      [...newAlbums].map(async (name) => {
-        const { artist, cover, year } = albumInfoMap[name];
+      [...newAlbums].map(async (albumArtistKey) => {
+        const { album, artist, cover, year } = albumInfoMap[albumArtistKey];
         const artistId = artistIdMap[artist];
         let exists = allAlbums.find(
-          (a) => a.name === name && a.artistId === artistId,
+          (a) => a.name === album && a.artistId === artistId,
         );
-        if (!exists) exists = await addAlbum(name, artistId, cover, year);
-        albumIdMap[name] = exists.id;
+        if (!exists) exists = await addAlbum(album, artistId, cover, year);
+        albumIdMap[albumArtistKey] = exists.id;
       }),
     );
 
@@ -151,7 +157,7 @@ export function useIndexAudio() {
       validTrackData.map(
         async ({ year: _, artist, album, cover, track, id, ...rest }) => {
           const artistId = artistIdMap[artist];
-          const albumId = album ? albumIdMap[album] : null;
+          const albumId = album ? albumIdMap[`${album} ${artist}`] : null;
 
           let coverSrc: string | null = null;
           if (!albumId && cover) coverSrc = await saveBase64Img(cover);
