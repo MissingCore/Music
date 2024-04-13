@@ -1,7 +1,17 @@
+import type { DefaultOptions } from "@tanstack/react-query";
 import { QueryClient } from "@tanstack/react-query";
 
+const queryConfig: DefaultOptions = {
+  queries: {
+    networkMode: "always",
+  },
+  mutations: {
+    networkMode: "always",
+  },
+};
+
 // Create TanStack Query client.
-export const queryClient = new QueryClient();
+export const queryClient = new QueryClient({ defaultOptions: queryConfig });
 
 /** @description Get the type of the value returned from a promise. */
 export type ExtractFnReturnType<FnType extends (...args: any) => any> = Awaited<
