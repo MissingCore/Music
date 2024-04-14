@@ -6,6 +6,7 @@ import { usePlaybackConfig } from "../api/getPlaybackConfig";
 import { useToggleControl } from "../api/toggleControl";
 
 import Colors from "@/constants/Colors";
+import { mutateGuard } from "@/lib/react-query";
 import type { ToggleableControls } from "../types";
 
 /** @description Media control used on `(current)` routes. */
@@ -48,7 +49,7 @@ export function MediaToggleButton({ type, size = 24 }: MediaToggleButtonProps) {
   const isToggled = toggleMutation.isPending ? !data : data;
 
   return (
-    <Pressable onPress={() => toggleMutation.mutate(data)}>
+    <Pressable onPress={() => mutateGuard(toggleMutation, data)}>
       <Ionicons
         name={`${type}-sharp`}
         size={size}

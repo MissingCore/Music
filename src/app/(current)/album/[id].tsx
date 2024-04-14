@@ -7,6 +7,7 @@ import { useAlbum } from "@/features/album/api/getAlbum";
 import { useToggleFavorite } from "@/features/album/api/toggleFavorite";
 
 import Colors from "@/constants/Colors";
+import { mutateGuard } from "@/lib/react-query";
 import { MediaList, MediaListHeader } from "@/components/media/MediaList";
 import { ActionButton } from "@/components/ui/ActionButton";
 import { TrackDuration } from "@/features/track/components/TrackDuration";
@@ -27,7 +28,7 @@ export default function CurrentAlbumScreen() {
 
     navigation.setOptions({
       headerRight: () => (
-        <Pressable onPress={() => toggleMutation.mutate(data.isFavorite)}>
+        <Pressable onPress={() => mutateGuard(toggleMutation, data.isFavorite)}>
           <Ionicons
             name={isToggled ? "heart" : "heart-outline"}
             size={24}
