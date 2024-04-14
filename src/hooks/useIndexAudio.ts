@@ -87,7 +87,7 @@ export function useIndexAudio() {
     // Add rejected tracks in "incomingTrackData" to `InvalidTracks` table.
     await Promise.allSettled(
       incomingTrackData.filter(isRejected).map(async ({ reason }) => {
-        const trackId = reason as string;
+        const trackId = reason.message as string;
         // Delete existing rejected track as we failed to modify it.
         if (modifiedTracks.has(trackId) && !retryTracks.has(trackId)) {
           const [deletedTrack] = await db
