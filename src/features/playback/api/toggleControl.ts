@@ -5,13 +5,7 @@ import { playbackKeys } from "./queryKeys";
 import type { ToggleableControls } from "../types";
 
 async function toggleControl(key: ToggleableControls, currState: boolean) {
-  try {
-    await AsyncStorage.setItem(key, JSON.stringify(!currState));
-    return !currState;
-  } catch (err) {
-    console.log(err);
-    throw new Error(`Failed to toggle playback value for: ${key}.`);
-  }
+  await AsyncStorage.setItem(key, JSON.stringify(!currState));
 }
 
 /** @description Toggle a toggleable playback control. */
@@ -20,8 +14,11 @@ export const useToggleControl = (key: ToggleableControls) => {
 
   return useMutation({
     mutationFn: (currState: boolean) => toggleControl(key, currState),
-    onSuccess: (newState: boolean) => {
-      queryClient.setQueryData(playbackKeys.config(key), newState);
+    onSuccess: () => {
+      queryClient.setQueryData(
+        playbackKeys.config(key),
+        (oldState: boolean) => !oldState,
+      );
     },
   });
 };

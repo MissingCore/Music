@@ -16,7 +16,8 @@ async function getPlaybackConfig({ queryKey: [{ key }] }: QueryFnOpts) {
     return JSON.parse(value) as PlaybackValue<typeof key>;
   } catch (err) {
     console.log(err);
-    throw new Error(`Failed to fetch playback config for: ${key}.`);
+    // Return the default value even when we fail.
+    return PlaybackAsyncStorageDefaults[key];
   }
 }
 

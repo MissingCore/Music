@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { Pressable, Text, View } from "react-native";
 
 import { useAlbum } from "@/features/album/api/getAlbum";
+import { useToggleFavorite } from "@/features/album/api/toggleFavorite";
 
 import Colors from "@/constants/Colors";
 import { MediaList, MediaListHeader } from "@/components/media/MediaList";
@@ -15,21 +16,27 @@ export default function CurrentAlbumScreen() {
   const { id } = useLocalSearchParams();
   const navigation = useNavigation();
   const { isPending, error, data } = useAlbum(id as string);
+  const toggleMutation = useToggleFavorite(id as string);
 
   useEffect(() => {
     if (data?.isFavorite === undefined) return;
+    // Add optimistic UI updates.
+    const isToggled = toggleMutation.isPending
+      ? !data.isFavorite
+      : data.isFavorite;
+
     navigation.setOptions({
       headerRight: () => (
-        <Pressable onPress={() => console.log("Add album to favorites.")}>
+        <Pressable onPress={() => toggleMutation.mutate(data.isFavorite)}>
           <Ionicons
-            name={data.isFavorite ? "heart" : "heart-outline"}
+            name={isToggled ? "heart" : "heart-outline"}
             size={24}
             color={Colors.foreground50}
           />
         </Pressable>
       ),
     });
-  }, [navigation, data?.isFavorite]);
+  }, [navigation, data?.isFavorite, toggleMutation]);
 
   if (isPending) return <View className="w-full flex-1 px-4" />;
   else if (!!error || !data) {

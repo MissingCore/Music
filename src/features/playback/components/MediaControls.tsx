@@ -36,7 +36,7 @@ type MediaToggleButtonProps = {
 /** @description Reusable toggleable media control button. */
 export function MediaToggleButton({ type, size = 24 }: MediaToggleButtonProps) {
   const { isPending, error, data } = usePlaybackConfig(type);
-  const onToggle = useToggleControl(type);
+  const toggleMutation = useToggleControl(type);
 
   if (isPending || error) {
     return (
@@ -44,12 +44,15 @@ export function MediaToggleButton({ type, size = 24 }: MediaToggleButtonProps) {
     );
   }
 
+  // Add optimistic UI updates.
+  const isToggled = toggleMutation.isPending ? !data : data;
+
   return (
-    <Pressable onPress={() => onToggle.mutate(data)}>
+    <Pressable onPress={() => toggleMutation.mutate(data)}>
       <Ionicons
         name={`${type}-sharp`}
         size={size}
-        color={data ? Colors.accent500 : Colors.foreground50}
+        color={isToggled ? Colors.accent500 : Colors.foreground50}
       />
     </Pressable>
   );
