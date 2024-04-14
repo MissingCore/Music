@@ -13,10 +13,10 @@ import { TrackDuration } from "@/features/track/components/TrackDuration";
 
 /** @description Screen for `/album/[id]` route. */
 export default function CurrentAlbumScreen() {
-  const { id } = useLocalSearchParams();
+  const { id } = useLocalSearchParams<{ id: string }>();
   const navigation = useNavigation();
-  const { isPending, error, data } = useAlbum(id as string);
-  const toggleMutation = useToggleFavorite(id as string);
+  const { isPending, error, data } = useAlbum(id);
+  const toggleMutation = useToggleFavorite(id);
 
   useEffect(() => {
     if (data?.isFavorite === undefined) return;
