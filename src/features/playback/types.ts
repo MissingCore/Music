@@ -1,8 +1,20 @@
+import type { MediaType } from "@/components/media/types";
+
+/** @description Where we'll get the list of tracks we'll play from. */
+type PlaybackSource = {
+  type: Omit<MediaType, "track">;
+  /** "id" of the list in the given `type`. */
+  ref: string;
+};
+
 /**
  * @description Default values of key-value pairs stored in AsyncStorage
  *  for "playback" feature.
  */
 export const PlaybackAsyncStorageDefaults = {
+  source: undefined as PlaybackSource | undefined,
+
+  /* Playback Options */
   repeat: false,
   shuffle: false,
 };
