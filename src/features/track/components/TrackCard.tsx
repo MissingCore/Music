@@ -17,11 +17,11 @@ export function TrackCard(props: {
   coverSrc: string | null;
   duration: number;
 }) {
-  const { play } = usePlaybackContext();
+  const { playNewTrack } = usePlaybackContext();
 
   return (
     <ActionButton
-      onPress={() => play({ trackId: props.id, uri: props.uri })}
+      onPress={() => playNewTrack(props.id, props.uri)}
       textContent={props.textContent}
       image={
         <MediaImage

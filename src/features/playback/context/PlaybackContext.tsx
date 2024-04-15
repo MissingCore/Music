@@ -1,24 +1,17 @@
-import { Audio } from "expo-av";
+import { Audio, InterruptionModeAndroid } from "expo-av";
+import { useAtom, useAtomValue } from "jotai";
+import { createContext, useCallback, useContext, useRef } from "react";
+
 import {
-  createContext,
-  useCallback,
-  useContext,
-  useRef,
-  useState,
-} from "react";
-
-import type { UseTrackData } from "@/features/track/api/getTrack";
-import { useTrack } from "@/features/track/api/getTrack";
-import { usePlaybackConfigs } from "../api/getPlaybackConfigs";
-import { useUpdateCurrentTrack } from "../api/updateCurrentTrack";
-
-type PlayFnProps = { trackId: string; uri: string };
+  currentTrackDataAtom,
+  currentTrackIdAtom,
+  isPlayingAtom,
+} from "../store";
 
 type TPlaybackContext = {
-  currentTrack?: UseTrackData;
   isPlaying: boolean;
   toggleIsPlaying: () => void;
-  play: (args: PlayFnProps) => void;
+  playNewTrack: (trackId: string, uri: string) => void;
 };
 
 const PlaybackContext = createContext<TPlaybackContext | null>(null);
@@ -28,14 +21,13 @@ const PlaybackContext = createContext<TPlaybackContext | null>(null);
  *  current playing song.
  */
 export function PlaybackProvider({ children }: { children: React.ReactNode }) {
-  // Note: Using dependent queries (this causes request waterfalls, which is bad for performance)
-  const { data: configs } = usePlaybackConfigs();
-  const { data: currentTrack } = useTrack(configs?.currentTrack);
-
-  const currentTrackMutation = useUpdateCurrentTrack();
-
   const soundRef = useRef(new Audio.Sound());
-  const [isPlaying, setIsPlaying] = useState(false);
+
+  const [currentTrackId, setCurrentTrackId] = useAtom(currentTrackIdAtom);
+  const currentTrack = useAtomValue(currentTrackDataAtom);
+  const [isPlaying, setIsPlaying] = useAtom(isPlayingAtom);
+
+  console.log(currentTrackId, currentTrack);
 
   /**
    * @description Toggle the play status of the current track. If no
@@ -58,23 +50,25 @@ export function PlaybackProvider({ children }: { children: React.ReactNode }) {
     }
 
     setIsPlaying((prev) => !prev);
-  }, [isPlaying, currentTrack]);
+  }, [isPlaying, setIsPlaying, currentTrack]);
 
-  const play = useCallback(
-    async ({ trackId, uri }: PlayFnProps) => {
+  /** @description Play a new track. */
+  const playNewTrack = useCallback(
+    async (trackId: string, uri: string) => {
+      // FIXME: Need to fix case w/ fast clicks
       await soundRef.current.unloadAsync();
       await soundRef.current.loadAsync({ uri });
       await soundRef.current.playAsync();
-      currentTrackMutation.mutate(trackId);
+      setCurrentTrackId(trackId);
 
       setIsPlaying(true);
     },
-    [currentTrackMutation],
+    [setCurrentTrackId, setIsPlaying],
   );
 
   return (
     <PlaybackContext.Provider
-      value={{ currentTrack, isPlaying, toggleIsPlaying, play }}
+      value={{ isPlaying, toggleIsPlaying, playNewTrack }}
     >
       {children}
     </PlaybackContext.Provider>

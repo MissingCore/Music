@@ -1,7 +1,9 @@
 export type TPlaybackAsyncStorage = {
+  currentTrack: string | undefined;
+
   repeat: boolean;
   shuffle: boolean;
-} & { currentTrack: string | undefined };
+};
 
 /**
  * @description Default values of key-value pairs stored in AsyncStorage

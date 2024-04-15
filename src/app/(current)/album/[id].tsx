@@ -19,7 +19,7 @@ export default function CurrentAlbumScreen() {
   const navigation = useNavigation();
   const { isPending, error, data } = useAlbum(id);
   const toggleMutation = useToggleFavorite(id);
-  const { play } = usePlaybackContext();
+  const { playNewTrack } = usePlaybackContext();
 
   useEffect(() => {
     if (data?.isFavorite === undefined) return;
@@ -72,7 +72,7 @@ export default function CurrentAlbumScreen() {
         data={data.tracks}
         renderItem={({ item: { id, name, track, duration, uri } }) => (
           <ActionButton
-            onPress={() => play({ trackId: id, uri })}
+            onPress={() => playNewTrack(id, uri)}
             textContent={[
               name,
               track > 0 ? `Track ${`${track}`.padStart(2, "0")}` : "Track",
