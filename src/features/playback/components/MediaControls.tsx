@@ -4,9 +4,11 @@ import { Pressable, View } from "react-native";
 
 import { usePlaybackConfig } from "../api/getPlaybackConfig";
 import { useToggleControl } from "../api/toggleControl";
+import { usePlaybackContext } from "../context/PlaybackContext";
 
 import Colors from "@/constants/Colors";
 import { mutateGuard } from "@/lib/react-query";
+import { cn } from "@/lib/style";
 import type { ToggleableControls } from "../types";
 
 /** @description Media control used on `(current)` routes. */
@@ -15,16 +17,7 @@ export function MediaControls() {
     <View className="flex-row items-center gap-4">
       <MediaToggleButton type="repeat" />
       <MediaToggleButton type="shuffle" />
-      <Pressable
-        onPress={() => console.log("Pressed `Play` button.")}
-        className="rounded-full bg-accent500 p-1"
-      >
-        <MaterialIcons
-          name="play-arrow"
-          size={24}
-          color={Colors.foreground50}
-        />
-      </Pressable>
+      <PlayButton />
     </View>
   );
 }
@@ -54,6 +47,26 @@ export function MediaToggleButton({ type, size = 24 }: MediaToggleButtonProps) {
         name={`${type}-sharp`}
         size={size}
         color={isToggled ? Colors.accent500 : Colors.foreground50}
+      />
+    </Pressable>
+  );
+}
+
+/** @description Toggles whether we're playing or not. */
+export function PlayButton({ size = 24 }) {
+  const { isPlaying, toggleIsPlaying } = usePlaybackContext();
+
+  return (
+    <Pressable
+      onPress={toggleIsPlaying}
+      className={cn("rounded-full bg-accent500 p-1", {
+        "bg-surface500": isPlaying,
+      })}
+    >
+      <MaterialIcons
+        name={isPlaying ? "pause" : "play-arrow"}
+        size={size}
+        color={Colors.foreground50}
       />
     </Pressable>
   );

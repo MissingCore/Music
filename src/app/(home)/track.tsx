@@ -13,9 +13,11 @@ export default function TrackScreen() {
   return (
     <MediaList
       data={data}
-      renderItem={({ item: { id, name, coverSrc, artistName, duration } }) => (
+      renderItem={({
+        item: { id, name, coverSrc, duration, artistName, uri },
+      }) => (
         <TrackCard
-          {...{ id, coverSrc, duration }}
+          {...{ id, coverSrc, duration, uri }}
           textContent={[name, artistName]}
         />
       )}

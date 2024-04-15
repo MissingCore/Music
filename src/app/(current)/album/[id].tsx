@@ -5,6 +5,7 @@ import { Pressable, Text, View } from "react-native";
 
 import { useAlbum } from "@/features/album/api/getAlbum";
 import { useToggleFavorite } from "@/features/album/api/toggleFavorite";
+import { usePlaybackContext } from "@/features/playback/context/PlaybackContext";
 
 import Colors from "@/constants/Colors";
 import { mutateGuard } from "@/lib/react-query";
@@ -18,6 +19,7 @@ export default function CurrentAlbumScreen() {
   const navigation = useNavigation();
   const { isPending, error, data } = useAlbum(id);
   const toggleMutation = useToggleFavorite(id);
+  const { play } = usePlaybackContext();
 
   useEffect(() => {
     if (data?.isFavorite === undefined) return;
@@ -68,9 +70,9 @@ export default function CurrentAlbumScreen() {
       />
       <MediaList
         data={data.tracks}
-        renderItem={({ item: { name, track, duration } }) => (
+        renderItem={({ item: { id, name, track, duration, uri } }) => (
           <ActionButton
-            onPress={() => console.log(`Now playing: ${name}`)}
+            onPress={() => play({ trackId: id, uri })}
             textContent={[
               name,
               track > 0 ? `Track ${`${track}`.padStart(2, "0")}` : "Track",

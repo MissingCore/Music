@@ -27,6 +27,7 @@
     "core-js": "^3.36.1",
     "drizzle-orm": "^0.30.7",
     "expo": "~50.0.15",
+    "expo-av": "~13.10.5",
     "expo-file-system": "~16.0.8",
     "expo-font": "~11.10.3",
     "expo-image": "^1.10.6",

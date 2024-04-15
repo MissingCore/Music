@@ -1,18 +1,15 @@
-import type { MediaType } from "@/components/media/types";
-
-/** @description Where we'll get the list of tracks we'll play from. */
-type PlaybackSource = {
-  type: Omit<MediaType, "track">;
-  /** "id" of the list in the given `type`. */
-  ref: string;
-};
+export type TPlaybackAsyncStorage = {
+  repeat: boolean;
+  shuffle: boolean;
+} & { currentTrack: string | undefined };
 
 /**
  * @description Default values of key-value pairs stored in AsyncStorage
  *  for "playback" feature.
  */
-export const PlaybackAsyncStorageDefaults = {
-  source: undefined as PlaybackSource | undefined,
+export const PlaybackAsyncStorageDefaults: TPlaybackAsyncStorage = {
+  /** Id of the track currently being played. */
+  currentTrack: undefined,
 
   /* Playback Options */
   repeat: false,
@@ -20,11 +17,11 @@ export const PlaybackAsyncStorageDefaults = {
 };
 
 /** @description The keys available in the AsyncStorage. */
-export type PlaybackKey = keyof typeof PlaybackAsyncStorageDefaults;
+export type PlaybackKey = keyof TPlaybackAsyncStorage;
 
 /** @description The result we expect from a given `PlaybackKey`. */
 export type PlaybackValue<TKey extends PlaybackKey> =
-  (typeof PlaybackAsyncStorageDefaults)[TKey];
+  TPlaybackAsyncStorage[TKey];
 
 /** @description Keys of values which we can toggle (ie: value is `boolean`). */
 export type ToggleableControls = "repeat" | "shuffle";

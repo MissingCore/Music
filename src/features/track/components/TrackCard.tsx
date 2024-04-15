@@ -1,3 +1,5 @@
+import { usePlaybackContext } from "@/features/playback/context/PlaybackContext";
+
 import { MediaImage } from "@/components/media/MediaImage";
 import { ActionButton } from "@/components/ui/ActionButton";
 import type { OptString } from "@/components/ui/Text";
@@ -10,17 +12,16 @@ import { TrackDuration } from "./TrackDuration";
  */
 export function TrackCard(props: {
   id: string;
+  uri: string;
   textContent: [string, OptString];
   coverSrc: string | null;
   duration: number;
 }) {
+  const { play } = usePlaybackContext();
+
   return (
     <ActionButton
-      onPress={() =>
-        console.log(
-          `Now playing: ${props.textContent[0]} by ${props.textContent[1]}`,
-        )
-      }
+      onPress={() => play({ trackId: props.id, uri: props.uri })}
       textContent={props.textContent}
       image={
         <MediaImage

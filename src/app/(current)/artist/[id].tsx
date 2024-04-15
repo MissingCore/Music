@@ -27,9 +27,11 @@ export default function CurrentArtistScreen() {
       <MediaListHeader title={data.name} metadata={data.metadata} />
       <MediaList
         data={data.tracks}
-        renderItem={({ item: { id, name, coverSrc, duration, albumName } }) => (
+        renderItem={({
+          item: { id, name, coverSrc, duration, albumName, uri },
+        }) => (
           <TrackCard
-            {...{ id, coverSrc, duration }}
+            {...{ id, coverSrc, duration, uri }}
             textContent={[name, albumName ?? "Single"]}
           />
         )}

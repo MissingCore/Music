@@ -41,6 +41,9 @@ dependencies:
   expo:
     specifier: ~50.0.15
     version: 50.0.15(@babel/core@7.24.4)(@react-native/babel-preset@0.73.21)
+  expo-av:
+    specifier: ~13.10.5
+    version: 13.10.5(expo@50.0.15)
   expo-file-system:
     specifier: ~16.0.8
     version: 16.0.8(expo@50.0.15)
@@ -6265,6 +6268,14 @@ packages:
     transitivePeerDependencies:
       - expo
       - supports-color
+    dev: false
+
+  /expo-av@13.10.5(expo@50.0.15):
+    resolution: {integrity: sha512-w45oCoe+8PunDeM0rh/Ut6UaGh7OjEJOCjAiQy3nCxpA8FaXB17KaqpsvkAXIMvceHYWndH8+D29esUTS6wEsA==}
+    peerDependencies:
+      expo: '*'
+    dependencies:
+      expo: 50.0.15(@babel/core@7.24.4)(@react-native/babel-preset@0.73.21)
     dev: false
 
   /expo-constants@15.4.5(expo@50.0.15):
