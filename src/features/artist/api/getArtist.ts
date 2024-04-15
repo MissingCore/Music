@@ -25,11 +25,12 @@ type QueryFnType = typeof getArtist;
 type QueryFnData = ExtractFnReturnType<QueryFnType>;
 
 /** @description Gets specified artist. */
-export const useArtist = (artistName: string) => {
+export const useArtist = (artistName: string | undefined) => {
   const queryClient = useQueryClient();
 
   return useQuery({
-    queryKey: artistKeys.detail(artistName),
+    enabled: Boolean(artistName),
+    queryKey: artistKeys.detail(artistName!),
     queryFn: getArtist,
     placeholderData: () => {
       return queryClient

@@ -24,11 +24,12 @@ type QueryFnType = typeof getAlbum;
 type QueryFnData = ExtractFnReturnType<QueryFnType>;
 
 /** @description Gets specified album. */
-export const useAlbum = (albumId: string) => {
+export const useAlbum = (albumId: string | undefined) => {
   const queryClient = useQueryClient();
 
   return useQuery({
-    queryKey: albumKeys.detail(albumId),
+    enabled: Boolean(albumId),
+    queryKey: albumKeys.detail(albumId!),
     queryFn: getAlbum,
     placeholderData: () => {
       return queryClient
