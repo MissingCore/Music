@@ -1,4 +1,6 @@
-import { usePlaybackContext } from "@/features/playback/context/PlaybackContext";
+import { useSetAtom } from "jotai";
+
+import { playNewTrackAtom } from "@/features/playback/api/playTrack";
 
 import { MediaImage } from "@/components/media/MediaImage";
 import { ActionButton } from "@/components/ui/ActionButton";
@@ -17,7 +19,7 @@ export function TrackCard(props: {
   coverSrc: string | null;
   duration: number;
 }) {
-  const { playNewTrack } = usePlaybackContext();
+  const playNewTrack = useSetAtom(playNewTrackAtom);
 
   return (
     <ActionButton

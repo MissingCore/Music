@@ -10,7 +10,6 @@ import { StatusBar } from "expo-status-bar";
 import "@/assets/global.css";
 import NavigationTheme from "@/constants/Theme";
 import { queryClient } from "@/lib/react-query";
-import { PlaybackProvider } from "@/features/playback/context/PlaybackContext";
 
 /**
  * @description The general providers used in our app. Also provides
@@ -21,7 +20,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider value={NavigationTheme}>
         <StatusBar style="light" />
-        <PlaybackProvider>{children}</PlaybackProvider>
+        {children}
       </ThemeProvider>
     </QueryClientProvider>
   );

@@ -1,10 +1,11 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useAtomValue, useSetAtom } from "jotai";
 import { Pressable, View } from "react-native";
 
 import { usePlaybackConfig } from "../api/getPlaybackConfig";
 import { useToggleControl } from "../api/toggleControl";
-import { usePlaybackContext } from "../context/PlaybackContext";
+import { isPlayingAtom, toggleIsPlayingAtom } from "../api/playTrack";
 
 import Colors from "@/constants/Colors";
 import { mutateGuard } from "@/lib/react-query";
@@ -54,7 +55,8 @@ export function MediaToggleButton({ type, size = 24 }: MediaToggleButtonProps) {
 
 /** @description Toggles whether we're playing or not. */
 export function PlayButton({ size = 24 }) {
-  const { isPlaying, toggleIsPlaying } = usePlaybackContext();
+  const isPlaying = useAtomValue(isPlayingAtom);
+  const toggleIsPlaying = useSetAtom(toggleIsPlayingAtom);
 
   return (
     <Pressable

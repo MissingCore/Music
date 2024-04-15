@@ -1,12 +1,9 @@
 import { atom } from "jotai";
-import { loadable, unwrap } from "jotai/utils";
+import { unwrap } from "jotai/utils";
 
 import { db } from "@/db";
 
 import { createAtomWithStorage } from "@/lib/jotai";
-
-export const isPlayingAtom = atom(false);
-export const playbackPositionAtom = atom(0);
 
 /** @description Returns the current track id stored in `AsyncStorage`. */
 export const currentTrackIdAtom = createAtomWithStorage<string | undefined>(
@@ -14,8 +11,11 @@ export const currentTrackIdAtom = createAtomWithStorage<string | undefined>(
   undefined,
 );
 
-/** @description Asynchronously fetch information about the current track. */
-const currentTrackDataAsyncAtom = atom(async (get) => {
+/**
+ * @description [FOR INTERNAL USE ONLY] Read-only atom that asynchronously
+ *  fetch information about the current track.
+ */
+export const currentTrackDataAsyncAtom = atom(async (get) => {
   try {
     const trackId = await get(currentTrackIdAtom);
     if (!trackId) throw new Error("No track id found.");

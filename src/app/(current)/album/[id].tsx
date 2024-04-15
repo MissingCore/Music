@@ -1,11 +1,12 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Link, useLocalSearchParams, useNavigation } from "expo-router";
+import { useSetAtom } from "jotai";
 import { useEffect } from "react";
 import { Pressable, Text, View } from "react-native";
 
 import { useAlbum } from "@/features/album/api/getAlbum";
 import { useToggleFavorite } from "@/features/album/api/toggleFavorite";
-import { usePlaybackContext } from "@/features/playback/context/PlaybackContext";
+import { playNewTrackAtom } from "@/features/playback/api/playTrack";
 
 import Colors from "@/constants/Colors";
 import { mutateGuard } from "@/lib/react-query";
@@ -19,7 +20,7 @@ export default function CurrentAlbumScreen() {
   const navigation = useNavigation();
   const { isPending, error, data } = useAlbum(id);
   const toggleMutation = useToggleFavorite(id);
-  const { playNewTrack } = usePlaybackContext();
+  const playNewTrack = useSetAtom(playNewTrackAtom);
 
   useEffect(() => {
     if (data?.isFavorite === undefined) return;
