@@ -5,10 +5,14 @@ import { db } from "@/db";
 
 import { createAtomWithStorage } from "@/lib/jotai";
 
+/** @description [FOR INTERNAL USE ONLY] */
+export const currentTrackIdAsyncAtom = createAtomWithStorage<
+  string | undefined
+>("current-track-id", undefined);
 /** @description Returns the current track id stored in `AsyncStorage`. */
-export const currentTrackIdAtom = createAtomWithStorage<string | undefined>(
-  "current-track-id",
-  undefined,
+export const currentTrackIdAtom = unwrap(
+  currentTrackIdAsyncAtom,
+  (prev) => prev ?? undefined,
 );
 
 /**
@@ -17,7 +21,7 @@ export const currentTrackIdAtom = createAtomWithStorage<string | undefined>(
  */
 export const currentTrackDataAsyncAtom = atom(async (get) => {
   try {
-    const trackId = await get(currentTrackIdAtom);
+    const trackId = await get(currentTrackIdAsyncAtom);
     if (!trackId) throw new Error("No track id found.");
     const currTrack = await db.query.tracks.findFirst({
       where: (fields, { eq }) => eq(fields.id, trackId),

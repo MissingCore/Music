@@ -4,7 +4,7 @@ import { loadable } from "jotai/utils";
 import { createAtomWithStorage } from "@/lib/jotai";
 
 /** @description [FOR INTERNAL USE ONLY] */
-const repeatAsyncAtom = createAtomWithStorage("repeat", false);
+export const repeatAsyncAtom = createAtomWithStorage("repeat", false);
 const repeatLoadableAtom = loadable(repeatAsyncAtom);
 /**
  * @description Returns if we should loop after reach the end of the list
@@ -16,7 +16,7 @@ export const repeatAtom = atom(
 );
 
 /** @description [FOR INTERNAL USE ONLY] */
-const shuffleAsyncAtom = createAtomWithStorage("shuffle", false);
+export const shuffleAsyncAtom = createAtomWithStorage("shuffle", false);
 const shuffleLoadableAtom = loadable(shuffleAsyncAtom);
 /** @description Return if the next track should be "random". */
 export const shuffleAtom = atom(

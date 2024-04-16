@@ -1,6 +1,9 @@
 import { atom } from "jotai";
 
-import { currentTrackDataAsyncAtom, currentTrackIdAtom } from "./currentTrack";
+import {
+  currentTrackDataAsyncAtom,
+  currentTrackIdAsyncAtom,
+} from "./currentTrack";
 import { soundRefAtom } from "./globalSound";
 
 /** @description Whether a track is currently playing. */
@@ -15,7 +18,7 @@ export const playNewTrackAtom = atom(
       await soundRef.unloadAsync(); // Needed if we want to replace the current track.
       await soundRef.loadAsync({ uri }, { shouldPlay: true });
 
-      set(currentTrackIdAtom, trackId);
+      set(currentTrackIdAsyncAtom, trackId);
       set(isPlayingAtom, true);
     } catch (err) {
       // Catch cases where media failed to load or if it's already loaded.
