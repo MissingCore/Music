@@ -10,15 +10,17 @@ export const isPlayingAtom = atom(false);
 export const playNewTrackAtom = atom(
   null,
   async (get, set, trackId: string, uri: string) => {
-    // FIXME: If we run this function in quick succession, we'll can
-    // potentially encounter an `Error: The Sound is already loading`.
-    const soundRef = get(soundRefAtom);
-    await soundRef.unloadAsync();
-    await soundRef.loadAsync({ uri });
-    await soundRef.playAsync();
+    try {
+      const soundRef = get(soundRefAtom);
+      await soundRef.unloadAsync(); // Needed if we want to replace the current track.
+      await soundRef.loadAsync({ uri }, { shouldPlay: true });
 
-    set(currentTrackIdAtom, trackId);
-    set(isPlayingAtom, true);
+      set(currentTrackIdAtom, trackId);
+      set(isPlayingAtom, true);
+    } catch (err) {
+      // Catch cases where media failed to load or if it's already loaded.
+      console.log(err);
+    }
   },
 );
 
@@ -41,8 +43,10 @@ export const toggleIsPlayingAtom = atom(null, async (get, set) => {
     // If no track is loaded, we assume `isPlaying = false`. This usually
     // occurs when we click the "play button" for the first time after the
     // app loads.
-    await soundRef.loadAsync({ uri: currentTrackData.uri });
-    await soundRef.playAsync();
+    await soundRef.loadAsync(
+      { uri: currentTrackData.uri },
+      { shouldPlay: true },
+    );
   }
 
   set(isPlayingAtom, !isPlaying);

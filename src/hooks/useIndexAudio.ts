@@ -1,4 +1,5 @@
 import { eq } from "drizzle-orm";
+import { Audio } from "expo-av";
 import * as FileSystem from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
 import { useCallback, useEffect, useState } from "react";
@@ -184,6 +185,9 @@ export function useIndexAudio() {
     );
 
     await cleanUpTracks(new Set(mp3Files.map(({ id }) => id)));
+
+    // Allow audio to play in the background.
+    await Audio.setAudioModeAsync({ staysActiveInBackground: true });
 
     setIsComplete(true);
     console.log(`Finished in ${(Date.now() - start) / 1000}s.`);
