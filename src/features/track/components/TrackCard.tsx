@@ -1,6 +1,6 @@
 import { useSetAtom } from "jotai";
 
-import { playNewTrackAtom } from "@/features/playback/api/playTrack";
+import { playNewTrackAtom } from "@/features/playback/api/controls";
 
 import { MediaImage } from "@/components/media/MediaImage";
 import { ActionButton } from "@/components/ui/ActionButton";

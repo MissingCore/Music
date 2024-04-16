@@ -6,7 +6,7 @@ import { Pressable, Text, View } from "react-native";
 
 import { useAlbum } from "@/features/album/api/getAlbum";
 import { useToggleFavorite } from "@/features/album/api/toggleFavorite";
-import { playNewTrackAtom } from "@/features/playback/api/playTrack";
+import { playNewTrackAtom } from "@/features/playback/api/controls";
 
 import Colors from "@/constants/Colors";
 import { mutateGuard } from "@/lib/react-query";

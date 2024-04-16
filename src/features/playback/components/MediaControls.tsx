@@ -1,53 +1,50 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { Pressable, View } from "react-native";
 
-import { usePlaybackConfig } from "../api/getPlaybackConfig";
-import { useToggleControl } from "../api/toggleControl";
-import { isPlayingAtom, toggleIsPlayingAtom } from "../api/playTrack";
+import { repeatAtom, shuffleAtom } from "../api/configs";
+import { isPlayingAtom, toggleIsPlayingAtom } from "../api/controls";
 
 import Colors from "@/constants/Colors";
-import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
-import type { ToggleableControls } from "../types";
 
 /** @description Media control used on `(current)` routes. */
 export function MediaControls() {
   return (
     <View className="flex-row items-center gap-4">
-      <MediaToggleButton type="repeat" />
-      <MediaToggleButton type="shuffle" />
+      <MediaToggleButton type="repeat" atom={repeatAtom} />
+      <MediaToggleButton type="shuffle" atom={shuffleAtom} />
       <PlayButton />
     </View>
   );
 }
 
-type MediaToggleButtonProps = {
-  type: ToggleableControls;
-  size?: number;
-};
-
 /** @description Reusable toggleable media control button. */
-export function MediaToggleButton({ type, size = 24 }: MediaToggleButtonProps) {
-  const { isPending, error, data } = usePlaybackConfig(type);
-  const toggleMutation = useToggleControl(type);
+export function MediaToggleButton(props: {
+  type: "repeat" | "shuffle";
+  atom: typeof repeatAtom;
+  size?: number;
+}) {
+  const [isActive, setIsActive] = useAtom(props.atom);
 
-  if (isPending || error) {
+  const size = props.size ?? 24;
+  if (isActive.state !== "hasData") {
     return (
-      <Ionicons name={`${type}-sharp`} size={size} color={Colors.surface500} />
+      <Ionicons
+        name={`${props.type}-sharp`}
+        size={size}
+        color={Colors.surface500}
+      />
     );
   }
 
-  // Add optimistic UI updates.
-  const isToggled = toggleMutation.isPending ? !data : data;
-
   return (
-    <Pressable onPress={() => mutateGuard(toggleMutation, data)}>
+    <Pressable onPress={() => setIsActive(!isActive.data)}>
       <Ionicons
-        name={`${type}-sharp`}
+        name={`${props.type}-sharp`}
         size={size}
-        color={isToggled ? Colors.accent500 : Colors.foreground50}
+        color={isActive.data ? Colors.accent500 : Colors.foreground50}
       />
     </Pressable>
   );
