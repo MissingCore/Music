@@ -46,7 +46,7 @@ export default function AlbumScreen() {
           </Text>
         )
       }
-      contentContainerClassName="mt-5 w-full flex-row flex-wrap gap-4 px-4 pb-16"
+      contentContainerClassName="w-full flex-row flex-wrap gap-4 px-4 pt-[22px] pb-4"
     />
   );
 }

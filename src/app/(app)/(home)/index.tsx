@@ -22,7 +22,7 @@ export default function HomeScreen() {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      contentContainerClassName="mt-5 pb-16"
+      contentContainerClassName="pt-[22px] pb-4"
     >
       <Text className="mb-4 px-4 font-geistMonoMedium text-subtitle text-foreground50">
         RECENTLY PLAYED

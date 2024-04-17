@@ -1,11 +1,8 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { Link, Stack } from "expo-router";
-import { Pressable } from "react-native";
+import { Stack } from "expo-router";
 
 import { useLoadAssets } from "@/hooks/useLoadAssets";
 
 import "@/assets/global.css";
-import Colors from "@/constants/Colors";
 import { AppProvider } from "@/providers/app";
 import { BackButton } from "@/components/BackButton";
 
@@ -16,7 +13,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/settings` keeps a back button present.
-  initialRouteName: "(home)",
+  initialRouteName: "(app)/(home)",
 };
 
 export default function RootLayout() {
@@ -29,28 +26,7 @@ function RootLayoutNav() {
   return (
     <AppProvider>
       <Stack>
-        <Stack.Screen
-          name="(home)"
-          options={{
-            title: "MUSIC",
-            headerTitleStyle: { fontFamily: "Ndot57", fontSize: 32 },
-            headerRight: () => (
-              <Link href="/setting" asChild>
-                <Pressable>
-                  {({ pressed }) => (
-                    <Ionicons
-                      name="settings-outline"
-                      size={24}
-                      color={Colors.foreground50}
-                      style={{ opacity: pressed ? 0.5 : 1 }}
-                    />
-                  )}
-                </Pressable>
-              </Link>
-            ),
-          }}
-        />
-        <Stack.Screen name="(current)" options={{ headerShown: false }} />
+        <Stack.Screen name="(app)" options={{ headerShown: false }} />
         <Stack.Screen
           name="current-track"
           options={{ animation: "slide_from_bottom", headerLeft: BackButton }}

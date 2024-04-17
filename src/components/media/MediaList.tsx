@@ -57,7 +57,7 @@ export function MediaList<TData extends { id: string }>(props: {
       showsVerticalScrollIndicator={false}
       ListEmptyComponent={props.ListEmptyComponent}
       contentContainerStyle={{
-        paddingBottom: 36,
+        paddingBottom: 8,
         paddingHorizontal: 4,
         paddingTop: 16,
         ...props.contentContainerStyle,

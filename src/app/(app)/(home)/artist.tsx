@@ -38,7 +38,7 @@ export default function ArtistScreen() {
           </Text>
         )
       }
-      contentContainerClassName="mt-5 w-full gap-2 px-4 pb-16"
+      contentContainerClassName="w-full gap-2 px-4 pt-[22px]"
     />
   );
 }
