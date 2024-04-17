@@ -1,25 +1,13 @@
-import { atom } from "jotai";
-import { loadable } from "jotai/utils";
+import { unwrap } from "jotai/utils";
 
 import { createAtomWithStorage } from "@/lib/jotai";
 
 /** @description [FOR INTERNAL USE ONLY] */
 export const repeatAsyncAtom = createAtomWithStorage("repeat", false);
-const repeatLoadableAtom = loadable(repeatAsyncAtom);
-/**
- * @description Returns if we should loop after reach the end of the list
- *  of tracks.
- */
-export const repeatAtom = atom(
-  (get) => get(repeatLoadableAtom),
-  (_get, set, arg: boolean) => set(repeatAsyncAtom, arg),
-);
+/** @description If we should loop after reaching the end of the track list. */
+export const repeatAtom = unwrap(repeatAsyncAtom, (prev) => prev ?? false);
 
 /** @description [FOR INTERNAL USE ONLY] */
 export const shuffleAsyncAtom = createAtomWithStorage("shuffle", false);
-const shuffleLoadableAtom = loadable(shuffleAsyncAtom);
-/** @description Return if the next track should be "random". */
-export const shuffleAtom = atom(
-  (get) => get(shuffleLoadableAtom),
-  (_get, set, arg: boolean) => set(shuffleAsyncAtom, arg),
-);
+/** @description If the next track should be "random". */
+export const shuffleAtom = unwrap(shuffleAsyncAtom, (prev) => prev ?? false);

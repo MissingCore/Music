@@ -9,7 +9,7 @@ import { createAtomWithStorage } from "@/lib/jotai";
 export const currentTrackIdAsyncAtom = createAtomWithStorage<
   string | undefined
 >("current-track-id", undefined);
-/** @description Returns the current track id stored in `AsyncStorage`. */
+/** @description Current track id stored in `AsyncStorage`. */
 export const currentTrackIdAtom = unwrap(
   currentTrackIdAsyncAtom,
   (prev) => prev ?? undefined,
@@ -39,7 +39,7 @@ export const currentTrackDataAsyncAtom = atom(async (get) => {
     return undefined;
   }
 });
-/** @description Returns information about the current track. */
+/** @description Information about the current track. */
 export const currentTrackDataAtom = unwrap(
   currentTrackDataAsyncAtom,
   (prev) => prev ?? undefined,

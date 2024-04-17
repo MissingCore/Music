@@ -33,23 +33,12 @@ function MediaToggleButton(props: {
 }) {
   const [isActive, setIsActive] = useAtom(props.atom);
 
-  if (isActive.state !== "hasData") {
-    return (
-      <Ionicons
-        name={`${props.type}-sharp`}
-        size={props.size}
-        color={Colors.surface500}
-        className="p-2"
-      />
-    );
-  }
-
   return (
-    <Pressable onPress={() => setIsActive(!isActive.data)} className="p-2">
+    <Pressable onPress={() => setIsActive(!isActive)} className="p-2">
       <Ionicons
         name={`${props.type}-sharp`}
         size={props.size}
-        color={isActive.data ? Colors.accent500 : Colors.foreground50}
+        color={isActive ? Colors.accent500 : Colors.foreground50}
       />
     </Pressable>
   );

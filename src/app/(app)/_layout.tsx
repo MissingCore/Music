@@ -1,6 +1,5 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Link, Stack } from "expo-router";
-import { Suspense } from "react";
 import { Pressable } from "react-native";
 
 import Colors from "@/constants/Colors";
@@ -34,9 +33,7 @@ export default function MainLayout() {
         />
         <Stack.Screen name="(current)" options={{ headerShown: false }} />
       </Stack>
-      <Suspense>
-        <MiniTrackPlayer />
-      </Suspense>
+      <MiniTrackPlayer />
     </>
   );
 }
