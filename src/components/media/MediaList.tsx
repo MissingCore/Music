@@ -4,7 +4,11 @@ import { View } from "react-native";
 
 import { AnimatedCover } from "@/components/media/AnimatedCover";
 import { TextLine } from "@/components/ui/Text";
-import { MediaControls } from "@/features/playback/components/MediaControls";
+import {
+  PlayButton,
+  RepeatButton,
+  ShuffleButton,
+} from "@/features/playback/components/MediaControls";
 
 /** @description Header component seen on the `(current)` pages. */
 export function MediaListHeader(props: {
@@ -30,7 +34,11 @@ export function MediaListHeader(props: {
         <TextLine className="flex-1 font-geistMonoLight text-xs text-foreground100">
           {props.metadata.join(" • ")}
         </TextLine>
-        <MediaControls />
+        <View className="flex-row items-center">
+          <RepeatButton />
+          <ShuffleButton />
+          <PlayButton className="ml-2" />
+        </View>
       </View>
     </View>
   );

@@ -1,12 +1,12 @@
 import { router } from "expo-router";
 import { useAtomValue } from "jotai";
-import { Pressable } from "react-native";
+import { Pressable, View } from "react-native";
 
 import { currentTrackDataAtom } from "../api/currentTrack";
 
 import { MediaImage } from "@/components/media/MediaImage";
 import { TextStack } from "@/components/ui/Text";
-import { MediaControls } from "./MediaControls";
+import { NextButton, PlayButton, PreviousButton } from "./MediaControls";
 
 /**
  * @description Displays a player that appears at the bottom of the
@@ -33,8 +33,11 @@ export function MiniTrackPlayer() {
         colors={{ row1: "text-foreground50", row2: "text-accent50" }}
         wrapperClassName="flex-1"
       />
-      {/* FIXME: Temporary mini track player buttons */}
-      <MediaControls />
+      <View className="flex-row items-center">
+        <PreviousButton />
+        <PlayButton className="px-5" />
+        <NextButton />
+      </View>
     </Pressable>
   );
 }

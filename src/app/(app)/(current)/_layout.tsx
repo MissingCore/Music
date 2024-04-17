@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 
-import { BackButton } from "@/components/BackButton";
+import { BackButton } from "@/components/navigation/BackButton";
 
 export default function CurrentLayout() {
   return (

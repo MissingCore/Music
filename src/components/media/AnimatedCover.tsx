@@ -6,32 +6,64 @@ import { Disc } from "@/assets/svgs/Disc";
 import { cn } from "@/lib/style";
 import { MediaImage } from "./MediaImage";
 
-type Props = {
+/** @description Keyframe for having the vinyl slide out from the right. */
+const SlideOutRight = (imgSize: number, delay: number) =>
+  new Keyframe({
+    0: { opacity: 0, translateX: 0 },
+    1: { opacity: 1, translateX: 0 },
+    100: { opacity: 1, translateX: imgSize / 2 },
+  })
+    .duration(300)
+    .delay(delay);
+
+/** @description Keyframe for having the vinyl slide out from the bottom. */
+const SlideOutBottom = (imgSize: number, delay: number) =>
+  new Keyframe({
+    0: { opacity: 0, translateY: 0 },
+    1: { opacity: 1, translateY: 0 },
+    100: { opacity: 1, translateY: imgSize * 0.45 },
+  })
+    .duration(300)
+    .delay(delay);
+
+/** @description Simple pulling of vinyl out of record animation. */
+export function AnimatedCover(props: {
+  type?: "right" | "bottom";
+  delay?: number;
   imgSrc: React.ComponentProps<typeof MediaImage>["imgSrc"];
   className?: string;
-};
-
-/** @description Simple pulling of viynl out of record animation. */
-export function AnimatedCover({ imgSrc, className }: Props) {
+}) {
   const { width, height } = useWindowDimensions();
+  const type = props.type ?? "right";
+  const delay = props.delay ?? 0;
 
   /*
     Automatically define the appropriate size of the cover based on the
     current screen size.
   */
-  const imgSize = clamp(100, (width * 2) / 5, height / 5);
+  const imgSize =
+    type === "right"
+      ? clamp(100, (width * 2) / 5, height / 5)
+      : clamp(200, (height * 2) / 7, (width * 2) / 3);
 
   return (
     <View
-      style={{ height: imgSize }}
-      className={cn("aspect-square w-full", className)}
+      style={{
+        height: imgSize,
+        marginBottom: type === "bottom" ? imgSize * 0.45 : 0,
+      }}
+      className={cn(
+        "aspect-square",
+        { "w-full": type === "right" },
+        props.className,
+      )}
     >
       <Animated.View
-        entering={new Keyframe({
-          0: { opacity: 0, translateX: 0 },
-          1: { opacity: 1, translateX: 0 },
-          100: { opacity: 1, translateX: imgSize / 2 },
-        }).duration(300)}
+        entering={
+          type === "right"
+            ? SlideOutRight(imgSize, delay)
+            : SlideOutBottom(imgSize, delay)
+        }
         className="absolute left-0 top-0 opacity-0"
       >
         <Disc size={imgSize} />
@@ -39,7 +71,7 @@ export function AnimatedCover({ imgSrc, className }: Props) {
       <MediaImage
         type="track"
         imgSize={imgSize}
-        imgSrc={imgSrc}
+        imgSrc={props.imgSrc}
         className="rounded border-2 border-foreground50"
       />
     </View>
