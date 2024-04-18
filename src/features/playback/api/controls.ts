@@ -23,7 +23,9 @@ export const playAtom = atom(
     // 1. See if we're playing from a new track list.
     const isNewTrackList = !isTrackSrcsEqual(currPlayingInfo.listSrc, trackSrc);
     const isTrackDefined = !!trackId;
-    const isDifferentTrack = trackId !== currPlayingInfo.trackId;
+    const isDifferentTrack =
+      currPlayingInfo.trackId === undefined ||
+      trackId !== currPlayingInfo.trackId;
 
     // 2. Handle when the track list is the same.
     if (!isNewTrackList) {
@@ -84,12 +86,9 @@ const playTrackAtom = atom(null, async (get, set, opts?: TPlayTrackOpts) => {
   // TODO: Need to reset or resume incrementing current track duration when we add this in.
   try {
     const soundRef = get(soundRefAtom);
-    const trackStatus = await soundRef.getStatusAsync();
     set(isPlayingAtom, true);
-
     // If we don't define any options, we assume we're just unpausing a track.
-    //  - Skip this option if no track is loaded.
-    if (trackStatus.isLoaded && !opts) {
+    if (!opts) {
       await soundRef.playAsync();
       return;
     }
