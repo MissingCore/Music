@@ -40,6 +40,13 @@ export async function getTrackList({ type, ref }: TTrackSrc) {
           orderBy: (fields, { asc }) => [asc(fields.name)],
         });
         break;
+      case SpecialPlaylists.favorites:
+        unflattenTrackList = await db.query.tracks.findMany({
+          where: (fields, { eq }) => eq(fields.isFavorite, true),
+          columns: { id: true },
+          orderBy: (fields, { asc }) => [asc(fields.name)],
+        });
+        break;
       default:
         throw new Error("Playlist feature not implemented.");
     }

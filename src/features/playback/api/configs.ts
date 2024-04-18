@@ -1,7 +1,8 @@
 import { atom } from "jotai";
-import { unwrap } from "jotai/utils";
+import { RESET, unwrap } from "jotai/utils";
 
 import { db } from "@/db";
+import { currentTrackIdAsyncAtom } from "./currentTrack";
 import type { TTrackSrc } from "../utils/trackList";
 import { SpecialPlaylists } from "../utils/trackList";
 
@@ -86,3 +87,14 @@ export const repeatAtom = unwrap(repeatAsyncAtom, (prev) => prev ?? false);
 export const shuffleAsyncAtom = createAtomWithStorage("shuffle", false);
 /** @description If the next track should be "random". */
 export const shuffleAtom = unwrap(shuffleAsyncAtom, (prev) => prev ?? false);
+
+/**
+ * @description Asynchronous write-only atom for resetting the track list &
+ *  current track id.
+ */
+export const clearTrackConfigAtom = atom(null, async (get, set) => {
+  set(trackListSrcAsyncAtom, RESET);
+  set(trackListAsyncAtom, RESET);
+  set(trackListIndexAsyncAtom, RESET);
+  set(currentTrackIdAsyncAtom, RESET);
+});

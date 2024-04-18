@@ -2,10 +2,15 @@ import { eq } from "drizzle-orm";
 import { Audio } from "expo-av";
 import * as FileSystem from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
+import { useAtomValue, useSetAtom } from "jotai";
 import { useCallback, useEffect, useState } from "react";
 
 import { db } from "@/db";
 import { artists, albums, tracks, invalidTracks } from "@/db/schema";
+import {
+  clearTrackConfigAtom,
+  trackListAtom,
+} from "@/features/playback/api/configs";
 
 import { createId } from "@/lib/cuid2";
 import { getMusicInfoAsync } from "@/utils/getMusicInfoAsync";
@@ -16,6 +21,9 @@ import { isFulfilled, isRejected } from "@/utils/promise";
  *  in the SQLite database.
  */
 export function useIndexAudio() {
+  const currTrackList = useAtomValue(trackListAtom);
+  const clearTrackConfig = useSetAtom(clearTrackConfigAtom);
+
   const [permissionResponse, requestPermission] = MediaLibrary.usePermissions();
   const [isComplete, setIsComplete] = useState(false);
 
@@ -184,14 +192,17 @@ export function useIndexAudio() {
       ),
     );
 
-    await cleanUpTracks(new Set(mp3Files.map(({ id }) => id)));
+    await cleanUpTracks(
+      new Set(mp3Files.map(({ id }) => id)),
+      currTrackList,
+      clearTrackConfig,
+    );
 
     // Allow audio to play in the background.
     await Audio.setAudioModeAsync({ staysActiveInBackground: true });
 
     setIsComplete(true);
-    console.log(`Finished in ${(Date.now() - start) / 1000}s.`);
-  }, [permissionResponse, requestPermission]);
+  }, [permissionResponse, requestPermission, currTrackList, clearTrackConfig]);
 
   useEffect(() => {
     if (permissionResponse && !isComplete) readMusicLibrary();
@@ -242,24 +253,38 @@ async function deleteFile(uri: string | undefined | null) {
  * @description Remove any tracks in our database that we didn't find w/
  *  Expo Media Library.
  */
-async function cleanUpTracks(usedTrackIds: Set<string>) {
+async function cleanUpTracks(
+  usedTrackIds: Set<string>,
+  currTrackList: string[],
+  clearTrackConfig: () => void,
+) {
   // Delete track entries.
   const allTracks = await db.query.tracks.findMany({ columns: { id: true } });
   const allInvalidTracks = await db.query.invalidTracks.findMany({
     columns: { id: true },
   });
+  const tracksToDelete = [
+    ...allTracks.map(({ id }) => id),
+    ...allInvalidTracks.map(({ id }) => id),
+  ].filter((id) => !usedTrackIds.has(id));
   await Promise.allSettled(
-    [...allTracks.map(({ id }) => id), ...allInvalidTracks.map(({ id }) => id)]
-      .filter((id) => !usedTrackIds.has(id))
-      .map(async (id) => {
-        await db.delete(invalidTracks).where(eq(invalidTracks.id, id));
-        const [deletedTrack] = await db
-          .delete(tracks)
-          .where(eq(tracks.id, id))
-          .returning({ coverSrc: tracks.coverSrc });
-        await deleteFile(deletedTrack.coverSrc);
-      }),
+    tracksToDelete.map(async (id) => {
+      await db.delete(invalidTracks).where(eq(invalidTracks.id, id));
+      const [deletedTrack] = await db
+        .delete(tracks)
+        .where(eq(tracks.id, id))
+        .returning({ coverSrc: tracks.coverSrc });
+      await deleteFile(deletedTrack.coverSrc);
+    }),
   );
+  // Clear current track list if it contains a track that's deleted. This
+  // prevents any broken behavior if the `trackListSrc` no longer exists
+  // (ie: the track deleted was the only track in the album which been
+  // deleted).
+  const deletedTrackInCurrTrackList = currTrackList.some((tId) =>
+    tracksToDelete.includes(tId),
+  );
+  if (deletedTrackInCurrTrackList) clearTrackConfig();
 
   // Remove Albums with no tracks.
   const allAlbums = await db.query.albums.findMany({

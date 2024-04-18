@@ -3,10 +3,11 @@ import { useAtomValue } from "jotai";
 import { useEffect } from "react";
 import { Text, View } from "react-native";
 
-import { AnimatedCover } from "@/components/media/AnimatedCover";
-import { TextLine } from "@/components/ui/Text";
 import { trackListNameAtom } from "@/features/playback/api/configs";
 import { currentTrackDataAtom } from "@/features/playback/api/currentTrack";
+
+import { AnimatedCover } from "@/components/media/AnimatedCover";
+import { TextLine } from "@/components/ui/Text";
 import {
   NextButton,
   PlayToggleButton,
