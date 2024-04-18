@@ -76,7 +76,7 @@ export const playAtom = atom(
     set(trackListSrcAsyncAtom, trackSrc);
     set(trackListAsyncAtom, newTrackList);
     set(trackListIndexAsyncAtom, newTrackIdx);
-    set(currentTrackIdAsyncAtom, trackId);
+    set(currentTrackIdAsyncAtom, newTrackList[newTrackIdx]);
 
     if (isDifferentTrack) set(playTrackAtom, { action: "new" });
     else set(playTrackAtom);

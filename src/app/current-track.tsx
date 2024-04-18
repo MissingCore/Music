@@ -8,7 +8,7 @@ import { TextLine } from "@/components/ui/Text";
 import { currentTrackDataAtom } from "@/features/playback/api/currentTrack";
 import {
   NextButton,
-  PlayButton,
+  PlayToggleButton,
   PreviousButton,
   RepeatButton,
   ShuffleButton,
@@ -58,7 +58,7 @@ export default function CurrentTrackScreen() {
       <View className="mt-auto flex-row items-center gap-2 p-8">
         <ShuffleButton size={32} />
         <PreviousButton size={32} />
-        <PlayButton size={32} className="px-5" />
+        <PlayToggleButton size={32} className="px-5" />
         <NextButton size={32} />
         <RepeatButton size={32} />
       </View>

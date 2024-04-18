@@ -24,7 +24,11 @@ export default function CurrentArtistScreen() {
 
   return (
     <View className="w-full flex-1 px-4">
-      <MediaListHeader title={data.name} metadata={data.metadata} />
+      <MediaListHeader
+        title={data.name}
+        metadata={data.metadata}
+        trackSrc={{ type: "artist", ref: artistId }}
+      />
       <MediaList
         data={data.tracks}
         renderItem={({ item: { id, name, coverSrc, duration, albumName } }) => (

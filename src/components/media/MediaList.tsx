@@ -2,6 +2,8 @@ import type { ContentStyle, ListRenderItem } from "@shopify/flash-list";
 import { FlashList } from "@shopify/flash-list";
 import { View } from "react-native";
 
+import type { TTrackSrc } from "@/features/playback/utils/trackList";
+
 import { AnimatedCover } from "@/components/media/AnimatedCover";
 import { TextLine } from "@/components/ui/Text";
 import {
@@ -19,6 +21,7 @@ export function MediaListHeader(props: {
   subtitleComponent?: React.JSX.Element;
   /** Strings describing the media (ie: total playtime, number of tracks.) */
   metadata: string[];
+  trackSrc: TTrackSrc;
 }) {
   return (
     <View className="border-b border-b-surface50 px-1 pb-2">
@@ -37,7 +40,7 @@ export function MediaListHeader(props: {
         <View className="flex-row items-center">
           <RepeatButton />
           <ShuffleButton />
-          <PlayButton className="ml-2" />
+          <PlayButton trackSrc={props.trackSrc} className="ml-2" />
         </View>
       </View>
     </View>

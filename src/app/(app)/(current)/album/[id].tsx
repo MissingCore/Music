@@ -68,6 +68,7 @@ export default function CurrentAlbumScreen() {
           </Link>
         }
         metadata={data.metadata}
+        trackSrc={{ type: "album", ref: albumId }}
       />
       <MediaList
         data={data.tracks}

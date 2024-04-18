@@ -6,7 +6,7 @@ import { currentTrackDataAtom } from "../api/currentTrack";
 
 import { MediaImage } from "@/components/media/MediaImage";
 import { TextStack } from "@/components/ui/Text";
-import { NextButton, PlayButton, PreviousButton } from "./MediaControls";
+import { NextButton, PlayToggleButton, PreviousButton } from "./MediaControls";
 
 /**
  * @description Displays a player that appears at the bottom of the
@@ -35,7 +35,7 @@ export function MiniTrackPlayer() {
       />
       <View className="flex-row items-center">
         <PreviousButton />
-        <PlayButton className="px-5" />
+        <PlayToggleButton className="px-5" />
         <NextButton />
       </View>
     </Pressable>

@@ -3,8 +3,15 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { Pressable } from "react-native";
 
-import { repeatAtom, shuffleAtom } from "../api/configs";
-import { isPlayingAtom, playPauseToggleAtom } from "../api/controls";
+import { repeatAtom, shuffleAtom, trackListSrcAtom } from "../api/configs";
+import {
+  isPlayingAtom,
+  pauseAtom,
+  playAtom,
+  playPauseToggleAtom,
+} from "../api/controls";
+import { isTrackSrcsEqual } from "../utils/comparison";
+import type { TTrackSrc } from "../utils/trackList";
 
 import Colors from "@/constants/Colors";
 import { cn } from "@/lib/style";
@@ -44,10 +51,49 @@ function MediaToggleButton(props: {
   );
 }
 
-type PlayButtonProps = { size?: number; className?: string };
+/**
+ * @description For pages where we want to link "toggle" behavior to the
+ *  content of the page (ie: show play button if we're not playing a
+ *  track from this track list).
+ */
+export function PlayButton({
+  size = 24,
+  trackSrc,
+  className,
+}: PlayToggleButtonProps & { trackSrc: TTrackSrc }) {
+  const currTrackSrc = useAtomValue(trackListSrcAtom);
+  const isPlaying = useAtomValue(isPlayingAtom);
+  const pauseFn = useSetAtom(pauseAtom);
+  const playFn = useSetAtom(playAtom);
+
+  const isTrackSrcSame = isTrackSrcsEqual(currTrackSrc, trackSrc);
+  const displayPause = isTrackSrcSame && isPlaying;
+
+  return (
+    <Pressable
+      onPress={displayPause ? pauseFn : () => playFn({ trackSrc })}
+      className={cn(
+        "rounded-full bg-accent500 p-1",
+        { "bg-surface500": displayPause },
+        className,
+      )}
+    >
+      <MaterialIcons
+        name={displayPause ? "pause" : "play-arrow"}
+        size={size}
+        color={Colors.foreground50}
+      />
+    </Pressable>
+  );
+}
+
+type PlayToggleButtonProps = { size?: number; className?: string };
 
 /** @description Toggles whether we're playing or not. */
-export function PlayButton({ size = 24, className }: PlayButtonProps) {
+export function PlayToggleButton({
+  size = 24,
+  className,
+}: PlayToggleButtonProps) {
   const isPlaying = useAtomValue(isPlayingAtom);
   const playPauseToggle = useSetAtom(playPauseToggleAtom);
 
