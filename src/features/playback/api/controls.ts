@@ -1,16 +1,8 @@
 import { atom } from "jotai";
 
-import {
-  shuffleAsyncAtom,
-  trackListAsyncAtom,
-  trackListIndexAsyncAtom,
-  trackListSrcAsyncAtom,
-} from "./configs";
-import {
-  currentTrackDataAsyncAtom,
-  currentTrackIdAsyncAtom,
-} from "./currentTrack";
+import { shuffleAsyncAtom } from "./configs";
 import { soundRefAtom } from "./globalSound";
+import { currentTrackDataAsyncAtom, playingInfoAsyncAtom } from "./playing";
 
 import { isTrackSrcsEqual } from "../utils/comparison";
 import type { TTrackSrc } from "../utils/trackList";
@@ -25,26 +17,25 @@ type TPlayFn = { trackId?: string; trackSrc: TTrackSrc };
 export const playAtom = atom(
   null,
   async (get, set, { trackId, trackSrc }: TPlayFn) => {
+    const currPlayingInfo = await get(playingInfoAsyncAtom);
     const shouldShuffle = await get(shuffleAsyncAtom);
-    const currentTrackId = await get(currentTrackIdAsyncAtom);
 
     // 1. See if we're playing from a new track list.
-    const isNewTrackList = !isTrackSrcsEqual(
-      await get(trackListSrcAsyncAtom),
-      trackSrc,
-    );
+    const isNewTrackList = !isTrackSrcsEqual(currPlayingInfo.listSrc, trackSrc);
     const isTrackDefined = !!trackId;
-    const isDifferentTrack = trackId !== currentTrackId;
+    const isDifferentTrack = trackId !== currPlayingInfo.trackId;
 
     // 2. Handle when the track list is the same.
     if (!isNewTrackList) {
       // 2a. Handle when we play a different song in the track list.
       if (isTrackDefined && isDifferentTrack) {
-        set(currentTrackIdAsyncAtom, trackId);
-        set(
-          trackListIndexAsyncAtom,
-          (await get(trackListAsyncAtom)).findIndex((tId) => tId === trackId)!,
-        );
+        set(playingInfoAsyncAtom, {
+          ...currPlayingInfo,
+          trackId,
+          trackIdx: currPlayingInfo.trackList.findIndex(
+            (tId) => tId === trackId,
+          )!,
+        });
         set(playTrackAtom, { action: "new" });
         return;
       }
@@ -73,10 +64,13 @@ export const playAtom = atom(
     }
 
     // 3b. Play the track.
-    set(trackListSrcAsyncAtom, trackSrc);
-    set(trackListAsyncAtom, newTrackList);
-    set(trackListIndexAsyncAtom, newTrackIdx);
-    set(currentTrackIdAsyncAtom, newTrackList[newTrackIdx]);
+    set(playingInfoAsyncAtom, {
+      ...currPlayingInfo,
+      listSrc: trackSrc,
+      trackList: newTrackList,
+      trackIdx: newTrackIdx,
+      trackId: newTrackList[newTrackIdx],
+    });
 
     if (isDifferentTrack) set(playTrackAtom, { action: "new" });
     else set(playTrackAtom);
@@ -90,9 +84,12 @@ const playTrackAtom = atom(null, async (get, set, opts?: TPlayTrackOpts) => {
   // TODO: Need to reset or resume incrementing current track duration when we add this in.
   try {
     const soundRef = get(soundRefAtom);
+    const trackStatus = await soundRef.getStatusAsync();
     set(isPlayingAtom, true);
+
     // If we don't define any options, we assume we're just unpausing a track.
-    if (!opts) {
+    //  - Skip this option if no track is loaded.
+    if (trackStatus.isLoaded && !opts) {
       await soundRef.playAsync();
       return;
     }

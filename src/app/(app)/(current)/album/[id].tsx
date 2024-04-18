@@ -53,6 +53,9 @@ export default function CurrentAlbumScreen() {
     );
   }
 
+  // Information about this track list.
+  const trackSrc = { type: "album", name: data.name, ref: albumId } as const;
+
   return (
     <View className="w-full flex-1 px-4">
       <MediaListHeader
@@ -68,15 +71,13 @@ export default function CurrentAlbumScreen() {
           </Link>
         }
         metadata={data.metadata}
-        trackSrc={{ type: "album", ref: albumId }}
+        trackSrc={trackSrc}
       />
       <MediaList
         data={data.tracks}
         renderItem={({ item: { id, name, track, duration } }) => (
           <ActionButton
-            onPress={() =>
-              playFn({ trackId: id, trackSrc: { type: "album", ref: albumId } })
-            }
+            onPress={() => playFn({ trackId: id, trackSrc })}
             textContent={[
               name,
               track > 0 ? `Track ${`${track}`.padStart(2, "0")}` : "Track",

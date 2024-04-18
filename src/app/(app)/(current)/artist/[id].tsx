@@ -22,21 +22,25 @@ export default function CurrentArtistScreen() {
     );
   }
 
+  // Information about this track list.
+  const trackSrc = {
+    type: "artist",
+    name: `Artist\n${data.name}`,
+    ref: artistId,
+  } as const;
+
   return (
     <View className="w-full flex-1 px-4">
       <MediaListHeader
         title={data.name}
         metadata={data.metadata}
-        trackSrc={{ type: "artist", ref: artistId }}
+        trackSrc={trackSrc}
       />
       <MediaList
         data={data.tracks}
         renderItem={({ item: { id, name, coverSrc, duration, albumName } }) => (
           <TrackCard
-            id={id}
-            trackSrc={{ type: "artist", ref: artistId }}
-            coverSrc={coverSrc}
-            duration={duration}
+            {...{ id, trackSrc, coverSrc, duration }}
             textContent={[name, albumName ?? "Single"]}
           />
         )}

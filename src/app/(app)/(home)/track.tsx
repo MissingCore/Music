@@ -11,13 +11,20 @@ import { TrackCard } from "@/features/track/components/TrackCard";
 export default function TrackScreen() {
   const { isPending, data } = useTracks();
 
+  // Information about this track list.
+  const trackSrc = {
+    type: "playlist",
+    name: "Tracks",
+    ref: SpecialPlaylists.tracks,
+  } as const;
+
   return (
     <MediaList
       data={data}
       renderItem={({ item: { id, name, coverSrc, duration, artistName } }) => (
         <TrackCard
           id={id}
-          trackSrc={{ type: "playlist", ref: SpecialPlaylists.tracks }}
+          trackSrc={trackSrc}
           coverSrc={coverSrc}
           duration={duration}
           textContent={[name, artistName]}

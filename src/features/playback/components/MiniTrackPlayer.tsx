@@ -2,7 +2,7 @@ import { router } from "expo-router";
 import { useAtomValue } from "jotai";
 import { Pressable, View } from "react-native";
 
-import { currentTrackDataAtom } from "../api/currentTrack";
+import { currentTrackDataAtom } from "../api/playing";
 
 import { MediaImage } from "@/components/media/MediaImage";
 import { TextStack } from "@/components/ui/Text";

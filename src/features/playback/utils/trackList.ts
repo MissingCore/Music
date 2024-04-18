@@ -8,7 +8,11 @@ export const SpecialPlaylists = {
   tracks: "all-tracks",
 } as const;
 
-export type TTrackSrc = { type: "album" | "artist" | "playlist"; ref: string };
+export type TTrackSrc = {
+  type: "album" | "artist" | "playlist";
+  name: string;
+  ref: string;
+};
 
 /** @description Get the list of track ids in a given track list. */
 export async function getTrackList({ type, ref }: TTrackSrc) {

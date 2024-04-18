@@ -8,9 +8,9 @@ import { useCallback, useEffect, useState } from "react";
 import { db } from "@/db";
 import { artists, albums, tracks, invalidTracks } from "@/db/schema";
 import {
-  clearTrackConfigAtom,
-  trackListAtom,
-} from "@/features/playback/api/configs";
+  playingInfoAtom,
+  resetPlayingInfoAtom,
+} from "@/features/playback/api/playing";
 
 import { createId } from "@/lib/cuid2";
 import { getMusicInfoAsync } from "@/utils/getMusicInfoAsync";
@@ -21,8 +21,8 @@ import { isFulfilled, isRejected } from "@/utils/promise";
  *  in the SQLite database.
  */
 export function useIndexAudio() {
-  const currTrackList = useAtomValue(trackListAtom);
-  const clearTrackConfig = useSetAtom(clearTrackConfigAtom);
+  const playingInfo = useAtomValue(playingInfoAtom);
+  const resetPlayingInfo = useSetAtom(resetPlayingInfoAtom);
 
   const [permissionResponse, requestPermission] = MediaLibrary.usePermissions();
   const [isComplete, setIsComplete] = useState(false);
@@ -194,15 +194,20 @@ export function useIndexAudio() {
 
     await cleanUpTracks(
       new Set(mp3Files.map(({ id }) => id)),
-      currTrackList,
-      clearTrackConfig,
+      playingInfo.trackList,
+      resetPlayingInfo,
     );
 
     // Allow audio to play in the background.
     await Audio.setAudioModeAsync({ staysActiveInBackground: true });
 
     setIsComplete(true);
-  }, [permissionResponse, requestPermission, currTrackList, clearTrackConfig]);
+  }, [
+    permissionResponse,
+    requestPermission,
+    playingInfo.trackList,
+    resetPlayingInfo,
+  ]);
 
   useEffect(() => {
     if (permissionResponse && !isComplete) readMusicLibrary();
@@ -256,7 +261,7 @@ async function deleteFile(uri: string | undefined | null) {
 async function cleanUpTracks(
   usedTrackIds: Set<string>,
   currTrackList: string[],
-  clearTrackConfig: () => void,
+  resetPlayingInfo: () => void,
 ) {
   // Delete track entries.
   const allTracks = await db.query.tracks.findMany({ columns: { id: true } });
@@ -284,7 +289,7 @@ async function cleanUpTracks(
   const deletedTrackInCurrTrackList = currTrackList.some((tId) =>
     tracksToDelete.includes(tId),
   );
-  if (deletedTrackInCurrTrackList) clearTrackConfig();
+  if (deletedTrackInCurrTrackList) resetPlayingInfo();
 
   // Remove Albums with no tracks.
   const allAlbums = await db.query.albums.findMany({

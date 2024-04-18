@@ -3,13 +3,14 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { Pressable } from "react-native";
 
-import { repeatAtom, shuffleAtom, trackListSrcAtom } from "../api/configs";
+import { repeatAtom, shuffleAtom } from "../api/configs";
 import {
   isPlayingAtom,
   pauseAtom,
   playAtom,
   playPauseToggleAtom,
 } from "../api/controls";
+import { playingInfoAtom } from "../api/playing";
 import { isTrackSrcsEqual } from "../utils/comparison";
 import type { TTrackSrc } from "../utils/trackList";
 
@@ -61,12 +62,12 @@ export function PlayButton({
   trackSrc,
   className,
 }: PlayToggleButtonProps & { trackSrc: TTrackSrc }) {
-  const currTrackSrc = useAtomValue(trackListSrcAtom);
+  const { listSrc } = useAtomValue(playingInfoAtom);
   const isPlaying = useAtomValue(isPlayingAtom);
   const pauseFn = useSetAtom(pauseAtom);
   const playFn = useSetAtom(playAtom);
 
-  const isTrackSrcSame = isTrackSrcsEqual(currTrackSrc, trackSrc);
+  const isTrackSrcSame = isTrackSrcsEqual(listSrc, trackSrc);
   const displayPause = isTrackSrcSame && isPlaying;
 
   return (
