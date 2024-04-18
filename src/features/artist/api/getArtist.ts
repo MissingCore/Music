@@ -48,8 +48,8 @@ function formatArtistTracks({ name, tracks }: QueryFnData) {
   return {
     name,
     tracks: tracks
-      .map(({ id, name, duration, uri, album, coverSrc }) => ({
-        ...{ id, name, duration, uri },
+      .map(({ id, name, duration, album, coverSrc }) => ({
+        ...{ id, name, duration },
         coverSrc: album ? album.coverSrc : coverSrc,
         albumName: album?.name,
       }))

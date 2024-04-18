@@ -27,8 +27,8 @@ export const useTracks = () =>
 /** @description Summarize information about each track. */
 function formatTracks(data: QueryFnData) {
   return data
-    .map(({ id, name, artistName, duration, uri, ...rest }) => ({
-      ...{ id, name, artistName, duration, uri },
+    .map(({ id, name, artistName, duration, ...rest }) => ({
+      ...{ id, name, artistName, duration },
       coverSrc: rest.album?.coverSrc ?? rest.coverSrc,
     }))
     .toSorted((a, b) => a.name.localeCompare(b.name));

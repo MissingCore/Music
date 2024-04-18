@@ -6,7 +6,7 @@ import { Pressable, Text, View } from "react-native";
 
 import { useAlbum } from "@/features/album/api/getAlbum";
 import { useToggleFavorite } from "@/features/album/api/toggleFavorite";
-import { playNewTrackAtom } from "@/features/playback/api/controls";
+import { playAtom } from "@/features/playback/api/controls";
 
 import Colors from "@/constants/Colors";
 import { mutateGuard } from "@/lib/react-query";
@@ -16,11 +16,11 @@ import { TrackDuration } from "@/features/track/components/TrackDuration";
 
 /** @description Screen for `/album/[id]` route. */
 export default function CurrentAlbumScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id: albumId } = useLocalSearchParams<{ id: string }>();
   const navigation = useNavigation();
-  const { isPending, error, data } = useAlbum(id);
-  const toggleMutation = useToggleFavorite(id);
-  const playNewTrack = useSetAtom(playNewTrackAtom);
+  const { isPending, error, data } = useAlbum(albumId);
+  const toggleMutation = useToggleFavorite(albumId);
+  const playFn = useSetAtom(playAtom);
 
   useEffect(() => {
     if (data?.isFavorite === undefined) return;
@@ -71,9 +71,11 @@ export default function CurrentAlbumScreen() {
       />
       <MediaList
         data={data.tracks}
-        renderItem={({ item: { id, name, track, duration, uri } }) => (
+        renderItem={({ item: { id, name, track, duration } }) => (
           <ActionButton
-            onPress={() => playNewTrack(id, uri)}
+            onPress={() =>
+              playFn({ trackId: id, trackSrc: { type: "album", ref: albumId } })
+            }
             textContent={[
               name,
               track > 0 ? `Track ${`${track}`.padStart(2, "0")}` : "Track",

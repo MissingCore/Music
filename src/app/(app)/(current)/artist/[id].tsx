@@ -8,8 +8,8 @@ import { TrackCard } from "@/features/track/components/TrackCard";
 
 /** @description Screen for `/artist/[id]` route. */
 export default function CurrentArtistScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
-  const { isPending, error, data } = useArtist(decodeURIComponent(id));
+  const { id: artistId } = useLocalSearchParams<{ id: string }>();
+  const { isPending, error, data } = useArtist(decodeURIComponent(artistId));
 
   if (isPending) return <View className="w-full flex-1 px-4" />;
   else if (!!error || !data) {
@@ -27,11 +27,12 @@ export default function CurrentArtistScreen() {
       <MediaListHeader title={data.name} metadata={data.metadata} />
       <MediaList
         data={data.tracks}
-        renderItem={({
-          item: { id, name, coverSrc, duration, albumName, uri },
-        }) => (
+        renderItem={({ item: { id, name, coverSrc, duration, albumName } }) => (
           <TrackCard
-            {...{ id, coverSrc, duration, uri }}
+            id={id}
+            trackSrc={{ type: "artist", ref: artistId }}
+            coverSrc={coverSrc}
+            duration={duration}
             textContent={[name, albumName ?? "Single"]}
           />
         )}

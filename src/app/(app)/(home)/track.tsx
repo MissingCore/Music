@@ -1,6 +1,7 @@
 import { Text } from "react-native";
 
 import { useTracks } from "@/features/track/api/getTracks";
+import { SpecialPlaylists } from "@/features/playback/utils/trackList";
 
 import { MediaList } from "@/components/media/MediaList";
 import { Spinner } from "@/components/ui/Spinner";
@@ -13,11 +14,12 @@ export default function TrackScreen() {
   return (
     <MediaList
       data={data}
-      renderItem={({
-        item: { id, name, coverSrc, duration, artistName, uri },
-      }) => (
+      renderItem={({ item: { id, name, coverSrc, duration, artistName } }) => (
         <TrackCard
-          {...{ id, coverSrc, duration, uri }}
+          id={id}
+          trackSrc={{ type: "playlist", ref: SpecialPlaylists.tracks }}
+          coverSrc={coverSrc}
+          duration={duration}
           textContent={[name, artistName]}
         />
       )}

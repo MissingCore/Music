@@ -1,6 +1,7 @@
 import { useSetAtom } from "jotai";
 
-import { playNewTrackAtom } from "@/features/playback/api/controls";
+import { playAtom } from "@/features/playback/api/controls";
+import type { TTrackSrc } from "@/features/playback/utils/trackList";
 
 import { MediaImage } from "@/components/media/MediaImage";
 import { ActionButton } from "@/components/ui/ActionButton";
@@ -14,16 +15,16 @@ import { TrackDuration } from "./TrackDuration";
  */
 export function TrackCard(props: {
   id: string;
-  uri: string;
+  trackSrc: TTrackSrc;
   textContent: [string, OptString];
   coverSrc: string | null;
   duration: number;
 }) {
-  const playNewTrack = useSetAtom(playNewTrackAtom);
+  const playFn = useSetAtom(playAtom);
 
   return (
     <ActionButton
-      onPress={() => playNewTrack(props.id, props.uri)}
+      onPress={() => playFn({ trackId: props.id, trackSrc: props.trackSrc })}
       textContent={props.textContent}
       image={
         <MediaImage

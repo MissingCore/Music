@@ -60,9 +60,7 @@ function formatAlbumTracks({
     ...rest,
     tracks: tracks
       .toSorted((a, b) => a.track - b.track)
-      .map(({ id, name, duration, uri, track }) => {
-        return { id, name, duration, uri, track };
-      }),
+      .map(({ id, name, duration, track }) => ({ id, name, duration, track })),
     metadata,
   };
 }

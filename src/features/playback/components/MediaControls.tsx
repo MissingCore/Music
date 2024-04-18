@@ -4,7 +4,7 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { Pressable } from "react-native";
 
 import { repeatAtom, shuffleAtom } from "../api/configs";
-import { isPlayingAtom, toggleIsPlayingAtom } from "../api/controls";
+import { isPlayingAtom, playPauseToggleAtom } from "../api/controls";
 
 import Colors from "@/constants/Colors";
 import { cn } from "@/lib/style";
@@ -49,11 +49,11 @@ type PlayButtonProps = { size?: number; className?: string };
 /** @description Toggles whether we're playing or not. */
 export function PlayButton({ size = 24, className }: PlayButtonProps) {
   const isPlaying = useAtomValue(isPlayingAtom);
-  const toggleIsPlaying = useSetAtom(toggleIsPlayingAtom);
+  const playPauseToggle = useSetAtom(playPauseToggleAtom);
 
   return (
     <Pressable
-      onPress={toggleIsPlaying}
+      onPress={playPauseToggle}
       className={cn(
         "rounded-full bg-accent500 p-1",
         { "bg-surface500": isPlaying },
