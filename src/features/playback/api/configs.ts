@@ -1,6 +1,9 @@
+import { atom } from "jotai";
 import { unwrap } from "jotai/utils";
 
+import { db } from "@/db";
 import type { TTrackSrc } from "../utils/trackList";
+import { SpecialPlaylists } from "../utils/trackList";
 
 import { createAtomWithStorage } from "@/lib/jotai";
 
@@ -12,6 +15,47 @@ export const trackListSrcAsyncAtom = createAtomWithStorage<
 export const trackListSrcAtom = unwrap(
   trackListSrcAsyncAtom,
   (prev) => prev ?? undefined,
+);
+
+const trackListNameAsyncAtom = atom(async (get) => {
+  try {
+    const trackListSrc = await get(trackListSrcAsyncAtom);
+    if (!trackListSrc) throw new Error("No track list source found.");
+    let sourceName = "";
+    if (trackListSrc.type === "album") {
+      sourceName = (await db.query.albums.findFirst({
+        where: (fields, { eq }) => eq(fields.id, trackListSrc.ref),
+        columns: { name: true },
+      }))!.name;
+    } else if (trackListSrc.type === "artist") {
+      sourceName = `Artist\n ${
+        (await db.query.artists.findFirst({
+          where: (fields, { eq }) => eq(fields.name, trackListSrc.ref),
+          columns: { name: true },
+        }))!.name
+      }`;
+    } else {
+      switch (trackListSrc.ref) {
+        case SpecialPlaylists.tracks:
+          sourceName = "Tracks";
+          break;
+        case SpecialPlaylists.favorites:
+          sourceName = "Favorite Tracks";
+          break;
+        default:
+          throw new Error("Playlist feature not implemented.");
+      }
+    }
+
+    return sourceName;
+  } catch (err) {
+    return "";
+  }
+});
+/** @description Name of the current track list. */
+export const trackListNameAtom = unwrap(
+  trackListNameAsyncAtom,
+  (prev) => prev ?? "",
 );
 
 /** @description [FOR INTERNAL USE ONLY] */

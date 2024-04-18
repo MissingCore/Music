@@ -5,6 +5,7 @@ import { Text, View } from "react-native";
 
 import { AnimatedCover } from "@/components/media/AnimatedCover";
 import { TextLine } from "@/components/ui/Text";
+import { trackListNameAtom } from "@/features/playback/api/configs";
 import { currentTrackDataAtom } from "@/features/playback/api/currentTrack";
 import {
   NextButton,
@@ -19,14 +20,12 @@ import { getTrackDuration } from "@/features/track/components/TrackDuration";
 export default function CurrentTrackScreen() {
   const navigation = useNavigation();
   const trackData = useAtomValue(currentTrackDataAtom);
+  const trackListName = useAtomValue(trackListNameAtom);
 
   useEffect(() => {
     if (!trackData) router.back();
-
-    navigation.setOptions({
-      headerTitle: "Playing Track From <>",
-    });
-  }, [navigation, trackData]);
+    navigation.setOptions({ headerTitle: trackListName });
+  }, [navigation, trackData, trackListName]);
 
   if (!trackData) return null;
 
@@ -34,8 +33,11 @@ export default function CurrentTrackScreen() {
     <View className="flex-1 items-center px-4 py-8">
       <AnimatedCover type="bottom" imgSrc={trackData.coverSrc} delay={300} />
 
-      <View className="mt-auto w-full px-8">
-        <TextLine className="text-center font-geistMono text-xl text-foreground50">
+      <View className="mt-auto w-full px-4">
+        <TextLine
+          numberOfLines={2}
+          className="text-center font-geistMono text-xl text-foreground50"
+        >
           {trackData.name}
         </TextLine>
         <TextLine className="text-center font-geistMonoLight text-base text-accent50">
@@ -43,7 +45,7 @@ export default function CurrentTrackScreen() {
         </TextLine>
       </View>
 
-      <View className="mt-auto w-full p-4">
+      <View className="mt-16 w-full p-4">
         <View className="mb-2 h-4 w-full rounded-lg bg-foreground100" />
         <View className="flex-row justify-between">
           <Text className="font-geistMono text-sm text-foreground50">
@@ -55,7 +57,7 @@ export default function CurrentTrackScreen() {
         </View>
       </View>
 
-      <View className="mt-auto flex-row items-center gap-2 p-8">
+      <View className="mt-4 flex-row items-center gap-2 p-8">
         <ShuffleButton size={32} />
         <PreviousButton size={32} />
         <PlayToggleButton size={32} className="px-5" />

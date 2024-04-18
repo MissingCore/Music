@@ -2,6 +2,7 @@ import { db } from "@/db";
 
 import { compareAsc } from "@/utils/string";
 
+/** @description "Enums" for special playlists. */
 export const SpecialPlaylists = {
   favorites: "favorite-tracks",
   tracks: "all-tracks",

@@ -121,8 +121,6 @@ export const pauseAtom = atom(null, async (get, set) => {
 export const playPauseToggleAtom = atom(null, async (get, set) => {
   const isPlaying = get(isPlayingAtom);
   const soundRef = get(soundRefAtom);
-  const currentTrackData = await get(currentTrackDataAsyncAtom);
-  if (!currentTrackData) return;
 
   const trackStatus = await soundRef.getStatusAsync();
 
