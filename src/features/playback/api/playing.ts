@@ -19,6 +19,8 @@ export type TPlayingInfo = {
   trackList: string[];
   /** Index of `trackId` in `trackList`. */
   trackIdx: number;
+  /** List of track ids we want to play after the current track. */
+  queueList: string[];
 };
 
 /**
@@ -30,6 +32,7 @@ export const DefaultPlayingInformation: TPlayingInfo = {
   listSrc: undefined,
   trackList: [],
   trackIdx: 0,
+  queueList: [],
 };
 
 /** @description [FOR INTERNAL USE ONLY] */

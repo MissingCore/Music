@@ -2,6 +2,7 @@ import { atom } from "jotai";
 
 import { repeatAsyncAtom, shuffleAsyncAtom } from "./configs";
 import { soundRefAtom } from "./globalSound";
+import type { TPlayingInfo } from "./playing";
 import {
   currentTrackDataAsyncAtom,
   playingInfoAsyncAtom,
@@ -148,25 +149,29 @@ export const playPauseToggleAtom = atom(null, async (get, set) => {
 
 /** @description Asynchronous write-only atom for playing the next track. */
 export const nextAtom = atom(null, async (get, set) => {
-  // TODO: Need to account for queue when implemented.
-  const { listSrc, trackIdx, trackList } = await get(playingInfoAsyncAtom);
+  const currPlayingInfo = await get(playingInfoAsyncAtom);
   const shouldRepeat = await get(repeatAsyncAtom);
 
-  const newTrackIdx = trackIdx < trackList.length - 1 ? trackIdx + 1 : 0;
-  set(playingInfoAsyncAtom, {
-    ...{ listSrc, trackList },
-    trackId: trackList[newTrackIdx],
-    trackIdx: newTrackIdx,
-  });
+  let newConfigs: Partial<TPlayingInfo> = {};
 
+  if (currPlayingInfo.queueList.length > 0) {
+    const [newTrackId, ...newQueueList] = currPlayingInfo.queueList;
+    newConfigs = { trackId: newTrackId, queueList: newQueueList };
+  } else {
+    const { trackIdx, trackList } = currPlayingInfo;
+    const newTrackIdx = trackIdx < trackList.length - 1 ? trackIdx + 1 : 0;
+    newConfigs = { trackId: trackList[newTrackIdx], trackIdx: newTrackIdx };
+  }
+
+  set(playingInfoAsyncAtom, { ...currPlayingInfo, ...newConfigs });
   set(playTrackAtom, {
-    action: !shouldRepeat && newTrackIdx === 0 ? "paused" : "new",
+    action: !shouldRepeat && newConfigs.trackIdx === 0 ? "paused" : "new",
   });
 });
 
 /** @description Asynchronous write-only atom for playing the previous track. */
 export const prevAtom = atom(null, async (get, set) => {
-  const { listSrc, trackIdx, trackList } = await get(playingInfoAsyncAtom);
+  const currPlayingInfo = await get(playingInfoAsyncAtom);
   const soundRef = get(soundRefAtom);
 
   // Start from the beginning of the current track instead of playing the
@@ -176,9 +181,10 @@ export const prevAtom = atom(null, async (get, set) => {
     trackStatus.isLoaded && trackStatus.positionMillis > 10000;
 
   if (!startFromBeginning) {
+    const { trackIdx, trackList } = currPlayingInfo;
     const newTrackIdx = trackIdx > 0 ? trackIdx - 1 : trackList.length - 1;
     set(playingInfoAsyncAtom, {
-      ...{ listSrc, trackList },
+      ...currPlayingInfo,
       trackId: trackList[newTrackIdx],
       trackIdx: newTrackIdx,
     });
