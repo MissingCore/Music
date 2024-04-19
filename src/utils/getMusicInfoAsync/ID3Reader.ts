@@ -28,8 +28,14 @@ type PictureFrameId = (typeof FrameTypes.picture)[number];
  *  are stored at the beginning of a MP3 file.
  */
 export class ID3Reader extends MediaFileReader {
+  metadataOnly = true;
   frames = {} as Record<TextFrameId | PictureFrameId, string | undefined>;
   version = 0; // The minor version of the spec (should be `3` or `4`).
+
+  constructor(uri: string, metadataOnly: boolean) {
+    super(uri);
+    this.metadataOnly = metadataOnly;
+  }
 
   /** Get MP3 metadata. */
   async getMetadata() {
@@ -42,17 +48,20 @@ export class ID3Reader extends MediaFileReader {
 
       // Return the results.
       const { APIC, TALB, TDRC, TIT2, TPE1, TRCK, TYER } = this.frames;
-      if (!TIT2) throw new Error("Has no name.");
-      if (!TPE1) throw new Error("Has no artist.");
-      const trackNumber = TRCK ? Number(TRCK.split("/")[0]) : null;
-      return {
-        name: TIT2,
-        artist: TPE1,
-        album: TALB ?? null,
-        track: trackNumber,
-        year: Number(TYER ?? TDRC?.slice(0, 4)) || null,
-        cover: APIC ?? null,
-      };
+      if (this.metadataOnly) {
+        if (!TIT2) throw new Error("Has no name.");
+        if (!TPE1) throw new Error("Has no artist.");
+        const trackNumber = TRCK ? Number(TRCK.split("/")[0]) : null;
+        return {
+          name: TIT2,
+          artist: TPE1,
+          album: TALB ?? null,
+          track: trackNumber,
+          year: Number(TYER ?? TDRC?.slice(0, 4)) || null,
+        };
+      } else {
+        return { cover: APIC ?? null };
+      }
     } catch (err) {
       throw err;
     }
@@ -101,17 +110,23 @@ export class ID3Reader extends MediaFileReader {
       // Next 2 bytes are treated as flags.
       await this.skip(2);
 
-      // Process the frame once we identify the frame type.
-      if (arrayIncludes(FrameTypes.text, frameId)) {
-        await this.processTextFrame(frameId, frameSize);
-      } else if (arrayIncludes(FrameTypes.picture, frameId)) {
-        await this.processPictureFrame(frameSize);
+      // Process the frame once we identify the frame type & exit early
+      // if we got all the data we needed.
+      if (this.metadataOnly) {
+        if (arrayIncludes(FrameTypes.text, frameId)) {
+          await this.processTextFrame(frameId, frameSize);
+          if (Object.keys(this.frames).length === 5) this.finished = true;
+        } else {
+          await this.skip(frameSize);
+        }
       } else {
-        await this.skip(frameSize);
+        if (arrayIncludes(FrameTypes.picture, frameId)) {
+          await this.processPictureFrame(frameSize);
+          if (Object.keys(this.frames).length === 1) this.finished = true;
+        } else {
+          await this.skip(frameSize);
+        }
       }
-
-      // Exit early as we got all the data we needed.
-      if (Object.keys(this.frames).length === 6) this.finished = true;
     }
   }
 
@@ -126,15 +141,23 @@ export class ID3Reader extends MediaFileReader {
   async processPictureFrame(frameSize: number) {
     // First byte indicates text encoding.
     await this.skip(1);
+    let pictureDataSize = frameSize - 1;
 
     // Get MIME Type (field is of unknown length & ends with a `null`)
     let chunk = await this.readTilNull();
+    pictureDataSize -= chunk.length;
     const mimeType = Buffer.bytesToString(chunk);
 
     // Next byte indicates picture type
-    await this.skip(1);
+    chunk = await this.read(1);
+    pictureDataSize -= 1;
+    const pictureType = Buffer.bytesToInt(chunk);
+    // We'll ignore the picture if it's not classified as `Other` or `Cover (front)`
+    if (pictureType !== 0 && pictureType !== 3) {
+      await this.skip(pictureDataSize);
+      return;
+    }
 
-    let pictureDataSize = frameSize - chunk.length - 2;
     // Get description (field is of unknown length & ends with a `null`)
     //  - We won't use this value
     chunk = await this.readTilNull();

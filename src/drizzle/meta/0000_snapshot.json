@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "5b82fb78-66e0-4594-8eb7-0a9a20a658f8",
+  "id": "6fadf74e-5ac9-4ac7-b752-4b62ee008fe0",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "albums": {
@@ -190,6 +190,14 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "fetchedCover": {
+          "name": "fetchedCover",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
         }
       },
       "indexes": {},

@@ -54,6 +54,9 @@ export const tracks = sqliteTable("tracks", {
     .default(false),
   uri: text("uri").notNull(),
   modificationTime: integer("modificationTime").notNull(),
+  fetchedCover: integer("fetchedCover", { mode: "boolean" })
+    .notNull()
+    .default(false),
 });
 export type Track = InferSelectModel<typeof tracks>;
 

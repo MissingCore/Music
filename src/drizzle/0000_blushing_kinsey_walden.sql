@@ -29,6 +29,7 @@ CREATE TABLE `tracks` (
 	`isFavorite` integer DEFAULT false NOT NULL,
 	`uri` text NOT NULL,
 	`modificationTime` integer NOT NULL,
+	`fetchedCover` integer DEFAULT false NOT NULL,
 	FOREIGN KEY (`artistName`) REFERENCES `artists`(`name`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`albumId`) REFERENCES `albums`(`id`) ON UPDATE no action ON DELETE no action
 );

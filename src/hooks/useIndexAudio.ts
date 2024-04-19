@@ -1,6 +1,5 @@
 import { eq } from "drizzle-orm";
 import { Audio } from "expo-av";
-import * as FileSystem from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
 import { useAtomValue, useSetAtom } from "jotai";
 import { useCallback, useEffect, useState } from "react";
@@ -12,7 +11,7 @@ import {
   resetPlayingInfoAtom,
 } from "@/features/playback/api/playing";
 
-import { createId } from "@/lib/cuid2";
+import { saveBase64Img, deleteFile } from "@/lib/file-system";
 import { getMusicInfoAsync } from "@/utils/getMusicInfoAsync";
 import { isFulfilled, isRejected } from "@/utils/promise";
 
@@ -81,7 +80,7 @@ export function useIndexAudio() {
         .filter(({ id }) => !unmodifiedTracks.has(id))
         .map(async ({ id, uri, duration, modificationTime }) => {
           try {
-            const metaData = await getMusicInfoAsync(uri);
+            const metaData = await getMusicInfoAsync(uri, true);
             return { id, uri, duration, modificationTime, ...metaData };
           } catch (err) {
             if (!(err instanceof Error))
@@ -91,7 +90,9 @@ export function useIndexAudio() {
           }
         }),
     );
-    console.log(`Got metadata in ${(Date.now() - start) / 1000}s.`);
+    console.log(
+      `Got metadata of ${incomingTrackData.length} tracks in ${(Date.now() - start) / 1000}s.`,
+    );
 
     // Add rejected tracks in "incomingTrackData" to `InvalidTracks` table.
     await Promise.allSettled(
@@ -135,18 +136,13 @@ export function useIndexAudio() {
     // Add new albums to database (albums may have the same name, but different artists).
     const albumInfoMap: Record<
       string,
-      {
-        album: string;
-        artist: string;
-        cover: string | null;
-        year: number | null;
-      }
+      { album: string; artist: string; year: number | null }
     > = {};
     const newAlbums = new Set(
       validTrackData
-        .map(({ album, artist, cover, year }) => {
+        .map(({ album, artist, year }) => {
           const key = `${album} ${artist}`;
-          if (album) albumInfoMap[key] = { album, artist, cover, year };
+          if (album) albumInfoMap[key] = { album, artist, year };
           return key;
         })
         .filter((a) => !!a) as string[],
@@ -154,11 +150,11 @@ export function useIndexAudio() {
     const albumIdMap: Record<string, string> = {};
     await Promise.allSettled(
       [...newAlbums].map(async (albumArtistKey) => {
-        const { album, artist, cover, year } = albumInfoMap[albumArtistKey];
+        const { album, artist, year } = albumInfoMap[albumArtistKey];
         let exists = allAlbums.find(
           (a) => a.name === album && a.artistName === artist,
         );
-        if (!exists) exists = await addAlbum(album, artist, cover, year);
+        if (!exists) exists = await addAlbum(album, artist, year);
         albumIdMap[albumArtistKey] = exists.id;
       }),
     );
@@ -166,13 +162,11 @@ export function useIndexAudio() {
     // Add the tracks to the database.
     await Promise.allSettled(
       validTrackData.map(
-        async ({ year: _, artist, album, cover, track, id, ...rest }) => {
+        async ({ year: _, artist, album, track, id, ...rest }) => {
           const albumId = album ? albumIdMap[`${album} ${artist}`] : null;
-          let coverSrc: string | null = null;
-          if (!albumId && cover) coverSrc = await saveBase64Img(cover);
 
           const newTrackData = {
-            ...{ ...rest, id, artistName: artist, albumId, coverSrc },
+            ...{ ...rest, id, artistName: artist, albumId },
             ...(track ? { track } : {}),
           };
           const isRetriedTrack = retryTracks.has(id);
@@ -197,6 +191,13 @@ export function useIndexAudio() {
       playingInfo.trackList,
       resetPlayingInfo,
     );
+    console.log(`Finished overall in ${(Date.now() - start) / 1000}s.`);
+
+    // Save cover images in the background. Resumes where we left off if
+    // we didn't finish indexing cover images last session.
+    //  - We don't call the function with `await` to make it not-blocking.
+    //  - Make sure we run this after cleaning up deleted tracks, albums, and artists.
+    indexCoverImgs();
 
     // Allow audio to play in the background.
     await Audio.setAudioModeAsync({ staysActiveInBackground: true });
@@ -223,35 +224,11 @@ export function useIndexAudio() {
 async function addAlbum(
   name: string,
   artistName: string,
-  coverImg: string | null,
   releaseYear: number | null,
 ) {
-  // Create new cover image if exists.
-  let coverSrc: string | null = null;
-  if (coverImg) coverSrc = await saveBase64Img(coverImg);
-
-  const [newAlbum] = await db
-    .insert(albums)
-    .values({ name, artistName, coverSrc, releaseYear })
-    .returning();
+  const vals = { name, artistName, releaseYear };
+  const [newAlbum] = await db.insert(albums).values(vals).returning();
   return newAlbum;
-}
-
-/** @description Helper to save images to device. */
-async function saveBase64Img(base64Img: string) {
-  const [dataMime, base64] = base64Img.split(";base64,");
-  const ext = dataMime.slice(11).toLowerCase();
-
-  const fileUri = FileSystem.documentDirectory + `${createId()}.${ext}`;
-  await FileSystem.writeAsStringAsync(fileUri, base64, {
-    encoding: FileSystem.EncodingType.Base64,
-  });
-  return fileUri;
-}
-
-/** @description Helper to delete a file if it's defined. */
-async function deleteFile(uri: string | undefined | null) {
-  if (uri) await FileSystem.deleteAsync(uri);
 }
 
 /**
@@ -315,5 +292,55 @@ async function cleanUpTracks(
       .map(async ({ name }) => {
         await db.delete(artists).where(eq(artists.name, name));
       }),
+  );
+}
+
+/** @description Optimizes saving cover images of tracks & albums. */
+async function indexCoverImgs() {
+  const start = Date.now();
+
+  const uncheckedTracks = await db.query.tracks.findMany({
+    where: (fields, { eq }) => eq(fields.fetchedCover, false),
+    columns: { id: true, albumId: true, uri: true },
+  });
+  const _albumsWCovers = await db.query.albums.findMany({
+    where: (fields, { isNotNull }) => isNotNull(fields.coverSrc),
+    columns: { id: true },
+  });
+  const albumsWCovers = new Set(_albumsWCovers.map(({ id }) => id));
+
+  let newCoverImgCnt = 0;
+
+  for (const { id, albumId, uri } of uncheckedTracks) {
+    // If we don't have an `albumId` or if the album doesn't have a cover image.
+    if (!albumId || !albumsWCovers.has(albumId)) {
+      const { cover } = await getMusicInfoAsync(uri, false);
+      if (cover) {
+        // Very slim chance that we might have a "floating" image if we
+        // close the app right after saving the image, but before setting
+        // `fetchedCover` to `true`.
+        const coverSrc = await saveBase64Img(cover);
+        if (albumId) {
+          await db
+            .update(albums)
+            .set({ coverSrc })
+            .where(eq(albums.id, albumId));
+          albumsWCovers.add(albumId);
+        } else {
+          await db.update(tracks).set({ coverSrc }).where(eq(tracks.id, id));
+        }
+        newCoverImgCnt++;
+      }
+    }
+
+    // Regardless, we set `fetchedCover` to `true.
+    await db
+      .update(tracks)
+      .set({ fetchedCover: true })
+      .where(eq(tracks.id, id));
+  }
+
+  console.log(
+    `Finished indexing ${newCoverImgCnt} new cover images in ${(Date.now() - start) / 1000}s.`,
   );
 }
