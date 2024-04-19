@@ -6,9 +6,11 @@ import { Pressable } from "react-native";
 import { repeatAtom, shuffleAtom } from "../api/configs";
 import {
   isPlayingAtom,
+  nextAtom,
   pauseAtom,
   playAtom,
   playPauseToggleAtom,
+  prevAtom,
 } from "../api/controls";
 import { playingInfoAtom } from "../api/playing";
 import { isTrackSrcsEqual } from "../utils/comparison";
@@ -118,11 +120,9 @@ export function PlayToggleButton({
 
 /** @description Play the next track. */
 export function NextButton({ size = 24 }) {
+  const nextTrackFn = useSetAtom(nextAtom);
   return (
-    <Pressable
-      onPress={() => console.log("Playing next track...")}
-      className="p-2"
-    >
+    <Pressable onPress={nextTrackFn} className="p-2">
       <MaterialIcons name="skip-next" size={size} color={Colors.foreground50} />
     </Pressable>
   );
@@ -130,11 +130,9 @@ export function NextButton({ size = 24 }) {
 
 /** @description Play the previous track. */
 export function PreviousButton({ size = 24 }) {
+  const prevTrackFn = useSetAtom(prevAtom);
   return (
-    <Pressable
-      onPress={() => console.log("Playing previous track...")}
-      className="p-2"
-    >
+    <Pressable onPress={prevTrackFn} className="p-2">
       <MaterialIcons
         name="skip-previous"
         size={size}

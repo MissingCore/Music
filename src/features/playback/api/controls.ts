@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 
-import { shuffleAsyncAtom } from "./configs";
+import { repeatAsyncAtom, shuffleAsyncAtom } from "./configs";
 import { soundRefAtom } from "./globalSound";
 import { currentTrackDataAsyncAtom, playingInfoAsyncAtom } from "./playing";
 
@@ -79,24 +79,30 @@ export const playAtom = atom(
   },
 );
 
-type TPlayTrackOpts = { action?: "new" | "queue" };
+type TPlayTrackOpts = { action: "new" | "queue" | "paused" };
 
 /** @description Internal function for playing the current song. */
 const playTrackAtom = atom(null, async (get, set, opts?: TPlayTrackOpts) => {
   // TODO: Need to reset or resume incrementing current track duration when we add this in.
   try {
     const soundRef = get(soundRefAtom);
-    set(isPlayingAtom, true);
-    // If we don't define any options, we assume we're just unpausing a track.
-    if (!opts) {
-      await soundRef.playAsync();
-      return;
+    const shouldPlay = opts?.action !== "paused";
+
+    switch (opts?.action) {
+      case "new":
+      case "paused": {
+        const trackData = await get(currentTrackDataAsyncAtom);
+        if (!trackData) throw new Error("No track data found.");
+        await soundRef.unloadAsync(); // Needed if we want to replace the current track.
+        await soundRef.loadAsync({ uri: trackData.uri }, { shouldPlay });
+        break;
+      }
+      default:
+        // If we don't define any options, we assume we're just unpausing a track.
+        await soundRef.playAsync();
     }
 
-    const trackData = await get(currentTrackDataAsyncAtom);
-    if (!trackData) throw new Error("No track data found.");
-    await soundRef.unloadAsync(); // Needed if we want to replace the current track.
-    await soundRef.loadAsync({ uri: trackData.uri }, { shouldPlay: true });
+    set(isPlayingAtom, shouldPlay);
   } catch (err) {
     // Catch cases where media failed to load or if it's already loaded.
     console.log(err);
@@ -119,7 +125,6 @@ export const playPauseToggleAtom = atom(null, async (get, set) => {
   const soundRef = get(soundRefAtom);
 
   const trackStatus = await soundRef.getStatusAsync();
-
   if (trackStatus.isLoaded) {
     if (isPlaying) set(pauseAtom);
     else set(playTrackAtom);
@@ -129,4 +134,45 @@ export const playPauseToggleAtom = atom(null, async (get, set) => {
     // app loads.
     await set(playTrackAtom, { action: "new" });
   }
+});
+
+/** @description Asynchronous write-only atom for playing the next track. */
+export const nextAtom = atom(null, async (get, set) => {
+  // TODO: Need to account for queue when implemented.
+  const { listSrc, trackIdx, trackList } = await get(playingInfoAsyncAtom);
+  const shouldRepeat = await get(repeatAsyncAtom);
+
+  const newTrackIdx = trackIdx < trackList.length - 1 ? trackIdx + 1 : 0;
+  set(playingInfoAsyncAtom, {
+    ...{ listSrc, trackList },
+    trackId: trackList[newTrackIdx],
+    trackIdx: newTrackIdx,
+  });
+
+  set(playTrackAtom, {
+    action: !shouldRepeat && newTrackIdx === 0 ? "paused" : "new",
+  });
+});
+
+/** @description Asynchronous write-only atom for playing the previous track. */
+export const prevAtom = atom(null, async (get, set) => {
+  const { listSrc, trackIdx, trackList } = await get(playingInfoAsyncAtom);
+  const soundRef = get(soundRefAtom);
+
+  // Start from the beginning of the current track instead of playing the
+  // previous track if we've played more than 10 seconds.
+  const trackStatus = await soundRef.getStatusAsync();
+  const startFromBeginning =
+    trackStatus.isLoaded && trackStatus.positionMillis > 10000;
+
+  if (!startFromBeginning) {
+    const newTrackIdx = trackIdx > 0 ? trackIdx - 1 : trackList.length - 1;
+    set(playingInfoAsyncAtom, {
+      ...{ listSrc, trackList },
+      trackId: trackList[newTrackIdx],
+      trackIdx: newTrackIdx,
+    });
+  }
+
+  set(playTrackAtom, { action: "new" });
 });
