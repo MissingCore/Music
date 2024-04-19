@@ -84,3 +84,6 @@ export const currentTrackDataAtom = unwrap(
   currentTrackDataAsyncAtom,
   (prev) => prev ?? undefined,
 );
+
+/** @description Current track position in milliseconds. */
+export const trackPositionMs = atom(0);

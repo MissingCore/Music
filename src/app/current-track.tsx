@@ -6,6 +6,7 @@ import { Text, View } from "react-native";
 import {
   currentTrackDataAtom,
   playingInfoAtom,
+  trackPositionMs,
 } from "@/features/playback/api/playing";
 
 import { AnimatedCover } from "@/components/media/AnimatedCover";
@@ -51,9 +52,7 @@ export default function CurrentTrackScreen() {
       <View className="mt-16 w-full p-4">
         <View className="mb-2 h-4 w-full rounded-lg bg-foreground100" />
         <View className="flex-row justify-between">
-          <Text className="font-geistMono text-sm text-foreground50">
-            00:00
-          </Text>
+          <CurrentTrackPosition />
           <Text className="font-geistMono text-sm text-foreground50">
             {getTrackDuration(trackData.duration)}
           </Text>
@@ -68,5 +67,18 @@ export default function CurrentTrackScreen() {
         <RepeatButton size={32} />
       </View>
     </View>
+  );
+}
+
+/**
+ * @description Split off the current track position into its own component
+ *  to prevent unnecessary rerendering.
+ */
+function CurrentTrackPosition() {
+  const trackPosMs = useAtomValue(trackPositionMs);
+  return (
+    <Text className="font-geistMono text-sm text-foreground50">
+      {getTrackDuration(trackPosMs / 1000)}
+    </Text>
   );
 }

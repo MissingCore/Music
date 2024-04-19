@@ -2,7 +2,11 @@ import { atom } from "jotai";
 
 import { repeatAsyncAtom, shuffleAsyncAtom } from "./configs";
 import { soundRefAtom } from "./globalSound";
-import { currentTrackDataAsyncAtom, playingInfoAsyncAtom } from "./playing";
+import {
+  currentTrackDataAsyncAtom,
+  playingInfoAsyncAtom,
+  trackPositionMs,
+} from "./playing";
 
 import { isTrackSrcsEqual } from "../utils/comparison";
 import type { TTrackSrc } from "../utils/trackList";
@@ -83,10 +87,17 @@ type TPlayTrackOpts = { action: "new" | "queue" | "paused" };
 
 /** @description Internal function for playing the current song. */
 const playTrackAtom = atom(null, async (get, set, opts?: TPlayTrackOpts) => {
-  // TODO: Need to reset or resume incrementing current track duration when we add this in.
   try {
     const soundRef = get(soundRefAtom);
     const shouldPlay = opts?.action !== "paused";
+
+    // Make sure next track is played on completion.
+    soundRef.setOnPlaybackStatusUpdate((playbackStatus) => {
+      if (!playbackStatus.isLoaded) return;
+      const { didJustFinish, positionMillis } = playbackStatus;
+      set(trackPositionMs, positionMillis);
+      if (didJustFinish) set(nextAtom);
+    });
 
     switch (opts?.action) {
       case "new":
@@ -111,7 +122,6 @@ const playTrackAtom = atom(null, async (get, set, opts?: TPlayTrackOpts) => {
 
 /** @description Asynchronous write-only atom for pausing tracks. */
 export const pauseAtom = atom(null, async (get, set) => {
-  // TODO: Need to pause incrementing current track duration when we add this in.
   await get(soundRefAtom).pauseAsync();
   set(isPlayingAtom, false);
 });
