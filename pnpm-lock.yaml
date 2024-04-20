@@ -14,6 +14,9 @@ dependencies:
   '@react-native-async-storage/async-storage':
     specifier: 1.21.0
     version: 1.21.0(react-native@0.73.6)
+  '@react-native-community/slider':
+    specifier: 4.4.2
+    version: 4.4.2
   '@react-navigation/native':
     specifier: ^6.1.17
     version: 6.1.17(react-native@0.73.6)(react@18.2.0)
@@ -3157,6 +3160,10 @@ packages:
       - encoding
       - supports-color
       - utf-8-validate
+    dev: false
+
+  /@react-native-community/slider@4.4.2:
+    resolution: {integrity: sha512-D9bv+3Vd2gairAhnRPAghwccgEmoM7g562pm8i4qB3Esrms5mggF81G3UvCyc0w3jjtFHh8dpQkfEoKiP0NW/Q==}
     dev: false
 
   /@react-native/assets-registry@0.73.1:

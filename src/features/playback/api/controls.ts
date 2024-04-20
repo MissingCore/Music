@@ -6,7 +6,7 @@ import type { TPlayingInfo } from "./playing";
 import {
   currentTrackDataAsyncAtom,
   playingInfoAsyncAtom,
-  trackPositionMs,
+  trackPositionMsAtom,
 } from "./playing";
 
 import { isTrackSrcsEqual } from "../utils/comparison";
@@ -96,7 +96,7 @@ const playTrackAtom = atom(null, async (get, set, opts?: TPlayTrackOpts) => {
     soundRef.setOnPlaybackStatusUpdate((playbackStatus) => {
       if (!playbackStatus.isLoaded) return;
       const { didJustFinish, positionMillis } = playbackStatus;
-      set(trackPositionMs, positionMillis);
+      set(trackPositionMsAtom, positionMillis);
       if (didJustFinish) set(nextAtom);
     });
 
@@ -125,6 +125,16 @@ const playTrackAtom = atom(null, async (get, set, opts?: TPlayTrackOpts) => {
 export const pauseAtom = atom(null, async (get, set) => {
   await get(soundRefAtom).pauseAsync();
   set(isPlayingAtom, false);
+});
+
+/**
+ * @description Asynchronous write-only atom for updating the current
+ *  track position to the value in `trackPositionMsAtom`.
+ */
+export const updateTrackPosAtom = atom(null, async (get) => {
+  await get(soundRefAtom).setStatusAsync({
+    positionMillis: get(trackPositionMsAtom),
+  });
 });
 
 /**

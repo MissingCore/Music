@@ -89,4 +89,4 @@ export const currentTrackDataAtom = unwrap(
 );
 
 /** @description Current track position in milliseconds. */
-export const trackPositionMs = atom(0);
+export const trackPositionMsAtom = atom(0);

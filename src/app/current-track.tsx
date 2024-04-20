@@ -1,12 +1,11 @@
 import { router, useNavigation } from "expo-router";
 import { useAtomValue } from "jotai";
 import { useEffect } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 import {
   currentTrackDataAtom,
   playingInfoAtom,
-  trackPositionMs,
 } from "@/features/playback/api/playing";
 
 import { AnimatedCover } from "@/components/media/AnimatedCover";
@@ -18,7 +17,7 @@ import {
   RepeatButton,
   ShuffleButton,
 } from "@/features/playback/components/MediaControls";
-import { getTrackDuration } from "@/features/track/components/TrackDuration";
+import { MediaSlider } from "@/features/playback/components/MediaSlider";
 
 /** @description Screen for `/current-track` route. */
 export default function CurrentTrackScreen() {
@@ -49,15 +48,7 @@ export default function CurrentTrackScreen() {
         </TextLine>
       </View>
 
-      <View className="mt-16 w-full p-4">
-        <View className="mb-2 h-4 w-full rounded-lg bg-foreground100" />
-        <View className="flex-row justify-between">
-          <CurrentTrackPosition />
-          <Text className="font-geistMono text-sm text-foreground50">
-            {getTrackDuration(trackData.duration)}
-          </Text>
-        </View>
-      </View>
+      <MediaSlider />
 
       <View className="mt-4 flex-row items-center gap-2 p-8">
         <ShuffleButton size={32} />
@@ -67,18 +58,5 @@ export default function CurrentTrackScreen() {
         <RepeatButton size={32} />
       </View>
     </View>
-  );
-}
-
-/**
- * @description Split off the current track position into its own component
- *  to prevent unnecessary rerendering.
- */
-function CurrentTrackPosition() {
-  const trackPosMs = useAtomValue(trackPositionMs);
-  return (
-    <Text className="font-geistMono text-sm text-foreground50">
-      {getTrackDuration(trackPosMs / 1000)}
-    </Text>
   );
 }
