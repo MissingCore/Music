@@ -6,7 +6,7 @@ A Nothing inspired music player.
 
 # LEGAL
 
-This application and code is published under the GNU Affero General Public License v3.0 (https://github.com/Nothing-Native/Music/blob/main/LICENSE).
+This application and code is published under the GNU Affero General Public License v3.0 (https://github.com/MissingCore/Music/blob/main/LICENSE).
 
 Nothing Technology Limited or any of its affiliates, subsidiaries, or related entities (collectively, "Nothing Technology") is a valid licensee and can use this app for any purpose, including commercial purposes, without compensation to the developers of this app. Nothing Technology is not required to comply with the terms of the GNU Affero General Public License v3.0.
 
