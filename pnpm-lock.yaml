@@ -8,15 +8,15 @@ dependencies:
   '@expo/vector-icons':
     specifier: ^14.0.0
     version: 14.0.0
+  '@miblanchard/react-native-slider':
+    specifier: ^2.6.0
+    version: 2.6.0(react-native@0.73.6)(react@18.2.0)
   '@paralleldrive/cuid2':
     specifier: ^2.2.2
     version: 2.2.2
   '@react-native-async-storage/async-storage':
     specifier: 1.21.0
     version: 1.21.0(react-native@0.73.6)
-  '@react-native-community/slider':
-    specifier: 4.4.2
-    version: 4.4.2
   '@react-navigation/native':
     specifier: ^6.1.17
     version: 6.1.17(react-native@0.73.6)(react@18.2.0)
@@ -2910,6 +2910,16 @@ packages:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
 
+  /@miblanchard/react-native-slider@2.6.0(react-native@0.73.6)(react@18.2.0):
+    resolution: {integrity: sha512-o7hk/f/8vkqh6QNR5L52m+ws846fQeD/qNCC9CCSRdBqjq66KiCgbxzlhRzKM/gbtxcvMYMIEEJ1yes5cr6I3A==}
+    peerDependencies:
+      react: '>=16.8'
+      react-native: '>=0.59'
+    dependencies:
+      react: 18.2.0
+      react-native: 0.73.6(@babel/core@7.24.4)(@babel/preset-env@7.24.4)(react@18.2.0)
+    dev: false
+
   /@noble/hashes@1.4.0:
     resolution: {integrity: sha512-V1JJ1WTRUqHHrOSh597hURcMqVKVGL/ea3kv0gSnEdsEZ0/+VyPghM1lMNGc00z7CIQorSvbKpuJkxvuHbvdbg==}
     engines: {node: '>= 16'}
@@ -3160,10 +3170,6 @@ packages:
       - encoding
       - supports-color
       - utf-8-validate
-    dev: false
-
-  /@react-native-community/slider@4.4.2:
-    resolution: {integrity: sha512-D9bv+3Vd2gairAhnRPAghwccgEmoM7g562pm8i4qB3Esrms5mggF81G3UvCyc0w3jjtFHh8dpQkfEoKiP0NW/Q==}
     dev: false
 
   /@react-native/assets-registry@0.73.1:
