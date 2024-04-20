@@ -2,6 +2,7 @@ import { atom } from "jotai";
 import { RESET, unwrap } from "jotai/utils";
 
 import { db } from "@/db";
+import { soundRefAtom } from "./globalSound";
 import type { TTrackSrc } from "../utils/trackList";
 
 import { createAtomWithStorage } from "@/lib/jotai";
@@ -90,3 +91,16 @@ export const currentTrackDataAtom = unwrap(
 
 /** @description Current track position in milliseconds. */
 export const trackPositionMsAtom = atom(0);
+
+/**
+ * @description Asynchronous write-only atom that loads track in when we
+ *  open the app.
+ */
+export const loadTrackAtom = atom(null, async (get) => {
+  const soundRef = get(soundRefAtom);
+  const trackStatus = await soundRef.getStatusAsync();
+  if (!trackStatus.isLoaded) {
+    const trackData = await get(currentTrackDataAsyncAtom);
+    if (trackData) await soundRef.loadAsync({ uri: trackData.uri });
+  }
+});

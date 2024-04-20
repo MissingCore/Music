@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import { db } from "@/db";
 import { artists, albums, tracks, invalidTracks } from "@/db/schema";
 import {
+  loadTrackAtom,
   playingInfoAtom,
   resetPlayingInfoAtom,
 } from "@/features/playback/api/playing";
@@ -20,6 +21,7 @@ import { isFulfilled, isRejected } from "@/utils/promise";
  *  in the SQLite database.
  */
 export function useIndexAudio() {
+  const loadTrackFn = useSetAtom(loadTrackAtom);
   const playingInfo = useAtomValue(playingInfoAtom);
   const resetPlayingInfo = useSetAtom(resetPlayingInfoAtom);
 
@@ -201,6 +203,7 @@ export function useIndexAudio() {
 
     // Allow audio to play in the background.
     await Audio.setAudioModeAsync({ staysActiveInBackground: true });
+    await loadTrackFn();
 
     setIsComplete(true);
   }, [
@@ -208,6 +211,7 @@ export function useIndexAudio() {
     requestPermission,
     playingInfo.trackList,
     resetPlayingInfo,
+    loadTrackFn,
   ]);
 
   useEffect(() => {

@@ -132,9 +132,8 @@ export const pauseAtom = atom(null, async (get, set) => {
  *  track position to the value in `trackPositionMsAtom`.
  */
 export const updateTrackPosAtom = atom(null, async (get) => {
-  await get(soundRefAtom).setStatusAsync({
-    positionMillis: get(trackPositionMsAtom),
-  });
+  const soundRef = get(soundRefAtom);
+  await soundRef.setStatusAsync({ positionMillis: get(trackPositionMsAtom) });
 });
 
 /**
@@ -142,19 +141,8 @@ export const updateTrackPosAtom = atom(null, async (get) => {
  *  will play or pause the current playing track.
  */
 export const playPauseToggleAtom = atom(null, async (get, set) => {
-  const isPlaying = get(isPlayingAtom);
-  const soundRef = get(soundRefAtom);
-
-  const trackStatus = await soundRef.getStatusAsync();
-  if (trackStatus.isLoaded) {
-    if (isPlaying) set(pauseAtom);
-    else set(playTrackAtom);
-  } else {
-    // If no track is loaded, we assume `isPlaying = false`. This usually
-    // occurs when we click the "play button" for the first time after the
-    // app loads.
-    await set(playTrackAtom, { action: "new" });
-  }
+  if (get(isPlayingAtom)) set(pauseAtom);
+  else set(playTrackAtom);
 });
 
 /** @description Asynchronous write-only atom for playing the next track. */
