@@ -11,8 +11,10 @@ import {
   playingInfoAtom,
   resetPlayingInfoAtom,
 } from "@/features/playback/api/playing";
+import { dbCleanUp } from "./dbCleanUp";
+import { saveCoverImages } from "./saveCoverImages";
 
-import { saveBase64Img, deleteFile } from "@/lib/file-system";
+import { deleteFile } from "@/lib/file-system";
 import { getMusicInfoAsync } from "@/utils/getMusicInfoAsync";
 import { isFulfilled, isRejected } from "@/utils/promise";
 
@@ -188,7 +190,7 @@ export function useIndexAudio() {
       ),
     );
 
-    await cleanUpTracks(
+    await dbCleanUp(
       new Set(mp3Files.map(({ id }) => id)),
       playingInfo.trackList,
       resetPlayingInfo,
@@ -199,7 +201,7 @@ export function useIndexAudio() {
     // we didn't finish indexing cover images last session.
     //  - We don't call the function with `await` to make it not-blocking.
     //  - Make sure we run this after cleaning up deleted tracks, albums, and artists.
-    indexCoverImgs();
+    saveCoverImages();
 
     // Allow audio to play in the background.
     await Audio.setAudioModeAsync({ staysActiveInBackground: true });
@@ -233,118 +235,4 @@ async function addAlbum(
   const vals = { name, artistName, releaseYear };
   const [newAlbum] = await db.insert(albums).values(vals).returning();
   return newAlbum;
-}
-
-/**
- * @description Remove any tracks in our database that we didn't find w/
- *  Expo Media Library.
- */
-async function cleanUpTracks(
-  usedTrackIds: Set<string>,
-  currTrackList: string[],
-  resetPlayingInfo: () => void,
-) {
-  // Delete track entries.
-  const allTracks = await db.query.tracks.findMany({ columns: { id: true } });
-  const allInvalidTracks = await db.query.invalidTracks.findMany({
-    columns: { id: true },
-  });
-  const tracksToDelete = [
-    ...allTracks.map(({ id }) => id),
-    ...allInvalidTracks.map(({ id }) => id),
-  ].filter((id) => !usedTrackIds.has(id));
-  await Promise.allSettled(
-    tracksToDelete.map(async (id) => {
-      await db.delete(invalidTracks).where(eq(invalidTracks.id, id));
-      const [deletedTrack] = await db
-        .delete(tracks)
-        .where(eq(tracks.id, id))
-        .returning({ coverSrc: tracks.coverSrc });
-      await deleteFile(deletedTrack.coverSrc);
-    }),
-  );
-  // Clear current track list if it contains a track that's deleted. This
-  // prevents any broken behavior if the `trackListSrc` no longer exists
-  // (ie: the track deleted was the only track in the album which been
-  // deleted).
-  const deletedTrackInCurrTrackList = currTrackList.some((tId) =>
-    tracksToDelete.includes(tId),
-  );
-  if (deletedTrackInCurrTrackList) resetPlayingInfo();
-
-  // Remove Albums with no tracks.
-  const allAlbums = await db.query.albums.findMany({
-    columns: { id: true, coverSrc: true },
-    with: { tracks: { columns: { id: true } } },
-  });
-  await Promise.allSettled(
-    allAlbums
-      .filter(({ tracks }) => tracks.length === 0)
-      .map(async ({ id, coverSrc }) => {
-        await deleteFile(coverSrc);
-        await db.delete(albums).where(eq(albums.id, id));
-      }),
-  );
-
-  // Remove Artists with no tracks.
-  const allArtists = await db.query.artists.findMany({
-    with: { tracks: { columns: { id: true } } },
-  });
-  await Promise.allSettled(
-    allArtists
-      .filter(({ tracks }) => tracks.length === 0)
-      .map(async ({ name }) => {
-        await db.delete(artists).where(eq(artists.name, name));
-      }),
-  );
-}
-
-/** @description Optimizes saving cover images of tracks & albums. */
-async function indexCoverImgs() {
-  const start = Date.now();
-
-  const uncheckedTracks = await db.query.tracks.findMany({
-    where: (fields, { eq }) => eq(fields.fetchedCover, false),
-    columns: { id: true, albumId: true, uri: true },
-  });
-  const _albumsWCovers = await db.query.albums.findMany({
-    where: (fields, { isNotNull }) => isNotNull(fields.coverSrc),
-    columns: { id: true },
-  });
-  const albumsWCovers = new Set(_albumsWCovers.map(({ id }) => id));
-
-  let newCoverImgCnt = 0;
-
-  for (const { id, albumId, uri } of uncheckedTracks) {
-    // If we don't have an `albumId` or if the album doesn't have a cover image.
-    if (!albumId || !albumsWCovers.has(albumId)) {
-      const { cover } = await getMusicInfoAsync(uri, false);
-      if (cover) {
-        // Very slim chance that we might have a "floating" image if we
-        // close the app right after saving the image, but before setting
-        // `fetchedCover` to `true`.
-        const coverSrc = await saveBase64Img(cover);
-        if (albumId) {
-          await db
-            .update(albums)
-            .set({ coverSrc })
-            .where(eq(albums.id, albumId));
-          albumsWCovers.add(albumId);
-        } else {
-          await db.update(tracks).set({ coverSrc }).where(eq(tracks.id, id));
-        }
-        newCoverImgCnt++;
-      }
-    }
-
-    // Regardless, we set `fetchedCover` to `true.
-    await db
-      .update(tracks)
-      .set({ fetchedCover: true })
-      .where(eq(tracks.id, id));
-  }
-
-  console.log(
-    `Finished indexing ${newCoverImgCnt} new cover images in ${(Date.now() - start) / 1000}s.`,
-  );
 }
