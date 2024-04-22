@@ -5,10 +5,13 @@ import { useCallback, useMemo, useRef } from "react";
 import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { addTrackToQueueAtom } from "@/features/playback/api/playing";
 import { useTrack } from "@/features/track/api/getTrack";
+import { useToggleFavorite } from "@/features/track/api/toggleFavorite";
 import type { ModalConfig } from "../store";
 import { modalConfigAtom } from "../store";
 
+import { mutateGuard } from "@/lib/react-query";
 import { TextLine } from "@/components/ui/Text";
 import { Backdrop } from "../components/Backdrop";
 import { ModalButton } from "../components/ModalButton";
@@ -27,7 +30,9 @@ type Props = { trackId: string } & Pick<ModalConfig, "origin">;
 export function TrackModal({ trackId, origin }: Props) {
   const insets = useSafeAreaInsets();
   const setModalConfig = useSetAtom(modalConfigAtom);
+  const addTrackToQueue = useSetAtom(addTrackToQueueAtom);
   const { isPending, error, data } = useTrack(trackId);
+  const toggleMutation = useToggleFavorite(trackId);
 
   const bottomSheetRef = useRef<UnwrappedBottomSheet>(null);
   const snapPoints = useMemo(() => ["50%", "100%"], []);
@@ -44,6 +49,11 @@ export function TrackModal({ trackId, origin }: Props) {
   );
 
   if (isPending || error) return null;
+
+  // Add optimistic UI updates.
+  const isToggled = toggleMutation.isPending
+    ? !data.isFavorite
+    : data.isFavorite;
 
   return (
     <BottomSheet
@@ -66,10 +76,13 @@ export function TrackModal({ trackId, origin }: Props) {
       </BottomSheetView>
       <BottomSheetView className="p-4">
         <ModalButton
-          content="Favorite this Song"
-          icon={{ type: "ionicons", name: "heart-outline" }}
-          onClose={closeModal}
-          onPress={() => console.log("Favoriting song...")}
+          content={isToggled ? "Unfavorite this Song" : "Favorite this Song"}
+          icon={{
+            type: "ionicons",
+            name: isToggled ? "heart" : "heart-outline",
+          }}
+          onClose={undefined}
+          onPress={() => mutateGuard(toggleMutation, data.isFavorite)}
         />
 
         <ModalButton
@@ -83,7 +96,7 @@ export function TrackModal({ trackId, origin }: Props) {
           content="Add to Queue"
           icon={{ type: "ionicons", name: "git-branch-outline" }}
           onClose={closeModal}
-          onPress={() => console.log("Adding song to queue...")}
+          onPress={() => addTrackToQueue(data.id)}
         />
 
         <View className="my-4 h-0.5 w-full rounded-full bg-surface500" />

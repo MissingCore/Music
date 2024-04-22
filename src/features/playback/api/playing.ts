@@ -51,6 +51,18 @@ const playingInfoUnwrapAtom = unwrap(
  */
 export const playingInfoAtom = atom((get) => get(playingInfoUnwrapAtom));
 
+/** @description Write-only atom to add a track to the end of the queue. */
+export const addTrackToQueueAtom = atom(
+  null,
+  async (get, set, trackId: string) => {
+    const currPlayingInfo = await get(playingInfoAsyncAtom);
+    set(playingInfoAsyncAtom, {
+      ...currPlayingInfo,
+      queueList: [...currPlayingInfo.queueList, trackId],
+    });
+  },
+);
+
 /**
  * @description Asynchronous write-only atom for resetting `playingInfoAtom`
  *  to its default values.

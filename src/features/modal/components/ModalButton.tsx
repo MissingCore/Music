@@ -13,7 +13,7 @@ type IconVariants =
 type ModalButtonProps = {
   icon: IconVariants;
   content: string;
-  onClose: () => void;
+  onClose: (() => void) | undefined;
   onPress?: (e: GestureResponderEvent) => void;
 };
 
@@ -26,7 +26,7 @@ export const ModalButton = forwardRef<View, ModalButtonProps>((props, ref) => {
       ref={ref}
       onPress={(e) => {
         if (props.onPress) props.onPress(e);
-        props.onClose();
+        if (props.onClose) props.onClose();
       }}
       className="flex-row items-center gap-4 p-2"
     >
