@@ -1,10 +1,10 @@
 import { Slider } from "@miblanchard/react-native-slider";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { useState } from "react";
 import { Text, View } from "react-native";
 
 import { updateTrackPosAtom } from "../api/controls";
-import { currentTrackDataAtom, trackPositionMsAtom } from "../api/playing";
+import { trackPositionMsAtom } from "../api/playing";
 
 import Colors from "@/constants/Colors";
 import { getTrackDuration } from "@/features/track/components/TrackDuration";
@@ -13,21 +13,18 @@ import { getTrackDuration } from "@/features/track/components/TrackDuration";
  * @description Allows seeking on the current track & displays the
  *  current track position.
  */
-export function MediaSlider() {
+export function MediaSlider({ duration }: { duration: number }) {
   const updateTrackPos = useSetAtom(updateTrackPosAtom);
-  const trackData = useAtomValue(currentTrackDataAtom);
   const [trackPosMs, setTrackPosMs] = useAtom(trackPositionMsAtom);
   const [isSliding, setIsSliding] = useState(false);
   const [slidingTrackPos, setSlidingTrackPos] = useState<number | null>(null);
-
-  if (!trackData) return null;
 
   return (
     <View className="mt-16 w-full p-4">
       <Slider
         value={slidingTrackPos ?? trackPosMs}
         minimumValue={0}
-        maximumValue={Math.floor(trackData.duration * 1000)}
+        maximumValue={Math.floor(duration * 1000)}
         onSlidingStart={() => setIsSliding(true)}
         onSlidingComplete={() => {
           updateTrackPos();
@@ -49,7 +46,7 @@ export function MediaSlider() {
           {getTrackDuration((slidingTrackPos ?? trackPosMs) / 1000)}
         </Text>
         <Text className="font-geistMono text-sm text-foreground50">
-          {getTrackDuration(trackData.duration)}
+          {getTrackDuration(duration)}
         </Text>
       </View>
     </View>

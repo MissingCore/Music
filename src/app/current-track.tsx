@@ -48,7 +48,7 @@ export default function CurrentTrackScreen() {
         </TextLine>
       </View>
 
-      <MediaSlider />
+      <MediaSlider duration={trackData.duration} />
 
       <View className="mt-4 flex-row items-center gap-2 p-8">
         <ShuffleButton size={32} />
