@@ -1,7 +1,7 @@
 import { db } from "@/db";
 
 import { compareAsc } from "@/utils/string";
-import type { MediaType } from "@/components/media/types";
+import type { MediaListType } from "@/components/media/types";
 
 /** @description "Enums" for special playlists. */
 export const SpecialPlaylists = {
@@ -10,7 +10,7 @@ export const SpecialPlaylists = {
 } as const;
 
 export type TTrackSrc = {
-  type: Exclude<MediaType, "track">;
+  type: MediaListType;
   name: string;
   ref: string;
 };

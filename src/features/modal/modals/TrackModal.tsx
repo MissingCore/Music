@@ -8,11 +8,11 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { addTrackToQueueAtom } from "@/features/playback/api/playing";
 import { useTrack } from "@/features/track/api/getTrack";
 import { useToggleFavorite } from "@/features/track/api/toggleFavorite";
-import type { ModalConfig } from "../store";
 import { modalConfigAtom } from "../store";
 
 import { mutateGuard } from "@/lib/react-query";
 import { TextLine } from "@/components/ui/Text";
+import type { MediaListType } from "@/components/media/types";
 import { Backdrop } from "../components/Backdrop";
 import { ModalButton } from "../components/ModalButton";
 import { ModalLink } from "../components/ModalLink";
@@ -24,7 +24,7 @@ const BottomSheet = cssInterop(UnwrappedBottomSheet, {
   handleIndicatorClassName: "handleIndicatorStyle",
 });
 
-type Props = { trackId: string } & Pick<ModalConfig, "origin">;
+type Props = { trackId: string; origin?: MediaListType | "current" };
 
 /** @description Modal used for tracks. */
 export function TrackModal({ trackId, origin }: Props) {
@@ -116,6 +116,15 @@ export function TrackModal({ trackId, origin }: Props) {
             content="View Artist"
             icon={{ type: "ionicons", name: "person-outline" }}
             onClose={closeModal}
+          />
+        )}
+
+        {origin === "current" && (
+          <ModalButton
+            content="View Queue"
+            icon={{ type: "ionicons", name: "albums-sharp" }}
+            onClose={closeModal}
+            onPress={() => console.log("Opening up queue list modal...")}
           />
         )}
       </BottomSheetView>
