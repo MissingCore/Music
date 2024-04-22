@@ -1,8 +1,10 @@
 import { useSetAtom } from "jotai";
 
+import { modalConfigAtom } from "@/features/modal/store";
 import { playAtom } from "@/features/playback/api/controls";
 import type { TTrackSrc } from "@/features/playback/utils/trackList";
 
+import type { MediaType } from "@/components/media/types";
 import { MediaImage } from "@/components/media/MediaImage";
 import { ActionButton } from "@/components/ui/ActionButton";
 import type { OptString } from "@/components/ui/Text";
@@ -19,8 +21,10 @@ export function TrackCard(props: {
   textContent: [string, OptString];
   coverSrc: string | null;
   duration: number;
+  origin?: Exclude<MediaType, "track">;
 }) {
   const playFn = useSetAtom(playAtom);
+  const openModal = useSetAtom(modalConfigAtom);
 
   return (
     <ActionButton
@@ -35,7 +39,9 @@ export function TrackCard(props: {
         />
       }
       asideContent={<TrackDuration duration={props.duration} />}
-      iconOnPress={() => console.log("View Track Options")}
+      iconOnPress={() =>
+        openModal({ type: "track", ref: props.id, origin: props.origin })
+      }
     />
   );
 }

@@ -6,6 +6,7 @@ import { Pressable, Text, View } from "react-native";
 
 import { useAlbum } from "@/features/album/api/getAlbum";
 import { useToggleFavorite } from "@/features/album/api/toggleFavorite";
+import { modalConfigAtom } from "@/features/modal/store";
 import { playAtom } from "@/features/playback/api/controls";
 
 import Colors from "@/constants/Colors";
@@ -21,6 +22,7 @@ export default function CurrentAlbumScreen() {
   const { isPending, error, data } = useAlbum(albumId);
   const toggleMutation = useToggleFavorite(albumId);
   const playFn = useSetAtom(playAtom);
+  const openModal = useSetAtom(modalConfigAtom);
 
   useEffect(() => {
     if (data?.isFavorite === undefined) return;
@@ -83,7 +85,9 @@ export default function CurrentAlbumScreen() {
               track > 0 ? `Track ${`${track}`.padStart(2, "0")}` : "Track",
             ]}
             asideContent={<TrackDuration duration={duration} />}
-            iconOnPress={() => console.log("View Track Options")}
+            iconOnPress={() =>
+              openModal({ type: "track", ref: id, origin: "album" })
+            }
           />
         )}
       />

@@ -6,6 +6,7 @@ import "@/assets/global.css";
 import { AppProvider } from "@/providers/app";
 import { Header } from "@/components/navigation/Header";
 import { BackButton } from "@/components/navigation/BackButton";
+import { AppModals } from "@/features/modal";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -38,6 +39,8 @@ function RootLayoutNav() {
         />
         <Stack.Screen name="setting" options={{ headerLeft: BackButton }} />
       </Stack>
+
+      <AppModals />
     </AppProvider>
   );
 }

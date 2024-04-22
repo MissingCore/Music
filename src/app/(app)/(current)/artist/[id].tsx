@@ -42,6 +42,7 @@ export default function CurrentArtistScreen() {
           <TrackCard
             {...{ id, trackSrc, coverSrc, duration }}
             textContent={[name, albumName ?? "Single"]}
+            origin="artist"
           />
         )}
       />

@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.0",
+    "@gorhom/bottom-sheet": "^4.6.1",
     "@miblanchard/react-native-slider": "^2.6.0",
     "@paralleldrive/cuid2": "^2.2.2",
     "@react-native-async-storage/async-storage": "1.21.0",
@@ -54,6 +55,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.73.6",
+    "react-native-gesture-handler": "~2.14.0",
     "react-native-reanimated": "~3.6.3",
     "react-native-safe-area-context": "4.8.2",
     "react-native-screens": "~3.29.0",
