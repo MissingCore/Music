@@ -5,7 +5,7 @@ import { useAlbums } from "@/features/album/api/getAlbums";
 import { useGetColumnWidth } from "@/hooks/layout";
 
 import { MediaCard } from "@/components/media/MediaCard";
-import { Spinner } from "@/components/ui/Spinner";
+import { Loading } from "@/components/ui/Loading";
 import { trackCountStr } from "@/features/track/utils";
 
 /** @description Screen for `/album` route. */
@@ -39,7 +39,7 @@ export default function AlbumScreen() {
       showsVerticalScrollIndicator={false}
       ListEmptyComponent={
         isPending ? (
-          <Spinner />
+          <Loading />
         ) : (
           <Text className="mx-auto text-center font-geistMono text-base text-foreground100">
             No Albums Found

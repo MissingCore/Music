@@ -5,7 +5,7 @@ import { ArrowRight } from "@/assets/svgs/ArrowRight";
 import { useArtists } from "@/features/artist/api/getArtists";
 
 import { ActionButton } from "@/components/ui/ActionButton";
-import { Spinner } from "@/components/ui/Spinner";
+import { Loading } from "@/components/ui/Loading";
 import { trackCountStr } from "@/features/track/utils";
 
 /** @description Screen for `/artist` route. */
@@ -31,7 +31,7 @@ export default function ArtistScreen() {
       showsVerticalScrollIndicator={false}
       ListEmptyComponent={
         isPending ? (
-          <Spinner />
+          <Loading />
         ) : (
           <Text className="mx-auto text-center font-geistMono text-base text-foreground100">
             No Artists Found

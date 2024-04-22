@@ -10,7 +10,9 @@ const Colors = {
   foreground100: "#C1C4C4",
 
   surface50: "#E7E9E9",
+  surface400: "#787878",
   surface500: "#484949",
+  surface700: "#303030",
   surface800: "#1B1D1F",
 } as const;
 

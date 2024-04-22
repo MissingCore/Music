@@ -4,7 +4,7 @@ import { useTracks } from "@/features/track/api/getTracks";
 import { SpecialPlaylists } from "@/features/playback/utils/trackList";
 
 import { MediaList } from "@/components/media/MediaList";
-import { Spinner } from "@/components/ui/Spinner";
+import { Loading } from "@/components/ui/Loading";
 import { TrackCard } from "@/features/track/components/TrackCard";
 
 /** @description Screen for `/track` route. */
@@ -32,7 +32,7 @@ export default function TrackScreen() {
       )}
       ListEmptyComponent={
         isPending ? (
-          <Spinner />
+          <Loading />
         ) : (
           <Text className="mx-auto text-center font-geistMono text-base text-foreground100">
             No Tracks Found
