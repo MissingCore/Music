@@ -1,3 +1,4 @@
+import type { QueryKey } from "@tanstack/react-query";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type QueryKeys = {
@@ -12,7 +13,7 @@ type ToggleFn = (contentId: string, currState: boolean) => Promise<void>;
 /** @description Currying function for toggling the `isFavorite` state. */
 export function generateFavoriteToggler<
   TData extends { id: string; isFavorite: boolean },
->(keys: QueryKeys, toggleFn: ToggleFn) {
+>(keys: QueryKeys, toggleFn: ToggleFn, invalidateKeys?: QueryKey[]) {
   return (contentId: string) => {
     const queryClient = useQueryClient();
 
@@ -24,13 +25,25 @@ export function generateFavoriteToggler<
           keys.detail(contentId),
           (old: Partial<TData>) => ({ ...old, isFavorite: !old.isFavorite }),
         );
-        // Update the entry in the cumulative list.
-        queryClient.setQueryData(keys.all, (old: Partial<TData>[]) =>
-          old.map((tk) => {
-            if (tk.id !== contentId) return tk;
-            return { ...tk, isFavorite: !tk.isFavorite };
-          }),
-        );
+
+        try {
+          // Update the entry in the cumulative list.
+          queryClient.setQueryData(keys.all, (old: Partial<TData>[]) =>
+            old.map((tk) => {
+              if (tk.id !== contentId) return tk;
+              return { ...tk, isFavorite: !tk.isFavorite };
+            }),
+          );
+        } catch {
+          // Silently handle case where cache isn't defined.
+        }
+
+        // Invalidate any keys if provided.
+        if (invalidateKeys && invalidateKeys.length > 0) {
+          invalidateKeys.forEach((key) =>
+            queryClient.invalidateQueries({ queryKey: key }),
+          );
+        }
       },
     });
   };

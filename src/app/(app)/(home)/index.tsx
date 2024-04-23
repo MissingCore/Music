@@ -1,6 +1,8 @@
-import { ScrollView, Text, View } from "react-native";
+import { Link } from "expo-router";
+import { Pressable, ScrollView, Text, View } from "react-native";
 
 import { useGetColumnWidth } from "@/hooks/layout";
+import { useFavoriteLists } from "@/features/data/getFavoriteLists";
 
 import { MediaCard } from "@/components/media/MediaCard";
 
@@ -87,23 +89,24 @@ export default function HomeScreen() {
             </View>
           </View>
 
-          <MediaCard
-            imgSrc={null}
-            imgSize={colWidth}
-            type="playlist"
-            title="Extra long playlist name"
-            subtitle="12 Tracks"
-          />
-          <MediaCard
-            imgSrc={null}
-            imgSize={colWidth}
-            type="album"
-            title="Album Name"
-            subtitle="Artist Name"
-            extra="| 10 Tracks"
-          />
+          <FavoriteLists imgSize={colWidth} />
         </View>
       </View>
     </ScrollView>
   );
+}
+
+/** @description An array of `<MediaCards />` of favorited albums & playlists. */
+function FavoriteLists({ imgSize }: { imgSize: number }) {
+  const { isPending, error, data } = useFavoriteLists();
+
+  if (isPending || error) return null;
+
+  return data.map(({ ref, ...rest }) => (
+    <Link key={`${rest.type}-${ref}`} href={`/${rest.type}/${ref}`} asChild>
+      <Pressable className="active:opacity-75">
+        <MediaCard imgSize={imgSize} {...rest} />
+      </Pressable>
+    </Link>
+  ));
 }

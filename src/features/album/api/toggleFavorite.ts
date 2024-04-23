@@ -4,6 +4,7 @@ import { db } from "@/db";
 import { albums } from "@/db/schema";
 
 import { generateFavoriteToggler } from "@/features/data/generateFavoriteToggler";
+import { assortedDataKeys } from "@/features/data/queryKeys";
 import { albumKeys } from "./queryKeys";
 
 async function toggleFavorite(albumId: string, currState: boolean) {
@@ -17,4 +18,5 @@ async function toggleFavorite(albumId: string, currState: boolean) {
 export const useToggleFavorite = generateFavoriteToggler(
   albumKeys,
   toggleFavorite,
+  [assortedDataKeys.favoriteLists],
 );
