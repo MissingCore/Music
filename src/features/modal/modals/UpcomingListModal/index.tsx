@@ -3,24 +3,24 @@ import { BottomSheetSectionList } from "@gorhom/bottom-sheet";
 import { useAtomValue, useSetAtom } from "jotai";
 import { Text } from "react-native";
 
-import { trackListsDataAtom } from "@/features/playback/api/configs";
 import { removeTrackAtQueueIdxAtom } from "@/features/playback/api/playing";
+import { upcomingListsDataAtom } from "./store";
 
 import Colors from "@/constants/Colors";
 import { MediaImage } from "@/components/media/MediaImage";
 import { ActionButton } from "@/components/ui/ActionButton";
 import { TextLine } from "@/components/ui/Text";
-import { ModalBase } from "../components/ModalBase";
+import { ModalBase } from "../../components/ModalBase";
 
 /** @description Modal used for seeing upcoming tracks. */
 export function UpcomingListModal() {
-  const listData = useAtomValue(trackListsDataAtom);
+  const upcomingListsData = useAtomValue(upcomingListsDataAtom);
   const removeTrackAtQueueIdx = useSetAtom(removeTrackAtQueueIdxAtom);
 
   return (
     <ModalBase>
       <BottomSheetSectionList
-        sections={listData ?? []}
+        sections={upcomingListsData ?? []}
         keyExtractor={({ id }, index) => `${id}${index}`}
         renderItem={({ item, section: { title }, index }) => {
           const isQueue = title === "Next in Queue";
@@ -55,10 +55,10 @@ export function UpcomingListModal() {
             {title}
           </TextLine>
         )}
-        renderSectionFooter={({ section }) => {
-          if (section.data.length > 0) return null;
+        renderSectionFooter={({ section: { data } }) => {
+          if (data.length > 0) return null;
           return (
-            <Text className="mb-2 font-geistMono text-base text-foreground100">
+            <Text className="mb-2 font-geistMonoLight text-base text-foreground100">
               No Tracks Found
             </Text>
           );
