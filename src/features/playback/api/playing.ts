@@ -51,6 +51,14 @@ const playingInfoUnwrapAtom = unwrap(
  */
 export const playingInfoAtom = atom((get) => get(playingInfoUnwrapAtom));
 
+/**
+ * @description Asynchronous write-only atom for resetting `playingInfoAtom`
+ *  to its default values.
+ */
+export const resetPlayingInfoAtom = atom(null, async (_get, set) => {
+  set(playingInfoAsyncAtom, RESET);
+});
+
 /** @description Write-only atom to add a track to the end of the queue. */
 export const addTrackToQueueAtom = atom(
   null,
@@ -63,13 +71,16 @@ export const addTrackToQueueAtom = atom(
   },
 );
 
-/**
- * @description Asynchronous write-only atom for resetting `playingInfoAtom`
- *  to its default values.
- */
-export const resetPlayingInfoAtom = atom(null, async (_get, set) => {
-  set(playingInfoAsyncAtom, RESET);
-});
+/** @description Write-only atom to remove the track at a specific index in the queue. */
+export const removeTrackAtQueueIdxAtom = atom(
+  null,
+  async (get, set, idx: number) => {
+    const currPlayingInfo = await get(playingInfoAsyncAtom);
+    const newQueueList = [...currPlayingInfo.queueList];
+    newQueueList.splice(idx, 1);
+    set(playingInfoAsyncAtom, { ...currPlayingInfo, queueList: newQueueList });
+  },
+);
 
 /**
  * @description [FOR INTERNAL USE ONLY] Read-only atom that asynchronously

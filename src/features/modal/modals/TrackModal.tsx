@@ -24,7 +24,7 @@ const BottomSheet = cssInterop(UnwrappedBottomSheet, {
   handleIndicatorClassName: "handleIndicatorStyle",
 });
 
-type Props = { trackId: string; origin?: MediaListType | "current" };
+type Props = { trackId: string; origin?: MediaListType | "current-track" };
 
 /** @description Modal used for tracks. */
 export function TrackModal({ trackId, origin }: Props) {
@@ -35,7 +35,7 @@ export function TrackModal({ trackId, origin }: Props) {
   const toggleMutation = useToggleFavorite(trackId);
 
   const bottomSheetRef = useRef<UnwrappedBottomSheet>(null);
-  const snapPoints = useMemo(() => ["50%", "100%"], []);
+  const snapPoints = useMemo(() => ["60%", "100%"], []);
 
   const closeModal = useCallback(() => {
     bottomSheetRef.current?.close();
@@ -119,12 +119,12 @@ export function TrackModal({ trackId, origin }: Props) {
           />
         )}
 
-        {origin === "current" && (
+        {origin === "current-track" && (
           <ModalButton
-            content="View Queue"
+            content="View Upcoming"
             icon={{ type: "ionicons", name: "albums-sharp" }}
             onClose={closeModal}
-            onPress={() => console.log("Opening up queue list modal...")}
+            onPress={() => setModalConfig({ type: "upcoming-list" })}
           />
         )}
       </BottomSheetView>

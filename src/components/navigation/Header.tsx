@@ -26,7 +26,7 @@ export function Header({ route, options }: NativeStackHeaderProps) {
           {title}
         </Text>
         <Pressable
-          onPress={() => openModal({ type: "current" })}
+          onPress={() => openModal({ type: "current-track" })}
           style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}
         >
           <EllipsisVertical size={24} />
