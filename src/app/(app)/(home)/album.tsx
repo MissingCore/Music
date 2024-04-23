@@ -1,5 +1,4 @@
-import { Link } from "expo-router";
-import { FlatList, Pressable, Text } from "react-native";
+import { FlatList, Text } from "react-native";
 
 import { useAlbums } from "@/features/album/api/getAlbums";
 import { useGetColumnWidth } from "@/hooks/layout";
@@ -23,18 +22,15 @@ export default function AlbumScreen() {
       data={data}
       keyExtractor={({ id }) => id}
       renderItem={({ item: { id, name, coverSrc, artistName, numTracks } }) => (
-        <Link href={`/album/${id}`} asChild>
-          <Pressable className="active:opacity-75">
-            <MediaCard
-              imgSrc={coverSrc}
-              imgSize={colWidth}
-              type="album"
-              title={name}
-              subtitle={artistName}
-              extra={`| ${getTrackCountStr(numTracks)}`}
-            />
-          </Pressable>
-        </Link>
+        <MediaCard
+          href={`/album/${id}`}
+          imgSrc={coverSrc}
+          imgSize={colWidth}
+          type="album"
+          title={name}
+          subtitle={artistName}
+          extra={`| ${getTrackCountStr(numTracks)}`}
+        />
       )}
       showsVerticalScrollIndicator={false}
       ListEmptyComponent={

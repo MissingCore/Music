@@ -1,5 +1,4 @@
-import { Link } from "expo-router";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
 import { useGetColumnWidth } from "@/hooks/layout";
 import { useFavoriteLists } from "@/features/data/getFavoriteLists";
@@ -36,6 +35,7 @@ export default function HomeScreen() {
         contentContainerClassName="gap-4 px-4"
       >
         <MediaCard
+          href="/"
           imgSrc={null}
           imgSize={colWidthSmall}
           type="artist"
@@ -43,6 +43,7 @@ export default function HomeScreen() {
           subtitle="24 Tracks"
         />
         <MediaCard
+          href="/"
           imgSrc={null}
           imgSize={colWidthSmall}
           type="track"
@@ -50,6 +51,7 @@ export default function HomeScreen() {
           subtitle="Artist Name"
         />
         <MediaCard
+          href="/"
           imgSrc={null}
           imgSize={colWidthSmall}
           type="playlist"
@@ -57,6 +59,7 @@ export default function HomeScreen() {
           subtitle="8 Tracks"
         />
         <MediaCard
+          href="/"
           imgSrc={null}
           imgSize={colWidthSmall}
           type="album"
@@ -65,6 +68,7 @@ export default function HomeScreen() {
           extra="| 10 Tracks"
         />
         <MediaCard
+          href="/"
           imgSrc={null}
           imgSize={colWidthSmall}
           type="track"
@@ -103,10 +107,10 @@ function FavoriteLists({ imgSize }: { imgSize: number }) {
   if (isPending || error) return null;
 
   return data.map(({ ref, ...rest }) => (
-    <Link key={`${rest.type}-${ref}`} href={`/${rest.type}/${ref}`} asChild>
-      <Pressable className="active:opacity-75">
-        <MediaCard imgSize={imgSize} {...rest} />
-      </Pressable>
-    </Link>
+    <MediaCard
+      key={`${rest.type}-${ref}`}
+      href={`/${rest.type}/${ref}`}
+      {...{ imgSize, ...rest }}
+    />
   ));
 }

@@ -37,7 +37,7 @@ export function TrackModal({ trackId, origin }: Props) {
           {data.name}
         </TextLine>
         <TextLine className="text-center font-ndot57 text-lg text-accent50">
-          {data.artistName}
+          {origin === "artist" ? data.album?.name ?? "" : data.artistName}
         </TextLine>
       </BottomSheetView>
       <BottomSheetView className="p-4">
