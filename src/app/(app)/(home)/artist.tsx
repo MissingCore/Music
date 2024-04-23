@@ -6,7 +6,7 @@ import { useArtists } from "@/features/artist/api/getArtists";
 
 import { ActionButton } from "@/components/ui/ActionButton";
 import { Loading } from "@/components/ui/Loading";
-import { trackCountStr } from "@/features/track/utils";
+import { getTrackCountStr } from "@/features/track/utils";
 
 /** @description Screen for `/artist` route. */
 export default function ArtistScreen() {
@@ -19,7 +19,7 @@ export default function ArtistScreen() {
       renderItem={({ item: { name, numTracks } }) => (
         <ActionButton
           onPress={() => router.navigate(`/artist/${encodeURIComponent(name)}`)}
-          textContent={[name, trackCountStr(numTracks)]}
+          textContent={[name, getTrackCountStr(numTracks)]}
           icon={<ArrowRight size={24} />}
         />
       )}

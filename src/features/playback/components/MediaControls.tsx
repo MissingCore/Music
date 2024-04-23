@@ -42,7 +42,6 @@ function MediaToggleButton(props: {
   size: number;
 }) {
   const [isActive, setIsActive] = useAtom(props.atom);
-
   return (
     <Pressable onPress={() => setIsActive(!isActive)} className="p-2">
       <Ionicons

@@ -6,7 +6,7 @@ import { db } from "@/db";
 import type { ExtractFnReturnType } from "@/lib/react-query";
 import { compareAsc } from "@/utils/string";
 import { getPlayTime } from "@/components/media/utils";
-import { trackCountStr } from "@/features/track/utils";
+import { getTrackCountStr } from "@/features/track/utils";
 import { artistKeys } from "./queryKeys";
 
 type QueryKeyType = ReturnType<typeof artistKeys.detail>;
@@ -58,7 +58,7 @@ function formatArtistTracks({ name, tracks }: QueryFnData) {
           compareAsc(a.albumName, b.albumName) || compareAsc(a.name, b.name),
       ),
     metadata: [
-      trackCountStr(tracks.length),
+      getTrackCountStr(tracks.length),
       getPlayTime(tracks.reduce((total, curr) => total + curr.duration, 0)),
     ],
   };

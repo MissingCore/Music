@@ -5,7 +5,7 @@ import { db } from "@/db";
 
 import type { ExtractFnReturnType } from "@/lib/react-query";
 import { getPlayTime } from "@/components/media/utils";
-import { trackCountStr } from "@/features/track/utils";
+import { getTrackCountStr } from "@/features/track/utils";
 import { albumKeys } from "./queryKeys";
 
 type QueryKeyType = ReturnType<typeof albumKeys.detail>;
@@ -51,7 +51,7 @@ function formatAlbumTracks({
 }: QueryFnData) {
   const metadata = [];
   if (releaseYear) metadata.push(String(releaseYear));
-  metadata.push(trackCountStr(tracks.length));
+  metadata.push(getTrackCountStr(tracks.length));
   metadata.push(
     getPlayTime(tracks.reduce((total, curr) => total + curr.duration, 0)),
   );

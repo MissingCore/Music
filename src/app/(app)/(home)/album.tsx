@@ -6,7 +6,7 @@ import { useGetColumnWidth } from "@/hooks/layout";
 
 import { MediaCard } from "@/components/media/MediaCard";
 import { Loading } from "@/components/ui/Loading";
-import { trackCountStr } from "@/features/track/utils";
+import { getTrackCountStr } from "@/features/track/utils";
 
 /** @description Screen for `/album` route. */
 export default function AlbumScreen() {
@@ -31,7 +31,7 @@ export default function AlbumScreen() {
               type="album"
               title={name}
               subtitle={artistName}
-              extra={`| ${trackCountStr(numTracks)}`}
+              extra={`| ${getTrackCountStr(numTracks)}`}
             />
           </Pressable>
         </Link>

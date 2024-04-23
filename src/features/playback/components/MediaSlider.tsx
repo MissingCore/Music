@@ -7,7 +7,7 @@ import { updateTrackPosAtom } from "../api/controls";
 import { trackPositionMsAtom } from "../api/playing";
 
 import Colors from "@/constants/Colors";
-import { getTrackDuration } from "@/features/track/components/TrackDuration";
+import { getTrackDuration } from "@/features/track/utils";
 
 /**
  * @description Allows seeking on the current track & displays the
