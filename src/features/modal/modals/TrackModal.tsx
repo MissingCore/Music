@@ -1,9 +1,6 @@
-import UnwrappedBottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import { BottomSheetView } from "@gorhom/bottom-sheet";
 import { useSetAtom } from "jotai";
-import { cssInterop } from "nativewind";
-import { useCallback, useMemo, useRef } from "react";
 import { View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { addTrackToQueueAtom } from "@/features/playback/api/playing";
 import { useTrack } from "@/features/track/api/getTrack";
@@ -13,40 +10,18 @@ import { modalConfigAtom } from "../store";
 import { mutateGuard } from "@/lib/react-query";
 import { TextLine } from "@/components/ui/Text";
 import type { MediaListType } from "@/components/media/types";
-import { Backdrop } from "../components/Backdrop";
+import { ModalBase } from "../components/ModalBase";
 import { ModalButton } from "../components/ModalButton";
 import { ModalLink } from "../components/ModalLink";
-
-const BottomSheet = cssInterop(UnwrappedBottomSheet, {
-  className: "style",
-  backgroundClassName: "backgroundStyle",
-  handleClassName: "handleStyle",
-  handleIndicatorClassName: "handleIndicatorStyle",
-});
 
 type Props = { trackId: string; origin?: MediaListType | "current-track" };
 
 /** @description Modal used for tracks. */
 export function TrackModal({ trackId, origin }: Props) {
-  const insets = useSafeAreaInsets();
   const setModalConfig = useSetAtom(modalConfigAtom);
   const addTrackToQueue = useSetAtom(addTrackToQueueAtom);
   const { isPending, error, data } = useTrack(trackId);
   const toggleMutation = useToggleFavorite(trackId);
-
-  const bottomSheetRef = useRef<UnwrappedBottomSheet>(null);
-  const snapPoints = useMemo(() => ["60%", "100%"], []);
-
-  const closeModal = useCallback(() => {
-    bottomSheetRef.current?.close();
-  }, []);
-
-  const handleSheetChanges = useCallback(
-    (index: number) => {
-      if (index === -1) setModalConfig(null);
-    },
-    [setModalConfig],
-  );
 
   if (isPending || error) return null;
 
@@ -56,16 +31,7 @@ export function TrackModal({ trackId, origin }: Props) {
     : data.isFavorite;
 
   return (
-    <BottomSheet
-      ref={bottomSheetRef}
-      snapPoints={snapPoints}
-      onChange={handleSheetChanges}
-      enablePanDownToClose
-      topInset={insets.top}
-      backdropComponent={Backdrop}
-      backgroundClassName="bg-surface800"
-      handleIndicatorClassName="bg-surface500"
-    >
+    <ModalBase>
       <BottomSheetView className="px-4">
         <TextLine className="text-center font-ndot57 text-title text-foreground50">
           {data.name}
@@ -81,21 +47,19 @@ export function TrackModal({ trackId, origin }: Props) {
             type: "ionicons",
             name: isToggled ? "heart" : "heart-outline",
           }}
-          onClose={undefined}
           onPress={() => mutateGuard(toggleMutation, data.isFavorite)}
+          dontCloseOnPress
         />
 
         <ModalButton
           content="Add to Playlist"
           icon={{ type: "ionicons", name: "list-outline" }}
-          onClose={closeModal}
           onPress={() => console.log("Opening up adding to playlist modal...")}
         />
 
         <ModalButton
           content="Add to Queue"
           icon={{ type: "ionicons", name: "git-branch-outline" }}
-          onClose={closeModal}
           onPress={() => addTrackToQueue(data.id)}
         />
 
@@ -106,7 +70,6 @@ export function TrackModal({ trackId, origin }: Props) {
             href={`/album/${data.album.id}`}
             content="View Album"
             icon={{ type: "feather", name: "disc" }}
-            onClose={closeModal}
           />
         )}
 
@@ -115,7 +78,6 @@ export function TrackModal({ trackId, origin }: Props) {
             href={`/artist/${encodeURIComponent(data.artistName)}`}
             content="View Artist"
             icon={{ type: "ionicons", name: "person-outline" }}
-            onClose={closeModal}
           />
         )}
 
@@ -123,11 +85,10 @@ export function TrackModal({ trackId, origin }: Props) {
           <ModalButton
             content="View Upcoming"
             icon={{ type: "ionicons", name: "albums-sharp" }}
-            onClose={closeModal}
             onPress={() => setModalConfig({ type: "upcoming-list" })}
           />
         )}
       </BottomSheetView>
-    </BottomSheet>
+    </ModalBase>
   );
 }

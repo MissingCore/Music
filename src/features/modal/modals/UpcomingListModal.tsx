@@ -1,58 +1,24 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import UnwrappedBottomSheet, {
-  BottomSheetSectionList,
-} from "@gorhom/bottom-sheet";
+import { BottomSheetSectionList } from "@gorhom/bottom-sheet";
 import { useAtomValue, useSetAtom } from "jotai";
-import { cssInterop } from "nativewind";
-import { useCallback, useMemo, useRef } from "react";
 import { Text } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { trackListsDataAtom } from "@/features/playback/api/configs";
 import { removeTrackAtQueueIdxAtom } from "@/features/playback/api/playing";
-import { modalConfigAtom } from "../store";
 
 import Colors from "@/constants/Colors";
 import { MediaImage } from "@/components/media/MediaImage";
 import { ActionButton } from "@/components/ui/ActionButton";
 import { TextLine } from "@/components/ui/Text";
-import { Backdrop } from "../components/Backdrop";
-
-const BottomSheet = cssInterop(UnwrappedBottomSheet, {
-  className: "style",
-  backgroundClassName: "backgroundStyle",
-  handleClassName: "handleStyle",
-  handleIndicatorClassName: "handleIndicatorStyle",
-});
+import { ModalBase } from "../components/ModalBase";
 
 /** @description Modal used for seeing upcoming tracks. */
 export function UpcomingListModal() {
-  const insets = useSafeAreaInsets();
-  const setModalConfig = useSetAtom(modalConfigAtom);
   const listData = useAtomValue(trackListsDataAtom);
   const removeTrackAtQueueIdx = useSetAtom(removeTrackAtQueueIdxAtom);
 
-  const bottomSheetRef = useRef<UnwrappedBottomSheet>(null);
-  const snapPoints = useMemo(() => ["60%", "100%"], []);
-
-  const handleSheetChanges = useCallback(
-    (index: number) => {
-      if (index === -1) setModalConfig(null);
-    },
-    [setModalConfig],
-  );
-
   return (
-    <BottomSheet
-      ref={bottomSheetRef}
-      snapPoints={snapPoints}
-      onChange={handleSheetChanges}
-      enablePanDownToClose
-      topInset={insets.top}
-      backdropComponent={Backdrop}
-      backgroundClassName="bg-surface800"
-      handleIndicatorClassName="bg-surface500"
-    >
+    <ModalBase>
       <BottomSheetSectionList
         sections={listData ?? []}
         keyExtractor={({ id }, index) => `${id}${index}`}
@@ -98,8 +64,8 @@ export function UpcomingListModal() {
           );
         }}
         showsVerticalScrollIndicator={false}
-        contentContainerClassName="px-4 pb-4"
+        contentContainerClassName="p-4 pt-0"
       />
-    </BottomSheet>
+    </ModalBase>
   );
 }
