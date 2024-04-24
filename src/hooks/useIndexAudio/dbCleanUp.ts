@@ -1,7 +1,13 @@
 import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { artists, albums, tracks, invalidTracks } from "@/db/schema";
+import {
+  artists,
+  albums,
+  invalidTracks,
+  tracks,
+  tracksToPlaylists,
+} from "@/db/schema";
 
 import { deleteFile } from "@/lib/file-system";
 
@@ -25,6 +31,9 @@ export async function dbCleanUp(
   ].filter((id) => !usedTrackIds.has(id));
   await Promise.allSettled(
     tracksToDelete.map(async (id) => {
+      await db
+        .delete(tracksToPlaylists)
+        .where(eq(tracksToPlaylists.trackId, id));
       await db.delete(invalidTracks).where(eq(invalidTracks.id, id));
       const [deletedTrack] = await db
         .delete(tracks)
