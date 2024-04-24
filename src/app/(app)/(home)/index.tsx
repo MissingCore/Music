@@ -5,7 +5,6 @@ import { useGetColumnWidth } from "@/hooks/layout";
 import { useFavoriteLists } from "@/features/data/getFavoriteLists";
 import { useFavoriteTracksCount } from "@/features/data/getFavoriteTracks";
 
-import { cn } from "@/lib/style";
 import { abbreviateNum } from "@/utils/number";
 import { MediaCard } from "@/components/media/MediaCard";
 import { SpecialPlaylists } from "@/features/playback/utils/trackList";
@@ -107,11 +106,8 @@ function FavoriteTracks({ colWidth }: { colWidth: number }) {
   return (
     <Link href={`/playlist/${SpecialPlaylists.favorites}`} asChild>
       <Pressable
-        style={{ maxWidth: colWidth, maxHeight: colWidth }}
-        className={cn(
-          "aspect-square size-full items-center justify-center",
-          "rounded-lg bg-accent500 active:opacity-75",
-        )}
+        style={{ width: colWidth, height: colWidth }}
+        className="items-center justify-center rounded-lg bg-accent500 active:opacity-75"
       >
         <Text className="font-ndot57 text-title text-foreground50">
           {trackCount}

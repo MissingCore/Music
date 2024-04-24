@@ -66,8 +66,7 @@ function PlaylistListContent({ queryHook, origin }: PlaylistContent) {
   return (
     <View className="w-full flex-1 px-4">
       <MediaListHeader
-        imgSrc={null}
-        // imgSrc={data.coverSrc}
+        imgSrc={data.coverSrc}
         title={data.name}
         metadata={data.metadata}
         trackSrc={trackSrc}
