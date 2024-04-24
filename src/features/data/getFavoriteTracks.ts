@@ -46,7 +46,7 @@ export const useFavoriteTracks = () =>
     return {
       id: SpecialPlaylists.favorites,
       name: "Favorite Tracks",
-      coverSrc: tracks.slice(0, 4).map(({ coverSrc }) => coverSrc),
+      coverSrc: SpecialPlaylists.favorites,
       tracks,
       metadata: [
         getTrackCountStr(tracks.length),

@@ -1,9 +1,11 @@
 import { Link } from "expo-router";
+import { useAtomValue } from "jotai";
 import { Pressable, ScrollView, Text, View } from "react-native";
 
 import { useGetColumnWidth } from "@/hooks/layout";
 import { useFavoriteLists } from "@/features/data/getFavoriteLists";
 import { useFavoriteTracksCount } from "@/features/data/getFavoriteTracks";
+import { recentlyPlayedDataAtom } from "@/features/playback/api/recent";
 
 import { abbreviateNum } from "@/utils/number";
 import { MediaCard } from "@/components/media/MediaCard";
@@ -38,47 +40,7 @@ export default function HomeScreen() {
         overScrollMode="never"
         contentContainerClassName="gap-4 px-4"
       >
-        <MediaCard
-          href="/"
-          imgSrc={null}
-          imgSize={colWidthSmall}
-          type="artist"
-          title="Artist Name"
-          subtitle="24 Tracks"
-        />
-        <MediaCard
-          href="/"
-          imgSrc={null}
-          imgSize={colWidthSmall}
-          type="track"
-          title="Track Name"
-          subtitle="Artist Name"
-        />
-        <MediaCard
-          href="/"
-          imgSrc={null}
-          imgSize={colWidthSmall}
-          type="playlist"
-          title="Playlist Name"
-          subtitle="8 Tracks"
-        />
-        <MediaCard
-          href="/"
-          imgSrc={null}
-          imgSize={colWidthSmall}
-          type="album"
-          title="Album Name"
-          subtitle="Artist Name"
-          extra="| 10 Tracks"
-        />
-        <MediaCard
-          href="/"
-          imgSrc={null}
-          imgSize={colWidthSmall}
-          type="track"
-          title="Track Name"
-          subtitle="Artist Name"
-        />
+        <RecentlyPlayed colWidth={colWidthSmall} />
       </ScrollView>
 
       <View className="px-4">
@@ -92,6 +54,27 @@ export default function HomeScreen() {
       </View>
     </ScrollView>
   );
+}
+
+/** @description An array of `<MediaCards />` of recently played media. */
+function RecentlyPlayed({ colWidth }: { colWidth: number }) {
+  const recentlyPlayedData = useAtomValue(recentlyPlayedDataAtom);
+
+  if (recentlyPlayedData.length === 0) {
+    return (
+      <Text className="my-4 font-geistMono text-base text-foreground100">
+        You haven't played anything yet!
+      </Text>
+    );
+  }
+
+  return recentlyPlayedData.map(({ ref, ...rest }) => (
+    <MediaCard
+      key={`${rest.type}-${ref}`}
+      href={rest.type === "track" ? `/track` : `/${rest.type}/${ref}`}
+      {...{ imgSize: colWidth, ...rest }}
+    />
+  ));
 }
 
 /**

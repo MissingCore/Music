@@ -8,6 +8,7 @@ import {
   playingInfoAsyncAtom,
   trackPositionMsAtom,
 } from "./playing";
+import { recentlyPlayedAsyncAtom } from "./recent";
 
 import { isTrackSrcsEqual } from "../utils/comparison";
 import type { TTrackSrc } from "../utils/trackList";
@@ -83,6 +84,15 @@ export const playAtom = atom(
 
     if (isDifferentTrack) set(playTrackAtom, { action: "new" });
     else set(playTrackAtom);
+
+    // 3c. Add track source to "recently played".
+    const currRecentlyPlayed = await get(recentlyPlayedAsyncAtom);
+    set(recentlyPlayedAsyncAtom, [
+      trackSrc,
+      ...currRecentlyPlayed
+        .filter((data) => !isTrackSrcsEqual(data, trackSrc))
+        .slice(0, 9),
+    ]);
   },
 );
 

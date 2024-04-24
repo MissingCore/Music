@@ -5,6 +5,7 @@ import { View } from "react-native";
 
 import { cn } from "@/lib/style";
 import type { MediaType } from "./types";
+import { SpecialPlaylists } from "@/features/playback/utils/trackList";
 
 // https://www.nativewind.dev/v4/api/css-interop
 const Image = cssInterop(ExpoImage, { className: "style" });
@@ -18,8 +19,17 @@ type Props = {
 
 /** @description Displays an image representing a media type. */
 export function MediaImage({ type, imgSize, imgSrc, className }: Props) {
-  // Display a collage image if we have more than 1 `imgSrc`.
-  if (Array.isArray(imgSrc) && imgSrc.length > 0) {
+  if (imgSrc === SpecialPlaylists.favorites) {
+    return (
+      <Image
+        source={require("@/assets/images/glyph/music.png")}
+        contentFit="cover"
+        style={{ width: imgSize, height: imgSize }}
+        className={cn("rounded-lg bg-accent500", className)}
+      />
+    );
+  } else if (Array.isArray(imgSrc) && imgSrc.length > 0) {
+    // Display a collage image if we have more than 1 `imgSrc`.
     return <CollageImage srcs={imgSrc} {...{ imgSize, className }} />;
   }
 
