@@ -47,17 +47,12 @@ function formatTrack({
   name,
   artistName,
   duration,
-  uri,
   isFavorite,
   ...rest
 }: QueryFnData) {
-  const albumInfo = rest.album
-    ? { id: rest.album.id, name: rest.album.name }
-    : null;
-
   return {
-    ...{ id, name, artistName, duration, uri, isFavorite },
-    album: albumInfo,
+    ...{ id, name, artistName, duration, isFavorite },
+    album: rest.album ? { id: rest.album.id, name: rest.album.name } : null,
     coverSrc: rest.album?.coverSrc ?? rest.coverSrc,
   };
 }

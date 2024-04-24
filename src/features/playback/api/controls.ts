@@ -54,6 +54,8 @@ export const playAtom = atom(
     // 3. Handle when the track list is new.
     let newTrackList = await getTrackList(trackSrc);
     if (shouldShuffle) newTrackList = shuffle(newTrackList);
+    // Exit early if tracklist has no tracks.
+    if (newTrackList.length === 0) return;
 
     // 3a. Get the index of the track we'll play.
     let newTrackIdx = 0;

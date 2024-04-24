@@ -41,15 +41,15 @@ export async function getTrackList({ type, ref }: TTrackSrc) {
     switch (ref) {
       case SpecialPlaylists.tracks:
         unflattenTrackList = await db.query.tracks.findMany({
-          columns: { id: true },
           orderBy: (fields, { asc }) => [asc(fields.name)],
+          columns: { id: true },
         });
         break;
       case SpecialPlaylists.favorites:
         unflattenTrackList = await db.query.tracks.findMany({
           where: (fields, { eq }) => eq(fields.isFavorite, true),
-          columns: { id: true },
           orderBy: (fields, { asc }) => [asc(fields.name)],
+          columns: { id: true },
         });
         break;
       default:

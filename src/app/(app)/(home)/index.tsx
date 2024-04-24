@@ -1,9 +1,14 @@
-import { ScrollView, Text, View } from "react-native";
+import { Link } from "expo-router";
+import { Pressable, ScrollView, Text, View } from "react-native";
 
 import { useGetColumnWidth } from "@/hooks/layout";
 import { useFavoriteLists } from "@/features/data/getFavoriteLists";
+import { useFavoriteTracksCount } from "@/features/data/getFavoriteTracks";
 
+import { cn } from "@/lib/style";
+import { abbreviateNum } from "@/utils/number";
 import { MediaCard } from "@/components/media/MediaCard";
+import { SpecialPlaylists } from "@/features/playback/utils/trackList";
 
 export default function HomeScreen() {
   const colWidth = useGetColumnWidth({
@@ -82,26 +87,43 @@ export default function HomeScreen() {
           FAVORITES
         </Text>
         <View className="w-full flex-row flex-wrap gap-4">
-          <View style={{ maxWidth: colWidth }} className="w-full">
-            <View className="aspect-square items-center justify-center rounded-lg bg-accent500">
-              <Text className="font-ndot57 text-title text-foreground50">
-                10
-              </Text>
-              <Text className="font-ndot57 text-title text-foreground50">
-                SONGS
-              </Text>
-            </View>
-          </View>
-
-          <FavoriteLists imgSize={colWidth} />
+          <FavoriteTracks colWidth={colWidth} />
+          <FavoriteLists colWidth={colWidth} />
         </View>
       </View>
     </ScrollView>
   );
 }
 
+/**
+ * @description A button displaying the number of favorite tracks & takes
+ *  the user to a special "Favorite Tracks" playlist.
+ */
+function FavoriteTracks({ colWidth }: { colWidth: number }) {
+  const { isPending, error, data } = useFavoriteTracksCount();
+
+  const trackCount = isPending || error ? "" : abbreviateNum(data);
+
+  return (
+    <Link href={`/playlist/${SpecialPlaylists.favorites}`} asChild>
+      <Pressable
+        style={{ maxWidth: colWidth, maxHeight: colWidth }}
+        className={cn(
+          "aspect-square size-full items-center justify-center",
+          "rounded-lg bg-accent500 active:opacity-75",
+        )}
+      >
+        <Text className="font-ndot57 text-title text-foreground50">
+          {trackCount}
+        </Text>
+        <Text className="font-ndot57 text-title text-foreground50">SONGS</Text>
+      </Pressable>
+    </Link>
+  );
+}
+
 /** @description An array of `<MediaCards />` of favorited albums & playlists. */
-function FavoriteLists({ imgSize }: { imgSize: number }) {
+function FavoriteLists({ colWidth }: { colWidth: number }) {
   const { isPending, error, data } = useFavoriteLists();
 
   if (isPending || error) return null;
@@ -110,7 +132,7 @@ function FavoriteLists({ imgSize }: { imgSize: number }) {
     <MediaCard
       key={`${rest.type}-${ref}`}
       href={`/${rest.type}/${ref}`}
-      {...{ imgSize, ...rest }}
+      {...{ imgSize: colWidth, ...rest }}
     />
   ));
 }
