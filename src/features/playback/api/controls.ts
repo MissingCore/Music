@@ -18,7 +18,7 @@ export const isPlayingAtom = atom(false);
 
 type TPlayFn = { trackId?: string; trackSrc: TTrackSrc };
 
-/** @description Asynchronous write-only atom for playing tracks. */
+/** @description Method of playing new tracks. */
 export const playAtom = atom(
   null,
   async (get, set, { trackId, trackSrc }: TPlayFn) => {
@@ -123,31 +123,25 @@ const playTrackAtom = atom(null, async (get, set, opts?: TPlayTrackOpts) => {
   }
 });
 
-/** @description Asynchronous write-only atom for pausing tracks. */
+/** @description Method for pausing the current playing track. */
 export const pauseAtom = atom(null, async (get, set) => {
   await get(soundRefAtom).pauseAsync();
   set(isPlayingAtom, false);
 });
 
-/**
- * @description Asynchronous write-only atom for updating the current
- *  track position to the value in `trackPositionMsAtom`.
- */
+/** @description Updates the current track position to the value in `trackPositionMsAtom`. */
 export const updateTrackPosAtom = atom(null, async (get) => {
   const soundRef = get(soundRefAtom);
   await soundRef.setStatusAsync({ positionMillis: get(trackPositionMsAtom) });
 });
 
-/**
- * @description Asynchronous write-only atom that toggle `isPlaying` and
- *  will play or pause the current playing track.
- */
+/** @description Toggle `isPlaying`, playing or pausing the current track. */
 export const playPauseToggleAtom = atom(null, async (get, set) => {
   if (get(isPlayingAtom)) set(pauseAtom);
   else set(playTrackAtom);
 });
 
-/** @description Asynchronous write-only atom for playing the next track. */
+/** @description Method for playing the next track. */
 export const nextAtom = atom(null, async (get, set) => {
   const currPlayingInfo = await get(playingInfoAsyncAtom);
   const shouldRepeat = await get(repeatAsyncAtom);
@@ -169,7 +163,7 @@ export const nextAtom = atom(null, async (get, set) => {
   });
 });
 
-/** @description Asynchronous write-only atom for playing the previous track. */
+/** @description Method for playing the previous track. */
 export const prevAtom = atom(null, async (get, set) => {
   const currPlayingInfo = await get(playingInfoAsyncAtom);
   const soundRef = get(soundRefAtom);

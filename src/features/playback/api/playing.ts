@@ -7,6 +7,9 @@ import type { TTrackSrc } from "../utils/trackList";
 
 import { createAtomWithStorage } from "@/lib/jotai";
 
+/** @description Current track position in milliseconds. */
+export const trackPositionMsAtom = atom(0);
+
 /**
  * @description Structure of the data store in AsyncStorage about the
  *  current playing media.
@@ -41,25 +44,18 @@ export const playingInfoAsyncAtom = createAtomWithStorage<TPlayingInfo>(
   "playing-info",
   DefaultPlayingInformation,
 );
-const playingInfoUnwrapAtom = unwrap(
+/** @description Info about the current playing & upcoming tracks. */
+export const playingInfoAtom = unwrap(
   playingInfoAsyncAtom,
   (prev) => prev ?? DefaultPlayingInformation,
 );
-/**
- * @description Read-only atom returning information about the current
- *  playing track (ie: track id, track list source).
- */
-export const playingInfoAtom = atom((get) => get(playingInfoUnwrapAtom));
 
-/**
- * @description Asynchronous write-only atom for resetting `playingInfoAtom`
- *  to its default values.
- */
+/** @description Resets `playingInfoAtom` to its default values. */
 export const resetPlayingInfoAtom = atom(null, async (_get, set) => {
   set(playingInfoAsyncAtom, RESET);
 });
 
-/** @description Write-only atom to add a track to the end of the queue. */
+/** @description Add a track to the end of the queue. */
 export const addTrackToQueueAtom = atom(
   null,
   async (get, set, trackId: string) => {
@@ -71,7 +67,7 @@ export const addTrackToQueueAtom = atom(
   },
 );
 
-/** @description Write-only atom to remove the track at a specific index in the queue. */
+/** @description Remove the track at a specific index in the queue. */
 export const removeTrackAtQueueIdxAtom = atom(
   null,
   async (get, set, idx: number) => {
@@ -82,10 +78,7 @@ export const removeTrackAtQueueIdxAtom = atom(
   },
 );
 
-/**
- * @description [FOR INTERNAL USE ONLY] Read-only atom that asynchronously
- *  fetch information about the current track.
- */
+/** @description [FOR INTERNAL USE ONLY] Gets info about the current track. */
 export const currentTrackDataAsyncAtom = atom(async (get) => {
   try {
     const { trackId } = await get(playingInfoAsyncAtom);
@@ -106,19 +99,13 @@ export const currentTrackDataAsyncAtom = atom(async (get) => {
     return undefined;
   }
 });
-/** @description Information about the current track. */
+/** @description Info about the current track. */
 export const currentTrackDataAtom = unwrap(
   currentTrackDataAsyncAtom,
   (prev) => prev ?? undefined,
 );
 
-/** @description Current track position in milliseconds. */
-export const trackPositionMsAtom = atom(0);
-
-/**
- * @description Asynchronous write-only atom that loads track in when we
- *  open the app.
- */
+/** @description Loads track in when we open the app. */
 export const loadTrackAtom = atom(null, async (get) => {
   const soundRef = get(soundRefAtom);
   const trackStatus = await soundRef.getStatusAsync();
