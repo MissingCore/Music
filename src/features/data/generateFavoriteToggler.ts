@@ -5,14 +5,16 @@ type QueryKeys = {
   all: readonly [{ entity: string }];
   detail: (
     id: string,
-  ) => readonly [{ entity: string; scope: string; id: string }];
+  ) =>
+    | readonly [{ entity: string; scope: string; id: string }]
+    | readonly [{ entity: string; scope: string; name: string }];
 };
 
 type ToggleFn = (contentId: string, currState: boolean) => Promise<void>;
 
 /** @description Currying function for toggling the `isFavorite` state. */
 export function generateFavoriteToggler<
-  TData extends { id: string; isFavorite: boolean },
+  TData extends { id: string; name: string; isFavorite: boolean },
 >(keys: QueryKeys, toggleFn: ToggleFn, invalidateKeys?: QueryKey[]) {
   return (contentId: string) => {
     const queryClient = useQueryClient();
@@ -27,10 +29,16 @@ export function generateFavoriteToggler<
         );
 
         try {
+          // Determine if the primary key is `id` or `name`.
+          const keyStruc = keys.detail(contentId);
+          const pk = Object.hasOwn(keyStruc[0], "id")
+            ? ("id" as const)
+            : ("name" as const);
+
           // Update the entry in the cumulative list.
           queryClient.setQueryData(keys.all, (old: Partial<TData>[]) =>
             old.map((data) => {
-              if (data.id !== contentId) return data;
+              if (data[pk] !== contentId) return data;
               return { ...data, isFavorite: !data.isFavorite };
             }),
           );
