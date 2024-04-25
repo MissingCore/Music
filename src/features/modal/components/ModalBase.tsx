@@ -27,7 +27,7 @@ export function ModalBase({
   const setModalConfig = useSetAtom(modalConfigAtom);
 
   const modalSnapPoints = useMemo(
-    () => snapPoints ?? ["60%", "100%"],
+    () => snapPoints ?? ["50%", "90%"],
     [snapPoints],
   );
 

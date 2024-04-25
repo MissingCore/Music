@@ -1,8 +1,10 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useSetAtom } from "jotai";
 import { Pressable, ScrollView } from "react-native";
 
 import { DashedBorder } from "@/assets/svgs/DashedBorder";
 import { useGetColumnWidth } from "@/hooks/layout";
+import { modalConfigAtom } from "@/features/modal/store";
 import { usePlaylists } from "@/features/playlist/api/getPlaylists";
 
 import Colors from "@/constants/Colors";
@@ -31,9 +33,11 @@ export default function PlaylistScreen() {
 
 /** @description Opens up a modal to create a new playlist. */
 function CreatePlaylistButton({ colWidth }: { colWidth: number }) {
+  const openModal = useSetAtom(modalConfigAtom);
+
   return (
     <Pressable
-      onPress={() => console.log("Opening up create playlist modal...")}
+      onPress={() => openModal({ type: "playlist-name", origin: "new" })}
       style={{ width: colWidth, height: colWidth }}
       className="items-center justify-center rounded-lg active:bg-surface800"
     >
