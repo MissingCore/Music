@@ -6,6 +6,7 @@ import { db } from "@/db";
 import { createAtomWithStorage } from "@/lib/jotai";
 import { isFulfilled } from "@/utils/promise";
 import type { MediaListType } from "@/components/media/types";
+import { MediaImage } from "@/components/media/MediaImage";
 import { getTrackCountStr } from "@/features/track/utils";
 import { SpecialPlaylists, TTrackSrc } from "../utils/trackList";
 
@@ -38,7 +39,7 @@ type MediaInfo = {
   title: string;
   subtitle: string;
   extra?: string;
-  imgSrc: string | null;
+  imgSrc: React.ComponentProps<typeof MediaImage>["imgSrc"];
 };
 
 /** @description Gets enough info about media to be used with `<MediaCard />`. */
@@ -90,7 +91,30 @@ async function getRecentMediaInfo({
         };
       }
       default: {
-        throw new Error("Playlist feature not implemented.");
+        const playlist = await db.query.playlists.findFirst({
+          where: (fields, { eq }) => eq(fields.name, ref),
+          with: {
+            tracksToPlaylists: {
+              columns: { trackId: false, playlistName: false },
+              with: {
+                track: {
+                  with: { album: true },
+                },
+              },
+            },
+          },
+        });
+        if (!playlist) throw new Error("Playlist doesn't exist.");
+        return {
+          ...{ type, ref, title: playlist.name },
+          subtitle: getTrackCountStr(playlist.tracksToPlaylists.length),
+          imgSrc:
+            playlist.coverSrc ??
+            playlist.tracksToPlaylists
+              .toSorted((a, b) => a.track.name.localeCompare(b.track.name))
+              .slice(0, 4)
+              .map(({ track }) => track.album?.coverSrc ?? track.coverSrc),
+        };
       }
     }
   }

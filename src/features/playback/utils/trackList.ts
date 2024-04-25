@@ -52,8 +52,16 @@ export async function getTrackList({ type, ref }: TTrackSrc) {
           columns: { id: true },
         });
         break;
-      default:
-        throw new Error("Playlist feature not implemented.");
+      default: {
+        const unsortedTracks = await db.query.tracksToPlaylists.findMany({
+          where: (fields, { eq }) => eq(fields.playlistName, ref),
+          columns: { trackId: true },
+          with: { track: { columns: { name: true } } },
+        });
+        unflattenTrackList = unsortedTracks
+          .toSorted((a, b) => a.track.name.localeCompare(b.track.name))
+          .map(({ trackId }) => ({ id: trackId }));
+      }
     }
   }
 
