@@ -5,8 +5,8 @@ import type { MediaListType } from "@/components/media/types";
 
 /** @description "Enums" for special playlists. */
 export const SpecialPlaylists = {
-  favorites: "favorite-tracks",
-  tracks: "all-tracks",
+  favorites: "Favorite Tracks",
+  tracks: "Tracks",
 } as const;
 
 export type TTrackSrc = {

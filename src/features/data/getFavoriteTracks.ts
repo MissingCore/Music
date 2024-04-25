@@ -44,8 +44,7 @@ export const useFavoriteTracks = () =>
       .toSorted((a, b) => a.name.localeCompare(b.name));
 
     return {
-      id: SpecialPlaylists.favorites,
-      name: "Favorite Tracks",
+      name: SpecialPlaylists.favorites,
       coverSrc: SpecialPlaylists.favorites,
       tracks,
       metadata: [

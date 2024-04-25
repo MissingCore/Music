@@ -65,7 +65,7 @@ export default function CurrentAlbumScreen() {
         title={data.name}
         subtitleComponent={
           <Link
-            href={`/artist/${encodeURIComponent(data.artistName)}`}
+            href={`/artist/${data.artistName}`}
             numberOfLines={1}
             className="font-geistMonoLight text-xs text-accent50"
           >

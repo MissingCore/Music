@@ -33,11 +33,13 @@ export const recentlyPlayedDataAtom = unwrap(
 );
 
 type MediaInfo = {
+  type: MediaListType;
+  ref: string;
   title: string;
   subtitle: string;
   extra?: string;
   imgSrc: string | null;
-} & ({ type: MediaListType; ref: string } | { type: "track"; ref: null });
+};
 
 /** @description Gets enough info about media to be used with `<MediaCard />`. */
 async function getRecentMediaInfo({
@@ -73,7 +75,7 @@ async function getRecentMediaInfo({
           columns: { id: true },
         });
         return {
-          ...{ type, ref, title: "Favorite Tracks" },
+          ...{ type, ref, title: SpecialPlaylists.favorites },
           subtitle: getTrackCountStr(tracks.length),
           imgSrc: SpecialPlaylists.favorites,
         };
@@ -83,7 +85,7 @@ async function getRecentMediaInfo({
           columns: { id: true },
         });
         return {
-          ...{ type: "track", ref: null, title: "Tracks", imgSrc: null },
+          ...{ type, ref, title: SpecialPlaylists.tracks, imgSrc: null },
           subtitle: getTrackCountStr(tracks.length),
         };
       }

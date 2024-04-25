@@ -11,6 +11,7 @@ import { abbreviateNum } from "@/utils/number";
 import { MediaCard } from "@/components/media/MediaCard";
 import { SpecialPlaylists } from "@/features/playback/utils/trackList";
 
+/** @description Screen for `/` route. */
 export default function HomeScreen() {
   const colWidth = useGetColumnWidth({
     cols: 2,
@@ -71,7 +72,11 @@ function RecentlyPlayed({ colWidth }: { colWidth: number }) {
   return recentlyPlayedData.map(({ ref, ...rest }) => (
     <MediaCard
       key={`${rest.type}-${ref}`}
-      href={rest.type === "track" ? `/track` : `/${rest.type}/${ref}`}
+      href={
+        rest.type === "playlist" && ref === SpecialPlaylists.tracks
+          ? "/track"
+          : `/${rest.type}/${ref}`
+      }
       {...{ imgSize: colWidth, ...rest }}
     />
   ));

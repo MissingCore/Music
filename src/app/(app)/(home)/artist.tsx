@@ -18,7 +18,7 @@ export default function ArtistScreen() {
       keyExtractor={({ name }) => name}
       renderItem={({ item: { name, numTracks } }) => (
         <ActionButton
-          onPress={() => router.navigate(`/artist/${encodeURIComponent(name)}`)}
+          onPress={() => router.navigate(`/artist/${name}`)}
           textContent={[name, getTrackCountStr(numTracks)]}
           icon={<ArrowRight size={24} />}
         />

@@ -14,7 +14,7 @@ export default function TrackScreen() {
   // Information about this track list.
   const trackSrc = {
     type: "playlist",
-    name: "Tracks",
+    name: SpecialPlaylists.tracks,
     ref: SpecialPlaylists.tracks,
   } as const;
 

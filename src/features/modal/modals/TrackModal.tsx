@@ -75,7 +75,7 @@ export function TrackModal({ trackId, origin }: Props) {
 
         {origin !== "artist" && (
           <ModalLink
-            href={`/artist/${encodeURIComponent(data.artistName)}`}
+            href={`/artist/${data.artistName}`}
             content="View Artist"
             icon={{ type: "ionicons", name: "person-outline" }}
           />
