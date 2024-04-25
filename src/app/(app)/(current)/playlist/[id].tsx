@@ -7,6 +7,7 @@ import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
 import { useFavoriteTracks } from "@/features/data/getFavoriteTracks";
 import { modalConfigAtom } from "@/features/modal/store";
 import { SpecialPlaylists } from "@/features/playback/utils/trackList";
+import { usePlaylist } from "@/features/playlist/api/getPlaylist";
 
 import { MediaList, MediaListHeader } from "@/components/media/MediaList";
 import { TrackCard } from "@/features/track/components/TrackCard";
@@ -37,17 +38,21 @@ export default function CurrentPlaylistScreen() {
   if (isFavoriteTracks) {
     return <PlaylistListContent queryHook={useFavoriteTracks} />;
   }
-  throw new Error("Playlist feature not implemented.");
+  return (
+    <PlaylistListContent id={id} queryHook={usePlaylist} origin="playlist" />
+  );
 }
 
 type PlaylistContent = {
-  queryHook: typeof useFavoriteTracks;
   origin?: React.ComponentProps<typeof TrackCard>["origin"];
-};
+} & (
+  | { id: string; queryHook: typeof usePlaylist }
+  | { id?: never; queryHook: typeof useFavoriteTracks }
+);
 
 /** @description Basic structure of what we want to render on page. */
-function PlaylistListContent({ queryHook, origin }: PlaylistContent) {
-  const { isPending, error, data } = queryHook();
+function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
+  const { isPending, error, data } = queryHook(id ? id : undefined);
 
   if (isPending) return <View className="w-full flex-1 px-4" />;
   else if (!!error || !data) {
@@ -88,7 +93,7 @@ function PlaylistListContent({ queryHook, origin }: PlaylistContent) {
         )}
         ListEmptyComponent={
           <Text className="mx-auto text-center font-geistMono text-base text-foreground100">
-            No tracks in playlist.
+            {id ? "No tracks in playlist." : "No favorited tracks."}
           </Text>
         }
       />
