@@ -5,6 +5,7 @@ import { modalConfigAtom } from "./store";
 
 import { PlaylistNameModal } from "./modals/PlaylistNameModal";
 import { TrackModal } from "./modals/TrackModal";
+import { TrackToPlaylistModal } from "./modals/TrackToPlaylistModal";
 import { UpcomingListModal } from "./modals/UpcomingListModal";
 
 /** @description Wraps all the Bottom Sheet modals used. */
@@ -22,6 +23,8 @@ export function AppModals() {
       return <PlaylistNameModal {...currModal} />;
     case "track":
       return <TrackModal trackId={currModal.ref} origin={currModal.origin} />;
+    case "track-to-playlist":
+      return <TrackToPlaylistModal trackId={currModal.ref} />;
     case "upcoming-list":
       return <UpcomingListModal />;
     default:

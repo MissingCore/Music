@@ -20,6 +20,7 @@ export function ActionButton(props: {
   asideContent?: React.JSX.Element;
   icon?: React.JSX.Element;
   iconOnPress?: PressableProps["onPress"];
+  className?: string;
 }) {
   const icon = props.icon ?? <EllipsisVertical size={24} />;
 
@@ -30,6 +31,7 @@ export function ActionButton(props: {
         "mb-2 h-[58px] flex-row items-center gap-2 rounded p-1",
         "border border-surface500 active:bg-surface800",
         { "px-2": !props.image },
+        props.className,
       )}
     >
       {props.image}

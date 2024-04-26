@@ -9,7 +9,11 @@ export type PlaylistNameModalConfig = {
 };
 
 export type ModalConfig =
-  | { type: MediaType; ref: string; origin?: MediaListType }
+  | {
+      type: MediaType | "track-to-playlist";
+      ref: string;
+      origin?: MediaListType;
+    }
   | { type: "current-track" | "upcoming-list" }
   | PlaylistNameModalConfig;
 
