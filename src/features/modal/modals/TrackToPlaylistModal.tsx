@@ -33,9 +33,9 @@ export function TrackToPlaylistModal({ trackId }: { trackId: string }) {
         >
           <ModalFormButton content="CANCEL" />
           <ModalFormButton
+            theme="secondary"
             onPress={() => mutateGuard(addTrackToPlaylists, inPlaylist)}
             content="CONFIRM"
-            className="border-surface500 bg-surface500 active:border-surface700"
           />
         </View>
       </BottomSheetFooter>
