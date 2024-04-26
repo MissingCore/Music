@@ -1,26 +1,27 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { BottomSheetTextInput, BottomSheetView } from "@gorhom/bottom-sheet";
-import { useAtom } from "jotai";
 import { useMemo, useState } from "react";
 import { Text, View } from "react-native";
 
 import { useCreatePlaylist } from "@/features/playlist/api/createPlaylist";
-import { usedPlaylistNamesAtom } from "./store";
-import type { PlaylistNameModalConfig } from "../../store";
+import { usePlaylists } from "@/features/playlist/api/getPlaylists";
+import type { PlaylistNameModalConfig } from "../store";
 
 import Colors from "@/constants/Colors";
 import { cn } from "@/lib/style";
 import { mutateGuard } from "@/lib/react-query";
 import { TextLine } from "@/components/ui/Text";
 import { SpecialPlaylists } from "@/features/playback/utils/trackList";
-import { ModalBase } from "../../components/ModalBase";
-import { ModalFormButton } from "../../components/ModalFormButton";
+import { ModalBase } from "../components/ModalBase";
+import { ModalFormButton } from "../components/ModalFormButton";
 
 /** @description Modal used for creating or changing a playlist name. */
 export function PlaylistNameModal({ origin, ref }: PlaylistNameModalConfig) {
   const [playlistName, setPlaylistName] = useState("");
-  const [usedNames, updateUsedNames] = useAtom(usedPlaylistNamesAtom);
+  const { isPending, error, data } = usePlaylists();
   const createPlaylist = useCreatePlaylist();
+
+  const snapPoints = useMemo(() => ["50%", "90%"], []);
 
   const meetsCharLength = useMemo(() => {
     const santiziedStr = playlistName.trim();
@@ -28,28 +29,32 @@ export function PlaylistNameModal({ origin, ref }: PlaylistNameModalConfig) {
   }, [playlistName]);
 
   const isUnique = useMemo(() => {
+    if (!data) return false;
     const santiziedStr = playlistName.trim();
     const reservedNames = new Set<string>(Object.values(SpecialPlaylists));
+    const usedNames = new Set(data.map(({ name }) => name));
     return (
       !!santiziedStr &&
       !usedNames.has(playlistName) &&
       !reservedNames.has(playlistName)
     );
-  }, [usedNames, playlistName]);
+  }, [data, playlistName]);
+
+  if (isPending || error) return null;
 
   return (
-    <ModalBase>
+    <ModalBase snapPoints={snapPoints}>
       <BottomSheetView>
-        <TextLine className="px-4 text-center font-ndot57 text-title text-foreground50">
+        <TextLine className="mb-12 px-4 text-center font-ndot57 text-title text-foreground50">
           Create a Playlist
         </TextLine>
-        <View className="mt-4 p-8">
+        <View className="mb-6 px-6">
           <BottomSheetTextInput
             value={playlistName}
             maxLength={30}
             onChangeText={(text) => setPlaylistName(text)}
             placeholder="New Playlist"
-            placeholderTextColor={Colors.foreground100}
+            placeholderTextColor={Colors.surface400}
             className={cn(
               "mb-2 border-b border-b-foreground100 px-2 py-1",
               "font-geistMonoLight text-lg text-foreground100",
@@ -68,10 +73,9 @@ export function PlaylistNameModal({ origin, ref }: PlaylistNameModalConfig) {
           onPress={() => {
             const santiziedStr = playlistName.trim();
             mutateGuard(createPlaylist, santiziedStr);
-            updateUsedNames({ type: "add", name: santiziedStr });
           }}
           content="CREATE"
-          className="m-8 self-end"
+          className="m-6 self-end"
         />
       </BottomSheetView>
     </ModalBase>

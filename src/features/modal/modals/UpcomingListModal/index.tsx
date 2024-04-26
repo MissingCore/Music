@@ -64,7 +64,7 @@ export function UpcomingListModal() {
           );
         }}
         showsVerticalScrollIndicator={false}
-        contentContainerClassName="p-4 pt-0"
+        contentContainerClassName="p-6 pt-0"
       />
     </ModalBase>
   );
