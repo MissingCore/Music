@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { db } from "@/db";
 import { playlists } from "@/db/schema";
 
-import { SpecialPlaylists } from "@/features/playback/utils/trackList";
+import { ReservedNames } from "@/features/playback/utils/trackList";
 import { playlistKeys } from "./queryKeys";
 
 async function createPlaylist(playlistName: string) {
@@ -12,8 +12,7 @@ async function createPlaylist(playlistName: string) {
     throw new Error("Playlist name must be between 1-30 character.");
   }
 
-  const reservedNames = new Set<string>(Object.values(SpecialPlaylists));
-  if (reservedNames.has(sanitizedName)) {
+  if (ReservedNames.has(sanitizedName)) {
     throw new Error("That playlist name is reserved.");
   }
 

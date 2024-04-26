@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Text, View } from "react-native";
 
 import { useCreatePlaylist } from "@/features/playlist/api/createPlaylist";
+import { useUpdatePlaylistName } from "@/features/playlist/api/updatePlaylistName";
 import { usePlaylists } from "@/features/playlist/api/getPlaylists";
 import type { ModalPlaylistName } from "../store";
 
@@ -11,15 +12,16 @@ import Colors from "@/constants/Colors";
 import { cn } from "@/lib/style";
 import { mutateGuard } from "@/lib/react-query";
 import { TextLine } from "@/components/ui/Text";
-import { SpecialPlaylists } from "@/features/playback/utils/trackList";
+import { ReservedNames } from "@/features/playback/utils/trackList";
 import { ModalBase } from "../components/ModalBase";
 import { ModalFormButton } from "../components/ModalFormButton";
 
 /** @description Modal used for creating or changing a playlist name. */
 export function PlaylistNameModal({ origin, id }: ModalPlaylistName) {
-  const [playlistName, setPlaylistName] = useState("");
+  const [playlistName, setPlaylistName] = useState(origin === "new" ? "" : id!);
   const { isPending, error, data } = usePlaylists();
   const createPlaylist = useCreatePlaylist();
+  const updatePlaylistName = useUpdatePlaylistName(id ?? "");
 
   const snapPoints = useMemo(() => ["50%", "90%"], []);
 
@@ -31,12 +33,11 @@ export function PlaylistNameModal({ origin, id }: ModalPlaylistName) {
   const isUnique = useMemo(() => {
     if (!data) return false;
     const santiziedStr = playlistName.trim();
-    const reservedNames = new Set<string>(Object.values(SpecialPlaylists));
     const usedNames = new Set(data.map(({ name }) => name));
     return (
       !!santiziedStr &&
       !usedNames.has(playlistName) &&
-      !reservedNames.has(playlistName)
+      !ReservedNames.has(playlistName)
     );
   }, [data, playlistName]);
 
@@ -45,8 +46,8 @@ export function PlaylistNameModal({ origin, id }: ModalPlaylistName) {
   return (
     <ModalBase snapPoints={snapPoints}>
       <BottomSheetView className="px-6">
-        <TextLine className="mb-12 text-center font-ndot57 text-title text-foreground50">
-          Create a Playlist
+        <TextLine className="mb-8 text-center font-ndot57 text-title text-foreground50">
+          {origin === "new" ? "Create a Playlist" : "Rename Playlist"}
         </TextLine>
         <View className="mb-6">
           <BottomSheetTextInput
@@ -68,15 +69,19 @@ export function PlaylistNameModal({ origin, id }: ModalPlaylistName) {
             <Requirement satisfied={isUnique} description="Unique" />
           </View>
         </View>
-        <ModalFormButton
-          disabled={!meetsCharLength || !isUnique}
-          onPress={() => {
-            const santiziedStr = playlistName.trim();
-            mutateGuard(createPlaylist, santiziedStr);
-          }}
-          content="CREATE"
-          className="my-6 self-end"
-        />
+        <View className="my-6 flex-row justify-end gap-2">
+          {origin === "update" && <ModalFormButton content="CANCEL" />}
+          <ModalFormButton
+            disabled={!meetsCharLength || !isUnique}
+            theme={origin === "new" ? "default" : "secondary"}
+            onPress={() => {
+              const santiziedStr = playlistName.trim();
+              if (origin === "new") mutateGuard(createPlaylist, santiziedStr);
+              else mutateGuard(updatePlaylistName, santiziedStr);
+            }}
+            content={origin === "new" ? "CREATE" : "CONFIRM"}
+          />
+        </View>
       </BottomSheetView>
     </ModalBase>
   );
