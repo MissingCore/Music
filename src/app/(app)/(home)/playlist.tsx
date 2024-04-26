@@ -55,8 +55,8 @@ function AllPlaylists({ colWidth }: { colWidth: number }) {
     <MediaCard
       key={name}
       href={`/playlist/${name}`}
-      imgSrc={coverSrc}
-      imgSize={colWidth}
+      size={colWidth}
+      source={coverSrc}
       type="playlist"
       title={name}
       subtitle={getTrackCountStr(numTracks)}

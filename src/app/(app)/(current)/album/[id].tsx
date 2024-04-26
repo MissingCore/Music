@@ -61,9 +61,9 @@ export default function CurrentAlbumScreen() {
   return (
     <View className="w-full flex-1 px-4">
       <MediaListHeader
-        imgSrc={data.coverSrc}
+        source={data.coverSrc}
         title={data.name}
-        subtitleComponent={
+        SubtitleComponent={
           <Link
             href={`/artist/${data.artistName}`}
             numberOfLines={1}
@@ -73,7 +73,7 @@ export default function CurrentAlbumScreen() {
           </Link>
         }
         metadata={data.metadata}
-        trackSrc={trackSrc}
+        trackSource={trackSrc}
       />
       <MediaList
         data={data.tracks}

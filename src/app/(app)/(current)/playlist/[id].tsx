@@ -75,10 +75,10 @@ function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
   return (
     <View className="w-full flex-1 px-4">
       <MediaListHeader
-        imgSrc={data.coverSrc}
+        source={data.coverSrc}
         title={data.name}
         metadata={data.metadata}
-        trackSrc={trackSrc}
+        trackSource={trackSrc}
       />
       <MediaList
         data={data.tracks}

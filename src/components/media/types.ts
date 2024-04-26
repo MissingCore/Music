@@ -1,3 +1,5 @@
-export type MediaType = "artist" | "album" | "playlist" | "track";
+/** @description Different types of media that can be played. */
+export type Media = "artist" | "album" | "playlist" | "track";
 
-export type MediaListType = Exclude<MediaType, "track">;
+/** @description Media containing a list of playable content. */
+export type MediaList = Exclude<Media, "track">;

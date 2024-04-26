@@ -4,38 +4,40 @@ import type { DimensionValue } from "react-native";
 import { View } from "react-native";
 
 import { cn } from "@/lib/style";
-import type { MediaType } from "./types";
 import { SpecialPlaylists } from "@/features/playback/utils/trackList";
+import type { Media } from "./types";
 
 // https://www.nativewind.dev/v4/api/css-interop
 const Image = cssInterop(ExpoImage, { className: "style" });
 
-type Props = {
-  type: MediaType;
-  imgSize: DimensionValue;
-  imgSrc: string | null | (string | null)[];
+export type ImageSource = string | null | Array<string | null>;
+
+export type MediaImageProps = {
+  type: Media;
+  size: DimensionValue;
+  source: ImageSource;
   className?: string;
 };
 
-/** @description Displays an image representing a media type. */
-export function MediaImage({ type, imgSize, imgSrc, className }: Props) {
-  if (imgSrc === SpecialPlaylists.favorites) {
+/** @description Image representing some media. */
+export function MediaImage({ type, size, source, className }: MediaImageProps) {
+  if (source === SpecialPlaylists.favorites) {
     return (
       <Image
         source={require("@/assets/images/glyph/music.png")}
         contentFit="cover"
-        style={{ width: imgSize, height: imgSize }}
+        style={{ width: size, height: size }}
         className={cn("rounded-lg bg-accent500", className)}
       />
     );
-  } else if (Array.isArray(imgSrc) && imgSrc.length > 0) {
-    // Display a collage image if we have more than 1 `imgSrc`.
-    return <CollageImage srcs={imgSrc} {...{ imgSize, className }} />;
+  } else if (Array.isArray(source) && source.length > 0) {
+    // Display a collage image if we recieve an array with atleast 1 `source`.
+    return <CollageImage sources={source} {...{ size, className }} />;
   }
 
   const isArtist = type === "artist";
   const isTrack = type === "track";
-  const displayedImg = Array.isArray(imgSrc) ? null : imgSrc;
+  const displayedImg = Array.isArray(source) ? null : source;
 
   return (
     <Image
@@ -46,7 +48,7 @@ export function MediaImage({ type, imgSize, imgSrc, className }: Props) {
           : require("@/assets/images/glyph/music.png")
       }
       contentFit="cover"
-      style={{ width: imgSize, height: imgSize }}
+      style={{ width: size, height: size }}
       className={cn(
         "rounded-lg bg-surface800",
         { "bg-surface500": isTrack, "rounded-full": isArtist },
@@ -56,24 +58,24 @@ export function MediaImage({ type, imgSize, imgSrc, className }: Props) {
   );
 }
 
-/** @description Displays a collage of up to 4 cover images in the same footprint. */
+/** @description Collage of up to 4 images in the same footprint. */
 function CollageImage(props: {
-  imgSize: DimensionValue;
-  srcs: (string | null)[];
+  size: DimensionValue;
+  sources: Array<string | null>;
   className?: string;
 }) {
   return (
     <View
-      style={{ width: props.imgSize, height: props.imgSize }}
+      style={{ width: props.size, height: props.size }}
       className={cn(
         "flex-row flex-wrap overflow-hidden rounded-lg bg-surface800",
         props.className,
       )}
     >
-      {props.srcs.slice(0, 4).map((imgSrc, idx) => (
+      {props.sources.slice(0, 4).map((source, idx) => (
         <Image
           key={idx}
-          source={imgSrc}
+          source={source}
           placeholder={require("@/assets/images/glyph/music.png")}
           contentFit="cover"
           className="size-1/2 bg-surface500"

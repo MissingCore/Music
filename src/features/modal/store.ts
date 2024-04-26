@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 
-import type { MediaListType, MediaType } from "@/components/media/types";
+import type { Media, MediaList } from "@/components/media/types";
 
 export type PlaylistNameModalConfig = {
   type: "playlist-name";
@@ -10,9 +10,9 @@ export type PlaylistNameModalConfig = {
 
 export type ModalConfig =
   | {
-      type: MediaType | "track-to-playlist";
+      type: Media | "track-to-playlist";
       ref: string;
-      origin?: MediaListType;
+      origin?: MediaList;
     }
   | { type: "current-track" | "upcoming-list" }
   | PlaylistNameModalConfig;

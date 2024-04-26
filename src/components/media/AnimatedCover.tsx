@@ -3,6 +3,7 @@ import Animated, { Keyframe, clamp } from "react-native-reanimated";
 
 import { Disc } from "@/assets/svgs/Disc";
 
+import type { ImageSource } from "./MediaImage";
 import { MediaImage } from "./MediaImage";
 
 /** @description Keyframe for having the vinyl slide out from the right. */
@@ -29,7 +30,7 @@ const SlideOutBottom = (imgSize: number, delay: number) =>
 export function AnimatedCover(props: {
   type?: "right" | "bottom";
   delay?: number;
-  imgSrc: React.ComponentProps<typeof MediaImage>["imgSrc"];
+  source: ImageSource;
   className?: string;
 }) {
   const { width, height } = useWindowDimensions();
@@ -62,8 +63,8 @@ export function AnimatedCover(props: {
       </Animated.View>
       <MediaImage
         type="track"
-        imgSize={imgSize}
-        imgSrc={props.imgSrc}
+        size={imgSize}
+        source={props.source}
         className="rounded border-2 border-foreground50"
       />
     </View>

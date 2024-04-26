@@ -24,8 +24,8 @@ export default function AlbumScreen() {
       renderItem={({ item: { id, name, coverSrc, artistName, numTracks } }) => (
         <MediaCard
           href={`/album/${id}`}
-          imgSrc={coverSrc}
-          imgSize={colWidth}
+          size={colWidth}
+          source={coverSrc}
           type="album"
           title={name}
           subtitle={artistName}

@@ -4,7 +4,7 @@ import { modalConfigAtom } from "@/features/modal/store";
 import { playAtom } from "@/features/playback/api/controls";
 import type { TTrackSrc } from "@/features/playback/utils/trackList";
 
-import type { MediaListType } from "@/components/media/types";
+import type { MediaList } from "@/components/media/types";
 import { MediaImage } from "@/components/media/MediaImage";
 import { ActionButton } from "@/components/ui/ActionButton";
 import type { OptString } from "@/components/ui/Text";
@@ -21,7 +21,7 @@ export function TrackCard(props: {
   textContent: [string, OptString];
   coverSrc: string | null;
   duration: number;
-  origin?: MediaListType;
+  origin?: MediaList;
 }) {
   const playFn = useSetAtom(playAtom);
   const openModal = useSetAtom(modalConfigAtom);
@@ -33,8 +33,8 @@ export function TrackCard(props: {
       image={
         <MediaImage
           type="track"
-          imgSize={48}
-          imgSrc={props.coverSrc}
+          size={48}
+          source={props.coverSrc}
           className="shrink-0 rounded-sm"
         />
       }

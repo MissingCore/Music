@@ -1,7 +1,7 @@
 import { db } from "@/db";
 
 import { compareAsc } from "@/utils/string";
-import type { MediaListType } from "@/components/media/types";
+import type { MediaList } from "@/components/media/types";
 
 /** @description "Enums" for special playlists. */
 export const SpecialPlaylists = {
@@ -10,14 +10,14 @@ export const SpecialPlaylists = {
 } as const;
 
 export type TTrackSrc = {
-  type: MediaListType;
+  type: MediaList;
   name: string;
   ref: string;
 };
 
 /** @description Get the list of track ids in a given track list. */
 export async function getTrackList({ type, ref }: TTrackSrc) {
-  let unflattenTrackList = [] as { id: string }[];
+  let unflattenTrackList: Array<{ id: string }> = [];
   if (type === "album") {
     unflattenTrackList = await db.query.tracks.findMany({
       where: (fields, { eq }) => eq(fields.albumId, ref),

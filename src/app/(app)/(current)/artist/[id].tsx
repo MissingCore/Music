@@ -34,7 +34,7 @@ export default function CurrentArtistScreen() {
       <MediaListHeader
         title={data.name}
         metadata={data.metadata}
-        trackSrc={trackSrc}
+        trackSource={trackSrc}
       />
       <MediaList
         data={data.tracks}

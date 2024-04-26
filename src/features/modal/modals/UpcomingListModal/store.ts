@@ -25,7 +25,7 @@ const upcomingListsDataAsyncAtom = atom(async (get) => {
     const nowPlaying = { id, name, artistName, coverSrc };
 
     // Get the same values, but for tracks in `queueList`.
-    let nextInQueue: (typeof nowPlaying)[] = [];
+    let nextInQueue: Array<typeof nowPlaying> = [];
     if (queueList.length > 0) {
       nextInQueue = (
         await Promise.all(queueList.map(getUpcomingTrackData))
@@ -40,7 +40,7 @@ const upcomingListsDataAsyncAtom = atom(async (get) => {
       next5Tracks.push(...trackList.slice(0, 5 - next5Tracks.length));
     }
 
-    let nextTracks: (typeof nowPlaying)[] = [];
+    let nextTracks: Array<typeof nowPlaying> = [];
     if (next5Tracks.length > 0) {
       nextTracks = (
         await Promise.all(next5Tracks.map(getUpcomingTrackData))

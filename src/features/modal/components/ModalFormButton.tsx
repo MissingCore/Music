@@ -1,6 +1,7 @@
 import { useBottomSheet } from "@gorhom/bottom-sheet";
 import { forwardRef } from "react";
-import { Pressable, Text, View } from "react-native";
+import type { View } from "react-native";
+import { Pressable, Text } from "react-native";
 
 import { cn } from "@/lib/style";
 

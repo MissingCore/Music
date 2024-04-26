@@ -2,20 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 
 import { db } from "@/db";
 
-import { MediaImage } from "@/components/media/MediaImage";
+import type { MediaCardContent } from "@/components/media/MediaCard";
 import { getTrackCountStr } from "@/features/track/utils";
 import { assortedDataKeys } from "./queryKeys";
 
-type FavoriteList = {
-  type: "album" | "playlist";
-  ref: string;
-  title: string;
-  subtitle: string;
-  extra?: string;
-  imgSrc: React.ComponentProps<typeof MediaImage>["imgSrc"];
-};
-
-async function getFavoriteLists() {
+async function getFavoriteLists<T>() {
   const favAlbums = (
     await db.query.albums.findMany({
       where: (fields, { eq }) => eq(fields.isFavorite, true),
@@ -23,8 +14,12 @@ async function getFavoriteLists() {
       with: { tracks: { columns: { id: true } } },
     })
   ).map(({ id, name, artistName, tracks, coverSrc }) => ({
-    ...{ type: "album", ref: id, title: name, subtitle: artistName },
-    ...{ extra: `| ${getTrackCountStr(tracks.length)}`, imgSrc: coverSrc },
+    type: "album",
+    href: `/album/${id}`,
+    title: name,
+    subtitle: artistName,
+    extra: `| ${getTrackCountStr(tracks.length)}`,
+    source: coverSrc,
   }));
   const favPlaylists = (
     await db.query.playlists.findMany({
@@ -41,9 +36,11 @@ async function getFavoriteLists() {
       },
     })
   ).map(({ name, coverSrc, tracksToPlaylists }) => ({
-    ...{ type: "playlist", ref: name, title: name },
+    type: "playlist",
+    href: `/playlist/${name}`,
+    title: name,
     subtitle: getTrackCountStr(tracksToPlaylists.length),
-    imgSrc:
+    source:
       coverSrc ??
       tracksToPlaylists
         .toSorted((a, b) => a.track.name.localeCompare(b.track.name))
@@ -53,7 +50,7 @@ async function getFavoriteLists() {
 
   return [...favAlbums, ...favPlaylists].toSorted((a, b) =>
     a.title.localeCompare(b.title),
-  ) as FavoriteList[];
+  ) as Array<MediaCardContent<T>>;
 }
 
 /**

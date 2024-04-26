@@ -9,12 +9,12 @@ import { modalConfigAtom } from "../store";
 
 import { mutateGuard } from "@/lib/react-query";
 import { TextLine } from "@/components/ui/Text";
-import type { MediaListType } from "@/components/media/types";
+import type { MediaList } from "@/components/media/types";
 import { ModalBase } from "../components/ModalBase";
 import { ModalButton } from "../components/ModalButton";
 import { ModalLink } from "../components/ModalLink";
 
-type Props = { trackId: string; origin?: MediaListType | "current-track" };
+type Props = { trackId: string; origin?: MediaList | "current-track" };
 
 /** @description Modal used for tracks. */
 export function TrackModal({ trackId, origin }: Props) {

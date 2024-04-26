@@ -34,7 +34,7 @@ export default function CurrentTrackScreen() {
 
   return (
     <View className="flex-1 items-center px-4 py-8">
-      <AnimatedCover type="bottom" imgSrc={trackData.coverSrc} delay={300} />
+      <AnimatedCover type="bottom" source={trackData.coverSrc} delay={300} />
 
       <View className="mt-auto w-full px-4">
         <TextLine

@@ -31,8 +31,8 @@ export function UpcomingListModal() {
               image={
                 <MediaImage
                   type="track"
-                  imgSize={48}
-                  imgSrc={item.coverSrc}
+                  size={48}
+                  source={item.coverSrc}
                   className="shrink-0 rounded-sm"
                 />
               }

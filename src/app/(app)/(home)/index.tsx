@@ -69,16 +69,8 @@ function RecentlyPlayed({ colWidth }: { colWidth: number }) {
     );
   }
 
-  return recentlyPlayedData.map(({ ref, ...rest }) => (
-    <MediaCard
-      key={`${rest.type}-${ref}`}
-      href={
-        rest.type === "playlist" && ref === SpecialPlaylists.tracks
-          ? "/track"
-          : `/${rest.type}/${ref}`
-      }
-      {...{ imgSize: colWidth, ...rest }}
-    />
+  return recentlyPlayedData.map((props) => (
+    <MediaCard key={props.href} {...{ size: colWidth, ...props }} />
   ));
 }
 
@@ -112,11 +104,7 @@ function FavoriteLists({ colWidth }: { colWidth: number }) {
 
   if (isPending || error) return null;
 
-  return data.map(({ ref, ...rest }) => (
-    <MediaCard
-      key={`${rest.type}-${ref}`}
-      href={`/${rest.type}/${ref}`}
-      {...{ imgSize: colWidth, ...rest }}
-    />
+  return data.map((props) => (
+    <MediaCard key={props.href} {...{ size: colWidth, ...props }} />
   ));
 }

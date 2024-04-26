@@ -2,8 +2,8 @@ import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useBottomSheet } from "@gorhom/bottom-sheet";
 import { forwardRef } from "react";
-import type { GestureResponderEvent } from "react-native";
-import { Pressable, Text, View } from "react-native";
+import type { GestureResponderEvent, View } from "react-native";
+import { Pressable, Text } from "react-native";
 
 import Colors from "@/constants/Colors";
 

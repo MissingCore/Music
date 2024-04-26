@@ -36,7 +36,7 @@ export function generateFavoriteToggler<
             : ("name" as const);
 
           // Update the entry in the cumulative list.
-          queryClient.setQueryData(keys.all, (old: Partial<TData>[]) =>
+          queryClient.setQueryData(keys.all, (old: Array<Partial<TData>>) =>
             old.map((data) => {
               if (data[pk] !== contentId) return data;
               return { ...data, isFavorite: !data.isFavorite };

@@ -11,28 +11,29 @@ import {
   RepeatButton,
   ShuffleButton,
 } from "@/features/playback/components/MediaControls";
+import type { ImageSource } from "./MediaImage";
 
 /** @description Header component seen on the `(current)` pages. */
 export function MediaListHeader(props: {
   /** Displays an animated vinyl image above the title. */
-  imgSrc?: React.ComponentProps<typeof AnimatedCover>["imgSrc"];
+  source?: ImageSource;
   title: string;
   /** Component placed underneath the title. */
-  subtitleComponent?: React.JSX.Element;
+  SubtitleComponent?: React.JSX.Element;
   /** Strings describing the media (ie: total playtime, number of tracks.) */
   metadata: string[];
-  trackSrc: TTrackSrc;
+  trackSource: TTrackSrc;
 }) {
   return (
     <View className="border-b border-b-surface50 px-1 pb-2">
       {/* Image type from our database is: `string | null`. */}
-      {props.imgSrc !== undefined && (
-        <AnimatedCover imgSrc={props.imgSrc} className="mb-2" />
+      {props.source !== undefined && (
+        <AnimatedCover source={props.source} className="mb-2" />
       )}
       <TextLine className="font-geistMono text-lg text-foreground50">
         {props.title}
       </TextLine>
-      {props.subtitleComponent}
+      {props.SubtitleComponent}
       <View className="mt-1 flex-row items-center gap-8">
         <TextLine className="flex-1 font-geistMonoLight text-xs text-foreground100">
           {props.metadata.join(" • ")}
@@ -40,7 +41,7 @@ export function MediaListHeader(props: {
         <View className="flex-row items-center">
           <RepeatButton />
           <ShuffleButton />
-          <PlayButton trackSrc={props.trackSrc} className="ml-2" />
+          <PlayButton trackSrc={props.trackSource} className="ml-2" />
         </View>
       </View>
     </View>
