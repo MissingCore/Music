@@ -44,11 +44,11 @@ export function PlaylistNameModal({ origin, id }: ModalPlaylistName) {
 
   return (
     <ModalBase snapPoints={snapPoints}>
-      <BottomSheetView>
-        <TextLine className="mb-12 px-4 text-center font-ndot57 text-title text-foreground50">
+      <BottomSheetView className="px-6">
+        <TextLine className="mb-12 text-center font-ndot57 text-title text-foreground50">
           Create a Playlist
         </TextLine>
-        <View className="mb-6 px-6">
+        <View className="mb-6">
           <BottomSheetTextInput
             value={playlistName}
             maxLength={30}
@@ -75,7 +75,7 @@ export function PlaylistNameModal({ origin, id }: ModalPlaylistName) {
             mutateGuard(createPlaylist, santiziedStr);
           }}
           content="CREATE"
-          className="m-6 self-end"
+          className="my-6 self-end"
         />
       </BottomSheetView>
     </ModalBase>

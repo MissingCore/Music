@@ -3,6 +3,7 @@ import { useAtomValue } from "jotai";
 import { currentTrackDataAtom } from "@/features/playback/api/playing";
 import { modalAtom } from "./store";
 
+import { PlaylistModal } from "./modals/PlaylistModal";
 import { PlaylistNameModal } from "./modals/PlaylistNameModal";
 import { TrackModal } from "./modals/TrackModal";
 import { TrackToPlaylistModal } from "./modals/TrackToPlaylistModal";
@@ -17,6 +18,8 @@ export function AppModals() {
   const { type, id, origin } = selectedModal;
 
   switch (type) {
+    case "playlist":
+      return <PlaylistModal playlistName={id} />;
     case "playlist-name":
       return <PlaylistNameModal {...selectedModal} />;
     case "track":
