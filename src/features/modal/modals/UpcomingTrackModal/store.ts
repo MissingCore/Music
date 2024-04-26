@@ -13,7 +13,7 @@ import {
  *  fetch information about the current playing track, those in the queue,
  *  and upcoming tracks.
  */
-const upcomingListsDataAsyncAtom = atom(async (get) => {
+const upcomingTrackDataAsyncAtom = atom(async (get) => {
   try {
     const shouldRepeat = await get(repeatAsyncAtom);
     const currTrackData = await get(currentTrackDataAsyncAtom);
@@ -59,8 +59,8 @@ const upcomingListsDataAsyncAtom = atom(async (get) => {
   }
 });
 /** @description Information about the tracks to be played. */
-export const upcomingListsDataAtom = unwrap(
-  upcomingListsDataAsyncAtom,
+export const upcomingTrackDataAtom = unwrap(
+  upcomingTrackDataAsyncAtom,
   (prev) => prev ?? undefined,
 );
 

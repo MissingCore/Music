@@ -8,7 +8,7 @@ import { cssInterop } from "nativewind";
 import { useCallback, useMemo } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { modalConfigAtom } from "../store";
+import { modalAtom } from "../store";
 
 const BottomSheet = cssInterop(_BottomSheet, {
   className: "style",
@@ -24,7 +24,7 @@ export function ModalBase({
   ...props
 }: Omit<BottomSheetProps, "ref">) {
   const insets = useSafeAreaInsets();
-  const setModalConfig = useSetAtom(modalConfigAtom);
+  const closeModal = useSetAtom(modalAtom);
 
   const modalSnapPoints = useMemo(
     () => snapPoints ?? ["60%", "90%"],
@@ -33,10 +33,10 @@ export function ModalBase({
 
   const handleSheetChanges = useCallback(
     (index: number) => {
-      // Closing the modal will reset the `modalConfig` atom for reuse.
-      if (index === -1) setModalConfig(null);
+      // Closing the modal will reset the `modalAtom` for reuse.
+      if (index === -1) closeModal(null);
     },
-    [setModalConfig],
+    [closeModal],
   );
 
   return (

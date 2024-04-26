@@ -5,7 +5,7 @@ import { Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
-import { modalConfigAtom } from "@/features/modal/store";
+import { modalAtom } from "@/features/modal/store";
 
 import { UnstyledBackButton } from "@/components/navigation/BackButton";
 
@@ -13,7 +13,7 @@ import { UnstyledBackButton } from "@/components/navigation/BackButton";
 export function Header({ route, options }: NativeStackHeaderProps) {
   const title = getHeaderTitle(options, route.name);
   const insets = useSafeAreaInsets();
-  const openModal = useSetAtom(modalConfigAtom);
+  const openModal = useSetAtom(modalAtom);
 
   return (
     <View style={{ paddingTop: insets.top }}>
@@ -26,7 +26,7 @@ export function Header({ route, options }: NativeStackHeaderProps) {
           {title}
         </Text>
         <Pressable
-          onPress={() => openModal({ type: "current-track" })}
+          onPress={() => openModal({ type: "track-current" })}
           style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}
         >
           <EllipsisVertical size={24} />

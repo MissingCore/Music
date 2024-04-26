@@ -4,7 +4,7 @@ import { Pressable, ScrollView } from "react-native";
 
 import { DashedBorder } from "@/assets/svgs/DashedBorder";
 import { useGetColumnWidth } from "@/hooks/layout";
-import { modalConfigAtom } from "@/features/modal/store";
+import { modalAtom } from "@/features/modal/store";
 import { usePlaylists } from "@/features/playlist/api/getPlaylists";
 
 import Colors from "@/constants/Colors";
@@ -33,7 +33,7 @@ export default function PlaylistScreen() {
 
 /** @description Opens up a modal to create a new playlist. */
 function CreatePlaylistButton({ colWidth }: { colWidth: number }) {
-  const openModal = useSetAtom(modalConfigAtom);
+  const openModal = useSetAtom(modalAtom);
 
   return (
     <Pressable

@@ -1,6 +1,6 @@
 import { useSetAtom } from "jotai";
 
-import { modalConfigAtom } from "@/features/modal/store";
+import { modalAtom } from "@/features/modal/store";
 import { playAtom } from "@/features/playback/api/controls";
 import type { TTrackSrc } from "@/features/playback/utils/trackList";
 
@@ -24,7 +24,7 @@ export function TrackCard(props: {
   origin?: MediaList;
 }) {
   const playFn = useSetAtom(playAtom);
-  const openModal = useSetAtom(modalConfigAtom);
+  const openModal = useSetAtom(modalAtom);
 
   return (
     <ActionButton

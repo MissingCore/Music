@@ -5,7 +5,7 @@ import { Pressable, Text, View } from "react-native";
 
 import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
 import { useFavoriteTracks } from "@/features/data/getFavoriteTracks";
-import { modalConfigAtom } from "@/features/modal/store";
+import { modalAtom } from "@/features/modal/store";
 import { SpecialPlaylists } from "@/features/playback/utils/trackList";
 import { usePlaylist } from "@/features/playlist/api/getPlaylist";
 
@@ -16,7 +16,7 @@ import { TrackCard } from "@/features/track/components/TrackCard";
 export default function CurrentPlaylistScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const navigation = useNavigation();
-  const openModal = useSetAtom(modalConfigAtom);
+  const openModal = useSetAtom(modalAtom);
 
   const isFavoriteTracks = useMemo(
     () => id === SpecialPlaylists.favorites,

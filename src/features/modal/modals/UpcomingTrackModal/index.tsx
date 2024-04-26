@@ -4,7 +4,7 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { Text } from "react-native";
 
 import { removeTrackAtQueueIdxAtom } from "@/features/playback/api/playing";
-import { upcomingListsDataAtom } from "./store";
+import { upcomingTrackDataAtom } from "./store";
 
 import Colors from "@/constants/Colors";
 import { MediaImage } from "@/components/media/MediaImage";
@@ -13,14 +13,14 @@ import { TextLine } from "@/components/ui/Text";
 import { ModalBase } from "../../components/ModalBase";
 
 /** @description Modal used for seeing upcoming tracks. */
-export function UpcomingListModal() {
-  const upcomingListsData = useAtomValue(upcomingListsDataAtom);
+export function UpcomingTrackModal() {
+  const upcomingTrackData = useAtomValue(upcomingTrackDataAtom);
   const removeTrackAtQueueIdx = useSetAtom(removeTrackAtQueueIdxAtom);
 
   return (
     <ModalBase>
       <BottomSheetSectionList
-        sections={upcomingListsData ?? []}
+        sections={upcomingTrackData ?? []}
         keyExtractor={({ id }, index) => `${id}${index}`}
         renderItem={({ item, section: { title }, index }) => {
           const isQueue = title === "Next in Queue";

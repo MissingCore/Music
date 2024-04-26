@@ -6,7 +6,7 @@ import { Pressable, Text, View } from "react-native";
 
 import { useAlbum } from "@/features/album/api/getAlbum";
 import { useToggleFavorite } from "@/features/album/api/toggleFavorite";
-import { modalConfigAtom } from "@/features/modal/store";
+import { modalAtom } from "@/features/modal/store";
 import { playAtom } from "@/features/playback/api/controls";
 
 import Colors from "@/constants/Colors";
@@ -22,7 +22,7 @@ export default function CurrentAlbumScreen() {
   const { isPending, error, data } = useAlbum(albumId);
   const toggleMutation = useToggleFavorite(albumId);
   const playFn = useSetAtom(playAtom);
-  const openModal = useSetAtom(modalConfigAtom);
+  const openModal = useSetAtom(modalAtom);
 
   useEffect(() => {
     if (data?.isFavorite === undefined) return;

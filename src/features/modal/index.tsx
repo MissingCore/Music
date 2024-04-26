@@ -1,32 +1,33 @@
 import { useAtomValue } from "jotai";
 
 import { currentTrackDataAtom } from "@/features/playback/api/playing";
-import { modalConfigAtom } from "./store";
+import { modalAtom } from "./store";
 
 import { PlaylistNameModal } from "./modals/PlaylistNameModal";
 import { TrackModal } from "./modals/TrackModal";
 import { TrackToPlaylistModal } from "./modals/TrackToPlaylistModal";
-import { UpcomingListModal } from "./modals/UpcomingListModal";
+import { UpcomingTrackModal } from "./modals/UpcomingTrackModal";
 
 /** @description Wraps all the Bottom Sheet modals used. */
 export function AppModals() {
-  const currModal = useAtomValue(modalConfigAtom);
+  const selectedModal = useAtomValue(modalAtom);
   const trackData = useAtomValue(currentTrackDataAtom);
 
-  if (!currModal) return null;
+  if (!selectedModal) return null;
+  const { type, ref, origin } = selectedModal;
 
-  switch (currModal.type) {
-    case "current-track":
-      if (!trackData) return null;
-      return <TrackModal trackId={trackData.id} origin="current-track" />;
+  switch (type) {
     case "playlist-name":
-      return <PlaylistNameModal {...currModal} />;
+      return <PlaylistNameModal {...selectedModal} />;
     case "track":
-      return <TrackModal trackId={currModal.ref} origin={currModal.origin} />;
+      return <TrackModal trackId={ref} origin={origin} />;
+    case "track-current":
+      if (!trackData) return null;
+      return <TrackModal trackId={trackData.id} origin="track-current" />;
     case "track-to-playlist":
-      return <TrackToPlaylistModal trackId={currModal.ref} />;
-    case "upcoming-list":
-      return <UpcomingListModal />;
+      return <TrackToPlaylistModal trackId={ref} />;
+    case "track-upcoming":
+      return <UpcomingTrackModal />;
     default:
       throw new Error("Modal type not implemented yet.");
   }

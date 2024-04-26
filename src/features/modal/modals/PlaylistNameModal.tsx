@@ -5,7 +5,7 @@ import { Text, View } from "react-native";
 
 import { useCreatePlaylist } from "@/features/playlist/api/createPlaylist";
 import { usePlaylists } from "@/features/playlist/api/getPlaylists";
-import type { PlaylistNameModalConfig } from "../store";
+import type { ModalPlaylistName } from "../store";
 
 import Colors from "@/constants/Colors";
 import { cn } from "@/lib/style";
@@ -16,7 +16,7 @@ import { ModalBase } from "../components/ModalBase";
 import { ModalFormButton } from "../components/ModalFormButton";
 
 /** @description Modal used for creating or changing a playlist name. */
-export function PlaylistNameModal({ origin, ref }: PlaylistNameModalConfig) {
+export function PlaylistNameModal({ origin, ref }: ModalPlaylistName) {
   const [playlistName, setPlaylistName] = useState("");
   const { isPending, error, data } = usePlaylists();
   const createPlaylist = useCreatePlaylist();

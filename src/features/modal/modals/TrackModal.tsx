@@ -5,7 +5,7 @@ import { View } from "react-native";
 import { addTrackToQueueAtom } from "@/features/playback/api/playing";
 import { useTrack } from "@/features/track/api/getTrack";
 import { useToggleFavorite } from "@/features/track/api/toggleFavorite";
-import { modalConfigAtom } from "../store";
+import { modalAtom } from "../store";
 
 import { mutateGuard } from "@/lib/react-query";
 import { TextLine } from "@/components/ui/Text";
@@ -14,11 +14,11 @@ import { ModalBase } from "../components/ModalBase";
 import { ModalButton } from "../components/ModalButton";
 import { ModalLink } from "../components/ModalLink";
 
-type Props = { trackId: string; origin?: MediaList | "current-track" };
+type Props = { trackId: string; origin?: MediaList | "track-current" };
 
 /** @description Modal used for tracks. */
 export function TrackModal({ trackId, origin }: Props) {
-  const setModalConfig = useSetAtom(modalConfigAtom);
+  const openModal = useSetAtom(modalAtom);
   const addTrackToQueue = useSetAtom(addTrackToQueueAtom);
   const { isPending, error, data } = useTrack(trackId);
   const toggleMutation = useToggleFavorite(trackId);
@@ -54,9 +54,7 @@ export function TrackModal({ trackId, origin }: Props) {
         <ModalButton
           content="Add to Playlist"
           icon={{ type: "ionicons", name: "list-outline" }}
-          onPress={() =>
-            setModalConfig({ type: "track-to-playlist", ref: trackId })
-          }
+          onPress={() => openModal({ type: "track-to-playlist", ref: trackId })}
         />
 
         <ModalButton
@@ -83,11 +81,11 @@ export function TrackModal({ trackId, origin }: Props) {
           />
         )}
 
-        {origin === "current-track" && (
+        {origin === "track-current" && (
           <ModalButton
             content="View Upcoming"
             icon={{ type: "ionicons", name: "albums-sharp" }}
-            onPress={() => setModalConfig({ type: "upcoming-list" })}
+            onPress={() => openModal({ type: "track-upcoming" })}
           />
         )}
       </BottomSheetView>
