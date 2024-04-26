@@ -16,7 +16,7 @@ import { ModalBase } from "../components/ModalBase";
 import { ModalFormButton } from "../components/ModalFormButton";
 
 /** @description Modal used for creating or changing a playlist name. */
-export function PlaylistNameModal({ origin, ref }: ModalPlaylistName) {
+export function PlaylistNameModal({ origin, id }: ModalPlaylistName) {
   const [playlistName, setPlaylistName] = useState("");
   const { isPending, error, data } = usePlaylists();
   const createPlaylist = useCreatePlaylist();

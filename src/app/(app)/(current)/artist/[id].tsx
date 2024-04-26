@@ -26,7 +26,7 @@ export default function CurrentArtistScreen() {
   const trackSrc = {
     type: "artist",
     name: `Artist\n${data.name}`,
-    ref: artistId,
+    id: artistId,
   } as const;
 
   return (

@@ -40,7 +40,7 @@ export function TrackCard(props: {
       }
       asideContent={<TrackDuration duration={props.duration} />}
       iconOnPress={() =>
-        openModal({ type: "track", ref: props.id, origin: props.origin })
+        openModal({ type: "track", id: props.id, origin: props.origin })
       }
     />
   );

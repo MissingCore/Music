@@ -4,6 +4,6 @@ import type { TTrackSrc } from "./trackList";
 export function isTrackSrcsEqual(src1: TTrackSrc | undefined, src2: TTrackSrc) {
   if (!src1) return false;
   return (
-    src1.type === src2.type && src1.name === src2.name && src1.ref === src2.ref
+    src1.type === src2.type && src1.name === src2.name && src1.id === src2.id
   );
 }

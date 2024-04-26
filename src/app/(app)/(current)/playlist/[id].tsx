@@ -28,7 +28,7 @@ export default function CurrentPlaylistScreen() {
 
     navigation.setOptions({
       headerRight: () => (
-        <Pressable onPress={() => openModal({ type: "playlist", ref: id })}>
+        <Pressable onPress={() => openModal({ type: "playlist", id })}>
           <EllipsisVertical size={24} />
         </Pressable>
       ),
@@ -69,7 +69,7 @@ function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
   const trackSrc = {
     type: "playlist",
     name: data.name,
-    ref: data.name,
+    id: data.name,
   } as const;
 
   return (

@@ -54,7 +54,7 @@ export function TrackModal({ trackId, origin }: Props) {
         <ModalButton
           content="Add to Playlist"
           icon={{ type: "ionicons", name: "list-outline" }}
-          onPress={() => openModal({ type: "track-to-playlist", ref: trackId })}
+          onPress={() => openModal({ type: "track-to-playlist", id: trackId })}
         />
 
         <ModalButton

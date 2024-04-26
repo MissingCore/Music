@@ -15,7 +15,7 @@ export default function TrackScreen() {
   const trackSrc = {
     type: "playlist",
     name: SpecialPlaylists.tracks,
-    ref: SpecialPlaylists.tracks,
+    id: SpecialPlaylists.tracks,
   } as const;
 
   return (

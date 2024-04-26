@@ -4,17 +4,17 @@ import type { Media, MediaList } from "@/components/media/types";
 
 export type ModalPlaylistName = {
   type: "playlist-name";
-  ref?: string;
+  id?: string;
   origin: "new" | "update";
 };
 
 export type Modal =
   | {
       type: Media | "track-to-playlist";
-      ref: string;
+      id: string;
       origin?: MediaList;
     }
-  | { type: "track-current" | "track-upcoming"; ref?: never; origin?: never }
+  | { type: "track-current" | "track-upcoming"; id?: never; origin?: never }
   | ModalPlaylistName;
 
 /** @description Describes the modal we want to display. */

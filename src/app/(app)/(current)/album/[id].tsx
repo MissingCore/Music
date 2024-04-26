@@ -56,7 +56,7 @@ export default function CurrentAlbumScreen() {
   }
 
   // Information about this track list.
-  const trackSrc = { type: "album", name: data.name, ref: albumId } as const;
+  const trackSrc = { type: "album", name: data.name, id: albumId } as const;
 
   return (
     <View className="w-full flex-1 px-4">
@@ -86,7 +86,7 @@ export default function CurrentAlbumScreen() {
             ]}
             asideContent={<TrackDuration duration={duration} />}
             iconOnPress={() =>
-              openModal({ type: "track", ref: id, origin: "album" })
+              openModal({ type: "track", id, origin: "album" })
             }
           />
         )}

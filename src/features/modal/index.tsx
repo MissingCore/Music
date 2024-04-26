@@ -14,18 +14,18 @@ export function AppModals() {
   const trackData = useAtomValue(currentTrackDataAtom);
 
   if (!selectedModal) return null;
-  const { type, ref, origin } = selectedModal;
+  const { type, id, origin } = selectedModal;
 
   switch (type) {
     case "playlist-name":
       return <PlaylistNameModal {...selectedModal} />;
     case "track":
-      return <TrackModal trackId={ref} origin={origin} />;
+      return <TrackModal trackId={id} origin={origin} />;
     case "track-current":
       if (!trackData) return null;
       return <TrackModal trackId={trackData.id} origin="track-current" />;
     case "track-to-playlist":
-      return <TrackToPlaylistModal trackId={ref} />;
+      return <TrackToPlaylistModal trackId={id} />;
     case "track-upcoming":
       return <UpcomingTrackModal />;
     default:

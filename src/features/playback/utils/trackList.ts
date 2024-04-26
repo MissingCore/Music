@@ -12,21 +12,21 @@ export const SpecialPlaylists = {
 export type TTrackSrc = {
   type: MediaList;
   name: string;
-  ref: string;
+  id: string;
 };
 
 /** @description Get the list of track ids in a given track list. */
-export async function getTrackList({ type, ref }: TTrackSrc) {
+export async function getTrackList({ type, id }: TTrackSrc) {
   let unflattenTrackList: Array<{ id: string }> = [];
   if (type === "album") {
     unflattenTrackList = await db.query.tracks.findMany({
-      where: (fields, { eq }) => eq(fields.albumId, ref),
+      where: (fields, { eq }) => eq(fields.albumId, id),
       orderBy: (fields, { asc }) => [asc(fields.track)],
       columns: { id: true },
     });
   } else if (type === "artist") {
     const unsortedArtistTracks = await db.query.tracks.findMany({
-      where: (fields, { eq }) => eq(fields.artistName, ref),
+      where: (fields, { eq }) => eq(fields.artistName, id),
       columns: { id: true, name: true },
       with: { album: { columns: { name: true } } },
     });
@@ -38,7 +38,7 @@ export async function getTrackList({ type, ref }: TTrackSrc) {
       )
       .map(({ id }) => ({ id }));
   } else {
-    switch (ref) {
+    switch (id) {
       case SpecialPlaylists.tracks:
         unflattenTrackList = await db.query.tracks.findMany({
           orderBy: (fields, { asc }) => [asc(fields.name)],
@@ -54,7 +54,7 @@ export async function getTrackList({ type, ref }: TTrackSrc) {
         break;
       default: {
         const unsortedTracks = await db.query.tracksToPlaylists.findMany({
-          where: (fields, { eq }) => eq(fields.playlistName, ref),
+          where: (fields, { eq }) => eq(fields.playlistName, id),
           columns: { trackId: true },
           with: { track: { columns: { name: true } } },
         });

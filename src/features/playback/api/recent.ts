@@ -37,18 +37,18 @@ export const recentlyPlayedDataAtom = unwrap(
 /** @description Gets enough info about media to be used with `<MediaCard />`. */
 async function getRecentMediaInfo<T>({
   type,
-  ref,
+  id,
 }: TTrackSrc): Promise<MediaCardContent<T>> {
   if (type === "album") {
     const album = await db.query.albums.findFirst({
-      where: (fields, { eq }) => eq(fields.id, ref),
+      where: (fields, { eq }) => eq(fields.id, id),
       with: { tracks: { columns: { id: true } } },
     });
     if (!album) throw new Error("Album doesn't exist.");
     return {
       type,
       // FIXME: Temporary `Href<T>` until Expo SDK 51
-      href: `/album/${ref}` as Href<T>,
+      href: `/album/${id}` as Href<T>,
       title: album.name,
       subtitle: album.artistName,
       extra: `| ${getTrackCountStr(album.tracks.length)}`,
@@ -56,19 +56,19 @@ async function getRecentMediaInfo<T>({
     };
   } else if (type === "artist") {
     const artist = await db.query.artists.findFirst({
-      where: (fields, { eq }) => eq(fields.name, ref),
+      where: (fields, { eq }) => eq(fields.name, id),
       with: { tracks: { columns: { id: true } } },
     });
     if (!artist) throw new Error("Artist doesn't exist.");
     return {
       type,
-      href: `/artist/${ref}` as Href<T>,
+      href: `/artist/${id}` as Href<T>,
       title: artist.name,
       subtitle: getTrackCountStr(artist.tracks.length),
       source: null,
     };
   } else {
-    switch (ref) {
+    switch (id) {
       case SpecialPlaylists.favorites: {
         const tracks = await db.query.tracks.findMany({
           where: (fields, { eq }) => eq(fields.isFavorite, true),
@@ -96,7 +96,7 @@ async function getRecentMediaInfo<T>({
       }
       default: {
         const playlist = await db.query.playlists.findFirst({
-          where: (fields, { eq }) => eq(fields.name, ref),
+          where: (fields, { eq }) => eq(fields.name, id),
           with: {
             tracksToPlaylists: {
               columns: { trackId: false, playlistName: false },
@@ -111,7 +111,7 @@ async function getRecentMediaInfo<T>({
         if (!playlist) throw new Error("Playlist doesn't exist.");
         return {
           type,
-          href: `/playlist/${ref}` as Href<T>,
+          href: `/playlist/${id}` as Href<T>,
           title: playlist.name,
           subtitle: getTrackCountStr(playlist.tracksToPlaylists.length),
           source:
