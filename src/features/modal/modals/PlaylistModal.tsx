@@ -61,7 +61,9 @@ export function PlaylistModal({ playlistName }: { playlistName: string }) {
           <ModalButton
             content="Delete Playlist"
             icon={{ type: "ionicons", name: "trash-outline" }}
-            onPress={() => console.log("Opening up delete playlist modal...")}
+            onPress={() =>
+              openModal({ type: "playlist-delete", id: playlistName })
+            }
           />
         </View>
       </BottomSheetView>

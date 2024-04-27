@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { tracksToPlaylists } from "@/db/schema";
 
+import { assortedDataKeys } from "@/features/data/queryKeys";
 import { playlistKeys } from "./queryKeys";
 
 type InPlaylistObj = Record<string, boolean>;
@@ -30,6 +31,9 @@ export function useAddTrackToPlaylists(trackId: string) {
       addTrackToPlaylists(trackId, inPlaylist),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: playlistKeys.all });
+      queryClient.invalidateQueries({
+        queryKey: assortedDataKeys.favoriteLists,
+      });
     },
   });
 }

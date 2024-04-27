@@ -92,7 +92,7 @@ function FavoriteTracks({ colWidth }: { colWidth: number }) {
         <Text className="font-ndot57 text-title text-foreground50">
           {trackCount}
         </Text>
-        <Text className="font-ndot57 text-title text-foreground50">SONGS</Text>
+        <Text className="font-ndot57 text-title text-foreground50">TRACKS</Text>
       </Pressable>
     </Link>
   );

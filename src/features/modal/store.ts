@@ -10,7 +10,7 @@ export type ModalPlaylistName = {
 
 export type Modal =
   | {
-      type: Media | "track-to-playlist";
+      type: Media | "track-to-playlist" | "playlist-delete";
       id: string;
       origin?: MediaList;
     }
