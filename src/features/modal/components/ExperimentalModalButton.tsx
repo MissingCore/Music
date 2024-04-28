@@ -35,8 +35,8 @@ export const ModalButton = forwardRef<View, ModalButtonProps>((props, ref) => {
         if (!props.dontCloseOnPress) close();
       }}
       className={cn(
-        "size-[108px] items-center justify-between rounded-lg p-2 pt-4",
-        "bg-surface700 active:bg-surface500",
+        "size-[108px] items-center justify-between px-1 pb-2 pt-4",
+        "rounded-lg bg-surface700 active:bg-surface500",
       )}
     >
       <Icon size={42} />
