@@ -1,8 +1,9 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import type { BottomSheetFooterProps } from "@gorhom/bottom-sheet";
-import { BottomSheetFlatList, BottomSheetFooter } from "@gorhom/bottom-sheet";
+import { BottomSheetFooter, BottomSheetView } from "@gorhom/bottom-sheet";
 import { useCallback, useEffect, useState } from "react";
 import { Text, View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 
 import { db } from "@/db";
 import { useAddTrackToPlaylists } from "@/features/playlist/api/addTrackToPlaylists";
@@ -27,7 +28,7 @@ export function TrackToPlaylistModal({ trackId }: { trackId: string }) {
       <BottomSheetFooter {...props}>
         <View
           className={cn(
-            "mx-6 flex-row justify-end gap-2 pb-6 pt-2",
+            "mx-4 flex-row justify-end gap-2 pb-6 pt-2",
             "border-t border-t-surface500 bg-surface800",
           )}
         >
@@ -70,33 +71,35 @@ export function TrackToPlaylistModal({ trackId }: { trackId: string }) {
 
   return (
     <ModalBase footerComponent={renderFooter}>
-      <Text className="mb-4 px-6 text-center font-ndot57 text-title text-foreground50">
-        Add Track to Playlist
-      </Text>
-      <BottomSheetFlatList
-        data={data}
-        keyExtractor={({ name }) => name}
-        renderItem={({ item }) => (
-          <PlaylistCheckbox
-            selected={inPlaylist[item.name]}
-            toggleSelf={() =>
-              setInPlaylist((prev) => ({
-                ...prev,
-                [item.name]: !prev[item.name],
-              }))
-            }
-            name={item.name}
-            numTracks={item.numTracks}
-          />
-        )}
-        ListEmptyComponent={
-          <Text className="mb-2 text-center font-geistMonoLight text-base text-foreground100">
-            No Playlists Found
-          </Text>
-        }
-        showsVerticalScrollIndicator={false}
-        contentContainerClassName="px-6 pb-16"
-      />
+      <BottomSheetView className="px-4">
+        <Text className="mb-4 text-center font-ndot57 text-title text-foreground50">
+          Add Track to Playlist
+        </Text>
+        <FlatList
+          data={data}
+          keyExtractor={({ name }) => name}
+          renderItem={({ item }) => (
+            <PlaylistCheckbox
+              selected={inPlaylist[item.name]}
+              toggleSelf={() =>
+                setInPlaylist((prev) => ({
+                  ...prev,
+                  [item.name]: !prev[item.name],
+                }))
+              }
+              name={item.name}
+              numTracks={item.numTracks}
+            />
+          )}
+          ListEmptyComponent={
+            <Text className="mb-2 text-center font-geistMonoLight text-base text-foreground100">
+              No Playlists Found
+            </Text>
+          }
+          showsVerticalScrollIndicator={false}
+          contentContainerClassName="pb-16"
+        />
+      </BottomSheetView>
     </ModalBase>
   );
 }

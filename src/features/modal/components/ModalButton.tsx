@@ -1,18 +1,16 @@
-import Feather from "@expo/vector-icons/Feather";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { useBottomSheet } from "@gorhom/bottom-sheet";
 import { forwardRef } from "react";
-import type { GestureResponderEvent, View } from "react-native";
-import { Pressable, Text } from "react-native";
+import type { GestureResponderEvent } from "react-native";
+import { Pressable, View } from "react-native";
 
-import Colors from "@/constants/Colors";
+import * as MaterialSymbol from "@/assets/svgs/MaterialSymbol";
 
-type IconVariants =
-  | { type: "feather"; name: React.ComponentProps<typeof Feather>["name"] }
-  | { type: "ionicons"; name: React.ComponentProps<typeof Ionicons>["name"] };
+import { TextLine } from "@/components/ui/Text";
+
+const Icons = { ...MaterialSymbol };
 
 type ModalButtonProps = {
-  icon: IconVariants;
+  icon: keyof typeof Icons;
   content: string;
   dontCloseOnPress?: boolean;
   onPress?: (e: GestureResponderEvent) => void;
@@ -26,7 +24,7 @@ type ModalButtonProps = {
 export const ModalButton = forwardRef<View, ModalButtonProps>((props, ref) => {
   const { close } = useBottomSheet();
 
-  const sharedProps = { size: 24, color: Colors.foreground50 };
+  const Icon = Icons[props.icon];
 
   return (
     <Pressable
@@ -35,16 +33,17 @@ export const ModalButton = forwardRef<View, ModalButtonProps>((props, ref) => {
         if (props.onPress) props.onPress(e);
         if (!props.dontCloseOnPress) close();
       }}
-      className="flex-row items-center gap-4 p-2"
+      className="w-24 items-center active:opacity-75"
     >
-      {props.icon.type === "feather" ? (
-        <Feather name={props.icon.name} {...sharedProps} />
-      ) : (
-        <Ionicons name={props.icon.name} {...sharedProps} />
-      )}
-      <Text className="font-geistMono text-lg text-foreground50">
+      <View className="mb-2 size-20 items-center justify-center rounded-lg bg-surface700">
+        <Icon size={48} />
+      </View>
+      <TextLine
+        numberOfLines={2}
+        className="h-[30px] text-center align-middle font-geistMono text-xs text-foreground50"
+      >
         {props.content}
-      </Text>
+      </TextLine>
     </Pressable>
   );
 });

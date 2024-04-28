@@ -64,7 +64,7 @@ export function UpcomingTrackModal() {
           );
         }}
         showsVerticalScrollIndicator={false}
-        contentContainerClassName="px-6"
+        contentContainerClassName="px-4"
       />
     </ModalBase>
   );

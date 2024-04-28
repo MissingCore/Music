@@ -1,5 +1,4 @@
-import { BottomSheetView } from "@gorhom/bottom-sheet";
-import { useMemo } from "react";
+import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { Text, View } from "react-native";
 
 import { usePlaylist } from "@/features/playlist/api/getPlaylist";
@@ -19,21 +18,19 @@ export function PlaylistDeleteModal({
   const { isPending, error, data } = usePlaylist(playlistName);
   const deletePlaylistFn = useDeletePlaylist(playlistName);
 
-  const snapPoints = useMemo(() => ["50%", "90%"], []);
-
   if (isPending || error) return null;
 
   return (
-    <ModalBase snapPoints={snapPoints}>
-      <BottomSheetView className="px-6">
+    <ModalBase detached>
+      <BottomSheetScrollView className="px-4">
         <TextLine className="text-center font-ndot57 text-title text-foreground50">
           Delete Playlist
         </TextLine>
-        <TextLine className="mb-6 text-center font-ndot57 text-lg text-accent50">
+        <TextLine className="mb-8 text-center font-ndot57 text-lg text-accent50">
           {data.name}
         </TextLine>
 
-        <Text className="mb-6 font-geistMonoLight text-sm text-foreground100">
+        <Text className="mb-8 font-geistMonoLight text-sm text-foreground100">
           You understand that this action will{" "}
           <Text className="font-geistMonoMedium text-sm text-accent50">
             permanently
@@ -41,7 +38,7 @@ export function PlaylistDeleteModal({
           delete this playlist.
         </Text>
 
-        <View className="my-6 flex-row justify-end gap-2">
+        <View className="flex-row justify-end gap-2">
           <ModalFormButton content="CANCEL" />
           <ModalFormButton
             theme="pop"
@@ -49,7 +46,7 @@ export function PlaylistDeleteModal({
             content="DELETE"
           />
         </View>
-      </BottomSheetView>
+      </BottomSheetScrollView>
     </ModalBase>
   );
 }

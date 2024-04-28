@@ -1,5 +1,8 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { BottomSheetTextInput, BottomSheetView } from "@gorhom/bottom-sheet";
+import {
+  BottomSheetScrollView,
+  BottomSheetTextInput,
+} from "@gorhom/bottom-sheet";
 import { useMemo, useState } from "react";
 import { Text, View } from "react-native";
 
@@ -23,8 +26,6 @@ export function PlaylistNameModal({ origin, id }: ModalPlaylistName) {
   const createPlaylist = useCreatePlaylist();
   const updatePlaylistName = useUpdatePlaylistName(id ?? "");
 
-  const snapPoints = useMemo(() => ["50%", "90%"], []);
-
   const meetsCharLength = useMemo(() => {
     const santiziedStr = playlistName.trim();
     return santiziedStr.length >= 1 && santiziedStr.length <= 30;
@@ -44,32 +45,36 @@ export function PlaylistNameModal({ origin, id }: ModalPlaylistName) {
   if (isPending || error) return null;
 
   return (
-    <ModalBase snapPoints={snapPoints}>
-      <BottomSheetView className="px-6">
+    <ModalBase detached>
+      <BottomSheetScrollView
+        keyboardShouldPersistTaps="handled"
+        className="px-4"
+      >
         <TextLine className="mb-8 text-center font-ndot57 text-title text-foreground50">
           {origin === "new" ? "Create a Playlist" : "Rename Playlist"}
         </TextLine>
-        <View className="mb-6">
-          <BottomSheetTextInput
-            value={playlistName}
-            maxLength={30}
-            onChangeText={(text) => setPlaylistName(text)}
-            placeholder="New Playlist"
-            placeholderTextColor={Colors.surface400}
-            className={cn(
-              "mb-2 border-b border-b-foreground100 px-2 py-1",
-              "font-geistMonoLight text-lg text-foreground100",
-            )}
+
+        <BottomSheetTextInput
+          autoFocus
+          value={playlistName}
+          maxLength={30}
+          onChangeText={(text) => setPlaylistName(text)}
+          placeholder="Playlist Name"
+          placeholderTextColor={Colors.surface400}
+          className={cn(
+            "mb-2 border-b border-b-foreground100 px-2 py-1",
+            "font-geistMonoLight text-lg text-foreground100",
+          )}
+        />
+        <View className="mb-8 flex-row gap-2">
+          <Requirement
+            satisfied={meetsCharLength}
+            description="1-30 Characters"
           />
-          <View className="flex-row gap-2">
-            <Requirement
-              satisfied={meetsCharLength}
-              description="1-30 Characters"
-            />
-            <Requirement satisfied={isUnique} description="Unique" />
-          </View>
+          <Requirement satisfied={isUnique} description="Unique" />
         </View>
-        <View className="my-6 flex-row justify-end gap-2">
+
+        <View className="flex-row justify-end gap-2">
           {origin === "update" && <ModalFormButton content="CANCEL" />}
           <ModalFormButton
             disabled={!meetsCharLength || !isUnique}
@@ -82,7 +87,7 @@ export function PlaylistNameModal({ origin, id }: ModalPlaylistName) {
             content={origin === "new" ? "CREATE" : "CONFIRM"}
           />
         </View>
-      </BottomSheetView>
+      </BottomSheetScrollView>
     </ModalBase>
   );
 }

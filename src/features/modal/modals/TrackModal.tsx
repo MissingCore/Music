@@ -23,9 +23,9 @@ import {
   ReservedNames,
   SpecialPlaylists,
 } from "@/features/playback/utils/trackList";
-import { ModalBase } from "../components/ExperimentalModalBase";
-import { ModalButton } from "../components/ExperimentalModalButton";
-import { ModalLink } from "../components/ExperimentalModalLink";
+import { ModalBase } from "../components/ModalBase";
+import { ModalButton } from "../components/ModalButton";
+import { ModalLink } from "../components/ModalLink";
 
 type Props = { trackId: string; origin?: MediaList | "track-current" };
 
@@ -47,7 +47,7 @@ export function TrackModal({ trackId, origin }: Props) {
     (!!data.album && origin !== "album") || origin !== "artist";
 
   return (
-    <ModalBase>
+    <ModalBase detached>
       <BottomSheetScrollView>
         <TextLine className="px-4 text-center font-ndot57 text-title text-foreground50">
           {data.name}
@@ -65,7 +65,7 @@ export function TrackModal({ trackId, origin }: Props) {
           horizontal
           showsHorizontalScrollIndicator={false}
           overScrollMode="never"
-          contentContainerClassName="mb-2 grow gap-2 px-4"
+          contentContainerClassName="grow gap-2 px-4"
         >
           <ModalButton
             content={isToggled ? "Unfavorite" : "Favorite"}
