@@ -19,7 +19,10 @@ import { cn } from "@/lib/style";
 import { mutateGuard } from "@/lib/react-query";
 import type { MediaList } from "@/components/media/types";
 import { TextLine } from "@/components/ui/Text";
-import { ReservedNames } from "@/features/playback/utils/trackList";
+import {
+  ReservedNames,
+  SpecialPlaylists,
+} from "@/features/playback/utils/trackList";
 import { ModalBase } from "../components/ExperimentalModalBase";
 import { ModalButton } from "../components/ExperimentalModalButton";
 import { ModalLink } from "../components/ExperimentalModalLink";
@@ -112,11 +115,14 @@ export function TrackModal({ trackId, origin }: Props) {
           )}
 
           {origin === "track-current" && (
-            <ModalButton
-              content="View Upcoming"
-              icon="LibraryMusicFilled"
-              onPress={() => openModal({ type: "track-upcoming" })}
-            />
+            <>
+              <ViewPlaylist />
+              <ModalButton
+                content="View Upcoming"
+                icon="LibraryMusicFilled"
+                onPress={() => openModal({ type: "track-upcoming" })}
+              />
+            </>
           )}
         </ScrollView>
       </BottomSheetScrollView>
@@ -167,6 +173,29 @@ function RemoveTrackFromPlaylist({ trackId }: { trackId: string }) {
       content="Remove from this Playlist"
       icon="DeleteOutline"
       onPress={() => mutateGuard(removeTrackFromPlaylist, undefined)}
+    />
+  );
+}
+
+/** @description Renders a button to view the current playing playlist. */
+function ViewPlaylist() {
+  const { listSrc } = useAtomValue(playingInfoAtom);
+
+  const currentPlaylist = useMemo(() => {
+    return listSrc?.type === "playlist" ? listSrc.name : undefined;
+  }, [listSrc]);
+
+  if (!currentPlaylist) return null;
+
+  return (
+    <ModalLink
+      href={
+        currentPlaylist === SpecialPlaylists.tracks
+          ? "/track"
+          : `/playlist/${currentPlaylist}`
+      }
+      content="View Playlist"
+      icon="ListOutline"
     />
   );
 }
