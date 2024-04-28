@@ -1,12 +1,11 @@
 import { useBottomSheet } from "@gorhom/bottom-sheet";
 import { forwardRef } from "react";
-import type { GestureResponderEvent, View } from "react-native";
-import { Pressable } from "react-native";
+import type { GestureResponderEvent } from "react-native";
+import { Pressable, View } from "react-native";
 
 import * as MaterialSymbol from "@/assets/svgs/MaterialSymbol";
 
 import { TextLine } from "@/components/ui/Text";
-import { cn } from "@/lib/style";
 
 const Icons = { ...MaterialSymbol };
 
@@ -34,12 +33,11 @@ export const ModalButton = forwardRef<View, ModalButtonProps>((props, ref) => {
         if (props.onPress) props.onPress(e);
         if (!props.dontCloseOnPress) close();
       }}
-      className={cn(
-        "size-[108px] items-center justify-between px-1 pb-2 pt-4",
-        "rounded-lg bg-surface700 active:bg-surface500",
-      )}
+      className="w-24 items-center active:opacity-75"
     >
-      <Icon size={42} />
+      <View className="mb-2 size-20 items-center justify-center rounded-lg bg-surface700">
+        <Icon size={48} />
+      </View>
       <TextLine
         numberOfLines={2}
         className="h-[30px] text-center align-middle font-geistMono text-xs text-foreground50"

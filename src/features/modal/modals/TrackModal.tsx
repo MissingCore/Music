@@ -2,6 +2,7 @@ import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { usePathname } from "expo-router";
 import { useAtomValue, useSetAtom } from "jotai";
 import { useMemo } from "react";
+import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 import {
@@ -39,6 +40,9 @@ export function TrackModal({ trackId, origin }: Props) {
     ? !data.isFavorite
     : data.isFavorite;
 
+  const hasSecondRow =
+    (!!data.album && origin !== "album") || origin !== "artist";
+
   return (
     <ModalBase>
       <BottomSheetScrollView>
@@ -47,8 +51,8 @@ export function TrackModal({ trackId, origin }: Props) {
         </TextLine>
         <TextLine
           className={cn(
-            "mb-4 px-4 text-center font-ndot57 text-lg text-accent50",
-            { "mb-0": origin === "artist" && !data.album?.name },
+            "mb-8 px-4 text-center font-ndot57 text-lg text-accent50",
+            { "mb-4": origin === "artist" && !data.album?.name },
           )}
         >
           {origin === "artist" ? data.album?.name : data.artistName}
@@ -80,6 +84,10 @@ export function TrackModal({ trackId, origin }: Props) {
             onPress={() => addTrackToQueue(data.id)}
           />
         </ScrollView>
+
+        {hasSecondRow && (
+          <View className="mx-2 my-4 h-[1px] flex-1 bg-surface500" />
+        )}
 
         <ScrollView
           horizontal

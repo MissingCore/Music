@@ -45,7 +45,7 @@ export function ModalBase({
       bottomInset={32}
       backdropComponent={Backdrop}
       backgroundComponent={Background}
-      className="px-2 pb-4"
+      className="mx-4 pb-4"
       backgroundClassName="bg-surface800"
       handleIndicatorClassName="bg-surface500"
       {...props}
@@ -64,5 +64,5 @@ function Backdrop(props: BottomSheetBackdropProps) {
 
 /** @description Custom background component for bottom sheet. */
 function Background(props: BottomSheetBackgroundProps) {
-  return <View {...props} className="mx-2 rounded-xl" />;
+  return <View {...props} className="rounded-xl" />;
 }
