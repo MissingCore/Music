@@ -2,8 +2,7 @@ import { Text, View } from "react-native";
 
 import type { TextColor } from "@/lib/style";
 import { cn } from "@/lib/style";
-
-export type OptString = string | undefined | null;
+import type { Maybe } from "@/utils/types";
 
 /** @description Shorthand for `<Text numberOfLines={1} />`. */
 export function TextLine(props: Text["props"]) {
@@ -15,7 +14,7 @@ export function TextLine(props: Text["props"]) {
  *  display 2 pieces of text next to each other in the 2nd row.
  */
 export function TextStack(props: {
-  content: [string, OptString] | [string, string, OptString];
+  content: [string, Maybe<string>] | [string, string, Maybe<string>];
   wrapperClassName?: string;
   colors?: { row1: TextColor; row2: TextColor };
 }) {

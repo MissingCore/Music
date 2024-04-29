@@ -4,10 +4,10 @@ import { modalAtom } from "@/features/modal/store";
 import { playAtom } from "@/features/playback/api/controls";
 import type { TTrackSrc } from "@/features/playback/utils/trackList";
 
+import type { Maybe } from "@/utils/types";
 import type { MediaList } from "@/components/media/types";
 import { MediaImage } from "@/components/media/MediaImage";
 import { ActionButton } from "@/components/ui/ActionButton";
-import type { OptString } from "@/components/ui/Text";
 import { TrackDuration } from "./TrackDuration";
 
 /**
@@ -18,7 +18,7 @@ import { TrackDuration } from "./TrackDuration";
 export function TrackCard(props: {
   id: string;
   trackSrc: TTrackSrc;
-  textContent: [string, OptString];
+  textContent: [string, Maybe<string>];
   coverSrc: string | null;
   duration: number;
   origin?: MediaList;

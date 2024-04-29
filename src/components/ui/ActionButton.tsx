@@ -4,7 +4,7 @@ import { Pressable, View } from "react-native";
 import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
 
 import { cn } from "@/lib/style";
-import type { OptString } from "@/components/ui/Text";
+import type { Maybe } from "@/utils/types";
 import { TextStack } from "@/components/ui/Text";
 
 /**
@@ -14,7 +14,7 @@ import { TextStack } from "@/components/ui/Text";
  */
 export function ActionButton(props: {
   onPress: PressableProps["onPress"];
-  textContent: [string, OptString];
+  textContent: [string, Maybe<string>];
   image?: React.JSX.Element;
   /** Displays between the `<TextStack />` & optional icon. */
   asideContent?: React.JSX.Element;

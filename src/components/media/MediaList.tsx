@@ -4,6 +4,7 @@ import { View } from "react-native";
 
 import type { TTrackSrc } from "@/features/playback/utils/trackList";
 
+import type { Maybe } from "@/utils/types";
 import { AnimatedCover } from "@/components/media/AnimatedCover";
 import { TextLine } from "@/components/ui/Text";
 import {
@@ -53,8 +54,8 @@ export function MediaListHeader(props: {
  *  render `<ActionButton />` components.
  */
 export function MediaList<TData extends { id: string }>(props: {
-  data: readonly TData[] | undefined | null;
-  renderItem: ListRenderItem<TData> | undefined | null;
+  data: Maybe<readonly TData[]>;
+  renderItem: Maybe<ListRenderItem<TData>>;
   ListEmptyComponent?: React.ComponentProps<
     typeof FlashList
   >["ListEmptyComponent"];
