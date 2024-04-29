@@ -16,6 +16,7 @@ import { ActionButton } from "@/components/ui/ActionButton";
 import { getTrackCountStr } from "@/features/track/utils";
 import { ModalBase } from "../components/ModalBase";
 import { ModalFormButton } from "../components/ModalFormButton";
+import { Title } from "../components/ModalUI";
 
 /** @description Modal used for adding or removing a track from a playlist. */
 export function TrackToPlaylistModal({ trackId }: { trackId: string }) {
@@ -72,9 +73,7 @@ export function TrackToPlaylistModal({ trackId }: { trackId: string }) {
   return (
     <ModalBase footerComponent={renderFooter}>
       <BottomSheetView className="px-4">
-        <Text className="mb-4 text-center font-ndot57 text-title text-foreground50">
-          Add Track to Playlist
-        </Text>
+        <Title className="mb-4">Add Track to Playlist</Title>
         <FlatList
           data={data}
           keyExtractor={({ name }) => name}

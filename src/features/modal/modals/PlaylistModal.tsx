@@ -1,6 +1,5 @@
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { useSetAtom } from "jotai";
-import { ScrollView } from "react-native-gesture-handler";
 
 import { usePlaylist } from "@/features/playlist/api/getPlaylist";
 import { useToggleFavorite } from "@/features/playlist/api/toggleFavorite";
@@ -9,9 +8,9 @@ import { useUpdatePlaylistCover } from "@/features/playlist/api/updatePlaylistCo
 import { modalAtom } from "../store";
 
 import { mutateGuard } from "@/lib/react-query";
-import { TextLine } from "@/components/ui/Text";
 import { ModalBase } from "../components/ModalBase";
-import { ModalButton } from "../components/ModalButton";
+import { Button } from "../components/ModalInteractive";
+import { ScrollRow, Title } from "../components/ModalUI";
 
 /** @description Modal used for playlists. */
 export function PlaylistModal({ playlistName }: { playlistName: string }) {
@@ -31,23 +30,18 @@ export function PlaylistModal({ playlistName }: { playlistName: string }) {
   return (
     <ModalBase detached>
       <BottomSheetScrollView>
-        <TextLine className="mb-8 px-4 text-center font-ndot57 text-title text-foreground50">
+        <Title asLine className="mb-8 px-4">
           {data.name}
-        </TextLine>
+        </Title>
 
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          overScrollMode="never"
-          contentContainerClassName="grow gap-2 px-4"
-        >
-          <ModalButton
+        <ScrollRow>
+          <Button
             content={isToggled ? "Unfavorite" : "Favorite"}
             icon={isToggled ? "FavoriteFilled" : "FavoriteOutline"}
             onPress={() => mutateGuard(toggleMutation, data.isFavorite)}
             dontCloseOnPress
           />
-          <ModalButton
+          <Button
             content="Rename"
             icon="MatchCaseOutline"
             onPress={() =>
@@ -58,26 +52,26 @@ export function PlaylistModal({ playlistName }: { playlistName: string }) {
               })
             }
           />
-          <ModalButton
+          <Button
             content="Change Cover"
             icon="ImageOutline"
             onPress={() => mutateGuard(updatePlaylistCover, undefined)}
           />
           {typeof data.coverSrc === "string" && (
-            <ModalButton
+            <Button
               content="Remove Cover"
               icon="HideImageOutline"
               onPress={() => mutateGuard(deletePlaylistCover, undefined)}
             />
           )}
-          <ModalButton
+          <Button
             content="Delete"
             icon="DeleteOutline"
             onPress={() =>
               openModal({ type: "playlist-delete", id: playlistName })
             }
           />
-        </ScrollView>
+        </ScrollRow>
       </BottomSheetScrollView>
     </ModalBase>
   );

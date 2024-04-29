@@ -1,4 +1,6 @@
 import { useBottomSheet } from "@gorhom/bottom-sheet";
+import type { Href } from "expo-router";
+import { Link as ExpoLink } from "expo-router";
 import { forwardRef } from "react";
 import type { GestureResponderEvent } from "react-native";
 import { Pressable, View } from "react-native";
@@ -21,7 +23,7 @@ type ModalButtonProps = {
  *  When pressed, will close the current modal (unless `dontCloseOnPress`
  *  is provided). Must be used inside a `<BottomSheet />`.
  */
-export const ModalButton = forwardRef<View, ModalButtonProps>((props, ref) => {
+export const Button = forwardRef<View, ModalButtonProps>((props, ref) => {
   const { close } = useBottomSheet();
 
   const Icon = Icons[props.icon];
@@ -47,3 +49,16 @@ export const ModalButton = forwardRef<View, ModalButtonProps>((props, ref) => {
     </Pressable>
   );
 });
+
+interface ModalLinkProps<T> extends React.ComponentProps<typeof Button> {
+  href: Href<T>;
+}
+
+/** @description A `<Link />` for a modal. */
+export function Link<T>({ href, ...rest }: ModalLinkProps<T>) {
+  return (
+    <ExpoLink href={href} asChild>
+      <Button {...rest} />
+    </ExpoLink>
+  );
+}

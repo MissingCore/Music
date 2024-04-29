@@ -3,7 +3,6 @@ import { usePathname } from "expo-router";
 import { useAtomValue, useSetAtom } from "jotai";
 import { useMemo } from "react";
 import { View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 
 import {
   addTrackToQueueAtom,
@@ -18,14 +17,13 @@ import { modalAtom } from "../store";
 import { cn } from "@/lib/style";
 import { mutateGuard } from "@/lib/react-query";
 import type { MediaList } from "@/components/media/types";
-import { TextLine } from "@/components/ui/Text";
 import {
   ReservedNames,
   SpecialPlaylists,
 } from "@/features/playback/utils/trackList";
 import { ModalBase } from "../components/ModalBase";
-import { ModalButton } from "../components/ModalButton";
-import { ModalLink } from "../components/ModalLink";
+import { Button, Link } from "../components/ModalInteractive";
+import { ScrollRow, Subtitle, Title } from "../components/ModalUI";
 
 type Props = { trackId: string; origin?: MediaList | "track-current" };
 
@@ -49,57 +47,47 @@ export function TrackModal({ trackId, origin }: Props) {
   return (
     <ModalBase detached>
       <BottomSheetScrollView>
-        <TextLine className="px-4 text-center font-ndot57 text-title text-foreground50">
+        <Title asLine className="px-4">
           {data.name}
-        </TextLine>
-        <TextLine
-          className={cn(
-            "mb-8 px-4 text-center font-ndot57 text-lg text-accent50",
-            { "mb-4": origin === "artist" && !data.album?.name },
-          )}
+        </Title>
+        <Subtitle
+          asLine
+          className={cn("mb-8 px-4", {
+            "mb-4": origin === "artist" && !data.album?.name,
+          })}
         >
           {origin === "artist" ? data.album?.name : data.artistName}
-        </TextLine>
+        </Subtitle>
 
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          overScrollMode="never"
-          contentContainerClassName="grow gap-2 px-4"
-        >
-          <ModalButton
+        <ScrollRow>
+          <Button
             content={isToggled ? "Unfavorite" : "Favorite"}
             icon={isToggled ? "FavoriteFilled" : "FavoriteOutline"}
             onPress={() => mutateGuard(toggleMutation, data.isFavorite)}
             dontCloseOnPress
           />
           <RemoveTrackFromPlaylist trackId={trackId} />
-          <ModalButton
+          <Button
             content="Add to Playlists"
             icon="PlaylistAddOutline"
             onPress={() =>
               openModal({ type: "track-to-playlist", id: trackId })
             }
           />
-          <ModalButton
+          <Button
             content="Add to Queue"
             icon="QueueMusicOutline"
             onPress={() => addTrackToQueue(data.id)}
           />
-        </ScrollView>
+        </ScrollRow>
 
         {hasSecondRow && (
           <View className="mx-2 my-4 h-[1px] flex-1 bg-surface500" />
         )}
 
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          overScrollMode="never"
-          contentContainerClassName="grow gap-2 px-4"
-        >
+        <ScrollRow>
           {!!data.album && origin !== "album" && (
-            <ModalLink
+            <Link
               href={`/album/${data.album.id}`}
               content="View Album"
               icon="AlbumOutline"
@@ -107,7 +95,7 @@ export function TrackModal({ trackId, origin }: Props) {
           )}
 
           {origin !== "artist" && (
-            <ModalLink
+            <Link
               href={`/artist/${data.artistName}`}
               content="View Artist"
               icon="ArtistOutline"
@@ -117,14 +105,14 @@ export function TrackModal({ trackId, origin }: Props) {
           {origin === "track-current" && (
             <>
               <ViewPlaylist />
-              <ModalButton
+              <Button
                 content="View Upcoming"
                 icon="LibraryMusicFilled"
                 onPress={() => openModal({ type: "track-upcoming" })}
               />
             </>
           )}
-        </ScrollView>
+        </ScrollRow>
       </BottomSheetScrollView>
     </ModalBase>
   );
@@ -169,7 +157,7 @@ function RemoveTrackFromPlaylist({ trackId }: { trackId: string }) {
   if (!isValidPath || !isTrackInPlaylist) return null;
 
   return (
-    <ModalButton
+    <Button
       content="Remove from this Playlist"
       icon="DeleteOutline"
       onPress={() => mutateGuard(removeTrackFromPlaylist, undefined)}
@@ -188,7 +176,7 @@ function ViewPlaylist() {
   if (!currentPlaylist) return null;
 
   return (
-    <ModalLink
+    <Link
       href={
         currentPlaylist === SpecialPlaylists.tracks
           ? "/track"

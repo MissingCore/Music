@@ -9,8 +9,8 @@ import { upcomingTrackDataAtom } from "./store";
 import Colors from "@/constants/Colors";
 import { MediaImage } from "@/components/media/MediaImage";
 import { ActionButton } from "@/components/ui/ActionButton";
-import { TextLine } from "@/components/ui/Text";
 import { ModalBase } from "../../components/ModalBase";
+import { Title } from "../../components/ModalUI";
 
 /** @description Modal used for seeing upcoming tracks. */
 export function UpcomingTrackModal() {
@@ -51,9 +51,9 @@ export function UpcomingTrackModal() {
           );
         }}
         renderSectionHeader={({ section: { title } }) => (
-          <TextLine className="mb-2 font-ndot57 text-title text-foreground50">
+          <Title asLine className="mb-2 text-start">
             {title}
-          </TextLine>
+          </Title>
         )}
         renderSectionFooter={({ section: { data } }) => {
           if (data.length > 0) return null;
