@@ -41,6 +41,7 @@
     "expo-file-system": "~16.0.9",
     "expo-font": "~11.10.3",
     "expo-image": "^1.10.6",
+    "expo-image-picker": "~14.7.1",
     "expo-linking": "~6.2.2",
     "expo-media-library": "~15.9.2",
     "expo-router": "~3.4.9",

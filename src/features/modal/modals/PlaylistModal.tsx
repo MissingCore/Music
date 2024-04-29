@@ -4,6 +4,8 @@ import { ScrollView } from "react-native-gesture-handler";
 
 import { usePlaylist } from "@/features/playlist/api/getPlaylist";
 import { useToggleFavorite } from "@/features/playlist/api/toggleFavorite";
+import { useDeletePlaylistCover } from "@/features/playlist/api/deletePlaylistCover";
+import { useUpdatePlaylistCover } from "@/features/playlist/api/updatePlaylistCover";
 import { modalAtom } from "../store";
 
 import { mutateGuard } from "@/lib/react-query";
@@ -16,6 +18,8 @@ export function PlaylistModal({ playlistName }: { playlistName: string }) {
   const openModal = useSetAtom(modalAtom);
   const { isPending, error, data } = usePlaylist(playlistName);
   const toggleMutation = useToggleFavorite(playlistName);
+  const updatePlaylistCover = useUpdatePlaylistCover(playlistName);
+  const deletePlaylistCover = useDeletePlaylistCover(playlistName);
 
   if (isPending || error) return null;
 
@@ -54,6 +58,18 @@ export function PlaylistModal({ playlistName }: { playlistName: string }) {
               })
             }
           />
+          <ModalButton
+            content="Change Cover"
+            icon="ImageOutline"
+            onPress={() => mutateGuard(updatePlaylistCover, undefined)}
+          />
+          {typeof data.coverSrc === "string" && (
+            <ModalButton
+              content="Remove Cover"
+              icon="HideImageOutline"
+              onPress={() => mutateGuard(deletePlaylistCover, undefined)}
+            />
+          )}
           <ModalButton
             content="Delete"
             icon="DeleteOutline"

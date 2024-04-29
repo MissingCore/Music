@@ -19,7 +19,10 @@ const BottomSheet = cssInterop(_BottomSheet, {
   handleIndicatorClassName: "handleIndicatorStyle",
 });
 
-/** @description Default implementation of `<BottomSheet />`. */
+/**
+ * @description Implementation of bottom sheet w/ 2 different designs,
+ *  selected by the value of the `detached` prop.
+ */
 export function ModalBase({
   detached,
   children,
