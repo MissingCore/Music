@@ -6,7 +6,7 @@ import type { MediaCardContent } from "@/components/media/MediaCard";
 import { getTrackCountStr } from "@/features/track/utils";
 import { assortedDataKeys } from "./queryKeys";
 
-async function getFavoriteLists<T>() {
+async function getFavoriteLists() {
   const favAlbums = (
     await db.query.albums.findMany({
       where: (fields, { eq }) => eq(fields.isFavorite, true),
@@ -50,7 +50,7 @@ async function getFavoriteLists<T>() {
 
   return [...favAlbums, ...favPlaylists].toSorted((a, b) =>
     a.title.localeCompare(b.title),
-  ) as Array<MediaCardContent<T>>;
+  ) as MediaCardContent[];
 }
 
 /**
