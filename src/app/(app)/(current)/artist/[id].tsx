@@ -1,15 +1,15 @@
 import { useLocalSearchParams } from "expo-router";
 import { Text, View } from "react-native";
 
-import { useArtist } from "@/features/artist/api/getArtist";
+import { useArtistForCurrentPage } from "@/api/artists/[id]";
 
 import { MediaList, MediaListHeader } from "@/components/media/MediaList";
 import { TrackCard } from "@/features/track/components/TrackCard";
 
 /** @description Screen for `/artist/[id]` route. */
 export default function CurrentArtistScreen() {
-  const { id: artistId } = useLocalSearchParams<{ id: string }>();
-  const { isPending, error, data } = useArtist(artistId);
+  const { id: artistName } = useLocalSearchParams<{ id: string }>();
+  const { isPending, error, data } = useArtistForCurrentPage(artistName);
 
   if (isPending) return <View className="w-full flex-1 px-4" />;
   else if (!!error || !data) {
@@ -23,10 +23,10 @@ export default function CurrentArtistScreen() {
   }
 
   // Information about this track list.
-  const trackSrc = {
+  const trackSource = {
     type: "artist",
     name: `Artist\n${data.name}`,
-    id: artistId,
+    id: artistName,
   } as const;
 
   return (
@@ -34,16 +34,12 @@ export default function CurrentArtistScreen() {
       <MediaListHeader
         title={data.name}
         metadata={data.metadata}
-        trackSource={trackSrc}
+        trackSource={trackSource}
       />
       <MediaList
         data={data.tracks}
-        renderItem={({ item: { id, name, coverSrc, duration, albumName } }) => (
-          <TrackCard
-            {...{ id, duration, trackSource: trackSrc, imageSource: coverSrc }}
-            textContent={[name, albumName ?? "Single"]}
-            origin="artist"
-          />
+        renderItem={({ item }) => (
+          <TrackCard {...{ ...item, trackSource }} origin="artist" />
         )}
       />
     </View>

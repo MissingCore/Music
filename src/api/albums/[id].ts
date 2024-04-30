@@ -4,8 +4,9 @@ import { useCallback } from "react";
 import { db } from "@/db";
 import type { AlbumWithTracks } from "@/db/schema";
 import { formatForCurrentPages } from "@/db/utils/formatters";
-import { pickKeys } from "@/utils/object";
 import { albumKeys } from "./_queryKeys";
+
+import { pickKeys } from "@/utils/object";
 
 type QueryFnData = AlbumWithTracks;
 

@@ -100,7 +100,7 @@ export function formatTracksForTrackCard({
         data.track > 0 ? `Track ${`${data.track}`.padStart(2, "0")}` : "Track";
     } else {
       imageSource = getTrackCover(data);
-      if (type === "artist") textContent[1] = data.album?.name;
+      if (type === "artist") textContent[1] = data.album?.name ?? "Single";
     }
 
     return { textContent, id, imageSource, duration };
