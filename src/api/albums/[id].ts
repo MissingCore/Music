@@ -1,8 +1,10 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useCallback } from "react";
 
 import { db } from "@/db";
 import type { AlbumWithTracks } from "@/db/schema";
 import { formatForCurrentPages } from "@/db/utils/formatters";
+import { pickKeys } from "@/utils/object";
 import { albumKeys } from "./_queryKeys";
 
 type QueryFnData = AlbumWithTracks;
@@ -52,11 +54,13 @@ export const useAlbumForCurrentPage = (albumId: string | undefined) =>
   useAlbum({
     albumId,
     config: {
-      select: (data) => ({
-        ...formatForCurrentPages({ type: "album", data }),
-        artistName: data.artistName,
-        imageSource: data.coverSrc,
-        isFavorite: data.isFavorite,
-      }),
+      select: useCallback(
+        (data: QueryFnData) => ({
+          ...formatForCurrentPages({ type: "album", data }),
+          ...pickKeys(data, ["artistName", "isFavorite"]),
+          imageSource: data.coverSrc,
+        }),
+        [],
+      ),
     },
   });

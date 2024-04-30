@@ -25,9 +25,7 @@ type FnArgsWithTrack = FnArgs | { type: "track"; data: TrackWithAlbum[] };
 /** @description Get the covers of the first 4 tracks. */
 export function getPlaylistCollage(data: TrackWithAlbum[]) {
   return data
-    .map(({ name, coverSrc, album }) => {
-      return { name, coverSrc: album?.coverSrc ?? coverSrc };
-    })
+    .map((data) => ({ name: data.name, coverSrc: getTrackCover(data) }))
     .toSorted((a, b) => a.name.localeCompare(b.name))
     .slice(0, 4)
     .map(({ coverSrc }) => coverSrc);

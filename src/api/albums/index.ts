@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useCallback } from "react";
 
 import { db } from "@/db";
 import type { AlbumWithTracks } from "@/db/schema";
@@ -32,7 +33,16 @@ export const useAlbums = <TData = QueryFnData>({
 export const useAlbumsForMediaCard = () =>
   useAlbums({
     config: {
-      select: (data) =>
-        data.map((album) => formatForMediaCard({ type: "album", data: album })),
+      select: useCallback(
+        (data: QueryFnData) =>
+          data
+            .map((album) => formatForMediaCard({ type: "album", data: album }))
+            .toSorted(
+              (a, b) =>
+                a.title.localeCompare(b.title) ||
+                a.subtitle.localeCompare(b.subtitle),
+            ),
+        [],
+      ),
     },
   });
