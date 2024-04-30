@@ -61,7 +61,7 @@ export default function CurrentAlbumScreen() {
   return (
     <View className="w-full flex-1 px-4">
       <MediaListHeader
-        source={data.coverSource}
+        source={data.imageSource}
         title={data.name}
         SubtitleComponent={
           <Link

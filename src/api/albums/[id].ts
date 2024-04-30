@@ -52,6 +52,11 @@ export const useAlbumForCurrentPage = (albumId: string | undefined) =>
   useAlbum({
     albumId,
     config: {
-      select: (data) => formatForCurrentPages({ type: "album", data }),
+      select: (data) => ({
+        ...formatForCurrentPages({ type: "album", data }),
+        artistName: data.artistName,
+        imageSource: data.coverSrc,
+        isFavorite: data.isFavorite,
+      }),
     },
   });

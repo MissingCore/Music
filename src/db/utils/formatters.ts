@@ -109,14 +109,8 @@ export function formatTracksForTrackCard({
   });
 }
 
-type CurrentPageBaseData = {
-  name: string;
-  metadata: string[];
-  tracks: TrackCardContent[];
-};
-
-/** @description Formats data to be used in our `(current)` routes. */
-export function formatForCurrentPages<TArgs extends FnArgs>(args: TArgs) {
+/** @description Return shared fields used for data in `(current)` routes. */
+export function formatForCurrentPages(args: FnArgs) {
   const { type, data } = args;
   const metadata = [
     getTrackCountStr(data.tracks.length),
@@ -126,28 +120,5 @@ export function formatForCurrentPages<TArgs extends FnArgs>(args: TArgs) {
     metadata.unshift(String(data.releaseYear));
   }
 
-  return {
-    name: data.name,
-    metadata,
-    tracks: formatTracksForTrackCard(args),
-    ...(type !== "artist"
-      ? {
-          coverSource:
-            type === "album" ? data.coverSrc : getPlaylistCover(data),
-        }
-      : {}),
-    ...(type === "album"
-      ? { artistName: data.artistName, isFavorite: data.isFavorite }
-      : {}),
-  } as TArgs extends { type: "artist" }
-    ? CurrentPageBaseData
-    : TArgs extends { type: "playlist" }
-      ? CurrentPageBaseData & { coverSource: string | Array<string | null> }
-      : TArgs extends { type: "album" }
-        ? CurrentPageBaseData & {
-            artistName: string;
-            isFavorite: boolean;
-            coverSource: string | null;
-          }
-        : never;
+  return { name: data.name, metadata, tracks: formatTracksForTrackCard(args) };
 }
