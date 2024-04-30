@@ -4,11 +4,11 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { useMemo } from "react";
 import { View } from "react-native";
 
+import { useTrackExcerpt } from "@/api/tracks/[id]";
 import {
   addTrackToQueueAtom,
   playingInfoAtom,
 } from "@/features/playback/api/playing";
-import { useTrack } from "@/features/track/api/getTrack";
 import { useIsTrackInPlaylist } from "@/features/playlist/api/isTrackInPlaylist";
 import { useRemoveTrackFromPlaylist } from "@/features/playlist/api/removeTrackFromPlaylist";
 import { useToggleFavorite } from "@/features/track/api/toggleFavorite";
@@ -31,7 +31,7 @@ type Props = { trackId: string; origin?: MediaList | "track-current" };
 export function TrackModal({ trackId, origin }: Props) {
   const openModal = useSetAtom(modalAtom);
   const addTrackToQueue = useSetAtom(addTrackToQueueAtom);
-  const { isPending, error, data } = useTrack(trackId);
+  const { isPending, error, data } = useTrackExcerpt(trackId);
   const toggleMutation = useToggleFavorite(trackId);
 
   if (isPending || error) return null;

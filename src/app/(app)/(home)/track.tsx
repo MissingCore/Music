@@ -1,6 +1,6 @@
 import { Text } from "react-native";
 
-import { useTracks } from "@/features/track/api/getTracks";
+import { useTracksForTrackCards } from "@/api/tracks";
 import { SpecialPlaylists } from "@/features/playback/utils/trackList";
 
 import { MediaList } from "@/components/media/MediaList";
@@ -9,10 +9,10 @@ import { TrackCard } from "@/features/track/components/TrackCard";
 
 /** @description Screen for `/track` route. */
 export default function TrackScreen() {
-  const { isPending, data } = useTracks();
+  const { isPending, data } = useTracksForTrackCards();
 
   // Information about this track list.
-  const trackSrc = {
+  const trackSource = {
     type: "playlist",
     name: SpecialPlaylists.tracks,
     id: SpecialPlaylists.tracks,
@@ -21,12 +21,7 @@ export default function TrackScreen() {
   return (
     <MediaList
       data={data}
-      renderItem={({ item: { id, name, coverSrc, duration, artistName } }) => (
-        <TrackCard
-          {...{ id, duration, trackSource: trackSrc, imageSource: coverSrc }}
-          textContent={[name, artistName]}
-        />
-      )}
+      renderItem={({ item }) => <TrackCard {...{ ...item, trackSource }} />}
       ListEmptyComponent={
         isPending ? (
           <Loading />
