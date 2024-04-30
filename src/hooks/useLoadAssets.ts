@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { useIndexAudio } from "./useIndexAudio";
 
 import { db } from "@/db";
-import migrations from "@/drizzle/migrations";
+import migrations from "@/db/drizzle/migrations";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();

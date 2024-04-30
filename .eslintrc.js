@@ -21,7 +21,7 @@ const config = {
     // Ensures props and state inside functions are always up-to-date
     "react-hooks/exhaustive-deps": "warn",
   },
-  ignorePatterns: ["expo-env.d.ts", "metro.config.js", "src/drizzle"],
+  ignorePatterns: ["expo-env.d.ts", "metro.config.js", "src/db/drizzle"],
 };
 
 module.exports = config;
