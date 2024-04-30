@@ -1,15 +1,14 @@
 import { FlatList, Text } from "react-native";
 
-import { useAlbums } from "@/features/album/api/getAlbums";
+import { useAlbumsForMediaCard } from "@/api/albums";
 import { useGetColumnWidth } from "@/hooks/layout";
 
 import { MediaCard } from "@/components/media/MediaCard";
 import { Loading } from "@/components/ui/Loading";
-import { getTrackCountStr } from "@/features/track/utils";
 
 /** @description Screen for `/album` route. */
 export default function AlbumScreen() {
-  const { isPending, data } = useAlbums();
+  const { isPending, data } = useAlbumsForMediaCard();
   const colWidth = useGetColumnWidth({
     cols: 2,
     gap: 16,
@@ -20,18 +19,8 @@ export default function AlbumScreen() {
   return (
     <FlatList
       data={data}
-      keyExtractor={({ id }) => id}
-      renderItem={({ item: { id, name, coverSrc, artistName, numTracks } }) => (
-        <MediaCard
-          href={`/album/${id}`}
-          size={colWidth}
-          source={coverSrc}
-          type="album"
-          title={name}
-          subtitle={artistName}
-          extra={`| ${getTrackCountStr(numTracks)}`}
-        />
-      )}
+      keyExtractor={({ href }) => href}
+      renderItem={({ item: data }) => <MediaCard {...data} size={colWidth} />}
       showsVerticalScrollIndicator={false}
       ListEmptyComponent={
         isPending ? (

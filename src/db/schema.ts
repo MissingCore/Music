@@ -8,12 +8,12 @@ import {
 } from "drizzle-orm/sqlite-core";
 
 import { createId } from "@/lib/cuid2";
+import type { Prettify } from "@/utils/types";
 
 export const artists = sqliteTable("artists", {
   name: text("name").primaryKey(),
   // FIXME: Potentially add `logo` field in the future.
 });
-export type Artist = InferSelectModel<typeof artists>;
 
 export const artistsRelations = relations(artists, ({ many }) => ({
   albums: many(albums),
@@ -34,7 +34,6 @@ export const albums = sqliteTable("albums", {
     .notNull()
     .default(false),
 });
-export type Album = InferSelectModel<typeof albums>;
 
 export const albumsRelations = relations(albums, ({ one, many }) => ({
   artist: one(artists, {
@@ -63,7 +62,6 @@ export const tracks = sqliteTable("tracks", {
     .notNull()
     .default(false),
 });
-export type Track = InferSelectModel<typeof tracks>;
 
 export const tracksRelations = relations(tracks, ({ one, many }) => ({
   artist: one(artists, {
@@ -79,7 +77,6 @@ export const invalidTracks = sqliteTable("invalid_tracks", {
   uri: text("uri").notNull(),
   modificationTime: integer("modification_time").notNull(),
 });
-export type InvalidTrack = InferSelectModel<typeof invalidTracks>;
 
 export const playlists = sqliteTable("playlists", {
   name: text("name").primaryKey(),
@@ -88,7 +85,6 @@ export const playlists = sqliteTable("playlists", {
     .notNull()
     .default(false),
 });
-export type Playlist = InferSelectModel<typeof playlists>;
 
 export const playlistsRelations = relations(playlists, ({ many }) => ({
   tracksToPlaylists: many(tracksToPlaylists),
@@ -122,3 +118,24 @@ export const tracksToPlaylistsRelations = relations(
     }),
   }),
 );
+
+export type Artist = InferSelectModel<typeof artists>;
+export type ArtistWithTracks = Prettify<Artist & { tracks: TrackWithAlbum[] }>;
+
+export type Album = InferSelectModel<typeof albums>;
+export type AlbumWithTracks = Prettify<Album & { tracks: Track[] }>;
+
+export type Track = InferSelectModel<typeof tracks>;
+export type TrackWithAlbum = Prettify<Track & { album: Album | null }>;
+
+export type InvalidTrack = InferSelectModel<typeof invalidTracks>;
+
+export type Playlist = InferSelectModel<typeof playlists>;
+export type PlaylistWithJunction = Prettify<
+  Playlist & { tracksToPlaylists: Array<{ track: TrackWithAlbum }> }
+>;
+export type PlaylistWithTracks = Prettify<
+  Playlist & { tracks: TrackWithAlbum[] }
+>;
+
+export type TrackToPlaylist = InferSelectModel<typeof tracksToPlaylists>;

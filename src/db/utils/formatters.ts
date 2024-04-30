@@ -1,0 +1,153 @@
+import type {
+  AlbumWithTracks,
+  ArtistWithTracks,
+  PlaylistWithJunction,
+  PlaylistWithTracks,
+  Track,
+  TrackWithAlbum,
+} from "../schema";
+
+import type { MediaCardContent } from "@/components/media/MediaCard";
+import { getPlayTime } from "@/components/media/utils";
+import { SpecialPlaylists } from "@/features/playback/utils/trackList";
+import type { TrackCardContent } from "@/features/track/components/TrackCard";
+import { getTrackCountStr } from "@/features/track/utils";
+import { isTrackWithAlbum } from "./narrowing";
+import { sortTracks } from "./sorting";
+
+/** @description General input type for data formatting. */
+type FnArgs =
+  | { type: "artist"; data: ArtistWithTracks }
+  | { type: "album"; data: AlbumWithTracks }
+  | { type: "playlist"; data: PlaylistWithTracks };
+type FnArgsWithTrack = FnArgs | { type: "track"; data: TrackWithAlbum[] };
+
+/** @description Get the covers of the first 4 tracks. */
+export function getPlaylistCollage(data: TrackWithAlbum[]) {
+  return data
+    .map(({ name, coverSrc, album }) => {
+      return { name, coverSrc: album?.coverSrc ?? coverSrc };
+    })
+    .toSorted((a, b) => a.name.localeCompare(b.name))
+    .slice(0, 4)
+    .map(({ coverSrc }) => coverSrc);
+}
+
+/** @description Get the cover of a playlist. */
+export function getPlaylistCover(data: PlaylistWithTracks) {
+  return data.coverSrc ?? getPlaylistCollage(data.tracks);
+}
+
+/** @description Get the cover of a track with `album` field. */
+export function getTrackCover(data: TrackWithAlbum) {
+  return data.album?.coverSrc ?? data.coverSrc;
+}
+
+/**
+ * @description Replace the "junction" field from the `Playlist` table
+ *  with `tracks`.
+ */
+export function fixPlaylistJunction(
+  data: PlaylistWithJunction,
+): PlaylistWithTracks {
+  const { tracksToPlaylists, ...rest } = data;
+  return { ...rest, tracks: tracksToPlaylists.map(({ track }) => track) };
+}
+
+/** @description Formats data to be used with `<MediaCard />`. */
+export function formatForMediaCard({ type, data }: FnArgs) {
+  const trackStr = getTrackCountStr(data.tracks.length);
+  return {
+    type,
+    // FIXME: Might need to fix `source` for Special Playlists
+    source:
+      type === "album"
+        ? data.coverSrc
+        : type === "playlist"
+          ? getPlaylistCover(data)
+          : null,
+    href:
+      type === "album"
+        ? `/album/${data.id}`
+        : type === "playlist" && data.name === SpecialPlaylists.tracks
+          ? "/tracks"
+          : `/${type}/${data.name}`,
+    title: data.name,
+    subtitle: type !== "album" ? trackStr : data.artistName,
+    extra: type === "album" ? `| ${trackStr}` : null,
+  } as MediaCardContent;
+}
+
+/**
+ * @description Formats tracks data to be used with `<TrackCard />` or
+ *  `<ActionButton />`.
+ */
+export function formatTracksForTrackCard({
+  type,
+  data,
+}: FnArgsWithTrack): TrackCardContent[] {
+  const tracks: Track[] | TrackWithAlbum[] =
+    type === "track" ? data : data.tracks;
+
+  return sortTracks({ type, tracks }).map((data) => {
+    const { id, duration, coverSrc, name, artistName } = data;
+
+    let imageSource = coverSrc;
+    const textContent: TrackCardContent["textContent"] = [name, artistName];
+
+    if (!isTrackWithAlbum(data)) {
+      // Only true when `type === "album"`.
+      imageSource = null;
+      textContent[1] =
+        data.track > 0 ? `Track ${`${data.track}`.padStart(2, "0")}` : "Track";
+    } else {
+      imageSource = getTrackCover(data);
+      if (type === "artist") textContent[1] = data.album?.name;
+    }
+
+    return { textContent, id, imageSource, duration };
+  });
+}
+
+type CurrentPageBaseData = {
+  name: string;
+  metadata: string[];
+  tracks: TrackCardContent[];
+};
+
+/** @description Formats data to be used in our `(current)` routes. */
+export function formatForCurrentPages<TArgs extends FnArgs>(args: TArgs) {
+  const { type, data } = args;
+  const metadata = [
+    getTrackCountStr(data.tracks.length),
+    getPlayTime(data.tracks.reduce((total, curr) => total + curr.duration, 0)),
+  ];
+  if (type === "album" && data.releaseYear) {
+    metadata.unshift(String(data.releaseYear));
+  }
+
+  return {
+    name: data.name,
+    metadata,
+    tracks: formatTracksForTrackCard(args),
+    ...(type !== "artist"
+      ? {
+          coverSource:
+            type === "album" ? data.coverSrc : getPlaylistCover(data),
+        }
+      : {}),
+    ...(type === "album"
+      ? { artistName: data.artistName, isFavorite: data.isFavorite }
+      : {}),
+  } as TArgs extends { type: "artist" }
+    ? CurrentPageBaseData
+    : TArgs extends { type: "playlist" }
+      ? CurrentPageBaseData & { coverSource: string | Array<string | null> }
+      : TArgs extends { type: "album" }
+        ? CurrentPageBaseData & {
+            artistName: string;
+            isFavorite: boolean;
+            coverSource: string | null;
+          }
+        : never;
+}

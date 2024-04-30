@@ -86,7 +86,7 @@ function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
           item: { id, name, coverSrc, duration, artistName },
         }) => (
           <TrackCard
-            {...{ id, trackSrc, coverSrc, duration }}
+            {...{ id, duration, trackSource: trackSrc, imageSource: coverSrc }}
             textContent={[name, artistName]}
             origin={origin}
           />

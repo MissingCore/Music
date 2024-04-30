@@ -40,7 +40,7 @@ export default function CurrentArtistScreen() {
         data={data.tracks}
         renderItem={({ item: { id, name, coverSrc, duration, albumName } }) => (
           <TrackCard
-            {...{ id, trackSrc, coverSrc, duration }}
+            {...{ id, duration, trackSource: trackSrc, imageSource: coverSrc }}
             textContent={[name, albumName ?? "Single"]}
             origin="artist"
           />

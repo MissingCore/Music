@@ -23,7 +23,7 @@ export default function TrackScreen() {
       data={data}
       renderItem={({ item: { id, name, coverSrc, duration, artistName } }) => (
         <TrackCard
-          {...{ id, trackSrc, coverSrc, duration }}
+          {...{ id, duration, trackSource: trackSrc, imageSource: coverSrc }}
           textContent={[name, artistName]}
         />
       )}

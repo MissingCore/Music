@@ -4,7 +4,7 @@ import { useSetAtom } from "jotai";
 import { useEffect } from "react";
 import { Pressable, Text, View } from "react-native";
 
-import { useAlbum } from "@/features/album/api/getAlbum";
+import { useAlbumForCurrentPage } from "@/api/albums/[id]";
 import { useToggleFavorite } from "@/features/album/api/toggleFavorite";
 import { modalAtom } from "@/features/modal/store";
 import { playAtom } from "@/features/playback/api/controls";
@@ -19,7 +19,7 @@ import { TrackDuration } from "@/features/track/components/TrackDuration";
 export default function CurrentAlbumScreen() {
   const { id: albumId } = useLocalSearchParams<{ id: string }>();
   const navigation = useNavigation();
-  const { isPending, error, data } = useAlbum(albumId);
+  const { isPending, error, data } = useAlbumForCurrentPage(albumId);
   const toggleMutation = useToggleFavorite(albumId);
   const playFn = useSetAtom(playAtom);
   const openModal = useSetAtom(modalAtom);
@@ -61,7 +61,7 @@ export default function CurrentAlbumScreen() {
   return (
     <View className="w-full flex-1 px-4">
       <MediaListHeader
-        source={data.coverSrc}
+        source={data.coverSource}
         title={data.name}
         SubtitleComponent={
           <Link
@@ -77,13 +77,10 @@ export default function CurrentAlbumScreen() {
       />
       <MediaList
         data={data.tracks}
-        renderItem={({ item: { id, name, track, duration } }) => (
+        renderItem={({ item: { id, textContent, duration } }) => (
           <ActionButton
             onPress={() => playFn({ trackId: id, trackSrc })}
-            textContent={[
-              name,
-              track > 0 ? `Track ${`${track}`.padStart(2, "0")}` : "Track",
-            ]}
+            textContent={textContent}
             asideContent={<TrackDuration duration={duration} />}
             iconOnPress={() =>
               openModal({ type: "track", id, origin: "album" })
