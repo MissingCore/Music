@@ -1,7 +1,7 @@
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { useSetAtom } from "jotai";
 
-import { usePlaylist } from "@/features/playlist/api/getPlaylist";
+import { usePlaylistForModal } from "@/api/playlists/[id]";
 import { useToggleFavorite } from "@/features/playlist/api/toggleFavorite";
 import { useDeletePlaylistCover } from "@/features/playlist/api/deletePlaylistCover";
 import { useUpdatePlaylistCover } from "@/features/playlist/api/updatePlaylistCover";
@@ -15,7 +15,7 @@ import { ScrollRow, Title } from "../components/ModalUI";
 /** @description Modal used for playlists. */
 export function PlaylistModal({ playlistName }: { playlistName: string }) {
   const openModal = useSetAtom(modalAtom);
-  const { isPending, error, data } = usePlaylist(playlistName);
+  const { isPending, error, data } = usePlaylistForModal(playlistName);
   const toggleMutation = useToggleFavorite(playlistName);
   const updatePlaylistCover = useUpdatePlaylistCover(playlistName);
   const deletePlaylistCover = useDeletePlaylistCover(playlistName);
@@ -57,7 +57,7 @@ export function PlaylistModal({ playlistName }: { playlistName: string }) {
             icon="ImageOutline"
             onPress={() => mutateGuard(updatePlaylistCover, undefined)}
           />
-          {typeof data.coverSrc === "string" && (
+          {typeof data.imageSource === "string" && (
             <Button
               content="Remove Cover"
               icon="HideImageOutline"

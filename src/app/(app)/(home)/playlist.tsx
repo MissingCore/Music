@@ -3,13 +3,12 @@ import { useSetAtom } from "jotai";
 import { Pressable, ScrollView } from "react-native";
 
 import { DashedBorder } from "@/assets/svgs/DashedBorder";
+import { usePlaylistsForMediaCard } from "@/api/playlists";
 import { useGetColumnWidth } from "@/hooks/layout";
 import { modalAtom } from "@/features/modal/store";
-import { usePlaylists } from "@/features/playlist/api/getPlaylists";
 
 import Colors from "@/constants/Colors";
 import { MediaCard } from "@/components/media/MediaCard";
-import { getTrackCountStr } from "@/features/track/utils";
 
 /** @description Screen for `/playlist` route. */
 export default function PlaylistScreen() {
@@ -49,17 +48,9 @@ function CreatePlaylistButton({ colWidth }: { colWidth: number }) {
 
 /** @description An array of playlist `<MediaCards />`. */
 function AllPlaylists({ colWidth }: { colWidth: number }) {
-  const { isPending, error, data } = usePlaylists();
+  const { isPending, error, data } = usePlaylistsForMediaCard();
   if (isPending || error) return null;
-  return data.map(({ name, coverSrc, numTracks }) => (
-    <MediaCard
-      key={name}
-      href={`/playlist/${name}`}
-      size={colWidth}
-      source={coverSrc}
-      type="playlist"
-      title={name}
-      subtitle={getTrackCountStr(numTracks)}
-    />
+  return data.map((props) => (
+    <MediaCard key={props.href} {...props} size={colWidth} />
   ));
 }

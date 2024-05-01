@@ -6,9 +6,9 @@ import {
 import { useMemo, useState } from "react";
 import { Text, View } from "react-native";
 
+import { usePlaylistsForModal } from "@/api/playlists";
 import { useCreatePlaylist } from "@/features/playlist/api/createPlaylist";
 import { useUpdatePlaylistName } from "@/features/playlist/api/updatePlaylistName";
-import { usePlaylists } from "@/features/playlist/api/getPlaylists";
 import type { ModalPlaylistName } from "../store";
 
 import Colors from "@/constants/Colors";
@@ -22,7 +22,7 @@ import { Title } from "../components/ModalUI";
 /** @description Modal used for creating or changing a playlist name. */
 export function PlaylistNameModal({ origin, id }: ModalPlaylistName) {
   const [playlistName, setPlaylistName] = useState(origin === "new" ? "" : id!);
-  const { isPending, error, data } = usePlaylists();
+  const { isPending, error, data } = usePlaylistsForModal();
   const createPlaylist = useCreatePlaylist();
   const updatePlaylistName = useUpdatePlaylistName(id ?? "");
 

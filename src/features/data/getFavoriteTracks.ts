@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { db } from "@/db";
+import { formatTracksForTrackCard } from "@/db/utils/formatters";
 
 import type { ExtractFnReturnType } from "@/lib/react-query";
 import { getPlayTime } from "@/components/media/utils";
@@ -36,16 +37,11 @@ const useFavoriteTracksQuery = <TData = QueryFnData>(
  */
 export const useFavoriteTracks = () =>
   useFavoriteTracksQuery((data: QueryFnData) => {
-    const tracks = data
-      .map(({ id, name, artistName, duration, ...rest }) => ({
-        ...{ id, name, artistName, duration },
-        coverSrc: rest.album?.coverSrc ?? rest.coverSrc,
-      }))
-      .toSorted((a, b) => a.name.localeCompare(b.name));
+    const tracks = formatTracksForTrackCard({ type: "track", data });
 
     return {
       name: SpecialPlaylists.favorites,
-      coverSrc: SpecialPlaylists.favorites,
+      imageSource: SpecialPlaylists.favorites,
       tracks,
       metadata: [
         getTrackCountStr(tracks.length),

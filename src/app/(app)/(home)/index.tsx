@@ -70,7 +70,7 @@ function RecentlyPlayed({ colWidth }: { colWidth: number }) {
   }
 
   return recentlyPlayedData.map((props) => (
-    <MediaCard key={props.href} {...{ size: colWidth, ...props }} />
+    <MediaCard key={props.href} {...props} size={colWidth} />
   ));
 }
 
@@ -105,6 +105,6 @@ function FavoriteLists({ colWidth }: { colWidth: number }) {
   if (isPending || error) return null;
 
   return data.map((props) => (
-    <MediaCard key={props.href} {...{ size: colWidth, ...props }} />
+    <MediaCard key={props.href} {...props} size={colWidth} />
   ));
 }

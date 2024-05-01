@@ -6,8 +6,8 @@ import { Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
 import { db } from "@/db";
+import { usePlaylistsForModal } from "@/api/playlists";
 import { useAddTrackToPlaylists } from "@/features/playlist/api/addTrackToPlaylists";
-import { usePlaylists } from "@/features/playlist/api/getPlaylists";
 
 import Colors from "@/constants/Colors";
 import { cn } from "@/lib/style";
@@ -20,7 +20,7 @@ import { Title } from "../components/ModalUI";
 
 /** @description Modal used for adding or removing a track from a playlist. */
 export function TrackToPlaylistModal({ trackId }: { trackId: string }) {
-  const { isPending, error, data } = usePlaylists();
+  const { isPending, error, data } = usePlaylistsForModal();
   const [inPlaylist, setInPlaylist] = useState<Record<string, boolean>>({});
   const addTrackToPlaylists = useAddTrackToPlaylists(trackId);
 
@@ -77,17 +77,14 @@ export function TrackToPlaylistModal({ trackId }: { trackId: string }) {
         <FlatList
           data={data}
           keyExtractor={({ name }) => name}
-          renderItem={({ item }) => (
+          renderItem={({ item: { name, trackCount } }) => (
             <PlaylistCheckbox
-              selected={inPlaylist[item.name]}
+              selected={inPlaylist[name]}
               toggleSelf={() =>
-                setInPlaylist((prev) => ({
-                  ...prev,
-                  [item.name]: !prev[item.name],
-                }))
+                setInPlaylist((prev) => ({ ...prev, [name]: !prev[name] }))
               }
-              name={item.name}
-              numTracks={item.numTracks}
+              name={name}
+              numTracks={trackCount}
             />
           )}
           ListEmptyComponent={

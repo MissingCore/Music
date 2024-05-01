@@ -1,7 +1,7 @@
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { Text, View } from "react-native";
 
-import { usePlaylist } from "@/features/playlist/api/getPlaylist";
+import { usePlaylistForModal } from "@/api/playlists/[id]";
 import { useDeletePlaylist } from "@/features/playlist/api/deletePlaylist";
 
 import { mutateGuard } from "@/lib/react-query";
@@ -15,7 +15,7 @@ export function PlaylistDeleteModal({
 }: {
   playlistName: string;
 }) {
-  const { isPending, error, data } = usePlaylist(playlistName);
+  const { isPending, error, data } = usePlaylistForModal(playlistName);
   const deletePlaylistFn = useDeletePlaylist(playlistName);
 
   if (isPending || error) return null;

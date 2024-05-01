@@ -4,10 +4,10 @@ import { useEffect, useMemo } from "react";
 import { Pressable, Text, View } from "react-native";
 
 import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
+import { usePlaylistForCurrentPage } from "@/api/playlists/[id]";
 import { useFavoriteTracks } from "@/features/data/getFavoriteTracks";
 import { modalAtom } from "@/features/modal/store";
 import { SpecialPlaylists } from "@/features/playback/utils/trackList";
-import { usePlaylist } from "@/features/playlist/api/getPlaylist";
 
 import { MediaList, MediaListHeader } from "@/components/media/MediaList";
 import { TrackCard } from "@/features/track/components/TrackCard";
@@ -39,14 +39,18 @@ export default function CurrentPlaylistScreen() {
     return <PlaylistListContent queryHook={useFavoriteTracks} />;
   }
   return (
-    <PlaylistListContent id={id} queryHook={usePlaylist} origin="playlist" />
+    <PlaylistListContent
+      id={id}
+      queryHook={usePlaylistForCurrentPage}
+      origin="playlist"
+    />
   );
 }
 
 type PlaylistContent = {
   origin?: React.ComponentProps<typeof TrackCard>["origin"];
 } & (
-  | { id: string; queryHook: typeof usePlaylist }
+  | { id: string; queryHook: typeof usePlaylistForCurrentPage }
   | { id?: never; queryHook: typeof useFavoriteTracks }
 );
 
@@ -66,7 +70,7 @@ function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
   }
 
   // Information about this track list.
-  const trackSrc = {
+  const trackSource = {
     type: "playlist",
     name: data.name,
     id: data.name,
@@ -75,21 +79,15 @@ function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
   return (
     <View className="w-full flex-1 px-4">
       <MediaListHeader
-        source={data.coverSrc}
+        source={data.imageSource}
         title={data.name}
         metadata={data.metadata}
-        trackSource={trackSrc}
+        trackSource={trackSource}
       />
       <MediaList
         data={data.tracks}
-        renderItem={({
-          item: { id, name, coverSrc, duration, artistName },
-        }) => (
-          <TrackCard
-            {...{ id, duration, trackSource: trackSrc, imageSource: coverSrc }}
-            textContent={[name, artistName]}
-            origin={origin}
-          />
+        renderItem={({ item }) => (
+          <TrackCard {...{ ...item, trackSource }} origin={origin} />
         )}
         ListEmptyComponent={
           <Text className="mx-auto text-center font-geistMono text-base text-foreground100">
