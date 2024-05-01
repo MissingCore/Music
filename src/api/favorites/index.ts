@@ -12,7 +12,7 @@ import {
   formatForCurrentPages,
   formatForMediaCard,
 } from "@/db/utils/formatters";
-import { favoriteKeys } from "./_queryKey";
+import { favoriteKeys } from "./_queryKeys";
 
 import { SpecialPlaylists } from "@/features/playback/utils/trackList";
 

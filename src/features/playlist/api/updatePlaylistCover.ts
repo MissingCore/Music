@@ -4,10 +4,10 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { playlists } from "@/db/schema";
+import { favoriteKeys } from "@/api/favorites/_queryKeys";
+import { playlistKeys } from "@/api/playlists/_queryKeys";
 
 import { saveBase64Img, deleteFile } from "@/lib/file-system";
-import { assortedDataKeys } from "@/features/data/queryKeys";
-import { playlistKeys } from "./queryKeys";
 
 /*
   Saves the new cover image locally in the app's file system to make sure
@@ -46,9 +46,7 @@ export function useUpdatePlaylistCover(playlistName: string) {
     mutationFn: () => updatePlaylistCover(playlistName),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: playlistKeys.all });
-      queryClient.invalidateQueries({
-        queryKey: assortedDataKeys.favoriteLists,
-      });
+      queryClient.invalidateQueries({ queryKey: favoriteKeys.lists() });
     },
   });
 }

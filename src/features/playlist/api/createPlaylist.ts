@@ -2,9 +2,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { db } from "@/db";
 import { playlists } from "@/db/schema";
+import { playlistKeys } from "@/api/playlists/_queryKeys";
 
 import { ReservedNames } from "@/features/playback/utils/trackList";
-import { playlistKeys } from "./queryKeys";
 
 async function createPlaylist(playlistName: string) {
   const sanitizedName = playlistName.trim();

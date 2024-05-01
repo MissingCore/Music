@@ -3,8 +3,8 @@ import { and, eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { tracksToPlaylists } from "@/db/schema";
-import { assortedDataKeys } from "@/features/data/queryKeys";
-import { playlistKeys } from "./queryKeys";
+import { favoriteKeys } from "@/api/favorites/_queryKeys";
+import { playlistKeys } from "@/api/playlists/_queryKeys";
 
 async function removeTrackFromPlaylist(
   trackId: string,
@@ -33,9 +33,7 @@ export function useRemoveTrackFromPlaylist(
     mutationFn: () => removeTrackFromPlaylist(trackId, playlistName),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: playlistKeys.all });
-      queryClient.invalidateQueries({
-        queryKey: assortedDataKeys.favoriteLists,
-      });
+      queryClient.invalidateQueries({ queryKey: favoriteKeys.lists() });
       queryClient.invalidateQueries({
         queryKey: [{ entity: "is-track-in-playlist", trackId, playlistName }],
       });

@@ -3,7 +3,7 @@ import { eq, not } from "drizzle-orm";
 
 import { db } from "@/db";
 import { albums, playlists, tracks } from "@/db/schema";
-import { favoriteKeys } from "./_queryKey";
+import { favoriteKeys } from "./_queryKeys";
 import { albumKeys } from "../albums/_queryKeys";
 import { playlistKeys } from "../playlists/_queryKeys";
 import { trackKeys } from "../tracks/_queryKeys";

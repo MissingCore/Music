@@ -4,10 +4,10 @@ import { router } from "expo-router";
 
 import { db } from "@/db";
 import { playlists, tracksToPlaylists } from "@/db/schema";
+import { favoriteKeys } from "@/api/favorites/_queryKeys";
+import { playlistKeys } from "@/api/playlists/_queryKeys";
 
 import { deleteFile } from "@/lib/file-system";
-import { assortedDataKeys } from "@/features/data/queryKeys";
-import { playlistKeys } from "./queryKeys";
 
 async function deletePlaylist(playlistName: string) {
   await db
@@ -29,9 +29,7 @@ export function useDeletePlaylist(playlistName: string) {
     mutationFn: () => deletePlaylist(playlistName),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: playlistKeys.all });
-      queryClient.invalidateQueries({
-        queryKey: assortedDataKeys.favoriteLists,
-      });
+      queryClient.invalidateQueries({ queryKey: favoriteKeys.lists() });
       router.back();
     },
   });

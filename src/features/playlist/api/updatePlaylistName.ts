@@ -4,10 +4,10 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { playlists, tracksToPlaylists } from "@/db/schema";
+import { favoriteKeys } from "@/api/favorites/_queryKeys";
+import { playlistKeys } from "@/api/playlists/_queryKeys";
 
-import { assortedDataKeys } from "@/features/data/queryKeys";
 import { ReservedNames } from "@/features/playback/utils/trackList";
-import { playlistKeys } from "./queryKeys";
 
 async function updatePlaylistName(oldName: string, newName: string) {
   const sanitizedName = newName.trim();
@@ -44,9 +44,7 @@ export function useUpdatePlaylistName(oldName: string) {
     mutationFn: (newName: string) => updatePlaylistName(oldName, newName),
     onSuccess: (newName: string) => {
       queryClient.invalidateQueries({ queryKey: playlistKeys.all });
-      queryClient.invalidateQueries({
-        queryKey: assortedDataKeys.favoriteLists,
-      });
+      queryClient.invalidateQueries({ queryKey: favoriteKeys.lists() });
       router.replace(`/playlist/${newName}`);
     },
   });

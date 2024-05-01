@@ -3,10 +3,10 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { playlists } from "@/db/schema";
+import { favoriteKeys } from "@/api/favorites/_queryKeys";
+import { playlistKeys } from "@/api/playlists/_queryKeys";
 
 import { deleteFile } from "@/lib/file-system";
-import { assortedDataKeys } from "@/features/data/queryKeys";
-import { playlistKeys } from "./queryKeys";
 
 async function deletePlaylistCover(playlistName: string) {
   const exists = await db.query.playlists.findFirst({
@@ -29,9 +29,7 @@ export function useDeletePlaylistCover(playlistName: string) {
     mutationFn: () => deletePlaylistCover(playlistName),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: playlistKeys.all });
-      queryClient.invalidateQueries({
-        queryKey: assortedDataKeys.favoriteLists,
-      });
+      queryClient.invalidateQueries({ queryKey: favoriteKeys.lists() });
     },
   });
 }
