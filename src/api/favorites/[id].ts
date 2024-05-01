@@ -3,6 +3,7 @@ import { eq, not } from "drizzle-orm";
 
 import { db } from "@/db";
 import { albums, playlists, tracks } from "@/db/schema";
+import { favoriteKeys } from "./_queryKey";
 import { albumKeys } from "../albums/_queryKeys";
 import { playlistKeys } from "../playlists/_queryKeys";
 import { trackKeys } from "../tracks/_queryKeys";
@@ -65,11 +66,10 @@ export const useToggleFavorite = (args: FnArgs) => {
       } catch {} // Silently handle case where cache isn't defined.
 
       // Additional invalidation to any favorite-related content.
-      /*
-        FIXME:
-          - Need to invalidate "Favorite Lists" on home page
-          - Need to invalidate "Favorite Tracks" list on home page
-      */
+      queryClient.invalidateQueries({
+        queryKey:
+          type === "track" ? favoriteKeys.tracks() : favoriteKeys.lists(),
+      });
     },
   });
 };

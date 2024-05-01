@@ -30,7 +30,7 @@ export const useTracks = <TData = QueryFnData>({
   });
 
 /** @description Returns a list of `TrackCardContent` generated from tracks. */
-export const useTracksForTrackCards = () =>
+export const useTracksForTrackCard = () =>
   useTracks({
     config: {
       select: useCallback(

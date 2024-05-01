@@ -4,8 +4,8 @@ import { useEffect, useMemo } from "react";
 import { Pressable, Text, View } from "react-native";
 
 import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
+import { useFavoriteTracksForCurrentPage } from "@/api/favorites";
 import { usePlaylistForCurrentPage } from "@/api/playlists/[id]";
-import { useFavoriteTracks } from "@/features/data/getFavoriteTracks";
 import { modalAtom } from "@/features/modal/store";
 import { SpecialPlaylists } from "@/features/playback/utils/trackList";
 
@@ -36,7 +36,7 @@ export default function CurrentPlaylistScreen() {
   }, [navigation, openModal, isFavoriteTracks, id]);
 
   if (isFavoriteTracks) {
-    return <PlaylistListContent queryHook={useFavoriteTracks} />;
+    return <PlaylistListContent queryHook={useFavoriteTracksForCurrentPage} />;
   }
   return (
     <PlaylistListContent
@@ -51,7 +51,7 @@ type PlaylistContent = {
   origin?: React.ComponentProps<typeof TrackCard>["origin"];
 } & (
   | { id: string; queryHook: typeof usePlaylistForCurrentPage }
-  | { id?: never; queryHook: typeof useFavoriteTracks }
+  | { id?: never; queryHook: typeof useFavoriteTracksForCurrentPage }
 );
 
 /** @description Basic structure of what we want to render on page. */

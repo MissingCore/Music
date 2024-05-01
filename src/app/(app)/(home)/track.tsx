@@ -1,6 +1,6 @@
 import { Text } from "react-native";
 
-import { useTracksForTrackCards } from "@/api/tracks";
+import { useTracksForTrackCard } from "@/api/tracks";
 import { SpecialPlaylists } from "@/features/playback/utils/trackList";
 
 import { MediaList } from "@/components/media/MediaList";
@@ -9,7 +9,7 @@ import { TrackCard } from "@/features/track/components/TrackCard";
 
 /** @description Screen for `/track` route. */
 export default function TrackScreen() {
-  const { isPending, data } = useTracksForTrackCards();
+  const { isPending, data } = useTracksForTrackCard();
 
   // Information about this track list.
   const trackSource = {

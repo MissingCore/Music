@@ -2,9 +2,11 @@ import { Link } from "expo-router";
 import { useAtomValue } from "jotai";
 import { Pressable, ScrollView, Text, View } from "react-native";
 
+import {
+  useFavoriteListsForMediaCard,
+  useFavoriteTracksCount,
+} from "@/api/favorites";
 import { useGetColumnWidth } from "@/hooks/layout";
-import { useFavoriteLists } from "@/features/data/getFavoriteLists";
-import { useFavoriteTracksCount } from "@/features/data/getFavoriteTracks";
 import { recentlyPlayedDataAtom } from "@/features/playback/api/recent";
 
 import { abbreviateNum } from "@/utils/number";
@@ -100,7 +102,7 @@ function FavoriteTracks({ colWidth }: { colWidth: number }) {
 
 /** @description An array of `<MediaCards />` of favorited albums & playlists. */
 function FavoriteLists({ colWidth }: { colWidth: number }) {
-  const { isPending, error, data } = useFavoriteLists();
+  const { isPending, error, data } = useFavoriteListsForMediaCard();
 
   if (isPending || error) return null;
 
