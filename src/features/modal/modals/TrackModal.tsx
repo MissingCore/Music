@@ -4,6 +4,7 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { useMemo } from "react";
 import { View } from "react-native";
 
+import { useToggleFavorite } from "@/api/favorites/[id]";
 import { useTrackExcerpt } from "@/api/tracks/[id]";
 import {
   addTrackToQueueAtom,
@@ -11,7 +12,6 @@ import {
 } from "@/features/playback/api/playing";
 import { useIsTrackInPlaylist } from "@/features/playlist/api/isTrackInPlaylist";
 import { useRemoveTrackFromPlaylist } from "@/features/playlist/api/removeTrackFromPlaylist";
-import { useToggleFavorite } from "@/features/track/api/toggleFavorite";
 import { modalAtom } from "../store";
 
 import { cn } from "@/lib/style";
@@ -32,12 +32,12 @@ export function TrackModal({ trackId, origin }: Props) {
   const openModal = useSetAtom(modalAtom);
   const addTrackToQueue = useSetAtom(addTrackToQueueAtom);
   const { isPending, error, data } = useTrackExcerpt(trackId);
-  const toggleMutation = useToggleFavorite(trackId);
+  const toggleFavoriteFn = useToggleFavorite({ type: "track", id: trackId });
 
   if (isPending || error) return null;
 
   // Add optimistic UI updates.
-  const isToggled = toggleMutation.isPending
+  const isToggled = toggleFavoriteFn.isPending
     ? !data.isFavorite
     : data.isFavorite;
 
@@ -63,7 +63,7 @@ export function TrackModal({ trackId, origin }: Props) {
           <Button
             content={isToggled ? "Unfavorite" : "Favorite"}
             icon={isToggled ? "FavoriteFilled" : "FavoriteOutline"}
-            onPress={() => mutateGuard(toggleMutation, data.isFavorite)}
+            onPress={() => mutateGuard(toggleFavoriteFn, undefined)}
             dontCloseOnPress
           />
           <RemoveTrackFromPlaylist trackId={trackId} />

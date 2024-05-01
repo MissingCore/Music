@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { Pressable, Text, View } from "react-native";
 
 import { useAlbumForCurrentPage } from "@/api/albums/[id]";
-import { useToggleFavorite } from "@/features/album/api/toggleFavorite";
+import { useToggleFavorite } from "@/api/favorites/[id]";
 import { modalAtom } from "@/features/modal/store";
 import { playAtom } from "@/features/playback/api/controls";
 
@@ -20,20 +20,20 @@ export default function CurrentAlbumScreen() {
   const { id: albumId } = useLocalSearchParams<{ id: string }>();
   const navigation = useNavigation();
   const { isPending, error, data } = useAlbumForCurrentPage(albumId);
-  const toggleMutation = useToggleFavorite(albumId);
+  const toggleFavoriteFn = useToggleFavorite({ type: "album", id: albumId });
   const playFn = useSetAtom(playAtom);
   const openModal = useSetAtom(modalAtom);
 
   useEffect(() => {
     if (data?.isFavorite === undefined) return;
     // Add optimistic UI updates.
-    const isToggled = toggleMutation.isPending
+    const isToggled = toggleFavoriteFn.isPending
       ? !data.isFavorite
       : data.isFavorite;
 
     navigation.setOptions({
       headerRight: () => (
-        <Pressable onPress={() => mutateGuard(toggleMutation, data.isFavorite)}>
+        <Pressable onPress={() => mutateGuard(toggleFavoriteFn, undefined)}>
           <Ionicons
             name={isToggled ? "heart" : "heart-outline"}
             size={24}
@@ -42,7 +42,7 @@ export default function CurrentAlbumScreen() {
         </Pressable>
       ),
     });
-  }, [navigation, data?.isFavorite, toggleMutation]);
+  }, [navigation, data?.isFavorite, toggleFavoriteFn]);
 
   if (isPending) return <View className="w-full flex-1 px-4" />;
   else if (!!error || !data) {
