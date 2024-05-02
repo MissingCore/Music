@@ -7,8 +7,8 @@ import { useMemo, useState } from "react";
 import { Text, View } from "react-native";
 
 import { usePlaylistsForModal } from "@/api/playlists";
+import { useUpdatePlaylist } from "@/api/playlists/[id]";
 import { useCreatePlaylist } from "@/features/playlist/api/createPlaylist";
-import { useUpdatePlaylistName } from "@/features/playlist/api/updatePlaylistName";
 import type { ModalPlaylistName } from "../store";
 
 import Colors from "@/constants/Colors";
@@ -24,7 +24,7 @@ export function PlaylistNameModal({ origin, id }: ModalPlaylistName) {
   const [playlistName, setPlaylistName] = useState(origin === "new" ? "" : id!);
   const { isPending, error, data } = usePlaylistsForModal();
   const createPlaylist = useCreatePlaylist();
-  const updatePlaylistName = useUpdatePlaylistName(id ?? "");
+  const updatePlaylistFn = useUpdatePlaylist(id ?? "");
 
   const meetsCharLength = useMemo(() => {
     const santiziedStr = playlistName.trim();
@@ -82,7 +82,12 @@ export function PlaylistNameModal({ origin, id }: ModalPlaylistName) {
             onPress={() => {
               const santiziedStr = playlistName.trim();
               if (origin === "new") mutateGuard(createPlaylist, santiziedStr);
-              else mutateGuard(updatePlaylistName, santiziedStr);
+              else {
+                mutateGuard(updatePlaylistFn, {
+                  field: "name",
+                  value: santiziedStr,
+                });
+              }
             }}
             content={origin === "new" ? "CREATE" : "CONFIRM"}
           />

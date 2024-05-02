@@ -2,12 +2,11 @@ import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { useSetAtom } from "jotai";
 
 import { useToggleFavorite } from "@/api/favorites/[id]";
-import { usePlaylistForModal } from "@/api/playlists/[id]";
-import { useDeletePlaylistCover } from "@/features/playlist/api/deletePlaylistCover";
-import { useUpdatePlaylistCover } from "@/features/playlist/api/updatePlaylistCover";
+import { usePlaylistForModal, useUpdatePlaylist } from "@/api/playlists/[id]";
 import { modalAtom } from "../store";
 
 import { mutateGuard } from "@/lib/react-query";
+import { pickImage } from "@/lib/file-system";
 import { ModalBase } from "../components/ModalBase";
 import { Button } from "../components/ModalInteractive";
 import { ScrollRow, Title } from "../components/ModalUI";
@@ -20,8 +19,7 @@ export function PlaylistModal({ playlistName }: { playlistName: string }) {
     type: "playlist",
     id: playlistName,
   });
-  const updatePlaylistCover = useUpdatePlaylistCover(playlistName);
-  const deletePlaylistCover = useDeletePlaylistCover(playlistName);
+  const updatePlaylistFn = useUpdatePlaylist(playlistName);
 
   if (isPending || error) return null;
 
@@ -58,13 +56,25 @@ export function PlaylistModal({ playlistName }: { playlistName: string }) {
           <Button
             content="Change Cover"
             icon="ImageOutline"
-            onPress={() => mutateGuard(updatePlaylistCover, undefined)}
+            onPress={async () => {
+              try {
+                mutateGuard(updatePlaylistFn, {
+                  field: "coverSrc",
+                  value: await pickImage(),
+                });
+              } catch {}
+            }}
           />
           {typeof data.imageSource === "string" && (
             <Button
               content="Remove Cover"
               icon="HideImageOutline"
-              onPress={() => mutateGuard(deletePlaylistCover, undefined)}
+              onPress={() =>
+                mutateGuard(updatePlaylistFn, {
+                  field: "coverSrc",
+                  value: null,
+                })
+              }
             />
           )}
           <Button

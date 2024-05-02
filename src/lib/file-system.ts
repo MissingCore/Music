@@ -1,6 +1,31 @@
 import * as FileSystem from "expo-file-system";
+import * as ImagePicker from "expo-image-picker";
 
 import { createId } from "@/lib/cuid2";
+
+/** @description Helper to delete a file if it's defined. */
+export async function deleteFile(uri: string | undefined | null) {
+  if (uri) await FileSystem.deleteAsync(uri);
+}
+
+/**
+ * @description Helper to open the image picker, allowing the user to pick
+ *  1 image, then saves that image to our file system, returning the
+ *  file uri.
+ */
+export async function pickImage() {
+  const result = await ImagePicker.launchImageLibraryAsync({
+    base64: true,
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  });
+  if (result.canceled) throw new Error("Action cancelled.");
+
+  const { base64, mimeType } = result.assets[0];
+  if (!base64) throw new Error("No base64 representation found.");
+  if (!mimeType) throw new Error("No mimeType found.");
+
+  return await saveBase64Img(`data:${mimeType};base64,${base64}`);
+}
 
 /** @description Helper to save images to device. */
 export async function saveBase64Img(base64Img: string) {
@@ -12,9 +37,4 @@ export async function saveBase64Img(base64Img: string) {
     encoding: FileSystem.EncodingType.Base64,
   });
   return fileUri;
-}
-
-/** @description Helper to delete a file if it's defined. */
-export async function deleteFile(uri: string | undefined | null) {
-  if (uri) await FileSystem.deleteAsync(uri);
 }

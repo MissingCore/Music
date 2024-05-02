@@ -56,7 +56,7 @@ type PlaylistContent = {
 
 /** @description Basic structure of what we want to render on page. */
 function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
-  const { isPending, error, data } = queryHook(id ? id : undefined);
+  const { isPending, error, data } = queryHook(id ?? "");
 
   if (isPending) return <View className="w-full flex-1 px-4" />;
   else if (!!error || !data) {
