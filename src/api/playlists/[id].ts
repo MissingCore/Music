@@ -161,11 +161,45 @@ export const useUpdatePlaylist = (playlistName: string) => {
       if (result.isFavorite) {
         queryClient.invalidateQueries({ queryKey: favoriteKeys.lists() });
       }
-
       // Redirect to new playlist page if we renamed.
       if (result.action.field === "name") {
         router.replace(`/playlist/${result.action.value}`);
       }
+    },
+  });
+};
+
+// ---------------------------------------------------------------------
+//                            DELETE Methods
+// ---------------------------------------------------------------------
+export async function deletePlaylist({ playlistName }: BaseFnArgs) {
+  await db
+    .delete(tracksToPlaylists)
+    .where(eq(tracksToPlaylists.playlistName, playlistName));
+  const [deletedPlaylist] = await db
+    .delete(playlists)
+    .where(eq(playlists.name, playlistName))
+    .returning();
+
+  await deleteFile(deletedPlaylist.coverSrc);
+
+  return deletedPlaylist.isFavorite;
+}
+
+/** @description Delete specified playlist. */
+export const useDeletePlaylist = (playlistName: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => deletePlaylist({ playlistName }),
+    onSuccess: (wasFavorited: boolean) => {
+      queryClient.invalidateQueries({ queryKey: playlistKeys.all });
+      // Remove from favorites list if it was favorited.
+      if (wasFavorited) {
+        queryClient.invalidateQueries({ queryKey: favoriteKeys.lists() });
+      }
+      // Go back a page as this current page (deleted playlist) isn't valid.
+      router.back();
     },
   });
 };

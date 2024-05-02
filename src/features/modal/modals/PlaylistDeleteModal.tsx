@@ -1,8 +1,7 @@
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { Text, View } from "react-native";
 
-import { usePlaylistForModal } from "@/api/playlists/[id]";
-import { useDeletePlaylist } from "@/features/playlist/api/deletePlaylist";
+import { useDeletePlaylist, usePlaylistForModal } from "@/api/playlists/[id]";
 
 import { mutateGuard } from "@/lib/react-query";
 import { ModalBase } from "../components/ModalBase";

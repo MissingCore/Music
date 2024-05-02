@@ -6,9 +6,8 @@ import {
 import { useMemo, useState } from "react";
 import { Text, View } from "react-native";
 
-import { usePlaylistsForModal } from "@/api/playlists";
+import { useCreatePlaylist, usePlaylistsForModal } from "@/api/playlists";
 import { useUpdatePlaylist } from "@/api/playlists/[id]";
-import { useCreatePlaylist } from "@/features/playlist/api/createPlaylist";
 import type { ModalPlaylistName } from "../store";
 
 import Colors from "@/constants/Colors";
