@@ -1,26 +1,18 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { eq } from "drizzle-orm";
 import { useCallback } from "react";
 
-import { db } from "@/db";
-import type { AlbumWithTracks } from "@/db/schema";
+import { albums } from "@/db/schema";
+import { getAlbum } from "@/db/queries";
 import { formatForCurrentPages } from "@/db/utils/formatters";
 import { albumKeys } from "./_queryKeys";
 
 import { pickKeys } from "@/utils/object";
-import type { Prettify } from "@/utils/types";
+import type { ExtractFnReturnType, Prettify } from "@/utils/types";
 
 type BaseFnArgs = { albumId: string };
 
-type QueryFnData = AlbumWithTracks;
-
-export async function getAlbum({ albumId }: BaseFnArgs) {
-  const currentAlbum = await db.query.albums.findFirst({
-    where: (fields, { eq }) => eq(fields.id, albumId),
-    with: { tracks: true },
-  });
-  if (!currentAlbum) throw new Error(`Album ${albumId} doesn't exist.`);
-  return currentAlbum;
-}
+type QueryFnData = ExtractFnReturnType<typeof getAlbum>;
 
 type UseAlbumOptions<TData = QueryFnData> = Prettify<
   BaseFnArgs & {
@@ -39,7 +31,7 @@ export const useAlbum = <TData = QueryFnData>({
 
   return useQuery({
     queryKey: albumKeys.detail(albumId),
-    queryFn: () => getAlbum({ albumId }),
+    queryFn: () => getAlbum([eq(albums.id, albumId)]),
     placeholderData: () => {
       return queryClient
         .getQueryData<QueryFnData[]>(albumKeys.all)

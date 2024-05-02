@@ -1,26 +1,18 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { eq } from "drizzle-orm";
 import { useCallback } from "react";
 
-import { db } from "@/db";
-import type { TrackWithAlbum } from "@/db/schema";
+import { tracks } from "@/db/schema";
+import { getTrack } from "@/db/queries";
 import { getTrackCover } from "@/db/utils/formatters";
 import { trackKeys } from "./_queryKeys";
 
 import { pickKeys } from "@/utils/object";
-import type { Prettify } from "@/utils/types";
+import type { ExtractFnReturnType, Prettify } from "@/utils/types";
 
 type BaseFnArgs = { trackId: string };
 
-type QueryFnData = TrackWithAlbum;
-
-export async function getTrack({ trackId }: BaseFnArgs) {
-  const currentTrack = await db.query.tracks.findFirst({
-    where: (fields, { eq }) => eq(fields.id, trackId),
-    with: { album: true },
-  });
-  if (!currentTrack) throw new Error(`Track ${trackId} doesn't exist.`);
-  return currentTrack;
-}
+type QueryFnData = ExtractFnReturnType<typeof getTrack>;
 
 type UseTrackOptions<TData = QueryFnData> = Prettify<
   BaseFnArgs & {
@@ -39,7 +31,7 @@ export const useTrack = <TData = QueryFnData>({
 
   return useQuery({
     queryKey: trackKeys.detail(trackId),
-    queryFn: () => getTrack({ trackId }),
+    queryFn: () => getTrack([eq(tracks.id, trackId)]),
     placeholderData: () => {
       return queryClient
         .getQueryData<QueryFnData[]>(trackKeys.all)

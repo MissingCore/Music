@@ -1,19 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { db } from "@/db";
-import type { ArtistWithTracks } from "@/db/schema";
+import { getArtists } from "@/db/queries";
 import { artistKeys } from "./_queryKeys";
 
+import type { ExtractFnReturnType } from "@/utils/types";
 import { getTrackCountStr } from "@/features/track/utils";
 
-type QueryFnData = ArtistWithTracks[];
-
-export async function getArtists() {
-  return await db.query.artists.findMany({
-    with: { tracks: { with: { album: true } } },
-  });
-}
+type QueryFnData = ExtractFnReturnType<typeof getArtists>;
 
 type UseArtistsOptions<TData = QueryFnData> = {
   config?: {
@@ -27,7 +21,7 @@ export const useArtists = <TData = QueryFnData>({
 }: UseArtistsOptions<TData>) =>
   useQuery({
     queryKey: artistKeys.all,
-    queryFn: getArtists,
+    queryFn: () => getArtists(),
     staleTime: Infinity,
     ...config,
   });

@@ -2,30 +2,20 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import { db } from "@/db";
-import type { PlaylistWithTracks } from "@/db/schema";
 import { playlists } from "@/db/schema";
-import { fixPlaylistJunction, formatForMediaCard } from "@/db/utils/formatters";
+import { getPlaylists } from "@/db/queries";
+import { formatForMediaCard } from "@/db/utils/formatters";
 import { sanitizedPlaylistName } from "@/db/utils/validators";
 import { playlistKeys } from "./_queryKeys";
+
+import type { ExtractFnReturnType } from "@/utils/types";
 
 type BaseFnArgs = { playlistName: string };
 
 // ---------------------------------------------------------------------
 //                            GET Methods
 // ---------------------------------------------------------------------
-type GETFnData = PlaylistWithTracks[];
-
-export async function getPlaylists() {
-  const allPlaylists = await db.query.playlists.findMany({
-    with: {
-      tracksToPlaylists: {
-        columns: {},
-        with: { track: { with: { album: true } } },
-      },
-    },
-  });
-  return allPlaylists.map((data) => fixPlaylistJunction(data));
-}
+type GETFnData = ExtractFnReturnType<typeof getPlaylists>;
 
 type UsePlaylistsOptions<TData = GETFnData> = {
   config?: {
@@ -39,7 +29,7 @@ export const usePlaylists = <TData = GETFnData>({
 }: UsePlaylistsOptions<TData>) =>
   useQuery({
     queryKey: playlistKeys.all,
-    queryFn: getPlaylists,
+    queryFn: () => getPlaylists(),
     staleTime: Infinity,
     ...config,
   });

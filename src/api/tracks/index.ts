@@ -1,16 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { db } from "@/db";
-import type { TrackWithAlbum } from "@/db/schema";
+import { getTracks } from "@/db/queries";
 import { formatTracksForTrackCard } from "@/db/utils/formatters";
 import { trackKeys } from "./_queryKeys";
 
-type QueryFnData = TrackWithAlbum[];
+import type { ExtractFnReturnType } from "@/utils/types";
 
-export async function getTracks() {
-  return await db.query.tracks.findMany({ with: { album: true } });
-}
+type QueryFnData = ExtractFnReturnType<typeof getTracks>;
 
 type UseTracksOptions<TData = QueryFnData> = {
   config?: {
@@ -24,7 +21,7 @@ export const useTracks = <TData = QueryFnData>({
 }: UseTracksOptions<TData>) =>
   useQuery({
     queryKey: trackKeys.all,
-    queryFn: getTracks,
+    queryFn: () => getTracks(),
     staleTime: Infinity,
     ...config,
   });

@@ -4,43 +4,23 @@ import { router } from "expo-router";
 import { useCallback } from "react";
 
 import { db } from "@/db";
-import type { PlaylistWithTracks } from "@/db/schema";
 import { playlists, tracksToPlaylists } from "@/db/schema";
-import {
-  getPlaylistCover,
-  fixPlaylistJunction,
-  formatForCurrentPages,
-} from "@/db/utils/formatters";
+import { getPlaylist } from "@/db/queries";
+import { getPlaylistCover, formatForCurrentPages } from "@/db/utils/formatters";
 import { sanitizedPlaylistName } from "@/db/utils/validators";
 import { playlistKeys } from "./_queryKeys";
 import { favoriteKeys } from "../favorites/_queryKeys";
 
 import { deleteFile } from "@/lib/file-system";
 import { pickKeys } from "@/utils/object";
-import type { Prettify } from "@/utils/types";
+import type { ExtractFnReturnType, Prettify } from "@/utils/types";
 
 type BaseFnArgs = { playlistName: string };
 
 // ---------------------------------------------------------------------
 //                            GET Methods
 // ---------------------------------------------------------------------
-type GETFnData = PlaylistWithTracks;
-
-export async function getPlaylist({ playlistName }: BaseFnArgs) {
-  const currentPlaylist = await db.query.playlists.findFirst({
-    where: (fields, { eq }) => eq(fields.name, playlistName),
-    with: {
-      tracksToPlaylists: {
-        columns: {},
-        with: { track: { with: { album: true } } },
-      },
-    },
-  });
-  if (!currentPlaylist) {
-    throw new Error(`Playlist ${playlistName} doesn't exist.`);
-  }
-  return fixPlaylistJunction(currentPlaylist);
-}
+type GETFnData = ExtractFnReturnType<typeof getPlaylist>;
 
 type UsePlaylistOptions<TData = GETFnData> = Prettify<
   BaseFnArgs & {
@@ -59,7 +39,7 @@ export const usePlaylist = <TData = GETFnData>({
 
   return useQuery({
     queryKey: playlistKeys.detail(playlistName),
-    queryFn: () => getPlaylist({ playlistName }),
+    queryFn: () => getPlaylist([eq(playlists.name, playlistName)]),
     placeholderData: () => {
       return queryClient
         .getQueryData<GETFnData[]>(playlistKeys.all)
@@ -112,40 +92,34 @@ type UPDATEFnAction =
 type UPDATEFnArgs = Prettify<BaseFnArgs & { action: UPDATEFnAction }>;
 
 export async function updatePlaylist({ playlistName, action }: UPDATEFnArgs) {
-  const currentPlaylist = await db.query.playlists.findFirst({
-    where: (fields, { eq }) => eq(fields.name, playlistName),
-  });
-  if (!currentPlaylist) {
-    throw new Error(`Playlist ${playlistName} doesn't exist.`);
-  }
+  const prevValue = await getPlaylist([eq(playlists.name, playlistName)]);
 
   if (action.field === "coverSrc") {
-    await deleteFile(currentPlaylist.coverSrc);
+    await deleteFile(prevValue.coverSrc);
     await db
       .update(playlists)
       .set({ coverSrc: action.value })
       .where(eq(playlists.name, playlistName));
   } else {
     const sanitizedName = sanitizedPlaylistName(action.value);
-
-    const exists = await db.query.playlists.findFirst({
-      where: (fields, { eq }) => eq(fields.name, sanitizedName),
-    });
-    if (exists) {
-      throw new Error(`Playlist with name ${sanitizedName} already exists.`);
+    let exists: unknown;
+    try {
+      exists = await getPlaylist([eq(playlists.name, sanitizedName)]);
+    } catch {
+      // We know this new playlist name hasn't been used.
+      await db
+        .update(playlists)
+        .set({ name: sanitizedName })
+        .where(eq(playlists.name, playlistName));
+      await db
+        .update(tracksToPlaylists)
+        .set({ playlistName: sanitizedName })
+        .where(eq(tracksToPlaylists.playlistName, playlistName));
     }
-
-    await db
-      .update(playlists)
-      .set({ name: sanitizedName })
-      .where(eq(playlists.name, playlistName));
-    await db
-      .update(tracksToPlaylists)
-      .set({ playlistName: sanitizedName })
-      .where(eq(tracksToPlaylists.playlistName, playlistName));
+    if (exists) throw new Error("Playlist with name already exists.");
   }
 
-  return { playlistName, action, isFavorite: currentPlaylist.isFavorite };
+  return { playlistName, action, isFavorite: prevValue.isFavorite };
 }
 
 /** @description Update a specific field in a playlist. */

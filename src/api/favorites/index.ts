@@ -1,56 +1,35 @@
 import { useQuery } from "@tanstack/react-query";
+import { eq } from "drizzle-orm";
 import { useCallback } from "react";
 
-import { db } from "@/db";
-import type {
-  AlbumWithTracks,
-  PlaylistWithTracks,
-  TrackWithAlbum,
-} from "@/db/schema";
+import { albums, playlists, tracks } from "@/db/schema";
+import { getAlbums, getPlaylists, getTracks } from "@/db/queries";
 import {
-  fixPlaylistJunction,
   formatForCurrentPages,
   formatForMediaCard,
 } from "@/db/utils/formatters";
 import { favoriteKeys } from "./_queryKeys";
 
+import type { ExtractFnReturnType } from "@/utils/types";
 import { SpecialPlaylists } from "@/features/playback/utils/trackList";
 
 type FavoriteListsFnData = {
-  albums: AlbumWithTracks[];
-  playlists: PlaylistWithTracks[];
+  albums: ExtractFnReturnType<typeof getAlbums>;
+  playlists: ExtractFnReturnType<typeof getPlaylists>;
 };
 
 export async function getFavoriteLists() {
   const [favoriteAlbums, favoritePlaylists] = await Promise.all([
-    db.query.albums.findMany({
-      where: (fields, { eq }) => eq(fields.isFavorite, true),
-      with: { tracks: true },
-    }),
-    db.query.playlists.findMany({
-      where: (fields, { eq }) => eq(fields.isFavorite, true),
-      with: {
-        tracksToPlaylists: {
-          columns: {},
-          with: { track: { with: { album: true } } },
-        },
-      },
-    }),
+    getAlbums([eq(albums.isFavorite, true)]),
+    getPlaylists([eq(playlists.isFavorite, true)]),
   ]);
-
-  return {
-    albums: favoriteAlbums,
-    playlists: favoritePlaylists.map((data) => fixPlaylistJunction(data)),
-  };
+  return { albums: favoriteAlbums, playlists: favoritePlaylists };
 }
 
-type FavoriteTracksFnData = TrackWithAlbum[];
+type FavoriteTracksFnData = ExtractFnReturnType<typeof getTracks>;
 
 export async function getFavoriteTracks() {
-  return await db.query.tracks.findMany({
-    where: (fields, { eq }) => eq(fields.isFavorite, true),
-    with: { album: true },
-  });
+  return await getTracks([eq(tracks.isFavorite, true)]);
 }
 
 type UseFavoriteOptions<

@@ -1,25 +1,17 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { eq } from "drizzle-orm";
 import { useCallback } from "react";
 
-import { db } from "@/db";
-import type { ArtistWithTracks } from "@/db/schema";
+import { artists } from "@/db/schema";
+import { getArtist } from "@/db/queries";
 import { formatForCurrentPages } from "@/db/utils/formatters";
 import { artistKeys } from "./_queryKeys";
 
-import type { Prettify } from "@/utils/types";
+import type { ExtractFnReturnType, Prettify } from "@/utils/types";
 
 type BaseFnArgs = { artistName: string };
 
-type QueryFnData = ArtistWithTracks;
-
-export async function getArtist({ artistName }: BaseFnArgs) {
-  const currentArtist = await db.query.artists.findFirst({
-    where: (fields, { eq }) => eq(fields.name, artistName),
-    with: { tracks: { with: { album: true } } },
-  });
-  if (!currentArtist) throw new Error(`Artist ${artistName} doesn't exist.`);
-  return currentArtist;
-}
+type QueryFnData = ExtractFnReturnType<typeof getArtist>;
 
 type UseArtistOptions<TData = QueryFnData> = Prettify<
   BaseFnArgs & {
@@ -38,7 +30,7 @@ export const useArtist = <TData = QueryFnData>({
 
   return useQuery({
     queryKey: artistKeys.detail(artistName),
-    queryFn: () => getArtist({ artistName }),
+    queryFn: () => getArtist([eq(artists.name, artistName)]),
     placeholderData: () => {
       return queryClient
         .getQueryData<QueryFnData[]>(artistKeys.all)

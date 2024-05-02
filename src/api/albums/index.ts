@@ -1,16 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-import { db } from "@/db";
-import type { AlbumWithTracks } from "@/db/schema";
+import { getAlbums } from "@/db/queries";
 import { formatForMediaCard } from "@/db/utils/formatters";
 import { albumKeys } from "./_queryKeys";
 
-type QueryFnData = AlbumWithTracks[];
+import type { ExtractFnReturnType } from "@/utils/types";
 
-export async function getAlbums() {
-  return await db.query.albums.findMany({ with: { tracks: true } });
-}
+type QueryFnData = ExtractFnReturnType<typeof getAlbums>;
 
 type UseAlbumsOptions<TData = QueryFnData> = {
   config?: {
@@ -24,7 +21,7 @@ export const useAlbums = <TData = QueryFnData>({
 }: UseAlbumsOptions<TData>) =>
   useQuery({
     queryKey: albumKeys.all,
-    queryFn: getAlbums,
+    queryFn: () => getAlbums(),
     staleTime: Infinity,
     ...config,
   });
