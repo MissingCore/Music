@@ -10,9 +10,9 @@ import { trackKeys } from "../tracks/_queryKeys";
 
 import type { Media } from "@/components/media/types";
 
-type FnArgs = { type: Exclude<Media, "artist">; id: string };
+type BaseFnArgs = { type: Exclude<Media, "artist">; id: string };
 
-export async function toggleFavorite({ type, id }: FnArgs) {
+export async function toggleFavorite({ type, id }: BaseFnArgs) {
   if (type === "album") {
     await db
       .update(albums)
@@ -34,7 +34,7 @@ export async function toggleFavorite({ type, id }: FnArgs) {
 type TData = { name: string; id?: string; isFavorite: boolean };
 
 /** @description Toggle the favorite status of supported media. */
-export const useToggleFavorite = (args: FnArgs) => {
+export const useToggleFavorite = (args: BaseFnArgs) => {
   const queryClient = useQueryClient();
 
   return useMutation({

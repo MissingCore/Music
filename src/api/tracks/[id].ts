@@ -7,10 +7,13 @@ import { getTrackCover } from "@/db/utils/formatters";
 import { trackKeys } from "./_queryKeys";
 
 import { pickKeys } from "@/utils/object";
+import type { Prettify } from "@/utils/types";
+
+type BaseFnArgs = { trackId: string };
 
 type QueryFnData = TrackWithAlbum;
 
-export async function getTrack({ trackId }: { trackId: string }) {
+export async function getTrack({ trackId }: BaseFnArgs) {
   const currentTrack = await db.query.tracks.findFirst({
     where: (fields, { eq }) => eq(fields.id, trackId),
     with: { album: true },
@@ -19,12 +22,13 @@ export async function getTrack({ trackId }: { trackId: string }) {
   return currentTrack;
 }
 
-type UseTrackOptions<TData = QueryFnData> = {
-  trackId: string | undefined;
-  config?: {
-    select?: (data: QueryFnData) => TData;
-  };
-};
+type UseTrackOptions<TData = QueryFnData> = Prettify<
+  BaseFnArgs & {
+    config?: {
+      select?: (data: QueryFnData) => TData;
+    };
+  }
+>;
 
 /** @description Returns specified track. */
 export const useTrack = <TData = QueryFnData>({
@@ -34,9 +38,8 @@ export const useTrack = <TData = QueryFnData>({
   const queryClient = useQueryClient();
 
   return useQuery({
-    enabled: Boolean(trackId),
-    queryKey: trackKeys.detail(trackId!),
-    queryFn: () => getTrack({ trackId: trackId! }),
+    queryKey: trackKeys.detail(trackId),
+    queryFn: () => getTrack({ trackId }),
     placeholderData: () => {
       return queryClient
         .getQueryData<QueryFnData[]>(trackKeys.all)
@@ -48,7 +51,7 @@ export const useTrack = <TData = QueryFnData>({
 };
 
 /** @description Return the most-used subset of track data. */
-export const useTrackExcerpt = (trackId: string | undefined) =>
+export const useTrackExcerpt = (trackId: string) =>
   useTrack({
     trackId,
     config: {

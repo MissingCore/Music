@@ -7,10 +7,13 @@ import { formatForCurrentPages } from "@/db/utils/formatters";
 import { albumKeys } from "./_queryKeys";
 
 import { pickKeys } from "@/utils/object";
+import type { Prettify } from "@/utils/types";
+
+type BaseFnArgs = { albumId: string };
 
 type QueryFnData = AlbumWithTracks;
 
-export async function getAlbum({ albumId }: { albumId: string }) {
+export async function getAlbum({ albumId }: BaseFnArgs) {
   const currentAlbum = await db.query.albums.findFirst({
     where: (fields, { eq }) => eq(fields.id, albumId),
     with: { tracks: true },
@@ -19,12 +22,13 @@ export async function getAlbum({ albumId }: { albumId: string }) {
   return currentAlbum;
 }
 
-type UseAlbumOptions<TData = QueryFnData> = {
-  albumId: string | undefined;
-  config?: {
-    select?: (data: QueryFnData) => TData;
-  };
-};
+type UseAlbumOptions<TData = QueryFnData> = Prettify<
+  BaseFnArgs & {
+    config?: {
+      select?: (data: QueryFnData) => TData;
+    };
+  }
+>;
 
 /** @description Returns specified album with its tracks. */
 export const useAlbum = <TData = QueryFnData>({
@@ -34,9 +38,8 @@ export const useAlbum = <TData = QueryFnData>({
   const queryClient = useQueryClient();
 
   return useQuery({
-    enabled: Boolean(albumId),
-    queryKey: albumKeys.detail(albumId!),
-    queryFn: () => getAlbum({ albumId: albumId! }),
+    queryKey: albumKeys.detail(albumId),
+    queryFn: () => getAlbum({ albumId }),
     placeholderData: () => {
       return queryClient
         .getQueryData<QueryFnData[]>(albumKeys.all)
@@ -51,7 +54,7 @@ export const useAlbum = <TData = QueryFnData>({
  * @description Return data to render "MediaList" components on the
  *  `/album/[id]` route.
  */
-export const useAlbumForCurrentPage = (albumId: string | undefined) =>
+export const useAlbumForCurrentPage = (albumId: string) =>
   useAlbum({
     albumId,
     config: {
