@@ -50,20 +50,18 @@ export const useToggleFavorite = (args: FnArgs) => {
             : trackKeys;
 
       // Update specific entry.
-      queryClient.setQueryData(usedKey.detail(id), (old: Partial<TData>) => {
-        return { ...old, isFavorite: !old.isFavorite };
-      });
+      queryClient.setQueryData(usedKey.detail(id), (old?: Partial<TData>) =>
+        old ? { ...old, isFavorite: !old.isFavorite } : undefined,
+      );
 
       // Update entry in cumulative list.
-      try {
-        const pk = type === "playlist" ? "name" : "id";
-        queryClient.setQueryData(usedKey.all, (old: Array<Partial<TData>>) =>
-          old.map((data) => {
-            if (data[pk] !== id) return data;
-            return { ...data, isFavorite: !data.isFavorite };
-          }),
-        );
-      } catch {} // Silently handle case where cache isn't defined.
+      const pk = type === "playlist" ? "name" : "id";
+      queryClient.setQueryData(usedKey.all, (old?: Array<Partial<TData>>) =>
+        old?.map((data) => {
+          if (data[pk] !== id) return data;
+          return { ...data, isFavorite: !data.isFavorite };
+        }),
+      );
 
       // Additional invalidation to any favorite-related content.
       queryClient.invalidateQueries({
