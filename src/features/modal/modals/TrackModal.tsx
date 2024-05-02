@@ -7,11 +7,13 @@ import { View } from "react-native";
 import { useToggleFavorite } from "@/api/favorites/[id]";
 import { useTrackExcerpt } from "@/api/tracks/[id]";
 import {
+  useDeleteTrackFromPlaylist,
+  useIsTrackInPlaylist,
+} from "@/api/tracks/[id]/playlist";
+import {
   addTrackToQueueAtom,
   playingInfoAtom,
 } from "@/features/playback/api/playing";
-import { useIsTrackInPlaylist } from "@/features/playlist/api/isTrackInPlaylist";
-import { useRemoveTrackFromPlaylist } from "@/features/playlist/api/removeTrackFromPlaylist";
 import { modalAtom } from "../store";
 
 import { cn } from "@/lib/style";
@@ -147,10 +149,10 @@ function RemoveTrackFromPlaylist({ trackId }: { trackId: string }) {
     isPending,
     error,
     data: isTrackInPlaylist,
-  } = useIsTrackInPlaylist(trackId, currentPlaylist);
-  const removeTrackFromPlaylist = useRemoveTrackFromPlaylist(
+  } = useIsTrackInPlaylist(trackId, currentPlaylist ?? "");
+  const removeTrackFromPlaylist = useDeleteTrackFromPlaylist(
     trackId,
-    currentPlaylist,
+    currentPlaylist ?? "",
   );
 
   if (isPending || error) return null;

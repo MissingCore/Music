@@ -82,3 +82,12 @@ export async function getTracks(filters?: SQL[]) {
     with: { album: true },
   });
 }
+
+export async function getTracksToPlaylists(filters?: SQL[]) {
+  const allTracksToPlaylists = await db.query.tracksToPlaylists.findMany({
+    where: and(...(filters ?? [])),
+    columns: {},
+    with: { playlist: true },
+  });
+  return allTracksToPlaylists.map(({ playlist }) => playlist);
+}

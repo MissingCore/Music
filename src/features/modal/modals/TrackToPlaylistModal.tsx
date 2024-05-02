@@ -5,9 +5,11 @@ import { useCallback, useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
-import { db } from "@/db";
 import { usePlaylistsForModal } from "@/api/playlists";
-import { useAddTrackToPlaylists } from "@/features/playlist/api/addTrackToPlaylists";
+import {
+  usePutTrackInPlaylists,
+  useTrackInPlaylists,
+} from "@/api/tracks/[id]/playlist";
 
 import Colors from "@/constants/Colors";
 import { cn } from "@/lib/style";
@@ -20,9 +22,10 @@ import { Title } from "../components/ModalUI";
 
 /** @description Modal used for adding or removing a track from a playlist. */
 export function TrackToPlaylistModal({ trackId }: { trackId: string }) {
-  const { isPending, error, data } = usePlaylistsForModal();
+  const { isPending, error, data: playlistData } = usePlaylistsForModal();
+  const trackInPlaylists = useTrackInPlaylists({ trackId });
   const [inPlaylist, setInPlaylist] = useState<Record<string, boolean>>({});
-  const addTrackToPlaylists = useAddTrackToPlaylists(trackId);
+  const putTrackInPlaylistsFn = usePutTrackInPlaylists(trackId);
 
   const renderFooter = useCallback(
     (props: BottomSheetFooterProps) => (
@@ -36,29 +39,31 @@ export function TrackToPlaylistModal({ trackId }: { trackId: string }) {
           <ModalFormButton content="CANCEL" />
           <ModalFormButton
             theme="secondary"
-            onPress={() => mutateGuard(addTrackToPlaylists, inPlaylist)}
+            onPress={() => {
+              const playlistNames = Object.entries(inPlaylist)
+                .filter(([_name, status]) => status)
+                .map(([name]) => name);
+              return mutateGuard(putTrackInPlaylistsFn, playlistNames);
+            }}
             content="CONFIRM"
           />
         </View>
       </BottomSheetFooter>
     ),
-    [addTrackToPlaylists, inPlaylist],
+    [putTrackInPlaylistsFn, inPlaylist],
   );
 
   useEffect(() => {
     async function getTracksToPlaylist() {
-      if (!data) return;
+      if (!playlistData || !trackInPlaylists.data) return;
       // Get all playlist names & create the initial `inPlaylist` object.
-      const playlistNames = data.map(({ name }) => name);
+      const playlistNames = playlistData.map(({ name }) => name);
       const initInPlaylist = Object.fromEntries(
         playlistNames.map((name) => [name, false]),
       );
-      // Get all playlists track is in (look in `tracksToPlaylists` table)
-      const inPlaylists = await db.query.tracksToPlaylists.findMany({
-        where: (fields, { eq }) => eq(fields.trackId, trackId),
-        columns: { playlistName: true },
-      });
-      inPlaylists.forEach(({ playlistName }) => {
+      // Get all playlists track is in.
+      const usedPlaylists = trackInPlaylists.data.map(({ name }) => name);
+      usedPlaylists.forEach((playlistName) => {
         initInPlaylist[playlistName] = true;
       });
 
@@ -66,8 +71,9 @@ export function TrackToPlaylistModal({ trackId }: { trackId: string }) {
     }
 
     getTracksToPlaylist();
-  }, [data, trackId]);
+  }, [playlistData, trackInPlaylists.data]);
 
+  if (trackInPlaylists.isPending || trackInPlaylists.error) return null;
   if (isPending || error) return null;
 
   return (
@@ -75,7 +81,7 @@ export function TrackToPlaylistModal({ trackId }: { trackId: string }) {
       <BottomSheetView className="px-4">
         <Title className="mb-4">Add Track to Playlist</Title>
         <FlatList
-          data={data}
+          data={playlistData}
           keyExtractor={({ name }) => name}
           renderItem={({ item: { name, trackCount } }) => (
             <PlaylistCheckbox

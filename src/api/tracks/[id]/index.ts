@@ -5,7 +5,7 @@ import { useCallback } from "react";
 import { tracks } from "@/db/schema";
 import { getTrack } from "@/db/queries";
 import { getTrackCover } from "@/db/utils/formatters";
-import { trackKeys } from "./_queryKeys";
+import { trackKeys } from "../_queryKeys";
 
 import { pickKeys } from "@/utils/object";
 import type { ExtractFnReturnType, Prettify } from "@/utils/types";

@@ -52,7 +52,7 @@ export const useFavoriteLists = <TData = FavoriteListsFnData>({
     ...config,
   });
 
-/** @description Returns an list of favorited tracks. */
+/** @description Returns a list of favorited tracks. */
 export const useFavoriteTracks = <TData = FavoriteTracksFnData>({
   config,
 }: UseFavoriteOptions<FavoriteTracksFnData, TData>) =>
