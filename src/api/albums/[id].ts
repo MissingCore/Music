@@ -8,19 +8,16 @@ import { formatForCurrentPages } from "@/db/utils/formatters";
 import { albumKeys } from "./_queryKeys";
 
 import { pickKeys } from "@/utils/object";
-import type { ExtractFnReturnType, Prettify } from "@/utils/types";
-
-type BaseFnArgs = { albumId: string };
+import type { ExtractFnReturnType } from "@/utils/types";
 
 type QueryFnData = ExtractFnReturnType<typeof getAlbum>;
 
-type UseAlbumOptions<TData = QueryFnData> = Prettify<
-  BaseFnArgs & {
-    config?: {
-      select?: (data: QueryFnData) => TData;
-    };
-  }
->;
+type UseAlbumOptions<TData = QueryFnData> = {
+  albumId: string;
+  config?: {
+    select?: (data: QueryFnData) => TData;
+  };
+};
 
 /** @description Returns specified album with its tracks. */
 export const useAlbum = <TData = QueryFnData>({

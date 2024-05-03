@@ -41,7 +41,6 @@ export const useToggleFavorite = (args: BaseFnArgs) => {
     mutationFn: () => toggleFavorite(args),
     onSuccess: () => {
       const { type, id } = args;
-
       const usedKey =
         type === "album"
           ? albumKeys
@@ -53,7 +52,6 @@ export const useToggleFavorite = (args: BaseFnArgs) => {
       queryClient.setQueryData(usedKey.detail(id), (old?: Partial<TData>) =>
         old ? { ...old, isFavorite: !old.isFavorite } : undefined,
       );
-
       // Update entry in cumulative list.
       const pk = type === "playlist" ? "name" : "id";
       queryClient.setQueryData(usedKey.all, (old?: Array<Partial<TData>>) =>
@@ -62,7 +60,6 @@ export const useToggleFavorite = (args: BaseFnArgs) => {
           return { ...data, isFavorite: !data.isFavorite };
         }),
       );
-
       // Additional invalidation to any favorite-related content.
       queryClient.invalidateQueries({
         queryKey:

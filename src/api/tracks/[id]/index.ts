@@ -8,19 +8,16 @@ import { getTrackCover } from "@/db/utils/formatters";
 import { trackKeys } from "../_queryKeys";
 
 import { pickKeys } from "@/utils/object";
-import type { ExtractFnReturnType, Prettify } from "@/utils/types";
-
-type BaseFnArgs = { trackId: string };
+import type { ExtractFnReturnType } from "@/utils/types";
 
 type QueryFnData = ExtractFnReturnType<typeof getTrack>;
 
-type UseTrackOptions<TData = QueryFnData> = Prettify<
-  BaseFnArgs & {
-    config?: {
-      select?: (data: QueryFnData) => TData;
-    };
-  }
->;
+type UseTrackOptions<TData = QueryFnData> = {
+  trackId: string;
+  config?: {
+    select?: (data: QueryFnData) => TData;
+  };
+};
 
 /** @description Returns specified track. */
 export const useTrack = <TData = QueryFnData>({
