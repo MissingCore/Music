@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { eq } from "drizzle-orm";
 import { router } from "expo-router";
+import { useSetAtom } from "jotai";
 import { useCallback } from "react";
 
 import { db } from "@/db";
@@ -10,6 +11,8 @@ import { getPlaylistCover, formatForCurrentPages } from "@/db/utils/formatters";
 import { sanitizedPlaylistName } from "@/db/utils/validators";
 import { playlistKeys } from "./_queryKeys";
 import { favoriteKeys } from "../favorites/_queryKeys";
+
+import { resynchronizeOnAtom } from "@/features/playback/api/synchronize";
 
 import { deleteFile } from "@/lib/file-system";
 import { pickKeys } from "@/utils/object";
@@ -125,6 +128,7 @@ export async function updatePlaylist({ playlistName, action }: UPDATEFnArgs) {
 /** @description Update a specific field in a playlist. */
 export const useUpdatePlaylist = (playlistName: string) => {
   const queryClient = useQueryClient();
+  const resynchronizeFn = useSetAtom(resynchronizeOnAtom);
 
   return useMutation({
     mutationFn: (action: UPDATEFnAction) =>
@@ -137,7 +141,21 @@ export const useUpdatePlaylist = (playlistName: string) => {
       }
       // Redirect to new playlist page if we renamed.
       if (result.action.field === "name") {
-        router.replace(`/playlist/${result.action.value}`);
+        const { value } = result.action;
+        // Resynchronize with Jotai.
+        resynchronizeFn({
+          action: "rename",
+          data: {
+            old: { type: "playlist", id: playlistName, name: playlistName },
+            latest: { type: "playlist", id: value, name: value },
+          },
+        });
+        router.replace(`/playlist/${value}`);
+      } else {
+        resynchronizeFn({
+          action: "update",
+          data: { type: "playlist", id: playlistName, name: playlistName },
+        });
       }
     },
   });
@@ -163,6 +181,7 @@ export async function deletePlaylist({ playlistName }: BaseFnArgs) {
 /** @description Delete specified playlist. */
 export const useDeletePlaylist = (playlistName: string) => {
   const queryClient = useQueryClient();
+  const resynchronizeFn = useSetAtom(resynchronizeOnAtom);
 
   return useMutation({
     mutationFn: () => deletePlaylist({ playlistName }),
@@ -172,6 +191,11 @@ export const useDeletePlaylist = (playlistName: string) => {
       if (wasFavorited) {
         queryClient.invalidateQueries({ queryKey: favoriteKeys.lists() });
       }
+      // Resynchronize with Jotai.
+      resynchronizeFn({
+        action: "delete",
+        data: { type: "playlist", id: playlistName, name: playlistName },
+      });
       // Go back a page as this current page (deleted playlist) isn't valid.
       router.back();
     },
