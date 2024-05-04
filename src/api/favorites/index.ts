@@ -2,8 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { eq } from "drizzle-orm";
 import { useCallback } from "react";
 
-import { albums, playlists, tracks } from "@/db/schema";
-import { getAlbums, getPlaylists, getTracks } from "@/db/queries";
+import { albums, playlists } from "@/db/schema";
+import { getAlbums, getPlaylists, getSpecialPlaylist } from "@/db/queries";
 import {
   formatForCurrentPages,
   formatForMediaCard,
@@ -26,11 +26,7 @@ export async function getFavoriteLists() {
   return { albums: favoriteAlbums, playlists: favoritePlaylists };
 }
 
-type FavoriteTracksFnData = ExtractFnReturnType<typeof getTracks>;
-
-export async function getFavoriteTracks() {
-  return await getTracks([eq(tracks.isFavorite, true)]);
-}
+type FavoriteTracksFnData = ExtractFnReturnType<typeof getSpecialPlaylist>;
 
 type UseFavoriteOptions<
   TData extends FavoriteListsFnData | FavoriteTracksFnData,
@@ -58,7 +54,7 @@ export const useFavoriteTracks = <TData = FavoriteTracksFnData>({
 }: UseFavoriteOptions<FavoriteTracksFnData, TData>) =>
   useQuery({
     queryKey: favoriteKeys.tracks(),
-    queryFn: getFavoriteTracks,
+    queryFn: () => getSpecialPlaylist(SpecialPlaylists.favorites),
     staleTime: Infinity,
     ...config,
   });
@@ -89,7 +85,10 @@ export const useFavoriteListsForMediaCard = () =>
 export const useFavoriteTracksCount = () =>
   useFavoriteTracks({
     config: {
-      select: useCallback((data: FavoriteTracksFnData) => data.length, []),
+      select: useCallback(
+        (data: FavoriteTracksFnData) => data.tracks.length,
+        [],
+      ),
     },
   });
 
@@ -102,15 +101,7 @@ export const useFavoriteTracksForCurrentPage = () =>
     config: {
       select: useCallback(
         (data: FavoriteTracksFnData) => ({
-          ...formatForCurrentPages({
-            type: "playlist",
-            data: {
-              name: SpecialPlaylists.favorites,
-              coverSrc: SpecialPlaylists.favorites,
-              isFavorite: false,
-              tracks: data,
-            },
-          }),
+          ...formatForCurrentPages({ type: "playlist", data }),
           imageSource: SpecialPlaylists.favorites,
         }),
         [],

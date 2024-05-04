@@ -57,18 +57,17 @@ export function formatForMediaCard({ type, data }: FnArgs) {
   const trackStr = getTrackCountStr(data.tracks.length);
   return {
     type,
-    // FIXME: Might need to fix `source` for Special Playlists
     source:
       type === "album"
         ? data.coverSrc
-        : type === "playlist"
+        : type === "playlist" && data.name !== SpecialPlaylists.tracks
           ? getPlaylistCover(data)
           : null,
     href:
       type === "album"
         ? `/album/${data.id}`
         : type === "playlist" && data.name === SpecialPlaylists.tracks
-          ? "/tracks"
+          ? "/track"
           : `/${type}/${data.name}`,
     title: data.name,
     subtitle: type !== "album" ? trackStr : data.artistName,

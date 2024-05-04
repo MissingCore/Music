@@ -1,8 +1,12 @@
 import type { SQL } from "drizzle-orm";
-import { and } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 import { db } from ".";
+import { tracks } from "./schema";
 import { fixPlaylistJunction } from "./utils/formatters";
+
+import type { SpecialPlaylistName } from "@/features/playback/constants";
+import { SpecialPlaylists } from "@/features/playback/constants";
 
 /** @description Throws error if no album is found. */
 export async function getAlbum(filters: SQL[]) {
@@ -64,6 +68,22 @@ export async function getPlaylists(filters?: SQL[]) {
     },
   });
   return allPlaylists.map((data) => fixPlaylistJunction(data));
+}
+
+/**
+ * @description Returns tracks in a `SpecialPlaylist` formatted as
+ *  `PlaylistWithTracks`.
+ */
+export async function getSpecialPlaylist(name: SpecialPlaylistName) {
+  const _tracks = await getTracks(
+    SpecialPlaylists.favorites === name
+      ? [eq(tracks.isFavorite, true)]
+      : undefined,
+  );
+  return {
+    ...{ name, isFavorite: false, tracks: _tracks },
+    coverSrc: SpecialPlaylists.favorites ? name : null,
+  };
 }
 
 /** @description Throws error if no track is found. */
