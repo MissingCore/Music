@@ -1,8 +1,10 @@
 import { atom } from "jotai";
 
+import { shuffleAsyncAtom } from "./configs";
 import { recentlyPlayedAsyncAtom } from "./recent";
+import { playingMediaAsyncAtom, trackListAsyncAtom } from "./track";
 import type { TrackListSource } from "../types";
-import { areTrackReferencesEqual } from "../utils";
+import { areTrackReferencesEqual, refreshTrackListData } from "../utils";
 
 type ResynchronizeArgs =
   | { action: "delete"; data: TrackListSource }
@@ -36,5 +38,41 @@ export const resynchronizeOnAtom = atom(
     }
 
     set(recentlyPlayedAsyncAtom, newRecentList);
+
+    // Synchronize track list.
+    const playingMedia = await get(playingMediaAsyncAtom);
+    const trackList = await get(trackListAsyncAtom);
+
+    const newPlayingMedia = { ...playingMedia };
+    let newTrackList = { ...trackList };
+
+    const shouldResynchronizeTrackList =
+      action === "update" && !data
+        ? true
+        : areTrackReferencesEqual(
+            trackList.reference,
+            action === "rename" ? data.old : data!,
+          );
+    if (shouldResynchronizeTrackList) {
+      if (action === "delete") {
+        newPlayingMedia.listIndex = 0;
+        newTrackList = { data: [], reference: undefined };
+      } else if (action === "update") {
+        if (trackList.reference) {
+          const newInfo = await refreshTrackListData({
+            listSource: trackList.reference,
+            shuffle: await get(shuffleAsyncAtom),
+            startingTrack: playingMedia.id,
+          });
+          newPlayingMedia.listIndex = newInfo.listIndex;
+          newTrackList.data = newInfo.trackList;
+        }
+      } else if (action === "rename") {
+        newTrackList.reference = data.latest;
+      }
+    }
+
+    set(playingMediaAsyncAtom, newPlayingMedia);
+    set(trackListAsyncAtom, newTrackList);
   },
 );

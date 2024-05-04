@@ -6,6 +6,7 @@ import { queueListAsyncAtom } from "./queue";
 import {
   playingMediaAsyncAtom,
   positionMsAtom,
+  resetPlayingInfoAtom,
   trackDataAsyncAtom,
   trackListAsyncAtom,
 } from "./track";
@@ -94,7 +95,12 @@ const playTrackAtom = atom(null, async (get, set, opts?: TPlayTrackOpts) => {
 
     if (opts?.action === "new" || opts?.action === "paused") {
       const trackData = await get(trackDataAsyncAtom);
-      if (!trackData) throw new Error("No track data found.");
+      if (!trackData) {
+        set(resetPlayingInfoAtom);
+        await soundRef.unloadAsync();
+        throw new Error("No track data found.");
+      }
+
       await soundRef.unloadAsync(); // Needed if we want to replace the current track.
       await soundRef.loadAsync({ uri: trackData.uri }, { shouldPlay });
     } else {
