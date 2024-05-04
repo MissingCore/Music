@@ -60,9 +60,10 @@ export async function refreshTrackListData({
   let newTrackList = await getTrackList(listSource);
   if (newTrackList.length === 0) return { listIndex: 0, trackList: [] };
   if (shuffle) newTrackList = shuffleArray(newTrackList);
+  const newTrackListAsSet = new Set(newTrackList);
 
   let newListIndex = 0;
-  if (startingTrack) {
+  if (startingTrack && newTrackListAsSet.has(startingTrack)) {
     if (shuffle) {
       newTrackList = [
         startingTrack,

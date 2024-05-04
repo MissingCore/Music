@@ -32,7 +32,7 @@ export const playAtom = atom(
       source,
     );
     const isTrackDefined = !!id;
-    const isDifferentTrack =
+    let isDifferentTrack =
       playingMedia.id === undefined || id !== playingMedia.id;
 
     // 2. Handle when the track list is the same.
@@ -53,13 +53,15 @@ export const playAtom = atom(
     const { listIndex, trackList } = await refreshTrackListData({
       listSource: source,
       shuffle: shouldShuffle,
-      startingTrack: id,
+      startingTrack: id ?? playingMedia.id,
     });
 
     // 3a. Play the track.
-    set(playingMediaAsyncAtom, { id: trackList[listIndex], listIndex });
+    const newTrackId = trackList[listIndex];
+    set(playingMediaAsyncAtom, { id: newTrackId, listIndex });
     set(trackListAsyncAtom, { data: trackList, reference: source });
 
+    isDifferentTrack = playingMedia.id !== newTrackId;
     if (isDifferentTrack) set(playTrackAtom, { action: "new" });
     else set(playTrackAtom);
 
@@ -143,6 +145,7 @@ export const nextAtom = atom(null, async (get, set) => {
     newPlayingMedia = { id: trackList[newListIdx], listIndex: newListIdx };
   }
 
+  set(positionMsAtom, 0);
   set(playingMediaAsyncAtom, newPlayingMedia);
   set(playTrackAtom, {
     action: !shouldRepeat && newPlayingMedia.listIndex === 0 ? "paused" : "new",
