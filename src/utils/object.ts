@@ -6,6 +6,20 @@ export function arrayIncludes<T>(arr: readonly T[], v: unknown): v is T {
   return arr.includes(v as T);
 }
 
+/**
+ * @description Shuffle a list of strings with the modern version of
+ *  `Fisher-Yates` Algorithm by Richard Durstenfeld.
+ *  - https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
+ */
+export function shuffleArray(arr: string[]) {
+  const arrCpy = [...arr];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arrCpy[j], arrCpy[i]] = [arrCpy[i], arrCpy[j]];
+  }
+  return arrCpy;
+}
+
 /** @description Return object with only the specified keys. */
 export function pickKeys<T extends Record<PropertyKey, any>, K extends keyof T>(
   obj: T,

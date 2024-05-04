@@ -4,7 +4,7 @@ import type { DimensionValue } from "react-native";
 import { View } from "react-native";
 
 import { cn } from "@/lib/style";
-import { SpecialPlaylists } from "@/features/playback/utils/trackList";
+import { SpecialPlaylists } from "@/features/playback/constants";
 import type { Media } from "./types";
 
 // https://www.nativewind.dev/v4/api/css-interop

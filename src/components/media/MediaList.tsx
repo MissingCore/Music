@@ -2,7 +2,7 @@ import type { ContentStyle, ListRenderItem } from "@shopify/flash-list";
 import { FlashList } from "@shopify/flash-list";
 import { View } from "react-native";
 
-import type { TTrackSrc } from "@/features/playback/utils/trackList";
+import type { TrackListSource } from "@/features/playback/types";
 
 import type { Maybe } from "@/utils/types";
 import { AnimatedCover } from "@/components/media/AnimatedCover";
@@ -23,7 +23,7 @@ export function MediaListHeader(props: {
   SubtitleComponent?: React.JSX.Element;
   /** Strings describing the media (ie: total playtime, number of tracks.) */
   metadata: string[];
-  trackSource: TTrackSrc;
+  trackSource: TrackListSource;
 }) {
   return (
     <View className="border-b border-b-surface50 px-1 pb-2">

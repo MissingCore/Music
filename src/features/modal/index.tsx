@@ -1,6 +1,6 @@
 import { useAtomValue } from "jotai";
 
-import { currentTrackDataAtom } from "@/features/playback/api/playing";
+import { trackDataAtom } from "@/features/playback/api/track";
 import { modalAtom } from "./store";
 
 import { PlaylistModal } from "./modals/PlaylistModal";
@@ -13,7 +13,7 @@ import { UpcomingTrackModal } from "./modals/UpcomingTrackModal";
 /** @description Wraps all the Bottom Sheet modals used. */
 export function AppModals() {
   const selectedModal = useAtomValue(modalAtom);
-  const trackData = useAtomValue(currentTrackDataAtom);
+  const trackData = useAtomValue(trackDataAtom);
 
   if (!selectedModal) return null;
   const { type, id, origin } = selectedModal;

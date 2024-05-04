@@ -13,7 +13,7 @@ import type { ModalPlaylistName } from "../store";
 import Colors from "@/constants/Colors";
 import { cn } from "@/lib/style";
 import { mutateGuard } from "@/lib/react-query";
-import { ReservedNames } from "@/features/playback/utils/trackList";
+import { ReservedNames } from "@/features/playback/constants";
 import { ModalBase } from "../components/ModalBase";
 import { ModalFormButton } from "../components/ModalFormButton";
 import { Title } from "../components/ModalUI";

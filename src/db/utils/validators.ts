@@ -1,4 +1,4 @@
-import { ReservedNames } from "@/features/playback/utils/trackList";
+import { ReservedNames } from "@/features/playback/constants";
 
 /**
  * @description Sanitize playlist name and make sure it meets the minimum

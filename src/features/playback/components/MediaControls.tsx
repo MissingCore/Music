@@ -11,10 +11,10 @@ import {
   playAtom,
   playPauseToggleAtom,
   prevAtom,
-} from "../api/controls";
-import { playingInfoAtom } from "../api/playing";
-import { isTrackSrcsEqual } from "../utils/comparison";
-import type { TTrackSrc } from "../utils/trackList";
+} from "../api/actions";
+import { trackListAtom } from "../api/track";
+import type { TrackListSource } from "../types";
+import { areTrackReferencesEqual } from "../utils";
 
 import Colors from "@/constants/Colors";
 import { cn } from "@/lib/style";
@@ -62,18 +62,18 @@ export function PlayButton({
   size = 24,
   trackSrc,
   className,
-}: PlayToggleButtonProps & { trackSrc: TTrackSrc }) {
-  const { listSrc } = useAtomValue(playingInfoAtom);
+}: PlayToggleButtonProps & { trackSrc: TrackListSource }) {
+  const { reference: listSrc } = useAtomValue(trackListAtom);
   const isPlaying = useAtomValue(isPlayingAtom);
   const pauseFn = useSetAtom(pauseAtom);
   const playFn = useSetAtom(playAtom);
 
-  const isTrackSrcSame = isTrackSrcsEqual(listSrc, trackSrc);
+  const isTrackSrcSame = areTrackReferencesEqual(listSrc, trackSrc);
   const displayPause = isTrackSrcSame && isPlaying;
 
   return (
     <Pressable
-      onPress={displayPause ? pauseFn : () => playFn({ trackSrc })}
+      onPress={displayPause ? pauseFn : () => playFn({ source: trackSrc })}
       className={cn(
         "rounded-full bg-accent500 p-1",
         { "bg-surface500": displayPause },

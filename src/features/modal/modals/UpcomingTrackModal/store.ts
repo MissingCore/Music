@@ -3,22 +3,26 @@ import { unwrap } from "jotai/utils";
 
 import { db } from "@/db";
 import { repeatAsyncAtom } from "@/features/playback/api/configs";
+import { queueListAsyncAtom } from "@/features/playback/api/queue";
 import {
-  currentTrackDataAsyncAtom,
-  playingInfoAsyncAtom,
-} from "@/features/playback/api/playing";
+  playingMediaAsyncAtom,
+  trackDataAsyncAtom,
+  trackListAsyncAtom,
+} from "@/features/playback/api/track";
 
 /**
- * @description [FOR INTERNAL USE ONLY] Read-only atom that asynchronously
+ * @description [🇫🇴🇷 🇮🇳🇹🇪🇷🇳🇦🇱 🇺🇸🇪 🇴🇳🇱🇾] Read-only atom that asynchronously
  *  fetch information about the current playing track, those in the queue,
  *  and upcoming tracks.
  */
 const upcomingTrackDataAsyncAtom = atom(async (get) => {
   try {
     const shouldRepeat = await get(repeatAsyncAtom);
-    const currTrackData = await get(currentTrackDataAsyncAtom);
+    const currTrackData = await get(trackDataAsyncAtom);
     if (!currTrackData) throw new Error("No tracks being played.");
-    const { trackList, trackIdx, queueList } = await get(playingInfoAsyncAtom);
+    const { listIndex: trackIdx } = await get(playingMediaAsyncAtom);
+    const queueList = await get(queueListAsyncAtom);
+    const { data: trackList } = await get(trackListAsyncAtom);
 
     // Keep only the information we want.
     const { id, name, artistName, coverSrc } = currTrackData;

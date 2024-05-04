@@ -7,7 +7,7 @@ import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
 import { useFavoriteTracksForCurrentPage } from "@/api/favorites";
 import { usePlaylistForCurrentPage } from "@/api/playlists/[id]";
 import { modalAtom } from "@/features/modal/store";
-import { SpecialPlaylists } from "@/features/playback/utils/trackList";
+import { SpecialPlaylists } from "@/features/playback/constants";
 
 import { MediaList, MediaListHeader } from "@/components/media/MediaList";
 import { TrackCard } from "@/features/track/components/TrackCard";

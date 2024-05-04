@@ -8,9 +8,9 @@ import { db } from "@/db";
 import { artists, albums, tracks, invalidTracks } from "@/db/schema";
 import {
   loadTrackAtom,
-  playingInfoAtom,
+  trackListAtom,
   resetPlayingInfoAtom,
-} from "@/features/playback/api/playing";
+} from "@/features/playback/api/track";
 import { dbCleanUp } from "./dbCleanUp";
 import { saveCoverImages } from "./saveCoverImages";
 
@@ -24,7 +24,7 @@ import { isFulfilled, isRejected } from "@/utils/promise";
  */
 export function useIndexAudio() {
   const loadTrackFn = useSetAtom(loadTrackAtom);
-  const playingInfo = useAtomValue(playingInfoAtom);
+  const trackList = useAtomValue(trackListAtom);
   const resetPlayingInfo = useSetAtom(resetPlayingInfoAtom);
 
   const [permissionResponse, requestPermission] = MediaLibrary.usePermissions();
@@ -192,7 +192,7 @@ export function useIndexAudio() {
 
     await dbCleanUp(
       new Set(mp3Files.map(({ id }) => id)),
-      playingInfo.trackList,
+      trackList.data,
       resetPlayingInfo,
     );
     console.log(`Finished overall in ${(Date.now() - start) / 1000}s.`);
@@ -211,7 +211,7 @@ export function useIndexAudio() {
   }, [
     permissionResponse,
     requestPermission,
-    playingInfo.trackList,
+    trackList.data,
     resetPlayingInfo,
     loadTrackFn,
   ]);

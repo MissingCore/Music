@@ -1,8 +1,8 @@
 import { useSetAtom } from "jotai";
 
 import { modalAtom } from "@/features/modal/store";
-import { playAtom } from "@/features/playback/api/controls";
-import type { TTrackSrc } from "@/features/playback/utils/trackList";
+import { playAtom } from "@/features/playback/api/actions";
+import type { TrackListSource } from "@/features/playback/types";
 
 import type { Prettify } from "@/utils/types";
 import type { MediaList } from "@/components/media/types";
@@ -20,7 +20,7 @@ export type TrackCardContent = Prettify<
 >;
 
 export type TrackCardProps = TrackCardContent & {
-  trackSource: TTrackSrc;
+  trackSource: TrackListSource;
   origin?: MediaList;
 };
 
@@ -35,7 +35,7 @@ export function TrackCard({ trackSource, origin, ...props }: TrackCardProps) {
 
   return (
     <ActionButton
-      onPress={() => playFn({ trackId: props.id, trackSrc: trackSource })}
+      onPress={() => playFn({ id: props.id, source: trackSource })}
       textContent={props.textContent}
       image={
         <MediaImage

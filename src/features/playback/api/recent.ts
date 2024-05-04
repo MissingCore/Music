@@ -4,15 +4,16 @@ import { unwrap } from "jotai/utils";
 
 import { db } from "@/db";
 
+import { SpecialPlaylists } from "../constants";
+import type { TrackListSource } from "../types";
+
 import { createAtomWithStorage } from "@/lib/jotai";
 import { isFulfilled } from "@/utils/promise";
 import type { MediaCardContent } from "@/components/media/MediaCard";
 import { getTrackCountStr } from "@/features/track/utils";
-import type { TTrackSrc } from "../utils/trackList";
-import { SpecialPlaylists } from "../utils/trackList";
 
 /** @description [FOR INTERNAL USE ONLY] List of up to 10 `TTrackSrc` that we've played. */
-export const recentlyPlayedAsyncAtom = createAtomWithStorage<TTrackSrc[]>(
+export const recentlyPlayedAsyncAtom = createAtomWithStorage<TrackListSource[]>(
   "recently-played",
   [],
 );
@@ -38,7 +39,7 @@ export const recentlyPlayedDataAtom = unwrap(
 async function getRecentMediaInfo({
   type,
   id,
-}: TTrackSrc): Promise<MediaCardContent> {
+}: TrackListSource): Promise<MediaCardContent> {
   if (type === "album") {
     const album = await db.query.albums.findFirst({
       where: (fields, { eq }) => eq(fields.id, id),

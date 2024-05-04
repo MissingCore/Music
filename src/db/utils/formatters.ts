@@ -9,7 +9,7 @@ import type {
 
 import type { MediaCardContent } from "@/components/media/MediaCard";
 import { getPlayTime } from "@/components/media/utils";
-import { SpecialPlaylists } from "@/features/playback/utils/trackList";
+import { SpecialPlaylists } from "@/features/playback/constants";
 import type { TrackCardContent } from "@/features/track/components/TrackCard";
 import { getTrackCountStr } from "@/features/track/utils";
 import { isTrackWithAlbum } from "./narrowing";
@@ -119,4 +119,9 @@ export function formatForCurrentPages(args: FnArgs) {
   }
 
   return { name: data.name, metadata, tracks: formatTracksForTrackCard(args) };
+}
+
+/** @description Return an array of track ids. */
+export function formatAsTrackIdList(tracks: Track[]) {
+  return tracks.map(({ id }) => id);
 }

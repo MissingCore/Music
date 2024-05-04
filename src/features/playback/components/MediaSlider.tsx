@@ -3,8 +3,8 @@ import { useAtom, useSetAtom } from "jotai";
 import { useState } from "react";
 import { Text, View } from "react-native";
 
-import { updateTrackPosAtom } from "../api/controls";
-import { trackPositionMsAtom } from "../api/playing";
+import { updateTrackPosAtom } from "../api/actions";
+import { positionMsAtom } from "../api/track";
 
 import Colors from "@/constants/Colors";
 import { getTrackDuration } from "@/features/track/utils";
@@ -15,7 +15,7 @@ import { getTrackDuration } from "@/features/track/utils";
  */
 export function MediaSlider({ duration }: { duration: number }) {
   const updateTrackPos = useSetAtom(updateTrackPosAtom);
-  const [trackPosMs, setTrackPosMs] = useAtom(trackPositionMsAtom);
+  const [trackPosMs, setTrackPosMs] = useAtom(positionMsAtom);
   const [isSliding, setIsSliding] = useState(false);
   const [slidingTrackPos, setSlidingTrackPos] = useState<number | null>(null);
 

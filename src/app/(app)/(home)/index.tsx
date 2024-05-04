@@ -11,7 +11,7 @@ import { recentlyPlayedDataAtom } from "@/features/playback/api/recent";
 
 import { abbreviateNum } from "@/utils/number";
 import { MediaCard } from "@/components/media/MediaCard";
-import { SpecialPlaylists } from "@/features/playback/utils/trackList";
+import { SpecialPlaylists } from "@/features/playback/constants";
 
 /** @description Screen for `/` route. */
 export default function HomeScreen() {

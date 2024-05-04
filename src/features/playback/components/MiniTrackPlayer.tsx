@@ -2,7 +2,7 @@ import { router } from "expo-router";
 import { useAtomValue } from "jotai";
 import { Pressable, View } from "react-native";
 
-import { currentTrackDataAtom } from "../api/playing";
+import { trackDataAtom } from "../api/track";
 
 import { MediaImage } from "@/components/media/MediaImage";
 import { TextStack } from "@/components/ui/Text";
@@ -13,7 +13,7 @@ import { NextButton, PlayToggleButton, PreviousButton } from "./MediaControls";
  *  screen if we have a song loaded.
  */
 export function MiniTrackPlayer() {
-  const trackData = useAtomValue(currentTrackDataAtom);
+  const trackData = useAtomValue(trackDataAtom);
 
   if (!trackData) return null;
 

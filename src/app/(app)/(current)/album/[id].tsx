@@ -7,7 +7,7 @@ import { Pressable, Text, View } from "react-native";
 import { useAlbumForCurrentPage } from "@/api/albums/[id]";
 import { useToggleFavorite } from "@/api/favorites/[id]";
 import { modalAtom } from "@/features/modal/store";
-import { playAtom } from "@/features/playback/api/controls";
+import { playAtom } from "@/features/playback/api/actions";
 
 import Colors from "@/constants/Colors";
 import { mutateGuard } from "@/lib/react-query";
@@ -56,7 +56,7 @@ export default function CurrentAlbumScreen() {
   }
 
   // Information about this track list.
-  const trackSrc = { type: "album", name: data.name, id: albumId } as const;
+  const trackSource = { type: "album", name: data.name, id: albumId } as const;
 
   return (
     <View className="w-full flex-1 px-4">
@@ -73,13 +73,13 @@ export default function CurrentAlbumScreen() {
           </Link>
         }
         metadata={data.metadata}
-        trackSource={trackSrc}
+        trackSource={trackSource}
       />
       <MediaList
         data={data.tracks}
         renderItem={({ item: { id, textContent, duration } }) => (
           <ActionButton
-            onPress={() => playFn({ trackId: id, trackSrc })}
+            onPress={() => playFn({ id, source: trackSource })}
             textContent={textContent}
             asideContent={<TrackDuration duration={duration} />}
             iconOnPress={() =>

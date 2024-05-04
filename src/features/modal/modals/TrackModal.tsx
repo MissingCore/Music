@@ -10,19 +10,14 @@ import {
   useDeleteTrackFromPlaylist,
   useIsTrackInPlaylist,
 } from "@/api/tracks/[id]/playlist";
-import {
-  addTrackToQueueAtom,
-  playingInfoAtom,
-} from "@/features/playback/api/playing";
+import { queuePushAtom } from "@/features/playback/api/queue";
+import { trackListAtom } from "@/features/playback/api/track";
 import { modalAtom } from "../store";
 
 import { cn } from "@/lib/style";
 import { mutateGuard } from "@/lib/react-query";
 import type { MediaList } from "@/components/media/types";
-import {
-  ReservedNames,
-  SpecialPlaylists,
-} from "@/features/playback/utils/trackList";
+import { ReservedNames, SpecialPlaylists } from "@/features/playback/constants";
 import { ModalBase } from "../components/ModalBase";
 import { Button, Link } from "../components/ModalInteractive";
 import { ScrollRow, Subtitle, Title } from "../components/ModalUI";
@@ -32,7 +27,7 @@ type Props = { trackId: string; origin?: MediaList | "track-current" };
 /** @description Modal used for tracks. */
 export function TrackModal({ trackId, origin }: Props) {
   const openModal = useSetAtom(modalAtom);
-  const addTrackToQueue = useSetAtom(addTrackToQueueAtom);
+  const addTrackToQueue = useSetAtom(queuePushAtom);
   const { isPending, error, data } = useTrackExcerpt(trackId);
   const toggleFavoriteFn = useToggleFavorite({ type: "track", id: trackId });
 
@@ -126,7 +121,7 @@ export function TrackModal({ trackId, origin }: Props) {
  */
 function RemoveTrackFromPlaylist({ trackId }: { trackId: string }) {
   const pathname = usePathname();
-  const { listSrc } = useAtomValue(playingInfoAtom);
+  const { reference: listSrc } = useAtomValue(trackListAtom);
 
   const isValidPath = useMemo(
     () => pathname.startsWith("/playlist/") || pathname === "/current-track",
@@ -169,7 +164,7 @@ function RemoveTrackFromPlaylist({ trackId }: { trackId: string }) {
 
 /** @description Renders a button to view the current playing playlist. */
 function ViewPlaylist() {
-  const { listSrc } = useAtomValue(playingInfoAtom);
+  const { reference: listSrc } = useAtomValue(trackListAtom);
 
   const currentPlaylist = useMemo(() => {
     return listSrc?.type === "playlist" ? listSrc.name : undefined;

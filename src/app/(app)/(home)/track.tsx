@@ -1,7 +1,7 @@
 import { Text } from "react-native";
 
 import { useTracksForTrackCard } from "@/api/tracks";
-import { SpecialPlaylists } from "@/features/playback/utils/trackList";
+import { SpecialPlaylists } from "@/features/playback/constants";
 
 import { MediaList } from "@/components/media/MediaList";
 import { Loading } from "@/components/ui/Loading";

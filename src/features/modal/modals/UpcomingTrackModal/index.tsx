@@ -3,7 +3,7 @@ import { BottomSheetSectionList } from "@gorhom/bottom-sheet";
 import { useAtomValue, useSetAtom } from "jotai";
 import { Text } from "react-native";
 
-import { removeTrackAtQueueIdxAtom } from "@/features/playback/api/playing";
+import { queueRemoveAtIdxAtom } from "@/features/playback/api/queue";
 import { upcomingTrackDataAtom } from "./store";
 
 import Colors from "@/constants/Colors";
@@ -15,7 +15,7 @@ import { Title } from "../../components/ModalUI";
 /** @description Modal used for seeing upcoming tracks. */
 export function UpcomingTrackModal() {
   const upcomingTrackData = useAtomValue(upcomingTrackDataAtom);
-  const removeTrackAtQueueIdx = useSetAtom(removeTrackAtQueueIdxAtom);
+  const removeTrackAtQueueIdx = useSetAtom(queueRemoveAtIdxAtom);
 
   return (
     <ModalBase>

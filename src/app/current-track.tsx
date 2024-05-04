@@ -3,10 +3,7 @@ import { useAtomValue } from "jotai";
 import { useEffect } from "react";
 import { View } from "react-native";
 
-import {
-  currentTrackDataAtom,
-  playingInfoAtom,
-} from "@/features/playback/api/playing";
+import { trackDataAtom, trackListAtom } from "@/features/playback/api/track";
 
 import { AnimatedCover } from "@/components/media/AnimatedCover";
 import { TextLine } from "@/components/ui/Text";
@@ -22,13 +19,13 @@ import { MediaSlider } from "@/features/playback/components/MediaSlider";
 /** @description Screen for `/current-track` route. */
 export default function CurrentTrackScreen() {
   const navigation = useNavigation();
-  const trackData = useAtomValue(currentTrackDataAtom);
-  const { listSrc } = useAtomValue(playingInfoAtom);
+  const trackData = useAtomValue(trackDataAtom);
+  const { reference } = useAtomValue(trackListAtom);
 
   useEffect(() => {
     if (!trackData) router.back();
-    navigation.setOptions({ headerTitle: listSrc?.name ?? "" });
-  }, [navigation, trackData, listSrc]);
+    navigation.setOptions({ headerTitle: reference?.name ?? "" });
+  }, [navigation, trackData, reference]);
 
   if (!trackData) return null;
 
