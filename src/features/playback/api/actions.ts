@@ -14,6 +14,12 @@ import { recentlyPlayedAsyncAtom } from "./recent";
 import type { TrackListSource } from "../types";
 import { areTrackReferencesEqual, refreshTrackListData } from "../utils";
 
+/**
+ * @description Id of track we want to play — will be used to help debounce
+ *  the track that'll be played after we stop clicking the next/prev button.
+ */
+const queuedTrackAtom = atom("");
+
 /** @description Whether a track is currently playing. */
 export const isPlayingAtom = atom(false);
 
@@ -81,38 +87,45 @@ type TPlayTrackOpts = { action: "new" | "paused" };
 
 /** @description Internal function for playing the current song. */
 const playTrackAtom = atom(null, async (get, set, opts?: TPlayTrackOpts) => {
-  try {
-    const soundRef = get(soundRefAtom);
-    const shouldPlay = opts?.action !== "paused";
+  const soundRef = get(soundRefAtom);
+  const shouldPlay = opts?.action !== "paused";
 
-    // Make sure next track is played on completion.
-    soundRef.setOnPlaybackStatusUpdate((playbackStatus) => {
-      if (!playbackStatus.isLoaded) return;
-      const { didJustFinish, positionMillis } = playbackStatus;
-      set(positionMsAtom, positionMillis);
-      if (didJustFinish) set(nextAtom);
-    });
+  // Make sure next track is played on completion.
+  soundRef.setOnPlaybackStatusUpdate((playbackStatus) => {
+    if (!playbackStatus.isLoaded) return;
+    const { didJustFinish, positionMillis } = playbackStatus;
+    set(positionMsAtom, positionMillis);
+    if (didJustFinish) set(nextAtom);
+  });
 
-    if (opts?.action === "new" || opts?.action === "paused") {
-      const trackData = await get(trackDataAsyncAtom);
-      if (!trackData) {
-        set(resetPlayingInfoAtom);
-        await soundRef.unloadAsync();
-        throw new Error("No track data found.");
-      }
-
-      await soundRef.unloadAsync(); // Needed if we want to replace the current track.
-      await soundRef.loadAsync({ uri: trackData.uri }, { shouldPlay });
-    } else {
-      // If we don't define any options, we assume we're just unpausing a track.
-      await soundRef.playAsync();
+  if (opts?.action) {
+    const trackData = await get(trackDataAsyncAtom);
+    if (!trackData) {
+      set(resetPlayingInfoAtom);
+      await soundRef.unloadAsync();
+      console.log("[Error: No track data found.]");
+      return;
     }
 
-    set(isPlayingAtom, shouldPlay);
-  } catch (err) {
-    // Catch cases where media failed to load or if it's already loaded.
-    console.log(err);
+    set(queuedTrackAtom, trackData.id);
+    await soundRef.unloadAsync(); // Needed if we want to replace the current track.
+    set(positionMsAtom, 0);
+
+    setTimeout(async () => {
+      if (trackData.id !== get(queuedTrackAtom)) return;
+      try {
+        await soundRef.loadAsync({ uri: trackData.uri }, { shouldPlay });
+      } catch (err) {
+        // Catch cases where media failed to load or if it's already loaded.
+        console.log(err);
+      }
+    }, 150);
+  } else {
+    // If we don't define any options, we assume we're just unpausing a track.
+    await soundRef.playAsync();
   }
+
+  set(isPlayingAtom, shouldPlay);
 });
 
 /** @description Method for pausing the current playing track. */
