@@ -78,7 +78,7 @@ function CollageImage(props: {
           source={source}
           placeholder={require("@/assets/images/glyph/music.png")}
           contentFit="cover"
-          className="size-1/2 bg-surface500"
+          className="size-1/2 bg-surface800"
         />
       ))}
     </View>

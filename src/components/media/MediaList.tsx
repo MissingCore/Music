@@ -1,8 +1,12 @@
 import type { ContentStyle, ListRenderItem } from "@shopify/flash-list";
 import { FlashList } from "@shopify/flash-list";
+import { useAtomValue } from "jotai";
 import { View } from "react-native";
 
+import { isPlayingAtom } from "@/features/playback/api/actions";
+import { trackListAtom } from "@/features/playback/api/track";
 import type { TrackListSource } from "@/features/playback/types";
+import { areTrackReferencesEqual } from "@/features/playback/utils";
 
 import type { Maybe } from "@/utils/types";
 import { AnimatedCover } from "@/components/media/AnimatedCover";
@@ -29,7 +33,10 @@ export function MediaListHeader(props: {
     <View className="border-b border-b-surface50 px-1 pb-2">
       {/* Image type from our database is: `string | null`. */}
       {props.source !== undefined && (
-        <AnimatedCover source={props.source} className="mb-2" />
+        <MediaListCoverImage
+          source={props.source}
+          trackSrc={props.trackSource}
+        />
       )}
       <TextLine className="font-geistMono text-lg text-foreground50">
         {props.title}
@@ -46,6 +53,27 @@ export function MediaListHeader(props: {
         </View>
       </View>
     </View>
+  );
+}
+
+/**
+ * @description Hook up `<AnimatedCover />` to logic that'll have it spin
+ *  if we're currently playing this `trackSrc`.
+ */
+function MediaListCoverImage(props: {
+  source: ImageSource;
+  trackSrc: TrackListSource;
+}) {
+  const isPlaying = useAtomValue(isPlayingAtom);
+  const { reference: listSrc } = useAtomValue(trackListAtom);
+  const isTrackSrcSame = areTrackReferencesEqual(listSrc, props.trackSrc);
+  return (
+    <AnimatedCover
+      type="album"
+      source={props.source}
+      className="mb-2"
+      shouldSpin={isPlaying && isTrackSrcSame}
+    />
   );
 }
 

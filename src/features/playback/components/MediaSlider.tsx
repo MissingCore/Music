@@ -20,7 +20,7 @@ export function MediaSlider({ duration }: { duration: number }) {
   const [slidingTrackPos, setSlidingTrackPos] = useState<number | null>(null);
 
   return (
-    <View className="mt-16 w-full p-4">
+    <View className="mt-8 w-full p-4">
       <Slider
         value={slidingTrackPos ?? trackPosMs}
         minimumValue={0}

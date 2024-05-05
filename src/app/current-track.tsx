@@ -3,6 +3,7 @@ import { useAtomValue } from "jotai";
 import { useEffect } from "react";
 import { View } from "react-native";
 
+import { isPlayingAtom } from "@/features/playback/api/actions";
 import { trackDataAtom, trackListAtom } from "@/features/playback/api/track";
 
 import { AnimatedCover } from "@/components/media/AnimatedCover";
@@ -21,6 +22,7 @@ export default function CurrentTrackScreen() {
   const navigation = useNavigation();
   const trackData = useAtomValue(trackDataAtom);
   const { reference } = useAtomValue(trackListAtom);
+  const isPlaying = useAtomValue(isPlayingAtom);
 
   useEffect(() => {
     if (!trackData) router.back();
@@ -31,7 +33,12 @@ export default function CurrentTrackScreen() {
 
   return (
     <View className="flex-1 items-center px-4 py-8">
-      <AnimatedCover type="bottom" source={trackData.coverSrc} delay={300} />
+      <AnimatedCover
+        placement="bottom"
+        source={trackData.coverSrc}
+        delay={300}
+        shouldSpin={isPlaying}
+      />
 
       <View className="mt-auto w-full px-4">
         <TextLine
@@ -47,7 +54,7 @@ export default function CurrentTrackScreen() {
 
       <MediaSlider duration={trackData.duration} />
 
-      <View className="mt-4 flex-row items-center gap-2 p-8">
+      <View className="flex-row items-center gap-2 p-8">
         <ShuffleButton size={32} />
         <PreviousButton size={32} />
         <PlayToggleButton size={32} className="px-5" />
