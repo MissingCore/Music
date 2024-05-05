@@ -3,9 +3,8 @@ import { Text } from "react-native";
 import { useTracksForTrackCard } from "@/api/tracks";
 import { SpecialPlaylists } from "@/features/playback/constants";
 
-import { MediaList } from "@/components/media/MediaList";
 import { Loading } from "@/components/ui/Loading";
-import { Track } from "@/features/track/components/Track";
+import { TrackList } from "@/features/track/components/TrackList";
 
 /** @description Screen for `/track` route. */
 export default function TrackScreen() {
@@ -19,9 +18,9 @@ export default function TrackScreen() {
   } as const;
 
   return (
-    <MediaList
+    <TrackList
       data={data}
-      renderItem={({ item }) => <Track {...{ ...item, trackSource }} />}
+      config={{ source: trackSource }}
       ListEmptyComponent={
         isPending ? (
           <Loading />

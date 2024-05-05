@@ -3,8 +3,8 @@ import { Text, View } from "react-native";
 
 import { useArtistForCurrentPage } from "@/api/artists/[id]";
 
-import { MediaList, MediaListHeader } from "@/components/media/MediaList";
-import { Track } from "@/features/track/components/Track";
+import { MediaPageHeader } from "@/components/media/MediaPageHeader";
+import { TrackList } from "@/features/track/components/TrackList";
 
 /** @description Screen for `/artist/[id]` route. */
 export default function CurrentArtistScreen() {
@@ -31,16 +31,14 @@ export default function CurrentArtistScreen() {
 
   return (
     <View className="w-full flex-1 px-4">
-      <MediaListHeader
+      <MediaPageHeader
         title={data.name}
         metadata={data.metadata}
         trackSource={trackSource}
       />
-      <MediaList
+      <TrackList
         data={data.tracks}
-        renderItem={({ item }) => (
-          <Track {...{ ...item, trackSource }} origin="artist" />
-        )}
+        config={{ source: trackSource, origin: "artist" }}
       />
     </View>
   );

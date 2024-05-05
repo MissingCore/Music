@@ -9,8 +9,9 @@ import { usePlaylistForCurrentPage } from "@/api/playlists/[id]";
 import { modalAtom } from "@/features/modal/store";
 import { SpecialPlaylists } from "@/features/playback/constants";
 
-import { MediaList, MediaListHeader } from "@/components/media/MediaList";
-import { Track } from "@/features/track/components/Track";
+import { MediaPageHeader } from "@/components/media/MediaPageHeader";
+import type { MediaList } from "@/components/media/types";
+import { TrackList } from "@/features/track/components/TrackList";
 
 /** @description Screen for `/playlist/[id]` route. */
 export default function CurrentPlaylistScreen() {
@@ -48,7 +49,7 @@ export default function CurrentPlaylistScreen() {
 }
 
 type PlaylistContent = {
-  origin?: React.ComponentProps<typeof Track>["origin"];
+  origin?: MediaList;
 } & (
   | { id: string; queryHook: typeof usePlaylistForCurrentPage }
   | { id?: never; queryHook: typeof useFavoriteTracksForCurrentPage }
@@ -78,17 +79,15 @@ function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
 
   return (
     <View className="w-full flex-1 px-4">
-      <MediaListHeader
+      <MediaPageHeader
         source={data.imageSource}
         title={data.name}
         metadata={data.metadata}
         trackSource={trackSource}
       />
-      <MediaList
+      <TrackList
         data={data.tracks}
-        renderItem={({ item }) => (
-          <Track {...{ ...item, trackSource }} origin={origin} />
-        )}
+        config={{ source: trackSource, origin }}
         ListEmptyComponent={
           <Text className="mx-auto text-center font-geistMono text-base text-foreground100">
             {id ? "No tracks in playlist." : "No favorited tracks."}

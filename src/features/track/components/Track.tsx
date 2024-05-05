@@ -5,8 +5,8 @@ import { playAtom } from "@/features/playback/api/actions";
 import type { TrackListSource } from "@/features/playback/types";
 
 import type { Prettify } from "@/utils/types";
-import type { MediaList } from "@/components/media/types";
 import type { ImageSource } from "@/components/media/MediaImage";
+import type { MediaList } from "@/components/media/types";
 import { MediaImage } from "@/components/media/MediaImage";
 import { ActionButton } from "@/components/ui/ActionButton";
 import { Duration } from "./Duration";
@@ -22,6 +22,7 @@ export type TrackContent = Prettify<
 export type TrackProps = TrackContent & {
   trackSource: TrackListSource;
   origin?: MediaList;
+  hideImage?: boolean;
 };
 
 /**
@@ -38,12 +39,14 @@ export function Track({ id, trackSource, origin, ...props }: TrackProps) {
       onPress={() => playFn({ id, source: trackSource })}
       textContent={props.textContent}
       image={
-        <MediaImage
-          type="track"
-          size={48}
-          source={props.imageSource}
-          className="shrink-0 rounded-sm"
-        />
+        !props.hideImage ? (
+          <MediaImage
+            type="track"
+            size={48}
+            source={props.imageSource}
+            className="shrink-0 rounded-sm"
+          />
+        ) : undefined
       }
       asideContent={<Duration duration={props.duration} />}
       iconOnPress={() => openModal({ type: "track", id, origin })}

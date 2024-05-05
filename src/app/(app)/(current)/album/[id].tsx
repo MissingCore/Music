@@ -1,19 +1,15 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Link, useLocalSearchParams, useNavigation } from "expo-router";
-import { useSetAtom } from "jotai";
 import { useEffect } from "react";
 import { Pressable, Text, View } from "react-native";
 
 import { useAlbumForCurrentPage } from "@/api/albums/[id]";
 import { useToggleFavorite } from "@/api/favorites/[id]";
-import { modalAtom } from "@/features/modal/store";
-import { playAtom } from "@/features/playback/api/actions";
 
 import Colors from "@/constants/Colors";
 import { mutateGuard } from "@/lib/react-query";
-import { MediaList, MediaListHeader } from "@/components/media/MediaList";
-import { ActionButton } from "@/components/ui/ActionButton";
-import { Duration } from "@/features/track/components/Duration";
+import { MediaPageHeader } from "@/components/media/MediaPageHeader";
+import { TrackList } from "@/features/track/components/TrackList";
 
 /** @description Screen for `/album/[id]` route. */
 export default function CurrentAlbumScreen() {
@@ -21,8 +17,6 @@ export default function CurrentAlbumScreen() {
   const navigation = useNavigation();
   const { isPending, error, data } = useAlbumForCurrentPage(albumId);
   const toggleFavoriteFn = useToggleFavorite({ type: "album", id: albumId });
-  const playFn = useSetAtom(playAtom);
-  const openModal = useSetAtom(modalAtom);
 
   useEffect(() => {
     if (data?.isFavorite === undefined) return;
@@ -60,7 +54,7 @@ export default function CurrentAlbumScreen() {
 
   return (
     <View className="w-full flex-1 px-4">
-      <MediaListHeader
+      <MediaPageHeader
         source={data.imageSource}
         title={data.name}
         SubtitleComponent={
@@ -75,18 +69,9 @@ export default function CurrentAlbumScreen() {
         metadata={data.metadata}
         trackSource={trackSource}
       />
-      <MediaList
+      <TrackList
         data={data.tracks}
-        renderItem={({ item: { id, textContent, duration } }) => (
-          <ActionButton
-            onPress={() => playFn({ id, source: trackSource })}
-            textContent={textContent}
-            asideContent={<Duration duration={duration} />}
-            iconOnPress={() =>
-              openModal({ type: "track", id, origin: "album" })
-            }
-          />
-        )}
+        config={{ source: trackSource, origin: "album", hideImage: true }}
       />
     </View>
   );
