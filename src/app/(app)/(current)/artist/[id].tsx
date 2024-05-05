@@ -4,7 +4,7 @@ import { Text, View } from "react-native";
 import { useArtistForCurrentPage } from "@/api/artists/[id]";
 
 import { MediaList, MediaListHeader } from "@/components/media/MediaList";
-import { TrackCard } from "@/features/track/components/TrackCard";
+import { Track } from "@/features/track/components/Track";
 
 /** @description Screen for `/artist/[id]` route. */
 export default function CurrentArtistScreen() {
@@ -39,7 +39,7 @@ export default function CurrentArtistScreen() {
       <MediaList
         data={data.tracks}
         renderItem={({ item }) => (
-          <TrackCard {...{ ...item, trackSource }} origin="artist" />
+          <Track {...{ ...item, trackSource }} origin="artist" />
         )}
       />
     </View>

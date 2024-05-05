@@ -10,7 +10,7 @@ import { modalAtom } from "@/features/modal/store";
 import { SpecialPlaylists } from "@/features/playback/constants";
 
 import { MediaList, MediaListHeader } from "@/components/media/MediaList";
-import { TrackCard } from "@/features/track/components/TrackCard";
+import { Track } from "@/features/track/components/Track";
 
 /** @description Screen for `/playlist/[id]` route. */
 export default function CurrentPlaylistScreen() {
@@ -48,7 +48,7 @@ export default function CurrentPlaylistScreen() {
 }
 
 type PlaylistContent = {
-  origin?: React.ComponentProps<typeof TrackCard>["origin"];
+  origin?: React.ComponentProps<typeof Track>["origin"];
 } & (
   | { id: string; queryHook: typeof usePlaylistForCurrentPage }
   | { id?: never; queryHook: typeof useFavoriteTracksForCurrentPage }
@@ -87,7 +87,7 @@ function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
       <MediaList
         data={data.tracks}
         renderItem={({ item }) => (
-          <TrackCard {...{ ...item, trackSource }} origin={origin} />
+          <Track {...{ ...item, trackSource }} origin={origin} />
         )}
         ListEmptyComponent={
           <Text className="mx-auto text-center font-geistMono text-base text-foreground100">

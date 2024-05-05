@@ -26,21 +26,21 @@ export async function getTrackList({ type, id }: TrackListSource) {
   let sortedTracks: Track[] = [];
 
   if (type === "album") {
-    const _tracks = await getTracks([eq(tracks.albumId, id)]);
-    sortedTracks = sortTracks({ type: "album", tracks: _tracks });
+    const data = await getTracks([eq(tracks.albumId, id)]);
+    sortedTracks = sortTracks({ type: "album", tracks: data });
   } else if (type === "artist") {
-    const _tracks = await getTracks([eq(tracks.artistName, id)]);
-    sortedTracks = sortTracks({ type: "artist", tracks: _tracks });
+    const data = await getTracks([eq(tracks.artistName, id)]);
+    sortedTracks = sortTracks({ type: "artist", tracks: data });
   } else {
     if (id === SpecialPlaylists.tracks) {
-      const _tracks = await getTracks();
-      sortedTracks = sortTracks({ type: "track", tracks: _tracks });
+      const data = await getTracks();
+      sortedTracks = sortTracks({ type: "track", tracks: data });
     } else if (id === SpecialPlaylists.favorites) {
-      const _tracks = await getTracks([eq(tracks.isFavorite, true)]);
-      sortedTracks = sortTracks({ type: "track", tracks: _tracks });
+      const data = await getTracks([eq(tracks.isFavorite, true)]);
+      sortedTracks = sortTracks({ type: "track", tracks: data });
     } else {
-      const _playlist = await getPlaylist([eq(playlists.name, id)]);
-      sortedTracks = sortTracks({ type: "playlist", tracks: _playlist.tracks });
+      const data = await getPlaylist([eq(playlists.name, id)]);
+      sortedTracks = sortTracks({ type: "playlist", tracks: data.tracks });
     }
   }
 

@@ -5,7 +5,7 @@ import { SpecialPlaylists } from "@/features/playback/constants";
 
 import { MediaList } from "@/components/media/MediaList";
 import { Loading } from "@/components/ui/Loading";
-import { TrackCard } from "@/features/track/components/TrackCard";
+import { Track } from "@/features/track/components/Track";
 
 /** @description Screen for `/track` route. */
 export default function TrackScreen() {
@@ -21,7 +21,7 @@ export default function TrackScreen() {
   return (
     <MediaList
       data={data}
-      renderItem={({ item }) => <TrackCard {...{ ...item, trackSource }} />}
+      renderItem={({ item }) => <Track {...{ ...item, trackSource }} />}
       ListEmptyComponent={
         isPending ? (
           <Loading />

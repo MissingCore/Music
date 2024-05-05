@@ -8,10 +8,9 @@ import type {
 } from "../schema";
 
 import type { MediaCardContent } from "@/components/media/MediaCard";
-import { getPlayTime } from "@/components/media/utils";
 import { SpecialPlaylists } from "@/features/playback/constants";
-import type { TrackCardContent } from "@/features/track/components/TrackCard";
-import { getTrackCountStr } from "@/features/track/utils";
+import type { TrackContent } from "@/features/track/components/Track";
+import { getPlayTime, getTrackCountStr } from "@/features/track/utils";
 import { isTrackWithAlbum } from "./narrowing";
 import { sortTracks } from "./sorting";
 
@@ -82,7 +81,7 @@ export function formatForMediaCard({ type, data }: FnArgs) {
 export function formatTracksForTrackCard({
   type,
   data,
-}: FnArgsWithTrack): TrackCardContent[] {
+}: FnArgsWithTrack): TrackContent[] {
   const tracks: Track[] | TrackWithAlbum[] =
     type === "track" ? data : data.tracks;
 
@@ -90,7 +89,7 @@ export function formatTracksForTrackCard({
     const { id, duration, coverSrc, name, artistName } = data;
 
     let imageSource = coverSrc;
-    const textContent: TrackCardContent["textContent"] = [name, artistName];
+    const textContent: TrackContent["textContent"] = [name, artistName];
 
     if (!isTrackWithAlbum(data)) {
       // Only true when `type === "album"`.

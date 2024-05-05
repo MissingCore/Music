@@ -9,9 +9,9 @@ import type { MediaList } from "@/components/media/types";
 import type { ImageSource } from "@/components/media/MediaImage";
 import { MediaImage } from "@/components/media/MediaImage";
 import { ActionButton } from "@/components/ui/ActionButton";
-import { TrackDuration } from "./TrackDuration";
+import { Duration } from "./Duration";
 
-export type TrackCardContent = Prettify<
+export type TrackContent = Prettify<
   Pick<React.ComponentProps<typeof ActionButton>, "textContent"> & {
     id: string;
     imageSource: ImageSource;
@@ -19,7 +19,7 @@ export type TrackCardContent = Prettify<
   }
 >;
 
-export type TrackCardProps = TrackCardContent & {
+export type TrackProps = TrackContent & {
   trackSource: TrackListSource;
   origin?: MediaList;
 };
@@ -29,13 +29,13 @@ export type TrackCardProps = TrackCardContent & {
  *  different press scenarios (pressing the icon or the whole card will
  *  do different actions).
  */
-export function TrackCard({ trackSource, origin, ...props }: TrackCardProps) {
+export function Track({ id, trackSource, origin, ...props }: TrackProps) {
   const playFn = useSetAtom(playAtom);
   const openModal = useSetAtom(modalAtom);
 
   return (
     <ActionButton
-      onPress={() => playFn({ id: props.id, source: trackSource })}
+      onPress={() => playFn({ id, source: trackSource })}
       textContent={props.textContent}
       image={
         <MediaImage
@@ -45,8 +45,8 @@ export function TrackCard({ trackSource, origin, ...props }: TrackCardProps) {
           className="shrink-0 rounded-sm"
         />
       }
-      asideContent={<TrackDuration duration={props.duration} />}
-      iconOnPress={() => openModal({ type: "track", id: props.id, origin })}
+      asideContent={<Duration duration={props.duration} />}
+      iconOnPress={() => openModal({ type: "track", id, origin })}
     />
   );
 }

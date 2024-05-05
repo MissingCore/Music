@@ -13,7 +13,7 @@ import Colors from "@/constants/Colors";
 import { mutateGuard } from "@/lib/react-query";
 import { MediaList, MediaListHeader } from "@/components/media/MediaList";
 import { ActionButton } from "@/components/ui/ActionButton";
-import { TrackDuration } from "@/features/track/components/TrackDuration";
+import { Duration } from "@/features/track/components/Duration";
 
 /** @description Screen for `/album/[id]` route. */
 export default function CurrentAlbumScreen() {
@@ -81,7 +81,7 @@ export default function CurrentAlbumScreen() {
           <ActionButton
             onPress={() => playFn({ id, source: trackSource })}
             textContent={textContent}
-            asideContent={<TrackDuration duration={duration} />}
+            asideContent={<Duration duration={duration} />}
             iconOnPress={() =>
               openModal({ type: "track", id, origin: "album" })
             }
