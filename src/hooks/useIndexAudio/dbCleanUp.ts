@@ -19,6 +19,7 @@ export async function dbCleanUp(
   usedTrackIds: Set<string>,
   currTrackList: string[],
   resetPlayingInfo: () => void,
+  removeTracksFromQueue: (tracks: string[]) => void,
 ) {
   // Delete track entries.
   const allTracks = await db.query.tracks.findMany({ columns: { id: true } });
@@ -42,14 +43,17 @@ export async function dbCleanUp(
       await deleteFile(deletedTrack.coverSrc);
     }),
   );
+
   // Clear current track list if it contains a track that's deleted. This
-  // prevents any broken behavior if the `trackListSrc` no longer exists
+  // prevents any broken behavior if the `TrackListSource` no longer exists
   // (ie: the track deleted was the only track in the album which been
   // deleted).
   const deletedTrackInCurrTrackList = currTrackList.some((tId) =>
     tracksToDelete.includes(tId),
   );
   if (deletedTrackInCurrTrackList) resetPlayingInfo();
+  // Clear the queue of deleted tracks.
+  removeTracksFromQueue(tracksToDelete);
 
   // Remove Albums with no tracks.
   const allAlbums = await db.query.albums.findMany({

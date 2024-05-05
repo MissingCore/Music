@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { db } from "@/db";
 import { artists, albums, tracks, invalidTracks } from "@/db/schema";
+import { queueRemoveItemsAtom } from "@/features/playback/api/queue";
 import {
   loadTrackAtom,
   trackListAtom,
@@ -26,6 +27,7 @@ export function useIndexAudio() {
   const loadTrackFn = useSetAtom(loadTrackAtom);
   const trackList = useAtomValue(trackListAtom);
   const resetPlayingInfo = useSetAtom(resetPlayingInfoAtom);
+  const removeItemsInQueue = useSetAtom(queueRemoveItemsAtom);
 
   const [permissionResponse, requestPermission] = MediaLibrary.usePermissions();
   const [isComplete, setIsComplete] = useState(false);
@@ -194,6 +196,7 @@ export function useIndexAudio() {
       new Set(mp3Files.map(({ id }) => id)),
       trackList.data,
       resetPlayingInfo,
+      removeItemsInQueue,
     );
     console.log(`Finished overall in ${(Date.now() - start) / 1000}s.`);
 
@@ -213,6 +216,7 @@ export function useIndexAudio() {
     requestPermission,
     trackList.data,
     resetPlayingInfo,
+    removeItemsInQueue,
     loadTrackFn,
   ]);
 

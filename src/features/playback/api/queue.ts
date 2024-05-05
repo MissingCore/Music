@@ -26,3 +26,15 @@ export const queueRemoveAtIdxAtom = atom(
     );
   },
 );
+
+/** @description Remove a list of tracks from the queue. */
+export const queueRemoveItemsAtom = atom(
+  null,
+  async (get, set, tracks: string[]) => {
+    const tracksSet = new Set(tracks);
+    set(
+      queueListAsyncAtom,
+      (await get(queueListAsyncAtom)).filter((track) => !tracksSet.has(track)),
+    );
+  },
+);
