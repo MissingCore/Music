@@ -1,5 +1,7 @@
 import { Link } from "expo-router";
 import { useAtomValue } from "jotai";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { NativeScrollEvent } from "react-native";
 import { Pressable, ScrollView, Text, View } from "react-native";
 
 import {
@@ -13,8 +15,32 @@ import { abbreviateNum } from "@/utils/number";
 import { MediaCard } from "@/components/media/MediaCard";
 import { SpecialPlaylists } from "@/features/playback/constants";
 
+/** @description Detect if we're near the end of a `<ScrollView />`. */
+const isCloseToBottom = ({
+  layoutMeasurement,
+  contentOffset,
+  contentSize,
+}: NativeScrollEvent) => {
+  const paddingToBottom = 16;
+  return (
+    layoutMeasurement.height + contentOffset.y >=
+    contentSize.height - paddingToBottom
+  );
+};
+
 /** @description Screen for `/` route. */
 export default function HomeScreen() {
+  const scrollViewRef = useRef<ScrollView>(null);
+  const [endOfScrollView, setEndOfScrollView] = useState(false);
+
+  /**
+   * @description Fix scroll position if we're at the end of the `<ScrollView />`
+   *  and we removed all items at the end.
+   */
+  const adjustScrollPosition = useCallback(() => {
+    if (endOfScrollView) scrollViewRef.current?.scrollToEnd();
+  }, [endOfScrollView]);
+
   const colWidth = useGetColumnWidth({
     cols: 2,
     gap: 16,
@@ -31,8 +57,12 @@ export default function HomeScreen() {
 
   return (
     <ScrollView
+      ref={scrollViewRef}
       showsVerticalScrollIndicator={false}
       contentContainerClassName="pt-[22px] pb-4"
+      onMomentumScrollEnd={({ nativeEvent }) => {
+        setEndOfScrollView(isCloseToBottom(nativeEvent));
+      }}
     >
       <Text className="mb-4 px-4 font-geistMonoMedium text-subtitle text-foreground50">
         RECENTLY PLAYED
@@ -52,7 +82,10 @@ export default function HomeScreen() {
         </Text>
         <View className="w-full flex-row flex-wrap gap-4">
           <FavoriteTracks colWidth={colWidth} />
-          <FavoriteLists colWidth={colWidth} />
+          <FavoriteLists
+            colWidth={colWidth}
+            fixScrollPosition={adjustScrollPosition}
+          />
         </View>
       </View>
     </ScrollView>
@@ -101,8 +134,18 @@ function FavoriteTracks({ colWidth }: { colWidth: number }) {
 }
 
 /** @description An array of `<MediaCards />` of favorited albums & playlists. */
-function FavoriteLists({ colWidth }: { colWidth: number }) {
+function FavoriteLists({
+  colWidth,
+  fixScrollPosition,
+}: {
+  colWidth: number;
+  fixScrollPosition: () => void;
+}) {
   const { isPending, error, data } = useFavoriteListsForMediaCard();
+
+  useEffect(() => {
+    fixScrollPosition();
+  }, [fixScrollPosition, data]);
 
   if (isPending || error) return null;
 

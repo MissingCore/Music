@@ -3,11 +3,9 @@ import type { Href } from "expo-router";
 import { Link as ExpoLink } from "expo-router";
 import { forwardRef } from "react";
 import type { GestureResponderEvent } from "react-native";
-import { Pressable, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 import * as MaterialSymbol from "@/assets/svgs/MaterialSymbol";
-
-import { TextLine } from "@/components/ui/Text";
 
 const Icons = { ...MaterialSymbol };
 
@@ -40,12 +38,12 @@ export const Button = forwardRef<View, ModalButtonProps>((props, ref) => {
       <View className="mb-2 size-20 items-center justify-center rounded-lg bg-surface700">
         <Icon size={48} />
       </View>
-      <TextLine
+      <Text
         numberOfLines={2}
         className="h-[30px] text-center align-middle font-geistMono text-xs text-foreground50"
       >
         {props.content}
-      </TextLine>
+      </Text>
     </Pressable>
   );
 });

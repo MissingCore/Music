@@ -51,9 +51,7 @@ export function UpcomingTrackModal() {
           );
         }}
         renderSectionHeader={({ section: { title } }) => (
-          <Title asLine className="mb-2 text-start">
-            {title}
-          </Title>
+          <Title className="mb-2 text-start">{title}</Title>
         )}
         renderSectionFooter={({ section: { data } }) => {
           if (data.length > 0) return null;
