@@ -5,8 +5,8 @@ import { useToggleFavorite } from "@/api/favorites/[id]";
 import { usePlaylistForModal, useUpdatePlaylist } from "@/api/playlists/[id]";
 import { modalAtom } from "../store";
 
-import { mutateGuard } from "@/lib/react-query";
 import { pickImage } from "@/lib/file-system";
+import { mutateGuard } from "@/lib/react-query";
 import { ModalBase } from "../components/ModalBase";
 import { Button } from "../components/ModalInteractive";
 import { ScrollRow, Title } from "../components/ModalUI";

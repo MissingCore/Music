@@ -12,8 +12,8 @@ import {
 } from "@/api/tracks/[id]/playlist";
 
 import Colors from "@/constants/Colors";
-import { cn } from "@/lib/style";
 import { mutateGuard } from "@/lib/react-query";
+import { cn } from "@/lib/style";
 import { ActionButton } from "@/components/ui/ActionButton";
 import { getTrackCountStr } from "@/features/track/utils";
 import { ModalBase } from "../components/ModalBase";
@@ -57,15 +57,13 @@ export function TrackToPlaylistModal({ trackId }: { trackId: string }) {
     async function getTracksToPlaylist() {
       if (!playlistData || !trackInPlaylists.data) return;
       // Get all playlist names & create the initial `inPlaylist` object.
-      const playlistNames = playlistData.map(({ name }) => name);
       const initInPlaylist = Object.fromEntries(
-        playlistNames.map((name) => [name, false]),
+        playlistData.map(({ name }) => name).map((name) => [name, false]),
       );
-      // Get all playlists track is in.
-      const usedPlaylists = trackInPlaylists.data.map(({ name }) => name);
-      usedPlaylists.forEach((playlistName) => {
-        initInPlaylist[playlistName] = true;
-      });
+      // Indicate the playlists the track is in.
+      trackInPlaylists.data
+        .map(({ name }) => name)
+        .forEach((playlistName) => (initInPlaylist[playlistName] = true));
 
       setInPlaylist(initInPlaylist);
     }
@@ -89,8 +87,7 @@ export function TrackToPlaylistModal({ trackId }: { trackId: string }) {
               toggleSelf={() =>
                 setInPlaylist((prev) => ({ ...prev, [name]: !prev[name] }))
               }
-              name={name}
-              numTracks={trackCount}
+              {...{ name, trackCount }}
             />
           )}
           ListEmptyComponent={
@@ -110,7 +107,7 @@ type PlaylistCheckboxProps = {
   selected: boolean;
   toggleSelf: () => void;
   name: string;
-  numTracks: number;
+  trackCount: number;
 };
 
 /** @description Toggleable checkbox to see if track should be in playlist. */
@@ -118,7 +115,7 @@ function PlaylistCheckbox(props: PlaylistCheckboxProps) {
   return (
     <ActionButton
       onPress={props.toggleSelf}
-      textContent={[props.name, getTrackCountStr(props.numTracks)]}
+      textContent={[props.name, getTrackCountStr(props.trackCount)]}
       icon={
         <Ionicons
           name={props.selected ? "checkmark-circle" : "ellipse-outline"}

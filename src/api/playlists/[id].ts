@@ -141,16 +141,16 @@ export const useUpdatePlaylist = (playlistName: string) => {
       }
       // Redirect to new playlist page if we renamed.
       if (result.action.field === "name") {
-        const { value } = result.action;
+        const newName = sanitizedPlaylistName(result.action.value);
         // Resynchronize with Jotai.
         resynchronizeFn({
           action: "rename",
           data: {
             old: { type: "playlist", id: playlistName, name: playlistName },
-            latest: { type: "playlist", id: value, name: value },
+            latest: { type: "playlist", id: newName, name: newName },
           },
         });
-        router.replace(`/playlist/${value}`);
+        router.replace(`/playlist/${newName}`);
       } else {
         resynchronizeFn({
           action: "update",

@@ -19,10 +19,7 @@ const BottomSheet = cssInterop(_BottomSheet, {
   handleIndicatorClassName: "handleIndicatorStyle",
 });
 
-/**
- * @description Implementation of bottom sheet w/ 2 different designs,
- *  selected by the value of the `detached` prop.
- */
+/** @description Bottom sheet w/ 2 different designs based on the value of `detached`. */
 export function ModalBase({
   detached,
   children,
@@ -50,6 +47,7 @@ export function ModalBase({
       android_keyboardInputMode="adjustResize"
       topInset={insets.top}
       backdropComponent={Backdrop}
+      backgroundComponent={Background}
       backgroundClassName="bg-surface800"
       handleIndicatorClassName="bg-surface500"
       {...(detached
@@ -57,7 +55,6 @@ export function ModalBase({
             detached: true,
             enableDynamicSizing: true,
             bottomInset: 32,
-            backgroundComponent: Background,
             className: "mx-4 pb-4",
           }
         : {

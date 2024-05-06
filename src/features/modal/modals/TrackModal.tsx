@@ -14,8 +14,8 @@ import { queuePushAtom } from "@/features/playback/api/queue";
 import { trackListAtom } from "@/features/playback/api/track";
 import { modalAtom } from "../store";
 
-import { cn } from "@/lib/style";
 import { mutateGuard } from "@/lib/react-query";
+import { cn } from "@/lib/style";
 import type { MediaList } from "@/components/media/types";
 import { ReservedNames, SpecialPlaylists } from "@/features/playback/constants";
 import { ModalBase } from "../components/ModalBase";
@@ -121,7 +121,7 @@ export function TrackModal({ trackId, origin }: Props) {
  */
 function RemoveTrackFromPlaylist({ trackId }: { trackId: string }) {
   const pathname = usePathname();
-  const { reference: listSrc } = useAtomValue(trackListAtom);
+  const { reference } = useAtomValue(trackListAtom);
 
   const isValidPath = useMemo(
     () => pathname.startsWith("/playlist/") || pathname === "/current-track",
@@ -130,15 +130,15 @@ function RemoveTrackFromPlaylist({ trackId }: { trackId: string }) {
   const currentPlaylist = useMemo(() => {
     let _playlistName = pathname.startsWith("/playlist/")
       ? decodeURIComponent(pathname.substring(10))
-      : listSrc?.type === "playlist"
-        ? listSrc.name
+      : reference?.type === "playlist"
+        ? reference.name
         : undefined;
     if (_playlistName && ReservedNames.has(_playlistName)) {
       _playlistName = undefined;
     }
 
     return _playlistName;
-  }, [pathname, listSrc]);
+  }, [pathname, reference]);
 
   const {
     isPending,
@@ -164,11 +164,11 @@ function RemoveTrackFromPlaylist({ trackId }: { trackId: string }) {
 
 /** @description Renders a button to view the current playing playlist. */
 function ViewPlaylist() {
-  const { reference: listSrc } = useAtomValue(trackListAtom);
+  const { reference } = useAtomValue(trackListAtom);
 
   const currentPlaylist = useMemo(() => {
-    return listSrc?.type === "playlist" ? listSrc.name : undefined;
-  }, [listSrc]);
+    return reference?.type === "playlist" ? reference.name : undefined;
+  }, [reference]);
 
   if (!currentPlaylist) return null;
 

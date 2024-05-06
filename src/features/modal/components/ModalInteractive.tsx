@@ -17,9 +17,9 @@ type ModalButtonProps = {
 };
 
 /**
- * @description Wraps an icon & text with a `<Pressable />` for a modal.
- *  When pressed, will close the current modal (unless `dontCloseOnPress`
- *  is provided). Must be used inside a `<BottomSheet />`.
+ * @description Button modeled after iOS "Activity views" buttons. Closes
+ *  the modal it's in when pressed (unless `dontCloseOnPress` is provided).
+ *  Must be used inside a `<BottomSheet />`.
  */
 export const Button = forwardRef<View, ModalButtonProps>((props, ref) => {
   const { close } = useBottomSheet();

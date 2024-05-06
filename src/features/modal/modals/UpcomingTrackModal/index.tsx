@@ -43,9 +43,7 @@ export function UpcomingTrackModal() {
                     size={24}
                     color={Colors.accent50}
                   />
-                ) : (
-                  <></>
-                )
+                ) : undefined
               }
             />
           );
