@@ -19,7 +19,7 @@ export default function ArtistScreen() {
         <ActionButton
           onPress={() => router.navigate(`/artist/${name}`)}
           textContent={textContent}
-          icon={<ArrowRight size={24} />}
+          Icon={<ArrowRight size={24} />}
         />
       )}
       renderSectionHeader={({ section: { title } }) => (

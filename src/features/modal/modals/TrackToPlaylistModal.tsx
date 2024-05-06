@@ -116,7 +116,7 @@ function PlaylistCheckbox(props: PlaylistCheckboxProps) {
     <ActionButton
       onPress={props.toggleSelf}
       textContent={[props.name, getTrackCountStr(props.trackCount)]}
-      icon={
+      Icon={
         <Ionicons
           name={props.selected ? "checkmark-circle" : "ellipse-outline"}
           size={24}

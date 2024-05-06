@@ -15,15 +15,15 @@ import { TextStack } from "@/components/ui/Text";
 export function ActionButton(props: {
   onPress: PressableProps["onPress"];
   textContent: [string, Maybe<string>];
-  image?: React.JSX.Element;
+  Image?: React.JSX.Element;
   /** Displays between the `<TextStack />` & optional icon. */
-  asideContent?: React.JSX.Element;
-  icon?: React.JSX.Element;
+  AsideContent?: React.JSX.Element;
+  Icon?: React.JSX.Element;
   iconOnPress?: PressableProps["onPress"];
   withoutIcon?: boolean;
   className?: string;
 }) {
-  const icon = props.icon ?? <EllipsisVertical size={24} />;
+  const icon = props.Icon ?? <EllipsisVertical size={24} />;
 
   return (
     <Pressable
@@ -31,13 +31,13 @@ export function ActionButton(props: {
       className={cn(
         "mb-2 h-[58px] flex-row items-center gap-2 rounded p-1",
         "border border-surface500 active:bg-surface800",
-        { "px-2": !props.image },
+        { "px-2": !props.Image },
         props.className,
       )}
     >
-      {props.image}
+      {props.Image}
       <TextStack content={props.textContent} wrapperClassName="flex-1" />
-      {props.asideContent}
+      {props.AsideContent}
       {props.withoutIcon ? null : props.iconOnPress ? (
         <Pressable onPress={props.iconOnPress} className="shrink-0">
           {icon}

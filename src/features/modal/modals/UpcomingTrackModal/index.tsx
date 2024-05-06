@@ -28,7 +28,7 @@ export function UpcomingTrackModal() {
             <ActionButton
               onPress={isQueue ? () => removeTrackAtQueueIdx(index) : undefined}
               textContent={[item.name, item.artistName]}
-              image={
+              Image={
                 <MediaImage
                   type="track"
                   size={48}
@@ -36,7 +36,7 @@ export function UpcomingTrackModal() {
                   className="shrink-0 rounded-sm"
                 />
               }
-              icon={
+              Icon={
                 isQueue ? (
                   <Ionicons
                     name="remove-circle-outline"

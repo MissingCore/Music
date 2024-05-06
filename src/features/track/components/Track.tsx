@@ -38,7 +38,7 @@ export function Track({ id, trackSource, origin, ...props }: TrackProps) {
     <ActionButton
       onPress={() => playFn({ id, source: trackSource })}
       textContent={props.textContent}
-      image={
+      Image={
         !props.hideImage ? (
           <MediaImage
             type="track"
@@ -48,7 +48,7 @@ export function Track({ id, trackSource, origin, ...props }: TrackProps) {
           />
         ) : undefined
       }
-      asideContent={<Duration duration={props.duration} />}
+      AsideContent={<Duration duration={props.duration} />}
       iconOnPress={() => openModal({ type: "track", id, origin })}
     />
   );
