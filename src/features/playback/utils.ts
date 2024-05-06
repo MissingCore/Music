@@ -48,15 +48,13 @@ export async function getTrackList({ type, id }: TrackListSource) {
 }
 
 /** @description Return information about a refreshed track list when change occurs. */
-export async function refreshTrackListData({
-  listSource,
-  shuffle = false,
-  startingTrack = undefined,
-}: {
+export async function refreshTrackListData(props: {
   listSource: TrackListSource;
   shuffle?: boolean;
   startingTrack?: string | undefined;
 }) {
+  const { listSource, shuffle = false, startingTrack = undefined } = props;
+
   let newTrackList = await getTrackList(listSource);
   if (newTrackList.length === 0) return { listIndex: 0, trackList: [] };
   if (shuffle) newTrackList = shuffleArray(newTrackList);

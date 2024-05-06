@@ -12,7 +12,7 @@ import { NextButton, PlayToggleButton, PreviousButton } from "./MediaControls";
  * @description Displays a player that appears at the bottom of the
  *  screen if we have a song loaded.
  */
-export function MiniTrackPlayer() {
+export function MiniPlayer() {
   const trackData = useAtomValue(trackDataAtom);
 
   if (!trackData) return null;

@@ -60,20 +60,20 @@ function MediaToggleButton(props: {
  */
 export function PlayButton({
   size = 24,
-  trackSrc,
+  trackSource,
   className,
-}: PlayToggleButtonProps & { trackSrc: TrackListSource }) {
-  const { reference: listSrc } = useAtomValue(trackListAtom);
+}: PlayToggleButtonProps & { trackSource: TrackListSource }) {
+  const { reference } = useAtomValue(trackListAtom);
   const isPlaying = useAtomValue(isPlayingAtom);
   const pauseFn = useSetAtom(pauseAtom);
   const playFn = useSetAtom(playAtom);
 
-  const isTrackSrcSame = areTrackReferencesEqual(listSrc, trackSrc);
-  const displayPause = isTrackSrcSame && isPlaying;
+  const isThisSource = areTrackReferencesEqual(reference, trackSource);
+  const displayPause = isThisSource && isPlaying;
 
   return (
     <Pressable
-      onPress={displayPause ? pauseFn : () => playFn({ source: trackSrc })}
+      onPress={displayPause ? pauseFn : () => playFn({ source: trackSource })}
       className={cn(
         "rounded-full bg-accent500 p-1",
         { "bg-surface500": displayPause },

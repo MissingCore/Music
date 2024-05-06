@@ -1,6 +1,6 @@
 import { Slider } from "@miblanchard/react-native-slider";
 import { useAtom, useSetAtom } from "jotai";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Text, View } from "react-native";
 
 import { updateTrackPosAtom } from "../api/actions";
@@ -13,11 +13,22 @@ import { getTrackDuration } from "@/features/track/utils";
  * @description Allows seeking on the current track & displays the
  *  current track position.
  */
-export function MediaSlider({ duration }: { duration: number }) {
+export function Timeline({ duration }: { duration: number }) {
   const updateTrackPos = useSetAtom(updateTrackPosAtom);
   const [trackPosMs, setTrackPosMs] = useAtom(positionMsAtom);
+  const prevDuration = useRef(0);
   const [isSliding, setIsSliding] = useState(false);
   const [slidingTrackPos, setSlidingTrackPos] = useState<number | null>(null);
+
+  useEffect(() => {
+    // Preserve scrub percentage position.
+    if (duration !== prevDuration.current) {
+      if (slidingTrackPos !== null) {
+        setSlidingTrackPos(duration * (slidingTrackPos / prevDuration.current));
+      }
+      prevDuration.current = duration;
+    }
+  }, [duration, slidingTrackPos]);
 
   return (
     <View className="mt-8 w-full p-4">

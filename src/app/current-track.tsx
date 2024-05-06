@@ -15,7 +15,7 @@ import {
   RepeatButton,
   ShuffleButton,
 } from "@/features/playback/components/MediaControls";
-import { MediaSlider } from "@/features/playback/components/MediaSlider";
+import { Timeline } from "@/features/playback/components/Timeline";
 
 /** @description Screen for `/current-track` route. */
 export default function CurrentTrackScreen() {
@@ -52,7 +52,7 @@ export default function CurrentTrackScreen() {
         </TextLine>
       </View>
 
-      <MediaSlider duration={trackData.duration} />
+      <Timeline duration={trackData.duration} />
 
       <View className="flex-row items-center gap-2 p-8">
         <ShuffleButton size={32} />

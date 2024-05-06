@@ -3,7 +3,7 @@ import { Link, Stack } from "expo-router";
 import { Pressable } from "react-native";
 
 import Colors from "@/constants/Colors";
-import { MiniTrackPlayer } from "@/features/playback/components/MiniTrackPlayer";
+import { MiniPlayer } from "@/features/playback/components/MiniPlayer";
 
 /** @description Contains content that doesn't take up the full-screen. */
 export default function MainLayout() {
@@ -33,7 +33,7 @@ export default function MainLayout() {
         />
         <Stack.Screen name="(current)" options={{ headerShown: false }} />
       </Stack>
-      <MiniTrackPlayer />
+      <MiniPlayer />
     </>
   );
 }

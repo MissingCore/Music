@@ -43,7 +43,7 @@ export function MediaPageHeader(props: {
         <View className="flex-row items-center">
           <RepeatButton />
           <ShuffleButton />
-          <PlayButton trackSrc={props.trackSource} className="ml-2" />
+          <PlayButton trackSource={props.trackSource} className="ml-2" />
         </View>
       </View>
     </View>

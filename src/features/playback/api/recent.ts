@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import { atom } from "jotai";
 import { unwrap } from "jotai/utils";
 
+import type { PlaylistWithTracks } from "@/db/schema";
 import { albums, artists, playlists } from "@/db/schema";
 import {
   getAlbum,
@@ -25,14 +26,10 @@ export const recentlyPlayedAsyncAtom = createAtomWithStorage<TrackListSource[]>(
 
 /** @description [🇫🇴🇷 🇮🇳🇹🇪🇷🇳🇦🇱 🇺🇸🇪 🇴🇳🇱🇾] Information about the recently played media. */
 const recentlyPlayedDataAsyncAtom = atom(async (get) => {
-  try {
-    const recentlyPlayed = await get(recentlyPlayedAsyncAtom);
-    return (await Promise.allSettled(recentlyPlayed.map(getRecentMediaInfo)))
-      .filter(isFulfilled)
-      .map(({ value }) => value);
-  } catch (err) {
-    return [];
-  }
+  const recentlyPlayed = await get(recentlyPlayedAsyncAtom);
+  return (await Promise.allSettled(recentlyPlayed.map(getRecentMediaInfo)))
+    .filter(isFulfilled)
+    .map(({ value }) => value);
 });
 /** @description Info about the recently played media. */
 export const recentlyPlayedDataAtom = unwrap(
@@ -49,19 +46,14 @@ async function getRecentMediaInfo({ type, id }: TrackListSource) {
     const data = await getArtist([eq(artists.name, id)]);
     return formatForMediaCard({ type: "artist", data });
   } else {
-    switch (id) {
-      case SpecialPlaylists.favorites: {
-        const data = await getSpecialPlaylist(SpecialPlaylists.favorites);
-        return formatForMediaCard({ type: "playlist", data });
-      }
-      case SpecialPlaylists.tracks: {
-        const data = await getSpecialPlaylist(SpecialPlaylists.tracks);
-        return formatForMediaCard({ type: "playlist", data });
-      }
-      default: {
-        const data = await getPlaylist([eq(playlists.name, id)]);
-        return formatForMediaCard({ type: "playlist", data });
-      }
+    let data: PlaylistWithTracks;
+    if (id === SpecialPlaylists.favorites) {
+      data = await getSpecialPlaylist(SpecialPlaylists.favorites);
+    } else if (id === SpecialPlaylists.tracks) {
+      data = await getSpecialPlaylist(SpecialPlaylists.tracks);
+    } else {
+      data = await getPlaylist([eq(playlists.name, id)]);
     }
+    return formatForMediaCard({ type: "playlist", data });
   }
 }
