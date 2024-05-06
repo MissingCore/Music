@@ -4,7 +4,6 @@ import { unwrap } from "jotai/utils";
 
 import { tracks } from "@/db/schema";
 import { getTrack } from "@/db/queries";
-import { getTrackCover } from "@/db/utils/formatters";
 
 import { repeatAsyncAtom } from "@/features/playback/api/configs";
 import { queueListAsyncAtom } from "@/features/playback/api/queue";
@@ -65,6 +64,5 @@ export const upcomingTrackDataAtom = unwrap(
 
 /** @description Get a given track and format its cover. */
 async function getTrackData(id: string) {
-  const data = await getTrack([eq(tracks.id, id)]);
-  return { ...data, coverSrc: getTrackCover(data) };
+  return await getTrack([eq(tracks.id, id)]);
 }

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import { getTracks } from "@/db/queries";
-import { formatTracksForTrackCard } from "@/db/utils/formatters";
+import { formatTracksForTrack } from "@/db/utils/formatters";
 import { trackKeys } from "./_queryKeys";
 
 import type { ExtractFnReturnType } from "@/utils/types";
@@ -31,8 +31,7 @@ export const useTracksForTrackCard = () =>
   useTracks({
     config: {
       select: useCallback(
-        (data: QueryFnData) =>
-          formatTracksForTrackCard({ type: "track", data }),
+        (data: QueryFnData) => formatTracksForTrack({ type: "track", data }),
         [],
       ),
     },

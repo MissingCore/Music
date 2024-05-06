@@ -69,16 +69,13 @@ export function formatForMediaCard({ type, data }: FnArgs) {
           ? "/track"
           : `/${type}/${data.name}`,
     title: data.name,
-    subtitle: type !== "album" ? trackStr : data.artistName,
+    subtitle: type === "album" ? data.artistName : trackStr,
     extra: type === "album" ? `| ${trackStr}` : null,
   } as MediaCardContent;
 }
 
-/**
- * @description Formats tracks data to be used with `<TrackCard />` or
- *  `<ActionButton />`.
- */
-export function formatTracksForTrackCard({
+/** @description Formats tracks data to be used with `<Track />`. */
+export function formatTracksForTrack({
   type,
   data,
 }: FnArgsWithTrack): TrackContent[] {
@@ -116,7 +113,7 @@ export function formatForCurrentPages(args: FnArgs) {
     metadata.unshift(String(data.releaseYear));
   }
 
-  return { name: data.name, metadata, tracks: formatTracksForTrackCard(args) };
+  return { name: data.name, metadata, tracks: formatTracksForTrack(args) };
 }
 
 /** @description Return an array of track ids. */

@@ -20,6 +20,7 @@ export function ActionButton(props: {
   asideContent?: React.JSX.Element;
   icon?: React.JSX.Element;
   iconOnPress?: PressableProps["onPress"];
+  withoutIcon?: boolean;
   className?: string;
 }) {
   const icon = props.icon ?? <EllipsisVertical size={24} />;
@@ -37,7 +38,7 @@ export function ActionButton(props: {
       {props.image}
       <TextStack content={props.textContent} wrapperClassName="flex-1" />
       {props.asideContent}
-      {props.iconOnPress ? (
+      {props.withoutIcon ? null : props.iconOnPress ? (
         <Pressable onPress={props.iconOnPress} className="shrink-0">
           {icon}
         </Pressable>

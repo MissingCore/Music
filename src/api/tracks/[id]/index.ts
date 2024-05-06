@@ -4,7 +4,6 @@ import { useCallback } from "react";
 
 import { tracks } from "@/db/schema";
 import { getTrack } from "@/db/queries";
-import { getTrackCover } from "@/db/utils/formatters";
 import { trackKeys } from "../_queryKeys";
 
 import { pickKeys } from "@/utils/object";
@@ -50,7 +49,7 @@ export const useTrackExcerpt = (trackId: string) =>
             ...["id", "name", "artistName", "duration", "isFavorite"],
           ] as const),
           album: data.album ? pickKeys(data.album, ["id", "name"]) : null,
-          imageSource: getTrackCover(data),
+          imageSource: data.coverSrc,
         }),
         [],
       ),

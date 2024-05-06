@@ -45,6 +45,7 @@ export function UpcomingTrackModal() {
                   />
                 ) : undefined
               }
+              withoutIcon={!isQueue}
             />
           );
         }}

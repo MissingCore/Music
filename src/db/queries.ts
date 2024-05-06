@@ -3,7 +3,7 @@ import { and, eq } from "drizzle-orm";
 
 import { db } from ".";
 import { tracks } from "./schema";
-import { fixPlaylistJunction } from "./utils/formatters";
+import { fixPlaylistJunction, getTrackCover } from "./utils/formatters";
 
 import type { SpecialPlaylistName } from "@/features/playback/constants";
 import { SpecialPlaylists } from "@/features/playback/constants";
@@ -93,14 +93,15 @@ export async function getTrack(filters: SQL[]) {
     with: { album: true },
   });
   if (!track) throw new Error("Track doesn't exist.");
-  return track;
+  return { ...track, coverSrc: getTrackCover(track) };
 }
 
 export async function getTracks(filters?: SQL[]) {
-  return await db.query.tracks.findMany({
+  const data = await db.query.tracks.findMany({
     where: and(...(filters ?? [])),
     with: { album: true },
   });
+  return data.map((track) => ({ ...track, coverSrc: getTrackCover(track) }));
 }
 
 export async function getTracksToPlaylists(filters?: SQL[]) {

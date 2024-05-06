@@ -4,7 +4,6 @@ import { RESET, unwrap } from "jotai/utils";
 
 import { tracks } from "@/db/schema";
 import { getTrack } from "@/db/queries";
-import { getTrackCover } from "@/db/utils/formatters";
 
 import { soundRefAtom } from "./globalSound";
 import { queueListAsyncAtom } from "./queue";
@@ -52,8 +51,7 @@ export const trackDataAsyncAtom = atom(async (get) => {
   try {
     const { id } = await get(playingMediaAsyncAtom);
     if (!id) throw new Error("No track id found.");
-    const track = await getTrack([eq(tracks.id, id)]);
-    return { ...track, coverSrc: getTrackCover(track) };
+    return await getTrack([eq(tracks.id, id)]);
   } catch (err) {
     return undefined;
   }
