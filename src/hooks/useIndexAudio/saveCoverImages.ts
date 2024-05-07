@@ -6,6 +6,17 @@ import { albums, tracks } from "@/db/schema";
 import { saveBase64Img } from "@/lib/file-system";
 import { getMusicInfoAsync } from "@/utils/getMusicInfoAsync";
 
+/** @description Make sure we run the logic to save cover images once. */
+export const saveCoverImagesOnce = (() => {
+  let executed = false;
+  return () => {
+    if (!executed) {
+      executed = true;
+      saveCoverImages();
+    }
+  };
+})();
+
 /**
  * @description Optimizes saving cover images of tracks & albums. Recommended
  *  to be run in the background by not calling this function with `await`.
