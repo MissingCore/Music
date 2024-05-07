@@ -17,15 +17,12 @@ export default function MainLayout() {
             headerTitleStyle: { fontFamily: "Ndot57", fontSize: 32 },
             headerRight: () => (
               <Link href="/setting" asChild>
-                <Pressable>
-                  {({ pressed }) => (
-                    <Ionicons
-                      name="settings-outline"
-                      size={24}
-                      color={Colors.foreground50}
-                      style={{ opacity: pressed ? 0.5 : 1 }}
-                    />
-                  )}
+                <Pressable className="active:opacity-75">
+                  <Ionicons
+                    name="settings-outline"
+                    size={24}
+                    color={Colors.foreground50}
+                  />
                 </Pressable>
               </Link>
             ),

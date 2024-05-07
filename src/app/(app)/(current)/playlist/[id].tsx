@@ -1,6 +1,6 @@
-import { useLocalSearchParams, useNavigation } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import { useSetAtom } from "jotai";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { Pressable, Text, View } from "react-native";
 
 import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
@@ -16,7 +16,6 @@ import { TrackList } from "@/features/track/components/TrackList";
 /** @description Screen for `/playlist/[id]` route. */
 export default function CurrentPlaylistScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const navigation = useNavigation();
   const openModal = useSetAtom(modalAtom);
 
   const isFavoriteTracks = useMemo(
@@ -24,27 +23,26 @@ export default function CurrentPlaylistScreen() {
     [id],
   );
 
-  useEffect(() => {
-    if (isFavoriteTracks) return;
-
-    navigation.setOptions({
-      headerRight: () => (
-        <Pressable onPress={() => openModal({ type: "playlist", id })}>
-          <EllipsisVertical size={24} />
-        </Pressable>
-      ),
-    });
-  }, [navigation, openModal, isFavoriteTracks, id]);
-
   if (isFavoriteTracks) {
     return <PlaylistListContent queryHook={useFavoriteTracksForCurrentPage} />;
   }
   return (
-    <PlaylistListContent
-      id={id}
-      queryHook={usePlaylistForCurrentPage}
-      origin="playlist"
-    />
+    <>
+      <Stack.Screen
+        options={{
+          headerRight: () => (
+            <Pressable onPress={() => openModal({ type: "playlist", id })}>
+              <EllipsisVertical size={24} />
+            </Pressable>
+          ),
+        }}
+      />
+      <PlaylistListContent
+        id={id}
+        queryHook={usePlaylistForCurrentPage}
+        origin="playlist"
+      />
+    </>
   );
 }
 
