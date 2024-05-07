@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { and, eq } from "drizzle-orm";
 import { useSetAtom } from "jotai";
 import { useCallback } from "react";
+import { Toast } from "react-native-toast-notifications";
 
 import { db } from "@/db";
 import { playlists, tracksToPlaylists } from "@/db/schema";
@@ -146,6 +147,7 @@ export function useDeleteTrackFromPlaylist(
         action: "update",
         data: { type: "playlist", id: playlistName, name: playlistName },
       });
+      Toast.show("Removed track from playlist.");
     },
   });
 }

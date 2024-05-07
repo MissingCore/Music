@@ -1,5 +1,6 @@
 import { atom } from "jotai";
 import { unwrap } from "jotai/utils";
+import { Toast } from "react-native-toast-notifications";
 
 import { createAtomWithStorage } from "@/lib/jotai";
 
@@ -14,6 +15,7 @@ export const queueListAtom = unwrap(queueListAsyncAtom, (prev) => prev ?? []);
 /** @description Add a track to the end of the queue. */
 export const queuePushAtom = atom(null, async (get, set, trackId: string) => {
   set(queueListAsyncAtom, [...(await get(queueListAsyncAtom)), trackId]);
+  Toast.show("Track added to queue.");
 });
 
 /** @description Remove the track at the specific index in the queue. */
