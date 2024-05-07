@@ -6,6 +6,7 @@ import { trackListAtom } from "@/features/playback/api/track";
 import type { TrackListSource } from "@/features/playback/types";
 import { areTrackReferencesEqual } from "@/features/playback/utils";
 
+import { cn } from "@/lib/style";
 import { AnimatedCover } from "@/components/media/AnimatedCover";
 import { TextLine } from "@/components/ui/Text";
 import {
@@ -32,11 +33,15 @@ export function MediaPageHeader(props: {
       {props.source !== undefined && (
         <HeroImage source={props.source} trackSource={props.trackSource} />
       )}
-      <TextLine className="font-geistMono text-lg text-foreground50">
+      <TextLine
+        className={cn("font-geistMono text-lg text-foreground50", {
+          "mt-1": props.source !== undefined,
+        })}
+      >
         {props.title}
       </TextLine>
       {props.SubtitleComponent}
-      <View className="mt-1 flex-row items-center gap-8">
+      <View className="flex-row items-center gap-8">
         <TextLine className="flex-1 font-geistMonoLight text-xs text-foreground100">
           {props.metadata.join(" • ")}
         </TextLine>

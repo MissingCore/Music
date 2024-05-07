@@ -66,16 +66,18 @@ export async function putTrackInPlaylists({
   trackId,
   playlistNames,
 }: PUTFnArgs) {
-  await db
-    .delete(tracksToPlaylists)
-    .where(eq(tracksToPlaylists.trackId, trackId));
+  await db.transaction(async (tx) => {
+    await tx
+      .delete(tracksToPlaylists)
+      .where(eq(tracksToPlaylists.trackId, trackId));
 
-  const newEntries = playlistNames.map((name) => {
-    return { playlistName: name, trackId };
+    const newEntries = playlistNames.map((name) => {
+      return { playlistName: name, trackId };
+    });
+    if (newEntries.length > 0) {
+      await tx.insert(tracksToPlaylists).values(newEntries);
+    }
   });
-  if (newEntries.length > 0) {
-    await db.insert(tracksToPlaylists).values(newEntries);
-  }
 }
 
 /** @description Put track in the specified playlists. */

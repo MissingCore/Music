@@ -110,14 +110,16 @@ export async function updatePlaylist({ playlistName, action }: UPDATEFnArgs) {
       exists = await getPlaylist([eq(playlists.name, sanitizedName)]);
     } catch {
       // We know this new playlist name hasn't been used.
-      await db
-        .update(playlists)
-        .set({ name: sanitizedName })
-        .where(eq(playlists.name, playlistName));
-      await db
-        .update(tracksToPlaylists)
-        .set({ playlistName: sanitizedName })
-        .where(eq(tracksToPlaylists.playlistName, playlistName));
+      await db.transaction(async (tx) => {
+        await tx
+          .update(playlists)
+          .set({ name: sanitizedName })
+          .where(eq(playlists.name, playlistName));
+        await tx
+          .update(tracksToPlaylists)
+          .set({ playlistName: sanitizedName })
+          .where(eq(tracksToPlaylists.playlistName, playlistName));
+      });
     }
     if (exists) throw new Error("Playlist with name already exists.");
   }
@@ -165,17 +167,19 @@ export const useUpdatePlaylist = (playlistName: string) => {
 //                            DELETE Methods
 // ---------------------------------------------------------------------
 export async function deletePlaylist({ playlistName }: BaseFnArgs) {
-  await db
-    .delete(tracksToPlaylists)
-    .where(eq(tracksToPlaylists.playlistName, playlistName));
-  const [deletedPlaylist] = await db
-    .delete(playlists)
-    .where(eq(playlists.name, playlistName))
-    .returning();
+  return await db.transaction(async (tx) => {
+    await tx
+      .delete(tracksToPlaylists)
+      .where(eq(tracksToPlaylists.playlistName, playlistName));
+    const [deletedPlaylist] = await tx
+      .delete(playlists)
+      .where(eq(playlists.name, playlistName))
+      .returning();
 
-  await deleteFile(deletedPlaylist.coverSrc);
+    await deleteFile(deletedPlaylist.coverSrc);
 
-  return deletedPlaylist.isFavorite;
+    return deletedPlaylist.isFavorite;
+  });
 }
 
 /** @description Delete specified playlist. */
