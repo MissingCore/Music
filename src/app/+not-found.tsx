@@ -17,7 +17,7 @@ export default function NotFoundScreen() {
       <Stack.Screen options={{ headerShown: false }} />
       <ErrorContainer>
         <ErrorTitle title="Unmatched Route" />
-        <ScrollView className="px-2">
+        <ScrollView contentContainerClassName="px-2">
           <View className="mb-2 flex-row gap-1">
             <Text className="font-geistMono text-base text-foreground50">
               Missing:

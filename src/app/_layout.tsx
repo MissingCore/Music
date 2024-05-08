@@ -11,7 +11,7 @@ import { AppModals } from "@/features/modal";
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
-} from "expo-router";
+} from "@/components/error/ErrorBoundary";
 
 export const unstable_settings = {
   // Ensure that reloading on `/settings` keeps a back button present.
