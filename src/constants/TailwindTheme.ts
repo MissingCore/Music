@@ -21,6 +21,7 @@ const TailwindTheme = {
     xl: "24px",
   },
   fontFamily: {
+    geistLight: "GeistLight",
     geistMonoLight: "GeistMonoLight",
     geistMono: "GeistMono",
     geistMonoMedium: "GeistMonoMedium",

@@ -1,19 +1,38 @@
-import { Link, Stack } from "expo-router";
-import { Text, View } from "react-native";
+import { Stack, usePathname } from "expo-router";
+import { useAtomValue } from "jotai";
+import { ScrollView, Text, View } from "react-native";
 
+import { prevPathnameAtom } from "@/components/error/PrevPathnameTracker";
+
+import { ReportInstructions } from "@/components/error/ReportInstructions";
+import { Code, ErrorContainer, ErrorTitle } from "@/components/error/UI";
+
+/** @description Screen for unmatched route. */
 export default function NotFoundScreen() {
+  const pathname = usePathname();
+  const prevPathname = useAtomValue(prevPathnameAtom);
+
   return (
     <>
-      <Stack.Screen options={{ title: "Oops!" }} />
-      <View className="flex-1 items-center justify-center p-5">
-        <Text className="font-geistMonoMedium text-lg text-foreground50">
-          This screen doesn't exist.
-        </Text>
-
-        <Link href="/" className="mt-4 py-4">
-          <Text className="text-base text-accent500">Go to home screen!</Text>
-        </Link>
-      </View>
+      <Stack.Screen options={{ headerShown: false }} />
+      <ErrorContainer>
+        <ErrorTitle title="Unmatched Route" />
+        <ScrollView className="px-2">
+          <View className="mb-2 flex-row gap-1">
+            <Text className="font-geistMono text-base text-foreground50">
+              Missing:
+            </Text>
+            <Code text={pathname} />
+          </View>
+          <View className="flex-row gap-1">
+            <Text className="font-geistMono text-base text-foreground50">
+              From:
+            </Text>
+            <Code text={prevPathname} />
+          </View>
+        </ScrollView>
+        <ReportInstructions encounterMessage="You somehow navigated to an invalid route." />
+      </ErrorContainer>
     </>
   );
 }

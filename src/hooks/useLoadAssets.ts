@@ -19,6 +19,7 @@ SplashScreen.preventAutoHideAsync();
  */
 export function useLoadAssets() {
   const [fontsLoaded, fontsError] = useFonts({
+    GeistLight: require("../assets/fonts/Geist-Light.ttf"),
     GeistMonoLight: require("../assets/fonts/GeistMono-Light.ttf"),
     GeistMono: require("../assets/fonts/GeistMono-Regular.ttf"),
     GeistMonoMedium: require("../assets/fonts/GeistMono-Medium.ttf"),

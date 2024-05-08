@@ -14,6 +14,7 @@ import { ToastProvider } from "react-native-toast-notifications";
 import "@/assets/global.css";
 import NavigationTheme from "@/constants/Theme";
 import { queryClient } from "@/lib/react-query";
+import { PrevPathnameTracker } from "@/components/error/PrevPathnameTracker";
 
 /**
  * @description The general providers used in our app. Also provides
@@ -37,6 +38,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         )}
       >
         <QueryClientProvider client={queryClient}>
+          <PrevPathnameTracker />
           <ThemeProvider value={NavigationTheme}>
             <BottomSheetModalProvider>
               <StatusBar style="light" />
