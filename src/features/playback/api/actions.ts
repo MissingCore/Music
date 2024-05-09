@@ -116,6 +116,15 @@ const playTrackAtom = atom(null, async (get, set, opts?: TPlayTrackOpts) => {
       try {
         await soundRef.loadAsync({ uri: trackData.uri }, { shouldPlay });
       } catch (err) {
+        if (
+          err instanceof Error &&
+          err.message.includes("java.io.FileNotFoundException")
+        ) {
+          // Case where we play a file that no longer exists. We'll just
+          // reset the information describing the playing information.
+          //  - We might alternatively just delete the track.
+          set(resetPlayingInfoAtom);
+        }
         // Catch cases where media failed to load or if it's already loaded.
         console.log(err);
       }
