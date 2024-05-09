@@ -24,7 +24,7 @@ export const saveCoverImagesOnce = (() => {
  *  application before referencing the image path in our database.
  */
 export async function saveCoverImages() {
-  const start = Date.now();
+  const start = performance.now();
 
   const uncheckedTracks = await db.query.tracks.findMany({
     where: (fields, { eq }) => eq(fields.fetchedCover, false),
@@ -68,6 +68,6 @@ export async function saveCoverImages() {
   }
 
   console.log(
-    `Finished indexing ${newCoverImgCnt} new cover images in ${(Date.now() - start) / 1000}s.`,
+    `Finished indexing ${newCoverImgCnt} new cover images in ${((performance.now() - start) / 1000).toFixed(4)}s.`,
   );
 }

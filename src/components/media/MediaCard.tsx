@@ -1,4 +1,3 @@
-import type { Href } from "expo-router";
 import { Link } from "expo-router";
 import { Pressable } from "react-native";
 
@@ -9,7 +8,7 @@ import { MediaImage } from "./MediaImage";
 
 export type MediaCardContent = Prettify<
   Pick<MediaImageProps, "source" | "type"> & {
-    href: Href<string>;
+    href: string;
     title: string;
     subtitle: string;
     extra?: string | null;

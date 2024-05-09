@@ -33,7 +33,7 @@ export function useIndexAudio() {
   const [isComplete, setIsComplete] = useState(false);
 
   const readMusicLibrary = useCallback(async () => {
-    const start = Date.now();
+    const start = performance.now();
 
     // Make sure we have permissions.
     if (permissionResponse?.status !== "granted") {
@@ -97,7 +97,7 @@ export function useIndexAudio() {
         }),
     );
     console.log(
-      `Got metadata of ${incomingTrackData.length} tracks in ${(Date.now() - start) / 1000}s.`,
+      `Got metadata of ${incomingTrackData.length} tracks in ${((performance.now() - start) / 1000).toFixed(4)}s.`,
     );
 
     // Add rejected tracks in "incomingTrackData" to `InvalidTracks` table.
@@ -198,7 +198,9 @@ export function useIndexAudio() {
       resetPlayingInfo,
       removeItemsInQueue,
     );
-    console.log(`Finished overall in ${(Date.now() - start) / 1000}s.`);
+    console.log(
+      `Finished overall in ${((performance.now() - start) / 1000).toFixed(4)}s.`,
+    );
 
     // Save cover images in the background. Resumes where we left off if
     // we didn't finish indexing cover images last session.

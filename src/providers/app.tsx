@@ -22,7 +22,7 @@ import { PrevPathnameTracker } from "@/components/error/PrevPathnameTracker";
  */
 export function AppProvider({ children }: { children: React.ReactNode }) {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView>
       <ToastProvider
         placement="bottom"
         duration={2000}

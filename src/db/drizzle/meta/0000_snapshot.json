@@ -1,8 +1,6 @@
 {
-  "version": "5",
+  "version": "6",
   "dialect": "sqlite",
-  "id": "83b05308-0a2b-47e4-97d7-724375f282a3",
-  "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "albums": {
       "name": "albums",
@@ -56,15 +54,15 @@
         "albums_artist_name_artists_name_fk": {
           "name": "albums_artist_name_artists_name_fk",
           "tableFrom": "albums",
-          "tableTo": "artists",
           "columnsFrom": [
             "artist_name"
           ],
+          "tableTo": "artists",
           "columnsTo": [
             "name"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -236,28 +234,28 @@
         "tracks_artist_name_artists_name_fk": {
           "name": "tracks_artist_name_artists_name_fk",
           "tableFrom": "tracks",
-          "tableTo": "artists",
           "columnsFrom": [
             "artist_name"
           ],
+          "tableTo": "artists",
           "columnsTo": [
             "name"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "tracks_album_id_albums_id_fk": {
           "name": "tracks_album_id_albums_id_fk",
           "tableFrom": "tracks",
-          "tableTo": "albums",
           "columnsFrom": [
             "album_id"
           ],
+          "tableTo": "albums",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -286,28 +284,28 @@
         "tracks_to_playlists_track_id_tracks_id_fk": {
           "name": "tracks_to_playlists_track_id_tracks_id_fk",
           "tableFrom": "tracks_to_playlists",
-          "tableTo": "tracks",
           "columnsFrom": [
             "track_id"
           ],
+          "tableTo": "tracks",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "tracks_to_playlists_playlist_name_playlists_name_fk": {
           "name": "tracks_to_playlists_playlist_name_playlists_name_fk",
           "tableFrom": "tracks_to_playlists",
-          "tableTo": "playlists",
           "columnsFrom": [
             "playlist_name"
           ],
+          "tableTo": "playlists",
           "columnsTo": [
             "name"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -324,8 +322,9 @@
   },
   "enums": {},
   "_meta": {
-    "schemas": {},
     "tables": {},
     "columns": {}
-  }
+  },
+  "id": "83b05308-0a2b-47e4-97d7-724375f282a3",
+  "prevId": "00000000-0000-0000-0000-000000000000"
 }

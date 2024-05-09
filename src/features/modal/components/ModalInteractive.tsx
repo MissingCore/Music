@@ -1,5 +1,4 @@
 import { useBottomSheet } from "@gorhom/bottom-sheet";
-import type { Href } from "expo-router";
 import { Link as ExpoLink } from "expo-router";
 import { forwardRef } from "react";
 import type { GestureResponderEvent } from "react-native";
@@ -48,12 +47,12 @@ export const Button = forwardRef<View, ModalButtonProps>((props, ref) => {
   );
 });
 
-interface ModalLinkProps<T> extends React.ComponentProps<typeof Button> {
-  href: Href<T>;
+interface ModalLinkProps extends React.ComponentProps<typeof Button> {
+  href: string;
 }
 
 /** @description A `<Link />` for a modal. */
-export function Link<T>({ href, ...rest }: ModalLinkProps<T>) {
+export function Link({ href, ...rest }: ModalLinkProps) {
   return (
     <ExpoLink href={href} asChild>
       <Button {...rest} />
