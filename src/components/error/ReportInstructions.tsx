@@ -20,10 +20,7 @@ export function ReportInstructions({
         </Text>
         <Text className="font-geistLight text-sm text-foreground100">
           You can help the development of this app by reporting this issue at{" "}
-          <ExternalLink
-            href={ReportLink}
-            className="font-geistLight text-sm text-accent50"
-          >
+          <ExternalLink href={ReportLink} className="text-accent50">
             https://github.com/MissingCore/Music/issues/new
           </ExternalLink>
           , make sure to include this screenshot and a description of the

@@ -124,10 +124,10 @@ function FavoriteTracks({ colWidth }: { colWidth: number }) {
         style={{ width: colWidth, height: colWidth }}
         className="items-center justify-center rounded-lg bg-accent500 active:opacity-75"
       >
-        <Text className="font-ndot57 text-title text-foreground50">
+        <Text className="text-center font-ndot57 text-title text-foreground50">
           {trackCount}
+          {"\nTracks"}
         </Text>
-        <Text className="font-ndot57 text-title text-foreground50">TRACKS</Text>
       </Pressable>
     </Link>
   );
