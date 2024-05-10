@@ -1,0 +1,14 @@
+name: "❓ Questions and discussions"
+description: "You have a question about Music or want to discuss some aspects of Music"
+labels: ["invalid issue: question"]
+body:
+  - type: markdown
+    attributes:
+      value: If you have a question about Music or want to discuss about related aspects, please find a discussion about your request (or create a new one) in the [Discussions Tab](https://github.com/MissingCore/Music/discussions).
+  - type: dropdown
+    attributes:
+      label: Do you understand that any discussions or questions opened as issues will be closed?
+      options:
+        - "Yes"
+    validations:
+      required: true

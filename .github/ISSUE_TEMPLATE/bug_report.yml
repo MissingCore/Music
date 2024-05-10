@@ -1,5 +1,5 @@
-name: "\U0001F41B Bug Report"
-description: "Report a reproducible bug in the production application"
+name: "🐛 Bug Report"
+description: "Report a reproducible bug in Music"
 labels: ["Bug", "needs review"]
 body:
   - type: markdown
@@ -26,6 +26,6 @@ body:
     attributes:
       label: Screenshot / Video
       description: |
-        A screenshot of the issue or error message displayed by the app. A video replicating this issue would be very helpful.
+        A screenshot of the issue or error message displayed by Music. A video replicating this issue would be very helpful.
     validations:
       required: true

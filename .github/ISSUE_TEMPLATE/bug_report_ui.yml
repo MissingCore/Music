@@ -1,5 +1,5 @@
-name: "\U0001F41B UI Bug Report"
-description: "Report a visual bug or issue in the production application"
+name: "🐛 UI Bug Report"
+description: "Report a visual bug or issue in Music"
 labels: ["Bug: UI", "needs review"]
 body:
   - type: markdown
