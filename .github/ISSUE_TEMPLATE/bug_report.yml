@@ -1,0 +1,31 @@
+name: "\U0001F41B Bug Report"
+description: "Report a reproducible bug in the production application"
+labels: ["Bug", "needs review"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to file a bug report! Please fill out this entire form. The most important piece are screenshots/videos/steps that led to the bug.
+  - type: input
+    attributes:
+      label: What device did this occur on?
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: What version of Android is your device running?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Summary
+      description: |
+        Clearly describe and list out the steps that led to this issue.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Screenshot / Video
+      description: |
+        A screenshot of the issue or error message displayed by the app. A video replicating this issue would be very helpful.
+    validations:
+      required: true
