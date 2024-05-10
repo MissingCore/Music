@@ -1,4 +1,5 @@
 import { atom } from "jotai";
+import { Toast } from "react-native-toast-notifications";
 
 import { repeatAsyncAtom, shuffleAsyncAtom } from "./configs";
 import { soundRefAtom } from "./globalSound";
@@ -124,6 +125,7 @@ const playTrackAtom = atom(null, async (get, set, opts?: TPlayTrackOpts) => {
           // reset the information describing the playing information.
           //  - We might alternatively just delete the track.
           set(resetPlayingInfoAtom);
+          Toast.show("Track no longer exists.");
         }
         // Catch cases where media failed to load or if it's already loaded.
         console.log(err);
