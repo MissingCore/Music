@@ -37,7 +37,10 @@ function RootLayoutNav() {
             headerTitle: "",
           }}
         />
-        <Stack.Screen name="setting" options={{ headerLeft: BackButton }} />
+        <Stack.Screen
+          name="setting"
+          options={{ animation: "slide_from_right", headerLeft: BackButton }}
+        />
       </Stack>
 
       <AppModals />

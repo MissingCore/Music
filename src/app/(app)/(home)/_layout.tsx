@@ -7,7 +7,9 @@ export default function HomeLayout() {
   return (
     <>
       <NavigationBar />
-      <Stack screenOptions={{ headerShown: false }}>
+      <Stack
+        screenOptions={{ animation: "slide_from_right", headerShown: false }}
+      >
         <Stack.Screen name="index" />
         <Stack.Screen name="playlist" />
         <Stack.Screen name="track" />
