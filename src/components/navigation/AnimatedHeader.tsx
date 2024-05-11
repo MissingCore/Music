@@ -69,7 +69,7 @@ export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
         ref={scrollRef}
         onScroll={checkTitlePosition}
         onMomentumScrollEnd={reactivelySnap}
-        contentContainerClassName="pt-[22px] p-4"
+        contentContainerClassName="px-4 pb-16 pt-[22px]"
       >
         <Text
           onLayout={({ nativeEvent }) => {
