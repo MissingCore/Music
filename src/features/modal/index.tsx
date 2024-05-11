@@ -13,7 +13,6 @@ import { UpcomingTrackModal } from "./modals/UpcomingTrackModal";
 /** @description Wraps all the Bottom Sheet modals used. */
 export function AppModals() {
   const selectedModal = useAtomValue(modalAtom);
-  const trackData = useAtomValue(trackDataAtom);
 
   if (!selectedModal) return null;
   const { type, id, origin } = selectedModal;
@@ -28,8 +27,7 @@ export function AppModals() {
     case "track":
       return <TrackModal trackId={id} origin={origin} />;
     case "track-current":
-      if (!trackData) return null;
-      return <TrackModal trackId={trackData.id} origin="track-current" />;
+      return <RenderTrackModal />;
     case "track-to-playlist":
       return <TrackToPlaylistModal trackId={id} />;
     case "track-upcoming":
@@ -37,4 +35,10 @@ export function AppModals() {
     default:
       throw new Error("Modal type not implemented yet.");
   }
+}
+
+function RenderTrackModal() {
+  const trackData = useAtomValue(trackDataAtom);
+  if (!trackData) return null;
+  return <TrackModal trackId={trackData.id} origin="track-current" />;
 }

@@ -5,10 +5,10 @@ import { playAtom } from "@/features/playback/api/actions";
 import type { TrackListSource } from "@/features/playback/types";
 
 import type { Prettify } from "@/utils/types";
+import { ActionButton } from "@/components/form/ActionButton";
 import type { ImageSource } from "@/components/media/MediaImage";
 import type { MediaList } from "@/components/media/types";
 import { MediaImage } from "@/components/media/MediaImage";
-import { ActionButton } from "@/components/ui/ActionButton";
 import { Duration } from "./Duration";
 
 export type TrackContent = Prettify<

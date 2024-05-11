@@ -1,13 +1,13 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 
 import { useLatestRelease } from "@/api/releases";
 
 import Colors from "@/constants/Colors";
 import { cn } from "@/lib/style";
+import { Button } from "@/components/form/Button";
 import { AnimatedHeader } from "@/components/navigation/AnimatedHeader";
-import { ExternalLink } from "@/components/navigation/ExternalLink";
 
 const APP_VERSION = "v0.0.0";
 const GITHUB_LINK = "https://github.com/MissingCore/Music";
@@ -23,24 +23,20 @@ export default function SettingScreen() {
 
       <Section>
         <Title>Source Code</Title>
-        <View className="flex-row">
-          <ExternalLink href={GITHUB_LINK} asChild>
-            <Pressable
-              className={cn(
-                "flex-row items-center gap-2 px-2 py-1",
-                "rounded-full bg-surface800 active:bg-surface700",
-              )}
-            >
+        <View className="flex-row gap-2">
+          <Button
+            type="external-link"
+            href={GITHUB_LINK}
+            theme="neutral-alt"
+            Icon={
               <Ionicons
                 name="logo-github"
                 size={24}
                 color={Colors.foreground50}
               />
-              <Text className="font-geistMonoLight text-xs text-foreground50">
-                GitHub
-              </Text>
-            </Pressable>
-          </ExternalLink>
+            }
+            content="GitHub"
+          />
         </View>
       </Section>
     </AnimatedHeader>
@@ -111,24 +107,20 @@ function UpdateChecker() {
       >
         {`# ${data.version} is Available\n\n${data.releaseNotes}`}
       </Markdown>
-      <View className="mt-4 flex-row">
-        <ExternalLink href={`${GITHUB_LINK}/releases/latest`} asChild>
-          <Pressable
-            className={cn(
-              "flex-row items-center gap-2 px-2 py-1",
-              "rounded-full bg-surface800 active:bg-surface700",
-            )}
-          >
+      <View className="mt-4 flex-row gap-2">
+        <Button
+          type="external-link"
+          href={`${GITHUB_LINK}/releases/latest`}
+          theme="neutral-alt"
+          Icon={
             <Ionicons
               name="logo-github"
               size={24}
               color={Colors.foreground50}
             />
-            <Text className="font-geistMonoLight text-xs text-foreground50">
-              APK
-            </Text>
-          </Pressable>
-        </ExternalLink>
+          }
+          content="APK"
+        />
       </View>
     </>
   );

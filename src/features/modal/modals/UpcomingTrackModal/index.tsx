@@ -1,14 +1,13 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { BottomSheetSectionList } from "@gorhom/bottom-sheet";
 import { useAtomValue, useSetAtom } from "jotai";
-import { Text } from "react-native";
+import { SectionList, Text } from "react-native";
 
 import { queueRemoveAtIdxAtom } from "@/features/playback/api/queue";
 import { upcomingTrackDataAtom } from "./store";
 
 import Colors from "@/constants/Colors";
+import { ActionButton } from "@/components/form/ActionButton";
 import { MediaImage } from "@/components/media/MediaImage";
-import { ActionButton } from "@/components/ui/ActionButton";
 import { ModalBase } from "../../components/ModalBase";
 import { Title } from "../../components/ModalUI";
 
@@ -19,7 +18,7 @@ export function UpcomingTrackModal() {
 
   return (
     <ModalBase>
-      <BottomSheetSectionList
+      <SectionList
         sections={upcomingTrackData ?? []}
         keyExtractor={({ id }, index) => `${id}${index}`}
         renderItem={({ item, section: { title }, index }) => {

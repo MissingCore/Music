@@ -1,7 +1,7 @@
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { Text, View } from "react-native";
 
-import { useDeletePlaylist, usePlaylistForModal } from "@/api/playlists/[id]";
+import { useDeletePlaylist } from "@/api/playlists/[id]";
 
 import { mutateGuard } from "@/lib/react-query";
 import { ModalBase } from "../components/ModalBase";
@@ -14,17 +14,14 @@ export function PlaylistDeleteModal({
 }: {
   playlistName: string;
 }) {
-  const { isPending, error, data } = usePlaylistForModal(playlistName);
   const deletePlaylistFn = useDeletePlaylist(playlistName);
-
-  if (isPending || error) return null;
 
   return (
     <ModalBase detached>
       <BottomSheetScrollView className="px-4">
         <Title>Delete Playlist</Title>
         <Subtitle asLine className="mb-8">
-          {data.name}
+          {playlistName}
         </Subtitle>
 
         <Text className="mb-8 font-geistMonoLight text-sm text-foreground100">
@@ -38,7 +35,7 @@ export function PlaylistDeleteModal({
         <View className="flex-row justify-end gap-2">
           <ModalFormButton content="CANCEL" />
           <ModalFormButton
-            theme="pop"
+            theme="accent"
             onPress={() => mutateGuard(deletePlaylistFn, undefined)}
             content="DELETE"
           />

@@ -1,8 +1,7 @@
-import { router } from "expo-router";
 import { Text, View } from "react-native";
 
+import { Button } from "../form/Button";
 import { ExternalLink } from "../navigation/ExternalLink";
-import { Button } from "../ui/Button";
 
 const ReportLink = "https://github.com/MissingCore/Music/issues/new";
 
@@ -21,7 +20,7 @@ export function ReportInstructions({
         <Text className="font-geistLight text-sm text-foreground100">
           You can help the development of this app by reporting this issue at{" "}
           <ExternalLink href={ReportLink} className="text-accent50">
-            https://github.com/MissingCore/Music/issues/new
+            {ReportLink}
           </ExternalLink>
           , make sure to include this screenshot and a description of the
           process that led to this error.
@@ -32,14 +31,13 @@ export function ReportInstructions({
         </Text>
       </View>
       <View className="mt-12 flex-row justify-end gap-2 px-2">
+        <Button type="link" href="/" content="Return Home" />
         <Button
-          theme="default"
-          content="Return Home"
-          onPress={() => router.navigate("/")}
+          type="external-link"
+          href={ReportLink}
+          theme="accent"
+          content="Report Issue"
         />
-        <ExternalLink href={ReportLink} asChild>
-          <Button theme="pop" content="Report Issue" />
-        </ExternalLink>
       </View>
     </View>
   );

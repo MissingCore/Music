@@ -4,7 +4,7 @@ import { SectionList, Text } from "react-native";
 import { ArrowRight } from "@/assets/svgs/ArrowRight";
 import { useArtistsForList } from "@/api/artists";
 
-import { ActionButton } from "@/components/ui/ActionButton";
+import { ActionButton } from "@/components/form/ActionButton";
 import { Loading } from "@/components/ui/Loading";
 
 /** @description Screen for `/artist` route. */

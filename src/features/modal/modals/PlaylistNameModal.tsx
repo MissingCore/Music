@@ -77,7 +77,7 @@ export function PlaylistNameModal({ origin, id }: ModalPlaylistName) {
           {origin === "update" && <ModalFormButton content="CANCEL" />}
           <ModalFormButton
             disabled={!meetsCharLength || !isUnique}
-            theme={origin === "new" ? "default" : "secondary"}
+            theme={origin === "new" ? undefined : "neutral"}
             onPress={() => {
               const santiziedStr = playlistName.trim();
               if (origin === "new") mutateGuard(createPlaylist, santiziedStr);
