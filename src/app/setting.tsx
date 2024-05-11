@@ -9,7 +9,7 @@ import { cn } from "@/lib/style";
 import { Button } from "@/components/form/Button";
 import { AnimatedHeader } from "@/components/navigation/AnimatedHeader";
 
-const APP_VERSION = "v0.0.0";
+const APP_VERSION = process.env.EXPO_PUBLIC_APP_VERSION!;
 const GITHUB_LINK = "https://github.com/MissingCore/Music";
 
 /** @description Screen for `/setting` route. */

@@ -163,6 +163,9 @@ devDependencies:
   babel-plugin-inline-import:
     specifier: ^3.0.0
     version: 3.0.0
+  babel-plugin-transform-remove-console:
+    specifier: ^6.9.4
+    version: 6.9.4
   drizzle-kit:
     specifier: ^0.21.0
     version: 0.21.0
@@ -4544,6 +4547,10 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
     dev: false
+
+  /babel-plugin-transform-remove-console@6.9.4:
+    resolution: {integrity: sha512-88blrUrMX3SPiGkT1GnvVY8E/7A+k6oj3MNvUtTIxJflFzXTw1bHkuJ/y039ouhFMp2prRn5cQGzokViYi1dsg==}
+    dev: true
 
   /babel-preset-current-node-syntax@1.0.1(@babel/core@7.24.5):
     resolution: {integrity: sha512-M7LQ0bxarkxQoN+vz5aJPsLBn77n8QgTFmo8WK0/44auK2xlCXrYcUxHFxgU7qW5Yzw/CjmLRK2uJzaCd7LvqQ==}
