@@ -1,5 +1,6 @@
 import { atom } from "jotai";
 import { Toast } from "react-native-toast-notifications";
+import TrackPlayer from "react-native-track-player";
 
 import { repeatAsyncAtom, shuffleAsyncAtom } from "./configs";
 import { soundRefAtom } from "./globalSound";
@@ -116,6 +117,14 @@ const playTrackAtom = atom(null, async (get, set, opts?: TPlayTrackOpts) => {
       if (trackData.id !== get(queuedTrackAtom)) return;
       try {
         await soundRef.loadAsync({ uri: trackData.uri }, { shouldPlay });
+        await TrackPlayer.load({
+          url: trackData.uri,
+          artwork: trackData.coverSrc ?? undefined,
+          title: trackData.name,
+          album: trackData.album?.name,
+          artist: trackData.artistName,
+          duration: trackData.duration,
+        });
       } catch (err) {
         if (
           err instanceof Error &&
@@ -136,20 +145,30 @@ const playTrackAtom = atom(null, async (get, set, opts?: TPlayTrackOpts) => {
     await soundRef.playAsync();
   }
 
+  if (shouldPlay) await TrackPlayer.play();
+  else await TrackPlayer.pause();
   set(isPlayingAtom, shouldPlay);
 });
 
 /** @description Method for pausing the current playing track. */
 export const pauseAtom = atom(null, async (get, set) => {
   await get(soundRefAtom).pauseAsync();
+  await TrackPlayer.pause();
   set(isPlayingAtom, false);
 });
 
 /** @description Updates the current track position to the value in `trackPositionMsAtom`. */
-export const updateTrackPosAtom = atom(null, async (get) => {
-  const soundRef = get(soundRefAtom);
-  await soundRef.setStatusAsync({ positionMillis: get(positionMsAtom) });
-});
+export const updateTrackPosAtom = atom(
+  null,
+  async (get, _set, newPositionSec?: number) => {
+    const soundRef = get(soundRefAtom);
+    const newPositionMs = newPositionSec
+      ? newPositionSec * 1000
+      : get(positionMsAtom);
+    await soundRef.setStatusAsync({ positionMillis: newPositionMs });
+    await TrackPlayer.seekTo(newPositionMs / 1000);
+  },
+);
 
 /** @description Toggle `isPlaying`, playing or pausing the current track. */
 export const playPauseToggleAtom = atom(null, async (get, set) => {

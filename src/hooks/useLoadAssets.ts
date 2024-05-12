@@ -3,8 +3,9 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
+import { useSetupTrackPlayer } from "@/features/playback/hooks/useSetupTrackPlayer";
 import { useIndexAudio } from "./useIndexAudio";
 
 import { db } from "@/db";
@@ -29,6 +30,11 @@ export function useLoadAssets() {
   });
   const { success: dbSuccess, error: dbError } = useMigrations(db, migrations);
   const { isComplete: audioIndexingStatus } = useIndexAudio();
+  const { isComplete: trackPlayerStatus } = useSetupTrackPlayer();
+
+  const completedTasks = useMemo(() => {
+    return fontsLoaded && dbSuccess && audioIndexingStatus && trackPlayerStatus;
+  }, [fontsLoaded, dbSuccess, audioIndexingStatus, trackPlayerStatus]);
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
@@ -37,10 +43,8 @@ export function useLoadAssets() {
   }, [fontsError, dbError]);
 
   useEffect(() => {
-    if (fontsLoaded && dbSuccess && audioIndexingStatus) {
-      SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded, dbSuccess, audioIndexingStatus]);
+    if (completedTasks) SplashScreen.hideAsync();
+  }, [completedTasks]);
 
-  return { isLoaded: fontsLoaded && dbSuccess && audioIndexingStatus };
+  return { isLoaded: completedTasks };
 }

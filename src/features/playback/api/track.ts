@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm";
 import { atom } from "jotai";
 import { RESET, unwrap } from "jotai/utils";
+import TrackPlayer from "react-native-track-player";
 
 import { tracks } from "@/db/schema";
 import { getTrack } from "@/db/queries";
@@ -66,8 +67,19 @@ export const trackDataAtom = unwrap(
 export const loadTrackAtom = atom(null, async (get) => {
   const soundRef = get(soundRefAtom);
   const trackStatus = await soundRef.getStatusAsync();
+
   if (!trackStatus.isLoaded) {
     const trackData = await get(trackDataAsyncAtom);
-    if (trackData) await soundRef.loadAsync({ uri: trackData.uri });
+    if (trackData) {
+      await soundRef.loadAsync({ uri: trackData.uri });
+      await TrackPlayer.load({
+        url: trackData.uri,
+        artwork: trackData.coverSrc ?? undefined,
+        title: trackData.name,
+        album: trackData.album?.name,
+        artist: trackData.artistName,
+        duration: trackData.duration,
+      });
+    }
   }
 });

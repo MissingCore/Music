@@ -122,6 +122,9 @@ dependencies:
   react-native-toast-notifications:
     specifier: ^3.4.0
     version: 3.4.0(react-native@0.74.1)(react@18.2.0)
+  react-native-track-player:
+    specifier: ^4.1.1
+    version: 4.1.1(react-native@0.74.1)(react@18.2.0)
   react-native-web:
     specifier: ~0.19.11
     version: 0.19.11(react-dom@18.2.0)(react@18.2.0)
@@ -10193,6 +10196,23 @@ packages:
     peerDependencies:
       react: '*'
       react-native: '*'
+    dependencies:
+      react: 18.2.0
+      react-native: 0.74.1(@babel/core@7.24.5)(@babel/preset-env@7.24.5)(@types/react@18.2.79)(react@18.2.0)
+    dev: false
+
+  /react-native-track-player@4.1.1(react-native@0.74.1)(react@18.2.0):
+    resolution: {integrity: sha512-E5N/eK/+HtAVJUAzXpm1cWz8ROheV9jb0TI6h2bM+333U+DWibTTnT2T1122FkCoXLXIYavtm2FR2if+5jH8cA==}
+    peerDependencies:
+      react: '>=16.8.6'
+      react-native: '>=0.60.0-rc.2'
+      react-native-windows: '>=0.63.0'
+      shaka-player: ^4.7.9
+    peerDependenciesMeta:
+      react-native-windows:
+        optional: true
+      shaka-player:
+        optional: true
     dependencies:
       react: 18.2.0
       react-native: 0.74.1(@babel/core@7.24.5)(@babel/preset-env@7.24.5)(@types/react@18.2.79)(react@18.2.0)
