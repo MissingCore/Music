@@ -5,25 +5,20 @@ import TrackPlayer, {
   RepeatMode,
 } from "react-native-track-player";
 
-import { usePlaybackServiceFn } from "./usePlaybackServiceFn";
-
 /** @description Sets up `react-native-track-player`. */
 export function useSetupTrackPlayer() {
   const [isInitialized, setIsInitialized] = useState(false);
-  const playbackService = usePlaybackServiceFn();
 
   useEffect(() => {
-    setupPlayer(playbackService).then(() => {
+    setupPlayer().then(() => {
       setIsInitialized(true);
     });
-  }, [playbackService]);
+  }, []);
 
-  return { isComplete: isInitialized };
+  return isInitialized;
 }
 
-async function setupPlayer(playbackService: () => Promise<void>) {
-  TrackPlayer.registerPlaybackService(() => playbackService);
-
+async function setupPlayer() {
   await TrackPlayer.setupPlayer();
   // Repeat mode is needed for the "next" button to show up in the widget.
   await TrackPlayer.setRepeatMode(RepeatMode.Queue);

@@ -1,3 +1,5 @@
+import type { Track as TrackPlayerTrack } from "react-native-track-player";
+
 import type {
   AlbumWithTracks,
   ArtistWithTracks,
@@ -119,4 +121,15 @@ export function formatForCurrentPages(args: FnArgs) {
 /** @description Return an array of track ids. */
 export function formatAsTrackIdList(tracks: Track[]) {
   return tracks.map(({ id }) => id);
+}
+
+/** @description Format track data to be used with `TrackPlayer.load()`. */
+export function formatTrackforPlayer(track: TrackWithAlbum) {
+  return {
+    url: track.uri,
+    artwork: getTrackCover(track) ?? undefined,
+    title: track.name,
+    artist: track.artistName,
+    duration: track.duration + 150,
+  } satisfies TrackPlayerTrack;
 }

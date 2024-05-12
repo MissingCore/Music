@@ -29,8 +29,8 @@ export function useLoadAssets() {
     ...MaterialIcons.font,
   });
   const { success: dbSuccess, error: dbError } = useMigrations(db, migrations);
-  const { isComplete: audioIndexingStatus } = useIndexAudio();
-  const { isComplete: trackPlayerStatus } = useSetupTrackPlayer();
+  const audioIndexingStatus = useIndexAudio();
+  const trackPlayerStatus = useSetupTrackPlayer();
 
   const completedTasks = useMemo(() => {
     return fontsLoaded && dbSuccess && audioIndexingStatus && trackPlayerStatus;

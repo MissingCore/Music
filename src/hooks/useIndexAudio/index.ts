@@ -226,10 +226,8 @@ export function useIndexAudio() {
     if (permissionResponse && !isComplete) readMusicLibrary();
   }, [permissionResponse, isComplete, readMusicLibrary]);
 
-  return {
-    /** The status of audio indexing — does not necessarily mean we have permissions. */
-    isComplete,
-  };
+  /** The status of audio indexing — does not necessarily mean we have permissions. */
+  return isComplete;
 }
 
 /** @description Helper to create and return a new album. */

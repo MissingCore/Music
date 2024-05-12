@@ -1,6 +1,9 @@
+import BackgroundTimer from "@boterop/react-native-background-timer";
 import { atom } from "jotai";
 import { Toast } from "react-native-toast-notifications";
 import TrackPlayer from "react-native-track-player";
+
+import { formatTrackforPlayer } from "@/db/utils/formatters";
 
 import { repeatAsyncAtom, shuffleAsyncAtom } from "./configs";
 import { soundRefAtom } from "./globalSound";
@@ -111,20 +114,14 @@ const playTrackAtom = atom(null, async (get, set, opts?: TPlayTrackOpts) => {
 
     set(queuedTrackAtom, trackData.id);
     await soundRef.unloadAsync(); // Needed if we want to replace the current track.
+    await TrackPlayer.load(formatTrackforPlayer(trackData));
     set(positionMsAtom, 0);
 
-    setTimeout(async () => {
+    BackgroundTimer.setTimeout(async () => {
       if (trackData.id !== get(queuedTrackAtom)) return;
       try {
         await soundRef.loadAsync({ uri: trackData.uri }, { shouldPlay });
-        await TrackPlayer.load({
-          url: trackData.uri,
-          artwork: trackData.coverSrc ?? undefined,
-          title: trackData.name,
-          album: trackData.album?.name,
-          artist: trackData.artistName,
-          duration: trackData.duration,
-        });
+        await TrackPlayer.seekTo(0);
       } catch (err) {
         if (
           err instanceof Error &&
@@ -162,9 +159,10 @@ export const updateTrackPosAtom = atom(
   null,
   async (get, _set, newPositionSec?: number) => {
     const soundRef = get(soundRefAtom);
-    const newPositionMs = newPositionSec
-      ? newPositionSec * 1000
-      : get(positionMsAtom);
+    const newPositionMs =
+      newPositionSec !== undefined
+        ? newPositionSec * 1000
+        : get(positionMsAtom);
     await soundRef.setStatusAsync({ positionMillis: newPositionMs });
     await TrackPlayer.seekTo(newPositionMs / 1000);
   },

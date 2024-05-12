@@ -5,6 +5,7 @@ import TrackPlayer from "react-native-track-player";
 
 import { tracks } from "@/db/schema";
 import { getTrack } from "@/db/queries";
+import { formatTrackforPlayer } from "@/db/utils/formatters";
 
 import { soundRefAtom } from "./globalSound";
 import { queueListAsyncAtom } from "./queue";
@@ -45,6 +46,7 @@ export const resetPlayingInfoAtom = atom(null, async (_get, set) => {
   set(positionMsAtom, 0);
   set(queueListAsyncAtom, RESET);
   set(trackListAsyncAtom, RESET);
+  await TrackPlayer.reset();
 });
 
 /** @description [🇫🇴🇷 🇮🇳🇹🇪🇷🇳🇦🇱 🇺🇸🇪 🇴🇳🇱🇾] */
@@ -72,14 +74,7 @@ export const loadTrackAtom = atom(null, async (get) => {
     const trackData = await get(trackDataAsyncAtom);
     if (trackData) {
       await soundRef.loadAsync({ uri: trackData.uri });
-      await TrackPlayer.load({
-        url: trackData.uri,
-        artwork: trackData.coverSrc ?? undefined,
-        title: trackData.name,
-        album: trackData.album?.name,
-        artist: trackData.artistName,
-        duration: trackData.duration,
-      });
+      await TrackPlayer.load(formatTrackforPlayer(trackData));
     }
   }
 });

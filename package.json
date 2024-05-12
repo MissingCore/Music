@@ -22,6 +22,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@boterop/react-native-background-timer": "^2.5.1",
     "@expo/vector-icons": "^14.0.1",
     "@gorhom/bottom-sheet": "5.0.0-alpha.9",
     "@miblanchard/react-native-slider": "^2.6.0",
@@ -70,6 +71,7 @@
     "@babel/core": "^7.24.5",
     "@tanstack/eslint-plugin-query": "^5.32.1",
     "@types/base-64": "^1.0.2",
+    "@types/boterop__react-native-background-timer": "npm:@types/react-native-background-timer@^2.0.2",
     "@types/core-js": "^2.5.8",
     "@types/fastestsmallesttextencoderdecoder": "^1.0.2",
     "@types/jest": "^29.5.12",

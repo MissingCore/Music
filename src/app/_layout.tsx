@@ -1,8 +1,10 @@
 import { Stack } from "expo-router";
+import TrackPlayer from "react-native-track-player";
 
 import { useLoadAssets } from "@/hooks/useLoadAssets";
 
 import "@/assets/global.css";
+import PlaybackService from "@/constants/PlaybackService";
 import { AppProvider } from "@/providers/app";
 import { Header } from "@/components/navigation/Header";
 import { BackButton } from "@/components/navigation/BackButton";
@@ -17,6 +19,8 @@ export const unstable_settings = {
   // Ensure that reloading on `/settings` keeps a back button present.
   initialRouteName: "(app)/(home)",
 };
+
+TrackPlayer.registerPlaybackService(() => PlaybackService);
 
 export default function RootLayout() {
   const { isLoaded } = useLoadAssets();
