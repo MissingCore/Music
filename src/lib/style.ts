@@ -2,7 +2,7 @@ import type { ClassValue } from "clsx";
 import { clsx } from "clsx";
 import { extendTailwindMerge } from "tailwind-merge";
 
-import TailwindTheme from "@/constants/TailwindTheme";
+import { TailwindTheme } from "@/constants/Themes";
 
 export type TextColor = `text-${string}` | `text-[${string}]`;
 

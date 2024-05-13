@@ -1,7 +1,7 @@
 import { cssInterop } from "nativewind";
 import Svg, { Path } from "react-native-svg";
 
-import Colors from "@/constants/Colors";
+import { Colors } from "@/constants/Styles";
 
 const WrappedSvg = cssInterop(Svg, { className: "style" });
 

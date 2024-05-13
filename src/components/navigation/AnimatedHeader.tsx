@@ -5,7 +5,7 @@ import { ScrollView, Text, View } from "react-native";
 import Animated, { clamp, useSharedValue } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import Colors from "@/constants/Colors";
+import { Colors } from "@/constants/Styles";
 import { UnstyledBackButton } from "./BackButton";
 
 type AnimatedHeaderProps = { title: string; children: React.ReactNode };

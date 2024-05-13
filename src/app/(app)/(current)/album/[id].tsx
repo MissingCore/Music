@@ -5,7 +5,7 @@ import { Pressable, Text, View } from "react-native";
 import { useAlbumForCurrentPage } from "@/api/albums/[id]";
 import { useToggleFavorite } from "@/api/favorites/[id]";
 
-import Colors from "@/constants/Colors";
+import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { MediaPageHeader } from "@/components/media/MediaPageHeader";
 import { TrackList } from "@/features/track/components/TrackList";

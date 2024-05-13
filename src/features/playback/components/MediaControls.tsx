@@ -16,7 +16,7 @@ import { trackListAtom } from "../api/track";
 import type { TrackListSource } from "../types";
 import { areTrackReferencesEqual } from "../utils";
 
-import Colors from "@/constants/Colors";
+import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
 
 /**

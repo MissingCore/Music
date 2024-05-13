@@ -1,6 +1,6 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-import Colors from "@/constants/Colors";
+import { Colors } from "@/constants/Styles";
 import { ActionButton } from "./ActionButton";
 
 export type CheckboxFieldProps = {

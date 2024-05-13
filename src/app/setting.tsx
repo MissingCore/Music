@@ -4,7 +4,7 @@ import Markdown from "react-native-markdown-display";
 
 import { useLatestRelease } from "@/api/releases";
 
-import Colors from "@/constants/Colors";
+import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
 import { Button } from "@/components/form/Button";
 import { AnimatedHeader } from "@/components/navigation/AnimatedHeader";

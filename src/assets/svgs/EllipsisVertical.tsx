@@ -1,6 +1,6 @@
 import Svg, { Circle } from "react-native-svg";
 
-import Colors from "@/constants/Colors";
+import { Colors } from "@/constants/Styles";
 
 /** @description Thinner ionicons "ellipsis-vertical" icon. */
 export function EllipsisVertical({

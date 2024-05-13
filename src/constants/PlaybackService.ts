@@ -8,7 +8,8 @@ import {
   updateTrackPosAtom,
 } from "@/features/playback/api/actions";
 
-export default async function PlaybackService() {
+/** @description How we handle the actions in the media control notification. */
+export async function PlaybackService() {
   const jotaiStore = getDefaultStore();
 
   TrackPlayer.addEventListener(Event.RemotePlay, () => {

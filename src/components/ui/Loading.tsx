@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Svg, Circle } from "react-native-svg";
 
-import Colors from "@/constants/Colors";
+import { Colors } from "@/constants/Styles";
 
 /** @description Nothing loading animation. */
 export function Loading() {

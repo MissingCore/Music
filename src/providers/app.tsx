@@ -12,7 +12,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ToastProvider } from "react-native-toast-notifications";
 
 import "@/assets/global.css";
-import NavigationTheme from "@/constants/Theme";
+import { NavigationTheme } from "@/constants/Themes";
 import { queryClient } from "@/lib/react-query";
 import { PrevPathnameTracker } from "@/components/error/PrevPathnameTracker";
 

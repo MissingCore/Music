@@ -10,7 +10,7 @@ import { useCreatePlaylist, usePlaylistsForModal } from "@/api/playlists";
 import { useUpdatePlaylist } from "@/api/playlists/[id]";
 import type { ModalPlaylistName } from "../store";
 
-import Colors from "@/constants/Colors";
+import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
 import { ReservedNames } from "@/features/playback/constants";

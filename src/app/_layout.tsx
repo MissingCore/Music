@@ -4,7 +4,7 @@ import TrackPlayer from "react-native-track-player";
 import { useLoadAssets } from "@/hooks/useLoadAssets";
 
 import "@/assets/global.css";
-import PlaybackService from "@/constants/PlaybackService";
+import { PlaybackService } from "@/constants/PlaybackService";
 import { AppProvider } from "@/providers/app";
 import { Header } from "@/components/navigation/Header";
 import { BackButton } from "@/components/navigation/BackButton";

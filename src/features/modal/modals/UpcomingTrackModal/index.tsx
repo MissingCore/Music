@@ -5,7 +5,7 @@ import { SectionList, Text } from "react-native";
 import { queueRemoveAtIdxAtom } from "@/features/playback/api/queue";
 import { upcomingTrackDataAtom } from "./store";
 
-import Colors from "@/constants/Colors";
+import { Colors } from "@/constants/Styles";
 import { ActionButton } from "@/components/form/ActionButton";
 import { MediaImage } from "@/components/media/MediaImage";
 import { ModalBase } from "../../components/ModalBase";

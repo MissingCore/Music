@@ -6,7 +6,7 @@ import { Text, View } from "react-native";
 import { updateTrackPosAtom } from "../api/actions";
 import { positionMsAtom } from "../api/track";
 
-import Colors from "@/constants/Colors";
+import { Colors } from "@/constants/Styles";
 import { getTrackDuration } from "@/features/track/utils";
 
 /**

@@ -7,7 +7,7 @@ import { usePlaylistsForMediaCard } from "@/api/playlists";
 import { useGetColumnWidth } from "@/hooks/layout";
 import { modalAtom } from "@/features/modal/store";
 
-import Colors from "@/constants/Colors";
+import { Colors } from "@/constants/Styles";
 import { MediaCard } from "@/components/media/MediaCard";
 
 /** @description Screen for `/playlist` route. */
