@@ -67,6 +67,7 @@ export const playAtom = atom(
       shuffle: shouldShuffle,
       startingTrack: id ?? playingMedia.id,
     });
+    if (trackList.length === 0) return;
 
     // 3a. Play the track.
     const newTrackId = trackList[listIndex];

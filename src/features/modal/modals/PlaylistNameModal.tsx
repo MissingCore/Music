@@ -36,8 +36,8 @@ export function PlaylistNameModal({ origin, id }: ModalPlaylistName) {
     const usedNames = new Set(data.map(({ name }) => name));
     return (
       !!santiziedStr &&
-      !usedNames.has(playlistName) &&
-      !ReservedNames.has(playlistName)
+      !usedNames.has(santiziedStr) &&
+      !ReservedNames.has(santiziedStr)
     );
   }, [data, playlistName]);
 

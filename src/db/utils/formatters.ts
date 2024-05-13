@@ -130,6 +130,6 @@ export function formatTrackforPlayer(track: TrackWithAlbum) {
     artwork: getTrackCover(track) ?? undefined,
     title: track.name,
     artist: track.artistName,
-    duration: track.duration + 150,
+    duration: track.duration,
   } satisfies TrackPlayerTrack;
 }

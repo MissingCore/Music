@@ -15,6 +15,7 @@ import "@/assets/global.css";
 import { NavigationTheme } from "@/constants/Themes";
 import { queryClient } from "@/lib/react-query";
 import { PrevPathnameTracker } from "@/components/error/PrevPathnameTracker";
+import { DeepLinkHandler } from "@/components/navigation/DeepLinkHandler";
 
 /**
  * @description The general providers used in our app. Also provides
@@ -38,6 +39,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         )}
       >
         <QueryClientProvider client={queryClient}>
+          <DeepLinkHandler />
           <PrevPathnameTracker />
           <ThemeProvider value={NavigationTheme}>
             <BottomSheetModalProvider>

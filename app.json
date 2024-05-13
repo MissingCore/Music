@@ -3,7 +3,7 @@
     "name": "Music",
     "slug": "Music",
     "description": "A Nothing inspired music player.",
-    "version": "1.0.0",
+    "version": "0.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
     "backgroundColor": "#000000",
