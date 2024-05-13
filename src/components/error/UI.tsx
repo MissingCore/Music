@@ -24,7 +24,7 @@ export function ErrorContainer({ children }: { children: React.ReactNode }) {
 /** @description Title displayed on error-related pages. */
 export function ErrorTitle({ title }: { title: string }) {
   return (
-    <Text className="mb-8 text-center font-ndot57 text-title text-foreground50">
+    <Text className="mb-4 text-center font-ndot57 text-title text-foreground50">
       {title}
     </Text>
   );

@@ -39,6 +39,25 @@ export default function SettingScreen() {
           />
         </View>
       </Section>
+
+      <Section>
+        <Title>Support</Title>
+        <View className="flex-row gap-2">
+          <Button
+            type="external-link"
+            href={`${GITHUB_LINK}/issues/new`}
+            theme="neutral-alt"
+            Icon={
+              <Ionicons
+                name="logo-github"
+                size={24}
+                color={Colors.foreground50}
+              />
+            }
+            content="Submit an Issue"
+          />
+        </View>
+      </Section>
     </AnimatedHeader>
   );
 }

@@ -31,7 +31,7 @@ export function Timeline({ duration }: { duration: number }) {
   }, [duration, slidingTrackPos]);
 
   return (
-    <View className="mt-8 w-full p-4">
+    <View className="mt-6 w-full p-4">
       <Slider
         value={slidingTrackPos ?? trackPosMs}
         minimumValue={0}

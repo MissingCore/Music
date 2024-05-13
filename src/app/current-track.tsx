@@ -50,7 +50,7 @@ export default function CurrentTrackScreen() {
 
         <Timeline duration={trackData.duration} />
 
-        <View className="flex-row items-center gap-2 p-8">
+        <View className="flex-row items-center gap-2 p-4 pb-8">
           <ShuffleButton size={32} />
           <PreviousButton size={32} />
           <PlayToggleButton size={32} className="px-5" />

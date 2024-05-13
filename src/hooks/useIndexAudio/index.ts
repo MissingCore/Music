@@ -202,11 +202,7 @@ export function useIndexAudio() {
       `Finished overall in ${((performance.now() - start) / 1000).toFixed(4)}s.`,
     );
 
-    // Save cover images in the background. Resumes where we left off if
-    // we didn't finish indexing cover images last session.
-    //  - We don't call the function with `await` to make it not-blocking.
-    //  - Make sure we run this after cleaning up deleted tracks, albums, and artists.
-    saveCoverImagesOnce();
+    await saveCoverImagesOnce();
 
     // Allow audio to play in the background.
     await Audio.setAudioModeAsync({ staysActiveInBackground: true });

@@ -9,10 +9,10 @@ import { getMusicInfoAsync } from "@/utils/getMusicInfoAsync";
 /** @description Make sure we run the logic to save cover images once. */
 export const saveCoverImagesOnce = (() => {
   let executed = false;
-  return () => {
+  return async () => {
     if (!executed) {
       executed = true;
-      saveCoverImages();
+      await saveCoverImages();
     }
   };
 })();

@@ -5,8 +5,8 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useMemo } from "react";
 
-import { useSetupTrackPlayer } from "@/features/playback/hooks/useSetupTrackPlayer";
 import { useIndexAudio } from "./useIndexAudio";
+import { useSetupTrackPlayer } from "./useSetupTrackPlayer";
 
 import { db } from "@/db";
 import migrations from "@/db/drizzle/migrations";
