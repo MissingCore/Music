@@ -26,20 +26,20 @@ type FnArgsWithTrack = FnArgs | { type: "track"; data: TrackWithAlbum[] };
 /** @description Get the covers of the first 4 tracks. */
 export function getPlaylistCollage(data: TrackWithAlbum[]) {
   return data
-    .map((data) => ({ name: data.name, coverSrc: getTrackCover(data) }))
+    .map((data) => ({ name: data.name, artwork: getTrackCover(data) }))
     .toSorted((a, b) => a.name.localeCompare(b.name))
     .slice(0, 4)
-    .map(({ coverSrc }) => coverSrc);
+    .map(({ artwork }) => artwork);
 }
 
 /** @description Get the cover of a playlist. */
 export function getPlaylistCover(data: PlaylistWithTracks) {
-  return data.coverSrc ?? getPlaylistCollage(data.tracks);
+  return data.artwork ?? getPlaylistCollage(data.tracks);
 }
 
 /** @description Get the cover of a track with `album` field. */
 export function getTrackCover(data: TrackWithAlbum) {
-  return data.album?.coverSrc ?? data.coverSrc;
+  return data.album?.artwork ?? data.artwork;
 }
 
 /**
@@ -60,7 +60,7 @@ export function formatForMediaCard({ type, data }: FnArgs) {
     type,
     source:
       type === "album"
-        ? data.coverSrc
+        ? data.artwork
         : type === "playlist" && data.name !== SpecialPlaylists.tracks
           ? getPlaylistCover(data)
           : null,
@@ -85,9 +85,9 @@ export function formatTracksForTrack({
     type === "track" ? data : data.tracks;
 
   return sortTracks({ type, tracks }).map((data) => {
-    const { id, duration, coverSrc, name, artistName } = data;
+    const { id, duration, artwork, name, artistName } = data;
 
-    let imageSource = coverSrc;
+    let imageSource = artwork;
     const textContent: TrackContent["textContent"] = [name, artistName];
 
     if (!isTrackWithAlbum(data)) {

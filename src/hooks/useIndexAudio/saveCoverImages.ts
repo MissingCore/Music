@@ -27,11 +27,11 @@ export async function saveCoverImages() {
   const start = performance.now();
 
   const uncheckedTracks = await db.query.tracks.findMany({
-    where: (fields, { eq }) => eq(fields.fetchedCover, false),
+    where: (fields, { eq }) => eq(fields.fetchedArt, false),
     columns: { id: true, albumId: true, uri: true },
   });
   const _albumsWCovers = await db.query.albums.findMany({
-    where: (fields, { isNotNull }) => isNotNull(fields.coverSrc),
+    where: (fields, { isNotNull }) => isNotNull(fields.artwork),
     columns: { id: true },
   });
   const albumsWCovers = new Set(_albumsWCovers.map(({ id }) => id));
@@ -45,26 +45,23 @@ export async function saveCoverImages() {
       if (cover) {
         // Very slim chance that we might have a "floating" image if we
         // close the app right after saving the image, but before setting
-        // `fetchedCover` to `true`.
-        const coverSrc = await saveBase64Img(cover);
+        // `fetchedArt` to `true`.
+        const artwork = await saveBase64Img(cover);
         if (albumId) {
           await db
             .update(albums)
-            .set({ coverSrc })
+            .set({ artwork })
             .where(eq(albums.id, albumId));
           albumsWCovers.add(albumId);
         } else {
-          await db.update(tracks).set({ coverSrc }).where(eq(tracks.id, id));
+          await db.update(tracks).set({ artwork }).where(eq(tracks.id, id));
         }
         newCoverImgCnt++;
       }
     }
 
-    // Regardless, we set `fetchedCover` to `true.
-    await db
-      .update(tracks)
-      .set({ fetchedCover: true })
-      .where(eq(tracks.id, id));
+    // Regardless, we set `fetchedArt` to `true.
+    await db.update(tracks).set({ fetchedArt: true }).where(eq(tracks.id, id));
   }
 
   console.log(

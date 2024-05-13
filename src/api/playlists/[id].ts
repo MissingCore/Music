@@ -90,18 +90,18 @@ export const usePlaylistForModal = (playlistName: string) =>
 //                            PATCH Methods
 // ---------------------------------------------------------------------
 type UPDATEFnAction =
-  | { field: "coverSrc"; value: string | null }
+  | { field: "artwork"; value: string | null }
   | { field: "name"; value: string };
 type UPDATEFnArgs = Prettify<BaseFnArgs & { action: UPDATEFnAction }>;
 
 export async function updatePlaylist({ playlistName, action }: UPDATEFnArgs) {
   const prevValue = await getPlaylist([eq(playlists.name, playlistName)]);
 
-  if (action.field === "coverSrc") {
-    await deleteFile(prevValue.coverSrc);
+  if (action.field === "artwork") {
+    await deleteFile(prevValue.artwork);
     await db
       .update(playlists)
-      .set({ coverSrc: action.value })
+      .set({ artwork: action.value })
       .where(eq(playlists.name, playlistName));
   } else {
     const sanitizedName = sanitizedPlaylistName(action.value);
@@ -176,7 +176,7 @@ export async function deletePlaylist({ playlistName }: BaseFnArgs) {
       .where(eq(playlists.name, playlistName))
       .returning();
 
-    await deleteFile(deletedPlaylist.coverSrc);
+    await deleteFile(deletedPlaylist.artwork);
 
     return deletedPlaylist.isFavorite;
   });

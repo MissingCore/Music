@@ -25,7 +25,7 @@ export function MiniPlayer() {
       <MediaImage
         type="track"
         size={48}
-        source={trackData.coverSrc}
+        source={trackData.artwork}
         className="rounded"
       />
       <TextStack

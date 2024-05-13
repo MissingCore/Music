@@ -109,8 +109,8 @@ export function useIndexAudio() {
           const [deletedTrack] = await db
             .delete(tracks)
             .where(eq(tracks.id, trackId))
-            .returning({ coverSrc: tracks.coverSrc });
-          await deleteFile(deletedTrack.coverSrc);
+            .returning({ artwork: tracks.artwork });
+          await deleteFile(deletedTrack.artwork);
         }
 
         const { id, uri, modificationTime } = mp3Files.find(
@@ -179,7 +179,7 @@ export function useIndexAudio() {
 
           if (modifiedTracks.has(id) && !isRetriedTrack) {
             // Delete old cover image if defined before updating track.
-            await deleteFile(allTracks.find((t) => t.id === id)!.coverSrc);
+            await deleteFile(allTracks.find((t) => t.id === id)!.artwork);
             await db.update(tracks).set(newTrackData).where(eq(tracks.id, id));
           } else {
             // Save new track.

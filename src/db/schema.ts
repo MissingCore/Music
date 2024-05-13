@@ -28,7 +28,7 @@ export const albums = sqliteTable("albums", {
     .notNull()
     .references(() => artists.name),
   name: text("name").notNull(),
-  coverSrc: text("cover_src"),
+  artwork: text("artwork"),
   releaseYear: integer("release_year"),
   isFavorite: integer("is_favorite", { mode: "boolean" })
     .notNull()
@@ -50,7 +50,7 @@ export const tracks = sqliteTable("tracks", {
     .references(() => artists.name),
   albumId: text("album_id").references(() => albums.id),
   name: text("name").notNull(),
-  coverSrc: text("cover_src"),
+  artwork: text("artwork"),
   track: integer("track").notNull().default(-1), // Track number in album if available
   duration: integer("duration").notNull(), // Track duration in seconds
   isFavorite: integer("is_favorite", { mode: "boolean" })
@@ -58,7 +58,7 @@ export const tracks = sqliteTable("tracks", {
     .default(false),
   uri: text("uri").notNull(),
   modificationTime: integer("modification_time").notNull(),
-  fetchedCover: integer("fetched_cover", { mode: "boolean" })
+  fetchedArt: integer("fetched_art", { mode: "boolean" })
     .notNull()
     .default(false),
 });
@@ -80,7 +80,7 @@ export const invalidTracks = sqliteTable("invalid_tracks", {
 
 export const playlists = sqliteTable("playlists", {
   name: text("name").primaryKey(),
-  coverSrc: text("cover_src"),
+  artwork: text("artwork"),
   isFavorite: integer("is_favorite", { mode: "boolean" })
     .notNull()
     .default(false),

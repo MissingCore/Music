@@ -2,7 +2,7 @@ CREATE TABLE `albums` (
 	`id` text PRIMARY KEY NOT NULL,
 	`artist_name` text NOT NULL,
 	`name` text NOT NULL,
-	`cover_src` text,
+	`artwork` text,
 	`release_year` integer,
 	`is_favorite` integer DEFAULT false NOT NULL,
 	FOREIGN KEY (`artist_name`) REFERENCES `artists`(`name`) ON UPDATE no action ON DELETE no action
@@ -20,7 +20,7 @@ CREATE TABLE `invalid_tracks` (
 --> statement-breakpoint
 CREATE TABLE `playlists` (
 	`name` text PRIMARY KEY NOT NULL,
-	`cover_src` text,
+	`artwork` text,
 	`is_favorite` integer DEFAULT false NOT NULL
 );
 --> statement-breakpoint
@@ -29,13 +29,13 @@ CREATE TABLE `tracks` (
 	`artist_name` text NOT NULL,
 	`album_id` text,
 	`name` text NOT NULL,
-	`cover_src` text,
+	`artwork` text,
 	`track` integer DEFAULT -1 NOT NULL,
 	`duration` integer NOT NULL,
 	`is_favorite` integer DEFAULT false NOT NULL,
 	`uri` text NOT NULL,
 	`modification_time` integer NOT NULL,
-	`fetched_cover` integer DEFAULT false NOT NULL,
+	`fetched_art` integer DEFAULT false NOT NULL,
 	FOREIGN KEY (`artist_name`) REFERENCES `artists`(`name`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`album_id`) REFERENCES `albums`(`id`) ON UPDATE no action ON DELETE no action
 );

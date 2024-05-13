@@ -31,7 +31,7 @@ export function UpcomingTrackModal() {
                 <MediaImage
                   type="track"
                   size={48}
-                  source={item.coverSrc}
+                  source={item.artwork}
                   className="shrink-0 rounded-sm"
                 />
               }

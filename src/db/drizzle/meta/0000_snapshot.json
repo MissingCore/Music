@@ -1,6 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
+  "id": "681c97a6-3565-4740-a6fa-09313aa6d1b6",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "albums": {
       "name": "albums",
@@ -26,8 +28,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "cover_src": {
-          "name": "cover_src",
+        "artwork": {
+          "name": "artwork",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -54,15 +56,15 @@
         "albums_artist_name_artists_name_fk": {
           "name": "albums_artist_name_artists_name_fk",
           "tableFrom": "albums",
+          "tableTo": "artists",
           "columnsFrom": [
             "artist_name"
           ],
-          "tableTo": "artists",
           "columnsTo": [
             "name"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -124,8 +126,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "cover_src": {
-          "name": "cover_src",
+        "artwork": {
+          "name": "artwork",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -176,8 +178,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "cover_src": {
-          "name": "cover_src",
+        "artwork": {
+          "name": "artwork",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -220,8 +222,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "fetched_cover": {
-          "name": "fetched_cover",
+        "fetched_art": {
+          "name": "fetched_art",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -234,28 +236,28 @@
         "tracks_artist_name_artists_name_fk": {
           "name": "tracks_artist_name_artists_name_fk",
           "tableFrom": "tracks",
+          "tableTo": "artists",
           "columnsFrom": [
             "artist_name"
           ],
-          "tableTo": "artists",
           "columnsTo": [
             "name"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "tracks_album_id_albums_id_fk": {
           "name": "tracks_album_id_albums_id_fk",
           "tableFrom": "tracks",
+          "tableTo": "albums",
           "columnsFrom": [
             "album_id"
           ],
-          "tableTo": "albums",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -284,28 +286,28 @@
         "tracks_to_playlists_track_id_tracks_id_fk": {
           "name": "tracks_to_playlists_track_id_tracks_id_fk",
           "tableFrom": "tracks_to_playlists",
+          "tableTo": "tracks",
           "columnsFrom": [
             "track_id"
           ],
-          "tableTo": "tracks",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "tracks_to_playlists_playlist_name_playlists_name_fk": {
           "name": "tracks_to_playlists_playlist_name_playlists_name_fk",
           "tableFrom": "tracks_to_playlists",
+          "tableTo": "playlists",
           "columnsFrom": [
             "playlist_name"
           ],
-          "tableTo": "playlists",
           "columnsTo": [
             "name"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -322,9 +324,8 @@
   },
   "enums": {},
   "_meta": {
+    "schemas": {},
     "tables": {},
     "columns": {}
-  },
-  "id": "83b05308-0a2b-47e4-97d7-724375f282a3",
-  "prevId": "00000000-0000-0000-0000-000000000000"
+  }
 }

@@ -59,7 +59,7 @@ export function PlaylistModal({ playlistName }: { playlistName: string }) {
             onPress={async () => {
               try {
                 mutateGuard(updatePlaylistFn, {
-                  field: "coverSrc",
+                  field: "artwork",
                   value: await pickImage(),
                 });
               } catch {}
@@ -70,10 +70,7 @@ export function PlaylistModal({ playlistName }: { playlistName: string }) {
               content="Remove Cover"
               icon="HideImageOutline"
               onPress={() =>
-                mutateGuard(updatePlaylistFn, {
-                  field: "coverSrc",
-                  value: null,
-                })
+                mutateGuard(updatePlaylistFn, { field: "artwork", value: null })
               }
             />
           )}

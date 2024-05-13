@@ -29,7 +29,7 @@ const upcomingTrackDataAsyncAtom = atom(async (get) => {
     const { data: trackList } = await get(trackListAsyncAtom);
 
     // The information we want to return.
-    const wantedKeys = ["id", "name", "artistName", "coverSrc"] as const;
+    const wantedKeys = ["id", "name", "artistName", "artwork"] as const;
 
     // Get up to the next 5 tracks in `trackList`.
     const next5Tracks = trackList.slice(listIndex + 1, listIndex + 6);

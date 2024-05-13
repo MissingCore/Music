@@ -49,7 +49,7 @@ export const useTrackExcerpt = (trackId: string) =>
             ...["id", "name", "artistName", "duration", "isFavorite"],
           ] as const),
           album: data.album ? pickKeys(data.album, ["id", "name"]) : null,
-          imageSource: data.coverSrc,
+          imageSource: data.artwork,
         }),
         [],
       ),

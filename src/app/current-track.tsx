@@ -31,7 +31,7 @@ export default function CurrentTrackScreen() {
       <View className="flex-1 items-center px-4 py-8">
         <AnimatedCover
           placement="bottom"
-          source={trackData.coverSrc}
+          source={trackData.artwork}
           delay={300}
           shouldSpin={isPlaying}
         />

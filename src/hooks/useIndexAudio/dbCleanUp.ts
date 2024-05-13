@@ -39,8 +39,8 @@ export async function dbCleanUp(
       const [deletedTrack] = await db
         .delete(tracks)
         .where(eq(tracks.id, id))
-        .returning({ coverSrc: tracks.coverSrc });
-      await deleteFile(deletedTrack.coverSrc);
+        .returning({ artwork: tracks.artwork });
+      await deleteFile(deletedTrack.artwork);
     }),
   );
 
@@ -57,14 +57,14 @@ export async function dbCleanUp(
 
   // Remove Albums with no tracks.
   const allAlbums = await db.query.albums.findMany({
-    columns: { id: true, coverSrc: true },
+    columns: { id: true, artwork: true },
     with: { tracks: { columns: { id: true } } },
   });
   await Promise.allSettled(
     allAlbums
       .filter(({ tracks }) => tracks.length === 0)
-      .map(async ({ id, coverSrc }) => {
-        await deleteFile(coverSrc);
+      .map(async ({ id, artwork }) => {
+        await deleteFile(artwork);
         await db.delete(albums).where(eq(albums.id, id));
       }),
   );

@@ -51,7 +51,7 @@ export const useAlbumForCurrentPage = (albumId: string) =>
         (data: QueryFnData) => ({
           ...formatForCurrentPages({ type: "album", data }),
           ...pickKeys(data, ["artistName", "isFavorite"]),
-          imageSource: data.coverSrc,
+          imageSource: data.artwork,
         }),
         [],
       ),

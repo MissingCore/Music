@@ -82,7 +82,7 @@ export async function getSpecialPlaylist(name: SpecialPlaylistName) {
   );
   return {
     ...{ name, isFavorite: false, tracks: _tracks },
-    coverSrc: SpecialPlaylists.favorites ? name : null,
+    artwork: SpecialPlaylists.favorites ? name : null,
   };
 }
 
@@ -93,7 +93,7 @@ export async function getTrack(filters: SQL[]) {
     with: { album: true },
   });
   if (!track) throw new Error("Track doesn't exist.");
-  return { ...track, coverSrc: getTrackCover(track) };
+  return { ...track, artwork: getTrackCover(track) };
 }
 
 export async function getTracks(filters?: SQL[]) {
@@ -101,7 +101,7 @@ export async function getTracks(filters?: SQL[]) {
     where: and(...(filters ?? [])),
     with: { album: true },
   });
-  return data.map((track) => ({ ...track, coverSrc: getTrackCover(track) }));
+  return data.map((track) => ({ ...track, artwork: getTrackCover(track) }));
 }
 
 export async function getTracksToPlaylists(filters?: SQL[]) {
