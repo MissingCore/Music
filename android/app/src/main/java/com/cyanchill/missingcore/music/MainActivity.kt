@@ -1,4 +1,4 @@
-package com.missingcore.Music
+package com.cyanchill.missingcore.music
 
 import android.os.Build
 import android.os.Bundle

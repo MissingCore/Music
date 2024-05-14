@@ -29,7 +29,9 @@ export function useIndexAudio() {
   const resetPlayingInfo = useSetAtom(resetPlayingInfoAtom);
   const removeItemsInQueue = useSetAtom(queueRemoveItemsAtom);
 
-  const [permissionResponse, requestPermission] = MediaLibrary.usePermissions();
+  const [permissionResponse, requestPermission] = MediaLibrary.usePermissions({
+    granularPermissions: ["audio"],
+  });
   const [isComplete, setIsComplete] = useState(false);
 
   const readMusicLibrary = useCallback(async () => {
