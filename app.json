@@ -15,20 +15,12 @@
       "backgroundColor": "#000000"
     },
     "assetBundlePatterns": ["**/*"],
-    "ios": {
-      "supportsTablet": true
-    },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#000000"
       },
       "package": "com.missingcore.Music"
-    },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./src/assets/images/favicon.png"
     },
     "plugins": ["expo-router", "expo-font"],
     "experiments": {

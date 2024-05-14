@@ -1,5 +1,5 @@
-import type { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { getHeaderTitle } from "@react-navigation/elements";
+import type { Stack } from "expo-router";
 import { useSetAtom } from "jotai";
 import { Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -8,6 +8,19 @@ import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
 import { modalAtom } from "@/features/modal/store";
 
 import { UnstyledBackButton } from "@/components/navigation/BackButton";
+
+/*
+  Manually extract `NativeStackHeaderProps` from `<Stack.Screen />` instead
+  of installing `@react-navigation/native-stack` just for the type.
+*/
+type HeaderOption = Required<
+  Pick<
+    NonNullable<React.ComponentProps<typeof Stack.Screen>["options"]>,
+    "header"
+  >
+>;
+type HeaderFnSignature = HeaderOption[keyof HeaderOption];
+type NativeStackHeaderProps = Parameters<HeaderFnSignature>[0];
 
 /** @description Custom navigation header for `/current-track` route. */
 export function Header({ route, options }: NativeStackHeaderProps) {
