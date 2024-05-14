@@ -139,8 +139,20 @@ const playTrackAtom = atom(null, async (get, set, opts?: TPlayTrackOpts) => {
       }
     }, 150);
   } else {
-    // If we don't define any options, we assume we're just unpausing a track.
-    await soundRef.playAsync();
+    // Make sure the track player notification is displayed.
+    const isPlayerLoaded = await TrackPlayer.getActiveTrack();
+    if (!isPlayerLoaded) {
+      const trackData = await get(trackDataAsyncAtom); // Should always be defined.
+      if (trackData) await TrackPlayer.load(formatTrackforPlayer(trackData));
+      // Play track after a short delay due to loading the notification stopping
+      // tracks from `expo-av` from playing temporarily.
+      BackgroundTimer.setTimeout(async () => {
+        await soundRef.playAsync();
+      }, 50);
+    } else {
+      // If we don't define any options, we assume we're just unpausing a track.
+      await soundRef.playAsync();
+    }
   }
 
   if (shouldPlay) await TrackPlayer.play();

@@ -1,6 +1,7 @@
+import { Link } from "expo-router";
 import { Text, View } from "react-native";
 
-import { Button } from "../form/Button";
+import { Button, ButtonContent } from "../form/Button";
 import { ExternalLink } from "../navigation/ExternalLink";
 
 const ReportLink = "https://github.com/MissingCore/Music/issues/new";
@@ -31,7 +32,9 @@ export function ReportInstructions({
         </Text>
       </View>
       <View className="mt-12 flex-row justify-end gap-2 px-2">
-        <Button type="link" href="/" content="Return Home" />
+        <Link href="/" replace asChild>
+          <ButtonContent content="Return Home" />
+        </Link>
         <Button
           type="external-link"
           href={ReportLink}

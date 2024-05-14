@@ -41,9 +41,10 @@ function RootLayoutNav() {
             headerTitle: "",
           }}
         />
+        <Stack.Screen name="setting" options={{ headerLeft: BackButton }} />
         <Stack.Screen
-          name="setting"
-          options={{ animation: "slide_from_right", headerLeft: BackButton }}
+          name="notification.click"
+          options={{ headerShown: false }}
         />
       </Stack>
 

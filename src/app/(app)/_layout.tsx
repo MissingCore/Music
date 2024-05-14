@@ -35,10 +35,7 @@ export default function MainLayout() {
             ),
           }}
         />
-        <Stack.Screen
-          name="(current)"
-          options={{ animation: "slide_from_right", headerShown: false }}
-        />
+        <Stack.Screen name="(current)" options={{ headerShown: false }} />
       </Stack>
       <MiniPlayer />
     </>

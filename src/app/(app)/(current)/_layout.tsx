@@ -6,7 +6,7 @@ export default function CurrentLayout() {
   return (
     <Stack
       screenOptions={{
-        animation: "slide_from_right",
+        animation: "fade",
         headerTitle: "",
         headerLeft: BackButton,
       }}

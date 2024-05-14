@@ -44,5 +44,6 @@ async function setupPlayer() {
       Capability.SkipToNext,
       Capability.SkipToPrevious,
     ],
+    icon: require("@/assets/images/icon.png"),
   });
 }
