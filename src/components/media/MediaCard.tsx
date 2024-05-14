@@ -38,3 +38,15 @@ export function MediaCard({ type, size, source, ...props }: MediaCardProps) {
     </Link>
   );
 }
+
+/**
+ * @description Placeholder content — useful in `<FlatList />` if we want
+ *  to do something special for the first item.
+ */
+export const PlaceholderContent: MediaCardContent = {
+  href: "invalid-href",
+  source: null,
+  title: "",
+  subtitle: "",
+  type: "album",
+};

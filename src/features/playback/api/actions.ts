@@ -148,7 +148,7 @@ const playTrackAtom = atom(null, async (get, set, opts?: TPlayTrackOpts) => {
       // tracks from `expo-av` from playing temporarily.
       BackgroundTimer.setTimeout(async () => {
         await soundRef.playAsync();
-      }, 50);
+      }, 150);
     } else {
       // If we don't define any options, we assume we're just unpausing a track.
       await soundRef.playAsync();

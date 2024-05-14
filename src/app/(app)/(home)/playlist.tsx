@@ -1,32 +1,46 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { FlashList } from "@shopify/flash-list";
 import { useSetAtom } from "jotai";
-import { Pressable, ScrollView } from "react-native";
+import { useMemo } from "react";
+import { Pressable, View } from "react-native";
 
 import { DashedBorder } from "@/assets/svgs/DashedBorder";
 import { usePlaylistsForMediaCard } from "@/api/playlists";
-import { useGetColumnWidth } from "@/hooks/layout";
+import { useGetColumn } from "@/hooks/layout";
 import { modalAtom } from "@/features/modal/store";
 
 import { Colors } from "@/constants/Styles";
-import { MediaCard } from "@/components/media/MediaCard";
+import { MediaCard, PlaceholderContent } from "@/components/media/MediaCard";
 
 /** @description Screen for `/playlist` route. */
 export default function PlaylistScreen() {
-  const colWidth = useGetColumnWidth({
-    cols: 2,
-    gap: 16,
-    gutters: 32,
-    minWidth: 175,
-  });
+  const { data } = usePlaylistsForMediaCard();
+  const columnParams = useMemo(
+    () => ({ cols: 2, gap: 16, gutters: 32, minWidth: 175 }),
+    [],
+  );
+  const { count, width } = useGetColumn(columnParams);
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      contentContainerClassName="pt-[22px] p-4 flex-row flex-wrap gap-4 w-full"
-    >
-      <CreatePlaylistButton colWidth={colWidth} />
-      <AllPlaylists colWidth={colWidth} />
-    </ScrollView>
+    <View className="-mx-2 flex-1 px-4">
+      <FlashList
+        numColumns={count}
+        estimatedItemSize={width + 37} // 35px `<TextStack />` Height + 2px Margin Top
+        data={data ? [PlaceholderContent, ...data] : [PlaceholderContent]}
+        keyExtractor={({ href }) => href}
+        renderItem={({ item: data, index }) => (
+          <View className="mx-2 mb-4">
+            {index === 0 ? (
+              <CreatePlaylistButton colWidth={width} />
+            ) : (
+              <MediaCard {...data} size={width} />
+            )}
+          </View>
+        )}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingTop: 22 }}
+      />
+    </View>
   );
 }
 
@@ -44,13 +58,4 @@ function CreatePlaylistButton({ colWidth }: { colWidth: number }) {
       <Ionicons name="add-outline" size={36} color={Colors.foreground100} />
     </Pressable>
   );
-}
-
-/** @description An array of playlist `<MediaCards />`. */
-function AllPlaylists({ colWidth }: { colWidth: number }) {
-  const { isPending, error, data } = usePlaylistsForMediaCard();
-  if (isPending || error) return null;
-  return data.map((props) => (
-    <MediaCard key={props.href} {...props} size={colWidth} />
-  ));
 }

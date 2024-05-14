@@ -8,7 +8,7 @@ import {
   useFavoriteListsForMediaCard,
   useFavoriteTracksCount,
 } from "@/api/favorites";
-import { useGetColumnWidth } from "@/hooks/layout";
+import { useGetColumn } from "@/hooks/layout";
 import { recentlyPlayedDataAtom } from "@/features/playback/api/recent";
 
 import { abbreviateNum } from "@/utils/number";
@@ -41,14 +41,14 @@ export default function HomeScreen() {
     if (endOfScrollView) scrollViewRef.current?.scrollToEnd();
   }, [endOfScrollView]);
 
-  const colWidth = useGetColumnWidth({
+  const { width: colWidth } = useGetColumn({
     cols: 2,
     gap: 16,
     gutters: 32,
     minWidth: 175,
   });
 
-  const colWidthSmall = useGetColumnWidth({
+  const { width: colWidthSmall } = useGetColumn({
     cols: 1,
     gap: 16,
     gutters: 32,
