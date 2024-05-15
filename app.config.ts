@@ -9,6 +9,7 @@ export default (): ExpoConfig => ({
   githubUrl: "https://github.com/MissingCore/Music",
   orientation: "portrait",
   icon: "./src/assets/images/icon.png",
+  scheme: "music",
   backgroundColor: "#000000",
   userInterfaceStyle: "automatic",
   splash: {
