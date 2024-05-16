@@ -103,12 +103,3 @@ export async function getTracks(filters?: SQL[]) {
   });
   return data.map((track) => ({ ...track, artwork: getTrackCover(track) }));
 }
-
-export async function getTracksToPlaylists(filters?: SQL[]) {
-  const allTracksToPlaylists = await db.query.tracksToPlaylists.findMany({
-    where: and(...(filters ?? [])),
-    columns: {},
-    with: { playlist: true },
-  });
-  return allTracksToPlaylists.map(({ playlist }) => playlist);
-}

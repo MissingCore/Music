@@ -15,6 +15,7 @@ export async function deleteFile(uri: Maybe<string>) {
  *  file uri.
  */
 export async function pickImage() {
+  // No permissions request is needed for launching the image library.
   const result = await ImagePicker.launchImageLibraryAsync({
     base64: true,
     mediaTypes: ImagePicker.MediaTypeOptions.Images,

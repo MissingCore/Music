@@ -6,7 +6,7 @@ import { Toast } from "react-native-toast-notifications";
 
 import { db } from "@/db";
 import { playlists, tracksToPlaylists } from "@/db/schema";
-import { getPlaylist, getTracksToPlaylists } from "@/db/queries";
+import { getPlaylist } from "@/db/queries";
 import { favoriteKeys } from "@/api/favorites/_queryKeys";
 import { playlistKeys } from "@/api/playlists/_queryKeys";
 import { trackKeys } from "../_queryKeys";
@@ -20,6 +20,15 @@ type BaseFnArgs = { trackId: string };
 // ---------------------------------------------------------------------
 //                            GET Methods
 // ---------------------------------------------------------------------
+export async function getTracksToPlaylists({ trackId }: { trackId: string }) {
+  const allTracksToPlaylists = await db.query.tracksToPlaylists.findMany({
+    where: (fields, { eq }) => eq(fields.trackId, trackId),
+    columns: {},
+    with: { playlist: { columns: { name: true } } },
+  });
+  return allTracksToPlaylists.map(({ playlist }) => playlist.name);
+}
+
 type GETFnData = ExtractFnReturnType<typeof getTracksToPlaylists>;
 
 type UseTrackInPlaylistsOptions<TData = GETFnData> = Prettify<
@@ -37,8 +46,7 @@ export const useTrackInPlaylists = <TData = GETFnData>({
 }: UseTrackInPlaylistsOptions<TData>) =>
   useQuery({
     queryKey: trackKeys.detailWithRelation(trackId),
-    queryFn: () =>
-      getTracksToPlaylists([eq(tracksToPlaylists.trackId, trackId)]),
+    queryFn: () => getTracksToPlaylists({ trackId }),
     gcTime: 0,
     ...config,
   });
@@ -49,10 +57,7 @@ export const useIsTrackInPlaylist = (trackId: string, playlistName: string) =>
     trackId,
     config: {
       select: useCallback(
-        (data: GETFnData) => {
-          const playlistNameSet = new Set(data.map(({ name }) => name));
-          return playlistNameSet.has(playlistName);
-        },
+        (data: GETFnData) => data.includes(playlistName),
         [playlistName],
       ),
     },
