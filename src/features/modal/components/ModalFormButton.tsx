@@ -16,7 +16,7 @@ export function ModalFormButton({
     <Button
       {...props}
       onPress={(e) => {
-        if (onPress) onPress(e);
+        if (onPress) setTimeout(() => onPress(e), 250);
         close();
       }}
       wrapperClassName={cn("px-4 py-1.5", wrapperClassName)}

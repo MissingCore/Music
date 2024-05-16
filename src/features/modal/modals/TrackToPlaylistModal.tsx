@@ -1,9 +1,10 @@
 import type { BottomSheetFooterProps } from "@gorhom/bottom-sheet";
 import { BottomSheetScrollView, BottomSheetFooter } from "@gorhom/bottom-sheet";
 import { FlashList } from "@shopify/flash-list";
-import { atom, useAtomValue, useSetAtom } from "jotai";
-import { Suspense, useEffect, useState } from "react";
+import { atom, useAtom, useAtomValue } from "jotai";
+import { Suspense, useEffect } from "react";
 import { Text, View } from "react-native";
+
 import { usePlaylistsForModal } from "@/api/playlists";
 import {
   usePutTrackInPlaylists,
@@ -28,7 +29,10 @@ export function TrackToPlaylistModal({ trackId }: { trackId: string }) {
       footerComponent={(props) => <ModalFooter trackId={trackId} {...props} />}
     >
       <Title className="bg-surface800 p-4 pt-0">Add Track to Playlist</Title>
-      <BottomSheetScrollView contentContainerClassName="px-4 pb-16">
+      <BottomSheetScrollView
+        enableFooterMarginAdjustment
+        contentContainerClassName="px-4"
+      >
         <Suspense fallback={<Loading />}>
           <PlaylistList trackId={trackId} />
         </Suspense>
@@ -37,64 +41,35 @@ export function TrackToPlaylistModal({ trackId }: { trackId: string }) {
   );
 }
 
-type PlaylistRelation = Array<{
-  name: string;
-  trackCount: number;
-  checked: boolean;
-}>;
-
 /** @description Lists all the playlists. */
 function PlaylistList({ trackId }: { trackId: string }) {
   const { isPending, error, data: playlistData } = usePlaylistsForModal();
   const trackInPlaylists = useTrackInPlaylists({ trackId });
-  const [playlistRelation, setPlaylistRelation] = useState<PlaylistRelation>(
-    [],
-  );
-  const setInPlaylist = useSetAtom(inPlaylistAtom);
+  const [inPlaylist, setInPlaylist] = useAtom(inPlaylistAtom);
 
   useEffect(() => {
     async function getTracksToPlaylist() {
-      if (!playlistData || !trackInPlaylists.data) return;
-      setPlaylistRelation(
-        playlistData.map((data) => ({
-          ...data,
-          checked: trackInPlaylists.data.includes(data.name),
-        })),
-      );
+      if (trackInPlaylists.data) setInPlaylist(trackInPlaylists.data);
     }
-
     getTracksToPlaylist();
-  }, [playlistData, trackInPlaylists.data]);
+  }, [setInPlaylist, trackInPlaylists.data]);
 
   if (isPending || error) return null;
 
   return (
     <FlashList
       estimatedItemSize={66} // 58px Height + 8px Margin Bottom
-      data={playlistRelation}
+      data={[...playlistData]}
       keyExtractor={({ name }) => name}
-      renderItem={({ item: { name, trackCount, checked } }) => (
+      renderItem={({ item: { name, trackCount } }) => (
         <CheckboxField
-          checked={checked}
+          checked={inPlaylist.includes(name)}
           onPress={() =>
-            setPlaylistRelation((prev) => {
-              // Need to update Jotai atom in this roundabout way as when we
-              // update the atom and use that atom in the FlashList, it doesn't
-              // update the `<CheckboxField />` when it updates.
-              if (checked) {
-                setInPlaylist((prev) => prev.filter((id) => id !== name));
-                return prev.map((data) => {
-                  if (data.name !== name) return data;
-                  else return { ...data, checked: false };
-                });
-              } else {
-                setInPlaylist((prev) => [...prev, name]);
-                return prev.map((data) => {
-                  if (data.name !== name) return data;
-                  else return { ...data, checked: true };
-                });
-              }
-            })
+            setInPlaylist((prev) =>
+              prev.includes(name)
+                ? prev.filter((id) => id !== name)
+                : [...prev, name],
+            )
           }
           textContent={[name, getTrackCountStr(trackCount)]}
         />
@@ -119,7 +94,7 @@ function ModalFooter({ trackId, ...props }: ModalFooterProps) {
     <BottomSheetFooter {...props}>
       <View
         className={cn(
-          "mx-4 flex-row justify-end gap-2 pb-6 pt-2",
+          "mx-4 flex-row justify-end gap-2 py-4",
           "border-t border-t-surface500 bg-surface800",
         )}
       >
