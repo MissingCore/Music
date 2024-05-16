@@ -1,3 +1,4 @@
+import { FlashList } from "@shopify/flash-list";
 import { Link } from "expo-router";
 import { useAtomValue } from "jotai";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -12,7 +13,7 @@ import { useGetColumn } from "@/hooks/layout";
 import { recentlyPlayedDataAtom } from "@/features/playback/api/recent";
 
 import { abbreviateNum } from "@/utils/number";
-import { MediaCard } from "@/components/media/MediaCard";
+import { MediaCard, PlaceholderContent } from "@/components/media/MediaCard";
 import { SpecialPlaylists } from "@/features/playback/constants";
 
 /** @description Detect if we're near the end of a `<ScrollView />`. */
@@ -41,25 +42,15 @@ export default function HomeScreen() {
     if (endOfScrollView) scrollViewRef.current?.scrollToEnd();
   }, [endOfScrollView]);
 
-  const { width: colWidth } = useGetColumn({
-    cols: 2,
-    gap: 16,
-    gutters: 32,
-    minWidth: 175,
-  });
-
   const { width: colWidthSmall } = useGetColumn({
-    cols: 1,
-    gap: 16,
-    gutters: 32,
-    minWidth: 100,
+    ...{ cols: 1, gap: 16, gutters: 32, minWidth: 100 },
   });
 
   return (
     <ScrollView
       ref={scrollViewRef}
       showsVerticalScrollIndicator={false}
-      contentContainerClassName="pt-[22px] pb-4"
+      contentContainerClassName="pt-[22px]"
       onMomentumScrollEnd={({ nativeEvent }) => {
         setEndOfScrollView(isCloseToBottom(nativeEvent));
       }}
@@ -76,18 +67,7 @@ export default function HomeScreen() {
         <RecentlyPlayed colWidth={colWidthSmall} />
       </ScrollView>
 
-      <View className="px-4">
-        <Text className="mb-4 mt-8 font-geistMonoMedium text-subtitle text-foreground50">
-          FAVORITES
-        </Text>
-        <View className="w-full flex-row flex-wrap gap-4">
-          <FavoriteTracks colWidth={colWidth} />
-          <FavoriteLists
-            colWidth={colWidth}
-            fixScrollPosition={adjustScrollPosition}
-          />
-        </View>
-      </View>
+      <FavoriteListSection fixScrollPosition={adjustScrollPosition} />
     </ScrollView>
   );
 }
@@ -107,6 +87,52 @@ function RecentlyPlayed({ colWidth }: { colWidth: number }) {
   return recentlyPlayedData.map((props) => (
     <MediaCard key={props.href} {...props} size={colWidth} />
   ));
+}
+
+/**
+ * @description Lists out albums or playlists we've favorited, and a
+ *  special playlist containing all our favorited tracks.
+ */
+function FavoriteListSection({
+  fixScrollPosition,
+}: {
+  fixScrollPosition: () => void;
+}) {
+  const { data } = useFavoriteListsForMediaCard();
+
+  const { width, count } = useGetColumn({
+    ...{ cols: 2, gap: 16, gutters: 32, minWidth: 175 },
+  });
+
+  useEffect(() => {
+    fixScrollPosition();
+  }, [fixScrollPosition, data]);
+
+  return (
+    <View className="px-4">
+      <Text className="mb-4 mt-8 font-geistMonoMedium text-subtitle text-foreground50">
+        FAVORITES
+      </Text>
+      <View className="-m-2 mt-0 flex-1">
+        <FlashList
+          numColumns={count}
+          estimatedItemSize={width + 37} // 35px `<TextStack />` Height + 2px Margin Top
+          data={data ? [PlaceholderContent, ...data] : [PlaceholderContent]}
+          keyExtractor={({ href }) => href}
+          renderItem={({ item: data, index }) => (
+            <View className="mx-2 mb-4">
+              {index === 0 ? (
+                <FavoriteTracks colWidth={width} />
+              ) : (
+                <MediaCard {...data} size={width} />
+              )}
+            </View>
+          )}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
+    </View>
+  );
 }
 
 /**
@@ -131,25 +157,4 @@ function FavoriteTracks({ colWidth }: { colWidth: number }) {
       </Pressable>
     </Link>
   );
-}
-
-/** @description An array of `<MediaCards />` of favorited albums & playlists. */
-function FavoriteLists({
-  colWidth,
-  fixScrollPosition,
-}: {
-  colWidth: number;
-  fixScrollPosition: () => void;
-}) {
-  const { isPending, error, data } = useFavoriteListsForMediaCard();
-
-  useEffect(() => {
-    fixScrollPosition();
-  }, [fixScrollPosition, data]);
-
-  if (isPending || error) return null;
-
-  return data.map((props) => (
-    <MediaCard key={props.href} {...props} size={colWidth} />
-  ));
 }

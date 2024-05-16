@@ -3,7 +3,7 @@ import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { FlashList } from "@shopify/flash-list";
 import { useAtomValue, useSetAtom } from "jotai";
 import { Suspense } from "react";
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 
 import type { Track } from "@/db/schema";
 
@@ -97,28 +97,30 @@ type UpcomingTrackProps =
 function UpcomingTrack({ data, onPress }: UpcomingTrackProps) {
   const inQueue = !!onPress;
   return (
-    <ActionButton
-      onPress={inQueue ? onPress : undefined}
-      textContent={[data.name, data.artistName]}
-      Image={
-        <MediaImage
-          type="track"
-          size={48}
-          source={data.artwork}
-          className="shrink-0 rounded-sm"
-        />
-      }
-      Icon={
-        inQueue ? (
-          <Ionicons
-            name="remove-circle-outline"
-            size={24}
-            color={Colors.accent50}
+    <View className="mb-2">
+      <ActionButton
+        onPress={inQueue ? onPress : undefined}
+        textContent={[data.name, data.artistName]}
+        Image={
+          <MediaImage
+            type="track"
+            size={48}
+            source={data.artwork}
+            className="shrink-0 rounded-sm"
           />
-        ) : undefined
-      }
-      withoutIcon={!inQueue}
-    />
+        }
+        Icon={
+          inQueue ? (
+            <Ionicons
+              name="remove-circle-outline"
+              size={24}
+              color={Colors.accent50}
+            />
+          ) : undefined
+        }
+        withoutIcon={!inQueue}
+      />
+    </View>
   );
 }
 

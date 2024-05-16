@@ -26,7 +26,10 @@ export const useArtists = <TData = QueryFnData>({
     ...config,
   });
 
-/** @description Returns a list of artists grouped by their first character. */
+/**
+ * @description Returns a list of artists grouped by their first character.
+ *  To be used with `<FlashList />` restructured to work as a `<SectionList />`.
+ */
 export const useArtistsForList = () =>
   useArtists({
     config: {
@@ -42,7 +45,8 @@ export const useArtistsForList = () =>
           else groupedArtists[key] = [artist];
         });
 
-        // Convert object to array, sort by character key and artist name.
+        // Convert object to array, sort by character key and artist name,
+        // then flatten to be used in a `<FlashList />`.
         return Object.entries(groupedArtists)
           .map(([key, arts]) => ({
             title: key,
@@ -55,7 +59,9 @@ export const useArtistsForList = () =>
                 a.name.localeCompare(b.name, undefined, { caseFirst: "upper" }),
               ),
           }))
-          .toSorted((a, b) => a.title.localeCompare(b.title));
+          .toSorted((a, b) => a.title.localeCompare(b.title))
+          .map(({ title, data }) => [title, ...data])
+          .flat();
       }, []),
     },
   });

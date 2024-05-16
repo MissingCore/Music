@@ -24,7 +24,7 @@ export default function AlbumScreen() {
       - https://github.com/shopify/flash-list/discussions/804#discussioncomment-5509022
   */
   return (
-    <View className="-mx-2 flex-1 px-4">
+    <View className="-m-2 mt-0 flex-1 px-4">
       <FlashList
         numColumns={count}
         estimatedItemSize={width + 37} // 35px `<TextStack />` Height + 2px Margin Top

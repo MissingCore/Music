@@ -1,5 +1,6 @@
 import type { ContentStyle } from "@shopify/flash-list";
 import { FlashList } from "@shopify/flash-list";
+import { View } from "react-native";
 
 import type { TrackListSource } from "@/features/playback/types";
 
@@ -29,12 +30,13 @@ export function TrackList(props: {
       data={props.data}
       keyExtractor={({ id }) => id}
       renderItem={({ item }) => (
-        <Track {...{ ...item, origin, hideImage }} trackSource={source} />
+        <View className="mb-2">
+          <Track {...{ ...item, origin, hideImage }} trackSource={source} />
+        </View>
       )}
       showsVerticalScrollIndicator={false}
       ListEmptyComponent={props.ListEmptyComponent}
       contentContainerStyle={{
-        paddingBottom: 8,
         paddingHorizontal: 4,
         paddingTop: 16,
         ...props.contentContainerStyle,

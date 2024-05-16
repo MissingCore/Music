@@ -29,7 +29,7 @@ export function ActionButton(props: {
     <Pressable
       onPress={props.onPress}
       className={cn(
-        "mb-2 h-[58px] flex-row items-center gap-2 rounded p-1",
+        "h-[58px] flex-row items-center gap-2 rounded p-1",
         "border border-surface500 active:bg-surface800",
         { "px-2": !props.Image },
         props.className,

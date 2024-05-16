@@ -22,7 +22,7 @@ export default function PlaylistScreen() {
   const { count, width } = useGetColumn(columnParams);
 
   return (
-    <View className="-mx-2 flex-1 px-4">
+    <View className="-m-2 mt-0 flex-1 px-4">
       <FlashList
         numColumns={count}
         estimatedItemSize={width + 37} // 35px `<TextStack />` Height + 2px Margin Top

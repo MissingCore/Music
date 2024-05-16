@@ -62,17 +62,19 @@ function PlaylistList({ trackId }: { trackId: string }) {
       data={[...playlistData]}
       keyExtractor={({ name }) => name}
       renderItem={({ item: { name, trackCount } }) => (
-        <CheckboxField
-          checked={inPlaylist.includes(name)}
-          onPress={() =>
-            setInPlaylist((prev) =>
-              prev.includes(name)
-                ? prev.filter((id) => id !== name)
-                : [...prev, name],
-            )
-          }
-          textContent={[name, getTrackCountStr(trackCount)]}
-        />
+        <View className="mb-2">
+          <CheckboxField
+            checked={inPlaylist.includes(name)}
+            onPress={() =>
+              setInPlaylist((prev) =>
+                prev.includes(name)
+                  ? prev.filter((id) => id !== name)
+                  : [...prev, name],
+              )
+            }
+            textContent={[name, getTrackCountStr(trackCount)]}
+          />
+        </View>
       )}
       showsVerticalScrollIndicator={false}
       ListEmptyComponent={
