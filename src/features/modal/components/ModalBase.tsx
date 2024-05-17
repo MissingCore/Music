@@ -30,17 +30,11 @@ export function ModalBase({
 
   const modalSnapPoints = useMemo(() => ["60%", "90%"], []);
 
-  const handleSheetChanges = useCallback(
-    (index: number) => {
-      // Closing the modal will reset the `modalAtom` for reuse.
-      if (index === -1) closeModal(null);
-    },
-    [closeModal],
-  );
+  const handleOnClose = useCallback(() => closeModal(null), [closeModal]);
 
   return (
     <BottomSheet
-      onChange={handleSheetChanges}
+      onClose={handleOnClose}
       enablePanDownToClose
       keyboardBehavior="interactive"
       keyboardBlurBehavior="restore"
