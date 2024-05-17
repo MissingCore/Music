@@ -1,8 +1,9 @@
 import type { ErrorBoundaryProps } from "expo-router";
 import { ScrollView, Text } from "react-native";
 
-import { ReportInstructions } from "@/components/error/ReportInstructions";
-import { ErrorContainer, ErrorTitle } from "@/components/error/UI";
+import { SafeContainer } from "@/components/ui/Container";
+import { Heading } from "@/components/ui/Text";
+import { ReportInstructions } from "./ReportInstructions";
 
 /** @description Screen displayed when an error is thrown in a component. */
 export function ErrorBoundary({ error }: ErrorBoundaryProps) {
@@ -12,8 +13,10 @@ export function ErrorBoundary({ error }: ErrorBoundaryProps) {
     character (`\n`) at the end.
   */
   return (
-    <ErrorContainer>
-      <ErrorTitle title="Something Went Wrong" />
+    <SafeContainer className="my-8 flex-1 px-4">
+      <Heading as="h1" className="mb-4">
+        Something Went Wrong
+      </Heading>
       <ScrollView contentContainerClassName="px-4 py-2">
         <Text className="font-geistMono text-sm text-accent50">
           {error.message}
@@ -23,6 +26,6 @@ export function ErrorBoundary({ error }: ErrorBoundaryProps) {
         </Text>
       </ScrollView>
       <ReportInstructions encounterMessage="You encountered an unexpected error that occurred in production." />
-    </ErrorContainer>
+    </SafeContainer>
   );
 }

@@ -3,7 +3,7 @@ import { Link } from "expo-router";
 import { useAtomValue } from "jotai";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { NativeScrollEvent } from "react-native";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { Pressable, ScrollView, View } from "react-native";
 
 import {
   useFavoriteListsForMediaCard,
@@ -14,6 +14,8 @@ import { recentlyPlayedDataAtom } from "@/features/playback/api/recent";
 
 import { abbreviateNum } from "@/utils/number";
 import { MediaCard, PlaceholderContent } from "@/components/media/MediaCard";
+import { ScrollRow } from "@/components/ui/Container";
+import { Description, Heading } from "@/components/ui/Text";
 import { SpecialPlaylists } from "@/features/playback/constants";
 
 /** @description Detect if we're near the end of a `<ScrollView />`. */
@@ -55,17 +57,12 @@ export default function HomeScreen() {
         setEndOfScrollView(isCloseToBottom(nativeEvent));
       }}
     >
-      <Text className="mb-4 px-4 font-geistMonoMedium text-subtitle text-foreground50">
+      <Heading as="h2" className="mb-4 px-4 text-start font-geistMonoMedium">
         RECENTLY PLAYED
-      </Text>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        overScrollMode="never"
-        contentContainerClassName="gap-4 px-4"
-      >
+      </Heading>
+      <ScrollRow contentContainerClassName="gap-4">
         <RecentlyPlayed colWidth={colWidthSmall} />
-      </ScrollView>
+      </ScrollRow>
 
       <FavoriteListSection fixScrollPosition={adjustScrollPosition} />
     </ScrollView>
@@ -78,9 +75,9 @@ function RecentlyPlayed({ colWidth }: { colWidth: number }) {
 
   if (recentlyPlayedData.length === 0) {
     return (
-      <Text className="my-4 font-geistMono text-base text-foreground100">
+      <Description className="my-4 text-start">
         You haven't played anything yet!
-      </Text>
+      </Description>
     );
   }
 
@@ -110,9 +107,9 @@ function FavoriteListSection({
 
   return (
     <View className="px-4">
-      <Text className="mb-4 mt-8 font-geistMonoMedium text-subtitle text-foreground50">
+      <Heading as="h2" className="mb-4 mt-8 text-start font-geistMonoMedium">
         FAVORITES
-      </Text>
+      </Heading>
       <View className="-m-2 mt-0 flex-1">
         <FlashList
           numColumns={count}
@@ -150,10 +147,7 @@ function FavoriteTracks({ colWidth }: { colWidth: number }) {
         style={{ width: colWidth, height: colWidth }}
         className="items-center justify-center rounded-lg bg-accent500 active:opacity-75"
       >
-        <Text className="text-center font-ndot57 text-title text-foreground50">
-          {trackCount}
-          {"\nTracks"}
-        </Text>
+        <Heading as="h1">{`${trackCount}\nTracks`}</Heading>
       </Pressable>
     </Link>
   );

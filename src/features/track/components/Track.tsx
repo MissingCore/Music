@@ -4,20 +4,19 @@ import { modalAtom } from "@/features/modal/store";
 import { playAtom } from "@/features/playback/api/actions";
 import type { TrackListSource } from "@/features/playback/types";
 
-import type { Prettify } from "@/utils/types";
+import type { ActionButtonProps } from "@/components/form/ActionButton";
 import { ActionButton } from "@/components/form/ActionButton";
 import type { ImageSource } from "@/components/media/MediaImage";
 import type { MediaList } from "@/components/media/types";
 import { MediaImage } from "@/components/media/MediaImage";
 import { Duration } from "./Duration";
 
-export type TrackContent = Prettify<
-  Pick<React.ComponentProps<typeof ActionButton>, "textContent"> & {
-    id: string;
-    imageSource: ImageSource;
-    duration: number;
-  }
->;
+export type TrackContent = {
+  id: string;
+  imageSource: ImageSource;
+  duration: number;
+  textContent: ActionButtonProps["textContent"];
+};
 
 export type TrackProps = TrackContent & {
   trackSource: TrackListSource;

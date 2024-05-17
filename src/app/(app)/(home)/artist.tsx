@@ -1,6 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
 import { router } from "expo-router";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 import { ArrowRight } from "@/assets/svgs/ArrowRight";
 import { useArtistsForList } from "@/api/artists";
@@ -8,6 +8,7 @@ import { useArtistsForList } from "@/api/artists";
 import { cn } from "@/lib/style";
 import { ActionButton } from "@/components/form/ActionButton";
 import { Loading } from "@/components/ui/Loading";
+import { Description, Heading } from "@/components/ui/Text";
 
 /** @description Screen for `/artist` route. */
 export default function ArtistScreen() {
@@ -23,14 +24,12 @@ export default function ArtistScreen() {
         keyExtractor={(item) => (typeof item === "string" ? item : item.name)}
         renderItem={({ item, index }) =>
           typeof item === "string" ? (
-            <Text
-              className={cn(
-                "mb-2 font-ndot57 text-subtitle text-foreground50",
-                { "mt-2": index !== 0 },
-              )}
+            <Heading
+              as="h2"
+              className={cn("mb-2 text-start", { "mt-2": index !== 0 })}
             >
               {item}
-            </Text>
+            </Heading>
           ) : (
             <View className="mb-2">
               <ActionButton
@@ -43,13 +42,7 @@ export default function ArtistScreen() {
         }
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          isPending ? (
-            <Loading />
-          ) : (
-            <Text className="mx-auto text-center font-geistMono text-base text-foreground100">
-              No Artists Found
-            </Text>
-          )
+          isPending ? <Loading /> : <Description>No Artists Found</Description>
         }
         contentContainerStyle={{ paddingTop: 22 }}
       />

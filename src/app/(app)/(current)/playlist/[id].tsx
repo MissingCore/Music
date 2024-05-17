@@ -1,7 +1,7 @@
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useSetAtom } from "jotai";
 import { useMemo } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, View } from "react-native";
 
 import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
 import { useFavoriteTracksForCurrentPage } from "@/api/favorites";
@@ -11,6 +11,7 @@ import { SpecialPlaylists } from "@/features/playback/constants";
 
 import { MediaPageHeader } from "@/components/media/MediaPageHeader";
 import type { MediaList } from "@/components/media/types";
+import { Description } from "@/components/ui/Text";
 import { TrackList } from "@/features/track/components/TrackList";
 
 /** @description Screen for `/playlist/[id]` route. */
@@ -58,12 +59,12 @@ function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
   const { isPending, error, data } = queryHook(id ?? "");
 
   if (isPending) return <View className="w-full flex-1 px-4" />;
-  else if (!!error || !data) {
+  else if (error) {
     return (
       <View className="w-full flex-1 px-4">
-        <Text className="mx-auto text-center font-geistMono text-base text-accent50">
+        <Description className="text-accent50">
           Error: Playlist not found
-        </Text>
+        </Description>
       </View>
     );
   }
@@ -87,9 +88,9 @@ function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
         data={data.tracks}
         config={{ source: trackSource, origin }}
         ListEmptyComponent={
-          <Text className="mx-auto text-center font-geistMono text-base text-foreground100">
+          <Description>
             {id ? "No tracks in playlist." : "No favorited tracks."}
-          </Text>
+          </Description>
         }
       />
     </View>

@@ -1,6 +1,6 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Link, Stack, useLocalSearchParams } from "expo-router";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, View } from "react-native";
 
 import { useAlbumForCurrentPage } from "@/api/albums/[id]";
 import { useToggleFavorite } from "@/api/favorites/[id]";
@@ -8,6 +8,7 @@ import { useToggleFavorite } from "@/api/favorites/[id]";
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { MediaPageHeader } from "@/components/media/MediaPageHeader";
+import { Description } from "@/components/ui/Text";
 import { TrackList } from "@/features/track/components/TrackList";
 
 /** @description Screen for `/album/[id]` route. */
@@ -17,12 +18,12 @@ export default function CurrentAlbumScreen() {
   const toggleFavoriteFn = useToggleFavorite({ type: "album", id: albumId });
 
   if (isPending) return <View className="w-full flex-1 px-4" />;
-  else if (!!error || !data) {
+  else if (error) {
     return (
       <View className="w-full flex-1 px-4">
-        <Text className="mx-auto text-center font-geistMono text-base text-accent50">
+        <Description className="text-accent50">
           Error: Album not found
-        </Text>
+        </Description>
       </View>
     );
   }

@@ -7,12 +7,7 @@ import { cn } from "@/lib/style";
 import type { Maybe } from "@/utils/types";
 import { TextStack } from "@/components/ui/Text";
 
-/**
- * @description Button displaying up to 2 lines of text, with up to 2
- *  different press scenarios (pressing the whole card or the optional
- *  icon will do different actions).
- */
-export function ActionButton(props: {
+export type ActionButtonProps = {
   onPress: PressableProps["onPress"];
   textContent: [string, Maybe<string>];
   Image?: React.JSX.Element;
@@ -22,7 +17,14 @@ export function ActionButton(props: {
   iconOnPress?: PressableProps["onPress"];
   withoutIcon?: boolean;
   className?: string;
-}) {
+};
+
+/**
+ * @description Button displaying up to 2 lines of text, with up to 2
+ *  different press scenarios (pressing the whole card or the optional
+ *  icon will do different actions).
+ */
+export function ActionButton(props: ActionButtonProps) {
   const icon = props.Icon ?? <EllipsisVertical size={24} />;
 
   return (

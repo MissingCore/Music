@@ -1,5 +1,7 @@
+import type { TextProps } from "react-native";
 import { Text, View } from "react-native";
 
+import { FontFamily } from "@/constants/Styles";
 import type { TextColor } from "@/lib/style";
 import { cn } from "@/lib/style";
 import type { Maybe } from "@/utils/types";
@@ -49,5 +51,57 @@ export function TextStack(props: {
         )}
       </View>
     </View>
+  );
+}
+
+/** @description Mimicking the HTML `<code>` element. */
+export function Code({ text }: { text: string }) {
+  return (
+    <View className="shrink rounded-sm bg-surface700 px-1 py-0.5">
+      <Text className="font-geistMonoLight text-xs text-surface50">{text}</Text>
+    </View>
+  );
+}
+
+export type HeadingProps = TextProps & {
+  as: "h1" | "h2" | "h3" | "h4";
+  children: React.ReactNode;
+  asLine?: boolean;
+  className?: string;
+};
+
+const fontFamilies = Object.keys(FontFamily).map(
+  (family) =>
+    `font-${family}` as `font-${(typeof FontFamily)[keyof typeof FontFamily]}`,
+);
+/** @description Generic component for heading text. */
+export function Heading({ as, asLine, className, ...props }: HeadingProps) {
+  const style = cn(
+    "text-center text-foreground50",
+    {
+      "text-title": as === "h1",
+      "text-subtitle": as === "h2",
+      "text-xl": as === "h3",
+      "text-lg": as === "h4",
+      // Need this as `font-family` class fail to be merged.
+      "font-ndot57": !fontFamilies?.some((fam) => className?.includes(fam)),
+    },
+    className,
+  );
+
+  if (asLine) return <TextLine className={style} {...props} />;
+  return <Text className={style} {...props} />;
+}
+
+/** @description Styled text for descriptive content. */
+export function Description({ className, ...props }: TextProps) {
+  return (
+    <Text
+      className={cn(
+        "text-center font-geistMono text-base text-foreground100",
+        className,
+      )}
+      {...props}
+    />
   );
 }

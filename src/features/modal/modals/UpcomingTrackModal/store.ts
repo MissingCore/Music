@@ -29,7 +29,7 @@ export const queueTrackListAtom = unwrap(
   (prev) => prev ?? [],
 );
 
-/** @description [🇫🇴🇷 🇮🇳🇹🇪🇷🇳🇦🇱 🇺🇸🇪 🇴🇳🇱🇾] Return the next 5 tracks. */
+/** @description [🇫🇴🇷 🇮🇳🇹🇪🇷🇳🇦🇱 🇺🇸🇪 🇴🇳🇱🇾] */
 export const nextTrackListAsyncAtom = atom(async (get) => {
   const shouldRepeat = await get(repeatAsyncAtom);
   const { listIndex: startIndex } = await get(playingMediaAsyncAtom);
@@ -44,7 +44,7 @@ export const nextTrackListAsyncAtom = atom(async (get) => {
 
   return data.map((track) => pickKeys(track!, wantedKeys));
 });
-/** @description Return tracks in the queue. */
+/** @description Return the next 5 tracks. */
 export const nextTrackListAtom = unwrap(
   nextTrackListAsyncAtom,
   (prev) => prev ?? [],

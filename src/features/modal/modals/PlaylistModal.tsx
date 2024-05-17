@@ -7,9 +7,10 @@ import { modalAtom } from "../store";
 
 import { pickImage } from "@/lib/file-system";
 import { mutateGuard } from "@/lib/react-query";
+import { ScrollRow } from "@/components/ui/Container";
+import { Heading } from "@/components/ui/Text";
 import { ModalBase } from "../components/ModalBase";
 import { Button } from "../components/ModalInteractive";
-import { ScrollRow, Title } from "../components/ModalUI";
 
 /** @description Modal used for playlists. */
 export function PlaylistModal({ playlistName }: { playlistName: string }) {
@@ -31,9 +32,9 @@ export function PlaylistModal({ playlistName }: { playlistName: string }) {
   return (
     <ModalBase detached>
       <BottomSheetScrollView>
-        <Title asLine className="mb-8 px-4">
+        <Heading as="h1" asLine className="mb-8 px-4">
           {data.name}
-        </Title>
+        </Heading>
 
         <ScrollRow>
           <Button

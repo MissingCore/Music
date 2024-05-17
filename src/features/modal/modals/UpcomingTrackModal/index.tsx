@@ -3,7 +3,7 @@ import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { FlashList } from "@shopify/flash-list";
 import { useAtomValue, useSetAtom } from "jotai";
 import { Suspense } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 import type { Track } from "@/db/schema";
 
@@ -16,8 +16,8 @@ import { pickKeys } from "@/utils/object";
 import { ActionButton } from "@/components/form/ActionButton";
 import { MediaImage } from "@/components/media/MediaImage";
 import { Loading } from "@/components/ui/Loading";
+import { Description, Heading } from "@/components/ui/Text";
 import { ModalBase } from "../../components/ModalBase";
-import { Title } from "../../components/ModalUI";
 
 type TrackExcerpt = Pick<Track, "id" | "artistName" | "name" | "artwork">;
 
@@ -26,17 +26,23 @@ export function UpcomingTrackModal() {
   return (
     <ModalBase>
       <BottomSheetScrollView className="px-4">
-        <Title className="mb-2 text-start">Now Playing</Title>
+        <Heading as="h1" className="mb-2 text-start">
+          Now Playing
+        </Heading>
         <Suspense fallback={<Loading />}>
           <CurrentTrack />
         </Suspense>
 
-        <Title className="mb-2 text-start">Next in Queue</Title>
+        <Heading as="h1" className="mb-2 text-start">
+          Next in Queue
+        </Heading>
         <Suspense fallback={<Loading />}>
           <QueueListTracks />
         </Suspense>
 
-        <Title className="mb-2 text-start">Next 5 Tracks</Title>
+        <Heading as="h1" className="mb-2 text-start">
+          Next 5 Tracks
+        </Heading>
         <Suspense fallback={<Loading />}>
           <NextTracks />
         </Suspense>
@@ -126,9 +132,5 @@ function UpcomingTrack({ data, onPress }: UpcomingTrackProps) {
 
 /** @description Render if there's no tracks. */
 function EmptyMessage() {
-  return (
-    <Text className="mb-2 font-geistMonoLight text-base text-foreground100">
-      No Tracks Found
-    </Text>
-  );
+  return <Description className="mb-2 text-start">No Tracks Found</Description>;
 }

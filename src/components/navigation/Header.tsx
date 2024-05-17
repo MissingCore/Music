@@ -2,12 +2,12 @@ import { getHeaderTitle } from "@react-navigation/elements";
 import type { Stack } from "expo-router";
 import { useSetAtom } from "jotai";
 import { Pressable, Text, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
 import { modalAtom } from "@/features/modal/store";
 
-import { UnstyledBackButton } from "@/components/navigation/BackButton";
+import { UnstyledBackButton } from "./BackButton";
+import { SafeContainer } from "../ui/Container";
 
 /*
   Manually extract `NativeStackHeaderProps` from `<Stack.Screen />` instead
@@ -25,11 +25,10 @@ type NativeStackHeaderProps = Parameters<HeaderFnSignature>[0];
 /** @description Custom navigation header for `/current-track` route. */
 export function Header({ route, options }: NativeStackHeaderProps) {
   const title = getHeaderTitle(options, route.name);
-  const insets = useSafeAreaInsets();
   const openModal = useSetAtom(modalAtom);
 
   return (
-    <View style={{ paddingTop: insets.top }}>
+    <SafeContainer>
       <View className="flex h-14 flex-row items-center justify-between gap-8 px-4">
         <UnstyledBackButton />
         <Text
@@ -45,6 +44,6 @@ export function Header({ route, options }: NativeStackHeaderProps) {
           <EllipsisVertical size={24} />
         </Pressable>
       </View>
-    </View>
+    </SafeContainer>
   );
 }

@@ -4,9 +4,9 @@ import { Text, View } from "react-native";
 import { useDeletePlaylist } from "@/api/playlists/[id]";
 
 import { mutateGuard } from "@/lib/react-query";
+import { Heading } from "@/components/ui/Text";
 import { ModalBase } from "../components/ModalBase";
 import { ModalFormButton } from "../components/ModalFormButton";
-import { Subtitle, Title } from "../components/ModalUI";
 
 /** @description Modal used for deleting playlists. */
 export function PlaylistDeleteModal({
@@ -19,10 +19,10 @@ export function PlaylistDeleteModal({
   return (
     <ModalBase detached>
       <BottomSheetScrollView className="px-4">
-        <Title>Delete Playlist</Title>
-        <Subtitle asLine className="mb-8">
+        <Heading as="h1">Delete Playlist</Heading>
+        <Heading as="h4" asLine className="mb-8 text-accent50">
           {playlistName}
-        </Subtitle>
+        </Heading>
 
         <Text className="mb-8 font-geistMonoLight text-sm text-foreground100">
           You understand that this action will{" "}

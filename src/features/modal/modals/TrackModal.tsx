@@ -17,10 +17,11 @@ import { modalAtom } from "../store";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
 import type { MediaList } from "@/components/media/types";
+import { ScrollRow } from "@/components/ui/Container";
+import { Heading } from "@/components/ui/Text";
 import { ReservedNames, SpecialPlaylists } from "@/features/playback/constants";
 import { ModalBase } from "../components/ModalBase";
 import { Button, Link } from "../components/ModalInteractive";
-import { ScrollRow, Subtitle, Title } from "../components/ModalUI";
 
 type Props = { trackId: string; origin?: MediaList | "track-current" };
 
@@ -44,17 +45,18 @@ export function TrackModal({ trackId, origin }: Props) {
   return (
     <ModalBase detached>
       <BottomSheetScrollView>
-        <Title asLine className="px-4">
+        <Heading as="h1" asLine className="px-4">
           {data.name}
-        </Title>
-        <Subtitle
+        </Heading>
+        <Heading
+          as="h4"
           asLine
-          className={cn("mb-8 px-4", {
+          className={cn("mb-8 px-4 text-accent50", {
             "mb-4": origin === "artist" && !data.album?.name,
           })}
         >
           {origin === "artist" ? data.album?.name : data.artistName}
-        </Subtitle>
+        </Heading>
 
         <ScrollRow>
           <Button

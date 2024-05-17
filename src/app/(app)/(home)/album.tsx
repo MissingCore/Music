@@ -1,12 +1,13 @@
 import { FlashList } from "@shopify/flash-list";
 import { useMemo } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 import { useAlbumsForMediaCard } from "@/api/albums";
 import { useGetColumn } from "@/hooks/layout";
 
 import { MediaCard } from "@/components/media/MediaCard";
 import { Loading } from "@/components/ui/Loading";
+import { Description } from "@/components/ui/Text";
 
 /** @description Screen for `/album` route. */
 export default function AlbumScreen() {
@@ -37,13 +38,7 @@ export default function AlbumScreen() {
         )}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          isPending ? (
-            <Loading />
-          ) : (
-            <Text className="mx-auto text-center font-geistMono text-base text-foreground100">
-              No Albums Found
-            </Text>
-          )
+          isPending ? <Loading /> : <Description>No Albums Found</Description>
         }
         contentContainerStyle={{ paddingTop: 22 }}
       />

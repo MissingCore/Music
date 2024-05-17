@@ -1,9 +1,8 @@
-import { Text } from "react-native";
-
 import { useTracksForTrackCard } from "@/api/tracks";
 import { SpecialPlaylists } from "@/features/playback/constants";
 
 import { Loading } from "@/components/ui/Loading";
+import { Description } from "@/components/ui/Text";
 import { TrackList } from "@/features/track/components/TrackList";
 
 /** @description Screen for `/track` route. */
@@ -22,13 +21,7 @@ export default function TrackScreen() {
       data={data}
       config={{ source: trackSource }}
       ListEmptyComponent={
-        isPending ? (
-          <Loading />
-        ) : (
-          <Text className="mx-auto text-center font-geistMono text-base text-foreground100">
-            No Tracks Found
-          </Text>
-        )
+        isPending ? <Loading /> : <Description>No Tracks Found</Description>
       }
       contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 20 }}
     />

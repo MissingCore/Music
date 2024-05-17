@@ -1,11 +1,12 @@
 import { Stack } from "expo-router";
 import { useCallback, useRef, useState } from "react";
 import type { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import Animated, { clamp, useSharedValue } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Colors } from "@/constants/Styles";
+import { Heading } from "@/components/ui/Text";
 import { UnstyledBackButton } from "./BackButton";
 
 type AnimatedHeaderProps = { title: string; children: React.ReactNode };
@@ -71,14 +72,15 @@ export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
         onMomentumScrollEnd={reactivelySnap}
         contentContainerClassName="px-4 pb-16 pt-[22px]"
       >
-        <Text
+        <Heading
+          as="h1"
           onLayout={({ nativeEvent }) => {
             titleHeightRef.current = nativeEvent.layout.height;
           }}
-          className="mb-8 font-ndot57 text-title text-foreground50"
+          className="mb-8 text-start"
         >
           {title}
-        </Text>
+        </Heading>
         {children}
       </ScrollView>
     </>

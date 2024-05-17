@@ -4,8 +4,7 @@ import type { GestureResponderEvent, View } from "react-native";
 import { Pressable, Text } from "react-native";
 
 import { cn } from "@/lib/style";
-import type { Prettify } from "@/utils/types";
-import { ExternalLink } from "../navigation/ExternalLink";
+import { ExternalLink } from "@/components/navigation/ExternalLink";
 
 const ButtonThemes = {
   "white-outline": {
@@ -38,35 +37,7 @@ const ButtonThemes = {
   },
 } as const;
 
-export type ButtonProps = Prettify<
-  ButtonContentProps &
-    (
-      | { type?: "button"; href?: never }
-      | { type: "link" | "external-link"; href: string }
-    )
->;
-
-/** @description Custom pill button with icon support. */
-export function Button({ type, href, ...rest }: ButtonProps) {
-  if (!type || type === "button") {
-    return <ButtonContent {...rest} />;
-  } else if (type === "link") {
-    return (
-      <Link href={href} asChild>
-        <ButtonContent {...rest} />
-      </Link>
-    );
-  } else if (type === "external-link") {
-    return (
-      <ExternalLink href={href} asChild>
-        <ButtonContent {...rest} />
-      </ExternalLink>
-    );
-  }
-  throw new Error("Invalid type.");
-}
-
-type ButtonContentProps = {
+export type ButtonProps = {
   theme?: keyof typeof ButtonThemes;
   disabled?: boolean;
   content: string;
@@ -76,40 +47,53 @@ type ButtonContentProps = {
   textClassName?: string;
 };
 
-/** @description Custom pill button. */
-export const ButtonContent = forwardRef<View, ButtonContentProps>(
-  (props, ref) => {
-    const theme = props.theme ?? "white-outline";
+/** @description Pill button with icon support. */
+export const Button = forwardRef<View, ButtonProps>((props, ref) => {
+  const theme = props.theme ?? "white-outline";
 
-    return (
-      <Pressable
-        ref={ref}
-        onPress={(e) => {
-          if (!props.disabled && props.onPress) props.onPress(e);
-        }}
+  return (
+    <Pressable
+      ref={ref}
+      onPress={(e) => {
+        if (!props.disabled && props.onPress) props.onPress(e);
+      }}
+      className={cn(
+        "flex-row items-center gap-2 rounded-full border px-2 py-1",
+        {
+          [ButtonThemes[theme].button.base]: !props.disabled,
+          [ButtonThemes[theme].button.disabled]: props.disabled,
+        },
+        props.wrapperClassName,
+      )}
+    >
+      {props.Icon}
+      <Text
         className={cn(
-          "flex-row items-center gap-2 rounded-full border px-2 py-1",
+          "font-geistMono text-sm",
           {
-            [ButtonThemes[theme].button.base]: !props.disabled,
-            [ButtonThemes[theme].button.disabled]: props.disabled,
+            [ButtonThemes[theme].text.base]: !props.disabled,
+            [ButtonThemes[theme].text.disabled]: props.disabled,
           },
-          props.wrapperClassName,
+          props.textClassName,
         )}
       >
-        {props.Icon}
-        <Text
-          className={cn(
-            "font-geistMono text-sm",
-            {
-              [ButtonThemes[theme].text.base]: !props.disabled,
-              [ButtonThemes[theme].text.disabled]: props.disabled,
-            },
-            props.textClassName,
-          )}
-        >
-          {props.content}
-        </Text>
-      </Pressable>
-    );
-  },
-);
+        {props.content}
+      </Text>
+    </Pressable>
+  );
+});
+
+export type LinkButtonProps = ButtonProps & { as?: "external"; href: string };
+
+/** @description Render `<Button />` as a link. */
+export function LinkButton({ as, href, ...rest }: LinkButtonProps) {
+  return as === "external" ? (
+    <ExternalLink href={href} asChild>
+      <Button {...rest} />
+    </ExternalLink>
+  ) : (
+    <Link href={href} asChild>
+      <Button {...rest} />
+    </Link>
+  );
+}

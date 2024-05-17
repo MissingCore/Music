@@ -7,7 +7,7 @@ import { trackDataAtom, trackListAtom } from "@/features/playback/api/track";
 
 import { AnimatedCover } from "@/components/media/AnimatedCover";
 import { Back } from "@/components/navigation/Back";
-import { TextLine } from "@/components/ui/Text";
+import { Heading, TextLine } from "@/components/ui/Text";
 import {
   NextButton,
   PlayToggleButton,
@@ -37,12 +37,9 @@ export default function CurrentTrackScreen() {
         />
 
         <View className="mt-auto w-full px-4">
-          <TextLine
-            numberOfLines={2}
-            className="text-center font-geistMono text-xl text-foreground50"
-          >
+          <Heading as="h3" numberOfLines={2} className="font-geistMono">
             {trackData.name}
-          </TextLine>
+          </Heading>
           <TextLine className="text-center font-geistMonoLight text-base text-accent50">
             {trackData.artistName}
           </TextLine>

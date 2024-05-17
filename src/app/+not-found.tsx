@@ -5,7 +5,8 @@ import { ScrollView, Text, View } from "react-native";
 import { prevPathnameAtom } from "@/components/error/PrevPathnameTracker";
 
 import { ReportInstructions } from "@/components/error/ReportInstructions";
-import { Code, ErrorContainer, ErrorTitle } from "@/components/error/UI";
+import { SafeContainer } from "@/components/ui/Container";
+import { Heading, Code } from "@/components/ui/Text";
 
 /** @description Screen for unmatched route. */
 export default function NotFoundScreen() {
@@ -15,8 +16,10 @@ export default function NotFoundScreen() {
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
-      <ErrorContainer>
-        <ErrorTitle title="Unmatched Route" />
+      <SafeContainer className="my-8 flex-1 px-4">
+        <Heading as="h1" className="mb-4">
+          Unmatched Route
+        </Heading>
         <ScrollView contentContainerClassName="px-2">
           <View className="mb-2 flex-row gap-1">
             <Text className="font-geistMono text-base text-foreground50">
@@ -32,7 +35,7 @@ export default function NotFoundScreen() {
           </View>
         </ScrollView>
         <ReportInstructions encounterMessage="You somehow navigated to an invalid route." />
-      </ErrorContainer>
+      </SafeContainer>
     </>
   );
 }

@@ -6,7 +6,7 @@ import { useLatestRelease } from "@/api/releases";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
-import { Button } from "@/components/form/Button";
+import { LinkButton } from "@/components/form/Button";
 import { AnimatedHeader } from "@/components/navigation/AnimatedHeader";
 
 const APP_VERSION = process.env.EXPO_PUBLIC_APP_VERSION!;
@@ -24,8 +24,8 @@ export default function SettingScreen() {
       <Section>
         <Title>Source Code</Title>
         <View className="flex-row gap-2">
-          <Button
-            type="external-link"
+          <LinkButton
+            as="external"
             href={GITHUB_LINK}
             theme="neutral-alt"
             Icon={
@@ -43,8 +43,8 @@ export default function SettingScreen() {
       <Section>
         <Title>Support</Title>
         <View className="flex-row gap-2">
-          <Button
-            type="external-link"
+          <LinkButton
+            as="external"
             href={`${GITHUB_LINK}/issues/new`}
             theme="neutral-alt"
             Icon={
@@ -127,8 +127,8 @@ function UpdateChecker() {
         {`# ${data.version} is Available\n\n${data.releaseNotes}`}
       </Markdown>
       <View className="mt-4 flex-row gap-2">
-        <Button
-          type="external-link"
+        <LinkButton
+          as="external"
           href={`${GITHUB_LINK}/releases/latest`}
           theme="neutral-alt"
           Icon={

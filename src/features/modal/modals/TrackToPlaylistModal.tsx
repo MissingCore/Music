@@ -3,7 +3,7 @@ import { BottomSheetScrollView, BottomSheetFooter } from "@gorhom/bottom-sheet";
 import { FlashList } from "@shopify/flash-list";
 import { atom, useAtom, useAtomValue } from "jotai";
 import { Suspense, useEffect } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 import { usePlaylistsForModal } from "@/api/playlists";
 import {
@@ -15,10 +15,10 @@ import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
 import { CheckboxField } from "@/components/form/CheckboxField";
 import { Loading } from "@/components/ui/Loading";
+import { Description, Heading } from "@/components/ui/Text";
 import { getTrackCountStr } from "@/features/track/utils";
 import { ModalBase } from "../components/ModalBase";
 import { ModalFormButton } from "../components/ModalFormButton";
-import { Title } from "../components/ModalUI";
 
 const inPlaylistAtom = atom<string[]>([]);
 
@@ -28,7 +28,9 @@ export function TrackToPlaylistModal({ trackId }: { trackId: string }) {
     <ModalBase
       footerComponent={(props) => <ModalFooter trackId={trackId} {...props} />}
     >
-      <Title className="bg-surface800 p-4 pt-0">Add Track to Playlist</Title>
+      <Heading as="h1" className="p-4 pt-0">
+        Add Track to Playlist
+      </Heading>
       <BottomSheetScrollView
         enableFooterMarginAdjustment
         contentContainerClassName="px-4"
@@ -77,11 +79,7 @@ function PlaylistList({ trackId }: { trackId: string }) {
         </View>
       )}
       showsVerticalScrollIndicator={false}
-      ListEmptyComponent={
-        <Text className="text-center font-geistMonoLight text-base text-foreground100">
-          No Playlists Found
-        </Text>
-      }
+      ListEmptyComponent={<Description>No Playlists Found</Description>}
     />
   );
 }

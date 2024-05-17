@@ -1,7 +1,8 @@
 import { Link, Stack, usePathname } from "expo-router";
-import { ScrollView, View } from "react-native";
+import { View } from "react-native";
 
 import { cn } from "@/lib/style";
+import { ScrollRow } from "@/components/ui/Container";
 
 export default function HomeLayout() {
   return (
@@ -32,12 +33,7 @@ function NavigationBar() {
   const pathname = usePathname();
   return (
     <View className="mt-4">
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        overScrollMode="never"
-        contentContainerClassName="ml-2 pr-[25%]"
-      >
+      <ScrollRow contentContainerClassName="ml-2 gap-0 px-0 pr-[25%]">
         {NavRoutes.map(({ href, label }) => (
           <Link
             key={href}
@@ -50,7 +46,7 @@ function NavigationBar() {
             {label}
           </Link>
         ))}
-      </ScrollView>
+      </ScrollRow>
     </View>
   );
 }

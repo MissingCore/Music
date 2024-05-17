@@ -13,10 +13,10 @@ import type { ModalPlaylistName } from "../store";
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
+import { Heading } from "@/components/ui/Text";
 import { ReservedNames } from "@/features/playback/constants";
 import { ModalBase } from "../components/ModalBase";
 import { ModalFormButton } from "../components/ModalFormButton";
-import { Title } from "../components/ModalUI";
 
 /** @description Modal used for creating or changing a playlist name. */
 export function PlaylistNameModal({ origin, id }: ModalPlaylistName) {
@@ -49,9 +49,9 @@ export function PlaylistNameModal({ origin, id }: ModalPlaylistName) {
         keyboardShouldPersistTaps="handled"
         className="px-4"
       >
-        <Title className="mb-8">
+        <Heading as="h1" className="mb-8">
           {origin === "new" ? "Create a Playlist" : "Rename Playlist"}
-        </Title>
+        </Heading>
 
         <BottomSheetTextInput
           autoFocus

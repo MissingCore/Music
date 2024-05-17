@@ -1,15 +1,16 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { Colors } from "@/constants/Styles";
+import type { ActionButtonProps } from "./ActionButton";
 import { ActionButton } from "./ActionButton";
 
 export type CheckboxFieldProps = {
   checked: boolean;
   onPress: () => void;
-  textContent: React.ComponentProps<typeof ActionButton>["textContent"];
+  textContent: ActionButtonProps["textContent"];
 };
 
-/** @description Custom checkbox field for our use case. */
+/** @description Controlled checkbox field built from `<ActionButton />`. */
 export function CheckboxField(props: CheckboxFieldProps) {
   return (
     <ActionButton
