@@ -2,7 +2,11 @@ import { Stack } from "expo-router";
 import { useCallback, useRef, useState } from "react";
 import type { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
 import { ScrollView, View } from "react-native";
-import Animated, { clamp, useSharedValue } from "react-native-reanimated";
+import Animated, {
+  clamp,
+  useAnimatedStyle,
+  useSharedValue,
+} from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Colors } from "@/constants/Styles";
@@ -39,6 +43,10 @@ export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
     [],
   );
 
+  const animatedStyles = useAnimatedStyle(() => ({
+    opacity: titleOpacity.value,
+  }));
+
   return (
     <>
       <Stack.Screen
@@ -56,7 +64,7 @@ export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
                 <UnstyledBackButton />
                 <Animated.Text
                   numberOfLines={1}
-                  style={{ opacity: titleOpacity }}
+                  style={animatedStyles}
                   className="font-ndot57 text-lg text-foreground50"
                 >
                   {title}
