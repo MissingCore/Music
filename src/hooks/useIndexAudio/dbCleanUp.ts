@@ -1,4 +1,5 @@
 import { eq } from "drizzle-orm";
+import { getDefaultStore } from "jotai";
 
 import { db } from "@/db";
 import {
@@ -9,18 +10,21 @@ import {
   tracksToPlaylists,
 } from "@/db/schema";
 
+import {
+  resetPlayingInfoAtom,
+  trackListAtom,
+} from "@/features/playback/api/track";
+import { queueRemoveItemsAtom } from "@/features/playback/api/queue";
+
 import { deleteFile } from "@/lib/file-system";
 
 /**
  * @description Remove any tracks in our database that we didn't find w/
  *  Expo Media Library. Will then delete any unused artists & albums.
  */
-export async function dbCleanUp(
-  usedTrackIds: Set<string>,
-  currTrackList: string[],
-  resetPlayingInfo: () => void,
-  removeTracksFromQueue: (tracks: string[]) => void,
-) {
+export async function dbCleanUp(usedTrackIds: Set<string>) {
+  const jotaiStore = getDefaultStore();
+
   // Delete track entries.
   const allTracks = await db.query.tracks.findMany({ columns: { id: true } });
   const allInvalidTracks = await db.query.invalidTracks.findMany({
@@ -48,12 +52,12 @@ export async function dbCleanUp(
   // prevents any broken behavior if the `TrackListSource` no longer exists
   // (ie: the track deleted was the only track in the album which been
   // deleted).
-  const deletedTrackInCurrTrackList = currTrackList.some((tId) =>
-    tracksToDelete.includes(tId),
-  );
-  if (deletedTrackInCurrTrackList) resetPlayingInfo();
+  const deletedTrackInCurrTrackList = jotaiStore
+    .get(trackListAtom)
+    .data.some((tId) => tracksToDelete.includes(tId));
+  if (deletedTrackInCurrTrackList) jotaiStore.set(resetPlayingInfoAtom);
   // Clear the queue of deleted tracks.
-  removeTracksFromQueue(tracksToDelete);
+  jotaiStore.set(queueRemoveItemsAtom, tracksToDelete);
 
   // Remove Albums with no tracks.
   const allAlbums = await db.query.albums.findMany({

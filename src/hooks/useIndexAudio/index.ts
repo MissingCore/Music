@@ -1,17 +1,12 @@
 import { eq } from "drizzle-orm";
 import { Audio } from "expo-av";
 import * as MediaLibrary from "expo-media-library";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import { useCallback, useEffect, useState } from "react";
 
 import { db } from "@/db";
 import { artists, albums, tracks, invalidTracks } from "@/db/schema";
-import { queueRemoveItemsAtom } from "@/features/playback/api/queue";
-import {
-  loadTrackAtom,
-  trackListAtom,
-  resetPlayingInfoAtom,
-} from "@/features/playback/api/track";
+import { loadTrackAtom } from "@/features/playback/api/track";
 import { dbCleanUp } from "./dbCleanUp";
 import { saveCoverImagesOnce } from "./saveCoverImages";
 
@@ -25,9 +20,6 @@ import { isFulfilled, isRejected } from "@/utils/promise";
  */
 export function useIndexAudio() {
   const loadTrackFn = useSetAtom(loadTrackAtom);
-  const trackList = useAtomValue(trackListAtom);
-  const resetPlayingInfo = useSetAtom(resetPlayingInfoAtom);
-  const removeItemsInQueue = useSetAtom(queueRemoveItemsAtom);
 
   const [permissionResponse, requestPermission] = MediaLibrary.usePermissions({
     granularPermissions: ["audio"],
@@ -194,12 +186,7 @@ export function useIndexAudio() {
       ),
     );
 
-    await dbCleanUp(
-      new Set(mp3Files.map(({ id }) => id)),
-      trackList.data,
-      resetPlayingInfo,
-      removeItemsInQueue,
-    );
+    await dbCleanUp(new Set(mp3Files.map(({ id }) => id)));
     console.log(
       `Finished overall in ${((performance.now() - start) / 1000).toFixed(4)}s.`,
     );
@@ -211,14 +198,7 @@ export function useIndexAudio() {
     await loadTrackFn();
 
     setIsComplete(true);
-  }, [
-    permissionResponse,
-    requestPermission,
-    trackList.data,
-    resetPlayingInfo,
-    removeItemsInQueue,
-    loadTrackFn,
-  ]);
+  }, [permissionResponse, requestPermission, loadTrackFn]);
 
   useEffect(() => {
     if (permissionResponse && !isComplete) readMusicLibrary();
