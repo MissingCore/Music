@@ -1,10 +1,9 @@
 import { useEffect } from "react";
-import { View, useWindowDimensions } from "react-native";
+import { View } from "react-native";
 import Animated, {
   Easing,
   Keyframe,
   cancelAnimation,
-  clamp,
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
@@ -40,6 +39,8 @@ const SlideOutBottom = (imgSize: number, delay: number) =>
 
 /** @description Simple pulling of vinyl out of record animation. */
 export function AnimatedCover(props: {
+  /** @description Available width if `placement = "right"`, otherwise available height. */
+  availableLength: number;
   type?: Media;
   placement?: "right" | "bottom";
   delay?: number;
@@ -48,7 +49,6 @@ export function AnimatedCover(props: {
   className?: string;
 }) {
   const rotationProgress = useSharedValue(0);
-  const { width, height } = useWindowDimensions();
   const placement = props.placement ?? "right";
   const delay = props.delay ?? 0;
   const type = props.type ?? "track";
@@ -78,37 +78,34 @@ export function AnimatedCover(props: {
   }));
 
   /*
-    Automatically define the appropriate size of the cover based on the
-    current screen size.
+    Represents 1/3 of `availableLength` — 2/3 is used for the image, 1/3
+    is used for the extended vinyl.
   */
-  const imgSize =
-    placement === "right"
-      ? clamp(100, (width * 2) / 5, height / 5)
-      : clamp(200, (height * 3) / 7, (width * 2) / 3);
+  const areaSection = props.availableLength / 3;
 
   return (
     <View
-      style={{ marginBottom: placement === "bottom" ? imgSize * 0.45 : 0 }}
+      style={{ marginBottom: placement === "bottom" ? areaSection : 0 }}
       className={props.className}
     >
       <Animated.View
         entering={
           placement === "right"
-            ? SlideOutRight(imgSize, delay)
-            : SlideOutBottom(imgSize, delay)
+            ? SlideOutRight(areaSection * 2, delay)
+            : SlideOutBottom(areaSection * 2, delay)
         }
         className="absolute left-0 top-0 opacity-0"
       >
         <Animated.View style={animatedStyles}>
           <Record
-            size={imgSize}
+            size={areaSection * 2}
             className={cn({ "rotate-45": placement === "right" })}
           />
         </Animated.View>
       </Animated.View>
       <MediaImage
         type={type}
-        size={imgSize}
+        size={areaSection * 2}
         source={props.source}
         className="rounded border-2 border-foreground50"
       />

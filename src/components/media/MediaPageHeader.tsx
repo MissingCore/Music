@@ -1,5 +1,6 @@
 import { useAtomValue } from "jotai";
-import { View } from "react-native";
+import { View, useWindowDimensions } from "react-native";
+import { clamp } from "react-native-reanimated";
 
 import { isPlayingAtom } from "@/features/playback/api/actions";
 import { trackListAtom } from "@/features/playback/api/track";
@@ -63,13 +64,18 @@ function HeroImage(props: {
   source: ImageSource;
   trackSource: TrackListSource;
 }) {
+  const { width, height } = useWindowDimensions();
   const isPlaying = useAtomValue(isPlayingAtom);
   const { reference } = useAtomValue(trackListAtom);
   const isThisSource = areTrackReferencesEqual(reference, props.trackSource);
+
+  const availableLength = clamp(100, width * 0.6, height * 0.4);
+
   return (
     <AnimatedCover
       type="album"
       source={props.source}
+      availableLength={availableLength}
       className="mb-2"
       shouldSpin={isPlaying && isThisSource}
     />
