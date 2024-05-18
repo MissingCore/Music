@@ -28,7 +28,6 @@ export const FontFamily = {
   geistLight: "GeistLight",
   geistMonoLight: "GeistMonoLight",
   geistMono: "GeistMono",
-  geistMonoMedium: "GeistMonoMedium",
   ndot57: "Ndot57",
 } as const;
 

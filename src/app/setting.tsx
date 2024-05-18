@@ -4,7 +4,7 @@ import Markdown from "react-native-markdown-display";
 
 import { useLatestRelease } from "@/api/releases";
 
-import { Colors } from "@/constants/Styles";
+import { BorderRadius, Colors, FontSize } from "@/constants/Styles";
 import { cn } from "@/lib/style";
 import { LinkButton } from "@/components/form/Button";
 import { AnimatedHeader } from "@/components/navigation/AnimatedHeader";
@@ -88,23 +88,35 @@ function UpdateChecker() {
             backgroundColor: Colors.surface800,
             color: Colors.foreground100,
             fontFamily: "GeistMonoLight",
-            fontSize: 12,
-            borderRadius: 16,
+            fontSize: FontSize.xs,
+            borderRadius: BorderRadius.lg,
           },
           heading1: {
             ...markdownStyles.heading,
             marginBottom: 16,
-            fontSize: 24,
+            fontSize: FontSize.xl,
           },
           heading2: {
             ...markdownStyles.heading,
-            fontSize: 20,
+            fontSize: FontSize.lg,
             textDecorationLine: "underline",
           },
-          heading3: { ...markdownStyles.heading, fontSize: 16 },
-          heading4: { ...markdownStyles.heading, fontSize: 12 },
-          heading5: { ...markdownStyles.heading, fontSize: 12 },
-          heading6: { ...markdownStyles.heading, fontSize: 10 },
+          heading3: {
+            ...markdownStyles.heading,
+            fontSize: FontSize.base,
+          },
+          heading4: {
+            ...markdownStyles.heading,
+            fontSize: FontSize.xs,
+          },
+          heading5: {
+            ...markdownStyles.heading,
+            fontSize: FontSize.xs,
+          },
+          heading6: {
+            ...markdownStyles.heading,
+            fontSize: 10,
+          },
           bullet_list: markdownStyles.list,
           ordered_list: markdownStyles.list,
           blockquote: {
@@ -112,9 +124,14 @@ function UpdateChecker() {
             marginHorizontal: 0,
             borderColor: Colors.accent500,
           },
-          fence: { ...markdownStyles.fence, borderColor: Colors.surface500 },
+          fence: {
+            ...markdownStyles.fence,
+            borderColor: Colors.surface500,
+          },
           code_inline: markdownStyles.code,
-          hr: { backgroundColor: Colors.surface700 },
+          hr: {
+            backgroundColor: Colors.surface700,
+          },
         }}
         rules={{
           link: (node, children, _parent, styles) => (
@@ -149,14 +166,18 @@ const markdownStyles = StyleSheet.create({
   heading: {
     marginBottom: 8,
     color: Colors.foreground50,
-    fontFamily: "GeistMonoMedium",
+    fontFamily: "GeistMono",
   },
-  list: { marginVertical: 8 },
-  code: { backgroundColor: Colors.surface700 },
+  list: {
+    marginVertical: 8,
+  },
+  code: {
+    backgroundColor: Colors.surface700,
+  },
   fence: {
     marginVertical: 8,
     backgroundColor: Colors.surface700,
-    borderRadius: 4,
+    borderRadius: BorderRadius.sm,
   },
 });
 

@@ -57,7 +57,7 @@ export default function HomeScreen() {
         setEndOfScrollView(isCloseToBottom(nativeEvent));
       }}
     >
-      <Heading as="h2" className="mb-4 px-4 text-start font-geistMonoMedium">
+      <Heading as="h2" className="mb-4 px-4 text-start font-geistMono">
         RECENTLY PLAYED
       </Heading>
       <ScrollRow contentContainerClassName="gap-4">
@@ -107,7 +107,7 @@ function FavoriteListSection({
 
   return (
     <View className="px-4">
-      <Heading as="h2" className="mb-4 mt-8 text-start font-geistMonoMedium">
+      <Heading as="h2" className="mb-4 mt-8 text-start font-geistMono">
         FAVORITES
       </Heading>
       <View className="-m-2 mt-0 flex-1">

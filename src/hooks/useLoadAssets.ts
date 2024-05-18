@@ -23,7 +23,6 @@ export function useLoadAssets() {
     GeistLight: require("../assets/fonts/Geist-Light.ttf"),
     GeistMonoLight: require("../assets/fonts/GeistMono-Light.ttf"),
     GeistMono: require("../assets/fonts/GeistMono-Regular.ttf"),
-    GeistMonoMedium: require("../assets/fonts/GeistMono-Medium.ttf"),
     Ndot57: require("../assets/fonts/Ndot-57.ttf"),
     ...Ionicons.font,
     ...MaterialIcons.font,

@@ -14,6 +14,7 @@ import { ToastProvider } from "react-native-toast-notifications";
 import "@/assets/global.css";
 import { NavigationTheme } from "@/constants/Themes";
 import { queryClient } from "@/lib/react-query";
+import { cn } from "@/lib/style";
 import { PrevPathnameTracker } from "@/components/error/PrevPathnameTracker";
 import { DeepLinkHandler } from "@/components/navigation/DeepLinkHandler";
 
@@ -29,12 +30,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         duration={2000}
         offset={24}
         renderToast={(toast) => (
-          <View className="px-4 pt-2">
-            <View className="rounded bg-surface700">
-              <Text className="p-2 font-geistMono text-sm text-foreground50">
-                {toast.message}
-              </Text>
-            </View>
+          <View
+            style={{ marginVertical: 4 }}
+            className={cn("rounded bg-surface700 p-2", {
+              "bg-accent500": toast.type === "danger",
+            })}
+          >
+            <Text className="font-geistMono text-sm text-foreground50">
+              {toast.message}
+            </Text>
           </View>
         )}
       >

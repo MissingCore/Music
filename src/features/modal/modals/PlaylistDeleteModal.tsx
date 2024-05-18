@@ -26,9 +26,7 @@ export function PlaylistDeleteModal({
 
         <Text className="mb-8 font-geistMonoLight text-sm text-foreground100">
           You understand that this action will{" "}
-          <Text className="font-geistMonoMedium text-accent50">
-            permanently
-          </Text>{" "}
+          <Text className="font-geistMono text-accent50">permanently</Text>{" "}
           delete this playlist.
         </Text>
 
