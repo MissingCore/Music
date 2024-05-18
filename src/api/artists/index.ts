@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import { getArtists } from "@/db/queries";
@@ -9,21 +9,12 @@ import { getTrackCountStr } from "@/features/track/utils";
 
 type QueryFnData = ExtractFnReturnType<typeof getArtists>;
 
-type UseArtistsOptions<TData = QueryFnData> = {
-  config?: {
-    select?: (data: QueryFnData) => TData;
-  };
-};
-
 /** @description Returns all artists with its tracks. */
-export const useArtists = <TData = QueryFnData>({
-  config,
-}: UseArtistsOptions<TData>) =>
-  useQuery({
+export const artistsOptions = () =>
+  queryOptions({
     queryKey: artistKeys.all,
     queryFn: () => getArtists(),
     staleTime: Infinity,
-    ...config,
   });
 
 /**
@@ -31,37 +22,36 @@ export const useArtists = <TData = QueryFnData>({
  *  To be used with `<FlashList />` restructured to work as a `<SectionList />`.
  */
 export const useArtistsForList = () =>
-  useArtists({
-    config: {
-      select: useCallback((data: QueryFnData) => {
-        // Group artists by their 1st character.
-        const groupedArtists: Record<string, typeof data> = {};
-        data.forEach((artist) => {
-          const key = /[a-zA-Z]/.test(artist.name.charAt(0))
-            ? artist.name.charAt(0).toUpperCase()
-            : "#";
-          if (Object.hasOwn(groupedArtists, key))
-            groupedArtists[key].push(artist);
-          else groupedArtists[key] = [artist];
-        });
+  useQuery({
+    ...artistsOptions(),
+    select: useCallback((data: QueryFnData) => {
+      // Group artists by their 1st character.
+      const groupedArtists: Record<string, typeof data> = {};
+      data.forEach((artist) => {
+        const key = /[a-zA-Z]/.test(artist.name.charAt(0))
+          ? artist.name.charAt(0).toUpperCase()
+          : "#";
+        if (Object.hasOwn(groupedArtists, key))
+          groupedArtists[key].push(artist);
+        else groupedArtists[key] = [artist];
+      });
 
-        // Convert object to array, sort by character key and artist name,
-        // then flatten to be used in a `<FlashList />`.
-        return Object.entries(groupedArtists)
-          .map(([key, arts]) => ({
-            title: key,
-            data: arts
-              .map(({ name, tracks }) => {
-                const textContent = [name, getTrackCountStr(tracks.length)];
-                return { name, textContent: textContent as [string, string] };
-              })
-              .toSorted((a, b) =>
-                a.name.localeCompare(b.name, undefined, { caseFirst: "upper" }),
-              ),
-          }))
-          .toSorted((a, b) => a.title.localeCompare(b.title))
-          .map(({ title, data }) => [title, ...data])
-          .flat();
-      }, []),
-    },
+      // Convert object to array, sort by character key and artist name,
+      // then flatten to be used in a `<FlashList />`.
+      return Object.entries(groupedArtists)
+        .map(([key, arts]) => ({
+          title: key,
+          data: arts
+            .map(({ name, tracks }) => {
+              const textContent = [name, getTrackCountStr(tracks.length)];
+              return { name, textContent: textContent as [string, string] };
+            })
+            .toSorted((a, b) =>
+              a.name.localeCompare(b.name, undefined, { caseFirst: "upper" }),
+            ),
+        }))
+        .toSorted((a, b) => a.title.localeCompare(b.title))
+        .map(({ title, data }) => [title, ...data])
+        .flat();
+    }, []),
   });

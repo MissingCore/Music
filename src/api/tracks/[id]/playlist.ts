@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  queryOptions,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { and, eq } from "drizzle-orm";
 import { useSetAtom } from "jotai";
 import { useCallback } from "react";
@@ -31,36 +36,22 @@ export async function getTracksToPlaylists({ trackId }: { trackId: string }) {
 
 type GETFnData = ExtractFnReturnType<typeof getTracksToPlaylists>;
 
-type UseTrackInPlaylistsOptions<TData = GETFnData> = Prettify<
-  BaseFnArgs & {
-    config?: {
-      select?: (data: GETFnData) => TData;
-    };
-  }
->;
-
 /** @description Returns all playlists this track is a part of. */
-export const useTrackInPlaylists = <TData = GETFnData>({
-  trackId,
-  config,
-}: UseTrackInPlaylistsOptions<TData>) =>
-  useQuery({
+export const trackInPlaylistsOptions = (trackId: string) =>
+  queryOptions({
     queryKey: trackKeys.detailWithRelation(trackId),
     queryFn: () => getTracksToPlaylists({ trackId }),
     gcTime: 0,
-    ...config,
   });
 
 /** @description Returns if the track is in a given playlist. */
 export const useIsTrackInPlaylist = (trackId: string, playlistName: string) =>
-  useTrackInPlaylists({
-    trackId,
-    config: {
-      select: useCallback(
-        (data: GETFnData) => data.includes(playlistName),
-        [playlistName],
-      ),
-    },
+  useQuery({
+    ...trackInPlaylistsOptions(trackId),
+    select: useCallback(
+      (data: GETFnData) => data.includes(playlistName),
+      [playlistName],
+    ),
   });
 
 // ---------------------------------------------------------------------

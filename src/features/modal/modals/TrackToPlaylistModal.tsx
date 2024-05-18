@@ -1,6 +1,7 @@
 import type { BottomSheetFooterProps } from "@gorhom/bottom-sheet";
 import { BottomSheetScrollView, BottomSheetFooter } from "@gorhom/bottom-sheet";
 import { FlashList } from "@shopify/flash-list";
+import { useQuery } from "@tanstack/react-query";
 import { atom, useAtom, useAtomValue } from "jotai";
 import { Suspense, useEffect } from "react";
 import { View } from "react-native";
@@ -8,7 +9,7 @@ import { View } from "react-native";
 import { usePlaylistsForModal } from "@/api/playlists";
 import {
   usePutTrackInPlaylists,
-  useTrackInPlaylists,
+  trackInPlaylistsOptions,
 } from "@/api/tracks/[id]/playlist";
 
 import { mutateGuard } from "@/lib/react-query";
@@ -46,7 +47,7 @@ export function TrackToPlaylistModal({ trackId }: { trackId: string }) {
 /** @description Lists all the playlists. */
 function PlaylistList({ trackId }: { trackId: string }) {
   const { isPending, error, data: playlistData } = usePlaylistsForModal();
-  const trackInPlaylists = useTrackInPlaylists({ trackId });
+  const trackInPlaylists = useQuery(trackInPlaylistsOptions(trackId));
   const [inPlaylist, setInPlaylist] = useAtom(inPlaylistAtom);
 
   useEffect(() => {

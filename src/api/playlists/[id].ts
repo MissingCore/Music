@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  queryOptions,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { eq } from "drizzle-orm";
 import { router } from "expo-router";
 import { useSetAtom } from "jotai";
@@ -25,65 +30,41 @@ type BaseFnArgs = { playlistName: string };
 // ---------------------------------------------------------------------
 type GETFnData = ExtractFnReturnType<typeof getPlaylist>;
 
-type UsePlaylistOptions<TData = GETFnData> = Prettify<
-  BaseFnArgs & {
-    config?: {
-      select?: (data: GETFnData) => TData;
-    };
-  }
->;
-
 /** @description Returns specified playlist with its tracks. */
-export const usePlaylist = <TData = GETFnData>({
-  playlistName,
-  config,
-}: UsePlaylistOptions<TData>) => {
-  const queryClient = useQueryClient();
-
-  return useQuery({
+export const playlistOptions = (playlistName: string) =>
+  queryOptions({
     queryKey: playlistKeys.detail(playlistName),
     queryFn: () => getPlaylist([eq(playlists.name, playlistName)]),
-    placeholderData: () => {
-      return queryClient
-        .getQueryData<GETFnData[]>(playlistKeys.all)
-        ?.find((d) => d?.name === playlistName);
-    },
     staleTime: Infinity,
-    ...config,
   });
-};
 
 /**
  * @description Return data to render "MediaList" components on the
  *  `/playlist/[id]` route.
  */
 export const usePlaylistForCurrentPage = (playlistName: string) =>
-  usePlaylist({
-    playlistName,
-    config: {
-      select: useCallback(
-        (data: GETFnData) => ({
-          ...formatForCurrentPages({ type: "playlist", data }),
-          imageSource: getPlaylistCover(data),
-        }),
-        [],
-      ),
-    },
+  useQuery({
+    ...playlistOptions(playlistName),
+    select: useCallback(
+      (data: GETFnData) => ({
+        ...formatForCurrentPages({ type: "playlist", data }),
+        imageSource: getPlaylistCover(data),
+      }),
+      [],
+    ),
   });
 
 /** @description Return the most-used data in playlist-related modals. */
 export const usePlaylistForModal = (playlistName: string) =>
-  usePlaylist({
-    playlistName,
-    config: {
-      select: useCallback(
-        (data: GETFnData) => ({
-          ...pickKeys(data, ["name", "isFavorite"]),
-          imageSource: getPlaylistCover(data),
-        }),
-        [],
-      ),
-    },
+  useQuery({
+    ...playlistOptions(playlistName),
+    select: useCallback(
+      (data: GETFnData) => ({
+        ...pickKeys(data, ["name", "isFavorite"]),
+        imageSource: getPlaylistCover(data),
+      }),
+      [],
+    ),
   });
 
 // ---------------------------------------------------------------------

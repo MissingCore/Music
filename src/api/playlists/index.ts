@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  queryOptions,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import { db } from "@/db";
@@ -17,51 +22,40 @@ type BaseFnArgs = { playlistName: string };
 // ---------------------------------------------------------------------
 type GETFnData = ExtractFnReturnType<typeof getPlaylists>;
 
-type UsePlaylistsOptions<TData = GETFnData> = {
-  config?: {
-    select?: (data: GETFnData) => TData;
-  };
-};
-
 /** @description Returns all playlists with its tracks. */
-export const usePlaylists = <TData = GETFnData>({
-  config,
-}: UsePlaylistsOptions<TData>) =>
-  useQuery({
+export const playlistsOptions = () =>
+  queryOptions({
     queryKey: playlistKeys.all,
     queryFn: () => getPlaylists(),
     staleTime: Infinity,
-    ...config,
   });
 
 /** @description Returns a list of `MediaCardContent` generated from playlists. */
 export const usePlaylistsForMediaCard = () =>
-  usePlaylists({
-    config: {
-      select: useCallback(
-        (data: GETFnData) =>
-          data
-            .map((playlist) =>
-              formatForMediaCard({ type: "playlist", data: playlist }),
-            )
-            .toSorted((a, b) => a.title.localeCompare(b.title)),
-        [],
-      ),
-    },
+  useQuery({
+    ...playlistsOptions(),
+    select: useCallback(
+      (data: GETFnData) =>
+        data
+          .map((playlist) =>
+            formatForMediaCard({ type: "playlist", data: playlist }),
+          )
+          .toSorted((a, b) => a.title.localeCompare(b.title)),
+      [],
+    ),
   });
 
 /** @description Return the most-used data in playlist-related modals. */
 export const usePlaylistsForModal = () =>
-  usePlaylists({
-    config: {
-      select: useCallback(
-        (data: GETFnData) =>
-          data
-            .map(({ name, tracks }) => ({ name, trackCount: tracks.length }))
-            .toSorted((a, b) => a.name.localeCompare(b.name)),
-        [],
-      ),
-    },
+  useQuery({
+    ...playlistsOptions(),
+    select: useCallback(
+      (data: GETFnData) =>
+        data
+          .map(({ name, tracks }) => ({ name, trackCount: tracks.length }))
+          .toSorted((a, b) => a.name.localeCompare(b.name)),
+      [],
+    ),
   });
 
 // ---------------------------------------------------------------------

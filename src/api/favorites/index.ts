@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 import { eq } from "drizzle-orm";
 import { useCallback } from "react";
 
@@ -28,35 +28,20 @@ export async function getFavoriteLists() {
 
 type FavoriteTracksFnData = ExtractFnReturnType<typeof getSpecialPlaylist>;
 
-type UseFavoriteOptions<
-  TData extends FavoriteListsFnData | FavoriteTracksFnData,
-  TResult = TData,
-> = {
-  config?: {
-    select?: (data: TData) => TResult;
-  };
-};
-
 /** @description Returns an object containing favorited albums & playlists. */
-export const useFavoriteLists = <TData = FavoriteListsFnData>({
-  config,
-}: UseFavoriteOptions<FavoriteListsFnData, TData>) =>
-  useQuery({
+export const favoriteListsOptions = () =>
+  queryOptions({
     queryKey: favoriteKeys.lists(),
     queryFn: getFavoriteLists,
     staleTime: Infinity,
-    ...config,
   });
 
 /** @description Returns a list of favorited tracks. */
-export const useFavoriteTracks = <TData = FavoriteTracksFnData>({
-  config,
-}: UseFavoriteOptions<FavoriteTracksFnData, TData>) =>
-  useQuery({
+export const favoriteTracksOptions = () =>
+  queryOptions({
     queryKey: favoriteKeys.tracks(),
     queryFn: () => getSpecialPlaylist(SpecialPlaylists.favorites),
     staleTime: Infinity,
-    ...config,
   });
 
 /**
@@ -64,32 +49,27 @@ export const useFavoriteTracks = <TData = FavoriteTracksFnData>({
  *  favorited albums & playlists.
  */
 export const useFavoriteListsForMediaCard = () =>
-  useFavoriteLists({
-    config: {
-      select: useCallback(
-        (data: FavoriteListsFnData) =>
-          [
-            ...data.albums.map((album) =>
-              formatForMediaCard({ type: "album", data: album }),
-            ),
-            ...data.playlists.map((playlist) =>
-              formatForMediaCard({ type: "playlist", data: playlist }),
-            ),
-          ].toSorted((a, b) => a.title.localeCompare(b.title)),
-        [],
-      ),
-    },
+  useQuery({
+    ...favoriteListsOptions(),
+    select: useCallback(
+      (data: FavoriteListsFnData) =>
+        [
+          ...data.albums.map((album) =>
+            formatForMediaCard({ type: "album", data: album }),
+          ),
+          ...data.playlists.map((playlist) =>
+            formatForMediaCard({ type: "playlist", data: playlist }),
+          ),
+        ].toSorted((a, b) => a.title.localeCompare(b.title)),
+      [],
+    ),
   });
 
 /** @description Returns number of favorited tracks. */
 export const useFavoriteTracksCount = () =>
-  useFavoriteTracks({
-    config: {
-      select: useCallback(
-        (data: FavoriteTracksFnData) => data.tracks.length,
-        [],
-      ),
-    },
+  useQuery({
+    ...favoriteTracksOptions(),
+    select: useCallback((data: FavoriteTracksFnData) => data.tracks.length, []),
   });
 
 /**
@@ -97,14 +77,13 @@ export const useFavoriteTracksCount = () =>
  *  `/playlist/${SpecialPlaylists.favorites}` route.
  */
 export const useFavoriteTracksForCurrentPage = () =>
-  useFavoriteTracks({
-    config: {
-      select: useCallback(
-        (data: FavoriteTracksFnData) => ({
-          ...formatForCurrentPages({ type: "playlist", data }),
-          imageSource: SpecialPlaylists.favorites,
-        }),
-        [],
-      ),
-    },
+  useQuery({
+    ...favoriteTracksOptions(),
+    select: useCallback(
+      (data: FavoriteTracksFnData) => ({
+        ...formatForCurrentPages({ type: "playlist", data }),
+        imageSource: SpecialPlaylists.favorites,
+      }),
+      [],
+    ),
   });

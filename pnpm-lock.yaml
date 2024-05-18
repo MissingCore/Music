@@ -30,8 +30,8 @@ dependencies:
     specifier: 1.6.4
     version: 1.6.4(@babel/runtime@7.24.5)(react-native@0.74.1)(react@18.2.0)
   '@tanstack/react-query':
-    specifier: ^5.36.0
-    version: 5.36.0(react@18.2.0)
+    specifier: ^5.36.2
+    version: 5.36.2(react@18.2.0)
   clsx:
     specifier: ^2.1.1
     version: 2.1.1
@@ -3591,16 +3591,16 @@ packages:
       - typescript
     dev: true
 
-  /@tanstack/query-core@5.36.0:
-    resolution: {integrity: sha512-B5BD3pg/mztDR36i77hGcyySKKeYrbM5mnogOROTBi1SUml5ByRK7PGUUl16vvubvQC+mSnqziFG/VIy/DE3FQ==}
+  /@tanstack/query-core@5.36.1:
+    resolution: {integrity: sha512-BteWYEPUcucEu3NBcDAgKuI4U25R9aPrHSP6YSf2NvaD2pSlIQTdqOfLRsxH9WdRYg7k0Uom35Uacb6nvbIMJg==}
     dev: false
 
-  /@tanstack/react-query@5.36.0(react@18.2.0):
-    resolution: {integrity: sha512-BATvtM0rohwg7pRHUnxgeDiwLWRGZ8OM/4y8LImHVpecQWoH6Uhytu3Z8YV6V7hQ1sMQBFcUrGE1/e4MxR6YiA==}
+  /@tanstack/react-query@5.36.2(react@18.2.0):
+    resolution: {integrity: sha512-bHNa+5dead+j6SA8WVlEOPxcGfteVFgdyFTCFcxBgjnPf0fFpHUc7aNZBCnvmPXqy/BeQa9zTuU9ectb7i8ZXA==}
     peerDependencies:
       react: ^18.0.0
     dependencies:
-      '@tanstack/query-core': 5.36.0
+      '@tanstack/query-core': 5.36.1
       react: 18.2.0
     dev: false
 

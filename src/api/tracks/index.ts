@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import { getTracks } from "@/db/queries";
@@ -9,30 +9,20 @@ import type { ExtractFnReturnType } from "@/utils/types";
 
 type QueryFnData = ExtractFnReturnType<typeof getTracks>;
 
-type UseTracksOptions<TData = QueryFnData> = {
-  config?: {
-    select?: (data: QueryFnData) => TData;
-  };
-};
-
 /** @description Returns all tracks. */
-export const useTracks = <TData = QueryFnData>({
-  config,
-}: UseTracksOptions<TData>) =>
-  useQuery({
+export const tracksOptions = () =>
+  queryOptions({
     queryKey: trackKeys.all,
     queryFn: () => getTracks(),
     staleTime: Infinity,
-    ...config,
   });
 
 /** @description Returns a list of `TrackCardContent` generated from tracks. */
 export const useTracksForTrackCard = () =>
-  useTracks({
-    config: {
-      select: useCallback(
-        (data: QueryFnData) => formatTracksForTrack({ type: "track", data }),
-        [],
-      ),
-    },
+  useQuery({
+    ...tracksOptions(),
+    select: useCallback(
+      (data: QueryFnData) => formatTracksForTrack({ type: "track", data }),
+      [],
+    ),
   });
