@@ -8,7 +8,6 @@ import { Text, View } from "react-native";
 
 import { useCreatePlaylist, usePlaylistsForModal } from "@/api/playlists";
 import { useUpdatePlaylist } from "@/api/playlists/[id]";
-import type { ModalPlaylistName } from "../store";
 
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
@@ -18,9 +17,11 @@ import { ReservedNames } from "@/features/playback/constants";
 import { ModalBase } from "../components/ModalBase";
 import { ModalFormButton } from "../components/ModalFormButton";
 
+type Props = { id?: string; scope: "new" | "update" };
+
 /** @description Modal used for creating or changing a playlist name. */
-export function PlaylistNameModal({ origin, id }: ModalPlaylistName) {
-  const [playlistName, setPlaylistName] = useState(origin === "new" ? "" : id!);
+export function PlaylistNameModal({ id, scope }: Props) {
+  const [playlistName, setPlaylistName] = useState(scope === "new" ? "" : id!);
   const { isPending, error, data } = usePlaylistsForModal();
   const createPlaylist = useCreatePlaylist();
   const updatePlaylistFn = useUpdatePlaylist(id ?? "");
@@ -50,7 +51,7 @@ export function PlaylistNameModal({ origin, id }: ModalPlaylistName) {
         className="px-4"
       >
         <Heading as="h1" className="mb-8">
-          {origin === "new" ? "Create a Playlist" : "Rename Playlist"}
+          {scope === "new" ? "Create a Playlist" : "Rename Playlist"}
         </Heading>
 
         <BottomSheetTextInput
@@ -74,13 +75,13 @@ export function PlaylistNameModal({ origin, id }: ModalPlaylistName) {
         </View>
 
         <View className="flex-row justify-end gap-2">
-          {origin === "update" && <ModalFormButton content="CANCEL" />}
+          {scope === "update" && <ModalFormButton content="CANCEL" />}
           <ModalFormButton
             disabled={!meetsCharLength || !isUnique}
-            theme={origin === "new" ? undefined : "neutral"}
+            theme={scope === "new" ? undefined : "neutral"}
             onPress={() => {
               const santiziedStr = playlistName.trim();
-              if (origin === "new") mutateGuard(createPlaylist, santiziedStr);
+              if (scope === "new") mutateGuard(createPlaylist, santiziedStr);
               else {
                 mutateGuard(updatePlaylistFn, {
                   field: "name",
@@ -88,7 +89,7 @@ export function PlaylistNameModal({ origin, id }: ModalPlaylistName) {
                 });
               }
             }}
-            content={origin === "new" ? "CREATE" : "CONFIRM"}
+            content={scope === "new" ? "CREATE" : "CONFIRM"}
           />
         </View>
       </BottomSheetScrollView>

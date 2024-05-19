@@ -24,10 +24,10 @@ import { ModalFormButton } from "../components/ModalFormButton";
 const inPlaylistAtom = atom<string[]>([]);
 
 /** @description Modal used for adding or removing a track from a playlist. */
-export function TrackToPlaylistModal({ trackId }: { trackId: string }) {
+export function TrackToPlaylistModal({ id }: { id: string }) {
   return (
     <ModalBase
-      footerComponent={(props) => <ModalFooter trackId={trackId} {...props} />}
+      footerComponent={(props) => <ModalFooter trackId={id} {...props} />}
     >
       <Heading as="h1" className="p-4 pt-0">
         Add Track to Playlist
@@ -37,7 +37,7 @@ export function TrackToPlaylistModal({ trackId }: { trackId: string }) {
         contentContainerClassName="px-4"
       >
         <Suspense fallback={<Loading />}>
-          <PlaylistList trackId={trackId} />
+          <PlaylistList trackId={id} />
         </Suspense>
       </BottomSheetScrollView>
     </ModalBase>

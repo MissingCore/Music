@@ -1,21 +1,30 @@
 import { atom } from "jotai";
 
-import type { Media, MediaList } from "@/components/media/types";
+import type { Prettify } from "@/utils/types";
+import type { MediaList } from "@/components/media/types";
 
-export type ModalPlaylistName = {
-  type: "playlist-name";
-  id?: string;
-  origin: "new" | "update";
-};
+type ModalEntity<TEntity extends string, TData extends Record<string, any>> = {
+  entity: TEntity;
+} & TData;
 
-export type Modal =
-  | {
-      type: Media | "track-to-playlist" | "playlist-delete";
-      id: string;
-      origin?: MediaList;
-    }
-  | { type: "track-current" | "track-upcoming"; id?: never; origin?: never }
-  | ModalPlaylistName;
+export type PlaylistModal = Prettify<
+  ModalEntity<
+    "playlist",
+    | { scope: "new"; id?: never; origin?: never }
+    | { scope: "view" | "update" | "delete"; id: string; origin?: never }
+  >
+>;
+
+export type TrackModal = Prettify<
+  ModalEntity<
+    "track",
+    | { scope: "view"; id: string; origin?: MediaList }
+    | { scope: "playlist"; id: string; origin?: never }
+    | { scope: "current" | "upcoming"; id?: never; origin?: never }
+  >
+>;
+
+export type Modal = PlaylistModal | TrackModal;
 
 /** @description Describes the modal we want to display. */
 export const modalAtom = atom<Modal | null>(null);

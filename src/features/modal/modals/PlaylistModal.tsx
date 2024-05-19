@@ -13,14 +13,11 @@ import { ModalBase } from "../components/ModalBase";
 import { Button } from "../components/ModalInteractive";
 
 /** @description Modal used for playlists. */
-export function PlaylistModal({ playlistName }: { playlistName: string }) {
+export function PlaylistModal({ id }: { id: string }) {
   const openModal = useSetAtom(modalAtom);
-  const { isPending, error, data } = usePlaylistForModal(playlistName);
-  const toggleFavoriteFn = useToggleFavorite({
-    type: "playlist",
-    id: playlistName,
-  });
-  const updatePlaylistFn = useUpdatePlaylist(playlistName);
+  const { isPending, error, data } = usePlaylistForModal(id);
+  const toggleFavoriteFn = useToggleFavorite({ type: "playlist", id });
+  const updatePlaylistFn = useUpdatePlaylist(id);
 
   if (isPending || error) return null;
 
@@ -47,11 +44,7 @@ export function PlaylistModal({ playlistName }: { playlistName: string }) {
             content="Rename"
             icon="MatchCaseOutline"
             onPress={() =>
-              openModal({
-                type: "playlist-name",
-                id: playlistName,
-                origin: "update",
-              })
+              openModal({ entity: "playlist", scope: "update", id })
             }
           />
           <Button
@@ -79,7 +72,7 @@ export function PlaylistModal({ playlistName }: { playlistName: string }) {
             content="Delete"
             icon="DeleteOutline"
             onPress={() =>
-              openModal({ type: "playlist-delete", id: playlistName })
+              openModal({ entity: "playlist", scope: "delete", id })
             }
           />
         </ScrollRow>

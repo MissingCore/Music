@@ -23,14 +23,14 @@ import { ReservedNames, SpecialPlaylists } from "@/features/playback/constants";
 import { ModalBase } from "../components/ModalBase";
 import { Button, Link } from "../components/ModalInteractive";
 
-type Props = { trackId: string; origin?: MediaList | "track-current" };
+type Props = { id: string; origin?: MediaList | "current" };
 
 /** @description Modal used for tracks. */
-export function TrackModal({ trackId, origin }: Props) {
+export function TrackModal({ id, origin }: Props) {
   const openModal = useSetAtom(modalAtom);
   const addTrackToQueue = useSetAtom(queuePushAtom);
-  const { isPending, error, data } = useTrackExcerpt(trackId);
-  const toggleFavoriteFn = useToggleFavorite({ type: "track", id: trackId });
+  const { isPending, error, data } = useTrackExcerpt(id);
+  const toggleFavoriteFn = useToggleFavorite({ type: "track", id });
 
   if (isPending || error) return null;
 
@@ -65,12 +65,12 @@ export function TrackModal({ trackId, origin }: Props) {
             onPress={() => mutateGuard(toggleFavoriteFn, undefined)}
             dontCloseOnPress
           />
-          <RemoveTrackFromPlaylist trackId={trackId} />
+          <RemoveTrackFromPlaylist trackId={id} />
           <Button
             content="Add to Playlists"
             icon="PlaylistAddOutline"
             onPress={() =>
-              openModal({ type: "track-to-playlist", id: trackId })
+              openModal({ entity: "track", scope: "playlist", id })
             }
           />
           <Button
@@ -101,13 +101,15 @@ export function TrackModal({ trackId, origin }: Props) {
             />
           )}
 
-          {origin === "track-current" && (
+          {origin === "current" && (
             <>
               <ViewPlaylist />
               <Button
                 content="View Upcoming"
                 icon="LibraryMusicFilled"
-                onPress={() => openModal({ type: "track-upcoming" })}
+                onPress={() =>
+                  openModal({ entity: "track", scope: "upcoming" })
+                }
               />
             </>
           )}

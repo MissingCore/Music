@@ -15,30 +15,33 @@ export function AppModals() {
   const selectedModal = useAtomValue(modalAtom);
 
   if (!selectedModal) return null;
-  const { type, id, origin } = selectedModal;
+  const { entity, scope, id, origin } = selectedModal;
 
-  switch (type) {
-    case "playlist":
-      return <PlaylistModal playlistName={id} />;
-    case "playlist-delete":
-      return <PlaylistDeleteModal playlistName={id} />;
-    case "playlist-name":
-      return <PlaylistNameModal {...selectedModal} />;
-    case "track":
-      return <TrackModal trackId={id} origin={origin} />;
-    case "track-current":
+  if (entity === "playlist") {
+    if (scope === "new") {
+      return <PlaylistNameModal scope="new" />;
+    } else if (scope === "view") {
+      return <PlaylistModal id={id} />;
+    } else if (scope === "update") {
+      return <PlaylistNameModal scope="update" id={id} />;
+    } else {
+      return <PlaylistDeleteModal id={id} />;
+    }
+  } else {
+    if (scope === "view") {
+      return <TrackModal id={id} origin={origin} />;
+    } else if (scope === "current") {
       return <RenderTrackModal />;
-    case "track-to-playlist":
-      return <TrackToPlaylistModal trackId={id} />;
-    case "track-upcoming":
+    } else if (scope === "playlist") {
+      return <TrackToPlaylistModal id={id} />;
+    } else {
       return <UpcomingTrackModal />;
-    default:
-      throw new Error("Modal type not implemented yet.");
+    }
   }
 }
 
 function RenderTrackModal() {
   const trackData = useAtomValue(trackDataAtom);
   if (!trackData) return null;
-  return <TrackModal trackId={trackData.id} origin="track-current" />;
+  return <TrackModal id={trackData.id} origin="current" />;
 }

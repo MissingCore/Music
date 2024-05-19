@@ -50,7 +50,7 @@ function CreatePlaylistButton({ colWidth }: { colWidth: number }) {
 
   return (
     <Pressable
-      onPress={() => openModal({ type: "playlist-name", origin: "new" })}
+      onPress={() => openModal({ entity: "playlist", scope: "new" })}
       style={{ width: colWidth, height: colWidth }}
       className="items-center justify-center rounded-lg active:bg-surface800"
     >

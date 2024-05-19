@@ -32,7 +32,11 @@ export default function CurrentPlaylistScreen() {
       <Stack.Screen
         options={{
           headerRight: () => (
-            <Pressable onPress={() => openModal({ type: "playlist", id })}>
+            <Pressable
+              onPress={() =>
+                openModal({ entity: "playlist", scope: "view", id })
+              }
+            >
               <EllipsisVertical size={24} />
             </Pressable>
           ),

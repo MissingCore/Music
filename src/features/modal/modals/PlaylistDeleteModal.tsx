@@ -9,19 +9,15 @@ import { ModalBase } from "../components/ModalBase";
 import { ModalFormButton } from "../components/ModalFormButton";
 
 /** @description Modal used for deleting playlists. */
-export function PlaylistDeleteModal({
-  playlistName,
-}: {
-  playlistName: string;
-}) {
-  const deletePlaylistFn = useDeletePlaylist(playlistName);
+export function PlaylistDeleteModal({ id }: { id: string }) {
+  const deletePlaylistFn = useDeletePlaylist(id);
 
   return (
     <ModalBase detached>
       <BottomSheetScrollView className="px-4">
         <Heading as="h1">Delete Playlist</Heading>
         <Heading as="h4" asLine className="mb-8 text-accent50">
-          {playlistName}
+          {id}
         </Heading>
 
         <Text className="mb-8 font-geistMonoLight text-sm text-foreground100">
