@@ -23,21 +23,23 @@ export const resynchronizeOnAtom = atom(
   null,
   async (get, set, { action, data }: ResynchronizeArgs) => {
     // Synchronize "Recently Played" list.
-    const recentlyPlayed = await get(recentlyPlayedAsyncAtom);
-    let newRecentList = [...recentlyPlayed];
+    if (action !== "update") {
+      const recentlyPlayed = await get(recentlyPlayedAsyncAtom);
+      let newRecentList = [...recentlyPlayed];
 
-    if (action === "delete") {
-      newRecentList = recentlyPlayed.filter(
-        (reference) => !areTrackReferencesEqual(reference, data),
-      );
-    } else if (action === "rename") {
-      newRecentList = recentlyPlayed.map((reference) => {
-        if (!areTrackReferencesEqual(reference, data.old)) return reference;
-        return data.latest;
-      });
+      if (action === "delete") {
+        newRecentList = recentlyPlayed.filter(
+          (reference) => !areTrackReferencesEqual(reference, data),
+        );
+      } else if (action === "rename") {
+        newRecentList = recentlyPlayed.map((reference) => {
+          if (!areTrackReferencesEqual(reference, data.old)) return reference;
+          return data.latest;
+        });
+      }
+
+      set(recentlyPlayedAsyncAtom, newRecentList);
     }
-
-    set(recentlyPlayedAsyncAtom, newRecentList);
 
     // Synchronize track list.
     const playingMedia = await get(playingMediaAsyncAtom);
@@ -53,6 +55,7 @@ export const resynchronizeOnAtom = atom(
             trackList.reference,
             action === "rename" ? data.old : data!,
           );
+
     if (shouldResynchronizeTrackList) {
       if (action === "delete") {
         newPlayingMedia.listIndex = 0;
@@ -70,9 +73,9 @@ export const resynchronizeOnAtom = atom(
       } else if (action === "rename") {
         newTrackList.reference = data.latest;
       }
-    }
 
-    set(playingMediaAsyncAtom, newPlayingMedia);
-    set(trackListAsyncAtom, newTrackList);
+      set(playingMediaAsyncAtom, newPlayingMedia);
+      set(trackListAsyncAtom, newTrackList);
+    }
   },
 );
