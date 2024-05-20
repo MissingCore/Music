@@ -4,12 +4,12 @@ import Markdown from "react-native-markdown-display";
 
 import { useLatestRelease } from "@/api/releases";
 
+import { APP_VERSION } from "@/constants/Config";
 import { BorderRadius, Colors, FontSize } from "@/constants/Styles";
 import { cn } from "@/lib/style";
 import { LinkButton } from "@/components/form/Button";
 import { AnimatedHeader } from "@/components/navigation/AnimatedHeader";
 
-const APP_VERSION = process.env.EXPO_PUBLIC_APP_VERSION!;
 const GITHUB_LINK = "https://github.com/MissingCore/Music";
 
 /** @description Screen for `/setting` route. */

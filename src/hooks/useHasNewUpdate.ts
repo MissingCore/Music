@@ -1,6 +1,6 @@
 import { useLatestRelease } from "@/api/releases";
 
-const APP_VERSION = process.env.EXPO_PUBLIC_APP_VERSION!;
+import { APP_VERSION } from "@/constants/Config";
 
 /** @description Returns a boolean on whether we have a new update. */
 export function useHasNewUpdate() {
