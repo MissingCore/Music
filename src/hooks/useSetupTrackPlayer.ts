@@ -44,6 +44,6 @@ async function setupPlayer() {
       Capability.SkipToNext,
       Capability.SkipToPrevious,
     ],
-    icon: require("@/assets/images/icon.png"),
+    icon: require("@/assets/images/glyph/music.png"),
   });
 }

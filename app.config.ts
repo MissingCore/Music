@@ -22,6 +22,7 @@ export default (): ExpoConfig => ({
     package: "com.cyanchill.missingcore.music",
     adaptiveIcon: {
       foregroundImage: "./src/assets/images/adaptive-icon.png",
+      monochromeImage: "./src/assets/images/adaptive-icon-monochrome.png",
       backgroundColor: "#000000",
     },
     blockedPermissions: [
