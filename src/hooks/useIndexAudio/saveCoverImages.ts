@@ -1,10 +1,10 @@
+import { getAudioMetadata } from "@missingcore/audio-metadata";
 import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { albums, tracks } from "@/db/schema";
 
 import { saveBase64Img } from "@/lib/file-system";
-import { getMusicInfoAsync } from "@/utils/getMusicInfoAsync";
 
 /** @description Make sure we run the logic to save cover images once. */
 export const saveCoverImagesOnce = (() => {
@@ -41,12 +41,12 @@ export async function saveCoverImages() {
   for (const { id, albumId, uri } of uncheckedTracks) {
     // If we don't have an `albumId` or if the album doesn't have a cover image.
     if (!albumId || !albumsWCovers.has(albumId)) {
-      const { cover } = await getMusicInfoAsync(uri, false);
-      if (cover) {
+      const { metadata } = await getAudioMetadata(uri, ["artwork"]);
+      if (metadata.artwork) {
         // Very slim chance that we might have a "floating" image if we
         // close the app right after saving the image, but before setting
         // `fetchedArt` to `true`.
-        const artwork = await saveBase64Img(cover);
+        const artwork = await saveBase64Img(metadata.artwork);
         if (albumId) {
           await db
             .update(albums)

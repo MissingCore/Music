@@ -17,6 +17,9 @@ dependencies:
   '@miblanchard/react-native-slider':
     specifier: ^2.6.0
     version: 2.6.0(react-native@0.74.1)(react@18.2.0)
+  '@missingcore/audio-metadata':
+    specifier: ^0.1.0
+    version: 0.1.0(@types/react@18.2.79)(expo-file-system@17.0.1)(react-native@0.74.1)(react@18.2.0)
   '@paralleldrive/cuid2':
     specifier: ^2.2.2
     version: 2.2.2
@@ -83,9 +86,6 @@ dependencies:
   expo-web-browser:
     specifier: ~13.0.3
     version: 13.0.3(expo@51.0.6)
-  fastestsmallesttextencoderdecoder:
-    specifier: ^1.0.22
-    version: 1.0.22
   jotai:
     specifier: ^2.8.0
     version: 2.8.0(@types/react@18.2.79)(react@18.2.0)
@@ -142,9 +142,6 @@ devDependencies:
   '@types/core-js':
     specifier: ^2.5.8
     version: 2.5.8
-  '@types/fastestsmallesttextencoderdecoder':
-    specifier: ^1.0.2
-    version: 1.0.2
   '@types/jest':
     specifier: ^29.5.12
     version: 29.5.12
@@ -2904,6 +2901,30 @@ packages:
       react-native: 0.74.1(@babel/core@7.24.5)(@babel/preset-env@7.24.5)(@types/react@18.2.79)(react@18.2.0)
     dev: false
 
+  /@missingcore/audio-metadata@0.1.0(@types/react@18.2.79)(expo-file-system@17.0.1)(react-native@0.74.1)(react@18.2.0):
+    resolution: {integrity: sha512-EMIiBNKhAHhTApCYriUhCfiY4Ls+WG6J/ov87m8MAotJDtZHHGOYYt+gakDiB1XFLJOJTseVEdOGIE/UGKBUnw==}
+    peerDependencies:
+      '@dr.pogodin/react-native-fs': '>=2.22.0'
+      '@types/react': '>=18.2.0'
+      expo-file-system: '>=17.0.0'
+      react: '>=18.2.0'
+      react-native: '>=0.74.0'
+    peerDependenciesMeta:
+      '@dr.pogodin/react-native-fs':
+        optional: true
+      '@types/react':
+        optional: true
+      expo-file-system:
+        optional: true
+    dependencies:
+      '@types/react': 18.2.79
+      expo-file-system: 17.0.1(expo@51.0.6)
+      fast-text-encoding: 1.0.6
+      fastestsmallesttextencoderdecoder: 1.0.22
+      react: 18.2.0
+      react-native: 0.74.1(@babel/core@7.24.5)(@babel/preset-env@7.24.5)(@types/react@18.2.79)(react@18.2.0)
+    dev: false
+
   /@noble/hashes@1.4.0:
     resolution: {integrity: sha512-V1JJ1WTRUqHHrOSh597hURcMqVKVGL/ea3kv0gSnEdsEZ0/+VyPghM1lMNGc00z7CIQorSvbKpuJkxvuHbvdbg==}
     engines: {node: '>= 16'}
@@ -3644,10 +3665,6 @@ packages:
 
   /@types/core-js@2.5.8:
     resolution: {integrity: sha512-VgnAj6tIAhJhZdJ8/IpxdatM8G4OD3VWGlp6xIxUGENZlpbob9Ty4VVdC1FIEp0aK6DBscDDjyzy5FB60TuNqg==}
-    dev: true
-
-  /@types/fastestsmallesttextencoderdecoder@1.0.2:
-    resolution: {integrity: sha512-0Md9qUxGnQ9uJ0NjsA70Y0NHIl3NwfBO1d8CGXK0zhczRL85CXJ3M0JZsmCNQ0WcAbt08FuT4U1G1mWQqgOsUg==}
     dev: true
 
   /@types/graceful-fs@4.1.9:
@@ -6545,6 +6562,10 @@ packages:
   /fast-levenshtein@2.0.6:
     resolution: {integrity: sha512-DCXu6Ifhqcks7TZKY3Hxp3y6qphY5SJZmrWMDrKcERSOXWQdMhU9Ig/PYrzyw/ul9jOIyh0N4M0tbC5hodg8dw==}
     dev: true
+
+  /fast-text-encoding@1.0.6:
+    resolution: {integrity: sha512-VhXlQgj9ioXCqGstD37E/HBeqEGV/qOD/kmbVG8h5xKBYvM1L3lR1Zn4555cQ8GkYbJa8aJSipLPndE1k6zK2w==}
+    dev: false
 
   /fast-xml-parser@4.3.6:
     resolution: {integrity: sha512-M2SovcRxD4+vC493Uc2GZVcZaj66CCJhWurC4viynVSTvrpErCShNcDz1lAho6n9REQKvL/ll4A4/fw6Y9z8nw==}

@@ -1,3 +1,4 @@
+import { AudioFileTypes, getAudioMetadata } from "@missingcore/audio-metadata";
 import { eq } from "drizzle-orm";
 import { Audio } from "expo-av";
 import * as MediaLibrary from "expo-media-library";
@@ -11,8 +12,10 @@ import { dbCleanUp } from "./dbCleanUp";
 import { saveCoverImagesOnce } from "./saveCoverImages";
 
 import { deleteFile } from "@/lib/file-system";
-import { getMusicInfoAsync } from "@/utils/getMusicInfoAsync";
 import { isFulfilled, isRejected } from "@/utils/promise";
+
+/** Metadata tags we want to save from each track. */
+const wantedTags = ["album", "artist", "name", "track", "year"] as const;
 
 /**
  * @description Reads our music library on load and index all MP3 files
@@ -51,7 +54,9 @@ export function useIndexAudio() {
         mediaType: "audio",
         first: totalCount,
       })
-    ).assets.filter((a) => a.filename.endsWith(".mp3"));
+    ).assets.filter((a) =>
+      AudioFileTypes.some((ext) => a.filename.endsWith(`.${ext}`)),
+    );
 
     // Get the entries that exist in our database.
     const allAlbums = await db.query.albums.findMany();
@@ -80,8 +85,10 @@ export function useIndexAudio() {
         .filter(({ id }) => !unmodifiedTracks.has(id))
         .map(async ({ id, uri, duration, modificationTime }) => {
           try {
-            const metaData = await getMusicInfoAsync(uri, true);
-            return { id, uri, duration, modificationTime, ...metaData };
+            const { metadata } = await getAudioMetadata(uri, wantedTags);
+            if (!metadata.artist) throw new Error("Track has no artist.");
+            if (!metadata.name) throw new Error("Track has no name.");
+            return { id, uri, duration, modificationTime, ...metadata };
           } catch (err) {
             if (!(err instanceof Error))
               console.log(`[Track ${id}] Rejected for unknown reasons.`);
@@ -127,7 +134,7 @@ export function useIndexAudio() {
 
     // Add new artists to database.
     await Promise.allSettled(
-      [...new Set(validTrackData.map(({ artist }) => artist))].map(
+      [...new Set(validTrackData.map(({ artist }) => artist!))].map(
         async (name) =>
           await db.insert(artists).values({ name }).onConflictDoNothing(),
       ),
@@ -142,7 +149,8 @@ export function useIndexAudio() {
       validTrackData
         .map(({ album, artist, year }) => {
           const key = `${album} ${artist}`;
-          if (album) albumInfoMap[key] = { album, artist, year };
+          if (album)
+            albumInfoMap[key] = { album, artist: artist!, year: year ?? null };
           return key;
         })
         .filter((a) => !!a) as string[],
@@ -162,11 +170,11 @@ export function useIndexAudio() {
     // Add the tracks to the database.
     await Promise.allSettled(
       validTrackData.map(
-        async ({ year: _, artist, album, track, id, ...rest }) => {
+        async ({ year: _, artist, album, track, id, name, ...rest }) => {
           const albumId = album ? albumIdMap[`${album} ${artist}`] : null;
 
           const newTrackData = {
-            ...{ ...rest, id, artistName: artist, albumId },
+            ...{ ...rest, name: name!, id, artistName: artist!, albumId },
             ...(track ? { track } : {}),
           };
           const isRetriedTrack = retryTracks.has(id);
