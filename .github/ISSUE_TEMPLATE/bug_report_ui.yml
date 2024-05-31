@@ -28,6 +28,15 @@ body:
         Essentially, see if you ever modified a value in: `Settings > Display > Display size and text`.
     validations:
       required: true
+  - type: input
+    attributes:
+      label: App Version
+      description: |
+        List the app version you are currently using. This can be found in:
+          - The "Settings" page in the app.
+          - In the "App Info" page for Music on your device (`Settings > Apps > Music` then scroll down).
+    validations:
+      required: true
   - type: textarea
     attributes:
       label: Summary

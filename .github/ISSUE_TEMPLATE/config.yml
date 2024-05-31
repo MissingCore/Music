@@ -1,0 +1,4 @@
+contact_links:
+  - name: 💽 Unsupported Audio Extension/Format
+    url: https://github.com/MissingCore/audio-metadata/issues/new?assignees=&labels=Request%3A+Audio+Format%2Cneeds+review&projects=&template=format_request.yml
+    about: Request support for an unsupported audio format by creating an issue in the `@MissingCore/audio-metadata` repository.
