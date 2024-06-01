@@ -50,6 +50,9 @@ dependencies:
   expo-av:
     specifier: ~14.0.5
     version: 14.0.5(expo@51.0.9)
+  expo-drizzle-studio-plugin:
+    specifier: ^0.0.2
+    version: 0.0.2(expo@51.0.9)
   expo-file-system:
     specifier: ~17.0.1
     version: 17.0.1(expo@51.0.9)
@@ -6153,6 +6156,15 @@ packages:
       expo: 51.0.9(@babel/core@7.24.6)(@babel/preset-env@7.24.6)
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /expo-drizzle-studio-plugin@0.0.2(expo@51.0.9):
+    resolution: {integrity: sha512-Q5PODIlRp1Hox8a55kJ0iEaaDBL1xo9+oidO03dRu45sB4GAulFcKqc4bZ3qpND4mex0sFu+xm72pmXa/GkjHw==}
+    peerDependencies:
+      expo: '*'
+    dependencies:
+      expo: 51.0.9(@babel/core@7.24.6)(@babel/preset-env@7.24.6)
+      expo-sqlite: 14.0.3(expo@51.0.9)
     dev: false
 
   /expo-file-system@17.0.1(expo@51.0.9):

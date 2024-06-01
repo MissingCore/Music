@@ -1,6 +1,7 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
+import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useMemo } from "react";
@@ -8,7 +9,7 @@ import { useEffect, useMemo } from "react";
 import { useIndexAudio } from "./useIndexAudio";
 import { useSetupTrackPlayer } from "./useSetupTrackPlayer";
 
-import { db } from "@/db";
+import { db, expoSQLiteDB } from "@/db";
 import migrations from "@/db/drizzle/migrations";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -28,6 +29,7 @@ export function useLoadAssets() {
     ...MaterialIcons.font,
   });
   const { success: dbSuccess, error: dbError } = useMigrations(db, migrations);
+  useDrizzleStudio(expoSQLiteDB);
   const audioIndexingStatus = useIndexAudio();
   const trackPlayerStatus = useSetupTrackPlayer();
 

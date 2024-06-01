@@ -13,8 +13,9 @@
     "start": "expo start",
     "android": "expo run:android",
     "android:prod": "expo run:android --variant release",
+    "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "test": "jest --watchAll",
+    "test": "jest",
     "db:generate": "drizzle-kit generate"
   },
   "jest": {
@@ -36,6 +37,7 @@
     "drizzle-orm": "^0.31.0",
     "expo": "~51.0.9",
     "expo-av": "~14.0.5",
+    "expo-drizzle-studio-plugin": "^0.0.2",
     "expo-file-system": "~17.0.1",
     "expo-font": "~12.0.6",
     "expo-image": "^1.12.9",
