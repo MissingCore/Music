@@ -60,10 +60,20 @@ export default function HomeScreen() {
       <Heading as="h2" className="mb-4 px-4 text-start font-geistMono">
         RECENTLY PLAYED
       </Heading>
-      <ScrollRow contentContainerClassName="gap-4">
-        <RecentlyPlayed colWidth={colWidthSmall} />
-      </ScrollRow>
+      {/*
+        `<View />` wrapping around `<ScrollRow />` is needed due to some
+        layout jank where on a fresh install of the app, when we add an
+        item to "Recently Played", the `<ScrollRow />` overprovide height.
+      */}
+      <View>
+        <ScrollRow contentContainerClassName="gap-4">
+          <RecentlyPlayed colWidth={colWidthSmall} />
+        </ScrollRow>
+      </View>
 
+      <Heading as="h2" className="mb-4 mt-8 px-4 text-start font-geistMono">
+        FAVORITES
+      </Heading>
       <FavoriteListSection fixScrollPosition={adjustScrollPosition} />
     </ScrollView>
   );
@@ -73,17 +83,15 @@ export default function HomeScreen() {
 function RecentlyPlayed({ colWidth }: { colWidth: number }) {
   const recentlyPlayedData = useAtomValue(recentlyPlayedDataAtom);
 
-  if (recentlyPlayedData.length === 0) {
-    return (
-      <Description className="my-4 text-start">
-        You haven't played anything yet!
-      </Description>
-    );
-  }
-
-  return recentlyPlayedData.map((props) => (
-    <MediaCard key={props.href} {...props} size={colWidth} />
-  ));
+  return recentlyPlayedData.length === 0 ? (
+    <Description className="my-4 text-start">
+      You haven't played anything yet!
+    </Description>
+  ) : (
+    recentlyPlayedData.map((props) => (
+      <MediaCard key={props.href} {...props} size={colWidth} />
+    ))
+  );
 }
 
 /**
@@ -106,28 +114,23 @@ function FavoriteListSection({
   }, [fixScrollPosition, data]);
 
   return (
-    <View className="px-4">
-      <Heading as="h2" className="mb-4 mt-8 text-start font-geistMono">
-        FAVORITES
-      </Heading>
-      <View className="-m-2 mt-0 flex-1">
-        <FlashList
-          numColumns={count}
-          estimatedItemSize={width + 37} // 35px `<TextStack />` Height + 2px Margin Top
-          data={data ? [PlaceholderContent, ...data] : [PlaceholderContent]}
-          keyExtractor={({ href }) => href}
-          renderItem={({ item: data, index }) => (
-            <View className="mx-2 mb-4">
-              {index === 0 ? (
-                <FavoriteTracks colWidth={width} />
-              ) : (
-                <MediaCard {...data} size={width} />
-              )}
-            </View>
-          )}
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
+    <View className="-m-2 mt-0 flex-1 px-4">
+      <FlashList
+        numColumns={count}
+        estimatedItemSize={width + 37} // 35px `<TextStack />` Height + 2px Margin Top
+        data={data ? [PlaceholderContent, ...data] : [PlaceholderContent]}
+        keyExtractor={({ href }) => href}
+        renderItem={({ item: data, index }) => (
+          <View className="mx-2 mb-4">
+            {index === 0 ? (
+              <FavoriteTracks colWidth={width} />
+            ) : (
+              <MediaCard {...data} size={width} />
+            )}
+          </View>
+        )}
+        showsVerticalScrollIndicator={false}
+      />
     </View>
   );
 }

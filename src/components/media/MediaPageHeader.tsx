@@ -42,7 +42,7 @@ export function MediaPageHeader(props: {
         {props.title}
       </TextLine>
       {props.SubtitleComponent}
-      <View className="flex-row items-center gap-8">
+      <View className="flex-row items-center gap-2">
         <TextLine className="flex-1 font-geistMonoLight text-xs text-foreground100">
           {props.metadata.join(" • ")}
         </TextLine>

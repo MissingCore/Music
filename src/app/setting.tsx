@@ -17,12 +17,12 @@ export default function SettingScreen() {
   return (
     <AnimatedHeader title="SETTINGS">
       <Section>
-        <Title>Updates</Title>
+        <Title>UPDATES</Title>
         <UpdateChecker />
       </Section>
 
       <Section>
-        <Title>Source Code</Title>
+        <Title>SOURCE CODE</Title>
         <View className="flex-row gap-2">
           <LinkButton
             as="external"
@@ -31,7 +31,7 @@ export default function SettingScreen() {
             Icon={
               <Ionicons
                 name="logo-github"
-                size={24}
+                size={20}
                 color={Colors.foreground50}
               />
             }
@@ -41,7 +41,7 @@ export default function SettingScreen() {
       </Section>
 
       <Section>
-        <Title>Support</Title>
+        <Title>SUPPORT</Title>
         <View className="flex-row gap-2">
           <LinkButton
             as="external"
@@ -50,13 +50,18 @@ export default function SettingScreen() {
             Icon={
               <Ionicons
                 name="logo-github"
-                size={24}
+                size={20}
                 color={Colors.foreground50}
               />
             }
             content="Submit an Issue"
           />
         </View>
+      </Section>
+
+      <Section>
+        <Title>VERSION</Title>
+        <Description>{APP_VERSION}</Description>
       </Section>
     </AnimatedHeader>
   );
@@ -94,7 +99,7 @@ function UpdateChecker() {
           heading1: {
             ...markdownStyles.heading,
             marginBottom: 16,
-            fontSize: FontSize.xl,
+            fontSize: FontSize.lg,
           },
           heading2: {
             ...markdownStyles.heading,
@@ -151,7 +156,7 @@ function UpdateChecker() {
           Icon={
             <Ionicons
               name="logo-github"
-              size={24}
+              size={20}
               color={Colors.foreground50}
             />
           }
@@ -184,14 +189,14 @@ const markdownStyles = StyleSheet.create({
 type UIProp = { className?: string; children: React.ReactNode };
 
 function Section({ className, children }: UIProp) {
-  return <View className={cn("mb-8", className)}>{children}</View>;
+  return <View className={cn("mb-4", className)}>{children}</View>;
 }
 
 function Title({ className, children }: UIProp) {
   return (
     <Text
       className={cn(
-        "mb-1.5 font-geistMonoLight text-lg text-foreground100",
+        "mb-1.5 font-geistMono text-base tracking-wider text-foreground100",
         className,
       )}
     >
@@ -202,9 +207,7 @@ function Title({ className, children }: UIProp) {
 
 function Description({ className, children }: UIProp) {
   return (
-    <Text
-      className={cn("font-geistMono text-base text-foreground50", className)}
-    >
+    <Text className={cn("font-geistMono text-sm text-surface400", className)}>
       {children}
     </Text>
   );
