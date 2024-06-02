@@ -4,6 +4,15 @@ import * as ImagePicker from "expo-image-picker";
 import { createId } from "@/lib/cuid2";
 import type { Maybe } from "@/utils/types";
 
+/** @description Creates "image" directory if it doesn't already exist. */
+export async function createImageDirectory() {
+  const imgDir = FileSystem.documentDirectory + "images";
+  const dir = await FileSystem.getInfoAsync(imgDir);
+  if (!dir.exists) {
+    await FileSystem.makeDirectoryAsync(imgDir);
+  }
+}
+
 /** @description Helper to delete a file if it's defined. */
 export async function deleteFile(uri: Maybe<string>) {
   if (uri) await FileSystem.deleteAsync(uri);
@@ -34,7 +43,7 @@ export async function saveBase64Img(base64Img: string) {
   const [dataMime, base64] = base64Img.split(";base64,");
   const ext = dataMime.slice(11).toLowerCase();
 
-  const fileUri = FileSystem.documentDirectory + `${createId()}.${ext}`;
+  const fileUri = FileSystem.documentDirectory + `images/${createId()}.${ext}`;
   await FileSystem.writeAsStringAsync(fileUri, base64!, {
     encoding: FileSystem.EncodingType.Base64,
   });

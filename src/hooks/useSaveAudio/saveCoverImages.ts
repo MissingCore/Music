@@ -66,7 +66,7 @@ export async function saveCoverImages() {
   }
 
   console.log(
-    `Finished indexing ${newCoverImgCnt} new cover images in ${((performance.now() - start) / 1000).toFixed(4)}s.`,
+    `Finished saving ${newCoverImgCnt} new cover images in ${((performance.now() - start) / 1000).toFixed(4)}s.`,
   );
 
   // Invalidate all queries (exclude "Latest Release" query) if we saved

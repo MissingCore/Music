@@ -9,10 +9,11 @@ import { db } from "@/db";
 import { artists, albums, tracks, invalidTracks } from "@/db/schema";
 import { deleteTrack } from "@/db/queries";
 import { loadTrackAtom } from "@/features/playback/api/track";
+import { cleanUpImages } from "./cleanUpImages";
 import { dbCleanUp } from "./dbCleanUp";
 import { saveCoverImagesOnce } from "./saveCoverImages";
 
-import { deleteFile } from "@/lib/file-system";
+import { createImageDirectory, deleteFile } from "@/lib/file-system";
 import { isFulfilled, isRejected } from "@/utils/promise";
 
 /** Metadata tags we want to save from each track. */
@@ -188,11 +189,17 @@ export function useSaveAudio() {
       `Finished overall in ${((performance.now() - start) / 1000).toFixed(4)}s.`,
     );
 
+    // Make sure this directory exists before saving images.
+    await createImageDirectory();
+
     // Save cover images in the background. Resumes where we left off if
     // we didn't finish indexing cover images last session.
     //  - We don't call the function with `await` to make it not-blocking.
     //  - Make sure we run this after cleaning up deleted tracks, albums, and artists.
-    saveCoverImagesOnce();
+    saveCoverImagesOnce().then(() => {
+      // Clean up any unlinked images in the background.
+      cleanUpImages();
+    });
 
     // Allow audio to play in the background.
     await Audio.setAudioModeAsync({ staysActiveInBackground: true });
