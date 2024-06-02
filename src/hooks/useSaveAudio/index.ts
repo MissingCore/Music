@@ -7,6 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { db } from "@/db";
 import { artists, albums, tracks, invalidTracks } from "@/db/schema";
+import { deleteTrack } from "@/db/queries";
 import { loadTrackAtom } from "@/features/playback/api/track";
 import { dbCleanUp } from "./dbCleanUp";
 import { saveCoverImagesOnce } from "./saveCoverImages";
@@ -18,10 +19,10 @@ import { isFulfilled, isRejected } from "@/utils/promise";
 const wantedTags = ["album", "artist", "name", "track", "year"] as const;
 
 /**
- * @description Reads our music library on load and index all MP3 files
+ * @description Reads our music library on load and index all supported files
  *  in the SQLite database.
  */
-export function useIndexAudio() {
+export function useSaveAudio() {
   const loadTrackFn = useSetAtom(loadTrackAtom);
 
   const [permissionResponse, requestPermission] = MediaLibrary.usePermissions({
@@ -35,25 +36,18 @@ export function useIndexAudio() {
     // Make sure we have permissions.
     if (permissionResponse?.status !== "granted") {
       const { canAskAgain, status } = await requestPermission();
-      if (canAskAgain) return;
-      if (status === "denied") {
-        setIsComplete(true);
+      if (canAskAgain || status === "denied") {
+        if (status === "denied") setIsComplete(true);
         return;
       }
     }
 
-    // Get all the audio tracks — MediaLibrary.getAssetsAsync() by default
-    // only loads the first 20 tracks.
-    const { totalCount } = await MediaLibrary.getAssetsAsync({
-      mediaType: "audio",
-      first: 0,
-    });
-    // Keep only the MP3 files (ie: Filter out the `.ogg` files).
-    const mp3Files = (
-      await MediaLibrary.getAssetsAsync({
-        mediaType: "audio",
-        first: totalCount,
-      })
+    // Get all tracks supported by `@missingcore/audio-metadata` —
+    // `getAssetsAsync()` by defaults loads only the first 20 tracks.
+    const assetOptions = { mediaType: "audio", first: 0 } as const;
+    const { totalCount } = await MediaLibrary.getAssetsAsync(assetOptions);
+    const audioFiles = (
+      await MediaLibrary.getAssetsAsync({ ...assetOptions, first: totalCount })
     ).assets.filter((a) =>
       AudioFileTypes.some((ext) => a.filename.endsWith(`.${ext}`)),
     );
@@ -66,30 +60,32 @@ export function useIndexAudio() {
     // Find the tracks we can skip indexing or need updating.
     const unmodifiedTracks = new Set<string>();
     const modifiedTracks = new Set<string>();
-    const retryTracks = new Set<string>();
-    mp3Files.forEach(({ id, modificationTime }) => {
-      const currTrack = allTracks.find((t) => t.id === id);
-      const invalidTrack = allInvalidTracks.find((t) => t.id === id);
-      if (!currTrack && !invalidTrack) return; // If we have a new track.
+    audioFiles.forEach(({ id, modificationTime }) => {
+      const isSaved = allTracks.find((t) => t.id === id);
+      const isInvalid = allInvalidTracks.find((t) => t.id === id);
+      if (!isSaved && !isInvalid) return; // If we have a new track.
 
-      // Considered "modified" if `modificationTime` is newer/greater.
-      if (modificationTime > (currTrack ?? invalidTrack)!.modificationTime) {
-        modifiedTracks.add(id);
-        if (invalidTrack) retryTracks.add(id);
-      } else unmodifiedTracks.add(id);
+      const lastModified = (isSaved ?? isInvalid)!.modificationTime;
+      // Retry indexing if modification time is different.
+      if (modificationTime !== lastModified) modifiedTracks.add(id);
+      else unmodifiedTracks.add(id);
     });
 
-    // Get the metadata for all new/updatable tracks.
+    // Get the metadata for all new or modified tracks.
     const incomingTrackData = await Promise.allSettled(
-      mp3Files
+      audioFiles
         .filter(({ id }) => !unmodifiedTracks.has(id))
         .map(async ({ id, uri, duration, modificationTime }) => {
           try {
             const { metadata } = await getAudioMetadata(uri, wantedTags);
             if (!metadata.artist) throw new Error("Track has no artist.");
             if (!metadata.name) throw new Error("Track has no name.");
-            return { id, uri, duration, modificationTime, ...metadata };
+            return {
+              ...{ id, uri, duration, modificationTime, ...metadata },
+              ...{ artist: metadata.artist!, name: metadata.name! },
+            };
           } catch (err) {
+            // Propagate error, changing its message to be the track id.
             if (!(err instanceof Error))
               console.log(`[Track ${id}] Rejected for unknown reasons.`);
             else console.log(`[Track ${id}] ${err.message}`);
@@ -101,20 +97,14 @@ export function useIndexAudio() {
       `Got metadata of ${incomingTrackData.length} tracks in ${((performance.now() - start) / 1000).toFixed(4)}s.`,
     );
 
-    // Add rejected tracks in "incomingTrackData" to `InvalidTracks` table.
+    // Add rejected tracks to `InvalidTracks` table.
     await Promise.allSettled(
       incomingTrackData.filter(isRejected).map(async ({ reason }) => {
         const trackId = reason.message as string;
         // Delete existing rejected track as we failed to modify it.
-        if (modifiedTracks.has(trackId) && !retryTracks.has(trackId)) {
-          const [deletedTrack] = await db
-            .delete(tracks)
-            .where(eq(tracks.id, trackId))
-            .returning({ artwork: tracks.artwork });
-          await deleteFile(deletedTrack.artwork);
-        }
+        if (modifiedTracks.has(trackId)) await deleteTrack(trackId);
 
-        const { id, uri, modificationTime } = mp3Files.find(
+        const { id, uri, modificationTime } = audioFiles.find(
           ({ id }) => id === trackId,
         )!;
         await db
@@ -127,14 +117,14 @@ export function useIndexAudio() {
       }),
     );
 
-    // Get all the valid track metadata from "incomingTrackData".
+    // Get all the valid track metadata.
     const validTrackData = incomingTrackData
       .filter(isFulfilled)
       .map(({ value }) => value);
 
     // Add new artists to database.
     await Promise.allSettled(
-      [...new Set(validTrackData.map(({ artist }) => artist!))].map(
+      [...new Set(validTrackData.map(({ artist }) => artist))].map(
         async (name) =>
           await db.insert(artists).values({ name }).onConflictDoNothing(),
       ),
@@ -149,16 +139,15 @@ export function useIndexAudio() {
       validTrackData
         .map(({ album, artist, year }) => {
           const key = `${album} ${artist}`;
-          if (album)
-            albumInfoMap[key] = { album, artist: artist!, year: year ?? null };
-          return key;
+          if (album) albumInfoMap[key] = { album, artist, year: year ?? null };
+          return album ? key : "";
         })
-        .filter((a) => !!a) as string[],
+        .filter((a) => !!a), // Filter out empty strings.
     );
     const albumIdMap: Record<string, string> = {};
     await Promise.allSettled(
       [...newAlbums].map(async (albumArtistKey) => {
-        const { album, artist, year } = albumInfoMap[albumArtistKey];
+        const { album, artist, year } = albumInfoMap[albumArtistKey]!;
         let exists = allAlbums.find(
           (a) => a.name === album && a.artistName === artist,
         );
@@ -167,17 +156,17 @@ export function useIndexAudio() {
       }),
     );
 
-    // Add the tracks to the database.
+    // Add new & updated tracks to the database.
     await Promise.allSettled(
       validTrackData.map(
         async ({ year: _, artist, album, track, id, name, ...rest }) => {
-          const albumId = album ? albumIdMap[`${album} ${artist}`] : null;
+          const albumId = album ? albumIdMap[`${album} ${artist}`]! : null;
 
           const newTrackData = {
-            ...{ ...rest, name: name!, id, artistName: artist!, albumId },
+            ...{ ...rest, name, id, artistName: artist, albumId },
             ...(track ? { track } : {}),
           };
-          const isRetriedTrack = retryTracks.has(id);
+          const isRetriedTrack = allInvalidTracks.find((t) => t.id === id);
 
           if (modifiedTracks.has(id) && !isRetriedTrack) {
             // Delete old cover image if defined before updating track.
@@ -194,7 +183,7 @@ export function useIndexAudio() {
       ),
     );
 
-    await dbCleanUp(new Set(mp3Files.map(({ id }) => id)));
+    await dbCleanUp(new Set(audioFiles.map(({ id }) => id)));
     console.log(
       `Finished overall in ${((performance.now() - start) / 1000).toFixed(4)}s.`,
     );
@@ -224,5 +213,5 @@ async function addAlbum(
 ) {
   const vals = { name, artistName, releaseYear };
   const [newAlbum] = await db.insert(albums).values(vals).returning();
-  return newAlbum;
+  return newAlbum!;
 }

@@ -2,9 +2,10 @@ import type { SQL } from "drizzle-orm";
 import { and, eq } from "drizzle-orm";
 
 import { db } from ".";
-import { tracks } from "./schema";
+import { tracks, tracksToPlaylists } from "./schema";
 import { fixPlaylistJunction, getTrackCover } from "./utils/formatters";
 
+import { deleteFile } from "@/lib/file-system";
 import type { SpecialPlaylistName } from "@/features/playback/constants";
 import { SpecialPlaylists } from "@/features/playback/constants";
 
@@ -84,6 +85,21 @@ export async function getSpecialPlaylist(name: SpecialPlaylistName) {
     ...{ name, isFavorite: false, tracks: _tracks },
     artwork: SpecialPlaylists.favorites ? name : null,
   };
+}
+
+/** @description Deletes a track along with its relation to any playlist. */
+export async function deleteTrack(trackId: string) {
+  await db.transaction(async (tx) => {
+    await tx
+      .delete(tracksToPlaylists)
+      .where(eq(tracksToPlaylists.trackId, trackId));
+    const [deletedTrack] = await tx
+      .delete(tracks)
+      .where(eq(tracks.id, trackId))
+      .returning({ artwork: tracks.artwork });
+    // Make sure to delete the track artwork.
+    await deleteFile(deletedTrack?.artwork);
+  });
 }
 
 /** @description Throws error if no track is found. */

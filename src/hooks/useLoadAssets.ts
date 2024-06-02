@@ -6,7 +6,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useMemo } from "react";
 
-import { useIndexAudio } from "./useIndexAudio";
+import { useSaveAudio } from "./useSaveAudio";
 import { useSetupTrackPlayer } from "./useSetupTrackPlayer";
 
 import { db, expoSQLiteDB } from "@/db";
@@ -30,12 +30,12 @@ export function useLoadAssets() {
   });
   const { success: dbSuccess, error: dbError } = useMigrations(db, migrations);
   useDrizzleStudio(expoSQLiteDB);
-  const audioIndexingStatus = useIndexAudio();
-  const trackPlayerStatus = useSetupTrackPlayer();
+  const tracksSaved = useSaveAudio();
+  const trackPlayerLoaded = useSetupTrackPlayer();
 
   const completedTasks = useMemo(() => {
-    return fontsLoaded && dbSuccess && audioIndexingStatus && trackPlayerStatus;
-  }, [fontsLoaded, dbSuccess, audioIndexingStatus, trackPlayerStatus]);
+    return fontsLoaded && dbSuccess && tracksSaved && trackPlayerLoaded;
+  }, [fontsLoaded, dbSuccess, tracksSaved, trackPlayerLoaded]);
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {

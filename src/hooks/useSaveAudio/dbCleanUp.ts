@@ -2,17 +2,12 @@ import { eq } from "drizzle-orm";
 import { getDefaultStore } from "jotai";
 
 import { db } from "@/db";
-import {
-  artists,
-  albums,
-  invalidTracks,
-  tracks,
-  tracksToPlaylists,
-} from "@/db/schema";
+import { artists, albums, invalidTracks } from "@/db/schema";
+import { deleteTrack } from "@/db/queries";
 
 import {
   resetPlayingInfoAtom,
-  trackListAtom,
+  trackListAsyncAtom,
 } from "@/features/playback/api/track";
 import { queueRemoveItemsAtom } from "@/features/playback/api/queue";
 
@@ -36,15 +31,8 @@ export async function dbCleanUp(usedTrackIds: Set<string>) {
   ].filter((id) => !usedTrackIds.has(id));
   await Promise.allSettled(
     tracksToDelete.map(async (id) => {
-      await db
-        .delete(tracksToPlaylists)
-        .where(eq(tracksToPlaylists.trackId, id));
       await db.delete(invalidTracks).where(eq(invalidTracks.id, id));
-      const [deletedTrack] = await db
-        .delete(tracks)
-        .where(eq(tracks.id, id))
-        .returning({ artwork: tracks.artwork });
-      await deleteFile(deletedTrack.artwork);
+      await deleteTrack(id);
     }),
   );
 
@@ -52,14 +40,14 @@ export async function dbCleanUp(usedTrackIds: Set<string>) {
   // prevents any broken behavior if the `TrackListSource` no longer exists
   // (ie: the track deleted was the only track in the album which been
   // deleted).
-  const deletedTrackInCurrTrackList = jotaiStore
-    .get(trackListAtom)
-    .data.some((tId) => tracksToDelete.includes(tId));
+  const deletedTrackInCurrTrackList = (
+    await jotaiStore.get(trackListAsyncAtom)
+  ).data.some((tId) => tracksToDelete.includes(tId));
   if (deletedTrackInCurrTrackList) jotaiStore.set(resetPlayingInfoAtom);
   // Clear the queue of deleted tracks.
   jotaiStore.set(queueRemoveItemsAtom, tracksToDelete);
 
-  // Remove Albums with no tracks.
+  // Remove albums with no tracks.
   const allAlbums = await db.query.albums.findMany({
     columns: { id: true, artwork: true },
     with: { tracks: { columns: { id: true } } },
