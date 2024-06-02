@@ -13,7 +13,8 @@ import { TrackList } from "@/features/track/components/TrackList";
 
 /** @description Screen for `/album/[id]` route. */
 export default function CurrentAlbumScreen() {
-  const { id: albumId } = useLocalSearchParams<{ id: string }>();
+  const { id: _albumId } = useLocalSearchParams<{ id: string }>();
+  const albumId = _albumId!;
   const { isPending, error, data } = useAlbumForCurrentPage(albumId);
   const toggleFavoriteFn = useToggleFavorite({ type: "album", id: albumId });
 

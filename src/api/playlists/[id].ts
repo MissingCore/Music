@@ -157,9 +157,9 @@ export async function deletePlaylist({ playlistName }: BaseFnArgs) {
       .where(eq(playlists.name, playlistName))
       .returning();
 
-    await deleteFile(deletedPlaylist.artwork);
+    await deleteFile(deletedPlaylist!.artwork);
 
-    return deletedPlaylist.isFavorite;
+    return deletedPlaylist!.isFavorite;
   });
 }
 

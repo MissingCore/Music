@@ -15,7 +15,7 @@ export function shuffleArray(arr: string[]) {
   const arrCpy = [...arr];
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [arrCpy[j], arrCpy[i]] = [arrCpy[i], arrCpy[j]];
+    [arrCpy[j], arrCpy[i]] = [arrCpy[i]!, arrCpy[j]!];
   }
   return arrCpy;
 }

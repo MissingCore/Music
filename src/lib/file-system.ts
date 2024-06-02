@@ -22,7 +22,7 @@ export async function pickImage() {
   });
   if (result.canceled) throw new Error("Action cancelled.");
 
-  const { base64, mimeType } = result.assets[0];
+  const { base64, mimeType } = result.assets[0]!;
   if (!base64) throw new Error("No base64 representation found.");
   if (!mimeType) throw new Error("No mimeType found.");
 
@@ -35,7 +35,7 @@ export async function saveBase64Img(base64Img: string) {
   const ext = dataMime.slice(11).toLowerCase();
 
   const fileUri = FileSystem.documentDirectory + `${createId()}.${ext}`;
-  await FileSystem.writeAsStringAsync(fileUri, base64, {
+  await FileSystem.writeAsStringAsync(fileUri, base64!, {
     encoding: FileSystem.EncodingType.Base64,
   });
   return fileUri;

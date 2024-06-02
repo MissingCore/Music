@@ -16,7 +16,8 @@ import { TrackList } from "@/features/track/components/TrackList";
 
 /** @description Screen for `/playlist/[id]` route. */
 export default function CurrentPlaylistScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id: _id } = useLocalSearchParams<{ id: string }>();
+  const id = _id!;
   const openModal = useSetAtom(modalAtom);
 
   const isFavoriteTracks = useMemo(

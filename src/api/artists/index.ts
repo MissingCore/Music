@@ -32,7 +32,7 @@ export const useArtistsForList = () =>
           ? artist.name.charAt(0).toUpperCase()
           : "#";
         if (Object.hasOwn(groupedArtists, key))
-          groupedArtists[key].push(artist);
+          groupedArtists[key]!.push(artist);
         else groupedArtists[key] = [artist];
       });
 

@@ -43,8 +43,8 @@ export function Timeline({ duration }: { duration: number }) {
           setSlidingTrackPos(null);
         }}
         onValueChange={([newPosMs]) => {
-          if (isSliding) setSlidingTrackPos(Math.floor(newPosMs));
-          setTrackPosMs(Math.floor(newPosMs));
+          if (isSliding) setSlidingTrackPos(Math.floor(newPosMs!));
+          setTrackPosMs(Math.floor(newPosMs!));
         }}
         minimumTrackTintColor={Colors.accent500}
         maximumTrackTintColor={Colors.surface500}
