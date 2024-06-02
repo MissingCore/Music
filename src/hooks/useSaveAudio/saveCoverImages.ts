@@ -5,6 +5,7 @@ import { db } from "@/db";
 import { albums, tracks } from "@/db/schema";
 
 import { saveBase64Img } from "@/lib/file-system";
+import { queryClient } from "@/lib/react-query";
 
 /** @description Make sure we run the logic to save cover images once. */
 export const saveCoverImagesOnce = (() => {
@@ -67,4 +68,14 @@ export async function saveCoverImages() {
   console.log(
     `Finished indexing ${newCoverImgCnt} new cover images in ${((performance.now() - start) / 1000).toFixed(4)}s.`,
   );
+
+  // Invalidate all queries (exclude "Latest Release" query) if we saved
+  // a cover image.
+  if (newCoverImgCnt > 0) {
+    queryClient.invalidateQueries({
+      // @ts-expect-error ts(2339) — We normalized the `queryKey` structure
+      // to be an object with an `entity` key.
+      predicate: ({ queryKey }) => queryKey[0]?.entity !== "releases",
+    });
+  }
 }
