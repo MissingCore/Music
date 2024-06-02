@@ -1,5 +1,6 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import type { SQLiteDatabase } from "expo-sqlite";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
 import { useFonts } from "expo-font";
@@ -29,7 +30,7 @@ export function useLoadAssets() {
     ...MaterialIcons.font,
   });
   const { success: dbSuccess, error: dbError } = useMigrations(db, migrations);
-  useDrizzleStudio(expoSQLiteDB);
+  useDevOnly(expoSQLiteDB);
   const tracksSaved = useSaveAudio();
   const trackPlayerLoaded = useSetupTrackPlayer();
 
@@ -48,4 +49,10 @@ export function useLoadAssets() {
   }, [completedTasks]);
 
   return { isLoaded: completedTasks };
+}
+
+/** @description Only run Expo dev tools plugins during development. */
+function useDevOnly(db: SQLiteDatabase | null) {
+  const hook = __DEV__ ? useDrizzleStudio : () => {};
+  return hook(db);
 }
