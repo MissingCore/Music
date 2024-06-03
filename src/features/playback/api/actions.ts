@@ -99,9 +99,13 @@ const playTrackAtom = atom(null, async (get, set, opts?: TPlayTrackOpts) => {
   // Make sure next track is played on completion.
   soundRef.setOnPlaybackStatusUpdate((playbackStatus) => {
     if (!playbackStatus.isLoaded) return;
-    const { didJustFinish, positionMillis } = playbackStatus;
+    const { didJustFinish, isPlaying, positionMillis } = playbackStatus;
     set(positionMsAtom, positionMillis);
     if (didJustFinish) set(nextAtom);
+    else if (!isPlaying && get(isPlayingAtom)) {
+      // Pause track if it was paused by media playing in a different app.
+      set(pauseAtom);
+    }
   });
 
   if (opts?.action) {
