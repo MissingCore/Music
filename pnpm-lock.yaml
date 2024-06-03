@@ -18,8 +18,8 @@ dependencies:
     specifier: ^2.6.0
     version: 2.6.0(react-native@0.74.1)(react@18.2.0)
   '@missingcore/audio-metadata':
-    specifier: ^1.0.0
-    version: 1.0.0(@types/react@18.2.79)(expo-file-system@17.0.1)(react-native@0.74.1)(react@18.2.0)
+    specifier: ^1.1.0
+    version: 1.1.0(@types/react@18.2.79)(expo-file-system@17.0.1)(react-native@0.74.1)(react@18.2.0)
   '@paralleldrive/cuid2':
     specifier: ^2.2.2
     version: 2.2.2
@@ -65,6 +65,9 @@ dependencies:
   expo-image-picker:
     specifier: ~15.0.5
     version: 15.0.5(expo@51.0.9)
+  expo-linear-gradient:
+    specifier: ~13.0.2
+    version: 13.0.2(expo@51.0.9)
   expo-linking:
     specifier: ~6.3.1
     version: 6.3.1(expo@51.0.9)
@@ -2914,8 +2917,8 @@ packages:
       react-native: 0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6)(@types/react@18.2.79)(react@18.2.0)
     dev: false
 
-  /@missingcore/audio-metadata@1.0.0(@types/react@18.2.79)(expo-file-system@17.0.1)(react-native@0.74.1)(react@18.2.0):
-    resolution: {integrity: sha512-Xf+LkauAFoYgE4ZAgqvRoMKwErqoeTVQa5nqgtKg9l1eDWKfrfaAWeUVQC+hjtavCYtMVYdkAy3+2a/3xJMoEQ==}
+  /@missingcore/audio-metadata@1.1.0(@types/react@18.2.79)(expo-file-system@17.0.1)(react-native@0.74.1)(react@18.2.0):
+    resolution: {integrity: sha512-1zdpvLwONdfR7q5EKYDztEf4OMM3/cVn+/HbbF0BU2DWdL9S2pMRSUxpXVyeQfDO7O3getXTXPQ9pjIUl6yVbA==}
     peerDependencies:
       '@dr.pogodin/react-native-fs': '>=2.22.0'
       '@types/react': '>=18.2.0'
@@ -6212,6 +6215,14 @@ packages:
 
   /expo-keep-awake@13.0.2(expo@51.0.9):
     resolution: {integrity: sha512-kKiwkVg/bY0AJ5q1Pxnm/GvpeB6hbNJhcFsoOWDh2NlpibhCLaHL826KHUM+WsnJRbVRxJ+K9vbPRHEMvFpVyw==}
+    peerDependencies:
+      expo: '*'
+    dependencies:
+      expo: 51.0.9(@babel/core@7.24.6)(@babel/preset-env@7.24.6)
+    dev: false
+
+  /expo-linear-gradient@13.0.2(expo@51.0.9):
+    resolution: {integrity: sha512-EDcILUjRKu4P1rtWcwciN6CSyGtH7Bq4ll3oTRV7h3h8oSzSilH1g6z7kTAMlacPBKvMnkkWOGzW6KtgMKEiTg==}
     peerDependencies:
       expo: '*'
     dependencies:

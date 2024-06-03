@@ -3,6 +3,7 @@ import { View } from "react-native";
 
 import { cn } from "@/lib/style";
 import { ScrollRow } from "@/components/ui/Container";
+import { ScrollShadow } from "@/components/ui/ScrollShadow";
 
 export default function HomeLayout() {
   return (
@@ -47,6 +48,7 @@ function NavigationBar() {
           </Link>
         ))}
       </ScrollRow>
+      <ScrollShadow size={16} />
     </View>
   );
 }
