@@ -2,12 +2,14 @@ import { Stack } from "expo-router";
 import TrackPlayer from "react-native-track-player";
 
 import { useLoadAssets } from "@/hooks/useLoadAssets";
+import { useSaveAudio } from "@/hooks/useSaveAudio";
 
 import "@/assets/global.css";
 import { PlaybackService } from "@/constants/PlaybackService";
 import { AppProvider } from "@/providers/app";
 import { Header } from "@/components/navigation/Header";
 import { BackButton } from "@/components/navigation/BackButton";
+import { Onboarding } from "@/components/navigation/Onboarding";
 import { AppModals } from "@/features/modal";
 
 export {
@@ -29,8 +31,11 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
+  const tracksSaved = useSaveAudio();
+
   return (
     <AppProvider>
+      {!tracksSaved && <Onboarding />}
       <Stack>
         <Stack.Screen name="(app)" options={{ headerShown: false }} />
         <Stack.Screen

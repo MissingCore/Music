@@ -25,7 +25,6 @@ export function MediaImage({ type, size, source, className }: MediaImageProps) {
     return (
       <Image
         source={require("@/assets/images/glyph/music.png")}
-        contentFit="cover"
         style={{ width: size, height: size }}
         className={cn("rounded-lg bg-accent500", className)}
       />
@@ -47,7 +46,6 @@ export function MediaImage({ type, size, source, className }: MediaImageProps) {
           ? require("@/assets/images/glyph/face.png")
           : require("@/assets/images/glyph/music.png")
       }
-      contentFit="cover"
       style={{ width: size, height: size }}
       className={cn(
         "rounded-lg bg-surface800",
@@ -77,7 +75,6 @@ function CollageImage(props: {
           key={idx}
           source={source}
           placeholder={require("@/assets/images/glyph/music.png")}
-          contentFit="cover"
           className="size-1/2 bg-surface800"
         />
       ))}
