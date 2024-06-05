@@ -65,7 +65,7 @@ export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
                 <Animated.Text
                   numberOfLines={1}
                   style={animatedStyles}
-                  className="font-ndot57 text-lg text-foreground50"
+                  className="shrink font-ndot57 text-lg text-foreground50"
                 >
                   {title}
                 </Animated.Text>

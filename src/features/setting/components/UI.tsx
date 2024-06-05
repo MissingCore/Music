@@ -51,7 +51,7 @@ export function Link({
   return (
     <LinkType href={href} asChild>
       <Pressable className="mb-6 flex-row items-center justify-between gap-2 active:opacity-75">
-        <View className="flex-row gap-2">
+        <View className="shrink flex-row gap-2">
           <Ionicons name={iconName} color={Colors.foreground50} size={24} />
           <Title>{label}</Title>
         </View>
@@ -72,7 +72,7 @@ export function Title({ className, children }: UIProp) {
     <Heading
       as="h4"
       className={cn(
-        "text-start font-geistMono tracking-wider text-foreground100",
+        "shrink text-start font-geistMono tracking-wider text-foreground100",
         className,
       )}
     >
