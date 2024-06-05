@@ -1,5 +1,8 @@
+import { count } from "drizzle-orm";
+import type { SQLiteTable } from "drizzle-orm/sqlite-core";
 import type { Track as TrackPlayerTrack } from "react-native-track-player";
 
+import { db } from "..";
 import type {
   AlbumWithTracks,
   ArtistWithTracks,
@@ -132,4 +135,9 @@ export function formatTrackforPlayer(track: TrackWithAlbum) {
     artist: track.artistName,
     duration: track.duration,
   } satisfies TrackPlayerTrack;
+}
+
+/** @description Count the number of entries in a table. */
+export async function countFrom<TTable extends SQLiteTable>(table: TTable) {
+  return (await db.select({ count: count() }).from(table))[0]?.count ?? 0;
 }

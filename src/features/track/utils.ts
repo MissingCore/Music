@@ -2,10 +2,13 @@
 export function getPlayTime(duration: number) {
   const totalSecs = Math.floor(duration);
 
-  const hours = Math.floor(duration / 3600);
-  const minutes = Math.floor((totalSecs - hours * 3600) / 60);
+  const _hours = Math.floor(duration / 3600);
+  const minutes = Math.floor((totalSecs - _hours * 3600) / 60);
+  const days = Math.floor(_hours / 24);
+  const hours = _hours % 24;
 
   const timeStr = [];
+  if (days > 0) timeStr.push(`${days}d`);
   if (hours > 0) timeStr.push(`${hours}hr`);
   timeStr.push(`${minutes}min`);
 

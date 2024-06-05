@@ -24,6 +24,7 @@ export default function SettingScreen() {
         <UpdateChecker />
       </Section>
 
+      <SubMenuLink href="storage" label="STORAGE & STATISTICS" />
       <SubMenuLink href="support" label="SUPPORT & SOURCE" />
 
       <Section className="flex-row items-center justify-between gap-2">
