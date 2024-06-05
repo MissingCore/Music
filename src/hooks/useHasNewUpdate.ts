@@ -1,4 +1,4 @@
-import { useLatestRelease } from "@/api/releases";
+import { useLatestRelease } from "@/features/setting/api/release";
 
 import { APP_VERSION } from "@/constants/Config";
 

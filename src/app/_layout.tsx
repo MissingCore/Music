@@ -8,7 +8,6 @@ import "@/assets/global.css";
 import { PlaybackService } from "@/constants/PlaybackService";
 import { AppProvider } from "@/providers/app";
 import { Header } from "@/components/navigation/Header";
-import { BackButton } from "@/components/navigation/BackButton";
 import { Onboarding } from "@/components/navigation/Onboarding";
 import { AppModals } from "@/features/modal";
 
@@ -36,21 +35,19 @@ function RootLayoutNav() {
   return (
     <AppProvider>
       {!tracksSaved && <Onboarding />}
-      <Stack>
-        <Stack.Screen name="(app)" options={{ headerShown: false }} />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(app)" />
         <Stack.Screen
           name="current-track"
           options={{
+            headerShown: true,
             animation: "slide_from_bottom",
             header: Header,
             headerTitle: "",
           }}
         />
-        <Stack.Screen name="setting" options={{ headerLeft: BackButton }} />
-        <Stack.Screen
-          name="notification.click"
-          options={{ headerShown: false }}
-        />
+        <Stack.Screen name="setting" />
+        <Stack.Screen name="notification.click" />
       </Stack>
 
       <AppModals />

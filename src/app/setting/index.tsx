@@ -2,64 +2,31 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { StyleSheet, Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 
-import { useLatestRelease } from "@/api/releases";
+import { useLatestRelease } from "@/features/setting/api/release";
 
-import { APP_VERSION } from "@/constants/Config";
+import { APP_VERSION, GITHUB_LINK } from "@/constants/Config";
 import { BorderRadius, Colors, FontSize } from "@/constants/Styles";
-import { cn } from "@/lib/style";
 import { LinkButton } from "@/components/form/Button";
 import { AnimatedHeader } from "@/components/navigation/AnimatedHeader";
-
-const GITHUB_LINK = "https://github.com/MissingCore/Music";
+import {
+  Description,
+  Section,
+  SubMenuLink,
+  Title,
+} from "@/features/setting/components/UI";
 
 /** @description Screen for `/setting` route. */
 export default function SettingScreen() {
   return (
     <AnimatedHeader title="SETTINGS">
       <Section>
-        <Title>UPDATES</Title>
+        <Title className="mb-2">UPDATES</Title>
         <UpdateChecker />
       </Section>
 
-      <Section>
-        <Title>SOURCE CODE</Title>
-        <View className="flex-row gap-2">
-          <LinkButton
-            as="external"
-            href={GITHUB_LINK}
-            theme="neutral-alt"
-            Icon={
-              <Ionicons
-                name="logo-github"
-                size={20}
-                color={Colors.foreground50}
-              />
-            }
-            content="GitHub"
-          />
-        </View>
-      </Section>
+      <SubMenuLink href="support" label="SUPPORT & SOURCE" />
 
-      <Section>
-        <Title>SUPPORT</Title>
-        <View className="flex-row gap-2">
-          <LinkButton
-            as="external"
-            href={`${GITHUB_LINK}/issues/new`}
-            theme="neutral-alt"
-            Icon={
-              <Ionicons
-                name="logo-github"
-                size={20}
-                color={Colors.foreground50}
-              />
-            }
-            content="Submit an Issue"
-          />
-        </View>
-      </Section>
-
-      <Section>
+      <Section className="flex-row items-center justify-between gap-2">
         <Title>VERSION</Title>
         <Description>{APP_VERSION}</Description>
       </Section>
@@ -185,30 +152,3 @@ const markdownStyles = StyleSheet.create({
     borderRadius: BorderRadius.sm,
   },
 });
-
-type UIProp = { className?: string; children: React.ReactNode };
-
-function Section({ className, children }: UIProp) {
-  return <View className={cn("mb-4", className)}>{children}</View>;
-}
-
-function Title({ className, children }: UIProp) {
-  return (
-    <Text
-      className={cn(
-        "mb-1.5 font-geistMono text-base tracking-wider text-foreground100",
-        className,
-      )}
-    >
-      {children}
-    </Text>
-  );
-}
-
-function Description({ className, children }: UIProp) {
-  return (
-    <Text className={cn("font-geistMono text-sm text-surface400", className)}>
-      {children}
-    </Text>
-  );
-}

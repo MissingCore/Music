@@ -1,9 +1,10 @@
 import { Text, View } from "react-native";
 
+import { GITHUB_LINK } from "@/constants/Config";
 import { LinkButton } from "@/components/form/Button";
 import { ExternalLink } from "@/components/navigation/ExternalLink";
 
-const ReportLink = "https://github.com/MissingCore/Music/issues/new";
+const ReportLink = `${GITHUB_LINK}/issues/new`;
 
 /** @description Instructions on how to report the issue displayed. */
 export function ReportInstructions({

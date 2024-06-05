@@ -1,5 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
+import { settingKeys } from "./_queryKeys";
+
 const RELEASE_NOTES_LINK =
   "https://api.github.com/repos/MissingCore/Music/releases/latest";
 
@@ -25,7 +27,7 @@ export async function getLatestRelease() {
 /** @description Check on the latest release. */
 export const useLatestRelease = () =>
   useQuery({
-    queryKey: [{ entity: "releases" }],
+    queryKey: settingKeys.release(),
     queryFn: getLatestRelease,
     staleTime: Infinity,
     gcTime: Infinity,
