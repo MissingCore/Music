@@ -39,23 +39,12 @@ function InfoWidgets() {
 
         <ProgressBar
           entries={[
-            {
-              color: Colors.accent500,
-              percent: data.userData.images / data.userData.total,
-            },
-            {
-              color: "#FFC800",
-              percent: data.userData.database / data.userData.total,
-            },
-            {
-              color: "#4142BE",
-              percent: data.userData.other / data.userData.total,
-            },
-            {
-              color: Colors.foreground100,
-              percent: data.userData.cache / data.userData.total,
-            },
+            { color: Colors.accent500, value: data.userData.images },
+            { color: "#FFC800", value: data.userData.database },
+            { color: "#4142BE", value: data.userData.other },
+            { color: Colors.foreground100, value: data.userData.cache },
           ]}
+          total={data.userData.total}
           className="mb-4"
         />
 

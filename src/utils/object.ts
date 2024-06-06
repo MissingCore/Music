@@ -7,6 +7,20 @@ export function arrayIncludes<T>(arr: readonly T[], v: unknown): v is T {
 }
 
 /**
+ * @description Partion an array into 2 arrays based on a predicate.
+ */
+export function partitionArray<TData>(
+  arr: TData[],
+  predicate: (data: TData) => boolean,
+): [TData[], TData[]] {
+  const pass: TData[] = [];
+  const fail: TData[] = [];
+  arr.forEach((el) => (predicate(el) ? pass.push(el) : fail.push(el)));
+
+  return [pass, fail];
+}
+
+/**
  * @description Shuffle a list of strings with the modern version of
  *  `Fisher-Yates` Algorithm by Richard Durstenfeld.
  *  - https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
