@@ -11,7 +11,6 @@ import { playlists } from "@/db/schema";
 import { getPlaylists } from "@/db/queries";
 import { formatForMediaCard } from "@/db/utils/formatters";
 import { sanitizedPlaylistName } from "@/db/utils/validators";
-import { settingKeys } from "@/features/setting/api/_queryKeys";
 import { playlistKeys } from "./_queryKeys";
 
 import type { ExtractFnReturnType } from "@/utils/types";
@@ -77,7 +76,6 @@ export const useCreatePlaylist = () => {
     mutationFn: (playlistName: string) => createPlaylist({ playlistName }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: playlistKeys.all });
-      queryClient.invalidateQueries({ queryKey: settingKeys.storage() });
     },
   });
 };

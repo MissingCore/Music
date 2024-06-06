@@ -59,7 +59,4 @@ export const useStorageInfo = () =>
   useQuery({
     queryKey: settingKeys.storage(),
     queryFn: getStorageAndStatistics,
-    staleTime: Infinity,
-    gcTime: Infinity,
-    retry: false,
   });

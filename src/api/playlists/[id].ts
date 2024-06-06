@@ -14,7 +14,6 @@ import { playlists, tracksToPlaylists } from "@/db/schema";
 import { getPlaylist } from "@/db/queries";
 import { getPlaylistCover, formatForCurrentPages } from "@/db/utils/formatters";
 import { sanitizedPlaylistName } from "@/db/utils/validators";
-import { settingKeys } from "@/features/setting/api/_queryKeys";
 import { playlistKeys } from "./_queryKeys";
 import { favoriteKeys } from "../favorites/_queryKeys";
 
@@ -173,7 +172,6 @@ export const useDeletePlaylist = (playlistName: string) => {
     mutationFn: () => deletePlaylist({ playlistName }),
     onSuccess: (wasFavorited: boolean) => {
       queryClient.invalidateQueries({ queryKey: playlistKeys.all });
-      queryClient.invalidateQueries({ queryKey: settingKeys.storage() });
       // Remove from favorites list if it was favorited.
       if (wasFavorited) {
         queryClient.invalidateQueries({ queryKey: favoriteKeys.lists() });
