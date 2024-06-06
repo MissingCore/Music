@@ -1,4 +1,10 @@
 contact_links:
+  - name: 🙋 Feature Request
+    url: https://github.com/MissingCore/Music/discussions
+    about: Want us to add something to Music? Find a discussion or create a new one.
+  - name: ❓ Questions and Discussions
+    url: https://github.com/MissingCore/Music/discussions
+    about: Have a question or want to discuss something about Music? Find a discussion or create a new one.
   - name: 💽 Unsupported Audio Extension/Format
     url: https://github.com/MissingCore/audio-metadata/issues/new?assignees=&labels=Request%3A+Audio+Format%2Cneeds+review&projects=&template=format_request.yml
     about: Request support for an unsupported audio format by creating an issue in the `@MissingCore/audio-metadata` repository.
