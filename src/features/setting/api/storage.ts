@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { sum } from "drizzle-orm";
 import * as FileSystem from "expo-file-system";
 
 import { db } from "@/db";
@@ -6,7 +7,6 @@ import { albums, artists, playlists, tracks } from "@/db/schema";
 import { countFrom } from "@/db/utils/formatters";
 
 import { settingKeys } from "./_queryKeys";
-import { sum } from "drizzle-orm";
 
 export async function getStorageAndStatistics() {
   // `FileSystem.documentDirectory` is `null` for "web".
@@ -22,18 +22,23 @@ export async function getStorageAndStatistics() {
     FileSystem.documentDirectory,
   );
 
-  if (!dbDirInfo.exists || !imgDirInfo.exists || !userDataInfo.exists) {
-    throw new Error(
-      "Failed to get storage information for one of the directories.",
-    );
-  }
+  const cacheData = await FileSystem.getInfoAsync(
+    `${FileSystem.cacheDirectory}`,
+  );
+
+  const imagesSize = imgDirInfo.exists ? imgDirInfo.size : 0;
+  const databaseSize = dbDirInfo.exists ? dbDirInfo.size : 0;
+  const userDataSize = userDataInfo.exists ? userDataInfo.size : 0;
+
+  const cacheSize = cacheData.exists ? cacheData.size : 0;
 
   return {
     userData: {
-      images: imgDirInfo.size,
-      database: dbDirInfo.size,
-      other: userDataInfo.size - imgDirInfo.size - dbDirInfo.size,
-      total: userDataInfo.size,
+      images: imagesSize,
+      database: databaseSize,
+      other: userDataSize - imagesSize - databaseSize,
+      cache: cacheSize,
+      total: userDataSize + cacheSize,
     },
     statistics: {
       albums: await countFrom(albums),

@@ -49,7 +49,7 @@ function UpdateChecker() {
     data.version.includes("-rc.") ||
     data.version < APP_VERSION.split("-rc.")[0]
   ) {
-    return <Description>Latest version ({APP_VERSION})</Description>;
+    return <Description>Currently on latest version.</Description>;
   }
 
   return (

@@ -2,13 +2,14 @@ import { Text, View } from "react-native";
 
 import { useStorageInfo } from "@/features/setting/api/storage";
 
+import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
 import { AnimatedHeader } from "@/components/navigation/AnimatedHeader";
+import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Heading } from "@/components/ui/Text";
 import { Description } from "@/features/setting/components/UI";
 import { abbreviateSize } from "@/features/setting/utils";
 import { getPlayTime } from "@/features/track/utils";
-import { Colors } from "@/constants/Styles";
 
 /** @description Screen for `/setting/storage` route. */
 export default function StorageScreen() {
@@ -36,6 +37,28 @@ function InfoWidgets() {
           User Data
         </Heading>
 
+        <ProgressBar
+          entries={[
+            {
+              color: Colors.accent500,
+              percent: data.userData.images / data.userData.total,
+            },
+            {
+              color: "#FFC800",
+              percent: data.userData.database / data.userData.total,
+            },
+            {
+              color: "#4142BE",
+              percent: data.userData.other / data.userData.total,
+            },
+            {
+              color: Colors.foreground100,
+              percent: data.userData.cache / data.userData.total,
+            },
+          ]}
+          className="mb-4"
+        />
+
         <ValueRow
           label="Images"
           value={abbreviateSize(data.userData.images)}
@@ -50,6 +73,11 @@ function InfoWidgets() {
           label="Other"
           value={abbreviateSize(data.userData.other)}
           barColor="#4142BE"
+        />
+        <ValueRow
+          label="Cache"
+          value={abbreviateSize(data.userData.cache)}
+          barColor={Colors.foreground100}
         />
 
         <ValueRow
