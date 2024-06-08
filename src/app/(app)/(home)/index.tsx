@@ -45,7 +45,7 @@ export default function HomeScreen() {
   }, [endOfScrollView]);
 
   const { width: colWidthSmall } = useGetColumn({
-    ...{ cols: 1, gap: 16, gutters: 32, minWidth: 100 },
+    ...{ cols: 1, gap: 0, gutters: 32, minWidth: 100 },
   });
 
   return (

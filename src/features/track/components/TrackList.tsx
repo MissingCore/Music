@@ -9,6 +9,8 @@ import type { MediaList } from "@/components/media/types";
 import type { TrackContent } from "./Track";
 import { Track } from "./Track";
 
+type FlashListProps = React.ComponentProps<typeof FlashList>;
+
 /** @description Lists out tracks. */
 export function TrackList(props: {
   data: Maybe<readonly TrackContent[]>;
@@ -17,9 +19,8 @@ export function TrackList(props: {
     origin?: MediaList;
     hideImage?: boolean;
   };
-  ListEmptyComponent?: React.ComponentProps<
-    typeof FlashList
-  >["ListEmptyComponent"];
+  ListHeaderComponent?: FlashListProps["ListHeaderComponent"];
+  ListEmptyComponent?: FlashListProps["ListEmptyComponent"];
   contentContainerStyle?: ContentStyle;
 }) {
   const { source, origin, hideImage = false } = props.config;
@@ -35,6 +36,7 @@ export function TrackList(props: {
         </View>
       )}
       showsVerticalScrollIndicator={false}
+      ListHeaderComponent={props.ListHeaderComponent}
       ListEmptyComponent={props.ListEmptyComponent}
       contentContainerStyle={{
         paddingHorizontal: 4,

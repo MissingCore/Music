@@ -13,14 +13,14 @@ export function sortTracks({
   tracks: Track[] | TrackWithAlbum[];
 }) {
   return tracks.toSorted((a, b) => {
-    if (type === "track" || type === "playlist") {
+    if (type === "playlist" || type === "track") {
       return a.name.localeCompare(b.name);
     } else if (type === "album") {
       return a.track - b.track;
     } else if (isTrackWithAlbum(a) && isTrackWithAlbum(b)) {
       // Only true when `type === "artist"`.
       return (
-        compareAsc(a.album?.name, b.album?.name) || compareAsc(a.name, b.name)
+        compareAsc(a.name, b.name) || compareAsc(a.album?.name, b.album?.name)
       );
     } else {
       throw new Error(
