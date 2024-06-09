@@ -12,6 +12,7 @@ import {
 import { queueRemoveItemsAtom } from "@/features/playback/api/queue";
 
 import { deleteFile } from "@/lib/file-system";
+import { queryClient } from "@/lib/react-query";
 
 /**
  * @description Remove any tracks in our database that we didn't find w/
@@ -72,4 +73,14 @@ export async function dbCleanUp(usedTrackIds: Set<string>) {
         await db.delete(artists).where(eq(artists.name, name));
       }),
   );
+
+  // Invalidate all queries (exclude "Latest Release" query) if deleted
+  // a track.
+  if (tracksToDelete.length > 0) {
+    queryClient.invalidateQueries({
+      // @ts-expect-error ts(2339) — We normalized the `queryKey` structure
+      // to be an object with an `entity` key.
+      predicate: ({ queryKey }) => queryKey[0]?.entity !== "releases",
+    });
+  }
 }
