@@ -1,4 +1,4 @@
-<img src=".github/SOCIAL_PREVIEW.png" alt="Music app screen previews" style="border-radius:2rem" />
+<img src=".github/SOCIAL_PREVIEW.png" alt="Music app screen previews" />
 
 # Music
 
