@@ -23,23 +23,21 @@ export const resynchronizeOnAtom = atom(
   null,
   async (get, set, { action, data }: ResynchronizeArgs) => {
     // Synchronize "Recently Played" list.
-    if (action !== "update") {
-      const recentlyPlayed = await get(recentlyPlayedAsyncAtom);
-      let newRecentList = [...recentlyPlayed];
+    const recentlyPlayed = await get(recentlyPlayedAsyncAtom);
+    let newRecentList = [...recentlyPlayed];
 
-      if (action === "delete") {
-        newRecentList = recentlyPlayed.filter(
-          (reference) => !areTrackReferencesEqual(reference, data),
-        );
-      } else if (action === "rename") {
-        newRecentList = recentlyPlayed.map((reference) => {
-          if (!areTrackReferencesEqual(reference, data.old)) return reference;
-          return data.latest;
-        });
-      }
-
-      set(recentlyPlayedAsyncAtom, newRecentList);
+    if (action === "delete") {
+      newRecentList = recentlyPlayed.filter(
+        (reference) => !areTrackReferencesEqual(reference, data),
+      );
+    } else if (action === "rename") {
+      newRecentList = recentlyPlayed.map((reference) => {
+        if (!areTrackReferencesEqual(reference, data.old)) return reference;
+        return data.latest;
+      });
     }
+
+    set(recentlyPlayedAsyncAtom, newRecentList);
 
     // Synchronize track list.
     const playingMedia = await get(playingMediaAsyncAtom);
