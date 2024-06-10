@@ -127,8 +127,8 @@ These are instructions for building the app for personal use. Some general prere
    npm run android:prod
    ```
 
-   > [!NOTE]  
-   > You may receive a prompt on your device asking: "Allow USB debugging". Click **OK** to allow USB debugging on your PC. If you hit **Cancel**, the build command will fail. To allow USB debugging after canceling, reconnect your device with the USB cable and run the command again.
+> [!NOTE]  
+> You may receive a prompt on your device asking: "Allow USB debugging". Click **OK** to allow USB debugging on your PC. If you hit **Cancel**, the build command will fail. To allow USB debugging after canceling, reconnect your device with the USB cable and run the command again.
 
 # FAQ
 
