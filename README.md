@@ -19,7 +19,12 @@ A Nothing inspired music player.
     <ol type="a">
       <li><a href="#local-build">Local Build</a></li>
     </ol>
+    <li><a href="#faq">FAQ</a></li>
     <li><a href="#legal">Legal</a></li>
+    <ol type="a">
+      <li><a href="#licenses-of-used-dependencies">Licenses of Used Dependencies</a></li>
+      <li><a href="#license">License</a></li>
+    </ol>
   </ol>
 </details>
 
@@ -125,6 +130,26 @@ These are instructions for building the app for personal use. Some general prere
    > [!NOTE]  
    > You may receive a prompt on your device asking: "Allow USB debugging". Click **OK** to allow USB debugging on your PC. If you hit **Cancel**, the build command will fail. To allow USB debugging after canceling, reconnect your device with the USB cable and run the command again.
 
+# FAQ
+
+> Why is the APK version of the app larger than the one from the Google Play Store?
+
+You can [read this for the full explanation](https://github.com/expo/fyi/blob/main/android-app-size.md), but in short the APK is built to be used with any device. The version distributed by the Google Play Store is built for your device.
+
+> Why is loading the app slow?
+
+Refer to the [performance section](#performance) of this README.
+
+> How do I add music to the app?
+
+Place your music files in the "Music" folder on your Android device. It doesn't matter if you put the tracks directly into the folder or in sub-folders for better organization.
+
+Look in [@missingcore/audio-metadata](https://github.com/MissingCore/audio-metadata) for supported audio files and metadata formats.
+
+> What platforms are supported?
+
+We officially support Android. Theoretically, this should also work for iOS (as this is React Native code), but this is untested as publishing on the App Store isn't feasible.
+
 # Legal
 
 This application and code is published under the GNU Affero General Public License v3.0 (https://github.com/MissingCore/Music/blob/main/LICENSE).
@@ -132,6 +157,14 @@ This application and code is published under the GNU Affero General Public Licen
 Nothing Technology Limited or any of its affiliates, subsidiaries, or related entities (collectively, "Nothing Technology") is a valid licensee and can use this app for any purpose, including commercial purposes, without compensation to the developers of this app. Nothing Technology is not required to comply with the terms of the GNU Affero General Public License v3.0.
 
 This app is developed by cyanChill and is not affiliated with, sponsored by, or endorsed by Nothing Technology. The developers of this app take no responsibility for the accuracy or completeness of the content and materials provided in this app. The content and materials contained in this app, including but not limited to fonts, are proprietary to Nothing Technology Limited, 80 Cheapside, London EC2V 6EE and are protected by copyright, trademark, and other intellectual property laws. These materials may not be used without the express written permission of Nothing Technology. Nothing Technology reserves all rights.
+
+## Licenses of Used Dependencies
+
+Refer to [THIRD_PARTY.md](./THIRD_PARTY.md).
+
+## License
+
+[AGPL-3.0](./LICENSE)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
