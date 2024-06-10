@@ -130,6 +130,9 @@ These are instructions for building the app for personal use. Some general prere
 > [!NOTE]  
 > You may receive a prompt on your device asking: "Allow USB debugging". Click **OK** to allow USB debugging on your PC. If you hit **Cancel**, the build command will fail. To allow USB debugging after canceling, reconnect your device with the USB cable and run the command again.
 
+> [!NOTE]  
+> This also generates the [different APK files](https://developer.android.com/ndk/guides/abis.html#sa) located in `android/app/build/outputs/apk/release`.
+
 # FAQ
 
 > Why is the APK version of the app larger than the one from the Google Play Store?

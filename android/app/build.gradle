@@ -91,6 +91,20 @@ android {
         versionCode 1
         versionName "0.0.0"
     }
+    /**
+     * https://developer.android.com/build/configure-apk-splits
+     *
+     *  - https://github.com/react-native-community/discussions-and-proposals/issues/602
+     *  - https://reactnative.dev/docs/signed-apk-android#publishing-to-other-stores
+     */
+    splits {
+        abi {
+            reset()
+            enable true
+            include "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+            universalApk true  // If true, also generate a universal APK
+        }
+    }
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
@@ -98,15 +112,41 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        /**
+         * Use app signing by Google Play. Fallback to debug config if not provided.
+         *  - https://reactnative.dev/docs/signed-apk-android#adding-signing-config-to-your-apps-gradle-config
+         */
+        release {
+            if (project.hasProperty('MYAPP_UPLOAD_STORE_PASSWORD')) {
+                storeFile file(MYAPP_UPLOAD_STORE_FILE)
+                storePassword MYAPP_UPLOAD_STORE_PASSWORD
+                keyAlias MYAPP_UPLOAD_KEY_ALIAS
+                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+            } else {
+              storeFile file('debug.keystore')
+              storePassword 'android'
+              keyAlias 'androiddebugkey'
+              keyPassword 'android'
+            }
+        }
     }
+    /**
+     * For each separate APK per architecture, we should set a different version
+     * code as when uploaded to the Play Store, they should have a unique code
+     * as described here:
+     *  - https://developer.android.com/build/configure-apk-splits#configure-APK-versions
+     *
+     * However, since these are to be distributed via GitHub, it should be fine.
+     */
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            applicationIdSuffix ".dev"
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             shrinkResources (findProperty('android.enableShrinkResourcesInReleaseBuilds')?.toBoolean() ?: false)
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
