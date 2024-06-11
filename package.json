@@ -16,7 +16,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "test": "jest",
-    "db:generate": "drizzle-kit generate"
+    "db:generate": "drizzle-kit generate",
+    "release": "git checkout main -q && git pull && python ./scripts/release_bump.py"
   },
   "jest": {
     "preset": "jest-expo"

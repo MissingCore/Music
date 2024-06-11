@@ -5,20 +5,39 @@
 import re
 import json
 from pathlib import Path
+from typing import TypedDict
 
 
 # We'll handle app version by only updating the value in `Config.ts`. The
 # first line should always look like:
 #   `export const APP_VERSION = "v0.0.0";`
-def getLatestVersion():
+def getVersion():
   with open(Path("./src/constants/Config.ts"), encoding="utf8") as f:
     line = f.readline()
     return line.split('"')[1][1:]
 
+
+# Give type hint for dictionary returned from `getVersionSegments()`.
+class VersionSegments(TypedDict):
+  major: int
+  minor: int
+  patch: int
+  rc: int | None
+
+
+# List out parts of a "semver" version as an object.
+def getVersionSegments(version=getVersion()) -> VersionSegments:
+  splitVersionStr = version.split("-rc.")
+  currVersion = splitVersionStr[0]
+  rc = int(splitVersionStr[1]) if len(splitVersionStr) > 1 else None
+  [major, minor, patch] = currVersion.split(".")
+  return { "major": int(major), "minor": int(minor), "patch": int(patch), "rc": rc }
+
+
 # This handles bumping the version name & code in `package.json`, `app.config.ts`,
 # and `build.gradle`.
 def bumpVersion():
-  latestVersion = getLatestVersion()
+  latestVersion = getVersion()
 
   # Update version in `package.json`.
   with open(Path("./package.json"), encoding="utf8") as f:
@@ -39,11 +58,11 @@ def bumpVersion():
         newVersionCode = int(find_versionCode.group(2)) + 1
         app_config.append(
           f"{find_versionCode.group(1)}{newVersionCode},\n"
-        )
+          )
       elif (find_versionName):
         app_config.append(
           f'{find_versionName.group(1)}"{latestVersion}",\n'
-        )
+          )
       else:
         app_config.append(line)
   with open(Path("./app.config.ts"), "w", encoding="utf8") as f:
@@ -59,11 +78,11 @@ def bumpVersion():
       if (find_versionCode):
         build_gradle.append(
           f"{find_versionCode.group(1)}{newVersionCode}\n"
-        )
+          )
       elif (find_versionName):
         build_gradle.append(
           f'{find_versionName.group(1)}"{latestVersion}"\n'
-        )
+          )
       else:
         build_gradle.append(line)
   with open(Path("./android/app/build.gradle"), "w", encoding="utf8") as f:
@@ -73,4 +92,4 @@ def bumpVersion():
 
 if __name__ == "__main__":
   bumpVersion()
-  print(f"Version bumped to {getLatestVersion()}")
+  print(f"Version bumped to {getVersion()}")
