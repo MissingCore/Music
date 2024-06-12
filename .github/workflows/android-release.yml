@@ -34,11 +34,6 @@ jobs:
           echo "COMMIT_TAG=${COMMIT_TAG}" >> $GITHUB_ENV
           echo "Commit Tag: $COMMIT_TAG"
 
-      - name: Add Build Sign Keys
-        run: |
-          git submodule update --init --recursive
-          echo "${{ secrets.RELEASE_SIGN_PWD }}" >> ./android/gradle.properties
-
       - name: Commit
         run: |
           git config --global user.email 170483286+MissingCore-Bot@users.noreply.github.com
@@ -50,6 +45,11 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.MISSINGCORE_BOT_GITHUB_TOKEN }}
+
+      - name: Add Build Sign Keys
+        run: |
+          git submodule update --init --recursive
+          echo "${{ secrets.RELEASE_SIGN_PWD }}" >> ./android/gradle.properties
 
       - name: Build Sign `.jks`
         uses: timheuer/base64-to-file@v1.2
