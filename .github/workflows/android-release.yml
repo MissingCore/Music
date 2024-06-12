@@ -40,7 +40,6 @@ jobs:
           git config --global user.name MissingCore-Bot
           git commit -am "build: Release version bump"
 
-      # FIXME: Move this into the script that uploads the `.aab` to the Play Store.
       - name: Push Changes to `main`
         uses: ad-m/github-push-action@master
         with:

@@ -17,7 +17,8 @@ A Nothing inspired music player.
     </ol>
     <li><a href="#build--installation">Build & Installation</a></li>
     <ol type="a">
-      <li><a href="#local-build">Local Build</a></li>
+      <li><a href="#unsigned-local-build">(Unsigned) Local Build</a></li>
+      <li><a href="#signed-build-w-github-actions">Signed Build w/ GitHub Actions</a></li>
     </ol>
     <li><a href="#faq">FAQ</a></li>
     <li><a href="#legal">Legal</a></li>
@@ -99,7 +100,7 @@ These are instructions for building the app for personal use. Some general prere
 - A code editor such as VSCode
 - USB Debugging enabled device
 
-## Local Build
+## (Unsigned) Local Build
 
 1. Clone the repository.
 
@@ -132,6 +133,53 @@ These are instructions for building the app for personal use. Some general prere
 
 > [!NOTE]  
 > This also generates the [different APK files](https://developer.android.com/ndk/guides/abis.html#sa) located in `android/app/build/outputs/apk/release`.
+
+## Signed Build w/ GitHub Actions
+
+This will create APKs that can be published to other stores via GitHub Actions when you create a new tag. Once the process finishes, a new release will automatically be created, with the APKs files attached.
+
+> [!NOTE]  
+> We may eventually add support for generating an `.aab` for publishing to the Google Play Store.
+
+1. Generate an upload key via `keytool` which comes with your installation of Java (this is referenced from [React Native's Guide](https://reactnative.dev/docs/signed-apk-android#generating-an-upload-key)). This will generate a `noxupload.jks` file in the directory where `keytool` is located.
+
+   ```sh
+   sudo keytool -genkey -v -keystore noxupload.jks -alias noxupload -keyalg RSA -keysize 2048 -validity 10000
+   ```
+
+> [!IMPORTANT]  
+> Keep the password you inputted as that'll be important later on.
+>
+> I found an issue with some characters in the password that kind of broke the behavior of the script when using GitHub actions (ie: `$`, `` ` ``, `=`), so you shouldn't use them.
+
+2. You can move `noxupload.jks` to a different folder (ie: create a new folder in the `/Downloads` directory).
+
+3. Open up `Git Bash` when it was installed with `git`. You want to go to the directory where the `noxupload.jks` file is by running `cd "<directory>"`. Then run the following command to encode `noxupload.jks` into a base64 file.
+
+   ```sh
+   openssl base64 < noxupload.jks | tr -d '\n' | tee noxupload_base64_encoded.txt
+   ```
+
+   > We want to encode `noxupload.jks` in base64 as we want to keep this file secret and prevent exposing it. By encoding it in base64, we can save this as a GitHub Actions secret and use it within the workflow.
+
+4. Fork this repository.
+
+5. Now we need to add some secrets. When in the forked repository, click: `Settings > Secrets and variables > Actions`. Click `New repository secret`. We're going to create 3 secrets:
+
+   a. Put `RELEASE_SIGN_PWD` in the `Name` field. For its `Secret` field, put:
+
+   ```
+   MYAPP_UPLOAD_STORE_PASSWORD=<UPLOAD_PASSWORD>
+   MYAPP_UPLOAD_KEY_PASSWORD=<UPLOAD_PASSWORD>
+   ```
+
+   > Remember the password you inputted in `Step 1`, that's what you'll replace `<UPLOAD_PASSWORD>` with (including the angle brackets).
+
+   b. Put `SIGNED_KEY_BASE64` in the `Name` field. For its `Secret` field, put the contents of `noxupload_base64_encoded.txt`.
+
+   c. Put `MISSINGCORE_BOT_GITHUB_TOKEN` in the `Name` field. For its `Secret` field, you need to put a [Fine-Grained Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token). This token should have `Read & Write` permissions for: `Contents`.
+
+That should be all the setup needed. Now whenever a new tag gets added to the repository that follows our version format, GitHub Actions will automatically call the workflow that builds the signed APKs.
 
 # FAQ
 
