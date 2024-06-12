@@ -44,3 +44,6 @@ expo-env.d.ts
 # User Added Files & Folders
 TODO.md
 __pycache__
+.env
+*.jks
+*.aab
