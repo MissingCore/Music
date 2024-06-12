@@ -28,9 +28,10 @@ jobs:
           distribution: microsoft
           java-version: 17
 
-      - name: Display Commit Tag
+      - name: Save Commit Tag as Environment Variable & Display it
         run: |
           COMMIT_TAG=$(git describe --tags --abbrev=0)
+          echo "COMMIT_TAG=${COMMIT_TAG}" >> $GITHUB_ENV
           echo "Commit Tag: $COMMIT_TAG"
 
       - name: Add Build Sign Keys
@@ -44,16 +45,22 @@ jobs:
           git config --global user.name MissingCore-Bot
           git commit -am "build: Release version bump"
 
+      # FIXME: Move this into the script that uploads the `.aab` to the Play Store.
+      - name: Push Changes to `main`
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.MISSINGCORE_BOT_GITHUB_TOKEN }}
+
       - name: Build Sign `.jks`
         uses: timheuer/base64-to-file@v1.2
         with:
-          fileName: 'noxupload.jks'
-          fileDir: './android/app'
+          fileName: "noxupload.jks"
+          fileDir: "./android/app"
           encodedString: ${{ secrets.SIGNED_KEY_BASE64 }}
 
       - name: Clean Generated Builds
         run: rm -rf android/app/build/generated/
-          
+
       - name: Gradle Build APKs
         # Go to `/android`, make `gradlew` executable, then generate release
         # signed APKs
@@ -62,8 +69,8 @@ jobs:
       - name: Release APKs
         uses: softprops/action-gh-release@v2
         with:
-          name: 'Release ${{ env.COMMIT_TAG }}'
-          tag_name: '${{ env.COMMIT_TAG }}'
+          name: "Release ${{ env.COMMIT_TAG }}"
+          tag_name: "${{ env.COMMIT_TAG }}"
           token: ${{ secrets.MISSINGCORE_BOT_GITHUB_TOKEN }}
           files: android/app/build/outputs/apk/release/*.apk
           draft: true
