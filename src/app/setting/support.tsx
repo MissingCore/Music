@@ -7,17 +7,13 @@ import { Description, Link } from "@/features/setting/components/UI";
 /** @description Screen for `/setting/support` route. */
 export default function SupportScreen() {
   return (
-    <AnimatedHeader title="SUPPORT & SOURCE">
+    <AnimatedHeader title="SUPPORT">
       <Description className="mb-8">
-        Find a problem with the app or want to know what you installed? Click
-        the link that fits your needs below.{"\n\n"}
+        Find a problem with the app? Click the link that fits your needs below.
+        {"\n\n"}
         <Text className="underline">Note:</Text> Some of the support related
         request methods require a GitHub account.
       </Description>
-
-      <Link href={GITHUB_LINK} iconName="logo-github" label="SOURCE CODE" />
-
-      <View className="mb-6 border-t border-surface700" />
 
       <Link
         href={`${GITHUB_LINK}/issues/new`}

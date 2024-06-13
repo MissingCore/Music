@@ -25,7 +25,8 @@ export default function SettingScreen() {
       </Section>
 
       <SubMenuLink href="storage" label="STORAGE & STATISTICS" />
-      <SubMenuLink href="support" label="SUPPORT & SOURCE" />
+      <SubMenuLink href="support" label="SUPPORT" />
+      <SubMenuLink href="licenses" label="LICENSES & SOURCE" />
 
       <Section className="flex-row items-center justify-between gap-2">
         <Title>VERSION</Title>

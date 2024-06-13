@@ -78,7 +78,7 @@ export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
         ref={scrollRef}
         onScroll={checkTitlePosition}
         onMomentumScrollEnd={reactivelySnap}
-        contentContainerClassName="px-4 pb-16 pt-[22px]"
+        contentContainerClassName="grow px-4 pb-16 pt-[22px]"
       >
         <Heading
           as="h1"
