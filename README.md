@@ -2,7 +2,7 @@
 
 # Music
 
-A Nothing inspired music player.
+A Nothing inspired music player (based on design by [Alkid Shuli (alKid)](https://bento.me/alkid)).
 
 <!-- TABLE OF CONTENTS -->
 <details>

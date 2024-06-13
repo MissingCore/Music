@@ -13,27 +13,20 @@ The public release of `Music`, a Nothing inspired music player.
 
 ### 🎉 Features
 
-At launch, `Music` provides basic features such as:
+At launch, `Music` provides the following features:
 
-1. Playing a track
-2. Repeat & Shuffle
-3. Creating playlists w/ the ability of customizing its artwork
-4. Favoriting albums, playlists, and tracks
-5. Playback in the background w/ media control notification
-
-In addition, `Music` has:
-
-1. Queue support
-2. Displays the 10 recently played sources of music
-3. Automatic saving of new tracks & cleanup
+- Supports Android
+- Play, Pause, Seek, Shuffle, Repeat
+- Grouping Tracks by Albums (w/ Artwork) & Artists
+- Playlists w/ Custom Artwork
+- Favoriting Albums, Playlists, and Tracks
+- Background Playback w/ Media Control Notification
+- Queues
+- Automatically extraction of metadata w/ [@missingcore/audio-metadata](https://github.com/MissingCore/audio-metadata)
 
 #### 📋 Queues
 
 Have a track that pops up that you want to play next? Queues allows you to do this by adding tracks to a special list that "interrupts" the current track list by playing first. You want to jam to the same track over and over again — keep adding the track to the queue until you're satisfied.
-
-#### ⌛ Recently Played
-
-`Music` displays up to 10 recently played track sources on the homepage. This can help give you the idea of where your interest lies and indicate to you what albums or playlists you're no longer interested in.
 
 #### 💾 Automatic Saving & Cleanup
 

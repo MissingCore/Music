@@ -1,7 +1,5 @@
 /* Polyfills */
-import "core-js/features/array/to-reversed";
 import "core-js/features/array/to-sorted";
-import "core-js/features/array/to-spliced";
 
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { ThemeProvider } from "@react-navigation/native";
