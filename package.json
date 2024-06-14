@@ -17,6 +17,7 @@
     "lint": "eslint .",
     "test": "jest",
     "db:generate": "drizzle-kit generate",
+    "sync:licenses": "license-report --output=json --fields=name --fields=installedVersion --fields=licenseType --fields=link | node ./scripts/updateLicenses.mjs",
     "release": "git checkout main -q && git pull && python ./scripts/release_bump.py"
   },
   "jest": {
@@ -83,6 +84,8 @@
     "eslint-config-universe": "^13.0.0",
     "jest": "^29.7.0",
     "jest-expo": "~51.0.2",
+    "license-report": "^6.5.0",
+    "neatjson": "^0.10.6",
     "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.4",
     "react-test-renderer": "18.2.0",

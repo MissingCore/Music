@@ -11,6 +11,7 @@
   "include": [
     ".eslintrc.js",
     "**/*.js",
+    "**/*.mjs",
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",

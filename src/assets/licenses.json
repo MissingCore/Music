@@ -1,436 +1,450 @@
 [
   {
+    "name": "@babel/core",
+    "installedVersion": "7.24.7",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/babel/babel/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/babel/babel/tree/main/packages/babel-core"
+  },
+  {
     "name": "@boterop/react-native-background-timer",
+    "installedVersion": "2.5.1",
     "licenseType": "MIT",
     "licenseLink": "https://github.com/boterop/react-native-background-timer/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/boterop/react-native-background-timer",
-    "installedVersion": "2.5.1"
+    "repositoryLink": "https://github.com/boterop/react-native-background-timer"
   },
   {
     "name": "@expo/vector-icons",
+    "installedVersion": "14.0.2",
     "licenseType": "MIT",
     "licenseLink": "https://github.com/expo/vector-icons/blob/master/LICENSE",
-    "repositoryLink": "https://github.com/expo/vector-icons",
-    "installedVersion": "14.0.2"
+    "repositoryLink": "https://github.com/expo/vector-icons"
   },
   {
     "name": "@gorhom/bottom-sheet",
+    "installedVersion": "5.0.0-alpha.9",
     "licenseType": "MIT",
     "licenseLink": "https://github.com/gorhom/react-native-bottom-sheet/blob/master/LICENSE",
-    "repositoryLink": "https://github.com/gorhom/react-native-bottom-sheet",
-    "installedVersion": "5.0.0-alpha.9"
+    "repositoryLink": "https://github.com/gorhom/react-native-bottom-sheet"
   },
   {
     "name": "@miblanchard/react-native-slider",
+    "installedVersion": "2.6.0",
     "licenseType": "MIT",
     "licenseLink": "https://github.com/miblanchard/react-native-slider/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/miblanchard/react-native-slider",
-    "installedVersion": "2.6.0"
+    "repositoryLink": "https://github.com/miblanchard/react-native-slider"
   },
   {
     "name": "@missingcore/audio-metadata",
+    "installedVersion": "1.1.0",
     "licenseType": "MIT",
     "licenseLink": "https://github.com/MissingCore/audio-metadata/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/MissingCore/audio-metadata",
-    "installedVersion": "1.1.0"
+    "repositoryLink": "https://github.com/MissingCore/audio-metadata"
   },
   {
     "name": "@paralleldrive/cuid2",
+    "installedVersion": "2.2.2",
     "licenseType": "MIT",
     "licenseLink": "https://github.com/paralleldrive/cuid2/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/paralleldrive/cuid2",
-    "installedVersion": "2.2.2"
+    "repositoryLink": "https://github.com/paralleldrive/cuid2"
   },
   {
     "name": "@react-native-async-storage/async-storage",
+    "installedVersion": "1.23.1",
     "licenseType": "MIT",
     "licenseLink": "https://github.com/react-native-async-storage/async-storage/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/react-native-async-storage/async-storage",
-    "installedVersion": "1.23.1"
+    "repositoryLink": "https://github.com/react-native-async-storage/async-storage"
   },
   {
     "name": "@react-navigation/native",
+    "installedVersion": "6.1.17",
     "licenseType": "MIT",
     "licenseLink": "https://github.com/react-navigation/react-navigation/blob/main/packages/native/LICENSE",
-    "repositoryLink": "https://github.com/react-navigation/react-navigation/tree/main/packages/native",
-    "installedVersion": "6.1.17"
+    "repositoryLink": "https://github.com/react-navigation/react-navigation/tree/main/packages/native"
   },
   {
     "name": "@shopify/flash-list",
+    "installedVersion": "1.6.4",
     "licenseType": "MIT",
     "licenseLink": "https://github.com/Shopify/flash-list/blob/main/LICENSE.md",
-    "repositoryLink": "https://github.com/Shopify/flash-list",
-    "installedVersion": "1.6.4"
-  },
-  {
-    "name": "@tanstack/react-query",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/TanStack/query/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/TanStack/query",
-    "installedVersion": "5.45.0"
-  },
-  {
-    "name": "clsx",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/lukeed/clsx/blob/master/license",
-    "repositoryLink": "https://github.com/lukeed/clsx",
-    "installedVersion": "2.1.1"
-  },
-  {
-    "name": "core-js",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/zloirock/core-js/blob/master/LICENSE",
-    "repositoryLink": "https://github.com/zloirock/core-js",
-    "installedVersion": "3.37.1"
-  },
-  {
-    "name": "drizzle-orm",
-    "licenseType": "Apache-2.0",
-    "licenseLink": "https://github.com/drizzle-team/drizzle-orm/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/drizzle-team/drizzle-orm",
-    "installedVersion": "0.31.2"
-  },
-  {
-    "name": "expo",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo",
-    "installedVersion": "51.0.11"
-  },
-  {
-    "name": "expo-av",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-av",
-    "installedVersion": "14.0.5"
-  },
-  {
-    "name": "expo-drizzle-studio-plugin",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/drizzle-team/drizzle-studio-expo/blob/main/package.json#L27",
-    "repositoryLink": "https://github.com/drizzle-team/drizzle-studio-expo",
-    "installedVersion": "0.0.2"
-  },
-  {
-    "name": "expo-file-system",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-file-system",
-    "installedVersion": "17.0.1"
-  },
-  {
-    "name": "expo-font",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-font",
-    "installedVersion": "12.0.7"
-  },
-  {
-    "name": "expo-image",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-image",
-    "installedVersion": "1.12.11"
-  },
-  {
-    "name": "expo-image-picker",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-image-picker",
-    "installedVersion": "15.0.5"
-  },
-  {
-    "name": "expo-linear-gradient",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-linear-gradient",
-    "installedVersion": "13.0.2"
-  },
-  {
-    "name": "expo-linking",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-linking",
-    "installedVersion": "6.3.1"
-  },
-  {
-    "name": "expo-media-library",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-media-library",
-    "installedVersion": "16.0.3"
-  },
-  {
-    "name": "expo-router",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-router",
-    "installedVersion": "3.5.15"
-  },
-  {
-    "name": "expo-splash-screen",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-splash-screen",
-    "installedVersion": "0.27.5"
-  },
-  {
-    "name": "expo-sqlite",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-sqlite",
-    "installedVersion": "14.0.3"
-  },
-  {
-    "name": "expo-status-bar",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-status-bar",
-    "installedVersion": "1.12.1"
-  },
-  {
-    "name": "expo-system-ui",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-system-ui",
-    "installedVersion": "3.0.6"
-  },
-  {
-    "name": "expo-web-browser",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-web-browser",
-    "installedVersion": "13.0.3"
-  },
-  {
-    "name": "jotai",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/pmndrs/jotai/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/pmndrs/jotai",
-    "installedVersion": "2.8.3"
-  },
-  {
-    "name": "nativewind",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/nativewind/nativewind/blob/main/packages/nativewind/LICENSE",
-    "repositoryLink": "https://github.com/marklawlor/nativewind",
-    "installedVersion": "4.0.36"
-  },
-  {
-    "name": "react",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/facebook/react/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/facebook/react",
-    "installedVersion": "18.2.0"
-  },
-  {
-    "name": "react-native",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/facebook/react-native/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/facebook/react-native",
-    "installedVersion": "0.74.2"
-  },
-  {
-    "name": "react-native-gesture-handler",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/software-mansion/react-native-gesture-handler/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/software-mansion/react-native-gesture-handler",
-    "installedVersion": "2.16.2"
-  },
-  {
-    "name": "react-native-markdown-display",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/iamacup/react-native-markdown-display/blob/master/LICENSE",
-    "repositoryLink": "https://github.com/iamacup/react-native-markdown-display",
-    "installedVersion": "7.0.2"
-  },
-  {
-    "name": "react-native-reanimated",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/software-mansion/react-native-reanimated/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/software-mansion/react-native-reanimated",
-    "installedVersion": "3.10.1"
-  },
-  {
-    "name": "react-native-safe-area-context",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/th3rdwave/react-native-safe-area-context/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/th3rdwave/react-native-safe-area-context",
-    "installedVersion": "4.10.1"
-  },
-  {
-    "name": "react-native-screens",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/software-mansion/react-native-screens/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/software-mansion/react-native-screens",
-    "installedVersion": "3.31.1"
-  },
-  {
-    "name": "react-native-svg",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/software-mansion/react-native-svg/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/react-native-community/react-native-svg",
-    "installedVersion": "15.3.0"
-  },
-  {
-    "name": "react-native-toast-notifications",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/arnnis/react-native-toast-notifications/blob/master/LICENSE",
-    "repositoryLink": "https://github.com/arnnis/react-native-toast-notifications",
-    "installedVersion": "3.4.0"
-  },
-  {
-    "name": "react-native-track-player",
-    "licenseType": "Apache-2.0",
-    "licenseLink": "https://github.com/doublesymmetry/react-native-track-player/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/doublesymmetry/react-native-track-player",
-    "installedVersion": "4.1.1"
-  },
-  {
-    "name": "tailwind-merge",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/dcastil/tailwind-merge/blob/main/LICENSE.md",
-    "repositoryLink": "https://github.com/dcastil/tailwind-merge",
-    "installedVersion": "2.3.0"
-  },
-  {
-    "name": "tailwindcss",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/tailwindlabs/tailwindcss/blob/next/LICENSE",
-    "repositoryLink": "https://github.com/tailwindlabs/tailwindcss",
-    "installedVersion": "3.4.4"
-  },
-  {
-    "name": "@babel/core",
-    "licenseType": "MIT",
-    "licenseLink": "https://github.com/babel/babel/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/babel/babel/tree/main/packages/babel-core",
-    "installedVersion": "7.24.7"
+    "repositoryLink": "https://github.com/Shopify/flash-list"
   },
   {
     "name": "@tanstack/eslint-plugin-query",
+    "installedVersion": "5.43.1",
     "licenseType": "MIT",
     "licenseLink": "https://github.com/TanStack/query/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/TanStack/query/tree/main/packages/eslint-plugin-query",
-    "installedVersion": "5.43.1"
+    "repositoryLink": "https://github.com/TanStack/query/tree/main/packages/eslint-plugin-query"
   },
   {
-    "name": "@types/react-native-background-timer",
+    "name": "@tanstack/react-query",
+    "installedVersion": "5.45.0",
     "licenseType": "MIT",
-    "licenseLink": "https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/LICENSE",
-    "repositoryLink": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react-native-background-timer",
-    "installedVersion": "2.0.2"
+    "licenseLink": "https://github.com/TanStack/query/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/TanStack/query"
   },
   {
     "name": "@types/core-js",
+    "installedVersion": "2.5.8",
     "licenseType": "MIT",
     "licenseLink": "https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/LICENSE",
-    "repositoryLink": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/core-js",
-    "installedVersion": "2.5.8"
+    "repositoryLink": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/core-js"
   },
   {
     "name": "@types/jest",
+    "installedVersion": "29.5.12",
     "licenseType": "MIT",
     "licenseLink": "https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/LICENSE",
-    "repositoryLink": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/jest",
-    "installedVersion": "29.5.12"
+    "repositoryLink": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/jest"
   },
   {
     "name": "@types/react",
+    "installedVersion": "18.2.79",
     "licenseType": "MIT",
     "licenseLink": "https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/LICENSE",
-    "repositoryLink": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react",
-    "installedVersion": "18.2.79"
+    "repositoryLink": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react"
+  },
+  {
+    "name": "@types/react-native-background-timer",
+    "installedVersion": "2.0.2",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/LICENSE",
+    "repositoryLink": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react-native-background-timer"
   },
   {
     "name": "@typescript-eslint/eslint-plugin",
+    "installedVersion": "7.13.0",
     "licenseType": "MIT",
     "licenseLink": "https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/LICENSE",
-    "repositoryLink": "https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin",
-    "installedVersion": "7.13.0"
+    "repositoryLink": "https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin"
   },
   {
     "name": "@typescript-eslint/parser",
+    "installedVersion": "7.13.0",
     "licenseType": "BSD-2-Clause",
     "licenseLink": "https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/parser/LICENSE",
-    "repositoryLink": "https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/parser",
-    "installedVersion": "7.13.0"
+    "repositoryLink": "https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/parser"
   },
   {
     "name": "babel-plugin-inline-import",
+    "installedVersion": "3.0.0",
     "licenseType": "MIT",
     "licenseLink": "https://github.com/feats/babel-plugin-inline-import/blob/master/LICENSE",
-    "repositoryLink": "https://github.com/Quadric/babel-plugin-inline-import",
-    "installedVersion": "3.0.0"
+    "repositoryLink": "https://github.com/Quadric/babel-plugin-inline-import"
   },
   {
     "name": "babel-plugin-transform-remove-console",
+    "installedVersion": "6.9.4",
     "licenseType": "MIT",
     "licenseLink": "https://github.com/babel/minify/blob/master/LICENSE",
-    "repositoryLink": "https://github.com/babel/minify/tree/master/packages/babel-plugin-transform-remove-console",
-    "installedVersion": "6.9.4"
+    "repositoryLink": "https://github.com/babel/minify/tree/master/packages/babel-plugin-transform-remove-console"
+  },
+  {
+    "name": "clsx",
+    "installedVersion": "2.1.1",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/lukeed/clsx/blob/master/license",
+    "repositoryLink": "https://github.com/lukeed/clsx"
+  },
+  {
+    "name": "core-js",
+    "installedVersion": "3.37.1",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/zloirock/core-js/blob/master/LICENSE",
+    "repositoryLink": "https://github.com/zloirock/core-js"
   },
   {
     "name": "drizzle-kit",
+    "installedVersion": "0.22.7",
     "licenseType": "MIT",
     "licenseLink": null,
-    "repositoryLink": "https://github.com/drizzle-team/drizzle-kit-mirror",
-    "installedVersion": "0.22.7"
+    "repositoryLink": "https://github.com/drizzle-team/drizzle-kit-mirror"
+  },
+  {
+    "name": "drizzle-orm",
+    "installedVersion": "0.31.2",
+    "licenseType": "Apache-2.0",
+    "licenseLink": "https://github.com/drizzle-team/drizzle-orm/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/drizzle-team/drizzle-orm"
   },
   {
     "name": "eslint",
+    "installedVersion": "8.57.0",
     "licenseType": "MIT",
     "licenseLink": "https://github.com/eslint/eslint/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/eslint/eslint",
-    "installedVersion": "8.57.0"
+    "repositoryLink": "https://github.com/eslint/eslint"
   },
   {
     "name": "eslint-config-universe",
+    "installedVersion": "13.0.0",
     "licenseType": "MIT",
     "licenseLink": "https://github.com/expo/expo/blob/main/packages/eslint-config-universe/LICENSE",
-    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/eslint-config-universe",
-    "installedVersion": "13.0.0"
+    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/eslint-config-universe"
+  },
+  {
+    "name": "expo",
+    "installedVersion": "51.0.11",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo"
+  },
+  {
+    "name": "expo-av",
+    "installedVersion": "14.0.5",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-av"
+  },
+  {
+    "name": "expo-drizzle-studio-plugin",
+    "installedVersion": "0.0.2",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/drizzle-team/drizzle-studio-expo/blob/main/package.json#L27",
+    "repositoryLink": "https://github.com/drizzle-team/drizzle-studio-expo"
+  },
+  {
+    "name": "expo-file-system",
+    "installedVersion": "17.0.1",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-file-system"
+  },
+  {
+    "name": "expo-font",
+    "installedVersion": "12.0.7",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-font"
+  },
+  {
+    "name": "expo-image",
+    "installedVersion": "1.12.11",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-image"
+  },
+  {
+    "name": "expo-image-picker",
+    "installedVersion": "15.0.5",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-image-picker"
+  },
+  {
+    "name": "expo-linear-gradient",
+    "installedVersion": "13.0.2",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-linear-gradient"
+  },
+  {
+    "name": "expo-linking",
+    "installedVersion": "6.3.1",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-linking"
+  },
+  {
+    "name": "expo-media-library",
+    "installedVersion": "16.0.3",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-media-library"
+  },
+  {
+    "name": "expo-router",
+    "installedVersion": "3.5.15",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-router"
+  },
+  {
+    "name": "expo-splash-screen",
+    "installedVersion": "0.27.5",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-splash-screen"
+  },
+  {
+    "name": "expo-sqlite",
+    "installedVersion": "14.0.3",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-sqlite"
+  },
+  {
+    "name": "expo-status-bar",
+    "installedVersion": "1.12.1",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-status-bar"
+  },
+  {
+    "name": "expo-system-ui",
+    "installedVersion": "3.0.6",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-system-ui"
+  },
+  {
+    "name": "expo-web-browser",
+    "installedVersion": "13.0.3",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/expo-web-browser"
   },
   {
     "name": "jest",
+    "installedVersion": "29.7.0",
     "licenseType": "MIT",
     "licenseLink": "https://github.com/jestjs/jest/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/jestjs/jest",
-    "installedVersion": "29.7.0"
+    "repositoryLink": "https://github.com/jestjs/jest"
   },
   {
     "name": "jest-expo",
+    "installedVersion": "51.0.2",
     "licenseType": "MIT",
     "licenseLink": "https://github.com/expo/expo/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/jest-expo",
-    "installedVersion": "51.0.2"
+    "repositoryLink": "https://github.com/expo/expo/tree/main/packages/jest-expo"
+  },
+  {
+    "name": "jotai",
+    "installedVersion": "2.8.3",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/pmndrs/jotai/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/pmndrs/jotai"
+  },
+  {
+    "name": "license-report",
+    "installedVersion": "6.5.0",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/kessler/license-report/blob/master/LICENSE",
+    "repositoryLink": "https://github.com/kessler/license-report"
+  },
+  {
+    "name": "nativewind",
+    "installedVersion": "4.0.36",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/nativewind/nativewind/blob/main/packages/nativewind/LICENSE",
+    "repositoryLink": "https://github.com/marklawlor/nativewind"
+  },
+  {
+    "name": "neatjson",
+    "installedVersion": "0.10.6",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/Phrogz/NeatJSON/blob/master/LICENSE.txt",
+    "repositoryLink": "https://github.com/Phrogz/NeatJSON"
   },
   {
     "name": "prettier",
+    "installedVersion": "3.3.2",
     "licenseType": "MIT",
     "licenseLink": "https://github.com/prettier/prettier/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/prettier/prettier",
-    "installedVersion": "3.3.2"
+    "repositoryLink": "https://github.com/prettier/prettier"
   },
   {
     "name": "prettier-plugin-tailwindcss",
+    "installedVersion": "0.6.4",
     "licenseType": "MIT",
     "licenseLink": "https://github.com/tailwindlabs/prettier-plugin-tailwindcss/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/tailwindlabs/prettier-plugin-tailwindcss",
-    "installedVersion": "0.6.4"
+    "repositoryLink": "https://github.com/tailwindlabs/prettier-plugin-tailwindcss"
+  },
+  {
+    "name": "react",
+    "installedVersion": "18.2.0",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/facebook/react/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/facebook/react"
+  },
+  {
+    "name": "react-native",
+    "installedVersion": "0.74.2",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/facebook/react-native/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/facebook/react-native"
+  },
+  {
+    "name": "react-native-gesture-handler",
+    "installedVersion": "2.16.2",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/software-mansion/react-native-gesture-handler/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/software-mansion/react-native-gesture-handler"
+  },
+  {
+    "name": "react-native-markdown-display",
+    "installedVersion": "7.0.2",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/iamacup/react-native-markdown-display/blob/master/LICENSE",
+    "repositoryLink": "https://github.com/iamacup/react-native-markdown-display"
+  },
+  {
+    "name": "react-native-reanimated",
+    "installedVersion": "3.10.1",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/software-mansion/react-native-reanimated/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/software-mansion/react-native-reanimated"
+  },
+  {
+    "name": "react-native-safe-area-context",
+    "installedVersion": "4.10.1",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/th3rdwave/react-native-safe-area-context/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/th3rdwave/react-native-safe-area-context"
+  },
+  {
+    "name": "react-native-screens",
+    "installedVersion": "3.31.1",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/software-mansion/react-native-screens/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/software-mansion/react-native-screens"
+  },
+  {
+    "name": "react-native-svg",
+    "installedVersion": "15.3.0",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/software-mansion/react-native-svg/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/react-native-community/react-native-svg"
+  },
+  {
+    "name": "react-native-toast-notifications",
+    "installedVersion": "3.4.0",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/arnnis/react-native-toast-notifications/blob/master/LICENSE",
+    "repositoryLink": "https://github.com/arnnis/react-native-toast-notifications"
+  },
+  {
+    "name": "react-native-track-player",
+    "installedVersion": "4.1.1",
+    "licenseType": "Apache-2.0",
+    "licenseLink": "https://github.com/doublesymmetry/react-native-track-player/blob/main/LICENSE",
+    "repositoryLink": "https://github.com/doublesymmetry/react-native-track-player"
   },
   {
     "name": "react-test-renderer",
+    "installedVersion": "18.2.0",
     "licenseType": "MIT",
     "licenseLink": "https://github.com/facebook/react/blob/main/LICENSE",
-    "repositoryLink": "https://github.com/facebook/react/tree/main/packages/react-test-renderer",
-    "installedVersion": "18.2.0"
+    "repositoryLink": "https://github.com/facebook/react/tree/main/packages/react-test-renderer"
+  },
+  {
+    "name": "tailwind-merge",
+    "installedVersion": "2.3.0",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/dcastil/tailwind-merge/blob/main/LICENSE.md",
+    "repositoryLink": "https://github.com/dcastil/tailwind-merge"
+  },
+  {
+    "name": "tailwindcss",
+    "installedVersion": "3.4.4",
+    "licenseType": "MIT",
+    "licenseLink": "https://github.com/tailwindlabs/tailwindcss/blob/next/LICENSE",
+    "repositoryLink": "https://github.com/tailwindlabs/tailwindcss"
   },
   {
     "name": "typescript",
+    "installedVersion": "5.4.5",
     "licenseType": "Apache-2.0",
     "licenseLink": "https://github.com/microsoft/TypeScript/blob/main/LICENSE.txt",
-    "repositoryLink": "https://github.com/Microsoft/TypeScript",
-    "installedVersion": "5.4.5"
+    "repositoryLink": "https://github.com/Microsoft/TypeScript"
   }
 ]
