@@ -6,6 +6,8 @@ export default function SettingsLayout() {
       <Stack.Screen name="index" />
       <Stack.Screen name="storage" />
       <Stack.Screen name="support" />
+      <Stack.Screen name="licenses/index" />
+      <Stack.Screen name="licenses/[...id]" />
     </Stack>
   );
 }

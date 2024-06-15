@@ -45,7 +45,7 @@ A Nothing inspired music player (based on design by [Alkid Shuli (alKid)](https:
 Music is based on the design seen in this [comment on the Nothing Community forums](https://nothing.community/d/1825-nothing-music-player-app/2), created by [Alkid Shuli (alKid)](https://bento.me/alkid).
 
 > [!IMPORTANT]  
-> Be careful when clearing the cache of the app as if you accidentally clear the storage, all your playlists will be deleted.
+> Be careful when clearing the cache of the app as if you accidentally clear the storage, all the data in the app will be deleted (ie: playlists, favorited tracks, artwork).
 >
 > It's planned in the future to add support for exporting playlist data to make transferring of data easier.
 

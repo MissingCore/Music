@@ -1,11 +1,13 @@
 import { FlashList } from "@shopify/flash-list";
+import { Link as ExpoLink } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 
 import LicensesList from "@/assets/licenses.json";
-import { OpenInNewOutline } from "@/assets/svgs/MaterialSymbol";
+import { ArrowRight } from "@/assets/svgs/ArrowRight";
 
 import { GITHUB_LINK } from "@/constants/Config";
 import { Colors } from "@/constants/Styles";
+import { cn } from "@/lib/style";
 import { AnimatedHeader } from "@/components/navigation/AnimatedHeader";
 import { ExternalLink } from "@/components/navigation/ExternalLink";
 import { Description, Link } from "@/features/setting/components/UI";
@@ -49,25 +51,28 @@ export default function LicensesScreen() {
         // Median between `36` (min height) & `52` (max height). At `36`,
         // later items "glitch" into view.
         estimatedItemSize={44}
-        data={LicensesList}
+        data={Object.values(LicensesList)}
         keyExtractor={({ name }) => name}
-        renderItem={({ item }) => (
-          <ExternalLink href={item.licenseLink ?? item.repositoryLink} asChild>
-            <Pressable className="mb-4 flex-row items-center justify-between gap-2 active:opacity-75">
+        renderItem={({ item, index }) => (
+          <ExpoLink href={`/setting/licenses/${item.name}`} asChild>
+            <Pressable
+              className={cn(
+                "flex-row items-center justify-between gap-2 active:opacity-75",
+                { "mb-4": index !== Object.values(LicensesList).length - 1 },
+              )}
+            >
               <View className="shrink">
                 <Text className="shrink font-geistMono text-sm text-foreground50">
                   {item.name}
                 </Text>
                 <Text className="shrink font-geistMonoLight text-sm text-foreground100">
-                  {item.licenseType}{" "}
-                  <Text className="text-surface400">
-                    ({item.installedVersion})
-                  </Text>
+                  {item.license}{" "}
+                  <Text className="text-surface400">({item.version})</Text>
                 </Text>
               </View>
-              <OpenInNewOutline size={24} color={Colors.surface400} />
+              <ArrowRight size={24} color={Colors.surface400} />
             </Pressable>
-          </ExternalLink>
+          </ExpoLink>
         )}
         showsVerticalScrollIndicator={false}
       />

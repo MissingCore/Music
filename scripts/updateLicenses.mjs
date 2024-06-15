@@ -4,8 +4,6 @@ import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 
-import existingLicenses from "../src/assets/licenses.json" assert { type: "json" };
-
 const ConsoleColor = {
   reset: "\x1b[0m",
   red: "\x1b[31m",
@@ -24,7 +22,7 @@ function styleText(color, text) {
 }
 
 /**
- * @typedef {{ name: string, licenseType: string, link: string, installedVersion: string }} License
+ * @typedef {{ name: string, version: string, copyright: string, repository: string, licenses: string, licenseText: string }} License
  */
 
 let inputStr = "";
@@ -39,52 +37,26 @@ let inputStr = "";
 function updateLicensesJSON() {
   const projectRootPath = process.cwd();
 
-  const licenseReport = /** @type {License[]} */ (JSON.parse(inputStr));
-  const newLicenses = /** @type {string[]} */ ([]);
+  /** @type {Record<string, License>} */
+  const licenseReport = JSON.parse(inputStr);
 
-  const currLicenses = licenseReport
-    .map((entry) => {
-      const exists = existingLicenses.find(({ name }) => name === entry.name);
-      if (exists) {
-        const { name, licenseType, installedVersion } = entry;
-        // Make sure license hasn't changed.
-        if (exists.licenseType !== licenseType) {
-          styleText(
-            "yellow",
-            `\`${name}\` changed its license from "${exists.licenseType}" to "${licenseType}".`,
-          );
-        }
-        return { ...exists, licenseType, installedVersion };
-      }
-      // New Entry
-      newLicenses.push(entry.name);
-      const { link: repositoryLink, ...rest } = entry;
-      return { ...rest, licenseLink: null, repositoryLink };
-    })
-    .filter((entry) => !!entry)
-    .sort((a, b) => a.name.localeCompare(b.name));
-
-  const removedPackages = existingLicenses.filter(
-    ({ name }) => !currLicenses.some((entry) => entry.name === name),
+  const updatedLicenseList = Object.fromEntries(
+    Object.values(licenseReport)
+      .map(
+        ({ name, version, copyright, repository, licenses, licenseText }) => {
+          const content = {
+            ...{ name, version, copyright: copyright || null, repository },
+            ...{ license: licenses, licenseText },
+          };
+          return [name, content];
+        },
+      )
+      .sort((a, b) => a[1].name.localeCompare(b[1].name)),
   );
-
-  if (newLicenses.length > 0) {
-    styleText(
-      "green",
-      `The following packages have been installed, make sure the values in \`licenses.json\` are correct, then rerun \`pnpm sync:licenses\`: ${newLicenses.map((name) => `\`${name}\``).join(", ")}.`,
-    );
-  }
-
-  if (removedPackages.length > 0) {
-    styleText(
-      "red",
-      `The following packages have been removed: ${removedPackages.map(({ name }) => `\`${name}\``).join(", ")}.`,
-    );
-  }
 
   fs.writeFileSync(
     path.resolve(projectRootPath, "./src/assets/licenses.json"),
-    neatJSON(currLicenses, {
+    neatJSON(updatedLicenseList, {
       objectPadding: 1,
       afterComma: 1,
       afterColon1: 1,
@@ -94,21 +66,22 @@ function updateLicensesJSON() {
 
   /* Update `THIRD_PARTY.md` based on the new `licenses.md`. */
   const tableHeading = [
-    "| Package Name | License Type & Link | Repository Link |",
-    "| ------------ | ------------------- | --------------- |",
+    "| Name | License | Repository |",
+    "| ---- | ------- | ---------- |",
   ];
-  const tableRows = currLicenses.map(
-    ({ name, licenseType, licenseLink, repositoryLink }) => {
-      const license = licenseLink
-        ? `[${licenseType}](${licenseLink})`
-        : licenseType;
-      return `| ${name} | ${license} | ${repositoryLink} |`;
-    },
+  const tableRows = Object.values(updatedLicenseList).map(
+    ({ name, license, repository }) =>
+      `| ${name} | ${license} | ${repository} |`,
   );
 
   fs.writeFileSync(
     path.resolve(projectRootPath, "./THIRD_PARTY.md"),
     [...tableHeading, ...tableRows].join("\n"),
+  );
+
+  styleText(
+    "green",
+    "Remember to review `licenses.json` & update `licenseClarification.json` as needed.",
   );
 }
 
