@@ -20,7 +20,7 @@ export default function CurrentLicenseScreen() {
       <Description className="mb-8">
         <Text className="text-foreground100">{licenseInfo.version}</Text>
         {"\n\n"}
-        This package is licensed under the {licenseInfo.license} license.
+        This component is licensed under the {licenseInfo.license} license.
         {!!licenseInfo.copyright && (
           <>
             {"\n\n"}
@@ -30,9 +30,13 @@ export default function CurrentLicenseScreen() {
       </Description>
 
       <Link
-        href={licenseInfo.repository}
-        iconName="logo-github"
-        label="Repository"
+        href={licenseInfo.source}
+        iconName={
+          licenseInfo.source.startsWith("https://github.com")
+            ? "logo-github"
+            : "globe-outline"
+        }
+        label="Source"
       />
 
       <View className="mb-6 border-t border-surface700" />

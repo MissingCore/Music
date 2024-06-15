@@ -1,5 +1,5 @@
-| Name | License | Repository |
-| ---- | ------- | ---------- |
+| Name | License | Source |
+| ---- | ------- | ------ |
 | @boterop/react-native-background-timer | MIT | https://github.com/boterop/react-native-background-timer |
 | @expo/vector-icons | MIT | https://github.com/expo/vector-icons |
 | @gorhom/bottom-sheet | MIT | https://github.com/gorhom/react-native-bottom-sheet |
@@ -29,7 +29,11 @@
 | expo-status-bar | MIT | https://github.com/expo/expo/tree/main/packages/expo-status-bar |
 | expo-system-ui | MIT | https://github.com/expo/expo/tree/main/packages/expo-system-ui |
 | expo-web-browser | MIT | https://github.com/expo/expo/tree/main/packages/expo-web-browser |
+| Geist Font | OFL-1.1 | https://github.com/vercel/geist-font |
+| heroicons | MIT | https://heroicons.com |
+| Ionicons | MIT | https://github.com/ionic-team/ionicons |
 | jotai | MIT | https://github.com/pmndrs/jotai |
+| Material Symbols | Apache-2.0 | https://github.com/google/material-design-icons |
 | nativewind | MIT | https://github.com/marklawlor/nativewind |
 | react | MIT | https://github.com/facebook/react |
 | react-native | MIT | https://github.com/facebook/react-native |

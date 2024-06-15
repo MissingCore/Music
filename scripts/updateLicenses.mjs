@@ -4,6 +4,8 @@ import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 
+import nonNPMLicenses from "./nonNPMLicenses.json" assert { type: "json" };
+
 const ConsoleColor = {
   reset: "\x1b[0m",
   red: "\x1b[31m",
@@ -45,11 +47,14 @@ function updateLicensesJSON() {
       .map(
         ({ name, version, copyright, repository, licenses, licenseText }) => {
           const content = {
-            ...{ name, version, copyright: copyright || null, repository },
-            ...{ license: licenses, licenseText },
+            ...{ name, version, copyright: copyright || null },
+            ...{ source: repository, license: licenses, licenseText },
           };
           return [name, content];
         },
+      )
+      .concat(
+        Object.entries(nonNPMLicenses).map(([key, value]) => [key, value]),
       )
       .sort((a, b) => a[1].name.localeCompare(b[1].name)),
   );
@@ -66,12 +71,11 @@ function updateLicensesJSON() {
 
   /* Update `THIRD_PARTY.md` based on the new `licenses.md`. */
   const tableHeading = [
-    "| Name | License | Repository |",
-    "| ---- | ------- | ---------- |",
+    "| Name | License | Source |",
+    "| ---- | ------- | ------ |",
   ];
   const tableRows = Object.values(updatedLicenseList).map(
-    ({ name, license, repository }) =>
-      `| ${name} | ${license} | ${repository} |`,
+    ({ name, license, source }) => `| ${name} | ${license} | ${source} |`,
   );
 
   fs.writeFileSync(
