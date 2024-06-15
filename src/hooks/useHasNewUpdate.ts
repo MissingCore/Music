@@ -6,18 +6,14 @@ import { APP_VERSION } from "@/constants/Config";
 export function useHasNewUpdate() {
   const { isPending, error, data } = useLatestRelease();
 
-  if (isPending) {
-    return false;
-  } else if (
-    !!error ||
-    !data.version ||
-    data.version.includes("-rc.") ||
-    data.version < APP_VERSION.split("-rc.")[0]
-  ) {
-    // We prefer newest stable version over release candidate (ie: `v1.0.0` over `v1.0.0-rc.1`)
-    //  - `data.version` should never be a release candidate value.
-    return false;
-  } else {
-    return true;
-  }
+  if (isPending || !!error) return false;
+
+  const usingRC = APP_VERSION.includes("-rc");
+  // Release candidates shouldn't have the "Latest Release" tag on GitHub
+  // (ie: shouldn't be in `data.latestStable`). We compare against potentially
+  // release candidate versions if we're on a release candidate.
+  const usedRelease = usingRC ? data.latestRelease : data.latestStable;
+
+  if (!usedRelease.version || usedRelease.version === APP_VERSION) return false;
+  else return true;
 }

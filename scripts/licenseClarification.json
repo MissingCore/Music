@@ -21,7 +21,7 @@
   },
   "expo-drizzle-studio-plugin@0.0.2": {
     "repository": "https://github.com/drizzle-team/drizzle-studio-expo",
-    "licenseText": "No license file found, visit repository with link above."
+    "licenseText": "No license file found, visit source with link above."
   },
   "expo-file-system@17.0.1": {
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",

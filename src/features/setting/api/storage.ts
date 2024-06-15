@@ -32,6 +32,10 @@ export async function getStorageAndStatistics() {
 
   const cacheSize = cacheData.exists ? cacheData.size : 0;
 
+  const imgDirContent = await FileSystem.readDirectoryAsync(
+    FileSystem.documentDirectory + "images",
+  );
+
   return {
     userData: {
       images: imagesSize,
@@ -43,6 +47,7 @@ export async function getStorageAndStatistics() {
     statistics: {
       albums: await countFrom(albums),
       artists: await countFrom(artists),
+      images: imgDirContent.length,
       playlists: await countFrom(playlists),
       tracks: await countFrom(tracks),
       totalDuration:

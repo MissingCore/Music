@@ -83,6 +83,7 @@ function InfoWidgets() {
 
         <ValueRow label="Albums" value={data.statistics.albums} />
         <ValueRow label="Artists" value={data.statistics.artists} />
+        <ValueRow label="Images" value={data.statistics.images} />
         <ValueRow label="Playlists" value={data.statistics.playlists} />
         <ValueRow label="Tracks" value={data.statistics.tracks} />
 

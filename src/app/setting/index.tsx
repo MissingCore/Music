@@ -41,15 +41,17 @@ function UpdateChecker() {
   const { isPending, error, data } = useLatestRelease();
 
   if (isPending) return null;
+  else if (error) {
+    return <Description>Currently on latest version.</Description>;
+  }
 
-  // We prefer newest stable version over release candidate (ie: `v1.0.0` over `v1.0.0-rc.1`)
-  //  - `data.version` should never be a release candidate value.
-  if (
-    !!error ||
-    !data.version ||
-    data.version.includes("-rc.") ||
-    data.version < APP_VERSION.split("-rc.")[0]
-  ) {
+  const usingRC = APP_VERSION.includes("-rc");
+  // Release candidates shouldn't have the "Latest Release" tag on GitHub
+  // (ie: shouldn't be in `data.latestStable`). We compare against potentially
+  // release candidate versions if we're on a release candidate.
+  const usedRelease = usingRC ? data.latestRelease : data.latestStable;
+
+  if (!usedRelease.version || usedRelease.version === APP_VERSION) {
     return <Description>Currently on latest version.</Description>;
   }
 
@@ -115,12 +117,12 @@ function UpdateChecker() {
           ),
         }}
       >
-        {`# ${data.version} is Available\n\n${data.releaseNotes}`}
+        {`# ${usedRelease.version} is Available\n\n${usedRelease.releaseNotes}`}
       </Markdown>
       <View className="mt-4 flex-row gap-2">
         <LinkButton
           as="external"
-          href={`${GITHUB_LINK}/releases/latest`}
+          href={`${GITHUB_LINK}/releases/${usingRC ? `tag/${usedRelease.version}` : "latest"}`}
           theme="neutral-alt"
           Icon={
             <Ionicons
