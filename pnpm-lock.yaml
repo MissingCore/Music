@@ -175,6 +175,9 @@ devDependencies:
   eslint-config-universe:
     specifier: ^13.0.0
     version: 13.0.0(eslint@8.57.0)(prettier@3.3.2)(typescript@5.4.5)
+  eslint-plugin-drizzle:
+    specifier: ^0.2.3
+    version: 0.2.3(eslint@8.57.0)
   jest:
     specifier: ^29.7.0
     version: 29.7.0
@@ -5951,6 +5954,14 @@ packages:
       eslint-import-resolver-node: 0.3.9
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /eslint-plugin-drizzle@0.2.3(eslint@8.57.0):
+    resolution: {integrity: sha512-BO+ymHo33IUNoJlC0rbd7HP9EwwpW4VIp49R/tWQF/d2E1K2kgTf0tCXT0v9MSiBr6gGR1LtPwMLapTKEWSg9A==}
+    peerDependencies:
+      eslint: '>=8.0.0'
+    dependencies:
+      eslint: 8.57.0
     dev: true
 
   /eslint-plugin-es@3.0.1(eslint@8.57.0):

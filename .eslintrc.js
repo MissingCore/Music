@@ -5,11 +5,12 @@ const config = {
   parserOptions: {
     project: true,
   },
-  plugins: ["@tanstack/query"],
+  plugins: ["@tanstack/query", "drizzle"],
   extends: [
     "universe/native",
     "universe/shared/typescript-analysis",
     "plugin:@tanstack/eslint-plugin-query/recommended",
+    "plugin:drizzle/recommended",
   ],
   rules: {
     "@typescript-eslint/array-type": ["warn", { default: "array-simple" }],
