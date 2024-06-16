@@ -122,7 +122,7 @@ function UpdateChecker() {
       <View className="mt-4 flex-row gap-2">
         <LinkButton
           as="external"
-          href={`${GITHUB_LINK}/releases/${usingRC ? `tag/${usedRelease.version}` : "latest"}`}
+          href={`${GITHUB_LINK}/releases/tag/${usedRelease.version}`}
           theme="neutral-alt"
           Icon={
             <Ionicons

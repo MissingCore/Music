@@ -96,6 +96,11 @@ const playTrackAtom = atom(null, async (get, set, opts?: TPlayTrackOpts) => {
   const soundRef = get(soundRefAtom);
   const shouldPlay = opts?.action !== "paused";
 
+  // Make sure the track player notification is displayed. If not displayed,
+  // add some delay due to the notification stopping tracks from `expo-av`
+  // from playing temporarily.
+  const isPlayerLoaded = await TrackPlayer.getActiveTrack();
+
   // Make sure next track is played on completion.
   soundRef.setOnPlaybackStatusUpdate((playbackStatus) => {
     if (!playbackStatus.isLoaded) return;
@@ -127,39 +132,35 @@ const playTrackAtom = atom(null, async (get, set, opts?: TPlayTrackOpts) => {
     await TrackPlayer.load(formatTrackforPlayer(trackData));
     set(positionMsAtom, 0);
 
-    BackgroundTimer.setTimeout(async () => {
-      if (trackData.id !== get(queuedTrackAtom)) return;
-      try {
-        await soundRef.loadAsync({ uri: trackData.uri }, { shouldPlay });
-        await TrackPlayer.seekTo(0);
-      } catch (err) {
-        if (
-          err instanceof Error &&
-          err.message.includes("java.io.FileNotFoundException")
-        ) {
-          // Case where we play a file that no longer exists. We'll just
-          // reset the information describing the playing information.
-          //  - We might alternatively just delete the track.
-          set(resetPlayingInfoAtom);
-          Toast.show("Track no longer exists.", { type: "danger" });
+    BackgroundTimer.setTimeout(
+      async () => {
+        // Check if the user was spamming the next/prev button.
+        if (trackData.id !== get(queuedTrackAtom)) return;
+        try {
+          await soundRef.loadAsync({ uri: trackData.uri }, { shouldPlay });
+          await TrackPlayer.seekTo(0);
+        } catch (err) {
+          if (
+            err instanceof Error &&
+            err.message.includes("java.io.FileNotFoundException")
+          ) {
+            // Played track no longer exists; reset context.
+            set(resetPlayingInfoAtom);
+            Toast.show("Track no longer exists.", { type: "danger" });
+          }
+          // Catch cases where media failed to load or if it's already loaded.
+          console.log(err);
         }
-        // Catch cases where media failed to load or if it's already loaded.
-        console.log(err);
-      }
-    }, 150);
+      },
+      isPlayerLoaded ? 150 : 250,
+    );
   } else {
-    // Make sure the track player notification is displayed.
-    const isPlayerLoaded = await TrackPlayer.getActiveTrack();
+    // If we don't define any options, we assume we're just unpausing a track.
     if (!isPlayerLoaded) {
       const trackData = await get(trackDataAsyncAtom); // Should always be defined.
       if (trackData) await TrackPlayer.load(formatTrackforPlayer(trackData));
-      // Play track after a short delay due to loading the notification stopping
-      // tracks from `expo-av` from playing temporarily.
-      BackgroundTimer.setTimeout(async () => {
-        await soundRef.playAsync();
-      }, 150);
+      BackgroundTimer.setTimeout(async () => await soundRef.playAsync(), 250);
     } else {
-      // If we don't define any options, we assume we're just unpausing a track.
       await soundRef.playAsync();
     }
   }
