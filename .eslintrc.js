@@ -5,10 +5,10 @@ const config = {
   parserOptions: {
     project: true,
   },
-  plugins: ["@tanstack/query", "drizzle"],
+  plugins: ["@tanstack/query", "drizzle", "prettier"],
   extends: [
-    "universe/native",
-    "universe/shared/typescript-analysis",
+    "expo",
+    "prettier",
     "plugin:@tanstack/eslint-plugin-query/recommended",
     "plugin:drizzle/recommended",
   ],

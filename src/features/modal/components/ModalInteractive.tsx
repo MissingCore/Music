@@ -20,32 +20,34 @@ type ModalButtonProps = {
  *  the modal it's in when pressed (unless `dontCloseOnPress` is provided).
  *  Must be used inside a `<BottomSheet />`.
  */
-export const Button = forwardRef<View, ModalButtonProps>((props, ref) => {
-  const { close } = useBottomSheet();
+export const Button = forwardRef<View, ModalButtonProps>(
+  function Button(props, ref) {
+    const { close } = useBottomSheet();
 
-  const Icon = Icons[props.icon];
+    const Icon = Icons[props.icon];
 
-  return (
-    <Pressable
-      ref={ref}
-      onPress={(e) => {
-        if (props.onPress) props.onPress(e);
-        if (!props.dontCloseOnPress) close();
-      }}
-      className="w-24 items-center active:opacity-75"
-    >
-      <View className="mb-2 size-20 items-center justify-center rounded-lg bg-surface700">
-        <Icon size={48} />
-      </View>
-      <Text
-        numberOfLines={2}
-        className="h-[30px] text-center align-middle font-geistMono text-xs text-foreground50"
+    return (
+      <Pressable
+        ref={ref}
+        onPress={(e) => {
+          if (props.onPress) props.onPress(e);
+          if (!props.dontCloseOnPress) close();
+        }}
+        className="w-24 items-center active:opacity-75"
       >
-        {props.content}
-      </Text>
-    </Pressable>
-  );
-});
+        <View className="mb-2 size-20 items-center justify-center rounded-lg bg-surface700">
+          <Icon size={48} />
+        </View>
+        <Text
+          numberOfLines={2}
+          className="h-[30px] text-center align-middle font-geistMono text-xs text-foreground50"
+        >
+          {props.content}
+        </Text>
+      </Pressable>
+    );
+  },
+);
 
 interface ModalLinkProps extends React.ComponentProps<typeof Button> {
   href: string;

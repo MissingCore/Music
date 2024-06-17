@@ -60,7 +60,7 @@ export default function CurrentAlbumScreen() {
             <Link
               href={`/artist/${data.artistName}`}
               numberOfLines={1}
-              className="font-geistMonoLight text-xs text-accent50"
+              className="self-start font-geistMonoLight text-xs text-accent50"
             >
               {data.artistName}
             </Link>

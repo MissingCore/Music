@@ -48,40 +48,42 @@ export type ButtonProps = {
 };
 
 /** @description Pill button with icon support. */
-export const Button = forwardRef<View, ButtonProps>((props, ref) => {
-  const theme = props.theme ?? "white-outline";
+export const Button = forwardRef<View, ButtonProps>(
+  function Button(props, ref) {
+    const theme = props.theme ?? "white-outline";
 
-  return (
-    <Pressable
-      ref={ref}
-      onPress={(e) => {
-        if (!props.disabled && props.onPress) props.onPress(e);
-      }}
-      className={cn(
-        "flex-row items-center gap-2 rounded-full border px-2 py-1",
-        {
-          [ButtonThemes[theme].button.base]: !props.disabled,
-          [ButtonThemes[theme].button.disabled]: props.disabled,
-        },
-        props.wrapperClassName,
-      )}
-    >
-      {props.Icon}
-      <Text
+    return (
+      <Pressable
+        ref={ref}
+        onPress={(e) => {
+          if (!props.disabled && props.onPress) props.onPress(e);
+        }}
         className={cn(
-          "font-geistMono text-sm",
+          "flex-row items-center gap-2 rounded-full border px-2 py-1",
           {
-            [ButtonThemes[theme].text.base]: !props.disabled,
-            [ButtonThemes[theme].text.disabled]: props.disabled,
+            [ButtonThemes[theme].button.base]: !props.disabled,
+            [ButtonThemes[theme].button.disabled]: props.disabled,
           },
-          props.textClassName,
+          props.wrapperClassName,
         )}
       >
-        {props.content}
-      </Text>
-    </Pressable>
-  );
-});
+        {props.Icon}
+        <Text
+          className={cn(
+            "font-geistMono text-sm",
+            {
+              [ButtonThemes[theme].text.base]: !props.disabled,
+              [ButtonThemes[theme].text.disabled]: props.disabled,
+            },
+            props.textClassName,
+          )}
+        >
+          {props.content}
+        </Text>
+      </Pressable>
+    );
+  },
+);
 
 export type LinkButtonProps = ButtonProps & { as?: "external"; href: string };
 
