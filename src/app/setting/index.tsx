@@ -5,7 +5,7 @@ import Markdown from "react-native-markdown-display";
 import { useLatestRelease } from "@/features/setting/api/release";
 
 import { APP_VERSION, GITHUB_LINK } from "@/constants/Config";
-import { BorderRadius, Colors, FontSize } from "@/constants/Styles";
+import { BorderRadius, Colors, FontFamily, FontSize } from "@/constants/Styles";
 import { LinkButton } from "@/components/form/Button";
 import { AnimatedHeader } from "@/components/navigation/AnimatedHeader";
 import {
@@ -63,7 +63,7 @@ function UpdateChecker() {
             padding: 8,
             backgroundColor: Colors.surface800,
             color: Colors.foreground100,
-            fontFamily: "GeistMonoLight",
+            fontFamily: FontFamily.geistMonoLight,
             fontSize: FontSize.xs,
             borderRadius: BorderRadius.lg,
           },
@@ -142,7 +142,7 @@ const markdownStyles = StyleSheet.create({
   heading: {
     marginBottom: 8,
     color: Colors.foreground50,
-    fontFamily: "GeistMono",
+    fontFamily: FontFamily.geistMono,
   },
   list: {
     marginVertical: 8,

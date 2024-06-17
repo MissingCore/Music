@@ -1,9 +1,6 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import type { SQLiteDatabase } from "expo-sqlite";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
-import { useFonts } from "expo-font";
 import { useEffect, useMemo } from "react";
 
 import { useSaveAudio } from "./useSaveAudio";
@@ -17,28 +14,19 @@ import migrations from "@/db/drizzle/migrations";
  *  tasks are complete.
  */
 export function useLoadAssets() {
-  const [fontsLoaded, fontsError] = useFonts({
-    GeistLight: require("../assets/fonts/Geist-Light.ttf"),
-    GeistMonoLight: require("../assets/fonts/GeistMono-Light.ttf"),
-    GeistMono: require("../assets/fonts/GeistMono-Regular.ttf"),
-    Ndot57: require("../assets/fonts/Ndot-57.ttf"),
-    ...Ionicons.font,
-    ...MaterialIcons.font,
-  });
   const { success: dbSuccess, error: dbError } = useMigrations(db, migrations);
   useDevOnly(expoSQLiteDB);
   const tracksSaved = useSaveAudio();
   const trackPlayerLoaded = useSetupTrackPlayer();
 
   const completedTasks = useMemo(() => {
-    return fontsLoaded && dbSuccess && trackPlayerLoaded && tracksSaved;
-  }, [fontsLoaded, dbSuccess, trackPlayerLoaded, tracksSaved]);
+    return dbSuccess && trackPlayerLoaded && tracksSaved;
+  }, [dbSuccess, trackPlayerLoaded, tracksSaved]);
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
-    if (fontsError) throw fontsError;
     if (dbError) throw dbError;
-  }, [fontsError, dbError]);
+  }, [dbError]);
 
   return { isLoaded: completedTasks };
 }

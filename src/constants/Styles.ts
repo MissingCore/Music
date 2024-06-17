@@ -25,10 +25,10 @@ export const Colors = {
 } as const;
 
 export const FontFamily = {
-  geistLight: "GeistLight",
-  geistMonoLight: "GeistMonoLight",
-  geistMono: "GeistMono",
-  ndot57: "Ndot57",
+  geistLight: "Geist-Light",
+  geistMonoLight: "GeistMono-Light",
+  geistMono: "GeistMono-Regular",
+  ndot57: "Ndot-57",
 } as const;
 
 export const FontSize = {

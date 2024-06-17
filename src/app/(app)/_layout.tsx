@@ -4,7 +4,7 @@ import { Pressable, View } from "react-native";
 
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 
-import { Colors } from "@/constants/Styles";
+import { Colors, FontFamily } from "@/constants/Styles";
 import { MiniPlayer } from "@/features/playback/components/MiniPlayer";
 
 /** @description Contains content that doesn't take up the full-screen. */
@@ -18,7 +18,7 @@ export default function MainLayout() {
           name="(home)"
           options={{
             title: "MUSIC",
-            headerTitleStyle: { fontFamily: "Ndot57", fontSize: 32 },
+            headerTitleStyle: { fontFamily: FontFamily.ndot57, fontSize: 32 },
             headerRight: () => (
               <Link href="/setting" asChild>
                 <Pressable className="active:opacity-75">

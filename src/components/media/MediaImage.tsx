@@ -24,7 +24,7 @@ export function MediaImage({ type, size, source, className }: MediaImageProps) {
   if (source === SpecialPlaylists.favorites) {
     return (
       <Image
-        source={require("@/assets/images/glyph/music.png")}
+        source={require("@/assets/glyphs/music.png")}
         style={{ width: size, height: size }}
         className={cn("rounded-lg bg-accent500", className)}
       />
@@ -43,8 +43,8 @@ export function MediaImage({ type, size, source, className }: MediaImageProps) {
       source={displayedImg}
       placeholder={
         isArtist
-          ? require("@/assets/images/glyph/face.png")
-          : require("@/assets/images/glyph/music.png")
+          ? require("@/assets/glyphs/face.png")
+          : require("@/assets/glyphs/music.png")
       }
       style={{ width: size, height: size }}
       className={cn(
@@ -74,7 +74,7 @@ function CollageImage(props: {
         <Image
           key={idx}
           source={source}
-          placeholder={require("@/assets/images/glyph/music.png")}
+          placeholder={require("@/assets/glyphs/music.png")}
           className="size-1/2 bg-surface800"
         />
       ))}

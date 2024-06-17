@@ -8,7 +8,7 @@ export default (): ExpoConfig => ({
   platforms: ["android"],
   githubUrl: "https://github.com/MissingCore/Music",
   orientation: "portrait",
-  icon: "./src/assets/images/icon.png",
+  icon: "./assets/icon.png",
   scheme: "music",
   backgroundColor: "#000000",
   userInterfaceStyle: "automatic",
@@ -17,8 +17,8 @@ export default (): ExpoConfig => ({
     package: "com.cyanchill.missingcore.music",
     versionCode: 0, // Shouldn't be `0`, but will get overridden w/ our workflow.
     adaptiveIcon: {
-      foregroundImage: "./src/assets/images/adaptive-icon.png",
-      monochromeImage: "./src/assets/images/adaptive-icon-monochrome.png",
+      foregroundImage: "./assets/adaptive-icon.png",
+      monochromeImage: "./assets/adaptive-icon-monochrome.png",
       backgroundColor: "#000000",
     },
     blockedPermissions: [
@@ -28,7 +28,19 @@ export default (): ExpoConfig => ({
   },
   plugins: [
     "expo-router",
-    "expo-font",
+    [
+      "expo-font",
+      {
+        fonts: [
+          "assets/fonts/Geist-Light.ttf",
+          "assets/fonts/GeistMono-Light.ttf",
+          "assets/fonts/GeistMono-Regular.ttf",
+          "assets/fonts/Ndot-57.ttf",
+          "node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Ionicons.ttf",
+          "node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/MaterialIcons.ttf",
+        ],
+      },
+    ],
     [
       "react-native-bootsplash",
       {
