@@ -1,7 +1,7 @@
+import { createId } from "@paralleldrive/cuid2";
 import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
 
-import { createId } from "@/lib/cuid2";
 import type { Maybe } from "@/utils/types";
 
 /** @description Creates "image" directory if it doesn't already exist. */

@@ -1,3 +1,4 @@
+import { createId } from "@paralleldrive/cuid2";
 import type { InferSelectModel } from "drizzle-orm";
 import { relations } from "drizzle-orm";
 import {
@@ -7,7 +8,6 @@ import {
   text,
 } from "drizzle-orm/sqlite-core";
 
-import { createId } from "@/lib/cuid2";
 import type { Prettify } from "@/utils/types";
 
 export const artists = sqliteTable("artists", {
