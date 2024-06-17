@@ -24,7 +24,6 @@
 | expo-linking | MIT | https://github.com/expo/expo/tree/main/packages/expo-linking |
 | expo-media-library | MIT | https://github.com/expo/expo/tree/main/packages/expo-media-library |
 | expo-router | MIT | https://github.com/expo/expo/tree/main/packages/expo-router |
-| expo-splash-screen | MIT | https://github.com/expo/expo/tree/main/packages/expo-splash-screen |
 | expo-sqlite | MIT | https://github.com/expo/expo/tree/main/packages/expo-sqlite |
 | expo-status-bar | MIT | https://github.com/expo/expo/tree/main/packages/expo-status-bar |
 | expo-system-ui | MIT | https://github.com/expo/expo/tree/main/packages/expo-system-ui |
@@ -37,6 +36,7 @@
 | nativewind | MIT | https://github.com/marklawlor/nativewind |
 | react | MIT | https://github.com/facebook/react |
 | react-native | MIT | https://github.com/facebook/react-native |
+| react-native-bootsplash | MIT | https://github.com/zoontek/react-native-bootsplash |
 | react-native-gesture-handler | MIT | https://github.com/software-mansion/react-native-gesture-handler |
 | react-native-markdown-display | MIT | https://github.com/iamacup/react-native-markdown-display |
 | react-native-reanimated | MIT | https://github.com/software-mansion/react-native-reanimated |

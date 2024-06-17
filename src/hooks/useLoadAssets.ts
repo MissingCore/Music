@@ -4,16 +4,13 @@ import type { SQLiteDatabase } from "expo-sqlite";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
 import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useMemo } from "react";
 
+import { useSaveAudio } from "./useSaveAudio";
 import { useSetupTrackPlayer } from "./useSetupTrackPlayer";
 
 import { db, expoSQLiteDB } from "@/db";
 import migrations from "@/db/drizzle/migrations";
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
 
 /**
  * @description Makes splash screen visible until all initialization
@@ -30,21 +27,18 @@ export function useLoadAssets() {
   });
   const { success: dbSuccess, error: dbError } = useMigrations(db, migrations);
   useDevOnly(expoSQLiteDB);
+  const tracksSaved = useSaveAudio();
   const trackPlayerLoaded = useSetupTrackPlayer();
 
   const completedTasks = useMemo(() => {
-    return fontsLoaded && dbSuccess && trackPlayerLoaded;
-  }, [fontsLoaded, dbSuccess, trackPlayerLoaded]);
+    return fontsLoaded && dbSuccess && trackPlayerLoaded && tracksSaved;
+  }, [fontsLoaded, dbSuccess, trackPlayerLoaded, tracksSaved]);
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (fontsError) throw fontsError;
     if (dbError) throw dbError;
   }, [fontsError, dbError]);
-
-  useEffect(() => {
-    if (completedTasks) SplashScreen.hideAsync();
-  }, [completedTasks]);
 
   return { isLoaded: completedTasks };
 }

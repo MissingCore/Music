@@ -1,4 +1,5 @@
 package com.cyanchill.missingcore.music
+import com.zoontek.rnbootsplash.RNBootSplash
 
 import android.os.Build
 import android.os.Bundle
@@ -15,7 +16,10 @@ class MainActivity : ReactActivity() {
     // Set the theme to AppTheme BEFORE onCreate to support
     // coloring the background, status bar, and navigation bar.
     // This is required for expo-splash-screen.
-    setTheme(R.style.AppTheme);
+    // setTheme(R.style.AppTheme);
+    // @generated begin bootsplash-init - expo prebuild (DO NOT MODIFY) sync-f0f7dbc46f1d82498f47676b4197e1949dc7790f
+    RNBootSplash.init(this, R.style.BootTheme)
+    // @generated end bootsplash-init
     super.onCreate(null)
   }
 

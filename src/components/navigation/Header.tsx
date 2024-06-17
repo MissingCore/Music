@@ -28,7 +28,7 @@ export function Header({ route, options }: NativeStackHeaderProps) {
   const openModal = useSetAtom(modalAtom);
 
   return (
-    <SafeContainer>
+    <SafeContainer className="bg-canvas">
       <View className="flex h-14 flex-row items-center justify-between gap-8 px-4">
         <UnstyledBackButton />
         <Text

@@ -2,13 +2,12 @@ import { Stack } from "expo-router";
 import TrackPlayer from "react-native-track-player";
 
 import { useLoadAssets } from "@/hooks/useLoadAssets";
-import { useSaveAudio } from "@/hooks/useSaveAudio";
 
 import "@/assets/global.css";
 import { PlaybackService } from "@/constants/PlaybackService";
 import { AppProvider } from "@/providers/app";
 import { Header } from "@/components/navigation/Header";
-import { Onboarding } from "@/components/navigation/Onboarding";
+import { AnimatedBootSplash } from "@/components/navigation/AnimatedBootSplash";
 import { AppModals } from "@/features/modal";
 
 export {
@@ -25,16 +24,13 @@ TrackPlayer.registerPlaybackService(() => PlaybackService);
 
 export default function RootLayout() {
   const { isLoaded } = useLoadAssets();
-  if (!isLoaded) return null;
+  if (!isLoaded) return <AnimatedBootSplash />;
   return <RootLayoutNav />;
 }
 
 function RootLayoutNav() {
-  const tracksSaved = useSaveAudio();
-
   return (
     <AppProvider>
-      {!tracksSaved && <Onboarding />}
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(app)" />
         <Stack.Screen

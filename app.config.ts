@@ -12,11 +12,6 @@ export default (): ExpoConfig => ({
   scheme: "music",
   backgroundColor: "#000000",
   userInterfaceStyle: "automatic",
-  splash: {
-    image: "./src/assets/images/splash.png",
-    resizeMode: "contain",
-    backgroundColor: "#000000",
-  },
   assetBundlePatterns: ["**/*"],
   android: {
     package: "com.cyanchill.missingcore.music",
@@ -31,7 +26,17 @@ export default (): ExpoConfig => ({
       "android.permission.RECORD_AUDIO",
     ],
   },
-  plugins: ["expo-router", "expo-font"],
+  plugins: [
+    "expo-router",
+    "expo-font",
+    [
+      "react-native-bootsplash",
+      {
+        assetsDir: "assets/bootsplash",
+        android: { parentTheme: "EdgeToEdge" },
+      },
+    ],
+  ],
   experiments: {
     typedRoutes: true,
   },
