@@ -46,11 +46,11 @@ export const useArtistsForList = () =>
               const textContent = [name, getTrackCountStr(tracks.length)];
               return { name, textContent: textContent as [string, string] };
             })
-            .toSorted((a, b) =>
+            .sort((a, b) =>
               a.name.localeCompare(b.name, undefined, { caseFirst: "upper" }),
             ),
         }))
-        .toSorted((a, b) => a.title.localeCompare(b.title))
+        .sort((a, b) => a.title.localeCompare(b.title))
         .map(({ title, data }) => [title, ...data])
         .flat();
     }, []),

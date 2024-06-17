@@ -30,7 +30,7 @@ type FnArgsWithTrack = FnArgs | { type: "track"; data: TrackWithAlbum[] };
 export function getPlaylistCollage(data: TrackWithAlbum[]) {
   return data
     .map((data) => ({ name: data.name, artwork: getTrackCover(data) }))
-    .toSorted((a, b) => a.name.localeCompare(b.name))
+    .sort((a, b) => a.name.localeCompare(b.name))
     .slice(0, 4)
     .map(({ artwork }) => artwork);
 }

@@ -25,7 +25,7 @@ export const useAlbumsForMediaCard = () =>
       (data: QueryFnData) =>
         data
           .map((album) => formatForMediaCard({ type: "album", data: album }))
-          .toSorted(
+          .sort(
             (a, b) =>
               a.title.localeCompare(b.title) ||
               a.subtitle.localeCompare(b.subtitle),

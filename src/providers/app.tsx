@@ -1,6 +1,3 @@
-/* Polyfills */
-import "core-js/features/array/to-sorted";
-
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { ThemeProvider } from "@react-navigation/native";
 import { QueryClientProvider } from "@tanstack/react-query";

@@ -12,7 +12,7 @@ export function sortTracks({
   type: Media;
   tracks: Track[] | TrackWithAlbum[];
 }) {
-  return tracks.toSorted((a, b) => {
+  return [...tracks].sort((a, b) => {
     if (type === "playlist" || type === "track") {
       return a.name.localeCompare(b.name);
     } else if (type === "album") {

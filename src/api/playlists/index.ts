@@ -40,7 +40,7 @@ export const usePlaylistsForMediaCard = () =>
           .map((playlist) =>
             formatForMediaCard({ type: "playlist", data: playlist }),
           )
-          .toSorted((a, b) => a.title.localeCompare(b.title)),
+          .sort((a, b) => a.title.localeCompare(b.title)),
       [],
     ),
   });
@@ -53,7 +53,7 @@ export const usePlaylistsForModal = () =>
       (data: GETFnData) =>
         data
           .map(({ name, tracks }) => ({ name, trackCount: tracks.length }))
-          .toSorted((a, b) => a.name.localeCompare(b.name)),
+          .sort((a, b) => a.name.localeCompare(b.name)),
       [],
     ),
   });

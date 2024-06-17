@@ -60,7 +60,7 @@ export const useFavoriteListsForMediaCard = () =>
           ...data.playlists.map((playlist) =>
             formatForMediaCard({ type: "playlist", data: playlist }),
           ),
-        ].toSorted((a, b) => a.title.localeCompare(b.title)),
+        ].sort((a, b) => a.title.localeCompare(b.title)),
       [],
     ),
   });
