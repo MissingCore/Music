@@ -68,7 +68,7 @@ jobs:
       - name: Release APKs
         uses: softprops/action-gh-release@v2
         with:
-          name: "Release ${{ env.COMMIT_TAG }}"
+          name: "${{ env.COMMIT_TAG }}"
           tag_name: "${{ env.COMMIT_TAG }}"
           token: ${{ secrets.MISSINGCORE_BOT_GITHUB_TOKEN }}
           files: android/app/build/outputs/apk/release/*.apk
