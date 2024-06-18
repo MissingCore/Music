@@ -40,11 +40,6 @@ jobs:
           git config --global user.name MissingCore-Bot
           git commit -am "build: Release version bump"
 
-      - name: Push Changes to `main`
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.MISSINGCORE_BOT_GITHUB_TOKEN }}
-
       - name: Add Build Sign Keys
         run: |
           git submodule update --init --recursive
@@ -76,3 +71,8 @@ jobs:
           # Mark release as prerelease if the tag contains `-rc.`
           prerelease: ${{ contains(env.COMMIT_TAG, '-rc.') }}
           generate_release_notes: true
+
+      - name: Push Changes to `main`
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.MISSINGCORE_BOT_GITHUB_TOKEN }}
