@@ -2,7 +2,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { StyleSheet, Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 
-import { useLatestRelease } from "@/features/setting/api/release";
+import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 
 import { APP_VERSION, GITHUB_LINK } from "@/constants/Config";
 import { BorderRadius, Colors, FontFamily, FontSize } from "@/constants/Styles";
@@ -38,20 +38,9 @@ export default function SettingScreen() {
 
 /** @description Indicates whether we're on the latest version of the app. */
 function UpdateChecker() {
-  const { isPending, error, data } = useLatestRelease();
+  const { newUpdate, release } = useHasNewUpdate();
 
-  if (isPending) return null;
-  else if (error) {
-    return <Description>Currently on latest version.</Description>;
-  }
-
-  const usingRC = APP_VERSION.includes("-rc");
-  // Release candidates shouldn't have the "Latest Release" tag on GitHub
-  // (ie: shouldn't be in `data.latestStable`). We compare against potentially
-  // release candidate versions if we're on a release candidate.
-  const usedRelease = usingRC ? data.latestRelease : data.latestStable;
-
-  if (!usedRelease.version || usedRelease.version === APP_VERSION) {
+  if (!newUpdate) {
     return <Description>Currently on latest version.</Description>;
   }
 
@@ -117,12 +106,12 @@ function UpdateChecker() {
           ),
         }}
       >
-        {`# ${usedRelease.version} is Available\n\n${usedRelease.releaseNotes}`}
+        {`# ${release.version} is Available\n\n${release.releaseNotes}`}
       </Markdown>
       <View className="mt-4 flex-row gap-2">
         <LinkButton
           as="external"
-          href={`${GITHUB_LINK}/releases/tag/${usedRelease.version}`}
+          href={`${GITHUB_LINK}/releases/tag/${release.version}`}
           theme="neutral-alt"
           Icon={
             <Ionicons

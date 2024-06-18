@@ -2,11 +2,15 @@ import { useLatestRelease } from "@/features/setting/api/release";
 
 import { APP_VERSION } from "@/constants/Config";
 
-/** @description Returns a boolean on whether we have a new update. */
-export function useHasNewUpdate() {
+type UpdateResult =
+  | { newUpdate: false; release: null }
+  | { newUpdate: true; release: { releaseNotes: string; version: string } };
+
+/** @description Determines if we have a new update. */
+export function useHasNewUpdate(): UpdateResult {
   const { isPending, error, data } = useLatestRelease();
 
-  if (isPending || !!error) return false;
+  if (isPending || !!error) return { newUpdate: false, release: null };
 
   const usingRC = APP_VERSION.includes("-rc");
   // Release candidates shouldn't have the "Latest Release" tag on GitHub
@@ -14,6 +18,9 @@ export function useHasNewUpdate() {
   // release candidate versions if we're on a release candidate.
   const usedRelease = usingRC ? data.latestRelease : data.latestStable;
 
-  if (!usedRelease.version || usedRelease.version === APP_VERSION) return false;
-  else return true;
+  if (!usedRelease.version || usedRelease.version === APP_VERSION) {
+    return { newUpdate: false, release: null };
+  } else {
+    return { newUpdate: true, release: usedRelease };
+  }
 }

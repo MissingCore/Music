@@ -9,7 +9,7 @@ import { MiniPlayer } from "@/features/playback/components/MiniPlayer";
 
 /** @description Contains content that doesn't take up the full-screen. */
 export default function MainLayout() {
-  const hasNewUpdate = useHasNewUpdate();
+  const { newUpdate } = useHasNewUpdate();
 
   return (
     <>
@@ -27,7 +27,7 @@ export default function MainLayout() {
                     size={24}
                     color={Colors.foreground50}
                   />
-                  {hasNewUpdate && (
+                  {newUpdate && (
                     <View className="absolute right-0 top-0 size-2 rounded-full bg-accent500" />
                   )}
                 </Pressable>
