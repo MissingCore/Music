@@ -73,7 +73,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.45.0",
+    "version": "5.45.1",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -97,7 +97,7 @@
   },
   "expo": {
     "name": "expo",
-    "version": "51.0.11",
+    "version": "51.0.14",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo",
     "license": "MIT",
@@ -137,7 +137,7 @@
   },
   "expo-image": {
     "name": "expo-image",
-    "version": "1.12.11",
+    "version": "1.12.12",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-image",
     "license": "MIT",
@@ -177,7 +177,7 @@
   },
   "expo-router": {
     "name": "expo-router",
-    "version": "3.5.15",
+    "version": "3.5.16",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-router",
     "license": "MIT",
