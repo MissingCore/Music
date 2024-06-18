@@ -91,6 +91,9 @@
     "react-test-renderer": "18.2.0",
     "typescript": "^5.4.5"
   },
+  "resolutions": {
+    "markdown-it": "14.1.0"
+  },
   "jest": {
     "preset": "jest-expo"
   },
