@@ -42,7 +42,7 @@ export function Link({
   external = true,
 }: {
   href: string;
-  iconName: React.ComponentProps<typeof Ionicons>["name"];
+  iconName?: React.ComponentProps<typeof Ionicons>["name"];
   label: string;
   external?: boolean;
 }) {
@@ -52,7 +52,9 @@ export function Link({
     <LinkType href={href} asChild>
       <Pressable className="mb-6 flex-row items-center justify-between gap-2 active:opacity-75">
         <View className="shrink flex-row gap-2">
-          <Ionicons name={iconName} color={Colors.foreground50} size={24} />
+          {!!iconName && (
+            <Ionicons name={iconName} color={Colors.foreground50} size={24} />
+          )}
           <Title>{label}</Title>
         </View>
         <OpenInNewOutline size={24} color={Colors.surface400} />

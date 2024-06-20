@@ -20,24 +20,19 @@ import {
 export default function SettingScreen() {
   return (
     <AnimatedHeader title="SETTINGS">
-      <Section className="mb-12">
+      <Section>
         <Title className="mb-2">UPDATES</Title>
         <UpdateChecker />
       </Section>
 
-      <Section>
-        <SubMenuLink href="storage" label="STORAGE & STATISTICS" />
-        <SubMenuLink href="support" label="SUPPORT" />
-        <SubMenuLink href="licenses" label="LICENSES & SOURCE" />
-      </Section>
+      <SubMenuLink href="storage" label="STORAGE & STATISTICS" />
+      <SubMenuLink href="support" label="SUPPORT" />
+      <SubMenuLink href="licenses" label="LICENSES & SOURCE" />
 
-      <Section>
-        <Link
-          href={`${GITHUB_LINK}/blob/main/PRIVACY_POLICY.md`}
-          iconName="shield-outline"
-          label="PRIVACY POLICY"
-        />
-      </Section>
+      <Link
+        href={`${GITHUB_LINK}/blob/main/PRIVACY_POLICY.md`}
+        label="PRIVACY POLICY"
+      />
 
       <Section className="flex-row items-center justify-between gap-2">
         <Title>VERSION</Title>

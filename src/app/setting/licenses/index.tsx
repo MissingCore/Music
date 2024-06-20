@@ -48,9 +48,7 @@ export default function LicensesScreen() {
       </Description>
 
       <FlashList
-        // Median between `36` (min height) & `52` (max height). At `36`,
-        // later items "glitch" into view.
-        estimatedItemSize={44}
+        estimatedItemSize={36}
         data={Object.values(LicensesList)}
         keyExtractor={({ name }) => name}
         renderItem={({ item, index }) => (
