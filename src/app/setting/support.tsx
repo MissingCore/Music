@@ -1,3 +1,4 @@
+import { Link as ExpoLink } from "expo-router";
 import { Text, View } from "react-native";
 
 import { GITHUB_LINK } from "@/constants/Config";
@@ -12,7 +13,16 @@ export default function SupportScreen() {
         Find a problem with the app? Click the link that fits your needs below.
         {"\n\n"}
         <Text className="underline">Note:</Text> Some of the support related
-        request methods require a GitHub account.
+        request methods require a GitHub account and will be public, so{" "}
+        {"don't"} post any personally identifiable information. In addition, you
+        should review{" "}
+        <ExpoLink
+          href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement"
+          className="text-foreground100 underline"
+        >
+          GitHub's Privacy Policy
+        </ExpoLink>
+        .
       </Description>
 
       <Link
