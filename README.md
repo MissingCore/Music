@@ -40,6 +40,8 @@ A Nothing inspired music player (based on design by [Alkid Shuli (alKid)](https:
 - Queues
 - Automatically extraction of metadata w/ [@missingcore/audio-metadata](https://github.com/MissingCore/audio-metadata)
 
+> See potential upcoming features in future updates in [this discussion post](https://github.com/MissingCore/Music/discussions/9).
+
 # Design
 
 Music is based on the design seen in this [comment on the Nothing Community forums](https://nothing.community/d/1825-nothing-music-player-app/2), created by [Alkid Shuli (alKid)](https://bento.me/alkid).
@@ -141,41 +143,44 @@ This will create APKs that can be published to other stores via GitHub Actions w
 > [!NOTE]  
 > We may eventually add support for generating an `.aab` for publishing to the Google Play Store.
 
-1. Generate an upload key via `keytool` which comes with your installation of Java (this is referenced from [React Native's Guide](https://reactnative.dev/docs/signed-apk-android#generating-an-upload-key)). This will generate a `noxupload.jks` file in the directory where `keytool` is located.
+1. Generate an upload key via `keytool` which comes with your installation of Java (this is referenced from [React Native's Guide](https://reactnative.dev/docs/signed-apk-android#generating-an-upload-key)). This will generate a `keystore.jks` file in the directory where `keytool` is located.
 
    ```sh
-   sudo keytool -genkey -v -keystore noxupload.jks -alias noxupload -keyalg RSA -keysize 2048 -validity 10000
+   sudo keytool -genkey -v -keystore keystore.jks -alias key-alias -keyalg RSA -keysize 2048 -validity 10000
    ```
 
 > [!IMPORTANT]  
+> **You should change `key-alias` to be something unique.**
+>
 > Keep the password you inputted as that'll be important later on.
 >
 > I found an issue with some characters in the password that kind of broke the behavior of the script when using GitHub actions (ie: `$`, `` ` ``, `=`), so you shouldn't use them.
 
-2. You can move `noxupload.jks` to a different folder (ie: create a new folder in the `/Downloads` directory).
+2. You can move `keystore.jks` to a different folder (ie: create a new folder in the `/Downloads` directory).
 
-3. Open up `Git Bash` when it was installed with `git`. You want to go to the directory where the `noxupload.jks` file is by running `cd "<directory>"`. Then run the following command to encode `noxupload.jks` into a base64 file.
+3. Open up `Git Bash` when it was installed with `git`. You want to go to the directory where the `keystore.jks` file is by running `cd "<directory>"`. Then run the following command to encode `keystore.jks` into a base64 file.
 
    ```sh
-   openssl base64 < noxupload.jks | tr -d '\n' | tee noxupload_base64_encoded.txt
+   openssl base64 < keystore.jks | tr -d '\n' | tee keystore.base64.txt
    ```
 
-   > We want to encode `noxupload.jks` in base64 as we want to keep this file secret and prevent exposing it. By encoding it in base64, we can save this as a GitHub Actions secret and use it within the workflow.
+   > We want to encode `keystore.jks` in base64 as we want to keep this file secret and prevent exposing it. By encoding it in base64, we can save this as a GitHub Actions secret and use it within the workflow.
 
-4. Fork this repository.
+4. Clone this repository.
 
-5. Now we need to add some secrets. When in the forked repository, click: `Settings > Secrets and variables > Actions`. Click `New repository secret`. We're going to create 3 secrets:
+5. Now we need to add some secrets. When in the cloned repository, click: `Settings > Secrets and variables > Actions`. Click `New repository secret`. We're going to create 3 secrets:
 
-   a. Put `RELEASE_SIGN_PWD` in the `Name` field. For its `Secret` field, put:
+   a. Put `RELEASE_CRED` in the `Name` field. For its `Secret` field, put:
 
    ```
-   MYAPP_UPLOAD_STORE_PASSWORD=<UPLOAD_PASSWORD>
-   MYAPP_UPLOAD_KEY_PASSWORD=<UPLOAD_PASSWORD>
+   RELEASE_KEYSTORE_PASSWORD=<UPLOAD_PASSWORD from Step 1>
+   RELEASE_KEY_ALIAS=<unique key-alias from Step 1>
+   RELEASE_KEY_PASSWORD=<UPLOAD_PASSWORD from Step 1>
    ```
 
-   > Remember the password you inputted in `Step 1`, that's what you'll replace `<UPLOAD_PASSWORD>` with (including the angle brackets).
+   > Remember to remove the angle brackets.
 
-   b. Put `SIGNED_KEY_BASE64` in the `Name` field. For its `Secret` field, put the contents of `noxupload_base64_encoded.txt`.
+   b. Put `KEYSTORE_BASE64` in the `Name` field. For its `Secret` field, put the contents of `keystore.base64.txt`.
 
    c. Put `MISSINGCORE_BOT_GITHUB_TOKEN` in the `Name` field. For its `Secret` field, you need to put a [Fine-Grained Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token). This token should have `Read & Write` permissions for: `Contents`.
 

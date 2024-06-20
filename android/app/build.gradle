@@ -117,11 +117,11 @@ android {
          *  - https://reactnative.dev/docs/signed-apk-android#adding-signing-config-to-your-apps-gradle-config
          */
         release {
-            if (project.hasProperty('MYAPP_UPLOAD_STORE_PASSWORD')) {
-                storeFile file(MYAPP_UPLOAD_STORE_FILE)
-                storePassword MYAPP_UPLOAD_STORE_PASSWORD
-                keyAlias MYAPP_UPLOAD_KEY_ALIAS
-                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+            if (project.hasProperty('RELEASE_KEYSTORE_PASSWORD')) {
+                storeFile file("keystore.jks")
+                storePassword RELEASE_KEYSTORE_PASSWORD
+                keyAlias RELEASE_KEY_ALIAS
+                keyPassword RELEASE_KEY_PASSWORD
             } else {
               storeFile file('debug.keystore')
               storePassword 'android'
