@@ -25,6 +25,7 @@ A Nothing inspired music player (based on design by [Alkid Shuli (alKid)](https:
     <ol type="a">
       <li><a href="#licenses-of-used-dependencies">Licenses of Used Dependencies</a></li>
       <li><a href="#license">License</a></li>
+      <li><a href="#privacy-policy">Privacy Policy</a></li>
     </ol>
   </ol>
 </details>
@@ -221,6 +222,10 @@ Refer to [THIRD_PARTY.md](./THIRD_PARTY.md).
 ## License
 
 [AGPL-3.0](./LICENSE)
+
+## Privacy Policy
+
+[Privacy Policy Link](./PRIVACY_POLICY.md)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->

@@ -1,46 +1,37 @@
 # Privacy Policy
 
-> Last Updated: June 20, 2024
+> *Last Updated: June 20, 2024*
 
-This privacy policy applies to the MissingCore Music app (hereby referred to as "Application") for mobile devices that was created by MissingCore (hereby referred to as "Service Provider", "Us", or "We") as an Open Source service. This service is intended for use "AS IS".
+The MissingCore Music app ("Application") is an Open Source service that provides an interface for playing music files stored on your device. You can find the source code of this Application at https://github.com/MissingCore/Music. We do not sell anything, and we do not display ads. Based on [Google's Guidelines on App Data Safety](https://support.google.com/googleplay/answer/11416267?hl=en&co=GENIE.Platform%3DAndroid), we state that:
 
-## Information We Collect
+1. **No data is collected** as the data accessed is never sent off your device.
+2. **No data is shared** as this is an offline & local first app.
 
-This Application automatically collects the following information during usage:
+For transparency, here is the data the Application may collect and stores locally on your device, along with its use:
 
-- **Usage Data:** Information on how you interact with the app, such as listening history.
+- **App interactions**: Tracking and displaying what you recently played in this Application.
+- **Music files**: Required for this Application's functionality.
+- **Photos**: Optional — used for customizing playlist covers.
 
-This Application designed to work completely offline, as such, any collected data is stored on device as is not sent to Us.
-
-## How We Use Information
-
-Any information We collect is used to provide features for this Application such as:
-
-- Displaying the last 10 recently played track sources (albums, artists, favorites, playlists, or tracks).
-
-## Third-Party Services
-
-This Application does not use any third-party services. We will never share, sell, or rent your information to third-parties.
-
-## Opt-Out Rights
+## Opt-Out Rights and Data Deletion
 
 You can stop all collection of information by the Application easily by uninstalling it. You may use the standard uninstall processes as may be available as part of your mobile device or via the mobile application marketplace or network.
 
 ## Data Security
 
-The security of your personal data is important to Us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While We strive to use commercially acceptable means to protect Your personal data, We cannot guarantee its absolute security.
+The security of your personal data is important to us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure, so we cannot guarantee its absolute security.
 
 ## Links to Other Sites
 
-Our Service may contain links to other websites that are not operated by Us. If you click on a third party link, you will be directed to that third party's site. We strongly advise you to review the Privacy Policy of every site you visit.
+Our Service may contain links to other websites not operated by us. If you click on a third party link, you will be directed to that site. We strongly advise you to review the Privacy Policy of every site you visit.
 
 We have no control over and assume no responsibility for the content, privacy policies or practices of any third party sites or services.
 
 ## Children's Privacy
 
-The Application is not used to knowingly solicit data from or market to children under the age of 13.
+Our Service does not address anyone under the age of 13. We do not knowingly collect personally identifiable information from anyone under the age of 13. If you are a parent or guardian and you are aware that your child has provided us with Personal Data, please contact us. If we become aware that we have collected Personal Data from anyone under the age of 13 without verification of parental consent, we take steps to remove that information from our servers.
 
-The Service Provider does not knowingly collect personally identifiable information from children. The Service Provider encourages all children to never submit any personally identifiable information through the Application and/or Services. The Service Provider encourage parents and legal guardians to monitor their children's Internet usage and to help enforce this Policy by instructing their children never to provide personally identifiable information through the Application and/or Services without their permission. If you have reason to believe that a child has provided personally identifiable information to the Service Provider through the Application and/or Services, please contact the Service Provider (missingcoredev@outlook.com) so that they will be able to take the necessary actions. You must also be at least 16 years of age to consent to the processing of your personally identifiable information in your country (in some countries we may allow your parent or guardian to do so on your behalf).
+If we need to rely on consent as a legal basis for processing your information and your country requires consent from a parent, we may require your parent's consent before we collect and use that information.
 
 ## Changes to This Privacy Policy
 
@@ -53,5 +44,3 @@ By using the Application, you are consenting to the processing of your informati
 ## Contact Us
 
 If you have any questions regarding privacy while using the Application, or have questions about the practices, please contact the Service Provider via email at missingcoredev@outlook.com.
-
-The code for this Application can be found at https://github.com/MissingCore/Music.
