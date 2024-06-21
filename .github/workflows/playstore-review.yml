@@ -11,7 +11,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 25
+          fetch-tags: true
 
+      - name: Check available tags
+        run: git tag
+      
       - name: Save Commit Tag as Environment Variable & Display it
         run: |
           COMMIT_TAG=$(git describe --tags --abbrev=0)
