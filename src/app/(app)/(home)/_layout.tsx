@@ -39,6 +39,7 @@ function NavigationBar() {
           <Link
             key={href}
             href={href}
+            accessibilityRole="button"
             className={cn(
               "px-2 py-4 font-geistMonoLight text-lg text-foreground50",
               { "text-accent500": pathname === href },

@@ -48,6 +48,7 @@ export function Track({ id, trackSource, origin, ...props }: TrackProps) {
         ) : undefined
       }
       AsideContent={<Duration duration={props.duration} />}
+      iconLabel="View track settings."
       iconOnPress={() =>
         openModal({ entity: "track", scope: "view", id, origin })
       }

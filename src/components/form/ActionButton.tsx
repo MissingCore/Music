@@ -14,6 +14,7 @@ export type ActionButtonProps = {
   /** Displays between the `<TextStack />` & optional icon. */
   AsideContent?: React.JSX.Element;
   Icon?: React.JSX.Element;
+  iconLabel?: string;
   iconOnPress?: PressableProps["onPress"];
   withoutIcon?: boolean;
   className?: string;
@@ -41,7 +42,11 @@ export function ActionButton(props: ActionButtonProps) {
       <TextStack content={props.textContent} wrapperClassName="flex-1" />
       {props.AsideContent}
       {props.withoutIcon ? null : props.iconOnPress ? (
-        <Pressable onPress={props.iconOnPress} className="shrink-0">
+        <Pressable
+          accessibilityLabel={props.iconLabel}
+          onPress={props.iconOnPress}
+          className="shrink-0"
+        >
           {icon}
         </Pressable>
       ) : (

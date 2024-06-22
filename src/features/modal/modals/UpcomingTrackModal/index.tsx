@@ -124,6 +124,7 @@ function UpcomingTrack({ data, onPress }: UpcomingTrackProps) {
             />
           ) : undefined
         }
+        iconLabel={inQueue ? "Remove track from queue." : undefined}
         withoutIcon={!inQueue}
       />
     </View>

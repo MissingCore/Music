@@ -34,6 +34,7 @@ export default function CurrentPlaylistScreen() {
         options={{
           headerRight: () => (
             <Pressable
+              accessibilityLabel="View playlist settings."
               onPress={() =>
                 openModal({ entity: "playlist", scope: "view", id })
               }
