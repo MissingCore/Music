@@ -16,9 +16,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Bump Versions
-        run: python ./scripts/version_bump.py
-
       - name: Setup Node.js & pnpm
         uses: ./.github/actions/setup
 
@@ -33,12 +30,6 @@ jobs:
           COMMIT_TAG=$(git describe --tags --abbrev=0)
           echo "COMMIT_TAG=${COMMIT_TAG}" >> $GITHUB_ENV
           echo "Commit Tag: $COMMIT_TAG"
-
-      - name: Commit
-        run: |
-          git config --global user.email 170483286+MissingCore-Bot@users.noreply.github.com
-          git config --global user.name MissingCore-Bot
-          git commit -am "build: Release version bump"
 
       - name: Add Build Sign Keys
         run: |
@@ -71,8 +62,3 @@ jobs:
           # Mark release as prerelease if the tag contains `-rc.`
           prerelease: ${{ contains(env.COMMIT_TAG, '-rc.') }}
           generate_release_notes: true
-
-      - name: Push Changes to `main`
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.MISSINGCORE_BOT_GITHUB_TOKEN }}

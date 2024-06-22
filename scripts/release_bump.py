@@ -8,7 +8,7 @@ import typing
 from pathlib import Path
 
 import color as c
-from version_bump import getVersion, getVersionSegments
+from version_bump import bumpVersion, getVersion, getVersionSegments
 
 
 # Define some constants.
@@ -91,10 +91,22 @@ if __name__ == "__main__":
     for line in app_config:
       f.write(line)
 
-  # Create new tag.
+  # Bump version throughout app based on new change.
+  bumpVersion()
+
+  # Commit changes & create new tag.
   subprocess.call(["git", "switch", "main", "-q"])
-  subprocess.call(["git", "add", "./src/constants/Config.ts"])
-  subprocess.call(["git", "commit", "-m", f"release: {newVersion}"])
+  subprocess.call([
+      "git", "add", "./src/constants/Config.ts",
+                    "./package.json",
+                    "./app.config.ts",
+                    "./android/app/build.gradle"
+    ])
+  subprocess.call(["git",
+      "-c", "user.name='MissingCore-Bot'",
+      "-c", "user.email='170483286+MissingCore-Bot@users.noreply.github.com'",
+      "commit", "-m", f"release: {newVersion}"
+    ])
   subprocess.call(["git", "tag", f"{newVersion}"])
 
   # Push changes to GitHub?
