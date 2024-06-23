@@ -24,6 +24,11 @@ export default (): ExpoConfig => ({
     blockedPermissions: [
       "android.permission.CAMERA",
       "android.permission.RECORD_AUDIO",
+      "android.permission.MODIFY_AUDIO_SETTINGS",
+      "android.permission.VIBRATE",
+      "android.permission.READ_MEDIA_IMAGES",
+      "android.permission.READ_MEDIA_VIDEO",
+      "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
     ],
   },
   plugins: [

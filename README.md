@@ -67,11 +67,10 @@ Music is based on the design seen in this [comment on the Nothing Community foru
 
 This (hopefully) lists out all the permissions required by Music based on the permissions asked in the code and values listed out in the [App Manifest](./android/app/src/main/AndroidManifest.xml).
 
-|          | Permissions                                                                                                                                                                                                                         |
-| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Popups   | - Music and Audio (Android 13+)<br/>- Files & Media (Android <13)                                                                                                                                                                   |
-| Implicit | - Read/Write to External Storage ([unused in Android 10+](https://developer.android.com/training/data-storage/shared/media#storage-permission))<br/>- Modify Audio Settings<br/>- Internet (only used for checking for new updates) |
-| Disabled | - Camera (from `expo-image-picker`)<br/>- Record Audio (from `expo-av`)                                                                                                                                                             |
+|          | Permissions                                                                                                                                                                                                                                                                                    |
+| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Popups   | - Music and Audio (Android 13+)<br/>- Files & Media (Android <13)                                                                                                                                                                                                                              |
+| Implicit | - Read External Storage; for reading Music & Audio Files (unused in Android 13+)<br/>- Write to External Storage ([unused in Android 11+](https://developer.android.com/reference/android/Manifest.permission#WRITE_EXTERNAL_STORAGE))<br/>- Internet (only used for checking for new updates) |
 
 ## Performance
 
