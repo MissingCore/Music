@@ -62,3 +62,52 @@ jobs:
           # Mark release as prerelease if the tag contains `-rc.`
           prerelease: ${{ contains(env.COMMIT_TAG, '-rc.') }}
           generate_release_notes: true
+
+  buildAAB:
+    name: build AAB
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js & pnpm
+        uses: ./.github/actions/setup
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: microsoft
+          java-version: 17
+
+      - name: Save Commit Tag as Environment Variable & Display it
+        run: |
+          COMMIT_TAG=$(git describe --tags --abbrev=0)
+          echo "COMMIT_TAG=${COMMIT_TAG}" >> $GITHUB_ENV
+          echo "Commit Tag: $COMMIT_TAG"
+
+      - name: Add Build Sign Keys
+        run: |
+          git submodule update --init --recursive
+          echo "${{ secrets.RELEASE_CRED }}" >> ./android/gradle.properties
+
+      - name: Build Sign `.jks`
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileName: "keystore.jks"
+          fileDir: "./android/app"
+          encodedString: ${{ secrets.KEYSTORE_BASE64 }}
+
+      - name: Clean Generated Builds
+        run: rm -rf android/app/build/generated/
+
+      - name: Gradle Build AAB
+        # Go to `/android`, make `gradlew` executable, then generate release
+        # signed AAB
+        run: cd android && chmod +x gradlew && ./gradlew bundleRelease
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: outputAAB
+          path: android/app/build/outputs/bundle/release/*.aab

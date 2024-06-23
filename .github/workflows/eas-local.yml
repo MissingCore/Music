@@ -1,0 +1,16 @@
+name: Build locally with EAS
+on:
+  workflow_dispatch:
+
+jobs:
+  buildAAB:
+    name: build AAB from latest tag
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js & pnpm
+        uses: ./.github/actions/setup
