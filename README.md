@@ -15,7 +15,8 @@ A Nothing inspired music player (based on design by [Alkid Shuli (alKid)](https:
       <li><a href="#permissions">Permissions</a></li>
       <li><a href="#performance">Performance</a></li>
     </ol>
-    <li><a href="#build--installation">Build & Installation</a></li>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#build">Build</a></li>
     <ol type="a">
       <li><a href="#unsigned-local-build">(Unsigned) Local Build</a></li>
       <li><a href="#signed-build-w-github-actions">Signed Build w/ GitHub Actions</a></li>
@@ -91,7 +92,21 @@ Here are some benchmarks for saving 177 new tracks & 20 album/track artwork **du
 | Nothing Phone 2a — Android 14 (v2.5.6) | ~15.1609s    | ~10.8303s      |
 | OnePlus 6 — Android 11 (v11.1.2.2)     | ~31.2854s    | ~16.0167s      |
 
-# Build & Installation
+# Installation
+
+There are 2 methods of installing this app:
+
+1. Download the APK for your device from a release found in ["Releases" tab](https://github.com/MissingCore/Music/releases).
+
+2. Download the app from the Google Play Store **[pending completion of closed test]**.
+
+> [!IMPORTANT]  
+> The APK & Play Store version of the apps **aren't compatible** as:
+>
+> - The APK is signed with an upload key.
+> - The Play Store app is signed with a Google-generated app signing key via "Play App Signing".
+
+# Build
 
 These are instructions for building the app for personal use. Some general prerequisites are:
 

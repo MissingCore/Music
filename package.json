@@ -43,12 +43,9 @@
     "expo-image": "^1.12.12",
     "expo-image-picker": "~15.0.5",
     "expo-linear-gradient": "~13.0.2",
-    "expo-linking": "~6.3.1",
     "expo-media-library": "~16.0.3",
     "expo-router": "~3.5.16",
     "expo-sqlite": "^14.0.3",
-    "expo-status-bar": "~1.12.1",
-    "expo-system-ui": "~3.0.6",
     "expo-web-browser": "~13.0.3",
     "jotai": "^2.8.3",
     "nativewind": "^4.0.36",
@@ -63,8 +60,7 @@
     "react-native-svg": "^15.3.0",
     "react-native-toast-notifications": "^3.4.0",
     "react-native-track-player": "^4.1.1",
-    "tailwind-merge": "^2.3.0",
-    "tailwindcss": "^3.4.4"
+    "tailwind-merge": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.7",
@@ -89,6 +85,7 @@
     "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.5",
     "react-test-renderer": "18.2.0",
+    "tailwindcss": "^3.4.4",
     "typescript": "^5.4.5"
   },
   "resolutions": {

@@ -1,6 +1,6 @@
-import * as Linking from "expo-linking";
 import { router } from "expo-router";
 import { useEffect } from "react";
+import { Linking } from "react-native";
 
 /** @description Handle deep links by `react-native-track-player`.  */
 export function DeepLinkHandler() {

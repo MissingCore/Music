@@ -20,12 +20,9 @@
 | expo-image | MIT | https://github.com/expo/expo/tree/main/packages/expo-image |
 | expo-image-picker | MIT | https://github.com/expo/expo/tree/main/packages/expo-image-picker |
 | expo-linear-gradient | MIT | https://github.com/expo/expo/tree/main/packages/expo-linear-gradient |
-| expo-linking | MIT | https://github.com/expo/expo/tree/main/packages/expo-linking |
 | expo-media-library | MIT | https://github.com/expo/expo/tree/main/packages/expo-media-library |
 | expo-router | MIT | https://github.com/expo/expo/tree/main/packages/expo-router |
 | expo-sqlite | MIT | https://github.com/expo/expo/tree/main/packages/expo-sqlite |
-| expo-status-bar | MIT | https://github.com/expo/expo/tree/main/packages/expo-status-bar |
-| expo-system-ui | MIT | https://github.com/expo/expo/tree/main/packages/expo-system-ui |
 | expo-web-browser | MIT | https://github.com/expo/expo/tree/main/packages/expo-web-browser |
 | Geist Font | OFL-1.1 | https://github.com/vercel/geist-font |
 | heroicons | MIT | https://heroicons.com |
@@ -45,4 +42,3 @@
 | react-native-toast-notifications | MIT | https://github.com/arnnis/react-native-toast-notifications |
 | react-native-track-player | Apache-2.0 | https://github.com/doublesymmetry/react-native-track-player |
 | tailwind-merge | MIT | https://github.com/dcastil/tailwind-merge |
-| tailwindcss | MIT | https://github.com/tailwindlabs/tailwindcss |
