@@ -54,5 +54,3 @@ jobs:
           releaseFiles: android/app/build/outputs/bundle/release/app-release.aab
           track: internal
           status: draft
-          # Require us to manually send the `.aab` for review.
-          changesNotSentForReview: true
