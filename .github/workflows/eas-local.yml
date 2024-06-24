@@ -1,16 +1,47 @@
-name: Build locally with EAS
+name: Build AAB Based on Current Content
 on:
   workflow_dispatch:
 
 jobs:
   buildAAB:
-    name: build AAB from latest tag
+    name: build AAB from current content
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
+      
       - name: Setup Node.js & pnpm
         uses: ./.github/actions/setup
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: microsoft
+          java-version: 17
+
+      - name: Add Build Sign Keys
+        run: |
+          git submodule update --init --recursive
+          echo "${{ secrets.RELEASE_CRED }}" >> ./android/gradle.properties
+
+      - name: Build Sign `.jks`
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileName: "keystore.jks"
+          fileDir: "./android/app"
+          encodedString: ${{ secrets.KEYSTORE_BASE64 }}
+
+      - name: Clean Generated Builds
+        run: rm -rf android/app/build/generated/
+
+      - name: Gradle Build AAB
+        # Go to `/android`, make `gradlew` executable, then generate release
+        # signed AAB
+        run: cd android && chmod +x gradlew && ./gradlew bundleRelease
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: outputAAB
+          path: android/app/build/outputs/bundle/release/*.aab
