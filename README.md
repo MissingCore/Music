@@ -207,6 +207,8 @@ That should be all the setup needed. Now whenever a new tag gets added to the re
 
 You can [read this for the full explanation](https://github.com/expo/fyi/blob/main/android-app-size.md), but in short the APK is built to be used with any device. The version distributed by the Google Play Store is built for your device.
 
+When looking at the `App size` field under `Space used` in the storage info for the app, you may notice the size displayed is **greater** than the download size. This is because what you downloaded is **compressed** and the app requires an **uncompressed** version of the libraries to be functional.
+
 > Why is loading the app slow?
 
 Refer to the [performance section](#performance) of this README.
@@ -220,6 +222,8 @@ Look in [@missingcore/audio-metadata](https://github.com/MissingCore/audio-metad
 > What platforms are supported?
 
 We officially support Android. Theoretically, this should also work for iOS (as this is React Native code), but this is untested as publishing on the App Store isn't feasible.
+
+On Android, the app can be installed on all form-factors, however, we guarantee functionality and a better user-experience on "phone" layouts as that's our main audience. We may improve the layout for larger screens in the future.
 
 # Legal
 
