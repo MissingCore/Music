@@ -2,7 +2,7 @@
   "name": "music",
   "private": true,
   "main": "expo-router/entry",
-  "version": "1.0.0-rc.4.5-minify-v2",
+  "version": "1.0.0-rc.4.5-auto-upload",
   "description": "A Nothing inspired music player.",
   "license": "AGPL-3.0-only",
   "repository": {

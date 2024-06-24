@@ -45,3 +45,14 @@ jobs:
         with:
           name: outputAAB
           path: android/app/build/outputs/bundle/release/*.aab
+
+      - name: Upload AAB to Google Play
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.cyanchill.missingcore.music
+          releaseFiles: android/app/build/outputs/bundle/release/app-release.aab
+          track: internal
+          status: draft
+          # Require us to manually send the `.aab` for review.
+          changesNotSentForReview: true
