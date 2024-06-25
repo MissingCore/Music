@@ -1,10 +1,10 @@
-name: Build AAB Based on Current Content
+name: Build APKs Based on Current Content
 on:
   workflow_dispatch:
 
 jobs:
-  buildAAB:
-    name: build AAB from current content
+  buildAPKs:
+    name: build APKs from current content
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -21,36 +21,37 @@ jobs:
           distribution: microsoft
           java-version: 17
 
-      - name: Add Build Sign Keys
+      - name: Add upload key secrets for signing APKs
         run: |
           git submodule update --init --recursive
           echo "${{ secrets.RELEASE_CRED }}" >> ./android/gradle.properties
 
-      - name: Build Sign `.jks`
+      - name: Build upload keystore `.jks` file
         uses: timheuer/base64-to-file@v1.2
         with:
           fileName: "keystore.jks"
           fileDir: "./android/app"
           encodedString: ${{ secrets.KEYSTORE_BASE64 }}
 
-      - name: Clean Generated Builds
+      - name: Clean generated builds
         run: rm -rf android/app/build/generated/
 
-      - name: Gradle Build AAB
-        # Go to `/android`, make `gradlew` executable, then generate release
-        # signed AAB
-        run: cd android && chmod +x gradlew && ./gradlew bundleRelease
+      - name: Build and sign APKs with Gradle
+        run: cd android && chmod +x gradlew && ./gradlew assembleRelease
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload APKs as artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: outputAAB
-          path: android/app/build/outputs/bundle/release/*.aab
+          name: outputAPKs
+          path: android/app/build/outputs/apk/release/*.apk
 
-      - name: Upload AAB to Google Play
-        uses: r0adkll/upload-google-play@v1
+      - name: Zip deobfuscation files
+        run: |
+          zip deobfuscate.zip ./android/app/build/outputs/mapping/release/mapping.txt \
+                              ./android/app/build/outputs/native-debug-symbols/release/native-debug-symbols.zip
+
+      - name: Upload deobfuscation files as artifact
+        uses: actions/upload-artifact@v4
         with:
-          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
-          packageName: com.cyanchill.missingcore.music
-          releaseFiles: android/app/build/outputs/bundle/release/app-release.aab
-          track: internal
-          status: draft
+          name: deobfuscate
+          path: deobfuscate.zip
