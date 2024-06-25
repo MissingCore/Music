@@ -47,7 +47,7 @@ jobs:
 
       - name: Zip deobfuscation files
         run: |
-          zip deobfuscate.zip ./android/app/build/outputs/mapping/release/mapping.txt \
+          zip -j deobfuscate.zip ./android/app/build/outputs/mapping/release/mapping.txt \
                               ./android/app/build/outputs/native-debug-symbols/release/native-debug-symbols.zip
 
       - name: Upload deobfuscation files as artifact
