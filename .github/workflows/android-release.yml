@@ -25,30 +25,28 @@ jobs:
           distribution: microsoft
           java-version: 17
 
-      - name: Save Commit Tag as Environment Variable & Display it
+      - name: Save commit tag as environment variable & display it
         run: |
           COMMIT_TAG=$(git describe --tags --abbrev=0)
           echo "COMMIT_TAG=${COMMIT_TAG}" >> $GITHUB_ENV
           echo "Commit Tag: $COMMIT_TAG"
 
-      - name: Add Build Sign Keys
+      - name: Add upload key secrets for signing APKs
         run: |
           git submodule update --init --recursive
           echo "${{ secrets.RELEASE_CRED }}" >> ./android/gradle.properties
 
-      - name: Build Sign `.jks`
+      - name: Build upload keystore `.jks` file
         uses: timheuer/base64-to-file@v1.2
         with:
           fileName: "keystore.jks"
           fileDir: "./android/app"
           encodedString: ${{ secrets.KEYSTORE_BASE64 }}
 
-      - name: Clean Generated Builds
+      - name: Clean generated builds
         run: rm -rf android/app/build/generated/
 
-      - name: Gradle Build APKs
-        # Go to `/android`, make `gradlew` executable, then generate release
-        # signed APKs
+      - name: Build and sign APKs with Gradle
         run: cd android && chmod +x gradlew && ./gradlew assembleRelease
 
       - name: Release APKs
@@ -81,33 +79,43 @@ jobs:
           distribution: microsoft
           java-version: 17
 
-      - name: Save Commit Tag as Environment Variable & Display it
+      - name: Save commit tag as environment variable & display it
         run: |
           COMMIT_TAG=$(git describe --tags --abbrev=0)
           echo "COMMIT_TAG=${COMMIT_TAG}" >> $GITHUB_ENV
           echo "Commit Tag: $COMMIT_TAG"
 
-      - name: Add Build Sign Keys
+      - name: Add upload key secrets for signing APKs
         run: |
           git submodule update --init --recursive
           echo "${{ secrets.RELEASE_CRED }}" >> ./android/gradle.properties
 
-      - name: Build Sign `.jks`
+      - name: Build upload keystore `.jks` file
         uses: timheuer/base64-to-file@v1.2
         with:
           fileName: "keystore.jks"
           fileDir: "./android/app"
           encodedString: ${{ secrets.KEYSTORE_BASE64 }}
 
-      - name: Clean Generated Builds
+      - name: Clean generated builds
         run: rm -rf android/app/build/generated/
 
-      - name: Gradle Build AAB
-        # Go to `/android`, make `gradlew` executable, then generate release
-        # signed AAB
+      - name: Build and sign app bundle with Gradle
         run: cd android && chmod +x gradlew && ./gradlew bundleRelease
 
-      - uses: actions/upload-artifact@v4
+      # Save `.aab` as artifact before upload to Play Console incase upload fails.
+      - name: Save AAB as artifact
+        uses: actions/upload-artifact@v4
         with:
           name: outputAAB
           path: android/app/build/outputs/bundle/release/*.aab
+
+      - name: Upload AAB to Google Play Console "Internal Testing" track
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.cyanchill.missingcore.music
+          releaseFiles: android/app/build/outputs/bundle/release/app-release.aab
+          # No need for `changesNotSentForReview: true` as internal track shouldn't
+          # get reviewed.
+          track: internal
