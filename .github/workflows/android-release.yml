@@ -49,13 +49,20 @@ jobs:
       - name: Build and sign APKs with Gradle
         run: cd android && chmod +x gradlew && ./gradlew assembleRelease
 
+      - name: Zip files used for deobfuscation
+        run: |
+          zip -j deobfuscate.zip ./android/app/build/outputs/mapping/release/mapping.txt \
+                                 ./android/app/build/outputs/native-debug-symbols/release/native-debug-symbols.zip
+
       - name: Release APKs
         uses: softprops/action-gh-release@v2
         with:
           name: "${{ env.COMMIT_TAG }}"
           tag_name: "${{ env.COMMIT_TAG }}"
           token: ${{ secrets.MISSINGCORE_BOT_GITHUB_TOKEN }}
-          files: android/app/build/outputs/apk/release/*.apk
+          files: |
+            android/app/build/outputs/apk/release/*.apk
+            deobfuscate.zip
           draft: true
           # Mark release as prerelease if the tag contains `-rc.`
           prerelease: ${{ contains(env.COMMIT_TAG, '-rc.') }}
@@ -104,7 +111,7 @@ jobs:
         run: cd android && chmod +x gradlew && ./gradlew bundleRelease
 
       # Save `.aab` as artifact before upload to Play Console incase upload fails.
-      - name: Save AAB as artifact
+      - name: Upload AAB as artifact
         uses: actions/upload-artifact@v4
         with:
           name: outputAAB

@@ -40,7 +40,7 @@ jobs:
         run: cd android && chmod +x gradlew && ./gradlew bundleRelease
 
       # Save `.aab` as artifact before upload to Play Console incase upload fails.
-      - name: Save AAB as artifact
+      - name: Upload AAB as artifact
         uses: actions/upload-artifact@v4
         with:
           name: outputAAB
