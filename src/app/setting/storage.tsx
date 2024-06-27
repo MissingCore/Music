@@ -4,6 +4,7 @@ import { useStorageInfo } from "@/features/setting/api/storage";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
+import { Button } from "@/components/form/Button";
 import { AnimatedHeader } from "@/components/navigation/AnimatedHeader";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Heading } from "@/components/ui/Text";
@@ -20,6 +21,18 @@ export default function StorageScreen() {
         device along with information about the playable media.
       </Description>
       <InfoWidgets />
+
+      <Heading as="h1" className="mb-8 mt-[22px] text-start">
+        Backup
+      </Heading>
+      <Description className="mb-8">
+        Import or export a file named{" "}
+        <Text className="text-foreground100">`music_export.json`</Text>{" "}
+        containing information about your favorited albums, playlists, and
+        tracks. Useful for transferring your data between the APK & Play Store
+        versions of the app.
+      </Description>
+      <BackupActions />
     </AnimatedHeader>
   );
 }
@@ -122,6 +135,28 @@ function ValueRow({ label, value, barColor, className }: ValueRowProps) {
       <Text className="font-geistMonoLight text-xs text-foreground100">
         {value}
       </Text>
+    </View>
+  );
+}
+
+/** @description Actions for "Backup" feature. */
+function BackupActions() {
+  return (
+    <View className="mb-4 flex-row gap-2">
+      <Button
+        theme="neutral-outline"
+        onPress={() => console.log("Exporting files...")}
+        content="Export"
+        wrapperClassName="flex-1 flex-col p-4"
+        textClassName="text-foreground100"
+      />
+      <Button
+        theme="neutral-outline"
+        onPress={() => console.log("Importing files...")}
+        content="Import"
+        wrapperClassName="flex-1 flex-col p-4"
+        textClassName="text-foreground100"
+      />
     </View>
   );
 }

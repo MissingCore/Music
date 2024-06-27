@@ -21,6 +21,13 @@ const ButtonThemes = {
     },
     text: { base: "text-foreground50", disabled: "text-surface500" },
   },
+  "neutral-outline": {
+    button: {
+      base: "border-surface500 active:bg-surface500",
+      disabled: "border-surface700",
+    },
+    text: { base: "text-foreground50", disabled: "text-surface500" },
+  },
   "neutral-alt": {
     button: {
       base: "border-surface800 bg-surface800 active:border-surface700 active:bg-surface700",
