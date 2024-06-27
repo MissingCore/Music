@@ -62,6 +62,9 @@ dependencies:
   expo-image:
     specifier: ^1.12.12
     version: 1.12.12(expo@51.0.14)
+  expo-image-manipulator:
+    specifier: ~12.0.5
+    version: 12.0.5(expo@51.0.14)
   expo-image-picker:
     specifier: ~15.0.5
     version: 15.0.5(expo@51.0.14)
@@ -6349,6 +6352,15 @@ packages:
       expo: '*'
     dependencies:
       expo: 51.0.14(@babel/core@7.24.7)(@babel/preset-env@7.24.7)
+    dev: false
+
+  /expo-image-manipulator@12.0.5(expo@51.0.14):
+    resolution: {integrity: sha512-zJ8yINjckYw/yfoSuICt4yJ9xr112+W9e5QVXwK3nCAHr7sv45RQ5sxte0qppf594TPl+UoV6Tjim7WpoKipRQ==}
+    peerDependencies:
+      expo: '*'
+    dependencies:
+      expo: 51.0.14(@babel/core@7.24.7)(@babel/preset-env@7.24.7)
+      expo-image-loader: 4.7.0(expo@51.0.14)
     dev: false
 
   /expo-image-picker@15.0.5(expo@51.0.14):

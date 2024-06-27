@@ -18,6 +18,7 @@
 | expo-file-system | MIT | https://github.com/expo/expo/tree/main/packages/expo-file-system |
 | expo-font | MIT | https://github.com/expo/expo/tree/main/packages/expo-font |
 | expo-image | MIT | https://github.com/expo/expo/tree/main/packages/expo-image |
+| expo-image-manipulator | MIT | https://github.com/expo/expo/tree/main/packages/expo-image-manipulator |
 | expo-image-picker | MIT | https://github.com/expo/expo/tree/main/packages/expo-image-picker |
 | expo-linear-gradient | MIT | https://github.com/expo/expo/tree/main/packages/expo-linear-gradient |
 | expo-media-library | MIT | https://github.com/expo/expo/tree/main/packages/expo-media-library |

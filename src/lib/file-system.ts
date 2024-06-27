@@ -1,5 +1,6 @@
 import { createId } from "@paralleldrive/cuid2";
 import * as FileSystem from "expo-file-system";
+import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
 import * as ImagePicker from "expo-image-picker";
 
 import type { Maybe } from "@/utils/types";
@@ -40,12 +41,11 @@ export async function pickImage() {
 
 /** @description Helper to save images to device. */
 export async function saveBase64Img(base64Img: string) {
-  const [dataMime, base64] = base64Img.split(";base64,");
-  const ext = dataMime.slice(11).toLowerCase();
-
-  const fileUri = FileSystem.documentDirectory + `images/${createId()}.${ext}`;
-  await FileSystem.writeAsStringAsync(fileUri, base64!, {
-    encoding: FileSystem.EncodingType.Base64,
+  const { uri: webpUri } = await manipulateAsync(base64Img, [], {
+    format: SaveFormat.WEBP,
   });
+  const fileUri = FileSystem.documentDirectory + `images/${createId()}.webp`;
+  await FileSystem.copyAsync({ from: webpUri, to: fileUri });
+  await FileSystem.deleteAsync(webpUri);
   return fileUri;
 }
