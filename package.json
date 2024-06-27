@@ -27,12 +27,12 @@
     "@expo/vector-icons": "^14.0.2",
     "@gorhom/bottom-sheet": "5.0.0-alpha.10",
     "@miblanchard/react-native-slider": "^2.6.0",
-    "@missingcore/audio-metadata": "^1.1.1",
+    "@missingcore/audio-metadata": "^1.2.0",
     "@paralleldrive/cuid2": "^2.2.2",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-navigation/native": "^6.1.17",
     "@shopify/flash-list": "1.6.4",
-    "@tanstack/react-query": "^5.45.1",
+    "@tanstack/react-query": "^5.48.0",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.31.2",
     "expo": "~51.0.14",
@@ -65,12 +65,12 @@
   },
   "devDependencies": {
     "@babel/core": "^7.24.7",
-    "@tanstack/eslint-plugin-query": "^5.43.1",
+    "@tanstack/eslint-plugin-query": "^5.47.0",
     "@types/boterop__react-native-background-timer": "npm:@types/react-native-background-timer@^2.0.2",
     "@types/jest": "^29.5.12",
     "@types/react": "~18.2.79",
-    "@typescript-eslint/eslint-plugin": "^7.13.1",
-    "@typescript-eslint/parser": "^7.13.1",
+    "@typescript-eslint/eslint-plugin": "^7.14.1",
+    "@typescript-eslint/parser": "^7.14.1",
     "babel-plugin-inline-import": "^3.0.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "drizzle-kit": "^0.22.7",
@@ -87,7 +87,7 @@
     "prettier-plugin-tailwindcss": "^0.6.5",
     "react-test-renderer": "18.2.0",
     "tailwindcss": "^3.4.4",
-    "typescript": "^5.4.5"
+    "typescript": "^5.5.2"
   },
   "resolutions": {
     "markdown-it": "14.1.0"
