@@ -41,15 +41,11 @@ export async function pickImage() {
 
 /** @description Helper to save images to device. */
 export async function saveBase64Img(base64Img: string) {
-  const { base64, uri: webpUri } = await manipulateAsync(base64Img, [], {
-    base64: true,
+  const { uri: webpUri } = await manipulateAsync(base64Img, [], {
     format: SaveFormat.WEBP,
   });
-
   const fileUri = FileSystem.documentDirectory + `images/${createId()}.webp`;
-  await FileSystem.writeAsStringAsync(fileUri, base64!, {
-    encoding: FileSystem.EncodingType.Base64,
-  });
+  await FileSystem.copyAsync({ from: webpUri, to: fileUri });
   await FileSystem.deleteAsync(webpUri);
   return fileUri;
 }

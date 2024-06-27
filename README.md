@@ -89,8 +89,8 @@ Here are some benchmarks for saving 177 new tracks & 20 album/track artwork **du
 
 | Device (OS Version)                    | Track Saving | Artwork Saving |
 | -------------------------------------- | ------------ | -------------- |
-| Nothing Phone 2a — Android 14 (v2.5.6) | ~15.1609s    | ~19.9914s      |
-| OnePlus 6 — Android 11 (v11.1.2.2)     | ~31.2854s    | ~22.4532s      |
+| Nothing Phone 2a — Android 14 (v2.5.6) | ~15.1609s    | ~14.7705s      |
+| OnePlus 6 — Android 11 (v11.1.2.2)     | ~30.9162s    | ~19.5772s      |
 
 # Installation
 
