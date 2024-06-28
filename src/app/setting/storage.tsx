@@ -1,6 +1,9 @@
 import { Text, View } from "react-native";
 
-import { useExportBackup } from "@/features/setting/api/backup";
+import {
+  useExportBackup,
+  useImportBackup,
+} from "@/features/setting/api/backup";
 import { useStorageInfo } from "@/features/setting/api/storage";
 
 import { Colors } from "@/constants/Styles";
@@ -144,8 +147,9 @@ function ValueRow({ label, value, barColor, className }: ValueRowProps) {
 /** @description Actions for "Backup" feature. */
 function BackupActions() {
   const exportBackupFn = useExportBackup();
+  const importBackupFn = useImportBackup();
 
-  const disableActions = exportBackupFn.isPending;
+  const disableActions = exportBackupFn.isPending || importBackupFn.isPending;
 
   return (
     <View className="mb-4 flex-row gap-2">
@@ -160,7 +164,7 @@ function BackupActions() {
       <Button
         theme="neutral-outline"
         content="Import"
-        onPress={() => console.log("Importing files...")}
+        onPress={() => mutateGuard(importBackupFn, undefined)}
         disabled={disableActions}
         wrapperClassName="flex-1 flex-col p-4"
         textClassName="text-foreground100"

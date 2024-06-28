@@ -38,6 +38,7 @@ export const Button = forwardRef<View, ButtonProps>(
         onPress={(e) => {
           if (!props.disabled && props.onPress) props.onPress(e);
         }}
+        disabled={props.disabled}
         className={cn(
           "flex-row items-center gap-2 rounded-full border px-2 py-1",
           ButtonThemes[theme],

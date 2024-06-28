@@ -50,6 +50,9 @@ dependencies:
   expo-av:
     specifier: ~14.0.5
     version: 14.0.5(expo@51.0.14)
+  expo-document-picker:
+    specifier: ~12.0.2
+    version: 12.0.2(expo@51.0.14)
   expo-drizzle-studio-plugin:
     specifier: ^0.0.2
     version: 0.0.2(expo@51.0.14)
@@ -128,6 +131,9 @@ dependencies:
   tailwind-merge:
     specifier: ^2.3.0
     version: 2.3.0
+  zod:
+    specifier: ^3.23.8
+    version: 3.23.8
 
 devDependencies:
   '@babel/core':
@@ -6327,6 +6333,14 @@ packages:
       - supports-color
     dev: false
 
+  /expo-document-picker@12.0.2(expo@51.0.14):
+    resolution: {integrity: sha512-tmwuRWoCPv6SmNDSMEWcttMBJ95k8/g5sMWnHdmvOx0UKp0pFXP8FI+55HKtQpo6k2+118MkdDDhQSwKqASVAw==}
+    peerDependencies:
+      expo: '*'
+    dependencies:
+      expo: 51.0.14(@babel/core@7.24.7)(@babel/preset-env@7.24.7)
+    dev: false
+
   /expo-drizzle-studio-plugin@0.0.2(expo@51.0.14):
     resolution: {integrity: sha512-Q5PODIlRp1Hox8a55kJ0iEaaDBL1xo9+oidO03dRu45sB4GAulFcKqc4bZ3qpND4mex0sFu+xm72pmXa/GkjHw==}
     peerDependencies:
@@ -12264,3 +12278,7 @@ packages:
   /yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
+
+  /zod@3.23.8:
+    resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
+    dev: false

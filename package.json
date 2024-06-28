@@ -37,6 +37,7 @@
     "drizzle-orm": "^0.31.2",
     "expo": "~51.0.14",
     "expo-av": "~14.0.5",
+    "expo-document-picker": "~12.0.2",
     "expo-drizzle-studio-plugin": "^0.0.2",
     "expo-file-system": "~17.0.1",
     "expo-font": "~12.0.7",
@@ -62,7 +63,8 @@
     "react-native-svg": "^15.3.0",
     "react-native-toast-notifications": "^3.4.0",
     "react-native-track-player": "^4.1.1",
-    "tailwind-merge": "^2.3.0"
+    "tailwind-merge": "^2.3.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@babel/core": "^7.24.7",
