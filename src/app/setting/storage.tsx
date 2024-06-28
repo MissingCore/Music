@@ -1,8 +1,10 @@
 import { Text, View } from "react-native";
 
+import { useExportBackup } from "@/features/setting/api/backup";
 import { useStorageInfo } from "@/features/setting/api/storage";
 
 import { Colors } from "@/constants/Styles";
+import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
 import { Button } from "@/components/form/Button";
 import { AnimatedHeader } from "@/components/navigation/AnimatedHeader";
@@ -26,8 +28,8 @@ export default function StorageScreen() {
         Backup
       </Heading>
       <Description className="mb-8">
-        Import or export a file named{" "}
-        <Text className="text-foreground100">`music_export.json`</Text>{" "}
+        Import or export{" "}
+        <Text className="text-foreground100">`music_backup.json`</Text>{" "}
         containing information about your favorited albums, playlists, and
         tracks. Useful for transferring your data between the APK & Play Store
         versions of the app.
@@ -141,19 +143,25 @@ function ValueRow({ label, value, barColor, className }: ValueRowProps) {
 
 /** @description Actions for "Backup" feature. */
 function BackupActions() {
+  const exportBackupFn = useExportBackup();
+
+  const disableActions = exportBackupFn.isPending;
+
   return (
     <View className="mb-4 flex-row gap-2">
       <Button
         theme="neutral-outline"
-        onPress={() => console.log("Exporting files...")}
         content="Export"
+        onPress={() => mutateGuard(exportBackupFn, undefined)}
+        disabled={disableActions}
         wrapperClassName="flex-1 flex-col p-4"
         textClassName="text-foreground100"
       />
       <Button
         theme="neutral-outline"
-        onPress={() => console.log("Importing files...")}
         content="Import"
+        onPress={() => console.log("Importing files...")}
+        disabled={disableActions}
         wrapperClassName="flex-1 flex-col p-4"
         textClassName="text-foreground100"
       />

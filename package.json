@@ -46,6 +46,7 @@
     "expo-linear-gradient": "~13.0.2",
     "expo-media-library": "~16.0.3",
     "expo-router": "~3.5.16",
+    "expo-sharing": "~12.0.1",
     "expo-sqlite": "^14.0.3",
     "expo-web-browser": "~13.0.3",
     "jotai": "^2.8.3",

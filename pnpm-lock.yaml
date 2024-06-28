@@ -77,6 +77,9 @@ dependencies:
   expo-router:
     specifier: ~3.5.16
     version: 3.5.16(expo-constants@16.0.2)(expo-linking@6.3.1)(expo-modules-autolinking@1.11.1)(expo-status-bar@1.12.1)(expo@51.0.14)(react-native-reanimated@3.10.1)(react-native-safe-area-context@4.10.1)(react-native-screens@3.31.1)(react-native@0.74.2)(react@18.2.0)(typescript@5.5.2)
+  expo-sharing:
+    specifier: ~12.0.1
+    version: 12.0.1(expo@51.0.14)
   expo-sqlite:
     specifier: ^14.0.3
     version: 14.0.3(expo@51.0.14)
@@ -6478,6 +6481,14 @@ packages:
       - react-native
       - supports-color
       - typescript
+    dev: false
+
+  /expo-sharing@12.0.1(expo@51.0.14):
+    resolution: {integrity: sha512-wBT+WeXwapj/9NWuLJO01vi9bdlchYu/Q/xD8slL/Ls4vVYku8CPqzkTtDFcjLrjtlJqyeHsdQXwKLvORmBIew==}
+    peerDependencies:
+      expo: '*'
+    dependencies:
+      expo: 51.0.14(@babel/core@7.24.7)(@babel/preset-env@7.24.7)
     dev: false
 
   /expo-splash-screen@0.27.5(expo-modules-autolinking@1.11.1)(expo@51.0.14):
