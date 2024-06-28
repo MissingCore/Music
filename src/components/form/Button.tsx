@@ -7,34 +7,14 @@ import { cn } from "@/lib/style";
 import { ExternalLink } from "@/components/navigation/ExternalLink";
 
 const ButtonThemes = {
-  "white-outline": {
-    button: {
-      base: "border-foreground50 active:bg-surface700",
-      disabled: "border-surface500",
-    },
-    text: { base: "text-foreground50", disabled: "text-surface500" },
-  },
-  neutral: {
-    button: {
-      base: "border-surface500 bg-surface500 active:border-surface700 active:bg-surface700",
-      disabled: "border-surface700 bg-surface700",
-    },
-    text: { base: "text-foreground50", disabled: "text-surface500" },
-  },
-  "neutral-alt": {
-    button: {
-      base: "border-surface800 bg-surface800 active:border-surface700 active:bg-surface700",
-      disabled: "border-surface700 bg-surface700",
-    },
-    text: { base: "text-foreground50", disabled: "text-surface500" },
-  },
-  accent: {
-    button: {
-      base: "border-accent500 bg-accent500 active:border-accent50 active:bg-accent50",
-      disabled: "border-surface700 bg-surface700",
-    },
-    text: { base: "text-foreground50", disabled: "text-surface500" },
-  },
+  "white-outline": "border-foreground50 active:bg-surface700",
+  neutral:
+    "border-surface500 bg-surface500 active:border-surface700 active:bg-surface700",
+  "neutral-outline": "border-surface500 active:bg-surface500",
+  "neutral-alt":
+    "border-surface800 bg-surface800 active:border-surface700 active:bg-surface700",
+  accent:
+    "border-accent500 bg-accent500 active:border-accent50 active:bg-accent50",
 } as const;
 
 export type ButtonProps = {
@@ -58,23 +38,18 @@ export const Button = forwardRef<View, ButtonProps>(
         onPress={(e) => {
           if (!props.disabled && props.onPress) props.onPress(e);
         }}
+        disabled={props.disabled}
         className={cn(
           "flex-row items-center gap-2 rounded-full border px-2 py-1",
-          {
-            [ButtonThemes[theme].button.base]: !props.disabled,
-            [ButtonThemes[theme].button.disabled]: props.disabled,
-          },
+          ButtonThemes[theme],
           props.wrapperClassName,
+          { "opacity-25": props.disabled },
         )}
       >
         {props.Icon}
         <Text
           className={cn(
-            "font-geistMono text-sm",
-            {
-              [ButtonThemes[theme].text.base]: !props.disabled,
-              [ButtonThemes[theme].text.disabled]: props.disabled,
-            },
+            "font-geistMono text-sm text-foreground50",
             props.textClassName,
           )}
         >

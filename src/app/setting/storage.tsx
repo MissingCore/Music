@@ -1,9 +1,15 @@
 import { Text, View } from "react-native";
 
+import {
+  useExportBackup,
+  useImportBackup,
+} from "@/features/setting/api/backup";
 import { useStorageInfo } from "@/features/setting/api/storage";
 
 import { Colors } from "@/constants/Styles";
+import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
+import { Button } from "@/components/form/Button";
 import { AnimatedHeader } from "@/components/navigation/AnimatedHeader";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Heading } from "@/components/ui/Text";
@@ -20,6 +26,18 @@ export default function StorageScreen() {
         device along with information about the playable media.
       </Description>
       <InfoWidgets />
+
+      <Heading as="h1" className="mb-8 mt-[22px] text-start">
+        Backup
+      </Heading>
+      <Description className="mb-8">
+        Import or export{" "}
+        <Text className="text-foreground100">`music_backup.json`</Text>{" "}
+        containing information about your favorited albums, playlists, and
+        tracks. Useful for transferring your data between the APK & Play Store
+        versions of the app.
+      </Description>
+      <BackupActions />
     </AnimatedHeader>
   );
 }
@@ -122,6 +140,35 @@ function ValueRow({ label, value, barColor, className }: ValueRowProps) {
       <Text className="font-geistMonoLight text-xs text-foreground100">
         {value}
       </Text>
+    </View>
+  );
+}
+
+/** @description Actions for "Backup" feature. */
+function BackupActions() {
+  const exportBackupFn = useExportBackup();
+  const importBackupFn = useImportBackup();
+
+  const disableActions = exportBackupFn.isPending || importBackupFn.isPending;
+
+  return (
+    <View className="mb-4 flex-row gap-2">
+      <Button
+        theme="neutral-outline"
+        content="Export"
+        onPress={() => mutateGuard(exportBackupFn, undefined)}
+        disabled={disableActions}
+        wrapperClassName="flex-1 flex-col p-4"
+        textClassName="text-foreground100"
+      />
+      <Button
+        theme="neutral-outline"
+        content="Import"
+        onPress={() => mutateGuard(importBackupFn, undefined)}
+        disabled={disableActions}
+        wrapperClassName="flex-1 flex-col p-4"
+        textClassName="text-foreground100"
+      />
     </View>
   );
 }
