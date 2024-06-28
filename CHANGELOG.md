@@ -23,6 +23,7 @@ At launch, `Music` provides the following features:
 - Background Playback w/ Media Control Notification
 - Queues
 - Automatically extraction of metadata w/ [@missingcore/audio-metadata](https://github.com/MissingCore/audio-metadata)
+- Data Backup
 
 #### 📋 Queues
 
@@ -35,3 +36,7 @@ On app launch, `Music` will look for any new tracks added to your device and sav
 In addition, `Music` will detect any tracks deleted and remove them from any playlists that contain it. If it was in an album or belongs to an artist with no tracks, those entities will automatically be removed from view.
 
 `Music` aims to keep its size small and delete any unnecessary resources.
+
+### Data Backup
+
+Export a `music_backup.json` file to help you switch between the APK & Google Play version of the app.
