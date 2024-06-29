@@ -18,6 +18,8 @@ export function useHasNewUpdate(): UpdateResult {
   // release candidate versions if we're on a release candidate.
   const usedRelease = usingRC ? data.latestRelease : data.latestStable;
 
+  // Note: We can technically display an older release note if we updated
+  // to the lastest version before the GitHub release notes are published.
   if (!usedRelease.version || usedRelease.version === APP_VERSION) {
     return { newUpdate: false, release: null };
   } else {
