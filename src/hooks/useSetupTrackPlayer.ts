@@ -10,9 +10,15 @@ export function useSetupTrackPlayer() {
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    setupPlayer().then(() => {
-      setIsInitialized(true);
-    });
+    setupPlayer()
+      .then(() => {
+        setIsInitialized(true);
+      })
+      .catch((err: Error) => {
+        // Set `isInitialized = true` if we get this specific error.
+        const msg = "The player has already been initialized via setupPlayer.";
+        if (err.message === msg) setIsInitialized(true);
+      });
   }, []);
 
   return isInitialized;
