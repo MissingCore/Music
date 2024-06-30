@@ -13,7 +13,7 @@ import { nextTrackListAtom, queueTrackListAtom } from "./store";
 
 import { Colors } from "@/constants/Styles";
 import { pickKeys } from "@/utils/object";
-import { ActionButton } from "@/components/form/ActionButton";
+import { ActionButton } from "@/components/form/action-button";
 import { MediaImage } from "@/components/media/MediaImage";
 import { Loading } from "@/components/ui/Loading";
 import { Description, Heading } from "@/components/ui/Text";
@@ -115,16 +115,16 @@ function UpcomingTrack({ data, onPress }: UpcomingTrackProps) {
             className="shrink-0 rounded-sm"
           />
         }
-        Icon={
-          inQueue ? (
+        icon={{
+          Element: inQueue ? (
             <Ionicons
               name="remove-circle-outline"
               size={24}
               color={Colors.accent50}
             />
-          ) : undefined
-        }
-        iconLabel={inQueue ? "Remove track from queue." : undefined}
+          ) : undefined,
+          label: inQueue ? "Remove track from queue." : undefined,
+        }}
         withoutIcon={!inQueue}
       />
     </View>

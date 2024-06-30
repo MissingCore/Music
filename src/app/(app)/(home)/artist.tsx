@@ -6,7 +6,7 @@ import { ArrowRight } from "@/assets/svgs/ArrowRight";
 import { useArtistsForList } from "@/api/artists";
 
 import { cn } from "@/lib/style";
-import { ActionButton } from "@/components/form/ActionButton";
+import { ActionButton } from "@/components/form/action-button";
 import { Loading } from "@/components/ui/Loading";
 import { Description, Heading } from "@/components/ui/Text";
 
@@ -35,7 +35,7 @@ export default function ArtistScreen() {
               <ActionButton
                 onPress={() => router.navigate(`/artist/${item.name}`)}
                 textContent={item.textContent}
-                Icon={<ArrowRight size={24} />}
+                icon={{ Element: <ArrowRight size={24} /> }}
               />
             </View>
           )

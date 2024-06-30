@@ -7,26 +7,31 @@ import { cn } from "@/lib/style";
 import type { Maybe } from "@/utils/types";
 import { TextStack } from "@/components/ui/Text";
 
-export type ActionButtonProps = {
-  onPress: PressableProps["onPress"];
-  textContent: [string, Maybe<string>];
-  Image?: React.JSX.Element;
-  /** Displays between the `<TextStack />` & optional icon. */
-  AsideContent?: React.JSX.Element;
-  Icon?: React.JSX.Element;
-  iconLabel?: string;
-  iconOnPress?: PressableProps["onPress"];
-  withoutIcon?: boolean;
-  className?: string;
-};
+export namespace ActionButton {
+  export interface Props {
+    onPress: PressableProps["onPress"];
+    textContent: [string, Maybe<string>];
+    Image?: React.JSX.Element;
+    /** Displays between the `<TextStack />` & optional icon. */
+    AsideContent?: React.JSX.Element;
+    icon?: {
+      Element?: React.JSX.Element;
+      /** Accessibility label for icon. */
+      label?: string;
+      onPress?: PressableProps["onPress"];
+    };
+    withoutIcon?: boolean;
+    className?: string;
+  }
+}
 
 /**
  * @description Button displaying up to 2 lines of text, with up to 2
  *  different press scenarios (pressing the whole card or the optional
  *  icon will do different actions).
  */
-export function ActionButton(props: ActionButtonProps) {
-  const icon = props.Icon ?? <EllipsisVertical size={24} />;
+export function ActionButton(props: ActionButton.Props) {
+  const icon = props.icon?.Element ?? <EllipsisVertical size={24} />;
 
   return (
     <Pressable
@@ -41,10 +46,10 @@ export function ActionButton(props: ActionButtonProps) {
       {props.Image}
       <TextStack content={props.textContent} wrapperClassName="flex-1" />
       {props.AsideContent}
-      {props.withoutIcon ? null : props.iconOnPress ? (
+      {props.withoutIcon ? null : props.icon?.onPress ? (
         <Pressable
-          accessibilityLabel={props.iconLabel}
-          onPress={props.iconOnPress}
+          accessibilityLabel={props.icon.label}
+          onPress={props.icon.onPress}
           className="shrink-0"
         >
           {icon}

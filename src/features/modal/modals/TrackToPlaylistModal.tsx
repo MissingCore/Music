@@ -14,7 +14,7 @@ import {
 
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
-import { CheckboxField } from "@/components/form/CheckboxField";
+import { CheckboxField } from "@/components/form/checkbox-field";
 import { Loading } from "@/components/ui/Loading";
 import { Description, Heading } from "@/components/ui/Text";
 import { getTrackCountStr } from "@/features/track/utils";

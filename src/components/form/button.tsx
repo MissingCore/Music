@@ -2,7 +2,7 @@ import type { VariantProps } from "cva";
 import { cva } from "cva";
 import { Link } from "expo-router";
 import { forwardRef } from "react";
-import type { GestureResponderEvent, View } from "react-native";
+import type { PressableProps, View } from "react-native";
 import { Pressable, Text } from "react-native";
 
 import { cn } from "@/lib/style";
@@ -42,7 +42,7 @@ export namespace Button {
     Interactions & {
       children: React.ReactNode;
       disabled?: boolean;
-      onPress?: (e?: GestureResponderEvent) => void;
+      onPress?: PressableProps["onPress"];
       Icon?: React.JSX.Element;
       wrapperClassName?: string;
       textClassName?: string;
@@ -50,7 +50,6 @@ export namespace Button {
 }
 
 /** @description Pill button with icon support. */
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export function Button({
   interaction = "button",
   href,
