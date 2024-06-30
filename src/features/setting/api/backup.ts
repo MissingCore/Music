@@ -77,23 +77,24 @@ export async function exportBackup() {
   const UTI = "public.json";
   const mimeType = "application/json";
 
-  downloadBlock: {
-    if (Platform.OS === "android") {
-      // Get user to select a folder inside the "Download" directory.
-      const downloadDir = SAF.getUriForDirectoryInRoot("Download");
-      const permissions =
-        await SAF.requestDirectoryPermissionsAsync(downloadDir);
-      if (!permissions.granted) break downloadBlock;
-      // Create a new file in specified directory. `SAF.copyAsync()` currently
-      // throws an error, saying the location isn't writable.
-      const fileUri = await SAF.createFileAsync(
-        ...[permissions.directoryUri, "music_backup", mimeType],
-      );
-      await SAF.writeAsStringAsync(fileUri, fileContent, fileOpts);
-    } else if (Platform.OS === "ios") {
-      // On iOS, there's a "Save to Files" option.
-      await Sharing.shareAsync(tempUri, { UTI, mimeType });
+  if (Platform.OS === "android") {
+    // Get user to select a folder inside the "Download" directory.
+    const downloadDir = SAF.getUriForDirectoryInRoot("Download");
+    const permissions = await SAF.requestDirectoryPermissionsAsync(downloadDir);
+    if (!permissions.granted) {
+      // Delete temporary file before throwing eror.
+      await FileSystem.deleteAsync(tempUri);
+      throw new Error("No save location selected.");
     }
+    // Create a new file in specified directory. `SAF.copyAsync()` currently
+    // throws an error, saying the location isn't writable.
+    const fileUri = await SAF.createFileAsync(
+      ...[permissions.directoryUri, "music_backup", mimeType],
+    );
+    await SAF.writeAsStringAsync(fileUri, fileContent, fileOpts);
+  } else if (Platform.OS === "ios") {
+    // On iOS, there's a "Save to Files" option.
+    await Sharing.shareAsync(tempUri, { UTI, mimeType });
   }
 
   // Delete temporary file.
@@ -215,7 +216,16 @@ export async function importBackup() {
 }
 
 /** @description Create a `music_backup.json` file to be saved. */
-export const useExportBackup = () => useMutation({ mutationFn: exportBackup });
+export const useExportBackup = () =>
+  useMutation({
+    mutationFn: exportBackup,
+    onSuccess: () => {
+      Toast.show("Created backup successfully.");
+    },
+    onError: (err) => {
+      Toast.show(err.message, { type: "danger" });
+    },
+  });
 
 /** @description Load data from a `music_backup.json` file. */
 export const useImportBackup = () => {
