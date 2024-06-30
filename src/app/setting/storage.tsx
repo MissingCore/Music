@@ -9,7 +9,7 @@ import { useStorageInfo } from "@/features/setting/api/storage";
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
-import { Button } from "@/components/form/Button";
+import { Button } from "@/components/form/button";
 import { AnimatedHeader } from "@/components/navigation/AnimatedHeader";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { Heading } from "@/components/ui/Text";
@@ -154,21 +154,25 @@ function BackupActions() {
   return (
     <View className="mb-4 flex-row gap-2">
       <Button
-        theme="neutral-outline"
-        content="Export"
+        variant="outline"
+        theme="neutral"
         onPress={() => mutateGuard(exportBackupFn, undefined)}
         disabled={disableActions}
-        wrapperClassName="flex-1 flex-col p-4"
+        wrapperClassName="flex-1 p-4"
         textClassName="text-foreground100"
-      />
+      >
+        Export
+      </Button>
       <Button
-        theme="neutral-outline"
-        content="Import"
+        variant="outline"
+        theme="neutral"
         onPress={() => mutateGuard(importBackupFn, undefined)}
         disabled={disableActions}
-        wrapperClassName="flex-1 flex-col p-4"
+        wrapperClassName="flex-1 p-4"
         textClassName="text-foreground100"
-      />
+      >
+        Import
+      </Button>
     </View>
   );
 }

@@ -6,7 +6,7 @@ import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 
 import { APP_VERSION, GITHUB_LINK } from "@/constants/Config";
 import { BorderRadius, Colors, FontFamily, FontSize } from "@/constants/Styles";
-import { LinkButton } from "@/components/form/Button";
+import { Button } from "@/components/form/button";
 import { AnimatedHeader } from "@/components/navigation/AnimatedHeader";
 import {
   Description,
@@ -115,10 +115,10 @@ function UpdateChecker() {
         {`# ${release.version} is Available\n\n${release.releaseNotes}`}
       </Markdown>
       <View className="mt-4 flex-row gap-2">
-        <LinkButton
-          as="external"
+        <Button
+          interaction="external-link"
           href={`${GITHUB_LINK}/releases/tag/${release.version}`}
-          theme="neutral-alt"
+          theme="neutral-dark"
           Icon={
             <Ionicons
               name="logo-github"
@@ -126,8 +126,9 @@ function UpdateChecker() {
               color={Colors.foreground50}
             />
           }
-          content="APK"
-        />
+        >
+          APK
+        </Button>
       </View>
     </>
   );

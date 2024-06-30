@@ -27,12 +27,13 @@ export function PlaylistDeleteModal({ id }: { id: string }) {
         </Text>
 
         <View className="flex-row justify-end gap-2">
-          <ModalFormButton content="CANCEL" />
+          <ModalFormButton variant="outline">CANCEL</ModalFormButton>
           <ModalFormButton
             theme="accent"
             onPress={() => mutateGuard(deletePlaylistFn, undefined)}
-            content="DELETE"
-          />
+          >
+            DELETE
+          </ModalFormButton>
         </View>
       </BottomSheetScrollView>
     </ModalBase>

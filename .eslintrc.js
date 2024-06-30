@@ -16,6 +16,12 @@ const config = {
     "@typescript-eslint/array-type": ["warn", { default: "array-simple" }],
     "@typescript-eslint/consistent-type-exports": "error",
     "@typescript-eslint/consistent-type-imports": "error",
+    // Note: you must disable the base rule as it can report incorrect errors
+    "no-redeclare": "off",
+    "@typescript-eslint/no-redeclare": [
+      "error",
+      { ignoreDeclarationMerge: true },
+    ],
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
     "import/order": "off",
     "prettier/prettier": ["error", { endOfLine: "auto" }],

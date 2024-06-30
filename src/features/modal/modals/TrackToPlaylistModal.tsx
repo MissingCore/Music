@@ -99,12 +99,13 @@ function ModalFooter({ trackId, ...props }: ModalFooterProps) {
           "border-t border-t-surface500 bg-surface800",
         )}
       >
-        <ModalFormButton content="CANCEL" />
+        <ModalFormButton variant="outline">CANCEL</ModalFormButton>
         <ModalFormButton
           theme="neutral"
           onPress={() => mutateGuard(putTrackInPlaylistsFn, inPlaylist)}
-          content="CONFIRM"
-        />
+        >
+          CONFIRM
+        </ModalFormButton>
       </View>
     </BottomSheetFooter>
   );

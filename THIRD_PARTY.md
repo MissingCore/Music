@@ -11,6 +11,7 @@
 | @shopify/flash-list | MIT | https://github.com/Shopify/flash-list |
 | @tanstack/react-query | MIT | https://github.com/TanStack/query |
 | clsx | MIT | https://github.com/lukeed/clsx |
+| cva | Apache-2.0 | https://github.com/joe-bell/cva |
 | drizzle-orm | Apache-2.0 | https://github.com/drizzle-team/drizzle-orm |
 | expo | MIT | https://github.com/expo/expo/tree/main/packages/expo |
 | expo-av | MIT | https://github.com/expo/expo/tree/main/packages/expo-av |

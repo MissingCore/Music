@@ -75,9 +75,12 @@ export function PlaylistNameModal({ id, scope }: Props) {
         </View>
 
         <View className="flex-row justify-end gap-2">
-          {scope === "update" && <ModalFormButton content="CANCEL" />}
+          {scope === "update" && (
+            <ModalFormButton variant="outline">CANCEL</ModalFormButton>
+          )}
           <ModalFormButton
             disabled={!meetsCharLength || !isUnique}
+            variant={scope === "new" ? "outline" : undefined}
             theme={scope === "new" ? undefined : "neutral"}
             onPress={() => {
               const santiziedStr = playlistName.trim();
@@ -89,8 +92,9 @@ export function PlaylistNameModal({ id, scope }: Props) {
                 });
               }
             }}
-            content={scope === "new" ? "CREATE" : "CONFIRM"}
-          />
+          >
+            {scope === "new" ? "CREATE" : "CONFIRM"}
+          </ModalFormButton>
         </View>
       </BottomSheetScrollView>
     </ModalBase>
