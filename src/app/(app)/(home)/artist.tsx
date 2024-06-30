@@ -7,8 +7,8 @@ import { useArtistsForList } from "@/api/artists";
 
 import { cn } from "@/lib/style";
 import { ActionButton } from "@/components/form/action-button";
-import { Loading } from "@/components/ui/Loading";
-import { Description, Heading } from "@/components/ui/Text";
+import { LoadingIndicator } from "@/components/ui/loading";
+import { Description, Heading } from "@/components/ui/text";
 
 /** @description Screen for `/artist` route. */
 export default function ArtistScreen() {
@@ -42,7 +42,11 @@ export default function ArtistScreen() {
         }
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          isPending ? <Loading /> : <Description>No Artists Found</Description>
+          isPending ? (
+            <LoadingIndicator />
+          ) : (
+            <Description>No Artists Found</Description>
+          )
         }
         contentContainerStyle={{ paddingTop: 22 }}
       />

@@ -10,7 +10,7 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Colors } from "@/constants/Styles";
-import { Heading } from "@/components/ui/Text";
+import { Heading } from "@/components/ui/text";
 import { UnstyledBackButton } from "./BackButton";
 
 type AnimatedHeaderProps = { title: string; children: React.ReactNode };

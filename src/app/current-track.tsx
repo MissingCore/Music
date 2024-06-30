@@ -8,7 +8,7 @@ import { trackDataAtom, trackListAtom } from "@/features/playback/api/track";
 
 import { AnimatedCover } from "@/components/media/AnimatedCover";
 import { Back } from "@/components/navigation/Back";
-import { Heading, TextLine } from "@/components/ui/Text";
+import { Heading, TextLine } from "@/components/ui/text";
 import {
   NextButton,
   PlayToggleButton,

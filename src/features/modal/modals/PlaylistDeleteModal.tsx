@@ -4,7 +4,7 @@ import { Text, View } from "react-native";
 import { useDeletePlaylist } from "@/api/playlists/[id]";
 
 import { mutateGuard } from "@/lib/react-query";
-import { Heading } from "@/components/ui/Text";
+import { Heading } from "@/components/ui/text";
 import { ModalBase } from "../components/ModalBase";
 import { ModalFormButton } from "../components/ModalFormButton";
 

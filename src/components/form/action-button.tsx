@@ -5,7 +5,7 @@ import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
 
 import { cn } from "@/lib/style";
 import type { Maybe } from "@/utils/types";
-import { TextStack } from "@/components/ui/Text";
+import { TextStack } from "../ui/text";
 
 export namespace ActionButton {
   export interface Props {

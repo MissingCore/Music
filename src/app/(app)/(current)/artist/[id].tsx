@@ -7,8 +7,8 @@ import { useGetColumn } from "@/hooks/layout";
 
 import { MediaCard } from "@/components/media/MediaCard";
 import { MediaPageHeader } from "@/components/media/MediaPageHeader";
-import { ScrollRow } from "@/components/ui/Container";
-import { Description, Heading } from "@/components/ui/Text";
+import { ScrollRow } from "@/components/ui/container";
+import { Description, Heading } from "@/components/ui/text";
 import { TrackList } from "@/features/track/components/TrackList";
 
 /** @description Screen for `/artist/[id]` route. */

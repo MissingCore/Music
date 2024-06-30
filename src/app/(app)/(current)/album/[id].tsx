@@ -8,7 +8,7 @@ import { useToggleFavorite } from "@/api/favorites/[id]";
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { MediaPageHeader } from "@/components/media/MediaPageHeader";
-import { Description } from "@/components/ui/Text";
+import { Description } from "@/components/ui/text";
 import { TrackList } from "@/features/track/components/TrackList";
 
 /** @description Screen for `/album/[id]` route. */

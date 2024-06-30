@@ -2,8 +2,8 @@ import { Link, Stack, usePathname } from "expo-router";
 import { View } from "react-native";
 
 import { cn } from "@/lib/style";
-import { ScrollRow } from "@/components/ui/Container";
-import { ScrollShadow } from "@/components/ui/ScrollShadow";
+import { ScrollRow } from "@/components/ui/container";
+import { ScrollShadow } from "@/components/ui/scroll-shadow";
 
 export default function HomeLayout() {
   return (

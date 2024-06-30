@@ -9,25 +9,21 @@ import Animated, {
 import { cn } from "@/lib/style";
 import { partitionArray } from "@/utils/object";
 
-type ProgressEntry = { color: string; value: number };
-
-type ProgressBarProps = {
-  entries: ProgressEntry[];
+/** @description Animated progress bar that can display several progresses. */
+export function ProgressBar(props: {
+  entries: Array<{ color: string; value: number }>;
   total: number;
   className?: string;
-};
-
-/** @description An animated progress bar that can display several progresses. */
-export function ProgressBar({ entries, total, className }: ProgressBarProps) {
+}) {
   const [barWidth, setBarWidth] = useState(0);
 
   const [usedEntries, unUsedEntries] = partitionArray(
-    entries,
-    ({ value }) => (value / total) * barWidth >= 1,
+    props.entries,
+    ({ value }) => (value / props.total) * barWidth >= 1,
   );
 
   const newTotal =
-    total - unUsedEntries.reduce((prev, curr) => prev + curr.value, 0);
+    props.total - unUsedEntries.reduce((prev, curr) => prev + curr.value, 0);
 
   const newEntries = usedEntries.map(({ color, value }, idx) => {
     const percent = value / newTotal;
@@ -41,7 +37,7 @@ export function ProgressBar({ entries, total, className }: ProgressBarProps) {
       onLayout={({ nativeEvent }) => setBarWidth(nativeEvent.layout.width)}
       className={cn(
         "h-3 flex-1 flex-row overflow-hidden rounded-full",
-        className,
+        props.className,
       )}
     >
       {newEntries.map((entry, idx) => (
@@ -56,26 +52,27 @@ export function ProgressBar({ entries, total, className }: ProgressBarProps) {
   );
 }
 
-type ProgressSegmentProps = {
+/** @description Segment of progress bar that gets animated. */
+function ProgressSegment(props: {
   color: string;
   width: number;
   first?: boolean;
   last?: boolean;
-};
-
-/** @description Segment of progress bar that gets animated. */
-function ProgressSegment({ color, width, first, last }: ProgressSegmentProps) {
-  const segmentWidth = useSharedValue(first ? 0 : 2);
+}) {
+  const segmentWidth = useSharedValue(props.first ? 0 : 2);
   const animatedWidth = useAnimatedStyle(() => ({ width: segmentWidth.value }));
 
   useEffect(() => {
-    segmentWidth.value = withTiming(width, { duration: 500 });
-  }, [segmentWidth, width]);
+    segmentWidth.value = withTiming(props.width, { duration: 500 });
+  }, [segmentWidth, props.width]);
 
   return (
     <Animated.View
-      style={[{ backgroundColor: color }, animatedWidth]}
-      className={cn("h-3", { "ml-0.5": !first, "rounded-r-full": last })}
+      style={[{ backgroundColor: props.color }, animatedWidth]}
+      className={cn("h-3", {
+        "ml-0.5": !props.first,
+        "rounded-r-full": props.last,
+      })}
     />
   );
 }

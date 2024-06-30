@@ -9,7 +9,7 @@ import { areTrackReferencesEqual } from "@/features/playback/utils";
 
 import { cn } from "@/lib/style";
 import { AnimatedCover } from "@/components/media/AnimatedCover";
-import { TextLine } from "@/components/ui/Text";
+import { TextLine } from "@/components/ui/text";
 import {
   PlayButton,
   RepeatButton,

@@ -12,7 +12,7 @@ import { useUpdatePlaylist } from "@/api/playlists/[id]";
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
-import { Heading } from "@/components/ui/Text";
+import { Heading } from "@/components/ui/text";
 import { ReservedNames } from "@/features/playback/constants";
 import { ModalBase } from "../components/ModalBase";
 import { ModalFormButton } from "../components/ModalFormButton";

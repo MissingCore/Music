@@ -2,7 +2,7 @@ import { Link } from "expo-router";
 import { Pressable } from "react-native";
 
 import type { Prettify } from "@/utils/types";
-import { TextStack } from "@/components/ui/Text";
+import { TextStack } from "@/components/ui/text";
 import type { MediaImageProps } from "./MediaImage";
 import { MediaImage } from "./MediaImage";
 

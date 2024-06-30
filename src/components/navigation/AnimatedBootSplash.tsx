@@ -4,8 +4,8 @@ import BootSplash from "react-native-bootsplash";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 
 import { Colors } from "@/constants/Styles";
-import { AnimatedSafeContainer } from "../ui/Container";
-import { LoadingTextEllipsis } from "../ui/Loading";
+import { SafeContainer } from "../ui/container";
+import { AnimatedTextEllipsis } from "../ui/loading";
 
 /** @description Screen when we're saving tracks into the database. */
 export function AnimatedBootSplash() {
@@ -21,7 +21,7 @@ export function AnimatedBootSplash() {
   });
 
   return (
-    <AnimatedSafeContainer {...container} exiting={FadeOut.duration(500)}>
+    <SafeContainer animated {...container} exiting={FadeOut.duration(500)}>
       <Animated.Image {...logo} style={[logo.style]} />
 
       {renderMessage && (
@@ -32,7 +32,7 @@ export function AnimatedBootSplash() {
         >
           <Text className="mb-2 text-center font-geistMono text-base text-foreground50">
             Saving tracks in progress
-            <LoadingTextEllipsis color={Colors.foreground50} />
+            <AnimatedTextEllipsis color={Colors.foreground50} />
           </Text>
           <Text className="text-center font-geistMonoLight text-xs text-foreground100">
             This may take a while if you just installed the app or added a lot
@@ -40,6 +40,6 @@ export function AnimatedBootSplash() {
           </Text>
         </Animated.View>
       )}
-    </AnimatedSafeContainer>
+    </SafeContainer>
   );
 }

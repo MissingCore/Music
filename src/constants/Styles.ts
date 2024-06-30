@@ -31,6 +31,10 @@ export const FontFamily = {
   ndot57: "Ndot-57",
 } as const;
 
+export const TwFontFamilies = Object.keys(FontFamily).map(
+  (f) => `font-${f}` as `font-${(typeof FontFamily)[keyof typeof FontFamily]}`,
+);
+
 export const FontSize = {
   title: 32,
   subtitle: 28,

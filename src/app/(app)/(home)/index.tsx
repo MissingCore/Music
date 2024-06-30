@@ -14,8 +14,8 @@ import { recentlyPlayedDataAtom } from "@/features/playback/api/recent";
 
 import { abbreviateNum } from "@/utils/number";
 import { MediaCard, PlaceholderContent } from "@/components/media/MediaCard";
-import { ScrollRow } from "@/components/ui/Container";
-import { Description, Heading } from "@/components/ui/Text";
+import { ScrollRow } from "@/components/ui/container";
+import { Description, Heading } from "@/components/ui/text";
 import { SpecialPlaylists } from "@/features/playback/constants";
 
 /** @description Detect if we're near the end of a `<ScrollView />`. */

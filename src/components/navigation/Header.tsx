@@ -7,7 +7,7 @@ import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
 import { modalAtom } from "@/features/modal/store";
 
 import { UnstyledBackButton } from "./BackButton";
-import { SafeContainer } from "../ui/Container";
+import { SafeContainer } from "../ui/container";
 
 /*
   Manually extract `NativeStackHeaderProps` from `<Stack.Screen />` instead

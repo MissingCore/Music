@@ -5,8 +5,8 @@ import { ScrollView, Text, View } from "react-native";
 import { prevPathnameAtom } from "@/components/error/prev-pathname-tracker";
 
 import { ReportInstructions } from "@/components/error/report-instructions";
-import { SafeContainer } from "@/components/ui/Container";
-import { Heading, Code } from "@/components/ui/Text";
+import { SafeContainer } from "@/components/ui/container";
+import { Heading, Code } from "@/components/ui/text";
 
 /** @description Screen for unmatched route. */
 export default function NotFoundScreen() {
