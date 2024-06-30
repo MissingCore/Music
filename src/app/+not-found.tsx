@@ -2,9 +2,9 @@ import { Stack, usePathname } from "expo-router";
 import { useAtomValue } from "jotai";
 import { ScrollView, Text, View } from "react-native";
 
-import { prevPathnameAtom } from "@/components/error/PrevPathnameTracker";
+import { prevPathnameAtom } from "@/components/error/prev-pathname-tracker";
 
-import { ReportInstructions } from "@/components/error/ReportInstructions";
+import { ReportInstructions } from "@/components/error/report-instructions";
 import { SafeContainer } from "@/components/ui/Container";
 import { Heading, Code } from "@/components/ui/Text";
 

@@ -31,10 +31,7 @@ export function ReportInstructions({
           external website.
         </Text>
       </View>
-      <View className="mt-8 flex-row justify-end gap-2 px-2">
-        <Button interaction="external-link" href="/" variant="outline">
-          Return Home
-        </Button>
+      <View className="mt-8 flex-row justify-end px-2">
         <Button interaction="external-link" href={ReportLink} theme="accent">
           Report Issue
         </Button>

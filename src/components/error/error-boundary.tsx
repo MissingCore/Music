@@ -3,7 +3,7 @@ import { ScrollView, Text } from "react-native";
 
 import { SafeContainer } from "@/components/ui/Container";
 import { Heading } from "@/components/ui/Text";
-import { ReportInstructions } from "./ReportInstructions";
+import { ReportInstructions } from "./report-instructions";
 
 /** @description Screen displayed when an error is thrown in a component. */
 export function ErrorBoundary({ error }: ErrorBoundaryProps) {

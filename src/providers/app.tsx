@@ -9,7 +9,7 @@ import "@/assets/global.css";
 import { NavigationTheme } from "@/constants/Themes";
 import { queryClient } from "@/lib/react-query";
 import { cn } from "@/lib/style";
-import { PrevPathnameTracker } from "@/components/error/PrevPathnameTracker";
+import { PrevPathnameTracker } from "@/components/error/prev-pathname-tracker";
 import { DeepLinkHandler } from "@/components/navigation/DeepLinkHandler";
 
 /**
