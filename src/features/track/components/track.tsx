@@ -1,33 +1,39 @@
 import { useSetAtom } from "jotai";
+import { Text } from "react-native";
 
 import { modalAtom } from "@/features/modal/store";
 import { playAtom } from "@/features/playback/api/actions";
 import type { TrackListSource } from "@/features/playback/types";
 
+import type { Prettify } from "@/utils/types";
 import { ActionButton } from "@/components/form/action-button";
 import type { MediaList } from "@/components/media/types";
 import { MediaImage } from "@/components/media/image";
-import { Duration } from "./Duration";
+import { getTrackDuration } from "../utils";
 
-export type TrackContent = {
-  id: string;
-  imageSource: MediaImage.ImageSource;
-  duration: number;
-  textContent: ActionButton.Props["textContent"];
-};
+export namespace Track {
+  export type Content = {
+    id: string;
+    imageSource: MediaImage.ImageSource;
+    duration: number;
+    textContent: ActionButton.Props["textContent"];
+  };
 
-export type TrackProps = TrackContent & {
-  trackSource: TrackListSource;
-  origin?: MediaList;
-  hideImage?: boolean;
-};
+  export type Props = Prettify<
+    Content & {
+      trackSource: TrackListSource;
+      origin?: MediaList;
+      hideImage?: boolean;
+    }
+  >;
+}
 
 /**
  * @description Displays information about the current track with 2
  *  different press scenarios (pressing the icon or the whole card will
  *  do different actions).
  */
-export function Track({ id, trackSource, origin, ...props }: TrackProps) {
+export function Track({ id, trackSource, origin, ...props }: Track.Props) {
   const playFn = useSetAtom(playAtom);
   const openModal = useSetAtom(modalAtom);
 
@@ -45,7 +51,11 @@ export function Track({ id, trackSource, origin, ...props }: TrackProps) {
           />
         ) : undefined
       }
-      AsideContent={<Duration duration={props.duration} />}
+      AsideContent={
+        <Text className="shrink-0 font-geistMonoLight text-xs text-foreground100">
+          {getTrackDuration(props.duration)}
+        </Text>
+      }
       icon={{
         label: "View track settings.",
         onPress: () =>

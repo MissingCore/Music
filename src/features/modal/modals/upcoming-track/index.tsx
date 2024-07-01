@@ -17,7 +17,7 @@ import { ActionButton } from "@/components/form/action-button";
 import { MediaImage } from "@/components/media/image";
 import { LoadingIndicator } from "@/components/ui/loading";
 import { Description, Heading } from "@/components/ui/text";
-import { ModalBase } from "../../components/ModalBase";
+import { ModalBase } from "../../components/modal-base";
 
 type TrackExcerpt = Pick<Track, "id" | "artistName" | "name" | "artwork">;
 

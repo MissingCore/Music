@@ -12,7 +12,7 @@ import { SpecialPlaylists } from "@/features/playback/constants";
 import { MediaScreenHeader } from "@/components/media/screen-header";
 import type { MediaList } from "@/components/media/types";
 import { Description } from "@/components/ui/text";
-import { TrackList } from "@/features/track/components/TrackList";
+import { TrackList } from "@/features/track/components/track-list";
 
 /** @description Screen for `/playlist/[id]` route. */
 export default function CurrentPlaylistScreen() {
@@ -68,9 +68,7 @@ function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
   else if (error) {
     return (
       <View className="w-full flex-1 px-4">
-        <Description className="text-accent50">
-          Error: Playlist not found
-        </Description>
+        <Description intent="error">Error: Playlist not found</Description>
       </View>
     );
   }

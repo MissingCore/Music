@@ -3,12 +3,12 @@ import { useAtomValue } from "jotai";
 import { trackDataAtom } from "@/features/playback/api/track";
 import { modalAtom } from "./store";
 
-import { PlaylistModal } from "./modals/PlaylistModal";
-import { PlaylistDeleteModal } from "./modals/PlaylistDeleteModal";
-import { PlaylistNameModal } from "./modals/PlaylistNameModal";
-import { TrackModal } from "./modals/TrackModal";
-import { TrackToPlaylistModal } from "./modals/TrackToPlaylistModal";
-import { UpcomingTrackModal } from "./modals/UpcomingTrackModal";
+import { PlaylistModal } from "./modals/playlist";
+import { PlaylistDeleteModal } from "./modals/playlist-delete";
+import { PlaylistNameModal } from "./modals/playlist-name";
+import { TrackModal } from "./modals/track";
+import { TrackToPlaylistModal } from "./modals/track-to-playlist";
+import { UpcomingTrackModal } from "./modals/upcoming-track";
 
 /** @description Wraps all the Bottom Sheet modals used. */
 export function AppModals() {

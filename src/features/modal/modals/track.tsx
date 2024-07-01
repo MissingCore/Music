@@ -20,8 +20,8 @@ import type { MediaList } from "@/components/media/types";
 import { ScrollRow } from "@/components/ui/container";
 import { Heading } from "@/components/ui/text";
 import { ReservedNames, SpecialPlaylists } from "@/features/playback/constants";
-import { ModalBase } from "../components/ModalBase";
-import { Button, Link } from "../components/ModalInteractive";
+import { Button } from "../components/button";
+import { ModalBase } from "../components/modal-base";
 
 type Props = { id: string; origin?: MediaList | "current" };
 
@@ -86,7 +86,8 @@ export function TrackModal({ id, origin }: Props) {
 
         <ScrollRow>
           {!!data.album && origin !== "album" && (
-            <Link
+            <Button
+              interaction="link"
               href={`/album/${data.album.id}`}
               content="View Album"
               icon="AlbumOutline"
@@ -94,7 +95,8 @@ export function TrackModal({ id, origin }: Props) {
           )}
 
           {origin !== "artist" && (
-            <Link
+            <Button
+              interaction="link"
               href={`/artist/${encodeURIComponent(data.artistName)}`}
               content="View Artist"
               icon="ArtistOutline"
@@ -177,7 +179,8 @@ function ViewPlaylist() {
   if (!currentPlaylist) return null;
 
   return (
-    <Link
+    <Button
+      interaction="link"
       href={
         currentPlaylist === SpecialPlaylists.tracks
           ? "/track"

@@ -5,7 +5,7 @@ import { useLoadAssets } from "@/hooks/useLoadAssets";
 
 import "@/assets/global.css";
 import { PlaybackService } from "@/constants/PlaybackService";
-import { AppProvider } from "@/providers/app";
+import { AppProvider } from "@/components/app-provider";
 import { Header } from "@/components/navigation/header";
 import { AnimatedBootSplash } from "@/components/navigation/animated-boot-splash";
 import { AppModals } from "@/features/modal";

@@ -5,7 +5,7 @@ import { Pressable, View } from "react-native";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 
 import { Colors, FontFamily } from "@/constants/Styles";
-import { MiniPlayer } from "@/features/playback/components/MiniPlayer";
+import { MiniPlayer } from "@/features/playback/components/mini-player";
 
 /** @description Contains content that doesn't take up the full-screen. */
 export default function MainLayout() {

@@ -9,8 +9,8 @@ import { pickImage } from "@/lib/file-system";
 import { mutateGuard } from "@/lib/react-query";
 import { ScrollRow } from "@/components/ui/container";
 import { Heading } from "@/components/ui/text";
-import { ModalBase } from "../components/ModalBase";
-import { Button } from "../components/ModalInteractive";
+import { Button } from "../components/button";
+import { ModalBase } from "../components/modal-base";
 
 /** @description Modal used for playlists. */
 export function PlaylistModal({ id }: { id: string }) {

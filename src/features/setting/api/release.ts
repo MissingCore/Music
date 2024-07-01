@@ -9,14 +9,14 @@ type ReleaseNotes =
   | { releaseNotes: undefined; version: undefined }
   | { releaseNotes: string; version: string };
 
-function formatGitHubRelease(data: any) {
+function formatGitHubRelease(data: any): ReleaseNotes {
   return {
     version: data.tag_name,
     // Remove markdown comments w/ regex.
     releaseNotes: data.body
       ? data.body.replace(/<!--[\s\S]*?(?:-->)/g, "")
       : undefined,
-  } as ReleaseNotes;
+  } satisfies ReleaseNotes;
 }
 
 export async function getLatestRelease() {

@@ -1,3 +1,5 @@
+import type { VariantProps } from "cva";
+import { cva } from "cva";
 import type { TextProps } from "react-native";
 import { Text, View } from "react-native";
 
@@ -69,12 +71,7 @@ export function Heading({
   asLine,
   className,
   ...props
-}: TextProps & {
-  as: "h1" | "h2" | "h3" | "h4";
-  children: React.ReactNode;
-  asLine?: boolean;
-  className?: string;
-}) {
+}: TextProps & { as: "h1" | "h2" | "h3" | "h4"; asLine?: boolean }) {
   const style = cn(
     "text-center text-foreground50",
     {
@@ -92,15 +89,38 @@ export function Heading({
   return <Text className={style} {...props} />;
 }
 
-/** @description Styled text for descriptive content. */
-export function Description({ className, ...props }: TextProps) {
+/** @description Pre-styled `<Heading />` used in `/setting` pages. */
+export function Title({ className, children, ...props }: TextProps) {
   return (
-    <Text
+    <Heading
+      as="h4"
       className={cn(
-        "text-center font-geistMono text-base text-foreground100",
+        "shrink text-start font-geistMono tracking-wider text-foreground100",
         className,
       )}
       {...props}
-    />
+    >
+      {children}
+    </Heading>
   );
+}
+
+const description = cva({
+  base: "text-center font-geistMono text-base text-foreground100",
+  variants: {
+    intent: {
+      default: "",
+      error: "text-accent50",
+      setting: "text-start font-geistMonoLight text-sm text-surface400",
+    },
+  },
+  defaultVariants: { intent: "default" },
+});
+
+/** @description Styled text for descriptive content. */
+export function Description(
+  props: VariantProps<typeof description> & TextProps,
+) {
+  const { intent, className, ...rest } = props;
+  return <Text {...rest} className={cn(description({ intent }), className)} />;
 }

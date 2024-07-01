@@ -1,4 +1,7 @@
-/** @description Returns the number of hours & minutes from seconds. */
+/**
+ * @description String representing the number of days, hours, and minutes
+ *  from seconds.
+ */
 export function getPlayTime(duration: number) {
   const totalSecs = Math.floor(duration);
 

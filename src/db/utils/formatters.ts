@@ -14,7 +14,7 @@ import type {
 
 import type { MediaCard } from "@/components/media/card";
 import { SpecialPlaylists } from "@/features/playback/constants";
-import type { TrackContent } from "@/features/track/components/Track";
+import type { Track as TrackC } from "@/features/track/components/track";
 import { getPlayTime, getTrackCountStr } from "@/features/track/utils";
 import { isTrackWithAlbum } from "./narrowing";
 import { sortTracks } from "./sorting";
@@ -57,7 +57,7 @@ export function fixPlaylistJunction(
 }
 
 /** @description Formats data to be used with `<MediaCard />`. */
-export function formatForMediaCard({ type, data }: FnArgs) {
+export function formatForMediaCard({ type, data }: FnArgs): MediaCard.Content {
   const trackStr = getTrackCountStr(data.tracks.length);
   return {
     type,
@@ -76,14 +76,14 @@ export function formatForMediaCard({ type, data }: FnArgs) {
     title: data.name,
     subtitle: type === "album" ? data.artistName : trackStr,
     extra: type === "album" ? `| ${trackStr}` : null,
-  } as MediaCard.Content;
+  } satisfies MediaCard.Content;
 }
 
 /** @description Formats tracks data to be used with `<Track />`. */
 export function formatTracksForTrack({
   type,
   data,
-}: FnArgsWithTrack): TrackContent[] {
+}: FnArgsWithTrack): TrackC.Content[] {
   const tracks: Track[] | TrackWithAlbum[] =
     type === "track" ? data : data.tracks;
 
@@ -91,7 +91,7 @@ export function formatTracksForTrack({
     const { id, duration, artwork, name, artistName } = data;
 
     let imageSource = artwork;
-    const textContent: TrackContent["textContent"] = [name, artistName];
+    const textContent: TrackC.Content["textContent"] = [name, artistName];
 
     if (!isTrackWithAlbum(data)) {
       // Only true when `type === "album"`.

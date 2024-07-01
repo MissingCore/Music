@@ -6,7 +6,7 @@ import { trackDataAtom } from "../api/track";
 
 import { MediaImage } from "@/components/media/image";
 import { TextStack } from "@/components/ui/text";
-import { NextButton, PlayToggleButton, PreviousButton } from "./MediaControls";
+import { NextButton, PlayToggleButton, PreviousButton } from "./media-controls";
 
 /**
  * @description Displays a player that appears at the bottom of the

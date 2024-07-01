@@ -9,7 +9,7 @@ import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { MediaScreenHeader } from "@/components/media/screen-header";
 import { Description } from "@/components/ui/text";
-import { TrackList } from "@/features/track/components/TrackList";
+import { TrackList } from "@/features/track/components/track-list";
 
 /** @description Screen for `/album/[id]` route. */
 export default function CurrentAlbumScreen() {
@@ -22,9 +22,7 @@ export default function CurrentAlbumScreen() {
   else if (error) {
     return (
       <View className="w-full flex-1 px-4">
-        <Description className="text-accent50">
-          Error: Album not found
-        </Description>
+        <Description intent="error">Error: Album not found</Description>
       </View>
     );
   }

@@ -12,7 +12,7 @@ import {
   PlayButton,
   RepeatButton,
   ShuffleButton,
-} from "@/features/playback/components/MediaControls";
+} from "@/features/playback/components/media-controls";
 import { AnimatedVinyl } from "./animated-vinyl";
 import type { MediaImage } from "./image";
 import { TextLine } from "../ui/text";
