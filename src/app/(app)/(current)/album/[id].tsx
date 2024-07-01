@@ -9,7 +9,7 @@ import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { MediaScreenHeader } from "@/components/media/screen-header";
 import { Description } from "@/components/ui/text";
-import { TrackList } from "@/features/track/components/TrackList";
+import { TrackList } from "@/features/track/components/track-list";
 
 /** @description Screen for `/album/[id]` route. */
 export default function CurrentAlbumScreen() {

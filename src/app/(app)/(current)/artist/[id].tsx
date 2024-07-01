@@ -9,7 +9,7 @@ import { MediaCard } from "@/components/media/card";
 import { MediaScreenHeader } from "@/components/media/screen-header";
 import { ScrollRow } from "@/components/ui/container";
 import { Description, Heading } from "@/components/ui/text";
-import { TrackList } from "@/features/track/components/TrackList";
+import { TrackList } from "@/features/track/components/track-list";
 
 /** @description Screen for `/artist/[id]` route. */
 export default function CurrentArtistScreen() {

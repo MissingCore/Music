@@ -3,7 +3,7 @@ import { SpecialPlaylists } from "@/features/playback/constants";
 
 import { LoadingIndicator } from "@/components/ui/loading";
 import { Description } from "@/components/ui/text";
-import { TrackList } from "@/features/track/components/TrackList";
+import { TrackList } from "@/features/track/components/track-list";
 
 /** @description Screen for `/track` route. */
 export default function TrackScreen() {

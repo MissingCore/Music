@@ -6,14 +6,13 @@ import type { TrackListSource } from "@/features/playback/types";
 
 import type { Maybe } from "@/utils/types";
 import type { MediaList } from "@/components/media/types";
-import type { TrackContent } from "./Track";
-import { Track } from "./Track";
+import { Track } from "./track";
 
 type FlashListProps = React.ComponentProps<typeof FlashList>;
 
 /** @description Lists out tracks. */
 export function TrackList(props: {
-  data: Maybe<readonly TrackContent[]>;
+  data: Maybe<readonly Track.Content[]>;
   config: {
     source: TrackListSource;
     origin?: MediaList;
