@@ -15,8 +15,8 @@ import {
   PreviousButton,
   RepeatButton,
   ShuffleButton,
-} from "@/features/playback/components/MediaControls";
-import { Timeline } from "@/features/playback/components/Timeline";
+} from "@/features/playback/components/media-controls";
+import { Timeline } from "@/features/playback/components/timeline";
 
 /** @description Screen for `/current-track` route. */
 export default function CurrentTrackScreen() {
