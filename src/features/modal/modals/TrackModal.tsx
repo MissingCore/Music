@@ -95,7 +95,7 @@ export function TrackModal({ id, origin }: Props) {
 
           {origin !== "artist" && (
             <Link
-              href={`/artist/${data.artistName}`}
+              href={`/artist/${encodeURIComponent(data.artistName)}`}
               content="View Artist"
               icon="ArtistOutline"
             />
@@ -181,7 +181,7 @@ function ViewPlaylist() {
       href={
         currentPlaylist === SpecialPlaylists.tracks
           ? "/track"
-          : `/playlist/${currentPlaylist}`
+          : `/playlist/${encodeURIComponent(currentPlaylist)}`
       }
       content="View Playlist"
       icon="ListOutline"
