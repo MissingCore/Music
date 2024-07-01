@@ -5,7 +5,7 @@ import { View } from "react-native";
 import { useAlbumsForMediaCard } from "@/api/albums";
 import { useGetColumn } from "@/hooks/layout";
 
-import { MediaCard } from "@/components/media/MediaCard";
+import { MediaCard } from "@/components/media/card";
 import { LoadingIndicator } from "@/components/ui/loading";
 import { Description } from "@/components/ui/text";
 

@@ -5,14 +5,13 @@ import { playAtom } from "@/features/playback/api/actions";
 import type { TrackListSource } from "@/features/playback/types";
 
 import { ActionButton } from "@/components/form/action-button";
-import type { ImageSource } from "@/components/media/MediaImage";
 import type { MediaList } from "@/components/media/types";
-import { MediaImage } from "@/components/media/MediaImage";
+import { MediaImage } from "@/components/media/image";
 import { Duration } from "./Duration";
 
 export type TrackContent = {
   id: string;
-  imageSource: ImageSource;
+  imageSource: MediaImage.ImageSource;
   duration: number;
   textContent: ActionButton.Props["textContent"];
 };

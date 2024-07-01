@@ -8,19 +8,19 @@ import type { TrackListSource } from "@/features/playback/types";
 import { areTrackReferencesEqual } from "@/features/playback/utils";
 
 import { cn } from "@/lib/style";
-import { AnimatedCover } from "@/components/media/AnimatedCover";
-import { TextLine } from "@/components/ui/text";
 import {
   PlayButton,
   RepeatButton,
   ShuffleButton,
 } from "@/features/playback/components/MediaControls";
-import type { ImageSource } from "./MediaImage";
+import { AnimatedVinyl } from "./animated-vinyl";
+import type { MediaImage } from "./image";
+import { TextLine } from "../ui/text";
 
 /** @description Header component seen on the `(current)` pages. */
-export function MediaPageHeader(props: {
+export function MediaScreenHeader(props: {
   /** Displays an animated vinyl image above the title. */
-  source?: ImageSource;
+  source?: MediaImage.ImageSource;
   title: string;
   /** Component placed underneath the title. */
   SubtitleComponent?: React.JSX.Element;
@@ -57,11 +57,11 @@ export function MediaPageHeader(props: {
 }
 
 /**
- * @description Hook up `<AnimatedCover />` to logic that'll have it spin
+ * @description Hook up `<AnimatedVinyl />` to logic that'll have it spin
  *  if we're currently playing this `TrackListSource`.
  */
 function HeroImage(props: {
-  source: ImageSource;
+  source: MediaImage.ImageSource;
   trackSource: TrackListSource;
 }) {
   const { width, height } = useWindowDimensions();
@@ -72,7 +72,7 @@ function HeroImage(props: {
   const availableLength = clamp(100, width * 0.6, height * 0.4);
 
   return (
-    <AnimatedCover
+    <AnimatedVinyl
       type="album"
       source={props.source}
       availableLength={availableLength}

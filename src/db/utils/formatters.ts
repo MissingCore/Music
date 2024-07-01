@@ -12,7 +12,7 @@ import type {
   TrackWithAlbum,
 } from "../schema";
 
-import type { MediaCardContent } from "@/components/media/MediaCard";
+import type { MediaCard } from "@/components/media/card";
 import { SpecialPlaylists } from "@/features/playback/constants";
 import type { TrackContent } from "@/features/track/components/Track";
 import { getPlayTime, getTrackCountStr } from "@/features/track/utils";
@@ -76,7 +76,7 @@ export function formatForMediaCard({ type, data }: FnArgs) {
     title: data.name,
     subtitle: type === "album" ? data.artistName : trackStr,
     extra: type === "album" ? `| ${trackStr}` : null,
-  } as MediaCardContent;
+  } as MediaCard.Content;
 }
 
 /** @description Formats tracks data to be used with `<Track />`. */

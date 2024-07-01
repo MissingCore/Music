@@ -14,7 +14,7 @@ import { nextTrackListAtom, queueTrackListAtom } from "./store";
 import { Colors } from "@/constants/Styles";
 import { pickKeys } from "@/utils/object";
 import { ActionButton } from "@/components/form/action-button";
-import { MediaImage } from "@/components/media/MediaImage";
+import { MediaImage } from "@/components/media/image";
 import { LoadingIndicator } from "@/components/ui/loading";
 import { Description, Heading } from "@/components/ui/text";
 import { ModalBase } from "../../components/ModalBase";

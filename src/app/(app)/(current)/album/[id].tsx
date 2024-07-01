@@ -7,7 +7,7 @@ import { useToggleFavorite } from "@/api/favorites/[id]";
 
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
-import { MediaPageHeader } from "@/components/media/MediaPageHeader";
+import { MediaScreenHeader } from "@/components/media/screen-header";
 import { Description } from "@/components/ui/text";
 import { TrackList } from "@/features/track/components/TrackList";
 
@@ -53,7 +53,7 @@ export default function CurrentAlbumScreen() {
         }}
       />
       <View className="w-full flex-1 px-4">
-        <MediaPageHeader
+        <MediaScreenHeader
           source={data.imageSource}
           title={data.name}
           SubtitleComponent={

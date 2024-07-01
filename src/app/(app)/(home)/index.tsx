@@ -13,7 +13,7 @@ import { useGetColumn } from "@/hooks/layout";
 import { recentlyPlayedDataAtom } from "@/features/playback/api/recent";
 
 import { abbreviateNum } from "@/utils/number";
-import { MediaCard, PlaceholderContent } from "@/components/media/MediaCard";
+import { MediaCard, PlaceholderContent } from "@/components/media/card";
 import { ScrollRow } from "@/components/ui/container";
 import { Description, Heading } from "@/components/ui/text";
 import { SpecialPlaylists } from "@/features/playback/constants";

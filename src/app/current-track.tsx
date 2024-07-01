@@ -6,7 +6,7 @@ import { View, useWindowDimensions } from "react-native";
 import { isPlayingAtom } from "@/features/playback/api/actions";
 import { trackDataAtom, trackListAtom } from "@/features/playback/api/track";
 
-import { AnimatedCover } from "@/components/media/AnimatedCover";
+import { AnimatedVinyl } from "@/components/media/animated-vinyl";
 import { Back } from "@/components/navigation/back";
 import { Heading, TextLine } from "@/components/ui/text";
 import {
@@ -45,7 +45,7 @@ export default function CurrentTrackScreen() {
         className="flex-1 items-center px-4 py-8"
       >
         {availableLength !== undefined && (
-          <AnimatedCover
+          <AnimatedVinyl
             placement="bottom"
             source={trackData.artwork}
             availableLength={availableLength}
