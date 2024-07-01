@@ -57,7 +57,7 @@ export function fixPlaylistJunction(
 }
 
 /** @description Formats data to be used with `<MediaCard />`. */
-export function formatForMediaCard({ type, data }: FnArgs) {
+export function formatForMediaCard({ type, data }: FnArgs): MediaCard.Content {
   const trackStr = getTrackCountStr(data.tracks.length);
   return {
     type,
@@ -76,7 +76,7 @@ export function formatForMediaCard({ type, data }: FnArgs) {
     title: data.name,
     subtitle: type === "album" ? data.artistName : trackStr,
     extra: type === "album" ? `| ${trackStr}` : null,
-  } as MediaCard.Content;
+  } satisfies MediaCard.Content;
 }
 
 /** @description Formats tracks data to be used with `<Track />`. */
