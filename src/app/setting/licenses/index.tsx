@@ -1,5 +1,5 @@
 import { FlashList } from "@shopify/flash-list";
-import { Link as ExpoLink } from "expo-router";
+import { Link } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 
 import LicensesList from "@/assets/licenses.json";
@@ -10,13 +10,14 @@ import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
 import { AnimatedHeader } from "@/components/navigation/animated-header";
 import { ExternalLink } from "@/components/navigation/external-link";
-import { Description, Link } from "@/features/setting/components/UI";
+import { NavLink } from "@/components/navigation/nav-link";
+import { Description } from "@/components/ui/text";
 
 /** @description Screen for `/setting/licenses` route. */
 export default function LicensesScreen() {
   return (
     <AnimatedHeader title="LICENSES & SOURCE">
-      <Description className="mb-8">
+      <Description intent="setting" className="mb-8">
         <Text className="font-ndot57">Music</Text> is open-source and can be
         found on GitHub with the link below. This code is published under the{" "}
         <ExternalLink
@@ -38,11 +39,16 @@ export default function LicensesScreen() {
         respective owners.
       </Description>
 
-      <Link href={GITHUB_LINK} iconName="logo-github" label="SOURCE CODE" />
+      <NavLink
+        href={GITHUB_LINK}
+        iconName="logo-github"
+        label="SOURCE CODE"
+        external
+      />
 
       <View className="mb-6 border-t border-surface700" />
 
-      <Description className="mb-8">
+      <Description intent="setting" className="mb-8">
         This project couldn't have been made without the help of the
         open-sourced projects listed below.
       </Description>
@@ -52,7 +58,7 @@ export default function LicensesScreen() {
         data={Object.values(LicensesList)}
         keyExtractor={({ name }) => name}
         renderItem={({ item, index }) => (
-          <ExpoLink href={`/setting/licenses/${item.name}`} asChild>
+          <Link href={`/setting/licenses/${item.name}`} asChild>
             <Pressable
               className={cn(
                 "flex-row items-center justify-between gap-2 active:opacity-75",
@@ -70,7 +76,7 @@ export default function LicensesScreen() {
               </View>
               <ArrowRight size={24} color={Colors.surface400} />
             </Pressable>
-          </ExpoLink>
+          </Link>
         )}
         showsVerticalScrollIndicator={false}
       />

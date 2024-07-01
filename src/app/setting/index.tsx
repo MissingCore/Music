@@ -8,36 +8,32 @@ import { APP_VERSION, GITHUB_LINK } from "@/constants/Config";
 import { BorderRadius, Colors, FontFamily, FontSize } from "@/constants/Styles";
 import { Button } from "@/components/form/button";
 import { AnimatedHeader } from "@/components/navigation/animated-header";
-import {
-  Description,
-  Link,
-  Section,
-  SubMenuLink,
-  Title,
-} from "@/features/setting/components/UI";
+import { NavLink } from "@/components/navigation/nav-link";
+import { Description, Title } from "@/components/ui/text";
 
 /** @description Screen for `/setting` route. */
 export default function SettingScreen() {
   return (
     <AnimatedHeader title="SETTINGS">
-      <Section>
+      <View className="mb-6">
         <Title className="mb-2">UPDATES</Title>
         <UpdateChecker />
-      </Section>
+      </View>
 
-      <SubMenuLink href="storage" label="STORAGE & STATISTICS" />
-      <SubMenuLink href="support" label="SUPPORT" />
-      <SubMenuLink href="licenses" label="LICENSES & SOURCE" />
+      <NavLink href="/setting/storage" label="STORAGE & STATISTICS" />
+      <NavLink href="/setting/support" label="SUPPORT" />
+      <NavLink href="/setting/licenses" label="LICENSES & SOURCE" />
 
-      <Link
+      <NavLink
         href={`${GITHUB_LINK}/blob/main/PRIVACY_POLICY.md`}
         label="PRIVACY POLICY"
+        external
       />
 
-      <Section className="flex-row items-center justify-between gap-2">
+      <View className="mb-6 flex-row items-center justify-between gap-2">
         <Title>VERSION</Title>
-        <Description>{APP_VERSION}</Description>
-      </Section>
+        <Description intent="setting">{APP_VERSION}</Description>
+      </View>
     </AnimatedHeader>
   );
 }
@@ -47,7 +43,9 @@ function UpdateChecker() {
   const { newUpdate, release } = useHasNewUpdate();
 
   if (!newUpdate) {
-    return <Description>Currently on latest version.</Description>;
+    return (
+      <Description intent="setting">Currently on latest version.</Description>
+    );
   }
 
   return (

@@ -5,7 +5,8 @@ import LicensesList from "@/assets/licenses.json";
 
 import { AnimatedHeader } from "@/components/navigation/animated-header";
 import { Back } from "@/components/navigation/back";
-import { Description, Link } from "@/features/setting/components/UI";
+import { NavLink } from "@/components/navigation/nav-link";
+import { Description } from "@/components/ui/text";
 
 /** @description Screen for `/setting/licenses/[...id]` route. */
 export default function CurrentLicenseScreen() {
@@ -17,7 +18,7 @@ export default function CurrentLicenseScreen() {
 
   return (
     <AnimatedHeader title={licenseInfo.name}>
-      <Description className="mb-8">
+      <Description intent="setting" className="mb-8">
         <Text className="text-foreground100">{licenseInfo.version}</Text>
         {"\n\n"}
         This component is licensed under the {licenseInfo.license} license.
@@ -29,7 +30,7 @@ export default function CurrentLicenseScreen() {
         )}
       </Description>
 
-      <Link
+      <NavLink
         href={licenseInfo.source}
         iconName={
           licenseInfo.source.startsWith("https://github.com")
@@ -37,11 +38,12 @@ export default function CurrentLicenseScreen() {
             : "globe-outline"
         }
         label="Source"
+        external
       />
 
       <View className="mb-6 border-t border-surface700" />
 
-      <Description>{licenseInfo.licenseText}</Description>
+      <Description intent="setting">{licenseInfo.licenseText}</Description>
     </AnimatedHeader>
   );
 }

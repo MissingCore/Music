@@ -68,9 +68,7 @@ function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
   else if (error) {
     return (
       <View className="w-full flex-1 px-4">
-        <Description className="text-accent50">
-          Error: Playlist not found
-        </Description>
+        <Description intent="error">Error: Playlist not found</Description>
       </View>
     );
   }

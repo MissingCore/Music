@@ -12,8 +12,7 @@ import { cn } from "@/lib/style";
 import { Button } from "@/components/form/button";
 import { AnimatedHeader } from "@/components/navigation/animated-header";
 import { ProgressBar } from "@/components/ui/progress-bar";
-import { Heading } from "@/components/ui/text";
-import { Description } from "@/features/setting/components/UI";
+import { Description, Heading } from "@/components/ui/text";
 import { abbreviateSize } from "@/features/setting/utils";
 import { getPlayTime } from "@/features/track/utils";
 
@@ -21,7 +20,7 @@ import { getPlayTime } from "@/features/track/utils";
 export default function StorageScreen() {
   return (
     <AnimatedHeader title="STORAGE & STATISTICS">
-      <Description className="mb-8">
+      <Description intent="setting" className="mb-8">
         See what <Text className="font-ndot57">Music</Text> have stored on your
         device along with information about the playable media.
       </Description>
@@ -30,7 +29,7 @@ export default function StorageScreen() {
       <Heading as="h1" className="mb-8 mt-[22px] text-start">
         Backup
       </Heading>
-      <Description className="mb-8">
+      <Description intent="setting" className="mb-8">
         Import or export{" "}
         <Text className="text-foreground100">`music_backup.json`</Text>{" "}
         containing information about your favorited albums, playlists, and
