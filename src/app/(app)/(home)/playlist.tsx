@@ -10,7 +10,7 @@ import { useGetColumn } from "@/hooks/layout";
 import { modalAtom } from "@/features/modal/store";
 
 import { Colors } from "@/constants/Styles";
-import { MediaCard, PlaceholderContent } from "@/components/media/MediaCard";
+import { MediaCard, PlaceholderContent } from "@/components/media/card";
 
 /** @description Screen for `/playlist` route. */
 export default function PlaylistScreen() {

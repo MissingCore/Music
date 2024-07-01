@@ -9,8 +9,8 @@ import "@/assets/global.css";
 import { NavigationTheme } from "@/constants/Themes";
 import { queryClient } from "@/lib/react-query";
 import { cn } from "@/lib/style";
-import { PrevPathnameTracker } from "@/components/error/PrevPathnameTracker";
-import { DeepLinkHandler } from "@/components/navigation/DeepLinkHandler";
+import { PrevPathnameTracker } from "@/components/error/prev-pathname-tracker";
+import { DeepLinkHandler } from "@/components/navigation/deep-link-handler";
 
 /**
  * @description The general providers used in our app. Also provides

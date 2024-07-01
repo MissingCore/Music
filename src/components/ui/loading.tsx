@@ -12,7 +12,7 @@ import { Svg, Circle } from "react-native-svg";
 import { Colors } from "@/constants/Styles";
 
 /** @description Nothing loading animation. */
-export function Loading() {
+export function LoadingIndicator() {
   const [activeIdx, setActiveIdx] = useState(0);
 
   useEffect(() => {
@@ -59,7 +59,7 @@ export function Loading() {
  * @description Loading animation for inside a `<Text />` — animated 3
  *  consecutive periods.
  */
-export function LoadingTextEllipsis({
+export function AnimatedTextEllipsis({
   color,
   durationMs: duration = 2500,
 }: {

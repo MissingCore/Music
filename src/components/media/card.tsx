@@ -2,27 +2,27 @@ import { Link } from "expo-router";
 import { Pressable } from "react-native";
 
 import type { Prettify } from "@/utils/types";
-import { TextStack } from "@/components/ui/Text";
-import type { MediaImageProps } from "./MediaImage";
-import { MediaImage } from "./MediaImage";
+import { MediaImage } from "./image";
+import { TextStack } from "../ui/text";
 
-export type MediaCardContent = Prettify<
-  Pick<MediaImageProps, "source" | "type"> & {
-    href: string;
-    title: string;
-    subtitle: string;
-    extra?: string | null;
-  }
->;
+export namespace MediaCard {
+  export type Content = Prettify<
+    Pick<MediaImage.Props, "source" | "type"> & {
+      href: string;
+      title: string;
+      subtitle: string;
+      extra?: string | null;
+    }
+  >;
 
-export type MediaCardProps = MediaCardContent &
-  Omit<MediaImageProps, "className">;
+  export type Props = Prettify<Content & Omit<MediaImage.Props, "className">>;
+}
 
 /**
  * @description Link containing information about a media and takes the
  *  user to that media's page.
  */
-export function MediaCard({ type, size, source, ...props }: MediaCardProps) {
+export function MediaCard({ type, size, source, ...props }: MediaCard.Props) {
   return (
     <Link href={props.href} asChild>
       <Pressable
@@ -43,7 +43,7 @@ export function MediaCard({ type, size, source, ...props }: MediaCardProps) {
  * @description Placeholder content — useful in `<FlatList />` if we want
  *  to do something special for the first item.
  */
-export const PlaceholderContent: MediaCardContent = {
+export const PlaceholderContent: MediaCard.Content = {
   href: "invalid-href",
   source: null,
   title: "",

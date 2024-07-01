@@ -1,8 +1,8 @@
 import { Text, View } from "react-native";
 
 import { GITHUB_LINK } from "@/constants/Config";
-import { LinkButton } from "@/components/form/Button";
-import { ExternalLink } from "@/components/navigation/ExternalLink";
+import { Button } from "../form/button";
+import { ExternalLink } from "../navigation/external-link";
 
 const ReportLink = `${GITHUB_LINK}/issues/new`;
 
@@ -31,14 +31,10 @@ export function ReportInstructions({
           external website.
         </Text>
       </View>
-      <View className="mt-8 flex-row justify-end gap-2 px-2">
-        <LinkButton href="/" content="Return Home" />
-        <LinkButton
-          as="external"
-          href={ReportLink}
-          theme="accent"
-          content="Report Issue"
-        />
+      <View className="mt-8 flex-row justify-end px-2">
+        <Button interaction="external-link" href={ReportLink} theme="accent">
+          Report Issue
+        </Button>
       </View>
     </View>
   );

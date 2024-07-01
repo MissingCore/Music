@@ -6,14 +6,14 @@ import { useLoadAssets } from "@/hooks/useLoadAssets";
 import "@/assets/global.css";
 import { PlaybackService } from "@/constants/PlaybackService";
 import { AppProvider } from "@/providers/app";
-import { Header } from "@/components/navigation/Header";
-import { AnimatedBootSplash } from "@/components/navigation/AnimatedBootSplash";
+import { Header } from "@/components/navigation/header";
+import { AnimatedBootSplash } from "@/components/navigation/animated-boot-splash";
 import { AppModals } from "@/features/modal";
 
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
-} from "@/components/error/ErrorBoundary";
+} from "@/components/error/error-boundary";
 
 export const unstable_settings = {
   // Ensure that reloading on `/settings` keeps a back button present.

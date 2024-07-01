@@ -1,8 +1,8 @@
 import { useTracksForTrackCard } from "@/api/tracks";
 import { SpecialPlaylists } from "@/features/playback/constants";
 
-import { Loading } from "@/components/ui/Loading";
-import { Description } from "@/components/ui/Text";
+import { LoadingIndicator } from "@/components/ui/loading";
+import { Description } from "@/components/ui/text";
 import { TrackList } from "@/features/track/components/TrackList";
 
 /** @description Screen for `/track` route. */
@@ -21,7 +21,11 @@ export default function TrackScreen() {
       data={data}
       config={{ source: trackSource }}
       ListEmptyComponent={
-        isPending ? <Loading /> : <Description>No Tracks Found</Description>
+        isPending ? (
+          <LoadingIndicator />
+        ) : (
+          <Description>No Tracks Found</Description>
+        )
       }
       contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 20 }}
     />

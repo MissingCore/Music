@@ -4,8 +4,8 @@ import { Pressable, View } from "react-native";
 
 import { trackDataAtom } from "../api/track";
 
-import { MediaImage } from "@/components/media/MediaImage";
-import { TextStack } from "@/components/ui/Text";
+import { MediaImage } from "@/components/media/image";
+import { TextStack } from "@/components/ui/text";
 import { NextButton, PlayToggleButton, PreviousButton } from "./MediaControls";
 
 /**

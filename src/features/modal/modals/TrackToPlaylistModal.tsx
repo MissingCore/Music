@@ -14,9 +14,9 @@ import {
 
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
-import { CheckboxField } from "@/components/form/CheckboxField";
-import { Loading } from "@/components/ui/Loading";
-import { Description, Heading } from "@/components/ui/Text";
+import { CheckboxField } from "@/components/form/checkbox-field";
+import { LoadingIndicator } from "@/components/ui/loading";
+import { Description, Heading } from "@/components/ui/text";
 import { getTrackCountStr } from "@/features/track/utils";
 import { ModalBase } from "../components/ModalBase";
 import { ModalFormButton } from "../components/ModalFormButton";
@@ -36,7 +36,7 @@ export function TrackToPlaylistModal({ id }: { id: string }) {
         enableFooterMarginAdjustment
         contentContainerClassName="px-4"
       >
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<LoadingIndicator />}>
           <PlaylistList trackId={id} />
         </Suspense>
       </BottomSheetScrollView>
@@ -99,12 +99,13 @@ function ModalFooter({ trackId, ...props }: ModalFooterProps) {
           "border-t border-t-surface500 bg-surface800",
         )}
       >
-        <ModalFormButton content="CANCEL" />
+        <ModalFormButton variant="outline">CANCEL</ModalFormButton>
         <ModalFormButton
           theme="neutral"
           onPress={() => mutateGuard(putTrackInPlaylistsFn, inPlaylist)}
-          content="CONFIRM"
-        />
+        >
+          CONFIRM
+        </ModalFormButton>
       </View>
     </BottomSheetFooter>
   );

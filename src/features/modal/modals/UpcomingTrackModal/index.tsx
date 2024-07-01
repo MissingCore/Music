@@ -13,10 +13,10 @@ import { nextTrackListAtom, queueTrackListAtom } from "./store";
 
 import { Colors } from "@/constants/Styles";
 import { pickKeys } from "@/utils/object";
-import { ActionButton } from "@/components/form/ActionButton";
-import { MediaImage } from "@/components/media/MediaImage";
-import { Loading } from "@/components/ui/Loading";
-import { Description, Heading } from "@/components/ui/Text";
+import { ActionButton } from "@/components/form/action-button";
+import { MediaImage } from "@/components/media/image";
+import { LoadingIndicator } from "@/components/ui/loading";
+import { Description, Heading } from "@/components/ui/text";
 import { ModalBase } from "../../components/ModalBase";
 
 type TrackExcerpt = Pick<Track, "id" | "artistName" | "name" | "artwork">;
@@ -29,21 +29,21 @@ export function UpcomingTrackModal() {
         <Heading as="h1" className="mb-2 text-start">
           Now Playing
         </Heading>
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<LoadingIndicator />}>
           <CurrentTrack />
         </Suspense>
 
         <Heading as="h1" className="mb-2 text-start">
           Next in Queue
         </Heading>
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<LoadingIndicator />}>
           <QueueListTracks />
         </Suspense>
 
         <Heading as="h1" className="mb-2 text-start">
           Next 5 Tracks
         </Heading>
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<LoadingIndicator />}>
           <NextTracks />
         </Suspense>
       </BottomSheetScrollView>
@@ -115,16 +115,16 @@ function UpcomingTrack({ data, onPress }: UpcomingTrackProps) {
             className="shrink-0 rounded-sm"
           />
         }
-        Icon={
-          inQueue ? (
+        icon={{
+          Element: inQueue ? (
             <Ionicons
               name="remove-circle-outline"
               size={24}
               color={Colors.accent50}
             />
-          ) : undefined
-        }
-        iconLabel={inQueue ? "Remove track from queue." : undefined}
+          ) : undefined,
+          label: inQueue ? "Remove track from queue." : undefined,
+        }}
         withoutIcon={!inQueue}
       />
     </View>

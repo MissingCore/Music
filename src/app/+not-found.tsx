@@ -2,11 +2,11 @@ import { Stack, usePathname } from "expo-router";
 import { useAtomValue } from "jotai";
 import { ScrollView, Text, View } from "react-native";
 
-import { prevPathnameAtom } from "@/components/error/PrevPathnameTracker";
+import { prevPathnameAtom } from "@/components/error/prev-pathname-tracker";
 
-import { ReportInstructions } from "@/components/error/ReportInstructions";
-import { SafeContainer } from "@/components/ui/Container";
-import { Heading, Code } from "@/components/ui/Text";
+import { ReportInstructions } from "@/components/error/report-instructions";
+import { SafeContainer } from "@/components/ui/container";
+import { Heading, Code } from "@/components/ui/text";
 
 /** @description Screen for unmatched route. */
 export default function NotFoundScreen() {

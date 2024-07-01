@@ -4,18 +4,16 @@ import { modalAtom } from "@/features/modal/store";
 import { playAtom } from "@/features/playback/api/actions";
 import type { TrackListSource } from "@/features/playback/types";
 
-import type { ActionButtonProps } from "@/components/form/ActionButton";
-import { ActionButton } from "@/components/form/ActionButton";
-import type { ImageSource } from "@/components/media/MediaImage";
+import { ActionButton } from "@/components/form/action-button";
 import type { MediaList } from "@/components/media/types";
-import { MediaImage } from "@/components/media/MediaImage";
+import { MediaImage } from "@/components/media/image";
 import { Duration } from "./Duration";
 
 export type TrackContent = {
   id: string;
-  imageSource: ImageSource;
+  imageSource: MediaImage.ImageSource;
   duration: number;
-  textContent: ActionButtonProps["textContent"];
+  textContent: ActionButton.Props["textContent"];
 };
 
 export type TrackProps = TrackContent & {
@@ -48,10 +46,11 @@ export function Track({ id, trackSource, origin, ...props }: TrackProps) {
         ) : undefined
       }
       AsideContent={<Duration duration={props.duration} />}
-      iconLabel="View track settings."
-      iconOnPress={() =>
-        openModal({ entity: "track", scope: "view", id, origin })
-      }
+      icon={{
+        label: "View track settings.",
+        onPress: () =>
+          openModal({ entity: "track", scope: "view", id, origin }),
+      }}
     />
   );
 }

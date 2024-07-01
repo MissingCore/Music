@@ -13,8 +13,7 @@ import Animated, {
 import { Record } from "@/assets/svgs/Record";
 
 import { cn } from "@/lib/style";
-import type { ImageSource } from "./MediaImage";
-import { MediaImage } from "./MediaImage";
+import { MediaImage } from "./image";
 import type { Media } from "./types";
 
 /** @description Keyframe for having the vinyl slide out from the right. */
@@ -37,15 +36,15 @@ const SlideOutBottom = (imgSize: number, delay: number) =>
     .duration(300)
     .delay(delay);
 
-/** @description Simple pulling of vinyl out of record animation. */
-export function AnimatedCover(props: {
+/** @description Simple pulling of vinyl out of sleeve animation. */
+export function AnimatedVinyl(props: {
   /** @description Available width if `placement = "right"`, otherwise available height. */
   availableLength: number;
   type?: Media;
   placement?: "right" | "bottom";
   delay?: number;
   shouldSpin?: boolean;
-  source: ImageSource;
+  source: MediaImage.ImageSource;
   className?: string;
 }) {
   const rotationProgress = useSharedValue(0);

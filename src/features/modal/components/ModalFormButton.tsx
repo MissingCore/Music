@@ -1,15 +1,14 @@
 import { useBottomSheet } from "@gorhom/bottom-sheet";
 
 import { cn } from "@/lib/style";
-import type { ButtonProps } from "@/components/form/Button";
-import { Button } from "@/components/form/Button";
+import { Button } from "@/components/form/button";
 
 /** @description A form button used in a modal. */
 export function ModalFormButton({
   onPress,
   wrapperClassName,
   ...props
-}: ButtonProps) {
+}: Button.Props) {
   const { close } = useBottomSheet();
 
   return (

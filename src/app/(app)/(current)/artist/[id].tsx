@@ -5,10 +5,10 @@ import type { Album } from "@/db/schema";
 import { useArtistForCurrentPage } from "@/api/artists/[id]";
 import { useGetColumn } from "@/hooks/layout";
 
-import { MediaCard } from "@/components/media/MediaCard";
-import { MediaPageHeader } from "@/components/media/MediaPageHeader";
-import { ScrollRow } from "@/components/ui/Container";
-import { Description, Heading } from "@/components/ui/Text";
+import { MediaCard } from "@/components/media/card";
+import { MediaScreenHeader } from "@/components/media/screen-header";
+import { ScrollRow } from "@/components/ui/container";
+import { Description, Heading } from "@/components/ui/text";
 import { TrackList } from "@/features/track/components/TrackList";
 
 /** @description Screen for `/artist/[id]` route. */
@@ -38,7 +38,7 @@ export default function CurrentArtistScreen() {
   return (
     <>
       <View className="px-4">
-        <MediaPageHeader
+        <MediaScreenHeader
           title={data.name}
           metadata={data.metadata}
           trackSource={trackSource}

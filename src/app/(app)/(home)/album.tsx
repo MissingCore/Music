@@ -5,9 +5,9 @@ import { View } from "react-native";
 import { useAlbumsForMediaCard } from "@/api/albums";
 import { useGetColumn } from "@/hooks/layout";
 
-import { MediaCard } from "@/components/media/MediaCard";
-import { Loading } from "@/components/ui/Loading";
-import { Description } from "@/components/ui/Text";
+import { MediaCard } from "@/components/media/card";
+import { LoadingIndicator } from "@/components/ui/loading";
+import { Description } from "@/components/ui/text";
 
 /** @description Screen for `/album` route. */
 export default function AlbumScreen() {
@@ -38,7 +38,11 @@ export default function AlbumScreen() {
         )}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          isPending ? <Loading /> : <Description>No Albums Found</Description>
+          isPending ? (
+            <LoadingIndicator />
+          ) : (
+            <Description>No Albums Found</Description>
+          )
         }
         contentContainerStyle={{ paddingTop: 22 }}
       />

@@ -9,9 +9,9 @@ import { usePlaylistForCurrentPage } from "@/api/playlists/[id]";
 import { modalAtom } from "@/features/modal/store";
 import { SpecialPlaylists } from "@/features/playback/constants";
 
-import { MediaPageHeader } from "@/components/media/MediaPageHeader";
+import { MediaScreenHeader } from "@/components/media/screen-header";
 import type { MediaList } from "@/components/media/types";
-import { Description } from "@/components/ui/Text";
+import { Description } from "@/components/ui/text";
 import { TrackList } from "@/features/track/components/TrackList";
 
 /** @description Screen for `/playlist/[id]` route. */
@@ -84,7 +84,7 @@ function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
 
   return (
     <View className="w-full flex-1 px-4">
-      <MediaPageHeader
+      <MediaScreenHeader
         source={data.imageSource}
         title={data.name}
         metadata={data.metadata}

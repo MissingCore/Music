@@ -2,7 +2,7 @@ import { Link as ExpoLink } from "expo-router";
 import { Text, View } from "react-native";
 
 import { GITHUB_LINK } from "@/constants/Config";
-import { AnimatedHeader } from "@/components/navigation/AnimatedHeader";
+import { AnimatedHeader } from "@/components/navigation/animated-header";
 import { Description, Link } from "@/features/setting/components/UI";
 
 /** @description Screen for `/setting/support` route. */

@@ -6,8 +6,8 @@ import { Pressable, Text, View } from "react-native";
 import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
 import { modalAtom } from "@/features/modal/store";
 
-import { UnstyledBackButton } from "./BackButton";
-import { SafeContainer } from "../ui/Container";
+import { BackButton } from "./back";
+import { SafeContainer } from "../ui/container";
 
 /*
   Manually extract `NativeStackHeaderProps` from `<Stack.Screen />` instead
@@ -30,7 +30,7 @@ export function Header({ route, options }: NativeStackHeaderProps) {
   return (
     <SafeContainer className="bg-canvas">
       <View className="flex h-14 flex-row items-center justify-between gap-8 px-4">
-        <UnstyledBackButton />
+        <BackButton unstyled />
         <Text
           numberOfLines={2}
           className="max-w-56 flex-1 text-center font-geistMono text-sm text-foreground50"
