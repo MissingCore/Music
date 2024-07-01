@@ -139,7 +139,9 @@ export function useSaveAudio() {
     const newAlbums = new Set(
       validTrackData
         .map(({ album, artist, year }) => {
-          const key = `${album} ${artist}`;
+          // Rare case where an artist releases multiple albums with the
+          // same name (ie: Weezer).
+          const key = `${album} ${artist} ${year}`;
           if (album) albumInfoMap[key] = { album, artist, year: year ?? null };
           return album ? key : "";
         })
@@ -160,8 +162,10 @@ export function useSaveAudio() {
     // Add new & updated tracks to the database.
     await Promise.allSettled(
       validTrackData.map(
-        async ({ year: _, artist, album, track, id, name, ...rest }) => {
-          const albumId = album ? albumIdMap[`${album} ${artist}`]! : null;
+        async ({ year, artist, album, track, id, name, ...rest }) => {
+          const albumId = album
+            ? albumIdMap[`${album} ${artist} ${year}`]!
+            : null;
 
           const newTrackData = {
             ...{ ...rest, name, id, artistName: artist, albumId },
