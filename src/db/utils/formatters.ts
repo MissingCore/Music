@@ -72,7 +72,7 @@ export function formatForMediaCard({ type, data }: FnArgs) {
         ? `/album/${data.id}`
         : type === "playlist" && data.name === SpecialPlaylists.tracks
           ? "/track"
-          : `/${type}/${data.name}`,
+          : `/${type}/${encodeURIComponent(data.name)}`,
     title: data.name,
     subtitle: type === "album" ? data.artistName : trackStr,
     extra: type === "album" ? `| ${trackStr}` : null,

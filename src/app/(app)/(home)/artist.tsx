@@ -33,7 +33,9 @@ export default function ArtistScreen() {
           ) : (
             <View className="mb-2">
               <ActionButton
-                onPress={() => router.navigate(`/artist/${item.name}`)}
+                onPress={() =>
+                  router.navigate(`/artist/${encodeURIComponent(item.name)}`)
+                }
                 textContent={item.textContent}
                 icon={{ Element: <ArrowRight size={24} /> }}
               />

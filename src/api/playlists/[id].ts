@@ -133,7 +133,7 @@ export const useUpdatePlaylist = (playlistName: string) => {
             latest: { type: "playlist", id: newName, name: newName },
           },
         });
-        router.replace(`/playlist/${newName}`);
+        router.replace(`/playlist/${encodeURIComponent(newName)}`);
       } else {
         resynchronizeFn({
           action: "update",
