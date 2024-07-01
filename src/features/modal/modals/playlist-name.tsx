@@ -14,8 +14,8 @@ import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
 import { Heading } from "@/components/ui/text";
 import { ReservedNames } from "@/features/playback/constants";
-import { ModalBase } from "../components/ModalBase";
-import { ModalFormButton } from "../components/ModalFormButton";
+import { ModalFormButton } from "../components/form-button";
+import { ModalBase } from "../components/modal-base";
 
 type Props = { id?: string; scope: "new" | "update" };
 
