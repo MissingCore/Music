@@ -10,7 +10,7 @@ import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
 import { Button } from "@/components/form/button";
-import { AnimatedHeader } from "@/components/navigation/AnimatedHeader";
+import { AnimatedHeader } from "@/components/navigation/animated-header";
 import { ProgressBar } from "@/components/ui/progress-bar";
 import { Heading } from "@/components/ui/text";
 import { Description } from "@/features/setting/components/UI";

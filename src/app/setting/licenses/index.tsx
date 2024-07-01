@@ -8,8 +8,8 @@ import { ArrowRight } from "@/assets/svgs/ArrowRight";
 import { GITHUB_LINK } from "@/constants/Config";
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
-import { AnimatedHeader } from "@/components/navigation/AnimatedHeader";
-import { ExternalLink } from "@/components/navigation/ExternalLink";
+import { AnimatedHeader } from "@/components/navigation/animated-header";
+import { ExternalLink } from "@/components/navigation/external-link";
 import { Description, Link } from "@/features/setting/components/UI";
 
 /** @description Screen for `/setting/licenses` route. */

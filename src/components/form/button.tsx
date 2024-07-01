@@ -6,7 +6,7 @@ import type { PressableProps, View } from "react-native";
 import { Pressable, Text } from "react-native";
 
 import { cn } from "@/lib/style";
-import { ExternalLink } from "@/components/navigation/ExternalLink";
+import { ExternalLink } from "../navigation/external-link";
 
 // FIXME: Currently hard-coded color values — need to revist when we do themes.
 const button = cva({
@@ -33,11 +33,11 @@ const button = cva({
   defaultVariants: { variant: "solid", theme: "white" },
 });
 
-type Interactions =
-  | { interaction?: "button"; href?: never }
-  | { interaction: "link" | "external-link"; href: string };
-
 export namespace Button {
+  type Interactions =
+    | { interaction?: "button"; href?: never }
+    | { interaction: "link" | "external-link"; href: string };
+
   export type Props = VariantProps<typeof button> &
     Interactions & {
       children: React.ReactNode;

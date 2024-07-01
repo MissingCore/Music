@@ -1,8 +1,8 @@
 import { Text, View } from "react-native";
 
 import { GITHUB_LINK } from "@/constants/Config";
-import { Button } from "@/components/form/button";
-import { ExternalLink } from "@/components/navigation/ExternalLink";
+import { Button } from "../form/button";
+import { ExternalLink } from "../navigation/external-link";
 
 const ReportLink = `${GITHUB_LINK}/issues/new`;
 

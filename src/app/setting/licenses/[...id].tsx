@@ -3,8 +3,8 @@ import { Text, View } from "react-native";
 
 import LicensesList from "@/assets/licenses.json";
 
-import { AnimatedHeader } from "@/components/navigation/AnimatedHeader";
-import { Back } from "@/components/navigation/Back";
+import { AnimatedHeader } from "@/components/navigation/animated-header";
+import { Back } from "@/components/navigation/back";
 import { Description, Link } from "@/features/setting/components/UI";
 
 /** @description Screen for `/setting/licenses/[...id]` route. */

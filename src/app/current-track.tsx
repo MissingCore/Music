@@ -7,7 +7,7 @@ import { isPlayingAtom } from "@/features/playback/api/actions";
 import { trackDataAtom, trackListAtom } from "@/features/playback/api/track";
 
 import { AnimatedCover } from "@/components/media/AnimatedCover";
-import { Back } from "@/components/navigation/Back";
+import { Back } from "@/components/navigation/back";
 import { Heading, TextLine } from "@/components/ui/text";
 import {
   NextButton,

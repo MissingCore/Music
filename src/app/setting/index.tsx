@@ -7,7 +7,7 @@ import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 import { APP_VERSION, GITHUB_LINK } from "@/constants/Config";
 import { BorderRadius, Colors, FontFamily, FontSize } from "@/constants/Styles";
 import { Button } from "@/components/form/button";
-import { AnimatedHeader } from "@/components/navigation/AnimatedHeader";
+import { AnimatedHeader } from "@/components/navigation/animated-header";
 import {
   Description,
   Link,

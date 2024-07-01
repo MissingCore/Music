@@ -7,7 +7,7 @@ import { OpenInNewOutline } from "@/assets/svgs/MaterialSymbol";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
-import { ExternalLink } from "@/components/navigation/ExternalLink";
+import { ExternalLink } from "@/components/navigation/external-link";
 import { Heading } from "@/components/ui/text";
 
 type UIProp = { className?: string; children: React.ReactNode };

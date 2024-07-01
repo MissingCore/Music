@@ -10,8 +10,8 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Colors } from "@/constants/Styles";
-import { Heading } from "@/components/ui/text";
-import { UnstyledBackButton } from "./BackButton";
+import { BackButton } from "./back";
+import { Heading } from "../ui/text";
 
 type AnimatedHeaderProps = { title: string; children: React.ReactNode };
 
@@ -61,7 +61,7 @@ export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
               }}
             >
               <View className="flex h-14 flex-row items-center gap-8 px-4">
-                <UnstyledBackButton />
+                <BackButton unstyled />
                 <Animated.Text
                   numberOfLines={1}
                   style={animatedStyles}

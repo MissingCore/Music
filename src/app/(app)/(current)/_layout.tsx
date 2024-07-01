@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 
-import { BackButton } from "@/components/navigation/BackButton";
+import { BackButton } from "@/components/navigation/back";
 
 export default function CurrentLayout() {
   return (
@@ -8,6 +8,7 @@ export default function CurrentLayout() {
       screenOptions={{
         animation: "fade",
         headerTitle: "",
+        // @ts-expect-error (TS2322) — Props shouldn't be conflicting.
         headerLeft: BackButton,
       }}
     >
