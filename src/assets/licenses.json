@@ -73,7 +73,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.48.0",
+    "version": "5.49.2",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -105,7 +105,7 @@
   },
   "expo": {
     "name": "expo",
-    "version": "51.0.14",
+    "version": "51.0.17",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo",
     "license": "MIT",
@@ -113,7 +113,7 @@
   },
   "expo-av": {
     "name": "expo-av",
-    "version": "14.0.5",
+    "version": "14.0.6",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-av",
     "license": "MIT",
@@ -169,7 +169,7 @@
   },
   "expo-image-picker": {
     "name": "expo-image-picker",
-    "version": "15.0.5",
+    "version": "15.0.6",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-image-picker",
     "license": "MIT",
@@ -185,7 +185,7 @@
   },
   "expo-media-library": {
     "name": "expo-media-library",
-    "version": "16.0.3",
+    "version": "16.0.4",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-media-library",
     "license": "MIT",
@@ -193,7 +193,7 @@
   },
   "expo-router": {
     "name": "expo-router",
-    "version": "3.5.16",
+    "version": "3.5.17",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-router",
     "license": "MIT",
@@ -209,7 +209,7 @@
   },
   "expo-sqlite": {
     "name": "expo-sqlite",
-    "version": "14.0.3",
+    "version": "14.0.4",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-sqlite",
     "license": "MIT",
@@ -249,7 +249,7 @@
   },
   "jotai": {
     "name": "jotai",
-    "version": "2.8.3",
+    "version": "2.8.4",
     "copyright": "Copyright (c) 2020-2023 Poimandres",
     "source": "https://github.com/pmndrs/jotai",
     "license": "MIT",
