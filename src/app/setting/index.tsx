@@ -4,7 +4,7 @@ import Markdown from "react-native-markdown-display";
 
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 
-import { APP_VERSION, GITHUB_LINK } from "@/constants/Config";
+import { APP_VERSION, GITHUB_LINK, PLAYSTORE_LINK } from "@/constants/Config";
 import { BorderRadius, Colors, FontFamily, FontSize } from "@/constants/Styles";
 import { Button } from "@/components/form/button";
 import { AnimatedHeader } from "@/components/navigation/animated-header";
@@ -112,7 +112,13 @@ function UpdateChecker() {
       >
         {`# ${release.version} is Available\n\n${release.releaseNotes}`}
       </Markdown>
-      <View className="mt-4 flex-row gap-2">
+
+      <Description intent="setting" className="my-4">
+        <Text className="underline">Note:</Text> The Play Store may not have the
+        latest update immediately due to the app being in review.
+      </Description>
+
+      <View className="flex-row gap-2">
         <Button
           interaction="external-link"
           href={`${GITHUB_LINK}/releases/tag/${release.version}`}
@@ -124,8 +130,24 @@ function UpdateChecker() {
               color={Colors.foreground50}
             />
           }
+          wrapperClassName="p-2"
         >
           APK
+        </Button>
+        <Button
+          interaction="external-link"
+          href={PLAYSTORE_LINK}
+          theme="neutral-dark"
+          Icon={
+            <Ionicons
+              name="logo-google-playstore"
+              size={20}
+              color={Colors.foreground50}
+            />
+          }
+          wrapperClassName="p-2"
+        >
+          Play Store
         </Button>
       </View>
     </>
