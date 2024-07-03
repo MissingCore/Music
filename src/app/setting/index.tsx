@@ -15,18 +15,26 @@ import {
 } from "@/components/navigation/nav-link";
 import { Description } from "@/components/ui/text";
 
-const LINKS = {
-  about: [
-    { label: "THIRD-PARTY SOFTWARE", href: "/setting/third-party" },
-    { label: "LICENSE", href: "/setting/license" },
-    {
-      label: "PRIVACY POLICY",
-      href: `${GITHUB_LINK}/blob/main/PRIVACY_POLICY.md`,
-      external: true,
-    },
-    { label: "SUPPORT", href: "/setting/support" },
-  ],
-  features: [{ label: "STORAGE & BACKUP", href: "/setting/storage" }],
+const LINKGROUPS = {
+  about: {
+    name: "ABOUT",
+    links: [
+      { label: "THIRD-PARTY SOFTWARE", href: "/setting/third-party" },
+      { label: "LICENSE", href: "/setting/license" },
+      {
+        label: "PRIVACY POLICY",
+        href: `${GITHUB_LINK}/blob/main/PRIVACY_POLICY.md`,
+        external: true,
+      },
+      { label: "SUPPORT", href: "/setting/support" },
+    ],
+    listClassName: "-mx-4",
+  },
+  features: {
+    name: "FEATURES",
+    links: [{ label: "STORAGE & BACKUP", href: "/setting/storage" }],
+    listClassName: "-mx-4",
+  },
 };
 
 /** @description Screen for `/setting` route. */
@@ -38,13 +46,9 @@ export default function SettingScreen() {
         <UpdateChecker />
       </View>
       <View className="mb-6 mt-2 h-px bg-surface850" />
-      <NavLinkGroup
-        name="FEATURES"
-        links={LINKS.features}
-        listClassName="-mx-4"
-      />
+      <NavLinkGroup {...LINKGROUPS.features} />
       <View className="mb-6 mt-2 h-px bg-surface850" />
-      <NavLinkGroup name="ABOUT" links={LINKS.about} listClassName="-mx-4" />
+      <NavLinkGroup {...LINKGROUPS.about} />
       <View className="h-12 flex-row items-center justify-between gap-2">
         <NavLinkLabel>VERSION</NavLinkLabel>
         <NavLinkLabel className="tracking-tight text-surface400">
