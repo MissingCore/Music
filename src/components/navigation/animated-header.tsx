@@ -25,10 +25,11 @@ export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
 
   const checkTitlePosition = useCallback(
     ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
-      const offsetY = nativeEvent.contentOffset.y - 22; // Exclude top padding
-      const hiddenPercent = (offsetY - titleHeightRef.current + 8) / 16;
+      const offsetY = nativeEvent.contentOffset.y;
+      // Denominator is how fast we want the header title to fade in.
+      const hiddenPercent = (offsetY - titleHeightRef.current + 8) / 12;
       titleOpacity.value = clamp(0, hiddenPercent, 1);
-      setAltHeaderBg(offsetY > 16);
+      setAltHeaderBg(offsetY > 14); // ~14px is where the title touches the header.
     },
     [titleOpacity],
   );
@@ -36,9 +37,9 @@ export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
   const reactivelySnap = useCallback(
     ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
       const offsetY = nativeEvent.contentOffset.y;
-      if (offsetY < 48) scrollRef.current?.scrollTo({ y: 0 });
-      else if (offsetY >= 48 && offsetY < titleHeightRef.current + 32)
-        scrollRef.current?.scrollTo({ y: titleHeightRef.current + 32 });
+      if (offsetY < 24) scrollRef.current?.scrollTo({ y: 0 });
+      else if (offsetY >= 24 && offsetY < titleHeightRef.current + 16)
+        scrollRef.current?.scrollTo({ y: titleHeightRef.current + 16 });
     },
     [],
   );
@@ -60,12 +61,12 @@ export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
                   : Colors.canvas,
               }}
             >
-              <View className="flex h-14 flex-row items-center gap-8 px-4">
-                <BackButton unstyled />
+              <View className="flex h-14 flex-row items-center gap-4 p-1 pr-4">
+                <BackButton unstyled className="p-3" />
                 <Animated.Text
                   numberOfLines={1}
                   style={animatedStyles}
-                  className="shrink font-ndot57 text-lg text-foreground50"
+                  className="shrink font-ndot57 text-lg leading-none text-foreground50"
                 >
                   {title}
                 </Animated.Text>
@@ -78,14 +79,14 @@ export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
         ref={scrollRef}
         onScroll={checkTitlePosition}
         onMomentumScrollEnd={reactivelySnap}
-        contentContainerClassName="grow px-4 pb-8 pt-[22px]"
+        contentContainerClassName="grow px-4 pb-8"
       >
         <Heading
           as="h1"
           onLayout={({ nativeEvent }) => {
             titleHeightRef.current = nativeEvent.layout.height;
           }}
-          className="mb-8 text-start"
+          className="mb-8 text-start tracking-tighter"
         >
           {title}
         </Heading>

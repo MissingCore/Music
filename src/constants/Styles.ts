@@ -22,6 +22,7 @@ export const Colors = {
   surface500: "#484949",
   surface700: "#303030",
   surface800: "#1B1D1F",
+  surface850: "#181919",
 } as const;
 
 export const FontFamily = {
@@ -36,7 +37,7 @@ export const TwFontFamilies = Object.keys(FontFamily).map(
 );
 
 export const FontSize = {
-  title: 32,
+  title: 36,
   subtitle: 28,
   xs: 12,
   sm: 14,
