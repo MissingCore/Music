@@ -8,31 +8,48 @@ import { APP_VERSION, GITHUB_LINK, PLAYSTORE_LINK } from "@/constants/Config";
 import { BorderRadius, Colors, FontFamily, FontSize } from "@/constants/Styles";
 import { Button } from "@/components/form/button";
 import { AnimatedHeader } from "@/components/navigation/animated-header";
-import { NavLink } from "@/components/navigation/nav-link";
-import { Description, Title } from "@/components/ui/text";
+import {
+  NavLinkGroup,
+  NavLinkGroupHeading,
+  NavLinkLabel,
+} from "@/components/navigation/nav-link";
+import { Description } from "@/components/ui/text";
+
+const LINKS = {
+  about: [
+    { label: "THIRD-PARTY SOFTWARE", href: "/setting/third-party" },
+    { label: "LICENSE", href: "/setting/license" },
+    {
+      label: "PRIVACY POLICY",
+      href: `${GITHUB_LINK}/blob/main/PRIVACY_POLICY.md`,
+      external: true,
+    },
+    { label: "SUPPORT", href: "/setting/support" },
+  ],
+  features: [{ label: "STORAGE & BACKUP", href: "/setting/storage" }],
+};
 
 /** @description Screen for `/setting` route. */
 export default function SettingScreen() {
   return (
     <AnimatedHeader title="SETTINGS">
-      <View className="mb-6">
-        <Title className="mb-2">UPDATES</Title>
+      <View>
+        <NavLinkGroupHeading>UPDATES</NavLinkGroupHeading>
         <UpdateChecker />
       </View>
-
-      <NavLink href="/setting/storage" label="STORAGE & STATISTICS" />
-      <NavLink href="/setting/support" label="SUPPORT" />
-      <NavLink href="/setting/licenses" label="LICENSES & SOURCE" />
-
-      <NavLink
-        href={`${GITHUB_LINK}/blob/main/PRIVACY_POLICY.md`}
-        label="PRIVACY POLICY"
-        external
+      <View className="mb-6 mt-2 h-px bg-surface850" />
+      <NavLinkGroup
+        name="FEATURES"
+        links={LINKS.features}
+        listClassName="-mx-4"
       />
-
-      <View className="mb-6 flex-row items-center justify-between gap-2">
-        <Title>VERSION</Title>
-        <Description intent="setting">{APP_VERSION}</Description>
+      <View className="mb-6 mt-2 h-px bg-surface850" />
+      <NavLinkGroup name="ABOUT" links={LINKS.about} listClassName="-mx-4" />
+      <View className="h-12 flex-row items-center justify-between gap-2">
+        <NavLinkLabel>VERSION</NavLinkLabel>
+        <NavLinkLabel className="tracking-tight text-surface400">
+          {APP_VERSION}
+        </NavLinkLabel>
       </View>
     </AnimatedHeader>
   );
@@ -44,7 +61,7 @@ function UpdateChecker() {
 
   if (!newUpdate) {
     return (
-      <Description intent="setting">Currently on latest version.</Description>
+      <NavLinkLabel className="my-4">Currently on latest version.</NavLinkLabel>
     );
   }
 
@@ -54,43 +71,25 @@ function UpdateChecker() {
         style={{
           body: {
             padding: 8,
+            gap: 8,
             backgroundColor: Colors.surface800,
             color: Colors.foreground100,
             fontFamily: FontFamily.geistMonoLight,
-            fontSize: FontSize.xs,
+            fontSize: 10,
             borderRadius: BorderRadius.lg,
           },
           heading1: {
             ...markdownStyles.heading,
-            marginBottom: 16,
             fontSize: FontSize.lg,
+            textDecorationLine: "none",
           },
-          heading2: {
-            ...markdownStyles.heading,
-            fontSize: FontSize.lg,
-            textDecorationLine: "underline",
+          heading2: markdownStyles.heading,
+          paragraph: {
+            marginTop: 0,
+            marginBottom: 0,
           },
-          heading3: {
-            ...markdownStyles.heading,
-            fontSize: FontSize.base,
-          },
-          heading4: {
-            ...markdownStyles.heading,
-            fontSize: FontSize.xs,
-          },
-          heading5: {
-            ...markdownStyles.heading,
-            fontSize: FontSize.xs,
-          },
-          heading6: {
-            ...markdownStyles.heading,
-            fontSize: 10,
-          },
-          bullet_list: markdownStyles.list,
-          ordered_list: markdownStyles.list,
           blockquote: {
             ...markdownStyles.fence,
-            marginHorizontal: 0,
             borderColor: Colors.accent500,
           },
           fence: {
@@ -118,7 +117,7 @@ function UpdateChecker() {
         latest update immediately due to the app being in review.
       </Description>
 
-      <View className="flex-row gap-2">
+      <View className="mb-4 flex-row gap-2">
         <Button
           interaction="external-link"
           href={`${GITHUB_LINK}/releases/tag/${release.version}`}
@@ -156,18 +155,17 @@ function UpdateChecker() {
 
 const markdownStyles = StyleSheet.create({
   heading: {
-    marginBottom: 8,
     color: Colors.foreground50,
     fontFamily: FontFamily.geistMono,
-  },
-  list: {
-    marginVertical: 8,
+    fontSize: FontSize.sm,
+    textDecorationLine: "underline",
   },
   code: {
     backgroundColor: Colors.surface700,
   },
   fence: {
-    marginVertical: 8,
+    padding: 4,
+    margin: 0,
     backgroundColor: Colors.surface700,
     borderRadius: BorderRadius.sm,
   },

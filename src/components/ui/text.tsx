@@ -89,29 +89,13 @@ export function Heading({
   return <Text className={style} {...props} />;
 }
 
-/** @description Pre-styled `<Heading />` used in `/setting` pages. */
-export function Title({ className, children, ...props }: TextProps) {
-  return (
-    <Heading
-      as="h4"
-      className={cn(
-        "shrink text-start font-geistMono tracking-wider text-foreground100",
-        className,
-      )}
-      {...props}
-    >
-      {children}
-    </Heading>
-  );
-}
-
 const description = cva({
   base: "text-center font-geistMono text-base text-foreground100",
   variants: {
     intent: {
       default: "",
       error: "text-accent50",
-      setting: "text-start font-geistMonoLight text-sm text-surface400",
+      setting: "text-start font-geistMonoLight text-xs text-surface400",
     },
   },
   defaultVariants: { intent: "default" },
