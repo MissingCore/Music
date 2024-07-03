@@ -24,7 +24,7 @@ export function NavLink(props: NavLink.Props) {
   return (
     <LinkType href={href} asChild>
       <Pressable className="flex-row items-center justify-between gap-2 pl-4 active:opacity-75">
-        <NavLinkLabel>{label}</NavLinkLabel>
+        <NavLinkLabel className="py-1">{label}</NavLinkLabel>
         <View className="p-3">
           <NavIcon size={24} color={Colors.surface400} />
         </View>

@@ -75,7 +75,7 @@ export function Heading({
   const style = cn(
     "text-center text-foreground50",
     {
-      "text-title": as === "h1",
+      "text-title tracking-tighter": as === "h1",
       "text-subtitle": as === "h2",
       "text-xl": as === "h3",
       "text-lg": as === "h4",

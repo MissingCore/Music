@@ -18,7 +18,7 @@ export default function PackageLicenseScreen() {
 
   return (
     <AnimatedHeader title={licenseInfo.name}>
-      <Description intent="setting" className="mb-8">
+      <Description intent="setting" className="mb-6">
         <Text className="text-foreground100">{licenseInfo.version}</Text>
         {"\n\n"}
         This component is licensed under the {licenseInfo.license} license.

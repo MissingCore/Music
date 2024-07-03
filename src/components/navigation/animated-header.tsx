@@ -86,7 +86,7 @@ export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
           onLayout={({ nativeEvent }) => {
             titleHeightRef.current = nativeEvent.layout.height;
           }}
-          className="mb-8 text-start tracking-tighter"
+          className="mb-8 text-start"
         >
           {title}
         </Heading>

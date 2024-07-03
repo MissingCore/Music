@@ -36,7 +36,7 @@ export default function ThirdPartyScreen() {
                   { "mb-1": index !== Object.values(LicensesList).length - 1 },
                 )}
               >
-                <View className="shrink">
+                <View className="shrink py-1">
                   <NavLinkLabel className="tracking-normal">
                     {item.name}
                   </NavLinkLabel>

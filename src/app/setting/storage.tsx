@@ -22,7 +22,7 @@ export default function StorageScreen() {
     <AnimatedHeader title="STORAGE & BACKUP">
       <InfoWidgets />
 
-      <Heading as="h1" className="my-8 text-start tracking-tighter">
+      <Heading as="h1" className="my-8 text-start">
         Backup
       </Heading>
       <Description intent="setting" className="mb-8">

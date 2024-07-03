@@ -49,7 +49,7 @@ export default function SettingScreen() {
       <NavLinkGroup {...LINKGROUPS.features} />
       <View className="mb-6 mt-2 h-px bg-surface850" />
       <NavLinkGroup {...LINKGROUPS.about} />
-      <View className="h-12 flex-row items-center justify-between gap-2">
+      <View className="mt-1 h-12 flex-row items-center justify-between gap-2">
         <NavLinkLabel>VERSION</NavLinkLabel>
         <NavLinkLabel className="tracking-tight text-surface400">
           {APP_VERSION}
@@ -74,6 +74,7 @@ function UpdateChecker() {
       <Markdown
         style={{
           body: {
+            marginTop: 16,
             padding: 8,
             gap: 8,
             backgroundColor: Colors.surface800,
