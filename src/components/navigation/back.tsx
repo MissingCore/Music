@@ -18,15 +18,16 @@ export function Back() {
 /** @description Custom back button to replace the one used by React Navigation. */
 export function BackButton(props: { unstyled?: boolean; className?: string }) {
   return (
-    <Pressable accessibilityLabel="Go back." onPress={() => router.back()}>
-      <ArrowRight
-        size={24}
-        className={cn(
-          "rotate-180",
-          { "mr-8": !props.unstyled },
-          props.className,
-        )}
-      />
+    <Pressable
+      accessibilityLabel="Go back."
+      onPress={() => router.back()}
+      className={cn(
+        "active:opacity-75",
+        { "mr-8": !props.unstyled },
+        props.className,
+      )}
+    >
+      <ArrowRight size={24} className="rotate-180" />
     </Pressable>
   );
 }

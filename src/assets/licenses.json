@@ -130,7 +130,7 @@
   "expo-drizzle-studio-plugin": {
     "name": "expo-drizzle-studio-plugin",
     "version": "0.0.2",
-    "copyright": null,
+    "copyright": "Copyright (c) 2024 Drizzle Team",
     "source": "https://github.com/drizzle-team/drizzle-studio-expo",
     "license": "MIT",
     "licenseText": "No license file found, visit source with link above."

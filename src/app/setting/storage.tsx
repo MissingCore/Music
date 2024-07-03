@@ -19,14 +19,10 @@ import { getPlayTime } from "@/features/track/utils";
 /** @description Screen for `/setting/storage` route. */
 export default function StorageScreen() {
   return (
-    <AnimatedHeader title="STORAGE & STATISTICS">
-      <Description intent="setting" className="mb-8">
-        See what <Text className="font-ndot57">Music</Text> have stored on your
-        device along with information about the playable media.
-      </Description>
+    <AnimatedHeader title="STORAGE & BACKUP">
       <InfoWidgets />
 
-      <Heading as="h1" className="mb-8 mt-[22px] text-start">
+      <Heading as="h1" className="my-8 text-start">
         Backup
       </Heading>
       <Description intent="setting" className="mb-8">
@@ -49,8 +45,8 @@ function InfoWidgets() {
 
   return (
     <>
-      <View className="mb-4 rounded-lg bg-surface800 p-4">
-        <Heading as="h3" className="mb-4 text-start">
+      <View className="mb-6 rounded-lg bg-surface800 p-4">
+        <Heading as="h4" className="mb-4 text-start tracking-tight">
           User Data
         </Heading>
 
@@ -93,8 +89,8 @@ function InfoWidgets() {
         />
       </View>
 
-      <View className="mb-4 rounded-lg bg-surface800 p-4">
-        <Heading as="h3" className="mb-4 text-start">
+      <View className="rounded-lg bg-surface800 p-4">
+        <Heading as="h4" className="mb-4 text-start tracking-tight">
           Statistics
         </Heading>
 
@@ -132,11 +128,11 @@ function ValueRow({ label, value, barColor, className }: ValueRowProps) {
             className="size-[9px] rounded-full"
           />
         )}
-        <Text className="shrink font-geistMono text-sm text-foreground50">
+        <Text className="shrink font-geistMono text-xs tracking-tight text-foreground50">
           {label}
         </Text>
       </View>
-      <Text className="font-geistMonoLight text-xs text-foreground100">
+      <Text className="font-geistMonoLight text-xs tracking-tighter text-foreground100">
         {value}
       </Text>
     </View>

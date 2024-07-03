@@ -28,7 +28,7 @@ export function MediaImage({
   source,
   className,
 }: MediaImage.Props) {
-  // Display a collage if we recieve an array with atleast 1 `source`.
+  // Display a collage if we receive an array with atleast 1 `source`.
   if (Array.isArray(source) && source.length > 0) {
     return <CollageImage sources={source} {...{ size, className }} />;
   }
