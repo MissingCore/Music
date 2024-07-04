@@ -37,25 +37,27 @@ export function ActionButton(props: ActionButton.Props) {
     <Pressable
       onPress={props.onPress}
       className={cn(
-        "h-[58px] flex-row items-center gap-2 rounded p-1",
+        "h-[58px] flex-row items-center rounded p-1",
         "border border-surface500 active:bg-surface800",
-        { "px-2": !props.Image },
+        { "px-2": !props.Image, "pr-0": !props.withoutIcon },
         props.className,
       )}
     >
-      {props.Image}
-      <TextStack content={props.textContent} wrapperClassName="flex-1" />
-      {props.AsideContent}
+      <View className="shrink flex-row items-center gap-2">
+        {props.Image}
+        <TextStack content={props.textContent} wrapperClassName="flex-1" />
+        {props.AsideContent}
+      </View>
       {props.withoutIcon ? null : props.icon?.onPress ? (
         <Pressable
           accessibilityLabel={props.icon.label}
           onPress={props.icon.onPress}
-          className="shrink-0"
+          className="shrink-0 p-3 active:opacity-75"
         >
           {icon}
         </Pressable>
       ) : (
-        <View className="shrink-0">{icon}</View>
+        <View className="shrink-0 p-3">{icon}</View>
       )}
     </Pressable>
   );

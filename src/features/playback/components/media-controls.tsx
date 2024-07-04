@@ -43,7 +43,10 @@ function MediaToggleButton(props: {
 }) {
   const [isActive, setIsActive] = useAtom(props.atom);
   return (
-    <Pressable onPress={() => setIsActive(!isActive)} className="p-2">
+    <Pressable
+      onPress={() => setIsActive(!isActive)}
+      className="p-2 active:opacity-75"
+    >
       <Ionicons
         name={`${props.type}-sharp`}
         size={props.size}
@@ -75,7 +78,7 @@ export function PlayButton({
     <Pressable
       onPress={displayPause ? pauseFn : () => playFn({ source: trackSource })}
       className={cn(
-        "rounded-full bg-accent500 p-1",
+        "rounded-full bg-accent500 p-1 active:opacity-75",
         { "bg-surface500": displayPause },
         className,
       )}
@@ -103,7 +106,7 @@ export function PlayToggleButton({
     <Pressable
       onPress={playPauseToggle}
       className={cn(
-        "rounded-full bg-accent500 p-1",
+        "rounded-full bg-accent500 p-1 active:opacity-75",
         { "bg-surface500": isPlaying },
         className,
       )}
@@ -121,7 +124,7 @@ export function PlayToggleButton({
 export function NextButton({ size = 24 }) {
   const nextTrackFn = useSetAtom(nextAtom);
   return (
-    <Pressable onPress={nextTrackFn} className="p-2">
+    <Pressable onPress={nextTrackFn} className="p-2 active:opacity-75">
       <MaterialIcons name="skip-next" size={size} color={Colors.foreground50} />
     </Pressable>
   );
@@ -131,7 +134,7 @@ export function NextButton({ size = 24 }) {
 export function PreviousButton({ size = 24 }) {
   const prevTrackFn = useSetAtom(prevAtom);
   return (
-    <Pressable onPress={prevTrackFn} className="p-2">
+    <Pressable onPress={prevTrackFn} className="p-2 active:opacity-75">
       <MaterialIcons
         name="skip-previous"
         size={size}

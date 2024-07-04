@@ -134,7 +134,6 @@ function UpdateChecker() {
               color={Colors.foreground50}
             />
           }
-          wrapperClassName="p-2"
         >
           APK
         </Button>
@@ -149,7 +148,6 @@ function UpdateChecker() {
               color={Colors.foreground50}
             />
           }
-          wrapperClassName="p-2"
         >
           Play Store
         </Button>
