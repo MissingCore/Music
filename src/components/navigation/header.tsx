@@ -1,11 +1,9 @@
 import { getHeaderTitle } from "@react-navigation/elements";
 import type { Stack } from "expo-router";
-import { useSetAtom } from "jotai";
-import { Pressable, Text, View } from "react-native";
+import { useNavigation } from "expo-router";
+import { Text, View } from "react-native";
 
-import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
-import { modalAtom } from "@/features/modal/store";
-
+import { cn } from "@/lib/style";
 import { BackButton } from "./back";
 import { SafeContainer } from "../ui/container";
 
@@ -22,28 +20,74 @@ type HeaderOption = Required<
 type HeaderFnSignature = HeaderOption[keyof HeaderOption];
 type NativeStackHeaderProps = Parameters<HeaderFnSignature>[0];
 
+/**
+ * @description Override React Navigation's default header to account for
+ *  tap-target size.
+ */
+export function CustomHeader(props: NativeStackHeaderProps) {
+  return (
+    <ReusableHeaderBase
+      {...props}
+      TitleWrapper={(props: { children: React.ReactNode }) => (
+        <Text
+          numberOfLines={1}
+          className="flex-1 shrink font-ndot57 text-title text-foreground50"
+        >
+          {props.children}
+        </Text>
+      )}
+    />
+  );
+}
+
 /** @description Custom navigation header for `/current-track` route. */
-export function Header({ route, options }: NativeStackHeaderProps) {
+export function CurrentTrackHeader(props: NativeStackHeaderProps) {
+  return (
+    <ReusableHeaderBase
+      {...props}
+      TitleWrapper={(props: { children: React.ReactNode }) => (
+        <Text
+          numberOfLines={2}
+          className="mx-auto max-w-56 flex-1 text-center font-geistMono text-sm text-foreground50"
+        >
+          {props.children}
+        </Text>
+      )}
+    />
+  );
+}
+
+namespace ReusableHeaderBase {
+  export type Props = NativeStackHeaderProps & {
+    TitleWrapper: (props: { children: React.ReactNode }) => React.ReactNode;
+  };
+}
+
+/**
+ * @description Override React Navigation's default header to account for
+ *  tap-target size. Requires a wrapper for the title.
+ */
+export function ReusableHeaderBase({
+  route,
+  options,
+  TitleWrapper,
+}: ReusableHeaderBase.Props) {
   const title = getHeaderTitle(options, route.name);
-  const openModal = useSetAtom(modalAtom);
+  const navigation = useNavigation();
+
+  const canGoBack = navigation.canGoBack();
 
   return (
     <SafeContainer className="bg-canvas">
-      <View className="flex h-14 flex-row items-center justify-between gap-8 px-4">
-        <BackButton unstyled />
-        <Text
-          numberOfLines={2}
-          className="max-w-56 flex-1 text-center font-geistMono text-sm text-foreground50"
-        >
-          {title}
-        </Text>
-        <Pressable
-          accessibilityLabel="View track settings."
-          onPress={() => openModal({ entity: "track", scope: "current" })}
-          className="active:opacity-75"
-        >
-          <EllipsisVertical size={24} />
-        </Pressable>
+      <View
+        className={cn("flex h-14 flex-row items-center gap-4 p-1", {
+          "pl-4": !canGoBack,
+          "pr-4": !options.headerRight,
+        })}
+      >
+        {canGoBack && <BackButton unstyled className="p-3" />}
+        <TitleWrapper>{title}</TitleWrapper>
+        {!!options.headerRight && options.headerRight({ canGoBack })}
       </View>
     </SafeContainer>
   );
