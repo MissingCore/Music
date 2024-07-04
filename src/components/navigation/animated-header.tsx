@@ -1,10 +1,11 @@
 import { Stack } from "expo-router";
 import { useCallback, useRef, useState } from "react";
 import type { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, useWindowDimensions } from "react-native";
 import Animated, {
   clamp,
   useAnimatedStyle,
+  useDerivedValue,
   useSharedValue,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -18,8 +19,10 @@ type AnimatedHeaderProps = { title: string; children: React.ReactNode };
 /** @description Have a title animate into the header bar on scroll. */
 export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
   const insets = useSafeAreaInsets();
+  const { height: screenHeight } = useWindowDimensions();
   const scrollRef = useRef<ScrollView>(null);
-  const titleHeightRef = useRef(0);
+  const initialContentHeight = useSharedValue(0);
+  const titleHeight = useSharedValue(0);
   const titleOpacity = useSharedValue(0);
   const [altHeaderBg, setAltHeaderBg] = useState(false);
 
@@ -27,26 +30,38 @@ export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
     ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
       const offsetY = nativeEvent.contentOffset.y;
       // Denominator is how fast we want the header title to fade in.
-      const hiddenPercent = (offsetY - titleHeightRef.current + 8) / 12;
+      const hiddenPercent = (offsetY - titleHeight.value + 8) / 12;
       titleOpacity.value = clamp(0, hiddenPercent, 1);
       setAltHeaderBg(offsetY > 14); // ~14px is where the title touches the header.
     },
-    [titleOpacity],
+    [titleHeight, titleOpacity],
   );
 
   const reactivelySnap = useCallback(
     ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
       const offsetY = nativeEvent.contentOffset.y;
       if (offsetY < 24) scrollRef.current?.scrollTo({ y: 0 });
-      else if (offsetY >= 24 && offsetY < titleHeightRef.current + 16)
-        scrollRef.current?.scrollTo({ y: titleHeightRef.current + 16 });
+      else if (offsetY >= 24 && offsetY < titleHeight.value + 16)
+        scrollRef.current?.scrollTo({ y: titleHeight.value + 16 });
     },
-    [],
+    [titleHeight],
   );
 
   const animatedStyles = useAnimatedStyle(() => ({
     opacity: titleOpacity.value,
   }));
+
+  const contentBuffer = useDerivedValue(() => {
+    const visibleHeight =
+      screenHeight - insets.top - 56 - titleHeight.value - 32;
+    // Ensure content has a minimum margin bottom of `32px`.
+    if (visibleHeight > initialContentHeight.value) return 32;
+    // Get visible height when fully snapped.
+    const snappedHeight = screenHeight - insets.top - 56 - 20;
+    return initialContentHeight.value >= snappedHeight
+      ? 32
+      : snappedHeight - initialContentHeight.value + 32;
+  });
 
   return (
     <>
@@ -79,18 +94,26 @@ export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
         ref={scrollRef}
         onScroll={checkTitlePosition}
         onMomentumScrollEnd={reactivelySnap}
-        contentContainerClassName="grow px-4 pb-8"
+        contentContainerClassName="grow px-4"
       >
         <Heading
           as="h1"
           onLayout={({ nativeEvent }) => {
-            titleHeightRef.current = nativeEvent.layout.height;
+            titleHeight.value = nativeEvent.layout.height;
           }}
           className="mb-8 text-start"
         >
           {title}
         </Heading>
-        {children}
+        <Animated.View
+          onLayout={({ nativeEvent }) => {
+            initialContentHeight.value = nativeEvent.layout.height;
+          }}
+          style={{ marginBottom: contentBuffer }}
+          className="flex-1"
+        >
+          {children}
+        </Animated.View>
       </ScrollView>
     </>
   );
