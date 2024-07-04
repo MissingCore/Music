@@ -26,21 +26,21 @@ export function UpcomingTrackModal() {
   return (
     <ModalBase>
       <BottomSheetScrollView className="px-4">
-        <Heading as="h1" className="mb-2 text-start">
+        <Heading as="h2" className="mb-2 text-start">
           Now Playing
         </Heading>
         <Suspense fallback={<LoadingIndicator />}>
           <CurrentTrack />
         </Suspense>
 
-        <Heading as="h1" className="mb-2 text-start">
+        <Heading as="h2" className="mb-2 text-start">
           Next in Queue
         </Heading>
         <Suspense fallback={<LoadingIndicator />}>
           <QueueListTracks />
         </Suspense>
 
-        <Heading as="h1" className="mb-2 text-start">
+        <Heading as="h2" className="mb-2 text-start">
           Next 5 Tracks
         </Heading>
         <Suspense fallback={<LoadingIndicator />}>

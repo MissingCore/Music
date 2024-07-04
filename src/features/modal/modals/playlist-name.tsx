@@ -50,7 +50,7 @@ export function PlaylistNameModal({ id, scope }: Props) {
         keyboardShouldPersistTaps="handled"
         className="px-4"
       >
-        <Heading as="h1" className="mb-8">
+        <Heading as="h2" className="mb-6">
           {scope === "new" ? "Create a Playlist" : "Rename Playlist"}
         </Heading>
 
@@ -62,8 +62,8 @@ export function PlaylistNameModal({ id, scope }: Props) {
           placeholder="Playlist Name"
           placeholderTextColor={Colors.surface400}
           className={cn(
-            "mb-2 border-b border-b-foreground100 px-2 py-1",
-            "font-geistMonoLight text-lg text-foreground100",
+            "mb-2 border-b border-b-foreground100 p-1",
+            "font-geistMonoLight text-base text-foreground100",
           )}
         />
         <View className="mb-8 flex-row gap-2">
@@ -106,10 +106,10 @@ type RequirementProps = { satisfied: boolean; description: string };
 /** @description Displays a requirement. */
 function Requirement({ satisfied, description }: RequirementProps) {
   return (
-    <View className="flex-row items-center gap-2">
+    <View className="flex-row items-center gap-1">
       <Ionicons
         name={satisfied ? "checkmark-circle" : "close-circle-outline"}
-        size={24}
+        size={20}
         color={satisfied ? Colors.foreground100 : Colors.surface500}
       />
       <Text

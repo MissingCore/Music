@@ -45,13 +45,13 @@ export function TrackModal({ id, origin }: Props) {
   return (
     <ModalBase detached>
       <BottomSheetScrollView>
-        <Heading as="h1" asLine className="px-4">
+        <Heading as="h2" asLine className="px-4">
           {data.name}
         </Heading>
         <Heading
           as="h4"
           asLine
-          className={cn("mb-8 px-4 text-accent50", {
+          className={cn("mb-6 px-4 text-accent50", {
             "mb-4": origin === "artist" && !data.album?.name,
           })}
         >
