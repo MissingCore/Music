@@ -38,6 +38,7 @@ export default function CurrentPlaylistScreen() {
               onPress={() =>
                 openModal({ entity: "playlist", scope: "view", id })
               }
+              className="p-3 active:opacity-75"
             >
               <EllipsisVertical size={24} />
             </Pressable>

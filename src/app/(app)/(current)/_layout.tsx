@@ -1,15 +1,14 @@
 import { Stack } from "expo-router";
 
-import { BackButton } from "@/components/navigation/back";
+import { CustomHeader } from "@/components/navigation/header";
 
 export default function CurrentLayout() {
   return (
     <Stack
       screenOptions={{
         animation: "fade",
+        header: CustomHeader,
         headerTitle: "",
-        // @ts-expect-error (TS2322) — Props shouldn't be conflicting.
-        headerLeft: BackButton,
       }}
     >
       <Stack.Screen name="playlist/[id]" />

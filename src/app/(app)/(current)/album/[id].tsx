@@ -40,7 +40,10 @@ export default function CurrentAlbumScreen() {
       <Stack.Screen
         options={{
           headerRight: () => (
-            <Pressable onPress={() => mutateGuard(toggleFavoriteFn, undefined)}>
+            <Pressable
+              onPress={() => mutateGuard(toggleFavoriteFn, undefined)}
+              className="p-3 active:opacity-75"
+            >
               <Ionicons
                 name={isToggled ? "heart" : "heart-outline"}
                 size={24}

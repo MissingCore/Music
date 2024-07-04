@@ -1,13 +1,17 @@
 import { Stack } from "expo-router";
+import { useSetAtom } from "jotai";
+import { Pressable } from "react-native";
 import TrackPlayer from "react-native-track-player";
 
+import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
 import { useLoadAssets } from "@/hooks/useLoadAssets";
+import { modalAtom } from "@/features/modal/store";
 
 import "@/assets/global.css";
 import { PlaybackService } from "@/constants/PlaybackService";
 import { AppProvider } from "@/components/app-provider";
-import { Header } from "@/components/navigation/header";
 import { AnimatedBootSplash } from "@/components/navigation/animated-boot-splash";
+import { CurrentTrackHeader } from "@/components/navigation/header";
 import { AppModals } from "@/features/modal";
 
 export {
@@ -29,6 +33,8 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
+  const openModal = useSetAtom(modalAtom);
+
   return (
     <AppProvider>
       <Stack screenOptions={{ headerShown: false }}>
@@ -38,8 +44,17 @@ function RootLayoutNav() {
           options={{
             headerShown: true,
             animation: "slide_from_bottom",
-            header: Header,
+            header: CurrentTrackHeader,
             headerTitle: "",
+            headerRight: () => (
+              <Pressable
+                accessibilityLabel="View track settings."
+                onPress={() => openModal({ entity: "track", scope: "current" })}
+                className="p-3 active:opacity-75"
+              >
+                <EllipsisVertical size={24} />
+              </Pressable>
+            ),
           }}
         />
         <Stack.Screen name="setting" />
