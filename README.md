@@ -51,8 +51,6 @@ Music is based on the design seen in this [comment on the Nothing Community foru
 
 > [!IMPORTANT]  
 > Be careful when clearing the cache of the app as if you accidentally clear the storage, all the data in the app will be deleted (ie: playlists, favorited tracks, artwork).
->
-> It's planned in the future to add support for exporting playlist data to make transferring of data easier.
 
 ## Built With
 
