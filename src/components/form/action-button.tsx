@@ -35,37 +35,40 @@ export function ActionButton(props: ActionButton.Props) {
   const icon = props.icon?.Element ?? <EllipsisVertical size={24} />;
 
   return (
-    <StyledPressable
-      onPress={props.onPress}
-      // Prevent ripple effect from occuring if `onPress` is undefined.
-      disabled={!props.onPress}
-      className={cn(
-        "h-[58px] flex-row items-center rounded border border-surface500 p-1",
-        {
-          "px-2": !props.Image,
-          "pr-0": !props.withoutIcon,
-          "active:bg-surface700 active:opacity-100": Platform.OS !== "android",
-        },
-        props.className,
-      )}
-    >
-      <View className="shrink flex-row items-center gap-2">
-        {props.Image}
-        <TextStack content={props.textContent} wrapperClassName="flex-1" />
-        {props.AsideContent}
-      </View>
-      {props.withoutIcon ? null : props.icon?.onPress ? (
-        <StyledPressable
-          accessibilityLabel={props.icon.label}
-          onPress={props.icon.onPress}
-          forIcon
-          className="shrink-0"
-        >
-          {icon}
-        </StyledPressable>
-      ) : (
-        <View className="shrink-0 p-3">{icon}</View>
-      )}
-    </StyledPressable>
+    <View className="overflow-hidden rounded border border-surface500">
+      <StyledPressable
+        onPress={props.onPress}
+        // Prevent ripple effect from occuring if `onPress` is undefined.
+        disabled={!props.onPress}
+        className={cn(
+          "h-[58px] flex-row items-center p-1",
+          {
+            "px-2": !props.Image,
+            "pr-0": !props.withoutIcon,
+            "active:bg-surface700 active:opacity-100":
+              Platform.OS !== "android",
+          },
+          props.className,
+        )}
+      >
+        <View className="pointer-events-none shrink flex-row items-center gap-2">
+          {props.Image}
+          <TextStack content={props.textContent} wrapperClassName="flex-1" />
+          {props.AsideContent}
+        </View>
+        {props.withoutIcon ? null : props.icon?.onPress ? (
+          <StyledPressable
+            accessibilityLabel={props.icon.label}
+            onPress={props.icon.onPress}
+            forIcon
+            className="shrink-0"
+          >
+            {icon}
+          </StyledPressable>
+        ) : (
+          <View className="shrink-0 p-3">{icon}</View>
+        )}
+      </StyledPressable>
+    </View>
   );
 }
