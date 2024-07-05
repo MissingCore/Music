@@ -77,7 +77,7 @@ export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
               }}
             >
               <View className="flex h-14 flex-row items-center gap-4 p-1 pr-4">
-                <BackButton unstyled className="p-3" />
+                <BackButton />
                 <Animated.Text
                   numberOfLines={1}
                   style={animatedStyles}

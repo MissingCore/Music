@@ -49,7 +49,7 @@ export function MediaScreenHeader(props: {
         <View className="flex-row items-center">
           <RepeatButton />
           <ShuffleButton />
-          <PlayButton trackSource={props.trackSource} className="ml-2" />
+          <PlayButton trackSource={props.trackSource} className="ml-1" />
         </View>
       </View>
     </View>

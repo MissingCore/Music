@@ -1,7 +1,7 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { StyleSheet, Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 
+import { Ionicons } from "@/components/icons";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 
 import { APP_VERSION, GITHUB_LINK, PLAYSTORE_LINK } from "@/constants/Config";
@@ -127,14 +127,7 @@ function UpdateChecker() {
           interaction="external-link"
           href={`${GITHUB_LINK}/releases/tag/${release.version}`}
           theme="neutral-dark"
-          Icon={
-            <Ionicons
-              name="logo-github"
-              size={20}
-              color={Colors.foreground50}
-            />
-          }
-          wrapperClassName="p-2"
+          Icon={<Ionicons name="logo-github" size={20} />}
         >
           APK
         </Button>
@@ -142,14 +135,7 @@ function UpdateChecker() {
           interaction="external-link"
           href={PLAYSTORE_LINK}
           theme="neutral-dark"
-          Icon={
-            <Ionicons
-              name="logo-google-playstore"
-              size={20}
-              color={Colors.foreground50}
-            />
-          }
-          wrapperClassName="p-2"
+          Icon={<Ionicons name="logo-google-playstore" size={20} />}
         >
           Play Store
         </Button>

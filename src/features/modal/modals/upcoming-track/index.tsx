@@ -1,4 +1,3 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { FlashList } from "@shopify/flash-list";
 import { useAtomValue, useSetAtom } from "jotai";
@@ -7,6 +6,7 @@ import { View } from "react-native";
 
 import type { Track } from "@/db/schema";
 
+import { Ionicons } from "@/components/icons";
 import { trackDataAtom } from "@/features/playback/api/track";
 import { queueRemoveAtIdxAtom } from "@/features/playback/api/queue";
 import { nextTrackListAtom, queueTrackListAtom } from "./store";
@@ -26,21 +26,21 @@ export function UpcomingTrackModal() {
   return (
     <ModalBase>
       <BottomSheetScrollView className="px-4">
-        <Heading as="h1" className="mb-2 text-start">
+        <Heading as="h2" className="mb-2 text-start">
           Now Playing
         </Heading>
         <Suspense fallback={<LoadingIndicator />}>
           <CurrentTrack />
         </Suspense>
 
-        <Heading as="h1" className="mb-2 text-start">
+        <Heading as="h2" className="mb-2 text-start">
           Next in Queue
         </Heading>
         <Suspense fallback={<LoadingIndicator />}>
           <QueueListTracks />
         </Suspense>
 
-        <Heading as="h1" className="mb-2 text-start">
+        <Heading as="h2" className="mb-2 text-start">
           Next 5 Tracks
         </Heading>
         <Suspense fallback={<LoadingIndicator />}>
@@ -105,7 +105,7 @@ function UpcomingTrack({ data, onPress }: UpcomingTrackProps) {
   return (
     <View className="mb-2">
       <ActionButton
-        onPress={inQueue ? onPress : undefined}
+        onPress={undefined}
         textContent={[data.name, data.artistName]}
         Image={
           <MediaImage
@@ -117,12 +117,9 @@ function UpcomingTrack({ data, onPress }: UpcomingTrackProps) {
         }
         icon={{
           Element: inQueue ? (
-            <Ionicons
-              name="remove-circle-outline"
-              size={24}
-              color={Colors.accent50}
-            />
+            <Ionicons name="remove-circle-outline" color={Colors.accent50} />
           ) : undefined,
+          onPress: inQueue ? onPress : undefined,
           label: inQueue ? "Remove track from queue." : undefined,
         }}
         withoutIcon={!inQueue}

@@ -1,8 +1,7 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { Pressable } from "react-native";
 
+import { Ionicons, MaterialIcons } from "@/components/icons";
 import { repeatAtom, shuffleAtom } from "../api/configs";
 import {
   isPlayingAtom,
@@ -18,6 +17,7 @@ import { areTrackReferencesEqual } from "../utils";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
+import { StyledPressable } from "@/components/ui/pressable";
 
 /**
  * @description Toggles whether we'll keep playing after we reach the
@@ -43,13 +43,17 @@ function MediaToggleButton(props: {
 }) {
   const [isActive, setIsActive] = useAtom(props.atom);
   return (
-    <Pressable onPress={() => setIsActive(!isActive)} className="p-2">
+    <StyledPressable
+      android_ripple={{ color: Colors.surface700, radius: props.size * 0.75 }}
+      onPress={() => setIsActive(!isActive)}
+      className="p-2"
+    >
       <Ionicons
         name={`${props.type}-sharp`}
         size={props.size}
         color={isActive ? Colors.accent500 : Colors.foreground50}
       />
-    </Pressable>
+    </StyledPressable>
   );
 }
 
@@ -75,16 +79,12 @@ export function PlayButton({
     <Pressable
       onPress={displayPause ? pauseFn : () => playFn({ source: trackSource })}
       className={cn(
-        "rounded-full bg-accent500 p-1",
+        "rounded-full bg-accent500 p-1 active:opacity-75",
         { "bg-surface500": displayPause },
         className,
       )}
     >
-      <MaterialIcons
-        name={displayPause ? "pause" : "play-arrow"}
-        size={size}
-        color={Colors.foreground50}
-      />
+      <MaterialIcons name={displayPause ? "pause" : "play-arrow"} size={size} />
     </Pressable>
   );
 }
@@ -103,16 +103,12 @@ export function PlayToggleButton({
     <Pressable
       onPress={playPauseToggle}
       className={cn(
-        "rounded-full bg-accent500 p-1",
+        "rounded-full bg-accent500 p-1 active:opacity-75",
         { "bg-surface500": isPlaying },
         className,
       )}
     >
-      <MaterialIcons
-        name={isPlaying ? "pause" : "play-arrow"}
-        size={size}
-        color={Colors.foreground50}
-      />
+      <MaterialIcons name={isPlaying ? "pause" : "play-arrow"} size={size} />
     </Pressable>
   );
 }
@@ -121,9 +117,13 @@ export function PlayToggleButton({
 export function NextButton({ size = 24 }) {
   const nextTrackFn = useSetAtom(nextAtom);
   return (
-    <Pressable onPress={nextTrackFn} className="p-2">
-      <MaterialIcons name="skip-next" size={size} color={Colors.foreground50} />
-    </Pressable>
+    <StyledPressable
+      android_ripple={{ color: Colors.surface700, radius: size * 0.75 }}
+      onPress={nextTrackFn}
+      className="p-2"
+    >
+      <MaterialIcons name="skip-next" size={size} />
+    </StyledPressable>
   );
 }
 
@@ -131,12 +131,12 @@ export function NextButton({ size = 24 }) {
 export function PreviousButton({ size = 24 }) {
   const prevTrackFn = useSetAtom(prevAtom);
   return (
-    <Pressable onPress={prevTrackFn} className="p-2">
-      <MaterialIcons
-        name="skip-previous"
-        size={size}
-        color={Colors.foreground50}
-      />
-    </Pressable>
+    <StyledPressable
+      android_ripple={{ color: Colors.surface700, radius: size * 0.75 }}
+      onPress={prevTrackFn}
+      className="p-2"
+    >
+      <MaterialIcons name="skip-previous" size={size} />
+    </StyledPressable>
   );
 }

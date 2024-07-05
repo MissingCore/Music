@@ -15,8 +15,8 @@ dependencies:
     specifier: ^14.0.2
     version: 14.0.2
   '@gorhom/bottom-sheet':
-    specifier: 5.0.0-alpha.10
-    version: 5.0.0-alpha.10(@types/react@18.2.79)(react-native-gesture-handler@2.16.2)(react-native-reanimated@3.10.1)(react-native@0.74.2)(react@18.2.0)
+    specifier: 5.0.0-alpha.9
+    version: 5.0.0-alpha.9(@types/react@18.2.79)(react-native-gesture-handler@2.16.2)(react-native-reanimated@3.10.1)(react-native@0.74.2)(react@18.2.0)
   '@miblanchard/react-native-slider':
     specifier: ^2.6.0
     version: 2.6.0(react-native@0.74.2)(react@18.2.0)
@@ -2650,8 +2650,8 @@ packages:
       js-yaml: 4.1.0
     dev: false
 
-  /@gorhom/bottom-sheet@5.0.0-alpha.10(@types/react@18.2.79)(react-native-gesture-handler@2.16.2)(react-native-reanimated@3.10.1)(react-native@0.74.2)(react@18.2.0):
-    resolution: {integrity: sha512-FjiNf2VtmCEWC4T6/1CHjNYHlgqq+eQAGp0jCSDm87nEWtzmvg6vhspttpRNqGCxj40//Z03BGw/JZR+AYhP0w==}
+  /@gorhom/bottom-sheet@5.0.0-alpha.9(@types/react@18.2.79)(react-native-gesture-handler@2.16.2)(react-native-reanimated@3.10.1)(react-native@0.74.2)(react@18.2.0):
+    resolution: {integrity: sha512-s44MvF5QO40nmiK8lycrGAZM8M8t+nbiH98kXTiqwxU8BQNAm3XiOTlvg56Z+gnpiRv+wvkbmsO9tDkVzLfDGQ==}
     peerDependencies:
       '@types/react': '*'
       '@types/react-native': '*'

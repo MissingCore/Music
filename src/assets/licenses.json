@@ -17,7 +17,7 @@
   },
   "@gorhom/bottom-sheet": {
     "name": "@gorhom/bottom-sheet",
-    "version": "5.0.0-alpha.10",
+    "version": "5.0.0-alpha.9",
     "copyright": "Copyright (c) 2020 Mo Gorhom",
     "source": "https://github.com/gorhom/react-native-bottom-sheet",
     "license": "MIT",

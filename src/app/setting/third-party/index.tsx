@@ -1,6 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
 import { Link } from "expo-router";
-import { Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
 
 import LicensesList from "@/assets/licenses.json";
 import { ArrowRight } from "@/assets/svgs/ArrowRight";
@@ -9,6 +9,7 @@ import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
 import { AnimatedHeader } from "@/components/navigation/animated-header";
 import { NavLinkLabel } from "@/components/navigation/nav-link";
+import { StyledPressable } from "@/components/ui/pressable";
 import { Description } from "@/components/ui/text";
 
 /** @description Screen for `/setting/third-party` route. */
@@ -30,9 +31,9 @@ export default function ThirdPartyScreen() {
               href={`/setting/third-party/${encodeURIComponent(item.name)}`}
               asChild
             >
-              <Pressable
+              <StyledPressable
                 className={cn(
-                  "flex-row items-center justify-between gap-2 pl-4 active:opacity-75",
+                  "flex-row items-center justify-between gap-2 pl-4",
                   { "mb-1": index !== Object.values(LicensesList).length - 1 },
                 )}
               >
@@ -48,7 +49,7 @@ export default function ThirdPartyScreen() {
                 <View className="p-3">
                   <ArrowRight size={24} color={Colors.surface400} />
                 </View>
-              </Pressable>
+              </StyledPressable>
             </Link>
           )}
           showsVerticalScrollIndicator={false}

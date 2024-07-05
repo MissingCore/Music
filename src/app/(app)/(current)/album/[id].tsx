@@ -1,13 +1,13 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { Link, Stack, useLocalSearchParams } from "expo-router";
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 
+import { Ionicons } from "@/components/icons";
 import { useAlbumForCurrentPage } from "@/api/albums/[id]";
 import { useToggleFavorite } from "@/api/favorites/[id]";
 
-import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { MediaScreenHeader } from "@/components/media/screen-header";
+import { StyledPressable } from "@/components/ui/pressable";
 import { Description } from "@/components/ui/text";
 import { TrackList } from "@/features/track/components/track-list";
 
@@ -40,16 +40,12 @@ export default function CurrentAlbumScreen() {
       <Stack.Screen
         options={{
           headerRight: () => (
-            <Pressable
+            <StyledPressable
               onPress={() => mutateGuard(toggleFavoriteFn, undefined)}
-              className="p-3 active:opacity-75"
+              forIcon
             >
-              <Ionicons
-                name={isToggled ? "heart" : "heart-outline"}
-                size={24}
-                color={Colors.foreground50}
-              />
-            </Pressable>
+              <Ionicons name={isToggled ? "heart" : "heart-outline"} />
+            </StyledPressable>
           ),
         }}
       />

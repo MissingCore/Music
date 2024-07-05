@@ -15,8 +15,8 @@ export function PlaylistDeleteModal({ id }: { id: string }) {
   return (
     <ModalBase detached>
       <BottomSheetScrollView className="px-4">
-        <Heading as="h1">Delete Playlist</Heading>
-        <Heading as="h4" asLine className="mb-8 text-accent50">
+        <Heading as="h2">Delete Playlist</Heading>
+        <Heading as="h4" asLine className="mb-6 text-accent50">
           {id}
         </Heading>
 

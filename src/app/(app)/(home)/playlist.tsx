@@ -1,16 +1,16 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { FlashList } from "@shopify/flash-list";
 import { useSetAtom } from "jotai";
 import { useMemo } from "react";
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 
 import { DashedBorder } from "@/assets/svgs/DashedBorder";
+import { Ionicons } from "@/components/icons";
 import { usePlaylistsForMediaCard } from "@/api/playlists";
 import { useGetColumn } from "@/hooks/layout";
 import { modalAtom } from "@/features/modal/store";
 
-import { Colors } from "@/constants/Styles";
 import { MediaCard, PlaceholderContent } from "@/components/media/card";
+import { StyledPressable } from "@/components/ui/pressable";
 
 /** @description Screen for `/playlist` route. */
 export default function PlaylistScreen() {
@@ -49,13 +49,17 @@ function CreatePlaylistButton({ colWidth }: { colWidth: number }) {
   const openModal = useSetAtom(modalAtom);
 
   return (
-    <Pressable
-      onPress={() => openModal({ entity: "playlist", scope: "new" })}
+    <View
       style={{ width: colWidth, height: colWidth }}
-      className="items-center justify-center rounded-lg active:bg-surface800"
+      className="overflow-hidden rounded-lg"
     >
-      <DashedBorder size={colWidth} />
-      <Ionicons name="add-outline" size={36} color={Colors.foreground100} />
-    </Pressable>
+      <StyledPressable
+        onPress={() => openModal({ entity: "playlist", scope: "new" })}
+        className="flex-1 items-center justify-center"
+      >
+        <DashedBorder size={colWidth} />
+        <Ionicons name="add-outline" size={36} />
+      </StyledPressable>
+    </View>
   );
 }

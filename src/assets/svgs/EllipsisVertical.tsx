@@ -1,3 +1,4 @@
+import { View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 
 import { Colors } from "@/constants/Styles";
@@ -11,10 +12,12 @@ export function EllipsisVertical({
   color?: string;
 }) {
   return (
-    <Svg width={size} height={size} viewBox="0 0 512 512" fill={color}>
-      <Circle cx="256" cy="76" r="36" />
-      <Circle cx="256" cy="256" r="36" />
-      <Circle cx="256" cy="436" r="36" />
-    </Svg>
+    <View className="pointer-events-none">
+      <Svg width={size} height={size} viewBox="0 0 512 512" fill={color}>
+        <Circle cx="256" cy="76" r="36" />
+        <Circle cx="256" cy="256" r="36" />
+        <Circle cx="256" cy="436" r="36" />
+      </Svg>
+    </View>
   );
 }

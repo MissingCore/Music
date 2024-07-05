@@ -1,6 +1,5 @@
 import { Stack } from "expo-router";
 import { useSetAtom } from "jotai";
-import { Pressable } from "react-native";
 import TrackPlayer from "react-native-track-player";
 
 import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
@@ -12,6 +11,7 @@ import { PlaybackService } from "@/constants/PlaybackService";
 import { AppProvider } from "@/components/app-provider";
 import { AnimatedBootSplash } from "@/components/navigation/animated-boot-splash";
 import { CurrentTrackHeader } from "@/components/navigation/header";
+import { StyledPressable } from "@/components/ui/pressable";
 import { AppModals } from "@/features/modal";
 
 export {
@@ -47,13 +47,13 @@ function RootLayoutNav() {
             header: CurrentTrackHeader,
             headerTitle: "",
             headerRight: () => (
-              <Pressable
+              <StyledPressable
                 accessibilityLabel="View track settings."
                 onPress={() => openModal({ entity: "track", scope: "current" })}
-                className="p-3 active:opacity-75"
+                forIcon
               >
                 <EllipsisVertical size={24} />
-              </Pressable>
+              </StyledPressable>
             ),
           }}
         />

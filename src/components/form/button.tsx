@@ -12,7 +12,7 @@ import { ExternalLink } from "../navigation/external-link";
 const button = cva({
   base: [
     `[--txt-clr:#F0F2F2]`,
-    "items-center rounded-full border px-2 py-1",
+    "items-center rounded-full border p-2",
     "active:opacity-75 disabled:opacity-25",
   ],
   variants: {

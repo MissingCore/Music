@@ -75,7 +75,7 @@ export function ReusableHeaderBase({
   const title = getHeaderTitle(options, route.name);
   const navigation = useNavigation();
 
-  const canGoBack = navigation.canGoBack();
+  const canGoBack = navigation.canGoBack() && title !== "MUSIC";
 
   return (
     <SafeContainer className="bg-canvas">
@@ -85,7 +85,7 @@ export function ReusableHeaderBase({
           "pr-4": !options.headerRight,
         })}
       >
-        {canGoBack && <BackButton unstyled className="p-3" />}
+        {canGoBack && <BackButton />}
         <TitleWrapper>{title}</TitleWrapper>
         {!!options.headerRight && options.headerRight({ canGoBack })}
       </View>
