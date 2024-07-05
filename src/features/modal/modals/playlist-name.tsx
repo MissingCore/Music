@@ -1,4 +1,3 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
 import {
   BottomSheetScrollView,
   BottomSheetTextInput,
@@ -6,6 +5,7 @@ import {
 import { useMemo, useState } from "react";
 import { Text, View } from "react-native";
 
+import { Ionicons } from "@/components/icons";
 import { useCreatePlaylist, usePlaylistsForModal } from "@/api/playlists";
 import { useUpdatePlaylist } from "@/api/playlists/[id]";
 

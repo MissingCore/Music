@@ -46,7 +46,7 @@ export default function ThirdPartyScreen() {
                     <Text className="text-surface400">({item.version})</Text>
                   </Text>
                 </View>
-                <View className="pointer-events-none p-3">
+                <View className="p-3">
                   <ArrowRight size={24} color={Colors.surface400} />
                 </View>
               </StyledPressable>

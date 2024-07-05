@@ -1,5 +1,5 @@
 import type { PressableProps } from "react-native";
-import { Pressable, View } from "react-native";
+import { Platform, View } from "react-native";
 
 import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
 
@@ -35,12 +35,17 @@ export function ActionButton(props: ActionButton.Props) {
   const icon = props.icon?.Element ?? <EllipsisVertical size={24} />;
 
   return (
-    <Pressable
+    <StyledPressable
       onPress={props.onPress}
+      // Prevent ripple effect from occuring if `onPress` is undefined.
+      disabled={!props.onPress}
       className={cn(
-        "h-[58px] flex-row items-center rounded p-1",
-        "border border-surface500 active:bg-surface800",
-        { "px-2": !props.Image, "pr-0": !props.withoutIcon },
+        "h-[58px] flex-row items-center rounded border border-surface500 p-1",
+        {
+          "px-2": !props.Image,
+          "pr-0": !props.withoutIcon,
+          "active:bg-surface700 active:opacity-100": Platform.OS !== "android",
+        },
         props.className,
       )}
     >
@@ -56,11 +61,11 @@ export function ActionButton(props: ActionButton.Props) {
           forIcon
           className="shrink-0"
         >
-          <View className="pointer-events-none">{icon}</View>
+          {icon}
         </StyledPressable>
       ) : (
         <View className="shrink-0 p-3">{icon}</View>
       )}
-    </Pressable>
+    </StyledPressable>
   );
 }

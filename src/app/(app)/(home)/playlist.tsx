@@ -1,15 +1,14 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { FlashList } from "@shopify/flash-list";
 import { useSetAtom } from "jotai";
 import { useMemo } from "react";
 import { View } from "react-native";
 
 import { DashedBorder } from "@/assets/svgs/DashedBorder";
+import { Ionicons } from "@/components/icons";
 import { usePlaylistsForMediaCard } from "@/api/playlists";
 import { useGetColumn } from "@/hooks/layout";
 import { modalAtom } from "@/features/modal/store";
 
-import { Colors } from "@/constants/Styles";
 import { MediaCard, PlaceholderContent } from "@/components/media/card";
 import { StyledPressable } from "@/components/ui/pressable";
 
@@ -59,9 +58,7 @@ function CreatePlaylistButton({ colWidth }: { colWidth: number }) {
         className="flex-1 items-center justify-center"
       >
         <DashedBorder size={colWidth} />
-        <View className="pointer-events-none">
-          <Ionicons name="add-outline" size={36} color={Colors.foreground50} />
-        </View>
+        <Ionicons name="add-outline" size={36} />
       </StyledPressable>
     </View>
   );

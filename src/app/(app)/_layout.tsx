@@ -1,10 +1,9 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { Link, Stack } from "expo-router";
 import { View } from "react-native";
 
+import { Ionicons } from "@/components/icons";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 
-import { Colors } from "@/constants/Styles";
 import { CustomHeader } from "@/components/navigation/header";
 import { StyledPressable } from "@/components/ui/pressable";
 import { MiniPlayer } from "@/features/playback/components/mini-player";
@@ -24,12 +23,8 @@ export default function MainLayout() {
             headerRight: () => (
               <Link href="/setting" asChild>
                 <StyledPressable forIcon>
-                  <View className="pointer-events-none">
-                    <Ionicons
-                      name="settings-outline"
-                      size={24}
-                      color={Colors.foreground50}
-                    />
+                  <View>
+                    <Ionicons name="settings-outline" />
                     {newUpdate && (
                       <View className="absolute right-0 top-0 size-2 rounded-full bg-accent500" />
                     )}

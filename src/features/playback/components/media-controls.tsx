@@ -1,8 +1,7 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { Pressable, View } from "react-native";
+import { Pressable } from "react-native";
 
+import { Ionicons, MaterialIcons } from "@/components/icons";
 import { repeatAtom, shuffleAtom } from "../api/configs";
 import {
   isPlayingAtom,
@@ -49,13 +48,11 @@ function MediaToggleButton(props: {
       onPress={() => setIsActive(!isActive)}
       className="p-2"
     >
-      <View className="pointer-events-none">
-        <Ionicons
-          name={`${props.type}-sharp`}
-          size={props.size}
-          color={isActive ? Colors.accent500 : Colors.foreground50}
-        />
-      </View>
+      <Ionicons
+        name={`${props.type}-sharp`}
+        size={props.size}
+        color={isActive ? Colors.accent500 : Colors.foreground50}
+      />
     </StyledPressable>
   );
 }
@@ -87,11 +84,7 @@ export function PlayButton({
         className,
       )}
     >
-      <MaterialIcons
-        name={displayPause ? "pause" : "play-arrow"}
-        size={size}
-        color={Colors.foreground50}
-      />
+      <MaterialIcons name={displayPause ? "pause" : "play-arrow"} size={size} />
     </Pressable>
   );
 }
@@ -115,11 +108,7 @@ export function PlayToggleButton({
         className,
       )}
     >
-      <MaterialIcons
-        name={isPlaying ? "pause" : "play-arrow"}
-        size={size}
-        color={Colors.foreground50}
-      />
+      <MaterialIcons name={isPlaying ? "pause" : "play-arrow"} size={size} />
     </Pressable>
   );
 }
@@ -133,13 +122,7 @@ export function NextButton({ size = 24 }) {
       onPress={nextTrackFn}
       className="p-2"
     >
-      <View className="pointer-events-none">
-        <MaterialIcons
-          name="skip-next"
-          size={size}
-          color={Colors.foreground50}
-        />
-      </View>
+      <MaterialIcons name="skip-next" size={size} />
     </StyledPressable>
   );
 }
@@ -153,13 +136,7 @@ export function PreviousButton({ size = 24 }) {
       onPress={prevTrackFn}
       className="p-2"
     >
-      <View className="pointer-events-none">
-        <MaterialIcons
-          name="skip-previous"
-          size={size}
-          color={Colors.foreground50}
-        />
-      </View>
+      <MaterialIcons name="skip-previous" size={size} />
     </StyledPressable>
   );
 }
