@@ -5,6 +5,7 @@ import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
 
 import { cn } from "@/lib/style";
 import type { Maybe } from "@/utils/types";
+import { StyledPressable } from "../ui/pressable";
 import { TextStack } from "../ui/text";
 
 export namespace ActionButton {
@@ -49,13 +50,14 @@ export function ActionButton(props: ActionButton.Props) {
         {props.AsideContent}
       </View>
       {props.withoutIcon ? null : props.icon?.onPress ? (
-        <Pressable
+        <StyledPressable
           accessibilityLabel={props.icon.label}
           onPress={props.icon.onPress}
-          className="shrink-0 p-3 active:opacity-75"
+          forIcon
+          className="shrink-0"
         >
-          {icon}
-        </Pressable>
+          <View className="pointer-events-none">{icon}</View>
+        </StyledPressable>
       ) : (
         <View className="shrink-0 p-3">{icon}</View>
       )}

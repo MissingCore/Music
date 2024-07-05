@@ -105,7 +105,7 @@ function UpcomingTrack({ data, onPress }: UpcomingTrackProps) {
   return (
     <View className="mb-2">
       <ActionButton
-        onPress={inQueue ? onPress : undefined}
+        onPress={() => {}}
         textContent={[data.name, data.artistName]}
         Image={
           <MediaImage
@@ -123,6 +123,7 @@ function UpcomingTrack({ data, onPress }: UpcomingTrackProps) {
               color={Colors.accent50}
             />
           ) : undefined,
+          onPress: inQueue ? onPress : undefined,
           label: inQueue ? "Remove track from queue." : undefined,
         }}
         withoutIcon={!inQueue}
