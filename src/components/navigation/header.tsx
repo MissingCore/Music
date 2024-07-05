@@ -75,7 +75,7 @@ export function ReusableHeaderBase({
   const title = getHeaderTitle(options, route.name);
   const navigation = useNavigation();
 
-  const canGoBack = navigation.canGoBack();
+  const canGoBack = navigation.canGoBack() && title !== "MUSIC";
 
   return (
     <SafeContainer className="bg-canvas">
