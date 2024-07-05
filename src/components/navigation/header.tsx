@@ -85,7 +85,7 @@ export function ReusableHeaderBase({
           "pr-4": !options.headerRight,
         })}
       >
-        {canGoBack && <BackButton unstyled className="p-3" />}
+        {canGoBack && <BackButton />}
         <TitleWrapper>{title}</TitleWrapper>
         {!!options.headerRight && options.headerRight({ canGoBack })}
       </View>

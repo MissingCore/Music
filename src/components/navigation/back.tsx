@@ -1,10 +1,9 @@
 import { router } from "expo-router";
 import { useEffect } from "react";
-import { Pressable } from "react-native";
 
 import { ArrowRight } from "@/assets/svgs/ArrowRight";
 
-import { cn } from "@/lib/style";
+import { StyledPressable } from "../ui/pressable";
 
 /** @description Navigate back when rendered. */
 export function Back() {
@@ -16,18 +15,15 @@ export function Back() {
 }
 
 /** @description Custom back button to replace the one used by React Navigation. */
-export function BackButton(props: { unstyled?: boolean; className?: string }) {
+export function BackButton(props: { className?: string }) {
   return (
-    <Pressable
+    <StyledPressable
       accessibilityLabel="Go back."
       onPress={() => router.back()}
-      className={cn(
-        "active:opacity-75",
-        { "mr-8": !props.unstyled },
-        props.className,
-      )}
+      forIcon
+      className={props.className}
     >
       <ArrowRight size={24} className="rotate-180" />
-    </Pressable>
+    </StyledPressable>
   );
 }

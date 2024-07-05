@@ -1,7 +1,7 @@
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useSetAtom } from "jotai";
 import { useMemo } from "react";
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 
 import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
 import { useFavoriteTracksForCurrentPage } from "@/api/favorites";
@@ -11,6 +11,7 @@ import { SpecialPlaylists } from "@/features/playback/constants";
 
 import { MediaScreenHeader } from "@/components/media/screen-header";
 import type { MediaList } from "@/components/media/types";
+import { StyledPressable } from "@/components/ui/pressable";
 import { Description } from "@/components/ui/text";
 import { TrackList } from "@/features/track/components/track-list";
 
@@ -33,15 +34,15 @@ export default function CurrentPlaylistScreen() {
       <Stack.Screen
         options={{
           headerRight: () => (
-            <Pressable
+            <StyledPressable
               accessibilityLabel="View playlist settings."
               onPress={() =>
                 openModal({ entity: "playlist", scope: "view", id })
               }
-              className="p-3 active:opacity-75"
+              forIcon
             >
               <EllipsisVertical size={24} />
-            </Pressable>
+            </StyledPressable>
           ),
         }}
       />
