@@ -132,28 +132,25 @@ const playTrackAtom = atom(null, async (get, set, opts?: TPlayTrackOpts) => {
     await TrackPlayer.load(formatTrackforPlayer(trackData));
     set(positionMsAtom, 0);
 
-    BackgroundTimer.setTimeout(
-      async () => {
-        // Check if the user was spamming the next/prev button.
-        if (trackData.id !== get(queuedTrackAtom)) return;
-        try {
-          await soundRef.loadAsync({ uri: trackData.uri }, { shouldPlay });
-          await TrackPlayer.seekTo(0);
-        } catch (err) {
-          if (
-            err instanceof Error &&
-            err.message.includes("java.io.FileNotFoundException")
-          ) {
-            // Played track no longer exists; reset context.
-            set(resetPlayingInfoAtom);
-            Toast.show("Track no longer exists.", { type: "danger" });
-          }
-          // Catch cases where media failed to load or if it's already loaded.
-          console.log(err);
+    BackgroundTimer.setTimeout(async () => {
+      // Check if the user was spamming the next/prev button.
+      if (trackData.id !== get(queuedTrackAtom)) return;
+      try {
+        await soundRef.loadAsync({ uri: trackData.uri }, { shouldPlay });
+        await TrackPlayer.seekTo(0);
+      } catch (err) {
+        if (
+          err instanceof Error &&
+          err.message.includes("java.io.FileNotFoundException")
+        ) {
+          // Played track no longer exists; reset context.
+          set(resetPlayingInfoAtom);
+          Toast.show("Track no longer exists.", { type: "danger" });
         }
-      },
-      isPlayerLoaded ? 150 : 250,
-    );
+        // Catch cases where media failed to load or if it's already loaded.
+        console.log(err);
+      }
+    }, 250);
   } else {
     // If we don't define any options, we assume we're just unpausing a track.
     if (!isPlayerLoaded) {
