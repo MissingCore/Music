@@ -32,7 +32,10 @@ const LINKGROUPS = {
   },
   features: {
     name: "FEATURES",
-    links: [{ label: "STORAGE & BACKUP", href: "/setting/storage" }],
+    links: [
+      { label: "BACKUP", href: "/setting/backup" },
+      { label: "INSIGHTS", href: "/setting/insights" },
+    ],
     listClassName: "-mx-4",
   },
 };

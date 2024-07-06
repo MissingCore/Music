@@ -1,38 +1,24 @@
 import { Text, View } from "react-native";
 
-import {
-  useExportBackup,
-  useImportBackup,
-} from "@/features/setting/api/backup";
 import { useStorageInfo } from "@/features/setting/api/storage";
 
 import { Colors } from "@/constants/Styles";
-import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
-import { Button } from "@/components/form/button";
 import { AnimatedHeader } from "@/components/navigation/animated-header";
 import { ProgressBar } from "@/components/ui/progress-bar";
 import { Description, Heading } from "@/components/ui/text";
 import { abbreviateSize } from "@/features/setting/utils";
 import { getPlayTime } from "@/features/track/utils";
 
-/** @description Screen for `/setting/storage` route. */
-export default function StorageScreen() {
+/** @description Screen for `/setting/insights` route. */
+export default function InsightsScreen() {
   return (
-    <AnimatedHeader title="STORAGE & BACKUP">
-      <InfoWidgets />
-
-      <Heading as="h1" className="my-8 text-start">
-        Backup
-      </Heading>
-      <Description intent="setting" className="mb-8">
-        Import or export{" "}
-        <Text className="text-foreground100">`music_backup.json`</Text>{" "}
-        containing information about your favorited albums, playlists, and
-        tracks. Useful for transferring your data between the APK & Play Store
-        versions of the app.
+    <AnimatedHeader title="INSIGHTS">
+      <Description intent="setting" className="mb-6">
+        See what <Text className="font-ndot57">Music</Text> has stored on your
+        device along with information about the playable media.
       </Description>
-      <BackupActions />
+      <InfoWidgets />
     </AnimatedHeader>
   );
 }
@@ -135,39 +121,6 @@ function ValueRow({ label, value, barColor, className }: ValueRowProps) {
       <Text className="font-geistMonoLight text-xs tracking-tighter text-foreground100">
         {value}
       </Text>
-    </View>
-  );
-}
-
-/** @description Actions for "Backup" feature. */
-function BackupActions() {
-  const exportBackupFn = useExportBackup();
-  const importBackupFn = useImportBackup();
-
-  const disableActions = exportBackupFn.isPending || importBackupFn.isPending;
-
-  return (
-    <View className="mb-4 flex-row gap-2">
-      <Button
-        variant="outline"
-        theme="neutral"
-        onPress={() => mutateGuard(exportBackupFn, undefined)}
-        disabled={disableActions}
-        wrapperClassName="flex-1 p-4"
-        textClassName="text-foreground100"
-      >
-        Export
-      </Button>
-      <Button
-        variant="outline"
-        theme="neutral"
-        onPress={() => mutateGuard(importBackupFn, undefined)}
-        disabled={disableActions}
-        wrapperClassName="flex-1 p-4"
-        textClassName="text-foreground100"
-      >
-        Import
-      </Button>
     </View>
   );
 }
