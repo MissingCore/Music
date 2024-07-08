@@ -8,7 +8,7 @@ import { countFrom } from "@/db/utils/formatters";
 
 import { settingKeys } from "./_queryKeys";
 
-export async function getStorageAndStatistics() {
+export async function getUserData() {
   // `FileSystem.documentDirectory` is `null` for "web".
   if (!FileSystem.documentDirectory) throw new Error("Web not supported");
 
@@ -32,36 +32,49 @@ export async function getStorageAndStatistics() {
 
   const cacheSize = cacheData.exists ? cacheData.size : 0;
 
+  return {
+    images: imagesSize,
+    database: databaseSize,
+    other: userDataSize - imagesSize - databaseSize,
+    cache: cacheSize,
+    total: userDataSize + cacheSize,
+  };
+}
+
+export async function getStatistics() {
+  // `FileSystem.documentDirectory` is `null` for "web".
+  if (!FileSystem.documentDirectory) throw new Error("Web not supported");
+
   const imgDirContent = await FileSystem.readDirectoryAsync(
     FileSystem.documentDirectory + "images",
   );
 
   return {
-    userData: {
-      images: imagesSize,
-      database: databaseSize,
-      other: userDataSize - imagesSize - databaseSize,
-      cache: cacheSize,
-      total: userDataSize + cacheSize,
-    },
-    statistics: {
-      albums: await countFrom(albums),
-      artists: await countFrom(artists),
-      images: imgDirContent.length,
-      playlists: await countFrom(playlists),
-      tracks: await countFrom(tracks),
-      totalDuration:
-        Number(
-          (await db.select({ total: sum(tracks.duration) }).from(tracks))[0]
-            ?.total,
-        ) || 0,
-    },
+    albums: await countFrom(albums),
+    artists: await countFrom(artists),
+    images: imgDirContent.length,
+    playlists: await countFrom(playlists),
+    tracks: await countFrom(tracks),
+    totalDuration:
+      Number(
+        (await db.select({ total: sum(tracks.duration) }).from(tracks))[0]
+          ?.total,
+      ) || 0,
   };
 }
 
 /** @description Get information on what's stored on the device. */
-export const useStorageInfo = () =>
+export const useUserDataInfo = () =>
   useQuery({
-    queryKey: settingKeys.storage(),
-    queryFn: getStorageAndStatistics,
+    queryKey: settingKeys.storageRelation("user-data"),
+    queryFn: getUserData,
+    gcTime: 0,
+  });
+
+/** @description Get information of whats stored in the database. */
+export const useStatisticsInfo = () =>
+  useQuery({
+    queryKey: settingKeys.storageRelation("statistics"),
+    queryFn: getStatistics,
+    gcTime: 0,
   });
