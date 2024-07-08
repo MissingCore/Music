@@ -19,7 +19,8 @@ type AnimatedHeaderProps = { title: string; children: React.ReactNode };
 /** @description Have a title animate into the header bar on scroll. */
 export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
   const insets = useSafeAreaInsets();
-  const { height: screenHeight } = useWindowDimensions();
+  // Window height excludes any Android UI (status bar, gesture bar).
+  const { height: windowHeight } = useWindowDimensions();
   const scrollRef = useRef<ScrollView>(null);
   const initialContentHeight = useSharedValue(0);
   const titleHeight = useSharedValue(0);
@@ -52,15 +53,16 @@ export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
   }));
 
   const contentBuffer = useDerivedValue(() => {
-    const visibleHeight =
-      screenHeight - insets.top - 56 - titleHeight.value - 32;
-    // Ensure content has a minimum margin bottom of `32px`.
-    if (visibleHeight > initialContentHeight.value) return 32;
+    const headerHeight = 56;
+    const fullTitleHeight = titleHeight.value + 32; // With `mb-8`
+    const visibleHeight = windowHeight - headerHeight - fullTitleHeight;
+    // See if scroll is caused by adding the `32px` bottom padding.
+    if (visibleHeight > initialContentHeight.value) return 0;
     // Get visible height when fully snapped.
-    const snappedHeight = screenHeight - insets.top - 56 - 20;
+    const snappedHeight = windowHeight - headerHeight - 20;
     return initialContentHeight.value >= snappedHeight
-      ? 32
-      : snappedHeight - initialContentHeight.value + 32;
+      ? 0 // We have a lot of scroll, so adjustment isn't necessary.
+      : snappedHeight - initialContentHeight.value;
   });
 
   return (
@@ -76,7 +78,7 @@ export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
                   : Colors.canvas,
               }}
             >
-              <View className="flex h-14 flex-row items-center gap-4 p-1 pr-4">
+              <View className="h-14 flex-row items-center gap-4 p-1 pr-4">
                 <BackButton />
                 <Animated.Text
                   numberOfLines={1}
@@ -110,7 +112,7 @@ export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
             initialContentHeight.value = nativeEvent.layout.height;
           }}
           style={{ marginBottom: contentBuffer }}
-          className="flex-1"
+          className="flex-1 pb-8"
         >
           {children}
         </Animated.View>
