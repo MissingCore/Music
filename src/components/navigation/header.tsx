@@ -80,7 +80,7 @@ export function ReusableHeaderBase({
   return (
     <SafeContainer className="bg-canvas">
       <View
-        className={cn("flex h-14 flex-row items-center gap-4 p-1", {
+        className={cn("h-14 flex-row items-center gap-4 p-1", {
           "pl-4": !canGoBack,
           "pr-4": !options.headerRight,
         })}
