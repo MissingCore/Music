@@ -36,7 +36,7 @@ export function ProgressBar(props: {
     <View
       onLayout={({ nativeEvent }) => setBarWidth(nativeEvent.layout.width)}
       className={cn(
-        "h-3 flex-1 flex-row overflow-hidden rounded-full",
+        "h-3 flex-row overflow-hidden rounded-full",
         props.className,
       )}
     >
