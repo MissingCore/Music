@@ -41,6 +41,7 @@ A Nothing inspired music player (based on design by [Alkid Shuli (alKid)](https:
 - Background Playback w/ Media Control Notification
 - Queues
 - Automatically extraction of metadata w/ [@missingcore/audio-metadata](https://github.com/MissingCore/audio-metadata)
+  - Supports `.mp3` (ID3v1 & ID3v2) & `.flac`. We're currently a bit picky with what files gets saved — their `title` & `artist` metadata field must be populated (this might change in the future).
 - Data Backup
 
 > See potential upcoming features in future updates in [this discussion post](https://github.com/MissingCore/Music/discussions/9).
@@ -207,6 +208,14 @@ Refer to the [performance section](#performance) of this README.
 Place your music files in the "Music" folder on your Android device. It doesn't matter if you put the tracks directly into the folder or in sub-folders for better organization.
 
 Look in [@missingcore/audio-metadata](https://github.com/MissingCore/audio-metadata) for supported audio files and metadata formats.
+
+> Why are my music files not displayed?
+
+Currently, we support a limited number of file extensions for metadata. Check [@missingcore/audio-metadata](https://github.com/MissingCore/audio-metadata) for the full list.
+
+In addition, we're a bit picky with what files get saved successfully. We only save files that have their `title` & `artist` metadata field populated (this might change in the future).
+
+If your file fails to get saved and has the supported file extensions, it may be due to the file not having the expected metadata container.
 
 > What platforms are supported?
 
