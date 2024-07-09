@@ -1,6 +1,11 @@
 import { Text, View } from "react-native";
 
-import { useStorageInfo } from "@/features/setting/api/storage";
+import { Ionicons } from "@/components/icons";
+import {
+  useUserDataInfo,
+  useStatisticsInfo,
+  useImageSaveStatus,
+} from "@/features/setting/api/insights";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
@@ -18,81 +23,103 @@ export default function InsightsScreen() {
         See what <Text className="font-ndot57">Music</Text> has stored on your
         device along with information about the playable media.
       </Description>
-      <InfoWidgets />
+
+      <UserDataWidget />
+      <StatisticsWidget />
+      <AllImagesSavedWidget />
     </AnimatedHeader>
   );
 }
 
-/** @description The 2 widgets containing information about storage & statistics. */
-function InfoWidgets() {
-  const { isPending, error, data } = useStorageInfo();
-
+/** @description Displays what's stored on this device. */
+function UserDataWidget() {
+  const { isPending, error, data } = useUserDataInfo();
   if (isPending || error) return null;
-
   return (
-    <>
-      <View className="mb-6 rounded-lg bg-surface800 p-4">
-        <Heading as="h4" className="mb-4 text-start tracking-tight">
-          User Data
-        </Heading>
+    <View className="mb-6 rounded-lg bg-surface800 p-4">
+      <Heading as="h4" className="mb-4 text-start tracking-tight">
+        User Data
+      </Heading>
 
-        <ProgressBar
-          entries={[
-            { color: Colors.accent500, value: data.userData.images },
-            { color: "#FFC800", value: data.userData.database },
-            { color: "#4142BE", value: data.userData.other },
-            { color: Colors.foreground100, value: data.userData.cache },
-          ]}
-          total={data.userData.total}
-          className="mb-4"
-        />
+      <ProgressBar
+        entries={[
+          { color: Colors.accent500, value: data.images },
+          { color: "#FFC800", value: data.database },
+          { color: "#4142BE", value: data.other },
+          { color: Colors.foreground100, value: data.cache },
+        ]}
+        total={data.total}
+        className="mb-4"
+      />
 
-        <ValueRow
-          label="Images"
-          value={abbreviateSize(data.userData.images)}
-          barColor={Colors.accent500}
-        />
-        <ValueRow
-          label="Database"
-          value={abbreviateSize(data.userData.database)}
-          barColor="#FFC800"
-        />
-        <ValueRow
-          label="Other"
-          value={abbreviateSize(data.userData.other)}
-          barColor="#4142BE"
-        />
-        <ValueRow
-          label="Cache"
-          value={abbreviateSize(data.userData.cache)}
-          barColor={Colors.foreground100}
-        />
+      <ValueRow
+        label="Images"
+        value={abbreviateSize(data.images)}
+        barColor={Colors.accent500}
+      />
+      <ValueRow
+        label="Database"
+        value={abbreviateSize(data.database)}
+        barColor="#FFC800"
+      />
+      <ValueRow
+        label="Other"
+        value={abbreviateSize(data.other)}
+        barColor="#4142BE"
+      />
+      <ValueRow
+        label="Cache"
+        value={abbreviateSize(data.cache)}
+        barColor={Colors.foreground100}
+      />
 
-        <ValueRow
-          label="Total"
-          value={abbreviateSize(data.userData.total)}
-          className="mb-0 mt-2"
-        />
-      </View>
+      <ValueRow
+        label="Total"
+        value={abbreviateSize(data.total)}
+        className="mb-0 mt-2"
+      />
+    </View>
+  );
+}
 
-      <View className="rounded-lg bg-surface800 p-4">
-        <Heading as="h4" className="mb-4 text-start tracking-tight">
-          Statistics
-        </Heading>
+/** @description Display what's tracked by the database. */
+function StatisticsWidget() {
+  const { isPending, error, data } = useStatisticsInfo();
+  if (isPending || error) return null;
+  return (
+    <View className="mb-6 rounded-lg bg-surface800 p-4">
+      <Heading as="h4" className="mb-4 text-start tracking-tight">
+        Statistics
+      </Heading>
 
-        <ValueRow label="Albums" value={data.statistics.albums} />
-        <ValueRow label="Artists" value={data.statistics.artists} />
-        <ValueRow label="Images" value={data.statistics.images} />
-        <ValueRow label="Playlists" value={data.statistics.playlists} />
-        <ValueRow label="Tracks" value={data.statistics.tracks} />
+      <ValueRow label="Albums" value={data.albums} />
+      <ValueRow label="Artists" value={data.artists} />
+      <ValueRow label="Images" value={data.images} />
+      <ValueRow label="Playlists" value={data.playlists} />
+      <ValueRow label="Tracks" value={data.tracks} />
 
-        <ValueRow
-          label="Total Duration"
-          value={getPlayTime(data.statistics.totalDuration)}
-          className="mb-0 mt-2"
-        />
-      </View>
-    </>
+      <ValueRow
+        label="Total Duration"
+        value={getPlayTime(data.totalDuration)}
+        className="mb-0 mt-2"
+      />
+    </View>
+  );
+}
+
+/** @description Display whether all images have been saved. */
+function AllImagesSavedWidget() {
+  const { isPending, error, data: allSaved } = useImageSaveStatus();
+  if (isPending || error) return null;
+  return (
+    <View className="flex-row justify-between gap-4 rounded-lg bg-surface800 p-4">
+      <Heading as="h4" className="text-start leading-tight tracking-tight">
+        All Images Saved?
+      </Heading>
+      <Ionicons
+        name={allSaved ? "checkmark-circle-outline" : "close-circle-outline"}
+      />
+    </View>
   );
 }
 
