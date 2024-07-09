@@ -1,8 +1,10 @@
 import { Text, View } from "react-native";
 
+import { Ionicons } from "@/components/icons";
 import {
   useUserDataInfo,
   useStatisticsInfo,
+  useImageSaveStatus,
 } from "@/features/setting/api/insights";
 
 import { Colors } from "@/constants/Styles";
@@ -21,8 +23,10 @@ export default function InsightsScreen() {
         See what <Text className="font-ndot57">Music</Text> has stored on your
         device along with information about the playable media.
       </Description>
+
       <UserDataWidget />
       <StatisticsWidget />
+      <AllImagesSavedWidget />
     </AnimatedHeader>
   );
 }
@@ -83,7 +87,7 @@ function StatisticsWidget() {
   const { isPending, error, data } = useStatisticsInfo();
   if (isPending || error) return null;
   return (
-    <View className="rounded-lg bg-surface800 p-4">
+    <View className="mb-6 rounded-lg bg-surface800 p-4">
       <Heading as="h4" className="mb-4 text-start tracking-tight">
         Statistics
       </Heading>
@@ -98,6 +102,22 @@ function StatisticsWidget() {
         label="Total Duration"
         value={getPlayTime(data.totalDuration)}
         className="mb-0 mt-2"
+      />
+    </View>
+  );
+}
+
+/** @description Display whether all images have been saved. */
+function AllImagesSavedWidget() {
+  const { isPending, error, data: allSaved } = useImageSaveStatus();
+  if (isPending || error) return null;
+  return (
+    <View className="flex-row justify-between gap-4 rounded-lg bg-surface800 p-4">
+      <Heading as="h4" className="text-start leading-tight tracking-tight">
+        All Images Saved?
+      </Heading>
+      <Ionicons
+        name={allSaved ? "checkmark-circle-outline" : "close-circle-outline"}
       />
     </View>
   );

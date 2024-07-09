@@ -1,8 +1,10 @@
 import * as FileSystem from "expo-file-system";
 
 import { db } from "@/db";
+import { settingKeys } from "@/features/setting/api/_queryKeys";
 
 import { deleteFile } from "@/lib/file-system";
+import { queryClient } from "@/lib/react-query";
 
 /**
  * @description Get all the images we stored in this app's "private"
@@ -51,4 +53,10 @@ export async function cleanUpImages() {
   console.log(
     `Deleted ${unlinkedImages.length} unlinked images in ${((performance.now() - start) / 1000).toFixed(4)}s.`,
   );
+
+  if (unlinkedImages.length > 0) {
+    queryClient.invalidateQueries({
+      queryKey: settingKeys.storageRelation("image-save-status"),
+    });
+  }
 }

@@ -63,6 +63,15 @@ export async function getStatistics() {
   };
 }
 
+export async function getImageSaveStatus() {
+  const isNotAllSaved = Boolean(
+    await db.query.tracks.findFirst({
+      where: (fields, { eq }) => eq(fields.fetchedArt, false),
+    }),
+  );
+  return !isNotAllSaved;
+}
+
 /** @description Get information on what's stored on the device. */
 export const useUserDataInfo = () =>
   useQuery({
@@ -76,5 +85,13 @@ export const useStatisticsInfo = () =>
   useQuery({
     queryKey: settingKeys.storageRelation("statistics"),
     queryFn: getStatistics,
+    gcTime: 0,
+  });
+
+/** @description See if all images are saved. */
+export const useImageSaveStatus = () =>
+  useQuery({
+    queryKey: settingKeys.storageRelation("image-save-status"),
+    queryFn: getImageSaveStatus,
     gcTime: 0,
   });
