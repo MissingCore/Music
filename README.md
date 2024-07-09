@@ -17,10 +17,6 @@ A Nothing inspired music player (based on design by [Alkid Shuli (alKid)](https:
     </ol>
     <li><a href="#installation">Installation</a></li>
     <li><a href="#build">Build</a></li>
-    <ol type="a">
-      <li><a href="#unsigned-local-build">(Unsigned) Local Build</a></li>
-      <li><a href="#signed-build-w-github-actions">Signed Build w/ GitHub Actions</a></li>
-    </ol>
     <li><a href="#faq">FAQ</a></li>
     <li><a href="#legal">Legal</a></li>
     <ol type="a">
@@ -108,88 +104,7 @@ There are 2 methods of installing this app:
 
 # Build
 
-These are instructions for building the app for personal use. Some general prerequisites are:
-
-- Basic understanding of the command line
-- [Node.js](https://nodejs.org/en/download/prebuilt-installer)
-- Android Studio
-  - You can follow [this quick start guide from Expo](https://docs.expo.dev/get-started/set-up-your-environment/?mode=development-build&buildEnv=local) (follow all the instructions until the "Running your app on an Android device" section)
-- A code editor such as VSCode
-- USB Debugging enabled device
-
-## (Unsigned) Local Build
-
-1. Clone the repository.
-
-   ```sh
-   git clone https://github.com/MissingCore/Music.git
-   ```
-
-2. Navigate to the project directory.
-
-   ```sh
-   cd Music
-   ```
-
-3. Install dependencies (we use `pnpm`, but your can use `npm`).
-
-   ```sh
-   npm i
-   ```
-
-4. Connect your Android device to your computer via a USB cable.
-
-5. Run the following command to build the app locally on your computer via Expo, which will add the app to your phone upon completion.
-
-   ```sh
-   npm run android:prod
-   ```
-
-> [!NOTE]  
-> You may receive a prompt on your device asking: "Allow USB debugging". Click **OK** to allow USB debugging on your PC. If you hit **Cancel**, the build command will fail. To allow USB debugging after canceling, reconnect your device with the USB cable and run the command again.
-
-> [!NOTE]  
-> This also generates the [different APK files](https://developer.android.com/ndk/guides/abis.html#sa) located in `android/app/build/outputs/apk/release`.
-
-## Signed Build w/ GitHub Actions
-
-This will create APKs that can be published to other stores via GitHub Actions when you create a new tag. Once the process finishes, a new release will automatically be created, with the APKs files attached. In addition, this will also create an `.aab` file that will automatically be upload to the Play Console.
-
-1. Generate an upload key via `keytool` which comes with your installation of Java (this is referenced from [React Native's Guide](https://reactnative.dev/docs/signed-apk-android#generating-an-upload-key)). This will generate a `keystore.jks` file in the directory where `keytool` is located.
-
-   ```sh
-   sudo keytool -genkey -v -keystore keystore.jks -alias key-alias -keyalg RSA -keysize 2048 -validity 10000
-   ```
-
-> [!IMPORTANT]  
-> **You should change `key-alias` to be something unique.**
->
-> Keep the password you inputted as that'll be important later on.
->
-> I found an issue with some characters in the password that kind of broke the behavior of the script when using GitHub actions (ie: `$`, `` ` ``, `=`), so you shouldn't use them.
->
-> You can move `keystore.jks` to a different folder (ie: create a new folder in the `/Downloads` directory).
-
-2. Open up `Git Bash` when it was installed with `git`. You want to go to the directory where the `keystore.jks` file is by running `cd "<directory>"`. Then run the following command to encode `keystore.jks` into a base64 file.
-
-   ```sh
-   openssl base64 < keystore.jks | tr -d '\n' | tee keystore.base64.txt
-   ```
-
-   > We want to encode `keystore.jks` in base64 as we want to keep this file secret and prevent exposing it. By encoding it in base64, we can save this as a GitHub Actions secret and use it within the workflow.
-
-3. Clone this repository.
-
-4. Now we need to add some secrets. When in the cloned repository, click: `Settings > Secrets and variables > Actions`. Click `New repository secret`. We're going to create 4 secrets:
-
-   | Name                               | Secret                                                                                                                                                                                                                                                                                                                                                   |
-   | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | `RELEASE_CRED`                     | _Remember to remove the angle brackets._<br/><pre><code>RELEASE_KEYSTORE_PASSWORD=<UPLOAD_PASSWORD from Step 1>&#13;RELEASE_KEY_ALIAS=<unique key-alias from Step 1>&#13;RELEASE_KEY_PASSWORD=<UPLOAD_PASSWORD from Step 1>&#13;</code></pre>                                                                                                            |
-   | `KEYSTORE_BASE64`                  | Put the contents of `keystore.base64.txt`.                                                                                                                                                                                                                                                                                                               |
-   | `MISSINGCORE_BOT_GITHUB_TOKEN`     | Put a [Fine-Grained Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token). This token should have `Read & Write` permissions for: `Contents`.                                                                        |
-   | `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON` | Paste the contents of the service account JSON file created by following the steps on the [r0adkll/upload-google-play GitHub Action Repository](https://github.com/r0adkll/upload-google-play?tab=readme-ov-file#configure-service-account). You don't need to give the service account permissions (ie: you don't need to give it `owner` permissions). |
-
-That should be all the setup needed. Now whenever a new tag gets added to the repository that follows our version format, GitHub Actions will automatically call the workflow that builds the signed APKs.
+Read the [Building this App docs](./docs//building-this-app.md).
 
 # FAQ
 
