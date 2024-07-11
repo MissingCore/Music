@@ -29,7 +29,7 @@ export async function saveCoverImages() {
 
   const uncheckedTracks = await db.query.tracks.findMany({
     where: (fields, { eq }) => eq(fields.fetchedArt, false),
-    columns: { id: true, albumId: true, uri: true },
+    columns: { id: true, albumId: true, uri: true, name: true },
   });
   const _albumsWCovers = await db.query.albums.findMany({
     where: (fields, { isNotNull }) => isNotNull(fields.artwork),
@@ -39,25 +39,30 @@ export async function saveCoverImages() {
 
   let newCoverImgCnt = 0;
 
-  for (const { id, albumId, uri } of uncheckedTracks) {
+  for (const { id, albumId, uri, name } of uncheckedTracks) {
     // If we don't have an `albumId` or if the album doesn't have a cover image.
     if (!albumId || !albumsWCovers.has(albumId)) {
       const { metadata } = await getAudioMetadata(uri, ["artwork"]);
       if (metadata.artwork) {
-        // Very slim chance that we might have a "floating" image if we
-        // close the app right after saving the image, but before setting
-        // `fetchedArt` to `true`.
-        const artwork = await saveBase64Img(metadata.artwork);
-        if (albumId) {
-          await db
-            .update(albums)
-            .set({ artwork })
-            .where(eq(albums.id, albumId));
-          albumsWCovers.add(albumId);
-        } else {
-          await db.update(tracks).set({ artwork }).where(eq(tracks.id, id));
+        try {
+          // Very slim chance that we might have a "floating" image if we
+          // close the app right after saving the image, but before setting
+          // `fetchedArt` to `true`.
+          const artwork = await saveBase64Img(metadata.artwork);
+          if (albumId) {
+            await db
+              .update(albums)
+              .set({ artwork })
+              .where(eq(albums.id, albumId));
+            albumsWCovers.add(albumId);
+          } else {
+            await db.update(tracks).set({ artwork }).where(eq(tracks.id, id));
+          }
+          newCoverImgCnt++;
+        } catch (err) {
+          // In case we fail to save an image due to having an invalid base64 string.
+          console.log(`[Error] Failed to save image for "${name}".`);
         }
-        newCoverImgCnt++;
       }
     }
 
