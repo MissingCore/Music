@@ -1,7 +1,7 @@
 import type { SQLiteDatabase } from "expo-sqlite";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 
 import { useSaveAudio } from "./useSaveAudio";
 import { useSetupTrackPlayer } from "./useSetupTrackPlayer";
@@ -13,22 +13,18 @@ import migrations from "@/db/drizzle/migrations";
  * @description Makes splash screen visible until all initialization
  *  tasks are complete.
  */
-export function useLoadAssets() {
+export function useLoadResources() {
   const { success: dbSuccess, error: dbError } = useMigrations(db, migrations);
   useDevOnly(expoSQLiteDB);
   const tracksSaved = useSaveAudio();
-  const trackPlayerLoaded = useSetupTrackPlayer();
-
-  const completedTasks = useMemo(() => {
-    return dbSuccess && trackPlayerLoaded && tracksSaved;
-  }, [dbSuccess, trackPlayerLoaded, tracksSaved]);
+  useSetupTrackPlayer();
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (dbError) throw dbError;
   }, [dbError]);
 
-  return { isLoaded: completedTasks };
+  return { isLoaded: dbSuccess && tracksSaved };
 }
 
 /** @description Only run Expo dev tools plugins during development. */

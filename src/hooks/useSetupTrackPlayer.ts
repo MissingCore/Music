@@ -1,27 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import TrackPlayer, {
   AppKilledPlaybackBehavior,
   Capability,
   RepeatMode,
 } from "react-native-track-player";
 
-/** @description Sets up `react-native-track-player`. */
+/**
+ * @description Sets up `react-native-track-player`. Non-blocking as if
+ *  `setupPlayer()` fails due to issues such as "The player has already
+ *  been initialized via setupPlayer.", it shouldn't prevent the rest of
+ *  the app from loading.
+ */
 export function useSetupTrackPlayer() {
-  const [isInitialized, setIsInitialized] = useState(false);
-
   useEffect(() => {
-    setupPlayer()
-      .then(() => {
-        setIsInitialized(true);
-      })
-      .catch((err: Error) => {
-        // Set `isInitialized = true` if we get this specific error.
-        const msg = "The player has already been initialized via setupPlayer.";
-        if (err.message === msg) setIsInitialized(true);
+    try {
+      setupPlayer().catch((err) => {
+        // Gracefully resolve setup error.
+        console.log(err);
       });
+    } catch {
+      // `try-catch` doesn't seem to catch the error thrown by `setupPlayer()`.
+    }
   }, []);
-
-  return isInitialized;
 }
 
 async function setupPlayer() {

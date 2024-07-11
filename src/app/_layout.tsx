@@ -3,7 +3,7 @@ import { useSetAtom } from "jotai";
 import TrackPlayer from "react-native-track-player";
 
 import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
-import { useLoadAssets } from "@/hooks/useLoadAssets";
+import { useLoadResources } from "@/hooks/useLoadResources";
 import { modalAtom } from "@/features/modal/store";
 
 import "@/assets/global.css";
@@ -27,7 +27,7 @@ export const unstable_settings = {
 TrackPlayer.registerPlaybackService(() => PlaybackService);
 
 export default function RootLayout() {
-  const { isLoaded } = useLoadAssets();
+  const { isLoaded } = useLoadResources();
   if (!isLoaded) return <AnimatedBootSplash />;
   return <RootLayoutNav />;
 }
