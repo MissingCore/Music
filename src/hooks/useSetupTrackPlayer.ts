@@ -13,43 +13,41 @@ import TrackPlayer, {
  */
 export function useSetupTrackPlayer() {
   useEffect(() => {
-    try {
-      setupPlayer().catch((err) => {
-        // Gracefully resolve setup error.
-        console.log(err);
-      });
-    } catch {
-      // `try-catch` doesn't seem to catch the error thrown by `setupPlayer()`.
-    }
+    setupPlayer();
   }, []);
 }
 
 async function setupPlayer() {
-  await TrackPlayer.setupPlayer();
-  // Repeat mode is needed for the "next" button to show up in the widget.
-  await TrackPlayer.setRepeatMode(RepeatMode.Queue);
-  // We want to play audio from `expo-av` as we only use
-  // `react-native-track-player` for the media controls.
-  await TrackPlayer.setVolume(0);
+  try {
+    await TrackPlayer.setupPlayer();
+    // Repeat mode is needed for the "next" button to show up in the widget.
+    await TrackPlayer.setRepeatMode(RepeatMode.Queue);
+    // We want to play audio from `expo-av` as we only use
+    // `react-native-track-player` for the media controls.
+    await TrackPlayer.setVolume(0);
 
-  await TrackPlayer.updateOptions({
-    android: {
-      appKilledPlaybackBehavior:
-        AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification,
-    },
-    capabilities: [
-      Capability.Play,
-      Capability.Pause,
-      Capability.SkipToNext,
-      Capability.SkipToPrevious,
-      Capability.SeekTo,
-    ],
-    compactCapabilities: [
-      Capability.Play,
-      Capability.Pause,
-      Capability.SkipToNext,
-      Capability.SkipToPrevious,
-    ],
-    icon: require("@/assets/glyphs/music.png"),
-  });
+    await TrackPlayer.updateOptions({
+      android: {
+        appKilledPlaybackBehavior:
+          AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification,
+      },
+      capabilities: [
+        Capability.Play,
+        Capability.Pause,
+        Capability.SkipToNext,
+        Capability.SkipToPrevious,
+        Capability.SeekTo,
+      ],
+      compactCapabilities: [
+        Capability.Play,
+        Capability.Pause,
+        Capability.SkipToNext,
+        Capability.SkipToPrevious,
+      ],
+      icon: require("@/assets/glyphs/music.png"),
+    });
+  } catch (err) {
+    // Gracefully resolve setup error.
+    console.log(`[Error]`, (err as Error)?.message);
+  }
 }
