@@ -42,6 +42,7 @@ export async function pickImage() {
 /** @description Helper to save images to device. */
 export async function saveBase64Img(base64Img: string) {
   const { uri: webpUri } = await manipulateAsync(base64Img, [], {
+    compress: 0.85, // Preserve 85% of original image quality.
     format: SaveFormat.WEBP,
   });
   const fileUri = FileSystem.documentDirectory + `images/${createId()}.webp`;

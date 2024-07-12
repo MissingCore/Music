@@ -135,7 +135,7 @@ function ValueRow({ label, value, barColor, className }: ValueRowProps) {
   return (
     <View className={cn("mb-2 flex-row justify-between gap-2", className)}>
       <View className="shrink flex-row items-center gap-2">
-        {barColor && (
+        {!!barColor && (
           <View
             style={{ backgroundColor: barColor }}
             className="size-[9px] rounded-full"
