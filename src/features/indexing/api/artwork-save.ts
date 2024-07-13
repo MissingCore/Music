@@ -6,7 +6,7 @@ import { albums, tracks } from "@/db/schema";
 
 import { saveBase64Img } from "@/lib/file-system";
 import { clearAllQueries } from "@/lib/react-query";
-import { splitTime } from "@/utils/debug";
+import { Stopwatch } from "@/utils/debug";
 
 /** @description Make sure we run the logic to save artwork once. */
 export const saveArtworkOnce = (() => {
@@ -21,7 +21,7 @@ export const saveArtworkOnce = (() => {
 
 /** @description Save artwork for albums & tracks in an optimized manner. */
 export async function saveArtwork() {
-  const start = performance.now();
+  const stopwatch = new Stopwatch();
 
   const uncheckedTracks = await db.query.tracks.findMany({
     where: (fields, { eq }) => eq(fields.fetchedArt, false),
@@ -67,7 +67,7 @@ export async function saveArtwork() {
   }
 
   console.log(
-    `Finished saving ${newArtworkCount} new cover images in ${splitTime(start)}.`,
+    `Finished saving ${newArtworkCount} new cover images in ${stopwatch.lapTime()}.`,
   );
 
   if (newArtworkCount > 0) clearAllQueries();

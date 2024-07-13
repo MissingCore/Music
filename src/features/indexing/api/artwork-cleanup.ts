@@ -5,14 +5,14 @@ import { db } from "@/db";
 import { albums, playlists, tracks } from "@/db/schema";
 
 import { deleteFile } from "@/lib/file-system";
-import { splitTime } from "@/utils/debug";
+import { Stopwatch } from "@/utils/debug";
 
 /**
  * @description Deletes any images saved by this app that aren't linked
  *  to an album, playlist, or track.
  */
 export async function cleanUpArtwork() {
-  const start = performance.now();
+  const stopwatch = new Stopwatch();
 
   // Get all the uris of images saved in the database.
   const usedUris = (
@@ -39,6 +39,6 @@ export async function cleanUpArtwork() {
   );
 
   console.log(
-    `Deleted ${deletedRes.length} unlinked images in ${splitTime(start)}.`,
+    `Deleted ${deletedRes.length} unlinked images in ${stopwatch.lapTime()}.`,
   );
 }
