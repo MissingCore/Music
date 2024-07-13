@@ -1,4 +1,4 @@
-import { AudioFileTypes, getAudioMetadata } from "@missingcore/audio-metadata";
+import { getAudioMetadata } from "@missingcore/audio-metadata";
 import { eq } from "drizzle-orm";
 import * as MediaLibrary from "expo-media-library";
 
@@ -12,6 +12,9 @@ import { isFulfilled, isRejected } from "@/utils/promise";
 /** Metadata tags we want to save from each track. */
 const wantedTags = ["album", "artist", "name", "track", "year"] as const;
 
+/* FIXME: Temporary work around as we don't really want to support `.mp4` & `.m4a` yet. */
+const wantedExtensions = ["mp3", "flac"] as const;
+
 /** @description Index tracks into our database for fast retrieval. */
 export async function indexAudio() {
   const stopwatch = new Stopwatch();
@@ -22,7 +25,7 @@ export async function indexAudio() {
   const audioFiles = (
     await MediaLibrary.getAssetsAsync({ ...assetOptions, first: totalCount })
   ).assets.filter((a) =>
-    AudioFileTypes.some((ext) => a.filename.endsWith(`.${ext}`)),
+    wantedExtensions.some((ext) => a.filename.endsWith(`.${ext}`)),
   );
 
   // Get relevant entries inside our database.
