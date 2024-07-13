@@ -12,7 +12,6 @@ import type { Prettify } from "@/utils/types";
 
 export const artists = sqliteTable("artists", {
   name: text("name").primaryKey(),
-  // FIXME: Potentially add `logo` field in the future.
 });
 
 export const artistsRelations = relations(artists, ({ many }) => ({
