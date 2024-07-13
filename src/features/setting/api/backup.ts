@@ -18,6 +18,7 @@ import { getFavoriteLists } from "@/api/favorites";
 
 import { resynchronizeOnAtom } from "@/features/playback/api/synchronize";
 
+import { clearAllQueries } from "@/lib/react-query";
 import { pickKeys } from "@/utils/object";
 import { isFulfilled } from "@/utils/promise";
 
@@ -235,12 +236,7 @@ export const useImportBackup = () => {
   return useMutation({
     mutationFn: importBackup,
     onSuccess: () => {
-      // Invalidate all queries (exclude "Latest Release" query).
-      queryClient.invalidateQueries({
-        // @ts-expect-error ts(2339) — We normalized the `queryKey` structure
-        // to be an object with an `entity` key.
-        predicate: ({ queryKey }) => queryKey[0]?.entity !== "releases",
-      });
+      clearAllQueries(queryClient);
       // Resynchronize with Jotai.
       resynchronizeFn({ action: "update", data: null });
       Toast.show("Backup import completed.");
