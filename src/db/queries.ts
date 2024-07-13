@@ -2,12 +2,17 @@ import type { SQL } from "drizzle-orm";
 import { and, eq } from "drizzle-orm";
 
 import { db } from ".";
-import { tracks, tracksToPlaylists } from "./schema";
+import { albums, tracks, tracksToPlaylists } from "./schema";
 import { fixPlaylistJunction, getTrackCover } from "./utils/formatters";
 
 import { deleteFile } from "@/lib/file-system";
 import type { SpecialPlaylistName } from "@/features/playback/constants";
 import { SpecialPlaylists } from "@/features/playback/constants";
+
+/** @description Create a new album, returning the created value. */
+export async function createAlbum(entry: typeof albums.$inferInsert) {
+  return (await db.insert(albums).values(entry).returning())[0]!;
+}
 
 /** @description Throws error if no album is found. */
 export async function getAlbum(filters: SQL[]) {

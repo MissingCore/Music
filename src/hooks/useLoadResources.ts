@@ -3,7 +3,7 @@ import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
 import { useEffect } from "react";
 
-import { useSaveAudio } from "./useSaveAudio";
+import { useIndexAudio } from "@/features/indexing/hooks/useIndexAudio";
 import { useSetupTrackPlayer } from "./useSetupTrackPlayer";
 
 import { db, expoSQLiteDB } from "@/db";
@@ -16,7 +16,7 @@ import migrations from "@/db/drizzle/migrations";
 export function useLoadResources() {
   const { success: dbSuccess, error: dbError } = useMigrations(db, migrations);
   useDevOnly(expoSQLiteDB);
-  const tracksSaved = useSaveAudio();
+  const tracksSaved = useIndexAudio();
   useSetupTrackPlayer();
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.

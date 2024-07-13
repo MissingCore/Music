@@ -25,3 +25,15 @@ export function mutateGuard<TData, TError, TVariables, TContext>(
 ) {
   if (!mutation.isPending) mutation.mutate(...args);
 }
+
+/**
+ * @description Helper for invalidating all queries except the "Latest Release"
+ *  query as that shouldn't ever change in the given app session.
+ */
+export function clearAllQueries(client = queryClient) {
+  client.invalidateQueries({
+    // @ts-expect-error ts(2339) — We normalized the `queryKey` structure
+    // to be an object with an `entity` key.
+    predicate: ({ queryKey }) => queryKey[0]?.entity !== "releases",
+  });
+}
