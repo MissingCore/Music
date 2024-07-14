@@ -25,7 +25,7 @@ export async function saveArtwork() {
 
   const uncheckedTracks = await db.query.tracks.findMany({
     where: (fields, { eq }) => eq(fields.fetchedArt, false),
-    columns: { id: true, albumId: true, uri: true, name: true },
+    columns: { id: true, albumId: true, uri: true, name: true, artwork: true },
   });
   const albumsWithCovers = new Set(
     (
@@ -38,9 +38,10 @@ export async function saveArtwork() {
 
   let newArtworkCount = 0;
 
-  for (const { id, albumId, uri, name } of uncheckedTracks) {
-    // If we don't have an `albumId` or if the album doesn't have a cover image.
-    if (!albumId || !albumsWithCovers.has(albumId)) {
+  for (const { id, albumId, uri, name, artwork } of uncheckedTracks) {
+    // Make sure the track doesn't have `artwork` and either be unassociated
+    // with an album or its album doesn't have `artwork`.
+    if (!artwork && (!albumId || !albumsWithCovers.has(albumId))) {
       const { metadata } = await getAudioMetadata(uri, ["artwork"]);
       if (metadata.artwork) {
         try {
