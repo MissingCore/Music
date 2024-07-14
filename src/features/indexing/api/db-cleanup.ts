@@ -81,11 +81,16 @@ export async function removeUnlinkedAlbums() {
 /** @description Remove from the database any artists that have no tracks. */
 export async function removeUnlinkedArtists() {
   const allArtists = await db.query.artists.findMany({
-    with: { tracks: { columns: { id: true } } },
+    with: {
+      albums: { columns: { id: true } },
+      tracks: { columns: { id: true } },
+    },
   });
   await Promise.allSettled(
     allArtists
-      .filter(({ tracks }) => tracks.length === 0)
+      .filter(
+        ({ albums, tracks }) => albums.length === 0 && tracks.length === 0,
+      )
       .map(({ name }) => db.delete(artists).where(eq(artists.name, name))),
   );
 }

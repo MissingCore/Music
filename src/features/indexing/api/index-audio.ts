@@ -10,7 +10,9 @@ import { Stopwatch } from "@/utils/debug";
 import { isFulfilled, isRejected } from "@/utils/promise";
 
 /** Metadata tags we want to save from each track. */
-const wantedTags = ["album", "artist", "name", "track", "year"] as const;
+const wantedTags = [
+  ...["album", "albumArtist", "artist", "name", "track", "year"],
+] as const;
 
 /* FIXME: Temporary work around as we don't really want to support `.mp4` & `.m4a` yet. */
 const wantedExtensions = ["mp3", "flac"] as const;
@@ -100,35 +102,43 @@ export async function indexAudio() {
 
   // Add new artists to database.
   await Promise.allSettled(
-    [...new Set(validTrackData.map(({ artist }) => artist))].map((name) =>
-      db.insert(artists).values({ name }).onConflictDoNothing(),
-    ),
+    [
+      ...new Set(
+        validTrackData
+          .map(({ artist, albumArtist }) => [artist, albumArtist ?? artist])
+          .flat(),
+      ),
+    ].map((name) => db.insert(artists).values({ name }).onConflictDoNothing()),
   );
 
   // Add new albums to database (albums may have the same name, but different artists).
   const albumInfoMap: Record<
     string,
-    { album: string; artist: string; year: number | null }
+    { name: string; albumArtist: string; year: number | null }
   > = {};
   const newAlbums = new Set(
     validTrackData
-      .filter(({ album }) => !!album)
-      .map(({ album, artist, year }) => {
+      .filter(({ album, albumArtist }) => !!album && !!albumArtist)
+      .map(({ album, albumArtist, year }) => {
         // An artist can releases multiple albums with the same name (ie: Weezer).
-        const key = `${album} ${artist} ${year}`;
-        albumInfoMap[key] = { album: album!, artist, year: year ?? null };
+        const key = getAlbumKey({ album, albumArtist, year });
+        albumInfoMap[key] = {
+          name: album!,
+          albumArtist: albumArtist!,
+          year: year ?? null,
+        };
         return key;
       }),
   );
   const albumIdMap: Record<string, string> = {};
   await Promise.allSettled(
     [...newAlbums].map(async (albumKey) => {
-      const { album, artist, year } = albumInfoMap[albumKey]!;
+      const { name, albumArtist: artist, year } = albumInfoMap[albumKey]!;
       let exists = allAlbums.find(
         (a) =>
-          a.name === album && a.artistName === artist && a.releaseYear === year,
+          a.name === name && a.artistName === artist && a.releaseYear === year,
       );
-      const entry = { name: album, artistName: artist, releaseYear: year };
+      const entry = { name, artistName: artist, releaseYear: year };
       if (!exists) exists = await createAlbum(entry);
       albumIdMap[albumKey] = exists.id;
     }),
@@ -136,25 +146,36 @@ export async function indexAudio() {
 
   // Add new & updated tracks to the database.
   await Promise.allSettled(
-    validTrackData.map(async ({ year, artist, album, id, ...rest }) => {
-      const albumKey = `${album} ${artist} ${year}`;
-      const albumId = album ? albumIdMap[albumKey]! : null;
+    validTrackData.map(
+      async ({ id, album, albumArtist, artist, year, ...rest }) => {
+        const albumKey = getAlbumKey({ album, albumArtist, year });
+        const albumId = album ? albumIdMap[albumKey] : null;
 
-      const newTrackData = { id, artistName: artist, albumId, ...rest };
-      const isRetriedTrack = allInvalidTracks.find((t) => t.id === id);
+        const newTrackData = { id, artistName: artist, albumId, ...rest };
+        const isRetriedTrack = allInvalidTracks.find((t) => t.id === id);
 
-      if (modifiedTracks.has(id) && !isRetriedTrack) {
-        // Update existing track.
-        await db.update(tracks).set(newTrackData).where(eq(tracks.id, id));
-      } else {
-        // Save new track.
-        await db.insert(tracks).values(newTrackData);
-        // Remove track from `InvalidTracks` table as it's now correctly structured.
-        if (isRetriedTrack)
-          await db.delete(invalidTracks).where(eq(invalidTracks.id, id));
-      }
-    }),
+        if (modifiedTracks.has(id) && !isRetriedTrack) {
+          // Update existing track.
+          await db.update(tracks).set(newTrackData).where(eq(tracks.id, id));
+        } else {
+          // Save new track.
+          await db.insert(tracks).values(newTrackData);
+          // Remove track from `InvalidTracks` table as it's now correctly structured.
+          if (isRetriedTrack)
+            await db.delete(invalidTracks).where(eq(invalidTracks.id, id));
+        }
+      },
+    ),
   );
 
   return audioFiles;
+}
+
+/** @description Ensure we use the right key to get the album id. */
+function getAlbumKey(key: {
+  album: string | undefined;
+  albumArtist: string | undefined;
+  year: number | undefined;
+}) {
+  return `${key.album} ${key.albumArtist} ${key.year}`;
 }
