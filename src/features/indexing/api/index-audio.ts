@@ -38,15 +38,19 @@ export async function indexAudio() {
   // Find the tracks we can skip indexing or need updating.
   const unmodifiedTracks = new Set<string>();
   const modifiedTracks = new Set<string>();
-  audioFiles.forEach(({ id, modificationTime }) => {
+  audioFiles.forEach(({ id, modificationTime, uri }) => {
     const isSaved = allTracks.find((t) => t.id === id);
     const isInvalid = allInvalidTracks.find((t) => t.id === id);
     if (!isSaved && !isInvalid) return; // If we have a new track.
 
     const lastModified = (isSaved ?? isInvalid)!.modificationTime;
-    // Retry indexing if modification time is different.
-    if (modificationTime !== lastModified) modifiedTracks.add(id);
-    else unmodifiedTracks.add(id);
+    const isDifferentUri = (isSaved ?? isInvalid)!.uri !== uri;
+    // Retry indexing if modification time or uri is different.
+    if (modificationTime !== lastModified || isDifferentUri) {
+      modifiedTracks.add(id);
+    } else {
+      unmodifiedTracks.add(id);
+    }
   });
 
   // Get the metadata for all new or modified tracks.
