@@ -23,6 +23,7 @@ export const albums = sqliteTable("albums", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => createId()),
+  // The `artistName` is the album artist.
   artistName: text("artist_name")
     .notNull()
     .references(() => artists.name),

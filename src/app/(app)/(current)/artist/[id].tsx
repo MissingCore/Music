@@ -47,6 +47,11 @@ export default function CurrentArtistScreen() {
         config={{ source: trackSource, origin: "artist" }}
         ListHeaderComponent={<ArtistAlbums albums={data.albums} />}
         contentContainerStyle={{ paddingHorizontal: 20 }}
+        ListEmptyComponent={
+          <Description className="text-start">
+            Artist has no tracks.
+          </Description>
+        }
       />
     </>
   );
