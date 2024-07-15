@@ -8,6 +8,7 @@ import { cleanUpArtwork } from "../api/artwork-cleanup";
 import { saveArtworkOnce } from "../api/artwork-save";
 import { cleanUpDb } from "../api/db-cleanup";
 import { indexAudio } from "../api/index-audio";
+import { dataReadjustments } from "../api/index-override";
 
 import { createImageDirectory } from "@/lib/file-system";
 import { Stopwatch } from "@/utils/debug";
@@ -34,9 +35,13 @@ export function useIndexAudio() {
       }
     }
 
+    // Fix database entries if we make any "breaking" changes.
+    await dataReadjustments();
+    console.log(`Completed data adjustments in ${stopwatch.lapTime()}.`);
+
     const foundAudioFiles = await indexAudio();
     await cleanUpDb(new Set(foundAudioFiles.map(({ id }) => id)));
-    console.log(`Finished overall in ${stopwatch.lapTime()}.`);
+    console.log(`Finished overall in ${stopwatch.stop()}.`);
 
     // Make sure this directory exists before saving images.
     await createImageDirectory();

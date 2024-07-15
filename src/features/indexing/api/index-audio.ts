@@ -176,10 +176,10 @@ export async function indexAudio() {
 }
 
 /** @description Ensure we use the right key to get the album id. */
-function getAlbumKey(key: {
+export function getAlbumKey(key: {
   album: string | undefined;
   albumArtist: string | undefined;
   year: number | undefined;
 }) {
-  return `${key.album} ${key.albumArtist} ${key.year}`;
+  return `${encodeURIComponent(key.album ?? "")} ${encodeURIComponent(key.albumArtist ?? "")} ${key.year}`;
 }
