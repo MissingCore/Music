@@ -48,7 +48,6 @@ export async function fixAlbumFracturization() {
       {
         albumIds: string[];
         entry: { name: string; artistName: string; releaseYear: number | null };
-        newAlbumId: string | undefined;
       }
     > = {};
     await Promise.all(
@@ -66,7 +65,6 @@ export async function fixAlbumFracturization() {
           albumInfoMap[key] = {
             albumIds: [id],
             entry: { name: album!, artistName: aA!, releaseYear: year ?? null },
-            newAlbumId: undefined,
           };
         }
       }),
@@ -80,25 +78,19 @@ export async function fixAlbumFracturization() {
     // Create new album entry for the duplicated albums.
     await Promise.allSettled(
       duplicatedAlbumKeys.map(async (key) => {
+        const { albumIds, entry } = albumInfoMap[key]!;
         // Make sure `albumArtist` exists as an `Artist`.
         await db
           .insert(artists)
-          .values({ name: albumInfoMap[key]!.entry.artistName })
+          .values({ name: entry.artistName })
           .onConflictDoNothing();
-        albumInfoMap[key]!.newAlbumId = (
-          await createAlbum(albumInfoMap[key]!.entry)
-        ).id;
-      }),
-    );
-
-    // Replace the ids of album names that are "duplicated" with the new id.
-    await Promise.allSettled(
-      duplicatedAlbumKeys.map((key) =>
-        db
+        // Create new album & replace the ids of album names that are
+        // "duplicated" with the new id.
+        await db
           .update(tracks)
-          .set({ albumId: albumInfoMap[key]!.newAlbumId })
-          .where(inArray(tracks.albumId, albumInfoMap[key]!.albumIds)),
-      ),
+          .set({ albumId: (await createAlbum(entry)).id })
+          .where(inArray(tracks.albumId, albumIds));
+      }),
     );
 
     // Reset playing info in case we're playing a deleted album.
