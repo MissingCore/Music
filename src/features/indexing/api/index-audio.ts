@@ -181,5 +181,5 @@ export function getAlbumKey(key: {
   albumArtist: string | undefined;
   year: number | undefined;
 }) {
-  return `${key.album} ${key.albumArtist} ${key.year}`;
+  return `${encodeURIComponent(key.album ?? "")} ${encodeURIComponent(key.albumArtist ?? "")} ${key.year}`;
 }
