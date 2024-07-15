@@ -35,8 +35,8 @@ export function AnimatedBootSplash() {
             <AnimatedTextEllipsis color={Colors.foreground50} />
           </Text>
           <Text className="text-center font-geistMonoLight text-xs text-foreground100">
-            This may take a while if you just installed the app or added a lot
-            of new tracks.
+            This may take a while if you just installed the app, added a lot of
+            new tracks, or the app is fixing some data.
           </Text>
         </Animated.View>
       )}
