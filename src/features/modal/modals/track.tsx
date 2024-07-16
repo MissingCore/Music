@@ -25,7 +25,7 @@ import { ModalBase } from "../components/modal-base";
 
 type Props = { id: string; origin?: MediaList | "current" };
 
-/** @description Modal used for tracks. */
+/** Modal used for tracks. */
 export function TrackModal({ id, origin }: Props) {
   const openModal = useSetAtom(modalAtom);
   const addTrackToQueue = useSetAtom(queuePushAtom);
@@ -122,8 +122,8 @@ export function TrackModal({ id, origin }: Props) {
 }
 
 /**
- * @description Renders a button to remove track from this playlist if
- *  certain conditions are met.
+ * Renders a button to remove track from this playlist if certain
+ * conditions are met.
  */
 function RemoveTrackFromPlaylist({ trackId }: { trackId: string }) {
   const pathname = usePathname();
@@ -168,7 +168,7 @@ function RemoveTrackFromPlaylist({ trackId }: { trackId: string }) {
   );
 }
 
-/** @description Renders a button to view the current playing playlist. */
+/** Renders a button to view the current playing playlist. */
 function ViewPlaylist() {
   const { reference } = useAtomValue(trackListAtom);
 

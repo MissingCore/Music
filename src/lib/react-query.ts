@@ -18,7 +18,7 @@ export const queryClient = new QueryClient({ defaultOptions: queryConfig });
     - https://stackoverflow.com/a/75788655
 */
 
-/** @description Prevent "double" submissions w/ `mutation.mutate()`. */
+/** Prevent "double" submissions w/ `mutation.mutate()`. */
 export function mutateGuard<TData, TError, TVariables, TContext>(
   mutation: UseMutationResult<TData, TError, TVariables, TContext>,
   ...args: Parameters<typeof mutation.mutate>
@@ -27,8 +27,8 @@ export function mutateGuard<TData, TError, TVariables, TContext>(
 }
 
 /**
- * @description Helper for invalidating all queries except the "Latest Release"
- *  query as that shouldn't ever change in the given app session.
+ * Helper for invalidating all queries except the "Latest Release" query
+ * as that shouldn't ever change in the given app session.
  */
 export function clearAllQueries(client = queryClient) {
   client.invalidateQueries({

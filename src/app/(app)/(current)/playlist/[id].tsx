@@ -15,7 +15,7 @@ import { StyledPressable } from "@/components/ui/pressable";
 import { Description } from "@/components/ui/text";
 import { TrackList } from "@/features/track/components/track-list";
 
-/** @description Screen for `/playlist/[id]` route. */
+/** Screen for `/playlist/[id]` route. */
 export default function CurrentPlaylistScreen() {
   const { id: _id } = useLocalSearchParams<{ id: string }>();
   const id = _id!;
@@ -62,7 +62,7 @@ type PlaylistContent = {
   | { id?: never; queryHook: typeof useFavoriteTracksForCurrentPage }
 );
 
-/** @description Basic structure of what we want to render on page. */
+/** Basic structure of what we want to render on page. */
 function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
   const { isPending, error, data } = queryHook(id ?? "");
 

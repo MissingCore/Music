@@ -30,7 +30,7 @@ type BaseFnArgs = { playlistName: string };
 // ---------------------------------------------------------------------
 type GETFnData = ExtractFnReturnType<typeof getPlaylist>;
 
-/** @description Returns specified playlist with its tracks. */
+/** Returns specified playlist with its tracks. */
 export const playlistOptions = (playlistName: string) =>
   queryOptions({
     queryKey: playlistKeys.detail(playlistName),
@@ -39,8 +39,8 @@ export const playlistOptions = (playlistName: string) =>
   });
 
 /**
- * @description Return data to render "MediaList" components on the
- *  `/playlist/[id]` route.
+ * Return data to render "MediaList" components on the `/playlist/[id]`
+ * route.
  */
 export const usePlaylistForCurrentPage = (playlistName: string) =>
   useQuery({
@@ -54,7 +54,7 @@ export const usePlaylistForCurrentPage = (playlistName: string) =>
     ),
   });
 
-/** @description Return the most-used data in playlist-related modals. */
+/** Return the most-used data in playlist-related modals. */
 export const usePlaylistForModal = (playlistName: string) =>
   useQuery({
     ...playlistOptions(playlistName),
@@ -108,7 +108,7 @@ export async function updatePlaylist({ playlistName, action }: UPDATEFnArgs) {
   return { playlistName, action, isFavorite: prevValue.isFavorite };
 }
 
-/** @description Update a specific field in a playlist. */
+/** Update a specific field in a playlist. */
 export const useUpdatePlaylist = (playlistName: string) => {
   const queryClient = useQueryClient();
   const resynchronizeFn = useSetAtom(resynchronizeOnAtom);
@@ -163,7 +163,7 @@ export async function deletePlaylist({ playlistName }: BaseFnArgs) {
   });
 }
 
-/** @description Delete specified playlist. */
+/** Delete specified playlist. */
 export const useDeletePlaylist = (playlistName: string) => {
   const queryClient = useQueryClient();
   const resynchronizeFn = useSetAtom(resynchronizeOnAtom);

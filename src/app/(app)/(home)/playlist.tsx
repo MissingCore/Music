@@ -12,7 +12,7 @@ import { modalAtom } from "@/features/modal/store";
 import { MediaCard, PlaceholderContent } from "@/components/media/card";
 import { StyledPressable } from "@/components/ui/pressable";
 
-/** @description Screen for `/playlist` route. */
+/** Screen for `/playlist` route. */
 export default function PlaylistScreen() {
   const { data } = usePlaylistsForMediaCard();
   const columnParams = useMemo(
@@ -44,7 +44,7 @@ export default function PlaylistScreen() {
   );
 }
 
-/** @description Opens up a modal to create a new playlist. */
+/** Opens up a modal to create a new playlist. */
 function CreatePlaylistButton({ colWidth }: { colWidth: number }) {
   const openModal = useSetAtom(modalAtom);
 

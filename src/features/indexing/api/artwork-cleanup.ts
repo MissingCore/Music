@@ -8,8 +8,8 @@ import { deleteFile } from "@/lib/file-system";
 import { Stopwatch } from "@/utils/debug";
 
 /**
- * @description Deletes any images saved by this app that aren't linked
- *  to an album, playlist, or track.
+ * Deletes any images saved by this app that aren't linked to an album,
+ * playlist, or track.
  */
 export async function cleanUpArtwork() {
   const stopwatch = new Stopwatch();

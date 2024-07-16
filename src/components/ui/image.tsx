@@ -16,7 +16,7 @@ export namespace CollageImage {
   }
 }
 
-/** @description Collage of up to 4 images. */
+/** Collage of up to 4 images. */
 export function CollageImage({ size, sources, className }: CollageImage.Props) {
   return (
     <View

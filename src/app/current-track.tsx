@@ -18,7 +18,7 @@ import {
 } from "@/features/playback/components/media-controls";
 import { Timeline } from "@/features/playback/components/timeline";
 
-/** @description Screen for `/current-track` route. */
+/** Screen for `/current-track` route. */
 export default function CurrentTrackScreen() {
   const { width } = useWindowDimensions();
   const trackData = useAtomValue(trackDataAtom);

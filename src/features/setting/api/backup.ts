@@ -216,7 +216,7 @@ export async function importBackup() {
   await FileSystem.deleteAsync(document.uri);
 }
 
-/** @description Create a `music_backup.json` file to be saved. */
+/** Create a `music_backup.json` file to be saved. */
 export const useExportBackup = () =>
   useMutation({
     mutationFn: exportBackup,
@@ -228,7 +228,7 @@ export const useExportBackup = () =>
     },
   });
 
-/** @description Load data from a `music_backup.json` file. */
+/** Load data from a `music_backup.json` file. */
 export const useImportBackup = () => {
   const queryClient = useQueryClient();
   const resynchronizeFn = useSetAtom(resynchronizeOnAtom);

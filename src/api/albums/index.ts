@@ -9,7 +9,7 @@ import type { ExtractFnReturnType } from "@/utils/types";
 
 type QueryFnData = ExtractFnReturnType<typeof getAlbums>;
 
-/** @description Returns all albums with its tracks. */
+/** Returns all albums with its tracks. */
 export const albumsOptions = () =>
   queryOptions({
     queryKey: albumKeys.all,
@@ -17,7 +17,7 @@ export const albumsOptions = () =>
     staleTime: Infinity,
   });
 
-/** @description Returns a list of `MediaCardContent` generated from albums. */
+/** Returns a list of `MediaCardContent` generated from albums. */
 export const useAlbumsForMediaCard = () =>
   useQuery({
     ...albumsOptions(),

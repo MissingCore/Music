@@ -1,4 +1,4 @@
-/** @description "Enums" for special playlists. */
+/** "Enums" for special playlists. */
 export const SpecialPlaylists = {
   favorites: "Favorite Tracks",
   tracks: "Tracks",
@@ -7,5 +7,5 @@ export const SpecialPlaylists = {
 export type SpecialPlaylistName =
   (typeof SpecialPlaylists)[keyof typeof SpecialPlaylists];
 
-/** @description A set of strings that we shouldn't allow to be used. */
+/** A set of strings that we shouldn't allow to be used. */
 export const ReservedNames = new Set<string>(Object.values(SpecialPlaylists));

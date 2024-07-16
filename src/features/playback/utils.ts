@@ -11,7 +11,7 @@ import type { TrackListSource } from "./types";
 
 import { shuffleArray } from "@/utils/object";
 
-/** @description See if 2 `TrackListSource` are the "same". */
+/** See if 2 `TrackListSource` are the "same". */
 export function areTrackReferencesEqual(
   source1: TrackListSource | undefined,
   source2: TrackListSource,
@@ -21,7 +21,7 @@ export function areTrackReferencesEqual(
   return keys.every((key) => source1[key] === source2[key]);
 }
 
-/** @description Get the list of track ids in a given track list. */
+/** Get the list of track ids in a given track list. */
 export async function getTrackList({ type, id }: TrackListSource) {
   let sortedTracks: Track[] = [];
 
@@ -47,7 +47,7 @@ export async function getTrackList({ type, id }: TrackListSource) {
   return formatAsTrackIdList(sortedTracks);
 }
 
-/** @description Return information about a refreshed track list when change occurs. */
+/** Return information about a refreshed track list when change occurs. */
 export async function refreshTrackListData(props: {
   listSource: TrackListSource;
   shuffle?: boolean;

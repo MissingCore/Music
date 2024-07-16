@@ -40,7 +40,7 @@ const LINKGROUPS = {
   },
 };
 
-/** @description Screen for `/setting` route. */
+/** Screen for `/setting` route. */
 export default function SettingScreen() {
   return (
     <AnimatedHeader title="SETTINGS">
@@ -62,7 +62,7 @@ export default function SettingScreen() {
   );
 }
 
-/** @description Indicates whether we're on the latest version of the app. */
+/** Indicates whether we're on the latest version of the app. */
 function UpdateChecker() {
   const { newUpdate, release } = useHasNewUpdate();
 

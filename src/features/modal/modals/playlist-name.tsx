@@ -19,7 +19,7 @@ import { ModalBase } from "../components/modal-base";
 
 type Props = { id?: string; scope: "new" | "update" };
 
-/** @description Modal used for creating or changing a playlist name. */
+/** Modal used for creating or changing a playlist name. */
 export function PlaylistNameModal({ id, scope }: Props) {
   const [playlistName, setPlaylistName] = useState(scope === "new" ? "" : id!);
   const { isPending, error, data } = usePlaylistsForModal();
@@ -103,7 +103,7 @@ export function PlaylistNameModal({ id, scope }: Props) {
 
 type RequirementProps = { satisfied: boolean; description: string };
 
-/** @description Displays a requirement. */
+/** Displays a requirement. */
 function Requirement({ satisfied, description }: RequirementProps) {
   return (
     <View className="flex-row items-center gap-1">

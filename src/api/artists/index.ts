@@ -9,7 +9,7 @@ import { getTrackCountStr } from "@/features/track/utils";
 
 type QueryFnData = ExtractFnReturnType<typeof getArtists>;
 
-/** @description Returns all artists with its tracks. */
+/** Returns all artists with its tracks. */
 export const artistsOptions = () =>
   queryOptions({
     queryKey: artistKeys.all,
@@ -18,8 +18,8 @@ export const artistsOptions = () =>
   });
 
 /**
- * @description Returns a list of artists grouped by their first character.
- *  To be used with `<FlashList />` restructured to work as a `<SectionList />`.
+ * Returns a list of artists grouped by their first character. To be used
+ * with `<FlashList />` restructured to work as a `<SectionList />`.
  */
 export const useArtistsForList = () =>
   useQuery({

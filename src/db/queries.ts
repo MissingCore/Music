@@ -9,12 +9,12 @@ import { deleteFile } from "@/lib/file-system";
 import type { SpecialPlaylistName } from "@/features/playback/constants";
 import { SpecialPlaylists } from "@/features/playback/constants";
 
-/** @description Create a new album, returning the created value. */
+/** Create a new album, returning the created value. */
 export async function createAlbum(entry: typeof albums.$inferInsert) {
   return (await db.insert(albums).values(entry).returning())[0]!;
 }
 
-/** @description Throws error if no album is found. */
+/** Throws error if no album is found. */
 export async function getAlbum(filters: SQL[]) {
   const album = await db.query.albums.findFirst({
     where: and(...filters),
@@ -31,7 +31,7 @@ export async function getAlbums(filters?: SQL[]) {
   });
 }
 
-/** @description Throws error if no artist is found. */
+/** Throws error if no artist is found. */
 export async function getArtist(filters: SQL[]) {
   const artist = await db.query.artists.findFirst({
     where: and(...filters),
@@ -48,7 +48,7 @@ export async function getArtists(filters?: SQL[]) {
   });
 }
 
-/** @description Throws error if no playlist is found. */
+/** Throws error if no playlist is found. */
 export async function getPlaylist(filters: SQL[]) {
   const playlist = await db.query.playlists.findFirst({
     where: and(...filters),
@@ -76,10 +76,7 @@ export async function getPlaylists(filters?: SQL[]) {
   return allPlaylists.map((data) => fixPlaylistJunction(data));
 }
 
-/**
- * @description Returns tracks in a `SpecialPlaylist` formatted as
- *  `PlaylistWithTracks`.
- */
+/** Returns tracks in a `SpecialPlaylist` formatted as `PlaylistWithTracks`. */
 export async function getSpecialPlaylist(name: SpecialPlaylistName) {
   const _tracks = await getTracks(
     SpecialPlaylists.favorites === name
@@ -92,7 +89,7 @@ export async function getSpecialPlaylist(name: SpecialPlaylistName) {
   };
 }
 
-/** @description Deletes a track along with its relation to any playlist. */
+/** Deletes a track along with its relation to any playlist. */
 export async function deleteTrack(trackId: string) {
   await db.transaction(async (tx) => {
     await tx
@@ -107,7 +104,7 @@ export async function deleteTrack(trackId: string) {
   });
 }
 
-/** @description Throws error if no track is found. */
+/** Throws error if no track is found. */
 export async function getTrack(filters: SQL[]) {
   const track = await db.query.tracks.findFirst({
     where: and(...filters),

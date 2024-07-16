@@ -8,7 +8,7 @@ import { Back } from "@/components/navigation/back";
 import { NavLink } from "@/components/navigation/nav-link";
 import { Description } from "@/components/ui/text";
 
-/** @description Screen for `/setting/third-party/[id]` route. */
+/** Screen for `/setting/third-party/[id]` route. */
 export default function PackageLicenseScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
 

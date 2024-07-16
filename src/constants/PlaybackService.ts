@@ -8,7 +8,7 @@ import {
   updateTrackPosAtom,
 } from "@/features/playback/api/actions";
 
-/** @description How we handle the actions in the media control notification. */
+/** How we handle the actions in the media control notification. */
 export async function PlaybackService() {
   const jotaiStore = getDefaultStore();
 

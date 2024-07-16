@@ -10,7 +10,7 @@ import { TrackModal } from "./modals/track";
 import { TrackToPlaylistModal } from "./modals/track-to-playlist";
 import { UpcomingTrackModal } from "./modals/upcoming-track";
 
-/** @description Wraps all the Bottom Sheet modals used. */
+/** Wraps all the Bottom Sheet modals used. */
 export function AppModals() {
   const selectedModal = useAtomValue(modalAtom);
 

@@ -13,33 +13,33 @@ import type { TrackListSource } from "../types";
 import { createAtomWithStorage } from "@/lib/jotai";
 
 const _playingMediaDefault = { id: undefined, listIndex: 0 };
-/** @description [🇫🇴🇷 🇮🇳🇹🇪🇷🇳🇦🇱 🇺🇸🇪 🇴🇳🇱🇾] */
+/** [🇫🇴🇷 🇮🇳🇹🇪🇷🇳🇦🇱 🇺🇸🇪 🇴🇳🇱🇾] */
 export const playingMediaAsyncAtom = createAtomWithStorage<{
   id: string | undefined;
   listIndex: number;
 }>("playing-media", _playingMediaDefault);
-/** @description Reference of the current playing track. */
+/** Reference of the current playing track. */
 export const playingMediaAtom = unwrap(
   playingMediaAsyncAtom,
   (prev) => prev ?? _playingMediaDefault,
 );
 
-/** @description Current track position in milliseconds. */
+/** Current track position in milliseconds. */
 export const positionMsAtom = atom(0);
 
 const _trackListDefault = { data: [], reference: undefined };
-/** @description [🇫🇴🇷 🇮🇳🇹🇪🇷🇳🇦🇱 🇺🇸🇪 🇴🇳🇱🇾] */
+/** [🇫🇴🇷 🇮🇳🇹🇪🇷🇳🇦🇱 🇺🇸🇪 🇴🇳🇱🇾] */
 export const trackListAsyncAtom = createAtomWithStorage<{
   data: string[];
   reference: TrackListSource | undefined;
 }>("track-list", _trackListDefault);
-/** @description List of track ids we'll play from. */
+/** List of track ids we'll play from. */
 export const trackListAtom = unwrap(
   trackListAsyncAtom,
   (prev) => prev ?? _trackListDefault,
 );
 
-/** @description Reset atoms describing the playing media. */
+/** Reset atoms describing the playing media. */
 export const resetPlayingInfoAtom = atom(null, async (_get, set) => {
   set(playingMediaAsyncAtom, RESET);
   set(positionMsAtom, 0);
@@ -48,7 +48,7 @@ export const resetPlayingInfoAtom = atom(null, async (_get, set) => {
   await TrackPlayer.reset();
 });
 
-/** @description [🇫🇴🇷 🇮🇳🇹🇪🇷🇳🇦🇱 🇺🇸🇪 🇴🇳🇱🇾] */
+/** [🇫🇴🇷 🇮🇳🇹🇪🇷🇳🇦🇱 🇺🇸🇪 🇴🇳🇱🇾] */
 export const trackDataAsyncAtom = atom(async (get) => {
   try {
     const { id } = await get(playingMediaAsyncAtom);
@@ -58,13 +58,13 @@ export const trackDataAsyncAtom = atom(async (get) => {
     return undefined;
   }
 });
-/** @description Information about the playing track. */
+/** Information about the playing track. */
 export const trackDataAtom = unwrap(
   trackDataAsyncAtom,
   (prev) => prev ?? undefined,
 );
 
-/** @description Loads track in when we open the app. */
+/** Loads track in when we open the app. */
 export const loadTrackAtom = atom(null, async (get) => {
   const soundRef = get(soundRefAtom);
   const trackStatus = await soundRef.getStatusAsync();

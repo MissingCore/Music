@@ -19,14 +19,14 @@ import { getPlayTime, getTrackCountStr } from "@/features/track/utils";
 import { isTrackWithAlbum } from "./narrowing";
 import { sortTracks } from "./sorting";
 
-/** @description General input type for data formatting. */
+/** General input type for data formatting. */
 type FnArgs =
   | { type: "artist"; data: ArtistWithTracks }
   | { type: "album"; data: AlbumWithTracks }
   | { type: "playlist"; data: PlaylistWithTracks };
 type FnArgsWithTrack = FnArgs | { type: "track"; data: TrackWithAlbum[] };
 
-/** @description Get the covers of the first 4 tracks. */
+/** Get the covers of the first 4 tracks. */
 export function getPlaylistCollage(data: TrackWithAlbum[]) {
   return data
     .map((data) => ({ name: data.name, artwork: getTrackCover(data) }))
@@ -35,20 +35,17 @@ export function getPlaylistCollage(data: TrackWithAlbum[]) {
     .map(({ artwork }) => artwork);
 }
 
-/** @description Get the cover of a playlist. */
+/** Get the cover of a playlist. */
 export function getPlaylistCover(data: PlaylistWithTracks) {
   return data.artwork ?? getPlaylistCollage(data.tracks);
 }
 
-/** @description Get the cover of a track with `album` field. */
+/** Get the cover of a track with `album` field. */
 export function getTrackCover(data: TrackWithAlbum) {
   return data.album?.artwork ?? data.artwork;
 }
 
-/**
- * @description Replace the "junction" field from the `Playlist` table
- *  with `tracks`.
- */
+/** Replace the "junction" field from the `Playlist` table with `tracks`. */
 export function fixPlaylistJunction(
   data: PlaylistWithJunction,
 ): PlaylistWithTracks {
@@ -56,7 +53,7 @@ export function fixPlaylistJunction(
   return { ...rest, tracks: tracksToPlaylists.map(({ track }) => track) };
 }
 
-/** @description Formats data to be used with `<MediaCard />`. */
+/** Formats data to be used with `<MediaCard />`. */
 export function formatForMediaCard({ type, data }: FnArgs): MediaCard.Content {
   const trackStr = getTrackCountStr(data.tracks.length);
   return {
@@ -79,7 +76,7 @@ export function formatForMediaCard({ type, data }: FnArgs): MediaCard.Content {
   } satisfies MediaCard.Content;
 }
 
-/** @description Formats tracks data to be used with `<Track />`. */
+/** Formats tracks data to be used with `<Track />`. */
 export function formatTracksForTrack({
   type,
   data,
@@ -107,7 +104,7 @@ export function formatTracksForTrack({
   });
 }
 
-/** @description Return shared fields used for data in `(current)` routes. */
+/** Return shared fields used for data in `(current)` routes. */
 export function formatForCurrentPages(args: FnArgs) {
   const { type, data } = args;
   const metadata = [
@@ -121,12 +118,12 @@ export function formatForCurrentPages(args: FnArgs) {
   return { name: data.name, metadata, tracks: formatTracksForTrack(args) };
 }
 
-/** @description Return an array of track ids. */
+/** Return an array of track ids. */
 export function formatAsTrackIdList(tracks: Track[]) {
   return tracks.map(({ id }) => id);
 }
 
-/** @description Format track data to be used with `TrackPlayer.load()`. */
+/** Format track data to be used with `TrackPlayer.load()`. */
 export function formatTrackforPlayer(track: TrackWithAlbum) {
   return {
     url: track.uri,
@@ -137,7 +134,7 @@ export function formatTrackforPlayer(track: TrackWithAlbum) {
   } satisfies TrackPlayerTrack;
 }
 
-/** @description Count the number of entries in a table. */
+/** Count the number of entries in a table. */
 export async function countFrom<TTable extends SQLiteTable>(table: TTable) {
   return (await db.select({ count: count() }).from(table))[0]?.count ?? 0;
 }

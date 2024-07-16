@@ -22,7 +22,7 @@ async function getArtistInfo(artistName: string) {
 
 type QueryFnData = ExtractFnReturnType<typeof getArtistInfo>;
 
-/** @description Returns specified artist with its tracks. */
+/** Returns specified artist with its tracks. */
 export const artistOptions = (artistName: string) =>
   queryOptions({
     queryKey: artistKeys.detail(artistName),
@@ -31,8 +31,8 @@ export const artistOptions = (artistName: string) =>
   });
 
 /**
- * @description Return data to render "MediaList" components on the
- *  `/artist/[id]` route.
+ * Return data to render "MediaList" components on the `/artist/[id]`
+ * route.
  */
 export const useArtistForCurrentPage = (artistName: string) =>
   useQuery({

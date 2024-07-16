@@ -23,7 +23,7 @@ import { ModalBase } from "../components/modal-base";
 
 const inPlaylistAtom = atom<string[]>([]);
 
-/** @description Modal used for adding or removing a track from a playlist. */
+/** Modal used for adding or removing a track from a playlist. */
 export function TrackToPlaylistModal({ id }: { id: string }) {
   return (
     <ModalBase
@@ -44,7 +44,7 @@ export function TrackToPlaylistModal({ id }: { id: string }) {
   );
 }
 
-/** @description Lists all the playlists. */
+/** Lists all the playlists. */
 function PlaylistList({ trackId }: { trackId: string }) {
   const { isPending, error, data: playlistData } = usePlaylistsForModal();
   const trackInPlaylists = useQuery(trackInPlaylistsOptions(trackId));
@@ -87,7 +87,7 @@ function PlaylistList({ trackId }: { trackId: string }) {
 
 type ModalFooterProps = BottomSheetFooterProps & { trackId: string };
 
-/** @description Contains buttons to close the modal or submit changes. */
+/** Contains buttons to close the modal or submit changes. */
 function ModalFooter({ trackId, ...props }: ModalFooterProps) {
   const inPlaylist = useAtomValue(inPlaylistAtom);
   const putTrackInPlaylistsFn = usePutTrackInPlaylists(trackId);

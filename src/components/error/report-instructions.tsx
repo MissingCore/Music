@@ -6,7 +6,7 @@ import { ExternalLink } from "../navigation/external-link";
 
 const ReportLink = `${GITHUB_LINK}/issues/new`;
 
-/** @description Instructions on how to report the issue displayed. */
+/** Instructions on how to report the issue displayed. */
 export function ReportInstructions({
   encounterMessage,
 }: {

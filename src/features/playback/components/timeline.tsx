@@ -10,8 +10,8 @@ import { Colors } from "@/constants/Styles";
 import { getTrackDuration } from "@/features/track/utils";
 
 /**
- * @description Allows seeking on the current track & displays the
- *  current track position.
+ * Allows seeking on the current track & displays the current track
+ * position.
  */
 export function Timeline({ duration }: { duration: number }) {
   const updateTrackPos = useSetAtom(updateTrackPosAtom);

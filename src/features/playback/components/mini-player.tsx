@@ -9,8 +9,8 @@ import { TextStack } from "@/components/ui/text";
 import { NextButton, PlayToggleButton, PreviousButton } from "./media-controls";
 
 /**
- * @description Displays a player that appears at the bottom of the
- *  screen if we have a song loaded.
+ * Displays a player that appears at the bottom of the screen if we have
+ * a song loaded.
  */
 export function MiniPlayer() {
   const trackData = useAtomValue(trackDataAtom);

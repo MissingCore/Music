@@ -49,7 +49,7 @@ export namespace Button {
     };
 }
 
-/** @description Pill button with icon support. */
+/** Pill button with icon support. */
 export function Button({
   interaction = "button",
   href,

@@ -4,7 +4,7 @@ import { compareAsc } from "@/utils/string";
 import type { Media } from "@/components/media/types";
 import { isTrackWithAlbum } from "./narrowing";
 
-/** @description Sort tracks based on algorithm for the given media. */
+/** Sort tracks based on algorithm for the given media. */
 export function sortTracks({
   type,
   tracks,

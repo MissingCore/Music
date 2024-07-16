@@ -1,4 +1,4 @@
-/** @description Query keys for "playlist" related queries. */
+/** Query keys for "playlist" related queries. */
 export const playlistKeys = {
   all: [{ entity: "playlists" }] as const,
   details: () => [{ ...playlistKeys.all[0], scope: "detail" }] as const,

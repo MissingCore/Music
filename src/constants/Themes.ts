@@ -2,7 +2,7 @@ import type { Theme } from "@react-navigation/native";
 
 import * as Styles from "./Styles";
 
-/** @description Theme to style React Navigation. */
+/** Theme to style React Navigation. */
 export const NavigationTheme: Theme = {
   dark: true,
   colors: {
@@ -15,7 +15,7 @@ export const NavigationTheme: Theme = {
   },
 };
 
-/** @description Theme used in Tailwind configuration. */
+/** Theme used in Tailwind configuration. */
 export const TailwindTheme = {
   borderRadius: pixelfyUnit(Styles.BorderRadius),
   colors: Styles.Colors,
@@ -23,7 +23,7 @@ export const TailwindTheme = {
   fontSize: pixelfyUnit(Styles.FontSize),
 } as const;
 
-/** @description Append `px` to the end of the number. */
+/** Append `px` to the end of the number. */
 function pixelfyUnit<T extends Record<string, number>>(
   theme: T,
 ): { [TKey in keyof T]: `${T[TKey]}px` } {

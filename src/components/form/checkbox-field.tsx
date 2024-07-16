@@ -10,7 +10,7 @@ export namespace CheckboxField {
   }
 }
 
-/** @description Controlled checkbox field built from `<ActionButton />`. */
+/** Controlled checkbox field built from `<ActionButton />`. */
 export function CheckboxField({ checked, ...props }: CheckboxField.Props) {
   return (
     <ActionButton

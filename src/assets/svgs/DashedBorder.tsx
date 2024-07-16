@@ -5,7 +5,7 @@ import { Colors } from "@/constants/Styles";
 
 const WrappedSvg = cssInterop(Svg, { className: "style" });
 
-/** @description Custom dashed border with longer dashes & spacing. Has a 16px radius. */
+/** Custom dashed border with longer dashes & spacing. Has a 16px radius. */
 export function DashedBorder({
   size,
   color = Colors.foreground50,

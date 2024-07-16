@@ -1,6 +1,6 @@
 /**
- * @description String representing the number of days, hours, and minutes
- *  from seconds.
+ * String representing the number of days, hours, and minutes from
+ * seconds.
  */
 export function getPlayTime(duration: number) {
   const totalSecs = Math.floor(duration);
@@ -18,12 +18,12 @@ export function getPlayTime(duration: number) {
   return timeStr.join(" ");
 }
 
-/** @description Display number of tracks string with correct plurality. */
+/** Display number of tracks string with correct plurality. */
 export function getTrackCountStr(trackCount: number) {
   return `${trackCount} Track${trackCount !== 1 ? "s" : ""}`;
 }
 
-/** @description Convert seconds in `hh:mm:ss` format. */
+/** Convert seconds in `hh:mm:ss` format. */
 export function getTrackDuration(duration: number) {
   let timeStr = new Date(Math.floor(duration) * 1000)
     .toISOString()

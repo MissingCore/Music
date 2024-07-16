@@ -19,8 +19,8 @@ export namespace MediaCard {
 }
 
 /**
- * @description Link containing information about a media and takes the
- *  user to that media's page.
+ * Link containing information about a media and takes the user to that
+ * media's page.
  */
 export function MediaCard({ type, size, source, ...props }: MediaCard.Props) {
   return (
@@ -40,8 +40,8 @@ export function MediaCard({ type, size, source, ...props }: MediaCard.Props) {
 }
 
 /**
- * @description Placeholder content — useful in `<FlatList />` if we want
- *  to do something special for the first item.
+ * Placeholder content — useful in `<FlatList />` if we want to do
+ * something special for the first item.
  */
 export const PlaceholderContent: MediaCard.Content = {
   href: "invalid-href",

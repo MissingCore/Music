@@ -15,9 +15,9 @@ type ResynchronizeArgs =
   | { action: "update"; data: TrackListSource | null };
 
 /**
- * @description Helper to synchronize Jotai state with React Query state.
- *  This synchronzies with the track list which we play from and "Recent
- *  Tracks" feature.
+ * Helper to synchronize Jotai state with React Query state. This
+ * synchronzies with the track list which we play from and "Recent Tracks"
+ * feature.
  */
 export const resynchronizeOnAtom = atom(
   null,

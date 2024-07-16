@@ -22,9 +22,9 @@ export namespace Button {
 }
 
 /**
- * @description Button modeled after iOS "Activity views" buttons. Closes
- *  the modal it's in when pressed (unless `dontCloseOnPress` is provided).
- *  Must be used inside a `<BottomSheet />`.
+ * Button modeled after iOS "Activity views" buttons. Closes the modal
+ * it's in when pressed (unless `dontCloseOnPress` is provided). Must be
+ * used inside a `<BottomSheet />`.
  */
 export function Button({
   interaction = "button",

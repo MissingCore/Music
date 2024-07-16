@@ -37,7 +37,7 @@ export async function toggleFavorite({ type, id }: BaseFnArgs) {
 
 type TData = { name: string; id?: string; isFavorite: boolean };
 
-/** @description Toggle the favorite status of supported media. */
+/** Toggle the favorite status of supported media. */
 export const useToggleFavorite = (args: BaseFnArgs) => {
   const queryClient = useQueryClient();
   const resynchronizeFn = useSetAtom(resynchronizeOnAtom);

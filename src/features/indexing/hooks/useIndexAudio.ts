@@ -14,8 +14,8 @@ import { createImageDirectory } from "@/lib/file-system";
 import { Stopwatch } from "@/utils/debug";
 
 /**
- * @description Reads our music library on load and index all supported files
- *  in the SQLite database.
+ * Reads our music library on load and index all supported files in the
+ * SQLite database.
  */
 export function useIndexAudio() {
   const [permissionResponse, requestPermission] = MediaLibrary.usePermissions({

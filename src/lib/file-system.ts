@@ -5,7 +5,7 @@ import * as ImagePicker from "expo-image-picker";
 
 import type { Maybe } from "@/utils/types";
 
-/** @description Creates "image" directory if it doesn't already exist. */
+/** Creates "image" directory if it doesn't already exist. */
 export async function createImageDirectory() {
   const imgDir = FileSystem.documentDirectory + "images";
   const dir = await FileSystem.getInfoAsync(imgDir);
@@ -14,15 +14,14 @@ export async function createImageDirectory() {
   }
 }
 
-/** @description Helper to delete a file if it's defined. */
+/** Helper to delete a file if it's defined. */
 export async function deleteFile(uri: Maybe<string>) {
   if (uri) await FileSystem.deleteAsync(uri);
 }
 
 /**
- * @description Helper to open the image picker, allowing the user to pick
- *  1 image, then saves that image to our file system, returning the
- *  file uri.
+ * Helper to open the image picker, allowing the user to pick 1 image,
+ * then saves that image to our file system, returning the file uri.
  */
 export async function pickImage() {
   // No permissions request is needed for launching the image library.
@@ -39,7 +38,7 @@ export async function pickImage() {
   return await saveBase64Img(`data:${mimeType};base64,${base64}`);
 }
 
-/** @description Helper to save images to device. */
+/** Helper to save images to device. */
 export async function saveBase64Img(base64Img: string) {
   const { uri: webpUri } = await manipulateAsync(base64Img, [], {
     compress: 0.85, // Preserve 85% of original image quality.

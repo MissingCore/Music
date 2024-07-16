@@ -5,7 +5,7 @@ import { LoadingIndicator } from "@/components/ui/loading";
 import { Description } from "@/components/ui/text";
 import { TrackList } from "@/features/track/components/track-list";
 
-/** @description Screen for `/track` route. */
+/** Screen for `/track` route. */
 export default function TrackScreen() {
   const { isPending, data } = useTracksForTrackCard();
 

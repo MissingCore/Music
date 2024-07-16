@@ -3,7 +3,7 @@ import { useBottomSheet } from "@gorhom/bottom-sheet";
 import { cn } from "@/lib/style";
 import { Button } from "@/components/form/button";
 
-/** @description A form button used in a modal. */
+/** A form button used in a modal. */
 export function ModalFormButton({
   onPress,
   wrapperClassName,

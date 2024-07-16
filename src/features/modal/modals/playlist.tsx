@@ -12,7 +12,7 @@ import { Heading } from "@/components/ui/text";
 import { Button } from "../components/button";
 import { ModalBase } from "../components/modal-base";
 
-/** @description Modal used for playlists. */
+/** Modal used for playlists. */
 export function PlaylistModal({ id }: { id: string }) {
   const openModal = useSetAtom(modalAtom);
   const { isPending, error, data } = usePlaylistForModal(id);

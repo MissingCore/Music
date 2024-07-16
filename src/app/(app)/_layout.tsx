@@ -8,7 +8,7 @@ import { CustomHeader } from "@/components/navigation/header";
 import { StyledPressable } from "@/components/ui/pressable";
 import { MiniPlayer } from "@/features/playback/components/mini-player";
 
-/** @description Contains content that doesn't take up the full-screen. */
+/** Contains content that doesn't take up the full-screen. */
 export default function MainLayout() {
   const { newUpdate } = useHasNewUpdate();
 

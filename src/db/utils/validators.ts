@@ -1,8 +1,8 @@
 import { ReservedNames } from "@/features/playback/constants";
 
 /**
- * @description Sanitize playlist name and make sure it meets the minimum
- *  requirements. Throws error on failure.
+ * Sanitize playlist name and make sure it meets the minimum requirements.
+ * Throws error on failure.
  */
 export function sanitizedPlaylistName(name: string) {
   const sanitized = name.trim();

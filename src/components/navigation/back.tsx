@@ -5,7 +5,7 @@ import { ArrowRight } from "@/assets/svgs/ArrowRight";
 
 import { StyledPressable } from "../ui/pressable";
 
-/** @description Navigate back when rendered. */
+/** Navigate back when rendered. */
 export function Back() {
   useEffect(() => {
     router.back();
@@ -14,7 +14,7 @@ export function Back() {
   return null;
 }
 
-/** @description Custom back button to replace the one used by React Navigation. */
+/** Custom back button to replace the one used by React Navigation. */
 export function BackButton(props: { className?: string }) {
   return (
     <StyledPressable

@@ -28,7 +28,7 @@ export async function getFavoriteLists() {
 
 type FavoriteTracksFnData = ExtractFnReturnType<typeof getSpecialPlaylist>;
 
-/** @description Returns an object containing favorited albums & playlists. */
+/** Returns an object containing favorited albums & playlists. */
 export const favoriteListsOptions = () =>
   queryOptions({
     queryKey: favoriteKeys.lists(),
@@ -36,7 +36,7 @@ export const favoriteListsOptions = () =>
     staleTime: Infinity,
   });
 
-/** @description Returns a list of favorited tracks. */
+/** Returns a list of favorited tracks. */
 export const favoriteTracksOptions = () =>
   queryOptions({
     queryKey: favoriteKeys.tracks(),
@@ -45,8 +45,8 @@ export const favoriteTracksOptions = () =>
   });
 
 /**
- * @description Return a list of `MediaCardContent` generated from
- *  favorited albums & playlists.
+ * Return a list of `MediaCardContent` generated from favorited albums &
+ * playlists.
  */
 export const useFavoriteListsForMediaCard = () =>
   useQuery({
@@ -65,7 +65,7 @@ export const useFavoriteListsForMediaCard = () =>
     ),
   });
 
-/** @description Returns number of favorited tracks. */
+/** Returns number of favorited tracks. */
 export const useFavoriteTracksCount = () =>
   useQuery({
     ...favoriteTracksOptions(),
@@ -73,8 +73,8 @@ export const useFavoriteTracksCount = () =>
   });
 
 /**
- * @description Return data to render "MediaList" components on the
- *  `/playlist/${SpecialPlaylists.favorites}` route.
+ * Return data to render "MediaList" components on the
+ * `/playlist/${SpecialPlaylists.favorites}` route.
  */
 export const useFavoriteTracksForCurrentPage = () =>
   useQuery({

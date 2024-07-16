@@ -1,4 +1,4 @@
-/** @description Abbreviate size in bytes. */
+/** Abbreviate size in bytes. */
 export function abbreviateSize(size: number) {
   if (size >= 1e9) {
     return `${(size / 1e9).toFixed(2)} GB`;

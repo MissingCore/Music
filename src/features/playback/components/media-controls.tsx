@@ -20,22 +20,22 @@ import { cn } from "@/lib/style";
 import { StyledPressable } from "@/components/ui/pressable";
 
 /**
- * @description Toggles whether we'll keep playing after we reach the
- *  end of the tracks list.
+ * Toggles whether we'll keep playing after we reach the end of the tracks
+ * list.
  */
 export function RepeatButton({ size = 24 }) {
   return <MediaToggleButton type="repeat" size={size} atom={repeatAtom} />;
 }
 
 /**
- * @description Toggles whether the next track will be a random unplayed
- *  track in the given tracks list.
+ * Toggles whether the next track will be a random unplayed track in the
+ * given tracks list.
  */
 export function ShuffleButton({ size = 24 }) {
   return <MediaToggleButton type="shuffle" size={size} atom={shuffleAtom} />;
 }
 
-/** @description Reusable toggleable media control button. */
+/** Reusable toggleable media control button. */
 function MediaToggleButton(props: {
   type: "repeat" | "shuffle";
   atom: typeof repeatAtom;
@@ -58,9 +58,9 @@ function MediaToggleButton(props: {
 }
 
 /**
- * @description For pages where we want to link "toggle" behavior to the
- *  content of the page (ie: show play button if we're not playing a
- *  track from this track list).
+ * For pages where we want to link "toggle" behavior to the content of
+ * the page (ie: show play button if we're not playing a track from this
+ * track list).
  */
 export function PlayButton({
   size = 24,
@@ -91,7 +91,7 @@ export function PlayButton({
 
 type PlayToggleButtonProps = { size?: number; className?: string };
 
-/** @description Toggles whether we're playing or not. */
+/** Toggles whether we're playing or not. */
 export function PlayToggleButton({
   size = 24,
   className,
@@ -113,7 +113,7 @@ export function PlayToggleButton({
   );
 }
 
-/** @description Play the next track. */
+/** Play the next track. */
 export function NextButton({ size = 24 }) {
   const nextTrackFn = useSetAtom(nextAtom);
   return (
@@ -127,7 +127,7 @@ export function NextButton({ size = 24 }) {
   );
 }
 
-/** @description Play the previous track. */
+/** Play the previous track. */
 export function PreviousButton({ size = 24 }) {
   const prevTrackFn = useSetAtom(prevAtom);
   return (

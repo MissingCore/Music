@@ -6,7 +6,7 @@ import { Colors } from "@/constants/Styles";
 
 const WrappedSvg = cssInterop(Svg, { className: "style" });
 
-/** @description Thinner & sharp heroicons "arrow-right" icon. */
+/** Thinner & sharp heroicons "arrow-right" icon. */
 export function ArrowRight({
   size,
   color = Colors.foreground50,

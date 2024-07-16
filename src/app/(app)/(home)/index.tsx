@@ -18,7 +18,7 @@ import { ScrollRow } from "@/components/ui/container";
 import { Description, Heading } from "@/components/ui/text";
 import { SpecialPlaylists } from "@/features/playback/constants";
 
-/** @description Detect if we're near the end of a `<ScrollView />`. */
+/** Detect if we're near the end of a `<ScrollView />`. */
 const isCloseToBottom = ({
   layoutMeasurement,
   contentOffset,
@@ -31,14 +31,14 @@ const isCloseToBottom = ({
   );
 };
 
-/** @description Screen for `/` route. */
+/** Screen for `/` route. */
 export default function HomeScreen() {
   const scrollViewRef = useRef<ScrollView>(null);
   const [endOfScrollView, setEndOfScrollView] = useState(false);
 
   /**
-   * @description Fix scroll position if we're at the end of the `<ScrollView />`
-   *  and we removed all items at the end.
+   * Fix scroll position if we're at the end of the `<ScrollView />` and
+   * we removed all items at the end.
    */
   const adjustScrollPosition = useCallback(() => {
     if (endOfScrollView) scrollViewRef.current?.scrollToEnd();
@@ -79,7 +79,7 @@ export default function HomeScreen() {
   );
 }
 
-/** @description An array of `<MediaCards />` of recently played media. */
+/** An array of `<MediaCards />` of recently played media. */
 function RecentlyPlayed({ colWidth }: { colWidth: number }) {
   const recentlyPlayedData = useAtomValue(recentlyPlayedDataAtom);
 
@@ -95,8 +95,8 @@ function RecentlyPlayed({ colWidth }: { colWidth: number }) {
 }
 
 /**
- * @description Lists out albums or playlists we've favorited, and a
- *  special playlist containing all our favorited tracks.
+ * Lists out albums or playlists we've favorited, and a special playlist
+ * containing all our favorited tracks.
  */
 function FavoriteListSection({
   fixScrollPosition,
@@ -136,8 +136,8 @@ function FavoriteListSection({
 }
 
 /**
- * @description A button displaying the number of favorite tracks & takes
- *  the user to a special "Favorite Tracks" playlist.
+ * A button displaying the number of favorite tracks & takes the user to
+ * a special "Favorite Tracks" playlist.
  */
 function FavoriteTracks({ colWidth }: { colWidth: number }) {
   const { isPending, error, data } = useFavoriteTracksCount();

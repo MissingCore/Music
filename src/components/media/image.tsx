@@ -21,7 +21,7 @@ export namespace MediaImage {
   }
 }
 
-/** @description Image representing some media. */
+/** Image representing some media. */
 export function MediaImage({
   type,
   size,

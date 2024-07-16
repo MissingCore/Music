@@ -13,7 +13,7 @@ import { queueRemoveItemsAtom } from "@/features/playback/api/queue";
 
 import { clearAllQueries } from "@/lib/react-query";
 
-/** @description Clean up any unlinked content in the database. */
+/** Clean up any unlinked content in the database. */
 export async function cleanUpDb(usedTrackIds: Set<string>) {
   const deletedTracksCount = await removeUnlinkedTracks(usedTrackIds);
   await removeUnlinkedAlbums();
@@ -23,8 +23,8 @@ export async function cleanUpDb(usedTrackIds: Set<string>) {
 }
 
 /**
- * @description Remove from the database any tracks that we've haven't
- *  found through `expo-media-library`.
+ * Remove from the database any tracks that we've haven't found through
+ * `expo-media-library`.
  */
 export async function removeUnlinkedTracks(foundTracks: Set<string>) {
   // Get the ids of the tracks we can delete.
@@ -51,8 +51,8 @@ export async function removeUnlinkedTracks(foundTracks: Set<string>) {
 }
 
 /**
- * @description Ensure we don't have any reference to the deleted track in
- *  the playback store.
+ * Ensure we don't have any reference to the deleted track in the playback
+ * store.
  */
 export async function revalidatePlaybackStore(removedTracks: string[]) {
   const jotaiStore = getDefaultStore();
@@ -65,7 +65,7 @@ export async function revalidatePlaybackStore(removedTracks: string[]) {
   jotaiStore.set(queueRemoveItemsAtom, removedTracks);
 }
 
-/** @description Remove from the database any albums that have no tracks. */
+/** Remove from the database any albums that have no tracks. */
 export async function removeUnlinkedAlbums() {
   const allAlbums = await db.query.albums.findMany({
     columns: { id: true },
@@ -78,7 +78,7 @@ export async function removeUnlinkedAlbums() {
   );
 }
 
-/** @description Remove from the database any artists that have no tracks. */
+/** Remove from the database any artists that have no tracks or albums. */
 export async function removeUnlinkedArtists() {
   const allArtists = await db.query.artists.findMany({
     with: {

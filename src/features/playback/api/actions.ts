@@ -20,17 +20,17 @@ import type { TrackListSource } from "../types";
 import { areTrackReferencesEqual, refreshTrackListData } from "../utils";
 
 /**
- * @description Id of track we want to play — will be used to help debounce
- *  the track that'll be played after we stop clicking the next/prev button.
+ * Id of track we want to play — will be used to help debounce the track
+ * that'll be played after we stop clicking the next/prev button.
  */
 const queuedTrackAtom = atom("");
 
-/** @description Whether a track is currently playing. */
+/** Whether a track is currently playing. */
 export const isPlayingAtom = atom(false);
 
 type TPlayFn = { id?: string; source: TrackListSource };
 
-/** @description Play a track from a given source. */
+/** Play a track from a given source. */
 export const playAtom = atom(
   null,
   async (get, set, { id, source }: TPlayFn) => {
@@ -91,7 +91,7 @@ export const playAtom = atom(
 
 type TPlayTrackOpts = { action: "new" | "paused" };
 
-/** @description Internal function for playing the current song. */
+/** Internal function for playing the current song. */
 const playTrackAtom = atom(null, async (get, set, opts?: TPlayTrackOpts) => {
   const soundRef = get(soundRefAtom);
   const shouldPlay = opts?.action !== "paused";
@@ -167,14 +167,14 @@ const playTrackAtom = atom(null, async (get, set, opts?: TPlayTrackOpts) => {
   set(isPlayingAtom, shouldPlay);
 });
 
-/** @description Method for pausing the current playing track. */
+/** Method for pausing the current playing track. */
 export const pauseAtom = atom(null, async (get, set) => {
   await get(soundRefAtom).pauseAsync();
   await TrackPlayer.pause();
   set(isPlayingAtom, false);
 });
 
-/** @description Updates the current track position to the value in `trackPositionMsAtom`. */
+/** Updates the current track position to the value in `trackPositionMsAtom`. */
 export const updateTrackPosAtom = atom(
   null,
   async (get, _set, newPositionSec?: number) => {
@@ -188,13 +188,13 @@ export const updateTrackPosAtom = atom(
   },
 );
 
-/** @description Toggle `isPlaying`, playing or pausing the current track. */
+/** Toggle `isPlaying`, playing or pausing the current track. */
 export const playPauseToggleAtom = atom(null, async (get, set) => {
   if (get(isPlayingAtom)) set(pauseAtom);
   else set(playTrackAtom);
 });
 
-/** @description Method for playing the next track. */
+/** Method for playing the next track. */
 export const nextAtom = atom(null, async (get, set) => {
   const queueList = await get(queueListAsyncAtom);
   const { id, listIndex } = await get(playingMediaAsyncAtom);
@@ -219,7 +219,7 @@ export const nextAtom = atom(null, async (get, set) => {
   });
 });
 
-/** @description Method for playing the previous track. */
+/** Method for playing the previous track. */
 export const prevAtom = atom(null, async (get, set) => {
   const { listIndex } = await get(playingMediaAsyncAtom);
   const { data: trackList } = await get(trackListAsyncAtom);

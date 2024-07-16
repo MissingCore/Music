@@ -16,7 +16,7 @@ import { Heading } from "../ui/text";
 
 type AnimatedHeaderProps = { title: string; children: React.ReactNode };
 
-/** @description Have a title animate into the header bar on scroll. */
+/** Have a title animate into the header bar on scroll. */
 export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
   const insets = useSafeAreaInsets();
   // Window height excludes any Android UI (status bar, gesture bar).

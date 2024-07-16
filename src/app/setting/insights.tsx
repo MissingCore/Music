@@ -15,7 +15,7 @@ import { Description, Heading } from "@/components/ui/text";
 import { abbreviateSize } from "@/features/setting/utils";
 import { getPlayTime } from "@/features/track/utils";
 
-/** @description Screen for `/setting/insights` route. */
+/** Screen for `/setting/insights` route. */
 export default function InsightsScreen() {
   return (
     <AnimatedHeader title="INSIGHTS">
@@ -31,7 +31,7 @@ export default function InsightsScreen() {
   );
 }
 
-/** @description Displays what's stored on this device. */
+/** Displays what's stored on this device. */
 function UserDataWidget() {
   const { isPending, error, data } = useUserDataInfo();
   if (isPending || error) return null;
@@ -82,7 +82,7 @@ function UserDataWidget() {
   );
 }
 
-/** @description Display what's tracked by the database. */
+/** Display what's tracked by the database. */
 function StatisticsWidget() {
   const { isPending, error, data } = useStatisticsInfo();
   if (isPending || error) return null;
@@ -107,7 +107,7 @@ function StatisticsWidget() {
   );
 }
 
-/** @description Display whether all images have been saved. */
+/** Display whether all images have been saved. */
 function AllImagesSavedWidget() {
   const { isPending, error, data: allSaved } = useImageSaveStatus();
   if (isPending || error) return null;
@@ -130,7 +130,7 @@ type ValueRowProps = {
   className?: string;
 };
 
-/** @description Displays a label & value in a row. */
+/** Displays a label & value in a row. */
 function ValueRow({ label, value, barColor, className }: ValueRowProps) {
   return (
     <View className={cn("mb-2 flex-row justify-between gap-2", className)}>

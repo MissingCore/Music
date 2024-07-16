@@ -8,7 +8,7 @@ import { saveBase64Img } from "@/lib/file-system";
 import { clearAllQueries } from "@/lib/react-query";
 import { Stopwatch } from "@/utils/debug";
 
-/** @description Make sure we run the logic to save artwork once. */
+/** Make sure we run the logic to save artwork once. */
 export const saveArtworkOnce = (() => {
   let executed = false;
   return async () => {
@@ -19,7 +19,7 @@ export const saveArtworkOnce = (() => {
   };
 })();
 
-/** @description Save artwork for albums & tracks in an optimized manner. */
+/** Save artwork for albums & tracks in an optimized manner. */
 export async function saveArtwork() {
   const stopwatch = new Stopwatch();
 

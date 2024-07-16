@@ -21,8 +21,8 @@ type HeaderFnSignature = HeaderOption[keyof HeaderOption];
 type NativeStackHeaderProps = Parameters<HeaderFnSignature>[0];
 
 /**
- * @description Override React Navigation's default header to account for
- *  tap-target size.
+ * Override React Navigation's default header to account for tap-target
+ * size.
  */
 export function CustomHeader(props: NativeStackHeaderProps) {
   return (
@@ -40,7 +40,7 @@ export function CustomHeader(props: NativeStackHeaderProps) {
   );
 }
 
-/** @description Custom navigation header for `/current-track` route. */
+/** Custom navigation header for `/current-track` route. */
 export function CurrentTrackHeader(props: NativeStackHeaderProps) {
   return (
     <ReusableHeaderBase
@@ -64,8 +64,8 @@ namespace ReusableHeaderBase {
 }
 
 /**
- * @description Override React Navigation's default header to account for
- *  tap-target size. Requires a wrapper for the title.
+ * Override React Navigation's default header to account for tap-target
+ * size. Requires a wrapper for the title.
  */
 export function ReusableHeaderBase({
   route,

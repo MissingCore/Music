@@ -9,7 +9,7 @@ import type { ExtractFnReturnType } from "@/utils/types";
 
 type QueryFnData = ExtractFnReturnType<typeof getTracks>;
 
-/** @description Returns all tracks. */
+/** Returns all tracks. */
 export const tracksOptions = () =>
   queryOptions({
     queryKey: trackKeys.all,
@@ -17,7 +17,7 @@ export const tracksOptions = () =>
     staleTime: Infinity,
   });
 
-/** @description Returns a list of `TrackCardContent` generated from tracks. */
+/** Returns a list of `TrackCardContent` generated from tracks. */
 export const useTracksForTrackCard = () =>
   useQuery({
     ...tracksOptions(),

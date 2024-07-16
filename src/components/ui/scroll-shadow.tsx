@@ -3,7 +3,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
 
-/** @description Add simple scrollshadows to scrollable content. */
+/** Add simple scrollshadows to scrollable content. */
 export function ScrollShadow(props: {
   size: number;
   color?: string;

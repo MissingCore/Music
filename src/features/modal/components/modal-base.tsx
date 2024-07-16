@@ -19,7 +19,7 @@ const BottomSheet = cssInterop(_BottomSheet, {
   handleIndicatorClassName: "handleIndicatorStyle",
 });
 
-/** @description Bottom sheet w/ 2 different designs based on the value of `detached`. */
+/** Bottom sheet w/ 2 different designs based on the value of `detached`. */
 export function ModalBase({
   detached,
   children,
@@ -62,14 +62,14 @@ export function ModalBase({
   );
 }
 
-/** @description Our version of `<BottomSheetBackdrop />`. */
+/** Our version of `<BottomSheetBackdrop />`. */
 function Backdrop(props: BottomSheetBackdropProps) {
   return (
     <BottomSheetBackdrop {...props} appearsOnIndex={0} disappearsOnIndex={-1} />
   );
 }
 
-/** @description Custom background component for bottom sheet. */
+/** Custom background component for bottom sheet. */
 function Background(props: BottomSheetBackgroundProps) {
   return <View {...props} className="rounded-xl" />;
 }

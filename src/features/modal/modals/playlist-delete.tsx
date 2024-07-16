@@ -8,7 +8,7 @@ import { Heading } from "@/components/ui/text";
 import { ModalFormButton } from "../components/form-button";
 import { ModalBase } from "../components/modal-base";
 
-/** @description Modal used for deleting playlists. */
+/** Modal used for deleting playlists. */
 export function PlaylistDeleteModal({ id }: { id: string }) {
   const deletePlaylistFn = useDeletePlaylist(id);
 

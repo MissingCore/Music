@@ -12,7 +12,7 @@ export namespace StyledPressable {
   };
 }
 
-/** @description Pre-styled `<Pressable />` with `android_ripple`. */
+/** Pre-styled `<Pressable />` with `android_ripple`. */
 // eslint-disable-next-line @typescript-eslint/no-redeclare, import/export
 export const StyledPressable = forwardRef<View, StyledPressable.Props>(
   function StyledPressable(

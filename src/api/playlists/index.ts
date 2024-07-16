@@ -22,7 +22,7 @@ type BaseFnArgs = { playlistName: string };
 // ---------------------------------------------------------------------
 type GETFnData = ExtractFnReturnType<typeof getPlaylists>;
 
-/** @description Returns all playlists with its tracks. */
+/** Returns all playlists with its tracks. */
 export const playlistsOptions = () =>
   queryOptions({
     queryKey: playlistKeys.all,
@@ -30,7 +30,7 @@ export const playlistsOptions = () =>
     staleTime: Infinity,
   });
 
-/** @description Returns a list of `MediaCardContent` generated from playlists. */
+/** Returns a list of `MediaCardContent` generated from playlists. */
 export const usePlaylistsForMediaCard = () =>
   useQuery({
     ...playlistsOptions(),
@@ -45,7 +45,7 @@ export const usePlaylistsForMediaCard = () =>
     ),
   });
 
-/** @description Return the most-used data in playlist-related modals. */
+/** Return the most-used data in playlist-related modals. */
 export const usePlaylistsForModal = () =>
   useQuery({
     ...playlistsOptions(),
@@ -68,7 +68,7 @@ export async function createPlaylist({ playlistName }: BaseFnArgs) {
     .onConflictDoNothing();
 }
 
-/** @description Create a new playlist entry. */
+/** Create a new playlist entry. */
 export const useCreatePlaylist = () => {
   const queryClient = useQueryClient();
 

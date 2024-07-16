@@ -18,26 +18,26 @@ import type { TrackListSource } from "../types";
 import { createAtomWithStorage } from "@/lib/jotai";
 import { isFulfilled } from "@/utils/promise";
 
-/** @description [🇫🇴🇷 🇮🇳🇹🇪🇷🇳🇦🇱 🇺🇸🇪 🇴🇳🇱🇾] List of up to 10 `TrackListSource` that we've played. */
+/** [🇫🇴🇷 🇮🇳🇹🇪🇷🇳🇦🇱 🇺🇸🇪 🇴🇳🇱🇾] List of up to 10 `TrackListSource` that we've played. */
 export const recentlyPlayedAsyncAtom = createAtomWithStorage<TrackListSource[]>(
   "recently-played",
   [],
 );
 
-/** @description [🇫🇴🇷 🇮🇳🇹🇪🇷🇳🇦🇱 🇺🇸🇪 🇴🇳🇱🇾] Information about the recently played media. */
+/** [🇫🇴🇷 🇮🇳🇹🇪🇷🇳🇦🇱 🇺🇸🇪 🇴🇳🇱🇾] Information about the recently played media. */
 const recentlyPlayedDataAsyncAtom = atom(async (get) => {
   const recentlyPlayed = await get(recentlyPlayedAsyncAtom);
   return (await Promise.allSettled(recentlyPlayed.map(getRecentMediaInfo)))
     .filter(isFulfilled)
     .map(({ value }) => value);
 });
-/** @description Info about the recently played media. */
+/** Info about the recently played media. */
 export const recentlyPlayedDataAtom = unwrap(
   recentlyPlayedDataAsyncAtom,
   (prev) => prev ?? [],
 );
 
-/** @description Information about media formatted as `MediaCardContent`. */
+/** Information about media formatted as `MediaCardContent`. */
 async function getRecentMediaInfo({ type, id }: TrackListSource) {
   if (type === "album") {
     const data = await getAlbum([eq(albums.id, id)]);

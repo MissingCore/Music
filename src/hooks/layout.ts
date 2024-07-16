@@ -20,7 +20,7 @@ type GCWProps = {
   minWidth?: number;
 };
 
-/** @description Determine the width a column will take up based on parameters. */
+/** Determine the width a column will take up based on parameters. */
 export function useGetColumn({ cols, gap, gutters, minWidth }: GCWProps) {
   const { width } = useWindowDimensions();
 
@@ -40,7 +40,7 @@ export function useGetColumn({ cols, gap, gutters, minWidth }: GCWProps) {
   };
 }
 
-/** @description `useGetColumnsWidth` helper function for calculating the column size. */
+/** `useGetColumnsWidth` helper function for calculating the column size. */
 function getColSize(width: number, cols: number, gap: number, gutters: number) {
   return (width - gutters - gap * (cols - 1)) / cols;
 }

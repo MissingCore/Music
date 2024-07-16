@@ -11,7 +11,7 @@ import type { ExtractFnReturnType } from "@/utils/types";
 
 type QueryFnData = ExtractFnReturnType<typeof getTrack>;
 
-/** @description Returns specified track. */
+/** Returns specified track. */
 export const trackOptions = (trackId: string) =>
   queryOptions({
     queryKey: trackKeys.detail(trackId),
@@ -19,7 +19,7 @@ export const trackOptions = (trackId: string) =>
     staleTime: Infinity,
   });
 
-/** @description Return the most-used subset of track data. */
+/** Return the most-used subset of track data. */
 export const useTrackExcerpt = (trackId: string) =>
   useQuery({
     ...trackOptions(trackId),

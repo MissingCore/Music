@@ -5,7 +5,7 @@ import { Colors } from "@/constants/Styles";
 
 const WrappedSvg = cssInterop(Svg, { className: "style" });
 
-/** @description Similar to the one shown in the Nothing Recorder app. */
+/** Similar to the one shown in the Nothing Recorder app. */
 export function Record({
   size,
   color = Colors.foreground50,

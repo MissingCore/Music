@@ -9,7 +9,7 @@ import { MediaCard } from "@/components/media/card";
 import { LoadingIndicator } from "@/components/ui/loading";
 import { Description } from "@/components/ui/text";
 
-/** @description Screen for `/album` route. */
+/** Screen for `/album` route. */
 export default function AlbumScreen() {
   const { isPending, data } = useAlbumsForMediaCard();
   const columnParams = useMemo(

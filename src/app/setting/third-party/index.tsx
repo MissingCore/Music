@@ -12,7 +12,7 @@ import { NavLinkLabel } from "@/components/navigation/nav-link";
 import { StyledPressable } from "@/components/ui/pressable";
 import { Description } from "@/components/ui/text";
 
-/** @description Screen for `/setting/third-party` route. */
+/** Screen for `/setting/third-party` route. */
 export default function ThirdPartyScreen() {
   return (
     <AnimatedHeader title="THIRD-PARTY SOFTWARE">

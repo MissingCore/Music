@@ -23,10 +23,7 @@ const customTwMerge = extendTailwindMerge({
   },
 });
 
-/**
- * @description Combines any number of Tailwind classes nicely.
- * @returns A string containing Tailwind classes.
- */
+/** Combines any number of Tailwind classes nicely. */
 export function cn(...inputs: ClassValue[]) {
   return customTwMerge(clsx(inputs));
 }

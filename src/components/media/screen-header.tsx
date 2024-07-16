@@ -17,7 +17,7 @@ import { AnimatedVinyl } from "./animated-vinyl";
 import type { MediaImage } from "./image";
 import { TextLine } from "../ui/text";
 
-/** @description Header component seen on the `(current)` pages. */
+/** Header component seen on the `(current)` pages. */
 export function MediaScreenHeader(props: {
   /** Displays an animated vinyl image above the title. */
   source?: MediaImage.ImageSource;
@@ -57,8 +57,8 @@ export function MediaScreenHeader(props: {
 }
 
 /**
- * @description Hook up `<AnimatedVinyl />` to logic that'll have it spin
- *  if we're currently playing this `TrackListSource`.
+ * Hook up `<AnimatedVinyl />` to logic that'll have it spin if we're
+ * currently playing this `TrackListSource`.
  */
 function HeroImage(props: {
   source: MediaImage.ImageSource;

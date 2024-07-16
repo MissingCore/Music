@@ -17,7 +17,7 @@ const wantedTags = [
 /* FIXME: Temporary work around as we don't really want to support `.mp4` & `.m4a` yet. */
 const wantedExtensions = ["mp3", "flac"] as const;
 
-/** @description Index tracks into our database for fast retrieval. */
+/** Index tracks into our database for fast retrieval. */
 export async function indexAudio() {
   const stopwatch = new Stopwatch();
 
@@ -175,7 +175,7 @@ export async function indexAudio() {
   return audioFiles;
 }
 
-/** @description Ensure we use the right key to get the album id. */
+/** Ensure we use the right key to get the album id. */
 export function getAlbumKey(key: {
   album: string | undefined;
   albumArtist: string | undefined;

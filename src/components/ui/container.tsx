@@ -8,8 +8,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { cn } from "@/lib/style";
 
 /**
- * @description `<Animated.View />` or `<View />` with default top padding
- *  to account for status bar. `paddingTop` style not supported.
+ * `<Animated.View />` or `<View />` with default top padding to account
+ * for status bar. `paddingTop` style not supported.
  */
 export function SafeContainer({
   animated = false,
@@ -28,7 +28,7 @@ export function SafeContainer({
   );
 }
 
-/** @description Horizontal-scrolling list with default styling. */
+/** Horizontal-scrolling list with default styling. */
 export function ScrollRow({
   contentContainerClassName,
   ...props

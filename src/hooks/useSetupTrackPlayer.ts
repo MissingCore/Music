@@ -6,10 +6,9 @@ import TrackPlayer, {
 } from "react-native-track-player";
 
 /**
- * @description Sets up `react-native-track-player`. Non-blocking as if
- *  `setupPlayer()` fails due to issues such as "The player has already
- *  been initialized via setupPlayer.", it shouldn't prevent the rest of
- *  the app from loading.
+ * Sets up `react-native-track-player`. Non-blocking as if `setupPlayer()`
+ * fails due to issues such as "The player has already been initialized
+ * via setupPlayer.", it shouldn't prevent the rest of the app from loading.
  */
 export function useSetupTrackPlayer() {
   useEffect(() => {

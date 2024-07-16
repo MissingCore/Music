@@ -1,4 +1,4 @@
-/** @description Help track performance of code. */
+/** Help track performance of code. */
 export class Stopwatch {
   laps: number[] = [];
 

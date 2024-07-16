@@ -11,7 +11,7 @@ import { StyledPressable } from "@/components/ui/pressable";
 import { Description } from "@/components/ui/text";
 import { TrackList } from "@/features/track/components/track-list";
 
-/** @description Screen for `/album/[id]` route. */
+/** Screen for `/album/[id]` route. */
 export default function CurrentAlbumScreen() {
   const { id: _albumId } = useLocalSearchParams<{ id: string }>();
   const albumId = _albumId!;

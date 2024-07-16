@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 
 export const prevPathnameAtom = atom("/");
 
-/** @description Keeps `prevPathnameAtom` up-to-date for error handling. */
+/** Keeps `prevPathnameAtom` up-to-date for error handling. */
 export function PrevPathnameTracker() {
   const pathname = usePathname();
   const setPathname = useSetAtom(prevPathnameAtom);

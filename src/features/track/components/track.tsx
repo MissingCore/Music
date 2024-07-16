@@ -29,9 +29,8 @@ export namespace Track {
 }
 
 /**
- * @description Displays information about the current track with 2
- *  different press scenarios (pressing the icon or the whole card will
- *  do different actions).
+ * Displays information about the current track with 2 different press
+ * scenarios (pressing the icon or the whole card will do different actions).
  */
 export function Track({ id, trackSource, origin, ...props }: Track.Props) {
   const playFn = useSetAtom(playAtom);

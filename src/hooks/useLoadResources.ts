@@ -10,8 +10,8 @@ import { db, expoSQLiteDB } from "@/db";
 import migrations from "@/db/drizzle/migrations";
 
 /**
- * @description Makes splash screen visible until all initialization
- *  tasks are complete.
+ * Makes splash screen visible until all initialization tasks are
+ * complete.
  */
 export function useLoadResources() {
   const { success: dbSuccess, error: dbError } = useMigrations(db, migrations);
@@ -27,7 +27,7 @@ export function useLoadResources() {
   return { isLoaded: dbSuccess && tracksSaved };
 }
 
-/** @description Only run Expo dev tools plugins during development. */
+/** Only run Expo dev tools plugins during development. */
 function useDevOnly(db: SQLiteDatabase | null) {
   const hook = __DEV__ ? useDrizzleStudio : () => {};
   return hook(db);

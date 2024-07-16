@@ -20,7 +20,7 @@ export default function HomeLayout() {
   );
 }
 
-/** @description List of routes we'll display buttons for on the "home" page. */
+/** List of routes we'll display buttons for on the "home" page. */
 const NavRoutes = [
   { href: "/", label: "HOME" },
   { href: "/playlist", label: "PLAYLISTS" },
@@ -29,7 +29,7 @@ const NavRoutes = [
   { href: "/artist", label: "ARTISTS" },
 ] as const;
 
-/** @description Custom navigation bar for "home" screen. */
+/** Custom navigation bar for "home" screen. */
 function NavigationBar() {
   const pathname = usePathname();
   return (

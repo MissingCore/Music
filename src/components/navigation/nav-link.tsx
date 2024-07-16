@@ -14,8 +14,8 @@ export namespace NavLink {
 }
 
 /**
- * @description Link user to another page or an external page with an helpful
- *  indicator icon.
+ * Link user to another page or an external page with an helpful indicator
+ * icon.
  */
 export function NavLink(props: NavLink.Props) {
   const { href, label, external } = props;
@@ -38,7 +38,7 @@ export namespace NavLinkLabel {
   export type Props = { children: React.ReactNode; className?: string };
 }
 
-/** @description Reusable label component for `<NavLink />`. */
+/** Reusable label component for `<NavLink />`. */
 export function NavLinkLabel(props: NavLinkLabel.Props) {
   return (
     <Text
@@ -60,7 +60,7 @@ export namespace NavLinkGroup {
   };
 }
 
-/** @description List out a group of `<NavLink />`. */
+/** List out a group of `<NavLink />`. */
 export function NavLinkGroup(props: NavLinkGroup.Props) {
   return (
     <>
@@ -78,7 +78,7 @@ export namespace NavLinkGroupHeading {
   export type Props = { children: React.ReactNode; className?: string };
 }
 
-/** @description Reusable heading component for `<NavLinkGroup />`. */
+/** Reusable heading component for `<NavLinkGroup />`. */
 export function NavLinkGroupHeading(props: NavLinkGroupHeading.Props) {
   return (
     <Text

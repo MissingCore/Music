@@ -11,7 +11,7 @@ import { ScrollRow } from "@/components/ui/container";
 import { Description, Heading } from "@/components/ui/text";
 import { TrackList } from "@/features/track/components/track-list";
 
-/** @description Screen for `/artist/[id]` route. */
+/** Screen for `/artist/[id]` route. */
 export default function CurrentArtistScreen() {
   const { id: _artistName } = useLocalSearchParams<{ id: string }>();
   const artistName = _artistName!;
@@ -58,8 +58,8 @@ export default function CurrentArtistScreen() {
 }
 
 /**
- * @description Display a list of the artist's albums. Renders a heading
- *  for the track list only if the artist has albums.
+ * Display a list of the artist's albums. Renders a heading for the track
+ * list only if the artist has albums.
  */
 function ArtistAlbums({ albums }: { albums: Album[] | null }) {
   const { width } = useGetColumn({

@@ -10,7 +10,7 @@ import { Button } from "@/components/form/button";
 import { AnimatedHeader } from "@/components/navigation/animated-header";
 import { Description } from "@/components/ui/text";
 
-/** @description Screen for `/setting/backup` route. */
+/** Screen for `/setting/backup` route. */
 export default function BackupScreen() {
   const exportBackupFn = useExportBackup();
   const importBackupFn = useImportBackup();

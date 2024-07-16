@@ -16,7 +16,7 @@ import { cn } from "@/lib/style";
 import { MediaImage } from "./image";
 import type { Media } from "./types";
 
-/** @description Keyframe for having the vinyl slide out from the right. */
+/** Keyframe for having the vinyl slide out from the right. */
 const SlideOutRight = (imgSize: number, delay: number) =>
   new Keyframe({
     0: { opacity: 0, translateX: 0 },
@@ -26,7 +26,7 @@ const SlideOutRight = (imgSize: number, delay: number) =>
     .duration(300)
     .delay(delay);
 
-/** @description Keyframe for having the vinyl slide out from the bottom. */
+/** Keyframe for having the vinyl slide out from the bottom. */
 const SlideOutBottom = (imgSize: number, delay: number) =>
   new Keyframe({
     0: { opacity: 0, translateY: 0 },
@@ -36,9 +36,9 @@ const SlideOutBottom = (imgSize: number, delay: number) =>
     .duration(300)
     .delay(delay);
 
-/** @description Simple pulling of vinyl out of sleeve animation. */
+/** Simple pulling of vinyl out of sleeve animation. */
 export function AnimatedVinyl(props: {
-  /** @description Available width if `placement = "right"`, otherwise available height. */
+  /** Available width if `placement = "right"`, otherwise available height. */
   availableLength: number;
   type?: Media;
   placement?: "right" | "bottom";

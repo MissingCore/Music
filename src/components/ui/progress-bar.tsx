@@ -9,7 +9,7 @@ import Animated, {
 import { cn } from "@/lib/style";
 import { partitionArray } from "@/utils/object";
 
-/** @description Animated progress bar that can display several progresses. */
+/** Animated progress bar that can display several progresses. */
 export function ProgressBar(props: {
   entries: Array<{ color: string; value: number }>;
   total: number;
@@ -52,7 +52,7 @@ export function ProgressBar(props: {
   );
 }
 
-/** @description Segment of progress bar that gets animated. */
+/** Segment of progress bar that gets animated. */
 function ProgressSegment(props: {
   color: string;
   width: number;

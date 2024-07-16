@@ -1,4 +1,4 @@
-/** @description Abbreviate large numbers. */
+/** Abbreviate large numbers. */
 export function abbreviateNum(num: number) {
   return Intl.NumberFormat("en-US", {
     notation: "compact",

@@ -7,7 +7,7 @@ import { Colors } from "@/constants/Styles";
 import { SafeContainer } from "../ui/container";
 import { AnimatedTextEllipsis } from "../ui/loading";
 
-/** @description Screen when we're saving tracks into the database. */
+/** Screen when we're saving tracks into the database. */
 export function AnimatedBootSplash() {
   const [renderMessage, setRenderMessage] = useState(false);
 

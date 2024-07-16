@@ -12,7 +12,7 @@ import type { ExtractFnReturnType } from "@/utils/types";
 
 type QueryFnData = ExtractFnReturnType<typeof getAlbum>;
 
-/** @description Returns specified album with its tracks. */
+/** Returns specified album with its tracks. */
 export const albumOptions = (albumId: string) =>
   queryOptions({
     queryKey: albumKeys.detail(albumId),
@@ -21,8 +21,8 @@ export const albumOptions = (albumId: string) =>
   });
 
 /**
- * @description Return data to render "MediaList" components on the
- *  `/album/[id]` route.
+ * Return data to render "MediaList" components on the `/album/[id]`
+ * route.
  */
 export const useAlbumForCurrentPage = (albumId: string) =>
   useQuery({

@@ -30,7 +30,7 @@ export async function getLatestRelease() {
   };
 }
 
-/** @description Returns the latest releases. */
+/** Returns the latest releases. */
 export const useLatestRelease = () =>
   useQuery({
     queryKey: settingKeys.release(),

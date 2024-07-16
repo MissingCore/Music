@@ -72,7 +72,7 @@ export async function getImageSaveStatus() {
   return !isNotAllSaved;
 }
 
-/** @description Get information on what's stored on the device. */
+/** Get information on what's stored on the device. */
 export const useUserDataInfo = () =>
   useQuery({
     queryKey: settingKeys.storageRelation("user-data"),
@@ -80,7 +80,7 @@ export const useUserDataInfo = () =>
     gcTime: 0,
   });
 
-/** @description Get information of whats stored in the database. */
+/** Get information of whats stored in the database. */
 export const useStatisticsInfo = () =>
   useQuery({
     queryKey: settingKeys.storageRelation("statistics"),
@@ -88,7 +88,7 @@ export const useStatisticsInfo = () =>
     gcTime: 0,
   });
 
-/** @description See if all images are saved. */
+/** See if all images are saved. */
 export const useImageSaveStatus = () =>
   useQuery({
     queryKey: settingKeys.storageRelation("image-save-status"),

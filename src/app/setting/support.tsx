@@ -41,7 +41,7 @@ const LINKGROUPS = {
   },
 };
 
-/** @description Screen for `/setting/support` route. */
+/** Screen for `/setting/support` route. */
 export default function SupportScreen() {
   return (
     <AnimatedHeader title="SUPPORT">

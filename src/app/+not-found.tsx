@@ -8,7 +8,7 @@ import { ReportInstructions } from "@/components/error/report-instructions";
 import { SafeContainer } from "@/components/ui/container";
 import { Heading, Code } from "@/components/ui/text";
 
-/** @description Screen for unmatched route. */
+/** Screen for unmatched route. */
 export default function NotFoundScreen() {
   const pathname = usePathname();
   const prevPathname = useAtomValue(prevPathnameAtom);

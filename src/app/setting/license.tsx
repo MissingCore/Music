@@ -6,7 +6,7 @@ import { ExternalLink } from "@/components/navigation/external-link";
 import { NavLink } from "@/components/navigation/nav-link";
 import { Description } from "@/components/ui/text";
 
-/** @description Screen for `/setting/license` route. */
+/** Screen for `/setting/license` route. */
 export default function LicenseScreen() {
   return (
     <AnimatedHeader title="LICENSE">

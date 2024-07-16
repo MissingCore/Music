@@ -5,7 +5,7 @@ export const AdjustmentOptions = [
 
 export type AdjustmentOption = (typeof AdjustmentOptions)[number];
 
-/** @description History of data adjustments due to "breaking" changes. */
+/** History of data adjustments due to "breaking" changes. */
 export const OverrideHistory: Record<
   number,
   { version: string; changes: AdjustmentOption[] }

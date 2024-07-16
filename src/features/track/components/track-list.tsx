@@ -10,7 +10,7 @@ import { Track } from "./track";
 
 type FlashListProps = React.ComponentProps<typeof FlashList>;
 
-/** @description Lists out tracks. */
+/** Lists out tracks. */
 export function TrackList(props: {
   data: Maybe<readonly Track.Content[]>;
   config: {

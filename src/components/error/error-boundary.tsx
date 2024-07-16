@@ -5,7 +5,7 @@ import { ReportInstructions } from "./report-instructions";
 import { SafeContainer } from "../ui/container";
 import { Heading } from "../ui/text";
 
-/** @description Screen displayed when an error is thrown in a component. */
+/** Screen displayed when an error is thrown in a component. */
 export function ErrorBoundary({ error }: ErrorBoundaryProps) {
   /*
     `error.stack?.slice(error.message.length + 8)` returns the rest of

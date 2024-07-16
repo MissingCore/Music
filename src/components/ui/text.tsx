@@ -8,14 +8,14 @@ import type { TextColor } from "@/lib/style";
 import { cn } from "@/lib/style";
 import type { Maybe } from "@/utils/types";
 
-/** @description Shorthand for `<Text numberOfLines={1} />`. */
+/** Shorthand for `<Text numberOfLines={1} />`. */
 export function TextLine(props: TextProps) {
   return <Text numberOfLines={1} {...props} />;
 }
 
 /**
- * @description Design for having 2 rows of text — we can optionally
- *  display 2 pieces of text next to each other in the 2nd row.
+ * Design for having 2 rows of text — we can optionally display 2 pieces
+ * of text next to each other in the 2nd row.
  */
 export function TextStack(props: {
   content: [string, Maybe<string>] | [string, string, Maybe<string>];
@@ -56,7 +56,7 @@ export function TextStack(props: {
   );
 }
 
-/** @description Mimicking the HTML `<code>` element. */
+/** Mimicking the HTML `<code>` element. */
 export function Code({ text }: { text: string }) {
   return (
     <View className="shrink rounded-sm bg-surface700 px-1 py-0.5">
@@ -65,7 +65,7 @@ export function Code({ text }: { text: string }) {
   );
 }
 
-/** @description Generic component for heading text. */
+/** Generic component for heading text. */
 export function Heading({
   as,
   asLine,
@@ -101,7 +101,7 @@ const description = cva({
   defaultVariants: { intent: "default" },
 });
 
-/** @description Styled text for descriptive content. */
+/** Styled text for descriptive content. */
 export function Description(
   props: VariantProps<typeof description> & TextProps,
 ) {

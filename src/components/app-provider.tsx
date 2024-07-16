@@ -12,10 +12,7 @@ import { cn } from "@/lib/style";
 import { PrevPathnameTracker } from "./error/prev-pathname-tracker";
 import { DeepLinkHandler } from "./navigation/deep-link-handler";
 
-/**
- * @description The general providers used in our app. Also provides
- *  polyfills for methods not supported.
- */
+/** The general providers used in our app. */
 export function AppProvider({ children }: { children: React.ReactNode }) {
   return (
     <GestureHandlerRootView>

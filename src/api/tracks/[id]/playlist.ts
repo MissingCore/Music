@@ -36,7 +36,7 @@ export async function getTracksToPlaylists({ trackId }: { trackId: string }) {
 
 type GETFnData = ExtractFnReturnType<typeof getTracksToPlaylists>;
 
-/** @description Returns all playlists this track is a part of. */
+/** Returns all playlists this track is a part of. */
 export const trackInPlaylistsOptions = (trackId: string) =>
   queryOptions({
     queryKey: trackKeys.detailWithRelation(trackId),
@@ -44,7 +44,7 @@ export const trackInPlaylistsOptions = (trackId: string) =>
     gcTime: 0,
   });
 
-/** @description Returns if the track is in a given playlist. */
+/** Returns if the track is in a given playlist. */
 export const useIsTrackInPlaylist = (trackId: string, playlistName: string) =>
   useQuery({
     ...trackInPlaylistsOptions(trackId),
@@ -77,7 +77,7 @@ export async function putTrackInPlaylists({
   });
 }
 
-/** @description Put track in the specified playlists. */
+/** Put track in the specified playlists. */
 export function usePutTrackInPlaylists(trackId: string) {
   const queryClient = useQueryClient();
   const resynchronizeFn = useSetAtom(resynchronizeOnAtom);
@@ -119,7 +119,7 @@ export async function deleteTrackFromPlaylist({
   return removedRelation.isFavorite;
 }
 
-/** @description Delete track from specified playlist. */
+/** Delete track from specified playlist. */
 export function useDeleteTrackFromPlaylist(
   trackId: string,
   playlistName: string,

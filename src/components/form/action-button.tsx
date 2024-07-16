@@ -27,9 +27,9 @@ export namespace ActionButton {
 }
 
 /**
- * @description Button displaying up to 2 lines of text, with up to 2
- *  different press scenarios (pressing the whole card or the optional
- *  icon will do different actions).
+ * Button displaying up to 2 lines of text, with up to 2 different press
+ * scenarios (pressing the whole card or the optional icon will do
+ * different actions).
  */
 export function ActionButton(props: ActionButton.Props) {
   const icon = props.icon?.Element ?? <EllipsisVertical size={24} />;

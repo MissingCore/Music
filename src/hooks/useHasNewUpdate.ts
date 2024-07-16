@@ -6,7 +6,7 @@ type UpdateResult =
   | { newUpdate: false; release: null }
   | { newUpdate: true; release: { releaseNotes: string; version: string } };
 
-/** @description Determines if we have a new update. */
+/** Determines if we have a new update. */
 export function useHasNewUpdate(): UpdateResult {
   const { isPending, error, data } = useLatestRelease();
 

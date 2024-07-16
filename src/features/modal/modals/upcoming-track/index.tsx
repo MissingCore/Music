@@ -21,7 +21,7 @@ import { ModalBase } from "../../components/modal-base";
 
 type TrackExcerpt = Pick<Track, "id" | "artistName" | "name" | "artwork">;
 
-/** @description Modal used for seeing upcoming tracks. */
+/** Modal used for seeing upcoming tracks. */
 export function UpcomingTrackModal() {
   return (
     <ModalBase>
@@ -51,7 +51,7 @@ export function UpcomingTrackModal() {
   );
 }
 
-/** @description Displays the current track. */
+/** Displays the current track. */
 function CurrentTrack() {
   const data = useAtomValue(trackDataAtom);
   if (!data) return <EmptyMessage />;
@@ -62,7 +62,7 @@ function CurrentTrack() {
   );
 }
 
-/** @description List out tracks in the queue, giving us the ability to remove them. */
+/** List out tracks in the queue, giving us the ability to remove them. */
 function QueueListTracks() {
   const data = useAtomValue(queueTrackListAtom);
   const removeQueueIdx = useSetAtom(queueRemoveAtIdxAtom);
@@ -80,7 +80,7 @@ function QueueListTracks() {
   );
 }
 
-/** @description Displays up to the next 5 tracks. */
+/** Displays up to the next 5 tracks. */
 function NextTracks() {
   const data = useAtomValue(nextTrackListAtom);
   return (
@@ -99,7 +99,7 @@ type UpcomingTrackProps =
   | { data: TrackExcerpt; onPress?: never }
   | { data: TrackExcerpt; onPress: () => void };
 
-/** @description Render the "data" for a "section" in a `<FlashList />`. */
+/** Render the "data" for a "section" in a `<FlashList />`. */
 function UpcomingTrack({ data, onPress }: UpcomingTrackProps) {
   const inQueue = !!onPress;
   return (
@@ -128,7 +128,7 @@ function UpcomingTrack({ data, onPress }: UpcomingTrackProps) {
   );
 }
 
-/** @description Render if there's no tracks. */
+/** Render if there's no tracks. */
 function EmptyMessage() {
   return <Description className="mb-2 text-start">No Tracks Found</Description>;
 }

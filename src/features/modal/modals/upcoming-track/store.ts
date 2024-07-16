@@ -17,19 +17,19 @@ import { pickKeys } from "@/utils/object";
 // The information we want to return.
 const wantedKeys = ["id", "name", "artistName", "artwork"] as const;
 
-/** @description [🇫🇴🇷 🇮🇳🇹🇪🇷🇳🇦🇱 🇺🇸🇪 🇴🇳🇱🇾] */
+/** [🇫🇴🇷 🇮🇳🇹🇪🇷🇳🇦🇱 🇺🇸🇪 🇴🇳🇱🇾] */
 export const queueTrackListAsyncAtom = atom(async (get) => {
   const queueList = await get(queueListAsyncAtom);
   const data = await Promise.all(queueList.map(getTrackData));
   return data.map((track) => pickKeys(track!, wantedKeys));
 });
-/** @description Return tracks in the queue. */
+/** Return tracks in the queue. */
 export const queueTrackListAtom = unwrap(
   queueTrackListAsyncAtom,
   (prev) => prev ?? [],
 );
 
-/** @description [🇫🇴🇷 🇮🇳🇹🇪🇷🇳🇦🇱 🇺🇸🇪 🇴🇳🇱🇾] */
+/** [🇫🇴🇷 🇮🇳🇹🇪🇷🇳🇦🇱 🇺🇸🇪 🇴🇳🇱🇾] */
 export const nextTrackListAsyncAtom = atom(async (get) => {
   const shouldRepeat = await get(repeatAsyncAtom);
   const { listIndex: startIndex } = await get(playingMediaAsyncAtom);
@@ -44,13 +44,13 @@ export const nextTrackListAsyncAtom = atom(async (get) => {
 
   return data.map((track) => pickKeys(track!, wantedKeys));
 });
-/** @description Return the next 5 tracks. */
+/** Return the next 5 tracks. */
 export const nextTrackListAtom = unwrap(
   nextTrackListAsyncAtom,
   (prev) => prev ?? [],
 );
 
-/** @description Get a given track and format its cover. */
+/** Get a given track and format its cover. */
 async function getTrackData(id: string) {
   return await getTrack([eq(tracks.id, id)]);
 }

@@ -10,7 +10,7 @@ import { ActionButton } from "@/components/form/action-button";
 import { LoadingIndicator } from "@/components/ui/loading";
 import { Description, Heading } from "@/components/ui/text";
 
-/** @description Screen for `/artist` route. */
+/** Screen for `/artist` route. */
 export default function ArtistScreen() {
   const { isPending, data } = useArtistsForList();
 
