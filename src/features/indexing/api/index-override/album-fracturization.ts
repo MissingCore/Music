@@ -47,7 +47,7 @@ export async function fixAlbumFracturization() {
       string,
       {
         albumIds: string[];
-        entry: { name: string; artistName: string; releaseYear: number | null };
+        entry: { name: string; artistName: string; releaseYear?: number };
       }
     > = {};
     await Promise.all(
@@ -64,7 +64,7 @@ export async function fixAlbumFracturization() {
         } else {
           albumInfoMap[key] = {
             albumIds: [id],
-            entry: { name: album!, artistName: aA!, releaseYear: year ?? null },
+            entry: { name: album!, artistName: aA!, releaseYear: year },
           };
         }
       }),
