@@ -65,6 +65,10 @@ export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
       : snappedHeight - initialContentHeight.value;
   });
 
+  const contentAnimatedStyles = useAnimatedStyle(() => ({
+    marginBottom: contentBuffer.value,
+  }));
+
   return (
     <>
       <Stack.Screen
@@ -111,7 +115,7 @@ export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
           onLayout={({ nativeEvent }) => {
             initialContentHeight.value = nativeEvent.layout.height;
           }}
-          style={{ marginBottom: contentBuffer }}
+          style={contentAnimatedStyles}
           className="flex-1 pb-8"
         >
           {children}
