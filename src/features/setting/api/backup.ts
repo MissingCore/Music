@@ -3,7 +3,7 @@ import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
 import { StorageAccessFramework as SAF } from "expo-file-system";
 import * as Sharing from "expo-sharing";
-import { and, eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import { useSetAtom } from "jotai";
 import { Platform } from "react-native";
 import { Toast } from "react-native-toast-notifications";
@@ -27,8 +27,10 @@ const RawAlbum = z.object({
   artistName: z.string().trim().min(1),
 });
 
-const RawTrack = RawAlbum.extend({
+const RawTrack = z.object({
   id: z.string().trim().min(1),
+  name: z.string().trim().min(1),
+  artistName: z.optional(z.string().trim().min(1)),
   albumName: z.optional(z.string().trim().min(1)),
 });
 
@@ -139,17 +141,20 @@ export async function importBackup() {
                 where: (fields, { and, eq }) =>
                   and(
                     eq(fields.name, t.albumName!),
-                    eq(fields.artistName, t.artistName),
+                    // Note: This won't work correctly for "collaboration" albums.
+                    eq(fields.artistName, t.artistName!),
                   ),
                 columns: { id: true },
               })
             : undefined;
           // Find track based on specifications.
           return db.query.tracks.findFirst({
-            where: (fields, { and, eq }) =>
+            where: (fields, { and, eq, isNull }) =>
               and(
                 eq(fields.name, t.name),
-                eq(fields.artistName, t.artistName),
+                t.artistName
+                  ? eq(fields.artistName, t.artistName)
+                  : isNull(fields.artistName),
                 al ? eq(fields.albumId, al.id) : undefined,
               ),
             columns: { id: true },
@@ -193,7 +198,8 @@ export async function importBackup() {
             where: (fields, { and, eq }) =>
               and(
                 eq(fields.name, t.albumName!),
-                eq(fields.artistName, t.artistName),
+                // Note: This won't work correctly for "collaboration" albums.
+                eq(fields.artistName, t.artistName!),
               ),
             columns: { id: true },
           })
@@ -205,7 +211,9 @@ export async function importBackup() {
         .where(
           and(
             eq(tracks.name, t.name),
-            eq(tracks.artistName, t.artistName),
+            t.artistName
+              ? eq(tracks.artistName, t.artistName)
+              : isNull(tracks.artistName),
             al ? eq(tracks.albumId, al.id) : undefined,
           ),
         );
