@@ -40,7 +40,9 @@ export function TrackModal({ id, origin }: Props) {
     : data.isFavorite;
 
   const hasSecondRow =
-    (!!data.album && origin !== "album") || origin !== "artist";
+    (origin !== "album" && !!data.album) ||
+    (origin !== "artist" && !!data.artistName) ||
+    origin === "current";
 
   return (
     <ModalBase detached>
@@ -52,7 +54,9 @@ export function TrackModal({ id, origin }: Props) {
           as="h4"
           asLine
           className={cn("mb-6 px-4 text-accent50", {
-            "mb-4": origin === "artist" && !data.album?.name,
+            "mb-4":
+              (origin === "artist" && !data.album?.name) ||
+              (origin !== "artist" && !data.artistName),
           })}
         >
           {origin === "artist" ? data.album?.name : data.artistName}
@@ -85,7 +89,7 @@ export function TrackModal({ id, origin }: Props) {
         )}
 
         <ScrollRow>
-          {!!data.album && origin !== "album" && (
+          {origin !== "album" && !!data.album && (
             <Button
               interaction="link"
               href={`/album/${data.album.id}`}
@@ -94,7 +98,7 @@ export function TrackModal({ id, origin }: Props) {
             />
           )}
 
-          {origin !== "artist" && (
+          {origin !== "artist" && !!data.artistName && (
             <Button
               interaction="link"
               href={`/artist/${encodeURIComponent(data.artistName)}`}
