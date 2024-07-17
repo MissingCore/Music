@@ -3,7 +3,7 @@ import { sum } from "drizzle-orm";
 import * as FileSystem from "expo-file-system";
 
 import { db } from "@/db";
-import { albums, artists, playlists, tracks } from "@/db/schema";
+import { albums, artists, playlists, tracks, invalidTracks } from "@/db/schema";
 import { countFrom } from "@/db/utils/formatters";
 
 import { settingKeys } from "./_queryKeys";
@@ -55,6 +55,7 @@ export async function getStatistics() {
     images: imgDirContent.length,
     playlists: await countFrom(playlists),
     tracks: await countFrom(tracks),
+    invalidTracks: await countFrom(invalidTracks),
     totalDuration:
       Number(
         (await db.select({ total: sum(tracks.duration) }).from(tracks))[0]

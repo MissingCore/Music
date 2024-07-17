@@ -97,6 +97,7 @@ function StatisticsWidget() {
       <ValueRow label="Images" value={data.images} />
       <ValueRow label="Playlists" value={data.playlists} />
       <ValueRow label="Tracks" value={data.tracks} />
+      <ValueRow label="Save Errors" value={data.invalidTracks} />
 
       <ValueRow
         label="Total Duration"
