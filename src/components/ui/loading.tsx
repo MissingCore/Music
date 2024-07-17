@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { View } from "react-native";
 import Animated, {
   Easing,
   interpolateColor,
+  useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
   withRepeat,
@@ -55,16 +57,15 @@ export function LoadingIndicator() {
   );
 }
 
-/**
- * Loading animation for inside a `<Text />` — animated 3 consecutive
- * periods.
- */
+/** Loading animation of animated 3 consecutive periods. */
 export function AnimatedTextEllipsis({
   color,
   durationMs: duration = 2500,
+  textClass,
 }: {
   color: `#${string}`;
   durationMs?: number;
+  textClass?: string;
 }) {
   const progress = useSharedValue(0);
 
@@ -97,11 +98,21 @@ export function AnimatedTextEllipsis({
     ),
   );
 
+  const dot1Style = useAnimatedStyle(() => ({ color: colorOpacity1.value }));
+  const dot2Style = useAnimatedStyle(() => ({ color: colorOpacity2.value }));
+  const dot3Style = useAnimatedStyle(() => ({ color: colorOpacity3.value }));
+
   return (
-    <>
-      <Animated.Text style={{ color: colorOpacity1 }}>.</Animated.Text>
-      <Animated.Text style={{ color: colorOpacity2 }}>.</Animated.Text>
-      <Animated.Text style={{ color: colorOpacity3 }}>.</Animated.Text>
-    </>
+    <View className="flex-row">
+      <Animated.Text style={dot1Style} className={textClass}>
+        .
+      </Animated.Text>
+      <Animated.Text style={dot2Style} className={textClass}>
+        .
+      </Animated.Text>
+      <Animated.Text style={dot3Style} className={textClass}>
+        .
+      </Animated.Text>
+    </View>
   );
 }
