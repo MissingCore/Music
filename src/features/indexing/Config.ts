@@ -1,6 +1,7 @@
 export const AdjustmentOptions = [
   "album-fracturization",
-  "fetchedArt",
+  "artwork-retry",
+  "invalid-tracks-retry",
 ] as const;
 
 export type AdjustmentOption = (typeof AdjustmentOptions)[number];
@@ -12,6 +13,6 @@ export const OverrideHistory: Record<
 > = {
   0: {
     version: "v1.0.0-rc.10",
-    changes: ["fetchedArt", "album-fracturization"],
+    changes: ["invalid-tracks-retry", "artwork-retry", "album-fracturization"],
   },
 };

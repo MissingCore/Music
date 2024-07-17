@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { tracks } from "@/db/schema";
+import { invalidTracks, tracks } from "@/db/schema";
 
 import { fixAlbumFracturization } from "./album-fracturization";
 import type { AdjustmentOption } from "../../Config";
@@ -42,10 +42,12 @@ export async function dataReadjustments() {
 /** Logic we want to run depending on what adjustments we need to make. */
 const AdjustmentFunctionMap: Record<AdjustmentOption, () => Promise<void>> = {
   "album-fracturization": fixAlbumFracturization,
-  fetchedArt: async () => {
-    await db
-      .update(tracks)
-      .set({ fetchedArt: false })
-      .where(eq(tracks.fetchedArt, true));
+  "artwork-retry": async () => {
+    // eslint-disable-next-line drizzle/enforce-update-with-where
+    await db.update(tracks).set({ fetchedArt: false });
+  },
+  "invalid-tracks-retry": async () => {
+    // eslint-disable-next-line drizzle/enforce-delete-with-where
+    await db.delete(invalidTracks);
   },
 };

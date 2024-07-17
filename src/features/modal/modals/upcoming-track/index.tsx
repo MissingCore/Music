@@ -106,7 +106,7 @@ function UpcomingTrack({ data, onPress }: UpcomingTrackProps) {
     <View className="mb-2">
       <ActionButton
         onPress={undefined}
-        textContent={[data.name, data.artistName]}
+        textContent={[data.name, data.artistName ?? "No Artist"]}
         Image={
           <MediaImage
             type="track"

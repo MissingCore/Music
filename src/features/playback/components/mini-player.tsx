@@ -30,7 +30,7 @@ export function MiniPlayer() {
           className="rounded"
         />
         <TextStack
-          content={[trackData.name, trackData.artistName]}
+          content={[trackData.name, trackData.artistName ?? "No Artist"]}
           colors={{ row1: "text-foreground50", row2: "text-accent50" }}
           wrapperClassName="flex-1"
         />

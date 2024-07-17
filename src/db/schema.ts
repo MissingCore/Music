@@ -45,9 +45,7 @@ export const albumsRelations = relations(albums, ({ one, many }) => ({
 
 export const tracks = sqliteTable("tracks", {
   id: text("id").primaryKey(),
-  artistName: text("artist_name")
-    .notNull()
-    .references(() => artists.name),
+  artistName: text("artist_name").references(() => artists.name),
   albumId: text("album_id").references(() => albums.id),
   name: text("name").notNull(),
   artwork: text("artwork"),

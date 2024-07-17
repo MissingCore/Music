@@ -8,6 +8,13 @@
       "when": 1715564309559,
       "tag": "0000_complete_greymalkin",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1721187130348,
+      "tag": "0001_wooden_wallop",
+      "breakpoints": true
     }
   ]
 }

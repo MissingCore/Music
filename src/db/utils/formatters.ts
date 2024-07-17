@@ -129,7 +129,7 @@ export function formatTrackforPlayer(track: TrackWithAlbum) {
     url: track.uri,
     artwork: getTrackCover(track) ?? undefined,
     title: track.name,
-    artist: track.artistName,
+    artist: track.artistName ?? "No Artist",
     duration: track.duration,
   } satisfies TrackPlayerTrack;
 }
