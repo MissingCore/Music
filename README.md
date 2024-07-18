@@ -37,7 +37,7 @@ A Nothing inspired music player (based on design by [Alkid Shuli (alKid)](https:
 - Background Playback w/ Media Control Notification
 - Queues
 - Automatically extraction of metadata w/ [@missingcore/audio-metadata](https://github.com/MissingCore/audio-metadata)
-  - Supports `.mp3` (ID3v1 & ID3v2) & `.flac`. We're currently a bit picky with what files gets saved — their `title` & `artist` metadata field must be populated (this might change in the future).
+  - Supports `.mp3` (ID3v1 & ID3v2) & `.flac`.
 - Data Backup
 
 > See potential upcoming features in future updates in [this discussion post](https://github.com/MissingCore/Music/discussions/9).
@@ -124,11 +124,15 @@ Place your music files in the "Music" folder on your Android device. It doesn't 
 
 Look in [@missingcore/audio-metadata](https://github.com/MissingCore/audio-metadata) for supported audio files and metadata formats.
 
+> The loading screen is permanently displayed after moving some music in the "Music" folder!
+
+This is an issue with Android where when we move a folder, the original location might still be cached, which means the folder gets detected in its original location in addition to its new location. This kind of scenario might break some things in the app prior to the logic that gives the ok, saying the saving action being completed.
+
+As mentioned in [#36](https://github.com/MissingCore/Music/issues/36), a work around is to copy the contents you want to move to the desired location (instead of moving the original folder), then delete the content at the original location. You can also go through your file system and see if you end up with duplicate "fake" copies of your moved media.
+
 > Why are my music files not displayed?
 
 Currently, we support a limited number of file extensions for metadata. Check [@missingcore/audio-metadata](https://github.com/MissingCore/audio-metadata) for the full list.
-
-In addition, we're a bit picky with what files get saved successfully. We only save files that have their `title` & `artist` metadata field populated (this might change in the future).
 
 If your file fails to get saved and has the supported file extensions, it may be due to the file not having the expected metadata container.
 
