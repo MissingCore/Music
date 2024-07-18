@@ -1,5 +1,4 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { invalidTracks, tracks } from "@/db/schema";

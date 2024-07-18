@@ -26,8 +26,11 @@ export async function indexAudio() {
   const { totalCount } = await MediaLibrary.getAssetsAsync(assetOptions);
   const audioFiles = (
     await MediaLibrary.getAssetsAsync({ ...assetOptions, first: totalCount })
-  ).assets.filter((a) =>
-    wantedExtensions.some((ext) => a.filename.endsWith(`.${ext}`)),
+  ).assets.filter(
+    (a) =>
+      wantedExtensions.some((ext) => a.filename.endsWith(`.${ext}`)) &&
+      // Limit media to those in the `Music` folder on our device.
+      a.uri.startsWith("file:///storage/emulated/0/Music/"),
   );
 
   // Get relevant entries inside our database.
