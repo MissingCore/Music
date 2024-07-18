@@ -15,6 +15,13 @@
       "when": 1721187130348,
       "tag": "0001_wooden_wallop",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1721343767586,
+      "tag": "0002_third_giant_man",
+      "breakpoints": true
     }
   ]
 }
