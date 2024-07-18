@@ -66,11 +66,15 @@ export const trackDataAtom = unwrap(
 
 /** Loads track in when we open the app. */
 export const loadTrackAtom = atom(null, async (get) => {
-  const soundRef = get(soundRefAtom);
-  const trackStatus = await soundRef.getStatusAsync();
+  try {
+    const soundRef = get(soundRefAtom);
+    const trackStatus = await soundRef.getStatusAsync();
 
-  if (!trackStatus.isLoaded) {
-    const trackData = await get(trackDataAsyncAtom);
-    if (trackData) await soundRef.loadAsync({ uri: trackData.uri });
+    if (!trackStatus.isLoaded) {
+      const trackData = await get(trackDataAsyncAtom);
+      if (trackData) await soundRef.loadAsync({ uri: trackData.uri });
+    }
+  } catch (err) {
+    console.log(err);
   }
 });

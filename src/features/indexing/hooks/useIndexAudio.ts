@@ -56,9 +56,8 @@ export function useIndexAudio() {
 
     // Allow audio to play in the background.
     await Audio.setAudioModeAsync({ staysActiveInBackground: true });
-    await getDefaultStore().set(loadTrackAtom);
-
     setIsComplete(true);
+    await getDefaultStore().set(loadTrackAtom);
   }, [permissionResponse, requestPermission]);
 
   useEffect(() => {

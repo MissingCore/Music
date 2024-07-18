@@ -147,6 +147,7 @@ export async function importBackup() {
                 columns: { id: true },
               })
             : undefined;
+          if (t.albumName && !al) throw new Error("Track album not found.");
           // Find track based on specifications.
           return db.query.tracks.findFirst({
             where: (fields, { and, eq, isNull }) =>
@@ -204,6 +205,7 @@ export async function importBackup() {
             columns: { id: true },
           })
         : undefined;
+      if (t.albumName && !al) throw new Error("Track album not found.");
       // Favorite track based on specifications.
       return db
         .update(tracks)
