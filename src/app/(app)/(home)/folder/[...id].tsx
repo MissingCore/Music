@@ -16,7 +16,7 @@ import { Description } from "@/components/ui/text";
 import { Track } from "@/features/track/components/track";
 
 /** Screen for `/folder/[id]` route. */
-export default function TrackScreen() {
+export default function FolderScreen() {
   const { id = ["Music"] } = useLocalSearchParams<{ id: string[] }>();
 
   return (
@@ -43,14 +43,13 @@ function Breadcrumbs({ pathSegments }: { pathSegments: string[] }) {
   return (
     <ScrollRow ref={breadcrumbsRef}>
       {pathSegments.map((dirName, idx) => (
-        <>
+        <View key={idx} className="flex-row gap-2">
           {idx !== 0 && (
             <Text className="px-1 font-geistMono text-sm text-foreground50">
               /
             </Text>
           )}
           <Link
-            key={idx}
             href={`/folder/${pathSegments.slice(0, idx + 1).join("/")}`}
             disabled={idx === pathSegments.length - 1}
             className={cn(
@@ -60,7 +59,7 @@ function Breadcrumbs({ pathSegments }: { pathSegments: string[] }) {
           >
             {dirName}
           </Link>
-        </>
+        </View>
       ))}
     </ScrollRow>
   );
@@ -74,6 +73,12 @@ function FolderContents({ currPath }: { currPath: string }) {
     return (
       <View className="w-full flex-1 px-4">
         <Description intent="error">Error: Directory not found</Description>
+      </View>
+    );
+  } else if (data.subDirectories.length === 0 && data.tracks.length === 0) {
+    return (
+      <View className="w-full flex-1 px-4">
+        <Description>Directory is empty</Description>
       </View>
     );
   }

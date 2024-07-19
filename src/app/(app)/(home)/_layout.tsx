@@ -11,6 +11,7 @@ export default function HomeLayout() {
       <NavigationBar />
       <Stack screenOptions={{ animation: "fade", headerShown: false }}>
         <Stack.Screen name="index" />
+        <Stack.Screen name="folder/index" />
         <Stack.Screen name="folder/[...id]" />
         <Stack.Screen name="playlist" />
         <Stack.Screen name="track" />
