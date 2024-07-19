@@ -192,7 +192,7 @@ export async function indexAudio() {
     ),
   );
 
-  return audioFiles;
+  return { foundFiles: audioFiles, changed: incomingTrackData.length };
 }
 
 /** Ensure we use the right key to get the album id. */
