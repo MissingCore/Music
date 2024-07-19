@@ -8,22 +8,28 @@ import { fileNodeKeys } from "./_queryKeys";
 import type { ExtractFnReturnType } from "@/utils/types";
 import { MUSIC_DIRECTORY } from "@/features/indexing/Config";
 
-export async function getFolderInfo(path: string) {
+export async function getFolderTracks(path: string) {
   const fullPath = `${MUSIC_DIRECTORY}${path.slice(6)}`;
-  const fileRegex = new RegExp(`^${fullPath}(?!.*/).*$`);
-
-  return {
-    subDirectories: await db.query.fileNode.findMany({
-      where: (fields, { eq }) => eq(fields.parentPath, path),
+  return (
+    await db.query.tracks.findMany({
+      where: (fields, { like }) => like(fields.uri, `${fullPath}%`),
+      with: { album: true },
       orderBy: (fields, { asc }) => asc(fields.name),
-    }),
-    tracks: (
-      await db.query.tracks.findMany({
-        where: (fields, { like }) => like(fields.uri, `${fullPath}%`),
-        with: { album: true },
-        orderBy: (fields, { asc }) => asc(fields.name),
-      })
-    ).filter(({ uri }) => fileRegex.test(uri)),
+    })
+  ).filter(({ uri }) => !uri.slice(fullPath.length).includes("/"));
+}
+
+export async function getFolderSubdirectories(path: string) {
+  return db.query.fileNode.findMany({
+    where: (fields, { eq }) => eq(fields.parentPath, path),
+    orderBy: (fields, { asc }) => asc(fields.name),
+  });
+}
+
+export async function getFolderInfo(path: string) {
+  return {
+    subDirectories: await getFolderSubdirectories(path),
+    tracks: await getFolderTracks(path),
   };
 }
 
