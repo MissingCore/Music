@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import type { ViewProps } from "react-native";
 import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -28,24 +29,32 @@ export function SafeContainer({
   );
 }
 
-/** Horizontal-scrolling list with default styling. */
-export function ScrollRow({
-  contentContainerClassName,
-  ...props
-}: Omit<
-  React.ComponentProps<typeof ScrollView>,
-  "horizontal" | "showsHorizontalScrollIndicator"
->) {
-  return (
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      overScrollMode="never"
-      contentContainerClassName={cn(
-        "grow gap-2 px-4",
-        contentContainerClassName,
-      )}
-      {...props}
-    />
-  );
+// eslint-disable-next-line import/export
+export namespace ScrollRow {
+  export type Ref = ScrollView;
+
+  export type Props = Omit<
+    React.ComponentProps<typeof ScrollView>,
+    "horizontal" | "showsHorizontalScrollIndicator"
+  >;
 }
+
+/** Horizontal-scrolling list with default styling. */
+// eslint-disable-next-line @typescript-eslint/no-redeclare, import/export
+export const ScrollRow = forwardRef<ScrollRow.Ref, ScrollRow.Props>(
+  function ScrollRow({ contentContainerClassName, ...props }, ref) {
+    return (
+      <ScrollView
+        ref={ref}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        overScrollMode="never"
+        contentContainerClassName={cn(
+          "grow gap-2 px-4",
+          contentContainerClassName,
+        )}
+        {...props}
+      />
+    );
+  },
+);

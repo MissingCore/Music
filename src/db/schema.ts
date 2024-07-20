@@ -1,6 +1,7 @@
 import { createId } from "@paralleldrive/cuid2";
 import type { InferSelectModel } from "drizzle-orm";
 import { relations } from "drizzle-orm";
+import type { AnySQLiteColumn } from "drizzle-orm/sqlite-core";
 import {
   integer,
   primaryKey,
@@ -117,6 +118,23 @@ export const tracksToPlaylistsRelations = relations(
   }),
 );
 
+export const fileNode = sqliteTable("file_node", {
+  // Excludes the verbose `file:///storage/emulated/0/`. Ends with a trailing `/`.
+  path: text("path").primaryKey(),
+  // `null` if `path = "Music"`. Ends with a trailing `/`.
+  parentPath: text("parent_path").references(
+    (): AnySQLiteColumn => fileNode.path,
+  ),
+  name: text("name").notNull(), // Name of directory.
+});
+
+export const fileNodeRelations = relations(fileNode, ({ one }) => ({
+  parent: one(fileNode, {
+    fields: [fileNode.parentPath],
+    references: [fileNode.path],
+  }),
+}));
+
 export type Artist = InferSelectModel<typeof artists>;
 export type ArtistWithTracks = Prettify<Artist & { tracks: TrackWithAlbum[] }>;
 
@@ -137,3 +155,8 @@ export type PlaylistWithTracks = Prettify<
 >;
 
 export type TrackToPlaylist = InferSelectModel<typeof tracksToPlaylists>;
+
+export type FileNode = InferSelectModel<typeof fileNode>;
+export type FileNodeWithParent = Prettify<
+  FileNode & { parent: FileNode | null }
+>;

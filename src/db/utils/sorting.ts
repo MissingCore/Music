@@ -9,11 +9,11 @@ export function sortTracks({
   type,
   tracks,
 }: {
-  type: Media;
+  type: Media | "folder";
   tracks: Track[] | TrackWithAlbum[];
 }) {
   return [...tracks].sort((a, b) => {
-    if (type === "playlist" || type === "track") {
+    if (type !== "album" && type !== "artist") {
       return a.name.localeCompare(b.name);
     } else if (type === "album") {
       return a.track - b.track;

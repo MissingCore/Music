@@ -6,6 +6,7 @@ import { getPlaylist, getTracks } from "@/db/queries";
 import { formatAsTrackIdList } from "@/db/utils/formatters";
 import { sortTracks } from "@/db/utils/sorting";
 
+import { getFolderTracks } from "@/api/file-nodes/[...id]";
 import { SpecialPlaylists } from "./constants";
 import type { TrackListSource } from "./types";
 
@@ -31,6 +32,9 @@ export async function getTrackList({ type, id }: TrackListSource) {
   } else if (type === "artist") {
     const data = await getTracks([eq(tracks.artistName, id)]);
     sortedTracks = sortTracks({ type: "artist", tracks: data });
+  } else if (type === "folder") {
+    const data = await getFolderTracks(id); // `id` contains pathname.
+    sortedTracks = sortTracks({ type: "folder", tracks: data });
   } else {
     if (id === SpecialPlaylists.tracks) {
       const data = await getTracks();

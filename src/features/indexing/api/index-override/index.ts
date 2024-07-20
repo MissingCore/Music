@@ -1,9 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { db } from "@/db";
-import { invalidTracks, tracks } from "@/db/schema";
+import { fileNode, invalidTracks, tracks } from "@/db/schema";
 
 import { fixAlbumFracturization } from "./album-fracturization";
+import { scanLibrary } from "../library-scan";
 import type { AdjustmentOption } from "../../Config";
 import { OverrideHistory } from "../../Config";
 
@@ -39,7 +40,10 @@ export async function dataReadjustments() {
 }
 
 /** Logic we want to run depending on what adjustments we need to make. */
-const AdjustmentFunctionMap: Record<AdjustmentOption, () => Promise<void>> = {
+export const AdjustmentFunctionMap: Record<
+  AdjustmentOption,
+  () => Promise<void>
+> = {
   "album-fracturization": fixAlbumFracturization,
   "artwork-retry": async () => {
     // eslint-disable-next-line drizzle/enforce-update-with-where
@@ -48,5 +52,10 @@ const AdjustmentFunctionMap: Record<AdjustmentOption, () => Promise<void>> = {
   "invalid-tracks-retry": async () => {
     // eslint-disable-next-line drizzle/enforce-delete-with-where
     await db.delete(invalidTracks);
+  },
+  "library-scan": async () => {
+    // eslint-disable-next-line drizzle/enforce-delete-with-where
+    await db.delete(fileNode);
+    await scanLibrary({ dirName: "Music" });
   },
 };

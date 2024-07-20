@@ -8,6 +8,7 @@ import { createAlbum, deleteTrack } from "@/db/queries";
 
 import { Stopwatch } from "@/utils/debug";
 import { isFulfilled, isRejected } from "@/utils/promise";
+import { MUSIC_DIRECTORY } from "../Config";
 
 /** Metadata tags we want to save from each track. */
 const wantedTags = [
@@ -30,7 +31,7 @@ export async function indexAudio() {
     (a) =>
       wantedExtensions.some((ext) => a.filename.endsWith(`.${ext}`)) &&
       // Limit media to those in the `Music` folder on our device.
-      a.uri.startsWith("file:///storage/emulated/0/Music/"),
+      a.uri.startsWith(MUSIC_DIRECTORY),
   );
 
   // Get relevant entries inside our database.
@@ -191,7 +192,7 @@ export async function indexAudio() {
     ),
   );
 
-  return audioFiles;
+  return { foundFiles: audioFiles, changed: incomingTrackData.length };
 }
 
 /** Ensure we use the right key to get the album id. */
