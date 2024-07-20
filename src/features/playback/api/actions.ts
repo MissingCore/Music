@@ -78,7 +78,8 @@ export const playAtom = atom(
     if (isDifferentTrack) set(playTrackAtom, { action: "new" });
     else set(playTrackAtom);
 
-    // 3b. Add track source to "recently played".
+    // 3b. Add track source to "recently played". Ignore for folders.
+    if (source.type === "folder") return;
     const currRecentlyPlayed = await get(recentlyPlayedAsyncAtom);
     set(recentlyPlayedAsyncAtom, [
       source,

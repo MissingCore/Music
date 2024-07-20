@@ -6,7 +6,6 @@ import { ScrollView, Text, View } from "react-native";
 import { ArrowRight } from "@/assets/svgs/ArrowRight";
 import { FolderOutline } from "@/assets/svgs/MaterialSymbol";
 import { useFolderContentForPath } from "@/api/file-nodes/[...id]";
-import { SpecialPlaylists } from "@/features/playback/constants";
 
 import { cn } from "@/lib/style";
 import { ActionButton } from "@/components/form/action-button";
@@ -85,9 +84,9 @@ function FolderContents({ currPath }: { currPath: string }) {
 
   // Information about this track list.
   const trackSource = {
-    type: "playlist",
-    name: SpecialPlaylists.tracks,
-    id: SpecialPlaylists.tracks,
+    type: "folder",
+    name: `[Folder] ${currPath.split("/").at(-1)}`,
+    id: `${currPath}/`,
   } as const;
 
   return (

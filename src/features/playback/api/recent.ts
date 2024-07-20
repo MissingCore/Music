@@ -39,6 +39,8 @@ export const recentlyPlayedDataAtom = unwrap(
 
 /** Information about media formatted as `MediaCardContent`. */
 async function getRecentMediaInfo({ type, id }: TrackListSource) {
+  if (type === "folder") throw new Error("Unsupported.");
+
   if (type === "album") {
     const data = await getAlbum([eq(albums.id, id)]);
     return formatForMediaCard({ type: "album", data });
