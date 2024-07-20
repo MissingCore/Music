@@ -88,8 +88,8 @@ android {
         applicationId 'com.cyanchill.missingcore.music'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 13
-        versionName "1.0.0-rc.9"
+        versionCode 14
+        versionName "1.0.0-rc.10"
     }
     /**
      * https://developer.android.com/build/configure-apk-splits
