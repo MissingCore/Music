@@ -1,4 +1,7 @@
-import { getMetadata } from "@missingcore/react-native-metadata-retriever";
+import {
+  MetadataPresets,
+  getMetadata,
+} from "@missingcore/react-native-metadata-retriever";
 import { inArray } from "drizzle-orm";
 import { getDefaultStore } from "jotai";
 
@@ -55,10 +58,8 @@ export async function fixAlbumFracturization() {
         const {
           albumTitle: album,
           albumArtist: aA,
-          recordingYear: year,
-        } = await getMetadata(tracks[0]!.uri, [
-          ...["albumTitle", "albumArtist", "artist", "recordingYear"],
-        ] as const);
+          year,
+        } = await getMetadata(tracks[0]!.uri, MetadataPresets.album);
 
         const key = getAlbumKey({ album, albumArtist: aA, year });
         if (albumInfoMap[key]) {

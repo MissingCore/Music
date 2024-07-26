@@ -133,7 +133,7 @@ export async function indexAudio() {
   const newAlbums = new Set(
     validTrackData
       .filter(({ albumTitle, albumArtist }) => !!albumTitle && !!albumArtist)
-      .map(({ albumTitle: album, albumArtist, recordingYear: year }) => {
+      .map(({ albumTitle: album, albumArtist, year }) => {
         // An artist can releases multiple albums with the same name (ie: Weezer).
         const key = getAlbumKey({ album, albumArtist, year });
         albumInfoMap[key] = {
@@ -167,7 +167,7 @@ export async function indexAudio() {
         albumTitle: album,
         albumArtist,
         artist: artistName,
-        recordingYear: year,
+        year,
         title: name,
         trackNumber,
         ...rest
