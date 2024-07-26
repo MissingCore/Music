@@ -1,4 +1,7 @@
-import { AudioFileTypes, getAudioMetadata } from "@missingcore/audio-metadata";
+import {
+  MetadataPresets,
+  getMetadata,
+} from "@missingcore/react-native-metadata-retriever";
 import { eq } from "drizzle-orm";
 import * as MediaLibrary from "expo-media-library";
 
@@ -8,31 +11,19 @@ import { createAlbum, deleteTrack } from "@/db/queries";
 
 import { Stopwatch } from "@/utils/debug";
 import { isFulfilled, isRejected } from "@/utils/promise";
+import type { Maybe } from "@/utils/types";
 import { MUSIC_DIRECTORY } from "../Config";
-
-/** Metadata tags we want to save from each track. */
-const wantedTags = [
-  ...["album", "albumArtist", "artist", "name", "track", "year"],
-] as const;
-
-/* FIXME: Temporary work around as we don't really want to support `.mp4` & `.m4a` yet. */
-const wantedExtensions = ["mp3", "flac"] as const;
 
 /** Index tracks into our database for fast retrieval. */
 export async function indexAudio() {
   const stopwatch = new Stopwatch();
 
-  // Get list of audio files supported by `@missingcore/audio-metdata`.
+  // Limit media to those in the `Music` folder on our device.
   const assetOptions = { mediaType: "audio", first: 0 } as const;
   const { totalCount } = await MediaLibrary.getAssetsAsync(assetOptions);
   const audioFiles = (
     await MediaLibrary.getAssetsAsync({ ...assetOptions, first: totalCount })
-  ).assets.filter(
-    (a) =>
-      wantedExtensions.some((ext) => a.filename.endsWith(`.${ext}`)) &&
-      // Limit media to those in the `Music` folder on our device.
-      a.uri.startsWith(MUSIC_DIRECTORY),
-  );
+  ).assets.filter((a) => a.uri.startsWith(MUSIC_DIRECTORY));
 
   // Get relevant entries inside our database.
   const allAlbums = await db.query.albums.findMany();
@@ -78,11 +69,11 @@ export async function indexAudio() {
       .filter(({ id }) => !unmodifiedTracks.has(id))
       .map(async ({ id, uri, duration, modificationTime, filename }) => {
         try {
-          const { metadata } = await getAudioMetadata(uri, wantedTags);
+          const metadata = await getMetadata(uri, MetadataPresets.standard);
           return {
             ...{ id, uri, duration, modificationTime, ...metadata },
             // Fallback to filename (excludes the file extension).
-            ...{ name: metadata.name ?? removeFileExtension(filename) },
+            ...{ title: metadata.title ?? removeFileExtension(filename) },
           };
         } catch (err) {
           // Propagate error, changing its message to be the track id.
@@ -129,7 +120,7 @@ export async function indexAudio() {
         validTrackData
           .map(({ artist, albumArtist }) => [artist, albumArtist])
           .flat()
-          .filter((name) => name !== undefined),
+          .filter((name) => name !== null),
       ),
     ].map((name) => db.insert(artists).values({ name }).onConflictDoNothing()),
   );
@@ -137,12 +128,12 @@ export async function indexAudio() {
   // Add new albums to database (albums may have the same name, but different artists).
   const albumInfoMap: Record<
     string,
-    { name: string; artistName: string; releaseYear?: number }
+    { name: string; artistName: string; releaseYear: number | null }
   > = {};
   const newAlbums = new Set(
     validTrackData
-      .filter(({ album, albumArtist }) => !!album && !!albumArtist)
-      .map(({ album, albumArtist, year }) => {
+      .filter(({ albumTitle, albumArtist }) => !!albumTitle && !!albumArtist)
+      .map(({ albumTitle: album, albumArtist, recordingYear: year }) => {
         // An artist can releases multiple albums with the same name (ie: Weezer).
         const key = getAlbumKey({ album, albumArtist, year });
         albumInfoMap[key] = {
@@ -171,11 +162,23 @@ export async function indexAudio() {
   // Add new & updated tracks to the database.
   await Promise.allSettled(
     validTrackData.map(
-      async ({ id, album, albumArtist, artist, year, ...rest }) => {
+      async ({
+        id,
+        albumTitle: album,
+        albumArtist,
+        artist: artistName,
+        recordingYear: year,
+        title: name,
+        trackNumber,
+        ...rest
+      }) => {
         const albumKey = getAlbumKey({ album, albumArtist, year });
         const albumId = album ? albumIdMap[albumKey] : null;
 
-        const newTrackData = { id, artistName: artist, albumId, ...rest };
+        const newTrackData = {
+          ...{ id, name, artistName, albumId, track: trackNumber ?? undefined },
+          ...rest,
+        };
         const isRetriedTrack = allInvalidTracks.find((t) => t.id === id);
 
         if (modifiedTracks.has(id) && !isRetriedTrack) {
@@ -197,16 +200,14 @@ export async function indexAudio() {
 
 /** Ensure we use the right key to get the album id. */
 export function getAlbumKey(key: {
-  album: string | undefined;
-  albumArtist: string | undefined;
-  year: number | undefined;
+  album: Maybe<string>;
+  albumArtist: Maybe<string>;
+  year: Maybe<number>;
 }) {
   return `${encodeURIComponent(key.album ?? "")} ${encodeURIComponent(key.albumArtist ?? "")} ${key.year}`;
 }
 
 /** Removes the file extension from a filename. */
 function removeFileExtension(filename: string) {
-  return AudioFileTypes.some((ext) => filename.endsWith(`.${ext}`))
-    ? filename.split(".").slice(0, -1).join(".")
-    : filename;
+  return filename.split(".").slice(0, -1).join(".");
 }

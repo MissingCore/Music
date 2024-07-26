@@ -1,4 +1,4 @@
-import { getAudioMetadata } from "@missingcore/audio-metadata";
+import { getMetadata } from "@missingcore/react-native-metadata-retriever";
 import { inArray } from "drizzle-orm";
 import { getDefaultStore } from "jotai";
 
@@ -47,15 +47,17 @@ export async function fixAlbumFracturization() {
       string,
       {
         albumIds: string[];
-        entry: { name: string; artistName: string; releaseYear?: number };
+        entry: { name: string; artistName: string; releaseYear: number | null };
       }
     > = {};
     await Promise.all(
       usedAlbums.map(async ({ id, tracks }) => {
         const {
-          metadata: { album, albumArtist: aA, year },
-        } = await getAudioMetadata(tracks[0]!.uri, [
-          ...["album", "albumArtist", "artist", "year"],
+          albumTitle: album,
+          albumArtist: aA,
+          recordingYear: year,
+        } = await getMetadata(tracks[0]!.uri, [
+          ...["albumTitle", "albumArtist", "artist", "recordingYear"],
         ] as const);
 
         const key = getAlbumKey({ album, albumArtist: aA, year });
