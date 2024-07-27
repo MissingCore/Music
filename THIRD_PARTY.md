@@ -32,6 +32,7 @@
 | heroicons | MIT | https://heroicons.com |
 | Ionicons | MIT | https://github.com/ionic-team/ionicons |
 | jotai | MIT | https://github.com/pmndrs/jotai |
+| jotai-scope | MIT | https://github.com/jotaijs/jotai-scope |
 | Material Symbols | Apache-2.0 | https://github.com/google/material-design-icons |
 | nativewind | MIT | https://github.com/marklawlor/nativewind |
 | react | MIT | https://github.com/facebook/react |

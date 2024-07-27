@@ -1,66 +1,34 @@
 import { FlashList } from "@shopify/flash-list";
-import { Link, router, useLocalSearchParams } from "expo-router";
-import { useEffect, useRef } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { router, useLocalSearchParams } from "expo-router";
+import { useSetAtom } from "jotai";
+import { useEffect } from "react";
+import { ScrollView, View } from "react-native";
 
 import { ArrowRight } from "@/assets/svgs/ArrowRight";
 import { FolderOutline } from "@/assets/svgs/MaterialSymbol";
 import { useFolderContentForPath } from "@/api/file-nodes/[...id]";
+import { folderPathAtom } from "./_layout";
 
-import { cn } from "@/lib/style";
 import { ActionButton } from "@/components/form/action-button";
-import { ScrollRow } from "@/components/ui/container";
-import { ScrollShadow } from "@/components/ui/scroll-shadow";
 import { Description } from "@/components/ui/text";
 import { Track } from "@/features/track/components/track";
 
 /** Screen for `/folder/[id]` route. */
 export default function FolderScreen() {
   const { id = ["Music"] } = useLocalSearchParams<{ id: string[] }>();
+  const updateFolderPath = useSetAtom(folderPathAtom);
+
+  useEffect(() => {
+    updateFolderPath(id);
+  }, [id, updateFolderPath]);
 
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      contentContainerClassName="grow pt-5"
+      contentContainerClassName="grow pt-2"
     >
-      <View style={{ height: 34 }} className="pb-4">
-        <Breadcrumbs pathSegments={id} />
-        <ScrollShadow size={16} />
-      </View>
       <FolderContents currPath={id.join("/")} />
     </ScrollView>
-  );
-}
-
-function Breadcrumbs({ pathSegments }: { pathSegments: string[] }) {
-  const breadcrumbsRef = useRef<ScrollRow.Ref>(null);
-
-  useEffect(() => {
-    if (breadcrumbsRef.current) breadcrumbsRef.current.scrollToEnd();
-  }, [pathSegments]);
-
-  return (
-    <ScrollRow ref={breadcrumbsRef}>
-      {pathSegments.map((dirName, idx) => (
-        <View key={idx} className="flex-row gap-2">
-          {idx !== 0 && (
-            <Text className="px-1 font-geistMono text-sm text-foreground50">
-              /
-            </Text>
-          )}
-          <Link
-            href={`/folder/${pathSegments.slice(0, idx + 1).join("/")}`}
-            disabled={idx === pathSegments.length - 1}
-            className={cn(
-              "font-geistMono text-sm text-foreground50 active:opacity-75",
-              { "text-accent50": idx === pathSegments.length - 1 },
-            )}
-          >
-            {dirName}
-          </Link>
-        </View>
-      ))}
-    </ScrollRow>
   );
 }
 
