@@ -20,10 +20,21 @@ export async function getFolderTracks(path: string) {
 }
 
 export async function getFolderSubdirectories(path: string) {
-  return db.query.fileNode.findMany({
+  const fileNodes = await db.query.fileNode.findMany({
     where: (fields, { eq }) => eq(fields.parentPath, path),
     orderBy: (fields, { asc }) => asc(fields.name),
   });
+  const hasChild = await Promise.all(
+    fileNodes.map(({ path }) =>
+      db.query.tracks.findFirst({
+        // FIXME: Hard-coded the path start for now.
+        where: (fields, { like }) =>
+          like(fields.uri, `file:///storage/emulated/0/${path}%`),
+        columns: { id: true },
+      }),
+    ),
+  );
+  return fileNodes.filter((_, idx) => hasChild[idx] !== undefined);
 }
 
 export async function getFolderInfo(path: string) {
