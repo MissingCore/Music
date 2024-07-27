@@ -1,7 +1,4 @@
 {
-  "@dr.pogodin/react-native-fs@2.27.1": {
-    "copyright": "Copyright © 2023, Dr. Sergey Pogodin — <doc@pogodin.studio> (https://dr.pogodin.studio)\nCopyright © 2015, Johannes Lumpe"
-  },
   "@paralleldrive/cuid2@2.2.2": {
     "repository": "https://github.com/paralleldrive/cuid2"
   },

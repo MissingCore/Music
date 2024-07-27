@@ -1,11 +1,10 @@
 | Name | License | Source |
 | ---- | ------- | ------ |
 | @boterop/react-native-background-timer | MIT | https://github.com/boterop/react-native-background-timer |
-| @dr.pogodin/react-native-fs | MIT | https://github.com/birdofpreyru/react-native-fs |
 | @expo/vector-icons | MIT | https://github.com/expo/vector-icons |
 | @gorhom/bottom-sheet | MIT | https://github.com/gorhom/react-native-bottom-sheet |
 | @miblanchard/react-native-slider | MIT | https://github.com/miblanchard/react-native-slider |
-| @missingcore/audio-metadata | MIT | https://github.com/MissingCore/audio-metadata |
+| @missingcore/react-native-metadata-retriever | MIT | https://github.com/MissingCore/react-native-metadata-retriever |
 | @paralleldrive/cuid2 | MIT | https://github.com/paralleldrive/cuid2 |
 | @react-native-async-storage/async-storage | MIT | https://github.com/react-native-async-storage/async-storage |
 | @react-navigation/native | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/native |

@@ -1,4 +1,4 @@
-import { getAudioMetadata } from "@missingcore/audio-metadata";
+import { getArtwork } from "@missingcore/react-native-metadata-retriever";
 import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
@@ -42,10 +42,10 @@ export async function saveArtwork() {
     // Make sure the track doesn't have `artwork` and either be unassociated
     // with an album or its album doesn't have `artwork`.
     if (!artwork && (!albumId || !albumsWithCovers.has(albumId))) {
-      const { metadata } = await getAudioMetadata(uri, ["artwork"]);
-      if (metadata.artwork) {
+      const base64Artwork = await getArtwork(uri);
+      if (base64Artwork) {
         try {
-          const artwork = await saveBase64Img(metadata.artwork);
+          const artwork = await saveBase64Img(base64Artwork);
           if (albumId) {
             await db
               .update(albums)

@@ -31,13 +31,13 @@ A Nothing inspired music player (based on design by [Alkid Shuli (alKid)](https:
 
 - Supports Android
 - Play, Pause, Seek, Shuffle, Repeat
-- Grouping Tracks by Albums (w/ Artwork) & Artists
+- Grouping Tracks by Albums (w/ Artwork), Artists, and Folder Structure
 - Playlists w/ Custom Artwork
 - Favoriting Albums, Playlists, and Tracks
 - Background Playback w/ Media Control Notification
 - Queues
-- Automatically extraction of metadata w/ [@missingcore/audio-metadata](https://github.com/MissingCore/audio-metadata)
-  - Supports `.mp3` (ID3v1 & ID3v2) & `.flac`.
+- Automatically extraction of metadata w/ [@missingcore/react-native-metadata-retriever](https://github.com/MissingCore/react-native-metadata-retriever)
+  - List of [supported media formats](https://developer.android.com/media/platform/supported-formats#audio-formats) according to Android docs.
 - Data Backup
 
 > See potential upcoming features in future updates in [this discussion post](https://github.com/MissingCore/Music/discussions/9).
@@ -76,17 +76,17 @@ This (hopefully) lists out all the permissions required by Music based on the pe
 >
 > When we open the app for the first time or after we add some new tracks to our device:
 >
-> 1. The app will detect any new tracks and automatically read the metadata via the [@missingcore/audio-metadata](https://github.com/MissingCore/audio-metadata) package. **This will cause you to be on the loading screen for a little bit.**
+> 1. The app will detect any new tracks and automatically read the metadata via the [@missingcore/react-native-metadata-retriever](https://github.com/MissingCore/react-native-metadata-retriever) package. **This will cause you to be on the loading screen for a little bit.**
 > 2. After the loading screen closes, the app will save the album/track artwork in the background in an optimal manner. **This will take some time and may cause some laggy behavior in the app**.
 >
 > Once this is completed, this logic won't run again unless Music detects that we added new tracks to the device.
 
 Here are some benchmarks for saving 177 new tracks & 20 album/track artwork **during a development version** of this app. Do note that the production version of the app may be faster due to not having any debug logic running in the background.
 
-| Device (OS Version)                    | Track Saving | Artwork Saving |
-| -------------------------------------- | ------------ | -------------- |
-| Nothing Phone 2a — Android 14 (v2.5.6) | ~13.2567s    | ~13.2035s      |
-| OnePlus 6 — Android 11 (v11.1.2.2)     | ~21.2380s    | ~17.6303s      |
+| Device (OS Version)                  | Track Saving | Artwork Saving |
+| ------------------------------------ | ------------ | -------------- |
+| Nothing Phone 2a — Android 14 (v2.6) | ~2.5028s     | ~6.0648s       |
+| OnePlus 6 — Android 11 (v11.1.2.2)   | ~5.5598s     | ~7.0251s       |
 
 # Installation
 
@@ -118,11 +118,11 @@ When looking at the `App size` field under `Space used` in the storage info for 
 
 Refer to the [performance section](#performance) of this README.
 
-> How do I add music to the app?
+> How do I add music to the app? Why are my music files not displayed?
 
 Place your music files in the "Music" folder on your Android device. It doesn't matter if you put the tracks directly into the folder or in sub-folders for better organization.
 
-Look in [@missingcore/audio-metadata](https://github.com/MissingCore/audio-metadata) for supported audio files and metadata formats.
+You can look [here](https://developer.android.com/media/platform/supported-formats#audio-formats) for the list of supported audio files & metadata formats from the Android documentation.
 
 > The loading screen is permanently displayed after moving some music in the "Music" folder!
 
@@ -130,15 +130,9 @@ This is an issue with Android where when we move a folder, the original location
 
 As mentioned in [#36](https://github.com/MissingCore/Music/issues/36), a work around is to copy the contents you want to move to the desired location (instead of moving the original folder), then delete the content at the original location. You can also go through your file system and see if you end up with duplicate "fake" copies of your moved media.
 
-> Why are my music files not displayed?
-
-Currently, we support a limited number of file extensions for metadata. Check [@missingcore/audio-metadata](https://github.com/MissingCore/audio-metadata) for the full list.
-
-If your file fails to get saved and has the supported file extensions, it may be due to the file not having the expected metadata container.
-
 > What platforms are supported?
 
-We officially support Android. Theoretically, this should also work for iOS (as this is React Native code), but this is untested as publishing on the App Store isn't feasible.
+We officially support Android. Prior to `v1.0.0-rc.11`, this theoretically should also work for iOS (as this is React Native code), but with the switch to `@missingcore/react-native-metadata-retriever` which uses an Android-only API, this is no longer the case.
 
 On Android, the app can be installed on all form-factors, however, we guarantee functionality and a better user-experience on "phone" layouts as that's our main audience. We may improve the layout for larger screens in the future.
 

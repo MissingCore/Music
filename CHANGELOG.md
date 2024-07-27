@@ -17,12 +17,12 @@ At launch, `Music` provides the following features:
 
 - Supports Android
 - Play, Pause, Seek, Shuffle, Repeat
-- Grouping Tracks by Albums (w/ Artwork) & Artists
+- Grouping Tracks by Albums (w/ Artwork), Artists, and Folder Structure
 - Playlists w/ Custom Artwork
 - Favoriting Albums, Playlists, and Tracks
 - Background Playback w/ Media Control Notification
 - Queues
-- Automatically extraction of metadata w/ [@missingcore/audio-metadata](https://github.com/MissingCore/audio-metadata)
+- Automatically extraction of metadata w/ [@missingcore/react-native-metadata-retriever](https://github.com/MissingCore/react-native-metadata-retriever)
 - Data Backup
 
 #### 📋 Queues
