@@ -1,17 +1,23 @@
 import { Link, Stack } from "expo-router";
 import { atom, useAtomValue } from "jotai";
 import { ScopeProvider } from "jotai-scope";
-import { Fragment, useEffect, useRef } from "react";
-import { View } from "react-native";
+import { Fragment } from "react";
+import { View, useWindowDimensions } from "react-native";
 import Animated, {
   FadeInLeft,
   FadeOutRight,
+  scrollTo,
+  useAnimatedRef,
   useAnimatedStyle,
+  useDerivedValue,
   useSharedValue,
+  withDelay,
+  withSequence,
+  withTiming,
 } from "react-native-reanimated";
 
 import { cn } from "@/lib/style";
-import { ScrollRow } from "@/components/ui/container";
+import { AnimatedScrollRow } from "@/components/ui/container";
 import { ScrollShadow } from "@/components/ui/scroll-shadow";
 
 /**
@@ -43,41 +49,35 @@ export default function FolderLayout() {
 /** Custom folder structure breadcrumbs. */
 function Breadcrumbs() {
   const pathSegments = useAtomValue(folderPathAtom);
-  const prevPathSegments = useRef<string[]>([]);
-  const breadcrumbsRef = useRef<ScrollRow.Ref>(null);
-  const containerWidth = useSharedValue(0);
-  const currWidth = useSharedValue(0);
+  const breadcrumbsRef = useAnimatedRef<AnimatedScrollRow.Ref>();
+  const { width: screenWidth } = useWindowDimensions();
   const lastWidth = useSharedValue(0);
   const removedWidth = useSharedValue(0);
+  const newScrollPos = useSharedValue(0);
 
   const onLayoutShift = (newWidth: number) => {
-    currWidth.value = newWidth;
+    // `newWidth` doesn't include the `px-4` on `<AnimatedScrollView />`;
+    // don't know exactly where the extra `8px` needed came from.
+    newScrollPos.value = 40 + newWidth - screenWidth;
     if (newWidth < lastWidth.value) {
-      removedWidth.value = lastWidth.value - newWidth;
+      removedWidth.value = withSequence(
+        withTiming(lastWidth.value - newWidth, { duration: 0 }),
+        withDelay(300, withTiming(0, { duration: 0 })),
+      );
     }
     lastWidth.value = newWidth;
   };
+
+  useDerivedValue(() => {
+    scrollTo(breadcrumbsRef, newScrollPos.value, 0, true);
+  });
 
   const wrapperStyle = useAnimatedStyle(() => ({
     paddingRight: removedWidth.value,
   }));
 
-  useEffect(() => {
-    // Automatically scroll if we've going deeper in the tree.
-    if (prevPathSegments.current.length <= pathSegments.length) {
-      if (breadcrumbsRef.current) breadcrumbsRef.current.scrollToEnd();
-    }
-    prevPathSegments.current = pathSegments;
-  }, [pathSegments]);
-
   return (
-    <ScrollRow
-      ref={breadcrumbsRef}
-      onLayout={({ nativeEvent }) => {
-        containerWidth.value = nativeEvent.layout.width;
-      }}
-      className="pb-2"
-    >
+    <AnimatedScrollRow ref={breadcrumbsRef}>
       <Animated.View
         onLayout={({ nativeEvent }) => onLayoutShift(nativeEvent.layout.width)}
         className="flex-row gap-2"
@@ -88,7 +88,7 @@ function Breadcrumbs() {
               <Animated.Text
                 entering={FadeInLeft}
                 exiting={FadeOutRight}
-                className="px-1 font-geistMono text-sm text-foreground50"
+                className="px-1 pb-2 font-geistMono text-sm text-foreground50"
               >
                 /
               </Animated.Text>
@@ -101,7 +101,7 @@ function Breadcrumbs() {
                   .join("/")}`}
                 disabled={idx === pathSegments.length - 1}
                 className={cn(
-                  "font-geistMono text-sm text-foreground50 active:opacity-75",
+                  "pb-2 font-geistMono text-sm text-foreground50 active:opacity-75",
                   { "text-accent50": idx === pathSegments.length - 1 },
                 )}
               >
@@ -111,19 +111,8 @@ function Breadcrumbs() {
           </Fragment>
         ))}
       </Animated.View>
-      <Animated.View
-        onLayout={({ nativeEvent }) => {
-          if (nativeEvent.layout.width !== 0) {
-            breadcrumbsRef.current?.scrollTo({
-              x: currWidth.value - removedWidth.value - containerWidth.value,
-            });
-            setTimeout(() => {
-              removedWidth.value = 0;
-            }, 300);
-          }
-        }}
-        style={wrapperStyle}
-      />
-    </ScrollRow>
+      {/* Animated padding to allow exiting scroll animation to look nice. */}
+      <Animated.View style={wrapperStyle} />
+    </AnimatedScrollRow>
   );
 }
