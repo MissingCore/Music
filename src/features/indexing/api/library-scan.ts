@@ -4,11 +4,11 @@ import { db } from "@/db";
 import { fileNode } from "@/db/schema";
 
 import { isFulfilled } from "@/utils/promise";
-import { MUSIC_DIRECTORY } from "../Config";
 
 /**
- * Recursively scans library structure in `file:///storage/emulated/0/Music/`,
- * going all the way down the tree until we no longer find any folders.
+ * Recursively scans library structure (starting from `file:///${dirName}`
+ * when `parentPath === undefined`), going all the way down the tree until
+ * we no longer find any folders.
  */
 export async function scanLibrary({
   dirName,
@@ -17,7 +17,8 @@ export async function scanLibrary({
   dirName: string;
   parentPath?: string; // If `undefined`, means we're starting at the root of `Music`.
 }) {
-  // Create new entry in database.
+  // Create new entry in database. We assume if `parentPath === undefined`,
+  // then `dirName` is the path from the "root".
   const currPath = parentPath ? `${parentPath}${dirName}/` : `${dirName}/`;
   await db
     .insert(fileNode)
@@ -25,9 +26,8 @@ export async function scanLibrary({
     .onConflictDoNothing();
 
   // Look for child directories (filtering out names with file extensions).
-  // We use `.slice(6)` to remove the `Music/`.
-  const fullPath = `${MUSIC_DIRECTORY}${currPath.slice(6)}`;
-  // We'll assume that if a file name has a period that's not at the beginning,
+  const fullPath = `file:///${currPath}`;
+  // We'll assume that if a filename has a period that's not at the beginning,
   // it's before the file extension and thus isn't a directory.
   const childDirNames = (await FileSystem.readDirectoryAsync(fullPath)).filter(
     (fileName) => !fileName.includes("."),
@@ -35,8 +35,8 @@ export async function scanLibrary({
   // Make sure that `childDirNames` only contain directory names.
   const childDirectories = (
     await Promise.allSettled(
-      childDirNames.map(async (dirName) => {
-        const uri = `${fullPath}${dirName}`;
+      childDirNames.map(async (name) => {
+        const uri = `${fullPath}${name}`;
         const { isDirectory } = await FileSystem.getInfoAsync(uri);
         return isDirectory ? uri : undefined;
       }),

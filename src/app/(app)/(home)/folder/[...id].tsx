@@ -15,7 +15,9 @@ import { Track } from "@/features/track/components/track";
 
 /** Screen for `/folder/[id]` route. */
 export default function FolderScreen() {
-  const { id = ["Music"] } = useLocalSearchParams<{ id: string[] }>();
+  const { id = ["storage/emulated/0/Music"] } = useLocalSearchParams<{
+    id: string[];
+  }>();
   const updateFolderPath = useSetAtom(folderPathAtom);
 
   useEffect(() => {
@@ -27,13 +29,17 @@ export default function FolderScreen() {
       showsVerticalScrollIndicator={false}
       contentContainerClassName="grow pt-2"
     >
-      <FolderContents currPath={id.join("/")} />
+      <FolderContents
+        currPath={id.map((segment) => encodeURIComponent(segment)).join("/")}
+      />
     </ScrollView>
   );
 }
 
 function FolderContents({ currPath }: { currPath: string }) {
-  const { isPending, error, data } = useFolderContentForPath(currPath);
+  const { isPending, error, data } = useFolderContentForPath(
+    decodeURIComponent(currPath),
+  );
 
   if (isPending) return <View className="w-full flex-1 px-4" />;
   else if (error) {
@@ -53,8 +59,8 @@ function FolderContents({ currPath }: { currPath: string }) {
   // Information about this track list.
   const trackSource = {
     type: "folder",
-    name: `[Folder] ${currPath.split("/").at(-1)}`,
-    id: `${currPath}/`,
+    name: `[Folder] ${decodeURIComponent(currPath).split("/").at(-1)}`,
+    id: `${decodeURIComponent(currPath)}/`,
   } as const;
 
   return (

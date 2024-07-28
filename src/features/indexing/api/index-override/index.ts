@@ -1,3 +1,4 @@
+import { StorageVolumesDirectoryPaths } from "@missingcore/react-native-metadata-retriever";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { db } from "@/db";
@@ -7,6 +8,7 @@ import { fixAlbumFracturization } from "./album-fracturization";
 import { scanLibrary } from "../library-scan";
 import type { AdjustmentOption } from "../../Config";
 import { OverrideHistory } from "../../Config";
+import { addTrailingSlash } from "../../utils";
 
 /**
  * Force any re-indexing based on any changes that we made in the code
@@ -56,6 +58,11 @@ export const AdjustmentFunctionMap: Record<
   "library-scan": async () => {
     // eslint-disable-next-line drizzle/enforce-delete-with-where
     await db.delete(fileNode);
-    await scanLibrary({ dirName: "Music" });
+    await Promise.allSettled(
+      StorageVolumesDirectoryPaths.map((dir) =>
+        // We want to remove the front forward slash.
+        scanLibrary({ dirName: `${addTrailingSlash(dir).slice(1)}Music` }),
+      ),
+    );
   },
 };

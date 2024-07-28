@@ -55,7 +55,10 @@ function Breadcrumbs() {
           )}
           <Animated.View entering={FadeInLeft} exiting={FadeOutRight}>
             <Link
-              href={`/folder/${pathSegments.slice(0, idx + 1).join("/")}`}
+              href={`/folder/${pathSegments
+                .slice(0, idx + 1)
+                .map((segment) => encodeURIComponent(segment))
+                .join("/")}`}
               disabled={idx === pathSegments.length - 1}
               className={cn(
                 "font-geistMono text-sm text-foreground50 active:opacity-75",

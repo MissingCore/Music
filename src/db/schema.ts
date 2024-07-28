@@ -119,7 +119,7 @@ export const tracksToPlaylistsRelations = relations(
 );
 
 export const fileNode = sqliteTable("file_node", {
-  // Excludes the verbose `file:///storage/emulated/0/`. Ends with a trailing `/`.
+  // Excludes the `file:///` at the beginning. Ends with a trailing `/`.
   path: text("path").primaryKey(),
   // `null` if `path = "Music"`. Ends with a trailing `/`.
   parentPath: text("parent_path").references(

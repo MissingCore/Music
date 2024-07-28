@@ -6,10 +6,10 @@ import { formatTracksForTrack } from "@/db/utils/formatters";
 import { fileNodeKeys } from "./_queryKeys";
 
 import type { ExtractFnReturnType } from "@/utils/types";
-import { MUSIC_DIRECTORY } from "@/features/indexing/Config";
+import { addTrailingSlash } from "@/features/indexing/utils";
 
 export async function getFolderTracks(path: string) {
-  const fullPath = `${MUSIC_DIRECTORY}${path.slice(6)}`;
+  const fullPath = `file:///${path}`;
   return (
     await db.query.tracks.findMany({
       where: (fields, { like }) => like(fields.uri, `${fullPath}%`),
@@ -27,9 +27,7 @@ export async function getFolderSubdirectories(path: string) {
   const hasChild = await Promise.all(
     fileNodes.map(({ path }) =>
       db.query.tracks.findFirst({
-        // FIXME: Hard-coded the path start for now.
-        where: (fields, { like }) =>
-          like(fields.uri, `file:///storage/emulated/0/${path}%`),
+        where: (fields, { like }) => like(fields.uri, `file:///${path}%`),
         columns: { id: true },
       }),
     ),
@@ -50,7 +48,7 @@ type QueryFnData = ExtractFnReturnType<typeof getFolderInfo>;
 export const useFolderContentForPath = (path: string) =>
   useQuery({
     queryKey: fileNodeKeys.detail(path),
-    queryFn: () => getFolderInfo(path.endsWith("/") ? path : `${path}/`),
+    queryFn: () => getFolderInfo(addTrailingSlash(path)),
     select: useCallback(
       ({ subDirectories, tracks }: QueryFnData) => ({
         subDirectories,

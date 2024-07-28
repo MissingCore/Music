@@ -23,7 +23,7 @@ export const OverrideHistory: Record<
   },
   1: {
     version: "v1.0.0-rc.11",
-    changes: ["invalid-tracks-retry"],
+    changes: ["invalid-tracks-retry", "library-scan"],
   },
 };
 
