@@ -26,9 +26,3 @@ export const OverrideHistory: Record<
     changes: ["invalid-tracks-retry", "library-scan"],
   },
 };
-
-/**
- * `file://` URI pointing to the directory where music is stored. Ends
- * with a trailing `/`.
- */
-export const MUSIC_DIRECTORY = "file:///storage/emulated/0/Music/";

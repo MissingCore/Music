@@ -1,5 +1,6 @@
 import {
   MetadataPresets,
+  StorageVolumesDirectoryPaths,
   getMetadata,
 } from "@missingcore/react-native-metadata-retriever";
 import { eq } from "drizzle-orm";
@@ -12,7 +13,7 @@ import { createAlbum, deleteTrack } from "@/db/queries";
 import { Stopwatch } from "@/utils/debug";
 import { isFulfilled, isRejected } from "@/utils/promise";
 import type { Maybe } from "@/utils/types";
-import { MUSIC_DIRECTORY } from "../Config";
+import { addTrailingSlash } from "../utils";
 
 /** Index tracks into our database for fast retrieval. */
 export async function indexAudio() {
@@ -23,7 +24,11 @@ export async function indexAudio() {
   const { totalCount } = await MediaLibrary.getAssetsAsync(assetOptions);
   const audioFiles = (
     await MediaLibrary.getAssetsAsync({ ...assetOptions, first: totalCount })
-  ).assets.filter((a) => a.uri.startsWith(MUSIC_DIRECTORY));
+  ).assets.filter((a) =>
+    StorageVolumesDirectoryPaths.some((dir) =>
+      a.uri.startsWith(`file://${addTrailingSlash(dir)}Music/`),
+    ),
+  );
 
   // Get relevant entries inside our database.
   const allAlbums = await db.query.albums.findMany();
