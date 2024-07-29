@@ -58,3 +58,37 @@ export const ScrollRow = forwardRef<ScrollRow.Ref, ScrollRow.Props>(
     );
   },
 );
+
+// eslint-disable-next-line import/export
+export namespace AnimatedScrollRow {
+  export type Ref = Animated.ScrollView;
+
+  export type Props = Omit<
+    React.ComponentProps<Animated.ScrollView>,
+    "horizontal" | "showsHorizontalScrollIndicator"
+  >;
+}
+
+/**
+ * Horizontal-scrolling list with default styling. Uses `Animated.ScrollView`
+ * from `react-native-reanimated`.
+ */
+// eslint-disable-next-line @typescript-eslint/no-redeclare, import/export
+export const AnimatedScrollRow = forwardRef<
+  AnimatedScrollRow.Ref,
+  AnimatedScrollRow.Props
+>(function AnimatedScrollRow({ contentContainerClassName, ...props }, ref) {
+  return (
+    <Animated.ScrollView
+      ref={ref}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      overScrollMode="never"
+      contentContainerClassName={cn(
+        "grow gap-2 px-4",
+        contentContainerClassName,
+      )}
+      {...props}
+    />
+  );
+});

@@ -120,7 +120,7 @@ Refer to the [performance section](#performance) of this README.
 
 > How do I add music to the app? Why are my music files not displayed?
 
-Place your music files in the "Music" folder on your Android device. It doesn't matter if you put the tracks directly into the folder or in sub-folders for better organization.
+Place your music files in the "Music" folder on your Android device or SD card. It doesn't matter if you put the tracks directly into the folder or in sub-folders for better organization.
 
 You can look [here](https://developer.android.com/media/platform/supported-formats#audio-formats) for the list of supported audio files & metadata formats from the Android documentation.
 

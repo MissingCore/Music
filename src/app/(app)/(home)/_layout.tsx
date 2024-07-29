@@ -11,8 +11,7 @@ export default function HomeLayout() {
       <NavigationBar />
       <Stack screenOptions={{ animation: "fade", headerShown: false }}>
         <Stack.Screen name="index" />
-        <Stack.Screen name="folder/index" />
-        <Stack.Screen name="folder/[...id]" />
+        <Stack.Screen name="folder" />
         <Stack.Screen name="playlist" />
         <Stack.Screen name="track" />
         <Stack.Screen name="album" />
@@ -25,7 +24,7 @@ export default function HomeLayout() {
 /** List of routes we'll display buttons for on the "home" page. */
 const NavRoutes = [
   { href: "/", label: "HOME" },
-  { href: "/folder/Music", label: "FOLDERS" },
+  { href: "/folder", label: "FOLDERS" },
   { href: "/playlist", label: "PLAYLISTS" },
   { href: "/track", label: "TRACKS" },
   { href: "/album", label: "ALBUMS" },
