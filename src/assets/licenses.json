@@ -17,7 +17,7 @@
   },
   "@gorhom/bottom-sheet": {
     "name": "@gorhom/bottom-sheet",
-    "version": "5.0.0-alpha.9",
+    "version": "5.0.0-alpha.11",
     "copyright": "Copyright (c) 2020 Mo Gorhom",
     "source": "https://github.com/gorhom/react-native-bottom-sheet",
     "license": "MIT",
@@ -57,7 +57,7 @@
   },
   "@react-navigation/native": {
     "name": "@react-navigation/native",
-    "version": "6.1.17",
+    "version": "6.1.18",
     "copyright": "Copyright (c) 2017 React Navigation Contributors",
     "source": "https://github.com/react-navigation/react-navigation/tree/main/packages/native",
     "license": "MIT",
@@ -73,7 +73,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.51.1",
+    "version": "5.51.15",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -97,7 +97,7 @@
   },
   "drizzle-orm": {
     "name": "drizzle-orm",
-    "version": "0.32.0",
+    "version": "0.32.1",
     "copyright": "Copyright (c) 2022 Drizzle Team",
     "source": "https://github.com/drizzle-team/drizzle-orm",
     "license": "Apache-2.0",
@@ -105,7 +105,7 @@
   },
   "expo": {
     "name": "expo",
-    "version": "51.0.20",
+    "version": "51.0.22",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo",
     "license": "MIT",
@@ -145,7 +145,7 @@
   },
   "expo-font": {
     "name": "expo-font",
-    "version": "12.0.8",
+    "version": "12.0.9",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-font",
     "license": "MIT",
@@ -153,7 +153,7 @@
   },
   "expo-image": {
     "name": "expo-image",
-    "version": "1.12.12",
+    "version": "1.12.13",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-image",
     "license": "MIT",
@@ -209,7 +209,7 @@
   },
   "expo-sqlite": {
     "name": "expo-sqlite",
-    "version": "14.0.4",
+    "version": "14.0.5",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-sqlite",
     "license": "MIT",
@@ -249,7 +249,7 @@
   },
   "jotai": {
     "name": "jotai",
-    "version": "2.9.0",
+    "version": "2.9.1",
     "copyright": "Copyright (c) 2020-2023 Poimandres",
     "source": "https://github.com/pmndrs/jotai",
     "license": "MIT",
@@ -297,7 +297,7 @@
   },
   "react-native-bootsplash": {
     "name": "react-native-bootsplash",
-    "version": "6.0.0-beta.9",
+    "version": "6.0.0",
     "copyright": "Copyright (c) 2021 Mathieu Acthernoene",
     "source": "https://github.com/zoontek/react-native-bootsplash",
     "license": "MIT",
