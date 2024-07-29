@@ -1,8 +1,8 @@
-import { Link, Stack } from "expo-router";
+import { Stack, router } from "expo-router";
 import { atom, useAtomValue } from "jotai";
 import { ScopeProvider } from "jotai-scope";
 import { Fragment } from "react";
-import { View, useWindowDimensions } from "react-native";
+import { Pressable, Text, View, useWindowDimensions } from "react-native";
 import Animated, {
   FadeInLeft,
   FadeOutRight,
@@ -39,7 +39,6 @@ export default function FolderLayout() {
         <ScrollShadow size={16} />
       </View>
       <Stack screenOptions={{ animation: "fade", headerShown: false }}>
-        <Stack.Screen name="index" />
         <Stack.Screen name="[...id]" />
       </Stack>
     </ScopeProvider>
@@ -82,7 +81,7 @@ function Breadcrumbs() {
         onLayout={({ nativeEvent }) => onLayoutShift(nativeEvent.layout.width)}
         className="flex-row gap-2"
       >
-        {pathSegments.map((dirName, idx) => (
+        {[undefined, ...pathSegments].map((dirName, idx) => (
           <Fragment key={idx}>
             {idx !== 0 && (
               <Animated.Text
@@ -94,19 +93,26 @@ function Breadcrumbs() {
               </Animated.Text>
             )}
             <Animated.View entering={FadeInLeft} exiting={FadeOutRight}>
-              <Link
-                href={`/folder/${pathSegments
-                  .slice(0, idx + 1)
-                  .map((segment) => encodeURIComponent(segment))
-                  .join("/")}`}
-                disabled={idx === pathSegments.length - 1}
-                className={cn(
-                  "pb-2 font-geistMono text-sm text-foreground50 active:opacity-75",
-                  { "text-accent50": idx === pathSegments.length - 1 },
-                )}
+              <Pressable
+                onPress={() => {
+                  // Pop the segments we pushed onto the stack and update
+                  // the path segments atom accordingly.
+                  router.dismiss(pathSegments.length - idx);
+                }}
+                // `pathSegments.length` instead of `pathSegments.length - 1`
+                // due to us prepending an extra entry to denote the "Root".
+                disabled={idx === pathSegments.length}
+                className="active:opacity-75"
               >
-                {dirName}
-              </Link>
+                <Text
+                  className={cn(
+                    "pb-2 font-geistMono text-sm text-foreground50",
+                    { "text-accent50": idx === pathSegments.length },
+                  )}
+                >
+                  {dirName ?? "Root"}
+                </Text>
+              </Pressable>
             </Animated.View>
           </Fragment>
         ))}

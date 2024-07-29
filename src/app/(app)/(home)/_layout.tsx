@@ -24,10 +24,7 @@ export default function HomeLayout() {
 /** List of routes we'll display buttons for on the "home" page. */
 const NavRoutes = [
   { href: "/", label: "HOME" },
-  {
-    href: `/folder/${encodeURIComponent("storage/emulated/0/Music")}`,
-    label: "FOLDERS",
-  },
+  { href: "/folder", label: "FOLDERS" },
   { href: "/playlist", label: "PLAYLISTS" },
   { href: "/track", label: "TRACKS" },
   { href: "/album", label: "ALBUMS" },

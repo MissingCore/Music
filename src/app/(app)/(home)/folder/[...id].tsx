@@ -1,5 +1,5 @@
 import { FlashList } from "@shopify/flash-list";
-import { router, useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import { useSetAtom } from "jotai";
 import { useEffect } from "react";
 import { ScrollView, View } from "react-native";
@@ -16,18 +16,25 @@ import { Track } from "@/features/track/components/track";
 
 /** Screen for `/folder/[id]` route. */
 export default function FolderScreen() {
-  const { id = ["storage/emulated/0/Music"] } = useLocalSearchParams<{
-    id: string[];
-  }>();
+  const { id } = useLocalSearchParams<{ id: string[] }>();
+  const navigation = useNavigation();
   const updateFolderPath = useSetAtom(folderPathAtom);
 
-  const fullPath = id.join("/");
+  const fullPath = id?.join("/");
 
   const { isPending, error, data } = useFolderContentForPath(fullPath);
 
   useEffect(() => {
-    updateFolderPath(id);
-  }, [id, updateFolderPath]);
+    function onFocus() {
+      updateFolderPath(id ?? []);
+    }
+    // Update breadcrumb (whenever we navigate to this screen or "pop"
+    // back on this screen).
+    navigation.addListener("focus", onFocus);
+    return () => {
+      navigation.removeListener("focus", onFocus);
+    };
+  }, [id, navigation, updateFolderPath]);
 
   if (isPending) {
     return (
@@ -52,7 +59,10 @@ export default function FolderScreen() {
   // Information about this track list.
   const trackSource = {
     type: "folder",
-    name: `[Folder] ${fullPath.split("/").at(-1)}`,
+    name: `[Folder] ${fullPath?.split("/").at(-1)}`,
+    // Theoretically, no tracks should be on the "root" (ie: `id = undefined`),
+    // so we shouldn't see any cases where we play a track from the
+    // invalid track source "id" created.
     id: `${fullPath}/`,
   } as const;
 
@@ -80,7 +90,7 @@ export default function FolderScreen() {
                 <ActionButton
                   onPress={() =>
                     router.push(
-                      `/folder/${id.map((segment) => encodeURIComponent(segment)).join("/")}/${item.name}`,
+                      `/folder/${id ? `${id.map((segment) => encodeURIComponent(segment)).join("/")}/` : ""}${encodeURIComponent(item.name)}`,
                     )
                   }
                   textContent={[item.name, null]}
