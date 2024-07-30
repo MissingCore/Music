@@ -47,3 +47,4 @@ __pycache__
 .env
 *.jks
 *.aab
+sentry.properties

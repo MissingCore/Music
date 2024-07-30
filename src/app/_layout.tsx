@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react-native";
 import { Stack } from "expo-router";
 import { useSetAtom } from "jotai";
 import TrackPlayer from "react-native-track-player";
@@ -23,6 +24,10 @@ export const unstable_settings = {
   // Ensure that reloading on `/settings` keeps a back button present.
   initialRouteName: "(app)/(home)",
 };
+
+Sentry.init({
+  dsn: "https://bbd726405356cdfb20b85f5f924fd3e3@o4507687432617984.ingest.us.sentry.io/4507687447101440",
+});
 
 TrackPlayer.registerPlaybackService(() => PlaybackService);
 
