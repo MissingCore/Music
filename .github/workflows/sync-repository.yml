@@ -1,0 +1,29 @@
+name: Sync Forked Repository
+on:
+  workflow_dispatch:
+
+jobs:
+  sync-tags:
+    name: Sync Forked Repository Tags
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.WORKFLOW_TOKEN }}
+
+      - name: Ensure we have a link to the original repository
+        run: |
+          git remote add upstream https://github.com/MissingCore/Music.git
+          git remote -v
+
+      - name: Fetch tags from original repository
+        run: |
+          git fetch --tags upstream
+
+      - name: Get latest tag (includes pre-release) and create a `latest-stable` branch from it
+        run: |
+          LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
+          echo "Latest Tag: $LATEST_TAG"
+          git checkout -b latest-stable $LATEST_TAG
+          git push -u -f origin latest-stable
