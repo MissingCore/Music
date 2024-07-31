@@ -1,10 +1,10 @@
-name: Sync Forked Repository
+name: Create `latest-stable` Branch
 on:
   workflow_dispatch:
 
 jobs:
-  sync-tags:
-    name: Sync Forked Repository Tags
+  create-latest-stable-branch:
+    name: Create `latest-stable` branch from latest release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
