@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
+apply plugin: "io.sentry.android.gradle"
 
 def projectRoot = rootDir.getAbsoluteFile().getParentFile().getAbsolutePath()
 
@@ -57,6 +58,78 @@ react {
     //
     //   The list of flags to pass to the Hermes compiler. By default is "-O", "-output-source-map"
     // hermesFlags = ["-O", "-output-source-map"]
+}
+
+/**
+ * Sentry gradle from React Native (@sentry/react-native) that handles uploads Sentry source maps.
+ *  - It seems like source maps aren't automatically uploaded with `expo run:android --variant release`.
+ *    - https://github.com/getsentry/sentry-react-native/issues/3907
+ *    - We're going to trust that it works in the production variants which are built with
+ *    `./gradlew assembleRelease`.
+ */
+apply from: new File(["node", "--print", "require.resolve('@sentry/react-native/package.json')"].execute().text.trim(), "../sentry.gradle")
+
+/**
+ * View default settings at: https://docs.sentry.io/platforms/android/configuration/gradle/
+ *
+ * Code partially based off of: https://github.com/getsentry/sentry-react-native/blob/main/samples/react-native/android/app/build.gradle
+ */ 
+sentry {
+    // Whether the plugin should attempt to auto-upload the mapping file to Sentry or not.
+    // If disabled the plugin will run a dry-run and just generate a UUID.
+    // The mapping file has to be uploaded manually via sentry-cli in this case.
+    // Default is enabled.
+    autoUploadProguardMapping = shouldSentryAutoUpload()
+
+    // Disables or enables the automatic configuration of Native Symbols
+    // for Sentry. This executes sentry-cli automatically so
+    // you don't need to do it manually.
+    // Default is disabled.
+    uploadNativeSymbols = shouldSentryAutoUpload()
+
+    // Does or doesn't include the source code of native code for Sentry.
+    // This executes sentry-cli with the --include-sources param. automatically so
+    // you don't need to do it manually.
+    // This option has an effect only when [uploadNativeSymbols] is enabled.
+    // Default is disabled.
+    includeNativeSources = true
+
+    // Generates a JVM (Java, Kotlin, etc.) source bundle and uploads your source code to Sentry.
+    // This enables source context, allowing you to see your source
+    // code as part of your stack traces in Sentry.
+    //
+    // Default is disabled.
+    includeSourceContext = shouldSentryAutoUpload()
+
+    // Enable or disable the tracing instrumentation.
+    // Does auto instrumentation for specified features through bytecode manipulation.
+    // Default is enabled.
+    tracingInstrumentation {
+        enabled = false
+    }
+
+    // `@sentry/react-native` ships with compatible `sentry-android`
+    // This option would install the latest version that ships with the SDK or SAGP (Sentry Android Gradle Plugin)
+    // which might be incompatible with the React Native SDK
+    // Enable auto-installation of Sentry components (sentry-android SDK and okhttp, timber and fragment integrations).
+    // Default is enabled.
+    autoInstallation {
+      enabled = false
+    }
+
+    // Disables or enables dependencies metadata reporting for Sentry.
+    // If enabled, the plugin will collect external dependencies and
+    // upload them to Sentry as part of events. If disabled, all the logic
+    // related to the dependencies metadata report will be excluded.
+    //
+    // Default is enabled.
+    includeDependenciesReport = false
+
+    // Whether the plugin should send telemetry data to Sentry.
+    // If disabled the plugin won't send telemetry data.
+    // This is auto disabled if running against a self hosted instance of Sentry.
+    // Default is enabled.
+    telemetry = false
 }
 
 /**
@@ -150,6 +223,7 @@ android {
             shrinkResources (findProperty('android.enableShrinkResourcesInReleaseBuilds')?.toBoolean() ?: false)
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            crunchPngs (findProperty('android.enablePngCrunchInReleaseBuilds')?.toBoolean() ?: true)
         }
     }
     packagingOptions {

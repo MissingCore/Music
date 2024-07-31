@@ -8,6 +8,7 @@
 | @paralleldrive/cuid2 | MIT | https://github.com/paralleldrive/cuid2 |
 | @react-native-async-storage/async-storage | MIT | https://github.com/react-native-async-storage/async-storage |
 | @react-navigation/native | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/native |
+| @sentry/react-native | MIT | https://github.com/getsentry/sentry-react-native |
 | @shopify/flash-list | MIT | https://github.com/Shopify/flash-list |
 | @tanstack/react-query | MIT | https://github.com/TanStack/query |
 | clsx | MIT | https://github.com/lukeed/clsx |

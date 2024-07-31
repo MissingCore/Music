@@ -1,7 +1,6 @@
 import type { SQLiteDatabase } from "expo-sqlite";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
-import { useEffect } from "react";
 
 import { useIndexAudio } from "@/features/indexing/hooks/useIndexAudio";
 import { useSetupTrackPlayer } from "./useSetupTrackPlayer";
@@ -16,15 +15,14 @@ import migrations from "@/db/drizzle/migrations";
 export function useLoadResources() {
   const { success: dbSuccess, error: dbError } = useMigrations(db, migrations);
   useDevOnly(expoSQLiteDB);
-  const tracksSaved = useIndexAudio();
+  const { success: tracksSaved, error: tracksSaveError } = useIndexAudio();
   useSetupTrackPlayer();
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
-  useEffect(() => {
-    if (dbError) throw dbError;
-  }, [dbError]);
-
-  return { isLoaded: dbSuccess && tracksSaved };
+  return {
+    isLoaded: dbSuccess && tracksSaved,
+    // Expo Router's Error Boundaries doesn't seem to catch these errors.
+    error: dbError ?? tracksSaveError,
+  };
 }
 
 /** Only run Expo dev tools plugins during development. */

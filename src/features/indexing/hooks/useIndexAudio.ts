@@ -25,6 +25,7 @@ export function useIndexAudio() {
     granularPermissions: ["audio"],
   });
   const [isComplete, setIsComplete] = useState(false);
+  const [error, setError] = useState<Error>();
 
   const readMusicLibrary = useCallback(async () => {
     const stopwatch = new Stopwatch();
@@ -69,9 +70,12 @@ export function useIndexAudio() {
   }, [permissionResponse, requestPermission]);
 
   useEffect(() => {
-    if (permissionResponse && !isComplete) readMusicLibrary();
+    if (permissionResponse && !isComplete) {
+      readMusicLibrary().catch((err) => {
+        setError(err);
+      });
+    }
   }, [permissionResponse, isComplete, readMusicLibrary]);
 
-  /** The status of audio indexing — does not necessarily mean we have permissions. */
-  return isComplete;
+  return { success: isComplete, error };
 }

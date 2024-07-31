@@ -1,4 +1,4 @@
-name: Automatic Release
+name: Music Automatic Release
 on:
   push:
     tags:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   buildAPKs:
-    name: build APKs
+    name: build APKs from Release Tag for GitHub Release
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -30,6 +30,10 @@ jobs:
           COMMIT_TAG=$(git describe --tags --abbrev=0)
           echo "COMMIT_TAG=${COMMIT_TAG}" >> $GITHUB_ENV
           echo "Commit Tag: $COMMIT_TAG"
+
+      - name: Create `sentry.properties` file
+        run: |
+          echo "${{ secrets.SENTRY_PROPERTIES }}" > ./android/sentry.properties
 
       - name: Add upload key secrets for signing APKs
         run: |
@@ -54,7 +58,7 @@ jobs:
           zip -j deobfuscate.zip ./android/app/build/outputs/mapping/release/mapping.txt \
                                  ./android/app/build/outputs/native-debug-symbols/release/native-debug-symbols.zip
 
-      - name: Release APKs
+      - name: Create GitHub Release draft with APKs
         uses: softprops/action-gh-release@v2
         with:
           name: "${{ env.COMMIT_TAG }}"
@@ -69,7 +73,7 @@ jobs:
           generate_release_notes: true
 
   buildAAB:
-    name: build AAB
+    name: build AAB from Release Tag for Play Console
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -86,11 +90,9 @@ jobs:
           distribution: microsoft
           java-version: 17
 
-      - name: Save commit tag as environment variable & display it
+      - name: Create `sentry.properties` file
         run: |
-          COMMIT_TAG=$(git describe --tags --abbrev=0)
-          echo "COMMIT_TAG=${COMMIT_TAG}" >> $GITHUB_ENV
-          echo "Commit Tag: $COMMIT_TAG"
+          echo "${{ secrets.SENTRY_PROPERTIES }}" > ./android/sentry.properties
 
       - name: Add upload key secrets for signing APKs
         run: |
