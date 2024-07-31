@@ -72,7 +72,7 @@ apply from: new File(["node", "--print", "require.resolve('@sentry/react-native/
 /**
  * View default settings at: https://docs.sentry.io/platforms/android/configuration/gradle/
  *
- * Code partially based off of: https://github.com/getsentry/sentry-react-native/blob/979a258538e6b140d912f7d74b89f684c504b67f/samples/react-native/android/app/build.gradle#L30
+ * Code partially based off of: https://github.com/getsentry/sentry-react-native/blob/main/samples/react-native/android/app/build.gradle
  */ 
 sentry {
     // Whether the plugin should attempt to auto-upload the mapping file to Sentry or not.
