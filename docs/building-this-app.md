@@ -53,7 +53,7 @@ This will build the app directly onto your connected device. In addition, you ca
 ## (Signed) GitHub Actions Build
 
 > [!IMPORTANT]  
-> This section is mainly for documentation purposes and probably shouldn't be used as you cannot upload this app to the Play Console as this app idea is already used.
+> This section is mainly for documentation purposes and probably shouldn't be used as you cannot upload this app to the Play Console as this app id is already used.
 
 This utilizes a GitHub Actions workflow to build the APKs (that can be published to other stores) along with an `.aab` file ready for the Play Console. Whenever a new tag is created of a certain format, the workflow will automatically run and build the APKs & `.aab` files and upload the `.aab` file to the Play Console if you have that set up.
 

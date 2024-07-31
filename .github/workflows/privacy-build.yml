@@ -22,7 +22,7 @@ jobs:
       - name: Clean generated builds
         run: rm -rf android/app/build/generated/
 
-      - name: Build and sign APKs with Gradle
+      - name: Build APKs with Gradle
         run: cd android && chmod +x gradlew && ./gradlew assembleRelease
 
       - name: Upload APKs as artifact
