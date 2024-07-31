@@ -31,6 +31,10 @@ jobs:
           echo "COMMIT_TAG=${COMMIT_TAG}" >> $GITHUB_ENV
           echo "Commit Tag: $COMMIT_TAG"
 
+      - name: Create `sentry.properties` file
+        run: |
+          echo "${{ secrets.SENTRY_PROPERTIES }}" > ./android/sentry.properties
+
       - name: Add upload key secrets for signing APKs
         run: |
           git submodule update --init --recursive
@@ -85,6 +89,10 @@ jobs:
         with:
           distribution: microsoft
           java-version: 17
+
+      - name: Create `sentry.properties` file
+        run: |
+          echo "${{ secrets.SENTRY_PROPERTIES }}" > ./android/sentry.properties
 
       - name: Add upload key secrets for signing APKs
         run: |
