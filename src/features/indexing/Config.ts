@@ -3,6 +3,7 @@ export const AdjustmentOptions = [
   "artwork-retry",
   "invalid-tracks-retry",
   "library-scan",
+  "track-schema-migration",
 ] as const;
 
 export type AdjustmentOption = (typeof AdjustmentOptions)[number];
@@ -28,6 +29,6 @@ export const OverrideHistory: Record<
   },
   1: {
     version: "v1.0.0-rc.11",
-    changes: ["invalid-tracks-retry", "library-scan"],
+    changes: ["invalid-tracks-retry", "track-schema-migration", "library-scan"],
   },
 };

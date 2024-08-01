@@ -1,5 +1,6 @@
 import { StorageVolumesDirectoryPaths } from "@missingcore/react-native-metadata-retriever";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { and, eq, isNotNull } from "drizzle-orm";
 
 import { db } from "@/db";
 import { fileNode, invalidTracks, tracks } from "@/db/schema";
@@ -44,8 +45,10 @@ export const AdjustmentFunctionMap: Record<
 > = {
   "album-fracturization": fixAlbumFracturization,
   "artwork-retry": async () => {
-    // eslint-disable-next-line drizzle/enforce-update-with-where
-    await db.update(tracks).set({ fetchedArt: false });
+    await db
+      .update(tracks)
+      .set({ fetchedArt: false })
+      .where(eq(tracks.fetchedArt, true));
   },
   "invalid-tracks-retry": async () => {
     // eslint-disable-next-line drizzle/enforce-delete-with-where
@@ -60,5 +63,13 @@ export const AdjustmentFunctionMap: Record<
         scanLibrary({ dirName: `${addTrailingSlash(dir).slice(1)}Music` }),
       ),
     );
+  },
+  "track-schema-migration": async () => {
+    // Only update tracks with completed metadata (ie: we'll re-check
+    // tracks with incompleted metadata after updating).
+    await db
+      .update(tracks)
+      .set({ fetchedMeta: true })
+      .where(and(isNotNull(tracks.artistName), eq(tracks.fetchedMeta, false)));
   },
 };
