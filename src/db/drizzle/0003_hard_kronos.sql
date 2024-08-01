@@ -1,0 +1,2 @@
+ALTER TABLE `tracks` ADD `fetched_meta` integer DEFAULT false NOT NULL;--> statement-breakpoint
+CREATE UNIQUE INDEX `albums_name_artist_name_release_year_unique` ON `albums` (`name`,`artist_name`,`release_year`);
