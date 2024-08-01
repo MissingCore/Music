@@ -130,20 +130,20 @@ export const tracksToPlaylistsRelations = relations(
   }),
 );
 
-export const fileNode = sqliteTable("file_node", {
+export const fileNodes = sqliteTable("file_node", {
   // Excludes the `file:///` at the beginning. Ends with a trailing `/`.
   path: text("path").primaryKey(),
   // `null` if `path = "Music"`. Ends with a trailing `/`.
   parentPath: text("parent_path").references(
-    (): AnySQLiteColumn => fileNode.path,
+    (): AnySQLiteColumn => fileNodes.path,
   ),
   name: text("name").notNull(), // Name of directory.
 });
 
-export const fileNodeRelations = relations(fileNode, ({ one }) => ({
-  parent: one(fileNode, {
-    fields: [fileNode.parentPath],
-    references: [fileNode.path],
+export const fileNodesRelations = relations(fileNodes, ({ one }) => ({
+  parent: one(fileNodes, {
+    fields: [fileNodes.parentPath],
+    references: [fileNodes.path],
   }),
 }));
 
@@ -168,7 +168,7 @@ export type PlaylistWithTracks = Prettify<
 
 export type TrackToPlaylist = InferSelectModel<typeof tracksToPlaylists>;
 
-export type FileNode = InferSelectModel<typeof fileNode>;
+export type FileNode = InferSelectModel<typeof fileNodes>;
 export type FileNodeWithParent = Prettify<
   FileNode & { parent: FileNode | null }
 >;

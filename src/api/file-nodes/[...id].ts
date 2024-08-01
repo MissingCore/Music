@@ -20,20 +20,20 @@ export async function getFolderTracks(path: string) {
 }
 
 export async function getFolderSubdirectories(path: string | null) {
-  const fileNodes = await db.query.fileNode.findMany({
+  const nodes = await db.query.fileNodes.findMany({
     where: (fields, { eq, isNull }) =>
       path ? eq(fields.parentPath, path) : isNull(fields.parentPath),
     orderBy: (fields, { asc }) => asc(fields.name),
   });
   const hasChild = await Promise.all(
-    fileNodes.map(({ path: subDir }) =>
+    nodes.map(({ path: subDir }) =>
       db.query.tracks.findFirst({
         where: (fields, { like }) => like(fields.uri, `file:///${subDir}%`),
         columns: { id: true },
       }),
     ),
   );
-  return fileNodes.filter((_, idx) => hasChild[idx] !== undefined);
+  return nodes.filter((_, idx) => hasChild[idx] !== undefined);
 }
 
 export async function getFolderInfo(path: string | null) {
