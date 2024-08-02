@@ -41,7 +41,7 @@ export default function RootLayout() {
       Bootsplash.hide();
       // Send error message to Sentry. Doesn't send if you followed the
       // "Personal Privacy Build" documentation.
-      Sentry.captureException(error);
+      if (!__DEV__) Sentry.captureException(error);
     }
   }, [error]);
 
