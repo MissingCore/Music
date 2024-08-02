@@ -9,9 +9,11 @@ import { deleteFile } from "@/lib/file-system";
 import type { SpecialPlaylistName } from "@/features/playback/constants";
 import { SpecialPlaylists } from "@/features/playback/constants";
 
-/** Create a new album, returning the created value. */
+/** Upsert a new album, returning the created value. */
 export async function createAlbum(entry: typeof albums.$inferInsert) {
-  return (await db.insert(albums).values(entry).returning())[0]!;
+  return (
+    await db.insert(albums).values(entry).onConflictDoNothing().returning()
+  )[0]!;
 }
 
 /** Throws error if no album is found. */

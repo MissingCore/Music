@@ -7,7 +7,7 @@ import { loadTrackAtom } from "@/features/playback/api/track";
 import { cleanUpArtwork } from "../api/artwork-cleanup";
 import { saveArtworkOnce } from "../api/artwork-save";
 import { cleanUpDb } from "../api/db-cleanup";
-import { indexAudio } from "../api/index-audio";
+import { doSparseAudioIndexing } from "../api/index-audio";
 import {
   AdjustmentFunctionMap,
   dataReadjustments,
@@ -43,7 +43,7 @@ export function useIndexAudio() {
     await dataReadjustments();
     console.log(`Completed data adjustments in ${stopwatch.lapTime()}.`);
 
-    const { foundFiles, changed } = await indexAudio();
+    const { foundFiles, changed } = await doSparseAudioIndexing();
     await cleanUpDb(new Set(foundFiles.map(({ id }) => id)));
     stopwatch.lapTime();
     if (changed > 0) {

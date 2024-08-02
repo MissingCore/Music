@@ -10,7 +10,7 @@ import { artists, tracks } from "@/db/schema";
 import { createAlbum } from "@/db/queries";
 import { resetPlayingInfoAtom } from "@/features/playback/api/track";
 
-import { getAlbumKey } from "../index-audio";
+import type { Maybe } from "@/utils/types";
 
 /**
  * Fixes any fracturized albums by combining them together if they share
@@ -99,4 +99,13 @@ export async function fixAlbumFracturization() {
     // Reset playing info in case we're playing a deleted album.
     getDefaultStore().set(resetPlayingInfoAtom);
   }
+}
+
+/** Ensure we use the right key to get the album id. */
+export function getAlbumKey(key: {
+  album: Maybe<string>;
+  albumArtist: Maybe<string>;
+  year: Maybe<number>;
+}) {
+  return `${encodeURIComponent(key.album ?? "")} ${encodeURIComponent(key.albumArtist ?? "")} ${key.year}`;
 }

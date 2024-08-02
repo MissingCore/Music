@@ -10,31 +10,36 @@ import { db } from "@/db";
 import { artists, tracks, invalidTracks } from "@/db/schema";
 import { createAlbum, deleteTrack } from "@/db/queries";
 
+import { clearAllQueries } from "@/lib/react-query";
 import { Stopwatch } from "@/utils/debug";
-import { isFulfilled, isRejected } from "@/utils/promise";
-import type { Maybe } from "@/utils/types";
 import { addTrailingSlash } from "../utils";
 
+/*
+  This file exports 2 functions that implements the 2 phases of how we
+  save/index tracks into our database: Sparse Saving & Background Saving.
+
+  Although doing lots of things at once (ie: `Promise.all` lots of promises
+  at once) may be faster, it may crash on devices with less memory.
+*/
+
+/** Number of concurrent tasks for light workloads. */
+const BATCH_MINIMAL = 500;
+/** Number of concurrent tasks for moderate workloads. */
+const BATCH_MODERATE = 200;
+/** Number of concurrent tasks for heavy workloads. */
+const BATCH_HEAVY = 100;
+
 /**
- * Index tracks and their metadata into our database for fast retrieval.
+ * Index tracks into our database for fast retrieval.
  *
- * Although doing lots of things at once (ie: `Promise.all` lots of promises
- * at once) may be faster, it may crash on devices with less memory.
- *
- * The overall saving strategy is broken up into 2 phases: Sparse Saving &
- * Background Saving.
- *
- * Phase 1: Sparse Saving
+ * This implements Phase 1 of our saving strategy:
  *  1. Get all audio files on the device and filter out the ones we want.
  *  2. Sort the incoming tracks by those which are new, modified, or unmodified.
  *     - Modified tracks in `InvalidTrack` will be removed from the table.
  *     - Modified tracks in `Track` will have their `fetchedMeta` set to `false`.
  *  3. Create `Track` entries from the minimum amount of data.
- *
- * Phase 2: Background Saving
- *  1.
  */
-export async function indexAudio() {
+export async function doSparseAudioIndexing() {
   const stopwatch = new Stopwatch();
 
   // Get all audio files discoverable by `expo-media-library`.
@@ -45,7 +50,7 @@ export async function indexAudio() {
     const { assets, endCursor, hasNextPage } =
       await MediaLibrary.getAssetsAsync({
         after: lastRead,
-        first: 500,
+        first: BATCH_MINIMAL,
         mediaType: "audio",
       });
     incomingData.push(...assets);
@@ -96,7 +101,6 @@ export async function indexAudio() {
       unmodifiedTracks.add(id);
     }
   });
-  stopwatch.lapTime();
 
   // Remove any invalid tracks that were modified.
   const modifiedInvalidTracks = allInvalidTracks
@@ -107,6 +111,15 @@ export async function indexAudio() {
       db.delete(invalidTracks).where(eq(invalidTracks.id, id)),
     ),
   );
+  // Set `fetchedMeta = false` on `modifiedTracks` (that aren't `InvalidTrack`).
+  await Promise.allSettled(
+    [...modifiedTracks]
+      .filter((id) => !modifiedInvalidTracks.includes(id))
+      .map((id) =>
+        db.update(tracks).set({ fetchedMeta: false }).where(eq(tracks.id, id)),
+      ),
+  );
+  stopwatch.lapTime();
 
   // Create track entries from the minimum amount of data.
   const newTracks = discoveredTracks.filter(
@@ -114,10 +127,10 @@ export async function indexAudio() {
       (!unmodifiedTracks.has(id) && !modifiedTracks.has(id)) ||
       modifiedInvalidTracks.includes(id),
   );
-  for (let i = 0; i < newTracks.length; i += 200) {
+  for (let i = 0; i < newTracks.length; i += BATCH_MODERATE) {
     await Promise.allSettled(
       newTracks
-        .slice(i, i + 200)
+        .slice(i, i + BATCH_MODERATE)
         .filter((i) => i !== undefined)
         .map(async ({ id, uri, duration, modificationTime, filename }) => {
           try {
@@ -137,28 +150,93 @@ export async function indexAudio() {
     `Attempted to create ${newTracks.length} minimum \`Track\` entries in ${stopwatch.lapTime()}.`,
   );
 
-  // Set `fetchedMeta` on `modifiedTracks` to `false`.
-  await Promise.allSettled(
-    [...modifiedTracks]
-      .filter((id) => !modifiedInvalidTracks.includes(id))
-      .map((id) =>
-        db.update(tracks).set({ fetchedMeta: false }).where(eq(tracks.id, id)),
-      ),
-  );
-
   return {
     foundFiles: discoveredTracks,
     changed: discoveredTracks.length - unmodifiedTracks.size,
   };
 }
 
-/** Ensure we use the right key to get the album id. */
-export function getAlbumKey(key: {
-  album: Maybe<string>;
-  albumArtist: Maybe<string>;
-  year: Maybe<number>;
-}) {
-  return `${encodeURIComponent(key.album ?? "")} ${encodeURIComponent(key.albumArtist ?? "")} ${key.year}`;
+/**
+ * Index the metadata of tracks into our database for fast retrieval.
+ *
+ * This implements Phase 2 of our saving strategy:
+ *  1. Get all tracks that we haven't saved metadata to (ie: `fetchedMeta = false`).
+ *  2. Go through a few at a time and:
+ *     - Insert artists & albums into the database if they don't exist.
+ *     - Insert new track.
+ */
+export async function doBackgroundAudioIndexing() {
+  const stopwatch = new Stopwatch();
+
+  // Get all tracks that we need to populate/update its metadata.
+  const incompleteTracks = await db.query.tracks.findMany({
+    where: (fields, { eq }) => eq(fields.fetchedMeta, false),
+  });
+
+  // Progressively populate the metadata of tracks.
+  for (let i = 0; i < incompleteTracks.length; i += BATCH_HEAVY) {
+    await Promise.allSettled(
+      incompleteTracks
+        .slice(i, i + BATCH_HEAVY)
+        .filter((i) => i !== undefined)
+        .map(async ({ id, uri, modificationTime }) => {
+          try {
+            const metadata = await getMetadata(uri, MetadataPresets.standard);
+            // Add new artists to the database.
+            await Promise.allSettled(
+              [metadata.artist, metadata.albumArtist]
+                .filter((name) => name !== null)
+                .map((name) =>
+                  db.insert(artists).values({ name }).onConflictDoNothing(),
+                ),
+            );
+            // Add new album to the database. The unique key on `Album` covers the rare
+            // case where an artist releases multiple albums with the same name.
+            let albumId: string | null = null;
+            if (!!metadata.albumTitle && !!metadata.albumArtist) {
+              const newAlbum = await createAlbum({
+                name: metadata.albumTitle,
+                artistName: metadata.albumArtist,
+                releaseYear: metadata.year,
+              });
+              albumId = newAlbum.id;
+            }
+            // Update track data with found metadata.
+            await db
+              .update(tracks)
+              .set({
+                ...(metadata.title ? { name: metadata.title } : {}),
+                artistName: metadata.artist,
+                albumId,
+                track: metadata.trackNumber ?? undefined,
+                fetchedMeta: true,
+              })
+              .where(eq(tracks.id, id));
+          } catch (err) {
+            // We may end up here if the track at the given uri doesn't exist anymore.
+            if (!(err instanceof Error))
+              console.log(`[Track ${id}] Rejected for unknown reasons.`);
+            else console.log(`[Track ${id}] ${err.message}`);
+
+            // Delete the track and its relation, then add it to `InvalidTrack`.
+            await deleteTrack(id);
+            await db
+              .insert(invalidTracks)
+              .values({ id, uri, modificationTime })
+              .onConflictDoUpdate({
+                target: invalidTracks.id,
+                set: { modificationTime },
+              });
+          }
+        }),
+    );
+
+    // Clear query cache after each iteration to show progress.
+    clearAllQueries();
+  }
+  console.log(
+    `Attempted to populate the metadata of ${incompleteTracks.length} tracks in ${stopwatch.lapTime()}.`,
+  );
 }
 
 /** Removes the file extension from a filename. */
