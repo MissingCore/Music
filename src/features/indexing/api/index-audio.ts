@@ -22,11 +22,16 @@ import { addTrailingSlash } from "../utils";
 */
 
 /** Help provide info to inform the user of what's happening. */
-export const indexingInfoAtom = atom({
-  previouslyFound: 0,
-  unstaged: 0,
-  staged: 0,
-  errors: 0,
+export const indexStatusAtom = atom<{
+  previouslyFound?: number;
+  unstaged?: number;
+  staged?: number;
+  errors?: number;
+}>({
+  previouslyFound: undefined,
+  unstaged: undefined,
+  staged: undefined,
+  errors: undefined,
 });
 
 /** Number of concurrent tasks for "light" workloads. */
@@ -205,13 +210,13 @@ function removeFileExtension(filename: string) {
   return filename.split(".").slice(0, -1).join(".");
 }
 
-/** Helper to update `indexingInfoAtom` progressively. */
+/** Helper to update `indexStatusAtom` progressively. */
 function incrementAtom(
-  key: keyof ExtractAtomValue<typeof indexingInfoAtom>,
+  key: keyof ExtractAtomValue<typeof indexStatusAtom>,
   val: number,
 ) {
-  getDefaultStore().set(indexingInfoAtom, (prev) => ({
+  getDefaultStore().set(indexStatusAtom, (prev) => ({
     ...prev,
-    [key]: prev[key] + val,
+    [key]: (prev[key] ?? 0) + val,
   }));
 }
