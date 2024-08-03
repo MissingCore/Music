@@ -199,7 +199,7 @@ export async function doBackgroundAudioIndexing() {
                 artistName: metadata.albumArtist,
                 releaseYear: metadata.year,
               });
-              albumId = newAlbum.id;
+              if (newAlbum) albumId = newAlbum.id;
             }
             // Update track data with found metadata.
             await db

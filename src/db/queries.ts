@@ -12,8 +12,15 @@ import { SpecialPlaylists } from "@/features/playback/constants";
 /** Upsert a new album, returning the created value. */
 export async function createAlbum(entry: typeof albums.$inferInsert) {
   return (
-    await db.insert(albums).values(entry).onConflictDoNothing().returning()
-  )[0]!;
+    await db
+      .insert(albums)
+      .values(entry)
+      .onConflictDoUpdate({
+        target: [albums.name, albums.artistName, albums.releaseYear],
+        set: entry,
+      })
+      .returning()
+  )[0];
 }
 
 /** Throws error if no album is found. */

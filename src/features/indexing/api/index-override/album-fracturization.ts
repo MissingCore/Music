@@ -91,7 +91,7 @@ export async function fixAlbumFracturization() {
         // "duplicated" with the new id.
         await db
           .update(tracks)
-          .set({ albumId: (await createAlbum(entry)).id })
+          .set({ albumId: (await createAlbum(entry))?.id })
           .where(inArray(tracks.albumId, albumIds));
       }),
     );

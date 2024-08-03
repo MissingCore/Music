@@ -7,7 +7,10 @@ import { loadTrackAtom } from "@/features/playback/api/track";
 import { cleanUpArtwork } from "../api/artwork-cleanup";
 import { saveArtworkOnce } from "../api/artwork-save";
 import { cleanUpDb } from "../api/db-cleanup";
-import { doSparseAudioIndexing } from "../api/index-audio";
+import {
+  doBackgroundAudioIndexing,
+  doSparseAudioIndexing,
+} from "../api/index-audio";
 import {
   AdjustmentFunctionMap,
   dataReadjustments,
@@ -52,21 +55,24 @@ export function useIndexAudio() {
     }
     console.log(`Finished overall in ${stopwatch.stop()}.`);
 
-    // Make sure this directory exists before saving images.
-    await createImageDirectory();
-
-    // Save artwork in the background. Resumes where we left off if we
-    // didn't finish indexing artwork last session.
-    //  - Make sure we run this after cleaning up deleted albums, artists, and tracks.
-    saveArtworkOnce().then(() => {
-      // Clean up any unlinked images in the background.
-      cleanUpArtwork();
-    });
-
     // Allow audio to play in the background.
     await Audio.setAudioModeAsync({ staysActiveInBackground: true });
     setIsComplete(true);
     await getDefaultStore().set(loadTrackAtom);
+
+    /* 
+      Start of the "background" tasks.
+    */
+    // Save the metadata of tracks.
+    await doBackgroundAudioIndexing();
+
+    // Make sure this directory exists before saving images.
+    await createImageDirectory();
+    // Save artwork. Resumes where we left off if we didn't finish last session.
+    //  - Make sure we run this after cleaning up deleted albums, artists, and tracks.
+    await saveArtworkOnce();
+    // Clean up any unlinked images.
+    await cleanUpArtwork();
   }, [permissionResponse, requestPermission]);
 
   useEffect(() => {
