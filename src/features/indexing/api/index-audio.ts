@@ -25,9 +25,9 @@ import { addTrailingSlash } from "../utils";
 /** Number of concurrent tasks for light workloads. */
 const BATCH_MINIMAL = 500;
 /** Number of concurrent tasks for moderate workloads. */
-const BATCH_MODERATE = 200;
+const BATCH_MODERATE = 400;
 /** Number of concurrent tasks for heavy workloads. */
-const BATCH_HEAVY = 100;
+const BATCH_HEAVY = 10;
 
 /**
  * Index tracks into our database for fast retrieval.
