@@ -7,10 +7,7 @@ import { loadTrackAtom } from "@/features/playback/api/track";
 import { cleanUpArtwork } from "../api/artwork-cleanup";
 import { saveArtworkOnce } from "../api/artwork-save";
 import { cleanUpDb } from "../api/db-cleanup";
-import {
-  doBackgroundAudioIndexing,
-  doSparseAudioIndexing,
-} from "../api/index-audio";
+import { doAudioIndexing } from "../api/index-audio";
 import {
   AdjustmentFunctionMap,
   dataReadjustments,
@@ -46,7 +43,7 @@ export function useIndexAudio() {
     await dataReadjustments();
     console.log(`Completed data adjustments in ${stopwatch.lapTime()}.`);
 
-    const { foundFiles, changed } = await doSparseAudioIndexing();
+    const { foundFiles, changed } = await doAudioIndexing();
     await cleanUpDb(new Set(foundFiles.map(({ id }) => id)));
     stopwatch.lapTime();
     if (changed > 0) {
@@ -60,11 +57,7 @@ export function useIndexAudio() {
     setIsComplete(true);
     await getDefaultStore().set(loadTrackAtom);
 
-    /* 
-      Start of the "background" tasks.
-    */
-    // Save the metadata of tracks.
-    await doBackgroundAudioIndexing();
+    /*  Start of the "background" tasks. */
 
     // Make sure this directory exists before saving images.
     await createImageDirectory();
