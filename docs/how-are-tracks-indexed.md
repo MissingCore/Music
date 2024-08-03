@@ -1,54 +1,47 @@
-# How are Tracks Indexed?
+# How Are Tracks Indexed?
 
-In this iteration of the app, we currently index tracks in different phases. The first phase would be considered "blocking" — as in, we don't let the user do anything while the phase is in progress. The remaining phases are done in the background, allowing the user to use the app (albeit, potentially with some slower interactions).
+The process of indexing tracks can be broken up in the following way:
 
-## "Blocking" Tasks
+1. Data Adjustments/Migrations.
+2. Saving & Populating Tracks With Metadata.
+3. Cleaning Up The Database.
+4. Saving Track Artwork.
+5. Cleaning Up Unused Images.
 
-These tasks must be completed before the user is allowed to interact with the app. There is 3 main tasks:
+When opening the app for the first time, you may encounter the loading screen for a substantial amount of time. Since this can be considered as the app setup process, the time spent on this screen is negligible as this operation should only happen when we open the app for the first time or whenever we add new tracks (the time spent on the screen depends on the number of new tracks found).
 
-1. Data adjustments / migrations.
-2. Sparse track saving.
-3. Database cleanup.
+## Data Adjustments/Migrations
 
-### Data Adjustments / Migrations
+Before we start looking for any tracks, we want to make sure that any existing data complies with any changes we made previously. This logic might be run when we update a schema.
 
-This portion of the code may change data in the database to trigger some other logic later on. Some examples of when this occurs is when we change a schema or fix some old logic, in which, we want to ensure the existing data is accurate and represents the same content as if we ran it through the app on fresh-install.
-
-Some things we currently fix are:
+We ran this logic in the past to fix existing data after we fixed the following issues or introduced new features:
 
 - Album fracturization.
 - Missing images.
-- Tracks previously rejected due to reading its metadata not being supported.
-- Generation of the file tree for the "Folders" feature.
-- Migrating existing `Track` entries due to adding a new `fetchedMeta` field.
+- Tracks previously rejected due to its metadata not being supported.
+- Generation of file tree for the "Folders" feature.
 
-### Sparse Track Saving
+## Saving & Populating Tracks With Metadata
 
-This portion of the code finds what tracks are found on our device and filters them down to the ones we're interested in (currently, tracks in the top-level `Music` directory on each storage device/volume). After figuring out which tracks are new or modified, we create `Track` entries with the minimum amount of data needed (ie: without metadata).
+The first thing we do is figure out what tracks are on our device and keep the subset of tracks that we want (currently, only tracks in the top-level `Music` directory on each storage device/volume). We then go through a couple of tracks at a time, getting their metadata, and creating or updating a `Track` entry. If an error is thrown when retrieving the metadata, that track gets added to the `InvalidTrack` table.
 
-### Database Cleanup
+## Cleaning Up The Database
 
-This portion of the code removes any unlinked content (ie: tracks that no longer exist, albums & artists with no tracks). When removing tracks, we also make sure we remove it from the queue and list of playing tracks.
+After we finish saving or updating the metadata of tracks, we then remove any entries that may no longer be relevant.
 
-## Background Tasks
+- We remove any `Track` entries that we didn't find when getting the list of tracks found on the device.
+- We remove any `Album` entries with no tracks.
+- We remove any `Artist` entries with no albums & tracks.
 
-These tasks are done while the user has access to the app's features. There are 3 main background tasks done in the following order:
+If we discover any deleted tracks in the queue list or in the list of playing tracks, they will be removed.
 
-1. Populating tracks with metadata.
-2. Artwork saving.
-3. Artwork cleanup.
+## Saving Track Artwork
 
-### Populating Tracks with Metadata
+After we do the above tasks, we start saving the tracks in the background in an optimal manner. We go through each track, one-by-one and save the image from its metadata if the following conditions are satisfied:
 
-This portion of the code goes through batches of tracks (currently `10` which doesn't hinder performance as much on older devices), fetches their metadata, and populates their database entry (creating the `Artist` or `Album` entries as needed).
+1. The album it belongs to doesn't have any artwork associated with it.
+2. The track doesn't belong to an album and has no artwork associated with it.
 
-### Artwork Saving
+## Cleaning Up Unused Images
 
-After we finish populating tracks with metadata, we go through each track, one-by-one and get the artwork from its metadata if necessary. We optimized the code such that this only occurs if:
-
-1. The album it belongs to doesn't have any artwork currently.
-2. The track doesn't belong to an album and doesn't have artwork.
-
-### Artwork Cleanup
-
-After we finish saving the artwork, we then find the artwork that isn't being used, which is stored by this app. This is an effort to slim down the amount of storage this app takes up on your device.
+After we finish saving any new artwork, we then find artwork stored by this app that isn't being used and delete them. This is an effort to slim down the amount of storage this app takes up on your device.
