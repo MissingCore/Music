@@ -34,8 +34,6 @@ export function mutateGuard<TData, TError, TVariables, TContext>(
  */
 export function clearAllQueries(client = queryClient) {
   client.invalidateQueries({
-    // @ts-expect-error ts(2339) — We normalized the `queryKey` structure
-    // to be an object with an `entity` key.
-    predicate: ({ queryKey }) => queryKey[0]?.entity !== settingKeys.release(),
+    predicate: ({ queryKey }) => queryKey[0] !== settingKeys.release(),
   });
 }
