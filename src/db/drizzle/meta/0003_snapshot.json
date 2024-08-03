@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "66eac065-c91b-4ff7-af1e-61dd3cb38fce",
+  "id": "2e498af4-e3a6-4b6b-b294-50998c7e7359",
   "prevId": "675b831d-7406-4f02-bc39-96d14feb156f",
   "tables": {
     "albums": {
@@ -278,14 +278,6 @@
         },
         "fetched_art": {
           "name": "fetched_art",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false,
-          "default": false
-        },
-        "fetched_meta": {
-          "name": "fetched_meta",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,

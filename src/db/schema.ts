@@ -69,9 +69,6 @@ export const tracks = sqliteTable("tracks", {
   fetchedArt: integer("fetched_art", { mode: "boolean" })
     .notNull()
     .default(false),
-  fetchedMeta: integer("fetched_meta", { mode: "boolean" })
-    .notNull()
-    .default(false),
 });
 
 export const tracksRelations = relations(tracks, ({ one, many }) => ({

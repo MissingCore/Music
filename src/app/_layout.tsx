@@ -31,6 +31,7 @@ Sentry.init({
   ignoreErrors: [
     "Cannot complete operation because sound is not loaded.",
     "Player does not exist.",
+    "Unable to activate keep awake",
   ],
 });
 
