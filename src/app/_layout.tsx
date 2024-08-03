@@ -1,7 +1,9 @@
 import * as Sentry from "@sentry/react-native";
 import { Stack } from "expo-router";
-import { useSetAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
+import { unwrap } from "jotai/utils";
 import { useEffect } from "react";
+import { Modal, Pressable, Text, View } from "react-native";
 import Bootsplash from "react-native-bootsplash";
 import TrackPlayer from "react-native-track-player";
 
@@ -11,10 +13,12 @@ import { modalAtom } from "@/features/modal/store";
 
 import "@/assets/global.css";
 import { PlaybackService } from "@/constants/PlaybackService";
+import { createAtomWithStorage } from "@/lib/jotai";
 import { AppProvider } from "@/components/app-provider";
 import { AnimatedBootSplash } from "@/components/navigation/animated-boot-splash";
 import { CurrentTrackHeader } from "@/components/navigation/header";
 import { StyledPressable } from "@/components/ui/pressable";
+import { Heading } from "@/components/ui/text";
 import { AppModals } from "@/features/modal";
 
 import { ErrorBoundary } from "@/components/error/error-boundary";
@@ -87,7 +91,52 @@ function RootLayoutNav() {
         <Stack.Screen name="notification.click" />
       </Stack>
 
+      <IntroModal />
       <AppModals />
     </AppProvider>
+  );
+}
+
+const shownIntroModalAsyncAtom = createAtomWithStorage<boolean | undefined>(
+  "shown-intro-modal",
+  undefined,
+);
+const shownIntroModalAtom = unwrap(shownIntroModalAsyncAtom, (prev) => prev);
+
+/** Modal that explains that artwork will be saved in the background. */
+function IntroModal() {
+  const [shownIntroModal, setShownIntroModal] = useAtom(shownIntroModalAtom);
+
+  return (
+    <Modal
+      animationType="fade"
+      visible={shownIntroModal === undefined}
+      onRequestClose={() => {
+        setShownIntroModal(true);
+      }}
+      transparent
+    >
+      <View className="flex-1 items-center justify-center bg-canvas/50">
+        <View className="m-4 rounded-xl bg-surface800 px-4 py-8">
+          <Heading as="h2" className="mb-8">
+            Artwork Saving
+          </Heading>
+          <Text className="mb-10 text-center font-geistMonoLight text-sm text-surface400">
+            Track artwork is being saved in the background in an optimal manner.
+            You may experience some UI lag as a result.
+          </Text>
+          <Pressable
+            onPress={() => {
+              setShownIntroModal(true);
+            }}
+            className="self-end px-4 py-2 active:opacity-75"
+          >
+            <Text className="font-geistMono text-base text-foreground100">
+              Dismiss
+            </Text>
+          </Pressable>
+        </View>
+      </View>
+    </Modal>
   );
 }
