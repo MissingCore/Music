@@ -1,8 +1,9 @@
 import { StorageVolumesDirectoryPaths } from "@missingcore/react-native-metadata-retriever";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { fileNode, invalidTracks, tracks } from "@/db/schema";
+import { fileNodes, invalidTracks, tracks } from "@/db/schema";
 
 import { fixAlbumFracturization } from "./album-fracturization";
 import { scanLibrary } from "../library-scan";
@@ -44,8 +45,10 @@ export const AdjustmentFunctionMap: Record<
 > = {
   "album-fracturization": fixAlbumFracturization,
   "artwork-retry": async () => {
-    // eslint-disable-next-line drizzle/enforce-update-with-where
-    await db.update(tracks).set({ fetchedArt: false });
+    await db
+      .update(tracks)
+      .set({ fetchedArt: false })
+      .where(eq(tracks.fetchedArt, true));
   },
   "invalid-tracks-retry": async () => {
     // eslint-disable-next-line drizzle/enforce-delete-with-where
@@ -53,7 +56,7 @@ export const AdjustmentFunctionMap: Record<
   },
   "library-scan": async () => {
     // eslint-disable-next-line drizzle/enforce-delete-with-where
-    await db.delete(fileNode);
+    await db.delete(fileNodes);
     await Promise.allSettled(
       StorageVolumesDirectoryPaths.map((dir) =>
         // We want to remove the front forward slash.

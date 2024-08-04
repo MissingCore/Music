@@ -1,7 +1,7 @@
 import * as FileSystem from "expo-file-system";
 
 import { db } from "@/db";
-import { fileNode } from "@/db/schema";
+import { fileNodes } from "@/db/schema";
 
 import { isFulfilled } from "@/utils/promise";
 
@@ -21,7 +21,7 @@ export async function scanLibrary({
   // then `dirName` is the path from the "root".
   const currPath = parentPath ? `${parentPath}${dirName}/` : `${dirName}/`;
   await db
-    .insert(fileNode)
+    .insert(fileNodes)
     .values({ name: dirName, parentPath, path: currPath })
     .onConflictDoNothing();
 

@@ -7,6 +7,7 @@ import {
   primaryKey,
   sqliteTable,
   text,
+  unique,
 } from "drizzle-orm/sqlite-core";
 
 import type { Prettify } from "@/utils/types";
@@ -20,21 +21,27 @@ export const artistsRelations = relations(artists, ({ many }) => ({
   tracks: many(tracks),
 }));
 
-export const albums = sqliteTable("albums", {
-  id: text("id")
-    .primaryKey()
-    .$defaultFn(() => createId()),
-  // The `artistName` is the album artist.
-  artistName: text("artist_name")
-    .notNull()
-    .references(() => artists.name),
-  name: text("name").notNull(),
-  artwork: text("artwork"),
-  releaseYear: integer("release_year"),
-  isFavorite: integer("is_favorite", { mode: "boolean" })
-    .notNull()
-    .default(false),
-});
+export const albums = sqliteTable(
+  "albums",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => createId()),
+    name: text("name").notNull(),
+    // The `artistName` is the album artist.
+    artistName: text("artist_name")
+      .notNull()
+      .references(() => artists.name),
+    releaseYear: integer("release_year"),
+    artwork: text("artwork"),
+    isFavorite: integer("is_favorite", { mode: "boolean" })
+      .notNull()
+      .default(false),
+  },
+  (t) => ({
+    unq: unique().on(t.name, t.artistName, t.releaseYear),
+  }),
+);
 
 export const albumsRelations = relations(albums, ({ one, many }) => ({
   artist: one(artists, {
@@ -46,9 +53,9 @@ export const albumsRelations = relations(albums, ({ one, many }) => ({
 
 export const tracks = sqliteTable("tracks", {
   id: text("id").primaryKey(),
+  name: text("name").notNull(),
   artistName: text("artist_name").references(() => artists.name),
   albumId: text("album_id").references(() => albums.id),
-  name: text("name").notNull(),
   artwork: text("artwork"),
   track: integer("track").notNull().default(-1), // Track number in album if available
   duration: integer("duration").notNull(), // Track duration in seconds
@@ -57,6 +64,8 @@ export const tracks = sqliteTable("tracks", {
     .default(false),
   uri: text("uri").notNull(),
   modificationTime: integer("modification_time").notNull(),
+
+  /* Data checking fields. */
   fetchedArt: integer("fetched_art", { mode: "boolean" })
     .notNull()
     .default(false),
@@ -118,20 +127,20 @@ export const tracksToPlaylistsRelations = relations(
   }),
 );
 
-export const fileNode = sqliteTable("file_node", {
+export const fileNodes = sqliteTable("file_node", {
   // Excludes the `file:///` at the beginning. Ends with a trailing `/`.
   path: text("path").primaryKey(),
   // `null` if `path = "Music"`. Ends with a trailing `/`.
   parentPath: text("parent_path").references(
-    (): AnySQLiteColumn => fileNode.path,
+    (): AnySQLiteColumn => fileNodes.path,
   ),
   name: text("name").notNull(), // Name of directory.
 });
 
-export const fileNodeRelations = relations(fileNode, ({ one }) => ({
-  parent: one(fileNode, {
-    fields: [fileNode.parentPath],
-    references: [fileNode.path],
+export const fileNodesRelations = relations(fileNodes, ({ one }) => ({
+  parent: one(fileNodes, {
+    fields: [fileNodes.parentPath],
+    references: [fileNodes.path],
   }),
 }));
 
@@ -156,7 +165,7 @@ export type PlaylistWithTracks = Prettify<
 
 export type TrackToPlaylist = InferSelectModel<typeof tracksToPlaylists>;
 
-export type FileNode = InferSelectModel<typeof fileNode>;
+export type FileNode = InferSelectModel<typeof fileNodes>;
 export type FileNodeWithParent = Prettify<
   FileNode & { parent: FileNode | null }
 >;

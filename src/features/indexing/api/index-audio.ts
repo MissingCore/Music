@@ -5,6 +5,8 @@ import {
 } from "@missingcore/react-native-metadata-retriever";
 import { eq } from "drizzle-orm";
 import * as MediaLibrary from "expo-media-library";
+import type { ExtractAtomValue } from "jotai";
+import { atom, getDefaultStore } from "jotai";
 
 import { db } from "@/db";
 import { artists, tracks, invalidTracks } from "@/db/schema";
@@ -12,33 +14,70 @@ import { createAlbum, deleteTrack } from "@/db/queries";
 
 import { Stopwatch } from "@/utils/debug";
 import { isFulfilled, isRejected } from "@/utils/promise";
-import type { Maybe } from "@/utils/types";
 import { addTrailingSlash } from "../utils";
 
-/** Index tracks into our database for fast retrieval. */
-export async function indexAudio() {
+/*
+  Although doing lots of things at once (ie: `Promise.all` lots of promises
+  at once) may be faster, it may crash on devices with less memory.
+*/
+
+/** Help provide info to inform the user of what's happening. */
+export const indexStatusAtom = atom<{
+  previouslyFound?: number;
+  unstaged?: number;
+  staged?: number;
+  errors?: number;
+}>({
+  previouslyFound: undefined,
+  unstaged: undefined,
+  staged: undefined,
+  errors: undefined,
+});
+
+/** Number of concurrent tasks for "light" workloads. */
+const BATCH_MINIMAL = 500;
+/** Number of concurrent tasks for "moderate" workloads. */
+const BATCH_MODERATE = 25;
+
+/**
+ * Index tracks with their metadata into our database for fast retrieval.
+ */
+export async function doAudioIndexing() {
   const stopwatch = new Stopwatch();
 
-  // Limit media to those in the `Music` folder on our device.
-  const assetOptions = { mediaType: "audio", first: 0 } as const;
-  const { totalCount } = await MediaLibrary.getAssetsAsync(assetOptions);
-  const audioFiles = (
-    await MediaLibrary.getAssetsAsync({ ...assetOptions, first: totalCount })
-  ).assets.filter((a) =>
+  // Get all audio files discoverable by `expo-media-library`.
+  const incomingData: MediaLibrary.Asset[] = [];
+  let isComplete = false;
+  let lastRead: string | undefined;
+  do {
+    const { assets, endCursor, hasNextPage } =
+      await MediaLibrary.getAssetsAsync({
+        after: lastRead,
+        first: BATCH_MINIMAL,
+        mediaType: "audio",
+      });
+    incomingData.push(...assets);
+    lastRead = endCursor;
+    isComplete = !hasNextPage;
+  } while (!isComplete);
+  // Filter through the audio files and keep the tracks we want.
+  //  - FIXME: In the future, we'll filter based on a whitelist & blacklist.
+  const discoveredTracks = incomingData.filter((a) =>
     StorageVolumesDirectoryPaths.some((dir) =>
       a.uri.startsWith(`file://${addTrailingSlash(dir)}Music/`),
     ),
   );
+  console.log(`Got list of wanted tracks in ${stopwatch.lapTime()}.`);
 
   // Get relevant entries inside our database.
-  const allAlbums = await db.query.albums.findMany();
   const allTracks = await db.query.tracks.findMany();
   const allInvalidTracks = await db.query.invalidTracks.findMany();
+  incrementAtom("previouslyFound", allTracks.length);
 
   // Find the tracks we can skip indexing or need updating.
-  const unmodifiedTracks = new Set<string>();
   const modifiedTracks = new Set<string>();
-  audioFiles.forEach(({ id, modificationTime, uri }) => {
+  const unmodifiedTracks = new Set<string>();
+  discoveredTracks.forEach(({ id, modificationTime, uri }) => {
     const isSaved = allTracks.find((t) => t.id === id);
     const isInvalid = allInvalidTracks.find((t) => t.id === id);
     if (!isSaved && !isInvalid) return; // If we have a new track.
@@ -54,7 +93,6 @@ export async function indexAudio() {
     // detected in 2 different locations, we make sure the track is marked
     // as being "modified".
     if (isDifferentUri && unmodifiedTracks.has(id)) {
-      // eslint-disable-next-line
       unmodifiedTracks.delete(id);
     } else if (!isDifferentUri && modifiedTracks.has(id)) {
       isDifferentUri = true;
@@ -67,152 +105,118 @@ export async function indexAudio() {
       unmodifiedTracks.add(id);
     }
   });
+  incrementAtom("unstaged", discoveredTracks.length - unmodifiedTracks.size);
+  stopwatch.lapTime();
 
-  // Get the metadata for all new or modified tracks.
-  const incomingTrackData = await Promise.allSettled(
-    audioFiles
-      .filter(({ id }) => !unmodifiedTracks.has(id))
-      .map(async ({ id, uri, duration, modificationTime, filename }) => {
-        try {
-          const metadata = await getMetadata(uri, MetadataPresets.standard);
-          return {
-            ...{ id, uri, duration, modificationTime, ...metadata },
-            // Fallback to filename (excludes the file extension).
-            ...{ title: metadata.title ?? removeFileExtension(filename) },
-          };
-        } catch (err) {
-          // Propagate error, changing its message to be the track id.
-          if (!(err instanceof Error))
-            console.log(`[Track ${id}] Rejected for unknown reasons.`);
-          else console.log(`[Track ${id}] ${err.message}`);
-          throw new Error(id);
-        }
-      }),
+  // Create track entries from the minimum amount of data.
+  const unstagedTracks = discoveredTracks.filter(
+    ({ id }) => !unmodifiedTracks.has(id),
   );
+  for (let i = 0; i < unstagedTracks.length; i += BATCH_MODERATE) {
+    const results = await Promise.allSettled(
+      unstagedTracks
+        .slice(i, i + BATCH_MODERATE)
+        .filter((i) => i !== undefined)
+        .map(async (mediaAsset) => {
+          const { id, uri, modificationTime } = mediaAsset;
+          const isRetry = allInvalidTracks.find((t) => t.id === id);
+
+          try {
+            const trackEntry = await getTrackEntry(mediaAsset);
+            if (modifiedTracks.has(id) && !isRetry) {
+              // Update existing track.
+              await db.update(tracks).set(trackEntry).where(eq(tracks.id, id));
+            } else {
+              // Save new track.
+              await db.insert(tracks).values(trackEntry);
+              // Remove track from `InvalidTrack` if it was there previously.
+              if (isRetry) {
+                await db.delete(invalidTracks).where(eq(invalidTracks.id, id));
+              }
+            }
+          } catch (err) {
+            // We may end up here if the track at the given uri doesn't exist anymore.
+            if (!(err instanceof Error))
+              console.log(`[Track ${id}] Rejected for unknown reasons.`);
+            else console.log(`[Track ${id}] ${err.message}`);
+
+            // Delete the track and its relation, then add it to `InvalidTrack`.
+            await deleteTrack(id);
+            await db
+              .insert(invalidTracks)
+              .values({ id, uri, modificationTime })
+              .onConflictDoUpdate({
+                target: invalidTracks.id,
+                set: { modificationTime },
+              });
+
+            throw new Error(id);
+          }
+        }),
+    );
+
+    incrementAtom("staged", results.filter(isFulfilled).length);
+    incrementAtom("errors", results.filter(isRejected).length);
+  }
   console.log(
-    `Attempted to get metadata of ${incomingTrackData.length} tracks in ${stopwatch.lapTime()}.`,
+    `Attempted to stage metadata of ${unstagedTracks.length} tracks in ${stopwatch.lapTime()}.`,
   );
 
-  // Add rejected tracks to `InvalidTracks` table.
-  await Promise.allSettled(
-    incomingTrackData.filter(isRejected).map(async ({ reason }) => {
-      const trackId = reason.message as string;
-      // Delete existing rejected track as we failed to modify it.
-      if (modifiedTracks.has(trackId)) await deleteTrack(trackId);
-
-      const { id, uri, modificationTime } = audioFiles.find(
-        ({ id }) => id === trackId,
-      )!;
-      await db
-        .insert(invalidTracks)
-        .values({ id, uri, modificationTime })
-        .onConflictDoUpdate({
-          target: invalidTracks.id,
-          set: { modificationTime },
-        });
-    }),
-  );
-
-  // Get all the valid track metadata.
-  const validTrackData = incomingTrackData
-    .filter(isFulfilled)
-    .map(({ value }) => value);
-
-  // Add new artists to database.
-  await Promise.allSettled(
-    [
-      ...new Set(
-        validTrackData
-          .map(({ artist, albumArtist }) => [artist, albumArtist])
-          .flat()
-          .filter((name) => name !== null),
-      ),
-    ].map((name) => db.insert(artists).values({ name }).onConflictDoNothing()),
-  );
-
-  // Add new albums to database (albums may have the same name, but different artists).
-  const albumInfoMap: Record<
-    string,
-    { name: string; artistName: string; releaseYear: number | null }
-  > = {};
-  const newAlbums = new Set(
-    validTrackData
-      .filter(({ albumTitle, albumArtist }) => !!albumTitle && !!albumArtist)
-      .map(({ albumTitle: album, albumArtist, year }) => {
-        // An artist can releases multiple albums with the same name (ie: Weezer).
-        const key = getAlbumKey({ album, albumArtist, year });
-        albumInfoMap[key] = {
-          name: album!,
-          artistName: albumArtist!,
-          releaseYear: year,
-        };
-        return key;
-      }),
-  );
-  const albumIdMap: Record<string, string> = {};
-  await Promise.allSettled(
-    [...newAlbums].map(async (albumKey) => {
-      const entry = albumInfoMap[albumKey]!;
-      let exists = allAlbums.find(
-        (a) =>
-          a.name === entry.name &&
-          a.artistName === entry.artistName &&
-          a.releaseYear === entry.releaseYear,
-      );
-      if (!exists) exists = await createAlbum(entry);
-      albumIdMap[albumKey] = exists.id;
-    }),
-  );
-
-  // Add new & updated tracks to the database.
-  await Promise.allSettled(
-    validTrackData.map(
-      async ({
-        id,
-        albumTitle: album,
-        albumArtist,
-        artist: artistName,
-        year,
-        title: name,
-        trackNumber,
-        ...rest
-      }) => {
-        const albumKey = getAlbumKey({ album, albumArtist, year });
-        const albumId = album ? albumIdMap[albumKey] : null;
-
-        const newTrackData = {
-          ...{ id, name, artistName, albumId, track: trackNumber ?? undefined },
-          ...rest,
-        };
-        const isRetriedTrack = allInvalidTracks.find((t) => t.id === id);
-
-        if (modifiedTracks.has(id) && !isRetriedTrack) {
-          // Update existing track.
-          await db.update(tracks).set(newTrackData).where(eq(tracks.id, id));
-        } else {
-          // Save new track.
-          await db.insert(tracks).values(newTrackData);
-          // Remove track from `InvalidTracks` table as it's now correctly structured.
-          if (isRetriedTrack)
-            await db.delete(invalidTracks).where(eq(invalidTracks.id, id));
-        }
-      },
-    ),
-  );
-
-  return { foundFiles: audioFiles, changed: incomingTrackData.length };
+  return {
+    foundFiles: discoveredTracks,
+    changed: discoveredTracks.length - unmodifiedTracks.size,
+  };
 }
 
-/** Ensure we use the right key to get the album id. */
-export function getAlbumKey(key: {
-  album: Maybe<string>;
-  albumArtist: Maybe<string>;
-  year: Maybe<number>;
-}) {
-  return `${encodeURIComponent(key.album ?? "")} ${encodeURIComponent(key.albumArtist ?? "")} ${key.year}`;
+/** Returns an object representing data for the found track. */
+async function getTrackEntry({
+  id,
+  uri,
+  duration,
+  modificationTime,
+  filename,
+}: MediaLibrary.Asset) {
+  const { albumArtist, albumTitle, artist, title, trackNumber, year } =
+    await getMetadata(uri, MetadataPresets.standard);
+
+  // Add new artists to the database.
+  await Promise.allSettled(
+    [artist, albumArtist]
+      .filter((name) => name !== null)
+      .map((name) => db.insert(artists).values({ name }).onConflictDoNothing()),
+  );
+
+  // Add new album to the database. The unique key on `Album` covers the rare
+  // case where an artist releases multiple albums with the same name.
+  let albumId: string | null = null;
+  if (!!albumTitle && !!albumArtist) {
+    const newAlbum = await createAlbum({
+      name: albumTitle,
+      artistName: albumArtist,
+      releaseYear: year,
+    });
+    if (newAlbum) albumId = newAlbum.id;
+  }
+
+  return {
+    ...{ id, name: title ?? removeFileExtension(filename) },
+    ...{ artistName: artist, albumId, track: trackNumber ?? undefined },
+    ...{ duration, uri, modificationTime },
+  };
 }
 
 /** Removes the file extension from a filename. */
 function removeFileExtension(filename: string) {
   return filename.split(".").slice(0, -1).join(".");
+}
+
+/** Helper to update `indexStatusAtom` progressively. */
+function incrementAtom(
+  key: keyof ExtractAtomValue<typeof indexStatusAtom>,
+  val: number,
+) {
+  getDefaultStore().set(indexStatusAtom, (prev) => ({
+    ...prev,
+    [key]: (prev[key] ?? 0) + val,
+  }));
 }

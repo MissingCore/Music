@@ -1,6 +1,8 @@
 import type { DefaultOptions, UseMutationResult } from "@tanstack/react-query";
 import { QueryClient } from "@tanstack/react-query";
 
+import { settingKeys } from "@/features/setting/api/_queryKeys";
+
 const queryConfig: DefaultOptions = {
   queries: {
     networkMode: "always",
@@ -32,8 +34,6 @@ export function mutateGuard<TData, TError, TVariables, TContext>(
  */
 export function clearAllQueries(client = queryClient) {
   client.invalidateQueries({
-    // @ts-expect-error ts(2339) — We normalized the `queryKey` structure
-    // to be an object with an `entity` key.
-    predicate: ({ queryKey }) => queryKey[0]?.entity !== "releases",
+    predicate: ({ queryKey }) => queryKey[0] !== settingKeys.release(),
   });
 }
