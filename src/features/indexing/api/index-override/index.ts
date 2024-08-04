@@ -1,4 +1,3 @@
-import { StorageVolumesDirectoryPaths } from "@missingcore/react-native-metadata-retriever";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { eq } from "drizzle-orm";
 
@@ -6,10 +5,9 @@ import { db } from "@/db";
 import { fileNodes, invalidTracks, tracks } from "@/db/schema";
 
 import { fixAlbumFracturization } from "./album-fracturization";
-import { scanLibrary } from "../library-scan";
+import { savePathComponents } from "../library-scan";
 import type { AdjustmentOption } from "../../Config";
 import { OverrideHistory } from "../../Config";
-import { addTrailingSlash } from "../../utils";
 
 /**
  * Force any re-indexing based on any changes that we made in the code
@@ -39,10 +37,7 @@ export async function dataReadjustments() {
 }
 
 /** Logic we want to run depending on what adjustments we need to make. */
-export const AdjustmentFunctionMap: Record<
-  AdjustmentOption,
-  () => Promise<void>
-> = {
+const AdjustmentFunctionMap: Record<AdjustmentOption, () => Promise<void>> = {
   "album-fracturization": fixAlbumFracturization,
   "artwork-retry": async () => {
     await db
@@ -57,11 +52,18 @@ export const AdjustmentFunctionMap: Record<
   "library-scan": async () => {
     // eslint-disable-next-line drizzle/enforce-delete-with-where
     await db.delete(fileNodes);
-    await Promise.allSettled(
-      StorageVolumesDirectoryPaths.map((dir) =>
-        // We want to remove the front forward slash.
-        scanLibrary({ dirName: `${addTrailingSlash(dir).slice(1)}Music` }),
-      ),
-    );
+
+    // Create "folder" structure for tracks we've already saved.
+    const allTracks = await db.query.tracks.findMany({
+      columns: { uri: true },
+    });
+    for (let i = 0; i < allTracks.length; i += 200) {
+      await Promise.allSettled(
+        allTracks
+          .slice(i, i + 200)
+          .filter((i) => i !== undefined)
+          .map(({ uri }) => savePathComponents(uri)),
+      );
+    }
   },
 };
