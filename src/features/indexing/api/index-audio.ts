@@ -14,6 +14,7 @@ import { createAlbum, deleteTrack } from "@/db/queries";
 
 import { Stopwatch } from "@/utils/debug";
 import { isFulfilled, isRejected } from "@/utils/promise";
+import { savePathComponents } from "./library-scan";
 import { addTrailingSlash } from "../utils";
 
 /*
@@ -123,6 +124,10 @@ export async function doAudioIndexing() {
 
           try {
             const trackEntry = await getTrackEntry(mediaAsset);
+
+            // Make sure we have the "folder" structure to this file.
+            await savePathComponents(uri);
+
             if (modifiedTracks.has(id) && !isRetry) {
               // Update existing track.
               await db.update(tracks).set(trackEntry).where(eq(tracks.id, id));

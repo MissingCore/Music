@@ -8,10 +8,7 @@ import { cleanUpArtwork } from "../api/artwork-cleanup";
 import { saveArtworkOnce } from "../api/artwork-save";
 import { cleanUpDb } from "../api/db-cleanup";
 import { doAudioIndexing } from "../api/index-audio";
-import {
-  AdjustmentFunctionMap,
-  dataReadjustments,
-} from "../api/index-override";
+import { dataReadjustments } from "../api/index-override";
 
 import { createImageDirectory } from "@/lib/file-system";
 import { Stopwatch } from "@/utils/debug";
@@ -43,13 +40,8 @@ export function useIndexAudio() {
     await dataReadjustments();
     console.log(`Completed data adjustments in ${stopwatch.lapTime()}.`);
 
-    const { foundFiles, changed } = await doAudioIndexing();
+    const { foundFiles } = await doAudioIndexing();
     await cleanUpDb(new Set(foundFiles.map(({ id }) => id)));
-    stopwatch.lapTime();
-    if (changed > 0) {
-      await AdjustmentFunctionMap["library-scan"]();
-      console.log(`Re-created library tree in ${stopwatch.lapTime()}.`);
-    }
     console.log(`Finished overall in ${stopwatch.stop()}.`);
 
     // Allow audio to play in the background.
