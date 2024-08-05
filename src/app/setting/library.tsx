@@ -24,8 +24,8 @@ export default function LibraryScreen() {
   return (
     <AnimatedHeader title="Library">
       <Description intent="setting">
-        Control where music is discovered from. Blacklisted directories take
-        priority over whitelisted ones. If the whitelist is empty, it defaults
+        Control where music is discovered from. Blocklisted directories take
+        priority over allowlisted ones. If the allowlist is empty, it defaults
         to the following values:{"\n"}
         <Text className="text-foreground100">
           {StorageVolumesDirectoryPaths.map((path) => `\n\t${path}`)}
@@ -37,12 +37,12 @@ export default function LibraryScreen() {
       </Description>
 
       <PathList
-        name="WHITELIST"
+        name="Allowlist"
         data={EXAMPLE_PATHS}
         onDelete={(entry: string) => console.log(`Deleting \`${entry}\`...`)}
       />
       <PathList
-        name="BLACKLIST"
+        name="Blocklist"
         data={[]}
         onDelete={(entry: string) => console.log(`Deleting \`${entry}\`...`)}
       />
@@ -50,7 +50,7 @@ export default function LibraryScreen() {
   );
 }
 
-/** Interface for adding & removing paths from a whitelist or blacklist. */
+/** Interface for adding & removing paths from an allowlist or blocklist. */
 function PathList({
   name,
   data,
@@ -65,7 +65,9 @@ function PathList({
       <View className="mt-6 h-px bg-surface850" />
 
       <View className="mb-1 flex-row justify-between gap-2">
-        <NavLinkGroupHeading className="mt-6">{name}</NavLinkGroupHeading>
+        <NavLinkGroupHeading className="mt-6">
+          {name.toUpperCase()}
+        </NavLinkGroupHeading>
         <Pressable
           onPress={() => console.log("Adding new item to list...")}
           className="-mr-4 px-3 pb-2 pt-4 active:opacity-75"
