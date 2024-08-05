@@ -31,7 +31,7 @@ export async function savePathComponents(uri: string) {
 
   // List of `FileNode` entries that make up the uri.
   const foundNodes: FileNode[] = [
-    { name: usedVolume, path: addTrailingSlash(usedVolume), parentPath: null },
+    { name: usedVolume, path: `${usedVolume}/`, parentPath: null },
   ];
 
   // Find remaining `FileNode` entries. `usedVolume.length + 1` is length
