@@ -1,10 +1,10 @@
 import type { BottomSheetModal } from "@gorhom/bottom-sheet";
-import {
-  BottomSheetScrollView,
-  BottomSheetTextInput,
-} from "@gorhom/bottom-sheet";
-import { forwardRef, useState } from "react";
-import { Platform, Text, View } from "react-native";
+import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import * as FileSystem from "expo-file-system";
+import { useAtom } from "jotai";
+import { forwardRef, useMemo, useState } from "react";
+import { Platform, Text, TextInput, View } from "react-native";
+import { Toast } from "react-native-toast-notifications";
 
 import { CreateNewFolderOutline } from "@/assets/svgs/MaterialSymbol";
 import type { allowListAtom } from "@/features/setting/api/library";
@@ -17,6 +17,12 @@ import { Heading } from "@/components/ui/text";
 import { ModalBase } from "@/features/modal/components/modal-base";
 import { ModalFormButton } from "@/features/modal/components/form-button";
 
+/** List of warning messages we can display. */
+const WarningsMap = {
+  supersede: "This supersede a previous constraint.",
+  used: "This constraint is already in the list.",
+} as const;
+
 /** Modal to add a new path to a list. */
 export const AddListModal = forwardRef<
   BottomSheetModal,
@@ -25,7 +31,24 @@ export const AddListModal = forwardRef<
     store: typeof allowListAtom;
   }
 >(function AddListModal({ name, store }, ref) {
+  const [listData, setListData] = useAtom(store);
   const [newPath, setNewPath] = useState<string>();
+
+  const isValidPath = useMemo(() => {
+    if (!newPath) return false;
+    const trimmed = newPath.trim();
+    return (
+      trimmed !== "/" && trimmed.startsWith("/") && !listData.includes(trimmed)
+    );
+  }, [newPath, listData]);
+
+  const warningKey = useMemo(() => {
+    if (!newPath) return;
+    const trimmed = newPath.trim();
+    if (trimmed === "" || trimmed === "/") return;
+    if (listData.includes(trimmed)) return "used";
+    if (listData.some((path) => path.startsWith(trimmed))) return "supersede";
+  }, [newPath, listData]);
 
   return (
     <ModalBase ref={ref} modalControlAtom={settingModalAtom} detached>
@@ -57,9 +80,8 @@ export const AddListModal = forwardRef<
           </StyledPressable>
         </View>
 
-        <BottomSheetTextInput
+        <TextInput
           value={newPath}
-          maxLength={30}
           onChangeText={(text) => setNewPath(text)}
           placeholder="/storage/emulated/0"
           placeholderTextColor={Colors.surface400}
@@ -68,14 +90,31 @@ export const AddListModal = forwardRef<
             "font-geistMonoLight text-base text-foreground100",
           )}
         />
-        <View className="mb-8 flex-row gap-2">
-          <Text className="text-start font-geistMonoLight text-xs text-accent50">
-            This supersede a previous constraint.
-          </Text>
-        </View>
+        <Text className="mb-8 text-start font-geistMonoLight text-xs text-accent50">
+          {!!warningKey && WarningsMap[warningKey]}
+        </Text>
 
         <View className="flex-row justify-end gap-2">
-          <ModalFormButton disabled={true} variant="outline" onPress={() => {}}>
+          <ModalFormButton
+            disabled={!isValidPath}
+            variant="outline"
+            onPress={async () => {
+              const trimmed = newPath!.trim();
+              // Check to see if directory exists before we add it.
+              try {
+                const { exists, isDirectory } = await FileSystem.getInfoAsync(
+                  `file://${trimmed}`,
+                );
+                if (!exists || !isDirectory) throw Error();
+              } catch {
+                Toast.show(`\`${trimmed}\` does not exist.`, {
+                  type: "danger",
+                });
+                return;
+              }
+              setListData(async (prev) => [...(await prev), trimmed]);
+            }}
+          >
             ADD
           </ModalFormButton>
         </View>
