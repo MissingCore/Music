@@ -21,6 +21,7 @@ import { CurrentTrackHeader } from "@/components/navigation/header";
 import { StyledPressable } from "@/components/ui/pressable";
 import { Heading } from "@/components/ui/text";
 import { AppModals } from "@/features/modal";
+import { SettingModalsPortal } from "@/features/setting/components/modal";
 
 import { ErrorBoundary } from "@/components/error/error-boundary";
 // Catch any errors thrown by the Layout component.
@@ -94,6 +95,7 @@ function RootLayoutNav() {
 
       <IntroModal />
       <AppModals />
+      <SettingModalsPortal />
     </AppProvider>
   );
 }

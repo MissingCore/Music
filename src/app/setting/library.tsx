@@ -1,14 +1,14 @@
 import { StorageVolumesDirectoryPaths } from "@missingcore/react-native-metadata-retriever";
 import { FlashList } from "@shopify/flash-list";
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { Pressable, Text, View } from "react-native";
 
 import {
   CloseOutline,
   CreateNewFolderOutline,
 } from "@/assets/svgs/MaterialSymbol";
-
 import { allowListAtom, blockListAtom } from "@/features/setting/api/library";
+import { settingModalAtom } from "@/features/setting/store";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
@@ -52,6 +52,7 @@ function PathList({
   listAtom: typeof allowListAtom;
 }) {
   const [data, setData] = useAtom(listAtom);
+  const openModal = useSetAtom(settingModalAtom);
 
   return (
     <>
@@ -62,7 +63,9 @@ function PathList({
           {name.toUpperCase()}
         </NavLinkGroupHeading>
         <Pressable
-          onPress={() => console.log("Adding new item to list...")}
+          onPress={() =>
+            openModal({ type: "filter-list", name, store: listAtom })
+          }
           className="-mr-4 px-3 pb-2 pt-4 active:opacity-75"
         >
           <CreateNewFolderOutline size={24} />
