@@ -1,7 +1,6 @@
 import * as Sentry from "@sentry/react-native";
 import { Stack } from "expo-router";
 import { useAtom, useSetAtom } from "jotai";
-import { unwrap } from "jotai/utils";
 import { useEffect } from "react";
 import { Modal, Pressable, Text, View } from "react-native";
 import Bootsplash from "react-native-bootsplash";
@@ -13,9 +12,11 @@ import { modalAtom } from "@/features/modal/store";
 
 import "@/assets/global.css";
 import { PlaybackService } from "@/constants/PlaybackService";
-import { createAtomWithStorage } from "@/lib/jotai";
 import { AppProvider } from "@/components/app-provider";
-import { AnimatedBootSplash } from "@/components/navigation/animated-boot-splash";
+import {
+  AnimatedBootSplash,
+  shownIntroModalAtom,
+} from "@/components/navigation/animated-boot-splash";
 import { CurrentTrackHeader } from "@/components/navigation/header";
 import { StyledPressable } from "@/components/ui/pressable";
 import { Heading } from "@/components/ui/text";
@@ -96,12 +97,6 @@ function RootLayoutNav() {
     </AppProvider>
   );
 }
-
-const shownIntroModalAsyncAtom = createAtomWithStorage<boolean | undefined>(
-  "shown-intro-modal",
-  undefined,
-);
-const shownIntroModalAtom = unwrap(shownIntroModalAsyncAtom, (prev) => prev);
 
 /** Modal that explains that artwork will be saved in the background. */
 function IntroModal() {
