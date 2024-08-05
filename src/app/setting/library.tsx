@@ -1,11 +1,14 @@
 import { StorageVolumesDirectoryPaths } from "@missingcore/react-native-metadata-retriever";
 import { FlashList } from "@shopify/flash-list";
+import { useAtom } from "jotai";
 import { Pressable, Text, View } from "react-native";
 
 import {
   CloseOutline,
   CreateNewFolderOutline,
 } from "@/assets/svgs/MaterialSymbol";
+
+import { allowListAtom, blockListAtom } from "@/features/setting/api/library";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
@@ -17,13 +20,11 @@ import {
 import { StyledPressable } from "@/components/ui/pressable";
 import { Description } from "@/components/ui/text";
 
-const EXAMPLE_PATHS = ["/storage/emulated/0/Music", "/storage/ace-999/Music"];
-
 /** Screen for `/setting/library` route. */
 export default function LibraryScreen() {
   return (
     <AnimatedHeader title="Library">
-      <Description intent="setting">
+      <Description intent="setting" className="mb-4">
         Control where music is discovered from. Blocklisted directories take
         priority over allowlisted ones. If the allowlist is empty, it defaults
         to the following values:{"\n"}
@@ -36,16 +37,8 @@ export default function LibraryScreen() {
         </Text>
       </Description>
 
-      <PathList
-        name="Allowlist"
-        data={EXAMPLE_PATHS}
-        onDelete={(entry: string) => console.log(`Deleting \`${entry}\`...`)}
-      />
-      <PathList
-        name="Blocklist"
-        data={[]}
-        onDelete={(entry: string) => console.log(`Deleting \`${entry}\`...`)}
-      />
+      <PathList name="Allowlist" listAtom={allowListAtom} />
+      <PathList name="Blocklist" listAtom={blockListAtom} />
     </AnimatedHeader>
   );
 }
@@ -53,16 +46,16 @@ export default function LibraryScreen() {
 /** Interface for adding & removing paths from an allowlist or blocklist. */
 function PathList({
   name,
-  data,
-  onDelete,
+  listAtom,
 }: {
   name: string;
-  data: string[];
-  onDelete: (entry: string) => void;
+  listAtom: typeof allowListAtom;
 }) {
+  const [data, setData] = useAtom(listAtom);
+
   return (
     <>
-      <View className="mt-6 h-px bg-surface850" />
+      <View className="mt-2 h-px bg-surface850" />
 
       <View className="mb-1 flex-row justify-between gap-2">
         <NavLinkGroupHeading className="mt-6">
@@ -89,7 +82,14 @@ function PathList({
               )}
             >
               <NavLinkLabel className="py-1">{item}</NavLinkLabel>
-              <StyledPressable forIcon onPress={() => onDelete(item)}>
+              <StyledPressable
+                forIcon
+                onPress={() =>
+                  setData(async (prev) =>
+                    (await prev).filter((path) => path !== item),
+                  )
+                }
+              >
                 <View className="pointer-events-none">
                   <CloseOutline size={24} color={Colors.surface400} />
                 </View>
