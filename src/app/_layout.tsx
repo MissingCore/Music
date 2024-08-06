@@ -114,14 +114,31 @@ function IntroModal() {
       transparent
     >
       <View className="flex-1 items-center justify-center bg-canvas/50">
-        <View className="m-4 rounded-xl bg-surface800 px-4 py-8">
+        <View className="m-4 rounded-xl bg-surface800 p-4">
           <Heading as="h2" className="mb-8">
-            Artwork Saving
+            Quick Start
           </Heading>
-          <Text className="mb-10 text-center font-geistMonoLight text-sm text-surface400">
+
+          <Text className="mb-2 font-geistMono text-sm text-foreground50">
+            Default Scanning
+          </Text>
+          <Text className="mb-6 font-geistMonoLight text-xs text-surface400">
+            By default, <Text className="font-ndot57">Music</Text> will{" "}
+            <Text className="text-foreground100">
+              scan for tracks in the top-level `Music` directory
+            </Text>{" "}
+            on every storage device found. To change this behavior, update the
+            filters in the `Library` feature in the settings page.
+          </Text>
+
+          <Text className="mb-2 font-geistMono text-sm text-foreground50">
+            Artwork Saving
+          </Text>
+          <Text className="mb-10 font-geistMonoLight text-xs text-surface400">
             Track artwork is being saved in the background in an optimal manner.
             You may experience some UI lag as a result.
           </Text>
+
           <Pressable
             onPress={() => {
               setShownIntroModal(true);
