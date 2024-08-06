@@ -1,5 +1,8 @@
 import type { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import {
+  BottomSheetScrollView,
+  BottomSheetTextInput,
+} from "@gorhom/bottom-sheet";
 import {
   PrimaryDirectoryPath,
   StorageVolumesDirectoryPaths,
@@ -8,7 +11,7 @@ import * as FileSystem from "expo-file-system";
 import { StorageAccessFramework as SAF } from "expo-file-system";
 import { useAtom } from "jotai";
 import { forwardRef, useCallback, useMemo, useState } from "react";
-import { Platform, Text, TextInput, View } from "react-native";
+import { Platform, Text, View } from "react-native";
 import { Toast } from "react-native-toast-notifications";
 
 import { CreateNewFolderOutline } from "@/assets/svgs/MaterialSymbol";
@@ -43,7 +46,7 @@ export const AddListModal = forwardRef<
   }
 >(function AddListModal({ name, store }, ref) {
   const [listData, setListData] = useAtom(store);
-  const [newPath, setNewPath] = useState<string>();
+  const [newPath, setNewPath] = useState("");
 
   const isValidPath = useMemo(() => {
     if (!newPath) return false;
@@ -124,7 +127,8 @@ export const AddListModal = forwardRef<
           </StyledPressable>
         </View>
 
-        <TextInput
+        <BottomSheetTextInput
+          autoFocus
           value={newPath}
           onChangeText={(text) => setNewPath(text)}
           placeholder="/storage/emulated/0"
