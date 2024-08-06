@@ -23,7 +23,7 @@ import { Description } from "@/components/ui/text";
 /** Screen for `/setting/library` route. */
 export default function LibraryScreen() {
   return (
-    <AnimatedHeader title="Library">
+    <AnimatedHeader title="LIBRARY">
       <Description intent="setting" className="mb-4">
         Control where music is discovered from. Directories in the blocklist
         have higher priority over ones in the allowlist. If the allowlist is

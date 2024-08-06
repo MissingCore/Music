@@ -23,7 +23,7 @@ We ran this logic in the past to fix existing data after we fixed the following 
 
 ## Saving & Populating Tracks With Metadata
 
-The first thing we do is figure out what tracks are on our device and keep the subset of tracks that we want (currently, only tracks in the top-level `Music` directory on each storage device/volume). We then go through a couple of tracks at a time, getting their metadata, and creating or updating a `Track` entry. If an error is thrown when retrieving the metadata, that track gets added to the `InvalidTrack` table.
+The first thing we do is figure out what tracks are on our device and keep the subset of tracks that we want. We then go through a couple of tracks at a time, getting their metadata, and creating or updating a `Track` entry. If an error is thrown when retrieving the metadata, that track gets added to the `InvalidTrack` table.
 
 ## Cleaning Up The Database
 

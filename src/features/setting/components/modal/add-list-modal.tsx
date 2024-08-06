@@ -131,7 +131,7 @@ export const AddListModal = forwardRef<
           autoFocus
           value={newPath}
           onChangeText={(text) => setNewPath(text)}
-          placeholder="/storage/emulated/0"
+          placeholder={PrimaryDirectoryPath}
           placeholderTextColor={Colors.surface400}
           className={cn(
             "mb-2 border-b border-b-foreground100 p-1",
