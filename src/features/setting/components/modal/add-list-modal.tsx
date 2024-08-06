@@ -1,8 +1,13 @@
 import type { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import {
+  PrimaryDirectoryPath,
+  StorageVolumesDirectoryPaths,
+} from "@missingcore/react-native-metadata-retriever";
 import * as FileSystem from "expo-file-system";
+import { StorageAccessFramework as SAF } from "expo-file-system";
 import { useAtom } from "jotai";
-import { forwardRef, useMemo, useState } from "react";
+import { forwardRef, useCallback, useMemo, useState } from "react";
 import { Platform, Text, TextInput, View } from "react-native";
 import { Toast } from "react-native-toast-notifications";
 
@@ -14,8 +19,14 @@ import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
 import { StyledPressable } from "@/components/ui/pressable";
 import { Heading } from "@/components/ui/text";
+import { addTrailingSlash } from "@/features/indexing/utils";
 import { ModalBase } from "@/features/modal/components/modal-base";
 import { ModalFormButton } from "@/features/modal/components/form-button";
+
+/** `StorageVolumesDirectoryPaths` without `PrimaryDirectoryPath`. */
+const NonPrimaryDirectoryPaths = StorageVolumesDirectoryPaths.filter(
+  (path) => path !== PrimaryDirectoryPath,
+);
 
 /** List of warning messages we can display. */
 const WarningsMap = {
@@ -38,7 +49,10 @@ export const AddListModal = forwardRef<
     if (!newPath) return false;
     const trimmed = newPath.trim();
     return (
-      trimmed !== "/" && trimmed.startsWith("/") && !listData.includes(trimmed)
+      trimmed !== "/" &&
+      trimmed.startsWith("/") &&
+      !trimmed.includes("//") &&
+      !listData.includes(trimmed)
     );
   }, [newPath, listData]);
 
@@ -49,6 +63,36 @@ export const AddListModal = forwardRef<
     if (listData.includes(trimmed)) return "used";
     if (listData.some((path) => path.startsWith(trimmed))) return "supersede";
   }, [newPath, listData]);
+
+  const selectDirectory = useCallback(async () => {
+    const permissions = await SAF.requestDirectoryPermissionsAsync();
+    if (!permissions.granted) {
+      Toast.show("No directory selected.", { type: "danger" });
+      return;
+    }
+
+    // The "path" portion of the `content://` uri is encoded, so we can
+    // split by `/` and extract the path with the volume uuid.
+    const treeUri = decodeURIComponent(
+      permissions.directoryUri.split("/").at(-1)!,
+    );
+    // Format is: `uuid:some/path`
+    const [volumeUUID, ..._path] = treeUri.split(":");
+    const path = _path.join(":");
+
+    // Find the storage volume for that given uuid.
+    let usedVolume = PrimaryDirectoryPath;
+    if (volumeUUID !== "primary") {
+      const actualVolume = NonPrimaryDirectoryPaths.filter((path) =>
+        path.includes(`/${volumeUUID}`),
+      );
+      // Used the found volume or a "guess".
+      if (actualVolume[0]) usedVolume = actualVolume[0];
+      else usedVolume = `/storage/${volumeUUID}`;
+    }
+
+    setNewPath(`${addTrailingSlash(usedVolume)}${path}`);
+  }, []);
 
   return (
     <ModalBase ref={ref} modalControlAtom={settingModalAtom} detached>
@@ -62,7 +106,7 @@ export const AddListModal = forwardRef<
 
         <View className="mb-6 overflow-hidden rounded border border-surface500">
           <StyledPressable
-            onPress={() => {}}
+            onPress={selectDirectory}
             className={cn(
               "h-[58px] flex-row items-center justify-between p-1 pl-2 pr-0",
               {
@@ -107,9 +151,7 @@ export const AddListModal = forwardRef<
                 );
                 if (!exists || !isDirectory) throw Error();
               } catch {
-                Toast.show(`\`${trimmed}\` does not exist.`, {
-                  type: "danger",
-                });
+                Toast.show(`\`${trimmed}\` doesn' exist.`, { type: "danger" });
                 return;
               }
               setListData(async (prev) => [...(await prev), trimmed]);

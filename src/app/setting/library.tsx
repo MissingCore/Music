@@ -25,13 +25,16 @@ export default function LibraryScreen() {
   return (
     <AnimatedHeader title="Library">
       <Description intent="setting" className="mb-4">
-        Control where music is discovered from. Blocklisted directories take
-        priority over allowlisted ones. If the allowlist is empty, it defaults
-        to the following values:{"\n"}
+        Control where music is discovered from. Directories in the blocklist
+        have higher priority over ones in the allowlist. If the allowlist is
+        empty, it defaults to the following values:{"\n"}
         <Text className="text-foreground100">
           {StorageVolumesDirectoryPaths.map((path) => `\n\t${path}`)}
         </Text>
         {"\n\n"}
+        <Text className="underline">Note:</Text> The locations returned by `Find
+        Directory` might not be accurate. Refer to the actual file URI for
+        better accuracy.{"\n\n"}
         <Text className="text-accent50">
           App relaunch is required to apply changes.
         </Text>
