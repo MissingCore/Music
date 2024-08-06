@@ -94,7 +94,7 @@ There are 2 methods of installing this app:
 
 1. Download the APK for your device from a release found in ["Releases" tab](https://github.com/MissingCore/Music/releases).
 
-2. Download the app from the Google Play Store **[pending completion of closed test]**.
+2. Download the app from the Google Play Store **(waiting for v1.0.0 release)**.
 
 > [!IMPORTANT]  
 > The APK & Play Store version of the apps **aren't compatible** as:
@@ -104,7 +104,7 @@ There are 2 methods of installing this app:
 
 # Build
 
-Read the [Building this App docs](./docs//building-this-app.md).
+Read the [Building this App docs](./docs/building-this-app.md).
 
 # FAQ
 
@@ -120,7 +120,7 @@ Refer to the [performance section](#performance) of this README.
 
 > How do I add music to the app? Why are my music files not displayed?
 
-Place your music files in the "Music" folder on your Android device or SD card. It doesn't matter if you put the tracks directly into the folder or in sub-folders for better organization.
+Read the [Where Are Tracks Found? document](./docs/where-are-tracks-found.md) to see how Music find tracks.
 
 You can look [here](https://developer.android.com/media/platform/supported-formats#audio-formats) for the list of supported audio files & metadata formats from the Android documentation.
 

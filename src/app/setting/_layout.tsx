@@ -6,6 +6,7 @@ export default function SettingsLayout() {
       <Stack.Screen name="index" />
       <Stack.Screen name="backup" />
       <Stack.Screen name="insights" />
+      <Stack.Screen name="library" />
       <Stack.Screen name="license" />
       <Stack.Screen name="support" />
       <Stack.Screen name="third-party/index" />

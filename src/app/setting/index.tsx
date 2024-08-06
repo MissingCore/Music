@@ -35,6 +35,7 @@ const LINKGROUPS = {
     links: [
       { label: "BACKUP", href: "/setting/backup" },
       { label: "INSIGHTS", href: "/setting/insights" },
+      { label: "LIBRARY", href: "/setting/library" },
     ],
     listClassName: "-mx-4",
   },

@@ -1,7 +1,6 @@
 import * as Sentry from "@sentry/react-native";
 import { Stack } from "expo-router";
 import { useAtom, useSetAtom } from "jotai";
-import { unwrap } from "jotai/utils";
 import { useEffect } from "react";
 import { Modal, Pressable, Text, View } from "react-native";
 import Bootsplash from "react-native-bootsplash";
@@ -13,13 +12,16 @@ import { modalAtom } from "@/features/modal/store";
 
 import "@/assets/global.css";
 import { PlaybackService } from "@/constants/PlaybackService";
-import { createAtomWithStorage } from "@/lib/jotai";
 import { AppProvider } from "@/components/app-provider";
-import { AnimatedBootSplash } from "@/components/navigation/animated-boot-splash";
+import {
+  AnimatedBootSplash,
+  shownIntroModalAtom,
+} from "@/components/navigation/animated-boot-splash";
 import { CurrentTrackHeader } from "@/components/navigation/header";
 import { StyledPressable } from "@/components/ui/pressable";
 import { Heading } from "@/components/ui/text";
 import { AppModals } from "@/features/modal";
+import { SettingModalsPortal } from "@/features/setting/components/modal";
 
 import { ErrorBoundary } from "@/components/error/error-boundary";
 // Catch any errors thrown by the Layout component.
@@ -93,15 +95,10 @@ function RootLayoutNav() {
 
       <IntroModal />
       <AppModals />
+      <SettingModalsPortal />
     </AppProvider>
   );
 }
-
-const shownIntroModalAsyncAtom = createAtomWithStorage<boolean | undefined>(
-  "shown-intro-modal",
-  undefined,
-);
-const shownIntroModalAtom = unwrap(shownIntroModalAsyncAtom, (prev) => prev);
 
 /** Modal that explains that artwork will be saved in the background. */
 function IntroModal() {
@@ -117,14 +114,31 @@ function IntroModal() {
       transparent
     >
       <View className="flex-1 items-center justify-center bg-canvas/50">
-        <View className="m-4 rounded-xl bg-surface800 px-4 py-8">
+        <View className="m-4 rounded-xl bg-surface800 p-4">
           <Heading as="h2" className="mb-8">
-            Artwork Saving
+            Quick Start
           </Heading>
-          <Text className="mb-10 text-center font-geistMonoLight text-sm text-surface400">
+
+          <Text className="mb-2 font-geistMono text-sm text-foreground50">
+            Default Scanning
+          </Text>
+          <Text className="mb-6 font-geistMonoLight text-xs text-surface400">
+            By default, <Text className="font-ndot57">Music</Text> will{" "}
+            <Text className="text-foreground100">
+              scan for tracks in the top-level `Music` directory
+            </Text>{" "}
+            on every storage device found. To change this behavior, update the
+            filters in the `Library` feature in the settings page.
+          </Text>
+
+          <Text className="mb-2 font-geistMono text-sm text-foreground50">
+            Artwork Saving
+          </Text>
+          <Text className="mb-10 font-geistMonoLight text-xs text-surface400">
             Track artwork is being saved in the background in an optimal manner.
             You may experience some UI lag as a result.
           </Text>
+
           <Pressable
             onPress={() => {
               setShownIntroModal(true);

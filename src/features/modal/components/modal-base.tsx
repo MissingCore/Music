@@ -1,12 +1,14 @@
 import type {
   BottomSheetBackdropProps,
   BottomSheetBackgroundProps,
+  BottomSheetModal,
   BottomSheetProps,
 } from "@gorhom/bottom-sheet";
 import _BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
+import type { PrimitiveAtom } from "jotai";
 import { useSetAtom } from "jotai";
 import { cssInterop } from "nativewind";
-import { useCallback, useMemo } from "react";
+import { forwardRef, useCallback, useMemo } from "react";
 import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -20,13 +22,12 @@ const BottomSheet = cssInterop(_BottomSheet, {
 });
 
 /** Bottom sheet w/ 2 different designs based on the value of `detached`. */
-export function ModalBase({
-  detached,
-  children,
-  ...props
-}: Omit<BottomSheetProps, "ref">) {
+export const ModalBase = forwardRef<
+  BottomSheetModal,
+  BottomSheetProps & { modalControlAtom?: PrimitiveAtom<any> }
+>(function ModalBase({ detached, children, modalControlAtom, ...props }, ref) {
   const insets = useSafeAreaInsets();
-  const closeModal = useSetAtom(modalAtom);
+  const closeModal = useSetAtom(modalControlAtom ?? modalAtom);
 
   const modalSnapPoints = useMemo(() => ["60%", "90%"], []);
 
@@ -34,6 +35,7 @@ export function ModalBase({
 
   return (
     <BottomSheet
+      ref={ref}
       onClose={handleOnClose}
       enablePanDownToClose
       keyboardBehavior="interactive"
@@ -60,7 +62,7 @@ export function ModalBase({
       {children}
     </BottomSheet>
   );
-}
+});
 
 /** Our version of `<BottomSheetBackdrop />`. */
 function Backdrop(props: BottomSheetBackdropProps) {

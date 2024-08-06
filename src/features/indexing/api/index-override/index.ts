@@ -1,13 +1,18 @@
+import { StorageVolumesDirectoryPaths } from "@missingcore/react-native-metadata-retriever";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { eq } from "drizzle-orm";
+import { getDefaultStore } from "jotai";
 
 import { db } from "@/db";
 import { fileNodes, invalidTracks, tracks } from "@/db/schema";
+
+import { allowListAsyncAtom } from "@/features/setting/api/library";
 
 import { fixAlbumFracturization } from "./album-fracturization";
 import { savePathComponents } from "../library-scan";
 import type { AdjustmentOption } from "../../Config";
 import { OverrideHistory } from "../../Config";
+import { addTrailingSlash } from "../../utils";
 
 /**
  * Force any re-indexing based on any changes that we made in the code
@@ -44,6 +49,14 @@ const AdjustmentFunctionMap: Record<AdjustmentOption, () => Promise<void>> = {
       .update(tracks)
       .set({ fetchedArt: false })
       .where(eq(tracks.fetchedArt, true));
+  },
+  "directory-lists": async () => {
+    await getDefaultStore().set(
+      allowListAsyncAtom,
+      StorageVolumesDirectoryPaths.map(
+        (path) => `${addTrailingSlash(path)}Music`,
+      ),
+    );
   },
   "invalid-tracks-retry": async () => {
     // eslint-disable-next-line drizzle/enforce-delete-with-where

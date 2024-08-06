@@ -12,6 +12,11 @@ import { db } from "@/db";
 import { artists, tracks, invalidTracks } from "@/db/schema";
 import { createAlbum, deleteTrack } from "@/db/queries";
 
+import {
+  allowListAsyncAtom,
+  blockListAsyncAtom,
+} from "@/features/setting/api/library";
+
 import { Stopwatch } from "@/utils/debug";
 import { isFulfilled, isRejected } from "@/utils/promise";
 import { savePathComponents } from "./library-scan";
@@ -44,7 +49,12 @@ const BATCH_MODERATE = 25;
  * Index tracks with their metadata into our database for fast retrieval.
  */
 export async function doAudioIndexing() {
+  const jotaiStore = getDefaultStore();
   const stopwatch = new Stopwatch();
+
+  let allowList = await jotaiStore.get(allowListAsyncAtom);
+  if (allowList.length === 0) allowList = StorageVolumesDirectoryPaths;
+  const blockList = await jotaiStore.get(blockListAsyncAtom);
 
   // Get all audio files discoverable by `expo-media-library`.
   const incomingData: MediaLibrary.Asset[] = [];
@@ -62,11 +72,14 @@ export async function doAudioIndexing() {
     isComplete = !hasNextPage;
   } while (!isComplete);
   // Filter through the audio files and keep the tracks we want.
-  //  - FIXME: In the future, we'll filter based on a whitelist & blacklist.
-  const discoveredTracks = incomingData.filter((a) =>
-    StorageVolumesDirectoryPaths.some((dir) =>
-      a.uri.startsWith(`file://${addTrailingSlash(dir)}Music/`),
-    ),
+  const discoveredTracks = incomingData.filter(
+    (a) =>
+      allowList.some((path) =>
+        a.uri.startsWith(`file://${addTrailingSlash(path)}`),
+      ) &&
+      !blockList.some((path) =>
+        a.uri.startsWith(`file://${addTrailingSlash(path)}`),
+      ),
   );
   console.log(`Got list of wanted tracks in ${stopwatch.lapTime()}.`);
 

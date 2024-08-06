@@ -19,27 +19,27 @@ export async function savePathComponents(uri: string) {
 
   // Check if the file path is in the database already,
   const exists = await db.query.fileNodes.findFirst({
-    where: (fields, { eq }) => eq(fields.path, `${filePath}/`),
+    where: (fields, { eq }) => eq(fields.path, addTrailingSlash(filePath)),
   });
   if (exists) return;
 
   // Figure out which storage volume this file belongs to.
-  const usedVolume = volumePaths.filter((path) => filePath.startsWith(path))[0];
+  const _usedVolume = volumePaths.filter((p) => filePath.startsWith(p))[0];
   // Don't throw error, but exit if the uri doesn't belong to any of the
   // storage volumes detected by `@missingcore/react-native-metadata-retriever`.
-  if (!usedVolume) return;
+  if (!_usedVolume) return;
+  const usedVolume = addTrailingSlash(_usedVolume);
 
   // List of `FileNode` entries that make up the uri.
   const foundNodes: FileNode[] = [
-    { name: usedVolume, path: addTrailingSlash(usedVolume), parentPath: null },
+    { name: usedVolume.slice(0, -1), path: usedVolume, parentPath: null },
   ];
 
-  // Find remaining `FileNode` entries. `usedVolume.length + 1` is length
-  // of `usedVolume` with a trailing slash.
-  const segments = filePath.slice(usedVolume.length + 1).split("/");
+  // Find remaining `FileNode` entries.
+  const segments = filePath.slice(usedVolume.length).split("/");
   segments.forEach((name, idx) => {
     const parentPath = addTrailingSlash(
-      `${usedVolume}/${segments.slice(0, idx).join("/")}`,
+      `${usedVolume}${segments.slice(0, idx).join("/")}`,
     );
     foundNodes.push({ name, path: `${parentPath}${name}/`, parentPath });
   });

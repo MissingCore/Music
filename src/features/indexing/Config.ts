@@ -1,6 +1,7 @@
 export const AdjustmentOptions = [
   "album-fracturization",
   "artwork-retry",
+  "directory-lists",
   "invalid-tracks-retry",
   "library-scan",
 ] as const;
@@ -28,6 +29,6 @@ export const OverrideHistory: Record<
   },
   1: {
     version: "v1.0.0-rc.11",
-    changes: ["invalid-tracks-retry", "library-scan"],
+    changes: ["directory-lists", "invalid-tracks-retry", "library-scan"],
   },
 };
