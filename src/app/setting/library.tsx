@@ -1,16 +1,21 @@
 import { StorageVolumesDirectoryPaths } from "@missingcore/react-native-metadata-retriever";
 import { FlashList } from "@shopify/flash-list";
+import { useMutation } from "@tanstack/react-query";
 import { useAtom, useSetAtom } from "jotai";
 import { Pressable, Text, View } from "react-native";
+import { Toast } from "react-native-toast-notifications";
 
 import {
   CloseOutline,
   CreateNewFolderOutline,
 } from "@/assets/svgs/MaterialSymbol";
+import { Ionicons } from "@/components/icons";
+import { AdjustmentFunctionMap } from "@/features/indexing/api/index-override";
 import { allowListAtom, blockListAtom } from "@/features/setting/api/library";
 import { settingModalAtom } from "@/features/setting/store";
 
 import { Colors } from "@/constants/Styles";
+import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
 import { AnimatedHeader } from "@/components/navigation/animated-header";
 import {
@@ -18,12 +23,44 @@ import {
   NavLinkLabel,
 } from "@/components/navigation/nav-link";
 import { StyledPressable } from "@/components/ui/pressable";
-import { Description } from "@/components/ui/text";
+import { Description, Heading } from "@/components/ui/text";
+
+/** Re-run the library scan logic. */
+const useRescanLibrary = () =>
+  useMutation({
+    mutationFn: AdjustmentFunctionMap["library-scan"],
+    onSuccess: () => {
+      Toast.show("Finished re-scanning folder structure.");
+    },
+  });
 
 /** Screen for `/setting/library` route. */
 export default function LibraryScreen() {
+  const rescanLibrary = useRescanLibrary();
+
   return (
     <AnimatedHeader title="LIBRARY">
+      <Heading as="h4" className="mb-4 text-start font-geistMono">
+        Re-Scan Folder Structure
+      </Heading>
+      <View className="mb-8 flex-row gap-4">
+        <Description intent="setting" className="shrink">
+          Re-scan folder structure of media found by{" "}
+          <Text className="font-ndot57">Music</Text>. Removes any old and unused
+          entries.
+        </Description>
+        <Pressable
+          disabled={rescanLibrary.isPending}
+          onPress={() => mutateGuard(rescanLibrary, undefined)}
+          className="rounded border border-foreground100 p-3 active:opacity-75 disabled:opacity-25"
+        >
+          <Ionicons name="refresh-outline" color={Colors.foreground100} />
+        </Pressable>
+      </View>
+
+      <Heading as="h4" className="mb-4 text-start font-geistMono">
+        Scan Filter
+      </Heading>
       <Description intent="setting" className="mb-4">
         Control where music is discovered from. Directories in the blocklist
         have higher priority over ones in the allowlist. If the allowlist is

@@ -42,7 +42,10 @@ export async function dataReadjustments() {
 }
 
 /** Logic we want to run depending on what adjustments we need to make. */
-const AdjustmentFunctionMap: Record<AdjustmentOption, () => Promise<void>> = {
+export const AdjustmentFunctionMap: Record<
+  AdjustmentOption,
+  () => Promise<void>
+> = {
   "album-fracturization": fixAlbumFracturization,
   "artwork-retry": async () => {
     await db
