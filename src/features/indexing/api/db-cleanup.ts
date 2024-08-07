@@ -38,12 +38,17 @@ export async function removeUnlinkedTracks(foundTracks: Set<string>) {
     .filter((id) => !foundTracks.has(id));
 
   // Delete missing tracks.
-  await Promise.allSettled(
-    missingTrackIds.map(async (id) => {
-      await db.delete(invalidTracks).where(eq(invalidTracks.id, id));
-      await deleteTrack(id);
-    }),
-  );
+  for (let i = 0; i < missingTrackIds.length; i += 200) {
+    await Promise.allSettled(
+      missingTrackIds
+        .slice(i, i + 200)
+        .filter((i) => i !== undefined)
+        .map(async (id) => {
+          await db.delete(invalidTracks).where(eq(invalidTracks.id, id));
+          await deleteTrack(id);
+        }),
+    );
+  }
 
   await revalidatePlaybackStore(missingTrackIds);
 

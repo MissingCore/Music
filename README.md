@@ -13,7 +13,6 @@ A Nothing inspired music player (based on design by [Alkid Shuli (alKid)](https:
     <ol type="a">
       <li><a href="#built-with">Built With</a></li>
       <li><a href="#permissions">Permissions</a></li>
-      <li><a href="#performance">Performance</a></li>
     </ol>
     <li><a href="#installation">Installation</a></li>
     <li><a href="#build">Build</a></li>
@@ -69,25 +68,6 @@ This (hopefully) lists out all the permissions required by Music based on the pe
 | Popups   | - Music and Audio (Android 13+)<br/>- Files & Media (Android <13)                                                                                                                                                                                                                              |
 | Implicit | - Read External Storage; for reading Music & Audio Files (unused in Android 13+)<br/>- Write to External Storage ([unused in Android 11+](https://developer.android.com/reference/android/Manifest.permission#WRITE_EXTERNAL_STORAGE))<br/>- Internet (only used for checking for new updates) |
 
-## Performance
-
-> [!NOTE]  
-> To understand what the benchmark means, we need to understand how Music save track metadata.
->
-> When we open the app for the first time or after we add some new tracks to our device:
->
-> 1. The app will detect any new tracks and automatically read the metadata via the [@missingcore/react-native-metadata-retriever](https://github.com/MissingCore/react-native-metadata-retriever) package. **This will cause you to be on the loading screen for a little bit.**
-> 2. After the loading screen closes, the app will save the album/track artwork in the background in an optimal manner. **This will take some time and may cause some laggy behavior in the app**.
->
-> Once this is completed, this logic won't run again unless Music detects that we added new tracks to the device.
-
-Here are some benchmarks for saving 177 new tracks & 20 album/track artwork **during a development version** of this app. Do note that the production version of the app may be faster due to not having any debug logic running in the background.
-
-| Device (OS Version)                  | Track Saving | Artwork Saving |
-| ------------------------------------ | ------------ | -------------- |
-| Nothing Phone 2a — Android 14 (v2.6) | ~2.5028s     | ~6.0648s       |
-| OnePlus 6 — Android 11 (v11.1.2.2)   | ~5.5598s     | ~7.0251s       |
-
 # Installation
 
 There are 2 methods of installing this app:
@@ -104,7 +84,7 @@ There are 2 methods of installing this app:
 
 # Build
 
-Read the [Building this App docs](./docs/building-this-app.md).
+Read the [Building this App](./docs/building-this-app.md) documentation.
 
 # FAQ
 
@@ -116,11 +96,11 @@ When looking at the `App size` field under `Space used` in the storage info for 
 
 > Why is loading the app slow?
 
-Refer to the [performance section](#performance) of this README.
+Read the [How Are Tracks Indexed?](./docs/how-are-tracks-indexed.md) documentation to see how the app saves tracks.
 
 > How do I add music to the app? Why are my music files not displayed?
 
-Read the [Where Are Tracks Found? document](./docs/where-are-tracks-found.md) to see how Music find tracks.
+Read the [Where Are Tracks Found?](./docs/where-are-tracks-found.md) documentation to see how the app find tracks.
 
 You can look [here](https://developer.android.com/media/platform/supported-formats#audio-formats) for the list of supported audio files & metadata formats from the Android documentation.
 

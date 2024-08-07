@@ -128,7 +128,7 @@ function IntroModal() {
               scan for tracks in the top-level `Music` directory
             </Text>{" "}
             on every storage device found. To change this behavior, update the
-            filters in the `Library` feature in the settings page.
+            filters in the `Library` screen in the settings page.
           </Text>
 
           <Text className="mb-2 font-geistMono text-sm text-foreground50">
