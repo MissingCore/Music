@@ -45,14 +45,16 @@ export default function LibraryScreen() {
       </Heading>
       <View className="mb-8 flex-row gap-4">
         <Description intent="setting" className="shrink">
-          Re-scan folder structure of media found by{" "}
-          <Text className="font-ndot57">Music</Text>. Removes any old and unused
-          entries.
+          Go through all the indexed tracks and re-create the structure seen in
+          the `FOLDERS` tab, removing any old and unused entries.{"\n\n"}
+          <Text className="text-accent50">
+            This doesn't look for any new tracks. To do that, relaunch the app.
+          </Text>
         </Description>
         <Pressable
           disabled={rescanLibrary.isPending}
           onPress={() => mutateGuard(rescanLibrary, undefined)}
-          className="rounded border border-foreground100 p-3 active:opacity-75 disabled:opacity-25"
+          className="self-start rounded border border-foreground100 p-3 active:opacity-75 disabled:opacity-25"
         >
           <Ionicons name="refresh-outline" color={Colors.foreground100} />
         </Pressable>
