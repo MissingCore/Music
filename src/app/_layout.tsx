@@ -35,8 +35,11 @@ export const unstable_settings = {
 Sentry.init({
   dsn: "https://bbd726405356cdfb20b85f5f924fd3e3@o4507687432617984.ingest.us.sentry.io/4507687447101440",
   ignoreErrors: [
-    "Cannot complete operation because sound is not loaded.",
-    "Player does not exist.",
+    /Missing .* permissions/,
+    // `expo-av` errors:
+    "Player does not exist",
+    /is (not|already) loaded/,
+    // Expo development errors:
     "Unable to activate keep awake",
   ],
 });

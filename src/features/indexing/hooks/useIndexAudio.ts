@@ -30,7 +30,7 @@ export function useIndexAudio() {
     // Make sure we have permissions.
     if (permissionResponse?.status !== "granted") {
       const { canAskAgain, status } = await requestPermission();
-      if (canAskAgain || status === "denied") {
+      if (canAskAgain || status !== "granted") {
         if (status === "denied") setIsComplete(true);
         return;
       }
