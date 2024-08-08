@@ -8,6 +8,7 @@ import { fileNodes, invalidTracks, tracks } from "@/db/schema";
 
 import { allowListAsyncAtom } from "@/features/setting/api/library";
 
+import { batch } from "@/utils/promise";
 import { fixAlbumFracturization } from "./album-fracturization";
 import { savePathComponents } from "../library-scan";
 import type { AdjustmentOption } from "../../Config";
@@ -73,13 +74,9 @@ export const AdjustmentFunctionMap: Record<
     const allTracks = await db.query.tracks.findMany({
       columns: { uri: true },
     });
-    for (let i = 0; i < allTracks.length; i += 200) {
-      await Promise.allSettled(
-        allTracks
-          .slice(i, i + 200)
-          .filter((i) => i !== undefined)
-          .map(({ uri }) => savePathComponents(uri)),
-      );
-    }
+    await batch({
+      data: allTracks,
+      callback: ({ uri }) => savePathComponents(uri),
+    });
   },
 };

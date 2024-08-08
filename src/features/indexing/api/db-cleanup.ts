@@ -12,6 +12,7 @@ import {
 import { queueRemoveItemsAtom } from "@/features/playback/api/queue";
 
 import { clearAllQueries } from "@/lib/react-query";
+import { batch } from "@/utils/promise";
 
 /** Clean up any unlinked content in the database. */
 export async function cleanUpDb(usedTrackIds: Set<string>) {
@@ -38,17 +39,13 @@ export async function removeUnlinkedTracks(foundTracks: Set<string>) {
     .filter((id) => !foundTracks.has(id));
 
   // Delete missing tracks.
-  for (let i = 0; i < missingTrackIds.length; i += 200) {
-    await Promise.allSettled(
-      missingTrackIds
-        .slice(i, i + 200)
-        .filter((i) => i !== undefined)
-        .map(async (id) => {
-          await db.delete(invalidTracks).where(eq(invalidTracks.id, id));
-          await deleteTrack(id);
-        }),
-    );
-  }
+  await batch({
+    data: missingTrackIds,
+    callback: async (id) => {
+      await db.delete(invalidTracks).where(eq(invalidTracks.id, id));
+      await deleteTrack(id);
+    },
+  });
 
   await revalidatePlaybackStore(missingTrackIds);
 

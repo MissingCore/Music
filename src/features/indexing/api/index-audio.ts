@@ -18,14 +18,9 @@ import {
 } from "@/features/setting/api/library";
 
 import { Stopwatch } from "@/utils/debug";
-import { isFulfilled, isRejected } from "@/utils/promise";
+import { BATCH_PRESETS, batch } from "@/utils/promise";
 import { savePathComponents } from "./library-scan";
 import { addTrailingSlash } from "../utils";
-
-/*
-  Although doing lots of things at once (ie: `Promise.all` lots of promises
-  at once) may be faster, it may crash on devices with less memory.
-*/
 
 /** Help provide info to inform the user of what's happening. */
 export const indexStatusAtom = atom<{
@@ -39,11 +34,6 @@ export const indexStatusAtom = atom<{
   staged: undefined,
   errors: undefined,
 });
-
-/** Number of concurrent tasks for "light" workloads. */
-const BATCH_MINIMAL = 500;
-/** Number of concurrent tasks for "moderate" workloads. */
-const BATCH_MODERATE = 25;
 
 /**
  * Index tracks with their metadata into our database for fast retrieval.
@@ -64,7 +54,7 @@ export async function doAudioIndexing() {
     const { assets, endCursor, hasNextPage } =
       await MediaLibrary.getAssetsAsync({
         after: lastRead,
-        first: BATCH_MINIMAL,
+        first: BATCH_PRESETS.LIGHT,
         mediaType: "audio",
       });
     incomingData.push(...assets);
@@ -126,56 +116,54 @@ export async function doAudioIndexing() {
   const unstagedTracks = discoveredTracks.filter(
     ({ id }) => !unmodifiedTracks.has(id),
   );
-  for (let i = 0; i < unstagedTracks.length; i += BATCH_MODERATE) {
-    const results = await Promise.allSettled(
-      unstagedTracks
-        .slice(i, i + BATCH_MODERATE)
-        .filter((i) => i !== undefined)
-        .map(async (mediaAsset) => {
-          const { id, uri, modificationTime } = mediaAsset;
-          const isRetry = allInvalidTracks.find((t) => t.id === id);
+  await batch({
+    data: unstagedTracks,
+    batchAmount: BATCH_PRESETS.PROGRESS,
+    callback: async (mediaAsset) => {
+      const { id, uri, modificationTime } = mediaAsset;
+      const isRetry = allInvalidTracks.find((t) => t.id === id);
 
-          try {
-            const trackEntry = await getTrackEntry(mediaAsset);
+      try {
+        const trackEntry = await getTrackEntry(mediaAsset);
 
-            // Make sure we have the "folder" structure to this file.
-            await savePathComponents(uri);
+        // Make sure we have the "folder" structure to this file.
+        await savePathComponents(uri);
 
-            if (modifiedTracks.has(id) && !isRetry) {
-              // Update existing track.
-              await db.update(tracks).set(trackEntry).where(eq(tracks.id, id));
-            } else {
-              // Save new track.
-              await db.insert(tracks).values(trackEntry);
-              // Remove track from `InvalidTrack` if it was there previously.
-              if (isRetry) {
-                await db.delete(invalidTracks).where(eq(invalidTracks.id, id));
-              }
-            }
-          } catch (err) {
-            // We may end up here if the track at the given uri doesn't exist anymore.
-            if (!(err instanceof Error))
-              console.log(`[Track ${id}] Rejected for unknown reasons.`);
-            else console.log(`[Track ${id}] ${err.message}`);
-
-            // Delete the track and its relation, then add it to `InvalidTrack`.
-            await deleteTrack(id);
-            await db
-              .insert(invalidTracks)
-              .values({ id, uri, modificationTime })
-              .onConflictDoUpdate({
-                target: invalidTracks.id,
-                set: { modificationTime },
-              });
-
-            throw new Error(id);
+        if (modifiedTracks.has(id) && !isRetry) {
+          // Update existing track.
+          await db.update(tracks).set(trackEntry).where(eq(tracks.id, id));
+        } else {
+          // Save new track.
+          await db.insert(tracks).values(trackEntry);
+          // Remove track from `InvalidTrack` if it was there previously.
+          if (isRetry) {
+            await db.delete(invalidTracks).where(eq(invalidTracks.id, id));
           }
-        }),
-    );
+        }
+      } catch (err) {
+        // We may end up here if the track at the given uri doesn't exist anymore.
+        if (!(err instanceof Error))
+          console.log(`[Track ${id}] Rejected for unknown reasons.`);
+        else console.log(`[Track ${id}] ${err.message}`);
 
-    incrementAtom("staged", results.filter(isFulfilled).length);
-    incrementAtom("errors", results.filter(isRejected).length);
-  }
+        // Delete the track and its relation, then add it to `InvalidTrack`.
+        await deleteTrack(id);
+        await db
+          .insert(invalidTracks)
+          .values({ id, uri, modificationTime })
+          .onConflictDoUpdate({
+            target: invalidTracks.id,
+            set: { modificationTime },
+          });
+
+        throw new Error(id);
+      }
+    },
+    onBatchComplete: (fulfilled, rejected) => {
+      incrementAtom("staged", fulfilled.length);
+      incrementAtom("errors", rejected.length);
+    },
+  });
   console.log(
     `Attempted to stage metadata of ${unstagedTracks.length} tracks in ${stopwatch.lapTime()}.`,
   );

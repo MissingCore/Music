@@ -6,6 +6,7 @@ import { albums, playlists, tracks } from "@/db/schema";
 
 import { deleteFile } from "@/lib/file-system";
 import { Stopwatch } from "@/utils/debug";
+import { batch } from "@/utils/promise";
 
 /**
  * Deletes any images saved by this app that aren't linked to an album,
@@ -32,13 +33,18 @@ export async function cleanUpArtwork() {
   const imageDir = FileSystem.documentDirectory + "images";
 
   // Get & delete all unlinked images.
-  const deletedRes = await Promise.allSettled(
-    (await FileSystem.readDirectoryAsync(imageDir))
-      .filter((imageName) => !usedUris.some((uri) => uri.endsWith(imageName)))
-      .map((imageName) => deleteFile(`${imageDir}/${imageName}`)),
-  );
+  let deletedCount = 0;
+  await batch({
+    data: (await FileSystem.readDirectoryAsync(imageDir)).filter(
+      (imageName) => !usedUris.some((uri) => uri.endsWith(imageName)),
+    ),
+    callback: (imageName) => deleteFile(`${imageDir}/${imageName}`),
+    onBatchComplete: (isFulfilled) => {
+      deletedCount += isFulfilled.length;
+    },
+  });
 
   console.log(
-    `Deleted ${deletedRes.length} unlinked images in ${stopwatch.lapTime()}.`,
+    `Deleted ${deletedCount} unlinked images in ${stopwatch.lapTime()}.`,
   );
 }
