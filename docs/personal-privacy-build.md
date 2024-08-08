@@ -56,17 +56,17 @@ In the newly created forked repository, click the `Actions` tab and then the `I 
 
 ## Step 4: Create branch for latest version of the app (includes pre-release)
 
-Now, click ```Create `latest-stable` Branch``` in the sidebar while in the `Actions` tab. Next click on the `Run workflow` dropdown on the right and click `Run workflow`. Make sure that under `Use workflow from`, `Branch: main` is selected. This will create a new `latest-stable` branch.
+Now, click ``Create `latest-stable` Branch`` in the sidebar while in the `Actions` tab. Next click on the `Run workflow` dropdown on the right and click `Run workflow`. Make sure that under `Use workflow from`, `Branch: main` is selected. This will create a new `latest-stable` branch.
 
 <img src="./assets/personal-privacy-build/create_latest_stable_branch.png" alt="Visual steps on creating the `latest-stable` branch." />
 
 ## Step 5: Removing Sentry code
 
-Go back to the `Code` tab and click the dropdown menu which has `main`. From the dropdown, select the `latest-stable` option.
+There are 2 places where we need to modify some code. Go back to the `Code` tab and click the dropdown menu which has `main`. From the dropdown, select the `latest-stable` option.
 
 <img src="./assets/personal-privacy-build/remove_sentry_1.png" alt="Visual steps on switching to the `latest-stable` branch." />
 
-Then click on the `src` folder, followed by the `app` folder, and then `_layout.tsx`. You should see the following:
+Then click on the `src` folder, followed by the `app` folder, and then `_layout.tsx`. You should see something similar to the following (pay attention to the "breadcrumbs" at the top to make sure you're in the right file):
 
 <img src="./assets/personal-privacy-build/remove_sentry_2.png" alt="Screen that you should see if you followed the steps correctly." />
 
@@ -81,6 +81,14 @@ Delete the code highlighted below.
 Then click the `Commit changes...` button. You then need to fill out the details to create a new commit and then click the `Commit changes` button to save these changes.
 
 <img src="./assets/personal-privacy-build/remove_sentry_5.png" alt="Saving these changes." />
+
+Now, we need to go to the `gradle.properties` file inside the `android` folder. This can be quickly accessed via the sidebar that appeared.
+
+<img src="./assets/personal-privacy-build/remove_sentry_6.png" alt="Going to 2nd file that we need to change." />
+
+Now, we need to change `music.CREATE_PRIVACY_BUILD=false` to `music.CREATE_PRIVACY_BUILD=true` (at the bottom of the file). Commit these changes as well.
+
+<img src="./assets/personal-privacy-build/remove_sentry_7.png" alt="Code that we need to change." />
 
 ### Step 6: Creating APKs without Sentry code
 
