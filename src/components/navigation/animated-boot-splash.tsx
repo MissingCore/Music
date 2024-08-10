@@ -37,10 +37,7 @@ export function AnimatedBootSplash() {
     manifest: require("../../../assets/bootsplash/manifest.json"),
     logo: require("../../../assets/bootsplash/logo.png"),
 
-    animate: async () => {
-      // Pre-load the value.
-      await getDefaultStore().get(shownIntroModalAsyncAtom);
-    },
+    animate: () => {},
   });
 
   const opacity = useAnimatedStyle(() => ({
