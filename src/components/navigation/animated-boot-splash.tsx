@@ -1,4 +1,4 @@
-import { getDefaultStore, useAtomValue } from "jotai";
+import { useAtomValue } from "jotai";
 import { unwrap } from "jotai/utils";
 import { Dimensions, Text, View } from "react-native";
 import BootSplash from "react-native-bootsplash";
