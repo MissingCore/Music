@@ -45,6 +45,8 @@ A Nothing inspired music player (based on design by [Alkid Shuli (alKid)](https:
 
 Music is based on the design seen in this [comment on the Nothing Community forums](https://nothing.community/d/1825-nothing-music-player-app/2), created by [Alkid Shuli (alKid)](https://bento.me/alkid).
 
+For information on the goals and ideology of this app, refer to the [`App Goals & Ideology`](./docs/app-goals-ideology.md) document.
+
 > [!IMPORTANT]  
 > Be careful when clearing the cache of the app as if you accidentally clear the storage, all the data in the app will be deleted (ie: playlists, favorited tracks, artwork).
 
