@@ -107,7 +107,7 @@ export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
           onLayout={({ nativeEvent }) => {
             titleHeight.value = nativeEvent.layout.height;
           }}
-          className="mb-8 text-start"
+          className="mb-8 text-start font-ndot57"
         >
           {title}
         </Heading>

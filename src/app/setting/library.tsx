@@ -40,7 +40,7 @@ export default function LibraryScreen() {
 
   return (
     <AnimatedHeader title="LIBRARY">
-      <Heading as="h4" className="mb-4 text-start font-geistMono">
+      <Heading as="h4" className="mb-4 text-start">
         Re-Scan Folder Structure
       </Heading>
       <View className="mb-8 flex-row gap-4">
@@ -60,7 +60,7 @@ export default function LibraryScreen() {
         </Pressable>
       </View>
 
-      <Heading as="h4" className="mb-4 text-start font-geistMono">
+      <Heading as="h4" className="mb-4 text-start">
         Scan Filter
       </Heading>
       <Description intent="setting" className="mb-4">

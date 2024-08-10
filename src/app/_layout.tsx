@@ -118,7 +118,7 @@ function IntroModal() {
     >
       <View className="flex-1 items-center justify-center bg-canvas/50">
         <View className="m-4 rounded-xl bg-surface800 p-4">
-          <Heading as="h2" className="mb-8">
+          <Heading as="h2" className="mb-8 font-ndot57">
             Quick Start
           </Heading>
 

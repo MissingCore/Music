@@ -37,7 +37,7 @@ function UserDataWidget() {
   if (isPending || error) return null;
   return (
     <View className="mb-6 rounded-lg bg-surface800 p-4">
-      <Heading as="h4" className="mb-4 text-start tracking-tight">
+      <Heading as="h4" className="mb-4 text-start font-ndot57 tracking-tight">
         User Data
       </Heading>
 
@@ -88,7 +88,7 @@ function StatisticsWidget() {
   if (isPending || error) return null;
   return (
     <View className="mb-6 rounded-lg bg-surface800 p-4">
-      <Heading as="h4" className="mb-4 text-start tracking-tight">
+      <Heading as="h4" className="mb-4 text-start font-ndot57 tracking-tight">
         Statistics
       </Heading>
 
@@ -114,7 +114,10 @@ function AllImagesSavedWidget() {
   if (isPending || error) return null;
   return (
     <View className="flex-row justify-between gap-4 rounded-lg bg-surface800 p-4">
-      <Heading as="h4" className="text-start leading-tight tracking-tight">
+      <Heading
+        as="h4"
+        className="text-start font-ndot57 leading-tight tracking-tight"
+      >
         All Images Saved?
       </Heading>
       <Ionicons

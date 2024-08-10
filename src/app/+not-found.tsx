@@ -17,7 +17,7 @@ export default function NotFoundScreen() {
     <>
       <Stack.Screen options={{ headerShown: false }} />
       <SafeContainer className="my-8 flex-1 px-4">
-        <Heading as="h1" className="mb-4">
+        <Heading as="h1" className="mb-4 font-ndot57">
           Unmatched Route
         </Heading>
         <ScrollView contentContainerClassName="px-2">

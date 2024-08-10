@@ -80,7 +80,9 @@ export function Heading({
       "text-xl": as === "h3",
       "text-lg": as === "h4",
       // Need this as `font-family` class fail to be merged.
-      "font-ndot57": !TwFontFamilies?.some((fam) => className?.includes(fam)),
+      "font-geistMono": !TwFontFamilies?.some((fam) =>
+        className?.includes(fam),
+      ),
     },
     className,
   );

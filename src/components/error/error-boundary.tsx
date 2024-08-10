@@ -14,7 +14,7 @@ export function ErrorBoundary({ error }: ErrorBoundaryProps) {
   */
   return (
     <SafeContainer className="my-8 flex-1 px-4">
-      <Heading as="h1" className="mb-4">
+      <Heading as="h1" className="mb-4 font-ndot57">
         Something Went Wrong
       </Heading>
       <ScrollView contentContainerClassName="px-4 py-2">

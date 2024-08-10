@@ -64,7 +64,7 @@ export default function CurrentTrackScreen() {
             <Heading
               as="h3"
               numberOfLines={2}
-              className="h-[58px] align-bottom font-geistMono"
+              className="h-[58px] align-bottom"
             >
               {trackData.name}
             </Heading>

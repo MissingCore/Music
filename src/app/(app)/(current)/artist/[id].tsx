@@ -70,7 +70,7 @@ function ArtistAlbums({ albums }: { albums: Album[] | null }) {
 
   return (
     <>
-      <Heading as="h3" className="mb-2 text-start font-geistMono">
+      <Heading as="h3" className="mb-2 text-start">
         Albums
       </Heading>
       <View className="-mx-5 mb-4">
@@ -88,7 +88,7 @@ function ArtistAlbums({ albums }: { albums: Album[] | null }) {
           ))}
         </ScrollRow>
       </View>
-      <Heading as="h3" className="mb-2 text-start font-geistMono">
+      <Heading as="h3" className="mb-2 text-start">
         Tracks
       </Heading>
     </>

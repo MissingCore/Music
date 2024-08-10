@@ -57,7 +57,7 @@ export default function HomeScreen() {
         setEndOfScrollView(isCloseToBottom(nativeEvent));
       }}
     >
-      <Heading as="h2" className="mb-4 px-4 text-start font-geistMono">
+      <Heading as="h2" className="mb-4 px-4 text-start">
         RECENTLY PLAYED
       </Heading>
       {/*
@@ -71,7 +71,7 @@ export default function HomeScreen() {
         </ScrollRow>
       </View>
 
-      <Heading as="h2" className="mb-4 mt-8 px-4 text-start font-geistMono">
+      <Heading as="h2" className="mb-4 mt-8 px-4 text-start">
         FAVORITES
       </Heading>
       <FavoriteListSection fixScrollPosition={adjustScrollPosition} />
@@ -150,7 +150,10 @@ function FavoriteTracks({ colWidth }: { colWidth: number }) {
         style={{ width: colWidth, height: colWidth }}
         className="items-center justify-center rounded-lg bg-accent500 active:opacity-75"
       >
-        <Heading as="h1">{`${trackCount}\nTracks`}</Heading>
+        <Heading
+          as="h1"
+          className="font-ndot57"
+        >{`${trackCount}\nTracks`}</Heading>
       </Pressable>
     </Link>
   );
