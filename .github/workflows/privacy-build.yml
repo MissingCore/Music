@@ -19,6 +19,10 @@ jobs:
           distribution: microsoft
           java-version: 17
 
+      - name: Add config to create privacy build
+        run: |
+          echo "music.CREATE_PRIVACY_BUILD=true" >> ./android/gradle.properties
+
       - name: Clean generated builds
         run: rm -rf android/app/build/generated/
 
