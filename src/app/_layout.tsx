@@ -70,6 +70,14 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const openModal = useSetAtom(modalAtom);
 
+  useEffect(() => {
+    // Encountered issue in Android 12+ where one of the bootsplashes
+    // persisted when it shouldn't. Make sure we close at least the bootsplash
+    // from `react-native-bootsplash` whenever we render the app (in case its
+    // "autohide" behavior doesn't work as expected).
+    Bootsplash.hide();
+  }, []);
+
   return (
     <AppProvider>
       <Stack screenOptions={{ headerShown: false }}>
@@ -110,7 +118,7 @@ function IntroModal() {
   return (
     <Modal
       animationType="fade"
-      visible={shownIntroModal === undefined}
+      visible={shownIntroModal === false}
       onRequestClose={() => {
         setShownIntroModal(true);
       }}

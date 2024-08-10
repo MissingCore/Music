@@ -1,4 +1,4 @@
-import { getDefaultStore, useAtomValue } from "jotai";
+import { useAtomValue } from "jotai";
 import { unwrap } from "jotai/utils";
 import { Dimensions, Text, View } from "react-native";
 import BootSplash from "react-native-bootsplash";
@@ -37,10 +37,7 @@ export function AnimatedBootSplash() {
     manifest: require("../../../assets/bootsplash/manifest.json"),
     logo: require("../../../assets/bootsplash/logo.png"),
 
-    animate: async () => {
-      // Pre-load the value.
-      await getDefaultStore().get(shownIntroModalAsyncAtom);
-    },
+    animate: () => {},
   });
 
   const opacity = useAnimatedStyle(() => ({
