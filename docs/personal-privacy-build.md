@@ -62,7 +62,7 @@ Now, click ``Create `latest-stable` Branch`` in the sidebar while in the `Action
 
 ## Step 5: Removing Sentry code
 
-There are 2 places where we need to modify some code. Go back to the `Code` tab and click the dropdown menu which has `main`. From the dropdown, select the `latest-stable` option.
+Go back to the `Code` tab and click the dropdown menu which has `main`. From the dropdown, select the `latest-stable` option.
 
 <img src="./assets/personal-privacy-build/remove_sentry_1.png" alt="Visual steps on switching to the `latest-stable` branch." />
 
@@ -82,13 +82,8 @@ Then click the `Commit changes...` button. You then need to fill out the details
 
 <img src="./assets/personal-privacy-build/remove_sentry_5.png" alt="Saving these changes." />
 
-Now, we need to go to the `gradle.properties` file inside the `android` folder. This can be quickly accessed via the sidebar that appeared.
-
-<img src="./assets/personal-privacy-build/remove_sentry_6.png" alt="Going to 2nd file that we need to change." />
-
-Now, we need to change `music.CREATE_PRIVACY_BUILD=false` to `music.CREATE_PRIVACY_BUILD=true` (at the bottom of the file). Commit these changes as well.
-
-<img src="./assets/personal-privacy-build/remove_sentry_7.png" alt="Code that we need to change." />
+> [!NOTE]  
+> We previously required you to modify the `gradle.properties` file to make sure the Sentry code run during build-time doesn't actually run. Now, we updated the workflow to automatically add the `music.CREATE_PRIVACY_BUILD=true` to `gradle.properties`.
 
 ### Step 6: Creating APKs without Sentry code
 
