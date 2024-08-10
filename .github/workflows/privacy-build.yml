@@ -19,6 +19,9 @@ jobs:
           distribution: microsoft
           java-version: 17
 
+      - name: Setup Gradle action for optimized execution and caching
+        uses: gradle/actions/setup-gradle@v4
+
       - name: Add config to create privacy build
         run: |
           echo "music.CREATE_PRIVACY_BUILD=true" >> ./android/gradle.properties
