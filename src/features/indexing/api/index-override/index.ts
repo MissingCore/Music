@@ -6,6 +6,7 @@ import { getDefaultStore } from "jotai";
 import { db } from "@/db";
 import { fileNodes, invalidTracks, tracks } from "@/db/schema";
 
+import { shownIntroModalAtom } from "@/components/navigation/animated-boot-splash";
 import { allowListAsyncAtom } from "@/features/setting/api/library";
 
 import { batch } from "@/utils/promise";
@@ -60,6 +61,11 @@ export const AdjustmentFunctionMap: Record<
       StorageVolumesDirectoryPaths.map(
         (path) => `${addTrailingSlash(path)}Music`,
       ),
+    );
+  },
+  "intro-modal": async () => {
+    await getDefaultStore().set(shownIntroModalAtom, async (prev) =>
+      (await prev) ? true : false,
     );
   },
   "invalid-tracks-retry": async () => {

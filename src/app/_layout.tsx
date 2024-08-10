@@ -110,7 +110,7 @@ function IntroModal() {
   return (
     <Modal
       animationType="fade"
-      visible={shownIntroModal === undefined}
+      visible={shownIntroModal === false}
       onRequestClose={() => {
         setShownIntroModal(true);
       }}
