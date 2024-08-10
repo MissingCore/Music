@@ -22,7 +22,7 @@
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
   <!--
     Does nothing in Android 11 (API Level 30) and above; however, `expo-media-library`
-    still needs it on Android 11 as it throws an error.
+    still needs it on Android 11+ as it throws an error.
       - https://developer.android.com/reference/android/Manifest.permission#WRITE_EXTERNAL_STORAGE
   -->
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
