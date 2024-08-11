@@ -15,12 +15,12 @@ export function PlaylistDeleteModal({ id }: { id: string }) {
   return (
     <ModalBase detached>
       <BottomSheetScrollView className="px-4">
-        <Heading as="h2">Delete Playlist</Heading>
-        <Heading as="h4" asLine className="mb-6 text-accent50">
+        <Heading as="h3">Delete Playlist</Heading>
+        <Heading as="h5" asLine className="mb-6 text-accent50">
           {id}
         </Heading>
 
-        <Text className="mb-8 font-geistMonoLight text-sm text-foreground100">
+        <Text className="mb-8 font-geistMonoLight text-xs text-foreground100">
           You understand that this action will{" "}
           <Text className="font-geistMono text-accent50">permanently</Text>{" "}
           delete this playlist.

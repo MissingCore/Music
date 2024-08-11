@@ -26,21 +26,21 @@ export function UpcomingTrackModal() {
   return (
     <ModalBase>
       <BottomSheetScrollView className="px-4">
-        <Heading as="h2" className="mb-2 text-start">
+        <Heading as="h3" className="mb-2 text-start">
           Now Playing
         </Heading>
         <Suspense fallback={<LoadingIndicator />}>
           <CurrentTrack />
         </Suspense>
 
-        <Heading as="h2" className="mb-2 text-start">
+        <Heading as="h3" className="mb-2 text-start">
           Next in Queue
         </Heading>
         <Suspense fallback={<LoadingIndicator />}>
           <QueueListTracks />
         </Suspense>
 
-        <Heading as="h2" className="mb-2 text-start">
+        <Heading as="h3" className="mb-2 text-start">
           Next 5 Tracks
         </Heading>
         <Suspense fallback={<LoadingIndicator />}>
@@ -130,5 +130,9 @@ function UpcomingTrack({ data, onPress }: UpcomingTrackProps) {
 
 /** Render if there's no tracks. */
 function EmptyMessage() {
-  return <Description className="mb-2 text-start">No Tracks Found</Description>;
+  return (
+    <Description className="mb-2 text-start text-sm">
+      No Tracks Found
+    </Description>
+  );
 }

@@ -29,7 +29,7 @@ export function TrackToPlaylistModal({ id }: { id: string }) {
     <ModalBase
       footerComponent={(props) => <ModalFooter trackId={id} {...props} />}
     >
-      <Heading as="h2" className="p-4 pt-0">
+      <Heading as="h3" className="p-4 pt-0">
         Add Track to Playlist
       </Heading>
       <BottomSheetScrollView

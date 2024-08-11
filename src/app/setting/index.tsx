@@ -78,7 +78,7 @@ function UpdateChecker() {
       <Markdown
         style={{
           body: {
-            marginTop: 16,
+            marginTop: 8,
             padding: 8,
             gap: 8,
             backgroundColor: Colors.surface800,
@@ -90,7 +90,6 @@ function UpdateChecker() {
           heading1: {
             ...markdownStyles.heading,
             fontSize: FontSize.lg,
-            textDecorationLine: "none",
           },
           heading2: markdownStyles.heading,
           paragraph: {
@@ -152,8 +151,7 @@ const markdownStyles = StyleSheet.create({
   heading: {
     color: Colors.foreground50,
     fontFamily: FontFamily.geistMono,
-    fontSize: FontSize.sm,
-    textDecorationLine: "underline",
+    fontSize: FontSize.base,
   },
   code: {
     backgroundColor: Colors.surface700,

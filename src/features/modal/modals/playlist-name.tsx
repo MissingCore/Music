@@ -50,7 +50,7 @@ export function PlaylistNameModal({ id, scope }: Props) {
         keyboardShouldPersistTaps="handled"
         className="px-4"
       >
-        <Heading as="h2" className="mb-6">
+        <Heading as="h3" className="mb-6">
           {scope === "new" ? "Create a Playlist" : "Rename Playlist"}
         </Heading>
 

@@ -71,7 +71,7 @@ export function Heading({
   asLine,
   className,
   ...props
-}: TextProps & { as: "h1" | "h2" | "h3" | "h4"; asLine?: boolean }) {
+}: TextProps & { as: "h1" | "h2" | "h3" | "h4" | "h5"; asLine?: boolean }) {
   const style = cn(
     "text-center text-foreground50",
     {
@@ -79,6 +79,7 @@ export function Heading({
       "text-subtitle": as === "h2",
       "text-xl": as === "h3",
       "text-lg": as === "h4",
+      "text-base": as === "h5",
       // Need this as `font-family` class fail to be merged.
       "font-geistMono": !TwFontFamilies?.some((fam) =>
         className?.includes(fam),

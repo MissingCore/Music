@@ -52,6 +52,7 @@ export default function LibraryScreen() {
           </Text>
         </Description>
         <Pressable
+          accessibilityLabel="Re-scan folder structure"
           disabled={rescanLibrary.isPending}
           onPress={() => mutateGuard(rescanLibrary, undefined)}
           className="self-start rounded border border-foreground100 p-3 active:opacity-75 disabled:opacity-25"
@@ -105,6 +106,7 @@ function PathList({
           {name.toUpperCase()}
         </NavLinkGroupHeading>
         <Pressable
+          accessibilityLabel={`Add directory to ${name}`}
           onPress={() =>
             openModal({ type: "filter-list", name, store: listAtom })
           }
@@ -128,12 +130,13 @@ function PathList({
             >
               <NavLinkLabel className="py-1">{item}</NavLinkLabel>
               <StyledPressable
-                forIcon
+                accessibilityLabel={`Delete \`${item}\` entry from ${name}`}
                 onPress={() =>
                   setData(async (prev) =>
                     (await prev).filter((path) => path !== item),
                   )
                 }
+                forIcon
               >
                 <View className="pointer-events-none">
                   <CloseOutline size={24} color={Colors.surface400} />

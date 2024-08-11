@@ -29,7 +29,7 @@ export function PlaylistModal({ id }: { id: string }) {
   return (
     <ModalBase detached>
       <BottomSheetScrollView>
-        <Heading as="h2" asLine className="mb-6 px-4">
+        <Heading as="h3" asLine className="mb-6 px-4">
           {data.name}
         </Heading>
 

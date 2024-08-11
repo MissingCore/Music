@@ -103,7 +103,7 @@ export const AddListModal = forwardRef<
         keyboardShouldPersistTaps="handled"
         className="px-4"
       >
-        <Heading as="h2" className="mb-6">
+        <Heading as="h3" className="mb-6">
           Add to {name}
         </Heading>
 
