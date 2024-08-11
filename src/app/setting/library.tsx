@@ -29,22 +29,20 @@ export default function LibraryScreen() {
 
   return (
     <AnimatedHeader title="LIBRARY">
-      <Heading as="h4" className="mb-4 text-start">
-        Rescan Folder Structure
-      </Heading>
-      <View className="mb-8 flex-row gap-4">
-        <Description intent="setting" className="shrink">
-          Go through all the indexed tracks and re-create the structure seen in
-          the `FOLDERS` tab, removing any old and unused entries.{"\n\n"}
-          <Text className="text-accent50">
-            This doesn't look for any new tracks. To do that, relaunch the app.
-          </Text>
-        </Description>
+      <View className="mb-8 flex-row justify-between gap-4">
+        <View className="shrink">
+          <Heading as="h4" className="mb-4 text-start">
+            Rescan
+          </Heading>
+          <Description intent="setting">
+            Look for any new tracks on your device.
+          </Description>
+        </View>
         <Pressable
           accessibilityLabel="Rescan folder structure"
           disabled={rescanLibrary.isPending}
           onPress={() => mutateGuard(rescanLibrary, undefined)}
-          className="self-start rounded border border-foreground100 p-3 active:opacity-75 disabled:opacity-25"
+          className="self-end rounded border border-foreground100 p-3 active:opacity-75 disabled:opacity-25"
         >
           <Ionicons name="refresh-outline" color={Colors.foreground100} />
         </Pressable>
