@@ -1,17 +1,15 @@
 import { StorageVolumesDirectoryPaths } from "@missingcore/react-native-metadata-retriever";
 import { FlashList } from "@shopify/flash-list";
-import { useMutation } from "@tanstack/react-query";
 import { useAtom, useSetAtom } from "jotai";
 import { Pressable, Text, View } from "react-native";
-import { Toast } from "react-native-toast-notifications";
 
 import {
   CloseOutline,
   CreateNewFolderOutline,
 } from "@/assets/svgs/MaterialSymbol";
 import { Ionicons } from "@/components/icons";
-import { AdjustmentFunctionMap } from "@/features/indexing/api/index-override";
 import { allowListAtom, blockListAtom } from "@/features/setting/api/library";
+import { useRescanLibrary } from "@/features/setting/api/library-rescan";
 import { settingModalAtom } from "@/features/setting/store";
 
 import { Colors } from "@/constants/Styles";
@@ -25,37 +23,26 @@ import {
 import { StyledPressable } from "@/components/ui/pressable";
 import { Description, Heading } from "@/components/ui/text";
 
-/** Re-run the library scan logic. */
-const useRescanLibrary = () =>
-  useMutation({
-    mutationFn: AdjustmentFunctionMap["library-scan"],
-    onSuccess: () => {
-      Toast.show("Finished re-scanning folder structure.");
-    },
-  });
-
 /** Screen for `/setting/library` route. */
 export default function LibraryScreen() {
   const rescanLibrary = useRescanLibrary();
 
   return (
     <AnimatedHeader title="LIBRARY">
-      <Heading as="h4" className="mb-4 text-start">
-        Re-Scan Folder Structure
-      </Heading>
-      <View className="mb-8 flex-row gap-4">
-        <Description intent="setting" className="shrink">
-          Go through all the indexed tracks and re-create the structure seen in
-          the `FOLDERS` tab, removing any old and unused entries.{"\n\n"}
-          <Text className="text-accent50">
-            This doesn't look for any new tracks. To do that, relaunch the app.
-          </Text>
-        </Description>
+      <View className="mb-8 flex-row justify-between gap-4">
+        <View className="shrink">
+          <Heading as="h4" className="mb-4 text-start">
+            Rescan
+          </Heading>
+          <Description intent="setting">
+            Look for any new tracks on your device.
+          </Description>
+        </View>
         <Pressable
-          accessibilityLabel="Re-scan folder structure"
+          accessibilityLabel="Rescan folder structure"
           disabled={rescanLibrary.isPending}
           onPress={() => mutateGuard(rescanLibrary, undefined)}
-          className="self-start rounded border border-foreground100 p-3 active:opacity-75 disabled:opacity-25"
+          className="self-end rounded border border-foreground100 p-3 active:opacity-75 disabled:opacity-25"
         >
           <Ionicons name="refresh-outline" color={Colors.foreground100} />
         </Pressable>
