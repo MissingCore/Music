@@ -35,7 +35,7 @@ A Nothing inspired music player (based on design by [Alkid Shuli (alKid)](https:
 - Favoriting Albums, Playlists, and Tracks
 - Background Playback w/ Media Control Notification
 - Queues
-- Automatically extraction of metadata w/ [@missingcore/react-native-metadata-retriever](https://github.com/MissingCore/react-native-metadata-retriever)
+- Automatic extraction of metadata w/ [@missingcore/react-native-metadata-retriever](https://github.com/MissingCore/react-native-metadata-retriever)
   - List of [supported media formats](https://developer.android.com/media/platform/supported-formats#audio-formats) according to Android docs.
 - Data Backup
 
