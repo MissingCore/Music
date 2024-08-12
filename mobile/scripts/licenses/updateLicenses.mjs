@@ -79,7 +79,7 @@ function updateLicensesJSON() {
   );
 
   fs.writeFileSync(
-    path.resolve(projectRootPath, "./THIRD_PARTY.md"),
+    path.resolve(projectRootPath, "../THIRD_PARTY.md"),
     [...tableHeading, ...tableRows].join("\n"),
   );
 
