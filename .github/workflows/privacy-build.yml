@@ -6,6 +6,9 @@ jobs:
   buildAPKs:
     name: build APKs
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobile
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,7 +27,7 @@ jobs:
 
       - name: Add config to create privacy build
         run: |
-          echo "music.CREATE_PRIVACY_BUILD=true" >> ./android/gradle.properties
+          echo "music.CREATE_PRIVACY_BUILD=true" >> android/gradle.properties
 
       - name: Clean generated builds
         run: rm -rf android/app/build/generated/
@@ -36,4 +39,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: outputAPKs
-          path: android/app/build/outputs/apk/release/*.apk
+          path: mobile/android/app/build/outputs/apk/release/*.apk

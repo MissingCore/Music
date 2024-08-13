@@ -12,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    defaults:
+      run:
+        working-directory: mobile
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,18 +39,18 @@ jobs:
 
       - name: Create `sentry.properties` file
         run: |
-          echo "${{ secrets.SENTRY_PROPERTIES }}" > ./android/sentry.properties
+          echo "${{ secrets.SENTRY_PROPERTIES }}" > android/sentry.properties
 
       - name: Add upload key secrets for signing APKs
         run: |
           git submodule update --init --recursive
-          echo "${{ secrets.RELEASE_CRED }}" >> ./android/gradle.properties
+          echo "${{ secrets.RELEASE_CRED }}" >> android/gradle.properties
 
       - name: Build upload keystore `.jks` file
         uses: timheuer/base64-to-file@v1.2
         with:
-          fileName: "keystore.jks"
-          fileDir: "./android/app"
+          fileName: keystore.jks
+          fileDir: mobile/android/app
           encodedString: ${{ secrets.KEYSTORE_BASE64 }}
 
       - name: Clean generated builds
@@ -58,18 +61,18 @@ jobs:
 
       - name: Zip files used for deobfuscation
         run: |
-          zip -j deobfuscate.zip ./android/app/build/outputs/mapping/release/mapping.txt \
-                                 ./android/app/build/outputs/native-debug-symbols/release/native-debug-symbols.zip
+          zip -j deobfuscate.zip android/app/build/outputs/mapping/release/mapping.txt \
+                                 android/app/build/outputs/native-debug-symbols/release/native-debug-symbols.zip
 
       - name: Create GitHub Release draft with APKs
         uses: softprops/action-gh-release@v2
         with:
-          name: "${{ env.COMMIT_TAG }}"
-          tag_name: "${{ env.COMMIT_TAG }}"
+          name: ${{ env.COMMIT_TAG }}
+          tag_name: ${{ env.COMMIT_TAG }}
           token: ${{ secrets.MISSINGCORE_BOT_GITHUB_TOKEN }}
           files: |
-            android/app/build/outputs/apk/release/*.apk
-            deobfuscate.zip
+            mobile/android/app/build/outputs/apk/release/*.apk
+            mobile/deobfuscate.zip
           draft: true
           # Mark release as prerelease if the tag contains `-rc.`
           prerelease: ${{ contains(env.COMMIT_TAG, '-rc.') }}
@@ -80,6 +83,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    defaults:
+      run:
+        working-directory: mobile
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -98,18 +104,18 @@ jobs:
   
       - name: Create `sentry.properties` file
         run: |
-          echo "${{ secrets.SENTRY_PROPERTIES }}" > ./android/sentry.properties
+          echo "${{ secrets.SENTRY_PROPERTIES }}" > android/sentry.properties
 
       - name: Add upload key secrets for signing APKs
         run: |
           git submodule update --init --recursive
-          echo "${{ secrets.RELEASE_CRED }}" >> ./android/gradle.properties
+          echo "${{ secrets.RELEASE_CRED }}" >> android/gradle.properties
 
       - name: Build upload keystore `.jks` file
         uses: timheuer/base64-to-file@v1.2
         with:
-          fileName: "keystore.jks"
-          fileDir: "./android/app"
+          fileName: keystore.jks
+          fileDir: mobile/android/app
           encodedString: ${{ secrets.KEYSTORE_BASE64 }}
 
       - name: Clean generated builds
@@ -123,14 +129,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: outputAAB
-          path: android/app/build/outputs/bundle/release/*.aab
+          path: mobile/android/app/build/outputs/bundle/release/*.aab
 
       - name: Upload AAB to Google Play Console "Internal Testing" track
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
           packageName: com.cyanchill.missingcore.music
-          releaseFiles: android/app/build/outputs/bundle/release/app-release.aab
+          releaseFiles: mobile/android/app/build/outputs/bundle/release/app-release.aab
           # No need for `changesNotSentForReview: true` as internal track shouldn't
           # get reviewed.
           track: internal
