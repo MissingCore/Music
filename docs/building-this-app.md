@@ -19,7 +19,7 @@ Except for the "Build the unsigned app via GitHub Actions" option, there are som
 
 ## (Unsigned) Local Build
 
-This will build the app directly onto your connected device. In addition, you can find the "release" variants of the unsigned APKs generated in the `android/app/build/outputs/apk/release` directory. There will be [different APK files](https://developer.android.com/ndk/guides/abis.html#sa), for modern Android devices, the `app-arm64-v8a-release.apk` is used.
+This will build the app directly onto your connected device. In addition, you can find the "release" variants of the unsigned APKs generated in the `mobile/android/app/build/outputs/apk/release` directory. There will be [different APK files](https://developer.android.com/ndk/guides/abis.html#sa), for modern Android devices, the `app-arm64-v8a-release.apk` is used.
 
 1. Clone the repository.
 
@@ -30,7 +30,7 @@ This will build the app directly onto your connected device. In addition, you ca
 2. Navigate to the project directory.
 
    ```sh
-   cd Music
+   cd Music/mobile
    ```
 
 3. Install dependencies (we use `pnpm`, but you can use `npm`).

@@ -56,9 +56,14 @@ In the newly created forked repository, click the `Actions` tab and then the `I 
 
 ## Step 4: Create branch for latest version of the app (includes pre-release)
 
-Now, click ``Create `latest-stable` Branch`` in the sidebar while in the `Actions` tab. Next click on the `Run workflow` dropdown on the right and click `Run workflow`. Make sure that under `Use workflow from`, `Branch: main` is selected. This will create a new `latest-stable` branch.
+Now, click `` Create `latest-stable` Branch `` in the sidebar while in the `Actions` tab. Next click on the `Run workflow` dropdown on the right and click `Run workflow`. Make sure that under `Use workflow from`, `Branch: main` is selected. This will create a new `latest-stable` branch.
 
 <img src="./assets/personal-privacy-build/create_latest_stable_branch.png" alt="Visual steps on creating the `latest-stable` branch." />
+
+> [!IMPORTANT]  
+> You should use the `latest-stable` branch instead of the `main` branch as the `main` branch will contain unrelease features that may be unstable or may be structured differently.
+>
+> In addition, this will also allow you to update the `main` branch of the repository seamlessly for whenever we create a new stable release.
 
 ## Step 5: Removing Sentry code
 
@@ -66,7 +71,7 @@ Go back to the `Code` tab and click the dropdown menu which has `main`. From the
 
 <img src="./assets/personal-privacy-build/remove_sentry_1.png" alt="Visual steps on switching to the `latest-stable` branch." />
 
-Then click on the `src` folder, followed by the `app` folder, and then `_layout.tsx`. You should see something similar to the following (pay attention to the "breadcrumbs" at the top to make sure you're in the right file):
+Then click on the `mobile` folder, followed by the `src` folder, followed by the `app` folder, and then `_layout.tsx`. You should see something similar to the following (pay attention to the "breadcrumbs" at the top to make sure you're in the right file):
 
 <img src="./assets/personal-privacy-build/remove_sentry_2.png" alt="Screen that you should see if you followed the steps correctly." />
 
@@ -74,7 +79,7 @@ Click the edit button.
 
 <img src="./assets/personal-privacy-build/remove_sentry_3.png" alt="Location of the file edit button." />
 
-Delete the code highlighted below.
+Delete the code highlighted below. This may change throughout versions, but in general, it'll start with `Sentry.init({` and end with `});`.
 
 <img src="./assets/personal-privacy-build/remove_sentry_4.png" alt="Sentry code segment that should be removed." />
 

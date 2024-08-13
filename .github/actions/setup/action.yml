@@ -11,9 +11,13 @@ runs:
     - name: Setup Node.js with pnpm cache
       uses: actions/setup-node@v4
       with:
-        cache: "pnpm"
-        node-version-file: .nvmrc
+        cache: pnpm
+        cache-dependency-path: mobile/pnpm-lock.yaml
+        node-version-file: mobile/.nvmrc
 
+    # Seems like setting a default `working-directory` in a workflow that
+    # uses this composite doesn't apply it to this file.
     - name: Install dependencies
+      working-directory: mobile
       run: pnpm i --frozen-lockfile
       shell: bash
