@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 
-import type { allowListAtom } from "./api/library";
+import type { allowListAtom } from "@/features/setting/api/library";
 
 export type SettingModal = {
   type: "filter-list";

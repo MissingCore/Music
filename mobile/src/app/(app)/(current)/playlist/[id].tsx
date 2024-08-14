@@ -6,8 +6,8 @@ import { View } from "react-native";
 import { EllipsisVertical } from "@/resources/svgs/EllipsisVertical";
 import { useFavoriteTracksForCurrentPage } from "@/api/favorites";
 import { usePlaylistForCurrentPage } from "@/api/playlists/[id]";
-import { modalAtom } from "@/features/modal/store";
 import { SpecialPlaylists } from "@/features/playback/constants";
+import { mediaModalAtom } from "@/modals/categories/media/store";
 
 import { MediaScreenHeader } from "@/components/media/screen-header";
 import type { MediaList } from "@/components/media/types";
@@ -19,7 +19,7 @@ import { TrackList } from "@/features/track/components/track-list";
 export default function CurrentPlaylistScreen() {
   const { id: _id } = useLocalSearchParams<{ id: string }>();
   const id = _id!;
-  const openModal = useSetAtom(modalAtom);
+  const openModal = useSetAtom(mediaModalAtom);
 
   const isFavoriteTracks = useMemo(
     () => id === SpecialPlaylists.favorites,

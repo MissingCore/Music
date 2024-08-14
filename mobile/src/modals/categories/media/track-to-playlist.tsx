@@ -18,8 +18,8 @@ import { CheckboxField } from "@/components/form/checkbox-field";
 import { LoadingIndicator } from "@/components/ui/loading";
 import { Description, Heading } from "@/components/ui/text";
 import { getTrackCountStr } from "@/features/track/utils";
-import { ModalFormButton } from "../components/form-button";
-import { ModalBase } from "../components/modal-base";
+import { ModalBase } from "../../components/base";
+import { ModalFormButton } from "../../components/form-button";
 
 const inPlaylistAtom = atom<string[]>([]);
 

@@ -12,7 +12,7 @@ import {
 } from "@/api/tracks/[id]/playlist";
 import { queuePushAtom } from "@/features/playback/api/queue";
 import { trackListAtom } from "@/features/playback/api/track";
-import { modalAtom } from "../store";
+import { mediaModalAtom } from "./store";
 
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
@@ -20,14 +20,14 @@ import type { MediaList } from "@/components/media/types";
 import { ScrollRow } from "@/components/ui/container";
 import { Heading } from "@/components/ui/text";
 import { ReservedNames, SpecialPlaylists } from "@/features/playback/constants";
-import { Button } from "../components/button";
-import { ModalBase } from "../components/modal-base";
+import { ModalBase } from "../../components/base";
+import { Button } from "../../components/button";
 
 type Props = { id: string; origin?: MediaList | "current" };
 
 /** Modal used for tracks. */
 export function TrackModal({ id, origin }: Props) {
-  const openModal = useSetAtom(modalAtom);
+  const openModal = useSetAtom(mediaModalAtom);
   const addTrackToQueue = useSetAtom(queuePushAtom);
   const { isPending, error, data } = useTrackExcerpt(id);
   const toggleFavoriteFn = useToggleFavorite({ type: "track", id });

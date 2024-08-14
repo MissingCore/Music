@@ -1,18 +1,18 @@
 import { useAtomValue } from "jotai";
 
 import { trackDataAtom } from "@/features/playback/api/track";
-import { modalAtom } from "./store";
+import { mediaModalAtom } from "./store";
 
-import { PlaylistModal } from "./modals/playlist";
-import { PlaylistDeleteModal } from "./modals/playlist-delete";
-import { PlaylistNameModal } from "./modals/playlist-name";
-import { TrackModal } from "./modals/track";
-import { TrackToPlaylistModal } from "./modals/track-to-playlist";
-import { UpcomingTrackModal } from "./modals/upcoming-track";
+import { PlaylistModal } from "./playlist";
+import { PlaylistDeleteModal } from "./playlist-delete";
+import { PlaylistNameModal } from "./playlist-name";
+import { TrackModal } from "./track";
+import { TrackToPlaylistModal } from "./track-to-playlist";
+import { UpcomingTrackModal } from "./upcoming-track";
 
-/** Wraps all the Bottom Sheet modals used. */
-export function AppModals() {
-  const selectedModal = useAtomValue(modalAtom);
+/** Wraps all modals used for media content. */
+export function MediaModals() {
+  const selectedModal = useAtomValue(mediaModalAtom);
 
   if (!selectedModal) return null;
   const { entity, scope, id, origin } = selectedModal;

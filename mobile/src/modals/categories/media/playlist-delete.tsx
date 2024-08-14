@@ -5,8 +5,8 @@ import { useDeletePlaylist } from "@/api/playlists/[id]";
 
 import { mutateGuard } from "@/lib/react-query";
 import { Heading } from "@/components/ui/text";
-import { ModalFormButton } from "../components/form-button";
-import { ModalBase } from "../components/modal-base";
+import { ModalBase } from "../../components/base";
+import { ModalFormButton } from "../../components/form-button";
 
 /** Modal used for deleting playlists. */
 export function PlaylistDeleteModal({ id }: { id: string }) {

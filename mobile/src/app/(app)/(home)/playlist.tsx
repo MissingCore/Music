@@ -7,7 +7,7 @@ import { DashedBorder } from "@/resources/svgs/DashedBorder";
 import { Ionicons } from "@/resources/svgs/icons";
 import { usePlaylistsForMediaCard } from "@/api/playlists";
 import { useGetColumn } from "@/hooks/layout";
-import { modalAtom } from "@/features/modal/store";
+import { mediaModalAtom } from "@/modals/categories/media/store";
 
 import { MediaCard, PlaceholderContent } from "@/components/media/card";
 import { StyledPressable } from "@/components/ui/pressable";
@@ -46,7 +46,7 @@ export default function PlaylistScreen() {
 
 /** Opens up a modal to create a new playlist. */
 function CreatePlaylistButton({ colWidth }: { colWidth: number }) {
-  const openModal = useSetAtom(modalAtom);
+  const openModal = useSetAtom(mediaModalAtom);
 
   return (
     <View

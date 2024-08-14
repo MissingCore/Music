@@ -12,7 +12,7 @@ import { forwardRef, useCallback, useMemo } from "react";
 import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { modalAtom } from "../store";
+import { mediaModalAtom } from "../categories/media/store";
 
 const BottomSheet = cssInterop(_BottomSheet, {
   className: "style",
@@ -24,10 +24,10 @@ const BottomSheet = cssInterop(_BottomSheet, {
 /** Bottom sheet w/ 2 different designs based on the value of `detached`. */
 export const ModalBase = forwardRef<
   BottomSheetModal,
-  BottomSheetProps & { modalControlAtom?: PrimitiveAtom<any> }
->(function ModalBase({ detached, children, modalControlAtom, ...props }, ref) {
+  BottomSheetProps & { controllerAtom?: PrimitiveAtom<any> }
+>(function ModalBase({ detached, children, controllerAtom, ...props }, ref) {
   const insets = useSafeAreaInsets();
-  const closeModal = useSetAtom(modalControlAtom ?? modalAtom);
+  const closeModal = useSetAtom(controllerAtom ?? mediaModalAtom);
 
   const modalSnapPoints = useMemo(() => ["60%", "90%"], []);
 

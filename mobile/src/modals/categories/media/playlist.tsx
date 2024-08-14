@@ -3,18 +3,18 @@ import { useSetAtom } from "jotai";
 
 import { useToggleFavorite } from "@/api/favorites/[id]";
 import { usePlaylistForModal, useUpdatePlaylist } from "@/api/playlists/[id]";
-import { modalAtom } from "../store";
+import { mediaModalAtom } from "./store";
 
 import { pickImage } from "@/lib/file-system";
 import { mutateGuard } from "@/lib/react-query";
 import { ScrollRow } from "@/components/ui/container";
 import { Heading } from "@/components/ui/text";
-import { Button } from "../components/button";
-import { ModalBase } from "../components/modal-base";
+import { ModalBase } from "../../components/base";
+import { Button } from "../../components/button";
 
 /** Modal used for playlists. */
 export function PlaylistModal({ id }: { id: string }) {
-  const openModal = useSetAtom(modalAtom);
+  const openModal = useSetAtom(mediaModalAtom);
   const { isPending, error, data } = usePlaylistForModal(id);
   const toggleFavoriteFn = useToggleFavorite({ type: "playlist", id });
   const updatePlaylistFn = useUpdatePlaylist(id);

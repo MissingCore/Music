@@ -27,4 +27,4 @@ export type TrackModal = Prettify<
 export type Modal = PlaylistModal | TrackModal;
 
 /** Describes the modal we want to display. */
-export const modalAtom = atom<Modal | null>(null);
+export const mediaModalAtom = atom<Modal | null>(null);

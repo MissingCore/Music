@@ -6,8 +6,8 @@ import { getDefaultStore } from "jotai";
 import { db } from "@/db";
 import { fileNodes, invalidTracks, tracks } from "@/db/schema";
 
-import { shownIntroModalAtom } from "@/components/navigation/animated-boot-splash";
 import { allowListAsyncAtom } from "@/features/setting/api/library";
+import { hasOnboardedAtom } from "@/modals/categories/onboarding";
 
 import { batch } from "@/utils/promise";
 import { fixAlbumFracturization } from "./album-fracturization";
@@ -64,7 +64,7 @@ export const AdjustmentFunctionMap: Record<
     );
   },
   "intro-modal": async () => {
-    await getDefaultStore().set(shownIntroModalAtom, async (prev) =>
+    await getDefaultStore().set(hasOnboardedAtom, async (prev) =>
       (await prev) ? true : false,
     );
   },

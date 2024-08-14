@@ -16,15 +16,15 @@ import { Toast } from "react-native-toast-notifications";
 
 import { CreateNewFolderOutline } from "@/resources/svgs/MaterialSymbol";
 import type { allowListAtom } from "@/features/setting/api/library";
-import { settingModalAtom } from "../../store";
+import { settingModalAtom } from "./store";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
 import { StyledPressable } from "@/components/ui/pressable";
 import { Heading } from "@/components/ui/text";
 import { addTrailingSlash } from "@/features/indexing/utils";
-import { ModalBase } from "@/features/modal/components/modal-base";
-import { ModalFormButton } from "@/features/modal/components/form-button";
+import { ModalBase } from "../../components/base";
+import { ModalFormButton } from "../../components/form-button";
 
 /** `StorageVolumesDirectoryPaths` without `PrimaryDirectoryPath`. */
 const NonPrimaryDirectoryPaths = StorageVolumesDirectoryPaths.filter(
@@ -37,14 +37,14 @@ const WarningsMap = {
   used: "This constraint is already in the list.",
 } as const;
 
-/** Modal to add a new path to a list. */
-export const AddListModal = forwardRef<
+/** Modal to add a new path to a filter list. */
+export const AddFilterModal = forwardRef<
   BottomSheetModal,
   {
     name: string;
     store: typeof allowListAtom;
   }
->(function AddListModal({ name, store }, ref) {
+>(function AddFilterModal({ name, store }, ref) {
   const [listData, setListData] = useAtom(store);
   const [newPath, setNewPath] = useState("");
 
@@ -98,7 +98,7 @@ export const AddListModal = forwardRef<
   }, []);
 
   return (
-    <ModalBase ref={ref} modalControlAtom={settingModalAtom} detached>
+    <ModalBase ref={ref} controllerAtom={settingModalAtom} detached>
       <BottomSheetScrollView
         keyboardShouldPersistTaps="handled"
         className="px-4"

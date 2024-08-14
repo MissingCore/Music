@@ -1,9 +1,9 @@
 import { useSetAtom } from "jotai";
 import { Text } from "react-native";
 
-import { modalAtom } from "@/features/modal/store";
 import { playAtom } from "@/features/playback/api/actions";
 import type { TrackListSource } from "@/features/playback/types";
+import { mediaModalAtom } from "@/modals/categories/media/store";
 
 import type { Prettify } from "@/utils/types";
 import { ActionButton } from "@/components/form/action-button";
@@ -34,7 +34,7 @@ export namespace Track {
  */
 export function Track({ id, trackSource, origin, ...props }: Track.Props) {
   const playFn = useSetAtom(playAtom);
-  const openModal = useSetAtom(modalAtom);
+  const openModal = useSetAtom(mediaModalAtom);
 
   return (
     <ActionButton

@@ -1,5 +1,4 @@
 import { useAtomValue } from "jotai";
-import { unwrap } from "jotai/utils";
 import { Dimensions, Text, View } from "react-native";
 import BootSplash from "react-native-bootsplash";
 import Animated, {
@@ -13,21 +12,11 @@ import Animated, {
 import { indexStatusAtom } from "@/features/indexing/api/index-audio";
 
 import { Colors } from "@/constants/Styles";
-import { createAtomWithStorage } from "@/lib/jotai";
 import { cn } from "@/lib/style";
 import { SafeContainer } from "../ui/container";
 import { AnimatedTextEllipsis } from "../ui/loading";
 
 const descriptionTextStyle = "text-center font-geistMonoLight text-xs";
-
-const shownIntroModalAsyncAtom = createAtomWithStorage<boolean | undefined>(
-  "shown-intro-modal",
-  undefined,
-);
-export const shownIntroModalAtom = unwrap(
-  shownIntroModalAsyncAtom,
-  (prev) => prev,
-);
 
 /** Screen when we're saving tracks into the database. */
 export function AnimatedBootSplash() {

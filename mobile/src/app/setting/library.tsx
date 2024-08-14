@@ -10,7 +10,7 @@ import {
 import { Ionicons } from "@/resources/svgs/icons";
 import { allowListAtom, blockListAtom } from "@/features/setting/api/library";
 import { useRescanLibrary } from "@/features/setting/api/library-rescan";
-import { settingModalAtom } from "@/features/setting/store";
+import { settingModalAtom } from "@/modals/categories/settings/store";
 
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
