@@ -1,7 +1,7 @@
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { Pressable } from "react-native";
 
-import { Ionicons, MaterialIcons } from "@/resources/svgs/icons";
+import { Ionicons, MaterialIcons } from "@/resources/icons";
 import { repeatAtom, shuffleAtom } from "../api/configs";
 import {
   isPlayingAtom,

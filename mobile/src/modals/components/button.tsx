@@ -4,9 +4,8 @@ import { forwardRef } from "react";
 import type { PressableProps } from "react-native";
 import { Pressable, Text, View } from "react-native";
 
-import * as MaterialSymbol from "@/resources/svgs/MaterialSymbol";
-
-const Icons = { ...MaterialSymbol };
+import type { MaterialSymbolNames } from "@/resources/icons";
+import { MaterialSymbols } from "@/resources/icons";
 
 export namespace Button {
   type Interactions =
@@ -14,7 +13,7 @@ export namespace Button {
     | { interaction: "link"; href: string };
 
   export type Props = Interactions & {
-    icon: keyof typeof Icons;
+    icon: MaterialSymbolNames;
     content: string;
     dontCloseOnPress?: boolean;
     onPress?: PressableProps["onPress"];
@@ -43,8 +42,6 @@ export const ButtonBase = forwardRef<View, Button.Props>(
   function ButtonBase(props, ref) {
     const { close } = useBottomSheet();
 
-    const Icon = Icons[props.icon];
-
     return (
       <Pressable
         ref={ref}
@@ -55,7 +52,7 @@ export const ButtonBase = forwardRef<View, Button.Props>(
         className="w-24 items-center active:opacity-75"
       >
         <View className="mb-2 size-20 items-center justify-center rounded-lg bg-surface700">
-          <Icon size={48} />
+          <MaterialSymbols name={props.icon} size={48} />
         </View>
         <Text
           numberOfLines={2}

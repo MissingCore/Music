@@ -14,7 +14,7 @@ import { forwardRef, useCallback, useMemo, useState } from "react";
 import { Platform, Text, View } from "react-native";
 import { Toast } from "react-native-toast-notifications";
 
-import { CreateNewFolderOutline } from "@/resources/svgs/MaterialSymbol";
+import { MaterialSymbols } from "@/resources/icons";
 import type { allowListAtom } from "@/features/setting/api/library";
 import { settingModalAtom } from "./store";
 
@@ -121,9 +121,10 @@ export const AddFilterModal = forwardRef<
             <Text className="font-geistMono text-base text-foreground50">
               Find Directory
             </Text>
-            <View className="pointer-events-none shrink-0 p-3">
-              <CreateNewFolderOutline size={24} />
-            </View>
+            <MaterialSymbols
+              name="create-new-folder-outline"
+              className="shrink-0 p-3"
+            />
           </StyledPressable>
         </View>
 

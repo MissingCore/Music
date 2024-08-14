@@ -3,11 +3,7 @@ import { FlashList } from "@shopify/flash-list";
 import { useAtom, useSetAtom } from "jotai";
 import { Pressable, Text, View } from "react-native";
 
-import {
-  CloseOutline,
-  CreateNewFolderOutline,
-} from "@/resources/svgs/MaterialSymbol";
-import { Ionicons } from "@/resources/svgs/icons";
+import { Ionicons, MaterialSymbols } from "@/resources/icons";
 import { allowListAtom, blockListAtom } from "@/features/setting/api/library";
 import { useRescanLibrary } from "@/features/setting/api/library-rescan";
 import { settingModalAtom } from "@/modals/categories/settings/store";
@@ -99,7 +95,7 @@ function PathList({
           }
           className="-mr-4 px-3 pb-2 pt-4 active:opacity-75"
         >
-          <CreateNewFolderOutline size={24} />
+          <MaterialSymbols name="create-new-folder-outline" />
         </Pressable>
       </View>
 
@@ -125,9 +121,10 @@ function PathList({
                 }
                 forIcon
               >
-                <View className="pointer-events-none">
-                  <CloseOutline size={24} color={Colors.surface400} />
-                </View>
+                <MaterialSymbols
+                  name="close-outline"
+                  color={Colors.surface400}
+                />
               </StyledPressable>
             </View>
           )}

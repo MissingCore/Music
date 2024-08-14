@@ -3,7 +3,7 @@ import { Link } from "expo-router";
 import { Text, View } from "react-native";
 
 import LicensesList from "@/resources/licenses.json";
-import { ArrowRight } from "@/resources/svgs/ArrowRight";
+import { ArrowRight } from "@/resources/icons/ArrowRight";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";

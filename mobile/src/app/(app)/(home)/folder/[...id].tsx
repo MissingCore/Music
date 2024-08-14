@@ -4,8 +4,8 @@ import { useSetAtom } from "jotai";
 import { useEffect } from "react";
 import { ScrollView, View } from "react-native";
 
-import { ArrowRight } from "@/resources/svgs/ArrowRight";
-import { FolderOutline } from "@/resources/svgs/MaterialSymbol";
+import { MaterialSymbols } from "@/resources/icons";
+import { ArrowRight } from "@/resources/icons/ArrowRight";
 import { useFolderContentForPath } from "@/api/file-nodes/[...id]";
 import { folderPathAtom } from "./_layout";
 
@@ -95,9 +95,11 @@ export default function FolderScreen() {
                   }
                   textContent={[item.name, null]}
                   Image={
-                    <View className="pointer-events-none rounded-sm bg-surface800 p-1">
-                      <FolderOutline size={40} />
-                    </View>
+                    <MaterialSymbols
+                      name="folder-outline"
+                      size={40}
+                      className="rounded-sm bg-surface800 p-1"
+                    />
                   }
                   icon={{ Element: <ArrowRight size={24} /> }}
                 />

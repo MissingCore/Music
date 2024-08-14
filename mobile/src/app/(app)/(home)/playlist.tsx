@@ -1,16 +1,20 @@
 import { FlashList } from "@shopify/flash-list";
 import { useSetAtom } from "jotai";
+import { cssInterop } from "nativewind";
 import { useMemo } from "react";
 import { View } from "react-native";
+import Svg, { Path } from "react-native-svg";
 
-import { DashedBorder } from "@/resources/svgs/DashedBorder";
-import { Ionicons } from "@/resources/svgs/icons";
+import { Ionicons } from "@/resources/icons";
 import { usePlaylistsForMediaCard } from "@/api/playlists";
 import { useGetColumn } from "@/hooks/layout";
 import { mediaModalAtom } from "@/modals/categories/media/store";
 
+import { Colors } from "@/constants/Styles";
 import { MediaCard, PlaceholderContent } from "@/components/media/card";
 import { StyledPressable } from "@/components/ui/pressable";
+
+const WrappedSvg = cssInterop(Svg, { className: "style" });
 
 /** Screen for `/playlist` route. */
 export default function PlaylistScreen() {
@@ -57,7 +61,25 @@ function CreatePlaylistButton({ colWidth }: { colWidth: number }) {
         onPress={() => openModal({ entity: "playlist", scope: "new" })}
         className="flex-1 items-center justify-center"
       >
-        <DashedBorder size={colWidth} />
+        {/* Custom dashed border with longer dashes & spacing. Has a 16px radius. */}
+        <WrappedSvg
+          width={colWidth}
+          height={colWidth}
+          viewBox="0 0 201 202"
+          preserveAspectRatio="none"
+          className="absolute left-0 top-0 size-full"
+        >
+          <Path
+            d="M184.5 1H16.5C7.66344 1 0.5 8.16344 0.5 17V185C0.5 193.837 7.66344 201 16.5 201H184.5C193.337 201 200.5 193.837 200.5 185V17C200.5 8.16344 193.337 1 184.5 1Z"
+            vectorEffect="non-scaling-stroke"
+            fill="none"
+            stroke={Colors.foreground50}
+            strokeDasharray={[10, 10]}
+            strokeWidth={1}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </WrappedSvg>
         <Ionicons name="add-outline" size={36} />
       </StyledPressable>
     </View>

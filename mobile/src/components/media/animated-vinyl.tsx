@@ -1,3 +1,4 @@
+import { cssInterop } from "nativewind";
 import { useEffect } from "react";
 import { View } from "react-native";
 import Animated, {
@@ -9,12 +10,14 @@ import Animated, {
   withRepeat,
   withTiming,
 } from "react-native-reanimated";
+import Svg, { Circle, Line } from "react-native-svg";
 
-import { Record } from "@/resources/svgs/Record";
-
+import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
 import { MediaImage } from "./image";
 import type { Media } from "./types";
+
+const WrappedSvg = cssInterop(Svg, { className: "style" });
 
 /** Keyframe for having the vinyl slide out from the right. */
 const SlideOutRight = (imgSize: number, delay: number) =>
@@ -96,10 +99,46 @@ export function AnimatedVinyl(props: {
         className="absolute left-0 top-0 opacity-0"
       >
         <Animated.View style={animatedStyles}>
-          <Record
-            size={areaSection * 2}
+          {/* Custom Record SVG similar to the one shown in the Nothing Recorder app. */}
+          <WrappedSvg
+            width={areaSection * 2}
+            height={areaSection * 2}
+            viewBox="0 0 836 836"
+            fill="none"
             className={cn({ "rotate-45": placement === "right" })}
-          />
+          >
+            <Circle
+              cx="418"
+              cy="418"
+              r="343.5"
+              strokeWidth="8"
+              stroke={Colors.foreground50}
+            />
+            <Circle
+              cx="418"
+              cy="418"
+              r="88"
+              strokeWidth="6"
+              stroke={Colors.foreground50}
+            />
+            <Circle cx="418" cy="418" r="22" fill={Colors.foreground50} />
+            <Line
+              x1="570"
+              y1="416.5"
+              x2="701"
+              y2="416.5"
+              strokeWidth="4"
+              stroke={Colors.foreground50}
+            />
+            <Line
+              x1="135"
+              y1="416.5"
+              x2="266"
+              y2="416.5"
+              strokeWidth="4"
+              stroke={Colors.foreground50}
+            />
+          </WrappedSvg>
         </Animated.View>
       </Animated.View>
       <MediaImage

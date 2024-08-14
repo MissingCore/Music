@@ -2,7 +2,7 @@ import { FlashList } from "@shopify/flash-list";
 import { router } from "expo-router";
 import { View } from "react-native";
 
-import { ArrowRight } from "@/resources/svgs/ArrowRight";
+import { ArrowRight } from "@/resources/icons/ArrowRight";
 import { useArtistsForList } from "@/api/artists";
 
 import { cn } from "@/lib/style";

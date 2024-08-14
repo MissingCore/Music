@@ -1,4 +1,4 @@
-import { Ionicons } from "@/resources/svgs/icons";
+import { Ionicons } from "@/resources/icons";
 
 import { ActionButton } from "./action-button";
 

@@ -5,7 +5,7 @@ import {
 import { useMemo, useState } from "react";
 import { Text, View } from "react-native";
 
-import { Ionicons } from "@/resources/svgs/icons";
+import { Ionicons } from "@/resources/icons";
 import { useCreatePlaylist, usePlaylistsForModal } from "@/api/playlists";
 import { useUpdatePlaylist } from "@/api/playlists/[id]";
 

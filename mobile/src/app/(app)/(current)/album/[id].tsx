@@ -1,7 +1,7 @@
 import { Link, Stack, useLocalSearchParams } from "expo-router";
 import { View } from "react-native";
 
-import { Ionicons } from "@/resources/svgs/icons";
+import { Ionicons } from "@/resources/icons";
 import { useAlbumForCurrentPage } from "@/api/albums/[id]";
 import { useToggleFavorite } from "@/api/favorites/[id]";
 

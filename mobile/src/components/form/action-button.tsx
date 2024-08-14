@@ -1,7 +1,7 @@
 import type { PressableProps } from "react-native";
 import { Platform, View } from "react-native";
 
-import { EllipsisVertical } from "@/resources/svgs/EllipsisVertical";
+import { EllipsisVertical } from "@/resources/icons/EllipsisVertical";
 
 import { cn } from "@/lib/style";
 import type { Maybe } from "@/utils/types";

@@ -1,8 +1,8 @@
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
 
-import { ArrowRight } from "@/resources/svgs/ArrowRight";
-import { OpenInNewOutline } from "@/resources/svgs/MaterialSymbol";
+import { MaterialSymbols } from "@/resources/icons";
+import { ArrowRight } from "@/resources/icons/ArrowRight";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
@@ -20,15 +20,22 @@ export namespace NavLink {
 export function NavLink(props: NavLink.Props) {
   const { href, label, external } = props;
   const LinkType = external ? ExternalLink : Link;
-  const NavIcon = external ? OpenInNewOutline : ArrowRight;
 
   return (
     <LinkType href={href} asChild>
       <StyledPressable className="flex-row items-center justify-between gap-2 pl-4">
         <NavLinkLabel className="py-1">{label}</NavLinkLabel>
-        <View className="pointer-events-none p-3">
-          <NavIcon size={24} color={Colors.surface400} />
-        </View>
+        {external ? (
+          <MaterialSymbols
+            name="open-in-new-outline"
+            color={Colors.surface400}
+            className="p-3"
+          />
+        ) : (
+          <View className="pointer-events-none p-3">
+            <ArrowRight size={24} color={Colors.surface400} />
+          </View>
+        )}
       </StyledPressable>
     </LinkType>
   );

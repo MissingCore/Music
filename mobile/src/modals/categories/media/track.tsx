@@ -65,21 +65,21 @@ export function TrackModal({ id, origin }: Props) {
         <ScrollRow>
           <Button
             content={isToggled ? "Unfavorite" : "Favorite"}
-            icon={isToggled ? "FavoriteFilled" : "FavoriteOutline"}
+            icon={isToggled ? "favorite" : "favorite-outline"}
             onPress={() => mutateGuard(toggleFavoriteFn, undefined)}
             dontCloseOnPress
           />
           <RemoveTrackFromPlaylist trackId={id} />
           <Button
             content="Add to Playlists"
-            icon="PlaylistAddOutline"
+            icon="playlist-add-outline"
             onPress={() =>
               openModal({ entity: "track", scope: "playlist", id })
             }
           />
           <Button
             content="Add to Queue"
-            icon="QueueMusicOutline"
+            icon="queue-music-outline"
             onPress={() => addTrackToQueue(data.id)}
           />
         </ScrollRow>
@@ -94,7 +94,7 @@ export function TrackModal({ id, origin }: Props) {
               interaction="link"
               href={`/album/${data.album.id}`}
               content="View Album"
-              icon="AlbumOutline"
+              icon="album-outline"
             />
           )}
 
@@ -103,7 +103,7 @@ export function TrackModal({ id, origin }: Props) {
               interaction="link"
               href={`/artist/${encodeURIComponent(data.artistName)}`}
               content="View Artist"
-              icon="ArtistOutline"
+              icon="artist-outline"
             />
           )}
 
@@ -112,7 +112,7 @@ export function TrackModal({ id, origin }: Props) {
               <ViewPlaylist />
               <Button
                 content="View Upcoming"
-                icon="LibraryMusicFilled"
+                icon="library-music"
                 onPress={() =>
                   openModal({ entity: "track", scope: "upcoming" })
                 }
@@ -166,7 +166,7 @@ function RemoveTrackFromPlaylist({ trackId }: { trackId: string }) {
   return (
     <Button
       content="Remove from this Playlist"
-      icon="DeleteOutline"
+      icon="delete-outline"
       onPress={() => mutateGuard(removeTrackFromPlaylist, undefined)}
     />
   );
@@ -191,7 +191,7 @@ function ViewPlaylist() {
           : `/playlist/${encodeURIComponent(currentPlaylist)}`
       }
       content="View Playlist"
-      icon="ListOutline"
+      icon="list-outline"
     />
   );
 }

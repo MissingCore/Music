@@ -36,20 +36,20 @@ export function PlaylistModal({ id }: { id: string }) {
         <ScrollRow>
           <Button
             content={isToggled ? "Unfavorite" : "Favorite"}
-            icon={isToggled ? "FavoriteFilled" : "FavoriteOutline"}
+            icon={isToggled ? "favorite" : "favorite-outline"}
             onPress={() => mutateGuard(toggleFavoriteFn, undefined)}
             dontCloseOnPress
           />
           <Button
             content="Rename"
-            icon="MatchCaseOutline"
+            icon="match-case-outline"
             onPress={() =>
               openModal({ entity: "playlist", scope: "update", id })
             }
           />
           <Button
             content="Change Cover"
-            icon="ImageOutline"
+            icon="image-outline"
             onPress={async () => {
               try {
                 mutateGuard(updatePlaylistFn, {
@@ -62,7 +62,7 @@ export function PlaylistModal({ id }: { id: string }) {
           {typeof data.imageSource === "string" && (
             <Button
               content="Remove Cover"
-              icon="HideImageOutline"
+              icon="hide-image-outline"
               onPress={() =>
                 mutateGuard(updatePlaylistFn, { field: "artwork", value: null })
               }
@@ -70,7 +70,7 @@ export function PlaylistModal({ id }: { id: string }) {
           )}
           <Button
             content="Delete"
-            icon="DeleteOutline"
+            icon="delete-outline"
             onPress={() =>
               openModal({ entity: "playlist", scope: "delete", id })
             }

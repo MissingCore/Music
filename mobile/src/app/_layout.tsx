@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import Bootsplash from "react-native-bootsplash";
 import TrackPlayer from "react-native-track-player";
 
-import { EllipsisVertical } from "@/resources/svgs/EllipsisVertical";
+import { EllipsisVertical } from "@/resources/icons/EllipsisVertical";
 import { useLoadResources } from "@/hooks/useLoadResources";
 import { mediaModalAtom } from "@/modals/categories/media/store";
 
