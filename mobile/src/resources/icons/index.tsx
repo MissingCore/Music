@@ -60,14 +60,16 @@ const MaterialSymbolMapping = {
   "queue-music-outline": _MaterialSymbols.QueueMusicOutline,
 } as const;
 
-export type MaterialSymbolNames = keyof typeof MaterialSymbolMapping;
+export namespace MaterialSymbols {
+  export type Names = keyof typeof MaterialSymbolMapping;
+}
 
 export function MaterialSymbols({
   name,
   size = 24,
   color = Colors.foreground50,
   className,
-}: IconProps<MaterialSymbolNames>) {
+}: IconProps<MaterialSymbols.Names>) {
   const Icon = MaterialSymbolMapping[name];
   return (
     <View className={cn("pointer-events-none", className)}>

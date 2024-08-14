@@ -4,7 +4,6 @@ import { forwardRef } from "react";
 import type { PressableProps } from "react-native";
 import { Pressable, Text, View } from "react-native";
 
-import type { MaterialSymbolNames } from "@/resources/icons";
 import { MaterialSymbols } from "@/resources/icons";
 
 export namespace Button {
@@ -13,7 +12,7 @@ export namespace Button {
     | { interaction: "link"; href: string };
 
   export type Props = Interactions & {
-    icon: MaterialSymbolNames;
+    icon: MaterialSymbols.Names;
     content: string;
     dontCloseOnPress?: boolean;
     onPress?: PressableProps["onPress"];
