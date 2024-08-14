@@ -6,11 +6,11 @@ import { Modal, Pressable, Text, View } from "react-native";
 import Bootsplash from "react-native-bootsplash";
 import TrackPlayer from "react-native-track-player";
 
-import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
+import { EllipsisVertical } from "@/resources/svgs/EllipsisVertical";
 import { useLoadResources } from "@/hooks/useLoadResources";
 import { modalAtom } from "@/features/modal/store";
 
-import "@/assets/global.css";
+import "@/resources/global.css";
 import { PlaybackService } from "@/constants/PlaybackService";
 import { AppProvider } from "@/components/app-provider";
 import {

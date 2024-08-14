@@ -6,8 +6,8 @@ import { Pressable, Text, View } from "react-native";
 import {
   CloseOutline,
   CreateNewFolderOutline,
-} from "@/assets/svgs/MaterialSymbol";
-import { Ionicons } from "@/components/icons";
+} from "@/resources/svgs/MaterialSymbol";
+import { Ionicons } from "@/resources/svgs/icons";
 import { allowListAtom, blockListAtom } from "@/features/setting/api/library";
 import { useRescanLibrary } from "@/features/setting/api/library-rescan";
 import { settingModalAtom } from "@/features/setting/store";
@@ -39,7 +39,7 @@ export default function LibraryScreen() {
           </Description>
         </View>
         <Pressable
-          accessibilityLabel="Rescan folder structure"
+          accessibilityLabel="Rescan library"
           disabled={rescanLibrary.isPending}
           onPress={() => mutateGuard(rescanLibrary, undefined)}
           className="self-end rounded border border-foreground100 p-3 active:opacity-75 disabled:opacity-25"

@@ -3,8 +3,8 @@ import { useSetAtom } from "jotai";
 import { useMemo } from "react";
 import { View } from "react-native";
 
-import { DashedBorder } from "@/assets/svgs/DashedBorder";
-import { Ionicons } from "@/components/icons";
+import { DashedBorder } from "@/resources/svgs/DashedBorder";
+import { Ionicons } from "@/resources/svgs/icons";
 import { usePlaylistsForMediaCard } from "@/api/playlists";
 import { useGetColumn } from "@/hooks/layout";
 import { modalAtom } from "@/features/modal/store";

@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 
-import { Ionicons } from "@/components/icons";
+import { Ionicons } from "@/resources/svgs/icons";
 import {
   useUserDataInfo,
   useStatisticsInfo,

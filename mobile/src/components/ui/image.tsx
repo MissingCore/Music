@@ -31,7 +31,7 @@ export function CollageImage({ size, sources, className }: CollageImage.Props) {
           key={idx}
           source={source}
           // FIXME: Currently hard-coded a placeholder image — should replace.
-          placeholder={require("@/assets/glyphs/music.png")}
+          placeholder={require("@/resources/images/music-glyph.png")}
           className="size-1/2"
         />
       ))}

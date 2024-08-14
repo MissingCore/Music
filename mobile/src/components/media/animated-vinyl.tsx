@@ -10,7 +10,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import { Record } from "@/assets/svgs/Record";
+import { Record } from "@/resources/svgs/Record";
 
 import { cn } from "@/lib/style";
 import { MediaImage } from "./image";

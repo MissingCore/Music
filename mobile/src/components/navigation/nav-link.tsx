@@ -1,8 +1,8 @@
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
 
-import { ArrowRight } from "@/assets/svgs/ArrowRight";
-import { OpenInNewOutline } from "@/assets/svgs/MaterialSymbol";
+import { ArrowRight } from "@/resources/svgs/ArrowRight";
+import { OpenInNewOutline } from "@/resources/svgs/MaterialSymbol";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";

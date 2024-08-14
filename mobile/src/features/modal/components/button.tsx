@@ -4,7 +4,7 @@ import { forwardRef } from "react";
 import type { PressableProps } from "react-native";
 import { Pressable, Text, View } from "react-native";
 
-import * as MaterialSymbol from "@/assets/svgs/MaterialSymbol";
+import * as MaterialSymbol from "@/resources/svgs/MaterialSymbol";
 
 const Icons = { ...MaterialSymbol };
 

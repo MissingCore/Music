@@ -5,7 +5,6 @@ import { StatusBar, Text, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ToastProvider } from "react-native-toast-notifications";
 
-import "@/assets/global.css";
 import { NavigationTheme } from "@/constants/Themes";
 import { queryClient } from "@/lib/react-query";
 import { cn } from "@/lib/style";

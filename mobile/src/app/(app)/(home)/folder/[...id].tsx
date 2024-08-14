@@ -4,8 +4,8 @@ import { useSetAtom } from "jotai";
 import { useEffect } from "react";
 import { ScrollView, View } from "react-native";
 
-import { ArrowRight } from "@/assets/svgs/ArrowRight";
-import { FolderOutline } from "@/assets/svgs/MaterialSymbol";
+import { ArrowRight } from "@/resources/svgs/ArrowRight";
+import { FolderOutline } from "@/resources/svgs/MaterialSymbol";
 import { useFolderContentForPath } from "@/api/file-nodes/[...id]";
 import { folderPathAtom } from "./_layout";
 

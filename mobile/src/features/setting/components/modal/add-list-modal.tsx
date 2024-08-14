@@ -14,7 +14,7 @@ import { forwardRef, useCallback, useMemo, useState } from "react";
 import { Platform, Text, View } from "react-native";
 import { Toast } from "react-native-toast-notifications";
 
-import { CreateNewFolderOutline } from "@/assets/svgs/MaterialSymbol";
+import { CreateNewFolderOutline } from "@/resources/svgs/MaterialSymbol";
 import type { allowListAtom } from "@/features/setting/api/library";
 import { settingModalAtom } from "../../store";
 

@@ -60,7 +60,7 @@ function updateLicensesJSON() {
   );
 
   fs.writeFileSync(
-    path.resolve(projectRootPath, "./src/assets/licenses.json"),
+    path.resolve(projectRootPath, "./src/resources/licenses.json"),
     neatJSON(updatedLicenseList, {
       objectPadding: 1,
       afterComma: 1,

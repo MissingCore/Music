@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import { useEffect } from "react";
 
-import { ArrowRight } from "@/assets/svgs/ArrowRight";
+import { ArrowRight } from "@/resources/svgs/ArrowRight";
 
 import { StyledPressable } from "../ui/pressable";
 

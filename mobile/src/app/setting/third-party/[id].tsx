@@ -1,7 +1,7 @@
 import { useLocalSearchParams } from "expo-router";
 import { Text, View } from "react-native";
 
-import LicensesList from "@/assets/licenses.json";
+import LicensesList from "@/resources/licenses.json";
 
 import { AnimatedHeader } from "@/components/navigation/animated-header";
 import { Back } from "@/components/navigation/back";

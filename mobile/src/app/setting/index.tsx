@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 
-import { Ionicons } from "@/components/icons";
+import { Ionicons } from "@/resources/svgs/icons";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 
 import { APP_VERSION, GITHUB_LINK, PLAYSTORE_LINK } from "@/constants/Config";

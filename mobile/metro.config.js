@@ -7,7 +7,7 @@ const config = getSentryExpoConfig(__dirname);
 config.resolver.sourceExts.push("sql");
 
 module.exports = withNativeWind(config, {
-  input: "./src/assets/global.css",
+  input: "./src/resources/global.css",
   configPath: "./tailwind.config.ts",
   inlineRem: false,
 });

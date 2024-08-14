@@ -36,7 +36,7 @@ export function MediaImage({
   const displayedImg = Array.isArray(source)
     ? null
     : source === SpecialPlaylists.favorites
-      ? require("@/assets/glyphs/music.png")
+      ? require("@/resources/images/music-glyph.png")
       : source;
 
   return (
@@ -44,8 +44,8 @@ export function MediaImage({
       source={displayedImg}
       placeholder={
         type === "artist"
-          ? require("@/assets/glyphs/face.png")
-          : require("@/assets/glyphs/music.png")
+          ? require("@/resources/images/face-glyph.png")
+          : require("@/resources/images/music-glyph.png")
       }
       style={{ width: size, height: size }}
       className={cn(

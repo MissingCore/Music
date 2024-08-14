@@ -1,7 +1,7 @@
 import { Link, Stack } from "expo-router";
 import { View } from "react-native";
 
-import { Ionicons } from "@/components/icons";
+import { Ionicons } from "@/resources/svgs/icons";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 
 import { CustomHeader } from "@/components/navigation/header";

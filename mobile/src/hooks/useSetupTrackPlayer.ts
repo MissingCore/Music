@@ -43,7 +43,7 @@ async function setupPlayer() {
         Capability.SkipToNext,
         Capability.SkipToPrevious,
       ],
-      icon: require("@/assets/glyphs/music.png"),
+      icon: require("@/resources/images/music-glyph.png"),
     });
   } catch (err) {
     // Gracefully resolve setup error.

@@ -3,7 +3,7 @@ import { useSetAtom } from "jotai";
 import { useMemo } from "react";
 import { View } from "react-native";
 
-import { EllipsisVertical } from "@/assets/svgs/EllipsisVertical";
+import { EllipsisVertical } from "@/resources/svgs/EllipsisVertical";
 import { useFavoriteTracksForCurrentPage } from "@/api/favorites";
 import { usePlaylistForCurrentPage } from "@/api/playlists/[id]";
 import { modalAtom } from "@/features/modal/store";

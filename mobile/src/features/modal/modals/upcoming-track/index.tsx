@@ -6,7 +6,7 @@ import { View } from "react-native";
 
 import type { Track } from "@/db/schema";
 
-import { Ionicons } from "@/components/icons";
+import { Ionicons } from "@/resources/svgs/icons";
 import { trackDataAtom } from "@/features/playback/api/track";
 import { queueRemoveAtIdxAtom } from "@/features/playback/api/queue";
 import { nextTrackListAtom, queueTrackListAtom } from "./store";
