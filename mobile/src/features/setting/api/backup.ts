@@ -30,8 +30,8 @@ const RawAlbum = z.object({
 const RawTrack = z.object({
   id: z.string().trim().min(1),
   name: z.string().trim().min(1),
-  artistName: z.optional(z.string().trim().min(1)),
-  albumName: z.optional(z.string().trim().min(1)),
+  artistName: z.string().trim().min(1).nullish(),
+  albumName: z.string().trim().min(1).nullish(),
 });
 
 const MusicBackup = z.object({

@@ -21,7 +21,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         offset={24}
         renderToast={(toast) => (
           <View
-            style={{ marginVertical: 4 }}
+            style={{ margin: 4 }}
             className={cn("rounded bg-surface700 p-2", {
               "bg-accent500": toast.type === "danger",
             })}
