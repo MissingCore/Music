@@ -39,6 +39,13 @@ const config = {
     ],
   },
   ignorePatterns: ["expo-env.d.ts", "metro.config.js", "src/db/drizzle"],
+  settings: {
+    "import/resolver": {
+      typescript: {
+        project: require.resolve("./tsconfig.json"),
+      },
+    },
+  },
 };
 
 module.exports = config;
