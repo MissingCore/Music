@@ -8,8 +8,15 @@ import _BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import type { PrimitiveAtom } from "jotai";
 import { useSetAtom } from "jotai";
 import { cssInterop } from "nativewind";
-import { forwardRef, useCallback, useMemo } from "react";
-import { View } from "react-native";
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+} from "react";
+import { BackHandler, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { mediaModalAtom } from "../categories/media/store";
@@ -26,16 +33,33 @@ export const ModalBase = forwardRef<
   BottomSheetModal,
   BottomSheetProps & { controllerAtom?: PrimitiveAtom<any> }
 >(function ModalBase({ detached, children, controllerAtom, ...props }, ref) {
+  const internalRef = useRef<BottomSheetModal>(null);
+  // Forward the value of the internal ref to the external ref.
+  useImperativeHandle(ref, () => internalRef.current!, []);
+
   const insets = useSafeAreaInsets();
   const closeModal = useSetAtom(controllerAtom ?? mediaModalAtom);
 
   const modalSnapPoints = useMemo(() => ["60%", "90%"], []);
-
   const handleOnClose = useCallback(() => closeModal(null), [closeModal]);
+
+  /* Close modal if we detect a back gesture/action. */
+  useEffect(() => {
+    const onBackPress = () => {
+      internalRef.current?.close();
+      return true;
+    };
+
+    BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
+    return () => {
+      BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+    };
+  }, []);
 
   return (
     <BottomSheet
-      ref={ref}
+      ref={internalRef}
       onClose={handleOnClose}
       enablePanDownToClose
       keyboardBehavior="interactive"
