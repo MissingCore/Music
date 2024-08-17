@@ -33,6 +33,7 @@ Sentry.init({
     // `expo-av` errors:
     "Player does not exist",
     /is (not|already) loaded/,
+    "Audio focus could not be acquired from the OS at this time.",
     // Expo development errors:
     "Unable to activate keep awake",
   ],

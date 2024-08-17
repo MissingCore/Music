@@ -42,9 +42,9 @@ export async function saveArtwork() {
     // Make sure the track doesn't have `artwork` and either be unassociated
     // with an album or its album doesn't have `artwork`.
     if (!artwork && (!albumId || !albumsWithCovers.has(albumId))) {
-      const base64Artwork = await getArtwork(uri);
-      if (base64Artwork) {
-        try {
+      try {
+        const base64Artwork = await getArtwork(uri);
+        if (base64Artwork) {
           const artwork = await saveBase64Img(base64Artwork);
           if (albumId) {
             await db
@@ -56,10 +56,10 @@ export async function saveArtwork() {
             await db.update(tracks).set({ artwork }).where(eq(tracks.id, id));
           }
           newArtworkCount++;
-        } catch (err) {
-          // In case we fail to save an image due to having an invalid base64 string.
-          console.log(`[Error] Failed to save image for "${name}".`);
         }
+      } catch (err) {
+        // In case we fail to save an image due to having an invalid base64 string.
+        console.log(`[Error] Failed to get or save image for "${name}".`);
       }
     }
 
