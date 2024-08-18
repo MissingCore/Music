@@ -1,4 +1,4 @@
-export const APP_VERSION = "v1.0.0-rc.12";
+export const APP_VERSION = "v1.0.0";
 
 export const GITHUB_LINK = "https://github.com/MissingCore/Music";
 
