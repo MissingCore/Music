@@ -4,40 +4,18 @@
 
 A Nothing inspired music player (based on design by [Alkid Shuli (alKid)](https://bento.me/alkid)).
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#design">Design</a></li>
-    <ol type="a">
-      <li><a href="#built-with">Built With</a></li>
-      <li><a href="#permissions">Permissions</a></li>
-    </ol>
-    <li><a href="#installation">Installation</a></li>
-    <li><a href="#build">Build</a></li>
-    <li><a href="#faq">FAQ</a></li>
-    <li><a href="#legal">Legal</a></li>
-    <ol type="a">
-      <li><a href="#licenses-of-used-dependencies">Licenses of Used Dependencies</a></li>
-      <li><a href="#license">License</a></li>
-      <li><a href="#privacy-policy">Privacy Policy</a></li>
-    </ol>
-  </ol>
-</details>
+[<img height="80" alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" />](https://play.google.com/store/apps/details?id=com.cyanchill.missingcore.music)
+[<img height="80" alt="Get it on GitHub" src="./.github/get-it-on-github.png" />](https://github.com/MissingCore/Music/releases)
 
 ## Features
 
-- Supports Android
-- Play, Pause, Seek, Shuffle, Repeat
-- Grouping Tracks by Albums (w/ Artwork), Artists, and Folder Structure
-- Playlists w/ Custom Artwork
-- Favoriting Albums, Playlists, and Tracks
-- Background Playback w/ Media Control Notification
+- Supports Android 7+
+- Offline-First
+- Diverse music organization: Favorites, Playlists, Folder Structure, Albums, Artists
+- Background playback w/ media control notification
 - Queues
-- Automatic extraction of metadata w/ [@missingcore/react-native-metadata-retriever](https://github.com/MissingCore/react-native-metadata-retriever)
-  - List of [supported media formats](https://developer.android.com/media/platform/supported-formats#audio-formats) according to Android docs.
-- Data Backup
+- Theoretical support of [these media formats](https://developer.android.com/media/platform/supported-formats#audio-formats)
+- Control of where music is found
 
 > See potential upcoming features in future updates in [this discussion post](https://github.com/MissingCore/Music/discussions/9).
 
@@ -74,15 +52,17 @@ This (hopefully) lists out all the permissions required by Music based on the pe
 
 There are 2 methods of installing this app:
 
-1. Download the APK for your device from a release found in ["Releases" tab](https://github.com/MissingCore/Music/releases).
+1. Download the APK for your device from a release found in the ["Releases" tab](https://github.com/MissingCore/Music/releases).
 
-2. Download the app from the Google Play Store **(waiting for v1.0.0 release)**.
+2. Download the app from the [Google Play Store](https://play.google.com/store/apps/details?id=com.cyanchill.missingcore.music).
 
 > [!IMPORTANT]  
 > The APK & Play Store version of the apps **aren't compatible** as:
 >
 > - The APK is signed with an upload key.
 > - The Play Store app is signed with a Google-generated app signing key via "Play App Signing".
+>
+> To transfer data over between versions, use the "Backup" feature found in the settings page in the app.
 
 # Build
 
@@ -102,13 +82,13 @@ Read the [How Are Tracks Indexed?](./docs/how-are-tracks-indexed.md) documentati
 
 > How do I add music to the app? Why are my music files not displayed?
 
-Read the [Where Are Tracks Found?](./docs/where-are-tracks-found.md) documentation to see how the app find tracks.
+Read the [Where Are Tracks Found?](./docs/where-are-tracks-found.md) documentation to see how the app finds tracks.
 
 You can look [here](https://developer.android.com/media/platform/supported-formats#audio-formats) for the list of supported audio files & metadata formats from the Android documentation.
 
 > The loading screen is permanently displayed after moving some music in the "Music" folder!
 
-This is an issue with Android where when we move a folder, the original location might still be cached, which means the folder gets detected in its original location in addition to its new location. This kind of scenario might break some things in the app prior to the logic that gives the ok, saying the saving action being completed.
+This is an issue with Android where when we move a folder, the original location might still be cached, which means the folder gets detected in its original location in addition to its new location. This kind of scenario might break some things in the app prior to the logic that gives the ok, saying the saving action is completed.
 
 As mentioned in [#36](https://github.com/MissingCore/Music/issues/36), a work around is to copy the contents you want to move to the desired location (instead of moving the original folder), then delete the content at the original location. You can also go through your file system and see if you end up with duplicate "fake" copies of your moved media.
 
