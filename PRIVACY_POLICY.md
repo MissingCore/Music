@@ -1,7 +1,6 @@
 # Privacy Policy
 
-> _Last Updated: July 31, 2024_  
-> _Effective on release of `v1.0.0-rc.11`_
+> _Last Updated: July 31, 2024_
 
 The MissingCore Music app ("Application") is an Open Source service that provides an interface for playing music files stored on your device. You can find the source code of this Application at https://github.com/MissingCore/Music.
 
