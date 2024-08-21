@@ -7,10 +7,14 @@ import type { Maybe } from "@/utils/types";
 
 /** Creates "image" directory if it doesn't already exist. */
 export async function createImageDirectory() {
-  const imgDir = FileSystem.documentDirectory + "images";
-  const dir = await FileSystem.getInfoAsync(imgDir);
-  if (!dir.exists) {
-    await FileSystem.makeDirectoryAsync(imgDir);
+  try {
+    const imgDir = FileSystem.documentDirectory + "images";
+    const dir = await FileSystem.getInfoAsync(imgDir);
+    if (!dir.exists) await FileSystem.makeDirectoryAsync(imgDir);
+  } catch {
+    // Silently catch `Directory <> could not be created or already exists`
+    // error from `FileSystem.makeDirectoryAsync()` in case it occurs. This
+    // shouldn't throw an error as the directory shouldn't exist prior.
   }
 }
 
