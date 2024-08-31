@@ -40,12 +40,16 @@ export const trackListAtom = unwrap(
 );
 
 /** Reset atoms describing the playing media. */
-export const resetPlayingInfoAtom = atom(null, async (_get, set) => {
+export const resetPlayingInfoAtom = atom(null, async (get, set) => {
   set(playingMediaAsyncAtom, RESET);
   set(positionMsAtom, 0);
   set(queueListAsyncAtom, RESET);
   set(trackListAsyncAtom, RESET);
   await TrackPlayer.reset();
+
+  // Unload currently playing media.
+  const soundRef = get(soundRefAtom);
+  await soundRef.unloadAsync();
 });
 
 /** [🇫🇴🇷 🇮🇳🇹🇪🇷🇳🇦🇱 🇺🇸🇪 🇴🇳🇱🇾] */
