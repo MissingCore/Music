@@ -3,7 +3,6 @@ import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
 
 import { useIndexAudio } from "@/features/indexing/hooks/useIndexAudio";
-import { useSetupTrackPlayer } from "./useSetupTrackPlayer";
 
 import { db, expoSQLiteDB } from "@/db";
 import migrations from "@/db/drizzle/migrations";
@@ -16,7 +15,6 @@ export function useLoadResources() {
   const { success: dbSuccess, error: dbError } = useMigrations(db, migrations);
   useDevOnly(expoSQLiteDB);
   const { success: tracksSaved, error: tracksSaveError } = useIndexAudio();
-  useSetupTrackPlayer();
 
   return {
     isLoaded: dbSuccess && tracksSaved,
