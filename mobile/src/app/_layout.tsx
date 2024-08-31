@@ -3,14 +3,12 @@ import { Stack } from "expo-router";
 import { useSetAtom } from "jotai";
 import { useEffect } from "react";
 import Bootsplash from "react-native-bootsplash";
-import TrackPlayer from "react-native-track-player";
 
 import { EllipsisVertical } from "@/resources/icons/EllipsisVertical";
 import { useLoadResources } from "@/hooks/useLoadResources";
 import { mediaModalAtom } from "@/modals/categories/media/store";
 
 import "@/resources/global.css";
-import { PlaybackService } from "@/constants/PlaybackService";
 import { AppProvider } from "@/components/app-provider";
 import { ErrorBoundary } from "@/components/error/error-boundary";
 import { AnimatedBootSplash } from "@/components/navigation/animated-boot-splash";
@@ -38,8 +36,6 @@ Sentry.init({
     "Unable to activate keep awake",
   ],
 });
-
-TrackPlayer.registerPlaybackService(() => PlaybackService);
 
 export default function RootLayout() {
   const { isLoaded, error } = useLoadResources();
