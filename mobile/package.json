@@ -57,7 +57,7 @@
     "nativewind": "^4.0.36",
     "react": "18.2.0",
     "react-native": "0.74.3",
-    "react-native-bootsplash": "6.0.0",
+    "react-native-bootsplash": "^6.1.2",
     "react-native-gesture-handler": "~2.17.1",
     "react-native-markdown-display": "^7.0.2",
     "react-native-reanimated": "~3.14.0",
