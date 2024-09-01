@@ -107,7 +107,7 @@ export async function exportBackup() {
 export async function importBackup() {
   // Have user select a `.json` file and save it to cache.
   const { assets, canceled } = await DocumentPicker.getDocumentAsync({
-    type: "application/json",
+    type: ["application/json", "application/octet-stream"],
   });
   if (canceled) throw new Error("Cancelled backup import.");
   // Selected document should be a `.json` file due to the provided mimeType.
