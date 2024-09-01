@@ -68,33 +68,44 @@ export const AddFilterModal = forwardRef<
   }, [newPath, listData]);
 
   const selectDirectory = useCallback(async () => {
-    const permissions = await SAF.requestDirectoryPermissionsAsync();
-    if (!permissions.granted) {
-      Toast.show("No directory selected.", { type: "danger" });
-      return;
-    }
+    try {
+      const permissions = await SAF.requestDirectoryPermissionsAsync();
+      if (!permissions.granted) {
+        Toast.show("No directory selected.", { type: "danger" });
+        return;
+      }
 
-    // The "path" portion of the `content://` uri is encoded, so we can
-    // split by `/` and extract the path with the volume uuid.
-    const treeUri = decodeURIComponent(
-      permissions.directoryUri.split("/").at(-1)!,
-    );
-    // Format is: `uuid:some/path`
-    const [volumeUUID, ..._path] = treeUri.split(":");
-    const path = _path.join(":");
-
-    // Find the storage volume for that given uuid.
-    let usedVolume = PrimaryDirectoryPath;
-    if (volumeUUID !== "primary") {
-      const actualVolume = NonPrimaryDirectoryPaths.filter((path) =>
-        path.includes(`/${volumeUUID}`),
+      // The "path" portion of the `content://` uri is encoded, so we can
+      // split by `/` and extract the path with the volume uuid.
+      const treeUri = decodeURIComponent(
+        permissions.directoryUri.split("/").at(-1)!,
       );
-      // Used the found volume or a "guess".
-      if (actualVolume[0]) usedVolume = actualVolume[0];
-      else usedVolume = `/storage/${volumeUUID}`;
-    }
+      // Format is: `uuid:some/path`
+      const [volumeUUID, ..._path] = treeUri.split(":");
+      const path = _path.join(":");
 
-    setNewPath(`${addTrailingSlash(usedVolume)}${path}`);
+      // Find the storage volume for that given uuid.
+      let usedVolume = PrimaryDirectoryPath;
+      if (volumeUUID !== "primary") {
+        const actualVolume = NonPrimaryDirectoryPaths.filter((path) =>
+          path.includes(`/${volumeUUID}`),
+        );
+        // Used the found volume or a "guess".
+        if (actualVolume[0]) usedVolume = actualVolume[0];
+        else usedVolume = `/storage/${volumeUUID}`;
+      }
+
+      setNewPath(`${addTrailingSlash(usedVolume)}${path}`);
+    } catch {
+      /*
+        This is the only place where I think the following error can occur from:
+        ```
+        Call to function 'ExponentFileSystem.requestDirectoryPermissionsAsync'
+        has been rejected.
+        → Caused by: You have an unfinished permission request
+        ```
+      */
+    }
   }, []);
 
   return (
