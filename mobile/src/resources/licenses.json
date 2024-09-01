@@ -33,7 +33,7 @@
   },
   "@missingcore/react-native-metadata-retriever": {
     "name": "@missingcore/react-native-metadata-retriever",
-    "version": "0.2.2",
+    "version": "0.3.0",
     "copyright": "Copyright (c) 2024 MissingCore <missingcoredev@outlook.com>",
     "source": "https://github.com/MissingCore/react-native-metadata-retriever",
     "license": "MIT",
@@ -305,7 +305,7 @@
   },
   "react-native-bootsplash": {
     "name": "react-native-bootsplash",
-    "version": "6.0.0",
+    "version": "6.1.2",
     "copyright": "Copyright (c) 2021 Mathieu Acthernoene",
     "source": "https://github.com/zoontek/react-native-bootsplash",
     "license": "MIT",
