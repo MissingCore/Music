@@ -21,8 +21,8 @@ dependencies:
     specifier: ^2.6.0
     version: 2.6.0(react-native@0.74.3)(react@18.2.0)
   '@missingcore/react-native-metadata-retriever':
-    specifier: ^0.2.2
-    version: 0.2.2(react-native@0.74.3)(react@18.2.0)
+    specifier: ^0.3.0
+    version: 0.3.0(react-native@0.74.3)(react@18.2.0)
   '@paralleldrive/cuid2':
     specifier: ^2.2.2
     version: 2.2.2
@@ -3176,8 +3176,8 @@ packages:
       react-native: 0.74.3(@babel/core@7.24.9)(@babel/preset-env@7.25.4)(@types/react@18.2.79)(react@18.2.0)
     dev: false
 
-  /@missingcore/react-native-metadata-retriever@0.2.2(react-native@0.74.3)(react@18.2.0):
-    resolution: {integrity: sha512-hShwmcRsOLG3iUGPQDVr77USCy1pUnITei7mXB0fy0BbbMbY2JOfJzcy2qArlJrRoMoEizWb5qWJNEkNWunYmw==}
+  /@missingcore/react-native-metadata-retriever@0.3.0(react-native@0.74.3)(react@18.2.0):
+    resolution: {integrity: sha512-1iwTmCSb6P7i8g79AJkqn8LZcqRHPSUTXtv/OAV/TY0Sep7fsu5Ejx4Le6luBgg06C4hCIh1wdeed8jAJ/8Lig==}
     peerDependencies:
       react: '*'
       react-native: '*'
