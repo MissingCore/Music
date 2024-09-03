@@ -53,7 +53,7 @@ export async function fixAlbumFracturization() {
         entry: { name: string; artistName: string; releaseYear: number | null };
       }
     > = {};
-    await Promise.all(
+    await Promise.allSettled(
       usedAlbums.map(async ({ id, tracks }) => {
         const {
           albumTitle: album,
