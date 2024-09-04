@@ -4,7 +4,7 @@ labels: ["Bug: UI", "needs review"]
 body:
   - type: markdown
     attributes:
-      value: Thanks for taking the time to file an UI bug report! Please fill out this entire form. The most important piece are screenshots/videos/actions that led to the bug.
+      value: Thanks for taking the time to file an UI bug report! Please fill out this entire form. The most important piece of information are screenshots/videos/actions that led to the bug.
   - type: input
     attributes:
       label: What device did this occur on?
