@@ -56,6 +56,9 @@ In the newly created forked repository, click the `Actions` tab and then the `I 
 
 ## Step 4: Create branch for latest version of the app (includes pre-release)
 
+> [!IMPORTANT]  
+> Depending on the time of writing, the default branch `main` may be replaced with `dev`. In that case, all reference to `main` will be `dev` instead.
+
 Now, click `` Create `latest-stable` Branch `` in the sidebar while in the `Actions` tab. Next click on the `Run workflow` dropdown on the right and click `Run workflow`. Make sure that under `Use workflow from`, `Branch: main` is selected. This will create a new `latest-stable` branch.
 
 <img src="./assets/personal-privacy-build/create_latest_stable_branch.png" alt="Visual steps on creating the `latest-stable` branch." />

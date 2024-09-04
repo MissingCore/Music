@@ -4,7 +4,7 @@ on:
 
 jobs:
   create-latest-stable-branch:
-    name: Create `latest-stable` branch from latest release
+    name: Create `latest-stable` branch from latest stable release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -17,13 +17,12 @@ jobs:
           git remote add upstream https://github.com/MissingCore/Music.git
           git remote -v
 
-      - name: Fetch tags from original repository
+      - name: Get latest tag and create a `latest-stable` branch from it
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git fetch --tags upstream
-
-      - name: Get latest tag (includes pre-release) and create a `latest-stable` branch from it
-        run: |
-          LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
+          LATEST_TAG=$(gh release list --repo MissingCore/Music --exclude-pre-releases --limit 1 --json tagName --jq '.[0].tagName')
           echo "Latest Tag: $LATEST_TAG"
+          git fetch --no-tags upstream tag $LATEST_TAG
           git checkout -b latest-stable $LATEST_TAG
           git push -u -f origin latest-stable
