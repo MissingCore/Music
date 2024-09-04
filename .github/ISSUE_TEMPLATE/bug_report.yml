@@ -4,7 +4,7 @@ labels: ["Bug", "needs review"]
 body:
   - type: markdown
     attributes:
-      value: Thanks for taking the time to file a bug report! Please fill out this entire form. The most important piece are screenshots/videos/steps that led to the bug.
+      value: Thanks for taking the time to file a bug report! Please fill out this entire form. The most important piece of information are the actions that led to this issue.
   - type: input
     attributes:
       label: What device did this occur on?
@@ -28,13 +28,6 @@ body:
     attributes:
       label: Summary
       description: |
-        Clearly describe and list out the steps that led to this issue.
-    validations:
-      required: true
-  - type: textarea
-    attributes:
-      label: Screenshot / Video
-      description: |
-        A screenshot of the issue or error message displayed by Music. A video replicating this issue would be very helpful.
+        Clearly describe and list out the actions that led to this issue. Include any video or screenshots showing a reproduction of this issue.
     validations:
       required: true

@@ -1,7 +1,7 @@
 contact_links:
-  - name: 🙋 Feature Request
+  - name: 💿 Music Metadata Issue
+    url: https://github.com/MissingCore/Music/issues/new/choose
+    about: We use Android's built-in API for getting the metadata for your music. If you encounter an issue, email the file with the problem to `missingcoredev@outlook.com` so I can debug the issue.
+  - name: 🙋 Feature Request, Questions, or Discussions
     url: https://github.com/MissingCore/Music/discussions
-    about: Want us to add something to Music? Find a discussion or create a new one.
-  - name: ❓ Questions and Discussions
-    url: https://github.com/MissingCore/Music/discussions
-    about: Have a question or want to discuss something about Music? Find a discussion or create a new one.
+    about: Have a feature request? A question? Want to discuss something with other users? Find a discussion or create a new one.

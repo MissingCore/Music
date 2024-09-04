@@ -4,7 +4,7 @@ labels: ["Bug: UI", "needs review"]
 body:
   - type: markdown
     attributes:
-      value: Thanks for taking the time to file an UI bug report! Please fill out this entire form. The most important piece are screenshots/videos/steps that led to the bug.
+      value: Thanks for taking the time to file an UI bug report! Please fill out this entire form. The most important piece are screenshots/videos/actions that led to the bug.
   - type: input
     attributes:
       label: What device did this occur on?
@@ -41,13 +41,6 @@ body:
     attributes:
       label: Summary
       description: |
-        Clearly describe the problem or steps that led to this problem.
-    validations:
-      required: true
-  - type: textarea
-    attributes:
-      label: Screenshot / Video
-      description: |
-        A screenshot of the UI issue. A video replicating this issue would be very helpful.
+        Clearly describe the problem or steps that led to this problem. Include any screenshots or videos showing this UI issue.
     validations:
       required: true
