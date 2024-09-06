@@ -61,6 +61,9 @@ export async function doAudioIndexing() {
     lastRead = endCursor;
     isComplete = !hasNextPage;
   } while (!isComplete);
+  console.log(
+    `Found ${incomingData.length} tracks on device in ${stopwatch.lapTime()}.`,
+  );
   // Filter through the audio files and keep the tracks we want.
   const discoveredTracks = incomingData.filter(
     (a) =>
@@ -71,7 +74,9 @@ export async function doAudioIndexing() {
         a.uri.startsWith(`file://${addTrailingSlash(path)}`),
       ),
   );
-  console.log(`Got list of wanted tracks in ${stopwatch.lapTime()}.`);
+  console.log(
+    `Filtered down to ${discoveredTracks.length} tracks in ${stopwatch.lapTime()}.`,
+  );
 
   // Get relevant entries inside our database.
   const allTracks = await db.query.tracks.findMany();
@@ -164,8 +169,9 @@ export async function doAudioIndexing() {
       incrementAtom("errors", rejected.length);
     },
   });
+  const { staged, errors } = jotaiStore.get(indexStatusAtom);
   console.log(
-    `Attempted to stage metadata of ${unstagedTracks.length} tracks in ${stopwatch.lapTime()}.`,
+    `Found/updated ${staged} tracks & encountered ${errors} errors in ${stopwatch.lapTime()}.`,
   );
 
   return {
