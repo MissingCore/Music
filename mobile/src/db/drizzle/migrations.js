@@ -5,6 +5,7 @@ import m0000 from "./0000_complete_greymalkin.sql";
 import m0001 from "./0001_wooden_wallop.sql";
 import m0002 from "./0002_third_giant_man.sql";
 import m0003 from "./0003_breezy_wolverine.sql";
+import m0004 from "./0004_past_starfox.sql";
 
 export default {
   journal,
@@ -13,5 +14,6 @@ export default {
     m0001,
     m0002,
     m0003,
+    m0004,
   },
 };

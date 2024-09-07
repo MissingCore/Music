@@ -10,6 +10,7 @@ import {
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
 import { AnimatedHeader } from "@/components/navigation/animated-header";
+import { NavLink } from "@/components/navigation/nav-link";
 import { ProgressBar } from "@/components/ui/progress-bar";
 import { Description, Heading } from "@/components/ui/text";
 import { abbreviateSize } from "@/features/setting/utils";
@@ -27,6 +28,11 @@ export default function InsightsScreen() {
       <UserDataWidget />
       <StatisticsWidget />
       <AllImagesSavedWidget />
+
+      <View className="mb-2 mt-6 h-px bg-surface850" />
+      <View className="-mx-4">
+        <NavLink label="SAVE ERRORS" href="/setting/insights/save-errors" />
+      </View>
     </AnimatedHeader>
   );
 }

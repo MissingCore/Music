@@ -146,16 +146,26 @@ export async function doAudioIndexing() {
           }
         }
       } catch (err) {
+        const errObj =
+          err instanceof Error
+            ? err
+            : {
+                name: "UnknownError",
+                message: "Rejected for unknown reasons.",
+              };
+
         // We may end up here if the track at the given uri doesn't exist anymore.
-        if (!(err instanceof Error))
-          console.log(`[Track ${id}] Rejected for unknown reasons.`);
-        else console.log(`[Track ${id}] ${err.message}`);
+        console.log(`[Track ${id}] ${errObj.message}`);
 
         // Delete the track and its relation, then add it to `InvalidTrack`.
         await deleteTrack(id);
         await db
           .insert(invalidTracks)
-          .values({ id, uri, modificationTime })
+          .values({
+            ...{ id, uri, modificationTime },
+            errorName: errObj.name,
+            errorMessage: errObj.message,
+          })
           .onConflictDoUpdate({
             target: invalidTracks.id,
             set: { modificationTime },

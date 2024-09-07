@@ -83,6 +83,8 @@ export const tracksRelations = relations(tracks, ({ one, many }) => ({
 export const invalidTracks = sqliteTable("invalid_tracks", {
   id: text("id").primaryKey(),
   uri: text("uri").notNull(),
+  errorName: text("error_name"),
+  errorMessage: text("error_message"),
   modificationTime: integer("modification_time").notNull(),
 });
 
