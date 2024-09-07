@@ -42,6 +42,15 @@ export async function doAudioIndexing() {
   const jotaiStore = getDefaultStore();
   const stopwatch = new Stopwatch();
 
+  // Make sure we reset this atom. The `RESET` symbol doesn't work with
+  // the store returned from `getDefaultStore()`.
+  jotaiStore.set(indexStatusAtom, {
+    previouslyFound: undefined,
+    unstaged: undefined,
+    staged: undefined,
+    errors: undefined,
+  });
+
   let allowList = await jotaiStore.get(allowListAsyncAtom);
   if (allowList.length === 0) allowList = StorageVolumesDirectoryPaths;
   const blockList = await jotaiStore.get(blockListAsyncAtom);
