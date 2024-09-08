@@ -5,6 +5,7 @@ import { Text, View } from "react-native";
 import { db } from "@/db";
 
 import { AnimatedHeader } from "@/components/navigation/animated-header";
+import { Description } from "@/components/ui/text";
 
 /** Screen for `/setting/insights/save-errors` route. */
 export default function SaveErrorsScreen() {
@@ -30,6 +31,11 @@ export default function SaveErrorsScreen() {
           </>
         )}
         showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <Description className="mb-2 text-start text-sm">
+            No save errors found.
+          </Description>
+        }
       />
     </AnimatedHeader>
   );
