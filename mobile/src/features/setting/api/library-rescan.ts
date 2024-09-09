@@ -22,6 +22,10 @@ export async function rescanLibrary() {
 
     // Re-create the "folder" structure for tracks we've already saved.
     await AdjustmentFunctionMap["library-scan"]();
+    // Make sure we retry invalid tracks.
+    await AdjustmentFunctionMap["invalid-tracks-retry"]();
+    // Make sure we allow the retrying of artwork of tracks with no images.
+    await AdjustmentFunctionMap["artwork-retry"]();
     // Rescan library for any new tracks and delete any old ones.
     const { foundFiles } = await doAudioIndexing();
     await cleanUpDb(new Set(foundFiles.map(({ id }) => id)));

@@ -42,6 +42,15 @@ export async function doAudioIndexing() {
   const jotaiStore = getDefaultStore();
   const stopwatch = new Stopwatch();
 
+  // Make sure we reset this atom. The `RESET` symbol doesn't work with
+  // the store returned from `getDefaultStore()`.
+  jotaiStore.set(indexStatusAtom, {
+    previouslyFound: undefined,
+    unstaged: undefined,
+    staged: undefined,
+    errors: undefined,
+  });
+
   let allowList = await jotaiStore.get(allowListAsyncAtom);
   if (allowList.length === 0) allowList = StorageVolumesDirectoryPaths;
   const blockList = await jotaiStore.get(blockListAsyncAtom);
@@ -61,6 +70,9 @@ export async function doAudioIndexing() {
     lastRead = endCursor;
     isComplete = !hasNextPage;
   } while (!isComplete);
+  console.log(
+    `Found ${incomingData.length} tracks on device in ${stopwatch.lapTime()}.`,
+  );
   // Filter through the audio files and keep the tracks we want.
   const discoveredTracks = incomingData.filter(
     (a) =>
@@ -71,7 +83,9 @@ export async function doAudioIndexing() {
         a.uri.startsWith(`file://${addTrailingSlash(path)}`),
       ),
   );
-  console.log(`Got list of wanted tracks in ${stopwatch.lapTime()}.`);
+  console.log(
+    `Filtered down to ${discoveredTracks.length} tracks in ${stopwatch.lapTime()}.`,
+  );
 
   // Get relevant entries inside our database.
   const allTracks = await db.query.tracks.findMany();
@@ -141,16 +155,26 @@ export async function doAudioIndexing() {
           }
         }
       } catch (err) {
+        const errObj =
+          err instanceof Error
+            ? err
+            : {
+                name: "UnknownError",
+                message: "Rejected for unknown reasons.",
+              };
+
         // We may end up here if the track at the given uri doesn't exist anymore.
-        if (!(err instanceof Error))
-          console.log(`[Track ${id}] Rejected for unknown reasons.`);
-        else console.log(`[Track ${id}] ${err.message}`);
+        console.log(`[Track ${id}] ${errObj.message}`);
 
         // Delete the track and its relation, then add it to `InvalidTrack`.
         await deleteTrack(id);
         await db
           .insert(invalidTracks)
-          .values({ id, uri, modificationTime })
+          .values({
+            ...{ id, uri, modificationTime },
+            errorName: errObj.name,
+            errorMessage: errObj.message,
+          })
           .onConflictDoUpdate({
             target: invalidTracks.id,
             set: { modificationTime },
@@ -164,8 +188,9 @@ export async function doAudioIndexing() {
       incrementAtom("errors", rejected.length);
     },
   });
+  const { staged, errors } = jotaiStore.get(indexStatusAtom);
   console.log(
-    `Attempted to stage metadata of ${unstagedTracks.length} tracks in ${stopwatch.lapTime()}.`,
+    `Found/updated ${staged} tracks & encountered ${errors} errors in ${stopwatch.lapTime()}.`,
   );
 
   return {

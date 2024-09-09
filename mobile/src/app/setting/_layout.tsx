@@ -5,7 +5,8 @@ export default function SettingsLayout() {
     <Stack screenOptions={{ animation: "fade" }}>
       <Stack.Screen name="index" />
       <Stack.Screen name="backup" />
-      <Stack.Screen name="insights" />
+      <Stack.Screen name="insights/index" />
+      <Stack.Screen name="insights/save-errors" />
       <Stack.Screen name="library" />
       <Stack.Screen name="license" />
       <Stack.Screen name="support" />
