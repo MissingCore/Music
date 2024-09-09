@@ -11,17 +11,17 @@ const LINKGROUPS = {
     name: "GITHUB",
     links: [
       {
-        label: "SUBMIT AN ISSUE",
+        label: "ISSUE を送信",
         href: `${GITHUB_LINK}/issues/new`,
         external: true,
       },
       {
-        label: "ASK THE COMMUNITY",
+        label: "コミュニティで質問する",
         href: `${GITHUB_LINK}/discussions/new?category=q-a`,
         external: true,
       },
       {
-        label: "SHARE AN IDEA",
+        label: "アイデアを共有する",
         href: `${GITHUB_LINK}/discussions/new?category=ideas`,
         external: true,
       },
@@ -29,10 +29,10 @@ const LINKGROUPS = {
     listClassName: "-mx-4",
   },
   other: {
-    name: "OTHER",
+    name: "その他",
     links: [
       {
-        label: "EMAIL THE DEVELOPER",
+        label: "開発者にメールを送る",
         href: "mailto:missingcoredev@outlook.com",
         external: true,
       },
@@ -44,20 +44,22 @@ const LINKGROUPS = {
 /** Screen for `/setting/support` route. */
 export default function SupportScreen() {
   return (
-    <AnimatedHeader title="SUPPORT">
+    <AnimatedHeader title="サポート">
       <Description intent="setting">
-        Find a problem with the app or want to discuss something? Click the link
-        that fits your needs below.
+        アプリの問題を発見した場合や何か伝えたいことがある場合は、
+
+        以下のニーズに合ったリンクを選択してください。
         {"\n\n"}
-        <Text className="underline">Note:</Text> Some of the support related
-        request methods require a GitHub account and will be public, so try not
-        to post any personally identifiable information. In addition, you should
-        review{" "}
+        <Text className="underline">注意:</Text> サポート関連のリクエスト方法の一部には
+        GitHub アカウントが必要です。
+        情報が公開されるため個人を特定できる情報を投稿しないでください。
+
+        その他に {" "} をご確認ください。
         <Link
           href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement"
           className="text-foreground100 underline"
         >
-          GitHub's Privacy Policy
+          GitHub のプライバシーポリシー
         </Link>
         .
       </Description>

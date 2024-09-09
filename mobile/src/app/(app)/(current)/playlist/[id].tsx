@@ -95,7 +95,7 @@ function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
         config={{ source: trackSource, origin }}
         ListEmptyComponent={
           <Description>
-            {id ? "No tracks in playlist." : "No favorited tracks."}
+            {id ? "プレイリストに曲がありません。" : "お気に入りの曲がありません。"}
           </Description>
         }
       />

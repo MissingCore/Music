@@ -58,7 +58,7 @@ export default function HomeScreen() {
       }}
     >
       <Heading as="h2" className="mb-4 px-4 text-start">
-        RECENTLY PLAYED
+        最近に再生
       </Heading>
       {/*
         `<View />` wrapping around `<ScrollRow />` is needed due to some
@@ -85,7 +85,7 @@ function RecentlyPlayed({ colWidth }: { colWidth: number }) {
 
   return recentlyPlayedData.length === 0 ? (
     <Description className="my-4 text-start">
-      You haven't played anything yet!
+      まだ何も再生していません!
     </Description>
   ) : (
     recentlyPlayedData.map((props) => (
@@ -153,7 +153,7 @@ function FavoriteTracks({ colWidth }: { colWidth: number }) {
         <Heading
           as="h1"
           className="font-ndot57"
-        >{`${trackCount}\nTracks`}</Heading>
+        >{`${trackCount}\n曲`}</Heading>
       </Pressable>
     </Link>
   );

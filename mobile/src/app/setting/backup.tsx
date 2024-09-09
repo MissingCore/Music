@@ -18,13 +18,10 @@ export default function BackupScreen() {
   const disableActions = exportBackupFn.isPending || importBackupFn.isPending;
 
   return (
-    <AnimatedHeader title="BACKUP">
+    <AnimatedHeader title="バックアップ">
       <Description intent="setting" className="mb-6">
-        Import or export{" "}
-        <Text className="text-foreground100">`music_backup.json`</Text>{" "}
-        containing information about your favorited albums, playlists, and
-        tracks. Useful for transferring your data between the APK & Play Store
-        versions of the app.
+      お気に入りのアルバム、プレイリスト、曲に関する情報を含む{" "}
+      <Text className="text-foreground100">｢music_backup.json｣</Text>{" "}を          インポートまたはエクスポートします。アプリの APK バージョンと Play ストアバージョン         間でのデータ転送時に役立ちます。
       </Description>
 
       <View className="mb-4 flex-row gap-2">
@@ -36,7 +33,7 @@ export default function BackupScreen() {
           wrapperClassName="flex-1 p-4"
           textClassName="text-foreground100"
         >
-          Export
+          エクスポート
         </Button>
         <Button
           variant="outline"
@@ -46,7 +43,7 @@ export default function BackupScreen() {
           wrapperClassName="flex-1 p-4"
           textClassName="text-foreground100"
         >
-          Import
+          インポート
         </Button>
       </View>
     </AnimatedHeader>

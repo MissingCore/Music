@@ -15,10 +15,10 @@ import { Description } from "@/components/ui/text";
 /** Screen for `/setting/third-party` route. */
 export default function ThirdPartyScreen() {
   return (
-    <AnimatedHeader title="THIRD-PARTY SOFTWARE">
+    <AnimatedHeader title="サードパーティーソフトウェア">
       <Description intent="setting" className="mb-6">
-        This project couldn't have been made without the help of the
-        open-sourced projects listed below.
+        このプロジェクトは、以下にリストされているオープンソースプロジェクトの
+        協力がなければ実現ができませんでした。
       </Description>
 
       <View className="-mx-4 flex-1">

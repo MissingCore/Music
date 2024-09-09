@@ -18,12 +18,12 @@ export default function NotFoundScreen() {
       <Stack.Screen options={{ headerShown: false }} />
       <SafeContainer className="my-8 flex-1 px-4">
         <Heading as="h1" className="mb-4 font-ndot57">
-          Unmatched Route
+          一致しないルート
         </Heading>
         <ScrollView contentContainerClassName="px-2">
           <View className="mb-2 flex-row gap-1">
             <Text className="font-geistMono text-base text-foreground50">
-              Missing:
+              なし:
             </Text>
             <Code text={pathname} />
           </View>
@@ -34,7 +34,7 @@ export default function NotFoundScreen() {
             <Code text={prevPathname} />
           </View>
         </ScrollView>
-        <ReportInstructions encounterMessage="You somehow navigated to an invalid route." />
+        <ReportInstructions encounterMessage="何らかの理由で無効なルートに移動しました。" />
       </SafeContainer>
     </>
   );

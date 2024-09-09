@@ -21,7 +21,7 @@ export default function CurrentArtistScreen() {
   else if (error) {
     return (
       <View className="w-full flex-1 px-4">
-        <Description intent="error">Error: Artist not found</Description>
+        <Description intent="error">エラー: アーティストが見つかりません</Description>
       </View>
     );
   }
@@ -29,7 +29,7 @@ export default function CurrentArtistScreen() {
   // Information about this track list.
   const trackSource = {
     type: "artist",
-    name: `Artist\n${data.name}`,
+    name: `アーティスト\n${data.name}`,
     id: artistName,
   } as const;
 
@@ -49,7 +49,7 @@ export default function CurrentArtistScreen() {
         contentContainerStyle={{ paddingHorizontal: 20 }}
         ListEmptyComponent={
           <Description className="text-start">
-            Artist has no tracks.
+            アーティストの曲がありません。
           </Description>
         }
       />

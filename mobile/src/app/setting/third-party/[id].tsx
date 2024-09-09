@@ -31,7 +31,7 @@ export default function PackageLicenseScreen() {
       </Description>
 
       <View className="-mx-4">
-        <NavLink href={licenseInfo.source} label="Source" external />
+        <NavLink href={licenseInfo.source} label="ソース" external />
       </View>
 
       <View className="mb-6 mt-2 h-px bg-surface850" />

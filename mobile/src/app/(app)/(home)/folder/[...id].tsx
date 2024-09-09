@@ -45,13 +45,13 @@ export default function FolderScreen() {
   } else if (error) {
     return (
       <View className="w-full flex-1 px-4">
-        <Description intent="error">Error: Directory not found</Description>
+        <Description intent="error">エラー: ディレクトリが見つかりません</Description>
       </View>
     );
   } else if (data.subDirectories.length === 0 && data.tracks.length === 0) {
     return (
       <View className="w-full flex-1 px-4">
-        <Description>Directory is empty</Description>
+        <Description>ディレクトリが空です</Description>
       </View>
     );
   }

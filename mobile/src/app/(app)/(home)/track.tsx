@@ -24,7 +24,7 @@ export default function TrackScreen() {
         isPending ? (
           <LoadingIndicator />
         ) : (
-          <Description>No Tracks Found</Description>
+          <Description>曲が見つかりません</Description>
         )
       }
       contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 20 }}

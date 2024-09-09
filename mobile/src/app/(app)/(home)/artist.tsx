@@ -49,7 +49,7 @@ export default function ArtistScreen() {
           isPending ? (
             <LoadingIndicator />
           ) : (
-            <Description>No Artists Found</Description>
+            <Description>アーティストが見つかりません</Description>
           )
         }
         contentContainerStyle={{ paddingTop: 22 }}

@@ -22,7 +22,7 @@ export default function CurrentAlbumScreen() {
   else if (error) {
     return (
       <View className="w-full flex-1 px-4">
-        <Description intent="error">Error: Album not found</Description>
+        <Description intent="error">エラー: アルバムが見つかりません</Description>
       </View>
     );
   }

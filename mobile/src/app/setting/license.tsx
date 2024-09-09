@@ -9,7 +9,7 @@ import { Description } from "@/components/ui/text";
 /** Screen for `/setting/license` route. */
 export default function LicenseScreen() {
   return (
-    <AnimatedHeader title="LICENSE">
+    <AnimatedHeader title="ライセンス">
       <Description intent="setting" className="mb-6">
         <Text className="font-ndot57">Music</Text> is open-source and can be
         found on GitHub with the link below. This code is published under the{" "}
@@ -33,7 +33,7 @@ export default function LicenseScreen() {
       </Description>
 
       <View className="-mx-4">
-        <NavLink href={GITHUB_LINK} label="SOURCE CODE" external />
+        <NavLink href={GITHUB_LINK} label="ソースコード" external />
       </View>
     </AnimatedHeader>
   );

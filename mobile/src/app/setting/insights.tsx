@@ -18,10 +18,9 @@ import { getPlayTime } from "@/features/track/utils";
 /** Screen for `/setting/insights` route. */
 export default function InsightsScreen() {
   return (
-    <AnimatedHeader title="INSIGHTS">
+    <AnimatedHeader title="解析">
       <Description intent="setting" className="mb-6">
-        See what <Text className="font-ndot57">Music</Text> has stored on your
-        device along with information about the playable media.
+        再生可能なメディアに関する情報とデバイスに保存されている<Text className="font-ndo        t57">音楽</Text>の内容を確認します。
       </Description>
 
       <UserDataWidget />
@@ -38,7 +37,7 @@ function UserDataWidget() {
   return (
     <View className="mb-6 rounded-lg bg-surface800 p-4">
       <Heading as="h4" className="mb-4 text-start font-ndot57 tracking-tight">
-        User Data
+        ユーザーデータ
       </Heading>
 
       <ProgressBar
@@ -53,28 +52,28 @@ function UserDataWidget() {
       />
 
       <ValueRow
-        label="Images"
+        label="画像"
         value={abbreviateSize(data.images)}
         barColor={Colors.accent500}
       />
       <ValueRow
-        label="Database"
+        label="データベース"
         value={abbreviateSize(data.database)}
         barColor="#FFC800"
       />
       <ValueRow
-        label="Other"
+        label="その他"
         value={abbreviateSize(data.other)}
         barColor="#4142BE"
       />
       <ValueRow
-        label="Cache"
+        label="キャッシュ"
         value={abbreviateSize(data.cache)}
         barColor={Colors.foreground100}
       />
 
       <ValueRow
-        label="Total"
+        label="合計"
         value={abbreviateSize(data.total)}
         className="mb-0 mt-2"
       />
@@ -89,18 +88,18 @@ function StatisticsWidget() {
   return (
     <View className="mb-6 rounded-lg bg-surface800 p-4">
       <Heading as="h4" className="mb-4 text-start font-ndot57 tracking-tight">
-        Statistics
+        統計
       </Heading>
 
-      <ValueRow label="Albums" value={data.albums} />
-      <ValueRow label="Artists" value={data.artists} />
-      <ValueRow label="Images" value={data.images} />
-      <ValueRow label="Playlists" value={data.playlists} />
-      <ValueRow label="Tracks" value={data.tracks} />
-      <ValueRow label="Save Errors" value={data.invalidTracks} />
+      <ValueRow label="アルバム" value={data.albums} />
+      <ValueRow label="アーティスト" value={data.artists} />
+      <ValueRow label="画像" value={data.images} />
+      <ValueRow label="プレイリスト" value={data.playlists} />
+      <ValueRow label="曲" value={data.tracks} />
+      <ValueRow label="エラーの保存" value={data.invalidTracks} />
 
       <ValueRow
-        label="Total Duration"
+        label="合計時間"
         value={getPlayTime(data.totalDuration)}
         className="mb-0 mt-2"
       />
@@ -118,7 +117,7 @@ function AllImagesSavedWidget() {
         as="h4"
         className="text-start font-ndot57 leading-tight tracking-tight"
       >
-        All Images Saved?
+        すべての画像を保存しますか?
       </Heading>
       <Ionicons
         name={allSaved ? "checkmark-circle-outline" : "close-circle-outline"}

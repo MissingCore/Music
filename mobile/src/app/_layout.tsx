@@ -31,9 +31,9 @@ Sentry.init({
     // `expo-av` errors:
     "Player does not exist",
     /is (not|already) loaded/,
-    "Audio focus could not be acquired from the OS at this time.",
+    "現時点ではオーディオフォーカスを OS から取得できませんでした。",
     // Expo development errors:
-    "Unable to activate keep awake",
+    "起動状態を維持できません",
   ],
 });
 
@@ -82,7 +82,7 @@ function RootLayoutNav() {
             headerTitle: "",
             headerRight: () => (
               <StyledPressable
-                accessibilityLabel="View track settings."
+                accessibilityLabel="曲の設定を表示"
                 onPress={() => openModal({ entity: "track", scope: "current" })}
                 forIcon
               >

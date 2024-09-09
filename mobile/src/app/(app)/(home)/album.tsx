@@ -41,7 +41,7 @@ export default function AlbumScreen() {
           isPending ? (
             <LoadingIndicator />
           ) : (
-            <Description>No Albums Found</Description>
+            <Description>アルバムが見つかりません</Description>
           )
         }
         contentContainerStyle={{ paddingTop: 22 }}

@@ -24,18 +24,18 @@ export default function LibraryScreen() {
   const rescanLibrary = useRescanLibrary();
 
   return (
-    <AnimatedHeader title="LIBRARY">
+    <AnimatedHeader title="ライブラリ">
       <View className="mb-8 flex-row justify-between gap-4">
         <View className="shrink">
           <Heading as="h4" className="mb-4 text-start">
-            Rescan
+            再スキャン
           </Heading>
           <Description intent="setting">
-            Look for any new tracks on your device.
+            デバイス内の曲を検索します。
           </Description>
         </View>
         <Pressable
-          accessibilityLabel="Rescan library"
+          accessibilityLabel="ライブラリを再スキャン"
           disabled={rescanLibrary.isPending}
           onPress={() => mutateGuard(rescanLibrary, undefined)}
           className="self-end rounded border border-foreground100 p-3 active:opacity-75 disabled:opacity-25"
@@ -45,26 +45,26 @@ export default function LibraryScreen() {
       </View>
 
       <Heading as="h4" className="mb-4 text-start">
-        Scan Filter
+        スキャンのフィルター
       </Heading>
       <Description intent="setting" className="mb-4">
-        Control where music is discovered from. Directories in the blocklist
-        have higher priority over ones in the allowlist. If the allowlist is
-        empty, it defaults to the following values:{"\n"}
+        どのディレクトリから検索をするかをコントロールします。
+        ブロックリスト内のディレクトリは、許可リスト内のディレクトリよりも優先されます。
+        許可リストが空の場合はデフォルトで次の値になります:{"\n"}
         <Text className="text-foreground100">
           {StorageVolumesDirectoryPaths.map((path) => `\n\t${path}`)}
         </Text>
         {"\n\n"}
-        <Text className="underline">Note:</Text> The locations returned by `Find
-        Directory` might not be accurate. Refer to the actual file URI for
-        better accuracy.{"\n\n"}
+        <Text className="underline">注意:</Text> ｢ディレクトリの検索｣により返される場所は、
+        正確ではない可能性があります。より正確に知るには、実際のファイル URI を
+        参照してください。{"\n\n"}
         <Text className="text-accent50">
-          App relaunch is required to apply changes.
+          アプリを再起動で設定が適用されます。
         </Text>
       </Description>
 
-      <PathList name="Allowlist" listAtom={allowListAtom} />
-      <PathList name="Blocklist" listAtom={blockListAtom} />
+      <PathList name="許可リスト" listAtom={allowListAtom} />
+      <PathList name="ブロックリスト" listAtom={blockListAtom} />
     </AnimatedHeader>
   );
 }
@@ -89,7 +89,7 @@ function PathList({
           {name.toUpperCase()}
         </NavLinkGroupHeading>
         <Pressable
-          accessibilityLabel={`Add directory to ${name}`}
+          accessibilityLabel={｢${name}｣のディレクトリを追加}
           onPress={() =>
             openModal({ type: "filter-list", name, store: listAtom })
           }
@@ -113,7 +113,7 @@ function PathList({
             >
               <NavLinkLabel className="py-1">{item}</NavLinkLabel>
               <StyledPressable
-                accessibilityLabel={`Delete \`${item}\` entry from ${name}`}
+                accessibilityLabel={`｢${name}｣から｢${item}｣のエントリを削除`}
                 onPress={() =>
                   setData(async (prev) =>
                     (await prev).filter((path) => path !== item),
@@ -131,7 +131,7 @@ function PathList({
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={
             <NavLinkLabel className="h-12 px-4 py-1 align-middle">
-              No Paths Found
+              パスがありません
             </NavLinkLabel>
           }
         />

@@ -17,25 +17,25 @@ import { Description } from "@/components/ui/text";
 
 const LINKGROUPS = {
   about: {
-    name: "ABOUT",
+    name: "アプリについて",
     links: [
-      { label: "THIRD-PARTY SOFTWARE", href: "/setting/third-party" },
-      { label: "LICENSE", href: "/setting/license" },
+      { label: "サードパーティーソフトウェア", href: "/setting/third-party" },
+      { label: "ライセンス", href: "/setting/license" },
       {
-        label: "PRIVACY POLICY",
+        label: "プライバシーポリシー",
         href: `${GITHUB_LINK}/blob/main/PRIVACY_POLICY.md`,
         external: true,
       },
-      { label: "SUPPORT", href: "/setting/support" },
+      { label: "サポート", href: "/setting/support" },
     ],
     listClassName: "-mx-4",
   },
   features: {
-    name: "FEATURES",
+    name: "機能",
     links: [
-      { label: "BACKUP", href: "/setting/backup" },
-      { label: "INSIGHTS", href: "/setting/insights" },
-      { label: "LIBRARY", href: "/setting/library" },
+      { label: "バックアップ", href: "/setting/backup" },
+      { label: "解析", href: "/setting/insights" },
+      { label: "ライブラリ", href: "/setting/library" },
     ],
     listClassName: "-mx-4",
   },
@@ -44,9 +44,9 @@ const LINKGROUPS = {
 /** Screen for `/setting` route. */
 export default function SettingScreen() {
   return (
-    <AnimatedHeader title="SETTINGS">
+    <AnimatedHeader title="設定">
       <View>
-        <NavLinkGroupHeading>UPDATES</NavLinkGroupHeading>
+        <NavLinkGroupHeading>アップデート</NavLinkGroupHeading>
         <UpdateChecker />
       </View>
       <View className="mb-6 mt-2 h-px bg-surface850" />
@@ -54,7 +54,7 @@ export default function SettingScreen() {
       <View className="mb-6 mt-2 h-px bg-surface850" />
       <NavLinkGroup {...LINKGROUPS.about} />
       <View className="mt-1 h-12 flex-row items-center justify-between gap-2">
-        <NavLinkLabel>VERSION</NavLinkLabel>
+        <NavLinkLabel>バージョン</NavLinkLabel>
         <NavLinkLabel className="tracking-tight text-surface400">
           {APP_VERSION}
         </NavLinkLabel>
@@ -69,7 +69,7 @@ function UpdateChecker() {
 
   if (!newUpdate) {
     return (
-      <NavLinkLabel className="my-4">Currently on latest version.</NavLinkLabel>
+      <NavLinkLabel className="my-4">最新のバージョンを使用しています。</NavLinkLabel>
     );
   }
 
@@ -117,12 +117,12 @@ function UpdateChecker() {
           ),
         }}
       >
-        {`# ${release.version} is Available\n\n${release.releaseNotes}`}
+        {`# ${release.version} が利用可能です。\n\n${release.releaseNotes}`}
       </Markdown>
 
       <Description intent="setting" className="my-4">
-        <Text className="underline">Note:</Text> The Play Store may not have the
-        latest update immediately due to the app being in review.
+        <Text className="underline">注意:</Text> アプリの審査により、
+        Play ストアでは最新のアップデートがすぐに提供されない可能性があります。
       </Description>
 
       <View className="mb-4 flex-row gap-2">
@@ -140,7 +140,7 @@ function UpdateChecker() {
           theme="neutral-dark"
           Icon={<Ionicons name="logo-google-playstore" size={20} />}
         >
-          Play Store
+          Play ストア
         </Button>
       </View>
     </>
