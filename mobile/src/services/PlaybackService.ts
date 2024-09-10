@@ -66,9 +66,6 @@ export async function setupPlayer() {
 
   // Repeat mode is needed for the "next" button to show up in the widget.
   await TrackPlayer.setRepeatMode(RepeatMode.Queue);
-  // We want to play audio from `expo-av` as we only use
-  // `react-native-track-player` for the media controls.
-  await TrackPlayer.setVolume(0);
 
   await TrackPlayer.updateOptions({
     android: {

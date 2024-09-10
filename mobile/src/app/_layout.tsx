@@ -28,10 +28,6 @@ Sentry.init({
   dsn: "https://bbd726405356cdfb20b85f5f924fd3e3@o4507687432617984.ingest.us.sentry.io/4507687447101440",
   ignoreErrors: [
     /Missing .* permissions/,
-    // `expo-av` errors:
-    "Player does not exist",
-    /is (not|already) loaded/,
-    "Audio focus could not be acquired from the OS at this time.",
     // Expo development errors:
     "Unable to activate keep awake",
   ],

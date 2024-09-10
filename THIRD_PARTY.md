@@ -1,6 +1,5 @@
 | Name | License | Source |
 | ---- | ------- | ------ |
-| @boterop/react-native-background-timer | MIT | https://github.com/boterop/react-native-background-timer |
 | @expo/vector-icons | MIT | https://github.com/expo/vector-icons |
 | @gorhom/bottom-sheet | MIT | https://github.com/gorhom/react-native-bottom-sheet |
 | @miblanchard/react-native-slider | MIT | https://github.com/miblanchard/react-native-slider |
@@ -15,7 +14,6 @@
 | cva | Apache-2.0 | https://github.com/joe-bell/cva |
 | drizzle-orm | Apache-2.0 | https://github.com/drizzle-team/drizzle-orm |
 | expo | MIT | https://github.com/expo/expo/tree/main/packages/expo |
-| expo-av | MIT | https://github.com/expo/expo/tree/main/packages/expo-av |
 | expo-document-picker | MIT | https://github.com/expo/expo/tree/main/packages/expo-document-picker |
 | expo-drizzle-studio-plugin | MIT | https://github.com/drizzle-team/drizzle-studio-expo |
 | expo-file-system | MIT | https://github.com/expo/expo/tree/main/packages/expo-file-system |

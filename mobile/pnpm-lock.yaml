@@ -8,9 +8,6 @@ overrides:
   markdown-it: 14.1.0
 
 dependencies:
-  '@boterop/react-native-background-timer':
-    specifier: ^2.5.1
-    version: 2.5.1(react-native@0.74.3)
   '@expo/vector-icons':
     specifier: ^14.0.2
     version: 14.0.2
@@ -53,9 +50,6 @@ dependencies:
   expo:
     specifier: ~51.0.22
     version: 51.0.22(@babel/core@7.24.9)(@babel/preset-env@7.25.4)
-  expo-av:
-    specifier: ~14.0.6
-    version: 14.0.6(expo@51.0.22)
   expo-document-picker:
     specifier: ~12.0.2
     version: 12.0.2(expo@51.0.22)
@@ -151,9 +145,6 @@ devDependencies:
   '@tanstack/eslint-plugin-query':
     specifier: ^5.51.15
     version: 5.51.15(eslint@8.57.0)(typescript@5.5.4)
-  '@types/boterop__react-native-background-timer':
-    specifier: npm:@types/react-native-background-timer@^2.0.2
-    version: /@types/react-native-background-timer@2.0.2
   '@types/jest':
     specifier: ^29.5.12
     version: 29.5.12
@@ -1956,14 +1947,6 @@ packages:
   /@bcoe/v8-coverage@0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
-
-  /@boterop/react-native-background-timer@2.5.1(react-native@0.74.3):
-    resolution: {integrity: sha512-Z/3D/fevHXEXAqHiGKLKNpTsBmnD+NZORHwCyIHKlk6/H+tvy95pG4V3azvJdRsM3Yw7KssO3sMiX5jUguajRA==}
-    peerDependencies:
-      react-native: '>=0.47.0'
-    dependencies:
-      react-native: 0.74.3(@babel/core@7.24.9)(@babel/preset-env@7.25.4)(@types/react@18.2.79)(react@18.2.0)
-    dev: false
 
   /@egjs/hammerjs@2.0.17:
     resolution: {integrity: sha512-XQsZgjm2EcVUiZQf11UBJQfmZeEmOW8DpI1gsFeln6w0ae0ii4dMQEQ0kjl6DspdWX1aGY1/loyXnP0JS06e/A==}
@@ -4203,10 +4186,6 @@ packages:
 
   /@types/prop-types@15.7.12:
     resolution: {integrity: sha512-5zvhXYtRNRluoE/jAp4GVsSduVUzNWKkOZrCDBWYtE7biZywwdC2AcEzg+cSMLFRfVgeAFqpfNabiPjxFddV1Q==}
-
-  /@types/react-native-background-timer@2.0.2:
-    resolution: {integrity: sha512-cMAep0M5yqUHjiiRPvGiviqiJYdI45KSjbI5ufsIFSQGFwHwrHJC/8yawNhy0G3Gix6fufWLsEj6jC5niUNHiQ==}
-    dev: true
 
   /@types/react@18.2.79:
     resolution: {integrity: sha512-RwGAGXPl9kSXwdNTafkOEuFrTBD5SA2B3iEB96xi8+xu5ddUa/cpvyVCSNn+asgLCTHkb5ZxN8gbuibYJi4s1w==}
@@ -6749,14 +6728,6 @@ packages:
       md5-file: 3.2.3
     transitivePeerDependencies:
       - supports-color
-    dev: false
-
-  /expo-av@14.0.6(expo@51.0.22):
-    resolution: {integrity: sha512-8FHKgMYo49C5hhgG0ssRRd454VQ82TuujhMdlz7ScJBihEXa89kWKpfk9bXrvetFtrJoAmYuGxsXCJCygZhxfA==}
-    peerDependencies:
-      expo: '*'
-    dependencies:
-      expo: 51.0.22(@babel/core@7.24.9)(@babel/preset-env@7.25.4)
     dev: false
 
   /expo-constants@16.0.2(expo@51.0.22):
