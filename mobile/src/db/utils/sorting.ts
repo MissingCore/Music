@@ -1,16 +1,16 @@
-import type { Track, TrackWithAlbum } from "../schema";
+import type { Track } from "../schema";
 
 import { compareAsc } from "@/utils/string";
-import type { Media } from "@/components/media/types";
+import type { MediaType } from "@/modules/media/types";
 import { isTrackWithAlbum } from "./narrowing";
 
 /** Sort tracks based on algorithm for the given media. */
-export function sortTracks({
+export function sortTracks<TData extends Track>({
   type,
   tracks,
 }: {
-  type: Media | "folder";
-  tracks: Track[] | TrackWithAlbum[];
+  type: MediaType;
+  tracks: TData[];
 }) {
   return [...tracks].sort((a, b) => {
     if (type !== "album" && type !== "artist") {

@@ -1,6 +1,5 @@
 import { count } from "drizzle-orm";
 import type { SQLiteTable } from "drizzle-orm/sqlite-core";
-import type { Track as TrackPlayerTrack } from "react-native-track-player";
 
 import { db } from "..";
 import type {
@@ -13,9 +12,9 @@ import type {
 } from "../schema";
 
 import type { MediaCard } from "@/components/media/card";
-import { SpecialPlaylists } from "@/features/playback/constants";
 import type { Track as TrackC } from "@/features/track/components/track";
 import { getPlayTime, getTrackCountStr } from "@/features/track/utils";
+import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
 import { isTrackWithAlbum } from "./narrowing";
 import { sortTracks } from "./sorting";
 
@@ -61,13 +60,13 @@ export function formatForMediaCard({ type, data }: FnArgs): MediaCard.Content {
     source:
       type === "album"
         ? data.artwork
-        : type === "playlist" && data.name !== SpecialPlaylists.tracks
+        : type === "playlist" && data.name !== ReservedPlaylists.tracks
           ? getPlaylistCover(data)
           : null,
     href:
       type === "album"
         ? `/album/${data.id}`
-        : type === "playlist" && data.name === SpecialPlaylists.tracks
+        : type === "playlist" && data.name === ReservedPlaylists.tracks
           ? "/track"
           : `/${type}/${encodeURIComponent(data.name)}`,
     title: data.name,
@@ -121,17 +120,6 @@ export function formatForCurrentPages(args: FnArgs) {
 /** Return an array of track ids. */
 export function formatAsTrackIdList(tracks: Track[]) {
   return tracks.map(({ id }) => id);
-}
-
-/** Format track data to be used with `TrackPlayer.load()`. */
-export function formatTrackforPlayer(track: TrackWithAlbum) {
-  return {
-    url: track.uri,
-    artwork: getTrackCover(track) ?? undefined,
-    title: track.name,
-    artist: track.artistName ?? "No Artist",
-    duration: track.duration,
-  } satisfies TrackPlayerTrack;
 }
 
 /** Count the number of entries in a table. */
