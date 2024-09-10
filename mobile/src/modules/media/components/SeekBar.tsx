@@ -1,10 +1,7 @@
 import { Slider } from "@miblanchard/react-native-slider";
-import { useAtom, useSetAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
 import { Text, View } from "react-native";
-
-import { updateTrackPosAtom } from "../api/actions";
-import { positionMsAtom } from "../api/track";
+import TrackPlayer, { useProgress } from "react-native-track-player";
 
 import { Colors } from "@/constants/Styles";
 import { getTrackDuration } from "@/features/track/utils";
@@ -13,12 +10,23 @@ import { getTrackDuration } from "@/features/track/utils";
  * Allows seeking on the current track & displays the current track
  * position.
  */
-export function Timeline({ duration }: { duration: number }) {
-  const updateTrackPos = useSetAtom(updateTrackPosAtom);
-  const [trackPosMs, setTrackPosMs] = useAtom(positionMsAtom);
+export function SeekBar() {
+  const { position, duration } = useProgress(200);
   const prevDuration = useRef(0);
-  const [isSliding, setIsSliding] = useState(false);
   const [slidingTrackPos, setSlidingTrackPos] = useState<number | null>(null);
+
+  useEffect(() => {
+    // To prevent "rubberbanding" as `useProgress()` takes an "extra frame"
+    // before it displayed the seeked position (±1 second in case `position`
+    // isn't exactly the same).
+    if (slidingTrackPos !== null) {
+      if (
+        position === slidingTrackPos ||
+        (position >= slidingTrackPos - 1 && position <= slidingTrackPos + 1)
+      )
+        setSlidingTrackPos(null);
+    }
+  }, [position, slidingTrackPos]);
 
   useEffect(() => {
     // Preserve scrub percentage position.
@@ -33,19 +41,11 @@ export function Timeline({ duration }: { duration: number }) {
   return (
     <View className="w-full p-4">
       <Slider
-        value={slidingTrackPos ?? trackPosMs}
+        value={slidingTrackPos ?? position}
         minimumValue={0}
-        maximumValue={Math.floor(duration * 1000)}
-        onSlidingStart={() => setIsSliding(true)}
-        onSlidingComplete={() => {
-          updateTrackPos();
-          setIsSliding(false);
-          setSlidingTrackPos(null);
-        }}
-        onValueChange={([newPosMs]) => {
-          if (isSliding) setSlidingTrackPos(Math.floor(newPosMs!));
-          setTrackPosMs(Math.floor(newPosMs!));
-        }}
+        maximumValue={duration}
+        onSlidingComplete={([newPos]) => TrackPlayer.seekTo(newPos!)}
+        onValueChange={([newPos]) => setSlidingTrackPos(newPos!)}
         minimumTrackTintColor={Colors.accent500}
         maximumTrackTintColor={Colors.surface500}
         thumbTintColor={Colors.foreground50}
@@ -54,7 +54,7 @@ export function Timeline({ duration }: { duration: number }) {
 
       <View className="flex-row justify-between">
         <Text className="font-geistMono text-sm text-foreground50">
-          {getTrackDuration((slidingTrackPos ?? trackPosMs) / 1000)}
+          {getTrackDuration(slidingTrackPos ?? position)}
         </Text>
         <Text className="font-geistMono text-sm text-foreground50">
           {getTrackDuration(duration)}

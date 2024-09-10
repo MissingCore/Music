@@ -16,7 +16,7 @@ import {
   RepeatButton,
   ShuffleButton,
 } from "@/features/playback/components/media-controls";
-import { Timeline } from "@/features/playback/components/timeline";
+import { SeekBar } from "@/modules/media/components/SeekBar";
 
 /** Screen for `/current-track` route. */
 export default function CurrentTrackScreen() {
@@ -73,7 +73,7 @@ export default function CurrentTrackScreen() {
             </TextLine>
           </View>
 
-          <Timeline duration={trackData.duration} />
+          <SeekBar />
 
           <View className="flex-row items-center gap-2 p-4 pb-8">
             <ShuffleButton size={32} />
