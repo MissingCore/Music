@@ -73,7 +73,7 @@ export default function CurrentTrackScreen() {
             </TextLine>
           </View>
 
-          <SeekBar />
+          <SeekBar duration={trackData.duration} />
 
           <View className="flex-row items-center gap-2 p-4 pb-8">
             <ShuffleButton size={32} />

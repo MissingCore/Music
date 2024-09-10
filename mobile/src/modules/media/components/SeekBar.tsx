@@ -10,8 +10,8 @@ import { getTrackDuration } from "@/features/track/utils";
  * Allows seeking on the current track & displays the current track
  * position.
  */
-export function SeekBar() {
-  const { position, duration } = useProgress(200);
+export function SeekBar({ duration }: { duration: number }) {
+  const { position } = useProgress(200);
   const prevDuration = useRef(0);
   const [slidingTrackPos, setSlidingTrackPos] = useState<number | null>(null);
 
@@ -30,7 +30,7 @@ export function SeekBar() {
 
   useEffect(() => {
     // Preserve scrub percentage position.
-    if (duration !== prevDuration.current) {
+    if (duration !== 0 && duration !== prevDuration.current) {
       if (slidingTrackPos !== null) {
         setSlidingTrackPos(duration * (slidingTrackPos / prevDuration.current));
       }
