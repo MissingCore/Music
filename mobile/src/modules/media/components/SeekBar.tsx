@@ -1,10 +1,12 @@
 import { Slider } from "@miblanchard/react-native-slider";
+import { useSetAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
 import { Text, View } from "react-native";
-import TrackPlayer, { useProgress } from "react-native-track-player";
+import { useProgress } from "react-native-track-player";
 
 import { Colors } from "@/constants/Styles";
 import { getTrackDuration } from "@/features/track/utils";
+import { seekAtom } from "../services/Playback";
 
 /**
  * Allows seeking on the current track & displays the current track
@@ -13,6 +15,7 @@ import { getTrackDuration } from "@/features/track/utils";
 export function SeekBar({ duration }: { duration: number }) {
   const { position } = useProgress(200);
   const prevDuration = useRef(0);
+  const seekToFn = useSetAtom(seekAtom);
   const [slidingTrackPos, setSlidingTrackPos] = useState<number | null>(null);
 
   useEffect(() => {
@@ -44,7 +47,7 @@ export function SeekBar({ duration }: { duration: number }) {
         value={slidingTrackPos ?? position}
         minimumValue={0}
         maximumValue={duration}
-        onSlidingComplete={([newPos]) => TrackPlayer.seekTo(newPos!)}
+        onSlidingComplete={([newPos]) => seekToFn(newPos!)}
         onValueChange={([newPos]) => setSlidingTrackPos(newPos!)}
         minimumTrackTintColor={Colors.accent500}
         maximumTrackTintColor={Colors.surface500}

@@ -7,36 +7,63 @@ import TrackPlayer, {
 } from "react-native-track-player";
 
 import {
-  nextAtom,
-  playPauseToggleAtom,
+  playAtom,
+  pauseAtom,
   prevAtom,
-  updateTrackPosAtom,
-} from "@/features/playback/api/actions";
+  nextAtom,
+  seekAtom,
+} from "@/modules/media/services/Playback";
+import {
+  _playViewRefAtom,
+  _repeatAtom,
+} from "@/modules/media/services/Persistent";
 
 /** How we handle the actions in the media control notification. */
 export async function PlaybackService() {
   const jotaiStore = getDefaultStore();
 
-  TrackPlayer.addEventListener(Event.RemotePlay, () => {
-    TrackPlayer.play();
-    jotaiStore.set(playPauseToggleAtom);
+  TrackPlayer.addEventListener(Event.RemotePlay, async () => {
+    await jotaiStore.set(playAtom);
   });
 
-  TrackPlayer.addEventListener(Event.RemotePause, () => {
-    TrackPlayer.pause();
-    jotaiStore.set(playPauseToggleAtom);
+  TrackPlayer.addEventListener(Event.RemotePause, async () => {
+    await jotaiStore.set(pauseAtom);
   });
 
-  TrackPlayer.addEventListener(Event.RemoteNext, () => {
-    jotaiStore.set(nextAtom);
+  TrackPlayer.addEventListener(Event.RemoteNext, async () => {
+    await jotaiStore.set(nextAtom);
   });
 
-  TrackPlayer.addEventListener(Event.RemotePrevious, () => {
-    jotaiStore.set(prevAtom);
+  TrackPlayer.addEventListener(Event.RemotePrevious, async () => {
+    await jotaiStore.set(prevAtom);
   });
 
-  TrackPlayer.addEventListener(Event.RemoteSeek, (e) => {
-    jotaiStore.set(updateTrackPosAtom, e.position);
+  TrackPlayer.addEventListener(Event.RemoteSeek, async ({ position }) => {
+    await jotaiStore.set(seekAtom, position);
+  });
+
+  TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (e) => {
+    // Update `_playViewReferenceAtom` when the track changes.
+    //  - This allows us to preserve the index of the last track played in one place.
+    //  - Note: `e.index` will briefly be `0` if we trigger this immediately.
+    const prevPlayView = await jotaiStore.get(_playViewRefAtom);
+    if (prevPlayView.listIndex !== e.index && prevPlayView.id !== e.track?.id) {
+      await jotaiStore.set(_playViewRefAtom, {
+        listIndex: e.index ?? 0,
+        id: e.track?.id,
+      });
+    }
+
+    // Handle case where we loop back to the beginning of the queue.
+    const currQueue = await TrackPlayer.getQueue();
+    if (e.index === 0 && prevPlayView.listIndex === currQueue.length - 1) {
+      const shouldRepeat = await jotaiStore.get(_repeatAtom);
+      if (!shouldRepeat) await jotaiStore.set(pauseAtom);
+    }
+  });
+
+  TrackPlayer.addEventListener(Event.PlaybackError, async (e) => {
+    console.log(`[${e.code}] ${e.message}`);
   });
 }
 

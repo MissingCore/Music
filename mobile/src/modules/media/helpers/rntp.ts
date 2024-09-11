@@ -2,10 +2,15 @@
  * Helpers for manipulating the `react-native-track-player` queue.
  */
 
-import TrackPlayer from "react-native-track-player";
+import TrackPlayer, { State } from "react-native-track-player";
 
 import type { TrackWithAlbum } from "@/db/schema";
 import { formatTrackforPlayer } from "./data";
+
+/** Helper to determine if any tracks are loaded in RNTP on launch. */
+export async function isRNTPLoaded() {
+  return (await TrackPlayer.getPlaybackState()).state !== State.None;
+}
 
 /**
  * Replaces all tracks around a specified index in the current RNTP queue.

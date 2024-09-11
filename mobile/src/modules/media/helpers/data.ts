@@ -36,6 +36,7 @@ export function formatTrackforPlayer(track: TrackWithAlbum) {
     title: track.name,
     artist: track.artistName ?? "No Artist",
     duration: track.duration,
+    id: track.id,
   } satisfies AddTrack;
 }
 

@@ -31,8 +31,8 @@ export const indexStatusAtom = atom<{
 }>({
   previouslyFound: undefined,
   unstaged: undefined,
-  staged: undefined,
-  errors: undefined,
+  staged: 0,
+  errors: 0,
 });
 
 /**
@@ -47,8 +47,8 @@ export async function doAudioIndexing() {
   jotaiStore.set(indexStatusAtom, {
     previouslyFound: undefined,
     unstaged: undefined,
-    staged: undefined,
-    errors: undefined,
+    staged: 0,
+    errors: 0,
   });
 
   let allowList = await jotaiStore.get(allowListAsyncAtom);
