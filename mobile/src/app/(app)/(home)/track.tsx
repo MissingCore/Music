@@ -12,7 +12,6 @@ export default function TrackScreen() {
   // Information about this track list.
   const trackSource = {
     type: "playlist",
-    name: ReservedPlaylists.tracks,
     id: ReservedPlaylists.tracks,
   } as const;
 

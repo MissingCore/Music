@@ -42,7 +42,7 @@ export function MediaScreenHeader(props: {
         <TextLine className="flex-1 font-geistMonoLight text-xs text-foreground100">
           {props.metadata.join(" • ")}
         </TextLine>
-        <MediaListControls source={props.trackSource} />
+        <MediaListControls trackSource={props.trackSource} />
       </View>
     </View>
   );

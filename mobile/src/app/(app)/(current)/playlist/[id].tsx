@@ -76,11 +76,7 @@ function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
   }
 
   // Information about this track list.
-  const trackSource = {
-    type: "playlist",
-    name: data.name,
-    id: data.name,
-  } as const;
+  const trackSource = { type: "playlist", id: data.name } as const;
 
   return (
     <View className="w-full flex-1 px-4">

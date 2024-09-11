@@ -15,12 +15,16 @@ import { arePlaybackSourceEqual } from "../helpers/data";
 import type { PlayListSource } from "../types";
 
 /** Media controls used on media list pages. */
-export function MediaListControls({ source }: { source: PlayListSource }) {
+export function MediaListControls({
+  trackSource,
+}: {
+  trackSource: PlayListSource;
+}) {
   return (
     <View className="flex-row items-center">
       <RepeatButton />
       <ShuffleButton />
-      <PlayMediaListButton source={source} />
+      <PlayMediaListButton trackSource={trackSource} />
     </View>
   );
 }
@@ -30,12 +34,12 @@ export function MediaListControls({ source }: { source: PlayListSource }) {
  * currently playing (ie: show play button if we're not playing a track
  * from this media list).
  */
-function PlayMediaListButton({ source }: { source: PlayListSource }) {
+function PlayMediaListButton({ trackSource }: { trackSource: PlayListSource }) {
   const currSource = useAtomValue(playListSourceAtom);
   const isPlaying = useAtomValue(isPlayingAtom);
   const playFromMediaListFn = useSetAtom(playFromMediaListAtom);
 
-  const isThisSource = arePlaybackSourceEqual(currSource, source);
+  const isThisSource = arePlaybackSourceEqual(currSource, trackSource);
   const displayPause = isThisSource && isPlaying;
 
   return (
@@ -43,7 +47,7 @@ function PlayMediaListButton({ source }: { source: PlayListSource }) {
       onPress={
         displayPause
           ? MusicControls.pause
-          : () => playFromMediaListFn({ source })
+          : () => playFromMediaListFn({ source: trackSource })
       }
       className={cn("ml-1 rounded-full bg-accent500 p-1 active:opacity-75", {
         "bg-surface500": displayPause,

@@ -33,7 +33,7 @@ export default function CurrentAlbumScreen() {
     : data.isFavorite;
 
   // Information about this track list.
-  const trackSource = { type: "album", name: data.name, id: albumId } as const;
+  const trackSource = { type: "album", id: albumId } as const;
 
   return (
     <>

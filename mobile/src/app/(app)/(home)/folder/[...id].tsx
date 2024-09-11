@@ -59,7 +59,6 @@ export default function FolderScreen() {
   // Information about this track list.
   const trackSource = {
     type: "folder",
-    name: `[Folder] ${fullPath?.split("/").at(-1)}`,
     // Theoretically, no tracks should be on the "root" (ie: `id = undefined`),
     // so we shouldn't see any cases where we play a track from the
     // invalid track source "id" created.
