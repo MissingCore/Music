@@ -11,10 +11,11 @@ import { RESET, unwrap } from "jotai/utils";
 import { Toast } from "react-native-toast-notifications";
 import TrackPlayer from "react-native-track-player";
 
-import { tracks } from "@/db/schema";
-import { getTrack } from "@/db/queries";
+import { albums, tracks } from "@/db/schema";
+import { getAlbum, getTrack } from "@/db/queries";
 
 import { createAtomWithStorage } from "@/lib/jotai";
+import { ReservedPlaylists } from "../constants/ReservedNames";
 import { generatePlayList } from "../helpers/data";
 import { isRNTPLoaded, replaceAroundTrack } from "../helpers/rntp";
 import type { PlayListSource } from "../types";
@@ -103,6 +104,31 @@ export const playListSourceAtom = unwrap(
 export const _playListAtom = createAtomWithStorage<string[]>("play-list", []);
 /** The list of tracks from `_playListSourceAtom`. */
 export const playListAtom = unwrap(_playListAtom, (prev) => prev ?? []);
+
+const _playListNameAtom = atom(async (get) => {
+  const source = await get(_playListSourceAtom);
+  if (!source) return "";
+  try {
+    if (
+      (Object.values(ReservedPlaylists) as string[]).includes(source.id) ||
+      ["artist", "playlist"].includes(source.type)
+    ) {
+      return source.id;
+    } else if (source.type === "folder") {
+      // FIXME: At `-2` index due to the folder path (in `id`) ending with
+      // a trailing slash.
+      return source.id.split("/").at(-2);
+    } else if (source.type === "album") {
+      const album = await getAlbum([eq(albums.id, source.id)]);
+      return album.name;
+    }
+    return ""; // Fallback in case we miss anything.
+  } catch {
+    return ""; // In case the query throws an error.
+  }
+});
+/** Get the name of the current playing track list. */
+export const playListNameAtom = unwrap(_playListNameAtom, (prev) => prev ?? "");
 //#endregion
 
 //#region Queue

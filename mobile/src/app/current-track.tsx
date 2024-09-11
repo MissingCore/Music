@@ -5,7 +5,7 @@ import { View, useWindowDimensions } from "react-native";
 
 import {
   currTrackAtom,
-  playListSourceAtom,
+  playListNameAtom,
 } from "@/modules/media/services/Persistent";
 import { isPlayingAtom } from "@/modules/media/services/Playback";
 
@@ -25,7 +25,7 @@ import { SeekBar } from "@/modules/media/components/SeekBar";
 export default function CurrentTrackScreen() {
   const { width } = useWindowDimensions();
   const track = useAtomValue(currTrackAtom);
-  const source = useAtomValue(playListSourceAtom);
+  const listName = useAtomValue(playListNameAtom);
   const isPlaying = useAtomValue(isPlayingAtom);
   const [pageHeight, setPageHeight] = useState<number | null>(null);
   const [infoHeight, setInfoHeight] = useState<number | null>(null);
@@ -42,7 +42,7 @@ export default function CurrentTrackScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ headerTitle: source?.id ?? "" }} />
+      <Stack.Screen options={{ headerTitle: listName }} />
       <View
         onLayout={({ nativeEvent }) => setPageHeight(nativeEvent.layout.height)}
         className="flex-1 items-center px-4 py-8"
