@@ -2,7 +2,7 @@ import { router } from "expo-router";
 import { useAtomValue } from "jotai";
 import { Pressable, View } from "react-native";
 
-import { playViewAtom } from "../services/Persistent";
+import { currTrackAtom } from "../services/Persistent";
 
 import { MediaImage } from "@/components/media/image";
 import { TextStack } from "@/components/ui/text";
@@ -13,7 +13,7 @@ import { NextButton, PlayToggleButton, PreviousButton } from "./MediaControls";
  * a song loaded.
  */
 export function MiniPlayer() {
-  const { track } = useAtomValue(playViewAtom);
+  const track = useAtomValue(currTrackAtom);
 
   if (!track) return null;
 

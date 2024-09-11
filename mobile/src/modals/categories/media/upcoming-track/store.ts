@@ -6,8 +6,8 @@ import { tracks } from "@/db/schema";
 import { getTrack } from "@/db/queries";
 
 import {
-  _playViewRefAtom,
-  _playListRefAtom,
+  _currPlayListIdxAtom,
+  _playListAtom,
   _queueAtom,
   _repeatAtom,
 } from "@/modules/media/services/Persistent";
@@ -32,8 +32,8 @@ export const queueTrackListAtom = unwrap(
 /** [🇫🇴🇷 🇮🇳🇹🇪🇷🇳🇦🇱 🇺🇸🇪 🇴🇳🇱🇾] */
 export const nextTrackListAsyncAtom = atom(async (get) => {
   const shouldRepeat = await get(_repeatAtom);
-  const { listIndex: startIndex } = await get(_playViewRefAtom);
-  const { trackIds } = await get(_playListRefAtom);
+  const startIndex = await get(_currPlayListIdxAtom);
+  const trackIds = await get(_playListAtom);
 
   // Get up to the next 5 tracks in `trackList`.
   const upcomingTracks = trackIds.slice(startIndex + 1, startIndex + 6);

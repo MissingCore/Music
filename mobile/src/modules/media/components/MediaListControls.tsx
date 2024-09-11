@@ -2,7 +2,7 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { Pressable, View } from "react-native";
 
 import { MaterialIcons } from "@/resources/icons";
-import { playListRefAtom } from "../services/Persistent";
+import { playListSourceAtom } from "../services/Persistent";
 import {
   MusicControls,
   isPlayingAtom,
@@ -31,7 +31,7 @@ export function MediaListControls({ source }: { source: PlayListSource }) {
  * from this media list).
  */
 function PlayMediaListButton({ source }: { source: PlayListSource }) {
-  const { source: currSource } = useAtomValue(playListRefAtom);
+  const currSource = useAtomValue(playListSourceAtom);
   const isPlaying = useAtomValue(isPlayingAtom);
   const playFromMediaListFn = useSetAtom(playFromMediaListAtom);
 

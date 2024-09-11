@@ -7,7 +7,7 @@ import { deleteTrack } from "@/db/queries";
 
 import {
   Queue,
-  _playListRefAtom,
+  _playListAtom,
   resetPersistentMediaAtom,
 } from "@/modules/media/services/Persistent";
 
@@ -59,9 +59,9 @@ export async function removeUnlinkedTracks(foundTracks: Set<string>) {
 export async function revalidatePlaybackStore(removedTracks: string[]) {
   const jotaiStore = getDefaultStore();
   // See if the current playing tracklist contains a deleted track.
-  const hasRemovedTrack = (
-    await jotaiStore.get(_playListRefAtom)
-  ).trackIds.some((tId) => removedTracks.includes(tId));
+  const hasRemovedTrack = (await jotaiStore.get(_playListAtom)).some((tId) =>
+    removedTracks.includes(tId),
+  );
   if (hasRemovedTrack) await jotaiStore.set(resetPersistentMediaAtom);
   // Clear the queue of deleted tracks.
   await Queue.removeIds(removedTracks);

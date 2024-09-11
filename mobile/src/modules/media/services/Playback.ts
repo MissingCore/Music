@@ -1,7 +1,13 @@
 import { atom, getDefaultStore } from "jotai";
 import TrackPlayer from "react-native-track-player";
 
-import { _playListRefAtom, _playViewRefAtom, _shuffleAtom } from "./Persistent";
+import {
+  _currPlayListIdxAtom,
+  _currTrackIdAtom,
+  _playListAtom,
+  _playListSourceAtom,
+  _shuffleAtom,
+} from "./Persistent";
 import { arePlaybackSourceEqual, generatePlayList } from "../helpers/data";
 import { preloadRNTPQueue } from "../helpers/preload";
 import { replaceAroundTrack, replaceRNTPQueue } from "../helpers/rntp";
@@ -73,24 +79,24 @@ export const playFromMediaListAtom = atom(
     set,
     { source, trackId }: { source: PlayListSource; trackId?: string },
   ) => {
-    const currPlayList = await get(_playListRefAtom);
-    const currPlayView = await get(_playViewRefAtom);
+    const currSource = await get(_playListSourceAtom);
+    const currTrackIds = await get(_playListAtom);
+    const currTrackId = await get(_currTrackIdAtom);
+    const currListIdx = await get(_currPlayListIdxAtom);
     const shouldShuffle = await get(_shuffleAtom);
 
     // 1. See if we're playing from a new media list.
-    const isSameSource = arePlaybackSourceEqual(currPlayList.source, source);
-    let isDiffTrack =
-      currPlayView.id === undefined || currPlayView.id !== trackId;
+    const isSameSource = arePlaybackSourceEqual(currSource, source);
+    let isDiffTrack = currTrackId === undefined || currTrackId !== trackId;
 
     // 2. Handle case when we're playing from the same media list.
     if (isSameSource) {
       // Case where we play a different track in this media list.
       if (!!trackId && isDiffTrack) {
         // Find index of new track in list.
-        const listIndex = currPlayList.trackIds.findIndex(
-          (tId) => tId === trackId,
-        );
-        await set(_playViewRefAtom, { id: trackId, listIndex });
+        const listIndex = currTrackIds.findIndex((tId) => tId === trackId);
+        set(_currTrackIdAtom, trackId);
+        set(_currPlayListIdxAtom, listIndex);
         await TrackPlayer.skip(listIndex);
       }
       await MusicControls.play(); // Will preload RNTP queue if empty.
@@ -102,17 +108,22 @@ export const playFromMediaListAtom = atom(
       source,
       shouldShuffle,
       // Either play from the selected track, the current playing track, or from the beginning.
-      startTrackId: trackId ?? currPlayView.id,
+      startTrackId: trackId ?? currTrackId,
     });
     if (tracks.length === 0) return; // Don't do anything if list is empty.
 
     // 4. Update the persistent storage.
     const newTrack = tracks[trackIndex]!;
-    set(_playViewRefAtom, { id: newTrack.id, listIndex: trackIndex });
-    set(_playListRefAtom, { source, trackIds: tracks.map(({ id }) => id) });
+    set(_currTrackIdAtom, newTrack.id);
+    set(_currPlayListIdxAtom, trackIndex);
+    set(_playListSourceAtom, source);
+    set(
+      _playListAtom,
+      tracks.map(({ id }) => id),
+    );
 
     // 5. Play this new media list.
-    isDiffTrack = currPlayView.id !== newTrack.id;
+    isDiffTrack = currTrackId !== newTrack.id;
     set(isPlayingAtom, true);
     if (isDiffTrack) {
       await replaceRNTPQueue({
@@ -123,7 +134,7 @@ export const playFromMediaListAtom = atom(
     } else {
       await replaceAroundTrack({
         tracks,
-        oldIndex: currPlayView.listIndex,
+        oldIndex: currListIdx,
         newIndex: trackIndex,
         shouldPlay: true,
       });

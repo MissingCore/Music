@@ -4,7 +4,7 @@ import { getDefaultStore } from "jotai";
 import { tracks } from "@/db/schema";
 import { getTracks } from "@/db/queries";
 
-import { _playListRefAtom, _playViewRefAtom } from "../services/Persistent";
+import { _currPlayListIdxAtom, _playListAtom } from "../services/Persistent";
 
 import { isRNTPLoaded, replaceRNTPQueue } from "./rntp";
 
@@ -16,8 +16,8 @@ export async function preloadRNTPQueue() {
   if (await isRNTPLoaded()) return;
   console.log("[RNTP] Queue is empty, preloading RNTP Queue...");
   const jotaiStore = getDefaultStore();
-  const { listIndex } = await jotaiStore.get(_playViewRefAtom);
-  const { trackIds } = await jotaiStore.get(_playListRefAtom);
+  const startIndex = await jotaiStore.get(_currPlayListIdxAtom);
+  const trackIds = await jotaiStore.get(_playListAtom);
   if (trackIds.length === 0) return;
 
   // Get tracks and put them in the correct order.
@@ -26,5 +26,5 @@ export async function preloadRNTPQueue() {
     (tId) => loadTracks.find(({ id }) => tId === id)!,
   );
 
-  await replaceRNTPQueue({ tracks: orderedTracks, startIndex: listIndex });
+  await replaceRNTPQueue({ tracks: orderedTracks, startIndex });
 }

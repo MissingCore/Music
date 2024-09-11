@@ -4,8 +4,8 @@ import { useMemo, useState } from "react";
 import { View, useWindowDimensions } from "react-native";
 
 import {
-  playViewAtom,
-  playListRefAtom,
+  currTrackAtom,
+  playListSourceAtom,
 } from "@/modules/media/services/Persistent";
 import { isPlayingAtom } from "@/modules/media/services/Playback";
 
@@ -24,8 +24,8 @@ import { SeekBar } from "@/modules/media/components/SeekBar";
 /** Screen for `/current-track` route. */
 export default function CurrentTrackScreen() {
   const { width } = useWindowDimensions();
-  const { track } = useAtomValue(playViewAtom);
-  const { source } = useAtomValue(playListRefAtom);
+  const track = useAtomValue(currTrackAtom);
+  const source = useAtomValue(playListSourceAtom);
   const isPlaying = useAtomValue(isPlayingAtom);
   const [pageHeight, setPageHeight] = useState<number | null>(null);
   const [infoHeight, setInfoHeight] = useState<number | null>(null);

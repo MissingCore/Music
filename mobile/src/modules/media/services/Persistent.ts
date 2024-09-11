@@ -11,7 +11,6 @@ import { RESET, unwrap } from "jotai/utils";
 import { Toast } from "react-native-toast-notifications";
 import TrackPlayer from "react-native-track-player";
 
-import type { TrackWithAlbum } from "@/db/schema";
 import { tracks } from "@/db/schema";
 import { getTrack } from "@/db/queries";
 
@@ -34,27 +33,28 @@ export const shuffleAtom = atom(
   (get) => get(_shuffleUnwrapAtom),
   async (get, set) => {
     const newShuffleStatus = !(await get(_shuffleAtom));
-    const currPlayView = await get(_playViewRefAtom);
-    const { source } = await get(_playListRefAtom);
+    const startTrackId = await get(_currTrackIdAtom);
+    const oldIndex = await get(_currPlayListIdxAtom);
+    const source = await get(_playListSourceAtom);
 
     // Update the current playing queue if we shuffle/unshuffle it.
     if (source) {
       const { trackIndex, tracks } = await generatePlayList({
         source,
         shouldShuffle: newShuffleStatus,
-        startTrackId: currPlayView.id,
+        startTrackId,
       });
       const newTrack = tracks[trackIndex]!;
-      set(_playViewRefAtom, { id: newTrack.id, listIndex: trackIndex });
-      set(_playListRefAtom, { source, trackIds: tracks.map(({ id }) => id) });
+      set(_currTrackIdAtom, newTrack.id);
+      set(_currPlayListIdxAtom, trackIndex);
+      set(
+        _playListAtom,
+        tracks.map(({ id }) => id),
+      );
 
       // Only update RNTP queue if it's loaded.
       if (await isRNTPLoaded()) {
-        await replaceAroundTrack({
-          tracks,
-          oldIndex: currPlayView.listIndex,
-          newIndex: trackIndex,
-        });
+        await replaceAroundTrack({ tracks, oldIndex, newIndex: trackIndex });
       }
     }
 
@@ -64,49 +64,45 @@ export const shuffleAtom = atom(
 //#endregion
 
 //#region Play View
-type StoredPlayView = {
-  /** Current track id. */
-  id: string | undefined;
-  track: TrackWithAlbum | undefined;
-  /** Index of track in play list. */
-  listIndex: number;
-};
-const DEFAULT_PLAY_VIEW_REF = { id: undefined, listIndex: 0 };
-const DEFAULT_PLAY_VIEW = { ...DEFAULT_PLAY_VIEW_REF, track: undefined };
+export const _currTrackIdAtom = createAtomWithStorage<string | undefined>(
+  "curr-track-id",
+  undefined,
+);
+export const _currPlayListIdxAtom = createAtomWithStorage(
+  "curr-play-list-idx",
+  0,
+);
 
-export const _playViewRefAtom = createAtomWithStorage<
-  Omit<StoredPlayView, "track">
->("play-view", DEFAULT_PLAY_VIEW_REF);
-export const _playViewAtom = atom<Promise<StoredPlayView>>(async (get) => {
-  const { id, listIndex } = await get(_playViewRefAtom);
-  if (!id) return DEFAULT_PLAY_VIEW;
+const _currTrackAtom = atom(async (get) => {
+  const trackId = await get(_currTrackIdAtom);
+  if (!trackId) return undefined;
   try {
-    const track = await getTrack([eq(tracks.id, id)]);
-    return { id, listIndex, track };
+    return getTrack([eq(tracks.id, trackId)]);
   } catch {
     // Track doesn't exist.
-    return DEFAULT_PLAY_VIEW;
+    return undefined;
   }
 });
 /** Information about the current track. */
-export const playViewAtom = unwrap(
-  _playViewAtom,
-  (prev) => prev ?? DEFAULT_PLAY_VIEW,
+export const currTrackAtom = unwrap(
+  _currTrackAtom,
+  (prev) => prev ?? undefined,
 );
 //#endregion
 
 //#region Play List
-export const DEFAULT_PLAY_LIST_REF = { source: undefined, trackIds: [] };
-
-export const _playListRefAtom = createAtomWithStorage<{
-  source: PlayListSource | undefined;
-  trackIds: string[];
-}>("play-list-reference", DEFAULT_PLAY_LIST_REF);
-/** Reference of the media list being played. */
-export const playListRefAtom = unwrap(
-  _playListRefAtom,
-  (prev) => prev ?? DEFAULT_PLAY_LIST_REF,
+export const _playListSourceAtom = createAtomWithStorage<
+  PlayListSource | undefined
+>("play-list-source", undefined);
+/** Identifies where the track list comes from. */
+export const playListSourceAtom = unwrap(
+  _playListSourceAtom,
+  (prev) => prev ?? undefined,
 );
+
+export const _playListAtom = createAtomWithStorage<string[]>("play-list", []);
+/** The list of tracks from `_playListSourceAtom`. */
+export const playListAtom = unwrap(_playListAtom, (prev) => prev ?? []);
 //#endregion
 
 //#region Queue
@@ -144,8 +140,10 @@ export class Queue {
 
 //#region Reset Persistent Media
 export const resetPersistentMediaAtom = atom(null, async (_, set) => {
-  set(_playViewRefAtom, RESET);
-  set(_playListRefAtom, RESET);
+  set(_currTrackIdAtom, RESET);
+  set(_currPlayListIdxAtom, RESET);
+  set(_playListSourceAtom, RESET);
+  set(_playListAtom, RESET);
   set(_queueAtom, RESET);
   await TrackPlayer.reset();
 });

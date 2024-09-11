@@ -8,7 +8,8 @@ import TrackPlayer, {
 
 import { MusicControls } from "@/modules/media/services/Playback";
 import {
-  _playViewRefAtom,
+  _currPlayListIdxAtom,
+  _currTrackIdAtom,
   _repeatAtom,
 } from "@/modules/media/services/Persistent";
 
@@ -41,17 +42,16 @@ export async function PlaybackService() {
     // Update `_playViewReferenceAtom` when the track changes.
     //  - This allows us to preserve the index of the last track played in one place.
     //  - Note: `e.index` will briefly be `0` if we trigger this immediately.
-    const prevPlayView = await jotaiStore.get(_playViewRefAtom);
-    if (prevPlayView.listIndex !== e.index && prevPlayView.id !== e.track?.id) {
-      await jotaiStore.set(_playViewRefAtom, {
-        listIndex: e.index ?? 0,
-        id: e.track?.id,
-      });
+    const prevTrackId = await jotaiStore.get(_currTrackIdAtom);
+    const prevListIdx = await jotaiStore.get(_currPlayListIdxAtom);
+    if (prevListIdx !== e.index && prevTrackId !== e.track?.id) {
+      await jotaiStore.set(_currTrackIdAtom, e.track?.id);
+      await jotaiStore.set(_currPlayListIdxAtom, e.index ?? 0);
     }
 
     // Handle case where we loop back to the beginning of the queue.
     const currQueue = await TrackPlayer.getQueue();
-    if (e.index === 0 && prevPlayView.listIndex === currQueue.length - 1) {
+    if (e.index === 0 && prevListIdx === currQueue.length - 1) {
       const shouldRepeat = await jotaiStore.get(_repeatAtom);
       if (!shouldRepeat) await MusicControls.pause();
     }
