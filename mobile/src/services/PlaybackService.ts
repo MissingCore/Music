@@ -41,7 +41,6 @@ export async function PlaybackService() {
     if (e.index === undefined) return;
     // Update `_playViewReferenceAtom` when the track changes.
     //  - This allows us to preserve the index of the last track played in one place.
-    //  - Note: `e.index` will briefly be `0` if we trigger this immediately.
     const prevTrackId = await jotaiStore.get(_currTrackIdAtom);
     const prevListIdx = await jotaiStore.get(_currPlayListIdxAtom);
     if (prevListIdx !== e.index && prevTrackId !== e.track?.id) {

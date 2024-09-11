@@ -36,6 +36,12 @@ export async function replaceAroundTrack({
   /** Whether we should play the queue after replacing the tracks. */
   shouldPlay?: boolean;
 }) {
+  // If RNTP queue is empty, use `replaceRNTPQueue()` instead.
+  if (!(await isRNTPLoaded())) {
+    await replaceRNTPQueue({ tracks, shouldPlay, startIndex: newIndex });
+    return;
+  }
+
   // Remove all tracks before & after the current playing track.
   await TrackPlayer.remove([...Array(oldIndex).keys()]);
   await TrackPlayer.removeUpcomingTracks();
@@ -62,7 +68,7 @@ export async function replaceRNTPQueue({
   shouldPlay?: boolean;
 }) {
   await TrackPlayer.reset();
-  await TrackPlayer.add(tracks.map(formatTrackforPlayer));
   await TrackPlayer.skip(startIndex);
+  await TrackPlayer.add(tracks.map(formatTrackforPlayer));
   if (shouldPlay) await TrackPlayer.play();
 }
