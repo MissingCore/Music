@@ -1,10 +1,9 @@
 import { Slider } from "@miblanchard/react-native-slider";
-import { useSetAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
 import { Text, View } from "react-native";
 import { useProgress } from "react-native-track-player";
 
-import { seekAtom } from "../services/Playback";
+import { MusicControls } from "../services/Playback";
 
 import { Colors } from "@/constants/Styles";
 import { getTrackDuration } from "@/features/track/utils";
@@ -16,7 +15,6 @@ import { getTrackDuration } from "@/features/track/utils";
 export function SeekBar({ duration }: { duration: number }) {
   const { position } = useProgress(200);
   const prevDuration = useRef(0);
-  const seekToFn = useSetAtom(seekAtom);
   const [slidingTrackPos, setSlidingTrackPos] = useState<number | null>(null);
 
   useEffect(() => {
@@ -48,7 +46,7 @@ export function SeekBar({ duration }: { duration: number }) {
         value={slidingTrackPos ?? position}
         minimumValue={0}
         maximumValue={duration}
-        onSlidingComplete={([newPos]) => seekToFn(newPos!)}
+        onSlidingComplete={([newPos]) => MusicControls.seekTo(newPos!)}
         onValueChange={([newPos]) => setSlidingTrackPos(newPos!)}
         minimumTrackTintColor={Colors.accent500}
         maximumTrackTintColor={Colors.surface500}

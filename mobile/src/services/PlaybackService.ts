@@ -6,13 +6,7 @@ import TrackPlayer, {
   RepeatMode,
 } from "react-native-track-player";
 
-import {
-  playAtom,
-  pauseAtom,
-  prevAtom,
-  nextAtom,
-  seekAtom,
-} from "@/modules/media/services/Playback";
+import { MusicControls } from "@/modules/media/services/Playback";
 import {
   _playViewRefAtom,
   _repeatAtom,
@@ -23,23 +17,23 @@ export async function PlaybackService() {
   const jotaiStore = getDefaultStore();
 
   TrackPlayer.addEventListener(Event.RemotePlay, async () => {
-    await jotaiStore.set(playAtom);
+    await MusicControls.play();
   });
 
   TrackPlayer.addEventListener(Event.RemotePause, async () => {
-    await jotaiStore.set(pauseAtom);
+    await MusicControls.pause();
   });
 
   TrackPlayer.addEventListener(Event.RemoteNext, async () => {
-    await jotaiStore.set(nextAtom);
+    await MusicControls.next();
   });
 
   TrackPlayer.addEventListener(Event.RemotePrevious, async () => {
-    await jotaiStore.set(prevAtom);
+    await MusicControls.prev();
   });
 
   TrackPlayer.addEventListener(Event.RemoteSeek, async ({ position }) => {
-    await jotaiStore.set(seekAtom, position);
+    await MusicControls.seekTo(position);
   });
 
   TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (e) => {
@@ -59,7 +53,7 @@ export async function PlaybackService() {
     const currQueue = await TrackPlayer.getQueue();
     if (e.index === 0 && prevPlayView.listIndex === currQueue.length - 1) {
       const shouldRepeat = await jotaiStore.get(_repeatAtom);
-      if (!shouldRepeat) await jotaiStore.set(pauseAtom);
+      if (!shouldRepeat) await MusicControls.pause();
     }
   });
 

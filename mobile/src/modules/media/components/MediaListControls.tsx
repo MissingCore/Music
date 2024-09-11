@@ -4,8 +4,8 @@ import { Pressable, View } from "react-native";
 import { MaterialIcons } from "@/resources/icons";
 import { playListRefAtom } from "../services/Persistent";
 import {
+  MusicControls,
   isPlayingAtom,
-  pauseAtom,
   playFromMediaListAtom,
 } from "../services/Playback";
 
@@ -33,7 +33,6 @@ export function MediaListControls({ source }: { source: PlayListSource }) {
 function PlayMediaListButton({ source }: { source: PlayListSource }) {
   const { source: currSource } = useAtomValue(playListRefAtom);
   const isPlaying = useAtomValue(isPlayingAtom);
-  const pauseFn = useSetAtom(pauseAtom);
   const playFromMediaListFn = useSetAtom(playFromMediaListAtom);
 
   const isThisSource = arePlaybackSourceEqual(currSource, source);
@@ -41,7 +40,11 @@ function PlayMediaListButton({ source }: { source: PlayListSource }) {
 
   return (
     <Pressable
-      onPress={displayPause ? pauseFn : () => playFromMediaListFn({ source })}
+      onPress={
+        displayPause
+          ? MusicControls.pause
+          : () => playFromMediaListFn({ source })
+      }
       className={cn("ml-1 rounded-full bg-accent500 p-1 active:opacity-75", {
         "bg-surface500": displayPause,
       })}

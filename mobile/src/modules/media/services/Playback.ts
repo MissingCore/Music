@@ -1,4 +1,4 @@
-import { atom } from "jotai";
+import { atom, getDefaultStore } from "jotai";
 import TrackPlayer from "react-native-track-player";
 
 import { _playListRefAtom, _playViewRefAtom, _shuffleAtom } from "./Persistent";
@@ -12,60 +12,56 @@ import type { PlayListSource } from "../types";
 export const isPlayingAtom = atom(false);
 //#endregion
 
-//#region Play
-/** Play the current track. */
-export const playAtom = atom(null, async (_, set) => {
-  set(isPlayingAtom, true);
-  await preloadRNTPQueue();
-  await TrackPlayer.play();
-});
-//#endregion
-
-//#region Pause
-/** Pause the current playing track. */
-export const pauseAtom = atom(null, async (_, set) => {
-  set(isPlayingAtom, false);
-  await TrackPlayer.pause();
-});
-//#endregion
-
-//#region Play/Pause Toggle
-/** Toggle `isPlaying`, playing or pausing the current track. */
-export const playToggleAtom = atom(null, async (get, set) => {
-  if (get(isPlayingAtom)) set(pauseAtom);
-  else set(playAtom);
-});
-//#endregion
-
-//#region Prev
-/** Play the previous track. */
-export const prevAtom = atom(null, async () => {
-  await preloadRNTPQueue();
-  const { position } = await TrackPlayer.getProgress();
-  if (position > 10) {
-    // Restart from the beginning of the current track if we've played
-    // more than 10 seconds of the track.
-    await TrackPlayer.seekTo(0);
-  } else {
-    await TrackPlayer.skipToPrevious();
+//#region MusicControls
+/**
+ * Helpers wrapping around RNTP's functions that provides some special
+ * behaviors.
+ */
+export class MusicControls {
+  /** Play the current track. */
+  static async play() {
+    getDefaultStore().set(isPlayingAtom, true);
+    await preloadRNTPQueue();
+    await TrackPlayer.play();
   }
-});
-//#endregion
 
-//#region Next
-/** Play the next track. */
-export const nextAtom = atom(null, async () => {
-  await preloadRNTPQueue();
-  await TrackPlayer.skipToNext();
-});
-//#endregion
+  /** Pause the current playing track. */
+  static async pause() {
+    getDefaultStore().set(isPlayingAtom, false);
+    await TrackPlayer.pause();
+  }
 
-//#region Seek
-/** Seek to a certain position in the current playing track. */
-export const seekAtom = atom(null, async (_get, _set, position: number) => {
-  await preloadRNTPQueue();
-  await TrackPlayer.seekTo(position);
-});
+  /** Toggle `isPlaying`, playing or pausing the current track. */
+  static async playToggle() {
+    if (getDefaultStore().get(isPlayingAtom)) await MusicControls.pause();
+    else await MusicControls.play();
+  }
+
+  /** Play the previous track. */
+  static async prev() {
+    await preloadRNTPQueue();
+    const { position } = await TrackPlayer.getProgress();
+    if (position > 10) {
+      // Restart from the beginning of the current track if we've played
+      // more than 10 seconds of the track.
+      await TrackPlayer.seekTo(0);
+    } else {
+      await TrackPlayer.skipToPrevious();
+    }
+  }
+
+  /** Play the next track. */
+  static async next() {
+    await preloadRNTPQueue();
+    await TrackPlayer.skipToNext();
+  }
+
+  /** Seek to a certain position in the current playing track. */
+  static async seekTo(position: number) {
+    await preloadRNTPQueue();
+    await TrackPlayer.seekTo(position);
+  }
+}
 //#endregion
 
 //#region Play From Media List
@@ -97,7 +93,7 @@ export const playFromMediaListAtom = atom(
         await set(_playViewRefAtom, { id: trackId, listIndex });
         await TrackPlayer.skip(listIndex);
       }
-      await set(playAtom); // Will preload RNTP queue if empty.
+      await MusicControls.play(); // Will preload RNTP queue if empty.
       return;
     }
 
