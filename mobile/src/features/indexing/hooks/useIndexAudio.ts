@@ -1,9 +1,6 @@
-import { Audio } from "expo-av";
 import * as MediaLibrary from "expo-media-library";
-import { getDefaultStore } from "jotai";
 import { useCallback, useEffect, useState } from "react";
 
-import { loadTrackAtom } from "@/features/playback/api/track";
 import { cleanUpArtwork } from "../api/artwork-cleanup";
 import { saveArtworkOnce } from "../api/artwork-save";
 import { cleanUpDb } from "../api/db-cleanup";
@@ -43,11 +40,7 @@ export function useIndexAudio() {
     const { foundFiles } = await doAudioIndexing();
     await cleanUpDb(new Set(foundFiles.map(({ id }) => id)));
     console.log(`Finished overall in ${stopwatch.stop()}.`);
-
-    // Allow audio to play in the background.
-    await Audio.setAudioModeAsync({ staysActiveInBackground: true });
     setIsComplete(true);
-    await getDefaultStore().set(loadTrackAtom);
 
     /*  Start of the "background" tasks. */
 

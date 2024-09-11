@@ -6,10 +6,10 @@ import { artists, albums, invalidTracks, tracks } from "@/db/schema";
 import { deleteTrack } from "@/db/queries";
 
 import {
-  resetPlayingInfoAtom,
-  trackListAsyncAtom,
-} from "@/features/playback/api/track";
-import { queueRemoveItemsAtom } from "@/features/playback/api/queue";
+  Queue,
+  _playListRefAtom,
+  resetPersistentMediaAtom,
+} from "@/modules/media/services/Persistent";
 
 import { clearAllQueries } from "@/lib/react-query";
 import { batch } from "@/utils/promise";
@@ -59,12 +59,12 @@ export async function removeUnlinkedTracks(foundTracks: Set<string>) {
 export async function revalidatePlaybackStore(removedTracks: string[]) {
   const jotaiStore = getDefaultStore();
   // See if the current playing tracklist contains a deleted track.
-  const hasRemovedTrack = (await jotaiStore.get(trackListAsyncAtom)).data.some(
-    (tId) => removedTracks.includes(tId),
-  );
-  if (hasRemovedTrack) jotaiStore.set(resetPlayingInfoAtom);
+  const hasRemovedTrack = (
+    await jotaiStore.get(_playListRefAtom)
+  ).trackIds.some((tId) => removedTracks.includes(tId));
+  if (hasRemovedTrack) await jotaiStore.set(resetPersistentMediaAtom);
   // Clear the queue of deleted tracks.
-  jotaiStore.set(queueRemoveItemsAtom, removedTracks);
+  await Queue.removeIds(removedTracks);
 }
 
 /** Remove from the database any albums that have no tracks. */

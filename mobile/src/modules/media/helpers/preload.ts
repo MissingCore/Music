@@ -4,8 +4,9 @@ import { getDefaultStore } from "jotai";
 import { tracks } from "@/db/schema";
 import { getTracks } from "@/db/queries";
 
-import { isRNTPLoaded, replaceRNTPQueue } from "./rntp";
 import { _playListRefAtom, _playViewRefAtom } from "../services/Persistent";
+
+import { isRNTPLoaded, replaceRNTPQueue } from "./rntp";
 
 /**
  * Populate the RNTP queue if the queue is currently empty and if we've

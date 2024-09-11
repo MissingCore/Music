@@ -17,7 +17,7 @@ import { sanitizedPlaylistName } from "@/db/utils/validators";
 import { playlistKeys } from "./_queryKeys";
 import { favoriteKeys } from "../favorites/_queryKeys";
 
-import { resynchronizeOnAtom } from "@/features/playback/api/synchronize";
+// import { resynchronizeOnAtom } from "@/features/playback/api/synchronize";
 
 import { deleteFile } from "@/lib/file-system";
 import { pickKeys } from "@/utils/object";
@@ -111,7 +111,7 @@ export async function updatePlaylist({ playlistName, action }: UPDATEFnArgs) {
 /** Update a specific field in a playlist. */
 export const useUpdatePlaylist = (playlistName: string) => {
   const queryClient = useQueryClient();
-  const resynchronizeFn = useSetAtom(resynchronizeOnAtom);
+  // const resynchronizeFn = useSetAtom(resynchronizeOnAtom);
 
   return useMutation({
     mutationFn: (action: UPDATEFnAction) =>
@@ -125,20 +125,20 @@ export const useUpdatePlaylist = (playlistName: string) => {
       // Redirect to new playlist page if we renamed.
       if (result.action.field === "name") {
         const newName = sanitizedPlaylistName(result.action.value);
-        // Resynchronize with Jotai.
-        resynchronizeFn({
-          action: "rename",
-          data: {
-            old: { type: "playlist", id: playlistName, name: playlistName },
-            latest: { type: "playlist", id: newName, name: newName },
-          },
-        });
+        // // Resynchronize with Jotai.
+        // resynchronizeFn({
+        //   action: "rename",
+        //   data: {
+        //     old: { type: "playlist", id: playlistName, name: playlistName },
+        //     latest: { type: "playlist", id: newName, name: newName },
+        //   },
+        // });
         router.replace(`/playlist/${encodeURIComponent(newName)}`);
       } else {
-        resynchronizeFn({
-          action: "update",
-          data: { type: "playlist", id: playlistName, name: playlistName },
-        });
+        // resynchronizeFn({
+        //   action: "update",
+        //   data: { type: "playlist", id: playlistName, name: playlistName },
+        // });
       }
     },
   });
@@ -166,7 +166,7 @@ export async function deletePlaylist({ playlistName }: BaseFnArgs) {
 /** Delete specified playlist. */
 export const useDeletePlaylist = (playlistName: string) => {
   const queryClient = useQueryClient();
-  const resynchronizeFn = useSetAtom(resynchronizeOnAtom);
+  // const resynchronizeFn = useSetAtom(resynchronizeOnAtom);
 
   return useMutation({
     mutationFn: () => deletePlaylist({ playlistName }),
@@ -176,11 +176,11 @@ export const useDeletePlaylist = (playlistName: string) => {
       if (wasFavorited) {
         queryClient.invalidateQueries({ queryKey: favoriteKeys.lists() });
       }
-      // Resynchronize with Jotai.
-      resynchronizeFn({
-        action: "delete",
-        data: { type: "playlist", id: playlistName, name: playlistName },
-      });
+      // // Resynchronize with Jotai.
+      // resynchronizeFn({
+      //   action: "delete",
+      //   data: { type: "playlist", id: playlistName, name: playlistName },
+      // });
       // Go back a page as this current page (deleted playlist) isn't valid.
       router.back();
     },

@@ -2,17 +2,13 @@ import { useAtomValue } from "jotai";
 import { View, useWindowDimensions } from "react-native";
 import { clamp } from "react-native-reanimated";
 
-import { isPlayingAtom } from "@/features/playback/api/actions";
-import { trackListAtom } from "@/features/playback/api/track";
-import type { TrackListSource } from "@/features/playback/types";
-import { areTrackReferencesEqual } from "@/features/playback/utils";
+import { playListRefAtom } from "@/modules/media/services/Persistent";
+import { isPlayingAtom } from "@/modules/media/services/Playback";
+import { arePlaybackSourceEqual } from "@/modules/media/helpers/data";
+import type { PlayListSource } from "@/modules/media/types";
 
 import { cn } from "@/lib/style";
-import {
-  PlayButton,
-  RepeatButton,
-  ShuffleButton,
-} from "@/features/playback/components/media-controls";
+import { MediaListControls } from "@/modules/media/components/MediaListControls";
 import { AnimatedVinyl } from "./animated-vinyl";
 import type { MediaImage } from "./image";
 import { TextLine } from "../ui/text";
@@ -26,7 +22,7 @@ export function MediaScreenHeader(props: {
   SubtitleComponent?: React.JSX.Element;
   /** Strings describing the media (ie: total playtime, number of tracks.) */
   metadata: string[];
-  trackSource: TrackListSource;
+  trackSource: PlayListSource;
 }) {
   return (
     <View className="border-b border-b-surface50 px-1 pb-2">
@@ -46,11 +42,7 @@ export function MediaScreenHeader(props: {
         <TextLine className="flex-1 font-geistMonoLight text-xs text-foreground100">
           {props.metadata.join(" • ")}
         </TextLine>
-        <View className="flex-row items-center">
-          <RepeatButton />
-          <ShuffleButton />
-          <PlayButton trackSource={props.trackSource} className="ml-1" />
-        </View>
+        <MediaListControls source={props.trackSource} />
       </View>
     </View>
   );
@@ -58,16 +50,16 @@ export function MediaScreenHeader(props: {
 
 /**
  * Hook up `<AnimatedVinyl />` to logic that'll have it spin if we're
- * currently playing this `TrackListSource`.
+ * currently playing this `PlayListSource`.
  */
 function HeroImage(props: {
   source: MediaImage.ImageSource;
-  trackSource: TrackListSource;
+  trackSource: PlayListSource;
 }) {
   const { width, height } = useWindowDimensions();
   const isPlaying = useAtomValue(isPlayingAtom);
-  const { reference } = useAtomValue(trackListAtom);
-  const isThisSource = areTrackReferencesEqual(reference, props.trackSource);
+  const { source } = useAtomValue(playListRefAtom);
+  const isThisSource = arePlaybackSourceEqual(source, props.trackSource);
 
   const availableLength = clamp(100, width * 0.6, height * 0.4);
 

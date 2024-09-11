@@ -1,6 +1,6 @@
 import { useAtomValue } from "jotai";
 
-import { trackDataAtom } from "@/features/playback/api/track";
+import { playViewAtom } from "@/modules/media/services/Persistent";
 import { mediaModalAtom } from "./store";
 
 import { PlaylistModal } from "./playlist";
@@ -41,7 +41,7 @@ export function MediaModals() {
 }
 
 function RenderTrackModal() {
-  const trackData = useAtomValue(trackDataAtom);
-  if (!trackData) return null;
-  return <TrackModal id={trackData.id} origin="current" />;
+  const { track } = useAtomValue(playViewAtom);
+  if (!track) return null;
+  return <TrackModal id={track.id} origin="current" />;
 }

@@ -2,20 +2,20 @@ import { router } from "expo-router";
 import { useAtomValue } from "jotai";
 import { Pressable, View } from "react-native";
 
-import { trackDataAtom } from "../api/track";
+import { playViewAtom } from "../services/Persistent";
 
 import { MediaImage } from "@/components/media/image";
 import { TextStack } from "@/components/ui/text";
-import { NextButton, PlayToggleButton, PreviousButton } from "./media-controls";
+import { NextButton, PlayToggleButton, PreviousButton } from "./MediaControls";
 
 /**
  * Displays a player that appears at the bottom of the screen if we have
  * a song loaded.
  */
 export function MiniPlayer() {
-  const trackData = useAtomValue(trackDataAtom);
+  const { track } = useAtomValue(playViewAtom);
 
-  if (!trackData) return null;
+  if (!track) return null;
 
   return (
     <View className="bg-canvas px-4">
@@ -26,11 +26,11 @@ export function MiniPlayer() {
         <MediaImage
           type="track"
           size={48}
-          source={trackData.artwork}
+          source={track.artwork}
           className="rounded"
         />
         <TextStack
-          content={[trackData.name, trackData.artistName ?? "No Artist"]}
+          content={[track.name, track.artistName ?? "No Artist"]}
           colors={{ row1: "text-foreground50", row2: "text-accent50" }}
           wrapperClassName="flex-1"
         />

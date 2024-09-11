@@ -8,7 +8,7 @@ import { getDefaultStore } from "jotai";
 import { db } from "@/db";
 import { artists, tracks } from "@/db/schema";
 import { createAlbum } from "@/db/queries";
-import { resetPlayingInfoAtom } from "@/features/playback/api/track";
+import { resetPersistentMediaAtom } from "@/modules/media/services/Persistent";
 
 import type { Maybe } from "@/utils/types";
 
@@ -97,7 +97,7 @@ export async function fixAlbumFracturization() {
     );
 
     // Reset playing info in case we're playing a deleted album.
-    getDefaultStore().set(resetPlayingInfoAtom);
+    await getDefaultStore().set(resetPersistentMediaAtom);
   }
 }
 

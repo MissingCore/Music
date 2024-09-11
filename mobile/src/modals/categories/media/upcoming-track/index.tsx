@@ -1,14 +1,13 @@
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { FlashList } from "@shopify/flash-list";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import { Suspense } from "react";
 import { View } from "react-native";
 
 import type { Track } from "@/db/schema";
 
 import { Ionicons } from "@/resources/icons";
-import { trackDataAtom } from "@/features/playback/api/track";
-import { queueRemoveAtIdxAtom } from "@/features/playback/api/queue";
+import { Queue, playViewAtom } from "@/modules/media/services/Persistent";
 import { nextTrackListAtom, queueTrackListAtom } from "./store";
 
 import { Colors } from "@/constants/Styles";
@@ -53,11 +52,11 @@ export function UpcomingTrackModal() {
 
 /** Displays the current track. */
 function CurrentTrack() {
-  const data = useAtomValue(trackDataAtom);
-  if (!data) return <EmptyMessage />;
+  const { track } = useAtomValue(playViewAtom);
+  if (!track) return <EmptyMessage />;
   return (
     <UpcomingTrack
-      data={pickKeys(data, ["id", "name", "artistName", "artwork"])}
+      data={pickKeys(track, ["id", "name", "artistName", "artwork"])}
     />
   );
 }
@@ -65,14 +64,13 @@ function CurrentTrack() {
 /** List out tracks in the queue, giving us the ability to remove them. */
 function QueueListTracks() {
   const data = useAtomValue(queueTrackListAtom);
-  const removeQueueIdx = useSetAtom(queueRemoveAtIdxAtom);
   return (
     <FlashList
       estimatedItemSize={66} // 58px Height + 8px Margin Bottom
       data={data}
       keyExtractor={({ id }, index) => `${id}${index}`}
       renderItem={({ item, index }) => (
-        <UpcomingTrack data={item} onPress={() => removeQueueIdx(index)} />
+        <UpcomingTrack data={item} onPress={() => Queue.removeAtIndex(index)} />
       )}
       showsVerticalScrollIndicator={false}
       ListEmptyComponent={EmptyMessage}

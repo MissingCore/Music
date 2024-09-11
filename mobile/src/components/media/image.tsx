@@ -3,7 +3,7 @@ import { cssInterop } from "nativewind";
 import type { DimensionValue } from "react-native";
 
 import { cn } from "@/lib/style";
-import { SpecialPlaylists } from "@/features/playback/constants";
+import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
 import type { Media } from "./types";
 import { CollageImage } from "../ui/image";
 
@@ -35,7 +35,7 @@ export function MediaImage({
 
   const displayedImg = Array.isArray(source)
     ? null
-    : source === SpecialPlaylists.favorites
+    : source === ReservedPlaylists.favorites
       ? require("@/resources/images/music-glyph.png")
       : source;
 
@@ -53,7 +53,7 @@ export function MediaImage({
         {
           "bg-surface500": type === "track",
           "rounded-full": type === "artist",
-          "bg-accent500": source === SpecialPlaylists.favorites,
+          "bg-accent500": source === ReservedPlaylists.favorites,
         },
         className,
       )}

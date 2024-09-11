@@ -5,6 +5,7 @@
 import TrackPlayer, { State } from "react-native-track-player";
 
 import type { TrackWithAlbum } from "@/db/schema";
+
 import { formatTrackforPlayer } from "./data";
 
 /** Helper to determine if any tracks are loaded in RNTP on launch. */

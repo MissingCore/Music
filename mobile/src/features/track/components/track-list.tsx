@@ -2,7 +2,7 @@ import type { ContentStyle } from "@shopify/flash-list";
 import { FlashList } from "@shopify/flash-list";
 import { View } from "react-native";
 
-import type { TrackListSource } from "@/features/playback/types";
+import type { PlayListSource } from "@/modules/media/types";
 
 import type { Maybe } from "@/utils/types";
 import type { MediaList } from "@/components/media/types";
@@ -14,7 +14,7 @@ type FlashListProps = React.ComponentProps<typeof FlashList>;
 export function TrackList(props: {
   data: Maybe<readonly Track.Content[]>;
   config: {
-    source: TrackListSource;
+    source: PlayListSource;
     origin?: MediaList;
     hideImage?: boolean;
   };

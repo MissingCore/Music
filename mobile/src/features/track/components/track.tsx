@@ -1,8 +1,8 @@
 import { useSetAtom } from "jotai";
 import { Text } from "react-native";
 
-import { playAtom } from "@/features/playback/api/actions";
-import type { TrackListSource } from "@/features/playback/types";
+import { playFromMediaListAtom } from "@/modules/media/services/Playback";
+import type { PlayListSource } from "@/modules/media/types";
 import { mediaModalAtom } from "@/modals/categories/media/store";
 
 import type { Prettify } from "@/utils/types";
@@ -21,7 +21,7 @@ export namespace Track {
 
   export type Props = Prettify<
     Content & {
-      trackSource: TrackListSource;
+      trackSource: PlayListSource;
       origin?: MediaList;
       hideImage?: boolean;
     }
@@ -33,12 +33,12 @@ export namespace Track {
  * scenarios (pressing the icon or the whole card will do different actions).
  */
 export function Track({ id, trackSource, origin, ...props }: Track.Props) {
-  const playFn = useSetAtom(playAtom);
+  const playFn = useSetAtom(playFromMediaListAtom);
   const openModal = useSetAtom(mediaModalAtom);
 
   return (
     <ActionButton
-      onPress={() => playFn({ id, source: trackSource })}
+      onPress={() => playFn({ trackId: id, source: trackSource })}
       textContent={props.textContent}
       Image={
         !props.hideImage ? (

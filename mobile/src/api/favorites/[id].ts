@@ -9,8 +9,8 @@ import { albumKeys } from "../albums/_queryKeys";
 import { playlistKeys } from "../playlists/_queryKeys";
 import { trackKeys } from "../tracks/_queryKeys";
 
-import { resynchronizeOnAtom } from "@/features/playback/api/synchronize";
-import { SpecialPlaylists } from "@/features/playback/constants";
+// import { resynchronizeOnAtom } from "@/features/playback/api/synchronize";
+import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
 
 import type { Media } from "@/components/media/types";
 
@@ -40,7 +40,7 @@ type TData = { name: string; id?: string; isFavorite: boolean };
 /** Toggle the favorite status of supported media. */
 export const useToggleFavorite = (args: BaseFnArgs) => {
   const queryClient = useQueryClient();
-  const resynchronizeFn = useSetAtom(resynchronizeOnAtom);
+  // const resynchronizeFn = useSetAtom(resynchronizeOnAtom);
 
   return useMutation({
     mutationFn: () => toggleFavorite(args),
@@ -70,17 +70,17 @@ export const useToggleFavorite = (args: BaseFnArgs) => {
         queryKey:
           type === "track" ? favoriteKeys.tracks() : favoriteKeys.lists(),
       });
-      // Resynchronize with Jotai.
-      if (type === "track") {
-        resynchronizeFn({
-          action: "update",
-          data: {
-            type: "playlist",
-            id: SpecialPlaylists.favorites,
-            name: SpecialPlaylists.favorites,
-          },
-        });
-      }
+      // // Resynchronize with Jotai.
+      // if (type === "track") {
+      //   resynchronizeFn({
+      //     action: "update",
+      //     data: {
+      //       type: "playlist",
+      //       id: ReservedPlaylists.favorites,
+      //       name: ReservedPlaylists.favorites,
+      //     },
+      //   });
+      // }
     },
   });
 };

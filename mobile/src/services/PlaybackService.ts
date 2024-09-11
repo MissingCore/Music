@@ -43,6 +43,7 @@ export async function PlaybackService() {
   });
 
   TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (e) => {
+    if (e.index === undefined) return;
     // Update `_playViewReferenceAtom` when the track changes.
     //  - This allows us to preserve the index of the last track played in one place.
     //  - Note: `e.index` will briefly be `0` if we trigger this immediately.

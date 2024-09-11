@@ -10,13 +10,13 @@ import {
   useFavoriteTracksCount,
 } from "@/api/favorites";
 import { useGetColumn } from "@/hooks/layout";
-import { recentlyPlayedDataAtom } from "@/features/playback/api/recent";
+// import { recentlyPlayedDataAtom } from "@/features/playback/api/recent";
 
 import { abbreviateNum } from "@/utils/number";
 import { MediaCard, PlaceholderContent } from "@/components/media/card";
 import { ScrollRow } from "@/components/ui/container";
 import { Description, Heading } from "@/components/ui/text";
-import { SpecialPlaylists } from "@/features/playback/constants";
+import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
 
 /** Detect if we're near the end of a `<ScrollView />`. */
 const isCloseToBottom = ({
@@ -81,7 +81,8 @@ export default function HomeScreen() {
 
 /** An array of `<MediaCards />` of recently played media. */
 function RecentlyPlayed({ colWidth }: { colWidth: number }) {
-  const recentlyPlayedData = useAtomValue(recentlyPlayedDataAtom);
+  // const recentlyPlayedData = useAtomValue(recentlyPlayedDataAtom);
+  const recentlyPlayedData: any[] = [];
 
   return recentlyPlayedData.length === 0 ? (
     <Description className="my-4 text-start">
@@ -145,7 +146,7 @@ function FavoriteTracks({ colWidth }: { colWidth: number }) {
   const trackCount = isPending || error ? "" : abbreviateNum(data);
 
   return (
-    <Link href={`/playlist/${SpecialPlaylists.favorites}`} asChild>
+    <Link href={`/playlist/${ReservedPlaylists.favorites}`} asChild>
       <Pressable
         style={{ width: colWidth, height: colWidth }}
         className="items-center justify-center rounded-lg bg-accent500 active:opacity-75"

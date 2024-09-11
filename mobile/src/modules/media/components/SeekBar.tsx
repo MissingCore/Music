@@ -4,9 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import { Text, View } from "react-native";
 import { useProgress } from "react-native-track-player";
 
+import { seekAtom } from "../services/Playback";
+
 import { Colors } from "@/constants/Styles";
 import { getTrackDuration } from "@/features/track/utils";
-import { seekAtom } from "../services/Playback";
 
 /**
  * Allows seeking on the current track & displays the current track

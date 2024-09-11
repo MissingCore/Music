@@ -1,5 +1,5 @@
 import { useTracksForTrackCard } from "@/api/tracks";
-import { SpecialPlaylists } from "@/features/playback/constants";
+import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
 
 import { LoadingIndicator } from "@/components/ui/loading";
 import { Description } from "@/components/ui/text";
@@ -12,8 +12,8 @@ export default function TrackScreen() {
   // Information about this track list.
   const trackSource = {
     type: "playlist",
-    name: SpecialPlaylists.tracks,
-    id: SpecialPlaylists.tracks,
+    name: ReservedPlaylists.tracks,
+    id: ReservedPlaylists.tracks,
   } as const;
 
   return (

@@ -16,7 +16,7 @@ import { getPlaylists, getTracks } from "@/db/queries";
 import { sanitizedPlaylistName } from "@/db/utils/validators";
 import { getFavoriteLists } from "@/api/favorites";
 
-import { resynchronizeOnAtom } from "@/features/playback/api/synchronize";
+// import { resynchronizeOnAtom } from "@/features/playback/api/synchronize";
 
 import { clearAllQueries } from "@/lib/react-query";
 import { pickKeys } from "@/utils/object";
@@ -241,14 +241,14 @@ export const useExportBackup = () =>
 /** Load data from a `music_backup.json` file. */
 export const useImportBackup = () => {
   const queryClient = useQueryClient();
-  const resynchronizeFn = useSetAtom(resynchronizeOnAtom);
+  // const resynchronizeFn = useSetAtom(resynchronizeOnAtom);
 
   return useMutation({
     mutationFn: importBackup,
     onSuccess: () => {
       clearAllQueries(queryClient);
-      // Resynchronize with Jotai.
-      resynchronizeFn({ action: "update", data: null });
+      // // Resynchronize with Jotai.
+      // resynchronizeFn({ action: "update", data: null });
       Toast.show("Backup import completed.");
     },
     onError: (err) => {
