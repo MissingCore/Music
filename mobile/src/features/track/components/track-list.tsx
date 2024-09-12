@@ -5,7 +5,7 @@ import { View } from "react-native";
 import type { PlayListSource } from "@/modules/media/types";
 
 import type { Maybe } from "@/utils/types";
-import type { MediaList } from "@/components/media/types";
+import type { MediaList } from "@/modules/media/types";
 import { Track } from "./track";
 
 type FlashListProps = React.ComponentProps<typeof FlashList>;

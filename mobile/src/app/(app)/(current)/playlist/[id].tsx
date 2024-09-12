@@ -10,10 +10,10 @@ import { mediaModalAtom } from "@/modals/categories/media/store";
 import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
 
 import { MediaScreenHeader } from "@/components/media/screen-header";
-import type { MediaList } from "@/components/media/types";
 import { StyledPressable } from "@/components/ui/pressable";
 import { Description } from "@/components/ui/text";
 import { TrackList } from "@/features/track/components/track-list";
+import type { MediaList } from "@/modules/media/types";
 
 /** Screen for `/playlist/[id]` route. */
 export default function CurrentPlaylistScreen() {

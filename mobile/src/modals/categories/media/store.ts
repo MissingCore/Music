@@ -1,7 +1,7 @@
 import { atom } from "jotai";
 
 import type { Prettify } from "@/utils/types";
-import type { MediaList } from "@/components/media/types";
+import type { MediaList } from "@/modules/media/types";
 
 type ModalEntity<TEntity extends string, TData extends Record<string, any>> = {
   entity: TEntity;

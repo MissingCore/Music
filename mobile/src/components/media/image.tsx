@@ -4,7 +4,7 @@ import type { DimensionValue } from "react-native";
 
 import { cn } from "@/lib/style";
 import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
-import type { Media } from "./types";
+import type { MediaType } from "@/modules/media/types";
 import { CollageImage } from "../ui/image";
 
 // https://www.nativewind.dev/v4/api/css-interop
@@ -14,7 +14,7 @@ export namespace MediaImage {
   export type ImageSource = string | null | CollageImage.Props["sources"];
 
   export interface Props {
-    type: Media;
+    type: Exclude<MediaType, "folder">;
     size: DimensionValue;
     source: ImageSource;
     className?: string;

@@ -12,9 +12,9 @@ import { trackKeys } from "../tracks/_queryKeys";
 // import { resynchronizeOnAtom } from "@/features/playback/api/synchronize";
 import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
 
-import type { Media } from "@/components/media/types";
+import type { MediaType } from "@/modules/media/types";
 
-type BaseFnArgs = { type: Exclude<Media, "artist">; id: string };
+type BaseFnArgs = { type: Exclude<MediaType, "artist" | "folder">; id: string };
 
 export async function toggleFavorite({ type, id }: BaseFnArgs) {
   if (type === "album") {

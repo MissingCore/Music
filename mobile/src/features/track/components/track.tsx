@@ -7,8 +7,8 @@ import { mediaModalAtom } from "@/modals/categories/media/store";
 
 import type { Prettify } from "@/utils/types";
 import { ActionButton } from "@/components/form/action-button";
-import type { MediaList } from "@/components/media/types";
 import { MediaImage } from "@/components/media/image";
+import type { MediaList } from "@/modules/media/types";
 import { getTrackDuration } from "../utils";
 
 export namespace Track {

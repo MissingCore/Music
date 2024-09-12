@@ -14,8 +14,8 @@ import Svg, { Circle, Line } from "react-native-svg";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
+import type { MediaType } from "@/modules/media/types";
 import { MediaImage } from "./image";
-import type { Media } from "./types";
 
 const WrappedSvg = cssInterop(Svg, { className: "style" });
 
@@ -43,7 +43,7 @@ const SlideOutBottom = (imgSize: number, delay: number) =>
 export function AnimatedVinyl(props: {
   /** Available width if `placement = "right"`, otherwise available height. */
   availableLength: number;
-  type?: Media;
+  type?: Exclude<MediaType, "folder">;
   placement?: "right" | "bottom";
   delay?: number;
   shouldSpin?: boolean;
