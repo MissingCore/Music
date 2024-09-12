@@ -1,7 +1,11 @@
 import { Slider } from "@miblanchard/react-native-slider";
 import { useEffect, useRef, useState } from "react";
 import { Text, View } from "react-native";
-import { useProgress } from "react-native-track-player";
+import {
+  State,
+  usePlaybackState,
+  useProgress,
+} from "react-native-track-player";
 
 import { MusicControls } from "../services/Playback";
 
@@ -13,8 +17,10 @@ import { getTrackDuration } from "@/features/track/utils";
  * position.
  */
 export function SeekBar({ duration }: { duration: number }) {
+  const { state: playbackState } = usePlaybackState();
   const { position } = useProgress(200);
   const prevDuration = useRef(0);
+  const [isLifted, setIsLifted] = useState(true);
   const [slidingTrackPos, setSlidingTrackPos] = useState<number | null>(null);
 
   useEffect(() => {
@@ -31,14 +37,16 @@ export function SeekBar({ duration }: { duration: number }) {
   }, [position, slidingTrackPos]);
 
   useEffect(() => {
+    // Prevent "rubberbanding" when we seeked to the end of the seekbar.
+    if (isLifted && playbackState === State.Loading) setSlidingTrackPos(null);
     // Preserve scrub percentage position.
-    if (duration !== 0 && duration !== prevDuration.current) {
-      if (slidingTrackPos !== null) {
+    if (duration !== prevDuration.current) {
+      if (!isLifted && slidingTrackPos !== null) {
         setSlidingTrackPos(duration * (slidingTrackPos / prevDuration.current));
       }
       prevDuration.current = duration;
     }
-  }, [duration, slidingTrackPos]);
+  }, [playbackState, duration, isLifted, slidingTrackPos]);
 
   return (
     <View className="w-full p-4">
@@ -46,7 +54,11 @@ export function SeekBar({ duration }: { duration: number }) {
         value={slidingTrackPos ?? position}
         minimumValue={0}
         maximumValue={duration}
-        onSlidingComplete={([newPos]) => MusicControls.seekTo(newPos!)}
+        onSlidingStart={() => setIsLifted(false)}
+        onSlidingComplete={async ([newPos]) => {
+          setIsLifted(true);
+          await MusicControls.seekTo(newPos!);
+        }}
         onValueChange={([newPos]) => setSlidingTrackPos(newPos!)}
         minimumTrackTintColor={Colors.accent500}
         maximumTrackTintColor={Colors.surface500}
