@@ -237,11 +237,6 @@ export class RecentList {
         : arePlaybackSourceEqual(fixedRef, ref);
   }
 
-  /** Determines if a `PlayListSource` already exists in a `PlayListSource[]`. */
-  static #isRefInList(ref: PlayListSource, refList: PlayListSource[]) {
-    return refList.some(RecentList.#compare(ref));
-  }
-
   /** Remove a `PlayListSource` inside a `PlayListSource[]`. */
   static #removeRefInList(ref: PlayListSource, refList: PlayListSource[]) {
     return refList.filter(RecentList.#compare(ref, true));
@@ -251,11 +246,34 @@ export class RecentList {
   static async add(newRef: PlayListSource) {
     await getDefaultStore().set(_recentListRefAtom, async (_prevList) => {
       let prevList = await _prevList;
-      if (RecentList.#isRefInList(newRef, prevList)) {
+      if (RecentList.isInRecentList(newRef, prevList)) {
         prevList = RecentList.#removeRefInList(newRef, prevList);
       }
       return [newRef, ...prevList];
     });
+  }
+
+  /** Determines if a `PlayListSource` already exists in a `PlayListSource[]`. */
+  static isInRecentList(ref: PlayListSource, refList: PlayListSource[]) {
+    return refList.some(RecentList.#compare(ref));
+  }
+
+  /** Replace a specific entry in the recent list. */
+  static async replaceEntry({
+    oldEntry,
+    newEntry,
+  }: Record<"oldEntry" | "newEntry", PlayListSource>) {
+    const jotaiStore = getDefaultStore();
+
+    const prevList = await jotaiStore.get(_recentListRefAtom);
+    const entryIdx = prevList.findIndex(RecentList.#compare(oldEntry));
+    if (entryIdx === -1) return;
+
+    await jotaiStore.set(_recentListRefAtom, [
+      ...prevList.slice(0, entryIdx),
+      newEntry,
+      ...prevList.slice(entryIdx + 1),
+    ]);
   }
 
   /** Remove a specific entry from the recent list. */
@@ -283,8 +301,56 @@ export class RecentList {
    */
   static async refresh() {
     await getDefaultStore().set(_recentListRefAtom, async (prevList) => {
-      return await prevList;
+      return [...(await prevList)];
     });
+  }
+}
+//#endregion
+
+//#region Resynchronize
+/**
+ * Update this atom with `Date.now()` to trigger data refetches on all
+ * the atoms that use this value.
+ */
+export const shouldRefreshAtom = atom(0);
+
+/**
+ * Wrapper containing helpers to ensure the Jotai store is up-to-date
+ * with the changes we make in React Query.
+ */
+export class Resynchronize {
+  /** Resynchronize when we delete one or more media list. */
+  static async onDelete(removedRefs: PlayListSource | PlayListSource[]) {
+    const jotaiStore = getDefaultStore();
+
+    if (Array.isArray(removedRefs)) await RecentList.removeEntries(removedRefs);
+    else await RecentList.removeEntry(removedRefs);
+
+    // Check if we were playing this list.
+    const currSource = await jotaiStore.get(_playListSourceAtom);
+    if (!currSource) return;
+
+    const isPlayingRef = Array.isArray(removedRefs)
+      ? RecentList.isInRecentList(currSource, removedRefs)
+      : arePlaybackSourceEqual(currSource, removedRefs);
+    if (isPlayingRef) await jotaiStore.set(resetPersistentMediaAtom);
+  }
+
+  /** Resynchronize when we rename a playlist. */
+  static async onRename({
+    oldEntry,
+    newEntry,
+  }: Record<"oldEntry" | "newEntry", PlayListSource>) {
+    const jotaiStore = getDefaultStore();
+
+    await RecentList.replaceEntry({ oldEntry, newEntry });
+
+    // Check if we were playing this list.
+    const currSource = await jotaiStore.get(_playListSourceAtom);
+    if (!currSource) return;
+
+    const isPlayingRef = arePlaybackSourceEqual(currSource, oldEntry);
+    if (isPlayingRef) await jotaiStore.set(_playListSourceAtom, newEntry);
   }
 }
 //#endregion
