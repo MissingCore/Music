@@ -1,4 +1,6 @@
+import { router } from "expo-router";
 import { getDefaultStore } from "jotai";
+import { Toast } from "react-native-toast-notifications";
 import TrackPlayer, {
   AppKilledPlaybackBehavior,
   Capability,
@@ -6,12 +8,21 @@ import TrackPlayer, {
   RepeatMode,
 } from "react-native-track-player";
 
+import { deleteTrack } from "@/db/queries";
+
+import {
+  removeUnlinkedAlbums,
+  removeUnlinkedArtists,
+} from "@/features/indexing/api/db-cleanup";
 import { MusicControls } from "@/modules/media/services/Playback";
 import {
   _currPlayListIdxAtom,
   _currTrackIdAtom,
   _repeatAtom,
+  resetPersistentMediaAtom,
 } from "@/modules/media/services/Persistent";
+
+import { clearAllQueries } from "@/lib/react-query";
 
 /** How we handle the actions in the media control notification. */
 export async function PlaybackService() {
@@ -57,7 +68,29 @@ export async function PlaybackService() {
   });
 
   TrackPlayer.addEventListener(Event.PlaybackError, async (e) => {
-    console.log(`[${e.code}] ${e.message}`);
+    // When this event is called, `TrackPlayer.getActiveTrack()` should
+    // contain the track that caused the error.
+    const erroredTrack = await TrackPlayer.getActiveTrack();
+    console.log(`[${e.code}] ${e.message}`, erroredTrack);
+
+    // Delete the track that caused the error if we either encounter an
+    // `android-io-file-not-found` error code or no code.
+    //  - We've encountered no code when RNTP naturally plays the next
+    //  track that throws an error because it doesn't exist.
+    if (
+      erroredTrack?.id &&
+      (e.code === "android-io-file-not-found" || e.code === undefined)
+    ) {
+      await deleteTrack(erroredTrack.id);
+      await removeUnlinkedAlbums();
+      await removeUnlinkedArtists();
+      clearAllQueries();
+      router.navigate("/");
+    }
+
+    Toast.show("Track no longer exists.", { type: "danger", duration: 3000 });
+    // Clear all reference of the current playing track.
+    await jotaiStore.set(resetPersistentMediaAtom);
   });
 }
 
