@@ -11,12 +11,21 @@ import { RESET, unwrap } from "jotai/utils";
 import { Toast } from "react-native-toast-notifications";
 import TrackPlayer from "react-native-track-player";
 
-import { albums, tracks } from "@/db/schema";
-import { getAlbum, getTrack } from "@/db/queries";
+import type { PlaylistWithTracks } from "@/db/schema";
+import { albums, artists, playlists, tracks } from "@/db/schema";
+import {
+  getAlbum,
+  getArtist,
+  getPlaylist,
+  getSpecialPlaylist,
+  getTrack,
+} from "@/db/queries";
+import { formatForMediaCard } from "@/db/utils/formatters";
 
 import { createAtomWithStorage } from "@/lib/jotai";
+import type { MediaCard } from "@/components/media/card";
 import { ReservedPlaylists } from "../constants/ReservedNames";
-import { generatePlayList } from "../helpers/data";
+import { arePlaybackSourceEqual, generatePlayList } from "../helpers/data";
 import { isRNTPLoaded, replaceAroundTrack } from "../helpers/rntp";
 import type { PlayListSource } from "../types";
 
@@ -173,4 +182,91 @@ export const resetPersistentMediaAtom = atom(null, async (_, set) => {
   set(_queueAtom, RESET);
   await TrackPlayer.reset();
 });
+//#endregion
+
+//#region Recent List
+export const _recentListRefAtom = createAtomWithStorage<PlayListSource[]>(
+  "recent-list",
+  [],
+);
+
+export const _recentListAtom = atom(async (get) => {
+  const recentRefs = await get(_recentListRefAtom);
+  const recentObjs: MediaCard.Content[] = [];
+
+  for (const { id, type } of recentRefs) {
+    try {
+      if (type === "album") {
+        const data = await getAlbum([eq(albums.id, id)]);
+        recentObjs.push(formatForMediaCard({ type: "album", data }));
+      } else if (type === "artist") {
+        const data = await getArtist([eq(artists.name, id)]);
+        recentObjs.push(formatForMediaCard({ type: "artist", data }));
+      } else if (type === "playlist") {
+        let data: PlaylistWithTracks;
+        if (
+          id === ReservedPlaylists.favorites ||
+          id === ReservedPlaylists.tracks
+        ) {
+          data = await getSpecialPlaylist(id);
+        } else {
+          data = await getPlaylist([eq(playlists.name, id)]);
+        }
+        recentObjs.push(formatForMediaCard({ type: "playlist", data }));
+      } else {
+        // FIXME: Any unexpected lists that we've added gets caught here,
+        // which should only be folders.
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  return recentObjs;
+});
+/** List of objects of what we've recently played. */
+export const recentListAtom = unwrap(_recentListAtom, (prev) => prev ?? []);
+
+/** Wrapper containing helpers to manipulate the recent list. */
+export class RecentList {
+  /** Determines if a new `PlayListSource` already exists in a `PlayListSource[]`. */
+  static #isRefInList(newRef: PlayListSource, refList: PlayListSource[]) {
+    return refList.some((existingRef) =>
+      arePlaybackSourceEqual(existingRef, newRef),
+    );
+  }
+
+  /** Add the latest media list played into the recents list. */
+  static async add(newRef: PlayListSource) {
+    await getDefaultStore().set(_recentListRefAtom, async (_prevList) => {
+      let prevList = await _prevList;
+      if (RecentList.#isRefInList(newRef, prevList)) {
+        prevList = prevList.filter(
+          (existingRef) => !arePlaybackSourceEqual(existingRef, newRef),
+        );
+      }
+      return [newRef, ...prevList];
+    });
+  }
+
+  /** Remove a specific entry from the recents list. */
+  static async removeEntry(removedRef: PlayListSource) {
+    await getDefaultStore().set(_recentListRefAtom, async (prevList) =>
+      (await prevList).filter(
+        (existingRef) => !arePlaybackSourceEqual(existingRef, removedRef),
+      ),
+    );
+  }
+
+  /**
+   * Force a revalidation of the values returned in `recentListAtom`. Useful
+   * when some information displayed (ie: playlist cover/name) changes or
+   * gets deleted.
+   */
+  static async refresh() {
+    await getDefaultStore().set(_recentListRefAtom, async (prevList) => {
+      return await prevList;
+    });
+  }
+}
 //#endregion

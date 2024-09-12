@@ -2,6 +2,7 @@ import { atom, getDefaultStore } from "jotai";
 import TrackPlayer from "react-native-track-player";
 
 import {
+  RecentList,
   _currPlayListIdxAtom,
   _currTrackIdAtom,
   _playListAtom,
@@ -139,6 +140,9 @@ export const playFromMediaListAtom = atom(
         shouldPlay: true,
       });
     }
+
+    // 6. Add media list to recent lists.
+    await RecentList.add(source);
   },
 );
 //#endregion
