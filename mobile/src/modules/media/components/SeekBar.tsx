@@ -48,10 +48,13 @@ export function SeekBar({ duration }: { duration: number }) {
     }
   }, [playbackState, duration, isLifted, slidingTrackPos]);
 
+  const displayedPos = slidingTrackPos ?? position;
+  const clampedPos = displayedPos > duration ? duration : displayedPos;
+
   return (
     <View className="w-full p-4">
       <Slider
-        value={slidingTrackPos ?? position}
+        value={clampedPos}
         minimumValue={0}
         maximumValue={duration}
         onSlidingStart={() => setIsLifted(false)}
@@ -68,7 +71,7 @@ export function SeekBar({ duration }: { duration: number }) {
 
       <View className="flex-row justify-between">
         <Text className="font-geistMono text-sm text-foreground50">
-          {getTrackDuration(slidingTrackPos ?? position)}
+          {getTrackDuration(clampedPos)}
         </Text>
         <Text className="font-geistMono text-sm text-foreground50">
           {getTrackDuration(duration)}
