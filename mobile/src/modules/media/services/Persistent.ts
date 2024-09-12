@@ -229,33 +229,51 @@ export const recentListAtom = unwrap(_recentListAtom, (prev) => prev ?? []);
 
 /** Wrapper containing helpers to manipulate the recent list. */
 export class RecentList {
-  /** Determines if a new `PlayListSource` already exists in a `PlayListSource[]`. */
-  static #isRefInList(newRef: PlayListSource, refList: PlayListSource[]) {
-    return refList.some((existingRef) =>
-      arePlaybackSourceEqual(existingRef, newRef),
-    );
+  /** Factory function to compare 2 `PlayListSource` inside array methods easier. */
+  static #compare(fixedRef: PlayListSource, negate = false) {
+    return (ref: PlayListSource) =>
+      negate
+        ? !arePlaybackSourceEqual(fixedRef, ref)
+        : arePlaybackSourceEqual(fixedRef, ref);
   }
 
-  /** Add the latest media list played into the recents list. */
+  /** Determines if a `PlayListSource` already exists in a `PlayListSource[]`. */
+  static #isRefInList(ref: PlayListSource, refList: PlayListSource[]) {
+    return refList.some(RecentList.#compare(ref));
+  }
+
+  /** Remove a `PlayListSource` inside a `PlayListSource[]`. */
+  static #removeRefInList(ref: PlayListSource, refList: PlayListSource[]) {
+    return refList.filter(RecentList.#compare(ref, true));
+  }
+
+  /** Add the latest media list played into the recent list. */
   static async add(newRef: PlayListSource) {
     await getDefaultStore().set(_recentListRefAtom, async (_prevList) => {
       let prevList = await _prevList;
       if (RecentList.#isRefInList(newRef, prevList)) {
-        prevList = prevList.filter(
-          (existingRef) => !arePlaybackSourceEqual(existingRef, newRef),
-        );
+        prevList = RecentList.#removeRefInList(newRef, prevList);
       }
       return [newRef, ...prevList];
     });
   }
 
-  /** Remove a specific entry from the recents list. */
+  /** Remove a specific entry from the recent list. */
   static async removeEntry(removedRef: PlayListSource) {
     await getDefaultStore().set(_recentListRefAtom, async (prevList) =>
-      (await prevList).filter(
-        (existingRef) => !arePlaybackSourceEqual(existingRef, removedRef),
-      ),
+      RecentList.#removeRefInList(removedRef, await prevList),
     );
+  }
+
+  /** Remove multiple entries in the recent list. */
+  static async removeEntries(removedRefs: PlayListSource[]) {
+    await getDefaultStore().set(_recentListRefAtom, async (_prevList) => {
+      let prevList = await _prevList;
+      removedRefs.forEach((removedRef) => {
+        prevList = RecentList.#removeRefInList(removedRef, prevList);
+      });
+      return prevList;
+    });
   }
 
   /**

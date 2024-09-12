@@ -17,6 +17,7 @@ import { sanitizedPlaylistName } from "@/db/utils/validators";
 import { playlistKeys } from "./_queryKeys";
 import { favoriteKeys } from "../favorites/_queryKeys";
 
+import { RecentList } from "@/modules/media/services/Persistent";
 // import { resynchronizeOnAtom } from "@/features/playback/api/synchronize";
 
 import { deleteFile } from "@/lib/file-system";
@@ -158,6 +159,7 @@ export async function deletePlaylist({ playlistName }: BaseFnArgs) {
       .returning();
 
     await deleteFile(deletedPlaylist!.artwork);
+    await RecentList.removeEntry({ type: "playlist", id: playlistName });
 
     return deletedPlaylist!.isFavorite;
   });
