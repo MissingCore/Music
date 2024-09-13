@@ -38,6 +38,12 @@ export class MusicControls {
     await TrackPlayer.pause();
   }
 
+  /** Stop & unload the current playing track (stops loading/buffering). */
+  static async stop() {
+    getDefaultStore().set(isPlayingAtom, false);
+    await TrackPlayer.stop();
+  }
+
   /** Toggle `isPlaying`, playing or pausing the current track. */
   static async playToggle() {
     if (getDefaultStore().get(isPlayingAtom)) await MusicControls.pause();

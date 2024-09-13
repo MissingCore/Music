@@ -48,6 +48,15 @@ export async function PlaybackService() {
     await MusicControls.seekTo(position);
   });
 
+  TrackPlayer.addEventListener(Event.RemoteDuck, async (e) => {
+    if (e.permanent) {
+      await MusicControls.stop();
+    } else {
+      if (e.paused) await MusicControls.pause();
+      else await MusicControls.play();
+    }
+  });
+
   TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (e) => {
     if (e.index === undefined) return;
     // Update `_playViewReferenceAtom` when the track changes.
@@ -73,7 +82,7 @@ export async function PlaybackService() {
     const erroredTrack = await TrackPlayer.getActiveTrack();
     console.log(`[${e.code}] ${e.message}`, erroredTrack);
 
-    // Delete the track that caused the error if we either encounter an
+    // Delete the track that caused the error if we encounter either an
     // `android-io-file-not-found` error code or no code.
     //  - We've encountered no code when RNTP naturally plays the next
     //  track that throws an error because it doesn't exist.
