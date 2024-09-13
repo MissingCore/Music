@@ -218,7 +218,7 @@ export const _recentListAtom = atom(async (get) => {
         // which should only be folders.
       }
     } catch (err) {
-      console.log(err);
+      await RecentList.removeEntry({ type, id });
     }
   }
 
