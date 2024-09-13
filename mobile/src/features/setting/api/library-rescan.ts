@@ -1,5 +1,4 @@
 import { useMutation } from "@tanstack/react-query";
-import { getDefaultStore } from "jotai";
 import { Toast } from "react-native-toast-notifications";
 
 import { cleanUpArtwork } from "@/features/indexing/api/artwork-cleanup";
@@ -7,7 +6,7 @@ import { saveArtwork } from "@/features/indexing/api/artwork-save";
 import { cleanUpDb } from "@/features/indexing/api/db-cleanup";
 import { doAudioIndexing } from "@/features/indexing/api/index-audio";
 import { AdjustmentFunctionMap } from "@/features/indexing/api/index-override";
-// import { resynchronizeOnAtom } from "@/features/playback/api/synchronize";
+import { RecentList } from "@/modules/media/services/Persistent";
 
 export async function rescanLibrary() {
   const toastId = Toast.show("Rescanning library...", { duration: 0 });
@@ -33,11 +32,8 @@ export async function rescanLibrary() {
     await saveArtwork();
     await cleanUpArtwork();
 
-    // // Make sure the "recents" list is correct.
-    // await getDefaultStore().set(resynchronizeOnAtom, {
-    //   action: "update",
-    //   data: null,
-    // });
+    // Make sure the "recents" list is correct.
+    await RecentList.refresh();
 
     Toast.update(toastId, "Finished rescanning library.", { duration: 3000 });
   } catch (err) {

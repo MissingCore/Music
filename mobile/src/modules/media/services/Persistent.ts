@@ -336,6 +336,11 @@ export class Resynchronize {
     if (isPlayingRef) await jotaiStore.set(resetPersistentMediaAtom);
   }
 
+  /** Resynchronize when we update the artwork. */
+  static async onImage() {
+    await RecentList.refresh();
+  }
+
   /** Resynchronize when we rename a playlist. */
   static async onRename({
     oldEntry,
@@ -351,6 +356,40 @@ export class Resynchronize {
 
     const isPlayingRef = arePlaybackSourceEqual(currSource, oldEntry);
     if (isPlayingRef) await jotaiStore.set(_playListSourceAtom, newEntry);
+  }
+
+  /** Resynchronize when we update the tracks in a media list. */
+  static async onTracks(ref: PlayListSource) {
+    const jotaiStore = getDefaultStore();
+
+    await RecentList.refresh();
+
+    // Check if we were playing this list.
+    const currSource = await jotaiStore.get(_playListSourceAtom);
+    if (!currSource) return;
+
+    // Update current playing track list.
+    const isPlayingRef = arePlaybackSourceEqual(currSource, ref);
+    if (isPlayingRef) {
+      const oldIndex = await jotaiStore.get(_currPlayListIdxAtom);
+      const currTrackId = await jotaiStore.get(_currTrackIdAtom);
+      const { trackIndex, tracks } = await generatePlayList({
+        source: ref,
+        shouldShuffle: await jotaiStore.get(_shuffleAtom),
+        startTrackId: currTrackId,
+      });
+
+      // FIXME: Need to flesh out more as if we delete a track and are
+      // currently playing that track, there's no current method that we've
+      // implemented to seamlessly remove it after it finishes playing.
+      // This would require us to finish up the "Queue" feature.
+      await jotaiStore.set(_currPlayListIdxAtom, trackIndex);
+      await jotaiStore.set(
+        _playListAtom,
+        tracks.map(({ id }) => id),
+      );
+      await replaceAroundTrack({ tracks, oldIndex, newIndex: trackIndex });
+    }
   }
 }
 //#endregion

@@ -5,7 +5,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { and, eq } from "drizzle-orm";
-import { useSetAtom } from "jotai";
+import { getDefaultStore } from "jotai";
 import { useCallback } from "react";
 import { Toast } from "react-native-toast-notifications";
 
@@ -16,7 +16,10 @@ import { favoriteKeys } from "@/api/favorites/_queryKeys";
 import { playlistKeys } from "@/api/playlists/_queryKeys";
 import { trackKeys } from "../_queryKeys";
 
-// import { resynchronizeOnAtom } from "@/features/playback/api/synchronize";
+import {
+  Resynchronize,
+  _playListSourceAtom,
+} from "@/modules/media/services/Persistent";
 
 import type { ExtractFnReturnType, Prettify } from "@/utils/types";
 
@@ -74,13 +77,15 @@ export async function putTrackInPlaylists({
     if (newEntries.length > 0) {
       await tx.insert(tracksToPlaylists).values(newEntries);
     }
+
+    const currPlayingFrom = await getDefaultStore().get(_playListSourceAtom);
+    if (currPlayingFrom) await Resynchronize.onTracks(currPlayingFrom);
   });
 }
 
 /** Put track in the specified playlists. */
 export function usePutTrackInPlaylists(trackId: string) {
   const queryClient = useQueryClient();
-  // const resynchronizeFn = useSetAtom(resynchronizeOnAtom);
 
   return useMutation({
     mutationFn: (playlistNames: string[]) =>
@@ -91,8 +96,6 @@ export function usePutTrackInPlaylists(trackId: string) {
       });
       queryClient.invalidateQueries({ queryKey: playlistKeys.all });
       queryClient.invalidateQueries({ queryKey: favoriteKeys.lists() });
-      // // Resynchronize with Jotai.
-      // resynchronizeFn({ action: "update", data: null });
     },
   });
 }
@@ -116,6 +119,8 @@ export async function deleteTrackFromPlaylist({
       ),
     );
 
+  await Resynchronize.onTracks({ type: "playlist", id: playlistName });
+
   return removedRelation.isFavorite;
 }
 
@@ -125,7 +130,6 @@ export function useDeleteTrackFromPlaylist(
   playlistName: string,
 ) {
   const queryClient = useQueryClient();
-  // const resynchronizeFn = useSetAtom(resynchronizeOnAtom);
 
   return useMutation({
     mutationFn: () => deleteTrackFromPlaylist({ trackId, playlistName }),
@@ -138,11 +142,6 @@ export function useDeleteTrackFromPlaylist(
       if (wasFavorited) {
         queryClient.invalidateQueries({ queryKey: favoriteKeys.lists() });
       }
-      // // Resynchronize with Jotai.
-      // resynchronizeFn({
-      //   action: "update",
-      //   data: { type: "playlist", id: playlistName, name: playlistName },
-      // });
       Toast.show("Removed track from playlist.");
     },
   });
