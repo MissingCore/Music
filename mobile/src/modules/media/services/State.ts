@@ -28,9 +28,11 @@ import type { MediaCard } from "@/components/media/card";
 import { ReservedPlaylists } from "../constants/ReservedNames";
 import {
   arePlaybackSourceEqual,
+  formatTrackforPlayer,
   getTrackList,
   getTracksFromIds,
 } from "../helpers/data";
+import { isRNTPLoaded } from "../helpers/rntp";
 import type { PlayListSource } from "../types";
 
 //#region Synchronous State
@@ -49,27 +51,24 @@ const shuffleAtom = atom(
   (get) => get(shuffleUnwrapAtom),
   async (get, set) => {
     const prevShuffled = await get(shuffleAsyncAtom);
-    const currPlayingIdx = await get(currPlayingIdxAsyncAtom);
-    const playingList = await get(playingListAsyncAtom);
-    const shuffledPlayingList = await get(shuffledPlayingListAsyncAtom);
 
-    // Update `currPlayingIdxAsyncAtom` to reflect the new index of the track
-    // in the used playing list.
-    //  - We need to keep in mind that `currPlayingIdAsyncAtom` might be
-    //  part of `queueListAsyncAtom`.
-    let newPlayingIdx: number | undefined;
-    if (prevShuffled) {
-      const currTrackId = shuffledPlayingList[currPlayingIdx];
-      newPlayingIdx = playingList.findIndex((id) => id === currTrackId);
-    } else {
-      const currTrackId = playingList[currPlayingIdx];
-      newPlayingIdx = shuffledPlayingList.findIndex((id) => id === currTrackId);
+    if ((await getAtom(playingSourceAsyncAtom)) !== undefined) {
+      // Update `currPlayingIdxAsyncAtom` to reflect the new index of the track
+      // in the used playing list.
+      //  - We need to keep in mind that `currPlayingId` might be part of `queueList`.
+      const newPlayingIdx = RNTPManager.getIdxFromTrackId(
+        await RNTPManager.getTrackAtCurrIdx(),
+        prevShuffled
+          ? await get(playingListAsyncAtom)
+          : await get(shuffledPlayingListAsyncAtom),
+      );
+      await set(currPlayingIdxAsyncAtom, newPlayingIdx);
     }
-    set(currPlayingIdxAsyncAtom, newPlayingIdx);
 
-    set(shuffleAsyncAtom, !prevShuffled);
+    await set(shuffleAsyncAtom, !prevShuffled);
 
-    // FIXME: Need to add logic to update the next playing track in the RNTP queue.
+    // Make sure the next track is correct after updating the list used.
+    await RNTPManager.refreshNextTrack();
   },
 );
 //#endregion
@@ -272,7 +271,8 @@ export class Queue {
     });
     Toast.show("Added track to queue.");
 
-    // FIXME: Need to add logic to update the next playing track in the RNTP queue.
+    // Make sure the next track is correct after updating the queue.
+    await RNTPManager.refreshNextTrack();
   }
 
   /** Remove track id at specified index of current queue. */
@@ -281,7 +281,8 @@ export class Queue {
       (await prev).filter((_, idx) => idx !== index),
     );
 
-    // FIXME: Need to add logic to update the next playing track in the RNTP queue.
+    // Make sure the next track is correct after updating the queue.
+    await RNTPManager.refreshNextTrack();
   }
 
   /** Remove list of track ids in the current queue. */
@@ -291,7 +292,8 @@ export class Queue {
       (await prev).filter((tId) => !idSet.has(tId)),
     );
 
-    // FIXME: Need to add logic to update the next playing track in the RNTP queue.
+    // Make sure the next track is correct after updating the queue.
+    await RNTPManager.refreshNextTrack();
   }
 }
 //#endregion
@@ -426,22 +428,14 @@ export class Resynchronize {
     const isPlayingRef = arePlaybackSourceEqual(currSource, ref);
     if (!isPlayingRef) return;
 
-    // We need to keep in mind that `currPlayingIdAsyncAtom` might be
-    // part of `queueListAsyncAtom`.
-    const isShuffle = await getAtom(shuffleAsyncAtom);
-    const oldIndex = await getAtom(currPlayingIdxAsyncAtom);
-    const playingList = await getAtom(playingListAsyncAtom);
-    const shuffledPlayingList = await getAtom(shuffledPlayingListAsyncAtom);
-    const currTrackId = isShuffle
-      ? shuffledPlayingList[oldIndex]
-      : playingList[oldIndex];
-
     // Make sure our track lists along with the current index are up-to-date.
     const newUnshuffled = (await getTrackList(currSource)).map(({ id }) => id);
     const newShuffled = shuffleArray(newUnshuffled);
-    const newIndex = isShuffle
-      ? newShuffled.findIndex((id) => id === currTrackId)
-      : newUnshuffled.findIndex((id) => id === currTrackId);
+
+    const newIndex = RNTPManager.getIdxFromTrackId(
+      await RNTPManager.getTrackAtCurrIdx(),
+      (await getAtom(shuffleAsyncAtom)) ? newShuffled : newUnshuffled,
+    );
 
     // Update state.
     await setAtom(playingListAsyncAtom, newUnshuffled);
@@ -450,13 +444,117 @@ export class Resynchronize {
 
     // Check to see if active track is the new `currTrackId`. If not, "add
     // the active track to the queue".
-    const activeTrackId = await getAtom(currPlayingIdAsyncAtom);
-    const newCurrTrackId = isShuffle
-      ? newShuffled[newIndex]
-      : newUnshuffled[newIndex];
-    await setAtom(isInQueueAsyncAtom, activeTrackId !== newCurrTrackId);
+    await setAtom(isInQueueAsyncAtom, !(await RNTPManager.isCurrActiveTrack()));
 
-    // FIXME: Need to add logic to update the next playing track in the RNTP queue.
+    // Make sure the next track is correct after updating the list used.
+    await RNTPManager.refreshNextTrack();
+  }
+}
+//#endregion
+
+//#region RNTP Manager
+/** Helpers to help manage the RNTP queue. */
+export class RNTPManager {
+  /** Get the index of the track id from the specified list. */
+  static getIdxFromTrackId(trackId: string | undefined, idList: string[]) {
+    if (trackId === undefined) return -1;
+    return idList.findIndex((tId) => tId === trackId);
+  }
+
+  /**
+   * Get the track at `currPlayingIdx` from the correct list. This is due
+   * to `currPlayingId` potentially not being that value.
+   */
+  static async getTrackAtCurrIdx() {
+    const isShuffled = await getAtom(shuffleAsyncAtom);
+    const currIdx = await getAtom(currPlayingIdxAsyncAtom);
+    const playingList = await getAtom(playingListAsyncAtom);
+    const shuffledPlayingList = await getAtom(shuffledPlayingListAsyncAtom);
+    return isShuffled ? shuffledPlayingList[currIdx] : playingList[currIdx];
+  }
+
+  /** Get the track after the one in `currPlayingIdx` from the correct list. */
+  static async getTrackAfterCurrIdx() {
+    const isShuffled = await getAtom(shuffleAsyncAtom);
+    const currIdx = await getAtom(currPlayingIdxAsyncAtom);
+    const playingList = await getAtom(playingListAsyncAtom);
+    const shuffledPlayingList = await getAtom(shuffledPlayingListAsyncAtom);
+    const nextIdx = currIdx === playingList.length - 1 ? 0 : currIdx + 1;
+    return isShuffled ? shuffledPlayingList[nextIdx] : playingList[nextIdx];
+  }
+
+  /**
+   * Determines if the track defined by `currPlayingIdx` is the same as the
+   * track defined by `currPlayingId`.
+   */
+  static async isCurrActiveTrack() {
+    // Return `false` if we're currently playing a track from the queue.
+    const isInQueue = await getAtom(isInQueueAsyncAtom);
+    if (isInQueue) return false;
+    // The following check is to fix `isInQueue` in case it doesn't have
+    // the right value.
+    const currPlayingId = await getAtom(currPlayingIdAsyncAtom);
+    const idAtCurrIdx = await RNTPManager.getTrackAtCurrIdx();
+    return currPlayingId === idAtCurrIdx;
+  }
+
+  /** Determines the next track we should play. */
+  static async getNextTrack() {
+    /*
+      The next track will be the 1st track in `queueList` if it's not empty.
+
+      Otherwise, if `RNTPManager.isCurrActiveTrack() = true`, the next
+      track is the one specified at the index that follows this. Otherwise,
+      it's the track specified at `currPlayingIdx`.
+    */
+    const queueList = await getAtom(queueListAsyncAtom);
+    if (queueList.length > 0) {
+      return { isNextInQueue: true, nextTrackId: queueList[0] };
+    }
+
+    return {
+      isNextInQueue: false,
+      nextTrackId: (await RNTPManager.isCurrActiveTrack())
+        ? await RNTPManager.getTrackAfterCurrIdx()
+        : await RNTPManager.getTrackAtCurrIdx(),
+    };
+  }
+
+  /** Make sure the next track in the RNTP queue is correct. */
+  static async refreshNextTrack() {
+    // Only update the RNTP queue if its defined.
+    if (!(await isRNTPLoaded())) return;
+
+    const { isNextInQueue, nextTrackId } = await RNTPManager.getNextTrack();
+    await TrackPlayer.removeUpcomingTracks();
+
+    // If the next track is `undefined`, then we should run `resetState()`
+    // after the current track finishes.
+    if (nextTrackId === undefined) {
+      await TrackPlayer.add({
+        ...formatTrackforPlayer(
+          await getTrack([
+            eq(tracks.id, (await getAtom(currPlayingIdAsyncAtom))!),
+          ]),
+        ),
+        /**
+         * Custom field that we'll read in the `PlaybackActiveTrackChanged`
+         * event to fire `resetState()`.
+         */
+        "music::status": "END",
+      });
+      return;
+    }
+
+    const newTrack = await getTrack([eq(tracks.id, nextTrackId)]);
+    await TrackPlayer.add({
+      ...formatTrackforPlayer(newTrack),
+      /**
+       * Custom field that we'll read in the `PlaybackActiveTrackChanged`
+       * event.
+       */
+      "music::status": isNextInQueue ? "QUEUE" : undefined,
+    });
   }
 }
 //#endregion
