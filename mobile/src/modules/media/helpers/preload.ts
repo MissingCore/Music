@@ -1,30 +1,27 @@
-import { inArray } from "drizzle-orm";
-import { getDefaultStore } from "jotai";
+import TrackPlayer from "react-native-track-player";
 
-import { tracks } from "@/db/schema";
-import { getTracks } from "@/db/queries";
+import { AsyncAtomState, RNTPManager } from "../services/State";
 
-import { _currPlayListIdxAtom, _playListAtom } from "../services/Persistent";
+import { getAtom } from "@/lib/jotai";
+import { formatTrackforPlayer } from "./data";
 
-import { isRNTPLoaded, replaceRNTPQueue } from "./rntp";
-
-/**
- * Populate the RNTP queue if the queue is currently empty and if we've
- * played a media list in the last session.
- */
+/** Initialize the RNTP queue, loading the first 2 tracks. */
 export async function preloadRNTPQueue() {
-  if (await isRNTPLoaded()) return;
+  if (await RNTPManager.isRNTPLoaded()) return;
   console.log("[RNTP] Queue is empty, preloading RNTP Queue...");
-  const jotaiStore = getDefaultStore();
-  const startIndex = await jotaiStore.get(_currPlayListIdxAtom);
-  const trackIds = await jotaiStore.get(_playListAtom);
-  if (trackIds.length === 0) return;
+  const activeTrack = await getAtom(AsyncAtomState.activeTrack);
+  if (!activeTrack) return;
+  const isPlayingFromQueue = await RNTPManager.isCurrActiveTrack();
 
-  // Get tracks and put them in the correct order.
-  const loadTracks = await getTracks([inArray(tracks.id, trackIds)]);
-  const orderedTracks = trackIds.map(
-    (tId) => loadTracks.find(({ id }) => tId === id)!,
-  );
-
-  await replaceRNTPQueue({ tracks: orderedTracks, startIndex });
+  // Add the current playing track to the RNTP queue.
+  await TrackPlayer.add({
+    ...formatTrackforPlayer(activeTrack),
+    /**
+     * Custom field that we'll read in the `PlaybackActiveTrackChanged`
+     * event.
+     */
+    "music::status": isPlayingFromQueue ? "QUEUE" : undefined,
+  });
+  // Add the 2nd track in the RNTP queue.
+  await RNTPManager.refreshNextTrack();
 }

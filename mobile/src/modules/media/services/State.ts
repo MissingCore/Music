@@ -9,7 +9,7 @@ import { eq } from "drizzle-orm";
 import { atom } from "jotai";
 import { RESET, unwrap } from "jotai/utils";
 import { Toast } from "react-native-toast-notifications";
-import TrackPlayer from "react-native-track-player";
+import TrackPlayer, { State } from "react-native-track-player";
 
 import type { PlaylistWithTracks } from "@/db/schema";
 import { albums, artists, playlists, tracks } from "@/db/schema";
@@ -32,7 +32,6 @@ import {
   getTrackList,
   getTracksFromIds,
 } from "../helpers/data";
-import { isRNTPLoaded } from "../helpers/rntp";
 import type { PlayListSource } from "../types";
 
 //#region Synchronous State
@@ -498,6 +497,11 @@ export class RNTPManager {
     return currPlayingId === idAtCurrIdx;
   }
 
+  /** Determine if any tracks are loaded in RNTP on launch. */
+  static async isRNTPLoaded() {
+    return (await TrackPlayer.getPlaybackState()).state !== State.None;
+  }
+
   /** Determines the next track we should play. */
   static async getNextTrack() {
     /*
@@ -523,7 +527,7 @@ export class RNTPManager {
   /** Make sure the next track in the RNTP queue is correct. */
   static async refreshNextTrack() {
     // Only update the RNTP queue if its defined.
-    if (!(await isRNTPLoaded())) return;
+    if (!(await RNTPManager.isRNTPLoaded())) return;
 
     const { isNextInQueue, nextTrackId } = await RNTPManager.getNextTrack();
     await TrackPlayer.removeUpcomingTracks();
