@@ -23,7 +23,7 @@ export function partitionArray<TData>(
  * Algorithm by Richard Durstenfeld.
  *  - https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
  */
-export function shuffleArray(arr: any[]) {
+export function shuffleArray<TData>(arr: TData[]) {
   const arrCpy = [...arr];
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
