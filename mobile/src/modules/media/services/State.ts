@@ -524,9 +524,7 @@ export class RNTPManager {
     /*
       The next track will be the 1st track in `queueList` if it's not empty.
 
-      Otherwise, if `RNTPManager.isCurrActiveTrack() = true`, the next
-      track is the one specified at the index that follows this. Otherwise,
-      it's the track specified at `currPlayingIdx`.
+      Otherwise, it's the track after `currPlayingIdx`.
     */
     const queueList = await getAtom(queueListAsyncAtom);
     if (queueList.length > 0) {
@@ -535,9 +533,7 @@ export class RNTPManager {
 
     return {
       isNextInQueue: false,
-      nextTrackId: (await RNTPManager.isCurrActiveTrack())
-        ? await RNTPManager.getTrackAroundCurrIdx("AFTER")
-        : await RNTPManager.getTrackAroundCurrIdx("AT"),
+      nextTrackId: await RNTPManager.getTrackAroundCurrIdx("AFTER"),
     };
   }
 

@@ -1,5 +1,4 @@
 import { router } from "expo-router";
-import { getDefaultStore } from "jotai";
 import { Toast } from "react-native-toast-notifications";
 import TrackPlayer, {
   AppKilledPlaybackBehavior,
@@ -16,18 +15,17 @@ import {
 } from "@/features/indexing/api/db-cleanup";
 import { MusicControls } from "@/modules/media/services/Playback";
 import {
-  _currPlayListIdxAtom,
-  _currTrackIdAtom,
-  _repeatAtom,
-  resetPersistentMediaAtom,
-} from "@/modules/media/services/Persistent";
+  AsyncAtomState,
+  Queue,
+  RNTPManager,
+  resetState,
+} from "@/modules/media/services/State";
 
+import { getAtom, setAtom } from "@/lib/jotai";
 import { clearAllQueries } from "@/lib/react-query";
 
 /** How we handle the actions in the media control notification. */
 export async function PlaybackService() {
-  const jotaiStore = getDefaultStore();
-
   TrackPlayer.addEventListener(Event.RemotePlay, async () => {
     await MusicControls.play();
   });
@@ -59,21 +57,37 @@ export async function PlaybackService() {
 
   TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (e) => {
     if (e.index === undefined) return;
-    // Update `_playViewReferenceAtom` when the track changes.
-    //  - This allows us to preserve the index of the last track played in one place.
-    const prevTrackId = await jotaiStore.get(_currTrackIdAtom);
-    const prevListIdx = await jotaiStore.get(_currPlayListIdxAtom);
-    if (prevListIdx !== e.index && prevTrackId !== e.track?.id) {
-      await jotaiStore.set(_currTrackIdAtom, e.track?.id);
-      await jotaiStore.set(_currPlayListIdxAtom, e.index ?? 0);
+
+    const activeTrack = e.track!;
+    const trackStatus: "QUEUE" | "END" | "RELOAD" | undefined =
+      activeTrack["music::status"];
+
+    if (trackStatus === "END") {
+      await resetState();
+      return;
+    } else if (trackStatus === "QUEUE") {
+      // Remove 1st item in `queueList` if they're the same.
+      if (activeTrack.id === (await getAtom(AsyncAtomState.queueList))[0]) {
+        await Queue.removeAtIndex(0);
+      }
+    } else if (trackStatus === undefined) {
+      // If `trackStatus = undefined`, it means we're playing the next track
+      // "naturally" and should update the index & values accordingly.
+      const currList = await getAtom(AsyncAtomState.currentList);
+      const prevIdx = await getAtom(AsyncAtomState.currPlayingIdx);
+      const newIdx = prevIdx === currList.length - 1 ? 0 : prevIdx + 1;
+      await setAtom(AsyncAtomState.currPlayingIdx, newIdx);
+      await setAtom(AsyncAtomState.currPlayingId, activeTrack.id);
+
+      // Check if we should pause after looping logic.
+      if (newIdx === 0) {
+        const shouldRepeat = await getAtom(AsyncAtomState.repeat);
+        if (!shouldRepeat) await MusicControls.pause();
+      }
     }
 
-    // Handle case where we loop back to the beginning of the queue.
-    const currQueue = await TrackPlayer.getQueue();
-    if (e.index === 0 && prevListIdx === currQueue.length - 1) {
-      const shouldRepeat = await jotaiStore.get(_repeatAtom);
-      if (!shouldRepeat) await MusicControls.pause();
-    }
+    if (e.index === 1) await TrackPlayer.remove(0);
+    await RNTPManager.refreshNextTrack();
   });
 
   TrackPlayer.addEventListener(Event.PlaybackError, async (e) => {
@@ -99,7 +113,7 @@ export async function PlaybackService() {
 
     Toast.show("Track no longer exists.", { type: "danger", duration: 3000 });
     // Clear all reference of the current playing track.
-    await jotaiStore.set(resetPersistentMediaAtom);
+    await resetState();
   });
 }
 
@@ -127,7 +141,8 @@ export async function setupPlayer() {
     await new Promise<void>((resolve) => setTimeout(resolve, 1));
   }
 
-  // Repeat mode is needed for the "next" button to show up in the widget.
+  // Repeat mode is needed for the "next" button to show up in the widget
+  // if we're on the last track.
   await TrackPlayer.setRepeatMode(RepeatMode.Queue);
 
   await TrackPlayer.updateOptions({
