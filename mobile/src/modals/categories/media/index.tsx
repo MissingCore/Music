@@ -1,6 +1,6 @@
 import { useAtomValue } from "jotai";
 
-import { currTrackAtom } from "@/modules/media/services/Persistent";
+import { SyncAtomState } from "@/modules/media/services/State";
 import { mediaModalAtom } from "./store";
 
 import { PlaylistModal } from "./playlist";
@@ -41,7 +41,7 @@ export function MediaModals() {
 }
 
 function RenderTrackModal() {
-  const track = useAtomValue(currTrackAtom);
+  const track = useAtomValue(SyncAtomState.activeTrack);
   if (!track) return null;
   return <TrackModal id={track.id} origin="current" />;
 }

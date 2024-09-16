@@ -5,7 +5,7 @@ import { View } from "react-native";
 
 import { useToggleFavorite } from "@/api/favorites/[id]";
 import { useTrackExcerpt } from "@/api/tracks/[id]";
-import { Queue, playListSourceAtom } from "@/modules/media/services/Persistent";
+import { Queue, SyncAtomState } from "@/modules/media/services/State";
 import { mediaModalAtom } from "./store";
 
 import { mutateGuard } from "@/lib/react-query";
@@ -119,7 +119,7 @@ export function TrackModal({ id, origin }: Props) {
 
 /** Renders a button to view the current playing playlist. */
 function ViewPlaylist() {
-  const source = useAtomValue(playListSourceAtom);
+  const source = useAtomValue(SyncAtomState.playingSource);
 
   const currentPlaylist = useMemo(() => {
     return source?.type === "playlist" ? source.id : undefined;

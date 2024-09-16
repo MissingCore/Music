@@ -5,7 +5,6 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { and, eq } from "drizzle-orm";
-import { getDefaultStore } from "jotai";
 import { useCallback } from "react";
 import { Toast } from "react-native-toast-notifications";
 
@@ -16,11 +15,9 @@ import { favoriteKeys } from "@/api/favorites/_queryKeys";
 import { playlistKeys } from "@/api/playlists/_queryKeys";
 import { trackKeys } from "../_queryKeys";
 
-import {
-  Resynchronize,
-  _playListSourceAtom,
-} from "@/modules/media/services/Persistent";
+import { AsyncAtomState, Resynchronize } from "@/modules/media/services/State";
 
+import { getAtom } from "@/lib/jotai";
 import type { ExtractFnReturnType, Prettify } from "@/utils/types";
 
 type BaseFnArgs = { trackId: string };
@@ -78,7 +75,7 @@ export async function putTrackInPlaylists({
       await tx.insert(tracksToPlaylists).values(newEntries);
     }
 
-    const currPlayingFrom = await getDefaultStore().get(_playListSourceAtom);
+    const currPlayingFrom = await getAtom(AsyncAtomState.playingSource);
     if (currPlayingFrom) await Resynchronize.onTracks(currPlayingFrom);
   });
 }

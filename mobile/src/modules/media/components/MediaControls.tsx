@@ -2,8 +2,8 @@ import { useAtom, useAtomValue } from "jotai";
 import { Pressable } from "react-native";
 
 import { Ionicons, MaterialIcons } from "@/resources/icons";
-import { repeatAtom, shuffleAtom } from "../services/Persistent";
-import { MusicControls, isPlayingAtom } from "../services/Playback";
+import { MusicControls } from "../services/Playback";
+import { SyncAtomState } from "../services/State";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
@@ -11,7 +11,7 @@ import { StyledPressable } from "@/components/ui/pressable";
 
 /** Toggles the repeat status. */
 export function RepeatButton({ size = 24 }) {
-  const [isActive, setIsActive] = useAtom(repeatAtom);
+  const [isActive, setIsActive] = useAtom(SyncAtomState.repeat);
   return (
     <StyledPressable
       android_ripple={{ color: Colors.surface700, radius: size * 0.75 }}
@@ -29,7 +29,7 @@ export function RepeatButton({ size = 24 }) {
 
 /** Toggles the shuffle status. */
 export function ShuffleButton({ size = 24 }) {
-  const [isActive, toggleStatus] = useAtom(shuffleAtom);
+  const [isActive, toggleStatus] = useAtom(SyncAtomState.shuffle);
   return (
     <StyledPressable
       android_ripple={{ color: Colors.surface700, radius: size * 0.75 }}
@@ -53,7 +53,7 @@ export function PlayToggleButton({
   size?: number;
   className?: string;
 }) {
-  const isPlaying = useAtomValue(isPlayingAtom);
+  const isPlaying = useAtomValue(SyncAtomState.isPlaying);
   return (
     <Pressable
       onPress={MusicControls.playToggle}

@@ -4,7 +4,6 @@ import * as FileSystem from "expo-file-system";
 import { StorageAccessFramework as SAF } from "expo-file-system";
 import * as Sharing from "expo-sharing";
 import { and, eq, isNull } from "drizzle-orm";
-import { getDefaultStore } from "jotai";
 import { Platform } from "react-native";
 import { Toast } from "react-native-toast-notifications";
 import { z } from "zod";
@@ -16,11 +15,9 @@ import { getPlaylists, getTracks } from "@/db/queries";
 import { sanitizedPlaylistName } from "@/db/utils/validators";
 import { getFavoriteLists } from "@/api/favorites";
 
-import {
-  Resynchronize,
-  _playListSourceAtom,
-} from "@/modules/media/services/Persistent";
+import { AsyncAtomState, Resynchronize } from "@/modules/media/services/State";
 
+import { getAtom } from "@/lib/jotai";
 import { clearAllQueries } from "@/lib/react-query";
 import { pickKeys } from "@/utils/object";
 import { isFulfilled } from "@/utils/promise";
@@ -228,7 +225,7 @@ export async function importBackup() {
   // Delete the cached document.
   await FileSystem.deleteAsync(document.uri);
 
-  const currPlayingFrom = await getDefaultStore().get(_playListSourceAtom);
+  const currPlayingFrom = await getAtom(AsyncAtomState.playingSource);
   if (currPlayingFrom) await Resynchronize.onTracks(currPlayingFrom);
 }
 

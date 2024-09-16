@@ -14,7 +14,6 @@ import { sortTracks } from "@/db/utils/sorting";
 
 import { getFolderTracks } from "@/api/file-nodes/[...id]";
 
-import { shuffleArray } from "@/utils/object";
 import { ReservedPlaylists } from "../constants/ReservedNames";
 import type { PlayListSource } from "../types";
 
@@ -38,36 +37,6 @@ export function formatTrackforPlayer(track: TrackWithAlbum) {
     duration: track.duration,
     id: track.id,
   } satisfies AddTrack;
-}
-
-/** Get an ordered list of tracks from a `PlayListSource`. */
-export async function generatePlayList({
-  source,
-  shouldShuffle = false,
-  startTrackId = undefined,
-}: {
-  source: PlayListSource;
-  shouldShuffle?: boolean;
-  /** Optionally provide a track id that you want to start from. */
-  startTrackId?: string | undefined;
-}): Promise<{ trackIndex: number; tracks: TrackWithAlbum[] }> {
-  let tracks = await getTrackList(source);
-  let trackIndex = 0;
-  if (shouldShuffle) tracks = shuffleArray(tracks);
-
-  // Adjust return values if we want to play from a specific track.
-  if (startTrackId) {
-    const atIdx = tracks.findIndex(({ id }) => id === startTrackId);
-    if (atIdx !== -1) {
-      if (shouldShuffle) {
-        tracks = [tracks[atIdx]!, ...tracks.filter((_, idx) => idx !== atIdx)];
-      } else {
-        trackIndex = atIdx;
-      }
-    }
-  }
-
-  return { trackIndex, tracks };
 }
 
 /** Get list of tracks from a `PlayListSource`. */

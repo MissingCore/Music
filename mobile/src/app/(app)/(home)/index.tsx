@@ -10,7 +10,7 @@ import {
   useFavoriteTracksCount,
 } from "@/api/favorites";
 import { useGetColumn } from "@/hooks/layout";
-import { recentListAtom } from "@/modules/media/services/Persistent";
+import { SyncAtomState } from "@/modules/media/services/State";
 
 import { abbreviateNum } from "@/utils/number";
 import { MediaCard, PlaceholderContent } from "@/components/media/card";
@@ -81,7 +81,7 @@ export default function HomeScreen() {
 
 /** An array of `<MediaCards />` of recently played media. */
 function RecentlyPlayed({ colWidth }: { colWidth: number }) {
-  const recentlyPlayedData = useAtomValue(recentListAtom);
+  const recentlyPlayedData = useAtomValue(SyncAtomState.recentList);
 
   // FIXME: Eventually replace the `Array.map()` with a horizontal
   // `<FlashList />` like what we did in `/album`.

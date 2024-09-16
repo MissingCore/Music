@@ -1,17 +1,17 @@
 import { eq } from "drizzle-orm";
-import { getDefaultStore } from "jotai";
 
 import { db } from "@/db";
 import { artists, albums, invalidTracks, tracks } from "@/db/schema";
 import { deleteTrack } from "@/db/queries";
 
 import {
+  AsyncAtomState,
   Queue,
   RecentList,
-  _playListAtom,
-  resetPersistentMediaAtom,
-} from "@/modules/media/services/Persistent";
+  resetState,
+} from "@/modules/media/services/State";
 
+import { getAtom } from "@/lib/jotai";
 import { clearAllQueries } from "@/lib/react-query";
 import { batch } from "@/utils/promise";
 
@@ -58,12 +58,11 @@ export async function removeUnlinkedTracks(foundTracks: Set<string>) {
  * store.
  */
 export async function revalidatePlaybackStore(removedTracks: string[]) {
-  const jotaiStore = getDefaultStore();
   // See if the current playing tracklist contains a deleted track.
-  const hasRemovedTrack = (await jotaiStore.get(_playListAtom)).some((tId) =>
-    removedTracks.includes(tId),
+  const hasRemovedTrack = (await getAtom(AsyncAtomState.playingList)).some(
+    (tId) => removedTracks.includes(tId),
   );
-  if (hasRemovedTrack) await jotaiStore.set(resetPersistentMediaAtom);
+  if (hasRemovedTrack) await resetState();
   // Clear the queue of deleted tracks.
   await Queue.removeIds(removedTracks);
 }

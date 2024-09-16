@@ -5,12 +5,7 @@ import { unwrap } from "jotai/utils";
 import { tracks } from "@/db/schema";
 import { getTrack } from "@/db/queries";
 
-import {
-  _currPlayListIdxAtom,
-  _playListAtom,
-  _queueAtom,
-  _repeatAtom,
-} from "@/modules/media/services/Persistent";
+import { AsyncAtomState } from "@/modules/media/services/State";
 
 import { pickKeys } from "@/utils/object";
 
@@ -19,8 +14,7 @@ const wantedKeys = ["id", "name", "artistName", "artwork"] as const;
 
 /** [🇫🇴🇷 🇮🇳🇹🇪🇷🇳🇦🇱 🇺🇸🇪 🇴🇳🇱🇾] */
 export const queueTrackListAsyncAtom = atom(async (get) => {
-  const queueList = await get(_queueAtom);
-  const data = await Promise.all(queueList.map(getTrackData));
+  const data = await get(AsyncAtomState.queuedTrackList);
   return data.map((track) => pickKeys(track!, wantedKeys));
 });
 /** Return tracks in the queue. */
@@ -31,9 +25,9 @@ export const queueTrackListAtom = unwrap(
 
 /** [🇫🇴🇷 🇮🇳🇹🇪🇷🇳🇦🇱 🇺🇸🇪 🇴🇳🇱🇾] */
 export const nextTrackListAsyncAtom = atom(async (get) => {
-  const shouldRepeat = await get(_repeatAtom);
-  const startIndex = await get(_currPlayListIdxAtom);
-  const trackIds = await get(_playListAtom);
+  const shouldRepeat = await get(AsyncAtomState.repeat);
+  const startIndex = await get(AsyncAtomState.currPlayingIdx);
+  const trackIds = await get(AsyncAtomState.playingList);
 
   // Get up to the next 5 tracks in `trackList`.
   const upcomingTracks = trackIds.slice(startIndex + 1, startIndex + 6);

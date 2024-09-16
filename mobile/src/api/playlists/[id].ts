@@ -16,7 +16,7 @@ import { sanitizedPlaylistName } from "@/db/utils/validators";
 import { playlistKeys } from "./_queryKeys";
 import { favoriteKeys } from "../favorites/_queryKeys";
 
-import { Resynchronize } from "@/modules/media/services/Persistent";
+import { Resynchronize } from "@/modules/media/services/State";
 
 import { deleteFile } from "@/lib/file-system";
 import { pickKeys } from "@/utils/object";

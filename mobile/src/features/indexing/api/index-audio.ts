@@ -6,7 +6,7 @@ import {
 import { eq } from "drizzle-orm";
 import * as MediaLibrary from "expo-media-library";
 import type { ExtractAtomValue } from "jotai";
-import { atom, getDefaultStore } from "jotai";
+import { atom } from "jotai";
 
 import { db } from "@/db";
 import { artists, tracks, invalidTracks } from "@/db/schema";
@@ -17,6 +17,7 @@ import {
   blockListAsyncAtom,
 } from "@/features/setting/api/library";
 
+import { getAtom, setAtom } from "@/lib/jotai";
 import { Stopwatch } from "@/utils/debug";
 import { BATCH_PRESETS, batch } from "@/utils/promise";
 import { savePathComponents } from "./library-scan";
@@ -39,21 +40,20 @@ export const indexStatusAtom = atom<{
  * Index tracks with their metadata into our database for fast retrieval.
  */
 export async function doAudioIndexing() {
-  const jotaiStore = getDefaultStore();
   const stopwatch = new Stopwatch();
 
   // Make sure we reset this atom. The `RESET` symbol doesn't work with
-  // the store returned from `getDefaultStore()`.
-  jotaiStore.set(indexStatusAtom, {
+  // this atom.
+  setAtom(indexStatusAtom, {
     previouslyFound: undefined,
     unstaged: undefined,
     staged: 0,
     errors: 0,
   });
 
-  let allowList = await jotaiStore.get(allowListAsyncAtom);
+  let allowList = await getAtom(allowListAsyncAtom);
   if (allowList.length === 0) allowList = StorageVolumesDirectoryPaths;
-  const blockList = await jotaiStore.get(blockListAsyncAtom);
+  const blockList = await getAtom(blockListAsyncAtom);
 
   // Get all audio files discoverable by `expo-media-library`.
   const incomingData: MediaLibrary.Asset[] = [];
@@ -188,7 +188,7 @@ export async function doAudioIndexing() {
       incrementAtom("errors", rejected.length);
     },
   });
-  const { staged, errors } = jotaiStore.get(indexStatusAtom);
+  const { staged, errors } = getAtom(indexStatusAtom);
   console.log(
     `Found/updated ${staged} tracks & encountered ${errors} errors in ${stopwatch.lapTime()}.`,
   );
@@ -246,7 +246,7 @@ function incrementAtom(
   key: keyof ExtractAtomValue<typeof indexStatusAtom>,
   val: number,
 ) {
-  getDefaultStore().set(indexStatusAtom, (prev) => ({
+  setAtom(indexStatusAtom, (prev) => ({
     ...prev,
     [key]: (prev[key] ?? 0) + val,
   }));
