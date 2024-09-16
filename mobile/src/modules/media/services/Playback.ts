@@ -1,23 +1,19 @@
-import { atom, getDefaultStore } from "jotai";
+import { atom } from "jotai";
 import TrackPlayer from "react-native-track-player";
 
 import {
+  AsyncAtomState,
   RecentList,
-  _currPlayListIdxAtom,
-  _currTrackIdAtom,
-  _playListAtom,
-  _playListSourceAtom,
-  _shuffleAtom,
-} from "./Persistent";
-import { arePlaybackSourceEqual, generatePlayList } from "../helpers/data";
-import { preloadRNTPQueue } from "../helpers/preload";
-import { replaceAroundTrack, replaceRNTPQueue } from "../helpers/rntp";
-import type { PlayListSource } from "../types";
+  RNTPManager,
+  SyncAtomState,
+  resetState,
+} from "./State";
 
-//#region Synchronous State
-/** Synchronously determine if a track is playing. */
-export const isPlayingAtom = atom(false);
-//#endregion
+import { getAtom, setAtom } from "@/lib/jotai";
+import { shuffleArray } from "@/utils/object";
+import { arePlaybackSourceEqual, getTrackList } from "../helpers/data";
+import { preloadRNTPQueue } from "../helpers/preload";
+import type { PlayListSource } from "../types";
 
 //#region MusicControls
 /**
@@ -27,46 +23,85 @@ export const isPlayingAtom = atom(false);
 export class MusicControls {
   /** Play the current track. */
   static async play() {
-    getDefaultStore().set(isPlayingAtom, true);
+    setAtom(SyncAtomState.isPlaying, true);
     await preloadRNTPQueue();
     await TrackPlayer.play();
   }
 
   /** Pause the current playing track. */
   static async pause() {
-    getDefaultStore().set(isPlayingAtom, false);
+    setAtom(SyncAtomState.isPlaying, false);
     await TrackPlayer.pause();
   }
 
   /** Stop & unload the current playing track (stops loading/buffering). */
   static async stop() {
-    getDefaultStore().set(isPlayingAtom, false);
+    setAtom(SyncAtomState.isPlaying, false);
     await TrackPlayer.stop();
   }
 
   /** Toggle `isPlaying`, playing or pausing the current track. */
   static async playToggle() {
-    if (getDefaultStore().get(isPlayingAtom)) await MusicControls.pause();
+    if (getAtom(SyncAtomState.isPlaying)) await MusicControls.pause();
     else await MusicControls.play();
   }
 
   /** Play the previous track. */
   static async prev() {
-    await preloadRNTPQueue();
-    const { position } = await TrackPlayer.getProgress();
-    if (position > 10) {
-      // Restart from the beginning of the current track if we've played
-      // more than 10 seconds of the track.
-      await TrackPlayer.seekTo(0);
-    } else {
-      await TrackPlayer.skipToPrevious();
+    const playingList = await getAtom(AsyncAtomState.playingList);
+    // If we have no tracks in `playlingList`, reset the state.
+    if (playingList.length === 0) {
+      await resetState();
+      return;
     }
+
+    // If the RNTP queue isn't loaded or if we played <=10s of the track,
+    // simply update the `currPlayingIdx` & `currPlayingId`
+    if (
+      !(await RNTPManager.isRNTPLoaded()) ||
+      (await TrackPlayer.getProgress()).position <= 10
+    ) {
+      // We're no longer in the queue if we go back.
+      await setAtom(AsyncAtomState.isInQueue, false);
+      await setAtom(AsyncAtomState.currPlayingIdx, async (_prevIdx) => {
+        const prevIdx = await _prevIdx;
+        return prevIdx === 0 ? playingList.length - 1 : prevIdx - 1;
+      });
+      await setAtom(
+        AsyncAtomState.currPlayingId,
+        await RNTPManager.getTrackAroundCurrIdx("BEFORE"),
+      );
+      return;
+    }
+
+    await RNTPManager.reloadCurrentTrack();
   }
 
   /** Play the next track. */
   static async next() {
-    await preloadRNTPQueue();
-    await TrackPlayer.skipToNext();
+    // If the RNTP queue is loaded, simply play the next track as we load
+    // the first 2 tracks in the RNTP queue.
+    if (await RNTPManager.isRNTPLoaded()) {
+      await TrackPlayer.skipToNext();
+      return;
+    }
+
+    const { isNextInQueue, nextTrackId } = await RNTPManager.getNextTrack();
+    await setAtom(AsyncAtomState.isInQueue, isNextInQueue);
+    if (isNextInQueue) {
+      await setAtom(AsyncAtomState.queueList, async (prev) => [
+        ...(await prev).slice(1),
+      ]);
+    }
+    await setAtom(AsyncAtomState.currPlayingId, nextTrackId);
+
+    if (!isNextInQueue) {
+      const playingList = await getAtom(AsyncAtomState.playingList);
+      await setAtom(AsyncAtomState.currPlayingIdx, async (_prevIdx) => {
+        const prevIdx = await _prevIdx;
+        return prevIdx === playingList.length - 1 ? 0 : prevIdx + 1;
+      });
+    }
   }
 
   /** Seek to a certain position in the current playing track. */
@@ -86,11 +121,10 @@ export const playFromMediaListAtom = atom(
     set,
     { source, trackId }: { source: PlayListSource; trackId?: string },
   ) => {
-    const currSource = await get(_playListSourceAtom);
-    const currTrackIds = await get(_playListAtom);
-    const currTrackId = await get(_currTrackIdAtom);
-    const currListIdx = await get(_currPlayListIdxAtom);
-    const shouldShuffle = await get(_shuffleAtom);
+    const currSource = await get(AsyncAtomState.playingSource);
+    const currTrackIds = await get(AsyncAtomState.currentList);
+    const currTrackId = await get(AsyncAtomState.currPlayingId);
+    const shouldShuffle = await get(AsyncAtomState.shuffle);
 
     // 1. See if we're playing from a new media list.
     const isSameSource = arePlaybackSourceEqual(currSource, source);
@@ -102,50 +136,43 @@ export const playFromMediaListAtom = atom(
       if (!!trackId && isDiffTrack) {
         // Find index of new track in list.
         const listIndex = currTrackIds.findIndex((tId) => tId === trackId);
-        set(_currTrackIdAtom, trackId);
-        set(_currPlayListIdxAtom, listIndex);
-        await TrackPlayer.skip(listIndex);
+        await set(AsyncAtomState.isInQueue, false);
+        await set(AsyncAtomState.currPlayingId, trackId);
+        await set(AsyncAtomState.currPlayingIdx, listIndex);
+        await RNTPManager.reloadCurrentTrack();
       }
       await MusicControls.play(); // Will preload RNTP queue if empty.
       return;
     }
 
     // 3. Handle case when the media list is new.
-    const { trackIndex, tracks } = await generatePlayList({
-      source,
-      shouldShuffle,
-      // Either play from the selected track, the current playing track, or from the beginning.
-      startTrackId: trackId ?? currTrackId,
-    });
-    if (tracks.length === 0) return; // Don't do anything if list is empty.
+    const newUnshuffled = (await getTrackList(source)).map(({ id }) => id);
+    if (newUnshuffled.length === 0) return; // Don't do anything if list is empty.
+    const newShuffled = shuffleArray(newUnshuffled);
+
+    const _newIndex = RNTPManager.getIdxFromTrackId(
+      await RNTPManager.getTrackAroundCurrIdx("AT"),
+      shouldShuffle ? newShuffled : newUnshuffled,
+    );
+    const newIndex = _newIndex === -1 ? 0 : _newIndex;
 
     // 4. Update the persistent storage.
-    const newTrack = tracks[trackIndex]!;
-    set(_currTrackIdAtom, newTrack.id);
-    set(_currPlayListIdxAtom, trackIndex);
-    set(_playListSourceAtom, source);
-    set(
-      _playListAtom,
-      tracks.map(({ id }) => id),
-    );
+    await set(AsyncAtomState.isInQueue, false);
+    await set(AsyncAtomState.playingSource, source);
+    await set(AsyncAtomState.playingList, newUnshuffled);
+    await set(AsyncAtomState.shuffledPlayingList, newShuffled);
+    await set(AsyncAtomState.currPlayingIdx, newIndex);
+
+    const newTrackId = shouldShuffle
+      ? newShuffled[newIndex]!
+      : newUnshuffled[newIndex]!;
+    isDiffTrack = currTrackId !== newTrackId;
+    if (isDiffTrack) await set(AsyncAtomState.currPlayingId, newTrackId);
 
     // 5. Play this new media list.
-    isDiffTrack = currTrackId !== newTrack.id;
-    set(isPlayingAtom, true);
-    if (isDiffTrack) {
-      await replaceRNTPQueue({
-        tracks,
-        startIndex: trackIndex,
-        shouldPlay: true,
-      });
-    } else {
-      await replaceAroundTrack({
-        tracks,
-        oldIndex: currListIdx,
-        newIndex: trackIndex,
-        shouldPlay: true,
-      });
-    }
+    set(SyncAtomState.isPlaying, true);
+    await RNTPManager.reloadCurrentTrack();
+    await TrackPlayer.play();
 
     // 6. Add media list to recent lists.
     await RecentList.add(source);

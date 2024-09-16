@@ -56,7 +56,7 @@ const shuffleAtom = atom(
       // in the used playing list.
       //  - We need to keep in mind that `currPlayingId` might be part of `queueList`.
       const newPlayingIdx = RNTPManager.getIdxFromTrackId(
-        await RNTPManager.getTrackAtCurrIdx(),
+        await RNTPManager.getTrackAroundCurrIdx("AT"),
         prevShuffled
           ? await get(playingListAsyncAtom)
           : await get(shuffledPlayingListAsyncAtom),
@@ -99,6 +99,21 @@ const shuffledTrackListAsyncAtom = atom(async (get) => {
 });
 const shuffledTrackListAtom = unwrap(
   shuffledTrackListAsyncAtom,
+  (prev) => prev ?? [],
+);
+
+const currentListAtom = atom(async (get) => {
+  return (await get(shuffleAsyncAtom))
+    ? await get(shuffledPlayingListAsyncAtom)
+    : await get(playingListAsyncAtom);
+});
+const currentTrackListAsyncAtom = atom(async (get) => {
+  return (await get(shuffleAsyncAtom))
+    ? await get(shuffledTrackListAsyncAtom)
+    : await get(trackListAsyncAtom);
+});
+const currentTrackListAtom = unwrap(
+  currentTrackListAsyncAtom,
   (prev) => prev ?? [],
 );
 
@@ -198,6 +213,10 @@ export const AsyncAtomState = {
   shuffledPlayingList: shuffledPlayingListAsyncAtom,
   /** List of shuffled `TrackWithAlbum` that we want to play. */
   shuffledTrackList: shuffledTrackListAsyncAtom,
+  /** The list of track ids used based on `shuffle`. */
+  currentList: currentListAtom,
+  /** List of `TrackWithAlbum` used based on `shuffle`. */
+  currentTrackList: currentTrackListAsyncAtom,
   /** Index of the track we're currently playing (or last left off). */
   currPlayingIdx: currPlayingIdxAsyncAtom,
   /** Id of the track we're currently playing. */
@@ -238,6 +257,8 @@ export const SyncAtomState = {
   trackList: trackListAtom,
   /** List of shuffled `TrackWithAlbum` that we want to play. */
   shuffledTrackList: shuffledTrackListAtom,
+  /** List of `TrackWithAlbum` used based on `shuffle`. */
+  currentTrackList: currentTrackListAtom,
 
   /** Determine if `currentPlayingId` belongs in the queue. */
   isInQueue: isInQueueAtom,
@@ -394,7 +415,7 @@ export class Resynchronize {
     const isPlayingRef = Array.isArray(removedRefs)
       ? RecentList.isInRecentList(currSource, removedRefs)
       : arePlaybackSourceEqual(currSource, removedRefs);
-    if (isPlayingRef) resetState();
+    if (isPlayingRef) await resetState();
   }
 
   /** Resynchronize when we update the artwork. */
@@ -432,7 +453,7 @@ export class Resynchronize {
     const newShuffled = shuffleArray(newUnshuffled);
 
     const newIndex = RNTPManager.getIdxFromTrackId(
-      await RNTPManager.getTrackAtCurrIdx(),
+      await RNTPManager.getTrackAroundCurrIdx("AT"),
       (await getAtom(shuffleAsyncAtom)) ? newShuffled : newUnshuffled,
     );
 
@@ -461,25 +482,21 @@ export class RNTPManager {
   }
 
   /**
-   * Get the track at `currPlayingIdx` from the correct list. This is due
-   * to `currPlayingId` potentially not being that value.
+   * Get track ±1 around `currPlayingIdx` from the correct list. Note that
+   * `currPlayingId` might not be the track specified by `currPlayingIdx`.
    */
-  static async getTrackAtCurrIdx() {
-    const isShuffled = await getAtom(shuffleAsyncAtom);
+  static async getTrackAroundCurrIdx(place: "AT" | "BEFORE" | "AFTER") {
     const currIdx = await getAtom(currPlayingIdxAsyncAtom);
-    const playingList = await getAtom(playingListAsyncAtom);
-    const shuffledPlayingList = await getAtom(shuffledPlayingListAsyncAtom);
-    return isShuffled ? shuffledPlayingList[currIdx] : playingList[currIdx];
-  }
+    const currList = await getAtom(currentListAtom);
 
-  /** Get the track after the one in `currPlayingIdx` from the correct list. */
-  static async getTrackAfterCurrIdx() {
-    const isShuffled = await getAtom(shuffleAsyncAtom);
-    const currIdx = await getAtom(currPlayingIdxAsyncAtom);
-    const playingList = await getAtom(playingListAsyncAtom);
-    const shuffledPlayingList = await getAtom(shuffledPlayingListAsyncAtom);
-    const nextIdx = currIdx === playingList.length - 1 ? 0 : currIdx + 1;
-    return isShuffled ? shuffledPlayingList[nextIdx] : playingList[nextIdx];
+    let newIdx = currIdx;
+    if (place === "BEFORE") {
+      newIdx = currIdx === 0 ? currList.length - 1 : currIdx - 1;
+    } else if (place === "AFTER") {
+      newIdx = currIdx === currList.length - 1 ? 0 : currIdx + 1;
+    }
+
+    return currList[newIdx];
   }
 
   /**
@@ -493,7 +510,7 @@ export class RNTPManager {
     // The following check is to fix `isInQueue` in case it doesn't have
     // the right value.
     const currPlayingId = await getAtom(currPlayingIdAsyncAtom);
-    const idAtCurrIdx = await RNTPManager.getTrackAtCurrIdx();
+    const idAtCurrIdx = await RNTPManager.getTrackAroundCurrIdx("AT");
     return currPlayingId === idAtCurrIdx;
   }
 
@@ -519,8 +536,8 @@ export class RNTPManager {
     return {
       isNextInQueue: false,
       nextTrackId: (await RNTPManager.isCurrActiveTrack())
-        ? await RNTPManager.getTrackAfterCurrIdx()
-        : await RNTPManager.getTrackAtCurrIdx(),
+        ? await RNTPManager.getTrackAroundCurrIdx("AFTER")
+        : await RNTPManager.getTrackAroundCurrIdx("AT"),
     };
   }
 
@@ -553,12 +570,24 @@ export class RNTPManager {
     const newTrack = await getTrack([eq(tracks.id, nextTrackId)]);
     await TrackPlayer.add({
       ...formatTrackforPlayer(newTrack),
-      /**
-       * Custom field that we'll read in the `PlaybackActiveTrackChanged`
-       * event.
-       */
       "music::status": isNextInQueue ? "QUEUE" : undefined,
     });
+  }
+
+  /**
+   * Checks to see if we should be playing the current track.
+   *
+   * This checks the track identified by `currPlayingId`. It's our
+   * responsibilty to update `isInQueue`, `currPlayingIdx`, and
+   * `currPlayingId` correctly.
+   */
+  static async reloadCurrentTrack() {
+    if (!(await RNTPManager.isRNTPLoaded())) return;
+    await TrackPlayer.load({
+      ...formatTrackforPlayer((await getAtom(activeTrackAsyncAtom))!),
+      "music::status": "RELOAD",
+    });
+    await TrackPlayer.seekTo(0);
   }
 }
 //#endregion

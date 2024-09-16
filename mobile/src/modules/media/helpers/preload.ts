@@ -16,10 +16,6 @@ export async function preloadRNTPQueue() {
   // Add the current playing track to the RNTP queue.
   await TrackPlayer.add({
     ...formatTrackforPlayer(activeTrack),
-    /**
-     * Custom field that we'll read in the `PlaybackActiveTrackChanged`
-     * event.
-     */
     "music::status": isPlayingFromQueue ? "QUEUE" : undefined,
   });
   // Add the 2nd track in the RNTP queue.
