@@ -65,7 +65,8 @@
     "react-native-toast-notifications": "^3.4.0",
     "react-native-track-player": "^4.1.1",
     "tailwind-merge": "^2.4.0",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "zustand": "5.0.0-rc.2"
   },
   "devDependencies": {
     "@babel/core": "^7.24.9",

@@ -47,3 +47,4 @@
 | react-native-track-player | Apache-2.0 | https://github.com/doublesymmetry/react-native-track-player |
 | tailwind-merge | MIT | https://github.com/dcastil/tailwind-merge |
 | zod | MIT | https://github.com/colinhacks/zod |
+| zustand | MIT | https://github.com/pmndrs/zustand |
