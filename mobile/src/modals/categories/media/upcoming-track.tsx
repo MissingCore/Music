@@ -1,6 +1,5 @@
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { FlashList } from "@shopify/flash-list";
-import { useAtomValue } from "jotai";
 import { Suspense } from "react";
 import { View } from "react-native";
 
@@ -8,7 +7,6 @@ import type { Track } from "@/db/schema";
 
 import { Ionicons } from "@/resources/icons";
 import { Queue, useMusicStore } from "@/modules/media/services/next/Music";
-import { nextTrackListAtom, queueTrackListAtom } from "./store";
 
 import { Colors } from "@/constants/Styles";
 import { pickKeys } from "@/utils/object";
@@ -16,7 +14,7 @@ import { ActionButton } from "@/components/form/action-button";
 import { MediaImage } from "@/components/media/image";
 import { LoadingIndicator } from "@/components/ui/loading";
 import { Description, Heading } from "@/components/ui/text";
-import { ModalBase } from "../../../components/base";
+import { ModalBase } from "../../components/base";
 
 type TrackExcerpt = Pick<Track, "id" | "artistName" | "name" | "artwork">;
 
@@ -63,7 +61,7 @@ function CurrentTrack() {
 
 /** List out tracks in the queue, giving us the ability to remove them. */
 function QueueListTracks() {
-  const data = useAtomValue(queueTrackListAtom);
+  const data = useMusicStore((state) => state.queuedTrackList);
   return (
     <FlashList
       estimatedItemSize={66} // 58px Height + 8px Margin Bottom
@@ -80,7 +78,11 @@ function QueueListTracks() {
 
 /** Displays up to the next 5 tracks. */
 function NextTracks() {
-  const data = useAtomValue(nextTrackListAtom);
+  const currIdx = useMusicStore((state) => state.listIdx);
+  const currTracks = useMusicStore((state) => state.currentTrackList);
+
+  const data = [...currTracks].slice(currIdx + 1, currIdx + 6);
+
   return (
     <FlashList
       estimatedItemSize={66} // 58px Height + 8px Margin Bottom

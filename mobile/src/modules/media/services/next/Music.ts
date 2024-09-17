@@ -65,6 +65,8 @@ interface MusicStore {
 
   /** Where the contents of `playingList` is from. */
   playingSource: PlayListSource | undefined;
+  /** Name representing the current `PlayListSource`. */
+  sourceName: string;
   /** Ordered list of track ids based on the `playingSource`. */
   playingList: string[];
   /** Ordered list of `TrackWithAlbum`. */
@@ -138,6 +140,7 @@ export const musicStore = createStore<MusicStore>()(
         setShuffle: (status: boolean) => set({ shuffle: status }),
 
         playingSource: undefined as PlayListSource | undefined,
+        sourceName: "",
         playingList: [] as string[],
         trackList: [] as TrackWithAlbum[],
         shuffledPlayingList: [] as string[],
@@ -200,6 +203,33 @@ musicStore.subscribe(
       currentList: shuffle ? shuffledPlayingList : playingList,
       trackList: shuffle ? shuffledTrackList : trackList,
     });
+  },
+);
+
+/** Update `sourceName` when `playingSource` changes. */
+musicStore.subscribe(
+  (state) => state.playingSource,
+  async (source) => {
+    if (!source) return "";
+    let newSourceName = "";
+    try {
+      if (
+        (Object.values(ReservedPlaylists) as string[]).includes(source.id) ||
+        ["artist", "playlist"].includes(source.type)
+      ) {
+        newSourceName = source.id;
+      } else if (source.type === "folder") {
+        // FIXME: At `-2` index due to the folder path (in `id`) ending with
+        // a trailing slash.
+        newSourceName = source.id.split("/").at(-2) ?? "";
+      } else if (source.type === "album") {
+        const album = await getAlbum([eq(albums.id, source.id)]);
+        newSourceName = album.name;
+      }
+      newSourceName = ""; // Fallback in case we miss anything.
+    } catch {}
+
+    musicStore.setState({ sourceName: newSourceName });
   },
 );
 
