@@ -84,7 +84,10 @@ export async function PlaybackService() {
       });
 
       // Check if we should pause after looping logic.
-      if (newIdx === 0 && !repeat) await MusicControls.pause();
+      if (newIdx === 0 && !repeat) {
+        await MusicControls.pause();
+        await TrackPlayer.seekTo(0);
+      }
     }
 
     if (e.index === 1) await TrackPlayer.remove(0);

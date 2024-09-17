@@ -13,7 +13,6 @@ import {
 } from "./next/Music";
 
 import { arePlaybackSourceEqual, getTrackList } from "../helpers/data";
-import { preloadRNTPQueue } from "../helpers/preload";
 import type { PlayListSource } from "../types";
 
 //#region MusicControls
@@ -25,7 +24,7 @@ export class MusicControls {
   /** Play the current track. */
   static async play() {
     musicStore.setState({ isPlaying: true });
-    await preloadRNTPQueue();
+    await RNTPManager.preloadRNTPQueue();
     await TrackPlayer.play();
   }
 
@@ -70,11 +69,12 @@ export class MusicControls {
       });
     }
 
-    await RNTPManager.reloadCurrentTrack(true);
+    await RNTPManager.reloadCurrentTrack({ restart: true });
   }
 
   /** Play the next track. */
   static async next() {
+    const shouldRepeat = musicStore.getState().repeat;
     const { trackId, track, newIdx, isInQueue } = RNTPManager.getNextTrack();
     musicStore.setState({
       activeId: trackId,
@@ -85,11 +85,12 @@ export class MusicControls {
     if (isInQueue) await Queue.removeAtIndex(0);
 
     await RNTPManager.reloadCurrentTrack();
+    if (newIdx === 0 && !shouldRepeat) await MusicControls.pause();
   }
 
   /** Seek to a certain position in the current playing track. */
   static async seekTo(position: number) {
-    await preloadRNTPQueue();
+    await RNTPManager.preloadRNTPQueue();
     await TrackPlayer.seekTo(position);
   }
 }
@@ -128,7 +129,7 @@ export async function playFromMediaList({
         listIdx: listIndex,
         isInQueue: false,
       });
-      await RNTPManager.reloadCurrentTrack();
+      await RNTPManager.reloadCurrentTrack({ preload: true });
     }
     await MusicControls.play(); // Will preload RNTP queue if empty.
     return;
@@ -137,7 +138,10 @@ export async function playFromMediaList({
   // 3. Handle case when the media list is new.
   const newPlayingList = (await getTrackList(source)).map(({ id }) => id);
   if (newPlayingList.length === 0) return; // Don't do anything if list is empty.
-  const newListsInfo = RNTPManager.getPlayingLists(newPlayingList);
+  const newListsInfo = RNTPManager.getPlayingLists(
+    newPlayingList,
+    trackId ?? activeId,
+  );
 
   // 4. Get the track from this new info.
   const newTrackId = newListsInfo.currentList[newListsInfo.listIdx];
@@ -158,7 +162,7 @@ export async function playFromMediaList({
   });
 
   // 5. Play this new media list.
-  await RNTPManager.reloadCurrentTrack();
+  await RNTPManager.reloadCurrentTrack({ preload: true });
   await TrackPlayer.play();
 
   // 6. Add media list to recent lists.

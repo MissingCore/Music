@@ -456,6 +456,22 @@ export class RNTPManager {
     return (await TrackPlayer.getPlaybackState()).state !== State.None;
   }
 
+  /** Initialize the RNTP queue, loading the first 2 tracks. */
+  static async preloadRNTPQueue() {
+    if (await RNTPManager.isRNTPLoaded()) return;
+    console.log("[RNTP] Queue is empty, preloading RNTP Queue...");
+    const { activeTrack, isInQueue } = musicStore.getState();
+    if (!activeTrack) return;
+
+    // Add the current playing track to the RNTP queue.
+    await TrackPlayer.add({
+      ...formatTrackforPlayer(activeTrack),
+      "music::status": (isInQueue ? "QUEUE" : "RELOAD") satisfies TrackStatus,
+    });
+    // Add the 2nd track in the RNTP queue.
+    await RNTPManager.reloadNextTrack();
+  }
+
   /**
    * Returns the next track to be played.
    *
@@ -505,12 +521,12 @@ export class RNTPManager {
   }
 
   /** Updates all the playing lists, along with `listIdx`. */
-  static getPlayingLists(newPlayingList: string[]) {
+  static getPlayingLists(newPlayingList: string[], startTrackId?: string) {
     const { shuffle, listIdx, currentList } = musicStore.getState();
     const newShuffledPlayingList = shuffleArray(newPlayingList);
 
     // Get the new index of the track at `listIdx` if the list changes.
-    const prevTrackId = currentList[listIdx]!;
+    const prevTrackId = startTrackId ?? currentList[listIdx]!;
     const newLocation = shuffle
       ? newShuffledPlayingList.findIndex((tId) => prevTrackId === tId)
       : newPlayingList.findIndex((tId) => prevTrackId === tId);
@@ -562,14 +578,20 @@ export class RNTPManager {
    * This checks the track identified by `activeId`. It's our responsibilty
    * to update `isInQueue`, `listIdx`, and `activeId` correctly.
    */
-  static async reloadCurrentTrack(restart?: boolean) {
-    if (!(await RNTPManager.isRNTPLoaded())) return;
+  static async reloadCurrentTrack(args?: {
+    restart?: boolean;
+    preload?: boolean;
+  }) {
+    if (!(await RNTPManager.isRNTPLoaded())) {
+      if (args?.preload) await RNTPManager.preloadRNTPQueue();
+      return;
+    }
     const playingTrack = await TrackPlayer.getActiveTrack();
     const { activeTrack, isInQueue } = musicStore.getState();
 
     // If we are playing the right track, don't do anything (unless
     // we want to restart).
-    if (playingTrack?.id === activeTrack?.id && !restart) return;
+    if (playingTrack?.id === activeTrack?.id && !args?.restart) return;
 
     await TrackPlayer.load({
       ...formatTrackforPlayer(activeTrack!),
