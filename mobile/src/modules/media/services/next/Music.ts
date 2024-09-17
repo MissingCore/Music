@@ -195,14 +195,35 @@ export const useMusicStore = <T>(selector: (state: MusicStore) => T): T =>
 /** Update `currentList` & `currentTrackList` when `shuffle` changes. */
 musicStore.subscribe(
   (state) => state.shuffle,
-  (shuffle) => {
-    const { playingList, trackList, shuffledPlayingList, shuffledTrackList } =
-      musicStore.getState();
+  async (shuffle) => {
+    const {
+      activeId,
+      currentList,
+      listIdx,
+      playingList,
+      trackList,
+      shuffledPlayingList,
+      shuffledTrackList,
+    } = musicStore.getState();
+
+    const newCurrList = shuffle ? shuffledPlayingList : playingList;
+
+    // Get the new `listIdx` value.
+    const trackAtListIdx = currentList[listIdx]!;
+    const isActiveInList = currentList.findIndex((tId) => tId === activeId);
+    // New list index will be based either on the current playing track if
+    // it's in the list, or the track at the `listIdx` index.
+    const newListIdx = isActiveInList
+      ? newCurrList.findIndex((tId) => tId === activeId)
+      : newCurrList.findIndex((tId) => tId === trackAtListIdx);
 
     musicStore.setState({
-      currentList: shuffle ? shuffledPlayingList : playingList,
-      trackList: shuffle ? shuffledTrackList : trackList,
+      currentList: newCurrList,
+      currentTrackList: shuffle ? shuffledTrackList : trackList,
+      listIdx: newListIdx,
     });
+
+    await RNTPManager.reloadNextTrack();
   },
 );
 
@@ -210,7 +231,11 @@ musicStore.subscribe(
 musicStore.subscribe(
   (state) => state.playingSource,
   async (source) => {
-    if (!source) return "";
+    if (!source) {
+      musicStore.setState({ sourceName: "" });
+      return;
+    }
+
     let newSourceName = "";
     try {
       if (
@@ -225,8 +250,9 @@ musicStore.subscribe(
       } else if (source.type === "album") {
         const album = await getAlbum([eq(albums.id, source.id)]);
         newSourceName = album.name;
+      } else {
+        newSourceName = ""; // Fallback in case we miss anything.
       }
-      newSourceName = ""; // Fallback in case we miss anything.
     } catch {}
 
     musicStore.setState({ sourceName: newSourceName });
@@ -648,14 +674,16 @@ export class Resynchronize {
     RecentList.refresh();
 
     // Check if we were playing this list.
-    const currSource = musicStore.getState().playingSource;
-    if (!currSource) return;
-    const isPlayingRef = arePlaybackSourceEqual(currSource, ref);
+    const { playingSource, activeId } = musicStore.getState();
+    if (!playingSource) return;
+    const isPlayingRef = arePlaybackSourceEqual(playingSource, ref);
     if (!isPlayingRef) return;
 
     // Make sure our track lists along with the current index are up-to-date.
-    const newPlayingList = (await getTrackList(currSource)).map(({ id }) => id);
-    const newListsInfo = RNTPManager.getPlayingLists(newPlayingList);
+    const newPlayingList = (await getTrackList(playingSource)).map(
+      ({ id }) => id,
+    );
+    const newListsInfo = RNTPManager.getPlayingLists(newPlayingList, activeId);
 
     // Update state.
     musicStore.setState({ ...newListsInfo });
