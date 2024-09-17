@@ -13,15 +13,15 @@ import {
   removeUnlinkedAlbums,
   removeUnlinkedArtists,
 } from "@/features/indexing/api/db-cleanup";
-import { MusicControls } from "@/modules/media/services/Playback";
+import type { TrackStatus } from "@/modules/media/services/next/Music";
 import {
-  AsyncAtomState,
   Queue,
   RNTPManager,
+  musicStore,
   resetState,
-} from "@/modules/media/services/State";
+} from "@/modules/media/services/next/Music";
+import { MusicControls } from "@/modules/media/services/Playback";
 
-import { getAtom, setAtom } from "@/lib/jotai";
 import { clearAllQueries } from "@/lib/react-query";
 
 /** How we handle the actions in the media control notification. */
@@ -58,36 +58,37 @@ export async function PlaybackService() {
   TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (e) => {
     if (e.index === undefined) return;
 
+    const { repeat, queueList } = musicStore.getState();
     const activeTrack = e.track!;
-    const trackStatus: "QUEUE" | "END" | "RELOAD" | undefined =
-      activeTrack["music::status"];
+    const trackStatus: TrackStatus = activeTrack["music::status"];
 
     if (trackStatus === "END") {
       await resetState();
       return;
     } else if (trackStatus === "QUEUE") {
       // Remove 1st item in `queueList` if they're the same.
-      if (activeTrack.id === (await getAtom(AsyncAtomState.queueList))[0]) {
-        await Queue.removeAtIndex(0);
-      }
+      if (activeTrack.id === queueList[0]) await Queue.removeAtIndex(0);
+      musicStore.setState({ isInQueue: true });
     } else if (trackStatus === undefined) {
-      // If `trackStatus = undefined`, it means we're playing the next track
-      // "naturally" and should update the index & values accordingly.
-      const currList = await getAtom(AsyncAtomState.currentList);
-      const prevIdx = await getAtom(AsyncAtomState.currPlayingIdx);
-      const newIdx = prevIdx === currList.length - 1 ? 0 : prevIdx + 1;
-      await setAtom(AsyncAtomState.currPlayingIdx, newIdx);
-      await setAtom(AsyncAtomState.currPlayingId, activeTrack.id);
+      // If `trackStatus = undefined`, it means the player naturally played
+      // the next track (which isn't part of `queueList`).
+
+      // Since we played this track naturally, the index hasn't been updated
+      // in the store.
+      const { trackId, track, newIdx } = RNTPManager.getNextTrack();
+      musicStore.setState({
+        activeId: trackId,
+        activeTrack: track,
+        listIdx: newIdx,
+        isInQueue: false,
+      });
 
       // Check if we should pause after looping logic.
-      if (newIdx === 0) {
-        const shouldRepeat = await getAtom(AsyncAtomState.repeat);
-        if (!shouldRepeat) await MusicControls.pause();
-      }
+      if (newIdx === 0 && !repeat) await MusicControls.pause();
     }
 
     if (e.index === 1) await TrackPlayer.remove(0);
-    await RNTPManager.refreshNextTrack();
+    await RNTPManager.reloadNextTrack();
   });
 
   TrackPlayer.addEventListener(Event.PlaybackError, async (e) => {

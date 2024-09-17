@@ -1,3 +1,9 @@
+/**
+ * Store representing the Media Player Interface.
+ *
+ * This file contains classes containing helpers to manipulate the store.
+ */
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { eq } from "drizzle-orm";
 import { Toast } from "react-native-toast-notifications";
@@ -208,6 +214,11 @@ musicStore.subscribe(
 musicStore.subscribe(
   (state) => state.activeId,
   async (activeId) => {
+    // Skip the async request if `activeTrack` is populated with the
+    // correct track.
+    const currTrack = musicStore.getState().activeTrack;
+    if (activeId === currTrack?.id) return;
+
     let newTrack: TrackWithAlbum | undefined;
     try {
       if (activeId) newTrack = await getTrack([eq(tracks.id, activeId)]);
@@ -389,6 +400,13 @@ export class RecentList {
 //#endregion
 
 //#region RNTP Manager
+/**
+ * Helps identifies the track played in the `PlaybackActiveTrackChanged`
+ * event.
+ */
+export type TrackStatus = "RELOAD" | "QUEUE" | "END" | undefined;
+
+/** Helpers to help manage the RNTP queue. */
 export class RNTPManager {
   /** Determine if any tracks are loaded in RNTP on launch. */
   static async isRNTPLoaded() {
@@ -444,7 +462,7 @@ export class RNTPManager {
   }
 
   /** Updates all the playing lists, along with `listIdx`. */
-  static updatePlayingList(newPlayingList: string[]) {
+  static getPlayingLists(newPlayingList: string[]) {
     const { shuffle, listIdx, currentList } = musicStore.getState();
     const newShuffledPlayingList = shuffleArray(newPlayingList);
 
@@ -455,15 +473,14 @@ export class RNTPManager {
       : newPlayingList.findIndex((tId) => prevTrackId === tId);
     const newListIdx = newLocation === -1 ? 0 : newLocation;
 
-    // Update state.
-    musicStore.setState({
+    return {
       playingList: newPlayingList,
       shuffledPlayingList: newShuffledPlayingList,
       currentList: shuffle ? newShuffledPlayingList : newPlayingList,
 
       listIdx: newListIdx,
       isInQueue: newLocation === -1,
-    });
+    };
   }
 
   /** Make sure the next track in the RNTP queue is correct */
@@ -484,12 +501,14 @@ export class RNTPManager {
          * Custom field that we'll read in the `PlaybackActiveTrackChanged`
          * event to fire `resetState()`.
          */
-        "music::status": "END",
+        "music::status": "END" satisfies TrackStatus,
       });
     } else {
       await TrackPlayer.add({
         ...formatTrackforPlayer(track!),
-        "music::status": isInQueue ? "QUEUE" : undefined,
+        "music::status": (isInQueue
+          ? "QUEUE"
+          : undefined) satisfies TrackStatus,
       });
     }
   }
@@ -511,7 +530,7 @@ export class RNTPManager {
 
     await TrackPlayer.load({
       ...formatTrackforPlayer(activeTrack!),
-      "music::status": isInQueue ? "QUEUE" : "RELOAD",
+      "music::status": (isInQueue ? "QUEUE" : "RELOAD") satisfies TrackStatus,
     });
     await TrackPlayer.seekTo(0);
   }

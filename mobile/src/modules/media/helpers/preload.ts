@@ -1,23 +1,22 @@
 import TrackPlayer from "react-native-track-player";
 
-import { AsyncAtomState, RNTPManager } from "../services/State";
+import type { TrackStatus } from "../services/next/Music";
+import { RNTPManager, musicStore } from "../services/next/Music";
 
-import { getAtom } from "@/lib/jotai";
 import { formatTrackforPlayer } from "./data";
 
 /** Initialize the RNTP queue, loading the first 2 tracks. */
 export async function preloadRNTPQueue() {
   if (await RNTPManager.isRNTPLoaded()) return;
   console.log("[RNTP] Queue is empty, preloading RNTP Queue...");
-  const activeTrack = await getAtom(AsyncAtomState.activeTrack);
+  const { activeTrack, isInQueue } = musicStore.getState();
   if (!activeTrack) return;
-  const isPlayingFromQueue = await RNTPManager.isCurrActiveTrack();
 
   // Add the current playing track to the RNTP queue.
   await TrackPlayer.add({
     ...formatTrackforPlayer(activeTrack),
-    "music::status": isPlayingFromQueue ? "QUEUE" : "RELOAD",
+    "music::status": (isInQueue ? "QUEUE" : "RELOAD") satisfies TrackStatus,
   });
   // Add the 2nd track in the RNTP queue.
-  await RNTPManager.refreshNextTrack();
+  await RNTPManager.reloadNextTrack();
 }
