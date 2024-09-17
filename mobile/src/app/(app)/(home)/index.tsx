@@ -1,6 +1,5 @@
 import { FlashList } from "@shopify/flash-list";
 import { Link } from "expo-router";
-import { useAtomValue } from "jotai";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { NativeScrollEvent } from "react-native";
 import { Pressable, ScrollView, View } from "react-native";
@@ -10,7 +9,7 @@ import {
   useFavoriteTracksCount,
 } from "@/api/favorites";
 import { useGetColumn } from "@/hooks/layout";
-import { SyncAtomState } from "@/modules/media/services/State";
+import { useMusicStore } from "@/modules/media/services/next/Music";
 
 import { abbreviateNum } from "@/utils/number";
 import { MediaCard, PlaceholderContent } from "@/components/media/card";
@@ -81,7 +80,7 @@ export default function HomeScreen() {
 
 /** An array of `<MediaCards />` of recently played media. */
 function RecentlyPlayed({ colWidth }: { colWidth: number }) {
-  const recentlyPlayedData = useAtomValue(SyncAtomState.recentList);
+  const recentlyPlayedData = useMusicStore((state) => state.recentList);
 
   // FIXME: Eventually replace the `Array.map()` with a horizontal
   // `<FlashList />` like what we did in `/album`.

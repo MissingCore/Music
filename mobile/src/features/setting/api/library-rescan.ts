@@ -6,7 +6,7 @@ import { saveArtwork } from "@/features/indexing/api/artwork-save";
 import { cleanUpDb } from "@/features/indexing/api/db-cleanup";
 import { doAudioIndexing } from "@/features/indexing/api/index-audio";
 import { AdjustmentFunctionMap } from "@/features/indexing/api/index-override";
-import { RecentList } from "@/modules/media/services/State";
+import { RecentList } from "@/modules/media/services/next/Music";
 
 export async function rescanLibrary() {
   const toastId = Toast.show("Rescanning library...", { duration: 0 });

@@ -15,9 +15,8 @@ import { favoriteKeys } from "@/api/favorites/_queryKeys";
 import { playlistKeys } from "@/api/playlists/_queryKeys";
 import { trackKeys } from "../_queryKeys";
 
-import { AsyncAtomState, Resynchronize } from "@/modules/media/services/State";
+import { Resynchronize, musicStore } from "@/modules/media/services/next/Music";
 
-import { getAtom } from "@/lib/jotai";
 import type { ExtractFnReturnType, Prettify } from "@/utils/types";
 
 type BaseFnArgs = { trackId: string };
@@ -75,7 +74,7 @@ export async function putTrackInPlaylists({
       await tx.insert(tracksToPlaylists).values(newEntries);
     }
 
-    const currPlayingFrom = await getAtom(AsyncAtomState.playingSource);
+    const currPlayingFrom = musicStore.getState().playingSource;
     if (currPlayingFrom) await Resynchronize.onTracks(currPlayingFrom);
   });
 }

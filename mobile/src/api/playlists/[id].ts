@@ -16,7 +16,7 @@ import { sanitizedPlaylistName } from "@/db/utils/validators";
 import { playlistKeys } from "./_queryKeys";
 import { favoriteKeys } from "../favorites/_queryKeys";
 
-import { Resynchronize } from "@/modules/media/services/State";
+import { Resynchronize } from "@/modules/media/services/next/Music";
 
 import { deleteFile } from "@/lib/file-system";
 import { pickKeys } from "@/utils/object";
@@ -84,7 +84,7 @@ export async function updatePlaylist({ playlistName, action }: UPDATEFnArgs) {
       .set({ artwork: action.value })
       .where(eq(playlists.name, playlistName));
 
-    await Resynchronize.onImage();
+    Resynchronize.onImage();
   } else {
     const sanitizedName = sanitizedPlaylistName(action.value);
     let exists: unknown;
@@ -102,9 +102,9 @@ export async function updatePlaylist({ playlistName, action }: UPDATEFnArgs) {
           .set({ playlistName: sanitizedName })
           .where(eq(tracksToPlaylists.playlistName, playlistName));
 
-        await Resynchronize.onRename({
-          oldEntry: { type: "playlist", id: playlistName },
-          newEntry: { type: "playlist", id: sanitizedName },
+        Resynchronize.onRename({
+          oldSource: { type: "playlist", id: playlistName },
+          newSource: { type: "playlist", id: sanitizedName },
         });
       });
     }

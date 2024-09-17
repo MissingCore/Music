@@ -1,8 +1,7 @@
-import { useAtomValue } from "jotai";
 import { View, useWindowDimensions } from "react-native";
 import { clamp } from "react-native-reanimated";
 
-import { SyncAtomState } from "@/modules/media/services/State";
+import { useMusicStore } from "@/modules/media/services/next/Music";
 import { arePlaybackSourceEqual } from "@/modules/media/helpers/data";
 import type { PlayListSource } from "@/modules/media/types";
 
@@ -56,8 +55,8 @@ function HeroImage(props: {
   trackSource: PlayListSource;
 }) {
   const { width, height } = useWindowDimensions();
-  const isPlaying = useAtomValue(SyncAtomState.isPlaying);
-  const source = useAtomValue(SyncAtomState.playingSource);
+  const isPlaying = useMusicStore((state) => state.isPlaying);
+  const source = useMusicStore((state) => state.playingSource);
   const isThisSource = arePlaybackSourceEqual(source, props.trackSource);
 
   const availableLength = clamp(100, width * 0.6, height * 0.4);

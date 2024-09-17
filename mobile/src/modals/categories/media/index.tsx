@@ -1,6 +1,6 @@
 import { useAtomValue } from "jotai";
 
-import { SyncAtomState } from "@/modules/media/services/State";
+import { useMusicStore } from "@/modules/media/services/next/Music";
 import { mediaModalAtom } from "./store";
 
 import { PlaylistModal } from "./playlist";
@@ -41,7 +41,7 @@ export function MediaModals() {
 }
 
 function RenderTrackModal() {
-  const track = useAtomValue(SyncAtomState.activeTrack);
+  const track = useMusicStore((state) => state.activeTrack);
   if (!track) return null;
   return <TrackModal id={track.id} origin="current" />;
 }

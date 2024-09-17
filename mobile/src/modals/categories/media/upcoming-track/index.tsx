@@ -7,7 +7,7 @@ import { View } from "react-native";
 import type { Track } from "@/db/schema";
 
 import { Ionicons } from "@/resources/icons";
-import { Queue, SyncAtomState } from "@/modules/media/services/State";
+import { Queue, useMusicStore } from "@/modules/media/services/next/Music";
 import { nextTrackListAtom, queueTrackListAtom } from "./store";
 
 import { Colors } from "@/constants/Styles";
@@ -52,7 +52,7 @@ export function UpcomingTrackModal() {
 
 /** Displays the current track. */
 function CurrentTrack() {
-  const track = useAtomValue(SyncAtomState.activeTrack);
+  const track = useMusicStore((state) => state.activeTrack);
   if (!track) return <EmptyMessage />;
   return (
     <UpcomingTrack

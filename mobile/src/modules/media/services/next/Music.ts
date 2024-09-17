@@ -8,6 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { eq } from "drizzle-orm";
 import { Toast } from "react-native-toast-notifications";
 import TrackPlayer, { State } from "react-native-track-player";
+import { useStore } from "zustand";
 import {
   createJSONStorage,
   persist,
@@ -32,6 +33,7 @@ import { ReservedPlaylists } from "../../constants/ReservedNames";
 import {
   arePlaybackSourceEqual,
   formatTrackforPlayer,
+  getTrackList,
   getTracksFromIds,
 } from "../../helpers/data";
 import type { PlayListSource } from "../../types";
@@ -51,11 +53,15 @@ interface MusicStore {
    * finishing the last track.
    */
   repeat: boolean;
+  /** Update the `repeat` field. */
+  setRepeat: (status: boolean) => void;
   /**
    * If we should use `shuffledPlayingList` instead of `playingList` for
    * the order of the tracks played.
    */
   shuffle: boolean;
+  /** Update the `shuffle` field. */
+  setShuffle: (status: boolean) => void;
 
   /** Where the contents of `playingList` is from. */
   playingSource: PlayListSource | undefined;
@@ -127,7 +133,9 @@ export const musicStore = createStore<MusicStore>()(
         isPlaying: false as boolean,
 
         repeat: false as boolean,
+        setRepeat: (status: boolean) => set({ repeat: status }),
         shuffle: false as boolean,
+        setShuffle: (status: boolean) => set({ shuffle: status }),
 
         playingSource: undefined as PlayListSource | undefined,
         playingList: [] as string[],
@@ -173,6 +181,11 @@ export const musicStore = createStore<MusicStore>()(
     ),
   ),
 );
+
+//#region Custom Hook
+export const useMusicStore = <T>(selector: (state: MusicStore) => T): T =>
+  useStore(musicStore, selector);
+//#endregion
 //#endregion
 
 //#region Subscriptions
@@ -533,6 +546,70 @@ export class RNTPManager {
       "music::status": (isInQueue ? "QUEUE" : "RELOAD") satisfies TrackStatus,
     });
     await TrackPlayer.seekTo(0);
+  }
+}
+//#endregion
+
+//#region Resynchronization Helpers
+/**
+ * Helpers to ensure the Jotai store is up-to-date with the changes made
+ * in React Query.
+ */
+export class Resynchronize {
+  /** Resynchronize when we delete one or more media lists. */
+  static async onDelete(removedRefs: PlayListSource | PlayListSource[]) {
+    if (Array.isArray(removedRefs)) RecentList.removeEntries(removedRefs);
+    else RecentList.removeEntry(removedRefs);
+
+    // Check if we were playing this list.
+    const currSource = musicStore.getState().playingSource;
+    if (!currSource) return;
+
+    const isPlayingRef = Array.isArray(removedRefs)
+      ? RecentList.isInRecentList(currSource, removedRefs)
+      : arePlaybackSourceEqual(currSource, removedRefs);
+    if (isPlayingRef) await resetState();
+  }
+
+  /** Resynchronize when we update the artwork. */
+  static onImage() {
+    RecentList.refresh();
+  }
+
+  /** Resynchronize when we rename a playlist. */
+  static onRename({
+    oldSource,
+    newSource,
+  }: Record<"oldSource" | "newSource", PlayListSource>) {
+    RecentList.replaceEntry({ oldSource, newSource });
+
+    // Check if we were playing this list.
+    const currSource = musicStore.getState().playingSource;
+    if (!currSource) return;
+
+    const isPlayingRef = arePlaybackSourceEqual(currSource, oldSource);
+    if (isPlayingRef) musicStore.setState({ playingSource: newSource });
+  }
+
+  /** Resynchronize when we update the tracks in a media list. */
+  static async onTracks(ref: PlayListSource) {
+    RecentList.refresh();
+
+    // Check if we were playing this list.
+    const currSource = musicStore.getState().playingSource;
+    if (!currSource) return;
+    const isPlayingRef = arePlaybackSourceEqual(currSource, ref);
+    if (!isPlayingRef) return;
+
+    // Make sure our track lists along with the current index are up-to-date.
+    const newPlayingList = (await getTrackList(currSource)).map(({ id }) => id);
+    const newListsInfo = RNTPManager.getPlayingLists(newPlayingList);
+
+    // Update state.
+    musicStore.setState({ ...newListsInfo });
+
+    // Make sure the next track is correct after updating the list used.
+    await RNTPManager.reloadNextTrack();
   }
 }
 //#endregion

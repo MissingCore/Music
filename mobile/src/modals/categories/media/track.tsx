@@ -1,11 +1,11 @@
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import { useMemo } from "react";
 import { View } from "react-native";
 
 import { useToggleFavorite } from "@/api/favorites/[id]";
 import { useTrackExcerpt } from "@/api/tracks/[id]";
-import { Queue, SyncAtomState } from "@/modules/media/services/State";
+import { Queue, useMusicStore } from "@/modules/media/services/next/Music";
 import { mediaModalAtom } from "./store";
 
 import { mutateGuard } from "@/lib/react-query";
@@ -119,7 +119,7 @@ export function TrackModal({ id, origin }: Props) {
 
 /** Renders a button to view the current playing playlist. */
 function ViewPlaylist() {
-  const source = useAtomValue(SyncAtomState.playingSource);
+  const source = useMusicStore((state) => state.playingSource);
 
   const currentPlaylist = useMemo(() => {
     return source?.type === "playlist" ? source.id : undefined;

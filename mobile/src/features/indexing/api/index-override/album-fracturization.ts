@@ -7,7 +7,7 @@ import { inArray } from "drizzle-orm";
 import { db } from "@/db";
 import { artists, tracks } from "@/db/schema";
 import { createAlbum } from "@/db/queries";
-import { resetState } from "@/modules/media/services/State";
+import { resetState } from "@/modules/media/services/next/Music";
 
 import type { Maybe } from "@/utils/types";
 

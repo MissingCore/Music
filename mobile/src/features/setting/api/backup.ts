@@ -15,9 +15,8 @@ import { getPlaylists, getTracks } from "@/db/queries";
 import { sanitizedPlaylistName } from "@/db/utils/validators";
 import { getFavoriteLists } from "@/api/favorites";
 
-import { AsyncAtomState, Resynchronize } from "@/modules/media/services/State";
+import { Resynchronize, musicStore } from "@/modules/media/services/next/Music";
 
-import { getAtom } from "@/lib/jotai";
 import { clearAllQueries } from "@/lib/react-query";
 import { pickKeys } from "@/utils/object";
 import { isFulfilled } from "@/utils/promise";
@@ -225,7 +224,7 @@ export async function importBackup() {
   // Delete the cached document.
   await FileSystem.deleteAsync(document.uri);
 
-  const currPlayingFrom = await getAtom(AsyncAtomState.playingSource);
+  const currPlayingFrom = musicStore.getState().playingSource;
   if (currPlayingFrom) await Resynchronize.onTracks(currPlayingFrom);
 }
 

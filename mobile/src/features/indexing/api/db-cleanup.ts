@@ -5,13 +5,12 @@ import { artists, albums, invalidTracks, tracks } from "@/db/schema";
 import { deleteTrack } from "@/db/queries";
 
 import {
-  AsyncAtomState,
   Queue,
   RecentList,
+  musicStore,
   resetState,
-} from "@/modules/media/services/State";
+} from "@/modules/media/services/next/Music";
 
-import { getAtom } from "@/lib/jotai";
 import { clearAllQueries } from "@/lib/react-query";
 import { batch } from "@/utils/promise";
 
@@ -59,9 +58,9 @@ export async function removeUnlinkedTracks(foundTracks: Set<string>) {
  */
 export async function revalidatePlaybackStore(removedTracks: string[]) {
   // See if the current playing tracklist contains a deleted track.
-  const hasRemovedTrack = (await getAtom(AsyncAtomState.playingList)).some(
-    (tId) => removedTracks.includes(tId),
-  );
+  const hasRemovedTrack = musicStore
+    .getState()
+    .playingList.some((tId) => removedTracks.includes(tId));
   if (hasRemovedTrack) await resetState();
   // Clear the queue of deleted tracks.
   await Queue.removeIds(removedTracks);

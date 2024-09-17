@@ -1,9 +1,8 @@
-import { useAtomValue, useSetAtom } from "jotai";
 import { Pressable, View } from "react-native";
 
 import { MaterialIcons } from "@/resources/icons";
-import { MusicControls, playFromMediaListAtom } from "../services/Playback";
-import { SyncAtomState } from "../services/State";
+import { MusicControls, playFromMediaList } from "../services/Playback";
+import { useMusicStore } from "../services/next/Music";
 
 import { cn } from "@/lib/style";
 import { RepeatButton, ShuffleButton } from "./MediaControls";
@@ -31,9 +30,8 @@ export function MediaListControls({
  * from this media list).
  */
 function PlayMediaListButton({ trackSource }: { trackSource: PlayListSource }) {
-  const currSource = useAtomValue(SyncAtomState.playingSource);
-  const isPlaying = useAtomValue(SyncAtomState.isPlaying);
-  const playFromMediaListFn = useSetAtom(playFromMediaListAtom);
+  const currSource = useMusicStore((state) => state.playingSource);
+  const isPlaying = useMusicStore((state) => state.isPlaying);
 
   const isThisSource = arePlaybackSourceEqual(currSource, trackSource);
   const displayPause = isThisSource && isPlaying;
@@ -43,7 +41,7 @@ function PlayMediaListButton({ trackSource }: { trackSource: PlayListSource }) {
       onPress={
         displayPause
           ? MusicControls.pause
-          : () => playFromMediaListFn({ source: trackSource })
+          : () => playFromMediaList({ source: trackSource })
       }
       className={cn("ml-1 rounded-full bg-accent500 p-1 active:opacity-75", {
         "bg-surface500": displayPause,

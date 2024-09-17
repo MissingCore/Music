@@ -1,7 +1,7 @@
 import { useSetAtom } from "jotai";
 import { Text } from "react-native";
 
-import { playFromMediaListAtom } from "@/modules/media/services/Playback";
+import { playFromMediaList } from "@/modules/media/services/Playback";
 import type { PlayListSource } from "@/modules/media/types";
 import { mediaModalAtom } from "@/modals/categories/media/store";
 
@@ -33,12 +33,11 @@ export namespace Track {
  * scenarios (pressing the icon or the whole card will do different actions).
  */
 export function Track({ id, trackSource, origin, ...props }: Track.Props) {
-  const playFn = useSetAtom(playFromMediaListAtom);
   const openModal = useSetAtom(mediaModalAtom);
 
   return (
     <ActionButton
-      onPress={() => playFn({ trackId: id, source: trackSource })}
+      onPress={() => playFromMediaList({ trackId: id, source: trackSource })}
       textContent={props.textContent}
       Image={
         !props.hideImage ? (

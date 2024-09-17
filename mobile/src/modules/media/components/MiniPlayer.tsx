@@ -1,8 +1,7 @@
 import { router } from "expo-router";
-import { useAtomValue } from "jotai";
 import { Pressable, View } from "react-native";
 
-import { SyncAtomState } from "../services/State";
+import { useMusicStore } from "../services/next/Music";
 
 import { MediaImage } from "@/components/media/image";
 import { TextStack } from "@/components/ui/text";
@@ -13,7 +12,7 @@ import { NextButton, PlayToggleButton, PreviousButton } from "./MediaControls";
  * a song loaded.
  */
 export function MiniPlayer() {
-  const track = useAtomValue(SyncAtomState.activeTrack);
+  const track = useMusicStore((state) => state.activeTrack);
 
   if (!track) return null;
 
