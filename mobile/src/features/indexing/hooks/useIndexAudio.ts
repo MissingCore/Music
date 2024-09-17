@@ -1,6 +1,7 @@
 import * as MediaLibrary from "expo-media-library";
 import { useCallback, useEffect, useState } from "react";
 
+import { useMusicStore } from "@/modules/media/services/next/Music";
 import { cleanUpArtwork } from "../api/artwork-cleanup";
 import { saveArtworkOnce } from "../api/artwork-save";
 import { cleanUpDb } from "../api/db-cleanup";
@@ -18,6 +19,7 @@ export function useIndexAudio() {
   const [permissionResponse, requestPermission] = MediaLibrary.usePermissions({
     granularPermissions: ["audio"],
   });
+  const isHydrated = useMusicStore((state) => state._hasHydrated);
   const [isComplete, setIsComplete] = useState(false);
   const [error, setError] = useState<Error>();
 
@@ -54,12 +56,15 @@ export function useIndexAudio() {
   }, [permissionResponse, requestPermission]);
 
   useEffect(() => {
+    // Make sure the Zustand store is hydrated before we do anything.
+    if (!isHydrated) return;
+
     if (permissionResponse && !isComplete) {
       readMusicLibrary().catch((err) => {
         setError(err);
       });
     }
-  }, [permissionResponse, isComplete, readMusicLibrary]);
+  }, [isHydrated, permissionResponse, isComplete, readMusicLibrary]);
 
   return { success: isComplete, error };
 }
