@@ -58,7 +58,7 @@ export async function PlaybackService() {
   TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (e) => {
     if (e.index === undefined) return;
 
-    const { repeat, queueList } = musicStore.getState();
+    const { repeat, queuedTrackList } = musicStore.getState();
     const activeTrack = e.track!;
     const trackStatus: TrackStatus = activeTrack["music::status"];
 
@@ -67,8 +67,17 @@ export async function PlaybackService() {
       return;
     } else if (trackStatus === "QUEUE") {
       // Remove 1st item in `queueList` if they're the same.
-      if (activeTrack.id === queueList[0]) await Queue.removeAtIndex(0);
-      musicStore.setState({ isInQueue: true });
+      if (activeTrack.id === queuedTrackList[0]?.id) {
+        // Update the displayed track.
+        musicStore.setState({
+          activeId: activeTrack.id,
+          activeTrack: queuedTrackList[0],
+          isInQueue: true,
+        });
+        await Queue.removeAtIndex(0);
+      } else {
+        musicStore.setState({ isInQueue: true });
+      }
     } else if (trackStatus === undefined) {
       // If `trackStatus = undefined`, it means the player naturally played
       // the next track (which isn't part of `queueList`).
