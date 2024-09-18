@@ -13,6 +13,7 @@ A Nothing inspired local music player (based on design by [Alkid Shuli (alKid)](
 
 - Supports Android 7+
 - Offline-First
+- Supports Nothing Music Widget & Glyph Music Visualization
 - Diverse music organization: Favorites, Playlists, Folder Structure, Albums, Artists
 - Background playback w/ media control notification
 - Queues
@@ -27,6 +28,9 @@ Music is based on the design seen in this [comment on the Nothing Community foru
 
 For information on the goals and ideology of this app, refer to the [`App Goals & Ideology`](./docs/app-goals-ideology.md) document.
 
+> [!NOTE]  
+> This app is designed to work best on "phone" layouts and isn't tested for larger screens (ie: tablets). We may improve the layout for larger screens in the future.
+
 > [!IMPORTANT]  
 > Be careful when clearing the cache of the app as if you accidentally clear the storage, all the data in the app will be deleted (ie: playlists, favorited tracks, artwork).
 
@@ -36,6 +40,7 @@ For information on the goals and ideology of this app, refer to the [`App Goals 
 [![React Native][React Native]][React Native-url]
 [![TypeScript][TypeScript]][TypeScript-url]
 [![Jotai][Jotai]][Jotai-url]
+[![Zustand][Zustand]][Zustand-url]
 [![React Query][React Query]][React Query-url]
 [![React Native Track Player][React Native Track Player]][React Native Track Player-url]
 [![Tailwind CSS][Tailwind CSS]][Tailwind CSS-url]
@@ -88,18 +93,6 @@ Read the [Where Are Tracks Found?](./docs/where-are-tracks-found.md) documentati
 
 You can look [here](https://developer.android.com/media/platform/supported-formats#audio-formats) for the list of supported audio files & metadata formats from the Android documentation.
 
-> The loading screen is permanently displayed after moving some music in the "Music" folder!
-
-This is an issue with Android where when we move a folder, the original location might still be cached, which means the folder gets detected in its original location in addition to its new location. This kind of scenario might break some things in the app prior to the logic that gives the ok, saying the saving action is completed.
-
-As mentioned in [#36](https://github.com/MissingCore/Music/issues/36), a work around is to copy the contents you want to move to the desired location (instead of moving the original folder), then delete the content at the original location. You can also go through your file system and see if you end up with duplicate "fake" copies of your moved media.
-
-> What platforms are supported?
-
-We officially support Android. Prior to `v1.0.0-rc.11`, this theoretically should also work for iOS (as this is React Native code), but with the switch to `@missingcore/react-native-metadata-retriever` which uses an Android-only API, this is no longer the case.
-
-On Android, the app can be installed on all form-factors, however, we guarantee functionality and a better user-experience on "phone" layouts as that's our main audience. We may improve the layout for larger screens in the future.
-
 # Legal
 
 This application and code is published under the GNU Affero General Public License v3.0 (https://github.com/MissingCore/Music/blob/main/LICENSE).
@@ -139,3 +132,5 @@ Refer to [THIRD_PARTY.md](./THIRD_PARTY.md).
 [Tailwind CSS-url]: https://tailwindcss.com/
 [TypeScript]: https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=FFFFFF
 [TypeScript-url]: https://www.typescriptlang.org/
+[Zustand]: https://img.shields.io/badge/Zustand-101417?style=for-the-badge&logo=data:image/png;base64,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
+[Zustand-url]: https://zustand.docs.pmnd.rs/
