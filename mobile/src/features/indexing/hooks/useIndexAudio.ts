@@ -1,7 +1,10 @@
 import * as MediaLibrary from "expo-media-library";
 import { useCallback, useEffect, useState } from "react";
 
-import { useMusicStore } from "@/modules/media/services/next/Music";
+import {
+  Resynchronize,
+  useMusicStore,
+} from "@/modules/media/services/next/Music";
 import { cleanUpArtwork } from "../api/artwork-cleanup";
 import { saveArtworkOnce } from "../api/artwork-save";
 import { cleanUpDb } from "../api/db-cleanup";
@@ -39,8 +42,12 @@ export function useIndexAudio() {
     await dataReadjustments();
     console.log(`Completed data adjustments in ${stopwatch.lapTime()}.`);
 
-    const { foundFiles } = await doAudioIndexing();
+    const { foundFiles, unstagedFiles } = await doAudioIndexing();
     await cleanUpDb(new Set(foundFiles.map(({ id }) => id)));
+    // Make sure any new tracks doesn't belong in the current playing list.
+    // If they do, then reset state as to get a more accurate playing list.
+    await Resynchronize.onUpdatedList(unstagedFiles.map(({ id }) => id));
+
     console.log(`Finished overall in ${stopwatch.stop()}.`);
     setIsComplete(true);
 

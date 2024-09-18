@@ -6,7 +6,7 @@ import { saveArtwork } from "@/features/indexing/api/artwork-save";
 import { cleanUpDb } from "@/features/indexing/api/db-cleanup";
 import { doAudioIndexing } from "@/features/indexing/api/index-audio";
 import { AdjustmentFunctionMap } from "@/features/indexing/api/index-override";
-import { RecentList } from "@/modules/media/services/next/Music";
+import { RecentList, Resynchronize } from "@/modules/media/services/next/Music";
 
 export async function rescanLibrary() {
   const toastId = Toast.show("Rescanning library...", { duration: 0 });
@@ -26,7 +26,7 @@ export async function rescanLibrary() {
     // Make sure we allow the retrying of artwork of tracks with no images.
     await AdjustmentFunctionMap["artwork-retry"]();
     // Rescan library for any new tracks and delete any old ones.
-    const { foundFiles } = await doAudioIndexing();
+    const { foundFiles, unstagedFiles } = await doAudioIndexing();
     await cleanUpDb(new Set(foundFiles.map(({ id }) => id)));
     // Get the artwork for any new tracks.
     await saveArtwork();
@@ -34,6 +34,10 @@ export async function rescanLibrary() {
 
     // Make sure the "recents" list is correct.
     await RecentList.refresh();
+
+    // Make sure any new tracks doesn't belong in the current playing list.
+    // If they do, then reset state as to get a more accurate playing list.
+    await Resynchronize.onUpdatedList(unstagedFiles.map(({ id }) => id));
 
     Toast.update(toastId, "Finished rescanning library.", { duration: 3000 });
   } catch (err) {

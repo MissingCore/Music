@@ -213,9 +213,12 @@ musicStore.subscribe(
     const isActiveInList = currentList.findIndex((tId) => tId === activeId);
     // New list index will be based either on the current playing track if
     // it's in the list, or the track at the `listIdx` index.
-    const newListIdx = isActiveInList
-      ? newCurrList.findIndex((tId) => tId === activeId)
-      : newCurrList.findIndex((tId) => tId === trackAtListIdx);
+    const newListIdx =
+      activeId === undefined
+        ? 0
+        : isActiveInList
+          ? newCurrList.findIndex((tId) => tId === activeId)
+          : newCurrList.findIndex((tId) => tId === trackAtListIdx);
 
     musicStore.setState({
       currentList: newCurrList,
@@ -690,6 +693,18 @@ export class Resynchronize {
 
     // Make sure the next track is correct after updating the list used.
     await RNTPManager.reloadNextTrack();
+  }
+
+  /** Resynchronize if we discovered new tracks in the current playing list. */
+  static async onUpdatedList(newIds: string[]) {
+    if (newIds.length === 0) return;
+    const currSource = musicStore.getState().playingSource;
+    if (currSource === undefined) return;
+
+    const hasUnstagedTrack = (await getTrackList(currSource)).some(
+      ({ id: tId }) => newIds.includes(tId),
+    );
+    if (hasUnstagedTrack) await resetState();
   }
 }
 //#endregion

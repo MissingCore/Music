@@ -4,13 +4,7 @@ import TrackPlayer from "react-native-track-player";
 import { tracks } from "@/db/schema";
 import { getTrack } from "@/db/queries";
 
-import {
-  Queue,
-  RecentList,
-  RNTPManager,
-  musicStore,
-  resetState,
-} from "./next/Music";
+import { RecentList, RNTPManager, musicStore, resetState } from "./next/Music";
 
 import { arePlaybackSourceEqual, getTrackList } from "../helpers/data";
 import type { PlayListSource } from "../types";
@@ -82,9 +76,10 @@ export class MusicControls {
       ...(!isInQueue ? { listIdx: newIdx } : {}),
       isInQueue,
     });
-    if (isInQueue) await Queue.removeAtIndex(0);
+    // We'll remove the track in the queue in the `PlaybackActiveTrackChanged`
+    // event.
 
-    await RNTPManager.reloadCurrentTrack();
+    await RNTPManager.reloadCurrentTrack({ restart: true });
     if (newIdx === 0 && !shouldRepeat) await MusicControls.pause();
   }
 
@@ -138,7 +133,7 @@ export async function playFromMediaList({
   // 3. Handle case when the media list is new.
   const newPlayingList = (await getTrackList(source)).map(({ id }) => id);
   if (newPlayingList.length === 0) return; // Don't do anything if list is empty.
-  const newListsInfo = RNTPManager.getPlayingLists(
+  const { isInQueue: _, ...newListsInfo } = RNTPManager.getPlayingLists(
     newPlayingList,
     trackId ?? activeId,
   );
@@ -159,6 +154,9 @@ export async function playFromMediaList({
     ...newListsInfo,
     playingSource: source,
     ...(isDiffTrack ? { activeId: newTrackId, activeTrack: newTrack } : {}),
+    // The `isInQueue` from `RNTPManager.getPlayingLists()` will return
+    // `true` if you were playing from a different media list.
+    isInQueue: false,
   });
 
   // 5. Play this new media list.

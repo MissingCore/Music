@@ -195,6 +195,7 @@ export async function doAudioIndexing() {
 
   return {
     foundFiles: discoveredTracks,
+    unstagedFiles: unstagedTracks,
     changed: discoveredTracks.length - unmodifiedTracks.size,
   };
 }
