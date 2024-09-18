@@ -580,6 +580,10 @@ export class RNTPManager {
     const { trackId, track, isInQueue } = RNTPManager.getNextTrack();
     await TrackPlayer.removeUpcomingTracks();
 
+    // Return if we have no tracks (ie: when we removed a track from
+    // the current list).
+    if (!track || !currTrack) return;
+
     // If the next track is `undefined`, then we should run `resetState()`
     // after the current track finishes.
     if (trackId === undefined) {

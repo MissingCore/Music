@@ -28,16 +28,16 @@ export async function rescanLibrary() {
     // Rescan library for any new tracks and delete any old ones.
     const { foundFiles, unstagedFiles } = await doAudioIndexing();
     await cleanUpDb(new Set(foundFiles.map(({ id }) => id)));
+    // Make sure any new tracks doesn't belong in the current playing list.
+    // If they do, then reset state as to get a more accurate playing list.
+    await Resynchronize.onUpdatedList(unstagedFiles.map(({ id }) => id));
+
     // Get the artwork for any new tracks.
     await saveArtwork();
     await cleanUpArtwork();
 
     // Make sure the "recents" list is correct.
     await RecentList.refresh();
-
-    // Make sure any new tracks doesn't belong in the current playing list.
-    // If they do, then reset state as to get a more accurate playing list.
-    await Resynchronize.onUpdatedList(unstagedFiles.map(({ id }) => id));
 
     Toast.update(toastId, "Finished rescanning library.", { duration: 3000 });
   } catch (err) {
