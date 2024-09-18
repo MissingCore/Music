@@ -29,14 +29,14 @@ import { formatForMediaCard } from "@/db/utils/formatters";
 
 import { shuffleArray } from "@/utils/object";
 import type { MediaCard } from "@/components/media/card";
-import { ReservedPlaylists } from "../../constants/ReservedNames";
+import { ReservedPlaylists } from "../constants/ReservedNames";
 import {
   arePlaybackSourceEqual,
   formatTrackforPlayer,
   getTrackList,
   getTracksFromIds,
-} from "../../helpers/data";
-import type { PlayListSource } from "../../types";
+} from "../helpers/data";
+import type { PlayListSource } from "../types";
 
 //#region Zustand Store
 //#region MusicStore Interface
@@ -253,8 +253,6 @@ musicStore.subscribe(
       } else if (source.type === "album") {
         const album = await getAlbum([eq(albums.id, source.id)]);
         newSourceName = album.name;
-      } else {
-        newSourceName = ""; // Fallback in case we miss anything.
       }
     } catch {}
 

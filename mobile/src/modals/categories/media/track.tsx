@@ -5,7 +5,7 @@ import { View } from "react-native";
 
 import { useToggleFavorite } from "@/api/favorites/[id]";
 import { useTrackExcerpt } from "@/api/tracks/[id]";
-import { Queue, useMusicStore } from "@/modules/media/services/next/Music";
+import { Queue, useMusicStore } from "@/modules/media/services/Music";
 import { mediaModalAtom } from "./store";
 
 import { mutateGuard } from "@/lib/react-query";

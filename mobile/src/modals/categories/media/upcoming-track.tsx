@@ -6,7 +6,7 @@ import { View } from "react-native";
 import type { Track } from "@/db/schema";
 
 import { Ionicons } from "@/resources/icons";
-import { Queue, useMusicStore } from "@/modules/media/services/next/Music";
+import { Queue, useMusicStore } from "@/modules/media/services/Music";
 
 import { Colors } from "@/constants/Styles";
 import { pickKeys } from "@/utils/object";

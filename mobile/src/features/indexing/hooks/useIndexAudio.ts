@@ -1,10 +1,7 @@
 import * as MediaLibrary from "expo-media-library";
 import { useCallback, useEffect, useState } from "react";
 
-import {
-  Resynchronize,
-  useMusicStore,
-} from "@/modules/media/services/next/Music";
+import { Resynchronize, useMusicStore } from "@/modules/media/services/Music";
 import { cleanUpArtwork } from "../api/artwork-cleanup";
 import { saveArtworkOnce } from "../api/artwork-save";
 import { cleanUpDb } from "../api/db-cleanup";

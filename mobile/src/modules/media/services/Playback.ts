@@ -4,7 +4,7 @@ import TrackPlayer from "react-native-track-player";
 import { tracks } from "@/db/schema";
 import { getTrack } from "@/db/queries";
 
-import { RecentList, RNTPManager, musicStore, resetState } from "./next/Music";
+import { RecentList, RNTPManager, musicStore, resetState } from "./Music";
 
 import { arePlaybackSourceEqual, getTrackList } from "../helpers/data";
 import type { PlayListSource } from "../types";

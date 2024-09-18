@@ -9,7 +9,7 @@ import {
   RecentList,
   musicStore,
   resetState,
-} from "@/modules/media/services/next/Music";
+} from "@/modules/media/services/Music";
 
 import { clearAllQueries } from "@/lib/react-query";
 import { batch } from "@/utils/promise";
@@ -77,7 +77,7 @@ export async function removeUnlinkedAlbums() {
     albumsToRemove.map(({ id }) => db.delete(albums).where(eq(albums.id, id))),
   );
   if (albumsToRemove.length > 0) {
-    await RecentList.removeEntries(
+    RecentList.removeEntries(
       albumsToRemove.map(({ id }) => ({ type: "album", id })),
     );
   }
@@ -100,7 +100,7 @@ export async function removeUnlinkedArtists() {
     ),
   );
   if (artistsToRemove.length > 0) {
-    await RecentList.removeEntries(
+    RecentList.removeEntries(
       artistsToRemove.map(({ name }) => ({ type: "artist", id: name })),
     );
   }

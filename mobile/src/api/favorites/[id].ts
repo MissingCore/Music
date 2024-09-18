@@ -8,7 +8,7 @@ import { albumKeys } from "../albums/_queryKeys";
 import { playlistKeys } from "../playlists/_queryKeys";
 import { trackKeys } from "../tracks/_queryKeys";
 
-import { Resynchronize } from "@/modules/media/services/next/Music";
+import { Resynchronize } from "@/modules/media/services/Music";
 
 import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
 import type { MediaType } from "@/modules/media/types";

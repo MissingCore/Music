@@ -1,8 +1,8 @@
 import { Pressable, View } from "react-native";
 
 import { MaterialIcons } from "@/resources/icons";
+import { useMusicStore } from "../services/Music";
 import { MusicControls, playFromMediaList } from "../services/Playback";
-import { useMusicStore } from "../services/next/Music";
 
 import { cn } from "@/lib/style";
 import { RepeatButton, ShuffleButton } from "./MediaControls";

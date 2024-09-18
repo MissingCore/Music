@@ -2,7 +2,7 @@ import { Stack } from "expo-router";
 import { useMemo, useState } from "react";
 import { View, useWindowDimensions } from "react-native";
 
-import { useMusicStore } from "@/modules/media/services/next/Music";
+import { useMusicStore } from "@/modules/media/services/Music";
 
 import { AnimatedVinyl } from "@/components/media/animated-vinyl";
 import { Back } from "@/components/navigation/back";

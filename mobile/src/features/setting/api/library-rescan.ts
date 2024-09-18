@@ -6,7 +6,7 @@ import { saveArtwork } from "@/features/indexing/api/artwork-save";
 import { cleanUpDb } from "@/features/indexing/api/db-cleanup";
 import { doAudioIndexing } from "@/features/indexing/api/index-audio";
 import { AdjustmentFunctionMap } from "@/features/indexing/api/index-override";
-import { RecentList, Resynchronize } from "@/modules/media/services/next/Music";
+import { RecentList, Resynchronize } from "@/modules/media/services/Music";
 
 export async function rescanLibrary() {
   const toastId = Toast.show("Rescanning library...", { duration: 0 });
@@ -37,7 +37,7 @@ export async function rescanLibrary() {
     await cleanUpArtwork();
 
     // Make sure the "recents" list is correct.
-    await RecentList.refresh();
+    RecentList.refresh();
 
     Toast.update(toastId, "Finished rescanning library.", { duration: 3000 });
   } catch (err) {

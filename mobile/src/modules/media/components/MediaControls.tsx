@@ -1,8 +1,8 @@
 import { Pressable } from "react-native";
 
 import { Ionicons, MaterialIcons } from "@/resources/icons";
+import { useMusicStore } from "../services/Music";
 import { MusicControls } from "../services/Playback";
-import { useMusicStore } from "../services/next/Music";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";

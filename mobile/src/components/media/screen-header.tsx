@@ -1,7 +1,7 @@
 import { View, useWindowDimensions } from "react-native";
 import { clamp } from "react-native-reanimated";
 
-import { useMusicStore } from "@/modules/media/services/next/Music";
+import { useMusicStore } from "@/modules/media/services/Music";
 import { arePlaybackSourceEqual } from "@/modules/media/helpers/data";
 import type { PlayListSource } from "@/modules/media/types";
 

@@ -1,6 +1,6 @@
 import { useAtomValue } from "jotai";
 
-import { useMusicStore } from "@/modules/media/services/next/Music";
+import { useMusicStore } from "@/modules/media/services/Music";
 import { mediaModalAtom } from "./store";
 
 import { PlaylistModal } from "./playlist";

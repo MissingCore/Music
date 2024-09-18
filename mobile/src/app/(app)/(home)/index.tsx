@@ -9,7 +9,7 @@ import {
   useFavoriteTracksCount,
 } from "@/api/favorites";
 import { useGetColumn } from "@/hooks/layout";
-import { useMusicStore } from "@/modules/media/services/next/Music";
+import { useMusicStore } from "@/modules/media/services/Music";
 
 import { abbreviateNum } from "@/utils/number";
 import { MediaCard, PlaceholderContent } from "@/components/media/card";

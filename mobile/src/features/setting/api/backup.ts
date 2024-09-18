@@ -15,7 +15,7 @@ import { getPlaylists, getTracks } from "@/db/queries";
 import { sanitizedPlaylistName } from "@/db/utils/validators";
 import { getFavoriteLists } from "@/api/favorites";
 
-import { Resynchronize, musicStore } from "@/modules/media/services/next/Music";
+import { Resynchronize, musicStore } from "@/modules/media/services/Music";
 
 import { clearAllQueries } from "@/lib/react-query";
 import { pickKeys } from "@/utils/object";

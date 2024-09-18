@@ -15,7 +15,7 @@ import { favoriteKeys } from "@/api/favorites/_queryKeys";
 import { playlistKeys } from "@/api/playlists/_queryKeys";
 import { trackKeys } from "../_queryKeys";
 
-import { Resynchronize, musicStore } from "@/modules/media/services/next/Music";
+import { Resynchronize, musicStore } from "@/modules/media/services/Music";
 
 import type { ExtractFnReturnType, Prettify } from "@/utils/types";
 

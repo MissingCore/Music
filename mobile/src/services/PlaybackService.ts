@@ -13,13 +13,13 @@ import {
   removeUnlinkedAlbums,
   removeUnlinkedArtists,
 } from "@/features/indexing/api/db-cleanup";
-import type { TrackStatus } from "@/modules/media/services/next/Music";
+import type { TrackStatus } from "@/modules/media/services/Music";
 import {
   Queue,
   RNTPManager,
   musicStore,
   resetState,
-} from "@/modules/media/services/next/Music";
+} from "@/modules/media/services/Music";
 import { MusicControls } from "@/modules/media/services/Playback";
 
 import { clearAllQueries } from "@/lib/react-query";

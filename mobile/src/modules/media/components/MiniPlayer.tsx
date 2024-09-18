@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import { Pressable, View } from "react-native";
 
-import { useMusicStore } from "../services/next/Music";
+import { useMusicStore } from "../services/Music";
 
 import { MediaImage } from "@/components/media/image";
 import { TextStack } from "@/components/ui/text";
