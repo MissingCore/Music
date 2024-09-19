@@ -1,9 +1,7 @@
-import { Audio } from "expo-av";
 import * as MediaLibrary from "expo-media-library";
-import { getDefaultStore } from "jotai";
 import { useCallback, useEffect, useState } from "react";
 
-import { loadTrackAtom } from "@/features/playback/api/track";
+import { Resynchronize, useMusicStore } from "@/modules/media/services/Music";
 import { cleanUpArtwork } from "../api/artwork-cleanup";
 import { saveArtworkOnce } from "../api/artwork-save";
 import { cleanUpDb } from "../api/db-cleanup";
@@ -21,6 +19,7 @@ export function useIndexAudio() {
   const [permissionResponse, requestPermission] = MediaLibrary.usePermissions({
     granularPermissions: ["audio"],
   });
+  const isHydrated = useMusicStore((state) => state._hasHydrated);
   const [isComplete, setIsComplete] = useState(false);
   const [error, setError] = useState<Error>();
 
@@ -40,14 +39,14 @@ export function useIndexAudio() {
     await dataReadjustments();
     console.log(`Completed data adjustments in ${stopwatch.lapTime()}.`);
 
-    const { foundFiles } = await doAudioIndexing();
+    const { foundFiles, unstagedFiles } = await doAudioIndexing();
     await cleanUpDb(new Set(foundFiles.map(({ id }) => id)));
-    console.log(`Finished overall in ${stopwatch.stop()}.`);
+    // Make sure any new tracks doesn't belong in the current playing list.
+    // If they do, get the updated playing list.
+    await Resynchronize.onUpdatedList(unstagedFiles.map(({ id }) => id));
 
-    // Allow audio to play in the background.
-    await Audio.setAudioModeAsync({ staysActiveInBackground: true });
+    console.log(`Finished overall in ${stopwatch.stop()}.`);
     setIsComplete(true);
-    await getDefaultStore().set(loadTrackAtom);
 
     /*  Start of the "background" tasks. */
 
@@ -61,12 +60,15 @@ export function useIndexAudio() {
   }, [permissionResponse, requestPermission]);
 
   useEffect(() => {
+    // Make sure the Zustand store is hydrated before we do anything.
+    if (!isHydrated) return;
+
     if (permissionResponse && !isComplete) {
       readMusicLibrary().catch((err) => {
         setError(err);
       });
     }
-  }, [permissionResponse, isComplete, readMusicLibrary]);
+  }, [isHydrated, permissionResponse, isComplete, readMusicLibrary]);
 
   return { success: isComplete, error };
 }

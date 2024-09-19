@@ -4,7 +4,6 @@ import * as FileSystem from "expo-file-system";
 import { StorageAccessFramework as SAF } from "expo-file-system";
 import * as Sharing from "expo-sharing";
 import { and, eq, isNull } from "drizzle-orm";
-import { useSetAtom } from "jotai";
 import { Platform } from "react-native";
 import { Toast } from "react-native-toast-notifications";
 import { z } from "zod";
@@ -16,7 +15,7 @@ import { getPlaylists, getTracks } from "@/db/queries";
 import { sanitizedPlaylistName } from "@/db/utils/validators";
 import { getFavoriteLists } from "@/api/favorites";
 
-import { resynchronizeOnAtom } from "@/features/playback/api/synchronize";
+import { Resynchronize, musicStore } from "@/modules/media/services/Music";
 
 import { clearAllQueries } from "@/lib/react-query";
 import { pickKeys } from "@/utils/object";
@@ -224,6 +223,9 @@ export async function importBackup() {
 
   // Delete the cached document.
   await FileSystem.deleteAsync(document.uri);
+
+  const currPlayingFrom = musicStore.getState().playingSource;
+  if (currPlayingFrom) await Resynchronize.onTracks(currPlayingFrom);
 }
 
 /** Create a `music_backup.json` file to be saved. */
@@ -241,14 +243,11 @@ export const useExportBackup = () =>
 /** Load data from a `music_backup.json` file. */
 export const useImportBackup = () => {
   const queryClient = useQueryClient();
-  const resynchronizeFn = useSetAtom(resynchronizeOnAtom);
 
   return useMutation({
     mutationFn: importBackup,
     onSuccess: () => {
       clearAllQueries(queryClient);
-      // Resynchronize with Jotai.
-      resynchronizeFn({ action: "update", data: null });
       Toast.show("Backup import completed.");
     },
     onError: (err) => {

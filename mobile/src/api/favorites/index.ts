@@ -11,7 +11,7 @@ import {
 import { favoriteKeys } from "./_queryKeys";
 
 import type { ExtractFnReturnType } from "@/utils/types";
-import { SpecialPlaylists } from "@/features/playback/constants";
+import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
 
 type FavoriteListsFnData = {
   albums: ExtractFnReturnType<typeof getAlbums>;
@@ -40,7 +40,7 @@ export const favoriteListsOptions = () =>
 export const favoriteTracksOptions = () =>
   queryOptions({
     queryKey: favoriteKeys.tracks(),
-    queryFn: () => getSpecialPlaylist(SpecialPlaylists.favorites),
+    queryFn: () => getSpecialPlaylist(ReservedPlaylists.favorites),
     staleTime: Infinity,
   });
 
@@ -82,7 +82,7 @@ export const useFavoriteTracksForCurrentPage = () =>
     select: useCallback(
       (data: FavoriteTracksFnData) => ({
         ...formatForCurrentPages({ type: "playlist", data }),
-        imageSource: SpecialPlaylists.favorites,
+        imageSource: ReservedPlaylists.favorites,
       }),
       [],
     ),

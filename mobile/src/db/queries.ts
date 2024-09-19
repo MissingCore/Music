@@ -6,8 +6,8 @@ import { albums, tracks, tracksToPlaylists } from "./schema";
 import { fixPlaylistJunction, getTrackCover } from "./utils/formatters";
 
 import { deleteFile } from "@/lib/file-system";
-import type { SpecialPlaylistName } from "@/features/playback/constants";
-import { SpecialPlaylists } from "@/features/playback/constants";
+import type { ReservedPlaylistName } from "@/modules/media/constants/ReservedNames";
+import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
 
 /** Upsert a new album, returning the created value. */
 export async function createAlbum(entry: typeof albums.$inferInsert) {
@@ -86,15 +86,15 @@ export async function getPlaylists(filters?: SQL[]) {
 }
 
 /** Returns tracks in a `SpecialPlaylist` formatted as `PlaylistWithTracks`. */
-export async function getSpecialPlaylist(name: SpecialPlaylistName) {
+export async function getSpecialPlaylist(name: ReservedPlaylistName) {
   const _tracks = await getTracks(
-    SpecialPlaylists.favorites === name
+    ReservedPlaylists.favorites === name
       ? [eq(tracks.isFavorite, true)]
       : undefined,
   );
   return {
     ...{ name, isFavorite: false, tracks: _tracks },
-    artwork: SpecialPlaylists.favorites ? name : null,
+    artwork: ReservedPlaylists.favorites ? name : null,
   };
 }
 

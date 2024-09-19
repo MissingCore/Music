@@ -6,14 +6,14 @@ import { View } from "react-native";
 import { EllipsisVertical } from "@/resources/icons/EllipsisVertical";
 import { useFavoriteTracksForCurrentPage } from "@/api/favorites";
 import { usePlaylistForCurrentPage } from "@/api/playlists/[id]";
-import { SpecialPlaylists } from "@/features/playback/constants";
 import { mediaModalAtom } from "@/modals/categories/media/store";
+import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
 
 import { MediaScreenHeader } from "@/components/media/screen-header";
-import type { MediaList } from "@/components/media/types";
 import { StyledPressable } from "@/components/ui/pressable";
 import { Description } from "@/components/ui/text";
 import { TrackList } from "@/features/track/components/track-list";
+import type { MediaList } from "@/modules/media/types";
 
 /** Screen for `/playlist/[id]` route. */
 export default function CurrentPlaylistScreen() {
@@ -22,7 +22,7 @@ export default function CurrentPlaylistScreen() {
   const openModal = useSetAtom(mediaModalAtom);
 
   const isFavoriteTracks = useMemo(
-    () => id === SpecialPlaylists.favorites,
+    () => id === ReservedPlaylists.favorites,
     [id],
   );
 
@@ -76,11 +76,7 @@ function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
   }
 
   // Information about this track list.
-  const trackSource = {
-    type: "playlist",
-    name: data.name,
-    id: data.name,
-  } as const;
+  const trackSource = { type: "playlist", id: data.name } as const;
 
   return (
     <View className="w-full flex-1 px-4">

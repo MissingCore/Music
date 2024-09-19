@@ -27,11 +27,7 @@ export default function CurrentArtistScreen() {
   }
 
   // Information about this track list.
-  const trackSource = {
-    type: "artist",
-    name: `Artist\n${data.name}`,
-    id: artistName,
-  } as const;
+  const trackSource = { type: "artist", id: artistName } as const;
 
   return (
     <>

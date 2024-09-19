@@ -1,15 +1,12 @@
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { FlashList } from "@shopify/flash-list";
-import { useAtomValue, useSetAtom } from "jotai";
 import { Suspense } from "react";
 import { View } from "react-native";
 
 import type { Track } from "@/db/schema";
 
 import { Ionicons } from "@/resources/icons";
-import { trackDataAtom } from "@/features/playback/api/track";
-import { queueRemoveAtIdxAtom } from "@/features/playback/api/queue";
-import { nextTrackListAtom, queueTrackListAtom } from "./store";
+import { Queue, useMusicStore } from "@/modules/media/services/Music";
 
 import { Colors } from "@/constants/Styles";
 import { pickKeys } from "@/utils/object";
@@ -17,7 +14,7 @@ import { ActionButton } from "@/components/form/action-button";
 import { MediaImage } from "@/components/media/image";
 import { LoadingIndicator } from "@/components/ui/loading";
 import { Description, Heading } from "@/components/ui/text";
-import { ModalBase } from "../../../components/base";
+import { ModalBase } from "../../components/base";
 
 type TrackExcerpt = Pick<Track, "id" | "artistName" | "name" | "artwork">;
 
@@ -53,26 +50,25 @@ export function UpcomingTrackModal() {
 
 /** Displays the current track. */
 function CurrentTrack() {
-  const data = useAtomValue(trackDataAtom);
-  if (!data) return <EmptyMessage />;
+  const track = useMusicStore((state) => state.activeTrack);
+  if (!track) return <EmptyMessage />;
   return (
     <UpcomingTrack
-      data={pickKeys(data, ["id", "name", "artistName", "artwork"])}
+      data={pickKeys(track, ["id", "name", "artistName", "artwork"])}
     />
   );
 }
 
 /** List out tracks in the queue, giving us the ability to remove them. */
 function QueueListTracks() {
-  const data = useAtomValue(queueTrackListAtom);
-  const removeQueueIdx = useSetAtom(queueRemoveAtIdxAtom);
+  const data = useMusicStore((state) => state.queuedTrackList);
   return (
     <FlashList
       estimatedItemSize={66} // 58px Height + 8px Margin Bottom
       data={data}
       keyExtractor={({ id }, index) => `${id}${index}`}
       renderItem={({ item, index }) => (
-        <UpcomingTrack data={item} onPress={() => removeQueueIdx(index)} />
+        <UpcomingTrack data={item} onPress={() => Queue.removeAtIndex(index)} />
       )}
       showsVerticalScrollIndicator={false}
       ListEmptyComponent={EmptyMessage}
@@ -82,7 +78,11 @@ function QueueListTracks() {
 
 /** Displays up to the next 5 tracks. */
 function NextTracks() {
-  const data = useAtomValue(nextTrackListAtom);
+  const currIdx = useMusicStore((state) => state.listIdx);
+  const currTracks = useMusicStore((state) => state.currentTrackList);
+
+  const data = [...currTracks].slice(currIdx + 1, currIdx + 6);
+
   return (
     <FlashList
       estimatedItemSize={66} // 58px Height + 8px Margin Bottom

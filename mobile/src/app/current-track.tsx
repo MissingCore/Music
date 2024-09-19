@@ -1,10 +1,8 @@
 import { Stack } from "expo-router";
-import { useAtomValue } from "jotai";
 import { useMemo, useState } from "react";
 import { View, useWindowDimensions } from "react-native";
 
-import { isPlayingAtom } from "@/features/playback/api/actions";
-import { trackDataAtom, trackListAtom } from "@/features/playback/api/track";
+import { useMusicStore } from "@/modules/media/services/Music";
 
 import { AnimatedVinyl } from "@/components/media/animated-vinyl";
 import { Back } from "@/components/navigation/back";
@@ -15,15 +13,15 @@ import {
   PreviousButton,
   RepeatButton,
   ShuffleButton,
-} from "@/features/playback/components/media-controls";
-import { Timeline } from "@/features/playback/components/timeline";
+} from "@/modules/media/components/MediaControls";
+import { SeekBar } from "@/modules/media/components/SeekBar";
 
 /** Screen for `/current-track` route. */
 export default function CurrentTrackScreen() {
   const { width } = useWindowDimensions();
-  const trackData = useAtomValue(trackDataAtom);
-  const { reference } = useAtomValue(trackListAtom);
-  const isPlaying = useAtomValue(isPlayingAtom);
+  const track = useMusicStore((state) => state.activeTrack);
+  const listName = useMusicStore((state) => state.sourceName);
+  const isPlaying = useMusicStore((state) => state.isPlaying);
   const [pageHeight, setPageHeight] = useState<number | null>(null);
   const [infoHeight, setInfoHeight] = useState<number | null>(null);
 
@@ -35,11 +33,11 @@ export default function CurrentTrackScreen() {
     return imgSize > width - 32 ? (width - 32) * 1.5 : usedHeight;
   }, [width, pageHeight, infoHeight]);
 
-  if (!trackData) return <Back />;
+  if (!track) return <Back />;
 
   return (
     <>
-      <Stack.Screen options={{ headerTitle: reference?.name ?? "" }} />
+      <Stack.Screen options={{ headerTitle: listName }} />
       <View
         onLayout={({ nativeEvent }) => setPageHeight(nativeEvent.layout.height)}
         className="flex-1 items-center px-4 py-8"
@@ -47,7 +45,7 @@ export default function CurrentTrackScreen() {
         {availableLength !== undefined && (
           <AnimatedVinyl
             placement="bottom"
-            source={trackData.artwork}
+            source={track.artwork}
             availableLength={availableLength}
             delay={300}
             shouldSpin={isPlaying}
@@ -66,14 +64,14 @@ export default function CurrentTrackScreen() {
               numberOfLines={2}
               className="h-[58px] align-bottom"
             >
-              {trackData.name}
+              {track.name}
             </Heading>
             <TextLine className="text-center font-geistMonoLight text-base text-accent50">
-              {trackData.artistName}
+              {track.artistName}
             </TextLine>
           </View>
 
-          <Timeline duration={trackData.duration} />
+          <SeekBar duration={track.duration} />
 
           <View className="flex-row items-center gap-2 p-4 pb-8">
             <ShuffleButton size={32} />

@@ -1,5 +1,4 @@
 import { useMutation } from "@tanstack/react-query";
-import { getDefaultStore } from "jotai";
 import { Toast } from "react-native-toast-notifications";
 
 import { cleanUpArtwork } from "@/features/indexing/api/artwork-cleanup";
@@ -7,7 +6,7 @@ import { saveArtwork } from "@/features/indexing/api/artwork-save";
 import { cleanUpDb } from "@/features/indexing/api/db-cleanup";
 import { doAudioIndexing } from "@/features/indexing/api/index-audio";
 import { AdjustmentFunctionMap } from "@/features/indexing/api/index-override";
-import { resynchronizeOnAtom } from "@/features/playback/api/synchronize";
+import { RecentList, Resynchronize } from "@/modules/media/services/Music";
 
 export async function rescanLibrary() {
   const toastId = Toast.show("Rescanning library...", { duration: 0 });
@@ -27,17 +26,18 @@ export async function rescanLibrary() {
     // Make sure we allow the retrying of artwork of tracks with no images.
     await AdjustmentFunctionMap["artwork-retry"]();
     // Rescan library for any new tracks and delete any old ones.
-    const { foundFiles } = await doAudioIndexing();
+    const { foundFiles, unstagedFiles } = await doAudioIndexing();
     await cleanUpDb(new Set(foundFiles.map(({ id }) => id)));
+    // Make sure any new tracks doesn't belong in the current playing list.
+    // If they do, get the updated playing list.
+    await Resynchronize.onUpdatedList(unstagedFiles.map(({ id }) => id));
+
     // Get the artwork for any new tracks.
     await saveArtwork();
     await cleanUpArtwork();
 
     // Make sure the "recents" list is correct.
-    await getDefaultStore().set(resynchronizeOnAtom, {
-      action: "update",
-      data: null,
-    });
+    RecentList.refresh();
 
     Toast.update(toastId, "Finished rescanning library.", { duration: 3000 });
   } catch (err) {

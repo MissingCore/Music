@@ -1,15 +1,15 @@
 import { eq } from "drizzle-orm";
-import { getDefaultStore } from "jotai";
 
 import { db } from "@/db";
 import { artists, albums, invalidTracks, tracks } from "@/db/schema";
 import { deleteTrack } from "@/db/queries";
 
 import {
-  resetPlayingInfoAtom,
-  trackListAsyncAtom,
-} from "@/features/playback/api/track";
-import { queueRemoveItemsAtom } from "@/features/playback/api/queue";
+  Queue,
+  RecentList,
+  musicStore,
+  resetState,
+} from "@/modules/media/services/Music";
 
 import { clearAllQueries } from "@/lib/react-query";
 import { batch } from "@/utils/promise";
@@ -57,14 +57,13 @@ export async function removeUnlinkedTracks(foundTracks: Set<string>) {
  * store.
  */
 export async function revalidatePlaybackStore(removedTracks: string[]) {
-  const jotaiStore = getDefaultStore();
   // See if the current playing tracklist contains a deleted track.
-  const hasRemovedTrack = (await jotaiStore.get(trackListAsyncAtom)).data.some(
-    (tId) => removedTracks.includes(tId),
-  );
-  if (hasRemovedTrack) jotaiStore.set(resetPlayingInfoAtom);
+  const hasRemovedTrack = musicStore
+    .getState()
+    .playingList.some((tId) => removedTracks.includes(tId));
+  if (hasRemovedTrack) await resetState();
   // Clear the queue of deleted tracks.
-  jotaiStore.set(queueRemoveItemsAtom, removedTracks);
+  await Queue.removeIds(removedTracks);
 }
 
 /** Remove from the database any albums that have no tracks. */
@@ -73,11 +72,15 @@ export async function removeUnlinkedAlbums() {
     columns: { id: true },
     with: { tracks: { columns: { id: true } } },
   });
+  const albumsToRemove = allAlbums.filter(({ tracks }) => tracks.length === 0);
   await Promise.allSettled(
-    allAlbums
-      .filter(({ tracks }) => tracks.length === 0)
-      .map(({ id }) => db.delete(albums).where(eq(albums.id, id))),
+    albumsToRemove.map(({ id }) => db.delete(albums).where(eq(albums.id, id))),
   );
+  if (albumsToRemove.length > 0) {
+    RecentList.removeEntries(
+      albumsToRemove.map(({ id }) => ({ type: "album", id })),
+    );
+  }
 }
 
 /** Remove from the database any artists that have no tracks or albums. */
@@ -88,11 +91,17 @@ export async function removeUnlinkedArtists() {
       tracks: { columns: { id: true } },
     },
   });
-  await Promise.allSettled(
-    allArtists
-      .filter(
-        ({ albums, tracks }) => albums.length === 0 && tracks.length === 0,
-      )
-      .map(({ name }) => db.delete(artists).where(eq(artists.name, name))),
+  const artistsToRemove = allArtists.filter(
+    ({ albums, tracks }) => albums.length === 0 && tracks.length === 0,
   );
+  await Promise.allSettled(
+    artistsToRemove.map(({ name }) =>
+      db.delete(artists).where(eq(artists.name, name)),
+    ),
+  );
+  if (artistsToRemove.length > 0) {
+    RecentList.removeEntries(
+      artistsToRemove.map(({ name }) => ({ type: "artist", id: name })),
+    );
+  }
 }

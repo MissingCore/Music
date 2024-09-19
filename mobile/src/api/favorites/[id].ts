@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { eq, not } from "drizzle-orm";
-import { useSetAtom } from "jotai";
 
 import { db } from "@/db";
 import { albums, playlists, tracks } from "@/db/schema";
@@ -9,12 +8,12 @@ import { albumKeys } from "../albums/_queryKeys";
 import { playlistKeys } from "../playlists/_queryKeys";
 import { trackKeys } from "../tracks/_queryKeys";
 
-import { resynchronizeOnAtom } from "@/features/playback/api/synchronize";
-import { SpecialPlaylists } from "@/features/playback/constants";
+import { Resynchronize } from "@/modules/media/services/Music";
 
-import type { Media } from "@/components/media/types";
+import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
+import type { MediaType } from "@/modules/media/types";
 
-type BaseFnArgs = { type: Exclude<Media, "artist">; id: string };
+type BaseFnArgs = { type: Exclude<MediaType, "artist" | "folder">; id: string };
 
 export async function toggleFavorite({ type, id }: BaseFnArgs) {
   if (type === "album") {
@@ -32,6 +31,10 @@ export async function toggleFavorite({ type, id }: BaseFnArgs) {
       .update(tracks)
       .set({ isFavorite: not(tracks.isFavorite) })
       .where(eq(tracks.id, id));
+    await Resynchronize.onTracks({
+      type: "playlist",
+      id: ReservedPlaylists.favorites,
+    });
   }
 }
 
@@ -40,7 +43,6 @@ type TData = { name: string; id?: string; isFavorite: boolean };
 /** Toggle the favorite status of supported media. */
 export const useToggleFavorite = (args: BaseFnArgs) => {
   const queryClient = useQueryClient();
-  const resynchronizeFn = useSetAtom(resynchronizeOnAtom);
 
   return useMutation({
     mutationFn: () => toggleFavorite(args),
@@ -70,17 +72,6 @@ export const useToggleFavorite = (args: BaseFnArgs) => {
         queryKey:
           type === "track" ? favoriteKeys.tracks() : favoriteKeys.lists(),
       });
-      // Resynchronize with Jotai.
-      if (type === "track") {
-        resynchronizeFn({
-          action: "update",
-          data: {
-            type: "playlist",
-            id: SpecialPlaylists.favorites,
-            name: SpecialPlaylists.favorites,
-          },
-        });
-      }
     },
   });
 };

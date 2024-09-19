@@ -23,7 +23,6 @@
     "release": "git checkout main -q && git pull && python ./scripts/release/release_bump.py"
   },
   "dependencies": {
-    "@boterop/react-native-background-timer": "^2.5.1",
     "@expo/vector-icons": "^14.0.2",
     "@gorhom/bottom-sheet": "5.0.0-alpha.11",
     "@miblanchard/react-native-slider": "^2.6.0",
@@ -38,7 +37,6 @@
     "cva": "1.0.0-beta.1",
     "drizzle-orm": "^0.32.1",
     "expo": "~51.0.22",
-    "expo-av": "~14.0.6",
     "expo-document-picker": "~12.0.2",
     "expo-drizzle-studio-plugin": "^0.0.2",
     "expo-file-system": "~17.0.1",
@@ -67,12 +65,12 @@
     "react-native-toast-notifications": "^3.4.0",
     "react-native-track-player": "^4.1.1",
     "tailwind-merge": "^2.4.0",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "zustand": "5.0.0-rc.2"
   },
   "devDependencies": {
     "@babel/core": "^7.24.9",
     "@tanstack/eslint-plugin-query": "^5.51.15",
-    "@types/boterop__react-native-background-timer": "npm:@types/react-native-background-timer@^2.0.2",
     "@types/jest": "^29.5.12",
     "@types/react": "~18.2.79",
     "@typescript-eslint/eslint-plugin": "^7.18.0",

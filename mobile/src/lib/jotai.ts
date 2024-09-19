@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { WritableAtom, SetStateAction } from "jotai";
+import { getDefaultStore } from "jotai";
 import { atomWithStorage, createJSONStorage } from "jotai/utils";
 
 /** Helper for creating an atom with `atomWithStorage`. */
@@ -22,3 +23,8 @@ export type TAtom<TValue> = WritableAtom<
 
 /** Type of the function returned from `useSetAtom`. */
 export type SetAtom<Args extends any[], Result> = (...args: Args) => Result;
+
+/* Interface with Jotai store outside of React. */
+export const store = getDefaultStore();
+export const getAtom = store.get;
+export const setAtom = store.set;

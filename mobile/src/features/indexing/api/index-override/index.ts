@@ -1,7 +1,6 @@
 import { StorageVolumesDirectoryPaths } from "@missingcore/react-native-metadata-retriever";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { eq } from "drizzle-orm";
-import { getDefaultStore } from "jotai";
 
 import { db } from "@/db";
 import { fileNodes, invalidTracks, tracks } from "@/db/schema";
@@ -9,6 +8,7 @@ import { fileNodes, invalidTracks, tracks } from "@/db/schema";
 import { allowListAsyncAtom } from "@/features/setting/api/library";
 import { hasOnboardedAtom } from "@/modals/categories/onboarding";
 
+import { setAtom } from "@/lib/jotai";
 import { batch } from "@/utils/promise";
 import { fixAlbumFracturization } from "./album-fracturization";
 import { savePathComponents } from "../library-scan";
@@ -56,7 +56,7 @@ export const AdjustmentFunctionMap: Record<
       .where(eq(tracks.fetchedArt, true));
   },
   "directory-lists": async () => {
-    await getDefaultStore().set(
+    await setAtom(
       allowListAsyncAtom,
       StorageVolumesDirectoryPaths.map(
         (path) => `${addTrailingSlash(path)}Music`,
@@ -64,7 +64,7 @@ export const AdjustmentFunctionMap: Record<
     );
   },
   "intro-modal": async () => {
-    await getDefaultStore().set(hasOnboardedAtom, async (prev) =>
+    await setAtom(hasOnboardedAtom, async (prev) =>
       (await prev) ? true : false,
     );
   },
