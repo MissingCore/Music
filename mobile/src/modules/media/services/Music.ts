@@ -710,7 +710,7 @@ export class Resynchronize {
     const hasUnstagedTrack = (await getTrackList(currSource)).some(
       ({ id: tId }) => newIds.includes(tId),
     );
-    if (hasUnstagedTrack) await resetState();
+    if (hasUnstagedTrack) await Resynchronize.onTracks(currSource);
   }
 }
 //#endregion
