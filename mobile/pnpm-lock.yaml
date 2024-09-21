@@ -18,8 +18,8 @@ dependencies:
     specifier: ^2.6.0
     version: 2.6.0(react-native@0.74.3)(react@18.2.0)
   '@missingcore/react-native-metadata-retriever':
-    specifier: ^0.4.0
-    version: 0.4.0(react-native@0.74.3)(react@18.2.0)
+    specifier: ^0.5.0
+    version: 0.5.0(react-native@0.74.3)(react@18.2.0)
   '@paralleldrive/cuid2':
     specifier: ^2.2.2
     version: 2.2.2
@@ -3165,8 +3165,8 @@ packages:
       react-native: 0.74.3(@babel/core@7.24.9)(@babel/preset-env@7.25.4)(@types/react@18.2.79)(react@18.2.0)
     dev: false
 
-  /@missingcore/react-native-metadata-retriever@0.4.0(react-native@0.74.3)(react@18.2.0):
-    resolution: {integrity: sha512-p0r0Cyqfr8G0O3f/TSfjlFuzTCGXtBsczyXqreu80Wy3D7t8xWRGTo8h/8zCqXL2AOStu5hLIdgT0GrXNCFBMQ==}
+  /@missingcore/react-native-metadata-retriever@0.5.0(react-native@0.74.3)(react@18.2.0):
+    resolution: {integrity: sha512-xL7vEthudfu3wCydt+Aku/EJggm4hyBu7V40uYPsvkxmVi+ov5jlk7qA4rKz86x5TEGal42WRk/IS9IhFCR9kw==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -4972,8 +4972,8 @@ packages:
     dev: false
     optional: true
 
-  /bare-fs@2.3.3:
-    resolution: {integrity: sha512-7RYKL+vZVCyAsMLi5SPu7QGauGGT8avnP/HO571ndEuV4MYdGXvLhtW67FuLPeEI8EiIY7zbbRR9x7x7HU0kgw==}
+  /bare-fs@2.3.5:
+    resolution: {integrity: sha512-SlE9eTxifPDJrT6YgemQ1WGFleevzwY+XAP1Xqgl56HtcrisC2CHCZ2tq6dBpcH2TnNxwUEUGhweo+lrQtYuiw==}
     requiresBuild: true
     dependencies:
       bare-events: 2.4.2
@@ -5090,8 +5090,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001658
-      electron-to-chromium: 1.5.18
+      caniuse-lite: 1.0.30001662
+      electron-to-chromium: 1.5.27
       node-releases: 2.0.18
       update-browserslist-db: 1.1.0(browserslist@4.23.3)
     dev: false
@@ -5206,8 +5206,8 @@ packages:
   /caniuse-lite@1.0.30001643:
     resolution: {integrity: sha512-ERgWGNleEilSrHM6iUz/zJNSQTP8Mr21wDWpdgvRwcTXGAq6jMtOUPP4dqFPTdKqZ2wKTdtB+uucZ3MRpAUSmg==}
 
-  /caniuse-lite@1.0.30001658:
-    resolution: {integrity: sha512-N2YVqWbJELVdrnsW5p+apoQyYt51aBMSsBZki1XZEfeBCexcM/sf4xiAHcXQBkuOwJBXtWF7aW1sYX6tKebPHw==}
+  /caniuse-lite@1.0.30001662:
+    resolution: {integrity: sha512-sgMUVwLmGseH8ZIrm1d51UbrhqMCH3jvS7gF/M6byuHOnKyLOBL7W8yz5V02OHwgLGA36o/AFhWzzh4uc5aqTA==}
     dev: false
 
   /chalk@2.4.2:
@@ -6068,12 +6068,12 @@ packages:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
     dev: false
 
-  /electron-to-chromium@1.5.18:
-    resolution: {integrity: sha512-1OfuVACu+zKlmjsNdcJuVQuVE61sZOLbNM4JAQ1Rvh6EOj0/EUKhMJjRH73InPlXSh8HIJk1cVZ8pyOV/FMdUQ==}
-    dev: false
-
   /electron-to-chromium@1.5.2:
     resolution: {integrity: sha512-kc4r3U3V3WLaaZqThjYz/Y6z8tJe+7K0bbjUVo3i+LWIypVdMx5nXCkwRe6SWbY6ILqLdc1rKcKmr3HoH7wjSQ==}
+
+  /electron-to-chromium@1.5.27:
+    resolution: {integrity: sha512-o37j1vZqCoEgBuWWXLHQgTN/KDKe7zwpiY5CPeq2RvUqOyJw9xnrULzZAEVQ5p4h+zjMk7hgtOoPdnLxr7m/jw==}
+    dev: false
 
   /emittery@0.13.1:
     resolution: {integrity: sha512-DeWwawk6r5yR9jFgnDKYt4sLS0LmHJJi3ZOnb5/JdbYwj3nW+FxQnHIjhBKz8YLC7oRNPVM9NQ47I3CVx34eqQ==}
@@ -11829,7 +11829,7 @@ packages:
       pump: 3.0.0
       tar-stream: 3.1.7
     optionalDependencies:
-      bare-fs: 2.3.3
+      bare-fs: 2.3.5
       bare-path: 2.1.3
     dev: false
 
