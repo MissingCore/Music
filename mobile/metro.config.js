@@ -9,5 +9,5 @@ config.resolver.sourceExts.push("sql");
 module.exports = withNativeWind(config, {
   input: "./src/resources/global.css",
   configPath: "./tailwind.config.ts",
-  inlineRem: false,
+  inlineRem: 16,
 });

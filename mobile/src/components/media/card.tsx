@@ -1,3 +1,4 @@
+import type { Href } from "expo-router";
 import { Link } from "expo-router";
 import { Pressable } from "react-native";
 
@@ -24,7 +25,7 @@ export namespace MediaCard {
  */
 export function MediaCard({ type, size, source, ...props }: MediaCard.Props) {
   return (
-    <Link href={props.href} asChild>
+    <Link href={props.href as Href} asChild>
       <Pressable
         style={{ maxWidth: size }}
         className="w-full active:opacity-75"

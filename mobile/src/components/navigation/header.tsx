@@ -1,24 +1,11 @@
 import { getHeaderTitle } from "@react-navigation/elements";
-import type { Stack } from "expo-router";
+import type { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { useNavigation } from "expo-router";
 import { Text, View } from "react-native";
 
 import { cn } from "@/lib/style";
 import { BackButton } from "./back";
 import { SafeContainer } from "../ui/container";
-
-/*
-  Manually extract `NativeStackHeaderProps` from `<Stack.Screen />` instead
-  of installing `@react-navigation/native-stack` just for the type.
-*/
-type HeaderOption = Required<
-  Pick<
-    NonNullable<React.ComponentProps<typeof Stack.Screen>["options"]>,
-    "header"
-  >
->;
-type HeaderFnSignature = HeaderOption[keyof HeaderOption];
-type NativeStackHeaderProps = Parameters<HeaderFnSignature>[0];
 
 /**
  * Override React Navigation's default header to account for tap-target

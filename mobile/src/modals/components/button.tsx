@@ -1,4 +1,5 @@
 import { useBottomSheet } from "@gorhom/bottom-sheet";
+import type { Href } from "expo-router";
 import { Link } from "expo-router";
 import { forwardRef } from "react";
 import type { PressableProps } from "react-native";
@@ -31,7 +32,7 @@ export function Button({
 }: Button.Props) {
   if (interaction === "button") return <ButtonBase {...props} />;
   return (
-    <Link href={href!} asChild>
+    <Link href={href as Href} asChild>
       <ButtonBase {...props} />
     </Link>
   );

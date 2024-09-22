@@ -22,6 +22,7 @@ export function NavLink(props: NavLink.Props) {
   const LinkType = external ? ExternalLink : Link;
 
   return (
+    // @ts-expect-error: Passed `href` are valid.
     <LinkType href={href} asChild>
       <StyledPressable className="flex-row items-center justify-between gap-2 pl-4">
         <NavLinkLabel className="py-1">{label}</NavLinkLabel>

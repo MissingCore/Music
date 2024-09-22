@@ -1,5 +1,6 @@
 import type { VariantProps } from "cva";
 import { cva } from "cva";
+import type { Href } from "expo-router";
 import { Link } from "expo-router";
 import { forwardRef } from "react";
 import type { PressableProps, View } from "react-native";
@@ -59,7 +60,7 @@ export function Button({
     return <ButtonBase {...props} />;
   } else if (interaction === "link") {
     return (
-      <Link href={href!} asChild>
+      <Link href={href as Href} asChild>
         <ButtonBase {...props} />
       </Link>
     );
