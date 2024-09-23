@@ -22,6 +22,7 @@
 | expo-image-manipulator | MIT | https://github.com/expo/expo/tree/main/packages/expo-image-manipulator |
 | expo-image-picker | MIT | https://github.com/expo/expo/tree/main/packages/expo-image-picker |
 | expo-linear-gradient | MIT | https://github.com/expo/expo/tree/main/packages/expo-linear-gradient |
+| expo-localization | MIT | https://github.com/expo/expo/tree/main/packages/expo-localization |
 | expo-media-library | MIT | https://github.com/expo/expo/tree/main/packages/expo-media-library |
 | expo-router | MIT | https://github.com/expo/expo/tree/main/packages/expo-router |
 | expo-sharing | MIT | https://github.com/expo/expo/tree/main/packages/expo-sharing |
@@ -29,12 +30,14 @@
 | expo-web-browser | MIT | https://github.com/expo/expo/tree/main/packages/expo-web-browser |
 | Geist Font | OFL-1.1 | https://github.com/vercel/geist-font |
 | heroicons | MIT | https://heroicons.com |
+| i18next | MIT | https://github.com/i18next/i18next |
 | Ionicons | MIT | https://github.com/ionic-team/ionicons |
 | jotai | MIT | https://github.com/pmndrs/jotai |
 | jotai-scope | MIT | https://github.com/jotaijs/jotai-scope |
 | Material Symbols | Apache-2.0 | https://github.com/google/material-design-icons |
 | nativewind | MIT | https://github.com/marklawlor/nativewind |
 | react | MIT | https://github.com/facebook/react |
+| react-i18next | MIT | https://github.com/i18next/react-i18next |
 | react-native | MIT | https://github.com/facebook/react-native |
 | react-native-bootsplash | MIT | https://github.com/zoontek/react-native-bootsplash |
 | react-native-gesture-handler | MIT | https://github.com/software-mansion/react-native-gesture-handler |
