@@ -23,7 +23,7 @@
       "appUpdate": {
         "title": "App Update",
         "brief": "A new update is available!",
-        "heading": "{{ version }} is Available",
+        "heading": "{{version}} is Available",
         "download": "Download the latest APK",
         "update": "Update via Play Store"
       },
@@ -83,11 +83,11 @@
         },
         "selectEntry": "Select directory.",
         "addEntry": "Add directory.",
-        "removeEntry": "Remove `{{ uri }}`.",
-        "entry_one": "{{ count }} entry",
-        "entry_other": "{{ count }} entries",
-        "second_one": "{{ count }} second",
-        "second_other": "{{ count }} seconds"
+        "removeEntry": "Remove `{{- uri}}`.",
+        "entry_one": "{{count}} entry",
+        "entry_other": "{{count}} entries",
+        "second_one": "{{count}} second",
+        "second_other": "{{count}} seconds"
       },
       "code": {
         "title": "GitHub Repository",
@@ -102,7 +102,7 @@
       "thirdParty": {
         "title": "Third-Party Software",
         "brief": "What makes this app possible.",
-        "visit": "Visit `{{ name }}` source."
+        "visit": "Visit `{{- name}}` source."
       },
       "version": {
         "title": "Version"
@@ -118,6 +118,6 @@
     "scanningFail": "Failed to rescan library.",
 
     "selectPathFail": "No directory selected.",
-    "addPathFail": "`{{ uri }}` doesn't exist."
+    "addPathFail": "`{{- uri}}` doesn't exist."
   }
 }
