@@ -1,0 +1,123 @@
+{
+  "language": "English",
+
+  "terms": {
+    "home": "Home",
+    "folder": "Folder",
+    "folders": "Folders",
+    "playlist": "Playlist",
+    "playlists": "Playlists",
+    "track": "Track",
+    "tracks": "Tracks",
+    "album": "Album",
+    "albums": "Albums",
+    "artist": "Artist",
+    "artists": "Artists",
+
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "screens": {
+    "settings": {
+      "title": "Settings",
+      "appUpdate": {
+        "title": "App Update",
+        "brief": "A new update is available!",
+        "heading": "{{ version }} is Available",
+        "download": "Download the latest APK",
+        "update": "Update via Play Store"
+      },
+      "language": {
+        "title": "Language"
+      },
+      "theme": {
+        "title": "Theme",
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
+      },
+      "backup": {
+        "title": "Backup",
+        "brief": "Move data across devices.",
+        "description": "Transfer data from this app across devices through a `music_backup.json` file.",
+        "export": "Export",
+        "import": "Import"
+      },
+      "insights": {
+        "title": "Insights",
+        "brief": "App usage & statistics.",
+        "images": "Images",
+        "database": "Database",
+        "other": "Other",
+        "cache": "Cache",
+        "total": "Total",
+        "totalDuration": "Total Duration",
+        "saveErrors": {
+          "title": "Save Errors",
+          "brief": "See the reason why some tracks weren't saved.",
+          "none": "No save errors found."
+        }
+      },
+      "interactions": {
+        "title": "Nothing Interactions",
+        "brief": "Supported Nothing features."
+      },
+      "scanning": {
+        "title": "Scanning",
+        "brief": "Music discovery options.",
+        "rescan": {
+          "title": "Rescan",
+          "brief": "Look for any new media."
+        },
+        "allowList": {
+          "title": "Allow List",
+          "description": "Defaults to the following if empty:"
+        },
+        "blockList": {
+          "title": "Block List",
+          "description": "Has higher priority over the entries in the Allow List."
+        },
+        "ignoreDuration": {
+          "title": "Ignore Short Audio",
+          "description": "Duration in seconds of audio we don't want to save."
+        },
+        "selectEntry": "Select directory.",
+        "addEntry": "Add directory.",
+        "removeEntry": "Remove `{{ uri }}`.",
+        "entry_one": "{{ count }} entry",
+        "entry_other": "{{ count }} entries",
+        "second_one": "{{ count }} second",
+        "second_other": "{{ count }} seconds"
+      },
+      "code": {
+        "title": "GitHub Repository",
+        "brief": "Report issues, contribute, or request new features."
+      },
+      "license": {
+        "title": "License"
+      },
+      "privacy": {
+        "title": "Privacy Policy"
+      },
+      "thirdParty": {
+        "title": "Third-Party Software",
+        "brief": "What makes this app possible.",
+        "visit": "Visit `{{ name }}` source."
+      },
+      "version": {
+        "title": "Version"
+      }
+    }
+  },
+  "toast": {
+    "exportSuccess": "Created backup successfully.",
+    "importSuccess": "Backup import completed.",
+
+    "scanningStart": "Rescanning library...",
+    "scanningSuccess": "Finished rescanning library.",
+    "scanningFail": "Failed to rescan library.",
+
+    "selectPathFail": "No directory selected.",
+    "addPathFail": "`{{ uri }}` doesn't exist."
+  }
+}
