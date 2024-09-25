@@ -27,14 +27,23 @@
         "download": "Download the latest APK",
         "update": "Update via Play Store"
       },
+      "appearance": {
+        "title": "Appearance",
+        "brief": "Personalize the app looks.",
+        "font": {
+          "title": "Accent Font",
+          "ndot": "NDot",
+          "ntype": "NType"
+        },
+        "theme": {
+          "title": "Theme",
+          "light": "Light",
+          "dark": "Dark",
+          "system": "System"
+        }
+      },
       "language": {
         "title": "Language"
-      },
-      "theme": {
-        "title": "Theme",
-        "light": "Light",
-        "dark": "Dark",
-        "system": "System"
       },
       "backup": {
         "title": "Backup",
