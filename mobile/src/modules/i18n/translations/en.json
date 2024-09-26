@@ -20,6 +20,9 @@
     "shuffle": "Shuffle",
     "repeat": "Repeat",
 
+    "favorite": "Add `{{name}}` to favorites.",
+    "unFavorite": "Remove `{{name}}` from favorites.",
+
     "cancel": "Cancel",
     "confirm": "Confirm"
   },
@@ -125,14 +128,22 @@
       "addEntry": "Add directory.",
       "removeEntry": "Remove `{{- uri}}`."
     },
-    "track": {
-      "open": "See more about `{{- name}}`."
-    },
     "sort": {
       "title": "Sort Order",
       "asc": "Ascending Order",
       "alphabetical": "Alphabetical",
       "modified": "Last Modified"
+    },
+    "track": {
+      "open": "See more about `{{- name}}`.",
+      "bitrate": "Bitrate",
+      "sampleRate": "Sample Rate",
+      "size": "Size",
+      "modified": "$t(modal:sort.modified)",
+      "filePath": "File Path",
+
+      "addPlaylist": "Add to Playlist",
+      "addQueue": "Add to Queue"
     }
   },
   "plural": {
