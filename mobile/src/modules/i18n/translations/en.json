@@ -1,8 +1,7 @@
 {
   "language": "English",
 
-  "terms": {
-    "home": "Home",
+  "common": {
     "folder": "Folder",
     "folders": "Folders",
     "playlist": "Playlist",
@@ -14,10 +13,33 @@
     "artist": "Artist",
     "artists": "Artists",
 
+    "play": "Play",
+    "pause": "Pause",
+    "prev": "Previous",
+    "next": "Next",
+    "shuffle": "Shuffle",
+    "repeat": "Repeat",
+
     "cancel": "Cancel",
     "confirm": "Confirm"
   },
   "screens": {
+    "home": {
+      "title": "Home",
+      "recent": "Recently Played",
+      "favorites": "Favorites"
+    },
+
+    "search": {
+      "title": "Search",
+      "placeholder": "Search Media",
+      "none": "No results found."
+    },
+
+    "modifyPlaylist": {
+      "create": "Create Playlist"
+    },
+
     "settings": {
       "title": "Settings",
       "appUpdate": {
@@ -102,6 +124,15 @@
       "selectEntry": "Select directory.",
       "addEntry": "Add directory.",
       "removeEntry": "Remove `{{- uri}}`."
+    },
+    "track": {
+      "open": "See more about `{{- name}}`."
+    },
+    "sort": {
+      "title": "Sort Order",
+      "asc": "Ascending Order",
+      "alphabetical": "Alphabetical",
+      "modified": "Last Modified"
     }
   },
   "plural": {
