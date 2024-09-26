@@ -27,31 +27,6 @@
         "download": "Download the latest APK",
         "update": "Update via Play Store"
       },
-      "appearance": {
-        "title": "Appearance",
-        "brief": "Personalize the app looks.",
-        "font": {
-          "title": "Accent Font",
-          "ndot": "NDot",
-          "ntype": "NType"
-        },
-        "theme": {
-          "title": "Theme",
-          "light": "Light",
-          "dark": "Dark",
-          "system": "System"
-        }
-      },
-      "language": {
-        "title": "Language"
-      },
-      "backup": {
-        "title": "Backup",
-        "brief": "Move data across devices.",
-        "description": "Transfer data from this app across devices through a `music_backup.json` file.",
-        "export": "Export",
-        "import": "Import"
-      },
       "insights": {
         "title": "Insights",
         "brief": "App usage & statistics.",
@@ -77,46 +52,63 @@
         "rescan": {
           "title": "Rescan",
           "brief": "Look for any new media."
-        },
-        "allowList": {
-          "title": "Allow List",
-          "description": "Defaults to the following if empty:"
-        },
-        "blockList": {
-          "title": "Block List",
-          "description": "Has higher priority over the entries in the Allow List."
-        },
-        "ignoreDuration": {
-          "title": "Ignore Short Audio",
-          "description": "Duration in seconds of audio we don't want to save."
-        },
-        "selectEntry": "Select directory.",
-        "addEntry": "Add directory.",
-        "removeEntry": "Remove `{{- uri}}`.",
-        "entry_one": "{{count}} entry",
-        "entry_other": "{{count}} entries",
-        "second_one": "{{count}} second",
-        "second_other": "{{count}} seconds"
+        }
       },
       "code": {
         "title": "GitHub Repository",
         "brief": "Report issues, contribute, or request new features."
       },
-      "license": {
-        "title": "License"
-      },
-      "privacy": {
-        "title": "Privacy Policy"
-      },
+      "license": "License",
+      "privacy": "Privacy Policy",
       "thirdParty": {
         "title": "Third-Party Software",
         "brief": "What makes this app possible.",
         "visit": "Visit `{{- name}}` source."
       },
-      "version": {
-        "title": "Version"
-      }
+      "version": "Version"
     }
+  },
+  "modal": {
+    "appearance": {
+      "title": "Appearance",
+      "brief": "Personalize the app looks.",
+      "language": "Language",
+      "font": "Accent Font",
+      "theme": "Theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    },
+    "backup": {
+      "title": "Backup",
+      "brief": "Move data across devices.",
+      "description": "Transfer data from this app across devices through a `music_backup.json` file.",
+      "export": "Export",
+      "import": "Import"
+    },
+    "ignoreDuration": {
+      "title": "Ignore Short Audio",
+      "description": "Duration in seconds of audio we don't want to save."
+    },
+    "pathFilter": {
+      "allow": {
+        "title": "Allow List",
+        "description": "Defaults to the following if empty:"
+      },
+      "block": {
+        "title": "Block List",
+        "description": "Has higher priority over the entries in the Allow List."
+      },
+      "selectEntry": "Select directory.",
+      "addEntry": "Add directory.",
+      "removeEntry": "Remove `{{- uri}}`."
+    }
+  },
+  "plural": {
+    "entry_one": "{{count}} entry",
+    "entry_other": "{{count}} entries",
+    "second_one": "{{count}} second",
+    "second_other": "{{count}} seconds"
   },
   "toast": {
     "exportSuccess": "Created backup successfully.",
