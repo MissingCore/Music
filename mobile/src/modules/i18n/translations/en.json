@@ -2,16 +2,16 @@
   "language": "English",
 
   "common": {
+    "album": "Album",
+    "albums": "Albums",
+    "artist": "Artist",
+    "artists": "Artists",
     "folder": "Folder",
     "folders": "Folders",
     "playlist": "Playlist",
     "playlists": "Playlists",
     "track": "Track",
     "tracks": "Tracks",
-    "album": "Album",
-    "albums": "Albums",
-    "artist": "Artist",
-    "artists": "Artists",
 
     "play": "Play",
     "pause": "Pause",
@@ -20,147 +20,173 @@
     "shuffle": "Shuffle",
     "repeat": "Repeat",
 
-    "favorite": "Add `{{name}}` to favorites.",
-    "unFavorite": "Remove `{{name}}` from favorites.",
+    "favorite": "Favorite",
+    "unFavorite": "Unfavorite",
 
-    "cancel": "Cancel",
-    "confirm": "Confirm"
+    "queue": "Queue"
   },
-  "screens": {
-    "home": {
-      "title": "Home",
-      "recent": "Recently Played",
-      "favorites": "Favorites"
-    },
 
-    "search": {
-      "title": "Search",
-      "placeholder": "Search Media",
-      "none": "No results found."
-    },
+  "header": {
+    "home": "Home",
+    "search": "Search",
 
-    "modifyPlaylist": {
-      "create": "Create Playlist"
-    },
-
-    "settings": {
-      "title": "Settings",
-      "appUpdate": {
-        "title": "App Update",
-        "brief": "A new update is available!",
-        "heading": "{{version}} is Available",
-        "download": "Download the latest APK",
-        "update": "Update via Play Store"
-      },
-      "insights": {
-        "title": "Insights",
-        "brief": "App usage & statistics.",
-        "images": "Images",
-        "database": "Database",
-        "other": "Other",
-        "cache": "Cache",
-        "total": "Total",
-        "totalDuration": "Total Duration",
-        "saveErrors": {
-          "title": "Save Errors",
-          "brief": "See the reason why some tracks weren't saved.",
-          "none": "No save errors found."
-        }
-      },
-      "interactions": {
-        "title": "Nothing Interactions",
-        "brief": "Supported Nothing features."
-      },
-      "scanning": {
-        "title": "Scanning",
-        "brief": "Music discovery options.",
-        "rescan": {
-          "title": "Rescan",
-          "brief": "Look for any new media."
-        }
-      },
-      "code": {
-        "title": "GitHub Repository",
-        "brief": "Report issues, contribute, or request new features."
-      },
-      "license": "License",
-      "privacy": "Privacy Policy",
-      "thirdParty": {
-        "title": "Third-Party Software",
-        "brief": "What makes this app possible.",
-        "visit": "Visit `{{- name}}` source."
-      },
-      "version": "Version"
-    }
+    "settings": "Settings",
+    "appUpdate": "App Update",
+    "appearance": "Appearance",
+    "insights": "Insights",
+    "saveErrors": "Save Errors",
+    "scanning": "Scanning",
+    "thirdParty": "Third-Party Software"
   },
-  "modal": {
-    "appearance": {
-      "title": "Appearance",
-      "brief": "Personalize the app looks.",
-      "language": "Language",
-      "font": "Accent Font",
-      "theme": "Theme",
+  "title": {
+    "language": "Language",
+    "backup": "Backup",
+    "font": "Accent Font",
+    "theme": "Theme",
+    "listAllow": "Allow List",
+    "listBlock": "Block List",
+    "ignoreDuration": "Ignore Short Audio",
+    "sort": "Sort Order",
+    "musicAdd": "Add Music"
+  },
+
+  "playlist": {
+    "create": "Create Playlist",
+    "edit": "Edit Playlist",
+    "delete": "Delete Playlist",
+
+    "add": "Add to Playlist",
+    "artworkChange": "Change Artwork",
+    "artworkRemove": "Remove Artwork"
+  },
+
+  "home": {
+    "playedRecent": "Recently Played",
+    "favorites": "Favorites"
+  },
+
+  "settings": {
+    "interactions": "Nothing Interactions",
+    "scanning": "Scanning",
+    "rescan": "Rescan",
+    "code": "GitHub Repository",
+    "license": "License",
+    "privacy": "Privacy Policy",
+    "version": "Version",
+
+    "brief": {
+      "appUpdate": "A new update is available!",
+      "appearance": "Personalize the app looks.",
+      "backup": "Move data across devices.",
+      "insights": "App usage & statistics.",
+      "saveErrors": "See the reason why some tracks weren't saved.",
+      "interactions": "Supported Nothing features.",
+      "scanning": "Music discovery options.",
+      "rescan": "Look for any new media.",
+      "code": "Report issues, contribute, or request new features.",
+      "thirdParty": "What makes this app possible."
+    },
+
+    "description": {
+      "backup": "Transfer data from this app across devices through a `music_backup.json` file.",
+      "listAllow": "Defaults to the following if empty:",
+      "listBlock": "Has higher priority over the entries in the Allow List.",
+      "ignoreDuration": "Duration in seconds of audio we don't want to save."
+    },
+
+    "related": {
+      "appDownload": "Download the latest APK",
+      "appUpdate": "Update via Play Store",
+
       "light": "Light",
       "dark": "Dark",
-      "system": "System"
-    },
-    "backup": {
-      "title": "Backup",
-      "brief": "Move data across devices.",
-      "description": "Transfer data from this app across devices through a `music_backup.json` file.",
-      "export": "Export",
-      "import": "Import"
-    },
-    "ignoreDuration": {
-      "title": "Ignore Short Audio",
-      "description": "Duration in seconds of audio we don't want to save."
-    },
-    "pathFilter": {
-      "allow": {
-        "title": "Allow List",
-        "description": "Defaults to the following if empty:"
-      },
-      "block": {
-        "title": "Block List",
-        "description": "Has higher priority over the entries in the Allow List."
-      },
-      "selectEntry": "Select directory.",
-      "addEntry": "Add directory.",
-      "removeEntry": "Remove `{{- uri}}`."
-    },
-    "sort": {
-      "title": "Sort Order",
-      "asc": "Ascending Order",
-      "alphabetical": "Alphabetical",
-      "modified": "Last Modified"
-    },
-    "track": {
-      "open": "See more about `{{- name}}`.",
-      "bitrate": "Bitrate",
-      "sampleRate": "Sample Rate",
-      "size": "Size",
-      "modified": "$t(modal:sort.modified)",
-      "filePath": "File Path",
+      "system": "System",
 
-      "addPlaylist": "Add to Playlist",
-      "addQueue": "Add to Queue"
+      "export": "Export",
+      "import": "Import",
+
+      "images": "Images",
+      "database": "Database",
+      "other": "Other",
+      "cache": "Cache",
+      "total": "Total",
+      "totalDuration": "Total Duration",
+
+      "pathAdd": "Add directory.",
+      "pathSelect": "Select directory."
     }
   },
+
+  "sortModal": {
+    "asc": "Ascending Order",
+    "alphabetical": "Alphabetical",
+    "modified": "Last Modified"
+  },
+  "trackModal": {
+    "bitrate": "Bitrate",
+    "sampleRate": "Sample Rate",
+    "size": "Size",
+    "modified": "$t(sortModal:modified)",
+    "filePath": "File Path",
+
+    "playlistAdd": "$t(playlist:add)",
+    "queueAdd": "Add to Queue"
+  },
+
+  "form": {
+    "apply": "Apply Changes",
+    "back": "Back",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+
+    "placeholder": {
+      "playlistName": "Playlist Name",
+      "searchMedia": "Search Media"
+    },
+
+    "validation": {
+      "unique": "Unique"
+    }
+  },
+
+  "template": {
+    "entryAdded": "`{{- name}}` added.",
+    "entryRemove": "Remove `{{- name}}`.",
+    "entryRemoved": "Removed `{{- name}}`.",
+    "entrySeeMore": "See more about `{{- name}`.",
+    "notFound": "`{{- name}}` doesn't exist."
+  },
+
   "plural": {
     "entry_one": "{{count}} entry",
     "entry_other": "{{count}} entries",
     "second_one": "{{count}} second",
-    "second_other": "{{count}} seconds"
+    "second_other": "{{count}} seconds",
+    "track_one": "{{count}} $t(common:track)",
+    "track_other": "{{count}} $t(common:tracks)"
   },
-  "toast": {
+
+  "response": {
+    "noRecents": "You haven't played anything yet!",
+    "noErrors": "No errors found.",
+    "noFilters": "No filters found.",
+    "noResults": "No results found.",
+    "noContent": "No content found.",
+
+    "noAlbums": "No albums found.",
+    "noArtists": "No artists found.",
+    "noPlaylists": "No playlists found.",
+    "noTracks": "No tracks found.",
+
+    "queueAdd": "`{{- name}}` added to queue.",
+
     "exportSuccess": "Created backup successfully.",
     "importSuccess": "Backup import completed.",
 
-    "scanningStart": "Rescanning library...",
-    "scanningSuccess": "Finished rescanning library.",
-    "scanningFail": "Failed to rescan library.",
+    "scanStart": "Rescanning library...",
+    "scanSuccess": "Finished rescanning library.",
+    "scanFail": "Failed to rescan library.",
 
-    "selectPathFail": "No directory selected.",
-    "addPathFail": "`{{- uri}}` doesn't exist."
+    "pathSelectFail": "No directory selected."
   }
 }

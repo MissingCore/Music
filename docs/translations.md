@@ -18,6 +18,14 @@ All translations live in the [`mobile/src/modules/i18n/translations`](https://gi
 
 You may also see some instances of **nesting**, which is where we use a translated value defined earlier in this given translation string. It'll appear in the translation string as `$t(<some-key>)`.
 
+### Brief Explanation on Organization
+
+- `common` contains terms used throughout the app.
+- `header` contains page names that are prominently displayed or are in the header.
+- `title` contains the header names used in modals.
+- `plural` contain phrases involving a dynamic number we provide.
+- `response` contains any message we conditionally display to the user.
+
 ## How To Contribute
 
 > [!IMPORTANT]  
