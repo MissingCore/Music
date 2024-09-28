@@ -21,9 +21,7 @@
     "repeat": "Repeat",
 
     "favorite": "Favorite",
-    "unFavorite": "Unfavorite",
-
-    "queue": "Queue"
+    "unFavorite": "Unfavorite"
   },
 
   "header": {
@@ -47,7 +45,8 @@
     "listBlock": "Block List",
     "ignoreDuration": "Ignore Short Audio",
     "sort": "Sort Order",
-    "musicAdd": "Add Music"
+    "musicAdd": "Add Music",
+    "upcoming": "Upcoming"
   },
 
   "playlist": {
@@ -69,6 +68,7 @@
     "interactions": "Nothing Interactions",
     "scanning": "Scanning",
     "rescan": "Rescan",
+    "translate": "Contribute Translations",
     "code": "GitHub Repository",
     "license": "License",
     "privacy": "Privacy Policy",
@@ -83,6 +83,7 @@
       "interactions": "Supported Nothing features.",
       "scanning": "Music discovery options.",
       "rescan": "Look for any new media.",
+      "translate": "Help translate the app in other languages.",
       "code": "Report issues, contribute, or request new features.",
       "thirdParty": "What makes this app possible."
     },
@@ -115,6 +116,33 @@
       "pathAdd": "Add directory.",
       "pathSelect": "Select directory."
     }
+  },
+
+  "errorScreen": {
+    "unmatched": "Unmatched Route",
+    "unmatchedBrief": "You somehow navigated to an invalid route.",
+    "missing": "Missing",
+    "from": "From",
+
+    "generic": "Something Went Wrong",
+    "genericBrief": "You encountered an unexpected error.",
+
+    "report": "Report Issue",
+    "screenshot": "Include a screenshot of this screen."
+  },
+
+  "onboardingScreen": {
+    "preprocess": "Preprocess",
+    "preprocessBrief": "Making sure existing data complies with any changes.",
+
+    "track": "Saving Tracks",
+    "prevSaved": "{{amount}} Previously Saved",
+    "saved": "{{amount}}/{{total}} Saved/Updated",
+    "errors": "{{amount}} Errors",
+
+    "image": "Saving Images",
+    "checked": "{{amount}}/{{total}} Checked",
+    "found": "{{amount}} Found"
   },
 
   "sortModal": {
