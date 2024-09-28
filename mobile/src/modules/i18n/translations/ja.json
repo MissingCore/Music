@@ -1,17 +1,17 @@
 {
-  "language": "English",
+  "language": "日本語",
 
   "common": {
-    "album": "Album",
-    "albums": "Albums",
-    "artist": "Artist",
-    "artists": "Artists",
-    "folder": "Folder",
-    "folders": "Folders",
-    "playlist": "Playlist",
-    "playlists": "Playlists",
-    "track": "Track",
-    "tracks": "Tracks",
+    "album": "アルバム",
+    "albums": "アルバム",
+    "artist": "アーティスト",
+    "artists": "アーティスト",
+    "folder": "フォルダ",
+    "folders": "フォルダ",
+    "playlist": "プレイリスト",
+    "playlists": "プレイリスト",
+    "track": "曲",
+    "tracks": "曲",
 
     "play": "Play",
     "pause": "Pause",
@@ -25,24 +25,24 @@
   },
 
   "header": {
-    "home": "Home",
+    "home": "ホーム",
     "search": "Search",
 
-    "settings": "Settings",
+    "settings": "設定",
     "appUpdate": "App Update",
     "appearance": "Appearance",
-    "insights": "Insights",
-    "saveErrors": "Save Errors",
+    "insights": "解析",
+    "saveErrors": "エラーの保存",
     "scanning": "Scanning",
-    "thirdParty": "Third-Party Software"
+    "thirdParty": "サードパーティーソフトウェア"
   },
   "title": {
     "language": "Language",
-    "backup": "Backup",
+    "backup": "バックアップ",
     "font": "Accent Font",
     "theme": "Theme",
-    "listAllow": "Allow List",
-    "listBlock": "Block List",
+    "listAllow": "許可リスト",
+    "listBlock": "ブロックリスト",
     "ignoreDuration": "Ignore Short Audio",
     "sort": "Sort Order",
     "musicAdd": "Add Music",
@@ -60,19 +60,19 @@
   },
 
   "home": {
-    "playedRecent": "Recently Played",
+    "playedRecent": "最近に再生",
     "favorites": "Favorites"
   },
 
   "settings": {
     "interactions": "Nothing Interactions",
     "scanning": "Scanning",
-    "rescan": "Rescan",
+    "rescan": "再スキャン",
     "translate": "Contribute Translations",
     "code": "GitHub Repository",
-    "license": "License",
-    "privacy": "Privacy Policy",
-    "version": "Version",
+    "license": "ライセンス",
+    "privacy": "プライバシーポリシー",
+    "version": "バージョン",
 
     "brief": {
       "appUpdate": "A new update is available!",
@@ -103,15 +103,15 @@
       "dark": "Dark",
       "system": "System",
 
-      "export": "Export",
-      "import": "Import",
+      "export": "エクスポート",
+      "import": "インポート",
 
-      "images": "Images",
-      "database": "Database",
-      "other": "Other",
-      "cache": "Cache",
-      "total": "Total",
-      "totalDuration": "Total Duration",
+      "images": "画像",
+      "database": "データベース",
+      "other": "その他",
+      "cache": "キャッシュ",
+      "total": "合計",
+      "totalDuration": "合計時間",
 
       "pathAdd": "Add directory.",
       "pathSelect": "Select directory."
@@ -119,9 +119,9 @@
   },
 
   "errorScreen": {
-    "unmatched": "Unmatched Route",
-    "unmatchedBrief": "You somehow navigated to an invalid route.",
-    "missing": "Missing",
+    "unmatched": "一致しないルート",
+    "unmatchedBrief": "何らかの理由で無効なルートに移動しました。",
+    "missing": "なし",
     "from": "From",
 
     "generic": "Something Went Wrong",
@@ -199,17 +199,17 @@
   },
 
   "response": {
-    "noRecents": "You haven't played anything yet!",
+    "noRecents": "まだ何も再生していません!",
     "noErrors": "No errors found.",
     "noFilters": "No filters found.",
     "noResults": "No results found.",
     "noContent": "No content found.",
 
-    "noAlbums": "No albums found.",
-    "noArtists": "No artists found.",
-    "noPlaylists": "No playlists found.",
-    "noTracks": "No tracks found.",
-    "noDirectory": "No directory found.",
+    "noAlbums": "アルバムが見つかりません。",
+    "noArtists": "アーティストが見つかりません。",
+    "noPlaylists": "プレイリストが見つかりません。",
+    "noTracks": "曲が見つかりません。",
+    "noDirectory": "ディレクトリが見つかりません。",
 
     "queueAdd": "`{{- name}}` added to queue.",
 
