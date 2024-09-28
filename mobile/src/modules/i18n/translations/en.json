@@ -167,6 +167,10 @@
     "cancel": "Cancel",
     "confirm": "Confirm",
 
+    "unsaved": "You may have unsaved changes.",
+    "stay": "Stay",
+    "leave": "Leave",
+
     "placeholder": {
       "playlistName": "Playlist Name",
       "searchMedia": "Search Media"
