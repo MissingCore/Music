@@ -74,6 +74,9 @@ dependencies:
   expo-linear-gradient:
     specifier: ~13.0.2
     version: 13.0.2(expo@51.0.32)
+  expo-localization:
+    specifier: ^15.0.3
+    version: 15.0.3(expo@51.0.32)
   expo-media-library:
     specifier: ~16.0.5
     version: 16.0.5(expo@51.0.32)
@@ -89,6 +92,12 @@ dependencies:
   expo-web-browser:
     specifier: ~13.0.3
     version: 13.0.3(expo@51.0.32)
+  i18next:
+    specifier: ^23.15.1
+    version: 23.15.1
+  intl-pluralrules:
+    specifier: ^2.0.1
+    version: 2.0.1
   jotai:
     specifier: ^2.10.0
     version: 2.10.0(@types/react@18.3.8)(react@18.3.1)
@@ -101,6 +110,9 @@ dependencies:
   react:
     specifier: 18.3.1
     version: 18.3.1
+  react-i18next:
+    specifier: ^15.0.2
+    version: 15.0.2(i18next@23.15.1)(react-native@0.75.3)(react@18.3.1)
   react-native:
     specifier: 0.75.3
     version: 0.75.3(@babel/core@7.25.2)(@babel/preset-env@7.25.4)(@types/react@18.3.8)(react@18.3.1)(typescript@5.6.2)
@@ -6829,6 +6841,15 @@ packages:
       - supports-color
     dev: false
 
+  /expo-localization@15.0.3(expo@51.0.32):
+    resolution: {integrity: sha512-IfcmlKuKRlowR9qIzL0e+nGHBeNoF7l2GQaOJstc7HZiPjNJ4J1R4D53ZNf483dt7JSkTRJBihdTadOtOEjRdg==}
+    peerDependencies:
+      expo: '*'
+    dependencies:
+      expo: 51.0.32(@babel/core@7.25.2)(@babel/preset-env@7.25.4)
+      rtl-detect: 1.1.2
+    dev: false
+
   /expo-media-library@16.0.5(expo@51.0.32):
     resolution: {integrity: sha512-O9RUqBWgJVRF0mO6EiLSBFyfb5wR1/ZqovbT43V0TAo5sgcjrHRs+0NID/U6BWDRuiFeX2AU516JgNDutNUFSw==}
     peerDependencies:
@@ -7535,6 +7556,12 @@ packages:
     resolution: {integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==}
     dev: true
 
+  /html-parse-stringify@3.0.1:
+    resolution: {integrity: sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==}
+    dependencies:
+      void-elements: 3.1.0
+    dev: false
+
   /http-errors@2.0.0:
     resolution: {integrity: sha512-FtwrG/euBzaEjYeRqOgly7G0qviiXoJWnvEH2Z1plBdXgbyjv34pHTSb9zoeHMyDy33+DWy5Wt9Wo+TURtOYSQ==}
     engines: {node: '>= 0.8'}
@@ -7569,6 +7596,12 @@ packages:
   /human-signals@2.1.0:
     resolution: {integrity: sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==}
     engines: {node: '>=10.17.0'}
+
+  /i18next@23.15.1:
+    resolution: {integrity: sha512-wB4abZ3uK7EWodYisHl/asf8UYEhrI/vj/8aoSsrj/ZDxj4/UXPOa1KvFt1Fq5hkUHquNqwFlDprmjZ8iySgYA==}
+    dependencies:
+      '@babel/runtime': 7.25.6
+    dev: false
 
   /iconv-lite@0.6.3:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
@@ -7663,6 +7696,10 @@ packages:
       es-errors: 1.3.0
       hasown: 2.0.2
       side-channel: 1.0.6
+
+  /intl-pluralrules@2.0.1:
+    resolution: {integrity: sha512-astxTLzIdXPeN0K9Rumi6LfMpm3rvNO0iJE+h/k8Kr/is+wPbRe4ikyDjlLr6VTh/mEfNv8RjN+gu3KwDiuhqg==}
+    dev: false
 
   /invariant@2.2.4:
     resolution: {integrity: sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==}
@@ -10481,6 +10518,26 @@ packages:
       react: 18.3.1
     dev: false
 
+  /react-i18next@15.0.2(i18next@23.15.1)(react-native@0.75.3)(react@18.3.1):
+    resolution: {integrity: sha512-z0W3/RES9Idv3MmJUcf0mDNeeMOUXe+xoL0kPfQPbDoZHmni/XsIoq5zgT2MCFUiau283GuBUK578uD/mkAbLQ==}
+    peerDependencies:
+      i18next: '>= 23.2.3'
+      react: '>= 16.8.0'
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.25.6
+      html-parse-stringify: 3.0.1
+      i18next: 23.15.1
+      react: 18.3.1
+      react-native: 0.75.3(@babel/core@7.25.2)(@babel/preset-env@7.25.4)(@types/react@18.3.8)(react@18.3.1)(typescript@5.6.2)
+    dev: false
+
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
@@ -11052,6 +11109,10 @@ packages:
     hasBin: true
     dependencies:
       glob: 7.2.3
+
+  /rtl-detect@1.1.2:
+    resolution: {integrity: sha512-PGMBq03+TTG/p/cRB7HCLKJ1MgDIi07+QU1faSjiYRfmY5UsAttV9Hs08jDAHVwcOwmVLcSJkpwyfXszVjWfIQ==}
+    dev: false
 
   /run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
@@ -12360,6 +12421,11 @@ packages:
 
   /vlq@1.0.1:
     resolution: {integrity: sha512-gQpnTgkubC6hQgdIcRdYGDSDc+SaujOdyesZQMv6JlfQee/9Mp0Qhnys6WxDWvQnL5WZdT7o2Ul187aSt0Rq+w==}
+    dev: false
+
+  /void-elements@3.1.0:
+    resolution: {integrity: sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==}
+    engines: {node: '>=0.10.0'}
     dev: false
 
   /w3c-xmlserializer@4.0.0:

@@ -1,3 +1,6 @@
+/* Polyfills */
+import "intl-pluralrules";
+
 import * as Sentry from "@sentry/react-native";
 import { Stack } from "expo-router";
 import { useSetAtom } from "jotai";
@@ -9,6 +12,7 @@ import { useLoadResources } from "@/hooks/useLoadResources";
 import { mediaModalAtom } from "@/modals/categories/media/store";
 
 import "@/resources/global.css";
+import "@/modules/i18n"; // Make sure translations are bundled.
 import { AppProvider } from "@/components/app-provider";
 import { ErrorBoundary } from "@/components/error/error-boundary";
 import { AnimatedBootSplash } from "@/components/navigation/animated-boot-splash";

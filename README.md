@@ -75,6 +75,10 @@ There are 2 methods of installing this app:
 
 Read the [Building this App](./docs/building-this-app.md) documentation.
 
+# Translations
+
+Read the [Translations](./docs/translations.md) documentation for a rundown of how to contribute translations to this app.
+
 # FAQ
 
 > Why is the APK version of the app larger than the one from the Google Play Store?

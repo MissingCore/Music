@@ -1,0 +1,225 @@
+{
+  "language": "日本語",
+
+  "common": {
+    "album": "アルバム",
+    "albums": "アルバム",
+    "artist": "アーティスト",
+    "artists": "アーティスト",
+    "folder": "フォルダ",
+    "folders": "フォルダ",
+    "playlist": "プレイリスト",
+    "playlists": "プレイリスト",
+    "track": "曲",
+    "tracks": "曲",
+
+    "play": "Play",
+    "pause": "Pause",
+    "prev": "Previous",
+    "next": "Next",
+    "shuffle": "Shuffle",
+    "repeat": "Repeat",
+
+    "favorite": "Favorite",
+    "unFavorite": "Unfavorite"
+  },
+
+  "header": {
+    "home": "ホーム",
+    "search": "Search",
+
+    "settings": "設定",
+    "appUpdate": "App Update",
+    "appearance": "Appearance",
+    "insights": "解析",
+    "saveErrors": "エラーの保存",
+    "scanning": "Scanning",
+    "thirdParty": "サードパーティーソフトウェア"
+  },
+  "title": {
+    "language": "Language",
+    "backup": "バックアップ",
+    "font": "Accent Font",
+    "theme": "Theme",
+    "listAllow": "許可リスト",
+    "listBlock": "ブロックリスト",
+    "ignoreDuration": "Ignore Short Audio",
+    "sort": "Sort Order",
+    "musicAdd": "Add Music",
+    "upcoming": "Upcoming"
+  },
+
+  "playlist": {
+    "create": "Create Playlist",
+    "edit": "Edit Playlist",
+    "delete": "Delete Playlist",
+
+    "add": "Add to Playlist",
+    "artworkChange": "Change Artwork",
+    "artworkRemove": "Remove Artwork"
+  },
+
+  "home": {
+    "playedRecent": "最近に再生",
+    "favorites": "Favorites"
+  },
+
+  "settings": {
+    "interactions": "Nothing Interactions",
+    "scanning": "Scanning",
+    "rescan": "再スキャン",
+    "translate": "Contribute Translations",
+    "code": "GitHub Repository",
+    "license": "ライセンス",
+    "privacy": "プライバシーポリシー",
+    "version": "バージョン",
+
+    "brief": {
+      "appUpdate": "A new update is available!",
+      "appearance": "Personalize the app looks.",
+      "backup": "Move data across devices.",
+      "insights": "App usage & statistics.",
+      "saveErrors": "See the reason why some tracks weren't saved.",
+      "interactions": "Supported Nothing features.",
+      "scanning": "Music discovery options.",
+      "rescan": "Look for any new media.",
+      "translate": "Help translate the app in other languages.",
+      "code": "Report issues, contribute, or request new features.",
+      "thirdParty": "What makes this app possible."
+    },
+
+    "description": {
+      "backup": "Transfer data from this app across devices through a `music_backup.json` file.",
+      "listAllow": "Defaults to the following if empty:",
+      "listBlock": "Has higher priority over the entries in the Allow List.",
+      "ignoreDuration": "Duration in seconds of audio we don't want to save."
+    },
+
+    "related": {
+      "appDownload": "Download the latest APK",
+      "appUpdate": "Update via Play Store",
+
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System",
+
+      "export": "エクスポート",
+      "import": "インポート",
+
+      "images": "画像",
+      "database": "データベース",
+      "other": "その他",
+      "cache": "キャッシュ",
+      "total": "合計",
+      "totalDuration": "合計時間",
+
+      "pathAdd": "Add directory.",
+      "pathSelect": "Select directory."
+    }
+  },
+
+  "errorScreen": {
+    "unmatched": "一致しないルート",
+    "unmatchedBrief": "何らかの理由で無効なルートに移動しました。",
+    "missing": "なし",
+    "from": "From",
+
+    "generic": "Something Went Wrong",
+    "genericBrief": "You encountered an unexpected error.",
+
+    "report": "Report Issue",
+    "screenshot": "Include a screenshot of this screen."
+  },
+
+  "onboardingScreen": {
+    "preprocess": "Preprocess",
+    "preprocessBrief": "Making sure existing data complies with any changes.",
+
+    "track": "Saving Tracks",
+    "prevSaved": "{{amount}} Previously Saved",
+    "saved": "{{amount}}/{{total}} Saved/Updated",
+    "errors": "{{amount}} Errors",
+
+    "image": "Saving Images",
+    "checked": "{{amount}}/{{total}} Checked",
+    "found": "{{amount}} Found"
+  },
+
+  "sortModal": {
+    "asc": "Ascending Order",
+    "alphabetical": "Alphabetical",
+    "modified": "Last Modified"
+  },
+  "trackModal": {
+    "bitrate": "Bitrate",
+    "sampleRate": "Sample Rate",
+    "size": "Size",
+    "modified": "$t(sortModal.modified)",
+    "filePath": "File Path",
+
+    "playlistAdd": "$t(playlist.add)",
+    "queueAdd": "Add to Queue"
+  },
+
+  "form": {
+    "apply": "Apply Changes",
+    "back": "Back",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+
+    "unsaved": "You may have unsaved changes.",
+    "stay": "Stay",
+    "leave": "Leave",
+
+    "placeholder": {
+      "playlistName": "Playlist Name",
+      "searchMedia": "Search Media"
+    },
+
+    "validation": {
+      "unique": "Unique"
+    }
+  },
+
+  "template": {
+    "entryAdded": "`{{- name}}` added.",
+    "entryRemove": "Remove `{{- name}}`.",
+    "entryRemoved": "Removed `{{- name}}`.",
+    "entrySeeMore": "See more about `{{- name}`.",
+    "notFound": "`{{- name}}` doesn't exist."
+  },
+
+  "plural": {
+    "entry_one": "{{count}} entry",
+    "entry_other": "{{count}} entries",
+    "second_one": "{{count}} second",
+    "second_other": "{{count}} seconds",
+    "track_one": "{{count}} $t(common.track)",
+    "track_other": "{{count}} $t(common.tracks)"
+  },
+
+  "response": {
+    "noRecents": "まだ何も再生していません!",
+    "noErrors": "No errors found.",
+    "noFilters": "No filters found.",
+    "noResults": "No results found.",
+    "noContent": "No content found.",
+
+    "noAlbums": "アルバムが見つかりません。",
+    "noArtists": "アーティストが見つかりません。",
+    "noPlaylists": "プレイリストが見つかりません。",
+    "noTracks": "曲が見つかりません。",
+    "noDirectory": "ディレクトリが見つかりません。",
+
+    "queueAdd": "`{{- name}}` added to queue.",
+
+    "exportSuccess": "Created backup successfully.",
+    "importSuccess": "Backup import completed.",
+
+    "scanStart": "Rescanning library...",
+    "scanSuccess": "Finished rescanning library.",
+    "scanFail": "Failed to rescan library.",
+
+    "pathSelectFail": "No directory selected."
+  }
+}

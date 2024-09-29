@@ -171,11 +171,11 @@ export const musicStore = createStore<MusicStore>()(
           ),
         // Listen to when the store is hydrated.
         onRehydrateStorage: () => {
-          console.log("[Zustand Hydration] Re-hydrating storage.");
+          console.log("[Music Store] Re-hydrating storage.");
           return (state, error) => {
-            if (error) console.log("[Zustand Hydration]", error);
+            if (error) console.log("[Music Store]", error);
             else {
-              console.log("[Zustand Hydration] Completed with:", state);
+              console.log("[Music Store] Completed with:", state);
               state?.setHasHydrated(true);
             }
           };

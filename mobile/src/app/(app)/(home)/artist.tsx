@@ -26,7 +26,7 @@ export default function ArtistScreen() {
           typeof item === "string" ? (
             <Heading
               as="h2"
-              className={cn("mb-2 text-start font-ndot57", {
+              className={cn("mb-2 text-start font-ndot", {
                 "mt-2": index !== 0,
               })}
             >

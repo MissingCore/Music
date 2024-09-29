@@ -18,7 +18,7 @@ export function CustomHeader(props: NativeStackHeaderProps) {
       TitleWrapper={(props: { children: React.ReactNode }) => (
         <Text
           numberOfLines={1}
-          className="flex-1 shrink font-ndot57 text-title text-foreground50"
+          className="flex-1 shrink font-ndot text-title text-foreground50"
         >
           {props.children}
         </Text>

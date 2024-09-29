@@ -1,0 +1,225 @@
+{
+  "language": "English",
+
+  "common": {
+    "album": "Album",
+    "albums": "Albums",
+    "artist": "Artist",
+    "artists": "Artists",
+    "folder": "Folder",
+    "folders": "Folders",
+    "playlist": "Playlist",
+    "playlists": "Playlists",
+    "track": "Track",
+    "tracks": "Tracks",
+
+    "play": "Play",
+    "pause": "Pause",
+    "prev": "Previous",
+    "next": "Next",
+    "shuffle": "Shuffle",
+    "repeat": "Repeat",
+
+    "favorite": "Favorite",
+    "unFavorite": "Unfavorite"
+  },
+
+  "header": {
+    "home": "Home",
+    "search": "Search",
+
+    "settings": "Settings",
+    "appUpdate": "App Update",
+    "appearance": "Appearance",
+    "insights": "Insights",
+    "saveErrors": "Save Errors",
+    "scanning": "Scanning",
+    "thirdParty": "Third-Party Software"
+  },
+  "title": {
+    "language": "Language",
+    "backup": "Backup",
+    "font": "Accent Font",
+    "theme": "Theme",
+    "listAllow": "Allow List",
+    "listBlock": "Block List",
+    "ignoreDuration": "Ignore Short Audio",
+    "sort": "Sort Order",
+    "musicAdd": "Add Music",
+    "upcoming": "Upcoming"
+  },
+
+  "playlist": {
+    "create": "Create Playlist",
+    "edit": "Edit Playlist",
+    "delete": "Delete Playlist",
+
+    "add": "Add to Playlist",
+    "artworkChange": "Change Artwork",
+    "artworkRemove": "Remove Artwork"
+  },
+
+  "home": {
+    "playedRecent": "Recently Played",
+    "favorites": "Favorites"
+  },
+
+  "settings": {
+    "interactions": "Nothing Interactions",
+    "scanning": "Scanning",
+    "rescan": "Rescan",
+    "translate": "Contribute Translations",
+    "code": "GitHub Repository",
+    "license": "License",
+    "privacy": "Privacy Policy",
+    "version": "Version",
+
+    "brief": {
+      "appUpdate": "A new update is available!",
+      "appearance": "Personalize the app looks.",
+      "backup": "Move data across devices.",
+      "insights": "App usage & statistics.",
+      "saveErrors": "See the reason why some tracks weren't saved.",
+      "interactions": "Supported Nothing features.",
+      "scanning": "Music discovery options.",
+      "rescan": "Look for any new media.",
+      "translate": "Help translate the app in other languages.",
+      "code": "Report issues, contribute, or request new features.",
+      "thirdParty": "What makes this app possible."
+    },
+
+    "description": {
+      "backup": "Transfer data from this app across devices through a `music_backup.json` file.",
+      "listAllow": "Defaults to the following if empty:",
+      "listBlock": "Has higher priority over the entries in the Allow List.",
+      "ignoreDuration": "Duration in seconds of audio we don't want to save."
+    },
+
+    "related": {
+      "appDownload": "Download the latest APK",
+      "appUpdate": "Update via Play Store",
+
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System",
+
+      "export": "Export",
+      "import": "Import",
+
+      "images": "Images",
+      "database": "Database",
+      "other": "Other",
+      "cache": "Cache",
+      "total": "Total",
+      "totalDuration": "Total Duration",
+
+      "pathAdd": "Add directory.",
+      "pathSelect": "Select directory."
+    }
+  },
+
+  "errorScreen": {
+    "unmatched": "Unmatched Route",
+    "unmatchedBrief": "You somehow navigated to an invalid route.",
+    "missing": "Missing",
+    "from": "From",
+
+    "generic": "Something Went Wrong",
+    "genericBrief": "You encountered an unexpected error.",
+
+    "report": "Report Issue",
+    "screenshot": "Include a screenshot of this screen."
+  },
+
+  "onboardingScreen": {
+    "preprocess": "Preprocess",
+    "preprocessBrief": "Making sure existing data complies with any changes.",
+
+    "track": "Saving Tracks",
+    "prevSaved": "{{amount}} Previously Saved",
+    "saved": "{{amount}}/{{total}} Saved/Updated",
+    "errors": "{{amount}} Errors",
+
+    "image": "Saving Images",
+    "checked": "{{amount}}/{{total}} Checked",
+    "found": "{{amount}} Found"
+  },
+
+  "sortModal": {
+    "asc": "Ascending Order",
+    "alphabetical": "Alphabetical",
+    "modified": "Last Modified"
+  },
+  "trackModal": {
+    "bitrate": "Bitrate",
+    "sampleRate": "Sample Rate",
+    "size": "Size",
+    "modified": "$t(sortModal.modified)",
+    "filePath": "File Path",
+
+    "playlistAdd": "$t(playlist.add)",
+    "queueAdd": "Add to Queue"
+  },
+
+  "form": {
+    "apply": "Apply Changes",
+    "back": "Back",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+
+    "unsaved": "You may have unsaved changes.",
+    "stay": "Stay",
+    "leave": "Leave",
+
+    "placeholder": {
+      "playlistName": "Playlist Name",
+      "searchMedia": "Search Media"
+    },
+
+    "validation": {
+      "unique": "Unique"
+    }
+  },
+
+  "template": {
+    "entryAdded": "`{{- name}}` added.",
+    "entryRemove": "Remove `{{- name}}`.",
+    "entryRemoved": "Removed `{{- name}}`.",
+    "entrySeeMore": "See more about `{{- name}`.",
+    "notFound": "`{{- name}}` doesn't exist."
+  },
+
+  "plural": {
+    "entry_one": "{{count}} entry",
+    "entry_other": "{{count}} entries",
+    "second_one": "{{count}} second",
+    "second_other": "{{count}} seconds",
+    "track_one": "{{count}} $t(common.track)",
+    "track_other": "{{count}} $t(common.tracks)"
+  },
+
+  "response": {
+    "noRecents": "You haven't played anything yet!",
+    "noErrors": "No errors found.",
+    "noFilters": "No filters found.",
+    "noResults": "No results found.",
+    "noContent": "No content found.",
+
+    "noAlbums": "No albums found.",
+    "noArtists": "No artists found.",
+    "noPlaylists": "No playlists found.",
+    "noTracks": "No tracks found.",
+    "noDirectory": "No directory found.",
+
+    "queueAdd": "`{{- name}}` added to queue.",
+
+    "exportSuccess": "Created backup successfully.",
+    "importSuccess": "Backup import completed.",
+
+    "scanStart": "Rescanning library...",
+    "scanSuccess": "Finished rescanning library.",
+    "scanFail": "Failed to rescan library.",
+
+    "pathSelectFail": "No directory selected."
+  }
+}

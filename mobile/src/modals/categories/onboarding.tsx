@@ -28,7 +28,7 @@ export function QuickStartModal() {
     >
       <View className="flex-1 items-center justify-center bg-canvas/50">
         <View className="m-4 rounded-xl bg-surface800 p-4">
-          <Heading as="h2" className="mb-8 font-ndot57">
+          <Heading as="h2" className="mb-8 font-ndot">
             Quick Start
           </Heading>
 
@@ -36,7 +36,7 @@ export function QuickStartModal() {
             Default Scanning
           </Text>
           <Text className="mb-6 font-geistMonoLight text-xs text-surface400">
-            By default, <Text className="font-ndot57">Music</Text> will{" "}
+            By default, <Text className="font-ndot">Music</Text> will{" "}
             <Text className="text-foreground100">
               scan for tracks in the top-level `Music` directory
             </Text>{" "}

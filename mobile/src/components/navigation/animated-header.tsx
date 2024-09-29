@@ -87,7 +87,7 @@ export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
                 <Animated.Text
                   numberOfLines={1}
                   style={animatedStyles}
-                  className="shrink font-ndot57 text-lg leading-none text-foreground50"
+                  className="shrink font-ndot text-lg leading-none text-foreground50"
                 >
                   {title}
                 </Animated.Text>
@@ -107,7 +107,7 @@ export function AnimatedHeader({ title, children }: AnimatedHeaderProps) {
           onLayout={({ nativeEvent }) => {
             titleHeight.value = nativeEvent.layout.height;
           }}
-          className="mb-8 text-start font-ndot57"
+          className="mb-8 text-start font-ndot"
         >
           {title}
         </Heading>
