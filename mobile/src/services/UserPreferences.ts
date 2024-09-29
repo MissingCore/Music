@@ -26,7 +26,7 @@ interface UserPreferencesStore {
 
   /** Language code of the displayed content. */
   language: string;
-  _setLanguage: (languageCode: string) => void;
+  setLanguage: (languageCode: string) => void;
 
   /** "Color" the overall app will look like. */
   theme: "light" | "dark" | "system";
@@ -50,7 +50,7 @@ interface UserPreferencesStore {
 const OMITTED_FIELDS: string[] = [
   "_hasHydrated",
   "setHasHydrated",
-  "_setLanguage",
+  "setLanguage",
 ] satisfies Array<keyof UserPreferencesStore>;
 //#endregion
 
@@ -65,7 +65,7 @@ export const userPreferencesStore = createStore<UserPreferencesStore>()(
         },
 
         language: "",
-        _setLanguage: (languageCode) => {
+        setLanguage: (languageCode) => {
           set({ language: languageCode });
         },
 
@@ -105,7 +105,7 @@ export const userPreferencesStore = createStore<UserPreferencesStore>()(
                 const exists = LANGUAGES.some(
                   ({ code }) => code === deviceLangCode,
                 );
-                state._setLanguage(exists ? deviceLangCode : "en");
+                state.setLanguage(exists ? deviceLangCode : "en");
               }
             }
           };

@@ -154,10 +154,10 @@
     "bitrate": "Bitrate",
     "sampleRate": "Sample Rate",
     "size": "Size",
-    "modified": "$t(sortModal:modified)",
+    "modified": "$t(sortModal.modified)",
     "filePath": "File Path",
 
-    "playlistAdd": "$t(playlist:add)",
+    "playlistAdd": "$t(playlist.add)",
     "queueAdd": "Add to Queue"
   },
 
@@ -194,8 +194,8 @@
     "entry_other": "{{count}} entries",
     "second_one": "{{count}} second",
     "second_other": "{{count}} seconds",
-    "track_one": "{{count}} $t(common:track)",
-    "track_other": "{{count}} $t(common:tracks)"
+    "track_one": "{{count}} $t(common.track)",
+    "track_other": "{{count}} $t(common.tracks)"
   },
 
   "response": {
