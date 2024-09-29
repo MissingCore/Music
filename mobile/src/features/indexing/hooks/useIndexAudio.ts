@@ -1,7 +1,8 @@
 import * as MediaLibrary from "expo-media-library";
 import { useCallback, useEffect, useState } from "react";
 
-import { Resynchronize, useMusicStore } from "@/modules/media/services/Music";
+import { useHasHydratedStores } from "@/hooks/useHasHydratedStores";
+import { Resynchronize } from "@/modules/media/services/Music";
 import { cleanUpArtwork } from "../api/artwork-cleanup";
 import { saveArtworkOnce } from "../api/artwork-save";
 import { cleanUpDb } from "../api/db-cleanup";
@@ -19,7 +20,7 @@ export function useIndexAudio() {
   const [permissionResponse, requestPermission] = MediaLibrary.usePermissions({
     granularPermissions: ["audio"],
   });
-  const isHydrated = useMusicStore((state) => state._hasHydrated);
+  const isHydrated = useHasHydratedStores();
   const [isComplete, setIsComplete] = useState(false);
   const [error, setError] = useState<Error>();
 

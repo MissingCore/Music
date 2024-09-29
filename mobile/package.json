@@ -52,6 +52,7 @@
     "expo-sqlite": "^14.0.6",
     "expo-web-browser": "~13.0.3",
     "i18next": "^23.15.1",
+    "intl-pluralrules": "^2.0.1",
     "jotai": "^2.10.0",
     "jotai-scope": "^0.7.2",
     "nativewind": "^4.0.36",

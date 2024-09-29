@@ -31,6 +31,7 @@
 | Geist Font | OFL-1.1 | https://github.com/vercel/geist-font |
 | heroicons | MIT | https://heroicons.com |
 | i18next | MIT | https://github.com/i18next/i18next |
+| intl-pluralrules | ISC | https://github.com/eemeli/intl-pluralrules |
 | Ionicons | MIT | https://github.com/ionic-team/ionicons |
 | jotai | MIT | https://github.com/pmndrs/jotai |
 | jotai-scope | MIT | https://github.com/jotaijs/jotai-scope |
