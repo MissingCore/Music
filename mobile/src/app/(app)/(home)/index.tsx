@@ -153,7 +153,7 @@ function FavoriteTracks({ colWidth }: { colWidth: number }) {
       >
         <Heading
           as="h1"
-          className="font-ndot57"
+          className="font-ndot"
         >{`${trackCount}\nTracks`}</Heading>
       </Pressable>
     </Link>

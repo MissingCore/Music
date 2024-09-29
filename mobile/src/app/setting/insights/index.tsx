@@ -21,7 +21,7 @@ export default function InsightsScreen() {
   return (
     <AnimatedHeader title="INSIGHTS">
       <Description intent="setting" className="mb-6">
-        See what <Text className="font-ndot57">Music</Text> has stored on your
+        See what <Text className="font-ndot">Music</Text> has stored on your
         device along with information about the playable media.
       </Description>
 
@@ -43,7 +43,7 @@ function UserDataWidget() {
   if (isPending || error) return null;
   return (
     <View className="mb-6 rounded-lg bg-surface800 p-4">
-      <Heading as="h4" className="mb-4 text-start font-ndot57 tracking-tight">
+      <Heading as="h4" className="mb-4 text-start font-ndot tracking-tight">
         User Data
       </Heading>
 
@@ -94,7 +94,7 @@ function StatisticsWidget() {
   if (isPending || error) return null;
   return (
     <View className="mb-6 rounded-lg bg-surface800 p-4">
-      <Heading as="h4" className="mb-4 text-start font-ndot57 tracking-tight">
+      <Heading as="h4" className="mb-4 text-start font-ndot tracking-tight">
         Statistics
       </Heading>
 
@@ -122,7 +122,7 @@ function AllImagesSavedWidget() {
     <View className="flex-row justify-between gap-4 rounded-lg bg-surface800 p-4">
       <Heading
         as="h4"
-        className="text-start font-ndot57 leading-tight tracking-tight"
+        className="text-start font-ndot leading-tight tracking-tight"
       >
         All Images Saved?
       </Heading>

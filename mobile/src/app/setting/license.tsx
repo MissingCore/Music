@@ -11,8 +11,8 @@ export default function LicenseScreen() {
   return (
     <AnimatedHeader title="LICENSE">
       <Description intent="setting" className="mb-6">
-        <Text className="font-ndot57">Music</Text> is open-source and can be
-        found on GitHub with the link below. This code is published under the{" "}
+        <Text className="font-ndot">Music</Text> is open-source and can be found
+        on GitHub with the link below. This code is published under the{" "}
         <ExternalLink
           href={`${GITHUB_LINK}/blob/main/LICENSE`}
           className="text-foreground100 underline"
