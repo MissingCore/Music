@@ -43,10 +43,10 @@
     "theme": "テーマ",
     "listAllow": "許可リスト",
     "listBlock": "ブロックリスト",
-    "ignoreDuration": "再生が短い音楽を無視",
+    "ignoreDuration": "再生時間が短い音楽を無視する",
     "sort": "並び替え順",
     "musicAdd": "音楽を追加",
-    "upcoming": "近日公開"
+    "upcoming": "次に再生"
   },
 
   "playlist": {
@@ -75,24 +75,24 @@
     "version": "バージョン",
 
     "brief": {
-      "appUpdate": "A new update is available!",
-      "appearance": "Personalize the app looks.",
-      "backup": "Move data across devices.",
-      "insights": "App usage & statistics.",
-      "saveErrors": "See the reason why some tracks weren't saved.",
-      "interactions": "Supported Nothing features.",
-      "scanning": "Music discovery options.",
-      "rescan": "Look for any new media.",
-      "translate": "Help translate the app in other languages.",
-      "code": "Report issues, contribute, or request new features.",
-      "thirdParty": "What makes this app possible."
+      "appUpdate": "最新のバージョンが公開されています！",
+      "appearance": "アプリの外観をカスタマイズします。",
+      "backup": "デバイス間でデータを移動します。",
+      "insights": "アプリの使用状況と統計。",
+      "saveErrors": "一部の曲が保存されなかった理由を確認します。",
+      "interactions": "Nothing でサポートされている機能",
+      "scanning": "音楽のディレクトリのオプション",
+      "rescan": "新しいメディアを探します。",
+      "translate": "アプリを他の言語に翻訳しませんか？",
+      "code": "問題の報告、貢献、新しい機能のリクエストができます。",
+      "thirdParty": "このアプリを可能にしたもの。"
     },
 
     "description": {
-      "backup": "Transfer data from this app across devices through a `music_backup.json` file.",
-      "listAllow": "Defaults to the following if empty:",
-      "listBlock": "Has higher priority over the entries in the Allow List.",
-      "ignoreDuration": "Duration in seconds of audio we don't want to save."
+      "backup": "｢music_backup.json｣ファイルを通じて、このアプリからデバイス間でデータを転送します。",
+      "listAllow": "空の場合はデフォルトで次のようになります:",
+      "listBlock": "許可リスト内のエントリよりも優先されます。",
+      "ignoreDuration": "保存をしない音楽の再生時間 (秒数)"
     },
 
     "related": {
@@ -124,16 +124,16 @@
     "missing": "なし",
     "from": "From",
 
-    "generic": "Something Went Wrong",
-    "genericBrief": "You encountered an unexpected error.",
+    "generic": "問題が発生しました",
+    "genericBrief": "予期しないエラーが発生しました。",
 
     "report": "問題を報告",
     "screenshot": "この画面のスクリーンショットを添付してください。"
   },
 
   "onboardingScreen": {
-    "preprocess": "Preprocess",
-    "preprocessBrief": "Making sure existing data complies with any changes.",
+    "preprocess": "前処理",
+    "preprocessBrief": "既存のデータが変更に対応しているか確認します。",
 
     "track": "曲を保存",
     "prevSaved": "{{amount}} 以前に保存",
@@ -141,13 +141,13 @@
     "errors": "{{amount}} 件のエラー",
 
     "image": "画像を保存",
-    "checked": "{{amount}}/{{total}} Checked",
-    "found": "{{amount}} Found"
+    "checked": "{{amount}}/{{total}} を確認済み",
+    "found": "{{amount}} 件を検出"
   },
 
   "sortModal": {
-    "asc": "Ascending Order",
-    "alphabetical": "Alphabetical",
+    "asc": "昇順",
+    "alphabetical": "アルファベット順",
     "modified": "最終更新"
   },
   "trackModal": {
@@ -182,11 +182,11 @@
   },
 
   "template": {
-    "entryAdded": "`{{- name}}` added.",
-    "entryRemove": "Remove `{{- name}}`.",
-    "entryRemoved": "Removed `{{- name}}`.",
-    "entrySeeMore": "See more about `{{- name}`.",
-    "notFound": "`{{- name}}` doesn't exist."
+    "entryAdded": "｢{{- name}}｣を追加しました。",
+    "entryRemove": "｢{{- name}}｣を削除します。",
+    "entryRemoved": "｢{{- name}}｣を削除しました。",
+    "entrySeeMore": "｢{{- name}｣の詳細を確認します。",
+    "notFound": "｢{{- name}}｣は存在しません。"
   },
 
   "plural": {
@@ -200,10 +200,10 @@
 
   "response": {
     "noRecents": "まだ何も再生していません!",
-    "noErrors": "No errors found.",
-    "noFilters": "No filters found.",
-    "noResults": "No results found.",
-    "noContent": "No content found.",
+    "noErrors": "エラーは見つかりませんでした。",
+    "noFilters": "フィルタが見つかりません。",
+    "noResults": "結果が見つかりませんでした。",
+    "noContent": "コンテンツが見つかりませんでした。",
 
     "noAlbums": "アルバムが見つかりません。",
     "noArtists": "アーティストが見つかりません。",
@@ -211,15 +211,15 @@
     "noTracks": "曲が見つかりません。",
     "noDirectory": "ディレクトリが見つかりません。",
 
-    "queueAdd": "`{{- name}}` added to queue.",
+    "queueAdd": "｢{{- name}}｣がキューに追加されました。",
 
     "exportSuccess": "バックアップの作成に成功しました。",
     "importSuccess": "バックアップのインポートが完了しました。",
 
     "scanStart": "ライブラリを再スキャン中...",
-    "scanSuccess": "Finished rescanning library.",
-    "scanFail": "Failed to rescan library.",
+    "scanSuccess": "ライブラリの再スキャンが完了しました。",
+    "scanFail": "ライブラリの再スキャンに失敗しました。",
 
-    "pathSelectFail": "No directory selected."
+    "pathSelectFail": "ディレクトリが選択されていません。"
   }
 }
