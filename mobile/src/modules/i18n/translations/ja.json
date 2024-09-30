@@ -13,63 +13,63 @@
     "track": "曲",
     "tracks": "曲",
 
-    "play": "Play",
-    "pause": "Pause",
-    "prev": "Previous",
-    "next": "Next",
-    "shuffle": "Shuffle",
-    "repeat": "Repeat",
+    "play": "再生",
+    "pause": "一時停止",
+    "prev": "前へ",
+    "next": "次へ",
+    "shuffle": "シャッフル",
+    "repeat": "リピート",
 
-    "favorite": "Favorite",
-    "unFavorite": "Unfavorite"
+    "favorite": "お気に入り",
+    "unFavorite": "お気に入りを解除"
   },
 
   "header": {
     "home": "ホーム",
-    "search": "Search",
+    "search": "検索",
 
     "settings": "設定",
-    "appUpdate": "App Update",
-    "appearance": "Appearance",
+    "appUpdate": "アプリを更新",
+    "appearance": "外観",
     "insights": "解析",
     "saveErrors": "エラーの保存",
-    "scanning": "Scanning",
+    "scanning": "スキャン中",
     "thirdParty": "サードパーティーソフトウェア"
   },
   "title": {
-    "language": "Language",
+    "language": "言語",
     "backup": "バックアップ",
-    "font": "Accent Font",
-    "theme": "Theme",
+    "font": "アクセントフォント",
+    "theme": "テーマ",
     "listAllow": "許可リスト",
     "listBlock": "ブロックリスト",
-    "ignoreDuration": "Ignore Short Audio",
-    "sort": "Sort Order",
-    "musicAdd": "Add Music",
-    "upcoming": "Upcoming"
+    "ignoreDuration": "再生が短い音楽を無視",
+    "sort": "並び替え順",
+    "musicAdd": "音楽を追加",
+    "upcoming": "近日公開"
   },
 
   "playlist": {
-    "create": "Create Playlist",
-    "edit": "Edit Playlist",
-    "delete": "Delete Playlist",
+    "create": "プレイリストを作成",
+    "edit": "プレイリストを編集",
+    "delete": "プレイリストを削除",
 
-    "add": "Add to Playlist",
-    "artworkChange": "Change Artwork",
-    "artworkRemove": "Remove Artwork"
+    "add": "プレイリストに追加",
+    "artworkChange": "アートワークを変更",
+    "artworkRemove": "アートワークを削除"
   },
 
   "home": {
     "playedRecent": "最近に再生",
-    "favorites": "Favorites"
+    "favorites": "お気に入り"
   },
 
   "settings": {
-    "interactions": "Nothing Interactions",
-    "scanning": "Scanning",
+    "interactions": "Nothing での交流",
+    "scanning": "スキャン中",
     "rescan": "再スキャン",
-    "translate": "Contribute Translations",
-    "code": "GitHub Repository",
+    "translate": "翻訳に貢献する",
+    "code": "GitHub リポジトリ",
     "license": "ライセンス",
     "privacy": "プライバシーポリシー",
     "version": "バージョン",
@@ -96,12 +96,12 @@
     },
 
     "related": {
-      "appDownload": "Download the latest APK",
-      "appUpdate": "Update via Play Store",
+      "appDownload": "最新の APK をダウンロード",
+      "appUpdate": "Play ストアで更新",
 
-      "light": "Light",
-      "dark": "Dark",
-      "system": "System",
+      "light": "ライト",
+      "dark": "ダーク",
+      "system": "システム",
 
       "export": "エクスポート",
       "import": "インポート",
@@ -113,8 +113,8 @@
       "total": "合計",
       "totalDuration": "合計時間",
 
-      "pathAdd": "Add directory.",
-      "pathSelect": "Select directory."
+      "pathAdd": "ディレクトリを追加",
+      "pathSelect": "ディレクトリを選択してください。"
     }
   },
 
@@ -127,20 +127,20 @@
     "generic": "Something Went Wrong",
     "genericBrief": "You encountered an unexpected error.",
 
-    "report": "Report Issue",
-    "screenshot": "Include a screenshot of this screen."
+    "report": "問題を報告",
+    "screenshot": "この画面のスクリーンショットを添付してください。"
   },
 
   "onboardingScreen": {
     "preprocess": "Preprocess",
     "preprocessBrief": "Making sure existing data complies with any changes.",
 
-    "track": "Saving Tracks",
-    "prevSaved": "{{amount}} Previously Saved",
-    "saved": "{{amount}}/{{total}} Saved/Updated",
-    "errors": "{{amount}} Errors",
+    "track": "曲を保存",
+    "prevSaved": "{{amount}} 以前に保存",
+    "saved": "{{amount}}/{{total}} を保存/更新",
+    "errors": "{{amount}} 件のエラー",
 
-    "image": "Saving Images",
+    "image": "画像を保存",
     "checked": "{{amount}}/{{total}} Checked",
     "found": "{{amount}} Found"
   },
@@ -148,36 +148,36 @@
   "sortModal": {
     "asc": "Ascending Order",
     "alphabetical": "Alphabetical",
-    "modified": "Last Modified"
+    "modified": "最終更新"
   },
   "trackModal": {
-    "bitrate": "Bitrate",
-    "sampleRate": "Sample Rate",
-    "size": "Size",
+    "bitrate": "ビットレート",
+    "sampleRate": "サンプルレート",
+    "size": "サイズ",
     "modified": "$t(sortModal.modified)",
-    "filePath": "File Path",
+    "filePath": "ファイルのパス",
 
     "playlistAdd": "$t(playlist.add)",
-    "queueAdd": "Add to Queue"
+    "queueAdd": "キューに追加"
   },
 
   "form": {
-    "apply": "Apply Changes",
-    "back": "Back",
-    "cancel": "Cancel",
-    "confirm": "Confirm",
+    "apply": "変更を適用",
+    "back": "戻る",
+    "cancel": "キャンセル",
+    "confirm": "確認",
 
-    "unsaved": "You may have unsaved changes.",
-    "stay": "Stay",
-    "leave": "Leave",
+    "unsaved": "変更が保存されていません。",
+    "stay": "留まる",
+    "leave": "離れる",
 
     "placeholder": {
-      "playlistName": "Playlist Name",
-      "searchMedia": "Search Media"
+      "playlistName": "プレイリスト名",
+      "searchMedia": "メディアを検索"
     },
 
     "validation": {
-      "unique": "Unique"
+      "unique": "ユニーク"
     }
   },
 
@@ -190,10 +190,10 @@
   },
 
   "plural": {
-    "entry_one": "{{count}} entry",
-    "entry_other": "{{count}} entries",
-    "second_one": "{{count}} second",
-    "second_other": "{{count}} seconds",
+    "entry_one": "{{count}} 個のエントリ",
+    "entry_other": "{{count}} 個のエントリ",
+    "second_one": "{{count}} 秒",
+    "second_other": "{{count}} 秒",
     "track_one": "{{count}} $t(common.track)",
     "track_other": "{{count}} $t(common.tracks)"
   },
@@ -213,10 +213,10 @@
 
     "queueAdd": "`{{- name}}` added to queue.",
 
-    "exportSuccess": "Created backup successfully.",
-    "importSuccess": "Backup import completed.",
+    "exportSuccess": "バックアップの作成に成功しました。",
+    "importSuccess": "バックアップのインポートが完了しました。",
 
-    "scanStart": "Rescanning library...",
+    "scanStart": "ライブラリを再スキャン中...",
     "scanSuccess": "Finished rescanning library.",
     "scanFail": "Failed to rescan library.",
 
