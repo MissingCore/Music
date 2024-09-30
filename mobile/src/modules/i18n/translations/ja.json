@@ -10,8 +10,8 @@
     "folders": "フォルダ",
     "playlist": "プレイリスト",
     "playlists": "プレイリスト",
-    "track": "曲",
-    "tracks": "曲",
+    "track": "トラック",
+    "tracks": "トラック",
 
     "play": "再生",
     "pause": "一時停止",
@@ -79,7 +79,7 @@
       "appearance": "アプリの外観をカスタマイズします。",
       "backup": "デバイス間でデータを移動します。",
       "insights": "アプリの使用状況と統計。",
-      "saveErrors": "一部の曲が保存されなかった理由を確認します。",
+      "saveErrors": "一部のトラックが保存されなかった理由を確認します。",
       "interactions": "Nothing でサポートされている機能",
       "scanning": "音楽のディレクトリのオプション",
       "rescan": "新しいメディアを探します。",
@@ -135,7 +135,7 @@
     "preprocess": "前処理",
     "preprocessBrief": "既存のデータが変更に対応しているか確認します。",
 
-    "track": "曲を保存",
+    "track": "トラックを保存",
     "prevSaved": "{{amount}} 以前に保存",
     "saved": "{{amount}}/{{total}} を保存/更新",
     "errors": "{{amount}} 件のエラー",
@@ -208,7 +208,7 @@
     "noAlbums": "アルバムが見つかりません。",
     "noArtists": "アーティストが見つかりません。",
     "noPlaylists": "プレイリストが見つかりません。",
-    "noTracks": "曲が見つかりません。",
+    "noTracks": "トラックが見つかりません。",
     "noDirectory": "ディレクトリが見つかりません。",
 
     "queueAdd": "｢{{- name}}｣がキューに追加されました。",
