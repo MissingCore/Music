@@ -40,6 +40,8 @@ export const FontFamily = {
   geistLight: "Geist-Light",
   geistMonoLight: "GeistMono-Light",
   geistMono: "GeistMono-Regular",
+  roboto: "Roboto-Regular",
+  robotoMedium: "Roboto-Medium",
   ndot: "Ndot-77_JP_Extended",
   ntype: "NType82-Headline",
 } as const;

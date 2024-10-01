@@ -40,6 +40,8 @@ export default (): ExpoConfig => ({
           "assets/fonts/Geist-Light.ttf",
           "assets/fonts/GeistMono-Light.ttf",
           "assets/fonts/GeistMono-Regular.ttf",
+          "assets/fonts/Roboto-Regular.ttf",
+          "assets/fonts/Roboto-Medium.ttf",
           "assets/fonts/Ndot-77_JP_Extended.ttf",
           "assets/fonts/NType82-Headline.otf",
           "node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Ionicons.ttf",
