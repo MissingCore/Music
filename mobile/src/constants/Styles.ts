@@ -9,6 +9,17 @@ export const BorderRadius = {
 } as const;
 
 export const Colors = {
+  neutral0: "#000000",
+  neutral10: "#1B1D1F", // Technically not the same hue or saturation.
+  neutral20: "#333333",
+  neutral80: "#CCCCCC",
+  neutral95: "#F2F2F2",
+  neutral100: "#FFFFFF",
+
+  red: "#C8102E",
+  yellow: "#FFD84D",
+
+  /* FIXME: Remove old colors below in the future. */
   canvas: "#000000",
 
   accent50: "#F28D91",

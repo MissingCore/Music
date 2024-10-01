@@ -1,24 +1,15 @@
-import type { Theme } from "@react-navigation/native";
-
 import * as Styles from "./Styles";
-
-/** Theme to style React Navigation. */
-export const NavigationTheme: Theme = {
-  dark: true,
-  colors: {
-    primary: Styles.Colors.accent500,
-    background: Styles.Colors.canvas,
-    card: Styles.Colors.canvas,
-    text: Styles.Colors.foreground50,
-    border: Styles.Colors.canvas,
-    notification: Styles.Colors.accent500,
-  },
-};
 
 /** Theme used in Tailwind configuration. */
 export const TailwindTheme = {
   borderRadius: pixelfyUnit(Styles.BorderRadius),
-  colors: Styles.Colors,
+  colors: {
+    ...Styles.Colors,
+    canvas: "rgb(var(--color-canvas) / <alpha-value>)",
+    surface: "rgb(var(--color-surface) / <alpha-value>)",
+    onSurface: "rgb(var(--color-onSurface) / <alpha-value>)",
+    foreground: "rgb(var(--color-foreground) / <alpha-value>)",
+  } as const,
   fontFamily: Styles.FontFamily,
   fontSize: pixelfyUnit(Styles.FontSize),
 } as const;
