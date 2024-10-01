@@ -41,6 +41,7 @@ export const FontFamily = {
   geistMonoLight: "GeistMono-Light",
   geistMono: "GeistMono-Regular",
   ndot: "Ndot-77_JP_Extended",
+  ntype: "NType82-Headline",
 } as const;
 
 export const TwFontFamilies = Object.keys(FontFamily).map(
