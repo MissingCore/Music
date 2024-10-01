@@ -65,7 +65,7 @@
   },
 
   "settings": {
-    "interactions": "Nothing での交流",
+    "interactions": "Nothing のインタラクション",
     "scanning": "スキャン中",
     "rescan": "再スキャン",
     "translate": "翻訳に貢献する",
@@ -80,8 +80,8 @@
       "backup": "デバイス間でデータを移動します。",
       "insights": "アプリの使用状況と統計。",
       "saveErrors": "一部のトラックが保存されなかった理由を確認します。",
-      "interactions": "Nothing でサポートされている機能",
-      "scanning": "音楽のディレクトリのオプション",
+      "interactions": "Nothing でサポートされている機能。",
+      "scanning": "音楽の検索オプション。",
       "rescan": "新しいメディアを探します。",
       "translate": "アプリを他の言語に翻訳しませんか？",
       "code": "問題の報告、貢献、新しい機能のリクエストができます。",
@@ -92,7 +92,7 @@
       "backup": "｢music_backup.json｣ファイルを通じて、このアプリからデバイス間でデータを転送します。",
       "listAllow": "空の場合はデフォルトで次のようになります:",
       "listBlock": "許可リスト内のエントリよりも優先されます。",
-      "ignoreDuration": "保存をしない音楽の再生時間 (秒数)"
+      "ignoreDuration": "保存をしない音楽の再生時間 (秒数)。"
     },
 
     "related": {
@@ -113,7 +113,7 @@
       "total": "合計",
       "totalDuration": "合計時間",
 
-      "pathAdd": "ディレクトリを追加",
+      "pathAdd": "ディレクトリを追加します。",
       "pathSelect": "ディレクトリを選択してください。"
     }
   },
@@ -122,7 +122,7 @@
     "unmatched": "一致しないルート",
     "unmatchedBrief": "何らかの理由で無効なルートに移動しました。",
     "missing": "なし",
-    "from": "From",
+    "from": "元のルート",
 
     "generic": "問題が発生しました",
     "genericBrief": "予期しないエラーが発生しました。",
