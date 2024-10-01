@@ -10,10 +10,10 @@ import Bootsplash from "react-native-bootsplash";
 import { EllipsisVertical } from "@/resources/icons/EllipsisVertical";
 import { useLoadResources } from "@/hooks/useLoadResources";
 import { mediaModalAtom } from "@/modals/categories/media/store";
+import { AppProvider } from "@/providers";
 
 import "@/resources/global.css";
 import "@/modules/i18n"; // Make sure translations are bundled.
-import { AppProvider } from "@/components/app-provider";
 import { ErrorBoundary } from "@/components/error/error-boundary";
 import { AnimatedBootSplash } from "@/components/navigation/animated-boot-splash";
 import { CurrentTrackHeader } from "@/components/navigation/header";
