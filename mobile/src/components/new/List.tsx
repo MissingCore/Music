@@ -2,6 +2,7 @@ import type { VariantProps } from "cva";
 import { cva } from "cva";
 import { Pressable, Text, View } from "react-native";
 
+import type { TextColor } from "@/lib/style";
 import { cn } from "@/lib/style";
 import { cardStyles } from "./Card";
 
@@ -19,8 +20,8 @@ export function List({
 //#endregion
 
 //#region List Item
-type listItemStyleProps = VariantProps<typeof listItemStyles>;
-const listItemStyles = cva({
+export type listItemStyleProps = VariantProps<typeof listItemStyles>;
+export const listItemStyles = cva({
   base: [cardStyles, "min-h-12"],
   variants: {
     first: { true: "", false: "rounded-t-sm" },
@@ -47,11 +48,13 @@ export namespace ListItem {
 
   export type StaticContent = {
     title: string;
-    description: string;
+    description?: string;
     icon?: React.ReactNode;
   };
   export type DynamicContent = { content: React.ReactNode };
-  export type Content = StaticContent | DynamicContent;
+  export type Content = (StaticContent | DynamicContent) & {
+    textColor?: TextColor;
+  };
 
   export type Props = Common &
     Content &
@@ -93,17 +96,20 @@ export function ListItem({
 }
 
 /** Checks what content we want to display inside an `<ListItem />`. */
-function ListItemLayout(props: ListItem.Content) {
+function ListItemLayout({ textColor, ...props }: ListItem.Content) {
+  const usedColor = textColor ?? "text-foreground";
   if (isDynamicContent(props)) return props.content;
   return (
     <>
-      <View className="shrink gap-0.5">
-        <Text className="font-roboto text-base text-foreground">
+      <View className="shrink grow gap-0.5">
+        <Text className={cn("font-roboto text-base", usedColor)}>
           {props.title}
         </Text>
-        <Text className="font-roboto text-xs text-foreground/50">
-          {props.description}
-        </Text>
+        {props.description ? (
+          <Text className={cn("font-roboto text-xs opacity-50", usedColor)}>
+            {props.description}
+          </Text>
+        ) : null}
       </View>
       {props.icon}
     </>

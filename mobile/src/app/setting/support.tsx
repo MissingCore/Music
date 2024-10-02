@@ -1,7 +1,7 @@
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
 
-import { GITHUB_LINK } from "@/constants/Config";
+import { GITHUB } from "@/constants/Links";
 import { AnimatedHeader } from "@/components/navigation/animated-header";
 import { NavLinkGroup } from "@/components/navigation/nav-link";
 import { Description } from "@/components/ui/text";
@@ -12,17 +12,17 @@ const LINKGROUPS = {
     links: [
       {
         label: "SUBMIT AN ISSUE",
-        href: `${GITHUB_LINK}/issues/new`,
+        href: `${GITHUB}/issues/new`,
         external: true,
       },
       {
         label: "ASK THE COMMUNITY",
-        href: `${GITHUB_LINK}/discussions/new?category=q-a`,
+        href: `${GITHUB}/discussions/new?category=q-a`,
         external: true,
       },
       {
         label: "SHARE AN IDEA",
-        href: `${GITHUB_LINK}/discussions/new?category=ideas`,
+        href: `${GITHUB}/discussions/new?category=ideas`,
         external: true,
       },
     ],

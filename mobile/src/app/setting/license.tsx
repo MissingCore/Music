@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 
-import { GITHUB_LINK } from "@/constants/Config";
+import { GITHUB } from "@/constants/Links";
 import { AnimatedHeader } from "@/components/navigation/animated-header";
 import { ExternalLink } from "@/components/navigation/external-link";
 import { NavLink } from "@/components/navigation/nav-link";
@@ -14,7 +14,7 @@ export default function LicenseScreen() {
         <Text className="font-ndot">Music</Text> is open-source and can be found
         on GitHub with the link below. This code is published under the{" "}
         <ExternalLink
-          href={`${GITHUB_LINK}/blob/main/LICENSE`}
+          href={`${GITHUB}/blob/main/LICENSE`}
           className="text-foreground100 underline"
         >
           GNU Affero General Public License v3.0
@@ -33,7 +33,7 @@ export default function LicenseScreen() {
       </Description>
 
       <View className="-mx-4">
-        <NavLink href={GITHUB_LINK} label="SOURCE CODE" external />
+        <NavLink href={GITHUB} label="SOURCE CODE" external />
       </View>
     </AnimatedHeader>
   );
