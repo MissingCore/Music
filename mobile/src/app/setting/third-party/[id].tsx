@@ -2,8 +2,8 @@ import { useLocalSearchParams } from "expo-router";
 import { Text, View } from "react-native";
 
 import LicensesList from "@/resources/licenses.json";
+import { SettingsLayout } from "@/layouts/SettingsLayout";
 
-import { AnimatedHeader } from "@/components/navigation/animated-header";
 import { Back } from "@/components/navigation/back";
 import { NavLink } from "@/components/navigation/nav-link";
 import { Description } from "@/components/ui/text";
@@ -17,7 +17,7 @@ export default function PackageLicenseScreen() {
   if (!licenseInfo) return <Back />;
 
   return (
-    <AnimatedHeader title={licenseInfo.name}>
+    <SettingsLayout>
       <Description intent="setting" className="mb-6">
         <Text className="text-foreground100">{licenseInfo.version}</Text>
         {"\n\n"}
@@ -37,6 +37,6 @@ export default function PackageLicenseScreen() {
       <View className="mb-6 mt-2 h-px bg-surface850" />
 
       <Description intent="setting">{licenseInfo.licenseText}</Description>
-    </AnimatedHeader>
+    </SettingsLayout>
   );
 }

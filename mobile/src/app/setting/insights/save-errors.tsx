@@ -4,7 +4,8 @@ import { Text, View } from "react-native";
 
 import { db } from "@/db";
 
-import { AnimatedHeader } from "@/components/navigation/animated-header";
+import { SettingsLayout } from "@/layouts/SettingsLayout";
+
 import { Description } from "@/components/ui/text";
 
 /** Screen for `/setting/insights/save-errors` route. */
@@ -12,7 +13,7 @@ export default function SaveErrorsScreen() {
   const { data } = useInvalidTracks();
 
   return (
-    <AnimatedHeader title="SAVE ERRORS">
+    <SettingsLayout>
       <FlashList
         estimatedItemSize={66} // 58px Height + 49px Divider
         data={data}
@@ -37,7 +38,7 @@ export default function SaveErrorsScreen() {
           </Description>
         }
       />
-    </AnimatedHeader>
+    </SettingsLayout>
   );
 }
 

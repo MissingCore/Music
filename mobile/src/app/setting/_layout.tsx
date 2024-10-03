@@ -25,7 +25,7 @@ export default function SettingsLayout() {
         name="insights/save-errors"
         options={{ title: t("header.saveErrors") }}
       />
-      {/* <Stack.Screen name="scanning" options={{ title: t("header.scanning") }} /> */}
+      <Stack.Screen name="scanning" options={{ title: t("header.scanning") }} />
       <Stack.Screen
         name="third-party/index"
         options={{ title: t("header.thirdParty") }}

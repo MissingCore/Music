@@ -2,12 +2,12 @@ import { FlashList } from "@shopify/flash-list";
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
 
-import LicensesList from "@/resources/licenses.json";
 import { ArrowRight } from "@/resources/icons/ArrowRight";
+import LicensesList from "@/resources/licenses.json";
+import { SettingsLayout } from "@/layouts/SettingsLayout";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
-import { AnimatedHeader } from "@/components/navigation/animated-header";
 import { NavLinkLabel } from "@/components/navigation/nav-link";
 import { StyledPressable } from "@/components/ui/pressable";
 import { Description } from "@/components/ui/text";
@@ -15,7 +15,7 @@ import { Description } from "@/components/ui/text";
 /** Screen for `/setting/third-party` route. */
 export default function ThirdPartyScreen() {
   return (
-    <AnimatedHeader title="THIRD-PARTY SOFTWARE">
+    <SettingsLayout>
       <Description intent="setting" className="mb-6">
         This project couldn't have been made without the help of the
         open-sourced projects listed below.
@@ -55,6 +55,6 @@ export default function ThirdPartyScreen() {
           showsVerticalScrollIndicator={false}
         />
       </View>
-    </AnimatedHeader>
+    </SettingsLayout>
   );
 }

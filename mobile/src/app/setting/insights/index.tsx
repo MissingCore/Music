@@ -1,6 +1,7 @@
 import { Text, View } from "react-native";
 
 import { Ionicons } from "@/resources/icons";
+import { SettingsLayout } from "@/layouts/SettingsLayout";
 import {
   useUserDataInfo,
   useStatisticsInfo,
@@ -9,7 +10,6 @@ import {
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
-import { AnimatedHeader } from "@/components/navigation/animated-header";
 import { NavLink } from "@/components/navigation/nav-link";
 import { ProgressBar } from "@/components/ui/progress-bar";
 import { Description, Heading } from "@/components/ui/text";
@@ -19,7 +19,7 @@ import { getPlayTime } from "@/features/track/utils";
 /** Screen for `/setting/insights` route. */
 export default function InsightsScreen() {
   return (
-    <AnimatedHeader title="INSIGHTS">
+    <SettingsLayout>
       <Description intent="setting" className="mb-6">
         See what <Text className="font-ndot">Music</Text> has stored on your
         device along with information about the playable media.
@@ -33,7 +33,7 @@ export default function InsightsScreen() {
       <View className="-mx-4">
         <NavLink label="SAVE ERRORS" href="/setting/insights/save-errors" />
       </View>
-    </AnimatedHeader>
+    </SettingsLayout>
   );
 }
 

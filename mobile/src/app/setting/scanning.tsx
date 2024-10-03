@@ -4,6 +4,7 @@ import { useAtom, useSetAtom } from "jotai";
 import { Pressable, Text, View } from "react-native";
 
 import { Ionicons, MaterialSymbols } from "@/resources/icons";
+import { SettingsLayout } from "@/layouts/SettingsLayout";
 import { allowListAtom, blockListAtom } from "@/features/setting/api/library";
 import { useRescanLibrary } from "@/features/setting/api/library-rescan";
 import { settingModalAtom } from "@/modals/categories/settings/store";
@@ -11,7 +12,6 @@ import { settingModalAtom } from "@/modals/categories/settings/store";
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
-import { AnimatedHeader } from "@/components/navigation/animated-header";
 import {
   NavLinkGroupHeading,
   NavLinkLabel,
@@ -19,12 +19,12 @@ import {
 import { StyledPressable } from "@/components/ui/pressable";
 import { Description, Heading } from "@/components/ui/text";
 
-/** Screen for `/setting/library` route. */
-export default function LibraryScreen() {
+/** Screen for `/setting/scanning` route. */
+export default function ScanningScreen() {
   const rescanLibrary = useRescanLibrary();
 
   return (
-    <AnimatedHeader title="LIBRARY">
+    <SettingsLayout>
       <View className="mb-8 flex-row justify-between gap-4">
         <View className="shrink">
           <Heading as="h4" className="mb-4 text-start">
@@ -65,7 +65,7 @@ export default function LibraryScreen() {
 
       <PathList name="Allowlist" listAtom={allowListAtom} />
       <PathList name="Blocklist" listAtom={blockListAtom} />
-    </AnimatedHeader>
+    </SettingsLayout>
   );
 }
 
