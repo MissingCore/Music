@@ -2,13 +2,14 @@ import { getHeaderTitle } from "@react-navigation/elements";
 import type { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 import { ArrowBack } from "@/resources/icons/ArrowBack";
 
 import { Marquee } from "./Marquee";
 import { SafeContainer } from "./SafeContainer";
 import { StyledPressable } from "./StyledPressable";
+import { StyledText } from "./Typography";
 
 /**
  * Custom header bar for React Navigation. The "title" can span at most
@@ -31,12 +32,9 @@ export function HeaderBar({ options, route }: NativeStackHeaderProps) {
           </View>
         </StyledPressable>
 
-        <Text
-          numberOfLines={2}
-          className="shrink font-roboto text-xs text-foreground"
-        >
+        <StyledText numberOfLines={2} className="shrink text-xs">
           {title.toLocaleUpperCase()}
-        </Text>
+        </StyledText>
 
         {options.headerRight ? (
           options.headerRight({ canGoBack: true })
@@ -70,7 +68,7 @@ export function HeaderBarMarquee({ options, route }: NativeStackHeaderProps) {
         </StyledPressable>
 
         <Marquee>
-          <Text className="font-roboto text-xs text-foreground">{title}</Text>
+          <StyledText className="text-xs">{title}</StyledText>
         </Marquee>
 
         {options.headerRight ? (

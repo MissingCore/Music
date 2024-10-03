@@ -1,10 +1,11 @@
 import type { VariantProps } from "cva";
 import { cva } from "cva";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, View } from "react-native";
 
 import type { TextColor } from "@/lib/style";
 import { cn } from "@/lib/style";
 import { cardStyles } from "./Card";
+import { StyledText } from "./Typography";
 
 //#region List
 /** Wrapper for list of `<ListItem />` for consistent gaps. */
@@ -15,12 +16,12 @@ export function List({
   children: React.ReactNode;
   className?: string;
 }) {
-  return <View className={cn("gap-1", className)}>{children}</View>;
+  return <View className={cn("gap-0.5", className)}>{children}</View>;
 }
 //#endregion
 
 //#region List Item
-export type listItemStyleProps = VariantProps<typeof listItemStyles>;
+export type ListItemStyleProps = VariantProps<typeof listItemStyles>;
 export const listItemStyles = cva({
   base: [cardStyles, "min-h-12"],
   variants: {
@@ -58,7 +59,7 @@ export namespace ListItem {
 
   export type Props = Common &
     Content &
-    Omit<listItemStyleProps, "pressable" | "withIcon">;
+    Omit<ListItemStyleProps, "pressable" | "withIcon">;
 }
 
 /** Static or pressable card themed after Nothing OS 3.0's setting page. */
@@ -102,13 +103,13 @@ function ListItemLayout({ textColor, ...props }: ListItem.Content) {
   return (
     <>
       <View className="shrink grow gap-0.5">
-        <Text className={cn("font-roboto text-base", usedColor)}>
+        <StyledText className={cn("text-sm", usedColor)}>
           {props.title}
-        </Text>
+        </StyledText>
         {props.description ? (
-          <Text className={cn("font-roboto text-xs opacity-50", usedColor)}>
+          <StyledText className={cn("text-xs opacity-50", usedColor)}>
             {props.description}
-          </Text>
+          </StyledText>
         ) : null}
       </View>
       {props.icon}

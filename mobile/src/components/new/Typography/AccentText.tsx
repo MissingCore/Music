@@ -11,6 +11,7 @@ export function AccentText({ className, ...rest }: TextProps) {
   return (
     <Text
       className={cn(
+        "text-foreground",
         {
           "font-ndot": accentFont === "ndot",
           "font-ntype": accentFont === "ntype",
