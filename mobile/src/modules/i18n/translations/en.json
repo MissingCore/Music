@@ -185,7 +185,7 @@
     "entryAdded": "`{{- name}}` added.",
     "entryRemove": "Remove `{{- name}}`.",
     "entryRemoved": "Removed `{{- name}}`.",
-    "entrySeeMore": "See more about `{{- name}`.",
+    "entrySeeMore": "See more about `{{- name}}`.",
     "notFound": "`{{- name}}` doesn't exist."
   },
 

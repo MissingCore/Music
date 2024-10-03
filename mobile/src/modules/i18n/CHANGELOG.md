@@ -2,6 +2,10 @@
 
 This file will document any changes made to the master translation file (`en.json`).
 
+## October 3, 2024
+
+- Fixed missing 2nd `}` in interpolation for `template.entrySeeMore` key.
+
 ## September 30, 2024
 
 - Removed space between `Allow List` & `Block List`. Shouldn't affect Japanese translations.
