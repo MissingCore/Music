@@ -185,7 +185,7 @@
     "entryAdded": "｢{{- name}}｣を追加しました。",
     "entryRemove": "｢{{- name}}｣を削除します。",
     "entryRemoved": "｢{{- name}}｣を削除しました。",
-    "entrySeeMore": "｢{{- name}｣の詳細を確認します。",
+    "entrySeeMore": "｢{{- name}}｣の詳細を確認します。",
     "notFound": "｢{{- name}}｣は存在しません。"
   },
 
