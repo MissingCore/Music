@@ -27,9 +27,7 @@ export function HeaderBar({ options, route }: NativeStackHeaderProps) {
           onPress={() => router.back()}
           forIcon
         >
-          <View pointerEvents="none">
-            <ArrowBack />
-          </View>
+          <ArrowBack />
         </StyledPressable>
 
         <StyledText numberOfLines={2} className="shrink text-xs">

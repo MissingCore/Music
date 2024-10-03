@@ -16,7 +16,7 @@ export function List({
   children: React.ReactNode;
   className?: string;
 }) {
-  return <View className={cn("gap-0.5", className)}>{children}</View>;
+  return <View className={cn("gap-[3px]", className)}>{children}</View>;
 }
 //#endregion
 

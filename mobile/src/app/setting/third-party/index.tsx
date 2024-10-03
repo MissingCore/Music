@@ -1,60 +1,41 @@
 import { FlashList } from "@shopify/flash-list";
-import { Link } from "expo-router";
-import { Text, View } from "react-native";
+import { router } from "expo-router";
 
-import { ArrowRight } from "@/resources/icons/ArrowRight";
 import LicensesList from "@/resources/licenses.json";
 import { SettingsLayout } from "@/layouts/SettingsLayout";
 
-import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
-import { NavLinkLabel } from "@/components/navigation/nav-link";
-import { StyledPressable } from "@/components/ui/pressable";
-import { Description } from "@/components/ui/text";
+import { ListItem } from "@/components/new/List";
 
 /** Screen for `/setting/third-party` route. */
 export default function ThirdPartyScreen() {
+  const LicenseData = Object.values(LicensesList);
+
   return (
     <SettingsLayout>
-      <Description intent="setting" className="mb-6">
-        This project couldn't have been made without the help of the
-        open-sourced projects listed below.
-      </Description>
-
-      <View className="-mx-4 flex-1">
-        <FlashList
-          estimatedItemSize={52} // 48px Min-Height + 4px Margin Bottom
-          data={Object.values(LicensesList)}
-          keyExtractor={({ name }) => name}
-          renderItem={({ item, index }) => (
-            <Link
-              href={`/setting/third-party/${encodeURIComponent(item.name)}`}
-              asChild
-            >
-              <StyledPressable
-                className={cn(
-                  "flex-row items-center justify-between gap-2 pl-4",
-                  { "mb-1": index !== Object.values(LicensesList).length - 1 },
-                )}
-              >
-                <View className="shrink py-1">
-                  <NavLinkLabel className="tracking-normal">
-                    {item.name}
-                  </NavLinkLabel>
-                  <Text className="shrink font-geistMonoLight text-xs text-foreground100">
-                    {item.license}{" "}
-                    <Text className="text-surface400">({item.version})</Text>
-                  </Text>
-                </View>
-                <View className="p-3">
-                  <ArrowRight size={24} color={Colors.surface400} />
-                </View>
-              </StyledPressable>
-            </Link>
-          )}
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
+      <FlashList
+        estimatedItemSize={70}
+        data={LicenseData}
+        keyExtractor={({ name }) => name}
+        renderItem={({ item, index }) => {
+          const first = index === 0;
+          const last = index === LicenseData.length - 1;
+          return (
+            <ListItem
+              title={item.name}
+              description={`${item.license} (${item.version})`}
+              onPress={() =>
+                router.navigate(
+                  `/setting/third-party/${encodeURIComponent(item.name)}`,
+                )
+              }
+              {...{ first, last }}
+              className={cn({ "mb-[3px]": !last })}
+            />
+          );
+        }}
+        showsVerticalScrollIndicator={false}
+      />
     </SettingsLayout>
   );
 }

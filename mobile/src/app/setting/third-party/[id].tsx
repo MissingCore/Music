@@ -1,42 +1,50 @@
-import { useLocalSearchParams } from "expo-router";
-import { Text, View } from "react-native";
+import { Stack, useLocalSearchParams } from "expo-router";
+import * as WebBrowser from "expo-web-browser";
+import { useTranslation } from "react-i18next";
 
+import { OpenInNew } from "@/resources/icons/OpenInNew";
 import LicensesList from "@/resources/licenses.json";
-import { SettingsLayout } from "@/layouts/SettingsLayout";
+import { StickyActionLayout } from "@/layouts/StickyActionLayout";
 
-import { Back } from "@/components/navigation/back";
-import { NavLink } from "@/components/navigation/nav-link";
-import { Description } from "@/components/ui/text";
+import { Card } from "@/components/new/Card";
+import { StyledPressable } from "@/components/new/StyledPressable";
+import { StyledText } from "@/components/new/Typography";
 
 /** Screen for `/setting/third-party/[id]` route. */
 export default function PackageLicenseScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { t } = useTranslation();
 
-  const licenseInfo = LicensesList[id! as keyof typeof LicensesList];
-
-  if (!licenseInfo) return <Back />;
+  const licenseInfo = LicensesList[id as keyof typeof LicensesList];
 
   return (
-    <SettingsLayout>
-      <Description intent="setting" className="mb-6">
-        <Text className="text-foreground100">{licenseInfo.version}</Text>
-        {"\n\n"}
-        This component is licensed under the {licenseInfo.license} license.
-        {!!licenseInfo.copyright && (
-          <>
-            {"\n\n"}
-            <Text className="italic">{licenseInfo.copyright}</Text>
-          </>
-        )}
-      </Description>
+    <>
+      <Stack.Screen
+        options={{
+          headerRight: () => (
+            <StyledPressable
+              accessibilityLabel={t("template.entrySeeMore", {
+                name: licenseInfo.name,
+              })}
+              onPress={() => WebBrowser.openBrowserAsync(licenseInfo.source)}
+              forIcon
+            >
+              <OpenInNew />
+            </StyledPressable>
+          ),
+        }}
+      />
+      <StickyActionLayout title={licenseInfo.name}>
+        <Card className="gap-2 bg-foreground/5">
+          <StyledText preset="dimOnCanvas">{licenseInfo.version}</StyledText>
+          <StyledText preset="dimOnCanvas">
+            This component is licensed under the {licenseInfo.license} license.
+          </StyledText>
+          <StyledText preset="dimOnCanvas">{licenseInfo.copyright}</StyledText>
+        </Card>
 
-      <View className="-mx-4">
-        <NavLink href={licenseInfo.source} label="Source" external />
-      </View>
-
-      <View className="mb-6 mt-2 h-px bg-surface850" />
-
-      <Description intent="setting">{licenseInfo.licenseText}</Description>
-    </SettingsLayout>
+        <StyledText preset="dimOnCanvas">{licenseInfo.licenseText}</StyledText>
+      </StickyActionLayout>
+    </>
   );
 }
