@@ -4,7 +4,7 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { ArrowBack } from "@/resources/icons/ArrowBack";
+import { ArrowBack } from "@/resources/icons";
 
 import { Marquee } from "./Marquee";
 import { SafeContainer } from "./SafeContainer";
@@ -60,9 +60,7 @@ export function HeaderBarMarquee({ options, route }: NativeStackHeaderProps) {
           onPress={() => router.back()}
           forIcon
         >
-          <View pointerEvents="none">
-            <ArrowBack />
-          </View>
+          <ArrowBack />
         </StyledPressable>
 
         <Marquee>

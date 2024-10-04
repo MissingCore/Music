@@ -77,3 +77,8 @@ export function MaterialSymbols({
     </View>
   );
 }
+
+export { ArrowBack } from "./ArrowBack";
+export { LogoGitHub } from "./LogoGitHub";
+export { LogoPlayStore } from "./LogoPlayStore";
+export { OpenInNew } from "./OpenInNew";

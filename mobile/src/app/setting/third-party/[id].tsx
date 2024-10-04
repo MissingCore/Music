@@ -2,7 +2,7 @@ import { Stack, useLocalSearchParams } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
 import { useTranslation } from "react-i18next";
 
-import { OpenInNew } from "@/resources/icons/OpenInNew";
+import { OpenInNew } from "@/resources/icons";
 import LicensesList from "@/resources/licenses.json";
 import { StickyActionLayout } from "@/layouts/StickyActionLayout";
 
