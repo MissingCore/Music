@@ -7,7 +7,7 @@ import LicensesList from "@/resources/licenses.json";
 import { StickyActionLayout } from "@/layouts/StickyActionLayout";
 
 import { Card } from "@/components/new/Card";
-import { StyledPressable } from "@/components/new/StyledPressable";
+import { StyledPressable } from "@/components/new/Form";
 import { StyledText } from "@/components/new/Typography";
 
 /** Screen for `/setting/third-party/[id]` route. */

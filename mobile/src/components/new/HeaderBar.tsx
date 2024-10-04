@@ -7,8 +7,8 @@ import { View } from "react-native";
 import { ArrowBack } from "@/resources/icons";
 
 import { Marquee } from "./Marquee";
+import { StyledPressable } from "./Form";
 import { SafeContainer } from "./SafeContainer";
-import { StyledPressable } from "./StyledPressable";
 import { StyledText } from "./Typography";
 
 /**

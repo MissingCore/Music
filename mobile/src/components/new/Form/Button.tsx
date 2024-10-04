@@ -8,18 +8,23 @@ import { cn } from "@/lib/style";
 export type ButtonStyleProps = VariantProps<typeof buttonStyles>;
 export const buttonStyles = cva({
   base: [
-    "min-h-12 flex-1 items-center justify-center gap-2 border p-2",
+    "min-h-12 items-center justify-center",
     "transition-opacity active:opacity-75 disabled:opacity-25",
   ],
   variants: {
     preset: {
       default: "bg-surface border-surface",
       danger: "bg-red border-red",
+      warning: "bg-yellow border-yellow",
       outline: "border-foreground",
     },
     pill: { true: "rounded-full", false: "rounded-md" },
+    icon: { true: "min-w-12 p-3", false: "flex-1 gap-2 border p-2" },
   },
-  defaultVariants: { preset: "default", pill: false },
+  compoundVariants: [
+    { preset: "outline", pill: true, icon: false, class: "px-4" },
+  ],
+  defaultVariants: { preset: "default", pill: false, icon: false },
 });
 
 /** Styled `<Pressable />`. */
