@@ -9,11 +9,8 @@ export default function SettingsLayout() {
   return (
     <Stack screenOptions={{ animation: "fade", header: HeaderBar }}>
       <Stack.Screen name="index" options={{ title: t("header.settings") }} />
+      <Stack.Screen name="update" options={{ title: t("header.appUpdate") }} />
       {/* <Stack.Screen
-        name="update"
-        options={{ title: t("header.appUpdate") }}
-      />
-      <Stack.Screen
         name="appearance"
         options={{ title: t("header.appearance") }}
       /> */}
