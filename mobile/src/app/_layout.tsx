@@ -1,6 +1,3 @@
-/* Polyfills */
-import "intl-pluralrules";
-
 import * as Sentry from "@sentry/react-native";
 import { Stack } from "expo-router";
 import { useSetAtom } from "jotai";
