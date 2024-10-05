@@ -1,3 +1,5 @@
+import type { FlashListProps } from "@shopify/flash-list";
+import { FlashList } from "@shopify/flash-list";
 import type { VariantProps } from "cva";
 import { cva } from "cva";
 import { Pressable, View } from "react-native";
@@ -17,6 +19,45 @@ export function List({
   className?: string;
 }) {
   return <View className={cn("gap-[3px]", className)}>{children}</View>;
+}
+//#endregion
+
+//#region List Renderer
+/** Represent structured data as `<ListItem />` in a `<FlashList />`. */
+export function ListRenderer<TData extends Record<string, any>>({
+  data,
+  renderOptions: { getTitle, getDescription, onPress },
+  ...rest
+}: Omit<FlashListProps<TData>, "renderItem"> & {
+  renderOptions: {
+    getTitle: (item: TData) => string;
+    getDescription?: (item: TData) => string;
+    onPress?: (item: TData) => () => void;
+  };
+}) {
+  return (
+    <FlashList
+      estimatedItemSize={70}
+      data={data}
+      renderItem={({ item, index }) => {
+        const first = index === 0;
+        const last = index === data!.length - 1;
+        return (
+          <ListItem
+            title={getTitle(item)}
+            description={getDescription ? getDescription(item) : undefined}
+            {...(onPress
+              ? { onPress: onPress(item), disabled: false }
+              : { onPress: undefined })}
+            {...{ first, last }}
+            className={cn({ "mb-[3px]": !last })}
+          />
+        );
+      }}
+      showsVerticalScrollIndicator={false}
+      {...rest}
+    />
+  );
 }
 //#endregion
 
