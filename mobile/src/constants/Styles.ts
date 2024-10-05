@@ -10,6 +10,7 @@ export const BorderRadius = {
 
 export const Colors = {
   neutral0: "#000000",
+  neutral5: "#0D0D0D",
   neutral10: "#1B1D1F", // Technically not the same hue or saturation.
   neutral20: "#333333",
   neutral80: "#CCCCCC",

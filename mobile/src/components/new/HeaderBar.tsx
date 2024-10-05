@@ -11,6 +11,7 @@ import { StyledPressable } from "./Form";
 import { SafeContainer } from "./SafeContainer";
 import { StyledText } from "./Typography";
 
+//#region Normal
 /**
  * Custom header bar for React Navigation. The "title" can span at most
  * 2 lines before it gets ellipsized.
@@ -43,7 +44,9 @@ export function HeaderBar({ options, route }: NativeStackHeaderProps) {
     </SafeContainer>
   );
 }
+//#endregion
 
+//#region With Marquee
 /**
  * Custom header bar for React Navigation. The "title" will span across
  * a single line through a `<Marquee />`.
@@ -76,3 +79,4 @@ export function HeaderBarMarquee({ options, route }: NativeStackHeaderProps) {
     </SafeContainer>
   );
 }
+//#endregion
