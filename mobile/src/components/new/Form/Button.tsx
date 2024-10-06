@@ -9,7 +9,7 @@ export type ButtonStyleProps = VariantProps<typeof buttonStyles>;
 export const buttonStyles = cva({
   base: [
     "min-h-12 items-center justify-center",
-    "transition-opacity active:opacity-75 disabled:opacity-25",
+    "active:opacity-75 disabled:opacity-25",
   ],
   variants: {
     preset: {

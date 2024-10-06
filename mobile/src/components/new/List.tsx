@@ -69,7 +69,7 @@ export const listItemStyles = cva({
     first: { true: "", false: "rounded-t-sm" },
     last: { true: "", false: "rounded-b-sm" },
     pressable: {
-      true: "transition-opacity active:opacity-75 disabled:opacity-25",
+      true: "active:opacity-75 disabled:opacity-25",
       false: "",
     },
     withIcon: { true: "flex-row items-center gap-4", false: "" },
