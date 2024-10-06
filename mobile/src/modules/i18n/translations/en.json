@@ -220,6 +220,11 @@
     "scanSuccess": "Finished rescanning library.",
     "scanFail": "Failed to rescan library.",
 
-    "pathSelectFail": "No directory selected."
+    "pathSelectFail": "No directory selected.",
+
+    "actionCancel": "Canceled action.",
+    "noSelect": "Nothing selected.",
+    "invalidStructure": "Invalid structure.",
+    "usedName": "That name can't be used."
   }
 }
