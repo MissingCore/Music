@@ -2,11 +2,7 @@ import type {
   BottomSheetBackdropProps,
   BottomSheetProps,
 } from "@gorhom/bottom-sheet";
-import {
-  BottomSheetBackdrop,
-  BottomSheetModal,
-  BottomSheetScrollView,
-} from "@gorhom/bottom-sheet";
+import { BottomSheetBackdrop, BottomSheetModal } from "@gorhom/bottom-sheet";
 import { cssInterop } from "nativewind";
 import {
   forwardRef,
@@ -16,10 +12,8 @@ import {
   useRef,
   useState,
 } from "react";
-import { BackHandler, View } from "react-native";
+import { BackHandler } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-import { StyledText } from "../Typography";
 
 const WrappedBottomSheetModal = cssInterop(BottomSheetModal, {
   className: "style",
@@ -32,12 +26,10 @@ const WrappedBottomSheetModal = cssInterop(BottomSheetModal, {
 export const ModalSheet = forwardRef<
   BottomSheetModal,
   BottomSheetProps & {
-    /** Title of modal that'll be displayed. */
-    title?: string;
     /** If the sheet should open at max screen height. */
     snapTop?: boolean;
   }
->(function ModalSheet({ children, title, snapTop, ...props }, ref) {
+>(function ModalSheet({ children, snapTop, ...props }, ref) {
   const [currentIndex, setCurrentIndex] = useState(-1);
   const internalRef = useRef<BottomSheetModal>(null);
   // Forward the value of the internal ref to the external ref.
@@ -85,17 +77,7 @@ export const ModalSheet = forwardRef<
         if (props.onChange) props.onChange(...args);
       }}
     >
-      <BottomSheetScrollView
-        stickyHeaderIndices={[0]}
-        showsVerticalScrollIndicator={false}
-      >
-        <View className="bg-canvas pb-4 dark:bg-neutral5">
-          {title ? (
-            <StyledText className="text-center text-lg">{title}</StyledText>
-          ) : null}
-        </View>
-        {children}
-      </BottomSheetScrollView>
+      {children}
     </WrappedBottomSheetModal>
   );
 });

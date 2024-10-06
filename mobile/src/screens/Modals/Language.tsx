@@ -1,15 +1,15 @@
 import type { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import { forwardRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
 
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { useTheme } from "@/hooks/useTheme";
 import { LANGUAGES } from "@/modules/i18n/constants";
 
 import { cn } from "@/lib/style";
-import { ModalSheet } from "@/components/new/Modal";
+import { ModalHeader, ModalSheet } from "@/components/new/Modal";
 import { StyledText } from "@/components/new/Typography";
 
 /** Modal to change the app's language. */
@@ -21,10 +21,8 @@ export const LanguageModal = forwardRef<BottomSheetModal, {}>(
     const { surface } = useTheme();
 
     return (
-      <ModalSheet ref={ref} title={t("title.language")}>
-        <FlatList
-          // Use a `<FlatList />` instead of a `<FlashList />` as the
-          // children should always rerender whenever the language changes.
+      <ModalSheet ref={ref}>
+        <BottomSheetFlatList
           data={LANGUAGES}
           keyExtractor={({ code }) => code}
           renderItem={({ item }) => (
@@ -41,8 +39,10 @@ export const LanguageModal = forwardRef<BottomSheetModal, {}>(
               </Pressable>
             </View>
           )}
-          scrollEnabled={false}
           showsVerticalScrollIndicator={false}
+          // Sticky the modal header as otherwise, it will scroll with the content.
+          stickyHeaderIndices={[0]}
+          ListHeaderComponent={<ModalHeader title={t("title.language")} />}
           contentContainerClassName="gap-1 pb-4"
         />
       </ModalSheet>
