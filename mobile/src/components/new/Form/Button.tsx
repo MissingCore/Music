@@ -13,10 +13,11 @@ export const buttonStyles = cva({
   ],
   variants: {
     preset: {
-      default: "bg-surface border-surface",
-      danger: "bg-red border-red",
-      warning: "bg-yellow border-yellow",
+      default: "border-surface bg-surface",
+      danger: "border-red bg-red",
+      warning: "border-yellow bg-yellow",
       outline: "border-foreground",
+      plain: "border-transparent",
     },
     pill: { true: "rounded-full", false: "rounded-md" },
     icon: { true: "min-w-12 p-3", false: "flex-1 gap-2 border p-2" },

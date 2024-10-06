@@ -1,3 +1,5 @@
+import colors from "tailwindcss/colors";
+
 export const BorderRadius = {
   none: 0,
   sm: 4,
@@ -9,6 +11,8 @@ export const BorderRadius = {
 } as const;
 
 export const Colors = {
+  transparent: colors.transparent,
+
   neutral0: "#000000",
   neutral5: "#0D0D0D",
   neutral10: "#1B1D1F", // Technically not the same hue or saturation.

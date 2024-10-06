@@ -95,7 +95,6 @@ export const ModalSheet = forwardRef<
           ) : null}
         </View>
         {children}
-        <View className="pb-4" />
       </BottomSheetScrollView>
     </WrappedBottomSheetModal>
   );
