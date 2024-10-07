@@ -4,7 +4,7 @@ This document aims to note any features on Nothing devices that this app support
 
 ## Nothing Media Player Widget
 
-Media played from the app will be detected by the Nothing Media Player Widget. The functions provided by the widget will work as expected (click to play/pause, swipe left for previous song, swipe right for next song). In addition, clicking on the widget while the app is closed will open up the app.
+Media played from the app will be detected by the Nothing Media Player Widget. The functions provided by the widget will work as expected (click to play/pause, swipe right for previous song, swipe left for next song). In addition, clicking on the widget while the app is closed will open up the app.
 
 ## Nothing Glyph Music Visualization
 
