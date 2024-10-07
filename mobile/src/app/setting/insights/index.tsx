@@ -141,7 +141,7 @@ async function getStorageStats() {
   };
 }
 
-export async function getDBSummary() {
+async function getDBSummary() {
   if (!documentDirectory) throw new Error("Web not supported");
 
   const imgDir = documentDirectory + "images";

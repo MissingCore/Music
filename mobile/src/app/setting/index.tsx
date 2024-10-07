@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { OpenInNew } from "@/resources/icons";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 import { SettingsLayout } from "@/layouts/SettingsLayout";
-import { LanguageModal } from "@/screens/Modals";
+import { BackupModal, LanguageModal } from "@/screens/Modals";
 import { LANGUAGES } from "@/modules/i18n/constants";
 
 import { APP_VERSION } from "@/constants/Config";
@@ -19,6 +19,7 @@ export default function SettingScreen() {
   const { hasNewUpdate } = useHasNewUpdate();
 
   const langModalRef = useModalRef();
+  const backupModalRef = useModalRef();
 
   const currLang = LANGUAGES.find(({ code }) => code === i18n.language)!.name;
 
@@ -54,7 +55,7 @@ export default function SettingScreen() {
           <ListItem
             title={t("title.backup")}
             description={t("settings.brief.backup")}
-            onPress={() => console.log("Opening backup modal...")}
+            onPress={() => backupModalRef.current?.present()}
             first
           />
           <ListItem
@@ -116,6 +117,7 @@ export default function SettingScreen() {
       </SettingsLayout>
 
       <LanguageModal ref={langModalRef} />
+      <BackupModal ref={backupModalRef} />
     </>
   );
 }
