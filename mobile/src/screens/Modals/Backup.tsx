@@ -22,7 +22,7 @@ export const BackupModal = forwardRef<BottomSheetModal, {}>(
 
     return (
       <ModalSheet ref={ref} enableOverDrag={false}>
-        <BottomSheetView className="gap-4 pb-4">
+        <BottomSheetView className="gap-4">
           <ModalHeader title={t("title.backup")} noPadding />
           <StyledText preset="dimOnCanvas" className="text-center text-sm">
             {t("settings.description.backup")}

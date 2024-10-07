@@ -36,7 +36,7 @@ export default function AppUpdateScreen() {
           heading2: {
             color: foreground,
             fontFamily:
-              accentFont === "ndot" ? FontFamily.ndot : FontFamily.ntype,
+              accentFont === "NDot" ? FontFamily.ndot : FontFamily.ntype,
             fontSize: FontSize.base,
           },
           blockquote: {

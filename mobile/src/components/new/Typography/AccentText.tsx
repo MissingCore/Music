@@ -13,8 +13,8 @@ export function AccentText({ className, ...rest }: TextProps) {
       className={cn(
         "text-foreground",
         {
-          "font-ndot": accentFont === "ndot",
-          "font-ntype": accentFont === "ntype",
+          "font-ndot": accentFont === "NDot",
+          "font-ntype": accentFont === "NType",
         },
         className,
       )}
