@@ -1,141 +1,58 @@
-import { StorageVolumesDirectoryPaths } from "@missingcore/react-native-metadata-retriever";
-import { FlashList } from "@shopify/flash-list";
-import { useAtom, useSetAtom } from "jotai";
-import { Pressable, Text, View } from "react-native";
+import { useMutation } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
-import { Ionicons, MaterialSymbols } from "@/resources/icons";
+import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { SettingsLayout } from "@/layouts/SettingsLayout";
-import { allowListAtom, blockListAtom } from "@/features/setting/api/library";
-import { useRescanLibrary } from "@/features/setting/api/library-rescan";
-import { settingModalAtom } from "@/modals/categories/settings/store";
 
-import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
-import { cn } from "@/lib/style";
-import {
-  NavLinkGroupHeading,
-  NavLinkLabel,
-} from "@/components/navigation/nav-link";
-import { StyledPressable } from "@/components/ui/pressable";
-import { Description, Heading } from "@/components/ui/text";
+import { List, ListItem } from "@/components/new/List";
+import { useModalRef } from "@/components/new/Modal";
 
 /** Screen for `/setting/scanning` route. */
 export default function ScanningScreen() {
-  const rescanLibrary = useRescanLibrary();
+  const { t } = useTranslation();
+  const allowList = useUserPreferencesStore((state) => state.allowList);
+  const blockList = useUserPreferencesStore((state) => state.blockList);
+  const ignoreDuration = useUserPreferencesStore((state) => state.minSeconds);
 
-  return (
-    <SettingsLayout>
-      <View className="mb-8 flex-row justify-between gap-4">
-        <View className="shrink">
-          <Heading as="h4" className="mb-4 text-start">
-            Rescan
-          </Heading>
-          <Description intent="setting">
-            Look for any new tracks on your device.
-          </Description>
-        </View>
-        <Pressable
-          accessibilityLabel="Rescan library"
-          disabled={rescanLibrary.isPending}
-          onPress={() => mutateGuard(rescanLibrary, undefined)}
-          className="self-end rounded border border-foreground100 p-3 active:opacity-75 disabled:opacity-25"
-        >
-          <Ionicons name="refresh-outline" color={Colors.foreground100} />
-        </Pressable>
-      </View>
-
-      <Heading as="h4" className="mb-4 text-start">
-        Scan Filter
-      </Heading>
-      <Description intent="setting" className="mb-4">
-        Control where music is discovered from. Directories in the blocklist
-        have higher priority over ones in the allowlist. If the allowlist is
-        empty, it defaults to the following values:{"\n"}
-        <Text className="text-foreground100">
-          {StorageVolumesDirectoryPaths.map((path) => `\n\t${path}`)}
-        </Text>
-        {"\n\n"}
-        <Text className="underline">Note:</Text> The locations returned by `Find
-        Directory` might not be accurate. Refer to the actual file URI for
-        better accuracy.{"\n\n"}
-        <Text className="text-accent50">
-          App relaunch is required to apply changes.
-        </Text>
-      </Description>
-
-      <PathList name="Allowlist" listAtom={allowListAtom} />
-      <PathList name="Blocklist" listAtom={blockListAtom} />
-    </SettingsLayout>
-  );
-}
-
-/** Interface for adding & removing paths from an allowlist or blocklist. */
-function PathList({
-  name,
-  listAtom,
-}: {
-  name: string;
-  listAtom: typeof allowListAtom;
-}) {
-  const [data, setData] = useAtom(listAtom);
-  const openModal = useSetAtom(settingModalAtom);
+  const rescan = useRescanLibrary();
 
   return (
     <>
-      <View className="mt-2 h-px bg-surface850" />
-
-      <View className="mb-1 flex-row justify-between gap-2">
-        <NavLinkGroupHeading className="mt-6">
-          {name.toUpperCase()}
-        </NavLinkGroupHeading>
-        <Pressable
-          accessibilityLabel={`Add directory to ${name}`}
-          onPress={() =>
-            openModal({ type: "filter-list", name, store: listAtom })
-          }
-          className="-mr-4 px-3 pb-2 pt-4 active:opacity-75"
-        >
-          <MaterialSymbols name="create-new-folder-outline" />
-        </Pressable>
-      </View>
-
-      <View className="-mx-4">
-        <FlashList
-          estimatedItemSize={52} // 48px Min-Height + 4px Margin Bottom
-          data={data}
-          keyExtractor={(path) => path}
-          renderItem={({ item, index }) => (
-            <View
-              className={cn(
-                "flex-row items-center justify-between gap-2 pl-4",
-                { "mb-1": index !== data.length - 1 },
-              )}
-            >
-              <NavLinkLabel className="py-1">{item}</NavLinkLabel>
-              <StyledPressable
-                accessibilityLabel={`Delete \`${item}\` entry from ${name}`}
-                onPress={() =>
-                  setData(async (prev) =>
-                    (await prev).filter((path) => path !== item),
-                  )
-                }
-                forIcon
-              >
-                <MaterialSymbols
-                  name="close-outline"
-                  color={Colors.surface400}
-                />
-              </StyledPressable>
-            </View>
-          )}
-          showsVerticalScrollIndicator={false}
-          ListEmptyComponent={
-            <NavLinkLabel className="h-12 px-4 py-1 align-middle">
-              No Paths Found
-            </NavLinkLabel>
-          }
+      <SettingsLayout>
+        <ListItem
+          title={t("settings.rescan")}
+          description={t("settings.brief.rescan")}
+          onPress={() => mutateGuard(rescan, undefined)}
+          {...{ first: true, last: true }}
         />
-      </View>
+
+        <List>
+          <ListItem
+            title={t("title.listAllow")}
+            description={t("plural.entry", { count: allowList.length })}
+            onPress={() => console.log("Viewing allowlist modal...")}
+            first
+          />
+          <ListItem
+            title={t("title.listBlock")}
+            description={t("plural.entry", { count: blockList.length })}
+            onPress={() => console.log("Viewing blocklist modal...")}
+          />
+          <ListItem
+            title={t("title.ignoreDuration")}
+            description={t("plural.second", { count: ignoreDuration })}
+            onPress={() => console.log("Viewing ignore duration modal...")}
+            last
+          />
+        </List>
+      </SettingsLayout>
     </>
   );
 }
+
+//#region Data
+async function rescanLibrary() {}
+
+const useRescanLibrary = () => useMutation({ mutationFn: rescanLibrary });
+//#endregion
