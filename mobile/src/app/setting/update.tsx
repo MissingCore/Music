@@ -84,13 +84,17 @@ export default function AppUpdateScreen() {
               `${LINKS.GITHUB}/releases/tag/${release.version}`,
             )
           }
+          className="flex-1 items-center p-2"
         >
           <LogoGitHub />
           <StyledText center className="text-xs">
             {t("settings.related.appDownload")}
           </StyledText>
         </Button>
-        <Button onPress={() => WebBrowser.openBrowserAsync(LINKS.PLAYSTORE)}>
+        <Button
+          onPress={() => WebBrowser.openBrowserAsync(LINKS.PLAYSTORE)}
+          className="flex-1 items-center p-2"
+        >
           <LogoPlayStore />
           <StyledText center className="text-xs">
             {t("settings.related.appUpdate")}

@@ -109,7 +109,7 @@ export const userPreferencesStore = createStore<UserPreferencesStore>()(
               console.log("[User Preferences Store] Completed with:", state);
               state?.setHasHydrated(true);
 
-              // Set device theme.
+              // Set app theme on initialization.
               if (state?.theme && state.theme !== "system") {
                 Appearance.setColorScheme(state.theme);
               }
