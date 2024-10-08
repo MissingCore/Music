@@ -14,8 +14,9 @@ export const textStyles = cva({
       dimOnSurface: "text-xs text-foreground/50",
     },
     bold: { true: "font-robotoMedium", false: "font-roboto" },
+    center: { true: "text-center", false: "" },
   },
-  defaultVariants: { preset: "default", bold: false },
+  defaultVariants: { preset: "default", bold: false, center: false },
 });
 
 /** Styled `<Text />`. */
@@ -23,9 +24,13 @@ export function StyledText({
   className,
   preset,
   bold,
+  center,
   ...rest
 }: TextProps & TextStyleProps) {
   return (
-    <Text className={cn(textStyles({ preset, bold }), className)} {...rest} />
+    <Text
+      className={cn(textStyles({ preset, bold, center }), className)}
+      {...rest}
+    />
   );
 }

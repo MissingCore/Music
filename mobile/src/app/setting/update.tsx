@@ -86,13 +86,13 @@ export default function AppUpdateScreen() {
           }
         >
           <LogoGitHub />
-          <StyledText className="text-center text-xs">
+          <StyledText center className="text-xs">
             {t("settings.related.appDownload")}
           </StyledText>
         </Button>
         <Button onPress={() => WebBrowser.openBrowserAsync(LINKS.PLAYSTORE)}>
           <LogoPlayStore />
-          <StyledText className="text-center text-xs">
+          <StyledText center className="text-xs">
             {t("settings.related.appUpdate")}
           </StyledText>
         </Button>

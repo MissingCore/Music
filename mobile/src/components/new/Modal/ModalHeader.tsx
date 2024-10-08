@@ -21,7 +21,9 @@ export function ModalHeader({
       })}
     >
       {title ? (
-        <StyledText className="text-center text-lg">{title}</StyledText>
+        <StyledText center className="text-lg">
+          {title}
+        </StyledText>
       ) : null}
     </View>
   );

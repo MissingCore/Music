@@ -35,14 +35,13 @@ export default function PackageLicenseScreen() {
         }}
       />
       <StickyActionLayout title={licenseInfo.name}>
-        <Card className="gap-2 bg-foreground/5">
-          <StyledText preset="dimOnCanvas">{licenseInfo.version}</StyledText>
+        <Card className="bg-foreground/5">
           <StyledText preset="dimOnCanvas">
+            {`${licenseInfo.version}\n\n`}
             This component is licensed under the {licenseInfo.license} license.
+            {`\n\n${licenseInfo.copyright}`}
           </StyledText>
-          <StyledText preset="dimOnCanvas">{licenseInfo.copyright}</StyledText>
         </Card>
-
         <StyledText preset="dimOnCanvas">{licenseInfo.licenseText}</StyledText>
       </StickyActionLayout>
     </>

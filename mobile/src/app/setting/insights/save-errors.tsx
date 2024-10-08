@@ -24,9 +24,7 @@ export default function SaveErrorsScreen() {
           getDescription: (item) => `[${item.errorName}] ${item.errorMessage}`,
         }}
         ListEmptyComponent={
-          <StyledText className="text-center">
-            {t("response.noErrors")}
-          </StyledText>
+          <StyledText center>{t("response.noErrors")}</StyledText>
         }
       />
     </SettingsLayout>
