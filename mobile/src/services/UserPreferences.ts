@@ -83,7 +83,7 @@ export const userPreferencesStore = createStore<UserPreferencesStore>()(
           set({ accentFont: newFont });
         },
 
-        minSeconds: 5,
+        minSeconds: 15,
 
         allowList: [],
         blockList: [],
