@@ -10,7 +10,7 @@ import {
 import { MusicControls } from "../services/Playback";
 
 import { Colors } from "@/constants/Styles";
-import { getTrackDuration } from "@/features/track/utils";
+import { formatSeconds } from "@/utils/number";
 
 /**
  * Allows seeking on the current track & displays the current track
@@ -71,10 +71,10 @@ export function SeekBar({ duration }: { duration: number }) {
 
       <View className="flex-row justify-between">
         <Text className="font-geistMono text-sm text-foreground50">
-          {getTrackDuration(clampedPos)}
+          {formatSeconds(clampedPos)}
         </Text>
         <Text className="font-geistMono text-sm text-foreground50">
-          {getTrackDuration(duration)}
+          {formatSeconds(duration)}
         </Text>
       </View>
     </View>

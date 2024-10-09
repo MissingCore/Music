@@ -1,7 +1,7 @@
-import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
 import { useUserPreferencesStore } from "@/services/UserPreferences";
+import { useRescanForTracks } from "@/modules/scanning/helpers/rescan";
 import { SettingsLayout } from "@/layouts/SettingsLayout";
 
 import { mutateGuard } from "@/lib/react-query";
@@ -15,7 +15,7 @@ export default function ScanningScreen() {
   const blockList = useUserPreferencesStore((state) => state.blockList);
   const ignoreDuration = useUserPreferencesStore((state) => state.minSeconds);
 
-  const rescan = useRescanLibrary();
+  const rescan = useRescanForTracks();
 
   return (
     <>
@@ -23,6 +23,7 @@ export default function ScanningScreen() {
         <ListItem
           title={t("settings.rescan")}
           description={t("settings.brief.rescan")}
+          disabled={rescan.isPending}
           onPress={() => mutateGuard(rescan, undefined)}
           {...{ first: true, last: true }}
         />
@@ -50,9 +51,3 @@ export default function ScanningScreen() {
     </>
   );
 }
-
-//#region Data
-async function rescanLibrary() {}
-
-const useRescanLibrary = () => useMutation({ mutationFn: rescanLibrary });
-//#endregion

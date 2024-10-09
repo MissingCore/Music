@@ -5,8 +5,8 @@ import { db } from "@/db";
 import { formatTracksForTrack } from "@/db/utils/formatters";
 import { fileNodeKeys } from "./_queryKeys";
 
+import { addTrailingSlash } from "@/utils/string";
 import type { ExtractFnReturnType } from "@/utils/types";
-import { addTrailingSlash } from "@/features/indexing/utils";
 
 export async function getFolderTracks(path: string) {
   const fullPath = `file:///${path}`;

@@ -9,10 +9,6 @@ import TrackPlayer, {
 
 import { deleteTrack } from "@/db/queries";
 
-import {
-  removeUnlinkedAlbums,
-  removeUnlinkedArtists,
-} from "@/features/indexing/api/db-cleanup";
 import type { TrackStatus } from "@/modules/media/services/Music";
 import {
   Queue,
@@ -21,6 +17,7 @@ import {
   resetState,
 } from "@/modules/media/services/Music";
 import { MusicControls } from "@/modules/media/services/Playback";
+import { removeUnusedCategories } from "@/modules/scanning/helpers/audio";
 
 import { clearAllQueries } from "@/lib/react-query";
 
@@ -118,8 +115,7 @@ export async function PlaybackService() {
       (e.code === "android-io-file-not-found" || e.code === undefined)
     ) {
       await deleteTrack(erroredTrack.id);
-      await removeUnlinkedAlbums();
-      await removeUnlinkedArtists();
+      await removeUnusedCategories();
       clearAllQueries();
       router.navigate("/");
     }

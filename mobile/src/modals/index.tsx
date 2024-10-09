@@ -1,6 +1,5 @@
 import { MediaModals } from "./categories/media";
 import { QuickStartModal } from "./categories/onboarding";
-import { SettingModals } from "./categories/settings";
 
 /**
  * Displays modals in the root `_layout.tsx` so that they are on top of
@@ -11,7 +10,6 @@ export function ModalPortal() {
     <>
       <QuickStartModal />
       <MediaModals />
-      <SettingModals />
     </>
   );
 }
