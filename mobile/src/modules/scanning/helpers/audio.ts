@@ -229,7 +229,7 @@ async function getTrackEntry({
 
 //#region Cleanup Functions
 /** Clean up all unused content from a validated list of found content. */
-export async function cleanupDatabase(usedTrackIds: Set<string>) {
+export async function cleanupDatabase(usedTrackIds: string[]) {
   // Remove any unused tracks.
   const unusedTrackIds = (
     await Promise.all(
@@ -238,7 +238,7 @@ export async function cleanupDatabase(usedTrackIds: Set<string>) {
   )
     .flat()
     .map(({ id }) => id)
-    .filter((id) => !usedTrackIds.has(id));
+    .filter((id) => !usedTrackIds.includes(id));
   await batch({
     data: unusedTrackIds,
     callback: async (id) => {
