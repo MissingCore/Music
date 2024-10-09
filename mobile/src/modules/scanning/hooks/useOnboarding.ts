@@ -30,7 +30,6 @@ export function useOnboarding() {
     // Make sure we have permissions.
     if (permissionResponse?.status !== "granted") {
       const { canAskAgain, status } = await requestPermission();
-      console.log(canAskAgain, status);
       if (canAskAgain || status !== "granted") {
         if (status === "denied") setStatus("complete");
         return;

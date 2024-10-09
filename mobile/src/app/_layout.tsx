@@ -6,13 +6,13 @@ import Bootsplash from "react-native-bootsplash";
 
 import { EllipsisVertical } from "@/resources/icons/EllipsisVertical";
 import { useLoadResources } from "@/hooks/useLoadResources";
+import { OnboardingScreen } from "@/screens/Onboarding";
 import { mediaModalAtom } from "@/modals/categories/media/store";
 import { AppProvider } from "@/providers";
 
 import "@/resources/global.css";
 import "@/modules/i18n"; // Make sure translations are bundled.
 import { ErrorBoundary } from "@/components/error/error-boundary";
-import { AnimatedBootSplash } from "@/components/navigation/animated-boot-splash";
 import { CurrentTrackHeader } from "@/components/navigation/header";
 import { StyledPressable } from "@/components/ui/pressable";
 import { ModalPortal } from "@/modals";
@@ -50,7 +50,11 @@ export default function RootLayout() {
   if (error) {
     return <ErrorBoundary error={error} retry={() => Promise.resolve()} />;
   } else if (!isLoaded) {
-    return <AnimatedBootSplash />;
+    return (
+      <AppProvider>
+        <OnboardingScreen />
+      </AppProvider>
+    );
   }
   return <RootLayoutNav />;
 }
