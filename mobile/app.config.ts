@@ -10,7 +10,7 @@ export default (): ExpoConfig => ({
   orientation: "portrait",
   icon: "./assets/icon.png",
   scheme: "music",
-  backgroundColor: "#000000",
+  backgroundColor: "#F2F2F2",
   userInterfaceStyle: "automatic",
   assetBundlePatterns: ["**/*"],
   android: {
