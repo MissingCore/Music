@@ -4,6 +4,7 @@ import { FlashList } from "@shopify/flash-list";
 import { useQuery } from "@tanstack/react-query";
 import { atom, useAtom, useAtomValue } from "jotai";
 import { Suspense, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { usePlaylistsForModal } from "@/api/playlists";
@@ -17,7 +18,6 @@ import { cn } from "@/lib/style";
 import { CheckboxField } from "@/components/form/checkbox-field";
 import { LoadingIndicator } from "@/components/ui/loading";
 import { Description, Heading } from "@/components/ui/text";
-import { getTrackCountStr } from "@/features/track/utils";
 import { ModalBase } from "../../components/base";
 import { ModalFormButton } from "../../components/form-button";
 
@@ -46,6 +46,7 @@ export function TrackToPlaylistModal({ id }: { id: string }) {
 
 /** Lists all the playlists. */
 function PlaylistList({ trackId }: { trackId: string }) {
+  const { t } = useTranslation();
   const { isPending, error, data: playlistData } = usePlaylistsForModal();
   const trackInPlaylists = useQuery(trackInPlaylistsOptions(trackId));
   const [inPlaylist, setInPlaylist] = useAtom(inPlaylistAtom);
@@ -75,7 +76,7 @@ function PlaylistList({ trackId }: { trackId: string }) {
                   : [...prev, name],
               )
             }
-            textContent={[name, getTrackCountStr(trackCount)]}
+            textContent={[name, t("plural.track", { count: trackCount })]}
           />
         </View>
       )}

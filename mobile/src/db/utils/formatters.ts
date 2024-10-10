@@ -11,9 +11,11 @@ import type {
   TrackWithAlbum,
 } from "../schema";
 
+import i18next from "@/modules/i18n";
+
+import { formatSeconds } from "@/utils/number";
 import type { MediaCard } from "@/components/media/card";
-import type { Track as TrackC } from "@/features/track/components/track";
-import { getPlayTime, getTrackCountStr } from "@/features/track/utils";
+import type { Track as TrackC } from "@/modules/media/components/Track";
 import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
 import { isTrackWithAlbum } from "./narrowing";
 import { sortTracks } from "./sorting";
@@ -54,7 +56,7 @@ export function fixPlaylistJunction(
 
 /** Formats data to be used with `<MediaCard />`. */
 export function formatForMediaCard({ type, data }: FnArgs): MediaCard.Content {
-  const trackStr = getTrackCountStr(data.tracks.length);
+  const trackStr = i18next.t("plural.track", { count: data.tracks.length });
   return {
     type,
     source:
@@ -107,8 +109,11 @@ export function formatTracksForTrack({
 export function formatForCurrentPages(args: FnArgs) {
   const { type, data } = args;
   const metadata = [
-    getTrackCountStr(data.tracks.length),
-    getPlayTime(data.tracks.reduce((total, curr) => total + curr.duration, 0)),
+    i18next.t("plural.track", { count: data.tracks.length }),
+    formatSeconds(
+      data.tracks.reduce((total, curr) => total + curr.duration, 0),
+      { format: "duration", omitSeconds: true },
+    ),
   ];
   if (type === "album" && data.releaseYear) {
     metadata.unshift(String(data.releaseYear));

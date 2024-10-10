@@ -1,3 +1,6 @@
+/* Polyfills */
+import "intl-pluralrules";
+
 import "expo-router/entry";
 import TrackPlayer from "react-native-track-player";
 

@@ -10,7 +10,7 @@ import { MiniPlayer } from "@/modules/media/components/MiniPlayer";
 
 /** Contains content that doesn't take up the full-screen. */
 export default function MainLayout() {
-  const { newUpdate } = useHasNewUpdate();
+  const { hasNewUpdate } = useHasNewUpdate();
 
   return (
     <>
@@ -25,7 +25,7 @@ export default function MainLayout() {
                 <StyledPressable forIcon>
                   <View>
                     <Ionicons name="settings-outline" />
-                    {newUpdate && (
+                    {hasNewUpdate && (
                       <View className="absolute right-0 top-0 size-2 rounded-full bg-accent500" />
                     )}
                   </View>

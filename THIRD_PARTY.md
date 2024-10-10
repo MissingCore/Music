@@ -49,6 +49,7 @@
 | react-native-svg | MIT | https://github.com/software-mansion/react-native-svg |
 | react-native-toast-notifications | MIT | https://github.com/arnnis/react-native-toast-notifications |
 | react-native-track-player | Apache-2.0 | https://github.com/doublesymmetry/react-native-track-player |
+| Roboto Font | Apache-2.0 | https://github.com/googlefonts/roboto |
 | tailwind-merge | MIT | https://github.com/dcastil/tailwind-merge |
 | zod | MIT | https://github.com/colinhacks/zod |
 | zustand | MIT | https://github.com/pmndrs/zustand |

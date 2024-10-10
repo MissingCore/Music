@@ -2,7 +2,7 @@ import { Stack, usePathname } from "expo-router";
 import { useAtomValue } from "jotai";
 import { ScrollView, Text, View } from "react-native";
 
-import { prevPathnameAtom } from "@/components/error/prev-pathname-tracker";
+import { prevRouteAtom } from "@/providers/RouteHandlers";
 
 import { ReportInstructions } from "@/components/error/report-instructions";
 import { SafeContainer } from "@/components/ui/container";
@@ -11,7 +11,7 @@ import { Heading, Code } from "@/components/ui/text";
 /** Screen for unmatched route. */
 export default function NotFoundScreen() {
   const pathname = usePathname();
-  const prevPathname = useAtomValue(prevPathnameAtom);
+  const prevRoute = useAtomValue(prevRouteAtom);
 
   return (
     <>
@@ -31,7 +31,7 @@ export default function NotFoundScreen() {
             <Text className="font-geistMono text-base text-foreground50">
               From:
             </Text>
-            <Code text={prevPathname} />
+            <Code text={prevRoute} />
           </View>
         </ScrollView>
         <ReportInstructions encounterMessage="You somehow navigated to an invalid route." />

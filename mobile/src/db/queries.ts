@@ -24,7 +24,7 @@ export async function createAlbum(entry: typeof albums.$inferInsert) {
 }
 
 /** Throws error if no album is found. */
-export async function getAlbum(filters: SQL[]) {
+export async function getAlbum(filters: Array<SQL | undefined>) {
   const album = await db.query.albums.findFirst({
     where: and(...filters),
     with: { tracks: true },
@@ -33,7 +33,7 @@ export async function getAlbum(filters: SQL[]) {
   return album;
 }
 
-export async function getAlbums(filters?: SQL[]) {
+export async function getAlbums(filters?: Array<SQL | undefined>) {
   return await db.query.albums.findMany({
     where: and(...(filters ?? [])),
     with: { tracks: true },
@@ -41,7 +41,7 @@ export async function getAlbums(filters?: SQL[]) {
 }
 
 /** Throws error if no artist is found. */
-export async function getArtist(filters: SQL[]) {
+export async function getArtist(filters: Array<SQL | undefined>) {
   const artist = await db.query.artists.findFirst({
     where: and(...filters),
     with: { tracks: { with: { album: true } } },
@@ -50,7 +50,7 @@ export async function getArtist(filters: SQL[]) {
   return artist;
 }
 
-export async function getArtists(filters?: SQL[]) {
+export async function getArtists(filters?: Array<SQL | undefined>) {
   return await db.query.artists.findMany({
     where: and(...(filters ?? [])),
     with: { tracks: { with: { album: true } } },
@@ -58,7 +58,7 @@ export async function getArtists(filters?: SQL[]) {
 }
 
 /** Throws error if no playlist is found. */
-export async function getPlaylist(filters: SQL[]) {
+export async function getPlaylist(filters: Array<SQL | undefined>) {
   const playlist = await db.query.playlists.findFirst({
     where: and(...filters),
     with: {
@@ -72,7 +72,7 @@ export async function getPlaylist(filters: SQL[]) {
   return fixPlaylistJunction(playlist);
 }
 
-export async function getPlaylists(filters?: SQL[]) {
+export async function getPlaylists(filters?: Array<SQL | undefined>) {
   const allPlaylists = await db.query.playlists.findMany({
     where: and(...(filters ?? [])),
     with: {
@@ -114,7 +114,7 @@ export async function deleteTrack(trackId: string) {
 }
 
 /** Throws error if no track is found. */
-export async function getTrack(filters: SQL[]) {
+export async function getTrack(filters: Array<SQL | undefined>) {
   const track = await db.query.tracks.findFirst({
     where: and(...filters),
     with: { album: true },
@@ -123,7 +123,7 @@ export async function getTrack(filters: SQL[]) {
   return { ...track, artwork: getTrackCover(track) };
 }
 
-export async function getTracks(filters?: SQL[]) {
+export async function getTracks(filters?: Array<SQL | undefined>) {
   const data = await db.query.tracks.findMany({
     where: and(...(filters ?? [])),
     with: { album: true },

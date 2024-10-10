@@ -1,53 +1,45 @@
-import { FlashList } from "@shopify/flash-list";
 import { useQuery } from "@tanstack/react-query";
-import { Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
 import { db } from "@/db";
+import { settingKeys } from "@/constants/QueryKeys";
 
-import { AnimatedHeader } from "@/components/navigation/animated-header";
-import { Description } from "@/components/ui/text";
+import { SettingsLayout } from "@/layouts/SettingsLayout";
+
+import { ListRenderer } from "@/components/new/List";
+import { StyledText } from "@/components/new/Typography";
 
 /** Screen for `/setting/insights/save-errors` route. */
 export default function SaveErrorsScreen() {
-  const { data } = useInvalidTracks();
+  const { t } = useTranslation();
+  const { data } = useSaveErrors();
 
   return (
-    <AnimatedHeader title="SAVE ERRORS">
-      <FlashList
-        estimatedItemSize={66} // 58px Height + 49px Divider
+    <SettingsLayout>
+      <ListRenderer
         data={data}
         keyExtractor={({ id }) => id}
-        renderItem={({ item, index }) => (
-          <>
-            {index !== 0 && <View className="my-6 h-px bg-surface850" />}
-            <View className="gap-2">
-              <Text className="font-geistMono text-sm text-foreground50">
-                {item.uri}
-              </Text>
-              <Text className="font-geistMonoLight text-xs text-foreground100">
-                {`[${item.errorName}] ${item.errorMessage}`}
-              </Text>
-            </View>
-          </>
-        )}
-        showsVerticalScrollIndicator={false}
+        renderOptions={{
+          getTitle: (item) => item.uri,
+          getDescription: (item) => `[${item.errorName}] ${item.errorMessage}`,
+        }}
         ListEmptyComponent={
-          <Description className="mb-2 text-start text-sm">
-            No save errors found.
-          </Description>
+          <StyledText center>{t("response.noErrors")}</StyledText>
         }
       />
-    </AnimatedHeader>
+    </SettingsLayout>
   );
 }
 
-async function getInvalidTracks() {
+//#region Data
+async function getSaveErrors() {
   return db.query.invalidTracks.findMany();
 }
 
-const useInvalidTracks = () =>
+const useSaveErrors = () =>
   useQuery({
-    queryKey: [{ entity: "settings", variant: "track-errors" }],
-    queryFn: getInvalidTracks,
+    queryKey: settingKeys.storageRelation("save-errors"),
+    queryFn: getSaveErrors,
     gcTime: 0,
   });
+//#endregion
