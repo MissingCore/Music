@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { useRescanForTracks } from "@/modules/scanning/helpers/rescan";
 import { SettingsLayout } from "@/layouts/SettingsLayout";
+import { ScanFilterListModal } from "@/screens/Modals";
 
 import { mutateGuard } from "@/lib/react-query";
 import { List, ListItem } from "@/components/new/List";
@@ -15,6 +16,9 @@ export default function ScanningScreen() {
   const blockList = useUserPreferencesStore((state) => state.listBlock);
   const ignoreDuration = useUserPreferencesStore((state) => state.minSeconds);
   const rescan = useRescanForTracks();
+
+  const allowListModalRef = useModalRef();
+  const blockListModalRef = useModalRef();
 
   return (
     <>
@@ -47,6 +51,9 @@ export default function ScanningScreen() {
           />
         </List>
       </SettingsLayout>
+
+      <ScanFilterListModal ref={allowListModalRef} listType="listAllow" />
+      <ScanFilterListModal ref={blockListModalRef} listType="listBlock" />
     </>
   );
 }

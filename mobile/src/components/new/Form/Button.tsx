@@ -12,15 +12,15 @@ export const buttonStyles = cva({
   base: ["min-h-12 justify-center"],
   variants: {
     preset: {
-      default: "border-surface bg-surface",
-      danger: "border-red bg-red",
-      warning: "border-yellow bg-yellow",
-      outline: "border-foreground",
-      plain: "border-transparent",
-      ripple: "border-transparent disabled:border-surface disabled:bg-surface",
+      default: "bg-surface",
+      danger: "bg-red",
+      warning: "bg-yellow",
+      outline: "border border-foreground",
+      plain: "",
+      ripple: "disabled:bg-surface",
     },
     pill: { true: "rounded-full", false: "rounded-md" },
-    icon: { true: "min-w-12 p-3", false: "gap-2 border p-4" },
+    icon: { true: "min-w-12 p-3", false: "gap-2 p-4" },
   },
   compoundVariants: [
     // The opacity styles shouldn't be applied for `preset="ripple"`.

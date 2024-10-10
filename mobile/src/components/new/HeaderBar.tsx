@@ -66,7 +66,7 @@ export function HeaderBarMarquee({ options, route }: NativeStackHeaderProps) {
           <ArrowBack />
         </StyledPressable>
 
-        <Marquee>
+        <Marquee center>
           <StyledText className="text-xs">{title}</StyledText>
         </Marquee>
 

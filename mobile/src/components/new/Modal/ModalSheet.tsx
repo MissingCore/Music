@@ -1,7 +1,4 @@
-import type {
-  BottomSheetBackdropProps,
-  BottomSheetProps,
-} from "@gorhom/bottom-sheet";
+import type { BottomSheetBackdropProps } from "@gorhom/bottom-sheet";
 import { BottomSheetBackdrop, BottomSheetModal } from "@gorhom/bottom-sheet";
 import { cssInterop } from "nativewind";
 import {
@@ -25,7 +22,7 @@ const WrappedBottomSheetModal = cssInterop(BottomSheetModal, {
 /** "Standardized" bottom sheet modal. */
 export const ModalSheet = forwardRef<
   BottomSheetModal,
-  BottomSheetProps & {
+  React.ComponentProps<typeof WrappedBottomSheetModal> & {
     /** If the sheet should open at max screen height. */
     snapTop?: boolean;
   }

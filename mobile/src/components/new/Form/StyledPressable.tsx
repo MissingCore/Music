@@ -25,7 +25,7 @@ export const StyledPressable = forwardRef<
       }}
       // We expect icons to be `24px`; `p-3` will give the `<Pressable />`
       // a `48px` size.
-      className={cn({ "p-3": forIcon }, className)}
+      className={cn("disabled:opacity-25", { "p-3": forIcon }, className)}
       {...props}
     />
   );

@@ -9,8 +9,16 @@ import Animated, {
 } from "react-native-reanimated";
 import { useEffect, useState } from "react";
 
+import { cn } from "@/lib/style";
+
 /** Used to progressively display long content. */
-export function Marquee({ children }: { children: React.ReactNode }) {
+export function Marquee({
+  children,
+  center = false,
+}: {
+  children: React.ReactNode;
+  center?: boolean;
+}) {
   const offset = useSharedValue(0);
   const [containerWidth, setContainerWidth] = useState(-1);
   const [contentWidth, setContentWidth] = useState(-1);
@@ -49,7 +57,9 @@ export function Marquee({ children }: { children: React.ReactNode }) {
       horizontal
       pointerEvents="none"
       showsHorizontalScrollIndicator={false}
-      contentContainerClassName="grow justify-center overflow-hidden"
+      contentContainerClassName={cn("grow overflow-hidden", {
+        "justify-center": center,
+      })}
     >
       <Animated.View
         onLayout={(e) => setContentWidth(e.nativeEvent.layout.width)}
