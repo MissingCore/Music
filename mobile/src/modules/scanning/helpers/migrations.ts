@@ -39,10 +39,10 @@ export const MigrationFunctionMap: Record<
 > = {
   "v1-to-v2-store": async () => {
     // Fetch any configs stored in the old AsyncStorage keys.
-    const allowList = await readFilterList("directory-allowlist");
-    const blockList = await readFilterList("directory-blocklist");
+    const listAllow = await readFilterList("directory-allowlist");
+    const listBlock = await readFilterList("directory-blocklist");
 
-    userPreferencesStore.setState({ allowList, blockList });
+    userPreferencesStore.setState({ listAllow, listBlock });
   },
 };
 

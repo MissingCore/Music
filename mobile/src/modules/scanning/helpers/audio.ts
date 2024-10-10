@@ -39,9 +39,9 @@ export async function findAndSaveAudio() {
     saveErrors: 0,
   });
 
-  const { allowList, blockList, minSeconds } = userPreferencesStore.getState();
+  const { listAllow, listBlock, minSeconds } = userPreferencesStore.getState();
   const usedDirs =
-    allowList.length > 0 ? allowList : StorageVolumesDirectoryPaths;
+    listAllow.length > 0 ? listAllow : StorageVolumesDirectoryPaths;
 
   // Get all audio files discoverable by `expo-media-library`.
   const incomingData: MediaLibrary.Asset[] = [];
@@ -65,7 +65,7 @@ export async function findAndSaveAudio() {
       usedDirs.some((path) =>
         a.uri.startsWith(`file://${addTrailingSlash(path)}`),
       ) &&
-      !blockList.some((path) =>
+      !listBlock.some((path) =>
         a.uri.startsWith(`file://${addTrailingSlash(path)}`),
       ) &&
       a.duration > minSeconds,

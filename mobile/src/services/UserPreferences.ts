@@ -40,9 +40,9 @@ interface UserPreferencesStore {
   minSeconds: number;
 
   /** Directories we'll limit to when looking for tracks. */
-  allowList: string[];
+  listAllow: string[];
   /** Directories we'll ignore when looking for tracks. */
-  blockList: string[];
+  listBlock: string[];
 
   /** Percentage of device volume audio will be outputted with. */
   volume: number;
@@ -85,8 +85,8 @@ export const userPreferencesStore = createStore<UserPreferencesStore>()(
 
         minSeconds: 15,
 
-        allowList: [],
-        blockList: [],
+        listAllow: [],
+        listBlock: [],
 
         volume: 1,
       }),

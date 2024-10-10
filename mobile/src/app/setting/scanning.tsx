@@ -11,10 +11,9 @@ import { useModalRef } from "@/components/new/Modal";
 /** Screen for `/setting/scanning` route. */
 export default function ScanningScreen() {
   const { t } = useTranslation();
-  const allowList = useUserPreferencesStore((state) => state.allowList);
-  const blockList = useUserPreferencesStore((state) => state.blockList);
+  const allowList = useUserPreferencesStore((state) => state.listAllow);
+  const blockList = useUserPreferencesStore((state) => state.listBlock);
   const ignoreDuration = useUserPreferencesStore((state) => state.minSeconds);
-
   const rescan = useRescanForTracks();
 
   return (
@@ -32,13 +31,13 @@ export default function ScanningScreen() {
           <ListItem
             title={t("title.listAllow")}
             description={t("plural.entry", { count: allowList.length })}
-            onPress={() => console.log("Viewing allowlist modal...")}
+            onPress={() => allowListModalRef.current?.present()}
             first
           />
           <ListItem
             title={t("title.listBlock")}
             description={t("plural.entry", { count: blockList.length })}
-            onPress={() => console.log("Viewing blocklist modal...")}
+            onPress={() => blockListModalRef.current?.present()}
           />
           <ListItem
             title={t("title.ignoreDuration")}
