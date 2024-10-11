@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { useRescanForTracks } from "@/modules/scanning/helpers/rescan";
 import { SettingsLayout } from "@/layouts/SettingsLayout";
-import { ScanFilterListModal } from "@/screens/Modals";
+import { MinDurationModal, ScanFilterListModal } from "@/screens/Modals";
 
 import { mutateGuard } from "@/lib/react-query";
 import { List, ListItem } from "@/components/new/List";
@@ -19,6 +19,7 @@ export default function ScanningScreen() {
 
   const allowListModalRef = useModalRef();
   const blockListModalRef = useModalRef();
+  const minDurationModalRef = useModalRef();
 
   return (
     <>
@@ -46,7 +47,7 @@ export default function ScanningScreen() {
           <ListItem
             title={t("title.ignoreDuration")}
             description={t("plural.second", { count: ignoreDuration })}
-            onPress={() => console.log("Viewing ignore duration modal...")}
+            onPress={() => minDurationModalRef.current?.present()}
             last
           />
         </List>
@@ -54,6 +55,7 @@ export default function ScanningScreen() {
 
       <ScanFilterListModal ref={allowListModalRef} listType="listAllow" />
       <ScanFilterListModal ref={blockListModalRef} listType="listBlock" />
+      <MinDurationModal ref={minDurationModalRef} />
     </>
   );
 }
