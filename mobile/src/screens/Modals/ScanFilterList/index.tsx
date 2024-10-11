@@ -10,12 +10,7 @@ import { View } from "react-native";
 
 import { Add, CreateNewFolder, Remove } from "@/resources/icons";
 import { useUserPreferencesStore } from "@/services/UserPreferences";
-import {
-  pickPath,
-  removePath,
-  useAddPathToList,
-  validatePath,
-} from "./ScanFilterList.data";
+import { pickPath, removePath, useAddPathToList, validatePath } from "./data";
 
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";

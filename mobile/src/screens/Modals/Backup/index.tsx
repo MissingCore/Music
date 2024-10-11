@@ -4,7 +4,7 @@ import { forwardRef } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { useExportBackup, useImportBackup } from "./Backup.data";
+import { useExportBackup, useImportBackup } from "./data";
 
 import { mutateGuard } from "@/lib/react-query";
 import { Button } from "@/components/new/Form";
