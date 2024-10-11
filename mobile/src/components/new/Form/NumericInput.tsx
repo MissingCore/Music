@@ -14,8 +14,8 @@ import { cn } from "@/lib/style";
  * setting `editable=false` doesn't actually prevent the input from
  * being editable.
  */
-export const NumberInput = forwardRef<TextInput, TextInputProps>(
-  function NumberInput({ className, ...rest }, ref) {
+export const NumericInput = forwardRef<TextInput, TextInputProps>(
+  function NumericInput({ className, ...rest }, ref) {
     const accentFont = useUserPreferencesStore((state) => state.accentFont);
     const { foreground } = useTheme();
 

@@ -9,7 +9,7 @@ import {
   userPreferencesStore,
 } from "@/services/UserPreferences";
 
-import { NumberInput } from "@/components/new/Form";
+import { NumericInput } from "@/components/new/Form";
 import { ModalHeader, ModalSheet } from "@/components/new/Modal";
 import { StyledText } from "@/components/new/Typography";
 
@@ -39,7 +39,7 @@ export const MinDurationModal = forwardRef<BottomSheetModal, {}>(
           </StyledText>
 
           <View className="mx-auto w-full max-w-[50%] items-center border-b border-foreground/60">
-            <NumberInput
+            <NumericInput
               defaultValue={`${minSeconds}`}
               onChangeText={(text) => setNewMin(text)}
             />
