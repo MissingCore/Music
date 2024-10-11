@@ -125,7 +125,6 @@ function FilterListHeader({
       <View className="flex-row gap-2">
         <View className="shrink grow flex-row items-center gap-2 border-b border-foreground/60">
           <TextInput
-            base="gorhom"
             editable={!onSubmit.isPending}
             value={newPath}
             onChangeText={(text) => setNewPath(text)}

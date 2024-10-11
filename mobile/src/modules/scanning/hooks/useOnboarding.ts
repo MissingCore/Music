@@ -55,6 +55,7 @@ export function useOnboarding() {
     await findAndSaveArtwork();
     await cleanupImages();
 
+    console.log(`Finished overall in ${stopwatch.stop()}.`);
     setStatus("complete");
   }, [permissionResponse, requestPermission]);
 
