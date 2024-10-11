@@ -88,13 +88,10 @@ export namespace ListItem {
     | { onPress: () => void; disabled?: boolean }
   );
 
-  export type StaticContent = {
+  export type Content = {
     title: string;
     description?: string;
     icon?: React.ReactNode;
-  };
-  export type DynamicContent = { content: React.ReactNode };
-  export type Content = (StaticContent | DynamicContent) & {
     textColor?: TextColor;
   };
 
@@ -112,7 +109,6 @@ export function ListItem({
   onPress,
   ...rest
 }: ListItem.Props) {
-  // @ts-expect-error ts(2339) We only care if the `icon` prop is defined.
   const withIcon = !!rest?.icon;
 
   if (onPress === undefined) {
@@ -140,7 +136,6 @@ export function ListItem({
 /** Checks what content we want to display inside an `<ListItem />`. */
 function ListItemLayout({ textColor, ...props }: ListItem.Content) {
   const usedColor = textColor ?? "text-foreground";
-  if (isDynamicContent(props)) return props.content;
   return (
     <>
       <View className="shrink grow gap-0.5">
@@ -156,12 +151,5 @@ function ListItemLayout({ textColor, ...props }: ListItem.Content) {
       {props.icon}
     </>
   );
-}
-
-/** Type guard to determine which content option is used. */
-function isDynamicContent(
-  content: ListItem.StaticContent | ListItem.DynamicContent,
-): content is ListItem.DynamicContent {
-  return content.hasOwnProperty("content");
 }
 //#endregion
