@@ -5,27 +5,32 @@ import { settingKeys } from "@/constants/QueryKeys";
 import { APP_VERSION } from "@/constants/Config";
 
 type UpdateResult =
-  | { hasNewUpdate: false; release: null }
-  | { hasNewUpdate: true; release: { releaseNotes: string; version: string } };
+  | { hasNewUpdate: false; release: null; isRC: false }
+  | {
+      hasNewUpdate: true;
+      release: { releaseNotes: string; version: string };
+      isRC: boolean;
+    };
 
 /** Determines if we have a new update. */
 export function useHasNewUpdate(): UpdateResult {
   const { isPending, error, data } = useLatestRelease();
 
-  if (isPending || !!error) return { hasNewUpdate: false, release: null };
+  let isRC = false;
+  if (isPending || !!error) return { hasNewUpdate: false, release: null, isRC };
 
-  const usingRC = APP_VERSION.includes("-rc");
+  isRC = APP_VERSION.includes("-rc");
   // Release candidates shouldn't have the "Latest Release" tag on GitHub
   // (ie: shouldn't be in `data.latestStable`). We compare against potentially
   // release candidate versions if we're on a release candidate.
-  const usedRelease = usingRC ? data.latestRelease : data.latestStable;
+  const usedRelease = isRC ? data.latestRelease : data.latestStable;
 
   // Note: We can technically display an older release note if we updated
   // to the lastest version before the GitHub release notes are published.
   if (!usedRelease.version || usedRelease.version === APP_VERSION) {
-    return { hasNewUpdate: false, release: null };
+    return { hasNewUpdate: false, release: null, isRC: false };
   } else {
-    return { hasNewUpdate: true, release: usedRelease };
+    return { hasNewUpdate: true, release: usedRelease, isRC };
   }
 }
 

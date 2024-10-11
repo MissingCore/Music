@@ -17,7 +17,7 @@ import { StyledText } from "@/components/new/Typography";
 /** Screen for `/setting/update` route. */
 export default function AppUpdateScreen() {
   const { t } = useTranslation();
-  const { release } = useHasNewUpdate();
+  const { release, isRC } = useHasNewUpdate();
   const { foreground } = useTheme();
   const accentFont = useUserPreferencesStore((state) => state.accentFont);
 
@@ -91,15 +91,17 @@ export default function AppUpdateScreen() {
             {t("settings.related.appDownload")}
           </StyledText>
         </Button>
-        <Button
-          onPress={() => WebBrowser.openBrowserAsync(LINKS.PLAYSTORE)}
-          className="flex-1 items-center p-2"
-        >
-          <LogoPlayStore />
-          <StyledText center className="text-xs">
-            {t("settings.related.appUpdate")}
-          </StyledText>
-        </Button>
+        {!isRC ? (
+          <Button
+            onPress={() => WebBrowser.openBrowserAsync(LINKS.PLAYSTORE)}
+            className="flex-1 items-center p-2"
+          >
+            <LogoPlayStore />
+            <StyledText center className="text-xs">
+              {t("settings.related.appUpdate")}
+            </StyledText>
+          </Button>
+        ) : null}
       </View>
     </StickyActionLayout>
   );
