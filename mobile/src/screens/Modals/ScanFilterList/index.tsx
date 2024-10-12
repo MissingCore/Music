@@ -16,7 +16,7 @@ import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
 import { cardStyles } from "@/components/new/Card";
-import { Button, StyledPressable, TextInput } from "@/components/new/Form";
+import { Button, Ripple, TextInput } from "@/components/new/Form";
 import { Marquee } from "@/components/new/Marquee";
 import { ModalHeader, ModalSheet } from "@/components/new/Modal";
 import { Swipeable } from "@/components/new/Swipeable";
@@ -126,14 +126,14 @@ function FilterListHeader({
             placeholder={PrimaryDirectoryPath}
             className="shrink grow"
           />
-          <StyledPressable
+          <Ripple
+            preset="icon"
             accessibilityLabel={t("settings.related.pathSelect")}
             disabled={onSubmit.isPending}
             onPress={selectDirectory}
-            forIcon
           >
             <CreateNewFolder />
-          </StyledPressable>
+          </Ripple>
         </View>
         <Button
           accessibilityLabel={t("settings.related.pathAdd")}

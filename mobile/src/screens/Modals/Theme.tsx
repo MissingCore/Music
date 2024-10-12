@@ -7,7 +7,7 @@ import { FlatList } from "react-native";
 
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 
-import { Button } from "@/components/new/Form";
+import { Ripple } from "@/components/new/Form";
 import { ModalHeader, ModalSheet } from "@/components/new/Modal";
 import { StyledText } from "@/components/new/Typography";
 
@@ -27,8 +27,8 @@ export const ThemeModal = forwardRef<BottomSheetModal, {}>(
             data={["light", "dark", "system"] as const}
             keyExtractor={(item) => item}
             renderItem={({ item }) => (
-              <Button
-                preset="ripple"
+              <Ripple
+                preset="select"
                 onPress={() => {
                   setColorScheme(item);
                   setTheme(item);
@@ -36,7 +36,7 @@ export const ThemeModal = forwardRef<BottomSheetModal, {}>(
                 disabled={item === theme}
               >
                 <StyledText>{t(`settings.related.${item}`)}</StyledText>
-              </Button>
+              </Ripple>
             )}
             showsVerticalScrollIndicator={false}
             contentContainerClassName="gap-1 pb-3"

@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { LANGUAGES } from "@/modules/i18n/constants";
 
-import { Button } from "@/components/new/Form";
+import { Ripple } from "@/components/new/Form";
 import { ModalHeader, ModalSheet } from "@/components/new/Modal";
 import { StyledText } from "@/components/new/Typography";
 
@@ -23,13 +23,13 @@ export const LanguageModal = forwardRef<BottomSheetModal, {}>(
           data={LANGUAGES}
           keyExtractor={({ code }) => code}
           renderItem={({ item }) => (
-            <Button
-              preset="ripple"
+            <Ripple
+              preset="select"
               onPress={() => setLanguage(item.code)}
               disabled={item.code === languageCode}
             >
               <StyledText>{item.name}</StyledText>
-            </Button>
+            </Ripple>
           )}
           showsVerticalScrollIndicator={false}
           // Sticky the modal header as otherwise, it will scroll with the content.

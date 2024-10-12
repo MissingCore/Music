@@ -7,7 +7,7 @@ import { View } from "react-native";
 import { ArrowBack } from "@/resources/icons";
 
 import { Marquee } from "./Marquee";
-import { StyledPressable } from "./Form";
+import { Ripple } from "./Form";
 import { SafeContainer } from "./SafeContainer";
 import { StyledText } from "./Typography";
 
@@ -23,13 +23,13 @@ export function HeaderBar({ options, route }: NativeStackHeaderProps) {
   return (
     <SafeContainer className="bg-canvas">
       <View className="h-14 flex-row items-center justify-between gap-4 p-1">
-        <StyledPressable
+        <Ripple
+          preset="icon"
           accessibilityLabel={t("form.back")}
           onPress={() => router.back()}
-          forIcon
         >
           <ArrowBack />
-        </StyledPressable>
+        </Ripple>
 
         <StyledText numberOfLines={2} className="shrink text-xs">
           {title.toLocaleUpperCase()}
@@ -58,13 +58,13 @@ export function HeaderBarMarquee({ options, route }: NativeStackHeaderProps) {
   return (
     <SafeContainer className="bg-canvas">
       <View className="h-14 flex-row items-center justify-between gap-4 p-1">
-        <StyledPressable
+        <Ripple
+          preset="icon"
           accessibilityLabel={t("form.back")}
           onPress={() => router.back()}
-          forIcon
         >
           <ArrowBack />
-        </StyledPressable>
+        </Ripple>
 
         <Marquee center>
           <StyledText className="text-xs">{title}</StyledText>
