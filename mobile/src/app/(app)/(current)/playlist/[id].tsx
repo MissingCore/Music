@@ -12,7 +12,7 @@ import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
 import { MediaScreenHeader } from "@/components/media/screen-header";
 import { StyledPressable } from "@/components/ui/pressable";
 import { Description } from "@/components/ui/text";
-import { TrackList } from "@/features/track/components/track-list";
+import { TrackList } from "@/modules/media/components/Track";
 import type { MediaList } from "@/modules/media/types";
 
 /** Screen for `/playlist/[id]` route. */

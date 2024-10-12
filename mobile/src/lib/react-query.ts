@@ -1,7 +1,7 @@
 import type { DefaultOptions, UseMutationResult } from "@tanstack/react-query";
 import { QueryClient } from "@tanstack/react-query";
 
-import { settingKeys } from "@/features/setting/api/_queryKeys";
+import { settingKeys } from "@/constants/QueryKeys";
 
 const queryConfig: DefaultOptions = {
   queries: {

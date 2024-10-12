@@ -1,47 +1,41 @@
 # How Are Tracks Indexed?
 
-The process of indexing tracks can be broken up in the following way:
+This document aims to note the process that goes on when on the onboarding screen (ie: the screen with this app's icon).
 
-1. Data Adjustments/Migrations.
-2. Saving & Populating Tracks With Metadata.
-3. Cleaning Up The Database.
-4. Saving Track Artwork.
-5. Cleaning Up Unused Images.
+When you open the app for the very first time, you'll encounter the loading screen for a substantial amount of time. This is considered the "onboarding" process, in which the app will search on your device all audio files and attempt to save its metadata into a database so that this information will be present to you instantaneously on future usage of the app. The time spent onboarding is negligible as this will only happen whenever you use the app for the first time or whenever you add new tracks, in which the duration spent correlates to the amount of tracks found.
 
-When opening the app for the first time, you may encounter the loading screen for a substantial amount of time. Since this can be considered as the app setup process, the time spent on this screen is negligible as this operation should only happen when we open the app for the first time or whenever we add new tracks (the time spent on the screen depends on the number of new tracks found).
+Specifically, this onboarding process has 3 phases:
 
-## Data Adjustments/Migrations
+1. Preprocessing
+2. Saving Track Metadata
+3. Saving Track Artwork
 
-Before we start looking for any tracks, we want to make sure that any existing data complies with any changes we made previously. This logic might be run when we update a schema.
+## Preprocessing
 
-We ran this logic in the past to fix existing data after we fixed the following issues or introduced new features:
+The "preprocessing" phase of the onboarding process is when we run some code to update pre-existing data to ensure it works with any new features.
 
-- Album fracturization.
-- Missing images.
-- Tracks previously rejected due to its metadata not being supported.
-- Generation of file tree for the "Folders" feature.
+## Saving Track Metadata
 
-## Saving & Populating Tracks With Metadata
+This phase involves:
 
-The first thing we do is figure out what tracks are on our device and keep the subset of tracks that we want. We then go through a couple of tracks at a time, getting their metadata, and creating or updating a `Track` entry. If an error is thrown when retrieving the metadata, that track gets added to the `InvalidTrack` table.
+1. Finding all the "valid" tracks which are:
+   - Tracks that are in the directories specified by the allowlist.
+   - Tracks that are not in the directories specified by the blocklist.
+   - Tracks that are longer than a specified duration.
+2. Getting the metadata of any new or modified tracks and inserting or updating entries in the database.
+3. Do any cleanup in the database.
 
-## Cleaning Up The Database
-
-After we finish saving or updating the metadata of tracks, we then remove any entries that may no longer be relevant.
-
-- We remove any `Track` entries that we didn't find when getting the list of tracks found on the device.
-- We remove any `Album` entries with no tracks.
-- We remove any `Artist` entries with no albums & tracks.
-
-If we discover any deleted tracks in the queue list or in the list of playing tracks, they will be removed.
+> [!NOTE]  
+> For new users to the app, the app will default to looking for music anywhere that is **longer than 15 seconds**.
 
 ## Saving Track Artwork
 
-After we do the above tasks, we start saving the tracks in the background in an optimal manner. We go through each track, one-by-one and save the image from its metadata if the following conditions are satisfied:
+This phase involves going through every track that doesn't have artwork associated with it (ie: if it belongs to an album, it must not have artwork) and attempting to find it directly from its metadata. If image data is found:
 
-1. The album it belongs to doesn't have any artwork associated with it.
-2. The track doesn't belong to an album and has no artwork associated with it.
+- If the track belongs to an album, that image gets assigned to the album.
+- Otherwise, the image gets assigned to the track.
 
-## Cleaning Up Unused Images
+> [!NOTE]  
+> In v1, we did this in the background (so you could be interacting with the app in some other form). The problem was that it sometimes caused some weird bugs due to the laggy behavior it creates as all the system resources are involved in reading the artwork directly from the music file.
 
-After we finish saving any new artwork, we then find artwork stored by this app that isn't being used and delete them. This is an effort to slim down the amount of storage this app takes up on your device.
+After we go through all unchecked tracks, we then look for and delete any image stored by the app that isn't associated with an album, playlist, or track (in order to slim down the amount of storage this app takes up on your device).

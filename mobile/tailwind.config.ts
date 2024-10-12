@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss";
 
-import { TailwindTheme } from "./src/constants/Themes";
+import { TailwindTheme } from "./src/constants/TailwindTheme";
 
 export default {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],

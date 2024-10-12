@@ -1,42 +1,49 @@
-import { useLocalSearchParams } from "expo-router";
-import { Text, View } from "react-native";
+import { Stack, useLocalSearchParams } from "expo-router";
+import * as WebBrowser from "expo-web-browser";
+import { useTranslation } from "react-i18next";
 
+import { OpenInNew } from "@/resources/icons";
 import LicensesList from "@/resources/licenses.json";
+import { StickyActionLayout } from "@/layouts/StickyActionLayout";
 
-import { AnimatedHeader } from "@/components/navigation/animated-header";
-import { Back } from "@/components/navigation/back";
-import { NavLink } from "@/components/navigation/nav-link";
-import { Description } from "@/components/ui/text";
+import { Card } from "@/components/new/Card";
+import { Ripple } from "@/components/new/Form";
+import { StyledText } from "@/components/new/Typography";
 
 /** Screen for `/setting/third-party/[id]` route. */
 export default function PackageLicenseScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { t } = useTranslation();
 
-  const licenseInfo = LicensesList[id! as keyof typeof LicensesList];
-
-  if (!licenseInfo) return <Back />;
+  const licenseInfo = LicensesList[id as keyof typeof LicensesList];
 
   return (
-    <AnimatedHeader title={licenseInfo.name}>
-      <Description intent="setting" className="mb-6">
-        <Text className="text-foreground100">{licenseInfo.version}</Text>
-        {"\n\n"}
-        This component is licensed under the {licenseInfo.license} license.
-        {!!licenseInfo.copyright && (
-          <>
-            {"\n\n"}
-            <Text className="italic">{licenseInfo.copyright}</Text>
-          </>
-        )}
-      </Description>
-
-      <View className="-mx-4">
-        <NavLink href={licenseInfo.source} label="Source" external />
-      </View>
-
-      <View className="mb-6 mt-2 h-px bg-surface850" />
-
-      <Description intent="setting">{licenseInfo.licenseText}</Description>
-    </AnimatedHeader>
+    <>
+      <Stack.Screen
+        options={{
+          headerRight: () => (
+            <Ripple
+              preset="icon"
+              accessibilityLabel={t("template.entrySeeMore", {
+                name: licenseInfo.name,
+              })}
+              onPress={() => WebBrowser.openBrowserAsync(licenseInfo.source)}
+            >
+              <OpenInNew />
+            </Ripple>
+          ),
+        }}
+      />
+      <StickyActionLayout title={licenseInfo.name}>
+        <Card className="bg-foreground/5">
+          <StyledText preset="dimOnCanvas">
+            {`${licenseInfo.version}\n\n`}
+            This component is licensed under the {licenseInfo.license} license.
+            {`\n\n${licenseInfo.copyright}`}
+          </StyledText>
+        </Card>
+        <StyledText preset="dimOnCanvas">{licenseInfo.licenseText}</StyledText>
+      </StickyActionLayout>
+    </>
   );
 }

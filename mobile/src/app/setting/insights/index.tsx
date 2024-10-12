@@ -1,163 +1,182 @@
-import { Text, View } from "react-native";
-
-import { Ionicons } from "@/resources/icons";
+import { useQuery } from "@tanstack/react-query";
+import { sum } from "drizzle-orm";
 import {
-  useUserDataInfo,
-  useStatisticsInfo,
-  useImageSaveStatus,
-} from "@/features/setting/api/insights";
+  cacheDirectory,
+  documentDirectory,
+  getInfoAsync,
+  readDirectoryAsync,
+} from "expo-file-system";
+import { router } from "expo-router";
+import { useTranslation } from "react-i18next";
+
+import { db } from "@/db";
+import { albums, artists, playlists, tracks, invalidTracks } from "@/db/schema";
+import { countFrom } from "@/db/utils/formatters";
+import { settingKeys } from "@/constants/QueryKeys";
+
+import { useTheme } from "@/hooks/useTheme";
+import { SettingsLayout } from "@/layouts/SettingsLayout";
 
 import { Colors } from "@/constants/Styles";
-import { cn } from "@/lib/style";
-import { AnimatedHeader } from "@/components/navigation/animated-header";
-import { NavLink } from "@/components/navigation/nav-link";
-import { ProgressBar } from "@/components/ui/progress-bar";
-import { Description, Heading } from "@/components/ui/text";
-import { abbreviateSize } from "@/features/setting/utils";
-import { getPlayTime } from "@/features/track/utils";
+import { abbreviateSize, formatSeconds } from "@/utils/number";
+import { Card } from "@/components/new/Card";
+import { Legend, LegendItem, ProgressBar } from "@/components/new/Form";
+import { List, ListItem } from "@/components/new/List";
 
 /** Screen for `/setting/insights` route. */
 export default function InsightsScreen() {
+  const { t } = useTranslation();
+
   return (
-    <AnimatedHeader title="INSIGHTS">
-      <Description intent="setting" className="mb-6">
-        See what <Text className="font-ndot">Music</Text> has stored on your
-        device along with information about the playable media.
-      </Description>
+    <SettingsLayout>
+      <List>
+        <StorageWidget />
+        <DBSummaryWidget />
+      </List>
 
-      <UserDataWidget />
-      <StatisticsWidget />
-      <AllImagesSavedWidget />
-
-      <View className="mb-2 mt-6 h-px bg-surface850" />
-      <View className="-mx-4">
-        <NavLink label="SAVE ERRORS" href="/setting/insights/save-errors" />
-      </View>
-    </AnimatedHeader>
+      <ListItem
+        title={t("header.saveErrors")}
+        description={t("settings.brief.saveErrors")}
+        onPress={() => router.navigate("/setting/insights/save-errors")}
+        {...{ first: true, last: true }}
+      />
+    </SettingsLayout>
   );
 }
 
-/** Displays what's stored on this device. */
-function UserDataWidget() {
-  const { isPending, error, data } = useUserDataInfo();
-  if (isPending || error) return null;
-  return (
-    <View className="mb-6 rounded-lg bg-surface800 p-4">
-      <Heading as="h4" className="mb-4 text-start font-ndot tracking-tight">
-        User Data
-      </Heading>
+/** Breaks down what this app stores on the device. */
+function StorageWidget() {
+  const { t } = useTranslation();
+  const { foreground } = useTheme();
+  const { isPending, error, data } = useStorageStats();
 
+  if (isPending || error) return null;
+
+  return (
+    <Card className="gap-2 rounded-b-sm">
       <ProgressBar
         entries={[
-          { color: Colors.accent500, value: data.images },
-          { color: "#FFC800", value: data.database },
+          { color: Colors.red, value: data.images },
+          { color: Colors.yellow, value: data.database },
           { color: "#4142BE", value: data.other },
-          { color: Colors.foreground100, value: data.cache },
+          { color: `${foreground}40`, value: data.cache },
         ]}
         total={data.total}
-        className="mb-4"
       />
-
-      <ValueRow
-        label="Images"
-        value={abbreviateSize(data.images)}
-        barColor={Colors.accent500}
-      />
-      <ValueRow
-        label="Database"
-        value={abbreviateSize(data.database)}
-        barColor="#FFC800"
-      />
-      <ValueRow
-        label="Other"
-        value={abbreviateSize(data.other)}
-        barColor="#4142BE"
-      />
-      <ValueRow
-        label="Cache"
-        value={abbreviateSize(data.cache)}
-        barColor={Colors.foreground100}
-      />
-
-      <ValueRow
-        label="Total"
+      <Legend className="py-2">
+        <LegendItem
+          name={t("settings.related.images")}
+          value={abbreviateSize(data.images)}
+          color={Colors.red}
+        />
+        <LegendItem
+          name={t("settings.related.database")}
+          value={abbreviateSize(data.database)}
+          color={Colors.yellow}
+        />
+        <LegendItem
+          name={t("settings.related.other")}
+          value={abbreviateSize(data.other)}
+          color="#4142BE"
+        />
+        <LegendItem
+          name={t("settings.related.cache")}
+          value={abbreviateSize(data.cache)}
+          color={`${foreground}40`} // 25% Opacity
+        />
+      </Legend>
+      <LegendItem
+        name={t("settings.related.total")}
         value={abbreviateSize(data.total)}
-        className="mb-0 mt-2"
       />
-    </View>
+    </Card>
   );
 }
 
-/** Display what's tracked by the database. */
-function StatisticsWidget() {
-  const { isPending, error, data } = useStatisticsInfo();
+/** Summarizes what is stored in the database. */
+function DBSummaryWidget() {
+  const { t } = useTranslation();
+  const { isPending, error, data } = useDBSummary();
+
   if (isPending || error) return null;
+
   return (
-    <View className="mb-6 rounded-lg bg-surface800 p-4">
-      <Heading as="h4" className="mb-4 text-start font-ndot tracking-tight">
-        Statistics
-      </Heading>
-
-      <ValueRow label="Albums" value={data.albums} />
-      <ValueRow label="Artists" value={data.artists} />
-      <ValueRow label="Images" value={data.images} />
-      <ValueRow label="Playlists" value={data.playlists} />
-      <ValueRow label="Tracks" value={data.tracks} />
-      <ValueRow label="Save Errors" value={data.invalidTracks} />
-
-      <ValueRow
-        label="Total Duration"
-        value={getPlayTime(data.totalDuration)}
-        className="mb-0 mt-2"
+    <Card className="gap-2 rounded-t-sm">
+      <Legend className="pb-2">
+        <LegendItem name={t("common.albums")} value={data.albums} />
+        <LegendItem name={t("common.artists")} value={data.artists} />
+        <LegendItem name={t("settings.related.images")} value={data.images} />
+        <LegendItem name={t("common.playlists")} value={data.playlists} />
+        <LegendItem name={t("common.tracks")} value={data.tracks} />
+        <LegendItem name={t("header.saveErrors")} value={data.saveErrors} />
+      </Legend>
+      <LegendItem
+        name={t("settings.related.totalDuration")}
+        value={formatSeconds(data.totalDuration, {
+          format: "duration",
+          omitSeconds: true,
+        })}
       />
-    </View>
+    </Card>
   );
 }
 
-/** Display whether all images have been saved. */
-function AllImagesSavedWidget() {
-  const { isPending, error, data: allSaved } = useImageSaveStatus();
-  if (isPending || error) return null;
-  return (
-    <View className="flex-row justify-between gap-4 rounded-lg bg-surface800 p-4">
-      <Heading
-        as="h4"
-        className="text-start font-ndot leading-tight tracking-tight"
-      >
-        All Images Saved?
-      </Heading>
-      <Ionicons
-        name={allSaved ? "checkmark-circle-outline" : "close-circle-outline"}
-      />
-    </View>
-  );
+//#region Data
+async function getStorageStats() {
+  if (!documentDirectory) throw new Error("Web not supported");
+
+  const dbData = await getInfoAsync(documentDirectory + "SQLite");
+  const imgData = await getInfoAsync(documentDirectory + "images");
+  const otherData = await getInfoAsync(documentDirectory);
+  const cacheData = await getInfoAsync(`${cacheDirectory}`);
+
+  const dbSize = dbData.exists ? dbData.size : 0;
+  const imgSize = imgData.exists ? imgData.size : 0;
+  const otherSize = otherData.exists ? otherData.size : 0;
+  const cacheSize = cacheData.exists ? cacheData.size : 0;
+
+  return {
+    images: imgSize,
+    database: dbSize,
+    other: otherSize - imgSize - dbSize,
+    cache: cacheSize,
+    total: otherSize + cacheSize,
+  };
 }
 
-type ValueRowProps = {
-  label: string;
-  value: string | number;
-  barColor?: string;
-  className?: string;
-};
+async function getDBSummary() {
+  if (!documentDirectory) throw new Error("Web not supported");
 
-/** Displays a label & value in a row. */
-function ValueRow({ label, value, barColor, className }: ValueRowProps) {
-  return (
-    <View className={cn("mb-2 flex-row justify-between gap-2", className)}>
-      <View className="shrink flex-row items-center gap-2">
-        {!!barColor && (
-          <View
-            style={{ backgroundColor: barColor }}
-            className="size-[9px] rounded-full"
-          />
-        )}
-        <Text className="shrink font-geistMono text-xs tracking-tight text-foreground50">
-          {label}
-        </Text>
-      </View>
-      <Text className="font-geistMonoLight text-xs tracking-tighter text-foreground100">
-        {value}
-      </Text>
-    </View>
-  );
+  const imgDir = documentDirectory + "images";
+  const imgData = await getInfoAsync(imgDir);
+  let imgCount = imgData.exists ? (await readDirectoryAsync(imgDir)).length : 0;
+
+  return {
+    albums: await countFrom(albums),
+    artists: await countFrom(artists),
+    images: imgCount,
+    playlists: await countFrom(playlists),
+    tracks: await countFrom(tracks),
+    saveErrors: await countFrom(invalidTracks),
+    totalDuration:
+      Number(
+        (await db.select({ total: sum(tracks.duration) }).from(tracks))[0]
+          ?.total,
+      ) || 0,
+  };
 }
+
+const useStorageStats = () =>
+  useQuery({
+    queryKey: settingKeys.storageRelation("storage-stats"),
+    queryFn: getStorageStats,
+    gcTime: 0,
+  });
+
+const useDBSummary = () =>
+  useQuery({
+    queryKey: settingKeys.storageRelation("db-summary"),
+    queryFn: getDBSummary,
+    gcTime: 0,
+  });
+//#endregion

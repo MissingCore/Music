@@ -1,165 +1,123 @@
-import { StyleSheet, Text, View } from "react-native";
-import Markdown from "react-native-markdown-display";
+import { router } from "expo-router";
+import * as WebBrowser from "expo-web-browser";
+import { useTranslation } from "react-i18next";
 
-import { Ionicons } from "@/resources/icons";
+import { OpenInNew } from "@/resources/icons";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
+import { SettingsLayout } from "@/layouts/SettingsLayout";
+import { BackupModal, LanguageModal } from "@/screens/Modals";
+import { LANGUAGES } from "@/modules/i18n/constants";
 
-import { APP_VERSION, GITHUB_LINK, PLAYSTORE_LINK } from "@/constants/Config";
-import { BorderRadius, Colors, FontFamily, FontSize } from "@/constants/Styles";
-import { Button } from "@/components/form/button";
-import { AnimatedHeader } from "@/components/navigation/animated-header";
-import {
-  NavLinkGroup,
-  NavLinkGroupHeading,
-  NavLinkLabel,
-} from "@/components/navigation/nav-link";
-import { Description } from "@/components/ui/text";
-
-const LINKGROUPS = {
-  about: {
-    name: "ABOUT",
-    links: [
-      { label: "THIRD-PARTY SOFTWARE", href: "/setting/third-party" },
-      { label: "LICENSE", href: "/setting/license" },
-      {
-        label: "PRIVACY POLICY",
-        href: `${GITHUB_LINK}/blob/main/PRIVACY_POLICY.md`,
-        external: true,
-      },
-      { label: "SUPPORT", href: "/setting/support" },
-    ],
-    listClassName: "-mx-4",
-  },
-  features: {
-    name: "FEATURES",
-    links: [
-      { label: "BACKUP", href: "/setting/backup" },
-      { label: "INSIGHTS", href: "/setting/insights" },
-      { label: "LIBRARY", href: "/setting/library" },
-    ],
-    listClassName: "-mx-4",
-  },
-};
+import { APP_VERSION } from "@/constants/Config";
+import * as LINKS from "@/constants/Links";
+import { List, ListItem } from "@/components/new/List";
+import { useModalRef } from "@/components/new/Modal";
 
 /** Screen for `/setting` route. */
 export default function SettingScreen() {
-  return (
-    <AnimatedHeader title="SETTINGS">
-      <View>
-        <NavLinkGroupHeading>UPDATES</NavLinkGroupHeading>
-        <UpdateChecker />
-      </View>
-      <View className="mb-6 mt-2 h-px bg-surface850" />
-      <NavLinkGroup {...LINKGROUPS.features} />
-      <View className="mb-6 mt-2 h-px bg-surface850" />
-      <NavLinkGroup {...LINKGROUPS.about} />
-      <View className="mt-1 h-12 flex-row items-center justify-between gap-2">
-        <NavLinkLabel>VERSION</NavLinkLabel>
-        <NavLinkLabel className="tracking-tight text-surface400">
-          {APP_VERSION}
-        </NavLinkLabel>
-      </View>
-    </AnimatedHeader>
-  );
-}
+  const { t, i18n } = useTranslation();
+  const { hasNewUpdate } = useHasNewUpdate();
 
-/** Indicates whether we're on the latest version of the app. */
-function UpdateChecker() {
-  const { newUpdate, release } = useHasNewUpdate();
+  const langModalRef = useModalRef();
+  const backupModalRef = useModalRef();
 
-  if (!newUpdate) {
-    return (
-      <NavLinkLabel className="my-4">Currently on latest version.</NavLinkLabel>
-    );
-  }
+  const currLang = LANGUAGES.find(({ code }) => code === i18n.language)!.name;
 
   return (
     <>
-      <Markdown
-        style={{
-          body: {
-            marginTop: 8,
-            padding: 8,
-            gap: 8,
-            backgroundColor: Colors.surface800,
-            color: Colors.foreground100,
-            fontFamily: FontFamily.geistMonoLight,
-            fontSize: 10,
-            borderRadius: BorderRadius.lg,
-          },
-          heading1: {
-            ...markdownStyles.heading,
-            fontSize: FontSize.lg,
-          },
-          heading2: markdownStyles.heading,
-          paragraph: {
-            marginTop: 0,
-            marginBottom: 0,
-          },
-          blockquote: {
-            ...markdownStyles.fence,
-            borderColor: Colors.accent500,
-          },
-          fence: {
-            ...markdownStyles.fence,
-            borderColor: Colors.surface500,
-          },
-          code_inline: markdownStyles.code,
-          hr: {
-            backgroundColor: Colors.surface700,
-          },
-        }}
-        rules={{
-          link: (node, children, _parent, styles) => (
-            <Text key={node.key} style={styles.link}>
-              {children}
-            </Text>
-          ),
-        }}
-      >
-        {`# ${release.version} is Available\n\n${release.releaseNotes}`}
-      </Markdown>
+      <SettingsLayout>
+        {hasNewUpdate && (
+          <ListItem
+            title={t("header.appUpdate")}
+            description={t("settings.brief.appUpdate")}
+            onPress={() => router.navigate("/setting/update")}
+            className="rounded-full bg-yellow"
+            textColor="text-neutral0"
+          />
+        )}
 
-      <Description intent="setting" className="my-4">
-        <Text className="underline">Note:</Text> The Play Store may not have the
-        latest update immediately due to the app being in review.
-      </Description>
+        <List>
+          <ListItem
+            title={t("header.appearance")}
+            description={t("settings.brief.appearance")}
+            onPress={() => router.navigate("/setting/appearance")}
+            first
+          />
+          <ListItem
+            title={t("title.language")}
+            description={currLang}
+            onPress={() => langModalRef.current?.present()}
+            last
+          />
+        </List>
 
-      <View className="mb-4 flex-row gap-2">
-        <Button
-          interaction="external-link"
-          href={`${GITHUB_LINK}/releases/tag/${release.version}`}
-          theme="neutral-dark"
-          Icon={<Ionicons name="logo-github" size={20} />}
-        >
-          APK
-        </Button>
-        <Button
-          interaction="external-link"
-          href={PLAYSTORE_LINK}
-          theme="neutral-dark"
-          Icon={<Ionicons name="logo-google-playstore" size={20} />}
-        >
-          Play Store
-        </Button>
-      </View>
+        <List>
+          <ListItem
+            title={t("title.backup")}
+            description={t("settings.brief.backup")}
+            onPress={() => backupModalRef.current?.present()}
+            first
+          />
+          <ListItem
+            title={t("header.insights")}
+            description={t("settings.brief.insights")}
+            onPress={() => router.navigate("/setting/insights")}
+          />
+          <ListItem
+            title={t("settings.interactions")}
+            description={t("settings.brief.interactions")}
+            icon={<OpenInNew />}
+            onPress={() =>
+              WebBrowser.openBrowserAsync(LINKS.NOTHING_INTERACTIONS)
+            }
+          />
+          <ListItem
+            title={t("header.scanning")}
+            description={t("settings.brief.scanning")}
+            onPress={() => router.navigate("/setting/scanning")}
+            last
+          />
+        </List>
+
+        <List>
+          <ListItem
+            title={t("settings.translate")}
+            description={t("settings.brief.translate")}
+            icon={<OpenInNew />}
+            onPress={() => WebBrowser.openBrowserAsync(LINKS.TRANSLATIONS)}
+            first
+          />
+          <ListItem
+            title={t("settings.code")}
+            description={t("settings.brief.code")}
+            icon={<OpenInNew />}
+            onPress={() => WebBrowser.openBrowserAsync(LINKS.GITHUB)}
+          />
+          <ListItem
+            title={t("settings.license")}
+            icon={<OpenInNew />}
+            onPress={() => WebBrowser.openBrowserAsync(LINKS.LICENSE)}
+          />
+          <ListItem
+            title={t("settings.privacy")}
+            icon={<OpenInNew />}
+            onPress={() => WebBrowser.openBrowserAsync(LINKS.PRIVACY_POLICY)}
+          />
+          <ListItem
+            title={t("header.thirdParty")}
+            description={t("settings.brief.thirdParty")}
+            onPress={() => router.navigate("/setting/third-party")}
+          />
+          <ListItem
+            title={t("settings.version")}
+            description={APP_VERSION}
+            last
+          />
+        </List>
+      </SettingsLayout>
+
+      <LanguageModal ref={langModalRef} />
+      <BackupModal ref={backupModalRef} />
     </>
   );
 }
-
-const markdownStyles = StyleSheet.create({
-  heading: {
-    color: Colors.foreground50,
-    fontFamily: FontFamily.geistMono,
-    fontSize: FontSize.base,
-  },
-  code: {
-    backgroundColor: Colors.surface700,
-  },
-  fence: {
-    padding: 4,
-    margin: 0,
-    backgroundColor: Colors.surface700,
-    borderRadius: BorderRadius.sm,
-  },
-});

@@ -3,7 +3,7 @@ import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
 
 import { LoadingIndicator } from "@/components/ui/loading";
 import { Description } from "@/components/ui/text";
-import { TrackList } from "@/features/track/components/track-list";
+import { TrackList } from "@/modules/media/components/Track";
 
 /** Screen for `/track` route. */
 export default function TrackScreen() {

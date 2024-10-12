@@ -6,6 +6,7 @@
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getLocales } from "expo-localization";
+import { Appearance } from "react-native";
 import { useStore } from "zustand";
 import {
   createJSONStorage,
@@ -30,16 +31,18 @@ interface UserPreferencesStore {
 
   /** "Color" the overall app will look like. */
   theme: "light" | "dark" | "system";
+  setTheme: (newTheme: "light" | "dark" | "system") => void;
   /** Font used for some accent text (ie: major headings). */
-  accentFont: "ndot" | "ntype";
+  accentFont: "NDot" | "NType";
+  setAccentFont: (newFont: "NDot" | "NType") => void;
 
   /** Minimum number of seconds a track needs to have to be saved. */
   minSeconds: number;
 
   /** Directories we'll limit to when looking for tracks. */
-  allowList: string[];
+  listAllow: string[];
   /** Directories we'll ignore when looking for tracks. */
-  blockList: string[];
+  listBlock: string[];
 
   /** Percentage of device volume audio will be outputted with. */
   volume: number;
@@ -51,6 +54,8 @@ const OMITTED_FIELDS: string[] = [
   "_hasHydrated",
   "setHasHydrated",
   "setLanguage",
+  "setTheme",
+  "setAccentFont",
 ] satisfies Array<keyof UserPreferencesStore>;
 //#endregion
 
@@ -70,12 +75,18 @@ export const userPreferencesStore = createStore<UserPreferencesStore>()(
         },
 
         theme: "system",
-        accentFont: "ntype",
+        setTheme: (newTheme) => {
+          set({ theme: newTheme });
+        },
+        accentFont: "NType",
+        setAccentFont: (newFont) => {
+          set({ accentFont: newFont });
+        },
 
-        minSeconds: 5,
+        minSeconds: 15,
 
-        allowList: [],
-        blockList: [],
+        listAllow: [],
+        listBlock: [],
 
         volume: 1,
       }),
@@ -97,6 +108,11 @@ export const userPreferencesStore = createStore<UserPreferencesStore>()(
             else {
               console.log("[User Preferences Store] Completed with:", state);
               state?.setHasHydrated(true);
+
+              // Set app theme on initialization.
+              if (state?.theme && state.theme !== "system") {
+                Appearance.setColorScheme(state.theme);
+              }
 
               // Try to use device language if no language is specified.
               if (state?.language === "") {
