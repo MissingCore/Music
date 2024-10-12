@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { View } from "react-native";
 import Animated, {
   useAnimatedStyle,
-  useSharedValue,
+  withSequence,
   withTiming,
 } from "react-native-reanimated";
 
@@ -59,12 +59,12 @@ function ProgressSegment(props: {
   first?: boolean;
   last?: boolean;
 }) {
-  const segmentWidth = useSharedValue(props.first ? 0 : 2);
-  const animatedWidth = useAnimatedStyle(() => ({ width: segmentWidth.value }));
-
-  useEffect(() => {
-    segmentWidth.value = withTiming(props.width, { duration: 500 });
-  }, [segmentWidth, props.width]);
+  const animatedWidth = useAnimatedStyle(() => ({
+    width: withSequence(
+      withTiming(props.first ? 0 : 2, { duration: 0 }),
+      withTiming(props.width, { duration: 500 }),
+    ),
+  }));
 
   return (
     <Animated.View

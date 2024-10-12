@@ -42,13 +42,15 @@ export const Colors = {
 } as const;
 
 export const FontFamily = {
-  geistLight: "Geist-Light",
-  geistMonoLight: "GeistMono-Light",
-  geistMono: "GeistMono-Regular",
   roboto: "Roboto-Regular",
   robotoMedium: "Roboto-Medium",
   ndot: "Ndot-77_JP_Extended",
   ntype: "NType82-Headline",
+
+  /* FIXME: Remove below in the future. */
+  geistLight: "Geist-Light",
+  geistMonoLight: "GeistMono-Light",
+  geistMono: "GeistMono-Regular",
 } as const;
 
 export const TwFontFamilies = Object.keys(FontFamily).map(
