@@ -91,12 +91,6 @@ When looking at the `App size` field under `Space used` in the storage info for 
 
 Read the [How Are Tracks Indexed?](./docs/how-are-tracks-indexed.md) documentation to see how the app saves tracks.
 
-> How do I add music to the app? Why are my music files not displayed?
-
-Read the [Where Are Tracks Found?](./docs/where-are-tracks-found.md) documentation to see how the app finds tracks.
-
-You can look [here](https://developer.android.com/media/platform/supported-formats#audio-formats) for the list of supported audio files & metadata formats from the Android documentation.
-
 # Legal
 
 This application and code is published under the GNU Affero General Public License v3.0 (https://github.com/MissingCore/Music/blob/main/LICENSE).
