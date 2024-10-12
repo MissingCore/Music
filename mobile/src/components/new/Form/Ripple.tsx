@@ -25,7 +25,7 @@ const rippleStyles = cva({
   compoundVariants: [
     {
       preset: ["default", "icon"],
-      class: "active:opacity-75 disabled:opacity-25",
+      class: "ios:active:opacity-75 disabled:opacity-25",
     },
   ],
   defaultVariants: { preset: "default" },
