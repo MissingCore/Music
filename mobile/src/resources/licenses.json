@@ -1,7 +1,7 @@
 {
   "@expo/vector-icons": {
     "name": "@expo/vector-icons",
-    "version": "14.0.3",
+    "version": "14.0.4",
     "copyright": "Copyright (c) 2015 Joel Arvidsson. Copyright (c) 2020 650 Industries",
     "source": "https://github.com/expo/vector-icons",
     "license": "MIT",
@@ -57,7 +57,7 @@
   },
   "@sentry/react-native": {
     "name": "@sentry/react-native",
-    "version": "5.24.3",
+    "version": "5.33.2",
     "copyright": "Copyright (c) 2017-2024 Sentry",
     "source": "https://github.com/getsentry/sentry-react-native",
     "license": "MIT",
@@ -73,7 +73,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.56.2",
+    "version": "5.59.13",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -97,7 +97,7 @@
   },
   "drizzle-orm": {
     "name": "drizzle-orm",
-    "version": "0.33.0",
+    "version": "0.34.1",
     "copyright": "Copyright (c) 2022 Drizzle Team",
     "source": "https://github.com/drizzle-team/drizzle-orm",
     "license": "Apache-2.0",
@@ -105,7 +105,7 @@
   },
   "expo": {
     "name": "expo",
-    "version": "51.0.32",
+    "version": "51.0.37",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo",
     "license": "MIT",
@@ -145,7 +145,7 @@
   },
   "expo-image": {
     "name": "expo-image",
-    "version": "1.12.15",
+    "version": "1.13.0",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-image",
     "license": "MIT",
@@ -241,7 +241,7 @@
   },
   "i18next": {
     "name": "i18next",
-    "version": "23.15.1",
+    "version": "23.15.2",
     "copyright": "Copyright (c) 2024 i18next",
     "source": "https://github.com/i18next/i18next",
     "license": "MIT",
@@ -289,7 +289,7 @@
   },
   "nativewind": {
     "name": "nativewind",
-    "version": "4.0.36",
+    "version": "4.1.16",
     "copyright": "Copyright (c) 2023 Mark Lawlor",
     "source": "https://github.com/marklawlor/nativewind",
     "license": "MIT",
@@ -305,7 +305,7 @@
   },
   "react-i18next": {
     "name": "react-i18next",
-    "version": "15.0.2",
+    "version": "15.0.3",
     "copyright": "Copyright (c) 2024 i18next",
     "source": "https://github.com/i18next/react-i18next",
     "license": "MIT",
@@ -313,7 +313,7 @@
   },
   "react-native": {
     "name": "react-native",
-    "version": "0.75.3",
+    "version": "0.75.4",
     "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates.",
     "source": "https://github.com/facebook/react-native",
     "license": "MIT",
@@ -321,7 +321,7 @@
   },
   "react-native-bootsplash": {
     "name": "react-native-bootsplash",
-    "version": "6.1.3",
+    "version": "6.1.5",
     "copyright": "Copyright (c) 2021 Mathieu Acthernoene",
     "source": "https://github.com/zoontek/react-native-bootsplash",
     "license": "MIT",
@@ -329,7 +329,7 @@
   },
   "react-native-gesture-handler": {
     "name": "react-native-gesture-handler",
-    "version": "2.19.0",
+    "version": "2.20.0",
     "copyright": "Copyright (c) 2016 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-gesture-handler",
     "license": "MIT",
@@ -345,7 +345,7 @@
   },
   "react-native-reanimated": {
     "name": "react-native-reanimated",
-    "version": "3.15.3",
+    "version": "3.15.5",
     "copyright": "Copyright (c) 2016 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-reanimated",
     "license": "MIT",
@@ -401,7 +401,7 @@
   },
   "tailwind-merge": {
     "name": "tailwind-merge",
-    "version": "2.5.2",
+    "version": "2.5.3",
     "copyright": "Copyright (c) 2021 Dany Castillo",
     "source": "https://github.com/dcastil/tailwind-merge",
     "license": "MIT",

@@ -4,4 +4,5 @@ export default {
   schema: "./src/db/schema.ts",
   out: "./src/db/drizzle",
   driver: "expo",
+  casing: "snake_case",
 } satisfies Config;

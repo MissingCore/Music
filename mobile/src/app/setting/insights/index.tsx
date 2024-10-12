@@ -11,7 +11,6 @@ import { useTranslation } from "react-i18next";
 
 import { db } from "@/db";
 import { albums, artists, playlists, tracks, invalidTracks } from "@/db/schema";
-import { countFrom } from "@/db/utils/formatters";
 import { settingKeys } from "@/constants/QueryKeys";
 
 import { useTheme } from "@/hooks/useTheme";
@@ -152,12 +151,12 @@ async function getDBSummary() {
   let imgCount = imgData.exists ? (await readDirectoryAsync(imgDir)).length : 0;
 
   return {
-    albums: await countFrom(albums),
-    artists: await countFrom(artists),
+    albums: await db.$count(albums),
+    artists: await db.$count(artists),
     images: imgCount,
-    playlists: await countFrom(playlists),
-    tracks: await countFrom(tracks),
-    saveErrors: await countFrom(invalidTracks),
+    playlists: await db.$count(playlists),
+    tracks: await db.$count(tracks),
+    saveErrors: await db.$count(invalidTracks),
     totalDuration:
       Number(
         (await db.select({ total: sum(tracks.duration) }).from(tracks))[0]

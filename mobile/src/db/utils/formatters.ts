@@ -1,7 +1,3 @@
-import { count } from "drizzle-orm";
-import type { SQLiteTable } from "drizzle-orm/sqlite-core";
-
-import { db } from "..";
 import type {
   AlbumWithTracks,
   ArtistWithTracks,
@@ -125,9 +121,4 @@ export function formatForCurrentPages(args: FnArgs) {
 /** Return an array of track ids. */
 export function formatAsTrackIdList(tracks: Track[]) {
   return tracks.map(({ id }) => id);
-}
-
-/** Count the number of entries in a table. */
-export async function countFrom<TTable extends SQLiteTable>(table: TTable) {
-  return (await db.select({ count: count() }).from(table))[0]?.count ?? 0;
 }
