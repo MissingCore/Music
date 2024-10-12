@@ -9,7 +9,7 @@ import { mutateGuard } from "@/lib/react-query";
 import { MediaScreenHeader } from "@/components/media/screen-header";
 import { StyledPressable } from "@/components/ui/pressable";
 import { Description } from "@/components/ui/text";
-import { TrackList } from "@/modules/media/components/Track";
+import { TrackList } from "@/modules/media/components";
 
 /** Screen for `/album/[id]` route. */
 export default function CurrentAlbumScreen() {

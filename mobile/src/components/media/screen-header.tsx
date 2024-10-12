@@ -6,7 +6,7 @@ import { arePlaybackSourceEqual } from "@/modules/media/helpers/data";
 import type { PlayListSource } from "@/modules/media/types";
 
 import { cn } from "@/lib/style";
-import { MediaListControls } from "@/modules/media/components/MediaListControls";
+import { MediaListControls } from "@/modules/media/components";
 import { AnimatedVinyl } from "./animated-vinyl";
 import type { MediaImage } from "./image";
 import { TextLine } from "../ui/text";

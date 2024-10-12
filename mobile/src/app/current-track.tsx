@@ -12,9 +12,9 @@ import {
   PlayToggleButton,
   PreviousButton,
   RepeatButton,
+  SeekBar,
   ShuffleButton,
-} from "@/modules/media/components/MediaControls";
-import { SeekBar } from "@/modules/media/components/SeekBar";
+} from "@/modules/media/components";
 
 /** Screen for `/current-track` route. */
 export default function CurrentTrackScreen() {

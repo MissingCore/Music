@@ -6,7 +6,7 @@ import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 
 import { CustomHeader } from "@/components/navigation/header";
 import { StyledPressable } from "@/components/ui/pressable";
-import { MiniPlayer } from "@/modules/media/components/MiniPlayer";
+import { MiniPlayer } from "@/modules/media/components";
 
 /** Contains content that doesn't take up the full-screen. */
 export default function MainLayout() {

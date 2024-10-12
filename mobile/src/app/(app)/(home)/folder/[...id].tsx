@@ -12,7 +12,7 @@ import { folderPathAtom } from "./_layout";
 import { ActionButton } from "@/components/form/action-button";
 import { LoadingIndicator } from "@/components/ui/loading";
 import { Description } from "@/components/ui/text";
-import { Track } from "@/modules/media/components/Track";
+import { Track } from "@/modules/media/components";
 
 /** Screen for `/folder/[id]` route. */
 export default function FolderScreen() {
