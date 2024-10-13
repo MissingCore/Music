@@ -1,6 +1,9 @@
 import { router } from "expo-router";
 import { Pressable, View } from "react-native";
-import Animated from "react-native-reanimated";
+import Animated, {
+  LinearTransition,
+  SlideOutDown,
+} from "react-native-reanimated";
 
 import { Pause, PlayArrow } from "../resources/icons";
 import { useMusicStore } from "../services/Music";
@@ -30,13 +33,15 @@ export function MiniPlayer({ stacked = false }) {
 
   return (
     <Animated.View
+      exiting={SlideOutDown.duration(1000)}
+      layout={LinearTransition}
       className={cn("overflow-hidden rounded-md bg-canvas", {
         "rounded-b-sm": stacked,
       })}
     >
       <Pressable
         onPress={() => router.navigate("/current-track")}
-        className="min-h-12 flex-row items-center bg-surface p-2 active:opacity-75"
+        className="flex-row items-center bg-surface p-2 active:opacity-75"
       >
         <MediaImage type="track" radius="sm" size={48} source={track.artwork} />
 
