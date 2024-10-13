@@ -53,11 +53,9 @@ export const ScanFilterListModal = forwardRef<
               </View>
             )}
           >
-            <View className={cn(cardStyles, "min-h-12 px-0")}>
-              <Marquee>
-                <StyledText className="px-4">{item}</StyledText>
-              </Marquee>
-            </View>
+            <Marquee wrapperClassName={cn(cardStyles, "min-h-12 px-0")}>
+              <StyledText className="px-4">{item}</StyledText>
+            </Marquee>
           </Swipeable>
         )}
         showsVerticalScrollIndicator={false}
