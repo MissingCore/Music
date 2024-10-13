@@ -3,12 +3,12 @@ import { Link } from "expo-router";
 import { Pressable } from "react-native";
 
 import type { Prettify } from "@/utils/types";
-import { MediaImage } from "./image";
+import { MediaImage } from "@/modules/media/components";
 import { TextStack } from "../ui/text";
 
 export namespace MediaCard {
   export type Content = Prettify<
-    Pick<MediaImage.Props, "source" | "type"> & {
+    MediaImage.ImageContent & {
       href: string;
       title: string;
       subtitle: string;
@@ -16,7 +16,7 @@ export namespace MediaCard {
     }
   >;
 
-  export type Props = Prettify<Content & Omit<MediaImage.Props, "className">>;
+  export type Props = Prettify<Content & { size: number }>;
 }
 
 /**
@@ -30,6 +30,7 @@ export function MediaCard({ type, size, source, ...props }: MediaCard.Props) {
         style={{ maxWidth: size }}
         className="w-full active:opacity-75"
       >
+        {/* @ts-expect-error Incompatible types */}
         <MediaImage {...{ type, size, source }} />
         <TextStack
           content={[props.title, props.subtitle, props.extra]}

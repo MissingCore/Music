@@ -10,7 +10,7 @@ import { mediaModalAtom } from "@/modals/categories/media/store";
 import { formatSeconds } from "@/utils/number";
 import type { Maybe, Prettify } from "@/utils/types";
 import { ActionButton } from "@/components/form/action-button";
-import { MediaImage } from "@/components/media/image";
+import { MediaImage } from "./MediaImage";
 
 type FlashListProps = React.ComponentProps<typeof FlashList>;
 

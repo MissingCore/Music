@@ -70,7 +70,7 @@ export function formatForMediaCard({ type, data }: FnArgs): MediaCard.Content {
     title: data.name,
     subtitle: type === "album" ? data.artistName : trackStr,
     extra: type === "album" ? `| ${trackStr}` : null,
-  } satisfies MediaCard.Content;
+  } as MediaCard.Content;
 }
 
 /** Formats tracks data to be used with `<Track />`. */
