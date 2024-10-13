@@ -32,6 +32,8 @@ export function Marquee({
 
   useEffect(() => {
     if (containerWidth === -1 || contentWidth === -1) return;
+    // Make sure we reset whenever the children changes size.
+    offset.value = 0;
     if (contentWidth <= containerWidth) return;
 
     const scrollRoom = contentWidth - containerWidth;
