@@ -1,5 +1,6 @@
 import { Link, Stack } from "expo-router";
 import { View } from "react-native";
+import Animated, { SlideInDown } from "react-native-reanimated";
 
 import { Ionicons } from "@/resources/icons";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
@@ -36,7 +37,14 @@ export default function MainLayout() {
         />
         <Stack.Screen name="(current)" options={{ headerShown: false }} />
       </Stack>
-      <MiniPlayer />
+
+      <Animated.View
+        entering={SlideInDown.duration(1000)}
+        pointerEvents="box-none"
+        className="absolute bottom-0 left-0 w-full p-4 pt-0"
+      >
+        <MiniPlayer />
+      </Animated.View>
     </>
   );
 }
