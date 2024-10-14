@@ -7,7 +7,7 @@ import Svg, { Path } from "react-native-svg";
 
 import { Ionicons } from "@/resources/icons";
 import { usePlaylistsForMediaCard } from "@/api/playlists";
-import { useGetColumn } from "@/hooks/layout";
+import { useGetColumn } from "@/hooks/useGetColumn";
 import { mediaModalAtom } from "@/modals/categories/media/store";
 
 import { Colors } from "@/constants/Styles";

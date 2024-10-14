@@ -3,7 +3,7 @@ import { View } from "react-native";
 
 import type { Album } from "@/db/schema";
 import { useArtistForCurrentPage } from "@/api/artists/[id]";
-import { useGetColumn } from "@/hooks/layout";
+import { useGetColumn } from "@/hooks/useGetColumn";
 
 import { MediaCard } from "@/components/media/card";
 import { MediaScreenHeader } from "@/components/media/screen-header";

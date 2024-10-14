@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { View } from "react-native";
 
 import { useAlbumsForMediaCard } from "@/api/albums";
-import { useGetColumn } from "@/hooks/layout";
+import { useGetColumn } from "@/hooks/useGetColumn";
 
 import { MediaCard } from "@/components/media/card";
 import { LoadingIndicator } from "@/components/ui/loading";
