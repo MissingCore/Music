@@ -14,7 +14,7 @@ import { sortTracks } from "@/db/utils/sorting";
 
 import { getFolderTracks } from "@/api/file-nodes/[...id]";
 
-import { ReservedPlaylists } from "../constants/ReservedNames";
+import { ReservedPlaylists } from "../constants";
 import type { PlayListSource } from "../types";
 
 /** Check if 2 `PlayListSource` are equivalent. */

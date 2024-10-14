@@ -29,7 +29,7 @@ import { formatForMediaCard } from "@/db/utils/formatters";
 
 import { shuffleArray } from "@/utils/object";
 import type { MediaCard } from "@/components/media/card";
-import { ReservedPlaylists } from "../constants/ReservedNames";
+import { ReservedPlaylists } from "../constants";
 import {
   arePlaybackSourceEqual,
   formatTrackforPlayer,

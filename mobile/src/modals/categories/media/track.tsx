@@ -12,7 +12,7 @@ import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
 import { ScrollRow } from "@/components/ui/container";
 import { Heading } from "@/components/ui/text";
-import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
+import { ReservedPlaylists } from "@/modules/media/constants";
 import type { MediaList } from "@/modules/media/types";
 import { ModalBase } from "../../components/base";
 import { Button } from "../../components/button";

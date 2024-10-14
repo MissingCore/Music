@@ -7,11 +7,11 @@ import { EllipsisVertical } from "@/resources/icons/EllipsisVertical";
 import { useFavoriteTracksForCurrentPage } from "@/api/favorites";
 import { usePlaylistForCurrentPage } from "@/api/playlists/[id]";
 import { mediaModalAtom } from "@/modals/categories/media/store";
-import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
 
 import { MediaScreenHeader } from "@/components/media/screen-header";
 import { StyledPressable } from "@/components/ui/pressable";
 import { Description } from "@/components/ui/text";
+import { ReservedPlaylists } from "@/modules/media/constants";
 import { TrackList } from "@/modules/media/components";
 import type { MediaList } from "@/modules/media/types";
 

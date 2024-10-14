@@ -15,7 +15,7 @@ import { StickyActionLayout } from "@/layouts/StickyActionLayout";
 import { abbreviateNum } from "@/utils/number";
 import { Button } from "@/components/new/Form";
 import { AccentText, StyledText } from "@/components/new/Typography";
-import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
+import { ReservedPlaylists } from "@/modules/media/constants";
 
 import { MediaCard, PlaceholderContent } from "@/components/media/card";
 

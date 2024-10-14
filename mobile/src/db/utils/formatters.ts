@@ -11,8 +11,8 @@ import i18next from "@/modules/i18n";
 
 import { formatSeconds } from "@/utils/number";
 import type { MediaCard } from "@/components/media/card";
+import { ReservedPlaylists } from "@/modules/media/constants";
 import type { Track as TrackC } from "@/modules/media/components";
-import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
 import { isTrackWithAlbum } from "./narrowing";
 import { sortTracks } from "./sorting";
 

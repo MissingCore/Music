@@ -4,7 +4,7 @@ import { Image as ExpoImage } from "expo-image";
 import { cssInterop } from "nativewind";
 import { View } from "react-native";
 
-import { ReservedPlaylists } from "../constants/ReservedNames";
+import { ReservedPlaylists } from "../constants";
 import type { MediaType } from "../types";
 
 import { cn } from "@/lib/style";
