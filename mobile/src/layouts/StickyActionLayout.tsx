@@ -6,18 +6,30 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { useBottomActionsLayout } from "@/hooks/useBottomActionsLayout";
+
 import { cn } from "@/lib/style";
 import { AccentText } from "@/components/new/Typography";
 
+//#region Layout
 /** Full-screen layout for displaying content on pages without a header bar. */
 export function StickyActionLayout({
   title,
   StickyAction,
   children,
+  wrapperClassName,
+  withoutHeaderBar = true,
 }: {
   title: string;
   StickyAction?: React.ReactNode;
   children: React.ReactNode;
+  wrapperClassName?: string;
+  /**
+   * This layout's intended use is on the "home" related screens. To use
+   * elsewhere (which will remove the top & bottom insets), set this to
+   * `false`.
+   */
+  withoutHeaderBar?: boolean;
 }) {
   const { top } = useSafeAreaInsets();
   const actionPosY = useSharedValue(0);
@@ -43,9 +55,14 @@ export function StickyActionLayout({
       onScroll={scrollHandler}
       showsVerticalScrollIndicator={false}
       stickyHeaderIndices={!!StickyAction ? [1] : undefined}
-      contentContainerClassName="grow gap-6 p-4"
+      contentContainerClassName={cn("grow gap-6 p-4", wrapperClassName)}
     >
-      <AccentText className="text-3xl">{title}</AccentText>
+      <AccentText
+        style={[withoutHeaderBar ? { paddingTop: top + 16 } : {}]}
+        className="text-3xl"
+      >
+        {title}
+      </AccentText>
 
       <View
         onLayout={(e) => {
@@ -65,6 +82,19 @@ export function StickyActionLayout({
       </View>
 
       {children}
+      {withoutHeaderBar ? <BottomInset /> : null}
     </Animated.ScrollView>
   );
 }
+//#endregion
+
+//#region Bottom Inset
+/**
+ * A "block" to help account for the bottom actions displayed while using
+ * this layout.
+ */
+function BottomInset() {
+  const { bottomInset } = useBottomActionsLayout();
+  return <View style={{ paddingTop: bottomInset }} className="-mt-2" />;
+}
+//#endRegion

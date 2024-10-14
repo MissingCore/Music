@@ -1,4 +1,4 @@
-import { Link, Stack, router, usePathname } from "expo-router";
+import { Stack, router, usePathname } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { ScrollView, View } from "react-native";
 import Animated, {
@@ -7,12 +7,13 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { Search, Settings } from "@/resources/icons";
-import { useMusicStore } from "@/modules/media/services/Music";
+import { useBottomActionsLayout } from "@/hooks/useBottomActionsLayout";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 import { useTheme } from "@/hooks/useTheme";
 
 import { cn } from "@/lib/style";
-import { Ripple } from "@/components/new/Form";
+import { Button, Ripple } from "@/components/new/Form";
+import { StyledText } from "@/components/new/Typography";
 import { MiniPlayer } from "@/modules/media/components";
 
 //#region Layout
@@ -34,13 +35,7 @@ export default function MainLayout() {
 //#region Bottom Actions
 /** Actions stickied to the bottom of the screens in the `(app)` group. */
 function BottomActions() {
-  const pathname = usePathname(); // Fires whenever we navigate to a different screen.
-  const activeTrackId = useMusicStore((state) => state.activeId);
-
-  const isMiniPlayerRendered = !!activeTrackId;
-  const hideNavBar = ["/playlist/", "/album/", "/artist/"].some((route) =>
-    pathname.startsWith(route),
-  );
+  const { isRendered } = useBottomActionsLayout();
 
   return (
     <Animated.View
@@ -49,8 +44,11 @@ function BottomActions() {
       pointerEvents="box-none"
       className="absolute bottom-0 left-0 w-full gap-[3px] p-4 pt-0"
     >
-      <MiniPlayer stacked={!hideNavBar} />
-      <NavigationBar stacked={isMiniPlayerRendered} hidden={hideNavBar} />
+      <MiniPlayer stacked={isRendered.navBar} />
+      <NavigationBar
+        stacked={isRendered.miniPlayer}
+        hidden={!isRendered.navBar}
+      />
     </Animated.View>
   );
 }
@@ -89,19 +87,23 @@ function NavigationBar({ stacked = false, hidden = false }) {
         showsHorizontalScrollIndicator={false}
         contentContainerClassName="grow px-2"
       >
-        {NavRoutes.map(({ href, key }) => (
-          <Link
-            key={href}
-            href={href}
-            accessibilityRole="button"
-            className={cn("px-2 py-4 font-roboto text-sm text-foreground", {
-              "text-red":
-                href === "/" ? pathname === "/" : pathname.startsWith(href),
-            })}
-          >
-            {t(key).toLocaleUpperCase()}
-          </Link>
-        ))}
+        {NavRoutes.map(({ href, key }) => {
+          const selected =
+            href === "/" ? pathname === "/" : pathname.startsWith(href);
+          return (
+            <Button
+              key={href}
+              preset="plain"
+              onPress={() => router.navigate(href)}
+              disabled={selected}
+              className="px-2 disabled:opacity-100"
+            >
+              <StyledText className={cn("text-sm", { "text-red": selected })}>
+                {t(key).toLocaleUpperCase()}
+              </StyledText>
+            </Button>
+          );
+        })}
       </ScrollView>
 
       <Ripple
