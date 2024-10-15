@@ -105,7 +105,7 @@ function Favorites() {
   return (
     <FlashList
       numColumns={count}
-      estimatedItemSize={width + 37} // 35px `<TextStack />` Height + 2px Margin Top
+      estimatedItemSize={width + 40}
       data={
         data
           ? [MediaCardPlaceholderContent, ...data]

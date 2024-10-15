@@ -76,6 +76,7 @@ export function StickyActionLayout({
           // Nested due to Reanimated crashing when an Animated component
           // using an animated style is stickied.
           style={actionStyle}
+          className="items-end"
         >
           {StickyAction}
         </Animated.View>
