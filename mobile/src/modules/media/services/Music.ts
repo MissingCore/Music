@@ -28,7 +28,6 @@ import {
 import { formatForMediaCard } from "@/db/utils/formatters";
 
 import { shuffleArray } from "@/utils/object";
-import type { MediaCard } from "@/components/media/card";
 import { ReservedPlaylists } from "../constants";
 import {
   arePlaybackSourceEqual,
@@ -36,6 +35,7 @@ import {
   getTrackList,
   getTracksFromIds,
 } from "../helpers/data";
+import type { MediaCard } from "../components";
 import type { PlayListSource } from "../types";
 
 //#region Zustand Store
@@ -349,9 +349,11 @@ musicStore.subscribe(
     musicStore.setState({
       // Remove any `PlayListSource` in `recentListSources` that are invalid.
       ...(errors.length > 0
-        ? recentListSources.filter(
-            (s1) => !errors.some((s2) => arePlaybackSourceEqual(s1, s2)),
-          )
+        ? {
+            recentListSources: recentListSources.filter(
+              (s1) => !errors.some((s2) => arePlaybackSourceEqual(s1, s2)),
+            ),
+          }
         : {}),
       recentList: newRecentList,
     });

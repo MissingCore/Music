@@ -33,7 +33,14 @@ export function mutateGuard<TData, TError, TVariables, TContext>(
  * as that shouldn't ever change in the given app session.
  */
 export function clearAllQueries(client = queryClient) {
-  client.invalidateQueries({
+  /*
+    `removeQueries` will remove the cache, so navigating to a page in the
+    stack will display the loading state.
+
+    `resetQueries` will remove the cache, but also refetch the data, so
+    there will be no loading state when navigating to a page in the stack.
+  */
+  client.removeQueries({
     predicate: ({ queryKey }) => queryKey[0] !== settingKeys.release(),
   });
 }
