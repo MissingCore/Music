@@ -10,9 +10,8 @@ import type {
 import i18next from "@/modules/i18n";
 
 import { formatSeconds } from "@/utils/number";
-import type { MediaCard } from "@/components/media/card";
 import { ReservedPlaylists } from "@/modules/media/constants";
-import type { Track as TrackC } from "@/modules/media/components";
+import type { MediaCard, Track as TrackC } from "@/modules/media/components";
 import { isTrackWithAlbum } from "./narrowing";
 import { sortTracks } from "./sorting";
 
@@ -53,24 +52,31 @@ export function fixPlaylistJunction(
 /** Formats data to be used with `<MediaCard />`. */
 export function formatForMediaCard({ type, data }: FnArgs): MediaCard.Content {
   const trackStr = i18next.t("plural.track", { count: data.tracks.length });
+
+  if (type === "playlist") {
+    return {
+      type,
+      source:
+        data.name !== ReservedPlaylists.tracks ? getPlaylistCover(data) : null,
+      href:
+        data.name === ReservedPlaylists.tracks
+          ? "/track"
+          : `/${type}/${encodeURIComponent(data.name)}`,
+      title: data.name,
+      subtitle: trackStr,
+    } satisfies MediaCard.Content;
+  }
+
   return {
     type,
-    source:
-      type === "album"
-        ? data.artwork
-        : type === "playlist" && data.name !== ReservedPlaylists.tracks
-          ? getPlaylistCover(data)
-          : null,
+    source: type === "album" ? data.artwork : null,
     href:
       type === "album"
         ? `/album/${data.id}`
-        : type === "playlist" && data.name === ReservedPlaylists.tracks
-          ? "/track"
-          : `/${type}/${encodeURIComponent(data.name)}`,
+        : `/${type}/${encodeURIComponent(data.name)}`,
     title: data.name,
     subtitle: type === "album" ? data.artistName : trackStr,
-    extra: type === "album" ? `| ${trackStr}` : null,
-  } as MediaCard.Content;
+  } satisfies MediaCard.Content;
 }
 
 /** Formats tracks data to be used with `<Track />`. */

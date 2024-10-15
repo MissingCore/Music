@@ -11,8 +11,11 @@ import { useGetColumn } from "@/hooks/useGetColumn";
 import { mediaModalAtom } from "@/modals/categories/media/store";
 
 import { Colors } from "@/constants/Styles";
-import { MediaCard, PlaceholderContent } from "@/components/media/card";
 import { StyledPressable } from "@/components/ui/pressable";
+import {
+  MediaCard,
+  MediaCardPlaceholderContent,
+} from "@/modules/media/components";
 
 const WrappedSvg = cssInterop(Svg, { className: "style" });
 
@@ -30,7 +33,11 @@ export default function PlaylistScreen() {
       <FlashList
         numColumns={count}
         estimatedItemSize={width + 37} // 35px `<TextStack />` Height + 2px Margin Top
-        data={data ? [PlaceholderContent, ...data] : [PlaceholderContent]}
+        data={
+          data
+            ? [MediaCardPlaceholderContent, ...data]
+            : [MediaCardPlaceholderContent]
+        }
         keyExtractor={({ href }) => href}
         renderItem={({ item: data, index }) => (
           <View className="mx-2 mb-4">

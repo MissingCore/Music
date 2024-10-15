@@ -5,9 +5,9 @@ import { View } from "react-native";
 import { useAlbumsForMediaCard } from "@/api/albums";
 import { useGetColumn } from "@/hooks/useGetColumn";
 
-import { MediaCard } from "@/components/media/card";
 import { LoadingIndicator } from "@/components/ui/loading";
 import { Description } from "@/components/ui/text";
+import { MediaCard } from "@/modules/media/components";
 
 /** Screen for `/album` route. */
 export default function AlbumScreen() {

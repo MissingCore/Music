@@ -16,8 +16,10 @@ import { abbreviateNum } from "@/utils/number";
 import { Button } from "@/components/new/Form";
 import { AccentText, StyledText } from "@/components/new/Typography";
 import { ReservedPlaylists } from "@/modules/media/constants";
-
-import { MediaCard, PlaceholderContent } from "@/components/media/card";
+import {
+  MediaCard,
+  MediaCardPlaceholderContent,
+} from "@/modules/media/components";
 
 /** Screen for `/` route. */
 export default function HomeScreen() {
@@ -104,7 +106,11 @@ function Favorites() {
     <FlashList
       numColumns={count}
       estimatedItemSize={width + 37} // 35px `<TextStack />` Height + 2px Margin Top
-      data={data ? [PlaceholderContent, ...data] : [PlaceholderContent]}
+      data={
+        data
+          ? [MediaCardPlaceholderContent, ...data]
+          : [MediaCardPlaceholderContent]
+      }
       keyExtractor={({ href }) => href}
       renderItem={({ item: data, index }) => (
         <View className="mx-2 mb-4">
