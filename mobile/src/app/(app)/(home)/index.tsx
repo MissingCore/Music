@@ -18,6 +18,7 @@ import { AccentText, StyledText } from "@/components/new/Typography";
 import { ReservedPlaylists } from "@/modules/media/constants";
 import {
   MediaCard,
+  MediaCardList,
   MediaCardPlaceholderContent,
 } from "@/modules/media/components";
 
@@ -98,31 +99,16 @@ function RecentlyPlayed() {
 /** Display list of content we've favorited. */
 function Favorites() {
   const { data } = useFavoriteListsForMediaCard();
-  const { width, count } = useGetColumn({
-    ...{ cols: 2, gap: 16, gutters: 32, minWidth: 175 },
-  });
 
   return (
-    <FlashList
-      numColumns={count}
-      estimatedItemSize={width + 40}
+    <MediaCardList
       data={
         data
           ? [MediaCardPlaceholderContent, ...data]
           : [MediaCardPlaceholderContent]
       }
-      keyExtractor={({ href }) => href}
-      renderItem={({ item: data, index }) => (
-        <View className="mx-2 mb-4">
-          {index === 0 ? (
-            <FavoriteTracks colWidth={width} />
-          ) : (
-            <MediaCard {...data} size={width} />
-          )}
-        </View>
-      )}
-      showsVerticalScrollIndicator={false}
-      className="-m-2 mt-0"
+      emptyMessage=""
+      RenderFirst={FavoriteTracks}
     />
   );
 }
@@ -131,7 +117,7 @@ function Favorites() {
  * Displays the number of favorited tracks and opens up the playlist of
  * favorited tracks.
  */
-function FavoriteTracks({ colWidth }: { colWidth: number }) {
+function FavoriteTracks({ size }: { size: number }) {
   const { t } = useTranslation();
   const { isPending, error, data } = useFavoriteTracksCount();
 
@@ -143,7 +129,7 @@ function FavoriteTracks({ colWidth }: { colWidth: number }) {
       onPress={() =>
         router.navigate(`/playlist/${ReservedPlaylists.favorites}`)
       }
-      style={{ width: colWidth, height: colWidth }}
+      style={{ width: size, height: size }}
       className="items-center gap-0 rounded-lg"
     >
       <AccentText className="text-[3rem] text-neutral100">

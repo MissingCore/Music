@@ -1,4 +1,8 @@
-export { MediaCard, MediaCardPlaceholderContent } from "./MediaCard";
+export {
+  MediaCard,
+  MediaCardList,
+  MediaCardPlaceholderContent,
+} from "./MediaCard";
 export {
   NextButton,
   PlayToggleButton,

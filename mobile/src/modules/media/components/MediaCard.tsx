@@ -1,11 +1,15 @@
+import { FlashList } from "@shopify/flash-list";
 import type { Href } from "expo-router";
 import { router } from "expo-router";
-import { Pressable } from "react-native";
+import { Pressable, View } from "react-native";
 
-import type { Prettify } from "@/utils/types";
+import { useGetColumn } from "@/hooks/useGetColumn";
+
+import type { Maybe, Prettify } from "@/utils/types";
 import { StyledText } from "@/components/new/Typography";
 import { MediaImage } from "./MediaImage";
 
+//#region Media Card
 export namespace MediaCard {
   export type Content = Prettify<
     MediaImage.ImageContent & {
@@ -46,7 +50,9 @@ export function MediaCard({
     </Pressable>
   );
 }
+//#endregion
 
+//#region Placeholder Data
 /**
  * Placeholder content — useful in `<FlatList />` if we want to do
  * something special for the first item.
@@ -58,3 +64,46 @@ export const MediaCardPlaceholderContent: MediaCard.Content = {
   subtitle: "",
   type: "album",
 };
+//#endregion
+
+//#region Media Card List
+/** Lists out `<MediaCard />` in a grid. */
+export function MediaCardList(props: {
+  data: Maybe<readonly MediaCard.Content[]>;
+  emptyMessage: string;
+  /**
+   * Renders a special entry before all other data. This assumes at `data[0]`,
+   * we have a `MediaCardPlaceholderContent`.
+   */
+  RenderFirst?: (props: { size: number }) => React.JSX.Element;
+}) {
+  const { count, width } = useGetColumn({
+    ...{ cols: 2, gap: 16, gutters: 32, minWidth: 175 },
+  });
+
+  /*
+    Utilized janky margin method to implement gaps in FlashList with columns.
+      - https://github.com/shopify/flash-list/discussions/804#discussioncomment-5509022
+  */
+  return (
+    <FlashList
+      numColumns={count}
+      estimatedItemSize={width + 40}
+      data={props.data}
+      keyExtractor={({ href }) => href}
+      renderItem={({ item, index }) => (
+        <View className="mx-2 mb-4">
+          {props.RenderFirst && index === 0 ? (
+            <props.RenderFirst size={width} />
+          ) : (
+            <MediaCard {...item} size={width} />
+          )}
+        </View>
+      )}
+      ListEmptyComponent={<StyledText center>{props.emptyMessage}</StyledText>}
+      showsVerticalScrollIndicator={false}
+      className="-m-2 mt-0"
+    />
+  );
+}
+//#endregion
