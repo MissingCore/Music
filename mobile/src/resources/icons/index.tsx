@@ -81,6 +81,7 @@ export function MaterialSymbols({
 export { Add } from "./Add";
 export { ArrowBack } from "./ArrowBack";
 export { CreateNewFolder } from "./CreateNewFolder";
+export { Folder } from "./Folder";
 export { LogoGitHub } from "./LogoGitHub";
 export { LogoPlayStore } from "./LogoPlayStore";
 export { OpenInNew } from "./OpenInNew";

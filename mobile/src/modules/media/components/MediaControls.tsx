@@ -9,8 +9,8 @@ import {
 import { useMusicStore } from "../services/Music";
 import { MusicControls } from "../services/Playback";
 
-import { cn } from "@/lib/style";
 import { Colors } from "@/constants/Styles";
+import { cn } from "@/lib/style";
 import { Button, Ripple } from "@/components/new/Form";
 
 type MediaControlProps = { size?: number; rippleColor?: string };

@@ -4,10 +4,12 @@ import { Image as ExpoImage } from "expo-image";
 import { cssInterop } from "nativewind";
 import { View } from "react-native";
 
+import { Folder } from "@/resources/icons";
+
+import { Colors } from "@/constants/Styles";
+import { cn } from "@/lib/style";
 import { ReservedPlaylists } from "../constants";
 import type { MediaType } from "../types";
-
-import { cn } from "@/lib/style";
 
 // https://www.nativewind.dev/v4/api/css-interop
 const Image = cssInterop(ExpoImage, { className: "style" });
@@ -45,6 +47,12 @@ export function MediaImage({
   if (type === "playlist" && Array.isArray(source) && source.length > 0) {
     return (
       <CollageImage {...{ sources: source, size, className: usedClasses }} />
+    );
+  } else if (type === "folder") {
+    return (
+      <View style={{ padding: size / 4 }} className={usedClasses}>
+        <Folder size={size / 2} color={Colors.neutral100} />
+      </View>
     );
   }
 
