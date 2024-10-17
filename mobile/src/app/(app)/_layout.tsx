@@ -72,14 +72,12 @@ function NavigationBar({ stacked = false, hidden = false }) {
   const { canvas } = useTheme();
   const { hasNewUpdate } = useHasNewUpdate();
 
-  if (hidden) return null;
-
   return (
     <Animated.View
       layout={LinearTransition}
       className={cn(
         "flex-row items-center overflow-hidden rounded-md bg-surface py-1",
-        { "rounded-t-sm": stacked },
+        { "rounded-t-sm": stacked, "hidden opacity-0": hidden },
       )}
     >
       <ScrollView

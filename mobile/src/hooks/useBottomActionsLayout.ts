@@ -15,7 +15,7 @@ export function useBottomActionsLayout() {
     pathname.startsWith(route),
   );
 
-  // Require the bottom insets required (excludes the `16px` bottom padding
+  // The bottom insets required (excludes the `16px` bottom padding
   // present in the layout).
   let bottomInset = 0;
   if (isMiniPlayerRendered) bottomInset += 64;
