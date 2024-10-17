@@ -1,51 +1,40 @@
 import { FlashList } from "@shopify/flash-list";
-import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { useAlbumsForMediaCard } from "@/api/albums";
 import { useGetColumn } from "@/hooks/useGetColumn";
+import { StickyActionLayout } from "@/layouts/StickyActionLayout";
 
-import { LoadingIndicator } from "@/components/ui/loading";
-import { Description } from "@/components/ui/text";
+import { StyledText } from "@/components/new/Typography";
 import { MediaCard } from "@/modules/media/components";
 
 /** Screen for `/album` route. */
 export default function AlbumScreen() {
-  const { isPending, data } = useAlbumsForMediaCard();
-  const columnParams = useMemo(
-    () => ({ cols: 2, gap: 16, gutters: 32, minWidth: 175 }),
-    [],
-  );
-  const { count, width } = useGetColumn(columnParams);
+  const { t } = useTranslation();
+  const { count, width } = useGetColumn({
+    ...{ cols: 2, gap: 16, gutters: 32, minWidth: 175 },
+  });
+  const { data } = useAlbumsForMediaCard();
 
-  /*
-    Utilized janky margin method to do `justify-content: space-between`
-    with FlashList with columns as FlashList does some weird layout magic
-    and puts random spaces between or after elements sometimes.
-      - https://github.com/shopify/flash-list/discussions/804#discussioncomment-5509022
-  */
   return (
-    <View className="-m-2 mt-0 flex-1 px-4">
+    <StickyActionLayout title={t("common.albums")}>
       <FlashList
         numColumns={count}
-        estimatedItemSize={width + 37} // 35px `<TextStack />` Height + 2px Margin Top
+        estimatedItemSize={width + 40}
         data={data}
         keyExtractor={({ href }) => href}
-        renderItem={({ item: data }) => (
+        renderItem={({ item }) => (
           <View className="mx-2 mb-4">
-            <MediaCard {...data} size={width} />
+            <MediaCard {...item} size={width} />
           </View>
         )}
-        showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          isPending ? (
-            <LoadingIndicator />
-          ) : (
-            <Description>No Albums Found</Description>
-          )
+          <StyledText center>{t("response.noAlbums")}</StyledText>
         }
-        contentContainerStyle={{ paddingTop: 22 }}
+        showsVerticalScrollIndicator={false}
+        className="-m-2 mt-0"
       />
-    </View>
+    </StickyActionLayout>
   );
 }
