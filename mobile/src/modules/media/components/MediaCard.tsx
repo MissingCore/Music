@@ -6,6 +6,7 @@ import { Pressable, View } from "react-native";
 import { useGetColumn } from "@/hooks/useGetColumn";
 
 import type { Maybe, Prettify } from "@/utils/types";
+import { Loading } from "@/components/new/Loading";
 import { StyledText } from "@/components/new/Typography";
 import { MediaImage } from "./MediaImage";
 
@@ -71,6 +72,7 @@ export const MediaCardPlaceholderContent: MediaCard.Content = {
 export function MediaCardList(props: {
   data: Maybe<readonly MediaCard.Content[]>;
   emptyMessage: string;
+  isLoading?: boolean;
   /**
    * Renders a special entry before all other data. This assumes at `data[0]`,
    * we have a `MediaCardPlaceholderContent`.
@@ -100,9 +102,15 @@ export function MediaCardList(props: {
           )}
         </View>
       )}
-      ListEmptyComponent={<StyledText center>{props.emptyMessage}</StyledText>}
+      ListEmptyComponent={
+        props.isLoading ? (
+          <Loading />
+        ) : (
+          <StyledText center>{props.emptyMessage}</StyledText>
+        )
+      }
       showsVerticalScrollIndicator={false}
-      className="-m-2 mt-0"
+      className="-mx-2 -mb-4"
     />
   );
 }

@@ -13,7 +13,7 @@ import { MediaCardList } from "@/modules/media/components";
 /** Screen for `/playlist` route. */
 export default function PlaylistScreen() {
   const { t } = useTranslation();
-  const { data } = usePlaylistsForMediaCard();
+  const { isPending, data } = usePlaylistsForMediaCard();
   const openModal = useSetAtom(mediaModalAtom);
 
   return (
@@ -30,7 +30,11 @@ export default function PlaylistScreen() {
         </Button>
       }
     >
-      <MediaCardList data={data} emptyMessage={t("response.noPlaylists")} />
+      <MediaCardList
+        data={data}
+        isLoading={isPending}
+        emptyMessage={t("response.noPlaylists")}
+      />
     </StickyActionLayout>
   );
 }

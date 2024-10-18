@@ -25,7 +25,6 @@ import {
 /** Screen for `/` route. */
 export default function HomeScreen() {
   const { t } = useTranslation();
-
   return (
     <StickyActionLayout title={t("header.home")}>
       <StyledText className="-mb-4 text-xs">
@@ -99,14 +98,9 @@ function RecentlyPlayed() {
 /** Display list of content we've favorited. */
 function Favorites() {
   const { data } = useFavoriteListsForMediaCard();
-
   return (
     <MediaCardList
-      data={
-        data
-          ? [MediaCardPlaceholderContent, ...data]
-          : [MediaCardPlaceholderContent]
-      }
+      data={[MediaCardPlaceholderContent, ...(data ?? [])]}
       emptyMessage=""
       RenderFirst={FavoriteTracks}
     />

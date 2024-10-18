@@ -8,11 +8,15 @@ import { MediaCardList } from "@/modules/media/components";
 /** Screen for `/album` route. */
 export default function AlbumScreen() {
   const { t } = useTranslation();
-  const { data } = useAlbumsForMediaCard();
+  const { isPending, data } = useAlbumsForMediaCard();
 
   return (
     <StickyActionLayout title={t("common.albums")}>
-      <MediaCardList data={data} emptyMessage={t("response.noAlbums")} />
+      <MediaCardList
+        data={data}
+        isLoading={isPending}
+        emptyMessage={t("response.noAlbums")}
+      />
     </StickyActionLayout>
   );
 }

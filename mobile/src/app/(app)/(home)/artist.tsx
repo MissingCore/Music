@@ -8,13 +8,14 @@ import { StickyActionLayout } from "@/layouts/StickyActionLayout";
 
 import { cn } from "@/lib/style";
 import { Ripple } from "@/components/new/Form";
+import { Loading } from "@/components/new/Loading";
 import { StyledText } from "@/components/new/Typography";
 import { MediaImage } from "@/modules/media/components";
 
 /** Screen for `/artist` route. */
 export default function ArtistScreen() {
   const { t } = useTranslation();
-  const { data } = useArtistsForList();
+  const { isPending, data } = useArtistsForList();
 
   return (
     <StickyActionLayout title={t("common.artists")}>
@@ -45,7 +46,11 @@ export default function ArtistScreen() {
           )
         }
         ListEmptyComponent={
-          <StyledText center>{t("response.noArtists")}</StyledText>
+          isPending ? (
+            <Loading />
+          ) : (
+            <StyledText center>{t("response.noArtists")}</StyledText>
+          )
         }
         showsVerticalScrollIndicator={false}
       />
