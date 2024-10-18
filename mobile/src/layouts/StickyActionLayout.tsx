@@ -19,6 +19,7 @@ export function StickyActionLayout({
   children,
   wrapperClassName,
   offsetConfig = {},
+  originalText,
 }: {
   title: string;
   StickyAction?: React.ReactNode;
@@ -28,7 +29,7 @@ export function StickyActionLayout({
    * Configure the vertical offset/padding for this layout.
    */
   offsetConfig?: { top?: boolean; bottom?: boolean };
-}) {
+} & Pick<React.ComponentProps<typeof AccentText>, "originalText">) {
   const { top } = useSafeAreaInsets();
   const actionPosY = useSharedValue(0);
   const actionOffset = useSharedValue(0);
@@ -58,6 +59,7 @@ export function StickyActionLayout({
       contentContainerClassName={cn("grow gap-6 p-4", wrapperClassName)}
     >
       <AccentText
+        originalText={originalText}
         style={[configs.top ? { paddingTop: top + 16 } : {}]}
         className="text-3xl"
       >

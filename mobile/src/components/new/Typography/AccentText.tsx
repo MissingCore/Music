@@ -6,7 +6,14 @@ import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { cn } from "@/lib/style";
 
 /** `<Text />` that utilizes the accent font. */
-export function AccentText({ className, ...rest }: TextProps) {
+export function AccentText({
+  className,
+  originalText,
+  ...rest
+}: TextProps & {
+  /** Ignore the uppercase behavior when the accent font is `NDot`. */
+  originalText?: boolean;
+}) {
   const accentFont = useUserPreferencesStore((state) => state.accentFont);
   return (
     <Text
@@ -14,6 +21,7 @@ export function AccentText({ className, ...rest }: TextProps) {
         "text-foreground",
         {
           "font-ndot": accentFont === "NDot",
+          uppercase: accentFont === "NDot" && !originalText,
           "font-ntype": accentFont === "NType",
         },
         className,
