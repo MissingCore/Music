@@ -34,7 +34,10 @@ export default function PackageLicenseScreen() {
           ),
         }}
       />
-      <StickyActionLayout title={licenseInfo.name} withoutHeaderBar={false}>
+      <StickyActionLayout
+        title={licenseInfo.name}
+        offsetConfig={{ top: false, bottom: false }}
+      >
         <Card className="bg-foreground/5">
           <StyledText preset="dimOnCanvas">
             {`${licenseInfo.version}\n\n`}

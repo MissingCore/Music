@@ -18,18 +18,16 @@ export function StickyActionLayout({
   StickyAction,
   children,
   wrapperClassName,
-  withoutHeaderBar = true,
+  offsetConfig = {},
 }: {
   title: string;
   StickyAction?: React.ReactNode;
   children: React.ReactNode;
   wrapperClassName?: string;
   /**
-   * This layout's intended use is on the "home" related screens. To use
-   * elsewhere (which will remove the top & bottom insets), set this to
-   * `false`.
+   * Configure the vertical offset/padding for this layout.
    */
-  withoutHeaderBar?: boolean;
+  offsetConfig?: { top?: boolean; bottom?: boolean };
 }) {
   const { top } = useSafeAreaInsets();
   const actionPosY = useSharedValue(0);
@@ -50,6 +48,8 @@ export function StickyActionLayout({
     transform: [{ translateY: actionOffset.value }],
   }));
 
+  const configs = { top: true, bottom: true, ...offsetConfig };
+
   return (
     <Animated.ScrollView
       onScroll={scrollHandler}
@@ -58,7 +58,7 @@ export function StickyActionLayout({
       contentContainerClassName={cn("grow gap-6 p-4", wrapperClassName)}
     >
       <AccentText
-        style={[withoutHeaderBar ? { paddingTop: top + 16 } : {}]}
+        style={[configs.top ? { paddingTop: top + 16 } : {}]}
         className="text-3xl"
       >
         {title}
@@ -83,7 +83,7 @@ export function StickyActionLayout({
       </View>
 
       {children}
-      {withoutHeaderBar ? <BottomInset /> : null}
+      {configs.bottom ? <BottomInset /> : null}
     </Animated.ScrollView>
   );
 }

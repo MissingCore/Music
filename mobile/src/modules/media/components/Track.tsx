@@ -1,18 +1,84 @@
 import type { ContentStyle } from "@shopify/flash-list";
 import { FlashList } from "@shopify/flash-list";
 import { useSetAtom } from "jotai";
+import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
+import { MoreVert } from "@/resources/icons";
 import { playFromMediaList } from "../services/Playback";
 import type { MediaList, PlayListSource } from "../types";
 import { mediaModalAtom } from "@/modals/categories/media/store";
 
 import { formatSeconds } from "@/utils/number";
 import type { Maybe, Prettify } from "@/utils/types";
-import { ActionButton } from "@/components/form/action-button";
+import { Ripple } from "@/components/new/Form";
+import { StyledText } from "@/components/new/Typography";
 import { MediaImage } from "./MediaImage";
 
+import { ActionButton } from "@/components/form/action-button";
+
 type FlashListProps = React.ComponentProps<typeof FlashList>;
+
+//#region TrackNew
+export namespace TrackNew {
+  export type Content = {
+    id: string;
+    imageSource: MediaImage.ImageSource;
+    title: string;
+    description: string;
+  };
+
+  export type Props = Prettify<
+    Content & {
+      trackSource: PlayListSource;
+      LeftElement?: React.JSX.Element;
+    }
+  >;
+}
+
+/**
+ * Displays information about the current track with 2 different press
+ * scenarios (pressing the icon or the whole card will do different actions).
+ */
+export function TrackNew({ id, trackSource, ...props }: TrackNew.Props) {
+  const { t } = useTranslation();
+  const openModal = useSetAtom(mediaModalAtom);
+
+  return (
+    <Ripple
+      onPress={() => playFromMediaList({ trackId: id, source: trackSource })}
+      wrapperClassName="rounded-sm"
+      className="flex-row items-center justify-start gap-2 p-0"
+    >
+      {props.LeftElement ? (
+        props.LeftElement
+      ) : (
+        <MediaImage
+          type="track"
+          size={48}
+          source={props.imageSource}
+          radius="sm"
+        />
+      )}
+      <View className="shrink grow">
+        <StyledText numberOfLines={1} className="text-sm">
+          {props.title}
+        </StyledText>
+        <StyledText preset="dimOnCanvas" numberOfLines={1}>
+          {props.description}
+        </StyledText>
+      </View>
+      <Ripple
+        preset="icon"
+        accessibilityLabel={t("template.entrySeeMore", { name: props.title })}
+        onPress={() => openModal({ entity: "track", scope: "view", id })}
+      >
+        <MoreVert />
+      </Ripple>
+    </Ripple>
+  );
+}
+//#endregion
 
 //#region Track
 export namespace Track {

@@ -24,7 +24,10 @@ export default function AppUpdateScreen() {
   if (!release) return null;
 
   return (
-    <StickyActionLayout title={release.version} withoutHeaderBar={false}>
+    <StickyActionLayout
+      title={release.version}
+      offsetConfig={{ top: false, bottom: false }}
+    >
       <Markdown
         style={{
           body: {

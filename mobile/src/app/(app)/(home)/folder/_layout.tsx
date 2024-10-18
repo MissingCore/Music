@@ -1,8 +1,9 @@
-import { Stack, router } from "expo-router";
+import { Slot, router } from "expo-router";
 import { atom, useAtomValue } from "jotai";
 import { ScopeProvider } from "jotai-scope";
 import { Fragment } from "react";
-import { Pressable, Text, View, useWindowDimensions } from "react-native";
+import { useTranslation } from "react-i18next";
+import { Pressable, useWindowDimensions } from "react-native";
 import Animated, {
   FadeInLeft,
   FadeOutRight,
@@ -16,9 +17,10 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
+import { StickyActionLayout } from "@/layouts/StickyActionLayout";
+
 import { cn } from "@/lib/style";
-import { AnimatedScrollRow } from "@/components/ui/container";
-import { ScrollShadow } from "@/components/ui/scroll-shadow";
+import { StyledText } from "@/components/new/Typography";
 
 /**
  * FIXME: Need to use atom to get the current layout path since although
@@ -32,15 +34,16 @@ import { ScrollShadow } from "@/components/ui/scroll-shadow";
 export const folderPathAtom = atom<string[]>([]);
 
 export default function FolderLayout() {
+  const { t } = useTranslation();
   return (
     <ScopeProvider atoms={[folderPathAtom]}>
-      <View>
-        <Breadcrumbs />
-        <ScrollShadow size={16} />
-      </View>
-      <Stack screenOptions={{ animation: "fade", headerShown: false }}>
-        <Stack.Screen name="[...id]" />
-      </Stack>
+      <StickyActionLayout
+        title={t("common.folders")}
+        StickyAction={<Breadcrumbs />}
+        offsetConfig={{ bottom: false }}
+      >
+        <Slot />
+      </StickyActionLayout>
     </ScopeProvider>
   );
 }
@@ -48,16 +51,16 @@ export default function FolderLayout() {
 /** Custom folder structure breadcrumbs. */
 function Breadcrumbs() {
   const pathSegments = useAtomValue(folderPathAtom);
-  const breadcrumbsRef = useAnimatedRef<AnimatedScrollRow.Ref>();
+  const breadcrumbsRef = useAnimatedRef<Animated.ScrollView>();
   const { width: screenWidth } = useWindowDimensions();
   const lastWidth = useSharedValue(0);
   const removedWidth = useSharedValue(0);
   const newScrollPos = useSharedValue(0);
 
   const onLayoutShift = (newWidth: number) => {
-    // `newWidth` doesn't include the `px-4` on `<AnimatedScrollView />`;
-    // don't know exactly where the extra `8px` needed came from.
-    newScrollPos.value = 40 + newWidth - screenWidth;
+    // `newWidth` doesn't include the `px-4` on `<StickyActionLayout />`
+    // and in `<Animated.ScrollView />`.
+    newScrollPos.value = 64 + newWidth - screenWidth;
     if (newWidth < lastWidth.value) {
       removedWidth.value = withSequence(
         withTiming(lastWidth.value - newWidth, { duration: 0 }),
@@ -71,54 +74,53 @@ function Breadcrumbs() {
     scrollTo(breadcrumbsRef, newScrollPos.value, 0, true);
   });
 
-  const wrapperStyle = useAnimatedStyle(() => ({
+  const offsetStyle = useAnimatedStyle(() => ({
     paddingRight: removedWidth.value,
   }));
 
   return (
-    <AnimatedScrollRow ref={breadcrumbsRef}>
+    <Animated.ScrollView
+      ref={breadcrumbsRef}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      className="rounded-md bg-surface"
+      contentContainerClassName="min-h-12 grow px-4"
+    >
       <Animated.View
         onLayout={({ nativeEvent }) => onLayoutShift(nativeEvent.layout.width)}
-        className="flex-row gap-2"
+        className="flex-row items-center gap-2"
       >
         {[undefined, ...pathSegments].map((dirName, idx) => (
           <Fragment key={idx}>
-            {idx !== 0 && (
-              <Animated.Text
-                entering={FadeInLeft}
-                exiting={FadeOutRight}
-                className="px-1 pb-2 font-geistMono text-sm text-foreground50"
-              >
-                /
-              </Animated.Text>
-            )}
+            {idx !== 0 ? (
+              <Animated.View entering={FadeInLeft} exiting={FadeOutRight}>
+                <StyledText className="px-1 text-xs">/</StyledText>
+              </Animated.View>
+            ) : null}
             <Animated.View entering={FadeInLeft} exiting={FadeOutRight}>
               <Pressable
-                onPress={() => {
-                  // Pop the segments we pushed onto the stack and update
-                  // the path segments atom accordingly.
-                  router.dismiss(pathSegments.length - idx);
-                }}
+                // Pop the segments we pushed onto the stack and update
+                // the path segments atom accordingly.
+                onPress={() => router.dismiss(pathSegments.length - idx)}
                 // `pathSegments.length` instead of `pathSegments.length - 1`
                 // due to us prepending an extra entry to denote the "Root".
                 disabled={idx === pathSegments.length}
                 className="active:opacity-75"
               >
-                <Text
-                  className={cn(
-                    "pb-2 font-geistMono text-sm text-foreground50",
-                    { "text-accent50": idx === pathSegments.length },
-                  )}
+                <StyledText
+                  className={cn("py-2 text-xs", {
+                    "text-red": idx === pathSegments.length,
+                  })}
                 >
                   {dirName ?? "Root"}
-                </Text>
+                </StyledText>
               </Pressable>
             </Animated.View>
           </Fragment>
         ))}
       </Animated.View>
       {/* Animated padding to allow exiting scroll animation to look nice. */}
-      <Animated.View style={wrapperStyle} />
-    </AnimatedScrollRow>
+      <Animated.View style={offsetStyle} />
+    </Animated.ScrollView>
   );
 }

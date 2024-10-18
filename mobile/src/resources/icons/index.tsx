@@ -84,6 +84,7 @@ export { CreateNewFolder } from "./CreateNewFolder";
 export { Folder } from "./Folder";
 export { LogoGitHub } from "./LogoGitHub";
 export { LogoPlayStore } from "./LogoPlayStore";
+export { MoreVert } from "./MoreVert";
 export { OpenInNew } from "./OpenInNew";
 export { Remove } from "./Remove";
 export { Search } from "./Search";

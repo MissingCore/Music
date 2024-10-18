@@ -2,20 +2,24 @@ import { FlashList } from "@shopify/flash-list";
 import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import { useSetAtom } from "jotai";
 import { useEffect } from "react";
-import { ScrollView, View } from "react-native";
+import { useTranslation } from "react-i18next";
+import { View } from "react-native";
 
-import { MaterialSymbols } from "@/resources/icons";
-import { ArrowRight } from "@/resources/icons/ArrowRight";
+import { useBottomActionsLayout } from "@/hooks/useBottomActionsLayout";
 import { useFolderContentForPath } from "@/api/file-nodes/[...id]";
 import { folderPathAtom } from "./_layout";
 
-import { ActionButton } from "@/components/form/action-button";
+import { cn } from "@/lib/style";
+import { Ripple } from "@/components/new/Form";
+import { StyledText } from "@/components/new/Typography";
+import { MediaImage, TrackNew } from "@/modules/media/components";
+
 import { LoadingIndicator } from "@/components/ui/loading";
-import { Description } from "@/components/ui/text";
-import { Track } from "@/modules/media/components";
 
 /** Screen for `/folder/[id]` route. */
 export default function FolderScreen() {
+  const { t } = useTranslation();
+  const { bottomInset } = useBottomActionsLayout();
   const { id } = useLocalSearchParams<{ id: string[] }>();
   const navigation = useNavigation();
   const updateFolderPath = useSetAtom(folderPathAtom);
@@ -38,20 +42,20 @@ export default function FolderScreen() {
 
   if (isPending) {
     return (
-      <View className="w-full flex-1 px-4">
+      <View className="w-full flex-1 items-center px-4">
         <LoadingIndicator />
       </View>
     );
   } else if (error) {
     return (
       <View className="w-full flex-1 px-4">
-        <Description intent="error">Error: Directory not found</Description>
+        <StyledText center>{t("response.noDirectory")}</StyledText>
       </View>
     );
   } else if (data.subDirectories.length === 0 && data.tracks.length === 0) {
     return (
       <View className="w-full flex-1 px-4">
-        <Description>Directory is empty</Description>
+        <StyledText center>{t("response.noContent")}</StyledText>
       </View>
     );
   }
@@ -65,54 +69,57 @@ export default function FolderScreen() {
     id: `${fullPath}/`,
   } as const;
 
+  const folderData = [...data.subDirectories, undefined, ...data.tracks];
+
   return (
-    <ScrollView
+    <FlashList
+      estimatedItemSize={48}
+      data={folderData}
+      keyExtractor={(_, index) => `${index}`}
+      renderItem={({ item, index }) => {
+        // "Divider" between found directories & tracks.
+        if (item === undefined) {
+          if (data.subDirectories.length > 0 && data.tracks.length > 0)
+            return <View className="mb-4" />;
+          else return null;
+        }
+        return (
+          <View className={cn({ "mb-2": index !== folderData.length - 1 })}>
+            {isTrackContent(item) ? (
+              <TrackNew
+                id={item.id}
+                trackSource={trackSource}
+                imageSource={item.imageSource}
+                // FIXME: Need to fix the below
+                // @ts-ignore We haven't updated the function used to get the data.
+                title={item.textContent[0]}
+                // @ts-ignore We haven't updated the function used to get the data.
+                description={item.textContent[1]}
+              />
+            ) : (
+              <Ripple
+                onPress={() =>
+                  router.push(
+                    `/folder/${id ? `${id.map((segment) => encodeURIComponent(segment)).join("/")}/` : ""}${encodeURIComponent(item.name)}`,
+                  )
+                }
+                wrapperClassName="rounded-sm"
+                className="flex-row items-center justify-start gap-2 p-0 pr-4"
+              >
+                <MediaImage type="folder" size={48} source={null} radius="sm" />
+                <StyledText numberOfLines={1}>{item.name}</StyledText>
+              </Ripple>
+            )}
+          </View>
+        );
+      }}
       showsVerticalScrollIndicator={false}
-      contentContainerClassName="grow pt-2"
-    >
-      <FlashList
-        estimatedItemSize={66} // 58px Height + 8px Margin Bottom
-        data={[...data.subDirectories, undefined, ...data.tracks]}
-        keyExtractor={(_, index) => `${index}`}
-        renderItem={({ item }) => {
-          // Render divider if we have subdirectories & tracks.
-          if (item === undefined) {
-            if (data.subDirectories.length > 0 && data.tracks.length > 0)
-              return <View className="mb-2 h-px bg-surface850" />;
-            else return null;
-          }
-          return (
-            <View className="mb-2">
-              {isTrackContent(item) ? (
-                <Track {...{ ...item, trackSource }} />
-              ) : (
-                <ActionButton
-                  onPress={() =>
-                    router.push(
-                      `/folder/${id ? `${id.map((segment) => encodeURIComponent(segment)).join("/")}/` : ""}${encodeURIComponent(item.name)}`,
-                    )
-                  }
-                  textContent={[item.name, null]}
-                  Image={
-                    <MaterialSymbols
-                      name="folder-outline"
-                      size={40}
-                      className="rounded-sm bg-surface800 p-1"
-                    />
-                  }
-                  icon={{ Element: <ArrowRight size={24} /> }}
-                />
-              )}
-            </View>
-          );
-        }}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 16 }}
-      />
-    </ScrollView>
+      // Add `24px` due to it being applied by the gap in `<StickyActionLayout />`.
+      contentContainerStyle={{ paddingBottom: bottomInset + 24 }}
+    />
   );
 }
 
-function isTrackContent(data: unknown): data is Track.Content {
-  return (data as Track.Content).id !== undefined;
+function isTrackContent(data: unknown): data is TrackNew.Content {
+  return Object.hasOwn(data as TrackNew.Content, "id");
 }
