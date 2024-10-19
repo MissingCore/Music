@@ -1,3 +1,4 @@
+import type { FlashListProps } from "@shopify/flash-list";
 import { FlashList } from "@shopify/flash-list";
 import { useSetAtom } from "jotai";
 import { useTranslation } from "react-i18next";
@@ -8,6 +9,7 @@ import { playFromMediaList } from "../services/Playback";
 import type { PlayListSource } from "../types";
 import { mediaModalAtom } from "@/modals/categories/media/store";
 
+import { cn } from "@/lib/style";
 import type { Maybe, Prettify } from "@/utils/types";
 import { Ripple } from "@/components/new/Form";
 import { Loading } from "@/components/new/Loading";
@@ -77,19 +79,21 @@ export function Track({ id, trackSource, ...props }: Track.Props) {
 
 //#region Track List
 /** Lists out tracks. */
-export function TrackList(props: {
-  data: Maybe<readonly Track.Content[]>;
-  emptyMessage: string;
-  isLoading?: boolean;
-  trackSource: PlayListSource;
-}) {
+export function TrackList(
+  props: {
+    data: Maybe<readonly Track.Content[]>;
+    emptyMessage: string;
+    isLoading?: boolean;
+    trackSource: PlayListSource;
+  } & Pick<FlashListProps<Track.Content>, "renderScrollComponent">,
+) {
   return (
     <FlashList
       estimatedItemSize={56} // 48px Height + 8px Margin Botton
       data={props.data}
       keyExtractor={({ id }) => id}
-      renderItem={({ item }) => (
-        <View className="mb-2">
+      renderItem={({ item, index }) => (
+        <View className={cn({ "mt-2": index > 0 })}>
           <Track {...item} trackSource={props.trackSource} />
         </View>
       )}
@@ -100,8 +104,8 @@ export function TrackList(props: {
           <StyledText center>{props.emptyMessage}</StyledText>
         )
       }
+      renderScrollComponent={props.renderScrollComponent}
       showsVerticalScrollIndicator={false}
-      className="-mb-2"
     />
   );
 }

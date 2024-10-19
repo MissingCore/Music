@@ -2,7 +2,7 @@ import type { VariantProps } from "cva";
 import { cva } from "cva";
 import { forwardRef } from "react";
 import type { PressableProps } from "react-native";
-import { Pressable, View } from "react-native";
+import { Pressable, View, useWindowDimensions } from "react-native";
 
 import { useTheme } from "@/hooks/useTheme";
 
@@ -41,9 +41,11 @@ export const Ripple = forwardRef<View, RippleProps>(function Ripple(
   { android_ripple, className, wrapperClassName, preset, ...props },
   ref,
 ) {
+  const { width: screenWidth } = useWindowDimensions();
   const { surface } = useTheme();
   return (
     <View
+      style={{ maxWidth: screenWidth - 32 }}
       className={cn(
         "overflow-hidden",
         { "rounded-md": preset === "select" },

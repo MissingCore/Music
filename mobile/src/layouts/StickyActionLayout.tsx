@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import type { ScrollViewProps } from "react-native";
 import { View } from "react-native";
 import Animated, {
   useAnimatedScrollHandler,
@@ -18,22 +19,28 @@ export function StickyActionLayout({
   title,
   StickyAction,
   children,
-}: {
-  title: string;
-  StickyAction?: React.ReactNode;
-  children: React.ReactNode;
-}) {
+  onScroll: jsOnScroll,
+  ...rest
+}: ScrollViewProps & { title: string; StickyAction?: React.ReactNode }) {
   const { bottomInset } = useBottomActionsLayout();
-  const { initActionYPos, onScroll, actionStyle } =
+  const { initActionYPos, scrollHandler, actionStyle } =
     useStickyActionLayoutAnimations();
 
   return (
     <Animated.ScrollView
-      onScroll={onScroll}
+      // FIXME: Currently have a problem where we need a regular JS scroll handler
+      // and a Reanimated scroll handler on the same component. Currently, this isn't
+      // possible to dom so what's below is currently a workaround.
+      //  - https://github.com/kirillzyusko/react-native-keyboard-controller/pull/339
+      //  - https://github.com/software-mansion/react-native-reanimated/issues/6204
+      // @ts-expect-error `onScrollReanimated` is a fake prop needed for reanimated to intercept scroll events
+      onScrollReanimated={scrollHandler}
+      onScroll={jsOnScroll}
       showsVerticalScrollIndicator={false}
       stickyHeaderIndices={!!StickyAction ? [1] : undefined}
-      contentContainerStyle={{ paddingBottom: bottomInset + 16 }}
-      contentContainerClassName="grow gap-6 p-4"
+      {...rest}
+      contentContainerStyle={{ padding: 16, paddingBottom: bottomInset + 16 }}
+      contentContainerClassName="grow gap-6"
     >
       <StickyActionHeader>{title}</StickyActionHeader>
 
@@ -105,15 +112,17 @@ export function useStickyActionLayoutAnimations() {
    *
    * **Note:** Can only be used in an `Animated` scrollable.
    */
-  const onScroll = useAnimatedScrollHandler((e) => {
-    const scroll = e.contentOffset.y;
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (e) => {
+      const scroll = e.contentOffset.y;
 
-    const maxOffset = top + 16;
-    const stickyStart = actionPosY.value - maxOffset;
+      const maxOffset = top + 16;
+      const stickyStart = actionPosY.value - maxOffset;
 
-    let offset = scroll < stickyStart ? 0 : scroll - stickyStart;
-    if (offset > maxOffset) offset = maxOffset;
-    actionOffset.value = offset;
+      let offset = scroll < stickyStart ? 0 : scroll - stickyStart;
+      if (offset > maxOffset) offset = maxOffset;
+      actionOffset.value = offset;
+    },
   });
 
   /** Animated styling on the element wrapping the sticky action. */
@@ -121,6 +130,6 @@ export function useStickyActionLayoutAnimations() {
     transform: [{ translateY: actionOffset.value }],
   }));
 
-  return { initActionYPos, onScroll, actionStyle };
+  return { initActionYPos, scrollHandler, actionStyle };
 }
 //#endregion

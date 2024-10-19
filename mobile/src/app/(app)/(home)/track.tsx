@@ -23,27 +23,29 @@ export default function TrackScreen() {
   } as const;
 
   return (
-    <StickyActionLayout
-      title={t("common.tracks")}
-      StickyAction={
-        <View className="w-full flex-row items-center justify-between rounded-md bg-surface">
-          <Ripple
-            preset="icon"
-            accessibilityLabel={t("title.sort")}
-            android_ripple={{ color: `${canvas}40` }}
-            onPress={() => console.log("Opening sort modal...")}
-          >
-            <Sort />
-          </Ripple>
-          <MediaListControls trackSource={trackSource} />
-        </View>
-      }
-    >
-      <TrackList
-        {...{ data, trackSource }}
-        isLoading={isPending}
-        emptyMessage={t("response.noTracks")}
-      />
-    </StickyActionLayout>
+    <TrackList
+      {...{ data, trackSource }}
+      isLoading={isPending}
+      emptyMessage={t("response.noTracks")}
+      renderScrollComponent={(props) => (
+        <StickyActionLayout
+          title={t("common.tracks")}
+          StickyAction={
+            <View className="w-full flex-row items-center justify-between rounded-md bg-surface">
+              <Ripple
+                preset="icon"
+                accessibilityLabel={t("title.sort")}
+                android_ripple={{ color: `${canvas}40` }}
+                onPress={() => console.log("Opening sort modal...")}
+              >
+                <Sort />
+              </Ripple>
+              <MediaListControls trackSource={trackSource} />
+            </View>
+          }
+          {...props}
+        />
+      )}
+    />
   );
 }
