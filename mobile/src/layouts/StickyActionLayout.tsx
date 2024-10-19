@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { View } from "react-native";
 import Animated, {
   useAnimatedScrollHandler,
@@ -17,46 +18,35 @@ export function StickyActionLayout({
   title,
   StickyAction,
   children,
-  wrapperClassName,
   offsetConfig = {},
   originalText,
 }: {
   title: string;
   StickyAction?: React.ReactNode;
   children: React.ReactNode;
-  wrapperClassName?: string;
   /**
    * Configure the vertical offset/padding for this layout.
    */
   offsetConfig?: { top?: boolean; bottom?: boolean };
-} & Pick<React.ComponentProps<typeof AccentText>, "originalText">) {
+  /** Ignore the uppercase behavior when the accent font is `NDot`. */
+  originalText?: boolean;
+}) {
+  const { bottomInset } = useBottomActionsLayout();
   const { top } = useSafeAreaInsets();
-  const actionPosY = useSharedValue(0);
-  const actionOffset = useSharedValue(0);
-
-  const scrollHandler = useAnimatedScrollHandler((e) => {
-    const scroll = e.contentOffset.y;
-
-    const maxOffset = top + 16;
-    const stickyStart = actionPosY.value - maxOffset;
-
-    let offset = scroll < stickyStart ? 0 : scroll - stickyStart;
-    if (offset > maxOffset) offset = maxOffset;
-    actionOffset.value = offset;
-  });
-
-  const actionStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: actionOffset.value }],
-  }));
+  const { initActionYPos, onScroll, actionStyle } =
+    useStickyActionLayoutAnimations();
 
   const configs = { top: true, bottom: true, ...offsetConfig };
 
   return (
     <Animated.ScrollView
-      onScroll={scrollHandler}
+      onScroll={onScroll}
       showsVerticalScrollIndicator={false}
       stickyHeaderIndices={!!StickyAction ? [1] : undefined}
-      contentContainerClassName={cn("grow gap-6 p-4", wrapperClassName)}
+      contentContainerStyle={{
+        paddingBottom: (configs.bottom ? bottomInset : 0) + 16,
+      }}
+      contentContainerClassName="grow gap-6 p-4"
     >
       <AccentText
         originalText={originalText}
@@ -67,9 +57,7 @@ export function StickyActionLayout({
       </AccentText>
 
       <View
-        onLayout={(e) => {
-          actionPosY.value = e.nativeEvent.layout.y;
-        }}
+        onLayout={initActionYPos}
         pointerEvents="box-none"
         className={cn({ hidden: !StickyAction })}
       >
@@ -85,19 +73,54 @@ export function StickyActionLayout({
       </View>
 
       {children}
-      {configs.bottom ? <BottomInset /> : null}
     </Animated.ScrollView>
   );
 }
 //#endregion
 
-//#region Bottom Inset
+//#region Layout Hook
 /**
- * A "block" to help account for the bottom actions displayed while using
- * this layout.
+ * Custom hook containing the animation logic to implement a `<StickyActionLayout />`
+ * for custom content such as nested scrollviews.
  */
-function BottomInset() {
-  const { bottomInset } = useBottomActionsLayout();
-  return <View style={{ paddingTop: bottomInset }} className="-mt-2" />;
+export function useStickyActionLayoutAnimations() {
+  const { top } = useSafeAreaInsets();
+  const actionPosY = useSharedValue(0);
+  const actionOffset = useSharedValue(0);
+
+  /**
+   * Identify the starting `y` position the sticky action is located in
+   * the scrollable.
+   */
+  const initActionYPos = useCallback(
+    (e: { nativeEvent: { layout: { y: number } } }) => {
+      actionPosY.value = e.nativeEvent.layout.y;
+    },
+    [actionPosY],
+  );
+
+  /**
+   * Animation logic that ensures the sticky action gets stickied under
+   * the status bar at an offset.
+   *
+   * **Note:** Can only be used in an `Animated` scrollable.
+   */
+  const onScroll = useAnimatedScrollHandler((e) => {
+    const scroll = e.contentOffset.y;
+
+    const maxOffset = top + 16;
+    const stickyStart = actionPosY.value - maxOffset;
+
+    let offset = scroll < stickyStart ? 0 : scroll - stickyStart;
+    if (offset > maxOffset) offset = maxOffset;
+    actionOffset.value = offset;
+  });
+
+  /** Animated styling on the element wrapping the sticky action. */
+  const actionStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: actionOffset.value }],
+  }));
+
+  return { initActionYPos, onScroll, actionStyle };
 }
-//#endRegion
+//#endregion

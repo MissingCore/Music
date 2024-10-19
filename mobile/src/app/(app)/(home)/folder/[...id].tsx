@@ -85,9 +85,7 @@ export default function FolderScreen() {
         )
       }
       showsVerticalScrollIndicator={false}
-      // Add `16px` due to not including the spacing between the last
-      // item and bottom actions.
-      contentContainerStyle={{ paddingBottom: bottomInset + 16 }}
+      contentContainerStyle={{ paddingBottom: bottomInset }}
     />
   );
 }
