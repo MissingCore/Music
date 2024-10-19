@@ -10,7 +10,7 @@ import { cn } from "@/lib/style";
 
 type RippleStyleProps = VariantProps<typeof rippleStyles>;
 const rippleStyles = cva({
-  base: ["min-h-12 justify-center p-4"],
+  base: ["min-h-12 flex-row items-center gap-2 p-4"],
   variants: {
     preset: {
       default: "",

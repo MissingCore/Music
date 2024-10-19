@@ -37,10 +37,12 @@ export default function ArtistScreen() {
                   router.navigate(`/artist/${encodeURIComponent(item.name)}`)
                 }
                 wrapperClassName="rounded-full"
-                className="flex-row items-center justify-start gap-2 p-0 pr-4"
+                className="p-0 pr-4"
               >
                 <MediaImage type="artist" size={48} source={null} />
-                <StyledText numberOfLines={1}>{item.name}</StyledText>
+                <StyledText numberOfLines={1} className="shrink grow">
+                  {item.name}
+                </StyledText>
               </Ripple>
             </View>
           )

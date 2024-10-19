@@ -76,10 +76,12 @@ export default function FolderScreen() {
                 )
               }
               wrapperClassName="rounded-sm"
-              className="flex-row items-center justify-start gap-2 p-0 pr-4"
+              className="p-0 pr-4"
             >
               <MediaImage type="folder" size={48} source={null} radius="sm" />
-              <StyledText numberOfLines={1}>{item.name}</StyledText>
+              <StyledText numberOfLines={1} className="shrink grow">
+                {item.name}
+              </StyledText>
             </Ripple>
           )}
         </View>
