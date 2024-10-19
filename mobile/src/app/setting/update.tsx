@@ -1,13 +1,13 @@
 import * as WebBrowser from "expo-web-browser";
 import { useTranslation } from "react-i18next";
-import { Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 
 import { LogoGitHub, LogoPlayStore } from "@/resources/icons";
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 import { useTheme } from "@/hooks/useTheme";
-import { StickyActionLayout } from "@/layouts/StickyActionLayout";
+import { StickyActionHeader } from "@/layouts/StickyActionLayout";
 
 import * as LINKS from "@/constants/Links";
 import { FontFamily, FontSize } from "@/constants/Styles";
@@ -24,10 +24,12 @@ export default function AppUpdateScreen() {
   if (!release) return null;
 
   return (
-    <StickyActionLayout
-      title={release.version}
-      offsetConfig={{ top: false, bottom: false }}
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      contentContainerClassName="grow gap-6 p-4"
     >
+      <StickyActionHeader noOffset>{release.version}</StickyActionHeader>
+
       <Markdown
         style={{
           body: {
@@ -106,6 +108,6 @@ export default function AppUpdateScreen() {
           </Button>
         ) : null}
       </View>
-    </StickyActionLayout>
+    </ScrollView>
   );
 }

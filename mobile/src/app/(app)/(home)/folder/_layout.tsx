@@ -40,7 +40,6 @@ export default function FolderLayout() {
       <StickyActionLayout
         title={t("common.folders")}
         StickyAction={<Breadcrumbs />}
-        offsetConfig={{ bottom: false }}
       >
         <Slot />
       </StickyActionLayout>

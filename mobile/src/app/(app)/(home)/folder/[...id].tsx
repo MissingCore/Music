@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { useBottomActionsLayout } from "@/hooks/useBottomActionsLayout";
 import { useFolderContentForPath } from "@/api/file-nodes/[...id]";
 import { folderPathAtom } from "./_layout";
 
@@ -18,7 +17,6 @@ import { MediaImage, Track } from "@/modules/media/components";
 /** Screen for `/folder/[id]` route. */
 export default function FolderScreen() {
   const { t } = useTranslation();
-  const { bottomInset } = useBottomActionsLayout();
   const { id } = useLocalSearchParams<{ id: string[] }>();
   const navigation = useNavigation();
   const updateFolderPath = useSetAtom(folderPathAtom);
@@ -85,7 +83,6 @@ export default function FolderScreen() {
         )
       }
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={{ paddingBottom: bottomInset }}
     />
   );
 }

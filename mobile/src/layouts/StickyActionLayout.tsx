@@ -18,43 +18,24 @@ export function StickyActionLayout({
   title,
   StickyAction,
   children,
-  offsetConfig = {},
-  originalText,
 }: {
   title: string;
   StickyAction?: React.ReactNode;
   children: React.ReactNode;
-  /**
-   * Configure the vertical offset/padding for this layout.
-   */
-  offsetConfig?: { top?: boolean; bottom?: boolean };
-  /** Ignore the uppercase behavior when the accent font is `NDot`. */
-  originalText?: boolean;
 }) {
   const { bottomInset } = useBottomActionsLayout();
-  const { top } = useSafeAreaInsets();
   const { initActionYPos, onScroll, actionStyle } =
     useStickyActionLayoutAnimations();
-
-  const configs = { top: true, bottom: true, ...offsetConfig };
 
   return (
     <Animated.ScrollView
       onScroll={onScroll}
       showsVerticalScrollIndicator={false}
       stickyHeaderIndices={!!StickyAction ? [1] : undefined}
-      contentContainerStyle={{
-        paddingBottom: (configs.bottom ? bottomInset : 0) + 16,
-      }}
+      contentContainerStyle={{ paddingBottom: bottomInset + 16 }}
       contentContainerClassName="grow gap-6 p-4"
     >
-      <AccentText
-        originalText={originalText}
-        style={[configs.top ? { paddingTop: top + 16 } : {}]}
-        className="text-3xl"
-      >
-        {title}
-      </AccentText>
+      <StickyActionHeader>{title}</StickyActionHeader>
 
       <View
         onLayout={initActionYPos}
@@ -74,6 +55,25 @@ export function StickyActionLayout({
 
       {children}
     </Animated.ScrollView>
+  );
+}
+//#endregion
+
+//#region Header
+/** Header component rendered in `<StickyActionLayout />`. */
+export function StickyActionHeader({
+  noOffset = false,
+  className,
+  style,
+  ...rest
+}: React.ComponentProps<typeof AccentText> & { noOffset?: boolean }) {
+  const { top } = useSafeAreaInsets();
+  return (
+    <AccentText
+      style={[!noOffset ? { paddingTop: top + 16 } : {}, style]}
+      className={cn("text-3xl", className)}
+      {...rest}
+    />
   );
 }
 //#endregion
