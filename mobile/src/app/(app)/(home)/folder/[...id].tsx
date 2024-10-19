@@ -13,7 +13,7 @@ import { cn } from "@/lib/style";
 import { Ripple } from "@/components/new/Form";
 import { Loading } from "@/components/new/Loading";
 import { StyledText } from "@/components/new/Typography";
-import { MediaImage, TrackNew } from "@/modules/media/components";
+import { MediaImage, Track } from "@/modules/media/components";
 
 /** Screen for `/folder/[id]` route. */
 export default function FolderScreen() {
@@ -58,16 +58,7 @@ export default function FolderScreen() {
       renderItem={({ item, index }) => (
         <View className={cn({ "mb-2": index !== folderData.length - 1 })}>
           {isTrackContent(item) ? (
-            <TrackNew
-              id={item.id}
-              trackSource={trackSource}
-              imageSource={item.imageSource}
-              // FIXME: Need to fix the below
-              // @ts-ignore We haven't updated the function used to get the data.
-              title={item.textContent[0]}
-              // @ts-ignore We haven't updated the function used to get the data.
-              description={item.textContent[1]}
-            />
+            <Track {...{ ...item, trackSource }} />
           ) : (
             <Ripple
               onPress={() =>
@@ -101,6 +92,6 @@ export default function FolderScreen() {
   );
 }
 
-function isTrackContent(data: unknown): data is TrackNew.Content {
-  return Object.hasOwn(data as TrackNew.Content, "id");
+function isTrackContent(data: unknown): data is Track.Content {
+  return Object.hasOwn(data as Track.Content, "id");
 }

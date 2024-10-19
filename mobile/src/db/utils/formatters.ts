@@ -91,19 +91,21 @@ export function formatTracksForTrack({
     const { id, duration, artwork, name, artistName } = data;
 
     let imageSource = artwork;
-    const textContent: TrackC.Content["textContent"] = [name, artistName];
+    let description = artistName ?? "—";
 
     if (!isTrackWithAlbum(data)) {
       // Only true when `type === "album"`.
       imageSource = null;
-      textContent[1] =
-        data.track > 0 ? `Track ${`${data.track}`.padStart(2, "0")}` : "Track";
+      // FIXME: We might need to fix this function to account for album
+      // artist as we want to also display the track artist if the album
+      // artist & artist are different.
+      description = formatSeconds(duration);
     } else {
       imageSource = getTrackCover(data);
-      if (type === "artist") textContent[1] = data.album?.name ?? "Single";
+      if (type === "artist") description = data.album?.name ?? "—";
     }
 
-    return { textContent, id, imageSource, duration };
+    return { id, imageSource, title: name, description };
   });
 }
 
