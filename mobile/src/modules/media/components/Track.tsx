@@ -1,4 +1,3 @@
-import type { ContentStyle } from "@shopify/flash-list";
 import { FlashList } from "@shopify/flash-list";
 import { useSetAtom } from "jotai";
 import { useTranslation } from "react-i18next";
@@ -6,15 +5,14 @@ import { View } from "react-native";
 
 import { MoreVert } from "@/resources/icons";
 import { playFromMediaList } from "../services/Playback";
-import type { MediaList, PlayListSource } from "../types";
+import type { PlayListSource } from "../types";
 import { mediaModalAtom } from "@/modals/categories/media/store";
 
 import type { Maybe, Prettify } from "@/utils/types";
 import { Ripple } from "@/components/new/Form";
+import { Loading } from "@/components/new/Loading";
 import { StyledText } from "@/components/new/Typography";
 import { MediaImage } from "./MediaImage";
-
-type FlashListProps = React.ComponentProps<typeof FlashList>;
 
 //#region Track
 export namespace Track {
@@ -81,35 +79,29 @@ export function Track({ id, trackSource, ...props }: Track.Props) {
 /** Lists out tracks. */
 export function TrackList(props: {
   data: Maybe<readonly Track.Content[]>;
-  config: {
-    source: PlayListSource;
-    origin?: MediaList;
-    hideImage?: boolean;
-  };
-  ListHeaderComponent?: FlashListProps["ListHeaderComponent"];
-  ListEmptyComponent?: FlashListProps["ListEmptyComponent"];
-  contentContainerStyle?: ContentStyle;
+  emptyMessage: string;
+  isLoading?: boolean;
+  trackSource: PlayListSource;
 }) {
-  const { source, origin, hideImage = false } = props.config;
-
   return (
     <FlashList
-      estimatedItemSize={66} // 58px Height + 8px Margin Bottom
+      estimatedItemSize={56} // 48px Height + 8px Margin Botton
       data={props.data}
       keyExtractor={({ id }) => id}
       renderItem={({ item }) => (
         <View className="mb-2">
-          <Track {...{ ...item, origin, hideImage }} trackSource={source} />
+          <Track {...item} trackSource={props.trackSource} />
         </View>
       )}
+      ListEmptyComponent={
+        props.isLoading ? (
+          <Loading />
+        ) : (
+          <StyledText center>{props.emptyMessage}</StyledText>
+        )
+      }
       showsVerticalScrollIndicator={false}
-      ListHeaderComponent={props.ListHeaderComponent}
-      ListEmptyComponent={props.ListEmptyComponent}
-      contentContainerStyle={{
-        paddingHorizontal: 4,
-        paddingTop: 16,
-        ...props.contentContainerStyle,
-      }}
+      className="-mb-2"
     />
   );
 }
