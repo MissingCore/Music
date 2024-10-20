@@ -14,8 +14,9 @@
     "tracks": "Trek",
 
     "play": "Putar",
+	"pause": "Jeda",
     "prev": "Sebelumnya",
-    "next": "Selanjutnya",
+    "next": "Berikutnya",
     "shuffle": "Acak",
     "repeat": "Ulangi",
 
