@@ -1,10 +1,12 @@
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 
-import { MaterialIcons } from "@/resources/icons";
+import { PlayArrow, Pause } from "../resources/icons";
 import { useMusicStore } from "../services/Music";
 import { MusicControls, playFromMediaList } from "../services/Playback";
 
+import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
+import { Button } from "@/components/new/Form";
 import { RepeatButton, ShuffleButton } from "./MediaControls";
 import { arePlaybackSourceEqual } from "../helpers/data";
 import type { PlayListSource } from "../types";
@@ -16,9 +18,9 @@ export function MediaListControls({
   trackSource: PlayListSource;
 }) {
   return (
-    <View className="flex-row items-center">
-      <RepeatButton />
-      <ShuffleButton />
+    <View className="flex-row items-center gap-1">
+      <RepeatButton size={24} />
+      <ShuffleButton size={24} />
       <PlayMediaListButton trackSource={trackSource} />
     </View>
   );
@@ -36,18 +38,20 @@ function PlayMediaListButton({ trackSource }: { trackSource: PlayListSource }) {
   const isThisSource = arePlaybackSourceEqual(currSource, trackSource);
   const displayPause = isThisSource && isPlaying;
 
+  const Icon = displayPause ? Pause : PlayArrow;
+
   return (
-    <Pressable
+    <Button
+      preset="danger"
       onPress={
         displayPause
           ? MusicControls.pause
           : () => playFromMediaList({ source: trackSource })
       }
-      className={cn("ml-1 rounded-full bg-accent500 p-1 active:opacity-75", {
-        "bg-surface500": displayPause,
-      })}
+      icon
+      className={cn({ "bg-neutral80 dark:bg-neutral20": displayPause })}
     >
-      <MaterialIcons name={displayPause ? "pause" : "play-arrow"} size={24} />
-    </Pressable>
+      <Icon size={24} color={Colors.neutral100} />
+    </Button>
   );
 }

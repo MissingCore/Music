@@ -11,9 +11,9 @@ import { Queue, useMusicStore } from "@/modules/media/services/Music";
 import { Colors } from "@/constants/Styles";
 import { pickKeys } from "@/utils/object";
 import { ActionButton } from "@/components/form/action-button";
-import { MediaImage } from "@/components/media/image";
 import { LoadingIndicator } from "@/components/ui/loading";
 import { Description, Heading } from "@/components/ui/text";
+import { MediaImage } from "@/modules/media/components";
 import { ModalBase } from "../../components/base";
 
 type TrackExcerpt = Pick<Track, "id" | "artistName" | "name" | "artwork">;

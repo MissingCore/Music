@@ -11,7 +11,7 @@ import {
 import { favoriteKeys } from "./_queryKeys";
 
 import type { ExtractFnReturnType } from "@/utils/types";
-import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
+import { ReservedPlaylists } from "@/modules/media/constants";
 
 type FavoriteListsFnData = {
   albums: ExtractFnReturnType<typeof getAlbums>;

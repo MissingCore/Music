@@ -8,6 +8,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { useEffect, useState } from "react";
+import { View } from "react-native";
 
 import { cn } from "@/lib/style";
 
@@ -15,9 +16,15 @@ import { cn } from "@/lib/style";
 export function Marquee({
   children,
   center = false,
+  wrapperClassName,
 }: {
   children: React.ReactNode;
   center?: boolean;
+  /**
+   * Styles the `<View />` wrapping the `<Animated.ScrollView />` containing
+   * the scrollable content.
+   */
+  wrapperClassName?: string;
 }) {
   const offset = useSharedValue(0);
   const [containerWidth, setContainerWidth] = useState(-1);
@@ -25,6 +32,8 @@ export function Marquee({
 
   useEffect(() => {
     if (containerWidth === -1 || contentWidth === -1) return;
+    // Make sure we reset whenever the children changes size.
+    offset.value = 0;
     if (contentWidth <= containerWidth) return;
 
     const scrollRoom = contentWidth - containerWidth;
@@ -52,21 +61,23 @@ export function Marquee({
   }));
 
   return (
-    <Animated.ScrollView
-      onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}
-      horizontal
-      pointerEvents="none"
-      showsHorizontalScrollIndicator={false}
-      contentContainerClassName={cn("grow overflow-hidden", {
-        "justify-center": center,
-      })}
-    >
-      <Animated.View
-        onLayout={(e) => setContentWidth(e.nativeEvent.layout.width)}
-        style={animatedStyles}
+    <View className={wrapperClassName}>
+      <Animated.ScrollView
+        onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}
+        horizontal
+        pointerEvents="none"
+        showsHorizontalScrollIndicator={false}
+        contentContainerClassName={cn("grow overflow-hidden", {
+          "justify-center": center,
+        })}
       >
-        {children}
-      </Animated.View>
-    </Animated.ScrollView>
+        <Animated.View
+          onLayout={(e) => setContentWidth(e.nativeEvent.layout.width)}
+          style={animatedStyles}
+        >
+          {children}
+        </Animated.View>
+      </Animated.ScrollView>
+    </View>
   );
 }

@@ -15,7 +15,7 @@ import Svg, { Circle, Line } from "react-native-svg";
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
 import type { MediaType } from "@/modules/media/types";
-import { MediaImage } from "./image";
+import { MediaImage } from "@/modules/media/components";
 
 const WrappedSvg = cssInterop(Svg, { className: "style" });
 

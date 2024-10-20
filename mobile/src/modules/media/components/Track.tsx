@@ -1,33 +1,34 @@
-import type { ContentStyle } from "@shopify/flash-list";
+import type { FlashListProps } from "@shopify/flash-list";
 import { FlashList } from "@shopify/flash-list";
 import { useSetAtom } from "jotai";
-import { Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
+import { View } from "react-native";
 
+import { MoreVert } from "@/resources/icons";
 import { playFromMediaList } from "../services/Playback";
-import type { MediaList, PlayListSource } from "../types";
+import type { PlayListSource } from "../types";
 import { mediaModalAtom } from "@/modals/categories/media/store";
 
-import { formatSeconds } from "@/utils/number";
+import { cn } from "@/lib/style";
 import type { Maybe, Prettify } from "@/utils/types";
-import { ActionButton } from "@/components/form/action-button";
-import { MediaImage } from "@/components/media/image";
-
-type FlashListProps = React.ComponentProps<typeof FlashList>;
+import { Ripple } from "@/components/new/Form";
+import { Loading } from "@/components/new/Loading";
+import { StyledText } from "@/components/new/Typography";
+import { MediaImage } from "./MediaImage";
 
 //#region Track
 export namespace Track {
   export type Content = {
     id: string;
     imageSource: MediaImage.ImageSource;
-    duration: number;
-    textContent: ActionButton.Props["textContent"];
+    title: string;
+    description: string;
   };
 
   export type Props = Prettify<
     Content & {
       trackSource: PlayListSource;
-      origin?: MediaList;
-      hideImage?: boolean;
+      LeftElement?: React.JSX.Element;
     }
   >;
 }
@@ -36,71 +37,75 @@ export namespace Track {
  * Displays information about the current track with 2 different press
  * scenarios (pressing the icon or the whole card will do different actions).
  */
-export function Track({ id, trackSource, origin, ...props }: Track.Props) {
+export function Track({ id, trackSource, ...props }: Track.Props) {
+  const { t } = useTranslation();
   const openModal = useSetAtom(mediaModalAtom);
 
   return (
-    <ActionButton
+    <Ripple
       onPress={() => playFromMediaList({ trackId: id, source: trackSource })}
-      textContent={props.textContent}
-      Image={
-        !props.hideImage ? (
-          <MediaImage
-            type="track"
-            size={48}
-            source={props.imageSource}
-            className="shrink-0 rounded-sm"
-          />
-        ) : undefined
-      }
-      AsideContent={
-        <Text className="shrink-0 font-geistMonoLight text-xs text-foreground100">
-          {formatSeconds(props.duration)}
-        </Text>
-      }
-      icon={{
-        label: "View track settings.",
-        onPress: () =>
-          openModal({ entity: "track", scope: "view", id, origin }),
-      }}
-    />
+      wrapperClassName="rounded-sm"
+      className="p-0"
+    >
+      {props.LeftElement ? (
+        props.LeftElement
+      ) : (
+        <MediaImage
+          type="track"
+          size={48}
+          source={props.imageSource}
+          radius="sm"
+        />
+      )}
+      <View className="shrink grow">
+        <StyledText numberOfLines={1} className="text-sm">
+          {props.title}
+        </StyledText>
+        <StyledText preset="dimOnCanvas" numberOfLines={1}>
+          {props.description}
+        </StyledText>
+      </View>
+      <Ripple
+        preset="icon"
+        accessibilityLabel={t("template.entrySeeMore", { name: props.title })}
+        onPress={() => openModal({ entity: "track", scope: "view", id })}
+      >
+        <MoreVert />
+      </Ripple>
+    </Ripple>
   );
 }
 //#endregion
 
 //#region Track List
 /** Lists out tracks. */
-export function TrackList(props: {
-  data: Maybe<readonly Track.Content[]>;
-  config: {
-    source: PlayListSource;
-    origin?: MediaList;
-    hideImage?: boolean;
-  };
-  ListHeaderComponent?: FlashListProps["ListHeaderComponent"];
-  ListEmptyComponent?: FlashListProps["ListEmptyComponent"];
-  contentContainerStyle?: ContentStyle;
-}) {
-  const { source, origin, hideImage = false } = props.config;
-
+export function TrackList(
+  props: {
+    data: Maybe<readonly Track.Content[]>;
+    emptyMessage: string;
+    isLoading?: boolean;
+    trackSource: PlayListSource;
+  } & Pick<FlashListProps<Track.Content>, "renderScrollComponent">,
+) {
   return (
     <FlashList
-      estimatedItemSize={66} // 58px Height + 8px Margin Bottom
+      estimatedItemSize={56} // 48px Height + 8px Margin Botton
       data={props.data}
       keyExtractor={({ id }) => id}
-      renderItem={({ item }) => (
-        <View className="mb-2">
-          <Track {...{ ...item, origin, hideImage }} trackSource={source} />
+      renderItem={({ item, index }) => (
+        <View className={cn({ "mt-2": index > 0 })}>
+          <Track {...item} trackSource={props.trackSource} />
         </View>
       )}
+      ListEmptyComponent={
+        props.isLoading ? (
+          <Loading />
+        ) : (
+          <StyledText center>{props.emptyMessage}</StyledText>
+        )
+      }
+      renderScrollComponent={props.renderScrollComponent}
       showsVerticalScrollIndicator={false}
-      ListHeaderComponent={props.ListHeaderComponent}
-      ListEmptyComponent={props.ListEmptyComponent}
-      contentContainerStyle={{
-        paddingHorizontal: 4,
-        paddingTop: 16,
-        ...props.contentContainerStyle,
-      }}
     />
   );
 }

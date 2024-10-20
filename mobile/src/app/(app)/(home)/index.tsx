@@ -1,161 +1,136 @@
 import { FlashList } from "@shopify/flash-list";
-import { Link } from "expo-router";
-import { useCallback, useEffect, useRef, useState } from "react";
-import type { NativeScrollEvent } from "react-native";
-import { Pressable, ScrollView, View } from "react-native";
+import { router } from "expo-router";
+import { useTranslation } from "react-i18next";
+import { useEffect, useRef, useState } from "react";
+import { View } from "react-native";
 
 import {
   useFavoriteListsForMediaCard,
   useFavoriteTracksCount,
 } from "@/api/favorites";
-import { useGetColumn } from "@/hooks/layout";
+import { useGetColumn } from "@/hooks/useGetColumn";
 import { useMusicStore } from "@/modules/media/services/Music";
+import { StickyActionLayout } from "@/layouts/StickyActionLayout";
 
 import { abbreviateNum } from "@/utils/number";
-import { MediaCard, PlaceholderContent } from "@/components/media/card";
-import { ScrollRow } from "@/components/ui/container";
-import { Description, Heading } from "@/components/ui/text";
-import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
-
-/** Detect if we're near the end of a `<ScrollView />`. */
-const isCloseToBottom = ({
-  layoutMeasurement,
-  contentOffset,
-  contentSize,
-}: NativeScrollEvent) => {
-  const paddingToBottom = 16;
-  return (
-    layoutMeasurement.height + contentOffset.y >=
-    contentSize.height - paddingToBottom
-  );
-};
+import { Button } from "@/components/new/Form";
+import { AccentText, StyledText } from "@/components/new/Typography";
+import { ReservedPlaylists } from "@/modules/media/constants";
+import {
+  MediaCard,
+  MediaCardList,
+  MediaCardPlaceholderContent,
+} from "@/modules/media/components";
 
 /** Screen for `/` route. */
 export default function HomeScreen() {
-  const scrollViewRef = useRef<ScrollView>(null);
-  const [endOfScrollView, setEndOfScrollView] = useState(false);
+  const { t } = useTranslation();
+  return (
+    <StickyActionLayout title={t("header.home")}>
+      <StyledText className="-mb-4 text-xs">
+        {t("home.playedRecent")}
+      </StyledText>
+      <RecentlyPlayed />
 
-  /**
-   * Fix scroll position if we're at the end of the `<ScrollView />` and
-   * we removed all items at the end.
-   */
-  const adjustScrollPosition = useCallback(() => {
-    if (endOfScrollView) scrollViewRef.current?.scrollToEnd();
-  }, [endOfScrollView]);
+      <StyledText className="-mb-4 text-xs">{t("home.favorites")}</StyledText>
+      <Favorites />
+    </StickyActionLayout>
+  );
+}
 
-  const { width: colWidthSmall } = useGetColumn({
+//#region Recently Played List
+/** Display list of media recently played. */
+function RecentlyPlayed() {
+  const { t } = useTranslation();
+  const { width } = useGetColumn({
     ...{ cols: 1, gap: 0, gutters: 32, minWidth: 100 },
   });
-
-  return (
-    <ScrollView
-      ref={scrollViewRef}
-      showsVerticalScrollIndicator={false}
-      contentContainerClassName="pt-[22px]"
-      onMomentumScrollEnd={({ nativeEvent }) => {
-        setEndOfScrollView(isCloseToBottom(nativeEvent));
-      }}
-    >
-      <Heading as="h2" className="mb-4 px-4 text-start">
-        RECENTLY PLAYED
-      </Heading>
-      {/*
-        `<View />` wrapping around `<ScrollRow />` is needed due to some
-        layout jank where on a fresh install of the app, when we add an
-        item to "Recently Played", the `<ScrollRow />` overprovide height.
-      */}
-      <View>
-        <ScrollRow contentContainerClassName="gap-4">
-          <RecentlyPlayed colWidth={colWidthSmall} />
-        </ScrollRow>
-      </View>
-
-      <Heading as="h2" className="mb-4 mt-8 px-4 text-start">
-        FAVORITES
-      </Heading>
-      <FavoriteListSection fixScrollPosition={adjustScrollPosition} />
-    </ScrollView>
-  );
-}
-
-/** An array of `<MediaCards />` of recently played media. */
-function RecentlyPlayed({ colWidth }: { colWidth: number }) {
   const recentlyPlayedData = useMusicStore((state) => state.recentList);
 
-  // FIXME: Eventually replace the `Array.map()` with a horizontal
-  // `<FlashList />` like what we did in `/album`.
-  return recentlyPlayedData.length === 0 ? (
-    <Description className="my-4 text-start">
-      You haven't played anything yet!
-    </Description>
-  ) : (
-    recentlyPlayedData.map((props) => (
-      <MediaCard key={props.href} {...props} size={colWidth} />
-    ))
-  );
-}
-
-/**
- * Lists out albums or playlists we've favorited, and a special playlist
- * containing all our favorited tracks.
- */
-function FavoriteListSection({
-  fixScrollPosition,
-}: {
-  fixScrollPosition: () => void;
-}) {
-  const { data } = useFavoriteListsForMediaCard();
-
-  const { width, count } = useGetColumn({
-    ...{ cols: 2, gap: 16, gutters: 32, minWidth: 175 },
-  });
+  const [initNoData, setInitNoData] = useState(false);
+  const [itemHeight, setItemHeight] = useState(0);
+  const listRef = useRef<FlashList<MediaCard.Content>>(null);
 
   useEffect(() => {
-    fixScrollPosition();
-  }, [fixScrollPosition, data]);
+    // Fix incorrect `<FlashList />` height due to it only being calculated
+    // on initial render.
+    //  - See: https://github.com/Shopify/flash-list/issues/881
+    if (initNoData && itemHeight !== 0) {
+      // @ts-ignore: Bypass private property access warning
+      listRef.current?.rlvRef?._onSizeChanged({
+        // @ts-ignore: Bypass private property access warning
+        width: listRef.current.rlvRef._layout.width,
+        height: itemHeight,
+      });
+      setInitNoData(false);
+    }
+  }, [initNoData, itemHeight]);
 
   return (
-    <View className="-m-2 mt-0 flex-1 px-4">
-      <FlashList
-        numColumns={count}
-        estimatedItemSize={width + 37} // 35px `<TextStack />` Height + 2px Margin Top
-        data={data ? [PlaceholderContent, ...data] : [PlaceholderContent]}
-        keyExtractor={({ href }) => href}
-        renderItem={({ item: data, index }) => (
-          <View className="mx-2 mb-4">
-            {index === 0 ? (
-              <FavoriteTracks colWidth={width} />
-            ) : (
-              <MediaCard {...data} size={width} />
-            )}
-          </View>
-        )}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
+    <FlashList
+      ref={listRef}
+      estimatedItemSize={width + 16} // Column width + gap from padding left
+      horizontal
+      data={recentlyPlayedData}
+      keyExtractor={({ href }) => href}
+      renderItem={({ item, index }) => (
+        <View
+          onLayout={(e) => setItemHeight(e.nativeEvent.layout.height)}
+          className={index !== 0 ? "pl-4" : ""}
+        >
+          <MediaCard {...item} size={width} />
+        </View>
+      )}
+      showsHorizontalScrollIndicator={false}
+      ListEmptyComponent={
+        <StyledText onLayout={() => setInitNoData(true)} className="my-4">
+          {t("response.noRecents")}
+        </StyledText>
+      }
+      className="-mx-4"
+      contentContainerClassName="px-4"
+    />
+  );
+}
+//#endregion
+
+//#region Favorites
+/** Display list of content we've favorited. */
+function Favorites() {
+  const { data } = useFavoriteListsForMediaCard();
+  return (
+    <MediaCardList
+      data={[MediaCardPlaceholderContent, ...(data ?? [])]}
+      emptyMessage=""
+      RenderFirst={FavoriteTracks}
+    />
   );
 }
 
 /**
- * A button displaying the number of favorite tracks & takes the user to
- * a special "Favorite Tracks" playlist.
+ * Displays the number of favorited tracks and opens up the playlist of
+ * favorited tracks.
  */
-function FavoriteTracks({ colWidth }: { colWidth: number }) {
+function FavoriteTracks({ size }: { size: number }) {
+  const { t } = useTranslation();
   const { isPending, error, data } = useFavoriteTracksCount();
 
   const trackCount = isPending || error ? "" : abbreviateNum(data);
 
   return (
-    <Link href={`/playlist/${ReservedPlaylists.favorites}`} asChild>
-      <Pressable
-        style={{ width: colWidth, height: colWidth }}
-        className="items-center justify-center rounded-lg bg-accent500 active:opacity-75"
-      >
-        <Heading
-          as="h1"
-          className="font-ndot"
-        >{`${trackCount}\nTracks`}</Heading>
-      </Pressable>
-    </Link>
+    <Button
+      preset="danger"
+      onPress={() =>
+        router.navigate(`/playlist/${ReservedPlaylists.favorites}`)
+      }
+      style={{ width: size, height: size }}
+      className="items-center gap-0 rounded-lg"
+    >
+      <AccentText className="text-[3rem] text-neutral100">
+        {trackCount}
+      </AccentText>
+      <StyledText className="text-neutral100">{t("common.tracks")}</StyledText>
+    </Button>
   );
 }
+//#endregion

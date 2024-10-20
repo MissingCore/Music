@@ -1,44 +1,71 @@
 import { router } from "expo-router";
 import { Pressable, View } from "react-native";
+import Animated, {
+  LinearTransition,
+  SlideOutDown,
+} from "react-native-reanimated";
 
+import { Pause, PlayArrow } from "../resources/icons";
 import { useMusicStore } from "../services/Music";
+import { MusicControls } from "../services/Playback";
+import { useTheme } from "@/hooks/useTheme";
 
-import { MediaImage } from "@/components/media/image";
-import { TextStack } from "@/components/ui/text";
-import { NextButton, PlayToggleButton, PreviousButton } from "./MediaControls";
+import { Colors } from "@/constants/Styles";
+import { cn } from "@/lib/style";
+import { Ripple } from "@/components/new/Form";
+import { Marquee } from "@/components/new/Marquee";
+import { StyledText } from "@/components/new/Typography";
+import { NextButton, PreviousButton } from "./MediaControls";
+import { MediaImage } from "./MediaImage";
 
 /**
  * Displays a player that appears at the bottom of the screen if we have
  * a song loaded.
  */
-export function MiniPlayer() {
+export function MiniPlayer({ stacked = false }) {
+  const { canvas } = useTheme();
+  const isPlaying = useMusicStore((state) => state.isPlaying);
   const track = useMusicStore((state) => state.activeTrack);
 
   if (!track) return null;
 
+  const Icon = isPlaying ? Pause : PlayArrow;
+
   return (
-    <View className="bg-canvas px-4">
+    <Animated.View
+      exiting={SlideOutDown.duration(1000)}
+      layout={LinearTransition}
+      className={cn("overflow-hidden rounded-md bg-canvas", {
+        "rounded-b-sm": stacked,
+      })}
+    >
       <Pressable
         onPress={() => router.navigate("/current-track")}
-        className="flex-row items-center gap-2 border-t border-t-foreground50 p-2"
+        className="flex-row items-center bg-surface p-2 active:opacity-75"
       >
-        <MediaImage
-          type="track"
-          size={48}
-          source={track.artwork}
-          className="rounded"
-        />
-        <TextStack
-          content={[track.name, track.artistName ?? "No Artist"]}
-          colors={{ row1: "text-foreground50", row2: "text-accent50" }}
-          wrapperClassName="flex-1"
-        />
+        <MediaImage type="track" radius="sm" size={48} source={track.artwork} />
+
+        <View className="ml-2 shrink grow">
+          <Marquee>
+            <StyledText>{track.name}</StyledText>
+          </Marquee>
+          <Marquee>
+            <StyledText preset="dimOnSurface">{track.artistName}</StyledText>
+          </Marquee>
+        </View>
+
         <View className="flex-row items-center">
-          <PreviousButton />
-          <PlayToggleButton className="px-5" />
-          <NextButton />
+          <PreviousButton rippleColor={`${canvas}40`} />
+          <Ripple
+            android_ripple={{ radius: 24, color: `${canvas}40` }}
+            onPress={MusicControls.playToggle}
+            className="p-2"
+          >
+            <Icon size={32} color={Colors.red} />
+          </Ripple>
+          <NextButton rippleColor={`${canvas}40`} />
         </View>
       </Pressable>
-    </View>
+    </Animated.View>
   );
 }

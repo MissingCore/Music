@@ -1,59 +1,61 @@
 import { FlashList } from "@shopify/flash-list";
 import { router } from "expo-router";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { ArrowRight } from "@/resources/icons/ArrowRight";
 import { useArtistsForList } from "@/api/artists";
+import { StickyActionLayout } from "@/layouts/StickyActionLayout";
 
 import { cn } from "@/lib/style";
-import { ActionButton } from "@/components/form/action-button";
-import { LoadingIndicator } from "@/components/ui/loading";
-import { Description, Heading } from "@/components/ui/text";
+import { Ripple } from "@/components/new/Form";
+import { Loading } from "@/components/new/Loading";
+import { StyledText } from "@/components/new/Typography";
+import { MediaImage } from "@/modules/media/components";
 
 /** Screen for `/artist` route. */
 export default function ArtistScreen() {
+  const { t } = useTranslation();
   const { isPending, data } = useArtistsForList();
 
   return (
-    <View className="flex-1 px-4">
+    <StickyActionLayout title={t("common.artists")}>
       <FlashList
-        estimatedItemSize={66} // 58px Height + 8px Margin Bottom
+        estimatedItemSize={64} // 48px Height + 16px Margin Top
         data={data}
         // Rare case where `keyExtractor` may break is when there's an
         // artist name that's a single character.
         keyExtractor={(item) => (typeof item === "string" ? item : item.name)}
         renderItem={({ item, index }) =>
           typeof item === "string" ? (
-            <Heading
-              as="h2"
-              className={cn("mb-2 text-start font-ndot", {
-                "mt-2": index !== 0,
-              })}
-            >
+            <StyledText className={cn("text-xs", { "mt-6": index !== 0 })}>
               {item}
-            </Heading>
+            </StyledText>
           ) : (
-            <View className="mb-2">
-              <ActionButton
+            <View className="mt-4">
+              <Ripple
                 onPress={() =>
                   router.navigate(`/artist/${encodeURIComponent(item.name)}`)
                 }
-                textContent={item.textContent}
-                icon={{ Element: <ArrowRight size={24} /> }}
-              />
+                wrapperClassName="rounded-full"
+                className="p-0 pr-4"
+              >
+                <MediaImage type="artist" size={48} source={null} />
+                <StyledText numberOfLines={1} className="shrink grow">
+                  {item.name}
+                </StyledText>
+              </Ripple>
             </View>
           )
         }
-        showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           isPending ? (
-            <LoadingIndicator />
+            <Loading />
           ) : (
-            <Description>No Artists Found</Description>
+            <StyledText center>{t("response.noArtists")}</StyledText>
           )
         }
-        contentContainerStyle={{ paddingTop: 22 }}
+        showsVerticalScrollIndicator={false}
       />
-    </View>
+    </StickyActionLayout>
   );
 }

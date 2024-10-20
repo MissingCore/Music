@@ -41,7 +41,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       <StatusBar
         barStyle={currentTheme === "light" ? "dark-content" : "light-content"}
       />
-      <View style={Themes[currentTheme]} className="flex-1">
+      <View style={Themes[currentTheme]} className="flex-1 bg-canvas">
         {children}
       </View>
     </NavigationThemeProvider>

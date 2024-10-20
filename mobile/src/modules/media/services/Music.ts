@@ -28,14 +28,14 @@ import {
 import { formatForMediaCard } from "@/db/utils/formatters";
 
 import { shuffleArray } from "@/utils/object";
-import type { MediaCard } from "@/components/media/card";
-import { ReservedPlaylists } from "../constants/ReservedNames";
+import { ReservedPlaylists } from "../constants";
 import {
   arePlaybackSourceEqual,
   formatTrackforPlayer,
   getTrackList,
   getTracksFromIds,
 } from "../helpers/data";
+import type { MediaCard } from "../components";
 import type { PlayListSource } from "../types";
 
 //#region Zustand Store
@@ -349,9 +349,11 @@ musicStore.subscribe(
     musicStore.setState({
       // Remove any `PlayListSource` in `recentListSources` that are invalid.
       ...(errors.length > 0
-        ? recentListSources.filter(
-            (s1) => !errors.some((s2) => arePlaybackSourceEqual(s1, s2)),
-          )
+        ? {
+            recentListSources: recentListSources.filter(
+              (s1) => !errors.some((s2) => arePlaybackSourceEqual(s1, s2)),
+            ),
+          }
         : {}),
       recentList: newRecentList,
     });
@@ -624,15 +626,17 @@ export class RNTPManager {
     const playingTrack = await TrackPlayer.getActiveTrack();
     const { activeTrack, isInQueue } = musicStore.getState();
 
-    // If we are playing the right track, don't do anything (unless
-    // we want to restart).
-    if (playingTrack?.id === activeTrack?.id && !args?.restart) return;
+    // Update the current playing track (or restart the track).
+    if (playingTrack?.id !== activeTrack?.id || args?.restart) {
+      await TrackPlayer.load({
+        ...formatTrackforPlayer(activeTrack!),
+        "music::status": (isInQueue ? "QUEUE" : "RELOAD") satisfies TrackStatus,
+      });
+      await TrackPlayer.seekTo(0);
+    }
 
-    await TrackPlayer.load({
-      ...formatTrackforPlayer(activeTrack!),
-      "music::status": (isInQueue ? "QUEUE" : "RELOAD") satisfies TrackStatus,
-    });
-    await TrackPlayer.seekTo(0);
+    // Make sure the next track is also "correct".
+    await RNTPManager.reloadNextTrack();
   }
 }
 //#endregion

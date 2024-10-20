@@ -13,7 +13,7 @@ import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
 import { Heading } from "@/components/ui/text";
-import { ReservedNames } from "@/modules/media/constants/ReservedNames";
+import { ReservedNames } from "@/modules/media/constants";
 import { ModalBase } from "../../components/base";
 import { ModalFormButton } from "../../components/form-button";
 

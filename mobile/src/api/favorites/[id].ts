@@ -10,7 +10,7 @@ import { trackKeys } from "../tracks/_queryKeys";
 
 import { Resynchronize } from "@/modules/media/services/Music";
 
-import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
+import { ReservedPlaylists } from "@/modules/media/constants";
 import type { MediaType } from "@/modules/media/types";
 
 type BaseFnArgs = { type: Exclude<MediaType, "artist" | "folder">; id: string };

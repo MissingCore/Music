@@ -6,8 +6,8 @@ import { albums, tracks, tracksToPlaylists } from "./schema";
 import { fixPlaylistJunction, getTrackCover } from "./utils/formatters";
 
 import { deleteFile } from "@/lib/file-system";
-import type { ReservedPlaylistName } from "@/modules/media/constants/ReservedNames";
-import { ReservedPlaylists } from "@/modules/media/constants/ReservedNames";
+import type { ReservedPlaylistName } from "@/modules/media/constants";
+import { ReservedPlaylists } from "@/modules/media/constants";
 
 /** Upsert a new album, returning the created value. */
 export async function createAlbum(entry: typeof albums.$inferInsert) {

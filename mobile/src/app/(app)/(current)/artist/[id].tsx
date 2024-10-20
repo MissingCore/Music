@@ -3,13 +3,12 @@ import { View } from "react-native";
 
 import type { Album } from "@/db/schema";
 import { useArtistForCurrentPage } from "@/api/artists/[id]";
-import { useGetColumn } from "@/hooks/layout";
+import { useGetColumn } from "@/hooks/useGetColumn";
 
-import { MediaCard } from "@/components/media/card";
 import { MediaScreenHeader } from "@/components/media/screen-header";
 import { ScrollRow } from "@/components/ui/container";
 import { Description, Heading } from "@/components/ui/text";
-import { TrackList } from "@/modules/media/components/Track";
+import { MediaCard, TrackList } from "@/modules/media/components";
 
 /** Screen for `/artist/[id]` route. */
 export default function CurrentArtistScreen() {

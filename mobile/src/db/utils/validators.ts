@@ -1,4 +1,4 @@
-import { ReservedNames } from "@/modules/media/constants/ReservedNames";
+import { ReservedNames } from "@/modules/media/constants";
 
 /**
  * Sanitize playlist name and make sure it meets the minimum requirements.

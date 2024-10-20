@@ -2,7 +2,7 @@ import type { VariantProps } from "cva";
 import { cva } from "cva";
 import { forwardRef } from "react";
 import type { PressableProps } from "react-native";
-import { Pressable, View } from "react-native";
+import { Pressable, View, useWindowDimensions } from "react-native";
 
 import { useTheme } from "@/hooks/useTheme";
 
@@ -10,7 +10,7 @@ import { cn } from "@/lib/style";
 
 type RippleStyleProps = VariantProps<typeof rippleStyles>;
 const rippleStyles = cva({
-  base: ["min-h-12 justify-center p-4"],
+  base: ["min-h-12 flex-row items-center gap-2 p-4"],
   variants: {
     preset: {
       default: "",
@@ -25,7 +25,7 @@ const rippleStyles = cva({
   compoundVariants: [
     {
       preset: ["default", "icon"],
-      class: "active:opacity-75 disabled:opacity-25",
+      class: "ios:active:opacity-75 disabled:opacity-25",
     },
   ],
   defaultVariants: { preset: "default" },
@@ -41,9 +41,11 @@ export const Ripple = forwardRef<View, RippleProps>(function Ripple(
   { android_ripple, className, wrapperClassName, preset, ...props },
   ref,
 ) {
+  const { width: screenWidth } = useWindowDimensions();
   const { surface } = useTheme();
   return (
     <View
+      style={{ maxWidth: screenWidth - 32 }}
       className={cn(
         "overflow-hidden",
         { "rounded-md": preset === "select" },

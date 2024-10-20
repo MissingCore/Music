@@ -17,6 +17,9 @@ import { createStore } from "zustand/vanilla";
 
 import i18next from "@/modules/i18n";
 import { LANGUAGES } from "@/modules/i18n/constants";
+import { RecentList } from "@/modules/media/services/Music";
+
+import { clearAllQueries } from "@/lib/react-query";
 
 //#region Zustand Store
 //#region UserPreferencesStore Interface
@@ -146,6 +149,11 @@ userPreferencesStore.subscribe(
   async (languageCode) => {
     // Set the language used by the app.
     await i18next.changeLanguage(languageCode);
+    // Make sure our queries that use translated values are updated.
+    clearAllQueries({ remove: true });
+    // Make sure the recent list data is also updated as we don't get
+    // it from React Query.
+    RecentList.refresh();
   },
 );
 //#endregion
