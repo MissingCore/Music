@@ -9,7 +9,7 @@
   },
   "@gorhom/bottom-sheet": {
     "name": "@gorhom/bottom-sheet",
-    "version": "5.0.0-alpha.11",
+    "version": "5.0.2",
     "copyright": "Copyright (c) 2020 Mo Gorhom",
     "source": "https://github.com/gorhom/react-native-bottom-sheet",
     "license": "MIT",
@@ -73,7 +73,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.59.13",
+    "version": "5.59.15",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -97,7 +97,7 @@
   },
   "drizzle-orm": {
     "name": "drizzle-orm",
-    "version": "0.34.1",
+    "version": "0.35.2",
     "copyright": "Copyright (c) 2022 Drizzle Team",
     "source": "https://github.com/drizzle-team/drizzle-orm",
     "license": "Apache-2.0",
@@ -105,7 +105,7 @@
   },
   "expo": {
     "name": "expo",
-    "version": "51.0.37",
+    "version": "51.0.38",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo",
     "license": "MIT",
@@ -241,7 +241,7 @@
   },
   "i18next": {
     "name": "i18next",
-    "version": "23.15.2",
+    "version": "23.16.1",
     "copyright": "Copyright (c) 2024 i18next",
     "source": "https://github.com/i18next/i18next",
     "license": "MIT",
@@ -265,7 +265,7 @@
   },
   "jotai": {
     "name": "jotai",
-    "version": "2.10.0",
+    "version": "2.10.1",
     "copyright": "Copyright (c) 2020-2023 Poimandres",
     "source": "https://github.com/pmndrs/jotai",
     "license": "MIT",
@@ -289,7 +289,7 @@
   },
   "nativewind": {
     "name": "nativewind",
-    "version": "4.1.16",
+    "version": "4.0.36",
     "copyright": "Copyright (c) 2023 Mark Lawlor",
     "source": "https://github.com/marklawlor/nativewind",
     "license": "MIT",
@@ -321,7 +321,7 @@
   },
   "react-native-bootsplash": {
     "name": "react-native-bootsplash",
-    "version": "6.1.5",
+    "version": "6.2.2",
     "copyright": "Copyright (c) 2021 Mathieu Acthernoene",
     "source": "https://github.com/zoontek/react-native-bootsplash",
     "license": "MIT",
@@ -353,7 +353,7 @@
   },
   "react-native-safe-area-context": {
     "name": "react-native-safe-area-context",
-    "version": "4.11.0",
+    "version": "4.11.1",
     "copyright": "Copyright (c) 2019 Th3rd Wave",
     "source": "https://github.com/th3rdwave/react-native-safe-area-context",
     "license": "MIT",
@@ -369,7 +369,7 @@
   },
   "react-native-svg": {
     "name": "react-native-svg",
-    "version": "15.7.1",
+    "version": "15.8.0",
     "copyright": "Copyright (c) [2015-2016] [Horcrux]",
     "source": "https://github.com/software-mansion/react-native-svg",
     "license": "MIT",
@@ -401,7 +401,7 @@
   },
   "tailwind-merge": {
     "name": "tailwind-merge",
-    "version": "2.5.3",
+    "version": "2.5.4",
     "copyright": "Copyright (c) 2021 Dany Castillo",
     "source": "https://github.com/dcastil/tailwind-merge",
     "license": "MIT",
@@ -417,7 +417,7 @@
   },
   "zustand": {
     "name": "zustand",
-    "version": "5.0.0-rc.2",
+    "version": "5.0.0",
     "copyright": "Copyright (c) 2019 Paul Henschel",
     "source": "https://github.com/pmndrs/zustand",
     "license": "MIT",
