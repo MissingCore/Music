@@ -78,33 +78,36 @@ export function Track({ id, trackSource, ...props }: Track.Props) {
 //#endregion
 
 //#region Track List
+type TrackListProps = {
+  data: Maybe<readonly Track.Content[]>;
+  emptyMessage: string;
+  isPending?: boolean;
+  trackSource: PlayListSource;
+};
+
+/** Presets used in the FlashList for `<TrackList />`. */
+export const TrackListPreset = (props: TrackListProps) =>
+  ({
+    estimatedItemSize: 56, // 48px Height + 8px Margin Botton
+    data: props.data,
+    keyExtractor: ({ id }) => id,
+    renderItem: ({ item, index }) => (
+      <View className={cn({ "mt-2": index > 0 })}>
+        <Track {...item} trackSource={props.trackSource} />
+      </View>
+    ),
+    ListEmptyComponent: props.isPending ? (
+      <Loading />
+    ) : (
+      <StyledText center>{props.emptyMessage}</StyledText>
+    ),
+  }) satisfies FlashListProps<Track.Content>;
+
 /** Lists out tracks. */
-export function TrackList(
-  props: {
-    data: Maybe<readonly Track.Content[]>;
-    emptyMessage: string;
-    isLoading?: boolean;
-    trackSource: PlayListSource;
-  } & Pick<FlashListProps<Track.Content>, "renderScrollComponent">,
-) {
+export function TrackList(props: TrackListProps) {
   return (
     <FlashList
-      estimatedItemSize={56} // 48px Height + 8px Margin Botton
-      data={props.data}
-      keyExtractor={({ id }) => id}
-      renderItem={({ item, index }) => (
-        <View className={cn({ "mt-2": index > 0 })}>
-          <Track {...item} trackSource={props.trackSource} />
-        </View>
-      )}
-      ListEmptyComponent={
-        props.isLoading ? (
-          <Loading />
-        ) : (
-          <StyledText center>{props.emptyMessage}</StyledText>
-        )
-      }
-      renderScrollComponent={props.renderScrollComponent}
+      {...TrackListPreset(props)}
       showsVerticalScrollIndicator={false}
     />
   );
