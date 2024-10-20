@@ -1,11 +1,14 @@
 import { FlashList } from "@shopify/flash-list";
+import { useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { useArtistsForList } from "@/api/artists";
+import { getArtists } from "@/db/queries";
+
 import { StickyActionLayout } from "@/layouts/StickyActionLayout";
 
+import { artistKeys } from "@/constants/QueryKeys";
 import { cn } from "@/lib/style";
 import { Ripple } from "@/components/new/Form";
 import { Loading } from "@/components/new/Loading";
@@ -59,3 +62,37 @@ export default function ArtistScreen() {
     </StickyActionLayout>
   );
 }
+
+//#region Data
+const useArtistsForList = () =>
+  useQuery({
+    queryKey: artistKeys.all,
+    queryFn: () => getArtists(),
+    staleTime: Infinity,
+    select: (data) => {
+      // Group artists by their 1st character.
+      const groupedArtists: Record<string, typeof data> = {};
+      data.forEach((artist) => {
+        const key = /[a-zA-Z]/.test(artist.name.charAt(0))
+          ? artist.name.charAt(0).toUpperCase()
+          : "#";
+        if (Object.hasOwn(groupedArtists, key))
+          groupedArtists[key]!.push(artist);
+        else groupedArtists[key] = [artist];
+      });
+
+      // Convert object to array, sort by character key and artist name,
+      // then flatten to be used in a `<FlashList />`.
+      return Object.entries(groupedArtists)
+        .map(([character, arts]) => ({
+          title: character,
+          data: arts.sort((a, b) =>
+            a.name.localeCompare(b.name, undefined, { caseFirst: "upper" }),
+          ),
+        }))
+        .sort((a, b) => a.title.localeCompare(b.title))
+        .map(({ title, data }) => [title, ...data])
+        .flat();
+    },
+  });
+//#endregion

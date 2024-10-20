@@ -1,13 +1,17 @@
+import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
+import { getTracks } from "@/db/queries";
+import { formatTracksForTrack } from "@/db/utils/formatters";
+
 import { Sort } from "@/resources/icons";
-import { useTracksForTrackCard } from "@/api/tracks";
 import { useTheme } from "@/hooks/useTheme";
 import { StickyActionLayout } from "@/layouts/StickyActionLayout";
 
-import { ReservedPlaylists } from "@/modules/media/constants";
+import { trackKeys } from "@/constants/QueryKeys";
 import { Ripple } from "@/components/new/Form";
+import { ReservedPlaylists } from "@/modules/media/constants";
 import { MediaListControls, TrackList } from "@/modules/media/components";
 
 /** Screen for `/track` route. */
@@ -49,3 +53,13 @@ export default function TrackScreen() {
     />
   );
 }
+
+//#region Data
+const useTracksForTrackCard = () =>
+  useQuery({
+    queryKey: trackKeys.all,
+    queryFn: () => getTracks(),
+    staleTime: Infinity,
+    select: (data) => formatTracksForTrack({ type: "track", data }),
+  });
+//#endregion

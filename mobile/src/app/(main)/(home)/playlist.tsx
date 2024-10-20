@@ -1,11 +1,15 @@
+import { useQuery } from "@tanstack/react-query";
 import { useSetAtom } from "jotai";
 import { useTranslation } from "react-i18next";
 
+import { getPlaylists } from "@/db/queries";
+import { formatForMediaCard } from "@/db/utils/formatters";
+
 import { Add } from "@/resources/icons";
-import { usePlaylistsForMediaCard } from "@/api/playlists";
 import { StickyActionLayout } from "@/layouts/StickyActionLayout";
 import { mediaModalAtom } from "@/modals/categories/media/store";
 
+import { playlistKeys } from "@/constants/QueryKeys";
 import { Colors } from "@/constants/Styles";
 import { Button } from "@/components/new/Form";
 import { MediaCardList } from "@/modules/media/components";
@@ -38,3 +42,16 @@ export default function PlaylistScreen() {
     </StickyActionLayout>
   );
 }
+
+//#region Data
+const usePlaylistsForMediaCard = () =>
+  useQuery({
+    queryKey: playlistKeys.all,
+    queryFn: () => getPlaylists(),
+    staleTime: Infinity,
+    select: (results) =>
+      results
+        .map((data) => formatForMediaCard({ type: "playlist", data }))
+        .sort((a, b) => a.title.localeCompare(b.title)),
+  });
+//#endregion
