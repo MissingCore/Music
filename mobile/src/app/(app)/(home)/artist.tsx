@@ -20,7 +20,7 @@ export default function ArtistScreen() {
   return (
     <StickyActionLayout title={t("common.artists")}>
       <FlashList
-        estimatedItemSize={48}
+        estimatedItemSize={64} // 48px Height + 16px Margin Top
         data={data}
         // Rare case where `keyExtractor` may break is when there's an
         // artist name that's a single character.

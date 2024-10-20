@@ -50,11 +50,11 @@ export default function FolderScreen() {
 
   return (
     <FlashList
-      estimatedItemSize={48}
+      estimatedItemSize={56} // 48px Height + 8px Margin Top
       data={folderData}
       keyExtractor={(_, index) => `${index}`}
       renderItem={({ item, index }) => (
-        <View className={cn({ "mb-2": index !== folderData.length - 1 })}>
+        <View className={cn({ "mt-2": index !== 0 })}>
           {isTrackContent(item) ? (
             <Track {...{ ...item, trackSource }} />
           ) : (
