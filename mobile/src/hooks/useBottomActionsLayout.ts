@@ -4,7 +4,7 @@ import { useMusicStore } from "@/modules/media/services/Music";
 
 /**
  * Returns information about what "bottom actions" are displayed in the
- * `(app)` group along with the additional bottom padding required.
+ * `(main)` group along with the additional bottom padding required.
  */
 export function useBottomActionsLayout() {
   const pathname = usePathname(); // Fires whenever we navigate to a different screen.

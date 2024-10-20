@@ -33,7 +33,7 @@ export default function MainLayout() {
 //#endregion
 
 //#region Bottom Actions
-/** Actions stickied to the bottom of the screens in the `(app)` group. */
+/** Actions stickied to the bottom of the screens in the `(main)` group. */
 function BottomActions() {
   const { isRendered } = useBottomActionsLayout();
 

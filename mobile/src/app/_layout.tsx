@@ -23,7 +23,7 @@ export { ErrorBoundary };
 
 export const unstable_settings = {
   // Ensure that reloading on `/settings` keeps a back button present.
-  initialRouteName: "(app)/(home)",
+  initialRouteName: "(main)/(home)",
 };
 
 Sentry.init({
@@ -74,7 +74,7 @@ function RootLayoutNav() {
   return (
     <AppProvider>
       <Stack screenOptions={{ header: HeaderBar, headerShown: false }}>
-        <Stack.Screen name="(app)" />
+        <Stack.Screen name="(main)" />
         <Stack.Screen
           name="current-track"
           options={{
