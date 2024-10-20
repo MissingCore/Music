@@ -1,6 +1,8 @@
+import type { FlashListProps } from "@shopify/flash-list";
 import { FlashList } from "@shopify/flash-list";
 import type { Href } from "expo-router";
 import { router } from "expo-router";
+import { useMemo } from "react";
 import { Pressable, View } from "react-native";
 
 import { useGetColumn } from "@/hooks/useGetColumn";
@@ -68,32 +70,35 @@ export const MediaCardPlaceholderContent: MediaCard.Content = {
 //#endregion
 
 //#region Media Card List
-/** Lists out `<MediaCard />` in a grid. */
-export function MediaCardList(props: {
+type MediaCardListProps = {
   data: Maybe<readonly MediaCard.Content[]>;
-  emptyMessage: string;
-  isLoading?: boolean;
+  emptyMessage?: string;
+  isPending?: boolean;
   /**
    * Renders a special entry before all other data. This assumes at `data[0]`,
    * we have a `MediaCardPlaceholderContent`.
    */
   RenderFirst?: (props: { size: number }) => React.JSX.Element;
-}) {
+};
+
+/** Hook for getting the presets used in the FlashList for `<MediaCardList />`. */
+export function useMediaCardListPreset(props: MediaCardListProps) {
   const { count, width } = useGetColumn({
     ...{ cols: 2, gap: 16, gutters: 32, minWidth: 175 },
   });
 
-  /*
-    Utilized janky margin method to implement gaps in FlashList with columns.
-      - https://github.com/shopify/flash-list/discussions/804#discussioncomment-5509022
-  */
-  return (
-    <FlashList
-      numColumns={count}
-      estimatedItemSize={width + 40}
-      data={props.data}
-      keyExtractor={({ href }) => href}
-      renderItem={({ item, index }) => (
+  return useMemo(
+    () => ({
+      numColumns: count,
+      // ~40px for text content under `<MediaImage />` + 16px Margin Bottom
+      estimatedItemSize: width + 40 + 16,
+      data: props.data,
+      keyExtractor: ({ href }) => href,
+      /*
+        Utilized janky margin method to implement gaps in FlashList with columns.
+          - https://github.com/shopify/flash-list/discussions/804#discussioncomment-5509022
+      */
+      renderItem: ({ item, index }) => (
         <View className="mx-2 mb-4">
           {props.RenderFirst && index === 0 ? (
             <props.RenderFirst size={width} />
@@ -101,17 +106,22 @@ export function MediaCardList(props: {
             <MediaCard {...item} size={width} />
           )}
         </View>
-      )}
-      ListEmptyComponent={
-        props.isLoading ? (
-          <Loading />
-        ) : (
-          <StyledText center>{props.emptyMessage}</StyledText>
-        )
-      }
-      showsVerticalScrollIndicator={false}
-      className="-mx-2 -mb-4"
-    />
-  );
+      ),
+      ListEmptyComponent: props.isPending ? (
+        <Loading />
+      ) : (
+        <StyledText center>{props.emptyMessage}</StyledText>
+      ),
+      ListHeaderComponentStyle: { paddingHorizontal: 8 },
+      className: "-mx-2 -mb-4",
+    }),
+    [count, width, props],
+  ) satisfies FlashListProps<MediaCard.Content>;
+}
+
+/** Lists out `<MediaCard />` in a grid. */
+export function MediaCardList(props: MediaCardListProps) {
+  const presets = useMediaCardListPreset(props);
+  return <FlashList {...presets} showsVerticalScrollIndicator={false} />;
 }
 //#endregion

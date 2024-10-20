@@ -7,7 +7,7 @@ import { formatTracksForTrack } from "@/db/utils/formatters";
 
 import { Sort } from "@/resources/icons";
 import { useTheme } from "@/hooks/useTheme";
-import { StickyActionListLayout } from "@/layouts/StickyActionListLayout";
+import { StickyActionListLayout } from "@/layouts/StickyActionLayout";
 
 import { trackKeys } from "@/constants/QueryKeys";
 import { Ripple } from "@/components/new/Form";

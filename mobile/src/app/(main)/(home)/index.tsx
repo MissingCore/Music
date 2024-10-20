@@ -104,7 +104,6 @@ function Favorites() {
   return (
     <MediaCardList
       data={[MediaCardPlaceholderContent, ...(data ?? [])]}
-      emptyMessage=""
       RenderFirst={FavoriteTracks}
     />
   );

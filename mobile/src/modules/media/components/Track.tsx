@@ -80,7 +80,7 @@ export function Track({ id, trackSource, ...props }: Track.Props) {
 //#region Track List
 type TrackListProps = {
   data: Maybe<readonly Track.Content[]>;
-  emptyMessage: string;
+  emptyMessage?: string;
   isPending?: boolean;
   trackSource: PlayListSource;
 };

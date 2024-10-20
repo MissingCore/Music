@@ -2,6 +2,7 @@ export {
   MediaCard,
   MediaCardList,
   MediaCardPlaceholderContent,
+  useMediaCardListPreset,
 } from "./MediaCard";
 export {
   NextButton,
