@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { PlayArrow, Pause } from "../resources/icons";
@@ -32,6 +33,7 @@ export function MediaListControls({
  * from this media list).
  */
 function PlayMediaListButton({ trackSource }: { trackSource: PlayListSource }) {
+  const { t } = useTranslation();
   const currSource = useMusicStore((state) => state.playingSource);
   const isPlaying = useMusicStore((state) => state.isPlaying);
 
@@ -43,6 +45,7 @@ function PlayMediaListButton({ trackSource }: { trackSource: PlayListSource }) {
   return (
     <Button
       preset="danger"
+      accessibilityLabel={t(`common.${displayPause ? "pause" : "play"}`)}
       onPress={
         displayPause
           ? MusicControls.pause
