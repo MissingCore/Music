@@ -1,0 +1,230 @@
+{
+  "language": "Indonesia",
+
+  "common": {
+    "album": "Album",
+    "albums": "Album",
+    "artist": "Artis",
+    "artists": "Artis",
+    "folder": "Folder",
+    "folders": "Folder",
+    "playlist": "Daftar Putar",
+    "playlists": "Daftar Putar",
+    "track": "Trek",
+    "tracks": "Trek",
+
+    "play": "Putar",
+    "pause": "Jeda",
+    "prev": "Sebelumnya",
+    "next": "Berikutnya",
+    "shuffle": "Acak",
+    "repeat": "Ulangi",
+
+    "favorite": "Sukai",
+    "unFavorite": "Batal Sukai"
+  },
+
+  "header": {
+    "home": "Beranda",
+    "search": "Cari",
+
+    "settings": "Pengaturan",
+    "appUpdate": "Pembaruan Aplikasi",
+    "appearance": "Tampilan",
+    "insights": "Insight",
+    "saveErrors": "Simpan Galat",
+    "scanning": "Memindai",
+    "thirdParty": "Perangkat Lunak Pihak Ketiga"
+  },
+  "title": {
+    "language": "Bahasa",
+    "backup": "Cadangkan",
+    "font": "Font Aksen",
+    "theme": "Tema",
+    "listAllow": "Diizinkan",
+    "listBlock": "Diblokir",
+    "ignoreDuration": "Abaikan Audio Pendek",
+    "sort": "urutan penyortiran",
+    "musicAdd": "Tambahkan Musik",
+    "upcoming": "Yang akan Datang"
+  },
+
+  "playlist": {
+    "create": "Buat Daftar Putar",
+    "edit": "Sunting Daftar Putar",
+    "delete": "Hapus Daftar Putar",
+
+    "add": "Tambahkan ke Daftar Putar",
+    "artworkChange": "Ubah Karya Seni",
+    "artworkRemove": "Hapus Karya Seni"
+  },
+
+  "home": {
+    "playedRecent": "Baru Saja Diputar",
+    "favorites": "Difavoritkan"
+  },
+
+  "settings": {
+    "interactions": "Tidak Ada Interaksi",
+    "scanning": "Memindai",
+    "rescan": "Memindai Ulang",
+    "translate": "Kontribusi Penerjemahan",
+    "code": "Repositori GitHub",
+    "license": "Lisensi",
+    "privacy": "Kebijakan Privasi",
+    "version": "Versi",
+
+    "brief": {
+      "appUpdate": "Versi terbaru sudah tersedia!",
+      "appearance": "Personalisasikan aplikasi.",
+      "backup": "Pindahkan data antar perangkat.",
+      "insights": "Penggunaan aplikasi & statistik.",
+      "saveErrors": "Lihat mengapa beberapa trek tidak disimpan.",
+      "interactions": "Fitur tidak didukung.",
+      "scanning": "Opsi jelajahi musik.",
+      "rescan": "Cari untuk beberapa media baru.",
+      "translate": "Bantu menerjemahkan aplikasi ini ke dalam bahasa lainnya.",
+      "code": "Lapor issue, kontribusi, atau request fitur baru.",
+      "thirdParty": "Apa yang membuat aplikasi ini memungkinkan."
+    },
+
+    "description": {
+      "backup": "Transfer data dari aplikasi ini antar perangkat melalui berkas `music_backup.json`.",
+      "listAllow": "Defaultnya adalah berikut jika kosong:",
+      "listBlock": "Memiliki prioritas lebih tinggi terhadap entri dalam daftar perizinan.",
+      "ignoreDuration": "Durasi audio dalam detik yang tidak ingin kami simpan."
+    },
+
+    "related": {
+      "appDownload": "Unduh APK saat ini",
+      "appUpdate": "Perbarui melalui Play Store",
+
+      "light": "Terang",
+      "dark": "Gelap",
+      "system": "Sistem",
+
+      "export": "Ekspor",
+      "import": "Impor",
+
+      "images": "Gambar",
+      "database": "Database",
+      "other": "Lain-lain",
+      "cache": "Tembolok",
+      "total": "Total",
+      "totalDuration": "Durasi Total",
+
+      "pathAdd": "Tambahkan direktori.",
+      "pathSelect": "Pilih direktori."
+    }
+  },
+
+  "errorScreen": {
+    "unmatched": "Rute tidak sesuai",
+    "unmatchedBrief": "Anda menavigasikan ke rute yang tidak valid.",
+    "missing": "Hilang",
+    "from": "Dari",
+
+    "generic": "Terjadi Kesalahan",
+    "genericBrief": "Anda mengalami kesalahan yang tidak terduga.",
+
+    "report": "Laporkan Issue",
+    "screenshot": "Sertakan tangkapan layar ini."
+  },
+
+  "onboardingScreen": {
+    "preprocess": "Praproses",
+    "preprocessBrief": "Memastikan data yang ada sesuai dengan perubahan apa pun.",
+
+    "track": "Menyimpan Trek",
+    "prevSaved": "{{amount}} Disimpan Sebelumnya",
+    "saved": "{{amount}}/{{total}} Disimpan/Diperbarui",
+    "errors": "{{amount}} Kesalahan",
+
+    "image": "Menyimpan Gambar",
+    "checked": "{{amount}}/{{total}} Telah diperiksa",
+    "found": "{{amount}} Ditemukan"
+  },
+
+  "sortModal": {
+    "asc": "Urutan Naik",
+    "alphabetical": "Alfabet",
+    "modified": "Terakhir Diubah"
+  },
+  "trackModal": {
+    "bitrate": "Bitrate",
+    "sampleRate": "Sample Rate",
+    "size": "Ukuran",
+    "modified": "$t(sortModal.modified)",
+    "filePath": "Lokasi Berkas",
+
+    "playlistAdd": "$t(playlist.add)",
+    "queueAdd": "Tambahkan ke Antrian"
+  },
+
+  "form": {
+    "apply": "Terapkan Perubahan",
+    "back": "Kembali",
+    "cancel": "Batal",
+    "confirm": "Konfirmasi",
+
+    "unsaved": "Anda masih memiliki perubahan yang belum disimpan.",
+    "stay": "Tetap disini",
+    "leave": "Keluar",
+
+    "placeholder": {
+      "playlistName": "Nama Daftar Putar",
+      "searchMedia": "Cari Media"
+    },
+
+    "validation": {
+      "unique": "Unik"
+    }
+  },
+
+  "template": {
+    "entryAdded": "`{{- name}}` telah ditambahkan.",
+    "entryRemove": "`{{- name}}` Dihapus.",
+    "entryRemoved": "`{{- name}}` Telah Dihapus.",
+    "entrySeeMore": "See more about `{{- name}}`.",
+    "notFound": "`{{- name}}` tidak ditemukan."
+  },
+
+  "plural": {
+    "entry_one": "{{count}} entri",
+    "entry_other": "{{count}} entri",
+    "second_one": "{{count}} detik",
+    "second_other": "{{count}} detik",
+    "track_one": "{{count}} $t(common.track)",
+    "track_other": "{{count}} $t(common.tracks)"
+  },
+
+  "response": {
+    "noRecents": "Anda belum memutar apapun!",
+    "noErrors": "Tidak ada masalah yang ditemukan.",
+    "noFilters": "Tidak ada filter yang ditemukan.",
+    "noResults": "Tidak ada hasil yang ditemukan.",
+    "noContent": "Tidak ada konten yang ditemukan.",
+
+    "noAlbums": "Tidak ada album yang ditemukan.",
+    "noArtists": "Tidak ada artis yang ditemukan.",
+    "noPlaylists": "Tidak ada daftar putar yang ditemukan.",
+    "noTracks": "Tidak ada trek yang ditemukan.",
+    "noDirectory": "Tidak ada direktori yang ditemukan.",
+
+    "queueAdd": "`{{- name}}` ditambahkan ke antrian.",
+
+    "exportSuccess": "Cadangan berhasil dibuat.",
+    "importSuccess": "Impor cadangan selesai.",
+
+    "scanStart": "Memindai ulang pustaka...",
+    "scanSuccess": "Selesai memindai ulang pustaka.",
+    "scanFail": "Gagal memindai ulang pustaka.",
+
+    "pathSelectFail": "Tidak ada direktori yang dipilih.",
+
+    "actionCancel": "Tindakan dibatalkan.",
+    "noSelect": "Tidak ada yang dipilih.",
+    "invalidStructure": "Struktur tidak valid.",
+    "usedName": "Nama ini tidak bisa digunakan."
+  }
+}
