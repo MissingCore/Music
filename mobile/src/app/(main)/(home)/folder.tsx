@@ -111,7 +111,7 @@ const FolderListPreset = (props: {
   ({
     estimatedItemSize: 56, // 48px Height + 8px Margin Botton
     data: props.data,
-    keyExtractor: (item) => (isTrackContent(item) ? item.id : item.path),
+    keyExtractor: (_, index) => `${index}`,
     renderItem: ({ item, index }) => (
       <View className={cn({ "mt-2": index !== 0 })}>
         {isTrackContent(item) ? (
