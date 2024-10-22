@@ -1,6 +1,6 @@
 import type { FlashListProps } from "@shopify/flash-list";
 import { FlashList } from "@shopify/flash-list";
-import { useCallback, useMemo } from "react";
+import { forwardRef, useCallback, useMemo, useRef } from "react";
 import type { LayoutChangeEvent, ScrollViewProps } from "react-native";
 import { View, useWindowDimensions } from "react-native";
 import Animated, {
@@ -19,12 +19,10 @@ import { AccentText } from "@/components/new/Typography";
 
 //#region Layout
 /** Full-screen layout for displaying content on pages without a header bar. */
-export function StickyActionLayout({
-  title,
-  StickyAction,
-  children,
-  ...rest
-}: ScrollViewProps & { title: string; StickyAction?: React.ReactNode }) {
+export const StickyActionLayout = forwardRef<
+  Animated.ScrollView,
+  ScrollViewProps & { title: string; StickyAction?: React.ReactNode }
+>(function StickyActionLayout({ title, StickyAction, children, ...rest }, ref) {
   const { top } = useSafeAreaInsets();
   const { bottomInset } = useBottomActionsLayout();
 
@@ -62,6 +60,7 @@ export function StickyActionLayout({
 
   return (
     <Animated.ScrollView
+      ref={ref}
       onScroll={scrollHandler}
       showsVerticalScrollIndicator={false}
       stickyHeaderIndices={!!StickyAction ? [1] : undefined}
@@ -90,7 +89,7 @@ export function StickyActionLayout({
       {children}
     </Animated.ScrollView>
   );
-}
+});
 //#endregion
 
 //#region List Layout
@@ -102,6 +101,7 @@ export function StickyActionListLayout<TData>({
   title,
   StickyAction,
   estimatedActionSize = 0,
+  listRef,
   ...flashListProps
 }: FlashListProps<TData> & {
   /** Name of list. */
@@ -110,6 +110,8 @@ export function StickyActionListLayout<TData>({
   StickyAction?: React.JSX.Element;
   /** Height of the StickyAction. */
   estimatedActionSize?: number;
+  /** Pass a ref to the animated FlashList. */
+  listRef?: React.RefObject<Animated.FlatList<TData>>;
 }) {
   const { top } = useSafeAreaInsets();
   const { width: ScreenWidth } = useWindowDimensions();
@@ -152,6 +154,8 @@ export function StickyActionListLayout<TData>({
   return (
     <>
       <AnimatedFlashList
+        // @ts-expect-error An Animated.FlatList shares the general methods we want to access.
+        ref={listRef}
         onScroll={scrollHandler}
         ListHeaderComponent={
           <StickyActionHeader
@@ -181,6 +185,14 @@ export function StickyActionListLayout<TData>({
       ) : null}
     </>
   );
+}
+//#endregion
+
+//#region Hooks
+/** Custom hook for getting a ref to a `<StickyActionListLayout />`. */
+export function useStickyActionListLayoutRef<TData>() {
+  const ref = useRef<Animated.FlatList<TData>>(null);
+  return ref;
 }
 //#endregion
 
