@@ -220,6 +220,10 @@
     "scanSuccess": "Das erneute Scannen ist abgeschlossen.",
     "scanFail": "Die Sammlung konnte nicht erneut gescannt werden.",
 
-    "pathSelectFail": "Kein Verzeichnis ausgewählt."
+    "pathSelectFail": "Kein Verzeichnis ausgewählt.",
+    "actionCancel": "Die Aktion wurde abgesagt.",
+    "noSelect": "Nichts ist ausgewählt.",
+    "invalidStructure": "Ungültige Struktur.",
+    "usedName": "Dieser Name darf nicht benutzt werden."
   }
 }
