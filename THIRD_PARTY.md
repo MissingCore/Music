@@ -40,6 +40,7 @@
 | react | MIT | https://github.com/facebook/react |
 | react-i18next | MIT | https://github.com/i18next/react-i18next |
 | react-native | MIT | https://github.com/facebook/react-native |
+| react-native-actions-sheet | MIT | https://github.com/ammarahm-ed/react-native-actions-sheet |
 | react-native-bootsplash | MIT | https://github.com/zoontek/react-native-bootsplash |
 | react-native-gesture-handler | MIT | https://github.com/software-mansion/react-native-gesture-handler |
 | react-native-markdown-display | MIT | https://github.com/iamacup/react-native-markdown-display |
