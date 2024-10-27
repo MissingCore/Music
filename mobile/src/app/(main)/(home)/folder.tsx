@@ -1,5 +1,6 @@
 import { useIsFocused } from "@react-navigation/native";
 import type { FlashListProps } from "@shopify/flash-list";
+import { useQuery } from "@tanstack/react-query";
 import { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -22,13 +23,15 @@ import Animated, {
 } from "react-native-reanimated";
 
 import type { FileNode } from "@/db/schema";
+import { getFolder } from "@/db/queries";
+import { formatTracksForTrack } from "@/db/utils/formatters";
 
-import { useFolderContentForPath } from "@/api/file-nodes/[...id]";
 import {
   StickyActionListLayout,
   useStickyActionListLayoutRef,
 } from "@/layouts/StickyActionLayout";
 
+import { fileNodeKeys } from "@/constants/QueryKeys";
 import { cn } from "@/lib/style";
 import type { Maybe } from "@/utils/types";
 import { Ripple } from "@/components/new/Form";
@@ -37,16 +40,18 @@ import { StyledText } from "@/components/new/Typography";
 import { MediaImage, Track } from "@/modules/media/components";
 import type { PlayListSource } from "@/modules/media/types";
 
+type FolderData = FileNode | Track.Content;
+
 /** Screen for `/folder` route. */
 export default function FolderScreen() {
   const { t } = useTranslation();
   const isFocused = useIsFocused();
-  const listRef = useStickyActionListLayoutRef<FileNode | Track.Content>();
+  const listRef = useStickyActionListLayoutRef<FolderData>();
   const [dirSegments, setDirSegments] = useState<string[]>([]);
 
   const fullPath = dirSegments.join("/");
 
-  const { isPending, data } = useFolderContentForPath(fullPath);
+  const { isPending, data } = useFolderContent(fullPath);
 
   useEffect(() => {
     // Prevent event from working when this screen isn't focused.
@@ -70,13 +75,7 @@ export default function FolderScreen() {
   }, [dirSegments, isFocused, listRef]);
 
   // Information about this track list.
-  const trackSource = {
-    type: "folder",
-    // Theoretically, no tracks should be on the "root" (ie: `id = undefined`),
-    // so we shouldn't see any cases where we play a track from the
-    // invalid track source "id" created.
-    id: `${fullPath}/`,
-  } as const;
+  const trackSource = { type: "folder", id: `${fullPath}/` } as const;
 
   return (
     <StickyActionListLayout
@@ -102,7 +101,7 @@ export default function FolderScreen() {
 
 //#region Preset
 const FolderListPreset = (props: {
-  data: Maybe<ReadonlyArray<FileNode | Track.Content>>;
+  data: Maybe<readonly FolderData[]>;
   emptyMessage?: string;
   isPending?: boolean;
   trackSource: PlayListSource;
@@ -135,7 +134,7 @@ const FolderListPreset = (props: {
     ) : (
       <StyledText center>{props.emptyMessage}</StyledText>
     ),
-  }) satisfies FlashListProps<FileNode | Track.Content>;
+  }) satisfies FlashListProps<FolderData>;
 
 function isTrackContent(data: unknown): data is Track.Content {
   return Object.hasOwn(data as Track.Content, "id");
@@ -224,4 +223,16 @@ function Breadcrumbs({
     </Animated.ScrollView>
   );
 }
+//#endregion
+
+//#region Data
+const useFolderContent = (path?: string) =>
+  useQuery({
+    queryKey: fileNodeKeys.detail(path ?? ".root"),
+    queryFn: () => getFolder(path),
+    select: ({ subDirectories, tracks }) => ({
+      subDirectories,
+      tracks: formatTracksForTrack({ type: "track", data: tracks }),
+    }),
+  });
 //#endregion
