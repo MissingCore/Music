@@ -110,5 +110,10 @@
         "expo-splash-screen"
       ]
     }
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "react-native-actions-sheet@0.9.7": "patches/react-native-actions-sheet@0.9.7.patch"
+    }
   }
 }

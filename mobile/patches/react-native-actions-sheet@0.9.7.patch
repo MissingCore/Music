@@ -1,0 +1,14 @@
+diff --git a/dist/src/index.js b/dist/src/index.js
+index 0e124da4da841bfb16fd7379ba77e8e8fc9abbe7..b86a21be4968d3885490e2f2eb4521a89ac1aea2 100644
+--- a/dist/src/index.js
++++ b/dist/src/index.js
+@@ -336,7 +336,8 @@ export default forwardRef(function ActionSheet(_a, ref) {
+                 ? safeAreaPaddings.current.top < 20
+                     ? 20
+                     : safeAreaPaddings.current.top
+-                : StatusBar.currentHeight || 0;
++                // FIXME: Apply safeAreaPaddings for custom model max height
++                : safeAreaPaddings.current.top || StatusBar.currentHeight || 0;
+             var height = rootViewHeight - safeMarginFromTop;
+             var width = rootViewWidth;
+             dimensionsRef.current = {
