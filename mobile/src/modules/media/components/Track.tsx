@@ -1,13 +1,12 @@
 import type { FlashListProps } from "@shopify/flash-list";
 import { FlashList } from "@shopify/flash-list";
-import { useSetAtom } from "jotai";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
+import { SheetManager } from "react-native-actions-sheet";
 
 import { MoreVert } from "@/resources/icons";
 import { playFromMediaList } from "../services/Playback";
 import type { PlayListSource } from "../types";
-import { mediaModalAtom } from "@/modals/categories/media/store";
 
 import { cn } from "@/lib/style";
 import type { Maybe, Prettify } from "@/utils/types";
@@ -39,8 +38,6 @@ export namespace Track {
  */
 export function Track({ id, trackSource, ...props }: Track.Props) {
   const { t } = useTranslation();
-  const openModal = useSetAtom(mediaModalAtom);
-
   return (
     <Ripple
       onPress={() => playFromMediaList({ trackId: id, source: trackSource })}
@@ -68,7 +65,7 @@ export function Track({ id, trackSource, ...props }: Track.Props) {
       <Ripple
         preset="icon"
         accessibilityLabel={t("template.entrySeeMore", { name: props.title })}
-        onPress={() => openModal({ entity: "track", scope: "view", id })}
+        onPress={() => SheetManager.show("track-sheet", { payload: { id } })}
       >
         <MoreVert />
       </Ripple>
