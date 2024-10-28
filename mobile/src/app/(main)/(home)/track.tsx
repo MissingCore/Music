@@ -3,10 +3,12 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 
+import type { TrackWithAlbum } from "@/db/schema";
 import { getTracks } from "@/db/queries";
-import { formatTracksForTrack } from "@/db/utils/formatters";
+import { getTrackCover } from "@/db/utils/formatters";
 
 import { Sort } from "@/resources/icons";
+import { useSessionPreferencesStore } from "@/services/SessionPreferences";
 import { useTheme } from "@/hooks/useTheme";
 import { StickyActionListLayout } from "@/layouts/StickyActionLayout";
 
@@ -62,11 +64,35 @@ function TrackActions() {
 //#endregion
 
 //#region Data
-const useTracksForTrackCard = () =>
-  useQuery({
+const useTracksForTrackCard = () => {
+  const isAsc = useSessionPreferencesStore((state) => state.isAsc);
+  const orderedBy = useSessionPreferencesStore((state) => state.orderedBy);
+
+  return useQuery({
     queryKey: trackKeys.all,
     queryFn: () => getTracks(),
     staleTime: Infinity,
-    select: (data) => formatTracksForTrack({ type: "track", data }),
+    select: (data) => {
+      // FIXME: Once Hermes supports `toSorted` & `toReversed`, use those
+      // instead of the in-place methods.
+      let sortedTracks: TrackWithAlbum[] = [...data];
+      // Order track by attribute.
+      if (orderedBy === "alphabetical") {
+        sortedTracks.sort((a, b) => a.name.localeCompare(b.name));
+      } else if (orderedBy === "modified") {
+        sortedTracks.sort((a, b) => a.modificationTime - b.modificationTime);
+      }
+      // Sort tracks in descending order.
+      if (!isAsc) sortedTracks.reverse();
+
+      // Format tracks.
+      return sortedTracks.map((tk) => ({
+        id: tk.id,
+        title: tk.name,
+        description: tk.artistName ?? "—",
+        imageSource: getTrackCover(tk),
+      }));
+    },
   });
+};
 //#endregion
