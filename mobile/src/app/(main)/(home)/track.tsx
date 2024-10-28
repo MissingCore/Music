@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
+import { SheetManager } from "react-native-actions-sheet";
 
 import { getTracks } from "@/db/queries";
 import { formatTracksForTrack } from "@/db/utils/formatters";
@@ -50,7 +51,7 @@ function TrackActions() {
         preset="icon"
         accessibilityLabel={t("title.sort")}
         android_ripple={{ color: `${canvas}40` }}
-        onPress={() => console.log("Opening sort modal...")}
+        onPress={() => SheetManager.show("track-sort-sheet")}
       >
         <Sort />
       </Ripple>
