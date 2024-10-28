@@ -1,6 +1,12 @@
+export { Album } from "./Album";
+export { Artist } from "./Artist";
+export { Favorite } from "./Favorite";
 export { Pause } from "./Pause";
 export { PlayArrow } from "./PlayArrow";
+export { PlaylistAdd } from "./PlaylistAdd";
+export { QueueMusic } from "./QueueMusic";
 export { Repeat } from "./Repeat";
+export { Schedule } from "./Schedule";
 export { Shuffle } from "./Shuffle";
 export { SkipNext } from "./SkipNext";
 export { SkipPrevious } from "./SkipPrevious";
