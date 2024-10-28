@@ -29,13 +29,12 @@ export function Sheet({
   contentContainerStyle?: StyleProp<ViewStyle>;
 }) {
   const insets = useSafeAreaInsets();
-
   return (
     <WrappedActionSheet
       gestureEnabled
       CustomHeaderComponent={<SheetHeader title={title} />}
       containerClassName={cn("rounded-t-lg bg-canvas dark:bg-neutral5", {
-        "flex-1": snapTop,
+        "h-full": snapTop,
       })}
       // Have sheet max height be right before the top app bar.
       //  - Note 1: We've patched the package as it only relies on the top

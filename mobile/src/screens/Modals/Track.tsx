@@ -38,15 +38,15 @@ import { MediaImage } from "@/modules/media/components";
 
 /** Sheet containing information and actions for a track. */
 export default function TrackSheet(props: SheetProps<"track-sheet">) {
-  const { isLoading, error, data } = useTrack(props.payload?.id);
+  const { isPending, error, data } = useTrack(props.payload?.id);
   return (
     <Sheet id={props.sheetId} contentContainerClassName="gap-4">
-      {isLoading || error ? null : (
+      {isPending || error ? null : (
         <>
-          <TrackIntro data={data!} />
+          <TrackIntro data={data} />
           <Divider />
-          <AddActions data={data!} />
-          <TrackLinks data={data!} />
+          <AddActions data={data} />
+          <TrackLinks data={data} />
         </>
       )}
     </Sheet>
@@ -112,9 +112,14 @@ function AddActions({ data }: { data: TrackData }) {
   return (
     <View className="flex-row flex-wrap gap-2">
       <IconButton
-        onPress={() => console.log("Opening playlist model...")}
+        onPress={() =>
+          SheetManager.show("track-to-playlist-sheet", {
+            payload: { id: data.id },
+          })
+        }
         Icon={<PlaylistAdd />}
         text={t("playlist.add")}
+        preventClose
       />
       <IconButton
         onPress={() => Queue.add(data.id)}
@@ -177,6 +182,7 @@ function TrackLinks({ data }: { data: TrackData }) {
     </>
   );
 }
+//#endregion
 
 //#region Icon Button
 /** Clicking this button will also close the model */
@@ -184,12 +190,13 @@ function IconButton(props: {
   onPress: () => void;
   Icon: React.JSX.Element;
   text: string;
+  preventClose?: boolean;
 }) {
   const { width } = useGetColumn({ cols: 2, gap: 8, gutters: 32 });
   return (
     <Button
       onPress={() => {
-        SheetManager.hide("track-sheet");
+        if (!props.preventClose) SheetManager.hide("track-sheet");
         props.onPress();
       }}
       style={{ width }}

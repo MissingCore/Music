@@ -2,6 +2,7 @@ import type { SheetDefinition } from "react-native-actions-sheet";
 import { registerSheet } from "react-native-actions-sheet";
 
 import TrackSheet from "./Track";
+import TrackToPlaylistSheet from "./TrackToPlaylist";
 
 /*
   Note: Our sheets need to always render some (ie: not `null`). If we
@@ -9,12 +10,14 @@ import TrackSheet from "./Track";
   appears, the sheet won't render as it expects a sheet on initial render.
 */
 registerSheet("track-sheet", TrackSheet);
+registerSheet("track-to-playlist-sheet", TrackToPlaylistSheet);
 
 // We extend some of the types here to give us great intellisense
 // across the app for all registered sheets.
 declare module "react-native-actions-sheet" {
   interface Sheets {
     "track-sheet": SheetDefinition<{ payload: { id: string } }>;
+    "track-to-playlist-sheet": SheetDefinition<{ payload: { id: string } }>;
   }
 }
 
