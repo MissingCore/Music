@@ -5,10 +5,7 @@ import Animated, {
 
 import { cn } from "@/lib/style";
 
-/**
- * Simple switch component that's externally controlled (there is no
- * "press" event on the switch).
- */
+/** Externally controlled switch component (BYO `<Pressable />`). */
 export function Switch({ enabled }: { enabled: boolean }) {
   const thumbStyle = useAnimatedStyle(() => ({
     transform: [

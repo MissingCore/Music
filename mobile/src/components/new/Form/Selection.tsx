@@ -6,7 +6,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { cn } from "@/lib/style";
 
 /** Shared props between `<Checkbox />` and `<Radio />` */
-type OptionProps = {
+type SelectionProps = {
   onSelect: () => void;
   selected: boolean;
   children: React.JSX.Element;
@@ -21,17 +21,17 @@ type OptionProps = {
 };
 
 /** Controlled checkbox component. */
-export function Checkbox(props: OptionProps) {
-  return <Option type="checkbox" {...props} />;
+export function Checkbox(props: SelectionProps) {
+  return <Selection type="checkbox" {...props} />;
 }
 
 /** Controlled radio button component. */
-export function Radio(props: OptionProps) {
-  return <Option type="radio" {...props} />;
+export function Radio(props: SelectionProps) {
+  return <Selection type="radio" {...props} />;
 }
 
-/** Based for controlled checkbox or radio component. */
-function Option(props: OptionProps & { type: "checkbox" | "radio" }) {
+/** Base for controlled checkbox or radio component. */
+function Selection(props: SelectionProps & { type: "checkbox" | "radio" }) {
   const { surface } = useTheme();
   return (
     <View
