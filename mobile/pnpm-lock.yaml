@@ -7,6 +7,11 @@ settings:
 overrides:
   markdown-it: 14.1.0
 
+patchedDependencies:
+  react-native-actions-sheet@0.9.7:
+    hash: rilo6dygbis6iqezxxrswoam2q
+    path: patches/react-native-actions-sheet@0.9.7.patch
+
 dependencies:
   '@expo/vector-icons':
     specifier: ^14.0.4
@@ -116,6 +121,9 @@ dependencies:
   react-native:
     specifier: 0.75.4
     version: 0.75.4(@babel/core@7.25.8)(@babel/preset-env@7.25.8)(@types/react@18.3.11)(react@18.3.1)(typescript@5.6.3)
+  react-native-actions-sheet:
+    specifier: ^0.9.7
+    version: 0.9.7(patch_hash=rilo6dygbis6iqezxxrswoam2q)(react-native-gesture-handler@2.20.0)(react-native-safe-area-context@4.11.1)(react-native@0.75.4)
   react-native-bootsplash:
     specifier: ^6.2.2
     version: 6.2.2(react-native@0.75.4)(react@18.3.1)
@@ -2256,7 +2264,7 @@ packages:
 
   /@expo/bunyan@4.0.1:
     resolution: {integrity: sha512-+Lla7nYSiHZirgK+U/uYzsLv/X+HaJienbD5AKX1UQZHYfWaP+9uuQluRB4GrEVWF0GZ7vEVp/jzaOT9k/SQlg==}
-    engines: {node: '>=0.10.0'}
+    engines: {'0': node >=0.10.0}
     dependencies:
       uuid: 8.3.2
     dev: false
@@ -10553,6 +10561,19 @@ packages:
 
   /react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
+
+  /react-native-actions-sheet@0.9.7(patch_hash=rilo6dygbis6iqezxxrswoam2q)(react-native-gesture-handler@2.20.0)(react-native-safe-area-context@4.11.1)(react-native@0.75.4):
+    resolution: {integrity: sha512-rjUwxUr5dxbdSLDtLDUFAdSlFxpNSpJsbXLhHkBzEBMxEMPUhRT3zqbvKqsPj0JUkjwuRligxrhbIJZkg/6ZDw==}
+    peerDependencies:
+      react-native: '*'
+      react-native-gesture-handler: '*'
+      react-native-safe-area-context: '*'
+    dependencies:
+      react-native: 0.75.4(@babel/core@7.25.8)(@babel/preset-env@7.25.8)(@types/react@18.3.11)(react@18.3.1)(typescript@5.6.3)
+      react-native-gesture-handler: 2.20.0(react-native@0.75.4)(react@18.3.1)
+      react-native-safe-area-context: 4.11.1(react-native@0.75.4)(react@18.3.1)
+    dev: false
+    patched: true
 
   /react-native-bootsplash@6.2.2(react-native@0.75.4)(react@18.3.1):
     resolution: {integrity: sha512-a3i/PwMzRnIUkZ91njKy9JhNmNGTnGxzYnrAycreTH0obEpmnzW6IHyxOcQDLkgAPQ8YzKO9VUQXwjd4L/NeqQ==}

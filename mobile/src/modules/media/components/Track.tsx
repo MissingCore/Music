@@ -1,13 +1,12 @@
 import type { FlashListProps } from "@shopify/flash-list";
 import { FlashList } from "@shopify/flash-list";
-import { useSetAtom } from "jotai";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
+import { SheetManager } from "react-native-actions-sheet";
 
 import { MoreVert } from "@/resources/icons";
 import { playFromMediaList } from "../services/Playback";
 import type { PlayListSource } from "../types";
-import { mediaModalAtom } from "@/modals/categories/media/store";
 
 import { cn } from "@/lib/style";
 import type { Maybe, Prettify } from "@/utils/types";
@@ -39,8 +38,6 @@ export namespace Track {
  */
 export function Track({ id, trackSource, ...props }: Track.Props) {
   const { t } = useTranslation();
-  const openModal = useSetAtom(mediaModalAtom);
-
   return (
     <Ripple
       onPress={() => playFromMediaList({ trackId: id, source: trackSource })}
@@ -68,7 +65,7 @@ export function Track({ id, trackSource, ...props }: Track.Props) {
       <Ripple
         preset="icon"
         accessibilityLabel={t("template.entrySeeMore", { name: props.title })}
-        onPress={() => openModal({ entity: "track", scope: "view", id })}
+        onPress={() => SheetManager.show("track-sheet", { payload: { id } })}
       >
         <MoreVert />
       </Ripple>
@@ -78,33 +75,36 @@ export function Track({ id, trackSource, ...props }: Track.Props) {
 //#endregion
 
 //#region Track List
+type TrackListProps = {
+  data: Maybe<readonly Track.Content[]>;
+  emptyMessage?: string;
+  isPending?: boolean;
+  trackSource: PlayListSource;
+};
+
+/** Presets used in the FlashList for `<TrackList />`. */
+export const TrackListPreset = (props: TrackListProps) =>
+  ({
+    estimatedItemSize: 56, // 48px Height + 8px Margin Botton
+    data: props.data,
+    keyExtractor: ({ id }) => id,
+    renderItem: ({ item, index }) => (
+      <View className={cn({ "mt-2": index > 0 })}>
+        <Track {...item} trackSource={props.trackSource} />
+      </View>
+    ),
+    ListEmptyComponent: props.isPending ? (
+      <Loading />
+    ) : (
+      <StyledText center>{props.emptyMessage}</StyledText>
+    ),
+  }) satisfies FlashListProps<Track.Content>;
+
 /** Lists out tracks. */
-export function TrackList(
-  props: {
-    data: Maybe<readonly Track.Content[]>;
-    emptyMessage: string;
-    isLoading?: boolean;
-    trackSource: PlayListSource;
-  } & Pick<FlashListProps<Track.Content>, "renderScrollComponent">,
-) {
+export function TrackList(props: TrackListProps) {
   return (
     <FlashList
-      estimatedItemSize={56} // 48px Height + 8px Margin Botton
-      data={props.data}
-      keyExtractor={({ id }) => id}
-      renderItem={({ item, index }) => (
-        <View className={cn({ "mt-2": index > 0 })}>
-          <Track {...item} trackSource={props.trackSource} />
-        </View>
-      )}
-      ListEmptyComponent={
-        props.isLoading ? (
-          <Loading />
-        ) : (
-          <StyledText center>{props.emptyMessage}</StyledText>
-        )
-      }
-      renderScrollComponent={props.renderScrollComponent}
+      {...TrackListPreset(props)}
       showsVerticalScrollIndicator={false}
     />
   );

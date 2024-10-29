@@ -61,6 +61,7 @@ export const TwFontFamilies = Object.keys(FontFamily).map(
 export const FontSize = {
   title: 36,
   subtitle: 28,
+  xxs: 10,
   xs: 12,
   sm: 14,
   base: 16,

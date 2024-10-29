@@ -74,11 +74,11 @@ export default function CurrentTrackScreen() {
           <SeekBar duration={track.duration} />
 
           <View className="flex-row items-center gap-2 p-4 pb-8">
-            <ShuffleButton size={32} />
-            <PreviousButton size={32} />
-            <PlayToggleButton size={32} className="px-5" />
-            <NextButton size={32} />
-            <RepeatButton size={32} />
+            <ShuffleButton />
+            <PreviousButton />
+            <PlayToggleButton />
+            <NextButton />
+            <RepeatButton />
           </View>
         </View>
       </View>

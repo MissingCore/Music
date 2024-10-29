@@ -1,4 +1,5 @@
 import { router } from "expo-router";
+import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import Animated, {
   LinearTransition,
@@ -23,6 +24,7 @@ import { MediaImage } from "./MediaImage";
  * a song loaded.
  */
 export function MiniPlayer({ stacked = false }) {
+  const { t } = useTranslation();
   const { canvas } = useTheme();
   const isPlaying = useMusicStore((state) => state.isPlaying);
   const track = useMusicStore((state) => state.activeTrack);
@@ -57,6 +59,7 @@ export function MiniPlayer({ stacked = false }) {
         <View className="flex-row items-center">
           <PreviousButton rippleColor={`${canvas}40`} />
           <Ripple
+            accessibilityLabel={t(`common.${isPlaying ? "pause" : "play"}`)}
             android_ripple={{ radius: 24, color: `${canvas}40` }}
             onPress={MusicControls.playToggle}
             className="p-2"
