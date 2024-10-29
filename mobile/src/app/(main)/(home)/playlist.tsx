@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { getPlaylists } from "@/db/queries";
 import { formatForMediaCard } from "@/db/utils/formatters";
 
-import { Add } from "@/resources/icons";
+import { Add } from "@/icons";
 import { StickyActionListLayout } from "@/layouts/StickyActionLayout";
 import { mediaModalAtom } from "@/modals/categories/media/store";
 

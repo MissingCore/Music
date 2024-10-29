@@ -6,7 +6,7 @@ import Animated, {
   SlideOutDown,
 } from "react-native-reanimated";
 
-import { Pause, PlayArrow } from "../resources/icons";
+import { Pause, PlayArrow } from "@/icons";
 import { useMusicStore } from "../services/Music";
 import { MusicControls } from "../services/Playback";
 import { useTheme } from "@/hooks/useTheme";

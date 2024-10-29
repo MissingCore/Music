@@ -4,7 +4,7 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { ArrowBack } from "@/resources/icons";
+import { ArrowBack } from "@/icons";
 
 import { Marquee } from "./Marquee";
 import { Ripple } from "./Form";

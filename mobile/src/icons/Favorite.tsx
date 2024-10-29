@@ -1,16 +1,9 @@
 import Svg, { Path } from "react-native-svg";
 
 import { useTheme } from "@/hooks/useTheme";
+import type { Icon } from "./type";
 
-export function Favorite({
-  size = 24,
-  filled = false,
-  color,
-}: {
-  filled?: boolean;
-  size?: number;
-  color?: string;
-}) {
+export function Favorite({ size = 24, filled = false, color }: Icon) {
   const { foreground } = useTheme();
   const usedColor = color ?? foreground;
   return (

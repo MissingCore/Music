@@ -4,7 +4,7 @@ import { Image as ExpoImage } from "expo-image";
 import { cssInterop } from "nativewind";
 import { View } from "react-native";
 
-import { Folder } from "@/resources/icons";
+import { Folder } from "@/icons";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";

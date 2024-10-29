@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 
-import { MoreVert } from "@/resources/icons";
+import { MoreVert } from "@/icons";
 import { playFromMediaList } from "../services/Playback";
 import type { PlayListSource } from "../types";
 

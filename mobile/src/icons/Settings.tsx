@@ -1,14 +1,9 @@
 import Svg, { Path } from "react-native-svg";
 
 import { useTheme } from "@/hooks/useTheme";
+import type { Icon } from "./type";
 
-export function Settings({
-  size = 24,
-  color,
-}: {
-  size?: number;
-  color?: string;
-}) {
+export function Settings({ size = 24, color }: Icon) {
   const { foreground } = useTheme();
   const usedColor = color ?? foreground;
   return (

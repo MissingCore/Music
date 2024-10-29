@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { ScrollView, Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 
-import { LogoGitHub, LogoPlayStore } from "@/resources/icons";
+import { LogoGitHub, LogoPlayStore } from "@/icons";
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 import { useTheme } from "@/hooks/useTheme";

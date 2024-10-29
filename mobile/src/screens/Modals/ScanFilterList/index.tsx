@@ -8,7 +8,7 @@ import { forwardRef, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { Add, CreateNewFolder, Remove } from "@/resources/icons";
+import { Add, CreateNewFolder, Remove } from "@/icons";
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { pickPath, removePath, useAddPathToList, validatePath } from "./data";
 

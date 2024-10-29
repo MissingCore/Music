@@ -1,14 +1,9 @@
 import Svg, { Path } from "react-native-svg";
 
 import { useTheme } from "@/hooks/useTheme";
+import type { Icon } from "./type";
 
-export function Search({
-  size = 24,
-  color,
-}: {
-  size?: number;
-  color?: string;
-}) {
+export function Search({ size = 24, color }: Icon) {
   const { foreground } = useTheme();
   const usedColor = color ?? foreground;
   return (

@@ -7,7 +7,7 @@ import type { TrackWithAlbum } from "@/db/schema";
 import { getTracks } from "@/db/queries";
 import { getTrackCover } from "@/db/utils/formatters";
 
-import { Sort } from "@/resources/icons";
+import { Sort } from "@/icons";
 import { useSessionPreferencesStore } from "@/services/SessionPreferences";
 import { useTheme } from "@/hooks/useTheme";
 import { StickyActionListLayout } from "@/layouts/StickyActionLayout";

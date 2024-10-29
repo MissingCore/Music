@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { Search } from "@/resources/icons";
+import { Search } from "@/icons";
 
 import { TextInput } from "@/components/new/Form";
 import { AccentText } from "@/components/new/Typography";

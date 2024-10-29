@@ -7,7 +7,7 @@ import {
   Shuffle,
   SkipNext,
   SkipPrevious,
-} from "../resources/icons";
+} from "@/icons";
 import { useMusicStore } from "../services/Music";
 import { MusicControls } from "../services/Playback";
 

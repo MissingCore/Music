@@ -6,7 +6,7 @@ import Animated, {
   SlideInDown,
 } from "react-native-reanimated";
 
-import { Search, Settings } from "@/resources/icons";
+import { Search, Settings } from "@/icons";
 import { useBottomActionsLayout } from "@/hooks/useBottomActionsLayout";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 import { useTheme } from "@/hooks/useTheme";

@@ -9,15 +9,15 @@ import type { TrackWithAlbum } from "@/db/schema";
 import { tracks } from "@/db/schema";
 import { getTrack } from "@/db/queries";
 
-import { List } from "@/resources/icons";
 import {
   Album,
   Artist,
   Favorite,
+  List,
   PlaylistAdd,
   QueueMusic,
   Schedule,
-} from "@/modules/media/resources/icons";
+} from "@/icons";
 import { useGetColumn } from "@/hooks/useGetColumn";
 import { useToggleFavorite } from "@/api/favorites/[id]";
 import { Queue, useMusicStore } from "@/modules/media/services/Music";

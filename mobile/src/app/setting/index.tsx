@@ -2,7 +2,7 @@ import { router } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
 import { useTranslation } from "react-i18next";
 
-import { OpenInNew } from "@/resources/icons";
+import { OpenInNew } from "@/icons";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 import { SettingsLayout } from "@/layouts/SettingsLayout";
 import { BackupModal, LanguageModal } from "@/screens/Modals";

@@ -77,17 +77,3 @@ export function MaterialSymbols({
     </View>
   );
 }
-
-export { Add } from "./Add";
-export { ArrowBack } from "./ArrowBack";
-export { CreateNewFolder } from "./CreateNewFolder";
-export { Folder } from "./Folder";
-export { List } from "./List";
-export { LogoGitHub } from "./LogoGitHub";
-export { LogoPlayStore } from "./LogoPlayStore";
-export { MoreVert } from "./MoreVert";
-export { OpenInNew } from "./OpenInNew";
-export { Remove } from "./Remove";
-export { Search } from "./Search";
-export { Settings } from "./Settings";
-export { Sort } from "./Sort";
