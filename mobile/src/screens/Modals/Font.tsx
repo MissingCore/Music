@@ -6,7 +6,7 @@ import { Text } from "react-native";
 
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 
-import { Ripple } from "@/components/new/Form";
+import { Radio } from "@/components/new/Form";
 import { ModalHeader, ModalSheet } from "@/components/new/Modal";
 
 /** Modal to change the app's accent font. */
@@ -22,25 +22,23 @@ export const FontModal = forwardRef<BottomSheetModal, {}>(
       <ModalSheet ref={ref} enableOverDrag={false}>
         <BottomSheetView className="gap-1">
           <ModalHeader title={t("title.font")} />
-          <Ripple
-            preset="select"
-            onPress={() => setAccentFont("NDot")}
-            disabled={accentFont === "NDot"}
+          <Radio
+            selected={accentFont === "NDot"}
+            onSelect={() => setAccentFont("NDot")}
           >
             <Text className="font-ndot text-base leading-tight text-foreground">
               NDot
             </Text>
-          </Ripple>
-          <Ripple
-            preset="select"
-            onPress={() => setAccentFont("NType")}
-            disabled={accentFont === "NType"}
-            wrapperClassName="mb-3"
+          </Radio>
+          <Radio
+            selected={accentFont === "NType"}
+            onSelect={() => setAccentFont("NType")}
+            containerClassName="mb-3"
           >
             <Text className="font-ntype text-base leading-tight text-foreground">
               NType
             </Text>
-          </Ripple>
+          </Radio>
         </BottomSheetView>
       </ModalSheet>
     );

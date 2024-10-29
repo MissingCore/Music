@@ -7,7 +7,7 @@ import {
   useSessionPreferencesStore,
 } from "@/services/SessionPreferences";
 
-import { Button, Ripple, Switch } from "@/components/new/Form";
+import { Button, Radio, Switch } from "@/components/new/Form";
 import { Sheet } from "@/components/new/Sheet";
 import { StyledText } from "@/components/new/Typography";
 
@@ -38,13 +38,12 @@ export default function TrackSortSheet(props: SheetProps<"track-sort-sheet">) {
         data={OrderedByOptions}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
-          <Ripple
-            preset="select"
-            onPress={() => setOrderedBy(item)}
-            disabled={item === orderedBy}
+          <Radio
+            selected={item === orderedBy}
+            onSelect={() => setOrderedBy(item)}
           >
             <StyledText>{t(`sortModal.${item}`)}</StyledText>
-          </Ripple>
+          </Radio>
         )}
         showsVerticalScrollIndicator={false}
         contentContainerClassName="gap-1"
