@@ -25,7 +25,7 @@ import { MediaImage } from "./MediaImage";
  */
 export function MiniPlayer({ stacked = false }) {
   const { t } = useTranslation();
-  const { canvas } = useTheme();
+  const { canvas, surface } = useTheme();
   const isPlaying = useMusicStore((state) => state.isPlaying);
   const track = useMusicStore((state) => state.activeTrack);
 
@@ -48,10 +48,10 @@ export function MiniPlayer({ stacked = false }) {
         <MediaImage type="track" radius="sm" size={48} source={track.artwork} />
 
         <View className="ml-2 shrink grow">
-          <Marquee>
+          <Marquee color={surface}>
             <StyledText>{track.name}</StyledText>
           </Marquee>
-          <Marquee>
+          <Marquee color={surface}>
             <StyledText preset="dimOnSurface">{track.artistName}</StyledText>
           </Marquee>
         </View>

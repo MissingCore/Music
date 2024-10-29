@@ -10,6 +10,7 @@ import { View } from "react-native";
 
 import { Add, CreateNewFolder, Remove } from "@/icons";
 import { useUserPreferencesStore } from "@/services/UserPreferences";
+import { useTheme } from "@/hooks/useTheme";
 import { pickPath, removePath, useAddPathToList, validatePath } from "./data";
 
 import { Colors } from "@/constants/Styles";
@@ -29,6 +30,7 @@ export const ScanFilterListModal = forwardRef<
   { listType: "listAllow" | "listBlock" }
 >(function ScanFilterListModal({ listType }, ref) {
   const { t } = useTranslation();
+  const { surface } = useTheme();
   const listEntries = useUserPreferencesStore((state) => state[listType]);
 
   return (
@@ -53,7 +55,11 @@ export const ScanFilterListModal = forwardRef<
               </View>
             )}
           >
-            <Marquee wrapperClassName={cn(cardStyles, "min-h-12 px-0")}>
+            <Marquee
+              color={surface}
+              topOffset={16}
+              wrapperClassName={cn(cardStyles, "min-h-12 px-0")}
+            >
               <StyledText className="px-4">{item}</StyledText>
             </Marquee>
           </Swipeable>

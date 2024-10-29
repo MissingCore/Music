@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { ArrowBack } from "@/icons";
+import { useTheme } from "@/hooks/useTheme";
 
 import { Marquee } from "./Marquee";
 import { Ripple } from "./Form";
@@ -53,6 +54,7 @@ export function HeaderBar({ options, route }: NativeStackHeaderProps) {
  */
 export function HeaderBarMarquee({ options, route }: NativeStackHeaderProps) {
   const { t } = useTranslation();
+  const { canvas } = useTheme();
   const title = getHeaderTitle(options, route.name);
 
   return (
@@ -66,7 +68,7 @@ export function HeaderBarMarquee({ options, route }: NativeStackHeaderProps) {
           <ArrowBack />
         </Ripple>
 
-        <Marquee center>
+        <Marquee color={canvas} center>
           <StyledText className="text-xs">{title}</StyledText>
         </Marquee>
 

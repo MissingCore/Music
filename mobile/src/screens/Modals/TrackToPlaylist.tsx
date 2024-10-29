@@ -11,6 +11,7 @@ import { tracksToPlaylists } from "@/db/schema";
 import { getPlaylists } from "@/db/queries";
 
 import { Resynchronize, musicStore } from "@/modules/media/services/Music";
+import { useTheme } from "@/hooks/useTheme";
 
 import { favoriteKeys, playlistKeys, trackKeys } from "@/constants/QueryKeys";
 import { mutateGuard } from "@/lib/react-query";
@@ -27,6 +28,7 @@ export default function TrackToPlaylistSheet(
   props: SheetProps<"track-to-playlist-sheet">,
 ) {
   const { t } = useTranslation();
+  const { canvasAlt, surface } = useTheme();
   const { isPending, data } = usePlaylists();
   const { data: inList } = useTrackPlaylists(props.payload?.id);
   const onToggle = useToggleInPlaylist(props.payload?.id);
@@ -44,24 +46,27 @@ export default function TrackToPlaylistSheet(
         estimatedItemSize={58} // 54px Height + 4px Margin Top
         data={data}
         keyExtractor={({ name }) => name}
-        renderItem={({ item, index }) => (
-          <View
-            className={cn({
-              "mt-1": index !== 0,
-              "mb-4": index === data!.length - 1,
-            })}
-          >
-            <Button
-              preset="plain"
-              onPress={() => mutateGuard(onToggle, item.name)}
-              className={cn({ "bg-surface": inList?.includes(item.name) })}
+        renderItem={({ item, index }) => {
+          const selected = inList?.includes(item.name);
+          return (
+            <View
+              className={cn({
+                "mt-1": index !== 0,
+                "mb-4": index === data!.length - 1,
+              })}
             >
-              <Marquee>
-                <StyledText>{item.name}</StyledText>
-              </Marquee>
-            </Button>
-          </View>
-        )}
+              <Button
+                preset="plain"
+                onPress={() => mutateGuard(onToggle, item.name)}
+                className={cn({ "bg-surface": selected })}
+              >
+                <Marquee color={selected ? surface : canvasAlt}>
+                  <StyledText>{item.name}</StyledText>
+                </Marquee>
+              </Button>
+            </View>
+          );
+        }}
         ListEmptyComponent={
           isPending ? (
             <Loading />

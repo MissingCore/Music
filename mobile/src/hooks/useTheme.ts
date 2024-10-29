@@ -7,12 +7,14 @@ import { Colors } from "@/constants/Styles";
 const Themes = {
   light: {
     canvas: Colors.neutral95,
+    canvasAlt: Colors.neutral95,
     surface: Colors.neutral100,
     onSurface: Colors.neutral80,
     foreground: Colors.neutral0,
   },
   dark: {
     canvas: Colors.neutral0,
+    canvasAlt: Colors.neutral5,
     surface: Colors.neutral10,
     onSurface: Colors.neutral20,
     foreground: Colors.neutral100,
