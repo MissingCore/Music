@@ -27,11 +27,8 @@ export default function TrackSortSheet(props: SheetProps<"track-sort-sheet">) {
       title={t("title.sort")}
       contentContainerClassName="gap-4"
     >
-      <Button
-        onPress={toggleIsAsc}
-        className="flex-row items-center justify-between gap-2"
-      >
-        <StyledText>{t("sortModal.asc")}</StyledText>
+      <Button onPress={toggleIsAsc} className="flex-row justify-between">
+        <StyledText className="shrink">{t("sortModal.asc")}</StyledText>
         <Switch enabled={isAsc} />
       </Button>
       <FlatList

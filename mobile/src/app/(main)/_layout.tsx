@@ -89,10 +89,9 @@ function NavigationBar({ stacked = false, hidden = false }) {
           return (
             <Button
               key={href}
-              preset="plain"
               onPress={() => router.navigate(href)}
               disabled={selected}
-              className="px-2 disabled:opacity-100"
+              className="bg-transparent px-2 disabled:opacity-100"
             >
               <StyledText className={cn("text-sm", { "text-red": selected })}>
                 {t(key).toLocaleUpperCase()}

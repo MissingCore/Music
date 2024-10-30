@@ -5,7 +5,7 @@ import { useTheme } from "@/hooks/useTheme";
 
 import { cn } from "@/lib/style";
 
-/** Shared props between `<Checkbox />` and `<Radio />` */
+/** Shared props between `<Checkbox />` and `<Radio />`. */
 type SelectionProps = {
   children: React.JSX.Element;
   onSelect: () => void;
