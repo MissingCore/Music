@@ -195,7 +195,7 @@ function SheetButton(props: {
   const { width } = useGetColumn({ cols: 2, gap: 8, gutters: 32 });
   return (
     <IconButton
-      kind="withText"
+      kind="extended"
       onPress={() => {
         if (!props.preventClose) SheetManager.hide("track-sheet");
         props.onPress();

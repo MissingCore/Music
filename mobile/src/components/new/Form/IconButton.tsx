@@ -7,7 +7,7 @@ import { cn } from "@/lib/style";
 
 type OptionalIconButtonProps =
   | { kind?: "default" | "ripple"; accessibilityLabel: string }
-  | { kind: "withText"; accessibilityLabel?: string };
+  | { kind: "extended"; accessibilityLabel?: string };
 
 /** Button specifically built for icons. */
 export function IconButton({
@@ -40,7 +40,7 @@ export function IconButton({
         "min-h-12 min-w-12 items-center justify-center p-3 disabled:opacity-25",
         {
           "rounded-md bg-surface active:opacity-75": kind !== "ripple",
-          "flex-row justify-start gap-2": kind === "withText",
+          "flex-row justify-start gap-2": kind === "extended",
         },
         props.className,
       )}

@@ -42,7 +42,7 @@ function Selection(props: SelectionProps & { type: "checkbox" | "radio" }) {
         android_ripple={{ color: surface }}
         onPress={props.onSelect}
         // `<Radio />` utilizes the `disabled` prop to prevent togglability.
-        {...(props.type === "radio" ? { disabled: props.selected } : {})}
+        disabled={props.type === "radio" ? props.selected : undefined}
         style={props.contentContainerStyle}
         className={cn(
           "min-h-12 p-4",
