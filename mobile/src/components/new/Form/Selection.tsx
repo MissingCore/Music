@@ -14,9 +14,7 @@ type SelectionProps = {
   wrapperStyle?: StyleProp<ViewStyle>;
   /** Classnames applied to the `<View />` wrapping the `<Pressable />`. */
   wrapperClassName?: string;
-  /** Styles applied to the `<Pressable />` wrapping the `children`. */
   style?: StyleProp<ViewStyle>;
-  /** Classnames applied to the `<Pressable />` wrapping the `children`. */
   className?: string;
 };
 
