@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { and, eq } from "drizzle-orm";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
 import type { SheetProps } from "react-native-actions-sheet";
 import { SheetManager } from "react-native-actions-sheet";
 import { FlashList } from "react-native-actions-sheet/dist/src/views/FlashList";
@@ -17,7 +16,7 @@ import { favoriteKeys, playlistKeys, trackKeys } from "@/constants/QueryKeys";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
 import type { Maybe } from "@/utils/types";
-import { Button } from "@/components/new/Form";
+import { Checkbox } from "@/components/new/Form";
 import { Loading } from "@/components/new/Loading";
 import { Marquee } from "@/components/new/Marquee";
 import { Sheet } from "@/components/new/Sheet";
@@ -47,24 +46,20 @@ export default function TrackToPlaylistSheet(
         data={data}
         keyExtractor={({ name }) => name}
         renderItem={({ item, index }) => {
-          const selected = inList?.includes(item.name);
+          const selected = inList?.includes(item.name) ?? false;
           return (
-            <View
-              className={cn({
+            <Checkbox
+              selected={selected}
+              onSelect={() => mutateGuard(onToggle, item.name)}
+              wrapperClassName={cn({
                 "mt-1": index !== 0,
                 "mb-4": index === data!.length - 1,
               })}
             >
-              <Button
-                preset="plain"
-                onPress={() => mutateGuard(onToggle, item.name)}
-                className={cn({ "bg-surface": selected })}
-              >
-                <Marquee color={selected ? surface : canvasAlt}>
-                  <StyledText>{item.name}</StyledText>
-                </Marquee>
-              </Button>
-            </View>
+              <Marquee color={selected ? surface : canvasAlt}>
+                <StyledText>{item.name}</StyledText>
+              </Marquee>
+            </Checkbox>
           );
         }}
         ListEmptyComponent={

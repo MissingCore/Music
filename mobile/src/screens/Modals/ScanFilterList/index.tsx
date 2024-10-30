@@ -17,7 +17,7 @@ import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
 import { cardStyles } from "@/components/new/Card";
-import { Button, Ripple, TextInput } from "@/components/new/Form";
+import { IconButton, TextInput } from "@/components/new/Form";
 import { Marquee } from "@/components/new/Marquee";
 import { ModalHeader, ModalSheet } from "@/components/new/Modal";
 import { Swipeable } from "@/components/new/Swipeable";
@@ -43,15 +43,13 @@ export const ScanFilterListModal = forwardRef<
             containerClassName="px-4"
             renderRightActions={() => (
               <View className="pr-4">
-                <Button
+                <IconButton
                   accessibilityLabel={t("template.entryRemove", { name: item })}
-                  preset="danger"
                   onPress={() => removePath({ list: listType, path: item })}
-                  icon
-                  className="aspect-square grow items-center"
+                  className="aspect-square grow bg-red"
                 >
                   <Remove color={Colors.neutral100} />
-                </Button>
+                </IconButton>
               </View>
             )}
           >
@@ -130,19 +128,17 @@ function FilterListHeader({
             placeholder={PrimaryDirectoryPath}
             className="shrink grow"
           />
-          <Ripple
-            preset="icon"
+          <IconButton
+            kind="ripple"
             accessibilityLabel={t("settings.related.pathSelect")}
-            disabled={onSubmit.isPending}
             onPress={selectDirectory}
+            disabled={onSubmit.isPending}
           >
             <CreateNewFolder />
-          </Ripple>
+          </IconButton>
         </View>
-        <Button
+        <IconButton
           accessibilityLabel={t("settings.related.pathAdd")}
-          preset="danger"
-          disabled={!isValidPath || onSubmit.isPending}
           onPress={() =>
             mutateGuard(onSubmit, {
               list: listType,
@@ -150,9 +146,11 @@ function FilterListHeader({
               onSuccess: () => setNewPath(""),
             })
           }
+          disabled={!isValidPath || onSubmit.isPending}
+          className="bg-red"
         >
           <Add color={Colors.neutral100} />
-        </Button>
+        </IconButton>
       </View>
     </View>
   );

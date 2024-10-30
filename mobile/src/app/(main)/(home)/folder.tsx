@@ -118,8 +118,7 @@ const FolderListPreset = (props: {
         ) : (
           <Ripple
             onPress={() => props.setDirSegments((prev) => [...prev, item.name])}
-            wrapperClassName="rounded-sm"
-            className="p-0 pr-4"
+            className="pr-4"
           >
             <MediaImage type="folder" size={48} source={null} radius="sm" />
             <StyledText numberOfLines={1} className="shrink grow">

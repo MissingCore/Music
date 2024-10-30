@@ -7,7 +7,7 @@ import { FlatList } from "react-native";
 
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 
-import { Ripple } from "@/components/new/Form";
+import { Radio } from "@/components/new/Form";
 import { ModalHeader, ModalSheet } from "@/components/new/Modal";
 import { StyledText } from "@/components/new/Typography";
 
@@ -27,16 +27,15 @@ export const ThemeModal = forwardRef<BottomSheetModal, {}>(
             data={["light", "dark", "system"] as const}
             keyExtractor={(item) => item}
             renderItem={({ item }) => (
-              <Ripple
-                preset="select"
-                onPress={() => {
+              <Radio
+                selected={item === theme}
+                onSelect={() => {
                   setColorScheme(item);
                   setTheme(item);
                 }}
-                disabled={item === theme}
               >
                 <StyledText>{t(`settings.related.${item}`)}</StyledText>
-              </Ripple>
+              </Radio>
             )}
             showsVerticalScrollIndicator={false}
             contentContainerClassName="gap-1 pb-3"

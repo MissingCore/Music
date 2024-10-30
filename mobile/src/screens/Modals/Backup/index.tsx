@@ -32,18 +32,18 @@ export const BackupModal = forwardRef<BottomSheetModal, {}>(
             <Button
               onPress={() => mutateGuard(exportBackup, undefined)}
               disabled={inProgress}
-              className="flex-1 items-center"
+              className="flex-1"
             >
-              <StyledText bold className="text-sm">
+              <StyledText bold center className="text-sm">
                 {t("settings.related.export")}
               </StyledText>
             </Button>
             <Button
               onPress={() => mutateGuard(importBackup, undefined)}
               disabled={inProgress}
-              className="flex-1 items-center"
+              className="flex-1"
             >
-              <StyledText bold className="text-sm">
+              <StyledText bold center className="text-sm">
                 {t("settings.related.import")}
               </StyledText>
             </Button>

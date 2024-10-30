@@ -29,7 +29,7 @@ import { pickKeys } from "@/utils/object";
 import { formatSeconds } from "@/utils/number";
 import type { Maybe } from "@/utils/types";
 import { Divider } from "@/components/new/Divider";
-import { Button } from "@/components/new/Form";
+import { IconButton } from "@/components/new/Form";
 import { Marquee } from "@/components/new/Marquee";
 import { Sheet } from "@/components/new/Sheet";
 import { StyledText } from "@/components/new/Typography";
@@ -111,7 +111,7 @@ function AddActions({ data }: { data: TrackData }) {
   const { t } = useTranslation();
   return (
     <View className="flex-row flex-wrap gap-2">
-      <IconButton
+      <SheetButton
         onPress={() =>
           SheetManager.show("track-to-playlist-sheet", {
             payload: { id: data.id },
@@ -121,7 +121,7 @@ function AddActions({ data }: { data: TrackData }) {
         text={t("playlist.add")}
         preventClose
       />
-      <IconButton
+      <SheetButton
         onPress={() => Queue.add(data.id)}
         Icon={<QueueMusic />}
         text={t("trackModal.queueAdd")}
@@ -152,21 +152,21 @@ function TrackLinks({ data }: { data: TrackData }) {
       <Divider />
       <View className="flex-row flex-wrap gap-2">
         {data.artistName ? (
-          <IconButton
+          <SheetButton
             onPress={() => router.navigate(`/artist/${data.artistName}`)}
             Icon={<Artist />}
             text={t("common.artist")}
           />
         ) : null}
         {data.album ? (
-          <IconButton
+          <SheetButton
             onPress={() => router.navigate(`/album/${data.album?.id}`)}
             Icon={<Album />}
             text={t("common.album")}
           />
         ) : null}
         {canShowPlaylistBtn && isInList ? (
-          <IconButton
+          <SheetButton
             onPress={() =>
               router.navigate(
                 playingSource?.id === ReservedPlaylists.tracks
@@ -184,9 +184,9 @@ function TrackLinks({ data }: { data: TrackData }) {
 }
 //#endregion
 
-//#region Icon Button
+//#region Sheet Button
 /** Clicking this button will also close the model */
-function IconButton(props: {
+function SheetButton(props: {
   onPress: () => void;
   Icon: React.JSX.Element;
   text: string;
@@ -194,17 +194,18 @@ function IconButton(props: {
 }) {
   const { width } = useGetColumn({ cols: 2, gap: 8, gutters: 32 });
   return (
-    <Button
+    <IconButton
+      kind="extended"
       onPress={() => {
         if (!props.preventClose) SheetManager.hide("track-sheet");
         props.onPress();
       }}
       style={{ width }}
-      className="flex-row items-center justify-start gap-2 p-2"
+      className="p-2"
     >
       {props.Icon}
       <StyledText className="shrink text-xs">{props.text}</StyledText>
-    </Button>
+    </IconButton>
   );
 }
 //#endregion

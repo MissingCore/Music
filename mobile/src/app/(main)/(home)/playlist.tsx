@@ -11,7 +11,7 @@ import { mediaModalAtom } from "@/modals/categories/media/store";
 
 import { playlistKeys } from "@/constants/QueryKeys";
 import { Colors } from "@/constants/Styles";
-import { Button } from "@/components/new/Form";
+import { IconButton } from "@/components/new/Form";
 import { useMediaCardListPreset } from "@/modules/media/components";
 
 /** Screen for `/playlist` route. */
@@ -40,15 +40,14 @@ function PlaylistActions() {
   const openModal = useSetAtom(mediaModalAtom);
 
   return (
-    <Button
-      preset="danger"
+    <IconButton
       accessibilityLabel={t("playlist.create")}
       // FIXME: Temporary until we implement the new "Create Playlist" screen.
       onPress={() => openModal({ entity: "playlist", scope: "new" })}
-      icon
+      className="bg-red"
     >
       <Add color={Colors.neutral100} />
-    </Button>
+    </IconButton>
   );
 }
 //#endregion

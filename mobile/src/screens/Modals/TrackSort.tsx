@@ -7,7 +7,7 @@ import {
   useSessionPreferencesStore,
 } from "@/services/SessionPreferences";
 
-import { Button, Ripple, Switch } from "@/components/new/Form";
+import { Button, Radio, Switch } from "@/components/new/Form";
 import { Sheet } from "@/components/new/Sheet";
 import { StyledText } from "@/components/new/Typography";
 
@@ -27,24 +27,20 @@ export default function TrackSortSheet(props: SheetProps<"track-sort-sheet">) {
       title={t("title.sort")}
       contentContainerClassName="gap-4"
     >
-      <Button
-        onPress={toggleIsAsc}
-        className="flex-row items-center justify-between gap-2"
-      >
-        <StyledText>{t("sortModal.asc")}</StyledText>
+      <Button onPress={toggleIsAsc} className="flex-row justify-between">
+        <StyledText className="shrink">{t("sortModal.asc")}</StyledText>
         <Switch enabled={isAsc} />
       </Button>
       <FlatList
         data={OrderedByOptions}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
-          <Ripple
-            preset="select"
-            onPress={() => setOrderedBy(item)}
-            disabled={item === orderedBy}
+          <Radio
+            selected={item === orderedBy}
+            onSelect={() => setOrderedBy(item)}
           >
             <StyledText>{t(`sortModal.${item}`)}</StyledText>
-          </Ripple>
+          </Radio>
         )}
         showsVerticalScrollIndicator={false}
         contentContainerClassName="gap-1"

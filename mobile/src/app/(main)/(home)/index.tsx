@@ -121,12 +121,11 @@ function FavoriteTracks({ size }: { size: number }) {
 
   return (
     <Button
-      preset="danger"
       onPress={() =>
         router.navigate(`/playlist/${ReservedPlaylists.favorites}`)
       }
       style={{ width: size, height: size }}
-      className="items-center gap-0 rounded-lg"
+      className="gap-0 rounded-lg bg-red"
     >
       <AccentText className="text-[3rem] text-neutral100">
         {trackCount}
