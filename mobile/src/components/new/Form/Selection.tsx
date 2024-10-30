@@ -7,17 +7,17 @@ import { cn } from "@/lib/style";
 
 /** Shared props between `<Checkbox />` and `<Radio />` */
 type SelectionProps = {
+  children: React.JSX.Element;
   onSelect: () => void;
   selected: boolean;
-  children: React.JSX.Element;
   /** Styles applied to the `<View />` wrapping the `<Pressable />`. */
-  containerStyle?: StyleProp<ViewStyle>;
+  wrapperStyle?: StyleProp<ViewStyle>;
   /** Classnames applied to the `<View />` wrapping the `<Pressable />`. */
-  containerClassName?: string;
+  wrapperClassName?: string;
   /** Styles applied to the `<Pressable />` wrapping the `children`. */
-  contentContainerStyle?: StyleProp<ViewStyle>;
+  style?: StyleProp<ViewStyle>;
   /** Classnames applied to the `<Pressable />` wrapping the `children`. */
-  contentContainerClassName?: string;
+  className?: string;
 };
 
 /** Controlled checkbox component. */
@@ -35,15 +35,15 @@ function Selection(props: SelectionProps & { type: "checkbox" | "radio" }) {
   const { surface } = useTheme();
   return (
     <View
-      style={props.containerStyle}
-      className={cn("overflow-hidden rounded-md", props.containerClassName)}
+      style={props.wrapperStyle}
+      className={cn("overflow-hidden rounded-md", props.wrapperClassName)}
     >
       <Pressable
         android_ripple={{ color: surface }}
         onPress={props.onSelect}
         // `<Radio />` utilizes the `disabled` prop to prevent togglability.
         disabled={props.type === "radio" ? props.selected : undefined}
-        style={props.contentContainerStyle}
+        style={props.style}
         className={cn(
           "min-h-12 p-4",
           // "Selected" styling is handled differently.
@@ -52,7 +52,7 @@ function Selection(props: SelectionProps & { type: "checkbox" | "radio" }) {
               props.type === "checkbox" && props.selected,
             "disabled:bg-surface": props.type === "radio",
           },
-          props.contentContainerClassName,
+          props.className,
         )}
       >
         {props.children}

@@ -51,7 +51,7 @@ export default function TrackToPlaylistSheet(
             <Checkbox
               selected={selected}
               onSelect={() => mutateGuard(onToggle, item.name)}
-              containerClassName={cn({
+              wrapperClassName={cn({
                 "mt-1": index !== 0,
                 "mb-4": index === data!.length - 1,
               })}

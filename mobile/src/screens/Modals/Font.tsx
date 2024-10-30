@@ -33,7 +33,7 @@ export const FontModal = forwardRef<BottomSheetModal, {}>(
           <Radio
             selected={accentFont === "NType"}
             onSelect={() => setAccentFont("NType")}
-            containerClassName="mb-3"
+            wrapperClassName="mb-3"
           >
             <Text className="font-ntype text-base leading-tight text-foreground">
               NType
