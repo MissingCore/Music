@@ -1,14 +1,14 @@
 import { Stack, useLocalSearchParams } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
-import { ScrollView } from "react-native";
 import { useTranslation } from "react-i18next";
+import { ScrollView } from "react-native";
 
 import { OpenInNew } from "@/icons";
 import LicensesList from "@/resources/licenses.json";
 import { StickyActionHeader } from "@/layouts/StickyActionLayout";
 
 import { Card } from "@/components/new/Card";
-import { Ripple } from "@/components/new/Form";
+import { IconButton } from "@/components/new/Form";
 import { StyledText } from "@/components/new/Typography";
 
 /** Screen for `/setting/third-party/[id]` route. */
@@ -23,15 +23,15 @@ export default function PackageLicenseScreen() {
       <Stack.Screen
         options={{
           headerRight: () => (
-            <Ripple
-              preset="icon"
+            <IconButton
+              kind="ripple"
               accessibilityLabel={t("template.entrySeeMore", {
                 name: licenseInfo.name,
               })}
               onPress={() => WebBrowser.openBrowserAsync(licenseInfo.source)}
             >
               <OpenInNew />
-            </Ripple>
+            </IconButton>
           ),
         }}
       />

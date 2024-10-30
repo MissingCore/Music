@@ -1,4 +1,5 @@
 export { Button } from "./Button";
+export { IconButton } from "./IconButton";
 export { Legend, LegendItem } from "./Legend";
 export { NumericInput } from "./NumericInput";
 export { ProgressBar } from "./ProgressBar";

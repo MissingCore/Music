@@ -7,7 +7,7 @@ import { MusicControls, playFromMediaList } from "../services/Playback";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
-import { Button } from "@/components/new/Form";
+import { IconButton } from "@/components/new/Form";
 import { RepeatButton, ShuffleButton } from "./MediaControls";
 import { arePlaybackSourceEqual } from "../helpers/data";
 import type { PlayListSource } from "../types";
@@ -43,18 +43,18 @@ function PlayMediaListButton({ trackSource }: { trackSource: PlayListSource }) {
   const Icon = displayPause ? Pause : PlayArrow;
 
   return (
-    <Button
-      preset="danger"
+    <IconButton
       accessibilityLabel={t(`common.${displayPause ? "pause" : "play"}`)}
       onPress={
         displayPause
           ? MusicControls.pause
           : () => playFromMediaList({ source: trackSource })
       }
-      icon
-      className={cn({ "bg-neutral80 dark:bg-neutral20": displayPause })}
+      className={cn("bg-red", {
+        "bg-neutral80 dark:bg-neutral20": displayPause,
+      })}
     >
-      <Icon size={24} color={Colors.neutral100} />
-    </Button>
+      <Icon color={Colors.neutral100} />
+    </IconButton>
   );
 }

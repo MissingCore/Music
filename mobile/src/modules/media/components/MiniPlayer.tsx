@@ -13,7 +13,7 @@ import { useTheme } from "@/hooks/useTheme";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
-import { Ripple } from "@/components/new/Form";
+import { IconButton } from "@/components/new/Form";
 import { Marquee } from "@/components/new/Marquee";
 import { StyledText } from "@/components/new/Typography";
 import { NextButton, PreviousButton } from "./MediaControls";
@@ -25,7 +25,7 @@ import { MediaImage } from "./MediaImage";
  */
 export function MiniPlayer({ stacked = false }) {
   const { t } = useTranslation();
-  const { canvas, surface } = useTheme();
+  const { surface } = useTheme();
   const isPlaying = useMusicStore((state) => state.isPlaying);
   const track = useMusicStore((state) => state.activeTrack);
 
@@ -57,16 +57,17 @@ export function MiniPlayer({ stacked = false }) {
         </View>
 
         <View className="flex-row items-center">
-          <PreviousButton rippleColor={`${canvas}40`} />
-          <Ripple
+          <PreviousButton />
+          <IconButton
+            kind="ripple"
             accessibilityLabel={t(`common.${isPlaying ? "pause" : "play"}`)}
-            android_ripple={{ radius: 24, color: `${canvas}40` }}
             onPress={MusicControls.playToggle}
+            rippleRadius={24}
             className="p-2"
           >
             <Icon size={32} color={Colors.red} />
-          </Ripple>
-          <NextButton rippleColor={`${canvas}40`} />
+          </IconButton>
+          <NextButton />
         </View>
       </Pressable>
     </Animated.View>

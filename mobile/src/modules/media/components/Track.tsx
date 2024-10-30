@@ -10,7 +10,7 @@ import type { PlayListSource } from "../types";
 
 import { cn } from "@/lib/style";
 import type { Maybe, Prettify } from "@/utils/types";
-import { Ripple } from "@/components/new/Form";
+import { IconButton, Ripple } from "@/components/new/Form";
 import { Loading } from "@/components/new/Loading";
 import { StyledText } from "@/components/new/Typography";
 import { MediaImage } from "./MediaImage";
@@ -62,13 +62,13 @@ export function Track({ id, trackSource, ...props }: Track.Props) {
           {props.description}
         </StyledText>
       </View>
-      <Ripple
-        preset="icon"
+      <IconButton
+        kind="ripple"
         accessibilityLabel={t("template.entrySeeMore", { name: props.title })}
         onPress={() => SheetManager.show("track-sheet", { payload: { id } })}
       >
         <MoreVert />
-      </Ripple>
+      </IconButton>
     </Ripple>
   );
 }

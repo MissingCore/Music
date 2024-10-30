@@ -9,11 +9,10 @@ import { getTrackCover } from "@/db/utils/formatters";
 
 import { Sort } from "@/icons";
 import { useSessionPreferencesStore } from "@/services/SessionPreferences";
-import { useTheme } from "@/hooks/useTheme";
 import { StickyActionListLayout } from "@/layouts/StickyActionLayout";
 
 import { trackKeys } from "@/constants/QueryKeys";
-import { Ripple } from "@/components/new/Form";
+import { IconButton } from "@/components/new/Form";
 import { ReservedPlaylists } from "@/modules/media/constants";
 import { MediaListControls, TrackListPreset } from "@/modules/media/components";
 
@@ -45,18 +44,15 @@ export default function TrackScreen() {
 /** Actions used on the `/track` screen. */
 function TrackActions() {
   const { t } = useTranslation();
-  const { canvas } = useTheme();
-
   return (
     <View className="w-full flex-row items-center justify-between rounded-md bg-surface">
-      <Ripple
-        preset="icon"
+      <IconButton
+        kind="ripple"
         accessibilityLabel={t("title.sort")}
-        android_ripple={{ color: `${canvas}40` }}
         onPress={() => SheetManager.show("track-sort-sheet")}
       >
         <Sort />
-      </Ripple>
+      </IconButton>
       <MediaListControls trackSource={trackSource} />
     </View>
   );

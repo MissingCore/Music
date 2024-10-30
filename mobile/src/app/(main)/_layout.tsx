@@ -9,10 +9,9 @@ import Animated, {
 import { Search, Settings } from "@/icons";
 import { useBottomActionsLayout } from "@/hooks/useBottomActionsLayout";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
-import { useTheme } from "@/hooks/useTheme";
 
 import { cn } from "@/lib/style";
-import { Button, Ripple } from "@/components/new/Form";
+import { Button, IconButton } from "@/components/new/Form";
 import { StyledText } from "@/components/new/Typography";
 import { MiniPlayer } from "@/modules/media/components";
 
@@ -69,7 +68,6 @@ const NavRoutes = [
 function NavigationBar({ stacked = false, hidden = false }) {
   const { t } = useTranslation();
   const pathname = usePathname();
-  const { canvas } = useTheme();
   const { hasNewUpdate } = useHasNewUpdate();
 
   return (
@@ -104,18 +102,16 @@ function NavigationBar({ stacked = false, hidden = false }) {
         })}
       </ScrollView>
 
-      <Ripple
-        preset="icon"
+      <IconButton
+        kind="ripple"
         accessibilityLabel={t("header.search")}
-        android_ripple={{ color: `${canvas}40` }}
         onPress={() => router.navigate("/search")}
       >
         <Search />
-      </Ripple>
-      <Ripple
-        preset="icon"
+      </IconButton>
+      <IconButton
+        kind="ripple"
         accessibilityLabel={t("header.settings")}
-        android_ripple={{ color: `${canvas}40` }}
         onPress={() => router.navigate("/setting")}
         className="relative"
       >
@@ -123,7 +119,7 @@ function NavigationBar({ stacked = false, hidden = false }) {
         {hasNewUpdate && (
           <View className="absolute right-3 top-3 size-2 rounded-full bg-red" />
         )}
-      </Ripple>
+      </IconButton>
     </Animated.View>
   );
 }
