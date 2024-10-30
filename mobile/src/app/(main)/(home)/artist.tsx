@@ -2,7 +2,6 @@ import type { FlashListProps } from "@shopify/flash-list";
 import { useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
 
 import type { ArtistWithTracks } from "@/db/schema";
 import { getArtists } from "@/db/queries";
@@ -49,20 +48,18 @@ const ArtistListPreset = (props: {
           {item}
         </StyledText>
       ) : (
-        <View className="mt-4">
-          <Ripple
-            onPress={() =>
-              router.navigate(`/artist/${encodeURIComponent(item.name)}`)
-            }
-            wrapperClassName="rounded-full"
-            className="p-0 pr-4"
-          >
-            <MediaImage type="artist" size={48} source={null} />
-            <StyledText numberOfLines={1} className="shrink grow">
-              {item.name}
-            </StyledText>
-          </Ripple>
-        </View>
+        <Ripple
+          onPress={() =>
+            router.navigate(`/artist/${encodeURIComponent(item.name)}`)
+          }
+          wrapperClassName="rounded-full mt-4"
+          className="pr-4"
+        >
+          <MediaImage type="artist" size={48} source={null} />
+          <StyledText numberOfLines={1} className="shrink grow">
+            {item.name}
+          </StyledText>
+        </Ripple>
       ),
     ListEmptyComponent: props.isPending ? (
       <Loading />

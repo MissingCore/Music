@@ -41,8 +41,6 @@ export function Track({ id, trackSource, ...props }: Track.Props) {
   return (
     <Ripple
       onPress={() => playFromMediaList({ trackId: id, source: trackSource })}
-      wrapperClassName="rounded-sm"
-      className="p-0"
     >
       {props.LeftElement ? (
         props.LeftElement
