@@ -7,7 +7,7 @@ import { cn } from "@/lib/style";
 
 //#region Button
 /** Styled button meeting the recommened touch target size. */
-export function Button({ className, ...rest }: PressableProps) {
+export function Button({ className, ...props }: PressableProps) {
   return (
     <Pressable
       className={cn(
@@ -15,7 +15,7 @@ export function Button({ className, ...rest }: PressableProps) {
         "active:opacity-75 disabled:opacity-25",
         className,
       )}
-      {...rest}
+      {...props}
     />
   );
 }
