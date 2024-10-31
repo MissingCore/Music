@@ -17,7 +17,7 @@ import { StyledText } from "./Typography";
  * Custom header bar for React Navigation. The "title" can span at most
  * 2 lines before it gets ellipsized.
  */
-export function HeaderBar({ options, route }: NativeStackHeaderProps) {
+export function TopAppBar({ options, route }: NativeStackHeaderProps) {
   const { t } = useTranslation();
   const title = getHeaderTitle(options, route.name);
 
@@ -52,7 +52,7 @@ export function HeaderBar({ options, route }: NativeStackHeaderProps) {
  * Custom header bar for React Navigation. The "title" will span across
  * a single line through a `<Marquee />`.
  */
-export function HeaderBarMarquee({ options, route }: NativeStackHeaderProps) {
+export function TopAppBarMarquee({ options, route }: NativeStackHeaderProps) {
   const { t } = useTranslation();
   const { canvas } = useTheme();
   const title = getHeaderTitle(options, route.name);
