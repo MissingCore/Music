@@ -6,7 +6,7 @@ import { SettingsLayout } from "@/layouts/SettingsLayout";
 import { MinDurationModal, ScanFilterListModal } from "@/screens/Modals";
 
 import { mutateGuard } from "@/lib/react-query";
-import { List, ListItem } from "@/components/new/List";
+import { List, ListItem } from "@/components/new/Containment";
 import { useModalRef } from "@/components/new/Modal";
 
 /** Screen for `/setting/scanning` route. */

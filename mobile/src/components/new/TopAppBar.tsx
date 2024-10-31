@@ -7,9 +7,8 @@ import { View } from "react-native";
 import { ArrowBack } from "@/icons";
 import { useTheme } from "@/hooks/useTheme";
 
-import { Marquee } from "./Marquee";
+import { Marquee, SafeContainer } from "./Containment";
 import { IconButton } from "./Form";
-import { SafeContainer } from "./SafeContainer";
 import { StyledText } from "./Typography";
 
 //#region Normal

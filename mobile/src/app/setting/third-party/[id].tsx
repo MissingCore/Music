@@ -7,7 +7,7 @@ import { OpenInNew } from "@/icons";
 import LicensesList from "@/resources/licenses.json";
 import { StickyActionHeader } from "@/layouts/StickyActionLayout";
 
-import { Card } from "@/components/new/Card";
+import { Card } from "@/components/new/Containment";
 import { IconButton } from "@/components/new/Form";
 import { StyledText } from "@/components/new/Typography";
 

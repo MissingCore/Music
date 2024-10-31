@@ -4,7 +4,7 @@ import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { SettingsLayout } from "@/layouts/SettingsLayout";
 import { FontModal, ThemeModal } from "@/screens/Modals";
 
-import { List, ListItem } from "@/components/new/List";
+import { List, ListItem } from "@/components/new/Containment";
 import { useModalRef } from "@/components/new/Modal";
 
 /** Screen for `/setting/appearance` route. */

@@ -7,7 +7,7 @@ import { Pressable, View } from "react-native";
 import type { TextColor } from "@/lib/style";
 import { cn } from "@/lib/style";
 import { cardStyles } from "./Card";
-import { StyledText } from "./Typography";
+import { StyledText } from "../Typography";
 
 //#region List
 /** Wrapper for list of `<ListItem />` for consistent gaps. */

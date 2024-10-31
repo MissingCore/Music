@@ -10,7 +10,7 @@ import { LANGUAGES } from "@/modules/i18n/constants";
 
 import { APP_VERSION } from "@/constants/Config";
 import * as LINKS from "@/constants/Links";
-import { List, ListItem } from "@/components/new/List";
+import { List, ListItem } from "@/components/new/Containment";
 import { useModalRef } from "@/components/new/Modal";
 
 /** Screen for `/setting` route. */

@@ -13,8 +13,7 @@ import Animated, {
 import { useOnboardingStore } from "@/modules/scanning/services/Onboarding";
 
 import { cn } from "@/lib/style";
-import { cardStyles } from "@/components/new/Card";
-import { SafeContainer } from "@/components/new/SafeContainer";
+import { SafeContainer, cardStyles } from "@/components/new/Containment";
 import { StyledText } from "@/components/new/Typography";
 
 /**

@@ -6,7 +6,7 @@ import { settingKeys } from "@/constants/QueryKeys";
 
 import { SettingsLayout } from "@/layouts/SettingsLayout";
 
-import { ListRenderer } from "@/components/new/List";
+import { ListRenderer } from "@/components/new/Containment";
 import { StyledText } from "@/components/new/Typography";
 
 /** Screen for `/setting/insights/save-errors` route. */

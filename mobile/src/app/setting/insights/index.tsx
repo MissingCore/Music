@@ -18,9 +18,8 @@ import { SettingsLayout } from "@/layouts/SettingsLayout";
 
 import { Colors } from "@/constants/Styles";
 import { abbreviateSize, formatSeconds } from "@/utils/number";
-import { Card } from "@/components/new/Card";
+import { Card, List, ListItem } from "@/components/new/Containment";
 import { Legend, LegendItem, ProgressBar } from "@/components/new/Form";
-import { List, ListItem } from "@/components/new/List";
 
 /** Screen for `/setting/insights` route. */
 export default function InsightsScreen() {
