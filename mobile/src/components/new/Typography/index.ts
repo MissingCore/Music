@@ -1,2 +1,2 @@
 export { AccentText } from "./AccentText";
-export { StyledText, textStyles } from "./StyledText";
+export { StyledText } from "./StyledText";

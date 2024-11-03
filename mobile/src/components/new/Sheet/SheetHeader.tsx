@@ -1,6 +1,6 @@
 import { View } from "react-native";
 
-import { Marquee } from "../Marquee";
+import { Marquee } from "../Containment";
 import { StyledText } from "../Typography";
 
 /** Header component to be used in `<Sheet />`. */

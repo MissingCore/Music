@@ -6,7 +6,7 @@ import { getPlaylists } from "@/db/queries";
 import { formatForMediaCard } from "@/db/utils/formatters";
 
 import { Add } from "@/icons";
-import { StickyActionListLayout } from "@/layouts/StickyActionLayout";
+import { StickyActionListLayout } from "@/layouts";
 import { mediaModalAtom } from "@/modals/categories/media/store";
 
 import { playlistKeys } from "@/constants/QueryKeys";

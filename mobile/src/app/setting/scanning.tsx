@@ -2,11 +2,11 @@ import { useTranslation } from "react-i18next";
 
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { useRescanForTracks } from "@/modules/scanning/helpers/rescan";
-import { SettingsLayout } from "@/layouts/SettingsLayout";
+import { StandardScrollLayout } from "@/layouts";
 import { MinDurationModal, ScanFilterListModal } from "@/screens/Modals";
 
 import { mutateGuard } from "@/lib/react-query";
-import { List, ListItem } from "@/components/new/List";
+import { List, ListItem } from "@/components/new/Containment";
 import { useModalRef } from "@/components/new/Modal";
 
 /** Screen for `/setting/scanning` route. */
@@ -23,7 +23,7 @@ export default function ScanningScreen() {
 
   return (
     <>
-      <SettingsLayout>
+      <StandardScrollLayout>
         <ListItem
           title={t("settings.rescan")}
           description={t("settings.brief.rescan")}
@@ -51,7 +51,7 @@ export default function ScanningScreen() {
             last
           />
         </List>
-      </SettingsLayout>
+      </StandardScrollLayout>
 
       <ScanFilterListModal ref={allowListModalRef} listType="listAllow" />
       <ScanFilterListModal ref={blockListModalRef} listType="listBlock" />

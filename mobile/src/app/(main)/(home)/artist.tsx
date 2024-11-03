@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import type { ArtistWithTracks } from "@/db/schema";
 import { getArtists } from "@/db/queries";
 
-import { StickyActionListLayout } from "@/layouts/StickyActionLayout";
+import { StickyActionListLayout } from "@/layouts";
 
 import { artistKeys } from "@/constants/QueryKeys";
 import { cn } from "@/lib/style";

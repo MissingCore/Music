@@ -14,20 +14,19 @@ import { albums, artists, playlists, tracks, invalidTracks } from "@/db/schema";
 import { settingKeys } from "@/constants/QueryKeys";
 
 import { useTheme } from "@/hooks/useTheme";
-import { SettingsLayout } from "@/layouts/SettingsLayout";
+import { StandardScrollLayout } from "@/layouts";
 
 import { Colors } from "@/constants/Styles";
 import { abbreviateSize, formatSeconds } from "@/utils/number";
-import { Card } from "@/components/new/Card";
+import { Card, List, ListItem } from "@/components/new/Containment";
 import { Legend, LegendItem, ProgressBar } from "@/components/new/Form";
-import { List, ListItem } from "@/components/new/List";
 
 /** Screen for `/setting/insights` route. */
 export default function InsightsScreen() {
   const { t } = useTranslation();
 
   return (
-    <SettingsLayout>
+    <StandardScrollLayout>
       <List>
         <StorageWidget />
         <DBSummaryWidget />
@@ -39,7 +38,7 @@ export default function InsightsScreen() {
         onPress={() => router.navigate("/setting/insights/save-errors")}
         {...{ first: true, last: true }}
       />
-    </SettingsLayout>
+    </StandardScrollLayout>
   );
 }
 

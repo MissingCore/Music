@@ -12,7 +12,7 @@ import { AppProvider } from "@/providers";
 
 import "@/resources/global.css";
 import "@/modules/i18n"; // Make sure translations are bundled.
-import { HeaderBar } from "@/components/new/HeaderBar";
+import { TopAppBar } from "@/components/new/TopAppBar";
 import { ErrorBoundary } from "@/components/error/error-boundary";
 import { CurrentTrackHeader } from "@/components/navigation/header";
 import { StyledPressable } from "@/components/ui/pressable";
@@ -73,7 +73,7 @@ function RootLayoutNav() {
 
   return (
     <AppProvider>
-      <Stack screenOptions={{ header: HeaderBar, headerShown: false }}>
+      <Stack screenOptions={{ header: TopAppBar, headerShown: false }}>
         <Stack.Screen name="(main)" />
         <Stack.Screen
           name="current-track"

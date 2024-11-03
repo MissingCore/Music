@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { getAlbums } from "@/db/queries";
 import { formatForMediaCard } from "@/db/utils/formatters";
 
-import { StickyActionListLayout } from "@/layouts/StickyActionLayout";
+import { StickyActionListLayout } from "@/layouts";
 
 import { albumKeys } from "@/constants/QueryKeys";
 import { useMediaCardListPreset } from "@/modules/media/components";

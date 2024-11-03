@@ -1,13 +1,13 @@
 import { ScrollView } from "react-native";
 
-/** Container for content on the setting pages. */
-export function SettingsLayout({ children }: { children: React.ReactNode }) {
+/** Simple scroll container layout. */
+export function StandardScrollLayout(props: { children: React.ReactNode }) {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerClassName="grow gap-6 p-4"
     >
-      {children}
+      {props.children}
     </ScrollView>
   );
 }

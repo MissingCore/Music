@@ -1,5 +1,3 @@
-import type { VariantProps } from "cva";
-import { cva } from "cva";
 import { Image as ExpoImage } from "expo-image";
 import { cssInterop } from "nativewind";
 import { View } from "react-native";
@@ -14,15 +12,6 @@ import type { MediaType } from "../types";
 // https://www.nativewind.dev/v4/api/css-interop
 const Image = cssInterop(ExpoImage, { className: "style" });
 
-type ImageStyleProps = VariantProps<typeof imageStyles>;
-const imageStyles = cva({
-  base: ["bg-onSurface"],
-  variants: {
-    radius: { default: "rounded-lg", sm: "rounded-sm" },
-  },
-  defaultVariants: { radius: "default" },
-});
-
 export namespace MediaImage {
   export type ImageSource = string | null;
 
@@ -30,19 +19,26 @@ export namespace MediaImage {
     | { type: "playlist"; source: ImageSource | Array<string | null> }
     | { type: Omit<MediaType, "playlist">; source: ImageSource };
 
-  export type Props = ImageStyleProps &
-    ImageContent & { size: number; className?: string };
+  export type Props = ImageContent & {
+    radius?: "sm";
+    size: number;
+    className?: string;
+  };
 }
 
 /** Image representing some media. */
 export function MediaImage({
   type,
+  radius,
   size,
   source,
   className,
-  ...rest
 }: MediaImage.Props) {
-  const usedClasses = cn(imageStyles(rest), className);
+  const usedClasses = cn(
+    "rounded-lg bg-onSurface",
+    { "rounded-sm": radius === "sm" },
+    className,
+  );
 
   if (type === "playlist" && Array.isArray(source) && source.length > 0) {
     return (

@@ -13,8 +13,8 @@ import { useTheme } from "@/hooks/useTheme";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
+import { Marquee } from "@/components/new/Containment";
 import { IconButton } from "@/components/new/Form";
-import { Marquee } from "@/components/new/Marquee";
 import { StyledText } from "@/components/new/Typography";
 import { NextButton, PreviousButton } from "./MediaControls";
 import { MediaImage } from "./MediaImage";

@@ -16,9 +16,9 @@ import { favoriteKeys, playlistKeys, trackKeys } from "@/constants/QueryKeys";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
 import type { Maybe } from "@/utils/types";
+import { Marquee } from "@/components/new/Containment";
 import { Checkbox } from "@/components/new/Form";
 import { Loading } from "@/components/new/Loading";
-import { Marquee } from "@/components/new/Marquee";
 import { Sheet } from "@/components/new/Sheet";
 import { StyledText } from "@/components/new/Typography";
 

@@ -1,16 +1,16 @@
 import { router } from "expo-router";
 
 import LicensesList from "@/resources/licenses.json";
-import { SettingsLayout } from "@/layouts/SettingsLayout";
+import { StandardScrollLayout } from "@/layouts";
 
-import { ListRenderer } from "@/components/new/List";
+import { ListRenderer } from "@/components/new/Containment";
 
 /** Screen for `/setting/third-party` route. */
 export default function ThirdPartyScreen() {
   const LicenseData = Object.values(LicensesList);
 
   return (
-    <SettingsLayout>
+    <StandardScrollLayout>
       <ListRenderer
         data={LicenseData}
         keyExtractor={({ name }) => name}
@@ -23,6 +23,6 @@ export default function ThirdPartyScreen() {
             ),
         }}
       />
-    </SettingsLayout>
+    </StandardScrollLayout>
   );
 }

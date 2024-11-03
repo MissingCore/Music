@@ -29,7 +29,7 @@ import { formatTracksForTrack } from "@/db/utils/formatters";
 import {
   StickyActionListLayout,
   useStickyActionListLayoutRef,
-} from "@/layouts/StickyActionLayout";
+} from "@/layouts";
 
 import { fileNodeKeys } from "@/constants/QueryKeys";
 import { cn } from "@/lib/style";
