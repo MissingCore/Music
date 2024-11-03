@@ -9,7 +9,7 @@ import { cn } from "@/lib/style";
 export function AccentText({
   className,
   originalText,
-  ...rest
+  ...props
 }: TextProps & {
   /** Ignore the uppercase behavior when the accent font is `NDot`. */
   originalText?: boolean;
@@ -26,7 +26,7 @@ export function AccentText({
         },
         className,
       )}
-      {...rest}
+      {...props}
     />
   );
 }

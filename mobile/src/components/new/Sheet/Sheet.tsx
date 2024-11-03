@@ -20,7 +20,7 @@ export function Sheet({
   contentContainerClassName,
   contentContainerStyle,
   children,
-  ...rest
+  ...props
 }: ActionSheetProps & {
   title?: string;
   /** If the sheet should open at max screen height. */
@@ -42,7 +42,7 @@ export function Sheet({
       //  - Note 2: The recommended way is to set a `maxHeight`, but that doesn't
       //  work as mentioned: https://github.com/ammarahm-ed/react-native-actions-sheet/issues/322#issuecomment-2029560154
       safeAreaInsets={{ ...insets, top: insets.top + 56 }}
-      {...rest}
+      {...props}
     >
       <View
         style={contentContainerStyle}

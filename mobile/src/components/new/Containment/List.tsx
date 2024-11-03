@@ -8,14 +8,10 @@ import { StyledText } from "../Typography";
 
 //#region List
 /** Wrapper for list of `<ListItem />` for consistent gaps. */
-export function List({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return <View className={cn("gap-[3px]", className)}>{children}</View>;
+export function List(props: { children: React.ReactNode; className?: string }) {
+  return (
+    <View className={cn("gap-[3px]", props.className)}>{props.children}</View>
+  );
 }
 //#endregion
 
@@ -24,7 +20,7 @@ export function List({
 export function ListRenderer<TData extends Record<string, any>>({
   data,
   renderOptions: { getTitle, getDescription, onPress },
-  ...rest
+  ...props
 }: Omit<FlashListProps<TData>, "renderItem"> & {
   renderOptions: {
     getTitle: (item: TData) => string;
@@ -50,7 +46,7 @@ export function ListRenderer<TData extends Record<string, any>>({
         );
       }}
       showsVerticalScrollIndicator={false}
-      {...rest}
+      {...props}
     />
   );
 }

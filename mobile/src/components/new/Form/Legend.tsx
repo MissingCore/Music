@@ -5,24 +5,17 @@ import { StyledText } from "../Typography";
 
 //#region Legend
 /** Wrapper for list of `<LegendItem />` for consistent gaps. */
-export function Legend({
-  children,
-  className,
-}: {
+export function Legend(props: {
   children: React.ReactNode;
   className?: string;
 }) {
-  return <View className={cn("gap-2", className)}>{children}</View>;
+  return <View className={cn("gap-2", props.className)}>{props.children}</View>;
 }
 //#endregion
 
 //#region Legend Item
 /** Help describe items represented in for example a `<ProgressBar />`. */
-export function LegendItem({
-  name,
-  value,
-  color,
-}: {
+export function LegendItem(props: {
   name: string;
   value: string | number;
   color?: string;
@@ -30,15 +23,15 @@ export function LegendItem({
   return (
     <View className="flex-row items-center justify-between gap-2">
       <View className="shrink flex-row items-center gap-2">
-        {color ? (
+        {props.color ? (
           <View
-            style={{ backgroundColor: color }}
+            style={{ backgroundColor: props.color }}
             className="size-[9px] rounded-full"
           />
         ) : null}
-        <StyledText className="shrink text-xs">{name}</StyledText>
+        <StyledText className="shrink text-xs">{props.name}</StyledText>
       </View>
-      <StyledText preset="dimOnSurface">{value}</StyledText>
+      <StyledText preset="dimOnSurface">{props.value}</StyledText>
     </View>
   );
 }

@@ -17,11 +17,9 @@ import { cn } from "@/lib/style";
 
 /** Used to progressively display long content. */
 export function Marquee({
-  children,
   color,
   topOffset = 0,
-  center = false,
-  wrapperClassName,
+  ...props
 }: {
   children: React.ReactNode;
   /**
@@ -95,21 +93,21 @@ export function Marquee({
   }));
 
   return (
-    <View className={cn("relative", wrapperClassName)}>
+    <View className={cn("relative", props.wrapperClassName)}>
       <Animated.ScrollView
         onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}
         horizontal
         pointerEvents="none"
         showsHorizontalScrollIndicator={false}
         contentContainerClassName={cn("grow overflow-hidden", {
-          "justify-center": center,
+          "justify-center": props.center,
         })}
       >
         <Animated.View
           onLayout={(e) => setContentWidth(e.nativeEvent.layout.width)}
           style={contentStyles}
         >
-          {children}
+          {props.children}
         </Animated.View>
       </Animated.ScrollView>
       {/* Scroll Shadow */}
