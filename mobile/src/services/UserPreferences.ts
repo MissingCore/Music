@@ -21,6 +21,11 @@ import { RecentList } from "@/modules/media/services/Music";
 
 import { clearAllQueries } from "@/lib/react-query";
 
+/** Options for app themes. */
+export const ThemeOptions = ["light", "dark", "system"] as const;
+/** Options for app accent font. */
+export const FontOptions = ["NDot", "NType"] as const;
+
 //#region Zustand Store
 //#region UserPreferencesStore Interface
 interface UserPreferencesStore {
@@ -33,11 +38,11 @@ interface UserPreferencesStore {
   setLanguage: (languageCode: string) => void;
 
   /** "Color" the overall app will look like. */
-  theme: "light" | "dark" | "system";
-  setTheme: (newTheme: "light" | "dark" | "system") => void;
+  theme: (typeof ThemeOptions)[number];
+  setTheme: (newTheme: UserPreferencesStore["theme"]) => void;
   /** Font used for some accent text (ie: major headings). */
-  accentFont: "NDot" | "NType";
-  setAccentFont: (newFont: "NDot" | "NType") => void;
+  accentFont: (typeof FontOptions)[number];
+  setAccentFont: (newFont: UserPreferencesStore["accentFont"]) => void;
 
   /** Minimum number of seconds a track needs to have to be saved. */
   minSeconds: number;
