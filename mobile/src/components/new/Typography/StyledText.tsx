@@ -1,23 +1,7 @@
-import type { VariantProps } from "cva";
-import { cva } from "cva";
 import type { TextProps } from "react-native";
 import { Text } from "react-native";
 
 import { cn } from "@/lib/style";
-
-export type TextStyleProps = VariantProps<typeof textStyles>;
-export const textStyles = cva({
-  variants: {
-    preset: {
-      default: "text-base text-foreground",
-      dimOnCanvas: "text-xs text-foreground/60",
-      dimOnSurface: "text-xs text-foreground/50",
-    },
-    bold: { true: "font-robotoMedium", false: "font-roboto" },
-    center: { true: "text-center", false: "" },
-  },
-  defaultVariants: { preset: "default", bold: false, center: false },
-});
 
 /** Styled `<Text />`. */
 export function StyledText({
@@ -25,12 +9,27 @@ export function StyledText({
   preset,
   bold,
   center,
-  ...rest
-}: TextProps & TextStyleProps) {
+  ...props
+}: TextProps & {
+  preset?: "dimOnCanvas" | "dimOnSurface";
+  bold?: boolean;
+  center?: boolean;
+}) {
   return (
     <Text
-      className={cn(textStyles({ preset, bold, center }), className)}
-      {...rest}
+      className={cn(
+        "text-base text-foreground",
+        {
+          "text-center": center,
+          "text-xs": preset !== undefined,
+          "text-foreground/60": preset === "dimOnCanvas",
+          "text-foreground/50": preset === "dimOnSurface",
+        },
+        // From past experience, the font-family doesn't get replaced for some reason.
+        bold ? "font-robotoMedium" : "font-roboto",
+        className,
+      )}
+      {...props}
     />
   );
 }
