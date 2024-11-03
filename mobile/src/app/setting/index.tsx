@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { OpenInNew } from "@/icons";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
-import { SettingsLayout } from "@/layouts/SettingsLayout";
+import { StandardScrollLayout } from "@/layouts";
 import { BackupModal, LanguageModal } from "@/screens/Modals";
 import { LANGUAGES } from "@/modules/i18n/constants";
 
@@ -25,7 +25,7 @@ export default function SettingScreen() {
 
   return (
     <>
-      <SettingsLayout>
+      <StandardScrollLayout>
         {hasNewUpdate && (
           <ListItem
             title={t("header.appUpdate")}
@@ -114,7 +114,7 @@ export default function SettingScreen() {
             last
           />
         </List>
-      </SettingsLayout>
+      </StandardScrollLayout>
 
       <LanguageModal ref={langModalRef} />
       <BackupModal ref={backupModalRef} />

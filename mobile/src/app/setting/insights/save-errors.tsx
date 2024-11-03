@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { db } from "@/db";
 import { settingKeys } from "@/constants/QueryKeys";
 
-import { SettingsLayout } from "@/layouts/SettingsLayout";
+import { StandardScrollLayout } from "@/layouts";
 
 import { ListRenderer } from "@/components/new/Containment";
 import { StyledText } from "@/components/new/Typography";
@@ -15,7 +15,7 @@ export default function SaveErrorsScreen() {
   const { data } = useSaveErrors();
 
   return (
-    <SettingsLayout>
+    <StandardScrollLayout>
       <ListRenderer
         data={data}
         keyExtractor={({ id }) => id}
@@ -27,7 +27,7 @@ export default function SaveErrorsScreen() {
           <StyledText center>{t("response.noErrors")}</StyledText>
         }
       />
-    </SettingsLayout>
+    </StandardScrollLayout>
   );
 }
 

@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 
 import { useUserPreferencesStore } from "@/services/UserPreferences";
-import { SettingsLayout } from "@/layouts/SettingsLayout";
+import { StandardScrollLayout } from "@/layouts";
 import { FontModal, ThemeModal } from "@/screens/Modals";
 
 import { List, ListItem } from "@/components/new/Containment";
@@ -18,7 +18,7 @@ export default function AppearanceScreen() {
 
   return (
     <>
-      <SettingsLayout>
+      <StandardScrollLayout>
         <List>
           <ListItem
             title={t("title.font")}
@@ -33,7 +33,7 @@ export default function AppearanceScreen() {
             last
           />
         </List>
-      </SettingsLayout>
+      </StandardScrollLayout>
 
       <FontModal ref={fontModalRef} />
       <ThemeModal ref={themeModalRef} />

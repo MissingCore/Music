@@ -12,7 +12,7 @@ import { formatForMediaCard } from "@/db/utils/formatters";
 
 import { useGetColumn } from "@/hooks/useGetColumn";
 import { useMusicStore } from "@/modules/media/services/Music";
-import { StickyActionLayout } from "@/layouts/StickyActionLayout";
+import { StickyActionLayout } from "@/layouts";
 
 import { favoriteKeys } from "@/constants/QueryKeys";
 import { abbreviateNum } from "@/utils/number";

@@ -14,7 +14,7 @@ import { albums, artists, playlists, tracks, invalidTracks } from "@/db/schema";
 import { settingKeys } from "@/constants/QueryKeys";
 
 import { useTheme } from "@/hooks/useTheme";
-import { SettingsLayout } from "@/layouts/SettingsLayout";
+import { StandardScrollLayout } from "@/layouts";
 
 import { Colors } from "@/constants/Styles";
 import { abbreviateSize, formatSeconds } from "@/utils/number";
@@ -26,7 +26,7 @@ export default function InsightsScreen() {
   const { t } = useTranslation();
 
   return (
-    <SettingsLayout>
+    <StandardScrollLayout>
       <List>
         <StorageWidget />
         <DBSummaryWidget />
@@ -38,7 +38,7 @@ export default function InsightsScreen() {
         onPress={() => router.navigate("/setting/insights/save-errors")}
         {...{ first: true, last: true }}
       />
-    </SettingsLayout>
+    </StandardScrollLayout>
   );
 }
 

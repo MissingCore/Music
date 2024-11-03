@@ -9,7 +9,7 @@ import { getTrackCover } from "@/db/utils/formatters";
 
 import { Sort } from "@/icons";
 import { useSessionPreferencesStore } from "@/services/SessionPreferences";
-import { StickyActionListLayout } from "@/layouts/StickyActionLayout";
+import { StickyActionListLayout } from "@/layouts";
 
 import { trackKeys } from "@/constants/QueryKeys";
 import { IconButton } from "@/components/new/Form";

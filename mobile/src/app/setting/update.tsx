@@ -7,7 +7,7 @@ import { LogoGitHub, LogoPlayStore } from "@/icons";
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 import { useTheme } from "@/hooks/useTheme";
-import { StickyActionHeader } from "@/layouts/StickyActionLayout";
+import { StickyActionHeader } from "@/layouts";
 
 import * as LINKS from "@/constants/Links";
 import { FontFamily, FontSize } from "@/constants/Styles";
