@@ -1,13 +1,12 @@
 import { useTranslation } from "react-i18next";
+import { SheetManager } from "react-native-actions-sheet";
 
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { useRescanForTracks } from "@/modules/scanning/helpers/rescan";
 import { StandardScrollLayout } from "@/layouts";
-import { MinDurationModal, ScanFilterListModal } from "@/screens/Modals";
 
 import { mutateGuard } from "@/lib/react-query";
 import { List, ListItem } from "@/components/new/Containment";
-import { useModalRef } from "@/components/new/Modal";
 
 /** Screen for `/setting/scanning` route. */
 export default function ScanningScreen() {
@@ -17,45 +16,43 @@ export default function ScanningScreen() {
   const ignoreDuration = useUserPreferencesStore((state) => state.minSeconds);
   const rescan = useRescanForTracks();
 
-  const allowListModalRef = useModalRef();
-  const blockListModalRef = useModalRef();
-  const minDurationModalRef = useModalRef();
-
   return (
-    <>
-      <StandardScrollLayout>
+    <StandardScrollLayout>
+      <ListItem
+        title={t("settings.rescan")}
+        description={t("settings.brief.rescan")}
+        disabled={rescan.isPending}
+        onPress={() => mutateGuard(rescan, undefined)}
+        {...{ first: true, last: true }}
+      />
+
+      <List>
         <ListItem
-          title={t("settings.rescan")}
-          description={t("settings.brief.rescan")}
-          disabled={rescan.isPending}
-          onPress={() => mutateGuard(rescan, undefined)}
-          {...{ first: true, last: true }}
+          title={t("title.listAllow")}
+          description={t("plural.entry", { count: allowList.length })}
+          onPress={() =>
+            SheetManager.show("scan-filter-list-sheet", {
+              payload: { listType: "listAllow" },
+            })
+          }
+          first
         />
-
-        <List>
-          <ListItem
-            title={t("title.listAllow")}
-            description={t("plural.entry", { count: allowList.length })}
-            onPress={() => allowListModalRef.current?.present()}
-            first
-          />
-          <ListItem
-            title={t("title.listBlock")}
-            description={t("plural.entry", { count: blockList.length })}
-            onPress={() => blockListModalRef.current?.present()}
-          />
-          <ListItem
-            title={t("title.ignoreDuration")}
-            description={t("plural.second", { count: ignoreDuration })}
-            onPress={() => minDurationModalRef.current?.present()}
-            last
-          />
-        </List>
-      </StandardScrollLayout>
-
-      <ScanFilterListModal ref={allowListModalRef} listType="listAllow" />
-      <ScanFilterListModal ref={blockListModalRef} listType="listBlock" />
-      <MinDurationModal ref={minDurationModalRef} />
-    </>
+        <ListItem
+          title={t("title.listBlock")}
+          description={t("plural.entry", { count: blockList.length })}
+          onPress={() =>
+            SheetManager.show("scan-filter-list-sheet", {
+              payload: { listType: "listBlock" },
+            })
+          }
+        />
+        <ListItem
+          title={t("title.ignoreDuration")}
+          description={t("plural.second", { count: ignoreDuration })}
+          onPress={() => SheetManager.show("min-duration-sheet")}
+          last
+        />
+      </List>
+    </StandardScrollLayout>
   );
 }

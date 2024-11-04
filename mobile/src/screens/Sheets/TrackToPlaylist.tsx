@@ -39,7 +39,6 @@ export default function TrackToPlaylistSheet(
       // Hide the Track sheet when we close this sheet since it's still open.
       onBeforeClose={() => SheetManager.hide("track-sheet")}
       snapTop
-      contentContainerClassName="h-full pb-0"
     >
       <FlashList
         estimatedItemSize={58} // 54px Height + 4px Margin Top

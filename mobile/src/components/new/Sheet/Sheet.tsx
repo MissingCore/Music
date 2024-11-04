@@ -46,7 +46,11 @@ export function Sheet({
     >
       <View
         style={contentContainerStyle}
-        className={cn("p-4 pt-0", contentContainerClassName)}
+        className={cn(
+          "p-4 pt-0",
+          { "h-full pb-0": snapTop },
+          contentContainerClassName,
+        )}
       >
         {children}
       </View>

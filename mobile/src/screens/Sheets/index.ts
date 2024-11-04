@@ -1,6 +1,12 @@
 import type { SheetDefinition } from "react-native-actions-sheet";
 import { registerSheet } from "react-native-actions-sheet";
 
+import BackupSheet from "./Backup";
+import FontSheet from "./Font";
+import LanguageSheet from "./Language";
+import MinDurationSheet from "./MinDuration";
+import ScanFilterListSheet from "./ScanFilterList";
+import ThemeSheet from "./Theme";
 import TrackSheet from "./Track";
 import TrackSortSheet from "./TrackSort";
 import TrackToPlaylistSheet from "./TrackToPlaylist";
@@ -10,6 +16,12 @@ import TrackToPlaylistSheet from "./TrackToPlaylist";
   return `null` due waiting for data (ie: React Query), when the data
   appears, the sheet won't render as it expects a sheet on initial render.
 */
+registerSheet("backup-sheet", BackupSheet);
+registerSheet("font-sheet", FontSheet);
+registerSheet("language-sheet", LanguageSheet);
+registerSheet("min-duration-sheet", MinDurationSheet);
+registerSheet("scan-filter-list-sheet", ScanFilterListSheet);
+registerSheet("theme-sheet", ThemeSheet);
 registerSheet("track-sheet", TrackSheet);
 registerSheet("track-sort-sheet", TrackSortSheet);
 registerSheet("track-to-playlist-sheet", TrackToPlaylistSheet);
@@ -18,6 +30,14 @@ registerSheet("track-to-playlist-sheet", TrackToPlaylistSheet);
 // across the app for all registered sheets.
 declare module "react-native-actions-sheet" {
   interface Sheets {
+    "backup-sheet": SheetDefinition;
+    "font-sheet": SheetDefinition;
+    "language-sheet": SheetDefinition;
+    "min-duration-sheet": SheetDefinition;
+    "scan-filter-list-sheet": SheetDefinition<{
+      payload: { listType: "listAllow" | "listBlock" };
+    }>;
+    "theme-sheet": SheetDefinition;
     "track-sheet": SheetDefinition<{ payload: { id: string } }>;
     "track-sort-sheet": SheetDefinition;
     "track-to-playlist-sheet": SheetDefinition<{ payload: { id: string } }>;
