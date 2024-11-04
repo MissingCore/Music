@@ -3,7 +3,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { SheetProvider } from "react-native-actions-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-import "@/screens/Modals/sheets";
+import "@/screens/Sheets";
 import { RouteHandlers } from "./RouteHandlers";
 import { ThemeProvider } from "./ThemeProvider";
 import { ToastProvider } from "./ToastProvider";
