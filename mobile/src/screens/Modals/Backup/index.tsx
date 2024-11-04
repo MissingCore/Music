@@ -22,6 +22,10 @@ export default function BackupSheet(props: SheetProps<"backup-sheet">) {
       id={props.sheetId}
       title={t("title.backup")}
       contentContainerClassName="gap-4"
+      // Work around for toast notification being underneath the modal.
+      //  - Using `isModal` makes the sheet appear slower compared to
+      //  the default behavior or not having it.
+      isModal={false}
     >
       <StyledText preset="dimOnCanvas" center className="text-sm">
         {t("settings.description.backup")}
