@@ -1,12 +1,12 @@
-import type { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import {
   PrimaryDirectoryPath,
   StorageVolumesDirectoryPaths,
 } from "@missingcore/react-native-metadata-retriever";
-import { forwardRef, useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
+import type { SheetProps } from "react-native-actions-sheet";
+import { FlashList } from "react-native-actions-sheet/dist/src/views/FlashList";
 
 import { Add, CreateNewFolder, Remove } from "@/icons";
 import { useUserPreferencesStore } from "@/services/UserPreferences";
@@ -18,28 +18,49 @@ import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
 import { Marquee, cardStyles } from "@/components/new/Containment";
 import { IconButton, TextInput } from "@/components/new/Form";
-import { ModalHeader, ModalSheet } from "@/components/new/Modal";
+import { Sheet } from "@/components/new/Sheet";
 import { Swipeable } from "@/components/new/Swipeable";
 import { StyledText } from "@/components/new/Typography";
 
-//#region Modal
-/** Modal that can be used to edit the paths in the allowlist or blocklist. */
-export const ScanFilterListModal = forwardRef<
-  BottomSheetModal,
-  { listType: "listAllow" | "listBlock" }
->(function ScanFilterListModal({ listType }, ref) {
+//#region Sheet
+/** Sheet used to edit the paths in the allowlist or blocklist. */
+export default function ScanFilterListSheet(
+  props: SheetProps<"scan-filter-list-sheet">,
+) {
+  const listType = props.payload!.listType;
+
   const { t } = useTranslation();
   const { surface } = useTheme();
   const listEntries = useUserPreferencesStore((state) => state[listType]);
 
   return (
-    <ModalSheet ref={ref} snapTop className="">
-      <BottomSheetFlatList
+    <Sheet
+      id={props.sheetId}
+      title={t(`title.${listType}`)}
+      contentContainerClassName="gap-4 px-0"
+      snapTop
+    >
+      <StyledText preset="dimOnCanvas" center className="px-4 text-sm">
+        {t(`settings.description.${listType}`)}
+        {listType === "listAllow" ? (
+          <StyledText preset="dimOnSurface" className="text-xs">
+            {"\n"}
+            {StorageVolumesDirectoryPaths.map((dir) => `\n${dir}`)}
+          </StyledText>
+        ) : null}
+      </StyledText>
+      <FilterForm {...{ listType, listEntries }} />
+
+      <FlashList
+        estimatedItemSize={58} // 54px Height + 4px Margin Top
         data={listEntries}
         keyExtractor={(item) => item}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <Swipeable
-            containerClassName="px-4"
+            containerClassName={cn("px-4", {
+              "mt-1": index !== 0,
+              "mb-4": index === listEntries!.length - 1,
+            })}
             renderRightActions={() => (
               <View className="pr-4">
                 <IconButton
@@ -61,28 +82,19 @@ export const ScanFilterListModal = forwardRef<
             </Marquee>
           </Swipeable>
         )}
-        showsVerticalScrollIndicator={false}
-        // Sticky the modal header as otherwise, it will scroll with the content.
-        stickyHeaderIndices={[0]}
-        ListHeaderComponent={
-          <FilterListHeader {...{ listType, listEntries }} />
-        }
         ListEmptyComponent={
           <StyledText center>{t("response.noFilters")}</StyledText>
         }
-        contentContainerClassName="gap-2 pb-4"
+        showsVerticalScrollIndicator={false}
       />
-    </ModalSheet>
+    </Sheet>
   );
-});
+}
 //#endregion
 
-//#region Modal Header
-/** Custom `ListHeaderComponent` for modal. */
-function FilterListHeader({
-  listType,
-  listEntries,
-}: {
+//#region Form
+/** Form for adding filters to the list. */
+function FilterForm(props: {
   listType: "listAllow" | "listBlock";
   listEntries: string[];
 }) {
@@ -92,8 +104,8 @@ function FilterListHeader({
 
   const isValidPath = useMemo(() => {
     const trimmed = newPath.trim();
-    return validatePath(newPath) && !listEntries.includes(trimmed);
-  }, [listEntries, newPath]);
+    return validatePath(newPath) && !props.listEntries.includes(trimmed);
+  }, [props.listEntries, newPath]);
 
   const selectDirectory = useCallback(async () => {
     try {
@@ -105,52 +117,39 @@ function FilterListHeader({
   }, []);
 
   return (
-    <View className="gap-4 bg-canvas px-4 pb-2 dark:bg-neutral5">
-      <ModalHeader title={t(`title.${listType}`)} noPadding />
-      <StyledText preset="dimOnCanvas" center className="text-sm">
-        {t(`settings.description.${listType}`)}
-        {listType === "listAllow" ? (
-          <StyledText preset="dimOnSurface" className="text-xs">
-            {"\n"}
-            {StorageVolumesDirectoryPaths.map((dir) => `\n${dir}`)}
-          </StyledText>
-        ) : null}
-      </StyledText>
-
-      {/* "Input Form" */}
-      <View className="flex-row gap-2">
-        <View className="shrink grow flex-row items-center gap-2 border-b border-foreground/60">
-          <TextInput
-            editable={!onSubmit.isPending}
-            value={newPath}
-            onChangeText={(text) => setNewPath(text)}
-            placeholder={PrimaryDirectoryPath}
-            className="shrink grow"
-          />
-          <IconButton
-            kind="ripple"
-            accessibilityLabel={t("settings.related.pathSelect")}
-            onPress={selectDirectory}
-            disabled={onSubmit.isPending}
-          >
-            <CreateNewFolder />
-          </IconButton>
-        </View>
+    <View className="flex-row gap-2 px-4">
+      <View className="shrink grow flex-row items-center gap-2 border-b border-foreground/60">
+        <TextInput
+          autoFocus={false}
+          editable={!onSubmit.isPending}
+          value={newPath}
+          onChangeText={(text) => setNewPath(text)}
+          placeholder={PrimaryDirectoryPath}
+          className="shrink grow"
+        />
         <IconButton
-          accessibilityLabel={t("settings.related.pathAdd")}
-          onPress={() =>
-            mutateGuard(onSubmit, {
-              list: listType,
-              path: newPath,
-              onSuccess: () => setNewPath(""),
-            })
-          }
-          disabled={!isValidPath || onSubmit.isPending}
-          className="bg-red"
+          kind="ripple"
+          accessibilityLabel={t("settings.related.pathSelect")}
+          onPress={selectDirectory}
+          disabled={onSubmit.isPending}
         >
-          <Add color={Colors.neutral100} />
+          <CreateNewFolder />
         </IconButton>
       </View>
+      <IconButton
+        accessibilityLabel={t("settings.related.pathAdd")}
+        onPress={() =>
+          mutateGuard(onSubmit, {
+            list: props.listType,
+            path: newPath,
+            onSuccess: () => setNewPath(""),
+          })
+        }
+        disabled={!isValidPath || onSubmit.isPending}
+        className="bg-red"
+      >
+        <Add color={Colors.neutral100} />
+      </IconButton>
     </View>
   );
 }
