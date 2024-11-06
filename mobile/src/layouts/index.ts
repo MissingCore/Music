@@ -1,3 +1,4 @@
+export { IssueLayout } from "./Issue";
 export { StandardScrollLayout } from "./StandardScroll";
 export {
   StickyActionHeader,
