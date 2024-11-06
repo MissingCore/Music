@@ -32,7 +32,7 @@ export function IssueLayout(props: {
         <AccentText style={{ paddingTop: top + 16 }} className="text-3xl">
           {t(`errorScreen.${props.issueType}`)}
         </AccentText>
-        <StyledText className="text-foreground/60">
+        <StyledText preset="dimOnCanvas" className="text-base">
           {t(`errorScreen.${props.issueType}Brief`)}
         </StyledText>
 
