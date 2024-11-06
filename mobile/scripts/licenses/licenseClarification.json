@@ -1,4 +1,7 @@
 {
+  "@backpackapp-io/react-native-toast@0.11.0": {
+    "copyright": "Copyright (c) 2022 Nick DeBaise"
+  },
   "@paralleldrive/cuid2@2.2.2": {
     "repository": "https://github.com/paralleldrive/cuid2"
   },

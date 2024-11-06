@@ -23,6 +23,7 @@
     "release": "git checkout main -q && git pull && python ./scripts/release/release_bump.py"
   },
   "dependencies": {
+    "@backpackapp-io/react-native-toast": "^0.11.0",
     "@expo/vector-icons": "^14.0.4",
     "@gorhom/bottom-sheet": "5.0.2",
     "@miblanchard/react-native-slider": "^2.6.0",

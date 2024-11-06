@@ -1,5 +1,6 @@
 | Name | License | Source |
 | ---- | ------- | ------ |
+| @backpackapp-io/react-native-toast | MIT | https://github.com/backpackapp-io/react-native-toast |
 | @expo/vector-icons | MIT | https://github.com/expo/vector-icons |
 | @gorhom/bottom-sheet | MIT | https://github.com/gorhom/react-native-bottom-sheet |
 | @miblanchard/react-native-slider | MIT | https://github.com/miblanchard/react-native-slider |
