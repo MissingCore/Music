@@ -121,7 +121,7 @@ function AddActions({ data }: { data: TrackData }) {
         preventClose
       />
       <SheetButton
-        onPress={() => Queue.add(data.id)}
+        onPress={() => Queue.add(data.id, data.name)}
         Icon={<QueueMusic />}
         text={t("trackModal.queueAdd")}
       />

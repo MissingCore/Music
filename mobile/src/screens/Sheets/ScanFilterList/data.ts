@@ -1,14 +1,15 @@
+import { toast } from "@backpackapp-io/react-native-toast";
 import {
   PrimaryDirectoryPath,
   StorageVolumesDirectoryPaths,
 } from "@missingcore/react-native-metadata-retriever";
 import { useMutation } from "@tanstack/react-query";
 import * as FileSystem from "expo-file-system";
-import { Toast } from "react-native-toast-notifications";
 
 import i18next from "@/modules/i18n";
 import { userPreferencesStore } from "@/services/UserPreferences";
 
+import { ToastOptions } from "@/lib/toast";
 import { addTrailingSlash } from "@/utils/string";
 
 const SAF = FileSystem.StorageAccessFramework;
@@ -41,7 +42,7 @@ export function validatePath(path: string) {
 export async function pickPath() {
   const permissions = await SAF.requestDirectoryPermissionsAsync();
   if (!permissions.granted) {
-    Toast.show(i18next.t("response.actionCancel"), { type: "danger" });
+    toast.error(i18next.t("response.actionCancel"), ToastOptions);
     return;
   }
 
@@ -83,9 +84,10 @@ async function addPathToList(props: {
     );
     if (!exists || !isDirectory) throw Error();
   } catch {
-    Toast.show(i18next.t("template.notFound", { name: trimmed }), {
-      type: "danger",
-    });
+    toast.error(
+      i18next.t("template.notFound", { name: trimmed }),
+      ToastOptions,
+    );
     return;
   }
   userPreferencesStore.setState((prev) => ({

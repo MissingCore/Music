@@ -4,9 +4,9 @@
  * This file contains classes containing helpers to manipulate the store.
  */
 
+import { toast } from "@backpackapp-io/react-native-toast";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { eq } from "drizzle-orm";
-import { Toast } from "react-native-toast-notifications";
 import TrackPlayer, { State } from "react-native-track-player";
 import { useStore } from "zustand";
 import {
@@ -27,6 +27,9 @@ import {
 } from "@/db/queries";
 import { formatForMediaCard } from "@/db/utils/formatters";
 
+import i18next from "@/modules/i18n";
+
+import { ToastOptions } from "@/lib/toast";
 import { shuffleArray } from "@/utils/object";
 import { ReservedPlaylists } from "../constants";
 import {
@@ -367,11 +370,11 @@ musicStore.subscribe(
 /** Helpers to manipulate the current queue. */
 export class Queue {
   /** Add a track id at the end of the current queue. */
-  static async add(trackId: string) {
+  static async add(trackId: string, trackName?: string) {
     musicStore.setState((prev) => ({
       queueList: [...prev.queueList, trackId],
     }));
-    Toast.show("Added track to queue.");
+    toast(i18next.t("response.queueAdd", { name: trackName }), ToastOptions);
 
     await RNTPManager.reloadNextTrack();
   }

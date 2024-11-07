@@ -1,3 +1,4 @@
+import { toast } from "@backpackapp-io/react-native-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
@@ -5,7 +6,6 @@ import * as Sharing from "expo-sharing";
 import { and, eq, isNull } from "drizzle-orm";
 import { useTranslation } from "react-i18next";
 import { Platform } from "react-native";
-import { Toast } from "react-native-toast-notifications";
 import { z } from "zod";
 
 import { db } from "@/db";
@@ -24,6 +24,7 @@ import i18next from "@/modules/i18n";
 import { Resynchronize, musicStore } from "@/modules/media/services/Music";
 
 import { clearAllQueries } from "@/lib/react-query";
+import { ToastOptions } from "@/lib/toast";
 import { pickKeys } from "@/utils/object";
 import { isFulfilled } from "@/utils/promise";
 import type { Maybe } from "@/utils/types";
@@ -235,10 +236,10 @@ export const useExportBackup = () => {
   return useMutation({
     mutationFn: exportBackup,
     onSuccess: () => {
-      Toast.show(t("response.exportSuccess"));
+      toast(t("response.exportSuccess"), ToastOptions);
     },
     onError: (err) => {
-      Toast.show(err.message, { type: "danger" });
+      toast.error(err.message, ToastOptions);
     },
   });
 };
@@ -251,10 +252,10 @@ export const useImportBackup = () => {
     mutationFn: importBackup,
     onSuccess: () => {
       clearAllQueries({ client: queryClient });
-      Toast.show(t("response.importSuccess"));
+      toast(t("response.importSuccess"), ToastOptions);
     },
     onError: (err) => {
-      Toast.show(err.message, { type: "danger" });
+      toast.error(err.message, ToastOptions);
     },
   });
 };
