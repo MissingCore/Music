@@ -114,7 +114,8 @@
   },
   "pnpm": {
     "patchedDependencies": {
-      "react-native-actions-sheet@0.9.7": "patches/react-native-actions-sheet@0.9.7.patch"
+      "react-native-actions-sheet@0.9.7": "patches/react-native-actions-sheet@0.9.7.patch",
+      "@backpackapp-io/react-native-toast@0.11.0": "patches/@backpackapp-io__react-native-toast@0.11.0.patch"
     }
   }
 }
