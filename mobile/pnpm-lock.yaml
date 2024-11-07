@@ -151,9 +151,6 @@ dependencies:
   react-native-svg:
     specifier: ^15.8.0
     version: 15.8.0(react-native@0.75.4)(react@18.3.1)
-  react-native-toast-notifications:
-    specifier: ^3.4.0
-    version: 3.4.0(react-native@0.75.4)(react@18.3.1)
   react-native-track-player:
     specifier: ^4.1.1
     version: 4.1.1(react-native@0.75.4)(react@18.3.1)
@@ -10765,16 +10762,6 @@ packages:
       react: 18.3.1
       react-native: 0.75.4(@babel/core@7.25.8)(@babel/preset-env@7.25.8)(@types/react@18.3.11)(react@18.3.1)(typescript@5.6.3)
       warn-once: 0.1.1
-    dev: false
-
-  /react-native-toast-notifications@3.4.0(react-native@0.75.4)(react@18.3.1):
-    resolution: {integrity: sha512-ZvB//jLhRiBRemtcH7vGP1maiKCikqtW4aDqo+QYvEIOcX0y3GrjxRayVAqI4oh0qJgd/26DkbM8COobj+0MEQ==}
-    peerDependencies:
-      react: '*'
-      react-native: '*'
-    dependencies:
-      react: 18.3.1
-      react-native: 0.75.4(@babel/core@7.25.8)(@babel/preset-env@7.25.8)(@types/react@18.3.11)(react@18.3.1)(typescript@5.6.3)
     dev: false
 
   /react-native-track-player@4.1.1(react-native@0.75.4)(react@18.3.1):

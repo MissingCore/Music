@@ -8,7 +8,6 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import "@/screens/Sheets";
 import { RouteHandlers } from "./RouteHandlers";
 import { ThemeProvider } from "./ThemeProvider";
-import { ToastProvider } from "./ToastProvider";
 
 import { queryClient } from "@/lib/react-query";
 
@@ -18,17 +17,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     <ThemeProvider>
       <SafeAreaProvider>
         <GestureHandlerRootView>
-          <ToastProvider>
-            <QueryClientProvider client={queryClient}>
-              <RouteHandlers />
-              <SheetProvider context="global">
-                <BottomSheetModalProvider>
-                  {children}
-                  <Toasts />
-                </BottomSheetModalProvider>
-              </SheetProvider>
-            </QueryClientProvider>
-          </ToastProvider>
+          <QueryClientProvider client={queryClient}>
+            <RouteHandlers />
+            <SheetProvider context="global">
+              <BottomSheetModalProvider>
+                {children}
+                <Toasts />
+              </BottomSheetModalProvider>
+            </SheetProvider>
+          </QueryClientProvider>
         </GestureHandlerRootView>
       </SafeAreaProvider>
     </ThemeProvider>
