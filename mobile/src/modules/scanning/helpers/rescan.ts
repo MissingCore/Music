@@ -1,6 +1,6 @@
+import { toast } from "@backpackapp-io/react-native-toast";
 import { useMutation } from "@tanstack/react-query";
 import { eq } from "drizzle-orm";
-import { Toast } from "react-native-toast-notifications";
 
 import { db } from "@/db";
 import { fileNodes, invalidTracks, tracks } from "@/db/schema";
@@ -9,6 +9,7 @@ import { getTracks } from "@/db/queries";
 import i18next from "@/modules/i18n";
 import { RecentList, Resynchronize } from "@/modules/media/services/Music";
 
+import { ToastOptions } from "@/lib/toast";
 import { batch } from "@/utils/promise";
 import { findAndSaveArtwork, cleanupImages } from "../helpers/artwork";
 import { cleanupDatabase, findAndSaveAudio } from "./audio";
@@ -16,7 +17,10 @@ import { savePathComponents } from "./folder";
 
 /** Look through our library for any new or updated tracks. */
 export async function rescanForTracks() {
-  const toastId = Toast.show(i18next.t("response.scanStart"), { duration: 0 });
+  const toastId = toast(i18next.t("response.scanStart"), {
+    ...ToastOptions,
+    duration: Infinity,
+  });
 
   try {
     // Slight buffer before we run our code due to the code blocking the
@@ -58,14 +62,17 @@ export async function rescanForTracks() {
     // Make sure the "recents" list is correct.
     RecentList.refresh();
 
-    Toast.update(toastId, i18next.t("response.scanSuccess"), {
-      duration: 3000,
+    toast(i18next.t("response.scanSuccess"), {
+      ...ToastOptions,
+      id: toastId,
+      duration: 4000,
     });
   } catch (err) {
     console.log(err);
-    Toast.update(toastId, i18next.t("response.scanFail"), {
-      type: "danger",
-      duration: 3000,
+    toast.error(i18next.t("response.scanFail"), {
+      ...ToastOptions,
+      id: toastId,
+      duration: 4000,
     });
   }
 }

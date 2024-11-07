@@ -6,7 +6,6 @@ import {
 } from "@tanstack/react-query";
 import { and, eq } from "drizzle-orm";
 import { useCallback } from "react";
-import { Toast } from "react-native-toast-notifications";
 
 import { db } from "@/db";
 import { playlists, tracksToPlaylists } from "@/db/schema";
@@ -138,7 +137,6 @@ export function useDeleteTrackFromPlaylist(
       if (wasFavorited) {
         queryClient.invalidateQueries({ queryKey: favoriteKeys.lists() });
       }
-      Toast.show("Removed track from playlist.");
     },
   });
 }

@@ -1,5 +1,6 @@
 | Name | License | Source |
 | ---- | ------- | ------ |
+| @backpackapp-io/react-native-toast | MIT | https://github.com/backpackapp-io/react-native-toast |
 | @expo/vector-icons | MIT | https://github.com/expo/vector-icons |
 | @gorhom/bottom-sheet | MIT | https://github.com/gorhom/react-native-bottom-sheet |
 | @miblanchard/react-native-slider | MIT | https://github.com/miblanchard/react-native-slider |
@@ -48,7 +49,6 @@
 | react-native-safe-area-context | MIT | https://github.com/th3rdwave/react-native-safe-area-context |
 | react-native-screens | MIT | https://github.com/software-mansion/react-native-screens |
 | react-native-svg | MIT | https://github.com/software-mansion/react-native-svg |
-| react-native-toast-notifications | MIT | https://github.com/arnnis/react-native-toast-notifications |
 | react-native-track-player | Apache-2.0 | https://github.com/doublesymmetry/react-native-track-player |
 | Roboto Font | Apache-2.0 | https://github.com/googlefonts/roboto |
 | tailwind-merge | MIT | https://github.com/dcastil/tailwind-merge |

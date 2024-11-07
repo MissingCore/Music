@@ -4,7 +4,7 @@ import {
 } from "@missingcore/react-native-metadata-retriever";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { Keyboard, View } from "react-native";
 import type { SheetProps } from "react-native-actions-sheet";
 import { FlashList } from "react-native-actions-sheet/dist/src/views/FlashList";
 
@@ -138,13 +138,14 @@ function FilterForm(props: {
       </View>
       <IconButton
         accessibilityLabel={t("settings.related.pathAdd")}
-        onPress={() =>
+        onPress={() => {
+          Keyboard.dismiss();
           mutateGuard(onSubmit, {
             list: props.listType,
             path: newPath,
             onSuccess: () => setNewPath(""),
-          })
-        }
+          });
+        }}
         disabled={!isValidPath || onSubmit.isPending}
         className="bg-red"
       >

@@ -8,11 +8,17 @@ overrides:
   markdown-it: 14.1.0
 
 patchedDependencies:
+  '@backpackapp-io/react-native-toast@0.11.0':
+    hash: od77t6fgaovtgbzmvgntqyne5e
+    path: patches/@backpackapp-io__react-native-toast@0.11.0.patch
   react-native-actions-sheet@0.9.7:
     hash: rilo6dygbis6iqezxxrswoam2q
     path: patches/react-native-actions-sheet@0.9.7.patch
 
 dependencies:
+  '@backpackapp-io/react-native-toast':
+    specifier: ^0.11.0
+    version: 0.11.0(patch_hash=od77t6fgaovtgbzmvgntqyne5e)(react-native-gesture-handler@2.20.0)(react-native-reanimated@3.15.5)(react-native-safe-area-context@4.11.1)(react-native@0.75.4)(react@18.3.1)
   '@expo/vector-icons':
     specifier: ^14.0.4
     version: 14.0.4
@@ -145,9 +151,6 @@ dependencies:
   react-native-svg:
     specifier: ^15.8.0
     version: 15.8.0(react-native@0.75.4)(react@18.3.1)
-  react-native-toast-notifications:
-    specifier: ^3.4.0
-    version: 3.4.0(react-native@0.75.4)(react@18.3.1)
   react-native-track-player:
     specifier: ^4.1.1
     version: 4.1.1(react-native@0.75.4)(react@18.3.1)
@@ -1788,6 +1791,23 @@ packages:
       '@babel/helper-string-parser': 7.25.7
       '@babel/helper-validator-identifier': 7.25.7
       to-fast-properties: 2.0.0
+
+  /@backpackapp-io/react-native-toast@0.11.0(patch_hash=od77t6fgaovtgbzmvgntqyne5e)(react-native-gesture-handler@2.20.0)(react-native-reanimated@3.15.5)(react-native-safe-area-context@4.11.1)(react-native@0.75.4)(react@18.3.1):
+    resolution: {integrity: sha512-ZRVYQPK6QOvt6vP1bF0I5oBpN5pnssdrX1JLV+KHPyxXWSNNvl1oo0qdJ5uzM7zj2TxMMUBPIsMofFeLA8E/dw==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+      react-native-gesture-handler: '>=2.2.1'
+      react-native-reanimated: '>=2.8.0'
+      react-native-safe-area-context: '>=4.2.4'
+    dependencies:
+      react: 18.3.1
+      react-native: 0.75.4(@babel/core@7.25.8)(@babel/preset-env@7.25.8)(@types/react@18.3.11)(react@18.3.1)(typescript@5.6.3)
+      react-native-gesture-handler: 2.20.0(react-native@0.75.4)(react@18.3.1)
+      react-native-reanimated: 3.15.5(@babel/core@7.25.8)(react-native@0.75.4)(react@18.3.1)
+      react-native-safe-area-context: 4.11.1(react-native@0.75.4)(react@18.3.1)
+    dev: false
+    patched: true
 
   /@bcoe/v8-coverage@0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
@@ -10742,16 +10762,6 @@ packages:
       react: 18.3.1
       react-native: 0.75.4(@babel/core@7.25.8)(@babel/preset-env@7.25.8)(@types/react@18.3.11)(react@18.3.1)(typescript@5.6.3)
       warn-once: 0.1.1
-    dev: false
-
-  /react-native-toast-notifications@3.4.0(react-native@0.75.4)(react@18.3.1):
-    resolution: {integrity: sha512-ZvB//jLhRiBRemtcH7vGP1maiKCikqtW4aDqo+QYvEIOcX0y3GrjxRayVAqI4oh0qJgd/26DkbM8COobj+0MEQ==}
-    peerDependencies:
-      react: '*'
-      react-native: '*'
-    dependencies:
-      react: 18.3.1
-      react-native: 0.75.4(@babel/core@7.25.8)(@babel/preset-env@7.25.8)(@types/react@18.3.11)(react@18.3.1)(typescript@5.6.3)
     dev: false
 
   /react-native-track-player@4.1.1(react-native@0.75.4)(react@18.3.1):
