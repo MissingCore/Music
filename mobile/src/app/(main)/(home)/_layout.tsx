@@ -1,14 +1,14 @@
-import { Stack } from "expo-router";
+import { MaterialTopTabs } from "@/layouts";
 
 export default function HomeLayout() {
   return (
-    <Stack screenOptions={{ animation: "fade", headerShown: false }}>
-      <Stack.Screen name="index" />
-      <Stack.Screen name="folder" />
-      <Stack.Screen name="playlist" />
-      <Stack.Screen name="track" />
-      <Stack.Screen name="album" />
-      <Stack.Screen name="artist" />
-    </Stack>
+    <MaterialTopTabs initialRouteName="index" tabBar={() => null}>
+      <MaterialTopTabs.Screen name="index" />
+      <MaterialTopTabs.Screen name="folder" />
+      <MaterialTopTabs.Screen name="playlist" />
+      <MaterialTopTabs.Screen name="track" />
+      <MaterialTopTabs.Screen name="album" />
+      <MaterialTopTabs.Screen name="artist" />
+    </MaterialTopTabs>
   );
 }
