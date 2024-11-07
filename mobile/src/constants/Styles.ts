@@ -16,6 +16,7 @@ export const Colors = {
   neutral0: "#000000",
   neutral5: "#0D0D0D",
   neutral10: "#1B1D1F", // Technically not the same hue or saturation.
+  neutral15: "#262626",
   neutral20: "#333333",
   neutral40: "#666666",
   neutral80: "#CCCCCC",
