@@ -25,6 +25,7 @@ function CustomToast({ type, message, height, width }: Toast) {
       className="items-center justify-center"
     >
       <View
+        style={{ elevation: 2, shadowColor: "#000" }}
         className={cn("rounded bg-surface p-2", {
           "bg-red": type === "error",
         })}
