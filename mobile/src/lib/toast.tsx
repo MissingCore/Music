@@ -12,12 +12,18 @@ export const ToastOptions = {
   customToast: CustomToast,
   disableShadow: true,
   position: ToastPosition.BOTTOM,
+  height: 36,
+  providerKey: "PERSISTS",
 } satisfies TOptions;
 
 /** Render a custom toast (makes styling for light/dark mode easier). */
 function CustomToast({ type, message, height, width }: Toast) {
   return (
-    <View style={{ height, width }} className="items-center justify-center">
+    <View
+      pointerEvents="box-none"
+      style={{ minHeight: height, width }}
+      className="items-center justify-center"
+    >
       <View
         className={cn("rounded bg-surface p-2", {
           "bg-red": type === "error",

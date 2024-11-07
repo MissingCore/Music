@@ -1,3 +1,4 @@
+import { Toasts } from "@backpackapp-io/react-native-toast";
 import { cssInterop } from "nativewind";
 import type { StyleProp, ViewStyle } from "react-native";
 import { View } from "react-native";
@@ -33,6 +34,7 @@ export function Sheet({
     <WrappedActionSheet
       gestureEnabled
       CustomHeaderComponent={<SheetHeader title={title} />}
+      ExtraOverlayComponent={<Toasts />}
       containerClassName={cn("rounded-t-lg bg-canvas dark:bg-neutral5", {
         "h-full": snapTop,
       })}
