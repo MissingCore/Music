@@ -1,7 +1,6 @@
-import { Stack, router } from "expo-router";
-import { useAtomValue } from "jotai";
+import { Stack, router, useRootNavigationState } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { FlatList, View } from "react-native";
 import Animated, {
   LinearTransition,
@@ -11,7 +10,6 @@ import Animated, {
 import { Search, Settings } from "@/icons";
 import { useBottomActionsLayout } from "@/hooks/useBottomActionsLayout";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
-import { tabIndexAtom } from "@/layouts";
 
 import { cn } from "@/lib/style";
 import { Button, IconButton } from "@/components/new/Form";
@@ -101,16 +99,24 @@ const NavRoutes = [
 
 /** List of routes in `(home)` group. */
 function NavigationList() {
-  const { t } = useTranslation();
-
+  const { t, i18n } = useTranslation();
+  const navState = useRootNavigationState();
   const listRef = useRef<FlatList>(null);
-  const tabIndex = useAtomValue(tabIndexAtom);
+
+  const tabIndex = useMemo(() => {
+    const mainRoute = navState.routes.find((r) => r.name === "(main)");
+    if (!mainRoute || !mainRoute.state) return 0;
+    const homeRoute = mainRoute.state.routes.find((r) => r.name === "(home)");
+    if (!homeRoute || !homeRoute.state) return 0;
+    return homeRoute.state.index ?? 0;
+  }, [navState]);
 
   useEffect(() => {
     if (!listRef.current) return;
     // Scroll to active tab (positioned in the middle of the visible area).
+    //  - Also fire when language changes due to word length being different.
     listRef.current.scrollToIndex({ index: tabIndex, viewPosition: 0.5 });
-  }, [tabIndex]);
+  }, [i18n.language, tabIndex]);
 
   return (
     <FlatList
