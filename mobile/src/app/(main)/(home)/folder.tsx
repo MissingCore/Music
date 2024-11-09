@@ -1,7 +1,7 @@
 import { useIsFocused } from "@react-navigation/native";
 import type { FlashListProps } from "@shopify/flash-list";
 import { useQuery } from "@tanstack/react-query";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   BackHandler,
@@ -51,18 +51,26 @@ export default function FolderScreen() {
   const { t } = useTranslation();
   const isFocused = useIsFocused();
   const listRef = useStickyActionListLayoutRef<FolderData>();
-  const [dirSegments, setDirSegments] = useState<string[]>([]);
+  const [dirSegments, _setDirSegments] = useState<string[]>([]);
 
   const fullPath = dirSegments.join("/");
 
   const { isPending, data } = useFolderContent(fullPath);
 
+  /** Modified state setter that scrolls to the top of the page. */
+  const setDirSegments: React.Dispatch<React.SetStateAction<string[]>> =
+    useCallback(
+      (value) => {
+        // Make sure we start at the beginning whenever the directory segments change.
+        listRef.current?.scrollToOffset({ offset: 0 });
+        _setDirSegments(value);
+      },
+      [listRef],
+    );
+
   useEffect(() => {
     // Prevent event from working when this screen isn't focused.
     if (!isFocused) return;
-
-    // Make sure we start at the beginning whenever the directory segments change.
-    listRef.current?.scrollToOffset({ offset: 0 });
 
     // Pop a directory segment if we detect a back gesture/action.
     const onBackPress = () => {
@@ -76,7 +84,7 @@ export default function FolderScreen() {
     return () => {
       BackHandler.removeEventListener("hardwareBackPress", onBackPress);
     };
-  }, [dirSegments, isFocused, listRef]);
+  }, [dirSegments, isFocused, listRef, setDirSegments]);
 
   // Information about this track list.
   const trackSource = { type: "folder", id: `${fullPath}/` } as const;
