@@ -5,6 +5,7 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
 import { albums, playlists } from "@/db/schema";
 import { getAlbums, getPlaylists, getSpecialPlaylist } from "@/db/queries";
@@ -84,12 +85,13 @@ function RecentlyPlayed() {
           <MediaCard {...item} size={width} />
         </View>
       )}
-      showsHorizontalScrollIndicator={false}
       ListEmptyComponent={
         <StyledText onLayout={() => setInitNoData(true)} className="my-4">
           {t("response.noRecents")}
         </StyledText>
       }
+      renderScrollComponent={ScrollView}
+      showsHorizontalScrollIndicator={false}
       className="-mx-4"
       contentContainerClassName="px-4"
     />

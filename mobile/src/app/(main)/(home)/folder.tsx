@@ -9,6 +9,7 @@ import {
   View,
   useWindowDimensions,
 } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
   FadeInLeft,
   FadeOutRight,
@@ -39,6 +40,9 @@ import { Loading } from "@/components/new/Loading";
 import { StyledText } from "@/components/new/Typography";
 import { MediaImage, Track } from "@/modules/media/components";
 import type { PlayListSource } from "@/modules/media/types";
+
+/** Animated scrollview supporting gestures. */
+const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
 type FolderData = FileNode | Track.Content;
 
@@ -176,12 +180,12 @@ function Breadcrumbs({
   }));
 
   return (
-    <Animated.ScrollView
+    <AnimatedScrollView
       ref={breadcrumbsRef}
       horizontal
       showsHorizontalScrollIndicator={false}
-      className="rounded-md bg-surface"
       style={{ width: screenWidth - 32 }}
+      className="rounded-md bg-surface"
       contentContainerClassName="px-4"
     >
       <Animated.View
@@ -219,7 +223,7 @@ function Breadcrumbs({
       </Animated.View>
       {/* Animated padding to allow exiting scroll animation to look nice. */}
       <Animated.View style={offsetStyle} />
-    </Animated.ScrollView>
+    </AnimatedScrollView>
   );
 }
 //#endregion
