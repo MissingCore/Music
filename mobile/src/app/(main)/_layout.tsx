@@ -1,3 +1,4 @@
+import { LinearGradient } from "expo-linear-gradient";
 import { Stack, router, useRootNavigationState } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { useEffect, useMemo, useRef } from "react";
@@ -10,6 +11,7 @@ import Animated, {
 import { Search, Settings } from "@/icons";
 import { useBottomActionsLayout } from "@/hooks/useBottomActionsLayout";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
+import { useTheme } from "@/hooks/useTheme";
 
 import { cn } from "@/lib/style";
 import { Button, IconButton } from "@/components/new/Form";
@@ -100,6 +102,7 @@ const NavRoutes = [
 /** List of routes in `(home)` group. */
 function NavigationList() {
   const { t, i18n } = useTranslation();
+  const { surface } = useTheme();
   const navState = useRootNavigationState();
   const listRef = useRef<FlatList>(null);
 
@@ -119,28 +122,44 @@ function NavigationList() {
   }, [i18n.language, tabIndex]);
 
   return (
-    <FlatList
-      ref={listRef}
-      horizontal
-      data={NavRoutes}
-      keyExtractor={({ href }) => href}
-      renderItem={({ item, index }) => (
-        <Button
-          onPress={() => router.navigate(item.href)}
-          disabled={tabIndex === index}
-          className="bg-transparent px-2 disabled:opacity-100"
-        >
-          <StyledText
-            className={cn("text-sm", { "text-red": tabIndex === index })}
+    <View className="relative shrink grow">
+      <FlatList
+        ref={listRef}
+        horizontal
+        data={NavRoutes}
+        keyExtractor={({ href }) => href}
+        renderItem={({ item, index }) => (
+          <Button
+            onPress={() => router.navigate(item.href)}
+            disabled={tabIndex === index}
+            className="bg-transparent px-2 disabled:opacity-100"
           >
-            {t(item.key).toLocaleUpperCase()}
-          </StyledText>
-        </Button>
-      )}
-      showsHorizontalScrollIndicator={false}
-      contentContainerClassName="grow px-2"
-    />
+            <StyledText
+              className={cn("text-sm", { "text-red": tabIndex === index })}
+            >
+              {t(item.key).toLocaleUpperCase()}
+            </StyledText>
+          </Button>
+        )}
+        showsHorizontalScrollIndicator={false}
+        contentContainerClassName="px-2"
+      />
+      {/* Scroll Shadow */}
+      <LinearGradient
+        pointerEvents="none"
+        colors={[`${surface}E6`, `${surface}00`]}
+        {...ShadowProps}
+        className="absolute left-0 h-full w-4"
+      />
+      <LinearGradient
+        pointerEvents="none"
+        colors={[`${surface}00`, `${surface}E6`]}
+        {...ShadowProps}
+        className="absolute right-0 h-full w-4"
+      />
+    </View>
   );
 }
 
+const ShadowProps = { start: { x: 0.0, y: 1.0 }, end: { x: 1.0, y: 1.0 } };
 //#endregion
