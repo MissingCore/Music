@@ -3,9 +3,10 @@ import type {
   ParamListBase,
   TabNavigationState,
 } from "@react-navigation/native";
+import { useSetAtom } from "jotai";
 import { useCallback, useMemo, useRef } from "react";
 
-import { MaterialTopTabs } from "@/layouts";
+import { MaterialTopTabs, tabIndexAtom } from "@/layouts";
 
 type TabState = EventArg<
   "state",
@@ -17,27 +18,34 @@ export default function HomeLayout() {
   // Should be fine to store navigation state in ref as it doesn't affect rendering.
   //  - https://react.dev/learn/referencing-values-with-refs#when-to-use-refs
   const prevTabState = useRef<TabState>();
+  const setTabIndex = useSetAtom(tabIndexAtom);
 
   /** Have Tab history operate like Stack history. */
-  const manageAsStackHistory = useCallback((e: TabState) => {
-    if (prevTabState.current) {
-      // Get top of history.
-      const currRoute = e.data.state.history.at(-1)!;
-      // See if route was seen previously.
-      const oldHistory = prevTabState.current.data.state.history;
-      const atIndex = oldHistory.findIndex(({ key }) => currRoute.key === key);
-      // Handle if we visited this tab earlier.
-      if (atIndex !== -1) {
-        // FIXME: Modifying the value in `e` for some reason modifies the
-        // original reference (even if we cloned `e` via object spreading).
-        //  - This might be fragile code, so we might swap over to the use
-        //  of the `reset` function.
-        //  - https://reactnavigation.org/docs/navigation-actions/#reset
-        e.data.state.history = oldHistory.toSpliced(atIndex + 1);
+  const manageAsStackHistory = useCallback(
+    (e: TabState) => {
+      if (prevTabState.current) {
+        // Get top of history.
+        const currRoute = e.data.state.history.at(-1)!;
+        // See if route was seen previously.
+        const oldHistory = prevTabState.current.data.state.history;
+        const atIndex = oldHistory.findIndex(
+          ({ key }) => currRoute.key === key,
+        );
+        // Handle if we visited this tab earlier.
+        if (atIndex !== -1) {
+          // FIXME: Modifying the value in `e` for some reason modifies the
+          // original reference (even if we cloned `e` via object spreading).
+          //  - This might be fragile code, so we might swap over to the use
+          //  of the `reset` function.
+          //  - https://reactnavigation.org/docs/navigation-actions/#reset
+          e.data.state.history = oldHistory.toSpliced(atIndex + 1);
+        }
       }
-    }
-    prevTabState.current = e;
-  }, []);
+      prevTabState.current = e;
+      setTabIndex(e.data.state.index);
+    },
+    [setTabIndex],
+  );
 
   const listeners = useMemo(
     () => ({ state: manageAsStackHistory }),

@@ -1,5 +1,5 @@
 export { IssueLayout } from "./Issue";
-export { MaterialTopTabs } from "./MaterialTopTabs";
+export { MaterialTopTabs, tabIndexAtom } from "./MaterialTopTabs";
 export { StandardScrollLayout } from "./StandardScroll";
 export {
   StickyActionHeader,
