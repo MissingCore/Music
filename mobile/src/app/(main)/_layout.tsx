@@ -53,7 +53,7 @@ function BottomActions() {
 //#endregion
 
 //#region Tab Bar
-/** Custom tab bar only visible while in routes in the `(home)` group. */
+/** Custom tab bar only visible while in routes in the `(main)` group. */
 function TabBar({ stacked = false, hidden = false }) {
   const { t } = useTranslation();
   const { hasNewUpdate } = useHasNewUpdate();
