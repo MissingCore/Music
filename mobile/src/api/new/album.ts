@@ -8,6 +8,7 @@ import i18next from "@/modules/i18n";
 import type {
   DrizzleFilter,
   FavoriteArgs,
+  QueryCondition,
   QueryMultiple,
   QuerySingle,
 } from "./types";
@@ -15,10 +16,10 @@ import type {
 //#region GET Methods
 /** Get the specified album. Throws error by default if no album is found. */
 export async function getAlbum({ shouldThrow = true, ...opts }: QuerySingle) {
-  let filters: DrizzleFilter = opts.filters ?? [];
-  if (opts.id) filters.push(eq(albums.id, opts.id));
+  let conditions: DrizzleFilter = opts.filters ?? [];
+  if (opts.id) conditions.push(eq(albums.id, opts.id));
   const album = await db.query.albums.findFirst({
-    where: and(...filters),
+    where: and(...conditions),
     with: { tracks: true },
   });
   if (shouldThrow && !album) throw new Error(i18next.t("response.noAlbums"));
@@ -36,8 +37,20 @@ export async function getAlbums(args?: QueryMultiple) {
 
 //#region PATCH Methods
 /** Update the `favorite` status of an album. */
-export async function favoriteAlbum({ id, isFavorite }: FavoriteArgs) {
-  await db.update(albums).set({ isFavorite }).where(eq(albums.id, id));
+export async function favoriteAlbum({ isFavorite, ...args }: FavoriteArgs) {
+  return updateAlbum({ ...args, set: { isFavorite } });
+}
+
+/** Update specified album. */
+export async function updateAlbum(
+  args: QueryCondition & { set: Partial<typeof albums.$inferInsert> },
+) {
+  let conditions: DrizzleFilter = args.filters ?? [];
+  if (args.id) conditions.push(eq(albums.id, args.id));
+  return db
+    .update(albums)
+    .set(args.set)
+    .where(and(...conditions));
 }
 //#endregion
 
@@ -54,5 +67,14 @@ export async function upsertAlbum(albumEntry: typeof albums.$inferInsert) {
       })
       .returning()
   )[0];
+}
+//#endregion
+
+//#region DELETE Methods
+/** Delete specified album. */
+export async function deleteAlbum(args: QueryCondition) {
+  let conditions: DrizzleFilter = args.filters ?? [];
+  if (args.id) conditions.push(eq(albums.id, args.id));
+  return db.delete(albums).where(and(...conditions));
 }
 //#endregion
