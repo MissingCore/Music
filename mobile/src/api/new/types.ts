@@ -9,8 +9,17 @@ export type QueryCondition =
   | { id: string; filters?: DrizzleFilter }
   | { id?: string; filters: DrizzleFilter };
 
-/** Arguments for querying a single entry in a table. */
-export type QuerySingle = QueryCondition & { shouldThrow?: boolean };
+/**
+ * Function signature for querying a single entry in a table with type-safe
+ * output.
+ *
+ * Note that a `@ts-expect-error` is required due to function overloading
+ * not working as well with object arguments.
+ */
+export type QuerySingleFn<TData> = {
+  (args: QueryCondition & { shouldThrow: false }): Promise<TData | undefined>;
+  (args: QueryCondition & { shouldThrow?: true }): Promise<TData>;
+};
 
 /** Arguments for querying multiple entries in a table. */
 export type QueryMultiple = { filters?: DrizzleFilter };

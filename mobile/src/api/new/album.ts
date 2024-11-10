@@ -1,6 +1,7 @@
 import { and, eq } from "drizzle-orm";
 
 import { db } from "@/db";
+import type { AlbumWithTracks } from "@/db/schema";
 import { albums } from "@/db/schema";
 
 import i18next from "@/modules/i18n";
@@ -10,12 +11,16 @@ import type {
   FavoriteArgs,
   QueryCondition,
   QueryMultiple,
-  QuerySingle,
+  QuerySingleFn,
 } from "./types";
 
 //#region GET Methods
 /** Get the specified album. Throws error by default if no album is found. */
-export async function getAlbum({ shouldThrow = true, ...opts }: QuerySingle) {
+// @ts-expect-error - Function overloading typing issues [ts(2322)]
+export const getAlbum: QuerySingleFn<AlbumWithTracks> = async ({
+  shouldThrow = true,
+  ...opts
+}) => {
   let conditions: DrizzleFilter = opts.filters ?? [];
   if (opts.id) conditions.push(eq(albums.id, opts.id));
   const album = await db.query.albums.findFirst({
@@ -24,7 +29,7 @@ export async function getAlbum({ shouldThrow = true, ...opts }: QuerySingle) {
   });
   if (shouldThrow && !album) throw new Error(i18next.t("response.noAlbums"));
   return album;
-}
+};
 
 /** Get multiple albums. */
 export async function getAlbums(args?: QueryMultiple) {
