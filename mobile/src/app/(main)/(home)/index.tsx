@@ -13,7 +13,7 @@ import { formatForMediaCard } from "@/db/utils/formatters";
 
 import { useGetColumn } from "@/hooks/useGetColumn";
 import { useMusicStore } from "@/modules/media/services/Music";
-import { StickyActionLayout } from "@/layouts";
+import { StickyActionScrollLayout } from "@/layouts";
 
 import { favoriteKeys } from "@/constants/QueryKeys";
 import { abbreviateNum } from "@/utils/number";
@@ -30,7 +30,7 @@ import {
 export default function HomeScreen() {
   const { t } = useTranslation();
   return (
-    <StickyActionLayout title={t("header.home")}>
+    <StickyActionScrollLayout title={t("header.home")}>
       <StyledText className="-mb-4 text-xs">
         {t("home.playedRecent")}
       </StyledText>
@@ -38,7 +38,7 @@ export default function HomeScreen() {
 
       <StyledText className="-mb-4 text-xs">{t("home.favorites")}</StyledText>
       <Favorites />
-    </StickyActionLayout>
+    </StickyActionScrollLayout>
   );
 }
 

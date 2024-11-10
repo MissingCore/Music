@@ -3,7 +3,7 @@ export { MaterialTopTabs } from "./MaterialTopTabs";
 export { StandardScrollLayout } from "./StandardScroll";
 export {
   StickyActionHeader,
-  StickyActionLayout,
+  StickyActionScrollLayout,
   StickyActionListLayout,
   useStickyActionListLayoutRef,
 } from "./StickyActionScroll";

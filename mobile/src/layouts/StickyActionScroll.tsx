@@ -12,19 +12,29 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { useBottomActionsLayout } from "@/hooks/useBottomActionsLayout";
+import { useBottomActionsContext } from "@/hooks/useBottomActionsContext";
 
 import { cn } from "@/lib/style";
 import { AccentText } from "@/components/new/Typography";
 
 //#region Layout
 /** Full-screen layout for displaying content on pages without a header bar. */
-export const StickyActionLayout = forwardRef<
+export const StickyActionScrollLayout = forwardRef<
   Animated.ScrollView,
-  ScrollViewProps & { title: string; StickyAction?: React.ReactNode }
->(function StickyActionLayout({ title, StickyAction, children, ...rest }, ref) {
+  ScrollViewProps & {
+    /** Name of list. */
+    title: string;
+    /** Optional action displayed in layout. */
+    StickyAction?: React.JSX.Element;
+    /** Determines the bottom padding applied. */
+    offsetType?: "withNav" | "onlyPlayer";
+  }
+>(function StickyActionScrollLayout(
+  { title, StickyAction, offsetType = "withNav", children, ...rest },
+  ref,
+) {
   const { top } = useSafeAreaInsets();
-  const { bottomInset } = useBottomActionsLayout();
+  const { bottomInset } = useBottomActionsContext();
 
   const initActionPos = useSharedValue(0);
   const scrollAmount = useSharedValue(0);
@@ -65,7 +75,10 @@ export const StickyActionLayout = forwardRef<
       showsVerticalScrollIndicator={false}
       stickyHeaderIndices={!!StickyAction ? [1] : undefined}
       {...rest}
-      contentContainerStyle={{ padding: 16, paddingBottom: bottomInset + 16 }}
+      contentContainerStyle={{
+        padding: 16,
+        paddingBottom: bottomInset[offsetType] + 16,
+      }}
       contentContainerClassName="grow gap-6"
     >
       <StickyActionHeader>{title}</StickyActionHeader>
@@ -102,6 +115,7 @@ export function StickyActionListLayout<TData>({
   StickyAction,
   estimatedActionSize = 0,
   listRef,
+  offsetType = "withNav",
   ...flashListProps
 }: FlashListProps<TData> & {
   /** Name of list. */
@@ -112,10 +126,12 @@ export function StickyActionListLayout<TData>({
   estimatedActionSize?: number;
   /** Pass a ref to the animated FlashList. */
   listRef?: React.RefObject<Animated.FlatList<TData>>;
+  /** Determines the bottom padding applied. */
+  offsetType?: "withNav" | "onlyPlayer";
 }) {
   const { top } = useSafeAreaInsets();
   const { width: ScreenWidth } = useWindowDimensions();
-  const { bottomInset } = useBottomActionsLayout();
+  const { bottomInset } = useBottomActionsContext();
 
   const initActionPos = useSharedValue(0);
   const scrollAmount = useSharedValue(0);
@@ -170,7 +186,10 @@ export function StickyActionListLayout<TData>({
         }
         showsVerticalScrollIndicator={false}
         {...flashListProps}
-        contentContainerStyle={{ padding: 16, paddingBottom: bottomInset + 16 }}
+        contentContainerStyle={{
+          padding: 16,
+          paddingBottom: bottomInset[offsetType] + 16,
+        }}
       />
 
       {StickyAction ? (
@@ -197,7 +216,7 @@ export function useStickyActionListLayoutRef<TData>() {
 //#endregion
 
 //#region Header
-/** Header component rendered in `<StickyActionLayout />`. */
+/** Header component rendered in `<StickyActionScrollLayout />`. */
 export function StickyActionHeader({
   noOffset = false,
   className,

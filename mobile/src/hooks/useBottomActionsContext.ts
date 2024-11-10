@@ -6,7 +6,7 @@ import { useMusicStore } from "@/modules/media/services/Music";
  * Returns information about what "bottom actions" are displayed in the
  * `(main)` group along with the additional bottom padding required.
  */
-export function useBottomActionsLayout() {
+export function useBottomActionsContext() {
   const pathname = usePathname(); // Fires whenever we navigate to a different screen.
   const activeTrackId = useMusicStore((state) => state.activeId);
 
@@ -15,14 +15,15 @@ export function useBottomActionsLayout() {
     pathname.startsWith(route),
   );
 
-  // The bottom insets required (includes the `16px` bottom offset).
-  let bottomInset = 16;
-  if (isMiniPlayerRendered) bottomInset += 64;
-  if (!hideNavBar) bottomInset += 60;
-  if (isMiniPlayerRendered && !hideNavBar) bottomInset += 3;
+  // Bottom inset on home screen.
+  let withNav = 76; // 60px Navbar Height + 16px Bottom Padding
+  if (isMiniPlayerRendered) withNav += 67; // 64px MiniPlayer Height + 3px Gap
+  // Bottom inset on screens with only MiniPlayer.
+  let onlyPlayer = 16;
+  if (isMiniPlayerRendered) onlyPlayer += 64;
 
   return {
     isRendered: { miniPlayer: isMiniPlayerRendered, navBar: !hideNavBar },
-    bottomInset,
+    bottomInset: { withNav, onlyPlayer },
   };
 }

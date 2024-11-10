@@ -9,7 +9,7 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { Search, Settings } from "@/icons";
-import { useBottomActionsLayout } from "@/hooks/useBottomActionsLayout";
+import { useBottomActionsContext } from "@/hooks/useBottomActionsContext";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 import { useTheme } from "@/hooks/useTheme";
 
@@ -36,8 +36,7 @@ export default function MainLayout() {
 //#region Bottom Actions
 /** Actions stickied to the bottom of the screens in the `(main)` group. */
 function BottomActions() {
-  const { isRendered } = useBottomActionsLayout();
-
+  const { isRendered } = useBottomActionsContext();
   return (
     <Animated.View
       entering={SlideInDown.duration(1000)}

@@ -167,7 +167,7 @@ function Breadcrumbs({
   const newScrollPos = useSharedValue(0);
 
   const onLayoutShift = (newWidth: number) => {
-    // `newWidth` doesn't include the `px-4` on `<StickyActionLayout />`
+    // `newWidth` doesn't include the `px-4` on `<StickyActionListLayout />`
     // and in `<Animated.ScrollView />`.
     newScrollPos.value = 64 + newWidth - screenWidth;
     if (newWidth < lastWidth.value) {
