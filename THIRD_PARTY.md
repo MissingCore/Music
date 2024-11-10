@@ -3,6 +3,7 @@
 | @backpackapp-io/react-native-toast | MIT | https://github.com/backpackapp-io/react-native-toast |
 | @expo/vector-icons | MIT | https://github.com/expo/vector-icons |
 | @gorhom/bottom-sheet | MIT | https://github.com/gorhom/react-native-bottom-sheet |
+| @lukemorales/query-key-factory | MIT | https://github.com/lukemorales/query-key-factory |
 | @miblanchard/react-native-slider | MIT | https://github.com/miblanchard/react-native-slider |
 | @missingcore/react-native-metadata-retriever | MIT | https://github.com/MissingCore/react-native-metadata-retriever |
 | @paralleldrive/cuid2 | MIT | https://github.com/paralleldrive/cuid2 |
