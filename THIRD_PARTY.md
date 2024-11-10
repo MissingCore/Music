@@ -7,6 +7,7 @@
 | @missingcore/react-native-metadata-retriever | MIT | https://github.com/MissingCore/react-native-metadata-retriever |
 | @paralleldrive/cuid2 | MIT | https://github.com/paralleldrive/cuid2 |
 | @react-native-async-storage/async-storage | MIT | https://github.com/react-native-async-storage/async-storage |
+| @react-navigation/material-top-tabs | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/material-top-tabs |
 | @react-navigation/native | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/native |
 | @sentry/react-native | MIT | https://github.com/getsentry/sentry-react-native |
 | @shopify/flash-list | MIT | https://github.com/Shopify/flash-list |
@@ -45,10 +46,12 @@
 | react-native-bootsplash | MIT | https://github.com/zoontek/react-native-bootsplash |
 | react-native-gesture-handler | MIT | https://github.com/software-mansion/react-native-gesture-handler |
 | react-native-markdown-display | MIT | https://github.com/iamacup/react-native-markdown-display |
+| react-native-pager-view | MIT | https://github.com/callstack/react-native-pager-view |
 | react-native-reanimated | MIT | https://github.com/software-mansion/react-native-reanimated |
 | react-native-safe-area-context | MIT | https://github.com/th3rdwave/react-native-safe-area-context |
 | react-native-screens | MIT | https://github.com/software-mansion/react-native-screens |
 | react-native-svg | MIT | https://github.com/software-mansion/react-native-svg |
+| react-native-tab-view | MIT | https://github.com/react-navigation/react-navigation |
 | react-native-track-player | Apache-2.0 | https://github.com/doublesymmetry/react-native-track-player |
 | Roboto Font | Apache-2.0 | https://github.com/googlefonts/roboto |
 | tailwind-merge | MIT | https://github.com/dcastil/tailwind-merge |

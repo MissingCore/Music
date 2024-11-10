@@ -1,7 +1,7 @@
 import { useIsFocused } from "@react-navigation/native";
 import type { FlashListProps } from "@shopify/flash-list";
 import { useQuery } from "@tanstack/react-query";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   BackHandler,
@@ -9,6 +9,7 @@ import {
   View,
   useWindowDimensions,
 } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
   FadeInLeft,
   FadeOutRight,
@@ -40,6 +41,9 @@ import { StyledText } from "@/components/new/Typography";
 import { MediaImage, Track } from "@/modules/media/components";
 import type { PlayListSource } from "@/modules/media/types";
 
+/** Animated scrollview supporting gestures. */
+const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
+
 type FolderData = FileNode | Track.Content;
 
 /** Screen for `/folder` route. */
@@ -47,18 +51,26 @@ export default function FolderScreen() {
   const { t } = useTranslation();
   const isFocused = useIsFocused();
   const listRef = useStickyActionListLayoutRef<FolderData>();
-  const [dirSegments, setDirSegments] = useState<string[]>([]);
+  const [dirSegments, _setDirSegments] = useState<string[]>([]);
 
   const fullPath = dirSegments.join("/");
 
   const { isPending, data } = useFolderContent(fullPath);
 
+  /** Modified state setter that scrolls to the top of the page. */
+  const setDirSegments: React.Dispatch<React.SetStateAction<string[]>> =
+    useCallback(
+      (value) => {
+        // Make sure we start at the beginning whenever the directory segments change.
+        listRef.current?.scrollToOffset({ offset: 0 });
+        _setDirSegments(value);
+      },
+      [listRef],
+    );
+
   useEffect(() => {
     // Prevent event from working when this screen isn't focused.
     if (!isFocused) return;
-
-    // Make sure we start at the beginning whenever the directory segments change.
-    listRef.current?.scrollToOffset({ offset: 0 });
 
     // Pop a directory segment if we detect a back gesture/action.
     const onBackPress = () => {
@@ -72,7 +84,7 @@ export default function FolderScreen() {
     return () => {
       BackHandler.removeEventListener("hardwareBackPress", onBackPress);
     };
-  }, [dirSegments, isFocused, listRef]);
+  }, [dirSegments, isFocused, listRef, setDirSegments]);
 
   // Information about this track list.
   const trackSource = { type: "folder", id: `${fullPath}/` } as const;
@@ -176,12 +188,12 @@ function Breadcrumbs({
   }));
 
   return (
-    <Animated.ScrollView
+    <AnimatedScrollView
       ref={breadcrumbsRef}
       horizontal
       showsHorizontalScrollIndicator={false}
-      className="rounded-md bg-surface"
       style={{ width: screenWidth - 32 }}
+      className="rounded-md bg-surface"
       contentContainerClassName="px-4"
     >
       <Animated.View
@@ -219,7 +231,7 @@ function Breadcrumbs({
       </Animated.View>
       {/* Animated padding to allow exiting scroll animation to look nice. */}
       <Animated.View style={offsetStyle} />
-    </Animated.ScrollView>
+    </AnimatedScrollView>
   );
 }
 //#endregion

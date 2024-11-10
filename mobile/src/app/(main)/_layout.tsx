@@ -1,6 +1,8 @@
-import { Stack, router, usePathname } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
+import { Stack, router, useRootNavigationState } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { ScrollView, View } from "react-native";
+import { useEffect, useMemo, useRef } from "react";
+import { FlatList, View } from "react-native";
 import Animated, {
   LinearTransition,
   SlideInDown,
@@ -9,6 +11,7 @@ import Animated, {
 import { Search, Settings } from "@/icons";
 import { useBottomActionsLayout } from "@/hooks/useBottomActionsLayout";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
+import { useTheme } from "@/hooks/useTheme";
 
 import { cn } from "@/lib/style";
 import { Button, IconButton } from "@/components/new/Form";
@@ -24,7 +27,6 @@ export default function MainLayout() {
         <Stack.Screen name="(home)" />
         <Stack.Screen name="(current)" />
       </Stack>
-
       <BottomActions />
     </>
   );
@@ -44,30 +46,16 @@ function BottomActions() {
       className="absolute bottom-0 left-0 w-full gap-[3px] p-4 pt-0"
     >
       <MiniPlayer stacked={isRendered.navBar} />
-      <NavigationBar
-        stacked={isRendered.miniPlayer}
-        hidden={!isRendered.navBar}
-      />
+      <TabBar stacked={isRendered.miniPlayer} hidden={!isRendered.navBar} />
     </Animated.View>
   );
 }
 //#endregion
 
-//#region Navigation Bar
-/** List of routes we'll display buttons for on the "home" page. */
-const NavRoutes = [
-  { href: "/", key: "header.home" },
-  { href: "/folder", key: "common.folders" },
-  { href: "/playlist", key: "common.playlists" },
-  { href: "/track", key: "common.tracks" },
-  { href: "/album", key: "common.albums" },
-  { href: "/artist", key: "common.artists" },
-] as const;
-
-/** Custom navigation bar. */
-function NavigationBar({ stacked = false, hidden = false }) {
+//#region Tab Bar
+/** Custom tab bar only visible while in routes in the `(main)` group. */
+function TabBar({ stacked = false, hidden = false }) {
   const { t } = useTranslation();
-  const pathname = usePathname();
   const { hasNewUpdate } = useHasNewUpdate();
 
   return (
@@ -78,29 +66,7 @@ function NavigationBar({ stacked = false, hidden = false }) {
         { "rounded-t-sm": stacked, "hidden opacity-0": hidden },
       )}
     >
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerClassName="grow px-2"
-      >
-        {NavRoutes.map(({ href, key }) => {
-          const selected =
-            href === "/" ? pathname === "/" : pathname.startsWith(href);
-          return (
-            <Button
-              key={href}
-              onPress={() => router.navigate(href)}
-              disabled={selected}
-              className="bg-transparent px-2 disabled:opacity-100"
-            >
-              <StyledText className={cn("text-sm", { "text-red": selected })}>
-                {t(key).toLocaleUpperCase()}
-              </StyledText>
-            </Button>
-          );
-        })}
-      </ScrollView>
-
+      <NavigationList />
       <IconButton
         kind="ripple"
         accessibilityLabel={t("header.search")}
@@ -122,4 +88,78 @@ function NavigationBar({ stacked = false, hidden = false }) {
     </Animated.View>
   );
 }
+
+/** List of routes we'll display buttons for on the "home" page. */
+const NavRoutes = [
+  { href: "/", key: "header.home" },
+  { href: "/folder", key: "common.folders" },
+  { href: "/playlist", key: "common.playlists" },
+  { href: "/track", key: "common.tracks" },
+  { href: "/album", key: "common.albums" },
+  { href: "/artist", key: "common.artists" },
+] as const;
+
+/** List of routes in `(home)` group. */
+function NavigationList() {
+  const { t, i18n } = useTranslation();
+  const { surface } = useTheme();
+  const navState = useRootNavigationState();
+  const listRef = useRef<FlatList>(null);
+
+  const tabIndex = useMemo(() => {
+    const mainRoute = navState.routes.find((r) => r.name === "(main)");
+    if (!mainRoute || !mainRoute.state) return 0;
+    const homeRoute = mainRoute.state.routes.find((r) => r.name === "(home)");
+    if (!homeRoute || !homeRoute.state) return 0;
+    return homeRoute.state.index ?? 0;
+  }, [navState]);
+
+  useEffect(() => {
+    if (!listRef.current) return;
+    // Scroll to active tab (positioned in the middle of the visible area).
+    //  - Also fire when language changes due to word length being different.
+    listRef.current.scrollToIndex({ index: tabIndex, viewPosition: 0.5 });
+  }, [i18n.language, tabIndex]);
+
+  return (
+    <View className="relative shrink grow">
+      <FlatList
+        ref={listRef}
+        horizontal
+        data={NavRoutes}
+        keyExtractor={({ href }) => href}
+        renderItem={({ item, index }) => (
+          <Button
+            onPress={() => router.navigate(item.href)}
+            disabled={tabIndex === index}
+            className="bg-transparent px-2 disabled:opacity-100"
+          >
+            <StyledText
+              className={cn("text-sm", { "text-red": tabIndex === index })}
+            >
+              {t(item.key).toLocaleUpperCase()}
+            </StyledText>
+          </Button>
+        )}
+        showsHorizontalScrollIndicator={false}
+        contentContainerClassName="px-2"
+      />
+      {/* Scroll Shadow */}
+      <LinearGradient
+        pointerEvents="none"
+        colors={[`${surface}E6`, `${surface}00`]}
+        {...ShadowProps}
+        className="absolute left-0 h-full w-4"
+      />
+      <LinearGradient
+        pointerEvents="none"
+        colors={[`${surface}00`, `${surface}E6`]}
+        {...ShadowProps}
+        className="absolute right-0 h-full w-4"
+      />
+    </View>
+  );
+}
+
+const ShadowProps = { start: { x: 0.0, y: 1.0 }, end: { x: 1.0, y: 1.0 } };
 //#endregion

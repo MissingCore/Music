@@ -27,7 +27,7 @@ function CustomToast({ type, message, height, width }: Toast) {
       <View
         className={cn("rounded bg-surface p-2", {
           "bg-red": type === "error",
-          "border border-neutral95 dark:border-[#262626]": type !== "error",
+          "border border-neutral95 dark:border-neutral15": type !== "error",
         })}
       >
         <Text
