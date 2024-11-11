@@ -1,3 +1,5 @@
+import i18next from "@/modules/i18n";
+
 import { ReservedNames } from "@/modules/media/constants";
 
 /**
@@ -7,12 +9,9 @@ import { ReservedNames } from "@/modules/media/constants";
 export function sanitizedPlaylistName(name: string) {
   const sanitized = name.trim();
 
-  if (sanitized.length < 1 || sanitized.length > 30) {
-    throw new Error("Playlist name must be between 1-30 character.");
-  }
   if (ReservedNames.has(sanitized)) {
-    throw new Error("That playlist name is reserved.");
+    throw new Error(i18next.t("response.usedName"));
   }
 
-  return name;
+  return sanitized;
 }
