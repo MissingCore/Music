@@ -10,10 +10,10 @@ export const trackKeys = createQueryKeys("tracks", {
   },
   detail: (trackId: string) => ({
     queryKey: [trackId],
-    queryFn: () => getTrack({ id: trackId }),
+    queryFn: () => getTrack(trackId),
     contextQueries: {
       playlists: {
-        queryFn: () => getTrackPlaylists({ id: trackId }),
+        queryFn: () => getTrackPlaylists(trackId),
       },
     },
   }),

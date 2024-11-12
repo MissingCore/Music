@@ -11,8 +11,8 @@ export const artistKeys = createQueryKeys("artists", {
   detail: (artistName: string) => ({
     queryKey: [artistName],
     queryFn: async () => ({
-      ...(await getArtist({ id: artistName })),
-      albums: await getArtistAlbums({ id: artistName }),
+      ...(await getArtist(artistName)),
+      albums: await getArtistAlbums(artistName),
     }),
   }),
 });

@@ -4,11 +4,6 @@ import type { SQL } from "drizzle-orm";
 /** Operations passed to `where` clause. */
 export type DrizzleFilter = Array<SQL | undefined>;
 
-/** Option of how we can filter for a single entry in the `where` clause. */
-export type QueryCondition =
-  | { id: string; filters?: DrizzleFilter }
-  | { id?: string; filters: DrizzleFilter };
-
 /**
  * Function signature for querying a single entry in a table with type-safe
  * output.
@@ -17,15 +12,7 @@ export type QueryCondition =
  * not working as well with object arguments.
  */
 export type QuerySingleFn<TData> = {
-  (args: QueryCondition & { shouldThrow: false }): Promise<TData | undefined>;
-  (args: QueryCondition & { shouldThrow?: true }): Promise<TData>;
+  (id: string, shouldThrow: false): Promise<TData | undefined>;
+  (id: string, shouldThrow?: true): Promise<TData>;
 };
-
-/** Arguments for querying multiple entries in a table. */
-export type QueryMultiple = { filters?: DrizzleFilter };
-//#endregion
-
-//#region PATCH
-/** Arguments for favoriting a media entry. */
-export type FavoriteArgs = QueryCondition & { isFavorite: boolean };
 //#endregion

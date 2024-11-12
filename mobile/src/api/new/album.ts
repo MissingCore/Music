@@ -6,25 +6,17 @@ import { albums } from "@/db/schema";
 
 import i18next from "@/modules/i18n";
 
-import type {
-  DrizzleFilter,
-  FavoriteArgs,
-  QueryCondition,
-  QueryMultiple,
-  QuerySingleFn,
-} from "./types";
+import type { DrizzleFilter, QuerySingleFn } from "./types";
 
 //#region GET Methods
-/** Get the specified album. Throws error by default if no album is found. */
+/** Get specified album. Throws error by default if nothing is found. */
 // @ts-expect-error - Function overloading typing issues [ts(2322)]
-export const getAlbum: QuerySingleFn<AlbumWithTracks> = async ({
+export const getAlbum: QuerySingleFn<AlbumWithTracks> = async (
+  id,
   shouldThrow = true,
-  ...opts
-}) => {
-  let conditions: DrizzleFilter = opts.filters ?? [];
-  if (opts.id) conditions.push(eq(albums.id, opts.id));
+) => {
   const album = await db.query.albums.findFirst({
-    where: and(...conditions),
+    where: eq(albums.id, id),
     with: { tracks: true },
   });
   if (shouldThrow && !album) throw new Error(i18next.t("response.noAlbums"));
@@ -32,9 +24,9 @@ export const getAlbum: QuerySingleFn<AlbumWithTracks> = async ({
 };
 
 /** Get multiple albums. */
-export async function getAlbums(args?: QueryMultiple) {
+export async function getAlbums(where: DrizzleFilter = []) {
   return db.query.albums.findMany({
-    where: and(...(args?.filters ?? [])),
+    where: and(...where),
     with: { tracks: true },
   });
 }
@@ -42,33 +34,29 @@ export async function getAlbums(args?: QueryMultiple) {
 
 //#region PATCH Methods
 /** Update the `favorite` status of an album. */
-export async function favoriteAlbum({ isFavorite, ...args }: FavoriteArgs) {
-  return updateAlbum({ ...args, set: { isFavorite } });
+export async function favoriteAlbum(id: string, isFavorite: boolean) {
+  return updateAlbum(id, { isFavorite });
 }
 
 /** Update specified album. */
 export async function updateAlbum(
-  args: QueryCondition & { set: Partial<typeof albums.$inferInsert> },
+  id: string,
+  values: Partial<typeof albums.$inferInsert>,
 ) {
-  let conditions: DrizzleFilter = args.filters ?? [];
-  if (args.id) conditions.push(eq(albums.id, args.id));
-  return db
-    .update(albums)
-    .set(args.set)
-    .where(and(...conditions));
+  return db.update(albums).set(values).where(eq(albums.id, id));
 }
 //#endregion
 
 //#region PUT Methods
 /** Create a new album entry, or update an existing one. Returns the created album. */
-export async function upsertAlbum(albumEntry: typeof albums.$inferInsert) {
+export async function upsertAlbum(entry: typeof albums.$inferInsert) {
   return (
     await db
       .insert(albums)
-      .values(albumEntry)
+      .values(entry)
       .onConflictDoUpdate({
         target: [albums.name, albums.artistName, albums.releaseYear],
-        set: albumEntry,
+        set: entry,
       })
       .returning()
   )[0];
@@ -77,9 +65,7 @@ export async function upsertAlbum(albumEntry: typeof albums.$inferInsert) {
 
 //#region DELETE Methods
 /** Delete specified album. */
-export async function deleteAlbum(args: QueryCondition) {
-  let conditions: DrizzleFilter = args.filters ?? [];
-  if (args.id) conditions.push(eq(albums.id, args.id));
-  return db.delete(albums).where(and(...conditions));
+export async function deleteAlbum(id: string) {
+  return db.delete(albums).where(eq(albums.id, id));
 }
 //#endregion

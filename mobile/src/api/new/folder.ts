@@ -3,19 +3,17 @@ import { db } from "@/db";
 import { addTrailingSlash } from "@/utils/string";
 import type { Maybe } from "@/utils/types";
 
-type GETArgs = { path: Maybe<string> };
-
 //#region GET Methods
 /** Get the contents of a folder for a given path (excludes the `file:///` at the start). */
-export async function getFolder(args: GETArgs) {
+export async function getFolder(path: Maybe<string>) {
   return {
-    subDirectories: await getFolderSubdirectories(args),
-    tracks: await getFolderTracks(args),
+    subDirectories: await getFolderSubdirectories(path),
+    tracks: await getFolderTracks(path),
   };
 }
 
 /** Get the direct non-empty subdirectories in a given folder. */
-export async function getFolderSubdirectories({ path }: GETArgs) {
+export async function getFolderSubdirectories(path: Maybe<string>) {
   const subDirs = await db.query.fileNodes.findMany({
     where: (fields, { eq, isNull }) =>
       path
@@ -35,7 +33,7 @@ export async function getFolderSubdirectories({ path }: GETArgs) {
 }
 
 /** Get the direct tracks in a given folder. */
-export async function getFolderTracks({ path }: GETArgs) {
+export async function getFolderTracks(path: Maybe<string>) {
   if (!path) return [];
   const fullPath = `file:///${addTrailingSlash(path)}`;
   return (

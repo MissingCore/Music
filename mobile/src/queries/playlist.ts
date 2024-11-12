@@ -10,6 +10,6 @@ export const playlistKeys = createQueryKeys("playlists", {
   },
   detail: (playlistName: string) => ({
     queryKey: [playlistName],
-    queryFn: () => getPlaylist({ id: playlistName }),
+    queryFn: () => getPlaylist(playlistName),
   }),
 });

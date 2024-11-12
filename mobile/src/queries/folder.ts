@@ -6,6 +6,6 @@ import { getFolder } from "@/api/new/folder";
 export const folderKeys = createQueryKeys("folders", {
   detail: (folderPath: string) => ({
     queryKey: [folderPath],
-    queryFn: () => getFolder({ path: folderPath }),
+    queryFn: () => getFolder(folderPath),
   }),
 });

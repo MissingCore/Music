@@ -10,6 +10,6 @@ export const albumKeys = createQueryKeys("albums", {
   },
   detail: (albumId: string) => ({
     queryKey: [albumId],
-    queryFn: () => getAlbum({ id: albumId }),
+    queryFn: () => getAlbum(albumId),
   }),
 });
