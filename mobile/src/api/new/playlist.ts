@@ -2,12 +2,15 @@ import { and, eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import type { PlaylistWithJunction, PlaylistWithTracks } from "@/db/schema";
-import { playlists, tracksToPlaylists } from "@/db/schema";
+import { playlists, tracks, tracksToPlaylists } from "@/db/schema";
 import { sanitizedPlaylistName } from "@/db/utils/validators";
 
 import i18next from "@/modules/i18n";
 
 import { deleteFile } from "@/lib/file-system";
+import type { ReservedPlaylistName } from "@/modules/media/constants";
+import { ReservedPlaylists } from "@/modules/media/constants";
+import { getTracks } from "./track";
 import type { DrizzleFilter, QuerySingleFn } from "./types";
 
 //#region GET Methods
@@ -32,6 +35,16 @@ export const getPlaylist: QuerySingleFn<PlaylistWithTracks> = async (
   }
   return fixPlaylistJunction(playlist);
 };
+
+/** Get one of the "reserved" playlists. */
+export async function getSpecialPlaylist(id: ReservedPlaylistName) {
+  const playlistTracks = await getTracks(
+    ReservedPlaylists.favorites === id
+      ? [eq(tracks.isFavorite, true)]
+      : undefined,
+  );
+  return { name: id, artwork: id, isFavorite: false, tracks: playlistTracks };
+}
 
 /** Get multiple playlists. */
 export async function getPlaylists(where: DrizzleFilter = []) {
