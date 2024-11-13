@@ -3,7 +3,7 @@ import { and, eq } from "drizzle-orm";
 import { db } from "@/db";
 import type { TrackWithAlbum } from "@/db/schema";
 import { tracks, tracksToPlaylists } from "@/db/schema";
-import { getTrackCover } from "@/db/utils/formatters";
+import { getTrackCover } from "@/db/utils";
 
 import i18next from "@/modules/i18n";
 

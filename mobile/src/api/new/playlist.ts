@@ -3,7 +3,7 @@ import { and, eq } from "drizzle-orm";
 import { db } from "@/db";
 import type { PlaylistWithJunction, PlaylistWithTracks } from "@/db/schema";
 import { playlists, tracks, tracksToPlaylists } from "@/db/schema";
-import { sanitizedPlaylistName } from "@/db/utils/validators";
+import { sanitizePlaylistName } from "@/db/utils";
 
 import i18next from "@/modules/i18n";
 
@@ -66,7 +66,7 @@ export async function getPlaylists(where: DrizzleFilter = []) {
 export async function createPlaylist(entry: typeof playlists.$inferInsert) {
   return db
     .insert(playlists)
-    .values({ ...entry, name: sanitizedPlaylistName(entry.name) })
+    .values({ ...entry, name: sanitizePlaylistName(entry.name) })
     .onConflictDoNothing();
 }
 //#endregion
@@ -84,7 +84,7 @@ export async function updatePlaylist(
 ) {
   const oldValue = await getPlaylist(id);
   const { name, ...rest } = values;
-  let sanitizedName = name ? sanitizedPlaylistName(name) : undefined;
+  let sanitizedName = name ? sanitizePlaylistName(name) : undefined;
   return db.transaction(async (tx) => {
     try {
       await tx
