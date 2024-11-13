@@ -1,21 +1,18 @@
 import { FlashList } from "@shopify/flash-list";
-import { useQuery } from "@tanstack/react-query";
-import { eq } from "drizzle-orm";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
-import { albums, playlists } from "@/db/schema";
-import { getAlbums, getPlaylists, getSpecialPlaylist } from "@/db/queries";
-import { formatForMediaCard } from "@/db/utils/formatters";
-
+import {
+  useFavoriteListsForCards,
+  useFavoriteTracksCount,
+} from "@/queries/favorite";
 import { useGetColumn } from "@/hooks/useGetColumn";
 import { useMusicStore } from "@/modules/media/services/Music";
 import { StickyActionScrollLayout } from "@/layouts";
 
-import { favoriteKeys } from "@/constants/QueryKeys";
 import { abbreviateNum } from "@/utils/number";
 import { Button } from "@/components/new/Form";
 import { AccentText, StyledText } from "@/components/new/Typography";
@@ -102,7 +99,7 @@ function RecentlyPlayed() {
 //#region Favorites
 /** Display list of content we've favorited. */
 function Favorites() {
-  const { data } = useFavoriteListsForMediaCard();
+  const { data } = useFavoriteListsForCards();
   return (
     <MediaCardList
       data={[MediaCardPlaceholderContent, ...(data ?? [])]}
@@ -136,38 +133,4 @@ function FavoriteTracks({ size }: { size: number }) {
     </Button>
   );
 }
-//#endregion
-
-//#region Data
-async function getFavoriteLists() {
-  const [favoriteAlbums, favoritePlaylists] = await Promise.all([
-    getAlbums([eq(albums.isFavorite, true)]),
-    getPlaylists([eq(playlists.isFavorite, true)]),
-  ]);
-  return { albums: favoriteAlbums, playlists: favoritePlaylists };
-}
-
-const useFavoriteTracksCount = () =>
-  useQuery({
-    queryKey: favoriteKeys.tracks(),
-    queryFn: () => getSpecialPlaylist(ReservedPlaylists.favorites),
-    staleTime: Infinity,
-    select: (data) => data.tracks.length,
-  });
-
-const useFavoriteListsForMediaCard = () =>
-  useQuery({
-    queryKey: favoriteKeys.lists(),
-    queryFn: getFavoriteLists,
-    staleTime: Infinity,
-    select: (data) =>
-      [
-        ...data.albums.map((album) =>
-          formatForMediaCard({ type: "album", data: album }),
-        ),
-        ...data.playlists.map((playlist) =>
-          formatForMediaCard({ type: "playlist", data: playlist }),
-        ),
-      ].sort((a, b) => a.title.localeCompare(b.title)),
-  });
 //#endregion
