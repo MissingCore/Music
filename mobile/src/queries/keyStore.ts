@@ -55,7 +55,7 @@ export const queries = createQueryKeyStore({
   },
   /** Query keys used in `useQuery` for folders. */
   folders: {
-    detail: (folderPath: string) => ({
+    detail: (folderPath?: string) => ({
       queryKey: [folderPath],
       queryFn: () => getFolder(folderPath),
     }),

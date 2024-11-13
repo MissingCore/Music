@@ -1,0 +1,18 @@
+import { useQuery } from "@tanstack/react-query";
+
+import { formatForTrack } from "@/db/utils";
+
+import { queries } from "./keyStore";
+
+//#region Queries
+/** Return the subdirectories and tracks in this current directory. */
+export function useFolderContent(path?: string) {
+  return useQuery({
+    ...queries.folders.detail(path),
+    select: ({ subDirectories, tracks }) => ({
+      subDirectories,
+      tracks: tracks.map((track) => formatForTrack("track", track)),
+    }),
+  });
+}
+//#endregion
