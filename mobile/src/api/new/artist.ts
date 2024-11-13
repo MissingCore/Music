@@ -17,7 +17,12 @@ export const getArtist: QuerySingleFn<ArtistWithTracks> = async (
 ) => {
   const artist = await db.query.artists.findFirst({
     where: eq(artists.name, id),
-    with: { tracks: { with: { album: true } } },
+    with: {
+      tracks: {
+        with: { album: true },
+        orderBy: (fields, { asc }) => asc(fields.name),
+      },
+    },
   });
   if (shouldThrow && !artist) throw new Error(i18next.t("response.noArtists"));
   return artist;
@@ -35,7 +40,13 @@ export async function getArtistAlbums(id: string) {
 export async function getArtists(where: DrizzleFilter = []) {
   return db.query.artists.findMany({
     where: and(...where),
-    with: { tracks: { with: { album: true } } },
+    with: {
+      tracks: {
+        with: { album: true },
+        orderBy: (fields, { asc }) => asc(fields.name),
+      },
+    },
+    orderBy: (fields, { asc }) => asc(fields.name),
   });
 }
 //#endregion

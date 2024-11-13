@@ -26,6 +26,7 @@ export const getPlaylist: QuerySingleFn<PlaylistWithTracks> = async (
       tracksToPlaylists: {
         columns: {},
         with: { track: { with: { album: true } } },
+        // FIXME: In the future, need to `orderBy` track order in playlist.
       },
     },
   });
@@ -36,7 +37,7 @@ export const getPlaylist: QuerySingleFn<PlaylistWithTracks> = async (
   return fixPlaylistJunction(playlist);
 };
 
-/** Get one of the "reserved" playlists. */
+/** Get one of the "reserved" playlists. Tracks are unsorted. */
 export async function getSpecialPlaylist(id: ReservedPlaylistName) {
   const playlistTracks = await getTracks(
     ReservedPlaylists.favorites === id
@@ -54,8 +55,10 @@ export async function getPlaylists(where: DrizzleFilter = []) {
       tracksToPlaylists: {
         columns: {},
         with: { track: { with: { album: true } } },
+        // FIXME: In the future, need to `orderBy` track order in playlist.
       },
     },
+    orderBy: (fields, { asc }) => asc(fields.name),
   });
   return allPlaylists.map((data) => fixPlaylistJunction(data));
 }
