@@ -3,15 +3,11 @@ import { eq } from "drizzle-orm";
 
 import { albums, playlists } from "@/db/schema";
 
-import { getAlbum, getAlbums } from "@/api/new/album";
-import { getArtist, getArtistAlbums, getArtists } from "@/api/new/artist";
-import { getFolder } from "@/api/new/folder";
-import {
-  getPlaylist,
-  getPlaylists,
-  getSpecialPlaylist,
-} from "@/api/new/playlist";
-import { getTrack, getTrackPlaylists, getTracks } from "@/api/new/track";
+import { getAlbum, getAlbums } from "@/api/album";
+import { getArtist, getArtistAlbums, getArtists } from "@/api/artist";
+import { getFolder } from "@/api/folder";
+import { getPlaylist, getPlaylists, getSpecialPlaylist } from "@/api/playlist";
+import { getTrack, getTrackPlaylists, getTracks } from "@/api/track";
 
 import { ReservedPlaylists } from "@/modules/media/constants";
 

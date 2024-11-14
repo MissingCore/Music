@@ -4,11 +4,7 @@ import { useCallback } from "react";
 import type { TrackWithAlbum } from "@/db/schema";
 import { formatForTrack } from "@/db/utils";
 
-import {
-  addToPlaylist,
-  favoriteTrack,
-  removeFromPlaylist,
-} from "@/api/new/track";
+import { addToPlaylist, favoriteTrack, removeFromPlaylist } from "@/api/track";
 import { Resynchronize } from "@/modules/media/services/Music";
 import { useSessionPreferencesStore } from "@/services/SessionPreferences";
 import { queries as q } from "./keyStore";

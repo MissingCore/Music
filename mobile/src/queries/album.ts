@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import { formatForCurrentScreen, formatForMediaCard } from "@/db/utils";
 
-import { favoriteAlbum } from "@/api/new/album";
+import { favoriteAlbum } from "@/api/album";
 import { queries as q } from "./keyStore";
 
 import { pickKeys } from "@/utils/object";
