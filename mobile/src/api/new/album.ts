@@ -28,7 +28,7 @@ export async function getAlbums(where: DrizzleFilter = []) {
   return db.query.albums.findMany({
     where: and(...where),
     with: { tracks: { orderBy: (fields, { asc }) => [asc(fields.track)] } },
-    orderBy: (fields, { asc }) => asc(fields.name),
+    orderBy: (fields, { asc }) => [asc(fields.name), asc(fields.artistName)],
   });
 }
 //#endregion

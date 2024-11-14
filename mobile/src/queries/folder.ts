@@ -6,9 +6,9 @@ import { queries } from "./keyStore";
 
 //#region Queries
 /** Return the subdirectories and tracks in this current directory. */
-export function useFolderContent(path?: string) {
+export function useFolderContent(folderPath?: string) {
   return useQuery({
-    ...queries.folders.detail(path),
+    ...queries.folders.detail(folderPath),
     select: ({ subDirectories, tracks }) => ({
       subDirectories,
       tracks: tracks.map((track) => formatForTrack("track", track)),
