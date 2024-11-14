@@ -1,17 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 
-import type { TrackWithAlbum } from "@/db/schema";
-import { getTracks } from "@/db/queries";
-import { getTrackCover } from "@/db/utils/formatters";
-
 import { Sort } from "@/icons";
-import { useSessionPreferencesStore } from "@/services/SessionPreferences";
+import { useTracksForTrackCard } from "@/queries/track";
 import { StickyActionListLayout } from "@/layouts";
 
-import { trackKeys } from "@/constants/QueryKeys";
 import { IconButton } from "@/components/new/Form";
 import { ReservedPlaylists } from "@/modules/media/constants";
 import { MediaListControls, TrackListPreset } from "@/modules/media/components";
@@ -57,38 +51,4 @@ function TrackActions() {
     </View>
   );
 }
-//#endregion
-
-//#region Data
-const useTracksForTrackCard = () => {
-  const isAsc = useSessionPreferencesStore((state) => state.isAsc);
-  const orderedBy = useSessionPreferencesStore((state) => state.orderedBy);
-
-  return useQuery({
-    queryKey: trackKeys.all,
-    queryFn: () => getTracks(),
-    staleTime: Infinity,
-    select: (data) => {
-      // FIXME: Once Hermes supports `toSorted` & `toReversed`, use those
-      // instead of the in-place methods.
-      let sortedTracks: TrackWithAlbum[] = [...data];
-      // Order track by attribute.
-      if (orderedBy === "alphabetical") {
-        sortedTracks.sort((a, b) => a.name.localeCompare(b.name));
-      } else if (orderedBy === "modified") {
-        sortedTracks.sort((a, b) => a.modificationTime - b.modificationTime);
-      }
-      // Sort tracks in descending order.
-      if (!isAsc) sortedTracks.reverse();
-
-      // Format tracks.
-      return sortedTracks.map((tk) => ({
-        id: tk.id,
-        title: tk.name,
-        description: tk.artistName ?? "—",
-        imageSource: getTrackCover(tk),
-      }));
-    },
-  });
-};
 //#endregion

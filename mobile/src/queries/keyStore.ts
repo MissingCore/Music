@@ -82,6 +82,8 @@ export const queries = createQueryKeyStore({
       queryFn: () => getTrack(trackId),
       contextQueries: {
         playlists: {
+          // eslint-disable-next-line @tanstack/query/exhaustive-deps
+          queryKey: null,
           queryFn: () => getTrackPlaylists(trackId),
         },
       },

@@ -127,7 +127,7 @@ export async function deletePlaylist(id: string) {
 }
 //#endregion
 
-//#region Utils
+//#region Internal Utils
 /** Replace the "junction" field from the `Playlist` table with `tracks`. */
 function fixPlaylistJunction(data: PlaylistWithJunction): PlaylistWithTracks {
   const { tracksToPlaylists, ...rest } = data;
