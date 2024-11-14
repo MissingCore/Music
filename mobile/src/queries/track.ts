@@ -11,7 +11,7 @@ import {
 } from "@/api/new/track";
 import { Resynchronize } from "@/modules/media/services/Music";
 import { useSessionPreferencesStore } from "@/services/SessionPreferences";
-import { queries } from "./keyStore";
+import { queries as q } from "./keyStore";
 
 import { pickKeys } from "@/utils/object";
 import { ReservedPlaylists } from "@/modules/media/constants";
@@ -21,7 +21,7 @@ import { ReservedPlaylists } from "@/modules/media/constants";
 export function useTracksForTrackCard() {
   const sortTracks = useSortTracksFn();
   return useQuery({
-    ...queries.tracks.all,
+    ...q.tracks.all,
     select: (data) =>
       sortTracks(data).map((track) => formatForTrack("track", track)),
   });
@@ -30,7 +30,7 @@ export function useTracksForTrackCard() {
 /** Return the most-used subset of track data. */
 export function useTrackExcerpt(trackId: string) {
   return useQuery({
-    ...queries.tracks.detail(trackId),
+    ...q.tracks.detail(trackId),
     select: (data) => ({
       ...pickKeys(data, ["id", "name", "artistName", "duration", "isFavorite"]),
       album: data.album ? pickKeys(data.album, ["id", "name"]) : null,
@@ -41,7 +41,7 @@ export function useTrackExcerpt(trackId: string) {
 
 /** Return the names of the playlists this track is in. */
 export function useTrackPlaylists(trackId: string) {
-  return useQuery({ ...queries.tracks.detail(trackId)._ctx.playlists });
+  return useQuery({ ...q.tracks.detail(trackId)._ctx.playlists });
 }
 //#endregion
 
@@ -54,10 +54,8 @@ export function useFavoriteTrack(trackId: string) {
     mutationFn: (isFavorite: boolean) => favoriteTrack(trackId, !isFavorite),
     onSuccess: () => {
       // Invalidate all track queries and the favorite tracks query.
-      queryClient.invalidateQueries({ queryKey: queries.tracks._def });
-      queryClient.invalidateQueries({
-        queryKey: queries.favorites.tracks.queryKey,
-      });
+      queryClient.invalidateQueries({ queryKey: q.tracks._def });
+      queryClient.invalidateQueries({ queryKey: q.favorites.tracks.queryKey });
       Resynchronize.onTracks({
         type: "playlist",
         id: ReservedPlaylists.favorites,
@@ -74,11 +72,9 @@ export function useAddToPlaylist(trackId: string) {
       addToPlaylist({ trackId, playlistName }),
     onSuccess: (_, playlistName) => {
       // Invalidate all track queries, favorite tracks query, and all playlist queries.
-      queryClient.invalidateQueries({ queryKey: queries.tracks._def });
-      queryClient.invalidateQueries({ queryKey: queries.playlists._def });
-      queryClient.invalidateQueries({
-        queryKey: queries.favorites.lists.queryKey,
-      });
+      queryClient.invalidateQueries({ queryKey: q.tracks._def });
+      queryClient.invalidateQueries({ queryKey: q.playlists._def });
+      queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
       // Ensure that if we're currently playing from the playlist we added
       // the track to, we update it.
       Resynchronize.onTracks({ type: "playlist", id: playlistName });
@@ -94,11 +90,9 @@ export function useRemoveFromPlaylist(trackId: string) {
       removeFromPlaylist({ trackId, playlistName }),
     onSuccess: (_, playlistName) => {
       // Invalidate all track queries, favorite tracks query, and all playlist queries.
-      queryClient.invalidateQueries({ queryKey: queries.tracks._def });
-      queryClient.invalidateQueries({ queryKey: queries.playlists._def });
-      queryClient.invalidateQueries({
-        queryKey: queries.favorites.lists.queryKey,
-      });
+      queryClient.invalidateQueries({ queryKey: q.tracks._def });
+      queryClient.invalidateQueries({ queryKey: q.playlists._def });
+      queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
       // Ensure that if we're currently playing from the playlist we removed
       // the track from, we update it.
       Resynchronize.onTracks({ type: "playlist", id: playlistName });

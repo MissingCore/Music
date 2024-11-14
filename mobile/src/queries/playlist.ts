@@ -17,19 +17,19 @@ import {
   updatePlaylist,
 } from "@/api/new/playlist";
 import { Resynchronize } from "@/modules/media/services/Music";
-import { queries } from "./keyStore";
+import { queries as q } from "./keyStore";
 
 //#region Queries
 /** Get all playlists. */
 export function usePlaylists() {
-  return useQuery({ ...queries.playlists.all });
+  return useQuery({ ...q.playlists.all });
 }
 
 /** Return list of `MediaCard.Content` from playlists. */
 export function usePlaylistsForCards() {
   const { t } = useTranslation();
   return useQuery({
-    ...queries.playlists.all,
+    ...q.playlists.all,
     select: (data) =>
       data.map((playlist) =>
         formatForMediaCard({ type: "playlist", data: playlist, t }),
@@ -40,7 +40,7 @@ export function usePlaylistsForCards() {
 /** Get specified playlist. */
 export function usePlaylist(playlistName: string) {
   return useQuery({
-    ...queries.playlists.detail(playlistName),
+    ...q.playlists.detail(playlistName),
     select: (data) => ({ ...data, imageSource: getPlaylistCover(data) }),
   });
 }
@@ -49,7 +49,7 @@ export function usePlaylist(playlistName: string) {
 export function usePlaylistForCurrentPage(playlistName: string) {
   const { t } = useTranslation();
   return useQuery({
-    ...queries.playlists.detail(playlistName),
+    ...q.playlists.detail(playlistName),
     select: (data) => ({
       ...formatForCurrentScreen({ type: "playlist", data, t }),
       imageSource: getPlaylistCover(data),
@@ -67,7 +67,7 @@ export function useCreatePlaylist() {
       createPlaylist({ name: playlistName }),
     onSuccess: () => {
       // Invalidate all playlist queries.
-      queryClient.invalidateQueries({ queryKey: queries.playlists._def });
+      queryClient.invalidateQueries({ queryKey: q.playlists._def });
     },
   });
 }
@@ -81,10 +81,8 @@ export function useFavoritePlaylist(playlistName: string) {
       favoritePlaylist(playlistName, !isFavorite),
     onSuccess: () => {
       // Invalidate all playlist queries and the favorite lists query.
-      queryClient.invalidateQueries({ queryKey: queries.playlists._def });
-      queryClient.invalidateQueries({
-        queryKey: queries.favorites.lists.queryKey,
-      });
+      queryClient.invalidateQueries({ queryKey: q.playlists._def });
+      queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
     },
   });
 }
@@ -98,11 +96,9 @@ export function useUpdatePlaylist(playlistName: string) {
     ) => updatePlaylist(playlistName, updatedValues),
     onSuccess: (_, { name, artwork }) => {
       // Invalidate all playlist queries.
-      queryClient.invalidateQueries({ queryKey: queries.playlists._def });
+      queryClient.invalidateQueries({ queryKey: q.playlists._def });
       // Invalidate favorite lists query to update the artwork or name used.
-      queryClient.invalidateQueries({
-        queryKey: queries.favorites.lists.queryKey,
-      });
+      queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
 
       if (artwork !== undefined) Resynchronize.onImage();
       if (name) {
@@ -126,10 +122,8 @@ export function useDeletePlaylist(playlistName: string) {
     onSuccess: () => {
       Resynchronize.onDelete({ type: "playlist", id: playlistName });
       // Invalidate all playlist queries and the favorite lists query.
-      queryClient.invalidateQueries({ queryKey: queries.playlists._def });
-      queryClient.invalidateQueries({
-        queryKey: queries.favorites.lists.queryKey,
-      });
+      queryClient.invalidateQueries({ queryKey: q.playlists._def });
+      queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
       // Go back a page as this current page (deleted playlist) isn't valid.
       router.back();
     },

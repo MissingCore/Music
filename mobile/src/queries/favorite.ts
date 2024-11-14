@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import { formatForCurrentScreen, formatForMediaCard } from "@/db/utils";
 
-import { queries } from "./keyStore";
+import { queries as q } from "./keyStore";
 
 import { ReservedPlaylists } from "@/modules/media/constants";
 
@@ -12,7 +12,7 @@ import { ReservedPlaylists } from "@/modules/media/constants";
 export function useFavoriteListsForCards() {
   const { t } = useTranslation();
   return useQuery({
-    ...queries.favorites.lists,
+    ...q.favorites.lists,
     select: (data) =>
       [
         ...data.albums.map((album) =>
@@ -28,7 +28,7 @@ export function useFavoriteListsForCards() {
 /** Get the number of favorited tracks. */
 export function useFavoriteTracksCount() {
   return useQuery({
-    ...queries.favorites.tracks,
+    ...q.favorites.tracks,
     select: (data) => data.tracks.length,
   });
 }
@@ -37,7 +37,7 @@ export function useFavoriteTracksCount() {
 export function useFavoriteTracksForCurrentPage() {
   const { t } = useTranslation();
   return useQuery({
-    ...queries.favorites.tracks,
+    ...q.favorites.tracks,
     select: (data) => ({
       ...formatForCurrentScreen({ type: "playlist", data, t }),
       imageSource: ReservedPlaylists.favorites,

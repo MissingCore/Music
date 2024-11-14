@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { formatForCurrentScreen, formatForMediaCard } from "@/db/utils";
 
 import { favoriteAlbum } from "@/api/new/album";
-import { queries } from "./keyStore";
+import { queries as q } from "./keyStore";
 
 import { pickKeys } from "@/utils/object";
 
@@ -13,7 +13,7 @@ import { pickKeys } from "@/utils/object";
 export function useAlbumsForCards() {
   const { t } = useTranslation();
   return useQuery({
-    ...queries.albums.all,
+    ...q.albums.all,
     select: (data) =>
       data.map((album) =>
         formatForMediaCard({ type: "album", data: album, t }),
@@ -25,7 +25,7 @@ export function useAlbumsForCards() {
 export function useAlbumForCurrentPage(albumId: string) {
   const { t } = useTranslation();
   return useQuery({
-    ...queries.albums.detail(albumId),
+    ...q.albums.detail(albumId),
     select: (data) => ({
       ...formatForCurrentScreen({ type: "album", data, t }),
       ...pickKeys(data, ["artistName", "isFavorite"]),
@@ -44,10 +44,8 @@ export function useFavoriteAlbum(albumId: string) {
     mutationFn: (isFavorite: boolean) => favoriteAlbum(albumId, !isFavorite),
     onSuccess: () => {
       // Invalidate all album queries and the favorite lists query.
-      queryClient.invalidateQueries({ queryKey: queries.albums._def });
-      queryClient.invalidateQueries({
-        queryKey: queries.favorites.lists.queryKey,
-      });
+      queryClient.invalidateQueries({ queryKey: q.albums._def });
+      queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
     },
   });
 }

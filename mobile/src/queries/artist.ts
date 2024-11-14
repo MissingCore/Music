@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import type { Artist } from "@/db/schema";
 import { formatForCurrentScreen } from "@/db/utils";
 
-import { queries } from "./keyStore";
+import { queries as q } from "./keyStore";
 
 //#region Queries
 /**
@@ -13,18 +13,18 @@ import { queries } from "./keyStore";
  */
 export function useArtistsForList() {
   return useQuery({
-    ...queries.artists.all,
+    ...q.artists.all,
     select: (data) => {
       // Group artists by their 1st character (artists are already
       // pre-sorted by their name).
       const groupedArtists: Record<string, Artist[]> = {};
-      data.forEach(({ name }) => {
-        const key = /[a-zA-Z]/.test(name.charAt(0))
-          ? name.charAt(0).toUpperCase()
+      data.forEach(({ tracks: _, ...artist }) => {
+        const key = /[a-zA-Z]/.test(artist.name.charAt(0))
+          ? artist.name.charAt(0).toUpperCase()
           : "#";
         if (Object.hasOwn(groupedArtists, key)) {
-          groupedArtists[key]!.push({ name });
-        } else groupedArtists[key] = [{ name }];
+          groupedArtists[key]!.push(artist);
+        } else groupedArtists[key] = [artist];
       });
 
       // Convert object to array to be used in a `<FlashList />` that acts
@@ -41,7 +41,7 @@ export function useArtistsForList() {
 export function useArtistForCurrentPage(artistName: string) {
   const { t } = useTranslation();
   return useQuery({
-    ...queries.artists.detail(artistName),
+    ...q.artists.detail(artistName),
     select: ({ albums, ...artist }) => ({
       ...formatForCurrentScreen({ type: "artist", data: artist, t }),
       albums: albums.length > 0 ? albums : null,
