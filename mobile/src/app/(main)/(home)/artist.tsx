@@ -1,14 +1,12 @@
 import type { FlashListProps } from "@shopify/flash-list";
-import { useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 
-import type { ArtistWithTracks } from "@/db/schema";
-import { getArtists } from "@/db/queries";
+import type { Artist } from "@/db/schema";
 
+import { useArtistsForList } from "@/queries/artist";
 import { StickyActionListLayout } from "@/layouts";
 
-import { artistKeys } from "@/constants/QueryKeys";
 import { cn } from "@/lib/style";
 import type { Maybe } from "@/utils/types";
 import { Ripple } from "@/components/new/Form";
@@ -34,7 +32,7 @@ export default function ArtistScreen() {
 
 //#region Preset
 const ArtistListPreset = (props: {
-  data: Maybe<ReadonlyArray<string | ArtistWithTracks>>;
+  data: Maybe<ReadonlyArray<string | Artist>>;
   emptyMessage?: string;
   isPending?: boolean;
 }) =>
@@ -66,39 +64,5 @@ const ArtistListPreset = (props: {
     ) : (
       <StyledText center>{props.emptyMessage}</StyledText>
     ),
-  }) satisfies FlashListProps<string | ArtistWithTracks>;
-//#endregion
-
-//#region Data
-const useArtistsForList = () =>
-  useQuery({
-    queryKey: artistKeys.all,
-    queryFn: () => getArtists(),
-    staleTime: Infinity,
-    select: (data) => {
-      // Group artists by their 1st character.
-      const groupedArtists: Record<string, typeof data> = {};
-      data.forEach((artist) => {
-        const key = /[a-zA-Z]/.test(artist.name.charAt(0))
-          ? artist.name.charAt(0).toUpperCase()
-          : "#";
-        if (Object.hasOwn(groupedArtists, key))
-          groupedArtists[key]!.push(artist);
-        else groupedArtists[key] = [artist];
-      });
-
-      // Convert object to array, sort by character key and artist name,
-      // then flatten to be used in a `<FlashList />`.
-      return Object.entries(groupedArtists)
-        .map(([character, arts]) => ({
-          title: character,
-          data: arts.sort((a, b) =>
-            a.name.localeCompare(b.name, undefined, { caseFirst: "upper" }),
-          ),
-        }))
-        .sort((a, b) => a.title.localeCompare(b.title))
-        .map(({ title, data }) => [title, ...data])
-        .flat();
-    },
-  });
+  }) satisfies FlashListProps<string | Artist>;
 //#endregion
