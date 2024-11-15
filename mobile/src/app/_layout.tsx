@@ -13,7 +13,6 @@ import "@/modules/i18n"; // Make sure translations are bundled.
 import { TopAppBar } from "@/components/new/TopAppBar";
 import { CurrentTrackHeader } from "@/components/navigation/header";
 import { StyledPressable } from "@/components/ui/pressable";
-import { ModalPortal } from "@/modals";
 
 // Catch any errors thrown by the Layout component.
 export { ErrorBoundary };
@@ -97,8 +96,6 @@ function RootLayoutNav() {
         <Stack.Screen name="setting" />
         <Stack.Screen name="notification.click" />
       </Stack>
-
-      <ModalPortal />
     </AppProvider>
   );
 }

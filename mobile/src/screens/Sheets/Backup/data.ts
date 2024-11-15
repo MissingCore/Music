@@ -11,16 +11,10 @@ import { z } from "zod";
 import { db } from "@/db";
 import type { TrackWithAlbum } from "@/db/schema";
 import { albums, playlists, tracks, tracksToPlaylists } from "@/db/schema";
-import {
-  getAlbum,
-  getAlbums,
-  getPlaylists,
-  getTrack,
-  getTracks,
-} from "@/db/queries";
-import { sanitizedPlaylistName } from "@/db/utils/validators";
+import { sanitizePlaylistName } from "@/db/utils";
 
 import i18next from "@/modules/i18n";
+import { getPlaylists } from "@/api/playlist";
 import { Resynchronize, musicStore } from "@/modules/media/services/Music";
 
 import { clearAllQueries } from "@/lib/react-query";
@@ -48,12 +42,12 @@ const RawTrack = z.object({
 const MusicBackup = z.object({
   favorites: z.object({
     albums: RawAlbum.array(),
-    playlists: z.string().transform(sanitizedPlaylistName).array(),
+    playlists: z.string().transform(sanitizePlaylistName).array(),
     tracks: RawTrack.array(),
   }),
   playlists: z
     .object({
-      name: z.string().transform(sanitizedPlaylistName),
+      name: z.string().transform(sanitizePlaylistName),
       tracks: RawTrack.array(),
     })
     .array(),
@@ -73,11 +67,11 @@ async function getAlbumId<T extends Maybe<string>>(
 ) {
   if (!albumName || !artistName) return undefined;
   return (
-    await getAlbum([
-      eq(albums.name, albumName),
-      eq(albums.artistName, artistName),
-    ])
-  ).id;
+    await db.query.albums.findFirst({
+      where: (fields, { and, eq }) =>
+        and(eq(fields.name, albumName), eq(fields.artistName, artistName)),
+    })
+  )?.id;
 }
 
 function getRawTrack({ id, name, artistName, album }: TrackWithAlbum) {
@@ -89,9 +83,16 @@ function getRawTrack({ id, name, artistName, album }: TrackWithAlbum) {
 async function exportBackup() {
   // Get favorited values.
   const [favAlbums, favPlaylists, favTracks] = await Promise.all([
-    getAlbums([eq(albums.isFavorite, true)]),
-    getPlaylists([eq(playlists.isFavorite, true)]),
-    getTracks([eq(tracks.isFavorite, true)]),
+    db.query.albums.findMany({
+      where: (fields, { eq }) => eq(fields.isFavorite, true),
+    }),
+    db.query.playlists.findMany({
+      where: (fields, { eq }) => eq(fields.isFavorite, true),
+    }),
+    db.query.tracks.findMany({
+      where: (fields, { eq }) => eq(fields.isFavorite, true),
+      with: { album: true },
+    }),
   ]);
   // Get all user-generated playlists.
   const allPlaylists = await getPlaylists();
@@ -166,13 +167,17 @@ async function importBackup() {
       const _trackIds = await Promise.allSettled(
         plTracks.map(async (t) => {
           const albumId = await getAlbumId(t.albumName, t.artistName);
-          const track = await getTrack([
-            eq(tracks.name, t.name),
-            t.artistName
-              ? eq(tracks.artistName, t.artistName)
-              : isNull(tracks.artistName),
-            albumId ? eq(tracks.albumId, albumId) : undefined,
-          ]);
+          const track = await db.query.tracks.findFirst({
+            where: (fields, { and, eq, isNull }) =>
+              and(
+                eq(fields.name, t.name),
+                t.artistName
+                  ? eq(fields.artistName, t.artistName)
+                  : isNull(fields.artistName),
+                albumId ? eq(fields.albumId, albumId) : undefined,
+              ),
+          });
+          if (!track) throw new Error("Track not found.");
           return track.id;
         }),
       );
