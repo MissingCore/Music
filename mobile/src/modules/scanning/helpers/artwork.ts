@@ -4,8 +4,9 @@ import * as FileSystem from "expo-file-system";
 
 import { db } from "@/db";
 import { albums, playlists, tracks } from "@/db/schema";
-import { getAlbums, getTracks } from "@/db/queries";
 
+import { getAlbums } from "@/api/album";
+import { getTracks } from "@/api/track";
 import { onboardingStore } from "../services/Onboarding";
 
 import { deleteFile, saveBase64Img } from "@/lib/file-system";

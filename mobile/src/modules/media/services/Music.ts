@@ -6,7 +6,6 @@
 
 import { toast } from "@backpackapp-io/react-native-toast";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { eq } from "drizzle-orm";
 import TrackPlayer, { State } from "react-native-track-player";
 import { useStore } from "zustand";
 import {
@@ -17,17 +16,13 @@ import {
 import { createStore } from "zustand/vanilla";
 
 import type { PlaylistWithTracks, TrackWithAlbum } from "@/db/schema";
-import { albums, artists, playlists, tracks } from "@/db/schema";
-import {
-  getAlbum,
-  getArtist,
-  getPlaylist,
-  getSpecialPlaylist,
-  getTrack,
-} from "@/db/queries";
-import { formatForMediaCard } from "@/db/utils/formatters";
+import { formatForMediaCard } from "@/db/utils";
 
 import i18next from "@/modules/i18n";
+import { getAlbum } from "@/api/album";
+import { getArtist } from "@/api/artist";
+import { getPlaylist, getSpecialPlaylist } from "@/api/playlist";
+import { getTrack } from "@/api/track";
 
 import { ToastOptions } from "@/lib/toast";
 import { shuffleArray } from "@/utils/object";
@@ -258,7 +253,7 @@ musicStore.subscribe(
         // a trailing slash.
         newSourceName = source.id.split("/").at(-2) ?? "";
       } else if (source.type === "album") {
-        const album = await getAlbum([eq(albums.id, source.id)]);
+        const album = await getAlbum(source.id);
         newSourceName = album.name;
       }
     } catch {}
@@ -298,7 +293,7 @@ musicStore.subscribe(
 
     let newTrack: TrackWithAlbum | undefined;
     try {
-      if (activeId) newTrack = await getTrack([eq(tracks.id, activeId)]);
+      if (activeId) newTrack = await getTrack(activeId);
     } catch {}
     musicStore.setState({ activeTrack: newTrack });
   },
@@ -323,11 +318,15 @@ musicStore.subscribe(
     for (const { id, type } of recentListSources) {
       try {
         if (type === "album") {
-          const data = await getAlbum([eq(albums.id, id)]);
-          newRecentList.push(formatForMediaCard({ type: "album", data }));
+          const data = await getAlbum(id);
+          newRecentList.push(
+            formatForMediaCard({ type: "album", data, t: i18next.t }),
+          );
         } else if (type === "artist") {
-          const data = await getArtist([eq(artists.name, id)]);
-          newRecentList.push(formatForMediaCard({ type: "artist", data }));
+          const data = await getArtist(id);
+          newRecentList.push(
+            formatForMediaCard({ type: "artist", data, t: i18next.t }),
+          );
         } else if (type === "playlist") {
           let data: PlaylistWithTracks;
           if (
@@ -336,9 +335,11 @@ musicStore.subscribe(
           ) {
             data = await getSpecialPlaylist(id);
           } else {
-            data = await getPlaylist([eq(playlists.name, id)]);
+            data = await getPlaylist(id);
           }
-          newRecentList.push(formatForMediaCard({ type: "playlist", data }));
+          newRecentList.push(
+            formatForMediaCard({ type: "playlist", data, t: i18next.t }),
+          );
         } else if (type === "folder") {
           // TODO: Eventually support folders in the recent list.
         } else {

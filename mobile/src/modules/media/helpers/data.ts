@@ -3,16 +3,18 @@
  * Player Interface.
  */
 
-import { eq, inArray } from "drizzle-orm";
+import { inArray } from "drizzle-orm";
 import type { AddTrack } from "react-native-track-player";
 
 import type { TrackWithAlbum } from "@/db/schema";
-import { playlists, tracks } from "@/db/schema";
-import { getPlaylist, getTracks } from "@/db/queries";
-import { getTrackCover } from "@/db/utils/formatters";
-import { sortTracks } from "@/db/utils/sorting";
+import { tracks } from "@/db/schema";
+import { getTrackCover, sortTracks } from "@/db/utils";
 
-import { getFolderTracks } from "@/api/file-nodes/[...id]";
+import { getAlbum } from "@/api/album";
+import { getArtist } from "@/api/artist";
+import { getFolderTracks } from "@/api/folder";
+import { getPlaylist, getSpecialPlaylist } from "@/api/playlist";
+import { getTracks } from "@/api/track";
 
 import { ReservedPlaylists } from "../constants";
 import type { PlayListSource } from "../types";
@@ -44,24 +46,29 @@ export async function getTrackList({ type, id }: PlayListSource) {
   let sortedTracks: TrackWithAlbum[] = [];
 
   if (type === "album") {
-    const data = await getTracks([eq(tracks.albumId, id)]);
-    sortedTracks = sortTracks({ type: "album", tracks: data });
+    const { tracks: trks, ...albumInfo } = await getAlbum(id);
+    sortedTracks = trks.map((track) => ({ ...track, album: albumInfo }));
   } else if (type === "artist") {
-    const data = await getTracks([eq(tracks.artistName, id)]);
-    sortedTracks = sortTracks({ type: "artist", tracks: data });
+    const data = await getArtist(id);
+    sortedTracks = data.tracks;
   } else if (type === "folder") {
-    const data = await getFolderTracks(id); // `id` contains pathname.
-    sortedTracks = sortTracks({ type: "folder", tracks: data });
+    sortedTracks = await getFolderTracks(id); // `id` contains pathname.
   } else {
     if (id === ReservedPlaylists.tracks) {
-      const data = await getTracks();
-      sortedTracks = sortTracks({ type: "track", tracks: data });
+      sortedTracks = sortTracks(await getTracks());
     } else if (id === ReservedPlaylists.favorites) {
-      const data = await getTracks([eq(tracks.isFavorite, true)]);
-      sortedTracks = sortTracks({ type: "track", tracks: data });
+      const data = await getSpecialPlaylist(ReservedPlaylists.favorites);
+      // FIXME: Currently no "defined" sorting order for favorite tracks.
+      //  - Currently using alphabetical order, but may change in the future.
+      sortedTracks = [...data.tracks].sort((a, b) =>
+        a.name.localeCompare(b.name),
+      );
     } else {
-      const data = await getPlaylist([eq(playlists.name, id)]);
-      sortedTracks = sortTracks({ type: "playlist", tracks: data.tracks });
+      const data = await getPlaylist(id);
+      // FIXME: As of now, playlists don't have a "defined" sorting order.
+      // In the future, we'll allow the user to have custom track ordering
+      // in the playlist.
+      sortedTracks = data.tracks;
     }
   }
 

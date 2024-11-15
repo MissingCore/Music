@@ -1,13 +1,11 @@
 import * as Sentry from "@sentry/react-native";
 import { Stack } from "expo-router";
-import { useSetAtom } from "jotai";
 import { useEffect } from "react";
 import Bootsplash from "react-native-bootsplash";
 
 import { EllipsisVertical } from "@/resources/icons/EllipsisVertical";
 import { useLoadResources } from "@/hooks/useLoadResources";
 import { ErrorBoundary, OnboardingScreen } from "@/screens";
-import { mediaModalAtom } from "@/modals/categories/media/store";
 import { AppProvider } from "@/providers";
 
 import "@/resources/global.css";
@@ -60,8 +58,6 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const openModal = useSetAtom(mediaModalAtom);
-
   useEffect(() => {
     // Encountered issue in Android 12+ where one of the bootsplashes
     // persisted when it shouldn't. Make sure we close at least the bootsplash
@@ -84,7 +80,9 @@ function RootLayoutNav() {
             headerRight: () => (
               <StyledPressable
                 accessibilityLabel="View track settings."
-                onPress={() => openModal({ entity: "track", scope: "current" })}
+                onPress={() =>
+                  console.log("Viewing sheet for current playing track.")
+                }
                 forIcon
               >
                 <EllipsisVertical size={24} />

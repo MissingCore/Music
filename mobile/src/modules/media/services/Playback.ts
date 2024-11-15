@@ -1,9 +1,6 @@
-import { eq } from "drizzle-orm";
 import TrackPlayer from "react-native-track-player";
 
-import { tracks } from "@/db/schema";
-import { getTrack } from "@/db/queries";
-
+import { getTrack } from "@/api/track";
 import { RecentList, RNTPManager, musicStore, resetState } from "./Music";
 
 import { arePlaybackSourceEqual, getTrackList } from "../helpers/data";
@@ -144,7 +141,7 @@ export async function playFromMediaList({
   let newTrack = activeTrack;
   if (isDiffTrack) {
     try {
-      newTrack = await getTrack([eq(tracks.id, newTrackId!)]);
+      newTrack = await getTrack(newTrackId!);
     } catch {}
   }
 

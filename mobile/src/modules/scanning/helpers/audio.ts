@@ -8,8 +8,9 @@ import * as MediaLibrary from "expo-media-library";
 
 import { db } from "@/db";
 import { albums, artists, tracks, invalidTracks } from "@/db/schema";
-import { createAlbum, deleteTrack, getAlbums } from "@/db/queries";
 
+import { getAlbums, upsertAlbum } from "@/api/album";
+import { deleteTrack } from "@/api/track";
 import { userPreferencesStore } from "@/services/UserPreferences";
 import {
   Queue,
@@ -211,7 +212,7 @@ async function getTrackEntry({
   // case where an artist releases multiple albums with the same name.
   let albumId: string | null = null;
   if (!!albumTitle && !!albumArtist) {
-    const newAlbum = await createAlbum({
+    const newAlbum = await upsertAlbum({
       name: albumTitle,
       artistName: albumArtist,
       releaseYear: year,

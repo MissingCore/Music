@@ -1,12 +1,10 @@
 import { Stack, useLocalSearchParams } from "expo-router";
-import { useSetAtom } from "jotai";
 import { useMemo } from "react";
 import { View } from "react-native";
 
 import { EllipsisVertical } from "@/resources/icons/EllipsisVertical";
-import { useFavoriteTracksForCurrentPage } from "@/api/favorites";
-import { usePlaylistForCurrentPage } from "@/api/playlists/[id]";
-import { mediaModalAtom } from "@/modals/categories/media/store";
+import { useFavoriteTracksForCurrentPage } from "@/queries/favorite";
+import { usePlaylistForCurrentPage } from "@/queries/playlist";
 
 import { MediaScreenHeader } from "@/components/media/screen-header";
 import { StyledPressable } from "@/components/ui/pressable";
@@ -19,7 +17,6 @@ import type { MediaList } from "@/modules/media/types";
 export default function CurrentPlaylistScreen() {
   const { id: _id } = useLocalSearchParams<{ id: string }>();
   const id = _id!;
-  const openModal = useSetAtom(mediaModalAtom);
 
   const isFavoriteTracks = useMemo(
     () => id === ReservedPlaylists.favorites,
@@ -36,9 +33,7 @@ export default function CurrentPlaylistScreen() {
           headerRight: () => (
             <StyledPressable
               accessibilityLabel="View playlist settings."
-              onPress={() =>
-                openModal({ entity: "playlist", scope: "view", id })
-              }
+              onPress={() => console.log("Configuring playlist...")}
               forIcon
             >
               <EllipsisVertical size={24} />
@@ -88,12 +83,12 @@ function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
       />
       <TrackList
         data={data.tracks}
-        config={{ source: trackSource, origin }}
-        ListEmptyComponent={
-          <Description>
-            {id ? "No tracks in playlist." : "No favorited tracks."}
-          </Description>
-        }
+        trackSource={trackSource}
+        // ListEmptyComponent={
+        //   <Description>
+        //     {id ? "No tracks in playlist." : "No favorited tracks."}
+        //   </Description>
+        // }
       />
     </View>
   );

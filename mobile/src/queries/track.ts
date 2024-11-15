@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 
 import type { TrackWithAlbum } from "@/db/schema";
-import { formatForTrack } from "@/db/utils";
+import { formatForTrack, sortTracks } from "@/db/utils";
 
 import { addToPlaylist, favoriteTrack, removeFromPlaylist } from "@/api/track";
 import { Resynchronize } from "@/modules/media/services/Music";
@@ -15,11 +15,11 @@ import { ReservedPlaylists } from "@/modules/media/constants";
 //#region Queries
 /** Return list of `Track.Content` from tracks. */
 export function useTracksForTrackCard() {
-  const sortTracks = useSortTracksFn();
+  const sortTracksFn = useSortTracksFn();
   return useQuery({
     ...q.tracks.all,
     select: (data) =>
-      sortTracks(data).map((track) => formatForTrack("track", track)),
+      sortTracksFn(data).map((track) => formatForTrack("track", track)),
   });
 }
 
@@ -104,21 +104,7 @@ function useSortTracksFn() {
   const orderedBy = useSessionPreferencesStore((state) => state.orderedBy);
 
   return useCallback(
-    (data: TrackWithAlbum[]) => {
-      // FIXME: Once Hermes supports `toSorted` & `toReversed`, use those
-      // instead of the in-place methods.
-      let sortedTracks: TrackWithAlbum[] = [...data];
-      // Order track by attribute.
-      if (orderedBy === "alphabetical") {
-        sortedTracks.sort((a, b) => a.name.localeCompare(b.name));
-      } else if (orderedBy === "modified") {
-        sortedTracks.sort((a, b) => a.modificationTime - b.modificationTime);
-      }
-      // Sort tracks in descending order.
-      if (!isAsc) sortedTracks.reverse();
-
-      return sortedTracks;
-    },
+    (data: TrackWithAlbum[]) => sortTracks(data, { isAsc, orderedBy }),
     [isAsc, orderedBy],
   );
 }

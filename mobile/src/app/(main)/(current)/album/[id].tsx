@@ -2,8 +2,7 @@ import { Link, Stack, useLocalSearchParams } from "expo-router";
 import { View } from "react-native";
 
 import { Ionicons } from "@/resources/icons";
-import { useAlbumForCurrentPage } from "@/api/albums/[id]";
-import { useToggleFavorite } from "@/api/favorites/[id]";
+import { useAlbumForCurrentPage, useFavoriteAlbum } from "@/queries/album";
 
 import { mutateGuard } from "@/lib/react-query";
 import { MediaScreenHeader } from "@/components/media/screen-header";
@@ -16,7 +15,7 @@ export default function CurrentAlbumScreen() {
   const { id: _albumId } = useLocalSearchParams<{ id: string }>();
   const albumId = _albumId!;
   const { isPending, error, data } = useAlbumForCurrentPage(albumId);
-  const toggleFavoriteFn = useToggleFavorite({ type: "album", id: albumId });
+  const favoriteAlbum = useFavoriteAlbum(albumId);
 
   if (isPending) return <View className="w-full flex-1 px-4" />;
   else if (error) {
@@ -28,7 +27,7 @@ export default function CurrentAlbumScreen() {
   }
 
   // Add optimistic UI updates.
-  const isToggled = toggleFavoriteFn.isPending
+  const isToggled = favoriteAlbum.isPending
     ? !data.isFavorite
     : data.isFavorite;
 
@@ -41,7 +40,7 @@ export default function CurrentAlbumScreen() {
         options={{
           headerRight: () => (
             <StyledPressable
-              onPress={() => mutateGuard(toggleFavoriteFn, undefined)}
+              onPress={() => mutateGuard(favoriteAlbum, data.isFavorite)}
               forIcon
             >
               <Ionicons name={isToggled ? "heart" : "heart-outline"} />
@@ -65,10 +64,7 @@ export default function CurrentAlbumScreen() {
           metadata={data.metadata}
           trackSource={trackSource}
         />
-        <TrackList
-          data={data.tracks}
-          config={{ source: trackSource, origin: "album", hideImage: true }}
-        />
+        <TrackList data={data.tracks} trackSource={trackSource} />
       </View>
     </>
   );

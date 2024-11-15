@@ -2,7 +2,8 @@ import { useLocalSearchParams } from "expo-router";
 import { View } from "react-native";
 
 import type { Album } from "@/db/schema";
-import { useArtistForCurrentPage } from "@/api/artists/[id]";
+
+import { useArtistForCurrentPage } from "@/queries/artist";
 import { useGetColumn } from "@/hooks/useGetColumn";
 
 import { MediaScreenHeader } from "@/components/media/screen-header";
@@ -39,14 +40,14 @@ export default function CurrentArtistScreen() {
       </View>
       <TrackList
         data={data.tracks}
-        config={{ source: trackSource, origin: "artist" }}
-        ListHeaderComponent={<ArtistAlbums albums={data.albums} />}
-        contentContainerStyle={{ paddingHorizontal: 20 }}
-        ListEmptyComponent={
-          <Description className="text-start">
-            Artist has no tracks.
-          </Description>
-        }
+        trackSource={trackSource}
+        // ListHeaderComponent={<ArtistAlbums albums={data.albums} />}
+        // contentContainerStyle={{ paddingHorizontal: 20 }}
+        // ListEmptyComponent={
+        //   <Description className="text-start">
+        //     Artist has no tracks.
+        //   </Description>
+        // }
       />
     </>
   );
@@ -63,6 +64,7 @@ function ArtistAlbums({ albums }: { albums: Album[] | null }) {
 
   if (!albums) return null;
 
+  // FIXME: We should use a horizontal FlashList
   return (
     <>
       <Heading as="h3" className="mb-2 text-start">
