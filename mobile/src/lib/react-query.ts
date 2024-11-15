@@ -32,27 +32,8 @@ export function mutateGuard<TData, TError, TVariables, TContext>(
  * Helper for invalidating all queries except the "Latest Release" query
  * as that shouldn't ever change in the given app session.
  */
-export function clearAllQueries(options?: {
-  client?: QueryClient;
-  remove?: boolean;
-}) {
-  const client = options?.client ?? queryClient;
-  const remove = options?.remove ?? false;
-
-  if (remove) {
-    /*
-    `removeQueries` will remove the cache, so navigating to a page in the
-    stack will display the loading state.
-
-    `resetQueries` will remove the cache, but also refetch the data, so
-    there will be no loading state when navigating to a page in the stack.
-  */
-    client.removeQueries({
-      predicate: ({ queryKey }) => queryKey[0] !== settingKeys.release(),
-    });
-  } else {
-    client.invalidateQueries({
-      predicate: ({ queryKey }) => queryKey[0] !== settingKeys.release(),
-    });
-  }
+export function clearAllQueries(client: QueryClient = queryClient) {
+  client.invalidateQueries({
+    predicate: ({ queryKey }) => queryKey[0] !== settingKeys.release(),
+  });
 }

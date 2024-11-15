@@ -256,7 +256,7 @@ export const useImportBackup = () => {
   return useMutation({
     mutationFn: importBackup,
     onSuccess: () => {
-      clearAllQueries({ client: queryClient });
+      clearAllQueries(queryClient);
       toast(t("response.importSuccess"), ToastOptions);
     },
     onError: (err) => {
