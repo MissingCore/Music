@@ -46,6 +46,13 @@ export async function getTracks(where: DrizzleFilter = []) {
 }
 //#endregion
 
+//#region POST Methods
+/** Create a new track entry. */
+export async function createTrack(entry: typeof tracks.$inferInsert) {
+  return db.insert(tracks).values(entry).onConflictDoNothing();
+}
+//#endregion
+
 //#region PATCH Methods
 /** Update the `favorite` status of a track. */
 export async function favoriteTrack(id: string, isFavorite: boolean) {

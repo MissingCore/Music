@@ -10,11 +10,13 @@ import { z } from "zod";
 
 import { db } from "@/db";
 import type { TrackWithAlbum } from "@/db/schema";
-import { albums, playlists, tracks, tracksToPlaylists } from "@/db/schema";
+import { albums, playlists, tracks } from "@/db/schema";
 import { sanitizePlaylistName } from "@/db/utils";
 
 import i18next from "@/modules/i18n";
-import { getPlaylists } from "@/api/playlist";
+import { getAlbums } from "@/api/album";
+import { createPlaylist, getPlaylists, updatePlaylist } from "@/api/playlist";
+import { addToPlaylist, getTracks } from "@/api/track";
 import { Resynchronize, musicStore } from "@/modules/media/services/Music";
 
 import { clearAllQueries } from "@/lib/react-query";
@@ -83,16 +85,9 @@ function getRawTrack({ id, name, artistName, album }: TrackWithAlbum) {
 async function exportBackup() {
   // Get favorited values.
   const [favAlbums, favPlaylists, favTracks] = await Promise.all([
-    db.query.albums.findMany({
-      where: (fields, { eq }) => eq(fields.isFavorite, true),
-    }),
-    db.query.playlists.findMany({
-      where: (fields, { eq }) => eq(fields.isFavorite, true),
-    }),
-    db.query.tracks.findMany({
-      where: (fields, { eq }) => eq(fields.isFavorite, true),
-      with: { album: true },
-    }),
+    getAlbums([eq(albums.isFavorite, true)]),
+    getPlaylists([eq(playlists.isFavorite, true)]),
+    getTracks([eq(tracks.isFavorite, true)]),
   ]);
   // Get all user-generated playlists.
   const allPlaylists = await getPlaylists();
@@ -161,7 +156,7 @@ async function importBackup() {
   await Promise.allSettled(
     backupContents.playlists.map(async ({ name, tracks: plTracks }) => {
       // Create playlist if it doesn't exist.
-      await db.insert(playlists).values({ name }).onConflictDoNothing();
+      await createPlaylist({ name });
 
       // Get all the ids of the tracks in this playlist.
       const _trackIds = await Promise.allSettled(
@@ -186,7 +181,7 @@ async function importBackup() {
       // Create relations between tracks & playlist.
       await Promise.allSettled(
         trackIds.map((trackId) =>
-          db.insert(tracksToPlaylists).values({ trackId, playlistName: name }),
+          addToPlaylist({ trackId, playlistName: name }),
         ),
       );
     }),
@@ -196,10 +191,7 @@ async function importBackup() {
   await Promise.allSettled([
     // Playlists
     ...backupContents.favorites.playlists.map((name) =>
-      db
-        .update(playlists)
-        .set({ isFavorite: true })
-        .where(eq(playlists.name, name)),
+      updatePlaylist(name, { isFavorite: true }),
     ),
     // Albums
     ...backupContents.favorites.albums.map(({ name, artistName }) =>
