@@ -2,7 +2,7 @@ import { Link, Stack, useLocalSearchParams } from "expo-router";
 import { View } from "react-native";
 
 import { Ionicons } from "@/resources/icons";
-import { useAlbumForCurrentPage, useFavoriteAlbum } from "@/queries/album";
+import { useAlbumForScreen, useFavoriteAlbum } from "@/queries/album";
 
 import { mutateGuard } from "@/lib/react-query";
 import { MediaScreenHeader } from "@/components/media/screen-header";
@@ -14,7 +14,7 @@ import { TrackList } from "@/modules/media/components";
 export default function CurrentAlbumScreen() {
   const { id: _albumId } = useLocalSearchParams<{ id: string }>();
   const albumId = _albumId!;
-  const { isPending, error, data } = useAlbumForCurrentPage(albumId);
+  const { isPending, error, data } = useAlbumForScreen(albumId);
   const favoriteAlbum = useFavoriteAlbum(albumId);
 
   if (isPending) return <View className="w-full flex-1 px-4" />;
@@ -40,7 +40,7 @@ export default function CurrentAlbumScreen() {
         options={{
           headerRight: () => (
             <StyledPressable
-              onPress={() => mutateGuard(favoriteAlbum, data.isFavorite)}
+              onPress={() => mutateGuard(favoriteAlbum, !data.isFavorite)}
               forIcon
             >
               <Ionicons name={isToggled ? "heart" : "heart-outline"} />

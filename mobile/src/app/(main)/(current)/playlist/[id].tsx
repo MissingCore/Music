@@ -3,8 +3,8 @@ import { useMemo } from "react";
 import { View } from "react-native";
 
 import { EllipsisVertical } from "@/resources/icons/EllipsisVertical";
-import { useFavoriteTracksForCurrentPage } from "@/queries/favorite";
-import { usePlaylistForCurrentPage } from "@/queries/playlist";
+import { useFavoriteTracksForScreen } from "@/queries/favorite";
+import { usePlaylistForScreen } from "@/queries/playlist";
 
 import { MediaScreenHeader } from "@/components/media/screen-header";
 import { StyledPressable } from "@/components/ui/pressable";
@@ -24,7 +24,7 @@ export default function CurrentPlaylistScreen() {
   );
 
   if (isFavoriteTracks) {
-    return <PlaylistListContent queryHook={useFavoriteTracksForCurrentPage} />;
+    return <PlaylistListContent queryHook={useFavoriteTracksForScreen} />;
   }
   return (
     <>
@@ -43,7 +43,7 @@ export default function CurrentPlaylistScreen() {
       />
       <PlaylistListContent
         id={id}
-        queryHook={usePlaylistForCurrentPage}
+        queryHook={usePlaylistForScreen}
         origin="playlist"
       />
     </>
@@ -53,8 +53,8 @@ export default function CurrentPlaylistScreen() {
 type PlaylistContent = {
   origin?: MediaList;
 } & (
-  | { id: string; queryHook: typeof usePlaylistForCurrentPage }
-  | { id?: never; queryHook: typeof useFavoriteTracksForCurrentPage }
+  | { id: string; queryHook: typeof usePlaylistForScreen }
+  | { id?: never; queryHook: typeof useFavoriteTracksForScreen }
 );
 
 /** Basic structure of what we want to render on page. */

@@ -3,7 +3,7 @@ import { View } from "react-native";
 
 import type { Album } from "@/db/schema";
 
-import { useArtistForCurrentPage } from "@/queries/artist";
+import { useArtistForScreen } from "@/queries/artist";
 import { useGetColumn } from "@/hooks/useGetColumn";
 
 import { MediaScreenHeader } from "@/components/media/screen-header";
@@ -15,7 +15,7 @@ import { MediaCard, TrackList } from "@/modules/media/components";
 export default function CurrentArtistScreen() {
   const { id: _artistName } = useLocalSearchParams<{ id: string }>();
   const artistName = _artistName!;
-  const { isPending, error, data } = useArtistForCurrentPage(artistName);
+  const { isPending, error, data } = useArtistForScreen(artistName);
 
   if (isPending) return <View className="w-full flex-1 px-4" />;
   else if (error) {

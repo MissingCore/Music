@@ -33,6 +33,23 @@ export async function getDatabaseSummary() {
   };
 }
 
+/** Get the latest stable & pre-release release notes from GitHub. */
+export async function getLatestRelease() {
+  return {
+    latestStable: await fetch(`${RELEASE_NOTES_LINK}/latest`)
+      .then((res) => res.json())
+      .then((data) => formatGitHubRelease(data)),
+    latestRelease: await fetch(`${RELEASE_NOTES_LINK}?per_page=1`)
+      .then((res) => res.json())
+      .then(([data]) => formatGitHubRelease(data)),
+  };
+}
+
+/** Get the list of tracks we failed to save along with their error message. */
+export async function getSaveErrors() {
+  return db.query.invalidTracks.findMany();
+}
+
 /** A summary of what consists of "user data" that's stored by the app. */
 export async function getStorageSummary() {
   if (!documentDirectory) throw new Error("Web not supported");
@@ -53,23 +70,6 @@ export async function getStorageSummary() {
     other: otherSize - imgSize - dbSize,
     cache: cacheSize,
     total: otherSize + cacheSize,
-  };
-}
-
-/** Get the list of tracks we failed to save along with their error message. */
-export async function getSaveErrors() {
-  return db.query.invalidTracks.findMany();
-}
-
-/** Get the latest stable & pre-release release notes from GitHub. */
-export async function getLatestRelease() {
-  return {
-    latestStable: await fetch(`${RELEASE_NOTES_LINK}/latest`)
-      .then((res) => res.json())
-      .then((data) => formatGitHubRelease(data)),
-    latestRelease: await fetch(`${RELEASE_NOTES_LINK}?per_page=1`)
-      .then((res) => res.json())
-      .then(([data]) => formatGitHubRelease(data)),
   };
 }
 //#endregion

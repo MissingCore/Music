@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import type { Artist } from "@/db/schema";
 
-import { useArtistsForList } from "@/queries/artist";
+import { useArtistsForIndex } from "@/queries/artist";
 import { StickyActionListLayout } from "@/layouts";
 
 import { cn } from "@/lib/style";
@@ -17,12 +17,12 @@ import { MediaImage } from "@/modules/media/components";
 /** Screen for `/artist` route. */
 export default function ArtistScreen() {
   const { t } = useTranslation();
-  const { isPending, data } = useArtistsForList();
+  const { isPending, data } = useArtistsForIndex();
 
   return (
     <StickyActionListLayout
       title={t("common.artists")}
-      {...ArtistListPreset({
+      {...ArtistIndexPreset({
         ...{ data, isPending },
         emptyMessage: t("response.noArtists"),
       })}
@@ -31,7 +31,7 @@ export default function ArtistScreen() {
 }
 
 //#region Preset
-const ArtistListPreset = (props: {
+const ArtistIndexPreset = (props: {
   data: Maybe<ReadonlyArray<string | Artist>>;
   emptyMessage?: string;
   isPending?: boolean;

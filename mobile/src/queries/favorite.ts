@@ -34,7 +34,7 @@ export function useFavoriteTracksCount() {
 }
 
 /** Format list of favorited tracks for playlist's `(current)` screen. */
-export function useFavoriteTracksForCurrentPage() {
+export function useFavoriteTracksForScreen() {
   const { t } = useTranslation();
   return useQuery({
     ...q.favorites.tracks,

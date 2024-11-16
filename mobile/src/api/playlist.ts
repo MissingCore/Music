@@ -36,6 +36,22 @@ export const getPlaylist: QuerySingleFn<PlaylistWithTracks> = async (
   return fixPlaylistJunction(playlist);
 };
 
+/** Get multiple playlists. */
+export async function getPlaylists(where: DrizzleFilter = []) {
+  const allPlaylists = await db.query.playlists.findMany({
+    where: and(...where),
+    with: {
+      tracksToPlaylists: {
+        columns: {},
+        with: { track: { with: { album: true } } },
+        // FIXME: In the future, need to `orderBy` track order in playlist.
+      },
+    },
+    orderBy: (fields, { asc }) => asc(fields.name),
+  });
+  return allPlaylists.map((data) => fixPlaylistJunction(data));
+}
+
 /** Get one of the "reserved" playlists. Tracks are unsorted. */
 export async function getSpecialPlaylist(id: ReservedPlaylistName) {
   const isFavoriteList = ReservedPlaylists.favorites === id;
@@ -53,22 +69,6 @@ export async function getSpecialPlaylist(id: ReservedPlaylistName) {
   if (!isFavoriteList) sortedTracks = sortTracks(playlistTracks);
 
   return { name: id, artwork: id, isFavorite: false, tracks: sortedTracks };
-}
-
-/** Get multiple playlists. */
-export async function getPlaylists(where: DrizzleFilter = []) {
-  const allPlaylists = await db.query.playlists.findMany({
-    where: and(...where),
-    with: {
-      tracksToPlaylists: {
-        columns: {},
-        with: { track: { with: { album: true } } },
-        // FIXME: In the future, need to `orderBy` track order in playlist.
-      },
-    },
-    orderBy: (fields, { asc }) => asc(fields.name),
-  });
-  return allPlaylists.map((data) => fixPlaylistJunction(data));
 }
 //#endregion
 

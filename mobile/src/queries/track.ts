@@ -13,16 +13,6 @@ import { pickKeys } from "@/utils/object";
 import { ReservedPlaylists } from "@/modules/media/constants";
 
 //#region Queries
-/** Return list of `Track.Content` from tracks. */
-export function useTracksForTrackCard() {
-  const sortTracksFn = useSortTracksFn();
-  return useQuery({
-    ...q.tracks.all,
-    select: (data) =>
-      sortTracksFn(data).map((track) => formatForTrack("track", track)),
-  });
-}
-
 /** Return the most-used subset of track data. */
 export function useTrackExcerpt(trackId: string) {
   return useQuery({
@@ -39,27 +29,19 @@ export function useTrackExcerpt(trackId: string) {
 export function useTrackPlaylists(trackId: string) {
   return useQuery({ ...q.tracks.detail(trackId)._ctx.playlists });
 }
+
+/** Return list of `Track.Content` from tracks. */
+export function useTracksForTrackCard() {
+  const sortTracksFn = useSortTracksFn();
+  return useQuery({
+    ...q.tracks.all,
+    select: (data) =>
+      sortTracksFn(data).map((track) => formatForTrack("track", track)),
+  });
+}
 //#endregion
 
 //#region Mutations
-/** Toggle the favorite status of an track by passing the current status. */
-export function useFavoriteTrack(trackId: string) {
-  const queryClient = useQueryClient();
-  return useMutation({
-    /** Pass the current favorite status of the track. */
-    mutationFn: (isFavorite: boolean) => favoriteTrack(trackId, !isFavorite),
-    onSuccess: () => {
-      // Invalidate all track queries and the favorite tracks query.
-      queryClient.invalidateQueries({ queryKey: q.tracks._def });
-      queryClient.invalidateQueries({ queryKey: q.favorites.tracks.queryKey });
-      Resynchronize.onTracks({
-        type: "playlist",
-        id: ReservedPlaylists.favorites,
-      });
-    },
-  });
-}
-
 /** Add track to playlist. */
 export function useAddToPlaylist(trackId: string) {
   const queryClient = useQueryClient();
@@ -74,6 +56,24 @@ export function useAddToPlaylist(trackId: string) {
       // Ensure that if we're currently playing from the playlist we added
       // the track to, we update it.
       Resynchronize.onTracks({ type: "playlist", id: playlistName });
+    },
+  });
+}
+
+/** Set the favorite status of an track. */
+export function useFavoriteTrack(trackId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    /** Pass the new favorite status of the track. */
+    mutationFn: (isFavorite: boolean) => favoriteTrack(trackId, isFavorite),
+    onSuccess: () => {
+      // Invalidate all track queries and the favorite tracks query.
+      queryClient.invalidateQueries({ queryKey: q.tracks._def });
+      queryClient.invalidateQueries({ queryKey: q.favorites.tracks.queryKey });
+      Resynchronize.onTracks({
+        type: "playlist",
+        id: ReservedPlaylists.favorites,
+      });
     },
   });
 }

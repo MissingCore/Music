@@ -7,11 +7,24 @@ import { formatForCurrentScreen } from "@/db/utils";
 import { queries as q } from "./keyStore";
 
 //#region Queries
+/** Format artist information for artist's `(current)` screen. */
+export function useArtistForScreen(artistName: string) {
+  const { t } = useTranslation();
+  return useQuery({
+    ...q.artists.detail(artistName),
+    select: ({ albums, ...artist }) => ({
+      ...formatForCurrentScreen({ type: "artist", data: artist, t }),
+      albums: albums.length > 0 ? albums : null,
+    }),
+  });
+}
+
 /**
  * Group artists by their first character (or in a group of special
- * characters) for a `<FlashList />` that functions like a `<SectionList />`.
+ * characters), like an index in a book for a `<FlashList />` that
+ * functions like a `<SectionList />`.
  */
-export function useArtistsForList() {
+export function useArtistsForIndex() {
   return useQuery({
     ...q.artists.all,
     select: (data) => {
@@ -34,18 +47,6 @@ export function useArtistsForList() {
         .map(([character, artists]) => [character, ...artists])
         .flat();
     },
-  });
-}
-
-/** Format artist information for artist's `(current)` screen. */
-export function useArtistForCurrentPage(artistName: string) {
-  const { t } = useTranslation();
-  return useQuery({
-    ...q.artists.detail(artistName),
-    select: ({ albums, ...artist }) => ({
-      ...formatForCurrentScreen({ type: "artist", data: artist, t }),
-      albums: albums.length > 0 ? albums : null,
-    }),
   });
 }
 //#endregion

@@ -9,6 +9,19 @@ import { queries as q } from "./keyStore";
 import { pickKeys } from "@/utils/object";
 
 //#region Queries
+/** Format album information for album's `(current)` screen. */
+export function useAlbumForScreen(albumId: string) {
+  const { t } = useTranslation();
+  return useQuery({
+    ...q.albums.detail(albumId),
+    select: (data) => ({
+      ...formatForCurrentScreen({ type: "album", data, t }),
+      ...pickKeys(data, ["artistName", "isFavorite"]),
+      imageSource: data.artwork,
+    }),
+  });
+}
+
 /** Return list of `MediaCard.Content` from albums. */
 export function useAlbumsForCards() {
   const { t } = useTranslation();
@@ -20,28 +33,15 @@ export function useAlbumsForCards() {
       ),
   });
 }
-
-/** Format album information for album's `(current)` screen. */
-export function useAlbumForCurrentPage(albumId: string) {
-  const { t } = useTranslation();
-  return useQuery({
-    ...q.albums.detail(albumId),
-    select: (data) => ({
-      ...formatForCurrentScreen({ type: "album", data, t }),
-      ...pickKeys(data, ["artistName", "isFavorite"]),
-      imageSource: data.artwork,
-    }),
-  });
-}
 //#endregion
 
 //#region Mutations
-/** Toggle the favorite status of an album by passing the current status. */
+/** Set the favorite status of an album. */
 export function useFavoriteAlbum(albumId: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    /** Pass the current favorite status of the album. */
-    mutationFn: (isFavorite: boolean) => favoriteAlbum(albumId, !isFavorite),
+    /** Pass the new favorite status of the album. */
+    mutationFn: (isFavorite: boolean) => favoriteAlbum(albumId, isFavorite),
     onSuccess: () => {
       // Invalidate all album queries and the favorite lists query.
       queryClient.invalidateQueries({ queryKey: q.albums._def });

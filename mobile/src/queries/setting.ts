@@ -8,16 +8,6 @@ export function useDatabaseSummary() {
   return useQuery({ ...q.settings.summary._ctx.database });
 }
 
-/** Return a summary of the "user data" stored by the app. */
-export function useStorageSummary() {
-  return useQuery({ ...q.settings.summary._ctx.storage });
-}
-
-/** Return the tracks that resulted in an error while saving. */
-export function useSaveErrors() {
-  return useQuery({ ...q.settings.saveErrors });
-}
-
 /** Returns latest stable & pre-release release notes from GitHub. */
 export function useLatestRelease() {
   return useQuery({
@@ -26,5 +16,15 @@ export function useLatestRelease() {
     gcTime: Infinity,
     retry: false,
   });
+}
+
+/** Return the tracks that resulted in an error while saving. */
+export function useSaveErrors() {
+  return useQuery({ ...q.settings.saveErrors });
+}
+
+/** Return a summary of the "user data" stored by the app. */
+export function useStorageSummary() {
+  return useQuery({ ...q.settings.summary._ctx.storage });
 }
 //#endregion
