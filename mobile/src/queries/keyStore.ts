@@ -7,6 +7,12 @@ import { getAlbum, getAlbums } from "@/api/album";
 import { getArtist, getArtistAlbums, getArtists } from "@/api/artist";
 import { getFolder } from "@/api/folder";
 import { getPlaylist, getPlaylists, getSpecialPlaylist } from "@/api/playlist";
+import {
+  getDatabaseSummary,
+  getLatestRelease,
+  getSaveErrors,
+  getStorageSummary,
+} from "@/api/setting";
 import { getTrack, getTrackPlaylists, getTracks } from "@/api/track";
 
 import { ReservedPlaylists } from "@/modules/media/constants";
@@ -84,6 +90,31 @@ export const queries = createQueryKeyStore({
         },
       },
     }),
+  },
+
+  /** Query keys used in `useQuery` for "setting" related features. */
+  settings: {
+    releaseNote: {
+      queryKey: null,
+      queryFn: () => getLatestRelease(),
+    },
+    saveErrors: {
+      queryKey: null,
+      queryFn: () => getSaveErrors(),
+    },
+    summary: {
+      queryKey: null,
+      contextQueries: {
+        database: {
+          queryKey: null,
+          queryFn: () => getDatabaseSummary(),
+        },
+        storage: {
+          queryKey: null,
+          queryFn: () => getStorageSummary(),
+        },
+      },
+    },
   },
 });
 

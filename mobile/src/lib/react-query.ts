@@ -1,7 +1,7 @@
 import type { DefaultOptions, UseMutationResult } from "@tanstack/react-query";
 import { QueryClient } from "@tanstack/react-query";
 
-import { settingKeys } from "@/constants/QueryKeys";
+import { queries as q } from "@/queries/keyStore";
 
 const queryConfig: DefaultOptions = {
   queries: {
@@ -34,6 +34,8 @@ export function mutateGuard<TData, TError, TVariables, TContext>(
  */
 export function clearAllQueries(client: QueryClient = queryClient) {
   client.invalidateQueries({
-    predicate: ({ queryKey }) => queryKey[0] !== settingKeys.release(),
+    // Typically, `false` is never the results when comparing 2 arrays with
+    // the "same" content unless they point to the same reference.
+    predicate: ({ queryKey }) => queryKey !== q.settings.releaseNote.queryKey,
   });
 }
