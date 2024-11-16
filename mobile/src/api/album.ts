@@ -6,6 +6,7 @@ import { albums } from "@/db/schema";
 
 import i18next from "@/modules/i18n";
 
+import { iAsc } from "@/lib/drizzle";
 import type { DrizzleFilter, QuerySingleFn } from "./types";
 
 //#region GET Methods
@@ -28,7 +29,7 @@ export async function getAlbums(where: DrizzleFilter = []) {
   return db.query.albums.findMany({
     where: and(...where),
     with: { tracks: { orderBy: (fields, { asc }) => [asc(fields.track)] } },
-    orderBy: (fields, { asc }) => [asc(fields.name), asc(fields.artistName)],
+    orderBy: (fields) => [iAsc(fields.name), iAsc(fields.artistName)],
   });
 }
 //#endregion

@@ -1,5 +1,6 @@
 import { db } from "@/db";
 
+import { iAsc } from "@/lib/drizzle";
 import { addTrailingSlash } from "@/utils/string";
 import type { Maybe } from "@/utils/types";
 
@@ -19,7 +20,7 @@ export async function getFolderSubdirectories(path: Maybe<string>) {
       path
         ? eq(fields.parentPath, addTrailingSlash(path))
         : isNull(fields.parentPath),
-    orderBy: (fields, { asc }) => asc(fields.name),
+    orderBy: (fields) => iAsc(fields.name),
   });
   const dirHasChild = await Promise.all(
     subDirs.map(({ path: subDir }) =>
@@ -40,7 +41,7 @@ export async function getFolderTracks(path: Maybe<string>) {
     await db.query.tracks.findMany({
       where: (fields, { like }) => like(fields.uri, `${fullPath}%`),
       with: { album: true },
-      orderBy: (fields, { asc }) => asc(fields.name),
+      orderBy: (fields) => iAsc(fields.name),
     })
   ).filter(({ uri }) => !uri.slice(fullPath.length).includes("/"));
 }

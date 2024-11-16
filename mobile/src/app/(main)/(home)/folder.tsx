@@ -81,7 +81,7 @@ export default function FolderScreen() {
     return () => {
       BackHandler.removeEventListener("hardwareBackPress", onBackPress);
     };
-  }, [dirSegments, isFocused, listRef, setDirSegments]);
+  }, [dirSegments, isFocused, setDirSegments]);
 
   // Information about this track list.
   const trackSource = { type: "folder", id: `${fullPath}/` } as const;

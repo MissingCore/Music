@@ -6,6 +6,7 @@ import { artists } from "@/db/schema";
 
 import i18next from "@/modules/i18n";
 
+import { iAsc } from "@/lib/drizzle";
 import type { DrizzleFilter, QuerySingleFn } from "./types";
 
 //#region GET Methods
@@ -20,7 +21,7 @@ export const getArtist: QuerySingleFn<ArtistWithTracks> = async (
     with: {
       tracks: {
         with: { album: true },
-        orderBy: (fields, { asc }) => asc(fields.name),
+        orderBy: (fields) => iAsc(fields.name),
       },
     },
   });
@@ -43,10 +44,10 @@ export async function getArtists(where: DrizzleFilter = []) {
     with: {
       tracks: {
         with: { album: true },
-        orderBy: (fields, { asc }) => asc(fields.name),
+        orderBy: (fields) => iAsc(fields.name),
       },
     },
-    orderBy: (fields, { asc }) => asc(fields.name),
+    orderBy: (fields) => iAsc(fields.name),
   });
 }
 //#endregion

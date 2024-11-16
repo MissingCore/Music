@@ -7,6 +7,7 @@ import { sanitizePlaylistName, sortTracks } from "@/db/utils";
 
 import i18next from "@/modules/i18n";
 
+import { iAsc } from "@/lib/drizzle";
 import { deleteFile } from "@/lib/file-system";
 import type { ReservedPlaylistName } from "@/modules/media/constants";
 import { ReservedPlaylists } from "@/modules/media/constants";
@@ -47,7 +48,7 @@ export async function getPlaylists(where: DrizzleFilter = []) {
         // FIXME: In the future, need to `orderBy` track order in playlist.
       },
     },
-    orderBy: (fields, { asc }) => asc(fields.name),
+    orderBy: (fields) => iAsc(fields.name),
   });
   return allPlaylists.map((data) => fixPlaylistJunction(data));
 }
@@ -60,7 +61,7 @@ export async function getSpecialPlaylist(id: ReservedPlaylistName) {
     ...(isFavoriteList
       ? {
           where: (fields, { eq }) => eq(fields.isFavorite, true),
-          orderBy: (fields, { asc }) => asc(fields.name),
+          orderBy: (fields) => iAsc(fields.name),
         }
       : {}),
   });
