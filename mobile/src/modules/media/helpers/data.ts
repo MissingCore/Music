@@ -58,11 +58,9 @@ export async function getTrackList({ type, id }: PlayListSource) {
       sortedTracks = sortTracks(await getTracks());
     } else if (id === ReservedPlaylists.favorites) {
       const data = await getSpecialPlaylist(ReservedPlaylists.favorites);
-      // FIXME: Currently no "defined" sorting order for favorite tracks.
-      //  - Currently using alphabetical order, but may change in the future.
-      sortedTracks = [...data.tracks].sort((a, b) =>
-        a.name.localeCompare(b.name),
-      );
+      // FIXME: Current default sorting order for list of favorite tracks
+      // is alphabetical, but may change in the future.
+      sortedTracks = data.tracks;
     } else {
       const data = await getPlaylist(id);
       // FIXME: As of now, playlists don't have a "defined" sorting order.

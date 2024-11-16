@@ -2,15 +2,14 @@ import { and, eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import type { PlaylistWithJunction, PlaylistWithTracks } from "@/db/schema";
-import { playlists, tracks, tracksToPlaylists } from "@/db/schema";
-import { sanitizePlaylistName } from "@/db/utils";
+import { playlists, tracksToPlaylists } from "@/db/schema";
+import { sanitizePlaylistName, sortTracks } from "@/db/utils";
 
 import i18next from "@/modules/i18n";
 
 import { deleteFile } from "@/lib/file-system";
 import type { ReservedPlaylistName } from "@/modules/media/constants";
 import { ReservedPlaylists } from "@/modules/media/constants";
-import { getTracks } from "./track";
 import type { DrizzleFilter, QuerySingleFn } from "./types";
 
 //#region GET Methods
@@ -39,12 +38,21 @@ export const getPlaylist: QuerySingleFn<PlaylistWithTracks> = async (
 
 /** Get one of the "reserved" playlists. Tracks are unsorted. */
 export async function getSpecialPlaylist(id: ReservedPlaylistName) {
-  const playlistTracks = await getTracks(
-    ReservedPlaylists.favorites === id
-      ? [eq(tracks.isFavorite, true)]
-      : undefined,
-  );
-  return { name: id, artwork: id, isFavorite: false, tracks: playlistTracks };
+  const isFavoriteList = ReservedPlaylists.favorites === id;
+  const playlistTracks = await db.query.tracks.findMany({
+    with: { album: true },
+    ...(isFavoriteList
+      ? {
+          where: (fields, { eq }) => eq(fields.isFavorite, true),
+          orderBy: (fields, { asc }) => asc(fields.name),
+        }
+      : {}),
+  });
+
+  let sortedTracks = playlistTracks;
+  if (!isFavoriteList) sortedTracks = sortTracks(playlistTracks);
+
+  return { name: id, artwork: id, isFavorite: false, tracks: sortedTracks };
 }
 
 /** Get multiple playlists. */
