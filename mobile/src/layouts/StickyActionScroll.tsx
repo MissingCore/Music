@@ -72,6 +72,7 @@ export const StickyActionScrollLayout = forwardRef<
     <Animated.ScrollView
       ref={ref}
       onScroll={scrollHandler}
+      overScrollMode="never"
       showsVerticalScrollIndicator={false}
       stickyHeaderIndices={!!StickyAction ? [1] : undefined}
       {...rest}
@@ -184,6 +185,7 @@ export function StickyActionListLayout<TData>({
             {title}
           </StickyActionHeader>
         }
+        overScrollMode="never"
         showsVerticalScrollIndicator={false}
         {...flashListProps}
         contentContainerStyle={{
