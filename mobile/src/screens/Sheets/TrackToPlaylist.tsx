@@ -1,21 +1,18 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { and, eq } from "drizzle-orm";
 import { useTranslation } from "react-i18next";
 import type { SheetProps } from "react-native-actions-sheet";
 import { SheetManager } from "react-native-actions-sheet";
 import { FlashList } from "react-native-actions-sheet/dist/src/views/FlashList";
 
-import { db } from "@/db";
-import { tracksToPlaylists } from "@/db/schema";
-import { getPlaylists } from "@/db/queries";
-
-import { Resynchronize, musicStore } from "@/modules/media/services/Music";
+import { usePlaylists } from "@/queries/playlist";
+import {
+  useAddToPlaylist,
+  useRemoveFromPlaylist,
+  useTrackPlaylists,
+} from "@/queries/track";
 import { useTheme } from "@/hooks/useTheme";
 
-import { favoriteKeys, playlistKeys, trackKeys } from "@/constants/QueryKeys";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
-import type { Maybe } from "@/utils/types";
 import { Marquee } from "@/components/new/Containment";
 import { Checkbox } from "@/components/new/Form";
 import { Loading } from "@/components/new/Loading";
@@ -29,8 +26,9 @@ export default function TrackToPlaylistSheet(
   const { t } = useTranslation();
   const { canvasAlt, surface } = useTheme();
   const { isPending, data } = usePlaylists();
-  const { data: inList } = useTrackPlaylists(props.payload?.id);
-  const onToggle = useToggleInPlaylist(props.payload?.id);
+  const { data: inList } = useTrackPlaylists(props.payload!.id);
+  const addToPlaylist = useAddToPlaylist(props.payload!.id);
+  const removeFromPlaylist = useRemoveFromPlaylist(props.payload!.id);
 
   return (
     <Sheet
@@ -49,7 +47,12 @@ export default function TrackToPlaylistSheet(
           return (
             <Checkbox
               selected={selected}
-              onSelect={() => mutateGuard(onToggle, item.name)}
+              onSelect={() =>
+                mutateGuard(
+                  selected ? removeFromPlaylist : addToPlaylist,
+                  item.name,
+                )
+              }
               wrapperClassName={cn({
                 "mt-1": index !== 0,
                 "mb-4": index === data!.length - 1,
@@ -73,74 +76,3 @@ export default function TrackToPlaylistSheet(
     </Sheet>
   );
 }
-
-//#region Data
-async function getTrackPlaylists(trackId: string) {
-  const allTracksToPlaylists = await db.query.tracksToPlaylists.findMany({
-    where: (fields, { eq }) => eq(fields.trackId, trackId),
-    columns: {},
-    with: { playlist: { columns: { name: true } } },
-  });
-  return allTracksToPlaylists.map(({ playlist }) => playlist.name);
-}
-
-async function toggleInPlaylist(playlistName: string, trackId: Maybe<string>) {
-  if (!trackId) return;
-  await db.transaction(async (tx) => {
-    const exists = await tx.query.tracksToPlaylists.findFirst({
-      where: (fields, { and, eq }) =>
-        and(eq(fields.trackId, trackId), eq(fields.playlistName, playlistName)),
-    });
-    if (exists) {
-      await tx
-        .delete(tracksToPlaylists)
-        .where(
-          and(
-            eq(tracksToPlaylists.trackId, trackId),
-            eq(tracksToPlaylists.playlistName, playlistName),
-          ),
-        );
-    } else {
-      await tx.insert(tracksToPlaylists).values({ trackId, playlistName });
-    }
-
-    const currPlayingFrom = musicStore.getState().playingSource;
-    if (
-      currPlayingFrom?.type === "playlist" &&
-      currPlayingFrom.id === playlistName
-    ) {
-      await Resynchronize.onTracks(currPlayingFrom);
-    }
-  });
-}
-
-const usePlaylists = () =>
-  useQuery({
-    queryKey: playlistKeys.all,
-    queryFn: () => getPlaylists(),
-    select: (data) => data.sort((a, b) => a.name.localeCompare(b.name)),
-    staleTime: Infinity,
-  });
-
-const useTrackPlaylists = (trackId: Maybe<string>) =>
-  useQuery({
-    enabled: !!trackId,
-    queryKey: trackKeys.detailWithRelation(trackId!),
-    queryFn: () => getTrackPlaylists(trackId!),
-  });
-
-function useToggleInPlaylist(trackId: Maybe<string>) {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (playlistName: string) =>
-      toggleInPlaylist(playlistName, trackId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: trackKeys.detailWithRelation(trackId!),
-      });
-      queryClient.invalidateQueries({ queryKey: playlistKeys.all });
-      queryClient.invalidateQueries({ queryKey: favoriteKeys.lists() });
-    },
-  });
-}
-//#endregion

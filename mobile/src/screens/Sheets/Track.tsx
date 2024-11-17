@@ -1,13 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
-import { eq } from "drizzle-orm";
 import { router, usePathname } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import { SheetManager, type SheetProps } from "react-native-actions-sheet";
 
 import type { TrackWithAlbum } from "@/db/schema";
-import { tracks } from "@/db/schema";
-import { getTrack } from "@/db/queries";
 
 import {
   Album,
@@ -18,16 +14,13 @@ import {
   QueueMusic,
   Schedule,
 } from "@/icons";
+import { useTrackExcerpt, useFavoriteTrack } from "@/queries/track";
 import { useGetColumn } from "@/hooks/useGetColumn";
-import { useToggleFavorite } from "@/api/favorites/[id]";
 import { Queue, useMusicStore } from "@/modules/media/services/Music";
 
-import { trackKeys } from "@/constants/QueryKeys";
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
-import { pickKeys } from "@/utils/object";
 import { formatSeconds } from "@/utils/number";
-import type { Maybe } from "@/utils/types";
 import { Divider, Marquee } from "@/components/new/Containment";
 import { IconButton } from "@/components/new/Form";
 import { Sheet } from "@/components/new/Sheet";
@@ -35,9 +28,14 @@ import { StyledText } from "@/components/new/Typography";
 import { ReservedPlaylists } from "@/modules/media/constants";
 import { MediaImage } from "@/modules/media/components";
 
+type TrackData = Pick<
+  TrackWithAlbum,
+  "id" | "name" | "artistName" | "duration" | "isFavorite"
+> & { imageSource: string | null; album: { id: string; name: string } | null };
+
 /** Sheet containing information and actions for a track. */
 export default function TrackSheet(props: SheetProps<"track-sheet">) {
-  const { isPending, error, data } = useTrack(props.payload?.id);
+  const { isPending, error, data } = useTrackExcerpt(props.payload!.id);
   return (
     <Sheet id={props.sheetId} contentContainerClassName="gap-4">
       {isPending || error ? null : (
@@ -55,14 +53,14 @@ export default function TrackSheet(props: SheetProps<"track-sheet">) {
 //#region Track Introduction
 /** Contains the favorite toggle. */
 function TrackIntro({ data }: { data: TrackData }) {
-  const toggleFavoriteFn = useToggleFavorite({ type: "track", id: data.id });
+  const favoriteTrack = useFavoriteTrack(data.id);
 
-  const isFav = toggleFavoriteFn.isPending ? !data.isFavorite : data.isFavorite;
+  const isFav = favoriteTrack.isPending ? !data.isFavorite : data.isFavorite;
 
   return (
     <View className="flex-row gap-2">
       <Pressable
-        onPress={() => mutateGuard(toggleFavoriteFn, undefined)}
+        onPress={() => mutateGuard(favoriteTrack, !data.isFavorite)}
         className="relative flex-row items-center rounded active:opacity-75"
       >
         <MediaImage
@@ -207,25 +205,4 @@ function SheetButton(props: {
     </IconButton>
   );
 }
-//#endregion
-
-//#region Data
-type TrackData = Pick<
-  TrackWithAlbum,
-  "id" | "name" | "artistName" | "duration" | "isFavorite"
-> & { imageSource: string | null; album: { id: string; name: string } | null };
-
-const useTrack = (trackId: Maybe<string>) =>
-  useQuery({
-    enabled: !!trackId,
-    queryKey: trackKeys.detail(trackId!),
-    queryFn: () => getTrack([eq(tracks.id, trackId!)]),
-    select: (data) => ({
-      ...pickKeys(data, [
-        ...["id", "name", "artistName", "duration", "isFavorite"],
-      ] as const),
-      album: data.album ? pickKeys(data.album, ["id", "name"]) : null,
-      imageSource: data.artwork,
-    }),
-  });
 //#endregion

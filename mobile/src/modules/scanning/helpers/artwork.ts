@@ -4,8 +4,9 @@ import * as FileSystem from "expo-file-system";
 
 import { db } from "@/db";
 import { albums, playlists, tracks } from "@/db/schema";
-import { getAlbums, getTracks } from "@/db/queries";
 
+import { getAlbums, updateAlbum } from "@/api/album";
+import { getTracks, updateTrack } from "@/api/track";
 import { onboardingStore } from "../services/Onboarding";
 
 import { deleteFile, saveBase64Img } from "@/lib/file-system";
@@ -42,13 +43,10 @@ export async function findAndSaveArtwork() {
         if (base64Artwork) {
           const artwork = await saveBase64Img(base64Artwork);
           if (albumId) {
-            await db
-              .update(albums)
-              .set({ artwork })
-              .where(eq(albums.id, albumId));
+            await updateAlbum(albumId, { artwork });
             albumsWithCovers.add(albumId);
           } else {
-            await db.update(tracks).set({ artwork }).where(eq(tracks.id, id));
+            await updateTrack(id, { artwork });
           }
           newArtworkCount++;
           onboardingStore.setState((prev) => ({ found: prev.found + 1 }));
@@ -60,7 +58,7 @@ export async function findAndSaveArtwork() {
     }
 
     // Indicate we attempted to find artwork for a track.
-    await db.update(tracks).set({ fetchedArt: true }).where(eq(tracks.id, id));
+    await updateTrack(id, { fetchedArt: true });
     onboardingStore.setState((prev) => ({ checked: prev.checked + 1 }));
   }
   console.log(

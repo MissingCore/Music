@@ -1,6 +1,5 @@
 import { useIsFocused } from "@react-navigation/native";
 import type { FlashListProps } from "@shopify/flash-list";
-import { useQuery } from "@tanstack/react-query";
 import { Fragment, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -24,15 +23,13 @@ import Animated, {
 } from "react-native-reanimated";
 
 import type { FileNode } from "@/db/schema";
-import { getFolder } from "@/db/queries";
-import { formatTracksForTrack } from "@/db/utils/formatters";
 
+import { useFolderContent } from "@/queries/folder";
 import {
   StickyActionListLayout,
   useStickyActionListLayoutRef,
 } from "@/layouts";
 
-import { fileNodeKeys } from "@/constants/QueryKeys";
 import { cn } from "@/lib/style";
 import type { Maybe } from "@/utils/types";
 import { Ripple } from "@/components/new/Form";
@@ -84,7 +81,7 @@ export default function FolderScreen() {
     return () => {
       BackHandler.removeEventListener("hardwareBackPress", onBackPress);
     };
-  }, [dirSegments, isFocused, listRef, setDirSegments]);
+  }, [dirSegments, isFocused, setDirSegments]);
 
   // Information about this track list.
   const trackSource = { type: "folder", id: `${fullPath}/` } as const;
@@ -234,16 +231,4 @@ function Breadcrumbs({
     </AnimatedScrollView>
   );
 }
-//#endregion
-
-//#region Data
-const useFolderContent = (path?: string) =>
-  useQuery({
-    queryKey: fileNodeKeys.detail(path ?? ".root"),
-    queryFn: () => getFolder(path),
-    select: ({ subDirectories, tracks }) => ({
-      subDirectories,
-      tracks: formatTracksForTrack({ type: "track", data: tracks }),
-    }),
-  });
 //#endregion

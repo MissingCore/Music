@@ -1,18 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import { sum } from "drizzle-orm";
-import {
-  cacheDirectory,
-  documentDirectory,
-  getInfoAsync,
-  readDirectoryAsync,
-} from "expo-file-system";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 
-import { db } from "@/db";
-import { albums, artists, playlists, tracks, invalidTracks } from "@/db/schema";
-import { settingKeys } from "@/constants/QueryKeys";
-
+import { useDatabaseSummary, useStorageSummary } from "@/queries/setting";
 import { useTheme } from "@/hooks/useTheme";
 import { StandardScrollLayout } from "@/layouts";
 
@@ -24,7 +13,6 @@ import { Legend, LegendItem, ProgressBar } from "@/components/new/Form";
 /** Screen for `/setting/insights` route. */
 export default function InsightsScreen() {
   const { t } = useTranslation();
-
   return (
     <StandardScrollLayout>
       <List>
@@ -46,7 +34,7 @@ export default function InsightsScreen() {
 function StorageWidget() {
   const { t } = useTranslation();
   const { foreground } = useTheme();
-  const { isPending, error, data } = useStorageStats();
+  const { isPending, error, data } = useStorageSummary();
 
   if (isPending || error) return null;
 
@@ -94,7 +82,7 @@ function StorageWidget() {
 /** Summarizes what is stored in the database. */
 function DBSummaryWidget() {
   const { t } = useTranslation();
-  const { isPending, error, data } = useDBSummary();
+  const { isPending, error, data } = useDatabaseSummary();
 
   if (isPending || error) return null;
 
@@ -118,63 +106,3 @@ function DBSummaryWidget() {
     </Card>
   );
 }
-
-//#region Data
-async function getStorageStats() {
-  if (!documentDirectory) throw new Error("Web not supported");
-
-  const dbData = await getInfoAsync(documentDirectory + "SQLite");
-  const imgData = await getInfoAsync(documentDirectory + "images");
-  const otherData = await getInfoAsync(documentDirectory);
-  const cacheData = await getInfoAsync(`${cacheDirectory}`);
-
-  const dbSize = dbData.exists ? dbData.size : 0;
-  const imgSize = imgData.exists ? imgData.size : 0;
-  const otherSize = otherData.exists ? otherData.size : 0;
-  const cacheSize = cacheData.exists ? cacheData.size : 0;
-
-  return {
-    images: imgSize,
-    database: dbSize,
-    other: otherSize - imgSize - dbSize,
-    cache: cacheSize,
-    total: otherSize + cacheSize,
-  };
-}
-
-async function getDBSummary() {
-  if (!documentDirectory) throw new Error("Web not supported");
-
-  const imgDir = documentDirectory + "images";
-  const imgData = await getInfoAsync(imgDir);
-  let imgCount = imgData.exists ? (await readDirectoryAsync(imgDir)).length : 0;
-
-  return {
-    albums: await db.$count(albums),
-    artists: await db.$count(artists),
-    images: imgCount,
-    playlists: await db.$count(playlists),
-    tracks: await db.$count(tracks),
-    saveErrors: await db.$count(invalidTracks),
-    totalDuration:
-      Number(
-        (await db.select({ total: sum(tracks.duration) }).from(tracks))[0]
-          ?.total,
-      ) || 0,
-  };
-}
-
-const useStorageStats = () =>
-  useQuery({
-    queryKey: settingKeys.storageRelation("storage-stats"),
-    queryFn: getStorageStats,
-    gcTime: 0,
-  });
-
-const useDBSummary = () =>
-  useQuery({
-    queryKey: settingKeys.storageRelation("db-summary"),
-    queryFn: getDBSummary,
-    gcTime: 0,
-  });
-//#endregion

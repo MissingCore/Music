@@ -5,7 +5,6 @@ import { TopAppBar } from "@/components/new/TopAppBar";
 
 export default function SettingsLayout() {
   const { t } = useTranslation();
-
   return (
     <Stack screenOptions={{ animation: "fade", header: TopAppBar }}>
       <Stack.Screen name="index" options={{ title: t("header.settings") }} />

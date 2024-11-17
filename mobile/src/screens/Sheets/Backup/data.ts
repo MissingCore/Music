@@ -10,17 +10,13 @@ import { z } from "zod";
 
 import { db } from "@/db";
 import type { TrackWithAlbum } from "@/db/schema";
-import { albums, playlists, tracks, tracksToPlaylists } from "@/db/schema";
-import {
-  getAlbum,
-  getAlbums,
-  getPlaylists,
-  getTrack,
-  getTracks,
-} from "@/db/queries";
-import { sanitizedPlaylistName } from "@/db/utils/validators";
+import { albums, playlists, tracks } from "@/db/schema";
+import { sanitizePlaylistName } from "@/db/utils";
 
 import i18next from "@/modules/i18n";
+import { getAlbums } from "@/api/album";
+import { createPlaylist, getPlaylists, updatePlaylist } from "@/api/playlist";
+import { addToPlaylist, getTracks } from "@/api/track";
 import { Resynchronize, musicStore } from "@/modules/media/services/Music";
 
 import { clearAllQueries } from "@/lib/react-query";
@@ -48,12 +44,12 @@ const RawTrack = z.object({
 const MusicBackup = z.object({
   favorites: z.object({
     albums: RawAlbum.array(),
-    playlists: z.string().transform(sanitizedPlaylistName).array(),
+    playlists: z.string().transform(sanitizePlaylistName).array(),
     tracks: RawTrack.array(),
   }),
   playlists: z
     .object({
-      name: z.string().transform(sanitizedPlaylistName),
+      name: z.string().transform(sanitizePlaylistName),
       tracks: RawTrack.array(),
     })
     .array(),
@@ -73,11 +69,11 @@ async function getAlbumId<T extends Maybe<string>>(
 ) {
   if (!albumName || !artistName) return undefined;
   return (
-    await getAlbum([
-      eq(albums.name, albumName),
-      eq(albums.artistName, artistName),
-    ])
-  ).id;
+    await db.query.albums.findFirst({
+      where: (fields, { and, eq }) =>
+        and(eq(fields.name, albumName), eq(fields.artistName, artistName)),
+    })
+  )?.id;
 }
 
 function getRawTrack({ id, name, artistName, album }: TrackWithAlbum) {
@@ -160,19 +156,23 @@ async function importBackup() {
   await Promise.allSettled(
     backupContents.playlists.map(async ({ name, tracks: plTracks }) => {
       // Create playlist if it doesn't exist.
-      await db.insert(playlists).values({ name }).onConflictDoNothing();
+      await createPlaylist({ name });
 
       // Get all the ids of the tracks in this playlist.
       const _trackIds = await Promise.allSettled(
         plTracks.map(async (t) => {
           const albumId = await getAlbumId(t.albumName, t.artistName);
-          const track = await getTrack([
-            eq(tracks.name, t.name),
-            t.artistName
-              ? eq(tracks.artistName, t.artistName)
-              : isNull(tracks.artistName),
-            albumId ? eq(tracks.albumId, albumId) : undefined,
-          ]);
+          const track = await db.query.tracks.findFirst({
+            where: (fields, { and, eq, isNull }) =>
+              and(
+                eq(fields.name, t.name),
+                t.artistName
+                  ? eq(fields.artistName, t.artistName)
+                  : isNull(fields.artistName),
+                albumId ? eq(fields.albumId, albumId) : undefined,
+              ),
+          });
+          if (!track) throw new Error("Track not found.");
           return track.id;
         }),
       );
@@ -181,7 +181,7 @@ async function importBackup() {
       // Create relations between tracks & playlist.
       await Promise.allSettled(
         trackIds.map((trackId) =>
-          db.insert(tracksToPlaylists).values({ trackId, playlistName: name }),
+          addToPlaylist({ trackId, playlistName: name }),
         ),
       );
     }),
@@ -191,10 +191,7 @@ async function importBackup() {
   await Promise.allSettled([
     // Playlists
     ...backupContents.favorites.playlists.map((name) =>
-      db
-        .update(playlists)
-        .set({ isFavorite: true })
-        .where(eq(playlists.name, name)),
+      updatePlaylist(name, { isFavorite: true }),
     ),
     // Albums
     ...backupContents.favorites.albums.map(({ name, artistName }) =>
@@ -251,7 +248,7 @@ export const useImportBackup = () => {
   return useMutation({
     mutationFn: importBackup,
     onSuccess: () => {
-      clearAllQueries({ client: queryClient });
+      clearAllQueries(queryClient);
       toast(t("response.importSuccess"), ToastOptions);
     },
     onError: (err) => {

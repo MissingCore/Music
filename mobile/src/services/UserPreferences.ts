@@ -155,7 +155,7 @@ userPreferencesStore.subscribe(
     // Set the language used by the app.
     await i18next.changeLanguage(languageCode);
     // Make sure our queries that use translated values are updated.
-    clearAllQueries({ remove: true });
+    clearAllQueries();
     // Make sure the recent list data is also updated as we don't get
     // it from React Query.
     RecentList.refresh();

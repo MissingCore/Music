@@ -4,9 +4,9 @@ import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { fileNodes, invalidTracks, tracks } from "@/db/schema";
-import { getTracks } from "@/db/queries";
 
 import i18next from "@/modules/i18n";
+import { getTracks } from "@/api/track";
 import { RecentList, Resynchronize } from "@/modules/media/services/Music";
 
 import { ToastOptions } from "@/lib/toast";

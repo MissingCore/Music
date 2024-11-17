@@ -8,7 +8,6 @@ import { ListRenderer } from "@/components/new/Containment";
 /** Screen for `/setting/third-party` route. */
 export default function ThirdPartyScreen() {
   const LicenseData = Object.values(LicensesList);
-
   return (
     <StandardScrollLayout>
       <ListRenderer

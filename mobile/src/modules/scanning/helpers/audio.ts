@@ -7,9 +7,12 @@ import { eq } from "drizzle-orm";
 import * as MediaLibrary from "expo-media-library";
 
 import { db } from "@/db";
-import { albums, artists, tracks, invalidTracks } from "@/db/schema";
-import { createAlbum, deleteTrack, getAlbums } from "@/db/queries";
+import { tracks, invalidTracks } from "@/db/schema";
 
+import { deleteAlbum, getAlbums, upsertAlbum } from "@/api/album";
+import { createArtist, deleteArtist } from "@/api/artist";
+import { getSaveErrors } from "@/api/setting";
+import { createTrack, deleteTrack, getTracks, updateTrack } from "@/api/track";
 import { userPreferencesStore } from "@/services/UserPreferences";
 import {
   Queue,
@@ -75,8 +78,8 @@ export async function findAndSaveAudio() {
   );
 
   // Get relevant entries inside our database.
-  const allTracks = await db.query.tracks.findMany();
-  const allInvalidTracks = await db.query.invalidTracks.findMany();
+  const allTracks = await getTracks();
+  const allInvalidTracks = await getSaveErrors();
   onboardingStore.setState({ prevSaved: allTracks.length });
 
   // Find the tracks we can skip indexing or need updating.
@@ -134,10 +137,10 @@ export async function findAndSaveAudio() {
 
         if (modifiedTracks.has(id) && !isRetry) {
           // Update existing track.
-          await db.update(tracks).set(trackEntry).where(eq(tracks.id, id));
+          await updateTrack(id, trackEntry);
         } else {
           // Save new track.
-          await db.insert(tracks).values(trackEntry);
+          await createTrack(trackEntry);
           // Remove track from `InvalidTrack` if it was there previously.
           if (isRetry) {
             await db.delete(invalidTracks).where(eq(invalidTracks.id, id));
@@ -204,14 +207,14 @@ async function getTrackEntry({
   await Promise.allSettled(
     [artist, albumArtist]
       .filter((name) => name !== null)
-      .map((name) => db.insert(artists).values({ name }).onConflictDoNothing()),
+      .map((name) => createArtist({ name })),
   );
 
   // Add new album to the database. The unique key on `Album` covers the rare
   // case where an artist releases multiple albums with the same name.
   let albumId: string | null = null;
   if (!!albumTitle && !!albumArtist) {
-    const newAlbum = await createAlbum({
+    const newAlbum = await upsertAlbum({
       name: albumTitle,
       artistName: albumArtist,
       releaseYear: year,
@@ -267,7 +270,7 @@ export async function removeUnusedCategories() {
   const unusedAlbums = allAlbums.filter(({ tracks }) => tracks.length === 0);
   await batch({
     data: unusedAlbums,
-    callback: ({ id }) => db.delete(albums).where(eq(albums.id, id)),
+    callback: ({ id }) => deleteAlbum(id),
   });
 
   // Remove unused artists.
@@ -282,7 +285,7 @@ export async function removeUnusedCategories() {
   );
   await batch({
     data: unusedArtists,
-    callback: ({ name }) => db.delete(artists).where(eq(artists.name, name)),
+    callback: ({ name }) => deleteArtist(name),
   });
 
   // Remove these values from the recent list.

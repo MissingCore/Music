@@ -1,9 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import { db } from "@/db";
-import { settingKeys } from "@/constants/QueryKeys";
-
+import { useSaveErrors } from "@/queries/setting";
 import { StandardScrollLayout } from "@/layouts";
 
 import { ListRenderer } from "@/components/new/Containment";
@@ -30,16 +27,3 @@ export default function SaveErrorsScreen() {
     </StandardScrollLayout>
   );
 }
-
-//#region Data
-async function getSaveErrors() {
-  return db.query.invalidTracks.findMany();
-}
-
-const useSaveErrors = () =>
-  useQuery({
-    queryKey: settingKeys.storageRelation("save-errors"),
-    queryFn: getSaveErrors,
-    gcTime: 0,
-  });
-//#endregion

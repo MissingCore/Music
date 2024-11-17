@@ -7,9 +7,8 @@ import TrackPlayer, {
   RepeatMode,
 } from "react-native-track-player";
 
-import { deleteTrack } from "@/db/queries";
-
 import i18next from "@/modules/i18n";
+import { deleteTrack } from "@/api/track";
 import type { TrackStatus } from "@/modules/media/services/Music";
 import {
   Queue,
