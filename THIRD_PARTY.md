@@ -31,13 +31,10 @@
 | expo-sharing | MIT | https://github.com/expo/expo/tree/main/packages/expo-sharing |
 | expo-sqlite | MIT | https://github.com/expo/expo/tree/main/packages/expo-sqlite |
 | expo-web-browser | MIT | https://github.com/expo/expo/tree/main/packages/expo-web-browser |
-| Geist Font | OFL-1.1 | https://github.com/vercel/geist-font |
-| heroicons | MIT | https://heroicons.com |
 | i18next | MIT | https://github.com/i18next/i18next |
 | intl-pluralrules | ISC | https://github.com/eemeli/intl-pluralrules |
-| Ionicons | MIT | https://github.com/ionic-team/ionicons |
+| ionicons | MIT | https://github.com/ionic-team/ionicons |
 | jotai | MIT | https://github.com/pmndrs/jotai |
-| jotai-scope | MIT | https://github.com/jotaijs/jotai-scope |
 | Material Symbols | Apache-2.0 | https://github.com/google/material-design-icons |
 | nativewind | MIT | https://github.com/marklawlor/nativewind |
 | react | MIT | https://github.com/facebook/react |

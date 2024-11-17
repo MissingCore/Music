@@ -57,7 +57,7 @@
   },
   "@react-native-async-storage/async-storage": {
     "name": "@react-native-async-storage/async-storage",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "copyright": "Copyright (c) 2015-present, Facebook, Inc.",
     "source": "https://github.com/react-native-async-storage/async-storage",
     "license": "MIT",
@@ -81,7 +81,7 @@
   },
   "@sentry/react-native": {
     "name": "@sentry/react-native",
-    "version": "5.33.2",
+    "version": "6.1.0",
     "copyright": "Copyright (c) 2017-2024 Sentry",
     "source": "https://github.com/getsentry/sentry-react-native",
     "license": "MIT",
@@ -89,7 +89,7 @@
   },
   "@shopify/flash-list": {
     "name": "@shopify/flash-list",
-    "version": "1.7.1",
+    "version": "1.7.2",
     "copyright": "Copyright 2022-present, Shopify Inc.",
     "source": "https://github.com/Shopify/flash-list",
     "license": "MIT",
@@ -97,7 +97,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.59.20",
+    "version": "5.60.5",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -121,7 +121,7 @@
   },
   "drizzle-orm": {
     "name": "drizzle-orm",
-    "version": "0.35.2",
+    "version": "0.36.3",
     "copyright": "Copyright (c) 2022 Drizzle Team",
     "source": "https://github.com/drizzle-team/drizzle-orm",
     "license": "Apache-2.0",
@@ -247,25 +247,9 @@
     "license": "MIT",
     "licenseText": "The MIT License (MIT)\n\nCopyright (c) 2015-present 650 Industries, Inc. (aka Expo)\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
   },
-  "Geist Font": {
-    "name": "Geist Font",
-    "version": "1.3.0",
-    "copyright": "Copyright (c) 2023 Vercel, in collaboration with basement.studio",
-    "source": "https://github.com/vercel/geist-font",
-    "license": "OFL-1.1",
-    "licenseText": "Copyright (c) 2023 Vercel, in collaboration with basement.studio\n\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\nThis license is copied below, and is also available with a FAQ at:\nhttp://scripts.sil.org/OFL\n\n-----------------------------------------------------------\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\n-----------------------------------------------------------\n\nPREAMBLE\nThe goals of the Open Font License (OFL) are to stimulate worldwide\ndevelopment of collaborative font projects, to support the font creation\nefforts of academic and linguistic communities, and to provide a free and\nopen framework in which fonts may be shared and improved in partnership\nwith others.\n\nThe OFL allows the licensed fonts to be used, studied, modified and\nredistributed freely as long as they are not sold by themselves. The\nfonts, including any derivative works, can be bundled, embedded,\nredistributed and/or sold with any software provided that any reserved\nnames are not used by derivative works. The fonts and derivatives,\nhowever, cannot be released under any other type of license. The\nrequirement for fonts to remain under this license does not apply\nto any document created using the fonts or their derivatives.\n\nDEFINITIONS\n\"Font Software\" refers to the set of files released by the Copyright\nHolder(s) under this license and clearly marked as such. This may\ninclude source files, build scripts and documentation.\n\n\"Reserved Font Name\" refers to any names specified as such after the\ncopyright statement(s).\n\n\"Original Version\" refers to the collection of Font Software components as\ndistributed by the Copyright Holder(s).\n\n\"Modified Version\" refers to any derivative made by adding to, deleting,\nor substituting -- in part or in whole -- any of the components of the\nOriginal Version, by changing formats or by porting the Font Software to a\nnew environment.\n\n\"Author\" refers to any designer, engineer, programmer, technical\nwriter or other person who contributed to the Font Software.\n\nPERMISSION AND CONDITIONS\nPermission is hereby granted, free of charge, to any person obtaining\na copy of the Font Software, to use, study, copy, merge, embed, modify,\nredistribute, and sell modified and unmodified copies of the Font\nSoftware, subject to the following conditions:\n\n1) Neither the Font Software nor any of its individual components,\nin Original or Modified Versions, may be sold by itself.\n\n2) Original or Modified Versions of the Font Software may be bundled,\nredistributed and/or sold with any software, provided that each copy\ncontains the above copyright notice and this license. These can be\nincluded either as stand-alone text files, human-readable headers or\nin the appropriate machine-readable metadata fields within text or\nbinary files as long as those fields can be easily viewed by the user.\n\n3) No Modified Version of the Font Software may use the Reserved Font\nName(s) unless explicit written permission is granted by the corresponding\nCopyright Holder. This restriction only applies to the primary font name as\npresented to the users.\n\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\nSoftware shall not be used to promote, endorse or advertise any\nModified Version, except to acknowledge the contribution(s) of the\nCopyright Holder(s) and the Author(s) or with their explicit written\npermission.\n\n5) The Font Software, modified or unmodified, in part or in whole,\nmust be distributed entirely under this license, and must not be\ndistributed under any other license. The requirement for fonts to\nremain under this license does not apply to any document created\nusing the Font Software.\n\nTERMINATION\nThis license becomes null and void if any of the above conditions are\nnot met.\n\nDISCLAIMER\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\nOTHER DEALINGS IN THE FONT SOFTWARE."
-  },
-  "heroicons": {
-    "name": "heroicons",
-    "version": "2.1.1",
-    "copyright": "Copyright (c) Tailwind Labs, Inc.",
-    "source": "https://heroicons.com",
-    "license": "MIT",
-    "licenseText": "MIT License\n\nCopyright (c) Tailwind Labs, Inc.\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
-  },
   "i18next": {
     "name": "i18next",
-    "version": "23.16.1",
+    "version": "23.16.5",
     "copyright": "Copyright (c) 2024 i18next",
     "source": "https://github.com/i18next/i18next",
     "license": "MIT",
@@ -279,8 +263,8 @@
     "license": "ISC",
     "licenseText": "Copyright 2015-2018 by Eemeli Aro <eemeli@gmail.com>\n\nPermission to use, copy, modify, and/or distribute this software for any\npurpose with or without fee is hereby granted, provided that the above\ncopyright notice and this permission notice appear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\nWITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF\nMERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR\nANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF\nOR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."
   },
-  "Ionicons": {
-    "name": "Ionicons",
+  "ionicons": {
+    "name": "ionicons",
     "version": "7.4.0",
     "copyright": "Copyright (c) 2015-present Ionic (http://ionic.io/)",
     "source": "https://github.com/ionic-team/ionicons",
@@ -289,19 +273,11 @@
   },
   "jotai": {
     "name": "jotai",
-    "version": "2.10.1",
+    "version": "2.10.2",
     "copyright": "Copyright (c) 2020-2023 Poimandres",
     "source": "https://github.com/pmndrs/jotai",
     "license": "MIT",
     "licenseText": "MIT License\n\nCopyright (c) 2020-2023 Poimandres\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
-  },
-  "jotai-scope": {
-    "name": "jotai-scope",
-    "version": "0.7.2",
-    "copyright": "Copyright (c) 2023 Daishi Kato",
-    "source": "https://github.com/jotaijs/jotai-scope",
-    "license": "MIT",
-    "licenseText": "The MIT License (MIT)\n\nCopyright (c) 2023 Daishi Kato\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE."
   },
   "Material Symbols": {
     "name": "Material Symbols",
@@ -329,7 +305,7 @@
   },
   "react-i18next": {
     "name": "react-i18next",
-    "version": "15.0.3",
+    "version": "15.1.1",
     "copyright": "Copyright (c) 2024 i18next",
     "source": "https://github.com/i18next/react-i18next",
     "license": "MIT",
@@ -353,7 +329,7 @@
   },
   "react-native-bootsplash": {
     "name": "react-native-bootsplash",
-    "version": "6.2.2",
+    "version": "6.3.1",
     "copyright": "Copyright (c) 2021 Mathieu Acthernoene",
     "source": "https://github.com/zoontek/react-native-bootsplash",
     "license": "MIT",
@@ -361,7 +337,7 @@
   },
   "react-native-gesture-handler": {
     "name": "react-native-gesture-handler",
-    "version": "2.20.0",
+    "version": "2.21.0",
     "copyright": "Copyright (c) 2016 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-gesture-handler",
     "license": "MIT",
@@ -377,7 +353,7 @@
   },
   "react-native-pager-view": {
     "name": "react-native-pager-view",
-    "version": "6.4.0",
+    "version": "6.5.0",
     "copyright": "Copyright (c) 2021 Callstack",
     "source": "https://github.com/callstack/react-native-pager-view",
     "license": "MIT",
@@ -393,7 +369,7 @@
   },
   "react-native-safe-area-context": {
     "name": "react-native-safe-area-context",
-    "version": "4.11.1",
+    "version": "4.14.0",
     "copyright": "Copyright (c) 2019 Th3rd Wave",
     "source": "https://github.com/th3rdwave/react-native-safe-area-context",
     "license": "MIT",
@@ -401,7 +377,7 @@
   },
   "react-native-screens": {
     "name": "react-native-screens",
-    "version": "3.34.0",
+    "version": "3.35.0",
     "copyright": "Copyright (c) 2018 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-screens",
     "license": "MIT",
@@ -409,7 +385,7 @@
   },
   "react-native-svg": {
     "name": "react-native-svg",
-    "version": "15.8.0",
+    "version": "15.9.0",
     "copyright": "Copyright (c) [2015-2016] [Horcrux]",
     "source": "https://github.com/software-mansion/react-native-svg",
     "license": "MIT",
@@ -457,7 +433,7 @@
   },
   "zustand": {
     "name": "zustand",
-    "version": "5.0.0",
+    "version": "5.0.1",
     "copyright": "Copyright (c) 2019 Paul Henschel",
     "source": "https://github.com/pmndrs/zustand",
     "license": "MIT",

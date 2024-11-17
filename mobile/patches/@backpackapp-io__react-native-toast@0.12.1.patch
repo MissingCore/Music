@@ -1,8 +1,8 @@
 diff --git a/src/components/Toast.tsx b/src/components/Toast.tsx
-index c598db60ff3d374db094493fb3a90ae5c4d59077..463219603128d5af80fa842c32b33423efdbbc50 100644
+index 6adf1776f90821280df2feec616e8acdbf3b7c9f..98f9657354a194f46abbc7cbf649514ac8138685 100644
 --- a/src/components/Toast.tsx
 +++ b/src/components/Toast.tsx
-@@ -130,7 +130,7 @@ export const Toast: FC<Props> = ({
+@@ -150,7 +150,7 @@ export const Toast: FC<Props> = ({
            kbHeight -
            insets.bottom -
            (extraInsets?.bottom ?? 0) -
@@ -10,8 +10,8 @@ index c598db60ff3d374db094493fb3a90ae5c4d59077..463219603128d5af80fa842c32b33423
 +          0
          : startingY;
  
-       offsetY.value = withSpring(val, {
-@@ -241,6 +241,7 @@ export const Toast: FC<Props> = ({
+       offsetY.value = animation(
+@@ -260,6 +260,7 @@ export const Toast: FC<Props> = ({
            endPause();
          }}
          onPress={onPress}
@@ -19,7 +19,7 @@ index c598db60ff3d374db094493fb3a90ae5c4d59077..463219603128d5af80fa842c32b33423
          style={[
            {
              backgroundColor: !toast.customToast
-@@ -267,6 +268,7 @@ export const Toast: FC<Props> = ({
+@@ -286,6 +287,7 @@ export const Toast: FC<Props> = ({
                updateHeight(toast.id, event.nativeEvent.layout.height)
              }
              key={toast.id}
