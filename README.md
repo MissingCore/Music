@@ -48,7 +48,7 @@ For information on the goals and ideology of this app, refer to the [`App Goals 
 
 ## Permissions
 
-This (hopefully) lists out all the permissions required by Music based on the permissions asked in the code and values listed out in the [App Manifest](./android/app/src/main/AndroidManifest.xml).
+This (hopefully) lists out all the permissions required by Music based on the permissions asked in the code and values listed out in the [App Manifest](./mobile/android/app/src/main/AndroidManifest.xml).
 
 |          | Permissions                                                                                                                                                                                                                                                                                    |
 | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -71,13 +71,24 @@ There are 2 methods of installing this app:
 >
 > To transfer data over between versions, use the "Backup" feature found in the settings page in the app.
 
-# Build
-
-Read the [Building this App](./docs/building-this-app.md) documentation.
-
 # Translations
 
 Read the [Translations](./docs/translations.md) documentation for a rundown of how to contribute translations to this app.
+
+| Translation |  Translator   |
+| :---------: | :-----------: |
+|   日本語    |  @reindex-ot  |
+|   Deutsch   |  @The-Ladle   |
+|  Indonesia  | @naturbrilian |
+|   Español   |    @G4b-0     |
+
+# Documentation
+
+See all the [available documentation here](./docs). Some highlights include:
+
+- [`Building this App`](./docs/building-this-app.md)
+- [`Nothing Interactions`](./docs/nothing-interactions.md)
+- [`Supported Gestures`](./docs/supported-gestures.md)
 
 # FAQ
 
