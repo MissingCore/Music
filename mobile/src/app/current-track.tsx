@@ -2,8 +2,9 @@ import { Stack } from "expo-router";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View, useWindowDimensions } from "react-native";
+import { SheetManager } from "react-native-actions-sheet";
 
-import { Favorite, LibraryMusic } from "@/icons";
+import { Favorite, LibraryMusic, MoreVert } from "@/icons";
 import { useFavoriteTrack, useTrackExcerpt } from "@/queries/track";
 import { useMusicStore } from "@/modules/media/services/Music";
 
@@ -24,6 +25,7 @@ import {
 
 /** Screen for `/current-track` route. */
 export default function CurrentTrackScreen() {
+  const { t } = useTranslation();
   const { width } = useWindowDimensions();
   const track = useMusicStore((state) => state.activeTrack);
   const listName = useMusicStore((state) => state.sourceName);
@@ -33,7 +35,7 @@ export default function CurrentTrackScreen() {
   const availableLength = useMemo(() => {
     if (pageHeight === null || infoHeight === null) return undefined;
     // Exclude the vertical padding on container.
-    const usedHeight = pageHeight - infoHeight - 16;
+    const usedHeight = pageHeight - infoHeight - 32;
     const maxWidth = width - 32;
     return usedHeight > maxWidth ? maxWidth : usedHeight;
   }, [width, pageHeight, infoHeight]);
@@ -42,10 +44,27 @@ export default function CurrentTrackScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ headerTitle: listName }} />
+      <Stack.Screen
+        options={{
+          headerTitle: listName,
+          headerRight: () => (
+            <IconButton
+              kind="ripple"
+              accessibilityLabel={t("template.entrySeeMore", {
+                name: track.name,
+              })}
+              onPress={() =>
+                SheetManager.show("track-sheet", { payload: { id: track.id } })
+              }
+            >
+              <MoreVert />
+            </IconButton>
+          ),
+        }}
+      />
       <View
         onLayout={({ nativeEvent }) => setPageHeight(nativeEvent.layout.height)}
-        className="flex-1 items-center px-4 pt-4"
+        className="flex-1 items-center px-4 pt-8"
       >
         {availableLength !== undefined && (
           <MediaImage
