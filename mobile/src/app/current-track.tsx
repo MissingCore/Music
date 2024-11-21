@@ -1,4 +1,3 @@
-import { Slider } from "@miblanchard/react-native-slider";
 import { Stack } from "expo-router";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -14,17 +13,15 @@ import {
   VolumeUp,
 } from "@/icons";
 import { useFavoriteTrack, useTrackExcerpt } from "@/queries/track";
-import { useTheme } from "@/hooks/useTheme";
 import { useMusicStore } from "@/modules/media/services/Music";
 import { MusicControls } from "@/modules/media/services/Playback";
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 
-import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { formatSeconds } from "@/utils/number";
 import { Back } from "@/components/new/Back";
 import { Marquee } from "@/components/new/Containment";
-import { IconButton } from "@/components/new/Form";
+import { IconButton, Slider } from "@/components/new/Form";
 import { StyledText } from "@/components/new/Typography";
 import {
   MediaImage,
@@ -120,7 +117,6 @@ function Metadata(props: { name: string; artistName: string | null }) {
 //#region Seek Bar
 /** Allows us to change the current positon of the playing track. */
 export function SeekBar({ duration }: { duration: number }) {
-  const { onSurface } = useTheme();
   const { position } = useProgress(200);
   const [sliderPos, setSliderPos] = useState<number | null>(null);
 
@@ -131,19 +127,14 @@ export function SeekBar({ duration }: { duration: number }) {
     <View>
       <Slider
         value={clampedPos}
-        minimumValue={0}
-        maximumValue={duration}
-        onSlidingComplete={async ([newPos]) => {
-          await MusicControls.seekTo(newPos!);
+        max={duration}
+        onChange={(newPos) => setSliderPos(newPos)}
+        onComplete={async (newPos) => {
+          await MusicControls.seekTo(newPos);
           // Helps prevents "rubberbanding".
           setTimeout(() => setSliderPos(null), 250);
         }}
-        onValueChange={([newPos]) => setSliderPos(newPos!)}
-        minimumTrackTintColor={Colors.red}
-        maximumTrackTintColor={onSurface}
-        thumbTintColor={Colors.red}
-        thumbStyle={{ height: 16, width: 16 }}
-        trackStyle={{ height: 8, borderRadius: 24 }}
+        thumbSize={16}
       />
       <View className="flex-row justify-between">
         <StyledText className="text-sm">{formatSeconds(clampedPos)}</StyledText>
@@ -175,7 +166,6 @@ function PlaybackControls() {
  * (different from device volume).
  */
 function VolumeSlider() {
-  const { onSurface } = useTheme();
   const savedVolume = useUserPreferencesStore((state) => state.volume);
   const setVolume = useUserPreferencesStore((state) => state.setVolume);
 
@@ -185,14 +175,9 @@ function VolumeSlider() {
       <View className="grow">
         <Slider
           value={savedVolume}
-          minimumValue={0}
-          maximumValue={1}
-          onValueChange={([newPos]) => setVolume(newPos!)}
-          minimumTrackTintColor={Colors.red}
-          maximumTrackTintColor={onSurface}
-          thumbTintColor={Colors.red}
-          thumbStyle={{ height: 12, width: 12 }}
-          trackStyle={{ height: 6, borderRadius: 24 }}
+          max={1}
+          onChange={(newPos) => setVolume(newPos)}
+          thumbSize={12}
         />
       </View>
       <VolumeUp />
