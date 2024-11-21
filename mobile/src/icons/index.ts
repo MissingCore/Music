@@ -24,3 +24,5 @@ export { Shuffle } from "./Shuffle";
 export { SkipNext } from "./SkipNext";
 export { SkipPrevious } from "./SkipPrevious";
 export { Sort } from "./Sort";
+export { VolumeDown } from "./VolumeDown";
+export { VolumeUp } from "./VolumeUp";

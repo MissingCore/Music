@@ -6,11 +6,18 @@ import { View, useWindowDimensions } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 import { useProgress } from "react-native-track-player";
 
-import { Favorite, LibraryMusic, MoreVert } from "@/icons";
+import {
+  Favorite,
+  LibraryMusic,
+  MoreVert,
+  VolumeDown,
+  VolumeUp,
+} from "@/icons";
 import { useFavoriteTrack, useTrackExcerpt } from "@/queries/track";
 import { useTheme } from "@/hooks/useTheme";
 import { useMusicStore } from "@/modules/media/services/Music";
 import { MusicControls } from "@/modules/media/services/Playback";
+import { useUserPreferencesStore } from "@/services/UserPreferences";
 
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
@@ -57,10 +64,11 @@ export default function CurrentTrackScreen() {
         }}
       />
       <Artwork artwork={track.artwork} />
-      <View className="gap-4 px-6 py-4">
+      <View className="gap-2 px-6 py-4">
         <Metadata name={track.name} artistName={track.artistName} />
         <SeekBar duration={track.duration} />
         <PlaybackControls />
+        <VolumeSlider />
         <BottomAppBar trackId={track.id} />
       </View>
     </>
@@ -114,13 +122,13 @@ function Metadata(props: { name: string; artistName: string | null }) {
 export function SeekBar({ duration }: { duration: number }) {
   const { onSurface } = useTheme();
   const { position } = useProgress(200);
-  const [slidingTrackPos, setSlidingTrackPos] = useState<number | null>(null);
+  const [sliderPos, setSliderPos] = useState<number | null>(null);
 
-  const displayedPos = slidingTrackPos ?? position;
+  const displayedPos = sliderPos ?? position;
   const clampedPos = displayedPos > duration ? duration : displayedPos;
 
   return (
-    <View className="w-full">
+    <View>
       <Slider
         value={clampedPos}
         minimumValue={0}
@@ -128,15 +136,15 @@ export function SeekBar({ duration }: { duration: number }) {
         onSlidingComplete={async ([newPos]) => {
           await MusicControls.seekTo(newPos!);
           // Helps prevents "rubberbanding".
-          setTimeout(() => setSlidingTrackPos(null), 250);
+          setTimeout(() => setSliderPos(null), 250);
         }}
-        onValueChange={([newPos]) => setSlidingTrackPos(newPos!)}
+        onValueChange={([newPos]) => setSliderPos(newPos!)}
         minimumTrackTintColor={Colors.red}
         maximumTrackTintColor={onSurface}
         thumbTintColor={Colors.red}
+        thumbStyle={{ height: 16, width: 16 }}
         trackStyle={{ height: 8, borderRadius: 24 }}
       />
-
       <View className="flex-row justify-between">
         <StyledText className="text-sm">{formatSeconds(clampedPos)}</StyledText>
         <StyledText className="text-sm">{formatSeconds(duration)}</StyledText>
@@ -156,6 +164,38 @@ function PlaybackControls() {
       <PlayToggleButton className="rounded-full px-6" />
       <NextButton />
       <RepeatButton />
+    </View>
+  );
+}
+//#endregion
+
+//#region Volume Slider
+/**
+ * Allow us to adjust the internal volume of the media played
+ * (different from device volume).
+ */
+function VolumeSlider() {
+  const { onSurface } = useTheme();
+  const savedVolume = useUserPreferencesStore((state) => state.volume);
+  const setVolume = useUserPreferencesStore((state) => state.setVolume);
+
+  return (
+    <View className="flex-row items-center gap-2">
+      <VolumeDown />
+      <View className="grow">
+        <Slider
+          value={savedVolume}
+          minimumValue={0}
+          maximumValue={1}
+          onValueChange={([newPos]) => setVolume(newPos!)}
+          minimumTrackTintColor={Colors.red}
+          maximumTrackTintColor={onSurface}
+          thumbTintColor={Colors.red}
+          thumbStyle={{ height: 12, width: 12 }}
+          trackStyle={{ height: 6, borderRadius: 24 }}
+        />
+      </View>
+      <VolumeUp />
     </View>
   );
 }
