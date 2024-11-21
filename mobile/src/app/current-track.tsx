@@ -26,19 +26,8 @@ import {
 /** Screen for `/current-track` route. */
 export default function CurrentTrackScreen() {
   const { t } = useTranslation();
-  const { width } = useWindowDimensions();
   const track = useMusicStore((state) => state.activeTrack);
   const listName = useMusicStore((state) => state.sourceName);
-  const [pageHeight, setPageHeight] = useState<number | null>(null);
-  const [infoHeight, setInfoHeight] = useState<number | null>(null);
-
-  const availableLength = useMemo(() => {
-    if (pageHeight === null || infoHeight === null) return undefined;
-    // Exclude the vertical padding on container.
-    const usedHeight = pageHeight - infoHeight - 32;
-    const maxWidth = width - 32;
-    return usedHeight > maxWidth ? maxWidth : usedHeight;
-  }, [width, pageHeight, infoHeight]);
 
   if (!track) return <Back />;
 
@@ -62,54 +51,75 @@ export default function CurrentTrackScreen() {
           ),
         }}
       />
-      <View
-        onLayout={({ nativeEvent }) => setPageHeight(nativeEvent.layout.height)}
-        className="flex-1 items-center px-4 pt-8"
-      >
-        {availableLength !== undefined && (
-          <MediaImage
-            type="track"
-            source={track.artwork}
-            size={availableLength}
-          />
-        )}
-
-        <View
-          onLayout={({ nativeEvent }) =>
-            setInfoHeight(nativeEvent.layout.height)
-          }
-          className="mt-auto w-full items-center pb-4"
-        >
-          {/* `flex-direction: column` w/ `align-content: center` breaks `<Marquee />`. */}
-          <View className="flex-row">
-            <View className="gap-0.5">
-              <Marquee center>
-                <StyledText className="text-xl">{track.name}</StyledText>
-              </Marquee>
-              <Marquee center>
-                <StyledText className="text-sm text-red">
-                  {track.artistName}
-                </StyledText>
-              </Marquee>
-            </View>
-          </View>
-
-          <SeekBar duration={track.duration} />
-
-          <View className="flex-row items-center gap-2">
-            <ShuffleButton />
-            <PreviousButton />
-            <PlayToggleButton className="rounded-full px-6" />
-            <NextButton />
-            <RepeatButton />
-          </View>
-          <BottomAppBar trackId={track.id} />
-        </View>
+      <Artwork artwork={track.artwork} />
+      <View className="gap-4 px-6 py-4">
+        <Metadata name={track.name} artistName={track.artistName} />
+        <SeekBar duration={track.duration} />
+        <PlaybackControls />
+        <BottomAppBar trackId={track.id} />
       </View>
     </>
   );
 }
 
+//#region Artwork
+/** Renders the artwork of the current playing track. */
+function Artwork(props: { artwork: string | null }) {
+  const { width } = useWindowDimensions();
+  const [areaHeight, setAreaHeight] = useState<number | null>(null);
+
+  /* Get the height for the artwork that maximizes the space. */
+  const maxImageHeight = useMemo(() => {
+    if (areaHeight === null) return undefined;
+    // Exclude the padding around the image depending on which measurement is used.
+    return (areaHeight > width ? width : areaHeight) - 32;
+  }, [areaHeight, width]);
+
+  return (
+    <View
+      onLayout={({ nativeEvent }) => setAreaHeight(nativeEvent.layout.height)}
+      className="flex-1 items-center pt-8"
+    >
+      {maxImageHeight !== undefined && (
+        <MediaImage type="track" source={props.artwork} size={maxImageHeight} />
+      )}
+    </View>
+  );
+}
+//#endregion
+
+//#region Metadata
+/** Renders the name & artist of the current playing track. */
+function Metadata(props: { name: string; artistName: string | null }) {
+  return (
+    <View className="gap-0.5">
+      <Marquee center>
+        <StyledText className="text-xl">{props.name}</StyledText>
+      </Marquee>
+      <Marquee center>
+        <StyledText className="text-sm text-red">{props.artistName}</StyledText>
+      </Marquee>
+    </View>
+  );
+}
+//#endregion
+
+//#region Playback Controls
+/** Playback controls for the current track. */
+function PlaybackControls() {
+  return (
+    <View className="flex-row items-center justify-center gap-2">
+      <ShuffleButton />
+      <PreviousButton />
+      <PlayToggleButton className="rounded-full px-6" />
+      <NextButton />
+      <RepeatButton />
+    </View>
+  );
+}
+//#endregion
+
+//#region Bottom App Bar
 /** Actions rendered on the bottom of the screen. */
 function BottomAppBar({ trackId }: { trackId: string }) {
   const { t } = useTranslation();
@@ -121,7 +131,7 @@ function BottomAppBar({ trackId }: { trackId: string }) {
     : (data?.isFavorite ?? false);
 
   return (
-    <View className="w-full flex-row items-center justify-end gap-2 pt-8">
+    <View className="flex-row items-center justify-end gap-2 pt-4">
       <IconButton
         kind="ripple"
         accessibilityLabel={t(`common.${isFav ? "unF" : "f"}avorite`)}
@@ -144,3 +154,4 @@ function BottomAppBar({ trackId }: { trackId: string }) {
     </View>
   );
 }
+//#endregion
