@@ -1,22 +1,25 @@
 import { Slider } from "@miblanchard/react-native-slider";
 import { useEffect, useRef, useState } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import {
   State,
   usePlaybackState,
   useProgress,
 } from "react-native-track-player";
 
+import { useTheme } from "@/hooks/useTheme";
 import { MusicControls } from "../services/Playback";
 
 import { Colors } from "@/constants/Styles";
 import { formatSeconds } from "@/utils/number";
+import { StyledText } from "@/components/new/Typography";
 
 /**
  * Allows seeking on the current track & displays the current track
  * position.
  */
 export function SeekBar({ duration }: { duration: number }) {
+  const { onSurface } = useTheme();
   const { state: playbackState } = usePlaybackState();
   const { position } = useProgress(200);
   const prevDuration = useRef(0);
@@ -63,19 +66,15 @@ export function SeekBar({ duration }: { duration: number }) {
           await MusicControls.seekTo(newPos!);
         }}
         onValueChange={([newPos]) => setSlidingTrackPos(newPos!)}
-        minimumTrackTintColor={Colors.accent500}
-        maximumTrackTintColor={Colors.surface500}
-        thumbTintColor={Colors.foreground50}
+        minimumTrackTintColor={Colors.red}
+        maximumTrackTintColor={onSurface}
+        thumbTintColor={Colors.red}
         trackStyle={{ height: 8, borderRadius: 24 }}
       />
 
       <View className="flex-row justify-between">
-        <Text className="font-geistMono text-sm text-foreground50">
-          {formatSeconds(clampedPos)}
-        </Text>
-        <Text className="font-geistMono text-sm text-foreground50">
-          {formatSeconds(duration)}
-        </Text>
+        <StyledText className="text-sm">{formatSeconds(clampedPos)}</StyledText>
+        <StyledText className="text-sm">{formatSeconds(duration)}</StyledText>
       </View>
     </View>
   );

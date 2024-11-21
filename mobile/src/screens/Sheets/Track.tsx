@@ -61,6 +61,7 @@ function TrackIntro({ data }: { data: TrackData }) {
     <View className="flex-row gap-2">
       <Pressable
         onPress={() => mutateGuard(favoriteTrack, !data.isFavorite)}
+        disabled={favoriteTrack.isPending}
         className="relative flex-row items-center rounded active:opacity-75"
       >
         <MediaImage

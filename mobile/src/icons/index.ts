@@ -5,6 +5,7 @@ export { Artist } from "./Artist";
 export { CreateNewFolder } from "./CreateNewFolder";
 export { Favorite } from "./Favorite";
 export { Folder } from "./Folder";
+export { LibraryMusic } from "./LibraryMusic";
 export { List } from "./List";
 export { LogoGitHub } from "./LogoGitHub";
 export { LogoPlayStore } from "./LogoPlayStore";
