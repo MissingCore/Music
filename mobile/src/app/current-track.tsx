@@ -1,14 +1,20 @@
+import { Slider } from "@miblanchard/react-native-slider";
 import { Stack } from "expo-router";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View, useWindowDimensions } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
+import { useProgress } from "react-native-track-player";
 
 import { Favorite, LibraryMusic, MoreVert } from "@/icons";
 import { useFavoriteTrack, useTrackExcerpt } from "@/queries/track";
+import { useTheme } from "@/hooks/useTheme";
 import { useMusicStore } from "@/modules/media/services/Music";
+import { MusicControls } from "@/modules/media/services/Playback";
 
+import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
+import { formatSeconds } from "@/utils/number";
 import { Back } from "@/components/new/Back";
 import { Marquee } from "@/components/new/Containment";
 import { IconButton } from "@/components/new/Form";
@@ -19,7 +25,6 @@ import {
   PlayToggleButton,
   PreviousButton,
   RepeatButton,
-  SeekBar,
   ShuffleButton,
 } from "@/modules/media/components";
 
@@ -99,6 +104,43 @@ function Metadata(props: { name: string; artistName: string | null }) {
       <Marquee center>
         <StyledText className="text-sm text-red">{props.artistName}</StyledText>
       </Marquee>
+    </View>
+  );
+}
+//#endregion
+
+//#region Seek Bar
+/** Allows us to change the current positon of the playing track. */
+export function SeekBar({ duration }: { duration: number }) {
+  const { onSurface } = useTheme();
+  const { position } = useProgress(200);
+  const [slidingTrackPos, setSlidingTrackPos] = useState<number | null>(null);
+
+  const displayedPos = slidingTrackPos ?? position;
+  const clampedPos = displayedPos > duration ? duration : displayedPos;
+
+  return (
+    <View className="w-full">
+      <Slider
+        value={clampedPos}
+        minimumValue={0}
+        maximumValue={duration}
+        onSlidingComplete={async ([newPos]) => {
+          await MusicControls.seekTo(newPos!);
+          // Helps prevents "rubberbanding".
+          setTimeout(() => setSlidingTrackPos(null), 250);
+        }}
+        onValueChange={([newPos]) => setSlidingTrackPos(newPos!)}
+        minimumTrackTintColor={Colors.red}
+        maximumTrackTintColor={onSurface}
+        thumbTintColor={Colors.red}
+        trackStyle={{ height: 8, borderRadius: 24 }}
+      />
+
+      <View className="flex-row justify-between">
+        <StyledText className="text-sm">{formatSeconds(clampedPos)}</StyledText>
+        <StyledText className="text-sm">{formatSeconds(duration)}</StyledText>
+      </View>
     </View>
   );
 }

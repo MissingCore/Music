@@ -14,5 +14,4 @@ export {
 export { MediaImage } from "./MediaImage";
 export { MediaListControls } from "./MediaListControls";
 export { MiniPlayer } from "./MiniPlayer";
-export { SeekBar } from "./SeekBar";
 export { Track, TrackList, TrackListPreset } from "./Track";
