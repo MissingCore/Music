@@ -75,7 +75,7 @@ export default function TrackUpcomingSheet(
                         name: item.name,
                       })}
                       onPress={() => Queue.removeAtIndex(index)}
-                      className="aspect-square grow bg-red"
+                      className="bg-red"
                     >
                       <Remove color={Colors.neutral100} />
                     </IconButton>
@@ -113,10 +113,13 @@ function TrackItem(props: {
     <View className="min-h-12 flex-row items-center gap-2 bg-canvas dark:bg-neutral5">
       <MediaImage type="track" size={48} source={props.artwork} radius="sm" />
       <View className="shrink grow">
-        <View className="shrink flex-row items-end gap-0.5">
+        <View className="shrink flex-row items-end gap-1">
           {props.inQueue && (
-            <View className="size-4 items-center justify-center rounded-sm bg-onSurface">
-              <StyledText className="text-xxs leading-none">Q</StyledText>
+            <View
+              aria-hidden
+              className="mb-0.5 size-[14px] items-center justify-center rounded-sm bg-onSurface"
+            >
+              <StyledText className="text-[0.5rem] leading-tight">Q</StyledText>
             </View>
           )}
           <StyledText numberOfLines={1} className="shrink grow text-sm">
