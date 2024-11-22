@@ -54,7 +54,7 @@ export default function TrackUpcomingSheet(
         renderItem={({ item, index }) => {
           const itemContent = {
             name: item.name,
-            albumName: item.album?.name ?? "—",
+            artistName: item.artistName ?? "—",
             artwork: getTrackCover(item),
           };
 
@@ -105,7 +105,7 @@ export default function TrackUpcomingSheet(
  */
 function TrackItem(props: {
   name: string;
-  albumName: string;
+  artistName: string;
   artwork: string | null;
   inQueue?: boolean;
 }) {
@@ -129,7 +129,7 @@ function TrackItem(props: {
           </StyledText>
         </View>
         <StyledText preset="dimOnCanvas" numberOfLines={1}>
-          {props.albumName}
+          {props.artistName}
         </StyledText>
       </View>
     </View>
