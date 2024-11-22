@@ -119,7 +119,9 @@ function TrackItem(props: {
               aria-hidden
               className="mb-0.5 size-[14px] items-center justify-center rounded-sm bg-onSurface"
             >
-              <StyledText className="text-[0.5rem] leading-tight">Q</StyledText>
+              <StyledText style={{ fontSize: 8 }} className="leading-tight">
+                Q
+              </StyledText>
             </View>
           )}
           <StyledText numberOfLines={1} className="shrink grow text-sm">
