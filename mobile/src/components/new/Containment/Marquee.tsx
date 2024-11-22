@@ -99,7 +99,7 @@ export function Marquee({
         horizontal
         pointerEvents="none"
         showsHorizontalScrollIndicator={false}
-        contentContainerClassName={cn("grow overflow-hidden", {
+        contentContainerClassName={cn("grow items-center overflow-hidden", {
           "justify-center": props.center,
         })}
       >

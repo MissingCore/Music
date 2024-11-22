@@ -7,6 +7,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getLocales } from "expo-localization";
 import { Appearance } from "react-native";
+import TrackPlayer from "react-native-track-player";
 import { useStore } from "zustand";
 import {
   createJSONStorage,
@@ -54,6 +55,7 @@ interface UserPreferencesStore {
 
   /** Percentage of device volume audio will be outputted with. */
   volume: number;
+  setVolume: (newVolume: number) => void;
 }
 //#endregion
 
@@ -64,6 +66,7 @@ const OMITTED_FIELDS: string[] = [
   "setLanguage",
   "setTheme",
   "setAccentFont",
+  "setVolume",
 ] satisfies Array<keyof UserPreferencesStore>;
 //#endregion
 
@@ -73,23 +76,15 @@ export const userPreferencesStore = createStore<UserPreferencesStore>()(
     persist(
       (set) => ({
         _hasHydrated: false as boolean,
-        setHasHydrated: (state) => {
-          set({ _hasHydrated: state });
-        },
+        setHasHydrated: (state) => set({ _hasHydrated: state }),
 
         language: "",
-        setLanguage: (languageCode) => {
-          set({ language: languageCode });
-        },
+        setLanguage: (languageCode) => set({ language: languageCode }),
 
         theme: "system",
-        setTheme: (newTheme) => {
-          set({ theme: newTheme });
-        },
+        setTheme: (newTheme) => set({ theme: newTheme }),
         accentFont: "NType",
-        setAccentFont: (newFont) => {
-          set({ accentFont: newFont });
-        },
+        setAccentFont: (newFont) => set({ accentFont: newFont }),
 
         minSeconds: 15,
 
@@ -97,6 +92,7 @@ export const userPreferencesStore = createStore<UserPreferencesStore>()(
         listBlock: [],
 
         volume: 1,
+        setVolume: (newVolume) => set({ volume: newVolume }),
       }),
       {
         name: "music::user-preferences",
@@ -159,6 +155,14 @@ userPreferencesStore.subscribe(
     // Make sure the recent list data is also updated as we don't get
     // it from React Query.
     RecentList.refresh();
+  },
+);
+
+/** Set the internal volume used from what's stored in AsyncStorage. */
+userPreferencesStore.subscribe(
+  (state) => state.volume,
+  async (volume) => {
+    await TrackPlayer.setVolume(volume);
   },
 );
 //#endregion

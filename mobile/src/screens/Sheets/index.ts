@@ -10,6 +10,7 @@ import ThemeSheet from "./Theme";
 import TrackSheet from "./Track";
 import TrackSortSheet from "./TrackSort";
 import TrackToPlaylistSheet from "./TrackToPlaylist";
+import TrackUpcomingSheet from "./TrackUpcoming";
 
 /*
   Note: Our sheets need to always render some (ie: not `null`). If we
@@ -25,6 +26,7 @@ registerSheet("theme-sheet", ThemeSheet);
 registerSheet("track-sheet", TrackSheet);
 registerSheet("track-sort-sheet", TrackSortSheet);
 registerSheet("track-to-playlist-sheet", TrackToPlaylistSheet);
+registerSheet("track-upcoming-sheet", TrackUpcomingSheet);
 
 // We extend some of the types here to give us great intellisense
 // across the app for all registered sheets.
@@ -41,6 +43,7 @@ declare module "react-native-actions-sheet" {
     "track-sheet": SheetDefinition<{ payload: { id: string } }>;
     "track-sort-sheet": SheetDefinition;
     "track-to-playlist-sheet": SheetDefinition<{ payload: { id: string } }>;
+    "track-upcoming-sheet": SheetDefinition;
   }
 }
 

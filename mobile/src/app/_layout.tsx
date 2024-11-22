@@ -3,16 +3,13 @@ import { Stack } from "expo-router";
 import { useEffect } from "react";
 import Bootsplash from "react-native-bootsplash";
 
-import { EllipsisVertical } from "@/resources/icons/EllipsisVertical";
 import { useLoadResources } from "@/hooks/useLoadResources";
 import { ErrorBoundary, OnboardingScreen } from "@/screens";
 import { AppProvider } from "@/providers";
 
 import "@/resources/global.css";
 import "@/modules/i18n"; // Make sure translations are bundled.
-import { TopAppBar } from "@/components/new/TopAppBar";
-import { CurrentTrackHeader } from "@/components/navigation/header";
-import { StyledPressable } from "@/components/ui/pressable";
+import { TopAppBar, TopAppBarMarquee } from "@/components/new/TopAppBar";
 
 // Catch any errors thrown by the Layout component.
 export { ErrorBoundary };
@@ -72,21 +69,10 @@ function RootLayoutNav() {
         <Stack.Screen
           name="current-track"
           options={{
-            headerShown: true,
             animation: "slide_from_bottom",
-            header: CurrentTrackHeader,
+            header: TopAppBarMarquee,
+            headerShown: true,
             headerTitle: "",
-            headerRight: () => (
-              <StyledPressable
-                accessibilityLabel="View track settings."
-                onPress={() =>
-                  console.log("Viewing sheet for current playing track.")
-                }
-                forIcon
-              >
-                <EllipsisVertical size={24} />
-              </StyledPressable>
-            ),
           }}
         />
         <Stack.Screen
