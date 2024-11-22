@@ -61,7 +61,7 @@ export default function CurrentTrackScreen() {
         }}
       />
       <Artwork artwork={track.artwork} />
-      <View className="gap-2 px-6 py-4">
+      <View className="gap-2 p-4">
         <Metadata name={track.name} artistName={track.artistName} />
         <SeekBar duration={track.duration} />
         <PlaybackControls />
@@ -198,7 +198,7 @@ function BottomAppBar({ trackId }: { trackId: string }) {
     : (data?.isFavorite ?? false);
 
   return (
-    <View className="flex-row items-center justify-end gap-2 pt-4">
+    <View className="flex-row items-center justify-end gap-2 pt-2">
       <IconButton
         kind="ripple"
         accessibilityLabel={t(`common.${isFav ? "unF" : "f"}avorite`)}
@@ -212,7 +212,7 @@ function BottomAppBar({ trackId }: { trackId: string }) {
       <IconButton
         kind="ripple"
         accessibilityLabel={t("title.upcoming")}
-        onPress={() => console.log("Viewing upcoming tracks...")}
+        onPress={() => SheetManager.show("track-upcoming-sheet")}
         rippleRadius={24}
         className="p-2"
       >
