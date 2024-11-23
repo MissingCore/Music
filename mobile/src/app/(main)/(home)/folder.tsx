@@ -35,8 +35,9 @@ import type { Maybe } from "@/utils/types";
 import { Ripple } from "@/components/Form";
 import { Loading } from "@/components/Loading";
 import { StyledText } from "@/components/Typography";
-import { MediaImage, Track } from "@/modules/media/components";
+import { Track } from "@/modules/media/components";
 import type { PlayListSource } from "@/modules/media/types";
+import { SearchResult } from "@/modules/search/components";
 
 /** Animated scrollview supporting gestures. */
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
@@ -127,12 +128,8 @@ const FolderListPreset = (props: {
         ) : (
           <Ripple
             onPress={() => props.setDirSegments((prev) => [...prev, item.name])}
-            className="pr-4"
           >
-            <MediaImage type="folder" size={48} source={null} radius="sm" />
-            <StyledText numberOfLines={1} className="shrink grow">
-              {item.name}
-            </StyledText>
+            <SearchResult type="folder" source={null} title={item.name} />
           </Ripple>
         )}
       </View>
