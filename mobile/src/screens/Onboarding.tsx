@@ -13,8 +13,8 @@ import Animated, {
 import { useOnboardingStore } from "@/modules/scanning/services/Onboarding";
 
 import { cn } from "@/lib/style";
-import { SafeContainer, cardStyles } from "@/components/new/Containment";
-import { StyledText } from "@/components/new/Typography";
+import { SafeContainer, cardStyles } from "@/components/Containment";
+import { StyledText } from "@/components/Typography";
 
 /**
  * Informs user with what's being done while displaying the app icon. This

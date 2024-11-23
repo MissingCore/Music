@@ -10,10 +10,10 @@ import { Queue, useMusicStore } from "@/modules/media/services/Music";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
-import { IconButton } from "@/components/new/Form";
-import { Sheet } from "@/components/new/Sheet";
-import { Swipeable } from "@/components/new/Swipeable";
-import { StyledText } from "@/components/new/Typography";
+import { IconButton } from "@/components/Form";
+import { Sheet } from "@/components/Sheet";
+import { Swipeable } from "@/components/Swipeable";
+import { StyledText } from "@/components/Typography";
 import { MediaImage } from "@/modules/media/components";
 
 /**

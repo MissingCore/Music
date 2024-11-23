@@ -8,8 +8,8 @@ import { Pressable, View } from "react-native";
 import { useGetColumn } from "@/hooks/useGetColumn";
 
 import type { Maybe, Prettify } from "@/utils/types";
-import { Loading } from "@/components/new/Loading";
-import { StyledText } from "@/components/new/Typography";
+import { Loading } from "@/components/Loading";
+import { StyledText } from "@/components/Typography";
 import { MediaImage } from "./MediaImage";
 
 //#region Media Card

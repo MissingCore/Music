@@ -4,8 +4,8 @@ import type { SheetProps } from "react-native-actions-sheet";
 
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 
-import { Radio } from "@/components/new/Form";
-import { Sheet } from "@/components/new/Sheet";
+import { Radio } from "@/components/Form";
+import { Sheet } from "@/components/Sheet";
 
 /** Sheet allowing us to change the app's accent font. */
 export default function FontSheet(props: SheetProps<"font-sheet">) {

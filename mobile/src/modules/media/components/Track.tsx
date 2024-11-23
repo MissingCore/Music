@@ -10,9 +10,9 @@ import type { PlayListSource } from "../types";
 
 import { cn } from "@/lib/style";
 import type { Maybe, Prettify } from "@/utils/types";
-import { IconButton, Ripple } from "@/components/new/Form";
-import { Loading } from "@/components/new/Loading";
-import { StyledText } from "@/components/new/Typography";
+import { IconButton, Ripple } from "@/components/Form";
+import { Loading } from "@/components/Loading";
+import { StyledText } from "@/components/Typography";
 import { MediaImage } from "./MediaImage";
 
 //#region Track

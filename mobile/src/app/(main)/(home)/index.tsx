@@ -14,8 +14,8 @@ import { useMusicStore } from "@/modules/media/services/Music";
 import { StickyActionScrollLayout } from "@/layouts";
 
 import { abbreviateNum } from "@/utils/number";
-import { Button } from "@/components/new/Form";
-import { AccentText, StyledText } from "@/components/new/Typography";
+import { Button } from "@/components/Form";
+import { AccentText, StyledText } from "@/components/Typography";
 import { ReservedPlaylists } from "@/modules/media/constants";
 import {
   MediaCard,

@@ -3,7 +3,7 @@ import { router } from "expo-router";
 import LicensesList from "@/resources/licenses.json";
 import { StandardScrollLayout } from "@/layouts";
 
-import { ListRenderer } from "@/components/new/Containment";
+import { ListRenderer } from "@/components/Containment";
 
 /** Screen for `/setting/third-party` route. */
 export default function ThirdPartyScreen() {

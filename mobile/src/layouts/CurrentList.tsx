@@ -3,7 +3,7 @@ import { View } from "react-native";
 import type { PlayListSource } from "@/modules/media/types";
 
 import { cn } from "@/lib/style";
-import { StyledText } from "@/components/new/Typography";
+import { StyledText } from "@/components/Typography";
 import { MediaImage, MediaListControls } from "@/modules/media/components";
 
 /*

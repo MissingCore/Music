@@ -7,9 +7,9 @@ import { OpenInNew } from "@/icons";
 import LicensesList from "@/resources/licenses.json";
 import { StickyActionHeader } from "@/layouts";
 
-import { Card } from "@/components/new/Containment";
-import { IconButton } from "@/components/new/Form";
-import { StyledText } from "@/components/new/Typography";
+import { Card } from "@/components/Containment";
+import { IconButton } from "@/components/Form";
+import { StyledText } from "@/components/Typography";
 
 /** Screen for `/setting/third-party/[id]` route. */
 export default function PackageLicenseScreen() {

@@ -7,8 +7,8 @@ import { useFavoriteTracksForScreen } from "@/queries/favorite";
 import { usePlaylistForScreen } from "@/queries/playlist";
 import { MediaListHeader } from "@/layouts/CurrentList";
 
-import { IconButton } from "@/components/new/Form";
-import { StyledText } from "@/components/new/Typography";
+import { IconButton } from "@/components/Form";
+import { StyledText } from "@/components/Typography";
 import { ReservedPlaylists } from "@/modules/media/constants";
 import { TrackList } from "@/modules/media/components";
 import type { MediaList } from "@/modules/media/types";

@@ -14,8 +14,8 @@ import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 import { useTheme } from "@/hooks/useTheme";
 
 import { cn } from "@/lib/style";
-import { Button, IconButton } from "@/components/new/Form";
-import { StyledText } from "@/components/new/Typography";
+import { Button, IconButton } from "@/components/Form";
+import { StyledText } from "@/components/Typography";
 import { MiniPlayer } from "@/modules/media/components";
 
 //#region Layout

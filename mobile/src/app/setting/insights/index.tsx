@@ -7,8 +7,8 @@ import { StandardScrollLayout } from "@/layouts";
 
 import { Colors } from "@/constants/Styles";
 import { abbreviateSize, formatSeconds } from "@/utils/number";
-import { Card, List, ListItem } from "@/components/new/Containment";
-import { Legend, LegendItem, ProgressBar } from "@/components/new/Form";
+import { Card, List, ListItem } from "@/components/Containment";
+import { Legend, LegendItem, ProgressBar } from "@/components/Form";
 
 /** Screen for `/setting/insights` route. */
 export default function InsightsScreen() {

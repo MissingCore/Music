@@ -21,10 +21,10 @@ import { Queue, useMusicStore } from "@/modules/media/services/Music";
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { formatSeconds } from "@/utils/number";
-import { Divider, Marquee } from "@/components/new/Containment";
-import { IconButton } from "@/components/new/Form";
-import { Sheet } from "@/components/new/Sheet";
-import { StyledText } from "@/components/new/Typography";
+import { Divider, Marquee } from "@/components/Containment";
+import { IconButton } from "@/components/Form";
+import { Sheet } from "@/components/Sheet";
+import { StyledText } from "@/components/Typography";
 import { ReservedPlaylists } from "@/modules/media/constants";
 import { MediaImage } from "@/modules/media/components";
 

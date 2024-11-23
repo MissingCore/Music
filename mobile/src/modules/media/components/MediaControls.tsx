@@ -13,7 +13,7 @@ import { MusicControls } from "../services/Playback";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
-import { IconButton } from "@/components/new/Form";
+import { IconButton } from "@/components/Form";
 
 type MediaControlProps = { size?: number };
 

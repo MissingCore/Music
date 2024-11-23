@@ -11,8 +11,8 @@ import { StickyActionHeader } from "@/layouts";
 
 import * as LINKS from "@/constants/Links";
 import { FontFamily, FontSize } from "@/constants/Styles";
-import { Button } from "@/components/new/Form";
-import { StyledText } from "@/components/new/Typography";
+import { Button } from "@/components/Form";
+import { StyledText } from "@/components/Typography";
 
 /** Screen for `/setting/update` route. */
 export default function AppUpdateScreen() {

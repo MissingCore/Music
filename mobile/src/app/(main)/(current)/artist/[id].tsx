@@ -7,7 +7,7 @@ import { useArtistForScreen } from "@/queries/artist";
 import { useGetColumn } from "@/hooks/useGetColumn";
 import { MediaListHeader } from "@/layouts/CurrentList";
 
-import { StyledText } from "@/components/new/Typography";
+import { StyledText } from "@/components/Typography";
 import { MediaCard, TrackList } from "@/modules/media/components";
 
 /** Screen for `/artist/[id]` route. */

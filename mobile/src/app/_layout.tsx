@@ -9,7 +9,7 @@ import { AppProvider } from "@/providers";
 
 import "@/resources/global.css";
 import "@/modules/i18n"; // Make sure translations are bundled.
-import { TopAppBar, TopAppBarMarquee } from "@/components/new/TopAppBar";
+import { TopAppBar, TopAppBarMarquee } from "@/components/TopAppBar";
 
 // Catch any errors thrown by the Layout component.
 export { ErrorBoundary };

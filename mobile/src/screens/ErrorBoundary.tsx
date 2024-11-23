@@ -3,8 +3,8 @@ import type { ErrorBoundaryProps } from "expo-router";
 import { IssueLayout } from "@/layouts";
 import { AppProvider } from "@/providers";
 
-import { Card } from "@/components/new/Containment";
-import { StyledText } from "@/components/new/Typography";
+import { Card } from "@/components/Containment";
+import { StyledText } from "@/components/Typography";
 
 /** Screen displayed when an error is thrown in a component. */
 export function ErrorBoundary({ error }: ErrorBoundaryProps) {

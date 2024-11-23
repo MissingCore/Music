@@ -5,9 +5,9 @@ import type { SheetProps } from "react-native-actions-sheet";
 import { useExportBackup, useImportBackup } from "./data";
 
 import { mutateGuard } from "@/lib/react-query";
-import { Button } from "@/components/new/Form";
-import { Sheet } from "@/components/new/Sheet";
-import { StyledText } from "@/components/new/Typography";
+import { Button } from "@/components/Form";
+import { Sheet } from "@/components/Sheet";
+import { StyledText } from "@/components/Typography";
 
 /** Sheet allowing us to utilize the "backup" feature of this app. */
 export default function BackupSheet(props: SheetProps<"backup-sheet">) {

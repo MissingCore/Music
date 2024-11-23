@@ -6,8 +6,8 @@ import { useAlbumForScreen, useFavoriteAlbum } from "@/queries/album";
 import { MediaListHeader } from "@/layouts/CurrentList";
 
 import { mutateGuard } from "@/lib/react-query";
-import { IconButton } from "@/components/new/Form";
-import { StyledText } from "@/components/new/Typography";
+import { IconButton } from "@/components/Form";
+import { StyledText } from "@/components/Typography";
 import { TrackList } from "@/modules/media/components";
 
 /** Screen for `/album/[id]` route. */

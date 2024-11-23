@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 import { useSaveErrors } from "@/queries/setting";
 import { StandardScrollLayout } from "@/layouts";
 
-import { ListRenderer } from "@/components/new/Containment";
-import { StyledText } from "@/components/new/Typography";
+import { ListRenderer } from "@/components/Containment";
+import { StyledText } from "@/components/Typography";
 
 /** Screen for `/setting/insights/save-errors` route. */
 export default function SaveErrorsScreen() {

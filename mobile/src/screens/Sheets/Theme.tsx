@@ -8,9 +8,9 @@ import {
   useUserPreferencesStore,
 } from "@/services/UserPreferences";
 
-import { Radio } from "@/components/new/Form";
-import { Sheet } from "@/components/new/Sheet";
-import { StyledText } from "@/components/new/Typography";
+import { Radio } from "@/components/Form";
+import { Sheet } from "@/components/Sheet";
+import { StyledText } from "@/components/Typography";
 
 /** Sheet allowing us to change the app's theme. */
 export default function ThemeSheet(props: SheetProps<"theme-sheet">) {

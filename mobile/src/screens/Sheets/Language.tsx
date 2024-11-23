@@ -5,9 +5,9 @@ import { FlatList } from "react-native-actions-sheet";
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { LANGUAGES } from "@/modules/i18n/constants";
 
-import { Radio } from "@/components/new/Form";
-import { Sheet } from "@/components/new/Sheet";
-import { StyledText } from "@/components/new/Typography";
+import { Radio } from "@/components/Form";
+import { Sheet } from "@/components/Sheet";
+import { StyledText } from "@/components/Typography";
 
 /** Sheet allowing us to change the app's language. */
 export default function LanguageSheet(props: SheetProps<"language-sheet">) {

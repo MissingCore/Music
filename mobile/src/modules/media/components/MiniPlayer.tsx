@@ -13,9 +13,9 @@ import { useTheme } from "@/hooks/useTheme";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
-import { Marquee } from "@/components/new/Containment";
-import { IconButton } from "@/components/new/Form";
-import { StyledText } from "@/components/new/Typography";
+import { Marquee } from "@/components/Containment";
+import { IconButton } from "@/components/Form";
+import { StyledText } from "@/components/Typography";
 import { NextButton, PreviousButton } from "./MediaControls";
 import { MediaImage } from "./MediaImage";
 

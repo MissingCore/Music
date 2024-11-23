@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { prevRouteAtom } from "@/providers/RouteHandlers";
 import { IssueLayout } from "@/layouts";
 
-import { List, ListItem } from "@/components/new/Containment";
+import { List, ListItem } from "@/components/Containment";
 
 /** Screen for unmatched route. */
 export default function NotFoundScreen() {

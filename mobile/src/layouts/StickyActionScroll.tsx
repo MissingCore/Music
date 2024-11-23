@@ -15,7 +15,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useBottomActionsContext } from "@/hooks/useBottomActionsContext";
 
 import { cn } from "@/lib/style";
-import { AccentText } from "@/components/new/Typography";
+import { AccentText } from "@/components/Typography";
 
 //#region Layout
 /** Full-screen layout for displaying content on pages without a header bar. */

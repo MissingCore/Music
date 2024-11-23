@@ -19,10 +19,10 @@ import { useUserPreferencesStore } from "@/services/UserPreferences";
 
 import { mutateGuard } from "@/lib/react-query";
 import { formatSeconds } from "@/utils/number";
-import { Back } from "@/components/new/Back";
-import { Marquee } from "@/components/new/Containment";
-import { IconButton, Slider } from "@/components/new/Form";
-import { StyledText } from "@/components/new/Typography";
+import { Back } from "@/components/Back";
+import { Marquee } from "@/components/Containment";
+import { IconButton, Slider } from "@/components/Form";
+import { StyledText } from "@/components/Typography";
 import {
   MediaImage,
   NextButton,

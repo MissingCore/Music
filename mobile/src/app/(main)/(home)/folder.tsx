@@ -32,9 +32,9 @@ import {
 
 import { cn } from "@/lib/style";
 import type { Maybe } from "@/utils/types";
-import { Ripple } from "@/components/new/Form";
-import { Loading } from "@/components/new/Loading";
-import { StyledText } from "@/components/new/Typography";
+import { Ripple } from "@/components/Form";
+import { Loading } from "@/components/Loading";
+import { StyledText } from "@/components/Typography";
 import { MediaImage, Track } from "@/modules/media/components";
 import type { PlayListSource } from "@/modules/media/types";
 

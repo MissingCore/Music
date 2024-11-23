@@ -4,8 +4,8 @@ import { View } from "react-native";
 
 import { Search } from "@/icons";
 
-import { TextInput } from "@/components/new/Form";
-import { AccentText } from "@/components/new/Typography";
+import { TextInput } from "@/components/Form";
+import { AccentText } from "@/components/Typography";
 
 /** Screen for `/search` route. */
 export default function SearchScreen() {

@@ -16,11 +16,11 @@ import { pickPath, removePath, useAddPathToList, validatePath } from "./data";
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
-import { Marquee, cardStyles } from "@/components/new/Containment";
-import { IconButton, TextInput } from "@/components/new/Form";
-import { Sheet } from "@/components/new/Sheet";
-import { Swipeable } from "@/components/new/Swipeable";
-import { StyledText } from "@/components/new/Typography";
+import { Marquee, cardStyles } from "@/components/Containment";
+import { IconButton, TextInput } from "@/components/Form";
+import { Sheet } from "@/components/Sheet";
+import { Swipeable } from "@/components/Swipeable";
+import { StyledText } from "@/components/Typography";
 
 //#region Sheet
 /** Sheet used to edit the paths in the allowlist or blocklist. */

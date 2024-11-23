@@ -7,7 +7,7 @@ import { MusicControls, playFromMediaList } from "../services/Playback";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
-import { IconButton } from "@/components/new/Form";
+import { IconButton } from "@/components/Form";
 import { RepeatButton, ShuffleButton } from "./MediaControls";
 import { arePlaybackSourceEqual } from "../helpers/data";
 import type { PlayListSource } from "../types";

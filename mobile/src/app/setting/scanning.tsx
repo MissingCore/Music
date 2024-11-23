@@ -6,7 +6,7 @@ import { useRescanForTracks } from "@/modules/scanning/helpers/rescan";
 import { StandardScrollLayout } from "@/layouts";
 
 import { mutateGuard } from "@/lib/react-query";
-import { List, ListItem } from "@/components/new/Containment";
+import { List, ListItem } from "@/components/Containment";
 
 /** Screen for `/setting/scanning` route. */
 export default function ScanningScreen() {

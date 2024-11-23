@@ -7,9 +7,9 @@ import {
   useSessionPreferencesStore,
 } from "@/services/SessionPreferences";
 
-import { Button, Radio, Switch } from "@/components/new/Form";
-import { Sheet } from "@/components/new/Sheet";
-import { StyledText } from "@/components/new/Typography";
+import { Button, Radio, Switch } from "@/components/Form";
+import { Sheet } from "@/components/Sheet";
+import { StyledText } from "@/components/Typography";
 
 /** Sheet allowing us visually change the sort order on the `/track` screen. */
 export default function TrackSortSheet(props: SheetProps<"track-sort-sheet">) {

@@ -8,9 +8,9 @@ import {
   userPreferencesStore,
 } from "@/services/UserPreferences";
 
-import { NumericInput } from "@/components/new/Form";
-import { Sheet } from "@/components/new/Sheet";
-import { StyledText } from "@/components/new/Typography";
+import { NumericInput } from "@/components/Form";
+import { Sheet } from "@/components/Sheet";
+import { StyledText } from "@/components/Typography";
 
 /** Sheet used to specify the minimum track duration we want to save. */
 export default function MinDurationSheet(
