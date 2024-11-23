@@ -22,9 +22,6 @@ dependencies:
   '@expo/vector-icons':
     specifier: ^14.0.4
     version: 14.0.4
-  '@gorhom/bottom-sheet':
-    specifier: 5.0.2
-    version: 5.0.2(@types/react@18.3.12)(react-native-gesture-handler@2.21.0)(react-native-reanimated@3.15.5)(react-native@0.75.4)(react@18.3.1)
   '@lukemorales/query-key-factory':
     specifier: ^1.3.4
     version: 1.3.4(@tanstack/query-core@5.60.5)(@tanstack/react-query@5.60.5)
@@ -3134,41 +3131,6 @@ packages:
       chalk: 4.1.2
       find-up: 5.0.0
       js-yaml: 4.1.0
-    dev: false
-
-  /@gorhom/bottom-sheet@5.0.2(@types/react@18.3.12)(react-native-gesture-handler@2.21.0)(react-native-reanimated@3.15.5)(react-native@0.75.4)(react@18.3.1):
-    resolution: {integrity: sha512-bctrT0PDeVUdUG4xm/d9A7ikHFgQ9wchhU0oIE1vIBncFri501GTs/8Bf16ryyKHo3Q0220Dnj5CKm3Ed6ejEg==}
-    peerDependencies:
-      '@types/react': '*'
-      '@types/react-native': '*'
-      react: '*'
-      react-native: '*'
-      react-native-gesture-handler: '>=2.16.1'
-      react-native-reanimated: '>=3.10.1'
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-      '@types/react-native':
-        optional: true
-    dependencies:
-      '@gorhom/portal': 1.0.14(react-native@0.75.4)(react@18.3.1)
-      '@types/react': 18.3.12
-      invariant: 2.2.4
-      react: 18.3.1
-      react-native: 0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0)(@types/react@18.3.12)(react@18.3.1)(typescript@5.6.3)
-      react-native-gesture-handler: 2.21.0(react-native@0.75.4)(react@18.3.1)
-      react-native-reanimated: 3.15.5(@babel/core@7.26.0)(react-native@0.75.4)(react@18.3.1)
-    dev: false
-
-  /@gorhom/portal@1.0.14(react-native@0.75.4)(react@18.3.1):
-    resolution: {integrity: sha512-MXyL4xvCjmgaORr/rtryDNFy3kU4qUbKlwtQqqsygd0xX3mhKjOLn6mQK8wfu0RkoE0pBE0nAasRoHua+/QZ7A==}
-    peerDependencies:
-      react: '*'
-      react-native: '*'
-    dependencies:
-      nanoid: 3.3.7
-      react: 18.3.1
-      react-native: 0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0)(@types/react@18.3.12)(react@18.3.1)(typescript@5.6.3)
     dev: false
 
   /@graphql-typed-document-node/core@3.2.0(graphql@15.8.0):

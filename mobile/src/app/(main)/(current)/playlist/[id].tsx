@@ -2,13 +2,13 @@ import { Stack, useLocalSearchParams } from "expo-router";
 import { useMemo } from "react";
 import { View } from "react-native";
 
-import { EllipsisVertical } from "@/resources/icons/EllipsisVertical";
+import { MoreVert } from "@/icons";
 import { useFavoriteTracksForScreen } from "@/queries/favorite";
 import { usePlaylistForScreen } from "@/queries/playlist";
+import { MediaListHeader } from "@/layouts/CurrentList";
 
-import { MediaScreenHeader } from "@/components/media/screen-header";
-import { StyledPressable } from "@/components/ui/pressable";
-import { Description } from "@/components/ui/text";
+import { IconButton } from "@/components/new/Form";
+import { StyledText } from "@/components/new/Typography";
 import { ReservedPlaylists } from "@/modules/media/constants";
 import { TrackList } from "@/modules/media/components";
 import type { MediaList } from "@/modules/media/types";
@@ -31,13 +31,13 @@ export default function CurrentPlaylistScreen() {
       <Stack.Screen
         options={{
           headerRight: () => (
-            <StyledPressable
+            <IconButton
+              kind="ripple"
               accessibilityLabel="View playlist settings."
               onPress={() => console.log("Configuring playlist...")}
-              forIcon
             >
-              <EllipsisVertical size={24} />
-            </StyledPressable>
+              <MoreVert />
+            </IconButton>
           ),
         }}
       />
@@ -65,7 +65,9 @@ function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
   else if (error) {
     return (
       <View className="w-full flex-1 px-4">
-        <Description intent="error">Error: Playlist not found</Description>
+        <StyledText preset="dimOnCanvas" className="text-base">
+          Error: Playlist not found
+        </StyledText>
       </View>
     );
   }
@@ -75,7 +77,8 @@ function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
 
   return (
     <View className="w-full flex-1 px-4">
-      <MediaScreenHeader
+      <MediaListHeader
+        // @ts-expect-error Technically fine as this is used for playlists.
         source={data.imageSource}
         title={data.name}
         metadata={data.metadata}

@@ -1,15 +1,11 @@
 import { Stack } from "expo-router";
 
-import { CustomHeader } from "@/components/navigation/header";
+import { TopAppBar } from "@/components/new/TopAppBar";
 
 export default function CurrentLayout() {
   return (
     <Stack
-      screenOptions={{
-        animation: "fade",
-        header: CustomHeader,
-        headerTitle: "",
-      }}
+      screenOptions={{ animation: "fade", header: TopAppBar, headerTitle: "" }}
     >
       <Stack.Screen name="playlist/[id]" />
       <Stack.Screen name="album/[id]" />

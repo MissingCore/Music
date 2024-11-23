@@ -1,5 +1,4 @@
 import { Toasts } from "@backpackapp-io/react-native-toast";
-import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { SheetProvider } from "react-native-actions-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -20,10 +19,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         <QueryClientProvider client={queryClient}>
           <RouteHandlers />
           <SheetProvider context="global">
-            <BottomSheetModalProvider>
-              {children}
-              <Toasts />
-            </BottomSheetModalProvider>
+            {children}
+            <Toasts />
           </SheetProvider>
         </QueryClientProvider>
       </GestureHandlerRootView>

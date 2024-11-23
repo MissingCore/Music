@@ -1,14 +1,13 @@
 import { useLocalSearchParams } from "expo-router";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 
 import type { Album } from "@/db/schema";
 
 import { useArtistForScreen } from "@/queries/artist";
 import { useGetColumn } from "@/hooks/useGetColumn";
+import { MediaListHeader } from "@/layouts/CurrentList";
 
-import { MediaScreenHeader } from "@/components/media/screen-header";
-import { ScrollRow } from "@/components/ui/container";
-import { Description, Heading } from "@/components/ui/text";
+import { StyledText } from "@/components/new/Typography";
 import { MediaCard, TrackList } from "@/modules/media/components";
 
 /** Screen for `/artist/[id]` route. */
@@ -21,7 +20,9 @@ export default function CurrentArtistScreen() {
   else if (error) {
     return (
       <View className="w-full flex-1 px-4">
-        <Description intent="error">Error: Artist not found</Description>
+        <StyledText preset="dimOnCanvas" className="text-base">
+          Error: Artist not found
+        </StyledText>
       </View>
     );
   }
@@ -32,7 +33,7 @@ export default function CurrentArtistScreen() {
   return (
     <>
       <View className="px-4">
-        <MediaScreenHeader
+        <MediaListHeader
           title={data.name}
           metadata={data.metadata}
           trackSource={trackSource}
@@ -67,11 +68,14 @@ function ArtistAlbums({ albums }: { albums: Album[] | null }) {
   // FIXME: We should use a horizontal FlashList
   return (
     <>
-      <Heading as="h3" className="mb-2 text-start">
-        Albums
-      </Heading>
+      <StyledText className="mb-2 text-xl">Albums</StyledText>
       <View className="-mx-5 mb-4">
-        <ScrollRow contentContainerClassName="gap-4 px-5">
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          overScrollMode="never"
+          contentContainerClassName="grow gap-4 px-5"
+        >
           {albums.map((album) => (
             <MediaCard
               key={album.id}
@@ -83,11 +87,9 @@ function ArtistAlbums({ albums }: { albums: Album[] | null }) {
               subtitle={`${album.releaseYear ?? "————"}`}
             />
           ))}
-        </ScrollRow>
+        </ScrollView>
       </View>
-      <Heading as="h3" className="mb-2 text-start">
-        Tracks
-      </Heading>
+      <StyledText className="mb-2 text-xl">Tracks</StyledText>
     </>
   );
 }

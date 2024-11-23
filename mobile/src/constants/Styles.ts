@@ -25,22 +25,6 @@ export const Colors = {
 
   red: "#C8102E",
   yellow: "#FFD84D",
-
-  /* FIXME: Remove old colors below in the future. */
-  canvas: "#000000",
-
-  accent50: "#F28D91",
-  accent500: "#D71921",
-
-  foreground50: "#F0F2F2",
-  foreground100: "#C1C4C4",
-
-  surface50: "#E7E9E9",
-  surface400: "#787878",
-  surface500: "#484949",
-  surface700: "#303030",
-  surface800: "#1B1D1F",
-  surface850: "#181919",
 } as const;
 
 export const FontFamily = {
@@ -48,11 +32,6 @@ export const FontFamily = {
   robotoMedium: "Roboto-Medium",
   ndot: "Ndot-77_JP_Extended",
   ntype: "NType82-Headline",
-
-  /* FIXME: Remove below in the future. */
-  geistLight: "Geist-Light",
-  geistMonoLight: "GeistMono-Light",
-  geistMono: "GeistMono-Regular",
 } as const;
 
 export const TwFontFamilies = Object.keys(FontFamily).map(
