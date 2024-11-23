@@ -13,7 +13,6 @@ import { cn } from "@/lib/style";
 import { IconButton } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";
 import { Swipeable } from "@/components/Swipeable";
-import { StyledText } from "@/components/Typography";
 import { SearchResult } from "@/modules/search/components";
 
 /**
@@ -116,18 +115,7 @@ function TrackItem({
     <SearchResult
       type="track"
       {...props}
-      Indicator={
-        inQueue ? (
-          <View
-            aria-hidden
-            className="mb-0.5 size-[14px] items-center justify-center rounded-sm bg-onSurface"
-          >
-            <StyledText style={{ fontSize: 8 }} className="leading-tight">
-              Q
-            </StyledText>
-          </View>
-        ) : undefined
-      }
+      kbdLetter={inQueue ? "Q" : undefined}
       className="rounded-sm bg-canvas pr-0 dark:bg-neutral5"
     />
   );

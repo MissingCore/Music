@@ -2,7 +2,7 @@ import { View } from "react-native";
 
 import { cn } from "@/lib/style";
 import type { Prettify } from "@/utils/types";
-import { StyledText } from "@/components/Typography";
+import { Kbd, StyledText } from "@/components/Typography";
 import { MediaImage } from "@/modules/media/components";
 
 /** Displays information about a media item. */
@@ -12,7 +12,7 @@ export function SearchResult(
       title: string;
       description?: string;
       /** Element that's placed next to the title. */
-      Indicator?: React.ReactElement;
+      kbdLetter?: string;
       className?: string;
     }
   >,
@@ -33,7 +33,9 @@ export function SearchResult(
       />
       <View className="shrink grow">
         <View className="shrink flex-row items-end gap-1">
-          {props.Indicator}
+          {props.kbdLetter ? (
+            <Kbd text={props.kbdLetter} className="mb-0.5" />
+          ) : undefined}
           <StyledText
             numberOfLines={1}
             className={cn("shrink grow", { "text-sm": !!props.description })}
