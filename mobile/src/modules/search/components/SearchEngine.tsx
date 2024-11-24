@@ -128,8 +128,9 @@ function formatResults(results: Partial<SearchResults>) {
         // @ts-expect-error - Values are of correct types.
         source: getArtwork({ type: key, data: item }),
         title: item.name,
+        // prettier-ignore
         // @ts-expect-error - `artistName` should be present in these cases.
-        description: withArtistName.includes(key) ? item.artistName : undefined,
+        description: withArtistName.includes(key) ? (item.artistName ?? "—") : undefined,
         entry: item,
       })),
     ])
