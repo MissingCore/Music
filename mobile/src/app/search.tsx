@@ -26,10 +26,9 @@ const searchScope = ["album", "artist", "playlist", "track"] as const;
 /** Actions that we want to run when we click on a search item. */
 const searchCallbacks: SearchCallbacks = {
   /* Visit the media's page. */
-  album: ({ id }) => router.navigate(`/album/${id}`),
-  artist: ({ name }) => router.navigate(`/artist/${encodeURIComponent(name)}`),
-  playlist: ({ name }) =>
-    router.navigate(`/playlist/${encodeURIComponent(name)}`),
+  album: ({ id }) => router.push(`/album/${id}`),
+  artist: ({ name }) => router.push(`/artist/${encodeURIComponent(name)}`),
+  playlist: ({ name }) => router.push(`/playlist/${encodeURIComponent(name)}`),
   /* Play the specified track. */
   track: ({ id }) =>
     playFromMediaList({
