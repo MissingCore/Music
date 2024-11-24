@@ -1,36 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
-import type {
-  AlbumWithTracks,
-  ArtistWithTracks,
-  PlaylistWithTracks,
-  TrackWithAlbum,
-} from "@/db/schema";
-
 import { getAlbums } from "@/api/album";
 import { getArtists } from "@/api/artist";
 import { getPlaylists } from "@/api/playlist";
 import { getTracks } from "@/api/track";
 
 import type { Prettify } from "@/utils/types";
-import type { MediaType } from "@/modules/media/types";
-
-type Results = {
-  album: AlbumWithTracks[];
-  artist: ArtistWithTracks[];
-  // folder: unknown[];
-  playlist: PlaylistWithTracks[];
-  track: TrackWithAlbum[];
-};
+import type { SearchCategories, SearchResults } from "../types";
 
 /** Returns media specified by query in the given scope. */
-export function useSearch<
-  TScope extends ReadonlyArray<Exclude<MediaType, "folder">>,
->(
+export function useSearch<TScope extends SearchCategories>(
   scope: TScope,
   query?: string,
-): Prettify<Pick<Results, TScope[number]>> | undefined {
+): Prettify<Pick<SearchResults, TScope[number]>> | undefined {
   const { data } = useAllMedia();
   return useMemo(() => {
     if (!data || !query) return undefined;
@@ -41,7 +24,7 @@ export function useSearch<
         mediaType,
         data[mediaType].filter((item) => item.name.toLowerCase().includes(q)),
       ]),
-    ) as Pick<Results, TScope[number]>;
+    ) as Pick<SearchResults, TScope[number]>;
   }, [data, query, scope]);
 }
 
