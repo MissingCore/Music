@@ -18,11 +18,17 @@ export function useSearch<TScope extends SearchCategories>(
   return useMemo(() => {
     if (!data || !query) return undefined;
     let q = query.toLocaleLowerCase();
-    // Keep results if we have a partial match with the "name".
     return Object.fromEntries(
       scope.map((mediaType) => [
         mediaType,
-        data[mediaType].filter((i) => i.name.toLocaleLowerCase().includes(q)),
+        data[mediaType].filter(
+          (i) =>
+            // Partial match with the `name` field.
+            i.name.toLocaleLowerCase().includes(q) ||
+            // Track's album starts with the query.
+            // @ts-expect-error - We ensured the `album` field is present.
+            (i.album && i.album.name.toLocaleLowerCase().startsWith(q)),
+        ),
       ]),
     ) as Pick<SearchResults, TScope[number]>;
   }, [data, query, scope]);
