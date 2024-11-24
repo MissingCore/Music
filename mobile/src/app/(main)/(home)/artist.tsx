@@ -12,7 +12,7 @@ import type { Maybe } from "@/utils/types";
 import { Ripple } from "@/components/Form";
 import { Loading } from "@/components/Loading";
 import { StyledText } from "@/components/Typography";
-import { MediaImage } from "@/modules/media/components";
+import { SearchResult } from "@/modules/search/components";
 
 /** Screen for `/artist` route. */
 export default function ArtistScreen() {
@@ -51,12 +51,8 @@ const ArtistIndexPreset = (props: {
             router.navigate(`/artist/${encodeURIComponent(item.name)}`)
           }
           wrapperClassName="rounded-full mt-4"
-          className="pr-4"
         >
-          <MediaImage type="artist" size={48} source={null} />
-          <StyledText numberOfLines={1} className="shrink grow">
-            {item.name}
-          </StyledText>
+          <SearchResult type="artist" source={null} title={item.name} />
         </Ripple>
       ),
     ListEmptyComponent: props.isPending ? (

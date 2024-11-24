@@ -13,8 +13,7 @@ import { cn } from "@/lib/style";
 import { IconButton } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";
 import { Swipeable } from "@/components/Swipeable";
-import { StyledText } from "@/components/Typography";
-import { MediaImage } from "@/modules/media/components";
+import { SearchResult } from "@/modules/search/components";
 
 /**
  * Sheet allowing us to see the upcoming tracks and remove tracks from
@@ -53,15 +52,14 @@ export default function TrackUpcomingSheet(
         keyExtractor={({ name }, index) => `${name}_${index}`}
         renderItem={({ item, index }) => {
           const itemContent = {
-            name: item.name,
-            artistName: item.artistName ?? "—",
-            artwork: getTrackCover(item),
+            title: item.name,
+            description: item.artistName ?? "—",
+            source: getTrackCover(item),
           };
 
           const wrapperStyle = cn("px-4", {
             "opacity-25": index >= disableIndex,
             "mt-1": index !== 0,
-            "mb-4": index === data!.length - 1,
           });
 
           if (index < queueList.length) {
@@ -94,6 +92,7 @@ export default function TrackUpcomingSheet(
           );
         }}
         showsVerticalScrollIndicator={false}
+        contentContainerClassName="pb-4"
       />
     </Sheet>
   );
@@ -103,35 +102,21 @@ export default function TrackUpcomingSheet(
  * Essentially `<Track />` without any playing functionality. Has special
  * behavior if the rendered track is part of the queue.
  */
-function TrackItem(props: {
-  name: string;
-  artistName: string;
-  artwork: string | null;
+function TrackItem({
+  inQueue,
+  ...props
+}: {
+  title: string;
+  description: string;
+  source: string | null;
   inQueue?: boolean;
 }) {
   return (
-    <View className="min-h-12 flex-row items-center gap-2 bg-canvas dark:bg-neutral5">
-      <MediaImage type="track" size={48} source={props.artwork} radius="sm" />
-      <View className="shrink grow">
-        <View className="shrink flex-row items-end gap-1">
-          {props.inQueue && (
-            <View
-              aria-hidden
-              className="mb-0.5 size-[14px] items-center justify-center rounded-sm bg-onSurface"
-            >
-              <StyledText style={{ fontSize: 8 }} className="leading-tight">
-                Q
-              </StyledText>
-            </View>
-          )}
-          <StyledText numberOfLines={1} className="shrink grow text-sm">
-            {props.name}
-          </StyledText>
-        </View>
-        <StyledText preset="dimOnCanvas" numberOfLines={1}>
-          {props.artistName}
-        </StyledText>
-      </View>
-    </View>
+    <SearchResult
+      type="track"
+      {...props}
+      kbdLetter={inQueue ? "Q" : undefined}
+      className="rounded-sm bg-canvas pr-0 dark:bg-neutral5"
+    />
   );
 }
