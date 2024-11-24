@@ -53,10 +53,7 @@ export default function TrackToPlaylistSheet(
                   item.name,
                 )
               }
-              wrapperClassName={cn({
-                "mt-1": index !== 0,
-                "mb-4": index === data!.length - 1,
-              })}
+              wrapperClassName={cn({ "mt-1": index !== 0 })}
             >
               <Marquee color={selected ? surface : canvasAlt}>
                 <StyledText>{item.name}</StyledText>
@@ -72,6 +69,7 @@ export default function TrackToPlaylistSheet(
           )
         }
         showsVerticalScrollIndicator={false}
+        contentContainerClassName="pb-4"
       />
     </Sheet>
   );

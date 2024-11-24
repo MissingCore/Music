@@ -60,7 +60,6 @@ export default function TrackUpcomingSheet(
           const wrapperStyle = cn("px-4", {
             "opacity-25": index >= disableIndex,
             "mt-1": index !== 0,
-            "mb-4": index === data!.length - 1,
           });
 
           if (index < queueList.length) {
@@ -93,6 +92,7 @@ export default function TrackUpcomingSheet(
           );
         }}
         showsVerticalScrollIndicator={false}
+        contentContainerClassName="pb-4"
       />
     </Sheet>
   );

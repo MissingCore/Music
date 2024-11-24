@@ -57,10 +57,7 @@ export default function ScanFilterListSheet(
         keyExtractor={(item) => item}
         renderItem={({ item, index }) => (
           <Swipeable
-            containerClassName={cn("px-4", {
-              "mt-1": index !== 0,
-              "mb-4": index === listEntries!.length - 1,
-            })}
+            containerClassName={cn("px-4", { "mt-1": index !== 0 })}
             renderRightActions={() => (
               <View className="pr-4">
                 <IconButton
@@ -86,6 +83,7 @@ export default function ScanFilterListSheet(
           <StyledText center>{t("response.noFilters")}</StyledText>
         }
         showsVerticalScrollIndicator={false}
+        contentContainerClassName="pb-4"
       />
     </Sheet>
   );
