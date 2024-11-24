@@ -33,7 +33,7 @@ export function useArtistsForIndex() {
       const groupedArtists: Record<string, Artist[]> = {};
       data.forEach(({ tracks: _, ...artist }) => {
         const key = /[a-zA-Z]/.test(artist.name.charAt(0))
-          ? artist.name.charAt(0).toUpperCase()
+          ? artist.name.charAt(0).toLocaleUpperCase()
           : "#";
         if (Object.hasOwn(groupedArtists, key)) {
           groupedArtists[key]!.push(artist);

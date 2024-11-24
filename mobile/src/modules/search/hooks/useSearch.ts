@@ -17,12 +17,12 @@ export function useSearch<TScope extends SearchCategories>(
   const { data } = useAllMedia();
   return useMemo(() => {
     if (!data || !query) return undefined;
-    let q = query.toLowerCase();
+    let q = query.toLocaleLowerCase();
     // Keep results if we have a partial match with the "name".
     return Object.fromEntries(
       scope.map((mediaType) => [
         mediaType,
-        data[mediaType].filter((item) => item.name.toLowerCase().includes(q)),
+        data[mediaType].filter((i) => i.name.toLocaleLowerCase().includes(q)),
       ]),
     ) as Pick<SearchResults, TScope[number]>;
   }, [data, query, scope]);
