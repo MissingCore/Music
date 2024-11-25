@@ -2,10 +2,8 @@ import { toast } from "@backpackapp-io/react-native-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
-import * as Sharing from "expo-sharing";
 import { and, eq, isNull } from "drizzle-orm";
 import { useTranslation } from "react-i18next";
-import { Platform } from "react-native";
 import { z } from "zod";
 
 import { db } from "@/db";
@@ -92,41 +90,30 @@ async function exportBackup() {
   // Get all user-generated playlists.
   const allPlaylists = await getPlaylists();
 
-  // Organize exported file contents.
-  const mimeType = "application/json";
-  const fileOpts = { encoding: FileSystem.EncodingType.UTF8 };
-  const fileContent = JSON.stringify({
-    favorites: {
-      playlists: favPlaylists.map(({ name }) => name),
-      albums: favAlbums.map((al) => pickKeys(al, ["name", "artistName"])),
-      tracks: favTracks.map(getRawTrack),
-    },
-    playlists: allPlaylists.map(({ name, tracks }) => {
-      return { name, tracks: tracks.map(getRawTrack) };
+  // User selects accessible location inside the "Download" directory to
+  // save this backup file.
+  const downloadDir = SAF.getUriForDirectoryInRoot("Download");
+  const perms = await SAF.requestDirectoryPermissionsAsync(downloadDir);
+  if (!perms.granted) throw new Error(i18next.t("response.actionCancel"));
+
+  // Create a new file in specified directory & write contents.
+  const fileUri = await SAF.createFileAsync(
+    ...[perms.directoryUri, "music_backup", "application/json"],
+  );
+  await SAF.writeAsStringAsync(
+    fileUri,
+    JSON.stringify({
+      favorites: {
+        playlists: favPlaylists.map(({ name }) => name),
+        albums: favAlbums.map((al) => pickKeys(al, ["name", "artistName"])),
+        tracks: favTracks.map(getRawTrack),
+      },
+      playlists: allPlaylists.map(({ name, tracks }) => {
+        return { name, tracks: tracks.map(getRawTrack) };
+      }),
     }),
-  });
-
-  // User selects accessible location to save this backup file.
-  if (Platform.OS === "android") {
-    // Get user to select a folder inside the "Download" directory.
-    const downloadDir = SAF.getUriForDirectoryInRoot("Download");
-    const perms = await SAF.requestDirectoryPermissionsAsync(downloadDir);
-    if (!perms.granted) throw new Error(i18next.t("response.actionCancel"));
-
-    // Create a new file in specified directory & write contents.
-    const fileUri = await SAF.createFileAsync(
-      ...[perms.directoryUri, "music_backup", mimeType],
-    );
-    await SAF.writeAsStringAsync(fileUri, fileContent, fileOpts);
-  } else if (Platform.OS === "ios") {
-    // Temporarily create exported file in cache.
-    const tempUri = FileSystem.cacheDirectory + "music_backup.json";
-    await FileSystem.writeAsStringAsync(tempUri, fileContent, fileOpts);
-    // On iOS, there's a "Save to Files" option in the sharing menu.
-    await Sharing.shareAsync(tempUri, { UTI: "public.json", mimeType });
-    // Delete temporary file.
-    await FileSystem.deleteAsync(tempUri);
-  }
+    { encoding: FileSystem.EncodingType.UTF8 },
+  );
 }
 //#endregion
 

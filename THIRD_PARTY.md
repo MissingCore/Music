@@ -1,7 +1,6 @@
 | Name | License | Source |
 | ---- | ------- | ------ |
 | @backpackapp-io/react-native-toast | MIT | https://github.com/backpackapp-io/react-native-toast |
-| @expo/vector-icons | MIT | https://github.com/expo/vector-icons |
 | @lukemorales/query-key-factory | MIT | https://github.com/lukemorales/query-key-factory |
 | @miblanchard/react-native-slider | MIT | https://github.com/miblanchard/react-native-slider |
 | @missingcore/react-native-metadata-retriever | MIT | https://github.com/MissingCore/react-native-metadata-retriever |
@@ -13,13 +12,11 @@
 | @shopify/flash-list | MIT | https://github.com/Shopify/flash-list |
 | @tanstack/react-query | MIT | https://github.com/TanStack/query |
 | clsx | MIT | https://github.com/lukeed/clsx |
-| cva | Apache-2.0 | https://github.com/joe-bell/cva |
 | drizzle-orm | Apache-2.0 | https://github.com/drizzle-team/drizzle-orm |
 | expo | MIT | https://github.com/expo/expo/tree/main/packages/expo |
 | expo-document-picker | MIT | https://github.com/expo/expo/tree/main/packages/expo-document-picker |
 | expo-drizzle-studio-plugin | MIT | https://github.com/drizzle-team/drizzle-studio-expo |
 | expo-file-system | MIT | https://github.com/expo/expo/tree/main/packages/expo-file-system |
-| expo-font | MIT | https://github.com/expo/expo/tree/main/packages/expo-font |
 | expo-image | MIT | https://github.com/expo/expo/tree/main/packages/expo-image |
 | expo-image-manipulator | MIT | https://github.com/expo/expo/tree/main/packages/expo-image-manipulator |
 | expo-image-picker | MIT | https://github.com/expo/expo/tree/main/packages/expo-image-picker |
@@ -27,7 +24,6 @@
 | expo-localization | MIT | https://github.com/expo/expo/tree/main/packages/expo-localization |
 | expo-media-library | MIT | https://github.com/expo/expo/tree/main/packages/expo-media-library |
 | expo-router | MIT | https://github.com/expo/expo/tree/main/packages/expo-router |
-| expo-sharing | MIT | https://github.com/expo/expo/tree/main/packages/expo-sharing |
 | expo-sqlite | MIT | https://github.com/expo/expo/tree/main/packages/expo-sqlite |
 | expo-web-browser | MIT | https://github.com/expo/expo/tree/main/packages/expo-web-browser |
 | i18next | MIT | https://github.com/i18next/i18next |
