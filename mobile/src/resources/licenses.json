@@ -65,7 +65,7 @@
   },
   "@sentry/react-native": {
     "name": "@sentry/react-native",
-    "version": "6.1.0",
+    "version": "6.2.0",
     "copyright": "Copyright (c) 2017-2024 Sentry",
     "source": "https://github.com/getsentry/sentry-react-native",
     "license": "MIT",
@@ -81,7 +81,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.60.5",
+    "version": "5.61.3",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -97,7 +97,7 @@
   },
   "drizzle-orm": {
     "name": "drizzle-orm",
-    "version": "0.36.3",
+    "version": "0.36.4",
     "copyright": "Copyright (c) 2022 Drizzle Team",
     "source": "https://github.com/drizzle-team/drizzle-orm",
     "license": "Apache-2.0",
@@ -233,7 +233,7 @@
   },
   "jotai": {
     "name": "jotai",
-    "version": "2.10.2",
+    "version": "2.10.3",
     "copyright": "Copyright (c) 2020-2023 Poimandres",
     "source": "https://github.com/pmndrs/jotai",
     "license": "MIT",
@@ -297,7 +297,7 @@
   },
   "react-native-gesture-handler": {
     "name": "react-native-gesture-handler",
-    "version": "2.21.0",
+    "version": "2.21.2",
     "copyright": "Copyright (c) 2016 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-gesture-handler",
     "license": "MIT",
@@ -313,7 +313,7 @@
   },
   "react-native-pager-view": {
     "name": "react-native-pager-view",
-    "version": "6.5.0",
+    "version": "6.5.1",
     "copyright": "Copyright (c) 2021 Callstack",
     "source": "https://github.com/callstack/react-native-pager-view",
     "license": "MIT",
@@ -377,7 +377,7 @@
   },
   "tailwind-merge": {
     "name": "tailwind-merge",
-    "version": "2.5.4",
+    "version": "2.5.5",
     "copyright": "Copyright (c) 2021 Dany Castillo",
     "source": "https://github.com/dcastil/tailwind-merge",
     "license": "MIT",
