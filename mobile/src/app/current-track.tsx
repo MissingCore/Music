@@ -9,7 +9,7 @@ import {
   Favorite,
   LibraryMusic,
   MoreVert,
-  VolumeDown,
+  VolumeMute,
   VolumeUp,
 } from "@/icons";
 import { useFavoriteTrack, useTrackExcerpt } from "@/queries/track";
@@ -171,7 +171,7 @@ function VolumeSlider() {
 
   return (
     <View className="flex-row items-center gap-2">
-      <VolumeDown />
+      <VolumeMute />
       <View className="grow">
         <Slider
           value={savedVolume}

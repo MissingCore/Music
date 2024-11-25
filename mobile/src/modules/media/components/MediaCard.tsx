@@ -84,14 +84,14 @@ type MediaCardListProps = {
 /** Hook for getting the presets used in the FlashList for `<MediaCardList />`. */
 export function useMediaCardListPreset(props: MediaCardListProps) {
   const { count, width } = useGetColumn({
-    ...{ cols: 2, gap: 16, gutters: 32, minWidth: 175 },
+    ...{ cols: 2, gap: 12, gutters: 32, minWidth: 175 },
   });
 
   return useMemo(
     () => ({
       numColumns: count,
       // ~40px for text content under `<MediaImage />` + 16px Margin Bottom
-      estimatedItemSize: width + 40 + 16,
+      estimatedItemSize: width + 40 + 12,
       data: props.data,
       keyExtractor: ({ href }) => href,
       /*
@@ -99,7 +99,7 @@ export function useMediaCardListPreset(props: MediaCardListProps) {
           - https://github.com/shopify/flash-list/discussions/804#discussioncomment-5509022
       */
       renderItem: ({ item, index }) => (
-        <View className="mx-2 mb-4">
+        <View className="mx-1.5 mb-3">
           {props.RenderFirst && index === 0 ? (
             <props.RenderFirst size={width} />
           ) : (
@@ -113,7 +113,7 @@ export function useMediaCardListPreset(props: MediaCardListProps) {
         <StyledText center>{props.emptyMessage}</StyledText>
       ),
       ListHeaderComponentStyle: { paddingHorizontal: 8 },
-      className: "-mx-2 -mb-4",
+      className: "-mx-1.5 -mb-3",
     }),
     [count, width, props],
   ) satisfies FlashListProps<MediaCard.Content>;

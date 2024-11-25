@@ -37,12 +37,12 @@ const ArtistIndexPreset = (props: {
   isPending?: boolean;
 }) =>
   ({
-    estimatedItemSize: 64, // 48px Height + 16px Margin Top
+    estimatedItemSize: 56, // 48px Height + 8px Margin Top
     data: props.data,
     keyExtractor: (item) => (typeof item === "string" ? item : item.name),
     renderItem: ({ item, index }) =>
       typeof item === "string" ? (
-        <StyledText className={cn("text-xs", { "mt-6": index !== 0 })}>
+        <StyledText className={cn("text-xs", { "mt-4": index !== 0 })}>
           {item}
         </StyledText>
       ) : (
@@ -50,7 +50,7 @@ const ArtistIndexPreset = (props: {
           onPress={() =>
             router.navigate(`/artist/${encodeURIComponent(item.name)}`)
           }
-          wrapperClassName="rounded-full mt-4"
+          wrapperClassName="rounded-full mt-2"
         >
           <SearchResult type="artist" source={null} title={item.name} />
         </Ripple>

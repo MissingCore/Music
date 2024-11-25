@@ -116,7 +116,7 @@ function TrackItem({
       type="track"
       {...props}
       kbdLetter={inQueue ? "Q" : undefined}
-      className="rounded-sm bg-canvas pr-0 dark:bg-neutral5"
+      className="bg-canvas pr-0 dark:bg-neutral5"
     />
   );
 }

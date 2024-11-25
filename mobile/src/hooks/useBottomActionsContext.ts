@@ -2,6 +2,9 @@ import { usePathname } from "expo-router";
 
 import { useMusicStore } from "@/modules/media/services/Music";
 
+/** Routes where we should hide the navigation bar. */
+const hideRoutes = ["/album/", "/artist/", "/playlist/", "/current-track"];
+
 /**
  * Returns information about what "bottom actions" are displayed in the
  * `(main)` group along with the additional bottom padding required.
@@ -11,9 +14,7 @@ export function useBottomActionsContext() {
   const activeTrackId = useMusicStore((state) => state.activeId);
 
   const isMiniPlayerRendered = !!activeTrackId;
-  const hideNavBar = ["/playlist/", "/album/", "/artist/"].some((route) =>
-    pathname.startsWith(route),
-  );
+  const hideNavBar = hideRoutes.some((route) => pathname.startsWith(route));
 
   // Bottom inset on home screen.
   let withNav = 76; // 60px Navbar Height + 16px Bottom Padding

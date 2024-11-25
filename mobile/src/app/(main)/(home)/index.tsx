@@ -13,6 +13,7 @@ import { useGetColumn } from "@/hooks/useGetColumn";
 import { useMusicStore } from "@/modules/media/services/Music";
 import { StickyActionScrollLayout } from "@/layouts";
 
+import { cn } from "@/lib/style";
 import { abbreviateNum } from "@/utils/number";
 import { Button } from "@/components/Form";
 import { AccentText, StyledText } from "@/components/Typography";
@@ -70,14 +71,14 @@ function RecentlyPlayed() {
   return (
     <FlashList
       ref={listRef}
-      estimatedItemSize={width + 16} // Column width + gap from padding left
+      estimatedItemSize={width + 12} // Column width + gap from padding left
       horizontal
       data={recentlyPlayedData}
       keyExtractor={({ href }) => href}
       renderItem={({ item, index }) => (
         <View
           onLayout={(e) => setItemHeight(e.nativeEvent.layout.height)}
-          className={index !== 0 ? "pl-4" : ""}
+          className={cn({ "pl-3": index !== 0 })}
         >
           <MediaCard {...item} size={width} />
         </View>

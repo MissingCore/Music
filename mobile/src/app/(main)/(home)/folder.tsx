@@ -118,7 +118,7 @@ const FolderListPreset = (props: {
   setDirSegments: React.Dispatch<React.SetStateAction<string[]>>;
 }) =>
   ({
-    estimatedItemSize: 56, // 48px Height + 8px Margin Botton
+    estimatedItemSize: 56, // 48px Height + 8px Margin Top
     data: props.data,
     keyExtractor: (_, index) => `${index}`,
     renderItem: ({ item, index }) => (

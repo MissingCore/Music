@@ -83,7 +83,7 @@ type TrackListProps = {
 /** Presets used in the FlashList for `<TrackList />`. */
 export const TrackListPreset = (props: TrackListProps) =>
   ({
-    estimatedItemSize: 56, // 48px Height + 8px Margin Botton
+    estimatedItemSize: 56, // 48px Height + 8px Margin Top
     data: props.data,
     keyExtractor: ({ id }) => id,
     renderItem: ({ item, index }) => (
