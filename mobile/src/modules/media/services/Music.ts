@@ -73,8 +73,6 @@ interface MusicStore {
   shuffledPlayingList: string[];
   /** Shuffled list of `TrackWithAlbum`. */
   shuffledTrackList: TrackWithAlbum[];
-  /** The list of track ids used based on `shuffle`. */
-  currentList: string[];
   /** The list of `TrackWithAlbum` used based on `shuffle`. */
   currentTrackList: TrackWithAlbum[];
 
@@ -161,7 +159,6 @@ export const musicStore = createStore<MusicStore>()(
         trackList: [] as TrackWithAlbum[],
         shuffledPlayingList: [] as string[],
         shuffledTrackList: [] as TrackWithAlbum[],
-        currentList: [] as string[],
         currentTrackList: [] as TrackWithAlbum[],
 
         activeId: undefined as string | undefined,
@@ -253,7 +250,6 @@ musicStore.subscribe(
     musicStore.setState({
       trackList: newTrackList,
       shuffledTrackList: newShuffledTrackList,
-      currentList: shuffle ? shuffledPlayingList : playingList,
       currentTrackList: shuffle ? newShuffledTrackList : newTrackList,
     });
   },
@@ -536,11 +532,11 @@ export class RNTPManager {
 
   /** Updates all the playing lists, along with `listIdx`. */
   static getPlayingLists(newPlayingList: string[], startTrackId?: string) {
-    const { shuffle, listIdx, currentList } = musicStore.getState();
+    const { shuffle, listIdx, currentTrackList } = musicStore.getState();
     const newShuffledPlayingList = shuffleArray(newPlayingList);
 
     // Get the new index of the track at `listIdx` if the list changes.
-    const prevTrackId = startTrackId ?? currentList[listIdx]!;
+    const prevTrackId = startTrackId ?? currentTrackList[listIdx]!.id;
     const newLocation = shuffle
       ? newShuffledPlayingList.findIndex((tId) => prevTrackId === tId)
       : newPlayingList.findIndex((tId) => prevTrackId === tId);
@@ -549,7 +545,6 @@ export class RNTPManager {
     return {
       playingList: newPlayingList,
       shuffledPlayingList: newShuffledPlayingList,
-      currentList: shuffle ? newShuffledPlayingList : newPlayingList,
 
       listIdx: newListIdx,
       isInQueue: newLocation === -1,

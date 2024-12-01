@@ -100,13 +100,8 @@ export async function playFromMediaList({
   source: PlayListSource;
   trackId?: string;
 }) {
-  const {
-    playingSource,
-    activeId,
-    activeTrack,
-    currentList,
-    currentTrackList,
-  } = musicStore.getState();
+  const { shuffle, playingSource, activeId, activeTrack, currentTrackList } =
+    musicStore.getState();
 
   // 1. See if we're playing from a new media list.
   const isSameSource = arePlaybackSourceEqual(playingSource, source);
@@ -117,7 +112,7 @@ export async function playFromMediaList({
     // Case where we play a different track in this media list.
     if (!!trackId && isDiffTrack) {
       // Find index of new track in list.
-      const listIndex = currentList.findIndex((tId) => tId === trackId);
+      const listIndex = currentTrackList.findIndex(({ id }) => id === trackId);
       musicStore.setState({
         activeId: trackId,
         activeTrack: currentTrackList[listIndex],
@@ -138,7 +133,9 @@ export async function playFromMediaList({
   );
 
   // 4. Get the track from this new info.
-  const newTrackId = newListsInfo.currentList[newListsInfo.listIdx];
+  const newTrackId = shuffle
+    ? newListsInfo.shuffledPlayingList[newListsInfo.listIdx]
+    : newListsInfo.playingList[newListsInfo.listIdx];
   isDiffTrack = activeId !== newTrackId;
   let newTrack = activeTrack;
   if (isDiffTrack) {
