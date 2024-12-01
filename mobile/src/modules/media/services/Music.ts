@@ -135,7 +135,41 @@ export const musicStore = createStore<MusicStore>()(
         repeat: false as boolean,
         setRepeat: (status: boolean) => set({ repeat: status }),
         shuffle: false as boolean,
-        setShuffle: (status: boolean) => set({ shuffle: status }),
+        setShuffle: async (status: boolean) => {
+          const {
+            activeId,
+            listIdx,
+            playingList,
+            trackList,
+            shuffledPlayingList,
+            shuffledTrackList,
+          } = musicStore.getState();
+
+          const prevCurrList = status ? playingList : shuffledPlayingList;
+          const newCurrList = status ? shuffledPlayingList : playingList;
+          // Get the new `listIdx` value.
+          const trackAtListIdx = prevCurrList[listIdx]!;
+          const isActiveInList = prevCurrList.some((tId) => tId === activeId);
+
+          // New list index will be based either on the current playing track if
+          // it's in the list, or the track at the `listIdx` index.
+          const newListIdx =
+            activeId === undefined
+              ? 0
+              : isActiveInList
+                ? newCurrList.findIndex((tId) => tId === activeId)
+                : newCurrList.findIndex((tId) => tId === trackAtListIdx);
+
+          musicStore.setState({
+            currentList: newCurrList,
+            currentTrackList: status ? shuffledTrackList : trackList,
+            listIdx: newListIdx,
+          });
+
+          await RNTPManager.reloadNextTrack();
+
+          set({ shuffle: status });
+        },
 
         playingSource: undefined as PlayListSource | undefined,
         sourceName: "",
@@ -190,44 +224,6 @@ export const useMusicStore = <T>(selector: (state: MusicStore) => T): T =>
 //#endregion
 
 //#region Subscriptions
-/** Update `currentList` & `currentTrackList` when `shuffle` changes. */
-musicStore.subscribe(
-  (state) => state.shuffle,
-  async (shuffle) => {
-    const {
-      activeId,
-      listIdx,
-      playingList,
-      trackList,
-      shuffledPlayingList,
-      shuffledTrackList,
-    } = musicStore.getState();
-
-    const prevCurrList = shuffle ? playingList : shuffledPlayingList;
-    const newCurrList = shuffle ? shuffledPlayingList : playingList;
-    // Get the new `listIdx` value.
-    const trackAtListIdx = prevCurrList[listIdx]!;
-    const isActiveInList = prevCurrList.some((tId) => tId === activeId);
-
-    // New list index will be based either on the current playing track if
-    // it's in the list, or the track at the `listIdx` index.
-    const newListIdx =
-      activeId === undefined
-        ? 0
-        : isActiveInList
-          ? newCurrList.findIndex((tId) => tId === activeId)
-          : newCurrList.findIndex((tId) => tId === trackAtListIdx);
-
-    musicStore.setState({
-      currentList: newCurrList,
-      currentTrackList: shuffle ? shuffledTrackList : trackList,
-      listIdx: newListIdx,
-    });
-
-    await RNTPManager.reloadNextTrack();
-  },
-);
-
 /** Update `sourceName` when `playingSource` changes. */
 musicStore.subscribe(
   (state) => state.playingSource,
