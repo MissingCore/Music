@@ -9,7 +9,11 @@ import {
   resetState,
 } from "./Music";
 
-import { arePlaybackSourceEqual, getTrackList } from "../helpers/data";
+import {
+  arePlaybackSourceEqual,
+  getSourceName,
+  getTrackList,
+} from "../helpers/data";
 import type { PlayListSource } from "../types";
 
 //#region MusicControls
@@ -149,6 +153,7 @@ export async function playFromMediaList({
     isPlaying: true,
     ...newListsInfo,
     playingSource: source,
+    sourceName: await getSourceName(source),
     ...(isDiffTrack ? { activeId: newTrackId, activeTrack: newTrack } : {}),
     // The `isInQueue` from `RNTPManager.getPlayingLists()` will return
     // `true` if you were playing from a different media list.

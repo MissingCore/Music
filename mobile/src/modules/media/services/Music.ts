@@ -30,6 +30,7 @@ import { ReservedPlaylists } from "../constants";
 import {
   arePlaybackSourceEqual,
   formatTrackforPlayer,
+  getSourceName,
   getTrackList,
   getTracksFromIds,
 } from "../helpers/data";
@@ -41,7 +42,8 @@ import type { PlayListSource } from "../types";
 interface MusicStore {
   /** Determines if the store has been hydrated from AsyncStorage. */
   _hasHydrated: boolean;
-  setHasHydrated: (newState: boolean) => void;
+  /** Initialize state that weren't initialized from subscriptions. */
+  _init: (state: MusicStore) => Promise<void>;
 
   /** If we're currently playing a track. */
   isPlaying: boolean;
@@ -124,8 +126,10 @@ export const musicStore = createStore<MusicStore>()(
     persist(
       (set, get) => ({
         _hasHydrated: false as boolean,
-        setHasHydrated: (state) => {
-          set({ _hasHydrated: state });
+        _init: async ({ playingSource }) => {
+          let sourceName = "";
+          if (playingSource) sourceName = await getSourceName(playingSource);
+          set({ _hasHydrated: true, sourceName });
         },
 
         isPlaying: false as boolean,
@@ -189,7 +193,7 @@ export const musicStore = createStore<MusicStore>()(
             if (error) console.log("[Music Store]", error);
             else {
               console.log("[Music Store] Completed with:", state);
-              state?.setHasHydrated(true);
+              state?._init(state);
             }
           };
         },
@@ -205,36 +209,6 @@ export const useMusicStore = <T>(selector: (state: MusicStore) => T): T =>
 //#endregion
 
 //#region Subscriptions
-/** Update `sourceName` when `playingSource` changes. */
-musicStore.subscribe(
-  (state) => state.playingSource,
-  async (source) => {
-    if (!source) {
-      musicStore.setState({ sourceName: "" });
-      return;
-    }
-
-    let newSourceName = "";
-    try {
-      if (
-        (Object.values(ReservedPlaylists) as string[]).includes(source.id) ||
-        ["artist", "playlist"].includes(source.type)
-      ) {
-        newSourceName = source.id;
-      } else if (source.type === "folder") {
-        // FIXME: At `-2` index due to the folder path (in `id`) ending with
-        // a trailing slash.
-        newSourceName = source.id.split("/").at(-2) ?? "";
-      } else if (source.type === "album") {
-        const album = await getAlbum(source.id);
-        newSourceName = album.name;
-      }
-    } catch {}
-
-    musicStore.setState({ sourceName: newSourceName });
-  },
-);
-
 /** Updates all 3 track lists when `playingList` changes. */
 musicStore.subscribe(
   (state) => state.playingList,
@@ -655,7 +629,11 @@ export class Resynchronize {
     if (!currSource) return;
 
     const isPlayingRef = arePlaybackSourceEqual(currSource, oldSource);
-    if (isPlayingRef) musicStore.setState({ playingSource: newSource });
+    if (isPlayingRef) {
+      getSourceName(newSource).then((newName) =>
+        musicStore.setState({ playingSource: newSource, sourceName: newName }),
+      );
+    }
   }
 
   /** Resynchronize when we update the tracks in a media list. */
@@ -701,6 +679,7 @@ export class Resynchronize {
 export async function resetState() {
   musicStore.setState({
     playingSource: undefined,
+    sourceName: "",
     playingList: [],
     shuffledPlayingList: [],
     activeId: undefined,

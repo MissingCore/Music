@@ -41,6 +41,26 @@ export function formatTrackforPlayer(track: TrackWithAlbum) {
   } satisfies AddTrack;
 }
 
+/** Returns the name of the `PlayListSource`. */
+export async function getSourceName(source: PlayListSource) {
+  let name = "";
+  try {
+    if (
+      (Object.values(ReservedPlaylists) as string[]).includes(source.id) ||
+      ["artist", "playlist"].includes(source.type)
+    ) {
+      name = source.id;
+    } else if (source.type === "folder") {
+      // FIXME: At `-2` index due to the folder path (in `id`) ending with
+      // a trailing slash.
+      name = source.id.split("/").at(-2) ?? "";
+    } else if (source.type === "album") {
+      name = (await getAlbum(source.id)).name;
+    }
+  } catch {}
+  return name;
+}
+
 /** Get list of tracks from a `PlayListSource`. */
 export async function getTrackList({ type, id }: PlayListSource) {
   let sortedTracks: TrackWithAlbum[] = [];
