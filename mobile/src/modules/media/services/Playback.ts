@@ -1,7 +1,13 @@
 import TrackPlayer from "react-native-track-player";
 
 import { getTrack } from "@/api/track";
-import { RecentList, RNTPManager, musicStore, resetState } from "./Music";
+import {
+  Queue,
+  RecentList,
+  RNTPManager,
+  musicStore,
+  resetState,
+} from "./Music";
 
 import { arePlaybackSourceEqual, getTrackList } from "../helpers/data";
 import type { PlayListSource } from "../types";
@@ -41,10 +47,7 @@ export class MusicControls {
   static async prev() {
     const { trackId, track, newIdx } = RNTPManager.getPrevTrack();
     // If no track is found, reset the state.
-    if (track === undefined) {
-      await resetState();
-      return;
-    }
+    if (track === undefined) return await resetState();
 
     // If the RNTP queue isn't loaded or if we played <=10s of the track,
     // simply update the `currPlayingIdx` & `currPlayingId`
@@ -73,8 +76,8 @@ export class MusicControls {
       ...(!isInQueue ? { listIdx: newIdx } : {}),
       isInQueue,
     });
-    // We'll remove the track in the queue in the `PlaybackActiveTrackChanged`
-    // event.
+    // Remove the track in the queue.
+    if (isInQueue) await Queue.removeAtIndex(0);
 
     await RNTPManager.reloadCurrentTrack({ restart: true });
     if (newIdx === 0 && !shouldRepeat) await MusicControls.pause();
@@ -123,8 +126,7 @@ export async function playFromMediaList({
       });
       await RNTPManager.reloadCurrentTrack({ preload: true });
     }
-    await MusicControls.play(); // Will preload RNTP queue if empty.
-    return;
+    return await MusicControls.play(); // Will preload RNTP queue if empty.
   }
 
   // 3. Handle case when the media list is new.

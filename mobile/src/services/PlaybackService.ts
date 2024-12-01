@@ -64,8 +64,10 @@ export async function PlaybackService() {
       await resetState();
       return;
     } else if (trackStatus === "QUEUE") {
-      // Remove 1st item in `queueList` if they're the same.
-      if (activeTrack.id === queuedTrackList[0]?.id) {
+      // Remove 1st item in `queueList` if they're the same (doesn't
+      // fire if we manually forced the next track to play - which would
+      // cause `e.index` to be `0`).
+      if (e.index > 0 && activeTrack.id === queuedTrackList[0]?.id) {
         // Update the displayed track.
         musicStore.setState({
           activeId: activeTrack.id,
