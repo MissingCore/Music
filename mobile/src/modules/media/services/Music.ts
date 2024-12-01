@@ -195,9 +195,7 @@ musicStore.subscribe(
   (state) => state.shuffle,
   async (shuffle) => {
     const {
-      _hasHydrated,
       activeId,
-      currentList,
       listIdx,
       playingList,
       trackList,
@@ -205,10 +203,8 @@ musicStore.subscribe(
       shuffledTrackList,
     } = musicStore.getState();
 
+    const prevCurrList = shuffle ? playingList : shuffledPlayingList;
     const newCurrList = shuffle ? shuffledPlayingList : playingList;
-    // During hydration, `currentList = []` as we don't save that value into
-    // AsyncStorage. In that case, it'll be the value in `newCurrList`.
-    const prevCurrList = !_hasHydrated ? newCurrList : currentList;
     // Get the new `listIdx` value.
     const trackAtListIdx = prevCurrList[listIdx]!;
     const isActiveInList = prevCurrList.some((tId) => tId === activeId);
@@ -277,6 +273,7 @@ musicStore.subscribe(
     musicStore.setState({
       trackList: newTrackList,
       shuffledTrackList: newShuffledTrackList,
+      currentList: shuffle ? shuffledPlayingList : playingList,
       currentTrackList: shuffle ? newShuffledTrackList : newTrackList,
     });
   },
