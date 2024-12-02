@@ -1,11 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useStore } from "zustand";
-import {
-  createJSONStorage,
-  persist,
-  subscribeWithSelector,
-} from "zustand/middleware";
-import { createStore } from "zustand/vanilla";
 
 import type { PlaylistWithTracks } from "@/db/schema";
 import { formatForMediaCard } from "@/db/utils";
@@ -15,6 +8,7 @@ import { getAlbum } from "@/api/album";
 import { getArtist } from "@/api/artist";
 import { getPlaylist, getSpecialPlaylist } from "@/api/playlist";
 
+import { createPersistedSubscribedStore } from "@/lib/zustand";
 import type { ReservedPlaylistName } from "../constants";
 import { ReservedNames } from "../constants";
 import { arePlaybackSourceEqual } from "../helpers/data";
@@ -33,35 +27,30 @@ interface RecentListStore {
   recentList: MediaCard.Content[];
 }
 
-export const recentListStore = createStore<RecentListStore>()(
-  subscribeWithSelector(
-    persist(
-      (set) => ({
-        _hasHydrated: false as boolean,
-        setHasHydrated: (state) => set({ _hasHydrated: state }),
+export const recentListStore = createPersistedSubscribedStore<RecentListStore>(
+  (set) => ({
+    _hasHydrated: false as boolean,
+    setHasHydrated: (state) => set({ _hasHydrated: state }),
 
-        sources: [] as PlayListSource[],
-        recentList: [] as MediaCard.Content[],
-      }),
-      {
-        name: "music::recent-list-store",
-        storage: createJSONStorage(() => AsyncStorage),
-        // Only store some fields in AsyncStorage.
-        partialize: (state) => ({ sources: state.sources }),
-        // Listen to when the store is hydrated.
-        onRehydrateStorage: () => {
-          console.log("[Recent List Store] Re-hydrating storage.");
-          return (state, error) => {
-            if (error) console.log("[Recent List Store]", error);
-            else {
-              console.log("[Recent List Store] Completed with:", state);
-              state?.setHasHydrated(true);
-            }
-          };
-        },
-      },
-    ),
-  ),
+    sources: [] as PlayListSource[],
+    recentList: [] as MediaCard.Content[],
+  }),
+  {
+    name: "music::recent-list-store",
+    // Only store some fields in AsyncStorage.
+    partialize: (state) => ({ sources: state.sources }),
+    // Listen to when the store is hydrated.
+    onRehydrateStorage: () => {
+      console.log("[Recent List Store] Re-hydrating storage.");
+      return (state, error) => {
+        if (error) console.log("[Recent List Store]", error);
+        else {
+          console.log("[Recent List Store] Completed with:", state);
+          state?.setHasHydrated(true);
+        }
+      };
+    },
+  },
 );
 
 export const useRecentListStore = <T>(

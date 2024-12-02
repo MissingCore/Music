@@ -1,13 +1,6 @@
 import { toast } from "@backpackapp-io/react-native-toast";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import TrackPlayer, { State } from "react-native-track-player";
 import { useStore } from "zustand";
-import {
-  createJSONStorage,
-  persist,
-  subscribeWithSelector,
-} from "zustand/middleware";
-import { createStore } from "zustand/vanilla";
 
 import type { TrackWithAlbum } from "@/db/schema";
 
@@ -16,6 +9,7 @@ import { getTrack } from "@/api/track";
 import { RecentList } from "./RecentList";
 
 import { ToastOptions } from "@/lib/toast";
+import { createPersistedSubscribedStore } from "@/lib/zustand";
 import { shuffleArray } from "@/utils/object";
 import {
   arePlaybackSourceEqual,
@@ -26,8 +20,7 @@ import {
 } from "../helpers/data";
 import type { PlayListSource } from "../types";
 
-//#region Zustand Store
-//#region MusicStore Interface
+//#region Store
 interface MusicStore {
   /** Determines if the store has been hydrated from AsyncStorage. */
   _hasHydrated: boolean;
@@ -87,9 +80,8 @@ interface MusicStore {
   /** List of `TrackWithAlbum` from `queueList`. */
   queuedTrackList: TrackWithAlbum[];
 }
-//#endregion
 
-//#region Fields stored in AsyncStorage
+/** Fields stored in AsyncStorage. */
 const STORED_FIELDS: string[] = [
   "repeat",
   "shuffle",
@@ -101,90 +93,78 @@ const STORED_FIELDS: string[] = [
   "isInQueue",
   "queueList",
 ] satisfies Array<keyof MusicStore>;
-//#endregion
 
-//#region Store Creation
-export const musicStore = createStore<MusicStore>()(
-  subscribeWithSelector(
-    persist(
-      (set, get) => ({
-        _hasHydrated: false as boolean,
-        _init: async ({ playingSource }) => {
-          let sourceName = "";
-          if (playingSource) sourceName = await getSourceName(playingSource);
-          set({ _hasHydrated: true, sourceName });
-        },
+export const musicStore = createPersistedSubscribedStore<MusicStore>(
+  (set, get) => ({
+    _hasHydrated: false as boolean,
+    _init: async ({ playingSource }) => {
+      let sourceName = "";
+      if (playingSource) sourceName = await getSourceName(playingSource);
+      set({ _hasHydrated: true, sourceName });
+    },
 
-        isPlaying: false as boolean,
+    isPlaying: false as boolean,
 
-        repeat: false as boolean,
-        setRepeat: (status) => set({ repeat: status }),
-        shuffle: false as boolean,
-        setShuffle: async (status) => {
-          const { currentTrackList, listIdx, trackList, shuffledTrackList } =
-            get();
+    repeat: false as boolean,
+    setRepeat: (status) => set({ repeat: status }),
+    shuffle: false as boolean,
+    setShuffle: async (status) => {
+      const { currentTrackList, listIdx, trackList, shuffledTrackList } = get();
 
-          const newActiveList = status ? shuffledTrackList : trackList;
-          // Shuffle around the track at `listIdx` and not `activeId`.
-          const trackAtListIdx = currentTrackList[listIdx]!.id;
-          const newListIdx = newActiveList.findIndex(
-            ({ id }) => id === trackAtListIdx,
-          );
+      const newActiveList = status ? shuffledTrackList : trackList;
+      // Shuffle around the track at `listIdx` and not `activeId`.
+      const trackAtListIdx = currentTrackList[listIdx]!.id;
+      const newListIdx = newActiveList.findIndex(
+        ({ id }) => id === trackAtListIdx,
+      );
 
-          musicStore.setState({
-            currentTrackList: newActiveList,
-            listIdx: newListIdx === -1 ? 0 : newListIdx,
-          });
-          await RNTPManager.reloadNextTrack();
-          set({ shuffle: status });
-        },
+      musicStore.setState({
+        currentTrackList: newActiveList,
+        listIdx: newListIdx === -1 ? 0 : newListIdx,
+      });
+      await RNTPManager.reloadNextTrack();
+      set({ shuffle: status });
+    },
 
-        playingSource: undefined as PlayListSource | undefined,
-        sourceName: "",
-        playingList: [] as string[],
-        trackList: [] as TrackWithAlbum[],
-        shuffledPlayingList: [] as string[],
-        shuffledTrackList: [] as TrackWithAlbum[],
-        currentTrackList: [] as TrackWithAlbum[],
+    playingSource: undefined as PlayListSource | undefined,
+    sourceName: "",
+    playingList: [] as string[],
+    trackList: [] as TrackWithAlbum[],
+    shuffledPlayingList: [] as string[],
+    shuffledTrackList: [] as TrackWithAlbum[],
+    currentTrackList: [] as TrackWithAlbum[],
 
-        activeId: undefined as string | undefined,
-        activeTrack: undefined as TrackWithAlbum | undefined,
-        listIdx: 0,
+    activeId: undefined as string | undefined,
+    activeTrack: undefined as TrackWithAlbum | undefined,
+    listIdx: 0,
 
-        isInQueue: false as boolean,
-        queueList: [] as string[],
-        queuedTrackList: [] as TrackWithAlbum[],
-      }),
-      {
-        name: "music::playing-store",
-        storage: createJSONStorage(() => AsyncStorage),
-        // Only store some fields in AsyncStorage.
-        partialize: (state) =>
-          Object.fromEntries(
-            Object.entries(state).filter(([key]) =>
-              STORED_FIELDS.includes(key),
-            ),
-          ),
-        // Listen to when the store is hydrated.
-        onRehydrateStorage: () => {
-          console.log("[Music Store] Re-hydrating storage.");
-          return (state, error) => {
-            if (error) console.log("[Music Store]", error);
-            else {
-              console.log("[Music Store] Completed with:", state);
-              state?._init(state);
-            }
-          };
-        },
-      },
-    ),
-  ),
+    isInQueue: false as boolean,
+    queueList: [] as string[],
+    queuedTrackList: [] as TrackWithAlbum[],
+  }),
+  {
+    name: "music::playing-store",
+    // Only store some fields in AsyncStorage.
+    partialize: (state) =>
+      Object.fromEntries(
+        Object.entries(state).filter(([key]) => STORED_FIELDS.includes(key)),
+      ),
+    // Listen to when the store is hydrated.
+    onRehydrateStorage: () => {
+      console.log("[Music Store] Re-hydrating storage.");
+      return (state, error) => {
+        if (error) console.log("[Music Store]", error);
+        else {
+          console.log("[Music Store] Completed with:", state);
+          state?._init(state);
+        }
+      };
+    },
+  },
 );
 
-//#region Custom Hook
 export const useMusicStore = <T>(selector: (state: MusicStore) => T): T =>
   useStore(musicStore, selector);
-//#endregion
 //#endregion
 
 //#region Subscriptions
@@ -511,9 +491,7 @@ export class Resynchronize {
   }
 }
 //#endregion
-//#endregion
 
-//#region Reset Function
 /** Resets the persistent state when something goes wrong. */
 export async function resetState() {
   musicStore.setState({
