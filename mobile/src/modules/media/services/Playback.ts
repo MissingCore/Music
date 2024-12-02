@@ -20,7 +20,7 @@ export class MusicControls {
   /** Play the current track. */
   static async play() {
     musicStore.setState({ isPlaying: true });
-    await RNTPManager.preloadRNTPQueue();
+    await RNTPManager.preload();
     await TrackPlayer.play();
   }
 
@@ -44,22 +44,17 @@ export class MusicControls {
 
   /** Play the previous track. */
   static async prev() {
-    const { trackId, track, newIdx } = RNTPManager.getPrevTrack();
+    const prevTrack = RNTPManager.getPrevTrack();
     // If no track is found, reset the state.
-    if (track === undefined) return await resetState();
+    if (prevTrack.activeTrack === undefined) return await resetState();
 
     // If the RNTP queue isn't loaded or if we played <=10s of the track,
     // simply update the `currPlayingIdx` & `currPlayingId`
     if (
-      !(await RNTPManager.isRNTPLoaded()) ||
+      !(await RNTPManager.isLoaded()) ||
       (await TrackPlayer.getProgress()).position <= 10
     ) {
-      musicStore.setState({
-        activeId: trackId,
-        activeTrack: track,
-        listIdx: newIdx,
-        isInQueue: false, // We're no longer in the queue if we go back.
-      });
+      musicStore.setState(prevTrack);
     }
 
     await RNTPManager.reloadCurrentTrack({ restart: true });
@@ -68,23 +63,21 @@ export class MusicControls {
   /** Play the next track. */
   static async next() {
     const shouldRepeat = musicStore.getState().repeat;
-    const { trackId, track, newIdx, isInQueue } = RNTPManager.getNextTrack();
+    const { listIdx, ...nextTrack } = RNTPManager.getNextTrack();
     musicStore.setState({
-      activeId: trackId,
-      activeTrack: track,
-      ...(!isInQueue ? { listIdx: newIdx } : {}),
-      isInQueue,
+      ...nextTrack,
+      ...(!nextTrack.isInQueue ? { listIdx } : {}),
     });
     // Remove the track in the queue.
-    if (isInQueue) await Queue.removeAtIndex(0);
+    if (nextTrack.isInQueue) await Queue.removeAtIndex(0);
 
     await RNTPManager.reloadCurrentTrack({ restart: true });
-    if (newIdx === 0 && !shouldRepeat) await MusicControls.pause();
+    if (listIdx === 0 && !shouldRepeat) await MusicControls.pause();
   }
 
   /** Seek to a certain position in the current playing track. */
   static async seekTo(position: number) {
-    await RNTPManager.preloadRNTPQueue();
+    await RNTPManager.preload();
     await TrackPlayer.seekTo(position);
   }
 }
@@ -126,7 +119,7 @@ export async function playFromMediaList({
   // 3. Handle case when the media list is new.
   const newPlayingList = (await getTrackList(source)).map(({ id }) => id);
   if (newPlayingList.length === 0) return; // Don't do anything if list is empty.
-  const { isInQueue: _, ...newListsInfo } = RNTPManager.getPlayingLists(
+  const { isInQueue: _, ...newListsInfo } = RNTPManager.getUpdatedLists(
     newPlayingList,
     trackId ?? activeId,
   );
@@ -150,7 +143,7 @@ export async function playFromMediaList({
     playingSource: source,
     sourceName: await getSourceName(source),
     ...(isDiffTrack ? { activeId: newTrackId, activeTrack: newTrack } : {}),
-    // The `isInQueue` from `RNTPManager.getPlayingLists()` will return
+    // The `isInQueue` from `RNTPManager.getUpdatedLists()` will return
     // `true` if you were playing from a different media list.
     isInQueue: false,
   });

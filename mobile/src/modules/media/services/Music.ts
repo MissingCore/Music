@@ -229,7 +229,7 @@ export class Queue {
   /** Remove track id at specified index of current queue. */
   static async removeAtIndex(index: number) {
     musicStore.setState((prev) => ({
-      queueList: prev.queueList.filter((_, idx) => idx !== index),
+      queueList: prev.queueList.toSpliced(index, 1),
     }));
     await RNTPManager.reloadNextTrack();
   }
@@ -255,17 +255,16 @@ export type TrackStatus = "RELOAD" | "QUEUE" | "END" | undefined;
 /** Helpers to help manage the RNTP queue. */
 export class RNTPManager {
   /** Determine if any tracks are loaded in RNTP on launch. */
-  static async isRNTPLoaded() {
+  static async isLoaded() {
     return (await TrackPlayer.getPlaybackState()).state !== State.None;
   }
 
   /** Initialize the RNTP queue, loading the first 2 tracks. */
-  static async preloadRNTPQueue() {
-    if (await RNTPManager.isRNTPLoaded()) return;
+  static async preload() {
+    if (await RNTPManager.isLoaded()) return;
     console.log("[RNTP] Queue is empty, preloading RNTP Queue...");
     const { activeTrack, isInQueue } = musicStore.getState();
     if (!activeTrack) return;
-
     // Add the current playing track to the RNTP queue.
     await TrackPlayer.add({
       ...formatTrackforPlayer(activeTrack),
@@ -275,12 +274,7 @@ export class RNTPManager {
     await RNTPManager.reloadNextTrack();
   }
 
-  /**
-   * Returns the next track to be played.
-   *
-   * This is the 1st track in `queueList` or the track at the index after
-   * `listIdx`.
-   */
+  /** Returns the next track or 1st track in queue list. */
   static getNextTrack() {
     const { listIdx, currentTrackList, queuedTrackList } =
       musicStore.getState();
@@ -292,43 +286,35 @@ export class RNTPManager {
       : currentTrackList[nextIndex];
 
     return {
-      trackId: nextTrack?.id,
-      track: nextTrack,
-      newIdx: nextInQueue ? -1 : nextIndex,
+      activeId: nextTrack?.id,
+      activeTrack: nextTrack,
+      listIdx: nextInQueue ? -1 : nextIndex,
       isInQueue: nextInQueue,
     };
   }
 
-  /**
-   * Returns the previous track to be played.
-   *
-   * This is the track at `listIdx` if we were playing from the queue or
-   * the track at the index before `listIdx`.
-   */
+  /** Returns the track at index before `listIdx` or at `listIdx` if in queue. */
   static getPrevTrack() {
     const { listIdx, currentTrackList, isInQueue } = musicStore.getState();
 
-    const prevIndex = isInQueue
-      ? listIdx
-      : listIdx === 0
-        ? currentTrackList.length - 1
-        : listIdx - 1;
+    let prevIndex = listIdx === 0 ? currentTrackList.length - 1 : listIdx - 1;
+    if (isInQueue) prevIndex = listIdx;
     const prevTrack = currentTrackList[prevIndex];
 
     return {
-      trackId: prevTrack?.id,
-      track: prevTrack,
-      newIdx: prevTrack ? prevIndex : -1,
+      activeId: prevTrack?.id,
+      activeTrack: prevTrack,
+      listIdx: prevTrack ? prevIndex : -1,
       isInQueue: false,
     };
   }
 
-  /** Updates all the playing lists, along with `listIdx`. */
-  static getPlayingLists(newPlayingList: string[], startTrackId?: string) {
+  /** Returns information necessary to switch `playingList` seamlessly. */
+  static getUpdatedLists(newPlayingList: string[], startTrackId?: string) {
     const { shuffle, listIdx, currentTrackList } = musicStore.getState();
     const newShuffledPlayingList = shuffleArray(newPlayingList);
 
-    // Get the new index of the track at `listIdx` if the list changes.
+    // Get the index we should start at in the new list.
     const prevTrackId = startTrackId ?? currentTrackList[listIdx]!.id;
     const newLocation = shuffle
       ? newShuffledPlayingList.findIndex((tId) => prevTrackId === tId)
@@ -338,63 +324,49 @@ export class RNTPManager {
     return {
       playingList: newPlayingList,
       shuffledPlayingList: newShuffledPlayingList,
-
       listIdx: newListIdx,
       isInQueue: newLocation === -1,
     };
   }
 
-  /** Make sure the next track in the RNTP queue is correct */
+  /** Ensure the next track in the RNTP queue is correct */
   static async reloadNextTrack() {
     // Only update the RNTP queue if its defined.
-    if (!(await RNTPManager.isRNTPLoaded())) return;
+    if (!(await RNTPManager.isLoaded())) return;
     const currTrack = musicStore.getState().activeTrack;
-
-    const { trackId, track, isInQueue } = RNTPManager.getNextTrack();
+    const nextTrack = RNTPManager.getNextTrack();
     await TrackPlayer.removeUpcomingTracks();
-
     // Return if we have no tracks (ie: when we removed a track from
     // the current list).
-    if (!track || !currTrack) return;
-
+    if (!nextTrack.activeTrack || !currTrack) return;
     // If the next track is `undefined`, then we should run `resetState()`
     // after the current track finishes.
-    if (trackId === undefined) {
+    if (nextTrack.activeId === undefined) {
       await TrackPlayer.add({
         ...formatTrackforPlayer(currTrack!),
-        /**
-         * Custom field that we'll read in the `PlaybackActiveTrackChanged`
-         * event to fire `resetState()`.
-         */
+        // Field read in `PlaybackActiveTrackChanged` event to fire `resetState()`.
         "music::status": "END" satisfies TrackStatus,
       });
     } else {
       await TrackPlayer.add({
-        ...formatTrackforPlayer(track!),
-        "music::status": (isInQueue
+        ...formatTrackforPlayer(nextTrack.activeTrack!),
+        "music::status": (nextTrack.isInQueue
           ? "QUEUE"
           : undefined) satisfies TrackStatus,
       });
     }
   }
 
-  /**
-   * Checks to see if we should be playing the current track.
-   *
-   * This checks the track identified by `activeId`. It's our responsibilty
-   * to update `isInQueue`, `listIdx`, and `activeId` correctly.
-   */
-  static async reloadCurrentTrack(args?: {
-    restart?: boolean;
-    preload?: boolean;
-  }) {
-    if (!(await RNTPManager.isRNTPLoaded())) {
-      if (args?.preload) await RNTPManager.preloadRNTPQueue();
+  /** Revalidates the active track (doesn't update `isInQueue` & `listIdx`). */
+  static async reloadCurrentTrack(
+    args?: Partial<Record<"restart" | "preload", boolean>>,
+  ) {
+    if (!(await RNTPManager.isLoaded())) {
+      if (args?.preload) await RNTPManager.preload();
       return;
     }
     const playingTrack = await TrackPlayer.getActiveTrack();
     const { activeTrack, isInQueue } = musicStore.getState();
-
     // Update the current playing track (or restart the track).
     if (playingTrack?.id !== activeTrack?.id || args?.restart) {
       await TrackPlayer.load({
@@ -403,7 +375,6 @@ export class RNTPManager {
       });
       await TrackPlayer.seekTo(0);
     }
-
     // Make sure the next track is also "correct".
     await RNTPManager.reloadNextTrack();
   }
@@ -469,7 +440,7 @@ export class Resynchronize {
     const newPlayingList = (await getTrackList(playingSource)).map(
       ({ id }) => id,
     );
-    const newListsInfo = RNTPManager.getPlayingLists(newPlayingList, activeId);
+    const newListsInfo = RNTPManager.getUpdatedLists(newPlayingList, activeId);
 
     // Update state.
     musicStore.setState({ ...newListsInfo });
