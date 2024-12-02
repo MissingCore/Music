@@ -26,6 +26,8 @@ interface MusicStore {
   _hasHydrated: boolean;
   /** Initialize state that weren't initialized from subscriptions. */
   _init: (state: MusicStore) => Promise<void>;
+  /** Resets the properties dictating the playing media. */
+  reset: () => Promise<void>;
 
   /** If we're currently playing a track. */
   isPlaying: boolean;
@@ -101,6 +103,19 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
       let sourceName = "";
       if (playingSource) sourceName = await getSourceName(playingSource);
       set({ _hasHydrated: true, sourceName });
+    },
+    reset: async () => {
+      set({
+        playingSource: undefined,
+        sourceName: "",
+        playingList: [],
+        shuffledPlayingList: [],
+        activeId: undefined,
+        listIdx: 0,
+        isInQueue: false,
+        queueList: [],
+      });
+      await TrackPlayer.reset();
     },
 
     isPlaying: false as boolean,
@@ -339,12 +354,12 @@ export class RNTPManager {
     // Return if we have no tracks (ie: when we removed a track from
     // the current list).
     if (!nextTrack.activeTrack || !currTrack) return;
-    // If the next track is `undefined`, then we should run `resetState()`
+    // If the next track is `undefined`, then we should run `reset()`
     // after the current track finishes.
     if (nextTrack.activeId === undefined) {
       await TrackPlayer.add({
         ...formatTrackforPlayer(currTrack!),
-        // Field read in `PlaybackActiveTrackChanged` event to fire `resetState()`.
+        // Field read in `PlaybackActiveTrackChanged` event to fire `reset()`.
         "music::status": "END" satisfies TrackStatus,
       });
     } else {
@@ -399,7 +414,7 @@ export class Resynchronize {
     const isPlayingRef = Array.isArray(removedRefs)
       ? RecentList.isInRecentList(currSource, removedRefs)
       : arePlaybackSourceEqual(currSource, removedRefs);
-    if (isPlayingRef) await resetState();
+    if (isPlayingRef) await musicStore.getState().reset();
   }
 
   /** Resynchronize when we update the artwork. */
@@ -462,19 +477,4 @@ export class Resynchronize {
   }
 }
 //#endregion
-
-/** Resets the persistent state when something goes wrong. */
-export async function resetState() {
-  musicStore.setState({
-    playingSource: undefined,
-    sourceName: "",
-    playingList: [],
-    shuffledPlayingList: [],
-    activeId: undefined,
-    listIdx: 0,
-    isInQueue: false,
-    queueList: [],
-  });
-  await TrackPlayer.reset();
-}
 //#endregion

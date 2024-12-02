@@ -14,7 +14,7 @@ import { createArtist, deleteArtist } from "@/api/artist";
 import { getSaveErrors } from "@/api/setting";
 import { createTrack, deleteTrack, getTracks, updateTrack } from "@/api/track";
 import { userPreferencesStore } from "@/services/UserPreferences";
-import { Queue, musicStore, resetState } from "@/modules/media/services/Music";
+import { Queue, musicStore } from "@/modules/media/services/Music";
 import { RecentList } from "@/modules/media/services/RecentList";
 import { onboardingStore } from "../services/Onboarding";
 
@@ -249,7 +249,7 @@ export async function cleanupDatabase(usedTrackIds: string[]) {
   // Ensure we didn't reference deleted tracks in the playback store.
   const currList = musicStore.getState().playingList;
   const hasRemovedTrack = currList.some((tId) => unusedTrackIds.includes(tId));
-  if (hasRemovedTrack) await resetState();
+  if (hasRemovedTrack) await musicStore.getState().reset();
   // Clear the queue of deleted tracks.
   await Queue.removeIds(unusedTrackIds);
 

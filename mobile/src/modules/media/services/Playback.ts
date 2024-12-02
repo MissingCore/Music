@@ -1,7 +1,7 @@
 import TrackPlayer from "react-native-track-player";
 
 import { getTrack } from "@/api/track";
-import { Queue, RNTPManager, musicStore, resetState } from "./Music";
+import { Queue, RNTPManager, musicStore } from "./Music";
 import { RecentList } from "./RecentList";
 
 import {
@@ -46,7 +46,9 @@ export class MusicControls {
   static async prev() {
     const prevTrack = RNTPManager.getPrevTrack();
     // If no track is found, reset the state.
-    if (prevTrack.activeTrack === undefined) return await resetState();
+    if (prevTrack.activeTrack === undefined) {
+      return await musicStore.getState().reset();
+    }
 
     // If the RNTP queue isn't loaded or if we played <=10s of the track,
     // simply update the `currPlayingIdx` & `currPlayingId`
