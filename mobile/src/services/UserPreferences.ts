@@ -18,7 +18,7 @@ import { createStore } from "zustand/vanilla";
 
 import i18next from "@/modules/i18n";
 import { LANGUAGES } from "@/modules/i18n/constants";
-import { RecentList } from "@/modules/media/services/Music";
+import { RecentList } from "@/modules/media/services/RecentList";
 
 import { clearAllQueries } from "@/lib/react-query";
 

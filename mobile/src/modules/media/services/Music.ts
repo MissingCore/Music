@@ -9,19 +9,14 @@ import {
 } from "zustand/middleware";
 import { createStore } from "zustand/vanilla";
 
-import type { PlaylistWithTracks, TrackWithAlbum } from "@/db/schema";
-import { formatForMediaCard } from "@/db/utils";
+import type { TrackWithAlbum } from "@/db/schema";
 
 import i18next from "@/modules/i18n";
-import { getAlbum } from "@/api/album";
-import { getArtist } from "@/api/artist";
-import { getPlaylist, getSpecialPlaylist } from "@/api/playlist";
 import { getTrack } from "@/api/track";
+import { RecentList } from "./RecentList";
 
 import { ToastOptions } from "@/lib/toast";
 import { shuffleArray } from "@/utils/object";
-import type { ReservedPlaylistName } from "../constants";
-import { ReservedNames } from "../constants";
 import {
   arePlaybackSourceEqual,
   formatTrackforPlayer,
@@ -29,7 +24,6 @@ import {
   getTrackList,
   getTracksFromIds,
 } from "../helpers/data";
-import type { MediaCard } from "../components";
 import type { PlayListSource } from "../types";
 
 //#region Zustand Store
@@ -92,11 +86,6 @@ interface MusicStore {
   queueList: string[];
   /** List of `TrackWithAlbum` from `queueList`. */
   queuedTrackList: TrackWithAlbum[];
-
-  /** List of `playingSource` the user has played. */
-  recentListSources: PlayListSource[];
-  /** List of `MediaCard.Content` we've recently played. */
-  recentList: MediaCard.Content[];
 }
 //#endregion
 
@@ -111,7 +100,6 @@ const STORED_FIELDS: string[] = [
   "listIdx",
   "isInQueue",
   "queueList",
-  "recentListSources",
 ] satisfies Array<keyof MusicStore>;
 //#endregion
 
@@ -166,9 +154,6 @@ export const musicStore = createStore<MusicStore>()(
         isInQueue: false as boolean,
         queueList: [] as string[],
         queuedTrackList: [] as TrackWithAlbum[],
-
-        recentListSources: [] as PlayListSource[],
-        recentList: [] as MediaCard.Content[],
       }),
       {
         name: "music::playing-store",
@@ -248,53 +233,6 @@ musicStore.subscribe(
     musicStore.setState({ queuedTrackList: newTrackList });
   },
 );
-
-/** Update `recentList` when `recentListSources` changes. */
-musicStore.subscribe(
-  (state) => state.recentListSources,
-  async (recentListSources) => {
-    const newRecentList: MediaCard.Content[] = [];
-    let entry: MediaCard.Content | undefined;
-    const errors: PlayListSource[] = [];
-
-    for (const { id, type } of recentListSources) {
-      try {
-        if (type === "album") {
-          const data = await getAlbum(id);
-          entry = formatForMediaCard({ type: "album", data, t: i18next.t });
-        } else if (type === "artist") {
-          const data = await getArtist(id);
-          entry = formatForMediaCard({ type: "artist", data, t: i18next.t });
-        } else if (type === "folder") {
-          // TODO: Eventually support folders in the recent list.
-          entry = undefined;
-        } else {
-          let data: PlaylistWithTracks;
-          if (ReservedNames.has(id)) {
-            data = await getSpecialPlaylist(id as ReservedPlaylistName);
-          } else {
-            data = await getPlaylist(id);
-          }
-          entry = formatForMediaCard({ type: "playlist", data, t: i18next.t });
-        }
-        if (entry) newRecentList.push(entry);
-      } catch {
-        errors.push({ id, type });
-      }
-    }
-
-    // Remove any `PlayListSource` in `recentListSources` that are invalid.
-    const revisedSources = recentListSources.filter(
-      (s1) => !errors.some((s2) => arePlaybackSourceEqual(s1, s2)),
-    );
-
-    musicStore.setState({
-      ...(errors.length > 0 ? { recentListSources: revisedSources } : {}),
-      recentList: newRecentList,
-    });
-  },
-);
-//#endregion
 //#endregion
 
 //#region Helpers
@@ -323,84 +261,6 @@ export class Queue {
       queueList: prev.queueList.filter((tId) => !idSet.has(tId)),
     }));
     await RNTPManager.reloadNextTrack();
-  }
-}
-//#endregion
-
-//#region Recent List Helpers
-/** Helpers to manipulate the recent list. */
-export class RecentList {
-  /** Factory function to compare 2 `PlayListSource` inside array methods easier. */
-  static #compare(fixedSource: PlayListSource, negate = false) {
-    return (source: PlayListSource) =>
-      negate
-        ? !arePlaybackSourceEqual(fixedSource, source)
-        : arePlaybackSourceEqual(fixedSource, source);
-  }
-
-  /** Remove a `PlayListSource` inside a `PlayListSource[]`. */
-  static #removeSourceInList(
-    removedSource: PlayListSource,
-    sourceList: PlayListSource[],
-  ) {
-    return sourceList.filter(RecentList.#compare(removedSource, true));
-  }
-
-  /** Add the latest media list played into the recent list. */
-  static add(newSource: PlayListSource) {
-    let prevList = musicStore.getState().recentListSources;
-    if (RecentList.isInRecentList(newSource, prevList)) {
-      prevList = RecentList.#removeSourceInList(newSource, prevList);
-    }
-    musicStore.setState({ recentListSources: [newSource, ...prevList] });
-  }
-
-  /** Determines if a `PlayListSource` already exists in a `PlayListSource[]`. */
-  static isInRecentList(source: PlayListSource, sourceList: PlayListSource[]) {
-    return sourceList.some(RecentList.#compare(source));
-  }
-
-  /** Replace a specific entry in the recent list. */
-  static replaceEntry({
-    oldSource,
-    newSource,
-  }: Record<"oldSource" | "newSource", PlayListSource>) {
-    const prevList = musicStore.getState().recentListSources;
-    const entryIdx = prevList.findIndex(RecentList.#compare(oldSource));
-    if (entryIdx === -1) return;
-    musicStore.setState({
-      recentListSources: prevList.with(entryIdx, newSource),
-    });
-  }
-
-  /** Remove a multiple entries from the recent list. */
-  static removeEntry(removedSource: PlayListSource) {
-    musicStore.setState((prev) => ({
-      recentListSources: RecentList.#removeSourceInList(
-        removedSource,
-        prev.recentListSources,
-      ),
-    }));
-  }
-
-  /** Remove multiple entries in the recent list. */
-  static removeEntries(removedSources: PlayListSource[]) {
-    let prevList = musicStore.getState().recentListSources;
-    removedSources.forEach((removedSource) => {
-      prevList = RecentList.#removeSourceInList(removedSource, prevList);
-    });
-    musicStore.setState({ recentListSources: prevList });
-  }
-
-  /**
-   * Force a revalidation of the values returned in `recentListAtom`. Useful
-   * when some information displayed (ie: playlist cover/name) changes or
-   * gets deleted.
-   */
-  static refresh() {
-    musicStore.setState((prev) => ({
-      recentListSources: [...prev.recentListSources],
-    }));
   }
 }
 //#endregion
@@ -579,7 +439,7 @@ export class Resynchronize {
   /** Resynchronize when we delete one or more media lists. */
   static async onDelete(removedRefs: PlayListSource | PlayListSource[]) {
     if (Array.isArray(removedRefs)) RecentList.removeEntries(removedRefs);
-    else RecentList.removeEntry(removedRefs);
+    else RecentList.removeEntries([removedRefs]);
 
     // Check if we were playing this list.
     const currSource = musicStore.getState().playingSource;

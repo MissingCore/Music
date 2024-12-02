@@ -1,13 +1,8 @@
 import TrackPlayer from "react-native-track-player";
 
 import { getTrack } from "@/api/track";
-import {
-  Queue,
-  RecentList,
-  RNTPManager,
-  musicStore,
-  resetState,
-} from "./Music";
+import { Queue, RNTPManager, musicStore, resetState } from "./Music";
+import { RecentList } from "./RecentList";
 
 import {
   arePlaybackSourceEqual,

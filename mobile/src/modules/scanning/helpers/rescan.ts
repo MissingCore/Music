@@ -7,7 +7,8 @@ import { fileNodes, invalidTracks, tracks } from "@/db/schema";
 
 import i18next from "@/modules/i18n";
 import { getTracks } from "@/api/track";
-import { RecentList, Resynchronize } from "@/modules/media/services/Music";
+import { Resynchronize } from "@/modules/media/services/Music";
+import { RecentList } from "@/modules/media/services/RecentList";
 
 import { ToastOptions } from "@/lib/toast";
 import { batch } from "@/utils/promise";

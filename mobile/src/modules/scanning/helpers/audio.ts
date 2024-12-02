@@ -14,12 +14,8 @@ import { createArtist, deleteArtist } from "@/api/artist";
 import { getSaveErrors } from "@/api/setting";
 import { createTrack, deleteTrack, getTracks, updateTrack } from "@/api/track";
 import { userPreferencesStore } from "@/services/UserPreferences";
-import {
-  Queue,
-  RecentList,
-  musicStore,
-  resetState,
-} from "@/modules/media/services/Music";
+import { Queue, musicStore, resetState } from "@/modules/media/services/Music";
+import { RecentList } from "@/modules/media/services/RecentList";
 import { onboardingStore } from "../services/Onboarding";
 
 import { clearAllQueries } from "@/lib/react-query";
