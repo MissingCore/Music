@@ -147,7 +147,6 @@ export const musicStore = createStore<MusicStore>()(
             currentTrackList: newActiveList,
             listIdx: newListIdx === -1 ? 0 : newListIdx,
           });
-
           await RNTPManager.reloadNextTrack();
           set({ shuffle: status });
         },
@@ -303,12 +302,9 @@ musicStore.subscribe(
 /** Helpers to manipulate the current queue. */
 export class Queue {
   /** Add a track id at the end of the current queue. */
-  static async add(trackId: string, trackName?: string) {
-    musicStore.setState((prev) => ({
-      queueList: [...prev.queueList, trackId],
-    }));
-    toast(i18next.t("response.queueAdd", { name: trackName }), ToastOptions);
-
+  static async add({ id, name }: { id: string; name: string }) {
+    musicStore.setState((prev) => ({ queueList: [...prev.queueList, id] }));
+    toast(i18next.t("response.queueAdd", { name }), ToastOptions);
     await RNTPManager.reloadNextTrack();
   }
 
@@ -317,7 +313,6 @@ export class Queue {
     musicStore.setState((prev) => ({
       queueList: prev.queueList.filter((_, idx) => idx !== index),
     }));
-
     await RNTPManager.reloadNextTrack();
   }
 
@@ -327,7 +322,6 @@ export class Queue {
     musicStore.setState((prev) => ({
       queueList: prev.queueList.filter((tId) => !idSet.has(tId)),
     }));
-
     await RNTPManager.reloadNextTrack();
   }
 }
