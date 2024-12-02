@@ -5,7 +5,7 @@ import type { TrackWithAlbum } from "@/db/schema";
 import { formatForTrack, sortTracks } from "@/db/utils";
 
 import { addToPlaylist, favoriteTrack, removeFromPlaylist } from "@/api/track";
-import { Resynchronize } from "@/modules/media/services/Music";
+import { Resynchronize } from "@/modules/media/services/Resynchronize";
 import { useSessionPreferencesStore } from "@/services/SessionPreferences";
 import { queries as q } from "./keyStore";
 

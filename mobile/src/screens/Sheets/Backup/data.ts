@@ -15,7 +15,8 @@ import i18next from "@/modules/i18n";
 import { getAlbums } from "@/api/album";
 import { createPlaylist, getPlaylists, updatePlaylist } from "@/api/playlist";
 import { addToPlaylist, getTracks } from "@/api/track";
-import { Resynchronize, musicStore } from "@/modules/media/services/Music";
+import { musicStore } from "@/modules/media/services/Music";
+import { Resynchronize } from "@/modules/media/services/Resynchronize";
 
 import { clearAllQueries } from "@/lib/react-query";
 import { ToastOptions } from "@/lib/toast";

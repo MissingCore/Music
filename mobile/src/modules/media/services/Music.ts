@@ -6,16 +6,13 @@ import type { TrackWithAlbum } from "@/db/schema";
 
 import i18next from "@/modules/i18n";
 import { getTrack } from "@/api/track";
-import { RecentList } from "./RecentList";
 
 import { ToastOptions } from "@/lib/toast";
 import { createPersistedSubscribedStore } from "@/lib/zustand";
 import { shuffleArray } from "@/utils/object";
 import {
-  arePlaybackSourceEqual,
   formatTrackforPlayer,
   getSourceName,
-  getTrackList,
   getTracksFromIds,
 } from "../helpers/data";
 import type { PlayListSource } from "../types";
@@ -392,88 +389,6 @@ export class RNTPManager {
     }
     // Make sure the next track is also "correct".
     await RNTPManager.reloadNextTrack();
-  }
-}
-//#endregion
-
-//#region Resynchronization Helpers
-/**
- * Helpers to ensure the Jotai store is up-to-date with the changes made
- * in React Query.
- */
-export class Resynchronize {
-  /** Resynchronize when we delete one or more media lists. */
-  static async onDelete(removedRefs: PlayListSource | PlayListSource[]) {
-    if (Array.isArray(removedRefs)) RecentList.removeEntries(removedRefs);
-    else RecentList.removeEntries([removedRefs]);
-
-    // Check if we were playing this list.
-    const currSource = musicStore.getState().playingSource;
-    if (!currSource) return;
-
-    const isPlayingRef = Array.isArray(removedRefs)
-      ? RecentList.isInRecentList(currSource, removedRefs)
-      : arePlaybackSourceEqual(currSource, removedRefs);
-    if (isPlayingRef) await musicStore.getState().reset();
-  }
-
-  /** Resynchronize when we update the artwork. */
-  static onImage() {
-    RecentList.refresh();
-  }
-
-  /** Resynchronize when we rename a playlist. */
-  static onRename({
-    oldSource,
-    newSource,
-  }: Record<"oldSource" | "newSource", PlayListSource>) {
-    RecentList.replaceEntry({ oldSource, newSource });
-
-    // Check if we were playing this list.
-    const currSource = musicStore.getState().playingSource;
-    if (!currSource) return;
-
-    const isPlayingRef = arePlaybackSourceEqual(currSource, oldSource);
-    if (isPlayingRef) {
-      getSourceName(newSource).then((newName) =>
-        musicStore.setState({ playingSource: newSource, sourceName: newName }),
-      );
-    }
-  }
-
-  /** Resynchronize when we update the tracks in a media list. */
-  static async onTracks(ref: PlayListSource) {
-    RecentList.refresh();
-
-    // Check if we were playing this list.
-    const { playingSource, activeId } = musicStore.getState();
-    if (!playingSource) return;
-    const isPlayingRef = arePlaybackSourceEqual(playingSource, ref);
-    if (!isPlayingRef) return;
-
-    // Make sure our track lists along with the current index are up-to-date.
-    const newPlayingList = (await getTrackList(playingSource)).map(
-      ({ id }) => id,
-    );
-    const newListsInfo = RNTPManager.getUpdatedLists(newPlayingList, activeId);
-
-    // Update state.
-    musicStore.setState({ ...newListsInfo });
-
-    // Make sure the next track is correct after updating the list used.
-    await RNTPManager.reloadNextTrack();
-  }
-
-  /** Resynchronize if we discovered new tracks in the current playing list. */
-  static async onUpdatedList(newIds: string[]) {
-    if (newIds.length === 0) return;
-    const currSource = musicStore.getState().playingSource;
-    if (currSource === undefined) return;
-
-    const hasUnstagedTrack = (await getTrackList(currSource)).some(
-      ({ id: tId }) => newIds.includes(tId),
-    );
-    if (hasUnstagedTrack) await Resynchronize.onTracks(currSource);
   }
 }
 //#endregion

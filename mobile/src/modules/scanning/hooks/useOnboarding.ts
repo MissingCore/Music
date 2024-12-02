@@ -2,7 +2,7 @@ import * as MediaLibrary from "expo-media-library";
 import { useCallback, useEffect, useState } from "react";
 
 import { useHasHydratedStores } from "@/hooks/useHasHydratedStores";
-import { Resynchronize } from "@/modules/media/services/Music";
+import { Resynchronize } from "@/modules/media/services/Resynchronize";
 import { findAndSaveArtwork, cleanupImages } from "../helpers/artwork";
 import { findAndSaveAudio, cleanupDatabase } from "../helpers/audio";
 import { checkForMigrations } from "../helpers/migrations";
