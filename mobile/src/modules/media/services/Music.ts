@@ -1,9 +1,3 @@
-/**
- * Store representing the Media Player Interface.
- *
- * This file contains classes containing helpers to manipulate the store.
- */
-
 import { toast } from "@backpackapp-io/react-native-toast";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import TrackPlayer, { State } from "react-native-track-player";
@@ -26,7 +20,8 @@ import { getTrack } from "@/api/track";
 
 import { ToastOptions } from "@/lib/toast";
 import { shuffleArray } from "@/utils/object";
-import { ReservedPlaylists } from "../constants";
+import type { ReservedPlaylistName } from "../constants";
+import { ReservedNames } from "../constants";
 import {
   arePlaybackSourceEqual,
   formatTrackforPlayer,
@@ -135,9 +130,9 @@ export const musicStore = createStore<MusicStore>()(
         isPlaying: false as boolean,
 
         repeat: false as boolean,
-        setRepeat: (status: boolean) => set({ repeat: status }),
+        setRepeat: (status) => set({ repeat: status }),
         shuffle: false as boolean,
-        setShuffle: async (status: boolean) => {
+        setShuffle: async (status) => {
           const { currentTrackList, listIdx, trackList, shuffledTrackList } =
             get();
 
@@ -260,52 +255,42 @@ musicStore.subscribe(
   (state) => state.recentListSources,
   async (recentListSources) => {
     const newRecentList: MediaCard.Content[] = [];
+    let entry: MediaCard.Content | undefined;
     const errors: PlayListSource[] = [];
 
     for (const { id, type } of recentListSources) {
       try {
         if (type === "album") {
           const data = await getAlbum(id);
-          newRecentList.push(
-            formatForMediaCard({ type: "album", data, t: i18next.t }),
-          );
+          entry = formatForMediaCard({ type: "album", data, t: i18next.t });
         } else if (type === "artist") {
           const data = await getArtist(id);
-          newRecentList.push(
-            formatForMediaCard({ type: "artist", data, t: i18next.t }),
-          );
-        } else if (type === "playlist") {
+          entry = formatForMediaCard({ type: "artist", data, t: i18next.t });
+        } else if (type === "folder") {
+          // TODO: Eventually support folders in the recent list.
+          entry = undefined;
+        } else {
           let data: PlaylistWithTracks;
-          if (
-            id === ReservedPlaylists.favorites ||
-            id === ReservedPlaylists.tracks
-          ) {
-            data = await getSpecialPlaylist(id);
+          if (ReservedNames.has(id)) {
+            data = await getSpecialPlaylist(id as ReservedPlaylistName);
           } else {
             data = await getPlaylist(id);
           }
-          newRecentList.push(
-            formatForMediaCard({ type: "playlist", data, t: i18next.t }),
-          );
-        } else if (type === "folder") {
-          // TODO: Eventually support folders in the recent list.
-        } else {
-          throw new Error("Unsupported recent list type.");
+          entry = formatForMediaCard({ type: "playlist", data, t: i18next.t });
         }
+        if (entry) newRecentList.push(entry);
       } catch {
         errors.push({ id, type });
       }
     }
 
+    // Remove any `PlayListSource` in `recentListSources` that are invalid.
+    const revisedSources = recentListSources.filter(
+      (s1) => !errors.some((s2) => arePlaybackSourceEqual(s1, s2)),
+    );
+
     musicStore.setState({
-      // Remove any `PlayListSource` in `recentListSources` that are invalid.
-      ...(errors.length > 0
-        ? {
-            recentListSources: recentListSources.filter(
-              (s1) => !errors.some((s2) => arePlaybackSourceEqual(s1, s2)),
-            ),
-          }
-        : {}),
+      ...(errors.length > 0 ? { recentListSources: revisedSources } : {}),
       recentList: newRecentList,
     });
   },
