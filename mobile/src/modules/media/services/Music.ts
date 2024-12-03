@@ -1,47 +1,30 @@
-/**
- * Store representing the Media Player Interface.
- *
- * This file contains classes containing helpers to manipulate the store.
- */
-
 import { toast } from "@backpackapp-io/react-native-toast";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import TrackPlayer, { State } from "react-native-track-player";
 import { useStore } from "zustand";
-import {
-  createJSONStorage,
-  persist,
-  subscribeWithSelector,
-} from "zustand/middleware";
-import { createStore } from "zustand/vanilla";
 
-import type { PlaylistWithTracks, TrackWithAlbum } from "@/db/schema";
-import { formatForMediaCard } from "@/db/utils";
+import type { TrackWithAlbum } from "@/db/schema";
 
 import i18next from "@/modules/i18n";
-import { getAlbum } from "@/api/album";
-import { getArtist } from "@/api/artist";
-import { getPlaylist, getSpecialPlaylist } from "@/api/playlist";
 import { getTrack } from "@/api/track";
 
 import { ToastOptions } from "@/lib/toast";
+import { createPersistedSubscribedStore } from "@/lib/zustand";
 import { shuffleArray } from "@/utils/object";
-import { ReservedPlaylists } from "../constants";
 import {
-  arePlaybackSourceEqual,
   formatTrackforPlayer,
-  getTrackList,
+  getSourceName,
   getTracksFromIds,
 } from "../helpers/data";
-import type { MediaCard } from "../components";
 import type { PlayListSource } from "../types";
 
-//#region Zustand Store
-//#region MusicStore Interface
+//#region Store
 interface MusicStore {
   /** Determines if the store has been hydrated from AsyncStorage. */
   _hasHydrated: boolean;
-  setHasHydrated: (newState: boolean) => void;
+  /** Initialize state that weren't initialized from subscriptions. */
+  _init: (state: MusicStore) => Promise<void>;
+  /** Resets the properties dictating the playing media. */
+  reset: () => Promise<void>;
 
   /** If we're currently playing a track. */
   isPlaying: boolean;
@@ -58,7 +41,7 @@ interface MusicStore {
    * the order of the tracks played.
    */
   shuffle: boolean;
-  /** Update the `shuffle` field. */
+  /** Update the `shuffle` field along with `currentTrackList` & `listIdx`. */
   setShuffle: (status: boolean) => void;
 
   /** Where the contents of `playingList` is from. */
@@ -73,8 +56,6 @@ interface MusicStore {
   shuffledPlayingList: string[];
   /** Shuffled list of `TrackWithAlbum`. */
   shuffledTrackList: TrackWithAlbum[];
-  /** The list of track ids used based on `shuffle`. */
-  currentList: string[];
   /** The list of `TrackWithAlbum` used based on `shuffle`. */
   currentTrackList: TrackWithAlbum[];
 
@@ -97,15 +78,9 @@ interface MusicStore {
   queueList: string[];
   /** List of `TrackWithAlbum` from `queueList`. */
   queuedTrackList: TrackWithAlbum[];
-
-  /** List of `playingSource` the user has played. */
-  recentListSources: PlayListSource[];
-  /** List of `MediaCard.Content` we've recently played. */
-  recentList: MediaCard.Content[];
 }
-//#endregion
 
-//#region Fields stored in AsyncStorage
+/** Fields stored in AsyncStorage. */
 const STORED_FIELDS: string[] = [
   "repeat",
   "shuffle",
@@ -116,148 +91,95 @@ const STORED_FIELDS: string[] = [
   "listIdx",
   "isInQueue",
   "queueList",
-  "recentListSources",
 ] satisfies Array<keyof MusicStore>;
-//#endregion
 
-//#region Store Creation
-export const musicStore = createStore<MusicStore>()(
-  subscribeWithSelector(
-    persist(
-      (set) => ({
-        _hasHydrated: false as boolean,
-        setHasHydrated: (state) => {
-          set({ _hasHydrated: state });
-        },
-
-        isPlaying: false as boolean,
-
-        repeat: false as boolean,
-        setRepeat: (status: boolean) => set({ repeat: status }),
-        shuffle: false as boolean,
-        setShuffle: (status: boolean) => set({ shuffle: status }),
-
-        playingSource: undefined as PlayListSource | undefined,
+export const musicStore = createPersistedSubscribedStore<MusicStore>(
+  (set, get) => ({
+    _hasHydrated: false as boolean,
+    _init: async ({ playingSource }) => {
+      let sourceName = "";
+      if (playingSource) sourceName = await getSourceName(playingSource);
+      set({ _hasHydrated: true, sourceName });
+    },
+    reset: async () => {
+      set({
+        playingSource: undefined,
         sourceName: "",
-        playingList: [] as string[],
-        trackList: [] as TrackWithAlbum[],
-        shuffledPlayingList: [] as string[],
-        shuffledTrackList: [] as TrackWithAlbum[],
-        currentList: [] as string[],
-        currentTrackList: [] as TrackWithAlbum[],
-
-        activeId: undefined as string | undefined,
-        activeTrack: undefined as TrackWithAlbum | undefined,
+        playingList: [],
+        shuffledPlayingList: [],
+        activeId: undefined,
         listIdx: 0,
+        isInQueue: false,
+        queueList: [],
+      });
+      await TrackPlayer.reset();
+    },
 
-        isInQueue: false as boolean,
-        queueList: [] as string[],
-        queuedTrackList: [] as TrackWithAlbum[],
+    isPlaying: false as boolean,
 
-        recentListSources: [] as PlayListSource[],
-        recentList: [] as MediaCard.Content[],
-      }),
-      {
-        name: "music::playing-store",
-        storage: createJSONStorage(() => AsyncStorage),
-        // Only store some fields in AsyncStorage.
-        partialize: (state) =>
-          Object.fromEntries(
-            Object.entries(state).filter(([key]) =>
-              STORED_FIELDS.includes(key),
-            ),
-          ),
-        // Listen to when the store is hydrated.
-        onRehydrateStorage: () => {
-          console.log("[Music Store] Re-hydrating storage.");
-          return (state, error) => {
-            if (error) console.log("[Music Store]", error);
-            else {
-              console.log("[Music Store] Completed with:", state);
-              state?.setHasHydrated(true);
-            }
-          };
-        },
-      },
-    ),
-  ),
+    repeat: false as boolean,
+    setRepeat: (status) => set({ repeat: status }),
+    shuffle: false as boolean,
+    setShuffle: async (status) => {
+      const { currentTrackList, listIdx, trackList, shuffledTrackList } = get();
+
+      const newActiveList = status ? shuffledTrackList : trackList;
+      // Shuffle around the track at `listIdx` and not `activeId`.
+      const trackAtListIdx = currentTrackList[listIdx]?.id;
+      const newListIdx = newActiveList.findIndex(
+        ({ id }) => id === trackAtListIdx,
+      );
+
+      musicStore.setState({
+        currentTrackList: newActiveList,
+        listIdx: newListIdx === -1 ? 0 : newListIdx,
+      });
+      await RNTPManager.reloadNextTrack();
+      set({ shuffle: status });
+    },
+
+    playingSource: undefined as PlayListSource | undefined,
+    sourceName: "",
+    playingList: [] as string[],
+    trackList: [] as TrackWithAlbum[],
+    shuffledPlayingList: [] as string[],
+    shuffledTrackList: [] as TrackWithAlbum[],
+    currentTrackList: [] as TrackWithAlbum[],
+
+    activeId: undefined as string | undefined,
+    activeTrack: undefined as TrackWithAlbum | undefined,
+    listIdx: 0,
+
+    isInQueue: false as boolean,
+    queueList: [] as string[],
+    queuedTrackList: [] as TrackWithAlbum[],
+  }),
+  {
+    name: "music::playing-store",
+    // Only store some fields in AsyncStorage.
+    partialize: (state) =>
+      Object.fromEntries(
+        Object.entries(state).filter(([key]) => STORED_FIELDS.includes(key)),
+      ),
+    // Listen to when the store is hydrated.
+    onRehydrateStorage: () => {
+      console.log("[Music Store] Re-hydrating storage.");
+      return (state, error) => {
+        if (error) console.log("[Music Store]", error);
+        else {
+          console.log("[Music Store] Completed with:", state);
+          state?._init(state);
+        }
+      };
+    },
+  },
 );
 
-//#region Custom Hook
 export const useMusicStore = <T>(selector: (state: MusicStore) => T): T =>
   useStore(musicStore, selector);
 //#endregion
-//#endregion
 
 //#region Subscriptions
-/** Update `currentList` & `currentTrackList` when `shuffle` changes. */
-musicStore.subscribe(
-  (state) => state.shuffle,
-  async (shuffle) => {
-    const {
-      activeId,
-      listIdx,
-      playingList,
-      trackList,
-      shuffledPlayingList,
-      shuffledTrackList,
-    } = musicStore.getState();
-
-    const prevCurrList = shuffle ? playingList : shuffledPlayingList;
-    const newCurrList = shuffle ? shuffledPlayingList : playingList;
-    // Get the new `listIdx` value.
-    const trackAtListIdx = prevCurrList[listIdx]!;
-    const isActiveInList = prevCurrList.some((tId) => tId === activeId);
-
-    // New list index will be based either on the current playing track if
-    // it's in the list, or the track at the `listIdx` index.
-    const newListIdx =
-      activeId === undefined
-        ? 0
-        : isActiveInList
-          ? newCurrList.findIndex((tId) => tId === activeId)
-          : newCurrList.findIndex((tId) => tId === trackAtListIdx);
-
-    musicStore.setState({
-      currentList: newCurrList,
-      currentTrackList: shuffle ? shuffledTrackList : trackList,
-      listIdx: newListIdx,
-    });
-
-    await RNTPManager.reloadNextTrack();
-  },
-);
-
-/** Update `sourceName` when `playingSource` changes. */
-musicStore.subscribe(
-  (state) => state.playingSource,
-  async (source) => {
-    if (!source) {
-      musicStore.setState({ sourceName: "" });
-      return;
-    }
-
-    let newSourceName = "";
-    try {
-      if (
-        (Object.values(ReservedPlaylists) as string[]).includes(source.id) ||
-        ["artist", "playlist"].includes(source.type)
-      ) {
-        newSourceName = source.id;
-      } else if (source.type === "folder") {
-        // FIXME: At `-2` index due to the folder path (in `id`) ending with
-        // a trailing slash.
-        newSourceName = source.id.split("/").at(-2) ?? "";
-      } else if (source.type === "album") {
-        const album = await getAlbum(source.id);
-        newSourceName = album.name;
-      }
-    } catch {}
-
-    musicStore.setState({ sourceName: newSourceName });
-  },
-);
-
 /** Updates all 3 track lists when `playingList` changes. */
 musicStore.subscribe(
   (state) => state.playingList,
@@ -273,7 +195,6 @@ musicStore.subscribe(
     musicStore.setState({
       trackList: newTrackList,
       shuffledTrackList: newShuffledTrackList,
-      currentList: shuffle ? shuffledPlayingList : playingList,
       currentTrackList: shuffle ? newShuffledTrackList : newTrackList,
     });
   },
@@ -304,63 +225,6 @@ musicStore.subscribe(
     musicStore.setState({ queuedTrackList: newTrackList });
   },
 );
-
-/** Update `recentList` when `recentListSources` changes. */
-musicStore.subscribe(
-  (state) => state.recentListSources,
-  async (recentListSources) => {
-    const newRecentList: MediaCard.Content[] = [];
-    const errors: PlayListSource[] = [];
-
-    for (const { id, type } of recentListSources) {
-      try {
-        if (type === "album") {
-          const data = await getAlbum(id);
-          newRecentList.push(
-            formatForMediaCard({ type: "album", data, t: i18next.t }),
-          );
-        } else if (type === "artist") {
-          const data = await getArtist(id);
-          newRecentList.push(
-            formatForMediaCard({ type: "artist", data, t: i18next.t }),
-          );
-        } else if (type === "playlist") {
-          let data: PlaylistWithTracks;
-          if (
-            id === ReservedPlaylists.favorites ||
-            id === ReservedPlaylists.tracks
-          ) {
-            data = await getSpecialPlaylist(id);
-          } else {
-            data = await getPlaylist(id);
-          }
-          newRecentList.push(
-            formatForMediaCard({ type: "playlist", data, t: i18next.t }),
-          );
-        } else if (type === "folder") {
-          // TODO: Eventually support folders in the recent list.
-        } else {
-          throw new Error("Unsupported recent list type.");
-        }
-      } catch {
-        errors.push({ id, type });
-      }
-    }
-
-    musicStore.setState({
-      // Remove any `PlayListSource` in `recentListSources` that are invalid.
-      ...(errors.length > 0
-        ? {
-            recentListSources: recentListSources.filter(
-              (s1) => !errors.some((s2) => arePlaybackSourceEqual(s1, s2)),
-            ),
-          }
-        : {}),
-      recentList: newRecentList,
-    });
-  },
-);
-//#endregion
 //#endregion
 
 //#region Helpers
@@ -368,21 +232,17 @@ musicStore.subscribe(
 /** Helpers to manipulate the current queue. */
 export class Queue {
   /** Add a track id at the end of the current queue. */
-  static async add(trackId: string, trackName?: string) {
-    musicStore.setState((prev) => ({
-      queueList: [...prev.queueList, trackId],
-    }));
-    toast(i18next.t("response.queueAdd", { name: trackName }), ToastOptions);
-
+  static async add({ id, name }: { id: string; name: string }) {
+    musicStore.setState((prev) => ({ queueList: [...prev.queueList, id] }));
+    toast(i18next.t("response.queueAdd", { name }), ToastOptions);
     await RNTPManager.reloadNextTrack();
   }
 
   /** Remove track id at specified index of current queue. */
   static async removeAtIndex(index: number) {
     musicStore.setState((prev) => ({
-      queueList: prev.queueList.filter((_, idx) => idx !== index),
+      queueList: prev.queueList.toSpliced(index, 1),
     }));
-
     await RNTPManager.reloadNextTrack();
   }
 
@@ -392,86 +252,7 @@ export class Queue {
     musicStore.setState((prev) => ({
       queueList: prev.queueList.filter((tId) => !idSet.has(tId)),
     }));
-
     await RNTPManager.reloadNextTrack();
-  }
-}
-//#endregion
-
-//#region Recent List Helpers
-/** Helpers to manipulate the recent list. */
-export class RecentList {
-  /** Factory function to compare 2 `PlayListSource` inside array methods easier. */
-  static #compare(fixedSource: PlayListSource, negate = false) {
-    return (source: PlayListSource) =>
-      negate
-        ? !arePlaybackSourceEqual(fixedSource, source)
-        : arePlaybackSourceEqual(fixedSource, source);
-  }
-
-  /** Remove a `PlayListSource` inside a `PlayListSource[]`. */
-  static #removeSourceInList(
-    removedSource: PlayListSource,
-    sourceList: PlayListSource[],
-  ) {
-    return sourceList.filter(RecentList.#compare(removedSource, true));
-  }
-
-  /** Add the latest media list played into the recent list. */
-  static add(newSource: PlayListSource) {
-    let prevList = musicStore.getState().recentListSources;
-    if (RecentList.isInRecentList(newSource, prevList)) {
-      prevList = RecentList.#removeSourceInList(newSource, prevList);
-    }
-    musicStore.setState({ recentListSources: [newSource, ...prevList] });
-  }
-
-  /** Determines if a `PlayListSource` already exists in a `PlayListSource[]`. */
-  static isInRecentList(source: PlayListSource, sourceList: PlayListSource[]) {
-    return sourceList.some(RecentList.#compare(source));
-  }
-
-  /** Replace a specific entry in the recent list. */
-  static replaceEntry({
-    oldSource,
-    newSource,
-  }: Record<"oldSource" | "newSource", PlayListSource>) {
-    const prevList = musicStore.getState().recentListSources;
-    const entryIdx = prevList.findIndex(RecentList.#compare(oldSource));
-    if (entryIdx === -1) return;
-    musicStore.setState({
-      recentListSources: prevList.with(entryIdx, newSource),
-    });
-  }
-
-  /** Remove a multiple entries from the recent list. */
-  static removeEntry(removedSource: PlayListSource) {
-    musicStore.setState((prev) => ({
-      recentListSources: RecentList.#removeSourceInList(
-        removedSource,
-        prev.recentListSources,
-      ),
-    }));
-  }
-
-  /** Remove multiple entries in the recent list. */
-  static removeEntries(removedSources: PlayListSource[]) {
-    let prevList = musicStore.getState().recentListSources;
-    removedSources.forEach((removedSource) => {
-      prevList = RecentList.#removeSourceInList(removedSource, prevList);
-    });
-    musicStore.setState({ recentListSources: prevList });
-  }
-
-  /**
-   * Force a revalidation of the values returned in `recentListAtom`. Useful
-   * when some information displayed (ie: playlist cover/name) changes or
-   * gets deleted.
-   */
-  static refresh() {
-    musicStore.setState((prev) => ({
-      recentListSources: [...prev.recentListSources],
-    }));
   }
 }
 //#endregion
@@ -486,17 +267,16 @@ export type TrackStatus = "RELOAD" | "QUEUE" | "END" | undefined;
 /** Helpers to help manage the RNTP queue. */
 export class RNTPManager {
   /** Determine if any tracks are loaded in RNTP on launch. */
-  static async isRNTPLoaded() {
+  static async isLoaded() {
     return (await TrackPlayer.getPlaybackState()).state !== State.None;
   }
 
   /** Initialize the RNTP queue, loading the first 2 tracks. */
-  static async preloadRNTPQueue() {
-    if (await RNTPManager.isRNTPLoaded()) return;
+  static async preload() {
+    if (await RNTPManager.isLoaded()) return;
     console.log("[RNTP] Queue is empty, preloading RNTP Queue...");
     const { activeTrack, isInQueue } = musicStore.getState();
     if (!activeTrack) return;
-
     // Add the current playing track to the RNTP queue.
     await TrackPlayer.add({
       ...formatTrackforPlayer(activeTrack),
@@ -506,12 +286,7 @@ export class RNTPManager {
     await RNTPManager.reloadNextTrack();
   }
 
-  /**
-   * Returns the next track to be played.
-   *
-   * This is the 1st track in `queueList` or the track at the index after
-   * `listIdx`.
-   */
+  /** Returns the next track or 1st track in queue list. */
   static getNextTrack() {
     const { listIdx, currentTrackList, queuedTrackList } =
       musicStore.getState();
@@ -523,110 +298,105 @@ export class RNTPManager {
       : currentTrackList[nextIndex];
 
     return {
-      trackId: nextTrack?.id,
-      track: nextTrack,
-      newIdx: nextInQueue ? -1 : nextIndex,
+      activeId: nextTrack?.id,
+      activeTrack: nextTrack,
+      listIdx: nextInQueue ? -1 : nextIndex,
       isInQueue: nextInQueue,
     };
   }
 
-  /**
-   * Returns the previous track to be played.
-   *
-   * This is the track at `listIdx` if we were playing from the queue or
-   * the track at the index before `listIdx`.
-   */
+  /** Returns the track at index before `listIdx` or at `listIdx` if in queue. */
   static getPrevTrack() {
     const { listIdx, currentTrackList, isInQueue } = musicStore.getState();
 
-    const prevIndex = isInQueue
-      ? listIdx
-      : listIdx === 0
-        ? currentTrackList.length - 1
-        : listIdx - 1;
+    let prevIndex = listIdx === 0 ? currentTrackList.length - 1 : listIdx - 1;
+    if (isInQueue) prevIndex = listIdx;
     const prevTrack = currentTrackList[prevIndex];
 
     return {
-      trackId: prevTrack?.id,
-      track: prevTrack,
-      newIdx: prevTrack ? prevIndex : -1,
+      activeId: prevTrack?.id,
+      activeTrack: prevTrack,
+      listIdx: prevTrack ? prevIndex : -1,
       isInQueue: false,
     };
   }
 
-  /** Updates all the playing lists, along with `listIdx`. */
-  static getPlayingLists(newPlayingList: string[], startTrackId?: string) {
-    const { shuffle, listIdx, currentList } = musicStore.getState();
+  /** Returns information necessary to switch `playingList` seamlessly. */
+  static getUpdatedLists(
+    newPlayingList: string[],
+    options?: { startTrackId?: string; contextAware?: boolean },
+  ) {
+    const { shuffle, listIdx, currentTrackList, isInQueue } =
+      musicStore.getState();
     const newShuffledPlayingList = shuffleArray(newPlayingList);
 
-    // Get the new index of the track at `listIdx` if the list changes.
-    const prevTrackId = startTrackId ?? currentList[listIdx]!;
-    const newLocation = shuffle
-      ? newShuffledPlayingList.findIndex((tId) => prevTrackId === tId)
-      : newPlayingList.findIndex((tId) => prevTrackId === tId);
-    const newListIdx = newLocation === -1 ? 0 : newLocation;
+    // Get list of tracks we can start from in the new list.
+    const prevIdx = listIdx - 1 === 0 ? newPlayingList.length - 1 : listIdx - 1;
+    const activeTrackIds = [
+      options?.startTrackId,
+      currentTrackList[listIdx]?.id,
+      // We ensured that the `contextAware` option can never occur when
+      // we remove more than 1 track.
+      options?.contextAware ? currentTrackList[prevIdx]?.id : undefined,
+    ];
+    // Get the index we should start at in the new list.
+    let newLocation = -1;
+    let usedContextAwareness = isInQueue;
+    activeTrackIds.forEach((prevTrackId, idx) => {
+      if (!prevTrackId || newLocation !== -1) return;
+      newLocation = shuffle
+        ? newShuffledPlayingList.findIndex((tId) => prevTrackId === tId)
+        : newPlayingList.findIndex((tId) => prevTrackId === tId);
+      // If `idx = 2`, then the active track should be marked as part of the queue.
+      if (idx === 2) usedContextAwareness = true;
+    });
 
     return {
       playingList: newPlayingList,
       shuffledPlayingList: newShuffledPlayingList,
-      currentList: shuffle ? newShuffledPlayingList : newPlayingList,
-
-      listIdx: newListIdx,
-      isInQueue: newLocation === -1,
+      listIdx: newLocation === -1 ? 0 : newLocation,
+      isInQueue: usedContextAwareness || newLocation === -1,
     };
   }
 
-  /** Make sure the next track in the RNTP queue is correct */
+  /** Ensure the next track in the RNTP queue is correct */
   static async reloadNextTrack() {
     // Only update the RNTP queue if its defined.
-    if (!(await RNTPManager.isRNTPLoaded())) return;
+    if (!(await RNTPManager.isLoaded())) return;
     const currTrack = musicStore.getState().activeTrack;
-
-    const { trackId, track, isInQueue } = RNTPManager.getNextTrack();
+    const nextTrack = RNTPManager.getNextTrack();
     await TrackPlayer.removeUpcomingTracks();
-
     // Return if we have no tracks (ie: when we removed a track from
     // the current list).
-    if (!track || !currTrack) return;
-
-    // If the next track is `undefined`, then we should run `resetState()`
+    if (!nextTrack.activeTrack || !currTrack) return;
+    // If the next track is `undefined`, then we should run `reset()`
     // after the current track finishes.
-    if (trackId === undefined) {
+    if (nextTrack.activeId === undefined) {
       await TrackPlayer.add({
         ...formatTrackforPlayer(currTrack!),
-        /**
-         * Custom field that we'll read in the `PlaybackActiveTrackChanged`
-         * event to fire `resetState()`.
-         */
+        // Field read in `PlaybackActiveTrackChanged` event to fire `reset()`.
         "music::status": "END" satisfies TrackStatus,
       });
     } else {
       await TrackPlayer.add({
-        ...formatTrackforPlayer(track!),
-        "music::status": (isInQueue
+        ...formatTrackforPlayer(nextTrack.activeTrack!),
+        "music::status": (nextTrack.isInQueue
           ? "QUEUE"
           : undefined) satisfies TrackStatus,
       });
     }
   }
 
-  /**
-   * Checks to see if we should be playing the current track.
-   *
-   * This checks the track identified by `activeId`. It's our responsibilty
-   * to update `isInQueue`, `listIdx`, and `activeId` correctly.
-   */
-  static async reloadCurrentTrack(args?: {
-    restart?: boolean;
-    preload?: boolean;
-  }) {
-    if (!(await RNTPManager.isRNTPLoaded())) {
-      if (args?.preload) await RNTPManager.preloadRNTPQueue();
+  /** Revalidates the active track (doesn't update `isInQueue` & `listIdx`). */
+  static async reloadCurrentTrack(
+    args?: Partial<Record<"restart" | "preload", boolean>>,
+  ) {
+    if (!(await RNTPManager.isLoaded())) {
+      if (args?.preload) await RNTPManager.preload();
       return;
     }
     const playingTrack = await TrackPlayer.getActiveTrack();
     const { activeTrack, isInQueue } = musicStore.getState();
-
     // Update the current playing track (or restart the track).
     if (playingTrack?.id !== activeTrack?.id || args?.restart) {
       await TrackPlayer.load({
@@ -635,104 +405,9 @@ export class RNTPManager {
       });
       await TrackPlayer.seekTo(0);
     }
-
     // Make sure the next track is also "correct".
     await RNTPManager.reloadNextTrack();
   }
 }
 //#endregion
-
-//#region Resynchronization Helpers
-/**
- * Helpers to ensure the Jotai store is up-to-date with the changes made
- * in React Query.
- */
-export class Resynchronize {
-  /** Resynchronize when we delete one or more media lists. */
-  static async onDelete(removedRefs: PlayListSource | PlayListSource[]) {
-    if (Array.isArray(removedRefs)) RecentList.removeEntries(removedRefs);
-    else RecentList.removeEntry(removedRefs);
-
-    // Check if we were playing this list.
-    const currSource = musicStore.getState().playingSource;
-    if (!currSource) return;
-
-    const isPlayingRef = Array.isArray(removedRefs)
-      ? RecentList.isInRecentList(currSource, removedRefs)
-      : arePlaybackSourceEqual(currSource, removedRefs);
-    if (isPlayingRef) await resetState();
-  }
-
-  /** Resynchronize when we update the artwork. */
-  static onImage() {
-    RecentList.refresh();
-  }
-
-  /** Resynchronize when we rename a playlist. */
-  static onRename({
-    oldSource,
-    newSource,
-  }: Record<"oldSource" | "newSource", PlayListSource>) {
-    RecentList.replaceEntry({ oldSource, newSource });
-
-    // Check if we were playing this list.
-    const currSource = musicStore.getState().playingSource;
-    if (!currSource) return;
-
-    const isPlayingRef = arePlaybackSourceEqual(currSource, oldSource);
-    if (isPlayingRef) musicStore.setState({ playingSource: newSource });
-  }
-
-  /** Resynchronize when we update the tracks in a media list. */
-  static async onTracks(ref: PlayListSource) {
-    RecentList.refresh();
-
-    // Check if we were playing this list.
-    const { playingSource, activeId } = musicStore.getState();
-    if (!playingSource) return;
-    const isPlayingRef = arePlaybackSourceEqual(playingSource, ref);
-    if (!isPlayingRef) return;
-
-    // Make sure our track lists along with the current index are up-to-date.
-    const newPlayingList = (await getTrackList(playingSource)).map(
-      ({ id }) => id,
-    );
-    const newListsInfo = RNTPManager.getPlayingLists(newPlayingList, activeId);
-
-    // Update state.
-    musicStore.setState({ ...newListsInfo });
-
-    // Make sure the next track is correct after updating the list used.
-    await RNTPManager.reloadNextTrack();
-  }
-
-  /** Resynchronize if we discovered new tracks in the current playing list. */
-  static async onUpdatedList(newIds: string[]) {
-    if (newIds.length === 0) return;
-    const currSource = musicStore.getState().playingSource;
-    if (currSource === undefined) return;
-
-    const hasUnstagedTrack = (await getTrackList(currSource)).some(
-      ({ id: tId }) => newIds.includes(tId),
-    );
-    if (hasUnstagedTrack) await Resynchronize.onTracks(currSource);
-  }
-}
-//#endregion
-//#endregion
-
-//#region Reset Function
-/** Resets the persistent state when something goes wrong. */
-export async function resetState() {
-  musicStore.setState({
-    playingSource: undefined,
-    playingList: [],
-    shuffledPlayingList: [],
-    activeId: undefined,
-    listIdx: 0,
-    isInQueue: false,
-    queueList: [],
-  });
-  await TrackPlayer.reset();
-}
 //#endregion

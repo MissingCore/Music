@@ -10,7 +10,7 @@ import {
   useFavoriteTracksCount,
 } from "@/queries/favorite";
 import { useGetColumn } from "@/hooks/useGetColumn";
-import { useMusicStore } from "@/modules/media/services/Music";
+import { useRecentListStore } from "@/modules/media/services/RecentList";
 import { StickyActionScrollLayout } from "@/layouts";
 
 import { cn } from "@/lib/style";
@@ -47,7 +47,7 @@ function RecentlyPlayed() {
   const { width } = useGetColumn({
     ...{ cols: 1, gap: 0, gutters: 32, minWidth: 100 },
   });
-  const recentlyPlayedData = useMusicStore((state) => state.recentList);
+  const recentlyPlayedData = useRecentListStore((state) => state.recentList);
 
   const [initNoData, setInitNoData] = useState(false);
   const [itemHeight, setItemHeight] = useState(0);

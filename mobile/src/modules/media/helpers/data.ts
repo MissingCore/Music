@@ -8,7 +8,7 @@ import type { AddTrack } from "react-native-track-player";
 
 import type { TrackWithAlbum } from "@/db/schema";
 import { tracks } from "@/db/schema";
-import { getTrackCover, sortTracks } from "@/db/utils";
+import { getTrackCover } from "@/db/utils";
 
 import { getAlbum } from "@/api/album";
 import { getArtist } from "@/api/artist";
@@ -16,7 +16,8 @@ import { getFolderTracks } from "@/api/folder";
 import { getPlaylist, getSpecialPlaylist } from "@/api/playlist";
 import { getTracks } from "@/api/track";
 
-import { ReservedPlaylists } from "../constants";
+import type { ReservedPlaylistName } from "../constants";
+import { ReservedNames } from "../constants";
 import type { PlayListSource } from "../types";
 
 /** Check if 2 `PlayListSource` are equivalent. */
@@ -41,6 +42,23 @@ export function formatTrackforPlayer(track: TrackWithAlbum) {
   } satisfies AddTrack;
 }
 
+/** Returns the name of the `PlayListSource`. */
+export async function getSourceName({ type, id }: PlayListSource) {
+  let name = "";
+  try {
+    if (ReservedNames.has(id) || ["artist", "playlist"].includes(type)) {
+      name = id;
+    } else if (type === "folder") {
+      // FIXME: At `-2` index due to the folder path (in `id`) ending with
+      // a trailing slash.
+      name = id.split("/").at(-2) ?? "";
+    } else {
+      name = (await getAlbum(id)).name; // `type` should be `album`.
+    }
+  } catch {}
+  return name;
+}
+
 /** Get list of tracks from a `PlayListSource`. */
 export async function getTrackList({ type, id }: PlayListSource) {
   let sortedTracks: TrackWithAlbum[] = [];
@@ -54,13 +72,9 @@ export async function getTrackList({ type, id }: PlayListSource) {
   } else if (type === "folder") {
     sortedTracks = await getFolderTracks(id); // `id` contains pathname.
   } else {
-    if (id === ReservedPlaylists.tracks) {
-      sortedTracks = sortTracks(await getTracks());
-    } else if (id === ReservedPlaylists.favorites) {
-      const data = await getSpecialPlaylist(ReservedPlaylists.favorites);
-      // FIXME: Current default sorting order for list of favorite tracks
-      // is alphabetical, but may change in the future.
-      sortedTracks = data.tracks;
+    if (ReservedNames.has(id)) {
+      sortedTracks = (await getSpecialPlaylist(id as ReservedPlaylistName))
+        .tracks;
     } else {
       const data = await getPlaylist(id);
       // FIXME: As of now, playlists don't have a "defined" sorting order.

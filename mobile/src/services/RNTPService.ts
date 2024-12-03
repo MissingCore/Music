@@ -10,12 +10,7 @@ import TrackPlayer, {
 import i18next from "@/modules/i18n";
 import { deleteTrack } from "@/api/track";
 import type { TrackStatus } from "@/modules/media/services/Music";
-import {
-  Queue,
-  RNTPManager,
-  musicStore,
-  resetState,
-} from "@/modules/media/services/Music";
+import { Queue, RNTPManager, musicStore } from "@/modules/media/services/Music";
 import { MusicControls } from "@/modules/media/services/Playback";
 import { removeUnusedCategories } from "@/modules/scanning/helpers/audio";
 
@@ -61,8 +56,7 @@ export async function PlaybackService() {
     const trackStatus: TrackStatus = activeTrack["music::status"];
 
     if (trackStatus === "END") {
-      await resetState();
-      return;
+      return await musicStore.getState().reset();
     } else if (trackStatus === "QUEUE") {
       // Remove 1st item in `queueList` if they're the same (doesn't
       // fire if we manually forced the next track to play - which would
@@ -84,16 +78,11 @@ export async function PlaybackService() {
 
       // Since we played this track naturally, the index hasn't been updated
       // in the store.
-      const { trackId, track, newIdx } = RNTPManager.getNextTrack();
-      musicStore.setState({
-        activeId: trackId,
-        activeTrack: track,
-        listIdx: newIdx,
-        isInQueue: false,
-      });
+      const nextTrack = RNTPManager.getNextTrack();
+      musicStore.setState(nextTrack);
 
       // Check if we should pause after looping logic.
-      if (newIdx === 0 && !repeat) {
+      if (nextTrack.listIdx === 0 && !repeat) {
         await MusicControls.pause();
         await TrackPlayer.seekTo(0);
       }
@@ -128,7 +117,7 @@ export async function PlaybackService() {
       ToastOptions,
     );
     // Clear all reference of the current playing track.
-    await resetState();
+    await musicStore.getState().reset();
   });
 }
 

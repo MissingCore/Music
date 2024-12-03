@@ -16,7 +16,7 @@ import {
   favoritePlaylist,
   updatePlaylist,
 } from "@/api/playlist";
-import { Resynchronize } from "@/modules/media/services/Music";
+import { Resynchronize } from "@/modules/media/services/Resynchronize";
 import { queries as q } from "./keyStore";
 
 //#region Queries
