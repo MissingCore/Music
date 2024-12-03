@@ -1,12 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useCallback } from "react";
 
-import type { TrackWithAlbum } from "@/db/schema";
-import { formatForTrack, sortTracks } from "@/db/utils";
+import { formatForTrack } from "@/db/utils";
 
 import { addToPlaylist, favoriteTrack, removeFromPlaylist } from "@/api/track";
 import { Resynchronize } from "@/modules/media/services/Resynchronize";
-import { useSessionPreferencesStore } from "@/services/SessionPreferences";
+import { useSortTracks } from "@/modules/media/services/SortPreferences";
 import { queries as q } from "./keyStore";
 
 import { pickKeys } from "@/utils/object";
@@ -32,7 +30,7 @@ export function useTrackPlaylists(trackId: string) {
 
 /** Return list of `Track.Content` from tracks. */
 export function useTracksForTrackCard() {
-  const sortTracksFn = useSortTracksFn();
+  const sortTracksFn = useSortTracks();
   return useQuery({
     ...q.tracks.all,
     select: (data) =>
@@ -94,18 +92,5 @@ export function useRemoveFromPlaylist(trackId: string) {
       Resynchronize.onTracks({ type: "playlist", id: playlistName });
     },
   });
-}
-//#endregion
-
-//#region Internal Utils
-/** Sorts tracks based on the session preference. */
-function useSortTracksFn() {
-  const isAsc = useSessionPreferencesStore((state) => state.isAsc);
-  const orderedBy = useSessionPreferencesStore((state) => state.orderedBy);
-
-  return useCallback(
-    (data: TrackWithAlbum[]) => sortTracks(data, { isAsc, orderedBy }),
-    [isAsc, orderedBy],
-  );
 }
 //#endregion

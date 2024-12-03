@@ -4,8 +4,8 @@ import type { SheetProps } from "react-native-actions-sheet";
 
 import {
   OrderedByOptions,
-  useSessionPreferencesStore,
-} from "@/services/SessionPreferences";
+  useSortPreferencesStore,
+} from "@/modules/media/services/SortPreferences";
 
 import { Button, Radio, Switch } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";
@@ -14,12 +14,10 @@ import { StyledText } from "@/components/Typography";
 /** Sheet allowing us visually change the sort order on the `/track` screen. */
 export default function TrackSortSheet(props: SheetProps<"track-sort-sheet">) {
   const { t } = useTranslation();
-  const isAsc = useSessionPreferencesStore((state) => state.isAsc);
-  const toggleIsAsc = useSessionPreferencesStore((state) => state.toggleIsAsc);
-  const orderedBy = useSessionPreferencesStore((state) => state.orderedBy);
-  const setOrderedBy = useSessionPreferencesStore(
-    (state) => state.setOrderedBy,
-  );
+  const isAsc = useSortPreferencesStore((state) => state.isAsc);
+  const toggleIsAsc = useSortPreferencesStore((state) => state.toggleIsAsc);
+  const orderedBy = useSortPreferencesStore((state) => state.orderedBy);
+  const setOrderedBy = useSortPreferencesStore((state) => state.setOrderedBy);
 
   return (
     <Sheet

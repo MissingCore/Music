@@ -9,8 +9,6 @@ import type {
 } from "./schema";
 
 import i18next from "@/modules/i18n";
-import type { OrderedByOptions } from "@/services/SessionPreferences";
-import { sessionPreferencesStore } from "@/services/SessionPreferences";
 
 import { formatSeconds } from "@/utils/number";
 import { omitKeys } from "@/utils/object";
@@ -103,33 +101,6 @@ export function formatForCurrentScreen({ type, data, t }: MediaData) {
       ),
     ),
   };
-}
-//#endregion
-
-//#region Sorters
-/** Sort tracks based on filters for `/track` screen. */
-export function sortTracks(
-  tracks: TrackWithAlbum[],
-  /** If we want this to be reactive (ie: In a hook). */
-  config?: { isAsc: boolean; orderedBy: (typeof OrderedByOptions)[number] },
-) {
-  const isAsc = config?.isAsc ?? sessionPreferencesStore.getState().isAsc;
-  const orderedBy =
-    config?.orderedBy ?? sessionPreferencesStore.getState().orderedBy;
-
-  // FIXME: Once Hermes supports `toSorted` & `toReversed`, use those
-  // instead of the in-place methods.
-  let sortedTracks: TrackWithAlbum[] = [...tracks];
-  // Order track by attribute.
-  if (orderedBy === "alphabetical") {
-    sortedTracks.sort((a, b) => a.name.localeCompare(b.name));
-  } else if (orderedBy === "modified") {
-    sortedTracks.sort((a, b) => a.modificationTime - b.modificationTime);
-  }
-  // Sort tracks in descending order.
-  if (!isAsc) sortedTracks.reverse();
-
-  return sortedTracks;
 }
 //#endregion
 
