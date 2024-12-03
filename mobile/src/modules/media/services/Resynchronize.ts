@@ -62,7 +62,10 @@ export class Resynchronize {
     const newPlayingList = (await getTrackList(playingSource)).map(
       ({ id }) => id,
     );
-    const newListsInfo = RNTPManager.getUpdatedLists(newPlayingList, activeId);
+    const newListsInfo = RNTPManager.getUpdatedLists(newPlayingList, {
+      startTrackId: activeId,
+      contextAware: true,
+    });
     musicStore.setState({ ...newListsInfo });
     // Make sure the next track is correct after updating the list used.
     await RNTPManager.reloadNextTrack();

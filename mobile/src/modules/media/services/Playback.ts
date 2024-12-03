@@ -123,7 +123,7 @@ export async function playFromMediaList({
   if (newPlayingList.length === 0) return; // Don't do anything if list is empty.
   const { isInQueue: _, ...newListsInfo } = RNTPManager.getUpdatedLists(
     newPlayingList,
-    trackId ?? activeId,
+    { startTrackId: trackId ?? activeId },
   );
 
   // 4. Get the track from this new info.

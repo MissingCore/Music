@@ -125,7 +125,7 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
 
       const newActiveList = status ? shuffledTrackList : trackList;
       // Shuffle around the track at `listIdx` and not `activeId`.
-      const trackAtListIdx = currentTrackList[listIdx]!.id;
+      const trackAtListIdx = currentTrackList[listIdx]?.id;
       const newListIdx = newActiveList.findIndex(
         ({ id }) => id === trackAtListIdx,
       );
@@ -322,22 +322,39 @@ export class RNTPManager {
   }
 
   /** Returns information necessary to switch `playingList` seamlessly. */
-  static getUpdatedLists(newPlayingList: string[], startTrackId?: string) {
+  static getUpdatedLists(
+    newPlayingList: string[],
+    options?: { startTrackId?: string; contextAware?: boolean },
+  ) {
     const { shuffle, listIdx, currentTrackList } = musicStore.getState();
     const newShuffledPlayingList = shuffleArray(newPlayingList);
 
+    // Get list of tracks we can start from in the new list.
+    const prevIdx = listIdx - 1 === 0 ? newPlayingList.length - 1 : listIdx - 1;
+    const activeTrackIds = [
+      options?.startTrackId,
+      currentTrackList[listIdx]?.id,
+      // We ensured that the `contextAware` option can never occur when
+      // we remove more than 1 track.
+      options?.contextAware ? currentTrackList[prevIdx]?.id : undefined,
+    ];
     // Get the index we should start at in the new list.
-    const prevTrackId = startTrackId ?? currentTrackList[listIdx]!.id;
-    const newLocation = shuffle
-      ? newShuffledPlayingList.findIndex((tId) => prevTrackId === tId)
-      : newPlayingList.findIndex((tId) => prevTrackId === tId);
-    const newListIdx = newLocation === -1 ? 0 : newLocation;
+    let newLocation = -1;
+    let usedContextAwareness = false;
+    activeTrackIds.forEach((prevTrackId, idx) => {
+      if (!prevTrackId || newLocation !== -1) return;
+      newLocation = shuffle
+        ? newShuffledPlayingList.findIndex((tId) => prevTrackId === tId)
+        : newPlayingList.findIndex((tId) => prevTrackId === tId);
+      // If `idx = 2`, then the active track should be marked as part of the queue.
+      if (idx === 2) usedContextAwareness = true;
+    });
 
     return {
       playingList: newPlayingList,
       shuffledPlayingList: newShuffledPlayingList,
-      listIdx: newListIdx,
-      isInQueue: newLocation === -1,
+      listIdx: newLocation === -1 ? 0 : newLocation,
+      isInQueue: usedContextAwareness || newLocation === -1,
     };
   }
 
