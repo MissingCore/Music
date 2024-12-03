@@ -54,16 +54,12 @@ export class Resynchronize {
   static async onTracks(ref: PlayListSource) {
     RecentList.refresh();
     // Check if we were playing this list.
-    const { playingSource, activeId } = musicStore.getState();
-    if (!playingSource) return;
+    const { playingSource } = musicStore.getState();
     const isPlayingRef = arePlaybackSourceEqual(playingSource, ref);
     if (!isPlayingRef) return;
     // Make sure our track lists along with the current index are up-to-date.
-    const newPlayingList = (await getTrackList(playingSource)).map(
-      ({ id }) => id,
-    );
+    const newPlayingList = (await getTrackList(ref)).map(({ id }) => id);
     const newListsInfo = RNTPManager.getUpdatedLists(newPlayingList, {
-      startTrackId: activeId,
       contextAware: true,
     });
     musicStore.setState({ ...newListsInfo });

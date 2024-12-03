@@ -326,7 +326,8 @@ export class RNTPManager {
     newPlayingList: string[],
     options?: { startTrackId?: string; contextAware?: boolean },
   ) {
-    const { shuffle, listIdx, currentTrackList } = musicStore.getState();
+    const { shuffle, listIdx, currentTrackList, isInQueue } =
+      musicStore.getState();
     const newShuffledPlayingList = shuffleArray(newPlayingList);
 
     // Get list of tracks we can start from in the new list.
@@ -340,7 +341,7 @@ export class RNTPManager {
     ];
     // Get the index we should start at in the new list.
     let newLocation = -1;
-    let usedContextAwareness = false;
+    let usedContextAwareness = isInQueue;
     activeTrackIds.forEach((prevTrackId, idx) => {
       if (!prevTrackId || newLocation !== -1) return;
       newLocation = shuffle
