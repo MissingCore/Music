@@ -20,10 +20,10 @@ export class Resynchronize {
     // Check if we were playing this list.
     const currSource = musicStore.getState().playingSource;
     if (!currSource) return;
-    // If we're playing a list we've deleted, reset the state.
     const isPlayingRef = Array.isArray(removedRefs)
       ? RecentList.isInRecentList(currSource, removedRefs)
       : arePlaybackSourceEqual(currSource, removedRefs);
+    // If we're playing a list we've deleted, reset the state.
     if (isPlayingRef) await musicStore.getState().reset();
   }
 
@@ -40,9 +40,8 @@ export class Resynchronize {
     RecentList.replaceEntry({ oldSource, newSource });
     // Check if we were playing this list.
     const currSource = musicStore.getState().playingSource;
-    if (!currSource) return;
-    // Update `playingSource` if we renamed that source.
     const isPlayingRef = arePlaybackSourceEqual(currSource, oldSource);
+    // Update `playingSource` if we renamed that source.
     if (isPlayingRef) {
       getSourceName(newSource).then((newName) =>
         musicStore.setState({ playingSource: newSource, sourceName: newName }),
@@ -71,7 +70,7 @@ export class Resynchronize {
   static async onUpdatedList(newIds: string[]) {
     if (newIds.length === 0) return;
     const currSource = musicStore.getState().playingSource;
-    if (currSource === undefined) return;
+    if (!currSource) return;
     // See if the playling list has any of the specified tracks.
     const hasUnstagedTrack = (await getTrackList(currSource)).some(
       ({ id: tId }) => newIds.includes(tId),
