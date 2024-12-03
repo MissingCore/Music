@@ -18,6 +18,7 @@ export const OrderedByOptions = ["alphabetical", "modified"] as const;
 interface SortPreferencesStore {
   /** Determines if the store has been hydrated from AsyncStorage. */
   _hasHydrated: boolean;
+  /** Initialize state that weren't initialized from subscriptions. */
   _init: (state: SortPreferencesStore) => void;
 
   /** Should tracks be displayed in ascending order. */
@@ -43,15 +44,16 @@ export const sortPreferencesStore =
     }),
     {
       name: "music::sort-preferences-store",
+      // Only store some fields in AsyncStorage.
+      partialize: (state) => ({
+        isAsc: state.isAsc,
+        orderedBy: state.orderedBy,
+      }),
       // Listen to when the store is hydrated.
       onRehydrateStorage: () => {
-        console.log("[Sort Preferences Store] Re-hydrating storage.");
         return (state, error) => {
           if (error) console.log("[Sort Preferences Store]", error);
-          else {
-            console.log("[Sort Preferences Store] Completed with:", state);
-            state?._init(state);
-          }
+          else state?._init(state);
         };
       },
     },

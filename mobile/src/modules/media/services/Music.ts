@@ -163,13 +163,9 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
       ),
     // Listen to when the store is hydrated.
     onRehydrateStorage: () => {
-      console.log("[Music Store] Re-hydrating storage.");
       return (state, error) => {
         if (error) console.log("[Music Store]", error);
-        else {
-          console.log("[Music Store] Completed with:", state);
-          state?._init(state);
-        }
+        else state?._init(state);
       };
     },
   },

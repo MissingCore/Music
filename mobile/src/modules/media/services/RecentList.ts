@@ -19,7 +19,8 @@ import type { PlayListSource } from "../types";
 interface RecentListStore {
   /** Determines if the store has been hydrated from AsyncStorage. */
   _hasHydrated: boolean;
-  setHasHydrated: (newState: boolean) => void;
+  /** Initialize state that weren't initialized from subscriptions. */
+  _init: (state: RecentListStore) => void;
 
   /** List of `PlayListSource` the user has played. */
   sources: PlayListSource[];
@@ -30,7 +31,9 @@ interface RecentListStore {
 export const recentListStore = createPersistedSubscribedStore<RecentListStore>(
   (set) => ({
     _hasHydrated: false as boolean,
-    setHasHydrated: (state) => set({ _hasHydrated: state }),
+    _init: () => {
+      set({ _hasHydrated: true });
+    },
 
     sources: [] as PlayListSource[],
     recentList: [] as MediaCard.Content[],
@@ -41,13 +44,9 @@ export const recentListStore = createPersistedSubscribedStore<RecentListStore>(
     partialize: (state) => ({ sources: state.sources }),
     // Listen to when the store is hydrated.
     onRehydrateStorage: () => {
-      console.log("[Recent List Store] Re-hydrating storage.");
       return (state, error) => {
         if (error) console.log("[Recent List Store]", error);
-        else {
-          console.log("[Recent List Store] Completed with:", state);
-          state?.setHasHydrated(true);
-        }
+        else state?._init(state);
       };
     },
   },

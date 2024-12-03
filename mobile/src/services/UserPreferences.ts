@@ -1,9 +1,3 @@
-/**
- * Store representing user preferences.
- *
- * This file contains classes containing helpers to manipulate the store.
- */
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getLocales } from "expo-localization";
 import { Appearance } from "react-native";
@@ -32,7 +26,8 @@ export const FontOptions = ["NDot", "NType"] as const;
 interface UserPreferencesStore {
   /** Determines if the store has been hydrated from AsyncStorage. */
   _hasHydrated: boolean;
-  setHasHydrated: (newState: boolean) => void;
+  /** Initialize state that weren't initialized from subscriptions. */
+  _init: (state: UserPreferencesStore) => void;
 
   /** Language code of the displayed content. */
   language: string;
@@ -62,7 +57,7 @@ interface UserPreferencesStore {
 //#region Fields we don't want to store in AsyncStorage
 const OMITTED_FIELDS: string[] = [
   "_hasHydrated",
-  "setHasHydrated",
+  "_init",
   "setLanguage",
   "setTheme",
   "setAccentFont",
@@ -76,7 +71,20 @@ export const userPreferencesStore = createStore<UserPreferencesStore>()(
     persist(
       (set) => ({
         _hasHydrated: false as boolean,
-        setHasHydrated: (state) => set({ _hasHydrated: state }),
+        _init: (state) => {
+          // Set app theme on initialization.
+          if (state.theme !== "system") Appearance.setColorScheme(state.theme);
+          // Try to use device language if no language is specified.
+          if (state.language === "") {
+            const deviceLangCode = getLocales()[0]?.languageCode || "en";
+            // See if we support the device language.
+            const exists = LANGUAGES.some(
+              ({ code }) => code === deviceLangCode,
+            );
+            state.setLanguage(exists ? deviceLangCode : "en");
+          }
+          set({ _hasHydrated: true });
+        },
 
         language: "",
         setLanguage: (languageCode) => set({ language: languageCode }),
@@ -106,28 +114,9 @@ export const userPreferencesStore = createStore<UserPreferencesStore>()(
           ),
         // Listen to when the store is hydrated.
         onRehydrateStorage: () => {
-          console.log("[User Preferences Store] Re-hydrating storage.");
           return (state, error) => {
             if (error) console.log("[User Preferences Store]", error);
-            else {
-              console.log("[User Preferences Store] Completed with:", state);
-              state?.setHasHydrated(true);
-
-              // Set app theme on initialization.
-              if (state?.theme && state.theme !== "system") {
-                Appearance.setColorScheme(state.theme);
-              }
-
-              // Try to use device language if no language is specified.
-              if (state?.language === "") {
-                const deviceLangCode = getLocales()[0]?.languageCode || "en";
-                // See if we support the device language.
-                const exists = LANGUAGES.some(
-                  ({ code }) => code === deviceLangCode,
-                );
-                state.setLanguage(exists ? deviceLangCode : "en");
-              }
-            }
+            else state?._init(state);
           };
         },
       },
