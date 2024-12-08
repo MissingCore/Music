@@ -1,4 +1,4 @@
-const MigrationOptions = ["v1-to-v2-store"] as const;
+const MigrationOptions = ["v1-to-v2-store", "v1-to-v2-schema"] as const;
 
 export type MigrationOption = (typeof MigrationOptions)[number];
 
@@ -20,5 +20,8 @@ export const MigrationHistory: Record<
   0: { version: "v1.0.0-rc.10", changes: [] },
   1: { version: "v1.0.0-rc.11", changes: [] },
   2: { version: "v1.0.0-rc.12", changes: [] },
-  3: { version: "v2.0.0-rc.1", changes: ["v1-to-v2-store"] },
+  3: {
+    version: "v2.0.0-rc.1",
+    changes: ["v1-to-v2-store", "v1-to-v2-schema"],
+  },
 };

@@ -1,4 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { eq } from "drizzle-orm";
+
+import { db } from "@/db";
+import { tracks } from "@/db/schema";
 
 import { userPreferencesStore } from "@/services/UserPreferences";
 
@@ -43,6 +47,13 @@ export const MigrationFunctionMap: Record<
     const listBlock = await readFilterList("directory-blocklist");
 
     userPreferencesStore.setState({ listAllow, listBlock });
+  },
+  "v1-to-v2-schema": async () => {
+    // We now allow the `track` field to be null.
+    await db.update(tracks).set({ track: null }).where(eq(tracks.track, -1));
+    // Easy way of rechecking all tracks.
+    // eslint-disable-next-line drizzle/enforce-update-with-where
+    await db.update(tracks).set({ modificationTime: -1 });
   },
 };
 
