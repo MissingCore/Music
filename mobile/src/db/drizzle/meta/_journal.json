@@ -36,6 +36,13 @@
       "when": 1725684724459,
       "tag": "0004_past_starfox",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1733689925630,
+      "tag": "0005_nappy_talon",
+      "breakpoints": true
     }
   ]
 }
