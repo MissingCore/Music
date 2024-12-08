@@ -33,6 +33,7 @@ export async function findAndSaveArtwork() {
   });
 
   let newArtworkCount = 0;
+  let checkedFiles = 0;
 
   for (const { id, albumId, uri, name, artwork } of uncheckedTracks) {
     // Make sure the track doesn't have `artwork` and either be unassociated
@@ -59,7 +60,12 @@ export async function findAndSaveArtwork() {
 
     // Indicate we attempted to find artwork for a track.
     await updateTrack(id, { fetchedArt: true });
-    onboardingStore.setState((prev) => ({ checked: prev.checked + 1 }));
+    checkedFiles++;
+    // Prevent excessive `setState` on Zustand store which may cause an
+    // "Warning: Maximum update depth exceeded.".
+    if (checkedFiles % 25 === 0) {
+      onboardingStore.setState({ checked: checkedFiles });
+    }
   }
   console.log(
     `Finished saving ${newArtworkCount} new cover images in ${stopwatch.lapTime()}.`,
