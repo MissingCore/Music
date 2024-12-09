@@ -4,6 +4,7 @@ import {
   getMetadata,
 } from "@missingcore/react-native-metadata-retriever";
 import { eq } from "drizzle-orm";
+import * as FileSystem from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
 
 import { db } from "@/db";
@@ -189,6 +190,11 @@ export async function findAndSaveAudio() {
   };
 }
 
+const wantedMetadata = [
+  ...MetadataPresets.standard,
+  ...["discNumber", "bitrate", "sampleMimeType", "sampleRate"],
+] as const;
+
 async function getTrackEntry({
   id,
   uri,
@@ -196,12 +202,15 @@ async function getTrackEntry({
   modificationTime,
   filename,
 }: MediaLibrary.Asset) {
-  const { albumArtist, albumTitle, artist, title, trackNumber, year } =
-    await getMetadata(uri, MetadataPresets.standard);
+  const { bitrate, sampleRate, ...meta } = await getMetadata(
+    uri,
+    wantedMetadata,
+  );
+  const assetInfo = await FileSystem.getInfoAsync(uri);
 
   // Add new artists to the database.
   await Promise.allSettled(
-    [artist, albumArtist]
+    [meta.artist, meta.albumArtist]
       .filter((name) => name !== null)
       .map((name) => createArtist({ name })),
   );
@@ -209,19 +218,21 @@ async function getTrackEntry({
   // Add new album to the database. The unique key on `Album` covers the rare
   // case where an artist releases multiple albums with the same name.
   let albumId: string | null = null;
-  if (!!albumTitle && !!albumArtist) {
+  if (!!meta.albumTitle && !!meta.albumArtist) {
     const newAlbum = await upsertAlbum({
-      name: albumTitle,
-      artistName: albumArtist,
-      releaseYear: year,
+      name: meta.albumTitle,
+      artistName: meta.albumArtist,
+      releaseYear: meta.year,
     });
     if (newAlbum) albumId = newAlbum.id;
   }
 
   return {
-    ...{ id, name: title ?? removeFileExtension(filename) },
-    ...{ artistName: artist, albumId, track: trackNumber ?? undefined },
-    ...{ duration, uri, modificationTime, fetchedArt: false },
+    ...{ id, name: meta.title ?? removeFileExtension(filename) },
+    ...{ artistName: meta.artist, albumId, track: meta.trackNumber },
+    ...{ disc: meta.discNumber, format: meta.sampleMimeType, bitrate },
+    ...{ sampleRate, duration, uri, modificationTime, fetchedArt: false },
+    ...{ size: assetInfo.exists ? (assetInfo.size ?? 0) : 0 },
   };
 }
 //#endregion

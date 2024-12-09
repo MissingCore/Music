@@ -7,20 +7,12 @@ import { Resynchronize } from "@/modules/media/services/Resynchronize";
 import { useSortTracks } from "@/modules/media/services/SortPreferences";
 import { queries as q } from "./keyStore";
 
-import { pickKeys } from "@/utils/object";
 import { ReservedPlaylists } from "@/modules/media/constants";
 
 //#region Queries
-/** Return the most-used subset of track data. */
-export function useTrackExcerpt(trackId: string) {
-  return useQuery({
-    ...q.tracks.detail(trackId),
-    select: (data) => ({
-      ...pickKeys(data, ["id", "name", "artistName", "duration", "isFavorite"]),
-      album: data.album ? pickKeys(data.album, ["id", "name"]) : null,
-      imageSource: data.artwork,
-    }),
-  });
+/** Get specified track. */
+export function useTrack(trackId: string) {
+  return useQuery({ ...q.tracks.detail(trackId) });
 }
 
 /** Return the names of the playlists this track is in. */

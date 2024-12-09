@@ -67,7 +67,7 @@ export function TopAppBarMarquee({ options, route }: NativeStackHeaderProps) {
           <ArrowBack />
         </IconButton>
 
-        <Marquee color={canvas} center>
+        <Marquee color={canvas} center wrapperClassName="shrink">
           <StyledText className="text-xs">{title}</StyledText>
         </Marquee>
 

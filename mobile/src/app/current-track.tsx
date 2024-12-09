@@ -12,7 +12,7 @@ import {
   VolumeMute,
   VolumeUp,
 } from "@/icons";
-import { useFavoriteTrack, useTrackExcerpt } from "@/queries/track";
+import { useFavoriteTrack, useTrack } from "@/queries/track";
 import { useMusicStore } from "@/modules/media/services/Music";
 import { MusicControls } from "@/modules/media/services/Playback";
 import { useUserPreferencesStore } from "@/services/UserPreferences";
@@ -190,7 +190,7 @@ function VolumeSlider() {
 /** Actions rendered on the bottom of the screen. */
 function BottomAppBar({ trackId }: { trackId: string }) {
   const { t } = useTranslation();
-  const { data } = useTrackExcerpt(trackId); // Since we don't revalidate the Zustand store.
+  const { data } = useTrack(trackId); // Since we don't revalidate the Zustand store.
   const favoriteTrack = useFavoriteTrack(trackId);
 
   const isFav = favoriteTrack.isPending

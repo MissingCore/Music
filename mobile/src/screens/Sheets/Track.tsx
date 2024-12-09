@@ -14,13 +14,18 @@ import {
   QueueMusic,
   Schedule,
 } from "@/icons";
-import { useTrackExcerpt, useFavoriteTrack } from "@/queries/track";
+import { useTrack, useFavoriteTrack } from "@/queries/track";
 import { useGetColumn } from "@/hooks/useGetColumn";
 import { Queue, useMusicStore } from "@/modules/media/services/Music";
 
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
-import { formatSeconds } from "@/utils/number";
+import {
+  abbreviateBitRate,
+  abbreviateSize,
+  formatEpoch,
+  formatSeconds,
+} from "@/utils/number";
 import { Divider, Marquee } from "@/components/Containment";
 import { IconButton } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";
@@ -28,19 +33,16 @@ import { StyledText } from "@/components/Typography";
 import { ReservedPlaylists } from "@/modules/media/constants";
 import { MediaImage } from "@/modules/media/components";
 
-type TrackData = Pick<
-  TrackWithAlbum,
-  "id" | "name" | "artistName" | "duration" | "isFavorite"
-> & { imageSource: string | null; album: { id: string; name: string } | null };
-
 /** Sheet containing information and actions for a track. */
 export default function TrackSheet(props: SheetProps<"track-sheet">) {
-  const { isPending, error, data } = useTrackExcerpt(props.payload!.id);
+  const { isPending, error, data } = useTrack(props.payload!.id);
   return (
     <Sheet id={props.sheetId} contentContainerClassName="gap-4">
       {isPending || error ? null : (
         <>
           <TrackIntro data={data} />
+          <Divider />
+          <Stats data={data} />
           <Divider />
           <AddActions data={data} />
           <TrackLinks data={data} />
@@ -52,7 +54,7 @@ export default function TrackSheet(props: SheetProps<"track-sheet">) {
 
 //#region Track Introduction
 /** Contains the favorite toggle. */
-function TrackIntro({ data }: { data: TrackData }) {
+function TrackIntro({ data }: { data: TrackWithAlbum }) {
   const favoriteTrack = useFavoriteTrack(data.id);
 
   const isFav = favoriteTrack.isPending ? !data.isFavorite : data.isFavorite;
@@ -67,7 +69,7 @@ function TrackIntro({ data }: { data: TrackData }) {
         <MediaImage
           type="track"
           size={98}
-          source={data.imageSource}
+          source={data.artwork}
           className="rounded"
         />
         <View className="absolute right-1 top-1 rounded-full bg-neutral0/75 p-1">
@@ -91,12 +93,51 @@ function TrackIntro({ data }: { data: TrackData }) {
             </StyledText>
           </Marquee>
         ) : null}
-        <View className="mt-2 flex-row items-center">
-          <Schedule size={12} />
-          <StyledText preset="dimOnSurface" className="text-xxs">
-            {` ${formatSeconds(data.duration)}`}
-          </StyledText>
-        </View>
+        <Marquee wrapperClassName="mt-2">
+          <View className="flex-row items-center">
+            <Schedule size={12} />
+            <StyledText preset="dimOnSurface" className="text-xxs">
+              {` ${formatSeconds(data.duration)}`}
+              {data.format ? ` | ${data.format}` : undefined}
+            </StyledText>
+          </View>
+        </Marquee>
+      </View>
+    </View>
+  );
+}
+//#endregion
+
+//#region Stats
+/** Display stats about the file. */
+function Stats({ data }: { data: TrackWithAlbum }) {
+  const { t } = useTranslation();
+  return (
+    <View className="gap-2">
+      <View className="flex-row gap-2">
+        <StatItem
+          title={t("trackModal.bitrate")}
+          description={
+            data.bitrate !== null ? abbreviateBitRate(data.bitrate) : "—"
+          }
+        />
+        <StatItem
+          title={t("trackModal.sampleRate")}
+          description={data.sampleRate !== null ? `${data.sampleRate} Hz` : "—"}
+        />
+      </View>
+      <View className="flex-row gap-2">
+        <StatItem
+          title={t("trackModal.size")}
+          description={abbreviateSize(data.size)}
+        />
+        <StatItem
+          title={t("trackModal.modified")}
+          description={formatEpoch(data.modificationTime)}
+        />
+      </View>
+      <View className="flex-row">
+        <StatItem title={t("trackModal.filePath")} description={data.uri} />
       </View>
     </View>
   );
@@ -105,10 +146,10 @@ function TrackIntro({ data }: { data: TrackData }) {
 
 //#region Add Actions
 /** Add track to a playlist or queue. */
-function AddActions({ data }: { data: TrackData }) {
+function AddActions({ data }: { data: TrackWithAlbum }) {
   const { t } = useTranslation();
   return (
-    <View className="flex-row flex-wrap gap-2">
+    <View className="flex-row gap-2">
       <SheetButton
         onPress={() =>
           SheetManager.show("track-to-playlist-sheet", {
@@ -130,7 +171,7 @@ function AddActions({ data }: { data: TrackData }) {
 //#endregion
 
 //#region Track Links
-function TrackLinks({ data }: { data: TrackData }) {
+function TrackLinks({ data }: { data: TrackWithAlbum }) {
   const { t } = useTranslation();
   const pathname = usePathname();
   const playingSource = useMusicStore((state) => state.playingSource);
@@ -178,6 +219,24 @@ function TrackLinks({ data }: { data: TrackData }) {
         ) : null}
       </View>
     </>
+  );
+}
+//#endregion
+
+//#region Stat Item
+/** Represents a statistical piece of information about the file. */
+function StatItem(props: { title: string; description: string }) {
+  return (
+    <View className="flex-1">
+      <Marquee>
+        <StyledText preset="dimOnCanvas" bold className="text-xxs">
+          {props.title.toLocaleUpperCase()}
+        </StyledText>
+      </Marquee>
+      <Marquee>
+        <StyledText className="text-xs">{props.description}</StyledText>
+      </Marquee>
+    </View>
   );
 }
 //#endregion

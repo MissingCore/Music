@@ -55,13 +55,19 @@ export const tracks = sqliteTable("tracks", {
   artistName: text().references(() => artists.name),
   albumId: text().references(() => albums.id),
   artwork: text(),
-  track: integer().notNull().default(-1), // Track number in album if available
-  duration: integer().notNull(), // Track duration in seconds
   isFavorite: integer({ mode: "boolean" }).notNull().default(false),
+  duration: integer().notNull(), // Track duration in seconds
+  // Album relations
+  disc: integer(),
+  track: integer(),
+  // Other metadata
+  format: text(), // Currently the mimetype of the file
+  bitrate: integer(),
+  sampleRate: integer(),
+  size: integer().notNull(),
   uri: text().notNull(),
   modificationTime: integer().notNull(),
-
-  /* Data checking fields. */
+  // Data checking fields.
   fetchedArt: integer({ mode: "boolean" }).notNull().default(false),
 });
 
