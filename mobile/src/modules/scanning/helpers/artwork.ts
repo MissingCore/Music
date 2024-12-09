@@ -36,6 +36,17 @@ export async function findAndSaveArtwork() {
   let checkedFiles = 0;
 
   for (const { id, albumId, uri, name, artwork } of uncheckedTracks) {
+    // Indicate we attempted to find artwork for a track. Do this before
+    // physically attempting to save the artwork in case an OOM error occurs,
+    // in which the app will essentially become "bricked".
+    await updateTrack(id, { fetchedArt: true });
+    checkedFiles++;
+    // Prevent excessive `setState` on Zustand store which may cause an
+    // "Warning: Maximum update depth exceeded.".
+    if (checkedFiles % 25 === 0) {
+      onboardingStore.setState({ checked: checkedFiles });
+    }
+
     // Make sure the track doesn't have `artwork` and either be unassociated
     // with an album or its album doesn't have `artwork`.
     if (!artwork && (!albumId || !albumsWithCovers.has(albumId))) {
@@ -56,15 +67,6 @@ export async function findAndSaveArtwork() {
         // In case we fail to save an image due to having an invalid base64 string.
         console.log(`[Error] Failed to get or save image for "${name}".`);
       }
-    }
-
-    // Indicate we attempted to find artwork for a track.
-    await updateTrack(id, { fetchedArt: true });
-    checkedFiles++;
-    // Prevent excessive `setState` on Zustand store which may cause an
-    // "Warning: Maximum update depth exceeded.".
-    if (checkedFiles % 25 === 0) {
-      onboardingStore.setState({ checked: checkedFiles });
     }
   }
   console.log(

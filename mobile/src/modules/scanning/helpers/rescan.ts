@@ -1,6 +1,6 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { useMutation } from "@tanstack/react-query";
-import { eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 
 import { db } from "@/db";
 import { fileNodes, invalidTracks, tracks } from "@/db/schema";
@@ -48,7 +48,7 @@ export async function rescanForTracks() {
     await db
       .update(tracks)
       .set({ fetchedArt: false })
-      .where(eq(tracks.fetchedArt, true));
+      .where(and(eq(tracks.fetchedArt, true), isNull(tracks.artwork)));
 
     // Rescan library for any new tracks and delete any old ones.
     const { foundFiles, unstagedFiles } = await findAndSaveAudio();
