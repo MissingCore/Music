@@ -230,9 +230,9 @@ async function getTrackEntry({
   return {
     ...{ id, name: meta.title ?? removeFileExtension(filename) },
     ...{ artistName: meta.artist, albumId, track: meta.trackNumber },
-    ...{ disc: meta.discNumber, format: meta.sampleMimeType },
-    ...{ bitrate, sampleRate, size: assetInfo.exists ? assetInfo.size : 0 },
-    ...{ duration, uri, modificationTime, fetchedArt: false },
+    ...{ disc: meta.discNumber, format: meta.sampleMimeType, bitrate },
+    ...{ sampleRate, duration, uri, modificationTime, fetchedArt: false },
+    ...{ size: assetInfo.exists ? (assetInfo.size ?? 0) : 0 },
   };
 }
 //#endregion
