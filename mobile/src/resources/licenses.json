@@ -1,7 +1,7 @@
 {
   "@backpackapp-io/react-native-toast": {
     "name": "@backpackapp-io/react-native-toast",
-    "version": "0.12.1",
+    "version": "0.13.0",
     "copyright": "Copyright (c) 2022 Nick DeBaise",
     "source": "https://github.com/backpackapp-io/react-native-toast",
     "license": "MIT",
@@ -65,7 +65,7 @@
   },
   "@sentry/react-native": {
     "name": "@sentry/react-native",
-    "version": "6.2.0",
+    "version": "6.4.0",
     "copyright": "Copyright (c) 2017-2024 Sentry",
     "source": "https://github.com/getsentry/sentry-react-native",
     "license": "MIT",
@@ -81,7 +81,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.61.3",
+    "version": "5.62.7",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -97,7 +97,7 @@
   },
   "drizzle-orm": {
     "name": "drizzle-orm",
-    "version": "0.36.4",
+    "version": "0.38.0",
     "copyright": "Copyright (c) 2022 Drizzle Team",
     "source": "https://github.com/drizzle-team/drizzle-orm",
     "license": "Apache-2.0",
@@ -209,7 +209,7 @@
   },
   "i18next": {
     "name": "i18next",
-    "version": "23.16.5",
+    "version": "24.0.5",
     "copyright": "Copyright (c) 2024 i18next",
     "source": "https://github.com/i18next/i18next",
     "license": "MIT",
@@ -265,7 +265,7 @@
   },
   "react-i18next": {
     "name": "react-i18next",
-    "version": "15.1.1",
+    "version": "15.1.4",
     "copyright": "Copyright (c) 2024 i18next",
     "source": "https://github.com/i18next/react-i18next",
     "license": "MIT",
@@ -289,7 +289,7 @@
   },
   "react-native-bootsplash": {
     "name": "react-native-bootsplash",
-    "version": "6.3.1",
+    "version": "6.3.2",
     "copyright": "Copyright (c) 2021 Mathieu Acthernoene",
     "source": "https://github.com/zoontek/react-native-bootsplash",
     "license": "MIT",
@@ -313,7 +313,7 @@
   },
   "react-native-pager-view": {
     "name": "react-native-pager-view",
-    "version": "6.5.1",
+    "version": "6.6.1",
     "copyright": "Copyright (c) 2021 Callstack",
     "source": "https://github.com/callstack/react-native-pager-view",
     "license": "MIT",
@@ -345,7 +345,7 @@
   },
   "react-native-svg": {
     "name": "react-native-svg",
-    "version": "15.9.0",
+    "version": "15.10.1",
     "copyright": "Copyright (c) [2015-2016] [Horcrux]",
     "source": "https://github.com/software-mansion/react-native-svg",
     "license": "MIT",
@@ -385,7 +385,7 @@
   },
   "zod": {
     "name": "zod",
-    "version": "3.23.8",
+    "version": "3.24.0",
     "copyright": "Copyright (c) 2020 Colin McDonnell",
     "source": "https://github.com/colinhacks/zod",
     "license": "MIT",
@@ -393,7 +393,7 @@
   },
   "zustand": {
     "name": "zustand",
-    "version": "5.0.1",
+    "version": "5.0.2",
     "copyright": "Copyright (c) 2019 Paul Henschel",
     "source": "https://github.com/pmndrs/zustand",
     "license": "MIT",

@@ -1,5 +1,5 @@
 diff --git a/src/components/Toast.tsx b/src/components/Toast.tsx
-index 6adf1776f90821280df2feec616e8acdbf3b7c9f..98f9657354a194f46abbc7cbf649514ac8138685 100644
+index 8db6291cfb677830f285b2de6d8b0916d9258d7d..d8b8282a08407351ea4c438a4498ddc0166c07ca 100644
 --- a/src/components/Toast.tsx
 +++ b/src/components/Toast.tsx
 @@ -150,7 +150,7 @@ export const Toast: FC<Props> = ({
@@ -11,7 +11,7 @@ index 6adf1776f90821280df2feec616e8acdbf3b7c9f..98f9657354a194f46abbc7cbf649514a
          : startingY;
  
        offsetY.value = animation(
-@@ -260,6 +260,7 @@ export const Toast: FC<Props> = ({
+@@ -261,6 +261,7 @@ export const Toast: FC<Props> = ({
            endPause();
          }}
          onPress={onPress}
@@ -19,7 +19,7 @@ index 6adf1776f90821280df2feec616e8acdbf3b7c9f..98f9657354a194f46abbc7cbf649514a
          style={[
            {
              backgroundColor: !toast.customToast
-@@ -286,6 +287,7 @@ export const Toast: FC<Props> = ({
+@@ -288,6 +289,7 @@ export const Toast: FC<Props> = ({
                updateHeight(toast.id, event.nativeEvent.layout.height)
              }
              key={toast.id}
