@@ -1,8 +1,28 @@
 diff --git a/dist/src/index.js b/dist/src/index.js
-index 0e124da4da841bfb16fd7379ba77e8e8fc9abbe7..b86a21be4968d3885490e2f2eb4521a89ac1aea2 100644
+index 0e124da4da841bfb16fd7379ba77e8e8fc9abbe7..3062317a6e8a98827ca971cace2967cdfc08c632 100644
 --- a/dist/src/index.js
 +++ b/dist/src/index.js
-@@ -336,7 +336,8 @@ export default forwardRef(function ActionSheet(_a, ref) {
+@@ -288,10 +288,19 @@ export default forwardRef(function ActionSheet(_a, ref) {
+             sheetPositionWithKeyboard > 0
+                 ? initialValue.current - sheetPositionWithKeyboard
+                 : initialValue.current;
++        // FIXME: On my Nothing 2a where the sheet closes/opens when we
++        // click off an input, `initialValue.current` was negative while
++        // on my OnePlus 6 where this doesn't happen, it was greater than 0.
++        if (initialValue.current < 0) initialValue.current = 0;
++
+         if (keyboard.keyboardShown) {
+             minTranslateValue.current =
+                 minTranslateValue.current -
+                     (keyboard.keyboardHeight + safeAreaPaddings.current.bottom);
++            // Ensuring `initialValue` wasn't negative fixed the problem, but
++            // `minTranslateValue` also became negative so we apply the changes
++            // here as well.
++            if (minTranslateValue.current < 0) minTranslateValue.current = 0;
+             keyboardWasVisible.current = true;
+             prevKeyboardHeight.current = keyboard.keyboardHeight;
+         }
+@@ -336,7 +345,8 @@ export default forwardRef(function ActionSheet(_a, ref) {
                  ? safeAreaPaddings.current.top < 20
                      ? 20
                      : safeAreaPaddings.current.top
