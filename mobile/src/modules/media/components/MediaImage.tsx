@@ -6,7 +6,7 @@ import { Folder } from "@/icons";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
-import { ReservedPlaylists } from "../constants";
+import { ReservedNames, ReservedPlaylists } from "../constants";
 import type { MediaType } from "../types";
 
 // https://www.nativewind.dev/v4/api/css-interop
@@ -54,7 +54,7 @@ export function MediaImage({
 
   return (
     <Image
-      source={Array.isArray(source) ? null : source}
+      source={getUsedImage({ source, type })}
       placeholder={
         type === "artist"
           ? require("@/resources/images/face-glyph.png")
@@ -67,6 +67,23 @@ export function MediaImage({
       })}
     />
   );
+}
+
+/** Helper to return the correct image displayed in `<MediaImage />`. */
+function getUsedImage(args: {
+  source: MediaImage.ImageSource | Array<string | null>;
+  type: Omit<MediaType, "playlist">;
+}) {
+  if (
+    Array.isArray(args.source) ||
+    args.source === null ||
+    ReservedNames.has(args.source)
+  ) {
+    if (args.type === "artist")
+      return require("@/resources/images/face-glyph.png");
+    return require("@/resources/images/music-glyph.png");
+  }
+  return args.source;
 }
 
 /** Only used to represent a playlist. */
