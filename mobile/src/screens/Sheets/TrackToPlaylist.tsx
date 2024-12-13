@@ -68,6 +68,7 @@ export default function TrackToPlaylistSheet(
             <StyledText center>{t("response.noPlaylists")}</StyledText>
           )
         }
+        overScrollMode="never"
         showsVerticalScrollIndicator={false}
         contentContainerClassName="pb-4"
       />

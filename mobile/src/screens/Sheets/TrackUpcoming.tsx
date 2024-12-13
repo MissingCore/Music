@@ -91,6 +91,7 @@ export default function TrackUpcomingSheet(
             </View>
           );
         }}
+        overScrollMode="never"
         showsVerticalScrollIndicator={false}
         contentContainerClassName="pb-4"
       />

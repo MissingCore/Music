@@ -32,6 +32,7 @@ export default function LanguageSheet(props: SheetProps<"language-sheet">) {
             <StyledText>{item.name}</StyledText>
           </Radio>
         )}
+        overScrollMode="never"
         showsVerticalScrollIndicator={false}
         contentContainerClassName="gap-1 pb-4"
       />

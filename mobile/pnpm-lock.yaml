@@ -12,7 +12,7 @@ patchedDependencies:
     hash: zgk2jjhdnijgnajdwndrw6mz2q
     path: patches/@backpackapp-io__react-native-toast@0.13.0.patch
   react-native-actions-sheet@0.9.7:
-    hash: h5772mzkxikifnpakqyhehjppm
+    hash: dmf2cvt7t24xk2qlczkgl6j5zu
     path: patches/react-native-actions-sheet@0.9.7.patch
 
 dependencies:
@@ -117,7 +117,7 @@ dependencies:
     version: 0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0)(@types/react@18.3.12)(react@18.3.1)(typescript@5.6.3)
   react-native-actions-sheet:
     specifier: ^0.9.7
-    version: 0.9.7(patch_hash=h5772mzkxikifnpakqyhehjppm)(react-native-gesture-handler@2.21.2)(react-native-safe-area-context@4.14.0)(react-native@0.75.4)
+    version: 0.9.7(patch_hash=dmf2cvt7t24xk2qlczkgl6j5zu)(react-native-gesture-handler@2.21.2)(react-native-safe-area-context@4.14.0)(react-native@0.75.4)
   react-native-bootsplash:
     specifier: ^6.3.2
     version: 6.3.2(react-native@0.75.4)(react@18.3.1)
@@ -9941,7 +9941,7 @@ packages:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
     dev: false
 
-  /react-native-actions-sheet@0.9.7(patch_hash=h5772mzkxikifnpakqyhehjppm)(react-native-gesture-handler@2.21.2)(react-native-safe-area-context@4.14.0)(react-native@0.75.4):
+  /react-native-actions-sheet@0.9.7(patch_hash=dmf2cvt7t24xk2qlczkgl6j5zu)(react-native-gesture-handler@2.21.2)(react-native-safe-area-context@4.14.0)(react-native@0.75.4):
     resolution: {integrity: sha512-rjUwxUr5dxbdSLDtLDUFAdSlFxpNSpJsbXLhHkBzEBMxEMPUhRT3zqbvKqsPj0JUkjwuRligxrhbIJZkg/6ZDw==}
     peerDependencies:
       react-native: '*'

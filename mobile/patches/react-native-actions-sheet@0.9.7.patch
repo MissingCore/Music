@@ -1,5 +1,5 @@
 diff --git a/dist/src/index.js b/dist/src/index.js
-index 0e124da4da841bfb16fd7379ba77e8e8fc9abbe7..3062317a6e8a98827ca971cace2967cdfc08c632 100644
+index 0e124da4da841bfb16fd7379ba77e8e8fc9abbe7..66f5e0e2f4e5aad54eb2fe8294008d8a98839960 100644
 --- a/dist/src/index.js
 +++ b/dist/src/index.js
 @@ -288,10 +288,19 @@ export default forwardRef(function ActionSheet(_a, ref) {
@@ -32,3 +32,21 @@ index 0e124da4da841bfb16fd7379ba77e8e8fc9abbe7..3062317a6e8a98827ca971cace2967cd
              var height = rootViewHeight - safeMarginFromTop;
              var width = rootViewWidth;
              dimensionsRef.current = {
+@@ -575,9 +585,14 @@ export default forwardRef(function ActionSheet(_a, ref) {
+             ? { enabled: false }
+             : {
+                 onBegan: function () {
+-                    if (Platform.OS === 'android') {
+-                        scrollable(false);
+-                    }
++                    // FIXME: This was causing scrolling on lists to be a bit
++                    // janky. From my tests so far, there doesn't seem to be
++                    // any issues with removing this.
++                    //  - There's no notes in the v0.9.0 PR that added this in
++                    //  on why this is here.
++                    // if (Platform.OS === 'android') {
++                    //     scrollable(false);
++                    // }
+                 },
+                 onGestureEvent: function (event) {
+                     var _a, _b;

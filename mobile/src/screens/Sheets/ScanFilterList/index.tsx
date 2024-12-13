@@ -82,6 +82,7 @@ export default function ScanFilterListSheet(
         ListEmptyComponent={
           <StyledText center>{t("response.noFilters")}</StyledText>
         }
+        overScrollMode="never"
         showsVerticalScrollIndicator={false}
         contentContainerClassName="pb-4"
       />
