@@ -82,7 +82,6 @@ export function formatForCurrentScreen({ type, data, t }: MediaData) {
     t("plural.track", { count: data.tracks.length }),
     formatSeconds(
       data.tracks.reduce((total, curr) => total + curr.duration, 0),
-      { omitSeconds: true },
     ),
   ];
   if (type === "album" && data.releaseYear) {

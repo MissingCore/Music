@@ -5,7 +5,7 @@ import type { Album } from "@/db/schema";
 
 import { useArtistForScreen } from "@/queries/artist";
 import { useGetColumn } from "@/hooks/useGetColumn";
-import { MediaListHeader } from "@/layouts/CurrentList";
+import { CurrentListLayout } from "@/layouts/CurrentList";
 
 import { StyledText } from "@/components/Typography";
 import { MediaCard, TrackList } from "@/modules/media/components";
@@ -31,14 +31,12 @@ export default function CurrentArtistScreen() {
   const trackSource = { type: "artist", id: artistName } as const;
 
   return (
-    <>
-      <View className="px-4">
-        <MediaListHeader
-          title={data.name}
-          metadata={data.metadata}
-          trackSource={trackSource}
-        />
-      </View>
+    <CurrentListLayout
+      title={data.name}
+      metadata={data.metadata}
+      imageSource={null}
+      mediaSource={trackSource}
+    >
       <TrackList
         data={data.tracks}
         trackSource={trackSource}
@@ -50,7 +48,7 @@ export default function CurrentArtistScreen() {
         //   </Description>
         // }
       />
-    </>
+    </CurrentListLayout>
   );
 }
 

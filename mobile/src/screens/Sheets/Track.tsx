@@ -16,6 +16,7 @@ import {
 } from "@/icons";
 import { useTrack, useFavoriteTrack } from "@/queries/track";
 import { useGetColumn } from "@/hooks/useGetColumn";
+import { useTheme } from "@/hooks/useTheme";
 import { Queue, useMusicStore } from "@/modules/media/services/Music";
 
 import { Colors } from "@/constants/Styles";
@@ -56,6 +57,7 @@ export default function TrackSheet(props: SheetProps<"track-sheet">) {
 /** Contains the favorite toggle. */
 function TrackIntro({ data }: { data: TrackWithAlbum }) {
   const favoriteTrack = useFavoriteTrack(data.id);
+  const { foreground } = useTheme();
 
   const isFav = favoriteTrack.isPending ? !data.isFavorite : data.isFavorite;
 
@@ -95,7 +97,7 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
         ) : null}
         <Marquee wrapperClassName="mt-2">
           <View className="flex-row items-center">
-            <Schedule size={12} />
+            <Schedule size={12} color={`${foreground}80`} />
             <StyledText preset="dimOnSurface" className="text-xxs">
               {` ${formatSeconds(data.duration)}`}
               {data.format ? ` | ${data.format}` : undefined}

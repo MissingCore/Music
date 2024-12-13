@@ -1,9 +1,9 @@
-import { Link, Stack, useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import { View } from "react-native";
 
 import { Favorite } from "@/icons";
 import { useAlbumForScreen, useFavoriteAlbum } from "@/queries/album";
-import { MediaListHeader } from "@/layouts/CurrentList";
+import { CurrentListLayout } from "@/layouts/CurrentList";
 
 import { mutateGuard } from "@/lib/react-query";
 import { IconButton } from "@/components/Form";
@@ -52,24 +52,15 @@ export default function CurrentAlbumScreen() {
           ),
         }}
       />
-      <View className="w-full flex-1 px-4">
-        <MediaListHeader
-          source={data.imageSource}
-          title={data.name}
-          SubtitleComponent={
-            <Link
-              href={`/artist/${encodeURIComponent(data.artistName)}`}
-              numberOfLines={1}
-              className="self-start font-roboto text-xs text-red"
-            >
-              {data.artistName}
-            </Link>
-          }
-          metadata={data.metadata}
-          trackSource={trackSource}
-        />
+      <CurrentListLayout
+        title={data.name}
+        artist={data.artistName}
+        metadata={data.metadata}
+        imageSource={data.imageSource}
+        mediaSource={trackSource}
+      >
         <TrackList data={data.tracks} trackSource={trackSource} />
-      </View>
+      </CurrentListLayout>
     </>
   );
 }

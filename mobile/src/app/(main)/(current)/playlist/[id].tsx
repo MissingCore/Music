@@ -5,7 +5,7 @@ import { View } from "react-native";
 import { MoreVert } from "@/icons";
 import { useFavoriteTracksForScreen } from "@/queries/favorite";
 import { usePlaylistForScreen } from "@/queries/playlist";
-import { MediaListHeader } from "@/layouts/CurrentList";
+import { CurrentListLayout } from "@/layouts/CurrentList";
 
 import { IconButton } from "@/components/Form";
 import { StyledText } from "@/components/Typography";
@@ -76,14 +76,12 @@ function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
   const trackSource = { type: "playlist", id: data.name } as const;
 
   return (
-    <View className="w-full flex-1 px-4">
-      <MediaListHeader
-        // @ts-expect-error Technically fine as this is used for playlists.
-        source={data.imageSource}
-        title={data.name}
-        metadata={data.metadata}
-        trackSource={trackSource}
-      />
+    <CurrentListLayout
+      title={data.name}
+      metadata={data.metadata}
+      imageSource={data.imageSource}
+      mediaSource={trackSource}
+    >
       <TrackList
         data={data.tracks}
         trackSource={trackSource}
@@ -93,6 +91,6 @@ function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
         //   </Description>
         // }
       />
-    </View>
+    </CurrentListLayout>
   );
 }
