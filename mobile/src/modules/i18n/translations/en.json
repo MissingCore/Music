@@ -21,7 +21,9 @@
     "repeat": "Repeat",
 
     "favorite": "Favorite",
-    "unFavorite": "Unfavorite"
+    "unFavorite": "Unfavorite",
+
+    "disc": "Disc {{count}}"
   },
 
   "header": {
