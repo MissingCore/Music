@@ -74,7 +74,10 @@ export default function CurrentAlbumScreen() {
           renderItem={({ item, index }) => (
             <View className={cn({ "mt-2": index > 0 })}>
               {item.disc !== null && discLocation[item.disc] === index ? (
-                <Em preset="dimOnCanvas" className="my-2">
+                <Em
+                  preset="dimOnCanvas"
+                  className={cn("mb-2", { "mt-2": index > 0 })}
+                >
                   {t("common.disc", { count: item.disc })}
                 </Em>
               ) : null}
@@ -87,10 +90,9 @@ export default function CurrentAlbumScreen() {
           )}
           overScrollMode="never"
           showsVerticalScrollIndicator={false}
+          className="mx-4"
           contentContainerClassName="pt-4"
-          contentContainerStyle={{
-            paddingBottom: bottomInset.onlyPlayer + 16,
-          }}
+          contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
         />
       </CurrentListLayout>
     </>

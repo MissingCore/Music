@@ -1,28 +1,31 @@
+import { FlashList } from "@shopify/flash-list";
 import { useLocalSearchParams } from "expo-router";
-import { ScrollView, View } from "react-native";
+import { useTranslation } from "react-i18next";
+import { View } from "react-native";
 
 import type { Album } from "@/db/schema";
 
 import { useArtistForScreen } from "@/queries/artist";
+import { useBottomActionsContext } from "@/hooks/useBottomActionsContext";
 import { useGetColumn } from "@/hooks/useGetColumn";
 import { CurrentListLayout } from "@/layouts/CurrentList";
 
-import { StyledText } from "@/components/Typography";
-import { MediaCard, TrackList } from "@/modules/media/components";
+import { cn } from "@/lib/style";
+import { Em, StyledText } from "@/components/Typography";
+import { MediaCard, Track } from "@/modules/media/components";
 
 /** Screen for `/artist/[id]` route. */
 export default function CurrentArtistScreen() {
-  const { id: _artistName } = useLocalSearchParams<{ id: string }>();
-  const artistName = _artistName!;
+  const { t } = useTranslation();
+  const { bottomInset } = useBottomActionsContext();
+  const { id: artistName } = useLocalSearchParams<{ id: string }>();
   const { isPending, error, data } = useArtistForScreen(artistName);
 
   if (isPending) return <View className="w-full flex-1 px-4" />;
   else if (error) {
     return (
-      <View className="w-full flex-1 px-4">
-        <StyledText preset="dimOnCanvas" className="text-base">
-          Error: Artist not found
-        </StyledText>
+      <View className="w-full flex-1 p-4">
+        <StyledText center>{t("response.noContent")}</StyledText>
       </View>
     );
   }
@@ -37,16 +40,20 @@ export default function CurrentArtistScreen() {
       imageSource={null}
       mediaSource={trackSource}
     >
-      <TrackList
+      <FlashList
+        estimatedItemSize={56} // 48px Height + 8px Margin Top
         data={data.tracks}
-        trackSource={trackSource}
-        // ListHeaderComponent={<ArtistAlbums albums={data.albums} />}
-        // contentContainerStyle={{ paddingHorizontal: 20 }}
-        // ListEmptyComponent={
-        //   <Description className="text-start">
-        //     Artist has no tracks.
-        //   </Description>
-        // }
+        keyExtractor={({ id }) => id}
+        renderItem={({ item, index }) => (
+          <View className={cn("mx-4", { "mt-2": index > 0 })}>
+            <Track {...item} trackSource={trackSource} />
+          </View>
+        )}
+        ListHeaderComponent={<ArtistAlbums albums={data.albums} />}
+        overScrollMode="never"
+        showsVerticalScrollIndicator={false}
+        contentContainerClassName="pt-4"
+        contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
       />
     </CurrentListLayout>
   );
@@ -57,37 +64,43 @@ export default function CurrentArtistScreen() {
  * list only if the artist has albums.
  */
 function ArtistAlbums({ albums }: { albums: Album[] | null }) {
+  const { t } = useTranslation();
   const { width } = useGetColumn({
     ...{ cols: 1, gap: 0, gutters: 32, minWidth: 100 },
   });
 
   if (!albums) return null;
 
-  // FIXME: We should use a horizontal FlashList
   return (
     <>
-      <StyledText className="mb-2 text-xl">Albums</StyledText>
-      <View className="-mx-5 mb-4">
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          overScrollMode="never"
-          contentContainerClassName="grow gap-4 px-5"
-        >
-          {albums.map((album) => (
+      <Em preset="dimOnCanvas" className="mx-4 mb-2">
+        {t("common.albums")}
+      </Em>
+      <FlashList
+        estimatedItemSize={width + 12} // Column width + gap from padding left
+        horizontal
+        data={albums}
+        keyExtractor={({ id }) => id}
+        renderItem={({ item, index }) => (
+          <View className={cn({ "pl-3": index !== 0 })}>
             <MediaCard
-              key={album.id}
+              key={item.id}
               type="album"
               size={width}
-              source={album.artwork}
-              href={`/album/${album.id}`}
-              title={album.name}
-              subtitle={`${album.releaseYear ?? "————"}`}
+              source={item.artwork}
+              href={`/album/${item.id}`}
+              title={item.name}
+              subtitle={`${item.releaseYear ?? "————"}`}
             />
-          ))}
-        </ScrollView>
-      </View>
-      <StyledText className="mb-2 text-xl">Tracks</StyledText>
+          </View>
+        )}
+        overScrollMode="never"
+        showsHorizontalScrollIndicator={false}
+        contentContainerClassName="px-4"
+      />
+      <Em preset="dimOnCanvas" className="m-4 mb-2">
+        {t("common.tracks")}
+      </Em>
     </>
   );
 }
