@@ -3,16 +3,20 @@ import { Stack, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { Edit, Favorite } from "@/icons";
+import { Edit, Favorite, Remove } from "@/icons";
 import { useFavoritePlaylist, usePlaylistForScreen } from "@/queries/playlist";
+import { useRemoveFromPlaylist } from "@/queries/track";
 import { useBottomActionsContext } from "@/hooks/useBottomActionsContext";
 import { CurrentListLayout } from "@/layouts/CurrentList";
 
+import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
 import { IconButton } from "@/components/Form";
+import { Swipeable } from "@/components/Swipeable";
 import { StyledText } from "@/components/Typography";
 import { Track } from "@/modules/media/components";
+import type { PlayListSource } from "@/modules/media/types";
 
 /** Screen for `/playlist/[id]` route. */
 export default function CurrentPlaylistScreen() {
@@ -76,8 +80,12 @@ export default function CurrentPlaylistScreen() {
           data={data.tracks}
           keyExtractor={({ id }) => id}
           renderItem={({ item, index }) => (
-            <View className={cn("mx-4", { "mt-2": index > 0 })}>
-              <Track {...item} trackSource={trackSource} />
+            <View className={cn({ "mt-2": index > 0 })}>
+              <PlaylistTrack
+                playlistName={data.name}
+                track={item}
+                trackSource={trackSource}
+              />
             </View>
           )}
           overScrollMode="never"
@@ -90,5 +98,34 @@ export default function CurrentPlaylistScreen() {
         />
       </CurrentListLayout>
     </>
+  );
+}
+
+/** Swipeable for track in playlist. */
+function PlaylistTrack(props: {
+  playlistName: string;
+  track: Track.Content;
+  trackSource: PlayListSource;
+}) {
+  const { t } = useTranslation();
+  const removeTrack = useRemoveFromPlaylist(props.track.id);
+
+  return (
+    <Swipeable
+      renderRightActions={() => (
+        <IconButton
+          accessibilityLabel={t("template.entryRemove", {
+            name: props.track.title,
+          })}
+          onPress={() => mutateGuard(removeTrack, props.playlistName)}
+          className="mr-4 bg-red"
+        >
+          <Remove color={Colors.neutral100} />
+        </IconButton>
+      )}
+      childrenContainerClassName={cn("px-4")}
+    >
+      <Track {...props.track} trackSource={props.trackSource} />
+    </Swipeable>
   );
 }
