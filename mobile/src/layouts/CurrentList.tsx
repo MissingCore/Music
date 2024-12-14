@@ -26,7 +26,7 @@ export function CurrentListLayout(props: {
   const { canvas, foreground } = useTheme();
 
   return (
-    <View className="flex-1 gap-4 p-4 pb-0">
+    <View className="flex-1 p-4 pb-0">
       <View className="flex-row gap-2">
         {/* @ts-expect-error Things should be fine with proper usage. */}
         <MediaImage
@@ -71,7 +71,7 @@ export function CurrentListLayout(props: {
           />
         </View>
       </View>
-      <Divider />
+      <Divider className="mt-4" />
       {props.children}
     </View>
   );

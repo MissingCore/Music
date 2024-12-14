@@ -93,12 +93,13 @@ export function formatForCurrentScreen({ type, data, t }: MediaData) {
   return {
     name: data.name,
     metadata,
-    tracks: data.tracks.map((track) =>
-      formatForTrack(
+    tracks: data.tracks.map((track) => ({
+      ...formatForTrack(
         type,
         isTrackWithAlbum(track) ? track : { ...track, album: albumInfo },
       ),
-    ),
+      ...{ disc: track.disc, track: track.track },
+    })),
   };
 }
 //#endregion
