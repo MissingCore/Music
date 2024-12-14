@@ -1,3 +1,3 @@
 export { AccentText } from "./AccentText";
 export { Kbd } from "./Kbd";
-export { StyledText } from "./StyledText";
+export { Em, StyledText } from "./StyledText";

@@ -11,7 +11,7 @@ import { CurrentListLayout } from "@/layouts/CurrentList";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
 import { IconButton } from "@/components/Form";
-import { StyledText } from "@/components/Typography";
+import { Em, StyledText } from "@/components/Typography";
 import { Track } from "@/modules/media/components";
 
 /** Screen for `/album/[id]` route. */
@@ -74,9 +74,9 @@ export default function CurrentAlbumScreen() {
           renderItem={({ item, index }) => (
             <View className={cn({ "mt-2": index > 0 })}>
               {item.disc !== null && discLocation[item.disc] === index ? (
-                <StyledText preset="dimOnCanvas" bold className="my-2 text-xxs">
-                  {t("common.disc", { count: item.disc }).toLocaleUpperCase()}
-                </StyledText>
+                <Em preset="dimOnCanvas" className="my-2">
+                  {t("common.disc", { count: item.disc })}
+                </Em>
               ) : null}
               <Track
                 {...item}

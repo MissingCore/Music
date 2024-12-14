@@ -7,7 +7,7 @@ import { useTheme } from "@/hooks/useTheme";
 
 import { toLowerCase } from "@/utils/string";
 import { Divider, Marquee } from "@/components/Containment";
-import { StyledText } from "@/components/Typography";
+import { Em, StyledText } from "@/components/Typography";
 import { MediaImage, MediaListControls } from "@/modules/media/components";
 import type { PlayListSource } from "@/modules/media/types";
 
@@ -35,11 +35,9 @@ export function CurrentListLayout(props: {
           size={128}
         />
         <View className="shrink grow justify-end">
-          <StyledText preset="dimOnCanvas" bold style={{ fontSize: 8 }}>
-            {t(
-              `common.${toLowerCase(props.mediaSource.type)}`,
-            ).toLocaleUpperCase()}
-          </StyledText>
+          <Em preset="dimOnCanvas" style={{ fontSize: 8 }}>
+            {t(`common.${toLowerCase(props.mediaSource.type)}`)}
+          </Em>
           <Marquee color={canvas}>
             <StyledText>{props.title}</StyledText>
           </Marquee>

@@ -30,7 +30,7 @@ import {
 import { Divider, Marquee } from "@/components/Containment";
 import { IconButton } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";
-import { StyledText } from "@/components/Typography";
+import { Em, StyledText } from "@/components/Typography";
 import { ReservedPlaylists } from "@/modules/media/constants";
 import { MediaImage } from "@/modules/media/components";
 
@@ -231,9 +231,7 @@ function StatItem(props: { title: string; description: string }) {
   return (
     <View className="flex-1">
       <Marquee>
-        <StyledText preset="dimOnCanvas" bold className="text-xxs">
-          {props.title.toLocaleUpperCase()}
-        </StyledText>
+        <Em preset="dimOnCanvas">{props.title}</Em>
       </Marquee>
       <Marquee>
         <StyledText className="text-xs">{props.description}</StyledText>
