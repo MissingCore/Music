@@ -7,6 +7,7 @@ export default function CurrentLayout() {
     <Stack
       screenOptions={{ animation: "fade", header: TopAppBar, headerTitle: "" }}
     >
+      <Stack.Screen name="playlist/Favorite Tracks" />
       <Stack.Screen name="playlist/[id]" />
       <Stack.Screen name="album/[id]" />
       <Stack.Screen name="artist/[id]" />

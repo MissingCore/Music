@@ -16,3 +16,8 @@ export function compareAsc(a: Maybe<string>, b: Maybe<string>) {
 export function removeFileExtension(filename: string) {
   return filename.split(".").slice(0, -1).join(".");
 }
+
+/** Type-safe `String.prototype.toLowerCase()`. */
+export function toLowerCase<T extends string>(str: T) {
+  return str.toLowerCase() as Lowercase<T>;
+}

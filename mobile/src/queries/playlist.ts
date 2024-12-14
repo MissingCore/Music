@@ -36,6 +36,7 @@ export function usePlaylistForScreen(playlistName: string) {
     select: (data) => ({
       ...formatForCurrentScreen({ type: "playlist", data, t }),
       imageSource: getPlaylistCover(data),
+      isFavorite: data.isFavorite,
     }),
   });
 }

@@ -33,3 +33,18 @@ export function StyledText({
     />
   );
 }
+
+/** Emphasize some text. */
+export function Em({
+  children,
+  className,
+  ...props
+}: Omit<React.ComponentProps<typeof StyledText>, "children"> & {
+  children: string;
+}) {
+  return (
+    <StyledText bold className={cn("text-xxs", className)} {...props}>
+      {children.toLocaleUpperCase()}
+    </StyledText>
+  );
+}

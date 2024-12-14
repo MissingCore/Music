@@ -82,7 +82,6 @@ export function formatForCurrentScreen({ type, data, t }: MediaData) {
     t("plural.track", { count: data.tracks.length }),
     formatSeconds(
       data.tracks.reduce((total, curr) => total + curr.duration, 0),
-      { omitSeconds: true },
     ),
   ];
   if (type === "album" && data.releaseYear) {
@@ -94,12 +93,13 @@ export function formatForCurrentScreen({ type, data, t }: MediaData) {
   return {
     name: data.name,
     metadata,
-    tracks: data.tracks.map((track) =>
-      formatForTrack(
+    tracks: data.tracks.map((track) => ({
+      ...formatForTrack(
         type,
         isTrackWithAlbum(track) ? track : { ...track, album: albumInfo },
       ),
-    ),
+      ...{ disc: track.disc, track: track.track },
+    })),
   };
 }
 //#endregion

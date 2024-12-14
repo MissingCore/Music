@@ -1,29 +1,32 @@
-import { Link, Stack, useLocalSearchParams } from "expo-router";
+import { FlashList } from "@shopify/flash-list";
+import { Stack, useLocalSearchParams } from "expo-router";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { Favorite } from "@/icons";
 import { useAlbumForScreen, useFavoriteAlbum } from "@/queries/album";
-import { MediaListHeader } from "@/layouts/CurrentList";
+import { useBottomActionsContext } from "@/hooks/useBottomActionsContext";
+import { CurrentListLayout } from "@/layouts/CurrentList";
 
 import { mutateGuard } from "@/lib/react-query";
+import { cn } from "@/lib/style";
 import { IconButton } from "@/components/Form";
-import { StyledText } from "@/components/Typography";
-import { TrackList } from "@/modules/media/components";
+import { Em, StyledText } from "@/components/Typography";
+import { Track } from "@/modules/media/components";
 
 /** Screen for `/album/[id]` route. */
 export default function CurrentAlbumScreen() {
-  const { id: _albumId } = useLocalSearchParams<{ id: string }>();
-  const albumId = _albumId!;
+  const { t } = useTranslation();
+  const { bottomInset } = useBottomActionsContext();
+  const { id: albumId } = useLocalSearchParams<{ id: string }>();
   const { isPending, error, data } = useAlbumForScreen(albumId);
   const favoriteAlbum = useFavoriteAlbum(albumId);
 
   if (isPending) return <View className="w-full flex-1 px-4" />;
   else if (error) {
     return (
-      <View className="w-full flex-1 px-4">
-        <StyledText preset="dimOnCanvas" className="text-base">
-          Error: Album not found
-        </StyledText>
+      <View className="w-full flex-1 p-4">
+        <StyledText center>{t("response.noContent")}</StyledText>
       </View>
     );
   }
@@ -36,6 +39,12 @@ export default function CurrentAlbumScreen() {
   // Information about this track list.
   const trackSource = { type: "album", id: albumId } as const;
 
+  const discLocation: Record<number, number> = {};
+  data.tracks.forEach(({ disc }, index) => {
+    if (disc === null) return;
+    if (!Object.hasOwn(discLocation, disc)) discLocation[disc] = index;
+  });
+
   return (
     <>
       <Stack.Screen
@@ -43,8 +52,7 @@ export default function CurrentAlbumScreen() {
           headerRight: () => (
             <IconButton
               kind="ripple"
-              // FIXME: Temporary accessibility label.
-              accessibilityLabel={isToggled ? "Unfavorite" : "Favorite"}
+              accessibilityLabel={t(`common.${isToggled ? "unF" : "f"}avorite`)}
               onPress={() => mutateGuard(favoriteAlbum, !data.isFavorite)}
             >
               <Favorite filled={isToggled} />
@@ -52,24 +60,50 @@ export default function CurrentAlbumScreen() {
           ),
         }}
       />
-      <View className="w-full flex-1 px-4">
-        <MediaListHeader
-          source={data.imageSource}
-          title={data.name}
-          SubtitleComponent={
-            <Link
-              href={`/artist/${encodeURIComponent(data.artistName)}`}
-              numberOfLines={1}
-              className="self-start font-roboto text-xs text-red"
-            >
-              {data.artistName}
-            </Link>
-          }
-          metadata={data.metadata}
-          trackSource={trackSource}
+      <CurrentListLayout
+        title={data.name}
+        artist={data.artistName}
+        metadata={data.metadata}
+        imageSource={data.imageSource}
+        mediaSource={trackSource}
+      >
+        <FlashList
+          estimatedItemSize={56} // 48px Height + 8px Margin Top
+          data={data.tracks}
+          keyExtractor={({ id }) => id}
+          renderItem={({ item, index }) => (
+            <View className={cn({ "mt-2": index > 0 })}>
+              {item.disc !== null && discLocation[item.disc] === index ? (
+                <Em
+                  preset="dimOnCanvas"
+                  className={cn("mb-2", { "mt-2": index > 0 })}
+                >
+                  {t("common.disc", { count: item.disc })}
+                </Em>
+              ) : null}
+              <Track
+                {...item}
+                LeftElement={<TrackNumber track={item.track} />}
+                trackSource={trackSource}
+              />
+            </View>
+          )}
+          overScrollMode="never"
+          showsVerticalScrollIndicator={false}
+          className="mx-4"
+          contentContainerClassName="pt-4"
+          contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
         />
-        <TrackList data={data.tracks} trackSource={trackSource} />
-      </View>
+      </CurrentListLayout>
     </>
+  );
+}
+
+/** Special track number next to the track content. */
+function TrackNumber({ track }: { track: number | null }) {
+  return (
+    <View className="size-12 items-center justify-center">
+      <StyledText>{track !== null ? track : "—"}</StyledText>
+    </View>
   );
 }

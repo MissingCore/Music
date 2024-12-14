@@ -16,7 +16,7 @@ import { StickyActionScrollLayout } from "@/layouts";
 import { cn } from "@/lib/style";
 import { abbreviateNum } from "@/utils/number";
 import { Button } from "@/components/Form";
-import { AccentText, StyledText } from "@/components/Typography";
+import { AccentText, Em, StyledText } from "@/components/Typography";
 import { ReservedPlaylists } from "@/modules/media/constants";
 import {
   MediaCard,
@@ -29,12 +29,10 @@ export default function HomeScreen() {
   const { t } = useTranslation();
   return (
     <StickyActionScrollLayout title={t("header.home")}>
-      <StyledText className="-mb-4 text-xs">
-        {t("home.playedRecent")}
-      </StyledText>
+      <Em className="-mb-4">{t("home.playedRecent")}</Em>
       <RecentlyPlayed />
 
-      <StyledText className="-mb-4 text-xs">{t("home.favorites")}</StyledText>
+      <Em className="-mb-4">{t("home.favorites")}</Em>
       <Favorites />
     </StickyActionScrollLayout>
   );

@@ -13,16 +13,15 @@ import { arePlaybackSourceEqual } from "../helpers/data";
 import type { PlayListSource } from "../types";
 
 /** Media controls used on media list pages. */
-export function MediaListControls({
-  trackSource,
-}: {
+export function MediaListControls(props: {
   trackSource: PlayListSource;
+  className?: string;
 }) {
   return (
-    <View className="flex-row items-center gap-1">
+    <View className={cn("flex-row items-center gap-1", props.className)}>
       <RepeatButton size={24} />
       <ShuffleButton size={24} />
-      <PlayMediaListButton trackSource={trackSource} />
+      <PlayMediaListButton trackSource={props.trackSource} />
     </View>
   );
 }

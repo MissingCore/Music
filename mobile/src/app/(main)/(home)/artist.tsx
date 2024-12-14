@@ -10,8 +10,8 @@ import { StickyActionListLayout } from "@/layouts";
 import { cn } from "@/lib/style";
 import type { Maybe } from "@/utils/types";
 import { Ripple } from "@/components/Form";
-import { Loading } from "@/components/Loading";
-import { StyledText } from "@/components/Typography";
+import { Loading } from "@/components/Transition";
+import { Em, StyledText } from "@/components/Typography";
 import { SearchResult } from "@/modules/search/components";
 
 /** Screen for `/artist` route. */
@@ -42,9 +42,7 @@ const ArtistIndexPreset = (props: {
     keyExtractor: (item) => (typeof item === "string" ? item : item.name),
     renderItem: ({ item, index }) =>
       typeof item === "string" ? (
-        <StyledText className={cn("text-xs", { "mt-4": index !== 0 })}>
-          {item}
-        </StyledText>
+        <Em className={cn({ "mt-4": index !== 0 })}>{item}</Em>
       ) : (
         <Ripple
           onPress={() =>

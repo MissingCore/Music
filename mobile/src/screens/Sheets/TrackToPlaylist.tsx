@@ -15,8 +15,8 @@ import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
 import { Marquee } from "@/components/Containment";
 import { Checkbox } from "@/components/Form";
-import { Loading } from "@/components/Loading";
 import { Sheet } from "@/components/Sheet";
+import { Loading } from "@/components/Transition";
 import { StyledText } from "@/components/Typography";
 
 /** Sheet allowing us to select which playlists the track belongs to. */

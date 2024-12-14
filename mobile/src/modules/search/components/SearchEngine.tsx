@@ -17,7 +17,7 @@ import { useTheme } from "@/hooks/useTheme";
 
 import { cn } from "@/lib/style";
 import { Ripple, TextInput } from "@/components/Form";
-import { StyledText } from "@/components/Typography";
+import { Em, StyledText } from "@/components/Typography";
 import { SearchResult } from "./SearchResult";
 import { useSearch } from "../hooks/useSearch";
 import type {
@@ -68,9 +68,9 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
           renderItem={({ item, index }) => {
             if (typeof item === "string") {
               return (
-                <StyledText className={cn("text-xs", { "mt-4": index !== 0 })}>
+                <Em className={cn({ "mt-4": index !== 0 })}>
                   {t(`common.${item}`)}
-                </StyledText>
+                </Em>
               );
             }
             const { entry, ...rest } = item;

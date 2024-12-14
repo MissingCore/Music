@@ -8,7 +8,7 @@ import { Pressable, View } from "react-native";
 import { useGetColumn } from "@/hooks/useGetColumn";
 
 import type { Maybe, Prettify } from "@/utils/types";
-import { Loading } from "@/components/Loading";
+import { Loading } from "@/components/Transition";
 import { StyledText } from "@/components/Typography";
 import { MediaImage } from "./MediaImage";
 

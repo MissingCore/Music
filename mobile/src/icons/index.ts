@@ -3,6 +3,7 @@ export { Album } from "./Album";
 export { ArrowBack } from "./ArrowBack";
 export { Artist } from "./Artist";
 export { CreateNewFolder } from "./CreateNewFolder";
+export { Edit } from "./Edit";
 export { Favorite } from "./Favorite";
 export { Folder } from "./Folder";
 export { LibraryMusic } from "./LibraryMusic";
