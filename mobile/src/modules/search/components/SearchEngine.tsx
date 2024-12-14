@@ -16,7 +16,7 @@ import { Search } from "@/icons";
 import { useTheme } from "@/hooks/useTheme";
 
 import { cn } from "@/lib/style";
-import { Ripple, TextInput } from "@/components/Form";
+import { TextInput } from "@/components/Form";
 import { Em, StyledText } from "@/components/Typography";
 import { SearchResult } from "./SearchResult";
 import { useSearch } from "../hooks/useSearch";
@@ -76,16 +76,15 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
             const { entry, ...rest } = item;
 
             return (
-              <Ripple
+              <SearchResult
+                as="ripple"
                 /* @ts-expect-error - `type` should be limited to our scope. */
                 onPress={() => props.callbacks[rest.type](entry)}
                 wrapperClassName={cn("mt-2", {
                   "rounded-full": rest.type === "artist",
                 })}
-              >
-                {/* @ts-expect-error - Values are of correct types. */}
-                <SearchResult {...rest} />
-              </Ripple>
+                {...rest}
+              />
             );
           }}
           ListEmptyComponent={
@@ -126,7 +125,7 @@ function formatResults(results: Partial<SearchResults>) {
       ...data.map((item) => ({
         type: key as SearchCategories[number],
         // @ts-expect-error - Values are of correct types.
-        source: getArtwork({ type: key, data: item }),
+        imageSource: getArtwork({ type: key, data: item }),
         title: item.name,
         // prettier-ignore
         // @ts-expect-error - `artistName` should be present in these cases.

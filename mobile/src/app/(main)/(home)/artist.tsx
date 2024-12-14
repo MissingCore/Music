@@ -9,7 +9,6 @@ import { StickyActionListLayout } from "@/layouts";
 
 import { cn } from "@/lib/style";
 import type { Maybe } from "@/utils/types";
-import { Ripple } from "@/components/Form";
 import { Loading } from "@/components/Transition";
 import { Em, StyledText } from "@/components/Typography";
 import { SearchResult } from "@/modules/search/components";
@@ -44,14 +43,13 @@ const ArtistIndexPreset = (props: {
       typeof item === "string" ? (
         <Em className={cn({ "mt-4": index !== 0 })}>{item}</Em>
       ) : (
-        <Ripple
+        <SearchResult
+          {...{ as: "ripple", type: "artist", title: item.name }}
           onPress={() =>
             router.navigate(`/artist/${encodeURIComponent(item.name)}`)
           }
           wrapperClassName="rounded-full mt-2"
-        >
-          <SearchResult type="artist" source={null} title={item.name} />
-        </Ripple>
+        />
       ),
     ListEmptyComponent: props.isPending ? (
       <Loading />

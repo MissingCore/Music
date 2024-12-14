@@ -32,7 +32,6 @@ import {
 
 import { cn } from "@/lib/style";
 import type { Maybe } from "@/utils/types";
-import { Ripple } from "@/components/Form";
 import { Loading } from "@/components/Transition";
 import { StyledText } from "@/components/Typography";
 import { Track } from "@/modules/media/components";
@@ -126,11 +125,10 @@ const FolderListPreset = (props: {
         {isTrackContent(item) ? (
           <Track {...{ ...item, trackSource: props.trackSource }} />
         ) : (
-          <Ripple
+          <SearchResult
+            {...{ as: "ripple", type: "folder", title: item.name }}
             onPress={() => props.setDirSegments((prev) => [...prev, item.name])}
-          >
-            <SearchResult type="folder" source={null} title={item.name} />
-          </Ripple>
+          />
         )}
       </View>
     ),

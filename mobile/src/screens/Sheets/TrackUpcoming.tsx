@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
 import type { SheetProps } from "react-native-actions-sheet";
 import { FlashList } from "react-native-actions-sheet/dist/src/views/FlashList";
 
@@ -54,7 +53,7 @@ export default function TrackUpcomingSheet(
           const itemContent = {
             title: item.name,
             description: item.artistName ?? "—",
-            source: getTrackCover(item),
+            imageSource: getTrackCover(item),
           };
 
           const wrapperStyle = cn("px-4", {
@@ -67,17 +66,15 @@ export default function TrackUpcomingSheet(
               <Swipeable
                 containerClassName={wrapperStyle}
                 renderRightActions={() => (
-                  <View className="pr-4">
-                    <IconButton
-                      accessibilityLabel={t("template.entryRemove", {
-                        name: item.name,
-                      })}
-                      onPress={() => Queue.removeAtIndex(index)}
-                      className="bg-red"
-                    >
-                      <Remove color={Colors.neutral100} />
-                    </IconButton>
-                  </View>
+                  <IconButton
+                    accessibilityLabel={t("template.entryRemove", {
+                      name: item.name,
+                    })}
+                    onPress={() => Queue.removeAtIndex(index)}
+                    className="mr-4 bg-red"
+                  >
+                    <Remove color={Colors.neutral100} />
+                  </IconButton>
                 )}
               >
                 <TrackItem {...itemContent} inQueue />
@@ -85,11 +82,7 @@ export default function TrackUpcomingSheet(
             );
           }
 
-          return (
-            <View className={wrapperStyle}>
-              <TrackItem {...itemContent} />
-            </View>
-          );
+          return <TrackItem {...itemContent} className={wrapperStyle} />;
         }}
         overScrollMode="never"
         showsVerticalScrollIndicator={false}
@@ -106,18 +99,18 @@ export default function TrackUpcomingSheet(
 function TrackItem({
   inQueue,
   ...props
-}: {
-  title: string;
-  description: string;
-  source: string | null;
-  inQueue?: boolean;
-}) {
+}: Pick<
+  SearchResult.Content,
+  "title" | "description" | "imageSource" | "className"
+> & { inQueue?: boolean }) {
   return (
     <SearchResult
       type="track"
       {...props}
-      kbdLetter={inQueue ? "Q" : undefined}
-      className="bg-canvas pr-2 dark:bg-neutral5"
+      contentLabel={inQueue ? "Q" : undefined}
+      className={cn(props.className, "bg-canvas pr-2 dark:bg-neutral5", {
+        "pr-6": !inQueue,
+      })}
     />
   );
 }
