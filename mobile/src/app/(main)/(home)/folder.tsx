@@ -33,7 +33,7 @@ import {
 import { cn } from "@/lib/style";
 import type { Maybe } from "@/utils/types";
 import { Ripple } from "@/components/Form";
-import { Loading } from "@/components/Loading";
+import { Loading } from "@/components/Transition";
 import { StyledText } from "@/components/Typography";
 import { Track } from "@/modules/media/components";
 import type { PlayListSource } from "@/modules/media/types";

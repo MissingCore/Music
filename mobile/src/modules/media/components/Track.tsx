@@ -11,7 +11,7 @@ import type { PlayListSource } from "../types";
 import { cn } from "@/lib/style";
 import type { Maybe, Prettify } from "@/utils/types";
 import { IconButton, Ripple } from "@/components/Form";
-import { Loading } from "@/components/Loading";
+import { Loading } from "@/components/Transition";
 import { StyledText } from "@/components/Typography";
 import { MediaImage } from "./MediaImage";
 
@@ -41,6 +41,7 @@ export function Track({ id, trackSource, ...props }: Track.Props) {
   return (
     <Ripple
       onPress={() => playFromMediaList({ trackId: id, source: trackSource })}
+      wrapperClassName="bg-canvas"
     >
       {props.LeftElement ? (
         props.LeftElement

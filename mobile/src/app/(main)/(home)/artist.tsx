@@ -10,7 +10,7 @@ import { StickyActionListLayout } from "@/layouts";
 import { cn } from "@/lib/style";
 import type { Maybe } from "@/utils/types";
 import { Ripple } from "@/components/Form";
-import { Loading } from "@/components/Loading";
+import { Loading } from "@/components/Transition";
 import { Em, StyledText } from "@/components/Typography";
 import { SearchResult } from "@/modules/search/components";
 
