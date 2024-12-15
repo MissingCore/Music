@@ -10,6 +10,7 @@ import { CurrentListLayout } from "@/layouts/CurrentList";
 
 import { mutateGuard } from "@/lib/react-query";
 import { IconButton } from "@/components/Form";
+import { PagePlaceholder } from "@/components/Transition";
 import { Em, StyledText } from "@/components/Typography";
 import { Track } from "@/modules/media/components";
 
@@ -21,14 +22,7 @@ export default function CurrentAlbumScreen() {
   const { isPending, error, data } = useAlbumForScreen(albumId);
   const favoriteAlbum = useFavoriteAlbum(albumId);
 
-  if (isPending) return <View className="w-full flex-1 px-4" />;
-  else if (error) {
-    return (
-      <View className="w-full flex-1 p-4">
-        <StyledText center>{t("response.noContent")}</StyledText>
-      </View>
-    );
-  }
+  if (isPending || error) return <PagePlaceholder {...{ isPending }} />;
 
   // Add optimistic UI updates.
   const isToggled = favoriteAlbum.isPending

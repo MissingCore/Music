@@ -1,7 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
 import { useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
 
 import type { Album } from "@/db/schema";
 
@@ -11,24 +10,17 @@ import { useGetColumn } from "@/hooks/useGetColumn";
 import { CurrentListLayout } from "@/layouts/CurrentList";
 
 import { cn } from "@/lib/style";
-import { Em, StyledText } from "@/components/Typography";
+import { PagePlaceholder } from "@/components/Transition";
+import { Em } from "@/components/Typography";
 import { MediaCard, Track } from "@/modules/media/components";
 
 /** Screen for `/artist/[id]` route. */
 export default function CurrentArtistScreen() {
-  const { t } = useTranslation();
   const { bottomInset } = useBottomActionsContext();
   const { id: artistName } = useLocalSearchParams<{ id: string }>();
   const { isPending, error, data } = useArtistForScreen(artistName);
 
-  if (isPending) return <View className="w-full flex-1 px-4" />;
-  else if (error) {
-    return (
-      <View className="w-full flex-1 p-4">
-        <StyledText center>{t("response.noContent")}</StyledText>
-      </View>
-    );
-  }
+  if (isPending || error) return <PagePlaceholder {...{ isPending }} />;
 
   // Information about this track list.
   const trackSource = { type: "artist", id: artistName } as const;

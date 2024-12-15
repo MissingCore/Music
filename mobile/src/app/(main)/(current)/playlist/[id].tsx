@@ -14,6 +14,7 @@ import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
 import { IconButton } from "@/components/Form";
 import { Swipeable } from "@/components/Swipeable";
+import { PagePlaceholder } from "@/components/Transition";
 import { StyledText } from "@/components/Typography";
 import { Track } from "@/modules/media/components";
 import type { PlayListSource } from "@/modules/media/types";
@@ -26,14 +27,7 @@ export default function CurrentPlaylistScreen() {
   const { isPending, error, data } = usePlaylistForScreen(id);
   const favoritePlaylist = useFavoritePlaylist(id);
 
-  if (isPending) return <View className="w-full flex-1 px-4" />;
-  else if (error) {
-    return (
-      <View className="w-full flex-1 p-4">
-        <StyledText center>{t("response.noContent")}</StyledText>
-      </View>
-    );
-  }
+  if (isPending || error) return <PagePlaceholder {...{ isPending }} />;
 
   // Add optimistic UI updates.
   const isToggled = favoritePlaylist.isPending
