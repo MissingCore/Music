@@ -9,7 +9,6 @@ import {
 import { useTheme } from "@/hooks/useTheme";
 
 import { mutateGuard } from "@/lib/react-query";
-import { cn } from "@/lib/style";
 import { Marquee } from "@/components/Containment";
 import { SheetsFlashList } from "@/components/Defaults";
 import { Checkbox } from "@/components/Form";
@@ -49,7 +48,7 @@ export default function TrackToPlaylistSheet(props: {
                   item.name,
                 )
               }
-              wrapperClassName={cn({ "mt-1": index > 0 })}
+              wrapperClassName={index > 0 ? "mt-1" : undefined}
             >
               <Marquee color={selected ? surface : canvasAlt}>
                 <StyledText>{item.name}</StyledText>

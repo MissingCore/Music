@@ -10,7 +10,6 @@ import { CurrentListLayout } from "@/layouts/CurrentList";
 
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
-import { cn } from "@/lib/style";
 import { FlashList } from "@/components/Defaults";
 import { IconButton } from "@/components/Form";
 import { Swipeable } from "@/components/Swipeable";
@@ -73,7 +72,7 @@ export default function CurrentPlaylistScreen() {
           data={data.tracks}
           keyExtractor={({ id }) => id}
           renderItem={({ item, index }) => (
-            <View className={cn({ "mt-2": index > 0 })}>
+            <View className={index > 0 ? "mt-2" : undefined}>
               <PlaylistTrack
                 playlistName={data.name}
                 track={item}
@@ -112,7 +111,7 @@ function PlaylistTrack(props: {
           <Remove color={Colors.neutral100} />
         </IconButton>
       )}
-      childrenContainerClassName={cn("px-4")}
+      childrenContainerClassName="px-4"
     >
       <Track {...props.track} trackSource={props.trackSource} />
     </Swipeable>

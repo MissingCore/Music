@@ -46,7 +46,7 @@ export function ListRenderer<TData extends Record<string, any>>({
             description={getDescription ? getDescription(item) : undefined}
             onPress={onPress ? onPress(item) : undefined}
             {...{ first, last }}
-            className={cn({ "mb-[3px]": !last })}
+            className={!last ? "mb-[3px]" : undefined}
           />
         );
       }}

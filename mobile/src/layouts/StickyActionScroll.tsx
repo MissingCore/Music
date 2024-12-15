@@ -90,7 +90,7 @@ export const StickyActionScrollLayout = forwardRef<
       <View
         onLayout={calcInitStartPos}
         pointerEvents="box-none"
-        className={cn({ hidden: !StickyAction })}
+        className={!StickyAction ? "hidden" : undefined}
       >
         <Animated.View
           pointerEvents="box-none"
