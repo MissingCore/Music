@@ -1,5 +1,4 @@
 import { useIsFocused } from "@react-navigation/native";
-import type { FlashListProps } from "@shopify/flash-list";
 import { Fragment, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler, Pressable, useWindowDimensions } from "react-native";
@@ -26,11 +25,9 @@ import {
 } from "@/layouts";
 
 import { cn } from "@/lib/style";
-import type { Maybe } from "@/utils/types";
 import { Loading } from "@/components/Transition";
 import { StyledText } from "@/components/Typography";
 import { Track } from "@/modules/media/components";
-import type { PlayListSource } from "@/modules/media/types";
 import { SearchResult } from "@/modules/search/components";
 
 /** Animated scrollview supporting gestures. */
@@ -85,6 +82,33 @@ export default function FolderScreen() {
     <StickyActionListLayout
       listRef={listRef}
       title={t("common.folder")}
+      estimatedItemSize={56} // 48px Height + 8px Margin Top
+      data={[data?.subDirectories ?? [], data?.tracks ?? []].flat()}
+      keyExtractor={(_, index) => `${index}`}
+      renderItem={({ item, index }) => (
+        <>
+          {isTrackContent(item) ? (
+            <Track
+              {...{ ...item, trackSource }}
+              className={index > 0 ? "mt-2" : undefined}
+            />
+          ) : (
+            <SearchResult
+              {...{ as: "ripple", type: "folder", title: item.name }}
+              onPress={() => setDirSegments((prev) => [...prev, item.name])}
+              wrapperClassName={index > 0 ? "mt-2" : undefined}
+              className="pr-4"
+            />
+          )}
+        </>
+      )}
+      ListEmptyComponent={
+        isPending ? (
+          <Loading />
+        ) : (
+          <StyledText center>{t("response.noContent")}</StyledText>
+        )
+      }
       StickyAction={
         <Breadcrumbs
           dirSegments={dirSegments}
@@ -92,57 +116,13 @@ export default function FolderScreen() {
         />
       }
       estimatedActionSize={48}
-      {...FolderListPreset({
-        data: [data?.subDirectories ?? [], data?.tracks ?? []].flat(),
-        isPending,
-        emptyMessage: t("response.noContent"),
-        trackSource,
-        setDirSegments,
-      })}
     />
   );
 }
 
-//#region Preset
-const FolderListPreset = (props: {
-  data: Maybe<readonly FolderData[]>;
-  emptyMessage?: string;
-  isPending?: boolean;
-  trackSource: PlayListSource;
-  setDirSegments: React.Dispatch<React.SetStateAction<string[]>>;
-}) =>
-  ({
-    estimatedItemSize: 56, // 48px Height + 8px Margin Top
-    data: props.data,
-    keyExtractor: (_, index) => `${index}`,
-    renderItem: ({ item, index }) => (
-      <>
-        {isTrackContent(item) ? (
-          <Track
-            {...{ ...item, trackSource: props.trackSource }}
-            className={index > 0 ? "mt-2" : undefined}
-          />
-        ) : (
-          <SearchResult
-            {...{ as: "ripple", type: "folder", title: item.name }}
-            onPress={() => props.setDirSegments((prev) => [...prev, item.name])}
-            wrapperClassName={index > 0 ? "mt-2" : undefined}
-            className="pr-4"
-          />
-        )}
-      </>
-    ),
-    ListEmptyComponent: props.isPending ? (
-      <Loading />
-    ) : (
-      <StyledText center>{props.emptyMessage}</StyledText>
-    ),
-  }) satisfies FlashListProps<FolderData>;
-
 function isTrackContent(data: unknown): data is Track.Content {
   return Object.hasOwn(data as Track.Content, "id");
 }
-//#endregion
 
 //#region Breadcrumbs
 function Breadcrumbs({

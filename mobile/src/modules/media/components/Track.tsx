@@ -1,5 +1,4 @@
 import type { FlashListProps } from "@shopify/flash-list";
-import { FlashList } from "@shopify/flash-list";
 import { useTranslation } from "react-i18next";
 import { SheetManager } from "react-native-actions-sheet";
 
@@ -65,7 +64,7 @@ type TrackListProps = {
   trackSource: PlayListSource;
 };
 
-/** Presets used in the FlashList for `<TrackList />`. */
+/** Presets used in the FlashList containing a list of `<Track />`. */
 export const TrackListPreset = (props: TrackListProps) =>
   ({
     estimatedItemSize: 56, // 48px Height + 8px Margin Top
@@ -83,14 +82,4 @@ export const TrackListPreset = (props: TrackListProps) =>
       <StyledText center>{props.emptyMessage}</StyledText>
     ),
   }) satisfies FlashListProps<Track.Content>;
-
-/** Lists out tracks. */
-export function TrackList(props: TrackListProps) {
-  return (
-    <FlashList
-      {...TrackListPreset(props)}
-      showsVerticalScrollIndicator={false}
-    />
-  );
-}
 //#endregion
