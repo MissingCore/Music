@@ -1,3 +1,5 @@
+import type { ParseKeys } from "i18next";
+import { useTranslation } from "react-i18next";
 import type { TextProps } from "react-native";
 import { Text } from "react-native";
 
@@ -48,3 +50,27 @@ export function Em({
     </StyledText>
   );
 }
+
+//#region Translated Variants
+/** `<StyledText />` that accepts a translated key instead of children. */
+export function TStyledText({
+  textKey,
+  ...props
+}: Omit<React.ComponentProps<typeof StyledText>, "children"> & {
+  textKey: ParseKeys;
+}) {
+  const { t } = useTranslation();
+  return <StyledText {...props}>{t(textKey)}</StyledText>;
+}
+
+/** `<Em />` that accepts a translated key instead of children. */
+export function TEm({
+  textKey,
+  ...props
+}: Omit<React.ComponentProps<typeof Em>, "children"> & {
+  textKey: ParseKeys;
+}) {
+  const { t } = useTranslation();
+  return <Em {...props}>{t(textKey)}</Em>;
+}
+//#endregion

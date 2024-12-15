@@ -1,4 +1,3 @@
-import { FlashList } from "@shopify/flash-list";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -11,10 +10,10 @@ import { CurrentListLayout } from "@/layouts/CurrentList";
 
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
-import { cn } from "@/lib/style";
+import { FlashList } from "@/components/Defaults";
 import { IconButton } from "@/components/Form";
 import { Swipeable } from "@/components/Swipeable";
-import { StyledText } from "@/components/Typography";
+import { PagePlaceholder } from "@/components/Transition";
 import { Track } from "@/modules/media/components";
 import type { PlayListSource } from "@/modules/media/types";
 
@@ -26,14 +25,7 @@ export default function CurrentPlaylistScreen() {
   const { isPending, error, data } = usePlaylistForScreen(id);
   const favoritePlaylist = useFavoritePlaylist(id);
 
-  if (isPending) return <View className="w-full flex-1 px-4" />;
-  else if (error) {
-    return (
-      <View className="w-full flex-1 p-4">
-        <StyledText center>{t("response.noContent")}</StyledText>
-      </View>
-    );
-  }
+  if (isPending || error) return <PagePlaceholder {...{ isPending }} />;
 
   // Add optimistic UI updates.
   const isToggled = favoritePlaylist.isPending
@@ -80,7 +72,7 @@ export default function CurrentPlaylistScreen() {
           data={data.tracks}
           keyExtractor={({ id }) => id}
           renderItem={({ item, index }) => (
-            <View className={cn({ "mt-2": index > 0 })}>
+            <View className={index > 0 ? "mt-2" : undefined}>
               <PlaylistTrack
                 playlistName={data.name}
                 track={item}
@@ -88,13 +80,9 @@ export default function CurrentPlaylistScreen() {
               />
             </View>
           )}
-          overScrollMode="never"
-          showsVerticalScrollIndicator={false}
           contentContainerClassName="pt-4"
           contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
-          ListEmptyComponent={
-            <StyledText center>{t("response.noTracks")}</StyledText>
-          }
+          emptyMsgKey="response.noTracks"
         />
       </CurrentListLayout>
     </>
@@ -123,7 +111,7 @@ function PlaylistTrack(props: {
           <Remove color={Colors.neutral100} />
         </IconButton>
       )}
-      childrenContainerClassName={cn("px-4")}
+      childrenContainerClassName="px-4"
     >
       <Track {...props.track} trackSource={props.trackSource} />
     </Swipeable>

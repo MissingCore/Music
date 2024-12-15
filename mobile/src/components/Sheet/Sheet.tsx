@@ -1,5 +1,7 @@
 import { Toasts } from "@backpackapp-io/react-native-toast";
+import type { ParseKeys } from "i18next";
 import { cssInterop } from "nativewind";
+import { useTranslation } from "react-i18next";
 import type { StyleProp, ViewStyle } from "react-native";
 import { View } from "react-native";
 import type { ActionSheetProps } from "react-native-actions-sheet";
@@ -16,24 +18,28 @@ const WrappedActionSheet = cssInterop(ActionSheet, {
 
 /** Pre-styled sheet. */
 export function Sheet({
-  title,
+  titleKey,
   snapTop,
   contentContainerClassName,
   contentContainerStyle,
   children,
   ...props
 }: ActionSheetProps & {
-  title?: string;
+  titleKey?: ParseKeys;
   /** If the sheet should open at max screen height. */
   snapTop?: boolean;
   contentContainerClassName?: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
 }) {
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
+
   return (
     <WrappedActionSheet
       gestureEnabled
-      CustomHeaderComponent={<SheetHeader title={title} />}
+      CustomHeaderComponent={
+        <SheetHeader title={titleKey ? t(titleKey) : undefined} />
+      }
       ExtraOverlayComponent={<Toasts />}
       containerClassName={cn("rounded-t-lg bg-canvas dark:bg-neutral5", {
         "h-full": snapTop,

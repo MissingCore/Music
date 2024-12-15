@@ -1,13 +1,6 @@
 import { useIsFocused } from "@react-navigation/native";
-import type { FlashListProps } from "@shopify/flash-list";
 import { Fragment, useCallback, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import {
-  BackHandler,
-  Pressable,
-  View,
-  useWindowDimensions,
-} from "react-native";
+import { BackHandler, Pressable, useWindowDimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
   FadeInLeft,
@@ -31,12 +24,9 @@ import {
 } from "@/layouts";
 
 import { cn } from "@/lib/style";
-import type { Maybe } from "@/utils/types";
-import { Ripple } from "@/components/Form";
-import { Loading } from "@/components/Transition";
+import { useListPresets } from "@/components/Defaults";
 import { StyledText } from "@/components/Typography";
 import { Track } from "@/modules/media/components";
-import type { PlayListSource } from "@/modules/media/types";
 import { SearchResult } from "@/modules/search/components";
 
 /** Animated scrollview supporting gestures. */
@@ -46,7 +36,6 @@ type FolderData = FileNode | Track.Content;
 
 /** Screen for `/folder` route. */
 export default function FolderScreen() {
-  const { t } = useTranslation();
   const isFocused = useIsFocused();
   const listRef = useStickyActionListLayoutRef<FolderData>();
   const [dirSegments, _setDirSegments] = useState<string[]>([]);
@@ -54,6 +43,7 @@ export default function FolderScreen() {
   const fullPath = dirSegments.join("/");
 
   const { isPending, data } = useFolderContent(fullPath);
+  const listPresets = useListPresets({ isPending });
 
   /** Modified state setter that scrolls to the top of the page. */
   const setDirSegments: React.Dispatch<React.SetStateAction<string[]>> =
@@ -90,7 +80,28 @@ export default function FolderScreen() {
   return (
     <StickyActionListLayout
       listRef={listRef}
-      title={t("common.folder")}
+      titleKey="common.folder"
+      estimatedItemSize={56} // 48px Height + 8px Margin Top
+      data={[data?.subDirectories ?? [], data?.tracks ?? []].flat()}
+      keyExtractor={(_, index) => `${index}`}
+      renderItem={({ item, index }) => (
+        <>
+          {isTrackContent(item) ? (
+            <Track
+              {...{ ...item, trackSource }}
+              className={index > 0 ? "mt-2" : undefined}
+            />
+          ) : (
+            <SearchResult
+              {...{ as: "ripple", type: "folder", title: item.name }}
+              onPress={() => setDirSegments((prev) => [...prev, item.name])}
+              wrapperClassName={index > 0 ? "mt-2" : undefined}
+              className="pr-4"
+            />
+          )}
+        </>
+      )}
+      {...listPresets}
       StickyAction={
         <Breadcrumbs
           dirSegments={dirSegments}
@@ -98,53 +109,13 @@ export default function FolderScreen() {
         />
       }
       estimatedActionSize={48}
-      {...FolderListPreset({
-        data: [data?.subDirectories ?? [], data?.tracks ?? []].flat(),
-        isPending,
-        emptyMessage: t("response.noContent"),
-        trackSource,
-        setDirSegments,
-      })}
     />
   );
 }
 
-//#region Preset
-const FolderListPreset = (props: {
-  data: Maybe<readonly FolderData[]>;
-  emptyMessage?: string;
-  isPending?: boolean;
-  trackSource: PlayListSource;
-  setDirSegments: React.Dispatch<React.SetStateAction<string[]>>;
-}) =>
-  ({
-    estimatedItemSize: 56, // 48px Height + 8px Margin Top
-    data: props.data,
-    keyExtractor: (_, index) => `${index}`,
-    renderItem: ({ item, index }) => (
-      <View className={cn({ "mt-2": index !== 0 })}>
-        {isTrackContent(item) ? (
-          <Track {...{ ...item, trackSource: props.trackSource }} />
-        ) : (
-          <Ripple
-            onPress={() => props.setDirSegments((prev) => [...prev, item.name])}
-          >
-            <SearchResult type="folder" source={null} title={item.name} />
-          </Ripple>
-        )}
-      </View>
-    ),
-    ListEmptyComponent: props.isPending ? (
-      <Loading />
-    ) : (
-      <StyledText center>{props.emptyMessage}</StyledText>
-    ),
-  }) satisfies FlashListProps<FolderData>;
-
 function isTrackContent(data: unknown): data is Track.Content {
   return Object.hasOwn(data as Track.Content, "id");
 }
-//#endregion
 
 //#region Breadcrumbs
 function Breadcrumbs({
@@ -196,7 +167,7 @@ function Breadcrumbs({
       >
         {[undefined, ...dirSegments].map((dirName, idx) => (
           <Fragment key={idx}>
-            {idx !== 0 ? (
+            {idx > 0 ? (
               <Animated.View entering={FadeInLeft} exiting={FadeOutRight}>
                 <StyledText className="px-1 text-xs">/</StyledText>
               </Animated.View>

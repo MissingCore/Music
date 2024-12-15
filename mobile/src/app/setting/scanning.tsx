@@ -19,7 +19,7 @@ export default function ScanningScreen() {
   return (
     <StandardScrollLayout>
       <ListItem
-        title={t("settings.rescan")}
+        titleKey="settings.rescan"
         description={t("settings.brief.rescan")}
         disabled={rescan.isPending}
         onPress={() => mutateGuard(rescan, undefined)}
@@ -28,28 +28,28 @@ export default function ScanningScreen() {
 
       <List>
         <ListItem
-          title={t("title.listAllow")}
+          titleKey="title.listAllow"
           description={t("plural.entry", { count: allowList.length })}
           onPress={() =>
-            SheetManager.show("scan-filter-list-sheet", {
+            SheetManager.show("ScanFilterListSheet", {
               payload: { listType: "listAllow" },
             })
           }
           first
         />
         <ListItem
-          title={t("title.listBlock")}
+          titleKey="title.listBlock"
           description={t("plural.entry", { count: blockList.length })}
           onPress={() =>
-            SheetManager.show("scan-filter-list-sheet", {
+            SheetManager.show("ScanFilterListSheet", {
               payload: { listType: "listBlock" },
             })
           }
         />
         <ListItem
-          title={t("title.ignoreDuration")}
+          titleKey="title.ignoreDuration"
           description={t("plural.second", { count: ignoreDuration })}
-          onPress={() => SheetManager.show("min-duration-sheet")}
+          onPress={() => SheetManager.show("MinDurationSheet")}
           last
         />
       </List>

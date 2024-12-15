@@ -1,13 +1,13 @@
 import { Stack, useLocalSearchParams } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
 import { useTranslation } from "react-i18next";
-import { ScrollView } from "react-native";
 
 import { OpenInNew } from "@/icons";
 import LicensesList from "@/resources/licenses.json";
 import { StickyActionHeader } from "@/layouts";
 
 import { Card } from "@/components/Containment";
+import { ScrollView } from "@/components/Defaults";
 import { IconButton } from "@/components/Form";
 import { StyledText } from "@/components/Typography";
 
@@ -35,10 +35,7 @@ export default function PackageLicenseScreen() {
           ),
         }}
       />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerClassName="grow gap-6 p-4"
-      >
+      <ScrollView contentContainerClassName="grow gap-6 p-4">
         <StickyActionHeader noOffset originalText>
           {licenseInfo.name}
         </StickyActionHeader>

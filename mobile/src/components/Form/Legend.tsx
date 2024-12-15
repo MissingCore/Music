@@ -1,7 +1,8 @@
+import type { ParseKeys } from "i18next";
 import { View } from "react-native";
 
 import { cn } from "@/lib/style";
-import { StyledText } from "../Typography";
+import { StyledText, TStyledText } from "../Typography";
 
 //#region Legend
 /** Wrapper for list of `<LegendItem />` for consistent gaps. */
@@ -16,7 +17,7 @@ export function Legend(props: {
 //#region Legend Item
 /** Help describe items represented in for example a `<ProgressBar />`. */
 export function LegendItem(props: {
-  name: string;
+  nameKey: ParseKeys;
   value: string | number;
   color?: string;
 }) {
@@ -29,7 +30,7 @@ export function LegendItem(props: {
             className="size-[9px] rounded-full"
           />
         ) : null}
-        <StyledText className="shrink text-xs">{props.name}</StyledText>
+        <TStyledText textKey={props.nameKey} className="shrink text-xs" />
       </View>
       <StyledText preset="dimOnSurface">{props.value}</StyledText>
     </View>

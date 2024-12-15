@@ -1,4 +1,3 @@
-import { FlashList } from "@shopify/flash-list";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -9,8 +8,9 @@ import { useBottomActionsContext } from "@/hooks/useBottomActionsContext";
 import { CurrentListLayout } from "@/layouts/CurrentList";
 
 import { mutateGuard } from "@/lib/react-query";
-import { cn } from "@/lib/style";
+import { FlashList } from "@/components/Defaults";
 import { IconButton } from "@/components/Form";
+import { PagePlaceholder } from "@/components/Transition";
 import { Em, StyledText } from "@/components/Typography";
 import { Track } from "@/modules/media/components";
 
@@ -22,14 +22,7 @@ export default function CurrentAlbumScreen() {
   const { isPending, error, data } = useAlbumForScreen(albumId);
   const favoriteAlbum = useFavoriteAlbum(albumId);
 
-  if (isPending) return <View className="w-full flex-1 px-4" />;
-  else if (error) {
-    return (
-      <View className="w-full flex-1 p-4">
-        <StyledText center>{t("response.noContent")}</StyledText>
-      </View>
-    );
-  }
+  if (isPending || error) return <PagePlaceholder {...{ isPending }} />;
 
   // Add optimistic UI updates.
   const isToggled = favoriteAlbum.isPending
@@ -72,24 +65,22 @@ export default function CurrentAlbumScreen() {
           data={data.tracks}
           keyExtractor={({ id }) => id}
           renderItem={({ item, index }) => (
-            <View className={cn({ "mt-2": index > 0 })}>
+            <>
               {item.disc !== null && discLocation[item.disc] === index ? (
                 <Em
                   preset="dimOnCanvas"
-                  className={cn("mb-2", { "mt-2": index > 0 })}
+                  className={index === 0 ? "mb-2" : "mt-4"}
                 >
                   {t("common.disc", { count: item.disc })}
                 </Em>
               ) : null}
               <Track
-                {...item}
+                {...{ ...item, trackSource }}
                 LeftElement={<TrackNumber track={item.track} />}
-                trackSource={trackSource}
+                className={index > 0 ? "mt-2" : undefined}
               />
-            </View>
+            </>
           )}
-          overScrollMode="never"
-          showsVerticalScrollIndicator={false}
           className="mx-4"
           contentContainerClassName="pt-4"
           contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}

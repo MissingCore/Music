@@ -1,19 +1,15 @@
-import { useTranslation } from "react-i18next";
-import { FlatList } from "react-native";
-import type { SheetProps } from "react-native-actions-sheet";
-
 import {
   OrderedByOptions,
   useSortPreferencesStore,
 } from "@/modules/media/services/SortPreferences";
 
+import { FlatList } from "@/components/Defaults";
 import { Button, Radio, Switch } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";
-import { StyledText } from "@/components/Typography";
+import { TStyledText } from "@/components/Typography";
 
 /** Sheet allowing us visually change the sort order on the `/track` screen. */
-export default function TrackSortSheet(props: SheetProps<"track-sort-sheet">) {
-  const { t } = useTranslation();
+export default function TrackSortSheet() {
   const isAsc = useSortPreferencesStore((state) => state.isAsc);
   const toggleIsAsc = useSortPreferencesStore((state) => state.toggleIsAsc);
   const orderedBy = useSortPreferencesStore((state) => state.orderedBy);
@@ -21,12 +17,12 @@ export default function TrackSortSheet(props: SheetProps<"track-sort-sheet">) {
 
   return (
     <Sheet
-      id={props.sheetId}
-      title={t("title.sort")}
+      id="TrackSortSheet"
+      titleKey="title.sort"
       contentContainerClassName="gap-4"
     >
       <Button onPress={toggleIsAsc} className="flex-row justify-between">
-        <StyledText className="shrink">{t("sortModal.asc")}</StyledText>
+        <TStyledText textKey="sortModal.asc" className="shrink" />
         <Switch enabled={isAsc} />
       </Button>
       <FlatList
@@ -37,10 +33,9 @@ export default function TrackSortSheet(props: SheetProps<"track-sort-sheet">) {
             selected={item === orderedBy}
             onSelect={() => setOrderedBy(item)}
           >
-            <StyledText>{t(`sortModal.${item}`)}</StyledText>
+            <TStyledText textKey={`sortModal.${item}`} />
           </Radio>
         )}
-        showsVerticalScrollIndicator={false}
         contentContainerClassName="gap-1"
       />
     </Sheet>

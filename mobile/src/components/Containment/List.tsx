@@ -1,9 +1,12 @@
 import type { FlashListProps } from "@shopify/flash-list";
-import { FlashList } from "@shopify/flash-list";
+import type { ParseKeys } from "i18next";
+import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 
 import type { TextColor } from "@/lib/style";
 import { cn } from "@/lib/style";
+import type { WithListEmptyProps } from "../Defaults";
+import { FlashList } from "../Defaults";
 import { StyledText } from "../Typography";
 
 //#region List
@@ -21,13 +24,15 @@ export function ListRenderer<TData extends Record<string, any>>({
   data,
   renderOptions: { getTitle, getDescription, onPress },
   ...props
-}: Omit<FlashListProps<TData>, "renderItem"> & {
-  renderOptions: {
-    getTitle: (item: TData) => string;
-    getDescription?: (item: TData) => string;
-    onPress?: (item: TData) => () => void;
-  };
-}) {
+}: WithListEmptyProps<
+  Omit<FlashListProps<TData>, "renderItem"> & {
+    renderOptions: {
+      getTitle: (item: TData) => string;
+      getDescription?: (item: TData) => string;
+      onPress?: (item: TData) => () => void;
+    };
+  }
+>) {
   return (
     <FlashList
       estimatedItemSize={70}
@@ -41,11 +46,10 @@ export function ListRenderer<TData extends Record<string, any>>({
             description={getDescription ? getDescription(item) : undefined}
             onPress={onPress ? onPress(item) : undefined}
             {...{ first, last }}
-            className={cn({ "mb-[3px]": !last })}
+            className={!last ? "mb-[3px]" : undefined}
           />
         );
       }}
-      showsVerticalScrollIndicator={false}
       {...props}
     />
   );
@@ -54,20 +58,26 @@ export function ListRenderer<TData extends Record<string, any>>({
 
 //#region List Item
 /** Static or pressable card themed after Nothing OS 3.0's setting page. */
-export function ListItem(props: {
-  // Interactivity props.
-  onPress?: () => void;
-  disabled?: boolean;
-  // Content props.
-  title: string;
-  description?: string;
-  icon?: React.ReactNode;
-  // Styling props.
-  first?: boolean;
-  last?: boolean;
-  textColor?: TextColor;
-  className?: string;
-}) {
+export function ListItem(
+  props: {
+    // Interactivity props.
+    onPress?: () => void;
+    disabled?: boolean;
+    // Content props.
+    description?: string;
+    icon?: React.ReactNode;
+    // Styling props.
+    first?: boolean;
+    last?: boolean;
+    textColor?: TextColor;
+    className?: string;
+  } & (
+    | { titleKey: ParseKeys; title?: never }
+    | { titleKey?: never; title: string }
+  ),
+) {
+  const { t } = useTranslation();
+
   const asButton = props.onPress !== undefined;
   const withIcon = !!props.icon;
   const usedColor = props.textColor ?? "text-foreground";
@@ -90,7 +100,7 @@ export function ListItem(props: {
     >
       <View className="shrink grow gap-0.5">
         <StyledText className={cn("text-sm", usedColor)}>
-          {props.title}
+          {props.titleKey ? t(props.titleKey) : props.title}
         </StyledText>
         {props.description ? (
           <StyledText className={cn("text-xs opacity-50", usedColor)}>

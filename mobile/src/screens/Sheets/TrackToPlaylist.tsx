@@ -1,7 +1,4 @@
-import { useTranslation } from "react-i18next";
-import type { SheetProps } from "react-native-actions-sheet";
 import { SheetManager } from "react-native-actions-sheet";
-import { FlashList } from "react-native-actions-sheet/dist/src/views/FlashList";
 
 import { usePlaylists } from "@/queries/playlist";
 import {
@@ -12,33 +9,31 @@ import {
 import { useTheme } from "@/hooks/useTheme";
 
 import { mutateGuard } from "@/lib/react-query";
-import { cn } from "@/lib/style";
 import { Marquee } from "@/components/Containment";
+import { SheetsFlashList } from "@/components/Defaults";
 import { Checkbox } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";
-import { Loading } from "@/components/Transition";
 import { StyledText } from "@/components/Typography";
 
 /** Sheet allowing us to select which playlists the track belongs to. */
-export default function TrackToPlaylistSheet(
-  props: SheetProps<"track-to-playlist-sheet">,
-) {
-  const { t } = useTranslation();
+export default function TrackToPlaylistSheet(props: {
+  payload: { id: string };
+}) {
   const { canvasAlt, surface } = useTheme();
-  const { isPending, data } = usePlaylists();
-  const { data: inList } = useTrackPlaylists(props.payload!.id);
-  const addToPlaylist = useAddToPlaylist(props.payload!.id);
-  const removeFromPlaylist = useRemoveFromPlaylist(props.payload!.id);
+  const { data } = usePlaylists();
+  const { data: inList } = useTrackPlaylists(props.payload.id);
+  const addToPlaylist = useAddToPlaylist(props.payload.id);
+  const removeFromPlaylist = useRemoveFromPlaylist(props.payload.id);
 
   return (
     <Sheet
-      id={props.sheetId}
-      title={t("playlist.add")}
+      id="TrackToPlaylistSheet"
+      titleKey="playlist.add"
       // Hide the Track sheet when we close this sheet since it's still open.
-      onBeforeClose={() => SheetManager.hide("track-sheet")}
+      onBeforeClose={() => SheetManager.hide("TrackSheet")}
       snapTop
     >
-      <FlashList
+      <SheetsFlashList
         estimatedItemSize={58} // 54px Height + 4px Margin Top
         data={data}
         keyExtractor={({ name }) => name}
@@ -53,7 +48,7 @@ export default function TrackToPlaylistSheet(
                   item.name,
                 )
               }
-              wrapperClassName={cn({ "mt-1": index !== 0 })}
+              wrapperClassName={index > 0 ? "mt-1" : undefined}
             >
               <Marquee color={selected ? surface : canvasAlt}>
                 <StyledText>{item.name}</StyledText>
@@ -61,16 +56,8 @@ export default function TrackToPlaylistSheet(
             </Checkbox>
           );
         }}
-        ListEmptyComponent={
-          isPending ? (
-            <Loading />
-          ) : (
-            <StyledText center>{t("response.noPlaylists")}</StyledText>
-          )
-        }
-        overScrollMode="never"
-        showsVerticalScrollIndicator={false}
         contentContainerClassName="pb-4"
+        emptyMsgKey="response.noPlaylists"
       />
     </Sheet>
   );

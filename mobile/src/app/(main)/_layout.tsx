@@ -143,6 +143,7 @@ function NavigationList() {
         // Suppresses error from `scrollToIndex` when we remount this layout
         // as a result of using the `push` navigation on the `/search` screen.
         onScrollToIndexFailed={() => {}}
+        overScrollMode="never"
         showsHorizontalScrollIndicator={false}
         contentContainerClassName="px-2"
       />

@@ -1,26 +1,23 @@
 import { useColorScheme } from "nativewind";
-import { useTranslation } from "react-i18next";
-import { FlatList } from "react-native";
-import type { SheetProps } from "react-native-actions-sheet";
 
 import {
   ThemeOptions,
   useUserPreferencesStore,
 } from "@/services/UserPreferences";
 
+import { FlatList } from "@/components/Defaults";
 import { Radio } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";
-import { StyledText } from "@/components/Typography";
+import { TStyledText } from "@/components/Typography";
 
 /** Sheet allowing us to change the app's theme. */
-export default function ThemeSheet(props: SheetProps<"theme-sheet">) {
-  const { t } = useTranslation();
+export default function ThemeSheet() {
   const { setColorScheme } = useColorScheme();
   const theme = useUserPreferencesStore((state) => state.theme);
   const setTheme = useUserPreferencesStore((state) => state.setTheme);
 
   return (
-    <Sheet id={props.sheetId} title={t("title.theme")}>
+    <Sheet id="ThemeSheet" titleKey="title.theme">
       <FlatList
         data={ThemeOptions}
         keyExtractor={(item) => item}
@@ -32,10 +29,9 @@ export default function ThemeSheet(props: SheetProps<"theme-sheet">) {
               setTheme(item);
             }}
           >
-            <StyledText>{t(`settings.related.${item}`)}</StyledText>
+            <TStyledText textKey={`settings.related.${item}`} />
           </Radio>
         )}
-        showsVerticalScrollIndicator={false}
         contentContainerClassName="gap-1"
       />
     </Sheet>

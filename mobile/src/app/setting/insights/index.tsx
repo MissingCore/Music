@@ -21,7 +21,7 @@ export default function InsightsScreen() {
       </List>
 
       <ListItem
-        title={t("header.saveErrors")}
+        titleKey="header.saveErrors"
         description={t("settings.brief.saveErrors")}
         onPress={() => router.navigate("/setting/insights/save-errors")}
         {...{ first: true, last: true }}
@@ -32,7 +32,6 @@ export default function InsightsScreen() {
 
 /** Breaks down what this app stores on the device. */
 function StorageWidget() {
-  const { t } = useTranslation();
   const { foreground } = useTheme();
   const { isPending, error, data } = useStorageSummary();
 
@@ -51,28 +50,28 @@ function StorageWidget() {
       />
       <Legend className="py-2">
         <LegendItem
-          name={t("settings.related.images")}
+          nameKey="settings.related.images"
           value={abbreviateSize(data.images)}
           color={Colors.red}
         />
         <LegendItem
-          name={t("settings.related.database")}
+          nameKey="settings.related.database"
           value={abbreviateSize(data.database)}
           color={Colors.yellow}
         />
         <LegendItem
-          name={t("settings.related.other")}
+          nameKey="settings.related.other"
           value={abbreviateSize(data.other)}
           color="#4142BE"
         />
         <LegendItem
-          name={t("settings.related.cache")}
+          nameKey="settings.related.cache"
           value={abbreviateSize(data.cache)}
           color={`${foreground}40`} // 25% Opacity
         />
       </Legend>
       <LegendItem
-        name={t("settings.related.total")}
+        nameKey="settings.related.total"
         value={abbreviateSize(data.total)}
       />
     </Card>
@@ -81,23 +80,20 @@ function StorageWidget() {
 
 /** Summarizes what is stored in the database. */
 function DBSummaryWidget() {
-  const { t } = useTranslation();
   const { isPending, error, data } = useDatabaseSummary();
-
   if (isPending || error) return null;
-
   return (
     <Card className="gap-2 rounded-t-sm">
       <Legend className="pb-2">
-        <LegendItem name={t("common.albums")} value={data.albums} />
-        <LegendItem name={t("common.artists")} value={data.artists} />
-        <LegendItem name={t("settings.related.images")} value={data.images} />
-        <LegendItem name={t("common.playlists")} value={data.playlists} />
-        <LegendItem name={t("common.tracks")} value={data.tracks} />
-        <LegendItem name={t("header.saveErrors")} value={data.saveErrors} />
+        <LegendItem nameKey="common.albums" value={data.albums} />
+        <LegendItem nameKey="common.artists" value={data.artists} />
+        <LegendItem nameKey="settings.related.images" value={data.images} />
+        <LegendItem nameKey="common.playlists" value={data.playlists} />
+        <LegendItem nameKey="common.tracks" value={data.tracks} />
+        <LegendItem nameKey="header.saveErrors" value={data.saveErrors} />
       </Legend>
       <LegendItem
-        name={t("settings.related.totalDuration")}
+        nameKey="settings.related.totalDuration"
         value={formatSeconds(data.totalDuration, {
           format: "duration",
           omitSeconds: true,

@@ -1,27 +1,23 @@
-import { useTranslation } from "react-i18next";
-import type { SheetProps } from "react-native-actions-sheet";
-import { FlatList } from "react-native-actions-sheet";
-
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { LANGUAGES } from "@/modules/i18n/constants";
 
+import { SheetsFlatList } from "@/components/Defaults";
 import { Radio } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";
 import { StyledText } from "@/components/Typography";
 
 /** Sheet allowing us to change the app's language. */
-export default function LanguageSheet(props: SheetProps<"language-sheet">) {
-  const { t } = useTranslation();
+export default function LanguageSheet() {
   const languageCode = useUserPreferencesStore((state) => state.language);
   const setLanguage = useUserPreferencesStore((state) => state.setLanguage);
 
   return (
     <Sheet
-      id={props.sheetId}
-      title={t("title.language")}
+      id="LanguageSheet"
+      titleKey="title.language"
       contentContainerClassName="pb-0"
     >
-      <FlatList
+      <SheetsFlatList
         data={LANGUAGES}
         keyExtractor={({ code }) => code}
         renderItem={({ item }) => (
@@ -32,8 +28,6 @@ export default function LanguageSheet(props: SheetProps<"language-sheet">) {
             <StyledText>{item.name}</StyledText>
           </Radio>
         )}
-        overScrollMode="never"
-        showsVerticalScrollIndicator={false}
         contentContainerClassName="gap-1 pb-4"
       />
     </Sheet>

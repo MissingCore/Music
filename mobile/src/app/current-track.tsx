@@ -52,7 +52,7 @@ export default function CurrentTrackScreen() {
                 name: track.name,
               })}
               onPress={() =>
-                SheetManager.show("track-sheet", { payload: { id: track.id } })
+                SheetManager.show("TrackSheet", { payload: { id: track.id } })
               }
             >
               <MoreVert />
@@ -212,7 +212,7 @@ function BottomAppBar({ trackId }: { trackId: string }) {
       <IconButton
         kind="ripple"
         accessibilityLabel={t("title.upcoming")}
-        onPress={() => SheetManager.show("track-upcoming-sheet")}
+        onPress={() => SheetManager.show("TrackUpcomingSheet")}
         rippleRadius={24}
         className="p-2"
       >

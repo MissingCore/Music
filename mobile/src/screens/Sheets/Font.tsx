@@ -1,6 +1,4 @@
-import { useTranslation } from "react-i18next";
 import { Text } from "react-native";
-import type { SheetProps } from "react-native-actions-sheet";
 
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 
@@ -8,15 +6,14 @@ import { Radio } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";
 
 /** Sheet allowing us to change the app's accent font. */
-export default function FontSheet(props: SheetProps<"font-sheet">) {
-  const { t } = useTranslation();
+export default function FontSheet() {
   const accentFont = useUserPreferencesStore((state) => state.accentFont);
   const setAccentFont = useUserPreferencesStore((state) => state.setAccentFont);
 
   return (
     <Sheet
-      id={props.sheetId}
-      title={t("title.font")}
+      id="FontSheet"
+      titleKey="title.font"
       contentContainerClassName="gap-1"
     >
       <Radio

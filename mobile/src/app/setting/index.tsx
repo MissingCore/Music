@@ -23,7 +23,7 @@ export default function SettingScreen() {
     <StandardScrollLayout>
       {hasNewUpdate && (
         <ListItem
-          title={t("header.appUpdate")}
+          titleKey="header.appUpdate"
           description={t("settings.brief.appUpdate")}
           onPress={() => router.navigate("/setting/update")}
           className="rounded-full bg-yellow"
@@ -33,33 +33,33 @@ export default function SettingScreen() {
 
       <List>
         <ListItem
-          title={t("header.appearance")}
+          titleKey="header.appearance"
           description={t("settings.brief.appearance")}
           onPress={() => router.navigate("/setting/appearance")}
           first
         />
         <ListItem
-          title={t("title.language")}
+          titleKey="title.language"
           description={currLang}
-          onPress={() => SheetManager.show("language-sheet")}
+          onPress={() => SheetManager.show("LanguageSheet")}
           last
         />
       </List>
 
       <List>
         <ListItem
-          title={t("title.backup")}
+          titleKey="title.backup"
           description={t("settings.brief.backup")}
-          onPress={() => SheetManager.show("backup-sheet")}
+          onPress={() => SheetManager.show("BackupSheet")}
           first
         />
         <ListItem
-          title={t("header.insights")}
+          titleKey="header.insights"
           description={t("settings.brief.insights")}
           onPress={() => router.navigate("/setting/insights")}
         />
         <ListItem
-          title={t("settings.interactions")}
+          titleKey="settings.interactions"
           description={t("settings.brief.interactions")}
           icon={<OpenInNew />}
           onPress={() =>
@@ -67,7 +67,7 @@ export default function SettingScreen() {
           }
         />
         <ListItem
-          title={t("header.scanning")}
+          titleKey="header.scanning"
           description={t("settings.brief.scanning")}
           onPress={() => router.navigate("/setting/scanning")}
           last
@@ -76,38 +76,34 @@ export default function SettingScreen() {
 
       <List>
         <ListItem
-          title={t("settings.translate")}
+          titleKey="settings.translate"
           description={t("settings.brief.translate")}
           icon={<OpenInNew />}
           onPress={() => WebBrowser.openBrowserAsync(LINKS.TRANSLATIONS)}
           first
         />
         <ListItem
-          title={t("settings.code")}
+          titleKey="settings.code"
           description={t("settings.brief.code")}
           icon={<OpenInNew />}
           onPress={() => WebBrowser.openBrowserAsync(LINKS.GITHUB)}
         />
         <ListItem
-          title={t("settings.license")}
+          titleKey="settings.license"
           icon={<OpenInNew />}
           onPress={() => WebBrowser.openBrowserAsync(LINKS.LICENSE)}
         />
         <ListItem
-          title={t("settings.privacy")}
+          titleKey="settings.privacy"
           icon={<OpenInNew />}
           onPress={() => WebBrowser.openBrowserAsync(LINKS.PRIVACY_POLICY)}
         />
         <ListItem
-          title={t("header.thirdParty")}
+          titleKey="header.thirdParty"
           description={t("settings.brief.thirdParty")}
           onPress={() => router.navigate("/setting/third-party")}
         />
-        <ListItem
-          title={t("settings.version")}
-          description={APP_VERSION}
-          last
-        />
+        <ListItem titleKey="settings.version" description={APP_VERSION} last />
       </List>
     </StandardScrollLayout>
   );

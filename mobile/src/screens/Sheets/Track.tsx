@@ -1,7 +1,7 @@
 import { router, usePathname } from "expo-router";
-import { useTranslation } from "react-i18next";
+import type { ParseKeys } from "i18next";
 import { Pressable, View } from "react-native";
-import { SheetManager, type SheetProps } from "react-native-actions-sheet";
+import { SheetManager } from "react-native-actions-sheet";
 
 import type { TrackWithAlbum } from "@/db/schema";
 
@@ -30,15 +30,15 @@ import {
 import { Divider, Marquee } from "@/components/Containment";
 import { IconButton } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";
-import { Em, StyledText } from "@/components/Typography";
+import { StyledText, TEm, TStyledText } from "@/components/Typography";
 import { ReservedPlaylists } from "@/modules/media/constants";
 import { MediaImage } from "@/modules/media/components";
 
 /** Sheet containing information and actions for a track. */
-export default function TrackSheet(props: SheetProps<"track-sheet">) {
-  const { isPending, error, data } = useTrack(props.payload!.id);
+export default function TrackSheet(props: { payload: { id: string } }) {
+  const { isPending, error, data } = useTrack(props.payload.id);
   return (
-    <Sheet id={props.sheetId} contentContainerClassName="gap-4">
+    <Sheet id="TrackSheet" contentContainerClassName="gap-4">
       {isPending || error ? null : (
         <>
           <TrackIntro data={data} />
@@ -113,33 +113,32 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
 //#region Stats
 /** Display stats about the file. */
 function Stats({ data }: { data: TrackWithAlbum }) {
-  const { t } = useTranslation();
   return (
     <View className="gap-2">
       <View className="flex-row gap-2">
         <StatItem
-          title={t("trackModal.bitrate")}
+          titleKey="trackModal.bitrate"
           description={
             data.bitrate !== null ? abbreviateBitRate(data.bitrate) : "—"
           }
         />
         <StatItem
-          title={t("trackModal.sampleRate")}
+          titleKey="trackModal.sampleRate"
           description={data.sampleRate !== null ? `${data.sampleRate} Hz` : "—"}
         />
       </View>
       <View className="flex-row gap-2">
         <StatItem
-          title={t("trackModal.size")}
+          titleKey="trackModal.size"
           description={abbreviateSize(data.size)}
         />
         <StatItem
-          title={t("trackModal.modified")}
+          titleKey="trackModal.modified"
           description={formatEpoch(data.modificationTime)}
         />
       </View>
       <View className="flex-row">
-        <StatItem title={t("trackModal.filePath")} description={data.uri} />
+        <StatItem titleKey="trackModal.filePath" description={data.uri} />
       </View>
     </View>
   );
@@ -149,23 +148,22 @@ function Stats({ data }: { data: TrackWithAlbum }) {
 //#region Add Actions
 /** Add track to a playlist or queue. */
 function AddActions({ data }: { data: TrackWithAlbum }) {
-  const { t } = useTranslation();
   return (
     <View className="flex-row gap-2">
       <SheetButton
         onPress={() =>
-          SheetManager.show("track-to-playlist-sheet", {
+          SheetManager.show("TrackToPlaylistSheet", {
             payload: { id: data.id },
           })
         }
         Icon={<PlaylistAdd />}
-        text={t("playlist.add")}
+        textKey="playlist.add"
         preventClose
       />
       <SheetButton
         onPress={() => Queue.add({ id: data.id, name: data.name })}
         Icon={<QueueMusic />}
-        text={t("trackModal.queueAdd")}
+        textKey="trackModal.queueAdd"
       />
     </View>
   );
@@ -174,7 +172,6 @@ function AddActions({ data }: { data: TrackWithAlbum }) {
 
 //#region Track Links
 function TrackLinks({ data }: { data: TrackWithAlbum }) {
-  const { t } = useTranslation();
   const pathname = usePathname();
   const playingSource = useMusicStore((state) => state.playingSource);
   const playingList = useMusicStore((state) => state.playingList);
@@ -196,14 +193,14 @@ function TrackLinks({ data }: { data: TrackWithAlbum }) {
           <SheetButton
             onPress={() => router.navigate(`/artist/${data.artistName}`)}
             Icon={<Artist />}
-            text={t("common.artist")}
+            textKey="common.artist"
           />
         ) : null}
         {data.album ? (
           <SheetButton
             onPress={() => router.navigate(`/album/${data.album?.id}`)}
             Icon={<Album />}
-            text={t("common.album")}
+            textKey="common.album"
           />
         ) : null}
         {canShowPlaylistBtn && isInList ? (
@@ -216,7 +213,7 @@ function TrackLinks({ data }: { data: TrackWithAlbum }) {
               )
             }
             Icon={<List />}
-            text={t("common.playlist")}
+            textKey="common.playlist"
           />
         ) : null}
       </View>
@@ -227,11 +224,11 @@ function TrackLinks({ data }: { data: TrackWithAlbum }) {
 
 //#region Stat Item
 /** Represents a statistical piece of information about the file. */
-function StatItem(props: { title: string; description: string }) {
+function StatItem(props: { titleKey: ParseKeys; description: string }) {
   return (
     <View className="flex-1">
       <Marquee>
-        <Em preset="dimOnCanvas">{props.title}</Em>
+        <TEm preset="dimOnCanvas" textKey={props.titleKey} />
       </Marquee>
       <Marquee>
         <StyledText className="text-xs">{props.description}</StyledText>
@@ -246,7 +243,7 @@ function StatItem(props: { title: string; description: string }) {
 function SheetButton(props: {
   onPress: () => void;
   Icon: React.JSX.Element;
-  text: string;
+  textKey: ParseKeys;
   preventClose?: boolean;
 }) {
   const { width } = useGetColumn({ cols: 2, gap: 8, gutters: 32 });
@@ -254,14 +251,14 @@ function SheetButton(props: {
     <IconButton
       kind="extended"
       onPress={() => {
-        if (!props.preventClose) SheetManager.hide("track-sheet");
+        if (!props.preventClose) SheetManager.hide("TrackSheet");
         props.onPress();
       }}
       style={{ width }}
       className="p-2"
     >
       {props.Icon}
-      <StyledText className="shrink text-xs">{props.text}</StyledText>
+      <TStyledText textKey={props.textKey} className="shrink text-xs" />
     </IconButton>
   );
 }

@@ -8,7 +8,10 @@ import { StickyActionListLayout } from "@/layouts";
 
 import { IconButton } from "@/components/Form";
 import { ReservedPlaylists } from "@/modules/media/constants";
-import { MediaListControls, TrackListPreset } from "@/modules/media/components";
+import {
+  MediaListControls,
+  useTrackListPreset,
+} from "@/modules/media/components";
 
 // Information about this track list.
 const trackSource = {
@@ -18,18 +21,18 @@ const trackSource = {
 
 /** Screen for `/track` route. */
 export default function TrackScreen() {
-  const { t } = useTranslation();
   const { isPending, data } = useTracksForTrackCard();
+  const listPresets = useTrackListPreset({
+    ...{ data, trackSource, isPending },
+    emptyMsgKey: "response.noTracks",
+  });
 
   return (
     <StickyActionListLayout
-      title={t("common.tracks")}
+      titleKey="common.tracks"
       StickyAction={<TrackActions />}
       estimatedActionSize={48}
-      {...TrackListPreset({
-        ...{ data, trackSource, isPending },
-        emptyMessage: t("response.noTracks"),
-      })}
+      {...listPresets}
     />
   );
 }
@@ -43,7 +46,7 @@ function TrackActions() {
       <IconButton
         kind="ripple"
         accessibilityLabel={t("title.sort")}
-        onPress={() => SheetManager.show("track-sort-sheet")}
+        onPress={() => SheetManager.show("TrackSortSheet")}
       >
         <Sort />
       </IconButton>

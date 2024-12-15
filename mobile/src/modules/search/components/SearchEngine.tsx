@@ -1,4 +1,3 @@
-import { FlashList } from "@shopify/flash-list";
 import { LinearGradient } from "expo-linear-gradient";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -16,8 +15,9 @@ import { Search } from "@/icons";
 import { useTheme } from "@/hooks/useTheme";
 
 import { cn } from "@/lib/style";
-import { Ripple, TextInput } from "@/components/Form";
-import { Em, StyledText } from "@/components/Typography";
+import { FlashList } from "@/components/Defaults";
+import { TextInput } from "@/components/Form";
+import { TEm, TStyledText } from "@/components/Typography";
 import { SearchResult } from "./SearchResult";
 import { useSearch } from "../hooks/useSearch";
 import type {
@@ -68,32 +68,32 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
           renderItem={({ item, index }) => {
             if (typeof item === "string") {
               return (
-                <Em className={cn({ "mt-4": index !== 0 })}>
-                  {t(`common.${item}`)}
-                </Em>
+                <TEm
+                  textKey={`common.${item}`}
+                  className={index > 0 ? "mt-4" : undefined}
+                />
               );
             }
             const { entry, ...rest } = item;
 
             return (
-              <Ripple
+              <SearchResult
+                as="ripple"
                 /* @ts-expect-error - `type` should be limited to our scope. */
                 onPress={() => props.callbacks[rest.type](entry)}
                 wrapperClassName={cn("mt-2", {
                   "rounded-full": rest.type === "artist",
                 })}
-              >
-                {/* @ts-expect-error - Values are of correct types. */}
-                <SearchResult {...rest} />
-              </Ripple>
+                className="pr-4"
+                {...rest}
+              />
             );
           }}
           ListEmptyComponent={
             query.length > 0 ? (
-              <StyledText center>{t("response.noResults")}</StyledText>
+              <TStyledText textKey="response.noResults" center />
             ) : undefined
           }
-          showsVerticalScrollIndicator={false}
           contentContainerClassName="pb-4 pt-6"
         />
 
@@ -126,7 +126,7 @@ function formatResults(results: Partial<SearchResults>) {
       ...data.map((item) => ({
         type: key as SearchCategories[number],
         // @ts-expect-error - Values are of correct types.
-        source: getArtwork({ type: key, data: item }),
+        imageSource: getArtwork({ type: key, data: item }),
         title: item.name,
         // prettier-ignore
         // @ts-expect-error - `artistName` should be present in these cases.

@@ -1,6 +1,5 @@
 import * as WebBrowser from "expo-web-browser";
-import { useTranslation } from "react-i18next";
-import { ScrollView, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 
 import { LogoGitHub, LogoPlayStore } from "@/icons";
@@ -11,12 +10,12 @@ import { StickyActionHeader } from "@/layouts";
 
 import * as LINKS from "@/constants/Links";
 import { FontFamily, FontSize } from "@/constants/Styles";
+import { ScrollView } from "@/components/Defaults";
 import { Button } from "@/components/Form";
-import { StyledText } from "@/components/Typography";
+import { TStyledText } from "@/components/Typography";
 
 /** Screen for `/setting/update` route. */
 export default function AppUpdateScreen() {
-  const { t } = useTranslation();
   const { release, isRC } = useHasNewUpdate();
   const { foreground } = useTheme();
   const accentFont = useUserPreferencesStore((state) => state.accentFont);
@@ -24,10 +23,7 @@ export default function AppUpdateScreen() {
   if (!release) return null;
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      contentContainerClassName="grow gap-6 p-4"
-    >
+    <ScrollView contentContainerClassName="grow gap-6 p-4">
       <StickyActionHeader noOffset>{release.version}</StickyActionHeader>
 
       <Markdown
@@ -92,9 +88,10 @@ export default function AppUpdateScreen() {
           className="flex-1 p-2"
         >
           <LogoGitHub />
-          <StyledText center className="text-xs">
-            {t("settings.related.appDownload")}
-          </StyledText>
+          <TStyledText
+            textKey="settings.related.appDownload"
+            className="text-center text-xs"
+          />
         </Button>
         {!isRC ? (
           <Button
@@ -102,9 +99,10 @@ export default function AppUpdateScreen() {
             className="flex-1 p-2"
           >
             <LogoPlayStore />
-            <StyledText center className="text-xs">
-              {t("settings.related.appUpdate")}
-            </StyledText>
+            <TStyledText
+              textKey="settings.related.appUpdate"
+              className="text-center text-xs"
+            />
           </Button>
         ) : null}
       </View>
