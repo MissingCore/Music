@@ -1,4 +1,3 @@
-import { FlashList } from "@shopify/flash-list";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -12,10 +11,10 @@ import { CurrentListLayout } from "@/layouts/CurrentList";
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
+import { FlashList } from "@/components/Defaults";
 import { IconButton } from "@/components/Form";
 import { Swipeable } from "@/components/Swipeable";
 import { PagePlaceholder } from "@/components/Transition";
-import { StyledText } from "@/components/Typography";
 import { Track } from "@/modules/media/components";
 import type { PlayListSource } from "@/modules/media/types";
 
@@ -82,13 +81,9 @@ export default function CurrentPlaylistScreen() {
               />
             </View>
           )}
-          overScrollMode="never"
-          showsVerticalScrollIndicator={false}
           contentContainerClassName="pt-4"
           contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
-          ListEmptyComponent={
-            <StyledText center>{t("response.noTracks")}</StyledText>
-          }
+          emptyMsgKey="response.noTracks"
         />
       </CurrentListLayout>
     </>

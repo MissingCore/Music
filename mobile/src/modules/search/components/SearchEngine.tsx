@@ -1,4 +1,3 @@
-import { FlashList } from "@shopify/flash-list";
 import { LinearGradient } from "expo-linear-gradient";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -16,6 +15,7 @@ import { Search } from "@/icons";
 import { useTheme } from "@/hooks/useTheme";
 
 import { cn } from "@/lib/style";
+import { FlashList } from "@/components/Defaults";
 import { TextInput } from "@/components/Form";
 import { Em, StyledText } from "@/components/Typography";
 import { SearchResult } from "./SearchResult";
@@ -93,7 +93,6 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
               <StyledText center>{t("response.noResults")}</StyledText>
             ) : undefined
           }
-          showsVerticalScrollIndicator={false}
           contentContainerClassName="pb-4 pt-6"
         />
 

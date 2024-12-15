@@ -6,7 +6,6 @@ import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Keyboard, View } from "react-native";
 import type { SheetProps } from "react-native-actions-sheet";
-import { FlashList } from "react-native-actions-sheet/dist/src/views/FlashList";
 
 import { Add, CreateNewFolder, Remove } from "@/icons";
 import { useUserPreferencesStore } from "@/services/UserPreferences";
@@ -17,6 +16,7 @@ import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
 import { Marquee, cardStyles } from "@/components/Containment";
+import { SheetsFlashList } from "@/components/Defaults";
 import { IconButton, TextInput } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";
 import { Swipeable } from "@/components/Swipeable";
@@ -51,13 +51,13 @@ export default function ScanFilterListSheet(
       </StyledText>
       <FilterForm {...{ listType, listEntries }} />
 
-      <FlashList
+      <SheetsFlashList
         estimatedItemSize={58} // 54px Height + 4px Margin Top
         data={listEntries}
         keyExtractor={(item) => item}
         renderItem={({ item, index }) => (
           <Swipeable
-            containerClassName={cn("px-4", { "mt-1": index !== 0 })}
+            containerClassName={cn("px-4", { "mt-1": index > 0 })}
             renderRightActions={() => (
               <View className="pr-4">
                 <IconButton
@@ -79,12 +79,8 @@ export default function ScanFilterListSheet(
             </Marquee>
           </Swipeable>
         )}
-        ListEmptyComponent={
-          <StyledText center>{t("response.noFilters")}</StyledText>
-        }
-        overScrollMode="never"
-        showsVerticalScrollIndicator={false}
         contentContainerClassName="pb-4"
+        emptyMsgKey="response.noFilters"
       />
     </Sheet>
   );

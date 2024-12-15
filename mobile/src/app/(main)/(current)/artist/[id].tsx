@@ -1,4 +1,3 @@
-import { FlashList } from "@shopify/flash-list";
 import { useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
 
@@ -10,6 +9,7 @@ import { useGetColumn } from "@/hooks/useGetColumn";
 import { CurrentListLayout } from "@/layouts/CurrentList";
 
 import { cn } from "@/lib/style";
+import { FlashList } from "@/components/Defaults";
 import { PagePlaceholder } from "@/components/Transition";
 import { Em } from "@/components/Typography";
 import { MediaCard, Track } from "@/modules/media/components";
@@ -43,8 +43,6 @@ export default function CurrentArtistScreen() {
           />
         )}
         ListHeaderComponent={<ArtistAlbums albums={data.albums} />}
-        overScrollMode="never"
-        showsVerticalScrollIndicator={false}
         contentContainerClassName="pt-4"
         contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
       />
@@ -85,8 +83,6 @@ function ArtistAlbums({ albums }: { albums: Album[] | null }) {
             className={index > 0 ? "ml-3" : undefined}
           />
         )}
-        overScrollMode="never"
-        showsHorizontalScrollIndicator={false}
         contentContainerClassName="px-4"
       />
       <Em preset="dimOnCanvas" className="m-4 mb-2">

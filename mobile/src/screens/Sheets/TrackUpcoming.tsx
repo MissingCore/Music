@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
 import type { SheetProps } from "react-native-actions-sheet";
-import { FlashList } from "react-native-actions-sheet/dist/src/views/FlashList";
 
 import { getTrackCover } from "@/db/utils";
 
@@ -9,6 +8,7 @@ import { Queue, useMusicStore } from "@/modules/media/services/Music";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
+import { SheetsFlashList } from "@/components/Defaults";
 import { IconButton } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";
 import { Swipeable } from "@/components/Swipeable";
@@ -45,7 +45,7 @@ export default function TrackUpcomingSheet(
       snapTop
       contentContainerClassName="px-0"
     >
-      <FlashList
+      <SheetsFlashList
         estimatedItemSize={52} // 48px Height + 4px Margin Top
         data={data}
         keyExtractor={({ name }, index) => `${name}_${index}`}
@@ -58,7 +58,7 @@ export default function TrackUpcomingSheet(
 
           const wrapperStyle = cn("px-4", {
             "opacity-25": index >= disableIndex,
-            "mt-1": index !== 0,
+            "mt-1": index > 0,
           });
 
           if (index < queueList.length) {
@@ -84,8 +84,6 @@ export default function TrackUpcomingSheet(
 
           return <TrackItem {...itemContent} className={wrapperStyle} />;
         }}
-        overScrollMode="never"
-        showsVerticalScrollIndicator={false}
         contentContainerClassName="pb-4"
       />
     </Sheet>

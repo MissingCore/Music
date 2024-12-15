@@ -10,11 +10,10 @@ import { useMediaCardListPreset } from "@/modules/media/components";
 
 /** Screen for `/playlist` route. */
 export default function PlaylistScreen() {
-  const { t } = useTranslation();
   const { isPending, data } = usePlaylistsForCards();
   const presets = useMediaCardListPreset({
     ...{ data, isPending },
-    emptyMessage: t("response.noPlaylists"),
+    emptyMsgKey: "response.noPlaylists",
   });
 
   return (

@@ -14,4 +14,4 @@ export {
 export { MediaImage } from "./MediaImage";
 export { MediaListControls } from "./MediaListControls";
 export { MiniPlayer } from "./MiniPlayer";
-export { Track, TrackListPreset } from "./Track";
+export { Track, useTrackListPreset } from "./Track";

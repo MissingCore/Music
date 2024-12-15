@@ -85,6 +85,7 @@ function RecentlyPlayed() {
         </StyledText>
       }
       renderScrollComponent={ScrollView}
+      overScrollMode="never"
       showsHorizontalScrollIndicator={false}
       className="-mx-4"
       contentContainerClassName="px-4"

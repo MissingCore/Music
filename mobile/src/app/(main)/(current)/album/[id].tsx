@@ -1,4 +1,3 @@
-import { FlashList } from "@shopify/flash-list";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -9,6 +8,7 @@ import { useBottomActionsContext } from "@/hooks/useBottomActionsContext";
 import { CurrentListLayout } from "@/layouts/CurrentList";
 
 import { mutateGuard } from "@/lib/react-query";
+import { FlashList } from "@/components/Defaults";
 import { IconButton } from "@/components/Form";
 import { PagePlaceholder } from "@/components/Transition";
 import { Em, StyledText } from "@/components/Typography";
@@ -81,8 +81,6 @@ export default function CurrentAlbumScreen() {
               />
             </>
           )}
-          overScrollMode="never"
-          showsVerticalScrollIndicator={false}
           className="mx-4"
           contentContainerClassName="pt-4"
           contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}

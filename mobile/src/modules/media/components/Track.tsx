@@ -1,4 +1,5 @@
 import type { FlashListProps } from "@shopify/flash-list";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { SheetManager } from "react-native-actions-sheet";
 
@@ -8,9 +9,9 @@ import type { PlayListSource } from "../types";
 
 import { cn } from "@/lib/style";
 import type { Maybe, Prettify } from "@/utils/types";
+import type { WithListEmptyProps } from "@/components/Defaults";
+import { useListPresets } from "@/components/Defaults";
 import { IconButton } from "@/components/Form";
-import { Loading } from "@/components/Transition";
-import { StyledText } from "@/components/Typography";
 import { SearchResult } from "@/modules/search/components";
 
 //#region Track
@@ -57,29 +58,31 @@ export function Track({ id, trackSource, className, ...props }: Track.Props) {
 //#endregion
 
 //#region Track List
-type TrackListProps = {
+type TrackListProps = WithListEmptyProps<{
   data: Maybe<readonly Track.Content[]>;
-  emptyMessage?: string;
-  isPending?: boolean;
   trackSource: PlayListSource;
-};
+}>;
 
 /** Presets used in the FlashList containing a list of `<Track />`. */
-export const TrackListPreset = (props: TrackListProps) =>
-  ({
-    estimatedItemSize: 56, // 48px Height + 8px Margin Top
-    data: props.data,
-    keyExtractor: ({ id }) => id,
-    renderItem: ({ item, index }) => (
-      <Track
-        {...{ ...item, trackSource: props.trackSource }}
-        className={index > 0 ? "mt-2" : undefined}
-      />
-    ),
-    ListEmptyComponent: props.isPending ? (
-      <Loading />
-    ) : (
-      <StyledText center>{props.emptyMessage}</StyledText>
-    ),
-  }) satisfies FlashListProps<Track.Content>;
+export function useTrackListPreset(props: TrackListProps) {
+  const listPresets = useListPresets({
+    isPending: props.isPending,
+    emptyMsgKey: props.emptyMsgKey,
+  });
+  return useMemo(
+    () => ({
+      ...listPresets,
+      estimatedItemSize: 56, // 48px Height + 8px Margin Top
+      data: props.data,
+      keyExtractor: ({ id }) => id,
+      renderItem: ({ item, index }) => (
+        <Track
+          {...{ ...item, trackSource: props.trackSource }}
+          className={index > 0 ? "mt-2" : undefined}
+        />
+      ),
+    }),
+    [props, listPresets],
+  ) satisfies FlashListProps<Track.Content>;
+}
 //#endregion

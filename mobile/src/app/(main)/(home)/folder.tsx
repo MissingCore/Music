@@ -1,6 +1,5 @@
 import { useIsFocused } from "@react-navigation/native";
 import { Fragment, useCallback, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { BackHandler, Pressable, useWindowDimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
@@ -25,7 +24,7 @@ import {
 } from "@/layouts";
 
 import { cn } from "@/lib/style";
-import { Loading } from "@/components/Transition";
+import { useListPresets } from "@/components/Defaults";
 import { StyledText } from "@/components/Typography";
 import { Track } from "@/modules/media/components";
 import { SearchResult } from "@/modules/search/components";
@@ -37,7 +36,6 @@ type FolderData = FileNode | Track.Content;
 
 /** Screen for `/folder` route. */
 export default function FolderScreen() {
-  const { t } = useTranslation();
   const isFocused = useIsFocused();
   const listRef = useStickyActionListLayoutRef<FolderData>();
   const [dirSegments, _setDirSegments] = useState<string[]>([]);
@@ -45,6 +43,7 @@ export default function FolderScreen() {
   const fullPath = dirSegments.join("/");
 
   const { isPending, data } = useFolderContent(fullPath);
+  const listPresets = useListPresets({ isPending });
 
   /** Modified state setter that scrolls to the top of the page. */
   const setDirSegments: React.Dispatch<React.SetStateAction<string[]>> =
@@ -102,13 +101,7 @@ export default function FolderScreen() {
           )}
         </>
       )}
-      ListEmptyComponent={
-        isPending ? (
-          <Loading />
-        ) : (
-          <StyledText center>{t("response.noContent")}</StyledText>
-        )
-      }
+      {...listPresets}
       StickyAction={
         <Breadcrumbs
           dirSegments={dirSegments}

@@ -1,3 +1,3 @@
 export { Back } from "./Back";
 export { Loading } from "./Loading";
-export { PagePlaceholder } from "./Placeholder";
+export { ContentPlaceholder, PagePlaceholder } from "./Placeholder";

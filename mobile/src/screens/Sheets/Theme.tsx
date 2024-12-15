@@ -1,6 +1,5 @@
 import { useColorScheme } from "nativewind";
 import { useTranslation } from "react-i18next";
-import { FlatList } from "react-native";
 import type { SheetProps } from "react-native-actions-sheet";
 
 import {
@@ -8,6 +7,7 @@ import {
   useUserPreferencesStore,
 } from "@/services/UserPreferences";
 
+import { FlatList } from "@/components/Defaults";
 import { Radio } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";
 import { StyledText } from "@/components/Typography";
@@ -35,7 +35,6 @@ export default function ThemeSheet(props: SheetProps<"theme-sheet">) {
             <StyledText>{t(`settings.related.${item}`)}</StyledText>
           </Radio>
         )}
-        showsVerticalScrollIndicator={false}
         contentContainerClassName="gap-1"
       />
     </Sheet>

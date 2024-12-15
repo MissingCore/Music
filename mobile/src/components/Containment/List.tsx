@@ -1,9 +1,10 @@
 import type { FlashListProps } from "@shopify/flash-list";
-import { FlashList } from "@shopify/flash-list";
 import { Pressable, View } from "react-native";
 
 import type { TextColor } from "@/lib/style";
 import { cn } from "@/lib/style";
+import type { WithListEmptyProps } from "../Defaults";
+import { FlashList } from "../Defaults";
 import { StyledText } from "../Typography";
 
 //#region List
@@ -21,13 +22,15 @@ export function ListRenderer<TData extends Record<string, any>>({
   data,
   renderOptions: { getTitle, getDescription, onPress },
   ...props
-}: Omit<FlashListProps<TData>, "renderItem"> & {
-  renderOptions: {
-    getTitle: (item: TData) => string;
-    getDescription?: (item: TData) => string;
-    onPress?: (item: TData) => () => void;
-  };
-}) {
+}: WithListEmptyProps<
+  Omit<FlashListProps<TData>, "renderItem"> & {
+    renderOptions: {
+      getTitle: (item: TData) => string;
+      getDescription?: (item: TData) => string;
+      onPress?: (item: TData) => () => void;
+    };
+  }
+>) {
   return (
     <FlashList
       estimatedItemSize={70}
@@ -45,7 +48,6 @@ export function ListRenderer<TData extends Record<string, any>>({
           />
         );
       }}
-      showsVerticalScrollIndicator={false}
       {...props}
     />
   );

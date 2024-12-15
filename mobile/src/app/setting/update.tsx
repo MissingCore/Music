@@ -1,6 +1,6 @@
 import * as WebBrowser from "expo-web-browser";
 import { useTranslation } from "react-i18next";
-import { ScrollView, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 
 import { LogoGitHub, LogoPlayStore } from "@/icons";
@@ -11,6 +11,7 @@ import { StickyActionHeader } from "@/layouts";
 
 import * as LINKS from "@/constants/Links";
 import { FontFamily, FontSize } from "@/constants/Styles";
+import { ScrollView } from "@/components/Defaults";
 import { Button } from "@/components/Form";
 import { StyledText } from "@/components/Typography";
 
@@ -24,10 +25,7 @@ export default function AppUpdateScreen() {
   if (!release) return null;
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      contentContainerClassName="grow gap-6 p-4"
-    >
+    <ScrollView contentContainerClassName="grow gap-6 p-4">
       <StickyActionHeader noOffset>{release.version}</StickyActionHeader>
 
       <Markdown

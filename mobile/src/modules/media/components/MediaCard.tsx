@@ -10,7 +10,8 @@ import { useGetColumn } from "@/hooks/useGetColumn";
 
 import { cn } from "@/lib/style";
 import type { Maybe, Prettify } from "@/utils/types";
-import { Loading } from "@/components/Transition";
+import type { WithListEmptyProps } from "@/components/Defaults";
+import { useListPresets } from "@/components/Defaults";
 import { StyledText } from "@/components/Typography";
 import { MediaImage } from "./MediaImage";
 
@@ -81,10 +82,8 @@ export const MediaCardPlaceholderContent: MediaCard.Content = {
 //#endregion
 
 //#region Media Card List
-type MediaCardListProps = {
+type MediaCardListProps = WithListEmptyProps<{
   data: Maybe<readonly MediaCard.Content[]>;
-  emptyMessage?: string;
-  isPending?: boolean;
   /**
    * Renders a special entry before all other data. This assumes at `data[0]`,
    * we have a `MediaCardPlaceholderContent`.
@@ -93,16 +92,21 @@ type MediaCardListProps = {
     size: number;
     className: string;
   }) => React.JSX.Element;
-};
+}>;
 
 /** Hook for getting the presets used in the FlashList for `<MediaCardList />`. */
 export function useMediaCardListPreset(props: MediaCardListProps) {
   const { count, width } = useGetColumn({
     ...{ cols: 2, gap: 12, gutters: 32, minWidth: 175 },
   });
+  const listPresets = useListPresets({
+    isPending: props.isPending,
+    emptyMsgKey: props.emptyMsgKey,
+  });
 
   return useMemo(
     () => ({
+      ...listPresets,
       numColumns: count,
       // ~40px for text content under `<MediaImage />` + 16px Margin Bottom
       estimatedItemSize: width + 40 + 12,
@@ -118,21 +122,16 @@ export function useMediaCardListPreset(props: MediaCardListProps) {
         ) : (
           <MediaCard {...item} size={width} className="mx-1.5 mb-3" />
         ),
-      ListEmptyComponent: props.isPending ? (
-        <Loading />
-      ) : (
-        <StyledText center>{props.emptyMessage}</StyledText>
-      ),
       ListHeaderComponentStyle: { paddingHorizontal: 8 },
       className: "-mx-1.5 -mb-3",
     }),
-    [count, width, props],
+    [count, width, props, listPresets],
   ) satisfies FlashListProps<MediaCard.Content>;
 }
 
 /** Lists out `<MediaCard />` in a grid. */
 export function MediaCardList(props: MediaCardListProps) {
   const presets = useMediaCardListPreset(props);
-  return <FlashList {...presets} showsVerticalScrollIndicator={false} />;
+  return <FlashList {...presets} />;
 }
 //#endregion

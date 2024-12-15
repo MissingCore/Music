@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { FlatList } from "react-native";
 import type { SheetProps } from "react-native-actions-sheet";
 
 import {
@@ -7,6 +6,7 @@ import {
   useSortPreferencesStore,
 } from "@/modules/media/services/SortPreferences";
 
+import { FlatList } from "@/components/Defaults";
 import { Button, Radio, Switch } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";
 import { StyledText } from "@/components/Typography";
@@ -40,7 +40,6 @@ export default function TrackSortSheet(props: SheetProps<"track-sort-sheet">) {
             <StyledText>{t(`sortModal.${item}`)}</StyledText>
           </Radio>
         )}
-        showsVerticalScrollIndicator={false}
         contentContainerClassName="gap-1"
       />
     </Sheet>

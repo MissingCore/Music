@@ -1,17 +1,19 @@
 import { router } from "expo-router";
-import { useTranslation } from "react-i18next";
 
 import { useArtistsForIndex } from "@/queries/artist";
 import { StickyActionListLayout } from "@/layouts";
 
-import { Loading } from "@/components/Transition";
-import { Em, StyledText } from "@/components/Typography";
+import { useListPresets } from "@/components/Defaults";
+import { Em } from "@/components/Typography";
 import { SearchResult } from "@/modules/search/components";
 
 /** Screen for `/artist` route. */
 export default function ArtistScreen() {
-  const { t } = useTranslation();
   const { isPending, data } = useArtistsForIndex();
+  const listPresets = useListPresets({
+    isPending,
+    emptyMsgKey: "response.noArtists",
+  });
 
   return (
     <StickyActionListLayout
@@ -33,13 +35,7 @@ export default function ArtistScreen() {
           />
         )
       }
-      ListEmptyComponent={
-        isPending ? (
-          <Loading />
-        ) : (
-          <StyledText center>{t("response.noArtists")}</StyledText>
-        )
-      }
+      {...listPresets}
     />
   );
 }
