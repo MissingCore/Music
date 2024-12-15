@@ -68,7 +68,7 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
           renderItem={({ item, index }) => {
             if (typeof item === "string") {
               return (
-                <Em className={cn({ "mt-4": index !== 0 })}>
+                <Em className={index > 0 ? "mt-4" : undefined}>
                   {t(`common.${item}`)}
                 </Em>
               );
@@ -83,6 +83,7 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
                 wrapperClassName={cn("mt-2", {
                   "rounded-full": rest.type === "artist",
                 })}
+                className="pr-4"
                 {...rest}
               />
             );

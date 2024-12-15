@@ -45,9 +45,10 @@ export default function CurrentArtistScreen() {
         data={data.tracks}
         keyExtractor={({ id }) => id}
         renderItem={({ item, index }) => (
-          <View className={cn("mx-4", { "mt-2": index > 0 })}>
-            <Track {...item} trackSource={trackSource} />
-          </View>
+          <Track
+            {...{ ...item, trackSource }}
+            className={cn("mx-4", { "mt-2": index > 0 })}
+          />
         )}
         ListHeaderComponent={<ArtistAlbums albums={data.albums} />}
         overScrollMode="never"
@@ -82,7 +83,7 @@ function ArtistAlbums({ albums }: { albums: Album[] | null }) {
         data={albums}
         keyExtractor={({ id }) => id}
         renderItem={({ item, index }) => (
-          <View className={cn({ "pl-3": index !== 0 })}>
+          <View className={index > 0 ? "pl-3" : undefined}>
             <MediaCard
               key={item.id}
               type="album"

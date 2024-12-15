@@ -48,7 +48,8 @@ const ArtistIndexPreset = (props: {
           onPress={() =>
             router.navigate(`/artist/${encodeURIComponent(item.name)}`)
           }
-          wrapperClassName="rounded-full mt-2"
+          wrapperClassName="mt-2 rounded-full"
+          className="pr-4"
         />
       ),
     ListEmptyComponent: props.isPending ? (

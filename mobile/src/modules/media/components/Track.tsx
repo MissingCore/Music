@@ -1,7 +1,6 @@
 import type { FlashListProps } from "@shopify/flash-list";
 import { FlashList } from "@shopify/flash-list";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 
 import { MoreVert } from "@/icons";
@@ -10,24 +9,23 @@ import type { PlayListSource } from "../types";
 
 import { cn } from "@/lib/style";
 import type { Maybe, Prettify } from "@/utils/types";
-import { IconButton, Ripple } from "@/components/Form";
+import { IconButton } from "@/components/Form";
 import { Loading } from "@/components/Transition";
 import { StyledText } from "@/components/Typography";
-import { MediaImage } from "./MediaImage";
+import { SearchResult } from "@/modules/search/components";
 
 //#region Track
 export namespace Track {
-  export type Content = {
-    id: string;
-    imageSource: MediaImage.ImageSource;
-    title: string;
-    description: string;
-  };
+  export type Content = Required<
+    Pick<SearchResult.Content, "title" | "description" | "imageSource">
+  > & { id: string };
 
   export type Props = Prettify<
     Content & {
       trackSource: PlayListSource;
       LeftElement?: React.JSX.Element;
+      /** Note: Maps to `wrapperClassName` on `<SearchResult />`. */
+      className?: string;
     }
   >;
 }
@@ -36,39 +34,25 @@ export namespace Track {
  * Displays information about the current track with 2 different press
  * scenarios (pressing the icon or the whole card will do different actions).
  */
-export function Track({ id, trackSource, ...props }: Track.Props) {
+export function Track({ id, trackSource, className, ...props }: Track.Props) {
   const { t } = useTranslation();
   return (
-    <Ripple
+    <SearchResult
+      as="ripple"
+      type="track"
       onPress={() => playFromMediaList({ trackId: id, source: trackSource })}
-      wrapperClassName="bg-canvas"
-    >
-      {props.LeftElement ? (
-        props.LeftElement
-      ) : (
-        <MediaImage
-          type="track"
-          size={48}
-          source={props.imageSource}
-          radius="sm"
-        />
-      )}
-      <View className="shrink grow">
-        <StyledText numberOfLines={1} className="text-sm">
-          {props.title}
-        </StyledText>
-        <StyledText preset="dimOnCanvas" numberOfLines={1}>
-          {props.description}
-        </StyledText>
-      </View>
-      <IconButton
-        kind="ripple"
-        accessibilityLabel={t("template.entrySeeMore", { name: props.title })}
-        onPress={() => SheetManager.show("track-sheet", { payload: { id } })}
-      >
-        <MoreVert />
-      </IconButton>
-    </Ripple>
+      RightElement={
+        <IconButton
+          kind="ripple"
+          accessibilityLabel={t("template.entrySeeMore", { name: props.title })}
+          onPress={() => SheetManager.show("track-sheet", { payload: { id } })}
+        >
+          <MoreVert />
+        </IconButton>
+      }
+      wrapperClassName={cn("bg-canvas", className)}
+      {...props}
+    />
   );
 }
 //#endregion
@@ -88,9 +72,10 @@ export const TrackListPreset = (props: TrackListProps) =>
     data: props.data,
     keyExtractor: ({ id }) => id,
     renderItem: ({ item, index }) => (
-      <View className={cn({ "mt-2": index > 0 })}>
-        <Track {...item} trackSource={props.trackSource} />
-      </View>
+      <Track
+        {...{ ...item, trackSource: props.trackSource }}
+        className={index > 0 ? "mt-2" : undefined}
+      />
     ),
     ListEmptyComponent: props.isPending ? (
       <Loading />

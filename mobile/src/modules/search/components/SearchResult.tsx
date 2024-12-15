@@ -4,7 +4,7 @@ import { cn } from "@/lib/style";
 import { omitKeys } from "@/utils/object";
 import { Ripple } from "@/components/Form";
 import { Kbd, StyledText } from "@/components/Typography";
-import { MediaImage } from "@/modules/media/components";
+import { MediaImage } from "@/modules/media/components/MediaImage";
 import type { MediaType } from "@/modules/media/types";
 
 export namespace SearchResult {
@@ -41,18 +41,13 @@ export function SearchResult(props: SearchResult.Props) {
 
   if (as === "ripple") {
     return (
-      <Ripple
-        {...{ onPress, wrapperClassName }}
-        className={cn("pr-4", className)}
-      >
+      <Ripple {...{ onPress, wrapperClassName, className }}>
         <SearchResultContent {...contentProps} />
       </Ripple>
     );
   }
   return (
-    <View
-      className={cn("min-h-12 flex-row items-center gap-2 pr-4", className)}
-    >
+    <View className={cn("min-h-12 flex-row items-center gap-2", className)}>
       <SearchResultContent {...contentProps} />
     </View>
   );

@@ -2,12 +2,7 @@ import { useIsFocused } from "@react-navigation/native";
 import type { FlashListProps } from "@shopify/flash-list";
 import { Fragment, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  BackHandler,
-  Pressable,
-  View,
-  useWindowDimensions,
-} from "react-native";
+import { BackHandler, Pressable, useWindowDimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
   FadeInLeft,
@@ -121,16 +116,21 @@ const FolderListPreset = (props: {
     data: props.data,
     keyExtractor: (_, index) => `${index}`,
     renderItem: ({ item, index }) => (
-      <View className={cn({ "mt-2": index !== 0 })}>
+      <>
         {isTrackContent(item) ? (
-          <Track {...{ ...item, trackSource: props.trackSource }} />
+          <Track
+            {...{ ...item, trackSource: props.trackSource }}
+            className={index > 0 ? "mt-2" : undefined}
+          />
         ) : (
           <SearchResult
             {...{ as: "ripple", type: "folder", title: item.name }}
             onPress={() => props.setDirSegments((prev) => [...prev, item.name])}
+            wrapperClassName={index > 0 ? "mt-2" : undefined}
+            className="pr-4"
           />
         )}
-      </View>
+      </>
     ),
     ListEmptyComponent: props.isPending ? (
       <Loading />
@@ -194,7 +194,7 @@ function Breadcrumbs({
       >
         {[undefined, ...dirSegments].map((dirName, idx) => (
           <Fragment key={idx}>
-            {idx !== 0 ? (
+            {idx > 0 ? (
               <Animated.View entering={FadeInLeft} exiting={FadeOutRight}>
                 <StyledText className="px-1 text-xs">/</StyledText>
               </Animated.View>

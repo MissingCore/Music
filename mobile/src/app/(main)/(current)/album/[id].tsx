@@ -9,7 +9,6 @@ import { useBottomActionsContext } from "@/hooks/useBottomActionsContext";
 import { CurrentListLayout } from "@/layouts/CurrentList";
 
 import { mutateGuard } from "@/lib/react-query";
-import { cn } from "@/lib/style";
 import { IconButton } from "@/components/Form";
 import { Em, StyledText } from "@/components/Typography";
 import { Track } from "@/modules/media/components";
@@ -72,21 +71,21 @@ export default function CurrentAlbumScreen() {
           data={data.tracks}
           keyExtractor={({ id }) => id}
           renderItem={({ item, index }) => (
-            <View className={cn({ "mt-2": index > 0 })}>
+            <>
               {item.disc !== null && discLocation[item.disc] === index ? (
                 <Em
                   preset="dimOnCanvas"
-                  className={cn("mb-2", { "mt-2": index > 0 })}
+                  className={index === 0 ? "mb-2" : "mt-4"}
                 >
                   {t("common.disc", { count: item.disc })}
                 </Em>
               ) : null}
               <Track
-                {...item}
+                {...{ ...item, trackSource }}
                 LeftElement={<TrackNumber track={item.track} />}
-                trackSource={trackSource}
+                className={index > 0 ? "mt-2" : undefined}
               />
-            </View>
+            </>
           )}
           overScrollMode="never"
           showsVerticalScrollIndicator={false}
