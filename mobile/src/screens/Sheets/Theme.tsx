@@ -1,5 +1,4 @@
 import { useColorScheme } from "nativewind";
-import { useTranslation } from "react-i18next";
 
 import {
   ThemeOptions,
@@ -9,11 +8,10 @@ import {
 import { FlatList } from "@/components/Defaults";
 import { Radio } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";
-import { StyledText } from "@/components/Typography";
+import { TStyledText } from "@/components/Typography";
 
 /** Sheet allowing us to change the app's theme. */
 export default function ThemeSheet() {
-  const { t } = useTranslation();
   const { setColorScheme } = useColorScheme();
   const theme = useUserPreferencesStore((state) => state.theme);
   const setTheme = useUserPreferencesStore((state) => state.setTheme);
@@ -31,7 +29,7 @@ export default function ThemeSheet() {
               setTheme(item);
             }}
           >
-            <StyledText>{t(`settings.related.${item}`)}</StyledText>
+            <TStyledText textKey={`settings.related.${item}`} />
           </Radio>
         )}
         contentContainerClassName="gap-1"

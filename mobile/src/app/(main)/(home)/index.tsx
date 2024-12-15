@@ -1,6 +1,5 @@
 import { FlashList } from "@shopify/flash-list";
 import { router } from "expo-router";
-import { useTranslation } from "react-i18next";
 import { useEffect, useRef, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -15,7 +14,7 @@ import { StickyActionScrollLayout } from "@/layouts";
 import { cn } from "@/lib/style";
 import { abbreviateNum } from "@/utils/number";
 import { Button } from "@/components/Form";
-import { AccentText, Em, StyledText } from "@/components/Typography";
+import { AccentText, TEm, TStyledText } from "@/components/Typography";
 import { ReservedPlaylists } from "@/modules/media/constants";
 import {
   MediaCard,
@@ -25,13 +24,11 @@ import {
 
 /** Screen for `/` route. */
 export default function HomeScreen() {
-  const { t } = useTranslation();
   return (
     <StickyActionScrollLayout titleKey="header.home">
-      <Em className="-mb-4">{t("home.playedRecent")}</Em>
+      <TEm textKey="home.playedRecent" className="-mb-4" />
       <RecentlyPlayed />
-
-      <Em className="-mb-4">{t("home.favorites")}</Em>
+      <TEm textKey="home.favorites" className="-mb-4" />
       <Favorites />
     </StickyActionScrollLayout>
   );
@@ -40,7 +37,6 @@ export default function HomeScreen() {
 //#region Recently Played List
 /** Display list of media recently played. */
 function RecentlyPlayed() {
-  const { t } = useTranslation();
   const { width } = useGetColumn({
     ...{ cols: 1, gap: 0, gutters: 32, minWidth: 100 },
   });
@@ -80,9 +76,11 @@ function RecentlyPlayed() {
         />
       )}
       ListEmptyComponent={
-        <StyledText onLayout={() => setInitNoData(true)} className="my-4">
-          {t("response.noRecents")}
-        </StyledText>
+        <TStyledText
+          onLayout={() => setInitNoData(true)}
+          textKey="response.noRecents"
+          className="my-4"
+        />
       }
       renderScrollComponent={ScrollView}
       overScrollMode="never"
@@ -111,7 +109,6 @@ function Favorites() {
  * favorited tracks.
  */
 function FavoriteTracks(props: { size: number; className: string }) {
-  const { t } = useTranslation();
   const { isPending, error, data } = useFavoriteTracksCount();
 
   const trackCount = isPending || error ? "" : abbreviateNum(data);
@@ -127,7 +124,7 @@ function FavoriteTracks(props: { size: number; className: string }) {
       <AccentText className="text-[3rem] text-neutral100">
         {trackCount}
       </AccentText>
-      <StyledText className="text-neutral100">{t("common.tracks")}</StyledText>
+      <TStyledText textKey="common.tracks" className="text-neutral100" />
     </Button>
   );
 }

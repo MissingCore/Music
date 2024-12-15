@@ -1,5 +1,4 @@
 import { Link } from "expo-router";
-import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { Schedule } from "@/icons";
@@ -7,7 +6,7 @@ import { useTheme } from "@/hooks/useTheme";
 
 import { toLowerCase } from "@/utils/string";
 import { Divider, Marquee } from "@/components/Containment";
-import { Em, StyledText } from "@/components/Typography";
+import { StyledText, TEm } from "@/components/Typography";
 import { MediaImage, MediaListControls } from "@/modules/media/components";
 import type { PlayListSource } from "@/modules/media/types";
 
@@ -22,9 +21,7 @@ export function CurrentListLayout(props: {
   mediaSource: PlayListSource;
   children: React.ReactNode;
 }) {
-  const { t } = useTranslation();
   const { canvas, foreground } = useTheme();
-
   return (
     <>
       <View className="flex-row gap-2 px-4">
@@ -35,9 +32,11 @@ export function CurrentListLayout(props: {
           size={128}
         />
         <View className="shrink grow justify-end">
-          <Em preset="dimOnCanvas" style={{ fontSize: 8 }}>
-            {t(`common.${toLowerCase(props.mediaSource.type)}`)}
-          </Em>
+          <TEm
+            preset="dimOnCanvas"
+            textKey={`common.${toLowerCase(props.mediaSource.type)}`}
+            style={{ fontSize: 8 }}
+          />
           <Marquee color={canvas}>
             <StyledText>{props.title}</StyledText>
           </Marquee>

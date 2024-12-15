@@ -9,7 +9,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { GITHUB } from "@/constants/Links";
 import { Button } from "@/components/Form";
-import { AccentText, StyledText } from "@/components/Typography";
+import { AccentText, TStyledText } from "@/components/Typography";
 
 /** Layout used for the "error" screens (route & unexpected errors). */
 export function IssueLayout(props: {
@@ -32,9 +32,11 @@ export function IssueLayout(props: {
         <AccentText style={{ paddingTop: top + 16 }} className="text-3xl">
           {t(`errorScreen.${props.issueType}`)}
         </AccentText>
-        <StyledText preset="dimOnCanvas" className="text-base">
-          {t(`errorScreen.${props.issueType}Brief`)}
-        </StyledText>
+        <TStyledText
+          preset="dimOnCanvas"
+          textKey={`errorScreen.${props.issueType}Brief`}
+          className="text-base"
+        />
 
         {props.children}
 
@@ -49,12 +51,16 @@ export function IssueLayout(props: {
         style={{ maxWidth: ScreenWidth - 32 }}
         className="absolute bottom-4 left-4 w-full gap-0.5 bg-red"
       >
-        <StyledText center className="text-neutral100">
-          {t("errorScreen.report")}
-        </StyledText>
-        <StyledText center className="text-xs text-neutral100/80">
-          {t("errorScreen.screenshot")}
-        </StyledText>
+        <TStyledText
+          textKey="errorScreen.report"
+          className="text-center text-neutral100"
+        />
+        /
+        <TStyledText
+          textKey="errorScreen.screenshot"
+          className="text-center text-xs text-neutral100/80"
+        />
+        /
       </Button>
     </>
   );

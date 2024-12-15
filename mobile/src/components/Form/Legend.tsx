@@ -1,9 +1,8 @@
 import type { ParseKeys } from "i18next";
-import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { cn } from "@/lib/style";
-import { StyledText } from "../Typography";
+import { StyledText, TStyledText } from "../Typography";
 
 //#region Legend
 /** Wrapper for list of `<LegendItem />` for consistent gaps. */
@@ -22,7 +21,6 @@ export function LegendItem(props: {
   value: string | number;
   color?: string;
 }) {
-  const { t } = useTranslation();
   return (
     <View className="flex-row items-center justify-between gap-2">
       <View className="shrink flex-row items-center gap-2">
@@ -32,7 +30,7 @@ export function LegendItem(props: {
             className="size-[9px] rounded-full"
           />
         ) : null}
-        <StyledText className="shrink text-xs">{t(props.nameKey)}</StyledText>
+        <TStyledText textKey={props.nameKey} className="shrink text-xs" />
       </View>
       <StyledText preset="dimOnSurface">{props.value}</StyledText>
     </View>

@@ -1,6 +1,5 @@
 import { router, usePathname } from "expo-router";
 import type { ParseKeys } from "i18next";
-import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 
@@ -31,7 +30,7 @@ import {
 import { Divider, Marquee } from "@/components/Containment";
 import { IconButton } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";
-import { Em, StyledText } from "@/components/Typography";
+import { StyledText, TEm, TStyledText } from "@/components/Typography";
 import { ReservedPlaylists } from "@/modules/media/constants";
 import { MediaImage } from "@/modules/media/components";
 
@@ -226,11 +225,10 @@ function TrackLinks({ data }: { data: TrackWithAlbum }) {
 //#region Stat Item
 /** Represents a statistical piece of information about the file. */
 function StatItem(props: { titleKey: ParseKeys; description: string }) {
-  const { t } = useTranslation();
   return (
     <View className="flex-1">
       <Marquee>
-        <Em preset="dimOnCanvas">{t(props.titleKey)}</Em>
+        <TEm preset="dimOnCanvas" textKey={props.titleKey} />
       </Marquee>
       <Marquee>
         <StyledText className="text-xs">{props.description}</StyledText>
@@ -248,9 +246,7 @@ function SheetButton(props: {
   textKey: ParseKeys;
   preventClose?: boolean;
 }) {
-  const { t } = useTranslation();
   const { width } = useGetColumn({ cols: 2, gap: 8, gutters: 32 });
-
   return (
     <IconButton
       kind="extended"
@@ -262,7 +258,7 @@ function SheetButton(props: {
       className="p-2"
     >
       {props.Icon}
-      <StyledText className="shrink text-xs">{t(props.textKey)}</StyledText>
+      <TStyledText textKey={props.textKey} className="shrink text-xs" />
     </IconButton>
   );
 }

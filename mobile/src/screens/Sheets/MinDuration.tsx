@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Keyboard } from "react-native";
 
 import {
@@ -9,11 +8,10 @@ import {
 
 import { NumericInput } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";
-import { StyledText } from "@/components/Typography";
+import { TStyledText } from "@/components/Typography";
 
 /** Sheet used to specify the minimum track duration we want to save. */
 export default function MinDurationSheet() {
-  const { t } = useTranslation();
   const minSeconds = useUserPreferencesStore((state) => state.minSeconds);
   const [newMin, setNewMin] = useState<string | undefined>();
 
@@ -33,9 +31,11 @@ export default function MinDurationSheet() {
       titleKey="title.ignoreDuration"
       contentContainerClassName="gap-4"
     >
-      <StyledText preset="dimOnCanvas" center className="text-sm">
-        {t("settings.description.ignoreDuration")}
-      </StyledText>
+      <TStyledText
+        preset="dimOnCanvas"
+        textKey="settings.description.ignoreDuration"
+        className="text-center text-sm"
+      />
       <NumericInput
         defaultValue={`${minSeconds}`}
         onChangeText={(text) => setNewMin(text)}

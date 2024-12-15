@@ -17,7 +17,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { cn } from "@/lib/style";
 import { FlashList } from "@/components/Defaults";
 import { TextInput } from "@/components/Form";
-import { Em, StyledText } from "@/components/Typography";
+import { TEm, TStyledText } from "@/components/Typography";
 import { SearchResult } from "./SearchResult";
 import { useSearch } from "../hooks/useSearch";
 import type {
@@ -68,9 +68,10 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
           renderItem={({ item, index }) => {
             if (typeof item === "string") {
               return (
-                <Em className={index > 0 ? "mt-4" : undefined}>
-                  {t(`common.${item}`)}
-                </Em>
+                <TEm
+                  textKey={`common.${item}`}
+                  className={index > 0 ? "mt-4" : undefined}
+                />
               );
             }
             const { entry, ...rest } = item;
@@ -90,7 +91,7 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
           }}
           ListEmptyComponent={
             query.length > 0 ? (
-              <StyledText center>{t("response.noResults")}</StyledText>
+              <TStyledText textKey="response.noResults" center />
             ) : undefined
           }
           contentContainerClassName="pb-4 pt-6"

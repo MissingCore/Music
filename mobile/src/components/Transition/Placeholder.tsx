@@ -1,9 +1,8 @@
 import type { ParseKeys } from "i18next";
-import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { Loading } from "./Loading";
-import { StyledText } from "../Typography";
+import { TStyledText } from "../Typography";
 
 /** Placeholder to render inside a list. */
 export function ContentPlaceholder(props: {
@@ -11,11 +10,10 @@ export function ContentPlaceholder(props: {
   /** Key to error messaeg in translations. */
   errMsgKey?: ParseKeys;
 }) {
-  const { t } = useTranslation();
   return props.isPending ? (
     <Loading />
   ) : (
-    <StyledText center>{t(props.errMsgKey ?? "response.noContent")}</StyledText>
+    <TStyledText textKey={props.errMsgKey ?? "response.noContent"} center />
   );
 }
 

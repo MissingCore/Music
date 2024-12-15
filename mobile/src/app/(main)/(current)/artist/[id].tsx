@@ -1,5 +1,4 @@
 import { useLocalSearchParams } from "expo-router";
-import { useTranslation } from "react-i18next";
 
 import type { Album } from "@/db/schema";
 
@@ -11,7 +10,7 @@ import { CurrentListLayout } from "@/layouts/CurrentList";
 import { cn } from "@/lib/style";
 import { FlashList } from "@/components/Defaults";
 import { PagePlaceholder } from "@/components/Transition";
-import { Em } from "@/components/Typography";
+import { TEm } from "@/components/Typography";
 import { MediaCard, Track } from "@/modules/media/components";
 
 /** Screen for `/artist/[id]` route. */
@@ -55,7 +54,6 @@ export default function CurrentArtistScreen() {
  * list only if the artist has albums.
  */
 function ArtistAlbums({ albums }: { albums: Album[] | null }) {
-  const { t } = useTranslation();
   const { width } = useGetColumn({
     ...{ cols: 1, gap: 0, gutters: 32, minWidth: 100 },
   });
@@ -64,9 +62,7 @@ function ArtistAlbums({ albums }: { albums: Album[] | null }) {
 
   return (
     <>
-      <Em preset="dimOnCanvas" className="mx-4 mb-2">
-        {t("common.albums")}
-      </Em>
+      <TEm preset="dimOnCanvas" textKey="common.albums" className="mx-4 mb-2" />
       <FlashList
         estimatedItemSize={width + 12} // Column width + gap from padding left
         horizontal
@@ -85,9 +81,7 @@ function ArtistAlbums({ albums }: { albums: Album[] | null }) {
         )}
         contentContainerClassName="px-4"
       />
-      <Em preset="dimOnCanvas" className="m-4 mb-2">
-        {t("common.tracks")}
-      </Em>
+      <TEm preset="dimOnCanvas" textKey="common.tracks" className="m-4 mb-2" />
     </>
   );
 }

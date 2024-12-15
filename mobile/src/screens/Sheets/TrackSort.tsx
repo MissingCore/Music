@@ -1,5 +1,3 @@
-import { useTranslation } from "react-i18next";
-
 import {
   OrderedByOptions,
   useSortPreferencesStore,
@@ -8,11 +6,10 @@ import {
 import { FlatList } from "@/components/Defaults";
 import { Button, Radio, Switch } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";
-import { StyledText } from "@/components/Typography";
+import { TStyledText } from "@/components/Typography";
 
 /** Sheet allowing us visually change the sort order on the `/track` screen. */
 export default function TrackSortSheet() {
-  const { t } = useTranslation();
   const isAsc = useSortPreferencesStore((state) => state.isAsc);
   const toggleIsAsc = useSortPreferencesStore((state) => state.toggleIsAsc);
   const orderedBy = useSortPreferencesStore((state) => state.orderedBy);
@@ -25,7 +22,7 @@ export default function TrackSortSheet() {
       contentContainerClassName="gap-4"
     >
       <Button onPress={toggleIsAsc} className="flex-row justify-between">
-        <StyledText className="shrink">{t("sortModal.asc")}</StyledText>
+        <TStyledText textKey="sortModal.asc" className="shrink" />
         <Switch enabled={isAsc} />
       </Button>
       <FlatList
@@ -36,7 +33,7 @@ export default function TrackSortSheet() {
             selected={item === orderedBy}
             onSelect={() => setOrderedBy(item)}
           >
-            <StyledText>{t(`sortModal.${item}`)}</StyledText>
+            <TStyledText textKey={`sortModal.${item}`} />
           </Radio>
         )}
         contentContainerClassName="gap-1"
