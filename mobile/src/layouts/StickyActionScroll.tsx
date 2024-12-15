@@ -1,6 +1,8 @@
 import type { FlashListProps } from "@shopify/flash-list";
 import { FlashList } from "@shopify/flash-list";
+import type { ParseKeys } from "i18next";
 import { forwardRef, useCallback, useMemo, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import type { LayoutChangeEvent, ScrollViewProps } from "react-native";
 import { View, useWindowDimensions } from "react-native";
 import Animated, {
@@ -22,17 +24,18 @@ import { AccentText } from "@/components/Typography";
 export const StickyActionScrollLayout = forwardRef<
   Animated.ScrollView,
   ScrollViewProps & {
-    /** Name of list. */
-    title: string;
+    /** Key to title in translations. */
+    titleKey: ParseKeys;
     /** Optional action displayed in layout. */
     StickyAction?: React.JSX.Element;
     /** Determines the bottom padding applied. */
     offsetType?: "withNav" | "onlyPlayer";
   }
 >(function StickyActionScrollLayout(
-  { title, StickyAction, offsetType = "withNav", children, ...rest },
+  { titleKey, StickyAction, offsetType = "withNav", children, ...rest },
   ref,
 ) {
+  const { t } = useTranslation();
   const { top } = useSafeAreaInsets();
   const { bottomInset } = useBottomActionsContext();
 
@@ -82,7 +85,7 @@ export const StickyActionScrollLayout = forwardRef<
       }}
       contentContainerClassName="grow gap-6"
     >
-      <StickyActionHeader>{title}</StickyActionHeader>
+      <StickyActionHeader>{t(titleKey)}</StickyActionHeader>
 
       <View
         onLayout={calcInitStartPos}
@@ -112,15 +115,15 @@ export const StickyActionScrollLayout = forwardRef<
  * after scrolling.
  */
 export function StickyActionListLayout<TData>({
-  title,
+  titleKey,
   StickyAction,
   estimatedActionSize = 0,
   listRef,
   offsetType = "withNav",
   ...flashListProps
 }: FlashListProps<TData> & {
-  /** Name of list. */
-  title: string;
+  /** Key to title in translations. */
+  titleKey: ParseKeys;
   /** Optional action displayed in layout. */
   StickyAction?: React.JSX.Element;
   /** Height of the StickyAction. */
@@ -130,6 +133,7 @@ export function StickyActionListLayout<TData>({
   /** Determines the bottom padding applied. */
   offsetType?: "withNav" | "onlyPlayer";
 }) {
+  const { t } = useTranslation();
   const { top } = useSafeAreaInsets();
   const { width: ScreenWidth } = useWindowDimensions();
   const { bottomInset } = useBottomActionsContext();
@@ -182,7 +186,7 @@ export function StickyActionListLayout<TData>({
             ]}
             className="pb-6"
           >
-            {title}
+            {t(titleKey)}
           </StickyActionHeader>
         }
         overScrollMode="never"

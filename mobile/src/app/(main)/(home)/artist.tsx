@@ -15,7 +15,7 @@ export default function ArtistScreen() {
 
   return (
     <StickyActionListLayout
-      title={t("common.artists")}
+      titleKey="common.artists"
       estimatedItemSize={56} // 48px Height + 8px Margin Top
       data={data}
       keyExtractor={(item) => (typeof item === "string" ? item : item.name)}

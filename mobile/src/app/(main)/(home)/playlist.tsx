@@ -19,7 +19,7 @@ export default function PlaylistScreen() {
 
   return (
     <StickyActionListLayout
-      title={t("common.playlists")}
+      titleKey="common.playlists"
       StickyAction={<PlaylistActions />}
       estimatedActionSize={48}
       {...presets}

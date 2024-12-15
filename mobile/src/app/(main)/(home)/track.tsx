@@ -23,7 +23,7 @@ export default function TrackScreen() {
 
   return (
     <StickyActionListLayout
-      title={t("common.tracks")}
+      titleKey="common.tracks"
       StickyAction={<TrackActions />}
       estimatedActionSize={48}
       {...TrackListPreset({

@@ -14,5 +14,5 @@ export default function AlbumScreen() {
     emptyMessage: t("response.noAlbums"),
   });
 
-  return <StickyActionListLayout title={t("common.albums")} {...presets} />;
+  return <StickyActionListLayout titleKey="common.albums" {...presets} />;
 }

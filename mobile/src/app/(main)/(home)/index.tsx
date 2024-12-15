@@ -27,7 +27,7 @@ import {
 export default function HomeScreen() {
   const { t } = useTranslation();
   return (
-    <StickyActionScrollLayout title={t("header.home")}>
+    <StickyActionScrollLayout titleKey="header.home">
       <Em className="-mb-4">{t("home.playedRecent")}</Em>
       <RecentlyPlayed />
 
