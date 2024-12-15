@@ -17,33 +17,33 @@ import TrackUpcomingSheet from "./TrackUpcoming";
   return `null` due waiting for data (ie: React Query), when the data
   appears, the sheet won't render as it expects a sheet on initial render.
 */
-registerSheet("backup-sheet", BackupSheet);
-registerSheet("font-sheet", FontSheet);
-registerSheet("language-sheet", LanguageSheet);
-registerSheet("min-duration-sheet", MinDurationSheet);
-registerSheet("scan-filter-list-sheet", ScanFilterListSheet);
-registerSheet("theme-sheet", ThemeSheet);
-registerSheet("track-sheet", TrackSheet);
-registerSheet("track-sort-sheet", TrackSortSheet);
-registerSheet("track-to-playlist-sheet", TrackToPlaylistSheet);
-registerSheet("track-upcoming-sheet", TrackUpcomingSheet);
+registerSheet("BackupSheet", BackupSheet);
+registerSheet("FontSheet", FontSheet);
+registerSheet("LanguageSheet", LanguageSheet);
+registerSheet("MinDurationSheet", MinDurationSheet);
+registerSheet("ScanFilterListSheet", ScanFilterListSheet);
+registerSheet("ThemeSheet", ThemeSheet);
+registerSheet("TrackSheet", TrackSheet);
+registerSheet("TrackSortSheet", TrackSortSheet);
+registerSheet("TrackToPlaylistSheet", TrackToPlaylistSheet);
+registerSheet("TrackUpcomingSheet", TrackUpcomingSheet);
 
 // We extend some of the types here to give us great intellisense
 // across the app for all registered sheets.
 declare module "react-native-actions-sheet" {
   interface Sheets {
-    "backup-sheet": SheetDefinition;
-    "font-sheet": SheetDefinition;
-    "language-sheet": SheetDefinition;
-    "min-duration-sheet": SheetDefinition;
-    "scan-filter-list-sheet": SheetDefinition<{
+    BackupSheet: SheetDefinition;
+    FontSheet: SheetDefinition;
+    LanguageSheet: SheetDefinition;
+    MinDurationSheet: SheetDefinition;
+    ScanFilterListSheet: SheetDefinition<{
       payload: { listType: "listAllow" | "listBlock" };
     }>;
-    "theme-sheet": SheetDefinition;
-    "track-sheet": SheetDefinition<{ payload: { id: string } }>;
-    "track-sort-sheet": SheetDefinition;
-    "track-to-playlist-sheet": SheetDefinition<{ payload: { id: string } }>;
-    "track-upcoming-sheet": SheetDefinition;
+    ThemeSheet: SheetDefinition;
+    TrackSheet: SheetDefinition<{ payload: { id: string } }>;
+    TrackSortSheet: SheetDefinition;
+    TrackToPlaylistSheet: SheetDefinition<{ payload: { id: string } }>;
+    TrackUpcomingSheet: SheetDefinition;
   }
 }
 

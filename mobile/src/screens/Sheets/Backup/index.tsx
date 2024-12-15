@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import type { SheetProps } from "react-native-actions-sheet";
 
 import { useExportBackup, useImportBackup } from "./data";
 
@@ -10,7 +9,7 @@ import { Sheet } from "@/components/Sheet";
 import { StyledText } from "@/components/Typography";
 
 /** Sheet allowing us to utilize the "backup" feature of this app. */
-export default function BackupSheet(props: SheetProps<"backup-sheet">) {
+export default function BackupSheet() {
   const { t } = useTranslation();
   const exportBackup = useExportBackup();
   const importBackup = useImportBackup();
@@ -19,8 +18,8 @@ export default function BackupSheet(props: SheetProps<"backup-sheet">) {
 
   return (
     <Sheet
-      id={props.sheetId}
-      title={t("title.backup")}
+      id="BackupSheet"
+      titleKey="title.backup"
       contentContainerClassName="gap-4"
     >
       <StyledText preset="dimOnCanvas" center className="text-sm">

@@ -41,7 +41,7 @@ export default function SettingScreen() {
         <ListItem
           title={t("title.language")}
           description={currLang}
-          onPress={() => SheetManager.show("language-sheet")}
+          onPress={() => SheetManager.show("LanguageSheet")}
           last
         />
       </List>
@@ -50,7 +50,7 @@ export default function SettingScreen() {
         <ListItem
           title={t("title.backup")}
           description={t("settings.brief.backup")}
-          onPress={() => SheetManager.show("backup-sheet")}
+          onPress={() => SheetManager.show("BackupSheet")}
           first
         />
         <ListItem

@@ -18,13 +18,13 @@ export default function AppearanceScreen() {
         <ListItem
           title={t("title.font")}
           description={accentFont}
-          onPress={() => SheetManager.show("font-sheet")}
+          onPress={() => SheetManager.show("FontSheet")}
           first
         />
         <ListItem
           title={t("title.theme")}
           description={t(`settings.related.${theme}`)}
-          onPress={() => SheetManager.show("theme-sheet")}
+          onPress={() => SheetManager.show("ThemeSheet")}
           last
         />
       </List>

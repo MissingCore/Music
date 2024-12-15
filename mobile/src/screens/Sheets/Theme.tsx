@@ -1,6 +1,5 @@
 import { useColorScheme } from "nativewind";
 import { useTranslation } from "react-i18next";
-import type { SheetProps } from "react-native-actions-sheet";
 
 import {
   ThemeOptions,
@@ -13,14 +12,14 @@ import { Sheet } from "@/components/Sheet";
 import { StyledText } from "@/components/Typography";
 
 /** Sheet allowing us to change the app's theme. */
-export default function ThemeSheet(props: SheetProps<"theme-sheet">) {
+export default function ThemeSheet() {
   const { t } = useTranslation();
   const { setColorScheme } = useColorScheme();
   const theme = useUserPreferencesStore((state) => state.theme);
   const setTheme = useUserPreferencesStore((state) => state.setTheme);
 
   return (
-    <Sheet id={props.sheetId} title={t("title.theme")}>
+    <Sheet id="ThemeSheet" titleKey="title.theme">
       <FlatList
         data={ThemeOptions}
         keyExtractor={(item) => item}

@@ -5,7 +5,6 @@ import {
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Keyboard, View } from "react-native";
-import type { SheetProps } from "react-native-actions-sheet";
 
 import { Add, CreateNewFolder, Remove } from "@/icons";
 import { useUserPreferencesStore } from "@/services/UserPreferences";
@@ -24,10 +23,10 @@ import { StyledText } from "@/components/Typography";
 
 //#region Sheet
 /** Sheet used to edit the paths in the allowlist or blocklist. */
-export default function ScanFilterListSheet(
-  props: SheetProps<"scan-filter-list-sheet">,
-) {
-  const listType = props.payload!.listType;
+export default function ScanFilterListSheet(props: {
+  payload: { listType: "listAllow" | "listBlock" };
+}) {
+  const listType = props.payload.listType;
 
   const { t } = useTranslation();
   const { surface } = useTheme();
@@ -35,8 +34,8 @@ export default function ScanFilterListSheet(
 
   return (
     <Sheet
-      id={props.sheetId}
-      title={t(`title.${listType}`)}
+      id="ScanFilterListSheet"
+      titleKey={`title.${listType}`}
       contentContainerClassName="gap-4 px-0"
       snapTop
     >

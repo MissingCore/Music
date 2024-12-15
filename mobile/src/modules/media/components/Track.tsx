@@ -45,7 +45,7 @@ export function Track({ id, trackSource, className, ...props }: Track.Props) {
         <IconButton
           kind="ripple"
           accessibilityLabel={t("template.entrySeeMore", { name: props.title })}
-          onPress={() => SheetManager.show("track-sheet", { payload: { id } })}
+          onPress={() => SheetManager.show("TrackSheet", { payload: { id } })}
         >
           <MoreVert />
         </IconButton>

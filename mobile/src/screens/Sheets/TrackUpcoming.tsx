@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import type { SheetProps } from "react-native-actions-sheet";
 
 import { getTrackCover } from "@/db/utils";
 
@@ -18,9 +17,7 @@ import { SearchResult } from "@/modules/search/components";
  * Sheet allowing us to see the upcoming tracks and remove tracks from
  * the queue.
  */
-export default function TrackUpcomingSheet(
-  props: SheetProps<"track-upcoming-sheet">,
-) {
+export default function TrackUpcomingSheet() {
   const { t } = useTranslation();
   const trackList = useMusicStore((state) => state.currentTrackList);
   const queueList = useMusicStore((state) => state.queuedTrackList);
@@ -40,8 +37,8 @@ export default function TrackUpcomingSheet(
 
   return (
     <Sheet
-      id={props.sheetId}
-      title={t("title.upcoming")}
+      id="TrackUpcomingSheet"
+      titleKey="title.upcoming"
       snapTop
       contentContainerClassName="px-0"
     >

@@ -1,5 +1,3 @@
-import { useTranslation } from "react-i18next";
-import type { SheetProps } from "react-native-actions-sheet";
 import { SheetManager } from "react-native-actions-sheet";
 
 import { usePlaylists } from "@/queries/playlist";
@@ -19,22 +17,21 @@ import { Sheet } from "@/components/Sheet";
 import { StyledText } from "@/components/Typography";
 
 /** Sheet allowing us to select which playlists the track belongs to. */
-export default function TrackToPlaylistSheet(
-  props: SheetProps<"track-to-playlist-sheet">,
-) {
-  const { t } = useTranslation();
+export default function TrackToPlaylistSheet(props: {
+  payload: { id: string };
+}) {
   const { canvasAlt, surface } = useTheme();
   const { data } = usePlaylists();
-  const { data: inList } = useTrackPlaylists(props.payload!.id);
-  const addToPlaylist = useAddToPlaylist(props.payload!.id);
-  const removeFromPlaylist = useRemoveFromPlaylist(props.payload!.id);
+  const { data: inList } = useTrackPlaylists(props.payload.id);
+  const addToPlaylist = useAddToPlaylist(props.payload.id);
+  const removeFromPlaylist = useRemoveFromPlaylist(props.payload.id);
 
   return (
     <Sheet
-      id={props.sheetId}
-      title={t("playlist.add")}
+      id="TrackToPlaylistSheet"
+      titleKey="playlist.add"
       // Hide the Track sheet when we close this sheet since it's still open.
-      onBeforeClose={() => SheetManager.hide("track-sheet")}
+      onBeforeClose={() => SheetManager.hide("TrackSheet")}
       snapTop
     >
       <SheetsFlashList

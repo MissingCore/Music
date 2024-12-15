@@ -46,7 +46,7 @@ function TrackActions() {
       <IconButton
         kind="ripple"
         accessibilityLabel={t("title.sort")}
-        onPress={() => SheetManager.show("track-sort-sheet")}
+        onPress={() => SheetManager.show("TrackSortSheet")}
       >
         <Sort />
       </IconButton>

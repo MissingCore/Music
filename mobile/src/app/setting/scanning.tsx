@@ -31,7 +31,7 @@ export default function ScanningScreen() {
           title={t("title.listAllow")}
           description={t("plural.entry", { count: allowList.length })}
           onPress={() =>
-            SheetManager.show("scan-filter-list-sheet", {
+            SheetManager.show("ScanFilterListSheet", {
               payload: { listType: "listAllow" },
             })
           }
@@ -41,7 +41,7 @@ export default function ScanningScreen() {
           title={t("title.listBlock")}
           description={t("plural.entry", { count: blockList.length })}
           onPress={() =>
-            SheetManager.show("scan-filter-list-sheet", {
+            SheetManager.show("ScanFilterListSheet", {
               payload: { listType: "listBlock" },
             })
           }
@@ -49,7 +49,7 @@ export default function ScanningScreen() {
         <ListItem
           title={t("title.ignoreDuration")}
           description={t("plural.second", { count: ignoreDuration })}
-          onPress={() => SheetManager.show("min-duration-sheet")}
+          onPress={() => SheetManager.show("MinDurationSheet")}
           last
         />
       </List>

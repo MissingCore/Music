@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import type { SheetProps } from "react-native-actions-sheet";
 
 import {
   OrderedByOptions,
@@ -12,7 +11,7 @@ import { Sheet } from "@/components/Sheet";
 import { StyledText } from "@/components/Typography";
 
 /** Sheet allowing us visually change the sort order on the `/track` screen. */
-export default function TrackSortSheet(props: SheetProps<"track-sort-sheet">) {
+export default function TrackSortSheet() {
   const { t } = useTranslation();
   const isAsc = useSortPreferencesStore((state) => state.isAsc);
   const toggleIsAsc = useSortPreferencesStore((state) => state.toggleIsAsc);
@@ -21,8 +20,8 @@ export default function TrackSortSheet(props: SheetProps<"track-sort-sheet">) {
 
   return (
     <Sheet
-      id={props.sheetId}
-      title={t("title.sort")}
+      id="TrackSortSheet"
+      titleKey="title.sort"
       contentContainerClassName="gap-4"
     >
       <Button onPress={toggleIsAsc} className="flex-row justify-between">

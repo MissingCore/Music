@@ -1,7 +1,7 @@
 import { router, usePathname } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
-import { SheetManager, type SheetProps } from "react-native-actions-sheet";
+import { SheetManager } from "react-native-actions-sheet";
 
 import type { TrackWithAlbum } from "@/db/schema";
 
@@ -35,10 +35,10 @@ import { ReservedPlaylists } from "@/modules/media/constants";
 import { MediaImage } from "@/modules/media/components";
 
 /** Sheet containing information and actions for a track. */
-export default function TrackSheet(props: SheetProps<"track-sheet">) {
-  const { isPending, error, data } = useTrack(props.payload!.id);
+export default function TrackSheet(props: { payload: { id: string } }) {
+  const { isPending, error, data } = useTrack(props.payload.id);
   return (
-    <Sheet id={props.sheetId} contentContainerClassName="gap-4">
+    <Sheet id="TrackSheet" contentContainerClassName="gap-4">
       {isPending || error ? null : (
         <>
           <TrackIntro data={data} />
@@ -154,7 +154,7 @@ function AddActions({ data }: { data: TrackWithAlbum }) {
     <View className="flex-row gap-2">
       <SheetButton
         onPress={() =>
-          SheetManager.show("track-to-playlist-sheet", {
+          SheetManager.show("TrackToPlaylistSheet", {
             payload: { id: data.id },
           })
         }
@@ -254,7 +254,7 @@ function SheetButton(props: {
     <IconButton
       kind="extended"
       onPress={() => {
-        if (!props.preventClose) SheetManager.hide("track-sheet");
+        if (!props.preventClose) SheetManager.hide("TrackSheet");
         props.onPress();
       }}
       style={{ width }}
