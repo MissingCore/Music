@@ -16,13 +16,13 @@ export default function AppearanceScreen() {
     <StandardScrollLayout>
       <List>
         <ListItem
-          title={t("title.font")}
+          titleKey="title.font"
           description={accentFont}
           onPress={() => SheetManager.show("FontSheet")}
           first
         />
         <ListItem
-          title={t("title.theme")}
+          titleKey="title.theme"
           description={t(`settings.related.${theme}`)}
           onPress={() => SheetManager.show("ThemeSheet")}
           last

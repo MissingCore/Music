@@ -1,4 +1,6 @@
 import type { FlashListProps } from "@shopify/flash-list";
+import type { ParseKeys } from "i18next";
+import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 
 import type { TextColor } from "@/lib/style";
@@ -56,20 +58,26 @@ export function ListRenderer<TData extends Record<string, any>>({
 
 //#region List Item
 /** Static or pressable card themed after Nothing OS 3.0's setting page. */
-export function ListItem(props: {
-  // Interactivity props.
-  onPress?: () => void;
-  disabled?: boolean;
-  // Content props.
-  title: string;
-  description?: string;
-  icon?: React.ReactNode;
-  // Styling props.
-  first?: boolean;
-  last?: boolean;
-  textColor?: TextColor;
-  className?: string;
-}) {
+export function ListItem(
+  props: {
+    // Interactivity props.
+    onPress?: () => void;
+    disabled?: boolean;
+    // Content props.
+    description?: string;
+    icon?: React.ReactNode;
+    // Styling props.
+    first?: boolean;
+    last?: boolean;
+    textColor?: TextColor;
+    className?: string;
+  } & (
+    | { titleKey: ParseKeys; title?: never }
+    | { titleKey?: never; title: string }
+  ),
+) {
+  const { t } = useTranslation();
+
   const asButton = props.onPress !== undefined;
   const withIcon = !!props.icon;
   const usedColor = props.textColor ?? "text-foreground";
@@ -92,7 +100,7 @@ export function ListItem(props: {
     >
       <View className="shrink grow gap-0.5">
         <StyledText className={cn("text-sm", usedColor)}>
-          {props.title}
+          {props.titleKey ? t(props.titleKey) : props.title}
         </StyledText>
         {props.description ? (
           <StyledText className={cn("text-xs opacity-50", usedColor)}>

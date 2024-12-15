@@ -1,3 +1,5 @@
+import type { ParseKeys } from "i18next";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { cn } from "@/lib/style";
@@ -16,10 +18,11 @@ export function Legend(props: {
 //#region Legend Item
 /** Help describe items represented in for example a `<ProgressBar />`. */
 export function LegendItem(props: {
-  name: string;
+  nameKey: ParseKeys;
   value: string | number;
   color?: string;
 }) {
+  const { t } = useTranslation();
   return (
     <View className="flex-row items-center justify-between gap-2">
       <View className="shrink flex-row items-center gap-2">
@@ -29,7 +32,7 @@ export function LegendItem(props: {
             className="size-[9px] rounded-full"
           />
         ) : null}
-        <StyledText className="shrink text-xs">{props.name}</StyledText>
+        <StyledText className="shrink text-xs">{t(props.nameKey)}</StyledText>
       </View>
       <StyledText preset="dimOnSurface">{props.value}</StyledText>
     </View>
