@@ -2,7 +2,6 @@ import { FlashList } from "@shopify/flash-list";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { useEffect, useRef, useState } from "react";
-import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 import {
@@ -74,12 +73,11 @@ function RecentlyPlayed() {
       data={recentlyPlayedData}
       keyExtractor={({ href }) => href}
       renderItem={({ item, index }) => (
-        <View
+        <MediaCard
           onLayout={(e) => setItemHeight(e.nativeEvent.layout.height)}
-          className={cn({ "pl-3": index !== 0 })}
-        >
-          <MediaCard {...item} size={width} />
-        </View>
+          {...{ ...item, size: width }}
+          className={index > 0 ? "ml-3" : undefined}
+        />
       )}
       ListEmptyComponent={
         <StyledText onLayout={() => setInitNoData(true)} className="my-4">
@@ -111,7 +109,7 @@ function Favorites() {
  * Displays the number of favorited tracks and opens up the playlist of
  * favorited tracks.
  */
-function FavoriteTracks({ size }: { size: number }) {
+function FavoriteTracks(props: { size: number; className: string }) {
   const { t } = useTranslation();
   const { isPending, error, data } = useFavoriteTracksCount();
 
@@ -122,8 +120,8 @@ function FavoriteTracks({ size }: { size: number }) {
       onPress={() =>
         router.navigate(`/playlist/${ReservedPlaylists.favorites}`)
       }
-      style={{ width: size, height: size }}
-      className="gap-0 rounded-lg bg-red"
+      style={{ width: props.size, height: props.size }}
+      className={cn("gap-0 rounded-lg bg-red", props.className)}
     >
       <AccentText className="text-[3rem] text-neutral100">
         {trackCount}

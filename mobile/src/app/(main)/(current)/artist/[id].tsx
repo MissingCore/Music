@@ -83,17 +83,15 @@ function ArtistAlbums({ albums }: { albums: Album[] | null }) {
         data={albums}
         keyExtractor={({ id }) => id}
         renderItem={({ item, index }) => (
-          <View className={index > 0 ? "pl-3" : undefined}>
-            <MediaCard
-              key={item.id}
-              type="album"
-              size={width}
-              source={item.artwork}
-              href={`/album/${item.id}`}
-              title={item.name}
-              subtitle={`${item.releaseYear ?? "————"}`}
-            />
-          </View>
+          <MediaCard
+            type="album"
+            size={width}
+            source={item.artwork}
+            href={`/album/${item.id}`}
+            title={item.name}
+            description={`${item.releaseYear ?? "————"}`}
+            className={index > 0 ? "ml-3" : undefined}
+          />
         )}
         overScrollMode="never"
         showsHorizontalScrollIndicator={false}

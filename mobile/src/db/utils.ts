@@ -42,18 +42,18 @@ type MediaData = Prettify<
 export function formatForMediaCard({ type, data, t }: MediaData) {
   let source = null;
   let href = `/${type}/${encodeURIComponent(data.name)}`;
-  let subtitle = t("plural.track", { count: data.tracks.length });
+  let description = t("plural.track", { count: data.tracks.length });
   if (type === "album") {
     source = data.artwork;
     href = `/album/${data.id}`;
-    subtitle = data.artistName;
+    description = data.artistName;
   } else if (type === "playlist") {
     source = getPlaylistCover(data);
     if (data.name === ReservedPlaylists.tracks) href = "/track";
   }
 
   return {
-    ...{ type, source, href, title: data.name, subtitle },
+    ...{ type, source, href, title: data.name, description },
   } as MediaCard.Content;
 }
 

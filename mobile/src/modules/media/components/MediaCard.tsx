@@ -3,10 +3,12 @@ import { FlashList } from "@shopify/flash-list";
 import type { Href } from "expo-router";
 import { router } from "expo-router";
 import { useMemo } from "react";
-import { Pressable, View } from "react-native";
+import type { LayoutChangeEvent } from "react-native";
+import { Pressable } from "react-native";
 
 import { useGetColumn } from "@/hooks/useGetColumn";
 
+import { cn } from "@/lib/style";
 import type { Maybe, Prettify } from "@/utils/types";
 import { Loading } from "@/components/Transition";
 import { StyledText } from "@/components/Typography";
@@ -18,11 +20,17 @@ export namespace MediaCard {
     MediaImage.ImageContent & {
       href: string;
       title: string;
-      subtitle: string;
+      description: string;
     }
   >;
 
-  export type Props = Prettify<Content & { size: number }>;
+  export type Props = Prettify<
+    Content & {
+      size: number;
+      className?: string;
+      onLayout?: (e: LayoutChangeEvent) => void;
+    }
+  >;
 }
 
 /**
@@ -32,23 +40,26 @@ export namespace MediaCard {
 export function MediaCard({
   href,
   title,
-  subtitle,
+  description,
+  className,
+  onLayout,
   ...imgProps
 }: MediaCard.Props) {
   return (
     <Pressable
+      onLayout={onLayout}
       onPress={() => router.navigate(href as Href)}
       style={{ maxWidth: imgProps.size }}
       // The `w-full` is to ensure the component takes up all the space
       // specified by `maxWidth`.
-      className="w-full active:opacity-75"
+      className={cn("w-full active:opacity-75", className)}
     >
       <MediaImage {...imgProps} />
       <StyledText numberOfLines={1} className="mt-1 text-sm">
         {title}
       </StyledText>
       <StyledText preset="dimOnCanvas" numberOfLines={1}>
-        {subtitle}
+        {description}
       </StyledText>
     </Pressable>
   );
@@ -64,7 +75,7 @@ export const MediaCardPlaceholderContent: MediaCard.Content = {
   href: "invalid-href",
   source: null,
   title: "",
-  subtitle: "",
+  description: "",
   type: "album",
 };
 //#endregion
@@ -78,7 +89,10 @@ type MediaCardListProps = {
    * Renders a special entry before all other data. This assumes at `data[0]`,
    * we have a `MediaCardPlaceholderContent`.
    */
-  RenderFirst?: (props: { size: number }) => React.JSX.Element;
+  RenderFirst?: (props: {
+    size: number;
+    className: string;
+  }) => React.JSX.Element;
 };
 
 /** Hook for getting the presets used in the FlashList for `<MediaCardList />`. */
@@ -98,15 +112,12 @@ export function useMediaCardListPreset(props: MediaCardListProps) {
         Utilized janky margin method to implement gaps in FlashList with columns.
           - https://github.com/shopify/flash-list/discussions/804#discussioncomment-5509022
       */
-      renderItem: ({ item, index }) => (
-        <View className="mx-1.5 mb-3">
-          {props.RenderFirst && index === 0 ? (
-            <props.RenderFirst size={width} />
-          ) : (
-            <MediaCard {...item} size={width} />
-          )}
-        </View>
-      ),
+      renderItem: ({ item, index }) =>
+        props.RenderFirst && index === 0 ? (
+          <props.RenderFirst size={width} className="mx-1.5 mb-3" />
+        ) : (
+          <MediaCard {...item} size={width} className="mx-1.5 mb-3" />
+        ),
       ListEmptyComponent: props.isPending ? (
         <Loading />
       ) : (
