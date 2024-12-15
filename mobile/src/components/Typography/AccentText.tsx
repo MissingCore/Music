@@ -25,6 +25,7 @@ export function AccentText({
           "font-ntype": accentFont === "NType",
         },
         className,
+        "leading-normal",
       )}
       {...props}
     />
