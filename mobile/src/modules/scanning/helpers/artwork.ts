@@ -9,7 +9,7 @@ import { getAlbums, updateAlbum } from "@/api/album";
 import { getTracks, updateTrack } from "@/api/track";
 import { onboardingStore } from "../services/Onboarding";
 
-import { ImageDirectory, deleteImage, saveBase64Img } from "@/lib/file-system";
+import { ImageDirectory, deleteImage, saveImage } from "@/lib/file-system";
 import { clearAllQueries } from "@/lib/react-query";
 import { Stopwatch } from "@/utils/debug";
 import { batch } from "@/utils/promise";
@@ -53,7 +53,7 @@ export async function findAndSaveArtwork() {
       try {
         const base64Artwork = await getArtwork(uri);
         if (base64Artwork) {
-          const artwork = await saveBase64Img(base64Artwork);
+          const artwork = await saveImage(base64Artwork);
           if (albumId) {
             await updateAlbum(albumId, { artwork });
             albumsWithCovers.add(albumId);
