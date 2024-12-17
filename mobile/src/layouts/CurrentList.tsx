@@ -1,5 +1,6 @@
 import { Link } from "expo-router";
-import { View } from "react-native";
+import { Pressable, View } from "react-native";
+import { SheetManager } from "react-native-actions-sheet";
 
 import { Schedule } from "@/icons";
 import { useTheme } from "@/hooks/useTheme";
@@ -7,8 +8,12 @@ import { useTheme } from "@/hooks/useTheme";
 import { toLowerCase } from "@/utils/string";
 import { Divider, Marquee } from "@/components/Containment";
 import { StyledText, TEm } from "@/components/Typography";
+import { ReservedPlaylists } from "@/modules/media/constants";
 import { MediaImage, MediaListControls } from "@/modules/media/components";
-import type { PlayListSource } from "@/modules/media/types";
+import type { MediaType, PlayListSource } from "@/modules/media/types";
+
+/** List of media that we can change artwork for. */
+const SupportedArtwork = new Set<MediaType>(["playlist"]);
 
 /** Layout for displaying a list of tracks for the specified media. */
 export function CurrentListLayout(props: {
@@ -25,12 +30,28 @@ export function CurrentListLayout(props: {
   return (
     <>
       <View className="flex-row gap-2 px-4">
-        {/* @ts-expect-error Things should be fine with proper usage. */}
-        <MediaImage
-          type={props.mediaSource.type}
-          source={props.imageSource}
-          size={128}
-        />
+        <Pressable
+          disabled={
+            props.title === ReservedPlaylists.favorites ||
+            !SupportedArtwork.has(props.mediaSource.type)
+          }
+          onLongPress={() => {
+            switch (props.mediaSource.type) {
+              case "playlist":
+                SheetManager.show("PlaylistArtworkSheet", {
+                  payload: { id: props.title },
+                });
+            }
+          }}
+          className="active:opacity-75"
+        >
+          {/* @ts-expect-error Things should be fine with proper usage. */}
+          <MediaImage
+            type={props.mediaSource.type}
+            source={props.imageSource}
+            size={128}
+          />
+        </Pressable>
         <View className="shrink grow justify-end">
           <TEm
             preset="dimOnCanvas"
