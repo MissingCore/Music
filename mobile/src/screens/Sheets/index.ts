@@ -1,6 +1,7 @@
 import type { SheetDefinition } from "react-native-actions-sheet";
 import { registerSheet } from "react-native-actions-sheet";
 
+import { PlaylistArtworkSheet } from "./Artwork";
 import BackupSheet from "./Backup";
 import FontSheet from "./Font";
 import LanguageSheet from "./Language";
@@ -21,6 +22,7 @@ registerSheet("BackupSheet", BackupSheet);
 registerSheet("FontSheet", FontSheet);
 registerSheet("LanguageSheet", LanguageSheet);
 registerSheet("MinDurationSheet", MinDurationSheet);
+registerSheet("PlaylistArtworkSheet", PlaylistArtworkSheet);
 registerSheet("ScanFilterListSheet", ScanFilterListSheet);
 registerSheet("ThemeSheet", ThemeSheet);
 registerSheet("TrackSheet", TrackSheet);
@@ -36,6 +38,7 @@ declare module "react-native-actions-sheet" {
     FontSheet: SheetDefinition;
     LanguageSheet: SheetDefinition;
     MinDurationSheet: SheetDefinition;
+    PlaylistArtworkSheet: SheetDefinition<{ payload: { id: string } }>;
     ScanFilterListSheet: SheetDefinition<{
       payload: { listType: "listAllow" | "listBlock" };
     }>;
