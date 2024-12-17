@@ -9,7 +9,7 @@ import { getAlbums, updateAlbum } from "@/api/album";
 import { getTracks, updateTrack } from "@/api/track";
 import { onboardingStore } from "../services/Onboarding";
 
-import { deleteFile, saveBase64Img } from "@/lib/file-system";
+import { ImageDirectory, deleteImage, saveBase64Img } from "@/lib/file-system";
 import { clearAllQueries } from "@/lib/react-query";
 import { Stopwatch } from "@/utils/debug";
 import { batch } from "@/utils/promise";
@@ -93,16 +93,13 @@ export async function cleanupImages() {
     .flat()
     .map(({ artwork }) => artwork!);
 
-  // Where we store images on this device.
-  const imageDir = FileSystem.documentDirectory + "images";
-
   // Get & delete all unused images.
   let deletedCount = 0;
   await batch({
-    data: (await FileSystem.readDirectoryAsync(imageDir)).filter(
+    data: (await FileSystem.readDirectoryAsync(ImageDirectory)).filter(
       (imageName) => !usedUris.some((uri) => uri.endsWith(imageName)),
     ),
-    callback: (imageName) => deleteFile(`${imageDir}/${imageName}`),
+    callback: (imageName) => deleteImage(`${ImageDirectory}/${imageName}`),
     onBatchComplete: (isFulfilled) => {
       deletedCount += isFulfilled.length;
     },

@@ -5,12 +5,14 @@ import * as ImagePicker from "expo-image-picker";
 
 import type { Maybe } from "@/utils/types";
 
+/** Internal app directory where we store images. */
+export const ImageDirectory = FileSystem.documentDirectory + "images";
+
 /** Creates "image" directory if it doesn't already exist. */
 export async function createImageDirectory() {
   try {
-    const imgDir = FileSystem.documentDirectory + "images";
-    const dir = await FileSystem.getInfoAsync(imgDir);
-    if (!dir.exists) await FileSystem.makeDirectoryAsync(imgDir);
+    const dir = await FileSystem.getInfoAsync(ImageDirectory);
+    if (!dir.exists) await FileSystem.makeDirectoryAsync(ImageDirectory);
   } catch {
     // Silently catch `Directory <> could not be created or already exists`
     // error from `FileSystem.makeDirectoryAsync()` in case it occurs. This
@@ -18,9 +20,9 @@ export async function createImageDirectory() {
   }
 }
 
-/** Helper to delete a file if it's defined. */
-export async function deleteFile(uri: Maybe<string>) {
-  if (uri) await FileSystem.deleteAsync(uri);
+/** Helper to delete an internal image file if it's defined. */
+export async function deleteImage(uri: Maybe<string>) {
+  if (uri && uri.startsWith(ImageDirectory)) await FileSystem.deleteAsync(uri);
 }
 
 /**

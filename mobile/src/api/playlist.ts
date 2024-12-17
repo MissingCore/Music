@@ -9,7 +9,7 @@ import i18next from "@/modules/i18n";
 import { sortTracks } from "@/modules/media/services/SortPreferences";
 
 import { iAsc } from "@/lib/drizzle";
-import { deleteFile } from "@/lib/file-system";
+import { deleteImage } from "@/lib/file-system";
 import type { ReservedPlaylistName } from "@/modules/media/constants";
 import { ReservedPlaylists } from "@/modules/media/constants";
 import type { DrizzleFilter, QuerySingleFn } from "./types";
@@ -116,7 +116,7 @@ export async function updatePlaylist(
         .where(eq(tracksToPlaylists.playlistName, id));
     }
     // Delete the old artwork if we changed it (`null` means we've removed it).
-    if (rest.artwork !== undefined) await deleteFile(oldValue.artwork);
+    if (rest.artwork !== undefined) await deleteImage(oldValue.artwork);
   });
 }
 //#endregion
@@ -132,7 +132,7 @@ export async function deletePlaylist(id: string) {
       .where(eq(tracksToPlaylists.playlistName, id));
     await tx.delete(playlists).where(eq(playlists.name, id));
     // If the deletions were fine, delete the artwork.
-    await deleteFile(artwork);
+    await deleteImage(artwork);
   });
 }
 //#endregion

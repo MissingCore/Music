@@ -7,7 +7,7 @@ import { getTrackCover } from "@/db/utils";
 
 import i18next from "@/modules/i18n";
 
-import { deleteFile } from "@/lib/file-system";
+import { deleteImage } from "@/lib/file-system";
 import type { DrizzleFilter, QuerySingleFn } from "./types";
 
 //#region GET Methods
@@ -86,7 +86,7 @@ export async function deleteTrack(id: string) {
     await tx.delete(tracksToPlaylists).where(eq(tracksToPlaylists.trackId, id));
     await tx.delete(tracks).where(eq(tracks.id, id));
     // If the deletions were fine, delete the artwork.
-    await deleteFile(artwork);
+    await deleteImage(artwork);
   });
 }
 
