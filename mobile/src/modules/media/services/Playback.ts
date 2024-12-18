@@ -121,6 +121,7 @@ export async function playFromMediaList({
   // 3. Handle case when the media list is new.
   const newPlayingList = (await getTrackList(source)).map(({ id }) => id);
   if (newPlayingList.length === 0) return; // Don't do anything if list is empty.
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { isInQueue: _, ...newListsInfo } = RNTPManager.getUpdatedLists(
     newPlayingList,
     { startTrackId: trackId ?? activeId },

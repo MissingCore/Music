@@ -1,9 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import type { Artist } from "@/db/schema";
+import type { Artist, artists } from "@/db/schema";
 import { formatForCurrentScreen } from "@/db/utils";
 
+import { updateArtist } from "@/api/artist";
+import { Resynchronize } from "@/modules/media/services/Resynchronize";
 import { queries as q } from "./keyStore";
 
 //#region Queries
@@ -46,6 +48,24 @@ export function useArtistsForIndex() {
         .sort((a, b) => a[0].localeCompare(b[0])) // Moves the `#` group to the front
         .map(([character, artists]) => [character, ...artists])
         .flat();
+    },
+  });
+}
+//#endregion
+
+//#region Mutations
+/** Update specified artist. */
+export function useUpdateArtist(artistName: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (
+      updatedValues: Partial<Omit<typeof artists.$inferInsert, "name">>,
+    ) => updateArtist(artistName, updatedValues),
+    onSuccess: (_, { artwork }) => {
+      // Invalidate all artist queries.
+      queryClient.invalidateQueries({ queryKey: q.artists._def });
+
+      if (artwork !== undefined) Resynchronize.onImage();
     },
   });
 }
