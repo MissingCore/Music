@@ -37,7 +37,6 @@ export function CurrentListLayout(props: {
           }
           delayLongPress={150}
           onLongPress={() => {
-            if (!SupportedArtwork.has(props.mediaSource.type)) return;
             SheetManager.show(
               `${capitalize(props.mediaSource.type)}ArtworkSheet`,
               { payload: { id: props.title } },
