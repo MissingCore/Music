@@ -32,3 +32,9 @@ This involves swiping left on some content to reveal actions related to that con
     </tr>
   </tbody>
 </table>
+
+## Long-Press for Action
+
+This involves long-pressing an item to reveal some action. It's currently present in the following features.
+
+- **`Artist & Playlist Artwork`:** You can long-press on the artist or playlist artwork on their respective screens to reveal a modal to change or remove the specified artwork.
