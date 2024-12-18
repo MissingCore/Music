@@ -28,7 +28,7 @@ export default function CurrentArtistScreen() {
     <CurrentListLayout
       title={data.name}
       metadata={data.metadata}
-      imageSource={null}
+      imageSource={data.imageSource}
       mediaSource={trackSource}
     >
       <FlashList

@@ -40,11 +40,10 @@ type MediaData = Prettify<
 //#region Format for Component
 /** Format data to be used in `<MediaCard />`. */
 export function formatForMediaCard({ type, data, t }: MediaData) {
-  let source = null;
+  let source: string | string[] | null = data.artwork;
   let href = `/${type}/${encodeURIComponent(data.name)}`;
   let description = t("plural.track", { count: data.tracks.length });
   if (type === "album") {
-    source = data.artwork;
     href = `/album/${data.id}`;
     description = data.artistName;
   } else if (type === "playlist") {
@@ -92,6 +91,7 @@ export function formatForCurrentScreen({ type, data, t }: MediaData) {
 
   return {
     name: data.name,
+    imageSource: type === "playlist" ? getPlaylistCover(data) : data.artwork,
     metadata,
     tracks: data.tracks.map((track) => ({
       ...formatForTrack(
