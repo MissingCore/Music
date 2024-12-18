@@ -35,7 +35,6 @@ export function usePlaylistForScreen(playlistName: string) {
     ...q.playlists.detail(playlistName),
     select: (data) => ({
       ...formatForCurrentScreen({ type: "playlist", data, t }),
-      imageSource: getPlaylistCover(data),
       isFavorite: data.isFavorite,
     }),
   });

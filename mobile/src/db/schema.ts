@@ -14,6 +14,7 @@ import type { Prettify } from "@/utils/types";
 
 export const artists = sqliteTable("artists", {
   name: text().primaryKey(),
+  artwork: text(),
 });
 
 export const artistsRelations = relations(artists, ({ many }) => ({
@@ -36,9 +37,7 @@ export const albums = sqliteTable(
     artwork: text(),
     isFavorite: integer({ mode: "boolean" }).notNull().default(false),
   },
-  (t) => ({
-    unq: unique().on(t.name, t.artistName, t.releaseYear),
-  }),
+  (t) => [unique().on(t.name, t.artistName, t.releaseYear)],
 );
 
 export const albumsRelations = relations(albums, ({ one, many }) => ({
@@ -108,9 +107,7 @@ export const tracksToPlaylists = sqliteTable(
       .notNull()
       .references(() => playlists.name),
   },
-  (t) => ({
-    pk: primaryKey({ columns: [t.trackId, t.playlistName] }),
-  }),
+  (t) => [primaryKey({ columns: [t.trackId, t.playlistName] })],
 );
 
 export const tracksToPlaylistsRelations = relations(

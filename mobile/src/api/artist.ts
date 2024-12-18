@@ -7,6 +7,7 @@ import { artists } from "@/db/schema";
 import i18next from "@/modules/i18n";
 
 import { iAsc } from "@/lib/drizzle";
+import { deleteImage } from "@/lib/file-system";
 import type { DrizzleFilter, QuerySingleFn } from "./types";
 
 //#region GET Methods
@@ -56,6 +57,23 @@ export async function getArtists(where: DrizzleFilter = []) {
 /** Create a new artist entry. */
 export async function createArtist(entry: typeof artists.$inferInsert) {
   return db.insert(artists).values(entry).onConflictDoNothing();
+}
+//#endregion
+
+//#region PATCH Methods
+/** Update specified artist. */
+export async function updateArtist(
+  id: string,
+  values: Partial<typeof artists.$inferInsert>,
+) {
+  const oldValue = await getArtist(id);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { name: _, ...rest } = values;
+  return db.transaction(async (tx) => {
+    await tx.update(artists).set(rest).where(eq(artists.name, id));
+    // Delete the old artwork if we changed it (`null` means we've removed it).
+    if (rest.artwork !== undefined) await deleteImage(oldValue.artwork);
+  });
 }
 //#endregion
 

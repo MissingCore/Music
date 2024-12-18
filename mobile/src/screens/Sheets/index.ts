@@ -1,6 +1,7 @@
 import type { SheetDefinition } from "react-native-actions-sheet";
 import { registerSheet } from "react-native-actions-sheet";
 
+import { ArtistArtworkSheet, PlaylistArtworkSheet } from "./Artwork";
 import BackupSheet from "./Backup";
 import FontSheet from "./Font";
 import LanguageSheet from "./Language";
@@ -17,10 +18,12 @@ import TrackUpcomingSheet from "./TrackUpcoming";
   return `null` due waiting for data (ie: React Query), when the data
   appears, the sheet won't render as it expects a sheet on initial render.
 */
+registerSheet("ArtistArtworkSheet", ArtistArtworkSheet);
 registerSheet("BackupSheet", BackupSheet);
 registerSheet("FontSheet", FontSheet);
 registerSheet("LanguageSheet", LanguageSheet);
 registerSheet("MinDurationSheet", MinDurationSheet);
+registerSheet("PlaylistArtworkSheet", PlaylistArtworkSheet);
 registerSheet("ScanFilterListSheet", ScanFilterListSheet);
 registerSheet("ThemeSheet", ThemeSheet);
 registerSheet("TrackSheet", TrackSheet);
@@ -32,10 +35,12 @@ registerSheet("TrackUpcomingSheet", TrackUpcomingSheet);
 // across the app for all registered sheets.
 declare module "react-native-actions-sheet" {
   interface Sheets {
+    ArtistArtworkSheet: SheetDefinition<{ payload: { id: string } }>;
     BackupSheet: SheetDefinition;
     FontSheet: SheetDefinition;
     LanguageSheet: SheetDefinition;
     MinDurationSheet: SheetDefinition;
+    PlaylistArtworkSheet: SheetDefinition<{ payload: { id: string } }>;
     ScanFilterListSheet: SheetDefinition<{
       payload: { listType: "listAllow" | "listBlock" };
     }>;

@@ -3,13 +3,13 @@ import { eq, isNotNull } from "drizzle-orm";
 import * as FileSystem from "expo-file-system";
 
 import { db } from "@/db";
-import { albums, playlists, tracks } from "@/db/schema";
+import { albums, artists, playlists, tracks } from "@/db/schema";
 
 import { getAlbums, updateAlbum } from "@/api/album";
 import { getTracks, updateTrack } from "@/api/track";
 import { onboardingStore } from "../services/Onboarding";
 
-import { deleteFile, saveBase64Img } from "@/lib/file-system";
+import { ImageDirectory, deleteImage, saveImage } from "@/lib/file-system";
 import { clearAllQueries } from "@/lib/react-query";
 import { Stopwatch } from "@/utils/debug";
 import { batch } from "@/utils/promise";
@@ -53,7 +53,7 @@ export async function findAndSaveArtwork() {
       try {
         const base64Artwork = await getArtwork(uri);
         if (base64Artwork) {
-          const artwork = await saveBase64Img(base64Artwork);
+          const artwork = await saveImage(base64Artwork);
           if (albumId) {
             await updateAlbum(albumId, { artwork });
             albumsWithCovers.add(albumId);
@@ -82,7 +82,7 @@ export async function cleanupImages() {
   // Get all the uris of images saved in the database.
   const usedUris = (
     await Promise.all(
-      [albums, playlists, tracks].map((schema) =>
+      [albums, artists, playlists, tracks].map((schema) =>
         db
           .select({ artwork: schema.artwork })
           .from(schema)
@@ -93,16 +93,13 @@ export async function cleanupImages() {
     .flat()
     .map(({ artwork }) => artwork!);
 
-  // Where we store images on this device.
-  const imageDir = FileSystem.documentDirectory + "images";
-
   // Get & delete all unused images.
   let deletedCount = 0;
   await batch({
-    data: (await FileSystem.readDirectoryAsync(imageDir)).filter(
+    data: (await FileSystem.readDirectoryAsync(ImageDirectory)).filter(
       (imageName) => !usedUris.some((uri) => uri.endsWith(imageName)),
     ),
-    callback: (imageName) => deleteFile(`${imageDir}/${imageName}`),
+    callback: (imageName) => deleteImage(`${ImageDirectory}/${imageName}`),
     onBatchComplete: (isFulfilled) => {
       deletedCount += isFulfilled.length;
     },

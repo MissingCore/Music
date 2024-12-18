@@ -17,7 +17,6 @@ export function useAlbumForScreen(albumId: string) {
     select: (data) => ({
       ...formatForCurrentScreen({ type: "album", data, t }),
       ...pickKeys(data, ["artistName", "isFavorite"]),
-      imageSource: data.artwork,
     }),
   });
 }

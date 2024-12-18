@@ -146,7 +146,7 @@ type MediaRelations =
 /** Get the artwork of the media that'll be displayed. */
 function getArtwork(props: MediaRelations) {
   if (props.type === "album") return props.data.artwork;
-  if (props.type === "artist") return null;
+  if (props.type === "artist") return props.data.artwork;
   if (props.type === "playlist") return getPlaylistCover(props.data);
   return getTrackCover(props.data);
 }

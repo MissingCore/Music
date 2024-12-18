@@ -27,6 +27,7 @@ export default function ArtistScreen() {
         ) : (
           <SearchResult
             {...{ as: "ripple", type: "artist", title: item.name }}
+            imageSource={item.artwork}
             onPress={() =>
               router.navigate(`/artist/${encodeURIComponent(item.name)}`)
             }
