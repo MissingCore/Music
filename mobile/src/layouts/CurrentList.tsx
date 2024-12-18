@@ -35,6 +35,7 @@ export function CurrentListLayout(props: {
             props.title === ReservedPlaylists.favorites ||
             !SupportedArtwork.has(props.mediaSource.type)
           }
+          delayLongPress={150}
           onLongPress={() => {
             switch (props.mediaSource.type) {
               case "playlist":

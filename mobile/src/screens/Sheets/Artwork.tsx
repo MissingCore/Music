@@ -1,3 +1,4 @@
+import type { UseMutationResult } from "@tanstack/react-query";
 import { useState } from "react";
 import { View, useWindowDimensions } from "react-native";
 
@@ -24,8 +25,7 @@ export function PlaylistArtworkSheet(props: { payload: { id: string } }) {
       <BaseArtworkSheetContent
         type="playlist"
         imageSource={data?.imageSource ?? null}
-        onChange={async (artwork) => mutateGuard(updatePlaylist, { artwork })}
-        onRemove={async () => mutateGuard(updatePlaylist, { artwork: null })}
+        mutationResult={updatePlaylist}
       />
     </Sheet>
   );
@@ -35,14 +35,10 @@ export function PlaylistArtworkSheet(props: { payload: { id: string } }) {
 function BaseArtworkSheetContent(props: {
   type: MediaType;
   imageSource: MediaImage.ImageSource | Array<string | null>;
-  onChange: (newUri: string) => Promise<void>;
-  onRemove: () => Promise<void>;
+  mutationResult: UseMutationResult<void, Error, { artwork?: string | null }>;
 }) {
   const { height, width } = useWindowDimensions();
-  const [disabled, setDisable] = useState(false);
-
-  const disableRemove =
-    disabled || props.imageSource === null || Array.isArray(props.imageSource);
+  const [disabled, setDisabled] = useState(false);
 
   return (
     <>
@@ -55,14 +51,16 @@ function BaseArtworkSheetContent(props: {
       />
       <View className="flex-row gap-2">
         <Button
-          onPress={async () => {
-            setDisable(true);
-            try {
-              await props.onRemove();
-            } catch {}
-            setDisable(false);
+          onPress={() => {
+            setDisabled(true);
+            mutateGuard(props.mutationResult, { artwork: null });
+            setDisabled(false);
           }}
-          disabled={disableRemove}
+          disabled={
+            disabled ||
+            props.imageSource === null ||
+            Array.isArray(props.imageSource)
+          }
           className="flex-1"
         >
           <TStyledText
@@ -73,11 +71,11 @@ function BaseArtworkSheetContent(props: {
         </Button>
         <Button
           onPress={async () => {
-            setDisable(true);
+            setDisabled(true);
             try {
-              await props.onChange(await pickImage());
+              mutateGuard(props.mutationResult, { artwork: await pickImage() });
             } catch {}
-            setDisable(false);
+            setDisabled(false);
           }}
           disabled={disabled}
           className="flex-1"
