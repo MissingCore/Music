@@ -2,6 +2,7 @@ import type { UseMutationResult } from "@tanstack/react-query";
 import { useState } from "react";
 import { View, useWindowDimensions } from "react-native";
 
+import { useArtist, useUpdateArtist } from "@/queries/artist";
 import { usePlaylist, useUpdatePlaylist } from "@/queries/playlist";
 
 import { pickImage } from "@/lib/file-system";
@@ -11,6 +12,25 @@ import { Sheet } from "@/components/Sheet";
 import { TStyledText } from "@/components/Typography";
 import { MediaImage } from "@/modules/media/components";
 import type { MediaType } from "@/modules/media/types";
+
+/** Sheet allowing us to change the artwork of a artist. */
+export function ArtistArtworkSheet(props: { payload: { id: string } }) {
+  const { data } = useArtist(props.payload.id);
+  const updateArtist = useUpdateArtist(props.payload.id);
+
+  return (
+    <Sheet
+      id="ArtistArtworkSheet"
+      contentContainerClassName="items-center gap-6"
+    >
+      <BaseArtworkSheetContent
+        type="artist"
+        imageSource={data?.artwork ?? null}
+        mutationResult={updateArtist}
+      />
+    </Sheet>
+  );
+}
 
 /** Sheet allowing us to change the artwork of a playlist. */
 export function PlaylistArtworkSheet(props: { payload: { id: string } }) {

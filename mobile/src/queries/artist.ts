@@ -9,6 +9,11 @@ import { Resynchronize } from "@/modules/media/services/Resynchronize";
 import { queries as q } from "./keyStore";
 
 //#region Queries
+/** Get specified artist. */
+export function useArtist(artistName: string) {
+  return useQuery({ ...q.artists.detail(artistName) });
+}
+
 /** Format artist information for artist's `(current)` screen. */
 export function useArtistForScreen(artistName: string) {
   const { t } = useTranslation();
