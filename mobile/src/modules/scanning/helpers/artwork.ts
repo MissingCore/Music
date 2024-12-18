@@ -3,7 +3,7 @@ import { eq, isNotNull } from "drizzle-orm";
 import * as FileSystem from "expo-file-system";
 
 import { db } from "@/db";
-import { albums, playlists, tracks } from "@/db/schema";
+import { albums, artists, playlists, tracks } from "@/db/schema";
 
 import { getAlbums, updateAlbum } from "@/api/album";
 import { getTracks, updateTrack } from "@/api/track";
@@ -82,7 +82,7 @@ export async function cleanupImages() {
   // Get all the uris of images saved in the database.
   const usedUris = (
     await Promise.all(
-      [albums, playlists, tracks].map((schema) =>
+      [albums, artists, playlists, tracks].map((schema) =>
         db
           .select({ artwork: schema.artwork })
           .from(schema)
