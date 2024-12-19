@@ -207,7 +207,7 @@ android {
             reset()
             enable true
             include "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
-            universalApk true  // If true, also generate a universal APK
+            universalApk false  // If true, also generate a universal APK
         }
     }
     signingConfigs {
