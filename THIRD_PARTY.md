@@ -32,6 +32,7 @@
 | jotai | MIT | https://github.com/pmndrs/jotai |
 | Material Symbols | Apache-2.0 | https://github.com/google/material-design-icons |
 | nativewind | MIT | https://github.com/marklawlor/nativewind |
+| NDot日本語 | Unknown |  |
 | react | MIT | https://github.com/facebook/react |
 | react-i18next | MIT | https://github.com/i18next/react-i18next |
 | react-native | MIT | https://github.com/facebook/react-native |

@@ -40,7 +40,7 @@ export default function PackageLicenseScreen() {
           {licenseInfo.name}
         </StickyActionHeader>
 
-        <Card className="bg-foreground/5">
+        <Card className="bg-foreground/5 dark:bg-foreground/15">
           <StyledText preset="dimOnCanvas">
             {`${licenseInfo.version}\n\n`}
             This component is licensed under the {licenseInfo.license} license.

@@ -7,19 +7,18 @@ import { ListRenderer } from "@/components/Containment";
 
 /** Screen for `/setting/third-party` route. */
 export default function ThirdPartyScreen() {
-  const LicenseData = Object.values(LicensesList);
   return (
     <StandardScrollLayout>
       <ListRenderer
-        data={LicenseData}
-        keyExtractor={({ name }) => name}
+        data={Object.entries(LicensesList)}
+        keyExtractor={([id]) => id}
         renderOptions={{
-          getTitle: (item) => item.name,
-          getDescription: (item) => `${item.license} (${item.version})`,
-          onPress: (item) => () =>
-            router.navigate(
-              `/setting/third-party/${encodeURIComponent(item.name)}`,
-            ),
+          getTitle: ([_, item]) => item.name,
+          getDescription: ([_, item]) => `${item.license} (${item.version})`,
+          onPress:
+            ([id]) =>
+            () =>
+              router.navigate(`/setting/third-party/${encodeURIComponent(id)}`),
         }}
       />
     </StandardScrollLayout>
