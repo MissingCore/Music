@@ -89,10 +89,7 @@
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.9",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5.6.3"
-  },
-  "resolutions": {
-    "markdown-it": "14.1.0"
+    "typescript": "5.6.3"
   },
   "expo": {
     "autolinking": {
@@ -102,6 +99,11 @@
     }
   },
   "pnpm": {
+    "overrides": {
+      "cookie": "0.7.0",
+      "markdown-it": "14.1.0",
+      "send": "0.19.0"
+    },
     "patchedDependencies": {
       "react-native-actions-sheet@0.9.7": "patches/react-native-actions-sheet@0.9.7.patch",
       "@backpackapp-io/react-native-toast@0.13.0": "patches/@backpackapp-io__react-native-toast@0.13.0.patch"
