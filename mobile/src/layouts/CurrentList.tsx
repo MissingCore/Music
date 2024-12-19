@@ -53,7 +53,7 @@ export function CurrentListLayout(props: {
         </Pressable>
         <View className="shrink grow justify-end">
           <TEm
-            preset="dimOnCanvas"
+            dim
             textKey={`common.${toLowerCase(props.mediaSource.type)}`}
             style={{ fontSize: 8 }}
           />
@@ -72,12 +72,12 @@ export function CurrentListLayout(props: {
           ) : null}
           <Marquee color={canvas} wrapperClassName="my-1">
             <View className="flex-row items-center">
-              <StyledText preset="dimOnCanvas" className="text-xxs">
+              <StyledText dim className="text-xxs">
                 {props.metadata.toSpliced(-1).join(" • ")}
                 {" • "}
               </StyledText>
               <Schedule size={12} color={`${foreground}99`} />
-              <StyledText preset="dimOnCanvas" className="text-xxs">
+              <StyledText dim className="text-xxs">
                 {` ${props.metadata.at(-1)!}`}
               </StyledText>
             </View>

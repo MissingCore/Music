@@ -32,7 +32,7 @@ export default function MinDurationSheet() {
       contentContainerClassName="gap-4"
     >
       <TStyledText
-        preset="dimOnCanvas"
+        dim
         textKey="settings.description.ignoreDuration"
         className="text-center text-sm"
       />

@@ -41,13 +41,13 @@ export default function PackageLicenseScreen() {
         </StickyActionHeader>
 
         <Card className="bg-foreground/5 dark:bg-foreground/15">
-          <StyledText preset="dimOnCanvas">
+          <StyledText dim>
             {`${licenseInfo.version}\n\n`}
             This component is licensed under the {licenseInfo.license} license.
             {`\n\n${licenseInfo.copyright}`}
           </StyledText>
         </Card>
-        <StyledText preset="dimOnCanvas">{licenseInfo.licenseText}</StyledText>
+        <StyledText dim>{licenseInfo.licenseText}</StyledText>
       </ScrollView>
     </>
   );

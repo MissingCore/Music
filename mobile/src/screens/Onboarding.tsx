@@ -59,17 +59,14 @@ function OnboardingPhase() {
     return (
       <>
         <TStyledText textKey="onboardingScreen.preprocess" />
-        <TStyledText
-          preset="dimOnSurface"
-          textKey="onboardingScreen.preprocessBrief"
-        />
+        <TStyledText dim textKey="onboardingScreen.preprocessBrief" />
       </>
     );
   } else if (store.phase === "tracks") {
     return (
       <>
         <TStyledText textKey="onboardingScreen.track" />
-        <StyledText preset="dimOnSurface">
+        <StyledText dim>
           {`${t("onboardingScreen.prevSaved", { amount: store.prevSaved })}\n\n`}
           {`${t("onboardingScreen.saved", { amount: store.staged, total: store.unstaged })}\n`}
           {`${t("onboardingScreen.errors", { amount: store.saveErrors })}`}
@@ -81,7 +78,7 @@ function OnboardingPhase() {
   return (
     <>
       <TStyledText textKey="onboardingScreen.image" />
-      <StyledText preset="dimOnSurface">
+      <StyledText dim>
         {`${t("onboardingScreen.checked", { amount: store.checked, total: store.unchecked })}\n`}
         {`${t("onboardingScreen.found", { amount: store.found })}`}
       </StyledText>

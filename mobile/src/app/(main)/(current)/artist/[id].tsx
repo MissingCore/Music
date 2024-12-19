@@ -62,7 +62,7 @@ function ArtistAlbums({ albums }: { albums: Album[] | null }) {
 
   return (
     <>
-      <TEm preset="dimOnCanvas" textKey="common.albums" className="mx-4 mb-2" />
+      <TEm dim textKey="common.albums" className="mx-4 mb-2" />
       <FlashList
         estimatedItemSize={width + 12} // Column width + gap from padding left
         horizontal
@@ -81,7 +81,7 @@ function ArtistAlbums({ albums }: { albums: Album[] | null }) {
         )}
         contentContainerClassName="px-4"
       />
-      <TEm preset="dimOnCanvas" textKey="common.tracks" className="m-4 mb-2" />
+      <TEm dim textKey="common.tracks" className="m-4 mb-2" />
     </>
   );
 }

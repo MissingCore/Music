@@ -59,7 +59,7 @@ export function MediaCard({
       <StyledText numberOfLines={1} className="mt-1 text-sm">
         {title}
       </StyledText>
-      <StyledText preset="dimOnCanvas" numberOfLines={1}>
+      <StyledText dim numberOfLines={1}>
         {description}
       </StyledText>
     </Pressable>

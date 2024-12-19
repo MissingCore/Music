@@ -33,7 +33,7 @@ export function IssueLayout(props: {
           {t(`errorScreen.${props.issueType}`)}
         </AccentText>
         <TStyledText
-          preset="dimOnCanvas"
+          dim
           textKey={`errorScreen.${props.issueType}Brief`}
           className="text-base"
         />

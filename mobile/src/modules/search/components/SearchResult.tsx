@@ -83,7 +83,7 @@ function SearchResultContent(
           </StyledText>
         </View>
         {!!props.description && (
-          <StyledText preset="dimOnCanvas" numberOfLines={1}>
+          <StyledText dim numberOfLines={1}>
             {props.description}
           </StyledText>
         )}

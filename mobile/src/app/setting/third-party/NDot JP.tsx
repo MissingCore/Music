@@ -15,11 +15,11 @@ export default function PackageLicenseScreen() {
       </StickyActionHeader>
 
       <Card className="bg-foreground/5 dark:bg-foreground/15">
-        <StyledText preset="dimOnCanvas">
+        <StyledText dim>
           {"1.2.0\n\nチーム「Nothing Japanese Font Project」"}
         </StyledText>
       </Card>
-      <StyledText preset="dimOnCanvas">
+      <StyledText dim>
         {
           "このフォントを提供してくださったNothing コミュニティ チーム「Nothing Japanese Font Project」チームに心より 感謝いたします。 参加者リスト:\n\n"
         }

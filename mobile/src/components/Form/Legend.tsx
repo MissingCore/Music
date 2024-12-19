@@ -32,7 +32,7 @@ export function LegendItem(props: {
         ) : null}
         <TStyledText textKey={props.nameKey} className="shrink text-xs" />
       </View>
-      <StyledText preset="dimOnSurface">{props.value}</StyledText>
+      <StyledText dim>{props.value}</StyledText>
     </View>
   );
 }

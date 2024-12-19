@@ -21,7 +21,7 @@ export default function BackupSheet() {
       contentContainerClassName="gap-4"
     >
       <TStyledText
-        preset="dimOnCanvas"
+        dim
         textKey="settings.description.backup"
         className="text-center text-sm"
       />

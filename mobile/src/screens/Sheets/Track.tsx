@@ -82,7 +82,7 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
       <View className="shrink self-end">
         {data.artistName ? (
           <Marquee>
-            <StyledText preset="dimOnSurface">{data.artistName}</StyledText>
+            <StyledText dim>{data.artistName}</StyledText>
           </Marquee>
         ) : null}
         <Marquee>
@@ -90,7 +90,7 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
         </Marquee>
         {data.album ? (
           <Marquee>
-            <StyledText preset="dimOnSurface" className="text-xxs">
+            <StyledText dim className="text-xxs">
               {data.album.name}
             </StyledText>
           </Marquee>
@@ -98,7 +98,7 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
         <Marquee wrapperClassName="mt-2">
           <View className="flex-row items-center">
             <Schedule size={12} color={`${foreground}80`} />
-            <StyledText preset="dimOnSurface" className="text-xxs">
+            <StyledText dim className="text-xxs">
               {` ${formatSeconds(data.duration)}`}
               {data.format ? ` | ${data.format}` : undefined}
             </StyledText>
@@ -228,7 +228,7 @@ function StatItem(props: { titleKey: ParseKeys; description: string }) {
   return (
     <View className="flex-1">
       <Marquee>
-        <TEm preset="dimOnCanvas" textKey={props.titleKey} />
+        <TEm dim textKey={props.titleKey} />
       </Marquee>
       <Marquee>
         <StyledText className="text-xs">{props.description}</StyledText>

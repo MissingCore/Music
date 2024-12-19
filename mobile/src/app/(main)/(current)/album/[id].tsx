@@ -67,10 +67,7 @@ export default function CurrentAlbumScreen() {
           renderItem={({ item, index }) => (
             <>
               {item.disc !== null && discLocation[item.disc] === index ? (
-                <Em
-                  preset="dimOnCanvas"
-                  className={index === 0 ? "mb-2" : "mt-4"}
-                >
+                <Em dim className={index === 0 ? "mb-2" : "mt-4"}>
                   {t("common.disc", { count: item.disc })}
                 </Em>
               ) : null}

@@ -103,7 +103,7 @@ export function ListItem(
           {props.titleKey ? t(props.titleKey) : props.title}
         </StyledText>
         {props.description ? (
-          <StyledText className={cn("text-xs opacity-50", usedColor)}>
+          <StyledText className={cn("text-xs opacity-60", usedColor)}>
             {props.description}
           </StyledText>
         ) : null}

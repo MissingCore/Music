@@ -52,9 +52,7 @@ export function MiniPlayer({ stacked = false }) {
             <StyledText>{track.name}</StyledText>
           </Marquee>
           <Marquee color={surface}>
-            <StyledText preset="dimOnSurface">
-              {track.artistName ?? "—"}
-            </StyledText>
+            <StyledText dim>{track.artistName ?? "—"}</StyledText>
           </Marquee>
         </View>
 

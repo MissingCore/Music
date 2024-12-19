@@ -39,10 +39,10 @@ export default function ScanFilterListSheet(props: {
       contentContainerClassName="gap-4 px-0"
       snapTop
     >
-      <StyledText preset="dimOnCanvas" center className="px-4 text-sm">
+      <StyledText dim center className="px-4 text-sm">
         {t(`settings.description.${listType}`)}
         {listType === "listAllow" ? (
-          <StyledText preset="dimOnSurface" className="text-xs">
+          <StyledText className="text-xs text-foreground/50">
             {"\n"}
             {StorageVolumesDirectoryPaths.map((dir) => `\n${dir}`)}
           </StyledText>

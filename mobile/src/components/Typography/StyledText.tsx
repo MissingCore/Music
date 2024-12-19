@@ -8,24 +8,18 @@ import { cn } from "@/lib/style";
 /** Styled `<Text />`. */
 export function StyledText({
   className,
-  preset,
   bold,
   center,
+  dim,
   ...props
-}: TextProps & {
-  preset?: "dimOnCanvas" | "dimOnSurface";
-  bold?: boolean;
-  center?: boolean;
-}) {
+}: TextProps & Partial<Record<"bold" | "center" | "dim", boolean>>) {
   return (
     <Text
       className={cn(
         "text-base text-foreground",
         {
           "text-center": center,
-          "text-xs": preset !== undefined,
-          "text-foreground/60": preset === "dimOnCanvas",
-          "text-foreground/50": preset === "dimOnSurface",
+          "text-xs text-foreground/60": dim,
         },
         // From past experience, the font-family doesn't get replaced for some reason.
         bold ? "font-robotoMedium" : "font-roboto",

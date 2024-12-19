@@ -14,7 +14,7 @@ export function ErrorBoundary({ error }: ErrorBoundaryProps) {
         <Card>
           <StyledText>{error.message}</StyledText>
         </Card>
-        <StyledText preset="dimOnCanvas" className="text-sm">
+        <StyledText dim className="text-sm">
           {error.stack}
         </StyledText>
       </IssueLayout>
