@@ -29,6 +29,7 @@ type ScreenOptions = ScreenModeOptions & {
 export function ModifyPlaylist(props: ScreenOptions) {
   const { t } = useTranslation();
   const { data } = usePlaylists();
+  const [inProgress, setInProgress] = useState(false);
   const [playlistName, setPlaylistName] = useState<string>();
   const [tracks, setTracks] = useState(props.initialTracks ?? []);
 
@@ -58,51 +59,65 @@ export function ModifyPlaylist(props: ScreenOptions) {
             <IconButton
               kind="ripple"
               accessibilityLabel={t("form.apply")}
-              disabled={!isUnique}
-              onPress={() => console.log("Applying changes to playlist...")}
+              disabled={!isUnique || inProgress}
+              onPress={async () => {
+                if (!playlistName) return;
+                try {
+                  const sanitized = sanitizePlaylistName(playlistName);
+                  setInProgress(true);
+                  await props.onSubmit(sanitized, tracks);
+                } catch {}
+                setInProgress(false);
+              }}
             >
               <Check />
             </IconButton>
           ),
         }}
       />
-      <FlashList
-        estimatedItemSize={56} // 48px Height + 8px Margin Top
-        data={tracks}
-        keyExtractor={({ id }) => id}
-        renderItem={({ item, index }) => (
-          <Swipeable
-            renderRightActions={() => (
-              <IconButton
-                accessibilityLabel={t("template.entryRemove", {
-                  name: item.name,
-                })}
-                onPress={() => console.log("Removing track from playlist...")}
-                className="mr-4 bg-red"
-              >
-                <Remove color={Colors.neutral100} />
-              </IconButton>
-            )}
-            childrenContainerClassName="px-4"
-            containerClassName={index > 0 ? "mt-2" : undefined}
-          >
-            <SearchResult
-              {...{ type: "track", title: item.name }}
-              imageSource={item.artwork}
+      <View
+        pointerEvents={inProgress ? "none" : "auto"}
+        className={cn("flex-1", { "opacity-25": inProgress })}
+      >
+        <FlashList
+          estimatedItemSize={56} // 48px Height + 8px Margin Top
+          data={tracks}
+          keyExtractor={({ id }) => id}
+          renderItem={({ item, index }) => (
+            <Swipeable
+              renderRightActions={() => (
+                <IconButton
+                  accessibilityLabel={t("template.entryRemove", {
+                    name: item.name,
+                  })}
+                  onPress={() => console.log("Removing track from playlist...")}
+                  className="mr-4 bg-red"
+                >
+                  <Remove color={Colors.neutral100} />
+                </IconButton>
+              )}
+              childrenContainerClassName="px-4"
+              containerClassName={index > 0 ? "mt-2" : undefined}
+            >
+              <SearchResult
+                {...{ type: "track", title: item.name }}
+                imageSource={item.artwork}
+              />
+            </Swipeable>
+          )}
+          ListHeaderComponent={
+            <HeaderActions
+              initialValue={props.initialName}
+              isUnique={isUnique}
+              addTracks={addTracks}
+              disabled={inProgress}
+              onNameChange={setPlaylistName}
             />
-          </Swipeable>
-        )}
-        ListHeaderComponent={
-          <HeaderActions
-            initialValue={props.initialName}
-            isUnique={isUnique}
-            addTracks={addTracks}
-            onNameChange={setPlaylistName}
-          />
-        }
-        emptyMsgKey="response.noTracks"
-        className="p-4"
-      />
+          }
+          emptyMsgKey="response.noTracks"
+          className="p-4"
+        />
+      </View>
     </>
   );
 }
@@ -118,7 +133,7 @@ const HeaderActions = memo(function HeaderActions(props: {
   const { t } = useTranslation();
   return (
     <>
-      <View className={cn("gap-2", { "opacity-25": props.disabled })}>
+      <View className="gap-2">
         <TextInput
           autoFocus={false}
           editable={!props.disabled}
