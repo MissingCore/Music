@@ -22,6 +22,7 @@
 
     "favorite": "Favorite",
     "unFavorite": "Unfavorite",
+    "favoriteTracks": "Favorite Tracks",
 
     "disc": "Disc {{count}}"
   },
