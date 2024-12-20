@@ -81,7 +81,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.62.7",
+    "version": "5.62.8",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -97,7 +97,7 @@
   },
   "drizzle-orm": {
     "name": "drizzle-orm",
-    "version": "0.38.0",
+    "version": "0.38.2",
     "copyright": "Copyright (c) 2022 Drizzle Team",
     "source": "https://github.com/drizzle-team/drizzle-orm",
     "license": "Apache-2.0",
@@ -105,7 +105,7 @@
   },
   "expo": {
     "name": "expo",
-    "version": "51.0.38",
+    "version": "51.0.39",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo",
     "license": "MIT",
@@ -185,7 +185,7 @@
   },
   "expo-router": {
     "name": "expo-router",
-    "version": "3.5.23",
+    "version": "3.5.24",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-router",
     "license": "MIT",
@@ -209,7 +209,7 @@
   },
   "i18next": {
     "name": "i18next",
-    "version": "24.0.5",
+    "version": "24.1.2",
     "copyright": "Copyright (c) 2024 i18next",
     "source": "https://github.com/i18next/i18next",
     "license": "MIT",
@@ -233,7 +233,7 @@
   },
   "jotai": {
     "name": "jotai",
-    "version": "2.10.3",
+    "version": "2.10.4",
     "copyright": "Copyright (c) 2020-2023 Poimandres",
     "source": "https://github.com/pmndrs/jotai",
     "license": "MIT",
@@ -273,7 +273,7 @@
   },
   "react-i18next": {
     "name": "react-i18next",
-    "version": "15.1.4",
+    "version": "15.2.0",
     "copyright": "Copyright (c) 2024 i18next",
     "source": "https://github.com/i18next/react-i18next",
     "license": "MIT",
@@ -393,7 +393,7 @@
   },
   "zod": {
     "name": "zod",
-    "version": "3.24.0",
+    "version": "3.24.1",
     "copyright": "Copyright (c) 2020 Colin McDonnell",
     "source": "https://github.com/colinhacks/zod",
     "license": "MIT",
