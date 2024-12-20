@@ -1,4 +1,5 @@
 import { Link } from "expo-router";
+import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 
@@ -26,15 +27,18 @@ export function CurrentListLayout(props: {
   mediaSource: PlayListSource;
   children: React.ReactNode;
 }) {
+  const { t } = useTranslation();
   const { canvas, foreground } = useTheme();
+
+  const isFavorite =
+    props.title === ReservedPlaylists.favorites &&
+    props.mediaSource.type === "playlist";
+
   return (
     <>
       <View className="flex-row gap-2 px-4">
         <Pressable
-          disabled={
-            props.title === ReservedPlaylists.favorites ||
-            !SupportedArtwork.has(props.mediaSource.type)
-          }
+          disabled={isFavorite || !SupportedArtwork.has(props.mediaSource.type)}
           delayLongPress={150}
           onLongPress={() => {
             SheetManager.show(
@@ -58,7 +62,9 @@ export function CurrentListLayout(props: {
             style={{ fontSize: 8 }}
           />
           <Marquee color={canvas}>
-            <StyledText>{props.title}</StyledText>
+            <StyledText>
+              {isFavorite ? t("common.favoriteTracks") : props.title}
+            </StyledText>
           </Marquee>
           {props.artist ? (
             <Marquee color={canvas}>

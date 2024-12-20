@@ -12,9 +12,11 @@ import { createStore } from "zustand/vanilla";
 
 import i18next from "@/modules/i18n";
 import { LANGUAGES } from "@/modules/i18n/constants";
+import { musicStore } from "@/modules/media/services/Music";
 import { RecentList } from "@/modules/media/services/RecentList";
 
 import { clearAllQueries } from "@/lib/react-query";
+import { getSourceName } from "@/modules/media/helpers/data";
 
 /** Options for app themes. */
 export const ThemeOptions = ["light", "dark", "system"] as const;
@@ -144,6 +146,11 @@ userPreferencesStore.subscribe(
     // Make sure the recent list data is also updated as we don't get
     // it from React Query.
     RecentList.refresh();
+    // Make sure to refresh the playing source name if it's one of the favorite playlists.
+    const { playingSource } = musicStore.getState();
+    if (playingSource) {
+      musicStore.setState({ sourceName: await getSourceName(playingSource) });
+    }
   },
 );
 

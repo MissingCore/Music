@@ -1,6 +1,5 @@
 import { useStore } from "zustand";
 
-import type { PlaylistWithTracks } from "@/db/schema";
 import { formatForMediaCard } from "@/db/utils";
 
 import i18next from "@/modules/i18n";
@@ -10,7 +9,7 @@ import { getPlaylist, getSpecialPlaylist } from "@/api/playlist";
 
 import { createPersistedSubscribedStore } from "@/lib/zustand";
 import type { ReservedPlaylistName } from "../constants";
-import { ReservedNames } from "../constants";
+import { ReservedNames, ReservedPlaylists } from "../constants";
 import { arePlaybackSourceEqual } from "../helpers/data";
 import type { MediaCard } from "../components";
 import type { PlayListSource } from "../types";
@@ -78,13 +77,17 @@ recentListStore.subscribe(
           // TODO: Eventually support folders in the recent list.
           entry = undefined;
         } else {
-          let data: PlaylistWithTracks;
-          if (ReservedNames.has(id)) {
-            data = await getSpecialPlaylist(id as ReservedPlaylistName);
-          } else {
-            data = await getPlaylist(id);
-          }
+          const data = ReservedNames.has(id)
+            ? await getSpecialPlaylist(id as ReservedPlaylistName)
+            : await getPlaylist(id);
           entry = formatForMediaCard({ type: "playlist", data, t: i18next.t });
+
+          // Translate the names of these special playlists.
+          if (entry && ReservedNames.has(id)) {
+            entry.title = i18next.t(
+              `common.${id === ReservedPlaylists.tracks ? "t" : "favoriteT"}racks`,
+            );
+          }
         }
         if (entry) newRecentList.push(entry);
       } catch {

@@ -10,6 +10,7 @@ import type { TrackWithAlbum } from "@/db/schema";
 import { tracks } from "@/db/schema";
 import { getTrackCover } from "@/db/utils";
 
+import i18next from "@/modules/i18n";
 import { getAlbum } from "@/api/album";
 import { getArtist } from "@/api/artist";
 import { getFolderTracks } from "@/api/folder";
@@ -17,7 +18,7 @@ import { getPlaylist, getSpecialPlaylist } from "@/api/playlist";
 import { getTracks } from "@/api/track";
 
 import type { ReservedPlaylistName } from "../constants";
-import { ReservedNames } from "../constants";
+import { ReservedNames, ReservedPlaylists } from "../constants";
 import type { PlayListSource } from "../types";
 
 /** Check if 2 `PlayListSource` are equivalent. */
@@ -46,7 +47,11 @@ export function formatTrackforPlayer(track: TrackWithAlbum) {
 export async function getSourceName({ type, id }: PlayListSource) {
   let name = "";
   try {
-    if (ReservedNames.has(id) || ["artist", "playlist"].includes(type)) {
+    if (ReservedNames.has(id)) {
+      name = i18next.t(
+        `common.${id === ReservedPlaylists.tracks ? "t" : "favoriteT"}racks`,
+      );
+    } else if (["artist", "playlist"].includes(type)) {
       name = id;
     } else if (type === "folder") {
       // FIXME: At `-2` index due to the folder path (in `id`) ending with
