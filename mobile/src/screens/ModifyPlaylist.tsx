@@ -3,6 +3,7 @@ import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler, Modal, View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
+import { toast } from "@backpackapp-io/react-native-toast";
 
 import type { TrackWithAlbum } from "@/db/schema";
 import { sanitizePlaylistName } from "@/db/utils";
@@ -11,7 +12,9 @@ import { Add, Cancel, Check, CheckCircle, Remove } from "@/icons";
 import { usePlaylists } from "@/queries/playlist";
 
 import { Colors } from "@/constants/Styles";
+import { ToastOptions } from "@/lib/toast";
 import { cn } from "@/lib/style";
+import { omitKeys } from "@/utils/object";
 import { FlashList } from "@/components/Defaults";
 import { IconButton, TextInput } from "@/components/Form";
 import { Swipeable } from "@/components/Swipeable";
@@ -50,10 +53,28 @@ export function ModifyPlaylist(props: ScreenOptions) {
 
   const addCallbacks = useMemo(() => {
     return {
-      album: (album) => {},
-      track: (track) => {},
+      album: (album) => {
+        const albumInfo = omitKeys(album, ["tracks"]);
+        const trackIds = new Set(album.tracks.map(({ id }) => id));
+        setTracks((prev) => [
+          ...prev.filter(({ id }) => !trackIds.has(id)),
+          ...album.tracks.map((t) => ({
+            ...t,
+            artwork: albumInfo.artwork ?? t.artwork,
+            album: albumInfo,
+          })),
+        ]);
+        toast(t("template.entryAdded", { name: album.name }), ToastOptions);
+      },
+      track: (track) => {
+        setTracks((prev) => [
+          ...prev.filter(({ id }) => track.id !== id),
+          track,
+        ]);
+        toast(t("template.entryAdded", { name: track.name }), ToastOptions);
+      },
     } satisfies Pick<SearchCallbacks, "album" | "track">;
-  }, []);
+  }, [t]);
 
   return (
     <>
