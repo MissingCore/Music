@@ -2,6 +2,7 @@ import { Stack } from "expo-router";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler, Modal, View } from "react-native";
+import { SheetManager } from "react-native-actions-sheet";
 
 import type { TrackWithAlbum } from "@/db/schema";
 import { sanitizePlaylistName } from "@/db/utils";
@@ -16,6 +17,7 @@ import { IconButton, TextInput } from "@/components/Form";
 import { Swipeable } from "@/components/Swipeable";
 import { StyledText, TStyledText } from "@/components/Typography";
 import { SearchResult } from "@/modules/search/components";
+import type { SearchCallbacks } from "@/modules/search/types";
 
 type ScreenModeOptions =
   | { mode?: "create"; initialName?: never; initialTracks?: never }
@@ -46,8 +48,11 @@ export function ModifyPlaylist(props: ScreenOptions) {
     }
   }, [props.initialName, data, playlistName]);
 
-  const addTracks = useCallback(() => {
-    console.log("Adding tracks...");
+  const addCallbacks = useMemo(() => {
+    return {
+      album: (album) => {},
+      track: (track) => {},
+    } satisfies Pick<SearchCallbacks, "album" | "track">;
   }, []);
 
   return (
@@ -109,7 +114,7 @@ export function ModifyPlaylist(props: ScreenOptions) {
             <HeaderActions
               initialValue={props.initialName}
               isUnique={isUnique}
-              addTracks={addTracks}
+              addCallbacks={addCallbacks}
               disabled={inProgress}
               onNameChange={setPlaylistName}
             />
@@ -127,7 +132,7 @@ const HeaderActions = memo(function HeaderActions(props: {
   initialValue?: string;
   isUnique: boolean;
   disabled?: boolean;
-  addTracks: (tracks: TrackWithAlbum[]) => void;
+  addCallbacks: Pick<SearchCallbacks, "album" | "track">;
   onNameChange: (newName: string) => void;
 }) {
   const { t } = useTranslation();
@@ -157,7 +162,11 @@ const HeaderActions = memo(function HeaderActions(props: {
           kind="ripple"
           accessibilityLabel={t("playlist.add")}
           disabled={props.disabled}
-          onPress={() => console.log("Opening add to playlist modal...")}
+          onPress={() =>
+            SheetManager.show("AddMusicSheet", {
+              payload: { callbacks: props.addCallbacks },
+            })
+          }
         >
           <Add />
         </IconButton>
