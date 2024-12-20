@@ -118,6 +118,8 @@ export function useUpdatePlaylist(playlistName: string) {
 
       if (artwork !== undefined) Resynchronize.onImage();
       if (name) {
+        // Don't need a try-catch as `name` should be valid (as it's called
+        // in `updatePlaylist()`).
         const sanitizedName = sanitizePlaylistName(name);
         Resynchronize.onRename({
           oldSource: { type: "playlist", id: playlistName },

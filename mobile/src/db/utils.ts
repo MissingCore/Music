@@ -114,6 +114,7 @@ export function sanitizePlaylistName(name: string) {
 
   let errMsg: string | undefined;
   if (ReservedNames.has(sanitized)) errMsg = i18next.t("response.usedName");
+  if (sanitized.length === 0) errMsg = i18next.t("response.noContent");
 
   if (errMsg) throw new Error(errMsg);
 

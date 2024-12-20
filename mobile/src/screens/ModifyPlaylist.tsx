@@ -1,11 +1,13 @@
 import { Stack } from "expo-router";
-import { useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler, Modal, View } from "react-native";
 
 import type { TrackWithAlbum } from "@/db/schema";
+import { sanitizePlaylistName } from "@/db/utils";
 
 import { Add, Cancel, Check, CheckCircle, Remove } from "@/icons";
+import { usePlaylists } from "@/queries/playlist";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
@@ -26,8 +28,26 @@ type ScreenOptions = ScreenModeOptions & {
 /** Resuable screen to modify (create or edit) a playlist. */
 export function ModifyPlaylist(props: ScreenOptions) {
   const { t } = useTranslation();
+  const { data } = usePlaylists();
   const [playlistName, setPlaylistName] = useState<string>();
   const [tracks, setTracks] = useState(props.initialTracks ?? []);
+
+  const isUnique = useMemo(() => {
+    if (!playlistName || !data) return false;
+    const usedNames = data.map(({ name }) => name);
+    try {
+      const sanitized = sanitizePlaylistName(playlistName);
+      return sanitized === props.initialName || !usedNames.includes(sanitized);
+    } catch {
+      // `sanitizePlaylistName` will throw an error if the value is a reserved
+      // name of is empty.
+      return false;
+    }
+  }, [props.initialName, data, playlistName]);
+
+  const addTracks = useCallback(() => {
+    console.log("Adding tracks...");
+  }, []);
 
   return (
     <>
@@ -38,7 +58,7 @@ export function ModifyPlaylist(props: ScreenOptions) {
             <IconButton
               kind="ripple"
               accessibilityLabel={t("form.apply")}
-              disabled={!playlistName || playlistName === props.initialName}
+              disabled={!isUnique}
               onPress={() => console.log("Applying changes to playlist...")}
             >
               <Check />
@@ -75,8 +95,8 @@ export function ModifyPlaylist(props: ScreenOptions) {
         ListHeaderComponent={
           <HeaderActions
             initialValue={props.initialName}
-            isUnique={false}
-            addTracks={() => console.log("Adding tracks...")}
+            isUnique={isUnique}
+            addTracks={addTracks}
             onNameChange={setPlaylistName}
           />
         }
@@ -88,20 +108,20 @@ export function ModifyPlaylist(props: ScreenOptions) {
 }
 
 /** Contains the input to change the playlist name and button to add tracks. */
-function HeaderActions(props: {
+const HeaderActions = memo(function HeaderActions(props: {
   initialValue?: string;
   isUnique: boolean;
+  disabled?: boolean;
   addTracks: (tracks: TrackWithAlbum[]) => void;
   onNameChange: (newName: string) => void;
 }) {
   const { t } = useTranslation();
-
   return (
     <>
-      <View className="gap-2">
+      <View className={cn("gap-2", { "opacity-25": props.disabled })}>
         <TextInput
           autoFocus={false}
-          editable={true}
+          editable={!props.disabled}
           defaultValue={props.initialValue}
           onChangeText={props.onNameChange}
           placeholder={t("form.placeholder.playlistName")}
@@ -121,6 +141,7 @@ function HeaderActions(props: {
         <IconButton
           kind="ripple"
           accessibilityLabel={t("playlist.add")}
+          disabled={props.disabled}
           onPress={() => console.log("Opening add to playlist modal...")}
         >
           <Add />
@@ -128,4 +149,4 @@ function HeaderActions(props: {
       </View>
     </>
   );
-}
+});
