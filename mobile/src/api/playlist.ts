@@ -84,8 +84,8 @@ export async function createPlaylist(
   entry: typeof playlists.$inferInsert & { tracks?: TrackWithAlbum[] },
 ) {
   return db.transaction(async (tx) => {
-    const { tracks, ...newPlaylist } = entry;
-    const playlistName = sanitizePlaylistName(entry.name);
+    const { tracks, name, ...newPlaylist } = entry;
+    const playlistName = sanitizePlaylistName(name);
     await tx
       .insert(playlists)
       .values({ ...newPlaylist, name: playlistName })

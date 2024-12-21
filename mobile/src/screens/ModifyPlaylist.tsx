@@ -58,7 +58,7 @@ export function ModifyPlaylist(props: ScreenOptions) {
       return sanitized === props.initialName || !usedNames.includes(sanitized);
     } catch {
       // `sanitizePlaylistName` will throw an error if the value is a reserved
-      // name of is empty.
+      // name or is empty.
       return false;
     }
   }, [props.initialName, data, playlistName]);
