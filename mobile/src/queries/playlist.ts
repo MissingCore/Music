@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 
-import type { playlists } from "@/db/schema";
+import type { TrackWithAlbum, playlists } from "@/db/schema";
 import {
   getPlaylistCover,
   formatForCurrentScreen,
@@ -63,11 +63,12 @@ export function usePlaylistsForCards() {
 export function useCreatePlaylist() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (playlistName: string) =>
-      createPlaylist({ name: playlistName }),
+    mutationFn: (args: { playlistName: string; tracks?: TrackWithAlbum[] }) =>
+      createPlaylist({ name: args.playlistName, tracks: args.tracks }),
     onSuccess: () => {
-      // Invalidate all playlist queries.
+      // Invalidate all playlist & track queries.
       queryClient.invalidateQueries({ queryKey: q.playlists._def });
+      queryClient.invalidateQueries({ queryKey: q.tracks._def });
     },
   });
 }

@@ -1,7 +1,11 @@
 import { and, eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import type { PlaylistWithJunction, PlaylistWithTracks } from "@/db/schema";
+import type {
+  PlaylistWithJunction,
+  PlaylistWithTracks,
+  TrackWithAlbum,
+} from "@/db/schema";
 import { playlists, tracksToPlaylists } from "@/db/schema";
 import { sanitizePlaylistName } from "@/db/utils";
 
@@ -76,11 +80,24 @@ export async function getSpecialPlaylist(id: ReservedPlaylistName) {
 
 //#region POST Methods
 /** Create a new playlist entry. */
-export async function createPlaylist(entry: typeof playlists.$inferInsert) {
-  return db
-    .insert(playlists)
-    .values({ ...entry, name: sanitizePlaylistName(entry.name) })
-    .onConflictDoNothing();
+export async function createPlaylist(
+  entry: typeof playlists.$inferInsert & { tracks?: TrackWithAlbum[] },
+) {
+  return db.transaction(async (tx) => {
+    const { tracks, ...newPlaylist } = entry;
+    const playlistName = sanitizePlaylistName(entry.name);
+    await tx
+      .insert(playlists)
+      .values({ ...newPlaylist, name: playlistName })
+      .onConflictDoNothing();
+
+    // Create track relations with playlist if provided.
+    if (tracks && tracks.length > 0) {
+      await tx
+        .insert(tracksToPlaylists)
+        .values(tracks.map(({ id }) => ({ trackId: id, playlistName })));
+    }
+  });
 }
 //#endregion
 
