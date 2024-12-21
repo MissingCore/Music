@@ -94,14 +94,14 @@ export function ModifyPlaylist(props: ScreenOptions) {
       "hardwareBackPress",
       () => {
         if (isUnchanged) return false;
-        setUnsavedDialog(true);
+        if (!isSubmitting) setUnsavedDialog(true);
         return true;
       },
     );
     return () => {
       subscription.remove();
     };
-  }, [isUnchanged]);
+  }, [isSubmitting, isUnchanged]);
 
   return (
     <>
@@ -131,6 +131,7 @@ export function ModifyPlaylist(props: ScreenOptions) {
       />
       <View
         pointerEvents={isSubmitting ? "none" : "auto"}
+        needsOffscreenAlphaCompositing
         className={cn("flex-1", { "opacity-25": isSubmitting })}
       >
         <FlashList
