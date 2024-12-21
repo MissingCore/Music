@@ -34,12 +34,12 @@ type ScreenOptions = ScreenModeOptions & {
 export function ModifyPlaylist(props: ScreenOptions) {
   const { t } = useTranslation();
   const { data } = usePlaylists();
-  const [inProgress, setInProgress] = useState(false);
-  const [playlistName, setPlaylistName] = useState<string>();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [playlistName, setPlaylistName] = useState("");
   const [tracks, setTracks] = useState(props.initialTracks ?? []);
 
   const isUnique = useMemo(() => {
-    if (!playlistName || !data) return false;
+    if (!data) return false;
     const usedNames = data.map(({ name }) => name);
     try {
       const sanitized = sanitizePlaylistName(playlistName);
@@ -53,24 +53,23 @@ export function ModifyPlaylist(props: ScreenOptions) {
 
   const addCallbacks = useMemo(() => {
     return {
-      album: (album) => {
-        const albumInfo = omitKeys(album, ["tracks"]);
-        const trackIds = new Set(album.tracks.map(({ id }) => id));
-        setTracks((prev) => [
-          ...prev.filter(({ id }) => !trackIds.has(id)),
-          ...album.tracks.map((t) => ({
-            ...t,
-            artwork: albumInfo.artwork ?? t.artwork,
-            album: albumInfo,
-          })),
-        ]);
+      album: ({ tracks, ...album }) => {
+        const trackIds = new Set(tracks.map(({ id }) => id));
+        setTracks((prev) =>
+          prev
+            .filter(({ id }) => !trackIds.has(id))
+            .concat(
+              tracks.map(({ artwork, ...t }) => {
+                return { ...t, artwork: album.artwork ?? artwork, album };
+              }),
+            ),
+        );
         toast(t("template.entryAdded", { name: album.name }), ToastOptions);
       },
       track: (track) => {
-        setTracks((prev) => [
-          ...prev.filter(({ id }) => track.id !== id),
-          track,
-        ]);
+        setTracks((prev) =>
+          prev.filter(({ id }) => track.id !== id).concat(track),
+        );
         toast(t("template.entryAdded", { name: track.name }), ToastOptions);
       },
     } satisfies Pick<SearchCallbacks, "album" | "track">;
@@ -81,19 +80,20 @@ export function ModifyPlaylist(props: ScreenOptions) {
       <Stack.Screen
         options={{
           headerTitle: t(`playlist.${props.mode ?? "create"}`),
+          // Hacky solution to disable the back button when submitting.
+          headerLeft: isSubmitting ? () => undefined : undefined,
           headerRight: () => (
             <IconButton
               kind="ripple"
               accessibilityLabel={t("form.apply")}
-              disabled={!isUnique || inProgress}
+              disabled={!isUnique || isSubmitting}
               onPress={async () => {
-                if (!playlistName) return;
                 try {
                   const sanitized = sanitizePlaylistName(playlistName);
-                  setInProgress(true);
+                  setIsSubmitting(true);
                   await props.onSubmit(sanitized, tracks);
                 } catch {}
-                setInProgress(false);
+                setIsSubmitting(false);
               }}
             >
               <Check />
@@ -102,8 +102,8 @@ export function ModifyPlaylist(props: ScreenOptions) {
         }}
       />
       <View
-        pointerEvents={inProgress ? "none" : "auto"}
-        className={cn("flex-1", { "opacity-25": inProgress })}
+        pointerEvents={isSubmitting ? "none" : "auto"}
+        className={cn("flex-1", { "opacity-25": isSubmitting })}
       >
         <FlashList
           estimatedItemSize={56} // 48px Height + 8px Margin Top
@@ -116,13 +116,15 @@ export function ModifyPlaylist(props: ScreenOptions) {
                   accessibilityLabel={t("template.entryRemove", {
                     name: item.name,
                   })}
-                  onPress={() => console.log("Removing track from playlist...")}
+                  onPress={() =>
+                    setTracks((prev) => prev.filter(({ id }) => id !== item.id))
+                  }
                   className="mr-4 bg-red"
                 >
                   <Remove color={Colors.neutral100} />
                 </IconButton>
               )}
-              childrenContainerClassName="px-4"
+              childrenContainerClassName="bg-canvas px-4"
               containerClassName={index > 0 ? "mt-2" : undefined}
             >
               <SearchResult
@@ -136,12 +138,12 @@ export function ModifyPlaylist(props: ScreenOptions) {
               initialValue={props.initialName}
               isUnique={isUnique}
               addCallbacks={addCallbacks}
-              disabled={inProgress}
+              disabled={isSubmitting}
               onNameChange={setPlaylistName}
             />
           }
           emptyMsgKey="response.noTracks"
-          className="p-4"
+          contentContainerClassName="py-4"
         />
       </View>
     </>
@@ -159,7 +161,7 @@ const HeaderActions = memo(function HeaderActions(props: {
   const { t } = useTranslation();
   return (
     <>
-      <View className="gap-2">
+      <View className="gap-2 px-4">
         <TextInput
           autoFocus={false}
           editable={!props.disabled}
@@ -177,7 +179,7 @@ const HeaderActions = memo(function HeaderActions(props: {
           <TStyledText textKey="form.validation.unique" className="text-xs" />
         </View>
       </View>
-      <View className="-mr-3 mb-2 mt-6 shrink grow flex-row items-center justify-between">
+      <View className="mb-2 ml-4 mr-1 mt-6 shrink grow flex-row items-center justify-between">
         <TStyledText textKey="common.tracks" />
         <IconButton
           kind="ripple"

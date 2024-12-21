@@ -26,6 +26,7 @@ export function TopAppBar({ options, route }: NativeStackHeaderProps) {
         <IconButton
           kind="ripple"
           accessibilityLabel={t("form.back")}
+          disabled={!!options.headerLeft}
           onPress={() => router.back()}
         >
           <ArrowBack />
@@ -62,6 +63,7 @@ export function TopAppBarMarquee({ options, route }: NativeStackHeaderProps) {
         <IconButton
           kind="ripple"
           accessibilityLabel={t("form.back")}
+          disabled={!!options.headerLeft}
           onPress={() => router.back()}
         >
           <ArrowBack />
