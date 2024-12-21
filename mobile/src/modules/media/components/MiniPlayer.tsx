@@ -23,13 +23,13 @@ import { MediaImage } from "./MediaImage";
  * Displays a player that appears at the bottom of the screen if we have
  * a song loaded.
  */
-export function MiniPlayer({ stacked = false }) {
+export function MiniPlayer({ hidden = false, stacked = false }) {
   const { t } = useTranslation();
   const { surface } = useTheme();
   const isPlaying = useMusicStore((state) => state.isPlaying);
   const track = useMusicStore((state) => state.activeTrack);
 
-  if (!track) return null;
+  if (!track || hidden) return null;
 
   const Icon = isPlaying ? Pause : PlayArrow;
 

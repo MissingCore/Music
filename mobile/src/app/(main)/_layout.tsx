@@ -44,7 +44,7 @@ function BottomActions() {
       pointerEvents="box-none"
       className="absolute bottom-0 left-0 w-full gap-[3px] p-4 pt-0"
     >
-      <MiniPlayer stacked={isRendered.navBar} />
+      <MiniPlayer stacked={isRendered.navBar} hidden={!isRendered.miniPlayer} />
       <TabBar stacked={isRendered.miniPlayer} hidden={!isRendered.navBar} />
     </Animated.View>
   );

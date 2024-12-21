@@ -2,6 +2,9 @@
 export const ReservedPlaylists = {
   favorites: "Favorite Tracks",
   tracks: "Tracks",
+  // Special utility route names.
+  create: "create",
+  modify: "modify",
 } as const;
 
 export type ReservedPlaylistName =

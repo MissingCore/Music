@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 
 import { Add } from "@/icons";
@@ -33,8 +34,7 @@ function PlaylistActions() {
   return (
     <IconButton
       accessibilityLabel={t("playlist.create")}
-      // FIXME: Temporary until we implement the new "Create Playlist" screen.
-      onPress={() => console.log("Creating new playlist...")}
+      onPress={() => router.navigate("/playlist/create")}
       className="bg-red"
     >
       <Add color={Colors.neutral100} />
