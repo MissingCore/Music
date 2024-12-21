@@ -1,9 +1,9 @@
-import { Stack } from "expo-router";
+import { toast } from "@backpackapp-io/react-native-toast";
+import { Stack, router } from "expo-router";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { BackHandler, Modal, View } from "react-native";
+import { BackHandler, Modal, Pressable, View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
-import { toast } from "@backpackapp-io/react-native-toast";
 
 import type { TrackWithAlbum } from "@/db/schema";
 import { sanitizePlaylistName } from "@/db/utils";
@@ -14,7 +14,6 @@ import { usePlaylists } from "@/queries/playlist";
 import { Colors } from "@/constants/Styles";
 import { ToastOptions } from "@/lib/toast";
 import { cn } from "@/lib/style";
-import { omitKeys } from "@/utils/object";
 import { FlashList } from "@/components/Defaults";
 import { IconButton, TextInput } from "@/components/Form";
 import { Swipeable } from "@/components/Swipeable";
@@ -34,9 +33,22 @@ type ScreenOptions = ScreenModeOptions & {
 export function ModifyPlaylist(props: ScreenOptions) {
   const { t } = useTranslation();
   const { data } = usePlaylists();
+  const [unsavedDialog, setUnsavedDialog] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [playlistName, setPlaylistName] = useState("");
   const [tracks, setTracks] = useState(props.initialTracks ?? []);
+
+  const isUnchanged = useMemo(() => {
+    let nameUnchanged = !playlistName; // `true` if empty.
+    if (!!props.initialName) nameUnchanged = props.initialName === playlistName;
+    let tracksUnchanged = tracks.length === 0;
+    if (props.initialTracks) {
+      tracksUnchanged =
+        props.initialTracks.length === tracks.length &&
+        props.initialTracks.every((t, index) => t.id === tracks[index]?.id);
+    }
+    return nameUnchanged && tracksUnchanged;
+  }, [props.initialName, props.initialTracks, playlistName, tracks]);
 
   const isUnique = useMemo(() => {
     if (!data) return false;
@@ -74,6 +86,22 @@ export function ModifyPlaylist(props: ScreenOptions) {
       },
     } satisfies Pick<SearchCallbacks, "album" | "track">;
   }, [t]);
+
+  const onCloseDialog = useCallback(() => setUnsavedDialog(false), []);
+
+  useEffect(() => {
+    const subscription = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        if (isUnchanged) return false;
+        setUnsavedDialog(true);
+        return true;
+      },
+    );
+    return () => {
+      subscription.remove();
+    };
+  }, [isUnchanged]);
 
   return (
     <>
@@ -146,6 +174,7 @@ export function ModifyPlaylist(props: ScreenOptions) {
           contentContainerClassName="py-4"
         />
       </View>
+      <UnsavedModal visible={unsavedDialog} onClose={onCloseDialog} />
     </>
   );
 }
@@ -195,5 +224,45 @@ const HeaderActions = memo(function HeaderActions(props: {
         </IconButton>
       </View>
     </>
+  );
+});
+
+/** Modal that's rendered if we have unsaved changes. */
+const UnsavedModal = memo(function UnsavedModal(props: {
+  visible: boolean;
+  onClose: () => void;
+}) {
+  const { t } = useTranslation();
+  return (
+    <Modal
+      animationType="fade"
+      visible={props.visible}
+      statusBarTranslucent
+      transparent
+    >
+      <View className="flex-1 items-center justify-center bg-neutral0/50 px-4">
+        <View className="w-full gap-8 rounded-md bg-canvas px-4 dark:bg-neutral5">
+          <TStyledText textKey="form.unsaved" className="pt-8 text-center" />
+          <View className="flex-row justify-end gap-4">
+            <Pressable
+              onPress={props.onClose}
+              className="min-h-12 min-w-12 shrink px-2 py-4"
+            >
+              <StyledText className="text-right text-sm">
+                {t("form.stay").toLocaleUpperCase()}
+              </StyledText>
+            </Pressable>
+            <Pressable
+              onPress={() => router.back()}
+              className="min-h-12 min-w-12 shrink px-2 py-4"
+            >
+              <StyledText className="text-right text-sm text-red">
+                {t("form.leave").toLocaleUpperCase()}
+              </StyledText>
+            </Pressable>
+          </View>
+        </View>
+      </View>
+    </Modal>
   );
 });

@@ -59,18 +59,17 @@ export default function FolderScreen() {
   useEffect(() => {
     // Prevent event from working when this screen isn't focused.
     if (!isFocused) return;
-
-    // Pop a directory segment if we detect a back gesture/action.
-    const onBackPress = () => {
-      if (dirSegments.length === 0) return false;
-      setDirSegments((prev) => prev.toSpliced(-1, 1));
-      return true;
-    };
-
-    BackHandler.addEventListener("hardwareBackPress", onBackPress);
-
+    const subscription = BackHandler.addEventListener(
+      "hardwareBackPress",
+      // Pop a directory segment if we detect a back gesture/action.
+      () => {
+        if (dirSegments.length === 0) return false;
+        setDirSegments((prev) => prev.toSpliced(-1, 1));
+        return true;
+      },
+    );
     return () => {
-      BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+      subscription.remove();
     };
   }, [dirSegments, isFocused, setDirSegments]);
 
