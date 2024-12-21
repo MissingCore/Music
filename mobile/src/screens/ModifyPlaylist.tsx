@@ -35,7 +35,7 @@ export function ModifyPlaylist(props: ScreenOptions) {
   const { data } = usePlaylists();
   const [unsavedDialog, setUnsavedDialog] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [playlistName, setPlaylistName] = useState("");
+  const [playlistName, setPlaylistName] = useState(props.initialName ?? "");
   const [tracks, setTracks] = useState(props.initialTracks ?? []);
 
   const isUnchanged = useMemo(() => {
@@ -157,7 +157,9 @@ export function ModifyPlaylist(props: ScreenOptions) {
               containerClassName={index > 0 ? "mt-2" : undefined}
             >
               <SearchResult
-                {...{ type: "track", title: item.name }}
+                type="track"
+                title={item.name}
+                description={item.artistName ?? "—"}
                 imageSource={item.artwork}
               />
             </Swipeable>
