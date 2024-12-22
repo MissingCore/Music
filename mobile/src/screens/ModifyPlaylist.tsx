@@ -318,11 +318,11 @@ const DeleteWorkflow = memo(function DeleteWorkflow(props: {
   };
 
   const buttonClass =
-    "min-h-12 min-w-12 shrink items-center justify-center p-4 active:opacity-50";
+    "min-h-12 min-w-12 shrink items-center justify-center px-2 py-4 active:opacity-50";
 
   return (
     <View
-      className={cn("flex-row bg-surface", {
+      className={cn("flex-row gap-2 bg-surface px-4", {
         "opacity-25": props.isSubmitting,
       })}
     >
