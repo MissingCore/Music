@@ -9,11 +9,12 @@ import type { TrackWithAlbum } from "@/db/schema";
 import { sanitizePlaylistName } from "@/db/utils";
 
 import { Add, Cancel, Check, CheckCircle, Remove } from "@/icons";
-import { usePlaylists } from "@/queries/playlist";
+import { useDeletePlaylist, usePlaylists } from "@/queries/playlist";
 
 import { Colors } from "@/constants/Styles";
-import { ToastOptions } from "@/lib/toast";
+import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
+import { ToastOptions } from "@/lib/toast";
 import { FlashList } from "@/components/Defaults";
 import { IconButton, TextInput } from "@/components/Form";
 import { Swipeable } from "@/components/Swipeable";
@@ -91,6 +92,8 @@ export function ModifyPlaylist(props: ScreenOptions) {
 
   const onCloseDialog = useCallback(() => setUnsavedDialog(false), []);
 
+  const onDelete = useCallback(() => setIsSubmitting(true), []);
+
   useEffect(() => {
     const subscription = BackHandler.addEventListener(
       "hardwareBackPress",
@@ -121,6 +124,10 @@ export function ModifyPlaylist(props: ScreenOptions) {
                 try {
                   const sanitized = sanitizePlaylistName(playlistName);
                   setIsSubmitting(true);
+                  // Slight buffer before running mutation.
+                  await new Promise((resolve) => {
+                    setTimeout(() => resolve(true), 100);
+                  });
                   await props.onSubmit(sanitized, tracks);
                 } catch {}
                 setIsSubmitting(false);
@@ -179,11 +186,18 @@ export function ModifyPlaylist(props: ScreenOptions) {
           contentContainerClassName="py-4"
         />
       </View>
+      <DeleteWorkflow
+        playlistName={props.initialName ?? ""}
+        visible={props.mode === "edit"}
+        isSubmitting={isSubmitting}
+        onDelete={onDelete}
+      />
       <UnsavedModal visible={unsavedDialog} onClose={onCloseDialog} />
     </>
   );
 }
 
+//#region Input Actions
 /** Contains the input to change the playlist name and button to add tracks. */
 const HeaderActions = memo(function HeaderActions(props: {
   initialValue?: string;
@@ -231,7 +245,9 @@ const HeaderActions = memo(function HeaderActions(props: {
     </>
   );
 });
+//#endregion
 
+//#region Unsaved Modal
 /** Modal that's rendered if we have unsaved changes. */
 const UnsavedModal = memo(function UnsavedModal(props: {
   visible: boolean;
@@ -251,7 +267,7 @@ const UnsavedModal = memo(function UnsavedModal(props: {
           <View className="flex-row justify-end gap-4">
             <Pressable
               onPress={props.onClose}
-              className="min-h-12 min-w-12 shrink px-2 py-4"
+              className="min-h-12 min-w-12 shrink px-2 py-4 active:opacity-50"
             >
               <StyledText className="text-right text-sm">
                 {t("form.stay").toLocaleUpperCase()}
@@ -259,7 +275,7 @@ const UnsavedModal = memo(function UnsavedModal(props: {
             </Pressable>
             <Pressable
               onPress={() => router.back()}
-              className="min-h-12 min-w-12 shrink px-2 py-4"
+              className="min-h-12 min-w-12 shrink px-2 py-4 active:opacity-50"
             >
               <StyledText className="text-right text-sm text-red">
                 {t("form.leave").toLocaleUpperCase()}
@@ -271,3 +287,77 @@ const UnsavedModal = memo(function UnsavedModal(props: {
     </Modal>
   );
 });
+//#endregion
+
+//#region Delete Workflow
+/** Logic to handle us deleting the playlist. */
+const DeleteWorkflow = memo(function DeleteWorkflow(props: {
+  playlistName: string;
+  visible: boolean;
+  isSubmitting: boolean;
+  onDelete: () => void;
+}) {
+  const { t } = useTranslation();
+  const [lastChance, setLastChance] = useState(false);
+  const deletePlaylist = useDeletePlaylist(props.playlistName);
+
+  if (!props.visible) return null;
+
+  const onDelete = async () => {
+    props.onDelete();
+    // Slight buffer before running mutation.
+    await new Promise((resolve) => {
+      setTimeout(() => resolve(true), 100);
+    });
+    mutateGuard(deletePlaylist, undefined, {
+      onSuccess: () => {
+        router.back();
+        router.back();
+      },
+    });
+  };
+
+  const buttonClass =
+    "min-h-12 min-w-12 shrink items-center justify-center p-4 active:opacity-50";
+
+  return (
+    <View
+      className={cn("flex-row bg-surface", {
+        "opacity-25": props.isSubmitting,
+      })}
+    >
+      <Pressable
+        onPress={() => setLastChance(true)}
+        disabled={lastChance || props.isSubmitting}
+        className={cn(buttonClass, "grow", { "items-start": lastChance })}
+      >
+        <StyledText className={cn("text-sm", { "text-red": !lastChance })}>
+          {t("playlist.delete").toLocaleUpperCase()}
+        </StyledText>
+      </Pressable>
+      {lastChance ? (
+        <>
+          <Pressable
+            onPress={() => setLastChance(false)}
+            disabled={props.isSubmitting}
+            className={buttonClass}
+          >
+            <StyledText className="text-right text-sm">
+              {t("form.cancel").toLocaleUpperCase()}
+            </StyledText>
+          </Pressable>
+          <Pressable
+            onPress={onDelete}
+            disabled={props.isSubmitting}
+            className={buttonClass}
+          >
+            <StyledText className="text-right text-sm text-red">
+              {t("form.confirm").toLocaleUpperCase()}
+            </StyledText>
+          </Pressable>
+        </>
+      ) : null}
+    </View>
+  );
+});
+//#endregion

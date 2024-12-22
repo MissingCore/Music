@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 
 import type { TrackWithAlbum, playlists } from "@/db/schema";
@@ -83,8 +82,6 @@ export function useDeletePlaylist(playlistName: string) {
       // Invalidate all playlist queries and the favorite lists query.
       queryClient.invalidateQueries({ queryKey: q.playlists._def });
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
-      // Go back a page as this current page (deleted playlist) isn't valid.
-      router.back();
     },
   });
 }
