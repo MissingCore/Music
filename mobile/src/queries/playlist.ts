@@ -127,8 +127,8 @@ export function useUpdatePlaylist(playlistName: string) {
           newSource: { type: "playlist", id: sanitizedName },
         });
       }
-      // Do this after checking for `name` as the tracks will be referenced
-      // on the new list name instead of `playlistName`.
+      // Do this after checking for `sanitizedName` as the tracks will be
+      // referenced on the new list name instead of `playlistName`.
       if (tracks !== undefined) {
         await Resynchronize.onTracks({
           type: "playlist",

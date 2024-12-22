@@ -66,7 +66,7 @@ export class MusicControls {
   static async next() {
     const shouldRepeat = musicStore.getState().repeat;
     const { listIdx, ...nextTrack } = RNTPManager.getNextTrack();
-    // Make sure we reset if we're play from a source with no tracks left.
+    // Make sure we reset if we play from a source with no tracks left.
     if (!nextTrack.activeId) return await musicStore.getState().reset();
     musicStore.setState({
       ...nextTrack,
