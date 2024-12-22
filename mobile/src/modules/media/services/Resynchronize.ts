@@ -33,7 +33,7 @@ export class Resynchronize {
   }
 
   /** Resynchronize when we rename a playlist. */
-  static onRename({
+  static async onRename({
     oldSource,
     newSource,
   }: Record<"oldSource" | "newSource", PlayListSource>) {
@@ -43,9 +43,8 @@ export class Resynchronize {
     const isPlayingRef = arePlaybackSourceEqual(currSource, oldSource);
     // Update `playingSource` if we renamed that source.
     if (isPlayingRef) {
-      getSourceName(newSource).then((newName) =>
-        musicStore.setState({ playingSource: newSource, sourceName: newName }),
-      );
+      const newName = await getSourceName(newSource);
+      musicStore.setState({ playingSource: newSource, sourceName: newName });
     }
   }
 

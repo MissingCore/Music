@@ -1,4 +1,4 @@
-import { Stack, useLocalSearchParams } from "expo-router";
+import { Stack, router, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
@@ -53,7 +53,11 @@ export default function CurrentPlaylistScreen() {
               <IconButton
                 kind="ripple"
                 accessibilityLabel={t("playlist.edit")}
-                onPress={() => console.log("Configuring playlist...")}
+                onPress={() =>
+                  router.navigate(
+                    `/playlist/modify?id=${encodeURIComponent(id)}`,
+                  )
+                }
               >
                 <Edit />
               </IconButton>
