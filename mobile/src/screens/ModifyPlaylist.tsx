@@ -40,7 +40,9 @@ export function ModifyPlaylist(props: ScreenOptions) {
 
   const isUnchanged = useMemo(() => {
     let nameUnchanged = !playlistName; // `true` if empty.
-    if (!!props.initialName) nameUnchanged = props.initialName === playlistName;
+    if (!!props.initialName) {
+      nameUnchanged = props.initialName === playlistName.trim();
+    }
     let tracksUnchanged = tracks.length === 0;
     if (props.initialTracks) {
       tracksUnchanged =
@@ -114,7 +116,7 @@ export function ModifyPlaylist(props: ScreenOptions) {
             <IconButton
               kind="ripple"
               accessibilityLabel={t("form.apply")}
-              disabled={!isUnique || isSubmitting}
+              disabled={isUnchanged || !isUnique || isSubmitting}
               onPress={async () => {
                 try {
                   const sanitized = sanitizePlaylistName(playlistName);

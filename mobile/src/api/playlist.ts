@@ -110,10 +110,12 @@ export async function favoritePlaylist(id: string, isFavorite: boolean) {
 /** Update specified playlist. */
 export async function updatePlaylist(
   id: string,
-  values: Partial<typeof playlists.$inferInsert>,
+  values: Partial<typeof playlists.$inferInsert> & {
+    tracks?: TrackWithAlbum[];
+  },
 ) {
   const oldValue = await getPlaylist(id);
-  const { name, ...rest } = values;
+  const { tracks, name, ...rest } = values;
   let sanitizedName = name ? sanitizePlaylistName(name) : undefined;
   return db.transaction(async (tx) => {
     try {
@@ -121,12 +123,27 @@ export async function updatePlaylist(
         .update(playlists)
         .set({ ...rest, name: sanitizedName })
         .where(eq(playlists.name, id));
-    } catch {
-      // If we tried to change the playlist name that's already in use.
-      throw new Error(i18next.t("response.usedName"));
+    } catch (err) {
+      if (!(err as Error).message.includes("No values to set")) {
+        // If we tried to change the playlist name that's already in use.
+        throw new Error(i18next.t("response.usedName"));
+      }
     }
-    // Ensure track relationship is preserved when changing the playlist name.
-    if (!!sanitizedName) {
+    // Ensure track relationship is preserved.
+    if (tracks) {
+      await tx
+        .delete(tracksToPlaylists)
+        .where(eq(tracksToPlaylists.playlistName, id));
+      // Add relations if necessary (`tracks = []` means the playlist has no tracks).
+      if (tracks.length > 0) {
+        await tx.insert(tracksToPlaylists).values(
+          tracks.map((t) => {
+            return { trackId: t.id, playlistName: sanitizedName ?? id };
+          }),
+        );
+      }
+    } else if (!!sanitizedName) {
+      // Otherwise, the playlist name was changed.
       await tx
         .update(tracksToPlaylists)
         .set({ playlistName: sanitizedName })
