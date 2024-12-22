@@ -360,22 +360,21 @@ export class RNTPManager {
     // Only update the RNTP queue if its defined.
     if (!(await RNTPManager.isLoaded())) return;
     const currTrack = musicStore.getState().activeTrack;
+    // Return early if we're not playing anything.
+    if (!currTrack) return;
     const nextTrack = RNTPManager.getNextTrack();
     await TrackPlayer.removeUpcomingTracks();
-    // Return if we have no tracks (ie: when we removed a track from
-    // the current list).
-    if (!nextTrack.activeTrack || !currTrack) return;
     // If the next track is `undefined`, then we should run `reset()`
     // after the current track finishes.
-    if (nextTrack.activeId === undefined) {
+    if (!nextTrack.activeId || !nextTrack.activeTrack) {
       await TrackPlayer.add({
-        ...formatTrackforPlayer(currTrack!),
+        ...formatTrackforPlayer(currTrack),
         // Field read in `PlaybackActiveTrackChanged` event to fire `reset()`.
         "music::status": "END" satisfies TrackStatus,
       });
     } else {
       await TrackPlayer.add({
-        ...formatTrackforPlayer(nextTrack.activeTrack!),
+        ...formatTrackforPlayer(nextTrack.activeTrack),
         "music::status": (nextTrack.isInQueue
           ? "QUEUE"
           : undefined) satisfies TrackStatus,
