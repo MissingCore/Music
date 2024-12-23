@@ -73,7 +73,22 @@ export async function updateTrack(
 export async function addToPlaylist(
   entry: typeof tracksToPlaylists.$inferInsert,
 ) {
-  return db.insert(tracksToPlaylists).values(entry).onConflictDoNothing();
+  return db.transaction(async (tx) => {
+    // Get largest position value (which is the last track in the playlist).
+    const lastTrack = await tx.query.tracksToPlaylists.findFirst({
+      where: (fields, { eq }) => eq(fields.playlistName, entry.playlistName),
+      orderBy: (fields, { desc }) => desc(fields.position),
+    });
+    // Add track to the end of the playlist (if we didn't provide a `position` value).
+    const nextPos = (lastTrack?.position ?? -1) + 1;
+    await tx
+      .insert(tracksToPlaylists)
+      .values({ position: nextPos, ...entry })
+      .onConflictDoUpdate({
+        target: [tracksToPlaylists.trackId, tracksToPlaylists.playlistName],
+        set: { position: entry.position ?? nextPos },
+      });
+  });
 }
 //#endregion
 

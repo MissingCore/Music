@@ -31,7 +31,7 @@ export const getPlaylist: QuerySingleFn<PlaylistWithTracks> = async (
       tracksToPlaylists: {
         columns: {},
         with: { track: { with: { album: true } } },
-        // FIXME: In the future, need to `orderBy` track order in playlist.
+        orderBy: (fields, { asc }) => asc(fields.position),
       },
     },
   });
@@ -50,7 +50,7 @@ export async function getPlaylists(where: DrizzleFilter = []) {
       tracksToPlaylists: {
         columns: {},
         with: { track: { with: { album: true } } },
-        // FIXME: In the future, need to `orderBy` track order in playlist.
+        orderBy: (fields, { asc }) => asc(fields.position),
       },
     },
     orderBy: (fields) => iAsc(fields.name),
@@ -93,9 +93,11 @@ export async function createPlaylist(
 
     // Create track relations with playlist if provided.
     if (tracks && tracks.length > 0) {
-      await tx
-        .insert(tracksToPlaylists)
-        .values(tracks.map(({ id }) => ({ trackId: id, playlistName })));
+      await tx.insert(tracksToPlaylists).values(
+        tracks.map((t, position) => {
+          return { trackId: t.id, playlistName, position };
+        }),
+      );
     }
   });
 }
@@ -137,8 +139,9 @@ export async function updatePlaylist(
       // Add relations if necessary (`tracks = []` means the playlist has no tracks).
       if (tracks.length > 0) {
         await tx.insert(tracksToPlaylists).values(
-          tracks.map((t) => {
-            return { trackId: t.id, playlistName: sanitizedName ?? id };
+          tracks.map((t, position) => {
+            const usedName = sanitizedName ?? id;
+            return { trackId: t.id, playlistName: usedName, position };
           }),
         );
       }
