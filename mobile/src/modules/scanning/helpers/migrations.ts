@@ -2,8 +2,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { tracks } from "@/db/schema";
+import { tracks, tracksToPlaylists } from "@/db/schema";
 
+import { getPlaylists } from "@/api/playlist";
 import { recentListStore } from "@/modules/media/services/RecentList";
 import { userPreferencesStore } from "@/services/UserPreferences";
 
@@ -60,6 +61,20 @@ export const MigrationFunctionMap: Record<
     // Easy way of rechecking all tracks.
     // eslint-disable-next-line drizzle/enforce-update-with-where
     await db.update(tracks).set({ modificationTime: -1 });
+    // Convert our default `position = -1` to be sequential based on
+    // alphabetical order.
+    const allPlaylists = await getPlaylists();
+    await db.transaction(async (tx) => {
+      const orderedRelations = allPlaylists.map(
+        ({ name: playlistName, tracks }) =>
+          tracks
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((t, position) => ({ playlistName, trackId: t.id, position })),
+      );
+      // eslint-disable-next-line drizzle/enforce-delete-with-where
+      await tx.delete(tracksToPlaylists);
+      await tx.insert(tracksToPlaylists).values(orderedRelations.flat());
+    });
   },
 };
 
