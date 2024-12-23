@@ -15,6 +15,7 @@ import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
 import { ToastOptions } from "@/lib/toast";
+import { wait } from "@/utils/promise";
 import { FlashList } from "@/components/Defaults";
 import { IconButton, TextInput } from "@/components/Form";
 import { Swipeable } from "@/components/Swipeable";
@@ -123,9 +124,7 @@ export function ModifyPlaylist(props: ScreenOptions) {
                   const sanitized = sanitizePlaylistName(playlistName);
                   setIsSubmitting(true);
                   // Slight buffer before running mutation.
-                  await new Promise((resolve) => {
-                    setTimeout(() => resolve(true), 100);
-                  });
+                  await wait(100);
                   await props.onSubmit(sanitized, tracks);
                 } catch {}
                 setIsSubmitting(false);
@@ -304,9 +303,7 @@ const DeleteWorkflow = memo(function DeleteWorkflow(props: {
   const onDelete = async () => {
     props.onDelete();
     // Slight buffer before running mutation.
-    await new Promise((resolve) => {
-      setTimeout(() => resolve(true), 100);
-    });
+    await wait(100);
     mutateGuard(deletePlaylist, undefined, {
       onSuccess: () => {
         router.back();

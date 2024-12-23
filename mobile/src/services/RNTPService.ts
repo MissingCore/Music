@@ -16,6 +16,7 @@ import { removeUnusedCategories } from "@/modules/scanning/helpers/audio";
 
 import { clearAllQueries } from "@/lib/react-query";
 import { ToastOptions } from "@/lib/toast";
+import { wait } from "@/utils/promise";
 
 /** How we handle the actions in the media control notification. */
 export async function PlaybackService() {
@@ -142,7 +143,7 @@ export async function setupPlayer() {
     // Timeouts will only execute when the app is in the foreground. If
     // it somehow executes in the background, the promise will be rejected
     // and we'll try this again.
-    await new Promise<void>((resolve) => setTimeout(resolve, 1));
+    await wait(1);
   }
 
   // Repeat mode is needed for the "next" button to show up in the widget

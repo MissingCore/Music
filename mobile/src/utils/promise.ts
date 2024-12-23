@@ -60,3 +60,11 @@ export async function batch<TData, TResult>({
     }
   }
 }
+
+/**
+ * Asynchronously pause logic for the specified amount of time. Useful to
+ * prevent code blocking due to an async task.
+ */
+export async function wait(durationMs: number) {
+  await new Promise<void>((resolve) => setTimeout(resolve, durationMs));
+}

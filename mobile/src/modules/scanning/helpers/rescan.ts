@@ -11,7 +11,7 @@ import { RecentList } from "@/modules/media/services/RecentList";
 import { Resynchronize } from "@/modules/media/services/Resynchronize";
 
 import { ToastOptions } from "@/lib/toast";
-import { batch } from "@/utils/promise";
+import { batch, wait } from "@/utils/promise";
 import { findAndSaveArtwork, cleanupImages } from "../helpers/artwork";
 import { cleanupDatabase, findAndSaveAudio } from "./audio";
 import { savePathComponents } from "./folder";
@@ -27,9 +27,7 @@ export async function rescanForTracks() {
     // Slight buffer before we run our code due to the code blocking the
     // JS thread, causing `isPending` to not update immediately, allowing
     // the user to spam the button to rescan the library.
-    await new Promise((resolve) => {
-      setTimeout(() => resolve(true), 100);
-    });
+    await wait(100);
 
     // Re-create the "folder" structure for tracks we've already saved.
     // eslint-disable-next-line drizzle/enforce-delete-with-where
