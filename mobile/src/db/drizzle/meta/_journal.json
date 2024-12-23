@@ -40,15 +40,8 @@
     {
       "idx": 5,
       "version": "6",
-      "when": 1733689925630,
-      "tag": "0005_nappy_talon",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "6",
-      "when": 1734495259538,
-      "tag": "0006_slow_deathstrike",
+      "when": 1734926347792,
+      "tag": "0005_equal_cerise",
       "breakpoints": true
     }
   ]

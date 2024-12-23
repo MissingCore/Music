@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "0e52e805-e00f-4877-8094-75569a74888b",
+  "id": "8c1393ab-971b-4a46-9d55-30c827f93cd4",
   "prevId": "21d0dc15-7e03-4a52-ae16-12b68edbaf9e",
   "tables": {
     "albums": {
@@ -89,6 +89,13 @@
           "type": "text",
           "primaryKey": true,
           "notNull": true,
+          "autoincrement": false
+        },
+        "artwork": {
+          "name": "artwork",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         }
       },
@@ -387,6 +394,14 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "position": {
+          "name": "position",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": -1
         }
       },
       "indexes": {},
