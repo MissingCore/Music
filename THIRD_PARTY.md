@@ -38,6 +38,7 @@
 | react-native | MIT | https://github.com/facebook/react-native |
 | react-native-actions-sheet | MIT | https://github.com/ammarahm-ed/react-native-actions-sheet |
 | react-native-bootsplash | MIT | https://github.com/zoontek/react-native-bootsplash |
+| react-native-flashdrag-list | MIT | https://github.com/Spicy-Sparks/react-native-flashdrag-list |
 | react-native-gesture-handler | MIT | https://github.com/software-mansion/react-native-gesture-handler |
 | react-native-markdown-display | MIT | https://github.com/iamacup/react-native-markdown-display |
 | react-native-pager-view | MIT | https://github.com/callstack/react-native-pager-view |
