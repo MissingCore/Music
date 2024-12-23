@@ -29,6 +29,17 @@ export function getTrackCover(track: TrackWithAlbum) {
 }
 //#endregion
 
+//#region Assorted Helpers
+/**
+ * Merges 2 arrays of `TrackWithAlbum`. Tracks that appear in both arrays
+ * will have their order adjusted to match the 2nd array.
+ */
+export function mergeTracks(arr1: TrackWithAlbum[], arr2: TrackWithAlbum[]) {
+  const trackIds = new Set(arr2.map(({ id }) => id));
+  return arr1.filter(({ id }) => !trackIds.has(id)).concat(arr2);
+}
+//#endregion
+
 type MediaData = Prettify<
   { t: TFunction } & (
     | { type: "artist"; data: ArtistWithTracks }

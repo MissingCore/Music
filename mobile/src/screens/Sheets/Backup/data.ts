@@ -2,27 +2,26 @@ import { toast } from "@backpackapp-io/react-native-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
-import { and, eq, isNull } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
 import { db } from "@/db";
 import type { TrackWithAlbum } from "@/db/schema";
 import { albums, playlists, tracks } from "@/db/schema";
-import { sanitizePlaylistName } from "@/db/utils";
+import { mergeTracks, sanitizePlaylistName } from "@/db/utils";
 
 import i18next from "@/modules/i18n";
 import { getAlbums } from "@/api/album";
 import { createPlaylist, getPlaylists, updatePlaylist } from "@/api/playlist";
-import { addToPlaylist, getTracks } from "@/api/track";
+import { getTracks } from "@/api/track";
 import { musicStore } from "@/modules/media/services/Music";
+import { RecentList } from "@/modules/media/services/RecentList";
 import { Resynchronize } from "@/modules/media/services/Resynchronize";
 
 import { clearAllQueries } from "@/lib/react-query";
 import { ToastOptions } from "@/lib/toast";
 import { pickKeys } from "@/utils/object";
-import { isFulfilled } from "@/utils/promise";
-import type { Maybe } from "@/utils/types";
 
 const SAF = FileSystem.StorageAccessFramework;
 
@@ -33,8 +32,6 @@ const RawAlbum = z.object({
 });
 
 const RawTrack = z.object({
-  /** @deprecated Not used due to the file id changing per device. */
-  id: z.string().trim().min(1),
   name: z.string().trim().min(1),
   artistName: z.string().trim().min(1).nullish(),
   albumName: z.string().trim().min(1).nullish(),
@@ -56,27 +53,39 @@ const MusicBackup = z.object({
 //#endregion
 
 //#region Helpers
-/**
- * Returns the id of the album from the specified parameters. Throws error
- * if no album found with specified parameters.
- *
- * Doesn't work correctly for "collaboration" albums.
- */
-async function getAlbumId<T extends Maybe<string>>(
-  albumName: T,
-  artistName: T,
-) {
-  if (!albumName || !artistName) return undefined;
-  return (
-    await db.query.albums.findFirst({
-      where: (fields, { and, eq }) =>
-        and(eq(fields.name, albumName), eq(fields.artistName, artistName)),
-    })
-  )?.id;
+function getRawTrack({ name, artistName, album }: TrackWithAlbum) {
+  return { name, artistName, albumName: album?.name };
 }
 
-function getRawTrack({ id, name, artistName, album }: TrackWithAlbum) {
-  return { id, name, artistName, albumName: album?.name };
+/** Creates a factory function that finds albums associated to `RawAlbum`. */
+async function findExistingAlbumsFactory() {
+  const allAlbums = await getAlbums();
+  return (entries: Array<z.infer<typeof RawAlbum>>) => {
+    return entries
+      .map((entry) =>
+        allAlbums.find(
+          (t) => t.name === entry.name && t.artistName === entry.artistName,
+        ),
+      )
+      .filter((entry) => entry !== undefined);
+  };
+}
+
+/** Creates a factory function that finds tracks associated to `RawTrack`. */
+async function findExistingTracksFactory() {
+  const allTracks = await getTracks();
+  return (entries: Array<z.infer<typeof RawTrack>>) => {
+    return entries
+      .map((entry) =>
+        allTracks.find(
+          (t) =>
+            t.name === entry.name &&
+            t.artistName === entry.artistName &&
+            t.album?.name === entry.albumName,
+        ),
+      )
+      .filter((entry) => entry !== undefined);
+  };
 }
 //#endregion
 
@@ -140,70 +149,52 @@ async function importBackup() {
     throw new Error(i18next.t("response.invalidStructure"));
   }
 
+  const allPlaylists = await getPlaylists();
+
+  const findExistingAlbums = await findExistingAlbumsFactory();
+  const findExistingTracks = await findExistingTracksFactory();
+
   // Import playlists.
   await Promise.allSettled(
     backupContents.playlists.map(async ({ name, tracks: plTracks }) => {
-      // Create playlist if it doesn't exist.
-      await createPlaylist({ name });
-
-      // Get all the ids of the tracks in this playlist.
-      const _trackIds = await Promise.allSettled(
-        plTracks.map(async (t) => {
-          const albumId = await getAlbumId(t.albumName, t.artistName);
-          const track = await db.query.tracks.findFirst({
-            where: (fields, { and, eq, isNull }) =>
-              and(
-                eq(fields.name, t.name),
-                t.artistName
-                  ? eq(fields.artistName, t.artistName)
-                  : isNull(fields.artistName),
-                albumId ? eq(fields.albumId, albumId) : undefined,
-              ),
-          });
-          if (!track) throw new Error("Track not found.");
-          return track.id;
-        }),
-      );
-      const trackIds = _trackIds.filter(isFulfilled).map((t) => t.value);
-
-      // Create relations between tracks & playlist.
-      await Promise.allSettled(
-        trackIds.map((trackId) =>
-          addToPlaylist({ trackId, playlistName: name }),
-        ),
-      );
+      const exists = allPlaylists.find((pl) => pl.name === name);
+      const playlistTracks = findExistingTracks(plTracks);
+      // Create or update playlist to have the current track order.
+      if (exists) {
+        await updatePlaylist(name, {
+          tracks: mergeTracks(exists.tracks, playlistTracks),
+        });
+      } else await createPlaylist({ name, tracks: playlistTracks });
     }),
   );
 
   // Import favorite media.
   await Promise.allSettled([
     // Playlists
-    ...backupContents.favorites.playlists.map((name) =>
-      updatePlaylist(name, { isFavorite: true }),
-    ),
+    db
+      .update(playlists)
+      .set({ isFavorite: true })
+      .where(inArray(playlists.name, backupContents.favorites.playlists)),
     // Albums
-    ...backupContents.favorites.albums.map(({ name, artistName }) =>
-      db
-        .update(albums)
-        .set({ isFavorite: true })
-        .where(and(eq(albums.name, name), eq(albums.artistName, artistName))),
-    ),
+    db
+      .update(albums)
+      .set({ isFavorite: true })
+      .where(
+        inArray(
+          albums.id,
+          findExistingAlbums(backupContents.favorites.albums).map((a) => a.id),
+        ),
+      ),
     // Tracks
-    ...backupContents.favorites.tracks.map(async (t) => {
-      const albumId = await getAlbumId(t.albumName, t.artistName);
-      return db
-        .update(tracks)
-        .set({ isFavorite: true })
-        .where(
-          and(
-            eq(tracks.name, t.name),
-            t.artistName
-              ? eq(tracks.artistName, t.artistName)
-              : isNull(tracks.artistName),
-            albumId ? eq(tracks.albumId, albumId) : undefined,
-          ),
-        );
-    }),
+    db
+      .update(tracks)
+      .set({ isFavorite: true })
+      .where(
+        inArray(
+          tracks.id,
+          findExistingTracks(backupContents.favorites.tracks).map((t) => t.id),
+        ),
+      ),
   ]);
 
   // Delete the cached document.
@@ -221,6 +212,7 @@ export const useExportBackup = () => {
   return useMutation({
     mutationFn: exportBackup,
     onSuccess: () => {
+      RecentList.refresh();
       toast(t("response.exportSuccess"), ToastOptions);
     },
     onError: (err) => {

@@ -6,7 +6,7 @@ import { BackHandler, Modal, Pressable, View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 
 import type { TrackWithAlbum } from "@/db/schema";
-import { sanitizePlaylistName } from "@/db/utils";
+import { mergeTracks, sanitizePlaylistName } from "@/db/utils";
 
 import { Add, Cancel, Check, CheckCircle, Remove } from "@/icons";
 import { useDeletePlaylist, usePlaylists } from "@/queries/playlist";
@@ -69,15 +69,13 @@ export function ModifyPlaylist(props: ScreenOptions) {
   const addCallbacks = useMemo(() => {
     return {
       album: ({ tracks, ...album }) => {
-        const trackIds = new Set(tracks.map(({ id }) => id));
         setTracks((prev) =>
-          prev
-            .filter(({ id }) => !trackIds.has(id))
-            .concat(
-              tracks.map(({ artwork, ...t }) => {
-                return { ...t, artwork: album.artwork ?? artwork, album };
-              }),
-            ),
+          mergeTracks(
+            prev,
+            tracks.map(({ artwork, ...t }) => {
+              return { ...t, artwork: album.artwork ?? artwork, album };
+            }),
+          ),
         );
         toast(t("template.entryAdded", { name: album.name }), ToastOptions);
       },
