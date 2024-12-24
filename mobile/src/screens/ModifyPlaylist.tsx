@@ -4,6 +4,8 @@ import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler, Modal, Pressable, View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
+import type { DragListRenderItemInfo } from "react-native-draglist";
+import DragList from "react-native-draglist";
 
 import type { TrackWithAlbum } from "@/db/schema";
 import { mergeTracks, sanitizePlaylistName } from "@/db/utils";
@@ -16,7 +18,7 @@ import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
 import { ToastOptions } from "@/lib/toast";
 import { wait } from "@/utils/promise";
-import { FlashList } from "@/components/Defaults";
+import { useListPresets } from "@/components/Defaults";
 import { IconButton, TextInput } from "@/components/Form";
 import { Swipeable } from "@/components/Swipeable";
 import { StyledText, TStyledText } from "@/components/Typography";
@@ -35,6 +37,7 @@ type ScreenOptions = ScreenModeOptions & {
 export function ModifyPlaylist(props: ScreenOptions) {
   const { t } = useTranslation();
   const { data } = usePlaylists();
+  const listPresets = useListPresets({ emptyMsgKey: "response.noTracks" });
   const [unsavedDialog, setUnsavedDialog] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [playlistName, setPlaylistName] = useState(props.initialName ?? "");
@@ -93,6 +96,36 @@ export function ModifyPlaylist(props: ScreenOptions) {
 
   const onDelete = useCallback(() => setIsSubmitting(true), []);
 
+  const renderItem = useCallback(
+    (info: DragListRenderItemInfo<TrackWithAlbum>) => (
+      <Pressable
+        delayLongPress={150}
+        onLongPress={info.onDragStart}
+        onPressOut={info.onDragEnd}
+        className={cn("active:opacity-75", { "mt-2": info.index > 0 })}
+      >
+        <SearchResult
+          type="track"
+          title={info.item.name}
+          description={info.item.artistName ?? "—"}
+          imageSource={info.item.artwork}
+          className={cn("mx-4 rounded-sm bg-canvas", {
+            "bg-surface": info.isActive,
+          })}
+        />
+      </Pressable>
+    ),
+    [],
+  );
+
+  const onReorder = useCallback((fromIndex: number, toIndex: number) => {
+    setTracks((prev) => {
+      const copy = [...prev];
+      const moved = copy.splice(fromIndex, 1);
+      return copy.toSpliced(toIndex, 0, moved[0]!);
+    });
+  }, []);
+
   useEffect(() => {
     const subscription = BackHandler.addEventListener(
       "hardwareBackPress",
@@ -140,36 +173,12 @@ export function ModifyPlaylist(props: ScreenOptions) {
         needsOffscreenAlphaCompositing
         className={cn("flex-1", { "opacity-25": isSubmitting })}
       >
-        <FlashList
+        <DragList
           estimatedItemSize={56} // 48px Height + 8px Margin Top
           data={tracks}
           keyExtractor={({ id }) => id}
-          renderItem={({ item, index }) => (
-            <Swipeable
-              renderRightActions={() => (
-                <IconButton
-                  accessibilityLabel={t("template.entryRemove", {
-                    name: item.name,
-                  })}
-                  onPress={() =>
-                    setTracks((prev) => prev.filter(({ id }) => id !== item.id))
-                  }
-                  className="mr-4 bg-red"
-                >
-                  <Remove color={Colors.neutral100} />
-                </IconButton>
-              )}
-              childrenContainerClassName="bg-canvas px-4"
-              containerClassName={index > 0 ? "mt-2" : undefined}
-            >
-              <SearchResult
-                type="track"
-                title={item.name}
-                description={item.artistName ?? "—"}
-                imageSource={item.artwork}
-              />
-            </Swipeable>
-          )}
+          renderItem={renderItem}
+          onReordered={onReorder}
           ListHeaderComponent={
             <HeaderActions
               initialValue={props.initialName}
@@ -179,8 +188,9 @@ export function ModifyPlaylist(props: ScreenOptions) {
               onNameChange={setPlaylistName}
             />
           }
-          emptyMsgKey="response.noTracks"
-          contentContainerClassName="py-4"
+          {...listPresets}
+          containerStyle={{ flex: 1 }} // Applies to the `<Animated.View />` wrapping the `<FlashList />`.
+          contentContainerClassName="py-4" // Applies to the internal `<FlashList />`.
         />
       </View>
       <DeleteWorkflow
