@@ -126,9 +126,9 @@ importers:
       react-native-bootsplash:
         specifier: ^6.3.2
         version: 6.3.2(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1)
-      react-native-flashdrag-list:
-        specifier: ^0.2.4
-        version: 0.2.4(@shopify/flash-list@1.7.2(@babel/runtime@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1))(react-native-gesture-handler@2.21.2(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1))(react-native-reanimated@3.15.5(@babel/core@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1))(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1)
+      react-native-draglist:
+        specifier: github:MissingCore/react-native-draglist#acd1e015f86a4b8a1575213b95ba9de069f90fe4
+        version: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/acd1e015f86a4b8a1575213b95ba9de069f90fe4(@shopify/flash-list@1.7.2(@babel/runtime@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1))(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1)
       react-native-gesture-handler:
         specifier: ~2.21.2
         version: 2.21.2(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1)
@@ -5096,18 +5096,16 @@ packages:
       react-native-svg:
         optional: true
 
-  react-native-fit-image@1.5.5:
-    resolution: {integrity: sha512-Wl3Vq2DQzxgsWKuW4USfck9zS7YzhvLNPpkwUUCF90bL32e1a0zOVQ3WsJILJOwzmPdHfzZmWasiiAUNBkhNkg==}
-
-  react-native-flashdrag-list@0.2.4:
-    resolution: {integrity: sha512-48jWLYPJoKUGzYUF1Gc3PM6sBXuI/Ppeyqi1bps69xmAu5wNvv97RxfOxAQuWETSDa7zr1O2erI9UspHJHRveg==}
-    engines: {node: '>= 16.0.0'}
+  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/acd1e015f86a4b8a1575213b95ba9de069f90fe4:
+    resolution: {tarball: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/acd1e015f86a4b8a1575213b95ba9de069f90fe4}
+    version: 3.8.0
     peerDependencies:
       '@shopify/flash-list': '*'
-      react: '*'
-      react-native: '*'
-      react-native-gesture-handler: '*'
-      react-native-reanimated: '*'
+      react: '>=17.0.1'
+      react-native: '>=0.64.0'
+
+  react-native-fit-image@1.5.5:
+    resolution: {integrity: sha512-Wl3Vq2DQzxgsWKuW4USfck9zS7YzhvLNPpkwUUCF90bL32e1a0zOVQ3WsJILJOwzmPdHfzZmWasiiAUNBkhNkg==}
 
   react-native-gesture-handler@2.21.2:
     resolution: {integrity: sha512-HcwB225K9aeZ8e/B8nFzEh+2T4EPWTeamO1l/y3PcQ9cyCDYO2zja/G31ITpYRIqkip7XzGs6wI/gnHOQn1LDQ==}
@@ -12017,17 +12015,15 @@ snapshots:
       - '@babel/core'
       - supports-color
 
-  react-native-fit-image@1.5.5:
-    dependencies:
-      prop-types: 15.8.1
-
-  react-native-flashdrag-list@0.2.4(@shopify/flash-list@1.7.2(@babel/runtime@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1))(react-native-gesture-handler@2.21.2(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1))(react-native-reanimated@3.15.5(@babel/core@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1))(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1):
+  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/acd1e015f86a4b8a1575213b95ba9de069f90fe4(@shopify/flash-list@1.7.2(@babel/runtime@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1))(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1):
     dependencies:
       '@shopify/flash-list': 1.7.2(@babel/runtime@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1)
       react: 18.3.1
       react-native: 0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3)
-      react-native-gesture-handler: 2.21.2(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1)
-      react-native-reanimated: 3.15.5(@babel/core@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1)
+
+  react-native-fit-image@1.5.5:
+    dependencies:
+      prop-types: 15.8.1
 
   react-native-gesture-handler@2.21.2(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1):
     dependencies:
