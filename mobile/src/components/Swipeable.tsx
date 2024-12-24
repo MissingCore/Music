@@ -1,7 +1,7 @@
 import { cssInterop } from "nativewind";
-import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeable";
+import { Swipeable as AnimatedSwipeable } from "react-native-gesture-handler";
 
-const Swipeable = cssInterop(ReanimatedSwipeable, {
+const Swipeable = cssInterop(AnimatedSwipeable, {
   childrenContainerClassName: "childrenContainerStyle",
   containerClassName: "containerStyle",
 });
