@@ -13,9 +13,8 @@ import Animated, {
 import { useOnboardingStore } from "@/modules/scanning/services/Onboarding";
 
 import { cn } from "@/lib/style";
-import { cardStyles } from "@/components/new/Card";
-import { SafeContainer } from "@/components/new/SafeContainer";
-import { StyledText } from "@/components/new/Typography";
+import { SafeContainer, cardStyles } from "@/components/Containment";
+import { StyledText, TStyledText } from "@/components/Typography";
 
 /**
  * Informs user with what's being done while displaying the app icon. This
@@ -59,17 +58,15 @@ function OnboardingPhase() {
   if (store.phase === "preprocess") {
     return (
       <>
-        <StyledText>{t("onboardingScreen.preprocess")}</StyledText>
-        <StyledText preset="dimOnSurface">
-          {t("onboardingScreen.preprocessBrief")}
-        </StyledText>
+        <TStyledText textKey="onboardingScreen.preprocess" />
+        <TStyledText dim textKey="onboardingScreen.preprocessBrief" />
       </>
     );
   } else if (store.phase === "tracks") {
     return (
       <>
-        <StyledText>{t("onboardingScreen.track")}</StyledText>
-        <StyledText preset="dimOnSurface">
+        <TStyledText textKey="onboardingScreen.track" />
+        <StyledText dim>
           {`${t("onboardingScreen.prevSaved", { amount: store.prevSaved })}\n\n`}
           {`${t("onboardingScreen.saved", { amount: store.staged, total: store.unstaged })}\n`}
           {`${t("onboardingScreen.errors", { amount: store.saveErrors })}`}
@@ -80,8 +77,8 @@ function OnboardingPhase() {
 
   return (
     <>
-      <StyledText>{t("onboardingScreen.image")}</StyledText>
-      <StyledText preset="dimOnSurface">
+      <TStyledText textKey="onboardingScreen.image" />
+      <StyledText dim>
         {`${t("onboardingScreen.checked", { amount: store.checked, total: store.unchecked })}\n`}
         {`${t("onboardingScreen.found", { amount: store.found })}`}
       </StyledText>

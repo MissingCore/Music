@@ -1,13 +1,12 @@
 import { Stack } from "expo-router";
 import { useTranslation } from "react-i18next";
 
-import { HeaderBar } from "@/components/new/HeaderBar";
+import { TopAppBar } from "@/components/TopAppBar";
 
 export default function SettingsLayout() {
   const { t } = useTranslation();
-
   return (
-    <Stack screenOptions={{ animation: "fade", header: HeaderBar }}>
+    <Stack screenOptions={{ animation: "fade", header: TopAppBar }}>
       <Stack.Screen name="index" options={{ title: t("header.settings") }} />
       <Stack.Screen name="update" options={{ title: t("header.appUpdate") }} />
       <Stack.Screen
@@ -27,6 +26,7 @@ export default function SettingsLayout() {
         name="third-party/index"
         options={{ title: t("header.thirdParty") }}
       />
+      <Stack.Screen name="third-party/NDot JP" options={{ title: "" }} />
       <Stack.Screen name="third-party/[id]" options={{ title: "" }} />
     </Stack>
   );

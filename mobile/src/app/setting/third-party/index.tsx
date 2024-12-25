@@ -1,28 +1,26 @@
 import { router } from "expo-router";
 
 import LicensesList from "@/resources/licenses.json";
-import { SettingsLayout } from "@/layouts/SettingsLayout";
+import { StandardScrollLayout } from "@/layouts";
 
-import { ListRenderer } from "@/components/new/List";
+import { ListRenderer } from "@/components/Containment";
 
 /** Screen for `/setting/third-party` route. */
 export default function ThirdPartyScreen() {
-  const LicenseData = Object.values(LicensesList);
-
   return (
-    <SettingsLayout>
+    <StandardScrollLayout>
       <ListRenderer
-        data={LicenseData}
-        keyExtractor={({ name }) => name}
+        data={Object.entries(LicensesList)}
+        keyExtractor={([id]) => id}
         renderOptions={{
-          getTitle: (item) => item.name,
-          getDescription: (item) => `${item.license} (${item.version})`,
-          onPress: (item) => () =>
-            router.navigate(
-              `/setting/third-party/${encodeURIComponent(item.name)}`,
-            ),
+          getTitle: ([_, item]) => item.name,
+          getDescription: ([_, item]) => `${item.license} (${item.version})`,
+          onPress:
+            ([id]) =>
+            () =>
+              router.navigate(`/setting/third-party/${encodeURIComponent(id)}`),
         }}
       />
-    </SettingsLayout>
+    </StandardScrollLayout>
   );
 }

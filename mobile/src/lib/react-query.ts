@@ -1,7 +1,7 @@
 import type { DefaultOptions, UseMutationResult } from "@tanstack/react-query";
 import { QueryClient } from "@tanstack/react-query";
 
-import { settingKeys } from "@/constants/QueryKeys";
+import { queries as q } from "@/queries/keyStore";
 
 const queryConfig: DefaultOptions = {
   queries: {
@@ -28,31 +28,22 @@ export function mutateGuard<TData, TError, TVariables, TContext>(
   if (!mutation.isPending) mutation.mutate(...args);
 }
 
+/** Prevent "double" submissions w/ `mutation.mutateAsync()`. */
+export async function mutateGuardAsync<TData, TError, TVariables, TContext>(
+  mutation: UseMutationResult<TData, TError, TVariables, TContext>,
+  ...args: Parameters<typeof mutation.mutate>
+) {
+  if (!mutation.isPending) await mutation.mutateAsync(...args);
+}
+
 /**
  * Helper for invalidating all queries except the "Latest Release" query
  * as that shouldn't ever change in the given app session.
  */
-export function clearAllQueries(options?: {
-  client?: QueryClient;
-  remove?: boolean;
-}) {
-  const client = options?.client ?? queryClient;
-  const remove = options?.remove ?? false;
-
-  if (remove) {
-    /*
-    `removeQueries` will remove the cache, so navigating to a page in the
-    stack will display the loading state.
-
-    `resetQueries` will remove the cache, but also refetch the data, so
-    there will be no loading state when navigating to a page in the stack.
-  */
-    client.removeQueries({
-      predicate: ({ queryKey }) => queryKey[0] !== settingKeys.release(),
-    });
-  } else {
-    client.invalidateQueries({
-      predicate: ({ queryKey }) => queryKey[0] !== settingKeys.release(),
-    });
-  }
+export function clearAllQueries(client: QueryClient = queryClient) {
+  client.invalidateQueries({
+    // Typically, `false` is never the results when comparing 2 arrays with
+    // the "same" content unless they point to the same reference.
+    predicate: ({ queryKey }) => queryKey !== q.settings.releaseNote.queryKey,
+  });
 }

@@ -16,6 +16,7 @@ export const Colors = {
   neutral0: "#000000",
   neutral5: "#0D0D0D",
   neutral10: "#1B1D1F", // Technically not the same hue or saturation.
+  neutral15: "#262626",
   neutral20: "#333333",
   neutral40: "#666666",
   neutral80: "#CCCCCC",
@@ -24,22 +25,6 @@ export const Colors = {
 
   red: "#C8102E",
   yellow: "#FFD84D",
-
-  /* FIXME: Remove old colors below in the future. */
-  canvas: "#000000",
-
-  accent50: "#F28D91",
-  accent500: "#D71921",
-
-  foreground50: "#F0F2F2",
-  foreground100: "#C1C4C4",
-
-  surface50: "#E7E9E9",
-  surface400: "#787878",
-  surface500: "#484949",
-  surface700: "#303030",
-  surface800: "#1B1D1F",
-  surface850: "#181919",
 } as const;
 
 export const FontFamily = {
@@ -47,11 +32,6 @@ export const FontFamily = {
   robotoMedium: "Roboto-Medium",
   ndot: "Ndot-77_JP_Extended",
   ntype: "NType82-Headline",
-
-  /* FIXME: Remove below in the future. */
-  geistLight: "Geist-Light",
-  geistMonoLight: "GeistMono-Light",
-  geistMono: "GeistMono-Regular",
 } as const;
 
 export const TwFontFamilies = Object.keys(FontFamily).map(
@@ -61,6 +41,7 @@ export const TwFontFamilies = Object.keys(FontFamily).map(
 export const FontSize = {
   title: 36,
   subtitle: 28,
+  xxs: 10,
   xs: 12,
   sm: 14,
   base: 16,

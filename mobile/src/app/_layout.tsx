@@ -1,22 +1,15 @@
 import * as Sentry from "@sentry/react-native";
 import { Stack } from "expo-router";
-import { useSetAtom } from "jotai";
 import { useEffect } from "react";
 import Bootsplash from "react-native-bootsplash";
 
-import { EllipsisVertical } from "@/resources/icons/EllipsisVertical";
 import { useLoadResources } from "@/hooks/useLoadResources";
-import { OnboardingScreen } from "@/screens/Onboarding";
-import { mediaModalAtom } from "@/modals/categories/media/store";
+import { ErrorBoundary, OnboardingScreen } from "@/screens";
 import { AppProvider } from "@/providers";
 
 import "@/resources/global.css";
 import "@/modules/i18n"; // Make sure translations are bundled.
-import { HeaderBar } from "@/components/new/HeaderBar";
-import { ErrorBoundary } from "@/components/error/error-boundary";
-import { CurrentTrackHeader } from "@/components/navigation/header";
-import { StyledPressable } from "@/components/ui/pressable";
-import { ModalPortal } from "@/modals";
+import { TopAppBar, TopAppBarMarquee } from "@/components/TopAppBar";
 
 // Catch any errors thrown by the Layout component.
 export { ErrorBoundary };
@@ -61,8 +54,6 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const openModal = useSetAtom(mediaModalAtom);
-
   useEffect(() => {
     // Encountered issue in Android 12+ where one of the bootsplashes
     // persisted when it shouldn't. Make sure we close at least the bootsplash
@@ -73,24 +64,15 @@ function RootLayoutNav() {
 
   return (
     <AppProvider>
-      <Stack screenOptions={{ header: HeaderBar, headerShown: false }}>
+      <Stack screenOptions={{ header: TopAppBar, headerShown: false }}>
         <Stack.Screen name="(main)" />
         <Stack.Screen
           name="current-track"
           options={{
-            headerShown: true,
             animation: "slide_from_bottom",
-            header: CurrentTrackHeader,
+            header: TopAppBarMarquee,
+            headerShown: true,
             headerTitle: "",
-            headerRight: () => (
-              <StyledPressable
-                accessibilityLabel="View track settings."
-                onPress={() => openModal({ entity: "track", scope: "current" })}
-                forIcon
-              >
-                <EllipsisVertical size={24} />
-              </StyledPressable>
-            ),
           }}
         />
         <Stack.Screen
@@ -100,8 +82,6 @@ function RootLayoutNav() {
         <Stack.Screen name="setting" />
         <Stack.Screen name="notification.click" />
       </Stack>
-
-      <ModalPortal />
     </AppProvider>
   );
 }

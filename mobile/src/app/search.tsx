@@ -1,29 +1,38 @@
-import { useState } from "react";
+import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { Search } from "@/resources/icons";
+import { playFromMediaList } from "@/modules/media/services/Playback";
 
-import { TextInput } from "@/components/new/Form";
-import { AccentText } from "@/components/new/Typography";
+import { AccentText } from "@/components/Typography";
+import { ReservedPlaylists } from "@/modules/media/constants";
+import { SearchEngine } from "@/modules/search/components";
+import type { SearchCallbacks } from "@/modules/search/types";
 
 /** Screen for `/search` route. */
 export default function SearchScreen() {
   const { t } = useTranslation();
-  const [query, setQuery] = useState("");
-
   return (
-    <View className="grow gap-6 p-4 pt-8">
+    <View className="grow gap-6 px-4 pt-8">
       <AccentText className="text-3xl">{t("header.search")}</AccentText>
-
-      <View className="flex-row items-center gap-2 rounded-full bg-surface px-4">
-        <Search />
-        <TextInput
-          onChangeText={(text) => setQuery(text)}
-          placeholder={t("form.placeholder.searchMedia")}
-          className="shrink grow"
-        />
-      </View>
+      <SearchEngine searchScope={searchScope} callbacks={searchCallbacks} />
     </View>
   );
 }
+
+/** List of media we want to appear in the search. */
+const searchScope = ["album", "artist", "playlist", "track"] as const;
+
+/** Actions that we want to run when we click on a search item. */
+const searchCallbacks: SearchCallbacks = {
+  /* Visit the media's page. */
+  album: ({ id }) => router.push(`/album/${id}`),
+  artist: ({ name }) => router.push(`/artist/${encodeURIComponent(name)}`),
+  playlist: ({ name }) => router.push(`/playlist/${encodeURIComponent(name)}`),
+  /* Play the specified track. */
+  track: ({ id }) =>
+    playFromMediaList({
+      trackId: id,
+      source: { type: "playlist", id: ReservedPlaylists.tracks },
+    }),
+};

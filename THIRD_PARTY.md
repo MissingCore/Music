@@ -1,23 +1,22 @@
 | Name | License | Source |
 | ---- | ------- | ------ |
-| @expo/vector-icons | MIT | https://github.com/expo/vector-icons |
-| @gorhom/bottom-sheet | MIT | https://github.com/gorhom/react-native-bottom-sheet |
+| @backpackapp-io/react-native-toast | MIT | https://github.com/backpackapp-io/react-native-toast |
+| @lukemorales/query-key-factory | MIT | https://github.com/lukemorales/query-key-factory |
 | @miblanchard/react-native-slider | MIT | https://github.com/miblanchard/react-native-slider |
 | @missingcore/react-native-metadata-retriever | MIT | https://github.com/MissingCore/react-native-metadata-retriever |
 | @paralleldrive/cuid2 | MIT | https://github.com/paralleldrive/cuid2 |
 | @react-native-async-storage/async-storage | MIT | https://github.com/react-native-async-storage/async-storage |
+| @react-navigation/material-top-tabs | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/material-top-tabs |
 | @react-navigation/native | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/native |
 | @sentry/react-native | MIT | https://github.com/getsentry/sentry-react-native |
 | @shopify/flash-list | MIT | https://github.com/Shopify/flash-list |
 | @tanstack/react-query | MIT | https://github.com/TanStack/query |
 | clsx | MIT | https://github.com/lukeed/clsx |
-| cva | Apache-2.0 | https://github.com/joe-bell/cva |
 | drizzle-orm | Apache-2.0 | https://github.com/drizzle-team/drizzle-orm |
 | expo | MIT | https://github.com/expo/expo/tree/main/packages/expo |
 | expo-document-picker | MIT | https://github.com/expo/expo/tree/main/packages/expo-document-picker |
 | expo-drizzle-studio-plugin | MIT | https://github.com/drizzle-team/drizzle-studio-expo |
 | expo-file-system | MIT | https://github.com/expo/expo/tree/main/packages/expo-file-system |
-| expo-font | MIT | https://github.com/expo/expo/tree/main/packages/expo-font |
 | expo-image | MIT | https://github.com/expo/expo/tree/main/packages/expo-image |
 | expo-image-manipulator | MIT | https://github.com/expo/expo/tree/main/packages/expo-image-manipulator |
 | expo-image-picker | MIT | https://github.com/expo/expo/tree/main/packages/expo-image-picker |
@@ -25,29 +24,28 @@
 | expo-localization | MIT | https://github.com/expo/expo/tree/main/packages/expo-localization |
 | expo-media-library | MIT | https://github.com/expo/expo/tree/main/packages/expo-media-library |
 | expo-router | MIT | https://github.com/expo/expo/tree/main/packages/expo-router |
-| expo-sharing | MIT | https://github.com/expo/expo/tree/main/packages/expo-sharing |
 | expo-sqlite | MIT | https://github.com/expo/expo/tree/main/packages/expo-sqlite |
 | expo-web-browser | MIT | https://github.com/expo/expo/tree/main/packages/expo-web-browser |
-| Geist Font | OFL-1.1 | https://github.com/vercel/geist-font |
-| heroicons | MIT | https://heroicons.com |
 | i18next | MIT | https://github.com/i18next/i18next |
 | intl-pluralrules | ISC | https://github.com/eemeli/intl-pluralrules |
-| Ionicons | MIT | https://github.com/ionic-team/ionicons |
+| ionicons | MIT | https://github.com/ionic-team/ionicons |
 | jotai | MIT | https://github.com/pmndrs/jotai |
-| jotai-scope | MIT | https://github.com/jotaijs/jotai-scope |
 | Material Symbols | Apache-2.0 | https://github.com/google/material-design-icons |
 | nativewind | MIT | https://github.com/marklawlor/nativewind |
+| NDot日本語 | Unknown |  |
 | react | MIT | https://github.com/facebook/react |
 | react-i18next | MIT | https://github.com/i18next/react-i18next |
 | react-native | MIT | https://github.com/facebook/react-native |
+| react-native-actions-sheet | MIT | https://github.com/ammarahm-ed/react-native-actions-sheet |
 | react-native-bootsplash | MIT | https://github.com/zoontek/react-native-bootsplash |
 | react-native-gesture-handler | MIT | https://github.com/software-mansion/react-native-gesture-handler |
 | react-native-markdown-display | MIT | https://github.com/iamacup/react-native-markdown-display |
+| react-native-pager-view | MIT | https://github.com/callstack/react-native-pager-view |
 | react-native-reanimated | MIT | https://github.com/software-mansion/react-native-reanimated |
 | react-native-safe-area-context | MIT | https://github.com/th3rdwave/react-native-safe-area-context |
 | react-native-screens | MIT | https://github.com/software-mansion/react-native-screens |
 | react-native-svg | MIT | https://github.com/software-mansion/react-native-svg |
-| react-native-toast-notifications | MIT | https://github.com/arnnis/react-native-toast-notifications |
+| react-native-tab-view | MIT | https://github.com/react-navigation/react-navigation |
 | react-native-track-player | Apache-2.0 | https://github.com/doublesymmetry/react-native-track-player |
 | Roboto Font | Apache-2.0 | https://github.com/googlefonts/roboto |
 | tailwind-merge | MIT | https://github.com/dcastil/tailwind-merge |

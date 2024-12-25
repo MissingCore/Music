@@ -1,54 +1,51 @@
 import { useLocalSearchParams } from "expo-router";
-import { View } from "react-native";
 
 import type { Album } from "@/db/schema";
-import { useArtistForCurrentPage } from "@/api/artists/[id]";
-import { useGetColumn } from "@/hooks/useGetColumn";
 
-import { MediaScreenHeader } from "@/components/media/screen-header";
-import { ScrollRow } from "@/components/ui/container";
-import { Description, Heading } from "@/components/ui/text";
-import { MediaCard, TrackList } from "@/modules/media/components";
+import { useArtistForScreen } from "@/queries/artist";
+import { useBottomActionsContext } from "@/hooks/useBottomActionsContext";
+import { useGetColumn } from "@/hooks/useGetColumn";
+import { CurrentListLayout } from "@/layouts/CurrentList";
+
+import { cn } from "@/lib/style";
+import { FlashList } from "@/components/Defaults";
+import { PagePlaceholder } from "@/components/Transition";
+import { TEm } from "@/components/Typography";
+import { MediaCard, Track } from "@/modules/media/components";
 
 /** Screen for `/artist/[id]` route. */
 export default function CurrentArtistScreen() {
-  const { id: _artistName } = useLocalSearchParams<{ id: string }>();
-  const artistName = _artistName!;
-  const { isPending, error, data } = useArtistForCurrentPage(artistName);
+  const { bottomInset } = useBottomActionsContext();
+  const { id: artistName } = useLocalSearchParams<{ id: string }>();
+  const { isPending, error, data } = useArtistForScreen(artistName);
 
-  if (isPending) return <View className="w-full flex-1 px-4" />;
-  else if (error) {
-    return (
-      <View className="w-full flex-1 px-4">
-        <Description intent="error">Error: Artist not found</Description>
-      </View>
-    );
-  }
+  if (isPending || error) return <PagePlaceholder {...{ isPending }} />;
 
   // Information about this track list.
   const trackSource = { type: "artist", id: artistName } as const;
 
   return (
-    <>
-      <View className="px-4">
-        <MediaScreenHeader
-          title={data.name}
-          metadata={data.metadata}
-          trackSource={trackSource}
-        />
-      </View>
-      <TrackList
+    <CurrentListLayout
+      title={data.name}
+      metadata={data.metadata}
+      imageSource={data.imageSource}
+      mediaSource={trackSource}
+    >
+      <FlashList
+        estimatedItemSize={56} // 48px Height + 8px Margin Top
         data={data.tracks}
-        config={{ source: trackSource, origin: "artist" }}
+        keyExtractor={({ id }) => id}
+        renderItem={({ item, index }) => (
+          <Track
+            {...{ ...item, trackSource }}
+            className={cn("mx-4", { "mt-2": index > 0 })}
+          />
+        )}
         ListHeaderComponent={<ArtistAlbums albums={data.albums} />}
-        contentContainerStyle={{ paddingHorizontal: 20 }}
-        ListEmptyComponent={
-          <Description className="text-start">
-            Artist has no tracks.
-          </Description>
-        }
+        contentContainerClassName="pt-4"
+        contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
       />
-    </>
+    </CurrentListLayout>
   );
 }
 
@@ -65,27 +62,26 @@ function ArtistAlbums({ albums }: { albums: Album[] | null }) {
 
   return (
     <>
-      <Heading as="h3" className="mb-2 text-start">
-        Albums
-      </Heading>
-      <View className="-mx-5 mb-4">
-        <ScrollRow contentContainerClassName="gap-4 px-5">
-          {albums.map((album) => (
-            <MediaCard
-              key={album.id}
-              type="album"
-              size={width}
-              source={album.artwork}
-              href={`/album/${album.id}`}
-              title={album.name}
-              subtitle={`${album.releaseYear ?? "————"}`}
-            />
-          ))}
-        </ScrollRow>
-      </View>
-      <Heading as="h3" className="mb-2 text-start">
-        Tracks
-      </Heading>
+      <TEm dim textKey="common.albums" className="mx-4 mb-2" />
+      <FlashList
+        estimatedItemSize={width + 12} // Column width + gap from padding left
+        horizontal
+        data={albums}
+        keyExtractor={({ id }) => id}
+        renderItem={({ item, index }) => (
+          <MediaCard
+            type="album"
+            size={width}
+            source={item.artwork}
+            href={`/album/${item.id}`}
+            title={item.name}
+            description={`${item.releaseYear ?? "————"}`}
+            className={index > 0 ? "ml-3" : undefined}
+          />
+        )}
+        contentContainerClassName="px-4"
+      />
+      <TEm dim textKey="common.tracks" className="m-4 mb-2" />
     </>
   );
 }

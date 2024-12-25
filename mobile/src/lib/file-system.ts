@@ -5,12 +5,14 @@ import * as ImagePicker from "expo-image-picker";
 
 import type { Maybe } from "@/utils/types";
 
+/** Internal app directory where we store images. */
+export const ImageDirectory = FileSystem.documentDirectory + "images";
+
 /** Creates "image" directory if it doesn't already exist. */
 export async function createImageDirectory() {
   try {
-    const imgDir = FileSystem.documentDirectory + "images";
-    const dir = await FileSystem.getInfoAsync(imgDir);
-    if (!dir.exists) await FileSystem.makeDirectoryAsync(imgDir);
+    const dir = await FileSystem.getInfoAsync(ImageDirectory);
+    if (!dir.exists) await FileSystem.makeDirectoryAsync(ImageDirectory);
   } catch {
     // Silently catch `Directory <> could not be created or already exists`
     // error from `FileSystem.makeDirectoryAsync()` in case it occurs. This
@@ -18,9 +20,9 @@ export async function createImageDirectory() {
   }
 }
 
-/** Helper to delete a file if it's defined. */
-export async function deleteFile(uri: Maybe<string>) {
-  if (uri) await FileSystem.deleteAsync(uri);
+/** Helper to delete an internal image file if it's defined. */
+export async function deleteImage(uri: Maybe<string>) {
+  if (uri && uri.startsWith(ImageDirectory)) await FileSystem.deleteAsync(uri);
 }
 
 /**
@@ -30,21 +32,21 @@ export async function deleteFile(uri: Maybe<string>) {
 export async function pickImage() {
   // No permissions request is needed for launching the image library.
   const result = await ImagePicker.launchImageLibraryAsync({
-    base64: true,
     mediaTypes: ImagePicker.MediaTypeOptions.Images,
   });
   if (result.canceled) throw new Error("Action cancelled.");
-
-  const { base64, mimeType } = result.assets[0]!;
-  if (!base64) throw new Error("No base64 representation found.");
-  if (!mimeType) throw new Error("No mimeType found.");
-
-  return await saveBase64Img(`data:${mimeType};base64,${base64}`);
+  if (!result.assets[0]) throw new Error("Nothing selected.");
+  const fileUri = await saveImage(result.assets[0].uri);
+  await FileSystem.deleteAsync(result.assets[0].uri); // Delete cached image.
+  return fileUri;
 }
 
-/** Helper to save images to device. */
-export async function saveBase64Img(base64Img: string) {
-  const { uri: webpUri } = await manipulateAsync(base64Img, [], {
+/**
+ * Helper to save image to device. `uri` can be an actual uri or a
+ * base64 image string.
+ */
+export async function saveImage(uri: string) {
+  const { uri: webpUri } = await manipulateAsync(uri, [], {
     compress: 0.85, // Preserve 85% of original image quality.
     format: SaveFormat.WEBP,
   });

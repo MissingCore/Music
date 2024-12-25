@@ -1,30 +1,33 @@
+import { toast } from "@backpackapp-io/react-native-toast";
 import { useMutation } from "@tanstack/react-query";
-import { eq } from "drizzle-orm";
-import { Toast } from "react-native-toast-notifications";
+import { and, eq, isNull } from "drizzle-orm";
 
 import { db } from "@/db";
 import { fileNodes, invalidTracks, tracks } from "@/db/schema";
-import { getTracks } from "@/db/queries";
 
 import i18next from "@/modules/i18n";
-import { RecentList, Resynchronize } from "@/modules/media/services/Music";
+import { getTracks } from "@/api/track";
+import { RecentList } from "@/modules/media/services/RecentList";
+import { Resynchronize } from "@/modules/media/services/Resynchronize";
 
-import { batch } from "@/utils/promise";
+import { ToastOptions } from "@/lib/toast";
+import { batch, wait } from "@/utils/promise";
 import { findAndSaveArtwork, cleanupImages } from "../helpers/artwork";
 import { cleanupDatabase, findAndSaveAudio } from "./audio";
 import { savePathComponents } from "./folder";
 
 /** Look through our library for any new or updated tracks. */
 export async function rescanForTracks() {
-  const toastId = Toast.show(i18next.t("response.scanStart"), { duration: 0 });
+  const toastId = toast(i18next.t("response.scanStart"), {
+    ...ToastOptions,
+    duration: Infinity,
+  });
 
   try {
     // Slight buffer before we run our code due to the code blocking the
     // JS thread, causing `isPending` to not update immediately, allowing
     // the user to spam the button to rescan the library.
-    await new Promise((resolve) => {
-      setTimeout(() => resolve(true), 100);
-    });
+    await wait(100);
 
     // Re-create the "folder" structure for tracks we've already saved.
     // eslint-disable-next-line drizzle/enforce-delete-with-where
@@ -43,7 +46,7 @@ export async function rescanForTracks() {
     await db
       .update(tracks)
       .set({ fetchedArt: false })
-      .where(eq(tracks.fetchedArt, true));
+      .where(and(eq(tracks.fetchedArt, true), isNull(tracks.artwork)));
 
     // Rescan library for any new tracks and delete any old ones.
     const { foundFiles, unstagedFiles } = await findAndSaveAudio();
@@ -58,14 +61,17 @@ export async function rescanForTracks() {
     // Make sure the "recents" list is correct.
     RecentList.refresh();
 
-    Toast.update(toastId, i18next.t("response.scanSuccess"), {
-      duration: 3000,
+    toast(i18next.t("response.scanSuccess"), {
+      ...ToastOptions,
+      id: toastId,
+      duration: 4000,
     });
   } catch (err) {
     console.log(err);
-    Toast.update(toastId, i18next.t("response.scanFail"), {
-      type: "danger",
-      duration: 3000,
+    toast.error(i18next.t("response.scanFail"), {
+      ...ToastOptions,
+      id: toastId,
+      duration: 4000,
     });
   }
 }

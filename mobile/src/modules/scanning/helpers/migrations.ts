@@ -1,9 +1,15 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { eq } from "drizzle-orm";
 
+import { db } from "@/db";
+import { tracks } from "@/db/schema";
+
+import { recentListStore } from "@/modules/media/services/RecentList";
 import { userPreferencesStore } from "@/services/UserPreferences";
 
 import type { MigrationOption } from "../constants";
 import { MigrationHistory } from "../constants";
+import type { PlayListSource } from "../../media/types";
 
 /**
  * Run code to change some values prior to indexing for any changes
@@ -39,16 +45,27 @@ export const MigrationFunctionMap: Record<
 > = {
   "v1-to-v2-store": async () => {
     // Fetch any configs stored in the old AsyncStorage keys.
-    const listAllow = await readFilterList("directory-allowlist");
-    const listBlock = await readFilterList("directory-blocklist");
+    const listAllow = await readStorage<string>("directory-allowlist");
+    const listBlock = await readStorage<string>("directory-blocklist");
+    const recentList = (
+      await readStorage<PlayListSource>("recently-played")
+    ).map(({ type, id }) => ({ type, id }));
 
     userPreferencesStore.setState({ listAllow, listBlock });
+    recentListStore.setState({ sources: recentList });
+  },
+  "v1-to-v2-schema": async () => {
+    // We now allow the `track` field to be null.
+    await db.update(tracks).set({ track: null }).where(eq(tracks.track, -1));
+    // Easy way of rechecking all tracks.
+    // eslint-disable-next-line drizzle/enforce-update-with-where
+    await db.update(tracks).set({ modificationTime: -1 });
   },
 };
 
-/** Helper to get the `string[]` stored in the allow or block list. */
-async function readFilterList(key: `directory-${"allowlist" | "blocklist"}`) {
+/** Helper to parse value from AsyncStorage. */
+async function readStorage<TData>(key: string) {
   const _list = await AsyncStorage.getItem(key);
-  const list: string[] = _list !== null ? JSON.parse(_list) : [];
+  const list: TData[] = _list !== null ? JSON.parse(_list) : [];
   return Array.isArray(list) ? list : [];
 }

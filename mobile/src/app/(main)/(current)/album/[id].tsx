@@ -1,75 +1,97 @@
-import { Link, Stack, useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { Ionicons } from "@/resources/icons";
-import { useAlbumForCurrentPage } from "@/api/albums/[id]";
-import { useToggleFavorite } from "@/api/favorites/[id]";
+import { Favorite } from "@/icons";
+import { useAlbumForScreen, useFavoriteAlbum } from "@/queries/album";
+import { useBottomActionsContext } from "@/hooks/useBottomActionsContext";
+import { CurrentListLayout } from "@/layouts/CurrentList";
 
 import { mutateGuard } from "@/lib/react-query";
-import { MediaScreenHeader } from "@/components/media/screen-header";
-import { StyledPressable } from "@/components/ui/pressable";
-import { Description } from "@/components/ui/text";
-import { TrackList } from "@/modules/media/components";
+import { FlashList } from "@/components/Defaults";
+import { IconButton } from "@/components/Form";
+import { PagePlaceholder } from "@/components/Transition";
+import { Em, StyledText } from "@/components/Typography";
+import { Track } from "@/modules/media/components";
 
 /** Screen for `/album/[id]` route. */
 export default function CurrentAlbumScreen() {
-  const { id: _albumId } = useLocalSearchParams<{ id: string }>();
-  const albumId = _albumId!;
-  const { isPending, error, data } = useAlbumForCurrentPage(albumId);
-  const toggleFavoriteFn = useToggleFavorite({ type: "album", id: albumId });
+  const { t } = useTranslation();
+  const { bottomInset } = useBottomActionsContext();
+  const { id: albumId } = useLocalSearchParams<{ id: string }>();
+  const { isPending, error, data } = useAlbumForScreen(albumId);
+  const favoriteAlbum = useFavoriteAlbum(albumId);
 
-  if (isPending) return <View className="w-full flex-1 px-4" />;
-  else if (error) {
-    return (
-      <View className="w-full flex-1 px-4">
-        <Description intent="error">Error: Album not found</Description>
-      </View>
-    );
-  }
+  if (isPending || error) return <PagePlaceholder {...{ isPending }} />;
 
   // Add optimistic UI updates.
-  const isToggled = toggleFavoriteFn.isPending
+  const isToggled = favoriteAlbum.isPending
     ? !data.isFavorite
     : data.isFavorite;
 
   // Information about this track list.
   const trackSource = { type: "album", id: albumId } as const;
 
+  const discLocation: Record<number, number> = {};
+  data.tracks.forEach(({ disc }, index) => {
+    if (disc === null) return;
+    if (!Object.hasOwn(discLocation, disc)) discLocation[disc] = index;
+  });
+
   return (
     <>
       <Stack.Screen
         options={{
           headerRight: () => (
-            <StyledPressable
-              onPress={() => mutateGuard(toggleFavoriteFn, undefined)}
-              forIcon
+            <IconButton
+              kind="ripple"
+              accessibilityLabel={t(`common.${isToggled ? "unF" : "f"}avorite`)}
+              onPress={() => mutateGuard(favoriteAlbum, !data.isFavorite)}
             >
-              <Ionicons name={isToggled ? "heart" : "heart-outline"} />
-            </StyledPressable>
+              <Favorite filled={isToggled} />
+            </IconButton>
           ),
         }}
       />
-      <View className="w-full flex-1 px-4">
-        <MediaScreenHeader
-          source={data.imageSource}
-          title={data.name}
-          SubtitleComponent={
-            <Link
-              href={`/artist/${encodeURIComponent(data.artistName)}`}
-              numberOfLines={1}
-              className="self-start font-geistMonoLight text-xs text-accent50"
-            >
-              {data.artistName}
-            </Link>
-          }
-          metadata={data.metadata}
-          trackSource={trackSource}
-        />
-        <TrackList
+      <CurrentListLayout
+        title={data.name}
+        artist={data.artistName}
+        metadata={data.metadata}
+        imageSource={data.imageSource}
+        mediaSource={trackSource}
+      >
+        <FlashList
+          estimatedItemSize={56} // 48px Height + 8px Margin Top
           data={data.tracks}
-          config={{ source: trackSource, origin: "album", hideImage: true }}
+          keyExtractor={({ id }) => id}
+          renderItem={({ item, index }) => (
+            <>
+              {item.disc !== null && discLocation[item.disc] === index ? (
+                <Em dim className={index === 0 ? "mb-2" : "mt-4"}>
+                  {t("common.disc", { count: item.disc })}
+                </Em>
+              ) : null}
+              <Track
+                {...{ ...item, trackSource }}
+                LeftElement={<TrackNumber track={item.track} />}
+                className={index > 0 ? "mt-2" : undefined}
+              />
+            </>
+          )}
+          className="mx-4"
+          contentContainerClassName="pt-4"
+          contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
         />
-      </View>
+      </CurrentListLayout>
     </>
+  );
+}
+
+/** Special track number next to the track content. */
+function TrackNumber({ track }: { track: number | null }) {
+  return (
+    <View className="size-12 items-center justify-center">
+      <StyledText>{track !== null ? track : "—"}</StyledText>
+    </View>
   );
 }

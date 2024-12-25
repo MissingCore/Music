@@ -1,27 +1,27 @@
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { PlayArrow, Pause } from "../resources/icons";
+import { Pause, PlayArrow } from "@/icons";
 import { useMusicStore } from "../services/Music";
 import { MusicControls, playFromMediaList } from "../services/Playback";
 
 import { Colors } from "@/constants/Styles";
 import { cn } from "@/lib/style";
-import { Button } from "@/components/new/Form";
+import { IconButton } from "@/components/Form";
 import { RepeatButton, ShuffleButton } from "./MediaControls";
 import { arePlaybackSourceEqual } from "../helpers/data";
 import type { PlayListSource } from "../types";
 
 /** Media controls used on media list pages. */
-export function MediaListControls({
-  trackSource,
-}: {
+export function MediaListControls(props: {
   trackSource: PlayListSource;
+  className?: string;
 }) {
   return (
-    <View className="flex-row items-center gap-1">
+    <View className={cn("flex-row items-center gap-1", props.className)}>
       <RepeatButton size={24} />
       <ShuffleButton size={24} />
-      <PlayMediaListButton trackSource={trackSource} />
+      <PlayMediaListButton trackSource={props.trackSource} />
     </View>
   );
 }
@@ -32,6 +32,7 @@ export function MediaListControls({
  * from this media list).
  */
 function PlayMediaListButton({ trackSource }: { trackSource: PlayListSource }) {
+  const { t } = useTranslation();
   const currSource = useMusicStore((state) => state.playingSource);
   const isPlaying = useMusicStore((state) => state.isPlaying);
 
@@ -41,17 +42,18 @@ function PlayMediaListButton({ trackSource }: { trackSource: PlayListSource }) {
   const Icon = displayPause ? Pause : PlayArrow;
 
   return (
-    <Button
-      preset="danger"
+    <IconButton
+      accessibilityLabel={t(`common.${displayPause ? "pause" : "play"}`)}
       onPress={
         displayPause
           ? MusicControls.pause
           : () => playFromMediaList({ source: trackSource })
       }
-      icon
-      className={cn({ "bg-neutral80 dark:bg-neutral20": displayPause })}
+      className={cn("bg-red", {
+        "bg-neutral80 dark:bg-neutral20": displayPause,
+      })}
     >
-      <Icon size={24} color={Colors.neutral100} />
-    </Button>
+      <Icon color={Colors.neutral100} />
+    </IconButton>
   );
 }

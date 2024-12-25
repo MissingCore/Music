@@ -1,100 +1,123 @@
-import { Stack, useLocalSearchParams } from "expo-router";
-import { useSetAtom } from "jotai";
-import { useMemo } from "react";
+import { Stack, router, useLocalSearchParams } from "expo-router";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { EllipsisVertical } from "@/resources/icons/EllipsisVertical";
-import { useFavoriteTracksForCurrentPage } from "@/api/favorites";
-import { usePlaylistForCurrentPage } from "@/api/playlists/[id]";
-import { mediaModalAtom } from "@/modals/categories/media/store";
+import { Edit, Favorite, Remove } from "@/icons";
+import { useFavoritePlaylist, usePlaylistForScreen } from "@/queries/playlist";
+import { useRemoveFromPlaylist } from "@/queries/track";
+import { useBottomActionsContext } from "@/hooks/useBottomActionsContext";
+import { CurrentListLayout } from "@/layouts/CurrentList";
 
-import { MediaScreenHeader } from "@/components/media/screen-header";
-import { StyledPressable } from "@/components/ui/pressable";
-import { Description } from "@/components/ui/text";
-import { ReservedPlaylists } from "@/modules/media/constants";
-import { TrackList } from "@/modules/media/components";
-import type { MediaList } from "@/modules/media/types";
+import { Colors } from "@/constants/Styles";
+import { mutateGuard } from "@/lib/react-query";
+import { FlashList } from "@/components/Defaults";
+import { IconButton } from "@/components/Form";
+import { Swipeable } from "@/components/Swipeable";
+import { PagePlaceholder } from "@/components/Transition";
+import { Track } from "@/modules/media/components";
+import type { PlayListSource } from "@/modules/media/types";
 
 /** Screen for `/playlist/[id]` route. */
 export default function CurrentPlaylistScreen() {
-  const { id: _id } = useLocalSearchParams<{ id: string }>();
-  const id = _id!;
-  const openModal = useSetAtom(mediaModalAtom);
+  const { t } = useTranslation();
+  const { bottomInset } = useBottomActionsContext();
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const { isPending, error, data } = usePlaylistForScreen(id);
+  const favoritePlaylist = useFavoritePlaylist(id);
 
-  const isFavoriteTracks = useMemo(
-    () => id === ReservedPlaylists.favorites,
-    [id],
-  );
+  if (isPending || error) return <PagePlaceholder {...{ isPending }} />;
 
-  if (isFavoriteTracks) {
-    return <PlaylistListContent queryHook={useFavoriteTracksForCurrentPage} />;
-  }
-  return (
-    <>
-      <Stack.Screen
-        options={{
-          headerRight: () => (
-            <StyledPressable
-              accessibilityLabel="View playlist settings."
-              onPress={() =>
-                openModal({ entity: "playlist", scope: "view", id })
-              }
-              forIcon
-            >
-              <EllipsisVertical size={24} />
-            </StyledPressable>
-          ),
-        }}
-      />
-      <PlaylistListContent
-        id={id}
-        queryHook={usePlaylistForCurrentPage}
-        origin="playlist"
-      />
-    </>
-  );
-}
-
-type PlaylistContent = {
-  origin?: MediaList;
-} & (
-  | { id: string; queryHook: typeof usePlaylistForCurrentPage }
-  | { id?: never; queryHook: typeof useFavoriteTracksForCurrentPage }
-);
-
-/** Basic structure of what we want to render on page. */
-function PlaylistListContent({ id, queryHook, origin }: PlaylistContent) {
-  const { isPending, error, data } = queryHook(id ?? "");
-
-  if (isPending) return <View className="w-full flex-1 px-4" />;
-  else if (error) {
-    return (
-      <View className="w-full flex-1 px-4">
-        <Description intent="error">Error: Playlist not found</Description>
-      </View>
-    );
-  }
+  // Add optimistic UI updates.
+  const isToggled = favoritePlaylist.isPending
+    ? !data.isFavorite
+    : data.isFavorite;
 
   // Information about this track list.
   const trackSource = { type: "playlist", id: data.name } as const;
 
   return (
-    <View className="w-full flex-1 px-4">
-      <MediaScreenHeader
-        source={data.imageSource}
+    <>
+      <Stack.Screen
+        options={{
+          headerRight: () => (
+            <View className="flex-row gap-1">
+              <IconButton
+                kind="ripple"
+                accessibilityLabel={t(
+                  `common.${isToggled ? "unF" : "f"}avorite`,
+                )}
+                onPress={() => mutateGuard(favoritePlaylist, !data.isFavorite)}
+              >
+                <Favorite filled={isToggled} />
+              </IconButton>
+              <IconButton
+                kind="ripple"
+                accessibilityLabel={t("playlist.edit")}
+                onPress={() =>
+                  router.navigate(
+                    `/playlist/modify?id=${encodeURIComponent(id)}`,
+                  )
+                }
+              >
+                <Edit />
+              </IconButton>
+            </View>
+          ),
+        }}
+      />
+      <CurrentListLayout
         title={data.name}
         metadata={data.metadata}
-        trackSource={trackSource}
-      />
-      <TrackList
-        data={data.tracks}
-        config={{ source: trackSource, origin }}
-        ListEmptyComponent={
-          <Description>
-            {id ? "No tracks in playlist." : "No favorited tracks."}
-          </Description>
-        }
-      />
-    </View>
+        imageSource={data.imageSource}
+        mediaSource={trackSource}
+      >
+        <FlashList
+          estimatedItemSize={56} // 48px Height + 8px Margin Top
+          data={data.tracks}
+          keyExtractor={({ id }) => id}
+          renderItem={({ item, index }) => (
+            <View className={index > 0 ? "mt-2" : undefined}>
+              <PlaylistTrack
+                playlistName={data.name}
+                track={item}
+                trackSource={trackSource}
+              />
+            </View>
+          )}
+          contentContainerClassName="pt-4"
+          contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
+          emptyMsgKey="response.noTracks"
+        />
+      </CurrentListLayout>
+    </>
+  );
+}
+
+/** Swipeable for track in playlist. */
+function PlaylistTrack(props: {
+  playlistName: string;
+  track: Track.Content;
+  trackSource: PlayListSource;
+}) {
+  const { t } = useTranslation();
+  const removeTrack = useRemoveFromPlaylist(props.track.id);
+
+  return (
+    <Swipeable
+      renderRightActions={() => (
+        <IconButton
+          accessibilityLabel={t("template.entryRemove", {
+            name: props.track.title,
+          })}
+          onPress={() => mutateGuard(removeTrack, props.playlistName)}
+          className="mr-4 bg-red"
+        >
+          <Remove color={Colors.neutral100} />
+        </IconButton>
+      )}
+      childrenContainerClassName="px-4"
+    >
+      <Track {...props.track} trackSource={props.trackSource} />
+    </Swipeable>
   );
 }

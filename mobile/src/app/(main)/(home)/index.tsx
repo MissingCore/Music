@@ -1,20 +1,20 @@
 import { FlashList } from "@shopify/flash-list";
 import { router } from "expo-router";
-import { useTranslation } from "react-i18next";
 import { useEffect, useRef, useState } from "react";
-import { View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
 import {
-  useFavoriteListsForMediaCard,
+  useFavoriteListsForCards,
   useFavoriteTracksCount,
-} from "@/api/favorites";
+} from "@/queries/favorite";
 import { useGetColumn } from "@/hooks/useGetColumn";
-import { useMusicStore } from "@/modules/media/services/Music";
-import { StickyActionLayout } from "@/layouts/StickyActionLayout";
+import { useRecentListStore } from "@/modules/media/services/RecentList";
+import { StickyActionScrollLayout } from "@/layouts";
 
+import { cn } from "@/lib/style";
 import { abbreviateNum } from "@/utils/number";
-import { Button } from "@/components/new/Form";
-import { AccentText, StyledText } from "@/components/new/Typography";
+import { Button } from "@/components/Form";
+import { AccentText, TEm, TStyledText } from "@/components/Typography";
 import { ReservedPlaylists } from "@/modules/media/constants";
 import {
   MediaCard,
@@ -24,28 +24,23 @@ import {
 
 /** Screen for `/` route. */
 export default function HomeScreen() {
-  const { t } = useTranslation();
   return (
-    <StickyActionLayout title={t("header.home")}>
-      <StyledText className="-mb-4 text-xs">
-        {t("home.playedRecent")}
-      </StyledText>
+    <StickyActionScrollLayout titleKey="header.home">
+      <TEm textKey="home.playedRecent" className="-mb-4" />
       <RecentlyPlayed />
-
-      <StyledText className="-mb-4 text-xs">{t("home.favorites")}</StyledText>
+      <TEm textKey="home.favorites" className="-mb-4" />
       <Favorites />
-    </StickyActionLayout>
+    </StickyActionScrollLayout>
   );
 }
 
 //#region Recently Played List
 /** Display list of media recently played. */
 function RecentlyPlayed() {
-  const { t } = useTranslation();
   const { width } = useGetColumn({
     ...{ cols: 1, gap: 0, gutters: 32, minWidth: 100 },
   });
-  const recentlyPlayedData = useMusicStore((state) => state.recentList);
+  const recentlyPlayedData = useRecentListStore((state) => state.recentList);
 
   const [initNoData, setInitNoData] = useState(false);
   const [itemHeight, setItemHeight] = useState(0);
@@ -69,24 +64,27 @@ function RecentlyPlayed() {
   return (
     <FlashList
       ref={listRef}
-      estimatedItemSize={width + 16} // Column width + gap from padding left
+      estimatedItemSize={width + 12} // Column width + gap from padding left
       horizontal
       data={recentlyPlayedData}
       keyExtractor={({ href }) => href}
       renderItem={({ item, index }) => (
-        <View
+        <MediaCard
           onLayout={(e) => setItemHeight(e.nativeEvent.layout.height)}
-          className={index !== 0 ? "pl-4" : ""}
-        >
-          <MediaCard {...item} size={width} />
-        </View>
+          {...{ ...item, size: width }}
+          className={index > 0 ? "ml-3" : undefined}
+        />
       )}
-      showsHorizontalScrollIndicator={false}
       ListEmptyComponent={
-        <StyledText onLayout={() => setInitNoData(true)} className="my-4">
-          {t("response.noRecents")}
-        </StyledText>
+        <TStyledText
+          onLayout={() => setInitNoData(true)}
+          textKey="response.noRecents"
+          className="my-4"
+        />
       }
+      renderScrollComponent={ScrollView}
+      overScrollMode="never"
+      showsHorizontalScrollIndicator={false}
       className="-mx-4"
       contentContainerClassName="px-4"
     />
@@ -97,11 +95,10 @@ function RecentlyPlayed() {
 //#region Favorites
 /** Display list of content we've favorited. */
 function Favorites() {
-  const { data } = useFavoriteListsForMediaCard();
+  const { data } = useFavoriteListsForCards();
   return (
     <MediaCardList
       data={[MediaCardPlaceholderContent, ...(data ?? [])]}
-      emptyMessage=""
       RenderFirst={FavoriteTracks}
     />
   );
@@ -111,25 +108,23 @@ function Favorites() {
  * Displays the number of favorited tracks and opens up the playlist of
  * favorited tracks.
  */
-function FavoriteTracks({ size }: { size: number }) {
-  const { t } = useTranslation();
+function FavoriteTracks(props: { size: number; className: string }) {
   const { isPending, error, data } = useFavoriteTracksCount();
 
   const trackCount = isPending || error ? "" : abbreviateNum(data);
 
   return (
     <Button
-      preset="danger"
       onPress={() =>
         router.navigate(`/playlist/${ReservedPlaylists.favorites}`)
       }
-      style={{ width: size, height: size }}
-      className="items-center gap-0 rounded-lg"
+      style={{ width: props.size, height: props.size }}
+      className={cn("gap-0 rounded-lg bg-red", props.className)}
     >
       <AccentText className="text-[3rem] text-neutral100">
         {trackCount}
       </AccentText>
-      <StyledText className="text-neutral100">{t("common.tracks")}</StyledText>
+      <TStyledText textKey="common.tracks" className="text-neutral100" />
     </Button>
   );
 }

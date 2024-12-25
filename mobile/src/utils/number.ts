@@ -6,6 +6,11 @@ export function abbreviateNum(num: number) {
   }).format(num);
 }
 
+/** Convert bit rate to kbit/s. */
+export function abbreviateBitRate(rate: number) {
+  return `${(rate / 1000).toFixed(2).replace(".00", "")} kbit/s`;
+}
+
 /** Abbreviate size in bytes. */
 export function abbreviateSize(size: number) {
   if (size >= 1e9) {
@@ -17,6 +22,14 @@ export function abbreviateSize(size: number) {
   } else {
     return `${size} B`;
   }
+}
+
+/** Convert epoch time to `YYYY-MM-DD` */
+export function formatEpoch(ms: number) {
+  const date = new Date(ms);
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+  return `${date.getFullYear()}-${month}-${day}`;
 }
 
 /**

@@ -1,51 +1,57 @@
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
+import { SheetManager } from "react-native-actions-sheet";
 
-import { Sort } from "@/resources/icons";
-import { useTracksForTrackCard } from "@/api/tracks";
-import { useTheme } from "@/hooks/useTheme";
-import { StickyActionLayout } from "@/layouts/StickyActionLayout";
+import { Sort } from "@/icons";
+import { useTracksForTrackCard } from "@/queries/track";
+import { StickyActionListLayout } from "@/layouts";
 
+import { IconButton } from "@/components/Form";
 import { ReservedPlaylists } from "@/modules/media/constants";
-import { Ripple } from "@/components/new/Form";
-import { MediaListControls, TrackList } from "@/modules/media/components";
+import {
+  MediaListControls,
+  useTrackListPreset,
+} from "@/modules/media/components";
+
+// Information about this track list.
+const trackSource = {
+  type: "playlist",
+  id: ReservedPlaylists.tracks,
+} as const;
 
 /** Screen for `/track` route. */
 export default function TrackScreen() {
-  const { t } = useTranslation();
   const { isPending, data } = useTracksForTrackCard();
-  const { canvas } = useTheme();
-
-  // Information about this track list.
-  const trackSource = {
-    type: "playlist",
-    id: ReservedPlaylists.tracks,
-  } as const;
+  const listPresets = useTrackListPreset({
+    ...{ data, trackSource, isPending },
+    emptyMsgKey: "response.noTracks",
+  });
 
   return (
-    <TrackList
-      {...{ data, trackSource }}
-      isLoading={isPending}
-      emptyMessage={t("response.noTracks")}
-      renderScrollComponent={(props) => (
-        <StickyActionLayout
-          title={t("common.tracks")}
-          StickyAction={
-            <View className="w-full flex-row items-center justify-between rounded-md bg-surface">
-              <Ripple
-                preset="icon"
-                accessibilityLabel={t("title.sort")}
-                android_ripple={{ color: `${canvas}40` }}
-                onPress={() => console.log("Opening sort modal...")}
-              >
-                <Sort />
-              </Ripple>
-              <MediaListControls trackSource={trackSource} />
-            </View>
-          }
-          {...props}
-        />
-      )}
+    <StickyActionListLayout
+      titleKey="common.tracks"
+      StickyAction={<TrackActions />}
+      estimatedActionSize={48}
+      {...listPresets}
     />
   );
 }
+
+//#region Actions
+/** Actions used on the `/track` screen. */
+function TrackActions() {
+  const { t } = useTranslation();
+  return (
+    <View className="w-full flex-row items-center justify-between rounded-md bg-surface">
+      <IconButton
+        kind="ripple"
+        accessibilityLabel={t("title.sort")}
+        onPress={() => SheetManager.show("TrackSortSheet")}
+      >
+        <Sort />
+      </IconButton>
+      <MediaListControls trackSource={trackSource} />
+    </View>
+  );
+}
+//#endregion

@@ -1,11 +1,10 @@
 import { useTranslation } from "react-i18next";
+import { SheetManager } from "react-native-actions-sheet";
 
 import { useUserPreferencesStore } from "@/services/UserPreferences";
-import { SettingsLayout } from "@/layouts/SettingsLayout";
-import { FontModal, ThemeModal } from "@/screens/Modals";
+import { StandardScrollLayout } from "@/layouts";
 
-import { List, ListItem } from "@/components/new/List";
-import { useModalRef } from "@/components/new/Modal";
+import { List, ListItem } from "@/components/Containment";
 
 /** Screen for `/setting/appearance` route. */
 export default function AppearanceScreen() {
@@ -13,30 +12,22 @@ export default function AppearanceScreen() {
   const accentFont = useUserPreferencesStore((state) => state.accentFont);
   const theme = useUserPreferencesStore((state) => state.theme);
 
-  const fontModalRef = useModalRef();
-  const themeModalRef = useModalRef();
-
   return (
-    <>
-      <SettingsLayout>
-        <List>
-          <ListItem
-            title={t("title.font")}
-            description={accentFont}
-            onPress={() => fontModalRef.current?.present()}
-            first
-          />
-          <ListItem
-            title={t("title.theme")}
-            description={t(`settings.related.${theme}`)}
-            onPress={() => themeModalRef.current?.present()}
-            last
-          />
-        </List>
-      </SettingsLayout>
-
-      <FontModal ref={fontModalRef} />
-      <ThemeModal ref={themeModalRef} />
-    </>
+    <StandardScrollLayout>
+      <List>
+        <ListItem
+          titleKey="title.font"
+          description={accentFont}
+          onPress={() => SheetManager.show("FontSheet")}
+          first
+        />
+        <ListItem
+          titleKey="title.theme"
+          description={t(`settings.related.${theme}`)}
+          onPress={() => SheetManager.show("ThemeSheet")}
+          last
+        />
+      </List>
+    </StandardScrollLayout>
   );
 }

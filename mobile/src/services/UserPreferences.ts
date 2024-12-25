@@ -1,12 +1,7 @@
-/**
- * Store representing user preferences.
- *
- * This file contains classes containing helpers to manipulate the store.
- */
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getLocales } from "expo-localization";
 import { Appearance } from "react-native";
+import TrackPlayer from "react-native-track-player";
 import { useStore } from "zustand";
 import {
   createJSONStorage,
@@ -17,27 +12,35 @@ import { createStore } from "zustand/vanilla";
 
 import i18next from "@/modules/i18n";
 import { LANGUAGES } from "@/modules/i18n/constants";
-import { RecentList } from "@/modules/media/services/Music";
+import { musicStore } from "@/modules/media/services/Music";
+import { RecentList } from "@/modules/media/services/RecentList";
 
 import { clearAllQueries } from "@/lib/react-query";
+import { getSourceName } from "@/modules/media/helpers/data";
+
+/** Options for app themes. */
+export const ThemeOptions = ["light", "dark", "system"] as const;
+/** Options for app accent font. */
+export const FontOptions = ["NDot", "NType"] as const;
 
 //#region Zustand Store
 //#region UserPreferencesStore Interface
 interface UserPreferencesStore {
   /** Determines if the store has been hydrated from AsyncStorage. */
   _hasHydrated: boolean;
-  setHasHydrated: (newState: boolean) => void;
+  /** Initialize state that weren't initialized from subscriptions. */
+  _init: (state: UserPreferencesStore) => void;
 
   /** Language code of the displayed content. */
   language: string;
   setLanguage: (languageCode: string) => void;
 
   /** "Color" the overall app will look like. */
-  theme: "light" | "dark" | "system";
-  setTheme: (newTheme: "light" | "dark" | "system") => void;
+  theme: (typeof ThemeOptions)[number];
+  setTheme: (newTheme: UserPreferencesStore["theme"]) => void;
   /** Font used for some accent text (ie: major headings). */
-  accentFont: "NDot" | "NType";
-  setAccentFont: (newFont: "NDot" | "NType") => void;
+  accentFont: (typeof FontOptions)[number];
+  setAccentFont: (newFont: UserPreferencesStore["accentFont"]) => void;
 
   /** Minimum number of seconds a track needs to have to be saved. */
   minSeconds: number;
@@ -49,16 +52,18 @@ interface UserPreferencesStore {
 
   /** Percentage of device volume audio will be outputted with. */
   volume: number;
+  setVolume: (newVolume: number) => void;
 }
 //#endregion
 
 //#region Fields we don't want to store in AsyncStorage
 const OMITTED_FIELDS: string[] = [
   "_hasHydrated",
-  "setHasHydrated",
+  "_init",
   "setLanguage",
   "setTheme",
   "setAccentFont",
+  "setVolume",
 ] satisfies Array<keyof UserPreferencesStore>;
 //#endregion
 
@@ -68,23 +73,28 @@ export const userPreferencesStore = createStore<UserPreferencesStore>()(
     persist(
       (set) => ({
         _hasHydrated: false as boolean,
-        setHasHydrated: (state) => {
-          set({ _hasHydrated: state });
+        _init: (state) => {
+          // Set app theme on initialization.
+          if (state.theme !== "system") Appearance.setColorScheme(state.theme);
+          // Try to use device language if no language is specified.
+          if (state.language === "") {
+            const deviceLangCode = getLocales()[0]?.languageCode || "en";
+            // See if we support the device language.
+            const exists = LANGUAGES.some(
+              ({ code }) => code === deviceLangCode,
+            );
+            state.setLanguage(exists ? deviceLangCode : "en");
+          }
+          set({ _hasHydrated: true });
         },
 
         language: "",
-        setLanguage: (languageCode) => {
-          set({ language: languageCode });
-        },
+        setLanguage: (languageCode) => set({ language: languageCode }),
 
         theme: "system",
-        setTheme: (newTheme) => {
-          set({ theme: newTheme });
-        },
+        setTheme: (newTheme) => set({ theme: newTheme }),
         accentFont: "NType",
-        setAccentFont: (newFont) => {
-          set({ accentFont: newFont });
-        },
+        setAccentFont: (newFont) => set({ accentFont: newFont }),
 
         minSeconds: 15,
 
@@ -92,6 +102,7 @@ export const userPreferencesStore = createStore<UserPreferencesStore>()(
         listBlock: [],
 
         volume: 1,
+        setVolume: (newVolume) => set({ volume: newVolume }),
       }),
       {
         name: "music::user-preferences",
@@ -105,28 +116,9 @@ export const userPreferencesStore = createStore<UserPreferencesStore>()(
           ),
         // Listen to when the store is hydrated.
         onRehydrateStorage: () => {
-          console.log("[User Preferences Store] Re-hydrating storage.");
           return (state, error) => {
             if (error) console.log("[User Preferences Store]", error);
-            else {
-              console.log("[User Preferences Store] Completed with:", state);
-              state?.setHasHydrated(true);
-
-              // Set app theme on initialization.
-              if (state?.theme && state.theme !== "system") {
-                Appearance.setColorScheme(state.theme);
-              }
-
-              // Try to use device language if no language is specified.
-              if (state?.language === "") {
-                const deviceLangCode = getLocales()[0]?.languageCode || "en";
-                // See if we support the device language.
-                const exists = LANGUAGES.some(
-                  ({ code }) => code === deviceLangCode,
-                );
-                state.setLanguage(exists ? deviceLangCode : "en");
-              }
-            }
+            else state?._init(state);
           };
         },
       },
@@ -150,10 +142,23 @@ userPreferencesStore.subscribe(
     // Set the language used by the app.
     await i18next.changeLanguage(languageCode);
     // Make sure our queries that use translated values are updated.
-    clearAllQueries({ remove: true });
+    clearAllQueries();
     // Make sure the recent list data is also updated as we don't get
     // it from React Query.
     RecentList.refresh();
+    // Make sure to refresh the playing source name if it's one of the favorite playlists.
+    const { playingSource } = musicStore.getState();
+    if (playingSource) {
+      musicStore.setState({ sourceName: await getSourceName(playingSource) });
+    }
+  },
+);
+
+/** Set the internal volume used from what's stored in AsyncStorage. */
+userPreferencesStore.subscribe(
+  (state) => state.volume,
+  async (volume) => {
+    await TrackPlayer.setVolume(volume);
   },
 );
 //#endregion

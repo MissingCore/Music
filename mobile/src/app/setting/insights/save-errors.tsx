@@ -1,21 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
-import { useTranslation } from "react-i18next";
+import { useSaveErrors } from "@/queries/setting";
+import { StandardScrollLayout } from "@/layouts";
 
-import { db } from "@/db";
-import { settingKeys } from "@/constants/QueryKeys";
-
-import { SettingsLayout } from "@/layouts/SettingsLayout";
-
-import { ListRenderer } from "@/components/new/List";
-import { StyledText } from "@/components/new/Typography";
+import { ListRenderer } from "@/components/Containment";
 
 /** Screen for `/setting/insights/save-errors` route. */
 export default function SaveErrorsScreen() {
-  const { t } = useTranslation();
   const { data } = useSaveErrors();
-
   return (
-    <SettingsLayout>
+    <StandardScrollLayout>
       <ListRenderer
         data={data}
         keyExtractor={({ id }) => id}
@@ -23,23 +15,8 @@ export default function SaveErrorsScreen() {
           getTitle: (item) => item.uri,
           getDescription: (item) => `[${item.errorName}] ${item.errorMessage}`,
         }}
-        ListEmptyComponent={
-          <StyledText center>{t("response.noErrors")}</StyledText>
-        }
+        emptyMsgKey="response.noErrors"
       />
-    </SettingsLayout>
+    </StandardScrollLayout>
   );
 }
-
-//#region Data
-async function getSaveErrors() {
-  return db.query.invalidTracks.findMany();
-}
-
-const useSaveErrors = () =>
-  useQuery({
-    queryKey: settingKeys.storageRelation("save-errors"),
-    queryFn: getSaveErrors,
-    gcTime: 0,
-  });
-//#endregion

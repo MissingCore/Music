@@ -1,22 +1,15 @@
-import { useTranslation } from "react-i18next";
+import { useAlbumsForCards } from "@/queries/album";
+import { StickyActionListLayout } from "@/layouts";
 
-import { useAlbumsForMediaCard } from "@/api/albums";
-import { StickyActionLayout } from "@/layouts/StickyActionLayout";
-
-import { MediaCardList } from "@/modules/media/components";
+import { useMediaCardListPreset } from "@/modules/media/components";
 
 /** Screen for `/album` route. */
 export default function AlbumScreen() {
-  const { t } = useTranslation();
-  const { isPending, data } = useAlbumsForMediaCard();
+  const { isPending, data } = useAlbumsForCards();
+  const presets = useMediaCardListPreset({
+    ...{ data, isPending },
+    emptyMsgKey: "response.noAlbums",
+  });
 
-  return (
-    <StickyActionLayout title={t("common.albums")}>
-      <MediaCardList
-        data={data}
-        isLoading={isPending}
-        emptyMessage={t("response.noAlbums")}
-      />
-    </StickyActionLayout>
-  );
+  return <StickyActionListLayout titleKey="common.albums" {...presets} />;
 }

@@ -1,19 +1,21 @@
-import { Stack, router, usePathname } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
+import { Stack, router, useRootNavigationState } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { ScrollView, View } from "react-native";
+import { useEffect, useMemo, useRef } from "react";
+import { FlatList, View } from "react-native";
 import Animated, {
   LinearTransition,
   SlideInDown,
 } from "react-native-reanimated";
 
-import { Search, Settings } from "@/resources/icons";
-import { useBottomActionsLayout } from "@/hooks/useBottomActionsLayout";
+import { Search, Settings } from "@/icons";
+import { useBottomActionsContext } from "@/hooks/useBottomActionsContext";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 import { useTheme } from "@/hooks/useTheme";
 
 import { cn } from "@/lib/style";
-import { Button, Ripple } from "@/components/new/Form";
-import { StyledText } from "@/components/new/Typography";
+import { Button, IconButton } from "@/components/Form";
+import { StyledText } from "@/components/Typography";
 import { MiniPlayer } from "@/modules/media/components";
 
 //#region Layout
@@ -25,7 +27,6 @@ export default function MainLayout() {
         <Stack.Screen name="(home)" />
         <Stack.Screen name="(current)" />
       </Stack>
-
       <BottomActions />
     </>
   );
@@ -35,8 +36,7 @@ export default function MainLayout() {
 //#region Bottom Actions
 /** Actions stickied to the bottom of the screens in the `(main)` group. */
 function BottomActions() {
-  const { isRendered } = useBottomActionsLayout();
-
+  const { isRendered } = useBottomActionsContext();
   return (
     <Animated.View
       entering={SlideInDown.duration(1000)}
@@ -44,32 +44,17 @@ function BottomActions() {
       pointerEvents="box-none"
       className="absolute bottom-0 left-0 w-full gap-[3px] p-4 pt-0"
     >
-      <MiniPlayer stacked={isRendered.navBar} />
-      <NavigationBar
-        stacked={isRendered.miniPlayer}
-        hidden={!isRendered.navBar}
-      />
+      <MiniPlayer stacked={isRendered.navBar} hidden={!isRendered.miniPlayer} />
+      <TabBar stacked={isRendered.miniPlayer} hidden={!isRendered.navBar} />
     </Animated.View>
   );
 }
 //#endregion
 
-//#region Navigation Bar
-/** List of routes we'll display buttons for on the "home" page. */
-const NavRoutes = [
-  { href: "/", key: "header.home" },
-  { href: "/folder", key: "common.folders" },
-  { href: "/playlist", key: "common.playlists" },
-  { href: "/track", key: "common.tracks" },
-  { href: "/album", key: "common.albums" },
-  { href: "/artist", key: "common.artists" },
-] as const;
-
-/** Custom navigation bar. */
-function NavigationBar({ stacked = false, hidden = false }) {
+//#region Tab Bar
+/** Custom tab bar only visible while in routes in the `(main)` group. */
+function TabBar({ stacked = false, hidden = false }) {
   const { t } = useTranslation();
-  const pathname = usePathname();
-  const { canvas } = useTheme();
   const { hasNewUpdate } = useHasNewUpdate();
 
   return (
@@ -80,42 +65,17 @@ function NavigationBar({ stacked = false, hidden = false }) {
         { "rounded-t-sm": stacked, "hidden opacity-0": hidden },
       )}
     >
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerClassName="grow px-2"
-      >
-        {NavRoutes.map(({ href, key }) => {
-          const selected =
-            href === "/" ? pathname === "/" : pathname.startsWith(href);
-          return (
-            <Button
-              key={href}
-              preset="plain"
-              onPress={() => router.navigate(href)}
-              disabled={selected}
-              className="px-2 disabled:opacity-100"
-            >
-              <StyledText className={cn("text-sm", { "text-red": selected })}>
-                {t(key).toLocaleUpperCase()}
-              </StyledText>
-            </Button>
-          );
-        })}
-      </ScrollView>
-
-      <Ripple
-        preset="icon"
+      <NavigationList />
+      <IconButton
+        kind="ripple"
         accessibilityLabel={t("header.search")}
-        android_ripple={{ color: `${canvas}40` }}
         onPress={() => router.navigate("/search")}
       >
         <Search />
-      </Ripple>
-      <Ripple
-        preset="icon"
+      </IconButton>
+      <IconButton
+        kind="ripple"
         accessibilityLabel={t("header.settings")}
-        android_ripple={{ color: `${canvas}40` }}
         onPress={() => router.navigate("/setting")}
         className="relative"
       >
@@ -123,8 +83,86 @@ function NavigationBar({ stacked = false, hidden = false }) {
         {hasNewUpdate && (
           <View className="absolute right-3 top-3 size-2 rounded-full bg-red" />
         )}
-      </Ripple>
+      </IconButton>
     </Animated.View>
   );
 }
+
+/** List of routes we'll display buttons for on the "home" page. */
+const NavRoutes = [
+  { href: "/", key: "header.home" },
+  { href: "/folder", key: "common.folders" },
+  { href: "/playlist", key: "common.playlists" },
+  { href: "/track", key: "common.tracks" },
+  { href: "/album", key: "common.albums" },
+  { href: "/artist", key: "common.artists" },
+] as const;
+
+/** List of routes in `(home)` group. */
+function NavigationList() {
+  const { t, i18n } = useTranslation();
+  const { surface } = useTheme();
+  const navState = useRootNavigationState();
+  const listRef = useRef<FlatList>(null);
+
+  const tabIndex = useMemo(() => {
+    const mainRoute = navState.routes.find((r) => r.name === "(main)");
+    if (!mainRoute || !mainRoute.state) return 0;
+    const homeRoute = mainRoute.state.routes.find((r) => r.name === "(home)");
+    if (!homeRoute || !homeRoute.state) return 0;
+    return homeRoute.state.index ?? 0;
+  }, [navState]);
+
+  useEffect(() => {
+    if (!listRef.current) return;
+    // Scroll to active tab (positioned in the middle of the visible area).
+    //  - Also fire when language changes due to word length being different.
+    listRef.current.scrollToIndex({ index: tabIndex, viewPosition: 0.5 });
+  }, [i18n.language, tabIndex]);
+
+  return (
+    <View className="relative shrink grow">
+      <FlatList
+        ref={listRef}
+        horizontal
+        data={NavRoutes}
+        keyExtractor={({ href }) => href}
+        renderItem={({ item, index }) => (
+          <Button
+            onPress={() => router.navigate(item.href)}
+            disabled={tabIndex === index}
+            className="bg-transparent px-2 disabled:opacity-100"
+          >
+            <StyledText
+              className={cn("text-sm", { "text-red": tabIndex === index })}
+            >
+              {t(item.key).toLocaleUpperCase()}
+            </StyledText>
+          </Button>
+        )}
+        // Suppresses error from `scrollToIndex` when we remount this layout
+        // as a result of using the `push` navigation on the `/search` screen.
+        onScrollToIndexFailed={() => {}}
+        overScrollMode="never"
+        showsHorizontalScrollIndicator={false}
+        contentContainerClassName="px-2"
+      />
+      {/* Scroll Shadow */}
+      <LinearGradient
+        pointerEvents="none"
+        colors={[`${surface}E6`, `${surface}00`]}
+        {...ShadowProps}
+        className="absolute left-0 h-full w-4"
+      />
+      <LinearGradient
+        pointerEvents="none"
+        colors={[`${surface}00`, `${surface}E6`]}
+        {...ShadowProps}
+        className="absolute right-0 h-full w-4"
+      />
+    </View>
+  );
+}
+
+const ShadowProps = { start: { x: 0.0, y: 1.0 }, end: { x: 1.0, y: 1.0 } };
 //#endregion

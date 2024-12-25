@@ -48,48 +48,31 @@ For information on the goals and ideology of this app, refer to the [`App Goals 
 
 ## Permissions
 
-This (hopefully) lists out all the permissions required by Music based on the permissions asked in the code and values listed out in the [App Manifest](./android/app/src/main/AndroidManifest.xml).
+This (hopefully) lists out all the permissions required by Music based on the permissions asked in the code and values listed out in the [App Manifest](./mobile/android/app/src/main/AndroidManifest.xml).
 
 |          | Permissions                                                                                                                                                                                                                                                                                    |
 | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Popups   | - Music and Audio (Android 13+)<br/>- Files & Media (Android <13)                                                                                                                                                                                                                              |
 | Implicit | - Read External Storage; for reading Music & Audio Files (unused in Android 13+)<br/>- Write to External Storage ([unused in Android 11+](https://developer.android.com/reference/android/Manifest.permission#WRITE_EXTERNAL_STORAGE))<br/>- Internet (only used for checking for new updates) |
 
-# Installation
+# Documentation
 
-There are 2 methods of installing this app:
+See all the [available documentation here](./docs). Some highlights include:
 
-1. Download the APK for your device from a release found in the ["Releases" tab](https://github.com/MissingCore/Music/releases).
-
-2. Download the app from the [Google Play Store](https://play.google.com/store/apps/details?id=com.cyanchill.missingcore.music).
-
-> [!IMPORTANT]  
-> The APK & Play Store version of the apps **aren't compatible** as:
->
-> - The APK is signed with an upload key.
-> - The Play Store app is signed with a Google-generated app signing key via "Play App Signing".
->
-> To transfer data over between versions, use the "Backup" feature found in the settings page in the app.
-
-# Build
-
-Read the [Building this App](./docs/building-this-app.md) documentation.
+- [`Building this App`](./docs/building-this-app.md)
+- [`Nothing Interactions`](./docs/nothing-interactions.md)
+- [`Supported Gestures`](./docs/supported-gestures.md)
 
 # Translations
 
 Read the [Translations](./docs/translations.md) documentation for a rundown of how to contribute translations to this app.
 
-# FAQ
-
-> Why is the APK version of the app larger than the one from the Google Play Store?
-
-You can [read this for the full explanation](https://github.com/expo/fyi/blob/main/android-app-size.md), but in short the APK is built to be used with any device. The version distributed by the Google Play Store is built for your device.
-
-When looking at the `App size` field under `Space used` in the storage info for the app, you may notice the size displayed is **greater** than the download size. This is because what you downloaded is **compressed** and the app requires an **uncompressed** version of the libraries to be functional.
-
-> Why is loading the app slow?
-
-Read the [How Are Tracks Indexed?](./docs/how-are-tracks-indexed.md) documentation to see how the app saves tracks.
+| Translation |                      Translator                      |
+| :---------: | :--------------------------------------------------: |
+|   日本語    |   [@reindex-ot](https://www.github.com/reindex-ot)   |
+|   Deutsch   |    [@The-Ladle](https://www.github.com/The-Ladle)    |
+|  Indonesia  | [@naturbrilian](https://www.github.com/naturbrilian) |
+|   Español   |        [@G4b-0](https://www.github.com/G4b-0)        |
 
 # Legal
 

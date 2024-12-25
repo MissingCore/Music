@@ -1,0 +1,29 @@
+diff --git a/src/components/Toast.tsx b/src/components/Toast.tsx
+index 8db6291cfb677830f285b2de6d8b0916d9258d7d..d8b8282a08407351ea4c438a4498ddc0166c07ca 100644
+--- a/src/components/Toast.tsx
++++ b/src/components/Toast.tsx
+@@ -150,7 +150,7 @@ export const Toast: FC<Props> = ({
+           kbHeight -
+           insets.bottom -
+           (extraInsets?.bottom ?? 0) -
+-          24
++          0
+         : startingY;
+ 
+       offsetY.value = animation(
+@@ -261,6 +261,7 @@ export const Toast: FC<Props> = ({
+           endPause();
+         }}
+         onPress={onPress}
++        pointerEvents="box-none"
+         style={[
+           {
+             backgroundColor: !toast.customToast
+@@ -288,6 +289,7 @@ export const Toast: FC<Props> = ({
+               updateHeight(toast.id, event.nativeEvent.layout.height)
+             }
+             key={toast.id}
++            pointerEvents="box-none"
+           >
+             {toast.customToast({
+               ...toast,
