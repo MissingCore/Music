@@ -96,26 +96,39 @@ export function ModifyPlaylist(props: ScreenOptions) {
 
   const onDelete = useCallback(() => setIsSubmitting(true), []);
 
+  const removeTrack = useCallback((id: string) => {
+    setTracks((prev) => prev.filter((t) => t.id !== id));
+  }, []);
+
   const renderItem = useCallback(
-    (info: DragListRenderItemInfo<TrackWithAlbum>) => (
+    ({ item, ...info }: DragListRenderItemInfo<TrackWithAlbum>) => (
       <Pressable
         delayLongPress={150}
         onLongPress={info.onDragStart}
         onPressOut={info.onDragEnd}
-        className={cn("active:opacity-75", { "mt-2": info.index > 0 })}
+        className={cn("group", { "mt-2": info.index > 0 })}
       >
-        <SearchResult
-          type="track"
-          title={info.item.name}
-          description={info.item.artistName ?? "—"}
-          imageSource={info.item.artwork}
-          className={cn("mx-4 rounded-sm bg-canvas", {
-            "bg-surface": info.isActive,
-          })}
-        />
+        <ItemWrapper
+          id={item.id}
+          name={item.name}
+          isActive={info.isActive}
+          isDragging={info.isDragging}
+          onRemove={removeTrack}
+        >
+          <SearchResult
+            type="track"
+            title={item.name}
+            description={item.artistName ?? "—"}
+            imageSource={item.artwork}
+            className={cn(
+              "mx-4 rounded-sm bg-canvas pr-4 group-active:bg-surface",
+              { "bg-surface": info.isActive },
+            )}
+          />
+        </ItemWrapper>
       </Pressable>
     ),
-    [],
+    [removeTrack],
   );
 
   const onReorder = useCallback((fromIndex: number, toIndex: number) => {
@@ -203,6 +216,43 @@ export function ModifyPlaylist(props: ScreenOptions) {
     </>
   );
 }
+
+//#region Rendered Item
+const ItemWrapper = memo(function ItemWrapper(props: {
+  id: string;
+  name: string;
+  isActive: boolean;
+  isDragging: boolean;
+  onRemove: (id: string) => void;
+  children: React.ReactNode;
+}) {
+  const { t } = useTranslation();
+
+  const onPress = useCallback(
+    () => props.onRemove(props.id),
+    [props.id, props.onRemove],
+  );
+
+  return (
+    <Swipeable
+      enabled={!props.isDragging}
+      renderRightActions={() =>
+        props.isActive ? undefined : (
+          <IconButton
+            accessibilityLabel={t("template.entryRemove", { name: props.name })}
+            onPress={onPress}
+            className="mr-4 bg-red"
+          >
+            <Remove color={Colors.neutral100} />
+          </IconButton>
+        )
+      }
+    >
+      {props.children}
+    </Swipeable>
+  );
+});
+//#endregion
 
 //#region Input Actions
 /** Contains the input to change the playlist name and button to add tracks. */
