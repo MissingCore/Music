@@ -107,7 +107,8 @@
     },
     "patchedDependencies": {
       "react-native-actions-sheet@0.9.7": "patches/react-native-actions-sheet@0.9.7.patch",
-      "@backpackapp-io/react-native-toast@0.13.0": "patches/@backpackapp-io__react-native-toast@0.13.0.patch"
+      "@backpackapp-io/react-native-toast@0.13.0": "patches/@backpackapp-io__react-native-toast@0.13.0.patch",
+      "react-native-gesture-handler@2.21.2": "patches/react-native-gesture-handler@2.21.2.patch"
     }
   }
 }

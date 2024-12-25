@@ -1,0 +1,21 @@
+diff --git a/src/components/Swipeable.tsx b/src/components/Swipeable.tsx
+index 593ab597407aaae6dcc860038d6c659e18ea22f0..60115b4ecf7239ce6cba2cefb0ad6670b10cb169 100644
+--- a/src/components/Swipeable.tsx
++++ b/src/components/Swipeable.tsx
+@@ -501,6 +501,16 @@ export default class Swipeable extends Component<
+     this.setState({ rowState: 0 });
+   };
+ 
++  componentDidUpdate(prevProps: Readonly<SwipeableProps>, prevState: Readonly<SwipeableState>, snapshot?: any): void {
++    if (
++      prevProps.enabled !== this.props.enabled &&
++      this.props.enabled === false &&
++      this.state.rowState !== 0
++    ) {
++      this.close();
++    }
++  }
++
+   render() {
+     const { rowState } = this.state;
+     const {
