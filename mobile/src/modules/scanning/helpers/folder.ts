@@ -45,5 +45,7 @@ export async function savePathComponents(uri: string) {
   });
 
   // Insert found nodes into database.
-  await db.insert(fileNodes).values(foundNodes).onConflictDoNothing();
+  if (foundNodes.length > 0) {
+    await db.insert(fileNodes).values(foundNodes).onConflictDoNothing();
+  }
 }

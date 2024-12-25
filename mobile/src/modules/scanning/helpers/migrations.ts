@@ -65,15 +65,18 @@ export const MigrationFunctionMap: Record<
     // alphabetical order.
     const allPlaylists = await getPlaylists();
     await db.transaction(async (tx) => {
-      const orderedRelations = allPlaylists.map(
-        ({ name: playlistName, tracks }) =>
+      const orderedRelations = allPlaylists
+        .map(({ name: playlistName, tracks }) =>
           tracks
             .sort((a, b) => a.name.localeCompare(b.name))
             .map((t, position) => ({ playlistName, trackId: t.id, position })),
-      );
+        )
+        .flat();
       // eslint-disable-next-line drizzle/enforce-delete-with-where
       await tx.delete(tracksToPlaylists);
-      await tx.insert(tracksToPlaylists).values(orderedRelations.flat());
+      if (orderedRelations.length > 0) {
+        await tx.insert(tracksToPlaylists).values(orderedRelations);
+      }
     });
   },
 };
