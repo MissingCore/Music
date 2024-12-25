@@ -1,6 +1,6 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { Stack, router } from "expo-router";
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler, Modal, Pressable, View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
@@ -20,6 +20,7 @@ import { ToastOptions } from "@/lib/toast";
 import { wait } from "@/utils/promise";
 import { useListPresets } from "@/components/Defaults";
 import { IconButton, TextInput } from "@/components/Form";
+import type { SwipeableRef } from "@/components/Swipeable";
 import { Swipeable } from "@/components/Swipeable";
 import { StyledText, TStyledText } from "@/components/Typography";
 import { SearchResult } from "@/modules/search/components";
@@ -227,14 +228,23 @@ const ItemWrapper = memo(function ItemWrapper(props: {
   children: React.ReactNode;
 }) {
   const { t } = useTranslation();
+  const swipeableRef = useRef<SwipeableRef>(null);
+  const lastItemId = useRef(props.id);
 
   const onPress = useCallback(
     () => props.onRemove(props.id),
     [props.id, props.onRemove],
   );
 
+  if (props.id !== lastItemId.current) {
+    lastItemId.current = props.id;
+    if (swipeableRef.current) swipeableRef.current.resetIfNeeded();
+  }
+
   return (
     <Swipeable
+      // @ts-expect-error - Error assigning ref to class component.
+      ref={swipeableRef}
       enabled={!props.isDragging}
       renderRightActions={() =>
         props.isActive ? undefined : (

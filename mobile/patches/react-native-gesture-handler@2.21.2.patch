@@ -1,11 +1,29 @@
+diff --git a/lib/typescript/components/Swipeable.d.ts b/lib/typescript/components/Swipeable.d.ts
+index 0cbe84fa9b660017825c91e8d6fc255ce696dfa0..d791099131bb617f64598201e6f7b676841a2c09 100644
+--- a/lib/typescript/components/Swipeable.d.ts
++++ b/lib/typescript/components/Swipeable.d.ts
+@@ -178,6 +178,7 @@ export default class Swipeable extends Component<SwipeableProps, SwipeableState>
+     openLeft: () => void;
+     openRight: () => void;
+     reset: () => void;
++    resetIfNeeded: () => void;
+     render(): React.JSX.Element;
+ }
+ export {};
 diff --git a/src/components/Swipeable.tsx b/src/components/Swipeable.tsx
-index 593ab597407aaae6dcc860038d6c659e18ea22f0..60115b4ecf7239ce6cba2cefb0ad6670b10cb169 100644
+index 593ab597407aaae6dcc860038d6c659e18ea22f0..d490573a2eada8ad9d5c0980aae7eeb48c4fa7f9 100644
 --- a/src/components/Swipeable.tsx
 +++ b/src/components/Swipeable.tsx
-@@ -501,6 +501,16 @@ export default class Swipeable extends Component<
+@@ -501,6 +501,22 @@ export default class Swipeable extends Component<
      this.setState({ rowState: 0 });
    };
  
++  resetIfNeeded = () => {
++    if (this.state.rowState !== 0) {
++      this.reset()
++    }
++  }
++
 +  componentDidUpdate(prevProps: Readonly<SwipeableProps>, prevState: Readonly<SwipeableState>, snapshot?: any): void {
 +    if (
 +      prevProps.enabled !== this.props.enabled &&
