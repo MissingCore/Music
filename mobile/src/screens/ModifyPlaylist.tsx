@@ -241,6 +241,7 @@ const ItemWrapper = memo(function ItemWrapper(props: {
     if (swipeableRef.current) swipeableRef.current.resetIfNeeded();
   }
 
+  if (props.isDragging && !props.isActive) return props.children;
   return (
     <Swipeable
       // @ts-expect-error - Error assigning ref to class component.
