@@ -52,3 +52,4 @@
 | tailwind-merge | MIT | https://github.com/dcastil/tailwind-merge |
 | zod | MIT | https://github.com/colinhacks/zod |
 | zustand | MIT | https://github.com/pmndrs/zustand |
+| zustand-computed | MIT | https://github.com/chrisvander/zustand-computed |

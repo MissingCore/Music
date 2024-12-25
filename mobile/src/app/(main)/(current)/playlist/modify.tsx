@@ -5,8 +5,13 @@ import { useTranslation } from "react-i18next";
 
 import { getTrackCover } from "@/db/utils";
 
-import { usePlaylist, useUpdatePlaylist } from "@/queries/playlist";
+import {
+  usePlaylist,
+  usePlaylists,
+  useUpdatePlaylist,
+} from "@/queries/playlist";
 import { ModifyPlaylist } from "@/screens/ModifyPlaylist";
+import { PlaylistStoreProvider } from "@/screens/ModifyPlaylist/context";
 
 import { mutateGuardAsync } from "@/lib/react-query";
 import { ToastOptions } from "@/lib/toast";
@@ -15,6 +20,7 @@ import { ToastOptions } from "@/lib/toast";
 export default function ModifyPlaylistScreen() {
   const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { data: allPlaylists } = usePlaylists();
   const { data } = usePlaylist(id);
   const updatePlaylist = useUpdatePlaylist(id);
 
@@ -24,8 +30,9 @@ export default function ModifyPlaylistScreen() {
   }, [data?.tracks]);
 
   return (
-    <ModifyPlaylist
+    <PlaylistStoreProvider
       mode="edit"
+      allPlaylistNames={allPlaylists?.map(({ name }) => name) ?? []}
       initialName={id}
       initialTracks={initialTracks}
       onSubmit={async (playlistName, tracks) => {
@@ -53,6 +60,8 @@ export default function ModifyPlaylistScreen() {
           },
         );
       }}
-    />
+    >
+      <ModifyPlaylist />
+    </PlaylistStoreProvider>
   );
 }
