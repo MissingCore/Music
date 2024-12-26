@@ -1,5 +1,5 @@
 import { Stack, router } from "expo-router";
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler, Modal, Pressable, View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
@@ -10,7 +10,8 @@ import type { TrackWithAlbum } from "@/db/schema";
 
 import { Add, Cancel, CheckCircle, Check, Remove } from "@/icons";
 import { useDeletePlaylist } from "@/queries/playlist";
-import { usePlaylistStore } from "./context";
+import type { InitStoreProps } from "./context";
+import { PlaylistStoreProvider, usePlaylistStore } from "./context";
 
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
@@ -19,19 +20,20 @@ import { pickKeys } from "@/utils/object";
 import { wait } from "@/utils/promise";
 import { useListPresets } from "@/components/Defaults";
 import { IconButton, TextInput } from "@/components/Form";
+import type { SwipeableRef } from "@/components/Swipeable";
 import { Swipeable } from "@/components/Swipeable";
 import { StyledText, TStyledText } from "@/components/Typography";
 import { SearchResult } from "@/modules/search/components";
 
 /** Resuable screen to modify (create or edit) a playlist. */
-export function ModifyPlaylist() {
+export function ModifyPlaylist(props: InitStoreProps) {
   return (
-    <>
+    <PlaylistStoreProvider {...props}>
       <ScreenConfig />
       <PageContent />
       <DeleteWorkflow />
       <ConfirmationModal />
-    </>
+    </PlaylistStoreProvider>
   );
 }
 
@@ -131,6 +133,8 @@ const RenderItem = memo(function RenderItem({
   ...info
 }: RenderItemProps) {
   const { t } = useTranslation();
+  const swipeableRef = useRef<SwipeableRef>(null);
+  const [lastItemId, setLastItemId] = useState(item.id);
 
   const removeTrack = usePlaylistStore((state) => state.onRemoveTrack);
 
@@ -138,6 +142,11 @@ const RenderItem = memo(function RenderItem({
     () => removeTrack(item.id),
     [item.id, removeTrack],
   );
+
+  if (item.id !== lastItemId) {
+    setLastItemId(item.id);
+    if (swipeableRef.current) swipeableRef.current.resetIfNeeded();
+  }
 
   return (
     <Pressable
@@ -147,6 +156,8 @@ const RenderItem = memo(function RenderItem({
       className={cn("group bg-canvas", { "mt-2": info.index > 0 })}
     >
       <Swipeable
+        // @ts-expect-error - Error assigning ref to class component.
+        ref={swipeableRef}
         enabled={!info.isDragging}
         renderRightActions={() =>
           info.isActive ? undefined : (

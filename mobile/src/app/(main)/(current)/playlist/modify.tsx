@@ -11,7 +11,6 @@ import {
   useUpdatePlaylist,
 } from "@/queries/playlist";
 import { ModifyPlaylist } from "@/screens/ModifyPlaylist";
-import { PlaylistStoreProvider } from "@/screens/ModifyPlaylist/context";
 
 import { mutateGuardAsync } from "@/lib/react-query";
 import { ToastOptions } from "@/lib/toast";
@@ -30,7 +29,7 @@ export default function ModifyPlaylistScreen() {
   }, [data?.tracks]);
 
   return (
-    <PlaylistStoreProvider
+    <ModifyPlaylist
       mode="edit"
       allPlaylistNames={allPlaylists?.map(({ name }) => name) ?? []}
       initialName={id}
@@ -60,8 +59,6 @@ export default function ModifyPlaylistScreen() {
           },
         );
       }}
-    >
-      <ModifyPlaylist />
-    </PlaylistStoreProvider>
+    />
   );
 }

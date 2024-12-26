@@ -17,7 +17,7 @@ type StoreModeOptions =
   | { mode?: "create"; initialName?: never; initialTracks?: never }
   | { mode: "edit"; initialName: string; initialTracks: TrackWithAlbum[] };
 
-type InitStoreProps = StoreModeOptions & {
+export type InitStoreProps = StoreModeOptions & {
   allPlaylistNames: string[];
   onSubmit: (playlistName: string, tracks: TrackWithAlbum[]) => Promise<void>;
 };
