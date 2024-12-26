@@ -149,7 +149,7 @@ const RenderItem = memo(function RenderItem({
 
   return (
     <Pressable
-      delayLongPress={150}
+      delayLongPress={300}
       onLongPress={info.onDragStart}
       onPressOut={info.onDragEnd}
       className={cn("group bg-canvas", { "mt-2": info.index > 0 })}
