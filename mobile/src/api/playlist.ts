@@ -109,6 +109,30 @@ export async function favoritePlaylist(id: string, isFavorite: boolean) {
   return updatePlaylist(id, { isFavorite });
 }
 
+/** Move a track in a playlist. */
+export async function moveInPlaylist(info: {
+  playlistName: string;
+  fromIndex: number;
+  toIndex: number;
+}) {
+  return db.transaction(async (tx) => {
+    const tracksInPlaylist = await tx
+      .delete(tracksToPlaylists)
+      .where(eq(tracksToPlaylists.playlistName, info.playlistName))
+      .returning();
+
+    const copy = [...tracksInPlaylist].sort((a, b) => a.position - b.position);
+    const moved = copy.splice(info.fromIndex, 1);
+    await tx
+      .insert(tracksToPlaylists)
+      .values(
+        copy
+          .toSpliced(info.toIndex, 0, moved[0]!)
+          .map((t, position) => ({ ...t, position })),
+      );
+  });
+}
+
 /** Update specified playlist. */
 export async function updatePlaylist(
   id: string,

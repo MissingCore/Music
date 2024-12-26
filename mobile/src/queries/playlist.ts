@@ -13,6 +13,7 @@ import {
   createPlaylist,
   deletePlaylist,
   favoritePlaylist,
+  moveInPlaylist,
   updatePlaylist,
 } from "@/api/playlist";
 import { Resynchronize } from "@/modules/media/services/Resynchronize";
@@ -97,6 +98,21 @@ export function useFavoritePlaylist(playlistName: string) {
       // Invalidate all playlist queries and the favorite lists query.
       queryClient.invalidateQueries({ queryKey: q.playlists._def });
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
+    },
+  });
+}
+
+/** Move a track in playlist. */
+export function useMoveInPlaylist(playlistName: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (movement: { fromIndex: number; toIndex: number }) =>
+      moveInPlaylist({ ...movement, playlistName }),
+    onSuccess: () => {
+      // Invalidate all playlist queries.
+      queryClient.invalidateQueries({ queryKey: q.playlists._def });
+      // Ensure that the order of the tracks in the playlist is correct.
+      Resynchronize.onTracks({ type: "playlist", id: playlistName });
     },
   });
 }
