@@ -112,7 +112,7 @@ export function useUpdatePlaylist(playlistName: string) {
     ) => updatePlaylist(playlistName, updatedValues),
     onSuccess: async (_, { name, artwork, tracks }) => {
       // Invalidate all playlist queries.
-      queryClient.invalidateQueries({ queryKey: q.playlists._def });
+      queryClient.resetQueries({ queryKey: q.playlists._def });
       // Invalidate favorite lists query to update the artwork or name used.
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
 
