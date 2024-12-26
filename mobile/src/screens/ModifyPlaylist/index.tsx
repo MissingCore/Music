@@ -81,7 +81,7 @@ function PageContent() {
   const tracks = usePlaylistStore((state) => state.tracks);
   const isUnchanged = usePlaylistStore((state) => state.isUnchanged);
   const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
-  const onReorderTrack = usePlaylistStore((state) => state.onReorderTrack);
+  const moveTrack = usePlaylistStore((state) => state.moveTrack);
   const setShowConfirmation = usePlaylistStore(
     (state) => state.setShowConfirmation,
   );
@@ -116,10 +116,9 @@ function PageContent() {
         data={tracks}
         keyExtractor={({ id }) => id}
         renderItem={renderItem}
-        onReordered={onReorderTrack}
+        onReordered={moveTrack}
         ListHeaderComponent={ListHeaderComponent}
         {...listPresets}
-        containerStyle={{ flex: 1 }} // Applies to the `<Animated.View />` wrapping the `<FlashList />`.
         contentContainerClassName="py-4" // Applies to the internal `<FlashList />`.
       />
     </View>
@@ -136,7 +135,7 @@ const RenderItem = memo(function RenderItem({
   const swipeableRef = useRef<SwipeableRef>(null);
   const [lastItemId, setLastItemId] = useState(item.id);
 
-  const removeTrack = usePlaylistStore((state) => state.onRemoveTrack);
+  const removeTrack = usePlaylistStore((state) => state.removeTrack);
 
   const onPress = useCallback(
     () => removeTrack(item.id),
@@ -213,10 +212,8 @@ function ListHeaderComponent() {
   const initialName = usePlaylistStore((state) => state.initialName);
   const isUnique = usePlaylistStore((state) => state.isUnique);
   const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
-  const onRenamePlaylist = usePlaylistStore((state) => state.onRenamePlaylist);
-  const addCallbacks = usePlaylistStore(
-    (state) => state.AddMusicSheetCallbacks,
-  );
+  const setPlaylistName = usePlaylistStore((state) => state.setPlaylistName);
+  const addCallbacks = usePlaylistStore((state) => state.SearchCallbacks);
 
   return (
     <>
@@ -225,7 +222,7 @@ function ListHeaderComponent() {
           autoFocus={false}
           editable={!isSubmitting}
           defaultValue={initialName}
-          onChangeText={onRenamePlaylist}
+          onChangeText={setPlaylistName}
           placeholder={t("form.placeholder.playlistName")}
           className="shrink grow border-b border-foreground/60"
         />
@@ -313,13 +310,13 @@ function DeleteWorkflow() {
   const mode = usePlaylistStore((state) => state.mode);
   const initialPlaylistName = usePlaylistStore((state) => state.initialName);
   const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
-  const submit = usePlaylistStore((state) => state.INTERNAL_Submit);
+  const setIsSubmitting = usePlaylistStore((state) => state.setIsSubmitting);
   const deletePlaylist = useDeletePlaylist(initialPlaylistName ?? "");
 
   if (mode !== "edit") return null;
 
   const onDelete = async () => {
-    submit();
+    setIsSubmitting(true);
     // Slight buffer before running mutation.
     await wait(100);
     mutateGuard(deletePlaylist, undefined, {

@@ -16,7 +16,7 @@ export default function CreatePlaylistScreen() {
 
   return (
     <ModifyPlaylist
-      allPlaylistNames={data?.map(({ name }) => name) ?? []}
+      usedNames={data?.map(({ name }) => name) ?? []}
       onSubmit={async (playlistName, tracks) => {
         await mutateGuardAsync(
           createPlaylist,

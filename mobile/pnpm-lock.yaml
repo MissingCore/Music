@@ -130,8 +130,8 @@ importers:
         specifier: ^6.3.2
         version: 6.3.2(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1)
       react-native-draglist:
-        specifier: github:MissingCore/react-native-draglist#66ff2261e49bc376507169dc679f47ff539ad041
-        version: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/66ff2261e49bc376507169dc679f47ff539ad041(@shopify/flash-list@1.7.2(@babel/runtime@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1))(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1)
+        specifier: github:MissingCore/react-native-draglist#30df0ad6d4ca7686a84a9ce7328d7faf7d1e5b71
+        version: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/30df0ad6d4ca7686a84a9ce7328d7faf7d1e5b71(@shopify/flash-list@1.7.2(@babel/runtime@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1))(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1)
       react-native-gesture-handler:
         specifier: ~2.21.2
         version: 2.21.2(patch_hash=bh4ckg75hvy7pf4jc45bgdz2jy)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1)
@@ -5102,8 +5102,8 @@ packages:
       react-native-svg:
         optional: true
 
-  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/66ff2261e49bc376507169dc679f47ff539ad041:
-    resolution: {tarball: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/66ff2261e49bc376507169dc679f47ff539ad041}
+  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/30df0ad6d4ca7686a84a9ce7328d7faf7d1e5b71:
+    resolution: {tarball: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/30df0ad6d4ca7686a84a9ce7328d7faf7d1e5b71}
     version: 3.8.0
     peerDependencies:
       '@shopify/flash-list': '*'
@@ -12027,7 +12027,7 @@ snapshots:
       - '@babel/core'
       - supports-color
 
-  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/66ff2261e49bc376507169dc679f47ff539ad041(@shopify/flash-list@1.7.2(@babel/runtime@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1))(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1):
+  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/30df0ad6d4ca7686a84a9ce7328d7faf7d1e5b71(@shopify/flash-list@1.7.2(@babel/runtime@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1))(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1):
     dependencies:
       '@shopify/flash-list': 1.7.2(@babel/runtime@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1)
       react: 18.3.1

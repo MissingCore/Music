@@ -31,7 +31,7 @@ export default function ModifyPlaylistScreen() {
   return (
     <ModifyPlaylist
       mode="edit"
-      allPlaylistNames={allPlaylists?.map(({ name }) => name) ?? []}
+      usedNames={allPlaylists?.map(({ name }) => name) ?? []}
       initialName={id}
       initialTracks={initialTracks}
       onSubmit={async (playlistName, tracks) => {

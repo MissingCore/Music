@@ -18,35 +18,39 @@ type StoreModeOptions =
   | { mode: "edit"; initialName: string; initialTracks: TrackWithAlbum[] };
 
 export type InitStoreProps = StoreModeOptions & {
-  allPlaylistNames: string[];
+  usedNames: string[];
   onSubmit: (playlistName: string, tracks: TrackWithAlbum[]) => Promise<void>;
 };
 
 type PlaylistStore = InitStoreProps & {
   playlistName: string;
+  setPlaylistName: (newName: string) => void;
+
   tracks: TrackWithAlbum[];
+  moveTrack: (fromIndex: number, toIndex: number) => void;
+  removeTrack: (id: string) => void;
 
   isUnique: boolean;
   isUnchanged: boolean;
+
+  /** If we're firing the `onSubmit` function. */
   isSubmitting: boolean;
-
+  setIsSubmitting: (status: boolean) => void;
+  /** If the "unsaved changes" modal is rendered. */
   showConfirmation: boolean;
-  setShowConfirmation: (newState: boolean) => void;
+  setShowConfirmation: (status: boolean) => void;
 
-  INTERNAL_Submit: () => void;
+  /** Callbacks to add searched tracks to the `tracks` state. */
+  SearchCallbacks: Pick<SearchCallbacks, "album" | "track">;
+
+  /** Validates our inputs before passing those values to `onSubmit`. */
   INTERNAL_onSubmit: () => Promise<void>;
-
-  onRenamePlaylist: (newName: string) => void;
-
-  onRemoveTrack: (id: string) => void;
-  onReorderTrack: (fromIndex: number, toIndex: number) => void;
-
-  AddMusicSheetCallbacks: Pick<SearchCallbacks, "album" | "track">;
 };
 
+/** "Derived" state subscribed to changes. */
 const computed = createComputed(
   ({
-    allPlaylistNames,
+    usedNames,
     initialName,
     initialTracks,
     playlistName,
@@ -56,8 +60,7 @@ const computed = createComputed(
     let isUnique = false;
     try {
       const sanitized = sanitizePlaylistName(playlistName);
-      isUnique =
-        sanitized === initialName || !allPlaylistNames.includes(sanitized);
+      isUnique = sanitized === initialName || !usedNames.includes(sanitized);
     } catch {}
 
     // Checks to see if initial playlist name & tracks is unchanged.
@@ -87,43 +90,28 @@ export function PlaylistStoreProvider({
     storeRef.current = createStore<PlaylistStore>()(
       computed((set, get) => ({
         ...initProps,
+
         playlistName: initProps.initialName ?? "",
+        setPlaylistName: (newName) => set({ playlistName: newName }),
+
         tracks: initProps.initialTracks ?? [],
-
-        isSubmitting: false,
-
-        showConfirmation: false,
-        setShowConfirmation: (newState) => set({ showConfirmation: newState }),
-
-        INTERNAL_Submit: () => set({ isSubmitting: true }),
-        INTERNAL_onSubmit: async () => {
-          try {
-            const { playlistName, tracks, onSubmit } = get();
-            const sanitizedName = sanitizePlaylistName(playlistName);
-            set({ isSubmitting: true });
-            // Slight buffer before running heavy async task.
-            await wait(100);
-            await onSubmit(sanitizedName, tracks);
-          } catch {}
-          set({ isSubmitting: false });
-        },
-
-        onRenamePlaylist: (newName) => {
-          set({ playlistName: newName });
-        },
-
-        onRemoveTrack: (id) => {
-          set((prev) => ({ tracks: prev.tracks.filter((t) => t.id !== id) }));
-        },
-        onReorderTrack: (fromIndex, toIndex) => {
+        moveTrack: (fromIndex, toIndex) => {
           set((prev) => {
             const copy = [...prev.tracks];
             const moved = copy.splice(fromIndex, 1);
             return { tracks: copy.toSpliced(toIndex, 0, moved[0]!) };
           });
         },
+        removeTrack: (id) => {
+          set((prev) => ({ tracks: prev.tracks.filter((t) => t.id !== id) }));
+        },
 
-        AddMusicSheetCallbacks: {
+        isSubmitting: false,
+        setIsSubmitting: (status) => set({ isSubmitting: status }),
+        showConfirmation: false,
+        setShowConfirmation: (status) => set({ showConfirmation: status }),
+
+        SearchCallbacks: {
           album: ({ tracks, ...album }) => {
             set((prev) => ({
               tracks: mergeTracks(
@@ -149,6 +137,18 @@ export function PlaylistStoreProvider({
               ToastOptions,
             );
           },
+        },
+
+        INTERNAL_onSubmit: async () => {
+          try {
+            const { playlistName, tracks, onSubmit } = get();
+            const sanitizedName = sanitizePlaylistName(playlistName);
+            set({ isSubmitting: true });
+            // Slight buffer before running heavy async task.
+            await wait(100);
+            await onSubmit(sanitizedName, tracks);
+          } catch {}
+          set({ isSubmitting: false });
         },
       })),
     );
