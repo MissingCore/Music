@@ -1,8 +1,10 @@
 import { View } from "react-native";
 
 import { cn } from "@/lib/style";
-import { omitKeys } from "@/utils/object";
-import { Ripple } from "@/components/Form";
+import { omitKeys, pickKeys } from "@/utils/object";
+import type { UniformObject } from "@/utils/types";
+import type { PressProps } from "@/components/Form";
+import { PressPropsKeys, Ripple } from "@/components/Form";
 import { Kbd, StyledText } from "@/components/Typography";
 import { MediaImage } from "@/modules/media/components/MediaImage";
 import type { MediaType } from "@/modules/media/types";
@@ -19,8 +21,11 @@ export namespace SearchResult {
   };
 
   export type Variations =
-    | { as?: "default"; onPress?: never; wrapperClassName?: never }
-    | { as: "ripple"; onPress: () => void; wrapperClassName?: string };
+    | ({ as?: "default" } & UniformObject<
+        PressProps & { wrapperClassName?: string },
+        never
+      >)
+    | ({ as: "ripple"; wrapperClassName?: string } & PressProps);
 
   export type Props = Content &
     Variations & {
@@ -31,17 +36,18 @@ export namespace SearchResult {
 }
 
 const wrapperPropsKeys = [
-  ...["as", "onPress", "className", "wrapperClassName"],
+  ...["as", "className", "wrapperClassName"],
+  ...PressPropsKeys,
 ] as const;
 
 /** Displays information about a media item. */
 export function SearchResult(props: SearchResult.Props) {
-  const { as, onPress, className, wrapperClassName } = props;
+  const { as, className, ...rippleProps } = pickKeys(props, wrapperPropsKeys);
   const contentProps = omitKeys(props, wrapperPropsKeys);
 
   if (as === "ripple") {
     return (
-      <Ripple {...{ onPress, wrapperClassName, className }}>
+      <Ripple {...{ ...rippleProps, className }}>
         <SearchResultContent {...contentProps} />
       </Ripple>
     );

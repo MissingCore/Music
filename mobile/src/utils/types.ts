@@ -9,3 +9,8 @@ export type Prettify<T> = {
 } & unknown;
 
 export type Maybe<T> = T | null | undefined;
+
+/** Make all keys in an object type have the same type. */
+export type UniformObject<TObj extends Record<any, any>, TData> = {
+  [K in keyof TObj]: TData;
+};
