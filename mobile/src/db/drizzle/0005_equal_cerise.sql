@@ -24,14 +24,16 @@ INSERT INTO `__new_tracks`("id", "name", "artist_name", "album_id", "artwork", "
 DROP TABLE `tracks`;--> statement-breakpoint
 ALTER TABLE `__new_tracks` RENAME TO `tracks`;--> statement-breakpoint
 PRAGMA foreign_keys=ON;--> statement-breakpoint
+ALTER TABLE `artists` ADD `artwork` text;--> statement-breakpoint
 CREATE TABLE `__new_tracks_to_playlists` (
 	`track_id` text NOT NULL,
 	`playlist_name` text NOT NULL,
+	`position` integer DEFAULT -1 NOT NULL,
 	PRIMARY KEY(`track_id`, `playlist_name`),
 	FOREIGN KEY (`track_id`) REFERENCES `tracks`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`playlist_name`) REFERENCES `playlists`(`name`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
-INSERT INTO `__new_tracks_to_playlists`("track_id", "playlist_name") SELECT "track_id", "playlist_name" FROM `tracks_to_playlists`;--> statement-breakpoint
+INSERT INTO `__new_tracks_to_playlists`("track_id", "playlist_name", "position") SELECT "track_id", "playlist_name", "position" FROM `tracks_to_playlists`;--> statement-breakpoint
 DROP TABLE `tracks_to_playlists`;--> statement-breakpoint
 ALTER TABLE `__new_tracks_to_playlists` RENAME TO `tracks_to_playlists`;

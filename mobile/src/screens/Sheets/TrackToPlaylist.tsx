@@ -44,6 +44,7 @@ export default function TrackToPlaylistSheet(props: {
               selected={selected}
               onSelect={() =>
                 mutateGuard(
+                  // @ts-expect-error - We don't care about return type.
                   selected ? removeFromPlaylist : addToPlaylist,
                   item.name,
                 )

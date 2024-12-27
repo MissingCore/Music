@@ -39,7 +39,7 @@ export function CurrentListLayout(props: {
       <View className="flex-row gap-2 px-4">
         <Pressable
           disabled={isFavorite || !SupportedArtwork.has(props.mediaSource.type)}
-          delayLongPress={150}
+          delayLongPress={300}
           onLongPress={() => {
             SheetManager.show(
               `${capitalize(props.mediaSource.type)}ArtworkSheet`,

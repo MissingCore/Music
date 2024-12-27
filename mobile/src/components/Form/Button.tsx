@@ -5,6 +5,13 @@ import { useTheme } from "@/hooks/useTheme";
 
 import { cn } from "@/lib/style";
 
+export const PressPropsKeys = [
+  ...["disabled", "delayLongPress", "onLongPress", "onPress", "onPressOut"],
+] as const;
+
+/** The most "used" action props used on `<Pressable />`. */
+export type PressProps = Pick<PressableProps, (typeof PressPropsKeys)[number]>;
+
 //#region Button
 /** Styled button meeting the recommened touch target size. */
 export function Button({ className, ...props }: PressableProps) {
@@ -29,48 +36,50 @@ type ConditionalIconButtonProps =
 /** Button specifically built for icons. */
 export function IconButton({
   kind = "default",
-  ...props
-}: ConditionalIconButtonProps & {
-  children: React.ReactNode;
-  onPress: () => void;
-  disabled?: boolean;
-  /** Radius of ripple if we don't use a standard `24px` icon. */
-  rippleRadius?: number;
-  style?: StyleProp<ViewStyle>;
-  className?: string;
-}) {
+  accessibilityLabel,
+  rippleRadius,
+  className,
+  ...pressableProps
+}: ConditionalIconButtonProps &
+  PressProps & {
+    children: React.ReactNode;
+    /** Radius of ripple if we don't use a standard `24px` icon. */
+    rippleRadius?: number;
+    style?: StyleProp<ViewStyle>;
+    className?: string;
+  }) {
   const { onSurface } = useTheme();
   return (
     <Pressable
-      accessibilityLabel={props.accessibilityLabel}
+      accessibilityLabel={accessibilityLabel}
       android_ripple={
         kind === "ripple"
-          ? { color: onSurface, radius: props.rippleRadius ?? 18 }
+          ? { color: onSurface, radius: rippleRadius ?? 18 }
           : undefined
       }
-      onPress={props.onPress}
-      disabled={props.disabled}
-      style={props.style}
       className={cn(
         "min-h-12 min-w-12 items-center justify-center p-3 disabled:opacity-25",
         {
           "rounded-md bg-surface active:opacity-75": kind !== "ripple",
           "flex-row justify-start gap-2": kind === "extended",
         },
-        props.className,
+        className,
       )}
-    >
-      {props.children}
-    </Pressable>
+      {...pressableProps}
+    />
   );
 }
 //#endregion
 
 //#region Ripple Button
 /** Button styled using `android_ripple` for press animations. */
-export function Ripple(props: {
+export function Ripple({
+  wrapperStyle,
+  wrapperClassName,
+  className,
+  ...pressableProps
+}: PressProps & {
   children: React.ReactNode;
-  onPress: () => void;
   /** Styles applied to the `<View />` wrapping the `<Pressable />`. */
   wrapperStyle?: StyleProp<ViewStyle>;
   /** Classnames applied to the `<View />` wrapping the `<Pressable />`. */
@@ -81,17 +90,14 @@ export function Ripple(props: {
   const { surface } = useTheme();
   return (
     <View
-      style={props.wrapperStyle}
-      className={cn("overflow-hidden rounded-sm", props.wrapperClassName)}
+      style={wrapperStyle}
+      className={cn("overflow-hidden rounded-sm", wrapperClassName)}
     >
       <Pressable
         android_ripple={{ color: surface }}
-        onPress={props.onPress}
-        style={props.style}
-        className={cn("min-h-12 flex-row items-center gap-2", props.className)}
-      >
-        {props.children}
-      </Pressable>
+        className={cn("min-h-12 flex-row items-center gap-2", className)}
+        {...pressableProps}
+      />
     </View>
   );
 }

@@ -1,1 +1,0 @@
-ALTER TABLE `artists` ADD `artwork` text;

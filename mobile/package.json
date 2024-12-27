@@ -57,6 +57,7 @@
     "react-native": "0.75.4",
     "react-native-actions-sheet": "^0.9.7",
     "react-native-bootsplash": "^6.3.2",
+    "react-native-draglist": "github:MissingCore/react-native-draglist#30df0ad6d4ca7686a84a9ce7328d7faf7d1e5b71",
     "react-native-gesture-handler": "~2.21.2",
     "react-native-markdown-display": "^7.0.2",
     "react-native-pager-view": "^6.6.1",
@@ -68,7 +69,8 @@
     "react-native-track-player": "^4.1.1",
     "tailwind-merge": "^2.5.5",
     "zod": "^3.24.1",
-    "zustand": "5.0.2"
+    "zustand": "5.0.2",
+    "zustand-computed": "^2.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
@@ -106,7 +108,8 @@
     },
     "patchedDependencies": {
       "react-native-actions-sheet@0.9.7": "patches/react-native-actions-sheet@0.9.7.patch",
-      "@backpackapp-io/react-native-toast@0.13.0": "patches/@backpackapp-io__react-native-toast@0.13.0.patch"
+      "@backpackapp-io/react-native-toast@0.13.0": "patches/@backpackapp-io__react-native-toast@0.13.0.patch",
+      "react-native-gesture-handler@2.21.2": "patches/react-native-gesture-handler@2.21.2.patch"
     }
   }
 }

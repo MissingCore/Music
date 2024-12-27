@@ -11,6 +11,7 @@ import { cn } from "@/lib/style";
 import type { Maybe, Prettify } from "@/utils/types";
 import type { WithListEmptyProps } from "@/components/Defaults";
 import { useListPresets } from "@/components/Defaults";
+import type { PressProps } from "@/components/Form";
 import { IconButton } from "@/components/Form";
 import { SearchResult } from "@/modules/search/components";
 
@@ -21,12 +22,13 @@ export namespace Track {
   > & { id: string };
 
   export type Props = Prettify<
-    Content & {
-      trackSource: PlayListSource;
-      LeftElement?: React.JSX.Element;
-      /** Note: Maps to `wrapperClassName` on `<SearchResult />`. */
-      className?: string;
-    }
+    Content &
+      Omit<PressProps, "onPress"> & {
+        trackSource: PlayListSource;
+        LeftElement?: React.JSX.Element;
+        /** Note: Maps to `wrapperClassName` on `<SearchResult />`. */
+        className?: string;
+      }
   >;
 }
 
@@ -46,6 +48,7 @@ export function Track({ id, trackSource, className, ...props }: Track.Props) {
           kind="ripple"
           accessibilityLabel={t("template.entrySeeMore", { name: props.title })}
           onPress={() => SheetManager.show("TrackSheet", { payload: { id } })}
+          disabled={props.disabled}
         >
           <MoreVert />
         </IconButton>

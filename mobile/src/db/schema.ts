@@ -106,6 +106,7 @@ export const tracksToPlaylists = sqliteTable(
     playlistName: text()
       .notNull()
       .references(() => playlists.name),
+    position: integer().notNull().default(-1),
   },
   (t) => [primaryKey({ columns: [t.trackId, t.playlistName] })],
 );
