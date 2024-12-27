@@ -22,6 +22,9 @@
 
     "favorite": "Dieses Lied lieben",
     "unFavorite": "Aus deinen Favoriten entfernen"
+    "favoriteTracks": "Lieblingslieder",
+
+    "disc": "CD {{count}}"
   },
 
   "header": {
