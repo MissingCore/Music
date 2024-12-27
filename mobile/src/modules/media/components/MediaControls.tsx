@@ -4,6 +4,7 @@ import {
   Pause,
   PlayArrow,
   Repeat,
+  RepeatOne,
   Shuffle,
   SkipNext,
   SkipPrevious,
@@ -20,17 +21,25 @@ type MediaControlProps = { size?: number };
 /** Toggles the repeat status. */
 export function RepeatButton({ size = 32 }: MediaControlProps) {
   const { t } = useTranslation();
-  const isActive = useMusicStore((state) => state.repeat);
-  const setRepeat = useMusicStore((state) => state.setRepeat);
+  const repeatMode = useMusicStore((state) => state.repeat);
+  const cycleRepeat = useMusicStore((state) => state.cycleRepeat);
+
+  const RepeatIcon = repeatMode === "repeat-one" ? RepeatOne : Repeat;
+
   return (
     <IconButton
       kind="ripple"
-      accessibilityLabel={t("common.repeat")}
-      onPress={() => setRepeat(!isActive)}
+      accessibilityLabel={t(
+        `common.repeat${repeatMode === "repeat-one" ? "One" : ""}`,
+      )}
+      onPress={cycleRepeat}
       rippleRadius={size * 0.75}
       className="p-2"
     >
-      <Repeat size={size} {...(isActive ? { color: Colors.red } : {})} />
+      <RepeatIcon
+        size={size}
+        {...(repeatMode !== "no-repeat" ? { color: Colors.red } : {})}
+      />
     </IconButton>
   );
 }
