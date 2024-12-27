@@ -1,4 +1,5 @@
 import { Stack, router } from "expo-router";
+import type { ParseKeys } from "i18next";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler, Modal, Pressable, View } from "react-native";
@@ -10,6 +11,7 @@ import type { TrackWithAlbum } from "@/db/schema";
 
 import { Add, Cancel, CheckCircle, Check, Remove } from "@/icons";
 import { useDeletePlaylist } from "@/queries/playlist";
+import { useTheme } from "@/hooks/useTheme";
 import type { InitStoreProps } from "./context";
 import { PlaylistStoreProvider, usePlaylistStore } from "./context";
 
@@ -259,44 +261,26 @@ function ListHeaderComponent() {
 //#region Confirmation Modal
 /** Modal that's rendered if we have unsaved changes. */
 function ConfirmationModal() {
-  const { t } = useTranslation();
-
   const showConfirmation = usePlaylistStore((state) => state.showConfirmation);
   const setShowConfirmation = usePlaylistStore(
     (state) => state.setShowConfirmation,
   );
 
   return (
-    <Modal
-      animationType="fade"
-      visible={showConfirmation}
-      statusBarTranslucent
-      transparent
-    >
-      <View className="flex-1 items-center justify-center bg-neutral0/50 px-4">
-        <View className="w-full gap-8 rounded-md bg-canvas px-4 dark:bg-neutral5">
-          <TStyledText textKey="form.unsaved" className="pt-8 text-center" />
-          <View className="flex-row justify-end gap-4">
-            <Pressable
-              onPress={() => setShowConfirmation(false)}
-              className="min-h-12 min-w-12 shrink px-2 py-4 active:opacity-50"
-            >
-              <StyledText className="text-right text-sm">
-                {t("form.stay").toLocaleUpperCase()}
-              </StyledText>
-            </Pressable>
-            <Pressable
-              onPress={() => router.back()}
-              className="min-h-12 min-w-12 shrink px-2 py-4 active:opacity-50"
-            >
-              <StyledText className="text-right text-sm text-red">
-                {t("form.leave").toLocaleUpperCase()}
-              </StyledText>
-            </Pressable>
-          </View>
-        </View>
+    <ModalBase visible={showConfirmation}>
+      <TStyledText textKey="form.unsaved" className="pt-8 text-center" />
+      <View className="flex-row justify-end gap-4">
+        <ModalButton
+          textKey="form.stay"
+          onPress={() => setShowConfirmation(false)}
+        />
+        <ModalButton
+          textKey="form.leave"
+          onPress={() => router.back()}
+          danger
+        />
       </View>
-    </Modal>
+    </ModalBase>
   );
 }
 //#endregion
@@ -305,6 +289,7 @@ function ConfirmationModal() {
 /** Logic to handle us deleting the playlist. */
 function DeleteWorkflow() {
   const { t } = useTranslation();
+  const { canvas } = useTheme();
   const [lastChance, setLastChance] = useState(false);
 
   const mode = usePlaylistStore((state) => state.mode);
@@ -316,6 +301,7 @@ function DeleteWorkflow() {
   if (mode !== "edit") return null;
 
   const onDelete = async () => {
+    setLastChance(false);
     setIsSubmitting(true);
     // Slight buffer before running mutation.
     await wait(100);
@@ -327,47 +313,70 @@ function DeleteWorkflow() {
     });
   };
 
-  const buttonClass =
-    "min-h-12 min-w-12 shrink items-center justify-center px-2 py-4 active:opacity-50";
-
   return (
-    <View
-      className={cn("flex-row gap-2 bg-surface px-4", {
-        "opacity-25": isSubmitting,
-      })}
-    >
+    <>
       <Pressable
+        android_ripple={{ color: canvas }}
         onPress={() => setLastChance(true)}
         disabled={lastChance || isSubmitting}
-        className={cn(buttonClass, "grow", { "items-start": lastChance })}
+        className="min-h-12 justify-center bg-surface disabled:opacity-25"
       >
-        <StyledText className={cn("text-sm", { "text-red": !lastChance })}>
+        <StyledText className="text-center text-sm text-red">
           {t("playlist.delete").toLocaleUpperCase()}
         </StyledText>
       </Pressable>
-      {lastChance ? (
-        <>
-          <Pressable
+      <ModalBase visible={lastChance}>
+        <TStyledText textKey="playlist.delete" className="pt-8 text-center" />
+        <View className="flex-row justify-end gap-4">
+          <ModalButton
+            textKey="form.cancel"
             onPress={() => setLastChance(false)}
-            disabled={isSubmitting}
-            className={buttonClass}
-          >
-            <StyledText className="text-right text-sm">
-              {t("form.cancel").toLocaleUpperCase()}
-            </StyledText>
-          </Pressable>
-          <Pressable
-            onPress={onDelete}
-            disabled={isSubmitting}
-            className={buttonClass}
-          >
-            <StyledText className="text-right text-sm text-red">
-              {t("form.confirm").toLocaleUpperCase()}
-            </StyledText>
-          </Pressable>
-        </>
-      ) : null}
-    </View>
+          />
+          <ModalButton textKey="form.confirm" onPress={onDelete} danger />
+        </View>
+      </ModalBase>
+    </>
+  );
+}
+//#endregion
+
+//#region Modal
+/** Base layout for native modals. */
+function ModalBase(props: { visible: boolean; children: React.ReactNode }) {
+  return (
+    <Modal
+      animationType="fade"
+      visible={props.visible}
+      statusBarTranslucent
+      transparent
+    >
+      <View className="flex-1 items-center justify-center bg-neutral0/50 px-4">
+        <View className="w-full gap-8 rounded-md bg-canvas px-4 dark:bg-neutral5">
+          {props.children}
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
+/** Base implementation of modal button. */
+function ModalButton(props: {
+  textKey: ParseKeys;
+  onPress: () => void | Promise<void>;
+  danger?: boolean;
+}) {
+  const { t } = useTranslation();
+  return (
+    <Pressable
+      onPress={props.onPress}
+      className="min-h-12 min-w-12 shrink px-2 py-4 active:opacity-50"
+    >
+      <StyledText
+        className={cn("text-right text-sm", { "text-red": props.danger })}
+      >
+        {t(props.textKey).toLocaleUpperCase()}
+      </StyledText>
+    </Pressable>
   );
 }
 //#endregion
