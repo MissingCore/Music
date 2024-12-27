@@ -21,6 +21,7 @@ export { PlaylistAdd } from "./PlaylistAdd";
 export { QueueMusic } from "./QueueMusic";
 export { Remove } from "./Remove";
 export { Repeat } from "./Repeat";
+export { RepeatOne } from "./RepeatOne";
 export { Schedule } from "./Schedule";
 export { Search } from "./Search";
 export { Settings } from "./Settings";
