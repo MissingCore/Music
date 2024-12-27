@@ -14,6 +14,7 @@ import { sortTracks } from "@/modules/media/services/SortPreferences";
 
 import { iAsc } from "@/lib/drizzle";
 import { deleteImage } from "@/lib/file-system";
+import { moveArray } from "@/utils/object";
 import type { ReservedPlaylistName } from "@/modules/media/constants";
 import { ReservedPlaylists } from "@/modules/media/constants";
 import type { DrizzleFilter, QuerySingleFn } from "./types";
@@ -120,16 +121,12 @@ export async function moveInPlaylist(info: {
       .delete(tracksToPlaylists)
       .where(eq(tracksToPlaylists.playlistName, info.playlistName))
       .returning();
-
-    const copy = [...tracksInPlaylist].sort((a, b) => a.position - b.position);
-    const moved = copy.splice(info.fromIndex, 1);
-    await tx
-      .insert(tracksToPlaylists)
-      .values(
-        copy
-          .toSpliced(info.toIndex, 0, moved[0]!)
-          .map((t, position) => ({ ...t, position })),
-      );
+    await tx.insert(tracksToPlaylists).values(
+      moveArray(
+        [...tracksInPlaylist].sort((a, b) => a.position - b.position),
+        { fromIndex: info.fromIndex, toIndex: info.toIndex },
+      ).map((t, position) => ({ ...t, position })),
+    );
   });
 }
 

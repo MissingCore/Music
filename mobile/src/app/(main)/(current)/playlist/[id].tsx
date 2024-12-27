@@ -18,7 +18,7 @@ import { CurrentListLayout } from "@/layouts/CurrentList";
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
-import { pickKeys } from "@/utils/object";
+import { moveArray, pickKeys } from "@/utils/object";
 import { useListPresets } from "@/components/Defaults";
 import { IconButton } from "@/components/Form";
 import type { SwipeableRef } from "@/components/Swipeable";
@@ -52,11 +52,7 @@ export default function CurrentPlaylistScreen() {
 
   const onReordered = useCallback(
     async (fromIndex: number, toIndex: number) => {
-      setPlaylistTracks((prev) => {
-        const copy = [...prev];
-        const moved = copy.splice(fromIndex, 1);
-        return copy.toSpliced(toIndex, 0, moved[0]!);
-      });
+      setPlaylistTracks((prev) => moveArray(prev, { fromIndex, toIndex }));
       mutateGuard(moveInPlaylist, { fromIndex, toIndex });
     },
     [moveInPlaylist],

@@ -10,6 +10,7 @@ import { mergeTracks, sanitizePlaylistName } from "@/db/utils";
 import i18next from "@/modules/i18n";
 
 import { ToastOptions } from "@/lib/toast";
+import { moveArray } from "@/utils/object";
 import { wait } from "@/utils/promise";
 import type { SearchCallbacks } from "@/modules/search/types";
 
@@ -96,11 +97,9 @@ export function PlaylistStoreProvider({
 
         tracks: initProps.initialTracks ?? [],
         moveTrack: (fromIndex, toIndex) => {
-          set((prev) => {
-            const copy = [...prev.tracks];
-            const moved = copy.splice(fromIndex, 1);
-            return { tracks: copy.toSpliced(toIndex, 0, moved[0]!) };
-          });
+          set((prev) => ({
+            tracks: moveArray(prev.tracks, { fromIndex, toIndex }),
+          }));
         },
         removeTrack: (id) => {
           set((prev) => ({ tracks: prev.tracks.filter((t) => t.id !== id) }));

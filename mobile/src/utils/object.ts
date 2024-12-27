@@ -6,6 +6,16 @@ export function arrayIncludes<T>(arr: readonly T[], v: unknown): v is T {
   return arr.includes(v as T);
 }
 
+/** Returns a copy of the array with the value at the specified index moved. */
+export function moveArray<T>(
+  arr: T[],
+  movement: { fromIndex: number; toIndex: number },
+) {
+  const copy = [...arr];
+  const moved = copy.splice(movement.fromIndex, 1);
+  return copy.toSpliced(movement.toIndex, 0, moved[0]!);
+}
+
 /** Partion an array into 2 arrays based on a predicate. */
 export function partitionArray<TData>(
   arr: TData[],
