@@ -73,7 +73,7 @@ export async function PlaybackService() {
       } else {
         musicStore.setState({ isInQueue: true });
       }
-    } else if (trackStatus === undefined) {
+    } else if (repeat !== "repeat-one" && trackStatus === undefined) {
       // If `trackStatus = undefined`, it means the player naturally played
       // the next track (which isn't part of `queueList`).
 
@@ -83,7 +83,7 @@ export async function PlaybackService() {
       musicStore.setState(nextTrack);
 
       // Check if we should pause after looping logic.
-      if (nextTrack.listIdx === 0 && !repeat) {
+      if (nextTrack.listIdx === 0 && repeat === "no-repeat") {
         await MusicControls.pause();
         await TrackPlayer.seekTo(0);
       }
