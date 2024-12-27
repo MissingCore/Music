@@ -34,8 +34,8 @@ export function useBottomActionsContext() {
   let withNav = 76; // 60px Navbar Height + 16px Bottom Padding
   if (isMiniPlayerRendered) withNav += 67; // 64px MiniPlayer Height + 3px Gap
   // Bottom inset on screens with only MiniPlayer.
-  let onlyPlayer = 16;
-  if (isMiniPlayerRendered) onlyPlayer += 64;
+  let onlyPlayer = 0;
+  if (isMiniPlayerRendered) onlyPlayer += 80; // 64px MiniPlayer Height + 16px Bottom Padding
 
   return {
     isRendered: { miniPlayer: isMiniPlayerRendered, navBar: !hideNavBar },

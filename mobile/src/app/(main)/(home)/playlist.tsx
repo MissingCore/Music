@@ -1,5 +1,6 @@
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
 
 import { Add } from "@/icons";
 import { usePlaylistsForCards } from "@/queries/playlist";
@@ -32,13 +33,15 @@ export default function PlaylistScreen() {
 function PlaylistActions() {
   const { t } = useTranslation();
   return (
-    <IconButton
-      accessibilityLabel={t("playlist.create")}
-      onPress={() => router.navigate("/playlist/create")}
-      className="bg-red"
-    >
-      <Add color={Colors.neutral100} />
-    </IconButton>
+    <View className="rounded-md bg-canvas">
+      <IconButton
+        accessibilityLabel={t("playlist.create")}
+        onPress={() => router.navigate("/playlist/create")}
+        className="bg-red"
+      >
+        <Add color={Colors.neutral100} />
+      </IconButton>
+    </View>
   );
 }
 //#endregion
