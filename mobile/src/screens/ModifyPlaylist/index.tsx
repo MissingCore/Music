@@ -154,7 +154,7 @@ const RenderItem = memo(function RenderItem({
       delayLongPress={300}
       onLongPress={info.onDragStart}
       onPressOut={info.onDragEnd}
-      className={cn("group bg-canvas", { "mt-2": info.index > 0 })}
+      className={cn("group", { "mt-2": info.index > 0 })}
     >
       <Swipeable
         // @ts-expect-error - Error assigning ref to class component.
