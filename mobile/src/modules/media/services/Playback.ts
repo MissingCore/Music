@@ -56,7 +56,11 @@ export class MusicControls {
       !(await RNTPManager.isLoaded()) ||
       (await TrackPlayer.getProgress()).position <= 10
     ) {
-      musicStore.setState(prevTrack);
+      const repeatMode = musicStore.getState().repeat;
+      musicStore.setState({
+        ...prevTrack,
+        ...(repeatMode === "repeat-one" ? { repeat: "repeat" } : {}),
+      });
     }
 
     await RNTPManager.reloadCurrentTrack({ restart: true });
@@ -64,19 +68,24 @@ export class MusicControls {
 
   /** Play the next track. */
   static async next() {
-    const shouldRepeat = musicStore.getState().repeat;
+    const repeatMode = musicStore.getState().repeat;
     const { listIdx, ...nextTrack } = RNTPManager.getNextTrack();
     // Make sure we reset if we play from a source with no tracks left.
     if (!nextTrack.activeId) return await musicStore.getState().reset();
     musicStore.setState({
       ...nextTrack,
       ...(!nextTrack.isInQueue ? { listIdx } : {}),
+      // If we're in "repeat-one" mode and we explicitly play the next
+      // track, we'll go back to "repeat" mode.
+      ...(repeatMode === "repeat-one" ? { repeat: "repeat" } : {}),
     });
     // Remove the track in the queue.
     if (nextTrack.isInQueue) await Queue.removeAtIndex(0);
 
     await RNTPManager.reloadCurrentTrack({ restart: true });
-    if (listIdx === 0 && !shouldRepeat) await MusicControls.pause();
+    if (listIdx === 0 && repeatMode === "no-repeat") {
+      await MusicControls.pause();
+    }
   }
 
   /** Seek to a certain position in the current playing track. */

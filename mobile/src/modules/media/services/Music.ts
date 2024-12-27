@@ -17,6 +17,9 @@ import {
 } from "../helpers/data";
 import type { PlayListSource } from "../types";
 
+/** Options for repeat status. */
+export const RepeatModes = ["no-repeat", "repeat", "repeat-one"] as const;
+
 //#region Store
 interface MusicStore {
   /** Determines if the store has been hydrated from AsyncStorage. */
@@ -29,13 +32,10 @@ interface MusicStore {
   /** If we're currently playing a track. */
   isPlaying: boolean;
 
-  /**
-   * If we should continue playing from the beginning of the queue after
-   * finishing the last track.
-   */
-  repeat: boolean;
-  /** Update the `repeat` field. */
-  setRepeat: (status: boolean) => void;
+  /** Behavior of how we'll loop in this list of tracks. */
+  repeat: (typeof RepeatModes)[number];
+  /** Switch to the next repeat mode. */
+  cycleRepeat: () => void;
   /**
    * If we should use `shuffledPlayingList` instead of `playingList` for
    * the order of the tracks played.
@@ -117,8 +117,14 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
 
     isPlaying: false as boolean,
 
-    repeat: false as boolean,
-    setRepeat: (status) => set({ repeat: status }),
+    repeat: "no-repeat",
+    cycleRepeat: () => {
+      const { repeat } = get();
+      let newMode: MusicStore["repeat"] = "repeat";
+      if (repeat === "repeat") newMode = "repeat-one";
+      else if (repeat === "repeat-one") newMode = "no-repeat";
+      set({ repeat: newMode });
+    },
     shuffle: false as boolean,
     setShuffle: async (status) => {
       const { currentTrackList, listIdx, trackList, shuffledTrackList } = get();
@@ -176,6 +182,17 @@ export const useMusicStore = <T>(selector: (state: MusicStore) => T): T =>
 //#endregion
 
 //#region Subscriptions
+/**
+ * Ensure the next track naturally played is correct when we change the
+ * repeat mode.
+ */
+musicStore.subscribe(
+  (state) => state.repeat,
+  async () => {
+    await RNTPManager.reloadNextTrack();
+  },
+);
+
 /** Updates all 3 track lists when `playingList` changes. */
 musicStore.subscribe(
   (state) => state.playingList,
@@ -258,7 +275,7 @@ export class Queue {
  * Helps identifies the track played in the `PlaybackActiveTrackChanged`
  * event.
  */
-export type TrackStatus = "RELOAD" | "QUEUE" | "END" | undefined;
+export type TrackStatus = "RELOAD" | "REPEAT" | "QUEUE" | "END" | undefined;
 
 /** Helpers to help manage the RNTP queue. */
 export class RNTPManager {
@@ -271,12 +288,15 @@ export class RNTPManager {
   static async preload() {
     if (await RNTPManager.isLoaded()) return;
     console.log("[RNTP] Queue is empty, preloading RNTP Queue...");
-    const { activeTrack, isInQueue } = musicStore.getState();
+    const { activeTrack, isInQueue, repeat } = musicStore.getState();
     if (!activeTrack) return;
+    // Identify how we'll load the track.
+    const trackStatus: TrackStatus =
+      repeat === "repeat-one" ? "REPEAT" : isInQueue ? "QUEUE" : "RELOAD";
     // Add the current playing track to the RNTP queue.
     await TrackPlayer.add({
       ...formatTrackforPlayer(activeTrack),
-      "music::status": (isInQueue ? "QUEUE" : "RELOAD") satisfies TrackStatus,
+      "music::status": trackStatus,
     });
     // Add the 2nd track in the RNTP queue.
     await RNTPManager.reloadNextTrack();
@@ -359,18 +379,19 @@ export class RNTPManager {
   static async reloadNextTrack() {
     // Only update the RNTP queue if its defined.
     if (!(await RNTPManager.isLoaded())) return;
-    const currTrack = musicStore.getState().activeTrack;
+    const { activeTrack: currTrack, repeat } = musicStore.getState();
     // Return early if we're not playing anything.
     if (!currTrack) return;
     const nextTrack = RNTPManager.getNextTrack();
     await TrackPlayer.removeUpcomingTracks();
     // If the next track is `undefined`, then we should run `reset()`
-    // after the current track finishes.
-    if (!nextTrack.activeId || !nextTrack.activeTrack) {
+    // after the current track finishes. If we're in "repeat-one" mode,
+    // then we'll repeat the current track.
+    if (repeat === "repeat-one" || !nextTrack.activeTrack) {
+      const status: TrackStatus = repeat === "repeat-one" ? "REPEAT" : "END";
       await TrackPlayer.add({
         ...formatTrackforPlayer(currTrack),
-        // Field read in `PlaybackActiveTrackChanged` event to fire `reset()`.
-        "music::status": "END" satisfies TrackStatus,
+        "music::status": status,
       });
     } else {
       await TrackPlayer.add({
@@ -391,12 +412,15 @@ export class RNTPManager {
       return;
     }
     const playingTrack = await TrackPlayer.getActiveTrack();
-    const { activeTrack, isInQueue } = musicStore.getState();
+    const { activeTrack, isInQueue, repeat } = musicStore.getState();
     // Update the current playing track (or restart the track).
     if (playingTrack?.id !== activeTrack?.id || args?.restart) {
+      // Identify how we'll load the track.
+      const trackStatus: TrackStatus =
+        repeat === "repeat-one" ? "REPEAT" : isInQueue ? "QUEUE" : "RELOAD";
       await TrackPlayer.load({
         ...formatTrackforPlayer(activeTrack!),
-        "music::status": (isInQueue ? "QUEUE" : "RELOAD") satisfies TrackStatus,
+        "music::status": trackStatus,
       });
       await TrackPlayer.seekTo(0);
     }

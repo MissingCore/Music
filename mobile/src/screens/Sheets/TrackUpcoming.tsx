@@ -31,9 +31,10 @@ export default function TrackUpcomingSheet() {
     ...trackList.slice(0, listIndex + 1),
   ];
   // Index where the tracks won't be played.
-  const disableIndex = repeat
-    ? trackList.length + queueList.length
-    : trackList.length - 1 - listIndex + queueList.length;
+  const disableIndex =
+    repeat !== "no-repeat"
+      ? trackList.length + queueList.length
+      : trackList.length - 1 - listIndex + queueList.length;
 
   return (
     <Sheet
