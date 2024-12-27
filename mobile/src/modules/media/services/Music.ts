@@ -388,10 +388,10 @@ export class RNTPManager {
     // after the current track finishes. If we're in "repeat-one" mode,
     // then we'll repeat the current track.
     if (repeat === "repeat-one" || !nextTrack.activeTrack) {
+      const status: TrackStatus = repeat === "repeat-one" ? "REPEAT" : "END";
       await TrackPlayer.add({
         ...formatTrackforPlayer(currTrack),
-        "music::status":
-          repeat === "repeat-one" ? "REPEAT" : ("END" satisfies TrackStatus),
+        "music::status": status,
       });
     } else {
       await TrackPlayer.add({
