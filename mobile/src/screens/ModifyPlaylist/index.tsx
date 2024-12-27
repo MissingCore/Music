@@ -181,7 +181,7 @@ const RenderItem = memo(function RenderItem({
           imageSource={item.artwork}
           className={cn(
             "mx-4 rounded-sm bg-canvas pr-4 group-active:bg-surface/50",
-            { "bg-surface": info.isActive },
+            { "!bg-surface": info.isActive },
           )}
         />
       </Swipeable>
