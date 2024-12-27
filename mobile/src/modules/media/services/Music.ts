@@ -385,17 +385,13 @@ export class RNTPManager {
     const nextTrack = RNTPManager.getNextTrack();
     await TrackPlayer.removeUpcomingTracks();
     // If the next track is `undefined`, then we should run `reset()`
-    // after the current track finishes.
-    if (!nextTrack.activeId || !nextTrack.activeTrack) {
+    // after the current track finishes. If we're in "repeat-one" mode,
+    // then we'll repeat the current track.
+    if (repeat === "repeat-one" || !nextTrack.activeTrack) {
       await TrackPlayer.add({
         ...formatTrackforPlayer(currTrack),
-        // Field read in `PlaybackActiveTrackChanged` event to fire `reset()`.
-        "music::status": "END" satisfies TrackStatus,
-      });
-    } else if (repeat === "repeat-one") {
-      await TrackPlayer.add({
-        ...formatTrackforPlayer(currTrack),
-        "music::status": "REPEAT" satisfies TrackStatus,
+        "music::status":
+          repeat === "repeat-one" ? "REPEAT" : ("END" satisfies TrackStatus),
       });
     } else {
       await TrackPlayer.add({
