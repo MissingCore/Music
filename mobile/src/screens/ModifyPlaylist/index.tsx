@@ -151,7 +151,7 @@ const RenderItem = memo(function RenderItem({
 
   return (
     <Pressable
-      delayLongPress={300}
+      delayLongPress={100}
       onLongPress={info.onDragStart}
       onPressOut={info.onDragEnd}
       className={cn("group", { "mt-2": info.index > 0 })}
