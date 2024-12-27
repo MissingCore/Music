@@ -5,6 +5,10 @@ This file will document any changes made to the master translation file (`en.jso
 > [!NOTE]  
 > Any missing translations will fallback to the values in `en.json`.
 
+## December 27, 2024
+
+- Add `common.repeatOne` key (used as an accessibility label).
+
 ## December 19, 2024
 
 - Add `common.favoriteTracks` key.
