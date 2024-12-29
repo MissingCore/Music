@@ -21,17 +21,13 @@ export async function findAndSaveArtwork() {
   const stopwatch = new Stopwatch();
 
   // Ensure we don't unnecessarily seach for artwork.
-  const albumsWithCovers = new Set(
-    (await getAlbums([isNotNull(albums.artwork)])).map(({ id }) => id),
-  );
+  const albumsWithCovers = await getAlbums([isNotNull(albums.artwork)]);
+  const idsWithCover = albumsWithCovers.map(({ id }) => id);
   await db
     .update(tracks)
     .set({ fetchedArt: true })
     .where(
-      or(
-        inArray(tracks.albumId, [...albumsWithCovers]),
-        isNotNull(tracks.artwork),
-      ),
+      or(inArray(tracks.albumId, idsWithCover), isNotNull(tracks.artwork)),
     );
 
   const uncheckedTracks = await getTracks([eq(tracks.fetchedArt, false)]);
@@ -63,7 +59,6 @@ export async function findAndSaveArtwork() {
       values,
       async ({ artworkUri }) => {
         await updateAlbum(albumId, { artwork: artworkUri });
-        albumsWithCovers.add(albumId);
         newArtworkCount++;
       },
       { endEarly: true },
@@ -86,9 +81,7 @@ export async function findAndSaveArtwork() {
     },
     {
       onEndIteration: () => {
-        // Prevent excessive `setState` on Zustand store which may cause an
-        // "Warning: Maximum update depth exceeded.".
-        checkedFiles += 1;
+        checkedFiles++;
         if (checkedFiles % 25 === 0) {
           onboardingStore.setState({ checked: checkedFiles });
         }
@@ -102,6 +95,7 @@ export async function findAndSaveArtwork() {
   if (newArtworkCount > 0) clearAllQueries();
 }
 
+/** Iterate over a list of tracks, finding and saving its artwork. */
 async function saveSinglesArtwork(
   singles: TrackWithAlbum[],
   onSave: (info: { artworkUri: string; trackId: string }) => Promise<void>,
