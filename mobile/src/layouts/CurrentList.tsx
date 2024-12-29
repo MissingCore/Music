@@ -37,16 +37,10 @@ export function CurrentListLayout(props: {
   return (
     <>
       <View className="flex-row gap-2 px-4">
-        <Pressable
-          disabled={isFavorite || !SupportedArtwork.has(props.mediaSource.type)}
-          delayLongPress={100}
-          onLongPress={() => {
-            SheetManager.show(
-              `${capitalize(props.mediaSource.type)}ArtworkSheet`,
-              { payload: { id: props.title } },
-            );
-          }}
-          className="active:opacity-75"
+        <ImageWrapper
+          title={props.title}
+          type={props.mediaSource.type}
+          isFavorite={isFavorite}
         >
           {/* @ts-expect-error Things should be fine with proper usage. */}
           <MediaImage
@@ -54,7 +48,7 @@ export function CurrentListLayout(props: {
             source={props.imageSource}
             size={128}
           />
-        </Pressable>
+        </ImageWrapper>
         <View className="shrink grow justify-end">
           <TEm
             dim
@@ -97,5 +91,32 @@ export function CurrentListLayout(props: {
       <Divider className="m-4 mb-0" />
       {props.children}
     </>
+  );
+}
+
+/** Whether we need to wrap the image with the "Change Artwork" workflow. */
+function ImageWrapper(props: {
+  title: string;
+  type: MediaType;
+  isFavorite: boolean;
+  children: React.ReactNode;
+}) {
+  const { t } = useTranslation();
+  if (props.isFavorite || !SupportedArtwork.has(props.type)) {
+    return props.children;
+  }
+  return (
+    <Pressable
+      aria-label={t("playlist.artworkChange")}
+      delayLongPress={100}
+      onLongPress={() => {
+        SheetManager.show(`${capitalize(props.type)}ArtworkSheet`, {
+          payload: { id: props.title },
+        });
+      }}
+      className="active:opacity-75"
+    >
+      {props.children}
+    </Pressable>
   );
 }
