@@ -44,8 +44,8 @@ export async function batch<TData, TResult>({
    * results of `Promise.allSettled()`.
    */
   onBatchComplete?: (
-    fulfilled: Array<PromiseSettledResult<TResult>>,
-    rejected: PromiseRejectedResult[],
+    fulfilled: TResult[],
+    rejected: any[],
   ) => Promise<void> | void;
 }) {
   for (let i = 0; i < data.length; i += batchAmount) {
@@ -56,7 +56,10 @@ export async function batch<TData, TResult>({
         .map(callback),
     );
     if (onBatchComplete) {
-      await onBatchComplete(res.filter(isFulfilled), res.filter(isRejected));
+      await onBatchComplete(
+        res.filter(isFulfilled).map(({ value }) => value),
+        res.filter(isRejected).map(({ reason }) => reason),
+      );
     }
   }
 }
