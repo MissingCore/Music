@@ -3,15 +3,15 @@ import {
   StorageVolumesDirectoryPaths,
   getMetadata,
 } from "@missingcore/react-native-metadata-retriever";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import * as FileSystem from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
 
 import { db } from "@/db";
-import { tracks, invalidTracks } from "@/db/schema";
+import { albums, artists, invalidTracks, tracks } from "@/db/schema";
 
-import { deleteAlbum, getAlbums, upsertAlbum } from "@/api/album";
-import { createArtist, deleteArtist } from "@/api/artist";
+import { getAlbums, upsertAlbum } from "@/api/album";
+import { createArtist } from "@/api/artist";
 import { getSaveErrors } from "@/api/setting";
 import { createTrack, deleteTrack, getTracks, updateTrack } from "@/api/track";
 import { userPreferencesStore } from "@/services/UserPreferences";
@@ -274,11 +274,10 @@ export async function cleanupDatabase(usedTrackIds: string[]) {
 export async function removeUnusedCategories() {
   // Remove unused albums.
   const allAlbums = await getAlbums();
-  const unusedAlbums = allAlbums.filter(({ tracks }) => tracks.length === 0);
-  await batch({
-    data: unusedAlbums,
-    callback: ({ id }) => deleteAlbum(id),
-  });
+  const unusedAlbumIds = allAlbums
+    .filter(({ tracks }) => tracks.length === 0)
+    .map(({ id }) => id);
+  await db.delete(albums).where(inArray(albums.id, unusedAlbumIds));
 
   // Remove unused artists.
   const allArtists = await db.query.artists.findMany({
@@ -287,18 +286,15 @@ export async function removeUnusedCategories() {
       tracks: { columns: { id: true } },
     },
   });
-  const unusedArtists = allArtists.filter(
-    ({ albums, tracks }) => albums.length === 0 && tracks.length === 0,
-  );
-  await batch({
-    data: unusedArtists,
-    callback: ({ name }) => deleteArtist(name),
-  });
+  const unusedArtistNames = allArtists
+    .filter(({ albums, tracks }) => albums.length === 0 && tracks.length === 0)
+    .map(({ name }) => name);
+  await db.delete(artists).where(inArray(artists.name, unusedArtistNames));
 
   // Remove these values from the recent list.
   const removedLists = [
-    ...unusedAlbums.map(({ id }) => ({ type: "album", id })),
-    ...unusedArtists.map(({ name }) => ({ type: "artist", id: name })),
+    ...unusedAlbumIds.map((id) => ({ type: "album", id })),
+    ...unusedArtistNames.map((name) => ({ type: "artist", id: name })),
   ] as Array<{ type: "album" | "artist"; id: string }>;
   if (removedLists.length > 0) RecentList.removeEntries(removedLists);
 }

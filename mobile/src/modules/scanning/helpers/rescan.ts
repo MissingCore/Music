@@ -12,7 +12,7 @@ import { Resynchronize } from "@/modules/media/services/Resynchronize";
 
 import { ToastOptions } from "@/lib/toast";
 import { batch, wait } from "@/utils/promise";
-import { findAndSaveArtwork, cleanupImages } from "../helpers/artwork";
+import { findAndSaveArtwork, cleanupImages } from "./artwork";
 import { cleanupDatabase, findAndSaveAudio } from "./audio";
 import { savePathComponents } from "./folder";
 
