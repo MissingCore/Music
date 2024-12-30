@@ -1,0 +1,234 @@
+{
+  "language": "Français",
+
+  "common": {
+    "album": "Album",
+    "albums": "Albums",
+    "artist": "Artiste",
+    "artists": "Artistes",
+    "folder": "Dossier",
+    "folders": "Dossiers",
+    "playlist": "Playlist",
+    "playlists": "Playlists",
+    "track": "Titre",
+    "tracks": "Titres",
+
+    "play": "Lecture",
+    "pause": "Pause",
+    "prev": "Précédent",
+    "next": "Suivant",
+    "shuffle": "Aléatoire",
+    "repeat": "Répéter",
+    "repeatOne": "Répéter le titre",
+
+    "favorite": "Favori",
+    "unFavorite": "Retirer des favoris",
+    "favoriteTracks": "Titres favoris",
+
+    "disc": "CD {{count}}"
+  },
+
+  "header": {
+    "home": "Accueil",
+    "search": "Rechercher",
+
+    "settings": "Paramètres",
+    "appUpdate": "Mise à jour de l'application",
+    "appearance": "Apparence",
+    "insights": "Informations Approfondies",
+    "saveErrors": "Erreurs d'enregistrement",
+    "scanning": "Recherche de musique",
+    "thirdParty": "Logiciel tiers"
+  },
+  "title": {
+    "language": "Langue",
+    "backup": "Sauvegarde",
+    "font": "Police Accentuée",
+    "theme": "Thème",
+    "listAllow": "Liste d'autorisation",
+    "listBlock": "Liste de blocage",
+    "ignoreDuration": "Ignorer les audios courts",
+    "sort": "Ordre de tri",
+    "musicAdd": "Ajouter de la musique",
+    "upcoming": "À venir"
+  },
+
+  "playlist": {
+    "create": "Créer playlist",
+    "edit": "Modifier playlist",
+    "delete": "Supprimer playlist",
+
+    "add": "Ajouter à une playlist",
+    "artworkChange": "Modifier l'illustration",
+    "artworkRemove": "Supprimer l'illustration"
+  },
+
+  "home": {
+    "playedRecent": "Écouté récemment",
+    "favorites": "Favoris"
+  },
+
+  "settings": {
+    "interactions": "Intéractions Nothing",
+    "scanning": "Recherche de musique",
+    "rescan": "Lancer une nouvelle recherche",
+    "translate": "Contribuer aux traductions",
+    "code": "Dépôt GitHub",
+    "license": "License",
+    "privacy": "Politique de confidentialité",
+    "version": "Version",
+
+    "brief": {
+      "appUpdate": "Une nouvelle mise à jour est disponible!",
+      "appearance": "Personnalisez l'apparence de l'application.",
+      "backup": "Déplacez vos données entre appareils.",
+      "insights": "Utilisation de l'application & statistiques.",
+      "saveErrors": "Voyez pourquoi certains titres n'ont pas été enregistrés.",
+      "interactions": "Fonctionalités Nothing supportées.",
+      "scanning": "Options de découverte de musique.",
+      "rescan": "Recherchez à nouveau votre bibliothèque musicale.",
+      "translate": "Aidez à traduire cette application dans d'autres langues.",
+      "code": "Signalez des bugs, contribuez ou demandez des nouvelles fonctionnalités.",
+      "thirdParty": "Ce qui rend cette application possible."
+    },
+
+    "description": {
+      "backup": "Transférez vos données entre appareils via un fichier `music_backup.json`.",
+      "listAllow": "Prends le suivant par défaut si vide:",
+      "listBlock": "Possède la priorité sur la liste d'autorisation.",
+      "ignoreDuration": "Durée en seconde des audios à ignorer."
+    },
+
+    "related": {
+      "appDownload": "Télécharger le dernier APK",
+      "appUpdate": "Mettre à jour via le Play Store",
+
+      "light": "Clair",
+      "dark": "Sombre",
+      "system": "Système",
+
+      "export": "Exporter",
+      "import": "Importer",
+
+      "images": "Images",
+      "database": "Base de données",
+      "other": "Autre",
+      "cache": "Cache",
+      "total": "Total",
+      "totalDuration": "Durée Totale",
+
+      "pathAdd": "Ajouter un dossier",
+      "pathSelect": "Sélectionner un dossier"
+    }
+  },
+
+  "errorScreen": {
+    "unmatched": "Route non trouvée",
+    "unmatchedBrief": "Vous avez d'une manière ou d'une autre navigué vers une route invalide.",
+    "missing": "Manquant",
+    "from": "Depuis",
+
+    "generic": "Quelque chose s'est mal passé",
+    "genericBrief": "Vous avez rencontré une erreur inattendue.",
+
+    "report": "Rapporter le problème",
+    "screenshot": "Incluez une capture d'écran de cette page."
+  },
+
+  "onboardingScreen": {
+    "preprocess": "Prétraitement",
+    "preprocessBrief": "S'assure que les données existantes sont conformes à toutes les modifications.",
+
+    "track": "Sauvegarde des titres",
+    "prevSaved": "{{amount}} Enregistrés précédemment",
+    "saved": "{{amount}}/{{total}} Sauvegardés/Actualisés",
+    "errors": "{{amount}} Erreurs",
+
+    "image": "Sauvegarde des images",
+    "checked": "{{amount}}/{{total}} Vérifiées",
+    "found": "{{amount}} Trouvées"
+  },
+
+  "sortModal": {
+    "asc": "Ordre croissant",
+    "alphabetical": "Alphabétique",
+    "modified": "Modifié récemment"
+  },
+  "trackModal": {
+    "bitrate": "Débit binaire",
+    "sampleRate": "Taux d'échantillonnage",
+    "size": "Taille",
+    "modified": "$t(sortModal.modified)",
+    "filePath": "Chemin du fichier",
+
+    "playlistAdd": "$t(playlist.add)",
+    "queueAdd": "Mettre à la suite"
+  },
+
+  "form": {
+    "apply": "Appliquer les modifications",
+    "back": "Retour",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+
+    "unsaved": "Vous avez des modifications non enregistrées.",
+    "stay": "Rester",
+    "leave": "Quitter",
+
+    "placeholder": {
+      "playlistName": "Nom de la Playlist",
+      "searchMedia": "Recherchez des médias"
+    },
+
+    "validation": {
+      "unique": "Unique"
+    }
+  },
+
+  "template": {
+    "entryAdded": "`{{- name}}` ajouté.",
+    "entryRemove": "Supprimer `{{- name}}`.",
+    "entryRemoved": "`{{- name}}` supprimé.",
+    "entrySeeMore": "Voir plus sur `{{- name}}`.",
+    "notFound": "`{{- name}}` n'existe pas."
+  },
+
+  "plural": {
+    "entry_one": "{{count}} entrée",
+    "entry_other": "{{count}} entrées",
+    "second_one": "{{count}} seconde",
+    "second_other": "{{count}} secondes",
+    "track_one": "{{count}} $t(common.track)",
+    "track_other": "{{count}} $t(common.tracks)"
+  },
+
+  "response": {
+    "noRecents": "Vous n'avez encore rien écouté!",
+    "noErrors": "Aucune erreur trouvée.",
+    "noFilters": "Aucun filtre trouvé.",
+    "noResults": "Aucun résultat trouvé.",
+    "noContent": "Aucun contenu trouvé.",
+
+    "noAlbums": "Aucun album trouvé.",
+    "noArtists": "Aucun artiste trouvé.",
+    "noPlaylists": "Aucune playlist trouvée.",
+    "noTracks": "Aucun titre trouvé.",
+    "noDirectory": "Aucun dossier trouvé.",
+
+    "queueAdd": "`{{- name}}` ajouté à la file d'attente.",
+
+    "exportSuccess": "Sauvegarde créée avec succès.",
+    "importSuccess": "Importation de la sauvegarde terminée.",
+
+    "scanStart": "Recherche en cours...",
+    "scanSuccess": "Recherche terminée.",
+    "scanFail": "Erreur lors de la recherche.",
+
+    "pathSelectFail": "Aucun dossier sélectionné.",
+
+    "actionCancel": "Action annulée.",
+    "noSelect": "Rien n'est sélectionné.",
+    "invalidStructure": "Structure invalide",
+    "usedName": "Ce nom ne peut pas être utilisé."
+  }
+}
