@@ -97,11 +97,8 @@ export async function findAndSaveAudio() {
     // The logic below makes sure that if the file has the same id and is
     // detected in 2 different locations, we make sure the track is marked
     // as being "modified".
-    if (isDifferentUri && unmodifiedTracks.has(id)) {
-      unmodifiedTracks.delete(id);
-    } else if (!isDifferentUri && modifiedTracks.has(id)) {
-      isDifferentUri = true;
-    }
+    if (isDifferentUri && unmodifiedTracks.has(id)) unmodifiedTracks.delete(id);
+    else if (!isDifferentUri && modifiedTracks.has(id)) isDifferentUri = true;
 
     // Retry indexing if modification time or uri is different.
     if (modificationTime !== lastModified || isDifferentUri) {
