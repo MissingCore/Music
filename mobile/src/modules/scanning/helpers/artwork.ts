@@ -13,7 +13,7 @@ import { onboardingStore } from "../services/Onboarding";
 import { ImageDirectory, deleteImage, saveImage } from "@/lib/file-system";
 import { clearAllQueries } from "@/lib/react-query";
 import { Stopwatch } from "@/utils/debug";
-import { batch } from "@/utils/promise";
+import { BATCH_PRESETS, batch } from "@/utils/promise";
 
 //#region Saving Function
 /** Save artwork for albums & tracks. */
@@ -65,9 +65,9 @@ export async function findAndSaveArtwork() {
     );
     // Prevent excessive `setState` on Zustand store which may cause an
     // "Warning: Maximum update depth exceeded.".
-    prevRemainder = checkedFiles % 25;
+    prevRemainder = checkedFiles % BATCH_PRESETS.PROGRESS;
     checkedFiles += values.length;
-    if (checkedFiles % 25 < prevRemainder) {
+    if (checkedFiles % BATCH_PRESETS.PROGRESS < prevRemainder) {
       onboardingStore.setState({ checked: checkedFiles });
     }
   }
@@ -82,7 +82,7 @@ export async function findAndSaveArtwork() {
     {
       onEndIteration: () => {
         checkedFiles++;
-        if (checkedFiles % 25 === 0) {
+        if (checkedFiles % BATCH_PRESETS.PROGRESS === 0) {
           onboardingStore.setState({ checked: checkedFiles });
         }
       },
