@@ -2,7 +2,7 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { Add } from "@/icons";
+import { Add } from "@/icons/Add";
 import { usePlaylistsForCards } from "@/queries/playlist";
 import { StickyActionListLayout } from "@/layouts";
 

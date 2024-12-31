@@ -2,7 +2,7 @@ import { Stack, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { Favorite } from "@/icons";
+import { Favorite } from "@/icons/Favorite";
 import { useAlbumForScreen, useFavoriteAlbum } from "@/queries/album";
 import { useBottomActionsContext } from "@/hooks/useBottomActionsContext";
 import { CurrentListLayout } from "@/layouts/CurrentList";

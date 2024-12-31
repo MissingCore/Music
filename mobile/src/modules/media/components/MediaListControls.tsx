@@ -1,7 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { Pause, PlayArrow } from "@/icons";
+import { Pause } from "@/icons/Pause";
+import { PlayArrow } from "@/icons/PlayArrow";
 import { useMusicStore } from "../services/Music";
 import { MusicControls, playFromMediaList } from "../services/Playback";
 

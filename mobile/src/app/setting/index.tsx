@@ -3,7 +3,7 @@ import * as WebBrowser from "expo-web-browser";
 import { useTranslation } from "react-i18next";
 import { SheetManager } from "react-native-actions-sheet";
 
-import { OpenInNew } from "@/icons";
+import { OpenInNew } from "@/icons/OpenInNew";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 import { StandardScrollLayout } from "@/layouts";
 import { LANGUAGES } from "@/modules/i18n/constants";

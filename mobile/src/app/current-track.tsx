@@ -5,13 +5,11 @@ import { View, useWindowDimensions } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 import { useProgress } from "react-native-track-player";
 
-import {
-  Favorite,
-  LibraryMusic,
-  MoreVert,
-  VolumeMute,
-  VolumeUp,
-} from "@/icons";
+import { Favorite } from "@/icons/Favorite";
+import { LibraryMusic } from "@/icons/LibraryMusic";
+import { MoreVert } from "@/icons/MoreVert";
+import { VolumeMute } from "@/icons/VolumeMute";
+import { VolumeUp } from "@/icons/VolumeUp";
 import { useFavoriteTrack, useTrack } from "@/queries/track";
 import { useMusicStore } from "@/modules/media/services/Music";
 import { MusicControls } from "@/modules/media/services/Playback";

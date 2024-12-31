@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 
-import { Schedule } from "@/icons";
+import { Schedule } from "@/icons/Schedule";
 import { useTheme } from "@/hooks/useTheme";
 
 import { capitalize, toLowerCase } from "@/utils/string";

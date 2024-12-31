@@ -1,14 +1,12 @@
 import { useTranslation } from "react-i18next";
 
-import {
-  Pause,
-  PlayArrow,
-  Repeat,
-  RepeatOne,
-  Shuffle,
-  SkipNext,
-  SkipPrevious,
-} from "@/icons";
+import { Pause } from "@/icons/Pause";
+import { PlayArrow } from "@/icons/PlayArrow";
+import { Repeat } from "@/icons/Repeat";
+import { RepeatOne } from "@/icons/RepeatOne";
+import { Shuffle } from "@/icons/Shuffle";
+import { SkipNext } from "@/icons/SkipNext";
+import { SkipPrevious } from "@/icons/SkipPrevious";
 import { useMusicStore } from "../services/Music";
 import { MusicControls } from "../services/Playback";
 

@@ -5,15 +5,13 @@ import { SheetManager } from "react-native-actions-sheet";
 
 import type { TrackWithAlbum } from "@/db/schema";
 
-import {
-  Album,
-  Artist,
-  Favorite,
-  List,
-  PlaylistAdd,
-  QueueMusic,
-  Schedule,
-} from "@/icons";
+import { Album } from "@/icons/Album";
+import { Artist } from "@/icons/Artist";
+import { Favorite } from "@/icons/Favorite";
+import { List } from "@/icons/List";
+import { PlaylistAdd } from "@/icons/PlaylistAdd";
+import { QueueMusic } from "@/icons/QueueMusic";
+import { Schedule } from "@/icons/Schedule";
 import { useTrack, useFavoriteTrack } from "@/queries/track";
 import { useGetColumn } from "@/hooks/useGetColumn";
 import { useTheme } from "@/hooks/useTheme";

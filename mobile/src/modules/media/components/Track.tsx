@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { SheetManager } from "react-native-actions-sheet";
 
-import { MoreVert } from "@/icons";
+import { MoreVert } from "@/icons/MoreVert";
 import { playFromMediaList } from "../services/Playback";
 import type { PlayListSource } from "../types";
 

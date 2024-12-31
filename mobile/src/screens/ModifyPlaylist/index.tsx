@@ -9,7 +9,11 @@ import DragList from "react-native-draglist";
 
 import type { TrackWithAlbum } from "@/db/schema";
 
-import { Add, Cancel, CheckCircle, Check, Remove } from "@/icons";
+import { Add } from "@/icons/Add";
+import { Cancel } from "@/icons/Cancel";
+import { CheckCircle } from "@/icons/CheckCircle";
+import { Check } from "@/icons/Check";
+import { Remove } from "@/icons/Remove";
 import { useDeletePlaylist } from "@/queries/playlist";
 import { useTheme } from "@/hooks/useTheme";
 import type { InitStoreProps } from "./context";

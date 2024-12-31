@@ -5,7 +5,9 @@ import { Pressable, View } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist";
 import DragList from "react-native-draglist";
 
-import { Edit, Favorite, Remove } from "@/icons";
+import { Edit } from "@/icons/Edit";
+import { Favorite } from "@/icons/Favorite";
+import { Remove } from "@/icons/Remove";
 import {
   useFavoritePlaylist,
   useMoveInPlaylist,

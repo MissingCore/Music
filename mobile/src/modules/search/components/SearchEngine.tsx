@@ -11,7 +11,7 @@ import type {
 } from "@/db/schema";
 import { getPlaylistCover, getTrackCover } from "@/db/utils";
 
-import { Search } from "@/icons";
+import { Search } from "@/icons/Search";
 import { useTheme } from "@/hooks/useTheme";
 
 import { cn } from "@/lib/style";

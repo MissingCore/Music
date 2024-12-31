@@ -8,7 +8,8 @@ import Animated, {
   SlideInDown,
 } from "react-native-reanimated";
 
-import { Search, Settings } from "@/icons";
+import { Search } from "@/icons/Search";
+import { Settings } from "@/icons/Settings";
 import { useBottomActionsContext } from "@/hooks/useBottomActionsContext";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 import { useTheme } from "@/hooks/useTheme";

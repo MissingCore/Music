@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { getTrackCover } from "@/db/utils";
 
-import { Remove } from "@/icons";
+import { Remove } from "@/icons/Remove";
 import { Queue, useMusicStore } from "@/modules/media/services/Music";
 
 import { Colors } from "@/constants/Styles";

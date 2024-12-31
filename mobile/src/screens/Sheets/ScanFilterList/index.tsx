@@ -6,7 +6,9 @@ import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Keyboard, View } from "react-native";
 
-import { Add, CreateNewFolder, Remove } from "@/icons";
+import { Add } from "@/icons/Add";
+import { CreateNewFolder } from "@/icons/CreateNewFolder";
+import { Remove } from "@/icons/Remove";
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { useTheme } from "@/hooks/useTheme";
 import { pickPath, removePath, useAddPathToList, validatePath } from "./data";

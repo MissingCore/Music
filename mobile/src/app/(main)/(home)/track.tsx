@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 
-import { Sort } from "@/icons";
+import { Sort } from "@/icons/Sort";
 import { useTracksForTrackCard } from "@/queries/track";
 import { StickyActionListLayout } from "@/layouts";
 
