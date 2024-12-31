@@ -144,7 +144,7 @@ export function PlaylistStoreProvider({
             const sanitizedName = sanitizePlaylistName(playlistName);
             set({ isSubmitting: true });
             // Slight buffer before running heavy async task.
-            await wait(100);
+            await wait(1);
             await onSubmit(sanitizedName, tracks);
           } catch {}
           set({ isSubmitting: false });

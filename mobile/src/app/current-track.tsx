@@ -202,7 +202,6 @@ function BottomAppBar({ trackId }: { trackId: string }) {
       <IconButton
         kind="ripple"
         accessibilityLabel={t(`common.${isFav ? "unF" : "f"}avorite`)}
-        disabled={favoriteTrack.isPending}
         onPress={() => mutateGuard(favoriteTrack, !data?.isFavorite)}
         rippleRadius={24}
         className="p-2"

@@ -304,7 +304,7 @@ function DeleteWorkflow() {
     setLastChance(false);
     setIsSubmitting(true);
     // Slight buffer before running mutation.
-    await wait(100);
+    await wait(1);
     mutateGuard(deletePlaylist, undefined, {
       onSuccess: () => {
         router.back();

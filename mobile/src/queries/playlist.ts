@@ -19,6 +19,8 @@ import {
 import { Resynchronize } from "@/modules/media/services/Resynchronize";
 import { queries as q } from "./keyStore";
 
+import { wait } from "@/utils/promise";
+
 //#region Queries
 /** Get specified playlist. */
 export function usePlaylist(playlistName: string) {
@@ -92,8 +94,10 @@ export function useFavoritePlaylist(playlistName: string) {
   const queryClient = useQueryClient();
   return useMutation({
     /** Pass the new favorite status of the playlist. */
-    mutationFn: (isFavorite: boolean) =>
-      favoritePlaylist(playlistName, isFavorite),
+    mutationFn: async (isFavorite: boolean) => {
+      await wait(1);
+      await favoritePlaylist(playlistName, isFavorite);
+    },
     onSuccess: () => {
       // Invalidate all playlist queries and the favorite lists query.
       queryClient.invalidateQueries({ queryKey: q.playlists._def });

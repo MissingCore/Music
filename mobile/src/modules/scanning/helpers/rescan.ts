@@ -27,7 +27,7 @@ export async function rescanForTracks() {
     // Slight buffer before we run our code due to the code blocking the
     // JS thread, causing `isPending` to not update immediately, allowing
     // the user to spam the button to rescan the library.
-    await wait(100);
+    await wait(1);
 
     // Re-create the "folder" structure for tracks we've already saved.
     // eslint-disable-next-line drizzle/enforce-delete-with-where

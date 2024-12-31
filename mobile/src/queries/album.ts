@@ -7,6 +7,7 @@ import { favoriteAlbum } from "@/api/album";
 import { queries as q } from "./keyStore";
 
 import { pickKeys } from "@/utils/object";
+import { wait } from "@/utils/promise";
 
 //#region Queries
 /** Format album information for album's `(current)` screen. */
@@ -40,7 +41,10 @@ export function useFavoriteAlbum(albumId: string) {
   const queryClient = useQueryClient();
   return useMutation({
     /** Pass the new favorite status of the album. */
-    mutationFn: (isFavorite: boolean) => favoriteAlbum(albumId, isFavorite),
+    mutationFn: async (isFavorite: boolean) => {
+      await wait(1);
+      await favoriteAlbum(albumId, isFavorite);
+    },
     onSuccess: () => {
       // Invalidate all album queries and the favorite lists query.
       queryClient.invalidateQueries({ queryKey: q.albums._def });
