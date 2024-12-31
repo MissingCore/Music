@@ -11,7 +11,7 @@ import { createPersistedSubscribedStore } from "@/lib/zustand";
 import type { ReservedPlaylistName } from "../constants";
 import { ReservedNames, ReservedPlaylists } from "../constants";
 import { arePlaybackSourceEqual } from "../helpers/data";
-import type { MediaCard } from "../components";
+import type { MediaCard } from "../components/MediaCard";
 import type { PlayListSource } from "../types";
 
 //#region Store

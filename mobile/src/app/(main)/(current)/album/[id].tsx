@@ -12,7 +12,7 @@ import { FlashList } from "@/components/Defaults";
 import { IconButton } from "@/components/Form";
 import { PagePlaceholder } from "@/components/Transition";
 import { Em, StyledText } from "@/components/Typography";
-import { Track } from "@/modules/media/components";
+import { Track } from "@/modules/media/components/Track";
 
 /** Screen for `/album/[id]` route. */
 export default function CurrentAlbumScreen() {

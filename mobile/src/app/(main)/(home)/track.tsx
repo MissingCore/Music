@@ -8,10 +8,8 @@ import { StickyActionListLayout } from "@/layouts/StickyActionScroll";
 
 import { IconButton } from "@/components/Form";
 import { ReservedPlaylists } from "@/modules/media/constants";
-import {
-  MediaListControls,
-  useTrackListPreset,
-} from "@/modules/media/components";
+import { MediaListControls } from "@/modules/media/components/MediaListControls";
+import { useTrackListPreset } from "@/modules/media/components/Track";
 
 // Information about this track list.
 const trackSource = {

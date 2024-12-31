@@ -8,7 +8,7 @@ import { StickyActionListLayout } from "@/layouts/StickyActionScroll";
 
 import { Colors } from "@/constants/Styles";
 import { IconButton } from "@/components/Form";
-import { useMediaCardListPreset } from "@/modules/media/components";
+import { useMediaCardListPreset } from "@/modules/media/components/MediaCard";
 
 /** Screen for `/playlist` route. */
 export default function PlaylistScreen() {

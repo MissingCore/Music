@@ -10,7 +10,8 @@ import { capitalize, toLowerCase } from "@/utils/string";
 import { Divider, Marquee } from "@/components/Containment";
 import { StyledText, TEm } from "@/components/Typography";
 import { ReservedPlaylists } from "@/modules/media/constants";
-import { MediaImage, MediaListControls } from "@/modules/media/components";
+import { MediaImage } from "@/modules/media/components/MediaImage";
+import { MediaListControls } from "@/modules/media/components/MediaListControls";
 import type { MediaType, PlayListSource } from "@/modules/media/types";
 
 /** List of media that we can change artwork for. */

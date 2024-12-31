@@ -17,7 +17,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { cn } from "@/lib/style";
 import { Button, IconButton } from "@/components/Form";
 import { StyledText } from "@/components/Typography";
-import { MiniPlayer } from "@/modules/media/components";
+import { MiniPlayer } from "@/modules/media/components/MiniPlayer";
 
 //#region Layout
 /** Contains content that doesn't take up the full-screen. */

@@ -20,7 +20,7 @@ import {
   MediaCard,
   MediaCardList,
   MediaCardPlaceholderContent,
-} from "@/modules/media/components";
+} from "@/modules/media/components/MediaCard";
 
 /** Screen for `/` route. */
 export default function HomeScreen() {

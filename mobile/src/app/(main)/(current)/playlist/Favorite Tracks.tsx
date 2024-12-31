@@ -6,7 +6,7 @@ import { CurrentListLayout } from "@/layouts/CurrentList";
 
 import { PagePlaceholder } from "@/components/Transition";
 import { ReservedPlaylists } from "@/modules/media/constants";
-import { useTrackListPreset } from "@/modules/media/components";
+import { useTrackListPreset } from "@/modules/media/components/Track";
 
 /** Screen for displaying favorited tracks. */
 export default function FavoriteTracksScreen() {

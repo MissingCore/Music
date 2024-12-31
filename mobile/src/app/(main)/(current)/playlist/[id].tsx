@@ -26,7 +26,7 @@ import { IconButton } from "@/components/Form";
 import type { SwipeableRef } from "@/components/Swipeable";
 import { Swipeable } from "@/components/Swipeable";
 import { PagePlaceholder } from "@/components/Transition";
-import { Track } from "@/modules/media/components";
+import { Track } from "@/modules/media/components/Track";
 import type { PlayListSource } from "@/modules/media/types";
 
 type ScreenData = Track.Content & { disc: number | null; track: number | null };

@@ -30,7 +30,7 @@ import { IconButton } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";
 import { StyledText, TEm, TStyledText } from "@/components/Typography";
 import { ReservedPlaylists } from "@/modules/media/constants";
-import { MediaImage } from "@/modules/media/components";
+import { MediaImage } from "@/modules/media/components/MediaImage";
 
 /** Sheet containing information and actions for a track. */
 export default function TrackSheet(props: { payload: { id: string } }) {

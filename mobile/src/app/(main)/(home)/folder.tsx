@@ -26,7 +26,7 @@ import {
 import { cn } from "@/lib/style";
 import { useListPresets } from "@/components/Defaults";
 import { StyledText } from "@/components/Typography";
-import { Track } from "@/modules/media/components";
+import { Track } from "@/modules/media/components/Track";
 import { SearchResult } from "@/modules/search/components";
 
 /** Animated scrollview supporting gestures. */

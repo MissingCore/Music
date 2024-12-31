@@ -21,14 +21,14 @@ import { Marquee } from "@/components/Containment";
 import { IconButton, Slider } from "@/components/Form";
 import { Back } from "@/components/Transition";
 import { StyledText } from "@/components/Typography";
+import { MediaImage } from "@/modules/media/components/MediaImage";
 import {
-  MediaImage,
   NextButton,
   PlayToggleButton,
   PreviousButton,
   RepeatButton,
   ShuffleButton,
-} from "@/modules/media/components";
+} from "@/modules/media/components/MediaControls";
 
 /** Screen for `/current-track` route. */
 export default function CurrentTrackScreen() {

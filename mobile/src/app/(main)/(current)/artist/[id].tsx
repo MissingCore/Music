@@ -11,7 +11,8 @@ import { cn } from "@/lib/style";
 import { FlashList } from "@/components/Defaults";
 import { PagePlaceholder } from "@/components/Transition";
 import { TEm } from "@/components/Typography";
-import { MediaCard, Track } from "@/modules/media/components";
+import { MediaCard } from "@/modules/media/components/MediaCard";
+import { Track } from "@/modules/media/components/Track";
 
 /** Screen for `/artist/[id]` route. */
 export default function CurrentArtistScreen() {
