@@ -25,7 +25,7 @@ import { useListPresets } from "@/components/Defaults";
 import { IconButton } from "@/components/Form";
 import type { SwipeableRef } from "@/components/Swipeable";
 import { Swipeable } from "@/components/Swipeable";
-import { PagePlaceholder } from "@/components/Transition";
+import { PagePlaceholder } from "@/components/Transition/Placeholder";
 import { Track } from "@/modules/media/components/Track";
 import type { PlayListSource } from "@/modules/media/types";
 

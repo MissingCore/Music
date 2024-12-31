@@ -19,7 +19,7 @@ import { mutateGuard } from "@/lib/react-query";
 import { formatSeconds } from "@/utils/number";
 import { Marquee } from "@/components/Containment";
 import { IconButton, Slider } from "@/components/Form";
-import { Back } from "@/components/Transition";
+import { Back } from "@/components/Transition/Back";
 import { StyledText } from "@/components/Typography";
 import { MediaImage } from "@/modules/media/components/MediaImage";
 import {

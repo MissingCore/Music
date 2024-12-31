@@ -10,7 +10,7 @@ import {
 import { FlatList as RNASFlatList } from "react-native-actions-sheet";
 import { FlashList as RNASFlashList } from "react-native-actions-sheet/dist/src/views/FlashList";
 
-import { ContentPlaceholder } from "./Transition";
+import { ContentPlaceholder } from "./Transition/Placeholder";
 
 //#region Preset Values
 /** Presets for scrollview-like components. */
