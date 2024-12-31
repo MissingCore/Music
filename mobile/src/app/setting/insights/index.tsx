@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import { useDatabaseSummary, useStorageSummary } from "@/queries/setting";
 import { useTheme } from "@/hooks/useTheme";
-import { StandardScrollLayout } from "@/layouts";
+import { StandardScrollLayout } from "@/layouts/StandardScroll";
 
 import { Colors } from "@/constants/Styles";
 import { abbreviateSize, formatSeconds } from "@/utils/number";

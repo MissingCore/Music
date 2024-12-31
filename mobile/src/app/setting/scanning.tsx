@@ -3,7 +3,7 @@ import { SheetManager } from "react-native-actions-sheet";
 
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { useRescanForTracks } from "@/modules/scanning/helpers/rescan";
-import { StandardScrollLayout } from "@/layouts";
+import { StandardScrollLayout } from "@/layouts/StandardScroll";
 
 import { mutateGuard } from "@/lib/react-query";
 import { List, ListItem } from "@/components/Containment";

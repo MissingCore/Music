@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { SheetManager } from "react-native-actions-sheet";
 
 import { useUserPreferencesStore } from "@/services/UserPreferences";
-import { StandardScrollLayout } from "@/layouts";
+import { StandardScrollLayout } from "@/layouts/StandardScroll";
 
 import { List, ListItem } from "@/components/Containment";
 

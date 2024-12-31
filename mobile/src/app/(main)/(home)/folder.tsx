@@ -21,7 +21,7 @@ import { useFolderContent } from "@/queries/folder";
 import {
   StickyActionListLayout,
   useStickyActionListLayoutRef,
-} from "@/layouts";
+} from "@/layouts/StickyActionScroll";
 
 import { cn } from "@/lib/style";
 import { useListPresets } from "@/components/Defaults";

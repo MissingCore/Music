@@ -5,7 +5,7 @@ import { SheetManager } from "react-native-actions-sheet";
 
 import { OpenInNew } from "@/icons/OpenInNew";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
-import { StandardScrollLayout } from "@/layouts";
+import { StandardScrollLayout } from "@/layouts/StandardScroll";
 import { LANGUAGES } from "@/modules/i18n/constants";
 
 import { APP_VERSION } from "@/constants/Config";

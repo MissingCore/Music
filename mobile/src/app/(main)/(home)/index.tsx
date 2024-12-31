@@ -9,7 +9,7 @@ import {
 } from "@/queries/favorite";
 import { useGetColumn } from "@/hooks/useGetColumn";
 import { useRecentListStore } from "@/modules/media/services/RecentList";
-import { StickyActionScrollLayout } from "@/layouts";
+import { StickyActionScrollLayout } from "@/layouts/StickyActionScroll";
 
 import { cn } from "@/lib/style";
 import { abbreviateNum } from "@/utils/number";

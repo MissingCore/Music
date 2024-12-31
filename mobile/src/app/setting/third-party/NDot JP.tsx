@@ -1,6 +1,6 @@
 import { Text } from "react-native";
 
-import { StickyActionHeader } from "@/layouts";
+import { StickyActionHeader } from "@/layouts/StickyActionScroll";
 
 import { Card } from "@/components/Containment";
 import { ScrollView } from "@/components/Defaults";

@@ -4,7 +4,7 @@ import { SheetManager } from "react-native-actions-sheet";
 
 import { Sort } from "@/icons/Sort";
 import { useTracksForTrackCard } from "@/queries/track";
-import { StickyActionListLayout } from "@/layouts";
+import { StickyActionListLayout } from "@/layouts/StickyActionScroll";
 
 import { IconButton } from "@/components/Form";
 import { ReservedPlaylists } from "@/modules/media/constants";

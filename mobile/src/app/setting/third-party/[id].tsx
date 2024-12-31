@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { OpenInNew } from "@/icons/OpenInNew";
 import LicensesList from "@/resources/licenses.json";
-import { StickyActionHeader } from "@/layouts";
+import { StickyActionHeader } from "@/layouts/StickyActionScroll";
 
 import { Card } from "@/components/Containment";
 import { ScrollView } from "@/components/Defaults";

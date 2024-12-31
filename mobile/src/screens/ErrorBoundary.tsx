@@ -1,6 +1,6 @@
 import type { ErrorBoundaryProps } from "expo-router";
 
-import { IssueLayout } from "@/layouts";
+import { IssueLayout } from "@/layouts/Issue";
 import { AppProvider } from "@/providers";
 
 import { Card } from "@/components/Containment";

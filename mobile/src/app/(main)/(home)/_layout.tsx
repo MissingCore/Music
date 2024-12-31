@@ -5,7 +5,7 @@ import type {
 } from "@react-navigation/native";
 import { useCallback, useMemo, useRef } from "react";
 
-import { MaterialTopTabs } from "@/layouts";
+import { MaterialTopTabs } from "@/layouts/MaterialTopTabs";
 
 type TabState = EventArg<
   "state",

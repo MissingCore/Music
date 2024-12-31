@@ -1,5 +1,5 @@
 import { useAlbumsForCards } from "@/queries/album";
-import { StickyActionListLayout } from "@/layouts";
+import { StickyActionListLayout } from "@/layouts/StickyActionScroll";
 
 import { useMediaCardListPreset } from "@/modules/media/components";
 

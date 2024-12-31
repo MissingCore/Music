@@ -1,5 +1,5 @@
 import { useSaveErrors } from "@/queries/setting";
-import { StandardScrollLayout } from "@/layouts";
+import { StandardScrollLayout } from "@/layouts/StandardScroll";
 
 import { ListRenderer } from "@/components/Containment";
 
