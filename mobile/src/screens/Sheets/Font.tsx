@@ -2,7 +2,7 @@ import { Text } from "react-native";
 
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 
-import { Radio } from "@/components/Form";
+import { Radio } from "@/components/Form/Selection";
 import { Sheet } from "@/components/Sheet";
 
 /** Sheet allowing us to change the app's accent font. */

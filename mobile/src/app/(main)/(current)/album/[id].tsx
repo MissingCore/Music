@@ -9,7 +9,7 @@ import { CurrentListLayout } from "@/layouts/CurrentList";
 
 import { mutateGuard } from "@/lib/react-query";
 import { FlashList } from "@/components/Defaults";
-import { IconButton } from "@/components/Form";
+import { IconButton } from "@/components/Form/Button";
 import { PagePlaceholder } from "@/components/Transition/Placeholder";
 import { Em, StyledText } from "@/components/Typography";
 import { Track } from "@/modules/media/components/Track";

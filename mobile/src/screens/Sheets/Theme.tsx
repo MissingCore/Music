@@ -6,7 +6,7 @@ import {
 } from "@/services/UserPreferences";
 
 import { FlatList } from "@/components/Defaults";
-import { Radio } from "@/components/Form";
+import { Radio } from "@/components/Form/Selection";
 import { Sheet } from "@/components/Sheet";
 import { TStyledText } from "@/components/Typography";
 

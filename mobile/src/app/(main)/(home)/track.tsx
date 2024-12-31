@@ -6,7 +6,7 @@ import { Sort } from "@/icons/Sort";
 import { useTracksForTrackCard } from "@/queries/track";
 import { StickyActionListLayout } from "@/layouts/StickyActionScroll";
 
-import { IconButton } from "@/components/Form";
+import { IconButton } from "@/components/Form/Button";
 import { ReservedPlaylists } from "@/modules/media/constants";
 import { MediaListControls } from "@/modules/media/components/MediaListControls";
 import { useTrackListPreset } from "@/modules/media/components/Track";

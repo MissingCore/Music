@@ -11,7 +11,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { mutateGuard } from "@/lib/react-query";
 import { Marquee } from "@/components/Containment/Marquee";
 import { SheetsFlashList } from "@/components/Defaults";
-import { Checkbox } from "@/components/Form";
+import { Checkbox } from "@/components/Form/Selection";
 import { Sheet } from "@/components/Sheet";
 import { StyledText } from "@/components/Typography";
 

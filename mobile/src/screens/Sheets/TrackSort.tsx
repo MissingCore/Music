@@ -4,7 +4,9 @@ import {
 } from "@/modules/media/services/SortPreferences";
 
 import { FlatList } from "@/components/Defaults";
-import { Button, Radio, Switch } from "@/components/Form";
+import { Button } from "@/components/Form/Button";
+import { Radio } from "@/components/Form/Selection";
+import { Switch } from "@/components/Form/Switch";
 import { Sheet } from "@/components/Sheet";
 import { TStyledText } from "@/components/Typography";
 

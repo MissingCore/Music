@@ -7,7 +7,7 @@ import { usePlaylistsForCards } from "@/queries/playlist";
 import { StickyActionListLayout } from "@/layouts/StickyActionScroll";
 
 import { Colors } from "@/constants/Styles";
-import { IconButton } from "@/components/Form";
+import { IconButton } from "@/components/Form/Button";
 import { useMediaCardListPreset } from "@/modules/media/components/MediaCard";
 
 /** Screen for `/playlist` route. */

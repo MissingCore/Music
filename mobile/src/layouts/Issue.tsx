@@ -8,7 +8,7 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { GITHUB } from "@/constants/Links";
-import { Button } from "@/components/Form";
+import { Button } from "@/components/Form/Button";
 import { AccentText, TStyledText } from "@/components/Typography";
 
 /** Layout used for the "error" screens (route & unexpected errors). */

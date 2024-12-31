@@ -2,7 +2,7 @@ import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { LANGUAGES } from "@/modules/i18n/constants";
 
 import { SheetsFlatList } from "@/components/Defaults";
-import { Radio } from "@/components/Form";
+import { Radio } from "@/components/Form/Selection";
 import { Sheet } from "@/components/Sheet";
 import { StyledText } from "@/components/Typography";
 

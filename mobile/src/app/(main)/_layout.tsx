@@ -15,7 +15,7 @@ import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 import { useTheme } from "@/hooks/useTheme";
 
 import { cn } from "@/lib/style";
-import { Button, IconButton } from "@/components/Form";
+import { Button, IconButton } from "@/components/Form/Button";
 import { StyledText } from "@/components/Typography";
 import { MiniPlayer } from "@/modules/media/components/MiniPlayer";
 

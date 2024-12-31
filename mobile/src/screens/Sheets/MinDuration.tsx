@@ -6,7 +6,7 @@ import {
   userPreferencesStore,
 } from "@/services/UserPreferences";
 
-import { NumericInput } from "@/components/Form";
+import { NumericInput } from "@/components/Form/Input";
 import { Sheet } from "@/components/Sheet";
 import { TStyledText } from "@/components/Typography";
 
