@@ -5,7 +5,7 @@ import { StickyActionListLayout } from "@/layouts/StickyActionScroll";
 
 import { useListPresets } from "@/components/Defaults";
 import { Em } from "@/components/Typography";
-import { SearchResult } from "@/modules/search/components";
+import { SearchResult } from "@/modules/search/components/SearchResult";
 
 /** Screen for `/artist` route. */
 export default function ArtistScreen() {

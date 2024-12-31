@@ -29,7 +29,7 @@ import { IconButton, TextInput } from "@/components/Form";
 import type { SwipeableRef } from "@/components/Swipeable";
 import { Swipeable } from "@/components/Swipeable";
 import { StyledText, TStyledText } from "@/components/Typography";
-import { SearchResult } from "@/modules/search/components";
+import { SearchResult } from "@/modules/search/components/SearchResult";
 
 /** Resuable screen to modify (create or edit) a playlist. */
 export function ModifyPlaylist(props: InitStoreProps) {

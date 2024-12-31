@@ -11,7 +11,7 @@ import { SheetsFlashList } from "@/components/Defaults";
 import { IconButton } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";
 import { Swipeable } from "@/components/Swipeable";
-import { SearchResult } from "@/modules/search/components";
+import { SearchResult } from "@/modules/search/components/SearchResult";
 
 /**
  * Sheet allowing us to see the upcoming tracks and remove tracks from

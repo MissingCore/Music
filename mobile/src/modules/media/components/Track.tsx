@@ -13,7 +13,7 @@ import type { WithListEmptyProps } from "@/components/Defaults";
 import { useListPresets } from "@/components/Defaults";
 import type { PressProps } from "@/components/Form";
 import { IconButton } from "@/components/Form";
-import { SearchResult } from "@/modules/search/components";
+import { SearchResult } from "@/modules/search/components/SearchResult";
 
 //#region Track
 export namespace Track {

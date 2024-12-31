@@ -6,7 +6,7 @@ import { playFromMediaList } from "@/modules/media/services/Playback";
 
 import { AccentText } from "@/components/Typography";
 import { ReservedPlaylists } from "@/modules/media/constants";
-import { SearchEngine } from "@/modules/search/components";
+import { SearchEngine } from "@/modules/search/components/SearchEngine";
 import type { SearchCallbacks } from "@/modules/search/types";
 
 /** Screen for `/search` route. */
