@@ -29,7 +29,7 @@ export function IssueLayout(props: {
   return (
     <>
       <Animated.ScrollView contentContainerClassName="grow gap-6 p-4">
-        <AccentText style={{ paddingTop: top + 16 }} className="text-3xl">
+        <AccentText style={{ paddingTop: top + 16 }} className="text-4xl">
           {t(`errorScreen.${props.issueType}`)}
         </AccentText>
         <TStyledText

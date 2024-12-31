@@ -102,7 +102,7 @@ function Artwork(props: { artwork: string | null }) {
 /** Renders the name & artist of the current playing track. */
 function Metadata(props: { name: string; artistName: string | null }) {
   return (
-    <View className="gap-0.5">
+    <View className="gap-0.5 pt-4">
       <Marquee center>
         <StyledText className="text-xl">{props.name}</StyledText>
       </Marquee>
@@ -149,7 +149,7 @@ export function SeekBar({ duration }: { duration: number }) {
 /** Playback controls for the current track. */
 function PlaybackControls() {
   return (
-    <View className="flex-row items-center justify-center gap-2">
+    <View className="flex-row items-center justify-center gap-2 py-2">
       <ShuffleButton />
       <PreviousButton />
       <PlayToggleButton className="rounded-full px-6" />

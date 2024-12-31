@@ -9,7 +9,7 @@ import { StyledText } from "@/components/Typography";
 /** Screen for `/setting/third-party/NDot JP` route. */
 export default function PackageLicenseScreen() {
   return (
-    <ScrollView contentContainerClassName="grow gap-6 p-4">
+    <ScrollView contentContainerClassName="grow gap-6 p-4 pt-2">
       <StickyActionHeader noOffset originalText>
         NDot日本語
       </StickyActionHeader>

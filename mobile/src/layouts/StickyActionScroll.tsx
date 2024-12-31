@@ -233,7 +233,7 @@ export function StickyActionHeader({
   return (
     <AccentText
       style={[!noOffset ? { paddingTop: top + 16 } : {}, style]}
-      className={cn("text-3xl", className)}
+      className={cn("text-4xl", className)}
       {...rest}
     />
   );

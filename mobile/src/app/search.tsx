@@ -13,8 +13,8 @@ import type { SearchCallbacks } from "@/modules/search/types";
 export default function SearchScreen() {
   const { t } = useTranslation();
   return (
-    <View className="grow gap-6 px-4 pt-8">
-      <AccentText className="text-3xl">{t("header.search")}</AccentText>
+    <View className="grow gap-6 px-4 pt-2">
+      <AccentText className="text-4xl">{t("header.search")}</AccentText>
       <SearchEngine searchScope={searchScope} callbacks={searchCallbacks} />
     </View>
   );

@@ -35,7 +35,7 @@ export default function PackageLicenseScreen() {
           ),
         }}
       />
-      <ScrollView contentContainerClassName="grow gap-6 p-4">
+      <ScrollView contentContainerClassName="grow gap-6 p-4 pt-2">
         <StickyActionHeader noOffset originalText>
           {licenseInfo.name}
         </StickyActionHeader>
