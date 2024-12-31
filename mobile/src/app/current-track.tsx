@@ -17,7 +17,7 @@ import { useUserPreferencesStore } from "@/services/UserPreferences";
 
 import { mutateGuard } from "@/lib/react-query";
 import { formatSeconds } from "@/utils/number";
-import { Marquee } from "@/components/Containment";
+import { Marquee } from "@/components/Containment/Marquee";
 import { IconButton, Slider } from "@/components/Form";
 import { Back } from "@/components/Transition/Back";
 import { StyledText } from "@/components/Typography";

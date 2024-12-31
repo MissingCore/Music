@@ -16,7 +16,7 @@ import { pickPath, removePath, useAddPathToList, validatePath } from "./data";
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
-import { Marquee, cardStyles } from "@/components/Containment";
+import { Marquee } from "@/components/Containment/Marquee";
 import { SheetsFlashList } from "@/components/Defaults";
 import { IconButton, TextInput } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";
@@ -74,7 +74,7 @@ export default function ScanFilterListSheet(props: {
             <Marquee
               color={surface}
               topOffset={16}
-              wrapperClassName={cn(cardStyles, "min-h-12 px-0")}
+              wrapperClassName="min-h-12 py-4 rounded-md bg-surface"
             >
               <StyledText className="px-4">{item}</StyledText>
             </Marquee>

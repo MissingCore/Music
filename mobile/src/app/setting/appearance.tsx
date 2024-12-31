@@ -4,7 +4,7 @@ import { SheetManager } from "react-native-actions-sheet";
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { StandardScrollLayout } from "@/layouts/StandardScroll";
 
-import { List, ListItem } from "@/components/Containment";
+import { List, ListItem } from "@/components/Containment/List";
 
 /** Screen for `/setting/appearance` route. */
 export default function AppearanceScreen() {

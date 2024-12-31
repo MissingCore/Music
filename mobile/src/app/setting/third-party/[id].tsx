@@ -6,7 +6,7 @@ import { OpenInNew } from "@/icons/OpenInNew";
 import LicensesList from "@/resources/licenses.json";
 import { StickyActionHeader } from "@/layouts/StickyActionScroll";
 
-import { Card } from "@/components/Containment";
+import { Card } from "@/components/Containment/Card";
 import { ScrollView } from "@/components/Defaults";
 import { IconButton } from "@/components/Form";
 import { StyledText } from "@/components/Typography";

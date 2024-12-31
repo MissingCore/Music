@@ -9,7 +9,7 @@ import {
 import { useTheme } from "@/hooks/useTheme";
 
 import { mutateGuard } from "@/lib/react-query";
-import { Marquee } from "@/components/Containment";
+import { Marquee } from "@/components/Containment/Marquee";
 import { SheetsFlashList } from "@/components/Defaults";
 import { Checkbox } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";

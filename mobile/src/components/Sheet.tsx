@@ -9,7 +9,7 @@ import ActionSheet from "react-native-actions-sheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { cn } from "@/lib/style";
-import { Marquee } from "./Containment";
+import { Marquee } from "./Containment/Marquee";
 import { StyledText } from "./Typography";
 
 const WrappedActionSheet = cssInterop(ActionSheet, {

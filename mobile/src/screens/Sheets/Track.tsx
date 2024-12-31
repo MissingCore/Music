@@ -25,7 +25,8 @@ import {
   formatEpoch,
   formatSeconds,
 } from "@/utils/number";
-import { Divider, Marquee } from "@/components/Containment";
+import { Divider } from "@/components/Containment/Divider";
+import { Marquee } from "@/components/Containment/Marquee";
 import { IconButton } from "@/components/Form";
 import { Sheet } from "@/components/Sheet";
 import { StyledText, TEm, TStyledText } from "@/components/Typography";
