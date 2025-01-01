@@ -34,13 +34,9 @@ export function formatEpoch(ms: number) {
 
 /**
  * Convert seconds into a time representing in the format of: `dd:hh:mm:ss`
- * or `d h min sec`.
+ * (default) or `d h min`.
  */
-export function formatSeconds(
-  seconds: number,
-  options?: { format?: "colon" | "duration"; omitSeconds?: boolean },
-) {
-  const config = { format: "colon", omitSeconds: false, ...options };
+export function formatSeconds(seconds: number, asISO: boolean = true) {
   let roundedSeconds = Math.floor(seconds);
 
   const days = Math.floor(roundedSeconds / (24 * 3600));
@@ -51,16 +47,13 @@ export function formatSeconds(
   roundedSeconds -= minutes * 60;
 
   const timeStr: string[] = [];
-  const withSuffix = config.format === "duration";
-  pushTimeSegment(timeStr, days, withSuffix ? "d" : undefined);
-  pushTimeSegment(timeStr, hours, withSuffix ? "hr" : undefined);
+  pushTimeSegment(timeStr, days, !asISO ? "d" : undefined);
+  pushTimeSegment(timeStr, hours, !asISO ? "hr" : undefined);
   // Ensure minutes is present in returned string.
-  pushTimeSegment(timeStr, minutes, withSuffix ? "min" : undefined, true);
-  if (!config.omitSeconds) {
-    pushTimeSegment(timeStr, roundedSeconds, withSuffix ? "s" : undefined);
-  }
+  pushTimeSegment(timeStr, minutes, !asISO ? "min" : undefined, true);
+  if (asISO) pushTimeSegment(timeStr, roundedSeconds);
 
-  return timeStr.join(config.format === "duration" ? " " : ":");
+  return timeStr.join(!asISO ? " " : ":");
 }
 
 /** Helper for `formatSeconds` to make sure we can push a valid value. */

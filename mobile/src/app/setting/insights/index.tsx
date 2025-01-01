@@ -96,10 +96,7 @@ function DBSummaryWidget() {
       </Legend>
       <LegendItem
         nameKey="settings.related.totalDuration"
-        value={formatSeconds(data.totalDuration, {
-          format: "duration",
-          omitSeconds: true,
-        })}
+        value={formatSeconds(data.totalDuration, false)}
       />
     </Card>
   );
