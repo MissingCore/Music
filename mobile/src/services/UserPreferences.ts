@@ -21,7 +21,7 @@ import { getSourceName } from "@/modules/media/helpers/data";
 /** Options for app themes. */
 export const ThemeOptions = ["light", "dark", "system"] as const;
 /** Options for app accent font. */
-export const FontOptions = ["NDot", "NType"] as const;
+export const FontOptions = ["NDot", "NType", "Roboto"] as const;
 
 //#region Zustand Store
 //#region UserPreferencesStore Interface

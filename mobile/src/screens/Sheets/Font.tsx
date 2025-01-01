@@ -1,7 +1,12 @@
 import { Text } from "react-native";
 
-import { useUserPreferencesStore } from "@/services/UserPreferences";
+import {
+  FontOptions,
+  useUserPreferencesStore,
+} from "@/services/UserPreferences";
 
+import { getAccentFont } from "@/lib/style";
+import { SheetsFlatList } from "@/components/Defaults";
 import { Radio } from "@/components/Form/Selection";
 import { Sheet } from "@/components/Sheet";
 
@@ -14,24 +19,26 @@ export default function FontSheet() {
     <Sheet
       id="FontSheet"
       titleKey="title.font"
-      contentContainerClassName="gap-1"
+      contentContainerClassName="pb-0"
     >
-      <Radio
-        selected={accentFont === "NDot"}
-        onSelect={() => setAccentFont("NDot")}
-      >
-        <Text className="font-ndot text-base leading-tight text-foreground">
-          NDot
-        </Text>
-      </Radio>
-      <Radio
-        selected={accentFont === "NType"}
-        onSelect={() => setAccentFont("NType")}
-      >
-        <Text className="font-ntype text-base leading-tight text-foreground">
-          NType
-        </Text>
-      </Radio>
+      <SheetsFlatList
+        data={FontOptions}
+        keyExtractor={(font) => font}
+        renderItem={({ item: font }) => (
+          <Radio
+            selected={accentFont === font}
+            onSelect={() => setAccentFont(font)}
+          >
+            <Text
+              className="text-base leading-tight text-foreground"
+              style={{ fontFamily: getAccentFont(font) }}
+            >
+              {font}
+            </Text>
+          </Radio>
+        )}
+        contentContainerClassName="gap-1 pb-4"
+      />
     </Sheet>
   );
 }

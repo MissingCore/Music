@@ -11,6 +11,7 @@ import { StickyActionHeader } from "@/layouts/StickyActionScroll";
 
 import * as LINKS from "@/constants/Links";
 import { FontFamily, FontSize } from "@/constants/Styles";
+import { getAccentFont } from "@/lib/style";
 import { ScrollView } from "@/components/Defaults";
 import { Button } from "@/components/Form/Button";
 import { TStyledText } from "@/components/Typography/StyledText";
@@ -25,7 +26,9 @@ export default function AppUpdateScreen() {
 
   return (
     <ScrollView contentContainerClassName="grow gap-6 p-4">
-      <StickyActionHeader noOffset>{release.version}</StickyActionHeader>
+      <StickyActionHeader noOffset originalText>
+        {release.version}
+      </StickyActionHeader>
 
       <Markdown
         style={{
@@ -37,8 +40,7 @@ export default function AppUpdateScreen() {
           },
           heading2: {
             color: foreground,
-            fontFamily:
-              accentFont === "NDot" ? FontFamily.ndot : FontFamily.ntype,
+            fontFamily: getAccentFont(accentFont),
             fontSize: FontSize.base,
           },
           blockquote: {

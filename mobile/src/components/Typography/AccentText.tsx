@@ -3,11 +3,12 @@ import { Text } from "react-native";
 
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 
-import { cn } from "@/lib/style";
+import { cn, getAccentFont } from "@/lib/style";
 
 /** `<Text />` that utilizes the accent font. */
 export function AccentText({
   className,
+  style,
   originalText,
   ...props
 }: TextProps & {
@@ -19,14 +20,11 @@ export function AccentText({
     <Text
       className={cn(
         "text-foreground",
-        {
-          "font-ndot": accentFont === "NDot",
-          uppercase: accentFont === "NDot" && !originalText,
-          "font-ntype": accentFont === "NType",
-        },
+        { uppercase: accentFont === "NDot" && !originalText },
         className,
         "leading-tight",
       )}
+      style={[{ fontFamily: getAccentFont(accentFont) }, style]}
       {...props}
     />
   );

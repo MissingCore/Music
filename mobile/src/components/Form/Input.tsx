@@ -3,11 +3,11 @@ import { TextInput as RNTextInput } from "react-native";
 
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 
-import { cn } from "@/lib/style";
+import { cn, getAccentFont } from "@/lib/style";
 
 //#region Numeric Input
 /** Numeric input using the accent font. */
-export function NumericInput({ className, ...props }: TextInputProps) {
+export function NumericInput({ className, style, ...props }: TextInputProps) {
   const accentFont = useUserPreferencesStore((state) => state.accentFont);
   return (
     <RNTextInput
@@ -15,13 +15,10 @@ export function NumericInput({ className, ...props }: TextInputProps) {
       inputMode="numeric"
       className={cn(
         "min-h-12 text-[3rem] text-foreground placeholder:text-foreground/60",
-        {
-          "font-ndot": accentFont === "NDot",
-          "font-ntype": accentFont === "NType",
-          "opacity-25": props.editable === false,
-        },
+        { "opacity-25": props.editable === false },
         className,
       )}
+      style={[{ fontFamily: getAccentFont(accentFont) }, style]}
       {...props}
     />
   );

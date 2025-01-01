@@ -2,7 +2,11 @@ import type { ClassValue } from "clsx";
 import { clsx } from "clsx";
 import { extendTailwindMerge } from "tailwind-merge";
 
+import type { FontOptions } from "@/services/UserPreferences";
+
 import { TailwindTheme } from "@/constants/TailwindTheme";
+import { FontFamily } from "@/constants/Styles";
+import { toLowerCase } from "@/utils/string";
 
 export type TextColor = `text-${string}` | `text-[${string}]`;
 
@@ -26,4 +30,9 @@ const customTwMerge = extendTailwindMerge({
 /** Combines any number of Tailwind classes nicely. */
 export function cn(...inputs: ClassValue[]) {
   return customTwMerge(clsx(inputs));
+}
+
+/** Returns the correct accent font used. */
+export function getAccentFont(font: (typeof FontOptions)[number]) {
+  return FontFamily[toLowerCase(font)];
 }
