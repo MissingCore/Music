@@ -12,9 +12,8 @@ import Animated, {
 
 import { useOnboardingStore } from "@/modules/scanning/services/Onboarding";
 
-import { cn } from "@/lib/style";
-import { SafeContainer, cardStyles } from "@/components/Containment";
-import { StyledText, TStyledText } from "@/components/Typography";
+import { SafeContainer } from "@/components/Containment/SafeContainer";
+import { StyledText, TStyledText } from "@/components/Typography/StyledText";
 
 /**
  * Informs user with what's being done while displaying the app icon. This
@@ -43,7 +42,7 @@ export function OnboardingScreen() {
       <Animated.View
         layout={LinearTransition}
         style={[{ width: Dimensions.get("window").width - 32 }, opacity]}
-        className={cn("absolute bottom-8 left-4 gap-1", cardStyles)}
+        className="absolute bottom-8 left-4 gap-1 rounded-md bg-surface p-4"
       >
         <OnboardingPhase />
       </Animated.View>

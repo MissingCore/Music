@@ -6,7 +6,9 @@ import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Keyboard, View } from "react-native";
 
-import { Add, CreateNewFolder, Remove } from "@/icons";
+import { Add } from "@/icons/Add";
+import { CreateNewFolder } from "@/icons/CreateNewFolder";
+import { Remove } from "@/icons/Remove";
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { useTheme } from "@/hooks/useTheme";
 import { pickPath, removePath, useAddPathToList, validatePath } from "./data";
@@ -14,12 +16,13 @@ import { pickPath, removePath, useAddPathToList, validatePath } from "./data";
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
-import { Marquee, cardStyles } from "@/components/Containment";
+import { Marquee } from "@/components/Containment/Marquee";
 import { SheetsFlashList } from "@/components/Defaults";
-import { IconButton, TextInput } from "@/components/Form";
+import { IconButton } from "@/components/Form/Button";
+import { TextInput } from "@/components/Form/Input";
 import { Sheet } from "@/components/Sheet";
 import { Swipeable } from "@/components/Swipeable";
-import { StyledText } from "@/components/Typography";
+import { StyledText } from "@/components/Typography/StyledText";
 
 //#region Sheet
 /** Sheet used to edit the paths in the allowlist or blocklist. */
@@ -72,7 +75,7 @@ export default function ScanFilterListSheet(props: {
             <Marquee
               color={surface}
               topOffset={16}
-              wrapperClassName={cn(cardStyles, "min-h-12 px-0")}
+              wrapperClassName="min-h-12 py-4 rounded-md bg-surface"
             >
               <StyledText className="px-4">{item}</StyledText>
             </Marquee>

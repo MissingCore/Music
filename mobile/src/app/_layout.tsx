@@ -4,7 +4,8 @@ import { useEffect } from "react";
 import Bootsplash from "react-native-bootsplash";
 
 import { useLoadResources } from "@/hooks/useLoadResources";
-import { ErrorBoundary, OnboardingScreen } from "@/screens";
+import { ErrorBoundary } from "@/screens/ErrorBoundary";
+import { OnboardingScreen } from "@/screens/Onboarding";
 import { AppProvider } from "@/providers";
 
 import "@/resources/global.css";

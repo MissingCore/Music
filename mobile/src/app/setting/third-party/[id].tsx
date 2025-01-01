@@ -2,14 +2,14 @@ import { Stack, useLocalSearchParams } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
 import { useTranslation } from "react-i18next";
 
-import { OpenInNew } from "@/icons";
+import { OpenInNew } from "@/icons/OpenInNew";
 import LicensesList from "@/resources/licenses.json";
-import { StickyActionHeader } from "@/layouts";
+import { StickyActionHeader } from "@/layouts/StickyActionScroll";
 
-import { Card } from "@/components/Containment";
+import { Card } from "@/components/Containment/Card";
 import { ScrollView } from "@/components/Defaults";
-import { IconButton } from "@/components/Form";
-import { StyledText } from "@/components/Typography";
+import { IconButton } from "@/components/Form/Button";
+import { StyledText } from "@/components/Typography/StyledText";
 
 /** Screen for `/setting/third-party/[id]` route. */
 export default function PackageLicenseScreen() {

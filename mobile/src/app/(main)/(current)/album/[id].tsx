@@ -2,17 +2,17 @@ import { Stack, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { Favorite } from "@/icons";
+import { Favorite } from "@/icons/Favorite";
 import { useAlbumForScreen, useFavoriteAlbum } from "@/queries/album";
 import { useBottomActionsContext } from "@/hooks/useBottomActionsContext";
 import { CurrentListLayout } from "@/layouts/CurrentList";
 
 import { mutateGuard } from "@/lib/react-query";
 import { FlashList } from "@/components/Defaults";
-import { IconButton } from "@/components/Form";
-import { PagePlaceholder } from "@/components/Transition";
-import { Em, StyledText } from "@/components/Typography";
-import { Track } from "@/modules/media/components";
+import { IconButton } from "@/components/Form/Button";
+import { PagePlaceholder } from "@/components/Transition/Placeholder";
+import { Em, StyledText } from "@/components/Typography/StyledText";
+import { Track } from "@/modules/media/components/Track";
 
 /** Screen for `/album/[id]` route. */
 export default function CurrentAlbumScreen() {

@@ -7,10 +7,10 @@ import { usePlaylist, useUpdatePlaylist } from "@/queries/playlist";
 
 import { pickImage } from "@/lib/file-system";
 import { mutateGuard } from "@/lib/react-query";
-import { Button } from "@/components/Form";
+import { Button } from "@/components/Form/Button";
 import { Sheet } from "@/components/Sheet";
-import { TStyledText } from "@/components/Typography";
-import { MediaImage } from "@/modules/media/components";
+import { TStyledText } from "@/components/Typography/StyledText";
+import { MediaImage } from "@/modules/media/components/MediaImage";
 import type { MediaType } from "@/modules/media/types";
 
 /** Sheet allowing us to change the artwork of a artist. */

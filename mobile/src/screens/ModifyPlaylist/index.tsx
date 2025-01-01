@@ -9,7 +9,11 @@ import DragList from "react-native-draglist";
 
 import type { TrackWithAlbum } from "@/db/schema";
 
-import { Add, Cancel, CheckCircle, Check, Remove } from "@/icons";
+import { Add } from "@/icons/Add";
+import { Cancel } from "@/icons/Cancel";
+import { CheckCircle } from "@/icons/CheckCircle";
+import { Check } from "@/icons/Check";
+import { Remove } from "@/icons/Remove";
 import { useDeletePlaylist } from "@/queries/playlist";
 import { useTheme } from "@/hooks/useTheme";
 import type { InitStoreProps } from "./context";
@@ -21,11 +25,12 @@ import { cn } from "@/lib/style";
 import { pickKeys } from "@/utils/object";
 import { wait } from "@/utils/promise";
 import { useListPresets } from "@/components/Defaults";
-import { IconButton, TextInput } from "@/components/Form";
+import { IconButton } from "@/components/Form/Button";
+import { TextInput } from "@/components/Form/Input";
 import type { SwipeableRef } from "@/components/Swipeable";
 import { Swipeable } from "@/components/Swipeable";
-import { StyledText, TStyledText } from "@/components/Typography";
-import { SearchResult } from "@/modules/search/components";
+import { StyledText, TStyledText } from "@/components/Typography/StyledText";
+import { SearchResult } from "@/modules/search/components/SearchResult";
 
 /** Resuable screen to modify (create or edit) a playlist. */
 export function ModifyPlaylist(props: InitStoreProps) {

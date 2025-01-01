@@ -9,18 +9,19 @@ import {
 } from "@/queries/favorite";
 import { useGetColumn } from "@/hooks/useGetColumn";
 import { useRecentListStore } from "@/modules/media/services/RecentList";
-import { StickyActionScrollLayout } from "@/layouts";
+import { StickyActionScrollLayout } from "@/layouts/StickyActionScroll";
 
 import { cn } from "@/lib/style";
 import { abbreviateNum } from "@/utils/number";
-import { Button } from "@/components/Form";
-import { AccentText, TEm, TStyledText } from "@/components/Typography";
+import { Button } from "@/components/Form/Button";
+import { AccentText } from "@/components/Typography/AccentText";
+import { TEm, TStyledText } from "@/components/Typography/StyledText";
 import { ReservedPlaylists } from "@/modules/media/constants";
 import {
   MediaCard,
   MediaCardList,
   MediaCardPlaceholderContent,
-} from "@/modules/media/components";
+} from "@/modules/media/components/MediaCard";
 
 /** Screen for `/` route. */
 export default function HomeScreen() {

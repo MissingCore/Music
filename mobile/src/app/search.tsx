@@ -4,9 +4,9 @@ import { View } from "react-native";
 
 import { playFromMediaList } from "@/modules/media/services/Playback";
 
-import { AccentText } from "@/components/Typography";
+import { AccentText } from "@/components/Typography/AccentText";
 import { ReservedPlaylists } from "@/modules/media/constants";
-import { SearchEngine } from "@/modules/search/components";
+import { SearchEngine } from "@/modules/search/components/SearchEngine";
 import type { SearchCallbacks } from "@/modules/search/types";
 
 /** Screen for `/search` route. */

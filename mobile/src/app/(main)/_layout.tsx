@@ -8,15 +8,16 @@ import Animated, {
   SlideInDown,
 } from "react-native-reanimated";
 
-import { Search, Settings } from "@/icons";
+import { Search } from "@/icons/Search";
+import { Settings } from "@/icons/Settings";
 import { useBottomActionsContext } from "@/hooks/useBottomActionsContext";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 import { useTheme } from "@/hooks/useTheme";
 
 import { cn } from "@/lib/style";
-import { Button, IconButton } from "@/components/Form";
-import { StyledText } from "@/components/Typography";
-import { MiniPlayer } from "@/modules/media/components";
+import { Button, IconButton } from "@/components/Form/Button";
+import { StyledText } from "@/components/Typography/StyledText";
+import { MiniPlayer } from "@/modules/media/components/MiniPlayer";
 
 //#region Layout
 /** Contains content that doesn't take up the full-screen. */

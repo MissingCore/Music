@@ -5,13 +5,11 @@ import { View, useWindowDimensions } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 import { useProgress } from "react-native-track-player";
 
-import {
-  Favorite,
-  LibraryMusic,
-  MoreVert,
-  VolumeMute,
-  VolumeUp,
-} from "@/icons";
+import { Favorite } from "@/icons/Favorite";
+import { LibraryMusic } from "@/icons/LibraryMusic";
+import { MoreVert } from "@/icons/MoreVert";
+import { VolumeMute } from "@/icons/VolumeMute";
+import { VolumeUp } from "@/icons/VolumeUp";
 import { useFavoriteTrack, useTrack } from "@/queries/track";
 import { useMusicStore } from "@/modules/media/services/Music";
 import { MusicControls } from "@/modules/media/services/Playback";
@@ -19,18 +17,19 @@ import { useUserPreferencesStore } from "@/services/UserPreferences";
 
 import { mutateGuard } from "@/lib/react-query";
 import { formatSeconds } from "@/utils/number";
-import { Marquee } from "@/components/Containment";
-import { IconButton, Slider } from "@/components/Form";
-import { Back } from "@/components/Transition";
-import { StyledText } from "@/components/Typography";
+import { Marquee } from "@/components/Containment/Marquee";
+import { IconButton } from "@/components/Form/Button";
+import { Slider } from "@/components/Form/Slider";
+import { Back } from "@/components/Transition/Back";
+import { StyledText } from "@/components/Typography/StyledText";
 import {
-  MediaImage,
   NextButton,
   PlayToggleButton,
   PreviousButton,
   RepeatButton,
   ShuffleButton,
-} from "@/modules/media/components";
+} from "@/modules/media/components/MediaControls";
+import { MediaImage } from "@/modules/media/components/MediaImage";
 
 /** Screen for `/current-track` route. */
 export default function CurrentTrackScreen() {

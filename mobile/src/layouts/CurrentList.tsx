@@ -3,14 +3,16 @@ import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 
-import { Schedule } from "@/icons";
+import { Schedule } from "@/icons/Schedule";
 import { useTheme } from "@/hooks/useTheme";
 
 import { capitalize, toLowerCase } from "@/utils/string";
-import { Divider, Marquee } from "@/components/Containment";
-import { StyledText, TEm } from "@/components/Typography";
+import { Marquee } from "@/components/Containment/Marquee";
+import { Divider } from "@/components/Divider";
+import { StyledText, TEm } from "@/components/Typography/StyledText";
 import { ReservedPlaylists } from "@/modules/media/constants";
-import { MediaImage, MediaListControls } from "@/modules/media/components";
+import { MediaImage } from "@/modules/media/components/MediaImage";
+import { MediaListControls } from "@/modules/media/components/MediaListControls";
 import type { MediaType, PlayListSource } from "@/modules/media/types";
 
 /** List of media that we can change artwork for. */

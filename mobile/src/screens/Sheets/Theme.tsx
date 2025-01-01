@@ -6,9 +6,9 @@ import {
 } from "@/services/UserPreferences";
 
 import { FlatList } from "@/components/Defaults";
-import { Radio } from "@/components/Form";
+import { Radio } from "@/components/Form/Selection";
 import { Sheet } from "@/components/Sheet";
-import { TStyledText } from "@/components/Typography";
+import { TStyledText } from "@/components/Typography/StyledText";
 
 /** Sheet allowing us to change the app's theme. */
 export default function ThemeSheet() {

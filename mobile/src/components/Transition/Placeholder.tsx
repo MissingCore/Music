@@ -2,7 +2,7 @@ import type { ParseKeys } from "i18next";
 import { View } from "react-native";
 
 import { Loading } from "./Loading";
-import { TStyledText } from "../Typography";
+import { TStyledText } from "../Typography/StyledText";
 
 /** Placeholder to render inside a list. */
 export function ContentPlaceholder(props: {

@@ -21,13 +21,13 @@ import { useFolderContent } from "@/queries/folder";
 import {
   StickyActionListLayout,
   useStickyActionListLayoutRef,
-} from "@/layouts";
+} from "@/layouts/StickyActionScroll";
 
 import { cn } from "@/lib/style";
 import { useListPresets } from "@/components/Defaults";
-import { StyledText } from "@/components/Typography";
-import { Track } from "@/modules/media/components";
-import { SearchResult } from "@/modules/search/components";
+import { StyledText } from "@/components/Typography/StyledText";
+import { Track } from "@/modules/media/components/Track";
+import { SearchResult } from "@/modules/search/components/SearchResult";
 
 /** Animated scrollview supporting gestures. */
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);

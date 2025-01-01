@@ -1,11 +1,11 @@
 import { router } from "expo-router";
 
 import { useArtistsForIndex } from "@/queries/artist";
-import { StickyActionListLayout } from "@/layouts";
+import { StickyActionListLayout } from "@/layouts/StickyActionScroll";
 
 import { useListPresets } from "@/components/Defaults";
-import { Em } from "@/components/Typography";
-import { SearchResult } from "@/modules/search/components";
+import { Em } from "@/components/Typography/StyledText";
+import { SearchResult } from "@/modules/search/components/SearchResult";
 
 /** Screen for `/artist` route. */
 export default function ArtistScreen() {

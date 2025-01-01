@@ -1,7 +1,7 @@
 import { useTheme } from "@/hooks/useTheme";
 
 import { Sheet } from "@/components/Sheet";
-import { SearchEngine } from "@/modules/search/components";
+import { SearchEngine } from "@/modules/search/components/SearchEngine";
 import type { SearchCallbacks } from "@/modules/search/types";
 
 /** List of media we want to appear in the search. */

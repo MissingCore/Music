@@ -14,7 +14,8 @@ import { formatSeconds } from "@/utils/number";
 import { omitKeys } from "@/utils/object";
 import type { Prettify } from "@/utils/types";
 import { ReservedNames, ReservedPlaylists } from "@/modules/media/constants";
-import type { MediaCard, Track as TrackC } from "@/modules/media/components";
+import type { MediaCard } from "@/modules/media/components/MediaCard";
+import type { Track as TrackC } from "@/modules/media/components/Track";
 import type { MediaType } from "@/modules/media/types";
 
 //#region Artwork Formatters

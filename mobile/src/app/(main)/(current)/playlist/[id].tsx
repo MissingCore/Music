@@ -5,7 +5,9 @@ import { Pressable, View } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist";
 import DragList from "react-native-draglist";
 
-import { Edit, Favorite, Remove } from "@/icons";
+import { Edit } from "@/icons/Edit";
+import { Favorite } from "@/icons/Favorite";
+import { Remove } from "@/icons/Remove";
 import {
   useFavoritePlaylist,
   useMoveInPlaylist,
@@ -20,11 +22,11 @@ import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
 import { moveArray, pickKeys } from "@/utils/object";
 import { useListPresets } from "@/components/Defaults";
-import { IconButton } from "@/components/Form";
+import { IconButton } from "@/components/Form/Button";
 import type { SwipeableRef } from "@/components/Swipeable";
 import { Swipeable } from "@/components/Swipeable";
-import { PagePlaceholder } from "@/components/Transition";
-import { Track } from "@/modules/media/components";
+import { PagePlaceholder } from "@/components/Transition/Placeholder";
+import { Track } from "@/modules/media/components/Track";
 import type { PlayListSource } from "@/modules/media/types";
 
 type ScreenData = Track.Content & { disc: number | null; track: number | null };

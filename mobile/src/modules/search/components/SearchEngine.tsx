@@ -11,13 +11,13 @@ import type {
 } from "@/db/schema";
 import { getPlaylistCover, getTrackCover } from "@/db/utils";
 
-import { Search } from "@/icons";
+import { Search } from "@/icons/Search";
 import { useTheme } from "@/hooks/useTheme";
 
 import { cn } from "@/lib/style";
 import { FlashList, SheetsFlashList } from "@/components/Defaults";
-import { TextInput } from "@/components/Form";
-import { TEm, TStyledText } from "@/components/Typography";
+import { TextInput } from "@/components/Form/Input";
+import { TEm, TStyledText } from "@/components/Typography/StyledText";
 import { SearchResult } from "./SearchResult";
 import { useSearch } from "../hooks/useSearch";
 import type {

@@ -23,6 +23,7 @@ const config = {
       { ignoreDeclarationMerge: true },
     ],
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+    "import/no-cycle": ["error"],
     "import/order": "off",
     "prettier/prettier": ["error", { endOfLine: "auto" }],
     // Ensures props and state inside functions are always up-to-date

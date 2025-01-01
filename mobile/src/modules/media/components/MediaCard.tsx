@@ -12,7 +12,7 @@ import { cn } from "@/lib/style";
 import type { Maybe, Prettify } from "@/utils/types";
 import type { WithListEmptyProps } from "@/components/Defaults";
 import { useListPresets } from "@/components/Defaults";
-import { StyledText } from "@/components/Typography";
+import { StyledText } from "@/components/Typography/StyledText";
 import { MediaImage } from "./MediaImage";
 
 //#region Media Card
