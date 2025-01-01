@@ -8,7 +8,7 @@ import { Button } from "@/components/Form/Button";
 import { Radio } from "@/components/Form/Selection";
 import { Switch } from "@/components/Form/Switch";
 import { Sheet } from "@/components/Sheet";
-import { TStyledText } from "@/components/Typography";
+import { TStyledText } from "@/components/Typography/StyledText";
 
 /** Sheet allowing us visually change the sort order on the `/track` screen. */
 export default function TrackSortSheet() {

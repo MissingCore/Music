@@ -10,7 +10,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { cn } from "@/lib/style";
 import { Marquee } from "./Containment/Marquee";
-import { StyledText } from "./Typography";
+import { StyledText } from "./Typography/StyledText";
 
 const WrappedActionSheet = cssInterop(ActionSheet, {
   containerClassName: "containerStyle",

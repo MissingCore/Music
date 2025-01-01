@@ -5,7 +5,8 @@ import { omitKeys, pickKeys } from "@/utils/object";
 import type { UniformObject } from "@/utils/types";
 import type { PressProps } from "@/components/Form/Button";
 import { PressPropsKeys, Ripple } from "@/components/Form/Button";
-import { Kbd, StyledText } from "@/components/Typography";
+import { Kbd } from "@/components/Typography/Kbd";
+import { StyledText } from "@/components/Typography/StyledText";
 import { MediaImage } from "@/modules/media/components/MediaImage";
 import type { MediaType } from "@/modules/media/types";
 

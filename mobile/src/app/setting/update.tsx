@@ -13,7 +13,7 @@ import * as LINKS from "@/constants/Links";
 import { FontFamily, FontSize } from "@/constants/Styles";
 import { ScrollView } from "@/components/Defaults";
 import { Button } from "@/components/Form/Button";
-import { TStyledText } from "@/components/Typography";
+import { TStyledText } from "@/components/Typography/StyledText";
 
 /** Screen for `/setting/update` route. */
 export default function AppUpdateScreen() {

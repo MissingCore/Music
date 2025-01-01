@@ -7,7 +7,7 @@ import type { TextColor } from "@/lib/style";
 import { cn } from "@/lib/style";
 import type { WithListEmptyProps } from "../Defaults";
 import { FlashList } from "../Defaults";
-import { StyledText } from "../Typography";
+import { StyledText } from "../Typography/StyledText";
 
 //#region List
 /** Wrapper for list of `<ListItem />` for consistent gaps. */

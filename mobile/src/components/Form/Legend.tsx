@@ -2,7 +2,7 @@ import type { ParseKeys } from "i18next";
 import { View } from "react-native";
 
 import { cn } from "@/lib/style";
-import { StyledText, TStyledText } from "../Typography";
+import { StyledText, TStyledText } from "../Typography/StyledText";
 
 //#region Legend
 /** Wrapper for list of `<LegendItem />` for consistent gaps. */

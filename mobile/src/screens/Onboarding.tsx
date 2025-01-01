@@ -13,7 +13,7 @@ import Animated, {
 import { useOnboardingStore } from "@/modules/scanning/services/Onboarding";
 
 import { SafeContainer } from "@/components/Containment/SafeContainer";
-import { StyledText, TStyledText } from "@/components/Typography";
+import { StyledText, TStyledText } from "@/components/Typography/StyledText";
 
 /**
  * Informs user with what's being done while displaying the app icon. This

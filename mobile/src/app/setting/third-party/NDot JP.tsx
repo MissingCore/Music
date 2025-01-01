@@ -4,7 +4,7 @@ import { StickyActionHeader } from "@/layouts/StickyActionScroll";
 
 import { Card } from "@/components/Containment/Card";
 import { ScrollView } from "@/components/Defaults";
-import { StyledText } from "@/components/Typography";
+import { StyledText } from "@/components/Typography/StyledText";
 
 /** Screen for `/setting/third-party/NDot JP` route. */
 export default function PackageLicenseScreen() {

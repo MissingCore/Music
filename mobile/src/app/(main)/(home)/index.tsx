@@ -14,7 +14,8 @@ import { StickyActionScrollLayout } from "@/layouts/StickyActionScroll";
 import { cn } from "@/lib/style";
 import { abbreviateNum } from "@/utils/number";
 import { Button } from "@/components/Form/Button";
-import { AccentText, TEm, TStyledText } from "@/components/Typography";
+import { AccentText } from "@/components/Typography/AccentText";
+import { TEm, TStyledText } from "@/components/Typography/StyledText";
 import { ReservedPlaylists } from "@/modules/media/constants";
 import {
   MediaCard,

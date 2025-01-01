@@ -8,7 +8,7 @@ import {
 
 import { NumericInput } from "@/components/Form/Input";
 import { Sheet } from "@/components/Sheet";
-import { TStyledText } from "@/components/Typography";
+import { TStyledText } from "@/components/Typography/StyledText";
 
 /** Sheet used to specify the minimum track duration we want to save. */
 export default function MinDurationSheet() {

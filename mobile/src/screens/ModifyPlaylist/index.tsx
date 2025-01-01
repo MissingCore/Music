@@ -29,7 +29,7 @@ import { IconButton } from "@/components/Form/Button";
 import { TextInput } from "@/components/Form/Input";
 import type { SwipeableRef } from "@/components/Swipeable";
 import { Swipeable } from "@/components/Swipeable";
-import { StyledText, TStyledText } from "@/components/Typography";
+import { StyledText, TStyledText } from "@/components/Typography/StyledText";
 import { SearchResult } from "@/modules/search/components/SearchResult";
 
 /** Resuable screen to modify (create or edit) a playlist. */

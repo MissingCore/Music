@@ -9,7 +9,7 @@ import { StickyActionHeader } from "@/layouts/StickyActionScroll";
 import { Card } from "@/components/Containment/Card";
 import { ScrollView } from "@/components/Defaults";
 import { IconButton } from "@/components/Form/Button";
-import { StyledText } from "@/components/Typography";
+import { StyledText } from "@/components/Typography/StyledText";
 
 /** Screen for `/setting/third-party/[id]` route. */
 export default function PackageLicenseScreen() {

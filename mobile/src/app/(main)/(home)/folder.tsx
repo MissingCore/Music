@@ -25,7 +25,7 @@ import {
 
 import { cn } from "@/lib/style";
 import { useListPresets } from "@/components/Defaults";
-import { StyledText } from "@/components/Typography";
+import { StyledText } from "@/components/Typography/StyledText";
 import { Track } from "@/modules/media/components/Track";
 import { SearchResult } from "@/modules/search/components/SearchResult";
 

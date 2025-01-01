@@ -16,7 +16,7 @@ import { useTheme } from "@/hooks/useTheme";
 
 import { cn } from "@/lib/style";
 import { Button, IconButton } from "@/components/Form/Button";
-import { StyledText } from "@/components/Typography";
+import { StyledText } from "@/components/Typography/StyledText";
 import { MiniPlayer } from "@/modules/media/components/MiniPlayer";
 
 //#region Layout

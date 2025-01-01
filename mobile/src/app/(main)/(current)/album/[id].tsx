@@ -11,7 +11,7 @@ import { mutateGuard } from "@/lib/react-query";
 import { FlashList } from "@/components/Defaults";
 import { IconButton } from "@/components/Form/Button";
 import { PagePlaceholder } from "@/components/Transition/Placeholder";
-import { Em, StyledText } from "@/components/Typography";
+import { Em, StyledText } from "@/components/Typography/StyledText";
 import { Track } from "@/modules/media/components/Track";
 
 /** Screen for `/album/[id]` route. */

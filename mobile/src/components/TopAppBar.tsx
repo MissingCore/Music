@@ -10,7 +10,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { Marquee } from "./Containment/Marquee";
 import { SafeContainer } from "./Containment/SafeContainer";
 import { IconButton } from "./Form/Button";
-import { StyledText } from "./Typography";
+import { StyledText } from "./Typography/StyledText";
 
 //#region Normal
 /**

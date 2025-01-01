@@ -22,7 +22,7 @@ import { IconButton } from "@/components/Form/Button";
 import { TextInput } from "@/components/Form/Input";
 import { Sheet } from "@/components/Sheet";
 import { Swipeable } from "@/components/Swipeable";
-import { StyledText } from "@/components/Typography";
+import { StyledText } from "@/components/Typography/StyledText";
 
 //#region Sheet
 /** Sheet used to edit the paths in the allowlist or blocklist. */

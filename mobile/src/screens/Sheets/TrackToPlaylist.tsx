@@ -13,7 +13,7 @@ import { Marquee } from "@/components/Containment/Marquee";
 import { SheetsFlashList } from "@/components/Defaults";
 import { Checkbox } from "@/components/Form/Selection";
 import { Sheet } from "@/components/Sheet";
-import { StyledText } from "@/components/Typography";
+import { StyledText } from "@/components/Typography/StyledText";
 
 /** Sheet allowing us to select which playlists the track belongs to. */
 export default function TrackToPlaylistSheet(props: {

@@ -17,7 +17,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { cn } from "@/lib/style";
 import { FlashList, SheetsFlashList } from "@/components/Defaults";
 import { TextInput } from "@/components/Form/Input";
-import { TEm, TStyledText } from "@/components/Typography";
+import { TEm, TStyledText } from "@/components/Typography/StyledText";
 import { SearchResult } from "./SearchResult";
 import { useSearch } from "../hooks/useSearch";
 import type {

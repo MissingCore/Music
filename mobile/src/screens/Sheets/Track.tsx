@@ -29,7 +29,11 @@ import { Divider } from "@/components/Containment/Divider";
 import { Marquee } from "@/components/Containment/Marquee";
 import { IconButton } from "@/components/Form/Button";
 import { Sheet } from "@/components/Sheet";
-import { StyledText, TEm, TStyledText } from "@/components/Typography";
+import {
+  StyledText,
+  TEm,
+  TStyledText,
+} from "@/components/Typography/StyledText";
 import { ReservedPlaylists } from "@/modules/media/constants";
 import { MediaImage } from "@/modules/media/components/MediaImage";
 
