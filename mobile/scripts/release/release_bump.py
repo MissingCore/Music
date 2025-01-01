@@ -16,8 +16,10 @@ Actions = typing.Literal["major", "minor", "patch", "rc", "release"]
 availableActions: typing.Tuple[Actions, ...] = typing.get_args(Actions)
 
 
-# Returns the newest version based on the provided inputs.
 def updateVersion(currVersion=getVersion(), action: Actions = "patch", asRC=False):
+  """
+  Returns the newest version based on the provided inputs.
+  """
   currSemver = getVersionSegments(currVersion)
 
   # Handle cases of incorrect use of the `rc` & `release` actions.
@@ -42,21 +44,39 @@ def updateVersion(currVersion=getVersion(), action: Actions = "patch", asRC=Fals
     case _:
       currSemver[action] += 1
       currSemver["rc"] = 1 if asRC else None
+      # Reset version numbers below current increment.
+      if action == "major":
+        currSemver["minor"] = 0
+      if action in ["major", "minor"]:
+        currSemver["patch"] = 0
 
   major, minor, patch, rc = currSemver.values()
   rcStr = f"-rc.{rc}" if rc != None else ""
   return f"{major}.{minor}.{patch}{rcStr}"
 
 
+def cliConfirmation(actionMessage: str, confirmMessage: str, cancelMessage: str):
+  """
+  Displays a message in the terminal, asking for confirmation before the
+  action is enacted.
+  """
+  print(actionMessage)
+  confirmationStatus = input(confirmMessage).strip().lower() or "y"
+  if (confirmationStatus != "y"):
+    print(cancelMessage)
+    sys.exit(0)
+
+
 if __name__ == "__main__":
   import argparse
 
+  # Description of the custom arguments this file accepts.
   parser = argparse.ArgumentParser(
     description="Bump the current release version & release the tag on GitHub."
     )
   parser.add_argument(
     "--action",
-    help="How we bump versions. `rc` increments `rc` version & `release` releases `rc`.",
+    help="How we bump versions. `rc` increments `rc` version & `release` removes the `rc`.",
     choices=availableActions,
     required=True
     )
@@ -67,21 +87,26 @@ if __name__ == "__main__":
     )
 
   args = parser.parse_args()
-  version = getVersion()
   
-  # Get the updated version from our helper function.
-  newVersion = f"v{updateVersion(version, args.action, args.asRC)}"
+  # 1. Confirm that we want to release on this branch.
+  currBranchBytes = subprocess.check_output(["git", "branch", "--show-current"])
+  currBranch = currBranchBytes.splitlines()[0].decode()
+  cliConfirmation(
+    f"\nDo you want to create a release on branch {c.BOLD}`{currBranch}`{c.DEFAULT}.",
+    f"Confirm branch? ({c.BOLD}Y{c.DEFAULT}/n) ",
+    f"{c.HIGHLIGHTED_RED}Cancelled release.{c.DEFAULT}",
+  )
 
-  print(
-    f"\nUpdating version {c.HIGHLIGHTED_RED}v{version}{c.DEFAULT} to {c.HIGHLIGHTED_GREEN}{newVersion}{c.DEFAULT}."
-    )
-  confirmChange = input(f"Confirm change? ({c.BOLD}Y{c.DEFAULT}/n) ").strip().lower() or "y"
+  # 2. Confirm the new release version.
+  currVersion = getVersion()
+  newVersion = f"v{updateVersion(currVersion, args.action, args.asRC)}"
+  cliConfirmation(
+    f"\nUpdating version {c.HIGHLIGHTED_RED}v{currVersion}{c.DEFAULT} to {c.HIGHLIGHTED_GREEN}{newVersion}{c.DEFAULT}.",
+    f"Confirm change? ({c.BOLD}Y{c.DEFAULT}/n) ",
+    f"{c.HIGHLIGHTED_RED}Cancelled changes.{c.DEFAULT}",
+  )
 
-  if (confirmChange != "y"):
-    print(f"{c.HIGHLIGHTED_RED}Cancelled changes.{c.DEFAULT}")
-    sys.exit(0)
-
-  # Update version in `Config.ts`.
+  # 3. Update version in `Config.ts`.
   app_config = [f'export const APP_VERSION = "{newVersion}";\n']
   with open(Path("./src/constants/Config.ts"), encoding="utf8") as f:
     f.readline()
@@ -91,11 +116,10 @@ if __name__ == "__main__":
     for line in app_config:
       f.write(line)
 
-  # Bump version throughout app based on new change.
+  # 4. Bump version throughout app based on new change.
   bumpVersion()
 
-  # Commit changes & create new tag.
-  subprocess.call(["git", "switch", "main", "-q"])
+  # 5. Commit changes & create new tag.
   subprocess.call([
       "git", "add", "./src/constants/Config.ts",
                     "./package.json",
@@ -109,13 +133,11 @@ if __name__ == "__main__":
     ])
   subprocess.call(["git", "tag", f"{newVersion}"])
 
-  # Push changes to GitHub?
-  print(
-    f"\nCreated tag {c.HIGHLIGHTED_GREEN}{newVersion}{c.DEFAULT}."
-    )
-  confirmPush = input(f"Push changes to GitHub? ({c.BOLD}Y{c.DEFAULT}/n) ").strip().lower() or "y"
-  if (confirmPush != "y"):
-    print(f"{c.HIGHLIGHTED_RED}Cancelled push to GitHub.{c.DEFAULT}")
-    sys.exit(0)
+  # 6. Push changes to GitHub?
+  cliConfirmation(
+    f"\nCreated tag {c.HIGHLIGHTED_GREEN}{newVersion}{c.DEFAULT}.",
+    f"Push changes to GitHub? ({c.BOLD}Y{c.DEFAULT}/n) ",
+    f"{c.HIGHLIGHTED_RED}Cancelled push to GitHub.{c.DEFAULT}",
+  )
 
-  subprocess.call(["git", "push", "origin", "main", "--tags"])
+  subprocess.call(["git", "push", "--tags"])

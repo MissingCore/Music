@@ -20,7 +20,7 @@
     "db:generate": "drizzle-kit generate",
     "gen:splashscreen": "npx react-native-bootsplash generate --platforms android --background #F2F2F2 ./assets/splash-icon.png",
     "sync:licenses": "license-checker-rseidelsohn --production --depth=0 --excludePrivatePackages --clarificationsFile ./scripts/licenses/licenseClarification.json --customPath ./scripts/licenses/customLicenseFormat.json --json | node ./scripts/licenses/updateLicenses.mjs",
-    "release": "git checkout main -q && git pull && python ./scripts/release/release_bump.py"
+    "release": "git pull && python ./scripts/release/release_bump.py"
   },
   "dependencies": {
     "@backpackapp-io/react-native-toast": "^0.13.0",

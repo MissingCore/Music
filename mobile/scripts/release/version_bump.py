@@ -8,25 +8,31 @@ from pathlib import Path
 from typing import TypedDict
 
 
-# We'll handle app version by only updating the value in `Config.ts`. The
-# first line should always look like:
-#   `export const APP_VERSION = "v0.0.0";`
 def getVersion():
+  """
+  We'll handle app version by only updating the value in `Config.ts`. The
+  first line should always look like:
+    `export const APP_VERSION = "v0.0.0";`
+  """
   with open(Path("./src/constants/Config.ts"), encoding="utf8") as f:
     line = f.readline()
     return line.split('"')[1][1:]
 
 
-# Give type hint for dictionary returned from `getVersionSegments()`.
 class VersionSegments(TypedDict):
+  """
+  Give type hint for dictionary returned from `getVersionSegments()`.
+  """
   major: int
   minor: int
   patch: int
   rc: int | None
 
 
-# List out parts of a "semver" version as an object.
 def getVersionSegments(version=getVersion()) -> VersionSegments:
+  """
+  List out parts of a "semver" version as an object.
+  """
   splitVersionStr = version.split("-rc.")
   currVersion = splitVersionStr[0]
   rc = int(splitVersionStr[1]) if len(splitVersionStr) > 1 else None
@@ -34,9 +40,11 @@ def getVersionSegments(version=getVersion()) -> VersionSegments:
   return { "major": int(major), "minor": int(minor), "patch": int(patch), "rc": rc }
 
 
-# This handles bumping the version name & code in `package.json`, `app.config.ts`,
-# and `build.gradle`.
 def bumpVersion():
+  """
+  This handles bumping the version name & code in `package.json`, `app.config.ts`,
+  and `build.gradle`.
+  """
   latestVersion = getVersion()
 
   # Update version in `package.json`.
