@@ -140,4 +140,4 @@ if __name__ == "__main__":
     f"{c.HIGHLIGHTED_RED}Cancelled push to GitHub.{c.DEFAULT}",
   )
 
-  subprocess.call(["git", "push", "--tags"])
+  subprocess.call(["git", "push", "origin", currBranch, "--tags"])
