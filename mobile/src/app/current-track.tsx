@@ -22,7 +22,6 @@ import { IconButton } from "@/components/Form/Button";
 import { Slider } from "@/components/Form/Slider";
 import { Back } from "@/components/Transition/Back";
 import { StyledText } from "@/components/Typography/StyledText";
-import { MediaImage } from "@/modules/media/components/MediaImage";
 import {
   NextButton,
   PlayToggleButton,
@@ -30,6 +29,7 @@ import {
   RepeatButton,
   ShuffleButton,
 } from "@/modules/media/components/MediaControls";
+import { MediaImage } from "@/modules/media/components/MediaImage";
 
 /** Screen for `/current-track` route. */
 export default function CurrentTrackScreen() {

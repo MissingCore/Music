@@ -25,8 +25,8 @@ import {
   formatEpoch,
   formatSeconds,
 } from "@/utils/number";
-import { Divider } from "@/components/Containment/Divider";
 import { Marquee } from "@/components/Containment/Marquee";
+import { Divider } from "@/components/Divider";
 import { IconButton } from "@/components/Form/Button";
 import { Sheet } from "@/components/Sheet";
 import {

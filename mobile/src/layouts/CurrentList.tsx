@@ -7,8 +7,8 @@ import { Schedule } from "@/icons/Schedule";
 import { useTheme } from "@/hooks/useTheme";
 
 import { capitalize, toLowerCase } from "@/utils/string";
-import { Divider } from "@/components/Containment/Divider";
 import { Marquee } from "@/components/Containment/Marquee";
+import { Divider } from "@/components/Divider";
 import { StyledText, TEm } from "@/components/Typography/StyledText";
 import { ReservedPlaylists } from "@/modules/media/constants";
 import { MediaImage } from "@/modules/media/components/MediaImage";
