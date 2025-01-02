@@ -1,11 +1,11 @@
-<img src=".github/SOCIAL_PREVIEW.png" alt="Music app screen previews" />
+<img src=".github/assets/SOCIAL_PREVIEW_v2.png" alt="Music app screen previews" />
 
 # Music
 
 A Nothing inspired local music player (based on design by [Alkid Shuli (alKid)](https://bento.me/alkid)).
 
 [<img height="80" alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" />](https://play.google.com/store/apps/details?id=com.cyanchill.missingcore.music)
-[<img height="80" alt="Get it on GitHub" src="./.github/get-it-on-github.png" />](https://github.com/MissingCore/Music/releases)
+[<img height="80" alt="Get it on GitHub" src="./.github/assets/get-it-on-github.png" />](https://github.com/MissingCore/Music/releases)
 
 **The default branch (`dev`) is the development version of the repository. For the stable version, see the `main` branch.**
 
