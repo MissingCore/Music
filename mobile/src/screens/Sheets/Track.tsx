@@ -1,5 +1,6 @@
 import { router, usePathname } from "expo-router";
 import type { ParseKeys } from "i18next";
+import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 
@@ -59,14 +60,16 @@ export default function TrackSheet(props: { payload: { id: string } }) {
 //#region Track Introduction
 /** Contains the favorite toggle. */
 function TrackIntro({ data }: { data: TrackWithAlbum }) {
-  const favoriteTrack = useFavoriteTrack(data.id);
+  const { t } = useTranslation();
   const { foreground } = useTheme();
+  const favoriteTrack = useFavoriteTrack(data.id);
 
   const isFav = favoriteTrack.isPending ? !data.isFavorite : data.isFavorite;
 
   return (
     <View className="flex-row gap-2">
       <Pressable
+        accessibilityLabel={t(`common.${isFav ? "unF" : "f"}avorite`)}
         onPress={() => mutateGuard(favoriteTrack, !data.isFavorite)}
         className="relative flex-row items-center rounded active:opacity-75"
       >
