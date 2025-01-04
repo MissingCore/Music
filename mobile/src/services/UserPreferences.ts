@@ -1,14 +1,7 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getLocales } from "expo-localization";
 import { Appearance } from "react-native";
 import TrackPlayer from "react-native-track-player";
 import { useStore } from "zustand";
-import {
-  createJSONStorage,
-  persist,
-  subscribeWithSelector,
-} from "zustand/middleware";
-import { createStore } from "zustand/vanilla";
 
 import i18next from "@/modules/i18n";
 import { LANGUAGES } from "@/modules/i18n/constants";
@@ -16,6 +9,7 @@ import { musicStore } from "@/modules/media/services/Music";
 import { RecentList } from "@/modules/media/services/RecentList";
 
 import { clearAllQueries } from "@/lib/react-query";
+import { createPersistedSubscribedStore } from "@/lib/zustand";
 import { getSourceName } from "@/modules/media/helpers/data";
 
 /** Options for app themes. */
@@ -68,63 +62,58 @@ const OMITTED_FIELDS: string[] = [
 //#endregion
 
 //#region Store Creation
-export const userPreferencesStore = createStore<UserPreferencesStore>()(
-  subscribeWithSelector(
-    persist(
-      (set) => ({
-        _hasHydrated: false as boolean,
-        _init: (state) => {
-          // Set app theme on initialization.
-          if (state.theme !== "system") Appearance.setColorScheme(state.theme);
-          // Try to use device language if no language is specified.
-          if (state.language === "") {
-            const deviceLangCode = getLocales()[0]?.languageCode || "en";
-            // See if we support the device language.
-            const exists = LANGUAGES.some(
-              ({ code }) => code === deviceLangCode,
-            );
-            state.setLanguage(exists ? deviceLangCode : "en");
-          }
-          set({ _hasHydrated: true });
-        },
-
-        language: "",
-        setLanguage: (languageCode) => set({ language: languageCode }),
-
-        theme: "system",
-        setTheme: (newTheme) => set({ theme: newTheme }),
-        accentFont: "NType",
-        setAccentFont: (newFont) => set({ accentFont: newFont }),
-
-        minSeconds: 15,
-
-        listAllow: [],
-        listBlock: [],
-
-        volume: 1,
-        setVolume: (newVolume) => set({ volume: newVolume }),
-      }),
-      {
-        name: "music::user-preferences",
-        storage: createJSONStorage(() => AsyncStorage),
-        // Only store some fields in AsyncStorage.
-        partialize: (state) =>
-          Object.fromEntries(
-            Object.entries(state).filter(
-              ([key]) => !OMITTED_FIELDS.includes(key),
-            ),
-          ),
-        // Listen to when the store is hydrated.
-        onRehydrateStorage: () => {
-          return (state, error) => {
-            if (error) console.log("[User Preferences Store]", error);
-            else state?._init(state);
-          };
-        },
+export const userPreferencesStore =
+  createPersistedSubscribedStore<UserPreferencesStore>(
+    (set) => ({
+      _hasHydrated: false as boolean,
+      _init: async (state) => {
+        // Set app theme on initialization.
+        if (state.theme !== "system") Appearance.setColorScheme(state.theme);
+        // Try to use device language if no language is specified.
+        if (state.language === "") {
+          await i18next.changeLanguage(getLocales()[0]?.languageTag || "en");
+          const usedLanguage = i18next.resolvedLanguage;
+          // Ensured the resolved value exists.
+          const exists = LANGUAGES.some((l) => l.code === usedLanguage);
+          state.setLanguage(exists && usedLanguage ? usedLanguage : "en");
+        }
+        set({ _hasHydrated: true });
       },
-    ),
-  ),
-);
+
+      language: "",
+      setLanguage: (languageCode) => set({ language: languageCode }),
+
+      theme: "system",
+      setTheme: (newTheme) => set({ theme: newTheme }),
+      accentFont: "NType",
+      setAccentFont: (newFont) => set({ accentFont: newFont }),
+
+      minSeconds: 15,
+
+      listAllow: [],
+      listBlock: [],
+
+      volume: 1,
+      setVolume: (newVolume) => set({ volume: newVolume }),
+    }),
+    {
+      name: "music::user-preferences",
+      // Only store some fields in AsyncStorage.
+      partialize: (state) =>
+        Object.fromEntries(
+          Object.entries(state).filter(
+            ([key]) => !OMITTED_FIELDS.includes(key),
+          ),
+        ),
+      // Listen to when the store is hydrated.
+      onRehydrateStorage: () => {
+        return (state, error) => {
+          if (error) console.log("[User Preferences Store]", error);
+          else state?._init(state);
+        };
+      },
+    },
+  );
 //#endregion
 
 //#region Custom Hook
