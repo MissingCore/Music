@@ -74,7 +74,7 @@
     "rescan": "Lancer une nouvelle recherche",
     "translate": "Contribuer aux traductions",
     "code": "Dépôt GitHub",
-    "license": "License",
+    "license": "Licence",
     "privacy": "Politique de confidentialité",
     "version": "Version",
 
@@ -84,7 +84,7 @@
       "backup": "Déplacez vos données entre appareils.",
       "insights": "Utilisation de l'application & statistiques.",
       "saveErrors": "Voyez pourquoi certains titres n'ont pas été enregistrés.",
-      "interactions": "Fonctionalités Nothing supportées.",
+      "interactions": "Fonctionnalités Nothing supportées.",
       "scanning": "Options de découverte de musique.",
       "rescan": "Recherchez à nouveau votre bibliothèque musicale.",
       "translate": "Aidez à traduire cette application dans d'autres langues.",
@@ -228,7 +228,7 @@
 
     "actionCancel": "Action annulée.",
     "noSelect": "Rien n'est sélectionné.",
-    "invalidStructure": "Structure invalide",
+    "invalidStructure": "Structure invalide.",
     "usedName": "Ce nom ne peut pas être utilisé."
   }
 }
