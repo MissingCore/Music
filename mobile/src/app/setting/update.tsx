@@ -19,7 +19,7 @@ import { TStyledText } from "@/components/Typography/StyledText";
 /** Screen for `/setting/update` route. */
 export default function AppUpdateScreen() {
   const { release, isRC } = useHasNewUpdate();
-  const { foreground } = useTheme();
+  const { theme, foreground } = useTheme();
   const accentFont = useUserPreferencesStore((state) => state.accentFont);
 
   if (!release) return null;
@@ -47,14 +47,10 @@ export default function AppUpdateScreen() {
             marginLeft: 0,
             padding: 16,
             paddingHorizontal: 16,
-            backgroundColor: `${foreground}0D`, // 5% Opacity
+            // Light: 5% Opacity; Dark: 15% Opacity
+            backgroundColor: `${foreground}${theme === "dark" ? "26" : "0D"}`,
             borderRadius: 12,
             borderLeftWidth: 0,
-          },
-          code_inline: {
-            backgroundColor: `${foreground}26`, // 15% Opacity
-            borderWidth: 0,
-            color: foreground,
           },
           fence: {
             padding: 16,
@@ -71,6 +67,20 @@ export default function AppUpdateScreen() {
           },
         }}
         rules={{
+          // Override the 'code' rule to render code blocks as plain text.
+          code_inline: (node, _children, _parent, _styles) => (
+            <View
+              key={node.key}
+              className="translate-y-0.5 rounded-sm bg-foreground/5 px-1 dark:bg-foreground/15"
+            >
+              <Text
+                style={{ fontFamily: "monospace" }}
+                className="text-xxs text-foreground/60"
+              >
+                {node.content}
+              </Text>
+            </View>
+          ),
           link: (node, children, _parent, styles) => (
             <Text key={node.key} style={styles.link}>
               {children}
