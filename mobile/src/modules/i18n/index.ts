@@ -14,12 +14,15 @@ const resources = {
   es: { translation: es },
   id: { translation: id },
   ja: { translation: ja },
-  'zh-Hans': { translation: zhHans },
+  "zh-Hans": { translation: zhHans },
 };
 
 i18next.use(initReactI18next).init({
   lng: "en",
-  fallbackLng: "en",
+  fallbackLng: () => ({
+    zh: ["zh-Hans"],
+    default: ["en"],
+  }),
   resources,
 });
 
