@@ -11,12 +11,14 @@ import type {
 } from "@/db/schema";
 import { getPlaylistCover, getTrackCover } from "@/db/utils";
 
+import { Close } from "@/icons/Close";
 import { Search } from "@/icons/Search";
 import { useTheme } from "@/hooks/useTheme";
 
 import { cn } from "@/lib/style";
 import { FlashList, SheetsFlashList } from "@/components/Defaults";
-import { TextInput } from "@/components/Form/Input";
+import { IconButton } from "@/components/Form/Button";
+import { TextInput, useInputRef } from "@/components/Form/Input";
 import { TEm, TStyledText } from "@/components/Typography/StyledText";
 import { SearchResult } from "./SearchResult";
 import { useSearch } from "../hooks/useSearch";
@@ -35,6 +37,7 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
 }) {
   const { t } = useTranslation();
   const { canvas } = useTheme();
+  const inputRef = useInputRef();
   const [query, setQuery] = useState("");
   const results = useSearch(props.searchScope, query);
 
@@ -56,13 +59,26 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
   return (
     <View className="grow">
       {/* Search input. */}
-      <View className="flex-row items-center gap-2 rounded-full bg-surface px-4">
+      <View className="flex-row items-center gap-2 rounded-full bg-surface pl-4">
         <Search />
         <TextInput
+          ref={inputRef}
           onChangeText={(text) => setQuery(text)}
           placeholder={t("form.placeholder.searchMedia")}
           className="shrink grow"
         />
+        <IconButton
+          kind="ripple"
+          accessibilityLabel={t("template.entryRemove", { name: query })}
+          onPress={() => {
+            inputRef?.current?.clear();
+            setQuery("");
+          }}
+          disabled={query === ""}
+          className="mr-1 disabled:invisible"
+        >
+          <Close />
+        </IconButton>
       </View>
       {/* Results list w/ scroll shadow. */}
       <View className="relative grow">
