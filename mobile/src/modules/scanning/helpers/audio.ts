@@ -255,7 +255,8 @@ export async function cleanupDatabase(usedTrackIds: string[]) {
   });
 
   // Ensure we didn't reference deleted tracks in the playback store.
-  const currList = musicStore.getState().playingList;
+  const { playingList, activeId } = musicStore.getState();
+  const currList = activeId ? playingList.concat(activeId) : playingList;
   const hasRemovedTrack = currList.some((tId) => unusedTrackIds.includes(tId));
   if (hasRemovedTrack) await musicStore.getState().reset();
   // Clear the queue of deleted tracks.
