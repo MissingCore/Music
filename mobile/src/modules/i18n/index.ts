@@ -7,6 +7,7 @@ import es from "./translations/es.json";
 import fr from "./translations/fr.json";
 import id from "./translations/id.json";
 import ja from "./translations/ja.json";
+import zhHans from "./translations/zh-Hans.json";
 
 const resources = {
   de: { translation: de },
@@ -15,11 +16,15 @@ const resources = {
   fr: { translation: fr },
   id: { translation: id },
   ja: { translation: ja },
+  "zh-Hans": { translation: zhHans },
 };
 
 i18next.use(initReactI18next).init({
   lng: "en",
-  fallbackLng: "en",
+  fallbackLng: () => ({
+    zh: ["zh-Hans"],
+    default: ["en"],
+  }),
   resources,
 });
 
