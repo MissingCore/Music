@@ -1,7 +1,7 @@
 contact_links:
   - name: 💿 Music Metadata Issue
-    url: https://github.com/MissingCore/Music/issues/new/choose
-    about: We use Android's built-in API for getting the metadata for your music. If you encounter an issue, email the file with the problem to `missingcoredev@outlook.com` so I can debug the issue.
+    url: https://github.com/MissingCore/react-native-metadata-retriever/issues
+    about: We use Android's built-in API for getting the metadata for your music. If you encounter an issue, email the file with the problem to `missingcoredev@outlook.com` so I can debug the issue. Alternatively, submit an issue in the `react-native-metadata-retriever` package.
   - name: 🙋 Feature Request, Questions, or Discussions
     url: https://github.com/MissingCore/Music/discussions
     about: Have a feature request? A question? Want to discuss something with other users? Find a discussion or create a new one.
