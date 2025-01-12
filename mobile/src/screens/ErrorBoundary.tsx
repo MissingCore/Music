@@ -1,5 +1,7 @@
 import type { ErrorBoundaryProps } from "expo-router";
+import { useEffect } from "react";
 
+import { musicStore } from "@/modules/media/services/Music";
 import { IssueLayout } from "@/layouts/Issue";
 import { AppProvider } from "@/providers";
 
@@ -8,6 +10,13 @@ import { StyledText } from "@/components/Typography/StyledText";
 
 /** Screen displayed when an error is thrown in a component. */
 export function ErrorBoundary({ error }: ErrorBoundaryProps) {
+  useEffect(() => {
+    try {
+      // Clear music store state in case error propagated from invalid data.
+      musicStore.getState().reset();
+    } catch {}
+  }, []);
+
   return (
     <AppProvider>
       <IssueLayout issueType="generic">

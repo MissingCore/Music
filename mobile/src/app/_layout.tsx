@@ -3,6 +3,7 @@ import { Stack } from "expo-router";
 import { useEffect } from "react";
 import Bootsplash from "react-native-bootsplash";
 
+import { musicStore } from "@/modules/media/services/Music";
 import { useLoadResources } from "@/hooks/useLoadResources";
 import { ErrorBoundary } from "@/screens/ErrorBoundary";
 import { OnboardingScreen } from "@/screens/Onboarding";
@@ -36,6 +37,10 @@ export default function RootLayout() {
     if (error) {
       // Display error message to user if encountered.
       Bootsplash.hide();
+      try {
+        // Clear music store state in case error propagated from invalid data.
+        musicStore.getState().reset();
+      } catch {}
       // Send error message to Sentry. Doesn't send if you followed the
       // "Personal Privacy Build" documentation.
       if (!__DEV__) Sentry.captureException(error);
