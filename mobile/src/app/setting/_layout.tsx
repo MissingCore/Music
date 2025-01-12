@@ -26,7 +26,6 @@ export default function SettingsLayout() {
         name="third-party/index"
         options={{ title: t("header.thirdParty") }}
       />
-      <Stack.Screen name="third-party/NDot JP" options={{ title: "" }} />
       <Stack.Screen name="third-party/[id]" options={{ title: "" }} />
     </Stack>
   );
