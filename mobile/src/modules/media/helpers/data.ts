@@ -68,26 +68,25 @@ export async function getSourceName({ type, id }: PlayListSource) {
 export async function getTrackList({ type, id }: PlayListSource) {
   let sortedTracks: TrackWithAlbum[] = [];
 
-  if (type === "album") {
-    const { tracks: trks, ...albumInfo } = await getAlbum(id);
-    sortedTracks = trks.map((track) => ({ ...track, album: albumInfo }));
-  } else if (type === "artist") {
-    const data = await getArtist(id);
-    sortedTracks = data.tracks;
-  } else if (type === "folder") {
-    sortedTracks = await getFolderTracks(id); // `id` contains pathname.
-  } else {
-    if (ReservedNames.has(id)) {
-      sortedTracks = (await getSpecialPlaylist(id as ReservedPlaylistName))
-        .tracks;
-    } else {
-      const data = await getPlaylist(id);
-      // FIXME: As of now, playlists don't have a "defined" sorting order.
-      // In the future, we'll allow the user to have custom track ordering
-      // in the playlist.
+  try {
+    if (type === "album") {
+      const { tracks: trks, ...albumInfo } = await getAlbum(id);
+      sortedTracks = trks.map((track) => ({ ...track, album: albumInfo }));
+    } else if (type === "artist") {
+      const data = await getArtist(id);
       sortedTracks = data.tracks;
+    } else if (type === "folder") {
+      sortedTracks = await getFolderTracks(id); // `id` contains pathname.
+    } else {
+      if (ReservedNames.has(id)) {
+        sortedTracks = (await getSpecialPlaylist(id as ReservedPlaylistName))
+          .tracks;
+      } else {
+        const data = await getPlaylist(id);
+        sortedTracks = data.tracks;
+      }
     }
-  }
+  } catch {}
 
   return sortedTracks;
 }

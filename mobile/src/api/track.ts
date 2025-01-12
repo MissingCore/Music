@@ -96,12 +96,12 @@ export async function addToPlaylist(
 /** Delete specified track. */
 export async function deleteTrack(id: string) {
   return db.transaction(async (tx) => {
-    const { artwork } = await getTrack(id);
     // Delete track and its playlist relations.
     await tx.delete(tracksToPlaylists).where(eq(tracksToPlaylists.trackId, id));
     await tx.delete(tracks).where(eq(tracks.id, id));
+    const deletedTrack = await getTrack(id, false);
     // If the deletions were fine, delete the artwork.
-    await deleteImage(artwork);
+    if (deletedTrack) await deleteImage(deletedTrack.artwork);
   });
 }
 
