@@ -33,7 +33,7 @@
     "appearance": "外観",
     "insights": "解析",
     "saveErrors": "エラーの保存",
-    "scanning": "スキャン中",
+    "scanning": "音楽のスキャン",
     "thirdParty": "サードパーティーソフトウェア"
   },
   "title": {
@@ -66,7 +66,7 @@
 
   "settings": {
     "interactions": "Nothing のインタラクション",
-    "scanning": "スキャン中",
+    "scanning": "音楽のスキャン",
     "rescan": "再スキャン",
     "translate": "翻訳に貢献する",
     "code": "GitHub リポジトリ",
@@ -77,15 +77,15 @@
     "brief": {
       "appUpdate": "最新のバージョンが公開されています！",
       "appearance": "アプリの外観をカスタマイズします。",
-      "backup": "デバイス間でデータを移動します。",
-      "insights": "アプリの使用状況と統計。",
+      "backup": "デバイス間でデータを転送します。",
+      "insights": "アプリの使用状況と統計を表示します。",
       "saveErrors": "一部のトラックが保存されなかった理由を確認します。",
-      "interactions": "Nothing でサポートされている機能。",
-      "scanning": "音楽の検索オプション。",
-      "rescan": "新しいメディアを探します。",
+      "interactions": "Nothing でサポートされている機能について。",
+      "scanning": "音楽の検索オプションを設定します。",
+      "rescan": "新しいメディアを検索します。",
       "translate": "アプリを他の言語に翻訳しませんか？",
       "code": "問題の報告、貢献、新しい機能のリクエストができます。",
-      "thirdParty": "このアプリを可能にしたもの。"
+      "thirdParty": "このアプリを可能にした物の一覧。"
     },
 
     "description": {
@@ -111,7 +111,7 @@
       "other": "その他",
       "cache": "キャッシュ",
       "total": "合計",
-      "totalDuration": "合計時間",
+      "totalDuration": "合計の再生時間",
 
       "pathAdd": "ディレクトリを追加します。",
       "pathSelect": "ディレクトリを選択してください。"
@@ -190,8 +190,8 @@
   },
 
   "plural": {
-    "entry_one": "{{count}} 個のエントリ",
-    "entry_other": "{{count}} 個のエントリ",
+    "entry_one": "{{count}} 件のエントリ",
+    "entry_other": "{{count}} 件のエントリ",
     "second_one": "{{count}} 秒",
     "second_other": "{{count}} 秒",
     "track_one": "{{count}} $t(common.track)",
@@ -216,7 +216,7 @@
     "exportSuccess": "バックアップの作成に成功しました。",
     "importSuccess": "バックアップのインポートが完了しました。",
 
-    "scanStart": "ライブラリを再スキャン中...",
+    "scanStart": "ライブラリを再スキャン中です...",
     "scanSuccess": "ライブラリの再スキャンが完了しました。",
     "scanFail": "ライブラリの再スキャンに失敗しました。",
 
