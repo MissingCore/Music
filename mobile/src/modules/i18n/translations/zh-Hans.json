@@ -37,7 +37,7 @@
     "appearance": "外观",
     "insights": "使用统计",
     "saveErrors": "保存错误",
-    "scanning": "扫描中",
+    "scanning": "扫描",
     "thirdParty": "第三方软件"
   },
   "title": {
@@ -47,10 +47,10 @@
     "theme": "主题",
     "listAllow": "允许列表",
     "listBlock": "阻止列表",
-    "ignoreDuration": "忽略短音频",
+    "ignoreDuration": "忽略较短的音频",
     "sort": "排序方式",
     "musicAdd": "添加音乐",
-    "upcoming": "即将推出"
+    "upcoming": "即将播放"
   },
 
   "playlist": {
@@ -100,7 +100,7 @@
     },
 
     "related": {
-      "appDownload": "下载最新 APK",
+      "appDownload": "下载最新版本的 APK",
       "appUpdate": "从 Play Store 更新",
 
       "light": "浅色",

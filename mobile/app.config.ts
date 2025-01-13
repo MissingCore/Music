@@ -51,6 +51,7 @@ export default (): ExpoConfig => ({
         android: { parentTheme: "EdgeToEdge" },
       },
     ],
+    "react-native-edge-to-edge",
   ],
   experiments: {
     typedRoutes: true,
