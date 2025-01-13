@@ -1,0 +1,234 @@
+{
+  "language": "Русский",
+
+  "common": {
+    "album": "Альбом",
+    "albums": "Альбомы",
+    "artist": "Исполнитель",
+    "artists": "Исполнители",
+    "folder": "Папка",
+    "folders": "Папки",
+    "playlist": "Плейлист",
+    "playlists": "Плейлисты",
+    "track": "Трек",
+    "tracks": "Треки",
+
+    "play": "Вкл.",
+    "pause": "Пауза",
+    "prev": "Предыдущее",
+    "next": "Следующее",
+    "shuffle": "Случайный",
+    "repeat": "Повтор",
+    "repeatOne": "Повтор одного",
+
+    "favorite": "Любимые",
+    "unFavorite": "Не любимые",
+    "favoriteTracks": "Любимые Треки",
+
+    "disc": "Диск {{count}}"
+  },
+
+  "header": {
+    "home": "Главная",
+    "search": "Поиск",
+
+    "settings": "Настройки",
+    "appUpdate": "Обновление приложения",
+    "appearance": "Внешний вид",
+    "insights": "Идеи",
+    "saveErrors": "Сохранение ошибок",
+    "scanning": "Сканирование",
+    "thirdParty": "Софт третьей стороны"
+  },
+  "title": {
+    "language": "Язык",
+    "backup": "Резервная копия",
+    "font": "Шрифт",
+    "theme": "Тема",
+    "listAllow": "Белый список",
+    "listBlock": "Черный список",
+    "ignoreDuration": "Игнорирование коротких аудио",
+    "sort": "Порядок сортировки",
+    "musicAdd": "Добавить музыку",
+    "upcoming": "Развитие"
+  },
+
+  "playlist": {
+    "create": "Создать плейлист",
+    "edit": "Изменить плейлист",
+    "delete": "Удалить плейлист",
+
+    "add": "Добавить в плейлист",
+    "artworkChange": "Изменить обложку",
+    "artworkRemove": "Удалить обложку"
+  },
+
+  "home": {
+    "playedRecent": "Недавно сыграно",
+    "favorites": "Любимые"
+  },
+
+  "settings": {
+    "interactions": "Nothing Interactions",
+    "scanning": "Сканирование",
+    "rescan": "Пересканирование",
+    "translate": "Свой перевод",
+    "code": "GitHub репозиторий",
+    "license": "Лицензия",
+    "privacy": "Политика конфиденциальности",
+    "version": "Версия",
+
+    "brief": {
+      "appUpdate": "Новое обновление уже вышло!",
+      "appearance": "Персонализировать внешний вид приложения.",
+      "backup": "Перемещать данные между устройствами",
+      "insights": "Использование предложения и статистика.",
+      "saveErrors": "Узнать причину, по которой некоторые треки не были сохранены.",
+      "interactions": "Поддержка Nothing функций.",
+      "scanning": "Варианты поиска музыки.",
+      "rescan": "Искать любые новые медиа",
+      "translate": "Помогите перевести приложение на другие языки.",
+      "code": "Сообщать о проблемах, вносить свой вклад или запрашивать новые функции.",
+      "thirdParty": "Что делает это приложение уникальным."
+    },
+
+    "description": {
+      "backup": "Передавать данные из этого приложения на другие устройства через файл music_backup.json.",
+      "listAllow": "по умолчанию, если пусто:",
+      "listBlock": "Имеет более высокий приоритет по сравнению с записями в списке разрешенных.",
+      "ignoreDuration": "Длительность аудио в секундах, которую мы не сохраняем."
+    },
+
+    "related": {
+      "appDownload": "Установить последний APK",
+      "appUpdate": "Обновить в Play Store",
+
+      "light": "Светлая",
+      "dark": "Тёмная",
+      "system": "Системная",
+
+      "export": "Экспорт",
+      "import": "Импорт",
+
+      "images": "Изображение",
+      "database": "База данных",
+      "other": "Другое",
+      "cache": "Кэш",
+      "total": "Полная",
+      "totalDuration": "Полная длительность",
+
+      "pathAdd": "Добавить директорию.",
+      "pathSelect": "Выбрать директорию."
+    }
+  },
+
+  "errorScreen": {
+    "unmatched": "Непревзойденный",
+    "unmatchedBrief": "Вы каким-то образом перешли на неверный маршрут.",
+    "missing": "Мимо",
+    "from": "из",
+
+    "generic": "Что-то пошло не так",
+    "genericBrief": "Вы столкнулись с неожиданной ошибкой.",
+
+    "report": "Сообщить о проблеме",
+    "screenshot": "Включите снимок экрана."
+  },
+
+  "onboardingScreen": {
+    "preprocess": "Предварительная обработка",
+    "preprocessBrief": "Обеспечение соответствия существующих данных любым изменениям.",
+
+    "track": "Сохранённые треки",
+    "prevSaved": "{{amount}} Уже сохранено",
+    "saved": "{{amount}}/{{total}} Сохранено/Добавлено",
+    "errors": "{{amount}} Ошибок",
+
+    "image": "Сохранённые картинки",
+    "checked": "{{amount}}/{{total}} Проверено",
+    "found": "{{amount}} Найдено"
+  },
+
+  "sortModal": {
+    "asc": "По возрастанию",
+    "alphabetical": "Алфавитный",
+    "modified": "Недавно изменённые"
+  },
+  "trackModal": {
+    "bitrate": "Битрейт",
+    "sampleRate": "Частота",
+    "size": "Размер",
+    "modified": "$t(sortModal.modified)",
+    "filePath": "Путь к файлу",
+
+    "playlistAdd": "$t(playlist.add)",
+    "queueAdd": "Добавить в очередь"
+  },
+
+  "form": {
+    "apply": "Применить изменения",
+    "back": "Назад",
+    "cancel": "Отмена",
+    "confirm": "Подтвердить",
+
+    "unsaved": "У вас могут быть несохраненные изменения.",
+    "stay": "Остаться",
+    "leave": "Выйти",
+
+    "placeholder": {
+      "playlistName": "Название плейлиста",
+      "searchMedia": "Найти медиа"
+    },
+
+    "validation": {
+      "unique": "Уникальный"
+    }
+  },
+
+  "template": {
+    "entryAdded": "`{{- name}}` Добавлен.",
+    "entryRemove": "Удалён `{{- name}}`.",
+    "entryRemoved": "Удалён `{{- name}}`.",
+    "entrySeeMore": "Увидеть подробности `{{- name}}`.",
+    "notFound": "`{{- name}}` Не существует."
+  },
+
+  "plural": {
+    "entry_one": "{{count}} Запись",
+    "entry_other": "{{count}} Записи",
+    "second_one": "{{count}} Секунд",
+    "second_other": "{{count}} Секунд",
+    "track_one": "{{count}} $t(common.track)",
+    "track_other": "{{count}} $t(common.tracks)"
+  },
+
+  "response": {
+    "noRecents": "Вы еще ничего не послушали!",
+    "noErrors": "Ошибки не найдены.",
+    "noFilters": "Фильтры не найдены",
+    "noResults": "Результаты не найдены.",
+    "noContent": "Контент не найден.",
+
+    "noAlbums": "Альбомы не найдены",
+    "noArtists": "Артисты не найдены.",
+    "noPlaylists": "Плейлисты не найдены.",
+    "noTracks": "Треки не найдены",
+    "noDirectory": "Директория не найдены",
+
+    "queueAdd": "`{{- name}}` добавления очередь.",
+
+    "exportSuccess": "Резервная копия успешно создана.",
+    "importSuccess": "Резервная копия успешно импортирована.",
+
+    "scanStart": "Повторное сканирование...",
+    "scanSuccess": "Успешное завершение повторного сканирования.",
+    "scanFail": "Не удалось сканировать.",
+
+    "pathSelectFail": "Директория не выбрана",
+
+    "actionCancel": "Отменённое действие",
+    "noSelect": "Ничего не выбрано.",
+    "invalidStructure": "Недействительная структура.",
+    "usedName": "Это имя не может быть использовано."
+  }
+}
