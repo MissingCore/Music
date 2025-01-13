@@ -22,7 +22,8 @@ export async function createImageDirectory() {
 
 /** Helper to delete an internal image file if it's defined. */
 export async function deleteImage(uri: Maybe<string>) {
-  if (uri && uri.startsWith(ImageDirectory)) await FileSystem.deleteAsync(uri);
+  if (uri && uri.startsWith(ImageDirectory))
+    await FileSystem.deleteAsync(uri, { idempotent: true });
 }
 
 /**
