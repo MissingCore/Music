@@ -1,11 +1,6 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { router } from "expo-router";
-import TrackPlayer, {
-  AppKilledPlaybackBehavior,
-  Capability,
-  Event,
-  RepeatMode,
-} from "react-native-track-player";
+import TrackPlayer, { Event } from "react-native-track-player";
 
 import i18next from "@/modules/i18n";
 import { deleteTrack } from "@/api/track";
@@ -14,6 +9,10 @@ import { Queue, RNTPManager, musicStore } from "@/modules/media/services/Music";
 import { MusicControls } from "@/modules/media/services/Playback";
 import { removeUnusedCategories } from "@/modules/scanning/helpers/audio";
 
+import {
+  setupPlayer,
+  setupPlayerConfigs,
+} from "@/lib/react-native-track-player";
 import { clearAllQueries } from "@/lib/react-query";
 import { ToastOptions } from "@/lib/toast";
 import { wait } from "@/utils/promise";
@@ -126,48 +125,16 @@ export async function PlaybackService() {
  * Ensure we setup `react-native-track-player` in the foreground in addition
  * to its configurations.
  */
-export async function setupPlayer() {
-  const setup = async () => {
-    try {
-      await TrackPlayer.setupPlayer();
-    } catch (_err) {
-      const err = _err as Error & { code?: string };
-      console.log(`[Player Error] ${err.code}`);
-      return err.code;
-    }
-  };
-
+export async function setupPlayerService() {
   // `setupPlayer` must be called when app is in the foreground, otherwise,
   // an `'android_cannot_setup_player_in_background'` error will be thrown.
-  while ((await setup()) === "android_cannot_setup_player_in_background") {
+  while (
+    (await setupPlayer()) === "android_cannot_setup_player_in_background"
+  ) {
     // Timeouts will only execute when the app is in the foreground. If
     // it somehow executes in the background, the promise will be rejected
     // and we'll try this again.
     await wait(1);
   }
-
-  // Repeat mode is needed for the "next" button to show up in the widget
-  // if we're on the last track.
-  await TrackPlayer.setRepeatMode(RepeatMode.Queue);
-
-  await TrackPlayer.updateOptions({
-    android: {
-      appKilledPlaybackBehavior:
-        AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification,
-    },
-    capabilities: [
-      Capability.Play,
-      Capability.Pause,
-      Capability.SkipToNext,
-      Capability.SkipToPrevious,
-      Capability.SeekTo,
-    ],
-    compactCapabilities: [
-      Capability.Play,
-      Capability.Pause,
-      Capability.SkipToNext,
-      Capability.SkipToPrevious,
-    ],
-    icon: require("@/resources/images/music-glyph.png"),
-  });
+  await setupPlayerConfigs();
 }
