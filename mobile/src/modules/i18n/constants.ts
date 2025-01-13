@@ -6,5 +6,6 @@ export const LANGUAGES = [
   { code: "fr", name: "Français" },
   { code: "id", name: "Indonesia" },
   { code: "ja", name: "日本語" },
+  { code: "ru", name: "Русский" },
   { code: "zh-Hans", name: "简体中文" },
 ] as const;
