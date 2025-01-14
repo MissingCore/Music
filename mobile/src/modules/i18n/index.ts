@@ -8,6 +8,7 @@ import fr from "./translations/fr.json";
 import id from "./translations/id.json";
 import ja from "./translations/ja.json";
 import ru from "./translations/ru.json";
+import tr from "./translations/tr.json";
 import zhHans from "./translations/zh-Hans.json";
 
 const resources = {
@@ -18,6 +19,7 @@ const resources = {
   id: { translation: id },
   ja: { translation: ja },
   ru: { translation: ru },
+  tr: { translation: tr },
   "zh-Hans": { translation: zhHans },
 };
 
