@@ -79,6 +79,7 @@ Read the [Translations](./docs/translations.md) documentation for a rundown of h
 |  Français   |        [@nin7o](https://www.github.com/nin7o)        |
 |  简体中文   |     [@yang1206](https://www.github.com/yang1206)     |
 |   Русский   |     [@klinoff0](https://www.github.com/klinoff0)     |
+|   Türkçe   |     [@mikropsoft](https://www.github.com/mikrops)     |
 
 # Legal
 

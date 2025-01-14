@@ -1,0 +1,234 @@
+{
+  "language": "Türkçe",
+
+  "common": {
+    "album": "Albüm",
+    "albums": "Albümler",
+    "artist": "Sanatçı",
+    "artists": "Sanatçılar",
+    "folder": "Klasör",
+    "folders": "Klasörler",
+    "playlist": "Oynatma Listesi",
+    "playlists": "Oynatma Listeleri",
+    "track": "Parça",
+    "tracks": "Parçalar",
+
+    "play": "Oynat",
+    "pause": "Duraklat",
+    "prev": "Önceki",
+    "next": "Sonraki",
+    "shuffle": "Karıştır",
+    "repeat": "Tekrarla",
+    "repeatOne": "Birini Tekrarla",
+
+    "favorite": "Favori",
+    "unFavorite": "Favorilerden Çıkar",
+    "favoriteTracks": "Favori Parçalar",
+
+    "disc": "Disk {{count}}"
+  },
+
+  "header": {
+    "home": "Anasayfa",
+    "search": "Ara",
+
+    "settings": "Ayarlar",
+    "appUpdate": "Uygulama Güncellemesi",
+    "appearance": "Görünüm",
+    "insights": "Analizler",
+    "saveErrors": "Hataları Kaydet",
+    "scanning": "Tarama",
+    "thirdParty": "Üçüncü Taraf Yazılım"
+  },
+  "title": {
+    "language": "Dil",
+    "backup": "Yedekleme",
+    "font": "Vurgu Yazı Tipi",
+    "theme": "Tema",
+    "listAllow": "İzin Listesi",
+    "listBlock": "Engel Listesi",
+    "ignoreDuration": "Kısa Sesleri Yoksay",
+    "sort": "Sıralama Düzeni",
+    "musicAdd": "Müzik Ekle",
+    "upcoming": "Yaklaşan"
+  },
+
+  "playlist": {
+    "create": "Oynatma Listesi Oluştur",
+    "edit": "Oynatma Listesini Düzenle",
+    "delete": "Oynatma Listesini Sil",
+
+    "add": "Oynatma Listesine Ekle",
+    "artworkChange": "Kapak Resmini Değiştir",
+    "artworkRemove": "Kapak Resmini Kaldır"
+  },
+
+  "home": {
+    "playedRecent": "Son Çalınanlar",
+    "favorites": "Favoriler"
+  },
+
+  "settings": {
+    "interactions": "Etkileşim Yok",
+    "scanning": "Tarama",
+    "rescan": "Yeniden Tara",
+    "translate": "Çevirilere Katkıda Bulunun",
+    "code": "GitHub Deposu",
+    "license": "Lisans",
+    "privacy": "Gizlilik Politikası",
+    "version": "Sürüm",
+
+    "brief": {
+      "appUpdate": "Yeni bir güncelleme mevcut!",
+      "appearance": "Uygulamanın görünümünü kişiselleştirin.",
+      "backup": "Verileri cihazlar arasında taşıyın.",
+      "insights": "Uygulama kullanımı ve istatistikler.",
+      "saveErrors": "Bazı parçaların neden kaydedilemediğini görün.",
+      "interactions": "Desteklenen Nothing özellikleri.",
+      "scanning": "Müzik keşfi seçenekleri.",
+      "rescan": "Yeni medya olup olmadığını kontrol edin.",
+      "translate": "Uygulamayı diğer dillere çevirmenize yardımcı olun.",
+      "code": "Sorun bildirin, katkıda bulunun veya yeni özellikler talep edin.",
+      "thirdParty": "Bu uygulamanın mümkün olmasını sağlayanlar."
+    },
+
+    "description": {
+      "backup": "Bu uygulamadan verileri cihazlar arasında `music_backup.json` dosyası ile aktarın.",
+      "listAllow": "Boş olduğunda varsayılan olarak şunları kullanır:",
+      "listBlock": "İzin listesindeki girişlerden daha yüksek önceliğe sahiptir.",
+      "ignoreDuration": "Kaydetmek istemediğimiz sesin süresi (saniye cinsinden)."
+    },
+
+    "related": {
+      "appDownload": "En son APK'yı indir",
+      "appUpdate": "Play Store'dan güncelle",
+
+      "light": "Açık",
+      "dark": "Koyu",
+      "system": "Sistem",
+
+      "export": "Dışa Aktar",
+      "import": "İçe Aktar",
+
+      "images": "Resimler",
+      "database": "Veritabanı",
+      "other": "Diğer",
+      "cache": "Önbellek",
+      "total": "Toplam",
+      "totalDuration": "Toplam Süre",
+
+      "pathAdd": "Dizin ekle.",
+      "pathSelect": "Dizin seç."
+    }
+  },
+
+  "errorScreen": {
+    "unmatched": "Eşleşmeyen Yol",
+    "unmatchedBrief": "Geçersiz bir yola ulaştınız.",
+    "missing": "Eksik",
+    "from": "Kaynak",
+
+    "generic": "Bir Hata Oluştu",
+    "genericBrief": "Beklenmedik bir hata ile karşılaştınız.",
+
+    "report": "Sorun Bildir",
+    "screenshot": "Bu ekranın bir ekran görüntüsünü ekle."
+  },
+
+  "onboardingScreen": {
+    "preprocess": "Ön İşlem",
+    "preprocessBrief": "Mevcut verilerin değişikliklere uygun olduğunu kontrol ediyor.",
+
+    "track": "Parçalar Kaydediliyor",
+    "prevSaved": "Daha Önce Kaydedilmiş {{amount}}",
+    "saved": "{{amount}}/{{total}} Kaydedildi/Güncellendi",
+    "errors": "{{amount}} Hata",
+
+    "image": "Resimler Kaydediliyor",
+    "checked": "{{amount}}/{{total}} Kontrol Edildi",
+    "found": "{{amount}} Bulundu"
+  },
+
+  "sortModal": {
+    "asc": "Artan Sıra",
+    "alphabetical": "Alfabetik",
+    "modified": "Son Değişiklik"
+  },
+  "trackModal": {
+    "bitrate": "Bit Hızı",
+    "sampleRate": "Örnekleme Hızı",
+    "size": "Boyut",
+    "modified": "$t(sortModal.modified)",
+    "filePath": "Dosya Yolu",
+
+    "playlistAdd": "$t(playlist.add)",
+    "queueAdd": "Kuyruğa Ekle"
+  },
+
+  "form": {
+    "apply": "Değişiklikleri Uygula",
+    "back": "Geri",
+    "cancel": "İptal",
+    "confirm": "Onayla",
+
+    "unsaved": "Kaydedilmemiş değişiklikler olabilir.",
+    "stay": "Kal",
+    "leave": "Ayrıl",
+
+    "placeholder": {
+      "playlistName": "Oynatma Listesi Adı",
+      "searchMedia": "Medya Ara"
+    },
+
+    "validation": {
+      "unique": "Benzersiz"
+    }
+  },
+
+  "template": {
+    "entryAdded": "`{{- name}}` eklendi.",
+    "entryRemove": "`{{- name}}` kaldır.",
+    "entryRemoved": "`{{- name}}` kaldırıldı.",
+    "entrySeeMore": "`{{- name}}` hakkında daha fazla bilgi.",
+    "notFound": "`{{- name}}` mevcut değil."
+  },
+
+  "plural": {
+    "entry_one": "{{count}} giriş",
+    "entry_other": "{{count}} giriş",
+    "second_one": "{{count}} saniye",
+    "second_other": "{{count}} saniye",
+    "track_one": "{{count}} $t(common.track)",
+    "track_other": "{{count}} $t(common.tracks)"
+  },
+
+  "response": {
+    "noRecents": "Henüz bir şey çalmadınız!",
+    "noErrors": "Hata bulunamadı.",
+    "noFilters": "Filtre bulunamadı.",
+    "noResults": "Sonuç bulunamadı.",
+    "noContent": "İçerik bulunamadı.",
+
+    "noAlbums": "Albüm bulunamadı.",
+    "noArtists": "Sanatçı bulunamadı.",
+    "noPlaylists": "Oynatma listesi bulunamadı.",
+    "noTracks": "Parça bulunamadı.",
+    "noDirectory": "Dizin bulunamadı.",
+
+    "queueAdd": "`{{- name}}` kuyruğa eklendi.",
+
+    "exportSuccess": "Yedek başarıyla oluşturuldu.",
+    "importSuccess": "Yedekleme tamamlandı.",
+
+    "scanStart": "Kütüphane yeniden taranıyor...",
+    "scanSuccess": "Kütüphane taraması tamamlandı.",
+    "scanFail": "Kütüphane taraması başarısız oldu.",
+
+    "pathSelectFail": "Hiçbir dizin seçilmedi.",
+
+    "actionCancel": "İşlem iptal edildi.",
+    "noSelect": "Hiçbir şey seçilmedi.",
+    "invalidStructure": "Geçersiz yapı.",
+    "usedName": "Bu isim kullanılamaz."
+  }
+}
