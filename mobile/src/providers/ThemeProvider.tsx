@@ -1,7 +1,8 @@
 import type { Theme } from "@react-navigation/native";
 import { ThemeProvider as NavigationThemeProvider } from "@react-navigation/native";
 import { vars } from "nativewind";
-import { StatusBar, View, useColorScheme } from "react-native";
+import { View, useColorScheme } from "react-native";
+import { SystemBars } from "react-native-edge-to-edge";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useUserPreferencesStore } from "@/services/UserPreferences";
@@ -34,15 +35,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   const currentTheme =
     savedTheme === "system" ? (deviceTheme ?? "light") : savedTheme;
+  const iconColor = currentTheme === "light" ? "dark" : "light";
 
   const { bottom } = useSafeAreaInsets();
   return (
     <NavigationThemeProvider
       value={currentTheme === "light" ? LightNavTheme : DarkNavTheme}
     >
-      <StatusBar
-        barStyle={currentTheme === "light" ? "dark-content" : "light-content"}
-      />
+      <SystemBars style={{ statusBar: iconColor, navigationBar: iconColor }} />
       <View
         style={[Themes[currentTheme], { paddingBottom: bottom }]}
         className="flex-1 bg-canvas"

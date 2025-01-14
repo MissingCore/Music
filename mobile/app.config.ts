@@ -8,6 +8,7 @@ export default (): ExpoConfig => ({
   platforms: ["android"],
   githubUrl: "https://github.com/MissingCore/Music",
   orientation: "portrait",
+  primaryColor: "#C8102E",
   icon: "./assets/icon.png",
   scheme: "music",
   backgroundColor: "#F2F2F2",
@@ -51,7 +52,10 @@ export default (): ExpoConfig => ({
         android: { parentTheme: "EdgeToEdge" },
       },
     ],
-    "react-native-edge-to-edge",
+    [
+      "react-native-edge-to-edge",
+      { android: { enforceNavigationBarContrast: false } },
+    ],
   ],
   experiments: {
     typedRoutes: true,
