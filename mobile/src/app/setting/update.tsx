@@ -7,12 +7,12 @@ import { LogoPlayStore } from "@/icons/LogoPlayStore";
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 import { useTheme } from "@/hooks/useTheme";
+import { StandardScrollLayout } from "@/layouts/StandardScroll";
 import { StickyActionHeader } from "@/layouts/StickyActionScroll";
 
 import * as LINKS from "@/constants/Links";
 import { FontFamily, FontSize } from "@/constants/Styles";
 import { getAccentFont } from "@/lib/style";
-import { ScrollView } from "@/components/Defaults";
 import { Button } from "@/components/Form/Button";
 import { TStyledText } from "@/components/Typography/StyledText";
 
@@ -25,7 +25,7 @@ export default function AppUpdateScreen() {
   if (!release) return null;
 
   return (
-    <ScrollView contentContainerClassName="grow gap-6 p-4">
+    <StandardScrollLayout>
       <StickyActionHeader noOffset originalText>
         {release.version}
       </StickyActionHeader>
@@ -119,6 +119,6 @@ export default function AppUpdateScreen() {
           </Button>
         ) : null}
       </View>
-    </ScrollView>
+    </StandardScrollLayout>
   );
 }

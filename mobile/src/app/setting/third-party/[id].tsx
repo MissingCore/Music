@@ -4,10 +4,10 @@ import { useTranslation } from "react-i18next";
 
 import { OpenInNew } from "@/icons/OpenInNew";
 import LicensesList from "@/resources/licenses.json";
+import { StandardScrollLayout } from "@/layouts/StandardScroll";
 import { StickyActionHeader } from "@/layouts/StickyActionScroll";
 
 import { Card } from "@/components/Containment/Card";
-import { ScrollView } from "@/components/Defaults";
 import { IconButton } from "@/components/Form/Button";
 import { StyledText } from "@/components/Typography/StyledText";
 
@@ -35,7 +35,7 @@ export default function PackageLicenseScreen() {
           ),
         }}
       />
-      <ScrollView contentContainerClassName="grow gap-6 p-4 pt-2">
+      <StandardScrollLayout contentContainerClassName="pt-2">
         <StickyActionHeader noOffset originalText>
           {licenseInfo.name}
         </StickyActionHeader>
@@ -48,7 +48,7 @@ export default function PackageLicenseScreen() {
           </StyledText>
         </Card>
         <StyledText dim>{licenseInfo.licenseText}</StyledText>
-      </ScrollView>
+      </StandardScrollLayout>
     </>
   );
 }

@@ -30,6 +30,7 @@ const Themes = {
  * text color and the React Navigation theme colors.
  */
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const { bottom } = useSafeAreaInsets();
   const deviceTheme = useColorScheme();
   const savedTheme = useUserPreferencesStore((state) => state.theme);
 
@@ -37,7 +38,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     savedTheme === "system" ? (deviceTheme ?? "light") : savedTheme;
   const iconColor = currentTheme === "light" ? "dark" : "light";
 
-  const { bottom } = useSafeAreaInsets();
   return (
     <NavigationThemeProvider
       value={currentTheme === "light" ? LightNavTheme : DarkNavTheme}
