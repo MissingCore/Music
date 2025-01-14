@@ -49,8 +49,12 @@ export function Sheet({
       //  - Note 1: We've patched the package as it only relies on the top
       //  insets for IOS
       //  - Note 2: The recommended way is to set a `maxHeight`, but that doesn't
-      //  work as mentioned: https://github.com/ammarahm-ed/react-native-actions-sheet/issues/322#issuecomment-2029560154
-      safeAreaInsets={{ ...insets, top: insets.top + 56 }}
+      //  work as mentioned:
+      //    - https://github.com/ammarahm-ed/react-native-actions-sheet/issues/322#issuecomment-2029560154
+      //  - Note 3: With edge-to-edge mode, having the `bottom` was adding
+      //  extra bottom padding. This might be related to:
+      //    - https://github.com/facebook/react-native/pull/47254
+      safeAreaInsets={{ ...insets, top: insets.top + 56, bottom: 0 }}
       {...props}
     >
       <View

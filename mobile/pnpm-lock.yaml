@@ -132,6 +132,9 @@ importers:
       react-native-draglist:
         specifier: github:MissingCore/react-native-draglist#30df0ad6d4ca7686a84a9ce7328d7faf7d1e5b71
         version: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/30df0ad6d4ca7686a84a9ce7328d7faf7d1e5b71(@shopify/flash-list@1.7.2(@babel/runtime@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1))(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1)
+      react-native-edge-to-edge:
+        specifier: ^1.3.1
+        version: 1.3.1(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1)
       react-native-gesture-handler:
         specifier: ~2.21.2
         version: 2.21.2(patch_hash=bh4ckg75hvy7pf4jc45bgdz2jy)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1)
@@ -4181,48 +4184,56 @@ packages:
     engines: {node: '>= 12.0.0'}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   lightningcss-linux-arm64-gnu@1.22.0:
     resolution: {integrity: sha512-AArGtKSY4DGTA8xP8SDyNyKtpsUl1Rzq6FW4JomeyUQ4nBrR71uPChksTpj3gmWuGhZeRKLeCUI1DBid/zhChg==}
     engines: {node: '>= 12.0.0'}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   lightningcss-linux-arm64-musl@1.19.0:
     resolution: {integrity: sha512-vSCKO7SDnZaFN9zEloKSZM5/kC5gbzUjoJQ43BvUpyTFUX7ACs/mDfl2Eq6fdz2+uWhUh7vf92c4EaaP4udEtA==}
     engines: {node: '>= 12.0.0'}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   lightningcss-linux-arm64-musl@1.22.0:
     resolution: {integrity: sha512-RRraNgP8hnBPhInTTUdlFm+z16C/ghbxBG51Sw00hd7HUyKmEUKRozyc5od+/N6pOrX/bIh5vIbtMXIxsos0lg==}
     engines: {node: '>= 12.0.0'}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   lightningcss-linux-x64-gnu@1.19.0:
     resolution: {integrity: sha512-0AFQKvVzXf9byrXUq9z0anMGLdZJS+XSDqidyijI5njIwj6MdbvX2UZK/c4FfNmeRa2N/8ngTffoIuOUit5eIQ==}
     engines: {node: '>= 12.0.0'}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   lightningcss-linux-x64-gnu@1.22.0:
     resolution: {integrity: sha512-grdrhYGRi2KrR+bsXJVI0myRADqyA7ekprGxiuK5QRNkv7kj3Yq1fERDNyzZvjisHwKUi29sYMClscbtl+/Zpw==}
     engines: {node: '>= 12.0.0'}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   lightningcss-linux-x64-musl@1.19.0:
     resolution: {integrity: sha512-SJoM8CLPt6ECCgSuWe+g0qo8dqQYVcPiW2s19dxkmSI5+Uu1GIRzyKA0b7QqmEXolA+oSJhQqCmJpzjY4CuZAg==}
     engines: {node: '>= 12.0.0'}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   lightningcss-linux-x64-musl@1.22.0:
     resolution: {integrity: sha512-t5f90X+iQUtIyR56oXIHMBUyQFX/zwmPt72E6Dane3P8KNGlkijTg2I75XVQS860gNoEFzV7Mm5ArRRA7u5CAQ==}
     engines: {node: '>= 12.0.0'}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   lightningcss-win32-x64-msvc@1.19.0:
     resolution: {integrity: sha512-C+VuUTeSUOAaBZZOPT7Etn/agx/MatzJzGRkeV+zEABmPuntv1zihncsi+AyGmjkkzq3wVedEy7h0/4S84mUtg==}
@@ -5186,6 +5197,12 @@ packages:
       '@shopify/flash-list': '*'
       react: '>=17.0.1'
       react-native: '>=0.64.0'
+
+  react-native-edge-to-edge@1.3.1:
+    resolution: {integrity: sha512-zJF5LyRgXY2Rery/BTMVzlwysVztTKJeyocidIuGt+LbWznMps+QtBSru4sZGoC9Yfs7SEvukZoZVz7/+j6Xtw==}
+    peerDependencies:
+      react: '>=18.2.0'
+      react-native: '>=0.74.0'
 
   react-native-fit-image@1.5.5:
     resolution: {integrity: sha512-Wl3Vq2DQzxgsWKuW4USfck9zS7YzhvLNPpkwUUCF90bL32e1a0zOVQ3WsJILJOwzmPdHfzZmWasiiAUNBkhNkg==}
@@ -12258,6 +12275,11 @@ snapshots:
   react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/30df0ad6d4ca7686a84a9ce7328d7faf7d1e5b71(@shopify/flash-list@1.7.2(@babel/runtime@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1))(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1):
     dependencies:
       '@shopify/flash-list': 1.7.2(@babel/runtime@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1)
+      react: 18.3.1
+      react-native: 0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3)
+
+  react-native-edge-to-edge@1.3.1(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1):
+    dependencies:
       react: 18.3.1
       react-native: 0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3)
 
