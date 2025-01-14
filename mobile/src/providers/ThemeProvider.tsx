@@ -3,7 +3,6 @@ import { ThemeProvider as NavigationThemeProvider } from "@react-navigation/nati
 import { vars } from "nativewind";
 import { View, useColorScheme } from "react-native";
 import { SystemBars } from "react-native-edge-to-edge";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 
@@ -30,7 +29,6 @@ const Themes = {
  * text color and the React Navigation theme colors.
  */
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const { bottom } = useSafeAreaInsets();
   const deviceTheme = useColorScheme();
   const savedTheme = useUserPreferencesStore((state) => state.theme);
 
@@ -43,10 +41,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       value={currentTheme === "light" ? LightNavTheme : DarkNavTheme}
     >
       <SystemBars style={{ statusBar: iconColor, navigationBar: iconColor }} />
-      <View
-        style={[Themes[currentTheme], { paddingBottom: bottom }]}
-        className="flex-1 bg-canvas"
-      >
+      <View style={Themes[currentTheme]} className="flex-1 bg-canvas">
         {children}
       </View>
     </NavigationThemeProvider>
