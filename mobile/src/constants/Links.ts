@@ -7,6 +7,6 @@ export const NOTHING_INTERACTIONS = `${GITHUB}/blob/dev/docs/nothing-interaction
 export const PLAYSTORE =
   "https://play.google.com/store/apps/details?id=com.cyanchill.missingcore.music";
 
-export const PRIVACY_POLICY = `${GITHUB}/blob/main/PRIVACY_POLICY.md`;
+export const PRIVACY_POLICY = "https://missingcore.vercel.app/privacy-policy";
 
 export const TRANSLATIONS = `${GITHUB}/blob/dev/docs/translations.md`;
