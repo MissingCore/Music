@@ -199,6 +199,13 @@ export async function deletePlaylist(id: string) {
 /** Replace the "junction" field from the `Playlist` table with `tracks`. */
 function fixPlaylistJunction(data: PlaylistWithJunction): PlaylistWithTracks {
   const { tracksToPlaylists, ...rest } = data;
-  return { ...rest, tracks: tracksToPlaylists.map(({ track }) => track) };
+  return {
+    ...rest,
+    // Note: We do the filter in the case where we attempted to delete a track,
+    // but failed to do so (resulting in an invalid track floating around).
+    tracks: tracksToPlaylists
+      .map(({ track }) => track)
+      .filter((t) => t !== null),
+  };
 }
 //#endregion

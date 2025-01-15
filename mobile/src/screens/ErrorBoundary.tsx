@@ -7,6 +7,7 @@ import { AppProvider } from "@/providers";
 
 import { Card } from "@/components/Containment/Card";
 import { StyledText } from "@/components/Typography/StyledText";
+import { MigrationFunctionMap } from "@/modules/scanning/helpers/migrations";
 
 /** Screen displayed when an error is thrown in a component. */
 export function ErrorBoundary({ error }: ErrorBoundaryProps) {
@@ -14,6 +15,7 @@ export function ErrorBoundary({ error }: ErrorBoundaryProps) {
     try {
       // Clear music store state in case error propagated from invalid data.
       musicStore.getState().reset();
+      MigrationFunctionMap["no-track-playlist-ref"]();
     } catch {}
   }, []);
 
