@@ -12,7 +12,6 @@ import { AppProvider } from "@/providers";
 import "@/resources/global.css";
 import "@/modules/i18n"; // Make sure translations are bundled.
 import { TopAppBar, TopAppBarMarquee } from "@/components/TopAppBar";
-import { MigrationFunctionMap } from "@/modules/scanning/helpers/migrations";
 
 // Catch any errors thrown by the Layout component.
 export { ErrorBoundary };
@@ -38,11 +37,7 @@ export default function RootLayout() {
     if (error) {
       // Display error message to user if encountered.
       Bootsplash.hide();
-      try {
-        // Clear music store state in case error propagated from invalid data.
-        musicStore.getState().reset();
-        MigrationFunctionMap["no-track-playlist-ref"]();
-      } catch {}
+      musicStore.getState().resetOnCrash();
       // Send error message to Sentry. Doesn't send if you followed the
       // "Personal Privacy Build" documentation.
       if (!__DEV__) Sentry.captureException(error);

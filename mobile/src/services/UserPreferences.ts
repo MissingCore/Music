@@ -9,10 +9,7 @@ import { musicStore } from "@/modules/media/services/Music";
 import { RecentList } from "@/modules/media/services/RecentList";
 
 import { clearAllQueries } from "@/lib/react-query";
-import {
-  setupPlayer,
-  setupPlayerConfigs,
-} from "@/lib/react-native-track-player";
+import { initPlayerWConfigs } from "@/lib/react-native-track-player";
 import { createPersistedSubscribedStore } from "@/lib/zustand";
 import { getSourceName } from "@/modules/media/helpers/data";
 
@@ -151,14 +148,8 @@ userPreferencesStore.subscribe(
 userPreferencesStore.subscribe(
   (state) => state.volume,
   async (volume) => {
-    // Ensure the player is setup (if `undefined` is returned, then the
-    // player hasn't be setup yet).
-    if (!(await setupPlayer({ suppress: true }))) {
-      await setupPlayerConfigs();
-      console.log(
-        "[RNTP] Setup inside of `userPreferencesStore`'s `volume` subscription.",
-      );
-    }
+    await initPlayerWConfigs("`userPreferencesStore`'s `volume` subscription");
+    // Ensure we don't crash due to the player initializing too slow.
     try {
       await TrackPlayer.setVolume(volume);
     } catch {}

@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 
 import { db } from "@/db";
 import type { TrackWithAlbum } from "@/db/schema";
@@ -117,5 +117,27 @@ export async function removeFromPlaylist(
         eq(tracksToPlaylists.playlistName, entry.playlistName),
       ),
     );
+}
+
+/** Delete any `TracksToPlaylists` entries where the `trackId` doesn't exist. */
+export async function removeInvalidTrackRelations() {
+  const [allTracks, trackRels] = await Promise.all([
+    db.query.tracks.findMany({ columns: { id: true } }),
+    db
+      .selectDistinct({ id: tracksToPlaylists.trackId })
+      .from(tracksToPlaylists),
+  ]);
+  try {
+    const trackIds = new Set(allTracks.map((t) => t.id));
+    const relTrackIds = trackRels.map((t) => t.id);
+    // Get ids in the track to playlist relationship where the track id
+    // doesn't exist and delete them.
+    const invalidTracks = relTrackIds.filter((id) => !trackIds.has(id));
+    if (invalidTracks.length > 0) {
+      await db
+        .delete(tracksToPlaylists)
+        .where(inArray(tracksToPlaylists.trackId, invalidTracks));
+    }
+  } catch {}
 }
 //#endregion

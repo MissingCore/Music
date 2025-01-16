@@ -1,10 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { eq, inArray } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { tracks, tracksToPlaylists } from "@/db/schema";
 
 import { getPlaylists } from "@/api/playlist";
+import { removeInvalidTrackRelations } from "@/api/track";
 import { recentListStore } from "@/modules/media/services/RecentList";
 import { userPreferencesStore } from "@/services/UserPreferences";
 
@@ -80,26 +81,7 @@ export const MigrationFunctionMap: Record<
     });
   },
   /** Removes track to playlist relations where the track doesn't exist. */
-  "no-track-playlist-ref": async () => {
-    const [allTracks, trackRels] = await Promise.all([
-      db.query.tracks.findMany({ columns: { id: true } }),
-      db
-        .selectDistinct({ id: tracksToPlaylists.trackId })
-        .from(tracksToPlaylists),
-    ]);
-    try {
-      const trackIds = new Set(allTracks.map((t) => t.id));
-      const relTrackIds = trackRels.map((t) => t.id);
-      // Get ids in the track to playlist relationship where the track id
-      // doesn't exist and delete them.
-      const invalidTracks = relTrackIds.filter((id) => !trackIds.has(id));
-      if (invalidTracks.length > 0) {
-        await db
-          .delete(tracksToPlaylists)
-          .where(inArray(tracksToPlaylists.trackId, invalidTracks));
-      }
-    } catch {}
-  },
+  "no-track-playlist-ref": removeInvalidTrackRelations,
 };
 
 /** Helper to parse value from AsyncStorage. */

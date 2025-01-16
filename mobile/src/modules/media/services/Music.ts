@@ -5,12 +5,9 @@ import { useStore } from "zustand";
 import type { TrackWithAlbum } from "@/db/schema";
 
 import i18next from "@/modules/i18n";
-import { getTrack } from "@/api/track";
+import { getTrack, removeInvalidTrackRelations } from "@/api/track";
 
-import {
-  setupPlayer,
-  setupPlayerConfigs,
-} from "@/lib/react-native-track-player";
+import { initPlayerWConfigs } from "@/lib/react-native-track-player";
 import { ToastOptions } from "@/lib/toast";
 import { createPersistedSubscribedStore } from "@/lib/zustand";
 import { shuffleArray } from "@/utils/object";
@@ -32,6 +29,8 @@ interface MusicStore {
   _init: (state: MusicStore) => Promise<void>;
   /** Resets the properties dictating the playing media. */
   reset: () => Promise<void>;
+  /** Logic we run if we catch when the app crashes. */
+  resetOnCrash: () => Promise<void>;
 
   /** If we're currently playing a track. */
   isPlaying: boolean;
@@ -117,6 +116,12 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
         queueList: [],
       });
       await TrackPlayer.reset();
+    },
+    resetOnCrash: async () => {
+      try {
+        await get().reset();
+        await removeInvalidTrackRelations();
+      } catch {}
     },
 
     isPlaying: false as boolean,
@@ -285,12 +290,7 @@ export type TrackStatus = "RELOAD" | "REPEAT" | "QUEUE" | "END" | undefined;
 export class RNTPManager {
   /** Determine if any tracks are loaded in RNTP on launch. */
   static async isLoaded() {
-    // Ensure the player is setup (if `undefined` is returned, then the
-    // player hasn't be setup yet).
-    if (!(await setupPlayer({ suppress: true }))) {
-      await setupPlayerConfigs();
-      console.log("[RNTP] Setup inside of `RNTPManager.isLoaded()`.");
-    }
+    await initPlayerWConfigs("`RNTPManager.isLoaded()`");
     // Ensure we don't crash due to the player initializing too slow.
     try {
       return (await TrackPlayer.getPlaybackState()).state !== State.None;
