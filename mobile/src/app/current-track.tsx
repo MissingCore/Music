@@ -30,6 +30,7 @@ import {
   ShuffleButton,
 } from "@/modules/media/components/MediaControls";
 import { MediaImage } from "@/modules/media/components/MediaImage";
+import { Vinyl } from "@/modules/media/components/Vinyl";
 
 /** Screen for `/current-track` route. */
 export default function CurrentTrackScreen() {
@@ -90,8 +91,11 @@ function Artwork(props: { artwork: string | null }) {
       className="flex-1 items-center pt-8"
     >
       {maxImageHeight !== undefined && (
-        <MediaImage type="track" source={props.artwork} size={maxImageHeight} />
+        <Vinyl source={props.artwork} size={maxImageHeight} />
       )}
+      {/* {maxImageHeight !== undefined && (
+        <MediaImage type="track" source={props.artwork} size={maxImageHeight} />
+      )} */}
     </View>
   );
 }

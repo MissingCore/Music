@@ -6,6 +6,7 @@ import { SheetManager } from "react-native-actions-sheet";
 import { Schedule } from "@/icons/Schedule";
 import { useTheme } from "@/hooks/useTheme";
 
+import { pickKeys } from "@/utils/object";
 import { capitalize, toLowerCase } from "@/utils/string";
 import { Marquee } from "@/components/Containment/Marquee";
 import { Divider } from "@/components/Divider";
@@ -13,7 +14,10 @@ import { StyledText, TEm } from "@/components/Typography/StyledText";
 import { ReservedPlaylists } from "@/modules/media/constants";
 import { MediaImage } from "@/modules/media/components/MediaImage";
 import { MediaListControls } from "@/modules/media/components/MediaListControls";
+import { Vinyl } from "@/modules/media/components/Vinyl";
 import type { MediaType, PlayListSource } from "@/modules/media/types";
+
+type ImageSource = MediaImage.ImageSource | Array<string | null>;
 
 /** List of media that we can change artwork for. */
 const SupportedArtwork = new Set<MediaType>(["artist", "playlist"]);
@@ -25,32 +29,21 @@ export function CurrentListLayout(props: {
   artist?: string;
   /** Strings describing the media (last string indicates total playtime). */
   metadata: string[];
-  imageSource: MediaImage.ImageSource | Array<string | null>;
+  imageSource: ImageSource;
   mediaSource: PlayListSource;
   children: React.ReactNode;
 }) {
   const { t } = useTranslation();
   const { canvas, foreground } = useTheme();
 
-  const isFavorite =
-    props.title === ReservedPlaylists.favorites &&
-    props.mediaSource.type === "playlist";
+  const isFavorite = getIsFavoritePlaylist(props.title, props.mediaSource.type);
 
   return (
     <>
       <View className="flex-row gap-2 px-4">
-        <ImageWrapper
-          title={props.title}
-          type={props.mediaSource.type}
-          isFavorite={isFavorite}
-        >
-          {/* @ts-expect-error Things should be fine with proper usage. */}
-          <MediaImage
-            type={props.mediaSource.type}
-            source={props.imageSource}
-            size={128}
-          />
-        </ImageWrapper>
+        <ContentImage
+          {...pickKeys(props, ["title", "mediaSource", "imageSource"])}
+        />
         <View className="shrink grow justify-end">
           <TEm
             dim
@@ -96,29 +89,57 @@ export function CurrentListLayout(props: {
   );
 }
 
-/** Whether we need to wrap the image with the "Change Artwork" workflow. */
-function ImageWrapper(props: {
+/** Determines the look and features of the image displayed. */
+function ContentImage(props: {
   title: string;
-  type: MediaType;
-  isFavorite: boolean;
-  children: React.ReactNode;
+  mediaSource: PlayListSource;
+  imageSource: ImageSource;
 }) {
   const { t } = useTranslation();
-  if (props.isFavorite || !SupportedArtwork.has(props.type)) {
-    return props.children;
+
+  const type = props.mediaSource.type;
+  const renderMediaImage =
+    getIsFavoritePlaylist(props.title, type) || !SupportedArtwork.has(type);
+
+  if (renderMediaImage) {
+    return <RenderImage type={type} source={props.imageSource} />;
   }
+
   return (
     <Pressable
       aria-label={t("playlist.artworkChange")}
       delayLongPress={100}
       onLongPress={() => {
-        SheetManager.show(`${capitalize(props.type)}ArtworkSheet`, {
+        SheetManager.show(`${capitalize(type)}ArtworkSheet`, {
           payload: { id: props.title },
         });
       }}
       className="active:opacity-75"
     >
-      {props.children}
+      <RenderImage
+        type={type}
+        source={props.imageSource}
+        asImage={type === "artist"}
+      />
     </Pressable>
   );
+}
+
+function RenderImage(props: {
+  type: MediaType;
+  source: ImageSource;
+  asImage?: boolean;
+}) {
+  if (props.asImage) {
+    return (
+      /* @ts-expect-error Things should be fine with proper usage. */
+      <MediaImage type={props.type} source={props.source} size={128} />
+    );
+  }
+  return <Vinyl source={props.source} size={128} />;
+}
+
+/** Determine if whether this layout is for the "Favorite Playlists" page. */
+function getIsFavoritePlaylist(title: string, type: MediaType) {
+  return title === ReservedPlaylists.favorites && type === "playlist";
 }
