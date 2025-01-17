@@ -32,8 +32,8 @@ import {
 import { MediaImage } from "@/modules/media/components/MediaImage";
 import { Vinyl } from "@/modules/media/components/Vinyl";
 
-/** Screen for `/current-track` route. */
-export default function CurrentTrackScreen() {
+/** Screen for `/now-playing` route. */
+export default function NowPlayingScreen() {
   const { t } = useTranslation();
   const track = useMusicStore((state) => state.activeTrack);
   const listName = useMusicStore((state) => state.sourceName);

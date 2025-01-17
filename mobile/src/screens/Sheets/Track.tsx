@@ -182,7 +182,7 @@ function TrackLinks({ data }: { data: TrackWithAlbum }) {
   const playingList = useMusicStore((state) => state.playingList);
 
   const canShowPlaylistBtn =
-    pathname === "/current-track" && playingSource?.type === "playlist";
+    pathname === "/now-playing" && playingSource?.type === "playlist";
   const isInList = playingList.some((id) => id === data.id);
 
   // Don't render the last `<Divider />` if there's no content in this row.
