@@ -1,5 +1,6 @@
 import { Image as ExpoImage } from "expo-image";
 import { cssInterop } from "nativewind";
+import { useMemo } from "react";
 import { View } from "react-native";
 
 import { Folder } from "@/icons/Folder";
@@ -12,37 +13,49 @@ import type { MediaType } from "../types";
 // https://www.nativewind.dev/v4/api/css-interop
 const Image = cssInterop(ExpoImage, { className: "style" });
 
+const MusicGlyph = require("@/resources/images/music-glyph.png");
+const FaceGlyph = require("@/resources/images/face-glyph.png");
+
 export namespace MediaImage {
   export type ImageSource = string | null;
 
   export type ImageContent =
-    | { type: "playlist"; source: ImageSource | Array<string | null> }
+    | { type: "playlist"; source: ImageSource | ImageSource[] }
     | { type: Omit<MediaType, "playlist">; source: ImageSource };
 
-  export type Props = ImageContent & {
-    radius?: "sm";
+  export type ImageConfig = {
     size: number;
     className?: string;
+    noPlaceholder?: boolean;
   };
+
+  export type Props = ImageContent & ImageConfig;
 }
 
 /** Image representing some media. */
 export function MediaImage({
   type,
-  radius,
   size,
   source,
   className,
+  noPlaceholder,
 }: MediaImage.Props) {
-  const usedClasses = cn(
-    "rounded-lg bg-onSurface",
-    { "rounded-sm": radius === "sm" },
-    className,
-  );
+  const usedClasses = cn("rounded-lg bg-onSurface", className);
+
+  const [RenderedEl, additionalProps] = useMemo(() => {
+    const imgSource = getUsedImage({ source, type, noPlaceholder });
+    if (!imgSource && noPlaceholder) return [View, {}];
+
+    let placeholder = type === "artist" ? FaceGlyph : MusicGlyph;
+    if (noPlaceholder) placeholder = undefined;
+    return [Image, { source: imgSource, placeholder }];
+  }, [source, type, noPlaceholder]);
 
   if (type === "playlist" && Array.isArray(source) && source.length > 0) {
     return (
-      <CollageImage {...{ sources: source, size, className: usedClasses }} />
+      <CollageImage
+        {...{ sources: source, size, className: usedClasses, noPlaceholder }}
+      />
     );
   } else if (type === "folder") {
     return (
@@ -53,13 +66,8 @@ export function MediaImage({
   }
 
   return (
-    <Image
-      source={getUsedImage({ source, type })}
-      placeholder={
-        type === "artist"
-          ? require("@/resources/images/face-glyph.png")
-          : require("@/resources/images/music-glyph.png")
-      }
+    <RenderedEl
+      {...additionalProps}
       style={{ width: size, height: size }}
       className={cn(usedClasses, {
         "rounded-full": type === "artist",
@@ -71,17 +79,18 @@ export function MediaImage({
 
 /** Helper to return the correct image displayed in `<MediaImage />`. */
 function getUsedImage(args: {
-  source: MediaImage.ImageSource | Array<string | null>;
+  source: MediaImage.ImageSource | MediaImage.ImageSource[];
   type: Omit<MediaType, "playlist">;
+  noPlaceholder?: boolean;
 }) {
   if (
     Array.isArray(args.source) ||
     args.source === null ||
     ReservedNames.has(args.source)
   ) {
-    if (args.type === "artist")
-      return require("@/resources/images/face-glyph.png");
-    return require("@/resources/images/music-glyph.png");
+    if (args.noPlaceholder) return null;
+    if (args.type === "artist") return FaceGlyph;
+    return MusicGlyph;
   }
   return args.source;
 }
@@ -91,11 +100,8 @@ function CollageImage({
   size,
   sources,
   className,
-}: {
-  size: number;
-  sources: Array<string | null>;
-  className?: string;
-}) {
+  noPlaceholder,
+}: { sources: MediaImage.ImageSource[] } & MediaImage.ImageConfig) {
   return (
     <View
       style={{ width: size, height: size }}
@@ -105,7 +111,7 @@ function CollageImage({
         <Image
           key={idx}
           source={source}
-          placeholder={require("@/resources/images/music-glyph.png")}
+          placeholder={noPlaceholder ? undefined : MusicGlyph}
           className="size-1/2"
         />
       ))}

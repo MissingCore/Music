@@ -30,7 +30,7 @@ import { Vinyl } from "@/modules/media/components/Vinyl";
 
 type SupportedMedia = "album" | "artist" | "playlist";
 type MediaListSource = { type: SupportedMedia; id: string };
-type ImageSource = MediaImage.ImageSource | Array<string | null>;
+type ImageSource = MediaImage.ImageSource | MediaImage.ImageSource[];
 
 /** Layout for displaying a list of tracks for the specified media. */
 export function CurrentListLayout(

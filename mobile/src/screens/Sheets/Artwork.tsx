@@ -54,7 +54,7 @@ export function PlaylistArtworkSheet(props: { payload: { id: string } }) {
 /** Reusable sheet for changing the artwork of some media. */
 function BaseArtworkSheetContent(props: {
   type: MediaType;
-  imageSource: MediaImage.ImageSource | Array<string | null>;
+  imageSource: MediaImage.ImageSource | MediaImage.ImageSource[];
   mutationResult: UseMutationResult<void, Error, { artwork?: string | null }>;
 }) {
   const { height, width } = useWindowDimensions();
