@@ -185,7 +185,7 @@ function AnimatedVinyl(props: AnimatedVinylProps) {
       }}
       className="ml-4"
     >
-      <View className="group-active:opacity-75">
+      <View needsOffscreenAlphaCompositing className="group-active:opacity-75">
         <Animated.View style={diskStyle}>
           <Vinyl source={props.imageSource} size={128} />
         </Animated.View>
