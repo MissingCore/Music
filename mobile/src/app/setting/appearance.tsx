@@ -11,6 +11,9 @@ export default function AppearanceScreen() {
   const { t } = useTranslation();
   const accentFont = useUserPreferencesStore((state) => state.accentFont);
   const theme = useUserPreferencesStore((state) => state.theme);
+  const nowPlayingDesign = useUserPreferencesStore(
+    (state) => state.nowPlayingDesign,
+  );
 
   return (
     <StandardScrollLayout>
@@ -25,6 +28,16 @@ export default function AppearanceScreen() {
           titleKey="title.theme"
           description={t(`settings.related.${theme}`)}
           onPress={() => SheetManager.show("ThemeSheet")}
+          last
+        />
+      </List>
+
+      <List>
+        <ListItem
+          titleKey="title.nowPlayingDesign"
+          description={t(`common.${nowPlayingDesign}`)}
+          onPress={() => SheetManager.show("NowPlayingDesignSheet")}
+          first
           last
         />
       </List>

@@ -80,7 +80,9 @@ export default function NowPlayingScreen() {
 function Artwork({ artwork: source }: { artwork: string | null }) {
   const { width } = useWindowDimensions();
   const [areaHeight, setAreaHeight] = useState<number | null>(null);
-  const nowPlayingDesign = "vinyl"; // FIXME: Temporary until we make a toggleable preference.
+  const nowPlayingDesign = useUserPreferencesStore(
+    (state) => state.nowPlayingDesign,
+  );
 
   /* Get the height for the artwork that maximizes the space. */
   const size = useMemo(() => {

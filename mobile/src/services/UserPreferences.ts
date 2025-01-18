@@ -17,6 +17,8 @@ import { getSourceName } from "@/modules/media/helpers/data";
 export const ThemeOptions = ["light", "dark", "system"] as const;
 /** Options for app accent font. */
 export const FontOptions = ["NDot", "NType", "Roboto"] as const;
+/** Options for "Now Playing" screen designs. */
+export const NowPlayingDesignOptions = ["vinyl", "plain"] as const;
 
 //#region Zustand Store
 //#region UserPreferencesStore Interface
@@ -36,6 +38,12 @@ interface UserPreferencesStore {
   /** Font used for some accent text (ie: major headings). */
   accentFont: (typeof FontOptions)[number];
   setAccentFont: (newFont: UserPreferencesStore["accentFont"]) => void;
+
+  /** Design used for the "Now Playing" screen. */
+  nowPlayingDesign: (typeof NowPlayingDesignOptions)[number];
+  setNowPlayingDesign: (
+    newDesign: UserPreferencesStore["nowPlayingDesign"],
+  ) => void;
 
   /** Minimum number of seconds a track needs to have to be saved. */
   minSeconds: number;
@@ -58,6 +66,7 @@ const OMITTED_FIELDS: string[] = [
   "setLanguage",
   "setTheme",
   "setAccentFont",
+  "setNowPlayingDesign",
   "setVolume",
 ] satisfies Array<keyof UserPreferencesStore>;
 //#endregion
@@ -88,6 +97,9 @@ export const userPreferencesStore =
       setTheme: (newTheme) => set({ theme: newTheme }),
       accentFont: "NType",
       setAccentFont: (newFont) => set({ accentFont: newFont }),
+
+      nowPlayingDesign: "vinyl",
+      setNowPlayingDesign: (newDesign) => set({ nowPlayingDesign: newDesign }),
 
       minSeconds: 15,
 
