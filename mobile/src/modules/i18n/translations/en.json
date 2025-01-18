@@ -25,7 +25,9 @@
     "unFavorite": "Unfavorite",
     "favoriteTracks": "Favorite Tracks",
 
-    "disc": "Disc {{count}}"
+    "disc": "Disc {{count}}",
+    "vinyl": "Vinyl",
+    "plain": "Plain"
   },
 
   "header": {
@@ -45,6 +47,8 @@
     "backup": "Backup",
     "font": "Accent Font",
     "theme": "Theme",
+    "nowPlayingDesign": "Now Playing Screen Design",
+    "homeTabsOrder": "Home Tabs Order",
     "listAllow": "Allowlist",
     "listBlock": "Blocklist",
     "ignoreDuration": "Ignore Short Audio",
@@ -190,7 +194,9 @@
     "entryRemove": "Remove `{{- name}}`.",
     "entryRemoved": "Removed `{{- name}}`.",
     "entrySeeMore": "See more about `{{- name}}`.",
-    "notFound": "`{{- name}}` doesn't exist."
+    "notFound": "`{{- name}}` doesn't exist.",
+    "showEntry": "Show {{- name}}",
+    "hideEntry": "Hide {{- name}}"
   },
 
   "plural": {

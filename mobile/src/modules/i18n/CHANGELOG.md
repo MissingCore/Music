@@ -5,6 +5,13 @@ This file will document any changes made to the master translation file (`en.jso
 > [!NOTE]  
 > Any missing translations will fallback to the values in `en.json`.
 
+## January 18, 2025
+
+> [!NOTE]  
+> I'm thinking about handling translations via something like Crowdin in the future to make updating translations easier as I think you get notified when I make changes?
+
+- Add terms for "Now Playing" screen design & home tab rearrangement.
+
 ## December 27, 2024
 
 - Add `common.repeatOne` key (used as an accessibility label).
