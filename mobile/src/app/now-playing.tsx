@@ -1,15 +1,9 @@
 import { Stack } from "expo-router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View, useWindowDimensions } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
-import Animated, {
-  cancelAnimation,
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
+import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { useProgress } from "react-native-track-player";
 
 import { Favorite } from "@/icons/Favorite";
@@ -21,6 +15,7 @@ import { useFavoriteTrack, useTrack } from "@/queries/track";
 import { useMusicStore } from "@/modules/media/services/Music";
 import { MusicControls } from "@/modules/media/services/Playback";
 import { useSeekStore } from "@/screens/NowPlaying/SeekService";
+import { useVinylSeekbar } from "@/screens/NowPlaying/useVinylSeekbar";
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 
 import { mutateGuard } from "@/lib/react-query";
@@ -101,7 +96,7 @@ function Artwork({ artwork: source }: { artwork: string | null }) {
     >
       {size !== undefined &&
         (nowPlayingDesign === "vinyl" ? (
-          <VinylSeekBar size={size} />
+          <VinylSeekBar {...{ source, size }} />
         ) : (
           <MediaImage type="track" {...{ source, size }} />
         ))}
@@ -110,39 +105,8 @@ function Artwork({ artwork: source }: { artwork: string | null }) {
 }
 
 /** Seekbar variant that uses the vinyl artwork. */
-function VinylSeekBar({ size }: { size: number }) {
-  const { position } = useProgress(200);
-  const rotationProgress = useSharedValue(0);
-  const hasMounted = useRef(false);
-  const activeTrack = useMusicStore((state) => state.activeTrack);
-  const isPlaying = useMusicStore((state) => state.isPlaying);
-  const sliderPos = useSeekStore((state) => state.sliderPos);
-  const setSliderPos = useSeekStore((state) => state.setSliderPos);
-
-  useEffect(() => {
-    if (!activeTrack) return; // Should be defined.
-
-    if (position === 0) {
-      // Reset animation when position goes back to 0s.
-      cancelAnimation(rotationProgress);
-      rotationProgress.value = 0;
-    } else if (!isPlaying) {
-      // Instantaneously go to new rotated position when paused.
-      cancelAnimation(rotationProgress);
-      rotationProgress.value = ((sliderPos ?? position) * 360) / 24;
-    } else if (position < activeTrack.duration - 1) {
-      rotationProgress.value = withTiming(
-        ((sliderPos ?? position) * 360) / 24,
-        // Prevent vinyl rotation on mount.
-        { duration: hasMounted.current ? 500 : 0, easing: Easing.linear },
-      );
-      if (!hasMounted.current) hasMounted.current = true;
-    } else {
-      // Cancel animation ~1s before the end due to weird behaviors if
-      // the following image is large in size (ie: "animation spike").
-      cancelAnimation(rotationProgress);
-    }
-  }, [activeTrack, isPlaying, position, sliderPos, rotationProgress]);
+function VinylSeekBar(props: { source: string | null; size: number }) {
+  const rotationProgress = useVinylSeekbar();
 
   const diskStyle = useAnimatedStyle(() => ({
     transform: [{ rotate: `${rotationProgress.value}deg` }],
@@ -150,7 +114,7 @@ function VinylSeekBar({ size }: { size: number }) {
 
   return (
     <Animated.View style={diskStyle}>
-      <Vinyl source={activeTrack?.artwork ?? null} size={size} />
+      <Vinyl {...props} />
     </Animated.View>
   );
 }
