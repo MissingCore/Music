@@ -18,7 +18,7 @@ export function DeepLinkHandler() {
   useEffect(() => {
     function deepLinkHandler(data: { url: string }) {
       if (data.url === "trackplayer://notification.click") {
-        router.navigate("/current-track");
+        router.navigate("/now-playing");
       }
     }
     // This event will be fired when the app is already open and the notification is clicked

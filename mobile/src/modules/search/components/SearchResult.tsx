@@ -15,7 +15,7 @@ export namespace SearchResult {
     title: string;
     description?: string;
     type: MediaType;
-    imageSource?: MediaImage.ImageSource | Array<string | null>;
+    imageSource?: MediaImage.ImageSource | MediaImage.ImageSource[];
     /** Renders this instead of the image if provided. */
     LeftElement?: React.JSX.Element;
     className?: string;
@@ -74,7 +74,7 @@ function SearchResultContent(
           type={props.type}
           size={48}
           source={props.imageSource ?? null}
-          radius="sm"
+          className="rounded-sm"
         />
       )}
       <View className="shrink grow">

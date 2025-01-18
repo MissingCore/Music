@@ -43,10 +43,15 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
       })}
     >
       <Pressable
-        onPress={() => router.navigate("/current-track")}
+        onPress={() => router.navigate("/now-playing")}
         className="flex-row items-center bg-surface p-2 active:opacity-75"
       >
-        <MediaImage type="track" radius="sm" size={48} source={track.artwork} />
+        <MediaImage
+          type="track"
+          size={48}
+          source={track.artwork}
+          className="rounded-sm"
+        />
 
         <View className="ml-2 shrink grow">
           <Marquee color={surface}>

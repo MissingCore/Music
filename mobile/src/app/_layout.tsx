@@ -70,7 +70,7 @@ function RootLayoutNav() {
       <Stack screenOptions={{ header: TopAppBar, headerShown: false }}>
         <Stack.Screen name="(main)" />
         <Stack.Screen
-          name="current-track"
+          name="now-playing"
           options={{
             animation: "slide_from_bottom",
             header: TopAppBarMarquee,

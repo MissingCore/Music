@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View, useWindowDimensions } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
+import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { useProgress } from "react-native-track-player";
 
 import { Favorite } from "@/icons/Favorite";
@@ -13,6 +14,8 @@ import { VolumeUp } from "@/icons/VolumeUp";
 import { useFavoriteTrack, useTrack } from "@/queries/track";
 import { useMusicStore } from "@/modules/media/services/Music";
 import { MusicControls } from "@/modules/media/services/Playback";
+import { useSeekStore } from "@/screens/NowPlaying/SeekService";
+import { useVinylSeekbar } from "@/screens/NowPlaying/useVinylSeekbar";
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 
 import { mutateGuard } from "@/lib/react-query";
@@ -30,9 +33,10 @@ import {
   ShuffleButton,
 } from "@/modules/media/components/MediaControls";
 import { MediaImage } from "@/modules/media/components/MediaImage";
+import { Vinyl } from "@/modules/media/components/Vinyl";
 
-/** Screen for `/current-track` route. */
-export default function CurrentTrackScreen() {
+/** Screen for `/now-playing` route. */
+export default function NowPlayingScreen() {
   const { t } = useTranslation();
   const track = useMusicStore((state) => state.activeTrack);
   const listName = useMusicStore((state) => state.sourceName);
@@ -73,12 +77,13 @@ export default function CurrentTrackScreen() {
 
 //#region Artwork
 /** Renders the artwork of the current playing track. */
-function Artwork(props: { artwork: string | null }) {
+function Artwork({ artwork: source }: { artwork: string | null }) {
   const { width } = useWindowDimensions();
   const [areaHeight, setAreaHeight] = useState<number | null>(null);
+  const nowPlayingDesign = "vinyl"; // FIXME: Temporary until we make a toggleable preference.
 
   /* Get the height for the artwork that maximizes the space. */
-  const maxImageHeight = useMemo(() => {
+  const size = useMemo(() => {
     if (areaHeight === null) return undefined;
     // Exclude the padding around the image depending on which measurement is used.
     return (areaHeight > width ? width : areaHeight) - 32;
@@ -89,10 +94,28 @@ function Artwork(props: { artwork: string | null }) {
       onLayout={({ nativeEvent }) => setAreaHeight(nativeEvent.layout.height)}
       className="flex-1 items-center pt-8"
     >
-      {maxImageHeight !== undefined && (
-        <MediaImage type="track" source={props.artwork} size={maxImageHeight} />
-      )}
+      {size !== undefined &&
+        (nowPlayingDesign === "vinyl" ? (
+          <VinylSeekBar {...{ source, size }} />
+        ) : (
+          <MediaImage type="track" {...{ source, size }} />
+        ))}
     </View>
+  );
+}
+
+/** Seekbar variant that uses the vinyl artwork. */
+function VinylSeekBar(props: { source: string | null; size: number }) {
+  const rotationProgress = useVinylSeekbar();
+
+  const diskStyle = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${rotationProgress.value}deg` }],
+  }));
+
+  return (
+    <Animated.View style={diskStyle}>
+      <Vinyl {...props} />
+    </Animated.View>
   );
 }
 //#endregion
@@ -117,7 +140,8 @@ function Metadata(props: { name: string; artistName: string | null }) {
 /** Allows us to change the current positon of the playing track. */
 export function SeekBar({ duration }: { duration: number }) {
   const { position } = useProgress(200);
-  const [sliderPos, setSliderPos] = useState<number | null>(null);
+  const sliderPos = useSeekStore((state) => state.sliderPos);
+  const setSliderPos = useSeekStore((state) => state.setSliderPos);
 
   const displayedPos = sliderPos ?? position;
   const clampedPos = displayedPos > duration ? duration : displayedPos;
