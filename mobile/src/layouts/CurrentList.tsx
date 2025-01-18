@@ -155,7 +155,7 @@ function AnimatedVinyl(props: AnimatedVinylProps) {
       // cancel the animation (hence the `+ 360`).
       rotationProgress.value = withRepeat(
         withTiming(rotationProgress.value + 360, {
-          duration: 15000,
+          duration: 24000,
           easing: Easing.linear,
         }),
         -1,
