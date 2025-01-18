@@ -26,7 +26,7 @@ const resources = {
 i18next.use(initReactI18next).init({
   lng: "en",
   fallbackLng: () => ({
-    zh: ["zh-Hans"],
+    zh: ["zh-Hans", "en"],
     default: ["en"],
   }),
   resources,
