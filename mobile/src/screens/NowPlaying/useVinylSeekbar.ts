@@ -16,17 +16,12 @@ export function useVinylSeekbar() {
   const rotationProgress = useSharedValue(0);
   const hasMounted = useRef(false);
   const activeTrack = useMusicStore((state) => state.activeTrack);
-  const isPlaying = useMusicStore((state) => state.isPlaying);
   const sliderPos = useSeekStore((state) => state.sliderPos);
 
   if (position === 0) {
     // Reset animation when position goes back to 0s.
     cancelAnimation(rotationProgress);
     rotationProgress.value = 0;
-  } else if (!isPlaying) {
-    // Instantaneously go to new rotated position when paused.
-    cancelAnimation(rotationProgress);
-    rotationProgress.value = ((sliderPos ?? position) * 360) / 24;
   } else if (position < (activeTrack?.duration ?? 0) - 1) {
     rotationProgress.value = withTiming(
       ((sliderPos ?? position) * 360) / 24,
