@@ -109,18 +109,10 @@ function Artwork({ artwork: source }: { artwork: string | null }) {
 
 /** Seekbar variant that uses the vinyl artwork. */
 function VinylSeekBar(props: { source: string | null; size: number }) {
-  const [center, setCenter] = useState({ x: 0, y: 0 });
-  const { vinylStyle, seekGesture } = useVinylSeekbar({ center });
-
+  const { initCenter, vinylStyle, seekGesture } = useVinylSeekbar();
   return (
     <GestureDetector gesture={seekGesture}>
-      <Animated.View
-        onLayout={(e) => {
-          const { x, y, width, height } = e.nativeEvent.layout;
-          setCenter({ x: x + width / 2, y: y + height / 2 });
-        }}
-        style={vinylStyle}
-      >
+      <Animated.View onLayout={initCenter} style={vinylStyle}>
         <Vinyl {...props} />
       </Animated.View>
     </GestureDetector>

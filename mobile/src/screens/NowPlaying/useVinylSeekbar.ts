@@ -1,4 +1,5 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useMemo, useRef } from "react";
+import type { LayoutChangeEvent } from "react-native";
 import { Gesture } from "react-native-gesture-handler";
 import {
   cancelAnimation,
@@ -14,37 +15,49 @@ import { useMusicStore } from "@/modules/media/services/Music";
 import { useSeekStore } from "@/screens/NowPlaying/SeekService";
 
 /** Controls the rotation of the vinyl on the "Now Playing" screen. */
-export function useVinylSeekbar({
-  center,
-}: {
-  /** Coordinates pointing to the center of the vinyl. */
-  center: { x: number; y: number };
-}) {
+export function useVinylSeekbar() {
   const { position } = useProgress(200);
   const activeTrack = useMusicStore((state) => state.activeTrack);
   const sliderPos = useSeekStore((state) => state.sliderPos);
 
   const hasMounted = useRef(false);
-  /** Rotation progress based on `position`. */
-  const rotationProgress = useSharedValue(0);
-  /** Rotation progress based on "seeking" on vinyl. */
+  // Coordinates pointing to the center of the vinyl.
+  const centerX = useSharedValue(0);
+  const centerY = useSharedValue(0);
+
+  // Rotation progress based on `position`.
+  const trueProgress = useSharedValue(0);
+  // Rotation progress based on "seeking" on vinyl.
   const seekProgress = useSharedValue<number | null>(null);
-  /** Number of seconds we need to move by. */
-  const cueAmount = useSharedValue(0);
   const prevAngle = useSharedValue(0);
 
-  const onEnd = useCallback(async (movedAmount: number) => {
-    await TrackPlayer.seekBy(movedAmount);
+  const duration = useMemo(() => activeTrack?.duration ?? 0, [activeTrack]);
+  const maxDegrees = useMemo(() => convertUnit(duration), [duration]);
+
+  /**
+   * Obtain the center coordinate of the vinyl which is used to calculate
+   * the angles used to determine seek progress.
+   */
+  const initCenter = useCallback(
+    ({ nativeEvent: { layout } }: LayoutChangeEvent) => {
+      centerX.value = layout.x + layout.width / 2;
+      centerY.value = layout.y + layout.height / 2;
+    },
+    [centerX, centerY],
+  );
+
+  const onEnd = useCallback(async (newPosition: number) => {
+    await TrackPlayer.seekTo(newPosition);
   }, []);
 
   //#region True Position
   if (position === 0) {
     // Reset animation when position goes back to 0s.
-    cancelAnimation(rotationProgress);
-    rotationProgress.value = 0;
-  } else if (position < (activeTrack?.duration ?? 0) - 1) {
-    rotationProgress.value = withTiming(
-      ((sliderPos ?? position) * 360) / 24,
+    cancelAnimation(trueProgress);
+    trueProgress.value = 0;
+  } else if (position < duration - 1) {
+    trueProgress.value = withTiming(
+      convertUnit(sliderPos ?? position),
       // Prevent vinyl rotation on mount.
       { duration: hasMounted.current ? 500 : 0, easing: Easing.linear },
     );
@@ -52,39 +65,57 @@ export function useVinylSeekbar({
   } else {
     // Cancel animation ~1s before the end due to weird behaviors if
     // the following image is large in size (ie: "animation spike").
-    cancelAnimation(rotationProgress);
+    cancelAnimation(trueProgress);
   }
   //#endregion
 
   const seekGesture = Gesture.Pan()
     .onStart(({ absoluteX, absoluteY }) => {
-      cancelAnimation(rotationProgress);
-      seekProgress.value = rotationProgress.value;
-      prevAngle.value = Math.atan2(absoluteY - center.y, absoluteX - center.x);
+      seekProgress.value = convertUnit(position);
+      prevAngle.value = Math.atan2(
+        absoluteY - centerY.value,
+        absoluteX - centerX.value,
+      );
     })
     .onUpdate(({ absoluteX, absoluteY }) => {
-      let currAngle = Math.atan2(absoluteY - center.y, absoluteX - center.x);
+      let currAngle = Math.atan2(
+        absoluteY - centerY.value,
+        absoluteX - centerX.value,
+      );
+      // Ensure arctan calculation is continuous.
       while (currAngle < prevAngle.value - Math.PI) currAngle += 2 * Math.PI;
       while (currAngle > prevAngle.value + Math.PI) currAngle -= 2 * Math.PI;
-      const difference = currAngle - prevAngle.value;
-      prevAngle.value = currAngle;
+      // Calculate new rotation position.
+      const rotateAmount = ((currAngle - prevAngle.value) * 180) / Math.PI;
+      const newPosition = (seekProgress.value ?? 0) + rotateAmount;
+      if (newPosition < 0) seekProgress.value = 0;
+      else if (newPosition > maxDegrees) seekProgress.value = maxDegrees;
+      else seekProgress.value = newPosition;
 
-      seekProgress.value =
-        (seekProgress.value ?? 0) + (difference * 180) / Math.PI;
-      // Convert `difference` to duration represented by duration.
-      cueAmount.value = cueAmount.value + (difference * 24) / (2 * Math.PI);
+      prevAngle.value = currAngle;
     })
     .onEnd(() => {
-      runOnJS(onEnd)(cueAmount.value);
-      rotationProgress.value = seekProgress.value ?? 0;
-      cueAmount.value = 0;
+      runOnJS(onEnd)(convertUnit(seekProgress.value ?? 0, "degrees"));
+      trueProgress.value = seekProgress.value ?? 0;
       seekProgress.value = null;
     });
 
   const vinylStyle = useAnimatedStyle(() => {
-    const rotateAmount = seekProgress.value ?? rotationProgress.value;
+    const rotateAmount = seekProgress.value ?? trueProgress.value;
     return { transform: [{ rotate: `${rotateAmount}deg` }] };
   });
 
-  return { vinylStyle, seekGesture };
+  return { initCenter, vinylStyle, seekGesture };
+}
+
+/**
+ * Convert between seconds and the degrees representing the rotated state
+ * of the vinyl. 1 full revolution (360deg) is 24s.
+ *
+ * **DEFAULTS** to converting seconds to degrees.
+ */
+function convertUnit(value: number, from?: "seconds" | "degrees") {
+  "worklet";
+  if (from === "degrees") return value * (24 / 360);
+  return value * (360 / 24);
 }
