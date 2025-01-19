@@ -19,6 +19,7 @@ export function useVinylSeekbar() {
   const { position } = useProgress(200);
   const activeTrack = useMusicStore((state) => state.activeTrack);
   const sliderPos = useSeekStore((state) => state.sliderPos);
+  const setSliderPos = useSeekStore((state) => state.setSliderPos);
 
   const hasMounted = useRef(false);
   // Coordinates pointing to the center of the vinyl.
@@ -46,9 +47,16 @@ export function useVinylSeekbar() {
     [centerX, centerY],
   );
 
-  const onEnd = useCallback(async (newPosition: number) => {
-    await TrackPlayer.seekTo(newPosition);
-  }, []);
+  const onEnd = useCallback(
+    async (seconds: number) => {
+      await TrackPlayer.seekTo(seconds);
+      trueProgress.value = convertUnit(seconds);
+      seekProgress.value = null;
+      // Helps prevents "rubberbanding" in seekbar.
+      setTimeout(() => setSliderPos(null), 250);
+    },
+    [setSliderPos, seekProgress, trueProgress],
+  );
 
   //#region True Position
   if (position === 0) {
@@ -71,6 +79,7 @@ export function useVinylSeekbar() {
 
   const seekGesture = Gesture.Pan()
     .onStart(({ absoluteX, absoluteY }) => {
+      runOnJS(setSliderPos)(position);
       seekProgress.value = convertUnit(position);
       prevAngle.value = Math.atan2(
         absoluteY - centerY.value,
@@ -91,13 +100,12 @@ export function useVinylSeekbar() {
       if (newPosition < 0) seekProgress.value = 0;
       else if (newPosition > maxDegrees) seekProgress.value = maxDegrees;
       else seekProgress.value = newPosition;
+      runOnJS(setSliderPos)(convertUnit(seekProgress.value, "degrees"));
 
       prevAngle.value = currAngle;
     })
     .onEnd(() => {
       runOnJS(onEnd)(convertUnit(seekProgress.value ?? 0, "degrees"));
-      trueProgress.value = seekProgress.value ?? 0;
-      seekProgress.value = null;
     });
 
   const vinylStyle = useAnimatedStyle(() => {
