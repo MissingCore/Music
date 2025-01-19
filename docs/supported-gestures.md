@@ -15,7 +15,7 @@ This involves swiping left on some content to reveal actions related to that con
   <thead>
     <tr>
       <th align="center"><code>Home Navigation</code></th>
-      <th align="center"><code>Filter List</code></th>
+      <th align="center"><code>Filter List Entries</code></th>
       <th align="center"><code>Queue List</code></th>
     </tr>
   </thead>
@@ -40,3 +40,9 @@ This involves long-pressing an item to reveal some action. It's currently presen
 
 - **`Artist & Playlist Artwork`:** You can long-press on the artist or playlist artwork on their respective screens to reveal a modal to change or remove the specified artwork.
 - **`Playlist Tracks`:** You can long-press on tracks in the playlist screen or playlist modification screen (create or edit) to change its order/position in the playlist.
+
+## Drag for Action
+
+This involves dragging an item to do some action. It's currently present in the following features.
+
+- **`Now Playing Vinyl`:** You can drag your finger in a circular motion on the vinyl (when enabled) to have it act as a seekbar. 1 full rotation of the vinyl is equivalent to 24s.
