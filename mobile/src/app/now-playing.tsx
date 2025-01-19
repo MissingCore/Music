@@ -3,7 +3,8 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View, useWindowDimensions } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
-import Animated, { useAnimatedStyle } from "react-native-reanimated";
+import { GestureDetector } from "react-native-gesture-handler";
+import Animated from "react-native-reanimated";
 import { useProgress } from "react-native-track-player";
 
 import { Favorite } from "@/icons/Favorite";
@@ -108,16 +109,13 @@ function Artwork({ artwork: source }: { artwork: string | null }) {
 
 /** Seekbar variant that uses the vinyl artwork. */
 function VinylSeekBar(props: { source: string | null; size: number }) {
-  const rotationProgress = useVinylSeekbar();
-
-  const diskStyle = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${rotationProgress.value}deg` }],
-  }));
-
+  const { initCenter, vinylStyle, seekGesture } = useVinylSeekbar();
   return (
-    <Animated.View style={diskStyle}>
-      <Vinyl {...props} />
-    </Animated.View>
+    <GestureDetector gesture={seekGesture}>
+      <Animated.View onLayout={initCenter} style={vinylStyle}>
+        <Vinyl {...props} />
+      </Animated.View>
+    </GestureDetector>
   );
 }
 //#endregion
