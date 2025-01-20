@@ -9,10 +9,8 @@ import { Queue, RNTPManager, musicStore } from "@/modules/media/services/Music";
 import { MusicControls } from "@/modules/media/services/Playback";
 import { removeUnusedCategories } from "@/modules/scanning/helpers/audio";
 
-import { initPlayer, setPlayerConfigs } from "@/lib/react-native-track-player";
 import { clearAllQueries } from "@/lib/react-query";
 import { ToastOptions } from "@/lib/toast";
-import { wait } from "@/utils/promise";
 
 /** How we handle the actions in the media control notification. */
 export async function PlaybackService() {
@@ -116,20 +114,4 @@ export async function PlaybackService() {
     // Clear all reference of the current playing track.
     await musicStore.getState().reset();
   });
-}
-
-/**
- * Ensure we setup `react-native-track-player` in the foreground in addition
- * to its configurations.
- */
-export async function setupPlayer() {
-  // `setupPlayer` must be called when app is in the foreground, otherwise,
-  // an `'android_cannot_setup_player_in_background'` error will be thrown.
-  while ((await initPlayer()) === "android_cannot_setup_player_in_background") {
-    // Timeouts will only execute when the app is in the foreground. If
-    // it somehow executes in the background, the promise will be rejected
-    // and we'll try this again.
-    await wait(1);
-  }
-  await setPlayerConfigs();
 }
