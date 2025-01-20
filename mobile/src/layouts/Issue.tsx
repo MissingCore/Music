@@ -29,7 +29,7 @@ export function IssueLayout(props: {
   }));
 
   return (
-    <>
+    <View className="flex-1">
       <Animated.ScrollView
         contentContainerClassName="grow gap-6 p-4"
         {...ScrollPresets}
@@ -67,6 +67,6 @@ export function IssueLayout(props: {
           />
         </Button>
       </View>
-    </>
+    </View>
   );
 }
