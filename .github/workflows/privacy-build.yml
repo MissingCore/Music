@@ -16,11 +16,11 @@ jobs:
       - name: Setup Node.js & pnpm
         uses: ./.github/actions/setup
 
-      - name: Setup JDK 17
+      - name: Setup JDK 18
         uses: actions/setup-java@v4
         with:
-          distribution: microsoft
-          java-version: 17
+          java-version: 18
+          distribution: temurin
 
       - name: Setup Gradle action for optimized execution and caching
         uses: gradle/actions/setup-gradle@v4
