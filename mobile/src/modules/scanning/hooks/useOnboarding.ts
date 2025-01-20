@@ -1,7 +1,7 @@
 import * as MediaLibrary from "expo-media-library";
 import { useCallback, useEffect, useState } from "react";
 
-import { useHasHydratedStores } from "@/hooks/useHasHydratedStores";
+import { useSetup } from "@/hooks/useSetup";
 import { Resynchronize } from "@/modules/media/services/Resynchronize";
 import { findAndSaveArtwork, cleanupImages } from "../helpers/artwork";
 import { findAndSaveAudio, cleanupDatabase } from "../helpers/audio";
@@ -18,7 +18,7 @@ export function useOnboarding() {
   const [permissionResponse, requestPermission] = MediaLibrary.usePermissions({
     granularPermissions: ["audio"],
   });
-  const isHydrated = useHasHydratedStores();
+  const isReady = useSetup();
   const [status, setStatus] = useState<"in-progress" | "complete" | undefined>(
     undefined,
   );
@@ -61,14 +61,14 @@ export function useOnboarding() {
 
   useEffect(() => {
     // Make sure the Zustand store is hydrated before we do anything.
-    if (!isHydrated) return;
+    if (!isReady) return;
 
     if (permissionResponse && status === undefined) {
       readMusicLibrary().catch((err) => {
         setError(err);
       });
     }
-  }, [isHydrated, permissionResponse, readMusicLibrary, status]);
+  }, [isReady, permissionResponse, readMusicLibrary, status]);
 
   return { success: status === "complete", error };
 }

@@ -183,6 +183,7 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
         else state?._init(state);
       };
     },
+    skipHydration: true,
   },
 );
 

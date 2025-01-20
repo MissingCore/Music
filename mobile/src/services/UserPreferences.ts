@@ -125,6 +125,7 @@ export const userPreferencesStore =
           else state?._init(state);
         };
       },
+      skipHydration: true,
     },
   );
 //#endregion
