@@ -7,7 +7,6 @@ import type { TrackWithAlbum } from "@/db/schema";
 import i18next from "@/modules/i18n";
 import { getTrack, removeInvalidTrackRelations } from "@/api/track";
 
-import { initPlayerWConfigs } from "@/lib/react-native-track-player";
 import { ToastOptions } from "@/lib/toast";
 import { createPersistedSubscribedStore } from "@/lib/zustand";
 import { shuffleArray } from "@/utils/object";
@@ -291,8 +290,6 @@ export type TrackStatus = "RELOAD" | "REPEAT" | "QUEUE" | "END" | undefined;
 export class RNTPManager {
   /** Determine if any tracks are loaded in RNTP on launch. */
   static async isLoaded() {
-    await initPlayerWConfigs("`RNTPManager.isLoaded()`");
-    // Ensure we don't crash due to the player initializing too slow.
     try {
       return (await TrackPlayer.getPlaybackState()).state !== State.None;
     } catch {

@@ -42,12 +42,3 @@ export async function setPlayerConfigs() {
     icon: require("@/resources/images/music-glyph.png"),
   });
 }
-
-/** Attempt to initialize RNTP player with its config. */
-export async function initPlayerWConfigs(location: string) {
-  // Ensure the player is setup (ie: `undefined` is returned).
-  if (!(await initPlayer({ suppress: true }))) {
-    await setPlayerConfigs();
-    console.log(`[RNTP] Setup inside of ${location}.`);
-  }
-}

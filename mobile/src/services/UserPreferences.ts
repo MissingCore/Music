@@ -9,7 +9,6 @@ import { musicStore } from "@/modules/media/services/Music";
 import { RecentList } from "@/modules/media/services/RecentList";
 
 import { clearAllQueries } from "@/lib/react-query";
-import { initPlayerWConfigs } from "@/lib/react-native-track-player";
 import { createPersistedSubscribedStore } from "@/lib/zustand";
 import { getSourceName } from "@/modules/media/helpers/data";
 
@@ -161,8 +160,6 @@ userPreferencesStore.subscribe(
 userPreferencesStore.subscribe(
   (state) => state.volume,
   async (volume) => {
-    await initPlayerWConfigs("`userPreferencesStore`'s `volume` subscription");
-    // Ensure we don't crash due to the player initializing too slow.
     try {
       await TrackPlayer.setVolume(volume);
     } catch {}
