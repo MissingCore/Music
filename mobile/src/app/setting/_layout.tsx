@@ -10,8 +10,12 @@ export default function SettingsLayout() {
       <Stack.Screen name="index" options={{ title: t("header.settings") }} />
       <Stack.Screen name="update" options={{ title: t("header.appUpdate") }} />
       <Stack.Screen
-        name="appearance"
+        name="appearance/index"
         options={{ title: t("header.appearance") }}
+      />
+      <Stack.Screen
+        name="appearance/home-tabs-order"
+        options={{ title: t("title.homeTabsOrder") }}
       />
       <Stack.Screen
         name="insights/index"

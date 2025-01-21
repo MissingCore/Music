@@ -10,6 +10,7 @@ import { RecentList } from "@/modules/media/services/RecentList";
 
 import { clearAllQueries } from "@/lib/react-query";
 import { createPersistedSubscribedStore } from "@/lib/zustand";
+import { moveArray } from "@/utils/object";
 import { getSourceName } from "@/modules/media/helpers/data";
 
 /** Options for app themes. */
@@ -18,6 +19,14 @@ export const ThemeOptions = ["light", "dark", "system"] as const;
 export const FontOptions = ["NDot", "NType", "Roboto"] as const;
 /** Options for "Now Playing" screen designs. */
 export const NowPlayingDesignOptions = ["vinyl", "plain"] as const;
+/** Options for the tabs we can reorder. */
+export const OrderableTabs = [
+  "album",
+  "artist",
+  "folder",
+  "playlist",
+  "track",
+] as const;
 
 //#region Zustand Store
 //#region UserPreferencesStore Interface
@@ -43,6 +52,9 @@ interface UserPreferencesStore {
   setNowPlayingDesign: (
     newDesign: UserPreferencesStore["nowPlayingDesign"],
   ) => void;
+  /** Order of tabs on the home screen. */
+  homeTabsOrder: Array<(typeof OrderableTabs)[number]>;
+  moveTab: (fromIndex: number, toIndex: number) => void;
 
   /** Minimum number of seconds a track needs to have to be saved. */
   minSeconds: number;
@@ -99,6 +111,12 @@ export const userPreferencesStore =
 
       nowPlayingDesign: "vinyl",
       setNowPlayingDesign: (newDesign) => set({ nowPlayingDesign: newDesign }),
+      homeTabsOrder: ["folder", "playlist", "track", "album", "artist"],
+      moveTab: (fromIndex: number, toIndex: number) => {
+        set(({ homeTabsOrder }) => ({
+          homeTabsOrder: moveArray(homeTabsOrder, { fromIndex, toIndex }),
+        }));
+      },
 
       minSeconds: 15,
 

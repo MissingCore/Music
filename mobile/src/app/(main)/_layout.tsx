@@ -10,6 +10,7 @@ import Animated, {
 
 import { Search } from "@/icons/Search";
 import { Settings } from "@/icons/Settings";
+import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { useBottomActionsContext } from "@/hooks/useBottomActionsContext";
 import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
 import { useTheme } from "@/hooks/useTheme";
@@ -89,22 +90,26 @@ function TabBar({ stacked = false, hidden = false }) {
   );
 }
 
-/** List of routes we'll display buttons for on the "home" page. */
-const NavRoutes = [
-  { href: "/", key: "header.home" },
-  { href: "/folder", key: "common.folders" },
-  { href: "/playlist", key: "common.playlists" },
-  { href: "/track", key: "common.tracks" },
-  { href: "/album", key: "common.albums" },
-  { href: "/artist", key: "common.artists" },
-] as const;
-
 /** List of routes in `(home)` group. */
 function NavigationList() {
   const { t, i18n } = useTranslation();
   const { surface } = useTheme();
   const navState = useRootNavigationState();
   const listRef = useRef<FlatList>(null);
+  const homeTabsOrder = useUserPreferencesStore((state) => state.homeTabsOrder);
+
+  // Buttons for the routes we can navigate to on the "home" screen, whose
+  // order can be customized.
+  const NavRoutes = useMemo(
+    () => [
+      { href: "/", key: "header.home" },
+      ...homeTabsOrder.map((tabKey) => ({
+        href: `/${tabKey}`,
+        key: `common.${tabKey}s`,
+      })),
+    ],
+    [homeTabsOrder],
+  );
 
   const tabIndex = useMemo(() => {
     const mainRoute = navState.routes.find((r) => r.name === "(main)");
