@@ -14,10 +14,3 @@ export type Maybe<T> = T | null | undefined;
 export type UniformObject<TObj extends Record<any, any>, TData> = {
   [K in keyof TObj]: TData;
 };
-
-/** Get all permutations from a list of elements. */
-export type Permutations<T, K = T> = [T] extends [never]
-  ? []
-  : K extends K
-    ? [K, ...Permutations<Exclude<T, K>>]
-    : never;

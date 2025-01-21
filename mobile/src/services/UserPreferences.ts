@@ -11,7 +11,6 @@ import { RecentList } from "@/modules/media/services/RecentList";
 import { clearAllQueries } from "@/lib/react-query";
 import { createPersistedSubscribedStore } from "@/lib/zustand";
 import { moveArray } from "@/utils/object";
-import type { Permutations } from "@/utils/types";
 import { getSourceName } from "@/modules/media/helpers/data";
 
 /** Options for app themes. */
@@ -54,7 +53,7 @@ interface UserPreferencesStore {
     newDesign: UserPreferencesStore["nowPlayingDesign"],
   ) => void;
   /** Order of tabs on the home screen. */
-  homeTabsOrder: Permutations<(typeof OrderableTabs)[number]>;
+  homeTabsOrder: Array<(typeof OrderableTabs)[number]>;
   moveTab: (fromIndex: number, toIndex: number) => void;
 
   /** Minimum number of seconds a track needs to have to be saved. */
@@ -114,12 +113,9 @@ export const userPreferencesStore =
       setNowPlayingDesign: (newDesign) => set({ nowPlayingDesign: newDesign }),
       homeTabsOrder: ["folder", "playlist", "track", "album", "artist"],
       moveTab: (fromIndex: number, toIndex: number) => {
-        set(({ homeTabsOrder }) => {
-          const newOrder = moveArray(homeTabsOrder, { fromIndex, toIndex });
-          return {
-            homeTabsOrder: newOrder as UserPreferencesStore["homeTabsOrder"],
-          };
-        });
+        set(({ homeTabsOrder }) => ({
+          homeTabsOrder: moveArray(homeTabsOrder, { fromIndex, toIndex }),
+        }));
       },
 
       minSeconds: 15,
