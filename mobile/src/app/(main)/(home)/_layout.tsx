@@ -55,7 +55,7 @@ export default function HomeLayout() {
     >
       <MaterialTopTabs.Screen name="index" />
       {homeTabsOrder.map((tabKey) => (
-        <MaterialTopTabs.Screen name={tabKey} />
+        <MaterialTopTabs.Screen key={tabKey} name={tabKey} />
       ))}
     </MaterialTopTabs>
   );
