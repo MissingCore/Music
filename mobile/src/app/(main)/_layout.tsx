@@ -103,9 +103,9 @@ function NavigationList() {
   const NavRoutes = useMemo(
     () => [
       { href: "/", key: "header.home" },
-      ...homeTabsOrder.map((tabName) => ({
-        href: `/${tabName}`,
-        key: `common.${tabName}s`,
+      ...homeTabsOrder.map((tabKey) => ({
+        href: `/${tabKey}`,
+        key: `common.${tabKey}s`,
       })),
     ],
     [homeTabsOrder],
