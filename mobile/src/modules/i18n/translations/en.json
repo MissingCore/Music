@@ -47,8 +47,8 @@
     "backup": "Backup",
     "font": "Accent Font",
     "theme": "Theme",
-    "nowPlayingDesign": "Now Playing Screen Design",
     "homeTabsOrder": "Home Tabs Order",
+    "nowPlayingDesign": "Now Playing Screen Design",
     "listAllow": "Allowlist",
     "listBlock": "Blocklist",
     "ignoreDuration": "Ignore Short Audio",
@@ -85,6 +85,7 @@
     "brief": {
       "appUpdate": "A new update is available!",
       "appearance": "Personalize the app looks.",
+      "homeTabsOrder": "Customize the order and visibility of the tabs.",
       "backup": "Move data across devices.",
       "insights": "App usage & statistics.",
       "saveErrors": "See the reason why some tracks weren't saved.",
@@ -97,6 +98,7 @@
     },
 
     "description": {
+      "homeTabsOrder": "Reorder the tabs after the \"Home\" tab by dragging and dropping. Toggle tab visibility using the eye icon.",
       "backup": "Transfer data from this app across devices through a `music_backup.json` file.",
       "listAllow": "Defaults to the following if empty:",
       "listBlock": "Has higher priority over the entries in the allowlist.",
