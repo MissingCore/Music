@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { SheetManager } from "react-native-actions-sheet";
 
@@ -34,10 +35,15 @@ export default function AppearanceScreen() {
 
       <List>
         <ListItem
+          titleKey="title.homeTabsOrder"
+          description={t("settings.brief.homeTabsOrder")}
+          onPress={() => router.navigate("/setting/appearance/home-tabs-order")}
+          first
+        />
+        <ListItem
           titleKey="title.nowPlayingDesign"
           description={t(`common.${nowPlayingDesign}`)}
           onPress={() => SheetManager.show("NowPlayingDesignSheet")}
-          first
           last
         />
       </List>
