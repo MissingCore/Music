@@ -5,6 +5,10 @@ This file will document any changes made to the master translation file (`en.jso
 > [!NOTE]  
 > Any missing translations will fallback to the values in `en.json`.
 
+## January 20, 2025
+
+- Add terms for home tab rearrangement.
+
 ## January 18, 2025
 
 > [!NOTE]  
