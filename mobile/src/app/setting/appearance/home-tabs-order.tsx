@@ -7,10 +7,12 @@ import { DragIndicator } from "@/icons/DragIndicator";
 import type { OrderableTabs } from "@/services/UserPreferences";
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { StandardScrollLayout } from "@/layouts/StandardScroll";
-import { useDragListState } from "@/lib/react-native-draglist";
+import {
+  areRenderItemPropsEqual,
+  useDragListState,
+} from "@/lib/react-native-draglist";
 
 import { cn } from "@/lib/style";
-import { pickKeys } from "@/utils/object";
 import { useListPresets } from "@/components/Defaults";
 import { Divider } from "@/components/Divider";
 import { TStyledText } from "@/components/Typography/StyledText";
@@ -53,42 +55,26 @@ export default function HomeTabsOrderScreen() {
 type RenderItemProps = DragListRenderItemInfo<TabValues>;
 
 /** Item rendered in the `<DragList />`. */
-const RenderItem = memo(function RenderItem({
-  item,
-  ...info
-}: RenderItemProps) {
-  return (
-    <Pressable
-      delayLongPress={100}
-      onLongPress={info.onDragStart}
-      onPressOut={info.onDragEnd}
-      className={cn(
-        "min-h-12 flex-row items-center gap-2 rounded-md p-4 pl-2 active:bg-surface/50",
-        {
-          "opacity-25": !info.isActive && info.isDragging,
-          "!bg-surface": info.isActive,
-          "mt-1": info.index > 0,
-        },
-      )}
-    >
-      <DragIndicator />
-      <TStyledText textKey={`common.${item}s`} className="pl-2" />
-    </Pressable>
-  );
-}, areRenderItemPropsEqual);
-
-const RenderItemPrimitiveProps = ["index", "isActive", "isDragging"] as const;
-
-function areRenderItemPropsEqual(
-  oldProps: RenderItemProps,
-  newProps: RenderItemProps,
-) {
-  const primitiveProps = pickKeys(oldProps, RenderItemPrimitiveProps);
-  return (
-    oldProps.item === newProps.item &&
-    Object.entries(primitiveProps).every(
-      // @ts-expect-error - Non-existent type conflicts.
-      ([key, value]) => value === newProps[key],
-    )
-  );
-}
+const RenderItem = memo(
+  function RenderItem({ item, ...info }: RenderItemProps) {
+    return (
+      <Pressable
+        delayLongPress={100}
+        onLongPress={info.onDragStart}
+        onPressOut={info.onDragEnd}
+        className={cn(
+          "min-h-12 flex-row items-center gap-2 rounded-md p-4 pl-2 active:bg-surface/50",
+          {
+            "opacity-25": !info.isActive && info.isDragging,
+            "!bg-surface": info.isActive,
+            "mt-1": info.index > 0,
+          },
+        )}
+      >
+        <DragIndicator />
+        <TStyledText textKey={`common.${item}s`} className="pl-2" />
+      </Pressable>
+    );
+  },
+  areRenderItemPropsEqual((o, n) => o.item === n.item),
+);

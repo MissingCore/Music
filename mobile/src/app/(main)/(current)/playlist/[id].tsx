@@ -16,12 +16,14 @@ import {
 import { useRemoveFromPlaylist } from "@/queries/track";
 import { useBottomActionsContext } from "@/hooks/useBottomActionsContext";
 import { CurrentListLayout } from "@/layouts/CurrentList";
-import { useDragListState } from "@/lib/react-native-draglist";
+import {
+  areRenderItemPropsEqual,
+  useDragListState,
+} from "@/lib/react-native-draglist";
 
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
-import { pickKeys } from "@/utils/object";
 import { useListPresets } from "@/components/Defaults";
 import { IconButton } from "@/components/Form/Button";
 import type { SwipeableRef } from "@/components/Swipeable";
@@ -122,74 +124,61 @@ export default function CurrentPlaylistScreen() {
 }
 
 /** Item rendered in the `<DragList />`. */
-const RenderItem = memo(function RenderItem({
-  item,
-  trackSource,
-  ...info
-}: RenderItemProps & { trackSource: PlayListSource }) {
-  const { t } = useTranslation();
-  const swipeableRef = useRef<SwipeableRef>(null);
-  const [lastItemId, setLastItemId] = useState(item.id);
-  const removeTrack = useRemoveFromPlaylist(item.id);
+const RenderItem = memo(
+  function RenderItem({
+    item,
+    trackSource,
+    ...info
+  }: RenderItemProps & { trackSource: PlayListSource }) {
+    const { t } = useTranslation();
+    const swipeableRef = useRef<SwipeableRef>(null);
+    const [lastItemId, setLastItemId] = useState(item.id);
+    const removeTrack = useRemoveFromPlaylist(item.id);
 
-  if (item.id !== lastItemId) {
-    setLastItemId(item.id);
-    if (swipeableRef.current) swipeableRef.current.resetIfNeeded();
-  }
+    if (item.id !== lastItemId) {
+      setLastItemId(item.id);
+      if (swipeableRef.current) swipeableRef.current.resetIfNeeded();
+    }
 
-  return (
-    <Pressable
-      delayLongPress={100}
-      onLongPress={info.onDragStart}
-      onPressOut={info.onDragEnd}
-      className={cn("group", { "mt-2": info.index > 0 })}
-    >
-      <Swipeable
-        // @ts-expect-error - Error assigning ref to class component.
-        ref={swipeableRef}
-        enabled={!info.isDragging}
-        renderRightActions={() =>
-          info.isActive ? undefined : (
-            <IconButton
-              accessibilityLabel={t("template.entryRemove", {
-                name: item.title,
-              })}
-              onPress={() => mutateGuard(removeTrack, trackSource.id)}
-              className="mr-4 bg-red"
-            >
-              <Remove color={Colors.neutral100} />
-            </IconButton>
-          )
-        }
+    return (
+      <Pressable
+        delayLongPress={100}
+        onLongPress={info.onDragStart}
+        onPressOut={info.onDragEnd}
+        className={cn("group", { "mt-2": info.index > 0 })}
       >
-        <Track
-          delayLongPress={100}
-          onLongPress={info.onDragStart}
-          onPressOut={info.onDragEnd}
-          disabled={info.isDragging}
-          {...item}
-          trackSource={trackSource}
-          className={cn("mx-4 group-active:bg-surface/50", {
-            "!bg-surface": info.isActive,
-          })}
-        />
-      </Swipeable>
-    </Pressable>
-  );
-}, areRenderItemPropsEqual);
-
-const RenderItemPrimitiveProps = ["index", "isActive", "isDragging"] as const;
-
-function areRenderItemPropsEqual(
-  oldProps: RenderItemProps,
-  newProps: RenderItemProps,
-) {
-  const primitiveProps = pickKeys(oldProps, RenderItemPrimitiveProps);
-  return (
-    oldProps.item.id === newProps.item.id &&
-    Object.entries(primitiveProps).every(
-      // @ts-expect-error - Non-existent type conflicts.
-      ([key, value]) => value === newProps[key],
-    )
-  );
-}
+        <Swipeable
+          // @ts-expect-error - Error assigning ref to class component.
+          ref={swipeableRef}
+          enabled={!info.isDragging}
+          renderRightActions={() =>
+            info.isActive ? undefined : (
+              <IconButton
+                accessibilityLabel={t("template.entryRemove", {
+                  name: item.title,
+                })}
+                onPress={() => mutateGuard(removeTrack, trackSource.id)}
+                className="mr-4 bg-red"
+              >
+                <Remove color={Colors.neutral100} />
+              </IconButton>
+            )
+          }
+        >
+          <Track
+            delayLongPress={100}
+            onLongPress={info.onDragStart}
+            onPressOut={info.onDragEnd}
+            disabled={info.isDragging}
+            {...item}
+            trackSource={trackSource}
+            className={cn("mx-4 group-active:bg-surface/50", {
+              "!bg-surface": info.isActive,
+            })}
+          />
+        </Swipeable>
+      </Pressable>
+    );
+  },
+  areRenderItemPropsEqual((o, n) => o.item.id === n.item.id),
+);
