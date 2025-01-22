@@ -15,7 +15,7 @@ type TabState = EventArg<
 >;
 
 export default function HomeLayout() {
-  const homeTabsOrder = useUserPreferencesStore((state) => state.homeTabsOrder);
+  const tabsOrder = useUserPreferencesStore((state) => state.tabsOrder);
   // Should be fine to store navigation state in ref as it doesn't affect rendering.
   //  - https://react.dev/learn/referencing-values-with-refs#when-to-use-refs
   const prevTabState = useRef<TabState>();
@@ -54,7 +54,7 @@ export default function HomeLayout() {
       screenListeners={listeners}
     >
       <MaterialTopTabs.Screen name="index" />
-      {homeTabsOrder.map((tabKey) => (
+      {tabsOrder.map((tabKey) => (
         <MaterialTopTabs.Screen key={tabKey} name={tabKey} />
       ))}
     </MaterialTopTabs>

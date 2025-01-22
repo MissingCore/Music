@@ -96,19 +96,19 @@ function NavigationList() {
   const { surface } = useTheme();
   const navState = useRootNavigationState();
   const listRef = useRef<FlatList>(null);
-  const homeTabsOrder = useUserPreferencesStore((state) => state.homeTabsOrder);
+  const tabsOrder = useUserPreferencesStore((state) => state.tabsOrder);
 
   // Buttons for the routes we can navigate to on the "home" screen, whose
   // order can be customized.
   const NavRoutes = useMemo(
     () => [
       { href: "/", key: "header.home" },
-      ...homeTabsOrder.map((tabKey) => ({
+      ...tabsOrder.map((tabKey) => ({
         href: `/${tabKey}`,
         key: `common.${tabKey}s`,
       })),
     ],
-    [homeTabsOrder],
+    [tabsOrder],
   );
 
   const tabIndex = useMemo(() => {

@@ -21,7 +21,7 @@ type RenderItemProps = DragListRenderItemInfo<TabValues>;
 
 /** Screen for `/setting/appearance/home-tabs-order` route. */
 export default function HomeTabsOrderScreen() {
-  const data = useUserPreferencesStore((state) => state.homeTabsOrder);
+  const data = useUserPreferencesStore((state) => state.tabsOrder);
   const onMove = useUserPreferencesStore((state) => state.moveTab);
   const { items, onReordered } = useDragListState({ data, onMove });
 

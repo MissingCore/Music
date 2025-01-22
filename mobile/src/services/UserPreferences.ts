@@ -52,8 +52,9 @@ interface UserPreferencesStore {
   setNowPlayingDesign: (
     newDesign: UserPreferencesStore["nowPlayingDesign"],
   ) => void;
+
   /** Order of tabs on the home screen. */
-  homeTabsOrder: Array<(typeof OrderableTabs)[number]>;
+  tabsOrder: Array<(typeof OrderableTabs)[number]>;
   moveTab: (fromIndex: number, toIndex: number) => void;
 
   /** Minimum number of seconds a track needs to have to be saved. */
@@ -111,10 +112,11 @@ export const userPreferencesStore =
 
       nowPlayingDesign: "vinyl",
       setNowPlayingDesign: (newDesign) => set({ nowPlayingDesign: newDesign }),
-      homeTabsOrder: ["folder", "playlist", "track", "album", "artist"],
+
+      tabsOrder: ["folder", "playlist", "track", "album", "artist"],
       moveTab: (fromIndex: number, toIndex: number) => {
-        set(({ homeTabsOrder }) => ({
-          homeTabsOrder: moveArray(homeTabsOrder, { fromIndex, toIndex }),
+        set(({ tabsOrder }) => ({
+          tabsOrder: moveArray(tabsOrder, { fromIndex, toIndex }),
         }));
       },
 
