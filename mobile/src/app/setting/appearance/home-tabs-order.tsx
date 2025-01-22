@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback } from "react";
 import { Pressable } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 import FlashDragList from "react-native-draglist/dist/FlashList";
@@ -7,9 +7,10 @@ import { DragIndicator } from "@/icons/DragIndicator";
 import type { OrderableTabs } from "@/services/UserPreferences";
 import { useUserPreferencesStore } from "@/services/UserPreferences";
 import { StandardScrollLayout } from "@/layouts/StandardScroll";
+import { useDragListState } from "@/lib/react-native-draglist";
 
 import { cn } from "@/lib/style";
-import { moveArray, pickKeys } from "@/utils/object";
+import { pickKeys } from "@/utils/object";
 import { useListPresets } from "@/components/Defaults";
 import { Divider } from "@/components/Divider";
 import { TStyledText } from "@/components/Typography/StyledText";
@@ -19,27 +20,14 @@ type TabValues = (typeof OrderableTabs)[number];
 /** Screen for `/setting/appearance/home-tabs-order` route. */
 export default function HomeTabsOrderScreen() {
   const listPresets = useListPresets();
-  const [tabOrder, setTabOrder] = useState<TabValues[]>([]);
-  const homeTabsOrder = useUserPreferencesStore((state) => state.homeTabsOrder);
-  const moveTab = useUserPreferencesStore((state) => state.moveTab);
+  const data = useUserPreferencesStore((state) => state.homeTabsOrder);
+  const onMove = useUserPreferencesStore((state) => state.moveTab);
+  const { items, onReordered } = useDragListState({ data, onMove });
 
   const renderItem = useCallback(
     (args: RenderItemProps) => <RenderItem {...args} />,
     [],
   );
-
-  const onReordered = useCallback(
-    async (fromIndex: number, toIndex: number) => {
-      setTabOrder((prev) => moveArray(prev, { fromIndex, toIndex }));
-      moveTab(fromIndex, toIndex);
-    },
-    [moveTab],
-  );
-
-  // Synchronize the local and real state.
-  useEffect(() => {
-    setTabOrder(homeTabsOrder);
-  }, [homeTabsOrder]);
 
   return (
     <StandardScrollLayout>
@@ -51,7 +39,7 @@ export default function HomeTabsOrderScreen() {
       <Divider />
       <FlashDragList
         estimatedItemSize={52} // 48px Height + 4px Margin top
-        data={tabOrder}
+        data={items}
         keyExtractor={(tabKey) => tabKey}
         renderItem={renderItem}
         onReordered={onReordered}

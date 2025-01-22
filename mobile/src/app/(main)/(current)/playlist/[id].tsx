@@ -1,5 +1,5 @@
 import { Stack, router, useLocalSearchParams } from "expo-router";
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
@@ -16,11 +16,12 @@ import {
 import { useRemoveFromPlaylist } from "@/queries/track";
 import { useBottomActionsContext } from "@/hooks/useBottomActionsContext";
 import { CurrentListLayout } from "@/layouts/CurrentList";
+import { useDragListState } from "@/lib/react-native-draglist";
 
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
-import { moveArray, pickKeys } from "@/utils/object";
+import { pickKeys } from "@/utils/object";
 import { useListPresets } from "@/components/Defaults";
 import { IconButton } from "@/components/Form/Button";
 import type { SwipeableRef } from "@/components/Swipeable";
@@ -39,10 +40,20 @@ export default function CurrentPlaylistScreen() {
   const { bottomInset } = useBottomActionsContext();
   const listPresets = useListPresets({ emptyMsgKey: "response.noTracks" });
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [playlistTracks, setPlaylistTracks] = useState<ScreenData[]>([]);
   const { isPending, error, data } = usePlaylistForScreen(id);
-  const favoritePlaylist = useFavoritePlaylist(id);
   const moveInPlaylist = useMoveInPlaylist(id);
+  const favoritePlaylist = useFavoritePlaylist(id);
+
+  const onMove = useCallback(
+    (fromIndex: number, toIndex: number) =>
+      mutateGuard(moveInPlaylist, { fromIndex, toIndex }),
+    [moveInPlaylist],
+  );
+
+  const { items, onReordered } = useDragListState({
+    data: data?.tracks,
+    onMove,
+  });
 
   // Information about this track list.
   const trackSource = useMemo(() => ({ type: "playlist", id }) as const, [id]);
@@ -51,19 +62,6 @@ export default function CurrentPlaylistScreen() {
     (args: RenderItemProps) => <RenderItem {...{ ...args, trackSource }} />,
     [trackSource],
   );
-
-  const onReordered = useCallback(
-    async (fromIndex: number, toIndex: number) => {
-      setPlaylistTracks((prev) => moveArray(prev, { fromIndex, toIndex }));
-      mutateGuard(moveInPlaylist, { fromIndex, toIndex });
-    },
-    [moveInPlaylist],
-  );
-
-  // Ensure that after the mutation completes, we synchronize the optimized state.
-  useEffect(() => {
-    if (data && Array.isArray(data.tracks)) setPlaylistTracks(data.tracks);
-  }, [data]);
 
   if (isPending || error) return <PagePlaceholder {...{ isPending }} />;
 
@@ -110,7 +108,7 @@ export default function CurrentPlaylistScreen() {
       >
         <FlashDragList
           estimatedItemSize={56} // 48px Height + 8px Margin Top
-          data={playlistTracks}
+          data={items}
           keyExtractor={({ id }) => id}
           renderItem={renderItem}
           onReordered={onReordered}
