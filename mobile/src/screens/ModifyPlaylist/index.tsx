@@ -4,8 +4,8 @@ import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler, Modal, Pressable, View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
-import type { DragListRenderItemInfo } from "react-native-draglist";
-import DragList from "react-native-draglist";
+import type { DragListRenderItemInfo } from "react-native-draglist/FlashList";
+import FlashDragList from "react-native-draglist/FlashList";
 
 import type { TrackWithAlbum } from "@/db/schema";
 
@@ -118,7 +118,7 @@ function PageContent() {
       needsOffscreenAlphaCompositing
       className={cn("flex-1", { "opacity-25": isSubmitting })}
     >
-      <DragList
+      <FlashDragList
         estimatedItemSize={56} // 48px Height + 8px Margin Top
         data={tracks}
         keyExtractor={({ id }) => id}

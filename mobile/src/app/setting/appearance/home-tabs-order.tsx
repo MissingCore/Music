@@ -1,7 +1,7 @@
 import { memo, useCallback, useEffect, useState } from "react";
 import { Pressable } from "react-native";
-import type { DragListRenderItemInfo } from "react-native-draglist";
-import DragList from "react-native-draglist";
+import type { DragListRenderItemInfo } from "react-native-draglist/FlashList";
+import FlashDragList from "react-native-draglist/FlashList";
 
 import { DragIndicator } from "@/icons/DragIndicator";
 import type { OrderableTabs } from "@/services/UserPreferences";
@@ -49,7 +49,7 @@ export default function HomeTabsOrderScreen() {
         className="text-center text-sm"
       />
       <Divider />
-      <DragList
+      <FlashDragList
         estimatedItemSize={52} // 48px Height + 4px Margin top
         data={tabOrder}
         keyExtractor={(tabKey) => tabKey}
