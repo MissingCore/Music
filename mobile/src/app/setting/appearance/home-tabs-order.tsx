@@ -54,8 +54,7 @@ const RenderItem = memo(
   function RenderItem({ item, ...info }: RenderItemProps) {
     return (
       <Pressable
-        delayLongPress={100}
-        onLongPress={info.onDragStart}
+        onPressIn={info.onDragStart}
         onPressOut={info.onDragEnd}
         className={cn(
           "min-h-12 flex-row items-center gap-2 rounded-md p-4 pl-2 active:bg-surface/50",
