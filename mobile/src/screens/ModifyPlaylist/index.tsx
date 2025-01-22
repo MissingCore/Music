@@ -4,8 +4,7 @@ import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler, Modal, Pressable, View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
-import type { DragListRenderItemInfo } from "react-native-draglist";
-import DragList from "react-native-draglist";
+import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
 import type { TrackWithAlbum } from "@/db/schema";
 
@@ -16,15 +15,15 @@ import { Check } from "@/icons/Check";
 import { Remove } from "@/icons/Remove";
 import { useDeletePlaylist } from "@/queries/playlist";
 import { useTheme } from "@/hooks/useTheme";
+import { areRenderItemPropsEqual } from "@/lib/react-native-draglist";
 import type { InitStoreProps } from "./context";
 import { PlaylistStoreProvider, usePlaylistStore } from "./context";
 
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
-import { pickKeys } from "@/utils/object";
 import { wait } from "@/utils/promise";
-import { useListPresets } from "@/components/Defaults";
+import { FlashDragList } from "@/components/Defaults";
 import { IconButton } from "@/components/Form/Button";
 import { TextInput } from "@/components/Form/Input";
 import type { SwipeableRef } from "@/components/Swipeable";
@@ -83,8 +82,6 @@ type RenderItemProps = DragListRenderItemInfo<TrackWithAlbum>;
 
 /** Contains the logic for editing the playlist name and tracks. */
 function PageContent() {
-  const listPresets = useListPresets({ emptyMsgKey: "response.noTracks" });
-
   const tracks = usePlaylistStore((state) => state.tracks);
   const isUnchanged = usePlaylistStore((state) => state.isUnchanged);
   const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
@@ -118,15 +115,15 @@ function PageContent() {
       needsOffscreenAlphaCompositing
       className={cn("flex-1", { "opacity-25": isSubmitting })}
     >
-      <DragList
+      <FlashDragList
         estimatedItemSize={56} // 48px Height + 8px Margin Top
         data={tracks}
         keyExtractor={({ id }) => id}
         renderItem={renderItem}
         onReordered={moveTrack}
         ListHeaderComponent={ListHeaderComponent}
-        {...listPresets}
         contentContainerClassName="py-4" // Applies to the internal `<FlashList />`.
+        emptyMsgKey="response.noTracks"
       />
     </View>
   );
@@ -134,81 +131,65 @@ function PageContent() {
 
 //#region renderItem
 /** Item rendered in the `<DragList />`. */
-const RenderItem = memo(function RenderItem({
-  item,
-  ...info
-}: RenderItemProps) {
-  const { t } = useTranslation();
-  const swipeableRef = useRef<SwipeableRef>(null);
-  const [lastItemId, setLastItemId] = useState(item.id);
+const RenderItem = memo(
+  function RenderItem({ item, ...info }: RenderItemProps) {
+    const { t } = useTranslation();
+    const swipeableRef = useRef<SwipeableRef>(null);
+    const [lastItemId, setLastItemId] = useState(item.id);
 
-  const removeTrack = usePlaylistStore((state) => state.removeTrack);
+    const removeTrack = usePlaylistStore((state) => state.removeTrack);
 
-  const onPress = useCallback(
-    () => removeTrack(item.id),
-    [item.id, removeTrack],
-  );
+    const onPress = useCallback(
+      () => removeTrack(item.id),
+      [item.id, removeTrack],
+    );
 
-  if (item.id !== lastItemId) {
-    setLastItemId(item.id);
-    if (swipeableRef.current) swipeableRef.current.resetIfNeeded();
-  }
+    if (item.id !== lastItemId) {
+      setLastItemId(item.id);
+      if (swipeableRef.current) swipeableRef.current.resetIfNeeded();
+    }
 
-  return (
-    <Pressable
-      delayLongPress={100}
-      onLongPress={info.onDragStart}
-      onPressOut={info.onDragEnd}
-      className={cn("group", { "mt-2": info.index > 0 })}
-    >
-      <Swipeable
-        // @ts-expect-error - Error assigning ref to class component.
-        ref={swipeableRef}
-        enabled={!info.isDragging}
-        renderRightActions={() =>
-          info.isActive ? undefined : (
-            <IconButton
-              accessibilityLabel={t("template.entryRemove", {
-                name: item.name,
-              })}
-              onPress={onPress}
-              className="mr-4 bg-red"
-            >
-              <Remove color={Colors.neutral100} />
-            </IconButton>
-          )
-        }
+    return (
+      <Pressable
+        delayLongPress={100}
+        onLongPress={info.onDragStart}
+        onPressOut={info.onDragEnd}
+        className={cn("group", { "mt-2": info.index > 0 })}
       >
-        <SearchResult
-          type="track"
-          title={item.name}
-          description={item.artistName ?? "—"}
-          imageSource={item.artwork}
-          className={cn(
-            "mx-4 rounded-sm bg-canvas pr-4 group-active:bg-surface/50",
-            { "!bg-surface": info.isActive },
-          )}
-        />
-      </Swipeable>
-    </Pressable>
-  );
-}, areRenderItemPropsEqual);
-
-const RenderItemPrimitiveProps = ["index", "isActive", "isDragging"] as const;
-
-function areRenderItemPropsEqual(
-  oldProps: RenderItemProps,
-  newProps: RenderItemProps,
-) {
-  const primitiveProps = pickKeys(oldProps, RenderItemPrimitiveProps);
-  return (
-    oldProps.item.id === newProps.item.id &&
-    Object.entries(primitiveProps).every(
-      // @ts-expect-error - Non-existent type conflicts.
-      ([key, value]) => value === newProps[key],
-    )
-  );
-}
+        <Swipeable
+          // @ts-expect-error - Error assigning ref to class component.
+          ref={swipeableRef}
+          enabled={!info.isDragging}
+          renderRightActions={() =>
+            info.isActive ? undefined : (
+              <IconButton
+                accessibilityLabel={t("template.entryRemove", {
+                  name: item.name,
+                })}
+                onPress={onPress}
+                className="mr-4 bg-red"
+              >
+                <Remove color={Colors.neutral100} />
+              </IconButton>
+            )
+          }
+        >
+          <SearchResult
+            type="track"
+            title={item.name}
+            description={item.artistName ?? "—"}
+            imageSource={item.artwork}
+            className={cn(
+              "mx-4 rounded-sm bg-canvas pr-4 group-active:bg-surface/50",
+              { "!bg-surface": info.isActive },
+            )}
+          />
+        </Swipeable>
+      </Pressable>
+    );
+  },
+  areRenderItemPropsEqual((o, n) => o.item.id === n.item.id),
+);
 //#endregion
 
 //#region ListHeaderComponent
