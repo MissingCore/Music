@@ -1,7 +1,7 @@
 import { memo, useCallback, useEffect, useState } from "react";
 import { Pressable } from "react-native";
-import type { DragListRenderItemInfo } from "react-native-draglist/FlashList";
-import FlashDragList from "react-native-draglist/FlashList";
+import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
+import FlashDragList from "react-native-draglist/dist/FlashList";
 
 import { DragIndicator } from "@/icons/DragIndicator";
 import type { OrderableTabs } from "@/services/UserPreferences";

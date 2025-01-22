@@ -4,8 +4,8 @@ import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler, Modal, Pressable, View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
-import type { DragListRenderItemInfo } from "react-native-draglist/FlashList";
-import FlashDragList from "react-native-draglist/FlashList";
+import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
+import FlashDragList from "react-native-draglist/dist/FlashList";
 
 import type { TrackWithAlbum } from "@/db/schema";
 

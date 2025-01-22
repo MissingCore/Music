@@ -6,9 +6,7 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "noUncheckedIndexedAccess": true,
-    "moduleResolution": "bundler",
-    "module": "ESNext"
+    "noUncheckedIndexedAccess": true
   },
   "include": [
     ".eslintrc.js",

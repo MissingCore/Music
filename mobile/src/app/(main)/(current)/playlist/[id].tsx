@@ -2,8 +2,8 @@ import { Stack, router, useLocalSearchParams } from "expo-router";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
-import type { DragListRenderItemInfo } from "react-native-draglist/FlashList";
-import FlashDragList from "react-native-draglist/FlashList";
+import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
+import FlashDragList from "react-native-draglist/dist/FlashList";
 
 import { Edit } from "@/icons/Edit";
 import { Favorite } from "@/icons/Favorite";
