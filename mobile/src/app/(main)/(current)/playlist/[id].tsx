@@ -3,7 +3,6 @@ import { memo, useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
-import FlashDragList from "react-native-draglist/dist/FlashList";
 
 import { Edit } from "@/icons/Edit";
 import { Favorite } from "@/icons/Favorite";
@@ -24,7 +23,7 @@ import {
 import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
-import { useListPresets } from "@/components/Defaults";
+import { FlashDragList } from "@/components/Defaults";
 import { IconButton } from "@/components/Form/Button";
 import type { SwipeableRef } from "@/components/Swipeable";
 import { Swipeable } from "@/components/Swipeable";
@@ -33,14 +32,12 @@ import { Track } from "@/modules/media/components/Track";
 import type { PlayListSource } from "@/modules/media/types";
 
 type ScreenData = Track.Content & { disc: number | null; track: number | null };
-
 type RenderItemProps = DragListRenderItemInfo<ScreenData>;
 
 /** Screen for `/playlist/[id]` route. */
 export default function CurrentPlaylistScreen() {
   const { t } = useTranslation();
   const { bottomInset } = useBottomActionsContext();
-  const listPresets = useListPresets({ emptyMsgKey: "response.noTracks" });
   const { id } = useLocalSearchParams<{ id: string }>();
   const { isPending, error, data } = usePlaylistForScreen(id);
   const moveInPlaylist = useMoveInPlaylist(id);
@@ -114,9 +111,9 @@ export default function CurrentPlaylistScreen() {
           keyExtractor={({ id }) => id}
           renderItem={renderItem}
           onReordered={onReordered}
-          {...listPresets}
           contentContainerClassName="pt-4"
           contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
+          emptyMsgKey="response.noTracks"
         />
       </CurrentListLayout>
     </>

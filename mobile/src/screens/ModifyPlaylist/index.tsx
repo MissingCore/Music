@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { BackHandler, Modal, Pressable, View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
-import FlashDragList from "react-native-draglist/dist/FlashList";
 
 import type { TrackWithAlbum } from "@/db/schema";
 
@@ -24,7 +23,7 @@ import { Colors } from "@/constants/Styles";
 import { mutateGuard } from "@/lib/react-query";
 import { cn } from "@/lib/style";
 import { wait } from "@/utils/promise";
-import { useListPresets } from "@/components/Defaults";
+import { FlashDragList } from "@/components/Defaults";
 import { IconButton } from "@/components/Form/Button";
 import { TextInput } from "@/components/Form/Input";
 import type { SwipeableRef } from "@/components/Swipeable";
@@ -83,8 +82,6 @@ type RenderItemProps = DragListRenderItemInfo<TrackWithAlbum>;
 
 /** Contains the logic for editing the playlist name and tracks. */
 function PageContent() {
-  const listPresets = useListPresets({ emptyMsgKey: "response.noTracks" });
-
   const tracks = usePlaylistStore((state) => state.tracks);
   const isUnchanged = usePlaylistStore((state) => state.isUnchanged);
   const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
@@ -125,8 +122,8 @@ function PageContent() {
         renderItem={renderItem}
         onReordered={moveTrack}
         ListHeaderComponent={ListHeaderComponent}
-        {...listPresets}
         contentContainerClassName="py-4" // Applies to the internal `<FlashList />`.
+        emptyMsgKey="response.noTracks"
       />
     </View>
   );

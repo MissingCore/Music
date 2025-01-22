@@ -9,6 +9,10 @@ import {
 } from "react-native";
 import { FlatList as RNASFlatList } from "react-native-actions-sheet";
 import { FlashList as RNASFlashList } from "react-native-actions-sheet/dist/src/views/FlashList";
+import type { DragListProps } from "react-native-draglist";
+import RNDragList from "react-native-draglist";
+import type { FlashDragListProps } from "react-native-draglist/dist/FlashList";
+import RNFlashDragList from "react-native-draglist/dist/FlashList";
 
 import { ContentPlaceholder } from "./Transition/Placeholder";
 
@@ -40,7 +44,7 @@ export function useListPresets(args?: ListEmptyProps) {
 }
 //#endregion
 
-//#region Preset Native Components
+//#region Native Components
 /** `<FlatList />` with some defaults applied. */
 export function FlatList<TData>(
   props: WithListEmptyProps<FlatListProps<TData>>,
@@ -56,7 +60,7 @@ export function ScrollView(props: ScrollViewProps) {
 }
 //#endregion
 
-//#region Preset Alternate Components
+//#region FlashLists
 /** `<FlashList />` with some defaults applied. */
 export function FlashList<TData>(
   props: WithListEmptyProps<FlashListProps<TData>>,
@@ -82,5 +86,25 @@ export function SheetsFlashList<TData>(
   const { isPending, emptyMsgKey, ...rest } = props;
   const listPresets = useListPresets({ isPending, emptyMsgKey });
   return <RNASFlashList {...listPresets} {...rest} />;
+}
+//#endregion
+
+//#region DragLists
+/** `<DragList />` with some defaults applied. */
+export function DragList<TData>(
+  props: WithListEmptyProps<DragListProps<TData>>,
+) {
+  const { isPending, emptyMsgKey, ...rest } = props;
+  const listPresets = useListPresets({ isPending, emptyMsgKey });
+  return <RNDragList {...listPresets} {...rest} />;
+}
+
+/** `<FlashDragList />` with some defaults applied. */
+export function FlashDragList<TData>(
+  props: WithListEmptyProps<FlashDragListProps<TData>>,
+) {
+  const { isPending, emptyMsgKey, ...rest } = props;
+  const listPresets = useListPresets({ isPending, emptyMsgKey });
+  return <RNFlashDragList {...listPresets} {...rest} />;
 }
 //#endregion

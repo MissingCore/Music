@@ -1,7 +1,6 @@
 import { memo, useCallback } from "react";
 import { Pressable } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
-import FlashDragList from "react-native-draglist/dist/FlashList";
 
 import { DragIndicator } from "@/icons/DragIndicator";
 import type { OrderableTabs } from "@/services/UserPreferences";
@@ -13,15 +12,15 @@ import {
 } from "@/lib/react-native-draglist";
 
 import { cn } from "@/lib/style";
-import { useListPresets } from "@/components/Defaults";
+import { FlashDragList } from "@/components/Defaults";
 import { Divider } from "@/components/Divider";
 import { TStyledText } from "@/components/Typography/StyledText";
 
 type TabValues = (typeof OrderableTabs)[number];
+type RenderItemProps = DragListRenderItemInfo<TabValues>;
 
 /** Screen for `/setting/appearance/home-tabs-order` route. */
 export default function HomeTabsOrderScreen() {
-  const listPresets = useListPresets();
   const data = useUserPreferencesStore((state) => state.homeTabsOrder);
   const onMove = useUserPreferencesStore((state) => state.moveTab);
   const { items, onReordered } = useDragListState({ data, onMove });
@@ -45,14 +44,10 @@ export default function HomeTabsOrderScreen() {
         keyExtractor={(tabKey) => tabKey}
         renderItem={renderItem}
         onReordered={onReordered}
-        {...listPresets}
       />
     </StandardScrollLayout>
   );
 }
-
-/** Items rendered in the `<DragList />`. */
-type RenderItemProps = DragListRenderItemInfo<TabValues>;
 
 /** Item rendered in the `<DragList />`. */
 const RenderItem = memo(
