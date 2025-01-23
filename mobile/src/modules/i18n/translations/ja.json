@@ -19,9 +19,15 @@
     "next": "次へ",
     "shuffle": "シャッフル",
     "repeat": "リピート",
+    "repeatOne": "1 回リピート",
 
     "favorite": "お気に入り",
-    "unFavorite": "お気に入りを解除"
+    "unFavorite": "お気に入りを解除",
+    "favoriteTracks": "お気に入りのトラック",
+
+    "disc": "ディスク {{count}}",
+    "vinyl": "ヴァイナル",
+    "plain": "プレーン"
   },
 
   "header": {
@@ -41,10 +47,12 @@
     "backup": "バックアップ",
     "font": "アクセントフォント",
     "theme": "テーマ",
+    "homeTabsOrder": "ホームタブの順序",
+    "nowPlayingDesign": "再生中画面のデザイン",
     "listAllow": "許可リスト",
     "listBlock": "ブロックリスト",
     "ignoreDuration": "再生時間が短い音楽を無視する",
-    "sort": "並び替え順",
+    "sort": "並べ替え順",
     "musicAdd": "音楽を追加",
     "upcoming": "次に再生"
   },
@@ -77,6 +85,7 @@
     "brief": {
       "appUpdate": "最新のバージョンが公開されています！",
       "appearance": "アプリの外観をカスタマイズします。",
+      "homeTabsOrder": "タブの順序と表示をカスタマイズします。",
       "backup": "デバイス間でデータを転送します。",
       "insights": "アプリの使用状況と統計を表示します。",
       "saveErrors": "一部のトラックが保存されなかった理由を確認します。",
@@ -84,11 +93,12 @@
       "scanning": "音楽の検索オプションを設定します。",
       "rescan": "新しいメディアを検索します。",
       "translate": "アプリを他の言語に翻訳しませんか？",
-      "code": "問題の報告、貢献、新しい機能のリクエストができます。",
-      "thirdParty": "このアプリを可能にした物の一覧。"
+      "code": "問題の報告、貢献、新しい機能の要望ができます。",
+      "thirdParty": "このアプリを可能にした物の一覧です。"
     },
 
     "description": {
+      "homeTabsOrder": "ドラッグ & ドロップで「ホーム」以降のタブを並べ替えます。目のアイコンでタブの表示を切り替えます。",
       "backup": "｢music_backup.json｣ファイルを通じて、このアプリからデバイス間でデータを転送します。",
       "listAllow": "空の場合はデフォルトで次のようになります:",
       "listBlock": "許可リスト内のエントリよりも優先されます。",
@@ -148,7 +158,7 @@
   "sortModal": {
     "asc": "昇順",
     "alphabetical": "アルファベット順",
-    "modified": "最終更新"
+    "modified": "最終更新順"
   },
   "trackModal": {
     "bitrate": "ビットレート",
@@ -186,7 +196,9 @@
     "entryRemove": "｢{{- name}}｣を削除します。",
     "entryRemoved": "｢{{- name}}｣を削除しました。",
     "entrySeeMore": "｢{{- name}}｣の詳細を確認します。",
-    "notFound": "｢{{- name}}｣は存在しません。"
+    "notFound": "｢{{- name}}｣は存在しません。",
+    "showEntry": "｢{{- name}}｣を表示",
+    "hideEntry": "｢{{- name}}｣を非表示"
   },
 
   "plural": {
@@ -220,6 +232,11 @@
     "scanSuccess": "ライブラリの再スキャンが完了しました。",
     "scanFail": "ライブラリの再スキャンに失敗しました。",
 
-    "pathSelectFail": "ディレクトリが選択されていません。"
+    "pathSelectFail": "ディレクトリが選択されていません。",
+
+    "actionCancel": "アクションをキャンセルしました。",
+    "noSelect": "選択されていません。",
+    "invalidStructure": "ストラクチャーが無効です。",
+    "usedName": "その名前は使用できません。"
   }
 }
