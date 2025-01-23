@@ -26,6 +26,7 @@ export default function HomeLayout() {
       if (prevTabState.current) {
         // Get top of history.
         const currRoute = e.data.state.history.at(-1)!;
+        const currIndex = e.data.state.index;
         // See if route was seen previously.
         const oldHistory = prevTabState.current.data.state.history;
         const atIndex = oldHistory.findIndex((r) => currRoute.key === r.key);
@@ -37,7 +38,7 @@ export default function HomeLayout() {
           //  of the `reset` function.
           //  - https://reactnavigation.org/docs/navigation-actions/#reset
           e.data.state.history = oldHistory
-            .toSpliced(atIndex + 1)
+            .toSpliced(currIndex === atIndex ? atIndex + 1 : 1)
             .filter((r) => !hiddenTabs.some((t) => r.key.startsWith(`${t}-`)));
         }
       }
