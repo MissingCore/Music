@@ -197,8 +197,8 @@
     "entryRemoved": "｢{{- name}}｣を削除しました。",
     "entrySeeMore": "｢{{- name}}｣の詳細を確認します。",
     "notFound": "｢{{- name}}｣は存在しません。",
-    "showEntry": "「{{- name}}」を表示",
-    "hideEntry": "「{{- name}}」を非表示"
+    "showEntry": "｢{{- name}}｣を表示",
+    "hideEntry": "｢{{- name}}｣を非表示"
   },
 
   "plural": {
