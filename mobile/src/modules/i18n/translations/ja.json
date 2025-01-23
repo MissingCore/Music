@@ -103,7 +103,7 @@
       "listAllow": "空の場合はデフォルトで次のようになります:",
       "listBlock": "許可リスト内のエントリよりも優先されます。",
       "ignoreDuration": "保存をしない音楽の再生時間 (秒数)。"
-     },
+    },
 
     "related": {
       "appDownload": "最新の APK をダウンロード",
