@@ -22,13 +22,13 @@
     "repeatOne": "1 回リピート",
 
     "favorite": "お気に入り",
-    "unFavorite": "お気に入りを解除"
+    "unFavorite": "お気に入りを解除",
     "favoriteTracks": "お気に入りのトラック",
 
-    "disc": "ディスク: {{count}}",
+    "disc": "ディスク {{count}}",
     "vinyl": "ヴァイナル",
-    "plain": "プレーン" 
-   },
+    "plain": "プレーン"
+  },
 
   "header": {
     "home": "ホーム",
@@ -85,7 +85,7 @@
     "brief": {
       "appUpdate": "最新のバージョンが公開されています！",
       "appearance": "アプリの外観をカスタマイズします。",
-      "homeTabsOrder": "タブの順序と表示をカスタマイズします。"
+      "homeTabsOrder": "タブの順序と表示をカスタマイズします。",
       "backup": "デバイス間でデータを転送します。",
       "insights": "アプリの使用状況と統計を表示します。",
       "saveErrors": "一部のトラックが保存されなかった理由を確認します。",
@@ -233,10 +233,10 @@
     "scanFail": "ライブラリの再スキャンに失敗しました。",
 
     "pathSelectFail": "ディレクトリが選択されていません。",
-    
+
     "actionCancel": "アクションをキャンセルしました。",
     "noSelect": "選択されていません。",
     "invalidStructure": "ストラクチャーが無効です。",
-    "usedName": "その名前は使用できません。"  
-    }
+    "usedName": "その名前は使用できません。"
+  }
 }
