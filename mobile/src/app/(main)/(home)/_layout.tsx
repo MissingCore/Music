@@ -5,7 +5,7 @@ import type {
 } from "@react-navigation/native";
 import { useCallback, useMemo, useRef } from "react";
 
-import { useUserPreferencesStore } from "@/services/UserPreferences";
+import { useTabsByVisibility } from "@/services/UserPreferences";
 import { MaterialTopTabs } from "@/layouts/MaterialTopTabs";
 
 type TabState = EventArg<
@@ -15,7 +15,7 @@ type TabState = EventArg<
 >;
 
 export default function HomeLayout() {
-  const tabsOrder = useUserPreferencesStore((state) => state.tabsOrder);
+  const { displayedTabs, hiddenTabs } = useTabsByVisibility();
   // Should be fine to store navigation state in ref as it doesn't affect rendering.
   //  - https://react.dev/learn/referencing-values-with-refs#when-to-use-refs
   const prevTabState = useRef<TabState>();
@@ -54,8 +54,11 @@ export default function HomeLayout() {
       screenListeners={listeners}
     >
       <MaterialTopTabs.Screen name="index" />
-      {tabsOrder.map((tabKey) => (
+      {displayedTabs.map((tabKey) => (
         <MaterialTopTabs.Screen key={tabKey} name={tabKey} />
+      ))}
+      {hiddenTabs.map((tabKey) => (
+        <MaterialTopTabs.Screen key={tabKey} name={tabKey} redirect />
       ))}
     </MaterialTopTabs>
   );

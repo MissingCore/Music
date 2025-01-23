@@ -164,6 +164,19 @@ export const userPreferencesStore =
 export const useUserPreferencesStore = <T>(
   selector: (state: UserPreferencesStore) => T,
 ): T => useStore(userPreferencesStore, selector);
+
+/** Return tabs that are displayed or hidden. */
+export function useTabsByVisibility() {
+  const tabsOrder = useUserPreferencesStore((state) => state.tabsOrder);
+  const tabsVisibility = useUserPreferencesStore(
+    (state) => state.tabsVisibility,
+  );
+
+  return {
+    displayedTabs: tabsOrder.filter((tabName) => tabsVisibility[tabName]),
+    hiddenTabs: tabsOrder.filter((tabName) => !tabsVisibility[tabName]),
+  };
+}
 //#endregion
 //#endregion
 
