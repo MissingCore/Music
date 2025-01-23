@@ -20,13 +20,7 @@ export const FontOptions = ["NDot", "NType", "Roboto"] as const;
 /** Options for "Now Playing" screen designs. */
 export const NowPlayingDesignOptions = ["vinyl", "plain"] as const;
 /** Options for the tabs we can reorder. */
-export const OrderableTabs = [
-  "album",
-  "artist",
-  "folder",
-  "playlist",
-  "track",
-] as const;
+export type OrderableTab = "album" | "artist" | "folder" | "playlist" | "track";
 
 //#region Zustand Store
 //#region UserPreferencesStore Interface
@@ -52,9 +46,13 @@ interface UserPreferencesStore {
   setNowPlayingDesign: (
     newDesign: UserPreferencesStore["nowPlayingDesign"],
   ) => void;
+
   /** Order of tabs on the home screen. */
-  homeTabsOrder: Array<(typeof OrderableTabs)[number]>;
+  tabsOrder: OrderableTab[];
   moveTab: (fromIndex: number, toIndex: number) => void;
+  /** Visibility of the tabs on the home screen. */
+  tabsVisibility: Record<OrderableTab, boolean>;
+  toggleTabVisibility: (tab: OrderableTab) => void;
 
   /** Minimum number of seconds a track needs to have to be saved. */
   minSeconds: number;
@@ -78,6 +76,8 @@ const OMITTED_FIELDS: string[] = [
   "setTheme",
   "setAccentFont",
   "setNowPlayingDesign",
+  "moveTab",
+  "toggleTabVisibility",
   "setVolume",
 ] satisfies Array<keyof UserPreferencesStore>;
 //#endregion
@@ -96,7 +96,7 @@ export const userPreferencesStore =
           const usedLanguage = i18next.resolvedLanguage;
           // Ensured the resolved value exists.
           const exists = LANGUAGES.some((l) => l.code === usedLanguage);
-          state.setLanguage(exists && usedLanguage ? usedLanguage : "en");
+          set({ language: exists && usedLanguage ? usedLanguage : "en" });
         }
         set({ _hasHydrated: true });
       },
@@ -111,10 +111,23 @@ export const userPreferencesStore =
 
       nowPlayingDesign: "vinyl",
       setNowPlayingDesign: (newDesign) => set({ nowPlayingDesign: newDesign }),
-      homeTabsOrder: ["folder", "playlist", "track", "album", "artist"],
+
+      tabsOrder: ["folder", "playlist", "track", "album", "artist"],
       moveTab: (fromIndex: number, toIndex: number) => {
-        set(({ homeTabsOrder }) => ({
-          homeTabsOrder: moveArray(homeTabsOrder, { fromIndex, toIndex }),
+        set(({ tabsOrder }) => ({
+          tabsOrder: moveArray(tabsOrder, { fromIndex, toIndex }),
+        }));
+      },
+      tabsVisibility: {
+        album: true,
+        artist: true,
+        folder: true,
+        playlist: true,
+        track: true,
+      },
+      toggleTabVisibility: (tab) => {
+        set(({ tabsVisibility }) => ({
+          tabsVisibility: { ...tabsVisibility, [tab]: !tabsVisibility[tab] },
         }));
       },
 
@@ -151,6 +164,19 @@ export const userPreferencesStore =
 export const useUserPreferencesStore = <T>(
   selector: (state: UserPreferencesStore) => T,
 ): T => useStore(userPreferencesStore, selector);
+
+/** Return tabs that are displayed or hidden. */
+export function useTabsByVisibility() {
+  const tabsOrder = useUserPreferencesStore((state) => state.tabsOrder);
+  const tabsVisibility = useUserPreferencesStore(
+    (state) => state.tabsVisibility,
+  );
+
+  return {
+    displayedTabs: tabsOrder.filter((tabName) => tabsVisibility[tabName]),
+    hiddenTabs: tabsOrder.filter((tabName) => !tabsVisibility[tabName]),
+  };
+}
 //#endregion
 //#endregion
 

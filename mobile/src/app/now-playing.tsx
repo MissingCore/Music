@@ -199,7 +199,7 @@ function VolumeSlider() {
         <Slider
           value={savedVolume}
           max={1}
-          onChange={(newPos) => setVolume(newPos)}
+          onChange={setVolume}
           thumbSize={12}
         />
       </View>
