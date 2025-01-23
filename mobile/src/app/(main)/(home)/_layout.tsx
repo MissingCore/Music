@@ -21,25 +21,30 @@ export default function HomeLayout() {
   const prevTabState = useRef<TabState>();
 
   /** Have Tab history operate like Stack history. */
-  const manageAsStackHistory = useCallback((e: TabState) => {
-    if (prevTabState.current) {
-      // Get top of history.
-      const currRoute = e.data.state.history.at(-1)!;
-      // See if route was seen previously.
-      const oldHistory = prevTabState.current.data.state.history;
-      const atIndex = oldHistory.findIndex(({ key }) => currRoute.key === key);
-      // Handle if we visited this tab earlier.
-      if (atIndex !== -1) {
-        // FIXME: Modifying the value in `e` for some reason modifies the
-        // original reference (even if we cloned `e` via object spreading).
-        //  - This might be fragile code, so we might swap over to the use
-        //  of the `reset` function.
-        //  - https://reactnavigation.org/docs/navigation-actions/#reset
-        e.data.state.history = oldHistory.toSpliced(atIndex + 1);
+  const manageAsStackHistory = useCallback(
+    (e: TabState) => {
+      if (prevTabState.current) {
+        // Get top of history.
+        const currRoute = e.data.state.history.at(-1)!;
+        // See if route was seen previously.
+        const oldHistory = prevTabState.current.data.state.history;
+        const atIndex = oldHistory.findIndex((r) => currRoute.key === r.key);
+        // Handle if we visited this tab earlier.
+        if (atIndex !== -1) {
+          // FIXME: Modifying the value in `e` for some reason modifies the
+          // original reference (even if we cloned `e` via object spreading).
+          //  - This might be fragile code, so we might swap over to the use
+          //  of the `reset` function.
+          //  - https://reactnavigation.org/docs/navigation-actions/#reset
+          e.data.state.history = oldHistory
+            .toSpliced(atIndex + 1)
+            .filter((r) => !hiddenTabs.some((t) => r.key.startsWith(`${t}-`)));
+        }
       }
-    }
-    prevTabState.current = e;
-  }, []);
+      prevTabState.current = e;
+    },
+    [hiddenTabs],
+  );
 
   const listeners = useMemo(
     () => ({ state: manageAsStackHistory }),
