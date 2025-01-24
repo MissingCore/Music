@@ -4,15 +4,15 @@ import type { StoreApi } from "zustand";
 import { createStore, useStore } from "zustand";
 import { createComputed } from "zustand-computed";
 
-import type { TrackWithAlbum } from "@/db/schema";
-import { mergeTracks, sanitizePlaylistName } from "@/db/utils";
+import type { TrackWithAlbum } from "~/db/schema";
+import { mergeTracks, sanitizePlaylistName } from "~/db/utils";
 
-import i18next from "@/modules/i18n";
+import i18next from "~/modules/i18n";
 
-import { ToastOptions } from "@/lib/toast";
-import { moveArray } from "@/utils/object";
-import { wait } from "@/utils/promise";
-import type { SearchCallbacks } from "@/modules/search/types";
+import { ToastOptions } from "~/lib/toast";
+import { moveArray } from "~/utils/object";
+import { wait } from "~/utils/promise";
+import type { SearchCallbacks } from "~/modules/search/types";
 
 type StoreModeOptions =
   | { mode?: "create"; initialName?: never; initialTracks?: never }

@@ -2,18 +2,18 @@ import { getArtwork } from "@missingcore/react-native-metadata-retriever";
 import { eq, inArray, isNotNull, or } from "drizzle-orm";
 import * as FileSystem from "expo-file-system";
 
-import { db } from "@/db";
-import type { TrackWithAlbum } from "@/db/schema";
-import { albums, artists, playlists, tracks } from "@/db/schema";
+import { db } from "~/db";
+import type { TrackWithAlbum } from "~/db/schema";
+import { albums, artists, playlists, tracks } from "~/db/schema";
 
-import { getAlbums, updateAlbum } from "@/api/album";
-import { getTracks, updateTrack } from "@/api/track";
+import { getAlbums, updateAlbum } from "~/api/album";
+import { getTracks, updateTrack } from "~/api/track";
 import { onboardingStore } from "../services/Onboarding";
 
-import { ImageDirectory, deleteImage, saveImage } from "@/lib/file-system";
-import { clearAllQueries } from "@/lib/react-query";
-import { Stopwatch } from "@/utils/debug";
-import { BATCH_PRESETS, batch } from "@/utils/promise";
+import { ImageDirectory, deleteImage, saveImage } from "~/lib/file-system";
+import { clearAllQueries } from "~/lib/react-query";
+import { Stopwatch } from "~/utils/debug";
+import { BATCH_PRESETS, batch } from "~/utils/promise";
 
 //#region Saving Function
 /** Save artwork for albums & tracks. */

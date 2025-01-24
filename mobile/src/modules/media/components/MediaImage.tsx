@@ -3,18 +3,18 @@ import { cssInterop } from "nativewind";
 import { useMemo } from "react";
 import { View } from "react-native";
 
-import { Folder } from "@/icons/Folder";
+import { Folder } from "~/icons/Folder";
 
-import { Colors } from "@/constants/Styles";
-import { cn } from "@/lib/style";
+import { Colors } from "~/constants/Styles";
+import { cn } from "~/lib/style";
 import { ReservedNames, ReservedPlaylists } from "../constants";
 import type { MediaType } from "../types";
 
 // https://www.nativewind.dev/v4/api/css-interop
 const Image = cssInterop(ExpoImage, { className: "style" });
 
-const MusicGlyph = require("@/resources/images/music-glyph.png");
-const FaceGlyph = require("@/resources/images/face-glyph.png");
+const MusicGlyph = require("~/resources/images/music-glyph.png");
+const FaceGlyph = require("~/resources/images/face-glyph.png");
 
 export namespace MediaImage {
   export type ImageSource = string | null;

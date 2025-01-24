@@ -13,20 +13,20 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import { Schedule } from "@/icons/Schedule";
-import { useMusicStore } from "@/modules/media/services/Music";
-import { useTheme } from "@/hooks/useTheme";
+import { Schedule } from "~/icons/Schedule";
+import { useMusicStore } from "~/modules/media/services/Music";
+import { useTheme } from "~/hooks/useTheme";
 
-import { pickKeys } from "@/utils/object";
-import { capitalize, toLowerCase } from "@/utils/string";
-import { Marquee } from "@/components/Containment/Marquee";
-import { Divider } from "@/components/Divider";
-import { StyledText, TEm } from "@/components/Typography/StyledText";
-import { ReservedPlaylists } from "@/modules/media/constants";
-import { MediaImage } from "@/modules/media/components/MediaImage";
-import { MediaListControls } from "@/modules/media/components/MediaListControls";
-import { Vinyl } from "@/modules/media/components/Vinyl";
-import { arePlaybackSourceEqual } from "@/modules/media/helpers/data";
+import { pickKeys } from "~/utils/object";
+import { capitalize, toLowerCase } from "~/utils/string";
+import { Marquee } from "~/components/Containment/Marquee";
+import { Divider } from "~/components/Divider";
+import { StyledText, TEm } from "~/components/Typography/StyledText";
+import { ReservedPlaylists } from "~/modules/media/constants";
+import { MediaImage } from "~/modules/media/components/MediaImage";
+import { MediaListControls } from "~/modules/media/components/MediaListControls";
+import { Vinyl } from "~/modules/media/components/Vinyl";
+import { arePlaybackSourceEqual } from "~/modules/media/helpers/data";
 
 type SupportedMedia = "album" | "artist" | "playlist";
 type MediaListSource = { type: SupportedMedia; id: string };

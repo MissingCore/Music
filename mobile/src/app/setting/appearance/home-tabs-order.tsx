@@ -3,22 +3,22 @@ import { useTranslation } from "react-i18next";
 import { Pressable } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
-import { DragIndicator } from "@/icons/DragIndicator";
-import { Eye } from "@/icons/Eye";
-import { EyeOff } from "@/icons/EyeOff";
-import type { OrderableTab } from "@/services/UserPreferences";
-import { useUserPreferencesStore } from "@/services/UserPreferences";
-import { StandardScrollLayout } from "@/layouts/StandardScroll";
+import { DragIndicator } from "~/icons/DragIndicator";
+import { Eye } from "~/icons/Eye";
+import { EyeOff } from "~/icons/EyeOff";
+import type { OrderableTab } from "~/services/UserPreferences";
+import { useUserPreferencesStore } from "~/services/UserPreferences";
+import { StandardScrollLayout } from "~/layouts/StandardScroll";
 import {
   areRenderItemPropsEqual,
   useDragListState,
-} from "@/lib/react-native-draglist";
+} from "~/lib/react-native-draglist";
 
-import { cn } from "@/lib/style";
-import { FlashDragList } from "@/components/Defaults";
-import { Divider } from "@/components/Divider";
-import { IconButton } from "@/components/Form/Button";
-import { TStyledText } from "@/components/Typography/StyledText";
+import { cn } from "~/lib/style";
+import { FlashDragList } from "~/components/Defaults";
+import { Divider } from "~/components/Divider";
+import { IconButton } from "~/components/Form/Button";
+import { TStyledText } from "~/components/Typography/StyledText";
 
 type RenderItemProps = DragListRenderItemInfo<OrderableTab>;
 

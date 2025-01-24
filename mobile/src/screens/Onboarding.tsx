@@ -10,10 +10,10 @@ import Animated, {
   withDelay,
 } from "react-native-reanimated";
 
-import { useOnboardingStore } from "@/modules/scanning/services/Onboarding";
+import { useOnboardingStore } from "~/modules/scanning/services/Onboarding";
 
-import { SafeContainer } from "@/components/Containment/SafeContainer";
-import { StyledText, TStyledText } from "@/components/Typography/StyledText";
+import { SafeContainer } from "~/components/Containment/SafeContainer";
+import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
 /**
  * Informs user with what's being done while displaying the app icon. This

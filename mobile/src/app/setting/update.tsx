@@ -2,19 +2,19 @@ import * as WebBrowser from "expo-web-browser";
 import { Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 
-import { LogoGitHub } from "@/icons/LogoGitHub";
-import { LogoPlayStore } from "@/icons/LogoPlayStore";
-import { useUserPreferencesStore } from "@/services/UserPreferences";
-import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
-import { useTheme } from "@/hooks/useTheme";
-import { StandardScrollLayout } from "@/layouts/StandardScroll";
-import { StickyActionHeader } from "@/layouts/StickyActionScroll";
+import { LogoGitHub } from "~/icons/LogoGitHub";
+import { LogoPlayStore } from "~/icons/LogoPlayStore";
+import { useUserPreferencesStore } from "~/services/UserPreferences";
+import { useHasNewUpdate } from "~/hooks/useHasNewUpdate";
+import { useTheme } from "~/hooks/useTheme";
+import { StandardScrollLayout } from "~/layouts/StandardScroll";
+import { StickyActionHeader } from "~/layouts/StickyActionScroll";
 
-import * as LINKS from "@/constants/Links";
-import { FontFamily, FontSize } from "@/constants/Styles";
-import { getAccentFont } from "@/lib/style";
-import { Button } from "@/components/Form/Button";
-import { TStyledText } from "@/components/Typography/StyledText";
+import * as LINKS from "~/constants/Links";
+import { FontFamily, FontSize } from "~/constants/Styles";
+import { getAccentFont } from "~/lib/style";
+import { Button } from "~/components/Form/Button";
+import { TStyledText } from "~/components/Typography/StyledText";
 
 /** Screen for `/setting/update` route. */
 export default function AppUpdateScreen() {

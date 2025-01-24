@@ -1,8 +1,8 @@
 import { Slider as RNSlider } from "@miblanchard/react-native-slider";
 
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme } from "~/hooks/useTheme";
 
-import { Colors } from "@/constants/Styles";
+import { Colors } from "~/constants/Styles";
 
 /** Slider with default styling. */
 export function Slider(props: {

@@ -2,15 +2,15 @@ import { toast } from "@backpackapp-io/react-native-toast";
 import { router } from "expo-router";
 import TrackPlayer, { Event } from "react-native-track-player";
 
-import i18next from "@/modules/i18n";
-import { deleteTrack } from "@/api/track";
-import type { TrackStatus } from "@/modules/media/services/Music";
-import { Queue, RNTPManager, musicStore } from "@/modules/media/services/Music";
-import { MusicControls } from "@/modules/media/services/Playback";
-import { removeUnusedCategories } from "@/modules/scanning/helpers/audio";
+import i18next from "~/modules/i18n";
+import { deleteTrack } from "~/api/track";
+import type { TrackStatus } from "~/modules/media/services/Music";
+import { Queue, RNTPManager, musicStore } from "~/modules/media/services/Music";
+import { MusicControls } from "~/modules/media/services/Playback";
+import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
 
-import { clearAllQueries } from "@/lib/react-query";
-import { ToastOptions } from "@/lib/toast";
+import { clearAllQueries } from "~/lib/react-query";
+import { ToastOptions } from "~/lib/toast";
 
 /** How we handle the actions in the media control notification. */
 export async function PlaybackService() {

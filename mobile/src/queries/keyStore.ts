@@ -1,21 +1,21 @@
 import { createQueryKeyStore } from "@lukemorales/query-key-factory";
 import { eq } from "drizzle-orm";
 
-import { albums, playlists } from "@/db/schema";
+import { albums, playlists } from "~/db/schema";
 
-import { getAlbum, getAlbums } from "@/api/album";
-import { getArtist, getArtistAlbums, getArtists } from "@/api/artist";
-import { getFolder } from "@/api/folder";
-import { getPlaylist, getPlaylists, getSpecialPlaylist } from "@/api/playlist";
+import { getAlbum, getAlbums } from "~/api/album";
+import { getArtist, getArtistAlbums, getArtists } from "~/api/artist";
+import { getFolder } from "~/api/folder";
+import { getPlaylist, getPlaylists, getSpecialPlaylist } from "~/api/playlist";
 import {
   getDatabaseSummary,
   getLatestRelease,
   getSaveErrors,
   getStorageSummary,
-} from "@/api/setting";
-import { getTrack, getTrackPlaylists, getTracks } from "@/api/track";
+} from "~/api/setting";
+import { getTrack, getTrackPlaylists, getTracks } from "~/api/track";
 
-import { ReservedPlaylists } from "@/modules/media/constants";
+import { ReservedPlaylists } from "~/modules/media/constants";
 
 /** All of the reusuable query keys. */
 export const queries = createQueryKeyStore({

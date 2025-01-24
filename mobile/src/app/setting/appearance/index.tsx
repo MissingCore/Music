@@ -2,10 +2,10 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { SheetManager } from "react-native-actions-sheet";
 
-import { useUserPreferencesStore } from "@/services/UserPreferences";
-import { StandardScrollLayout } from "@/layouts/StandardScroll";
+import { useUserPreferencesStore } from "~/services/UserPreferences";
+import { StandardScrollLayout } from "~/layouts/StandardScroll";
 
-import { List, ListItem } from "@/components/Containment/List";
+import { List, ListItem } from "~/components/Containment/List";
 
 /** Screen for `/setting/appearance` route. */
 export default function AppearanceScreen() {

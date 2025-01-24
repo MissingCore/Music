@@ -4,9 +4,9 @@ import { vars } from "nativewind";
 import { View, useColorScheme } from "react-native";
 import { SystemBars } from "react-native-edge-to-edge";
 
-import { useUserPreferencesStore } from "@/services/UserPreferences";
+import { useUserPreferencesStore } from "~/services/UserPreferences";
 
-import { Colors } from "@/constants/Styles";
+import { Colors } from "~/constants/Styles";
 
 /** Used themed colors through a single Tailwind color via CSS Variables. */
 const Themes = {

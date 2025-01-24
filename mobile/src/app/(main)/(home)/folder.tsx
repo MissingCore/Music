@@ -15,19 +15,19 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import type { FileNode } from "@/db/schema";
+import type { FileNode } from "~/db/schema";
 
-import { useFolderContent } from "@/queries/folder";
+import { useFolderContent } from "~/queries/folder";
 import {
   StickyActionListLayout,
   useStickyActionListLayoutRef,
-} from "@/layouts/StickyActionScroll";
+} from "~/layouts/StickyActionScroll";
 
-import { cn } from "@/lib/style";
-import { useListPresets } from "@/components/Defaults";
-import { StyledText } from "@/components/Typography/StyledText";
-import { Track } from "@/modules/media/components/Track";
-import { SearchResult } from "@/modules/search/components/SearchResult";
+import { cn } from "~/lib/style";
+import { useListPresets } from "~/components/Defaults";
+import { StyledText } from "~/components/Typography/StyledText";
+import { Track } from "~/modules/media/components/Track";
+import { SearchResult } from "~/modules/search/components/SearchResult";
 
 /** Animated scrollview supporting gestures. */
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);

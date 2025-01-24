@@ -1,10 +1,10 @@
 import { Stack, usePathname } from "expo-router";
 import { useAtomValue } from "jotai";
 
-import { prevRouteAtom } from "@/providers/RouteHandlers";
-import { IssueLayout } from "@/layouts/Issue";
+import { prevRouteAtom } from "~/providers/RouteHandlers";
+import { IssueLayout } from "~/layouts/Issue";
 
-import { List, ListItem } from "@/components/Containment/List";
+import { List, ListItem } from "~/components/Containment/List";
 
 /** Screen for unmatched route. */
 export default function NotFoundScreen() {

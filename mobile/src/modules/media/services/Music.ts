@@ -2,14 +2,14 @@ import { toast } from "@backpackapp-io/react-native-toast";
 import TrackPlayer, { State } from "react-native-track-player";
 import { useStore } from "zustand";
 
-import type { TrackWithAlbum } from "@/db/schema";
+import type { TrackWithAlbum } from "~/db/schema";
 
-import i18next from "@/modules/i18n";
-import { getTrack, removeInvalidTrackRelations } from "@/api/track";
+import i18next from "~/modules/i18n";
+import { getTrack, removeInvalidTrackRelations } from "~/api/track";
 
-import { ToastOptions } from "@/lib/toast";
-import { createPersistedSubscribedStore } from "@/lib/zustand";
-import { shuffleArray } from "@/utils/object";
+import { ToastOptions } from "~/lib/toast";
+import { createPersistedSubscribedStore } from "~/lib/zustand";
+import { shuffleArray } from "~/utils/object";
 import {
   formatTrackforPlayer,
   getSourceName,

@@ -1,13 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import type { TrackWithAlbum, playlists } from "@/db/schema";
+import type { TrackWithAlbum, playlists } from "~/db/schema";
 import {
   getPlaylistCover,
   formatForCurrentScreen,
   formatForMediaCard,
   sanitizePlaylistName,
-} from "@/db/utils";
+} from "~/db/utils";
 
 import {
   createPlaylist,
@@ -15,11 +15,11 @@ import {
   favoritePlaylist,
   moveInPlaylist,
   updatePlaylist,
-} from "@/api/playlist";
-import { Resynchronize } from "@/modules/media/services/Resynchronize";
+} from "~/api/playlist";
+import { Resynchronize } from "~/modules/media/services/Resynchronize";
 import { queries as q } from "./keyStore";
 
-import { wait } from "@/utils/promise";
+import { wait } from "~/utils/promise";
 
 //#region Queries
 /** Get specified playlist. */

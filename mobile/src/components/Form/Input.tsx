@@ -2,9 +2,9 @@ import { forwardRef, useRef } from "react";
 import type { TextInputProps } from "react-native";
 import { TextInput as RNTextInput } from "react-native";
 
-import { useUserPreferencesStore } from "@/services/UserPreferences";
+import { useUserPreferencesStore } from "~/services/UserPreferences";
 
-import { cn, getAccentFont } from "@/lib/style";
+import { cn, getAccentFont } from "~/lib/style";
 
 //#region Numeric Input
 /** Numeric input using the accent font. */

@@ -1,8 +1,8 @@
 import { useColorScheme } from "react-native";
 
-import { useUserPreferencesStore } from "@/services/UserPreferences";
+import { useUserPreferencesStore } from "~/services/UserPreferences";
 
-import { Colors } from "@/constants/Styles";
+import { Colors } from "~/constants/Styles";
 
 const Themes = {
   light: {

@@ -2,10 +2,10 @@ import { View } from "react-native";
 
 import { useExportBackup, useImportBackup } from "./data";
 
-import { mutateGuard } from "@/lib/react-query";
-import { Button } from "@/components/Form/Button";
-import { Sheet } from "@/components/Sheet";
-import { TStyledText } from "@/components/Typography/StyledText";
+import { mutateGuard } from "~/lib/react-query";
+import { Button } from "~/components/Form/Button";
+import { Sheet } from "~/components/Sheet";
+import { TStyledText } from "~/components/Typography/StyledText";
 
 /** Sheet allowing us to utilize the "backup" feature of this app. */
 export default function BackupSheet() {

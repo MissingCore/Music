@@ -11,9 +11,9 @@ import Animated, {
 import { useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
 
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme } from "~/hooks/useTheme";
 
-import { cn } from "@/lib/style";
+import { cn } from "~/lib/style";
 
 /** Used to progressively display long content. */
 export function Marquee({

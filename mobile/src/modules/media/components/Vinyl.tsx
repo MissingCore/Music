@@ -2,9 +2,9 @@ import { View } from "react-native";
 import type { CircleProps } from "react-native-svg";
 import Svg, { Circle, Defs, Mask, Rect } from "react-native-svg";
 
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme } from "~/hooks/useTheme";
 
-import { Colors } from "@/constants/Styles";
+import { Colors } from "~/constants/Styles";
 import { MediaImage } from "./MediaImage";
 
 const CENTER = { cx: 384, cy: 384 };

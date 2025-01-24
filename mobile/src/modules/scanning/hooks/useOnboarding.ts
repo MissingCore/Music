@@ -1,14 +1,14 @@
 import * as MediaLibrary from "expo-media-library";
 import { useCallback, useEffect, useState } from "react";
 
-import { useSetup } from "@/hooks/useSetup";
-import { Resynchronize } from "@/modules/media/services/Resynchronize";
+import { useSetup } from "~/hooks/useSetup";
+import { Resynchronize } from "~/modules/media/services/Resynchronize";
 import { findAndSaveArtwork, cleanupImages } from "../helpers/artwork";
 import { findAndSaveAudio, cleanupDatabase } from "../helpers/audio";
 import { checkForMigrations } from "../helpers/migrations";
 
-import { createImageDirectory } from "@/lib/file-system";
-import { Stopwatch } from "@/utils/debug";
+import { createImageDirectory } from "~/lib/file-system";
+import { Stopwatch } from "~/utils/debug";
 
 /**
  * Reads our music library on load and index all supported files in the

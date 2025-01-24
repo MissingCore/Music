@@ -8,15 +8,15 @@ import type {
   TrackWithAlbum,
 } from "./schema";
 
-import i18next from "@/modules/i18n";
+import i18next from "~/modules/i18n";
 
-import { formatSeconds } from "@/utils/number";
-import { omitKeys } from "@/utils/object";
-import type { Prettify } from "@/utils/types";
-import { ReservedNames, ReservedPlaylists } from "@/modules/media/constants";
-import type { MediaCard } from "@/modules/media/components/MediaCard";
-import type { Track as TrackC } from "@/modules/media/components/Track";
-import type { MediaType } from "@/modules/media/types";
+import { formatSeconds } from "~/utils/number";
+import { omitKeys } from "~/utils/object";
+import type { Prettify } from "~/utils/types";
+import { ReservedNames, ReservedPlaylists } from "~/modules/media/constants";
+import type { MediaCard } from "~/modules/media/components/MediaCard";
+import type { Track as TrackC } from "~/modules/media/components/Track";
+import type { MediaType } from "~/modules/media/types";
 
 //#region Artwork Formatters
 /** Get the cover of a playlist. */

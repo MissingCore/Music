@@ -1,9 +1,9 @@
 import type { PressableProps, StyleProp, ViewStyle } from "react-native";
 import { Pressable, View } from "react-native";
 
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme } from "~/hooks/useTheme";
 
-import { cn } from "@/lib/style";
+import { cn } from "~/lib/style";
 
 export const PressPropsKeys = [
   ...["disabled", "delayLongPress", "onLongPress", "onPress", "onPressOut"],

@@ -1,7 +1,7 @@
 import { Stack } from "expo-router";
 import { useTranslation } from "react-i18next";
 
-import { TopAppBar } from "@/components/TopAppBar";
+import { TopAppBar } from "~/components/TopAppBar";
 
 export default function SettingsLayout() {
   const { t } = useTranslation();

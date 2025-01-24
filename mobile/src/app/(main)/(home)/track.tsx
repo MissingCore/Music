@@ -2,14 +2,14 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 
-import { Sort } from "@/icons/Sort";
-import { useTracksForTrackCard } from "@/queries/track";
-import { StickyActionListLayout } from "@/layouts/StickyActionScroll";
+import { Sort } from "~/icons/Sort";
+import { useTracksForTrackCard } from "~/queries/track";
+import { StickyActionListLayout } from "~/layouts/StickyActionScroll";
 
-import { IconButton } from "@/components/Form/Button";
-import { ReservedPlaylists } from "@/modules/media/constants";
-import { MediaListControls } from "@/modules/media/components/MediaListControls";
-import { useTrackListPreset } from "@/modules/media/components/Track";
+import { IconButton } from "~/components/Form/Button";
+import { ReservedPlaylists } from "~/modules/media/constants";
+import { MediaListControls } from "~/modules/media/components/MediaListControls";
+import { useTrackListPreset } from "~/modules/media/components/Track";
 
 // Information about this track list.
 const trackSource = {

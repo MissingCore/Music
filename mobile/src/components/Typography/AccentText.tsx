@@ -1,9 +1,9 @@
 import type { TextProps } from "react-native";
 import { Text } from "react-native";
 
-import { useUserPreferencesStore } from "@/services/UserPreferences";
+import { useUserPreferencesStore } from "~/services/UserPreferences";
 
-import { cn, getAccentFont } from "@/lib/style";
+import { cn, getAccentFont } from "~/lib/style";
 
 /** `<Text />` that utilizes the accent font. */
 export function AccentText({

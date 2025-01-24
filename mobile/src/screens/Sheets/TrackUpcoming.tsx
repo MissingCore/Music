@@ -1,17 +1,17 @@
 import { useTranslation } from "react-i18next";
 
-import { getTrackCover } from "@/db/utils";
+import { getTrackCover } from "~/db/utils";
 
-import { Remove } from "@/icons/Remove";
-import { Queue, useMusicStore } from "@/modules/media/services/Music";
+import { Remove } from "~/icons/Remove";
+import { Queue, useMusicStore } from "~/modules/media/services/Music";
 
-import { Colors } from "@/constants/Styles";
-import { cn } from "@/lib/style";
-import { SheetsFlashList } from "@/components/Defaults";
-import { IconButton } from "@/components/Form/Button";
-import { Sheet } from "@/components/Sheet";
-import { Swipeable } from "@/components/Swipeable";
-import { SearchResult } from "@/modules/search/components/SearchResult";
+import { Colors } from "~/constants/Styles";
+import { cn } from "~/lib/style";
+import { SheetsFlashList } from "~/components/Defaults";
+import { IconButton } from "~/components/Form/Button";
+import { Sheet } from "~/components/Sheet";
+import { Swipeable } from "~/components/Swipeable";
+import { SearchResult } from "~/modules/search/components/SearchResult";
 
 /**
  * Sheet allowing us to see the upcoming tracks and remove tracks from

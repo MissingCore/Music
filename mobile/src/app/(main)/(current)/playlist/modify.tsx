@@ -3,17 +3,17 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
-import { getTrackCover } from "@/db/utils";
+import { getTrackCover } from "~/db/utils";
 
 import {
   usePlaylist,
   usePlaylists,
   useUpdatePlaylist,
-} from "@/queries/playlist";
-import { ModifyPlaylist } from "@/screens/ModifyPlaylist";
+} from "~/queries/playlist";
+import { ModifyPlaylist } from "~/screens/ModifyPlaylist";
 
-import { mutateGuardAsync } from "@/lib/react-query";
-import { ToastOptions } from "@/lib/toast";
+import { mutateGuardAsync } from "~/lib/react-query";
+import { ToastOptions } from "~/lib/toast";
 
 /** Screen for modifying a playlist. */
 export default function ModifyPlaylistScreen() {

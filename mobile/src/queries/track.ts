@@ -1,14 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { formatForTrack } from "@/db/utils";
+import { formatForTrack } from "~/db/utils";
 
-import { addToPlaylist, favoriteTrack, removeFromPlaylist } from "@/api/track";
-import { Resynchronize } from "@/modules/media/services/Resynchronize";
-import { useSortTracks } from "@/modules/media/services/SortPreferences";
+import { addToPlaylist, favoriteTrack, removeFromPlaylist } from "~/api/track";
+import { Resynchronize } from "~/modules/media/services/Resynchronize";
+import { useSortTracks } from "~/modules/media/services/SortPreferences";
 import { queries as q } from "./keyStore";
 
-import { wait } from "@/utils/promise";
-import { ReservedPlaylists } from "@/modules/media/constants";
+import { wait } from "~/utils/promise";
+import { ReservedPlaylists } from "~/modules/media/constants";
 
 //#region Queries
 /** Get specified track. */

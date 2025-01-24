@@ -1,9 +1,9 @@
 import type { StyleProp, ViewStyle } from "react-native";
 import { Pressable, View } from "react-native";
 
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme } from "~/hooks/useTheme";
 
-import { cn } from "@/lib/style";
+import { cn } from "~/lib/style";
 
 /** Shared props between `<Checkbox />` and `<Radio />`. */
 type SelectionProps = {

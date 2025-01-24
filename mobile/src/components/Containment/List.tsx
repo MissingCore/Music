@@ -3,8 +3,8 @@ import type { ParseKeys } from "i18next";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 
-import type { TextColor } from "@/lib/style";
-import { cn } from "@/lib/style";
+import type { TextColor } from "~/lib/style";
+import { cn } from "~/lib/style";
 import type { WithListEmptyProps } from "../Defaults";
 import { FlashList } from "../Defaults";
 import { StyledText } from "../Typography/StyledText";

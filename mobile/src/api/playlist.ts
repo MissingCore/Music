@@ -1,22 +1,22 @@
 import { and, eq } from "drizzle-orm";
 
-import { db } from "@/db";
+import { db } from "~/db";
 import type {
   PlaylistWithJunction,
   PlaylistWithTracks,
   TrackWithAlbum,
-} from "@/db/schema";
-import { playlists, tracksToPlaylists } from "@/db/schema";
-import { sanitizePlaylistName } from "@/db/utils";
+} from "~/db/schema";
+import { playlists, tracksToPlaylists } from "~/db/schema";
+import { sanitizePlaylistName } from "~/db/utils";
 
-import i18next from "@/modules/i18n";
-import { sortTracks } from "@/modules/media/services/SortPreferences";
+import i18next from "~/modules/i18n";
+import { sortTracks } from "~/modules/media/services/SortPreferences";
 
-import { iAsc } from "@/lib/drizzle";
-import { deleteImage } from "@/lib/file-system";
-import { moveArray } from "@/utils/object";
-import type { ReservedPlaylistName } from "@/modules/media/constants";
-import { ReservedPlaylists } from "@/modules/media/constants";
+import { iAsc } from "~/lib/drizzle";
+import { deleteImage } from "~/lib/file-system";
+import { moveArray } from "~/utils/object";
+import type { ReservedPlaylistName } from "~/modules/media/constants";
+import { ReservedPlaylists } from "~/modules/media/constants";
 import type { DrizzleFilter, QuerySingleFn } from "./types";
 
 //#region GET Methods

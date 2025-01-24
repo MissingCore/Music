@@ -2,10 +2,10 @@ import type { SQLiteDatabase } from "expo-sqlite";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
 
-import { useOnboarding } from "@/modules/scanning/hooks/useOnboarding";
+import { useOnboarding } from "~/modules/scanning/hooks/useOnboarding";
 
-import { db, expoSQLiteDB } from "@/db";
-import migrations from "@/db/drizzle/migrations";
+import { db, expoSQLiteDB } from "~/db";
+import migrations from "~/db/drizzle/migrations";
 
 /**
  * Makes splash screen visible until all initialization tasks are

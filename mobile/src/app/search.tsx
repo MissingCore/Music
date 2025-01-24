@@ -2,12 +2,12 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { playFromMediaList } from "@/modules/media/services/Playback";
+import { playFromMediaList } from "~/modules/media/services/Playback";
 
-import { AccentText } from "@/components/Typography/AccentText";
-import { ReservedPlaylists } from "@/modules/media/constants";
-import { SearchEngine } from "@/modules/search/components/SearchEngine";
-import type { SearchCallbacks } from "@/modules/search/types";
+import { AccentText } from "~/components/Typography/AccentText";
+import { ReservedPlaylists } from "~/modules/media/constants";
+import { SearchEngine } from "~/modules/search/components/SearchEngine";
+import type { SearchCallbacks } from "~/modules/search/types";
 
 /** Screen for `/search` route. */
 export default function SearchScreen() {

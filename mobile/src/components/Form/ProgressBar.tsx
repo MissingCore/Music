@@ -6,8 +6,8 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import { cn } from "@/lib/style";
-import { partitionArray } from "@/utils/object";
+import { cn } from "~/lib/style";
+import { partitionArray } from "~/utils/object";
 
 /** Animated progress bar that can display several progresses. */
 export function ProgressBar(props: {

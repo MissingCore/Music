@@ -1,13 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { eq } from "drizzle-orm";
 
-import { db } from "@/db";
-import { tracks, tracksToPlaylists } from "@/db/schema";
+import { db } from "~/db";
+import { tracks, tracksToPlaylists } from "~/db/schema";
 
-import { getPlaylists } from "@/api/playlist";
-import { removeInvalidTrackRelations } from "@/api/track";
-import { recentListStore } from "@/modules/media/services/RecentList";
-import { userPreferencesStore } from "@/services/UserPreferences";
+import { getPlaylists } from "~/api/playlist";
+import { removeInvalidTrackRelations } from "~/api/track";
+import { recentListStore } from "~/modules/media/services/RecentList";
+import { userPreferencesStore } from "~/services/UserPreferences";
 
 import type { MigrationOption } from "../constants";
 import { MigrationHistory } from "../constants";

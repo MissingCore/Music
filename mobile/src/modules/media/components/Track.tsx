@@ -3,17 +3,17 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { SheetManager } from "react-native-actions-sheet";
 
-import { MoreVert } from "@/icons/MoreVert";
+import { MoreVert } from "~/icons/MoreVert";
 import { playFromMediaList } from "../services/Playback";
 import type { PlayListSource } from "../types";
 
-import { cn } from "@/lib/style";
-import type { Maybe, Prettify } from "@/utils/types";
-import type { WithListEmptyProps } from "@/components/Defaults";
-import { useListPresets } from "@/components/Defaults";
-import type { PressProps } from "@/components/Form/Button";
-import { IconButton } from "@/components/Form/Button";
-import { SearchResult } from "@/modules/search/components/SearchResult";
+import { cn } from "~/lib/style";
+import type { Maybe, Prettify } from "~/utils/types";
+import type { WithListEmptyProps } from "~/components/Defaults";
+import { useListPresets } from "~/components/Defaults";
+import type { PressProps } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button";
+import { SearchResult } from "~/modules/search/components/SearchResult";
 
 //#region Track
 export namespace Track {

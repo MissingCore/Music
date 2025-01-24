@@ -3,14 +3,14 @@ import * as WebBrowser from "expo-web-browser";
 import { useTranslation } from "react-i18next";
 import { SheetManager } from "react-native-actions-sheet";
 
-import { OpenInNew } from "@/icons/OpenInNew";
-import { useHasNewUpdate } from "@/hooks/useHasNewUpdate";
-import { StandardScrollLayout } from "@/layouts/StandardScroll";
-import { LANGUAGES } from "@/modules/i18n/constants";
+import { OpenInNew } from "~/icons/OpenInNew";
+import { useHasNewUpdate } from "~/hooks/useHasNewUpdate";
+import { StandardScrollLayout } from "~/layouts/StandardScroll";
+import { LANGUAGES } from "~/modules/i18n/constants";
 
-import { APP_VERSION } from "@/constants/Config";
-import * as LINKS from "@/constants/Links";
-import { List, ListItem } from "@/components/Containment/List";
+import { APP_VERSION } from "~/constants/Config";
+import * as LINKS from "~/constants/Links";
+import { List, ListItem } from "~/components/Containment/List";
 
 /** Screen for `/setting` route. */
 export default function SettingScreen() {

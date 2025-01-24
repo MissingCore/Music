@@ -1,10 +1,10 @@
 import { StorageVolumesDirectoryPaths } from "@missingcore/react-native-metadata-retriever";
 
-import { db } from "@/db";
-import type { FileNode } from "@/db/schema";
-import { fileNodes } from "@/db/schema";
+import { db } from "~/db";
+import type { FileNode } from "~/db/schema";
+import { fileNodes } from "~/db/schema";
 
-import { addTrailingSlash } from "@/utils/string";
+import { addTrailingSlash } from "~/utils/string";
 
 /** Remove the `/` at the start. */
 const volumePaths = StorageVolumesDirectoryPaths.map((path) => path.slice(1));

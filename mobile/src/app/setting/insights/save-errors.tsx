@@ -1,7 +1,7 @@
-import { useSaveErrors } from "@/queries/setting";
-import { StandardScrollLayout } from "@/layouts/StandardScroll";
+import { useSaveErrors } from "~/queries/setting";
+import { StandardScrollLayout } from "~/layouts/StandardScroll";
 
-import { ListRenderer } from "@/components/Containment/List";
+import { ListRenderer } from "~/components/Containment/List";
 
 /** Screen for `/setting/insights/save-errors` route. */
 export default function SaveErrorsScreen() {

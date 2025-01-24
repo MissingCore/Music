@@ -1,11 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import type { Artist, artists } from "@/db/schema";
-import { formatForCurrentScreen } from "@/db/utils";
+import type { Artist, artists } from "~/db/schema";
+import { formatForCurrentScreen } from "~/db/utils";
 
-import { updateArtist } from "@/api/artist";
-import { Resynchronize } from "@/modules/media/services/Resynchronize";
+import { updateArtist } from "~/api/artist";
+import { Resynchronize } from "~/modules/media/services/Resynchronize";
 import { queries as q } from "./keyStore";
 
 //#region Queries

@@ -1,6 +1,6 @@
-import { useLatestRelease } from "@/queries/setting";
+import { useLatestRelease } from "~/queries/setting";
 
-import { APP_VERSION } from "@/constants/Config";
+import { APP_VERSION } from "~/constants/Config";
 
 type UpdateResult =
   | { hasNewUpdate: false; release: null; isRC: false }

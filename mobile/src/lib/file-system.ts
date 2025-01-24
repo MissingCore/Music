@@ -3,7 +3,7 @@ import * as FileSystem from "expo-file-system";
 import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
 import * as ImagePicker from "expo-image-picker";
 
-import type { Maybe } from "@/utils/types";
+import type { Maybe } from "~/utils/types";
 
 /** Internal app directory where we store images. */
 export const ImageDirectory = FileSystem.documentDirectory + "images";

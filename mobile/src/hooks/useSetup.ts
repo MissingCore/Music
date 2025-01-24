@@ -5,16 +5,16 @@ import TrackPlayer, {
   RepeatMode,
 } from "react-native-track-player";
 
-import "@/modules/media/services/_subscriptions";
-import { musicStore, useMusicStore } from "@/modules/media/services/Music";
-import { useRecentListStore } from "@/modules/media/services/RecentList";
-import { useSortPreferencesStore } from "@/modules/media/services/SortPreferences";
+import "~/modules/media/services/_subscriptions";
+import { musicStore, useMusicStore } from "~/modules/media/services/Music";
+import { useRecentListStore } from "~/modules/media/services/RecentList";
+import { useSortPreferencesStore } from "~/modules/media/services/SortPreferences";
 import {
   userPreferencesStore,
   useUserPreferencesStore,
-} from "@/services/UserPreferences";
+} from "~/services/UserPreferences";
 
-import { wait } from "@/utils/promise";
+import { wait } from "~/utils/promise";
 
 /**
  * Ensure our Zustand stores are hydrated before we do anything, making
@@ -97,6 +97,6 @@ async function setupPlayer() {
       Capability.SkipToNext,
       Capability.SkipToPrevious,
     ],
-    icon: require("@/resources/images/music-glyph.png"),
+    icon: require("~/resources/images/music-glyph.png"),
   });
 }

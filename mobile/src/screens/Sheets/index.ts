@@ -15,7 +15,7 @@ import TrackSortSheet from "./TrackSort";
 import TrackToPlaylistSheet from "./TrackToPlaylist";
 import TrackUpcomingSheet from "./TrackUpcoming";
 
-import type { SearchCallbacks } from "@/modules/search/types";
+import type { SearchCallbacks } from "~/modules/search/types";
 
 /*
   Note: Our sheets need to always render some (ie: not `null`). If we

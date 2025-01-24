@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
-import { moveArray } from "@/utils/object";
+import { moveArray } from "~/utils/object";
 
 /**
  * Hook that returns a localized state synchronized with its source to

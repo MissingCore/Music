@@ -7,11 +7,11 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { GITHUB } from "@/constants/Links";
-import { ScrollPresets } from "@/components/Defaults";
-import { Button } from "@/components/Form/Button";
-import { AccentText } from "@/components/Typography/AccentText";
-import { TStyledText } from "@/components/Typography/StyledText";
+import { GITHUB } from "~/constants/Links";
+import { ScrollPresets } from "~/components/Defaults";
+import { Button } from "~/components/Form/Button";
+import { AccentText } from "~/components/Typography/AccentText";
+import { TStyledText } from "~/components/Typography/StyledText";
 
 /** Layout used for the "error" screens (route & unexpected errors). */
 export function IssueLayout(props: {

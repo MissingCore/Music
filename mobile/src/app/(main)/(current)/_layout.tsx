@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 
-import { TopAppBar } from "@/components/TopAppBar";
+import { TopAppBar } from "~/components/TopAppBar";
 
 export default function CurrentLayout() {
   return (

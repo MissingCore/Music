@@ -2,16 +2,16 @@ import { toast } from "@backpackapp-io/react-native-toast";
 import { useMutation } from "@tanstack/react-query";
 import { and, eq, isNull } from "drizzle-orm";
 
-import { db } from "@/db";
-import { fileNodes, invalidTracks, tracks } from "@/db/schema";
+import { db } from "~/db";
+import { fileNodes, invalidTracks, tracks } from "~/db/schema";
 
-import i18next from "@/modules/i18n";
-import { getTracks } from "@/api/track";
-import { RecentList } from "@/modules/media/services/RecentList";
-import { Resynchronize } from "@/modules/media/services/Resynchronize";
+import i18next from "~/modules/i18n";
+import { getTracks } from "~/api/track";
+import { RecentList } from "~/modules/media/services/RecentList";
+import { Resynchronize } from "~/modules/media/services/Resynchronize";
 
-import { ToastOptions } from "@/lib/toast";
-import { batch, wait } from "@/utils/promise";
+import { ToastOptions } from "~/lib/toast";
+import { batch, wait } from "~/utils/promise";
 import { findAndSaveArtwork, cleanupImages } from "./artwork";
 import { cleanupDatabase, findAndSaveAudio } from "./audio";
 import { savePathComponents } from "./folder";

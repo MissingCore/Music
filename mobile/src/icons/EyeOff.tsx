@@ -1,6 +1,6 @@
 import Svg, { Path } from "react-native-svg";
 
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme } from "~/hooks/useTheme";
 import type { Icon } from "./type";
 
 // From ionicons.

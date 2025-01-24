@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 
-import { cn } from "@/lib/style";
+import { cn } from "~/lib/style";
 
 /** Our version of the HTML keyboard input element. */
 export function Kbd(props: { text: string; className?: string }) {

@@ -1,16 +1,16 @@
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 
-import { useDatabaseSummary, useStorageSummary } from "@/queries/setting";
-import { useTheme } from "@/hooks/useTheme";
-import { StandardScrollLayout } from "@/layouts/StandardScroll";
+import { useDatabaseSummary, useStorageSummary } from "~/queries/setting";
+import { useTheme } from "~/hooks/useTheme";
+import { StandardScrollLayout } from "~/layouts/StandardScroll";
 
-import { Colors } from "@/constants/Styles";
-import { abbreviateSize, formatSeconds } from "@/utils/number";
-import { Card } from "@/components/Containment/Card";
-import { List, ListItem } from "@/components/Containment/List";
-import { Legend, LegendItem } from "@/components/Form/Legend";
-import { ProgressBar } from "@/components/Form/ProgressBar";
+import { Colors } from "~/constants/Styles";
+import { abbreviateSize, formatSeconds } from "~/utils/number";
+import { Card } from "~/components/Containment/Card";
+import { List, ListItem } from "~/components/Containment/List";
+import { Legend, LegendItem } from "~/components/Form/Legend";
+import { ProgressBar } from "~/components/Form/ProgressBar";
 
 /** Screen for `/setting/insights` route. */
 export default function InsightsScreen() {

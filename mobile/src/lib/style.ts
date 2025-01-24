@@ -2,11 +2,11 @@ import type { ClassValue } from "clsx";
 import { clsx } from "clsx";
 import { extendTailwindMerge } from "tailwind-merge";
 
-import type { FontOptions } from "@/services/UserPreferences";
+import type { FontOptions } from "~/services/UserPreferences";
 
-import { TailwindTheme } from "@/constants/TailwindTheme";
-import { FontFamily } from "@/constants/Styles";
-import { toLowerCase } from "@/utils/string";
+import { TailwindTheme } from "~/constants/TailwindTheme";
+import { FontFamily } from "~/constants/Styles";
+import { toLowerCase } from "~/utils/string";
 
 export type TextColor = `text-${string}` | `text-[${string}]`;
 

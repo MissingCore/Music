@@ -1,7 +1,7 @@
 import type { Href } from "expo-router";
 import { usePathname } from "expo-router";
 
-import { useMusicStore } from "@/modules/media/services/Music";
+import { useMusicStore } from "~/modules/media/services/Music";
 
 /** Routes where we hide all "bottom actions". */
 const overrideVisible = [

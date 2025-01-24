@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import type { TextProps } from "react-native";
 import { Text } from "react-native";
 
-import { cn } from "@/lib/style";
+import { cn } from "~/lib/style";
 
 /** Styled `<Text />`. */
 export function StyledText({

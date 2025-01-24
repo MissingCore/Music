@@ -5,11 +5,11 @@ import { SheetProvider } from "react-native-actions-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import "@/screens/Sheets";
+import "~/screens/Sheets";
 import { RouteHandlers } from "./RouteHandlers";
 import { ThemeProvider } from "./ThemeProvider";
 
-import { queryClient } from "@/lib/react-query";
+import { queryClient } from "~/lib/react-query";
 
 /** All providers used by the app. */
 export function AppProvider(props: { children: React.ReactNode }) {

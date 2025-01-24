@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { View } from "react-native";
 
-import { Colors } from "@/constants/Styles";
+import { Colors } from "~/constants/Styles";
 
 const { neutral10, neutral40, neutral80 } = Colors;
 

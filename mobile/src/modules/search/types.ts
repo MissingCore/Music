@@ -3,9 +3,9 @@ import type {
   ArtistWithTracks,
   PlaylistWithTracks,
   TrackWithAlbum,
-} from "@/db/schema";
+} from "~/db/schema";
 
-import type { MediaType } from "@/modules/media/types";
+import type { MediaType } from "~/modules/media/types";
 
 /** Categories of media that can be returned by search. */
 export type SearchCategories = ReadonlyArray<Exclude<MediaType, "folder">>;

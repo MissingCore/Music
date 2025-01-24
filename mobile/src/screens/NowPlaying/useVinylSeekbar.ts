@@ -11,8 +11,8 @@ import {
 } from "react-native-reanimated";
 import TrackPlayer, { useProgress } from "react-native-track-player";
 
-import { useMusicStore } from "@/modules/media/services/Music";
-import { useSeekStore } from "@/screens/NowPlaying/SeekService";
+import { useMusicStore } from "~/modules/media/services/Music";
+import { useSeekStore } from "~/screens/NowPlaying/SeekService";
 
 /** Controls the rotation of the vinyl on the "Now Playing" screen. */
 export function useVinylSeekbar() {

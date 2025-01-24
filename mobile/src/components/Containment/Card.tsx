@@ -1,6 +1,6 @@
 import { View } from "react-native";
 
-import { cn } from "@/lib/style";
+import { cn } from "~/lib/style";
 
 /** Basic reusable card component. */
 export function Card(props: { children: React.ReactNode; className?: string }) {

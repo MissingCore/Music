@@ -1,8 +1,8 @@
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme } from "~/hooks/useTheme";
 
-import { Sheet } from "@/components/Sheet";
-import { SearchEngine } from "@/modules/search/components/SearchEngine";
-import type { SearchCallbacks } from "@/modules/search/types";
+import { Sheet } from "~/components/Sheet";
+import { SearchEngine } from "~/modules/search/components/SearchEngine";
+import type { SearchCallbacks } from "~/modules/search/types";
 
 /** List of media we want to appear in the search. */
 const searchScope = ["album", "track"] as const;

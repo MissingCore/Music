@@ -4,39 +4,39 @@ import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 
-import type { TrackWithAlbum } from "@/db/schema";
+import type { TrackWithAlbum } from "~/db/schema";
 
-import { Album } from "@/icons/Album";
-import { Artist } from "@/icons/Artist";
-import { Favorite } from "@/icons/Favorite";
-import { List } from "@/icons/List";
-import { PlaylistAdd } from "@/icons/PlaylistAdd";
-import { QueueMusic } from "@/icons/QueueMusic";
-import { Schedule } from "@/icons/Schedule";
-import { useTrack, useFavoriteTrack } from "@/queries/track";
-import { useGetColumn } from "@/hooks/useGetColumn";
-import { useTheme } from "@/hooks/useTheme";
-import { Queue, useMusicStore } from "@/modules/media/services/Music";
+import { Album } from "~/icons/Album";
+import { Artist } from "~/icons/Artist";
+import { Favorite } from "~/icons/Favorite";
+import { List } from "~/icons/List";
+import { PlaylistAdd } from "~/icons/PlaylistAdd";
+import { QueueMusic } from "~/icons/QueueMusic";
+import { Schedule } from "~/icons/Schedule";
+import { useTrack, useFavoriteTrack } from "~/queries/track";
+import { useGetColumn } from "~/hooks/useGetColumn";
+import { useTheme } from "~/hooks/useTheme";
+import { Queue, useMusicStore } from "~/modules/media/services/Music";
 
-import { Colors } from "@/constants/Styles";
-import { mutateGuard } from "@/lib/react-query";
+import { Colors } from "~/constants/Styles";
+import { mutateGuard } from "~/lib/react-query";
 import {
   abbreviateBitRate,
   abbreviateSize,
   formatEpoch,
   formatSeconds,
-} from "@/utils/number";
-import { Marquee } from "@/components/Containment/Marquee";
-import { Divider } from "@/components/Divider";
-import { IconButton } from "@/components/Form/Button";
-import { Sheet } from "@/components/Sheet";
+} from "~/utils/number";
+import { Marquee } from "~/components/Containment/Marquee";
+import { Divider } from "~/components/Divider";
+import { IconButton } from "~/components/Form/Button";
+import { Sheet } from "~/components/Sheet";
 import {
   StyledText,
   TEm,
   TStyledText,
-} from "@/components/Typography/StyledText";
-import { ReservedPlaylists } from "@/modules/media/constants";
-import { MediaImage } from "@/modules/media/components/MediaImage";
+} from "~/components/Typography/StyledText";
+import { ReservedPlaylists } from "~/modules/media/constants";
+import { MediaImage } from "~/modules/media/components/MediaImage";
 
 /** Sheet containing information and actions for a track. */
 export default function TrackSheet(props: { payload: { id: string } }) {

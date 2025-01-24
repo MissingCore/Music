@@ -3,7 +3,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import { cn } from "@/lib/style";
+import { cn } from "~/lib/style";
 
 /** Externally controlled switch component (BYO `<Pressable />`). */
 export function Switch({ enabled }: { enabled: boolean }) {

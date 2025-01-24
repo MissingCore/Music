@@ -1,12 +1,12 @@
 import { useTranslation } from "react-i18next";
 import { SheetManager } from "react-native-actions-sheet";
 
-import { useUserPreferencesStore } from "@/services/UserPreferences";
-import { useRescanForTracks } from "@/modules/scanning/helpers/rescan";
-import { StandardScrollLayout } from "@/layouts/StandardScroll";
+import { useUserPreferencesStore } from "~/services/UserPreferences";
+import { useRescanForTracks } from "~/modules/scanning/helpers/rescan";
+import { StandardScrollLayout } from "~/layouts/StandardScroll";
 
-import { mutateGuard } from "@/lib/react-query";
-import { List, ListItem } from "@/components/Containment/List";
+import { mutateGuard } from "~/lib/react-query";
+import { List, ListItem } from "~/components/Containment/List";
 
 /** Screen for `/setting/scanning` route. */
 export default function ScanningScreen() {

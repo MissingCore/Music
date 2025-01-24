@@ -6,17 +6,17 @@ import Animated, {
   SlideOutDown,
 } from "react-native-reanimated";
 
-import { Pause } from "@/icons/Pause";
-import { PlayArrow } from "@/icons/PlayArrow";
+import { Pause } from "~/icons/Pause";
+import { PlayArrow } from "~/icons/PlayArrow";
 import { useMusicStore } from "../services/Music";
 import { MusicControls } from "../services/Playback";
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme } from "~/hooks/useTheme";
 
-import { Colors } from "@/constants/Styles";
-import { cn } from "@/lib/style";
-import { Marquee } from "@/components/Containment/Marquee";
-import { IconButton } from "@/components/Form/Button";
-import { StyledText } from "@/components/Typography/StyledText";
+import { Colors } from "~/constants/Styles";
+import { cn } from "~/lib/style";
+import { Marquee } from "~/components/Containment/Marquee";
+import { IconButton } from "~/components/Form/Button";
+import { StyledText } from "~/components/Typography/StyledText";
 import { NextButton, PreviousButton } from "./MediaControls";
 import { MediaImage } from "./MediaImage";
 

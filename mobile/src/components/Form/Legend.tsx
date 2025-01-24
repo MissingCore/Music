@@ -1,7 +1,7 @@
 import type { ParseKeys } from "i18next";
 import { View } from "react-native";
 
-import { cn } from "@/lib/style";
+import { cn } from "~/lib/style";
 import { StyledText, TStyledText } from "../Typography/StyledText";
 
 //#region Legend

@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
-import { getAlbums } from "@/api/album";
-import { getArtists } from "@/api/artist";
-import { getPlaylists } from "@/api/playlist";
-import { getTracks } from "@/api/track";
+import { getAlbums } from "~/api/album";
+import { getArtists } from "~/api/artist";
+import { getPlaylists } from "~/api/playlist";
+import { getTracks } from "~/api/track";
 
-import type { Prettify } from "@/utils/types";
+import type { Prettify } from "~/utils/types";
 import type { SearchCategories, SearchResults } from "../types";
 
 /** Returns media specified by query in the given scope. */

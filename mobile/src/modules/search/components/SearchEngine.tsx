@@ -8,18 +8,18 @@ import type {
   ArtistWithTracks,
   PlaylistWithTracks,
   TrackWithAlbum,
-} from "@/db/schema";
-import { getPlaylistCover, getTrackCover } from "@/db/utils";
+} from "~/db/schema";
+import { getPlaylistCover, getTrackCover } from "~/db/utils";
 
-import { Close } from "@/icons/Close";
-import { Search } from "@/icons/Search";
-import { useTheme } from "@/hooks/useTheme";
+import { Close } from "~/icons/Close";
+import { Search } from "~/icons/Search";
+import { useTheme } from "~/hooks/useTheme";
 
-import { cn } from "@/lib/style";
-import { FlashList, SheetsFlashList } from "@/components/Defaults";
-import { IconButton } from "@/components/Form/Button";
-import { TextInput, useInputRef } from "@/components/Form/Input";
-import { TEm, TStyledText } from "@/components/Typography/StyledText";
+import { cn } from "~/lib/style";
+import { FlashList, SheetsFlashList } from "~/components/Defaults";
+import { IconButton } from "~/components/Form/Button";
+import { TextInput, useInputRef } from "~/components/Form/Input";
+import { TEm, TStyledText } from "~/components/Typography/StyledText";
 import { SearchResult } from "./SearchResult";
 import { useSearch } from "../hooks/useSearch";
 import type {

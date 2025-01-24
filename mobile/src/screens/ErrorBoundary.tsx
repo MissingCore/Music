@@ -1,12 +1,12 @@
 import type { ErrorBoundaryProps } from "expo-router";
 import { useEffect } from "react";
 
-import { musicStore } from "@/modules/media/services/Music";
-import { IssueLayout } from "@/layouts/Issue";
-import { AppProvider } from "@/providers";
+import { musicStore } from "~/modules/media/services/Music";
+import { IssueLayout } from "~/layouts/Issue";
+import { AppProvider } from "~/providers";
 
-import { Card } from "@/components/Containment/Card";
-import { StyledText } from "@/components/Typography/StyledText";
+import { Card } from "~/components/Containment/Card";
+import { StyledText } from "~/components/Typography/StyledText";
 
 /** Screen displayed when an error is thrown in a component. */
 export function ErrorBoundary({ error }: ErrorBoundaryProps) {

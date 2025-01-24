@@ -3,15 +3,15 @@ import { Appearance } from "react-native";
 import TrackPlayer from "react-native-track-player";
 import { useStore } from "zustand";
 
-import i18next from "@/modules/i18n";
-import { LANGUAGES } from "@/modules/i18n/constants";
-import { musicStore } from "@/modules/media/services/Music";
-import { RecentList } from "@/modules/media/services/RecentList";
+import i18next from "~/modules/i18n";
+import { LANGUAGES } from "~/modules/i18n/constants";
+import { musicStore } from "~/modules/media/services/Music";
+import { RecentList } from "~/modules/media/services/RecentList";
 
-import { clearAllQueries } from "@/lib/react-query";
-import { createPersistedSubscribedStore } from "@/lib/zustand";
-import { moveArray } from "@/utils/object";
-import { getSourceName } from "@/modules/media/helpers/data";
+import { clearAllQueries } from "~/lib/react-query";
+import { createPersistedSubscribedStore } from "~/lib/zustand";
+import { moveArray } from "~/utils/object";
+import { getSourceName } from "~/modules/media/helpers/data";
 
 /** Options for app themes. */
 export const ThemeOptions = ["light", "dark", "system"] as const;

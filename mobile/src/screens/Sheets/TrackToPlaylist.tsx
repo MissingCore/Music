@@ -1,19 +1,19 @@
 import { SheetManager } from "react-native-actions-sheet";
 
-import { usePlaylists } from "@/queries/playlist";
+import { usePlaylists } from "~/queries/playlist";
 import {
   useAddToPlaylist,
   useRemoveFromPlaylist,
   useTrackPlaylists,
-} from "@/queries/track";
-import { useTheme } from "@/hooks/useTheme";
+} from "~/queries/track";
+import { useTheme } from "~/hooks/useTheme";
 
-import { mutateGuard } from "@/lib/react-query";
-import { Marquee } from "@/components/Containment/Marquee";
-import { SheetsFlashList } from "@/components/Defaults";
-import { Checkbox } from "@/components/Form/Selection";
-import { Sheet } from "@/components/Sheet";
-import { StyledText } from "@/components/Typography/StyledText";
+import { mutateGuard } from "~/lib/react-query";
+import { Marquee } from "~/components/Containment/Marquee";
+import { SheetsFlashList } from "~/components/Defaults";
+import { Checkbox } from "~/components/Form/Selection";
+import { Sheet } from "~/components/Sheet";
+import { StyledText } from "~/components/Typography/StyledText";
 
 /** Sheet allowing us to select which playlists the track belongs to. */
 export default function TrackToPlaylistSheet(props: {

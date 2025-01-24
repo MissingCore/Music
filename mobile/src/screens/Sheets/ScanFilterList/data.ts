@@ -6,11 +6,11 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import * as FileSystem from "expo-file-system";
 
-import i18next from "@/modules/i18n";
-import { userPreferencesStore } from "@/services/UserPreferences";
+import i18next from "~/modules/i18n";
+import { userPreferencesStore } from "~/services/UserPreferences";
 
-import { ToastOptions } from "@/lib/toast";
-import { addTrailingSlash } from "@/utils/string";
+import { ToastOptions } from "~/lib/toast";
+import { addTrailingSlash } from "~/utils/string";
 
 const SAF = FileSystem.StorageAccessFramework;
 

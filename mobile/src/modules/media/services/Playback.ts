@@ -1,6 +1,6 @@
 import TrackPlayer from "react-native-track-player";
 
-import { getTrack } from "@/api/track";
+import { getTrack } from "~/api/track";
 import { Queue, RNTPManager, musicStore } from "./Music";
 import { RecentList } from "./RecentList";
 

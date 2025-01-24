@@ -6,30 +6,30 @@ import { BackHandler, Modal, Pressable, View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
-import type { TrackWithAlbum } from "@/db/schema";
+import type { TrackWithAlbum } from "~/db/schema";
 
-import { Add } from "@/icons/Add";
-import { Cancel } from "@/icons/Cancel";
-import { CheckCircle } from "@/icons/CheckCircle";
-import { Check } from "@/icons/Check";
-import { Remove } from "@/icons/Remove";
-import { useDeletePlaylist } from "@/queries/playlist";
-import { useTheme } from "@/hooks/useTheme";
-import { areRenderItemPropsEqual } from "@/lib/react-native-draglist";
+import { Add } from "~/icons/Add";
+import { Cancel } from "~/icons/Cancel";
+import { CheckCircle } from "~/icons/CheckCircle";
+import { Check } from "~/icons/Check";
+import { Remove } from "~/icons/Remove";
+import { useDeletePlaylist } from "~/queries/playlist";
+import { useTheme } from "~/hooks/useTheme";
+import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import type { InitStoreProps } from "./context";
 import { PlaylistStoreProvider, usePlaylistStore } from "./context";
 
-import { Colors } from "@/constants/Styles";
-import { mutateGuard } from "@/lib/react-query";
-import { cn } from "@/lib/style";
-import { wait } from "@/utils/promise";
-import { FlashDragList } from "@/components/Defaults";
-import { IconButton } from "@/components/Form/Button";
-import { TextInput } from "@/components/Form/Input";
-import type { SwipeableRef } from "@/components/Swipeable";
-import { Swipeable } from "@/components/Swipeable";
-import { StyledText, TStyledText } from "@/components/Typography/StyledText";
-import { SearchResult } from "@/modules/search/components/SearchResult";
+import { Colors } from "~/constants/Styles";
+import { mutateGuard } from "~/lib/react-query";
+import { cn } from "~/lib/style";
+import { wait } from "~/utils/promise";
+import { FlashDragList } from "~/components/Defaults";
+import { IconButton } from "~/components/Form/Button";
+import { TextInput } from "~/components/Form/Input";
+import type { SwipeableRef } from "~/components/Swipeable";
+import { Swipeable } from "~/components/Swipeable";
+import { StyledText, TStyledText } from "~/components/Typography/StyledText";
+import { SearchResult } from "~/modules/search/components/SearchResult";
 
 /** Resuable screen to modify (create or edit) a playlist. */
 export function ModifyPlaylist(props: InitStoreProps) {

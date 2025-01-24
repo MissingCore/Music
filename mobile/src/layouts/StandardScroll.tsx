@@ -1,5 +1,5 @@
-import { cn } from "@/lib/style";
-import { ScrollView } from "@/components/Defaults";
+import { cn } from "~/lib/style";
+import { ScrollView } from "~/components/Defaults";
 
 /** Simple scroll container layout. */
 export function StandardScrollLayout(props: {

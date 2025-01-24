@@ -6,8 +6,8 @@ import {
   readDirectoryAsync,
 } from "expo-file-system";
 
-import { db } from "@/db";
-import { albums, artists, invalidTracks, playlists, tracks } from "@/db/schema";
+import { db } from "~/db";
+import { albums, artists, invalidTracks, playlists, tracks } from "~/db/schema";
 
 //#region GET Methods
 /** A summary of what's stored in the database. */

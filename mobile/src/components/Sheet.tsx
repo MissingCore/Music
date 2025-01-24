@@ -8,7 +8,7 @@ import type { ActionSheetProps } from "react-native-actions-sheet";
 import ActionSheet from "react-native-actions-sheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { cn } from "@/lib/style";
+import { cn } from "~/lib/style";
 import { Marquee } from "./Containment/Marquee";
 import { StyledText } from "./Typography/StyledText";
 

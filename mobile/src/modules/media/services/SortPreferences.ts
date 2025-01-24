@@ -1,9 +1,9 @@
 import { useCallback } from "react";
 import { useStore } from "zustand";
 
-import type { TrackWithAlbum } from "@/db/schema";
+import type { TrackWithAlbum } from "~/db/schema";
 
-import { createPersistedSubscribedStore } from "@/lib/zustand";
+import { createPersistedSubscribedStore } from "~/lib/zustand";
 
 /** Options for how we can order tracks. */
 export const OrderedByOptions = ["alphabetical", "modified"] as const;

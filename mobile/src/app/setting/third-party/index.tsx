@@ -1,9 +1,9 @@
 import { router } from "expo-router";
 
-import LicensesList from "@/resources/licenses.json";
-import { StandardScrollLayout } from "@/layouts/StandardScroll";
+import LicensesList from "~/resources/licenses.json";
+import { StandardScrollLayout } from "~/layouts/StandardScroll";
 
-import { ListRenderer } from "@/components/Containment/List";
+import { ListRenderer } from "~/components/Containment/List";
 
 /** Screen for `/setting/third-party` route. */
 export default function ThirdPartyScreen() {

@@ -10,7 +10,7 @@ import {
   unique,
 } from "drizzle-orm/sqlite-core";
 
-import type { Prettify } from "@/utils/types";
+import type { Prettify } from "~/utils/types";
 
 export const artists = sqliteTable("artists", {
   name: text().primaryKey(),

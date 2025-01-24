@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { formatForTrack } from "@/db/utils";
+import { formatForTrack } from "~/db/utils";
 
 import { queries as q } from "./keyStore";
 

@@ -14,10 +14,10 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { useBottomActionsContext } from "@/hooks/useBottomActionsContext";
+import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 
-import { cn } from "@/lib/style";
-import { AccentText } from "@/components/Typography/AccentText";
+import { cn } from "~/lib/style";
+import { AccentText } from "~/components/Typography/AccentText";
 
 //#region Layout
 /** Full-screen layout for displaying content on pages without a header bar. */

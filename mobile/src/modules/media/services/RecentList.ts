@@ -1,13 +1,13 @@
 import { useStore } from "zustand";
 
-import { formatForMediaCard } from "@/db/utils";
+import { formatForMediaCard } from "~/db/utils";
 
-import i18next from "@/modules/i18n";
-import { getAlbum } from "@/api/album";
-import { getArtist } from "@/api/artist";
-import { getPlaylist, getSpecialPlaylist } from "@/api/playlist";
+import i18next from "~/modules/i18n";
+import { getAlbum } from "~/api/album";
+import { getArtist } from "~/api/artist";
+import { getPlaylist, getSpecialPlaylist } from "~/api/playlist";
 
-import { createPersistedSubscribedStore } from "@/lib/zustand";
+import { createPersistedSubscribedStore } from "~/lib/zustand";
 import type { ReservedPlaylistName } from "../constants";
 import { ReservedNames, ReservedPlaylists } from "../constants";
 import { arePlaybackSourceEqual } from "../helpers/data";

@@ -6,16 +6,16 @@
 import { inArray } from "drizzle-orm";
 import type { AddTrack } from "react-native-track-player";
 
-import type { TrackWithAlbum } from "@/db/schema";
-import { tracks } from "@/db/schema";
-import { getTrackCover } from "@/db/utils";
+import type { TrackWithAlbum } from "~/db/schema";
+import { tracks } from "~/db/schema";
+import { getTrackCover } from "~/db/utils";
 
-import i18next from "@/modules/i18n";
-import { getAlbum } from "@/api/album";
-import { getArtist } from "@/api/artist";
-import { getFolderTracks } from "@/api/folder";
-import { getPlaylist, getSpecialPlaylist } from "@/api/playlist";
-import { getTracks } from "@/api/track";
+import i18next from "~/modules/i18n";
+import { getAlbum } from "~/api/album";
+import { getArtist } from "~/api/artist";
+import { getFolderTracks } from "~/api/folder";
+import { getPlaylist, getSpecialPlaylist } from "~/api/playlist";
+import { getTracks } from "~/api/track";
 
 import type { ReservedPlaylistName } from "../constants";
 import { ReservedNames, ReservedPlaylists } from "../constants";

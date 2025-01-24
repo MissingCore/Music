@@ -1,13 +1,13 @@
 import { and, eq, inArray } from "drizzle-orm";
 
-import { db } from "@/db";
-import type { TrackWithAlbum } from "@/db/schema";
-import { tracks, tracksToPlaylists } from "@/db/schema";
-import { getTrackCover } from "@/db/utils";
+import { db } from "~/db";
+import type { TrackWithAlbum } from "~/db/schema";
+import { tracks, tracksToPlaylists } from "~/db/schema";
+import { getTrackCover } from "~/db/utils";
 
-import i18next from "@/modules/i18n";
+import i18next from "~/modules/i18n";
 
-import { deleteImage } from "@/lib/file-system";
+import { deleteImage } from "~/lib/file-system";
 import type { DrizzleFilter, QuerySingleFn } from "./types";
 
 //#region GET Methods

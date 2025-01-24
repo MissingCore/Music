@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import { formatForCurrentScreen, formatForMediaCard } from "@/db/utils";
+import { formatForCurrentScreen, formatForMediaCard } from "~/db/utils";
 
 import { queries as q } from "./keyStore";
 
-import { ReservedPlaylists } from "@/modules/media/constants";
+import { ReservedPlaylists } from "~/modules/media/constants";
 
 //#region Queries
 /** Return list of `MediaCard.Content` of favorited albums & playlists. */

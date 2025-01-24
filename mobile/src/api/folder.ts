@@ -1,8 +1,8 @@
-import { db } from "@/db";
+import { db } from "~/db";
 
-import { iAsc } from "@/lib/drizzle";
-import { addTrailingSlash } from "@/utils/string";
-import type { Maybe } from "@/utils/types";
+import { iAsc } from "~/lib/drizzle";
+import { addTrailingSlash } from "~/utils/string";
+import type { Maybe } from "~/utils/types";
 
 //#region GET Methods
 /** Get the contents of a folder for a given path (excludes the `file:///` at the start). */

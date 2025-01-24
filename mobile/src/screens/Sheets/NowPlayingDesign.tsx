@@ -1,12 +1,12 @@
 import {
   NowPlayingDesignOptions,
   useUserPreferencesStore,
-} from "@/services/UserPreferences";
+} from "~/services/UserPreferences";
 
-import { FlatList } from "@/components/Defaults";
-import { Radio } from "@/components/Form/Selection";
-import { Sheet } from "@/components/Sheet";
-import { TStyledText } from "@/components/Typography/StyledText";
+import { FlatList } from "~/components/Defaults";
+import { Radio } from "~/components/Form/Selection";
+import { Sheet } from "~/components/Sheet";
+import { TStyledText } from "~/components/Typography/StyledText";
 
 /** Sheet allowing us to change the design used on the "Now Playing" screen. */
 export default function NowPlayingDesignSheet() {

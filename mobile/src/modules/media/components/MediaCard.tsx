@@ -6,13 +6,13 @@ import { useMemo } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { Pressable } from "react-native";
 
-import { useGetColumn } from "@/hooks/useGetColumn";
+import { useGetColumn } from "~/hooks/useGetColumn";
 
-import { cn } from "@/lib/style";
-import type { Maybe, Prettify } from "@/utils/types";
-import type { WithListEmptyProps } from "@/components/Defaults";
-import { useListPresets } from "@/components/Defaults";
-import { StyledText } from "@/components/Typography/StyledText";
+import { cn } from "~/lib/style";
+import type { Maybe, Prettify } from "~/utils/types";
+import type { WithListEmptyProps } from "~/components/Defaults";
+import { useListPresets } from "~/components/Defaults";
+import { StyledText } from "~/components/Typography/StyledText";
 import { MediaImage } from "./MediaImage";
 
 //#region Media Card

@@ -1,12 +1,12 @@
 import { and, eq } from "drizzle-orm";
 
-import { db } from "@/db";
-import type { AlbumWithTracks } from "@/db/schema";
-import { albums } from "@/db/schema";
+import { db } from "~/db";
+import type { AlbumWithTracks } from "~/db/schema";
+import { albums } from "~/db/schema";
 
-import i18next from "@/modules/i18n";
+import i18next from "~/modules/i18n";
 
-import { iAsc } from "@/lib/drizzle";
+import { iAsc } from "~/lib/drizzle";
 import type { DrizzleFilter, QuerySingleFn } from "./types";
 
 //#region GET Methods

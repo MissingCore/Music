@@ -1,14 +1,14 @@
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { Pause } from "@/icons/Pause";
-import { PlayArrow } from "@/icons/PlayArrow";
+import { Pause } from "~/icons/Pause";
+import { PlayArrow } from "~/icons/PlayArrow";
 import { useMusicStore } from "../services/Music";
 import { MusicControls, playFromMediaList } from "../services/Playback";
 
-import { Colors } from "@/constants/Styles";
-import { cn } from "@/lib/style";
-import { IconButton } from "@/components/Form/Button";
+import { Colors } from "~/constants/Styles";
+import { cn } from "~/lib/style";
+import { IconButton } from "~/components/Form/Button";
 import { RepeatButton, ShuffleButton } from "./MediaControls";
 import { arePlaybackSourceEqual } from "../helpers/data";
 import type { PlayListSource } from "../types";

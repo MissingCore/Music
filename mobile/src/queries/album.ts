@@ -1,13 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import { formatForCurrentScreen, formatForMediaCard } from "@/db/utils";
+import { formatForCurrentScreen, formatForMediaCard } from "~/db/utils";
 
-import { favoriteAlbum } from "@/api/album";
+import { favoriteAlbum } from "~/api/album";
 import { queries as q } from "./keyStore";
 
-import { pickKeys } from "@/utils/object";
-import { wait } from "@/utils/promise";
+import { pickKeys } from "~/utils/object";
+import { wait } from "~/utils/promise";
 
 //#region Queries
 /** Format album information for album's `(current)` screen. */
