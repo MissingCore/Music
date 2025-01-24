@@ -5,6 +5,10 @@ This file will document any changes made to the master translation file (`en.jso
 > [!NOTE]  
 > Any missing translations will fallback to the values in `en.json`.
 
+## January 23, 2025
+
+- Updated `settings.description.homeTabsOrder` translation by adding a note that unexpected behavior may occur when using the "visibility" feature.
+
 ## January 20, 2025
 
 - Add terms for home tab rearrangement.
