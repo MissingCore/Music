@@ -58,14 +58,14 @@ export function useVinylSeekbar() {
     [setSliderPos, seekProgress, trueProgress],
   );
 
-  //#region True Position
-  if (position === 0) {
+  const renderedPosition = sliderPos ?? position;
+  if (renderedPosition === 0) {
     // Reset animation when position goes back to 0s.
     cancelAnimation(trueProgress);
     trueProgress.value = 0;
-  } else if (position < duration - 1) {
+  } else if (renderedPosition < duration - 1) {
     trueProgress.value = withTiming(
-      convertUnit(sliderPos ?? position),
+      convertUnit(renderedPosition),
       // Prevent vinyl rotation on mount.
       { duration: hasMounted.current ? 500 : 0, easing: Easing.linear },
     );
@@ -75,7 +75,6 @@ export function useVinylSeekbar() {
     // the following image is large in size (ie: "animation spike").
     cancelAnimation(trueProgress);
   }
-  //#endregion
 
   const seekGesture = Gesture.Pan()
     .onStart(({ absoluteX, absoluteY }) => {
