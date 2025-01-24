@@ -2,6 +2,7 @@ import * as Sentry from "@sentry/react-native";
 import { Stack } from "expo-router";
 import { useEffect } from "react";
 import Bootsplash from "react-native-bootsplash";
+import TrackPlayer from "react-native-track-player";
 
 import { musicStore } from "@/modules/media/services/Music";
 import { useLoadResources } from "@/hooks/useLoadResources";
@@ -32,6 +33,15 @@ Sentry.init({
 
 export default function RootLayout() {
   const { isLoaded, error } = useLoadResources();
+
+  // Ensure the RNTP service closes on app close.
+  useEffect(() => {
+    return () => {
+      try {
+        TrackPlayer.reset();
+      } catch {}
+    };
+  }, []);
 
   useEffect(() => {
     if (error) {
