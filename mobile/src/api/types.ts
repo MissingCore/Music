@@ -1,6 +1,6 @@
 import type { SQL } from "drizzle-orm";
 
-import type { Track, TrackWithAlbum } from "~/db/schema";
+import type { Album, Track, TrackWithAlbum } from "~/db/schema";
 
 /** Operations passed to `where` clause. */
 export type DrizzleFilter = Array<SQL | undefined>;
@@ -45,3 +45,71 @@ export type QueryManyWithTracksResult<
 /** The variant of `Track` type we used. */
 type UsedTrackType<T extends boolean> = true extends T ? TrackWithAlbum : Track;
 //#endregion
+
+/**
+ * `QueryOneResult`, but also applies a couple more layers of depth with
+ * the `tracks` property and its `album` field.
+ */
+type QueryOneWithTracksResult_Next<
+  TData extends Record<string, any>,
+  WithAlbum extends boolean,
+  DCols extends keyof TData,
+  TCols extends keyof Track,
+  ACols extends keyof Album,
+> = QueryOneResult<TData, DCols> & {
+  tracks: Array<
+    QueryOneResult<Track, TCols> &
+      (true extends WithAlbum
+        ? { album: QueryOneResult<Album, ACols> }
+        : Record<never, never>)
+  >;
+};
+
+/**
+ * Function signature for "get single" API functions.
+ *
+ * **Note:** This requires use of currying to achieve partial type argument
+ * inference.
+ *  - https://stackoverflow.com/a/60378737
+ */
+export type QueryOneWithTracksFn<
+  TData extends Record<string, any>,
+  WithAlbum extends boolean = true,
+  TId extends string = string,
+> = () => <
+  DCols extends keyof TData,
+  TCols extends keyof Track,
+  ACols extends keyof Album,
+>(
+  id: TId,
+  options?: {
+    columns?: DCols[];
+    trackColumns?: TCols[];
+    albumColumns?: ACols[];
+  },
+) => Promise<
+  QueryOneWithTracksResult_Next<TData, WithAlbum, DCols, TCols, ACols>
+>;
+
+/**
+ * Function signature for "get many" API functions.
+ *
+ * **Note:** This requires use of currying to achieve partial type argument
+ * inference.
+ *  - https://stackoverflow.com/a/60378737
+ */
+export type QueryManyWithTracksFn<
+  TData extends Record<string, any>,
+  WithAlbum extends boolean = true,
+> = () => <
+  DCols extends keyof TData,
+  TCols extends keyof Track,
+  ACols extends keyof Album,
+>(options?: {
+  where?: DrizzleFilter;
+  columns?: DCols[];
+  trackColumns?: TCols[];
+  albumColumns?: ACols[];
+}) => Promise<
+  Array<QueryOneWithTracksResult_Next<TData, WithAlbum, DCols, TCols, ACols>>
+>;

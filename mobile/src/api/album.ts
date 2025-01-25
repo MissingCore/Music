@@ -1,60 +1,52 @@
 import { and, eq } from "drizzle-orm";
 
 import { db } from "~/db";
-import type { Album, AlbumWithTracks, Track } from "~/db/schema";
+import type { Album } from "~/db/schema";
 import { albums } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 
 import { iAsc } from "~/lib/drizzle";
-import type {
-  DrizzleFilter,
-  QueryManyWithTracksResult,
-  QueryOneWithTracksResult,
-} from "./types";
+import type { QueryManyWithTracksFn, QueryOneWithTracksFn } from "./types";
 import { getColumns } from "./utils";
 
 //#region GET Methods
-/** Get specified album. Throws error if nothing is found. */
-export async function getAlbum<
-  DCols extends keyof Album,
-  TCols extends keyof Track,
->(id: string, options?: { columns?: DCols[]; trackColumns?: TCols[] }) {
-  const album = await db.query.albums.findFirst({
-    where: eq(albums.id, id),
-    columns: getColumns(options?.columns),
-    with: {
-      tracks: {
-        columns: getColumns(options?.trackColumns),
-        orderBy: (fields, { asc }) => [asc(fields.disc), asc(fields.track)],
+const _getAlbum: QueryOneWithTracksFn<Album, false> =
+  () => async (id, options) => {
+    const album = await db.query.albums.findFirst({
+      where: eq(albums.id, id),
+      columns: getColumns(options?.columns),
+      with: {
+        tracks: {
+          columns: getColumns(options?.trackColumns),
+          orderBy: (fields, { asc }) => [asc(fields.disc), asc(fields.track)],
+        },
       },
-    },
-  });
-  if (!album) throw new Error(i18next.t("response.noAlbums"));
-  return album as QueryOneWithTracksResult<AlbumWithTracks, DCols, TCols>;
-}
+    });
+    if (!album) throw new Error(i18next.t("response.noAlbums"));
+    return album;
+  };
+
+/** Get specified album. Throws error if nothing is found. */
+export const getAlbum = _getAlbum();
+
+const _getAlbums: QueryManyWithTracksFn<Album, false> =
+  () => async (options) => {
+    return db.query.albums.findMany({
+      where: and(...(options?.where ?? [])),
+      columns: getColumns(options?.columns),
+      with: {
+        tracks: {
+          columns: getColumns(options?.trackColumns),
+          orderBy: (fields, { asc }) => [asc(fields.disc), asc(fields.track)],
+        },
+      },
+      orderBy: (fields) => [iAsc(fields.name), iAsc(fields.artistName)],
+    });
+  };
 
 /** Get multiple albums. */
-export async function getAlbums<
-  DCols extends keyof Album,
-  TCols extends keyof Track,
->(options?: {
-  where?: DrizzleFilter;
-  columns?: DCols[];
-  trackColumns?: TCols[];
-}) {
-  return db.query.albums.findMany({
-    where: and(...(options?.where ?? [])),
-    columns: getColumns(options?.columns),
-    with: {
-      tracks: {
-        columns: getColumns(options?.trackColumns),
-        orderBy: (fields, { asc }) => [asc(fields.disc), asc(fields.track)],
-      },
-    },
-    orderBy: (fields) => [iAsc(fields.name), iAsc(fields.artistName)],
-  }) as Promise<QueryManyWithTracksResult<AlbumWithTracks, DCols, TCols>>;
-}
+export const getAlbums = _getAlbums();
 //#endregion
 
 //#region PATCH Methods
