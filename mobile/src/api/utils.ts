@@ -1,4 +1,7 @@
-import type { Track } from "~/db/schema";
+import type { Track, TrackWithAlbum } from "~/db/schema";
+
+/** The variant of `Track` type we used. */
+type UsedTrackType<T extends boolean> = true extends T ? TrackWithAlbum : Track;
 
 /**
  * Conditionally select properties of an object type based on optionally
@@ -14,11 +17,12 @@ export type QueryOneResult<
  * property.
  */
 export type QueryOneWithTracksResult<
-  TData extends { tracks: Track[] },
+  TData extends { tracks: Array<UsedTrackType<WithAlbum>> },
   TDataKeys extends Exclude<keyof TData, "tracks"> | undefined,
-  TTrackKeys extends keyof Track | undefined,
+  TTrackKeys extends keyof UsedTrackType<WithAlbum> | undefined,
+  WithAlbum extends boolean = false,
 > = QueryOneResult<TData, TDataKeys> & {
-  tracks: Array<QueryOneResult<Track, TTrackKeys>>;
+  tracks: Array<QueryOneResult<UsedTrackType<WithAlbum>, TTrackKeys>>;
 };
 
 /** When we return an array of `QueryOneResult`. */
@@ -29,10 +33,11 @@ export type QueryManyResult<
 
 /** When we return an array of `QueryOneWithTracksResult`. */
 export type QueryManyWithTracksResult<
-  TData extends { tracks: Track[] },
+  TData extends { tracks: Array<UsedTrackType<WithAlbum>> },
   TDataKeys extends Exclude<keyof TData, "tracks"> | undefined,
-  TTrackKeys extends keyof Track | undefined,
-> = Array<QueryOneWithTracksResult<TData, TDataKeys, TTrackKeys>>;
+  TTrackKeys extends keyof UsedTrackType<WithAlbum> | undefined,
+  WithAlbum extends boolean = false,
+> = Array<QueryOneWithTracksResult<TData, TDataKeys, TTrackKeys, WithAlbum>>;
 
 /** Get columns we want to select in the database schema. */
 export function getColumns<T extends string>(keys: T[] | undefined) {
