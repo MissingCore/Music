@@ -122,7 +122,7 @@ export const queries = createQueryKeyStore({
 async function getFavoriteLists() {
   const [favAlbums, favPlaylists] = await Promise.all([
     getAlbums({ where: [eq(albums.isFavorite, true)] }),
-    getPlaylists([eq(playlists.isFavorite, true)]),
+    getPlaylists({ where: [eq(playlists.isFavorite, true)] }),
   ]);
   return { albums: favAlbums, playlists: favPlaylists };
 }

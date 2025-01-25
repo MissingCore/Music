@@ -94,7 +94,7 @@ async function exportBackup() {
   // Get favorited values.
   const [favAlbums, favPlaylists, favTracks] = await Promise.all([
     getAlbums({ where: [eq(albums.isFavorite, true)] }),
-    getPlaylists([eq(playlists.isFavorite, true)]),
+    getPlaylists({ where: [eq(playlists.isFavorite, true)] }),
     getTracks([eq(tracks.isFavorite, true)]),
   ]);
   // Get all user-generated playlists.
