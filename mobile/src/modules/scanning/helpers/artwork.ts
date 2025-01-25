@@ -32,7 +32,9 @@ export async function findAndSaveArtwork() {
       or(inArray(tracks.albumId, idsWithCover), isNotNull(tracks.artwork)),
     );
 
-  const uncheckedTracks = await getTracks([eq(tracks.fetchedArt, false)]);
+  const uncheckedTracks = await getTracks({
+    where: [eq(tracks.fetchedArt, false)],
+  });
   // Sort tracks to optimize SQL queries.
   const singles: TrackWithAlbum[] = [];
   const albumTracks: Record<string, TrackWithAlbum[]> = {};

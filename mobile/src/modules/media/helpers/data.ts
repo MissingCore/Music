@@ -94,6 +94,8 @@ export async function getTrackList({ type, id }: PlayListSource) {
 /** Get list of tracks from track ids. */
 export async function getTracksFromIds(trackIds: string[]) {
   if (trackIds.length === 0) return [];
-  const unorderedTracks = await getTracks([inArray(tracks.id, trackIds)]);
+  const unorderedTracks = await getTracks({
+    where: [inArray(tracks.id, trackIds)],
+  });
   return trackIds.map((tId) => unorderedTracks.find(({ id }) => id === tId)!);
 }

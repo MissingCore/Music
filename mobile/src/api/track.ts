@@ -1,48 +1,70 @@
 import { and, eq, inArray } from "drizzle-orm";
 
 import { db } from "~/db";
-import type { TrackWithAlbum } from "~/db/schema";
+import type { Album, Track } from "~/db/schema";
 import { tracks, tracksToPlaylists } from "~/db/schema";
 import { getTrackCover } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
 
 import { deleteImage } from "~/lib/file-system";
-import type { DrizzleFilter, QuerySingleFn } from "./types";
+import type { DrizzleFilter } from "./types";
+import type { QueryOneResult } from "./utils";
+import { getColumns } from "./utils";
 
 //#region GET Methods
 /** Get specified track. Throws error by default if nothing is found. */
-// @ts-expect-error - Function overloading typing issues [ts(2322)]
-export const getTrack: QuerySingleFn<TrackWithAlbum> = async (
-  id,
-  shouldThrow = true,
-) => {
+export async function getTrack<
+  DCols extends keyof Track,
+  ACols extends keyof Album,
+>(id: string, options?: { columns?: DCols[]; albumColumns?: ACols[] }) {
   const track = await db.query.tracks.findFirst({
     where: eq(tracks.id, id),
-    with: { album: true },
+    columns: getColumns(options?.columns),
+    with: { album: { columns: getColumns(options?.albumColumns) } },
   });
-  if (!track) {
-    if (shouldThrow) throw new Error(i18next.t("response.noTracks"));
-    return undefined;
-  }
-  return { ...track, artwork: getTrackCover(track) };
-};
+  if (!track) throw new Error(i18next.t("response.noTracks"));
+  const hasArtwork =
+    // @ts-expect-error - `options.columns` is defined.
+    options?.columns === undefined || options?.columns.includes("artwork");
+  return {
+    ...track,
+    ...(hasArtwork ? { artwork: getTrackCover(track) } : {}),
+  } as QueryOneResult<Track, DCols> & { album: QueryOneResult<Album, ACols> };
+}
 
 /** Get the names of the playlists that this track is in. */
 export async function getTrackPlaylists(id: string) {
   const allTrackPlaylists = await db.query.tracksToPlaylists.findMany({
     where: (fields, { eq }) => eq(fields.trackId, id),
+    columns: { playlistName: true },
   });
-  return allTrackPlaylists.map((rel) => rel.playlistName);
+  return allTrackPlaylists.map(({ playlistName }) => playlistName);
 }
 
 /** Get multiple tracks. */
-export async function getTracks(where: DrizzleFilter = []) {
+export async function getTracks<
+  DCols extends keyof Track,
+  ACols extends keyof Album,
+>(options?: {
+  where?: DrizzleFilter;
+  columns?: DCols[];
+  albumColumns?: ACols[];
+}) {
   const allTracks = await db.query.tracks.findMany({
-    where: and(...where),
-    with: { album: true },
+    where: and(...(options?.where ?? [])),
+    columns: getColumns(options?.columns),
+    with: { album: { columns: getColumns(options?.albumColumns) } },
   });
-  return allTracks.map((t) => ({ ...t, artwork: getTrackCover(t) }));
+  const hasArtwork =
+    // @ts-expect-error - `options.columns` is defined.
+    options?.columns === undefined || options?.columns.includes("artwork");
+  return allTracks.map((t) => ({
+    ...t,
+    ...(hasArtwork ? { artwork: getTrackCover(t) } : {}),
+  })) as Array<
+    QueryOneResult<Track, DCols> & { album: QueryOneResult<Album, ACols> }
+  >;
 }
 //#endregion
 
@@ -96,12 +118,20 @@ export async function addToPlaylist(
 /** Delete specified track. */
 export async function deleteTrack(id: string) {
   return db.transaction(async (tx) => {
+    // Get artwork of track that we want to delete.
+    let oldArtwork: string | null = null;
+    try {
+      const deletedTrack = await getTrack(id, {
+        columns: ["artwork"],
+        albumColumns: [],
+      });
+      oldArtwork = deletedTrack.artwork;
+    } catch {}
     // Delete track and its playlist relations.
     await tx.delete(tracksToPlaylists).where(eq(tracksToPlaylists.trackId, id));
     await tx.delete(tracks).where(eq(tracks.id, id));
-    const deletedTrack = await getTrack(id, false);
     // If the deletions were fine, delete the artwork.
-    if (deletedTrack) await deleteImage(deletedTrack.artwork);
+    if (oldArtwork) await deleteImage(oldArtwork);
   });
 }
 
