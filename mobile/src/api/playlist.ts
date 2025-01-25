@@ -19,11 +19,11 @@ import { deleteImage } from "~/lib/file-system";
 import { moveArray } from "~/utils/object";
 import type { ReservedPlaylistName } from "~/modules/media/constants";
 import { ReservedPlaylists } from "~/modules/media/constants";
-import type { DrizzleFilter } from "./types";
 import type {
+  DrizzleFilter,
   QueryManyWithTracksResult,
   QueryOneWithTracksResult,
-} from "./utils";
+} from "./types";
 import { getColumns } from "./utils";
 
 //#region GET Methods

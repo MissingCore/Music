@@ -8,8 +8,7 @@ import { getTrackCover } from "~/db/utils";
 import i18next from "~/modules/i18n";
 
 import { deleteImage } from "~/lib/file-system";
-import type { DrizzleFilter } from "./types";
-import type { QueryOneResult } from "./utils";
+import type { DrizzleFilter, QueryOneResult } from "./types";
 import { getColumns } from "./utils";
 
 //#region GET Methods

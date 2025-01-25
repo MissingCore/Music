@@ -8,11 +8,11 @@ import i18next from "~/modules/i18n";
 
 import { iAsc } from "~/lib/drizzle";
 import { deleteImage } from "~/lib/file-system";
-import type { DrizzleFilter } from "./types";
 import type {
+  DrizzleFilter,
   QueryManyWithTracksResult,
   QueryOneWithTracksResult,
-} from "./utils";
+} from "./types";
 import { getColumns } from "./utils";
 
 //#region GET Methods
