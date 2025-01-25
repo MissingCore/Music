@@ -21,6 +21,19 @@ export type QueryOneWithTracksResult<
   tracks: Array<QueryOneResult<Track, TTrackKeys>>;
 };
 
+/** When we return an array of `QueryOneResult`. */
+export type QueryManyResult<
+  TData,
+  TCols extends keyof TData | undefined,
+> = Array<QueryOneResult<TData, TCols>>;
+
+/** When we return an array of `QueryOneWithTracksResult`. */
+export type QueryManyWithTracksResult<
+  TData extends { tracks: Track[] },
+  TDataKeys extends Exclude<keyof TData, "tracks"> | undefined,
+  TTrackKeys extends keyof Track | undefined,
+> = Array<QueryOneWithTracksResult<TData, TDataKeys, TTrackKeys>>;
+
 /** Get columns we want to select in the database schema. */
 export function getColumns<T extends string>(keys: T[] | undefined) {
   if (keys === undefined) return undefined;

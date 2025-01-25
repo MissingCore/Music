@@ -21,7 +21,9 @@ export async function findAndSaveArtwork() {
   const stopwatch = new Stopwatch();
 
   // Ensure we don't unnecessarily seach for artwork.
-  const albumsWithCovers = await getAlbums([isNotNull(albums.artwork)]);
+  const albumsWithCovers = await getAlbums({
+    where: [isNotNull(albums.artwork)],
+  });
   const idsWithCover = albumsWithCovers.map(({ id }) => id);
   await db
     .update(tracks)

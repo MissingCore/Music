@@ -8,7 +8,10 @@ import i18next from "~/modules/i18n";
 
 import { iAsc } from "~/lib/drizzle";
 import type { DrizzleFilter } from "./types";
-import type { QueryOneWithTracksResult } from "./utils";
+import type {
+  QueryManyWithTracksResult,
+  QueryOneWithTracksResult,
+} from "./utils";
 import { getColumns } from "./utils";
 
 //#region GET Methods
@@ -32,16 +35,25 @@ export async function getAlbum<
 }
 
 /** Get multiple albums. */
-export async function getAlbums(where: DrizzleFilter = []) {
+export async function getAlbums<
+  DCols extends keyof Album,
+  TCols extends keyof Track,
+>(options?: {
+  where?: DrizzleFilter;
+  columns?: DCols[];
+  trackColumns?: TCols[];
+}) {
   return db.query.albums.findMany({
-    where: and(...where),
+    where: and(...(options?.where ?? [])),
+    columns: getColumns(options?.columns),
     with: {
       tracks: {
+        columns: getColumns(options?.trackColumns),
         orderBy: (fields, { asc }) => [asc(fields.disc), asc(fields.track)],
       },
     },
     orderBy: (fields) => [iAsc(fields.name), iAsc(fields.artistName)],
-  });
+  }) as Promise<QueryManyWithTracksResult<AlbumWithTracks, DCols, TCols>>;
 }
 //#endregion
 
