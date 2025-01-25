@@ -1,32 +1,35 @@
 import { and, eq } from "drizzle-orm";
 
 import { db } from "~/db";
-import type { AlbumWithTracks } from "~/db/schema";
+import type { Album, AlbumWithTracks, Track } from "~/db/schema";
 import { albums } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 
 import { iAsc } from "~/lib/drizzle";
-import type { DrizzleFilter, QuerySingleFn } from "./types";
+import type { DrizzleFilter } from "./types";
+import type { QueryOneWithTracksResult } from "./utils";
+import { getColumns } from "./utils";
 
 //#region GET Methods
-/** Get specified album. Throws error by default if nothing is found. */
-// @ts-expect-error - Function overloading typing issues [ts(2322)]
-export const getAlbum: QuerySingleFn<AlbumWithTracks> = async (
-  id,
-  shouldThrow = true,
-) => {
+/** Get specified album. Throws error if nothing is found. */
+export async function getAlbum<
+  DCols extends keyof Album,
+  TCols extends keyof Track,
+>(id: string, options?: { columns?: DCols[]; trackColumns?: TCols[] }) {
   const album = await db.query.albums.findFirst({
     where: eq(albums.id, id),
+    columns: getColumns(options?.columns),
     with: {
       tracks: {
+        columns: getColumns(options?.trackColumns),
         orderBy: (fields, { asc }) => [asc(fields.disc), asc(fields.track)],
       },
     },
   });
-  if (shouldThrow && !album) throw new Error(i18next.t("response.noAlbums"));
-  return album;
-};
+  if (!album) throw new Error(i18next.t("response.noAlbums"));
+  return album as QueryOneWithTracksResult<AlbumWithTracks, DCols, TCols>;
+}
 
 /** Get multiple albums. */
 export async function getAlbums(where: DrizzleFilter = []) {
