@@ -68,18 +68,30 @@ recentListStore.subscribe(
     for (const { id, type } of sources) {
       try {
         if (type === "album") {
-          const data = await getAlbum(id);
+          const data = await getAlbum(id, {
+            columns: ["id", "name", "artistName", "artwork"],
+            trackColumns: ["id"],
+          });
           entry = formatForMediaCard({ type: "album", data, t: i18next.t });
         } else if (type === "artist") {
-          const data = await getArtist(id);
+          const data = await getArtist(id, {
+            columns: ["name", "artwork"],
+            trackColumns: ["id"],
+          });
           entry = formatForMediaCard({ type: "artist", data, t: i18next.t });
         } else if (type === "folder") {
           // TODO: Eventually support folders in the recent list.
           entry = undefined;
         } else {
           const data = ReservedNames.has(id)
-            ? await getSpecialPlaylist(id as ReservedPlaylistName)
-            : await getPlaylist(id);
+            ? await getSpecialPlaylist(id as ReservedPlaylistName, {
+                trackColumns: ["id", "artwork"],
+              })
+            : await getPlaylist(id, {
+                columns: ["name", "artwork"],
+                trackColumns: ["id", "artwork"],
+              });
+
           entry = formatForMediaCard({ type: "playlist", data, t: i18next.t });
 
           // Translate the names of these special playlists.
