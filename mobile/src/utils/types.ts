@@ -1,6 +1,12 @@
 /** Get a partial of an object with some required fields. */
 export type AtLeast<T, K extends keyof T> = Partial<T> & Pick<T, K>;
 
+/** Use the boolean in the 1st position if not `undefined`. */
+export type BooleanPriority<
+  T extends boolean | undefined,
+  U extends boolean,
+> = undefined extends T ? U : NonNullable<T>;
+
 /** Get the type of the value returned from a promise. */
 export type ExtractFnReturnType<FnType extends (...args: any) => any> = Awaited<
   ReturnType<FnType>

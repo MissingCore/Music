@@ -8,7 +8,7 @@ import i18next from "~/modules/i18n";
 
 import { iAsc } from "~/lib/drizzle";
 import type { QueryManyWithTracksFn, QueryOneWithTracksFn } from "./types";
-import { getColumns } from "./utils";
+import { getColumns, withAlbum } from "./utils";
 
 //#region GET Methods
 const _getAlbum: QueryOneWithTracksFn<Album, false> =
@@ -19,6 +19,7 @@ const _getAlbum: QueryOneWithTracksFn<Album, false> =
       with: {
         tracks: {
           columns: getColumns(options?.trackColumns),
+          ...withAlbum({ defaultWithAlbum: false, ...options }),
           orderBy: (fields, { asc }) => [asc(fields.disc), asc(fields.track)],
         },
       },
@@ -38,6 +39,7 @@ const _getAlbums: QueryManyWithTracksFn<Album, false> =
       with: {
         tracks: {
           columns: getColumns(options?.trackColumns),
+          ...withAlbum({ defaultWithAlbum: false, ...options }),
           orderBy: (fields, { asc }) => [asc(fields.disc), asc(fields.track)],
         },
       },

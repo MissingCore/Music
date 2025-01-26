@@ -2,6 +2,8 @@ import type { SQL } from "drizzle-orm";
 
 import type { Album, Track, TrackWithAlbum } from "~/db/schema";
 
+import type { BooleanPriority } from "~/utils/types";
+
 /** Operations passed to `where` clause. */
 export type DrizzleFilter = Array<SQL | undefined>;
 
@@ -80,15 +82,23 @@ export type QueryOneWithTracksFn<
   DCols extends keyof TData,
   TCols extends keyof Track,
   ACols extends keyof Album,
+  WithAlbum_User extends boolean | undefined,
 >(
   id: TId,
   options?: {
     columns?: DCols[];
     trackColumns?: TCols[];
     albumColumns?: [ACols, ...ACols[]];
+    withAlbum?: WithAlbum_User;
   },
 ) => Promise<
-  QueryOneWithTracksResult_Next<TData, WithAlbum, DCols, TCols, ACols>
+  QueryOneWithTracksResult_Next<
+    TData,
+    BooleanPriority<WithAlbum_User, WithAlbum>,
+    DCols,
+    TCols,
+    ACols
+  >
 >;
 
 /**
@@ -105,11 +115,21 @@ export type QueryManyWithTracksFn<
   DCols extends keyof TData,
   TCols extends keyof Track,
   ACols extends keyof Album,
+  WithAlbum_User extends boolean | undefined,
 >(options?: {
   where?: DrizzleFilter;
   columns?: DCols[];
   trackColumns?: TCols[];
   albumColumns?: [ACols, ...ACols[]];
+  withAlbum?: WithAlbum_User;
 }) => Promise<
-  Array<QueryOneWithTracksResult_Next<TData, WithAlbum, DCols, TCols, ACols>>
+  Array<
+    QueryOneWithTracksResult_Next<
+      TData,
+      BooleanPriority<WithAlbum_User, WithAlbum>,
+      DCols,
+      TCols,
+      ACols
+    >
+  >
 >;

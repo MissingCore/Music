@@ -9,7 +9,7 @@ import i18next from "~/modules/i18n";
 import { iAsc } from "~/lib/drizzle";
 import { deleteImage } from "~/lib/file-system";
 import type { QueryManyWithTracksFn, QueryOneWithTracksFn } from "./types";
-import { getColumns } from "./utils";
+import { getColumns, withAlbum } from "./utils";
 
 //#region GET Methods
 const _getArtist: QueryOneWithTracksFn<Artist> = () => async (id, options) => {
@@ -19,7 +19,7 @@ const _getArtist: QueryOneWithTracksFn<Artist> = () => async (id, options) => {
     with: {
       tracks: {
         columns: getColumns(options?.trackColumns),
-        with: { album: { columns: getColumns(options?.albumColumns) } },
+        ...withAlbum({ defaultWithAlbum: true, ...options }),
         orderBy: (fields) => iAsc(fields.name),
       },
     },
@@ -46,7 +46,7 @@ const _getArtists: QueryManyWithTracksFn<Artist> = () => async (options) => {
     with: {
       tracks: {
         columns: getColumns(options?.trackColumns),
-        with: { album: { columns: getColumns(options?.albumColumns) } },
+        ...withAlbum({ defaultWithAlbum: true, ...options }),
         orderBy: (fields) => iAsc(fields.name),
       },
     },
