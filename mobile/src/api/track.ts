@@ -8,19 +8,28 @@ import { getTrackCover } from "~/db/utils";
 import i18next from "~/modules/i18n";
 
 import { deleteImage } from "~/lib/file-system";
-import type { DrizzleFilter, QueryOneResult } from "./types";
-import { getColumns } from "./utils";
+import type { BooleanPriority } from "~/utils/types";
+import type { DrizzleFilter, QueriedTrack } from "./types";
+import { getColumns, withAlbum } from "./utils";
 
 //#region GET Methods
-/** Get specified track. Throws error by default if nothing is found. */
+/** Get specified track. Throws error if nothing is found. */
 export async function getTrack<
-  DCols extends keyof Track,
+  TCols extends keyof Track,
   ACols extends keyof Album,
->(id: string, options?: { columns?: DCols[]; albumColumns?: ACols[] }) {
+  WithAlbum_User extends boolean | undefined,
+>(
+  id: string,
+  options?: {
+    columns?: TCols[];
+    albumColumns?: [ACols, ...ACols[]];
+    withAlbum?: WithAlbum_User;
+  },
+) {
   const track = await db.query.tracks.findFirst({
     where: eq(tracks.id, id),
     columns: getColumns(options?.columns),
-    with: { album: { columns: getColumns(options?.albumColumns) } },
+    ...withAlbum({ defaultWithAlbum: true, ...options }),
   });
   if (!track) throw new Error(i18next.t("response.noTracks"));
   const hasArtwork =
@@ -29,7 +38,7 @@ export async function getTrack<
   return {
     ...track,
     ...(hasArtwork ? { artwork: getTrackCover(track) } : {}),
-  } as QueryOneResult<Track, DCols> & { album: QueryOneResult<Album, ACols> };
+  } as QueriedTrack<BooleanPriority<WithAlbum_User, true>, TCols, ACols>;
 }
 
 /** Get the names of the playlists that this track is in. */
@@ -43,17 +52,19 @@ export async function getTrackPlaylists(id: string) {
 
 /** Get multiple tracks. */
 export async function getTracks<
-  DCols extends keyof Track,
+  TCols extends keyof Track,
   ACols extends keyof Album,
+  WithAlbum_User extends boolean | undefined,
 >(options?: {
   where?: DrizzleFilter;
-  columns?: DCols[];
-  albumColumns?: ACols[];
+  columns?: TCols[];
+  albumColumns?: [ACols, ...ACols[]];
+  withAlbum?: WithAlbum_User;
 }) {
   const allTracks = await db.query.tracks.findMany({
     where: and(...(options?.where ?? [])),
     columns: getColumns(options?.columns),
-    with: { album: { columns: getColumns(options?.albumColumns) } },
+    ...withAlbum({ defaultWithAlbum: true, ...options }),
   });
   const hasArtwork =
     // @ts-expect-error - `options.columns` is defined.
@@ -62,7 +73,7 @@ export async function getTracks<
     ...t,
     ...(hasArtwork ? { artwork: getTrackCover(t) } : {}),
   })) as Array<
-    QueryOneResult<Track, DCols> & { album: QueryOneResult<Album, ACols> }
+    QueriedTrack<BooleanPriority<WithAlbum_User, true>, TCols, ACols>
   >;
 }
 //#endregion
@@ -122,7 +133,7 @@ export async function deleteTrack(id: string) {
     try {
       const deletedTrack = await getTrack(id, {
         columns: ["artwork"],
-        albumColumns: [],
+        withAlbum: false,
       });
       oldArtwork = deletedTrack.artwork;
     } catch {}

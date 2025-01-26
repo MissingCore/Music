@@ -48,6 +48,16 @@ export type QueryManyWithTracksResult<
 type UsedTrackType<T extends boolean> = true extends T ? TrackWithAlbum : Track;
 //#endregion
 
+/** The structure of each track returned in the `tracks` relation. */
+export type QueriedTrack<
+  WithAlbum extends boolean,
+  TCols extends keyof Track,
+  ACols extends keyof Album,
+> = QueryOneResult<Track, TCols> &
+  (true extends WithAlbum
+    ? { album: QueryOneResult<Album, ACols> | null }
+    : Record<never, never>);
+
 /**
  * `QueryOneResult`, but also applies a couple more layers of depth with
  * the `tracks` property and its `album` field.
@@ -59,12 +69,7 @@ type QueryOneWithTracksResult_Next<
   TCols extends keyof Track,
   ACols extends keyof Album,
 > = QueryOneResult<TData, DCols> & {
-  tracks: Array<
-    QueryOneResult<Track, TCols> &
-      (true extends WithAlbum
-        ? { album: QueryOneResult<Album, ACols> | null }
-        : Record<never, never>)
-  >;
+  tracks: Array<QueriedTrack<WithAlbum, TCols, ACols>>;
 };
 
 /**
