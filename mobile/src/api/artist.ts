@@ -1,45 +1,35 @@
 import { and, eq } from "drizzle-orm";
 
 import { db } from "~/db";
-import type { Artist, ArtistWithTracks, Track } from "~/db/schema";
+import type { Artist } from "~/db/schema";
 import { artists } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 
 import { iAsc } from "~/lib/drizzle";
 import { deleteImage } from "~/lib/file-system";
-import type {
-  DrizzleFilter,
-  QueryManyWithTracksResult,
-  QueryOneWithTracksResult,
-} from "./types";
+import type { QueryManyWithTracksFn, QueryOneWithTracksFn } from "./types";
 import { getColumns } from "./utils";
 
 //#region GET Methods
-/** Get specified artist. Throws error if nothing is found. */
-export async function getArtist<
-  DCols extends keyof Artist,
-  TCols extends keyof Track,
->(id: string, options?: { columns?: DCols[]; trackColumns?: TCols[] }) {
+const _getArtist: QueryOneWithTracksFn<Artist> = () => async (id, options) => {
   const artist = await db.query.artists.findFirst({
     where: eq(artists.name, id),
     columns: getColumns(options?.columns),
     with: {
       tracks: {
         columns: getColumns(options?.trackColumns),
-        with: { album: true },
+        with: { album: { columns: getColumns(options?.albumColumns) } },
         orderBy: (fields) => iAsc(fields.name),
       },
     },
   });
   if (!artist) throw new Error(i18next.t("response.noArtists"));
-  return artist as QueryOneWithTracksResult<
-    ArtistWithTracks,
-    DCols,
-    TCols | "album",
-    true
-  >;
-}
+  return artist;
+};
+
+/** Get specified artist. Throws error if nothing is found. */
+export const getArtist = _getArtist();
 
 /** Get the albums an artist has released in descending order. */
 export async function getArtistAlbums(id: string) {
@@ -49,30 +39,23 @@ export async function getArtistAlbums(id: string) {
   });
 }
 
-/** Get multiple artists. */
-export async function getArtists<
-  DCols extends keyof Artist,
-  TCols extends keyof Track,
->(options?: {
-  where?: DrizzleFilter;
-  columns?: DCols[];
-  trackColumns?: TCols[];
-}) {
+const _getArtists: QueryManyWithTracksFn<Artist> = () => async (options) => {
   return db.query.artists.findMany({
     where: and(...(options?.where ?? [])),
     columns: getColumns(options?.columns),
     with: {
       tracks: {
         columns: getColumns(options?.trackColumns),
-        with: { album: true },
+        with: { album: { columns: getColumns(options?.albumColumns) } },
         orderBy: (fields) => iAsc(fields.name),
       },
     },
     orderBy: (fields) => iAsc(fields.name),
-  }) as Promise<
-    QueryManyWithTracksResult<ArtistWithTracks, DCols, TCols | "album", true>
-  >;
-}
+  });
+};
+
+/** Get multiple artists. */
+export const getArtists = _getArtists();
 //#endregion
 
 //#region POST Methods

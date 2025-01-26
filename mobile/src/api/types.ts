@@ -60,7 +60,7 @@ type QueryOneWithTracksResult_Next<
   tracks: Array<
     QueryOneResult<Track, TCols> &
       (true extends WithAlbum
-        ? { album: QueryOneResult<Album, ACols> }
+        ? { album: QueryOneResult<Album, ACols> | null }
         : Record<never, never>)
   >;
 };
@@ -85,7 +85,7 @@ export type QueryOneWithTracksFn<
   options?: {
     columns?: DCols[];
     trackColumns?: TCols[];
-    albumColumns?: ACols[];
+    albumColumns?: [ACols, ...ACols[]];
   },
 ) => Promise<
   QueryOneWithTracksResult_Next<TData, WithAlbum, DCols, TCols, ACols>
@@ -109,7 +109,7 @@ export type QueryManyWithTracksFn<
   where?: DrizzleFilter;
   columns?: DCols[];
   trackColumns?: TCols[];
-  albumColumns?: ACols[];
+  albumColumns?: [ACols, ...ACols[]];
 }) => Promise<
   Array<QueryOneWithTracksResult_Next<TData, WithAlbum, DCols, TCols, ACols>>
 >;
