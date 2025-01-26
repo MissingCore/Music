@@ -77,20 +77,33 @@ recentListStore.subscribe(
           const data = await getArtist(id, {
             columns: ["name", "artwork"],
             trackColumns: ["id"],
+            withAlbum: false,
           });
           entry = formatForMediaCard({ type: "artist", data, t: i18next.t });
         } else if (type === "folder") {
           // TODO: Eventually support folders in the recent list.
           entry = undefined;
         } else {
-          const data = ReservedNames.has(id)
-            ? await getSpecialPlaylist(id as ReservedPlaylistName, {
-                trackColumns: ["id", "artwork"],
-              })
-            : await getPlaylist(id, {
-                columns: ["name", "artwork"],
-                trackColumns: ["id", "artwork"],
-              });
+          let data = null;
+          if (ReservedNames.has(id)) {
+            const specialList = await getSpecialPlaylist(
+              id as ReservedPlaylistName,
+              { trackColumns: ["id"], withAlbum: false },
+            );
+            data = {
+              ...specialList,
+              tracks: specialList.tracks.map(() => ({
+                artwork: null,
+                album: null,
+              })),
+            };
+          } else {
+            data = await getPlaylist(id, {
+              columns: ["name", "artwork"],
+              trackColumns: ["artwork"],
+              albumColumns: ["artwork"],
+            });
+          }
 
           entry = formatForMediaCard({ type: "playlist", data, t: i18next.t });
 

@@ -1,6 +1,6 @@
 import type { SQL } from "drizzle-orm";
 
-import type { Album, Track, TrackWithAlbum } from "~/db/schema";
+import type { Album, Track } from "~/db/schema";
 
 import type { BooleanPriority } from "~/utils/types";
 
@@ -11,42 +11,10 @@ export type DrizzleFilter = Array<SQL | undefined>;
  * Conditionally select properties of an object type based on optionally
  * provided keys.
  */
-export type QueryOneResult<
+type QueryOneResult<
   TData,
   TCols extends keyof TData | undefined,
 > = undefined extends TCols ? TData : Pick<TData, Extract<TCols, keyof TData>>;
-
-/**
- * `QueryOneResult`, but also applies one more layer deep with the `tracks`
- * property.
- */
-export type QueryOneWithTracksResult<
-  TData extends { tracks: Array<UsedTrackType<WithAlbum>> },
-  TDataKeys extends Exclude<keyof TData, "tracks"> | undefined,
-  TTrackKeys extends keyof UsedTrackType<WithAlbum> | undefined,
-  WithAlbum extends boolean = false,
-> = QueryOneResult<TData, TDataKeys> & {
-  tracks: Array<QueryOneResult<UsedTrackType<WithAlbum>, TTrackKeys>>;
-};
-
-/** When we return an array of `QueryOneResult`. */
-export type QueryManyResult<
-  TData,
-  TCols extends keyof TData | undefined,
-> = Array<QueryOneResult<TData, TCols>>;
-
-/** When we return an array of `QueryOneWithTracksResult`. */
-export type QueryManyWithTracksResult<
-  TData extends { tracks: Array<UsedTrackType<WithAlbum>> },
-  TDataKeys extends Exclude<keyof TData, "tracks"> | undefined,
-  TTrackKeys extends keyof UsedTrackType<WithAlbum> | undefined,
-  WithAlbum extends boolean = false,
-> = Array<QueryOneWithTracksResult<TData, TDataKeys, TTrackKeys, WithAlbum>>;
-
-//#region Internal Helpers
-/** The variant of `Track` type we used. */
-type UsedTrackType<T extends boolean> = true extends T ? TrackWithAlbum : Track;
-//#endregion
 
 /** The structure of each track returned in the `tracks` relation. */
 export type QueriedTrack<
@@ -62,7 +30,7 @@ export type QueriedTrack<
  * `QueryOneResult`, but also applies a couple more layers of depth with
  * the `tracks` property and its `album` field.
  */
-type QueryOneWithTracksResult_Next<
+type QueryOneWithTracksResult<
   TData extends Record<string, any>,
   WithAlbum extends boolean,
   DCols extends keyof TData,
@@ -97,7 +65,7 @@ export type QueryOneWithTracksFn<
     withAlbum?: WithAlbum_User;
   },
 ) => Promise<
-  QueryOneWithTracksResult_Next<
+  QueryOneWithTracksResult<
     TData,
     BooleanPriority<WithAlbum_User, WithAlbum>,
     DCols,
@@ -129,7 +97,7 @@ export type QueryManyWithTracksFn<
   withAlbum?: WithAlbum_User;
 }) => Promise<
   Array<
-    QueryOneWithTracksResult_Next<
+    QueryOneWithTracksResult<
       TData,
       BooleanPriority<WithAlbum_User, WithAlbum>,
       DCols,
