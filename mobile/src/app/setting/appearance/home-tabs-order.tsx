@@ -8,7 +8,6 @@ import { Eye } from "~/icons/Eye";
 import { EyeOff } from "~/icons/EyeOff";
 import type { OrderableTab } from "~/services/UserPreferences";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
-import { StandardScrollLayout } from "~/layouts/StandardScroll";
 import {
   areRenderItemPropsEqual,
   useDragListState,
@@ -34,21 +33,29 @@ export default function HomeTabsOrderScreen() {
   );
 
   return (
-    <StandardScrollLayout>
+    <FlashDragList
+      estimatedItemSize={52} // 48px Height + 4px Margin top
+      data={items}
+      keyExtractor={(tabKey) => tabKey}
+      renderItem={renderItem}
+      onReordered={onReordered}
+      ListHeaderComponent={ListHeaderComponent}
+      contentContainerClassName="py-4"
+      className="mx-4"
+    />
+  );
+}
+
+function ListHeaderComponent() {
+  return (
+    <>
       <TStyledText
         textKey="settings.description.homeTabsOrder"
         dim
         className="text-center text-sm"
       />
-      <Divider />
-      <FlashDragList
-        estimatedItemSize={52} // 48px Height + 4px Margin top
-        data={items}
-        keyExtractor={(tabKey) => tabKey}
-        renderItem={renderItem}
-        onReordered={onReordered}
-      />
-    </StandardScrollLayout>
+      <Divider className="my-6" />
+    </>
   );
 }
 

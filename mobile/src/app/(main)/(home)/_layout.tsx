@@ -38,7 +38,7 @@ export default function HomeLayout() {
           //  of the `reset` function.
           //  - https://reactnavigation.org/docs/navigation-actions/#reset
           e.data.state.history = oldHistory
-            .toSpliced(currIndex === atIndex ? atIndex + 1 : 1)
+            .toSpliced(currIndex === 0 ? 1 : atIndex + 1)
             .filter((r) => !hiddenTabs.some((t) => r.key.startsWith(`${t}-`)));
         }
       }
