@@ -12,20 +12,28 @@ import i18next from "~/modules/i18n";
 
 import { formatSeconds } from "~/utils/number";
 import { omitKeys } from "~/utils/object";
-import type { Prettify } from "~/utils/types";
+import type { AtLeast, Prettify } from "~/utils/types";
 import { ReservedNames, ReservedPlaylists } from "~/modules/media/constants";
 import type { MediaCard } from "~/modules/media/components/MediaCard";
 import type { Track as TrackC } from "~/modules/media/components/Track";
 import type { MediaType } from "~/modules/media/types";
 
+//#region Slim Types
+type Artwork = string | null;
+type TrackArtwork = { artwork: Artwork; album: { artwork: Artwork } | null };
+//#endregion
+
 //#region Artwork Formatters
 /** Get the cover of a playlist. */
-export function getPlaylistCover(playlist: PlaylistWithTracks) {
+export function getPlaylistCover(playlist: {
+  artwork: Artwork;
+  tracks: TrackArtwork[];
+}) {
   return playlist.artwork ?? getCollage(playlist.tracks);
 }
 
 /** Get the cover of a track. */
-export function getTrackCover(track: TrackWithAlbum) {
+export function getTrackCover(track: TrackArtwork) {
   return track.artwork ?? track.album?.artwork ?? null;
 }
 //#endregion
@@ -35,23 +43,31 @@ export function getTrackCover(track: TrackWithAlbum) {
  * Merges 2 arrays of `TrackWithAlbum`. Tracks that appear in both arrays
  * will have their order adjusted to match the 2nd array.
  */
-export function mergeTracks(arr1: TrackWithAlbum[], arr2: TrackWithAlbum[]) {
+export function mergeTracks<TData extends { id: string }>(
+  arr1: TData[],
+  arr2: TData[],
+) {
   const trackIds = new Set(arr2.map(({ id }) => id));
   return arr1.filter(({ id }) => !trackIds.has(id)).concat(arr2);
 }
 //#endregion
 
-type MediaData = Prettify<
+//#region Format for Component
+type MediaCardData<T = {}> = {
+  name: string;
+  artwork: Artwork;
+  tracks: any[];
+} & T;
+type MediaCardFormatter = Prettify<
   { t: TFunction } & (
-    | { type: "artist"; data: ArtistWithTracks }
-    | { type: "album"; data: AlbumWithTracks }
-    | { type: "playlist"; data: PlaylistWithTracks }
+    | { type: "artist"; data: MediaCardData }
+    | { type: "album"; data: MediaCardData<{ id: string; artistName: string }> }
+    | { type: "playlist"; data: MediaCardData<{ tracks: TrackArtwork[] }> }
   )
 >;
 
-//#region Format for Component
 /** Format data to be used in `<MediaCard />`. */
-export function formatForMediaCard({ type, data, t }: MediaData) {
+export function formatForMediaCard({ type, data, t }: MediaCardFormatter) {
   let source: string | string[] | null = data.artwork;
   let href = `/${type}/${encodeURIComponent(data.name)}`;
   let description = t("plural.track", { count: data.tracks.length });
@@ -69,7 +85,13 @@ export function formatForMediaCard({ type, data, t }: MediaData) {
 }
 
 /** Format data to be used in `<Track />`. */
-export function formatForTrack(type: MediaType, track: TrackWithAlbum) {
+export function formatForTrack(
+  type: MediaType,
+  track: AtLeast<
+    TrackWithAlbum,
+    "id" | "name" | "artistName" | "duration" | "artwork"
+  > & { album: { name: string; artistName: string; artwork: Artwork } | null },
+) {
   const { id, name, artistName, duration, album } = track;
 
   const imageSource = type !== "album" ? getTrackCover(track) : null;
@@ -87,8 +109,16 @@ export function formatForTrack(type: MediaType, track: TrackWithAlbum) {
 //#endregion
 
 //#region Format for Screen
+type ScreenFormatter = Prettify<
+  { t: TFunction } & (
+    | { type: "artist"; data: ArtistWithTracks }
+    | { type: "album"; data: AlbumWithTracks }
+    | { type: "playlist"; data: PlaylistWithTracks }
+  )
+>;
+
 /** Format data to be used in the `(current)` routes. */
-export function formatForCurrentScreen({ type, data, t }: MediaData) {
+export function formatForCurrentScreen({ type, data, t }: ScreenFormatter) {
   const metadata = [
     t("plural.track", { count: data.tracks.length }),
     formatSeconds(
@@ -139,7 +169,7 @@ export function sanitizePlaylistName(name: string) {
  * Create a collage from the first 4 tracks with artwork. We assume the
  * `TrackWithAlbum[]` passed is already sorted.
  */
-function getCollage(tracks: TrackWithAlbum[]) {
+function getCollage(tracks: TrackArtwork[]) {
   return tracks
     .map((track) => getTrackCover(track))
     .filter((artwork) => artwork !== null)

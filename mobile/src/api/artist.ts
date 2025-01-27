@@ -1,34 +1,35 @@
 import { and, eq } from "drizzle-orm";
 
 import { db } from "~/db";
-import type { ArtistWithTracks } from "~/db/schema";
+import type { Artist } from "~/db/schema";
 import { artists } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 
 import { iAsc } from "~/lib/drizzle";
 import { deleteImage } from "~/lib/file-system";
-import type { DrizzleFilter, QuerySingleFn } from "./types";
+import type { QueryManyWithTracksFn, QueryOneWithTracksFn } from "./types";
+import { getColumns, withAlbum } from "./utils";
 
 //#region GET Methods
-/** Get specified artist. Throws error by default if nothing is found. */
-// @ts-expect-error - Function overloading typing issues [ts(2322)]
-export const getArtist: QuerySingleFn<ArtistWithTracks> = async (
-  id,
-  shouldThrow = true,
-) => {
+const _getArtist: QueryOneWithTracksFn<Artist> = () => async (id, options) => {
   const artist = await db.query.artists.findFirst({
     where: eq(artists.name, id),
+    columns: getColumns(options?.columns),
     with: {
       tracks: {
-        with: { album: true },
+        columns: getColumns(options?.trackColumns),
+        ...withAlbum({ defaultWithAlbum: true, ...options }),
         orderBy: (fields) => iAsc(fields.name),
       },
     },
   });
-  if (shouldThrow && !artist) throw new Error(i18next.t("response.noArtists"));
+  if (!artist) throw new Error(i18next.t("response.noArtists"));
   return artist;
 };
+
+/** Get specified artist. Throws error if nothing is found. */
+export const getArtist = _getArtist();
 
 /** Get the albums an artist has released in descending order. */
 export async function getArtistAlbums(id: string) {
@@ -38,19 +39,23 @@ export async function getArtistAlbums(id: string) {
   });
 }
 
-/** Get multiple artists. */
-export async function getArtists(where: DrizzleFilter = []) {
+const _getArtists: QueryManyWithTracksFn<Artist> = () => async (options) => {
   return db.query.artists.findMany({
-    where: and(...where),
+    where: and(...(options?.where ?? [])),
+    columns: getColumns(options?.columns),
     with: {
       tracks: {
-        with: { album: true },
+        columns: getColumns(options?.trackColumns),
+        ...withAlbum({ defaultWithAlbum: true, ...options }),
         orderBy: (fields) => iAsc(fields.name),
       },
     },
     orderBy: (fields) => iAsc(fields.name),
   });
-}
+};
+
+/** Get multiple artists. */
+export const getArtists = _getArtists();
 //#endregion
 
 //#region POST Methods
@@ -66,7 +71,10 @@ export async function updateArtist(
   id: string,
   values: Partial<typeof artists.$inferInsert>,
 ) {
-  const oldValue = await getArtist(id);
+  const oldValue = await getArtist(id, {
+    columns: ["artwork"],
+    trackColumns: [],
+  });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { name: _, ...rest } = values;
   return db.transaction(async (tx) => {

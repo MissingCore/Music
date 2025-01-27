@@ -21,7 +21,9 @@ export async function findAndSaveArtwork() {
   const stopwatch = new Stopwatch();
 
   // Ensure we don't unnecessarily seach for artwork.
-  const albumsWithCovers = await getAlbums([isNotNull(albums.artwork)]);
+  const albumsWithCovers = await getAlbums({
+    where: [isNotNull(albums.artwork)],
+  });
   const idsWithCover = albumsWithCovers.map(({ id }) => id);
   await db
     .update(tracks)
@@ -30,7 +32,9 @@ export async function findAndSaveArtwork() {
       or(inArray(tracks.albumId, idsWithCover), isNotNull(tracks.artwork)),
     );
 
-  const uncheckedTracks = await getTracks([eq(tracks.fetchedArt, false)]);
+  const uncheckedTracks = await getTracks({
+    where: [eq(tracks.fetchedArt, false)],
+  });
   // Sort tracks to optimize SQL queries.
   const singles: TrackWithAlbum[] = [];
   const albumTracks: Record<string, TrackWithAlbum[]> = {};
