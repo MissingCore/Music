@@ -15,6 +15,8 @@ import { clearAllQueries } from "~/lib/react-query";
 import { Stopwatch } from "~/utils/debug";
 import { BATCH_PRESETS, batch } from "~/utils/promise";
 
+type PartialTrack = Pick<TrackWithAlbum, "id" | "name" | "albumId" | "uri">;
+
 //#region Saving Function
 /** Save artwork for albums & tracks. */
 export async function findAndSaveArtwork() {
@@ -22,6 +24,8 @@ export async function findAndSaveArtwork() {
 
   // Ensure we don't unnecessarily seach for artwork.
   const albumsWithCovers = await getAlbums({
+    columns: ["id"],
+    trackColumns: ["id"],
     where: [isNotNull(albums.artwork)],
   });
   const idsWithCover = albumsWithCovers.map(({ id }) => id);
@@ -33,11 +37,13 @@ export async function findAndSaveArtwork() {
     );
 
   const uncheckedTracks = await getTracks({
+    columns: ["id", "name", "albumId", "uri"],
+    withAlbum: false,
     where: [eq(tracks.fetchedArt, false)],
   });
   // Sort tracks to optimize SQL queries.
-  const singles: TrackWithAlbum[] = [];
-  const albumTracks: Record<string, TrackWithAlbum[]> = {};
+  const singles: PartialTrack[] = [];
+  const albumTracks: Record<string, PartialTrack[]> = {};
   uncheckedTracks.forEach((t) => {
     const key = t.albumId;
     if (key === null) singles.push(t);
@@ -101,7 +107,7 @@ export async function findAndSaveArtwork() {
 
 /** Iterate over a list of tracks, finding and saving its artwork. */
 async function saveSinglesArtwork(
-  singles: TrackWithAlbum[],
+  singles: PartialTrack[],
   onSave: (info: { artworkUri: string; trackId: string }) => Promise<void>,
   options?: { endEarly?: boolean; onEndIteration?: () => void },
 ) {
