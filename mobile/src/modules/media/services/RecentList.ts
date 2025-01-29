@@ -104,7 +104,6 @@ recentListStore.subscribe(
               albumColumns: ["artwork"],
             });
           }
-
           entry = formatForMediaCard({ type: "playlist", data, t: i18next.t });
 
           // Translate the names of these special playlists.
@@ -157,7 +156,9 @@ export class RecentList {
     if (RecentList.isInRecentList(newSource, oldSources)) {
       oldSources = RecentList.#removeSourceInList(newSource, oldSources);
     }
-    recentListStore.setState({ sources: [newSource, ...oldSources] });
+    recentListStore.setState({
+      sources: [newSource, ...oldSources].slice(0, 15),
+    });
   }
 
   /** Determines if a `PlayListSource` already exists in a `PlayListSource[]`. */
