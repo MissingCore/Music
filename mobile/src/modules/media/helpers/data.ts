@@ -57,7 +57,7 @@ export async function getSourceName({ type, id }: PlayListSource) {
       // a trailing slash.
       name = id.split("/").at(-2) ?? "";
     } else {
-      name = (await getAlbum(id, { columns: ["name"], trackColumns: ["id"] }))
+      name = (await getAlbum(id, { columns: ["name"], withTracks: false }))
         .name;
     }
   } catch {}

@@ -9,20 +9,17 @@ import i18next from "~/modules/i18n";
 import { iAsc } from "~/lib/drizzle";
 import { deleteImage } from "~/lib/file-system";
 import type { QueryManyWithTracksFn, QueryOneWithTracksFn } from "./types";
-import { getColumns, withAlbum } from "./utils";
+import { getColumns, withTracks } from "./utils";
 
 //#region GET Methods
 const _getArtist: QueryOneWithTracksFn<Artist> = () => async (id, options) => {
   const artist = await db.query.artists.findFirst({
     where: eq(artists.name, id),
     columns: getColumns(options?.columns),
-    with: {
-      tracks: {
-        columns: getColumns(options?.trackColumns),
-        ...withAlbum({ defaultWithAlbum: true, ...options }),
-        orderBy: (fields) => iAsc(fields.name),
-      },
-    },
+    with: withTracks(
+      { ...options, orderBy: (fields) => iAsc(fields.name) },
+      { defaultWithAlbum: true, ...options },
+    ),
   });
   if (!artist) throw new Error(i18next.t("response.noArtists"));
   return artist;
@@ -43,13 +40,10 @@ const _getArtists: QueryManyWithTracksFn<Artist> = () => async (options) => {
   return db.query.artists.findMany({
     where: and(...(options?.where ?? [])),
     columns: getColumns(options?.columns),
-    with: {
-      tracks: {
-        columns: getColumns(options?.trackColumns),
-        ...withAlbum({ defaultWithAlbum: true, ...options }),
-        orderBy: (fields) => iAsc(fields.name),
-      },
-    },
+    with: withTracks(
+      { ...options, orderBy: (fields) => iAsc(fields.name) },
+      { defaultWithAlbum: true, ...options },
+    ),
     orderBy: (fields) => iAsc(fields.name),
   });
 };
@@ -73,7 +67,7 @@ export async function updateArtist(
 ) {
   const oldValue = await getArtist(id, {
     columns: ["artwork"],
-    trackColumns: [],
+    withTracks: false,
   });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { name: _, ...rest } = values;

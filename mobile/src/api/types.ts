@@ -33,12 +33,14 @@ export type QueriedTrack<
 type QueryOneWithTracksResult<
   TData extends Record<string, any>,
   WithAlbum extends boolean,
+  WithTracks extends boolean,
   DCols extends keyof TData,
   TCols extends keyof Track,
   ACols extends keyof Album,
-> = QueryOneResult<TData, DCols> & {
-  tracks: Array<QueriedTrack<WithAlbum, TCols, ACols>>;
-};
+> = QueryOneResult<TData, DCols> &
+  (true extends WithTracks
+    ? { tracks: Array<QueriedTrack<WithAlbum, TCols, ACols>> }
+    : Record<never, never>);
 
 /**
  * Function signature for "get single" API functions.
@@ -56,6 +58,7 @@ export type QueryOneWithTracksFn<
   TCols extends keyof Track,
   ACols extends keyof Album,
   WithAlbum_User extends boolean | undefined,
+  WithTracks extends false | undefined,
 >(
   id: TId,
   options?: {
@@ -63,11 +66,13 @@ export type QueryOneWithTracksFn<
     trackColumns?: TCols[];
     albumColumns?: [ACols, ...ACols[]];
     withAlbum?: WithAlbum_User;
+    withTracks?: WithTracks;
   },
 ) => Promise<
   QueryOneWithTracksResult<
     TData,
     BooleanPriority<WithAlbum_User, WithAlbum>,
+    BooleanPriority<WithTracks, true>,
     DCols,
     TCols,
     ACols
@@ -89,17 +94,20 @@ export type QueryManyWithTracksFn<
   TCols extends keyof Track,
   ACols extends keyof Album,
   WithAlbum_User extends boolean | undefined,
+  WithTracks extends false | undefined,
 >(options?: {
   where?: DrizzleFilter;
   columns?: DCols[];
   trackColumns?: TCols[];
   albumColumns?: [ACols, ...ACols[]];
   withAlbum?: WithAlbum_User;
+  withTracks?: WithTracks;
 }) => Promise<
   Array<
     QueryOneWithTracksResult<
       TData,
       BooleanPriority<WithAlbum_User, WithAlbum>,
+      BooleanPriority<WithTracks, true>,
       DCols,
       TCols,
       ACols

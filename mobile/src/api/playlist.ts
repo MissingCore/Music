@@ -44,7 +44,11 @@ const _getPlaylist: QueryOneWithTracksFn<Playlist> =
     return fixPlaylistJunction(playlist);
   };
 
-/** Get specified playlist. Throws error if nothing is found. */
+/**
+ * Get specified playlist. Throws error if nothing is found.
+ *
+ * **Note:** Do not use the `withTracks` option with this function.
+ */
 export const getPlaylist = _getPlaylist();
 
 const _getPlaylists: QueryManyWithTracksFn<Playlist> =
@@ -69,7 +73,11 @@ const _getPlaylists: QueryManyWithTracksFn<Playlist> =
     return allPlaylists.map((data) => fixPlaylistJunction(data));
   };
 
-/** Get multiple playlists. */
+/**
+ * Get multiple playlists.
+ *
+ * **Note:** Do not use the `withTracks` option with this function.
+ */
 export const getPlaylists = _getPlaylists();
 
 const _getSpecialPlaylist: QueryOneWithTracksFn<
@@ -110,7 +118,11 @@ const _getSpecialPlaylist: QueryOneWithTracksFn<
   return { ...mainFields, tracks: playlistTracks };
 };
 
-/** Get one of the "reserved" playlists. Tracks are sorted. */
+/**
+ * Get one of the "reserved" playlists. Tracks are sorted.
+ *
+ * **Note:** Do not use the `withTracks` option with this function.
+ */
 export const getSpecialPlaylist = _getSpecialPlaylist();
 //#endregion
 

@@ -25,7 +25,7 @@ export async function findAndSaveArtwork() {
   // Ensure we don't unnecessarily seach for artwork.
   const albumsWithCovers = await getAlbums({
     columns: ["id"],
-    trackColumns: ["id"],
+    withTracks: false,
     where: [isNotNull(albums.artwork)],
   });
   const idsWithCover = albumsWithCovers.map(({ id }) => id);

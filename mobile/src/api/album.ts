@@ -8,7 +8,7 @@ import i18next from "~/modules/i18n";
 
 import { iAsc } from "~/lib/drizzle";
 import type { QueryManyWithTracksFn, QueryOneWithTracksFn } from "./types";
-import { getColumns, withAlbum } from "./utils";
+import { getColumns, withTracks } from "./utils";
 
 //#region GET Methods
 const _getAlbum: QueryOneWithTracksFn<Album, false> =
@@ -16,13 +16,13 @@ const _getAlbum: QueryOneWithTracksFn<Album, false> =
     const album = await db.query.albums.findFirst({
       where: eq(albums.id, id),
       columns: getColumns(options?.columns),
-      with: {
-        tracks: {
-          columns: getColumns(options?.trackColumns),
-          ...withAlbum({ defaultWithAlbum: false, ...options }),
+      with: withTracks(
+        {
+          ...options,
           orderBy: (fields, { asc }) => [asc(fields.disc), asc(fields.track)],
         },
-      },
+        { defaultWithAlbum: false, ...options },
+      ),
     });
     if (!album) throw new Error(i18next.t("response.noAlbums"));
     return album;
@@ -36,13 +36,13 @@ const _getAlbums: QueryManyWithTracksFn<Album, false> =
     return db.query.albums.findMany({
       where: and(...(options?.where ?? [])),
       columns: getColumns(options?.columns),
-      with: {
-        tracks: {
-          columns: getColumns(options?.trackColumns),
-          ...withAlbum({ defaultWithAlbum: false, ...options }),
+      with: withTracks(
+        {
+          ...options,
           orderBy: (fields, { asc }) => [asc(fields.disc), asc(fields.track)],
         },
-      },
+        { defaultWithAlbum: false, ...options },
+      ),
       orderBy: (fields) => [iAsc(fields.name), iAsc(fields.artistName)],
     });
   };
