@@ -108,9 +108,8 @@ recentListStore.subscribe(
 
           // Translate the names of these special playlists.
           if (entry && ReservedNames.has(id)) {
-            entry.title = i18next.t(
-              `common.${id === ReservedPlaylists.tracks ? "t" : "favoriteT"}racks`,
-            );
+            const tKey = id === ReservedPlaylists.tracks ? "t" : "favoriteT";
+            entry.title = i18next.t(`common.${tKey}racks`);
           }
         }
         if (entry) newRecentList.push(entry);

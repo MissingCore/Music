@@ -48,17 +48,17 @@ export async function getSourceName({ type, id }: PlayListSource) {
   let name = "";
   try {
     if (ReservedNames.has(id)) {
-      name = i18next.t(
-        `common.${id === ReservedPlaylists.tracks ? "t" : "favoriteT"}racks`,
-      );
-    } else if (["artist", "playlist"].includes(type)) {
+      const tKey = id === ReservedPlaylists.tracks ? "t" : "favoriteT";
+      name = i18next.t(`common.${tKey}racks`);
+    } else if (type === "artist" || type === "playlist") {
       name = id;
     } else if (type === "folder") {
       // FIXME: At `-2` index due to the folder path (in `id`) ending with
       // a trailing slash.
       name = id.split("/").at(-2) ?? "";
     } else {
-      name = (await getAlbum(id)).name; // `type` should be `album`.
+      name = (await getAlbum(id, { columns: ["name"], trackColumns: ["id"] }))
+        .name;
     }
   } catch {}
   return name;
