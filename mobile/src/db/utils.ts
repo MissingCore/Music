@@ -20,7 +20,7 @@ import type { MediaType } from "~/modules/media/types";
 
 //#region Slim Types
 type Artwork = string | null;
-type TrackArtwork = { artwork: Artwork; album: { artwork: Artwork } | null };
+type TrackArtwork = { artwork: Artwork; album?: { artwork: Artwork } | null };
 //#endregion
 
 //#region Artwork Formatters
