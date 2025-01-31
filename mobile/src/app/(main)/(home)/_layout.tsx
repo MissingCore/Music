@@ -61,7 +61,11 @@ export default function HomeLayout() {
     >
       <MaterialTopTabs.Screen name="index" />
       {displayedTabs.map((tabKey) => (
-        <MaterialTopTabs.Screen key={tabKey} name={tabKey} />
+        <MaterialTopTabs.Screen
+          key={tabKey}
+          name={tabKey}
+          options={{ lazy: true }}
+        />
       ))}
       {hiddenTabs.map((tabKey) => (
         <MaterialTopTabs.Screen key={tabKey} name={tabKey} redirect />
