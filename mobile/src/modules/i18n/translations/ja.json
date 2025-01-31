@@ -157,8 +157,8 @@
 
   "sortModal": {
     "asc": "昇順",
-    "alphabetical": "アルファベット順",
-    "modified": "最終更新順"
+    "alphabetical": "アルファベット",
+    "modified": "最終更新"
   },
   "trackModal": {
     "bitrate": "ビットレート",
