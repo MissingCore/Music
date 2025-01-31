@@ -14,7 +14,6 @@ import i18next from "~/modules/i18n";
 import { sortPreferencesStore } from "~/modules/media/services/SortPreferences";
 
 import { iAsc, iDesc } from "~/lib/drizzle";
-import { deleteImage } from "~/lib/file-system";
 import { moveArray, pickKeys } from "~/utils/object";
 import type { ReservedPlaylistName } from "~/modules/media/constants";
 import { ReservedPlaylists } from "~/modules/media/constants";
@@ -89,7 +88,7 @@ const _getSpecialPlaylist: QueryOneWithTracksFn<
   // @ts-expect-error - `mainFields` should match based on `options.columns`.
   if (options?.columns) mainFields = pickKeys(mainFields, options.columns);
 
-  // FIXME: Sorting is done in-line compared to with the `sortTracks()` function.
+  // FIXME: Sorting is handling in the SQL instead of the `sortTracks()` function.
   const { isAsc, orderedBy } = sortPreferencesStore.getState();
   const playlistTracks = await db.query.tracks.findMany({
     columns: getColumns(options?.trackColumns),
@@ -131,9 +130,9 @@ export const getSpecialPlaylist = _getSpecialPlaylist();
 export async function createPlaylist(
   entry: typeof playlists.$inferInsert & { tracks?: TrackWithAlbum[] },
 ) {
+  const { tracks, name, ...newPlaylist } = entry;
+  const playlistName = sanitizePlaylistName(name);
   return db.transaction(async (tx) => {
-    const { tracks, name, ...newPlaylist } = entry;
-    const playlistName = sanitizePlaylistName(name);
     await tx
       .insert(playlists)
       .values({ ...newPlaylist, name: playlistName })
@@ -184,10 +183,6 @@ export async function updatePlaylist(
     tracks?: TrackWithAlbum[];
   },
 ) {
-  const oldValue = await getPlaylist(id, {
-    columns: ["artwork"],
-    trackColumns: [],
-  });
   const { tracks, name, ...rest } = values;
   let sanitizedName = name ? sanitizePlaylistName(name) : undefined;
   return db.transaction(async (tx) => {
@@ -223,8 +218,6 @@ export async function updatePlaylist(
         .set({ playlistName: sanitizedName })
         .where(eq(tracksToPlaylists.playlistName, id));
     }
-    // Delete the old artwork if we changed it (`null` means we've removed it).
-    if (rest.artwork !== undefined) await deleteImage(oldValue.artwork);
   });
 }
 //#endregion
@@ -233,22 +226,10 @@ export async function updatePlaylist(
 /** Delete specified playlist. */
 export async function deletePlaylist(id: string) {
   return db.transaction(async (tx) => {
-    // Get artwork of playlist that we want to delete.
-    let oldArtwork: string | null = null;
-    try {
-      const deletedPlaylist = await getPlaylist(id, {
-        columns: ["artwork"],
-        trackColumns: [],
-      });
-      oldArtwork = deletedPlaylist.artwork;
-    } catch {}
-    // Delete playlist and its track relations.
     await tx
       .delete(tracksToPlaylists)
       .where(eq(tracksToPlaylists.playlistName, id));
     await tx.delete(playlists).where(eq(playlists.name, id));
-    // If the deletions were fine, delete the artwork.
-    await deleteImage(oldArtwork);
   });
 }
 //#endregion

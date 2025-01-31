@@ -7,7 +7,6 @@ import { artists } from "~/db/schema";
 import i18next from "~/modules/i18n";
 
 import { iAsc } from "~/lib/drizzle";
-import { deleteImage } from "~/lib/file-system";
 import type { QueryManyWithTracksFn, QueryOneWithTracksFn } from "./types";
 import { getColumns, withTracks } from "./utils";
 
@@ -65,23 +64,8 @@ export async function updateArtist(
   id: string,
   values: Partial<typeof artists.$inferInsert>,
 ) {
-  const oldValue = await getArtist(id, {
-    columns: ["artwork"],
-    withTracks: false,
-  });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { name: _, ...rest } = values;
-  return db.transaction(async (tx) => {
-    await tx.update(artists).set(rest).where(eq(artists.name, id));
-    // Delete the old artwork if we changed it (`null` means we've removed it).
-    if (rest.artwork !== undefined) await deleteImage(oldValue.artwork);
-  });
-}
-//#endregion
-
-//#region DELETE Methods
-/** Delete specified artist. */
-export async function deleteArtist(id: string) {
-  return db.delete(artists).where(eq(artists.name, id));
+  return db.update(artists).set(rest).where(eq(artists.name, id));
 }
 //#endregion

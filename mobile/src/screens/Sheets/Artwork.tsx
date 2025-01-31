@@ -55,7 +55,7 @@ export function PlaylistArtworkSheet(props: { payload: { id: string } }) {
 function BaseArtworkSheetContent(props: {
   type: MediaType;
   imageSource: MediaImage.ImageSource | MediaImage.ImageSource[];
-  mutationResult: UseMutationResult<void, Error, { artwork?: string | null }>;
+  mutationResult: UseMutationResult<any, Error, { artwork?: string | null }>;
 }) {
   const { height, width } = useWindowDimensions();
   const [disabled, setDisabled] = useState(false);

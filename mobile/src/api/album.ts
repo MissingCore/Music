@@ -81,10 +81,3 @@ export async function upsertAlbum(entry: typeof albums.$inferInsert) {
   )[0];
 }
 //#endregion
-
-//#region DELETE Methods
-/** Delete specified album. */
-export async function deleteAlbum(id: string) {
-  return db.delete(albums).where(eq(albums.id, id));
-}
-//#endregion

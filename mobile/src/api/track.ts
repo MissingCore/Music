@@ -7,7 +7,6 @@ import { getTrackCover } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
 
-import { deleteImage } from "~/lib/file-system";
 import type { BooleanPriority } from "~/utils/types";
 import type { DrizzleFilter, QueriedTrack } from "./types";
 import { getColumns, withAlbum } from "./utils";
@@ -128,20 +127,9 @@ export async function addToPlaylist(
 /** Delete specified track. */
 export async function deleteTrack(id: string) {
   return db.transaction(async (tx) => {
-    // Get artwork of track that we want to delete.
-    let oldArtwork: string | null = null;
-    try {
-      const deletedTrack = await getTrack(id, {
-        columns: ["artwork"],
-        withAlbum: false,
-      });
-      oldArtwork = deletedTrack.artwork;
-    } catch {}
-    // Delete track and its playlist relations.
+    // Remember to delete the track's playlist relations.
     await tx.delete(tracksToPlaylists).where(eq(tracksToPlaylists.trackId, id));
     await tx.delete(tracks).where(eq(tracks.id, id));
-    // If the deletions were fine, delete the artwork.
-    if (oldArtwork) await deleteImage(oldArtwork);
   });
 }
 
