@@ -1,45 +1,54 @@
 import { and, eq } from "drizzle-orm";
 
 import { db } from "~/db";
-import type { AlbumWithTracks } from "~/db/schema";
+import type { Album } from "~/db/schema";
 import { albums } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 
 import { iAsc } from "~/lib/drizzle";
-import type { DrizzleFilter, QuerySingleFn } from "./types";
+import type { QueryManyWithTracksFn, QueryOneWithTracksFn } from "./types";
+import { getColumns, withTracks } from "./utils";
 
 //#region GET Methods
-/** Get specified album. Throws error by default if nothing is found. */
-// @ts-expect-error - Function overloading typing issues [ts(2322)]
-export const getAlbum: QuerySingleFn<AlbumWithTracks> = async (
-  id,
-  shouldThrow = true,
-) => {
-  const album = await db.query.albums.findFirst({
-    where: eq(albums.id, id),
-    with: {
-      tracks: {
-        orderBy: (fields, { asc }) => [asc(fields.disc), asc(fields.track)],
-      },
-    },
-  });
-  if (shouldThrow && !album) throw new Error(i18next.t("response.noAlbums"));
-  return album;
-};
+const _getAlbum: QueryOneWithTracksFn<Album, false> =
+  () => async (id, options) => {
+    const album = await db.query.albums.findFirst({
+      where: eq(albums.id, id),
+      columns: getColumns(options?.columns),
+      with: withTracks(
+        {
+          ...options,
+          orderBy: (fields, { asc }) => [asc(fields.disc), asc(fields.track)],
+        },
+        { defaultWithAlbum: false, ...options },
+      ),
+    });
+    if (!album) throw new Error(i18next.t("response.noAlbums"));
+    return album;
+  };
+
+/** Get specified album. Throws error if nothing is found. */
+export const getAlbum = _getAlbum();
+
+const _getAlbums: QueryManyWithTracksFn<Album, false> =
+  () => async (options) => {
+    return db.query.albums.findMany({
+      where: and(...(options?.where ?? [])),
+      columns: getColumns(options?.columns),
+      with: withTracks(
+        {
+          ...options,
+          orderBy: (fields, { asc }) => [asc(fields.disc), asc(fields.track)],
+        },
+        { defaultWithAlbum: false, ...options },
+      ),
+      orderBy: (fields) => [iAsc(fields.name), iAsc(fields.artistName)],
+    });
+  };
 
 /** Get multiple albums. */
-export async function getAlbums(where: DrizzleFilter = []) {
-  return db.query.albums.findMany({
-    where: and(...where),
-    with: {
-      tracks: {
-        orderBy: (fields, { asc }) => [asc(fields.disc), asc(fields.track)],
-      },
-    },
-    orderBy: (fields) => [iAsc(fields.name), iAsc(fields.artistName)],
-  });
-}
+export const getAlbums = _getAlbums();
 //#endregion
 
 //#region PATCH Methods

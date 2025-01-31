@@ -65,9 +65,11 @@ export const useSortPreferencesStore = <T>(
 //#endregion
 
 //#region Helpers
+type PartialTrack = Pick<TrackWithAlbum, "name" | "modificationTime">;
+
 /** Sort tracks based on filters for `/track` screen. */
-export function sortTracks(
-  tracks: TrackWithAlbum[],
+export function sortTracks<TData extends PartialTrack>(
+  tracks: TData[],
   /** If we want this to be reactive (ie: In a hook). */
   config?: { isAsc: boolean; orderedBy: (typeof OrderedByOptions)[number] },
 ) {
@@ -77,7 +79,7 @@ export function sortTracks(
 
   // FIXME: Once Hermes supports `toSorted` & `toReversed`, use those
   // instead of the in-place methods.
-  let sortedTracks: TrackWithAlbum[] = [...tracks];
+  let sortedTracks = [...tracks];
   // Order track by attribute.
   if (orderedBy === "alphabetical") {
     sortedTracks.sort((a, b) => a.name.localeCompare(b.name));
@@ -96,7 +98,8 @@ export function useSortTracks() {
   const orderedBy = useSortPreferencesStore((state) => state.orderedBy);
 
   return useCallback(
-    (data: TrackWithAlbum[]) => sortTracks(data, { isAsc, orderedBy }),
+    <TData extends PartialTrack>(data: TData[]) =>
+      sortTracks(data, { isAsc, orderedBy }),
     [isAsc, orderedBy],
   );
 }

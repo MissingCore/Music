@@ -68,25 +68,48 @@ recentListStore.subscribe(
     for (const { id, type } of sources) {
       try {
         if (type === "album") {
-          const data = await getAlbum(id);
+          const data = await getAlbum(id, {
+            columns: ["id", "name", "artistName", "artwork"],
+            trackColumns: ["id"],
+          });
           entry = formatForMediaCard({ type: "album", data, t: i18next.t });
         } else if (type === "artist") {
-          const data = await getArtist(id);
+          const data = await getArtist(id, {
+            columns: ["name", "artwork"],
+            trackColumns: ["id"],
+            withAlbum: false,
+          });
           entry = formatForMediaCard({ type: "artist", data, t: i18next.t });
         } else if (type === "folder") {
           // TODO: Eventually support folders in the recent list.
           entry = undefined;
         } else {
-          const data = ReservedNames.has(id)
-            ? await getSpecialPlaylist(id as ReservedPlaylistName)
-            : await getPlaylist(id);
+          let data = null;
+          if (ReservedNames.has(id)) {
+            const specialList = await getSpecialPlaylist(
+              id as ReservedPlaylistName,
+              { trackColumns: ["id"], withAlbum: false },
+            );
+            data = {
+              ...specialList,
+              tracks: specialList.tracks.map(() => ({
+                artwork: null,
+                album: null,
+              })),
+            };
+          } else {
+            data = await getPlaylist(id, {
+              columns: ["name", "artwork"],
+              trackColumns: ["artwork"],
+              albumColumns: ["artwork"],
+            });
+          }
           entry = formatForMediaCard({ type: "playlist", data, t: i18next.t });
 
           // Translate the names of these special playlists.
           if (entry && ReservedNames.has(id)) {
-            entry.title = i18next.t(
-              `common.${id === ReservedPlaylists.tracks ? "t" : "favoriteT"}racks`,
-            );
+            const tKey = id === ReservedPlaylists.tracks ? "t" : "favoriteT";
+            entry.title = i18next.t(`common.${tKey}racks`);
           }
         }
         if (entry) newRecentList.push(entry);
@@ -132,7 +155,9 @@ export class RecentList {
     if (RecentList.isInRecentList(newSource, oldSources)) {
       oldSources = RecentList.#removeSourceInList(newSource, oldSources);
     }
-    recentListStore.setState({ sources: [newSource, ...oldSources] });
+    recentListStore.setState({
+      sources: [newSource, ...oldSources].slice(0, 15),
+    });
   }
 
   /** Determines if a `PlayListSource` already exists in a `PlayListSource[]`. */

@@ -32,7 +32,7 @@ export async function rescanForTracks() {
     // Re-create the "folder" structure for tracks we've already saved.
     // eslint-disable-next-line drizzle/enforce-delete-with-where
     await db.delete(fileNodes);
-    const allTracks = await getTracks();
+    const allTracks = await getTracks({ columns: ["uri"], withAlbum: false });
     await batch({
       data: allTracks,
       callback: ({ uri }) => savePathComponents(uri),

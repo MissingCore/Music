@@ -75,7 +75,10 @@ export async function findAndSaveAudio() {
   );
 
   // Get relevant entries inside our database.
-  const allTracks = await getTracks();
+  const allTracks = await getTracks({
+    columns: ["id", "modificationTime", "uri"],
+    withAlbum: false,
+  });
   const allInvalidTracks = await getSaveErrors();
   onboardingStore.setState({ prevSaved: allTracks.length });
 
@@ -110,7 +113,7 @@ export async function findAndSaveAudio() {
   onboardingStore.setState({
     unstaged: discoveredTracks.length - unmodifiedTracks.size,
   });
-  stopwatch.lapTime();
+  console.log(`Determined unstaged content in ${stopwatch.lapTime()}.`);
 
   // Create track entries from the minimum amount of data.
   const unstagedTracks = discoveredTracks.filter(
@@ -179,6 +182,7 @@ export async function findAndSaveAudio() {
   console.log(
     `Found/updated ${staged} tracks & encountered ${saveErrors} errors in ${stopwatch.lapTime()}.`,
   );
+  console.log(`Completed finding & saving audio in ${stopwatch.stop()}`);
 
   return {
     foundFiles: discoveredTracks,
@@ -271,7 +275,7 @@ export async function cleanupDatabase(usedTrackIds: string[]) {
 /** Remove any albums or artists that aren't used. */
 export async function removeUnusedCategories() {
   // Remove unused albums.
-  const allAlbums = await getAlbums();
+  const allAlbums = await getAlbums({ columns: ["id"], trackColumns: ["id"] });
   const unusedAlbumIds = allAlbums
     .filter(({ tracks }) => tracks.length === 0)
     .map(({ id }) => id);
@@ -279,6 +283,7 @@ export async function removeUnusedCategories() {
 
   // Remove unused artists.
   const allArtists = await db.query.artists.findMany({
+    columns: { name: true },
     with: {
       albums: { columns: { id: true } },
       tracks: { columns: { id: true } },

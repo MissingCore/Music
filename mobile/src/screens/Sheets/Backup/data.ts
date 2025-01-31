@@ -93,9 +93,9 @@ async function findExistingTracksFactory() {
 async function exportBackup() {
   // Get favorited values.
   const [favAlbums, favPlaylists, favTracks] = await Promise.all([
-    getAlbums([eq(albums.isFavorite, true)]),
-    getPlaylists([eq(playlists.isFavorite, true)]),
-    getTracks([eq(tracks.isFavorite, true)]),
+    getAlbums({ where: [eq(albums.isFavorite, true)] }),
+    getPlaylists({ where: [eq(playlists.isFavorite, true)] }),
+    getTracks({ where: [eq(tracks.isFavorite, true)] }),
   ]);
   // Get all user-generated playlists.
   const allPlaylists = await getPlaylists();

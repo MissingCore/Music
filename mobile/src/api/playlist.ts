@@ -2,6 +2,7 @@ import { and, eq } from "drizzle-orm";
 
 import { db } from "~/db";
 import type {
+  Playlist,
   PlaylistWithJunction,
   PlaylistWithTracks,
   TrackWithAlbum,
@@ -10,73 +11,119 @@ import { playlists, tracksToPlaylists } from "~/db/schema";
 import { sanitizePlaylistName } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
-import { sortTracks } from "~/modules/media/services/SortPreferences";
+import { sortPreferencesStore } from "~/modules/media/services/SortPreferences";
 
-import { iAsc } from "~/lib/drizzle";
+import { iAsc, iDesc } from "~/lib/drizzle";
 import { deleteImage } from "~/lib/file-system";
-import { moveArray } from "~/utils/object";
+import { moveArray, pickKeys } from "~/utils/object";
 import type { ReservedPlaylistName } from "~/modules/media/constants";
 import { ReservedPlaylists } from "~/modules/media/constants";
-import type { DrizzleFilter, QuerySingleFn } from "./types";
+import type { QueryManyWithTracksFn, QueryOneWithTracksFn } from "./types";
+import { getColumns, withAlbum } from "./utils";
 
 //#region GET Methods
-/** Get specified playlist. Throws error by default if nothing is found. */
-// @ts-expect-error - Function overloading typing issues [ts(2322)]
-export const getPlaylist: QuerySingleFn<PlaylistWithTracks> = async (
-  id,
-  shouldThrow = true,
-) => {
-  const playlist = await db.query.playlists.findFirst({
-    where: eq(playlists.name, id),
-    with: {
-      tracksToPlaylists: {
-        columns: {},
-        with: { track: { with: { album: true } } },
-        orderBy: (fields, { asc }) => asc(fields.position),
+const _getPlaylist: QueryOneWithTracksFn<Playlist> =
+  () => async (id, options) => {
+    const playlist = await db.query.playlists.findFirst({
+      where: eq(playlists.name, id),
+      columns: getColumns(options?.columns),
+      with: {
+        tracksToPlaylists: {
+          columns: {},
+          with: {
+            track: {
+              columns: getColumns(options?.trackColumns),
+              ...withAlbum({ defaultWithAlbum: true, ...options }),
+            },
+          },
+          orderBy: (fields, { asc }) => asc(fields.position),
+        },
       },
-    },
-  });
-  if (!playlist) {
-    if (shouldThrow) throw new Error(i18next.t("response.noPlaylists"));
-    return undefined;
-  }
-  return fixPlaylistJunction(playlist);
-};
+    });
+    if (!playlist) throw new Error(i18next.t("response.noPlaylists"));
+    return fixPlaylistJunction(playlist);
+  };
 
-/** Get multiple playlists. */
-export async function getPlaylists(where: DrizzleFilter = []) {
-  const allPlaylists = await db.query.playlists.findMany({
-    where: and(...where),
-    with: {
-      tracksToPlaylists: {
-        columns: {},
-        with: { track: { with: { album: true } } },
-        orderBy: (fields, { asc }) => asc(fields.position),
+/**
+ * Get specified playlist. Throws error if nothing is found.
+ *
+ * **Note:** Do not use the `withTracks` option with this function.
+ */
+export const getPlaylist = _getPlaylist();
+
+const _getPlaylists: QueryManyWithTracksFn<Playlist> =
+  () => async (options) => {
+    const allPlaylists = await db.query.playlists.findMany({
+      where: and(...(options?.where ?? [])),
+      columns: getColumns(options?.columns),
+      with: {
+        tracksToPlaylists: {
+          columns: {},
+          with: {
+            track: {
+              columns: getColumns(options?.trackColumns),
+              ...withAlbum({ defaultWithAlbum: true, ...options }),
+            },
+          },
+          orderBy: (fields, { asc }) => asc(fields.position),
+        },
       },
-    },
-    orderBy: (fields) => iAsc(fields.name),
-  });
-  return allPlaylists.map((data) => fixPlaylistJunction(data));
-}
+      orderBy: (fields) => iAsc(fields.name),
+    });
+    return allPlaylists.map((data) => fixPlaylistJunction(data));
+  };
 
-/** Get one of the "reserved" playlists. Tracks are unsorted. */
-export async function getSpecialPlaylist(id: ReservedPlaylistName) {
-  const isFavoriteList = ReservedPlaylists.favorites === id;
+/**
+ * Get multiple playlists.
+ *
+ * **Note:** Do not use the `withTracks` option with this function.
+ */
+export const getPlaylists = _getPlaylists();
+
+const _getSpecialPlaylist: QueryOneWithTracksFn<
+  Playlist,
+  true,
+  ReservedPlaylistName
+> = () => async (id, options) => {
+  let mainFields = { name: id, artwork: id, isFavorite: false };
+  // @ts-expect-error - `mainFields` should match based on `options.columns`.
+  if (options?.columns) mainFields = pickKeys(mainFields, options.columns);
+
+  // FIXME: Sorting is done in-line compared to with the `sortTracks()` function.
+  const { isAsc, orderedBy } = sortPreferencesStore.getState();
   const playlistTracks = await db.query.tracks.findMany({
-    with: { album: true },
-    ...(isFavoriteList
+    columns: getColumns(options?.trackColumns),
+    ...withAlbum({ defaultWithAlbum: true, ...options }),
+    ...(ReservedPlaylists.favorites === id
       ? {
           where: (fields, { eq }) => eq(fields.isFavorite, true),
           orderBy: (fields) => iAsc(fields.name),
         }
-      : {}),
+      : {
+          orderBy: (fields) =>
+            isAsc
+              ? iAsc(
+                  orderedBy === "alphabetical"
+                    ? fields.name
+                    : fields.modificationTime,
+                )
+              : iDesc(
+                  orderedBy === "alphabetical"
+                    ? fields.name
+                    : fields.modificationTime,
+                ),
+        }),
   });
 
-  let sortedTracks = playlistTracks;
-  if (!isFavoriteList) sortedTracks = sortTracks(playlistTracks);
+  return { ...mainFields, tracks: playlistTracks };
+};
 
-  return { name: id, artwork: id, isFavorite: false, tracks: sortedTracks };
-}
+/**
+ * Get one of the "reserved" playlists. Tracks are sorted.
+ *
+ * **Note:** Do not use the `withTracks` option with this function.
+ */
+export const getSpecialPlaylist = _getSpecialPlaylist();
 //#endregion
 
 //#region POST Methods
@@ -137,7 +184,10 @@ export async function updatePlaylist(
     tracks?: TrackWithAlbum[];
   },
 ) {
-  const oldValue = await getPlaylist(id);
+  const oldValue = await getPlaylist(id, {
+    columns: ["artwork"],
+    trackColumns: [],
+  });
   const { tracks, name, ...rest } = values;
   let sanitizedName = name ? sanitizePlaylistName(name) : undefined;
   return db.transaction(async (tx) => {
@@ -183,14 +233,22 @@ export async function updatePlaylist(
 /** Delete specified playlist. */
 export async function deletePlaylist(id: string) {
   return db.transaction(async (tx) => {
-    const { artwork } = await getPlaylist(id);
+    // Get artwork of playlist that we want to delete.
+    let oldArtwork: string | null = null;
+    try {
+      const deletedPlaylist = await getPlaylist(id, {
+        columns: ["artwork"],
+        trackColumns: [],
+      });
+      oldArtwork = deletedPlaylist.artwork;
+    } catch {}
     // Delete playlist and its track relations.
     await tx
       .delete(tracksToPlaylists)
       .where(eq(tracksToPlaylists.playlistName, id));
     await tx.delete(playlists).where(eq(playlists.name, id));
     // If the deletions were fine, delete the artwork.
-    await deleteImage(artwork);
+    await deleteImage(oldArtwork);
   });
 }
 //#endregion

@@ -16,6 +16,9 @@ The "preprocessing" phase of the onboarding process is when we run some code to 
 
 ## Saving Track Metadata
 
+> [!WARNING]  
+> This process penalizes users with a lot of tracks as on every app launch, we need to determine which tracks are new or have been modified, which involves looking at every track on the device. As your library gets larger, the longer it takes for this process to finish.
+
 This phase involves:
 
 1. Finding all the "valid" tracks which are:
