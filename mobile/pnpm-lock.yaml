@@ -35,8 +35,8 @@ importers:
         specifier: ^2.6.0
         version: 2.6.0(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1)
       '@missingcore/react-native-metadata-retriever':
-        specifier: ^0.6.1
-        version: 0.6.1(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1)
+        specifier: ^0.6.2
+        version: 0.6.2(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1)
       '@paralleldrive/cuid2':
         specifier: ^2.2.2
         version: 2.2.2
@@ -1459,8 +1459,8 @@ packages:
       react: '>=16.8'
       react-native: '>=0.59'
 
-  '@missingcore/react-native-metadata-retriever@0.6.1':
-    resolution: {integrity: sha512-dCHmzRRntUhRAglYbhCR7AqCukxqT0JiX84TONkJF48UOxZdjX2ase+LOwAw2C/Ax0XonUcMgZgz0sArgvTVmQ==}
+  '@missingcore/react-native-metadata-retriever@0.6.2':
+    resolution: {integrity: sha512-bv+h8UtbTvRozshr1lk/gcSo2fVmJbojmj/UuwoRVK0WJ/jZHMJcuREb4FS1kmLUXRiMeYU38TtjJvePTu+oTA==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -7928,7 +7928,7 @@ snapshots:
       react: 18.3.1
       react-native: 0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3)
 
-  '@missingcore/react-native-metadata-retriever@0.6.1(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1)':
+  '@missingcore/react-native-metadata-retriever@0.6.2(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3))(react@18.3.1)':
     dependencies:
       react: 18.3.1
       react-native: 0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.17)(react@18.3.1)(typescript@5.6.3)

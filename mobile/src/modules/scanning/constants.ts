@@ -2,6 +2,7 @@ const MigrationOptions = [
   "v1-to-v2-store",
   "v1-to-v2-schema",
   "no-track-playlist-ref",
+  "recheck-invalid-tracks",
 ] as const;
 
 export type MigrationOption = (typeof MigrationOptions)[number];
@@ -29,4 +30,5 @@ export const MigrationHistory: Record<
     changes: ["v1-to-v2-store", "v1-to-v2-schema"],
   },
   4: { version: "v2.0.1", changes: ["no-track-playlist-ref"] },
+  5: { version: "v2.1.1-rc.1", changes: ["recheck-invalid-tracks"] },
 };

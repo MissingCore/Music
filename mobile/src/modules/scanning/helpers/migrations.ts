@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { eq } from "drizzle-orm";
 
 import { db } from "~/db";
-import { tracks, tracksToPlaylists } from "~/db/schema";
+import { invalidTracks, tracks, tracksToPlaylists } from "~/db/schema";
 
 import { getPlaylists } from "~/api/playlist";
 import { removeInvalidTrackRelations } from "~/api/track";
@@ -82,6 +82,10 @@ export const MigrationFunctionMap: Record<
   },
   /** Removes track to playlist relations where the track doesn't exist. */
   "no-track-playlist-ref": removeInvalidTrackRelations,
+  "recheck-invalid-tracks": async () => {
+    // eslint-disable-next-line drizzle/enforce-delete-with-where
+    await db.delete(invalidTracks);
+  },
 };
 
 /** Helper to parse value from AsyncStorage. */
