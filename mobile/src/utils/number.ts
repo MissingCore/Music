@@ -68,3 +68,8 @@ function pushTimeSegment(
     arr.length === 0 ? `${length}` : `${length}`.padStart(2, `0`);
   arr.push(lengthStr + (suffix ?? ""));
 }
+
+/** Determines if a year is defined. */
+export function isYearDefined(year: number | null) {
+  return year !== null && year !== -1;
+}

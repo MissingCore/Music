@@ -223,7 +223,7 @@ async function getTrackEntry({
     const newAlbum = await upsertAlbum({
       name: meta.albumTitle,
       artistName: meta.albumArtist,
-      releaseYear: meta.year,
+      releaseYear: meta.year ?? undefined,
     });
     if (newAlbum) albumId = newAlbum.id;
   }

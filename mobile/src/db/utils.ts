@@ -10,7 +10,7 @@ import type {
 
 import i18next from "~/modules/i18n";
 
-import { formatSeconds } from "~/utils/number";
+import { formatSeconds, isYearDefined } from "~/utils/number";
 import { omitKeys } from "~/utils/object";
 import type { AtLeast, Prettify } from "~/utils/types";
 import { ReservedNames, ReservedPlaylists } from "~/modules/media/constants";
@@ -125,7 +125,7 @@ export function formatForCurrentScreen({ type, data, t }: ScreenFormatter) {
       data.tracks.reduce((total, curr) => total + curr.duration, 0),
     ),
   ];
-  if (type === "album" && data.releaseYear) {
+  if (type === "album" && isYearDefined(data.releaseYear)) {
     metadata.unshift(String(data.releaseYear));
   }
 
