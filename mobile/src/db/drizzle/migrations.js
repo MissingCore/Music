@@ -7,6 +7,7 @@ import m0002 from "./0002_third_giant_man.sql";
 import m0003 from "./0003_breezy_wolverine.sql";
 import m0004 from "./0004_past_starfox.sql";
 import m0005 from "./0005_equal_cerise.sql";
+import m0006 from "./0006_wild_gabe_jones.sql";
 
 export default {
   journal,
@@ -17,5 +18,6 @@ export default {
     m0003,
     m0004,
     m0005,
+    m0006,
   },
 };
