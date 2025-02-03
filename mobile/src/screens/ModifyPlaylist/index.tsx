@@ -6,6 +6,8 @@ import { BackHandler, Modal, Pressable, View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
+import type { SlimTrackWithAlbum } from "~/db/slimTypes";
+
 import { Add } from "~/icons/Add";
 import { Cancel } from "~/icons/Cancel";
 import { CheckCircle } from "~/icons/CheckCircle";
@@ -28,7 +30,6 @@ import type { SwipeableRef } from "~/components/Swipeable";
 import { Swipeable } from "~/components/Swipeable";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { SearchResult } from "~/modules/search/components/SearchResult";
-import type { SearchTrackWithAlbum } from "~/modules/search/types";
 
 /** Resuable screen to modify (create or edit) a playlist. */
 export function ModifyPlaylist(props: InitStoreProps) {
@@ -77,7 +78,7 @@ function ScreenConfig() {
 
 //#region Page Content
 /** Items rendered in the `<DragList />`. */
-type RenderItemProps = DragListRenderItemInfo<SearchTrackWithAlbum>;
+type RenderItemProps = DragListRenderItemInfo<SlimTrackWithAlbum>;
 
 /** Contains the logic for editing the playlist name and tracks. */
 function PageContent() {
