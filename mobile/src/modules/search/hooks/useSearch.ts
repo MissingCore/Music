@@ -37,10 +37,23 @@ export function useSearch<TScope extends SearchCategories>(
 //#region Helpers
 async function getAllMedia() {
   return {
-    album: await getAlbums(),
-    artist: await getArtists(),
-    playlist: await getPlaylists(),
-    track: await getTracks(),
+    album: await getAlbums({
+      columns: ["id", "name", "artistName", "artwork"],
+      withTracks: false,
+    }),
+    artist: await getArtists({
+      columns: ["name", "artwork"],
+      withTracks: false,
+    }),
+    playlist: await getPlaylists({
+      columns: ["name", "artwork"],
+      trackColumns: ["artwork"],
+      albumColumns: ["artwork"],
+    }),
+    track: await getTracks({
+      columns: ["id", "name", "artistName", "artwork"],
+      albumColumns: ["artwork"],
+    }),
   };
 }
 
