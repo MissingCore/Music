@@ -5,7 +5,6 @@ import type {
   Playlist,
   PlaylistWithJunction,
   PlaylistWithTracks,
-  TrackWithAlbum,
 } from "~/db/schema";
 import { playlists, tracksToPlaylists } from "~/db/schema";
 import { sanitizePlaylistName } from "~/db/utils";
@@ -128,7 +127,7 @@ export const getSpecialPlaylist = _getSpecialPlaylist();
 //#region POST Methods
 /** Create a new playlist entry. */
 export async function createPlaylist(
-  entry: typeof playlists.$inferInsert & { tracks?: TrackWithAlbum[] },
+  entry: typeof playlists.$inferInsert & { tracks?: Array<{ id: string }> },
 ) {
   const { tracks, name, ...newPlaylist } = entry;
   const playlistName = sanitizePlaylistName(name);
@@ -180,7 +179,7 @@ export async function moveInPlaylist(info: {
 export async function updatePlaylist(
   id: string,
   values: Partial<typeof playlists.$inferInsert> & {
-    tracks?: TrackWithAlbum[];
+    tracks?: Array<{ id: string }>;
   },
 ) {
   const { tracks, name, ...rest } = values;
