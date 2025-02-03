@@ -4,7 +4,6 @@ import type { StoreApi } from "zustand";
 import { createStore, useStore } from "zustand";
 import { createComputed } from "zustand-computed";
 
-import type { TrackWithAlbum } from "~/db/schema";
 import { mergeTracks, sanitizePlaylistName } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
@@ -12,22 +11,32 @@ import i18next from "~/modules/i18n";
 import { ToastOptions } from "~/lib/toast";
 import { moveArray } from "~/utils/object";
 import { wait } from "~/utils/promise";
-import type { SearchCallbacks } from "~/modules/search/types";
+import type {
+  SearchCallbacks,
+  SearchTrackWithAlbum,
+} from "~/modules/search/types";
 
 type StoreModeOptions =
   | { mode?: "create"; initialName?: never; initialTracks?: never }
-  | { mode: "edit"; initialName: string; initialTracks: TrackWithAlbum[] };
+  | {
+      mode: "edit";
+      initialName: string;
+      initialTracks: SearchTrackWithAlbum[];
+    };
 
 export type InitStoreProps = StoreModeOptions & {
   usedNames: string[];
-  onSubmit: (playlistName: string, tracks: TrackWithAlbum[]) => Promise<void>;
+  onSubmit: (
+    playlistName: string,
+    tracks: SearchTrackWithAlbum[],
+  ) => Promise<void>;
 };
 
 type PlaylistStore = InitStoreProps & {
   playlistName: string;
   setPlaylistName: (newName: string) => void;
 
-  tracks: TrackWithAlbum[];
+  tracks: SearchTrackWithAlbum[];
   moveTrack: (fromIndex: number, toIndex: number) => void;
   removeTrack: (id: string) => void;
 

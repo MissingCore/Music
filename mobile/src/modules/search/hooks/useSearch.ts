@@ -39,7 +39,7 @@ async function getAllMedia() {
   return {
     album: await getAlbums({
       columns: ["id", "name", "artistName", "artwork"],
-      withTracks: false,
+      trackColumns: ["id", "name", "artistName", "artwork"],
     }),
     artist: await getArtists({
       columns: ["name", "artwork"],
@@ -54,7 +54,7 @@ async function getAllMedia() {
       columns: ["id", "name", "artistName", "artwork"],
       albumColumns: ["artwork"],
     }),
-  };
+  } satisfies SearchResults;
 }
 
 const queryKey = ["search"];

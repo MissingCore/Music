@@ -11,7 +11,10 @@ type TrackArtwork = { artwork: Artwork; album?: { artwork: Artwork } | null };
 export type SearchCategories = ReadonlyArray<Exclude<MediaType, "folder">>;
 
 /** Minimum data returned for album for search. */
-export type SearchAlbum = Pick<Album, "id" | "name" | "artistName" | "artwork">;
+export type SearchAlbum = Pick<
+  Album,
+  "id" | "name" | "artistName" | "artwork"
+> & { tracks: SearchTrack[] };
 /** Minimum data returned for artist for search. */
 export type SearchArtist = Pick<Artist, "name" | "artwork">;
 /** Minimum data returned for playlist for search. */
@@ -19,10 +22,10 @@ export type SearchPlaylist = Pick<Playlist, "name" | "artwork"> & {
   tracks: TrackArtwork[];
 };
 /** Minimum data returned for track for search. */
-export type SearchTrack = Pick<
-  Track,
-  "id" | "name" | "artistName" | "artwork"
-> & { album?: Artwork };
+export type SearchTrack = Pick<Track, "id" | "name" | "artistName" | "artwork">;
+export type SearchTrackWithAlbum = SearchTrack & {
+  album: { artwork: Artwork } | null;
+};
 
 /** Functions that can be triggered on the categories of media. */
 export type SearchCallbacks = {
@@ -30,7 +33,7 @@ export type SearchCallbacks = {
   artist: (artist: SearchArtist) => void | Promise<void>;
   // folder: (folder: unknown) => void | Promise<void>;
   playlist: (playlist: SearchPlaylist) => void | Promise<void>;
-  track: (track: SearchTrack) => void | Promise<void>;
+  track: (track: SearchTrackWithAlbum) => void | Promise<void>;
 };
 
 /** Data that can be returned from search. */
@@ -39,5 +42,5 @@ export type SearchResults = {
   artist: SearchArtist[];
   // folder: unknown[];
   playlist: SearchPlaylist[];
-  track: SearchTrack[];
+  track: SearchTrackWithAlbum[];
 };
