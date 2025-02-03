@@ -40,7 +40,7 @@ async function getAllMedia() {
     album: await getAlbums(),
     artist: await getArtists(),
     playlist: await getPlaylists(),
-    track: (await getTracks()).sort((a, b) => a.name.localeCompare(b.name)),
+    track: await getTracks(),
   };
 }
 
