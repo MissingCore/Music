@@ -24,7 +24,7 @@ export type SearchPlaylist = Pick<Playlist, "name" | "artwork"> & {
 /** Minimum data returned for track for search. */
 export type SearchTrack = Pick<Track, "id" | "name" | "artistName" | "artwork">;
 export type SearchTrackWithAlbum = SearchTrack & {
-  album: { artwork: Artwork } | null;
+  album: { name: string; artwork: Artwork } | null;
 };
 
 /** Functions that can be triggered on the categories of media. */

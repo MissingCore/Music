@@ -52,7 +52,7 @@ async function getAllMedia() {
     }),
     track: await getTracks({
       columns: ["id", "name", "artistName", "artwork"],
-      albumColumns: ["artwork"],
+      albumColumns: ["name", "artwork"],
     }),
   } satisfies SearchResults;
 }
