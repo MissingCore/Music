@@ -58,6 +58,8 @@ interface MusicStore {
   shuffledPlayingList: string[];
   /** Shuffled list of `TrackWithAlbum`. */
   shuffledTrackList: TrackWithAlbum[];
+  /** The list of track ids used based on `shuffle`. */
+  currentPlayingList: string[];
   /** The list of `TrackWithAlbum` used based on `shuffle`. */
   currentTrackList: TrackWithAlbum[];
 
@@ -135,16 +137,25 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
     },
     shuffle: false as boolean,
     setShuffle: async (status) => {
-      const { currentTrackList, listIdx, trackList, shuffledTrackList } = get();
+      const {
+        currentPlayingList,
+        listIdx,
+        playingList,
+        trackList,
+        shuffledPlayingList,
+        shuffledTrackList,
+      } = get();
 
       const newActiveList = status ? shuffledTrackList : trackList;
+      const newPlayingList = status ? shuffledPlayingList : playingList;
       // Shuffle around the track at `listIdx` and not `activeId`.
-      const trackAtListIdx = currentTrackList[listIdx]?.id;
-      const newListIdx = newActiveList.findIndex(
-        ({ id }) => id === trackAtListIdx,
+      const trackAtListIdx = currentPlayingList[listIdx];
+      const newListIdx = newPlayingList.findIndex(
+        (id) => id === trackAtListIdx,
       );
 
       musicStore.setState({
+        currentPlayingList: newPlayingList,
         currentTrackList: newActiveList,
         listIdx: newListIdx === -1 ? 0 : newListIdx,
       });
@@ -158,6 +169,7 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
     trackList: [] as TrackWithAlbum[],
     shuffledPlayingList: [] as string[],
     shuffledTrackList: [] as TrackWithAlbum[],
+    currentPlayingList: [] as string[],
     currentTrackList: [] as TrackWithAlbum[],
 
     activeId: undefined as string | undefined,
@@ -217,6 +229,7 @@ musicStore.subscribe(
     musicStore.setState({
       trackList: newTrackList,
       shuffledTrackList: newShuffledTrackList,
+      currentPlayingList: shuffle ? shuffledPlayingList : playingList,
       currentTrackList: shuffle ? newShuffledTrackList : newTrackList,
     });
   },
@@ -355,7 +368,7 @@ export class RNTPManager {
     newPlayingList: string[],
     options?: { startTrackId?: string; contextAware?: boolean },
   ) {
-    const { shuffle, listIdx, currentTrackList, isInQueue } =
+    const { shuffle, listIdx, currentPlayingList, isInQueue } =
       musicStore.getState();
     const newShuffledPlayingList = shuffleArray(newPlayingList);
 
@@ -363,10 +376,10 @@ export class RNTPManager {
     const prevIdx = listIdx - 1 === 0 ? newPlayingList.length - 1 : listIdx - 1;
     const activeTrackIds = [
       options?.startTrackId,
-      currentTrackList[listIdx]?.id,
+      currentPlayingList[listIdx],
       // We ensured that the `contextAware` option can never occur when
       // we remove more than 1 track.
-      options?.contextAware ? currentTrackList[prevIdx]?.id : undefined,
+      options?.contextAware ? currentPlayingList[prevIdx] : undefined,
     ];
     // Get the index we should start at in the new list.
     let newLocation = -1;
