@@ -43,7 +43,7 @@ export function useArtistsForIndex() {
           ? artist.name.charAt(0).toLocaleUpperCase()
           : "#";
         if (Object.hasOwn(groupedArtists, key)) {
-          groupedArtists[key]!.push(artist);
+          groupedArtists[key]?.push(artist);
         } else groupedArtists[key] = [artist];
       });
 

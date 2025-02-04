@@ -29,7 +29,7 @@ export async function fixAlbumFracturization() {
       doesAlbumCopyExists(al, dupAl.key),
     );
     if (existsIdx !== -1) {
-      duplicateCombos[existsIdx]!.ids.push(al.id);
+      duplicateCombos[existsIdx]?.ids.push(al.id);
       return;
     }
     // Don't need to check last index for duplicate.

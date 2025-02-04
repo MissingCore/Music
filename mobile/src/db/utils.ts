@@ -97,7 +97,7 @@ export function formatForTrack(
   if (type === "artist") description = album?.name ?? "—";
   else if (type === "album") {
     description = formatSeconds(duration);
-    if (artistName && album!.artistName !== artistName) {
+    if (artistName && album?.artistName !== artistName) {
       description += ` • ${artistName}`;
     }
   }

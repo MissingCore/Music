@@ -44,10 +44,10 @@ export async function PlaybackService() {
   });
 
   TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (e) => {
-    if (e.index === undefined) return;
+    if (e.index === undefined || e.track === undefined) return;
 
     const { repeat, queuedTrackList } = musicStore.getState();
-    const activeTrack = e.track!;
+    const activeTrack = e.track;
     const trackStatus: TrackStatus = activeTrack["music::status"];
 
     if (trackStatus === "END") {

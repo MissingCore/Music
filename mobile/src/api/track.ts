@@ -33,8 +33,8 @@ export async function getTrack<
   });
   if (!track) throw new Error(i18next.t("response.noTracks"));
   const hasArtwork =
-    // @ts-expect-error - `options.columns` is defined.
-    options?.columns === undefined || options?.columns.includes("artwork");
+    options?.columns === undefined ||
+    options?.columns.includes("artwork" as TCols);
   return {
     ...track,
     ...(hasArtwork ? { artwork: getTrackCover(track) } : {}),
@@ -68,8 +68,8 @@ export async function getTracks<
     orderBy: (fields) => iAsc(fields.name),
   });
   const hasArtwork =
-    // @ts-expect-error - `options.columns` is defined.
-    options?.columns === undefined || options?.columns.includes("artwork");
+    options?.columns === undefined ||
+    options?.columns.includes("artwork" as TCols);
   return allTracks.map((t) => ({
     ...t,
     ...(hasArtwork ? { artwork: getTrackCover(t) } : {}),

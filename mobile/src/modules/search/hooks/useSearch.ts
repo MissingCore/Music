@@ -21,14 +21,15 @@ export function useSearch<TScope extends SearchCategories>(
     return Object.fromEntries(
       scope.map((mediaType) => [
         mediaType,
-        data[mediaType].filter(
-          (i) =>
+        data[mediaType].filter((i) => {
+          return (
             // Partial match with the `name` field.
             i.name.toLocaleLowerCase().includes(q) ||
             // Track's album starts with the query.
             // @ts-expect-error - We ensured the `album` field is present.
-            (i.album && i.album.name.toLocaleLowerCase().startsWith(q)),
-        ),
+            (i.album !== null && i.album.name.toLocaleLowerCase().startsWith(q))
+          );
+        }),
       ]),
     ) as Pick<SearchResults, TScope[number]>;
   }, [data, query, scope]);

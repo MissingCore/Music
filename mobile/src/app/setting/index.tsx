@@ -17,7 +17,7 @@ export default function SettingScreen() {
   const { t, i18n } = useTranslation();
   const { hasNewUpdate } = useHasNewUpdate();
 
-  const currLang = LANGUAGES.find(({ code }) => code === i18n.language)!.name;
+  const currLang = LANGUAGES.find(({ code }) => code === i18n.language)?.name;
 
   return (
     <StandardScrollLayout>
@@ -40,7 +40,7 @@ export default function SettingScreen() {
         />
         <ListItem
           titleKey="title.language"
-          description={currLang}
+          description={currLang ?? "English"}
           onPress={() => SheetManager.show("LanguageSheet")}
           last
         />
