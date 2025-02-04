@@ -17,7 +17,7 @@ import { cleanupDatabase, findAndSaveAudio } from "./audio";
 import { savePathComponents } from "./folder";
 
 /** Look through our library for any new or updated tracks. */
-export async function rescanForTracks() {
+export async function rescanForTracks(deepScan = false) {
   const toastId = toast(i18next.t("response.scanStart"), {
     ...ToastOptions,
     duration: Infinity,
@@ -47,6 +47,15 @@ export async function rescanForTracks() {
       .update(tracks)
       .set({ fetchedArt: false })
       .where(and(eq(tracks.fetchedArt, true), isNull(tracks.artwork)));
+
+    // Update all tracks even if its `modificationTime` hasn't changed.
+    // Useful to update tracks to comply with new saving behavior (ie:
+    // trimming the album, album artist, artist, and track names to prevent
+    // unexpected uniqueness).
+    if (deepScan) {
+      // eslint-disable-next-line drizzle/enforce-update-with-where
+      await db.update(tracks).set({ modificationTime: -1 });
+    }
 
     // Rescan library for any new tracks and delete any old ones.
     const { foundFiles, unstagedFiles } = await findAndSaveAudio();
