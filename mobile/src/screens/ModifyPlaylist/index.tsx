@@ -6,7 +6,7 @@ import { BackHandler, Modal, Pressable, View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
-import type { TrackWithAlbum } from "~/db/schema";
+import type { SlimTrackWithAlbum } from "~/db/slimTypes";
 
 import { Add } from "~/icons/Add";
 import { Cancel } from "~/icons/Cancel";
@@ -78,7 +78,7 @@ function ScreenConfig() {
 
 //#region Page Content
 /** Items rendered in the `<DragList />`. */
-type RenderItemProps = DragListRenderItemInfo<TrackWithAlbum>;
+type RenderItemProps = DragListRenderItemInfo<SlimTrackWithAlbum>;
 
 /** Contains the logic for editing the playlist name and tracks. */
 function PageContent() {

@@ -7,6 +7,7 @@ import { getTrackCover } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
 
+import { iAsc } from "~/lib/drizzle";
 import type { BooleanPriority } from "~/utils/types";
 import type { DrizzleFilter, QueriedTrack } from "./types";
 import { getColumns, withAlbum } from "./utils";
@@ -64,6 +65,7 @@ export async function getTracks<
     where: and(...(options?.where ?? [])),
     columns: getColumns(options?.columns),
     ...withAlbum({ defaultWithAlbum: true, ...options }),
+    orderBy: (fields) => iAsc(fields.name),
   });
   const hasArtwork =
     // @ts-expect-error - `options.columns` is defined.

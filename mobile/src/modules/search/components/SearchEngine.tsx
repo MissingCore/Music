@@ -4,11 +4,11 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import type {
-  AlbumWithTracks,
-  ArtistWithTracks,
-  PlaylistWithTracks,
-  TrackWithAlbum,
-} from "~/db/schema";
+  SlimAlbumWithTracks,
+  SlimArtist,
+  SlimPlaylistWithTracks,
+  SlimTrackWithAlbum,
+} from "~/db/slimTypes";
 import { getPlaylistCover, getTrackCover } from "~/db/utils";
 
 import { Close } from "~/icons/Close";
@@ -159,10 +159,10 @@ function formatResults(results: Partial<SearchResults>) {
 }
 
 type MediaRelations =
-  | { type: "album"; data: AlbumWithTracks }
-  | { type: "artist"; data: ArtistWithTracks }
-  | { type: "playlist"; data: PlaylistWithTracks }
-  | { type: "track"; data: TrackWithAlbum };
+  | { type: "album"; data: SlimAlbumWithTracks }
+  | { type: "artist"; data: SlimArtist }
+  | { type: "playlist"; data: SlimPlaylistWithTracks }
+  | { type: "track"; data: SlimTrackWithAlbum };
 
 /** Get the artwork of the media that'll be displayed. */
 function getArtwork(props: MediaRelations) {

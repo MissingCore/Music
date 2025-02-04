@@ -7,6 +7,13 @@ import type {
   Track,
   TrackWithAlbum,
 } from "./schema";
+import type {
+  Artwork,
+  SlimAlbum,
+  SlimArtist,
+  SlimPlaylistWithTracks,
+  TrackArtwork,
+} from "./slimTypes";
 
 import i18next from "~/modules/i18n";
 
@@ -17,11 +24,6 @@ import { ReservedNames, ReservedPlaylists } from "~/modules/media/constants";
 import type { MediaCard } from "~/modules/media/components/MediaCard";
 import type { Track as TrackC } from "~/modules/media/components/Track";
 import type { MediaType } from "~/modules/media/types";
-
-//#region Slim Types
-type Artwork = string | null;
-type TrackArtwork = { artwork: Artwork; album?: { artwork: Artwork } | null };
-//#endregion
 
 //#region Artwork Formatters
 /** Get the cover of a playlist. */
@@ -53,16 +55,11 @@ export function mergeTracks<TData extends { id: string }>(
 //#endregion
 
 //#region Format for Component
-type MediaCardData<T = {}> = {
-  name: string;
-  artwork: Artwork;
-  tracks: any[];
-} & T;
 type MediaCardFormatter = Prettify<
   { t: TFunction } & (
-    | { type: "artist"; data: MediaCardData }
-    | { type: "album"; data: MediaCardData<{ id: string; artistName: string }> }
-    | { type: "playlist"; data: MediaCardData<{ tracks: TrackArtwork[] }> }
+    | { type: "artist"; data: SlimArtist & { tracks: any[] } }
+    | { type: "album"; data: SlimAlbum & { tracks: any[] } }
+    | { type: "playlist"; data: SlimPlaylistWithTracks }
   )
 >;
 
