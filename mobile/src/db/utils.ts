@@ -1,6 +1,7 @@
 import type { TFunction } from "i18next";
 
 import type {
+  Album,
   AlbumWithTracks,
   ArtistWithTracks,
   PlaylistWithTracks,
@@ -85,9 +86,9 @@ export function formatForMediaCard({ type, data, t }: MediaCardFormatter) {
 export function formatForTrack(
   type: MediaType,
   track: AtLeast<
-    TrackWithAlbum,
+    Track,
     "id" | "name" | "artistName" | "duration" | "artwork"
-  > & { album: { name: string; artistName: string; artwork: Artwork } | null },
+  > & { album: AtLeast<Album, "name" | "artistName" | "artwork"> | null },
 ) {
   const { id, name, artistName, duration, album } = track;
 
