@@ -73,7 +73,7 @@ export async function PlaybackService() {
 
       // Since we played this track naturally, the index hasn't been updated
       // in the store.
-      const nextTrack = RNTPManager.getNextTrack();
+      const nextTrack = await RNTPManager.getNextTrack();
       musicStore.setState(nextTrack);
 
       // Check if we should pause after looping logic.

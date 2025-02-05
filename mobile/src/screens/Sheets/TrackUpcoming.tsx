@@ -13,13 +13,22 @@ import { Sheet } from "~/components/Sheet";
 import { Swipeable } from "~/components/Swipeable";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 
+/*
+  FIXME: Temporary fix for now as we get rid of storing all tracks in the
+  Zustand store.
+    - If we were to have an "TrackWithAlbum[]", it'll probably sync with
+    `currentPlayingList`.
+*/
+import type { TrackWithAlbum } from "~/db/schema";
+const trackList: TrackWithAlbum[] = [];
+
 /**
  * Sheet allowing us to see the upcoming tracks and remove tracks from
  * the queue.
  */
 export default function TrackUpcomingSheet() {
   const { t } = useTranslation();
-  const trackList = useMusicStore((state) => state.currentTrackList);
+  // const trackList = useMusicStore((state) => state.currentTrackList);
   const queueList = useMusicStore((state) => state.queuedTrackList);
   const listIndex = useMusicStore((state) => state.listIdx);
   const repeat = useMusicStore((state) => state.repeat);
