@@ -97,5 +97,5 @@ export async function getTracksFromIds(trackIds: string[]) {
   const unorderedTracks = await getTracks({
     where: [inArray(tracks.id, trackIds)],
   });
-  return trackIds.map((tId) => unorderedTracks.find(({ id }) => id === tId)!);
+  return trackIds.map((tId) => unorderedTracks.find(({ id }) => id === tId));
 }

@@ -21,6 +21,7 @@ import { SearchResult } from "~/modules/search/components/SearchResult";
 */
 import type { TrackWithAlbum } from "~/db/schema";
 const trackList: TrackWithAlbum[] = [];
+const queueList: TrackWithAlbum[] = [];
 
 /**
  * Sheet allowing us to see the upcoming tracks and remove tracks from
@@ -29,7 +30,7 @@ const trackList: TrackWithAlbum[] = [];
 export default function TrackUpcomingSheet() {
   const { t } = useTranslation();
   // const trackList = useMusicStore((state) => state.currentTrackList);
-  const queueList = useMusicStore((state) => state.queuedTrackList);
+  // const queueList = useMusicStore((state) => state.queuedTrackList);
   const listIndex = useMusicStore((state) => state.listIdx);
   const repeat = useMusicStore((state) => state.repeat);
 

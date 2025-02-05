@@ -10,11 +10,7 @@ import { getTrack, removeInvalidTrackRelations } from "~/api/track";
 import { ToastOptions } from "~/lib/toast";
 import { createPersistedSubscribedStore } from "~/lib/zustand";
 import { shuffleArray } from "~/utils/object";
-import {
-  formatTrackforPlayer,
-  getSourceName,
-  getTracksFromIds,
-} from "../helpers/data";
+import { formatTrackforPlayer, getSourceName } from "../helpers/data";
 import type { PlayListSource } from "../types";
 
 /** Options for repeat status. */
@@ -74,8 +70,6 @@ interface MusicStore {
   isInQueue: boolean;
   /** List of track ids that we want to play next. */
   queueList: string[];
-  /** List of `TrackWithAlbum` from `queueList`. */
-  queuedTrackList: TrackWithAlbum[];
 }
 
 /** Fields stored in AsyncStorage. */
@@ -161,7 +155,6 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
 
     isInQueue: false as boolean,
     queueList: [] as string[],
-    queuedTrackList: [] as TrackWithAlbum[],
   }),
   {
     name: "music::playing-store",
@@ -223,15 +216,6 @@ musicStore.subscribe(
       if (activeId) newTrack = await getTrack(activeId);
     } catch {}
     musicStore.setState({ activeTrack: newTrack });
-  },
-);
-
-/** Update `queuedTrackList` when `queueList` changes. */
-musicStore.subscribe(
-  (state) => state.queueList,
-  async (queueList) => {
-    const newTrackList = await getTracksFromIds(queueList);
-    musicStore.setState({ queuedTrackList: newTrackList });
   },
 );
 //#endregion
@@ -304,20 +288,18 @@ export class RNTPManager {
 
   /** Returns the next track or 1st track in queue list. */
   static async getNextTrack() {
-    const { listIdx, currentPlayingList, queuedTrackList } =
-      musicStore.getState();
+    const { listIdx, currentPlayingList, queueList } = musicStore.getState();
 
-    const nextInQueue = queuedTrackList.length > 0;
+    const nextInQueue = queueList.length > 0;
     const nextIndex =
       listIdx === currentPlayingList.length - 1 ? 0 : listIdx + 1;
 
     let nextTrack: TrackWithAlbum | undefined = undefined;
-    if (nextInQueue) nextTrack = queuedTrackList[0];
-    else {
-      try {
-        nextTrack = await getTrack(currentPlayingList[nextIndex]!);
-      } catch {}
-    }
+    try {
+      nextTrack = await getTrack(
+        (nextInQueue ? queueList[0] : currentPlayingList[nextIndex]) as string,
+      );
+    } catch {}
 
     return {
       activeId: nextTrack?.id,
