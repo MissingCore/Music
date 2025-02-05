@@ -17,7 +17,7 @@ import { SearchResult } from "~/modules/search/components/SearchResult";
   FIXME: Temporary fix for now as we get rid of storing all tracks in the
   Zustand store.
     - If we were to have an "TrackWithAlbum[]", it'll probably sync with
-    `currentPlayingList`.
+    `currentList`.
 */
 import type { TrackWithAlbum } from "~/db/schema";
 const trackList: TrackWithAlbum[] = [];

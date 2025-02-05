@@ -39,7 +39,7 @@ interface MusicStore {
    * the order of the tracks played.
    */
   shuffle: boolean;
-  /** Update the `shuffle` field along with `currentPlayingList` & `listIdx`. */
+  /** Update the `shuffle` field along with `currentList` & `listIdx`. */
   setShuffle: (status: boolean) => void;
 
   /** Where the contents of `playingList` is from. */
@@ -51,7 +51,7 @@ interface MusicStore {
   /** Shuffled list of track ids based on the `playingSource`. */
   shuffledPlayingList: string[];
   /** The list of track ids used based on `shuffle`. */
-  currentPlayingList: string[];
+  currentList: string[];
 
   /**
    * The id of the track currently being played (which might not be the
@@ -125,18 +125,17 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
     },
     shuffle: false as boolean,
     setShuffle: async (status) => {
-      const { currentPlayingList, listIdx, playingList, shuffledPlayingList } =
-        get();
+      const { currentList, listIdx, playingList, shuffledPlayingList } = get();
 
       const newPlayingList = status ? shuffledPlayingList : playingList;
       // Shuffle around the track at `listIdx` and not `activeId`.
-      const trackAtListIdx = currentPlayingList[listIdx];
+      const trackAtListIdx = currentList[listIdx];
       const newListIdx = newPlayingList.findIndex(
         (id) => id === trackAtListIdx,
       );
 
       musicStore.setState({
-        currentPlayingList: newPlayingList,
+        currentList: newPlayingList,
         listIdx: newListIdx === -1 ? 0 : newListIdx,
       });
       await RNTPManager.reloadNextTrack();
@@ -147,7 +146,7 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
     sourceName: "",
     playingList: [] as string[],
     shuffledPlayingList: [] as string[],
-    currentPlayingList: [] as string[],
+    currentList: [] as string[],
 
     activeId: undefined as string | undefined,
     activeTrack: undefined as TrackWithAlbum | undefined,
@@ -190,14 +189,14 @@ musicStore.subscribe(
   },
 );
 
-/** Keep `currentPlayingList` up-to-date when the lists changes. */
+/** Keep `currentList` up-to-date when the lists changes. */
 musicStore.subscribe(
   (state) => state.playingList,
   (playingList) => {
     // `shuffledPlayingList` is updated at the same time as `playingList`.
     const { shuffle, shuffledPlayingList } = musicStore.getState();
     musicStore.setState({
-      currentPlayingList: shuffle ? shuffledPlayingList : playingList,
+      currentList: shuffle ? shuffledPlayingList : playingList,
     });
   },
 );
@@ -288,16 +287,15 @@ export class RNTPManager {
 
   /** Returns the next track or 1st track in queue list. */
   static async getNextTrack() {
-    const { listIdx, currentPlayingList, queueList } = musicStore.getState();
+    const { listIdx, currentList, queueList } = musicStore.getState();
 
     const nextInQueue = queueList.length > 0;
-    const nextIndex =
-      listIdx === currentPlayingList.length - 1 ? 0 : listIdx + 1;
+    const nextIndex = listIdx === currentList.length - 1 ? 0 : listIdx + 1;
 
     let nextTrack: TrackWithAlbum | undefined = undefined;
     try {
       nextTrack = await getTrack(
-        (nextInQueue ? queueList[0] : currentPlayingList[nextIndex]) as string,
+        (nextInQueue ? queueList[0] : currentList[nextIndex]) as string,
       );
     } catch {}
 
@@ -311,14 +309,14 @@ export class RNTPManager {
 
   /** Returns the track at index before `listIdx` or at `listIdx` if in queue. */
   static async getPrevTrack() {
-    const { listIdx, currentPlayingList, isInQueue } = musicStore.getState();
+    const { listIdx, currentList, isInQueue } = musicStore.getState();
 
-    let prevIndex = listIdx === 0 ? currentPlayingList.length - 1 : listIdx - 1;
+    let prevIndex = listIdx === 0 ? currentList.length - 1 : listIdx - 1;
     if (isInQueue) prevIndex = listIdx;
 
     let prevTrack: TrackWithAlbum | undefined = undefined;
     try {
-      prevTrack = await getTrack(currentPlayingList[prevIndex]!);
+      prevTrack = await getTrack(currentList[prevIndex]!);
     } catch {}
 
     return {
@@ -334,18 +332,17 @@ export class RNTPManager {
     newPlayingList: string[],
     options?: { startTrackId?: string; contextAware?: boolean },
   ) {
-    const { shuffle, listIdx, currentPlayingList, isInQueue } =
-      musicStore.getState();
+    const { shuffle, listIdx, currentList, isInQueue } = musicStore.getState();
     const newShuffledPlayingList = shuffleArray(newPlayingList);
 
     // Get list of tracks we can start from in the new list.
     const prevIdx = listIdx - 1 === 0 ? newPlayingList.length - 1 : listIdx - 1;
     const activeTrackIds = [
       options?.startTrackId,
-      currentPlayingList[listIdx],
+      currentList[listIdx],
       // We ensured that the `contextAware` option can never occur when
       // we remove more than 1 track.
-      options?.contextAware ? currentPlayingList[prevIdx] : undefined,
+      options?.contextAware ? currentList[prevIdx] : undefined,
     ];
     // Get the index we should start at in the new list.
     let newLocation = -1;
