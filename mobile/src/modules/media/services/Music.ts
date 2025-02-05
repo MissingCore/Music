@@ -5,8 +5,13 @@ import { useStore } from "zustand";
 import type { TrackWithAlbum } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
-import { getTrack, removeInvalidTrackRelations } from "~/api/track";
+import {
+  deleteTrack,
+  getTrack,
+  removeInvalidTrackRelations,
+} from "~/api/track";
 
+import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
 import { createPersistedSubscribedStore } from "~/lib/zustand";
 import { shuffleArray } from "~/utils/object";
@@ -213,7 +218,16 @@ musicStore.subscribe(
     let newTrack: TrackWithAlbum | undefined;
     try {
       if (activeId) newTrack = await getTrack(activeId);
-    } catch {}
+    } catch {
+      // Handle when track doesn't exist.
+      console.log(
+        `[Music Store] Failed to find track with id \`${activeId}\`.`,
+      );
+      await deleteTrack(activeId!);
+      clearAllQueries();
+      await musicStore.getState().reset();
+      return;
+    }
     musicStore.setState({ activeTrack: newTrack });
   },
 );
