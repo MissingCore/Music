@@ -27,7 +27,7 @@ export function useSearch<TScope extends SearchCategories>(
             i.name.toLocaleLowerCase().includes(q) ||
             // Track's album starts with the query.
             // @ts-expect-error - We ensured the `album` field is present.
-            (i.album !== null && i.album.name.toLocaleLowerCase().startsWith(q))
+            (!!i.album && i.album.name.toLocaleLowerCase().startsWith(q))
           );
         }),
       ]),
