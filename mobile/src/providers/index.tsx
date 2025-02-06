@@ -11,6 +11,8 @@ import { ThemeProvider } from "./ThemeProvider";
 
 import { queryClient } from "~/lib/react-query";
 
+import { UpcomingStoreProvider } from "~/screens/Sheets/TrackUpcoming/context";
+
 /** All providers used by the app. */
 export function AppProvider(props: { children: React.ReactNode }) {
   // NOTE: `expo-router` automatically adds `<SafeAreaProvider />`
@@ -20,10 +22,12 @@ export function AppProvider(props: { children: React.ReactNode }) {
       <GestureHandlerRootView>
         <QueryClientProvider client={queryClient}>
           <RouteHandlers />
-          <SheetProvider context="global">
-            <ChildrenWrapper {...props} />
-            <Toasts />
-          </SheetProvider>
+          <UpcomingStoreProvider>
+            <SheetProvider context="global">
+              <ChildrenWrapper {...props} />
+              <Toasts />
+            </SheetProvider>
+          </UpcomingStoreProvider>
         </QueryClientProvider>
       </GestureHandlerRootView>
     </ThemeProvider>

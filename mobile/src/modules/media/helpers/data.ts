@@ -3,11 +3,9 @@
  * Player Interface.
  */
 
-import { inArray } from "drizzle-orm";
 import type { AddTrack } from "react-native-track-player";
 
 import type { TrackWithAlbum } from "~/db/schema";
-import { tracks } from "~/db/schema";
 import { getTrackCover } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
@@ -15,7 +13,6 @@ import { getAlbum } from "~/api/album";
 import { getArtist } from "~/api/artist";
 import { getFolderTracks } from "~/api/folder";
 import { getPlaylist, getSpecialPlaylist } from "~/api/playlist";
-import { getTracks } from "~/api/track";
 
 import type { ReservedPlaylistName } from "../constants";
 import { ReservedNames, ReservedPlaylists } from "../constants";
@@ -89,13 +86,4 @@ export async function getTrackList({ type, id }: PlayListSource) {
   } catch {}
 
   return sortedTracks;
-}
-
-/** Get list of tracks from track ids. */
-export async function getTracksFromIds(trackIds: string[]) {
-  if (trackIds.length === 0) return [];
-  const unorderedTracks = await getTracks({
-    where: [inArray(tracks.id, trackIds)],
-  });
-  return trackIds.map((tId) => unorderedTracks.find(({ id }) => id === tId));
 }
