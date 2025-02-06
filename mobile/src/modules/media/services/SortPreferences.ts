@@ -32,7 +32,7 @@ interface SortPreferencesStore {
 export const sortPreferencesStore =
   createPersistedSubscribedStore<SortPreferencesStore>(
     (set) => ({
-      _hasHydrated: false as boolean,
+      _hasHydrated: false,
       _init: () => {
         set({ _hasHydrated: true });
       },

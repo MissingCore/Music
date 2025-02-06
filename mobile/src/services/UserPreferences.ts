@@ -86,7 +86,7 @@ const OMITTED_FIELDS: string[] = [
 export const userPreferencesStore =
   createPersistedSubscribedStore<UserPreferencesStore>(
     (set) => ({
-      _hasHydrated: false as boolean,
+      _hasHydrated: false,
       _init: async (state) => {
         // Set app theme on initialization.
         if (state.theme !== "system") Appearance.setColorScheme(state.theme);

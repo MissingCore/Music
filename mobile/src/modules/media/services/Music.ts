@@ -92,7 +92,7 @@ const STORED_FIELDS: string[] = [
 
 export const musicStore = createPersistedSubscribedStore<MusicStore>(
   (set, get) => ({
-    _hasHydrated: false as boolean,
+    _hasHydrated: false,
     _init: async ({ playingSource }) => {
       let sourceName = "";
       if (playingSource) sourceName = await getSourceName(playingSource);
@@ -118,7 +118,7 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
       } catch {}
     },
 
-    isPlaying: false as boolean,
+    isPlaying: false,
 
     repeat: "no-repeat",
     cycleRepeat: () => {
@@ -128,7 +128,7 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
       else if (repeat === "repeat-one") newMode = "no-repeat";
       set({ repeat: newMode });
     },
-    shuffle: false as boolean,
+    shuffle: false,
     setShuffle: async (status) => {
       const { currentList, listIdx, playingList, shuffledPlayingList } = get();
 
@@ -147,18 +147,18 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
       set({ shuffle: status });
     },
 
-    playingSource: undefined as PlayListSource | undefined,
+    playingSource: undefined,
     sourceName: "",
-    playingList: [] as string[],
-    shuffledPlayingList: [] as string[],
-    currentList: [] as string[],
+    playingList: [],
+    shuffledPlayingList: [],
+    currentList: [],
 
-    activeId: undefined as string | undefined,
-    activeTrack: undefined as TrackWithAlbum | undefined,
+    activeId: undefined,
+    activeTrack: undefined,
     listIdx: 0,
 
-    isInQueue: false as boolean,
-    queueList: [] as string[],
+    isInQueue: false,
+    queueList: [],
   }),
   {
     name: "music::playing-store",
