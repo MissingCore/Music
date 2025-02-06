@@ -416,13 +416,14 @@ export class RNTPManager {
     }
     const playingTrack = await TrackPlayer.getActiveTrack();
     const { activeTrack, isInQueue, repeat } = musicStore.getState();
+    if (!activeTrack) return;
     // Update the current playing track (or restart the track).
-    if (playingTrack?.id !== activeTrack?.id || args?.restart) {
+    if (playingTrack?.id !== activeTrack.id || args?.restart) {
       // Identify how we'll load the track.
       const trackStatus: TrackStatus =
         repeat === "repeat-one" ? "REPEAT" : isInQueue ? "QUEUE" : "RELOAD";
       await TrackPlayer.load({
-        ...formatTrackforPlayer(activeTrack!),
+        ...formatTrackforPlayer(activeTrack),
         "music::status": trackStatus,
       });
       await TrackPlayer.seekTo(0);
