@@ -6,12 +6,11 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import "~/screens/Sheets";
+import { UpcomingStoreProvider } from "~/screens/Sheets/TrackUpcoming/context";
 import { RouteHandlers } from "./RouteHandlers";
 import { ThemeProvider } from "./ThemeProvider";
 
 import { queryClient } from "~/lib/react-query";
-
-import { UpcomingStoreProvider } from "~/screens/Sheets/TrackUpcoming/context";
 
 /** All providers used by the app. */
 export function AppProvider(props: { children: React.ReactNode }) {
