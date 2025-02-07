@@ -47,7 +47,7 @@ export async function findAndSaveArtwork() {
   uncheckedTracks.forEach((t) => {
     const key = t.albumId;
     if (key === null) singles.push(t);
-    else if (Object.hasOwn(albumTracks, key)) albumTracks[key]!.push(t);
+    else if (Object.hasOwn(albumTracks, key)) albumTracks[key]?.push(t);
     else albumTracks[key] = [t];
   });
 

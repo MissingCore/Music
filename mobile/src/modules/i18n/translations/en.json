@@ -76,6 +76,7 @@
     "interactions": "Nothing Interactions",
     "scanning": "Scanning",
     "rescan": "Rescan",
+    "deepRescan": "Deep Rescan",
     "translate": "Contribute Translations",
     "code": "GitHub Repository",
     "license": "License",
@@ -92,6 +93,7 @@
       "interactions": "Supported Nothing features.",
       "scanning": "Music discovery options.",
       "rescan": "Look for any new media.",
+      "deepRescan": "Ignores any skip measures that speeds up the normal rescan feature.",
       "translate": "Help translate the app in other languages.",
       "code": "Report issues, contribute, or request new features.",
       "thirdParty": "What makes this app possible."

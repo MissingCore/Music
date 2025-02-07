@@ -23,7 +23,11 @@ export const queries = createQueryKeyStore({
   albums: {
     all: {
       queryKey: null,
-      queryFn: () => getAlbums(),
+      queryFn: () =>
+        getAlbums({
+          columns: ["id", "name", "artistName", "artwork"],
+          trackColumns: ["id"],
+        }),
     },
     detail: (albumId: string) => ({
       queryKey: [albumId],
@@ -34,7 +38,11 @@ export const queries = createQueryKeyStore({
   artists: {
     all: {
       queryKey: null,
-      queryFn: () => getArtists(),
+      queryFn: () =>
+        getArtists({
+          columns: ["name", "artwork"],
+          withTracks: false,
+        }),
     },
     detail: (artistName: string) => ({
       queryKey: [artistName],
@@ -66,7 +74,12 @@ export const queries = createQueryKeyStore({
   playlists: {
     all: {
       queryKey: null,
-      queryFn: () => getPlaylists(),
+      queryFn: () =>
+        getPlaylists({
+          columns: ["name", "artwork"],
+          trackColumns: ["artwork"],
+          albumColumns: ["artwork"],
+        }),
     },
     detail: (playlistName: string) => ({
       queryKey: [playlistName],
@@ -77,7 +90,18 @@ export const queries = createQueryKeyStore({
   tracks: {
     all: {
       queryKey: null,
-      queryFn: () => getTracks(),
+      queryFn: () =>
+        getTracks({
+          columns: [
+            "id",
+            "name",
+            "artistName",
+            "duration",
+            "artwork",
+            "modificationTime",
+          ],
+          albumColumns: ["name", "artistName", "artwork"],
+        }),
     },
     detail: (trackId: string) => ({
       queryKey: [trackId],
@@ -121,8 +145,17 @@ export const queries = createQueryKeyStore({
 /** Get favorited albums & playlists. */
 async function getFavoriteLists() {
   const [favAlbums, favPlaylists] = await Promise.all([
-    getAlbums({ where: [eq(albums.isFavorite, true)] }),
-    getPlaylists({ where: [eq(playlists.isFavorite, true)] }),
+    getAlbums({
+      where: [eq(albums.isFavorite, true)],
+      columns: ["id", "name", "artistName", "artwork"],
+      trackColumns: ["id"],
+    }),
+    getPlaylists({
+      where: [eq(playlists.isFavorite, true)],
+      columns: ["name", "artwork"],
+      trackColumns: ["artwork"],
+      albumColumns: ["artwork"],
+    }),
   ]);
   return { albums: favAlbums, playlists: favPlaylists };
 }

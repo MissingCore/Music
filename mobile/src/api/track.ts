@@ -7,6 +7,7 @@ import { getTrackCover } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
 
+import { iAsc } from "~/lib/drizzle";
 import type { BooleanPriority } from "~/utils/types";
 import type { DrizzleFilter, QueriedTrack } from "./types";
 import { getColumns, withAlbum } from "./utils";
@@ -32,8 +33,8 @@ export async function getTrack<
   });
   if (!track) throw new Error(i18next.t("response.noTracks"));
   const hasArtwork =
-    // @ts-expect-error - `options.columns` is defined.
-    options?.columns === undefined || options?.columns.includes("artwork");
+    options?.columns === undefined ||
+    options?.columns.includes("artwork" as TCols);
   return {
     ...track,
     ...(hasArtwork ? { artwork: getTrackCover(track) } : {}),
@@ -64,10 +65,11 @@ export async function getTracks<
     where: and(...(options?.where ?? [])),
     columns: getColumns(options?.columns),
     ...withAlbum({ defaultWithAlbum: true, ...options }),
+    orderBy: (fields) => iAsc(fields.name),
   });
   const hasArtwork =
-    // @ts-expect-error - `options.columns` is defined.
-    options?.columns === undefined || options?.columns.includes("artwork");
+    options?.columns === undefined ||
+    options?.columns.includes("artwork" as TCols);
   return allTracks.map((t) => ({
     ...t,
     ...(hasArtwork ? { artwork: getTrackCover(t) } : {}),

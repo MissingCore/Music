@@ -2,13 +2,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { eq } from "drizzle-orm";
 
 import { db } from "~/db";
-import { tracks, tracksToPlaylists } from "~/db/schema";
+import { invalidTracks, tracks, tracksToPlaylists } from "~/db/schema";
 
 import { getPlaylists } from "~/api/playlist";
 import { removeInvalidTrackRelations } from "~/api/track";
 import { recentListStore } from "~/modules/media/services/RecentList";
 import { userPreferencesStore } from "~/services/UserPreferences";
 
+import { fixAlbumFracturization } from "./_album-fracturization";
 import type { MigrationOption } from "../constants";
 import { MigrationHistory } from "../constants";
 import type { PlayListSource } from "../../media/types";
@@ -82,6 +83,12 @@ export const MigrationFunctionMap: Record<
   },
   /** Removes track to playlist relations where the track doesn't exist. */
   "no-track-playlist-ref": removeInvalidTrackRelations,
+  "recheck-invalid-tracks": async () => {
+    // eslint-disable-next-line drizzle/enforce-delete-with-where
+    await db.delete(invalidTracks);
+  },
+  /** Fix album fracturization caused by `releaseYear = null`. */
+  "fix-null-releaseYear": fixAlbumFracturization,
 };
 
 /** Helper to parse value from AsyncStorage. */

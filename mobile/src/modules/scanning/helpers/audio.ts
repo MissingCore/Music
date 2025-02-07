@@ -213,7 +213,7 @@ async function getTrackEntry({
   await Promise.allSettled(
     [meta.artist, meta.albumArtist]
       .filter((name) => name !== null)
-      .map((name) => createArtist({ name })),
+      .map((name) => createArtist({ name: name.trim() })),
   );
 
   // Add new album to the database. The unique key on `Album` covers the rare
@@ -221,16 +221,16 @@ async function getTrackEntry({
   let albumId: string | null = null;
   if (!!meta.albumTitle && !!meta.albumArtist) {
     const newAlbum = await upsertAlbum({
-      name: meta.albumTitle,
-      artistName: meta.albumArtist,
-      releaseYear: meta.year,
+      name: meta.albumTitle.trim(),
+      artistName: meta.albumArtist.trim(),
+      releaseYear: meta.year ?? -1,
     });
     if (newAlbum) albumId = newAlbum.id;
   }
 
   return {
-    ...{ id, name: meta.title ?? removeFileExtension(filename) },
-    ...{ artistName: meta.artist, albumId, track: meta.trackNumber },
+    ...{ id, name: meta.title?.trim() ?? removeFileExtension(filename) },
+    ...{ artistName: meta.artist?.trim(), albumId, track: meta.trackNumber },
     ...{ disc: meta.discNumber, format: meta.sampleMimeType, bitrate },
     ...{ sampleRate, duration, uri, modificationTime, fetchedArt: false },
     ...{ size: assetInfo.exists ? (assetInfo.size ?? 0) : 0 },

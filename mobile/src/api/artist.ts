@@ -62,10 +62,8 @@ export async function createArtist(entry: typeof artists.$inferInsert) {
 /** Update specified artist. */
 export async function updateArtist(
   id: string,
-  values: Partial<typeof artists.$inferInsert>,
+  values: Partial<Omit<typeof artists.$inferInsert, "name">>,
 ) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { name: _, ...rest } = values;
-  return db.update(artists).set(rest).where(eq(artists.name, id));
+  return db.update(artists).set(values).where(eq(artists.name, id));
 }
 //#endregion

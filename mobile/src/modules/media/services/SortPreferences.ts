@@ -32,7 +32,7 @@ interface SortPreferencesStore {
 export const sortPreferencesStore =
   createPersistedSubscribedStore<SortPreferencesStore>(
     (set) => ({
-      _hasHydrated: false as boolean,
+      _hasHydrated: false,
       _init: () => {
         set({ _hasHydrated: true });
       },
@@ -80,10 +80,9 @@ export function sortTracks<TData extends PartialTrack>(
   // FIXME: Once Hermes supports `toSorted` & `toReversed`, use those
   // instead of the in-place methods.
   let sortedTracks = [...tracks];
-  // Order track by attribute.
-  if (orderedBy === "alphabetical") {
-    sortedTracks.sort((a, b) => a.name.localeCompare(b.name));
-  } else if (orderedBy === "modified") {
+  // Order track by attribute (by default, tracks are sorted in alphabetical
+  // order in the database).
+  if (orderedBy === "modified") {
     sortedTracks.sort((a, b) => a.modificationTime - b.modificationTime);
   }
   // Sort tracks in descending order.

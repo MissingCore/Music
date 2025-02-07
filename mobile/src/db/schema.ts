@@ -33,7 +33,11 @@ export const albums = sqliteTable(
     artistName: text("artist_name")
       .notNull()
       .references(() => artists.name),
-    releaseYear: integer("release_year"),
+    /*
+      FIXME: This is technically `.notNull()`, but the migration will fail
+      for users who have "duplicate" album where `releaseYear = null`.
+    */
+    releaseYear: integer("release_year").default(-1),
     artwork: text(),
     isFavorite: integer({ mode: "boolean" }).notNull().default(false),
   },

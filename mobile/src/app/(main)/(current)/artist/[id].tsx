@@ -8,6 +8,7 @@ import { useGetColumn } from "~/hooks/useGetColumn";
 import { CurrentListLayout } from "~/layouts/CurrentList";
 
 import { cn } from "~/lib/style";
+import { isYearDefined } from "~/utils/number";
 import { FlashList } from "~/components/Defaults";
 import { PagePlaceholder } from "~/components/Transition/Placeholder";
 import { TEm } from "~/components/Typography/StyledText";
@@ -76,7 +77,7 @@ function ArtistAlbums({ albums }: { albums: Album[] | null }) {
             source={item.artwork}
             href={`/album/${item.id}`}
             title={item.name}
-            description={`${item.releaseYear ?? "————"}`}
+            description={`${isYearDefined(item.releaseYear) ? item.releaseYear : "————"}`}
             className={index > 0 ? "ml-3" : undefined}
           />
         )}

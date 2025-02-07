@@ -29,13 +29,13 @@ interface RecentListStore {
 
 export const recentListStore = createPersistedSubscribedStore<RecentListStore>(
   (set) => ({
-    _hasHydrated: false as boolean,
+    _hasHydrated: false,
     _init: () => {
       set({ _hasHydrated: true });
     },
 
-    sources: [] as PlayListSource[],
-    recentList: [] as MediaCard.Content[],
+    sources: [],
+    recentList: [],
   }),
   {
     name: "music::recent-list-store",

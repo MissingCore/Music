@@ -4,6 +4,7 @@ import { getTrackCover } from "~/db/utils";
 
 import { Remove } from "~/icons/Remove";
 import { Queue, useMusicStore } from "~/modules/media/services/Music";
+import { useUpcomingStore } from "./context";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
@@ -19,8 +20,8 @@ import { SearchResult } from "~/modules/search/components/SearchResult";
  */
 export default function TrackUpcomingSheet() {
   const { t } = useTranslation();
-  const trackList = useMusicStore((state) => state.currentTrackList);
-  const queueList = useMusicStore((state) => state.queuedTrackList);
+  const trackList = useUpcomingStore((state) => state.currentTrackList);
+  const queueList = useUpcomingStore((state) => state.queuedTrackList);
   const listIndex = useMusicStore((state) => state.listIdx);
   const repeat = useMusicStore((state) => state.repeat);
 
@@ -46,8 +47,10 @@ export default function TrackUpcomingSheet() {
       <SheetsFlashList
         estimatedItemSize={52} // 48px Height + 4px Margin Top
         data={data}
-        keyExtractor={({ name }, index) => `${name}_${index}`}
+        keyExtractor={(item, index) => `${item?.name ?? ""}_${index}`}
         renderItem={({ item, index }) => {
+          if (item === undefined) return null;
+
           const itemContent = {
             title: item.name,
             description: item.artistName ?? "—",

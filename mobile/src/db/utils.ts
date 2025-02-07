@@ -1,27 +1,30 @@
 import type { TFunction } from "i18next";
 
 import type {
+  Album,
   AlbumWithTracks,
   ArtistWithTracks,
   PlaylistWithTracks,
   Track,
   TrackWithAlbum,
 } from "./schema";
+import type {
+  Artwork,
+  SlimAlbum,
+  SlimArtist,
+  SlimPlaylistWithTracks,
+  TrackArtwork,
+} from "./slimTypes";
 
 import i18next from "~/modules/i18n";
 
-import { formatSeconds } from "~/utils/number";
+import { formatSeconds, isYearDefined } from "~/utils/number";
 import { omitKeys } from "~/utils/object";
 import type { AtLeast, Prettify } from "~/utils/types";
 import { ReservedNames, ReservedPlaylists } from "~/modules/media/constants";
 import type { MediaCard } from "~/modules/media/components/MediaCard";
 import type { Track as TrackC } from "~/modules/media/components/Track";
 import type { MediaType } from "~/modules/media/types";
-
-//#region Slim Types
-type Artwork = string | null;
-type TrackArtwork = { artwork: Artwork; album?: { artwork: Artwork } | null };
-//#endregion
 
 //#region Artwork Formatters
 /** Get the cover of a playlist. */
@@ -53,16 +56,11 @@ export function mergeTracks<TData extends { id: string }>(
 //#endregion
 
 //#region Format for Component
-type MediaCardData<T = {}> = {
-  name: string;
-  artwork: Artwork;
-  tracks: any[];
-} & T;
 type MediaCardFormatter = Prettify<
   { t: TFunction } & (
-    | { type: "artist"; data: MediaCardData }
-    | { type: "album"; data: MediaCardData<{ id: string; artistName: string }> }
-    | { type: "playlist"; data: MediaCardData<{ tracks: TrackArtwork[] }> }
+    | { type: "artist"; data: SlimArtist & { tracks: any[] } }
+    | { type: "album"; data: SlimAlbum & { tracks: any[] } }
+    | { type: "playlist"; data: SlimPlaylistWithTracks }
   )
 >;
 
@@ -88,9 +86,9 @@ export function formatForMediaCard({ type, data, t }: MediaCardFormatter) {
 export function formatForTrack(
   type: MediaType,
   track: AtLeast<
-    TrackWithAlbum,
+    Track,
     "id" | "name" | "artistName" | "duration" | "artwork"
-  > & { album: { name: string; artistName: string; artwork: Artwork } | null },
+  > & { album: AtLeast<Album, "name" | "artistName" | "artwork"> | null },
 ) {
   const { id, name, artistName, duration, album } = track;
 
@@ -99,7 +97,7 @@ export function formatForTrack(
   if (type === "artist") description = album?.name ?? "—";
   else if (type === "album") {
     description = formatSeconds(duration);
-    if (artistName && album!.artistName !== artistName) {
+    if (artistName && album?.artistName !== artistName) {
       description += ` • ${artistName}`;
     }
   }
@@ -125,7 +123,7 @@ export function formatForCurrentScreen({ type, data, t }: ScreenFormatter) {
       data.tracks.reduce((total, curr) => total + curr.duration, 0),
     ),
   ];
-  if (type === "album" && data.releaseYear) {
+  if (type === "album" && isYearDefined(data.releaseYear)) {
     metadata.unshift(String(data.releaseYear));
   }
 

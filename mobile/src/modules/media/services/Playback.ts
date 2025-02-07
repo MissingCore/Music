@@ -44,7 +44,7 @@ export class MusicControls {
 
   /** Play the previous track. */
   static async prev() {
-    const prevTrack = RNTPManager.getPrevTrack();
+    const prevTrack = await RNTPManager.getPrevTrack();
     // If no track is found, reset the state.
     if (prevTrack.activeTrack === undefined) {
       return await musicStore.getState().reset();
@@ -69,7 +69,7 @@ export class MusicControls {
   /** Play the next track. */
   static async next() {
     const repeatMode = musicStore.getState().repeat;
-    const { listIdx, ...nextTrack } = RNTPManager.getNextTrack();
+    const { listIdx, ...nextTrack } = await RNTPManager.getNextTrack();
     // Make sure we reset if we play from a source with no tracks left.
     if (!nextTrack.activeId) return await musicStore.getState().reset();
     musicStore.setState({
@@ -105,7 +105,7 @@ export async function playFromMediaList({
   source: PlayListSource;
   trackId?: string;
 }) {
-  const { shuffle, playingSource, activeId, activeTrack, currentTrackList } =
+  const { shuffle, playingSource, activeId, activeTrack, currentList } =
     musicStore.getState();
 
   // 1. See if we're playing from a new media list.
@@ -116,11 +116,11 @@ export async function playFromMediaList({
   if (isSameSource) {
     // Case where we play a different track in this media list.
     if (!!trackId && isDiffTrack) {
-      // Find index of new track in list.
-      const listIndex = currentTrackList.findIndex(({ id }) => id === trackId);
+      // Find index of new track in list (let the `activeId` subscription
+      // handle updating `activeTrack`).
+      const listIndex = currentList.findIndex((id) => id === trackId);
       musicStore.setState({
         activeId: trackId,
-        activeTrack: currentTrackList[listIndex],
         listIdx: listIndex,
         isInQueue: false,
       });

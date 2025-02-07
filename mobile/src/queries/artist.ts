@@ -38,12 +38,12 @@ export function useArtistsForIndex() {
       // Group artists by their 1st character (artists are already
       // pre-sorted by their name).
       const groupedArtists: Record<string, Artist[]> = {};
-      data.forEach(({ tracks: _, ...artist }) => {
+      data.forEach((artist) => {
         const key = /[a-zA-Z]/.test(artist.name.charAt(0))
           ? artist.name.charAt(0).toLocaleUpperCase()
           : "#";
         if (Object.hasOwn(groupedArtists, key)) {
-          groupedArtists[key]!.push(artist);
+          groupedArtists[key]?.push(artist);
         } else groupedArtists[key] = [artist];
       });
 

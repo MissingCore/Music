@@ -18,13 +18,22 @@ export default function ScanningScreen() {
 
   return (
     <StandardScrollLayout>
-      <ListItem
-        titleKey="settings.rescan"
-        description={t("settings.brief.rescan")}
-        disabled={rescan.isPending}
-        onPress={() => mutateGuard(rescan, undefined)}
-        {...{ first: true, last: true }}
-      />
+      <List>
+        <ListItem
+          titleKey="settings.rescan"
+          description={t("settings.brief.rescan")}
+          disabled={rescan.isPending}
+          onPress={() => mutateGuard(rescan, undefined)}
+          first
+        />
+        <ListItem
+          titleKey="settings.deepRescan"
+          description={t("settings.brief.deepRescan")}
+          disabled={rescan.isPending}
+          onPress={() => mutateGuard(rescan, true)}
+          last
+        />
+      </List>
 
       <List>
         <ListItem

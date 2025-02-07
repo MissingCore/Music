@@ -11,7 +11,7 @@ index 0cbe84fa9b660017825c91e8d6fc255ce696dfa0..d791099131bb617f64598201e6f7b676
  }
  export {};
 diff --git a/src/components/Swipeable.tsx b/src/components/Swipeable.tsx
-index 593ab597407aaae6dcc860038d6c659e18ea22f0..d490573a2eada8ad9d5c0980aae7eeb48c4fa7f9 100644
+index e3b502e1c68667378cd0932929566359c1375ad9..d84fd68263a48ce8083bf7d7844b0d177dbdde9a 100644
 --- a/src/components/Swipeable.tsx
 +++ b/src/components/Swipeable.tsx
 @@ -501,6 +501,22 @@ export default class Swipeable extends Component<

@@ -37,9 +37,7 @@ export default function RootLayout() {
   // Ensure the RNTP service closes on app close.
   useEffect(() => {
     return () => {
-      try {
-        TrackPlayer.reset();
-      } catch {}
+      TrackPlayer.reset().catch();
     };
   }, []);
 

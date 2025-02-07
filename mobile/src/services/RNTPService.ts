@@ -44,10 +44,10 @@ export async function PlaybackService() {
   });
 
   TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (e) => {
-    if (e.index === undefined) return;
+    if (e.index === undefined || e.track === undefined) return;
 
-    const { repeat, queuedTrackList } = musicStore.getState();
-    const activeTrack = e.track!;
+    const { repeat, queueList } = musicStore.getState();
+    const activeTrack = e.track;
     const trackStatus: TrackStatus = activeTrack["music::status"];
 
     if (trackStatus === "END") {
@@ -56,13 +56,10 @@ export async function PlaybackService() {
       // Remove 1st item in `queueList` if they're the same (doesn't
       // fire if we manually forced the next track to play - which would
       // cause `e.index` to be `0`).
-      if (e.index > 0 && activeTrack.id === queuedTrackList[0]?.id) {
-        // Update the displayed track.
-        musicStore.setState({
-          activeId: activeTrack.id,
-          activeTrack: queuedTrackList[0],
-          isInQueue: true,
-        });
+      if (e.index > 0 && activeTrack.id === queueList[0]) {
+        // Update the displayed track (let the `activeId` subscription
+        // handle updating `activeTrack`).
+        musicStore.setState({ activeId: activeTrack.id, isInQueue: true });
         await Queue.removeAtIndex(0);
       } else {
         musicStore.setState({ isInQueue: true });
@@ -73,7 +70,7 @@ export async function PlaybackService() {
 
       // Since we played this track naturally, the index hasn't been updated
       // in the store.
-      const nextTrack = RNTPManager.getNextTrack();
+      const nextTrack = await RNTPManager.getNextTrack();
       musicStore.setState(nextTrack);
 
       // Check if we should pause after looping logic.
