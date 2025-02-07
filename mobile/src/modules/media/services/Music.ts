@@ -306,15 +306,14 @@ export class RNTPManager {
     const nextInQueue = queueList.length > 0;
     const nextIndex = listIdx === currentList.length - 1 ? 0 : listIdx + 1;
 
+    const nextTrackId = nextInQueue ? queueList[0] : currentList[nextIndex];
     let nextTrack: TrackWithAlbum | undefined = undefined;
     try {
-      nextTrack = await getTrack(
-        (nextInQueue ? queueList[0] : currentList[nextIndex]) as string,
-      );
+      if (nextTrackId) nextTrack = await getTrack(nextTrackId);
     } catch {}
 
     return {
-      activeId: nextTrack?.id,
+      activeId: nextTrackId,
       activeTrack: nextTrack,
       listIdx: nextInQueue ? -1 : nextIndex,
       isInQueue: nextInQueue,
@@ -328,13 +327,14 @@ export class RNTPManager {
     let prevIndex = listIdx === 0 ? currentList.length - 1 : listIdx - 1;
     if (isInQueue) prevIndex = listIdx;
 
+    const prevTrackId = currentList[prevIndex];
     let prevTrack: TrackWithAlbum | undefined = undefined;
     try {
-      prevTrack = await getTrack(currentList[prevIndex]!);
+      if (prevTrackId) prevTrack = await getTrack(prevTrackId);
     } catch {}
 
     return {
-      activeId: prevTrack?.id,
+      activeId: prevTrackId,
       activeTrack: prevTrack,
       listIdx: prevTrack ? prevIndex : -1,
       isInQueue: false,
