@@ -76,6 +76,7 @@
     "interactions": "Nothing のインタラクション",
     "scanning": "音楽のスキャン",
     "rescan": "再スキャン",
+    "deepRescan": "ディープで再スキャン",
     "translate": "翻訳に貢献する",
     "code": "GitHub リポジトリ",
     "license": "ライセンス",
@@ -92,6 +93,7 @@
       "interactions": "Nothing でサポートされている機能について。",
       "scanning": "音楽の検索オプションを設定します。",
       "rescan": "新しいメディアを検索します。",
+      "deepRescan": "通常の再スキャンのスキップ機能による高速化を無視します。",
       "translate": "アプリを他の言語に翻訳しませんか？",
       "code": "問題の報告、貢献、新しい機能の要望ができます。",
       "thirdParty": "このアプリを可能にした物の一覧です。"
