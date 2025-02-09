@@ -81,6 +81,7 @@ Read the [Translations](./docs/translations.md) documentation for a rundown of h
 |   Русский   |     [@klinoff0](https://www.github.com/klinoff0)     |
 |   Türkçe    |   [@mikropsoft](https://www.github.com/mikropsoft)   |
 |   Català    |      [@T-K-Y-M](https://www.github.com/T-K-Y-M)      |
+|    हिंदी    |    [@OxSourabh](https://www.github.com/OxSourabh)    |
 
 # Legal
 
