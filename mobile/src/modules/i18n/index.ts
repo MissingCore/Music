@@ -6,6 +6,7 @@ import de from "./translations/de.json";
 import en from "./translations/en.json";
 import es from "./translations/es.json";
 import fr from "./translations/fr.json";
+import hi from "./translations/hi.json";
 import id from "./translations/id.json";
 import ja from "./translations/ja.json";
 import ru from "./translations/ru.json";
@@ -18,6 +19,7 @@ const resources = {
   en: { translation: en },
   es: { translation: es },
   fr: { translation: fr },
+  hi: { translation: hi },
   id: { translation: id },
   ja: { translation: ja },
   ru: { translation: ru },
