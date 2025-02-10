@@ -1,0 +1,187 @@
+{
+  "appUpdate": {
+    "title": "App Update",
+    "brief": "A new update is available!",
+    "extra": {
+      "downloadAPK": "Download the latest APK",
+      "updateGoogle": "Update via Play Store"
+    }
+  },
+  "appearance": {
+    "title": "Appearance",
+    "brief": "Personalize the app looks."
+  },
+  "accentFont": {
+    "title": "Accent Font"
+  },
+  "theme": {
+    "title": "Theme",
+    "extra": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
+  },
+  "homeTabsOrder": {
+    "title": "Home Tabs Order",
+    "brief": "Customize the order and visibility of the tabs.",
+    "description": {
+      "line1": "Reorder the tabs after the \"Home\" tab by dragging and dropping. Toggle tab visibility using the eye icon.",
+      "line2": "Caution: Unexpected behavior may occur when navigating to a hidden tab."
+    }
+  },
+  "nowPlayingDesign": {
+    "title": "Now Playing Screen Design",
+    "extra": {
+      "plain": "Plain",
+      "vinyl": "Vinyl"
+    }
+  },
+  "language": {
+    "title": "Language"
+  },
+  "backup": {
+    "title": "Backup",
+    "brief": "Move data across devices.",
+    "description": "Transfer data from this app across devices through a `music_backup.json` file.",
+    "extra": {
+      "export": "Export",
+      "exportSuccess": "Created backup successfully.",
+      "import": "Import",
+      "importSuccess": "Backup import completed."
+    }
+  },
+  "insights": {
+    "title": "Insights",
+    "brief": "App usage & statistics.",
+    "extra": {
+      "cache": "Cache",
+      "database": "Database",
+      "images": "Images",
+      "other": "Other",
+      "total": "Total",
+      "totalDuration": "Total Duration"
+    }
+  },
+  "saveErrors": {
+    "title": "Save Errors",
+    "brief": "See the reason why some tracks weren't saved."
+  },
+  "interactions": {
+    "title": "Nothing Interactions",
+    "brief": "Supported Nothing features."
+  },
+  "scanning": {
+    "title": "Scanning",
+    "brief": "Music discovery options."
+  },
+  "rescan": {
+    "title": "Rescan",
+    "brief": "Look for any new media.",
+    "extra": {
+      "start": "Rescanning library...",
+      "success": "Finished rescanning library.",
+      "fail": "Failed to rescan library."
+    }
+  },
+  "deepRescan": {
+    "title": "Deep Rescan",
+    "brief": "Ignores any skip measures that speeds up the normal rescan feature."
+  },
+  "listAllow": {
+    "title": "Allowlist",
+    "description": "Defaults to the following if empty:"
+  },
+  "listBlock": {
+    "title": "Blocklist",
+    "description": "Has higher priority over the entries in the allowlist."
+  },
+  "ignoreDuration": {
+    "title": "Ignore Short Audio",
+    "description": "Duration in seconds of audio we don't want to save."
+  },
+  "translate": {
+    "title": "Contribute Translations",
+    "brief": "Help translate the app in other languages."
+  },
+  "code": {
+    "title": "GitHub Repository",
+    "brief": "Report issues, contribute, or request new features."
+  },
+  "license": {
+    "title": "License"
+  },
+  "privacy": {
+    "title": "Privacy Policy"
+  },
+  "thirdParty": {
+    "title": "Third-Party Software",
+    "brief": "What makes this app possible."
+  },
+  "version": {
+    "title": "Version"
+  },
+
+  "errorRoute": {
+    "title": "Unmatched Route",
+    "brief": "You somehow navigated to an invalid route.",
+    "extra": {
+      "missing": "Missing",
+      "from": "From"
+    }
+  },
+  "errorGeneric": {
+    "title": "Something Went Wrong",
+    "brief": "You encountered an unexpected error."
+  },
+  "errorReport": {
+    "title": "Report Issue",
+    "brief": "Include a screenshot of this screen."
+  },
+
+  "onboardPreprocess": {
+    "title": "Preprocess",
+    "brief": "Making sure existing data complies with any changes."
+  },
+  "onboardTracks": {
+    "title": "Saving Tracks",
+    "extra": {
+      "prevSaved": "{{amount}} Previously Saved",
+      "saved": "{{amount}}/{{total}} Saved/Updated",
+      "errors": "{{amount}} Errors"
+    }
+  },
+  "onboardImages": {
+    "title": "Saving Images",
+    "extra": {
+      "checked": "{{amount}}/{{total}} Checked",
+      "found": "{{amount}} Found"
+    }
+  },
+
+  "playedRecent": {
+    "title": "Recently Played",
+    "extra": {
+      "empty": "You haven't played anything yet!"
+    }
+  },
+
+  "modalSort": {
+    "title": "Sort Order",
+    "extra": {
+      "asc": "Ascending Order",
+      "alphabetical": "Alphabetical",
+      "modified": "Last Modified"
+    }
+  },
+  "modalTrack": {
+    "extra": {
+      "bitrate": "Bitrate",
+      "filePath": "File Path",
+      "sampleRate": "Sample Rate",
+      "size": "Size",
+
+      "queueAdd": "`{{- content}}` added to queue."
+    }
+  }
+}

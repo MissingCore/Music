@@ -1,0 +1,107 @@
+{
+  "language": "English",
+
+  "term": {
+    "album": "Album",
+    "albums": "Albums",
+    "artist": "Artist",
+    "artists": "Artists",
+    "folder": "Folder",
+    "folders": "Folders",
+    "playlist": "Playlist",
+    "playlists": "Playlists",
+    "track": "Track",
+    "tracks": "Tracks",
+
+    "play": "Play",
+    "pause": "Pause",
+    "prev": "Previous",
+    "next": "Next",
+    "shuffle": "Shuffle",
+    "repeat": "Repeat",
+    "repeatOne": "Repeat One",
+
+    "favorite": "Favorite",
+    "favorites": "Favorites",
+    "unFavorite": "Unfavorite",
+    "favoriteTracks": "Favorite Tracks",
+
+    "entry": "Entry",
+    "entries": "Entries",
+    "second": "Second",
+    "seconds": "Seconds",
+
+    "home": "Home",
+    "search": "Search",
+    "settings": "Settings",
+    "upcoming": "Upcoming",
+
+    "artwork": "Artwork",
+    "disc": "Disc",
+    "music": "Music",
+    "queue": "Queue",
+
+    "content": "Content",
+    "directory": "Directory",
+    "errors": "Errors",
+    "filters": "Filters",
+    "results": "Results"
+  },
+
+  "action": {
+    "add": "Add",
+    "change": "Change",
+    "clear": "Clear",
+    "create": "Create",
+    "delete": "Delete",
+    "disable": "Disable",
+    "edit": "Edit",
+    "enable": "Enable",
+    "hide": "Hide",
+    "remove": "Remove",
+    "removed": "Removed",
+    "select": "Select",
+    "show": "Show"
+  },
+
+  "template": {
+    "actionItem": "{{action}} {{item}}",
+    "actionContent": "{{action}} `{{- content}}`",
+    "countItem": "{{count}} {{item}}",
+    "itemCount": "{{item}} {{count}}",
+
+    "contentAdded": "`{{- content}}` added.",
+    "contentSeeMore": "See more about `{{- content}}`.",
+    "contentNotFound": "`{{- content}}` doesn't exist.",
+
+    "itemNotFound": "No {{item}} found.",
+    "addToItem": "Add to {{item}}"
+  },
+
+  "form": {
+    "apply": "Apply Changes",
+    "back": "Back",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+
+    "unsaved": "You may have unsaved changes.",
+    "stay": "Stay",
+    "leave": "Leave",
+
+    "placeholder": {
+      "playlistName": "Playlist Name",
+      "searchMedia": "Search Media"
+    },
+
+    "validation": {
+      "unique": "Unique"
+    },
+
+    "error": {
+      "actionCancel": "Canceled action.",
+      "invalidStructure": "Invalid structure.",
+      "noSelect": "Nothing selected.",
+      "usedName": "That name can't be used."
+    }
+  }
+}
