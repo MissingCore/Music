@@ -6,7 +6,6 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import "~/screens/Sheets";
-import { UpcomingStoreProvider } from "~/screens/Sheets/TrackUpcoming/context";
 import { RouteHandlers } from "./RouteHandlers";
 import { ThemeProvider } from "./ThemeProvider";
 
@@ -21,12 +20,10 @@ export function AppProvider(props: { children: React.ReactNode }) {
       <GestureHandlerRootView>
         <QueryClientProvider client={queryClient}>
           <RouteHandlers />
-          <UpcomingStoreProvider>
-            <SheetProvider context="global">
-              <ChildrenWrapper {...props} />
-              <Toasts />
-            </SheetProvider>
-          </UpcomingStoreProvider>
+          <SheetProvider context="global">
+            <ChildrenWrapper {...props} />
+            <Toasts />
+          </SheetProvider>
         </QueryClientProvider>
       </GestureHandlerRootView>
     </ThemeProvider>

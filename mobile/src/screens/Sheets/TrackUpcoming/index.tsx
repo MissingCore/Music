@@ -1,10 +1,11 @@
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import { getTrackCover } from "~/db/utils";
 
 import { Remove } from "~/icons/Remove";
 import { Queue, useMusicStore } from "~/modules/media/services/Music";
-import { useUpcomingStore } from "./context";
+import { useUpcomingStore } from "./store";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
@@ -20,6 +21,9 @@ import { SearchResult } from "~/modules/search/components/SearchResult";
  */
 export default function TrackUpcomingSheet() {
   const { t } = useTranslation();
+  const populateCurrentTrackList = useUpcomingStore(
+    (state) => state.populateCurrentTrackList,
+  );
   const trackList = useUpcomingStore((state) => state.currentTrackList);
   const queueList = useUpcomingStore((state) => state.queuedTrackList);
   const listIndex = useMusicStore((state) => state.listIdx);
@@ -36,6 +40,10 @@ export default function TrackUpcomingSheet() {
     repeat !== "no-repeat"
       ? trackList.length + queueList.length
       : trackList.length - 1 - listIndex + queueList.length;
+
+  useEffect(() => {
+    populateCurrentTrackList();
+  }, [populateCurrentTrackList]);
 
   return (
     <Sheet
