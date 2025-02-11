@@ -1,0 +1,187 @@
+{
+  "appUpdate": {
+    "title": "App-Update",
+    "brief": "Ein neues Update ist verfügbar!",
+    "extra": {
+      "downloadAPK": "Das Neueste APK herunterladen",
+      "updateGoogle": "Update über Play Store"
+    }
+  },
+  "appearance": {
+    "title": "Aussehen",
+    "brief": "Aussehen der App personalisieren."
+  },
+  "accentFont": {
+    "title": "Akzentschrift"
+  },
+  "theme": {
+    "title": "Thema",
+    "extra": {
+      "light": "Licht",
+      "dark": "Dunkel",
+      "system": "System"
+    }
+  },
+  "homeTabsOrder": {
+    "title": null,
+    "brief": null,
+    "description": {
+      "line1": null,
+      "line2": null
+    }
+  },
+  "nowPlayingDesign": {
+    "title": null,
+    "extra": {
+      "plain": null,
+      "vinyl": null
+    }
+  },
+  "language": {
+    "title": "Sprache"
+  },
+  "backup": {
+    "title": "Sicherungskopie",
+    "brief": "Daten zwischen Handys verschieben.",
+    "description": "Daten von dieser App geräteübergreifend über eine Datei „music_backup.json“ übertragen.",
+    "extra": {
+      "export": "Exportieren",
+      "exportSuccess": "Sicherungskopie erfolgreich erstellt.",
+      "import": "Importieren",
+      "importSuccess": "Sicherungskopie-Import ist abgeschlossen."
+    }
+  },
+  "insights": {
+    "title": "Einsichten",
+    "brief": "App-Nutzung und Statistiken.",
+    "extra": {
+      "cache": "Cache",
+      "database": "Datenbank",
+      "images": "Bilder",
+      "other": "Andere",
+      "total": "Gesamt",
+      "totalDuration": "Gesamtdauer"
+    }
+  },
+  "saveErrors": {
+    "title": "Fehler beim Speichern",
+    "brief": "Der Grund, warum nicht einige Lieder gespeichert wurden schauen."
+  },
+  "interactions": {
+    "title": "Nothing Wechselwirkung",
+    "brief": "Unterstützte Nothing Funktionen."
+  },
+  "scanning": {
+    "title": "Scannen",
+    "brief": "Möglichkeiten zur Musikentdeckung."
+  },
+  "rescan": {
+    "title": "Noch einmal scannen",
+    "brief": "Nach neuen Medien suchen.",
+    "extra": {
+      "start": "Noch einmal scannen...",
+      "success": "Das erneute Scannen ist abgeschlossen.",
+      "fail": "Die Sammlung konnte nicht erneut gescannt werden."
+    }
+  },
+  "deepRescan": {
+    "title": null,
+    "brief": null
+  },
+  "listAllow": {
+    "title": "Zulassungsliste",
+    "description": "Wenn es leer ist, wird standardmäßig Folgendes verwendet:"
+  },
+  "listBlock": {
+    "title": "Sperrliste",
+    "description": "Hat höhere Priorität als die Einträge in der Zulassungsliste."
+  },
+  "ignoreDuration": {
+    "title": "Ignoriere kurzes Audio",
+    "description": "Dauer in Sekunden des Audios, das wir nicht speichern möchten."
+  },
+  "translate": {
+    "title": "Übersetzungen beitragen",
+    "brief": "Uns helfen, die App in deine Sprache zu Übersetzen."
+  },
+  "code": {
+    "title": "GitHub Repository",
+    "brief": "Probleme melden, beitragen oder neue Funktionen anfordern."
+  },
+  "license": {
+    "title": "Lizenz"
+  },
+  "privacy": {
+    "title": "Datenschutzrichtlinie"
+  },
+  "thirdParty": {
+    "title": "Software von Drittanbietern",
+    "brief": "Was macht diese App möglich."
+  },
+  "version": {
+    "title": "Version"
+  },
+
+  "errorRoute": {
+    "title": "Unübertroffene Route",
+    "brief": "Du hast irgendwie zu einer ungültigen Route navigiert.",
+    "extra": {
+      "missing": "Vermisst",
+      "from": "Von"
+    }
+  },
+  "errorGeneric": {
+    "title": "Fehler mit etwas",
+    "brief": "Es ist ein unerwarteter Fehler aufgetreten."
+  },
+  "errorReport": {
+    "title": "Problem melden",
+    "brief": "Füg einen Screenshot dieses Bildschirms bei."
+  },
+
+  "onboardPreprocess": {
+    "title": "Vorverarbeitung",
+    "brief": "Bestätigt, dass die vorhandenen Daten allen Änderungen entsprechen."
+  },
+  "onboardTracks": {
+    "title": "Speichert Lieder",
+    "extra": {
+      "prevSaved": "{{amount}} Zuvor gespeichert",
+      "saved": "{{amount}}/{{total}} Gespeichert/Aktualisiert",
+      "errors": "{{amount}} Fehlen"
+    }
+  },
+  "onboardImages": {
+    "title": "Speicher Bilder",
+    "extra": {
+      "checked": "{{amount}}/{{total}} überprüft",
+      "found": "{{amount}} Gefunden"
+    }
+  },
+
+  "playedRecent": {
+    "title": "Kürzlich gehört",
+    "extra": {
+      "empty": "Du hast noch nichts gehört!"
+    }
+  },
+
+  "modalSort": {
+    "title": "Sortierreihenfolge",
+    "extra": {
+      "asc": "Aufsteigende Reihenfolge",
+      "alphabetical": "Alphabetische Reihenfolge",
+      "modified": "Zuletzt Geändert"
+    }
+  },
+  "modalTrack": {
+    "extra": {
+      "bitrate": "Bitrate",
+      "filePath": "Dateipfad",
+      "sampleRate": "Abtastrate",
+      "size": "Größe",
+
+      "queueAdd": "`{{- content}}` wurde zur Warteschlange hinzugefügt."
+    }
+  }
+}

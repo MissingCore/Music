@@ -1,0 +1,107 @@
+{
+  "language": "Deutsch",
+
+  "term": {
+    "album": "Album",
+    "albums": "Alben",
+    "artist": "Musiker",
+    "artists": "Musiker",
+    "folder": "Dateiordner",
+    "folders": "Dateiordner",
+    "playlist": "Playlist",
+    "playlists": "Playlists",
+    "track": "Lied",
+    "tracks": "Lieder",
+
+    "play": "Abspielen",
+    "pause": "Pausieren",
+    "prev": "Vorherige",
+    "next": "Nächste",
+    "shuffle": "Unsortieren",
+    "repeat": "Wiederholen",
+    "repeatOne": null,
+
+    "favorite": "Dieses Lied lieben",
+    "favorites": "Favoriten",
+    "unFavorite": "Aus deinen Favoriten entfernen",
+    "favoriteTracks": "Lieblingslieder",
+
+    "entry": "Eintrag",
+    "entries": "Einträge",
+    "second": "Sekunde",
+    "seconds": "Sekunden",
+
+    "home": "Homepage",
+    "search": "Suchen",
+    "settings": "Einstellungen",
+    "upcoming": "Bevorstehend",
+
+    "artwork": "Bild",
+    "disc": "CD",
+    "music": "Musik",
+    "queue": "Warteschlange",
+
+    "content": "Inhalt",
+    "directory": "Verzeichnis",
+    "errors": "Fehler",
+    "filters": "Filter",
+    "results": "Ergebnisse"
+  },
+
+  "action": {
+    "add": "Hinzufügen",
+    "change": "Ändern",
+    "clear": null,
+    "create": "Erstellen",
+    "delete": "Beseitigen",
+    "disable": null,
+    "edit": "Bearbeiten",
+    "enable": null,
+    "hide": null,
+    "remove": "Entfernen",
+    "removed": "Entfernt",
+    "select": "Auswählen",
+    "show": null
+  },
+
+  "template": {
+    "actionItem": "{{item}} {{action}}",
+    "actionContent": "`{{- content}}` {{action}}",
+    "countItem": "{{count}} {{item}}",
+    "itemCount": "{{item}} {{count}}",
+
+    "contentAdded": "`{{- content}}` hinzugefügt.",
+    "contentSeeMore": "Mehr über `{{- content}}` sehen.",
+    "contentNotFound": "`{{- content}}` existiert nicht.",
+
+    "itemNotFound": "Keine {{item}} gefunden.",
+    "addToItem": "Zur {{item}} hinzufügen"
+  },
+
+  "form": {
+    "apply": "Änderungen anwenden",
+    "back": "Zurück",
+    "cancel": "Stornieren",
+    "confirm": "Bestätigen",
+
+    "unsaved": "Möglicherweise hast du noch nicht gespeicherte Änderungen.",
+    "stay": "Bleiben",
+    "leave": "Verlassen",
+
+    "placeholder": {
+      "playlistName": "Playlistname",
+      "searchMedia": "Medien suchen"
+    },
+
+    "validation": {
+      "unique": "Einzigartig"
+    },
+
+    "error": {
+      "actionCancel": "Die Aktion wurde abgesagt.",
+      "invalidStructure": "Ungültige Struktur.",
+      "noSelect": "Nichts ist ausgewählt.",
+      "usedName": "Dieser Name darf nicht benutzt werden."
+    }
+  }
+}
