@@ -55,7 +55,7 @@ export function useSetup() {
  * Ensure we setup `react-native-track-player` in the foreground in addition
  * to its configurations.
  */
-async function setupPlayer() {
+export async function setupPlayer() {
   const setup = async () => {
     try {
       await TrackPlayer.setupPlayer();

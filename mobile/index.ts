@@ -4,6 +4,7 @@ import "intl-pluralrules";
 import "expo-router/entry";
 import TrackPlayer from "react-native-track-player";
 
+import { setupPlayer } from "./src/hooks/useSetup";
 import { PlaybackService } from "./src/services/RNTPService";
 
 /*
@@ -11,3 +12,4 @@ import { PlaybackService } from "./src/services/RNTPService";
   `react-native-track-player`.
 */
 TrackPlayer.registerPlaybackService(() => PlaybackService);
+setupPlayer(); // async
