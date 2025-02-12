@@ -37,15 +37,10 @@
     "upcoming": "Pròxima",
 
     "artwork": "Caràtula",
+    "directory": "Directori",
     "disc": "Disc",
     "music": null,
-    "queue": "Cua",
-
-    "content": "Contingut",
-    "directory": "Directori",
-    "errors": "Errors",
-    "filters": "Filtres",
-    "results": "Resultats"
+    "queue": "Cua"
   },
 
   "action": {
@@ -59,22 +54,23 @@
     "enable": null,
     "hide": "Amaga",
     "remove": "Suprimeix",
-    "removed": "Suprimit",
     "select": "Selecciona",
-    "show": "Mostra"
+    "show": "Mostra",
+
+    "added": "Afegit",
+    "removed": "Suprimit"
   },
 
   "template": {
     "actionItem": "{{action}} {{item}}",
     "actionContent": "{{action}} `{{- content}}`",
+    "pastActionContent": "`{{- content}}` {{pastAction}}",
     "countItem": "{{count}} {{item}}",
     "itemCount": "{{item}} {{count}}",
 
-    "contentAdded": "`{{- content}}` afegit.",
     "contentSeeMore": "Veure més sobre `{{- content}}`.",
     "contentNotFound": "`{{- content}}` no existeix.",
 
-    "itemNotFound": "No s'han trobat {{item}}.",
     "addToItem": "Afegir a la {{item}}"
   },
 
@@ -95,13 +91,6 @@
 
     "validation": {
       "unique": "Únic"
-    },
-
-    "error": {
-      "actionCancel": "Acció cancel·lada.",
-      "invalidStructure": "Estructura invàlida.",
-      "noSelect": "Res seleccionat.",
-      "usedName": "Aquest nom no es pot fer servir."
     }
   }
 }

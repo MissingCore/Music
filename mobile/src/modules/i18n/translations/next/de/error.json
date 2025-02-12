@@ -1,0 +1,37 @@
+{
+  "flow": {
+    "route": {
+      "title": "Unübertroffene Route",
+      "brief": "Du hast irgendwie zu einer ungültigen Route navigiert.",
+      "extra": {
+        "missing": "Vermisst",
+        "from": "Von"
+      }
+    },
+    "generic": {
+      "title": "Fehler mit etwas",
+      "brief": "Es ist ein unerwarteter Fehler aufgetreten."
+    },
+    "report": {
+      "title": "Problem melden",
+      "brief": "Füg einen Screenshot dieses Bildschirms bei."
+    }
+  },
+
+  "message": {
+    "actionCancel": "Die Aktion wurde abgesagt.",
+    "invalidStructure": "Ungültige Struktur.",
+    "noSelect": "Nichts ist ausgewählt.",
+    "usedName": "Dieser Name darf nicht benutzt werden.",
+
+    "noContent": "Kein Inhalt gefunden.",
+    "noErrors": "Keine Fehler gefunden.",
+    "noFilters": "Keine Filter gefunden.",
+    "noResults": "Keine Ergebnisse gefunden.",
+
+    "noAlbums": "Keine Alben gefunden.",
+    "noArtists": "Keine Musiker gefunden.",
+    "noPlaylists": "Keine Playlists gefunden.",
+    "noTracks": "Keine Lieder gefunden."
+  }
+}

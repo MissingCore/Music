@@ -122,23 +122,6 @@
     "title": "Versión"
   },
 
-  "errorRoute": {
-    "title": "Ruta no coincidente",
-    "brief": "De alguna forma has navegado a una ruta inválida.",
-    "extra": {
-      "missing": "Falta",
-      "from": "De"
-    }
-  },
-  "errorGeneric": {
-    "title": "Algo salió mal",
-    "brief": "Has encontrado un error inesperado."
-  },
-  "errorReport": {
-    "title": "Reportar problema",
-    "brief": "Incluye una captura de esta pantalla."
-  },
-
   "onboardPreprocess": {
     "title": "Preprocesar",
     "brief": "Asegurándose de que los datos existentes cumplen con los cambios."

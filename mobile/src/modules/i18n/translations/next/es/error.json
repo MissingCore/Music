@@ -1,0 +1,37 @@
+{
+  "flow": {
+    "route": {
+      "title": "Ruta no coincidente",
+      "brief": "De alguna forma has navegado a una ruta inválida.",
+      "extra": {
+        "missing": "Falta",
+        "from": "De"
+      }
+    },
+    "generic": {
+      "title": "Algo salió mal",
+      "brief": "Has encontrado un error inesperado."
+    },
+    "report": {
+      "title": "Reportar problema",
+      "brief": "Incluye una captura de esta pantalla."
+    }
+  },
+
+  "message": {
+    "actionCancel": "Acción cancelada.",
+    "invalidStructure": "Estructura inválida.",
+    "noSelect": "Nada seleccionado.",
+    "usedName": "Ese nombre no se puede usar.",
+
+    "noContent": "No se encontró contenido.",
+    "noErrors": "No se encontraron errores.",
+    "noFilters": "No se encontraron filtros.",
+    "noResults": "No se encontraron resultados.",
+
+    "noAlbums": "No se encontraron álbumes.",
+    "noArtists": "No se encontraron artistas.",
+    "noPlaylists": "No se encontraron listas de reproducción.",
+    "noTracks": "No se encontraron pistas."
+  }
+}

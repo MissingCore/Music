@@ -122,23 +122,6 @@
     "title": "Version"
   },
 
-  "errorRoute": {
-    "title": "Unübertroffene Route",
-    "brief": "Du hast irgendwie zu einer ungültigen Route navigiert.",
-    "extra": {
-      "missing": "Vermisst",
-      "from": "Von"
-    }
-  },
-  "errorGeneric": {
-    "title": "Fehler mit etwas",
-    "brief": "Es ist ein unerwarteter Fehler aufgetreten."
-  },
-  "errorReport": {
-    "title": "Problem melden",
-    "brief": "Füg einen Screenshot dieses Bildschirms bei."
-  },
-
   "onboardPreprocess": {
     "title": "Vorverarbeitung",
     "brief": "Bestätigt, dass die vorhandenen Daten allen Änderungen entsprechen."

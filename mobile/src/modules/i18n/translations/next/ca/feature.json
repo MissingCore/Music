@@ -122,23 +122,6 @@
     "title": "Versió"
   },
 
-  "errorRoute": {
-    "title": "La ruta no coincideix",
-    "brief": "D'alguna manera has navegat a una ruta invàlida.",
-    "extra": {
-      "missing": "No està",
-      "from": "De"
-    }
-  },
-  "errorGeneric": {
-    "title": "Alguna cosa ha anat malament",
-    "brief": "Ha sorgit un error inesperat."
-  },
-  "errorReport": {
-    "title": "Informa d'un problema",
-    "brief": "Inclou una captura d'aquesta pantalla."
-  },
-
   "onboardPreprocess": {
     "title": "Preprocessar",
     "brief": "Assegurar-se que les dades existents compleixin els canvis."

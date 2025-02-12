@@ -122,23 +122,6 @@
     "title": "Version"
   },
 
-  "errorRoute": {
-    "title": "Unmatched Route",
-    "brief": "You somehow navigated to an invalid route.",
-    "extra": {
-      "missing": "Missing",
-      "from": "From"
-    }
-  },
-  "errorGeneric": {
-    "title": "Something Went Wrong",
-    "brief": "You encountered an unexpected error."
-  },
-  "errorReport": {
-    "title": "Report Issue",
-    "brief": "Include a screenshot of this screen."
-  },
-
   "onboardPreprocess": {
     "title": "Preprocess",
     "brief": "Making sure existing data complies with any changes."

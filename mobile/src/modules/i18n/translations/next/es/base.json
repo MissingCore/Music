@@ -37,15 +37,10 @@
     "upcoming": "Próximamente",
 
     "artwork": "Carátula",
+    "directory": "Directorio",
     "disc": null,
     "music": "Música",
-    "queue": "Cola",
-
-    "content": "Contenido",
-    "directory": "Directorio",
-    "errors": "Errores",
-    "filters": "Filtros",
-    "results": "Resultados"
+    "queue": "Cola"
   },
 
   "action": {
@@ -59,22 +54,23 @@
     "enable": null,
     "hide": null,
     "remove": "Eliminar",
-    "removed": "Eliminado",
     "select": "Seleccionar",
-    "show": null
+    "show": null,
+
+    "added": "Añadido",
+    "removed": "Eliminado"
   },
 
   "template": {
     "actionItem": "{{action}} {{item}}",
     "actionContent": "{{action}} `{{- content}}`",
+    "pastActionContent": "`{{- content}}` {{pastAction}}",
     "countItem": "{{count}} {{item}}",
     "itemCount": "{{item}} {{count}}",
 
-    "contentAdded": "`{{- content}}` añadido.",
     "contentSeeMore": "Ver más sobre `{{- content}}`.",
     "contentNotFound": "`{{- content}}` no existe.",
 
-    "itemNotFound": "No se encontraron {{item}}.",
     "addToItem": "Añadir a la {{item}}"
   },
 
@@ -95,13 +91,6 @@
 
     "validation": {
       "unique": "Único"
-    },
-
-    "error": {
-      "actionCancel": "Acción cancelada.",
-      "invalidStructure": "Estructura inválida.",
-      "noSelect": "Nada seleccionado.",
-      "usedName": "Ese nombre no se puede usar."
     }
   }
 }

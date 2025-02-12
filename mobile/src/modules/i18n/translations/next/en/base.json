@@ -37,15 +37,10 @@
     "upcoming": "Upcoming",
 
     "artwork": "Artwork",
+    "directory": "Directory",
     "disc": "Disc",
     "music": "Music",
-    "queue": "Queue",
-
-    "content": "Content",
-    "directory": "Directory",
-    "errors": "Errors",
-    "filters": "Filters",
-    "results": "Results"
+    "queue": "Queue"
   },
 
   "action": {
@@ -59,22 +54,23 @@
     "enable": "Enable",
     "hide": "Hide",
     "remove": "Remove",
-    "removed": "Removed",
     "select": "Select",
-    "show": "Show"
+    "show": "Show",
+
+    "added": "Added",
+    "removed": "Removed"
   },
 
   "template": {
     "actionItem": "{{action}} {{item}}",
     "actionContent": "{{action}} `{{- content}}`",
+    "pastActionContent": "{{pastAction}} `{{- content}}`",
     "countItem": "{{count}} {{item}}",
     "itemCount": "{{item}} {{count}}",
 
-    "contentAdded": "`{{- content}}` added.",
     "contentSeeMore": "See more about `{{- content}}`.",
     "contentNotFound": "`{{- content}}` doesn't exist.",
 
-    "itemNotFound": "No {{item}} found.",
     "addToItem": "Add to {{item}}"
   },
 
@@ -95,13 +91,6 @@
 
     "validation": {
       "unique": "Unique"
-    },
-
-    "error": {
-      "actionCancel": "Canceled action.",
-      "invalidStructure": "Invalid structure.",
-      "noSelect": "Nothing selected.",
-      "usedName": "That name can't be used."
     }
   }
 }

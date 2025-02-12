@@ -122,23 +122,6 @@
     "title": "Version"
   },
 
-  "errorRoute": {
-    "title": "Route non trouvée",
-    "brief": "Vous avez d'une manière ou d'une autre navigué vers une route invalide.",
-    "extra": {
-      "missing": "Manquant",
-      "from": "Depuis"
-    }
-  },
-  "errorGeneric": {
-    "title": "Quelque chose s'est mal passé",
-    "brief": "Vous avez rencontré une erreur inattendue."
-  },
-  "errorReport": {
-    "title": "Rapporter le problème",
-    "brief": "Incluez une capture d'écran de cette page."
-  },
-
   "onboardPreprocess": {
     "title": "Prétraitement",
     "brief": "S'assure que les données existantes sont conformes à toutes les modifications."

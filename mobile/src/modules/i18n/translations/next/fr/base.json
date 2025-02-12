@@ -37,15 +37,10 @@
     "upcoming": "À venir",
 
     "artwork": "Illustration",
+    "directory": "Dossier",
     "disc": "CD",
     "music": "Musique",
-    "queue": "File d'attente",
-
-    "content": "Contenu",
-    "directory": "Dossier",
-    "errors": "Erreurs",
-    "filters": "Filtres",
-    "results": "Résultats"
+    "queue": "File d'attente"
   },
 
   "action": {
@@ -59,22 +54,23 @@
     "enable": null,
     "hide": null,
     "remove": "Supprimer",
-    "removed": "Supprimé",
     "select": "Sélectionner",
-    "show": null
+    "show": null,
+
+    "added": "Ajouté",
+    "removed": "Supprimé"
   },
 
   "template": {
     "actionItem": "{{action}} {{item}}",
     "actionContent": "{{action}} `{{- content}}`",
+    "pastActionContent": "`{{- content}}` {{pastAction}}",
     "countItem": "{{count}} {{item}}",
     "itemCount": "{{item}} {{count}}",
 
-    "contentAdded": "`{{- content}}` ajouté.",
     "contentSeeMore": "Voir plus sur `{{- content}}`.",
     "contentNotFound": "`{{- content}}` n'existe pas.",
 
-    "itemNotFound": "Aucun {{item}} trouvé.",
     "addToItem": "Ajouter à la {{item}}"
   },
 
@@ -95,13 +91,6 @@
 
     "validation": {
       "unique": "Unique"
-    },
-
-    "error": {
-      "actionCancel": "Action annulée.",
-      "invalidStructure": "Structure invalide.",
-      "noSelect": "Rien n'est sélectionné.",
-      "usedName": "Ce nom ne peut pas être utilisé."
     }
   }
 }
