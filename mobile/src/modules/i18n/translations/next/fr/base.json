@@ -1,0 +1,107 @@
+{
+  "language": "Français",
+
+  "term": {
+    "album": "Album",
+    "albums": "Albums",
+    "artist": "Artiste",
+    "artists": "Artistes",
+    "folder": "Dossier",
+    "folders": "Dossiers",
+    "playlist": "Playlist",
+    "playlists": "Playlists",
+    "track": "Titre",
+    "tracks": "Titres",
+
+    "play": "Lecture",
+    "pause": "Pause",
+    "prev": "Précédent",
+    "next": "Suivant",
+    "shuffle": "Aléatoire",
+    "repeat": "Répéter",
+    "repeatOne": "Répéter le titre",
+
+    "favorite": "Favori",
+    "favorites": "Favoris",
+    "unFavorite": "Retirer des favoris",
+    "favoriteTracks": "Titres favoris",
+
+    "entry": "Entrée",
+    "entries": "Entrées",
+    "second": "Seconde",
+    "seconds": "Secondes",
+
+    "home": "Accueil",
+    "search": "Rechercher",
+    "settings": "Paramètres",
+    "upcoming": "À venir",
+
+    "artwork": "Illustration",
+    "disc": "CD",
+    "music": "Musique",
+    "queue": "File d'attente",
+
+    "content": "Contenu",
+    "directory": "Dossier",
+    "errors": "Erreurs",
+    "filters": "Filtres",
+    "results": "Résultats"
+  },
+
+  "action": {
+    "add": "Ajouter",
+    "change": "Modifier",
+    "clear": null,
+    "create": "Créer",
+    "delete": "Supprimer",
+    "disable": null,
+    "edit": "Modifier",
+    "enable": null,
+    "hide": null,
+    "remove": "Supprimer",
+    "removed": "Supprimé",
+    "select": "Sélectionner",
+    "show": null
+  },
+
+  "template": {
+    "actionItem": "{{action}} {{item}}",
+    "actionContent": "{{action}} `{{- content}}`",
+    "countItem": "{{count}} {{item}}",
+    "itemCount": "{{item}} {{count}}",
+
+    "contentAdded": "`{{- content}}` ajouté.",
+    "contentSeeMore": "Voir plus sur `{{- content}}`.",
+    "contentNotFound": "`{{- content}}` n'existe pas.",
+
+    "itemNotFound": "Aucun {{item}} trouvé.",
+    "addToItem": "Ajouter à la {{item}}"
+  },
+
+  "form": {
+    "apply": "Appliquer les modifications",
+    "back": "Retour",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+
+    "unsaved": "Vous avez des modifications non enregistrées.",
+    "stay": "Rester",
+    "leave": "Quitter",
+
+    "placeholder": {
+      "playlistName": "Nom de la Playlist",
+      "searchMedia": "Recherchez des médias"
+    },
+
+    "validation": {
+      "unique": "Unique"
+    },
+
+    "error": {
+      "actionCancel": "Action annulée.",
+      "invalidStructure": "Structure invalide.",
+      "noSelect": "Rien n'est sélectionné.",
+      "usedName": "Ce nom ne peut pas être utilisé."
+    }
+  }
+}
