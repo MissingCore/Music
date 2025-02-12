@@ -1,0 +1,170 @@
+{
+  "appUpdate": {
+    "title": "Pembaruan Aplikasi",
+    "brief": "Versi terbaru sudah tersedia!",
+    "extra": {
+      "downloadAPK": "Unduh APK saat ini",
+      "updateGoogle": "Perbarui melalui Play Store"
+    }
+  },
+  "appearance": {
+    "title": "Tampilan",
+    "brief": "Personalisasikan aplikasi."
+  },
+  "accentFont": {
+    "title": "Font Aksen"
+  },
+  "theme": {
+    "title": "Tema",
+    "extra": {
+      "light": "Terang",
+      "dark": "Gelap",
+      "system": "Sistem"
+    }
+  },
+  "homeTabsOrder": {
+    "title": null,
+    "brief": null,
+    "description": {
+      "line1": null,
+      "line2": null
+    }
+  },
+  "nowPlayingDesign": {
+    "title": null,
+    "extra": {
+      "plain": null,
+      "vinyl": null
+    }
+  },
+  "language": {
+    "title": "Bahasa"
+  },
+  "backup": {
+    "title": "Cadangkan",
+    "brief": "Pindahkan data antar perangkat.",
+    "description": "Transfer data dari aplikasi ini antar perangkat melalui berkas `music_backup.json`.",
+    "extra": {
+      "export": "Ekspor",
+      "exportSuccess": "Cadangan berhasil dibuat.",
+      "import": "Impor",
+      "importSuccess": "Impor cadangan selesai."
+    }
+  },
+  "insights": {
+    "title": "Insight",
+    "brief": "Penggunaan aplikasi & statistik.",
+    "extra": {
+      "cache": "Tembolok",
+      "database": "Database",
+      "images": "Gambar",
+      "other": "Lain-lain",
+      "total": "Total",
+      "totalDuration": "Durasi Total"
+    }
+  },
+  "saveErrors": {
+    "title": "Simpan Galat",
+    "brief": "Lihat mengapa beberapa trek tidak disimpan."
+  },
+  "interactions": {
+    "title": "Tidak Ada Interaksi",
+    "brief": "Fitur tidak didukung."
+  },
+  "scanning": {
+    "title": "Memindai",
+    "brief": "Opsi jelajahi musik."
+  },
+  "rescan": {
+    "title": "Memindai Ulang",
+    "brief": "Cari untuk beberapa media baru.",
+    "extra": {
+      "start": "Memindai ulang pustaka...",
+      "success": "Selesai memindai ulang pustaka.",
+      "fail": "Gagal memindai ulang pustaka."
+    }
+  },
+  "deepRescan": {
+    "title": null,
+    "brief": null
+  },
+  "listAllow": {
+    "title": "Diizinkan",
+    "description": "Defaultnya adalah berikut jika kosong:"
+  },
+  "listBlock": {
+    "title": "Diblokir",
+    "description": "Memiliki prioritas lebih tinggi terhadap entri dalam daftar perizinan."
+  },
+  "ignoreDuration": {
+    "title": "Abaikan Audio Pendek",
+    "description": "Durasi audio dalam detik yang tidak ingin kami simpan."
+  },
+  "translate": {
+    "title": "Kontribusi Penerjemahan",
+    "brief": "Bantu menerjemahkan aplikasi ini ke dalam bahasa lainnya."
+  },
+  "code": {
+    "title": "Repositori GitHub",
+    "brief": "Lapor issue, kontribusi, atau request fitur baru."
+  },
+  "license": {
+    "title": "Lisensi"
+  },
+  "privacy": {
+    "title": "Kebijakan Privasi"
+  },
+  "thirdParty": {
+    "title": "Perangkat Lunak Pihak Ketiga",
+    "brief": "Apa yang membuat aplikasi ini memungkinkan."
+  },
+  "version": {
+    "title": "Versi"
+  },
+
+  "onboardPreprocess": {
+    "title": "Praproses",
+    "brief": "Memastikan data yang ada sesuai dengan perubahan apa pun."
+  },
+  "onboardTracks": {
+    "title": "Menyimpan Trek",
+    "extra": {
+      "prevSaved": "{{amount}} Disimpan Sebelumnya",
+      "saved": "{{amount}}/{{total}} Disimpan/Diperbarui",
+      "errors": "{{amount}} Kesalahan"
+    }
+  },
+  "onboardImages": {
+    "title": "Menyimpan Gambar",
+    "extra": {
+      "checked": "{{amount}}/{{total}} Telah diperiksa",
+      "found": "{{amount}} Ditemukan"
+    }
+  },
+
+  "playedRecent": {
+    "title": "Baru Saja Diputar",
+    "extra": {
+      "empty": "Anda belum memutar apapun!"
+    }
+  },
+
+  "modalSort": {
+    "title": "Urutan Penyortiran",
+    "extra": {
+      "asc": "Urutan Naik",
+      "alphabetical": "Alfabet",
+      "modified": "Terakhir Diubah"
+    }
+  },
+  "modalTrack": {
+    "extra": {
+      "bitrate": "Bitrate",
+      "filePath": "Lokasi Berkas",
+      "sampleRate": "Sample Rate",
+      "size": "Ukuran",
+
+      "queueAdd": "`{{- content}}` ditambahkan ke antrian."
+    }
+  }
+}

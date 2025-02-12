@@ -1,0 +1,96 @@
+{
+  "language": "Indonesia",
+
+  "term": {
+    "album": "Album",
+    "albums": "Album",
+    "artist": "Artis",
+    "artists": "Artis",
+    "folder": "Folder",
+    "folders": "Folder",
+    "playlist": "Daftar Putar",
+    "playlists": "Daftar Putar",
+    "track": "Trek",
+    "tracks": "Trek",
+
+    "play": "Putar",
+    "pause": "Jeda",
+    "prev": "Sebelumnya",
+    "next": "Berikutnya",
+    "shuffle": "Acak",
+    "repeat": "Ulangi",
+    "repeatOne": null,
+
+    "favorite": "Sukai",
+    "favorites": "Difavoritkan",
+    "unFavorite": "Batal Sukai",
+    "favoriteTracks": null,
+
+    "entry": "Entri",
+    "entries": "Entri",
+    "second": "Detik",
+    "seconds": "Detik",
+
+    "home": "Beranda",
+    "search": "Cari",
+    "settings": "Pengaturan",
+    "upcoming": "Yang akan Datang",
+
+    "artwork": "Karya Seni",
+    "directory": "Direktori",
+    "disc": null,
+    "music": "Musik",
+    "queue": "Antrian"
+  },
+
+  "action": {
+    "add": "Tambahkan",
+    "change": "Ubah",
+    "clear": null,
+    "create": "Buat",
+    "delete": "Hapus",
+    "disable": null,
+    "edit": "Sunting",
+    "enable": null,
+    "hide": null,
+    "remove": "Hapus",
+    "select": "Pilih",
+    "show": null,
+
+    "added": "Ditambahkan",
+    "removed": "Dihapus"
+  },
+
+  "template": {
+    "actionItem": "{{action}} {{item}}",
+    "actionContent": "{{action}} `{{- content}}`",
+    "pastActionContent": "`{{- content}}` {{pastAction}}",
+    "countItem": "{{count}} {{item}}",
+    "itemCount": "{{item}} {{count}}",
+
+    "contentSeeMore": "See more about `{{- content}}`.",
+    "contentNotFound": "`{{- content}}` tidak ditemukan.",
+
+    "addToItem": "Tambahkan ke {{item}}"
+  },
+
+  "form": {
+    "apply": "Terapkan Perubahan",
+    "back": "Kembali",
+    "cancel": "Batal",
+    "confirm": "Konfirmasi",
+
+    "unsaved": "Anda masih memiliki perubahan yang belum disimpan.",
+    "stay": "Tetap disini",
+    "leave": "Keluar",
+
+    "placeholder": {
+      "playlistName": "Nama Daftar Putar",
+      "searchMedia": "Cari Media"
+    },
+
+    "validation": {
+      "unique": "Unik"
+    }
+  }
+}
