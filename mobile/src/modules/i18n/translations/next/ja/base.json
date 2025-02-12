@@ -1,0 +1,96 @@
+{
+  "language": "日本語",
+
+  "term": {
+    "album": "アルバム",
+    "albums": "アルバム",
+    "artist": "アーティスト",
+    "artists": "アーティスト",
+    "folder": "フォルダ",
+    "folders": "フォルダ",
+    "playlist": "プレイリスト",
+    "playlists": "プレイリスト",
+    "track": "トラック",
+    "tracks": "トラック",
+
+    "play": "再生",
+    "pause": "一時停止",
+    "prev": "前へ",
+    "next": "次へ",
+    "shuffle": "シャッフル",
+    "repeat": "リピート",
+    "repeatOne": "1 回リピート",
+
+    "favorite": "お気に入り",
+    "favorites": "お気に入り",
+    "unFavorite": "お気に入りを解除",
+    "favoriteTracks": "お気に入りのトラック",
+
+    "entry": "件のエントリ",
+    "entries": "件のエントリ",
+    "second": "秒",
+    "seconds": "秒",
+
+    "home": "ホーム",
+    "search": "検索",
+    "settings": "設定",
+    "upcoming": "次に再生",
+
+    "artwork": "アートワーク",
+    "directory": "ディレクトリ",
+    "disc": "ディスク",
+    "music": "音楽",
+    "queue": "キュー"
+  },
+
+  "action": {
+    "add": "追加",
+    "change": "変更",
+    "clear": null,
+    "create": "作成",
+    "delete": "削除",
+    "disable": null,
+    "edit": "編集",
+    "enable": null,
+    "hide": "非表示",
+    "remove": "削除",
+    "select": "選択",
+    "show": "表示",
+
+    "added": "追加しました",
+    "removed": "削除しました"
+  },
+
+  "template": {
+    "actionItem": "{{item}}を{{action}}",
+    "actionContent": "｢{{- content}}｣を{{action}}",
+    "pastActionContent": "｢{{- content}}｣を{{pastAction}}",
+    "countItem": "{{count}} {{item}}",
+    "itemCount": "{{item}} {{count}}",
+
+    "contentSeeMore": "｢{{- content}}｣の詳細を確認します。",
+    "contentNotFound": "｢{{- content}}｣は存在しません。",
+
+    "addToItem": "{{item}}に追加"
+  },
+
+  "form": {
+    "apply": "変更を適用",
+    "back": "戻る",
+    "cancel": "キャンセル",
+    "confirm": "確認",
+
+    "unsaved": "変更が保存されていません。",
+    "stay": "留まる",
+    "leave": "離れる",
+
+    "placeholder": {
+      "playlistName": "プレイリスト名",
+      "searchMedia": "メディアを検索"
+    },
+
+    "validation": {
+      "unique": "ユニーク"
+    }
+  }
+}
