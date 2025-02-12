@@ -64,7 +64,7 @@
   "template": {
     "actionItem": "{{item}} {{action}}",
     "actionContent": "{{- content}} {{action}}",
-    "pastActionContent": "{{- content}} {{action}}",
+    "pastActionContent": "{{- content}} {{pastAction}}",
     "countItem": "{{count}} {{item}}",
     "itemCount": "{{item}} {{count}}",
 
