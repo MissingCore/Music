@@ -9,6 +9,7 @@ import { MediaImage } from "./MediaImage";
 
 const CENTER = { cx: 384, cy: 384 };
 const GROOVES = {
+  pointerEvents: "none",
   ...CENTER,
   fill: "none",
   stroke: "#FFF",
@@ -21,6 +22,7 @@ const GROOVES = {
  * component is slow (ie: the image doesn't load immediately on first look).
  */
 export function Vinyl(props: {
+  onPress?: () => Promise<void> | void;
   size: number;
   source: MediaImage.ImageSource | MediaImage.ImageSource[];
 }) {
@@ -42,15 +44,29 @@ export function Vinyl(props: {
           </Mask>
         </Defs>
         {/* Background */}
-        <Circle {...CENTER} r={384} fill={Colors.neutral10} mask="url(#hole)" />
+        <Circle
+          {...CENTER}
+          r={384}
+          fill={Colors.neutral10}
+          mask="url(#hole)"
+          onPress={props.onPress}
+        />
         {/* Grooves */}
         <Circle {...GROOVES} r={264} />
         <Circle {...GROOVES} r={304} />
         <Circle {...GROOVES} r={344} />
         {/* Spin Indicator */}
-        <Rect x={384} y={193} width={2} height={24} fill="#FFF" />
+        <Rect
+          pointerEvents="none"
+          x={384}
+          y={193}
+          width={2}
+          height={24}
+          fill="#FFF"
+        />
         {/* Center hole */}
         <Circle
+          pointerEvents="none"
           {...CENTER}
           r={12}
           fill={canvas}

@@ -113,7 +113,7 @@ function VinylSeekBar(props: { source: string | null; size: number }) {
   return (
     <GestureDetector gesture={seekGesture}>
       <Animated.View onLayout={initCenter} style={vinylStyle}>
-        <Vinyl {...props} />
+        <Vinyl onPress={MusicControls.playToggle} {...props} />
       </Animated.View>
     </GestureDetector>
   );
