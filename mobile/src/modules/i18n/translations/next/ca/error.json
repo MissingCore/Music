@@ -1,0 +1,37 @@
+{
+  "flow": {
+    "route": {
+      "title": "La ruta no coincideix",
+      "brief": "D'alguna manera has navegat a una ruta invàlida.",
+      "extra": {
+        "missing": "No està",
+        "from": "De"
+      }
+    },
+    "generic": {
+      "title": "Alguna cosa ha anat malament",
+      "brief": "Ha sorgit un error inesperat."
+    },
+    "report": {
+      "title": "Informa d'un problema",
+      "brief": "Inclou una captura d'aquesta pantalla."
+    }
+  },
+
+  "message": {
+    "actionCancel": "Acció cancel·lada.",
+    "invalidStructure": "Estructura invàlida.",
+    "noSelect": "Res seleccionat.",
+    "usedName": "Aquest nom no es pot fer servir.",
+
+    "noContent": "No s'ha trobat contingut.",
+    "noErrors": "Cap errors trobat.",
+    "noFilters": "Cap filtre trobat.",
+    "noResults": "Cap resultat trobat.",
+
+    "noAlbums": "No s'ha trobat cap àlbum.",
+    "noArtists": "No s'ha trobat cap artista.",
+    "noPlaylists": "No s'ha trobat cap llista.",
+    "noTracks": "No s'han trobat pistes."
+  }
+}

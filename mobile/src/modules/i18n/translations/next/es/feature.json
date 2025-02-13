@@ -1,0 +1,180 @@
+{
+  "appUpdate": {
+    "title": "Actualización de la app",
+    "brief": "¡Nueva actualización disponible!",
+    "extra": {
+      "downloadAPK": "Descargar el último APK",
+      "updateGoogle": "Actualizar vía Play Store"
+    }
+  },
+  "appearance": {
+    "title": "Apariencia",
+    "brief": "Personaliza el aspecto de la app."
+  },
+  "accentFont": {
+    "title": "Fuente de acento"
+  },
+  "theme": {
+    "title": "Tema",
+    "extra": {
+      "light": "Claro",
+      "dark": "Oscuro",
+      "system": "Sistema"
+    }
+  },
+  "homeTabsOrder": {
+    "title": null,
+    "brief": null,
+    "description": {
+      "line1": null,
+      "line2": null
+    }
+  },
+  "nowPlayingDesign": {
+    "title": null,
+    "extra": {
+      "plain": null,
+      "vinyl": null
+    }
+  },
+  "language": {
+    "title": "Idioma"
+  },
+  "backup": {
+    "title": "Copia de seguridad",
+    "brief": "Mueve datos entre dispositivos.",
+    "description": "Transfiere datos de esta app entre dispositivos a través de un archivo `music_backup.json`.",
+    "extra": {
+      "export": "Exportar",
+      "exportSuccess": "Copia de seguridad creada exitosamente.",
+      "import": "Importar",
+      "importSuccess": "Importación de copia de seguridad completada."
+    }
+  },
+  "insights": {
+    "title": "Análisis",
+    "brief": "Uso de la app y análisis.",
+    "extra": {
+      "cache": "Cache",
+      "database": "Base de datos",
+      "images": "Imágenes",
+      "other": "Otros",
+      "total": "Total",
+      "totalDuration": "Duración total"
+    }
+  },
+  "saveErrors": {
+    "title": "Errores al guardar",
+    "brief": "Ver por qué no se guardaron algunas pistas."
+  },
+  "interactions": {
+    "title": "Interacciones de Nothing",
+    "brief": "Características compatibles de Nothing."
+  },
+  "scanning": {
+    "title": "Escaneando",
+    "brief": "Opciones de descubrimiento de música."
+  },
+  "rescan": {
+    "title": "Reescaneo",
+    "brief": "Buscar cualquier medio nuevo.",
+    "extra": {
+      "start": "Reescaneando biblioteca...",
+      "success": "Reescaneo de biblioteca finalizado.",
+      "fail": "Error al reescanear la biblioteca."
+    }
+  },
+  "deepRescan": {
+    "title": null,
+    "brief": null
+  },
+  "listAllow": {
+    "title": "Lista de permitidos",
+    "description": "Predeterminado a lo siguiente si está vacío:"
+  },
+  "listBlock": {
+    "title": "Lista de bloqueados",
+    "description": "Tiene mayor prioridad sobre las entradas en la lista de permitidos."
+  },
+  "ignoreDuration": {
+    "title": "Ignorar audio corto",
+    "description": "Duración en segundos del audio que no queremos guardar."
+  },
+  "translate": {
+    "title": "Contribuir con traducciones",
+    "brief": "Ayuda a traducir la app a otros idiomas."
+  },
+  "code": {
+    "title": "Repositorio en GitHub",
+    "brief": "Reporta problemas, contribuye o pide nuevas funciones."
+  },
+  "license": {
+    "title": "Licencia"
+  },
+  "privacy": {
+    "title": "Política de privacidad"
+  },
+  "thirdParty": {
+    "title": "Software de terceros",
+    "brief": "Lo que hace posible esta app."
+  },
+  "version": {
+    "title": "Versión"
+  },
+
+  "onboardPreprocess": {
+    "title": "Preprocesar",
+    "brief": "Asegurándose de que los datos existentes cumplen con los cambios."
+  },
+  "onboardTracks": {
+    "title": "Guardando pistas",
+    "extra": {
+      "prevSaved": "{{amount}} guardadas anteriormente",
+      "saved": "{{amount}}/{{total}} guardadas/actualizadas",
+      "errors": "{{amount}} errores"
+    }
+  },
+  "onboardImages": {
+    "title": "Guardando imágenes",
+    "extra": {
+      "checked": "{{amount}}/{{total}} comprobadas",
+      "found": "{{amount}} encontradas"
+    }
+  },
+
+  "playedRecent": {
+    "title": "Reproducido recientemente",
+    "extra": {
+      "empty": "¡Aún no has reproducido nada!"
+    }
+  },
+  "search": {
+    "title": "Buscar",
+    "extra": {
+      "musicAdd": "Añadir música",
+      "searchMedia": "Buscar medios"
+    }
+  },
+
+  "modalSort": {
+    "title": "Orden",
+    "extra": {
+      "asc": "Orden ascendente",
+      "alphabetical": "Alfabético",
+      "modified": "Última modificación"
+    }
+  },
+  "modalTrack": {
+    "extra": {
+      "bitrate": "Tasa de bits",
+      "filePath": "Ruta de archivo",
+      "sampleRate": "Tasa de muestreo",
+      "size": "Tamaño",
+
+      "addToPlaylist": "Añadir a la lista de reproducción",
+      "addToQueue": "Añadir a la cola",
+
+      "queueAdd": "`{{- content}}` añadido a la cola."
+    }
+  }
+}
