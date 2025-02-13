@@ -65,7 +65,7 @@
     "countItem": "{{count}} {{item}}",
     "itemCount": "{{item}} {{count}}",
 
-    "contentSeeMore": "See more about `{{- content}}`.",
+    "contentSeeMore": null,
     "contentNotFound": "`{{- content}}` tidak ditemukan."
   },
 
