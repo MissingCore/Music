@@ -77,6 +77,8 @@ export function useVinylSeekbar() {
   }
 
   const seekGesture = Gesture.Pan()
+    .shouldCancelWhenOutside(true)
+    .hitSlop(32)
     .onStart(({ absoluteX, absoluteY }) => {
       runOnJS(setSliderPos)(position);
       seekProgress.value = convertUnit(position);

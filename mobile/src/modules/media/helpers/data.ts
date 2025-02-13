@@ -14,6 +14,7 @@ import { getArtist } from "~/api/artist";
 import { getFolderTracks } from "~/api/folder";
 import { getPlaylist, getSpecialPlaylist } from "~/api/playlist";
 
+import { getSafeUri } from "~/utils/string";
 import type { ReservedPlaylistName } from "../constants";
 import { ReservedNames, ReservedPlaylists } from "../constants";
 import type { PlayListSource } from "../types";
@@ -31,7 +32,7 @@ export function arePlaybackSourceEqual(
 /** Format track data to be used with the RNTP queue. */
 export function formatTrackforPlayer(track: TrackWithAlbum) {
   return {
-    url: track.uri,
+    url: getSafeUri(track.uri),
     artwork: getTrackCover(track) ?? undefined,
     title: track.name,
     artist: track.artistName ?? "No Artist",

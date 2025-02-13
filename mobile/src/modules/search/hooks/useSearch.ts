@@ -25,6 +25,10 @@ export function useSearch<TScope extends SearchCategories>(
           return (
             // Partial match with the `name` field.
             i.name.toLocaleLowerCase().includes(q) ||
+            // Album's or track's artist name starts with the query.
+            // prettier-ignore
+            // @ts-expect-error - We ensured the `artistName` field is present.
+            (!!i.artistName && i.artistName.toLocaleLowerCase().startsWith(q)) ||
             // Track's album starts with the query.
             // @ts-expect-error - We ensured the `album` field is present.
             (!!i.album && i.album.name.toLocaleLowerCase().startsWith(q))

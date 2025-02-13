@@ -12,6 +12,9 @@ import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
 import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
 
+/** Context to whether we should resume playback after ducking. */
+let resumeAfterDuck: boolean = false;
+
 /** How we handle the actions in the media control notification. */
 export async function PlaybackService() {
   TrackPlayer.addEventListener(Event.RemotePlay, async () => {
@@ -38,8 +41,13 @@ export async function PlaybackService() {
     if (e.permanent) {
       await MusicControls.stop();
     } else {
-      if (e.paused) await MusicControls.pause();
-      else await MusicControls.play();
+      if (e.paused) {
+        resumeAfterDuck = musicStore.getState().isPlaying;
+        await MusicControls.pause();
+      } else if (resumeAfterDuck) {
+        await MusicControls.play();
+        resumeAfterDuck = false;
+      }
     }
   });
 
