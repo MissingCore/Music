@@ -1,0 +1,90 @@
+{
+  "language": "English",
+
+  "term": {
+    "album": "Album",
+    "albums": "Albums",
+    "artist": "Artist",
+    "artists": "Artists",
+    "folder": "Folder",
+    "folders": "Folders",
+    "playlist": "Playlist",
+    "playlists": "Playlists",
+    "track": "Track",
+    "tracks": "Tracks",
+
+    "play": "Play",
+    "pause": "Pause",
+    "prev": "Previous",
+    "next": "Next",
+    "shuffle": "Shuffle",
+    "repeat": "Repeat",
+    "repeatOne": "Repeat One",
+
+    "favorite": "Favorite",
+    "favorites": "Favorites",
+    "unFavorite": "Unfavorite",
+    "favoriteTracks": "Favorite Tracks",
+
+    "entry": "Entry",
+    "entries": "Entries",
+    "second": "Second",
+    "seconds": "Seconds",
+
+    "home": "Home",
+    "settings": "Settings",
+    "upcoming": "Upcoming",
+
+    "artwork": "Artwork",
+    "directory": "Directory",
+    "disc": "Disc"
+  },
+
+  "action": {
+    "add": "Add",
+    "change": "Change",
+    "clear": "Clear",
+    "create": "Create",
+    "delete": "Delete",
+    "disable": "Disable",
+    "edit": "Edit",
+    "enable": "Enable",
+    "hide": "Hide",
+    "remove": "Remove",
+    "select": "Select",
+    "show": "Show",
+
+    "added": "Added",
+    "removed": "Removed"
+  },
+
+  "template": {
+    "actionItem": "{{action}} {{item}}",
+    "actionContent": "{{action}} `{{- content}}`",
+    "pastActionContent": "{{pastAction}} `{{- content}}`",
+    "countItem": "{{count}} {{item}}",
+    "itemCount": "{{item}} {{count}}",
+
+    "contentSeeMore": "See more about `{{- content}}`.",
+    "contentNotFound": "`{{- content}}` doesn't exist."
+  },
+
+  "form": {
+    "apply": "Apply Changes",
+    "back": "Back",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+
+    "unsaved": "You may have unsaved changes.",
+    "stay": "Stay",
+    "leave": "Leave",
+
+    "placeholder": {
+      "playlistName": "Playlist Name"
+    },
+
+    "validation": {
+      "unique": "Unique"
+    }
+  }
+}

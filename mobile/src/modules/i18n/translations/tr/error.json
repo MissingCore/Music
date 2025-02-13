@@ -1,0 +1,37 @@
+{
+  "flow": {
+    "route": {
+      "title": "Eşleşmeyen Yol",
+      "brief": "Geçersiz bir yola ulaştınız.",
+      "extra": {
+        "missing": "Eksik",
+        "from": "Kaynak"
+      }
+    },
+    "generic": {
+      "title": "Bir Hata Oluştu",
+      "brief": "Beklenmedik bir hata ile karşılaştınız."
+    },
+    "report": {
+      "title": "Sorun Bildir",
+      "brief": "Bu ekranın bir ekran görüntüsünü ekle."
+    }
+  },
+
+  "message": {
+    "actionCancel": "İşlem iptal edildi.",
+    "invalidStructure": "Geçersiz yapı.",
+    "noSelect": "Hiçbir şey seçilmedi.",
+    "usedName": "Bu isim kullanılamaz.",
+
+    "noContent": "İçerik bulunamadı.",
+    "noErrors": "Hata bulunamadı.",
+    "noFilters": "Filtre bulunamadı.",
+    "noResults": "Sonuç bulunamadı.",
+
+    "noAlbums": "Albüm bulunamadı.",
+    "noArtists": "Sanatçı bulunamadı.",
+    "noPlaylists": "Oynatma listesi bulunamadı.",
+    "noTracks": "Parça bulunamadı."
+  }
+}

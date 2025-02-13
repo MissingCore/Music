@@ -1,17 +1,17 @@
 import i18next from "i18next";
 import { initReactI18next } from "react-i18next";
 
-import ca from "./translations/ca.json";
-import de from "./translations/de.json";
-import en from "./translations/en.json";
-import es from "./translations/es.json";
-import fr from "./translations/fr.json";
-import hi from "./translations/hi.json";
-import id from "./translations/id.json";
-import ja from "./translations/ja.json";
-import ru from "./translations/ru.json";
-import tr from "./translations/tr.json";
-import zhHans from "./translations/zh-Hans.json";
+import ca from "./translations/_legacy/ca.json";
+import de from "./translations/_legacy/de.json";
+import en from "./translations/_legacy/en.json";
+import es from "./translations/_legacy/es.json";
+import fr from "./translations/_legacy/fr.json";
+import hi from "./translations/_legacy/hi.json";
+import id from "./translations/_legacy/id.json";
+import ja from "./translations/_legacy/ja.json";
+import ru from "./translations/_legacy/ru.json";
+import tr from "./translations/_legacy/tr.json";
+import zhHans from "./translations/_legacy/zh-Hans.json";
 
 const resources = {
   ca: { translation: ca },

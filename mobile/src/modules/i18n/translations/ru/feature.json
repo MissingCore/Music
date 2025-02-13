@@ -1,0 +1,180 @@
+{
+  "appUpdate": {
+    "title": "Обновление приложения",
+    "brief": "Новое обновление уже вышло!",
+    "extra": {
+      "downloadAPK": "Установить последний APK",
+      "updateGoogle": "Обновить в Play Store"
+    }
+  },
+  "appearance": {
+    "title": "Внешний вид",
+    "brief": "Персонализировать внешний вид приложения."
+  },
+  "accentFont": {
+    "title": "Шрифт"
+  },
+  "theme": {
+    "title": "Тема",
+    "extra": {
+      "light": "Светлая",
+      "dark": "Тёмная",
+      "system": "Системная"
+    }
+  },
+  "homeTabsOrder": {
+    "title": null,
+    "brief": null,
+    "description": {
+      "line1": null,
+      "line2": null
+    }
+  },
+  "nowPlayingDesign": {
+    "title": null,
+    "extra": {
+      "plain": null,
+      "vinyl": null
+    }
+  },
+  "language": {
+    "title": "Язык"
+  },
+  "backup": {
+    "title": "Резервная копия",
+    "brief": "Перемещать данные между устройствами.",
+    "description": "Передавать данные из этого приложения на другие устройства через файл music_backup.json.",
+    "extra": {
+      "export": "Экспорт",
+      "exportSuccess": "Резервная копия успешно создана.",
+      "import": "Импорт",
+      "importSuccess": "Резервная копия успешно импортирована."
+    }
+  },
+  "insights": {
+    "title": "Идеи",
+    "brief": "Использование приложения и статистика.",
+    "extra": {
+      "cache": "Кэш",
+      "database": "База данных",
+      "images": "Изображение",
+      "other": "Другое",
+      "total": "Полная",
+      "totalDuration": "Полная длительность"
+    }
+  },
+  "saveErrors": {
+    "title": "Сохранение ошибок",
+    "brief": "Узнать причину, по которой некоторые треки не были сохранены."
+  },
+  "interactions": {
+    "title": null,
+    "brief": "Поддержка Nothing функций."
+  },
+  "scanning": {
+    "title": "Сканирование",
+    "brief": "Варианты поиска музыки."
+  },
+  "rescan": {
+    "title": "Пересканирование",
+    "brief": "Искать любые новые медиа.",
+    "extra": {
+      "start": "Повторное сканирование...",
+      "success": "Успешное завершение повторного сканирования.",
+      "fail": "Не удалось сканировать."
+    }
+  },
+  "deepRescan": {
+    "title": null,
+    "brief": null
+  },
+  "listAllow": {
+    "title": "Белый список",
+    "description": "По умолчанию, если пусто:"
+  },
+  "listBlock": {
+    "title": "Черный список",
+    "description": "Имеет более высокий приоритет по сравнению с записями в списке разрешенных."
+  },
+  "ignoreDuration": {
+    "title": "Игнорирование коротких аудио",
+    "description": "Длительность аудио в секундах, которую мы не сохраняем."
+  },
+  "translate": {
+    "title": "Свой перевод",
+    "brief": "Помогите перевести приложение на другие языки."
+  },
+  "code": {
+    "title": "GitHub репозиторий",
+    "brief": "Сообщать о проблемах, вносить свой вклад или запрашивать новые функции."
+  },
+  "license": {
+    "title": "Лицензия"
+  },
+  "privacy": {
+    "title": "Политика конфиденциальности"
+  },
+  "thirdParty": {
+    "title": "Софт третьей стороны",
+    "brief": "Что делает это приложение возможный."
+  },
+  "version": {
+    "title": "Версия"
+  },
+
+  "onboardPreprocess": {
+    "title": "Предварительная обработка",
+    "brief": "Обеспечение соответствия существующих данных любым изменениям."
+  },
+  "onboardTracks": {
+    "title": "Сохранённые треки",
+    "extra": {
+      "prevSaved": "{{amount}} Уже сохранено",
+      "saved": "{{amount}}/{{total}} Сохранено/Добавлено",
+      "errors": "{{amount}} Ошибок"
+    }
+  },
+  "onboardImages": {
+    "title": "Сохранённые картинки",
+    "extra": {
+      "checked": "{{amount}}/{{total}} Проверено",
+      "found": "{{amount}} Найдено"
+    }
+  },
+
+  "playedRecent": {
+    "title": "Недавно сыграно",
+    "extra": {
+      "empty": "Вы еще ничего не послушали!"
+    }
+  },
+  "search": {
+    "title": "Поиск",
+    "extra": {
+      "musicAdd": "Добавить музыку",
+      "searchMedia": "Найти медиа"
+    }
+  },
+
+  "modalSort": {
+    "title": "Порядок сортировки",
+    "extra": {
+      "asc": "По возрастанию",
+      "alphabetical": "Алфавитный",
+      "modified": "Недавно изменённые"
+    }
+  },
+  "modalTrack": {
+    "extra": {
+      "bitrate": "Битрейт",
+      "filePath": "Путь к файлу",
+      "sampleRate": "Частота",
+      "size": "Размер",
+
+      "addToPlaylist": "Добавить в плейлист",
+      "addToQueue": "Добавить в очередь",
+
+      "queueAdd": "`{{- content}}` добавления очередь."
+    }
+  }
+}
