@@ -32,15 +32,12 @@
     "seconds": "Detik",
 
     "home": "Beranda",
-    "search": "Cari",
     "settings": "Pengaturan",
     "upcoming": "Yang akan Datang",
 
     "artwork": "Karya Seni",
     "directory": "Direktori",
-    "disc": null,
-    "music": "Musik",
-    "queue": "Antrian"
+    "disc": null
   },
 
   "action": {
@@ -69,9 +66,7 @@
     "itemCount": "{{item}} {{count}}",
 
     "contentSeeMore": "See more about `{{- content}}`.",
-    "contentNotFound": "`{{- content}}` tidak ditemukan.",
-
-    "addToItem": "Tambahkan ke {{item}}"
+    "contentNotFound": "`{{- content}}` tidak ditemukan."
   },
 
   "form": {
@@ -85,8 +80,7 @@
     "leave": "Keluar",
 
     "placeholder": {
-      "playlistName": "Nama Daftar Putar",
-      "searchMedia": "Cari Media"
+      "playlistName": "Nama Daftar Putar"
     },
 
     "validation": {

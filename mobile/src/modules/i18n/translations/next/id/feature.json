@@ -148,6 +148,13 @@
       "empty": "Anda belum memutar apapun!"
     }
   },
+  "search": {
+    "title": "Cari",
+    "extra": {
+      "musicAdd": "Tambahkan Musik",
+      "searchMedia": "Cari Media"
+    }
+  },
 
   "modalSort": {
     "title": "Urutan Penyortiran",
@@ -163,6 +170,9 @@
       "filePath": "Lokasi Berkas",
       "sampleRate": "Sample Rate",
       "size": "Ukuran",
+
+      "addToPlaylist": "Tambahkan ke Daftar Putar",
+      "addToQueue": "Tambahkan ke Antrian",
 
       "queueAdd": "`{{- content}}` ditambahkan ke antrian."
     }

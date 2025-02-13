@@ -32,15 +32,12 @@
     "seconds": "Sekunden",
 
     "home": "Homepage",
-    "search": "Suchen",
     "settings": "Einstellungen",
     "upcoming": "Bevorstehend",
 
     "artwork": "Bild",
     "directory": "Verzeichnis",
-    "disc": "CD",
-    "music": "Musik",
-    "queue": "Warteschlange"
+    "disc": "CD"
   },
 
   "action": {
@@ -69,9 +66,7 @@
     "itemCount": "{{item}} {{count}}",
 
     "contentSeeMore": "Mehr über `{{- content}}` sehen.",
-    "contentNotFound": "`{{- content}}` existiert nicht.",
-
-    "addToItem": "Zur {{item}} hinzufügen"
+    "contentNotFound": "`{{- content}}` existiert nicht."
   },
 
   "form": {
@@ -85,8 +80,7 @@
     "leave": "Verlassen",
 
     "placeholder": {
-      "playlistName": "Playlistname",
-      "searchMedia": "Medien suchen"
+      "playlistName": "Playlistname"
     },
 
     "validation": {

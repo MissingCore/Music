@@ -148,6 +148,13 @@
       "empty": "You haven't played anything yet!"
     }
   },
+  "search": {
+    "title": "Search",
+    "extra": {
+      "musicAdd": "Add Music",
+      "searchMedia": "Search Media"
+    }
+  },
 
   "modalSort": {
     "title": "Sort Order",
@@ -163,6 +170,9 @@
       "filePath": "File Path",
       "sampleRate": "Sample Rate",
       "size": "Size",
+
+      "addToPlaylist": "Add to Playlist",
+      "addToQueue": "Add to Queue",
 
       "queueAdd": "`{{- content}}` added to queue."
     }

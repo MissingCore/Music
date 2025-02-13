@@ -32,15 +32,12 @@
     "seconds": "Secondes",
 
     "home": "Accueil",
-    "search": "Rechercher",
     "settings": "Paramètres",
     "upcoming": "À venir",
 
     "artwork": "Illustration",
     "directory": "Dossier",
-    "disc": "CD",
-    "music": "Musique",
-    "queue": "File d'attente"
+    "disc": "CD"
   },
 
   "action": {
@@ -69,9 +66,7 @@
     "itemCount": "{{item}} {{count}}",
 
     "contentSeeMore": "Voir plus sur `{{- content}}`.",
-    "contentNotFound": "`{{- content}}` n'existe pas.",
-
-    "addToItem": "Ajouter à la {{item}}"
+    "contentNotFound": "`{{- content}}` n'existe pas."
   },
 
   "form": {
@@ -85,8 +80,7 @@
     "leave": "Quitter",
 
     "placeholder": {
-      "playlistName": "Nom de la Playlist",
-      "searchMedia": "Recherchez des médias"
+      "playlistName": "Nom de la Playlist"
     },
 
     "validation": {

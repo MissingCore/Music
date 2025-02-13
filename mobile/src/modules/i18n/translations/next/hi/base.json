@@ -32,15 +32,12 @@
     "seconds": "सेकंड",
 
     "home": "होम",
-    "search": "खोज",
     "settings": "सेटिंग्स",
     "upcoming": "आगामी",
 
     "artwork": "आर्टवर्क",
     "directory": "डायरेक्टरी",
-    "disc": "डिस्क",
-    "music": "संगीत",
-    "queue": "कतार"
+    "disc": "डिस्क"
   },
 
   "action": {
@@ -69,9 +66,7 @@
     "itemCount": "{{item}} {{count}}",
 
     "contentSeeMore": "`{{- content}}` के बारे में और देखें।",
-    "contentNotFound": "`{{- content}}` मौजूद नहीं है।",
-
-    "addToItem": "{{item}} में जोड़ें"
+    "contentNotFound": "`{{- content}}` मौजूद नहीं है।"
   },
 
   "form": {
@@ -85,8 +80,7 @@
     "leave": "छोड़ें",
 
     "placeholder": {
-      "playlistName": "प्लेलिस्ट नाम",
-      "searchMedia": "मीडिया खोजें"
+      "playlistName": "प्लेलिस्ट नाम"
     },
 
     "validation": {

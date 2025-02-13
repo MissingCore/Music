@@ -148,6 +148,13 @@
       "noRecents": "まだ何も再生していません！"
     }
   },
+  "search": {
+    "title": "検索",
+    "extra": {
+      "musicAdd": "音楽を追加",
+      "searchMedia": "メディアを検索"
+    }
+  },
 
   "modalSort": {
     "title": "並べ替え順",
@@ -163,6 +170,9 @@
       "filePath": "ファイルのパス",
       "sampleRate": "サンプルレート",
       "size": "サイズ",
+
+      "addToPlaylist": "プレイリストに追加",
+      "addToQueue": "キューに追加",
 
       "queueAdd": "｢{{- content}}｣がキューに追加されました。"
     }

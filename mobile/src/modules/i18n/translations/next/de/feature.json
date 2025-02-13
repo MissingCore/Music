@@ -148,6 +148,13 @@
       "empty": "Du hast noch nichts gehört!"
     }
   },
+  "search": {
+    "title": "Suchen",
+    "extra": {
+      "musicAdd": "Musik hinzufügen",
+      "searchMedia": "Medien suchen"
+    }
+  },
 
   "modalSort": {
     "title": "Sortierreihenfolge",
@@ -163,6 +170,9 @@
       "filePath": "Dateipfad",
       "sampleRate": "Abtastrate",
       "size": "Größe",
+
+      "addToPlaylist": "Zu einer Playlist hinzufügen",
+      "addToQueue": "Zur Warteschlange hinzufügen",
 
       "queueAdd": "`{{- content}}` wurde zur Warteschlange hinzugefügt."
     }

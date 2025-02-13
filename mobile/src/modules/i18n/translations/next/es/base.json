@@ -32,15 +32,12 @@
     "seconds": "Segundos",
 
     "home": "Inicio",
-    "search": "Buscar",
     "settings": "Configuración",
     "upcoming": "Próximamente",
 
     "artwork": "Carátula",
     "directory": "Directorio",
-    "disc": null,
-    "music": "Música",
-    "queue": "Cola"
+    "disc": null
   },
 
   "action": {
@@ -69,9 +66,7 @@
     "itemCount": "{{item}} {{count}}",
 
     "contentSeeMore": "Ver más sobre `{{- content}}`.",
-    "contentNotFound": "`{{- content}}` no existe.",
-
-    "addToItem": "Añadir a la {{item}}"
+    "contentNotFound": "`{{- content}}` no existe."
   },
 
   "form": {
@@ -85,8 +80,7 @@
     "leave": "Salir",
 
     "placeholder": {
-      "playlistName": "Nombre de la lista de reproducción",
-      "searchMedia": "Buscar medios"
+      "playlistName": "Nombre de la lista de reproducción"
     },
 
     "validation": {

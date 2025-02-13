@@ -148,6 +148,13 @@
       "empty": "आपने अभी तक कुछ भी नहीं चलाया है!"
     }
   },
+  "search": {
+    "title": "खोज",
+    "extra": {
+      "musicAdd": "संगीत जोड़ें",
+      "searchMedia": "मीडिया खोजें"
+    }
+  },
 
   "modalSort": {
     "title": "क्रम",
@@ -163,6 +170,9 @@
       "filePath": "फ़ाइल पथ",
       "sampleRate": "सैंपल रेट",
       "size": "आकार",
+
+      "addToPlaylist": "प्लेलिस्ट में जोड़ें",
+      "addToQueue": "कतार में जोड़ें",
 
       "queueAdd": "`{{- content}}` कतार में जोड़ा गया।"
     }

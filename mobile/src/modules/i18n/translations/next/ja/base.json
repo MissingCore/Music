@@ -32,15 +32,12 @@
     "seconds": "秒",
 
     "home": "ホーム",
-    "search": "検索",
     "settings": "設定",
     "upcoming": "次に再生",
 
     "artwork": "アートワーク",
     "directory": "ディレクトリ",
-    "disc": "ディスク",
-    "music": "音楽",
-    "queue": "キュー"
+    "disc": "ディスク"
   },
 
   "action": {
@@ -69,9 +66,7 @@
     "itemCount": "{{item}} {{count}}",
 
     "contentSeeMore": "｢{{- content}}｣の詳細を確認します。",
-    "contentNotFound": "｢{{- content}}｣は存在しません。",
-
-    "addToItem": "{{item}}に追加"
+    "contentNotFound": "｢{{- content}}｣は存在しません。"
   },
 
   "form": {
@@ -85,8 +80,7 @@
     "leave": "離れる",
 
     "placeholder": {
-      "playlistName": "プレイリスト名",
-      "searchMedia": "メディアを検索"
+      "playlistName": "プレイリスト名"
     },
 
     "validation": {

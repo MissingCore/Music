@@ -148,6 +148,13 @@
       "empty": "Encara no has reproduït rés!"
     }
   },
+  "search": {
+    "title": "Cerca",
+    "extra": {
+      "musicAdd": "Afegir",
+      "searchMedia": "Cerca fitxers de mèdia"
+    }
+  },
 
   "modalSort": {
     "title": "Ordre",
@@ -163,6 +170,9 @@
       "filePath": "Ruta del fitxer",
       "sampleRate": "Freq. de mostreig",
       "size": "Mida",
+
+      "addToPlaylist": "Afegir a la llista",
+      "addToQueue": "Afegir a la cua",
 
       "queueAdd": "`{{- content}}` afegit a la cua."
     }

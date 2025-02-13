@@ -32,15 +32,12 @@
     "seconds": "Segons",
 
     "home": "Inici",
-    "search": "Cerca",
     "settings": "Ajusts",
     "upcoming": "Pròxima",
 
     "artwork": "Caràtula",
     "directory": "Directori",
-    "disc": "Disc",
-    "music": null,
-    "queue": "Cua"
+    "disc": "Disc"
   },
 
   "action": {
@@ -69,9 +66,7 @@
     "itemCount": "{{item}} {{count}}",
 
     "contentSeeMore": "Veure més sobre `{{- content}}`.",
-    "contentNotFound": "`{{- content}}` no existeix.",
-
-    "addToItem": "Afegir a la {{item}}"
+    "contentNotFound": "`{{- content}}` no existeix."
   },
 
   "form": {
@@ -85,8 +80,7 @@
     "leave": "Eixir",
 
     "placeholder": {
-      "playlistName": "Títol de la Llista",
-      "searchMedia": "Cerca fitxers de mèdia"
+      "playlistName": "Títol de la Llista"
     },
 
     "validation": {

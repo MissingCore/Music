@@ -148,6 +148,13 @@
       "empty": "Vous n'avez encore rien écouté!"
     }
   },
+  "search": {
+    "title": "Rechercher",
+    "extra": {
+      "musicAdd":"Ajouter de la musique",
+      "searchMedia": "Recherchez des médias"
+    }
+  },
 
   "modalSort": {
     "title": "Ordre de tri",
@@ -163,6 +170,9 @@
       "filePath": "Chemin du fichier",
       "sampleRate": "Taux d'échantillonnage",
       "size": "Taille",
+
+      "addToPlaylist": "Ajouter à une playlist",
+      "addToQueue": "Mettre à la suite",
 
       "queueAdd": "`{{- content}}` ajouté à la file d'attente."
     }
