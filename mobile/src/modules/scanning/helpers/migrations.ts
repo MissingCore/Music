@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 
 import { db } from "~/db";
 import { invalidTracks, tracks, tracksToPlaylists } from "~/db/schema";
@@ -89,6 +89,12 @@ export const MigrationFunctionMap: Record<
   },
   /** Fix album fracturization caused by `releaseYear = null`. */
   "fix-null-releaseYear": fixAlbumFracturization,
+  "artwork-retry": async () => {
+    await db
+      .update(tracks)
+      .set({ fetchedArt: false })
+      .where(and(eq(tracks.fetchedArt, true), isNull(tracks.artwork)));
+  },
 };
 
 /** Helper to parse value from AsyncStorage. */
