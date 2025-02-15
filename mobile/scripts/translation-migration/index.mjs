@@ -11,7 +11,10 @@ import TranslationMap from "./translationMap.json" assert { type: "json" };
  */
 async function migrateTranslation(source) {
   // Copy over the translations from `source` to our new structure.
-  const updatedStruc = { ...NewTranslationStructure };
+  //  - NOTE: The `spread` operator only does a shallow copy.
+  const updatedStruc = {
+    ...JSON.parse(JSON.stringify(NewTranslationStructure)),
+  };
   const oldTranslations = JSON.parse(await fs.readFile(source, "utf-8"));
   traverseTranslation(oldTranslations, updatedStruc, []);
   // We'll store the created file in an `output` folder in the translations.
