@@ -1,0 +1,244 @@
+{
+  "language": "language",
+
+  "common": {
+    "album": "term.album",
+    "albums": "term.albums",
+    "artist": "term.artist",
+    "artists": "term.artists",
+    "folder": "term.folder",
+    "folders": "term.folders",
+    "playlist": "term.playlist",
+    "playlists": "term.playlists",
+    "track": "term.track",
+    "tracks": "term.tracks",
+
+    "play": "term.play",
+    "pause": "term.pause",
+    "prev": "term.prev",
+    "next": "term.next",
+    "shuffle": "term.shuffle",
+    "repeat": "term.repeat",
+    "repeatOne": "term.repeatOne",
+
+    "favorite": "term.favorite",
+    "unFavorite": "term.unFavorite",
+    "favoriteTracks": "term.favoriteTracks",
+
+    "disc": "term.disc",
+    "vinyl": "feat.nowPlayingDesign.extra.vinyl",
+    "plain": "feat.nowPlayingDesign.extra.plain"
+  },
+
+  "header": {
+    "home": "term.home",
+    "search": "feat.search.title",
+
+    "settings": "term.settings",
+    "appUpdate": "feat.appUpdate.title",
+    "appearance": "feat.appearance.title",
+    "insights": "feat.insights.title",
+    "saveErrors": "feat.saveErrors.title",
+    "scanning": "feat.scanning.title",
+    "thirdParty": "feat.thirdParty.title"
+  },
+  "title": {
+    "language": "feat.language.title",
+    "backup": "feat.backup.title",
+    "font": "feat.accentFont.title",
+    "theme": "feat.theme.title",
+    "homeTabsOrder": "feat.homeTabsOrder.title",
+    "nowPlayingDesign": "feat.nowPlayingDesign.title",
+    "listAllow": "feat.listAllow.title",
+    "listBlock": "feat.listBlock.title",
+    "ignoreDuration": "feat.ignoreDuration.title",
+    "sort": "feat.modalSort.title",
+    "musicAdd": "feat.search.extra.musicAdd",
+    "upcoming": "term.upcoming"
+  },
+
+  "playlist": {
+    "create": "feat.playlist.extra.create",
+    "edit": "feat.playlist.extra.edit",
+    "delete": "feat.playlist.extra.delete",
+
+    "add": "feat.modalTrack.extra.addToPlaylist",
+    "artworkChange": "feat.artwork.extra.change",
+    "artworkRemove": "feat.artwork.extra.remove"
+  },
+
+  "home": {
+    "playedRecent": "feat.playedRecent.title",
+    "favorites": "term.favorites"
+  },
+
+  "settings": {
+    "interactions": "feat.interactions.title",
+    "scanning": null,
+    "rescan": "feat.rescan.title",
+    "deepRescan": "feat.deepRescan.title",
+    "translate": "feat.translate.title",
+    "code": "feat.code.title",
+    "license": "feat.license.title",
+    "privacy": "feat.privacy.title",
+    "version": "feat.version.title",
+
+    "brief": {
+      "appUpdate": "feat.appUpdate.brief",
+      "appearance": "feat.appearance.brief",
+      "homeTabsOrder": "feat.homeTabsOrder.brief",
+      "backup": "feat.backup.brief",
+      "insights": "feat.insights.brief",
+      "saveErrors": "feat.saveErrors.brief",
+      "interactions": "feat.interactions.brief",
+      "scanning": "feat.scanning.brief",
+      "rescan": "feat.rescan.brief",
+      "deepRescan": "feat.deepRescan.brief",
+      "translate": "feat.translate.brief",
+      "code": "feat.code.brief",
+      "thirdParty": "feat.thirdParty.brief"
+    },
+
+    "description": {
+      "homeTabsOrder": null,
+      "backup": "feat.backup.description",
+      "listAllow": "feat.listAllow.description",
+      "listBlock": "feat.listBlock.description",
+      "ignoreDuration": "feat.ignoreDuration.description"
+    },
+
+    "related": {
+      "appDownload": "feat.appUpdate.extra.downloadAPK",
+      "appUpdate": "feat.appUpdate.extra.updateGoogle",
+
+      "light": "feat.theme.extra.light",
+      "dark": "feat.theme.extra.dark",
+      "system": "feat.theme.extra.system",
+
+      "export": "feat.backup.extra.export",
+      "import": "feat.backup.extra.import",
+
+      "images": "feat.insights.extra.images",
+      "database": "feat.insights.extra.database",
+      "other": "feat.insights.extra.other",
+      "cache": "feat.insights.extra.cache",
+      "total": "feat.insights.extra.total",
+      "totalDuration": "feat.insights.extra.totalDuration",
+
+      "pathAdd": null,
+      "pathSelect": null
+    }
+  },
+
+  "errorScreen": {
+    "unmatched": "err.flow.route.title",
+    "unmatchedBrief": "err.flow.route.brief",
+    "missing": "err.flow.route.extra.missing",
+    "from": "err.flow.route.extra.from",
+
+    "generic": "err.flow.generic.title",
+    "genericBrief": "err.flow.generic.brief",
+
+    "report": "err.flow.report.title",
+    "screenshot": "err.flow.report.brief"
+  },
+
+  "onboardingScreen": {
+    "preprocess": "feat.onboardPreprocess.title",
+    "preprocessBrief": "feat.onboardPreprocess.brief",
+
+    "track": "feat.onboardTracks.title",
+    "prevSaved": "feat.onboardTracks.extra.prevSaved",
+    "saved": "feat.onboardTracks.extra.saved",
+    "errors": "feat.onboardTracks.extra.errors",
+
+    "image": "feat.onboardImages.title",
+    "checked": "feat.onboardImages.extra.checked",
+    "found": "feat.onboardImages.extra.found"
+  },
+
+  "sortModal": {
+    "asc": "feat.modalSort.extra.asc",
+    "alphabetical": "feat.modalSort.extra.alphabetical",
+    "modified": "feat.modalSort.extra.modified"
+  },
+  "trackModal": {
+    "bitrate": "feat.modalTrack.extra.bitrate",
+    "sampleRate": "feat.modalTrack.extra.sampleRate",
+    "size": "feat.modalTrack.extra.size",
+    "modified": null,
+    "filePath": "feat.modalTrack.extra.filePath",
+
+    "playlistAdd": null,
+    "queueAdd": "feat.modalTrack.extra.addToQueue"
+  },
+
+  "form": {
+    "apply": "form.apply",
+    "back": "form.back",
+    "cancel": "form.cancel",
+    "confirm": "form.confirm",
+
+    "unsaved": "form.unsaved",
+    "stay": "form.stay",
+    "leave": "form.leave",
+
+    "placeholder": {
+      "playlistName": "feat.playlist.extra.name",
+      "searchMedia": "feat.search.extra.searchMedia"
+    },
+
+    "validation": {
+      "unique": "form.validation.unique"
+    }
+  },
+
+  "template": {
+    "entryAdded": "template.entryAdded",
+    "entryRemove": "template.entryRemove",
+    "entryRemoved": "template.entryRemoved",
+    "entrySeeMore": "template.entrySeeMore",
+    "notFound": "template.notFound",
+    "showEntry": null,
+    "hideEntry": null
+  },
+
+  "plural": {
+    "entry_one": "plural.entry_one",
+    "entry_other": "plural.entry_other",
+    "second_one": "plural.second_one",
+    "second_other": "plural.second_other",
+    "track_one": null,
+    "track_other": null
+  },
+
+  "response": {
+    "noRecents": "feat.playedRecent.extra.empty",
+    "noErrors": "err.msg.noErrors",
+    "noFilters": "err.msg.noFilters",
+    "noResults": "err.msg.noResults",
+    "noContent": "err.msg.noContent",
+
+    "noAlbums": "err.msg.noAlbums",
+    "noArtists": "err.msg.noArtists",
+    "noPlaylists": "err.msg.noPlaylists",
+    "noTracks": "err.msg.noTracks",
+    "noDirectory": null,
+
+    "queueAdd": "feat.modalTrack.extra.queueAdd",
+
+    "exportSuccess": "feat.backup.extra.exportSuccess",
+    "importSuccess": "feat.backup.extra.importSuccess",
+
+    "scanStart": "feat.rescan.extra.start",
+    "scanSuccess": "feat.rescan.extra.success",
+    "scanFail": "feat.rescan.extra.fail",
+
+    "pathSelectFail": null,
+
+    "actionCancel": "err.msg.actionCancel",
+    "noSelect": "err.msg.noSelect",
+    "invalidStructure": "err.msg.invalidStructure",
+    "usedName": "err.msg.usedName"
+  }
+}
