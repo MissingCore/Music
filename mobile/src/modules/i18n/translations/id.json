@@ -39,7 +39,7 @@
     "entryRemove": "`{{- name}}` Dihapus.",
     "entryRemoved": "`{{- name}}` Telah Dihapus.",
 
-    "entrySeeMore": "See more about `{{- name}}`.",
+    "entrySeeMore": null,
     "notFound": "`{{- name}}` tidak ditemukan.",
 
     "itemShow": null,

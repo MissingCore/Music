@@ -180,7 +180,7 @@
       "brief": "Узнать причину, по которой некоторые треки не были сохранены."
     },
     "interactions": {
-      "title": "Nothing Interactions",
+      "title": null,
       "brief": "Поддержка Nothing функций."
     },
     "scanning": {
