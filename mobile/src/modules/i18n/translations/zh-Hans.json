@@ -1,0 +1,314 @@
+{
+  "language": "简体中文",
+
+  "term": {
+    "album": "专辑",
+    "albums": "专辑",
+    "artist": "艺术家",
+    "artists": "艺术家",
+    "folder": "文件夹",
+    "folders": "文件夹",
+    "playlist": "播放列表",
+    "playlists": "播放列表",
+    "track": "歌曲",
+    "tracks": "歌曲",
+
+    "play": "播放",
+    "pause": "暂停",
+    "prev": "上一首",
+    "next": "下一首",
+    "shuffle": "随机播放",
+    "repeat": "循环播放",
+    "repeatOne": "单曲循环",
+
+    "favorite": "收藏",
+    "favorites": "收藏",
+    "unFavorite": "取消收藏",
+    "favoriteTracks": "收藏的歌曲",
+
+    "home": "首页",
+    "settings": "设置",
+    "upcoming": "即将播放",
+
+    "clear": null,
+    "disc": "碟片 {{count}}"
+  },
+
+  "template": {
+    "entryAdded": "已添加 `{{- name}}`。",
+    "entryRemove": "移除 `{{- name}}`。",
+    "entryRemoved": "已移除 `{{- name}}`。",
+
+    "entrySeeMore": "查看更多关于 `{{- name}}` 的信息。",
+    "notFound": "`{{- name}}` 不存在。",
+
+    "itemShow": null,
+    "itemHide": null,
+    "itemEnable": null,
+    "itemDisable": null
+  },
+
+  "plural": {
+    "entry_one": "{{count}} 条记录",
+    "entry_other": "{{count}} 条记录",
+    "second_one": "{{count}} 秒",
+    "second_other": "{{count}} 秒",
+    "track_one": "{{count}} $t(term.track)",
+    "track_other": "{{count}} $t(term.tracks)"
+  },
+
+  "form": {
+    "apply": "应用更改",
+    "back": "返回",
+    "cancel": "取消",
+    "confirm": "确认",
+
+    "unsaved": "可能有未保存的更改。",
+    "stay": "留在此处",
+    "leave": "离开",
+
+    "validation": {
+      "unique": "唯一"
+    }
+  },
+
+  "err": {
+    "flow": {
+      "route": {
+        "title": "无效路由",
+        "brief": "你不知怎的导航到了一个无效路由。",
+        "extra": {
+          "missing": "缺失",
+          "from": "来自"
+        }
+      },
+      "generic": {
+        "title": "出现错误",
+        "brief": "你遇到了一个意外错误。"
+      },
+      "report": {
+        "title": "报告问题",
+        "brief": "包含此屏幕的截图。"
+      }
+    },
+
+    "msg": {
+      "actionCancel": "已取消操作。",
+      "invalidStructure": "结构无效。",
+      "noSelect": "未选择任何内容。",
+      "usedName": "该名称无法使用。",
+
+      "noContent": "未找到内容。",
+      "noErrors": "未发现错误。",
+      "noFilters": "未找到过滤器。",
+      "noResults": "未找到结果。",
+
+      "noAlbums": "未找到专辑。",
+      "noArtists": "未找到艺术家。",
+      "noPlaylists": "未找到播放列表。",
+      "noTracks": "未找到歌曲。"
+    }
+  },
+
+  "feat": {
+    "appUpdate": {
+      "title": "应用更新",
+      "brief": "有新的更新可用！",
+      "extra": {
+        "downloadAPK": "下载最新版本的 APK",
+        "updateGoogle": "从 Play Store 更新"
+      }
+    },
+    "appearance": {
+      "title": "外观",
+      "brief": "个性化应用外观。"
+    },
+    "accentFont": {
+      "title": "强调字体"
+    },
+    "theme": {
+      "title": "主题",
+      "extra": {
+        "light": "浅色",
+        "dark": "深色",
+        "system": "跟随系统"
+      }
+    },
+    "homeTabsOrder": {
+      "title": null,
+      "brief": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
+    },
+    "nowPlayingDesign": {
+      "title": null,
+      "extra": {
+        "plain": null,
+        "vinyl": null
+      }
+    },
+    "language": {
+      "title": "语言"
+    },
+    "backup": {
+      "title": "备份",
+      "brief": "在设备间迁移数据。",
+      "description": "通过 `music_backup.json` 文件在设备间传输应用数据。",
+      "extra": {
+        "export": "导出",
+        "exportSuccess": "备份创建成功。",
+        "import": "导入",
+        "importSuccess": "备份导入完成。"
+      }
+    },
+    "insights": {
+      "title": "使用统计",
+      "brief": "应用使用情况与统计。",
+      "extra": {
+        "cache": "缓存",
+        "database": "数据库",
+        "images": "图片",
+        "other": "其他",
+        "total": "总计",
+        "totalDuration": "总时长"
+      }
+    },
+    "saveErrors": {
+      "title": "保存错误",
+      "brief": "查看部分歌曲未能保存的原因。"
+    },
+    "interactions": {
+      "title": "Nothing 交互",
+      "brief": "支持的 Nothing 功能。"
+    },
+    "scanning": {
+      "title": "扫描",
+      "brief": "音乐发现选项。"
+    },
+    "rescan": {
+      "title": "重新扫描",
+      "brief": "查找新的媒体文件。",
+      "extra": {
+        "start": "正在重新扫描音乐库...",
+        "success": "音乐库扫描完成。",
+        "fail": "音乐库扫描失败。"
+      }
+    },
+    "deepRescan": {
+      "title": null,
+      "brief": null
+    },
+    "listAllow": {
+      "title": "允许列表",
+      "description": "为空时使用以下默认值："
+    },
+    "listBlock": {
+      "title": "阻止列表",
+      "description": "优先级高于允许列表中的条目。"
+    },
+    "ignoreDuration": {
+      "title": "忽略较短的音频",
+      "description": "不想保存的音频时长（秒）。"
+    },
+    "translate": {
+      "title": "协助翻译",
+      "brief": "帮助翻译应用到其他语言。"
+    },
+    "code": {
+      "title": "GitHub 仓库",
+      "brief": "报告问题、贡献代码或请求新功能。"
+    },
+    "license": {
+      "title": "许可证"
+    },
+    "privacy": {
+      "title": "隐私政策"
+    },
+    "thirdParty": {
+      "title": "第三方软件",
+      "brief": "感谢这些让应用成为可能的开源项目"
+    },
+    "version": {
+      "title": "版本"
+    },
+
+    "onboardPreprocess": {
+      "title": "预处理",
+      "brief": "确保现有数据符合所有更改。"
+    },
+    "onboardTracks": {
+      "title": "保存歌曲",
+      "extra": {
+        "prevSaved": "已保存 {{amount}} 首",
+        "saved": "已保存/更新 {{amount}}/{{total}} 首",
+        "errors": "{{amount}} 个错误"
+      }
+    },
+    "onboardImages": {
+      "title": "保存图片",
+      "extra": {
+        "checked": "已检查 {{amount}}/{{total}}",
+        "found": "找到 {{amount}} 个"
+      }
+    },
+
+    "playedRecent": {
+      "title": "最近播放",
+      "extra": {
+        "empty": "你还没有播放任何内容！"
+      }
+    },
+    "search": {
+      "title": "搜索",
+      "extra": {
+        "musicAdd": "添加音乐",
+        "searchMedia": "搜索媒体"
+      }
+    },
+
+    "artwork": {
+      "extra": {
+        "change": "更改封面",
+        "remove": "移除封面"
+      }
+    },
+    "directory": {
+      "extra": {
+        "add": "添加目录",
+        "select": "选择目录"
+      }
+    },
+    "playlist": {
+      "extra": {
+        "create": "创建播放列表",
+        "delete": "删除播放列表",
+        "edit": "编辑播放列表",
+        "name": "播放列表名称"
+      }
+    },
+
+    "modalSort": {
+      "title": "排序方式",
+      "extra": {
+        "asc": "升序",
+        "alphabetical": "字母顺序",
+        "modified": "最后修改"
+      }
+    },
+    "modalTrack": {
+      "extra": {
+        "bitrate": "比特率",
+        "filePath": "文件路径",
+        "sampleRate": "采样率",
+        "size": "大小",
+
+        "addToPlaylist": "添加到播放列表",
+        "addToQueue": "添加到队列",
+
+        "queueAdd": "已将 `{{- name}}` 添加到队列。"
+      }
+    }
+  }
+}

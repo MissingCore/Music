@@ -1,0 +1,314 @@
+{
+  "language": "Français",
+
+  "term": {
+    "album": "Album",
+    "albums": "Albums",
+    "artist": "Artiste",
+    "artists": "Artistes",
+    "folder": "Dossier",
+    "folders": "Dossiers",
+    "playlist": "Playlist",
+    "playlists": "Playlists",
+    "track": "Titre",
+    "tracks": "Titres",
+
+    "play": "Lecture",
+    "pause": "Pause",
+    "prev": "Précédent",
+    "next": "Suivant",
+    "shuffle": "Aléatoire",
+    "repeat": "Répéter",
+    "repeatOne": "Répéter le titre",
+
+    "favorite": "Favori",
+    "favorites": "Favoris",
+    "unFavorite": "Retirer des favoris",
+    "favoriteTracks": "Titres favoris",
+
+    "home": "Accueil",
+    "settings": "Paramètres",
+    "upcoming": "À venir",
+
+    "clear": null,
+    "disc": "CD {{count}}"
+  },
+
+  "template": {
+    "entryAdded": "`{{- name}}` ajouté.",
+    "entryRemove": "Supprimer `{{- name}}`.",
+    "entryRemoved": "`{{- name}}` supprimé.",
+
+    "entrySeeMore": "Voir plus sur `{{- name}}`.",
+    "notFound": "`{{- name}}` n'existe pas.",
+
+    "itemShow": null,
+    "itemHide": null,
+    "itemEnable": null,
+    "itemDisable": null
+  },
+
+  "plural": {
+    "entry_one": "{{count}} entrée",
+    "entry_other": "{{count}} entrées",
+    "second_one": "{{count}} seconde",
+    "second_other": "{{count}} secondes",
+    "track_one": "{{count}} $t(term.track)",
+    "track_other": "{{count}} $t(term.tracks)"
+  },
+
+  "form": {
+    "apply": "Appliquer les modifications",
+    "back": "Retour",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+
+    "unsaved": "Vous avez des modifications non enregistrées.",
+    "stay": "Rester",
+    "leave": "Quitter",
+
+    "validation": {
+      "unique": "Unique"
+    }
+  },
+
+  "err": {
+    "flow": {
+      "route": {
+        "title": "Route non trouvée",
+        "brief": "Vous avez d'une manière ou d'une autre navigué vers une route invalide.",
+        "extra": {
+          "missing": "Manquant",
+          "from": "Depuis"
+        }
+      },
+      "generic": {
+        "title": "Quelque chose s'est mal passé",
+        "brief": "Vous avez rencontré une erreur inattendue."
+      },
+      "report": {
+        "title": "Rapporter le problème",
+        "brief": "Incluez une capture d'écran de cette page."
+      }
+    },
+
+    "msg": {
+      "actionCancel": "Action annulée.",
+      "invalidStructure": "Structure invalide.",
+      "noSelect": "Rien n'est sélectionné.",
+      "usedName": "Ce nom ne peut pas être utilisé.",
+
+      "noContent": "Aucun contenu trouvé.",
+      "noErrors": "Aucune erreur trouvée.",
+      "noFilters": "Aucun filtre trouvé.",
+      "noResults": "Aucun résultat trouvé.",
+
+      "noAlbums": "Aucun album trouvé.",
+      "noArtists": "Aucun artiste trouvé.",
+      "noPlaylists": "Aucune playlist trouvée.",
+      "noTracks": "Aucun titre trouvé."
+    }
+  },
+
+  "feat": {
+    "appUpdate": {
+      "title": "Mise à jour de l'application",
+      "brief": "Une nouvelle mise à jour est disponible!",
+      "extra": {
+        "downloadAPK": "Télécharger le dernier APK",
+        "updateGoogle": "Mettre à jour via le Play Store"
+      }
+    },
+    "appearance": {
+      "title": "Apparence",
+      "brief": "Personnalisez l'apparence de l'application."
+    },
+    "accentFont": {
+      "title": "Police Accentuée"
+    },
+    "theme": {
+      "title": "Thème",
+      "extra": {
+        "light": "Clair",
+        "dark": "Sombre",
+        "system": "Système"
+      }
+    },
+    "homeTabsOrder": {
+      "title": null,
+      "brief": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
+    },
+    "nowPlayingDesign": {
+      "title": null,
+      "extra": {
+        "plain": null,
+        "vinyl": null
+      }
+    },
+    "language": {
+      "title": "Langue"
+    },
+    "backup": {
+      "title": "Sauvegarde",
+      "brief": "Déplacez vos données entre appareils.",
+      "description": "Transférez vos données entre appareils via un fichier `music_backup.json`.",
+      "extra": {
+        "export": "Exporter",
+        "exportSuccess": "Sauvegarde créée avec succès.",
+        "import": "Importer",
+        "importSuccess": "Importation de la sauvegarde terminée."
+      }
+    },
+    "insights": {
+      "title": "Informations Approfondies",
+      "brief": "Utilisation de l'application & statistiques.",
+      "extra": {
+        "cache": "Cache",
+        "database": "Base de données",
+        "images": "Images",
+        "other": "Autre",
+        "total": "Total",
+        "totalDuration": "Durée Totale"
+      }
+    },
+    "saveErrors": {
+      "title": "Erreurs d'enregistrement",
+      "brief": "Voyez pourquoi certains titres n'ont pas été enregistrés."
+    },
+    "interactions": {
+      "title": "Intéractions Nothing",
+      "brief": "Fonctionnalités Nothing supportées."
+    },
+    "scanning": {
+      "title": "Recherche de musique",
+      "brief": "Options de découverte de musique."
+    },
+    "rescan": {
+      "title": "Lancer une nouvelle recherche",
+      "brief": "Recherchez à nouveau votre bibliothèque musicale.",
+      "extra": {
+        "start": "Recherche en cours...",
+        "success": "Recherche terminée.",
+        "fail": "Erreur lors de la recherche."
+      }
+    },
+    "deepRescan": {
+      "title": null,
+      "brief": null
+    },
+    "listAllow": {
+      "title": "Liste d'autorisation",
+      "description": "Prends le suivant par défaut si vide:"
+    },
+    "listBlock": {
+      "title": "Liste de blocage",
+      "description": "Possède la priorité sur la liste d'autorisation."
+    },
+    "ignoreDuration": {
+      "title": "Ignorer les audios courts",
+      "description": "Durée en seconde des audios à ignorer."
+    },
+    "translate": {
+      "title": "Contribuer aux traductions",
+      "brief": "Aidez à traduire cette application dans d'autres langues."
+    },
+    "code": {
+      "title": "Dépôt GitHub",
+      "brief": "Signalez des bugs, contribuez ou demandez des nouvelles fonctionnalités."
+    },
+    "license": {
+      "title": "Licence"
+    },
+    "privacy": {
+      "title": "Politique de confidentialité"
+    },
+    "thirdParty": {
+      "title": "Logiciel tiers",
+      "brief": "Ce qui rend cette application possible."
+    },
+    "version": {
+      "title": "Version"
+    },
+
+    "onboardPreprocess": {
+      "title": "Prétraitement",
+      "brief": "S'assure que les données existantes sont conformes à toutes les modifications."
+    },
+    "onboardTracks": {
+      "title": "Sauvegarde des titres",
+      "extra": {
+        "prevSaved": "{{amount}} Enregistrés précédemment",
+        "saved": "{{amount}}/{{total}} Sauvegardés/Actualisés",
+        "errors": "{{amount}} Erreurs"
+      }
+    },
+    "onboardImages": {
+      "title": "Sauvegarde des images",
+      "extra": {
+        "checked": "{{amount}}/{{total}} Vérifiées",
+        "found": "{{amount}} Trouvées"
+      }
+    },
+
+    "playedRecent": {
+      "title": "Écouté récemment",
+      "extra": {
+        "empty": "Vous n'avez encore rien écouté!"
+      }
+    },
+    "search": {
+      "title": "Rechercher",
+      "extra": {
+        "musicAdd": "Ajouter de la musique",
+        "searchMedia": "Recherchez des médias"
+      }
+    },
+
+    "artwork": {
+      "extra": {
+        "change": "Modifier l'illustration",
+        "remove": "Supprimer l'illustration"
+      }
+    },
+    "directory": {
+      "extra": {
+        "add": "Ajouter un Dossier",
+        "select": "Sélectionner un Dossier"
+      }
+    },
+    "playlist": {
+      "extra": {
+        "create": "Créer playlist",
+        "delete": "Supprimer playlist",
+        "edit": "Modifier playlist",
+        "name": "Nom de la Playlist"
+      }
+    },
+
+    "modalSort": {
+      "title": "Ordre de tri",
+      "extra": {
+        "asc": "Ordre croissant",
+        "alphabetical": "Alphabétique",
+        "modified": "Modifié récemment"
+      }
+    },
+    "modalTrack": {
+      "extra": {
+        "bitrate": "Débit binaire",
+        "filePath": "Chemin du fichier",
+        "sampleRate": "Taux d'échantillonnage",
+        "size": "Taille",
+
+        "addToPlaylist": "Ajouter à une playlist",
+        "addToQueue": "Mettre à la suite",
+
+        "queueAdd": "`{{- name}}` ajouté à la file d'attente."
+      }
+    }
+  }
+}

@@ -1,0 +1,314 @@
+{
+  "language": "Català",
+
+  "term": {
+    "album": "Àlbum",
+    "albums": "Àlbums",
+    "artist": "Artista",
+    "artists": "Artistes",
+    "folder": "Carpeta",
+    "folders": "Carpetes",
+    "playlist": "Llista de reproducció",
+    "playlists": "Llistes de reproducció",
+    "track": "Pista",
+    "tracks": "Pistes",
+
+    "play": "Reproduir",
+    "pause": "Pausar",
+    "prev": "Prèvia",
+    "next": "Següent",
+    "shuffle": "Aleatori",
+    "repeat": "Repeteix",
+    "repeatOne": "Repeteix un cop",
+
+    "favorite": "Preferida",
+    "favorites": "Preferides",
+    "unFavorite": "Treu de preferides",
+    "favoriteTracks": "Pistes preferides",
+
+    "home": "Inici",
+    "settings": "Ajusts",
+    "upcoming": "Pròxima",
+
+    "clear": null,
+    "disc": "Disc {{count}}"
+  },
+
+  "template": {
+    "entryAdded": "`{{- name}}` afegit.",
+    "entryRemove": "Suprimeix `{{- name}}`.",
+    "entryRemoved": "`{{- name}}` suprimit.",
+
+    "entrySeeMore": "Veure més sobre `{{- name}}`.",
+    "notFound": "`{{- name}}` no existeix.",
+
+    "itemShow": "Mostra {{item}}",
+    "itemHide": "Amaga {{item}}",
+    "itemEnable": null,
+    "itemDisable": null
+  },
+
+  "plural": {
+    "entry_one": "{{count}} entrada",
+    "entry_other": "{{count}} entrades",
+    "second_one": "{{count}} segons",
+    "second_other": "{{count}} segons",
+    "track_one": "{{count}} $t(term.track)",
+    "track_other": "{{count}} $t(term.tracks)"
+  },
+
+  "form": {
+    "apply": "Aplica canvis",
+    "back": "Enrere",
+    "cancel": "Cancel·lar",
+    "confirm": "Confirmar",
+
+    "unsaved": "Poder tens canvis sense desar.",
+    "stay": "Queda't",
+    "leave": "Eixir",
+
+    "validation": {
+      "unique": "Únic"
+    }
+  },
+
+  "err": {
+    "flow": {
+      "route": {
+        "title": "La ruta no coincideix",
+        "brief": "D'alguna manera has navegat a una ruta invàlida.",
+        "extra": {
+          "missing": "No està",
+          "from": "De"
+        }
+      },
+      "generic": {
+        "title": "Alguna cosa ha anat malament",
+        "brief": "Ha sorgit un error inesperat."
+      },
+      "report": {
+        "title": "Informa d'un problema",
+        "brief": "Inclou una captura d'aquesta pantalla."
+      }
+    },
+
+    "msg": {
+      "actionCancel": "Acció cancel·lada.",
+      "invalidStructure": "Estructura invàlida.",
+      "noSelect": "Res seleccionat.",
+      "usedName": "Aquest nom no es pot fer servir.",
+
+      "noContent": "No s'ha trobat contingut.",
+      "noErrors": "Cap errors trobat.",
+      "noFilters": "Cap filtre trobat.",
+      "noResults": "Cap resultat trobat.",
+
+      "noAlbums": "No s'ha trobat cap àlbum.",
+      "noArtists": "No s'ha trobat cap artista.",
+      "noPlaylists": "No s'ha trobat cap llista.",
+      "noTracks": "No s'han trobat pistes."
+    }
+  },
+
+  "feat": {
+    "appUpdate": {
+      "title": "Actualització de l'App",
+      "brief": "Nova actualització disponible!",
+      "extra": {
+        "downloadAPK": "Descarrega l'última APK",
+        "updateGoogle": "Actualitza vía Play Store"
+      }
+    },
+    "appearance": {
+      "title": "Aparença",
+      "brief": "Personalitza l'aspecte de l'app."
+    },
+    "accentFont": {
+      "title": "Accent"
+    },
+    "theme": {
+      "title": "Tema",
+      "extra": {
+        "light": "Clar",
+        "dark": "Fosc",
+        "system": "Sistema"
+      }
+    },
+    "homeTabsOrder": {
+      "title": "Ordre de les pestanyes",
+      "brief": "Personalitza l'ordre i visibilitat de les pestanyes.",
+      "description": {
+        "line1": "Reordena les pestanyes que segueixen a la pestanya de \"Inici\" arrossegant i deixant anar. Fes visible o invisible cada pestanya pressionant la icona de l'ull.",
+        "line2": "Precaució: al accedir a pestanyes ocultes es poden produir errors."
+      }
+    },
+    "nowPlayingDesign": {
+      "title": "Disseny pantalla de reproducció",
+      "extra": {
+        "plain": "Pla",
+        "vinyl": "Vinil"
+      }
+    },
+    "language": {
+      "title": "Llengua"
+    },
+    "backup": {
+      "title": "Copia de seguretat",
+      "brief": "Mou dades entre dispositius.",
+      "description": "Transfereix dades d'aquesta aplicació entre dispositius a través del fitxer `music_backup.json`.",
+      "extra": {
+        "export": "Exporta",
+        "exportSuccess": "Còpia de seguretat creada amb èxit.",
+        "import": "Importa",
+        "importSuccess": "Còpia de seguretat importada amb èxit."
+      }
+    },
+    "insights": {
+      "title": "Estadístiques",
+      "brief": "Dades d'ús i estadístiques.",
+      "extra": {
+        "cache": "Cache",
+        "database": "Base de dades",
+        "images": "Imatges",
+        "other": "Altres",
+        "total": "Total",
+        "totalDuration": "Durada total"
+      }
+    },
+    "saveErrors": {
+      "title": "Errors al guardar",
+      "brief": "Raó per la que no s'han desat algunes pistes."
+    },
+    "interactions": {
+      "title": "Interaccions de Nothing",
+      "brief": "Funcions de Nothing suportades."
+    },
+    "scanning": {
+      "title": "Escanejant",
+      "brief": "Ajustos del descobriment de música."
+    },
+    "rescan": {
+      "title": "Reescanejar",
+      "brief": "Cerca nous fitxers de mèdia.",
+      "extra": {
+        "start": "Reescanejant la biblioteca...",
+        "success": "Reescaneig finalitzat.",
+        "fail": "Error al reescaneajar la biblioteca."
+      }
+    },
+    "deepRescan": {
+      "title": "Escanejar a fons",
+      "brief": "Ignora qualsevol ordre d'omissió que acceleren els reescanejos normals."
+    },
+    "listAllow": {
+      "title": "Llista de permeses",
+      "description": "Predeterminat al següent si està buit:"
+    },
+    "listBlock": {
+      "title": "Llista de bloquejades",
+      "description": "Té prioritat per sobre de les entrades de la llista de permeses."
+    },
+    "ignoreDuration": {
+      "title": "Ignora àudios curts",
+      "description": "Durada en segons dels àudios que no vols guardar."
+    },
+    "translate": {
+      "title": "Contribueix amb traduccions",
+      "brief": "Ajuda a traduir l'aplicació a altres llengües."
+    },
+    "code": {
+      "title": "Repositori GitHub",
+      "brief": "Informe d'errors, contribueix o sol·licita noves funcions."
+    },
+    "license": {
+      "title": "Llicència"
+    },
+    "privacy": {
+      "title": "Política de privadesa"
+    },
+    "thirdParty": {
+      "title": "Software de tercers",
+      "brief": "Què fa possible aquesta aplicació."
+    },
+    "version": {
+      "title": "Versió"
+    },
+
+    "onboardPreprocess": {
+      "title": "Preprocessar",
+      "brief": "Assegurar-se que les dades existents compleixin els canvis."
+    },
+    "onboardTracks": {
+      "title": "Desant pistes",
+      "extra": {
+        "prevSaved": "{{amount}} prèviament desades",
+        "saved": "{{amount}}/{{total}} desades/actualitzades",
+        "errors": "{{amount}} Errors"
+      }
+    },
+    "onboardImages": {
+      "title": "Desant imatges",
+      "extra": {
+        "checked": "{{amount}}/{{total}} comprovades",
+        "found": "{{amount}} Trobades"
+      }
+    },
+
+    "playedRecent": {
+      "title": "Reproduït fa poc",
+      "extra": {
+        "empty": "Encara no has reproduït rés!"
+      }
+    },
+    "search": {
+      "title": "Cerca",
+      "extra": {
+        "musicAdd": "Afegir",
+        "searchMedia": "Cerca fitxers de mèdia"
+      }
+    },
+
+    "artwork": {
+      "extra": {
+        "change": "Canvia caràtula",
+        "remove": "Esborra caràtula"
+      }
+    },
+    "directory": {
+      "extra": {
+        "add": "Afegeix Diccionari",
+        "select": "Selecciona Diccionari"
+      }
+    },
+    "playlist": {
+      "extra": {
+        "create": "Crea llista",
+        "delete": "Esborra llista",
+        "edit": "Edita llista",
+        "name": "Títol de la Llista"
+      }
+    },
+
+    "modalSort": {
+      "title": "Ordre",
+      "extra": {
+        "asc": "Ordre ascendent",
+        "alphabetical": "Alfabètic",
+        "modified": "Darrera modificació"
+      }
+    },
+    "modalTrack": {
+      "extra": {
+        "bitrate": "Taxa de bits",
+        "filePath": "Ruta del fitxer",
+        "sampleRate": "Freq. de mostreig",
+        "size": "Mida",
+
+        "addToPlaylist": "Afegir a la llista",
+        "addToQueue": "Afegir a la cua",
+
+        "queueAdd": "`{{- name}}` afegit a la cua."
+      }
+    }
+  }
+}
