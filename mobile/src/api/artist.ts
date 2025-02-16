@@ -20,7 +20,7 @@ const _getArtist: QueryOneWithTracksFn<Artist> = () => async (id, options) => {
       { defaultWithAlbum: true, ...options },
     ),
   });
-  if (!artist) throw new Error(i18next.t("response.noArtists"));
+  if (!artist) throw new Error(i18next.t("err.msg.noArtists"));
   return artist;
 };
 

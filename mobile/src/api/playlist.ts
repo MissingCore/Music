@@ -38,7 +38,7 @@ const _getPlaylist: QueryOneWithTracksFn<Playlist> =
         },
       },
     });
-    if (!playlist) throw new Error(i18next.t("response.noPlaylists"));
+    if (!playlist) throw new Error(i18next.t("err.msg.noPlaylists"));
     return fixPlaylistJunction(playlist);
   };
 
@@ -193,7 +193,7 @@ export async function updatePlaylist(
     } catch (err) {
       if (!(err as Error).message.includes("No values to set")) {
         // If we tried to change the playlist name that's already in use.
-        throw new Error(i18next.t("response.usedName"));
+        throw new Error(i18next.t("err.msg.usedName"));
       }
     }
     // Ensure track relationship is preserved.

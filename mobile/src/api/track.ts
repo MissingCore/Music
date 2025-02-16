@@ -31,7 +31,7 @@ export async function getTrack<
     columns: getColumns(options?.columns),
     ...withAlbum({ defaultWithAlbum: true, ...options }),
   });
-  if (!track) throw new Error(i18next.t("response.noTracks"));
+  if (!track) throw new Error(i18next.t("err.msg.noTracks"));
   const hasArtwork =
     options?.columns === undefined ||
     options?.columns.includes("artwork" as TCols);

@@ -24,7 +24,7 @@ const _getAlbum: QueryOneWithTracksFn<Album, false> =
         { defaultWithAlbum: false, ...options },
       ),
     });
-    if (!album) throw new Error(i18next.t("response.noAlbums"));
+    if (!album) throw new Error(i18next.t("err.msg.noAlbums"));
     return album;
   };
 
