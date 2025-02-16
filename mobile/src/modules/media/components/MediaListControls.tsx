@@ -44,7 +44,7 @@ function PlayMediaListButton({ trackSource }: { trackSource: PlayListSource }) {
 
   return (
     <IconButton
-      accessibilityLabel={t(`common.${displayPause ? "pause" : "play"}`)}
+      accessibilityLabel={t(`term.${displayPause ? "pause" : "play"}`)}
       onPress={
         displayPause
           ? MusicControls.pause

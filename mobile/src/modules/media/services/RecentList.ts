@@ -109,7 +109,7 @@ recentListStore.subscribe(
           // Translate the names of these special playlists.
           if (entry && ReservedNames.has(id)) {
             const tKey = id === ReservedPlaylists.tracks ? "t" : "favoriteT";
-            entry.title = i18next.t(`common.${tKey}racks`);
+            entry.title = i18next.t(`term.${tKey}racks`);
           }
         }
         if (entry) newRecentList.push(entry);

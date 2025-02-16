@@ -47,7 +47,7 @@ export async function getSourceName({ type, id }: PlayListSource) {
   try {
     if (ReservedNames.has(id)) {
       const tKey = id === ReservedPlaylists.tracks ? "t" : "favoriteT";
-      name = i18next.t(`common.${tKey}racks`);
+      name = i18next.t(`term.${tKey}racks`);
     } else if (type === "artist" || type === "playlist") {
       name = id;
     } else if (type === "folder") {
