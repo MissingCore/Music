@@ -13,7 +13,7 @@ export function ContentPlaceholder(props: {
   return props.isPending ? (
     <Loading />
   ) : (
-    <TStyledText textKey={props.errMsgKey ?? "response.noContent"} center />
+    <TStyledText textKey={props.errMsgKey ?? "err.msg.noContent"} center />
   );
 }
 

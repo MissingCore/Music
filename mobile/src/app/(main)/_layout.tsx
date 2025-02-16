@@ -102,9 +102,9 @@ function NavigationList() {
   // order can be customized.
   const NavRoutes = useMemo(
     () => [
-      { href: "/", key: "header.home", name: "index" },
+      { href: "/", key: "term.home", name: "index" },
       ...displayedTabs.map((tabKey) => {
-        return { href: `/${tabKey}`, key: `common.${tabKey}s`, name: tabKey };
+        return { href: `/${tabKey}`, key: `term.${tabKey}s`, name: tabKey };
       }),
     ],
     [displayedTabs],

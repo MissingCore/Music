@@ -15,7 +15,7 @@ import { TStyledText } from "~/components/Typography/StyledText";
 
 /** Layout used for the "error" screens (route & unexpected errors). */
 export function IssueLayout(props: {
-  issueType: "unmatched" | "generic";
+  issueType: "route" | "generic";
   children: React.ReactNode;
 }) {
   const { t } = useTranslation();
@@ -35,11 +35,11 @@ export function IssueLayout(props: {
         {...ScrollPresets}
       >
         <AccentText style={{ paddingTop: top + 16 }} className="text-4xl">
-          {t(`errorScreen.${props.issueType}`)}
+          {t(`err.flow.${props.issueType}.title`)}
         </AccentText>
         <TStyledText
           dim
-          textKey={`errorScreen.${props.issueType}Brief`}
+          textKey={`err.flow.${props.issueType}.brief`}
           className="text-base"
         />
 
@@ -58,11 +58,11 @@ export function IssueLayout(props: {
           className="bg-red"
         >
           <TStyledText
-            textKey="errorScreen.report"
+            textKey="err.flow.report.title"
             className="text-center text-neutral100"
           />
           <TStyledText
-            textKey="errorScreen.screenshot"
+            textKey="err.flow.report.brief"
             className="text-center text-xs text-neutral100/80"
           />
         </Button>

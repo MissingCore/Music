@@ -57,12 +57,12 @@ export function CurrentListLayout(
         <View className="shrink grow justify-end">
           <TEm
             dim
-            textKey={`common.${toLowerCase(props.mediaSource.type)}`}
+            textKey={`term.${toLowerCase(props.mediaSource.type)}`}
             style={{ fontSize: 8 }}
           />
           <Marquee color={canvas}>
             <StyledText>
-              {isFavorite ? t("common.favoriteTracks") : props.title}
+              {isFavorite ? t("term.favoriteTracks") : props.title}
             </StyledText>
           </Marquee>
           {props.artist ? (
@@ -113,7 +113,7 @@ function ContentImage({
 
   return (
     <Pressable
-      aria-label={t("playlist.artworkChange")}
+      aria-label={t("feat.artwork.extra.change")}
       delayLongPress={100}
       onLongPress={() => {
         SheetManager.show(`${capitalize(type)}ArtworkSheet`, {

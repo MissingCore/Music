@@ -153,8 +153,8 @@ export function sanitizePlaylistName(name: string) {
   const sanitized = name.trim();
 
   let errMsg: string | undefined;
-  if (ReservedNames.has(sanitized)) errMsg = i18next.t("response.usedName");
-  if (sanitized.length === 0) errMsg = i18next.t("response.noContent");
+  if (ReservedNames.has(sanitized)) errMsg = i18next.t("err.msg.usedName");
+  if (sanitized.length === 0) errMsg = i18next.t("err.msg.noContent");
 
   if (errMsg) throw new Error(errMsg);
 
