@@ -17,7 +17,7 @@ import { cn } from "~/lib/style";
 import { FlashDragList } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { IconButton } from "~/components/Form/Button";
-import { TStyledText } from "~/components/Typography/StyledText";
+import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
 type RenderItemProps = DragListRenderItemInfo<OrderableTab>;
 
@@ -47,13 +47,14 @@ export default function HomeTabsOrderScreen() {
 }
 
 function ListHeaderComponent() {
+  const { t } = useTranslation();
   return (
     <>
-      <TStyledText
-        textKey="settings.description.homeTabsOrder"
-        dim
-        className="text-center text-sm"
-      />
+      <StyledText dim className="text-center text-sm">
+        {t("feat.homeTabsOrder.description.line1")}
+        {"\n\n"}
+        {t("feat.homeTabsOrder.description.line2")}
+      </StyledText>
       <Divider className="my-6" />
     </>
   );
@@ -72,7 +73,7 @@ const RenderItem = memo(
 
     const isVisible = tabsVisibility[item];
     const Icon = isVisible ? Eye : EyeOff;
-    const tabNameKey = `common.${item}s` as const;
+    const tabNameKey = `term.${item}s` as const;
 
     return (
       <Pressable
@@ -92,7 +93,7 @@ const RenderItem = memo(
         <IconButton
           kind="ripple"
           accessibilityLabel={t(
-            isVisible ? "template.hideEntry" : "template.showEntry",
+            isVisible ? "template.entryHide" : "template.entryShow",
             { name: t(tabNameKey) },
           )}
           onPress={() => toggleVisibility(item)}

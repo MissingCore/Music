@@ -224,7 +224,7 @@ function BottomAppBar({ trackId }: { trackId: string }) {
     <View className="flex-row items-center justify-end gap-2 pt-2">
       <IconButton
         kind="ripple"
-        accessibilityLabel={t(`common.${isFav ? "unF" : "f"}avorite`)}
+        accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
         onPress={() => mutateGuard(favoriteTrack, !data?.isFavorite)}
         rippleRadius={24}
         className="p-2"
@@ -233,7 +233,7 @@ function BottomAppBar({ trackId }: { trackId: string }) {
       </IconButton>
       <IconButton
         kind="ripple"
-        accessibilityLabel={t("title.upcoming")}
+        accessibilityLabel={t("term.upcoming")}
         onPress={() => SheetManager.show("TrackUpcomingSheet")}
         rippleRadius={24}
         className="p-2"

@@ -15,7 +15,7 @@ export default function SaveErrorsScreen() {
           getTitle: (item) => item.uri,
           getDescription: (item) => `[${item.errorName}] ${item.errorMessage}`,
         }}
-        emptyMsgKey="response.noErrors"
+        emptyMsgKey="err.msg.noErrors"
       />
     </StandardScrollLayout>
   );

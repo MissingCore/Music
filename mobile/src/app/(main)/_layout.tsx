@@ -70,14 +70,14 @@ function TabBar({ stacked = false, hidden = false }) {
       <NavigationList />
       <IconButton
         kind="ripple"
-        accessibilityLabel={t("header.search")}
+        accessibilityLabel={t("feat.search.title")}
         onPress={() => router.navigate("/search")}
       >
         <Search />
       </IconButton>
       <IconButton
         kind="ripple"
-        accessibilityLabel={t("header.settings")}
+        accessibilityLabel={t("term.settings")}
         onPress={() => router.navigate("/setting")}
         className="relative"
       >

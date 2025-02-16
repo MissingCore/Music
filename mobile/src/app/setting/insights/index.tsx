@@ -23,8 +23,8 @@ export default function InsightsScreen() {
       </List>
 
       <ListItem
-        titleKey="header.saveErrors"
-        description={t("settings.brief.saveErrors")}
+        titleKey="feat.saveErrors.title"
+        description={t("feat.saveErrors.brief")}
         onPress={() => router.navigate("/setting/insights/save-errors")}
         {...{ first: true, last: true }}
       />
@@ -52,28 +52,28 @@ function StorageWidget() {
       />
       <Legend className="py-2">
         <LegendItem
-          nameKey="settings.related.images"
+          nameKey="feat.insights.extra.images"
           value={abbreviateSize(data.images)}
           color={Colors.red}
         />
         <LegendItem
-          nameKey="settings.related.database"
+          nameKey="feat.insights.extra.database"
           value={abbreviateSize(data.database)}
           color={Colors.yellow}
         />
         <LegendItem
-          nameKey="settings.related.other"
+          nameKey="feat.insights.extra.other"
           value={abbreviateSize(data.other)}
           color="#4142BE"
         />
         <LegendItem
-          nameKey="settings.related.cache"
+          nameKey="feat.insights.extra.cache"
           value={abbreviateSize(data.cache)}
           color={`${foreground}40`} // 25% Opacity
         />
       </Legend>
       <LegendItem
-        nameKey="settings.related.total"
+        nameKey="feat.insights.extra.total"
         value={abbreviateSize(data.total)}
       />
     </Card>
@@ -87,15 +87,15 @@ function DBSummaryWidget() {
   return (
     <Card className="gap-2 rounded-t-sm">
       <Legend className="pb-2">
-        <LegendItem nameKey="common.albums" value={data.albums} />
-        <LegendItem nameKey="common.artists" value={data.artists} />
-        <LegendItem nameKey="settings.related.images" value={data.images} />
-        <LegendItem nameKey="common.playlists" value={data.playlists} />
-        <LegendItem nameKey="common.tracks" value={data.tracks} />
-        <LegendItem nameKey="header.saveErrors" value={data.saveErrors} />
+        <LegendItem nameKey="term.albums" value={data.albums} />
+        <LegendItem nameKey="term.artists" value={data.artists} />
+        <LegendItem nameKey="feat.insights.extra.images" value={data.images} />
+        <LegendItem nameKey="term.playlists" value={data.playlists} />
+        <LegendItem nameKey="term.tracks" value={data.tracks} />
+        <LegendItem nameKey="feat.saveErrors.title" value={data.saveErrors} />
       </Legend>
       <LegendItem
-        nameKey="settings.related.totalDuration"
+        nameKey="feat.insights.extra.totalDuration"
         value={formatSeconds(data.totalDuration, false)}
       />
     </Card>

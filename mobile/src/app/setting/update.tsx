@@ -102,7 +102,7 @@ export default function AppUpdateScreen() {
         >
           <LogoGitHub />
           <TStyledText
-            textKey="settings.related.appDownload"
+            textKey="feat.appUpdate.extra.downloadAPK"
             className="text-center text-xs"
           />
         </Button>
@@ -113,7 +113,7 @@ export default function AppUpdateScreen() {
           >
             <LogoPlayStore />
             <TStyledText
-              textKey="settings.related.appUpdate"
+              textKey="feat.appUpdate.extra.updateGoogle"
               className="text-center text-xs"
             />
           </Button>

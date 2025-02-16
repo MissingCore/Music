@@ -79,7 +79,7 @@ export default function FolderScreen() {
   return (
     <StickyActionListLayout
       listRef={listRef}
-      titleKey="common.folders"
+      titleKey="term.folders"
       estimatedItemSize={56} // 48px Height + 8px Margin Top
       data={[data?.subDirectories ?? [], data?.tracks ?? []].flat()}
       keyExtractor={(_, index) => `${index}`}

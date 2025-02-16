@@ -22,12 +22,12 @@ export default function TrackScreen() {
   const { isPending, data } = useTracksForTrackCard();
   const listPresets = useTrackListPreset({
     ...{ data, trackSource, isPending },
-    emptyMsgKey: "response.noTracks",
+    emptyMsgKey: "err.msg.noTracks",
   });
 
   return (
     <StickyActionListLayout
-      titleKey="common.tracks"
+      titleKey="term.tracks"
       StickyAction={<TrackActions />}
       estimatedActionSize={48}
       {...listPresets}
@@ -43,7 +43,7 @@ function TrackActions() {
     <View className="w-full flex-row items-center justify-between rounded-md bg-surface">
       <IconButton
         kind="ripple"
-        accessibilityLabel={t("title.sort")}
+        accessibilityLabel={t("feat.modalSort.title")}
         onPress={() => SheetManager.show("TrackSortSheet")}
       >
         <Sort />

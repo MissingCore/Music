@@ -45,7 +45,7 @@ export default function CurrentAlbumScreen() {
           headerRight: () => (
             <IconButton
               kind="ripple"
-              accessibilityLabel={t(`common.${isToggled ? "unF" : "f"}avorite`)}
+              accessibilityLabel={t(`term.${isToggled ? "unF" : "f"}avorite`)}
               onPress={() => mutateGuard(favoriteAlbum, !data.isFavorite)}
             >
               <Favorite filled={isToggled} />
@@ -68,7 +68,7 @@ export default function CurrentAlbumScreen() {
             <>
               {item.disc !== null && discLocation[item.disc] === index ? (
                 <Em dim className={index === 0 ? "mb-2" : "mt-4"}>
-                  {t("common.disc", { count: item.disc })}
+                  {t("term.disc", { count: item.disc })}
                 </Em>
               ) : null}
               <Track

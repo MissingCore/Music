@@ -20,15 +20,15 @@ export default function ScanningScreen() {
     <StandardScrollLayout>
       <List>
         <ListItem
-          titleKey="settings.rescan"
-          description={t("settings.brief.rescan")}
+          titleKey="feat.rescan.title"
+          description={t("feat.rescan.brief")}
           disabled={rescan.isPending}
           onPress={() => mutateGuard(rescan, undefined)}
           first
         />
         <ListItem
-          titleKey="settings.deepRescan"
-          description={t("settings.brief.deepRescan")}
+          titleKey="feat.deepRescan.title"
+          description={t("feat.deepRescan.brief")}
           disabled={rescan.isPending}
           onPress={() => mutateGuard(rescan, true)}
           last
@@ -37,7 +37,7 @@ export default function ScanningScreen() {
 
       <List>
         <ListItem
-          titleKey="title.listAllow"
+          titleKey="feat.listAllow.title"
           description={t("plural.entry", { count: allowList.length })}
           onPress={() =>
             SheetManager.show("ScanFilterListSheet", {
@@ -47,7 +47,7 @@ export default function ScanningScreen() {
           first
         />
         <ListItem
-          titleKey="title.listBlock"
+          titleKey="feat.listBlock.title"
           description={t("plural.entry", { count: blockList.length })}
           onPress={() =>
             SheetManager.show("ScanFilterListSheet", {
@@ -56,7 +56,7 @@ export default function ScanningScreen() {
           }
         />
         <ListItem
-          titleKey="title.ignoreDuration"
+          titleKey="feat.ignoreDuration.title"
           description={t("plural.second", { count: ignoreDuration })}
           onPress={() => SheetManager.show("MinDurationSheet")}
           last
