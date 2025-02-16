@@ -1,0 +1,314 @@
+{
+  "language": null,
+
+  "term": {
+    "album": null,
+    "albums": null,
+    "artist": null,
+    "artists": null,
+    "folder": null,
+    "folders": null,
+    "playlist": null,
+    "playlists": null,
+    "track": null,
+    "tracks": null,
+
+    "play": null,
+    "pause": null,
+    "prev": null,
+    "next": null,
+    "shuffle": null,
+    "repeat": null,
+    "repeatOne": null,
+
+    "favorite": null,
+    "favorites": null,
+    "unFavorite": null,
+    "favoriteTracks": null,
+
+    "home": null,
+    "settings": null,
+    "upcoming": null,
+
+    "clear": null,
+    "disc": null
+  },
+
+  "template": {
+    "entryAdded": null,
+    "entryRemove": null,
+    "entryRemoved": null,
+
+    "entrySeeMore": null,
+    "notFound": null,
+
+    "entryShow": null,
+    "entryHide": null,
+    "entryEnable": null,
+    "entryDisable": null
+  },
+
+  "plural": {
+    "entry_one": null,
+    "entry_other": null,
+    "second_one": null,
+    "second_other": null,
+    "track_one": null,
+    "track_other": null
+  },
+
+  "form": {
+    "apply": null,
+    "back": null,
+    "cancel": null,
+    "confirm": null,
+
+    "unsaved": null,
+    "stay": null,
+    "leave": null,
+
+    "validation": {
+      "unique": null
+    }
+  },
+
+  "err": {
+    "flow": {
+      "route": {
+        "title": null,
+        "brief": null,
+        "extra": {
+          "missing": null,
+          "from": null
+        }
+      },
+      "generic": {
+        "title": null,
+        "brief": null
+      },
+      "report": {
+        "title": null,
+        "brief": null
+      }
+    },
+
+    "msg": {
+      "actionCancel": null,
+      "invalidStructure": null,
+      "noSelect": null,
+      "usedName": null,
+
+      "noContent": null,
+      "noErrors": null,
+      "noFilters": null,
+      "noResults": null,
+
+      "noAlbums": null,
+      "noArtists": null,
+      "noPlaylists": null,
+      "noTracks": null
+    }
+  },
+
+  "feat": {
+    "appUpdate": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "downloadAPK": null,
+        "updateGoogle": null
+      }
+    },
+    "appearance": {
+      "title": null,
+      "brief": null
+    },
+    "accentFont": {
+      "title": null
+    },
+    "theme": {
+      "title": null,
+      "extra": {
+        "light": null,
+        "dark": null,
+        "system": null
+      }
+    },
+    "homeTabsOrder": {
+      "title": null,
+      "brief": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
+    },
+    "nowPlayingDesign": {
+      "title": null,
+      "extra": {
+        "plain": null,
+        "vinyl": null
+      }
+    },
+    "language": {
+      "title": null
+    },
+    "backup": {
+      "title": null,
+      "brief": null,
+      "description": null,
+      "extra": {
+        "export": null,
+        "exportSuccess": null,
+        "import": null,
+        "importSuccess": null
+      }
+    },
+    "insights": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "cache": null,
+        "database": null,
+        "images": null,
+        "other": null,
+        "total": null,
+        "totalDuration": null
+      }
+    },
+    "saveErrors": {
+      "title": null,
+      "brief": null
+    },
+    "interactions": {
+      "title": null,
+      "brief": null
+    },
+    "scanning": {
+      "title": null,
+      "brief": null
+    },
+    "rescan": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "start": null,
+        "success": null,
+        "fail": null
+      }
+    },
+    "deepRescan": {
+      "title": null,
+      "brief": null
+    },
+    "listAllow": {
+      "title": null,
+      "description": null
+    },
+    "listBlock": {
+      "title": null,
+      "description": null
+    },
+    "ignoreDuration": {
+      "title": null,
+      "description": null
+    },
+    "translate": {
+      "title": null,
+      "brief": null
+    },
+    "code": {
+      "title": null,
+      "brief": null
+    },
+    "license": {
+      "title": null
+    },
+    "privacy": {
+      "title": null
+    },
+    "thirdParty": {
+      "title": null,
+      "brief": null
+    },
+    "version": {
+      "title": null
+    },
+
+    "onboardPreprocess": {
+      "title": null,
+      "brief": null
+    },
+    "onboardTracks": {
+      "title": null,
+      "extra": {
+        "prevSaved": null,
+        "saved": null,
+        "errors": null
+      }
+    },
+    "onboardImages": {
+      "title": null,
+      "extra": {
+        "checked": null,
+        "found": null
+      }
+    },
+
+    "playedRecent": {
+      "title": null,
+      "extra": {
+        "empty": null
+      }
+    },
+    "search": {
+      "title": null,
+      "extra": {
+        "musicAdd": null,
+        "searchMedia": null
+      }
+    },
+
+    "artwork": {
+      "extra": {
+        "change": null,
+        "remove": null
+      }
+    },
+    "directory": {
+      "extra": {
+        "add": null,
+        "select": null
+      }
+    },
+    "playlist": {
+      "extra": {
+        "create": null,
+        "delete": null,
+        "edit": null,
+        "name": null
+      }
+    },
+
+    "modalSort": {
+      "title": null,
+      "extra": {
+        "asc": null,
+        "alphabetical": null,
+        "modified": null
+      }
+    },
+    "modalTrack": {
+      "extra": {
+        "bitrate": null,
+        "filePath": null,
+        "sampleRate": null,
+        "size": null,
+
+        "addToPlaylist": null,
+        "addToQueue": null,
+
+        "queueAdd": null
+      }
+    }
+  }
+}

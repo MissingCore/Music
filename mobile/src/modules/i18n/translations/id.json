@@ -1,0 +1,314 @@
+{
+  "language": "Indonesia",
+
+  "term": {
+    "album": "Album",
+    "albums": "Album",
+    "artist": "Artis",
+    "artists": "Artis",
+    "folder": "Folder",
+    "folders": "Folder",
+    "playlist": "Daftar Putar",
+    "playlists": "Daftar Putar",
+    "track": "Trek",
+    "tracks": "Trek",
+
+    "play": "Putar",
+    "pause": "Jeda",
+    "prev": "Sebelumnya",
+    "next": "Berikutnya",
+    "shuffle": "Acak",
+    "repeat": "Ulangi",
+    "repeatOne": null,
+
+    "favorite": "Sukai",
+    "favorites": "Difavoritkan",
+    "unFavorite": "Batal Sukai",
+    "favoriteTracks": null,
+
+    "home": "Beranda",
+    "settings": "Pengaturan",
+    "upcoming": "Yang akan Datang",
+
+    "clear": null,
+    "disc": null
+  },
+
+  "template": {
+    "entryAdded": "`{{- name}}` telah ditambahkan.",
+    "entryRemove": "`{{- name}}` Dihapus.",
+    "entryRemoved": "`{{- name}}` Telah Dihapus.",
+
+    "entrySeeMore": null,
+    "notFound": "`{{- name}}` tidak ditemukan.",
+
+    "entryShow": null,
+    "entryHide": null,
+    "entryEnable": null,
+    "entryDisable": null
+  },
+
+  "plural": {
+    "entry_one": "{{count}} entri",
+    "entry_other": "{{count}} entri",
+    "second_one": "{{count}} detik",
+    "second_other": "{{count}} detik",
+    "track_one": "{{count}} $t(term.track)",
+    "track_other": "{{count}} $t(term.tracks)"
+  },
+
+  "form": {
+    "apply": "Terapkan Perubahan",
+    "back": "Kembali",
+    "cancel": "Batal",
+    "confirm": "Konfirmasi",
+
+    "unsaved": "Anda masih memiliki perubahan yang belum disimpan.",
+    "stay": "Tetap disini",
+    "leave": "Keluar",
+
+    "validation": {
+      "unique": "Unik"
+    }
+  },
+
+  "err": {
+    "flow": {
+      "route": {
+        "title": "Rute tidak sesuai",
+        "brief": "Anda menavigasikan ke rute yang tidak valid.",
+        "extra": {
+          "missing": "Hilang",
+          "from": "Dari"
+        }
+      },
+      "generic": {
+        "title": "Terjadi Kesalahan",
+        "brief": "Anda mengalami kesalahan yang tidak terduga."
+      },
+      "report": {
+        "title": "Laporkan Issue",
+        "brief": "Sertakan tangkapan layar ini."
+      }
+    },
+
+    "msg": {
+      "actionCancel": "Tindakan dibatalkan.",
+      "invalidStructure": "Struktur tidak valid.",
+      "noSelect": "Tidak ada yang dipilih.",
+      "usedName": "Nama ini tidak bisa digunakan.",
+
+      "noContent": "Tidak ada konten yang ditemukan.",
+      "noErrors": "Tidak ada masalah yang ditemukan.",
+      "noFilters": "Tidak ada filter yang ditemukan.",
+      "noResults": "Tidak ada hasil yang ditemukan.",
+
+      "noAlbums": "Tidak ada album yang ditemukan.",
+      "noArtists": "Tidak ada artis yang ditemukan.",
+      "noPlaylists": "Tidak ada daftar putar yang ditemukan.",
+      "noTracks": "Tidak ada trek yang ditemukan."
+    }
+  },
+
+  "feat": {
+    "appUpdate": {
+      "title": "Pembaruan Aplikasi",
+      "brief": "Versi terbaru sudah tersedia!",
+      "extra": {
+        "downloadAPK": "Unduh APK saat ini",
+        "updateGoogle": "Perbarui melalui Play Store"
+      }
+    },
+    "appearance": {
+      "title": "Tampilan",
+      "brief": "Personalisasikan aplikasi."
+    },
+    "accentFont": {
+      "title": "Font Aksen"
+    },
+    "theme": {
+      "title": "Tema",
+      "extra": {
+        "light": "Terang",
+        "dark": "Gelap",
+        "system": "Sistem"
+      }
+    },
+    "homeTabsOrder": {
+      "title": null,
+      "brief": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
+    },
+    "nowPlayingDesign": {
+      "title": null,
+      "extra": {
+        "plain": null,
+        "vinyl": null
+      }
+    },
+    "language": {
+      "title": "Bahasa"
+    },
+    "backup": {
+      "title": "Cadangkan",
+      "brief": "Pindahkan data antar perangkat.",
+      "description": "Transfer data dari aplikasi ini antar perangkat melalui berkas `music_backup.json`.",
+      "extra": {
+        "export": "Ekspor",
+        "exportSuccess": "Cadangan berhasil dibuat.",
+        "import": "Impor",
+        "importSuccess": "Impor cadangan selesai."
+      }
+    },
+    "insights": {
+      "title": "Insight",
+      "brief": "Penggunaan aplikasi & statistik.",
+      "extra": {
+        "cache": "Tembolok",
+        "database": "Database",
+        "images": "Gambar",
+        "other": "Lain-lain",
+        "total": "Total",
+        "totalDuration": "Durasi Total"
+      }
+    },
+    "saveErrors": {
+      "title": "Simpan Galat",
+      "brief": "Lihat mengapa beberapa trek tidak disimpan."
+    },
+    "interactions": {
+      "title": "Tidak Ada Interaksi",
+      "brief": "Fitur tidak didukung."
+    },
+    "scanning": {
+      "title": "Memindai",
+      "brief": "Opsi jelajahi musik."
+    },
+    "rescan": {
+      "title": "Memindai Ulang",
+      "brief": "Cari untuk beberapa media baru.",
+      "extra": {
+        "start": "Memindai ulang pustaka...",
+        "success": "Selesai memindai ulang pustaka.",
+        "fail": "Gagal memindai ulang pustaka."
+      }
+    },
+    "deepRescan": {
+      "title": null,
+      "brief": null
+    },
+    "listAllow": {
+      "title": "Diizinkan",
+      "description": "Defaultnya adalah berikut jika kosong:"
+    },
+    "listBlock": {
+      "title": "Diblokir",
+      "description": "Memiliki prioritas lebih tinggi terhadap entri dalam daftar perizinan."
+    },
+    "ignoreDuration": {
+      "title": "Abaikan Audio Pendek",
+      "description": "Durasi audio dalam detik yang tidak ingin kami simpan."
+    },
+    "translate": {
+      "title": "Kontribusi Penerjemahan",
+      "brief": "Bantu menerjemahkan aplikasi ini ke dalam bahasa lainnya."
+    },
+    "code": {
+      "title": "Repositori GitHub",
+      "brief": "Lapor issue, kontribusi, atau request fitur baru."
+    },
+    "license": {
+      "title": "Lisensi"
+    },
+    "privacy": {
+      "title": "Kebijakan Privasi"
+    },
+    "thirdParty": {
+      "title": "Perangkat Lunak Pihak Ketiga",
+      "brief": "Apa yang membuat aplikasi ini memungkinkan."
+    },
+    "version": {
+      "title": "Versi"
+    },
+
+    "onboardPreprocess": {
+      "title": "Praproses",
+      "brief": "Memastikan data yang ada sesuai dengan perubahan apa pun."
+    },
+    "onboardTracks": {
+      "title": "Menyimpan Trek",
+      "extra": {
+        "prevSaved": "{{amount}} Disimpan Sebelumnya",
+        "saved": "{{amount}}/{{total}} Disimpan/Diperbarui",
+        "errors": "{{amount}} Kesalahan"
+      }
+    },
+    "onboardImages": {
+      "title": "Menyimpan Gambar",
+      "extra": {
+        "checked": "{{amount}}/{{total}} Telah diperiksa",
+        "found": "{{amount}} Ditemukan"
+      }
+    },
+
+    "playedRecent": {
+      "title": "Baru Saja Diputar",
+      "extra": {
+        "empty": "Anda belum memutar apapun!"
+      }
+    },
+    "search": {
+      "title": "Cari",
+      "extra": {
+        "musicAdd": "Tambahkan Musik",
+        "searchMedia": "Cari Media"
+      }
+    },
+
+    "artwork": {
+      "extra": {
+        "change": "Ubah Karya Seni",
+        "remove": "Hapus Karya Seni"
+      }
+    },
+    "directory": {
+      "extra": {
+        "add": "Tambahkan Direktori",
+        "select": "Pilih Direktori"
+      }
+    },
+    "playlist": {
+      "extra": {
+        "create": "Buat Daftar Putar",
+        "delete": "Hapus Daftar Putar",
+        "edit": "Sunting Daftar Putar",
+        "name": "Nama Daftar Putar"
+      }
+    },
+
+    "modalSort": {
+      "title": "urutan penyortiran",
+      "extra": {
+        "asc": "Urutan Naik",
+        "alphabetical": "Alfabet",
+        "modified": "Terakhir Diubah"
+      }
+    },
+    "modalTrack": {
+      "extra": {
+        "bitrate": "Bitrate",
+        "filePath": "Lokasi Berkas",
+        "sampleRate": "Sample Rate",
+        "size": "Ukuran",
+
+        "addToPlaylist": "Tambahkan ke Daftar Putar",
+        "addToQueue": "Tambahkan ke Antrian",
+
+        "queueAdd": "`{{- name}}` ditambahkan ke antrian."
+      }
+    }
+  }
+}

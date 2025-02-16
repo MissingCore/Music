@@ -1,0 +1,314 @@
+{
+  "language": "Русский",
+
+  "term": {
+    "album": "Альбом",
+    "albums": "Альбомы",
+    "artist": "Исполнитель",
+    "artists": "Исполнители",
+    "folder": "Папка",
+    "folders": "Папки",
+    "playlist": "Плейлист",
+    "playlists": "Плейлисты",
+    "track": "Трек",
+    "tracks": "Треки",
+
+    "play": "Вкл.",
+    "pause": "Пауза",
+    "prev": "Предыдущее",
+    "next": "Следующее",
+    "shuffle": "Случайный",
+    "repeat": "Повтор",
+    "repeatOne": "Повтор одного",
+
+    "favorite": "Любимые",
+    "favorites": "Любимые",
+    "unFavorite": "Не любимые",
+    "favoriteTracks": "Любимые Треки",
+
+    "home": "Главная",
+    "settings": "Настройки",
+    "upcoming": "Развитие",
+
+    "clear": null,
+    "disc": "Диск {{count}}"
+  },
+
+  "template": {
+    "entryAdded": "`{{- name}}` Добавлен.",
+    "entryRemove": "Удалён `{{- name}}`.",
+    "entryRemoved": "Удалён `{{- name}}`.",
+
+    "entrySeeMore": "Увидеть подробности `{{- name}}`.",
+    "notFound": "`{{- name}}` Не существует.",
+
+    "entryShow": null,
+    "entryHide": null,
+    "entryEnable": null,
+    "entryDisable": null
+  },
+
+  "plural": {
+    "entry_one": "{{count}} Запись",
+    "entry_other": "{{count}} Записи",
+    "second_one": "{{count}} Секунд",
+    "second_other": "{{count}} Секунд",
+    "track_one": "{{count}} $t(term.track)",
+    "track_other": "{{count}} $t(term.tracks)"
+  },
+
+  "form": {
+    "apply": "Применить изменения",
+    "back": "Назад",
+    "cancel": "Отмена",
+    "confirm": "Подтвердить",
+
+    "unsaved": "У вас могут быть несохраненные изменения.",
+    "stay": "Остаться",
+    "leave": "Оставлять",
+
+    "validation": {
+      "unique": "Уникальный"
+    }
+  },
+
+  "err": {
+    "flow": {
+      "route": {
+        "title": "Непревзойденный",
+        "brief": "Вы каким-то образом перешли на неверный маршрут.",
+        "extra": {
+          "missing": "Мимо",
+          "from": "из"
+        }
+      },
+      "generic": {
+        "title": "Что-то пошло не так",
+        "brief": "Вы столкнулись с неожиданной ошибкой."
+      },
+      "report": {
+        "title": "Сообщить о проблеме",
+        "brief": "Включите снимок экрана."
+      }
+    },
+
+    "msg": {
+      "actionCancel": "Отменённое действие.",
+      "invalidStructure": "Недействительная структура.",
+      "noSelect": "Ничего не выбрано.",
+      "usedName": "Это имя не может быть использовано.",
+
+      "noContent": "Контент не найден.",
+      "noErrors": "Ошибки не найдены.",
+      "noFilters": "Фильтры не найдены.",
+      "noResults": "Результаты не найдены.",
+
+      "noAlbums": "Альбомы не найдены.",
+      "noArtists": "Артисты не найдены.",
+      "noPlaylists": "Плейлисты не найдены.",
+      "noTracks": "Треки не найдены."
+    }
+  },
+
+  "feat": {
+    "appUpdate": {
+      "title": "Обновление приложения",
+      "brief": "Новое обновление уже вышло!",
+      "extra": {
+        "downloadAPK": "Установить последний APK",
+        "updateGoogle": "Обновить в Play Store"
+      }
+    },
+    "appearance": {
+      "title": "Внешний вид",
+      "brief": "Персонализировать внешний вид приложения."
+    },
+    "accentFont": {
+      "title": "Шрифт"
+    },
+    "theme": {
+      "title": "Тема",
+      "extra": {
+        "light": "Светлая",
+        "dark": "Тёмная",
+        "system": "Системная"
+      }
+    },
+    "homeTabsOrder": {
+      "title": null,
+      "brief": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      }
+    },
+    "nowPlayingDesign": {
+      "title": null,
+      "extra": {
+        "plain": null,
+        "vinyl": null
+      }
+    },
+    "language": {
+      "title": "Язык"
+    },
+    "backup": {
+      "title": "Резервная копия",
+      "brief": "Перемещать данные между устройствами.",
+      "description": "Передавать данные из этого приложения на другие устройства через файл music_backup.json.",
+      "extra": {
+        "export": "Экспорт",
+        "exportSuccess": "Резервная копия успешно создана.",
+        "import": "Импорт",
+        "importSuccess": "Резервная копия успешно импортирована."
+      }
+    },
+    "insights": {
+      "title": "Идеи",
+      "brief": "Использование приложения и статистика.",
+      "extra": {
+        "cache": "Кэш",
+        "database": "База данных",
+        "images": "Изображение",
+        "other": "Другое",
+        "total": "Полная",
+        "totalDuration": "Полная длительность"
+      }
+    },
+    "saveErrors": {
+      "title": "Сохранение ошибок",
+      "brief": "Узнать причину, по которой некоторые треки не были сохранены."
+    },
+    "interactions": {
+      "title": null,
+      "brief": "Поддержка Nothing функций."
+    },
+    "scanning": {
+      "title": "Сканирование",
+      "brief": "Варианты поиска музыки."
+    },
+    "rescan": {
+      "title": "Пересканирование",
+      "brief": "Искать любые новые медиа.",
+      "extra": {
+        "start": "Повторное сканирование...",
+        "success": "Успешное завершение повторного сканирования.",
+        "fail": "Не удалось сканировать."
+      }
+    },
+    "deepRescan": {
+      "title": null,
+      "brief": null
+    },
+    "listAllow": {
+      "title": "Белый список",
+      "description": "По умолчанию, если пусто:"
+    },
+    "listBlock": {
+      "title": "Черный список",
+      "description": "Имеет более высокий приоритет по сравнению с записями в списке разрешенных."
+    },
+    "ignoreDuration": {
+      "title": "Игнорирование коротких аудио",
+      "description": "Длительность аудио в секундах, которую мы не сохраняем."
+    },
+    "translate": {
+      "title": "Свой перевод",
+      "brief": "Помогите перевести приложение на другие языки."
+    },
+    "code": {
+      "title": "GitHub репозиторий",
+      "brief": "Сообщать о проблемах, вносить свой вклад или запрашивать новые функции."
+    },
+    "license": {
+      "title": "Лицензия"
+    },
+    "privacy": {
+      "title": "Политика конфиденциальности"
+    },
+    "thirdParty": {
+      "title": "Софт третьей стороны",
+      "brief": "Что делает это приложение возможный."
+    },
+    "version": {
+      "title": "Версия"
+    },
+
+    "onboardPreprocess": {
+      "title": "Предварительная обработка",
+      "brief": "Обеспечение соответствия существующих данных любым изменениям."
+    },
+    "onboardTracks": {
+      "title": "Сохранённые треки",
+      "extra": {
+        "prevSaved": "{{amount}} Уже сохранено",
+        "saved": "{{amount}}/{{total}} Сохранено/Добавлено",
+        "errors": "{{amount}} Ошибок"
+      }
+    },
+    "onboardImages": {
+      "title": "Сохранённые картинки",
+      "extra": {
+        "checked": "{{amount}}/{{total}} Проверено",
+        "found": "{{amount}} Найдено"
+      }
+    },
+
+    "playedRecent": {
+      "title": "Недавно сыграно",
+      "extra": {
+        "empty": "Вы еще ничего не послушали!"
+      }
+    },
+    "search": {
+      "title": "Поиск",
+      "extra": {
+        "musicAdd": "Добавить музыку",
+        "searchMedia": "Найти медиа"
+      }
+    },
+
+    "artwork": {
+      "extra": {
+        "change": "Изменить обложку",
+        "remove": "Удалить обложку"
+      }
+    },
+    "directory": {
+      "extra": {
+        "add": "Добавить Директорию",
+        "select": "Выбрать Директорию"
+      }
+    },
+    "playlist": {
+      "extra": {
+        "create": "Создать плейлист",
+        "delete": "Удалить плейлист",
+        "edit": "Изменить плейлист",
+        "name": "Название плейлиста"
+      }
+    },
+
+    "modalSort": {
+      "title": "Порядок сортировки",
+      "extra": {
+        "asc": "По возрастанию",
+        "alphabetical": "Алфавитный",
+        "modified": "Недавно изменённые"
+      }
+    },
+    "modalTrack": {
+      "extra": {
+        "bitrate": "Битрейт",
+        "filePath": "Путь к файлу",
+        "sampleRate": "Частота",
+        "size": "Размер",
+
+        "addToPlaylist": "Добавить в плейлист",
+        "addToQueue": "Добавить в очередь",
+
+        "queueAdd": "`{{- name}}` добавления очередь."
+      }
+    }
+  }
+}
