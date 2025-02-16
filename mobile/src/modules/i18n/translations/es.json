@@ -42,10 +42,10 @@
     "entrySeeMore": "Ver más sobre `{{- name}}`.",
     "notFound": "`{{- name}}` no existe.",
 
-    "itemShow": null,
-    "itemHide": null,
-    "itemEnable": null,
-    "itemDisable": null
+    "entryShow": null,
+    "entryHide": null,
+    "entryEnable": null,
+    "entryDisable": null
   },
 
   "plural": {

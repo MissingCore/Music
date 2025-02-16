@@ -42,10 +42,10 @@
     "entrySeeMore": "`{{- name}}` hakkında daha fazla bilgi.",
     "notFound": "`{{- name}}` mevcut değil.",
 
-    "itemShow": null,
-    "itemHide": null,
-    "itemEnable": null,
-    "itemDisable": null
+    "entryShow": null,
+    "entryHide": null,
+    "entryEnable": null,
+    "entryDisable": null
   },
 
   "plural": {

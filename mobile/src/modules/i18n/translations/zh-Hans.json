@@ -42,10 +42,10 @@
     "entrySeeMore": "查看更多关于 `{{- name}}` 的信息。",
     "notFound": "`{{- name}}` 不存在。",
 
-    "itemShow": null,
-    "itemHide": null,
-    "itemEnable": null,
-    "itemDisable": null
+    "entryShow": null,
+    "entryHide": null,
+    "entryEnable": null,
+    "entryDisable": null
   },
 
   "plural": {

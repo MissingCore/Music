@@ -42,10 +42,10 @@
     "entrySeeMore": "｢{{- name}}｣の詳細を確認します。",
     "notFound": "｢{{- name}}｣は存在しません。",
 
-    "itemShow": "｢{{item}}｣を表示",
-    "itemHide": "｢{{item}}｣を非表示",
-    "itemEnable": null,
-    "itemDisable": null
+    "entryShow": "｢{{- name}}｣を表示",
+    "entryHide": "｢{{- name}}｣を非表示",
+    "entryEnable": null,
+    "entryDisable": null
   },
 
   "plural": {

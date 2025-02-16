@@ -42,10 +42,10 @@
     "entrySeeMore": "See more about `{{- name}}`.",
     "notFound": "`{{- name}}` doesn't exist.",
 
-    "itemShow": "Show {{item}}",
-    "itemHide": "Hide {{item}}",
-    "itemEnable": "Enable {{item}}",
-    "itemDisable": "Disable {{item}}"
+    "entryShow": "Show `{{- name}}`",
+    "entryHide": "Hide `{{- name}}`",
+    "entryEnable": "Enable `{{- name}}`",
+    "entryDisable": "Disable `{{- name}}`"
   },
 
   "plural": {

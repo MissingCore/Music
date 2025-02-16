@@ -42,10 +42,10 @@
     "entrySeeMore": "`{{- name}}` के बारे में और देखें।",
     "notFound": "`{{- name}}` मौजूद नहीं है।",
 
-    "itemShow": "{{item}} दिखाएँ",
-    "itemHide": "{{item}} छुपाएँ",
-    "itemEnable": null,
-    "itemDisable": null
+    "entryShow": "`{{- name}}` दिखाएँ",
+    "entryHide": "`{{- name}}` छुपाएँ",
+    "entryEnable": null,
+    "entryDisable": null
   },
 
   "plural": {
