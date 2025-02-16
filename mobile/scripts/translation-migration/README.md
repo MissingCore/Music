@@ -32,9 +32,9 @@ Besides making the JSON file look nice, there are some translations that we have
   - Goes to `feat.directory.extra.add`.
 - `settings.related.pathSelect`: Changed from `"Select directory."` to `"Select Directory"`
   - Goes to `feat.directory.extra.select`.
-- `template.showEntry`: Changed from `"Show {{- name}}"` to `"Show `{{- name}}`"`.
+- `template.showEntry`: Changed from `"Show {{- name}}"` to ``"Show `{{- name}}`"``.
   - Goes to `template.entryShow`.
-- `template.hideEntry`: Changed from `"Hide {{- name}}"` to `"Hide `{{- name}}`"`.
+- `template.hideEntry`: Changed from `"Hide {{- name}}"` to ``"Hide `{{- name}}`"``.
   - Goes to `template.entryHide`.
 - `plural.track_one`: Changed from `"{{count}} $t(common.track)"` to `"{{count}} $t(term.track)"`.
   - Goes to `plural.track_one`.
