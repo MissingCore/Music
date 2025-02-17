@@ -1,0 +1,38 @@
+name: Sync Crowdin Translations
+
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - "mobile/src/modules/i18n/translations/en.json"
+  schedule:
+    - cron: "0 0 * * 1" # Run every Monday
+  workflow_dispatch: # Allow for manual trigger
+
+jobs:
+  synchronize-with-crowdin:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: crowdin action
+        uses: crowdin/github-action@v2
+        with:
+          config: mobile/crowdin.yml
+          upload_sources: true
+          upload_translations: true
+          download_translations: true
+          skip_untranslated_strings: true
+          localization_branch_name: l10n_crowdin_translations
+          create_pull_request: true
+          pull_request_title: "ci(Crowdin): New Translations"
+          pull_request_body: "New Crowdin translations by [Crowdin GH Action](https://github.com/crowdin/github-action)"
+          pull_request_labels: Translations
+          pull_request_base_branch_name: "dev"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
