@@ -30,7 +30,6 @@
     "settings": "Ayarlar",
     "upcoming": "Yaklaşan",
 
-    "clear": null,
     "disc": "Disk {{count}}"
   },
 
@@ -66,6 +65,8 @@
     "unsaved": "Kaydedilmemiş değişiklikler olabilir.",
     "stay": "Kal",
     "leave": "Ayrıl",
+
+    "clear": null,
 
     "validation": {
       "unique": "Benzersiz"

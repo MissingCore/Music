@@ -30,7 +30,6 @@
     "settings": "Ajusts",
     "upcoming": "Pròxima",
 
-    "clear": null,
     "disc": "Disc {{count}}"
   },
 
@@ -66,6 +65,8 @@
     "unsaved": "Poder tens canvis sense desar.",
     "stay": "Queda't",
     "leave": "Eixir",
+
+    "clear": null,
 
     "validation": {
       "unique": "Únic"

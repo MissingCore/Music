@@ -30,7 +30,6 @@
     "settings": "सेटिंग्स",
     "upcoming": "आगामी",
 
-    "clear": null,
     "disc": "डिस्क {{count}}"
   },
 
@@ -66,6 +65,8 @@
     "unsaved": "आपके पास कुछ असहेजित परिवर्तन हो सकते हैं।",
     "stay": "रहें",
     "leave": "छोड़ें",
+
+    "clear": null,
 
     "validation": {
       "unique": "अद्वितीय"

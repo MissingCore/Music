@@ -30,7 +30,6 @@
     "settings": "Configuración",
     "upcoming": "Próximamente",
 
-    "clear": null,
     "disc": null
   },
 
@@ -66,6 +65,8 @@
     "unsaved": "Puede que tengas cambios sin guardar.",
     "stay": "Permanecer",
     "leave": "Salir",
+
+    "clear": null,
 
     "validation": {
       "unique": "Único"

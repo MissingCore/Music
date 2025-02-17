@@ -30,7 +30,6 @@
     "settings": "设置",
     "upcoming": "即将播放",
 
-    "clear": null,
     "disc": "碟片 {{count}}"
   },
 
@@ -66,6 +65,8 @@
     "unsaved": "可能有未保存的更改。",
     "stay": "留在此处",
     "leave": "离开",
+
+    "clear": null,
 
     "validation": {
       "unique": "唯一"

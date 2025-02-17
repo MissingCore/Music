@@ -30,7 +30,6 @@
     "settings": "Einstellungen",
     "upcoming": "Bevorstehend",
 
-    "clear": null,
     "disc": "CD {{count}}"
   },
 
@@ -66,6 +65,8 @@
     "unsaved": "Möglicherweise hast du noch nicht gespeicherte Änderungen.",
     "stay": "Bleiben",
     "leave": "Verlassen",
+
+    "clear": null,
 
     "validation": {
       "unique": "Einzigartig"

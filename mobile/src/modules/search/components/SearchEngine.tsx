@@ -69,7 +69,7 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
         />
         <IconButton
           kind="ripple"
-          accessibilityLabel={t("template.entryRemove", { name: query })}
+          accessibilityLabel={t("form.clear")}
           onPress={() => {
             inputRef?.current?.clear();
             setQuery("");
