@@ -1,5 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { Stack, router, useRootNavigationState } from "expo-router";
+import type { ParseKeys } from "i18next";
 import { useTranslation } from "react-i18next";
 import { useEffect, useMemo, useRef } from "react";
 import { FlatList, View } from "react-native";
@@ -100,15 +101,18 @@ function NavigationList() {
 
   // Buttons for the routes we can navigate to on the "home" screen, whose
   // order can be customized.
-  const NavRoutes = useMemo(
-    () => [
-      { href: "/", key: "term.home", name: "index" },
-      ...displayedTabs.map((tabKey) => {
-        return { href: `/${tabKey}`, key: `term.${tabKey}s`, name: tabKey };
-      }),
-    ],
-    [displayedTabs],
-  );
+  const NavRoutes: Array<{ href: string; key: ParseKeys; name: string }> =
+    useMemo(
+      () => [
+        { href: "/", key: "term.home", name: "index" },
+        ...displayedTabs.map((tabKey) => ({
+          href: `/${tabKey}`,
+          key: `term.${tabKey}s` satisfies ParseKeys,
+          name: tabKey,
+        })),
+      ],
+      [displayedTabs],
+    );
 
   // Name of the current route.
   const routeName = useMemo(() => {
