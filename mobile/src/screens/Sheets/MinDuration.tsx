@@ -28,12 +28,12 @@ export default function MinDurationSheet() {
   return (
     <Sheet
       id="MinDurationSheet"
-      titleKey="title.ignoreDuration"
+      titleKey="feat.ignoreDuration.title"
       contentContainerClassName="gap-4"
     >
       <TStyledText
         dim
-        textKey="settings.description.ignoreDuration"
+        textKey="feat.ignoreDuration.description"
         className="text-center text-sm"
       />
       <NumericInput

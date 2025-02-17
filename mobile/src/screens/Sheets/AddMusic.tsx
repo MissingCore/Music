@@ -13,7 +13,7 @@ export default function AddMusicSheet(props: {
 }) {
   const { canvasAlt } = useTheme();
   return (
-    <Sheet id="AddMusicSheet" titleKey="title.musicAdd" snapTop>
+    <Sheet id="AddMusicSheet" titleKey="feat.search.extra.musicAdd" snapTop>
       <SearchEngine
         searchScope={searchScope}
         callbacks={props.payload.callbacks}

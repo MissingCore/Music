@@ -17,12 +17,12 @@ export default function BackupSheet() {
   return (
     <Sheet
       id="BackupSheet"
-      titleKey="title.backup"
+      titleKey="feat.backup.title"
       contentContainerClassName="gap-4"
     >
       <TStyledText
         dim
-        textKey="settings.description.backup"
+        textKey="feat.backup.description"
         className="text-center text-sm"
       />
 
@@ -33,7 +33,7 @@ export default function BackupSheet() {
           className="flex-1"
         >
           <TStyledText
-            textKey="settings.related.export"
+            textKey="feat.backup.extra.export"
             bold
             className="text-center text-sm"
           />
@@ -44,7 +44,7 @@ export default function BackupSheet() {
           className="flex-1"
         >
           <TStyledText
-            textKey="settings.related.import"
+            textKey="feat.backup.extra.import"
             bold
             className="text-center text-sm"
           />

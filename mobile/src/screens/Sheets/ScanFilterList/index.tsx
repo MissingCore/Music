@@ -38,12 +38,12 @@ export default function ScanFilterListSheet(props: {
   return (
     <Sheet
       id="ScanFilterListSheet"
-      titleKey={`title.${listType}`}
+      titleKey={`feat.${listType}.title`}
       contentContainerClassName="gap-4 px-0"
       snapTop
     >
       <StyledText dim center className="px-4 text-sm">
-        {t(`settings.description.${listType}`)}
+        {t(`feat.${listType}.description`)}
         {listType === "listAllow" ? (
           <StyledText className="text-xs text-foreground/50">
             {"\n"}
@@ -82,7 +82,7 @@ export default function ScanFilterListSheet(props: {
           </Swipeable>
         )}
         contentContainerClassName="pb-4"
-        emptyMsgKey="response.noFilters"
+        emptyMsgKey="err.msg.noFilters"
       />
     </Sheet>
   );
@@ -126,7 +126,7 @@ function FilterForm(props: {
         />
         <IconButton
           kind="ripple"
-          accessibilityLabel={t("settings.related.pathSelect")}
+          accessibilityLabel={t("feat.directory.extra.select")}
           onPress={selectDirectory}
           disabled={onSubmit.isPending}
         >
@@ -134,7 +134,7 @@ function FilterForm(props: {
         </IconButton>
       </View>
       <IconButton
-        accessibilityLabel={t("settings.related.pathAdd")}
+        accessibilityLabel={t("feat.directory.extra.add")}
         onPress={() => {
           Keyboard.dismiss();
           mutateGuard(onSubmit, {

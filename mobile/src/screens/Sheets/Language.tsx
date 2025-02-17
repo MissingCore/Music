@@ -14,7 +14,7 @@ export default function LanguageSheet() {
   return (
     <Sheet
       id="LanguageSheet"
-      titleKey="title.language"
+      titleKey="feat.language.title"
       contentContainerClassName="pb-0"
     >
       <SheetsFlatList

@@ -69,7 +69,7 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
   return (
     <View className="flex-row gap-2">
       <Pressable
-        accessibilityLabel={t(`common.${isFav ? "unF" : "f"}avorite`)}
+        accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
         onPress={() => mutateGuard(favoriteTrack, !data.isFavorite)}
         className="relative flex-row items-center rounded active:opacity-75"
       >
@@ -122,28 +122,31 @@ function Stats({ data }: { data: TrackWithAlbum }) {
     <View className="gap-2">
       <View className="flex-row gap-2">
         <StatItem
-          titleKey="trackModal.bitrate"
+          titleKey="feat.modalTrack.extra.bitrate"
           description={
             data.bitrate !== null ? abbreviateBitRate(data.bitrate) : "—"
           }
         />
         <StatItem
-          titleKey="trackModal.sampleRate"
+          titleKey="feat.modalTrack.extra.sampleRate"
           description={data.sampleRate !== null ? `${data.sampleRate} Hz` : "—"}
         />
       </View>
       <View className="flex-row gap-2">
         <StatItem
-          titleKey="trackModal.size"
+          titleKey="feat.modalTrack.extra.size"
           description={abbreviateSize(data.size)}
         />
         <StatItem
-          titleKey="trackModal.modified"
+          titleKey="feat.modalSort.extra.modified"
           description={formatEpoch(data.modificationTime)}
         />
       </View>
       <View className="flex-row">
-        <StatItem titleKey="trackModal.filePath" description={data.uri} />
+        <StatItem
+          titleKey="feat.modalTrack.extra.filePath"
+          description={data.uri}
+        />
       </View>
     </View>
   );
@@ -162,13 +165,13 @@ function AddActions({ data }: { data: TrackWithAlbum }) {
           })
         }
         Icon={<PlaylistAdd />}
-        textKey="playlist.add"
+        textKey="feat.modalTrack.extra.addToPlaylist"
         preventClose
       />
       <SheetButton
         onPress={() => Queue.add({ id: data.id, name: data.name })}
         Icon={<QueueMusic />}
-        textKey="trackModal.queueAdd"
+        textKey="feat.modalTrack.extra.addToQueue"
       />
     </View>
   );
@@ -198,14 +201,14 @@ function TrackLinks({ data }: { data: TrackWithAlbum }) {
           <SheetButton
             onPress={() => router.navigate(`/artist/${data.artistName}`)}
             Icon={<Artist />}
-            textKey="common.artist"
+            textKey="term.artist"
           />
         ) : null}
         {data.album ? (
           <SheetButton
             onPress={() => router.navigate(`/album/${data.album?.id}`)}
             Icon={<Album />}
-            textKey="common.album"
+            textKey="term.album"
           />
         ) : null}
         {canShowPlaylistBtn && isInList ? (
@@ -218,7 +221,7 @@ function TrackLinks({ data }: { data: TrackWithAlbum }) {
               )
             }
             Icon={<List />}
-            textKey="common.playlist"
+            textKey="term.playlist"
           />
         ) : null}
       </View>

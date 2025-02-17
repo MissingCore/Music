@@ -48,7 +48,7 @@ export default function TrackUpcomingSheet() {
   return (
     <Sheet
       id="TrackUpcomingSheet"
-      titleKey="title.upcoming"
+      titleKey="term.upcoming"
       snapTop
       contentContainerClassName="px-0"
     >

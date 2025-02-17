@@ -18,7 +18,7 @@ export default function FontSheet() {
   return (
     <Sheet
       id="FontSheet"
-      titleKey="title.font"
+      titleKey="feat.accentFont.title"
       contentContainerClassName="pb-0"
     >
       <SheetsFlatList
