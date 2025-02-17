@@ -1,14 +1,11 @@
-import type en from "../src/modules/i18n/translations/_legacy/en.json";
+import type { resources } from "../src/modules/i18n/translations/resources";
 
 declare module "i18next" {
   interface CustomTypeOptions {
-    resources: {
-      /*
-        Note that interpolation keys inside the translation aren't
-        type-safe (except the built-in `count`). This is due to the
-        contents of the JSON file not being imported "as const".
-      */
-      translation: typeof en;
-    };
+    /*
+      Note that interpolation keys can't be inferred from JSON file (yet).
+        - See: https://www.i18next.com/overview/typescript#not-working-interpolation-values
+    */
+    resources: (typeof resources)["en"];
   }
 }

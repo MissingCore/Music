@@ -54,7 +54,7 @@ export default function ModifyPlaylistScreen() {
               }
             },
             onError: () => {
-              toast.error(t("errorScreen.generic"), ToastOptions);
+              toast.error(t("err.flow.generic.title"), ToastOptions);
             },
           },
         );

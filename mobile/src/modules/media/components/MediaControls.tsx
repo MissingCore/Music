@@ -28,7 +28,7 @@ export function RepeatButton({ size = 32 }: MediaControlProps) {
     <IconButton
       kind="ripple"
       accessibilityLabel={t(
-        `common.repeat${repeatMode === "repeat-one" ? "One" : ""}`,
+        `term.repeat${repeatMode === "repeat-one" ? "One" : ""}`,
       )}
       onPress={cycleRepeat}
       rippleRadius={size * 0.75}
@@ -50,7 +50,7 @@ export function ShuffleButton({ size = 32 }: MediaControlProps) {
   return (
     <IconButton
       kind="ripple"
-      accessibilityLabel={t("common.shuffle")}
+      accessibilityLabel={t("term.shuffle")}
       onPress={() => setShuffle(!isActive)}
       rippleRadius={size * 0.75}
       className="p-2"
@@ -67,7 +67,7 @@ export function PlayToggleButton({ size = 32, className = "" }) {
   const Icon = isPlaying ? Pause : PlayArrow;
   return (
     <IconButton
-      accessibilityLabel={t(`common.${isPlaying ? "pause" : "play"}`)}
+      accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
       onPress={MusicControls.playToggle}
       className={cn(
         "bg-red p-2",
@@ -86,7 +86,7 @@ export function NextButton({ size = 32 }: MediaControlProps) {
   return (
     <IconButton
       kind="ripple"
-      accessibilityLabel={t("common.next")}
+      accessibilityLabel={t("term.next")}
       onPress={MusicControls.next}
       rippleRadius={size * 0.75}
       className="p-2"
@@ -102,7 +102,7 @@ export function PreviousButton({ size = 32 }: MediaControlProps) {
   return (
     <IconButton
       kind="ripple"
-      accessibilityLabel={t("common.prev")}
+      accessibilityLabel={t("term.prev")}
       onPress={MusicControls.prev}
       rippleRadius={size * 0.75}
       className="p-2"

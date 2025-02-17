@@ -77,16 +77,14 @@ export default function CurrentPlaylistScreen() {
             <View className="flex-row gap-1">
               <IconButton
                 kind="ripple"
-                accessibilityLabel={t(
-                  `common.${isToggled ? "unF" : "f"}avorite`,
-                )}
+                accessibilityLabel={t(`term.${isToggled ? "unF" : "f"}avorite`)}
                 onPress={() => mutateGuard(favoritePlaylist, !data.isFavorite)}
               >
                 <Favorite filled={isToggled} />
               </IconButton>
               <IconButton
                 kind="ripple"
-                accessibilityLabel={t("playlist.edit")}
+                accessibilityLabel={t("feat.playlist.extra.edit")}
                 onPress={() =>
                   router.navigate(
                     `/playlist/modify?id=${encodeURIComponent(id)}`,
@@ -113,7 +111,7 @@ export default function CurrentPlaylistScreen() {
           onReordered={onReordered}
           contentContainerClassName="pt-4"
           contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
-          emptyMsgKey="response.noTracks"
+          emptyMsgKey="err.msg.noTracks"
         />
       </CurrentListLayout>
     </>

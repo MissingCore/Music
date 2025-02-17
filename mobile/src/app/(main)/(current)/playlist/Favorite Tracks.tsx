@@ -20,7 +20,7 @@ export default function FavoriteTracksScreen() {
   const { isPending, error, data } = useFavoriteTracksForScreen();
   const listPresets = useTrackListPreset({
     ...{ data: data?.tracks, trackSource },
-    emptyMsgKey: "response.noTracks",
+    emptyMsgKey: "err.msg.noTracks",
   });
 
   if (isPending || error) return <PagePlaceholder {...{ isPending }} />;

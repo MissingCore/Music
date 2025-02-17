@@ -30,7 +30,6 @@
     "settings": "設定",
     "upcoming": "次に再生",
 
-    "clear": null,
     "disc": "ディスク {{count}}"
   },
 
@@ -66,6 +65,8 @@
     "unsaved": "変更が保存されていません。",
     "stay": "留まる",
     "leave": "離れる",
+
+    "clear": null,
 
     "validation": {
       "unique": "ユニーク"

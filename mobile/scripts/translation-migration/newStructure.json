@@ -30,7 +30,6 @@
     "settings": null,
     "upcoming": null,
 
-    "clear": null,
     "disc": null
   },
 
@@ -66,6 +65,8 @@
     "unsaved": null,
     "stay": null,
     "leave": null,
+
+    "clear": null,
 
     "validation": {
       "unique": null

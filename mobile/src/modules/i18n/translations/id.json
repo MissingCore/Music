@@ -30,7 +30,6 @@
     "settings": "Pengaturan",
     "upcoming": "Yang akan Datang",
 
-    "clear": null,
     "disc": null
   },
 
@@ -66,6 +65,8 @@
     "unsaved": "Anda masih memiliki perubahan yang belum disimpan.",
     "stay": "Tetap disini",
     "leave": "Keluar",
+
+    "clear": null,
 
     "validation": {
       "unique": "Unik"

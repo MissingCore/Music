@@ -30,7 +30,6 @@
     "settings": "Настройки",
     "upcoming": "Развитие",
 
-    "clear": null,
     "disc": "Диск {{count}}"
   },
 
@@ -66,6 +65,8 @@
     "unsaved": "У вас могут быть несохраненные изменения.",
     "stay": "Остаться",
     "leave": "Оставлять",
+
+    "clear": null,
 
     "validation": {
       "unique": "Уникальный"

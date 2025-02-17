@@ -17,7 +17,7 @@ export default function ThemeSheet() {
   const setTheme = useUserPreferencesStore((state) => state.setTheme);
 
   return (
-    <Sheet id="ThemeSheet" titleKey="title.theme">
+    <Sheet id="ThemeSheet" titleKey="feat.theme.title">
       <FlatList
         data={ThemeOptions}
         keyExtractor={(item) => item}
@@ -29,7 +29,7 @@ export default function ThemeSheet() {
               setTheme(item);
             }}
           >
-            <TStyledText textKey={`settings.related.${item}`} />
+            <TStyledText textKey={`feat.theme.extra.${item}`} />
           </Radio>
         )}
         contentContainerClassName="gap-1"

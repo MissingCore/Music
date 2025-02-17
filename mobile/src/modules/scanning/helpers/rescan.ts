@@ -18,7 +18,7 @@ import { savePathComponents } from "./folder";
 
 /** Look through our library for any new or updated tracks. */
 export async function rescanForTracks(deepScan = false) {
-  const toastId = toast(i18next.t("response.scanStart"), {
+  const toastId = toast(i18next.t("feat.rescan.extra.start"), {
     ...ToastOptions,
     duration: Infinity,
   });
@@ -70,14 +70,14 @@ export async function rescanForTracks(deepScan = false) {
     // Make sure the "recents" list is correct.
     RecentList.refresh();
 
-    toast(i18next.t("response.scanSuccess"), {
+    toast(i18next.t("feat.rescan.extra.success"), {
       ...ToastOptions,
       id: toastId,
       duration: 4000,
     });
   } catch (err) {
     console.log(err);
-    toast.error(i18next.t("response.scanFail"), {
+    toast.error(i18next.t("feat.rescan.extra.fail"), {
       ...ToastOptions,
       id: toastId,
       duration: 4000,

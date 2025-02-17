@@ -64,12 +64,12 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
         <TextInput
           ref={inputRef}
           onChangeText={(text) => setQuery(text)}
-          placeholder={t("form.placeholder.searchMedia")}
+          placeholder={t("feat.search.extra.searchMedia")}
           className="shrink grow"
         />
         <IconButton
           kind="ripple"
-          accessibilityLabel={t("template.entryRemove", { name: query })}
+          accessibilityLabel={t("form.clear")}
           onPress={() => {
             inputRef?.current?.clear();
             setQuery("");
@@ -90,7 +90,7 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
             if (typeof item === "string") {
               return (
                 <TEm
-                  textKey={`common.${item}`}
+                  textKey={`term.${item}`}
                   className={index > 0 ? "mt-4" : undefined}
                 />
               );
@@ -112,7 +112,7 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
           }}
           ListEmptyComponent={
             query.length > 0 ? (
-              <TStyledText textKey="response.noResults" center />
+              <TStyledText textKey="err.msg.noResults" center />
             ) : undefined
           }
           contentContainerClassName="pb-4 pt-6"

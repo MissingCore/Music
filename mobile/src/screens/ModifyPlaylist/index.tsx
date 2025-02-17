@@ -57,7 +57,7 @@ function ScreenConfig() {
   return (
     <Stack.Screen
       options={{
-        headerTitle: t(`playlist.${mode ?? "create"}`),
+        headerTitle: t(`feat.playlist.extra.${mode ?? "create"}`),
         // Hacky solution to disable the back button when submitting.
         headerLeft: isSubmitting ? () => undefined : undefined,
         headerRight: () => (
@@ -123,7 +123,7 @@ function PageContent() {
         onReordered={moveTrack}
         ListHeaderComponent={ListHeaderComponent}
         contentContainerClassName="py-4" // Applies to the internal `<FlashList />`.
-        emptyMsgKey="response.noTracks"
+        emptyMsgKey="err.msg.noTracks"
       />
     </View>
   );
@@ -211,7 +211,7 @@ function ListHeaderComponent() {
           editable={!isSubmitting}
           defaultValue={initialName}
           onChangeText={setPlaylistName}
-          placeholder={t("form.placeholder.playlistName")}
+          placeholder={t("feat.playlist.extra.name")}
           className="shrink grow border-b border-foreground/60"
         />
         <View
@@ -224,10 +224,10 @@ function ListHeaderComponent() {
         </View>
       </View>
       <View className="mb-2 ml-4 mr-1 mt-6 shrink grow flex-row items-center justify-between">
-        <TStyledText textKey="common.tracks" />
+        <TStyledText textKey="term.tracks" />
         <IconButton
           kind="ripple"
-          accessibilityLabel={t("playlist.add")}
+          accessibilityLabel={t("feat.modalTrack.extra.addToPlaylist")}
           disabled={isSubmitting}
           onPress={() =>
             SheetManager.show("AddMusicSheet", {
@@ -308,11 +308,14 @@ function DeleteWorkflow() {
         className="min-h-12 justify-center bg-surface disabled:opacity-25"
       >
         <StyledText className="text-center text-sm text-red">
-          {t("playlist.delete").toLocaleUpperCase()}
+          {t("feat.playlist.extra.delete").toLocaleUpperCase()}
         </StyledText>
       </Pressable>
       <ModalBase visible={lastChance}>
-        <TStyledText textKey="playlist.delete" className="pt-8 text-center" />
+        <TStyledText
+          textKey="feat.playlist.extra.delete"
+          className="pt-8 text-center"
+        />
         <View className="flex-row justify-end gap-4">
           <ModalButton
             textKey="form.cancel"

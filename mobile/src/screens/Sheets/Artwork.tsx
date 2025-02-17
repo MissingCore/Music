@@ -84,7 +84,7 @@ function BaseArtworkSheetContent(props: {
           className="flex-1"
         >
           <TStyledText
-            textKey="playlist.artworkRemove"
+            textKey="feat.artwork.extra.remove"
             bold
             className="text-center text-sm"
           />
@@ -101,7 +101,7 @@ function BaseArtworkSheetContent(props: {
           className="flex-1"
         >
           <TStyledText
-            textKey="playlist.artworkChange"
+            textKey="feat.artwork.extra.change"
             bold
             className="text-center text-sm"
           />

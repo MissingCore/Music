@@ -15,12 +15,12 @@ export default function PlaylistScreen() {
   const { isPending, data } = usePlaylistsForCards();
   const presets = useMediaCardListPreset({
     ...{ data, isPending },
-    emptyMsgKey: "response.noPlaylists",
+    emptyMsgKey: "err.msg.noPlaylists",
   });
 
   return (
     <StickyActionListLayout
-      titleKey="common.playlists"
+      titleKey="term.playlists"
       StickyAction={<PlaylistActions />}
       estimatedActionSize={48}
       {...presets}
@@ -35,7 +35,7 @@ function PlaylistActions() {
   return (
     <View className="rounded-md bg-canvas">
       <IconButton
-        accessibilityLabel={t("playlist.create")}
+        accessibilityLabel={t("feat.playlist.extra.create")}
         onPress={() => router.navigate("/playlist/create")}
         className="bg-red"
       >

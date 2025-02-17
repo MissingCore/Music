@@ -30,7 +30,6 @@
     "settings": "Settings",
     "upcoming": "Upcoming",
 
-    "clear": "Clear",
     "disc": "Disc {{count}}"
   },
 
@@ -66,6 +65,8 @@
     "unsaved": "You may have unsaved changes.",
     "stay": "Stay",
     "leave": "Leave",
+
+    "clear": "Clear",
 
     "validation": {
       "unique": "Unique"

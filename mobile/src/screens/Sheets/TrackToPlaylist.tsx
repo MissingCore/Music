@@ -28,7 +28,7 @@ export default function TrackToPlaylistSheet(props: {
   return (
     <Sheet
       id="TrackToPlaylistSheet"
-      titleKey="playlist.add"
+      titleKey="feat.modalTrack.extra.addToPlaylist"
       // Hide the Track sheet when we close this sheet since it's still open.
       onBeforeClose={() => SheetManager.hide("TrackSheet")}
       snapTop
@@ -58,7 +58,7 @@ export default function TrackToPlaylistSheet(props: {
           );
         }}
         contentContainerClassName="pb-4"
-        emptyMsgKey="response.noPlaylists"
+        emptyMsgKey="err.msg.noPlaylists"
       />
     </Sheet>
   );

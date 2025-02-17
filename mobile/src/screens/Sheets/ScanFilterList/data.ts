@@ -42,7 +42,7 @@ export function validatePath(path: string) {
 export async function pickPath() {
   const permissions = await SAF.requestDirectoryPermissionsAsync();
   if (!permissions.granted) {
-    toast.error(i18next.t("response.actionCancel"), ToastOptions);
+    toast.error(i18next.t("err.msg.actionCancel"), ToastOptions);
     return;
   }
 

@@ -26,7 +26,7 @@ export default function CreatePlaylistScreen() {
               router.replace(`/playlist/${encodeURIComponent(playlistName)}`);
             },
             onError: () => {
-              toast.error(t("errorScreen.generic"), ToastOptions);
+              toast.error(t("err.flow.generic.title"), ToastOptions);
             },
           },
         );

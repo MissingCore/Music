@@ -20,14 +20,14 @@ export default function AppearanceScreen() {
     <StandardScrollLayout>
       <List>
         <ListItem
-          titleKey="title.font"
+          titleKey="feat.accentFont.title"
           description={accentFont}
           onPress={() => SheetManager.show("FontSheet")}
           first
         />
         <ListItem
-          titleKey="title.theme"
-          description={t(`settings.related.${theme}`)}
+          titleKey="feat.theme.title"
+          description={t(`feat.theme.extra.${theme}`)}
           onPress={() => SheetManager.show("ThemeSheet")}
           last
         />
@@ -35,14 +35,14 @@ export default function AppearanceScreen() {
 
       <List>
         <ListItem
-          titleKey="title.homeTabsOrder"
-          description={t("settings.brief.homeTabsOrder")}
+          titleKey="feat.homeTabsOrder.title"
+          description={t("feat.homeTabsOrder.brief")}
           onPress={() => router.navigate("/setting/appearance/home-tabs-order")}
           first
         />
         <ListItem
-          titleKey="title.nowPlayingDesign"
-          description={t(`common.${nowPlayingDesign}`)}
+          titleKey="feat.nowPlayingDesign.title"
+          description={t(`feat.nowPlayingDesign.extra.${nowPlayingDesign}`)}
           onPress={() => SheetManager.show("NowPlayingDesignSheet")}
           last
         />

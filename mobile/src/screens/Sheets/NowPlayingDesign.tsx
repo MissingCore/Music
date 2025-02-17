@@ -18,7 +18,7 @@ export default function NowPlayingDesignSheet() {
   );
 
   return (
-    <Sheet id="NowPlayingDesignSheet" titleKey="title.nowPlayingDesign">
+    <Sheet id="NowPlayingDesignSheet" titleKey="feat.nowPlayingDesign.title">
       <FlatList
         data={NowPlayingDesignOptions}
         keyExtractor={(design) => design}
@@ -27,7 +27,7 @@ export default function NowPlayingDesignSheet() {
             selected={nowPlayingDesign === design}
             onSelect={() => setNowPlayingDesign(design)}
           >
-            <TStyledText textKey={`common.${design}`} />
+            <TStyledText textKey={`feat.nowPlayingDesign.extra.${design}`} />
           </Radio>
         )}
         contentContainerClassName="gap-1"

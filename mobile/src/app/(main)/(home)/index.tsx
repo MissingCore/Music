@@ -26,10 +26,10 @@ import {
 /** Screen for `/` route. */
 export default function HomeScreen() {
   return (
-    <StickyActionScrollLayout titleKey="header.home">
-      <TEm textKey="home.playedRecent" className="-mb-4" />
+    <StickyActionScrollLayout titleKey="term.home">
+      <TEm textKey="feat.playedRecent.title" className="-mb-4" />
       <RecentlyPlayed />
-      <TEm textKey="home.favorites" className="-mb-4" />
+      <TEm textKey="term.favorites" className="-mb-4" />
       <Favorites />
     </StickyActionScrollLayout>
   );
@@ -79,7 +79,7 @@ function RecentlyPlayed() {
       ListEmptyComponent={
         <TStyledText
           onLayout={() => setInitNoData(true)}
-          textKey="response.noRecents"
+          textKey="feat.playedRecent.extra.empty"
           className="my-4"
         />
       }
@@ -125,7 +125,7 @@ function FavoriteTracks(props: { size: number; className: string }) {
       <AccentText className="text-[3rem] text-neutral100">
         {trackCount}
       </AccentText>
-      <TStyledText textKey="common.tracks" className="text-neutral100" />
+      <TStyledText textKey="term.tracks" className="text-neutral100" />
     </Button>
   );
 }

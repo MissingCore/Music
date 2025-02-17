@@ -66,7 +66,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
           <PreviousButton />
           <IconButton
             kind="ripple"
-            accessibilityLabel={t(`common.${isPlaying ? "pause" : "play"}`)}
+            accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
             onPress={MusicControls.playToggle}
             rippleRadius={24}
             className="p-2"

@@ -57,18 +57,18 @@ function OnboardingPhase() {
   if (store.phase === "preprocess") {
     return (
       <>
-        <TStyledText textKey="onboardingScreen.preprocess" />
-        <TStyledText dim textKey="onboardingScreen.preprocessBrief" />
+        <TStyledText textKey="feat.onboardPreprocess.title" />
+        <TStyledText dim textKey="feat.onboardPreprocess.brief" />
       </>
     );
   } else if (store.phase === "tracks") {
     return (
       <>
-        <TStyledText textKey="onboardingScreen.track" />
+        <TStyledText textKey="feat.onboardTracks.title" />
         <StyledText dim>
-          {`${t("onboardingScreen.prevSaved", { amount: store.prevSaved })}\n\n`}
-          {`${t("onboardingScreen.saved", { amount: store.staged, total: store.unstaged })}\n`}
-          {`${t("onboardingScreen.errors", { amount: store.saveErrors })}`}
+          {`${t("feat.onboardTracks.extra.prevSaved", { amount: store.prevSaved })}\n\n`}
+          {`${t("feat.onboardTracks.extra.saved", { amount: store.staged, total: store.unstaged })}\n`}
+          {`${t("feat.onboardTracks.extra.errors", { amount: store.saveErrors })}`}
         </StyledText>
       </>
     );
@@ -76,10 +76,10 @@ function OnboardingPhase() {
 
   return (
     <>
-      <TStyledText textKey="onboardingScreen.image" />
+      <TStyledText textKey="feat.onboardImages.title" />
       <StyledText dim>
-        {`${t("onboardingScreen.checked", { amount: store.checked, total: store.unchecked })}\n`}
-        {`${t("onboardingScreen.found", { amount: store.found })}`}
+        {`${t("feat.onboardImages.extra.checked", { amount: store.checked, total: store.unchecked })}\n`}
+        {`${t("feat.onboardImages.extra.found", { amount: store.found })}`}
       </StyledText>
     </>
   );
