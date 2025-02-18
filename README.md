@@ -70,6 +70,8 @@ See all the [available documentation here](./docs). Some highlights include:
 
 Read the [Translations](./docs/translations.md) documentation for a rundown of how to contribute translations to this app.
 
+A huge thanks to the early translators prior to our move to Crowdin:
+
 | Translation |                      Translator                      |
 | :---------: | :--------------------------------------------------: |
 |   日本語    |   [@reindex-ot](https://www.github.com/reindex-ot)   |

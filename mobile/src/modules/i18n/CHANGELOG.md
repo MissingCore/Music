@@ -1,5 +1,10 @@
 # Translation Changelog
 
+> [!IMPORTANT]  
+> As of February 18, 2025, this file will no longer be updated as untranslated values can now more easily be seen through the presence of `null` in the "value" field.
+>
+> This is enabled through the Crowdin GitHub Actions, which synchronizes all translation files with the source `en.json` file, adding new fields with `null` to translation files without a proper translation with those new keys.
+
 This file will document any changes made to the master translation file (`en.json`).
 
 > [!NOTE]  
