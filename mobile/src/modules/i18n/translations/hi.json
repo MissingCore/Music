@@ -1,6 +1,5 @@
 {
   "language": "हिंदी",
-
   "term": {
     "album": "एल्बम",
     "albums": "एल्बम्स",
@@ -12,7 +11,6 @@
     "playlists": "प्लेलिस्ट्स",
     "track": "ट्रैक",
     "tracks": "ट्रैक्स",
-
     "play": "चलाएँ",
     "pause": "रोकें",
     "prev": "पिछला",
@@ -20,33 +18,26 @@
     "shuffle": "मिश्रित करें",
     "repeat": "दोहराएँ",
     "repeatOne": "एक दोहराएँ",
-
     "favorite": "पसंदीदा",
     "favorites": "पसंदीदा",
     "unFavorite": "पसंदीदा हटाएँ",
     "favoriteTracks": "पसंदीदा ट्रैक्स",
-
     "home": "होम",
     "settings": "सेटिंग्स",
     "upcoming": "आगामी",
-
     "disc": "डिस्क {{count}}"
   },
-
   "template": {
     "entryAdded": "`{{- name}}` जोड़ा गया।",
     "entryRemove": "`{{- name}}` हटाएँ।",
     "entryRemoved": "`{{- name}}` हटा दिया गया।",
-
     "entrySeeMore": "`{{- name}}` के बारे में और देखें।",
     "notFound": "`{{- name}}` मौजूद नहीं है।",
-
     "entryShow": "`{{- name}}` दिखाएँ",
     "entryHide": "`{{- name}}` छुपाएँ",
     "entryEnable": null,
     "entryDisable": null
   },
-
   "plural": {
     "entry_one": "{{count}} प्रविष्टि",
     "entry_other": "{{count}} प्रविष्टियाँ",
@@ -55,24 +46,19 @@
     "track_one": "{{count}} $t(term.track)",
     "track_other": "{{count}} $t(term.tracks)"
   },
-
   "form": {
     "apply": "परिवर्तन लागू करें",
     "back": "वापस",
     "cancel": "रद्द करें",
     "confirm": "पुष्टि करें",
-
     "unsaved": "आपके पास कुछ असहेजित परिवर्तन हो सकते हैं।",
     "stay": "रहें",
     "leave": "छोड़ें",
-
     "clear": null,
-
     "validation": {
       "unique": "अद्वितीय"
     }
   },
-
   "err": {
     "flow": {
       "route": {
@@ -92,25 +78,21 @@
         "brief": "इस स्क्रीन का स्क्रीनशॉट शामिल करें।"
       }
     },
-
     "msg": {
       "actionCancel": "कार्रवाई रद्द कर दी गई।",
       "invalidStructure": "अमान्य संरचना।",
       "noSelect": "कुछ भी चयनित नहीं है।",
       "usedName": "यह नाम उपयोग नहीं किया जा सकता।",
-
       "noContent": "कोई सामग्री नहीं मिली।",
       "noErrors": "कोई त्रुटि नहीं मिली।",
       "noFilters": "कोई फ़िल्टर नहीं मिला।",
       "noResults": "कोई परिणाम नहीं मिला।",
-
       "noAlbums": "कोई एल्बम नहीं मिला।",
       "noArtists": "कोई कलाकार नहीं मिला।",
       "noPlaylists": "कोई प्लेलिस्ट नहीं मिली।",
       "noTracks": "कोई ट्रैक नहीं मिला।"
     }
   },
-
   "feat": {
     "appUpdate": {
       "title": "ऐप अपडेट",
@@ -234,7 +216,6 @@
     "version": {
       "title": "संस्करण"
     },
-
     "onboardPreprocess": {
       "title": "पूर्व-प्रसंस्करण",
       "brief": "सुनिश्चित कर रहा है कि मौजूदा डेटा किसी भी परिवर्तन के साथ अनुपालन में है।"
@@ -254,7 +235,6 @@
         "found": "{{amount}} पाया गया"
       }
     },
-
     "playedRecent": {
       "title": "हाल ही में चलाए गए",
       "extra": {
@@ -268,7 +248,6 @@
         "searchMedia": "मीडिया खोजें"
       }
     },
-
     "artwork": {
       "extra": {
         "change": "आर्टवर्क बदलें",
@@ -289,7 +268,6 @@
         "name": "प्लेलिस्ट नाम"
       }
     },
-
     "modalSort": {
       "title": "क्रम",
       "extra": {
@@ -304,10 +282,8 @@
         "filePath": "फ़ाइल पथ",
         "sampleRate": "सैंपल रेट",
         "size": "आकार",
-
         "addToPlaylist": "प्लेलिस्ट में जोड़ें",
         "addToQueue": "कतार में जोड़ें",
-
         "queueAdd": "`{{- name}}` कतार में जोड़ा गया।"
       }
     }

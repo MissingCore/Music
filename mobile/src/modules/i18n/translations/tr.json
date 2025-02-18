@@ -1,6 +1,5 @@
 {
   "language": "Türkçe",
-
   "term": {
     "album": "Albüm",
     "albums": "Albümler",
@@ -12,7 +11,6 @@
     "playlists": "Oynatma Listeleri",
     "track": "Parça",
     "tracks": "Parçalar",
-
     "play": "Oynat",
     "pause": "Duraklat",
     "prev": "Önceki",
@@ -20,33 +18,26 @@
     "shuffle": "Karıştır",
     "repeat": "Tekrarla",
     "repeatOne": "Birini Tekrarla",
-
     "favorite": "Favori",
     "favorites": "Favoriler",
     "unFavorite": "Favorilerden Çıkar",
     "favoriteTracks": "Favori Parçalar",
-
     "home": "Anasayfa",
     "settings": "Ayarlar",
     "upcoming": "Yaklaşan",
-
     "disc": "Disk {{count}}"
   },
-
   "template": {
     "entryAdded": "`{{- name}}` eklendi.",
     "entryRemove": "`{{- name}}` kaldır.",
     "entryRemoved": "`{{- name}}` kaldırıldı.",
-
     "entrySeeMore": "`{{- name}}` hakkında daha fazla bilgi.",
     "notFound": "`{{- name}}` mevcut değil.",
-
     "entryShow": null,
     "entryHide": null,
     "entryEnable": null,
     "entryDisable": null
   },
-
   "plural": {
     "entry_one": "{{count}} giriş",
     "entry_other": "{{count}} giriş",
@@ -55,24 +46,19 @@
     "track_one": "{{count}} $t(term.track)",
     "track_other": "{{count}} $t(term.tracks)"
   },
-
   "form": {
     "apply": "Değişiklikleri Uygula",
     "back": "Geri",
     "cancel": "İptal",
     "confirm": "Onayla",
-
     "unsaved": "Kaydedilmemiş değişiklikler olabilir.",
     "stay": "Kal",
     "leave": "Ayrıl",
-
     "clear": null,
-
     "validation": {
       "unique": "Benzersiz"
     }
   },
-
   "err": {
     "flow": {
       "route": {
@@ -92,25 +78,21 @@
         "brief": "Bu ekranın bir ekran görüntüsünü ekle."
       }
     },
-
     "msg": {
       "actionCancel": "İşlem iptal edildi.",
       "invalidStructure": "Geçersiz yapı.",
       "noSelect": "Hiçbir şey seçilmedi.",
       "usedName": "Bu isim kullanılamaz.",
-
       "noContent": "İçerik bulunamadı.",
       "noErrors": "Hata bulunamadı.",
       "noFilters": "Filtre bulunamadı.",
       "noResults": "Sonuç bulunamadı.",
-
       "noAlbums": "Albüm bulunamadı.",
       "noArtists": "Sanatçı bulunamadı.",
       "noPlaylists": "Oynatma listesi bulunamadı.",
       "noTracks": "Parça bulunamadı."
     }
   },
-
   "feat": {
     "appUpdate": {
       "title": "Uygulama Güncellemesi",
@@ -234,7 +216,6 @@
     "version": {
       "title": "Sürüm"
     },
-
     "onboardPreprocess": {
       "title": "Ön İşlem",
       "brief": "Mevcut verilerin değişikliklere uygun olduğunu kontrol ediyor."
@@ -254,7 +235,6 @@
         "found": "{{amount}} Bulundu"
       }
     },
-
     "playedRecent": {
       "title": "Son Çalınanlar",
       "extra": {
@@ -268,7 +248,6 @@
         "searchMedia": "Medya Ara"
       }
     },
-
     "artwork": {
       "extra": {
         "change": "Kapak Resmini Değiştir",
@@ -289,7 +268,6 @@
         "name": "Oynatma Listesi Adı"
       }
     },
-
     "modalSort": {
       "title": "Sıralama Düzeni",
       "extra": {
@@ -304,10 +282,8 @@
         "filePath": "Dosya Yolu",
         "sampleRate": "Örnekleme Hızı",
         "size": "Boyut",
-
         "addToPlaylist": "Oynatma Listesine Ekle",
         "addToQueue": "Kuyruğa Ekle",
-
         "queueAdd": "`{{- name}}` kuyruğa eklendi."
       }
     }

@@ -1,6 +1,5 @@
 {
   "language": "Indonesia",
-
   "term": {
     "album": "Album",
     "albums": "Album",
@@ -12,7 +11,6 @@
     "playlists": "Daftar Putar",
     "track": "Trek",
     "tracks": "Trek",
-
     "play": "Putar",
     "pause": "Jeda",
     "prev": "Sebelumnya",
@@ -20,33 +18,26 @@
     "shuffle": "Acak",
     "repeat": "Ulangi",
     "repeatOne": null,
-
     "favorite": "Sukai",
     "favorites": "Difavoritkan",
     "unFavorite": "Batal Sukai",
     "favoriteTracks": null,
-
     "home": "Beranda",
     "settings": "Pengaturan",
     "upcoming": "Yang akan Datang",
-
     "disc": null
   },
-
   "template": {
     "entryAdded": "`{{- name}}` telah ditambahkan.",
     "entryRemove": "`{{- name}}` Dihapus.",
     "entryRemoved": "`{{- name}}` Telah Dihapus.",
-
     "entrySeeMore": null,
     "notFound": "`{{- name}}` tidak ditemukan.",
-
     "entryShow": null,
     "entryHide": null,
     "entryEnable": null,
     "entryDisable": null
   },
-
   "plural": {
     "entry_one": "{{count}} entri",
     "entry_other": "{{count}} entri",
@@ -55,24 +46,19 @@
     "track_one": "{{count}} $t(term.track)",
     "track_other": "{{count}} $t(term.tracks)"
   },
-
   "form": {
     "apply": "Terapkan Perubahan",
     "back": "Kembali",
     "cancel": "Batal",
     "confirm": "Konfirmasi",
-
     "unsaved": "Anda masih memiliki perubahan yang belum disimpan.",
     "stay": "Tetap disini",
     "leave": "Keluar",
-
     "clear": null,
-
     "validation": {
       "unique": "Unik"
     }
   },
-
   "err": {
     "flow": {
       "route": {
@@ -92,25 +78,21 @@
         "brief": "Sertakan tangkapan layar ini."
       }
     },
-
     "msg": {
       "actionCancel": "Tindakan dibatalkan.",
       "invalidStructure": "Struktur tidak valid.",
       "noSelect": "Tidak ada yang dipilih.",
       "usedName": "Nama ini tidak bisa digunakan.",
-
       "noContent": "Tidak ada konten yang ditemukan.",
       "noErrors": "Tidak ada masalah yang ditemukan.",
       "noFilters": "Tidak ada filter yang ditemukan.",
       "noResults": "Tidak ada hasil yang ditemukan.",
-
       "noAlbums": "Tidak ada album yang ditemukan.",
       "noArtists": "Tidak ada artis yang ditemukan.",
       "noPlaylists": "Tidak ada daftar putar yang ditemukan.",
       "noTracks": "Tidak ada trek yang ditemukan."
     }
   },
-
   "feat": {
     "appUpdate": {
       "title": "Pembaruan Aplikasi",
@@ -234,7 +216,6 @@
     "version": {
       "title": "Versi"
     },
-
     "onboardPreprocess": {
       "title": "Praproses",
       "brief": "Memastikan data yang ada sesuai dengan perubahan apa pun."
@@ -254,7 +235,6 @@
         "found": "{{amount}} Ditemukan"
       }
     },
-
     "playedRecent": {
       "title": "Baru Saja Diputar",
       "extra": {
@@ -268,7 +248,6 @@
         "searchMedia": "Cari Media"
       }
     },
-
     "artwork": {
       "extra": {
         "change": "Ubah Karya Seni",
@@ -289,7 +268,6 @@
         "name": "Nama Daftar Putar"
       }
     },
-
     "modalSort": {
       "title": "urutan penyortiran",
       "extra": {
@@ -304,10 +282,8 @@
         "filePath": "Lokasi Berkas",
         "sampleRate": "Sample Rate",
         "size": "Ukuran",
-
         "addToPlaylist": "Tambahkan ke Daftar Putar",
         "addToQueue": "Tambahkan ke Antrian",
-
         "queueAdd": "`{{- name}}` ditambahkan ke antrian."
       }
     }
