@@ -1,0 +1,14 @@
+name: "🔠 Crowdin/Translation"
+description: "Request a new language to be listed on Crowdin or any issues related to translations."
+labels:
+  - "Translations"
+  - "needs review"
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for wanting to contribute translations for the app. This issue template is for anything Crowdin or translation related.
+  - type: textarea
+    attributes:
+      label: Summary
+      description: |
+        Mention the language you want to be added to Crowdin or any issues related to the translations. If the issue affects the UI, attach a screenshot as well.

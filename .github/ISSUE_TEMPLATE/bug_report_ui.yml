@@ -1,6 +1,8 @@
 name: "🐛 UI Bug Report"
 description: "Report a visual bug or issue in Music"
-labels: ["Bug: UI", "needs review"]
+labels:
+  - "Bug: UI"
+  - "needs review"
 body:
   - type: markdown
     attributes:
