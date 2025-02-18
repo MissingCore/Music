@@ -1,6 +1,5 @@
 {
   "language": "Català",
-
   "term": {
     "album": "Àlbum",
     "albums": "Àlbums",
@@ -12,7 +11,6 @@
     "playlists": "Llistes de reproducció",
     "track": "Pista",
     "tracks": "Pistes",
-
     "play": "Reproduir",
     "pause": "Pausar",
     "prev": "Prèvia",
@@ -20,33 +18,26 @@
     "shuffle": "Aleatori",
     "repeat": "Repeteix",
     "repeatOne": "Repeteix un cop",
-
     "favorite": "Preferida",
     "favorites": "Preferides",
     "unFavorite": "Treu de preferides",
     "favoriteTracks": "Pistes preferides",
-
     "home": "Inici",
     "settings": "Ajusts",
     "upcoming": "Pròxima",
-
     "disc": "Disc {{count}}"
   },
-
   "template": {
     "entryAdded": "`{{- name}}` afegit.",
     "entryRemove": "Suprimeix `{{- name}}`.",
     "entryRemoved": "`{{- name}}` suprimit.",
-
     "entrySeeMore": "Veure més sobre `{{- name}}`.",
     "notFound": "`{{- name}}` no existeix.",
-
     "entryShow": "Mostra `{{- name}}`",
     "entryHide": "Amaga `{{- name}}`",
     "entryEnable": null,
     "entryDisable": null
   },
-
   "plural": {
     "entry_one": "{{count}} entrada",
     "entry_other": "{{count}} entrades",
@@ -55,24 +46,19 @@
     "track_one": "{{count}} $t(term.track)",
     "track_other": "{{count}} $t(term.tracks)"
   },
-
   "form": {
     "apply": "Aplica canvis",
     "back": "Enrere",
     "cancel": "Cancel·lar",
     "confirm": "Confirmar",
-
     "unsaved": "Poder tens canvis sense desar.",
     "stay": "Queda't",
     "leave": "Eixir",
-
     "clear": null,
-
     "validation": {
       "unique": "Únic"
     }
   },
-
   "err": {
     "flow": {
       "route": {
@@ -92,25 +78,21 @@
         "brief": "Inclou una captura d'aquesta pantalla."
       }
     },
-
     "msg": {
       "actionCancel": "Acció cancel·lada.",
       "invalidStructure": "Estructura invàlida.",
       "noSelect": "Res seleccionat.",
       "usedName": "Aquest nom no es pot fer servir.",
-
       "noContent": "No s'ha trobat contingut.",
       "noErrors": "Cap errors trobat.",
       "noFilters": "Cap filtre trobat.",
       "noResults": "Cap resultat trobat.",
-
       "noAlbums": "No s'ha trobat cap àlbum.",
       "noArtists": "No s'ha trobat cap artista.",
       "noPlaylists": "No s'ha trobat cap llista.",
       "noTracks": "No s'han trobat pistes."
     }
   },
-
   "feat": {
     "appUpdate": {
       "title": "Actualització de l'App",
@@ -234,7 +216,6 @@
     "version": {
       "title": "Versió"
     },
-
     "onboardPreprocess": {
       "title": "Preprocessar",
       "brief": "Assegurar-se que les dades existents compleixin els canvis."
@@ -254,7 +235,6 @@
         "found": "{{amount}} Trobades"
       }
     },
-
     "playedRecent": {
       "title": "Reproduït fa poc",
       "extra": {
@@ -268,7 +248,6 @@
         "searchMedia": "Cerca fitxers de mèdia"
       }
     },
-
     "artwork": {
       "extra": {
         "change": "Canvia caràtula",
@@ -289,7 +268,6 @@
         "name": "Títol de la Llista"
       }
     },
-
     "modalSort": {
       "title": "Ordre",
       "extra": {
@@ -304,10 +282,8 @@
         "filePath": "Ruta del fitxer",
         "sampleRate": "Freq. de mostreig",
         "size": "Mida",
-
         "addToPlaylist": "Afegir a la llista",
         "addToQueue": "Afegir a la cua",
-
         "queueAdd": "`{{- name}}` afegit a la cua."
       }
     }

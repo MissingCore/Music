@@ -1,6 +1,5 @@
 {
   "language": "日本語",
-
   "term": {
     "album": "アルバム",
     "albums": "アルバム",
@@ -12,7 +11,6 @@
     "playlists": "プレイリスト",
     "track": "トラック",
     "tracks": "トラック",
-
     "play": "再生",
     "pause": "一時停止",
     "prev": "前へ",
@@ -20,33 +18,26 @@
     "shuffle": "シャッフル",
     "repeat": "リピート",
     "repeatOne": "1 回リピート",
-
     "favorite": "お気に入り",
     "favorites": "お気に入り",
     "unFavorite": "お気に入りを解除",
     "favoriteTracks": "お気に入りのトラック",
-
     "home": "ホーム",
     "settings": "設定",
     "upcoming": "次に再生",
-
     "disc": "ディスク {{count}}"
   },
-
   "template": {
     "entryAdded": "｢{{- name}}｣を追加しました。",
     "entryRemove": "｢{{- name}}｣を削除します。",
     "entryRemoved": "｢{{- name}}｣を削除しました。",
-
     "entrySeeMore": "｢{{- name}}｣の詳細を確認します。",
     "notFound": "｢{{- name}}｣は存在しません。",
-
     "entryShow": "｢{{- name}}｣を表示",
     "entryHide": "｢{{- name}}｣を非表示",
     "entryEnable": null,
     "entryDisable": null
   },
-
   "plural": {
     "entry_one": "{{count}} 件のエントリ",
     "entry_other": "{{count}} 件のエントリ",
@@ -55,24 +46,19 @@
     "track_one": "{{count}} $t(term.track)",
     "track_other": "{{count}} $t(term.tracks)"
   },
-
   "form": {
     "apply": "変更を適用",
     "back": "戻る",
     "cancel": "キャンセル",
     "confirm": "確認",
-
     "unsaved": "変更が保存されていません。",
     "stay": "留まる",
     "leave": "離れる",
-
     "clear": null,
-
     "validation": {
       "unique": "ユニーク"
     }
   },
-
   "err": {
     "flow": {
       "route": {
@@ -92,25 +78,21 @@
         "brief": "この画面のスクリーンショットを添付してください。"
       }
     },
-
     "msg": {
       "actionCancel": "アクションをキャンセルしました。",
       "invalidStructure": "ストラクチャーが無効です。",
       "noSelect": "選択されていません。",
       "usedName": "その名前は使用できません。",
-
       "noContent": "コンテンツが見つかりませんでした。",
       "noErrors": "エラーは見つかりませんでした。",
       "noFilters": "フィルタが見つかりません。",
       "noResults": "結果が見つかりませんでした。",
-
       "noAlbums": "アルバムが見つかりません。",
       "noArtists": "アーティストが見つかりません。",
       "noPlaylists": "プレイリストが見つかりません。",
       "noTracks": "トラックが見つかりません。"
     }
   },
-
   "feat": {
     "appUpdate": {
       "title": "アプリを更新",
@@ -234,7 +216,6 @@
     "version": {
       "title": "バージョン"
     },
-
     "onboardPreprocess": {
       "title": "前処理",
       "brief": "既存のデータが変更に対応しているか確認します。"
@@ -254,7 +235,6 @@
         "found": "{{amount}} 件を検出"
       }
     },
-
     "playedRecent": {
       "title": "最近に再生",
       "extra": {
@@ -268,7 +248,6 @@
         "searchMedia": "メディアを検索"
       }
     },
-
     "artwork": {
       "extra": {
         "change": "アートワークを変更",
@@ -289,7 +268,6 @@
         "name": "プレイリスト名"
       }
     },
-
     "modalSort": {
       "title": "並べ替え順",
       "extra": {
@@ -304,10 +282,8 @@
         "filePath": "ファイルのパス",
         "sampleRate": "サンプルレート",
         "size": "サイズ",
-
         "addToPlaylist": "プレイリストに追加",
         "addToQueue": "キューに追加",
-
         "queueAdd": "｢{{- name}}｣がキューに追加されました。"
       }
     }
