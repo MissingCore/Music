@@ -1,4 +1,3 @@
-import * as Sentry from "@sentry/react-native";
 import { Stack } from "expo-router";
 import { useEffect } from "react";
 import Bootsplash from "react-native-bootsplash";
@@ -22,14 +21,21 @@ export const unstable_settings = {
   initialRouteName: "(main)/(home)",
 };
 
-Sentry.init({
-  dsn: "https://bbd726405356cdfb20b85f5f924fd3e3@o4507687432617984.ingest.us.sentry.io/4507687447101440",
-  ignoreErrors: [
-    /Missing .* permissions/,
-    // Expo development errors:
-    "Unable to activate keep awake",
-  ],
-});
+let Sentry: any;
+const WithSentry = process.env.EXPO_PUBLIC_PRIVACY_BUILD !== "true";
+
+if (WithSentry) {
+  // Dynamically import Sentry if we want to use it.
+  Sentry = require("@sentry/react-native");
+  Sentry.init({
+    dsn: "https://bbd726405356cdfb20b85f5f924fd3e3@o4507687432617984.ingest.us.sentry.io/4507687447101440",
+    ignoreErrors: [
+      /Missing .* permissions/,
+      // Expo development errors:
+      "Unable to activate keep awake",
+    ],
+  });
+}
 
 export default function RootLayout() {
   const { isLoaded, error } = useLoadResources();
@@ -46,9 +52,8 @@ export default function RootLayout() {
       // Display error message to user if encountered.
       Bootsplash.hide();
       musicStore.getState().resetOnCrash();
-      // Send error message to Sentry. Doesn't send if you followed the
-      // "Personal Privacy Build" documentation.
-      if (!__DEV__) Sentry.captureException(error);
+      // Send error message to Sentry.
+      if (WithSentry && !__DEV__) Sentry.captureException(error);
     }
   }, [error]);
 
