@@ -13,7 +13,7 @@ Go to the [MissingCore/Music](https://github.com/MissingCore/Music) repository a
 
 <img src="./assets/personal-privacy-build/forking_1.jpg" alt="Appearance of `Fork` button in repository." />
 
-Then, making sure we **uncheck the "Copy the `dev` branch only" option**, we click the `Create fork` button.
+Then, making sure we **uncheck the "Copy the `dev` branch only" option**, click the `Create fork` button.
 
 <img src="./assets/personal-privacy-build/forking_2.jpg" alt="Appearance of `Create a new fork`screen." />
 
