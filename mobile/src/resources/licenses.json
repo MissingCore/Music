@@ -65,7 +65,7 @@
   },
   "@sentry/react-native": {
     "name": "@sentry/react-native",
-    "version": "6.4.0",
+    "version": "6.8.0",
     "copyright": "Copyright (c) 2017-2024 Sentry",
     "source": "https://github.com/getsentry/sentry-react-native",
     "license": "MIT",

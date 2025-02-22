@@ -1,8 +1,16 @@
 // Learn more https://docs.expo.io/guides/customizing-metro
-const { getSentryExpoConfig } = require("@sentry/react-native/metro");
 const { withNativeWind } = require("nativewind/metro");
 
-const config = getSentryExpoConfig(__dirname);
+/** @type {import('expo/metro-config').MetroConfig} */
+let config = null;
+
+if (process.env.EXPO_PUBLIC_PRIVACY_BUILD !== "true") {
+  const { getSentryExpoConfig } = require("@sentry/react-native/metro");
+  config = getSentryExpoConfig(__dirname);
+} else {
+  const { getDefaultConfig } = require("expo/metro-config");
+  config = getDefaultConfig(__dirname);
+}
 
 config.resolver.sourceExts.push("sql");
 

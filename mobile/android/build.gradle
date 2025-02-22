@@ -22,7 +22,7 @@ buildscript {
         // If `music.CREATE_PRIVACY_BUILD` defined in `gradle.properties`
         // is `true`, we don't run this code.
         if (!findProperty('music.CREATE_PRIVACY_BUILD')?.toBoolean()) {
-            classpath('io.sentry:sentry-android-gradle-plugin:4.2.0')
+            classpath('io.sentry:sentry-android-gradle-plugin:4.14.1')
         }
     }
 }
