@@ -1,4 +1,5 @@
 import { getLocales } from "expo-localization";
+import { useMemo } from "react";
 import { Appearance } from "react-native";
 import TrackPlayer from "react-native-track-player";
 import { useStore } from "zustand";
@@ -172,10 +173,13 @@ export function useTabsByVisibility() {
     (state) => state.tabsVisibility,
   );
 
-  return {
-    displayedTabs: tabsOrder.filter((tabName) => tabsVisibility[tabName]),
-    hiddenTabs: tabsOrder.filter((tabName) => !tabsVisibility[tabName]),
-  };
+  return useMemo(
+    () => ({
+      displayedTabs: tabsOrder.filter((tabName) => tabsVisibility[tabName]),
+      hiddenTabs: tabsOrder.filter((tabName) => !tabsVisibility[tabName]),
+    }),
+    [tabsOrder, tabsVisibility],
+  );
 }
 //#endregion
 //#endregion
