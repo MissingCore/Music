@@ -10,6 +10,7 @@ import { getTracks } from "~/api/track";
 import { RecentList } from "~/modules/media/services/RecentList";
 import { Resynchronize } from "~/modules/media/services/Resynchronize";
 
+import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
 import { batch, wait } from "~/utils/promise";
 import { findAndSaveArtwork, cleanupImages } from "./artwork";
@@ -69,6 +70,9 @@ export async function rescanForTracks(deepScan = false) {
 
     // Make sure the "recents" list is correct.
     RecentList.refresh();
+
+    // Ensure queries are all up-to-date.
+    clearAllQueries();
 
     toast(i18next.t("feat.rescan.extra.success"), {
       ...ToastOptions,
