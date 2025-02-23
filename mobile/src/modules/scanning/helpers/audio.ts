@@ -30,14 +30,8 @@ import { savePathComponents } from "./folder";
 export async function findAndSaveAudio() {
   const stopwatch = new Stopwatch();
 
-  // Initiate the track saving phase.
-  onboardingStore.setState({
-    phase: "tracks",
-    prevSaved: 0,
-    unstaged: 0,
-    staged: 0,
-    saveErrors: 0,
-  });
+  // Reset tracked values when saving/updating tracks in onboarding store.
+  onboardingStore.setState({ staged: 0, saveErrors: 0 });
 
   const { listAllow, listBlock, minSeconds } = userPreferencesStore.getState();
   const usedDirs =
@@ -119,6 +113,8 @@ export async function findAndSaveAudio() {
   const unstagedTracks = discoveredTracks.filter(
     ({ id }) => !unmodifiedTracks.has(id),
   );
+  // Set the current phase to `tracks` if we find tracks that need saving/updating.
+  if (unstagedTracks.length > 0) onboardingStore.setState({ phase: "tracks" });
   await batch({
     data: unstagedTracks,
     batchAmount: BATCH_PRESETS.PROGRESS,

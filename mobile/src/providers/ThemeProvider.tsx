@@ -1,6 +1,7 @@
 import type { Theme } from "@react-navigation/native";
 import { ThemeProvider as NavigationThemeProvider } from "@react-navigation/native";
 import { vars } from "nativewind";
+import { useState } from "react";
 import { View, useColorScheme } from "react-native";
 import { SystemBars } from "react-native-edge-to-edge";
 
@@ -45,6 +46,24 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         {children}
       </View>
     </NavigationThemeProvider>
+  );
+}
+
+/** Override the theme provided by the `<ThemeProvider />`, using the system theme. */
+export function SystemTheme({ children }: { children: React.ReactNode }) {
+  const deviceTheme = useColorScheme();
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  return (
+    <View
+      // Use the initial theme as it'll change when we get the values from
+      // the user preference store.
+      onLayout={() => setTheme(deviceTheme ?? "light")}
+      style={Themes[theme]}
+      className="flex-1 bg-canvas"
+    >
+      {children}
+    </View>
   );
 }
 

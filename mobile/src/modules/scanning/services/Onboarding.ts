@@ -1,20 +1,12 @@
-/**
- * Store representing the onboarding process.
- *
- * This file contains classes containing helpers to manipulate the store.
- */
-
 import { useStore } from "zustand";
 import { createStore } from "zustand/vanilla";
 
-//#region Zustand Store
-//#region OnboardingStore Interface
 interface OnboardingStore {
   /**
    * Onboarding phase currently being conducted. Keys used by the
    * `onboardingScreen` translations.
    */
-  phase: "preprocess" | "tracks" | "image";
+  phase: "preprocess" | "tracks" | "image" | undefined;
 
   /** Number of tracks previously saved. */
   prevSaved: number;
@@ -32,11 +24,13 @@ interface OnboardingStore {
   /** Number of new images found. */
   found: number;
 }
-//#endregion
 
-//#region Store Creation
+/**
+ * Tracks where we are in the onboarding process - from running migrations,
+ * saving/updating tracks, or saving images.
+ */
 export const onboardingStore = createStore<OnboardingStore>()(() => ({
-  phase: "preprocess",
+  phase: undefined,
 
   prevSaved: 0,
   staged: 0,
@@ -47,11 +41,7 @@ export const onboardingStore = createStore<OnboardingStore>()(() => ({
   unchecked: 0,
   found: 0,
 }));
-//#endregion
 
-//#region Custom Hook
 export const useOnboardingStore = <T>(
   selector: (state: OnboardingStore) => T,
 ): T => useStore(onboardingStore, selector);
-//#endregion
-//#endregion

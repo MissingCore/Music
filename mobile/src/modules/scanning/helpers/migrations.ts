@@ -8,6 +8,7 @@ import { getPlaylists } from "~/api/playlist";
 import { removeInvalidTrackRelations } from "~/api/track";
 import { recentListStore } from "~/modules/media/services/RecentList";
 import { userPreferencesStore } from "~/services/UserPreferences";
+import { onboardingStore } from "../services/Onboarding";
 
 import { fixAlbumFracturization } from "./_album-fracturization";
 import type { MigrationOption } from "../constants";
@@ -25,6 +26,9 @@ export async function checkForMigrations() {
   // Exit early if we don't need to do any migrations.
   const lastestMigrationCode = Object.keys(MigrationHistory).length - 1;
   if (lastMigrationCode === lastestMigrationCode) return;
+
+  // Set the current phase to `preprocess` as we have to run some migrations.
+  onboardingStore.setState({ phase: "preprocess" });
 
   // Get the list of migrations we need to make.
   let pendingMigrations: MigrationOption[] = [];
