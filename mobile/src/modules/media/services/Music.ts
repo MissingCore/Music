@@ -215,20 +215,20 @@ musicStore.subscribe(
     const currTrack = musicStore.getState().activeTrack;
     if (activeId === currTrack?.id) return;
 
-    let newTrack: TrackWithAlbum | undefined;
     try {
-      if (activeId) newTrack = await getTrack(activeId);
+      const newTrack = activeId ? await getTrack(activeId) : undefined;
+      musicStore.setState({ activeTrack: newTrack });
     } catch {
       // Handle when track doesn't exist.
       console.log(
-        `[Music Store] Failed to find track with id \`${activeId}\`.`,
+        `[Database Mismatch] Track (${activeId}) doesn't exist in the database.`,
       );
+      // Can't add to `InvalidTrack` schema as track doesn't exist in database.
       await deleteTrack(activeId!);
       clearAllQueries();
       await musicStore.getState().reset();
       return;
     }
-    musicStore.setState({ activeTrack: newTrack });
   },
 );
 //#endregion

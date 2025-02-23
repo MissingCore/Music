@@ -140,28 +140,23 @@ export async function findAndSaveAudio() {
           }
         }
       } catch (err) {
-        const errObj =
-          err instanceof Error
-            ? err
-            : {
-                name: "UnknownError",
-                message: "Rejected for unknown reasons.",
-              };
+        const isError = err instanceof Error;
+        const errorInfo = {
+          errorName: isError ? err.name : "UnknownError",
+          errorMessage: isError ? err.message : "Rejected for unknown reasons.",
+        };
         // We may end up here if the track at the given uri doesn't exist anymore.
-        console.log(`[Track ${id}] ${errObj.message}`);
+        console.log(`[Track ${id}] ${errorInfo.errorMessage}`);
 
-        // Delete the track and its relation, then add it to `InvalidTrack`.
+        // Delete the track and its relation, then manually add it to
+        // `InvalidTrack` schema (as the track may not exist prior).
         await deleteTrack(id);
         await db
           .insert(invalidTracks)
-          .values({
-            ...{ id, uri, modificationTime },
-            errorName: errObj.name,
-            errorMessage: errObj.message,
-          })
+          .values({ id, uri, modificationTime, ...errorInfo })
           .onConflictDoUpdate({
             target: invalidTracks.id,
-            set: { modificationTime },
+            set: { modificationTime, ...errorInfo },
           });
 
         throw new Error(id);

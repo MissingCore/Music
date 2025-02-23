@@ -15,6 +15,12 @@ import { ToastOptions } from "~/lib/toast";
 /** Context to whether we should resume playback after ducking. */
 let resumeAfterDuck: boolean = false;
 
+/** Errors which should cause us to "delete" a track. */
+const ValidErrors = [
+  "android-io-file-not-found",
+  "android-failed-runtime-check",
+];
+
 /** How we handle the actions in the media control notification. */
 export async function PlaybackService() {
   TrackPlayer.addEventListener(Event.RemotePlay, async () => {
@@ -98,24 +104,28 @@ export async function PlaybackService() {
     const erroredTrack = await TrackPlayer.getActiveTrack();
     console.log(`[${e.code}] ${e.message}`, erroredTrack);
 
-    // Delete the track that caused the error if we encounter either an
-    // `android-io-file-not-found` error code or no code.
-    //  - We've encountered no code when RNTP naturally plays the next
-    //  track that throws an error because it doesn't exist.
-    if (
-      erroredTrack?.id &&
-      (e.code === "android-io-file-not-found" || e.code === undefined)
-    ) {
-      await deleteTrack(erroredTrack.id);
-      await removeUnusedCategories();
-      clearAllQueries();
-      router.navigate("/");
+    if (erroredTrack) {
+      // Delete the track that caused the error from certain scenarios.
+      //  - We've encountered no code when RNTP naturally plays the next
+      //  track that throws an error because it doesn't exist.
+      if (ValidErrors.includes(e.code) || e.code === undefined) {
+        let errorMessage = "File not found.";
+        if (e.code === "android-failed-runtime-check")
+          errorMessage =
+            "Unexpected runtime error. For example, this may happen if the file has a sample rate greater than or equal to 352.8kHz.";
+
+        await deleteTrack(erroredTrack.id, { errorName: e.code, errorMessage });
+        await removeUnusedCategories();
+        clearAllQueries();
+        router.navigate("/");
+      }
+
+      toast.error(
+        i18next.t("template.notFound", { name: erroredTrack.title }),
+        ToastOptions,
+      );
     }
 
-    toast.error(
-      i18next.t("template.notFound", { name: erroredTrack?.title }),
-      ToastOptions,
-    );
     // Clear all reference of the current playing track.
     await musicStore.getState().reset();
   });

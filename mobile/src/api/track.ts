@@ -2,7 +2,7 @@ import { and, eq, inArray } from "drizzle-orm";
 
 import { db } from "~/db";
 import type { Album, Track } from "~/db/schema";
-import { tracks, tracksToPlaylists } from "~/db/schema";
+import { invalidTracks, tracks, tracksToPlaylists } from "~/db/schema";
 import { getTrackCover } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
@@ -127,11 +127,28 @@ export async function addToPlaylist(
 
 //#region DELETE Methods
 /** Delete specified track. */
-export async function deleteTrack(id: string) {
+export async function deleteTrack(
+  id: string,
+  errorInfo?: { errorName: string; errorMessage: string },
+) {
   return db.transaction(async (tx) => {
     // Remember to delete the track's playlist relations.
     await tx.delete(tracksToPlaylists).where(eq(tracksToPlaylists.trackId, id));
-    await tx.delete(tracks).where(eq(tracks.id, id));
+    const [deletedTrack] = await tx
+      .delete(tracks)
+      .where(eq(tracks.id, id))
+      .returning();
+    // Add to `InvalidTrack` schema if we provided the error.
+    if (deletedTrack && errorInfo) {
+      const { id, uri, modificationTime } = deletedTrack;
+      await db
+        .insert(invalidTracks)
+        .values({ id, uri, modificationTime, ...errorInfo })
+        .onConflictDoUpdate({
+          target: invalidTracks.id,
+          set: { modificationTime, ...errorInfo },
+        });
+    }
   });
 }
 
