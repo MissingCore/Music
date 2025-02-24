@@ -17,7 +17,7 @@
     "next": "Nächste",
     "shuffle": "Unsortieren",
     "repeat": "Wiederholen",
-    "repeatOne": null,
+    "repeatOne": "Einmal Wiederholen",
     "favorite": "Dieses Lied lieben",
     "favorites": "Favoriten",
     "unFavorite": "Aus deinen Favoriten entfernen",
@@ -33,10 +33,10 @@
     "entryRemoved": "Hat `{{- name}}` entfernt.",
     "entrySeeMore": "Mehr über `{{- name}}` sehen.",
     "notFound": "`{{- name}}` existiert nicht.",
-    "entryShow": null,
-    "entryHide": null,
-    "entryEnable": null,
-    "entryDisable": null
+    "entryShow": "`{{- name}}` anzeigen",
+    "entryHide": "`{{- name}}` verstecken",
+    "entryEnable": "`{{- name}}` aktivieren",
+    "entryDisable": "`{{- name}}` deaktivieren"
   },
   "plural": {
     "entry_one": "{{count}} eintrag",
@@ -54,7 +54,7 @@
     "unsaved": "Möglicherweise hast du noch nicht gespeicherte Änderungen.",
     "stay": "Bleiben",
     "leave": "Verlassen",
-    "clear": null,
+    "clear": "Leeren",
     "validation": {
       "unique": "Einzigartig"
     }
@@ -118,18 +118,18 @@
       }
     },
     "homeTabsOrder": {
-      "title": null,
-      "brief": null,
+      "title": "Home-Tabs Reihenfolge",
+      "brief": "Reihenfolge und Sichtbarkeit der Tabs ändern.",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "Ordnen die Registerkarten nach der Registerkarte \"Home\" durch Ziehen und Ablegen neu. Schalt die Registerkarte mit dem Augensymbol um.",
+        "line2": "Achtung: Unerwartetes Verhalten kann auftreten, wenn du zu einem versteckten Tab wechselst."
       }
     },
     "nowPlayingDesign": {
-      "title": null,
+      "title": "Design des Jetzt-Läuft-Bildschirms",
       "extra": {
-        "plain": null,
-        "vinyl": null
+        "plain": "Einfach",
+        "vinyl": "Vinyl"
       }
     },
     "language": {
@@ -180,8 +180,8 @@
       }
     },
     "deepRescan": {
-      "title": null,
-      "brief": null
+      "title": "Tiefe erneute Scan",
+      "brief": "Ignoriert alle Überspringungsmaßnahmen, die die normale Rescan Funktion beschleunigen."
     },
     "listAllow": {
       "title": "Zulassungsliste",

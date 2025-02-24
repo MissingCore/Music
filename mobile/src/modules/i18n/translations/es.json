@@ -17,15 +17,15 @@
     "next": "Siguiente",
     "shuffle": "Aleatorio",
     "repeat": "Repetir",
-    "repeatOne": null,
+    "repeatOne": "Repetir una",
     "favorite": "Favorito",
     "favorites": "Favoritos",
     "unFavorite": "Quitar de favoritos",
-    "favoriteTracks": null,
+    "favoriteTracks": "Pistas favoritas",
     "home": "Inicio",
     "settings": "Configuración",
     "upcoming": "Próximamente",
-    "disc": null
+    "disc": "Disco {{count}}"
   },
   "template": {
     "entryAdded": "`{{- name}}` añadido.",
@@ -33,10 +33,10 @@
     "entryRemoved": "`{{- name}}` eliminado.",
     "entrySeeMore": "Ver más sobre `{{- name}}`.",
     "notFound": "`{{- name}}` no existe.",
-    "entryShow": null,
-    "entryHide": null,
-    "entryEnable": null,
-    "entryDisable": null
+    "entryShow": "Mostrar `{{- name}}`",
+    "entryHide": "Ocultar `{{- name}}`",
+    "entryEnable": "Activar `{{- name}}`",
+    "entryDisable": "Desactivar `{{- name}}`"
   },
   "plural": {
     "entry_one": "{{count}} entrada",
@@ -54,7 +54,7 @@
     "unsaved": "Puede que tengas cambios sin guardar.",
     "stay": "Permanecer",
     "leave": "Salir",
-    "clear": null,
+    "clear": "Claro",
     "validation": {
       "unique": "Único"
     }
@@ -118,18 +118,18 @@
       }
     },
     "homeTabsOrder": {
-      "title": null,
-      "brief": null,
+      "title": "Orden de Pestañas de Inicio",
+      "brief": "Personalizar el orden y la visibilidad de las pestañas.",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "Reordena las pestañas después de la pestaña \"Inicio\" arrastrando y soltando. Alterna la visibilidad de las pestañas usando el icono del ojo.",
+        "line2": "Atención: Puede ocurrir un comportamiento inesperado al navegar a una pestaña oculta."
       }
     },
     "nowPlayingDesign": {
-      "title": null,
+      "title": "Diseño de Pantalla Ahora Reproduciendo",
       "extra": {
-        "plain": null,
-        "vinyl": null
+        "plain": "Simple",
+        "vinyl": "Vinilo"
       }
     },
     "language": {
@@ -180,8 +180,8 @@
       }
     },
     "deepRescan": {
-      "title": null,
-      "brief": null
+      "title": "Reescaneo Profundo",
+      "brief": "Ignora cualquier medida de salto que acelere la función de reescaneo normal."
     },
     "listAllow": {
       "title": "Lista de permitidos",

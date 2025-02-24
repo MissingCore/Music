@@ -7,8 +7,8 @@
     "artists": "Sanatçılar",
     "folder": "Klasör",
     "folders": "Klasörler",
-    "playlist": "Oynatma Listesi",
-    "playlists": "Oynatma Listeleri",
+    "playlist": "Çalma Listesi",
+    "playlists": "Çalma Listeleri",
     "track": "Parça",
     "tracks": "Parçalar",
     "play": "Oynat",
@@ -16,13 +16,13 @@
     "prev": "Önceki",
     "next": "Sonraki",
     "shuffle": "Karıştır",
-    "repeat": "Tekrarla",
-    "repeatOne": "Birini Tekrarla",
+    "repeat": "Yinele",
+    "repeatOne": "Birini Yinele",
     "favorite": "Favori",
     "favorites": "Favoriler",
     "unFavorite": "Favorilerden Çıkar",
     "favoriteTracks": "Favori Parçalar",
-    "home": "Anasayfa",
+    "home": "Ana Sayfa",
     "settings": "Ayarlar",
     "upcoming": "Yaklaşan",
     "disc": "Disk {{count}}"
@@ -33,14 +33,14 @@
     "entryRemoved": "`{{- name}}` kaldırıldı.",
     "entrySeeMore": "`{{- name}}` hakkında daha fazla bilgi.",
     "notFound": "`{{- name}}` mevcut değil.",
-    "entryShow": null,
-    "entryHide": null,
-    "entryEnable": null,
-    "entryDisable": null
+    "entryShow": "`{{- name}}` göster",
+    "entryHide": "`{{- name}}` gizle",
+    "entryEnable": "`{{- name}}` etkinleştir",
+    "entryDisable": "`{{- name}}` devre dışı bırak"
   },
   "plural": {
     "entry_one": "{{count}} giriş",
-    "entry_other": "{{count}} giriş",
+    "entry_other": "{{count}} girişler",
     "second_one": "{{count}} saniye",
     "second_other": "{{count}} saniye",
     "track_one": "{{count}} $t(term.track)",
@@ -51,10 +51,10 @@
     "back": "Geri",
     "cancel": "İptal",
     "confirm": "Onayla",
-    "unsaved": "Kaydedilmemiş değişiklikler olabilir.",
+    "unsaved": "Kaydedilmemiş değişiklikleriniz olabilir.",
     "stay": "Kal",
-    "leave": "Ayrıl",
-    "clear": null,
+    "leave": "Çık",
+    "clear": "Temizle",
     "validation": {
       "unique": "Benzersiz"
     }
@@ -62,11 +62,11 @@
   "err": {
     "flow": {
       "route": {
-        "title": "Eşleşmeyen Yol",
-        "brief": "Geçersiz bir yola ulaştınız.",
+        "title": "Eşleşmeyen Yönlendirme",
+        "brief": "Geçersiz bir yönlendirmeye yönlendirilmişsiniz.",
         "extra": {
           "missing": "Eksik",
-          "from": "Kaynak"
+          "from": "Nereden"
         }
       },
       "generic": {
@@ -75,7 +75,7 @@
       },
       "report": {
         "title": "Sorun Bildir",
-        "brief": "Bu ekranın bir ekran görüntüsünü ekle."
+        "brief": "Bu ekranın bir ekran görüntüsünü ekleyin."
       }
     },
     "msg": {
@@ -83,14 +83,14 @@
       "invalidStructure": "Geçersiz yapı.",
       "noSelect": "Hiçbir şey seçilmedi.",
       "usedName": "Bu isim kullanılamaz.",
-      "noContent": "İçerik bulunamadı.",
-      "noErrors": "Hata bulunamadı.",
-      "noFilters": "Filtre bulunamadı.",
-      "noResults": "Sonuç bulunamadı.",
-      "noAlbums": "Albüm bulunamadı.",
-      "noArtists": "Sanatçı bulunamadı.",
-      "noPlaylists": "Oynatma listesi bulunamadı.",
-      "noTracks": "Parça bulunamadı."
+      "noContent": "Hiç içerik bulunamadı.",
+      "noErrors": "Hiç hata bulunamadı.",
+      "noFilters": "Hiç filtre bulunamadı.",
+      "noResults": "Hiç sonuç bulunamadı.",
+      "noAlbums": "Hiç albüm bulunamadı.",
+      "noArtists": "Hiç sanatçı bulunamadı.",
+      "noPlaylists": "Hiç çalma listesi bulunamadı.",
+      "noTracks": "Hiç parça bulunamadı."
     }
   },
   "feat": {
@@ -98,38 +98,38 @@
       "title": "Uygulama Güncellemesi",
       "brief": "Yeni bir güncelleme mevcut!",
       "extra": {
-        "downloadAPK": "En son APK'yı indir",
-        "updateGoogle": "Play Store'dan güncelle"
+        "downloadAPK": "Son APK'yı indir",
+        "updateGoogle": "Play Store üzerinden güncelle"
       }
     },
     "appearance": {
       "title": "Görünüm",
-      "brief": "Uygulamanın görünümünü kişiselleştirin."
+      "brief": "Uygulamanın görünümünü kişiselleştir."
     },
     "accentFont": {
-      "title": "Vurgu Yazı Tipi"
+      "title": "Vurgulu Yazı Tipi"
     },
     "theme": {
       "title": "Tema",
       "extra": {
-        "light": "Açık",
-        "dark": "Koyu",
+        "light": "Aydınlık",
+        "dark": "Karanlık",
         "system": "Sistem"
       }
     },
     "homeTabsOrder": {
-      "title": null,
-      "brief": null,
+      "title": "Ana Sayfa Sekmeleri Sırası",
+      "brief": "Sekmelerin sırasını ve görünürlüğünü özelleştir.",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "Sekmeleri \"Ana Sayfa\" sekmesinden sonra sürükleyip bırakarak yeniden sıralayın. Sekme görünürlüğünü göz simgesini kullanarak geçiş yapın.",
+        "line2": "Dikkat: Gizli bir sekmeye geçerken beklenmedik davranışlar olabilir."
       }
     },
     "nowPlayingDesign": {
-      "title": null,
+      "title": "Şu An Çalan Ekran Tasarımı",
       "extra": {
-        "plain": null,
-        "vinyl": null
+        "plain": "Sade",
+        "vinyl": "Vinil"
       }
     },
     "language": {
@@ -137,17 +137,17 @@
     },
     "backup": {
       "title": "Yedekleme",
-      "brief": "Verileri cihazlar arasında taşıyın.",
-      "description": "Bu uygulamadan verileri cihazlar arasında `music_backup.json` dosyası ile aktarın.",
+      "brief": "Veriyi cihazlar arasında taşı.",
+      "description": "Bu uygulamadan verileri `music_backup.json` dosyası aracılığıyla cihazlar arasında aktarın.",
       "extra": {
         "export": "Dışa Aktar",
         "exportSuccess": "Yedek başarıyla oluşturuldu.",
         "import": "İçe Aktar",
-        "importSuccess": "Yedekleme tamamlandı."
+        "importSuccess": "Yedek başarıyla içe aktarıldı."
       }
     },
     "insights": {
-      "title": "Analizler",
+      "title": "Veri Analizleri",
       "brief": "Uygulama kullanımı ve istatistikler.",
       "extra": {
         "cache": "Önbellek",
@@ -159,49 +159,49 @@
       }
     },
     "saveErrors": {
-      "title": "Hataları Kaydet",
-      "brief": "Bazı parçaların neden kaydedilemediğini görün."
+      "title": "Kaydetme Hataları",
+      "brief": "Bazı parçaların neden kaydedilmediğini görün."
     },
     "interactions": {
-      "title": "Etkileşim Yok",
+      "title": "Nothing Etkileşimleri",
       "brief": "Desteklenen Nothing özellikleri."
     },
     "scanning": {
       "title": "Tarama",
-      "brief": "Müzik keşfi seçenekleri."
+      "brief": "Müzik keşif seçenekleri."
     },
     "rescan": {
       "title": "Yeniden Tara",
-      "brief": "Yeni medya olup olmadığını kontrol edin.",
+      "brief": "Yeni medya arayın.",
       "extra": {
         "start": "Kütüphane yeniden taranıyor...",
-        "success": "Kütüphane taraması tamamlandı.",
-        "fail": "Kütüphane taraması başarısız oldu."
+        "success": "Kütüphane yeniden tarama tamamlandı.",
+        "fail": "Kütüphane yeniden taranamadı."
       }
     },
     "deepRescan": {
-      "title": null,
-      "brief": null
+      "title": "Derin Tarama",
+      "brief": "Normal yeniden tarama özelliğini hızlandıran her türlü geçişi yoksayar."
     },
     "listAllow": {
       "title": "İzin Listesi",
-      "description": "Boş olduğunda varsayılan olarak şunları kullanır:"
+      "description": "Boşsa varsayılan olarak şunları kabul eder:"
     },
     "listBlock": {
-      "title": "Engel Listesi",
-      "description": "İzin listesindeki girişlerden daha yüksek önceliğe sahiptir."
+      "title": "Engellenmiş Liste",
+      "description": "İzin listesinde bulunan öğelere göre daha yüksek önceliğe sahiptir."
     },
     "ignoreDuration": {
       "title": "Kısa Sesleri Yoksay",
-      "description": "Kaydetmek istemediğimiz sesin süresi (saniye cinsinden)."
+      "description": "Kaydetmek istemediğimiz sesin saniye cinsinden süresi."
     },
     "translate": {
-      "title": "Çevirilere Katkıda Bulunun",
-      "brief": "Uygulamayı diğer dillere çevirmenize yardımcı olun."
+      "title": "Çevirilere Katkı Sağlayın",
+      "brief": "Uygulamayı başka dillere çevirmeye yardımcı olun."
     },
     "code": {
       "title": "GitHub Deposu",
-      "brief": "Sorun bildirin, katkıda bulunun veya yeni özellikler talep edin."
+      "brief": "Sorun bildirin, katkı sağlayın veya yeni özellikler isteyin."
     },
     "license": {
       "title": "Lisans"
@@ -210,33 +210,33 @@
       "title": "Gizlilik Politikası"
     },
     "thirdParty": {
-      "title": "Üçüncü Taraf Yazılım",
-      "brief": "Bu uygulamanın mümkün olmasını sağlayanlar."
+      "title": "Üçüncü Taraf Yazılımlar",
+      "brief": "Bu uygulamayı mümkün kılan unsurlar."
     },
     "version": {
       "title": "Sürüm"
     },
     "onboardPreprocess": {
       "title": "Ön İşlem",
-      "brief": "Mevcut verilerin değişikliklere uygun olduğunu kontrol ediyor."
+      "brief": "Mevcut verilerin değişikliklerle uyumlu olduğundan emin olun."
     },
     "onboardTracks": {
-      "title": "Parçalar Kaydediliyor",
+      "title": "Parçaları Kaydetme",
       "extra": {
-        "prevSaved": "Daha Önce Kaydedilmiş {{amount}}",
+        "prevSaved": "{{amount}} Önceden Kaydedilmiş",
         "saved": "{{amount}}/{{total}} Kaydedildi/Güncellendi",
         "errors": "{{amount}} Hata"
       }
     },
     "onboardImages": {
-      "title": "Resimler Kaydediliyor",
+      "title": "Resimleri Kaydetme",
       "extra": {
         "checked": "{{amount}}/{{total}} Kontrol Edildi",
         "found": "{{amount}} Bulundu"
       }
     },
     "playedRecent": {
-      "title": "Son Çalınanlar",
+      "title": "Son Oynatılanlar",
       "extra": {
         "empty": "Henüz bir şey çalmadınız!"
       }
@@ -250,8 +250,8 @@
     },
     "artwork": {
       "extra": {
-        "change": "Kapak Resmini Değiştir",
-        "remove": "Kapak Resmini Kaldır"
+        "change": "Sanatı Değiştir",
+        "remove": "Sanatı Kaldır"
       }
     },
     "directory": {
@@ -262,10 +262,10 @@
     },
     "playlist": {
       "extra": {
-        "create": "Oynatma Listesi Oluştur",
-        "delete": "Oynatma Listesini Sil",
-        "edit": "Oynatma Listesini Düzenle",
-        "name": "Oynatma Listesi Adı"
+        "create": "Çalma Listesi Oluştur",
+        "delete": "Çalma Listesini Sil",
+        "edit": "Çalma Listesini Düzenle",
+        "name": "Çalma Listesi Adı"
       }
     },
     "modalSort": {
@@ -273,7 +273,7 @@
       "extra": {
         "asc": "Artan Sıra",
         "alphabetical": "Alfabetik",
-        "modified": "Son Değişiklik"
+        "modified": "Son Düzenleme"
       }
     },
     "modalTrack": {
@@ -282,7 +282,7 @@
         "filePath": "Dosya Yolu",
         "sampleRate": "Örnekleme Hızı",
         "size": "Boyut",
-        "addToPlaylist": "Oynatma Listesine Ekle",
+        "addToPlaylist": "Çalma Listesine Ekle",
         "addToQueue": "Kuyruğa Ekle",
         "queueAdd": "`{{- name}}` kuyruğa eklendi."
       }

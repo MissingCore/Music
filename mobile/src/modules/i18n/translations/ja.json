@@ -35,8 +35,8 @@
     "notFound": "｢{{- name}}｣は存在しません。",
     "entryShow": "｢{{- name}}｣を表示",
     "entryHide": "｢{{- name}}｣を非表示",
-    "entryEnable": null,
-    "entryDisable": null
+    "entryEnable": "「{{- name}}」を有効化",
+    "entryDisable": "「{{- name}}」を無効化"
   },
   "plural": {
     "entry_one": "{{count}} 件のエントリ",
@@ -54,7 +54,7 @@
     "unsaved": "変更が保存されていません。",
     "stay": "留まる",
     "leave": "離れる",
-    "clear": null,
+    "clear": "消去",
     "validation": {
       "unique": "ユニーク"
     }
