@@ -1,3 +1,4 @@
+![1000045386](https://github.com/user-attachments/assets/8bb1cf87-78cb-4fe5-9246-831007629e30)
 <img src=".github/assets/SOCIAL_PREVIEW_v2.png" alt="Music app screen previews" />
 
 # Music
