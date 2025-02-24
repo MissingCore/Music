@@ -1,6 +1,6 @@
 # Translations
 
-Translations are created by community members who use the app and want to support their language.
+**Translations are created by community members who use the app and want to support their language.**
 
 We use the following packages to display these translations:
 
@@ -38,6 +38,10 @@ This will require you to make a Crowdin account in order to suggest translations
 
 - With the current settings, you (hopefully) don't need approval to join the project.
 - You should receive notifications whenever we add new strings.
+
+> **Note:** You might need to message me on Crowdin to get permission to be a translator.
+
+If the language you want to translation isn't available in the project, request it on Crowdin or create a GitHub issue using the `🔠 Crowdin/Translation` template.
 
 ### Contribution Through Pull Request
 
