@@ -17,26 +17,26 @@
     "next": "Berikutnya",
     "shuffle": "Acak",
     "repeat": "Ulangi",
-    "repeatOne": null,
+    "repeatOne": "Ulangi Sekali",
     "favorite": "Sukai",
     "favorites": "Difavoritkan",
     "unFavorite": "Batal Sukai",
-    "favoriteTracks": null,
+    "favoriteTracks": "Trek Favorit",
     "home": "Beranda",
     "settings": "Pengaturan",
     "upcoming": "Yang akan Datang",
-    "disc": null
+    "disc": "Disk {{count}}"
   },
   "template": {
     "entryAdded": "`{{- name}}` telah ditambahkan.",
     "entryRemove": "`{{- name}}` Dihapus.",
     "entryRemoved": "`{{- name}}` Telah Dihapus.",
-    "entrySeeMore": null,
+    "entrySeeMore": "Lihat selengkapnya tentang `{{- name}}`.",
     "notFound": "`{{- name}}` tidak ditemukan.",
-    "entryShow": null,
-    "entryHide": null,
-    "entryEnable": null,
-    "entryDisable": null
+    "entryShow": "Tampilkan `{{- name}}`",
+    "entryHide": "Sembunyikan `{{- name}}`",
+    "entryEnable": "Aktifkan `{{- name}}`",
+    "entryDisable": "Nonaktifkan `{{- name}}`"
   },
   "plural": {
     "entry_one": "{{count}} entri",
@@ -54,7 +54,7 @@
     "unsaved": "Anda masih memiliki perubahan yang belum disimpan.",
     "stay": "Tetap disini",
     "leave": "Keluar",
-    "clear": null,
+    "clear": "Hapus",
     "validation": {
       "unique": "Unik"
     }
@@ -118,18 +118,18 @@
       }
     },
     "homeTabsOrder": {
-      "title": null,
-      "brief": null,
+      "title": "Urutan Tab Beranda",
+      "brief": "Kustomisasikan urutan dan visibilitas tab.",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "Urutkan lagi tab setelah tab \"Beranda\" dengan menarik dan melepaskan. Tombol visibilitas tab menggunakan ikon mata.",
+        "line2": "Peringatan: Perilaku tak terduga mungkin terjadi saat menavigasi ke tab yang disembunyikan."
       }
     },
     "nowPlayingDesign": {
-      "title": null,
+      "title": "Desain Layar Pemutaran Saat Ini",
       "extra": {
-        "plain": null,
-        "vinyl": null
+        "plain": "Plain",
+        "vinyl": "Vinyl"
       }
     },
     "language": {
@@ -180,8 +180,8 @@
       }
     },
     "deepRescan": {
-      "title": null,
-      "brief": null
+      "title": "Deep Rescan",
+      "brief": "Mengabaikan tindakan apa pun yang mempercepat fitur pemindaian ulang normal."
     },
     "listAllow": {
       "title": "Diizinkan",

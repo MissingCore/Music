@@ -33,10 +33,10 @@
     "entryRemoved": "已移除 `{{- name}}`。",
     "entrySeeMore": "查看更多关于 `{{- name}}` 的信息。",
     "notFound": "`{{- name}}` 不存在。",
-    "entryShow": null,
-    "entryHide": null,
-    "entryEnable": null,
-    "entryDisable": null
+    "entryShow": "显示`{{- name}}`",
+    "entryHide": "隐藏 `{{- name}}`",
+    "entryEnable": "启用`{{- name}}`",
+    "entryDisable": "禁用`{{- name}}`"
   },
   "plural": {
     "entry_one": "{{count}} 条记录",
@@ -54,7 +54,7 @@
     "unsaved": "可能有未保存的更改。",
     "stay": "留在此处",
     "leave": "离开",
-    "clear": null,
+    "clear": "清除",
     "validation": {
       "unique": "唯一"
     }
@@ -118,18 +118,18 @@
       }
     },
     "homeTabsOrder": {
-      "title": null,
-      "brief": null,
+      "title": "主页标签顺序",
+      "brief": "自定义标签的顺序和可见性。",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "通过拖放来重新排列“主页”标签后的标签页。使用眼睛图标切换标签可见性。",
+        "line2": "注意：导航到隐藏标签时可能会发生意外行为。"
       }
     },
     "nowPlayingDesign": {
-      "title": null,
+      "title": "播放器设计风格",
       "extra": {
-        "plain": null,
-        "vinyl": null
+        "plain": "普通封面",
+        "vinyl": "黑胶唱片"
       }
     },
     "language": {
@@ -180,8 +180,8 @@
       }
     },
     "deepRescan": {
-      "title": null,
-      "brief": null
+      "title": "深度扫描",
+      "brief": "忽略任何可以加速正常重新扫描功能的跳过措施。"
     },
     "listAllow": {
       "title": "允许列表",

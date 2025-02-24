@@ -33,10 +33,10 @@
     "entryRemoved": "`{{- name}}` supprimé.",
     "entrySeeMore": "Voir plus sur `{{- name}}`.",
     "notFound": "`{{- name}}` n'existe pas.",
-    "entryShow": null,
-    "entryHide": null,
-    "entryEnable": null,
-    "entryDisable": null
+    "entryShow": "Afficher `{{- name}}`",
+    "entryHide": "Cacher `{{- name}}`",
+    "entryEnable": "Activer `{{- name}}`",
+    "entryDisable": "Désactiver `{{- name}}`"
   },
   "plural": {
     "entry_one": "{{count}} entrée",
@@ -54,7 +54,7 @@
     "unsaved": "Vous avez des modifications non enregistrées.",
     "stay": "Rester",
     "leave": "Quitter",
-    "clear": null,
+    "clear": "Réinitialiser",
     "validation": {
       "unique": "Unique"
     }
@@ -118,18 +118,18 @@
       }
     },
     "homeTabsOrder": {
-      "title": null,
-      "brief": null,
+      "title": "Ordre des onglets",
+      "brief": "Personnalisez l'ordre et la visibilité des onglets.",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "Réorganiser les onglets après l'onglet \"Accueil\" par glisser-déposer. Activez/désactivez la visibilité des onglets en utilisant l'icône d'œil.",
+        "line2": "Attention : Un comportement inattendu peut survenir lors de la navigation vers un onglet caché."
       }
     },
     "nowPlayingDesign": {
-      "title": null,
+      "title": "Design de l'écran \"En cours de lecture\"",
       "extra": {
-        "plain": null,
-        "vinyl": null
+        "plain": "Classique",
+        "vinyl": "Vinyle"
       }
     },
     "language": {
@@ -180,8 +180,8 @@
       }
     },
     "deepRescan": {
-      "title": null,
-      "brief": null
+      "title": "Recherche en profondeur",
+      "brief": "Ignore toutes les mesures de saut qui accélèrent la fonction normale de recherche."
     },
     "listAllow": {
       "title": "Liste d'autorisation",

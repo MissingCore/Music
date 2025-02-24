@@ -35,8 +35,8 @@
     "notFound": "`{{- name}}` no existeix.",
     "entryShow": "Mostra `{{- name}}`",
     "entryHide": "Amaga `{{- name}}`",
-    "entryEnable": null,
-    "entryDisable": null
+    "entryEnable": "Activar `{{- name}}`",
+    "entryDisable": "Desactivar `{{- name}}`"
   },
   "plural": {
     "entry_one": "{{count}} entrada",
@@ -54,7 +54,7 @@
     "unsaved": "Poder tens canvis sense desar.",
     "stay": "Queda't",
     "leave": "Eixir",
-    "clear": null,
+    "clear": "Clar",
     "validation": {
       "unique": "Únic"
     }
