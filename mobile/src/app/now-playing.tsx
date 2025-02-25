@@ -1,10 +1,7 @@
 import { Stack } from "expo-router";
-import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { View, useWindowDimensions } from "react-native";
+import { View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
-import { GestureDetector } from "react-native-gesture-handler";
-import Animated from "react-native-reanimated";
 import { useProgress } from "react-native-track-player";
 
 import { Favorite } from "~/icons/Favorite";
@@ -16,7 +13,7 @@ import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { useMusicStore } from "~/modules/media/services/Music";
 import { MusicControls } from "~/modules/media/services/Playback";
 import { useSeekStore } from "~/screens/NowPlaying/SeekService";
-import { useVinylSeekbar } from "~/screens/NowPlaying/useVinylSeekbar";
+import { NowPlayingArtwork } from "~/screens/NowPlaying/Artwork";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 
 import { mutateGuard } from "~/lib/react-query";
@@ -33,8 +30,6 @@ import {
   RepeatButton,
   ShuffleButton,
 } from "~/modules/media/components/MediaControls";
-import { MediaImage } from "~/modules/media/components/MediaImage";
-import { Vinyl } from "~/modules/media/components/Vinyl";
 
 /** Screen for `/now-playing` route. */
 export default function NowPlayingScreen() {
@@ -64,7 +59,7 @@ export default function NowPlayingScreen() {
           ),
         }}
       />
-      <Artwork artwork={track.artwork} />
+      <NowPlayingArtwork artwork={track.artwork} />
       <View className="gap-2 p-4">
         <Metadata name={track.name} artistName={track.artistName} />
         <SeekBar duration={track.duration} />
@@ -75,50 +70,6 @@ export default function NowPlayingScreen() {
     </>
   );
 }
-
-//#region Artwork
-/** Renders the artwork of the current playing track. */
-function Artwork({ artwork: source }: { artwork: string | null }) {
-  const { width } = useWindowDimensions();
-  const [areaHeight, setAreaHeight] = useState<number | null>(null);
-  const nowPlayingDesign = useUserPreferencesStore(
-    (state) => state.nowPlayingDesign,
-  );
-
-  /* Get the height for the artwork that maximizes the space. */
-  const size = useMemo(() => {
-    if (areaHeight === null) return undefined;
-    // Exclude the padding around the image depending on which measurement is used.
-    return (areaHeight > width ? width : areaHeight) - 32;
-  }, [areaHeight, width]);
-
-  return (
-    <View
-      onLayout={({ nativeEvent }) => setAreaHeight(nativeEvent.layout.height)}
-      className="flex-1 items-center pt-8"
-    >
-      {size !== undefined &&
-        (nowPlayingDesign === "vinyl" ? (
-          <VinylSeekBar {...{ source, size }} />
-        ) : (
-          <MediaImage type="track" {...{ source, size }} />
-        ))}
-    </View>
-  );
-}
-
-/** Seekbar variant that uses the vinyl artwork. */
-function VinylSeekBar(props: { source: string | null; size: number }) {
-  const { initCenter, vinylStyle, seekGesture } = useVinylSeekbar();
-  return (
-    <GestureDetector gesture={seekGesture}>
-      <Animated.View onLayout={initCenter} style={vinylStyle}>
-        <Vinyl onPress={MusicControls.playToggle} {...props} />
-      </Animated.View>
-    </GestureDetector>
-  );
-}
-//#endregion
 
 //#region Metadata
 /** Renders the name & artist of the current playing track. */
