@@ -19,7 +19,7 @@ export const ThemeOptions = ["light", "dark", "system"] as const;
 /** Options for app accent font. */
 export const FontOptions = ["NDot", "NType", "Roboto"] as const;
 /** Options for "Now Playing" screen designs. */
-export const NowPlayingDesignOptions = ["vinyl", "plain"] as const;
+export const NowPlayingDesignOptions = ["vinyl", "vinylOld", "plain"] as const;
 /** Options for the tabs we can reorder. */
 export type OrderableTab = "album" | "artist" | "folder" | "playlist" | "track";
 
