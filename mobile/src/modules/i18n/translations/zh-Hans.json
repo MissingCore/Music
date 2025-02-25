@@ -106,8 +106,11 @@
       "title": "外观",
       "brief": "个性化应用外观。"
     },
-    "accentFont": {
-      "title": "强调字体"
+    "font": {
+      "extra": {
+        "accent": "强调字体",
+        "primary": null
+      }
     },
     "theme": {
       "title": "主题",
@@ -129,7 +132,8 @@
       "title": "播放器设计风格",
       "extra": {
         "plain": "普通封面",
-        "vinyl": "黑胶唱片"
+        "vinyl": "黑胶唱片",
+        "vinylOld": null
       }
     },
     "language": {
@@ -165,6 +169,23 @@
     "interactions": {
       "title": "Nothing 交互",
       "brief": "支持的 Nothing 功能。"
+    },
+    "playback": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "options": null,
+        "speed": null,
+        "volume": null
+      }
+    },
+    "ignoreInterrupt": {
+      "title": null,
+      "brief": null
+    },
+    "repeatOnSkip": {
+      "title": null,
+      "brief": null
     },
     "scanning": {
       "title": "扫描",
@@ -238,7 +259,8 @@
     "playedRecent": {
       "title": "最近播放",
       "extra": {
-        "empty": "你还没有播放任何内容！"
+        "empty": "你还没有播放任何内容！",
+        "section": null
       }
     },
     "search": {

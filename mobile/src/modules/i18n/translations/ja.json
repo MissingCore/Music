@@ -106,8 +106,11 @@
       "title": "外観",
       "brief": "アプリの外観をカスタマイズします。"
     },
-    "accentFont": {
-      "title": "アクセントフォント"
+    "font": {
+      "extra": {
+        "accent": "アクセントフォント",
+        "primary": null
+      }
     },
     "theme": {
       "title": "テーマ",
@@ -129,7 +132,8 @@
       "title": "再生中画面のデザイン",
       "extra": {
         "plain": "プレーン",
-        "vinyl": "ヴァイナル"
+        "vinyl": "ヴァイナル",
+        "vinylOld": null
       }
     },
     "language": {
@@ -165,6 +169,23 @@
     "interactions": {
       "title": "Nothing のインタラクション",
       "brief": "Nothing でサポートされている機能について。"
+    },
+    "playback": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "options": null,
+        "speed": null,
+        "volume": null
+      }
+    },
+    "ignoreInterrupt": {
+      "title": null,
+      "brief": null
+    },
+    "repeatOnSkip": {
+      "title": null,
+      "brief": null
     },
     "scanning": {
       "title": "音楽のスキャン",
@@ -238,7 +259,8 @@
     "playedRecent": {
       "title": "最近に再生",
       "extra": {
-        "empty": "まだ何も再生していません！"
+        "empty": "まだ何も再生していません！",
+        "section": null
       }
     },
     "search": {

@@ -106,8 +106,11 @@
       "title": "Aparença",
       "brief": "Personalitza l'aspecte de l'app."
     },
-    "accentFont": {
-      "title": "Accent"
+    "font": {
+      "extra": {
+        "accent": "Accent",
+        "primary": null
+      }
     },
     "theme": {
       "title": "Tema",
@@ -129,7 +132,8 @@
       "title": "Disseny pantalla de reproducció",
       "extra": {
         "plain": "Pla",
-        "vinyl": "Vinil"
+        "vinyl": "Vinil",
+        "vinylOld": null
       }
     },
     "language": {
@@ -165,6 +169,23 @@
     "interactions": {
       "title": "Interaccions de Nothing",
       "brief": "Funcions de Nothing suportades."
+    },
+    "playback": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "options": null,
+        "speed": null,
+        "volume": null
+      }
+    },
+    "ignoreInterrupt": {
+      "title": null,
+      "brief": null
+    },
+    "repeatOnSkip": {
+      "title": null,
+      "brief": null
     },
     "scanning": {
       "title": "Escanejant",
@@ -238,7 +259,8 @@
     "playedRecent": {
       "title": "Reproduït fa poc",
       "extra": {
-        "empty": "Encara no has reproduït rés!"
+        "empty": "Encara no has reproduït rés!",
+        "section": null
       }
     },
     "search": {

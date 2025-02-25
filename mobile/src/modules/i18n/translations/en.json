@@ -124,8 +124,11 @@
       "title": "Appearance",
       "brief": "Personalize the app looks."
     },
-    "accentFont": {
-      "title": "Accent Font"
+    "font": {
+      "extra": {
+        "accent": "Accent Font",
+        "primary": "Primary Font"
+      }
     },
     "theme": {
       "title": "Theme",
@@ -147,7 +150,8 @@
       "title": "Now Playing Screen Design",
       "extra": {
         "plain": "Plain",
-        "vinyl": "Vinyl"
+        "vinyl": "Vinyl",
+        "vinylOld": "Vinyl (Legacy)"
       }
     },
     "language": {
@@ -183,6 +187,23 @@
     "interactions": {
       "title": "Nothing Interactions",
       "brief": "Supported Nothing features."
+    },
+    "playback": {
+      "title": "Playback",
+      "brief": "Change music playing behavior.",
+      "extra": {
+        "options": "Playback Options",
+        "speed": "Playback Speed",
+        "volume": "App Volume"
+      }
+    },
+    "ignoreInterrupt": {
+      "title": "Ignore Interruptions",
+      "brief": "Continue playing audio when an interruption such as a notification or a call occurs. You will need to manually pause and unpause the music during these situations."
+    },
+    "repeatOnSkip": {
+      "title": "Keep Repeat Mode on Skip",
+      "brief": "Don't switch mode to \"Repeat\" from \"Repeat One\" on skip."
     },
     "scanning": {
       "title": "Scanning",
@@ -258,7 +279,8 @@
     "playedRecent": {
       "title": "Recently Played",
       "extra": {
-        "empty": "You haven't played anything yet!"
+        "empty": "You haven't played anything yet!",
+        "section": "Recently Played Section"
       }
     },
     "search": {

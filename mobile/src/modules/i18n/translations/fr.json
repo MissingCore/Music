@@ -106,8 +106,11 @@
       "title": "Apparence",
       "brief": "Personnalisez l'apparence de l'application."
     },
-    "accentFont": {
-      "title": "Police Accentuée"
+    "font": {
+      "extra": {
+        "accent": "Police Accentuée",
+        "primary": null
+      }
     },
     "theme": {
       "title": "Thème",
@@ -129,7 +132,8 @@
       "title": "Design de l'écran \"En cours de lecture\"",
       "extra": {
         "plain": "Classique",
-        "vinyl": "Vinyle"
+        "vinyl": "Vinyle",
+        "vinylOld": null
       }
     },
     "language": {
@@ -165,6 +169,23 @@
     "interactions": {
       "title": "Intéractions Nothing",
       "brief": "Fonctionnalités Nothing supportées."
+    },
+    "playback": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "options": null,
+        "speed": null,
+        "volume": null
+      }
+    },
+    "ignoreInterrupt": {
+      "title": null,
+      "brief": null
+    },
+    "repeatOnSkip": {
+      "title": null,
+      "brief": null
     },
     "scanning": {
       "title": "Recherche de musique",
@@ -238,7 +259,8 @@
     "playedRecent": {
       "title": "Écouté récemment",
       "extra": {
-        "empty": "Vous n'avez encore rien écouté!"
+        "empty": "Vous n'avez encore rien écouté!",
+        "section": null
       }
     },
     "search": {

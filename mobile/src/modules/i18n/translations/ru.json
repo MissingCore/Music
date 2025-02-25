@@ -106,8 +106,11 @@
       "title": "Внешний вид",
       "brief": "Персонализировать внешний вид приложения."
     },
-    "accentFont": {
-      "title": "Шрифт"
+    "font": {
+      "extra": {
+        "accent": "Шрифт",
+        "primary": null
+      }
     },
     "theme": {
       "title": "Тема",
@@ -129,7 +132,8 @@
       "title": null,
       "extra": {
         "plain": null,
-        "vinyl": null
+        "vinyl": null,
+        "vinylOld": null
       }
     },
     "language": {
@@ -165,6 +169,23 @@
     "interactions": {
       "title": null,
       "brief": "Поддержка Nothing функций."
+    },
+    "playback": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "options": null,
+        "speed": null,
+        "volume": null
+      }
+    },
+    "ignoreInterrupt": {
+      "title": null,
+      "brief": null
+    },
+    "repeatOnSkip": {
+      "title": null,
+      "brief": null
     },
     "scanning": {
       "title": "Сканирование",
@@ -238,7 +259,8 @@
     "playedRecent": {
       "title": "Недавно сыграно",
       "extra": {
-        "empty": "Вы еще ничего не послушали!"
+        "empty": "Вы еще ничего не послушали!",
+        "section": null
       }
     },
     "search": {

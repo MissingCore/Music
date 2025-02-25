@@ -106,8 +106,11 @@
       "title": "दिखावट",
       "brief": "ऐप की दिखावट को व्यक्तिगत बनाएं।"
     },
-    "accentFont": {
-      "title": "अक्षर शैली"
+    "font": {
+      "extra": {
+        "accent": "अक्षर शैली",
+        "primary": null
+      }
     },
     "theme": {
       "title": "थीम",
@@ -129,7 +132,8 @@
       "title": "अभी चल रहा स्क्रीन डिज़ाइन",
       "extra": {
         "plain": "साधारण",
-        "vinyl": "विनाइल"
+        "vinyl": "विनाइल",
+        "vinylOld": null
       }
     },
     "language": {
@@ -165,6 +169,23 @@
     "interactions": {
       "title": "कोई इंटरैक्शन नहीं",
       "brief": "समर्थित 'कुछ भी नहीं' विशेषताएँ।"
+    },
+    "playback": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "options": null,
+        "speed": null,
+        "volume": null
+      }
+    },
+    "ignoreInterrupt": {
+      "title": null,
+      "brief": null
+    },
+    "repeatOnSkip": {
+      "title": null,
+      "brief": null
     },
     "scanning": {
       "title": "स्कैनिंग",
@@ -238,7 +259,8 @@
     "playedRecent": {
       "title": "हाल ही में चलाए गए",
       "extra": {
-        "empty": "आपने अभी तक कुछ भी नहीं चलाया है!"
+        "empty": "आपने अभी तक कुछ भी नहीं चलाया है!",
+        "section": null
       }
     },
     "search": {

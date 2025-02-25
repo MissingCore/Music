@@ -106,8 +106,11 @@
       "title": "Apariencia",
       "brief": "Personaliza el aspecto de la app."
     },
-    "accentFont": {
-      "title": "Fuente de acento"
+    "font": {
+      "extra": {
+        "accent": "Fuente de acento",
+        "primary": null
+      }
     },
     "theme": {
       "title": "Tema",
@@ -129,7 +132,8 @@
       "title": "Diseño de Pantalla Ahora Reproduciendo",
       "extra": {
         "plain": "Simple",
-        "vinyl": "Vinilo"
+        "vinyl": "Vinilo",
+        "vinylOld": null
       }
     },
     "language": {
@@ -165,6 +169,23 @@
     "interactions": {
       "title": "Interacciones de Nothing",
       "brief": "Características compatibles de Nothing."
+    },
+    "playback": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "options": null,
+        "speed": null,
+        "volume": null
+      }
+    },
+    "ignoreInterrupt": {
+      "title": null,
+      "brief": null
+    },
+    "repeatOnSkip": {
+      "title": null,
+      "brief": null
     },
     "scanning": {
       "title": "Escaneando",
@@ -238,7 +259,8 @@
     "playedRecent": {
       "title": "Reproducido recientemente",
       "extra": {
-        "empty": "¡Aún no has reproducido nada!"
+        "empty": "¡Aún no has reproducido nada!",
+        "section": null
       }
     },
     "search": {

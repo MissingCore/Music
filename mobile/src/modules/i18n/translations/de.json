@@ -106,8 +106,11 @@
       "title": "Aussehen",
       "brief": "Aussehen der App personalisieren."
     },
-    "accentFont": {
-      "title": "Akzentschrift"
+    "font": {
+      "extra": {
+        "accent": "Akzentschrift",
+        "primary": null
+      }
     },
     "theme": {
       "title": "Thema",
@@ -129,7 +132,8 @@
       "title": "Design des Jetzt-Läuft-Bildschirms",
       "extra": {
         "plain": "Einfach",
-        "vinyl": "Vinyl"
+        "vinyl": "Vinyl",
+        "vinylOld": null
       }
     },
     "language": {
@@ -165,6 +169,23 @@
     "interactions": {
       "title": "Nothing Wechselwirkung",
       "brief": "Unterstützte Nothing Funktionen."
+    },
+    "playback": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "options": null,
+        "speed": null,
+        "volume": null
+      }
+    },
+    "ignoreInterrupt": {
+      "title": null,
+      "brief": null
+    },
+    "repeatOnSkip": {
+      "title": null,
+      "brief": null
     },
     "scanning": {
       "title": "Scannen",
@@ -238,7 +259,8 @@
     "playedRecent": {
       "title": "Kürzlich gehört",
       "extra": {
-        "empty": "Du hast noch nichts gehört!"
+        "empty": "Du hast noch nichts gehört!",
+        "section": null
       }
     },
     "search": {

@@ -106,8 +106,11 @@
       "title": "Tampilan",
       "brief": "Personalisasikan aplikasi."
     },
-    "accentFont": {
-      "title": "Font Aksen"
+    "font": {
+      "extra": {
+        "accent": "Font Aksen",
+        "primary": null
+      }
     },
     "theme": {
       "title": "Tema",
@@ -129,7 +132,8 @@
       "title": "Desain Layar Pemutaran Saat Ini",
       "extra": {
         "plain": "Plain",
-        "vinyl": "Vinyl"
+        "vinyl": "Vinyl",
+        "vinylOld": null
       }
     },
     "language": {
@@ -165,6 +169,23 @@
     "interactions": {
       "title": "Tidak Ada Interaksi",
       "brief": "Fitur tidak didukung."
+    },
+    "playback": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "options": null,
+        "speed": null,
+        "volume": null
+      }
+    },
+    "ignoreInterrupt": {
+      "title": null,
+      "brief": null
+    },
+    "repeatOnSkip": {
+      "title": null,
+      "brief": null
     },
     "scanning": {
       "title": "Memindai",
@@ -238,7 +259,8 @@
     "playedRecent": {
       "title": "Baru Saja Diputar",
       "extra": {
-        "empty": "Anda belum memutar apapun!"
+        "empty": "Anda belum memutar apapun!",
+        "section": null
       }
     },
     "search": {

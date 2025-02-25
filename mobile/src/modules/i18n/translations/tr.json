@@ -106,8 +106,11 @@
       "title": "Görünüm",
       "brief": "Uygulamanın görünümünü kişiselleştir."
     },
-    "accentFont": {
-      "title": "Vurgulu Yazı Tipi"
+    "font": {
+      "extra": {
+        "accent": "Vurgulu Yazı Tipi",
+        "primary": null
+      }
     },
     "theme": {
       "title": "Tema",
@@ -129,7 +132,8 @@
       "title": "Şu An Çalan Ekran Tasarımı",
       "extra": {
         "plain": "Sade",
-        "vinyl": "Vinil"
+        "vinyl": "Vinil",
+        "vinylOld": null
       }
     },
     "language": {
@@ -165,6 +169,23 @@
     "interactions": {
       "title": "Nothing Etkileşimleri",
       "brief": "Desteklenen Nothing özellikleri."
+    },
+    "playback": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "options": null,
+        "speed": null,
+        "volume": null
+      }
+    },
+    "ignoreInterrupt": {
+      "title": null,
+      "brief": null
+    },
+    "repeatOnSkip": {
+      "title": null,
+      "brief": null
     },
     "scanning": {
       "title": "Tarama",
@@ -238,7 +259,8 @@
     "playedRecent": {
       "title": "Son Oynatılanlar",
       "extra": {
-        "empty": "Henüz bir şey çalmadınız!"
+        "empty": "Henüz bir şey çalmadınız!",
+        "section": null
       }
     },
     "search": {
