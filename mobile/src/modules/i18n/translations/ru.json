@@ -11,7 +11,7 @@
     "playlists": "Плейлисты",
     "track": "Трек",
     "tracks": "Треки",
-    "play": "Вкл.",
+    "play": "Играть",
     "pause": "Пауза",
     "prev": "Предыдущее",
     "next": "Следующее",
@@ -33,10 +33,10 @@
     "entryRemoved": "Удалён `{{- name}}`.",
     "entrySeeMore": "Увидеть подробности `{{- name}}`.",
     "notFound": "`{{- name}}` Не существует.",
-    "entryShow": null,
-    "entryHide": null,
-    "entryEnable": null,
-    "entryDisable": null
+    "entryShow": "Показать `{{- name}}`",
+    "entryHide": "Скрыть `{{- name}}`",
+    "entryEnable": "Включить `{{- name}}`",
+    "entryDisable": "Отключить `{{- name}}`"
   },
   "plural": {
     "entry_one": "{{count}} Запись",
@@ -54,7 +54,7 @@
     "unsaved": "У вас могут быть несохраненные изменения.",
     "stay": "Остаться",
     "leave": "Оставлять",
-    "clear": null,
+    "clear": "Сбросить",
     "validation": {
       "unique": "Уникальный"
     }
@@ -121,18 +121,18 @@
       }
     },
     "homeTabsOrder": {
-      "title": null,
-      "brief": null,
+      "title": "Порядок вкладок домашней страницы",
+      "brief": "Настроить порядок и видимость вкладок.",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "Упорядочьте вкладки после вкладки \"Home\" перетаскиванием и сбросом. Переключите видимость вкладки с помощью значка глаза.",
+        "line2": "Внимание: При переходе к скрытой вкладке может произойти непредвиденное поведение."
       }
     },
     "nowPlayingDesign": {
-      "title": null,
+      "title": "Проигрывается дизайн экрана",
       "extra": {
-        "plain": null,
-        "vinyl": null,
+        "plain": "Обычный",
+        "vinyl": "Винил",
         "vinylOld": null
       }
     },
@@ -167,7 +167,7 @@
       "brief": "Узнать причину, по которой некоторые треки не были сохранены."
     },
     "interactions": {
-      "title": null,
+      "title": "Nothing Interactions",
       "brief": "Поддержка Nothing функций."
     },
     "playback": {
@@ -201,8 +201,8 @@
       }
     },
     "deepRescan": {
-      "title": null,
-      "brief": null
+      "title": "Глубокое сканирование",
+      "brief": "Игнорирует любые средства пропуска, которые ускоряют нормальный процесс сканирования."
     },
     "listAllow": {
       "title": "Белый список",

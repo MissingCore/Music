@@ -9,40 +9,41 @@
 
 ## [日本語] Japanese
 
-[@reindex-ot](https://www.github.com/reindex-ot)
+- [@reindex-ot](https://www.github.com/reindex-ot)
 
 ## [Deutsch] German
 
-[@The-Ladle](https://www.github.com/The-Ladle)
+- [@The-Ladle](https://www.github.com/The-Ladle)
 
 ## [Indonesia] Indonesian
 
-[@naturbrilian](https://www.github.com/naturbrilian)
+- [@naturbrilian](https://www.github.com/naturbrilian)
 
 ## [Español] Spanish
 
-[@G4b-0](https://www.github.com/G4b-0)
+- [@G4b-0](https://www.github.com/G4b-0)
 
 ## [Français] French
 
-[@nin7o](https://www.github.com/nin7o)
+- [@nin7o](https://www.github.com/nin7o)
 
 ## [简体中文] Chinese (Simplified)
 
-[@yang1206](https://www.github.com/yang1206)
+- [@yang1206](https://www.github.com/yang1206)
 
 ## [Русский] Russian
 
-[@klinoff0](https://www.github.com/klinoff0)
+- [@klinoff0](https://www.github.com/klinoff0)
+- [Nonameguy48 (thenonameguy295)](https://crowdin.com/profile/thenonameguy295)
 
 ## [Türkçe] Turkish
 
-[@mikropsoft](https://www.github.com/mikropsoft)
+- [@mikropsoft](https://www.github.com/mikropsoft)
 
 ## [Català] Catalan
 
-[@T-K-Y-M](https://www.github.com/T-K-Y-M)
+- [@T-K-Y-M](https://www.github.com/T-K-Y-M)
 
 ## [हिंदी] Hindi
 
-[@OxSourabh](https://www.github.com/OxSourabh)
+- [@OxSourabh](https://www.github.com/OxSourabh)
