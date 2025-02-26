@@ -59,7 +59,7 @@ export function TopAppBarMarquee({ options, route }: NativeStackHeaderProps) {
   const title = getHeaderTitle(options, route.name);
 
   return (
-    <SafeContainer className="bg-canvas">
+    <SafeContainer className="bg-canvas/80">
       <View className="h-14 flex-row items-center justify-between gap-4 p-1">
         <IconButton
           kind="ripple"

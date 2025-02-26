@@ -19,6 +19,7 @@ import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { mutateGuard } from "~/lib/react-query";
 import { formatSeconds } from "~/utils/number";
 import { Marquee } from "~/components/Containment/Marquee";
+import { SafeContainer } from "~/components/Containment/SafeContainer";
 import { IconButton } from "~/components/Form/Button";
 import { Slider } from "~/components/Form/Slider";
 import { Back } from "~/components/Transition/Back";
@@ -59,14 +60,16 @@ export default function NowPlayingScreen() {
           ),
         }}
       />
-      <NowPlayingArtwork artwork={track.artwork} />
-      <View className="gap-2 p-4">
-        <Metadata name={track.name} artistName={track.artistName} />
-        <SeekBar duration={track.duration} />
-        <PlaybackControls />
-        <VolumeSlider />
-        <BottomAppBar trackId={track.id} />
-      </View>
+      <SafeContainer additionalTopOffset={56} className="flex-1">
+        <NowPlayingArtwork artwork={track.artwork} />
+        <View className="gap-2 p-4">
+          <Metadata name={track.name} artistName={track.artistName} />
+          <SeekBar duration={track.duration} />
+          <PlaybackControls />
+          <VolumeSlider />
+          <BottomAppBar trackId={track.id} />
+        </View>
+      </SafeContainer>
     </>
   );
 }
