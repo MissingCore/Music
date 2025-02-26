@@ -87,6 +87,7 @@ function RootLayoutNav() {
           options={{
             animation: "slide_from_bottom",
             header: TopAppBarMarquee,
+            headerTransparent: true,
             headerShown: true,
             headerTitle: "",
           }}

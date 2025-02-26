@@ -1,8 +1,10 @@
 import { getHeaderTitle } from "@react-navigation/elements";
 import type { NativeStackHeaderProps } from "@react-navigation/native-stack";
+import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { ArrowBack } from "~/icons/ArrowBack";
 import { useTheme } from "~/hooks/useTheme";
@@ -54,12 +56,20 @@ export function TopAppBar({ options, route }: NativeStackHeaderProps) {
  * a single line through a `<Marquee />`.
  */
 export function TopAppBarMarquee({ options, route }: NativeStackHeaderProps) {
+  const insets = useSafeAreaInsets();
   const { t } = useTranslation();
-  const { canvas } = useTheme();
+  const { canvas, theme } = useTheme();
   const title = getHeaderTitle(options, route.name);
 
   return (
-    <SafeContainer className="bg-canvas">
+    <SafeContainer className="relative">
+      <LinearGradient
+        colors={[`${canvas}${theme === "light" ? "B3" : "00"}`, `${canvas}FF`]}
+        start={{ x: 0.0, y: 1.0 }}
+        end={{ x: 0.0, y: 0.0 }}
+        style={{ height: insets.top + 56 }}
+        className="absolute left-0 top-0 w-full"
+      />
       <View className="h-14 flex-row items-center justify-between gap-4 p-1">
         <IconButton
           kind="ripple"
