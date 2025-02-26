@@ -7,6 +7,7 @@ import {
   useFavoriteListsForCards,
   useFavoriteTracksCount,
 } from "~/queries/favorite";
+import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { useRecentListStore } from "~/modules/media/services/RecentList";
 import { StickyActionScrollLayout } from "~/layouts/StickyActionScroll";
@@ -27,7 +28,6 @@ import {
 export default function HomeScreen() {
   return (
     <StickyActionScrollLayout titleKey="term.home">
-      <TEm textKey="feat.playedRecent.title" className="-mb-4" />
       <RecentlyPlayed />
       <TEm textKey="term.favorites" className="-mb-4" />
       <Favorites />
@@ -42,6 +42,7 @@ function RecentlyPlayed() {
     ...{ cols: 1, gap: 0, gutters: 32, minWidth: 100 },
   });
   const recentlyPlayedData = useRecentListStore((state) => state.recentList);
+  const shouldShow = useUserPreferencesStore((state) => state.showRecent);
 
   const [initNoData, setInitNoData] = useState(false);
   const [itemHeight, setItemHeight] = useState(0);
@@ -62,33 +63,38 @@ function RecentlyPlayed() {
     }
   }, [initNoData, itemHeight]);
 
+  if (!shouldShow) return null;
+
   return (
-    <FlashList
-      ref={listRef}
-      estimatedItemSize={width + 12} // Column width + gap from padding left
-      horizontal
-      data={recentlyPlayedData}
-      keyExtractor={({ href }) => href}
-      renderItem={({ item, index }) => (
-        <MediaCard
-          onLayout={(e) => setItemHeight(e.nativeEvent.layout.height)}
-          {...{ ...item, size: width }}
-          className={index > 0 ? "ml-3" : undefined}
-        />
-      )}
-      ListEmptyComponent={
-        <TStyledText
-          onLayout={() => setInitNoData(true)}
-          textKey="feat.playedRecent.extra.empty"
-          className="my-4"
-        />
-      }
-      renderScrollComponent={ScrollView}
-      overScrollMode="never"
-      showsHorizontalScrollIndicator={false}
-      className="-mx-4"
-      contentContainerClassName="px-4"
-    />
+    <>
+      <TEm textKey="feat.playedRecent.title" className="-mb-4" />
+      <FlashList
+        ref={listRef}
+        estimatedItemSize={width + 12} // Column width + gap from padding left
+        horizontal
+        data={recentlyPlayedData}
+        keyExtractor={({ href }) => href}
+        renderItem={({ item, index }) => (
+          <MediaCard
+            onLayout={(e) => setItemHeight(e.nativeEvent.layout.height)}
+            {...{ ...item, size: width }}
+            className={index > 0 ? "ml-3" : undefined}
+          />
+        )}
+        ListEmptyComponent={
+          <TStyledText
+            onLayout={() => setInitNoData(true)}
+            textKey="feat.playedRecent.extra.empty"
+            className="my-4"
+          />
+        }
+        renderScrollComponent={ScrollView}
+        overScrollMode="never"
+        showsHorizontalScrollIndicator={false}
+        className="-mx-4"
+        contentContainerClassName="px-4"
+      />
+    </>
   );
 }
 //#endregion

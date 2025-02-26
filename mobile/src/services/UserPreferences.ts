@@ -55,6 +55,10 @@ interface UserPreferencesStore {
   tabsVisibility: Record<OrderableTab, boolean>;
   toggleTabVisibility: (tab: OrderableTab) => void;
 
+  /** Whether we'll show the "Recently Played" section on the home screen. */
+  showRecent: boolean;
+  toggleShowRecent: () => void;
+
   /** Minimum number of seconds a track needs to have to be saved. */
   minSeconds: number;
 
@@ -131,6 +135,9 @@ export const userPreferencesStore =
           tabsVisibility: { ...tabsVisibility, [tab]: !tabsVisibility[tab] },
         }));
       },
+
+      showRecent: true,
+      toggleShowRecent: () => set((prev) => ({ showRecent: !prev.showRecent })),
 
       minSeconds: 15,
 

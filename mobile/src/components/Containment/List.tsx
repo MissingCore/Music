@@ -7,6 +7,7 @@ import type { TextColor } from "~/lib/style";
 import { cn } from "~/lib/style";
 import type { WithListEmptyProps } from "../Defaults";
 import { FlashList } from "../Defaults";
+import { Switch } from "../Form/Switch";
 import { StyledText } from "../Typography/StyledText";
 
 //#region List
@@ -63,6 +64,7 @@ export function ListItem(
     // Interactivity props.
     onPress?: () => void;
     disabled?: boolean;
+    switchState?: boolean;
     // Content props.
     description?: string;
     icon?: React.ReactNode;
@@ -79,11 +81,14 @@ export function ListItem(
   const { t } = useTranslation();
 
   const asButton = props.onPress !== undefined;
+  const asSwitch = asButton && props.switchState !== undefined;
   const withIcon = !!props.icon;
   const usedColor = props.textColor ?? "text-foreground";
 
   return (
     <Pressable
+      accessibilityRole={asSwitch ? "switch" : undefined}
+      accessibilityState={asSwitch ? { checked: props.switchState } : undefined}
       onPress={props.onPress}
       // Have `<Pressable />` work as a `<View />` if no `onPress` is provided.
       disabled={asButton ? props.disabled : true}
@@ -93,7 +98,7 @@ export function ListItem(
           "rounded-t-sm": !props.first,
           "rounded-b-sm": !props.last,
           "active:opacity-75 disabled:opacity-25": asButton,
-          "flex-row items-center gap-4": withIcon,
+          "flex-row items-center gap-4": asSwitch || withIcon,
         },
         props.className,
       )}
@@ -108,7 +113,7 @@ export function ListItem(
           </StyledText>
         ) : null}
       </View>
-      {props.icon}
+      {asSwitch ? <Switch enabled={!!props.switchState} /> : props.icon}
     </Pressable>
   );
 }

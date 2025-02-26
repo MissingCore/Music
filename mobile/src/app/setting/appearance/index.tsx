@@ -15,6 +15,12 @@ export default function AppearanceScreen() {
   const nowPlayingDesign = useUserPreferencesStore(
     (state) => state.nowPlayingDesign,
   );
+  const showRecentlyPlayed = useUserPreferencesStore(
+    (state) => state.showRecent,
+  );
+  const toggleShowRecentlyPlayed = useUserPreferencesStore(
+    (state) => state.toggleShowRecent,
+  );
 
   return (
     <StandardScrollLayout>
@@ -44,6 +50,11 @@ export default function AppearanceScreen() {
           titleKey="feat.nowPlayingDesign.title"
           description={t(`feat.nowPlayingDesign.extra.${nowPlayingDesign}`)}
           onPress={() => SheetManager.show("NowPlayingDesignSheet")}
+        />
+        <ListItem
+          titleKey="feat.playedRecent.extra.section"
+          onPress={toggleShowRecentlyPlayed}
+          switchState={showRecentlyPlayed}
           last
         />
       </List>
