@@ -2,7 +2,12 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View, useWindowDimensions } from "react-native";
 import { GestureDetector } from "react-native-gesture-handler";
-import Animated from "react-native-reanimated";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withTiming,
+} from "react-native-reanimated";
 
 import { useMusicStore } from "~/modules/media/services/Music";
 import { MusicControls } from "~/modules/media/services/Playback";
@@ -44,7 +49,8 @@ function ArtworkPicker(props: ArtworkProps) {
 
   if (usedDesign === "plain") return <PlainArtwork {...props} />;
   else if (usedDesign === "vinyl") return <VinylSeekBar {...props} />;
-  else return null;
+  else if (usedDesign === "vinylOld") return <VinylLegacy {...props} />;
+  return null;
 }
 
 /** Plain artwork design. */
@@ -70,5 +76,33 @@ function VinylSeekBar(props: ArtworkProps) {
         <Vinyl onPress={MusicControls.playToggle} {...props} />
       </Animated.View>
     </GestureDetector>
+  );
+}
+
+/** Similar artwork design seen in v1, but with the new features. */
+function VinylLegacy(props: ArtworkProps) {
+  const coverPosition = useSharedValue(0);
+  const coverStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: coverPosition.value }],
+  }));
+  return (
+    <View
+      onLayout={() => {
+        coverPosition.value = withDelay(
+          50,
+          withTiming(-props.size / 2, { duration: 500 }),
+        );
+      }}
+      className="relative"
+    >
+      <VinylSeekBar {...props} />
+      <Animated.View
+        pointerEvents="none"
+        style={coverStyle}
+        className="absolute left-0 top-0 z-10"
+      >
+        <MediaImage type="track" {...props} />
+      </Animated.View>
+    </View>
   );
 }
