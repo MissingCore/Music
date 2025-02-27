@@ -67,6 +67,11 @@ export default function SettingScreen() {
           }
         />
         <ListItem
+          titleKey="feat.playback.title"
+          description={t("feat.playback.brief")}
+          onPress={() => router.navigate("/setting/playback")}
+        />
+        <ListItem
           titleKey="feat.scanning.title"
           description={t("feat.scanning.brief")}
           onPress={() => router.navigate("/setting/scanning")}

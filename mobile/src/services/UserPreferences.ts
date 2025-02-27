@@ -59,6 +59,10 @@ interface UserPreferencesStore {
   showRecent: boolean;
   toggleShowRecent: () => void;
 
+  /** Whether we'll continue playback through any interruptions. */
+  ignoreInterrupt: boolean;
+  toggleIgnoreInterrupt: () => void;
+
   /** Minimum number of seconds a track needs to have to be saved. */
   minSeconds: number;
 
@@ -138,6 +142,10 @@ export const userPreferencesStore =
 
       showRecent: true,
       toggleShowRecent: () => set((prev) => ({ showRecent: !prev.showRecent })),
+
+      ignoreInterrupt: false,
+      toggleIgnoreInterrupt: () =>
+        set((prev) => ({ ignoreInterrupt: !prev.ignoreInterrupt })),
 
       minSeconds: 15,
 

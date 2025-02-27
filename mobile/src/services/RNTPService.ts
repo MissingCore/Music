@@ -8,6 +8,7 @@ import type { TrackStatus } from "~/modules/media/services/Music";
 import { Queue, RNTPManager, musicStore } from "~/modules/media/services/Music";
 import { MusicControls } from "~/modules/media/services/Playback";
 import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
+import { userPreferencesStore } from "./UserPreferences";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
@@ -44,6 +45,8 @@ export async function PlaybackService() {
   });
 
   TrackPlayer.addEventListener(Event.RemoteDuck, async (e) => {
+    // Keep playing media when an interruption is detected.
+    if (userPreferencesStore.getState().ignoreInterrupt) return;
     if (e.permanent) {
       await MusicControls.stop();
     } else {
