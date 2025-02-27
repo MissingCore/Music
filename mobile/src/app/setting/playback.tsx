@@ -14,6 +14,10 @@ export default function PlaybackScreen() {
   const toggleIgnoreInterrupt = useUserPreferencesStore(
     (state) => state.toggleIgnoreInterrupt,
   );
+  const repeatOnSkip = useUserPreferencesStore((state) => state.repeatOnSkip);
+  const toggleRepeatOnSkip = useUserPreferencesStore(
+    (state) => state.toggleRepeatOnSkip,
+  );
 
   return (
     <StandardScrollLayout>
@@ -23,7 +27,14 @@ export default function PlaybackScreen() {
           description={t("feat.ignoreInterrupt.brief")}
           onPress={toggleIgnoreInterrupt}
           switchState={ignoreInterrupt}
-          {...{ first: true, last: true }}
+          first
+        />
+        <ListItem
+          titleKey="feat.repeatOnSkip.title"
+          description={t("feat.repeatOnSkip.brief")}
+          onPress={toggleRepeatOnSkip}
+          switchState={repeatOnSkip}
+          last
         />
       </List>
     </StandardScrollLayout>

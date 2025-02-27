@@ -62,6 +62,9 @@ interface UserPreferencesStore {
   /** Whether we'll continue playback through any interruptions. */
   ignoreInterrupt: boolean;
   toggleIgnoreInterrupt: () => void;
+  /** Whether we stay on "Repeat One" mode when we skip. */
+  repeatOnSkip: boolean;
+  toggleRepeatOnSkip: () => void;
 
   /** Minimum number of seconds a track needs to have to be saved. */
   minSeconds: number;
@@ -146,6 +149,9 @@ export const userPreferencesStore =
       ignoreInterrupt: false,
       toggleIgnoreInterrupt: () =>
         set((prev) => ({ ignoreInterrupt: !prev.ignoreInterrupt })),
+      repeatOnSkip: false,
+      toggleRepeatOnSkip: () =>
+        set((prev) => ({ repeatOnSkip: !prev.repeatOnSkip })),
 
       minSeconds: 15,
 

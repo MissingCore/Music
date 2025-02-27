@@ -1,6 +1,7 @@
 import TrackPlayer from "react-native-track-player";
 
 import { getTrack } from "~/api/track";
+import { userPreferencesStore } from "~/services/UserPreferences";
 import { Queue, RNTPManager, musicStore } from "./Music";
 import { RecentList } from "./RecentList";
 
@@ -56,11 +57,7 @@ export class MusicControls {
       !(await RNTPManager.isLoaded()) ||
       (await TrackPlayer.getProgress()).position <= 10
     ) {
-      const repeatMode = musicStore.getState().repeat;
-      musicStore.setState({
-        ...prevTrack,
-        ...(repeatMode === "repeat-one" ? { repeat: "repeat" } : {}),
-      });
+      musicStore.setState({ ...prevTrack, ...shouldChangeRepeatMode() });
     }
 
     await RNTPManager.reloadCurrentTrack({ restart: true });
@@ -75,9 +72,7 @@ export class MusicControls {
     musicStore.setState({
       ...nextTrack,
       ...(!nextTrack.isInQueue ? { listIdx } : {}),
-      // If we're in "repeat-one" mode and we explicitly play the next
-      // track, we'll go back to "repeat" mode.
-      ...(repeatMode === "repeat-one" ? { repeat: "repeat" } : {}),
+      ...shouldChangeRepeatMode(),
     });
     // Remove the track in the queue.
     if (nextTrack.isInQueue) await Queue.removeAtIndex(0);
@@ -168,5 +163,18 @@ export async function playFromMediaList({
 
   // 6. Add media list to recent lists.
   RecentList.add(source);
+}
+//#endregion
+
+//#region Internal Helper
+/** Determines if we should switch the repeat mode to "repeat" from "repeat-one". */
+function shouldChangeRepeatMode() {
+  const { repeat } = musicStore.getState();
+  const { repeatOnSkip } = userPreferencesStore.getState();
+  if (repeat === "repeat-one" && !repeatOnSkip) {
+    return { repeat: "repeat" } as const;
+  } else {
+    return {};
+  }
 }
 //#endregion
