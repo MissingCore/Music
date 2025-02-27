@@ -3,10 +3,9 @@ import {
   useSortPreferencesStore,
 } from "~/modules/media/services/SortPreferences";
 
+import { ListItem } from "~/components/Containment/List";
 import { FlatList } from "~/components/Defaults";
-import { Button } from "~/components/Form/Button";
 import { Radio } from "~/components/Form/Selection";
-import { Switch } from "~/components/Form/Switch";
 import { Sheet } from "~/components/Sheet";
 import { TStyledText } from "~/components/Typography/StyledText";
 
@@ -23,11 +22,14 @@ export default function TrackSortSheet() {
       titleKey="feat.modalSort.title"
       contentContainerClassName="gap-4"
     >
-      <Button onPress={toggleIsAsc} className="flex-row justify-between">
-        <TStyledText textKey="feat.modalSort.extra.asc" className="shrink" />
-        <Switch enabled={isAsc} />
-      </Button>
+      <ListItem
+        titleKey="feat.modalSort.extra.asc"
+        onPress={toggleIsAsc}
+        switchState={isAsc}
+        {...{ largeTitle: true, first: true, last: true }}
+      />
       <FlatList
+        accessibilityRole="radiogroup"
         data={OrderedByOptions}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (

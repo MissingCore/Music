@@ -22,6 +22,7 @@ export default function FontSheet() {
       contentContainerClassName="pb-0"
     >
       <SheetsFlatList
+        accessibilityRole="radiogroup"
         data={FontOptions}
         keyExtractor={(font) => font}
         renderItem={({ item: font }) => (

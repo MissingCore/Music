@@ -37,6 +37,8 @@ function Selection(props: SelectionProps & { type: "checkbox" | "radio" }) {
       className={cn("overflow-hidden rounded-md", props.wrapperClassName)}
     >
       <Pressable
+        accessibilityRole={props.type}
+        accessibilityState={{ checked: props.selected }}
         android_ripple={{ color: surface }}
         onPress={props.onSelect}
         // `<Radio />` utilizes the `disabled` prop to prevent togglability.

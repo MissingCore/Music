@@ -19,6 +19,7 @@ export default function ThemeSheet() {
   return (
     <Sheet id="ThemeSheet" titleKey="feat.theme.title">
       <FlatList
+        accessibilityRole="radiogroup"
         data={ThemeOptions}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (

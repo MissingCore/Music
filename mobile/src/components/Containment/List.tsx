@@ -71,6 +71,7 @@ export function ListItem(
     // Styling props.
     first?: boolean;
     last?: boolean;
+    largeTitle?: boolean;
     textColor?: TextColor;
     className?: string;
   } & (
@@ -104,7 +105,7 @@ export function ListItem(
       )}
     >
       <View className="shrink grow gap-0.5">
-        <StyledText className={cn("text-sm", usedColor)}>
+        <StyledText className={cn({ "text-sm": !props.largeTitle }, usedColor)}>
           {props.titleKey ? t(props.titleKey) : props.title}
         </StyledText>
         {props.description ? (

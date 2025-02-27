@@ -20,6 +20,7 @@ export default function NowPlayingDesignSheet() {
   return (
     <Sheet id="NowPlayingDesignSheet" titleKey="feat.nowPlayingDesign.title">
       <FlatList
+        accessibilityRole="radiogroup"
         data={NowPlayingDesignOptions}
         keyExtractor={(design) => design}
         renderItem={({ item: design }) => (

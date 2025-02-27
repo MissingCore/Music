@@ -18,6 +18,7 @@ export default function LanguageSheet() {
       contentContainerClassName="pb-0"
     >
       <SheetsFlatList
+        accessibilityRole="radiogroup"
         data={LANGUAGES}
         keyExtractor={({ code }) => code}
         renderItem={({ item }) => (
