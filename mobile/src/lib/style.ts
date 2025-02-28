@@ -43,6 +43,11 @@ export function getFont(
   font:
     | (typeof AccentFontOptions)[number]
     | (typeof PrimaryFontOptions)[number],
+  bold = false,
 ) {
-  return FontFamily[font === "Geist Mono" ? "geistMono" : toLowerCase(font)];
+  const fontCode = font === "Geist Mono" ? "geistMono" : toLowerCase(font);
+  if (bold && (fontCode === "geistMono" || fontCode === "roboto")) {
+    return FontFamily[`${fontCode}Medium`];
+  }
+  return FontFamily[fontCode];
 }

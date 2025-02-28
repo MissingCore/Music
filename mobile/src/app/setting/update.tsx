@@ -11,7 +11,7 @@ import { StandardScrollLayout } from "~/layouts/StandardScroll";
 import { StickyActionHeader } from "~/layouts/StickyActionScroll";
 
 import * as LINKS from "~/constants/Links";
-import { FontFamily, FontSize } from "~/constants/Styles";
+import { FontSize } from "~/constants/Styles";
 import { getFont } from "~/lib/style";
 import { Button } from "~/components/Form/Button";
 import { TStyledText } from "~/components/Typography/StyledText";
@@ -21,6 +21,7 @@ export default function AppUpdateScreen() {
   const { release, isRC } = useHasNewUpdate();
   const { theme, foreground } = useTheme();
   const accentFont = useUserPreferencesStore((state) => state.accentFont);
+  const primaryFont = useUserPreferencesStore((state) => state.primaryFont);
 
   if (!release) return null;
 
@@ -34,7 +35,7 @@ export default function AppUpdateScreen() {
         style={{
           body: {
             gap: 12,
-            fontFamily: FontFamily.roboto,
+            fontFamily: getFont(primaryFont),
             fontSize: 12,
             color: `${foreground}99`,
           },

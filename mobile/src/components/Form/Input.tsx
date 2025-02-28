@@ -32,16 +32,18 @@ export const NumericInput = forwardRef<RNTextInput, TextInputProps>(
 //#region Text Input
 /** Styled text input meeting the recommended touch target size. */
 export const TextInput = forwardRef<RNTextInput, TextInputProps>(
-  function TextInput({ className, ...props }, ref) {
+  function TextInput({ className, style, ...props }, ref) {
+    const primaryFont = useUserPreferencesStore((state) => state.primaryFont);
     return (
       <RNTextInput
         ref={ref}
         autoFocus
         className={cn(
-          "min-h-12 font-roboto text-base text-foreground placeholder:text-foreground/60",
+          "min-h-12 text-base text-foreground placeholder:text-foreground/60",
           { "opacity-25": props.editable === false },
           className,
         )}
+        style={[{ fontFamily: getFont(primaryFont) }, style]}
         {...props}
       />
     );
