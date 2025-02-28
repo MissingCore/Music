@@ -70,7 +70,7 @@ See all the [available documentation here](./docs). Some highlights include:
 
 Read the [Translations](./docs/translations.md) documentation for a rundown of how to contribute translations to this app.
 
-A huge thanks to the early translators prior to our move to Crowdin:
+The [full list of translators can be found here](./TRANSLATORS.md). A huge thanks to the early translators prior to our move to Crowdin:
 
 | Translation |                      Translator                      |
 | :---------: | :--------------------------------------------------: |
