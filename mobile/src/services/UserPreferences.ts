@@ -16,7 +16,7 @@ import { getSourceName } from "~/modules/media/helpers/data";
 /** Options for app themes. */
 export const ThemeOptions = ["light", "dark", "system"] as const;
 /** Options for app accent font. */
-export const FontOptions = ["NDot", "NType", "Roboto"] as const;
+export const AccentFontOptions = ["NDot", "NType", "Roboto"] as const;
 /** Options for "Now Playing" screen designs. */
 export const NowPlayingDesignOptions = ["vinyl", "vinylOld", "plain"] as const;
 /** Options for the tabs we can reorder. */
@@ -36,7 +36,7 @@ interface UserPreferencesStore {
   /** "Color" the overall app will look like. */
   theme: (typeof ThemeOptions)[number];
   /** Font used for some accent text (ie: major headings). */
-  accentFont: (typeof FontOptions)[number];
+  accentFont: (typeof AccentFontOptions)[number];
 
   /** Design used for the "Now Playing" screen. */
   nowPlayingDesign: (typeof NowPlayingDesignOptions)[number];

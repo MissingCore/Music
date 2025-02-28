@@ -26,9 +26,9 @@ export default function AppearanceScreen() {
     <StandardScrollLayout>
       <List>
         <ListItem
-          titleKey="feat.accentFont.title"
+          titleKey="feat.font.extra.accent"
           description={accentFont}
-          onPress={() => SheetManager.show("FontSheet")}
+          onPress={() => SheetManager.show("FontAccentSheet")}
           first
         />
         <ListItem

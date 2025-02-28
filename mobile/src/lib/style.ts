@@ -2,7 +2,7 @@ import type { ClassValue } from "clsx";
 import { clsx } from "clsx";
 import { extendTailwindMerge } from "tailwind-merge";
 
-import type { FontOptions } from "~/services/UserPreferences";
+import type { AccentFontOptions } from "~/services/UserPreferences";
 
 import { TailwindTheme } from "~/constants/TailwindTheme";
 import { FontFamily } from "~/constants/Styles";
@@ -33,6 +33,6 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /** Returns the correct accent font used. */
-export function getAccentFont(font: (typeof FontOptions)[number]) {
+export function getAccentFont(font: (typeof AccentFontOptions)[number]) {
   return FontFamily[toLowerCase(font)];
 }
