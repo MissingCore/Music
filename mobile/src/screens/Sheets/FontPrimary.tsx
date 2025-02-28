@@ -1,7 +1,7 @@
 import { Text } from "react-native";
 
 import {
-  AccentFontOptions,
+  PrimaryFontOptions,
   userPreferencesStore,
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
@@ -11,23 +11,23 @@ import { SheetsFlatList } from "~/components/Defaults";
 import { Radio } from "~/components/Form/Selection";
 import { Sheet } from "~/components/Sheet";
 
-/** Sheet allowing us to change the app's accent font. */
-export default function FontAccentSheet() {
-  const accentFont = useUserPreferencesStore((state) => state.accentFont);
+/** Sheet allowing us to change the app's primary font. */
+export default function FontPrimarySheet() {
+  const primaryFont = useUserPreferencesStore((state) => state.primaryFont);
   return (
     <Sheet
-      id="FontAccentSheet"
-      titleKey="feat.font.extra.accent"
+      id="FontPrimarySheet"
+      titleKey="feat.font.extra.primary"
       contentContainerClassName="pb-0"
     >
       <SheetsFlatList
         accessibilityRole="radiogroup"
-        data={AccentFontOptions}
+        data={PrimaryFontOptions}
         keyExtractor={(font) => font}
         renderItem={({ item: font }) => (
           <Radio
-            selected={accentFont === font}
-            onSelect={() => setAccentFont(font)}
+            selected={primaryFont === font}
+            onSelect={() => setPrimaryFont(font)}
           >
             <Text
               className="text-base leading-tight text-foreground"
@@ -43,5 +43,5 @@ export default function FontAccentSheet() {
   );
 }
 
-const setAccentFont = (newFont: (typeof AccentFontOptions)[number]) =>
-  userPreferencesStore.setState({ accentFont: newFont });
+const setPrimaryFont = (newFont: (typeof PrimaryFontOptions)[number]) =>
+  userPreferencesStore.setState({ primaryFont: newFont });

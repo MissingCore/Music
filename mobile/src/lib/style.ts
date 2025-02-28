@@ -2,7 +2,10 @@ import type { ClassValue } from "clsx";
 import { clsx } from "clsx";
 import { extendTailwindMerge } from "tailwind-merge";
 
-import type { AccentFontOptions } from "~/services/UserPreferences";
+import type {
+  AccentFontOptions,
+  PrimaryFontOptions,
+} from "~/services/UserPreferences";
 
 import { TailwindTheme } from "~/constants/TailwindTheme";
 import { FontFamily } from "~/constants/Styles";
@@ -32,7 +35,14 @@ export function cn(...inputs: ClassValue[]) {
   return customTwMerge(clsx(inputs));
 }
 
-/** Returns the correct accent font used. */
-export function getAccentFont(font: (typeof AccentFontOptions)[number]) {
-  return FontFamily[toLowerCase(font)];
+/**
+ * Returns the correct font used from the codes used to determine the
+ * accent & primary font used.
+ */
+export function getFont(
+  font:
+    | (typeof AccentFontOptions)[number]
+    | (typeof PrimaryFontOptions)[number],
+) {
+  return FontFamily[font === "Geist Mono" ? "geistMono" : toLowerCase(font)];
 }

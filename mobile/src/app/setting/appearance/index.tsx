@@ -14,6 +14,7 @@ import { List, ListItem } from "~/components/Containment/List";
 export default function AppearanceScreen() {
   const { t } = useTranslation();
   const accentFont = useUserPreferencesStore((state) => state.accentFont);
+  const primaryFont = useUserPreferencesStore((state) => state.primaryFont);
   const theme = useUserPreferencesStore((state) => state.theme);
   const nowPlayingDesign = useUserPreferencesStore(
     (state) => state.nowPlayingDesign,
@@ -30,6 +31,11 @@ export default function AppearanceScreen() {
           description={accentFont}
           onPress={() => SheetManager.show("FontAccentSheet")}
           first
+        />
+        <ListItem
+          titleKey="feat.font.extra.primary"
+          description={primaryFont}
+          onPress={() => SheetManager.show("FontPrimarySheet")}
         />
         <ListItem
           titleKey="feat.theme.title"

@@ -12,7 +12,7 @@ import { StickyActionHeader } from "~/layouts/StickyActionScroll";
 
 import * as LINKS from "~/constants/Links";
 import { FontFamily, FontSize } from "~/constants/Styles";
-import { getAccentFont } from "~/lib/style";
+import { getFont } from "~/lib/style";
 import { Button } from "~/components/Form/Button";
 import { TStyledText } from "~/components/Typography/StyledText";
 
@@ -40,7 +40,7 @@ export default function AppUpdateScreen() {
           },
           heading2: {
             color: foreground,
-            fontFamily: getAccentFont(accentFont),
+            fontFamily: getFont(accentFont),
             fontSize: FontSize.base,
           },
           blockquote: {

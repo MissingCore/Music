@@ -4,7 +4,7 @@ import { TextInput as RNTextInput } from "react-native";
 
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 
-import { cn, getAccentFont } from "~/lib/style";
+import { cn, getFont } from "~/lib/style";
 
 //#region Numeric Input
 /** Numeric input using the accent font. */
@@ -21,7 +21,7 @@ export const NumericInput = forwardRef<RNTextInput, TextInputProps>(
           { "opacity-25": props.editable === false },
           className,
         )}
-        style={[{ fontFamily: getAccentFont(accentFont) }, style]}
+        style={[{ fontFamily: getFont(accentFont) }, style]}
         {...props}
       />
     );
