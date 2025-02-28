@@ -1,5 +1,6 @@
 import {
   NowPlayingDesignOptions,
+  userPreferencesStore,
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
 
@@ -13,10 +14,6 @@ export default function NowPlayingDesignSheet() {
   const nowPlayingDesign = useUserPreferencesStore(
     (state) => state.nowPlayingDesign,
   );
-  const setNowPlayingDesign = useUserPreferencesStore(
-    (state) => state.setNowPlayingDesign,
-  );
-
   return (
     <Sheet id="NowPlayingDesignSheet" titleKey="feat.nowPlayingDesign.title">
       <FlatList
@@ -36,3 +33,7 @@ export default function NowPlayingDesignSheet() {
     </Sheet>
   );
 }
+
+const setNowPlayingDesign = (
+  newDesign: (typeof NowPlayingDesignOptions)[number],
+) => userPreferencesStore.setState({ nowPlayingDesign: newDesign });

@@ -2,7 +2,10 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { SheetManager } from "react-native-actions-sheet";
 
-import { useUserPreferencesStore } from "~/services/UserPreferences";
+import {
+  userPreferencesStore,
+  useUserPreferencesStore,
+} from "~/services/UserPreferences";
 import { StandardScrollLayout } from "~/layouts/StandardScroll";
 
 import { List, ListItem } from "~/components/Containment/List";
@@ -17,9 +20,6 @@ export default function AppearanceScreen() {
   );
   const showRecentlyPlayed = useUserPreferencesStore(
     (state) => state.showRecent,
-  );
-  const toggleShowRecentlyPlayed = useUserPreferencesStore(
-    (state) => state.toggleShowRecent,
   );
 
   return (
@@ -53,7 +53,7 @@ export default function AppearanceScreen() {
         />
         <ListItem
           titleKey="feat.playedRecent.extra.section"
-          onPress={toggleShowRecentlyPlayed}
+          onPress={toggleShowRecent}
           switchState={showRecentlyPlayed}
           last
         />
@@ -61,3 +61,6 @@ export default function AppearanceScreen() {
     </StandardScrollLayout>
   );
 }
+
+const toggleShowRecent = () =>
+  userPreferencesStore.setState((prev) => ({ showRecent: !prev.showRecent }));

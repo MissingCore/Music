@@ -11,7 +11,6 @@ import { RecentList } from "~/modules/media/services/RecentList";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { createPersistedSubscribedStore } from "~/lib/zustand";
-import { moveArray } from "~/utils/object";
 import { getSourceName } from "~/modules/media/helpers/data";
 
 /** Options for app themes. */
@@ -33,38 +32,27 @@ interface UserPreferencesStore {
 
   /** Language code of the displayed content. */
   language: string;
-  setLanguage: (languageCode: string) => void;
 
   /** "Color" the overall app will look like. */
   theme: (typeof ThemeOptions)[number];
-  setTheme: (newTheme: UserPreferencesStore["theme"]) => void;
   /** Font used for some accent text (ie: major headings). */
   accentFont: (typeof FontOptions)[number];
-  setAccentFont: (newFont: UserPreferencesStore["accentFont"]) => void;
 
   /** Design used for the "Now Playing" screen. */
   nowPlayingDesign: (typeof NowPlayingDesignOptions)[number];
-  setNowPlayingDesign: (
-    newDesign: UserPreferencesStore["nowPlayingDesign"],
-  ) => void;
 
   /** Order of tabs on the home screen. */
   tabsOrder: OrderableTab[];
-  moveTab: (fromIndex: number, toIndex: number) => void;
   /** Visibility of the tabs on the home screen. */
   tabsVisibility: Record<OrderableTab, boolean>;
-  toggleTabVisibility: (tab: OrderableTab) => void;
 
   /** Whether we'll show the "Recently Played" section on the home screen. */
   showRecent: boolean;
-  toggleShowRecent: () => void;
 
   /** Whether we'll continue playback through any interruptions. */
   ignoreInterrupt: boolean;
-  toggleIgnoreInterrupt: () => void;
   /** Whether we stay on "Repeat One" mode when we skip. */
   repeatOnSkip: boolean;
-  toggleRepeatOnSkip: () => void;
 
   /** Minimum number of seconds a track needs to have to be saved. */
   minSeconds: number;
@@ -76,22 +64,13 @@ interface UserPreferencesStore {
 
   /** Percentage of device volume audio will be outputted with. */
   volume: number;
-  setVolume: (newVolume: number) => void;
 }
 //#endregion
 
 //#region Fields we don't want to store in AsyncStorage
-const OMITTED_FIELDS: string[] = [
-  "_hasHydrated",
-  "_init",
-  "setLanguage",
-  "setTheme",
-  "setAccentFont",
-  "setNowPlayingDesign",
-  "moveTab",
-  "toggleTabVisibility",
-  "setVolume",
-] satisfies Array<keyof UserPreferencesStore>;
+const OMITTED_FIELDS: string[] = ["_hasHydrated", "_init"] satisfies Array<
+  keyof UserPreferencesStore
+>;
 //#endregion
 
 //#region Store Creation
@@ -114,22 +93,13 @@ export const userPreferencesStore =
       },
 
       language: "",
-      setLanguage: (languageCode) => set({ language: languageCode }),
 
       theme: "system",
-      setTheme: (newTheme) => set({ theme: newTheme }),
       accentFont: "NType",
-      setAccentFont: (newFont) => set({ accentFont: newFont }),
 
       nowPlayingDesign: "vinyl",
-      setNowPlayingDesign: (newDesign) => set({ nowPlayingDesign: newDesign }),
 
       tabsOrder: ["folder", "playlist", "track", "album", "artist"],
-      moveTab: (fromIndex: number, toIndex: number) => {
-        set(({ tabsOrder }) => ({
-          tabsOrder: moveArray(tabsOrder, { fromIndex, toIndex }),
-        }));
-      },
       tabsVisibility: {
         album: true,
         artist: true,
@@ -137,21 +107,11 @@ export const userPreferencesStore =
         playlist: true,
         track: true,
       },
-      toggleTabVisibility: (tab) => {
-        set(({ tabsVisibility }) => ({
-          tabsVisibility: { ...tabsVisibility, [tab]: !tabsVisibility[tab] },
-        }));
-      },
 
       showRecent: true,
-      toggleShowRecent: () => set((prev) => ({ showRecent: !prev.showRecent })),
 
       ignoreInterrupt: false,
-      toggleIgnoreInterrupt: () =>
-        set((prev) => ({ ignoreInterrupt: !prev.ignoreInterrupt })),
       repeatOnSkip: false,
-      toggleRepeatOnSkip: () =>
-        set((prev) => ({ repeatOnSkip: !prev.repeatOnSkip })),
 
       minSeconds: 15,
 
@@ -159,7 +119,6 @@ export const userPreferencesStore =
       listBlock: [],
 
       volume: 1,
-      setVolume: (newVolume) => set({ volume: newVolume }),
     }),
     {
       name: "music::user-preferences",

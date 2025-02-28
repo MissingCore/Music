@@ -2,6 +2,7 @@ import { useColorScheme } from "nativewind";
 
 import {
   ThemeOptions,
+  userPreferencesStore,
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
 
@@ -14,7 +15,6 @@ import { TStyledText } from "~/components/Typography/StyledText";
 export default function ThemeSheet() {
   const { setColorScheme } = useColorScheme();
   const theme = useUserPreferencesStore((state) => state.theme);
-  const setTheme = useUserPreferencesStore((state) => state.setTheme);
 
   return (
     <Sheet id="ThemeSheet" titleKey="feat.theme.title">
@@ -38,3 +38,6 @@ export default function ThemeSheet() {
     </Sheet>
   );
 }
+
+const setTheme = (newTheme: (typeof ThemeOptions)[number]) =>
+  userPreferencesStore.setState({ theme: newTheme });

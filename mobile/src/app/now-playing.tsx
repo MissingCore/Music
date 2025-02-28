@@ -14,7 +14,10 @@ import { useMusicStore } from "~/modules/media/services/Music";
 import { MusicControls } from "~/modules/media/services/Playback";
 import { useSeekStore } from "~/screens/NowPlaying/SeekService";
 import { NowPlayingArtwork } from "~/screens/NowPlaying/Artwork";
-import { useUserPreferencesStore } from "~/services/UserPreferences";
+import {
+  userPreferencesStore,
+  useUserPreferencesStore,
+} from "~/services/UserPreferences";
 
 import { mutateGuard } from "~/lib/react-query";
 import { formatSeconds } from "~/utils/number";
@@ -144,8 +147,6 @@ function PlaybackControls() {
  */
 function VolumeSlider() {
   const savedVolume = useUserPreferencesStore((state) => state.volume);
-  const setVolume = useUserPreferencesStore((state) => state.setVolume);
-
   return (
     <View className="flex-row items-center gap-2">
       <VolumeMute />
@@ -161,6 +162,9 @@ function VolumeSlider() {
     </View>
   );
 }
+
+const setVolume = (newVolume: number) =>
+  userPreferencesStore.setState({ volume: newVolume });
 //#endregion
 
 //#region Bottom App Bar

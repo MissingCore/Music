@@ -1,4 +1,7 @@
-import { useUserPreferencesStore } from "~/services/UserPreferences";
+import {
+  userPreferencesStore,
+  useUserPreferencesStore,
+} from "~/services/UserPreferences";
 import { LANGUAGES } from "~/modules/i18n/constants";
 
 import { SheetsFlatList } from "~/components/Defaults";
@@ -9,8 +12,6 @@ import { StyledText } from "~/components/Typography/StyledText";
 /** Sheet allowing us to change the app's language. */
 export default function LanguageSheet() {
   const languageCode = useUserPreferencesStore((state) => state.language);
-  const setLanguage = useUserPreferencesStore((state) => state.setLanguage);
-
   return (
     <Sheet
       id="LanguageSheet"
@@ -34,3 +35,6 @@ export default function LanguageSheet() {
     </Sheet>
   );
 }
+
+const setLanguage = (languageCode: string) =>
+  userPreferencesStore.setState({ language: languageCode });
