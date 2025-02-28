@@ -26,6 +26,7 @@
 | expo-router | MIT | https://github.com/expo/expo/tree/main/packages/expo-router |
 | expo-sqlite | MIT | https://github.com/expo/expo/tree/main/packages/expo-sqlite |
 | expo-web-browser | MIT | https://github.com/expo/expo/tree/main/packages/expo-web-browser |
+| Geist Mono Font | OFL-1.1 | https://github.com/vercel/geist-font |
 | i18next | MIT | https://github.com/i18next/i18next |
 | intl-pluralrules | ISC | https://github.com/eemeli/intl-pluralrules |
 | ionicons | MIT | https://github.com/ionic-team/ionicons |
