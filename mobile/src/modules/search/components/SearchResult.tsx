@@ -78,10 +78,8 @@ function SearchResultContent(
         />
       )}
       <View className="shrink grow">
-        <View className="shrink flex-row items-end gap-1">
-          {props.contentLabel ? (
-            <Kbd text={props.contentLabel} className="mb-0.5" />
-          ) : undefined}
+        <View className="shrink flex-row items-center gap-1">
+          {props.contentLabel ? <Kbd text={props.contentLabel} /> : undefined}
           <StyledText
             numberOfLines={1}
             className={cn("shrink grow", { "text-sm": !!props.description })}

@@ -1,28 +1,28 @@
 import { Text } from "react-native";
 
 import {
-  FontOptions,
+  AccentFontOptions,
   userPreferencesStore,
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
 
-import { getAccentFont } from "~/lib/style";
+import { getFont } from "~/lib/style";
 import { SheetsFlatList } from "~/components/Defaults";
 import { Radio } from "~/components/Form/Selection";
 import { Sheet } from "~/components/Sheet";
 
 /** Sheet allowing us to change the app's accent font. */
-export default function FontSheet() {
+export default function FontAccentSheet() {
   const accentFont = useUserPreferencesStore((state) => state.accentFont);
   return (
     <Sheet
-      id="FontSheet"
-      titleKey="feat.accentFont.title"
+      id="FontAccentSheet"
+      titleKey="feat.font.extra.accent"
       contentContainerClassName="pb-0"
     >
       <SheetsFlatList
         accessibilityRole="radiogroup"
-        data={FontOptions}
+        data={AccentFontOptions}
         keyExtractor={(font) => font}
         renderItem={({ item: font }) => (
           <Radio
@@ -31,7 +31,7 @@ export default function FontSheet() {
           >
             <Text
               className="text-base leading-tight text-foreground"
-              style={{ fontFamily: getAccentFont(font) }}
+              style={{ fontFamily: getFont(font) }}
             >
               {font}
             </Text>
@@ -43,5 +43,5 @@ export default function FontSheet() {
   );
 }
 
-const setAccentFont = (newFont: (typeof FontOptions)[number]) =>
+const setAccentFont = (newFont: (typeof AccentFontOptions)[number]) =>
   userPreferencesStore.setState({ accentFont: newFont });

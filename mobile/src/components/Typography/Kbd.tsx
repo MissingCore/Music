@@ -1,6 +1,7 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 import { cn } from "~/lib/style";
+import { StyledText } from "./StyledText";
 
 /** Our version of the HTML keyboard input element. */
 export function Kbd(props: { text: string; className?: string }) {
@@ -12,12 +13,9 @@ export function Kbd(props: { text: string; className?: string }) {
         props.className,
       )}
     >
-      <Text
-        style={{ fontSize: 8 }}
-        className="text-roboto text-center leading-tight text-foreground"
-      >
+      <StyledText style={{ fontSize: 8 }} className="text-center leading-tight">
         {props.text}
-      </Text>
+      </StyledText>
     </View>
   );
 }

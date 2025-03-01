@@ -15,8 +15,10 @@ import Animated, {
 
 import { Schedule } from "~/icons/Schedule";
 import { useMusicStore } from "~/modules/media/services/Music";
+import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useTheme } from "~/hooks/useTheme";
 
+import { getFont } from "~/lib/style";
 import { pickKeys } from "~/utils/object";
 import { capitalize, toLowerCase } from "~/utils/string";
 import { Marquee } from "~/components/Containment/Marquee";
@@ -45,6 +47,7 @@ export function CurrentListLayout(
 ) {
   const { t } = useTranslation();
   const { canvas, foreground } = useTheme();
+  const primaryFont = useUserPreferencesStore((state) => state.primaryFont);
 
   const isFavorite = getIsFavoritePlaylist(props.title, props.mediaSource.type);
 
@@ -69,7 +72,8 @@ export function CurrentListLayout(
             <Marquee color={canvas}>
               <Link
                 href={`/artist/${encodeURIComponent(props.artist)}`}
-                className="font-roboto text-xs text-red"
+                style={{ fontFamily: getFont(primaryFont) }}
+                className="text-xs text-red"
               >
                 {props.artist}
               </Link>

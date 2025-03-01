@@ -11,9 +11,9 @@ import { StandardScrollLayout } from "~/layouts/StandardScroll";
 import { StickyActionHeader } from "~/layouts/StickyActionScroll";
 
 import * as LINKS from "~/constants/Links";
-import { FontFamily, FontSize } from "~/constants/Styles";
-import { getAccentFont } from "~/lib/style";
-import { Button } from "~/components/Form/Button";
+import { FontSize } from "~/constants/Styles";
+import { getFont } from "~/lib/style";
+import { IconButton } from "~/components/Form/Button";
 import { TStyledText } from "~/components/Typography/StyledText";
 
 /** Screen for `/setting/update` route. */
@@ -21,6 +21,7 @@ export default function AppUpdateScreen() {
   const { release, isRC } = useHasNewUpdate();
   const { theme, foreground } = useTheme();
   const accentFont = useUserPreferencesStore((state) => state.accentFont);
+  const primaryFont = useUserPreferencesStore((state) => state.primaryFont);
 
   if (!release) return null;
 
@@ -34,13 +35,13 @@ export default function AppUpdateScreen() {
         style={{
           body: {
             gap: 12,
-            fontFamily: FontFamily.roboto,
+            fontFamily: getFont(primaryFont),
             fontSize: 12,
             color: `${foreground}99`,
           },
           heading2: {
             color: foreground,
-            fontFamily: getAccentFont(accentFont),
+            fontFamily: getFont(accentFont),
             fontSize: FontSize.base,
           },
           blockquote: {
@@ -91,32 +92,34 @@ export default function AppUpdateScreen() {
         {release.releaseNotes}
       </Markdown>
 
-      <View className="flex-row gap-2">
-        <Button
+      <View className="gap-2">
+        <IconButton
+          kind="extended"
           onPress={() =>
             WebBrowser.openBrowserAsync(
               `${LINKS.GITHUB}/releases/tag/${release.version}`,
             )
           }
-          className="flex-1 p-2"
+          className="gap-4 py-4"
         >
           <LogoGitHub />
           <TStyledText
             textKey="feat.appUpdate.extra.downloadAPK"
-            className="text-center text-xs"
+            className="text-center text-sm"
           />
-        </Button>
+        </IconButton>
         {!isRC ? (
-          <Button
+          <IconButton
+            kind="extended"
             onPress={() => WebBrowser.openBrowserAsync(LINKS.PLAYSTORE)}
-            className="flex-1 p-2"
+            className="gap-4 py-4"
           >
             <LogoPlayStore />
             <TStyledText
               textKey="feat.appUpdate.extra.updateGoogle"
-              className="text-center text-xs"
+              className="text-center text-sm"
             />
-          </Button>
+          </IconButton>
         ) : null}
       </View>
     </StandardScrollLayout>

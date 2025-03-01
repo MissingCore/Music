@@ -3,7 +3,7 @@ import { Text } from "react-native";
 
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 
-import { cn, getAccentFont } from "~/lib/style";
+import { cn, getFont } from "~/lib/style";
 
 /** `<Text />` that utilizes the accent font. */
 export function AccentText({
@@ -24,7 +24,7 @@ export function AccentText({
         className,
         "leading-tight",
       )}
-      style={[{ fontFamily: getAccentFont(accentFont) }, style]}
+      style={[{ fontFamily: getFont(accentFont) }, style]}
       {...props}
     />
   );

@@ -30,6 +30,8 @@ export const Colors = {
 export const FontFamily = {
   roboto: "Roboto-Regular",
   robotoMedium: "Roboto-Medium",
+  geistMono: "GeistMono-Regular",
+  geistMonoMedium: "GeistMono-Medium",
   ndot: "Ndot-77_JP_Extended",
   ntype: "NType82-Headline",
 } as const;

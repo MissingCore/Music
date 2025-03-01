@@ -3,16 +3,20 @@ import { useTranslation } from "react-i18next";
 import type { TextProps } from "react-native";
 import { Text } from "react-native";
 
-import { cn } from "~/lib/style";
+import { useUserPreferencesStore } from "~/services/UserPreferences";
+
+import { cn, getFont } from "~/lib/style";
 
 /** Styled `<Text />`. */
 export function StyledText({
   className,
+  style,
   bold,
   center,
   dim,
   ...props
 }: TextProps & Partial<Record<"bold" | "center" | "dim", boolean>>) {
+  const primaryFont = useUserPreferencesStore((state) => state.primaryFont);
   return (
     <Text
       className={cn(
@@ -21,10 +25,9 @@ export function StyledText({
           "text-center": center,
           "text-xs text-foreground/60": dim,
         },
-        // From past experience, the font-family doesn't get replaced for some reason.
-        bold ? "font-robotoMedium" : "font-roboto",
         className,
       )}
+      style={[{ fontFamily: getFont(primaryFont, bold) }, style]}
       {...props}
     />
   );
