@@ -13,7 +13,7 @@ import { StickyActionHeader } from "~/layouts/StickyActionScroll";
 import * as LINKS from "~/constants/Links";
 import { FontSize } from "~/constants/Styles";
 import { getFont } from "~/lib/style";
-import { Button } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button";
 import { TStyledText } from "~/components/Typography/StyledText";
 
 /** Screen for `/setting/update` route. */
@@ -92,32 +92,34 @@ export default function AppUpdateScreen() {
         {release.releaseNotes}
       </Markdown>
 
-      <View className="flex-row gap-2">
-        <Button
+      <View className="gap-2">
+        <IconButton
+          kind="extended"
           onPress={() =>
             WebBrowser.openBrowserAsync(
               `${LINKS.GITHUB}/releases/tag/${release.version}`,
             )
           }
-          className="flex-1 p-2"
+          className="gap-4 py-4"
         >
           <LogoGitHub />
           <TStyledText
             textKey="feat.appUpdate.extra.downloadAPK"
-            className="text-center text-xs"
+            className="text-center text-sm"
           />
-        </Button>
+        </IconButton>
         {!isRC ? (
-          <Button
+          <IconButton
+            kind="extended"
             onPress={() => WebBrowser.openBrowserAsync(LINKS.PLAYSTORE)}
-            className="flex-1 p-2"
+            className="gap-4 py-4"
           >
             <LogoPlayStore />
             <TStyledText
               textKey="feat.appUpdate.extra.updateGoogle"
-              className="text-center text-xs"
+              className="text-center text-sm"
             />
-          </Button>
+          </IconButton>
         ) : null}
       </View>
     </StandardScrollLayout>
