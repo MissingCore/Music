@@ -29,6 +29,7 @@
     "home": "Home",
     "settings": "Settings",
     "upcoming": "Upcoming",
+    "playingFrom": "Playing From",
 
     "disc": "Disc {{count}}"
   },
