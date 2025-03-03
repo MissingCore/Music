@@ -109,7 +109,7 @@
     "font": {
       "extra": {
         "accent": "アクセントフォント",
-        "primary": null
+        "primary": "プライマリフォント"
       }
     },
     "theme": {
@@ -133,7 +133,7 @@
       "extra": {
         "plain": "プレーン",
         "vinyl": "ヴァイナル",
-        "vinylOld": null
+        "vinylOld": "ヴァイナル (従来)"
       }
     },
     "language": {
@@ -171,21 +171,21 @@
       "brief": "Nothing でサポートされている機能について。"
     },
     "playback": {
-      "title": null,
-      "brief": null,
+      "title": "再生中",
+      "brief": "音楽再生時の動作を変更します。",
       "extra": {
-        "options": null,
-        "speed": null,
-        "volume": null
+        "options": "再生オプション",
+        "speed": "再生速度",
+        "volume": "アプリの音量"
       }
     },
     "ignoreInterrupt": {
-      "title": null,
-      "brief": null
+      "title": "中断を無視する",
+      "brief": "通知や通話などのイベントが発生しても音楽の再生を継続します。この機能を有効化すると手動で音楽を一時停止または再開を操作する必要があります。"
     },
     "repeatOnSkip": {
-      "title": null,
-      "brief": null
+      "title": "スキップ時にリピートモードを維持する",
+      "brief": "スキップ時に「1 回リピート」を「リピート」に切り替えないようにします。"
     },
     "scanning": {
       "title": "音楽のスキャン",
@@ -260,7 +260,7 @@
       "title": "最近に再生",
       "extra": {
         "empty": "まだ何も再生していません！",
-        "section": null
+        "section": "最近に再生のセクション"
       }
     },
     "search": {

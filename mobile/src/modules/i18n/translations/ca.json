@@ -54,7 +54,7 @@
     "unsaved": "Poder tens canvis sense desar.",
     "stay": "Queda't",
     "leave": "Eixir",
-    "clear": "Clar",
+    "clear": "Netejar",
     "validation": {
       "unique": "Únic"
     }
@@ -108,8 +108,8 @@
     },
     "font": {
       "extra": {
-        "accent": "Accent",
-        "primary": null
+        "accent": "Font d'accent",
+        "primary": "Font principal"
       }
     },
     "theme": {
@@ -133,7 +133,7 @@
       "extra": {
         "plain": "Pla",
         "vinyl": "Vinil",
-        "vinylOld": null
+        "vinylOld": "Vinil (tradicional)"
       }
     },
     "language": {
@@ -171,25 +171,25 @@
       "brief": "Funcions de Nothing suportades."
     },
     "playback": {
-      "title": null,
-      "brief": null,
+      "title": "Reproduint",
+      "brief": "Canvia el comportament del reproductor.",
       "extra": {
-        "options": null,
-        "speed": null,
-        "volume": null
+        "options": "Ajusts de reproducció",
+        "speed": "Velocitat de reproducció",
+        "volume": "Volum de l'aplicació"
       }
     },
     "ignoreInterrupt": {
-      "title": null,
-      "brief": null
+      "title": "Ignorar interrupcions",
+      "brief": "Continua reproduint àudio quan es produeixi una interrupció, com ara una notificació o trucada. Haureu de d'aturar i reactivar manualment la música durant aquestes situacions."
     },
     "repeatOnSkip": {
-      "title": null,
-      "brief": null
+      "title": "Mantenir el mode de repetició al saltar",
+      "brief": "Evita que \"Repetir una vegada\" canviï a \"Repetir\" en saltar."
     },
     "scanning": {
       "title": "Escanejant",
-      "brief": "Ajustos del descobriment de música."
+      "brief": "Ajusts del descobriment de música."
     },
     "rescan": {
       "title": "Reescanejar",
@@ -260,7 +260,7 @@
       "title": "Reproduït fa poc",
       "extra": {
         "empty": "Encara no has reproduït rés!",
-        "section": null
+        "section": "Recentment reproduït"
       }
     },
     "search": {

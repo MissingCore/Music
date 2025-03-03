@@ -109,7 +109,7 @@
     "font": {
       "extra": {
         "accent": "Vurgulu Yazı Tipi",
-        "primary": null
+        "primary": "Birincil Yazı Tipi"
       }
     },
     "theme": {
@@ -133,7 +133,7 @@
       "extra": {
         "plain": "Sade",
         "vinyl": "Vinil",
-        "vinylOld": null
+        "vinylOld": "Vinyl (Eski)"
       }
     },
     "language": {
@@ -171,21 +171,21 @@
       "brief": "Desteklenen Nothing özellikleri."
     },
     "playback": {
-      "title": null,
-      "brief": null,
+      "title": "Oynatma",
+      "brief": "Müzik çalma davranışını değiştirin.",
       "extra": {
-        "options": null,
-        "speed": null,
-        "volume": null
+        "options": "Oynatma Seçenekleri",
+        "speed": "Oynatma Hızı",
+        "volume": "Uygulama Ses Düzeyi"
       }
     },
     "ignoreInterrupt": {
-      "title": null,
-      "brief": null
+      "title": "Kesintileri Yoksay",
+      "brief": "Bir bildirim veya arama gibi bir kesinti meydana geldiğinde sesi çalmaya devam et. Bu durumlarda müziği manuel olarak duraklatıp devam ettirmeniz gerekecek."
     },
     "repeatOnSkip": {
-      "title": null,
-      "brief": null
+      "title": "Atlama sırasında tekrar modunu açık tut",
+      "brief": "Atlama sırasında modu \"Tekrar Tek\"ten \"Tekrar\" moduna değiştirme."
     },
     "scanning": {
       "title": "Tarama",
@@ -260,7 +260,7 @@
       "title": "Son Oynatılanlar",
       "extra": {
         "empty": "Henüz bir şey çalmadınız!",
-        "section": null
+        "section": "Son Oynanan Bölüm"
       }
     },
     "search": {

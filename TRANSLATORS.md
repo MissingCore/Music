@@ -22,6 +22,7 @@
 ## [Español] Spanish
 
 - [@G4b-0](https://www.github.com/G4b-0)
+- [@T-K-Y-M](https://www.github.com/T-K-Y-M)
 
 ## [Français] French
 
@@ -35,6 +36,7 @@
 
 - [@klinoff0](https://www.github.com/klinoff0)
 - [Nonameguy48 (thenonameguy295)](https://crowdin.com/profile/thenonameguy295)
+- [Artem Yakovlev (socutezyy)](https://crowdin.com/profile/socutezyy)
 
 ## [Türkçe] Turkish
 
