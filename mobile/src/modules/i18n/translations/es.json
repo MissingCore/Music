@@ -54,7 +54,7 @@
     "unsaved": "Puede que tengas cambios sin guardar.",
     "stay": "Permanecer",
     "leave": "Salir",
-    "clear": "Claro",
+    "clear": "Limpiar",
     "validation": {
       "unique": "Único"
     }
@@ -109,7 +109,7 @@
     "font": {
       "extra": {
         "accent": "Fuente de acento",
-        "primary": null
+        "primary": "Fuente primaria"
       }
     },
     "theme": {
@@ -133,7 +133,7 @@
       "extra": {
         "plain": "Simple",
         "vinyl": "Vinilo",
-        "vinylOld": null
+        "vinylOld": "Vinilo (tradicional)"
       }
     },
     "language": {
@@ -171,21 +171,21 @@
       "brief": "Características compatibles de Nothing."
     },
     "playback": {
-      "title": null,
-      "brief": null,
+      "title": "Reproduciendo",
+      "brief": "Cambiar comportamiento del reproductor.",
       "extra": {
-        "options": null,
-        "speed": null,
-        "volume": null
+        "options": "Opciones de reproducción",
+        "speed": "Velocidad de reproducción",
+        "volume": "Volumen de aplicación"
       }
     },
     "ignoreInterrupt": {
-      "title": null,
-      "brief": null
+      "title": "Ignorar interrupciones",
+      "brief": "Seguir reproduciendo audio cuando se produzca una interrupción, como una notificación o llamada. Deberá pausar y reactivar manualmente la música durante estas situaciones."
     },
     "repeatOnSkip": {
-      "title": null,
-      "brief": null
+      "title": "Mantener el modo de repetición al saltar",
+      "brief": "Evita que \"Repetir una\" cambie a \"Repetir\" al saltar."
     },
     "scanning": {
       "title": "Escaneando",
@@ -260,7 +260,7 @@
       "title": "Reproducido recientemente",
       "extra": {
         "empty": "¡Aún no has reproducido nada!",
-        "section": null
+        "section": "Reproducido recientemente"
       }
     },
     "search": {
