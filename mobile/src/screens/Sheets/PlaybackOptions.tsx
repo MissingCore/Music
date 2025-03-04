@@ -2,6 +2,7 @@ import { Slider as RNSlider } from "@miblanchard/react-native-slider";
 import { View } from "react-native";
 import TrackPlayer from "react-native-track-player";
 
+import { SlowMotionVideo } from "~/icons/SlowMotionVideo";
 import { VolumeUp } from "~/icons/VolumeUp";
 import {
   sessionPreferencesStore,
@@ -15,12 +16,23 @@ import { StyledText } from "~/components/Typography/StyledText";
 
 /** Sheet allowing us to change how the media is played. */
 export default function PlaybackOptionsSheet() {
-  const savedVolume = useSessionPreferencesStore((state) => state.volume);
+  const playbackSpeed = useSessionPreferencesStore(
+    (state) => state.playbackSpeed,
+  );
+  const volume = useSessionPreferencesStore((state) => state.volume);
 
   return (
     <Sheet id="PlaybackOptionsSheet" contentContainerClassName="gap-4">
       <Slider
-        value={savedVolume}
+        value={playbackSpeed}
+        min={0.25}
+        max={2}
+        icon={<SlowMotionVideo />}
+        onChange={setPlaybackSpeed}
+        formatValue={formatPlaybackSpeed}
+      />
+      <Slider
+        value={volume}
         min={0}
         max={1}
         icon={<VolumeUp />}
@@ -75,6 +87,19 @@ function Slider(props: {
 //#endregion
 
 //#region Formatters & Setters
+const rateFormatter = new Intl.NumberFormat("en-US", {
+  notation: "compact",
+  maximumFractionDigits: 2,
+});
+
+const setPlaybackSpeed = async (newRate: number) => {
+  sessionPreferencesStore.setState({ playbackSpeed: newRate });
+  try {
+    await TrackPlayer.setRate(newRate);
+  } catch {}
+};
+const formatPlaybackSpeed = (rate: number) => `${rateFormatter.format(rate)}x`;
+
 const setVolume = async (newVolume: number) => {
   sessionPreferencesStore.setState({ volume: newVolume });
   try {
