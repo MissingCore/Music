@@ -1,5 +1,6 @@
 import { Slider as RNSlider } from "@miblanchard/react-native-slider";
-import { View } from "react-native";
+import { useState } from "react";
+import { Pressable, View } from "react-native";
 import TrackPlayer from "react-native-track-player";
 
 import { SlowMotionVideo } from "~/icons/SlowMotionVideo";
@@ -11,6 +12,7 @@ import {
 import { useTheme } from "~/hooks/useTheme";
 
 import { Colors } from "~/constants/Styles";
+import { cn } from "~/lib/style";
 import { Sheet } from "~/components/Sheet";
 import { StyledText } from "~/components/Typography/StyledText";
 
@@ -27,6 +29,7 @@ export default function PlaybackOptionsSheet() {
         value={playbackSpeed}
         min={0.25}
         max={2}
+        trackMarks={PlaybackSpeedMarks}
         icon={<SlowMotionVideo />}
         onChange={setPlaybackSpeed}
         formatValue={formatPlaybackSpeed}
@@ -35,6 +38,7 @@ export default function PlaybackOptionsSheet() {
         value={volume}
         min={0}
         max={1}
+        trackMarks={VolumeMarks}
         icon={<VolumeUp />}
         onChange={setVolume}
         formatValue={formatVolume}
@@ -45,17 +49,20 @@ export default function PlaybackOptionsSheet() {
 
 //#region Slider
 /** Custom slider design to match the one in the Nothing X app. */
-function Slider(props: {
-  value: number;
-  min: number;
-  max: number;
-  icon: React.ReactNode;
-  onChange: (value: number) => void | Promise<void>;
-  formatValue: (value: number) => string;
-}) {
+function Slider(
+  props: MarkProps & {
+    icon: React.ReactNode;
+    formatValue: (value: number) => string;
+  },
+) {
   const { surface } = useTheme();
+  const [width, setWidth] = useState<number>();
+
   return (
-    <View className="relative overflow-hidden rounded-full">
+    <View
+      onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
+      className="relative overflow-hidden rounded-full"
+    >
       <RNSlider
         value={props.value}
         minimumValue={props.min}
@@ -72,6 +79,7 @@ function Slider(props: {
         // The slider height defaults to 40px and isn't inferred from the heights assigned.
         containerStyle={{ height: 64 }}
       />
+      {width !== undefined ? <SliderMarks width={width} {...props} /> : null}
       <View
         pointerEvents="none"
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex-row items-center gap-2"
@@ -84,13 +92,45 @@ function Slider(props: {
     </View>
   );
 }
+
+type MarkProps = {
+  value: number;
+  min: number;
+  max: number;
+  trackMarks?: number[];
+  onChange: (value: number) => void | Promise<void>;
+};
+
+/** Makes the marks clickable. */
+function SliderMarks(props: MarkProps & { width: number }) {
+  if (!props.trackMarks) return null;
+  return props.trackMarks.map((val) => (
+    <Pressable
+      key={val}
+      accessible={false}
+      hitSlop={{ left: 7, right: 7, top: 24, bottom: 24 }}
+      onPress={() => props.onChange(val)}
+      disabled={props.value === val}
+      pointerEvents={props.value === val ? "none" : "auto"}
+      style={{
+        left: ((val - props.min) / (props.max - props.min)) * props.width,
+      }}
+      className={cn(
+        "absolute top-1/2 h-4 w-0.5 -translate-x-px -translate-y-1/2",
+        { "bg-foreground/5": val !== props.min && val !== props.max },
+      )}
+    />
+  ));
+}
 //#endregion
 
-//#region Formatters & Setters
+//#region Playback Speed Context
 const rateFormatter = new Intl.NumberFormat("en-US", {
   notation: "compact",
   maximumFractionDigits: 2,
 });
+
+const PlaybackSpeedMarks = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
 
 const setPlaybackSpeed = async (newRate: number) => {
   sessionPreferencesStore.setState({ playbackSpeed: newRate });
@@ -99,6 +139,10 @@ const setPlaybackSpeed = async (newRate: number) => {
   } catch {}
 };
 const formatPlaybackSpeed = (rate: number) => `${rateFormatter.format(rate)}x`;
+//#endregion
+
+//#region Volume Context
+const VolumeMarks = [0, 0.25, 0.5, 0.75, 1];
 
 const setVolume = async (newVolume: number) => {
   sessionPreferencesStore.setState({ volume: newVolume });
