@@ -30,22 +30,12 @@ export default function PlaybackOptionsSheet() {
       <Slider
         label={t("feat.playback.extra.speed")}
         value={playbackSpeed}
-        min={0.25}
-        max={2}
-        trackMarks={PlaybackSpeedMarks}
-        icon={<SlowMotionVideo />}
-        onChange={setPlaybackSpeed}
-        formatValue={formatPlaybackSpeed}
+        {...PlaybackSpeedSliderOptions}
       />
       <Slider
         label={t("feat.playback.extra.volume")}
         value={volume}
-        min={0}
-        max={1}
-        trackMarks={VolumeMarks}
-        icon={<VolumeUp />}
-        onChange={setVolume}
-        formatValue={formatVolume}
+        {...VolumeSliderOptions}
       />
     </Sheet>
   );
@@ -128,31 +118,34 @@ function SliderMarks(props: MarkProps & { width: number }) {
 }
 //#endregion
 
-//#region Playback Speed Context
+//#region Slider Options
 const rateFormatter = new Intl.NumberFormat("en-US", {
   notation: "compact",
   maximumFractionDigits: 2,
 });
 
-const PlaybackSpeedMarks = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
-
-const setPlaybackSpeed = async (newRate: number) => {
-  sessionPreferencesStore.setState({ playbackSpeed: newRate });
-  try {
-    await TrackPlayer.setRate(newRate);
-  } catch {}
+const PlaybackSpeedSliderOptions = {
+  min: 0.25,
+  max: 2,
+  trackMarks: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
+  icon: <SlowMotionVideo />,
+  onChange: async (playbackSpeed: number) => {
+    sessionPreferencesStore.setState({ playbackSpeed });
+    await TrackPlayer.setRate(playbackSpeed).catch();
+  },
+  formatValue: (playbackSpeed: number) =>
+    `${rateFormatter.format(playbackSpeed)}x`,
 };
-const formatPlaybackSpeed = (rate: number) => `${rateFormatter.format(rate)}x`;
-//#endregion
 
-//#region Volume Context
-const VolumeMarks = [0, 0.25, 0.5, 0.75, 1];
-
-const setVolume = async (newVolume: number) => {
-  sessionPreferencesStore.setState({ volume: newVolume });
-  try {
-    await TrackPlayer.setVolume(newVolume);
-  } catch {}
+const VolumeSliderOptions = {
+  min: 0,
+  max: 1,
+  trackMarks: [0, 0.25, 0.5, 0.75, 1],
+  icon: <VolumeUp />,
+  onChange: async (volume: number) => {
+    sessionPreferencesStore.setState({ volume });
+    await TrackPlayer.setVolume(volume).catch();
+  },
+  formatValue: (volume: number) => `${Math.round(volume * 100)}%`,
 };
-const formatVolume = (volume: number) => `${Math.round(volume * 100)}%`;
 //#endregion
