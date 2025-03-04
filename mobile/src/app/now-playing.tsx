@@ -2,22 +2,17 @@ import { Stack } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
-import TrackPlayer, { useProgress } from "react-native-track-player";
+import { useProgress } from "react-native-track-player";
 
 import { Favorite } from "~/icons/Favorite";
+import { InstantMix } from "~/icons/InstantMix";
 import { LibraryMusic } from "~/icons/LibraryMusic";
 import { MoreVert } from "~/icons/MoreVert";
-import { VolumeMute } from "~/icons/VolumeMute";
-import { VolumeUp } from "~/icons/VolumeUp";
 import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { useMusicStore } from "~/modules/media/services/Music";
 import { MusicControls } from "~/modules/media/services/Playback";
 import { useSeekStore } from "~/screens/NowPlaying/SeekService";
 import { NowPlayingArtwork } from "~/screens/NowPlaying/Artwork";
-import {
-  sessionPreferencesStore,
-  useSessionPreferencesStore,
-} from "~/services/SessionPreferences";
 
 import { mutateGuard } from "~/lib/react-query";
 import { formatSeconds } from "~/utils/number";
@@ -69,7 +64,6 @@ export default function NowPlayingScreen() {
           <Metadata name={track.name} artistName={track.artistName} />
           <SeekBar duration={track.duration} />
           <PlaybackControls />
-          <VolumeSlider />
           <BottomAppBar trackId={track.id} />
         </View>
       </SafeContainer>
@@ -140,37 +134,6 @@ function PlaybackControls() {
 }
 //#endregion
 
-//#region Volume Slider
-/**
- * Allow us to adjust the internal volume of the media played
- * (different from device volume).
- */
-function VolumeSlider() {
-  const savedVolume = useSessionPreferencesStore((state) => state.volume);
-  return (
-    <View className="flex-row items-center gap-2">
-      <VolumeMute />
-      <View className="grow">
-        <Slider
-          value={savedVolume}
-          max={1}
-          onChange={setVolume}
-          thumbSize={12}
-        />
-      </View>
-      <VolumeUp />
-    </View>
-  );
-}
-
-const setVolume = async (newVolume: number) => {
-  sessionPreferencesStore.setState({ volume: newVolume });
-  try {
-    await TrackPlayer.setVolume(newVolume);
-  } catch {}
-};
-//#endregion
-
 //#region Bottom App Bar
 /** Actions rendered on the bottom of the screen. */
 function BottomAppBar({ trackId }: { trackId: string }) {
@@ -183,25 +146,37 @@ function BottomAppBar({ trackId }: { trackId: string }) {
     : (data?.isFavorite ?? false);
 
   return (
-    <View className="flex-row items-center justify-end gap-2 pt-2">
+    <View className="flex-row items-center justify-between gap-4">
       <IconButton
         kind="ripple"
-        accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
-        onPress={() => mutateGuard(favoriteTrack, !data?.isFavorite)}
+        accessibilityLabel={t("feat.playback.extra.options")}
+        onPress={() => SheetManager.show("PlaybackOptionsSheet")}
         rippleRadius={24}
         className="p-2"
       >
-        <Favorite size={32} filled={isFav} />
+        <InstantMix size={32} />
       </IconButton>
-      <IconButton
-        kind="ripple"
-        accessibilityLabel={t("term.upcoming")}
-        onPress={() => SheetManager.show("TrackUpcomingSheet")}
-        rippleRadius={24}
-        className="p-2"
-      >
-        <LibraryMusic size={32} />
-      </IconButton>
+
+      <View className="flex-row items-center gap-2 pt-2">
+        <IconButton
+          kind="ripple"
+          accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
+          onPress={() => mutateGuard(favoriteTrack, !data?.isFavorite)}
+          rippleRadius={24}
+          className="p-2"
+        >
+          <Favorite size={32} filled={isFav} />
+        </IconButton>
+        <IconButton
+          kind="ripple"
+          accessibilityLabel={t("term.upcoming")}
+          onPress={() => SheetManager.show("TrackUpcomingSheet")}
+          rippleRadius={24}
+          className="p-2"
+        >
+          <LibraryMusic size={32} />
+        </IconButton>
+      </View>
     </View>
   );
 }

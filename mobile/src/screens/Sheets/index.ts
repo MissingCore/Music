@@ -8,6 +8,7 @@ import { FontAccentSheet, FontPrimarySheet } from "./Font";
 import LanguageSheet from "./Language";
 import MinDurationSheet from "./MinDuration";
 import NowPlayingDesignSheet from "./NowPlayingDesign";
+import PlaybackOptionsSheet from "./PlaybackOptions";
 import ScanFilterListSheet from "./ScanFilterList";
 import ThemeSheet from "./Theme";
 import TrackSheet from "./Track";
@@ -30,6 +31,7 @@ registerSheet("FontPrimarySheet", FontPrimarySheet);
 registerSheet("LanguageSheet", LanguageSheet);
 registerSheet("MinDurationSheet", MinDurationSheet);
 registerSheet("NowPlayingDesignSheet", NowPlayingDesignSheet);
+registerSheet("PlaybackOptionsSheet", PlaybackOptionsSheet);
 registerSheet("PlaylistArtworkSheet", PlaylistArtworkSheet);
 registerSheet("ScanFilterListSheet", ScanFilterListSheet);
 registerSheet("ThemeSheet", ThemeSheet);
@@ -52,6 +54,7 @@ declare module "react-native-actions-sheet" {
     LanguageSheet: SheetDefinition;
     MinDurationSheet: SheetDefinition;
     NowPlayingDesignSheet: SheetDefinition;
+    PlaybackOptionsSheet: SheetDefinition;
     PlaylistArtworkSheet: SheetDefinition<{ payload: { id: string } }>;
     ScanFilterListSheet: SheetDefinition<{
       payload: { listType: "listAllow" | "listBlock" };
