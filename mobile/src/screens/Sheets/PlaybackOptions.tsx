@@ -1,5 +1,6 @@
 import { Slider as RNSlider } from "@miblanchard/react-native-slider";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import TrackPlayer from "react-native-track-player";
 
@@ -18,6 +19,7 @@ import { StyledText } from "~/components/Typography/StyledText";
 
 /** Sheet allowing us to change how the media is played. */
 export default function PlaybackOptionsSheet() {
+  const { t } = useTranslation();
   const playbackSpeed = useSessionPreferencesStore(
     (state) => state.playbackSpeed,
   );
@@ -26,6 +28,7 @@ export default function PlaybackOptionsSheet() {
   return (
     <Sheet id="PlaybackOptionsSheet" contentContainerClassName="gap-4">
       <Slider
+        label={t("feat.playback.extra.speed")}
         value={playbackSpeed}
         min={0.25}
         max={2}
@@ -35,6 +38,7 @@ export default function PlaybackOptionsSheet() {
         formatValue={formatPlaybackSpeed}
       />
       <Slider
+        label={t("feat.playback.extra.volume")}
         value={volume}
         min={0}
         max={1}
@@ -49,20 +53,28 @@ export default function PlaybackOptionsSheet() {
 
 //#region Slider
 /** Custom slider design to match the one in the Nothing X app. */
-function Slider(
-  props: MarkProps & {
-    icon: React.ReactNode;
-    formatValue: (value: number) => string;
-  },
-) {
+function Slider(props: MarkProps & { label: string; icon: React.ReactNode }) {
   const { surface } = useTheme();
   const [width, setWidth] = useState<number>();
+
+  const formattedValue = props.formatValue(props.value);
 
   return (
     <View
       onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
       className="relative overflow-hidden rounded-full"
     >
+      <View
+        accessible
+        accessibilityLabel={`${props.label}: ${formattedValue}`}
+        pointerEvents="none"
+        className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 flex-row items-center gap-2"
+      >
+        {props.icon}
+        <StyledText className="min-w-12 text-sm" bold>
+          {formattedValue}
+        </StyledText>
+      </View>
       <RNSlider
         value={props.value}
         minimumValue={props.min}
@@ -80,15 +92,6 @@ function Slider(
         containerStyle={{ height: 64 }}
       />
       {width !== undefined ? <SliderMarks width={width} {...props} /> : null}
-      <View
-        pointerEvents="none"
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex-row items-center gap-2"
-      >
-        {props.icon}
-        <StyledText className="min-w-12 text-sm" bold>
-          {props.formatValue(props.value)}
-        </StyledText>
-      </View>
     </View>
   );
 }
@@ -99,6 +102,7 @@ type MarkProps = {
   max: number;
   trackMarks?: number[];
   onChange: (value: number) => void | Promise<void>;
+  formatValue: (value: number) => string;
 };
 
 /** Makes the marks clickable. */
@@ -107,8 +111,8 @@ function SliderMarks(props: MarkProps & { width: number }) {
   return props.trackMarks.map((val) => (
     <Pressable
       key={val}
-      accessible={false}
-      hitSlop={{ left: 7, right: 7, top: 24, bottom: 24 }}
+      accessibilityLabel={props.formatValue(val)}
+      hitSlop={{ left: 16, right: 16, top: 24, bottom: 24 }}
       onPress={() => props.onChange(val)}
       disabled={props.value === val}
       pointerEvents={props.value === val ? "none" : "auto"}
