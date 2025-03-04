@@ -1,7 +1,6 @@
 import { getLocales } from "expo-localization";
 import { useMemo } from "react";
 import { Appearance } from "react-native";
-import TrackPlayer from "react-native-track-player";
 import { useStore } from "zustand";
 
 import i18next from "~/modules/i18n";
@@ -61,16 +60,12 @@ interface UserPreferencesStore {
   /** Whether we stay on "Repeat One" mode when we skip. */
   repeatOnSkip: boolean;
 
-  /** Minimum number of seconds a track needs to have to be saved. */
-  minSeconds: number;
-
   /** Directories we'll limit to when looking for tracks. */
   listAllow: string[];
   /** Directories we'll ignore when looking for tracks. */
   listBlock: string[];
-
-  /** Percentage of device volume audio will be outputted with. */
-  volume: number;
+  /** Minimum number of seconds a track needs to have to be saved. */
+  minSeconds: number;
 }
 //#endregion
 
@@ -121,12 +116,9 @@ export const userPreferencesStore =
       ignoreInterrupt: false,
       repeatOnSkip: false,
 
-      minSeconds: 15,
-
       listAllow: [],
       listBlock: [],
-
-      volume: 1,
+      minSeconds: 15,
     }),
     {
       name: "music::user-preferences",
@@ -189,16 +181,6 @@ userPreferencesStore.subscribe(
     if (playingSource) {
       musicStore.setState({ sourceName: await getSourceName(playingSource) });
     }
-  },
-);
-
-/** Set the internal volume used from what's stored in AsyncStorage. */
-userPreferencesStore.subscribe(
-  (state) => state.volume,
-  async (volume) => {
-    try {
-      await TrackPlayer.setVolume(volume);
-    } catch {}
   },
 );
 //#endregion

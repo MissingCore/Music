@@ -2,7 +2,7 @@ import { Stack } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
-import { useProgress } from "react-native-track-player";
+import TrackPlayer, { useProgress } from "react-native-track-player";
 
 import { Favorite } from "~/icons/Favorite";
 import { LibraryMusic } from "~/icons/LibraryMusic";
@@ -15,9 +15,9 @@ import { MusicControls } from "~/modules/media/services/Playback";
 import { useSeekStore } from "~/screens/NowPlaying/SeekService";
 import { NowPlayingArtwork } from "~/screens/NowPlaying/Artwork";
 import {
-  userPreferencesStore,
-  useUserPreferencesStore,
-} from "~/services/UserPreferences";
+  sessionPreferencesStore,
+  useSessionPreferencesStore,
+} from "~/services/SessionPreferences";
 
 import { mutateGuard } from "~/lib/react-query";
 import { formatSeconds } from "~/utils/number";
@@ -146,7 +146,7 @@ function PlaybackControls() {
  * (different from device volume).
  */
 function VolumeSlider() {
-  const savedVolume = useUserPreferencesStore((state) => state.volume);
+  const savedVolume = useSessionPreferencesStore((state) => state.volume);
   return (
     <View className="flex-row items-center gap-2">
       <VolumeMute />
@@ -163,8 +163,12 @@ function VolumeSlider() {
   );
 }
 
-const setVolume = (newVolume: number) =>
-  userPreferencesStore.setState({ volume: newVolume });
+const setVolume = async (newVolume: number) => {
+  sessionPreferencesStore.setState({ volume: newVolume });
+  try {
+    await TrackPlayer.setVolume(newVolume);
+  } catch {}
+};
 //#endregion
 
 //#region Bottom App Bar
