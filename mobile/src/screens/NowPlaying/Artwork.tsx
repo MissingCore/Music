@@ -32,7 +32,7 @@ export function NowPlayingArtwork(props: { artwork: string | null }) {
   return (
     <View
       onLayout={({ nativeEvent }) => setAreaHeight(nativeEvent.layout.height)}
-      className="flex-1 items-center justify-center pt-8"
+      className="flex-1 items-center justify-center"
     >
       {size !== undefined ? (
         <ArtworkPicker source={props.artwork} size={size} />

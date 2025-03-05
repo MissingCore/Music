@@ -4,6 +4,8 @@ import { View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 import { useProgress } from "react-native-track-player";
 
+import type { TrackWithAlbum } from "~/db/schema";
+
 import { Favorite } from "~/icons/Favorite";
 import { InstantMix } from "~/icons/InstantMix";
 import { LibraryMusic } from "~/icons/LibraryMusic";
@@ -32,7 +34,6 @@ import {
 
 /** Screen for `/now-playing` route. */
 export default function NowPlayingScreen() {
-  const { t } = useTranslation();
   const track = useMusicStore((state) => state.activeTrack);
   const listName = useMusicStore((state) => state.sourceName);
 
@@ -40,32 +41,15 @@ export default function NowPlayingScreen() {
 
   return (
     <>
-      <Stack.Screen
-        options={{
-          headerTitle: listName,
-          headerRight: () => (
-            <IconButton
-              kind="ripple"
-              accessibilityLabel={t("template.entrySeeMore", {
-                name: track.name,
-              })}
-              onPress={() =>
-                SheetManager.show("TrackSheet", { payload: { id: track.id } })
-              }
-            >
-              <MoreVert />
-            </IconButton>
-          ),
-        }}
-      />
-      <SafeContainer additionalTopOffset={56} className="flex-1">
+      <Stack.Screen options={{ headerTitle: listName }} />
+      <SafeContainer additionalTopOffset={56} className="flex-1 gap-8">
         <NowPlayingArtwork artwork={track.artwork} />
-        <View className="gap-2 p-4">
-          <Metadata name={track.name} artistName={track.artistName} />
+        <View className="gap-6 px-4">
+          <Metadata track={track} />
           <SeekBar duration={track.duration} />
           <PlaybackControls />
-          <BottomAppBar trackId={track.id} />
         </View>
+        <BottomAppBar />
       </SafeContainer>
     </>
   );
@@ -73,15 +57,56 @@ export default function NowPlayingScreen() {
 
 //#region Metadata
 /** Renders the name & artist of the current playing track. */
-function Metadata(props: { name: string; artistName: string | null }) {
+function Metadata({ track }: { track: TrackWithAlbum }) {
+  const { t } = useTranslation();
+  const { data } = useTrack(track.id); // Since we don't revalidate the Zustand store.
+  const favoriteTrack = useFavoriteTrack(track.id);
+
+  const isFav = favoriteTrack.isPending
+    ? !data?.isFavorite
+    : (data?.isFavorite ?? false);
+
   return (
-    <View className="gap-0.5 pt-4">
-      <Marquee center>
-        <StyledText className="text-xl">{props.name}</StyledText>
-      </Marquee>
-      <Marquee center>
-        <StyledText className="text-sm text-red">{props.artistName}</StyledText>
-      </Marquee>
+    <View className="flex-row items-center gap-4">
+      <View className="grow gap-1">
+        <Marquee>
+          <StyledText className="text-xl leading-[1.125]">
+            {track.name}
+          </StyledText>
+        </Marquee>
+        <Marquee>
+          <StyledText className="text-sm leading-[1.125] text-red">
+            {track.artistName}
+          </StyledText>
+        </Marquee>
+        <Marquee>
+          <StyledText className="text-sm leading-[1.125]" dim>
+            {track.album?.name}
+          </StyledText>
+        </Marquee>
+      </View>
+      <View className="flex-row items-center gap-2">
+        <IconButton
+          kind="ripple"
+          accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
+          onPress={() => mutateGuard(favoriteTrack, !data?.isFavorite)}
+          rippleRadius={24}
+          className="p-2"
+        >
+          <Favorite size={32} filled={isFav} />
+        </IconButton>
+        <IconButton
+          kind="ripple"
+          accessibilityLabel={t("template.entrySeeMore", {
+            name: track.name,
+          })}
+          onPress={() =>
+            SheetManager.show("TrackSheet", { payload: { id: track.id } })
+          }
+        >
+          <MoreVert />
+        </IconButton>
+      </View>
     </View>
   );
 }
@@ -98,7 +123,7 @@ export function SeekBar({ duration }: { duration: number }) {
   const clampedPos = displayedPos > duration ? duration : displayedPos;
 
   return (
-    <View>
+    <View className="gap-2">
       <Slider
         value={clampedPos}
         max={duration}
@@ -123,7 +148,7 @@ export function SeekBar({ duration }: { duration: number }) {
 /** Playback controls for the current track. */
 function PlaybackControls() {
   return (
-    <View className="flex-row items-center justify-center gap-2 py-2">
+    <View className="flex-row items-center justify-center gap-2">
       <ShuffleButton />
       <PreviousButton />
       <PlayToggleButton className="rounded-full px-6" />
@@ -136,17 +161,10 @@ function PlaybackControls() {
 
 //#region Bottom App Bar
 /** Actions rendered on the bottom of the screen. */
-function BottomAppBar({ trackId }: { trackId: string }) {
+function BottomAppBar() {
   const { t } = useTranslation();
-  const { data } = useTrack(trackId); // Since we don't revalidate the Zustand store.
-  const favoriteTrack = useFavoriteTrack(trackId);
-
-  const isFav = favoriteTrack.isPending
-    ? !data?.isFavorite
-    : (data?.isFavorite ?? false);
-
   return (
-    <View className="flex-row items-center justify-between gap-4">
+    <View className="flex-row items-center justify-end gap-4 p-4">
       <IconButton
         kind="ripple"
         accessibilityLabel={t("feat.playback.extra.options")}
@@ -156,27 +174,15 @@ function BottomAppBar({ trackId }: { trackId: string }) {
       >
         <InstantMix size={32} />
       </IconButton>
-
-      <View className="flex-row items-center gap-2 pt-2">
-        <IconButton
-          kind="ripple"
-          accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
-          onPress={() => mutateGuard(favoriteTrack, !data?.isFavorite)}
-          rippleRadius={24}
-          className="p-2"
-        >
-          <Favorite size={32} filled={isFav} />
-        </IconButton>
-        <IconButton
-          kind="ripple"
-          accessibilityLabel={t("term.upcoming")}
-          onPress={() => SheetManager.show("TrackUpcomingSheet")}
-          rippleRadius={24}
-          className="p-2"
-        >
-          <LibraryMusic size={32} />
-        </IconButton>
-      </View>
+      <IconButton
+        kind="ripple"
+        accessibilityLabel={t("term.upcoming")}
+        onPress={() => SheetManager.show("TrackUpcomingSheet")}
+        rippleRadius={24}
+        className="p-2"
+      >
+        <LibraryMusic size={32} />
+      </IconButton>
     </View>
   );
 }
