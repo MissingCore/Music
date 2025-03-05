@@ -65,9 +65,7 @@ function Metadata({ track }: { track: TrackWithAlbum }) {
     <View className="flex-row items-center gap-4">
       <View className="shrink grow gap-1">
         <Marquee>
-          <StyledText className="text-xl leading-[1.125]">
-            {track.name}
-          </StyledText>
+          <StyledText className="text-xl/[1.125]">{track.name}</StyledText>
         </Marquee>
         <MarqueeLink href={`/artist/${track.artistName}`} className="text-red">
           {track.artistName}
@@ -89,6 +87,20 @@ function Metadata({ track }: { track: TrackWithAlbum }) {
         >
           <MoreVert size={32} />
         </IconButton>
+      </View>
+      {/*
+        "Spacer" to prevent layout shift when missing album or artist name.
+        There needs to be some content within the text to have the line height
+        take effect.
+      */}
+      <View
+        aria-hidden
+        pointerEvents="none"
+        className="invisible -ml-4 w-0 gap-1"
+      >
+        <StyledText className="text-xl/[1.125]"> </StyledText>
+        <StyledText className="text-sm/[1.125]"> </StyledText>
+        <StyledText className="text-sm/[1.125]"> </StyledText>
       </View>
     </View>
   );
@@ -120,15 +132,16 @@ function FavoriteButton(props: { trackId: string }) {
 function MarqueeLink({
   href,
   className,
+  children,
   ...rest
 }: React.ComponentProps<typeof StyledText> & { href: Href }) {
+  if (!children) return null;
   return (
     <Marquee>
       <Pressable onPress={() => router.navigate(href)}>
-        <StyledText
-          className={cn("text-sm leading-[1.125]", className)}
-          {...rest}
-        />
+        <StyledText className={cn("text-sm/[1.125]", className)} {...rest}>
+          {children}
+        </StyledText>
       </Pressable>
     </Marquee>
   );
