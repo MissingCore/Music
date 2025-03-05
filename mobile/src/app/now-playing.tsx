@@ -1,6 +1,7 @@
-import { Stack } from "expo-router";
+import type { Href } from "expo-router";
+import { Stack, router } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { Pressable, View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 import { useProgress } from "react-native-track-player";
 
@@ -17,6 +18,7 @@ import { useSeekStore } from "~/screens/NowPlaying/SeekService";
 import { NowPlayingArtwork } from "~/screens/NowPlaying/Artwork";
 
 import { mutateGuard } from "~/lib/react-query";
+import { cn } from "~/lib/style";
 import { formatSeconds } from "~/utils/number";
 import { Marquee } from "~/components/Containment/Marquee";
 import { SafeContainer } from "~/components/Containment/SafeContainer";
@@ -56,58 +58,79 @@ export default function NowPlayingScreen() {
 }
 
 //#region Metadata
-/** Renders the name & artist of the current playing track. */
+/** Brief information and actions on the current playing track. */
 function Metadata({ track }: { track: TrackWithAlbum }) {
   const { t } = useTranslation();
-  const { data } = useTrack(track.id); // Since we don't revalidate the Zustand store.
-  const favoriteTrack = useFavoriteTrack(track.id);
+  return (
+    <View className="flex-row items-center gap-4">
+      <View className="shrink grow gap-1">
+        <Marquee>
+          <StyledText className="text-xl leading-[1.125]">
+            {track.name}
+          </StyledText>
+        </Marquee>
+        <MarqueeLink href={`/artist/${track.artistName}`} className="text-red">
+          {track.artistName}
+        </MarqueeLink>
+        <MarqueeLink href={`/album/${track.album?.id}`} dim>
+          {track.album?.name}
+        </MarqueeLink>
+      </View>
+      <View className="flex-row items-center gap-2">
+        <FavoriteButton trackId={track.id} />
+        <IconButton
+          kind="ripple"
+          accessibilityLabel={t("template.entrySeeMore", { name: track.name })}
+          onPress={() =>
+            SheetManager.show("TrackSheet", { payload: { id: track.id } })
+          }
+          rippleRadius={24}
+          className="p-2"
+        >
+          <MoreVert size={32} />
+        </IconButton>
+      </View>
+    </View>
+  );
+}
+
+/** Quick action to favorite/unfavorite a track. */
+function FavoriteButton(props: { trackId: string }) {
+  const { t } = useTranslation();
+  const { data } = useTrack(props.trackId); // Since we don't revalidate the Zustand store.
+  const favoriteTrack = useFavoriteTrack(props.trackId);
 
   const isFav = favoriteTrack.isPending
     ? !data?.isFavorite
     : (data?.isFavorite ?? false);
 
   return (
-    <View className="flex-row items-center gap-4">
-      <View className="grow gap-1">
-        <Marquee>
-          <StyledText className="text-xl leading-[1.125]">
-            {track.name}
-          </StyledText>
-        </Marquee>
-        <Marquee>
-          <StyledText className="text-sm leading-[1.125] text-red">
-            {track.artistName}
-          </StyledText>
-        </Marquee>
-        <Marquee>
-          <StyledText className="text-sm leading-[1.125]" dim>
-            {track.album?.name}
-          </StyledText>
-        </Marquee>
-      </View>
-      <View className="flex-row items-center gap-2">
-        <IconButton
-          kind="ripple"
-          accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
-          onPress={() => mutateGuard(favoriteTrack, !data?.isFavorite)}
-          rippleRadius={24}
-          className="p-2"
-        >
-          <Favorite size={32} filled={isFav} />
-        </IconButton>
-        <IconButton
-          kind="ripple"
-          accessibilityLabel={t("template.entrySeeMore", {
-            name: track.name,
-          })}
-          onPress={() =>
-            SheetManager.show("TrackSheet", { payload: { id: track.id } })
-          }
-        >
-          <MoreVert />
-        </IconButton>
-      </View>
-    </View>
+    <IconButton
+      kind="ripple"
+      accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
+      onPress={() => mutateGuard(favoriteTrack, !data?.isFavorite)}
+      rippleRadius={24}
+      className="p-2"
+    >
+      <Favorite size={32} filled={isFav} />
+    </IconButton>
+  );
+}
+
+function MarqueeLink({
+  href,
+  className,
+  ...rest
+}: React.ComponentProps<typeof StyledText> & { href: Href }) {
+  return (
+    <Marquee>
+      <Pressable onPress={() => router.navigate(href)}>
+        <StyledText
+          className={cn("text-sm leading-[1.125]", className)}
+          {...rest}
+        />
+      </Pressable>
+    </Marquee>
   );
 }
 //#endregion
