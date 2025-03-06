@@ -11,7 +11,8 @@ import { AppProvider } from "~/providers";
 
 import "~/resources/global.css";
 import "~/modules/i18n"; // Make sure translations are bundled.
-import { TopAppBar, TopAppBarMarquee } from "~/components/TopAppBar";
+import { TopAppBar } from "~/components/TopAppBar";
+import { NowPlayingTopAppBar } from "~/screens/NowPlaying/TopAppBar";
 
 // Catch any errors thrown by the Layout component.
 export { ErrorBoundary };
@@ -86,7 +87,7 @@ function RootLayoutNav() {
           name="now-playing"
           options={{
             animation: "slide_from_bottom",
-            header: TopAppBarMarquee,
+            header: NowPlayingTopAppBar,
             headerTransparent: true,
             headerShown: true,
             headerTitle: "",

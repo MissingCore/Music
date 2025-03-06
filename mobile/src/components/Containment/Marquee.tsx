@@ -38,6 +38,16 @@ export function Marquee({
 }) {
   const { canvasAlt } = useTheme();
   const shadowColor = useMemo(() => color ?? canvasAlt, [color, canvasAlt]);
+  // This will enable support of hexadecimal colors with opacity.
+  const startColor = useMemo(
+    () =>
+      `${shadowColor.length === 7 ? shadowColor : shadowColor.slice(0, 7)}00`,
+    [shadowColor],
+  );
+  const endColor = useMemo(
+    () => (shadowColor.length === 7 ? `${shadowColor}E6` : shadowColor),
+    [shadowColor],
+  );
 
   const offset = useSharedValue(0);
   const [containerWidth, setContainerWidth] = useState(-1);
@@ -116,20 +126,14 @@ export function Marquee({
         style={isLeftVisible}
         className={cn("absolute left-0 h-full", { hidden: isStatic })}
       >
-        <LinearGradient
-          colors={[`${shadowColor}E6`, `${shadowColor}00`]}
-          {...ShadowProps}
-        />
+        <LinearGradient colors={[endColor, startColor]} {...ShadowProps} />
       </Animated.View>
       <Animated.View
         pointerEvents="none"
         style={isRightVisible}
         className={cn("absolute right-0 h-full", { hidden: isStatic })}
       >
-        <LinearGradient
-          colors={[`${shadowColor}00`, `${shadowColor}E6`]}
-          {...ShadowProps}
-        />
+        <LinearGradient colors={[startColor, endColor]} {...ShadowProps} />
       </Animated.View>
     </View>
   );

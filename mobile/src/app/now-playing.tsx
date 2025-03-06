@@ -1,5 +1,5 @@
 import type { Href } from "expo-router";
-import { Stack, router } from "expo-router";
+import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
@@ -9,6 +9,7 @@ import type { TrackWithAlbum } from "~/db/schema";
 
 import { Favorite } from "~/icons/Favorite";
 import { InstantMix } from "~/icons/InstantMix";
+import { KeyboardArrowDown } from "~/icons/KeyboardArrowDown";
 import { LibraryMusic } from "~/icons/LibraryMusic";
 import { MoreVert } from "~/icons/MoreVert";
 import { useFavoriteTrack, useTrack } from "~/queries/track";
@@ -37,23 +38,17 @@ import {
 /** Screen for `/now-playing` route. */
 export default function NowPlayingScreen() {
   const track = useMusicStore((state) => state.activeTrack);
-  const listName = useMusicStore((state) => state.sourceName);
-
   if (!track) return <Back />;
-
   return (
-    <>
-      <Stack.Screen options={{ headerTitle: listName }} />
-      <SafeContainer additionalTopOffset={56} className="flex-1 gap-8">
-        <NowPlayingArtwork artwork={track.artwork} />
-        <View className="gap-6 px-4">
-          <Metadata track={track} />
-          <SeekBar duration={track.duration} />
-          <PlaybackControls />
-        </View>
-        <BottomAppBar />
-      </SafeContainer>
-    </>
+    <SafeContainer additionalTopOffset={56} className="flex-1 gap-8">
+      <NowPlayingArtwork artwork={track.artwork} />
+      <View className="gap-6 px-4">
+        <Metadata track={track} />
+        <SeekBar duration={track.duration} />
+        <PlaybackControls />
+      </View>
+      <BottomAppBar />
+    </SafeContainer>
   );
 }
 
@@ -200,25 +195,37 @@ function PlaybackControls() {
 function BottomAppBar() {
   const { t } = useTranslation();
   return (
-    <View className="flex-row items-center justify-end gap-4 p-4">
+    <View className="flex-row items-center justify-between gap-4 p-4">
       <IconButton
         kind="ripple"
-        accessibilityLabel={t("feat.playback.extra.options")}
-        onPress={() => SheetManager.show("PlaybackOptionsSheet")}
+        accessibilityLabel={t("form.back")}
+        onPress={() => router.back()}
         rippleRadius={24}
         className="p-2"
       >
-        <InstantMix size={32} />
+        <KeyboardArrowDown size={32} />
       </IconButton>
-      <IconButton
-        kind="ripple"
-        accessibilityLabel={t("term.upcoming")}
-        onPress={() => SheetManager.show("TrackUpcomingSheet")}
-        rippleRadius={24}
-        className="p-2"
-      >
-        <LibraryMusic size={32} />
-      </IconButton>
+
+      <View className="flex-row items-center gap-4">
+        <IconButton
+          kind="ripple"
+          accessibilityLabel={t("feat.playback.extra.options")}
+          onPress={() => SheetManager.show("PlaybackOptionsSheet")}
+          rippleRadius={24}
+          className="p-2"
+        >
+          <InstantMix size={32} />
+        </IconButton>
+        <IconButton
+          kind="ripple"
+          accessibilityLabel={t("term.upcoming")}
+          onPress={() => SheetManager.show("TrackUpcomingSheet")}
+          rippleRadius={24}
+          className="p-2"
+        >
+          <LibraryMusic size={32} />
+        </IconButton>
+      </View>
     </View>
   );
 }
