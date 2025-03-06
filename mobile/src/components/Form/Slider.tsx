@@ -32,7 +32,7 @@ export function Slider(props: {
       thumbTintColor={Colors.red}
       thumbStyle={{ height: props.thumbSize, width: props.thumbSize }}
       trackStyle={{ height: props.thumbSize / 2, borderRadius: 999 }}
-      containerStyle={{ height: props.thumbSize }}
+      containerStyle={{ height: props.thumbSize + 16 }}
     />
   );
 }

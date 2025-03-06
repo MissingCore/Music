@@ -155,7 +155,7 @@ function SeekBar({ duration }: { duration: number }) {
   const clampedPos = displayedPos > duration ? duration : displayedPos;
 
   return (
-    <View className="gap-2">
+    <View>
       <Slider
         value={clampedPos}
         max={duration}
