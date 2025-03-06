@@ -17,7 +17,10 @@ import { useVinylSeekbar } from "./useVinylSeekbar";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import { Vinyl } from "~/modules/media/components/Vinyl";
 
-/** Renders the artwork of the current playing track. */
+/**
+ * Renders the artwork of the current playing track (with a minimum 16px
+ * of padding around the artwork).
+ */
 export function NowPlayingArtwork(props: { artwork: string | null }) {
   const { width } = useWindowDimensions();
   const [areaHeight, setAreaHeight] = useState<number | null>(null);
@@ -32,7 +35,7 @@ export function NowPlayingArtwork(props: { artwork: string | null }) {
   return (
     <View
       onLayout={({ nativeEvent }) => setAreaHeight(nativeEvent.layout.height)}
-      className="flex-1 items-center justify-center pt-8"
+      className="flex-1 items-center justify-center"
     >
       {size !== undefined ? (
         <ArtworkPicker source={props.artwork} size={size} />
