@@ -17,7 +17,10 @@ import { useVinylSeekbar } from "./useVinylSeekbar";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import { Vinyl } from "~/modules/media/components/Vinyl";
 
-/** Renders the artwork of the current playing track. */
+/**
+ * Renders the artwork of the current playing track (with a minimum 16px
+ * of padding around the artwork).
+ */
 export function NowPlayingArtwork(props: { artwork: string | null }) {
   const { width } = useWindowDimensions();
   const [areaHeight, setAreaHeight] = useState<number | null>(null);

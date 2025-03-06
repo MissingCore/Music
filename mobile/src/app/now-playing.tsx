@@ -15,6 +15,7 @@ import { MoreVert } from "~/icons/MoreVert";
 import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { useMusicStore } from "~/modules/media/services/Music";
 import { MusicControls } from "~/modules/media/services/Playback";
+import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useSeekStore } from "~/screens/NowPlaying/SeekService";
 import { NowPlayingArtwork } from "~/screens/NowPlaying/Artwork";
 
@@ -145,7 +146,7 @@ function MarqueeLink({
 
 //#region Seek Bar
 /** Allows us to change the current positon of the playing track. */
-export function SeekBar({ duration }: { duration: number }) {
+function SeekBar({ duration }: { duration: number }) {
   const { position } = useProgress(200);
   const sliderPos = useSeekStore((state) => state.sliderPos);
   const setSliderPos = useSeekStore((state) => state.setSliderPos);
@@ -196,16 +197,7 @@ function BottomAppBar() {
   const { t } = useTranslation();
   return (
     <View className="flex-row items-center justify-between gap-4 p-4">
-      <IconButton
-        kind="ripple"
-        accessibilityLabel={t("form.back")}
-        onPress={() => router.back()}
-        rippleRadius={24}
-        className="p-2"
-      >
-        <KeyboardArrowDown size={32} />
-      </IconButton>
-
+      <BackButton />
       <View className="flex-row items-center gap-4">
         <IconButton
           kind="ripple"
@@ -227,6 +219,29 @@ function BottomAppBar() {
         </IconButton>
       </View>
     </View>
+  );
+}
+
+/**
+ * Conditionally render the back button in the bottom app bar if we're
+ * using the `Vinyl (Legacy)` design.
+ */
+function BackButton() {
+  const { t } = useTranslation();
+  const usedDesign = useUserPreferencesStore((state) => state.nowPlayingDesign);
+
+  if (usedDesign !== "vinylOld") return <View />;
+
+  return (
+    <IconButton
+      kind="ripple"
+      accessibilityLabel={t("form.back")}
+      onPress={() => router.back()}
+      rippleRadius={24}
+      className="p-2"
+    >
+      <KeyboardArrowDown size={32} />
+    </IconButton>
   );
 }
 //#endregion
