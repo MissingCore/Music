@@ -39,6 +39,7 @@ export const albums = sqliteTable(
     */
     releaseYear: integer("release_year").default(-1),
     artwork: text(),
+    altArtwork: text(),
     isFavorite: integer({ mode: "boolean" }).notNull().default(false),
   },
   (t) => [unique().on(t.name, t.artistName, t.releaseYear)],
