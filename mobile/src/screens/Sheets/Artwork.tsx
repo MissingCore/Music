@@ -2,6 +2,7 @@ import type { UseMutationResult } from "@tanstack/react-query";
 import { useState } from "react";
 import { View, useWindowDimensions } from "react-native";
 
+import { useAlbum, useUpdateAlbumArtwork } from "~/queries/album";
 import { useArtist, useUpdateArtist } from "~/queries/artist";
 import { usePlaylist, useUpdatePlaylist } from "~/queries/playlist";
 
@@ -13,7 +14,27 @@ import { TStyledText } from "~/components/Typography/StyledText";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import type { MediaType } from "~/modules/media/types";
 
-/** Sheet allowing us to change the artwork of a artist. */
+/** Sheet allowing us to change the artwork of an album. */
+export function AlbumArtworkSheet(props: { payload: { id: string } }) {
+  const { data } = useAlbum(props.payload.id);
+  const updateAlbumArtwork = useUpdateAlbumArtwork(props.payload.id);
+
+  return (
+    <Sheet
+      id="AlbumArtworkSheet"
+      contentContainerClassName="items-center gap-6"
+    >
+      <BaseArtworkSheetContent
+        type="album"
+        imageSource={data?.altArtwork ?? data?.artwork ?? null}
+        mutationResult={updateAlbumArtwork}
+        disabled={data?.altArtwork === null}
+      />
+    </Sheet>
+  );
+}
+
+/** Sheet allowing us to change the artwork of an artist. */
 export function ArtistArtworkSheet(props: { payload: { id: string } }) {
   const { data } = useArtist(props.payload.id);
   const updateArtist = useUpdateArtist(props.payload.id);
@@ -56,6 +77,7 @@ function BaseArtworkSheetContent(props: {
   type: MediaType;
   imageSource: MediaImage.ImageSource | MediaImage.ImageSource[];
   mutationResult: UseMutationResult<any, Error, { artwork?: string | null }>;
+  disabled?: boolean;
 }) {
   const { height, width } = useWindowDimensions();
   const [disabled, setDisabled] = useState(false);
@@ -77,6 +99,7 @@ function BaseArtworkSheetContent(props: {
             setDisabled(false);
           }}
           disabled={
+            props.disabled ||
             disabled ||
             props.imageSource === null ||
             Array.isArray(props.imageSource)
