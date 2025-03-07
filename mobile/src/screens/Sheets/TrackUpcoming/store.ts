@@ -2,12 +2,12 @@ import { inArray } from "drizzle-orm";
 import { createStore, useStore } from "zustand";
 
 import { tracks } from "~/db/schema";
-import type { Artwork, SlimTrack } from "~/db/slimTypes";
+import type { SlimTrack, TrackArtwork } from "~/db/slimTypes";
 
 import { getTracks } from "~/api/track";
 import { musicStore } from "~/modules/media/services/Music";
 
-type PartialTrack = SlimTrack & { album: { artwork: Artwork } | null };
+type PartialTrack = SlimTrack & Required<TrackArtwork>;
 
 interface UpcomingStore {
   currentTrackList: Array<PartialTrack | undefined>;
@@ -74,7 +74,7 @@ async function getTracksFromIds(trackIds: string[]) {
   const unorderedTracks = await getTracks({
     where: [inArray(tracks.id, trackIds)],
     columns: ["id", "name", "artistName", "artwork"],
-    albumColumns: ["artwork"],
+    albumColumns: ["artwork", "altArtwork"],
   });
   return trackIds.map((tId) => unorderedTracks.find(({ id }) => id === tId));
 }

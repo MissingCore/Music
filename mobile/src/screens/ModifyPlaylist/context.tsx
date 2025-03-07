@@ -5,7 +5,7 @@ import { createStore, useStore } from "zustand";
 import { createComputed } from "zustand-computed";
 
 import type { SlimTrackWithAlbum } from "~/db/slimTypes";
-import { mergeTracks, sanitizePlaylistName } from "~/db/utils";
+import { getTrackCover, mergeTracks, sanitizePlaylistName } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
 
@@ -122,9 +122,11 @@ export function PlaylistStoreProvider({
             set((prev) => ({
               tracks: mergeTracks(
                 prev.tracks,
-                tracks.map(({ artwork, ...t }) => {
-                  return { ...t, artwork: album.artwork ?? artwork, album };
-                }),
+                tracks.map((t) => ({
+                  ...t,
+                  artwork: getTrackCover({ ...t, album }),
+                  album,
+                })),
               ),
             }));
             toast(

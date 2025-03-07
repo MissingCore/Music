@@ -22,8 +22,9 @@ type WithTracksOptions = {
  * Determines if the `tracks` relation is used along with each track's
  * `album` relation.
  *
- * **Note:** The type assertion on the result when it may not even be that
- * is to prevent an error being thrown with the `QueryOneWithTracksFn` type.
+ * **Note:** The typing is very loose as to support the various use case of
+ * `QueryOneWithTracksFn` (we ensure what's returned complies with what's
+ * expected).
  */
 export function withTracks(
   trackOptions: WithTracksOptions,
@@ -51,13 +52,12 @@ type WithAlbumOptions = {
  * Creates the relations through the `with` operator for the `tracks`
  * field.
  *
- * **Note:** The type assertion on the result when it may not even be that
- * is to prevent an error being thrown with the `QueryOneWithTracksFn` type.
+ * **Note:** The typing is very loose as to support the various use case of
+ * `QueryOneWithTracksFn` (we ensure what's returned complies with what's
+ * expected).
  */
 export function withAlbum(options: WithAlbumOptions) {
-  return (
-    (options.withAlbum ?? options.defaultWithAlbum) === true
-      ? { with: { album: { columns: getColumns(options.albumColumns) } } }
-      : {}
-  ) as { with: { album: { columns: ReturnType<typeof getColumns> } } };
+  return ((options.withAlbum ?? options.defaultWithAlbum) === true
+    ? { with: { album: { columns: getColumns(options.albumColumns) } } }
+    : {}) as unknown as { with: { album: true } };
 }

@@ -165,10 +165,10 @@ type MediaRelations =
   | { type: "track"; data: SlimTrackWithAlbum };
 
 /** Get the artwork of the media that'll be displayed. */
-function getArtwork(props: MediaRelations) {
-  if (props.type === "album") return props.data.artwork;
-  if (props.type === "artist") return props.data.artwork;
-  if (props.type === "playlist") return getPlaylistCover(props.data);
-  return getTrackCover(props.data);
+function getArtwork({ type, data }: MediaRelations) {
+  if (type === "album") return data.altArtwork ?? data.artwork;
+  if (type === "artist") return data.artwork;
+  if (type === "playlist") return getPlaylistCover(data);
+  return getTrackCover(data);
 }
 //#endregion

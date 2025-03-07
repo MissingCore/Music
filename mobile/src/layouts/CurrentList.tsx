@@ -49,14 +49,12 @@ export function CurrentListLayout(
   const { canvas, foreground } = useTheme();
   const primaryFont = useUserPreferencesStore((state) => state.primaryFont);
 
-  const isFavorite = getIsFavoritePlaylist(props.title, props.mediaSource.type);
+  const isFavorite = getIsFavoritePlaylist(props.mediaSource);
 
   return (
     <>
       <View className="flex-row gap-2 pr-4">
-        <ContentImage
-          {...pickKeys(props, ["title", "mediaSource", "imageSource"])}
-        />
+        <ContentImage {...pickKeys(props, ["mediaSource", "imageSource"])} />
         <View className="shrink grow justify-end">
           <TEm
             dim
@@ -104,15 +102,10 @@ export function CurrentListLayout(
 }
 
 /** Determines the look and features of the image displayed. */
-function ContentImage({
-  title,
-  ...props
-}: { title: string } & AnimatedVinylProps) {
+function ContentImage(props: AnimatedVinylProps) {
   const { t } = useTranslation();
 
-  const type = props.mediaSource.type;
-
-  if (getIsFavoritePlaylist(title, type) || type === "album")
+  if (getIsFavoritePlaylist(props.mediaSource))
     return <AnimatedVinyl {...props} />;
 
   return (
@@ -120,13 +113,13 @@ function ContentImage({
       aria-label={t("feat.artwork.extra.change")}
       delayLongPress={100}
       onLongPress={() => {
-        SheetManager.show(`${capitalize(type)}ArtworkSheet`, {
-          payload: { id: title },
+        SheetManager.show(`${capitalize(props.mediaSource.type)}ArtworkSheet`, {
+          payload: { id: props.mediaSource.id },
         });
       }}
       className="group"
     >
-      {type === "artist" ? (
+      {props.mediaSource.type === "artist" ? (
         <MediaImage
           type="artist"
           source={props.imageSource as string | null}
@@ -207,6 +200,6 @@ function AnimatedVinyl(props: AnimatedVinylProps) {
 }
 
 /** Determine if whether this layout is for the "Favorite Playlists" page. */
-function getIsFavoritePlaylist(title: string, type: SupportedMedia) {
-  return title === ReservedPlaylists.favorites && type === "playlist";
+function getIsFavoritePlaylist({ type, id }: MediaListSource) {
+  return id === ReservedPlaylists.favorites && type === "playlist";
 }

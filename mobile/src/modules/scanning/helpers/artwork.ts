@@ -137,14 +137,18 @@ async function saveSinglesArtwork(
 export async function cleanupImages() {
   // Get all the uris of images saved in the database.
   const usedUris = (
-    await Promise.all(
-      [albums, artists, playlists, tracks].map((schema) =>
+    await Promise.all([
+      ...[albums, artists, playlists, tracks].map((schema) =>
         db
           .select({ artwork: schema.artwork })
           .from(schema)
           .where(isNotNull(schema.artwork)),
       ),
-    )
+      db
+        .select({ artwork: albums.altArtwork })
+        .from(albums)
+        .where(isNotNull(albums.altArtwork)),
+    ])
   )
     .flat()
     .map(({ artwork }) => artwork!);

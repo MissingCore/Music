@@ -2,7 +2,11 @@ import type { SheetDefinition } from "react-native-actions-sheet";
 import { registerSheet } from "react-native-actions-sheet";
 
 import AddMusicSheet from "./AddMusic";
-import { ArtistArtworkSheet, PlaylistArtworkSheet } from "./Artwork";
+import {
+  AlbumArtworkSheet,
+  ArtistArtworkSheet,
+  PlaylistArtworkSheet,
+} from "./Artwork";
 import BackupSheet from "./Backup";
 import { FontAccentSheet, FontPrimarySheet } from "./Font";
 import LanguageSheet from "./Language";
@@ -24,6 +28,7 @@ import type { SearchCallbacks } from "~/modules/search/types";
   appears, the sheet won't render as it expects a sheet on initial render.
 */
 registerSheet("AddMusicSheet", AddMusicSheet);
+registerSheet("AlbumArtworkSheet", AlbumArtworkSheet);
 registerSheet("ArtistArtworkSheet", ArtistArtworkSheet);
 registerSheet("BackupSheet", BackupSheet);
 registerSheet("FontAccentSheet", FontAccentSheet);
@@ -47,6 +52,7 @@ declare module "react-native-actions-sheet" {
     AddMusicSheet: SheetDefinition<{
       payload: { callbacks: Pick<SearchCallbacks, "album" | "track"> };
     }>;
+    AlbumArtworkSheet: SheetDefinition<{ payload: { id: string } }>;
     ArtistArtworkSheet: SheetDefinition<{ payload: { id: string } }>;
     BackupSheet: SheetDefinition;
     FontAccentSheet: SheetDefinition;
