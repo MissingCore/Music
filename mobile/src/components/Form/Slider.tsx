@@ -41,7 +41,12 @@ export function Slider(props: {
 //#region Nothing Slider
 /** Custom slider design to match the one in the Nothing X app. */
 export function NSlider(
-  props: NMarkProps & { label: string; icon: React.ReactNode },
+  props: NMarkProps & {
+    label: string;
+    icon: React.ReactNode;
+    formatValue: (value: number) => string;
+    step?: number;
+  },
 ) {
   const { surface } = useTheme();
   const [width, setWidth] = useState<number>();
@@ -68,6 +73,7 @@ export function NSlider(
         value={props.value}
         minimumValue={props.min}
         maximumValue={props.max}
+        step={props.step}
         onValueChange={async ([newPos]) => await props.onChange(newPos!)}
         minimumTrackTintColor={`${Colors.red}33`} // 20% Opacity
         maximumTrackTintColor={surface}
@@ -91,27 +97,33 @@ type NMarkProps = {
   max: number;
   trackMarks?: number[];
   onChange: (value: number) => void | Promise<void>;
-  formatValue: (value: number) => string;
 };
 
-function NSliderMarks(props: NMarkProps & { width: number }) {
-  if (!props.trackMarks) return null;
-  return props.trackMarks.map((val) => (
-    <Pressable
-      key={val}
-      accessibilityLabel={props.formatValue(val)}
-      hitSlop={{ left: 16, right: 16, top: 24, bottom: 24 }}
-      onPress={() => props.onChange(val)}
-      disabled={props.value === val}
-      pointerEvents={props.value === val ? "none" : "auto"}
-      style={{
-        left: ((val - props.min) / (props.max - props.min)) * props.width,
-      }}
-      className={cn(
-        "absolute top-1/2 h-4 w-0.5 -translate-x-px -translate-y-1/2",
-        { "bg-foreground/5": val !== props.min && val !== props.max },
-      )}
-    />
-  ));
+const markClass =
+  "absolute top-1/2 h-4 w-0.5 -translate-x-1/2 -translate-y-1/2";
+
+function NSliderMarks({ min, max, ...rest }: NMarkProps & { width: number }) {
+  if (!rest.trackMarks) return null;
+  return rest.trackMarks.map((val) =>
+    val !== min && val !== max ? (
+      <View
+        key={val}
+        pointerEvents="none"
+        style={{ left: ((val - min) / (max - min)) * rest.width }}
+        className={cn("bg-foreground/5", markClass)}
+      />
+    ) : (
+      <Pressable
+        key={val}
+        accessible={false}
+        hitSlop={{ left: 16, right: 16, top: 24, bottom: 24 }}
+        onPress={() => rest.onChange(val)}
+        disabled={rest.value === val}
+        pointerEvents={rest.value === val ? "none" : "auto"}
+        style={{ left: ((val - min) / (max - min)) * rest.width }}
+        className={markClass}
+      />
+    ),
+  );
 }
 //#endregion

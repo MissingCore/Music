@@ -44,6 +44,7 @@ const rateFormatter = new Intl.NumberFormat("en-US", {
 const PlaybackSpeedSliderOptions = {
   min: 0.25,
   max: 2,
+  step: 0.05,
   trackMarks: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
   icon: <SlowMotionVideo />,
   onChange: async (playbackSpeed: number) => {
@@ -57,6 +58,7 @@ const PlaybackSpeedSliderOptions = {
 const VolumeSliderOptions = {
   min: 0,
   max: 1,
+  step: 0.01,
   trackMarks: [0, 0.25, 0.5, 0.75, 1],
   icon: <VolumeUp />,
   onChange: async (volume: number) => {
