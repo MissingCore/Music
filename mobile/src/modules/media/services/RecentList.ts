@@ -69,7 +69,7 @@ recentListStore.subscribe(
       try {
         if (type === "album") {
           const data = await getAlbum(id, {
-            columns: ["id", "name", "artistName", "artwork"],
+            columns: ["id", "name", "artistName", "artwork", "altArtwork"],
             trackColumns: ["id"],
           });
           entry = formatForMediaCard({ type: "album", data, t: i18next.t });
@@ -101,7 +101,7 @@ recentListStore.subscribe(
             data = await getPlaylist(id, {
               columns: ["name", "artwork"],
               trackColumns: ["artwork"],
-              albumColumns: ["artwork"],
+              albumColumns: ["artwork", "altArtwork"],
             });
           }
           entry = formatForMediaCard({ type: "playlist", data, t: i18next.t });
