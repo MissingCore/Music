@@ -25,6 +25,9 @@ export default function AppUpdateScreen() {
 
   if (!release) return null;
 
+  // Light: 5% Opacity; Dark: 15% Opacity
+  const codeBg = `${foreground}${theme === "dark" ? "26" : "0D"}`;
+
   return (
     <StandardScrollLayout>
       <StickyActionHeader noOffset originalText>
@@ -48,8 +51,7 @@ export default function AppUpdateScreen() {
             marginLeft: 0,
             padding: 16,
             paddingHorizontal: 16,
-            // Light: 5% Opacity; Dark: 15% Opacity
-            backgroundColor: `${foreground}${theme === "dark" ? "26" : "0D"}`,
+            backgroundColor: codeBg,
             borderRadius: 12,
             borderLeftWidth: 0,
           },
@@ -72,7 +74,8 @@ export default function AppUpdateScreen() {
           code_inline: (node, _children, _parent, _styles) => (
             <View
               key={node.key}
-              className="translate-y-0.5 rounded-sm bg-foreground/5 px-1 dark:bg-foreground/15"
+              style={{ backgroundColor: codeBg }}
+              className="translate-y-0.5 rounded-sm px-1"
             >
               <Text
                 style={{ fontFamily: "monospace" }}

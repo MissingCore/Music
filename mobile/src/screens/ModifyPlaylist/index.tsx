@@ -340,7 +340,7 @@ function ModalBase(props: { visible: boolean; children: React.ReactNode }) {
       transparent
     >
       <View className="flex-1 items-center justify-center bg-neutral0/50 px-4">
-        <View className="w-full gap-8 rounded-md bg-canvas px-4 dark:bg-neutral5">
+        <View className="w-full gap-8 rounded-md bg-canvasAlt px-4">
           {props.children}
         </View>
       </View>

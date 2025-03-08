@@ -42,7 +42,7 @@ export function Sheet({
         <SheetHeader title={titleKey ? t(titleKey) : undefined} />
       }
       ExtraOverlayComponent={<Toasts />}
-      containerClassName={cn("rounded-t-lg bg-canvas dark:bg-neutral5", {
+      containerClassName={cn("rounded-t-lg bg-canvasAlt", {
         "h-full": snapTop,
       })}
       // Have sheet max height be right before the top app bar.

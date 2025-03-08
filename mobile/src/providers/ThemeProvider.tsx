@@ -13,12 +13,14 @@ import { Colors } from "~/constants/Styles";
 const Themes = {
   light: vars({
     "--color-canvas": "242 242 242", // Colors.neutral95
+    "--color-canvasAlt": "242 242 242", // Colors.neutral95
     "--color-surface": "255 255 255", // Colors.neutral100
     "--color-onSurface": "204 204 204", // Colors.neutral80
     "--color-foreground": "0 0 0", // Colors.neutral0
   }),
   dark: vars({
     "--color-canvas": "0 0 0", // Colors.neutral0
+    "--color-canvasAlt": "13 13 13", // Colors.neutral5
     "--color-surface": "27 29 31", // Colors.neutral10
     "--color-onSurface": "51 51 51", // Colors.neutral20
     "--color-foreground": "255 255 255", // Colors.neutral100

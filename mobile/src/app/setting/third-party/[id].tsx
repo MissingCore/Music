@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { OpenInNew } from "~/icons/OpenInNew";
 import LicensesList from "~/resources/licenses.json";
+import { useTheme } from "~/hooks/useTheme";
 import { StandardScrollLayout } from "~/layouts/StandardScroll";
 import { StickyActionHeader } from "~/layouts/StickyActionScroll";
 
@@ -15,6 +16,7 @@ import { StyledText } from "~/components/Typography/StyledText";
 export default function PackageLicenseScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { t } = useTranslation();
+  const { theme } = useTheme();
 
   const licenseInfo = LicensesList[id as keyof typeof LicensesList];
 
@@ -40,7 +42,9 @@ export default function PackageLicenseScreen() {
           {licenseInfo.name}
         </StickyActionHeader>
 
-        <Card className="bg-foreground/5 dark:bg-foreground/15">
+        <Card
+          className={theme === "dark" ? "bg-foreground/15" : "bg-foreground/5"}
+        >
           <StyledText dim>
             {`${licenseInfo.version}\n\n`}
             This component is licensed under the {licenseInfo.license} license.

@@ -69,11 +69,7 @@ export function PlayToggleButton({ size = 32, className = "" }) {
     <IconButton
       accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
       onPress={MusicControls.playToggle}
-      className={cn(
-        "bg-red p-2",
-        { "bg-neutral80 dark:bg-neutral20": isPlaying },
-        className,
-      )}
+      className={cn("bg-red p-2", { "bg-onSurface": isPlaying }, className)}
     >
       <Icon size={size} color={Colors.neutral100} />
     </IconButton>

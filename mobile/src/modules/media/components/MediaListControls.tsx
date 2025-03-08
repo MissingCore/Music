@@ -50,9 +50,7 @@ function PlayMediaListButton({ trackSource }: { trackSource: PlayListSource }) {
           ? MusicControls.pause
           : () => playFromMediaList({ source: trackSource })
       }
-      className={cn("bg-red", {
-        "bg-neutral80 dark:bg-neutral20": displayPause,
-      })}
+      className={displayPause ? "bg-onSurface" : "bg-red"}
     >
       <Icon color={Colors.neutral100} />
     </IconButton>

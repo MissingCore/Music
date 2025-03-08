@@ -6,6 +6,7 @@ export const TailwindTheme = {
   colors: {
     ...Styles.Colors,
     canvas: "rgb(var(--color-canvas) / <alpha-value>)",
+    canvasAlt: "rgb(var(--color-canvasAlt) / <alpha-value>)",
     surface: "rgb(var(--color-surface) / <alpha-value>)",
     onSurface: "rgb(var(--color-onSurface) / <alpha-value>)",
     foreground: "rgb(var(--color-foreground) / <alpha-value>)",

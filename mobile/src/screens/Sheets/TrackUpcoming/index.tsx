@@ -133,9 +133,7 @@ function TrackItem({
       type="track"
       {...props}
       contentLabel={inQueue ? "Q" : undefined}
-      className={cn(props.className, "bg-canvas pr-2 dark:bg-neutral5", {
-        "pr-6": !inQueue,
-      })}
+      className={cn(props.className, "bg-canvasAlt pr-2", { "pr-6": !inQueue })}
     />
   );
 }
