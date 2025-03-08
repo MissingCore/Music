@@ -239,9 +239,10 @@ musicStore.subscribe(
 export class Queue {
   /** Add a track id at the end of the current queue. */
   static async add({ id, name }: { id: string; name: string }) {
+    const prevQueueLength = musicStore.getState().queueList.length;
     musicStore.setState((prev) => ({ queueList: [...prev.queueList, id] }));
     toast(i18next.t("feat.modalTrack.extra.queueAdd", { name }), ToastOptions);
-    await RNTPManager.reloadNextTrack();
+    if (prevQueueLength === 0) await RNTPManager.reloadNextTrack();
   }
 
   /** Remove track id at specified index of current queue. */
@@ -249,7 +250,7 @@ export class Queue {
     musicStore.setState((prev) => ({
       queueList: prev.queueList.toSpliced(index, 1),
     }));
-    await RNTPManager.reloadNextTrack();
+    if (index === 0) await RNTPManager.reloadNextTrack();
   }
 
   /** Remove list of track ids in the current queue. */
