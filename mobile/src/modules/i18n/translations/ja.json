@@ -25,6 +25,7 @@
     "home": "ホーム",
     "settings": "設定",
     "upcoming": "次に再生",
+    "playingFrom": "再生元",
     "disc": "ディスク {{count}}"
   },
   "template": {

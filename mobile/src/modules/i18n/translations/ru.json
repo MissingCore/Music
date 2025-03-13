@@ -25,6 +25,7 @@
     "home": "Главная",
     "settings": "Настройки",
     "upcoming": "Предстоящее",
+    "playingFrom": "Играет с",
     "disc": "Диск {{count}}"
   },
   "template": {

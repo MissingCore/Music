@@ -25,6 +25,7 @@
     "home": "首页",
     "settings": "设置",
     "upcoming": "即将播放",
+    "playingFrom": null,
     "disc": "碟片 {{count}}"
   },
   "template": {

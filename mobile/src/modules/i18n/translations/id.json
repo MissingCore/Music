@@ -25,6 +25,7 @@
     "home": "Beranda",
     "settings": "Pengaturan",
     "upcoming": "Yang akan Datang",
+    "playingFrom": "Memutar Dari",
     "disc": "Disk {{count}}"
   },
   "template": {
@@ -109,7 +110,7 @@
     "font": {
       "extra": {
         "accent": "Font Aksen",
-        "primary": null
+        "primary": "Font Primer"
       }
     },
     "theme": {
@@ -171,12 +172,12 @@
       "brief": "Fitur tidak didukung."
     },
     "playback": {
-      "title": null,
-      "brief": null,
+      "title": "Pemutaran",
+      "brief": "Ubah perilaku pemutaran musik.",
       "extra": {
-        "options": null,
-        "speed": null,
-        "volume": null
+        "options": "Opsi Pemutaran",
+        "speed": "Kecepatan Pemutaran",
+        "volume": "Volume Aplikasi"
       }
     },
     "ignoreInterrupt": {
@@ -260,7 +261,7 @@
       "title": "Baru Saja Diputar",
       "extra": {
         "empty": "Anda belum memutar apapun!",
-        "section": null
+        "section": "Bagian yang Baru Diputar"
       }
     },
     "search": {
