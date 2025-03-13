@@ -12,8 +12,9 @@ A Nothing inspired **local** music player.
 ## Features
 
 - Supports Android 7+
-- Supports Nothing Music Widget & Glyph Music Visualization
-- Diverse music organization: Favorites, Playlists, Folder Structure, Albums, Artists
+- Works with Nothing Music Widget & Glyph Music Visualization
+- Diverse music organization: Albums, Artists, Favorites, Folder Structure, Playlists
+- Artwork customizability for: Albums, Artists, Playlists (long-press the artwork on their screen)
 - Background playback w/ media control notification
 - Queues
 - Theoretical support of [these media formats](https://developer.android.com/media/platform/supported-formats#audio-formats)
