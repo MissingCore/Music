@@ -25,6 +25,7 @@
     "home": "Accueil",
     "settings": "Paramètres",
     "upcoming": "À venir",
+    "playingFrom": null,
     "disc": "CD {{count}}"
   },
   "template": {

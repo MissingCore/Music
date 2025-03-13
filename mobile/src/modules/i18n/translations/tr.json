@@ -25,6 +25,7 @@
     "home": "Ana Sayfa",
     "settings": "Ayarlar",
     "upcoming": "Yaklaşan",
+    "playingFrom": "Şuradan Oynatılıyor",
     "disc": "Disk {{count}}"
   },
   "template": {

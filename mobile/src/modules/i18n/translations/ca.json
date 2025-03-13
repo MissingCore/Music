@@ -25,6 +25,7 @@
     "home": "Inici",
     "settings": "Ajusts",
     "upcoming": "Pròxima",
+    "playingFrom": "Reproduint des de",
     "disc": "Disc {{count}}"
   },
   "template": {

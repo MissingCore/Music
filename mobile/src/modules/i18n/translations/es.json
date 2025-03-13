@@ -9,8 +9,8 @@
     "folders": "Carpetas",
     "playlist": "Lista de reproducción",
     "playlists": "Listas de reproducción",
-    "track": "Pista",
-    "tracks": "Pistas",
+    "track": "Canción",
+    "tracks": "Canciones",
     "play": "Reproducir",
     "pause": "Pausar",
     "prev": "Anterior",
@@ -21,10 +21,11 @@
     "favorite": "Favorito",
     "favorites": "Favoritos",
     "unFavorite": "Quitar de favoritos",
-    "favoriteTracks": "Pistas favoritas",
+    "favoriteTracks": "Canciones favoritas",
     "home": "Inicio",
     "settings": "Configuración",
     "upcoming": "Próximamente",
+    "playingFrom": "Reproduciendo desde",
     "disc": "Disco {{count}}"
   },
   "template": {
@@ -52,7 +53,7 @@
     "cancel": "Cancelar",
     "confirm": "Confirmar",
     "unsaved": "Puede que tengas cambios sin guardar.",
-    "stay": "Permanecer",
+    "stay": "Esperar",
     "leave": "Salir",
     "clear": "Limpiar",
     "validation": {
@@ -62,7 +63,7 @@
   "err": {
     "flow": {
       "route": {
-        "title": "Ruta no coincidente",
+        "title": "Ruta no coincide",
         "brief": "De alguna forma has navegado a una ruta inválida.",
         "extra": {
           "missing": "Falta",
@@ -75,14 +76,14 @@
       },
       "report": {
         "title": "Reportar problema",
-        "brief": "Incluye una captura de esta pantalla."
+        "brief": "Incluir una captura de esta pantalla."
       }
     },
     "msg": {
       "actionCancel": "Acción cancelada.",
       "invalidStructure": "Estructura inválida.",
-      "noSelect": "Nada seleccionado.",
-      "usedName": "Ese nombre no se puede usar.",
+      "noSelect": "No hay elementos seleccionados.",
+      "usedName": "No se puede usar ese nombre.",
       "noContent": "No se encontró contenido.",
       "noErrors": "No se encontraron errores.",
       "noFilters": "No se encontraron filtros.",
@@ -90,7 +91,7 @@
       "noAlbums": "No se encontraron álbumes.",
       "noArtists": "No se encontraron artistas.",
       "noPlaylists": "No se encontraron listas de reproducción.",
-      "noTracks": "No se encontraron pistas."
+      "noTracks": "No se encontraron canciones."
     }
   },
   "feat": {
@@ -98,7 +99,7 @@
       "title": "Actualización de la app",
       "brief": "¡Nueva actualización disponible!",
       "extra": {
-        "downloadAPK": "Descargar el último APK",
+        "downloadAPK": "Descargar la APK más reciente",
         "updateGoogle": "Actualizar vía Play Store"
       }
     },
@@ -108,8 +109,8 @@
     },
     "font": {
       "extra": {
-        "accent": "Fuente de acento",
-        "primary": "Fuente primaria"
+        "accent": "Fuente con acento",
+        "primary": "Fuente principal"
       }
     },
     "theme": {
@@ -121,7 +122,7 @@
       }
     },
     "homeTabsOrder": {
-      "title": "Orden de Pestañas de Inicio",
+      "title": "Orden de pestañas de Inicio",
       "brief": "Personalizar el orden y la visibilidad de las pestañas.",
       "description": {
         "line1": "Reordena las pestañas después de la pestaña \"Inicio\" arrastrando y soltando. Alterna la visibilidad de las pestañas usando el icono del ojo.",
@@ -129,7 +130,7 @@
       }
     },
     "nowPlayingDesign": {
-      "title": "Diseño de Pantalla Ahora Reproduciendo",
+      "title": "Diseño de la pantalla de reproducción.",
       "extra": {
         "plain": "Simple",
         "vinyl": "Vinilo",
@@ -141,20 +142,20 @@
     },
     "backup": {
       "title": "Copia de seguridad",
-      "brief": "Mueve datos entre dispositivos.",
+      "brief": "Mover datos entre dispositivos.",
       "description": "Transfiere datos de esta app entre dispositivos a través de un archivo `music_backup.json`.",
       "extra": {
         "export": "Exportar",
-        "exportSuccess": "Copia de seguridad creada exitosamente.",
+        "exportSuccess": "Copia de seguridad creada con éxito",
         "import": "Importar",
         "importSuccess": "Importación de copia de seguridad completada."
       }
     },
     "insights": {
       "title": "Análisis",
-      "brief": "Uso de la app y análisis.",
+      "brief": "Uso y estadísticas de la aplicación.",
       "extra": {
-        "cache": "Cache",
+        "cache": "Caché",
         "database": "Base de datos",
         "images": "Imágenes",
         "other": "Otros",
@@ -164,7 +165,7 @@
     },
     "saveErrors": {
       "title": "Errores al guardar",
-      "brief": "Ver por qué no se guardaron algunas pistas."
+      "brief": "Ver por qué no se guardaron algunas canciones."
     },
     "interactions": {
       "title": "Interacciones de Nothing",
@@ -181,7 +182,7 @@
     },
     "ignoreInterrupt": {
       "title": "Ignorar interrupciones",
-      "brief": "Seguir reproduciendo audio cuando se produzca una interrupción, como una notificación o llamada. Deberá pausar y reactivar manualmente la música durante estas situaciones."
+      "brief": "Seguir reproduciendo audio cuando se produce una interrupción como una notificación o una llamada. Tendrá que pausar y reanudar manualmente la música durante estas situaciones."
     },
     "repeatOnSkip": {
       "title": "Mantener el modo de repetición al saltar",
@@ -193,7 +194,7 @@
     },
     "rescan": {
       "title": "Reescaneo",
-      "brief": "Buscar cualquier medio nuevo.",
+      "brief": "Buscar música y archivos nuevos.",
       "extra": {
         "start": "Reescaneando biblioteca...",
         "success": "Reescaneo de biblioteca finalizado.",
@@ -206,7 +207,7 @@
     },
     "listAllow": {
       "title": "Lista de permitidos",
-      "description": "Predeterminado a lo siguiente si está vacío:"
+      "description": "Predeterminado si lo siguiente está vacío:"
     },
     "listBlock": {
       "title": "Lista de bloqueados",
@@ -217,7 +218,7 @@
       "description": "Duración en segundos del audio que no queremos guardar."
     },
     "translate": {
-      "title": "Contribuir con traducciones",
+      "title": "Contribuir con las traducciones",
       "brief": "Ayuda a traducir la app a otros idiomas."
     },
     "code": {
@@ -238,11 +239,11 @@
       "title": "Versión"
     },
     "onboardPreprocess": {
-      "title": "Preprocesar",
+      "title": "Pre procesar",
       "brief": "Asegurándose de que los datos existentes cumplen con los cambios."
     },
     "onboardTracks": {
-      "title": "Guardando pistas",
+      "title": "Guardando canciones",
       "extra": {
         "prevSaved": "{{amount}} guardadas anteriormente",
         "saved": "{{amount}}/{{total}} guardadas/actualizadas",
@@ -260,7 +261,7 @@
       "title": "Reproducido recientemente",
       "extra": {
         "empty": "¡Aún no has reproducido nada!",
-        "section": "Reproducido recientemente"
+        "section": "Sección Reproducida Recientemente"
       }
     },
     "search": {
