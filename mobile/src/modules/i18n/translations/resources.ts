@@ -6,6 +6,7 @@ import fr from "./fr.json";
 import hi from "./hi.json";
 import id from "./id.json";
 import ja from "./ja.json";
+import pl from "./pl.json";
 import ru from "./ru.json";
 import tr from "./tr.json";
 import zhHans from "./zh-Hans.json";
@@ -19,6 +20,7 @@ export const resources = {
   hi: { translation: hi },
   id: { translation: id },
   ja: { translation: ja },
+  pl: { translation: pl },
   ru: { translation: ru },
   tr: { translation: tr },
   "zh-Hans": { translation: zhHans },
