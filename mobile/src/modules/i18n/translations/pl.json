@@ -81,7 +81,7 @@
         "brief": "Wszedłeś do nieistniejącego katalogu.",
         "extra": {
           "missing": "Brakujące",
-          "from": "Formularz"
+          "from": "z"
         }
       },
       "generic": {
