@@ -1,0 +1,338 @@
+{
+  "language": "Polski",
+
+  "term": {
+    "album": "Album",
+    "albums": "Albumy",
+    "artist": "Artysta",
+    "artists": "Artyści",
+    "folder": "Katalog",
+    "folders": "Katalogi",
+    "playlist": "Playlista",
+    "playlists": "Playlisty",
+    "track": "Utwór",
+    "tracks": "Utwory",
+
+    "play": "Odtwórz",
+    "pause": "Zatrzymaj",
+    "prev": "Poprzednia",
+    "next": "Następna",
+    "shuffle": "Losuj",
+    "repeat": "Zapętl",
+    "repeatOne": "Zapętl jedną",
+
+    "favorite": "Ulubiona",
+    "favorites": "Ulubione",
+    "unFavorite": "Usuń z ulubionych",
+    "favoriteTracks": "Ulubione Utwory",
+
+    "home": "Start",
+    "settings": "Ustawienia",
+    "upcoming": "Następne",
+    "playingFrom": "Odtwarzanie z",
+
+    "disc": "CD {{count}}"
+  },
+
+  "template": {
+    "entryAdded": "Dodono `{{- name}}`.",
+    "entryRemove": "Usuń `{{- name}}`.",
+    "entryRemoved": "Usunięto `{{- name}}`.",
+
+    "entrySeeMore": "Zobacz więcej o `{{- name}}`.",
+    "notFound": "`{{- name}}` nie istnieje.",
+
+    "entryShow": "Pokaż `{{- name}}`",
+    "entryHide": "Ukryj `{{- name}}`",
+    "entryEnable": "Włącz `{{- name}}`",
+    "entryDisable": "Wyłącz `{{- name}}`"
+  },
+
+  "plural": {
+    "entry_one": "{{count}} element",
+    "entry_other": "{{count}} elementy/ów",
+    "second_one": "{{count}} sekunda",
+    "second_other": "{{count}} sekund/y",
+    "track_one": "{{count}} $t(term.track)",
+    "track_other": "{{count}} $t(term.tracks)"
+  },
+
+  "form": {
+    "apply": "Zapisz zmiany",
+    "back": "Wstecz",
+    "cancel": "Anuluj",
+    "confirm": "Potwierdź",
+
+    "unsaved": "Masz niezapisane zmiany.",
+    "stay": "Zostań",
+    "leave": "Wyjdź",
+
+    "clear": "Wyczyść",
+
+    "validation": {
+      "unique": "Unikalne"
+    }
+  },
+
+  "err": {
+    "flow": {
+      "route": {
+        "title": "Nieprawidłowa ścieżka",
+        "brief": "Wszedłeś do nieistniejącego katalogu.",
+        "extra": {
+          "missing": "Brakujące",
+          "from": "z"
+        }
+      },
+      "generic": {
+        "title": "Coś poszło nie tak",
+        "brief": "Wystąpił nieoczekiwany błąd."
+      },
+      "report": {
+        "title": "Zgłoś problem",
+        "brief": "Załącz zrzut ekranu tego co teraz widzisz."
+      }
+    },
+
+    "msg": {
+      "actionCancel": "Anulowano akcję.",
+      "invalidStructure": "Nieprawidłowa struktura.",
+      "noSelect": "Nic nie zaznaczono.",
+      "usedName": "Nie można użyć tej nazwy.",
+
+      "noContent": "Brak zawartości.",
+      "noErrors": "Brak błędów.",
+      "noFilters": "Brak filtrów.",
+      "noResults": "Brak wyników.",
+
+      "noAlbums": "Brak albumów.",
+      "noArtists": "Brak artystów.",
+      "noPlaylists": "Brak playlist.",
+      "noTracks": "Brak utworów."
+    }
+  },
+
+  "feat": {
+    "appUpdate": {
+      "title": "Aktualizacja aplikacji",
+      "brief": "Nowa aktualizacja jest dostępna!",
+      "extra": {
+        "downloadAPK": "Pobierz najnowszy plik APK",
+        "updateGoogle": "Zaktualizuj przez Sklep Play"
+      }
+    },
+    "appearance": {
+      "title": "Wygląd",
+      "brief": "Spersonalizuj wygląd aplikacji."
+    },
+    "font": {
+      "extra": {
+        "accent": "Czcionka Tytułów",
+        "primary": "Czcionka Główna"
+      }
+    },
+    "theme": {
+      "title": "Motyw",
+      "extra": {
+        "light": "Jasny",
+        "dark": "Ciemny",
+        "system": "Systemowy"
+      }
+    },
+    "homeTabsOrder": {
+      "title": "Kolejność Zakładek",
+      "brief": "Spersonalizuj kolejność i widoczność zakładek.",
+      "description": {
+        "line1": "Zmień kolejność zakładek za zakładką \"Start\" przez przeciaganie i upiszczanie. Ustaw widoczność używając ikony oka.",
+        "line2": "Ostrzeżenie: Podczas przechodzenia do ukrytych zakładek mogą wystąpić nieoczekiwane błędy."
+      }
+    },
+    "nowPlayingDesign": {
+      "title": "Wygląd Ekranu Grane Teraz",
+      "extra": {
+        "plain": "Zwykły",
+        "vinyl": "Vinyl",
+        "vinylOld": "Vinyl (Legacy)"
+      }
+    },
+    "language": {
+      "title": "Język"
+    },
+    "backup": {
+      "title": "Kopia zapasowa",
+      "brief": "Przenieś dane pomiędzy urządzeniami.",
+      "description": "Przenieś dane z tej aplikacji na inne urządzenia przez plik `music_backup.json`.",
+      "extra": {
+        "export": "Eksportuj",
+        "exportSuccess": "Pomyślnie wyeksportowano dane.",
+        "import": "Importuj",
+        "importSuccess": "Pomyślnie zaimportowano dane."
+      }
+    },
+    "insights": {
+      "title": "Spostrzeżenia",
+      "brief": "Dane o aplikacji i statystyki.",
+      "extra": {
+        "cache": "Pamięć podręczna",
+        "database": "Baza danych",
+        "images": "Obrazy",
+        "other": "Inne",
+        "total": "Razem",
+        "totalDuration": "Łączna Długość"
+      }
+    },
+    "saveErrors": {
+      "title": "Analizuj błędy",
+      "brief": "Zobacz dlaczego niektóre utwory nie zostały dodane."
+    },
+    "interactions": {
+      "title": "Interakcje z Nothing",
+      "brief": "Wspierane funkcjonalności od Nothing."
+    },
+    "playback": {
+      "title": "Odtwarzanie",
+      "brief": "Dostosuj zachowanie odtwarzacza.",
+      "extra": {
+        "options": "Opcje odtwarzania",
+        "speed": "Prędkość odtwarzania",
+        "volume": "Głośność aplikacji"
+      }
+    },
+    "ignoreInterrupt": {
+      "title": "Ignoruj Przerwania",
+      "brief": "Kontynuuj odtwarzania podczas odbierania powiadomień i połączeń. Będziesz musieć ręcznie zatrzymywać odtwarzanie w takich sytuacjach."
+    },
+    "repeatOnSkip": {
+      "title": "Zachowaj Zapętlenie Po Pominięciu",
+      "brief": "Nie zmieniaj trypu na \"Zapętl\" z \"Zapętl jedną\" po pominięciu."
+    },
+    "scanning": {
+      "title": "Skanowanie",
+      "brief": "Opcje szukania muzyki."
+    },
+    "rescan": {
+      "title": "Skanuj Ponownie",
+      "brief": "Szukaj nowych plików medialnych.",
+      "extra": {
+        "start": "Przeszukiwanie biblioteki...",
+        "success": "Zakończono przeszukiwanie biblioteki.",
+        "fail": "Nie udało się przeszukać biblioteki."
+      }
+    },
+    "deepRescan": {
+      "title": "Głębokie Szukanie",
+      "brief": "Ignoruj wszystkie reguły pomijania, które przyspieszają standardowe szukanie."
+    },
+    "listAllow": {
+      "title": "Biała Lista",
+      "description": "Jeżeli pusto, domyślnie przyjmie:"
+    },
+    "listBlock": {
+      "title": "Czarna Lista",
+      "description": "Ma wyższy priorytet niż elementy na Białej Liście."
+    },
+    "ignoreDuration": {
+      "title": "Ignoruj Krótkie Nagrania",
+      "description": "Nagrania krótsze niż poniższa wartość sekund nie będą zapisywane."
+    },
+    "translate": {
+      "title": "Rozwijaj Tłumaczenia",
+      "brief": "Pomóż przetłumaczyć interfejs aplikacji na inne języki."
+    },
+    "code": {
+      "title": "Repozytorium GitHub",
+      "brief": "Zgłoś błędy, rozwijaj lub poproś o nowe funkcjonalności."
+    },
+    "license": {
+      "title": "Licencja"
+    },
+    "privacy": {
+      "title": "Polityka Prywatności"
+    },
+    "thirdParty": {
+      "title": "Zewnętrzne Oprogramowanie",
+      "brief": "Dzięki czemu ta aplikacja może działać."
+    },
+    "version": {
+      "title": "Wersja"
+    },
+
+    "onboardPreprocess": {
+      "title": "Przeprocesuj",
+      "brief": "Upewnij się, że wszystkie dane są aktualne."
+    },
+    "onboardTracks": {
+      "title": "Dodawanie Utworów",
+      "extra": {
+        "prevSaved": "{{amount}} Dodano Wcześniej",
+        "saved": "{{amount}}/{{total}} Dodano/Zaktualizowano",
+        "errors": "{{amount}} Błędów"
+      }
+    },
+    "onboardImages": {
+      "title": "Dodawanie Obrazów",
+      "extra": {
+        "checked": "{{amount}}/{{total}} Sprawdzono",
+        "found": "{{amount}} Znaleziono"
+      }
+    },
+
+    "playedRecent": {
+      "title": "Ostatnio Odtwarzane",
+      "extra": {
+        "empty": "Niczego nie słuchałeś w ostatnim czasie!",
+        "section": "Sekcja Ostatnio odtwarzane"
+      }
+    },
+    "search": {
+      "title": "Szukaj",
+      "extra": {
+        "musicAdd": "Dodaj Muzykę",
+        "searchMedia": "Szukaj Mediów"
+      }
+    },
+
+    "artwork": {
+      "extra": {
+        "change": "Zmień Okładkę",
+        "remove": "Usuń Okładkę"
+      }
+    },
+    "directory": {
+      "extra": {
+        "add": "Dodaj Katalog",
+        "select": "Wybierz Katalog"
+      }
+    },
+    "playlist": {
+      "extra": {
+        "create": "Utwórz Playlistę",
+        "delete": "Usuń Playlistę",
+        "edit": "Edytuj Playlistę",
+        "name": "Nazwa Playlisty"
+      }
+    },
+
+    "modalSort": {
+      "title": "Kolejność Sortowania",
+      "extra": {
+        "asc": "Rosnąco",
+        "alphabetical": "Alfabetycznie",
+        "modified": "Ostatnio Zmienione"
+      }
+    },
+    "modalTrack": {
+      "extra": {
+        "bitrate": "Bitrate",
+        "filePath": "Ścieżka do pliku",
+        "sampleRate": "Częstotliwość próbkowania",
+        "size": "Rozmiar",
+
+        "addToPlaylist": "Dodaj do Playlisty",
+        "addToQueue": "Dodaj do Kolejki",
+
+        "queueAdd": "`{{- name}}` został dodany do kolejki."
+      }
+    }
+  }
+}

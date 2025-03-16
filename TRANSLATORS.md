@@ -49,3 +49,7 @@
 ## [हिंदी] Hindi
 
 - [@OxSourabh](https://www.github.com/OxSourabh)
+
+## [Polski] Polish
+
+- [@p-krystian](https://www.github.com/p-krystian)
