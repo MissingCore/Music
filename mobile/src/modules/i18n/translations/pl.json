@@ -1,6 +1,5 @@
 {
   "language": "Polski",
-
   "term": {
     "album": "Album",
     "albums": "Albumy",
@@ -12,7 +11,6 @@
     "playlists": "Playlisty",
     "track": "Utwór",
     "tracks": "Utwory",
-
     "play": "Odtwórz",
     "pause": "Zatrzymaj",
     "prev": "Poprzednia",
@@ -20,34 +18,27 @@
     "shuffle": "Losuj",
     "repeat": "Zapętl",
     "repeatOne": "Zapętl jedną",
-
     "favorite": "Ulubiona",
     "favorites": "Ulubione",
     "unFavorite": "Usuń z ulubionych",
     "favoriteTracks": "Ulubione Utwory",
-
     "home": "Start",
     "settings": "Ustawienia",
     "upcoming": "Następne",
     "playingFrom": "Odtwarzanie z",
-
     "disc": "CD {{count}}"
   },
-
   "template": {
     "entryAdded": "Dodono `{{- name}}`.",
     "entryRemove": "Usuń `{{- name}}`.",
     "entryRemoved": "Usunięto `{{- name}}`.",
-
     "entrySeeMore": "Zobacz więcej o `{{- name}}`.",
     "notFound": "`{{- name}}` nie istnieje.",
-
     "entryShow": "Pokaż `{{- name}}`",
     "entryHide": "Ukryj `{{- name}}`",
     "entryEnable": "Włącz `{{- name}}`",
     "entryDisable": "Wyłącz `{{- name}}`"
   },
-
   "plural": {
     "entry_one": "{{count}} element",
     "entry_other": "{{count}} elementy/ów",
@@ -56,24 +47,19 @@
     "track_one": "{{count}} $t(term.track)",
     "track_other": "{{count}} $t(term.tracks)"
   },
-
   "form": {
     "apply": "Zapisz zmiany",
     "back": "Wstecz",
     "cancel": "Anuluj",
     "confirm": "Potwierdź",
-
     "unsaved": "Masz niezapisane zmiany.",
     "stay": "Zostań",
     "leave": "Wyjdź",
-
     "clear": "Wyczyść",
-
     "validation": {
       "unique": "Unikalne"
     }
   },
-
   "err": {
     "flow": {
       "route": {
@@ -93,25 +79,21 @@
         "brief": "Załącz zrzut ekranu tego co teraz widzisz."
       }
     },
-
     "msg": {
       "actionCancel": "Anulowano akcję.",
       "invalidStructure": "Nieprawidłowa struktura.",
       "noSelect": "Nic nie zaznaczono.",
       "usedName": "Nie można użyć tej nazwy.",
-
       "noContent": "Brak zawartości.",
       "noErrors": "Brak błędów.",
       "noFilters": "Brak filtrów.",
       "noResults": "Brak wyników.",
-
       "noAlbums": "Brak albumów.",
       "noArtists": "Brak artystów.",
       "noPlaylists": "Brak playlist.",
       "noTracks": "Brak utworów."
     }
   },
-
   "feat": {
     "appUpdate": {
       "title": "Aktualizacja aplikacji",
@@ -256,7 +238,6 @@
     "version": {
       "title": "Wersja"
     },
-
     "onboardPreprocess": {
       "title": "Przeprocesuj",
       "brief": "Upewnij się, że wszystkie dane są aktualne."
@@ -276,7 +257,6 @@
         "found": "{{amount}} Znaleziono"
       }
     },
-
     "playedRecent": {
       "title": "Ostatnio Odtwarzane",
       "extra": {
@@ -291,7 +271,6 @@
         "searchMedia": "Szukaj Mediów"
       }
     },
-
     "artwork": {
       "extra": {
         "change": "Zmień Okładkę",
@@ -312,7 +291,6 @@
         "name": "Nazwa Playlisty"
       }
     },
-
     "modalSort": {
       "title": "Kolejność Sortowania",
       "extra": {
@@ -327,10 +305,8 @@
         "filePath": "Ścieżka do pliku",
         "sampleRate": "Częstotliwość próbkowania",
         "size": "Rozmiar",
-
         "addToPlaylist": "Dodaj do Playlisty",
         "addToQueue": "Dodaj do Kolejki",
-
         "queueAdd": "`{{- name}}` został dodany do kolejki."
       }
     }

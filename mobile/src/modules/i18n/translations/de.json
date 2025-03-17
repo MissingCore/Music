@@ -25,7 +25,7 @@
     "home": "Homepage",
     "settings": "Einstellungen",
     "upcoming": "Bevorstehend",
-    "playingFrom": null,
+    "playingFrom": "Wiedergabe von",
     "disc": "CD {{count}}"
   },
   "template": {
@@ -110,7 +110,7 @@
     "font": {
       "extra": {
         "accent": "Akzentschrift",
-        "primary": null
+        "primary": "Primäre Schriftart"
       }
     },
     "theme": {
@@ -134,7 +134,7 @@
       "extra": {
         "plain": "Einfach",
         "vinyl": "Vinyl",
-        "vinylOld": null
+        "vinylOld": "Vinyl (Alt)"
       }
     },
     "language": {
@@ -172,21 +172,21 @@
       "brief": "Unterstützte Nothing Funktionen."
     },
     "playback": {
-      "title": null,
-      "brief": null,
+      "title": "Wiedergabe",
+      "brief": "Musik-Abspielverhalten ändern.",
       "extra": {
-        "options": null,
-        "speed": null,
-        "volume": null
+        "options": "Wiedergabeoptionen",
+        "speed": "Wiedergabegeschwindigkeit",
+        "volume": "App-Lautstärke"
       }
     },
     "ignoreInterrupt": {
-      "title": null,
-      "brief": null
+      "title": "Unterbrechungen ignorieren",
+      "brief": "Wiedergabe von Audio fortsetzen, wenn eine Unterbrechung wie eine Benachrichtigung oder ein Anruf auftritt. Du musst die Musik in diesen Situationen manuell pausieren und aufheben."
     },
     "repeatOnSkip": {
-      "title": null,
-      "brief": null
+      "title": "Wiederholungsmodus beim Überspringen behalten",
+      "brief": "Beim Überspringen nicht von \"Einmal wiederholen\" auf \"Wiederholen\" umschalten."
     },
     "scanning": {
       "title": "Scannen",
@@ -261,7 +261,7 @@
       "title": "Kürzlich gehört",
       "extra": {
         "empty": "Du hast noch nichts gehört!",
-        "section": null
+        "section": "Zuletzt gespielte Sektion"
       }
     },
     "search": {
