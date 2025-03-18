@@ -41,7 +41,7 @@
   },
   "@react-native-async-storage/async-storage": {
     "name": "@react-native-async-storage/async-storage",
-    "version": "2.1.1",
+    "version": "2.1.2",
     "copyright": "Copyright (c) 2015-present, Facebook, Inc.",
     "source": "https://github.com/react-native-async-storage/async-storage",
     "license": "MIT",
@@ -65,7 +65,7 @@
   },
   "@sentry/react-native": {
     "name": "@sentry/react-native",
-    "version": "6.8.0",
+    "version": "6.9.1",
     "copyright": "Copyright (c) 2017-2024 Sentry",
     "source": "https://github.com/getsentry/sentry-react-native",
     "license": "MIT",
@@ -81,7 +81,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.66.0",
+    "version": "5.69.0",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -97,7 +97,7 @@
   },
   "drizzle-orm": {
     "name": "drizzle-orm",
-    "version": "0.39.2",
+    "version": "0.40.1",
     "copyright": "Copyright (c) 2022 Drizzle Team",
     "source": "https://github.com/drizzle-team/drizzle-orm",
     "license": "Apache-2.0",
@@ -217,7 +217,7 @@
   },
   "i18next": {
     "name": "i18next",
-    "version": "24.2.2",
+    "version": "24.2.3",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/i18next",
     "license": "MIT",
@@ -241,11 +241,11 @@
   },
   "jotai": {
     "name": "jotai",
-    "version": "2.11.3",
-    "copyright": "Copyright (c) 2020-2023 Poimandres",
+    "version": "2.12.2",
+    "copyright": "Copyright (c) 2020 Poimandres",
     "source": "https://github.com/pmndrs/jotai",
     "license": "MIT",
-    "licenseText": "MIT License\n\nCopyright (c) 2020-2023 Poimandres\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
+    "licenseText": "MIT License\n\nCopyright (c) 2020 Poimandres\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
   },
   "Material Symbols": {
     "name": "Material Symbols",
@@ -257,7 +257,7 @@
   },
   "nativewind": {
     "name": "nativewind",
-    "version": "4.0.36",
+    "version": "4.1.23",
     "copyright": "Copyright (c) 2023 Mark Lawlor",
     "source": "https://github.com/marklawlor/nativewind",
     "license": "MIT",
@@ -281,7 +281,7 @@
   },
   "react-i18next": {
     "name": "react-i18next",
-    "version": "15.4.0",
+    "version": "15.4.1",
     "copyright": "Copyright (c) 2024 i18next",
     "source": "https://github.com/i18next/react-i18next",
     "license": "MIT",
@@ -329,7 +329,7 @@
   },
   "react-native-gesture-handler": {
     "name": "react-native-gesture-handler",
-    "version": "2.23.0",
+    "version": "2.24.0",
     "copyright": "Copyright (c) 2016 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-gesture-handler",
     "license": "MIT",
@@ -377,7 +377,7 @@
   },
   "react-native-svg": {
     "name": "react-native-svg",
-    "version": "15.11.1",
+    "version": "15.11.2",
     "copyright": "Copyright (c) [2015-2016] [Horcrux]",
     "source": "https://github.com/software-mansion/react-native-svg",
     "license": "MIT",
@@ -417,7 +417,7 @@
   },
   "zod": {
     "name": "zod",
-    "version": "3.24.1",
+    "version": "3.24.2",
     "copyright": "Copyright (c) 2020 Colin McDonnell",
     "source": "https://github.com/colinhacks/zod",
     "license": "MIT",
