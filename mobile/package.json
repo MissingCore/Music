@@ -38,7 +38,7 @@
     "drizzle-orm": "^0.40.1",
     "expo": "~52.0.39",
     "expo-document-picker": "~13.0.3",
-    "expo-drizzle-studio-plugin": "^0.0.2",
+    "expo-drizzle-studio-plugin": "^0.1.1",
     "expo-file-system": "~18.0.11",
     "expo-image": "^2.0.6",
     "expo-image-manipulator": "~13.0.6",
