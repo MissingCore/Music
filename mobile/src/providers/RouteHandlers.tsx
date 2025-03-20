@@ -1,7 +1,6 @@
-import { atom, useSetAtom } from "jotai";
 import type { Href } from "expo-router";
 import { router, usePathname } from "expo-router";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { Linking } from "react-native";
 
 import { useNavigationStore } from "~/services/NavigationStore";
@@ -11,7 +10,7 @@ export function RouteHandlers() {
   return (
     <>
       <DeepLinkHandler />
-      <PrevRouteTracker />
+      <HistoryTracker />
     </>
   );
 }
@@ -35,22 +34,16 @@ export function DeepLinkHandler() {
   return null;
 }
 
-export const prevRouteAtom = atom("/");
-
-/** Keeps track of the last route we've navigated to. */
-export function PrevRouteTracker() {
-  const prevPathname = useRef("/");
+/** Subscribes to route changes to keep the Navigation store up-to-date. */
+export function HistoryTracker() {
   const pathname = usePathname();
-  const setPrevRoute = useSetAtom(prevRouteAtom);
   const handleNavigation = useNavigationStore(
     (state) => state.handleNavigation,
   );
 
   useEffect(() => {
     handleNavigation(pathname as Href);
-    setPrevRoute(prevPathname.current);
-    prevPathname.current = pathname;
-  }, [handleNavigation, setPrevRoute, pathname]);
+  }, [handleNavigation, pathname]);
 
   return null;
 }

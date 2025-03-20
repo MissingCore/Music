@@ -106,9 +106,6 @@ importers:
       intl-pluralrules:
         specifier: ^2.0.1
         version: 2.0.1
-      jotai:
-        specifier: ^2.12.2
-        version: 2.12.2(@types/react@18.3.17)(react@18.3.1)
       nativewind:
         specifier: 4.1.23
         version: 4.1.23(react-native-reanimated@3.16.7(@babel/core@7.26.10)(react-native@0.76.7(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@react-native-community/cli-server-api@14.1.0)(@types/react@18.3.17)(react@18.3.1))(react@18.3.1))(react-native-safe-area-context@5.3.0(react-native@0.76.7(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@react-native-community/cli-server-api@14.1.0)(@types/react@18.3.17)(react@18.3.1))(react@18.3.1))(react-native-svg@15.11.2(react-native@0.76.7(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@react-native-community/cli-server-api@14.1.0)(@types/react@18.3.17)(react@18.3.1))(react@18.3.1))(react-native@0.76.7(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@react-native-community/cli-server-api@14.1.0)(@types/react@18.3.17)(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.17)
@@ -4095,18 +4092,6 @@ packages:
 
   join-component@1.1.0:
     resolution: {integrity: sha512-bF7vcQxbODoGK1imE2P9GS9aw4zD0Sd+Hni68IMZLj7zRnquH7dXUmMw9hDI5S/Jzt7q+IyTXN0rSg2GI0IKhQ==}
-
-  jotai@2.12.2:
-    resolution: {integrity: sha512-oN8715y7MkjXlSrpyjlR887TOuc/NLZMs9gvgtfWH/JP47ChwO0lR2ijSwBvPMYyXRAPT+liIAhuBavluKGgtA==}
-    engines: {node: '>=12.20.0'}
-    peerDependencies:
-      '@types/react': '>=17.0.0'
-      react: '>=17.0.0'
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-      react:
-        optional: true
 
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
@@ -11126,11 +11111,6 @@ snapshots:
   jiti@1.21.7: {}
 
   join-component@1.1.0: {}
-
-  jotai@2.12.2(@types/react@18.3.17)(react@18.3.1):
-    optionalDependencies:
-      '@types/react': 18.3.17
-      react: 18.3.1
 
   js-tokens@4.0.0: {}
 
