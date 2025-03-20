@@ -31,7 +31,7 @@ export const navigationStore = createStore<NavigationStore>()((set, get) => ({
     const historyIdx = history.findLastIndex((route) => route === decodedHref);
     set({ event: "NAVIGATE" });
     if (historyIdx !== -1) {
-      if (!materialTopTabs) router.dismissTo(href);
+      if (!materialTopTabs) router.dismiss(history.length - 1 - historyIdx);
       else {
         // None of the `router.dismiss*()` methods work with the Material
         // Top Tabs navigator, so we have to manually call `router.back()`
