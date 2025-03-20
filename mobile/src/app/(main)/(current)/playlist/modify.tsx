@@ -10,6 +10,7 @@ import {
   usePlaylists,
   useUpdatePlaylist,
 } from "~/queries/playlist";
+import { Router } from "~/services/NavigationStore";
 import { ModifyPlaylist } from "~/screens/ModifyPlaylist";
 
 import { mutateGuardAsync } from "~/lib/react-query";
@@ -50,7 +51,7 @@ export default function ModifyPlaylistScreen() {
               router.back();
               // If playlist name changed, see the new playlist page.
               if (newName !== undefined) {
-                router.replace(`/playlist/${encodeURIComponent(newName)}`);
+                Router.replace(`/playlist/${encodeURIComponent(newName)}`);
               }
             },
             onError: () => {

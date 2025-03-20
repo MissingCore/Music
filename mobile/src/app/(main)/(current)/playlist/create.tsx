@@ -1,8 +1,8 @@
 import { toast } from "@backpackapp-io/react-native-toast";
-import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 
 import { useCreatePlaylist, usePlaylists } from "~/queries/playlist";
+import { Router } from "~/services/NavigationStore";
 import { ModifyPlaylist } from "~/screens/ModifyPlaylist";
 
 import { mutateGuardAsync } from "~/lib/react-query";
@@ -23,7 +23,7 @@ export default function CreatePlaylistScreen() {
           { playlistName, tracks },
           {
             onSuccess: () => {
-              router.replace(`/playlist/${encodeURIComponent(playlistName)}`);
+              Router.replace(`/playlist/${encodeURIComponent(playlistName)}`);
             },
             onError: () => {
               toast.error(t("err.flow.generic.title"), ToastOptions);

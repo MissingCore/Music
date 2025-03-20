@@ -1,7 +1,10 @@
 import { atom, useSetAtom } from "jotai";
+import type { Href } from "expo-router";
 import { router, usePathname } from "expo-router";
 import { useEffect, useRef } from "react";
 import { Linking } from "react-native";
+
+import { useNavigationStore } from "~/services/NavigationStore";
 
 /** All of the route handlers inside a single component. */
 export function RouteHandlers() {
@@ -39,11 +42,15 @@ export function PrevRouteTracker() {
   const prevPathname = useRef("/");
   const pathname = usePathname();
   const setPrevRoute = useSetAtom(prevRouteAtom);
+  const handleNavigation = useNavigationStore(
+    (state) => state.handleNavigation,
+  );
 
   useEffect(() => {
+    handleNavigation(pathname as Href);
     setPrevRoute(prevPathname.current);
     prevPathname.current = pathname;
-  }, [setPrevRoute, pathname]);
+  }, [handleNavigation, setPrevRoute, pathname]);
 
   return null;
 }

@@ -1,3 +1,4 @@
+import type { NavigationState } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Stack, router, useRootNavigationState } from "expo-router";
 import type { ParseKeys } from "i18next";
@@ -11,6 +12,7 @@ import Animated, {
 
 import { Search } from "~/icons/Search";
 import { Settings } from "~/icons/Settings";
+import { Router } from "~/services/NavigationStore";
 import { useTabsByVisibility } from "~/services/UserPreferences";
 import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 import { useHasNewUpdate } from "~/hooks/useHasNewUpdate";
@@ -95,7 +97,7 @@ function TabBar({ stacked = false, hidden = false }) {
 function NavigationList() {
   const { t, i18n } = useTranslation();
   const { surface } = useTheme();
-  const navState = useRootNavigationState();
+  const navState = useRootNavigationState() as NavigationState;
   const listRef = useRef<FlatList>(null);
   const { displayedTabs } = useTabsByVisibility();
 
@@ -145,7 +147,7 @@ function NavigationList() {
         keyExtractor={({ href }) => href}
         renderItem={({ item: { href, key, name } }) => (
           <Button
-            onPress={() => router.navigate(href)}
+            onPress={() => Router.navigateMTT(href)}
             disabled={routeName === name}
             className="bg-transparent px-2 disabled:opacity-100"
           >
