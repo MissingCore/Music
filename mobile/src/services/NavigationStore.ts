@@ -5,12 +5,12 @@ import { createStore } from "zustand/vanilla";
 
 interface NavigationStore {
   history: Href[];
-  event: "NAVIGATE" | "REPLACE" | null;
+  event: "NAVIGATE" | "REPLACE" | "REPLACE_PREV" | null;
 
   /** Go back if the route already exists in our history. */
   navigate: (href: Href, materialTopTabs?: boolean) => void;
   /** Replace the current route in the stack. */
-  replace: (href: Href) => void;
+  replace: (href: Href, previous?: boolean) => void;
 
   /** How we handle the new route from `usePathname()` based on the event. */
   handleNavigation: (href: Href) => void;
@@ -45,8 +45,9 @@ export const navigationStore = createStore<NavigationStore>()((set, get) => ({
     else if (history.at(-1) === "/now-playing") router.replace(href);
     else router.push(href);
   },
-  replace: (href) => {
-    set({ event: "REPLACE" });
+  replace: (href, previous = false) => {
+    // Setting `previous = true` means we called a `router.back()` prior.
+    set({ event: `REPLACE${previous ? "_PREV" : ""}` });
     router.replace(href);
   },
 
@@ -57,6 +58,11 @@ export const navigationStore = createStore<NavigationStore>()((set, get) => ({
           history: [...prev.history.slice(0, -1), href],
           event: null,
         }));
+        break;
+      case "REPLACE_PREV":
+        // `handleNavigation()` will be called twice in this case. The href
+        // of the route we're going to will be added via the default case.
+        set((prev) => ({ history: prev.history.slice(0, -2), event: null }));
         break;
       // The default case handles the "NAVIGATE" event and "back" event.
       default:
@@ -93,5 +99,10 @@ export class Router {
   /** Replace the current route in the stack. */
   static replace(href: Href) {
     navigationStore.getState().replace(href);
+  }
+
+  /** For when we go back and then replace the previous route. */
+  static replacePrev(href: Href) {
+    navigationStore.getState().replace(href, true);
   }
 }

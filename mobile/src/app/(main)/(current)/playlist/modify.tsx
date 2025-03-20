@@ -51,7 +51,7 @@ export default function ModifyPlaylistScreen() {
               router.back();
               // If playlist name changed, see the new playlist page.
               if (newName !== undefined) {
-                Router.replace(`/playlist/${encodeURIComponent(newName)}`);
+                Router.replacePrev(`/playlist/${encodeURIComponent(newName)}`);
               }
             },
             onError: () => {
