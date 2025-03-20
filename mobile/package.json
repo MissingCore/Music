@@ -75,7 +75,7 @@
   "devDependencies": {
     "@babel/core": "^7.26.10",
     "@tanstack/eslint-plugin-query": "^5.68.0",
-    "@types/react": "~18.3.17",
+    "@types/react": "~18.3.19",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "babel-plugin-inline-import": "^3.0.0",
@@ -83,7 +83,7 @@
     "drizzle-kit": "^0.30.5",
     "eslint": "^8.57.1",
     "eslint-config-expo": "^8.0.1",
-    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-drizzle": "^0.2.3",
     "eslint-plugin-prettier": "^5.2.3",
     "expo-atlas": "^0.4.0",
