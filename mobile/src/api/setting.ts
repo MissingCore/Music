@@ -1,27 +1,19 @@
 import { sum } from "drizzle-orm";
-import {
-  cacheDirectory,
-  documentDirectory,
-  getInfoAsync,
-  readDirectoryAsync,
-} from "expo-file-system";
+import { Directory, Paths } from "expo-file-system/next";
 
 import { db } from "~/db";
 import { albums, artists, invalidTracks, playlists, tracks } from "~/db/schema";
 
+import { ImageDirectory, isFile } from "~/lib/file-system";
+
 //#region GET Methods
 /** A summary of what's stored in the database. */
 export async function getDatabaseSummary() {
-  if (!documentDirectory) throw new Error("Web not supported");
-
-  const imgDir = documentDirectory + "images";
-  const imgData = await getInfoAsync(imgDir);
-  let imgCount = imgData.exists ? (await readDirectoryAsync(imgDir)).length : 0;
-
+  const imgDir = new Directory(ImageDirectory);
   return {
     albums: await db.$count(albums),
     artists: await db.$count(artists),
-    images: imgCount,
+    images: imgDir.exists ? imgDir.list().length : 0,
     playlists: await db.$count(playlists),
     tracks: await db.$count(tracks),
     saveErrors: await db.$count(invalidTracks),
@@ -52,17 +44,10 @@ export async function getSaveErrors() {
 
 /** A summary of what consists of "user data" that's stored by the app. */
 export async function getStorageSummary() {
-  if (!documentDirectory) throw new Error("Web not supported");
-
-  const dbData = await getInfoAsync(documentDirectory + "SQLite");
-  const imgData = await getInfoAsync(documentDirectory + "images");
-  const otherData = await getInfoAsync(documentDirectory);
-  const cacheData = await getInfoAsync(`${cacheDirectory}`);
-
-  const dbSize = dbData.exists ? dbData.size : 0;
-  const imgSize = imgData.exists ? imgData.size : 0;
-  const otherSize = otherData.exists ? otherData.size : 0;
-  const cacheSize = cacheData.exists ? cacheData.size : 0;
+  const dbSize = getDirectorySize(new Directory(Paths.document, "SQLite"));
+  const imgSize = getDirectorySize(new Directory(ImageDirectory));
+  const otherSize = getDirectorySize(new Directory(Paths.document));
+  const cacheSize = getDirectorySize(new Directory(Paths.cache));
 
   return {
     images: imgSize,
@@ -91,5 +76,14 @@ function formatGitHubRelease(data: any): ReleaseNotes {
       ? data.body.replace(/<!--[\s\S]*?(?:-->)/g, "")
       : undefined,
   };
+}
+
+/** Gets the size of a directory. */
+function getDirectorySize(dir: Directory): number {
+  if (!dir.exists) return 0;
+  return dir.list().reduce((prev, file) => {
+    if (isFile(file)) return prev + (file.size ?? 0);
+    else return prev + getDirectorySize(file);
+  }, 0);
 }
 //#endregion

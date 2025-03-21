@@ -1,29 +1,31 @@
-import { createId } from "@paralleldrive/cuid2";
-import * as FileSystem from "expo-file-system";
+import { File } from "expo-file-system/next";
+import { Directory, Paths } from "expo-file-system/next";
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 import * as ImagePicker from "expo-image-picker";
 
 import type { Maybe } from "~/utils/types";
 
 /** Internal app directory where we store images. */
-export const ImageDirectory = FileSystem.documentDirectory + "images";
+export const ImageDirectory = Paths.join(Paths.document, "images");
 
 /** Creates "image" directory if it doesn't already exist. */
-export async function createImageDirectory() {
-  try {
-    const dir = await FileSystem.getInfoAsync(ImageDirectory);
-    if (!dir.exists) await FileSystem.makeDirectoryAsync(ImageDirectory);
-  } catch {
-    // Silently catch `Directory <> could not be created or already exists`
-    // error from `FileSystem.makeDirectoryAsync()` in case it occurs. This
-    // shouldn't throw an error as the directory shouldn't exist prior.
-  }
+export function createImageDirectory() {
+  const imgDir = new Directory(ImageDirectory);
+  if (!imgDir.exists) imgDir.create();
 }
 
 /** Helper to delete an internal image file if it's defined. */
-export async function deleteImage(uri: Maybe<string>) {
-  if (uri && uri.startsWith(ImageDirectory))
-    await FileSystem.deleteAsync(uri, { idempotent: true });
+export function deleteImage(uri: Maybe<string>) {
+  if (typeof uri !== "string" || !uri.startsWith(ImageDirectory)) return;
+  // Shouldn't throw an error as file should be in location that doesn't
+  // require special permissions.
+  const file = new File(uri);
+  if (file.exists) file.delete();
+}
+
+/** Helper to determine if we have a `Directory` or `File`. */
+export function isFile(file: Directory | File): file is File {
+  return (file as File).size !== undefined;
 }
 
 /**
@@ -37,8 +39,9 @@ export async function pickImage() {
   });
   if (result.canceled) throw new Error("Action cancelled.");
   if (!result.assets[0]) throw new Error("Nothing selected.");
-  const fileUri = await saveImage(result.assets[0].uri);
-  await FileSystem.deleteAsync(result.assets[0].uri); // Delete cached image.
+  const cachedImg = new File(result.assets[0].uri);
+  const fileUri = await saveImage(cachedImg.uri);
+  cachedImg.delete();
   return fileUri;
 }
 
@@ -54,8 +57,8 @@ export async function saveImage(uri: string) {
     compress: 0.85, // Preserve 85% of original image quality.
     format: SaveFormat.WEBP,
   });
-  const fileUri = FileSystem.documentDirectory + `images/${createId()}.webp`;
-  await FileSystem.copyAsync({ from: webpUri, to: fileUri });
-  await FileSystem.deleteAsync(webpUri);
-  return fileUri;
+  // Move cached image to final location.
+  const finalLocation = new File(webpUri);
+  finalLocation.move(new Directory(ImageDirectory));
+  return finalLocation.uri;
 }
