@@ -1,16 +1,14 @@
-import { Stack, usePathname } from "expo-router";
-import { useAtomValue } from "jotai";
+import type { Href } from "expo-router";
+import { Stack } from "expo-router";
 
-import { prevRouteAtom } from "~/providers/RouteHandlers";
+import { useNavigationStore } from "~/services/NavigationStore";
 import { IssueLayout } from "~/layouts/Issue";
 
 import { List, ListItem } from "~/components/Containment/List";
 
 /** Screen for unmatched route. */
 export default function NotFoundScreen() {
-  const pathname = usePathname();
-  const prevRoute = useAtomValue(prevRouteAtom);
-
+  const history = useNavigationStore((state) => state.history);
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
@@ -18,16 +16,23 @@ export default function NotFoundScreen() {
         <List>
           <ListItem
             titleKey="err.flow.route.extra.missing"
-            description={pathname}
+            description={asString(history.at(-1))}
             first
           />
           <ListItem
             titleKey="err.flow.route.extra.from"
-            description={prevRoute}
+            description={asString(history.at(-2))}
             last
           />
         </List>
       </IssueLayout>
     </>
   );
+}
+
+/** Return `Href` as a string. */
+function asString(href: Href | undefined) {
+  if (href === undefined) return undefined;
+  else if (typeof href === "string") return href;
+  return JSON.stringify(href);
 }

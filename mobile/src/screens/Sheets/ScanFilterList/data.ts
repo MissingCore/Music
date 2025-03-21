@@ -4,15 +4,13 @@ import {
   StorageVolumesDirectoryPaths,
 } from "@missingcore/react-native-metadata-retriever";
 import { useMutation } from "@tanstack/react-query";
-import * as FileSystem from "expo-file-system";
+import { StorageAccessFramework as SAF, getInfoAsync } from "expo-file-system";
 
 import i18next from "~/modules/i18n";
 import { userPreferencesStore } from "~/services/UserPreferences";
 
 import { ToastOptions } from "~/lib/toast";
 import { addTrailingSlash } from "~/utils/string";
-
-const SAF = FileSystem.StorageAccessFramework;
 
 /** `StorageVolumesDirectoryPaths` without `PrimaryDirectoryPath`. */
 const NonPrimaryDirectoryPaths = StorageVolumesDirectoryPaths.filter(
@@ -79,9 +77,7 @@ async function addPathToList(props: {
   const trimmed = props.path.trim();
   // Check to see if directory exists before we add it.
   try {
-    const { exists, isDirectory } = await FileSystem.getInfoAsync(
-      `file://${trimmed}`,
-    );
+    const { exists, isDirectory } = await getInfoAsync(`file://${trimmed}`);
     if (!exists || !isDirectory) throw Error();
   } catch {
     toast.error(

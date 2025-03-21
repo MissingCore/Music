@@ -51,7 +51,7 @@ export function useOnboarding() {
     // however it caused some weird bugs due to the lag generated. Since this
     // process rarely occurs, it should be fine to have the user stay on the
     // onboarding screen longer.
-    await createImageDirectory();
+    createImageDirectory();
     await findAndSaveArtwork();
     await cleanupImages();
 

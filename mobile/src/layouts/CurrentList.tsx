@@ -1,7 +1,6 @@
-import { Link } from "expo-router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { SheetManager } from "react-native-actions-sheet";
 import Animated, {
   Easing,
@@ -15,6 +14,7 @@ import Animated, {
 
 import { Schedule } from "~/icons/Schedule";
 import { useMusicStore } from "~/modules/media/services/Music";
+import { Router } from "~/services/NavigationStore";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useTheme } from "~/hooks/useTheme";
 
@@ -68,13 +68,20 @@ export function CurrentListLayout(
           </Marquee>
           {props.artist ? (
             <Marquee color={canvas}>
-              <Link
-                href={`/artist/${encodeURIComponent(props.artist)}`}
-                style={{ fontFamily: getFont(primaryFont) }}
-                className="text-xs text-red"
+              <Pressable
+                onPress={() =>
+                  Router.navigate(
+                    `/artist/${encodeURIComponent(props.artist!)}`,
+                  )
+                }
               >
-                {props.artist}
-              </Link>
+                <Text
+                  style={{ fontFamily: getFont(primaryFont) }}
+                  className="text-xs text-red"
+                >
+                  {props.artist}
+                </Text>
+              </Pressable>
             </Marquee>
           ) : null}
           <Marquee color={canvas} wrapperClassName="my-1">

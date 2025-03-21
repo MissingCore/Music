@@ -69,8 +69,6 @@
         <data android:scheme="com.cyanchill.missingcore.music" />
       </intent-filter>
     </activity>
-    <activity android:name="com.facebook.react.devsupport.DevSettingsActivity"
-      android:exported="false" />
 
     <!-- Disable Sentry's ANR feature. -->
     <meta-data android:name="io.sentry.anr.enable" android:value="false" />

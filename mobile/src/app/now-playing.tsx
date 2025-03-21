@@ -15,6 +15,7 @@ import { MoreVert } from "~/icons/MoreVert";
 import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { useMusicStore } from "~/modules/media/services/Music";
 import { MusicControls } from "~/modules/media/services/Playback";
+import { Router } from "~/services/NavigationStore";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useSeekStore } from "~/screens/NowPlaying/SeekService";
 import { NowPlayingArtwork } from "~/screens/NowPlaying/Artwork";
@@ -134,7 +135,7 @@ function MarqueeLink({
   if (!children) return null;
   return (
     <Marquee>
-      <Pressable onPress={() => router.navigate(href)}>
+      <Pressable onPress={() => Router.navigate(href)}>
         <StyledText className={cn("text-sm/[1.125]", className)} {...rest}>
           {children}
         </StyledText>

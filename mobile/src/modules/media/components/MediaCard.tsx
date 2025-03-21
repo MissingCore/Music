@@ -1,11 +1,11 @@
 import type { FlashListProps } from "@shopify/flash-list";
 import { FlashList } from "@shopify/flash-list";
 import type { Href } from "expo-router";
-import { router } from "expo-router";
 import { useMemo } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { Pressable } from "react-native";
 
+import { Router } from "~/services/NavigationStore";
 import { useGetColumn } from "~/hooks/useGetColumn";
 
 import { cn } from "~/lib/style";
@@ -49,7 +49,7 @@ export function MediaCard({
   return (
     <Pressable
       onLayout={onLayout}
-      onPress={() => router.navigate(href as Href)}
+      onPress={() => Router.navigate(href as Href)}
       style={{ maxWidth: imgProps.size }}
       // The `w-full` is to ensure the component takes up all the space
       // specified by `maxWidth`.

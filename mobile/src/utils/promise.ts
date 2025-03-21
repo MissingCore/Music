@@ -38,7 +38,7 @@ export async function batch<TData, TResult>({
    */
   batchAmount?: number;
   /** Function that's called on each `data` entry. */
-  callback: (data: TData) => Promise<TResult>;
+  callback: (data: TData) => TResult | Promise<TResult>;
   /**
    * Runs after each batch of `batchAmount` is completed. Returns the
    * results of `Promise.allSettled()`.
