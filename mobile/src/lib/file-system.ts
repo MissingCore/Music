@@ -34,9 +34,7 @@ export function isFile(file: Directory | File): file is File {
  */
 export async function pickImage() {
   // No permissions request is needed for launching the image library.
-  const result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ImagePicker.MediaTypeOptions.Images,
-  });
+  const result = await ImagePicker.launchImageLibraryAsync();
   if (result.canceled) throw new Error("Action cancelled.");
   if (!result.assets[0]) throw new Error("Nothing selected.");
   const cachedImg = new File(result.assets[0].uri);
