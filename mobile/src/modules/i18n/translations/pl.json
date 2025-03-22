@@ -21,7 +21,7 @@
     "favorite": "Ulubiona",
     "favorites": "Ulubione",
     "unFavorite": "Usuń z ulubionych",
-    "favoriteTracks": "Ulubione utwory",
+    "favoriteTracks": "Ulubione Utwory",
     "home": "Start",
     "settings": "Ustawienia",
     "upcoming": "Następne",
@@ -29,7 +29,7 @@
     "disc": "CD {{count}}"
   },
   "template": {
-    "entryAdded": "Dodano `{{- name}}`.",
+    "entryAdded": "Dodono `{{- name}}`.",
     "entryRemove": "Usuń `{{- name}}`.",
     "entryRemoved": "Usunięto `{{- name}}`.",
     "entrySeeMore": "Zobacz więcej o `{{- name}}`.",
@@ -41,9 +41,9 @@
   },
   "plural": {
     "entry_one": "{{count}} element",
-    "entry_other": "{{count}} elementy|ów",
+    "entry_other": "{{count}} elementy/ów",
     "second_one": "{{count}} sekunda",
-    "second_other": "{{count}} sekund|y",
+    "second_other": "{{count}} sekund/y",
     "track_one": "{{count}} $t(term.track)",
     "track_other": "{{count}} $t(term.tracks)"
   },
@@ -57,14 +57,14 @@
     "leave": "Wyjdź",
     "clear": "Wyczyść",
     "validation": {
-      "unique": "Unikalna"
+      "unique": "Unikalne"
     }
   },
   "err": {
     "flow": {
       "route": {
         "title": "Nieprawidłowa ścieżka",
-        "brief": "Taki katalog nie istnieje.",
+        "brief": "Wszedłeś do nieistniejącego katalogu.",
         "extra": {
           "missing": "Brakujące",
           "from": "z"
@@ -76,7 +76,7 @@
       },
       "report": {
         "title": "Zgłoś problem",
-        "brief": "Dołącz zrzut ekranu tego co teraz widzisz."
+        "brief": "Załącz zrzut ekranu tego co teraz widzisz."
       }
     },
     "msg": {
@@ -97,7 +97,7 @@
   "feat": {
     "appUpdate": {
       "title": "Aktualizacja aplikacji",
-      "brief": "Nowa wersja jest dostępna do zainstalowania!",
+      "brief": "Nowa aktualizacja jest dostępna!",
       "extra": {
         "downloadAPK": "Pobierz najnowszy plik APK",
         "updateGoogle": "Zaktualizuj przez Sklep Play"
@@ -109,8 +109,8 @@
     },
     "font": {
       "extra": {
-        "accent": "Czcionka tytułów",
-        "primary": "Czcionka główna"
+        "accent": "Czcionka Tytułów",
+        "primary": "Czcionka Główna"
       }
     },
     "theme": {
@@ -122,15 +122,15 @@
       }
     },
     "homeTabsOrder": {
-      "title": "Kolejność zakładek",
+      "title": "Kolejność Zakładek",
       "brief": "Spersonalizuj kolejność i widoczność zakładek.",
       "description": {
-        "line1": "Zmień kolejność zakładek dalszych niż `Start` przez przeciąganie i upuszczanie. Ustaw widoczność używając ikony oka.",
-        "line2": "Ostrzeżenie: Mogą występować nieoczekiwane błędy podczas przechodzenia do ukrytych zakładek."
+        "line1": "Zmień kolejność zakładek za zakładką \"Start\" przez przeciaganie i upiszczanie. Ustaw widoczność używając ikony oka.",
+        "line2": "Ostrzeżenie: Podczas przechodzenia do ukrytych zakładek mogą wystąpić nieoczekiwane błędy."
       }
     },
     "nowPlayingDesign": {
-      "title": "Wygląd ekranu `Grane teraz`",
+      "title": "Wygląd Ekranu Grane Teraz",
       "extra": {
         "plain": "Zwykły",
         "vinyl": "Winyl",
@@ -152,19 +152,19 @@
       }
     },
     "insights": {
-      "title": "Statystyki",
-      "brief": "Rozmiary i ilości danych.",
+      "title": "Spostrzeżenia",
+      "brief": "Dane o aplikacji i statystyki.",
       "extra": {
         "cache": "Pamięć podręczna",
         "database": "Baza danych",
         "images": "Obrazy",
         "other": "Inne",
         "total": "Razem",
-        "totalDuration": "Łączna długość"
+        "totalDuration": "Łączna Długość"
       }
     },
     "saveErrors": {
-      "title": "Zapisane błędy",
+      "title": "Analizuj błędy",
       "brief": "Zobacz dlaczego niektóre utwory nie zostały dodane."
     },
     "interactions": {
@@ -181,19 +181,19 @@
       }
     },
     "ignoreInterrupt": {
-      "title": "Ignoruj przerwania",
-      "brief": "Powiadomienia i połączenia nie będą zatrzymywać odtwarzania. Wymagane będzie ręczne zatrzymanie."
+      "title": "Ignoruj Przerwania",
+      "brief": "Kontynuuj odtwarzania podczas odbierania powiadomień i połączeń. Będziesz musieć ręcznie zatrzymywać odtwarzanie w takich sytuacjach."
     },
     "repeatOnSkip": {
-      "title": "Zachowaj zapętlenie po pominięciu",
-      "brief": "Nie zmieniaj trybu na `Zapętl` z `Zapętl jedną` po pominięciu."
+      "title": "Zachowaj Zapętlenie Po Pominięciu",
+      "brief": "Nie zmieniaj trypu na \"Zapętl\" z \"Zapętl jedną\" po pominięciu."
     },
     "scanning": {
       "title": "Skanowanie",
       "brief": "Opcje szukania muzyki."
     },
     "rescan": {
-      "title": "Ponowne skanowanie",
+      "title": "Skanuj Ponownie",
       "brief": "Szukaj nowych plików medialnych.",
       "extra": {
         "start": "Przeszukiwanie biblioteki...",
@@ -202,23 +202,23 @@
       }
     },
     "deepRescan": {
-      "title": "Głębokie skanowanie",
-      "brief": "Ignoruje wszystkie reguły pomijania, które przyspieszają standardowe szukanie."
+      "title": "Głębokie Szukanie",
+      "brief": "Ignoruj wszystkie reguły pomijania, które przyspieszają standardowe szukanie."
     },
     "listAllow": {
-      "title": "Biała lista",
+      "title": "Biała Lista",
       "description": "Jeżeli pusto, domyślnie przyjmie:"
     },
     "listBlock": {
-      "title": "Czarna lista",
-      "description": "Ma wyższy priorytet niż elementy na białej liście."
+      "title": "Czarna Lista",
+      "description": "Ma wyższy priorytet niż elementy na Białej Liście."
     },
     "ignoreDuration": {
-      "title": "Ignoruj krótkie nagrania",
+      "title": "Ignoruj Krótkie Nagrania",
       "description": "Nagrania krótsze niż poniższa wartość sekund nie będą zapisywane."
     },
     "translate": {
-      "title": "Rozwijaj tłumaczenia",
+      "title": "Rozwijaj Tłumaczenia",
       "brief": "Pomóż przetłumaczyć interfejs aplikacji na inne języki."
     },
     "code": {
@@ -229,11 +229,11 @@
       "title": "Licencja"
     },
     "privacy": {
-      "title": "Polityka prywatności"
+      "title": "Polityka Prywatności"
     },
     "thirdParty": {
-      "title": "Zewnętrzne oprogramowanie",
-      "brief": "Komponenty, dzięki którym ta aplikacja działa."
+      "title": "Zewnętrzne Oprogramowanie",
+      "brief": "Dzięki czemu ta aplikacja może działać."
     },
     "version": {
       "title": "Wersja"
@@ -243,60 +243,60 @@
       "brief": "Upewnij się, że wszystkie dane są aktualne."
     },
     "onboardTracks": {
-      "title": "Dodawanie utworów...",
+      "title": "Dodawanie Utworów",
       "extra": {
-        "prevSaved": "Wcześniej dodano: {{amount}}",
-        "saved": "Dodano lub zaktualizowano: {{amount}}/{{total}}",
-        "errors": "Liczba błędów: {{amount}}"
+        "prevSaved": "{{amount}} Dodano Wcześniej",
+        "saved": "{{amount}}/{{total}} Dodano/Zaktualizowano",
+        "errors": "{{amount}} Błędów"
       }
     },
     "onboardImages": {
-      "title": "Dodawanie obrazów...",
+      "title": "Dodawanie Obrazów",
       "extra": {
-        "checked": "Sprawdzono: {{amount}}/{{total}}",
-        "found": "Znaleziono: {{amount}}"
+        "checked": "{{amount}}/{{total}} Sprawdzono",
+        "found": "{{amount}} Znaleziono"
       }
     },
     "playedRecent": {
-      "title": "Ostatnio odtwarzane",
+      "title": "Ostatnio Odtwarzane",
       "extra": {
-        "empty": "Niczego nie słuchano w ostatnim czasie!",
-        "section": "Sekcja `Ostatnio odtwarzane`"
+        "empty": "Niczego nie słuchałeś w ostatnim czasie!",
+        "section": "Sekcja Ostatnio odtwarzane"
       }
     },
     "search": {
       "title": "Szukaj",
       "extra": {
-        "musicAdd": "Dodaj muzykę",
-        "searchMedia": "Szukaj mediów"
+        "musicAdd": "Dodaj Muzykę",
+        "searchMedia": "Szukaj Mediów"
       }
     },
     "artwork": {
       "extra": {
-        "change": "Zmień okładkę",
-        "remove": "Usuń okładkę"
+        "change": "Zmień Okładkę",
+        "remove": "Usuń Okładkę"
       }
     },
     "directory": {
       "extra": {
-        "add": "Dodaj katalog",
-        "select": "Wybierz katalog"
+        "add": "Dodaj Katalog",
+        "select": "Wybierz Katalog"
       }
     },
     "playlist": {
       "extra": {
-        "create": "Utwórz playlistę",
-        "delete": "Usuń playlistę",
-        "edit": "Edytuj playlistę",
-        "name": "Nazwa dla playlisty"
+        "create": "Utwórz Playlistę",
+        "delete": "Usuń Playlistę",
+        "edit": "Edytuj Playlistę",
+        "name": "Nazwa Playlisty"
       }
     },
     "modalSort": {
-      "title": "Kolejność sortowania",
+      "title": "Kolejność Sortowania",
       "extra": {
         "asc": "Rosnąco",
         "alphabetical": "Alfabetycznie",
-        "modified": "Data modyfikacji"
+        "modified": "Ostatnio Zmienione"
       }
     },
     "modalTrack": {
@@ -305,9 +305,9 @@
         "filePath": "Ścieżka do pliku",
         "sampleRate": "Częstotliwość próbkowania",
         "size": "Rozmiar",
-        "addToPlaylist": "Dodaj do playlisty",
-        "addToQueue": "Dodaj do kolejki",
-        "queueAdd": "Dodano do kolejki: `{{- name}}`."
+        "addToPlaylist": "Dodaj do Playlisty",
+        "addToQueue": "Dodaj do Kolejki",
+        "queueAdd": "`{{- name}}` został dodany do kolejki."
       }
     }
   }
