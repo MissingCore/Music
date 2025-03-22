@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { View } from "react-native";
 import type { CircleProps } from "react-native-svg";
 import Svg, { Circle, Defs, Mask, Rect } from "react-native-svg";
@@ -5,7 +6,7 @@ import Svg, { Circle, Defs, Mask, Rect } from "react-native-svg";
 import { useTheme } from "~/hooks/useTheme";
 
 import { Colors } from "~/constants/Styles";
-import { MediaImage } from "./MediaImage";
+import { MediaImage, getUsedImage } from "./MediaImage";
 
 const CENTER = { cx: 384, cy: 384 };
 const GROOVES = {
@@ -27,6 +28,18 @@ export function Vinyl(props: {
   source: MediaImage.ImageSource | MediaImage.ImageSource[];
 }) {
   const { canvas } = useTheme();
+
+  const renderIndicator = useMemo(() => {
+    if (Array.isArray(props.source) && props.source.length > 0) return false;
+    return (
+      getUsedImage({
+        type: "playlist",
+        source: props.source,
+        noPlaceholder: true,
+      }) === null
+    );
+  }, [props.source]);
+
   return (
     <View className="relative">
       <MediaImage
@@ -56,14 +69,16 @@ export function Vinyl(props: {
         <Circle {...GROOVES} r={304} />
         <Circle {...GROOVES} r={344} />
         {/* Spin Indicator */}
-        <Rect
-          pointerEvents="none"
-          x={384}
-          y={193}
-          width={2}
-          height={24}
-          fill="#FFF"
-        />
+        {renderIndicator ? (
+          <Rect
+            pointerEvents="none"
+            x={384}
+            y={193}
+            width={2}
+            height={24}
+            fill="#FFF"
+          />
+        ) : null}
         {/* Center hole */}
         <Circle
           pointerEvents="none"

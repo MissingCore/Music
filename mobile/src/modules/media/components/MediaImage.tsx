@@ -78,7 +78,7 @@ export function MediaImage({
 }
 
 /** Helper to return the correct image displayed in `<MediaImage />`. */
-function getUsedImage(args: {
+export function getUsedImage(args: {
   source: MediaImage.ImageSource | MediaImage.ImageSource[];
   type: Omit<MediaType, "playlist">;
   noPlaceholder?: boolean;
