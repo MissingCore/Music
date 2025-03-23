@@ -5,10 +5,7 @@ import type { ParseKeys } from "i18next";
 import { useTranslation } from "react-i18next";
 import { useEffect, useMemo, useRef } from "react";
 import { FlatList, View } from "react-native";
-import Animated, {
-  LinearTransition,
-  SlideInDown,
-} from "react-native-reanimated";
+import Animated, { LinearTransition } from "react-native-reanimated";
 
 import { Search } from "~/icons/Search";
 import { Settings } from "~/icons/Settings";
@@ -44,7 +41,6 @@ function BottomActions() {
   const { isRendered } = useBottomActionsContext();
   return (
     <Animated.View
-      entering={SlideInDown.duration(1000)}
       layout={LinearTransition}
       pointerEvents="box-none"
       className="absolute bottom-0 left-0 w-full gap-[3px] p-4 pt-0"

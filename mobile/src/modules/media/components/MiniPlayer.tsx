@@ -1,10 +1,7 @@
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
-import Animated, {
-  LinearTransition,
-  SlideOutDown,
-} from "react-native-reanimated";
+import Animated, { LinearTransition } from "react-native-reanimated";
 
 import { Pause } from "~/icons/Pause";
 import { PlayArrow } from "~/icons/PlayArrow";
@@ -36,7 +33,6 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
 
   return (
     <Animated.View
-      exiting={SlideOutDown.duration(1000)}
       layout={LinearTransition}
       className={cn("overflow-hidden rounded-md bg-canvas", {
         "rounded-b-sm": stacked,
