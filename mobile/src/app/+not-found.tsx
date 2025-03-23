@@ -21,6 +21,9 @@ export default function NotFoundScreen() {
           />
           <ListItem
             titleKey="err.flow.route.extra.from"
+            // Note: This might not necessarily be the previous route in
+            // the case we've gone back in the history stack to a route
+            // that no longer exists.
             description={asString(history.at(-2))}
             last
           />
