@@ -60,8 +60,9 @@ export const navigationStore = createStore<NavigationStore>()((set, get) => ({
         }));
         break;
       case "REPLACE_PREV":
-        // `handleNavigation()` will be called twice in this case. The href
-        // of the route we're going to will be added via the default case.
+        // `handleNavigation()` will be called twice in this case. First by
+        // the `router.back()`, then by the `router.replace()`. The href of
+        // the route we're going to will be added via the default case.
         set((prev) => ({ history: prev.history.slice(0, -2), event: null }));
         break;
       // The default case handles the "NAVIGATE" event and "back" event.
