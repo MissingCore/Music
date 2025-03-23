@@ -1,6 +1,6 @@
 import { getArtwork } from "@missingcore/react-native-metadata-retriever";
 import { eq, inArray, isNotNull, or } from "drizzle-orm";
-import * as FileSystem from "expo-file-system";
+import { Directory } from "expo-file-system/next";
 
 import { db } from "~/db";
 import type { TrackWithAlbum } from "~/db/schema";
@@ -156,10 +156,11 @@ export async function cleanupImages() {
   // Get & delete all unused images.
   let deletedCount = 0;
   await batch({
-    data: (await FileSystem.readDirectoryAsync(ImageDirectory)).filter(
-      (imageName) => !usedUris.some((uri) => uri.endsWith(imageName)),
-    ),
-    callback: (imageName) => deleteImage(`${ImageDirectory}/${imageName}`),
+    data: new Directory(ImageDirectory)
+      .list()
+      // There shouldn't be any directories in the "Image Directory".
+      .filter((file) => !usedUris.some((uri) => file.uri === uri)),
+    callback: (image) => deleteImage(image.uri),
     onBatchComplete: (isFulfilled) => {
       deletedCount += isFulfilled.length;
     },

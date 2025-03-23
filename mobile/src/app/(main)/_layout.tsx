@@ -1,16 +1,15 @@
+import type { NavigationState } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Stack, router, useRootNavigationState } from "expo-router";
 import type { ParseKeys } from "i18next";
 import { useTranslation } from "react-i18next";
 import { useEffect, useMemo, useRef } from "react";
 import { FlatList, View } from "react-native";
-import Animated, {
-  LinearTransition,
-  SlideInDown,
-} from "react-native-reanimated";
+import Animated, { LinearTransition } from "react-native-reanimated";
 
 import { Search } from "~/icons/Search";
 import { Settings } from "~/icons/Settings";
+import { Router } from "~/services/NavigationStore";
 import { useTabsByVisibility } from "~/services/UserPreferences";
 import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 import { useHasNewUpdate } from "~/hooks/useHasNewUpdate";
@@ -42,7 +41,6 @@ function BottomActions() {
   const { isRendered } = useBottomActionsContext();
   return (
     <Animated.View
-      entering={SlideInDown.duration(1000)}
       layout={LinearTransition}
       pointerEvents="box-none"
       className="absolute bottom-0 left-0 w-full gap-[3px] p-4 pt-0"
@@ -95,7 +93,7 @@ function TabBar({ stacked = false, hidden = false }) {
 function NavigationList() {
   const { t, i18n } = useTranslation();
   const { surface } = useTheme();
-  const navState = useRootNavigationState();
+  const navState = useRootNavigationState() as NavigationState;
   const listRef = useRef<FlatList>(null);
   const { displayedTabs } = useTabsByVisibility();
 
@@ -145,7 +143,7 @@ function NavigationList() {
         keyExtractor={({ href }) => href}
         renderItem={({ item: { href, key, name } }) => (
           <Button
-            onPress={() => router.navigate(href)}
+            onPress={() => Router.navigateMTT(href)}
             disabled={routeName === name}
             className="bg-transparent px-2 disabled:opacity-100"
           >

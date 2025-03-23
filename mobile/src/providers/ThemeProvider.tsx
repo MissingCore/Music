@@ -1,5 +1,8 @@
 import type { Theme } from "@react-navigation/native";
-import { ThemeProvider as NavigationThemeProvider } from "@react-navigation/native";
+import {
+  DefaultTheme,
+  ThemeProvider as NavigationThemeProvider,
+} from "@react-navigation/native";
 import { vars } from "nativewind";
 import { useState } from "react";
 import { View, useColorScheme } from "react-native";
@@ -80,6 +83,7 @@ const LightNavTheme = {
     border: Colors.neutral95,
     notification: Colors.red,
   },
+  fonts: DefaultTheme.fonts,
 } satisfies Theme;
 
 /** Dark theme for React Navigation components. */
@@ -93,4 +97,5 @@ const DarkNavTheme = {
     border: Colors.neutral0,
     notification: Colors.red,
   },
+  fonts: DefaultTheme.fonts,
 } satisfies Theme;

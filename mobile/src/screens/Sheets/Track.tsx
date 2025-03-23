@@ -1,4 +1,4 @@
-import { router, usePathname } from "expo-router";
+import { usePathname } from "expo-router";
 import type { ParseKeys } from "i18next";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
@@ -14,6 +14,7 @@ import { PlaylistAdd } from "~/icons/PlaylistAdd";
 import { QueueMusic } from "~/icons/QueueMusic";
 import { Schedule } from "~/icons/Schedule";
 import { useTrack, useFavoriteTrack } from "~/queries/track";
+import { Router } from "~/services/NavigationStore";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { useTheme } from "~/hooks/useTheme";
 import { Queue, useMusicStore } from "~/modules/media/services/Music";
@@ -199,14 +200,14 @@ function TrackLinks({ data }: { data: TrackWithAlbum }) {
       <View className="flex-row flex-wrap gap-2">
         {data.artistName ? (
           <SheetButton
-            onPress={() => router.navigate(`/artist/${data.artistName}`)}
+            onPress={() => Router.navigate(`/artist/${data.artistName}`)}
             Icon={<Artist />}
             textKey="term.artist"
           />
         ) : null}
         {data.album ? (
           <SheetButton
-            onPress={() => router.navigate(`/album/${data.album?.id}`)}
+            onPress={() => Router.navigate(`/album/${data.album?.id}`)}
             Icon={<Album />}
             textKey="term.album"
           />
@@ -214,7 +215,7 @@ function TrackLinks({ data }: { data: TrackWithAlbum }) {
         {canShowPlaylistBtn && isInList ? (
           <SheetButton
             onPress={() =>
-              router.navigate(
+              Router.navigate(
                 playingSource?.id === ReservedPlaylists.tracks
                   ? "/track"
                   : `/playlist/${encodeURIComponent(playingSource?.id ?? "")}`,

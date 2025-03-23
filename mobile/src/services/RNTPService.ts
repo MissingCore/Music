@@ -1,5 +1,4 @@
 import { toast } from "@backpackapp-io/react-native-toast";
-import { router } from "expo-router";
 import TrackPlayer, { Event } from "react-native-track-player";
 
 import i18next from "~/modules/i18n";
@@ -8,6 +7,7 @@ import type { TrackStatus } from "~/modules/media/services/Music";
 import { Queue, RNTPManager, musicStore } from "~/modules/media/services/Music";
 import { MusicControls } from "~/modules/media/services/Playback";
 import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
+import { Router } from "./NavigationStore";
 import { userPreferencesStore } from "./UserPreferences";
 
 import { clearAllQueries } from "~/lib/react-query";
@@ -120,7 +120,7 @@ export async function PlaybackService() {
         await deleteTrack(erroredTrack.id, { errorName: e.code, errorMessage });
         await removeUnusedCategories();
         clearAllQueries();
-        router.navigate("/");
+        Router.navigate("/");
       }
 
       toast.error(

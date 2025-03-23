@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 
 import { ArrowBack } from "~/icons/ArrowBack";
+import { Router } from "~/services/NavigationStore";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useMusicStore } from "~/modules/media/services/Music";
 import { useTheme } from "~/hooks/useTheme";
@@ -56,7 +57,7 @@ function AppBarContent() {
         <ArrowBack />
       </IconButton>
       <Pressable
-        onPress={() => (listHref ? router.navigate(listHref) : undefined)}
+        onPress={() => (listHref ? Router.navigate(listHref) : undefined)}
         disabled={listHref === undefined}
         className="shrink gap-0.5"
       >
