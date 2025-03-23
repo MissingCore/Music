@@ -1,7 +1,7 @@
 import { File } from "expo-file-system/next";
 import { Directory, Paths } from "expo-file-system/next";
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
-import * as ImagePicker from "expo-image-picker";
+import { launchImageLibraryAsync } from "expo-image-picker";
 
 import type { Maybe } from "~/utils/types";
 
@@ -34,7 +34,7 @@ export function isFile(file: Directory | File): file is File {
  */
 export async function pickImage() {
   // No permissions request is needed for launching the image library.
-  const result = await ImagePicker.launchImageLibraryAsync();
+  const result = await launchImageLibraryAsync();
   if (result.canceled) throw new Error("Action cancelled.");
   if (!result.assets[0]) throw new Error("Nothing selected.");
   const cachedImg = new File(result.assets[0].uri);

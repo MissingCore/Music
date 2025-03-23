@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import * as WebBrowser from "expo-web-browser";
+import { openBrowserAsync } from "expo-web-browser";
 import { useTranslation } from "react-i18next";
 import { SheetManager } from "react-native-actions-sheet";
 
@@ -62,9 +62,7 @@ export default function SettingScreen() {
           titleKey="feat.interactions.title"
           description={t("feat.interactions.brief")}
           icon={<OpenInNew />}
-          onPress={() =>
-            WebBrowser.openBrowserAsync(LINKS.NOTHING_INTERACTIONS)
-          }
+          onPress={() => openBrowserAsync(LINKS.NOTHING_INTERACTIONS)}
         />
         <ListItem
           titleKey="feat.playback.title"
@@ -84,24 +82,24 @@ export default function SettingScreen() {
           titleKey="feat.translate.title"
           description={t("feat.translate.brief")}
           icon={<OpenInNew />}
-          onPress={() => WebBrowser.openBrowserAsync(LINKS.TRANSLATIONS)}
+          onPress={() => openBrowserAsync(LINKS.TRANSLATIONS)}
           first
         />
         <ListItem
           titleKey="feat.code.title"
           description={t("feat.code.brief")}
           icon={<OpenInNew />}
-          onPress={() => WebBrowser.openBrowserAsync(LINKS.GITHUB)}
+          onPress={() => openBrowserAsync(LINKS.GITHUB)}
         />
         <ListItem
           titleKey="feat.license.title"
           icon={<OpenInNew />}
-          onPress={() => WebBrowser.openBrowserAsync(LINKS.LICENSE)}
+          onPress={() => openBrowserAsync(LINKS.LICENSE)}
         />
         <ListItem
           titleKey="feat.privacy.title"
           icon={<OpenInNew />}
-          onPress={() => WebBrowser.openBrowserAsync(LINKS.PRIVACY_POLICY)}
+          onPress={() => openBrowserAsync(LINKS.PRIVACY_POLICY)}
         />
         <ListItem
           titleKey="feat.thirdParty.title"

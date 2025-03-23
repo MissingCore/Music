@@ -5,7 +5,8 @@ import {
 } from "@missingcore/react-native-metadata-retriever";
 import { eq, inArray } from "drizzle-orm";
 import { getInfoAsync } from "expo-file-system";
-import * as MediaLibrary from "expo-media-library";
+import type { Asset as MediaLibraryAsset } from "expo-media-library";
+import { getAssetsAsync } from "expo-media-library";
 
 import { db } from "~/db";
 import { albums, artists, invalidTracks, tracks } from "~/db/schema";
@@ -42,16 +43,15 @@ export async function findAndSaveAudio() {
     listAllow.length > 0 ? listAllow : StorageVolumesDirectoryPaths;
 
   // Get all audio files discoverable by `expo-media-library`.
-  const incomingData: MediaLibrary.Asset[] = [];
+  const incomingData: MediaLibraryAsset[] = [];
   let isComplete = false;
   let lastRead: string | undefined;
   do {
-    const { assets, endCursor, hasNextPage } =
-      await MediaLibrary.getAssetsAsync({
-        after: lastRead,
-        first: BATCH_PRESETS.LIGHT,
-        mediaType: "audio",
-      });
+    const { assets, endCursor, hasNextPage } = await getAssetsAsync({
+      after: lastRead,
+      first: BATCH_PRESETS.LIGHT,
+      mediaType: "audio",
+    });
     incomingData.push(...assets);
     lastRead = endCursor;
     isComplete = !hasNextPage;
@@ -197,7 +197,7 @@ async function getTrackEntry({
   duration,
   modificationTime,
   filename,
-}: MediaLibrary.Asset) {
+}: MediaLibraryAsset) {
   const { bitrate, sampleRate, ...t } = await getMetadata(uri, wantedMetadata);
   const assetInfo = await getInfoAsync(getSafeUri(uri));
 
