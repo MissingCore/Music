@@ -38,6 +38,7 @@ export function Sheet({
   return (
     <WrappedActionSheet
       gestureEnabled
+      keyboardHandlerEnabled={false}
       CustomHeaderComponent={
         <SheetHeader title={titleKey ? t(titleKey) : undefined} />
       }
