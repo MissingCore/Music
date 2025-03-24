@@ -72,11 +72,14 @@ function PlainArtwork(props: ArtworkProps) {
 
 /** Seekbar variant that uses the vinyl artwork. */
 function VinylSeekBar(props: ArtworkProps) {
-  const { initCenter, vinylStyle, seekGesture } = useVinylSeekbar();
+  const { isActive, initCenter, vinylStyle, seekGesture } = useVinylSeekbar();
   return (
     <GestureDetector gesture={seekGesture}>
       <Animated.View onLayout={initCenter} style={vinylStyle}>
-        <Vinyl onPress={MusicControls.playToggle} {...props} />
+        <Vinyl
+          onPress={!isActive ? MusicControls.playToggle : undefined}
+          {...props}
+        />
       </Animated.View>
     </GestureDetector>
   );
