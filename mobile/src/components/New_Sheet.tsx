@@ -1,11 +1,10 @@
 import type { TrueSheetProps } from "@lodev09/react-native-true-sheet";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import type { ParseKeys } from "i18next";
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { StyleProp, ViewStyle } from "react-native";
 import { View, useWindowDimensions } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useTheme } from "~/hooks/useTheme";
 
@@ -38,8 +37,8 @@ export const Sheet = forwardRef<TrueSheet, SheetProps>(function Sheet(
 ) {
   const { t } = useTranslation();
   const { canvasAlt } = useTheme();
-  const insets = useSafeAreaInsets();
   const { height: screenHeight } = useWindowDimensions();
+  const [headerHeight, setHeaderHeight] = useState(0);
 
   return (
     <TrueSheet
@@ -49,16 +48,25 @@ export const Sheet = forwardRef<TrueSheet, SheetProps>(function Sheet(
       backgroundColor={canvasAlt}
       cornerRadius={BorderRadius.lg}
       // Sheet max height will be just before the `<TopAppBar />`.
-      maxHeight={screenHeight - insets.top - 56}
+      maxHeight={screenHeight - 56}
       grabber={false}
       {...props}
     >
-      <SheetHeader title={titleKey ? t(titleKey) : undefined} />
+      <SheetHeader
+        title={titleKey ? t(titleKey) : undefined}
+        getHeight={setHeaderHeight}
+      />
       <View
-        style={contentContainerStyle}
+        style={[
+          contentContainerStyle,
+          // TrueSheet doesn't know the actual scrollable area, so we
+          // need to exclude the height taken up by the "SheetHeader"
+          // from the container that can hold a scrollable.
+          [{ maxHeight: screenHeight - 56 - headerHeight }],
+        ]}
         className={cn(
           "p-4 pt-0",
-          { "h-full pb-0": snapTop },
+          { "pb-0": snapTop },
           contentContainerClassName,
         )}
       >
@@ -69,13 +77,19 @@ export const Sheet = forwardRef<TrueSheet, SheetProps>(function Sheet(
 });
 
 /** Header component to be used in `<Sheet />`. */
-function SheetHeader({ title }: { title?: string }) {
+function SheetHeader(props: {
+  getHeight: (height: number) => void;
+  title?: string;
+}) {
   return (
-    <View className={cn("gap-2 px-4 pb-2", { "pb-6": !!title })}>
+    <View
+      onLayout={(e) => props.getHeight(e.nativeEvent.layout.height)}
+      className={cn("gap-2 px-4 pb-2", { "pb-6": !!props.title })}
+    >
       <View className="mx-auto my-[10px] h-1 w-8 rounded-full bg-onSurface" />
-      {title ? (
+      {props.title ? (
         <Marquee center>
-          <StyledText className="text-lg">{title}</StyledText>
+          <StyledText className="text-lg">{props.title}</StyledText>
         </Marquee>
       ) : null}
     </View>
