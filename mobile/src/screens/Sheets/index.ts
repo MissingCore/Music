@@ -7,9 +7,7 @@ import {
   ArtistArtworkSheet,
   PlaylistArtworkSheet,
 } from "./Artwork";
-import BackupSheet from "./Backup";
 import { FontAccentSheet, FontPrimarySheet } from "./Font";
-import LanguageSheet from "./Language";
 import MinDurationSheet from "./MinDuration";
 import NowPlayingDesignSheet from "./NowPlayingDesign";
 import PlaybackOptionsSheet from "./PlaybackOptions";
@@ -30,10 +28,8 @@ import type { SearchCallbacks } from "~/modules/search/types";
 registerSheet("AddMusicSheet", AddMusicSheet);
 registerSheet("AlbumArtworkSheet", AlbumArtworkSheet);
 registerSheet("ArtistArtworkSheet", ArtistArtworkSheet);
-registerSheet("BackupSheet", BackupSheet);
 registerSheet("FontAccentSheet", FontAccentSheet);
 registerSheet("FontPrimarySheet", FontPrimarySheet);
-registerSheet("LanguageSheet", LanguageSheet);
 registerSheet("MinDurationSheet", MinDurationSheet);
 registerSheet("NowPlayingDesignSheet", NowPlayingDesignSheet);
 registerSheet("PlaybackOptionsSheet", PlaybackOptionsSheet);
@@ -54,10 +50,8 @@ declare module "react-native-actions-sheet" {
     }>;
     AlbumArtworkSheet: SheetDefinition<{ payload: { id: string } }>;
     ArtistArtworkSheet: SheetDefinition<{ payload: { id: string } }>;
-    BackupSheet: SheetDefinition;
     FontAccentSheet: SheetDefinition;
     FontPrimarySheet: SheetDefinition;
-    LanguageSheet: SheetDefinition;
     MinDurationSheet: SheetDefinition;
     NowPlayingDesignSheet: SheetDefinition;
     PlaybackOptionsSheet: SheetDefinition;

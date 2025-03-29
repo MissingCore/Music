@@ -1,7 +1,7 @@
 import type { TrueSheetProps } from "@lodev09/react-native-true-sheet";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import type { ParseKeys } from "i18next";
-import { forwardRef, useState } from "react";
+import { forwardRef, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { StyleProp, ViewStyle } from "react-native";
 import { View, useWindowDimensions } from "react-native";
@@ -21,6 +21,10 @@ interface SheetProps extends TrueSheetProps {
   snapTop?: boolean;
   contentContainerClassName?: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
+}
+
+export function useSheetRef() {
+  return useRef<TrueSheet>(null);
 }
 
 export const Sheet = forwardRef<TrueSheet, SheetProps>(function Sheet(
