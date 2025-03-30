@@ -7,9 +7,7 @@ import {
   ArtistArtworkSheet,
   PlaylistArtworkSheet,
 } from "./Artwork";
-import MinDurationSheet from "./MinDuration";
 import PlaybackOptionsSheet from "./PlaybackOptions";
-import ScanFilterListSheet from "./ScanFilterList";
 import TrackSheet from "./Track";
 import TrackSortSheet from "./TrackSort";
 import TrackToPlaylistSheet from "./TrackToPlaylist";
@@ -25,10 +23,8 @@ import type { SearchCallbacks } from "~/modules/search/types";
 registerSheet("AddMusicSheet", AddMusicSheet);
 registerSheet("AlbumArtworkSheet", AlbumArtworkSheet);
 registerSheet("ArtistArtworkSheet", ArtistArtworkSheet);
-registerSheet("MinDurationSheet", MinDurationSheet);
 registerSheet("PlaybackOptionsSheet", PlaybackOptionsSheet);
 registerSheet("PlaylistArtworkSheet", PlaylistArtworkSheet);
-registerSheet("ScanFilterListSheet", ScanFilterListSheet);
 registerSheet("TrackSheet", TrackSheet);
 registerSheet("TrackSortSheet", TrackSortSheet);
 registerSheet("TrackToPlaylistSheet", TrackToPlaylistSheet);
@@ -43,12 +39,8 @@ declare module "react-native-actions-sheet" {
     }>;
     AlbumArtworkSheet: SheetDefinition<{ payload: { id: string } }>;
     ArtistArtworkSheet: SheetDefinition<{ payload: { id: string } }>;
-    MinDurationSheet: SheetDefinition;
     PlaybackOptionsSheet: SheetDefinition;
     PlaylistArtworkSheet: SheetDefinition<{ payload: { id: string } }>;
-    ScanFilterListSheet: SheetDefinition<{
-      payload: { listType: "listAllow" | "listBlock" };
-    }>;
     TrackSheet: SheetDefinition<{ payload: { id: string } }>;
     TrackSortSheet: SheetDefinition;
     TrackToPlaylistSheet: SheetDefinition<{ payload: { id: string } }>;

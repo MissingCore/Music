@@ -70,7 +70,7 @@ export const Sheet = forwardRef<TrueSheet, SheetProps>(function Sheet(
         ]}
         className={cn(
           "p-4 pt-0",
-          { "pb-0": snapTop },
+          { "h-full pb-0": snapTop },
           contentContainerClassName,
         )}
       >
