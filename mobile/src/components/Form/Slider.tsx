@@ -1,4 +1,5 @@
 import { Slider as RNSlider } from "@miblanchard/react-native-slider";
+import SheetSlider from "@react-native-assets/slider/src/Slider";
 import { useState } from "react";
 import { Pressable, View } from "react-native";
 
@@ -56,7 +57,7 @@ export function NSlider(
   return (
     <View
       onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
-      className="relative overflow-hidden rounded-full"
+      className="relative overflow-hidden rounded-full bg-surface"
     >
       <View
         accessible
@@ -69,22 +70,21 @@ export function NSlider(
           {formattedValue}
         </StyledText>
       </View>
-      <RNSlider
+      <SheetSlider
         value={props.value}
         minimumValue={props.min}
         maximumValue={props.max}
         step={props.step}
-        onValueChange={async ([newPos]) => await props.onChange(newPos!)}
+        onValueChange={props.onChange as (val: number) => void}
         minimumTrackTintColor={`${Colors.red}33`} // 20% Opacity
         maximumTrackTintColor={surface}
-        thumbStyle={{
-          height: 64,
-          width: props.value === props.min || props.value === props.max ? 0 : 2,
-          backgroundColor: Colors.red,
-        }}
-        trackStyle={{ height: 64 }}
-        // The slider height defaults to 40px and isn't inferred from the heights assigned.
-        containerStyle={{ height: 64 }}
+        thumbSize={
+          props.value === props.min || props.value === props.max ? 0 : 2
+        }
+        trackHeight={64}
+        thumbStyle={{ height: 64, backgroundColor: Colors.red }}
+        // The wrapper adds some extra padding, which this will negate.
+        style={{ height: 64 }}
       />
       {width !== undefined ? <NSliderMarks width={width} {...props} /> : null}
     </View>

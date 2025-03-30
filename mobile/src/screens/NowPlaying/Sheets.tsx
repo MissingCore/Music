@@ -1,7 +1,6 @@
 import type { TrueSheet } from "@lodev09/react-native-true-sheet";
 import type { RefObject } from "react";
 import { useTranslation } from "react-i18next";
-import type { ActionSheetRef } from "react-native-actions-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import TrackPlayer from "react-native-track-player";
 
@@ -23,15 +22,16 @@ import { FlashList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { NSlider } from "~/components/Form/Slider";
 import { Sheet } from "~/components/Sheet";
-import { Sheet as LegacySheet } from "~/components/Sheet/Legacy";
 import { Swipeable } from "~/components/Swipeable";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 
 /** All the sheets used on `/now-playing` route. */
-export function NowPlayingSheets(props: {
-  playbackOptionsRef: RefObject<ActionSheetRef>;
-  upcomingTracksRef: RefObject<TrueSheet>;
-}) {
+export function NowPlayingSheets(
+  props: Record<
+    "playbackOptionsRef" | "upcomingTracksRef",
+    RefObject<TrueSheet>
+  >,
+) {
   return (
     <>
       <PlaybackOptionsSheet sheetRef={props.playbackOptionsRef} />
@@ -42,7 +42,7 @@ export function NowPlayingSheets(props: {
 
 //#region Playback Options
 /** Enables us to specify  how the media is played. */
-function PlaybackOptionsSheet(props: { sheetRef: RefObject<ActionSheetRef> }) {
+function PlaybackOptionsSheet(props: { sheetRef: RefObject<TrueSheet> }) {
   const { t } = useTranslation();
   const playbackSpeed = useSessionPreferencesStore(
     (state) => state.playbackSpeed,
@@ -50,7 +50,7 @@ function PlaybackOptionsSheet(props: { sheetRef: RefObject<ActionSheetRef> }) {
   const volume = useSessionPreferencesStore((state) => state.volume);
 
   return (
-    <LegacySheet ref={props.sheetRef} contentContainerClassName="gap-4">
+    <Sheet ref={props.sheetRef} contentContainerClassName="gap-4">
       <NSlider
         label={t("feat.playback.extra.speed")}
         value={playbackSpeed}
@@ -61,7 +61,7 @@ function PlaybackOptionsSheet(props: { sheetRef: RefObject<ActionSheetRef> }) {
         value={volume}
         {...VolumeSliderOptions}
       />
-    </LegacySheet>
+    </Sheet>
   );
 }
 

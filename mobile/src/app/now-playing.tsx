@@ -29,7 +29,6 @@ import { SafeContainer } from "~/components/Containment/SafeContainer";
 import { IconButton } from "~/components/Form/Button";
 import { Slider } from "~/components/Form/Slider";
 import { useSheetRef } from "~/components/Sheet";
-import { useLegacySheetRef } from "~/components/Sheet/Legacy";
 import { Back } from "~/components/Transition/Back";
 import { StyledText } from "~/components/Typography/StyledText";
 import {
@@ -199,7 +198,7 @@ function PlaybackControls() {
 /** Actions rendered on the bottom of the screen. */
 function BottomAppBar() {
   const { t } = useTranslation();
-  const playbackOptionsSheetRef = useLegacySheetRef();
+  const playbackOptionsSheetRef = useSheetRef();
   const upcomingTracksSheetRef = useSheetRef();
 
   return (
@@ -210,7 +209,7 @@ function BottomAppBar() {
           <IconButton
             kind="ripple"
             accessibilityLabel={t("feat.playback.extra.options")}
-            onPress={() => playbackOptionsSheetRef.current?.show()}
+            onPress={() => playbackOptionsSheetRef.current?.present()}
             rippleRadius={24}
             className="p-2"
           >

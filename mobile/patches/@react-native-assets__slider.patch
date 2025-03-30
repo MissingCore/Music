@@ -1,0 +1,54 @@
+diff --git a/src/Slider.tsx b/src/Slider.tsx
+index 5b1485807f58c472aa138050662fd363149bb7e9..b09980c64584ab18f9b6d71c34aeb07381455b3b 100644
+--- a/src/Slider.tsx
++++ b/src/Slider.tsx
+@@ -118,7 +118,7 @@ const Slider = React.forwardRef<RN.View, SliderProps>((props: SliderProps, forwa
+       inverted={inverted}
+     >
+       <Track {...trackProps} color={minimumTrackTintColor} style={minStyle} length={percentage * 100} track='min' />
+-      <Thumb {...thumbProps} updateValue={updateValue} value={value} />
++      {percentage !== 1 ? <Thumb {...thumbProps} updateValue={updateValue} value={value} /> : null}
+       <Track {...trackProps} color={maximumTrackTintColor} style={maxStyle} length={(1 - percentage) * 100} track='max' />
+       <Marks {...marksProps} />
+     </ResponderView>
+diff --git a/src/components/Thumb.tsx b/src/components/Thumb.tsx
+index 7b6fcdd121b4471e3992e7c8414c1398462cd2d8..a2958e689100b5cabe4387d7603ed4e12f5183a6 100644
+--- a/src/components/Thumb.tsx
++++ b/src/components/Thumb.tsx
+@@ -59,7 +59,6 @@ function getThumbStyle (size: number, color: RN.ColorValue) {
+       backgroundColor: color,
+       borderRadius: size / 2,
+       overflow: 'hidden',
+-      elevation: 10,
+       zIndex: 10
+     }
+   }).thumb
+diff --git a/src/components/Track.tsx b/src/components/Track.tsx
+index 256772950b6b3ab0fc479661232ee1293cf31573..1f6bb64b9185da691c463408863794548b303652 100644
+--- a/src/components/Track.tsx
++++ b/src/components/Track.tsx
+@@ -11,12 +11,13 @@ type Props = {
+   CustomTrack?: React.ComponentType<{ length: number; thickness: number; vertical: boolean; track: 'min' | 'mid' | 'max' ; style: RN.StyleProp<RN.ViewStyle>; color: RN.ColorValue; }>
+ }
+ 
+-function getTrackStyle (length: number, thickness: number, color: RN.ColorValue, vertical: boolean) {
++function getTrackStyle (length: number, thickness: number, color: RN.ColorValue, vertical: boolean, track: Props['track']) {
+   return RN.StyleSheet.create({
+     thumb: {
+       flexGrow: length,
+       flexBasis: 0,
+-      borderRadius: thickness / 2,
++      [track === 'min' ? "borderTopLeftRadius" : "borderTopRightRadius"]: thickness / 2,
++      [track === 'min' ? "borderBottomLeftRadius" : "borderBottomRightRadius"]: thickness / 2,
+       backgroundColor: color,
+       // This is for web
+       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+@@ -29,7 +30,7 @@ function getTrackStyle (length: number, thickness: number, color: RN.ColorValue,
+ 
+ const Track = ({ style, thickness, length, vertical, color = 'grey', CustomTrack, track }: Props) => {
+   const trackViewStyle = React.useMemo<RN.StyleProp<RN.ViewStyle>>(() => [
+-    getTrackStyle(length, thickness, color, vertical), style
++    getTrackStyle(length, thickness, color, vertical, track), style
+   ], [length, thickness, color, vertical, style])
+ 
+   return CustomTrack ? <CustomTrack style={trackViewStyle} color={color} length={length} thickness={thickness} vertical={vertical} track={track} /> : <RN.View style={trackViewStyle} />
