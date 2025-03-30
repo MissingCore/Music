@@ -1,14 +1,15 @@
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { SheetManager } from "react-native-actions-sheet";
 
 import {
   userPreferencesStore,
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
 import { StandardScrollLayout } from "~/layouts/StandardScroll";
+import { AppearanceSettingsSheets } from "~/screens/Sheets/Settings/Appearance";
 
 import { List, ListItem } from "~/components/Containment/List";
+import { useSheetRef } from "~/components/New_Sheet";
 
 /** Screen for `/setting/appearance` route. */
 export default function AppearanceScreen() {
@@ -22,49 +23,64 @@ export default function AppearanceScreen() {
   const showRecentlyPlayed = useUserPreferencesStore(
     (state) => state.showRecent,
   );
+  const accentFontSheetRef = useSheetRef();
+  const primaryFontSheetRef = useSheetRef();
+  const themeSheetRef = useSheetRef();
+  const nowPlayingDesignSheetRef = useSheetRef();
 
   return (
-    <StandardScrollLayout>
-      <List>
-        <ListItem
-          titleKey="feat.font.extra.accent"
-          description={accentFont}
-          onPress={() => SheetManager.show("FontAccentSheet")}
-          first
-        />
-        <ListItem
-          titleKey="feat.font.extra.primary"
-          description={primaryFont}
-          onPress={() => SheetManager.show("FontPrimarySheet")}
-        />
-        <ListItem
-          titleKey="feat.theme.title"
-          description={t(`feat.theme.extra.${theme}`)}
-          onPress={() => SheetManager.show("ThemeSheet")}
-          last
-        />
-      </List>
+    <>
+      <StandardScrollLayout>
+        <List>
+          <ListItem
+            titleKey="feat.font.extra.accent"
+            description={accentFont}
+            onPress={() => accentFontSheetRef.current?.present()}
+            first
+          />
+          <ListItem
+            titleKey="feat.font.extra.primary"
+            description={primaryFont}
+            onPress={() => primaryFontSheetRef.current?.present()}
+          />
+          <ListItem
+            titleKey="feat.theme.title"
+            description={t(`feat.theme.extra.${theme}`)}
+            onPress={() => themeSheetRef.current?.present()}
+            last
+          />
+        </List>
 
-      <List>
-        <ListItem
-          titleKey="feat.homeTabsOrder.title"
-          description={t("feat.homeTabsOrder.brief")}
-          onPress={() => router.navigate("/setting/appearance/home-tabs-order")}
-          first
-        />
-        <ListItem
-          titleKey="feat.nowPlayingDesign.title"
-          description={t(`feat.nowPlayingDesign.extra.${nowPlayingDesign}`)}
-          onPress={() => SheetManager.show("NowPlayingDesignSheet")}
-        />
-        <ListItem
-          titleKey="feat.playedRecent.extra.section"
-          onPress={toggleShowRecent}
-          switchState={showRecentlyPlayed}
-          last
-        />
-      </List>
-    </StandardScrollLayout>
+        <List>
+          <ListItem
+            titleKey="feat.homeTabsOrder.title"
+            description={t("feat.homeTabsOrder.brief")}
+            onPress={() =>
+              router.navigate("/setting/appearance/home-tabs-order")
+            }
+            first
+          />
+          <ListItem
+            titleKey="feat.nowPlayingDesign.title"
+            description={t(`feat.nowPlayingDesign.extra.${nowPlayingDesign}`)}
+            onPress={() => nowPlayingDesignSheetRef.current?.present()}
+          />
+          <ListItem
+            titleKey="feat.playedRecent.extra.section"
+            onPress={toggleShowRecent}
+            switchState={showRecentlyPlayed}
+            last
+          />
+        </List>
+      </StandardScrollLayout>
+
+      <AppearanceSettingsSheets
+        accentFontRef={accentFontSheetRef}
+        primaryFontRef={primaryFontSheetRef}
+        themeRef={themeSheetRef}
+        nowPlayingDesignRef={nowPlayingDesignSheetRef}
+      />
+    </>
   );
 }
 

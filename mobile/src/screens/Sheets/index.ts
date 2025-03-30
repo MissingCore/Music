@@ -7,12 +7,9 @@ import {
   ArtistArtworkSheet,
   PlaylistArtworkSheet,
 } from "./Artwork";
-import { FontAccentSheet, FontPrimarySheet } from "./Font";
 import MinDurationSheet from "./MinDuration";
-import NowPlayingDesignSheet from "./NowPlayingDesign";
 import PlaybackOptionsSheet from "./PlaybackOptions";
 import ScanFilterListSheet from "./ScanFilterList";
-import ThemeSheet from "./Theme";
 import TrackSheet from "./Track";
 import TrackSortSheet from "./TrackSort";
 import TrackToPlaylistSheet from "./TrackToPlaylist";
@@ -28,14 +25,10 @@ import type { SearchCallbacks } from "~/modules/search/types";
 registerSheet("AddMusicSheet", AddMusicSheet);
 registerSheet("AlbumArtworkSheet", AlbumArtworkSheet);
 registerSheet("ArtistArtworkSheet", ArtistArtworkSheet);
-registerSheet("FontAccentSheet", FontAccentSheet);
-registerSheet("FontPrimarySheet", FontPrimarySheet);
 registerSheet("MinDurationSheet", MinDurationSheet);
-registerSheet("NowPlayingDesignSheet", NowPlayingDesignSheet);
 registerSheet("PlaybackOptionsSheet", PlaybackOptionsSheet);
 registerSheet("PlaylistArtworkSheet", PlaylistArtworkSheet);
 registerSheet("ScanFilterListSheet", ScanFilterListSheet);
-registerSheet("ThemeSheet", ThemeSheet);
 registerSheet("TrackSheet", TrackSheet);
 registerSheet("TrackSortSheet", TrackSortSheet);
 registerSheet("TrackToPlaylistSheet", TrackToPlaylistSheet);
@@ -50,16 +43,12 @@ declare module "react-native-actions-sheet" {
     }>;
     AlbumArtworkSheet: SheetDefinition<{ payload: { id: string } }>;
     ArtistArtworkSheet: SheetDefinition<{ payload: { id: string } }>;
-    FontAccentSheet: SheetDefinition;
-    FontPrimarySheet: SheetDefinition;
     MinDurationSheet: SheetDefinition;
-    NowPlayingDesignSheet: SheetDefinition;
     PlaybackOptionsSheet: SheetDefinition;
     PlaylistArtworkSheet: SheetDefinition<{ payload: { id: string } }>;
     ScanFilterListSheet: SheetDefinition<{
       payload: { listType: "listAllow" | "listBlock" };
     }>;
-    ThemeSheet: SheetDefinition;
     TrackSheet: SheetDefinition<{ payload: { id: string } }>;
     TrackSortSheet: SheetDefinition;
     TrackToPlaylistSheet: SheetDefinition<{ payload: { id: string } }>;

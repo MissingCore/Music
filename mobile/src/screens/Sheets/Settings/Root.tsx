@@ -1,6 +1,5 @@
 import type { TrueSheet } from "@lodev09/react-native-true-sheet";
 import type { RefObject } from "react";
-import { forwardRef } from "react";
 import { View } from "react-native";
 
 import {
@@ -18,20 +17,19 @@ import { Sheet } from "~/components/New_Sheet";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
 /** All the sheets used on `/setting` route. */
-export function SettingsSheets(props: {
-  backupRef: RefObject<TrueSheet>;
-  languageRef: RefObject<TrueSheet>;
-}) {
+export function SettingsSheets(
+  props: Record<"backupRef" | "languageRef", RefObject<TrueSheet>>,
+) {
   return (
     <>
-      <BackupSheet ref={props.backupRef} />
-      <LanguageSheet ref={props.languageRef} />
+      <BackupSheet sheetRef={props.backupRef} />
+      <LanguageSheet sheetRef={props.languageRef} />
     </>
   );
 }
 
 /** Enables import & export of a backup of your media organization in this app. */
-const BackupSheet = forwardRef<TrueSheet>(function BackupSheet(_, ref) {
+function BackupSheet(props: { sheetRef: RefObject<TrueSheet> }) {
   const exportBackup = useExportBackup();
   const importBackup = useImportBackup();
 
@@ -39,7 +37,7 @@ const BackupSheet = forwardRef<TrueSheet>(function BackupSheet(_, ref) {
 
   return (
     <Sheet
-      ref={ref}
+      ref={props.sheetRef}
       titleKey="feat.backup.title"
       contentContainerClassName="gap-4"
     >
@@ -75,14 +73,14 @@ const BackupSheet = forwardRef<TrueSheet>(function BackupSheet(_, ref) {
       </View>
     </Sheet>
   );
-});
+}
 
 /** Enables the ability to change the language used. */
-const LanguageSheet = forwardRef<TrueSheet>(function LanguageSheet(_, ref) {
+function LanguageSheet(props: { sheetRef: RefObject<TrueSheet> }) {
   const languageCode = useUserPreferencesStore((state) => state.language);
   return (
     <Sheet
-      ref={ref}
+      ref={props.sheetRef}
       titleKey="feat.language.title"
       contentContainerClassName="pb-0"
     >
@@ -103,7 +101,9 @@ const LanguageSheet = forwardRef<TrueSheet>(function LanguageSheet(_, ref) {
       />
     </Sheet>
   );
-});
+}
 
+//#region Setter Functions
 const setLanguage = (languageCode: string) =>
   userPreferencesStore.setState({ language: languageCode });
+//#endregion
