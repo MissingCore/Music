@@ -7,11 +7,9 @@ import {
   ArtistArtworkSheet,
   PlaylistArtworkSheet,
 } from "./Artwork";
-import PlaybackOptionsSheet from "./PlaybackOptions";
 import TrackSheet from "./Track";
 import TrackSortSheet from "./TrackSort";
 import TrackToPlaylistSheet from "./TrackToPlaylist";
-import TrackUpcomingSheet from "./TrackUpcoming";
 
 import type { SearchCallbacks } from "~/modules/search/types";
 
@@ -23,12 +21,10 @@ import type { SearchCallbacks } from "~/modules/search/types";
 registerSheet("AddMusicSheet", AddMusicSheet);
 registerSheet("AlbumArtworkSheet", AlbumArtworkSheet);
 registerSheet("ArtistArtworkSheet", ArtistArtworkSheet);
-registerSheet("PlaybackOptionsSheet", PlaybackOptionsSheet);
 registerSheet("PlaylistArtworkSheet", PlaylistArtworkSheet);
 registerSheet("TrackSheet", TrackSheet);
 registerSheet("TrackSortSheet", TrackSortSheet);
 registerSheet("TrackToPlaylistSheet", TrackToPlaylistSheet);
-registerSheet("TrackUpcomingSheet", TrackUpcomingSheet);
 
 // We extend some of the types here to give us great intellisense
 // across the app for all registered sheets.
@@ -39,12 +35,10 @@ declare module "react-native-actions-sheet" {
     }>;
     AlbumArtworkSheet: SheetDefinition<{ payload: { id: string } }>;
     ArtistArtworkSheet: SheetDefinition<{ payload: { id: string } }>;
-    PlaybackOptionsSheet: SheetDefinition;
     PlaylistArtworkSheet: SheetDefinition<{ payload: { id: string } }>;
     TrackSheet: SheetDefinition<{ payload: { id: string } }>;
     TrackSortSheet: SheetDefinition;
     TrackToPlaylistSheet: SheetDefinition<{ payload: { id: string } }>;
-    TrackUpcomingSheet: SheetDefinition;
   }
 }
 

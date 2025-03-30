@@ -1,10 +1,14 @@
 import { Toasts } from "@backpackapp-io/react-native-toast";
 import type { ParseKeys } from "i18next";
 import { cssInterop } from "nativewind";
+import { forwardRef, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import type { StyleProp, ViewStyle } from "react-native";
 import { View } from "react-native";
-import type { ActionSheetProps } from "react-native-actions-sheet";
+import type {
+  ActionSheetProps,
+  ActionSheetRef,
+} from "react-native-actions-sheet";
 import ActionSheet from "react-native-actions-sheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -16,32 +20,42 @@ const WrappedActionSheet = cssInterop(ActionSheet, {
   indicatorClassName: "indicatorStyle",
 });
 
-/** Pre-styled sheet. */
-export function Sheet({
-  titleKey,
-  snapTop,
-  contentContainerClassName,
-  contentContainerStyle,
-  children,
-  ...props
-}: ActionSheetProps & {
+export function useLegacySheetRef() {
+  return useRef<ActionSheetRef>(null);
+}
+
+interface SheetProps extends ActionSheetProps {
   titleKey?: ParseKeys;
   /** If the sheet should open at max screen height. */
   snapTop?: boolean;
   contentContainerClassName?: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
-}) {
+}
+
+export const Sheet = forwardRef<ActionSheetRef, SheetProps>(function Sheet(
+  {
+    titleKey,
+    snapTop,
+    contentContainerClassName,
+    contentContainerStyle,
+    children,
+    ...props
+  },
+  ref,
+) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
 
   return (
     <WrappedActionSheet
+      ref={ref}
       gestureEnabled
       keyboardHandlerEnabled={false}
       CustomHeaderComponent={
         <SheetHeader title={titleKey ? t(titleKey) : undefined} />
       }
       ExtraOverlayComponent={<Toasts />}
+      defaultOverlayOpacity={0.6}
       containerClassName={cn("rounded-t-lg bg-canvasAlt", {
         "h-full": snapTop,
       })}
@@ -69,4 +83,4 @@ export function Sheet({
       </View>
     </WrappedActionSheet>
   );
-}
+});
