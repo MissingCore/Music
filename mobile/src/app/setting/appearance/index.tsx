@@ -9,7 +9,7 @@ import { StandardScrollLayout } from "~/layouts/StandardScroll";
 import { AppearanceSettingsSheets } from "~/screens/Sheets/Settings/Appearance";
 
 import { List, ListItem } from "~/components/Containment/List";
-import { useSheetRef } from "~/components/New_Sheet";
+import { useSheetRef } from "~/components/Sheet";
 
 /** Screen for `/setting/appearance` route. */
 export default function AppearanceScreen() {

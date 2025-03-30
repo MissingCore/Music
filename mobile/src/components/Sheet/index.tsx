@@ -10,8 +10,8 @@ import { useTheme } from "~/hooks/useTheme";
 
 import { BorderRadius } from "~/constants/Styles";
 import { cn } from "~/lib/style";
-import { Marquee } from "./Containment/Marquee";
-import { StyledText } from "./Typography/StyledText";
+import { Marquee } from "../Containment/Marquee";
+import { StyledText } from "../Typography/StyledText";
 
 interface SheetProps extends TrueSheetProps {
   titleKey?: ParseKeys;
@@ -62,11 +62,11 @@ export const Sheet = forwardRef<TrueSheet, SheetProps>(function Sheet(
       />
       <View
         style={[
-          contentContainerStyle,
           // TrueSheet doesn't know the actual scrollable area, so we
           // need to exclude the height taken up by the "SheetHeader"
           // from the container that can hold a scrollable.
           [{ maxHeight: screenHeight - 56 - headerHeight }],
+          contentContainerStyle,
         ]}
         className={cn(
           "p-4 pt-0",

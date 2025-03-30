@@ -9,8 +9,7 @@ import ActionSheet from "react-native-actions-sheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { cn } from "~/lib/style";
-import { Marquee } from "./Containment/Marquee";
-import { StyledText } from "./Typography/StyledText";
+import { SheetHeader } from "./SheetHeader";
 
 const WrappedActionSheet = cssInterop(ActionSheet, {
   containerClassName: "containerStyle",
@@ -69,19 +68,5 @@ export function Sheet({
         {children}
       </View>
     </WrappedActionSheet>
-  );
-}
-
-/** Header component to be used in `<Sheet />`. */
-function SheetHeader({ title }: { title?: string }) {
-  return (
-    <View className={cn("gap-2 px-4 pb-2", { "pb-6": !!title })}>
-      <View className="mx-auto my-[10px] h-1 w-8 rounded-full bg-onSurface" />
-      {title ? (
-        <Marquee center>
-          <StyledText className="text-lg">{title}</StyledText>
-        </Marquee>
-      ) : null}
-    </View>
   );
 }

@@ -9,7 +9,7 @@ import {
 } from "~/services/SessionPreferences";
 
 import { NSlider } from "~/components/Form/Slider";
-import { Sheet } from "~/components/Sheet";
+import { Sheet } from "~/components/Sheet/Legacy";
 
 /** Sheet allowing us to change how the media is played. */
 export default function PlaybackOptionsSheet() {

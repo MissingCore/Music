@@ -9,7 +9,7 @@ import { usePlaylist, useUpdatePlaylist } from "~/queries/playlist";
 import { pickImage } from "~/lib/file-system";
 import { mutateGuard } from "~/lib/react-query";
 import { Button } from "~/components/Form/Button";
-import { Sheet } from "~/components/Sheet";
+import { Sheet } from "~/components/Sheet/Legacy";
 import { TStyledText } from "~/components/Typography/StyledText";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import type { MediaType } from "~/modules/media/types";

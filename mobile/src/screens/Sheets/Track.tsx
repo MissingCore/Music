@@ -30,7 +30,7 @@ import {
 import { Marquee } from "~/components/Containment/Marquee";
 import { Divider } from "~/components/Divider";
 import { IconButton } from "~/components/Form/Button";
-import { Sheet } from "~/components/Sheet";
+import { Sheet } from "~/components/Sheet/Legacy";
 import {
   StyledText,
   TEm,

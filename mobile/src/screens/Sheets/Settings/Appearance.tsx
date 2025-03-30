@@ -16,7 +16,7 @@ import { getFont } from "~/lib/style";
 import { toLowerCase } from "~/utils/string";
 import { FlatList } from "~/components/Defaults";
 import { Radio } from "~/components/Form/Selection";
-import { Sheet } from "~/components/New_Sheet";
+import { Sheet } from "~/components/Sheet";
 import { TStyledText } from "~/components/Typography/StyledText";
 
 /** All the sheets used on `/setting/appearance` route. */

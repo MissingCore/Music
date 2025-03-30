@@ -11,7 +11,7 @@ import { LANGUAGES } from "~/modules/i18n/constants";
 import { APP_VERSION } from "~/constants/Config";
 import * as LINKS from "~/constants/Links";
 import { List, ListItem } from "~/components/Containment/List";
-import { useSheetRef } from "~/components/New_Sheet";
+import { useSheetRef } from "~/components/Sheet";
 
 /** Screen for `/setting` route. */
 export default function SettingScreen() {

@@ -31,7 +31,7 @@ import { Marquee } from "~/components/Containment/Marquee";
 import { FlashList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { NumericInput, TextInput, useInputRef } from "~/components/Form/Input";
-import { Sheet } from "~/components/New_Sheet";
+import { Sheet } from "~/components/Sheet";
 import { Swipeable } from "~/components/Swipeable";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 

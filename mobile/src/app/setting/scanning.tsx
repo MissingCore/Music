@@ -7,7 +7,7 @@ import { ScanningSettingsSheets } from "~/screens/Sheets/Settings/Scanning";
 
 import { mutateGuard } from "~/lib/react-query";
 import { List, ListItem } from "~/components/Containment/List";
-import { useSheetRef } from "~/components/New_Sheet";
+import { useSheetRef } from "~/components/Sheet";
 
 /** Screen for `/setting/scanning` route. */
 export default function ScanningScreen() {

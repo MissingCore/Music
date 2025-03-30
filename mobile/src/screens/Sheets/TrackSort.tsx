@@ -6,7 +6,7 @@ import {
 import { ListItem } from "~/components/Containment/List";
 import { FlatList } from "~/components/Defaults";
 import { Radio } from "~/components/Form/Selection";
-import { Sheet } from "~/components/Sheet";
+import { Sheet } from "~/components/Sheet/Legacy";
 import { TStyledText } from "~/components/Typography/StyledText";
 
 /** Sheet allowing us visually change the sort order on the `/track` screen. */

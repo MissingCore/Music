@@ -1,6 +1,6 @@
 import { useTheme } from "~/hooks/useTheme";
 
-import { Sheet } from "~/components/Sheet";
+import { Sheet } from "~/components/Sheet/Legacy";
 import { SearchEngine } from "~/modules/search/components/SearchEngine";
 import type { SearchCallbacks } from "~/modules/search/types";
 

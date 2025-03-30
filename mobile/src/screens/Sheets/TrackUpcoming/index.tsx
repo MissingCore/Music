@@ -11,7 +11,7 @@ import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
 import { FlashList, SheetsFlashList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
-import { Sheet } from "~/components/Sheet";
+import { Sheet } from "~/components/Sheet/Legacy";
 import { Swipeable } from "~/components/Swipeable";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 

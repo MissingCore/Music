@@ -13,7 +13,7 @@ import { mutateGuard } from "~/lib/react-query";
 import { FlatList } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
 import { Radio } from "~/components/Form/Selection";
-import { Sheet } from "~/components/New_Sheet";
+import { Sheet } from "~/components/Sheet";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
 /** All the sheets used on `/setting` route. */
