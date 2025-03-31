@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useRef } from "react";
-import type { LayoutChangeEvent } from "react-native";
 import { Gesture } from "react-native-gesture-handler";
+import type Animated from "react-native-reanimated";
 import {
   cancelAnimation,
   Easing,
@@ -21,6 +21,7 @@ export function useVinylSeekbar() {
   const sliderPos = useSeekStore((state) => state.sliderPos);
   const setSliderPos = useSeekStore((state) => state.setSliderPos);
 
+  const wrapperRef = useRef<Animated.View>(null);
   const hasMounted = useRef(false);
   // Coordinates pointing to the center of the vinyl.
   const centerX = useSharedValue(0);
@@ -39,13 +40,12 @@ export function useVinylSeekbar() {
    * Obtain the center coordinate of the vinyl which is used to calculate
    * the angles used to determine seek progress.
    */
-  const initCenter = useCallback(
-    ({ nativeEvent: { layout } }: LayoutChangeEvent) => {
-      centerX.value = layout.x + layout.width / 2;
-      centerY.value = layout.y + layout.height / 2;
-    },
-    [centerX, centerY],
-  );
+  const initCenter = useCallback(() => {
+    wrapperRef.current?.measure((_x, _y, width, height, pageX, pageY) => {
+      centerX.value = pageX + width / 2;
+      centerY.value = pageY + height / 2;
+    });
+  }, [centerX, centerY]);
 
   const onEnd = useCallback(
     async (seconds: number) => {
@@ -114,7 +114,7 @@ export function useVinylSeekbar() {
     return { transform: [{ rotate: `${rotateAmount}deg` }] };
   });
 
-  return { initCenter, vinylStyle, seekGesture };
+  return { wrapperRef, initCenter, vinylStyle, seekGesture };
 }
 
 /**
