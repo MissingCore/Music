@@ -14,6 +14,7 @@
 ## [Deutsch] German
 
 - [@The-Ladle](https://www.github.com/The-Ladle)
+- [@friiskoch](https://github.com/friiskoch)
 
 ## [Indonesia] Indonesian
 
