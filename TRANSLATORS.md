@@ -54,3 +54,7 @@
 ## [Polski] Polish
 
 - [@p-krystian](https://www.github.com/p-krystian)
+
+## [Dansk] Danish
+
+- [@friiskoch](https://github.com/friiskoch)

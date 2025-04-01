@@ -1,0 +1,314 @@
+{
+  "language": "Dansk",
+  "term": {
+    "album": "Album",
+    "albums": "Album",
+    "artist": "Kunstner",
+    "artists": "Kunstnere",
+    "folder": "Mappe",
+    "folders": "Mapper",
+    "playlist": "Playliste",
+    "playlists": "Playlister",
+    "track": "Sang",
+    "tracks": "Sange",
+    "play": "Afspil",
+    "pause": "Sæt på pause",
+    "prev": "Forrige",
+    "next": "Næste",
+    "shuffle": "Shuffle",
+    "repeat": "Gentag",
+    "repeatOne": "Gentag én",
+    "favorite": "Favorisér",
+    "favorites": "Favoritter",
+    "unFavorite": "Favorisér ikke længere",
+    "favoriteTracks": "Yndlingssange",
+    "home": "Startside",
+    "settings": "Indstillinger",
+    "upcoming": "Næste sange",
+    "playingFrom": "Afspiller fra",
+    "disc": "Plade {{count}}"
+  },
+  "template": {
+    "entryAdded": "\"{{- name}}\" blev tilføjet.",
+    "entryRemove": "Fjern \"{{- name}}\".",
+    "entryRemoved": "\"{{- name}}\" blev fjernet.",
+    "entrySeeMore": "Se mere om \"{{- name}}\".",
+    "notFound": "\"{{- name}}\" findes ikke.",
+    "entryShow": "Vis \"{{- name}}\"",
+    "entryHide": "Gem \"{{- name}}\"",
+    "entryEnable": "Aktivér \"{{- name}}\"",
+    "entryDisable": "Deaktivér \"{{- name}}\""
+  },
+  "plural": {
+    "entry_one": "{{count}} indlæg",
+    "entry_other": "{{count}} indlæg",
+    "second_one": "{{count}} sekund",
+    "second_other": "{{count}} sekunder",
+    "track_one": "{{count}} $t(term.track)",
+    "track_other": "{{count}} $t(term.tracks)"
+  },
+  "form": {
+    "apply": "Gem ændringer",
+    "back": "Tilbage",
+    "cancel": "Afbryd",
+    "confirm": "Bekræft",
+    "unsaved": "Du har muligvis ugemte ændringer.",
+    "stay": "Bliv her",
+    "leave": "Luk",
+    "clear": "Ryd",
+    "validation": {
+      "unique": "Navn er ikke blevet brugt"
+    }
+  },
+  "err": {
+    "flow": {
+      "route": {
+        "title": "Stien stemmer ikke overens",
+        "brief": "Du har prøvet at navigere til en ugyldig sti.",
+        "extra": {
+          "missing": "Mangler",
+          "from": "Fra"
+        }
+      },
+      "generic": {
+        "title": "Noget gik galt",
+        "brief": "Du stødte på en uventet fejl."
+      },
+      "report": {
+        "title": "Anmeld et problem",
+        "brief": "Inkludér et skærmbillede"
+      }
+    },
+    "msg": {
+      "actionCancel": "Aktionen blev afbrudt.",
+      "invalidStructure": "Ugyldig struktur.",
+      "noSelect": "Intet valgt.",
+      "usedName": "Dette navn kan ikke bruges.",
+      "noContent": "Intet indhold fundet.",
+      "noErrors": "Ingen fejl fundet.",
+      "noFilters": "Ingen filtre fundet.",
+      "noResults": "Ingen resultater fundet.",
+      "noAlbums": "Intet album fundet.",
+      "noArtists": "Ingen kunstnere fundet.",
+      "noPlaylists": "Ingen playlister fundet.",
+      "noTracks": "Ingen sange fundet."
+    }
+  },
+  "feat": {
+    "appUpdate": {
+      "title": "Opdatér app",
+      "brief": "En ny opdatering er tilgængelig!",
+      "extra": {
+        "downloadAPK": "Download den nyeste APK",
+        "updateGoogle": "Opdatér via Play Store"
+      }
+    },
+    "appearance": {
+      "title": "Udseende",
+      "brief": "Tilpas appens udseende."
+    },
+    "font": {
+      "extra": {
+        "accent": "Ekstra skrifttype",
+        "primary": "Primær skrifttype"
+      }
+    },
+    "theme": {
+      "title": "Farveskema",
+      "extra": {
+        "light": "Lys",
+        "dark": "Mørk",
+        "system": "System-standard"
+      }
+    },
+    "homeTabsOrder": {
+      "title": "Rækkefølge af faner",
+      "brief": "Tilpas rækkefølgen og synligheden af fanerne.",
+      "description": {
+        "line1": "Tilpas fanernes rækkefølge med Drag-and-Drop. Gem eller vis fanerne med øje-ikonet.",
+        "line2": "Bemærk: Uventet adfærd kan forekomme, når du navigerer til en gemt fane."
+      }
+    },
+    "nowPlayingDesign": {
+      "title": "Design af Afspiller-nu-skærmen",
+      "extra": {
+        "plain": "Kun cover",
+        "vinyl": "Kun vinyl",
+        "vinylOld": "Vinyl og cover"
+      }
+    },
+    "language": {
+      "title": "Sprog"
+    },
+    "backup": {
+      "title": "Backup",
+      "brief": "Flyt data på tværs af enheder.",
+      "description": "Overfør data fra denne app til andre enheder via en `music_backup.json` fil.",
+      "extra": {
+        "export": "Eksportér",
+        "exportSuccess": "Backup oprettet.",
+        "import": "Importér",
+        "importSuccess": "Import af backup afsluttet."
+      }
+    },
+    "insights": {
+      "title": "Indsigter",
+      "brief": "Dataforbrug og statistikker",
+      "extra": {
+        "cache": "Cache",
+        "database": "Database",
+        "images": "Billeder",
+        "other": "Andet",
+        "total": "I alt",
+        "totalDuration": "Varighed i alt"
+      }
+    },
+    "saveErrors": {
+      "title": "Fejl under gemning",
+      "brief": "Se grunden til eventuelle fejl."
+    },
+    "interactions": {
+      "title": "Integrationer med Nothing Phone",
+      "brief": "Understøttede Nothing-funktioner"
+    },
+    "playback": {
+      "title": "Afspilning",
+      "brief": "Tilpas musikafspilning.",
+      "extra": {
+        "options": "Ekstra optioner til afspilning",
+        "speed": "Afspilningshastighed",
+        "volume": "Appens lydstyrke"
+      }
+    },
+    "ignoreInterrupt": {
+      "title": "Ignorér afbrydelser",
+      "brief": "Fortsæt med at afspille musik, når du får et opkald eller en notifikation. Du bliver nødt til manuelt at pause/afspille musikken i disse situationer."
+    },
+    "repeatOnSkip": {
+      "title": "Behold gentagelsesindstilling ved næste sang",
+      "brief": "Ændr ikke gentagelsesindstillingen fra \"Gentag én\" til \"Gentag\", når der skiftes til næste sang."
+    },
+    "scanning": {
+      "title": "Scanning",
+      "brief": "Tjek for musikfiler på din enhed."
+    },
+    "rescan": {
+      "title": "Scan igen",
+      "brief": "Gennemse din enhed for nye musikfiler.",
+      "extra": {
+        "start": "Scanner enhed...",
+        "success": "Færdig med scanning af enhed.",
+        "fail": "Kunne ikke scanne enhed."
+      }
+    },
+    "deepRescan": {
+      "title": "Grundig scanning",
+      "brief": "Scanner alle filer på enheden. Kan tage længere tid end den normale scanning."
+    },
+    "listAllow": {
+      "title": "Tilladelsesliste",
+      "description": "Bruger standardmæssigt følgende:"
+    },
+    "listBlock": {
+      "title": "Blokeringsliste",
+      "description": "Blokeringslisten har højere prioritet end Tilladelseslisten."
+    },
+    "ignoreDuration": {
+      "title": "Ignorér korte audiofiler",
+      "description": "Varighed i sekunder af audiofiler, der ikke skal gemmes."
+    },
+    "translate": {
+      "title": "Bidrag oversættelser",
+      "brief": "Hjælp med at oversætte denne app til andre sprog."
+    },
+    "code": {
+      "title": "GitHub Repository",
+      "brief": "Anmeld problemer, bidrag kode eller anmod om nye funktioner."
+    },
+    "license": {
+      "title": "Licens"
+    },
+    "privacy": {
+      "title": "Politik om beskyttelse af personlige oplysninger"
+    },
+    "thirdParty": {
+      "title": "Tredjepartssoftware",
+      "brief": "Hvad der gør denne app muligt."
+    },
+    "version": {
+      "title": "App-Version"
+    },
+    "onboardPreprocess": {
+      "title": "Forudberegninger",
+      "brief": "Sikrer, at eksisterende data er i overenstemmelse med eventuelle ændringer."
+    },
+    "onboardTracks": {
+      "title": "Gemmer sange",
+      "extra": {
+        "prevSaved": "{{amount}} tidligere gemt",
+        "saved": "{{amount}}/{{total}} gemt/opdateret",
+        "errors": "{{amount}} fejl"
+      }
+    },
+    "onboardImages": {
+      "title": "Gemmer billeder",
+      "extra": {
+        "checked": "{{amount}}/{{total}} tjekket",
+        "found": "{{amount}} fundet"
+      }
+    },
+    "playedRecent": {
+      "title": "Nyligt afspillet",
+      "extra": {
+        "empty": "Du har ikke afspillet noget endnu!",
+        "section": "Nyligt-afspillet-sektion"
+      }
+    },
+    "search": {
+      "title": "Søg",
+      "extra": {
+        "musicAdd": "Tilføj musik",
+        "searchMedia": "Søg i medier"
+      }
+    },
+    "artwork": {
+      "extra": {
+        "change": "Skift billede",
+        "remove": "Fjern billede"
+      }
+    },
+    "directory": {
+      "extra": {
+        "add": "Tilføj Directory",
+        "select": "Vælg Directory"
+      }
+    },
+    "playlist": {
+      "extra": {
+        "create": "Lav ny playliste",
+        "delete": "Slet playliste",
+        "edit": "Tilpas playliste",
+        "name": "Playlistens navn"
+      }
+    },
+    "modalSort": {
+      "title": "Sortering",
+      "extra": {
+        "asc": "Stigende rækkefølge",
+        "alphabetical": "Alfabetisk",
+        "modified": "Senest gemt/ændret"
+      }
+    },
+    "modalTrack": {
+      "extra": {
+        "bitrate": "Bitrate",
+        "filePath": "Filens sti",
+        "sampleRate": "Samplingfrekvens",
+        "size": "Størrelse",
+        "addToPlaylist": "Tilføj til playliste",
+        "addToQueue": "Tilføj til kø",
+        "queueAdd": "\"{{- name}}\" tilføjet til kø."
+      }
+    }
+  }
+}

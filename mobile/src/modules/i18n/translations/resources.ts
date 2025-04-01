@@ -1,4 +1,5 @@
 import ca from "./ca.json";
+import da from "./da.json";
 import de from "./de.json";
 import en from "./en.json";
 import es from "./es.json";
@@ -13,6 +14,7 @@ import zhHans from "./zh-Hans.json";
 
 export const resources = {
   ca: { translation: ca },
+  da: { translation: da },
   de: { translation: de },
   en: { translation: en },
   es: { translation: es },
