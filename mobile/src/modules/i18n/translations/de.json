@@ -3,8 +3,8 @@
   "term": {
     "album": "Album",
     "albums": "Alben",
-    "artist": "Musiker",
-    "artists": "Musiker",
+    "artist": "Künstler",
+    "artists": "Künstler",
     "folder": "Dateiordner",
     "folders": "Dateiordner",
     "playlist": "Playlist",
@@ -15,10 +15,10 @@
     "pause": "Pausieren",
     "prev": "Vorherige",
     "next": "Nächste",
-    "shuffle": "Unsortieren",
+    "shuffle": "Zufallswiedergabe",
     "repeat": "Wiederholen",
-    "repeatOne": "Einmal Wiederholen",
-    "favorite": "Dieses Lied lieben",
+    "repeatOne": "Ein Lied wiederholen",
+    "favorite": "Dieses Lied favorisieren",
     "favorites": "Favoriten",
     "unFavorite": "Aus deinen Favoriten entfernen",
     "favoriteTracks": "Lieblingslieder",
@@ -40,17 +40,17 @@
     "entryDisable": "`{{- name}}` deaktivieren"
   },
   "plural": {
-    "entry_one": "{{count}} eintrag",
-    "entry_other": "{{count}} einträge",
-    "second_one": "{{count}} sekunde",
-    "second_other": "{{count}} sekunden",
+    "entry_one": "{{count}} Eintrag",
+    "entry_other": "{{count}} Einträge",
+    "second_one": "{{count}} Sekunde",
+    "second_other": "{{count}} Sekunden",
     "track_one": "{{count}} $t(term.track)",
     "track_other": "{{count}} $t(term.tracks)"
   },
   "form": {
-    "apply": "Änderungen anwenden",
+    "apply": "Änderungen speichern",
     "back": "Zurück",
-    "cancel": "Stornieren",
+    "cancel": "Abbrechen",
     "confirm": "Bestätigen",
     "unsaved": "Möglicherweise hast du noch nicht gespeicherte Änderungen.",
     "stay": "Bleiben",
@@ -66,12 +66,12 @@
         "title": "Unübertroffene Route",
         "brief": "Du hast irgendwie zu einer ungültigen Route navigiert.",
         "extra": {
-          "missing": "Vermisst",
+          "missing": "Fehlt",
           "from": "Von"
         }
       },
       "generic": {
-        "title": "Fehler mit etwas",
+        "title": "Etwas ist schiefgelaufen",
         "brief": "Es ist ein unerwarteter Fehler aufgetreten."
       },
       "report": {
@@ -80,16 +80,16 @@
       }
     },
     "msg": {
-      "actionCancel": "Die Aktion wurde abgesagt.",
+      "actionCancel": "Die Aktion wurde abgebrochen.",
       "invalidStructure": "Ungültige Struktur.",
       "noSelect": "Nichts ist ausgewählt.",
-      "usedName": "Dieser Name darf nicht benutzt werden.",
+      "usedName": "Dieser Name kann nicht genutzt werden.",
       "noContent": "Kein Inhalt gefunden.",
       "noErrors": "Keine Fehler gefunden.",
       "noFilters": "Keine Filter gefunden.",
       "noResults": "Keine Ergebnisse gefunden.",
       "noAlbums": "Keine Alben gefunden.",
-      "noArtists": "Keine Musiker gefunden.",
+      "noArtists": "Keine Künstler gefunden.",
       "noPlaylists": "Keine Playlists gefunden.",
       "noTracks": "Keine Lieder gefunden."
     }
@@ -99,7 +99,7 @@
       "title": "App-Update",
       "brief": "Ein neues Update ist verfügbar!",
       "extra": {
-        "downloadAPK": "Das Neueste APK herunterladen",
+        "downloadAPK": "Die neueste APK herunterladen",
         "updateGoogle": "Update über Play Store"
       }
     },
@@ -143,7 +143,7 @@
     "backup": {
       "title": "Sicherungskopie",
       "brief": "Daten zwischen Handys verschieben.",
-      "description": "Daten von dieser App geräteübergreifend über eine Datei „music_backup.json“ übertragen.",
+      "description": "Daten von dieser App geräteübergreifend als „music_backup.json“-Datei übertragen.",
       "extra": {
         "export": "Exportieren",
         "exportSuccess": "Sicherungskopie erfolgreich erstellt.",
@@ -168,7 +168,7 @@
       "brief": "Der Grund, warum nicht einige Lieder gespeichert wurden schauen."
     },
     "interactions": {
-      "title": "Nothing Wechselwirkung",
+      "title": "Nothing Phone Integrationen",
       "brief": "Unterstützte Nothing Funktionen."
     },
     "playback": {
@@ -186,7 +186,7 @@
     },
     "repeatOnSkip": {
       "title": "Wiederholungsmodus beim Überspringen behalten",
-      "brief": "Beim Überspringen nicht von \"Einmal wiederholen\" auf \"Wiederholen\" umschalten."
+      "brief": "Beim Überspringen nicht von \"Ein Lied wiederholen\" auf \"Wiederholen\" umschalten."
     },
     "scanning": {
       "title": "Scannen",
@@ -196,7 +196,7 @@
       "title": "Noch einmal scannen",
       "brief": "Nach neuen Medien suchen.",
       "extra": {
-        "start": "Noch einmal scannen...",
+        "start": "Scannt erneut...",
         "success": "Das erneute Scannen ist abgeschlossen.",
         "fail": "Die Sammlung konnte nicht erneut gescannt werden."
       }
@@ -254,14 +254,14 @@
       "title": "Speicher Bilder",
       "extra": {
         "checked": "{{amount}}/{{total}} überprüft",
-        "found": "{{amount}} Gefunden"
+        "found": "{{amount}} gefunden"
       }
     },
     "playedRecent": {
       "title": "Kürzlich gehört",
       "extra": {
         "empty": "Du hast noch nichts gehört!",
-        "section": "Zuletzt gespielte Sektion"
+        "section": "Zuletzt-abgespielt-Sektion"
       }
     },
     "search": {
@@ -286,7 +286,7 @@
     "playlist": {
       "extra": {
         "create": "Playlist erstellen",
-        "delete": "Playlist beseitigen",
+        "delete": "Playlist löschen",
         "edit": "Playlist bearbeiten",
         "name": "Playlistname"
       }
@@ -304,7 +304,7 @@
         "bitrate": "Bitrate",
         "filePath": "Dateipfad",
         "sampleRate": "Abtastrate",
-        "size": "Größe",
+        "size": "Dateigröße",
         "addToPlaylist": "Zu einer Playlist hinzufügen",
         "addToQueue": "Zur Warteschlange hinzufügen",
         "queueAdd": "`{{- name}}` wurde zur Warteschlange hinzugefügt."
