@@ -6,6 +6,7 @@ import es from "./es.json";
 import fr from "./fr.json";
 import hi from "./hi.json";
 import id from "./id.json";
+import it from "./it.json";
 import ja from "./ja.json";
 import pl from "./pl.json";
 import ru from "./ru.json";
@@ -21,6 +22,7 @@ export const resources = {
   fr: { translation: fr },
   hi: { translation: hi },
   id: { translation: id },
+  it: { translation: it },
   ja: { translation: ja },
   pl: { translation: pl },
   ru: { translation: ru },

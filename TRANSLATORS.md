@@ -58,3 +58,7 @@
 ## [Dansk] Danish
 
 - [@friiskoch](https://github.com/friiskoch)
+
+## [Italiano] Italian
+
+- [@R1D3R175](https://github.com/R1D3R175)
