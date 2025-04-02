@@ -1,0 +1,338 @@
+{
+  "language": "Italiano",
+
+  "term": {
+    "album": "Album",
+    "albums": "Album",
+    "artist": "Artista",
+    "artists": "Artisti",
+    "folder": "Cartella",
+    "folders": "Cartelle",
+    "playlist": "Playlist",
+    "playlists": "Playlist",
+    "track": "Brano",
+    "tracks": "Brani",
+
+    "play": "Riproduci",
+    "pause": "Pausa",
+    "prev": "Precedente",
+    "next": "Successivo",
+    "shuffle": "Casuale",
+    "repeat": "Ripeti",
+    "repeatOne": "Ripeti singolo",
+
+    "favorite": "Preferito",
+    "favorites": "Preferiti",
+    "unFavorite": "Rimuovi dai preferiti",
+    "favoriteTracks": "Brani preferiti",
+
+    "home": "Home",
+    "settings": "Impostazioni",
+    "upcoming": "Prossimamente",
+    "playingFrom": "Riproducendo da",
+
+    "disc": "Disco {{count}}"
+  },
+
+  "template": {
+    "entryAdded": "`{{- name}}` aggiunto.",
+    "entryRemove": "Rimuovi `{{- name}}`.",
+    "entryRemoved": "Rimosso `{{- name}}`.",
+
+    "entrySeeMore": "Vedi di più su `{{- name}}`.",
+    "notFound": "`{{- name}}` non esiste.",
+
+    "entryShow": "Mostra `{{- name}}`",
+    "entryHide": "Nascondi `{{- name}}`",
+    "entryEnable": "Attiva `{{- name}}`",
+    "entryDisable": "Disattiva `{{- name}}`"
+  },
+
+  "plural": {
+    "entry_one": "{{count}} voce",
+    "entry_other": "{{count}} voci",
+    "second_one": "{{count}} secondo",
+    "second_other": "{{count}} secondi",
+    "track_one": "{{count}} $t(term.track)",
+    "track_other": "{{count}} $t(term.tracks)"
+  },
+
+  "form": {
+    "apply": "Applica modifiche",
+    "back": "Indietro",
+    "cancel": "Annulla",
+    "confirm": "Conferma",
+
+    "unsaved": "Potresti avere delle modifiche non salvate.",
+    "stay": "Aspetta",
+    "leave": "Esci",
+
+    "clear": "Cancella",
+
+    "validation": {
+      "unique": "Unico"
+    }
+  },
+
+  "err": {
+    "flow": {
+      "route": {
+        "title": "Percorso non esistente",
+        "brief": "In qualche modo sei arrivato ad un percorso non esistente.",
+        "extra": {
+          "missing": "Mancante",
+          "from": "Da"
+        }
+      },
+      "generic": {
+        "title": "Qualcosa è andato storto",
+        "brief": "Si è verificato un errore imprevisto."
+      },
+      "report": {
+        "title": "Segnala problema",
+        "brief": "Includi uno screenshot di questa schermata."
+      }
+    },
+
+    "msg": {
+      "actionCancel": "Azione annullata.",
+      "invalidStructure": "Struttura non valida.",
+      "noSelect": "Selezione vuota.",
+      "usedName": "Quel nome non può essere utilizzato.",
+
+      "noContent": "Nessun contenuto trovato.",
+      "noErrors": "Nessun errore trovato.",
+      "noFilters": "Nessun filtro trovato.",
+      "noResults": "Nessun risultato trovato.",
+
+      "noAlbums": "Nessun $t(term.album) trovato.",
+      "noArtists": "Nessun $t(term.artist) trovato.",
+      "noPlaylists": "Nessuna $t(term.playlist) trovata.",
+      "noTracks": "Nessun $t(term.track) trovato."
+    }
+  },
+
+  "feat": {
+    "appUpdate": {
+      "title": "Aggiornamento app",
+      "brief": "È disponibile un nuovo aggiornamento!",
+      "extra": {
+        "downloadAPK": "Scarica l'ultimo APK",
+        "updateGoogle": "Aggiorna tramite Play Store"
+      }
+    },
+    "appearance": {
+      "title": "Aspetto",
+      "brief": "Personalizza l'aspetto dell'app."
+    },
+    "font": {
+      "extra": {
+        "accent": "Font con accento",
+        "primary": "Font primario"
+      }
+    },
+    "theme": {
+      "title": "Tema",
+      "extra": {
+        "light": "Chiaro",
+        "dark": "Scuro",
+        "system": "Sistema"
+      }
+    },
+    "homeTabsOrder": {
+      "title": "Ordine schede $t(term.home)",
+      "brief": "Personalizza l'ordine e la visibilità delle schede.",
+      "description": {
+        "line1": "Riordina le schede dopo la scheda \"$t(term.home)\" trascinando e rilasciando. Cambia la visibilità utilizzando l'icona dell'occhio.",
+        "line2": "Attenzione: Potrebbero verificarsi comportamenti imprevisti navigando ad una scheda nascosta."
+      }
+    },
+    "nowPlayingDesign": {
+      "title": "Schermata \"Riproduzione in corso\"",
+      "extra": {
+        "plain": "Classico",
+        "vinyl": "Vinile",
+        "vinylOld": "Vinile (legacy)"
+      }
+    },
+    "language": {
+      "title": "Lingua"
+    },
+    "backup": {
+      "title": "Backup",
+      "brief": "Trasferisci dati tra dispositivi.",
+      "description": "Trasferisci dati da quest'app tra dispositivi utilizzando il file `music_backup.json`.",
+      "extra": {
+        "export": "Esporta",
+        "exportSuccess": "Backup creato con successo.",
+        "import": "Importa",
+        "importSuccess": "Backup importato con successo."
+      }
+    },
+    "insights": {
+      "title": "Analisi",
+      "brief": "Utilizzo & statistische dell'app.",
+      "extra": {
+        "cache": "Cache",
+        "database": "Database",
+        "images": "Immagini",
+        "other": "Altro",
+        "total": "Totale",
+        "totalDuration": "Durata totale"
+      }
+    },
+    "saveErrors": {
+      "title": "Salva errori",
+      "brief": "Controlla perché alcuni $t(term.tracks) non sono stati salvati."
+    },
+    "interactions": {
+      "title": "Interazioni Nothing",
+      "brief": "Funzionalità Nothing supportate."
+    },
+    "playback": {
+      "title": "Riproduzione",
+      "brief": "Modifica comportamento della riproduzione.",
+      "extra": {
+        "options": "Opzioni di riproduzione",
+        "speed": "Velocità di riproduzione",
+        "volume": "Volume dell'app"
+      }
+    },
+    "ignoreInterrupt": {
+      "title": "Ignora interruzioni",
+      "brief": "Continua a riprodurre quando si verifica un'interruzione come una notifica o una chiamata. In questi casi dovrai mettere in pausa o far ricominciare la riproduzione manualmente."
+    },
+    "repeatOnSkip": {
+      "title": "Mantieni modalità \"$t(term.repeat)\" al cambio brano",
+      "brief": "Non cambiare a \"$t(term.repeat)\" da \"$t(term.repeatOne)\" quando salti un brano."
+    },
+    "scanning": {
+      "title": "Scansione in corso",
+      "brief": "Opzioni scansione musica."
+    },
+    "rescan": {
+      "title": "Ripeti scansione",
+      "brief": "Controlla per nuovi file.",
+      "extra": {
+        "start": "Scansione libreria in corso...",
+        "success": "Scansione libreria terminata.",
+        "fail": "Errore durante la scansione della libreria."
+      }
+    },
+    "deepRescan": {
+      "title": "Scansione profonda",
+      "brief": "Ignora qualsiasi funzionalità che rende più veloce le scansioni successive alla prima."
+    },
+    "listAllow": {
+      "title": null,
+      "description": "Se non specificata assume il seguente valore:"
+    },
+    "listBlock": {
+      "title": null,
+      "description": "Ha priorità maggiore rispetto alle voci nella \"$t(feat.listAllow.title)\"."
+    },
+    "ignoreDuration": {
+      "title": "Ignora audio corti",
+      "description": "Durata (in secondi) degli audio da non salvare."
+    },
+    "translate": {
+      "title": "Contribuisci alle traduzioni",
+      "brief": "Aiuta traducendo l'app in altre lingue."
+    },
+    "code": {
+      "title": "Repository GitHub",
+      "brief": "Segnala problemi, contribuisci, o richiedi nuove funzionalità."
+    },
+    "license": {
+      "title": "Licenza"
+    },
+    "privacy": {
+      "title": "Normativa sulla privacy"
+    },
+    "thirdParty": {
+      "title": "Software di terze parti",
+      "brief": "Ciò che rende quest'app possibile."
+    },
+    "version": {
+      "title": "Versione"
+    },
+
+    "onboardPreprocess": {
+      "title": null,
+      "brief": "Controllando che i dati esistenti siano conformi a eventuali modifiche."
+    },
+    "onboardTracks": {
+      "title": "Salvataggio $t(term.tracks) in corso",
+      "extra": {
+        "prevSaved": "{{amount}} precedentemente salvati",
+        "saved": "{{amount}}/{{total}} salvati/aggiornati",
+        "errors": "{{amount}} errori"
+      }
+    },
+    "onboardImages": {
+      "title": "Salvataggio immagini in corso",
+      "extra": {
+        "checked": "{{amount}}/{{total}} controllate",
+        "found": "{{amount}} trovate"
+      }
+    },
+
+    "playedRecent": {
+      "title": "Riprodotti di recente",
+      "extra": {
+        "empty": "Non hai ancora riprodotto niente!",
+        "section": "Sezione \"$t(feat.playedRecent.title)\""
+      }
+    },
+    "search": {
+      "title": "Ricerca",
+      "extra": {
+        "musicAdd": "Aggiungi musica",
+        "searchMedia": "Cerca file"
+      }
+    },
+
+    "artwork": {
+      "extra": {
+        "change": "Cambia copertina",
+        "remove": "Rimuovi copertina"
+      }
+    },
+    "directory": {
+      "extra": {
+        "add": "Aggiungi cartella",
+        "select": "Seleziona cartella"
+      }
+    },
+    "playlist": {
+      "extra": {
+        "create": "Crea $t(term.playlist)",
+        "delete": "Elimina $t(term.playlist)",
+        "edit": "Modifica $t(term.playlist)",
+        "name": "Nome $t(term.playlist)"
+      }
+    },
+
+    "modalSort": {
+      "title": "Ordine",
+      "extra": {
+        "asc": "Ordine ascendente",
+        "alphabetical": "Alfabetico",
+        "modified": "Ultima modifica"
+      }
+    },
+    "modalTrack": {
+      "extra": {
+        "bitrate": "Bitrate",
+        "filePath": "Percorso file",
+        "sampleRate": "Frequenza di campionamento",
+        "size": "Dimensioni",
+
+        "addToPlaylist": "Aggiungi ad una $t(term.playlist)",
+        "addToQueue": "Aggiungi alla coda",
+
+        "queueAdd": "`{{- name}}` aggiunto alla coda."
+      }
+    }
+  }
+}
