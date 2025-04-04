@@ -14,6 +14,7 @@
 ## [Deutsch] German
 
 - [@The-Ladle](https://www.github.com/The-Ladle)
+- [@friiskoch](https://github.com/friiskoch)
 
 ## [Indonesia] Indonesian
 
@@ -53,3 +54,11 @@
 ## [Polski] Polish
 
 - [@p-krystian](https://www.github.com/p-krystian)
+
+## [Dansk] Danish
+
+- [@friiskoch](https://github.com/friiskoch)
+
+## [Italiano] Italian
+
+- [@R1D3R175](https://github.com/R1D3R175)
