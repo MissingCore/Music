@@ -1,5 +1,5 @@
 import { Slider as RNSlider } from "@miblanchard/react-native-slider";
-import SheetSlider from "@react-native-assets/slider/src/Slider";
+import SheetSlider from "@react-native-assets/slider";
 import { useState } from "react";
 import { Pressable, View } from "react-native";
 

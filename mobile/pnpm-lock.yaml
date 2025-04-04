@@ -13,7 +13,7 @@ patchedDependencies:
     hash: nmohijms62xwkaqt33qfrtxrvm
     path: patches/@backpackapp-io__react-native-toast@0.13.0.patch
   '@react-native-assets/slider':
-    hash: dq45mep33cbgkn2mnlykdayhkq
+    hash: 6txxlqyyxwuuhk5l6j3drlrrjq
     path: patches/@react-native-assets__slider.patch
   react-native-actions-sheet@0.9.7:
     hash: dmf2cvt7t24xk2qlczkgl6j5zu
@@ -46,7 +46,7 @@ importers:
         version: 2.2.2
       '@react-native-assets/slider':
         specifier: ^10.0.2
-        version: 10.0.2(patch_hash=dq45mep33cbgkn2mnlykdayhkq)(react-native@0.76.7(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@react-native-community/cli-server-api@14.1.0)(@types/react@18.3.19)(react@18.3.1))(react@18.3.1)
+        version: 10.0.2(patch_hash=6txxlqyyxwuuhk5l6j3drlrrjq)(react-native@0.76.7(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@react-native-community/cli-server-api@14.1.0)(@types/react@18.3.19)(react@18.3.1))(react@18.3.1)
       '@react-native-async-storage/async-storage':
         specifier: 2.1.2
         version: 2.1.2(react-native@0.76.7(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@react-native-community/cli-server-api@14.1.0)(@types/react@18.3.19)(react@18.3.1))
@@ -7964,7 +7964,7 @@ snapshots:
       '@radix-ui/react-compose-refs': 1.0.0(react@18.3.1)
       react: 18.3.1
 
-  '@react-native-assets/slider@10.0.2(patch_hash=dq45mep33cbgkn2mnlykdayhkq)(react-native@0.76.7(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@react-native-community/cli-server-api@14.1.0)(@types/react@18.3.19)(react@18.3.1))(react@18.3.1)':
+  '@react-native-assets/slider@10.0.2(patch_hash=6txxlqyyxwuuhk5l6j3drlrrjq)(react-native@0.76.7(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@react-native-community/cli-server-api@14.1.0)(@types/react@18.3.19)(react@18.3.1))(react@18.3.1)':
     dependencies:
       react: 18.3.1
       react-native: 0.76.7(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@react-native-community/cli-server-api@14.1.0)(@types/react@18.3.19)(react@18.3.1)
