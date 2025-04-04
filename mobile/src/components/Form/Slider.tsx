@@ -66,7 +66,7 @@ export function NSlider(
         className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 flex-row items-center gap-2"
       >
         {props.icon}
-        <StyledText className="h-4 min-w-12 py-0.5 text-sm/none" bold>
+        <StyledText className="min-w-12 text-sm" bold>
           {formattedValue}
         </StyledText>
       </View>
