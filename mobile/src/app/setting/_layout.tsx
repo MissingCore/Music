@@ -29,6 +29,10 @@ export default function SettingsLayout() {
         options={{ title: t("feat.saveErrors.title") }}
       />
       <Stack.Screen
+        name="playback"
+        options={{ title: t("feat.playback.title") }}
+      />
+      <Stack.Screen
         name="scanning"
         options={{ title: t("feat.scanning.title") }}
       />
