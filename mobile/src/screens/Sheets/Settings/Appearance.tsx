@@ -1,6 +1,4 @@
-import type { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { useColorScheme } from "nativewind";
-import type { RefObject } from "react";
 import { Text } from "react-native";
 
 import {
@@ -16,6 +14,7 @@ import { getFont } from "~/lib/style";
 import { toLowerCase } from "~/utils/string";
 import { FlatList } from "~/components/Defaults";
 import { Radio } from "~/components/Form/Selection";
+import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
 import { TStyledText } from "~/components/Typography/StyledText";
 
@@ -23,7 +22,7 @@ import { TStyledText } from "~/components/Typography/StyledText";
 export function AppearanceSettingsSheets(
   props: Record<
     "accentFontRef" | "primaryFontRef" | "themeRef" | "nowPlayingDesignRef",
-    RefObject<TrueSheet>
+    TrueSheetRef
   >,
 ) {
   return (
@@ -38,7 +37,7 @@ export function AppearanceSettingsSheets(
 
 //#region Font
 /** Enables changing the font used primarily for headings. */
-function FontAccentSheet(props: { sheetRef: RefObject<TrueSheet> }) {
+function FontAccentSheet(props: { sheetRef: TrueSheetRef }) {
   const accentFont = useUserPreferencesStore((state) => state.accentFont);
   return (
     <FontSheet
@@ -52,7 +51,7 @@ function FontAccentSheet(props: { sheetRef: RefObject<TrueSheet> }) {
 }
 
 /** Enables changing the font used by all text in the app. */
-function FontPrimarySheet(props: { sheetRef: RefObject<TrueSheet> }) {
+function FontPrimarySheet(props: { sheetRef: TrueSheetRef }) {
   const primaryFont = useUserPreferencesStore((state) => state.primaryFont);
   return (
     <FontSheet
@@ -67,7 +66,7 @@ function FontPrimarySheet(props: { sheetRef: RefObject<TrueSheet> }) {
 
 /** Reusable font sheet component. */
 function FontSheet<T extends (typeof AccentFontOptions)[number]>(props: {
-  sheetRef: RefObject<TrueSheet>;
+  sheetRef: TrueSheetRef;
   kind: "Accent" | "Primary";
   selectedFont: T;
   fontOptions: readonly T[];
@@ -103,7 +102,7 @@ function FontSheet<T extends (typeof AccentFontOptions)[number]>(props: {
 //#endregion
 
 /** Enables changing the theme of the app. */
-function ThemeSheet(props: { sheetRef: RefObject<TrueSheet> }) {
+function ThemeSheet(props: { sheetRef: TrueSheetRef }) {
   const { setColorScheme } = useColorScheme();
   const theme = useUserPreferencesStore((state) => state.theme);
 
@@ -131,7 +130,7 @@ function ThemeSheet(props: { sheetRef: RefObject<TrueSheet> }) {
 }
 
 /** Enables changing the appearance of the artwork on the "Now Playing" screen. */
-function NowPlayingDesignSheet(props: { sheetRef: RefObject<TrueSheet> }) {
+function NowPlayingDesignSheet(props: { sheetRef: TrueSheetRef }) {
   const nowPlayingDesign = useUserPreferencesStore(
     (state) => state.nowPlayingDesign,
   );

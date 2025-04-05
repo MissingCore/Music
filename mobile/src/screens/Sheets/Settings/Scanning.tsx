@@ -1,9 +1,7 @@
-import type { TrueSheet } from "@lodev09/react-native-true-sheet";
 import {
   PrimaryDirectoryPath,
   StorageVolumesDirectoryPaths,
 } from "@missingcore/react-native-metadata-retriever";
-import type { RefObject } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Keyboard, Pressable, View } from "react-native";
@@ -31,6 +29,7 @@ import { Marquee } from "~/components/Containment/Marquee";
 import { FlashList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { NumericInput, TextInput, useInputRef } from "~/components/Form/Input";
+import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
 import { Swipeable } from "~/components/Swipeable";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
@@ -39,7 +38,7 @@ import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 export function ScanningSettingsSheets(
   props: Record<
     "allowListRef" | "blockListRef" | "minDurationRef",
-    RefObject<TrueSheet>
+    TrueSheetRef
   >,
 ) {
   return (
@@ -58,7 +57,7 @@ function ScanFilterListSheet({
   sheetRef,
 }: {
   listType: "listAllow" | "listBlock";
-  sheetRef: RefObject<TrueSheet>;
+  sheetRef: TrueSheetRef;
 }) {
   const { t } = useTranslation();
   const { surface } = useTheme();
@@ -187,7 +186,7 @@ function FilterForm(props: {
 //#endregion
 
 /** Enables us to specify the minimum track duration we want to save. */
-function MinDurationSheet(props: { sheetRef: RefObject<TrueSheet> }) {
+function MinDurationSheet(props: { sheetRef: TrueSheetRef }) {
   const minSeconds = useUserPreferencesStore((state) => state.minSeconds);
   const inputRef = useInputRef();
   const [disabled, setDisabled] = useState(false);

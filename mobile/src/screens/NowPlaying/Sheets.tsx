@@ -1,5 +1,3 @@
-import type { TrueSheet } from "@lodev09/react-native-true-sheet";
-import type { RefObject } from "react";
 import { useTranslation } from "react-i18next";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import TrackPlayer from "react-native-track-player";
@@ -21,16 +19,14 @@ import { cn } from "~/lib/style";
 import { FlashList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { NSlider } from "~/components/Form/Slider";
+import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
 import { Swipeable } from "~/components/Swipeable";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 
 /** All the sheets used on `/now-playing` route. */
 export function NowPlayingSheets(
-  props: Record<
-    "playbackOptionsRef" | "upcomingTracksRef",
-    RefObject<TrueSheet>
-  >,
+  props: Record<"playbackOptionsRef" | "upcomingTracksRef", TrueSheetRef>,
 ) {
   return (
     <>
@@ -42,7 +38,7 @@ export function NowPlayingSheets(
 
 //#region Playback Options
 /** Enables us to specify  how the media is played. */
-function PlaybackOptionsSheet(props: { sheetRef: RefObject<TrueSheet> }) {
+function PlaybackOptionsSheet(props: { sheetRef: TrueSheetRef }) {
   const { t } = useTranslation();
   const playbackSpeed = useSessionPreferencesStore(
     (state) => state.playbackSpeed,
@@ -101,7 +97,7 @@ const VolumeSliderOptions = {
 
 //#region Upcoming Tracks
 /** Enables user to see what tracks are coming up and remove tracks from the queue. */
-function TrackUpcomingSheet(props: { sheetRef: RefObject<TrueSheet> }) {
+function TrackUpcomingSheet(props: { sheetRef: TrueSheetRef }) {
   const populateCurrentTrackList = useUpcomingStore(
     (state) => state.populateCurrentTrackList,
   );

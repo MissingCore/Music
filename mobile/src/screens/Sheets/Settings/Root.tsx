@@ -1,5 +1,3 @@
-import type { TrueSheet } from "@lodev09/react-native-true-sheet";
-import type { RefObject } from "react";
 import { View } from "react-native";
 
 import {
@@ -13,12 +11,13 @@ import { mutateGuard } from "~/lib/react-query";
 import { FlatList } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
 import { Radio } from "~/components/Form/Selection";
+import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
 /** All the sheets used on `/setting` route. */
 export function SettingsSheets(
-  props: Record<"backupRef" | "languageRef", RefObject<TrueSheet>>,
+  props: Record<"backupRef" | "languageRef", TrueSheetRef>,
 ) {
   return (
     <>
@@ -29,7 +28,7 @@ export function SettingsSheets(
 }
 
 /** Enables import & export of a backup of your media organization in this app. */
-function BackupSheet(props: { sheetRef: RefObject<TrueSheet> }) {
+function BackupSheet(props: { sheetRef: TrueSheetRef }) {
   const exportBackup = useExportBackup();
   const importBackup = useImportBackup();
 
@@ -76,7 +75,7 @@ function BackupSheet(props: { sheetRef: RefObject<TrueSheet> }) {
 }
 
 /** Enables the ability to change the language used. */
-function LanguageSheet(props: { sheetRef: RefObject<TrueSheet> }) {
+function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
   const languageCode = useUserPreferencesStore((state) => state.language);
   return (
     <Sheet
