@@ -7,7 +7,6 @@ import {
   PlaylistArtworkSheet,
 } from "./Artwork";
 import TrackSheet from "./Track";
-import TrackSortSheet from "./TrackSort";
 import TrackToPlaylistSheet from "./TrackToPlaylist";
 
 /*
@@ -19,7 +18,6 @@ registerSheet("AlbumArtworkSheet", AlbumArtworkSheet);
 registerSheet("ArtistArtworkSheet", ArtistArtworkSheet);
 registerSheet("PlaylistArtworkSheet", PlaylistArtworkSheet);
 registerSheet("TrackSheet", TrackSheet);
-registerSheet("TrackSortSheet", TrackSortSheet);
 registerSheet("TrackToPlaylistSheet", TrackToPlaylistSheet);
 
 // We extend some of the types here to give us great intellisense
@@ -30,7 +28,6 @@ declare module "react-native-actions-sheet" {
     ArtistArtworkSheet: SheetDefinition<{ payload: { id: string } }>;
     PlaylistArtworkSheet: SheetDefinition<{ payload: { id: string } }>;
     TrackSheet: SheetDefinition<{ payload: { id: string } }>;
-    TrackSortSheet: SheetDefinition;
     TrackToPlaylistSheet: SheetDefinition<{ payload: { id: string } }>;
   }
 }
