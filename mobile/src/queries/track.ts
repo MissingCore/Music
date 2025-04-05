@@ -7,7 +7,6 @@ import { Resynchronize } from "~/modules/media/services/Resynchronize";
 import { useSortTracks } from "~/modules/media/services/SortPreferences";
 import { queries as q } from "./keyStore";
 
-import { wait } from "~/utils/promise";
 import { ReservedPlaylists } from "~/modules/media/constants";
 
 //#region Queries
@@ -56,10 +55,7 @@ export function useFavoriteTrack(trackId: string) {
   const queryClient = useQueryClient();
   return useMutation({
     /** Pass the new favorite status of the track. */
-    mutationFn: async (isFavorite: boolean) => {
-      await wait(1);
-      await favoriteTrack(trackId, isFavorite);
-    },
+    mutationFn: (isFavorite: boolean) => favoriteTrack(trackId, isFavorite),
     onSuccess: () => {
       // Invalidate all track queries and the favorite tracks query.
       queryClient.invalidateQueries({ queryKey: q.tracks._def });
