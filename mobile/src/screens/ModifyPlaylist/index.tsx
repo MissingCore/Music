@@ -3,7 +3,6 @@ import type { ParseKeys } from "i18next";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler, Modal, Pressable, View } from "react-native";
-import { SheetManager } from "react-native-actions-sheet";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
 import type { SlimTrackWithAlbum } from "~/db/slimTypes";
@@ -18,6 +17,7 @@ import { useTheme } from "~/hooks/useTheme";
 import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import type { InitStoreProps } from "./context";
 import { PlaylistStoreProvider, usePlaylistStore } from "./context";
+import { AddMusicSheet } from "./Sheets";
 
 import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
@@ -28,6 +28,7 @@ import { IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import type { SwipeableRef } from "~/components/Swipeable";
 import { Swipeable } from "~/components/Swipeable";
+import { useSheetRef } from "~/components/Sheet";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 
@@ -89,6 +90,17 @@ function PageContent() {
   const setShowConfirmation = usePlaylistStore(
     (state) => state.setShowConfirmation,
   );
+  const addCallbacks = usePlaylistStore((state) => state.SearchCallbacks);
+  const addMusicSheetRef = useSheetRef();
+
+  const renderHeader = useCallback(
+    () => (
+      <ListHeaderComponent
+        showSheet={() => addMusicSheetRef.current?.present()}
+      />
+    ),
+    [addMusicSheetRef],
+  );
 
   const renderItem = useCallback(
     (args: RenderItemProps) => <RenderItem {...args} />,
@@ -110,22 +122,26 @@ function PageContent() {
   }, [isSubmitting, isUnchanged, setShowConfirmation]);
 
   return (
-    <View
-      pointerEvents={isSubmitting ? "none" : "auto"}
-      needsOffscreenAlphaCompositing
-      className={cn("flex-1", { "opacity-25": isSubmitting })}
-    >
-      <FlashDragList
-        estimatedItemSize={56} // 48px Height + 8px Margin Top
-        data={tracks}
-        keyExtractor={({ id }) => id}
-        renderItem={renderItem}
-        onReordered={moveTrack}
-        ListHeaderComponent={ListHeaderComponent}
-        contentContainerClassName="py-4" // Applies to the internal `<FlashList />`.
-        emptyMsgKey="err.msg.noTracks"
-      />
-    </View>
+    <>
+      <View
+        pointerEvents={isSubmitting ? "none" : "auto"}
+        needsOffscreenAlphaCompositing
+        className={cn("flex-1", { "opacity-25": isSubmitting })}
+      >
+        <FlashDragList
+          estimatedItemSize={56} // 48px Height + 8px Margin Top
+          data={tracks}
+          keyExtractor={({ id }) => id}
+          renderItem={renderItem}
+          onReordered={moveTrack}
+          ListHeaderComponent={renderHeader}
+          contentContainerClassName="py-4" // Applies to the internal `<FlashList />`.
+          emptyMsgKey="err.msg.noTracks"
+        />
+      </View>
+
+      <AddMusicSheet sheetRef={addMusicSheetRef} callbacks={addCallbacks} />
+    </>
   );
 }
 
@@ -194,14 +210,13 @@ const RenderItem = memo(
 
 //#region ListHeaderComponent
 /** Contains the input to change the playlist name and button to add tracks. */
-function ListHeaderComponent() {
+function ListHeaderComponent(props: { showSheet: () => void }) {
   const { t } = useTranslation();
 
   const initialName = usePlaylistStore((state) => state.initialName);
   const isUnique = usePlaylistStore((state) => state.isUnique);
   const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
   const setPlaylistName = usePlaylistStore((state) => state.setPlaylistName);
-  const addCallbacks = usePlaylistStore((state) => state.SearchCallbacks);
 
   return (
     <>
@@ -229,11 +244,7 @@ function ListHeaderComponent() {
           kind="ripple"
           accessibilityLabel={t("feat.modalTrack.extra.addToPlaylist")}
           disabled={isSubmitting}
-          onPress={() =>
-            SheetManager.show("AddMusicSheet", {
-              payload: { callbacks: addCallbacks },
-            })
-          }
+          onPress={props.showSheet}
         >
           <Add />
         </IconButton>

@@ -1,0 +1,34 @@
+import type { TrueSheet } from "@lodev09/react-native-true-sheet";
+import type { RefObject } from "react";
+
+import { useTheme } from "~/hooks/useTheme";
+
+import { Sheet } from "~/components/Sheet";
+import { SearchEngine } from "~/modules/search/components/SearchEngine";
+import type { SearchCallbacks } from "~/modules/search/types";
+
+/** List of media we want to appear in the search. */
+const searchScope = ["album", "track"] as const;
+
+/** Enables us to add music to a playlist. */
+export function AddMusicSheet(props: {
+  sheetRef: RefObject<TrueSheet>;
+  callbacks: Pick<SearchCallbacks, "album" | "track">;
+}) {
+  const { canvasAlt } = useTheme();
+  return (
+    <Sheet
+      ref={props.sheetRef}
+      titleKey="feat.search.extra.musicAdd"
+      keyboardMode="pan"
+      snapTop
+    >
+      <SearchEngine
+        searchScope={searchScope}
+        callbacks={props.callbacks}
+        bgColor={canvasAlt}
+        withGesture
+      />
+    </Sheet>
+  );
+}
