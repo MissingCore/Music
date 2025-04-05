@@ -5,9 +5,10 @@ import TrackPlayer from "react-native-track-player";
 
 import { musicStore } from "~/modules/media/services/Music";
 import { useLoadResources } from "~/hooks/useLoadResources";
+import { AppProvider } from "~/providers";
 import { ErrorBoundary } from "~/screens/ErrorBoundary";
 import { OnboardingScreen } from "~/screens/Onboarding";
-import { AppProvider } from "~/providers";
+import { TrackSheet } from "~/screens/Sheets/Track";
 
 import "~/resources/global.css";
 import "~/modules/i18n"; // Make sure translations are bundled.
@@ -100,6 +101,8 @@ function RootLayoutNav() {
         <Stack.Screen name="setting" />
         <Stack.Screen name="notification.click" />
       </Stack>
+
+      <TrackSheet />
     </AppProvider>
   );
 }
