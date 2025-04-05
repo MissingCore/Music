@@ -15,9 +15,6 @@ patchedDependencies:
   '@react-native-assets/slider':
     hash: 6txxlqyyxwuuhk5l6j3drlrrjq
     path: patches/@react-native-assets__slider.patch
-  react-native-actions-sheet@0.9.7:
-    hash: dmf2cvt7t24xk2qlczkgl6j5zu
-    path: patches/react-native-actions-sheet@0.9.7.patch
   react-native-gesture-handler:
     hash: rjhgnwrqf5shhovxtmq2tgj2qm
     path: patches/react-native-gesture-handler.patch
@@ -128,9 +125,6 @@ importers:
       react-native:
         specifier: 0.76.7
         version: 0.76.7(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@react-native-community/cli-server-api@14.1.0)(@types/react@18.3.19)(react@18.3.1)
-      react-native-actions-sheet:
-        specifier: ^0.9.7
-        version: 0.9.7(patch_hash=dmf2cvt7t24xk2qlczkgl6j5zu)(react-native-gesture-handler@2.24.0(patch_hash=rjhgnwrqf5shhovxtmq2tgj2qm)(react-native@0.76.7(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@react-native-community/cli-server-api@14.1.0)(@types/react@18.3.19)(react@18.3.1))(react@18.3.1))(react-native-safe-area-context@5.3.0(react-native@0.76.7(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@react-native-community/cli-server-api@14.1.0)(@types/react@18.3.19)(react@18.3.1))(react@18.3.1))(react-native@0.76.7(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@react-native-community/cli-server-api@14.1.0)(@types/react@18.3.19)(react@18.3.1))
       react-native-bootsplash:
         specifier: ^6.3.4
         version: 6.3.4(react-native@0.76.7(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@react-native-community/cli-server-api@14.1.0)(@types/react@18.3.19)(react@18.3.1))(react@18.3.1)
@@ -5139,13 +5133,6 @@ packages:
 
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
-
-  react-native-actions-sheet@0.9.7:
-    resolution: {integrity: sha512-rjUwxUr5dxbdSLDtLDUFAdSlFxpNSpJsbXLhHkBzEBMxEMPUhRT3zqbvKqsPj0JUkjwuRligxrhbIJZkg/6ZDw==}
-    peerDependencies:
-      react-native: '*'
-      react-native-gesture-handler: '*'
-      react-native-safe-area-context: '*'
 
   react-native-bootsplash@6.3.4:
     resolution: {integrity: sha512-d+2pYlp8rvJRHDrMYjqXFmDxTPD/1eaa57Y60gpb/qLGmEX6ErSRIIGLOELtH2BPtPoyOS1yCeGOZqE7L30gVQ==}
@@ -12093,12 +12080,6 @@ snapshots:
     optional: true
 
   react-is@18.3.1: {}
-
-  react-native-actions-sheet@0.9.7(patch_hash=dmf2cvt7t24xk2qlczkgl6j5zu)(react-native-gesture-handler@2.24.0(patch_hash=rjhgnwrqf5shhovxtmq2tgj2qm)(react-native@0.76.7(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@react-native-community/cli-server-api@14.1.0)(@types/react@18.3.19)(react@18.3.1))(react@18.3.1))(react-native-safe-area-context@5.3.0(react-native@0.76.7(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@react-native-community/cli-server-api@14.1.0)(@types/react@18.3.19)(react@18.3.1))(react@18.3.1))(react-native@0.76.7(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@react-native-community/cli-server-api@14.1.0)(@types/react@18.3.19)(react@18.3.1)):
-    dependencies:
-      react-native: 0.76.7(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@react-native-community/cli-server-api@14.1.0)(@types/react@18.3.19)(react@18.3.1)
-      react-native-gesture-handler: 2.24.0(patch_hash=rjhgnwrqf5shhovxtmq2tgj2qm)(react-native@0.76.7(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@react-native-community/cli-server-api@14.1.0)(@types/react@18.3.19)(react@18.3.1))(react@18.3.1)
-      react-native-safe-area-context: 5.3.0(react-native@0.76.7(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@react-native-community/cli-server-api@14.1.0)(@types/react@18.3.19)(react@18.3.1))(react@18.3.1)
 
   react-native-bootsplash@6.3.4(react-native@0.76.7(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@react-native-community/cli-server-api@14.1.0)(@types/react@18.3.19)(react@18.3.1))(react@18.3.1):
     dependencies:
