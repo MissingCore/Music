@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
@@ -28,23 +27,19 @@ export default function TrackScreen() {
   });
   const trackSortSheetRef = useSheetRef();
 
-  const renderStickyAction = useMemo(
-    () => (
-      <TrackActions showSheet={() => trackSortSheetRef.current?.present()} />
-    ),
-    [trackSortSheetRef],
-  );
-
   return (
     <>
+      <TrackSortSheet sheetRef={trackSortSheetRef} />
       <StickyActionListLayout
         titleKey="term.tracks"
-        StickyAction={renderStickyAction}
+        StickyAction={
+          <TrackActions
+            showSheet={() => trackSortSheetRef.current?.present()}
+          />
+        }
         estimatedActionSize={48}
         {...listPresets}
       />
-
-      <TrackSortSheet sheetRef={trackSortSheetRef} />
     </>
   );
 }

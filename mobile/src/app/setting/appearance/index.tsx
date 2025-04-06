@@ -30,6 +30,12 @@ export default function AppearanceScreen() {
 
   return (
     <>
+      <AppearanceSettingsSheets
+        accentFontRef={accentFontSheetRef}
+        primaryFontRef={primaryFontSheetRef}
+        themeRef={themeSheetRef}
+        nowPlayingDesignRef={nowPlayingDesignSheetRef}
+      />
       <StandardScrollLayout>
         <List>
           <ListItem
@@ -73,13 +79,6 @@ export default function AppearanceScreen() {
           />
         </List>
       </StandardScrollLayout>
-
-      <AppearanceSettingsSheets
-        accentFontRef={accentFontSheetRef}
-        primaryFontRef={primaryFontSheetRef}
-        themeRef={themeSheetRef}
-        nowPlayingDesignRef={nowPlayingDesignSheetRef}
-      />
     </>
   );
 }

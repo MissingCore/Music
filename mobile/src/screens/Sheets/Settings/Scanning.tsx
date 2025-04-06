@@ -4,7 +4,7 @@ import {
 } from "@missingcore/react-native-metadata-retriever";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Keyboard, Pressable, View } from "react-native";
+import { Keyboard, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { Add } from "~/icons/Add";
@@ -189,22 +189,11 @@ function FilterForm(props: {
 function MinDurationSheet(props: { sheetRef: TrueSheetRef }) {
   const minSeconds = useUserPreferencesStore((state) => state.minSeconds);
   const inputRef = useInputRef();
-  const [disabled, setDisabled] = useState(false);
   const [newMin, setNewMin] = useState<string | undefined>();
-
-  const focusInput = useCallback(() => {
-    inputRef.current?.focus();
-    setDisabled(true);
-  }, [inputRef]);
 
   const focusInputDelayed = useCallback(() => {
     inputRef.current?.blur();
-    setTimeout(focusInput, 50);
-  }, [inputRef, focusInput]);
-
-  const unfocusInput = useCallback(() => {
-    inputRef.current?.blur();
-    setDisabled(false);
+    setTimeout(() => inputRef.current?.focus(), 50);
   }, [inputRef]);
 
   useEffect(() => {
@@ -224,7 +213,6 @@ function MinDurationSheet(props: { sheetRef: TrueSheetRef }) {
       // FIXME: Current hacked solution to auto-focus on input when sheet
       // appears (input gets focused but keyboard doesn't appear).
       onPresent={focusInputDelayed}
-      onDismiss={unfocusInput}
       contentContainerClassName="gap-4"
     >
       <TStyledText
@@ -232,23 +220,16 @@ function MinDurationSheet(props: { sheetRef: TrueSheetRef }) {
         textKey="feat.ignoreDuration.description"
         className="text-center text-sm"
       />
-      <View className="relative mx-auto w-full max-w-[50%]">
-        <NumericInput
-          ref={inputRef}
-          defaultValue={`${minSeconds}`}
-          onChangeText={(text) => setNewMin(text)}
-          onBlur={unfocusInput}
-          className="border-b border-foreground/60 text-center"
-        />
-        <Pressable
-          aria-hidden
-          // FIXME: Current hacked solution to get input focus to work.
-          onPress={focusInput}
-          disabled={disabled}
-          pointerEvents={disabled ? "none" : "auto"}
-          className="absolute left-0 top-0 size-full"
-        />
-      </View>
+      <NumericInput
+        ref={inputRef}
+        defaultValue={`${minSeconds}`}
+        onChangeText={(text) => setNewMin(text)}
+        // Input can't be re-focused if a `text-center` class is applied.
+        // Having the `multiline` prop is a weird hack that fixes the issue.
+        multiline
+        numberOfLines={1}
+        className="mx-auto w-full max-w-[50%] border-b border-foreground/60 text-center"
+      />
     </Sheet>
   );
 }
@@ -259,6 +240,5 @@ async function updateMinDuration(newDuration: string | undefined) {
   // Validate that it's a positive integer.
   if (!Number.isInteger(asNum) || asNum < 0) return;
   userPreferencesStore.setState({ minSeconds: asNum });
-  return;
 }
 //#endregion

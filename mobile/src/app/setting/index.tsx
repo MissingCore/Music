@@ -24,6 +24,10 @@ export default function SettingScreen() {
 
   return (
     <>
+      <SettingsSheets
+        backupRef={backupSheetRef}
+        languageRef={languageSheetRef}
+      />
       <StandardScrollLayout>
         {hasNewUpdate && (
           <ListItem
@@ -117,11 +121,6 @@ export default function SettingScreen() {
           />
         </List>
       </StandardScrollLayout>
-
-      <SettingsSheets
-        backupRef={backupSheetRef}
-        languageRef={languageSheetRef}
-      />
     </>
   );
 }

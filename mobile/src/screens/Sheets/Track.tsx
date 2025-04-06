@@ -85,7 +85,7 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
           mutateGuard(favoriteTrack, !favState);
           setFavState((prev) => !prev);
         }}
-        className="relative flex-row items-center rounded active:opacity-75"
+        className="relative rounded active:opacity-75"
       >
         <MediaImage
           type="track"

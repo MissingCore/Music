@@ -22,6 +22,11 @@ export default function ScanningScreen() {
 
   return (
     <>
+      <ScanningSettingsSheets
+        allowListRef={allowListSheetRef}
+        blockListRef={blockListSheetRef}
+        minDurationRef={minDurationSheetRef}
+      />
       <StandardScrollLayout>
         <List>
           <ListItem
@@ -60,12 +65,6 @@ export default function ScanningScreen() {
           />
         </List>
       </StandardScrollLayout>
-
-      <ScanningSettingsSheets
-        allowListRef={allowListSheetRef}
-        blockListRef={blockListSheetRef}
-        minDurationRef={minDurationSheetRef}
-      />
     </>
   );
 }

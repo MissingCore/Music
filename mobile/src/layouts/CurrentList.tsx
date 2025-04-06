@@ -129,6 +129,7 @@ function ContentImage(props: AnimatedVinylProps) {
 
   return (
     <>
+      <RenderedSheet sheetRef={artworkSheetRef} id={props.mediaSource.id} />
       <Pressable
         aria-label={t("feat.artwork.extra.change")}
         delayLongPress={100}
@@ -146,8 +147,6 @@ function ContentImage(props: AnimatedVinylProps) {
           <AnimatedVinyl {...props} />
         )}
       </Pressable>
-
-      <RenderedSheet sheetRef={artworkSheetRef} id={props.mediaSource.id} />
     </>
   );
 }

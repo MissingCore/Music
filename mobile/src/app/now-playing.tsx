@@ -201,6 +201,10 @@ function BottomAppBar() {
 
   return (
     <>
+      <NowPlayingSheets
+        playbackOptionsRef={playbackOptionsSheetRef}
+        upcomingTracksRef={upcomingTracksSheetRef}
+      />
       <View className="flex-row items-center justify-between gap-4 p-4">
         <BackButton />
         <View className="flex-row items-center gap-4">
@@ -224,11 +228,6 @@ function BottomAppBar() {
           </IconButton>
         </View>
       </View>
-
-      <NowPlayingSheets
-        playbackOptionsRef={playbackOptionsSheetRef}
-        upcomingTracksRef={upcomingTracksSheetRef}
-      />
     </>
   );
 }

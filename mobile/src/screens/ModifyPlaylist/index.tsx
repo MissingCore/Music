@@ -93,15 +93,6 @@ function PageContent() {
   const addCallbacks = usePlaylistStore((state) => state.SearchCallbacks);
   const addMusicSheetRef = useSheetRef();
 
-  const renderHeader = useCallback(
-    () => (
-      <ListHeaderComponent
-        showSheet={() => addMusicSheetRef.current?.present()}
-      />
-    ),
-    [addMusicSheetRef],
-  );
-
   const renderItem = useCallback(
     (args: RenderItemProps) => <RenderItem {...args} />,
     [],
@@ -123,6 +114,7 @@ function PageContent() {
 
   return (
     <>
+      <AddMusicSheet sheetRef={addMusicSheetRef} callbacks={addCallbacks} />
       <View
         pointerEvents={isSubmitting ? "none" : "auto"}
         needsOffscreenAlphaCompositing
@@ -134,13 +126,15 @@ function PageContent() {
           keyExtractor={({ id }) => id}
           renderItem={renderItem}
           onReordered={moveTrack}
-          ListHeaderComponent={renderHeader}
+          ListHeaderComponent={
+            <ListHeaderComponent
+              showSheet={() => addMusicSheetRef.current?.present()}
+            />
+          }
           contentContainerClassName="py-4" // Applies to the internal `<FlashList />`.
           emptyMsgKey="err.msg.noTracks"
         />
       </View>
-
-      <AddMusicSheet sheetRef={addMusicSheetRef} callbacks={addCallbacks} />
     </>
   );
 }
