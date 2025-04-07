@@ -1,0 +1,111 @@
+diff --git a/src/components/Toast.tsx b/src/components/Toast.tsx
+index 8db6291cfb677830f285b2de6d8b0916d9258d7d..fed22e87b2defc3861683475f1cc60ae3d8317ed 100644
+--- a/src/components/Toast.tsx
++++ b/src/components/Toast.tsx
+@@ -42,6 +42,7 @@ type Props = {
+   endPause: () => void;
+   startPause: () => void;
+   customRenderer?: (toast: ToastType) => React.ReactNode;
++  sheetHeight?: number;
+   overrideDarkMode?: boolean;
+   onToastShow?: (toast: T) => void;
+   onToastHide?: (toast: T) => void;
+@@ -63,11 +64,12 @@ export const Toast: FC<Props> = ({
+   offset,
+   startPause,
+   endPause,
++  sheetHeight,
+   overrideDarkMode,
+   onToastHide,
+   onToastPress,
+   onToastShow,
+-  extraInsets,
++  extraInsets: _extraInsets,
+   defaultStyle,
+   keyboardVisible,
+   keyboardHeight,
+@@ -75,6 +77,11 @@ export const Toast: FC<Props> = ({
+   const insets = useSafeAreaInsets();
+   const { width, height } = useWindowDimensions();
+ 
++  const extraInsets = useMemo(
++    () => ({ ..._extraInsets, bottom: (_extraInsets?.bottom ?? 0) - insets.bottom }),
++    [_extraInsets, insets],
++  );
++
+   useVisibilityChange(
+     () => {
+       onToastShow?.(toast);
+@@ -100,8 +107,8 @@ export const Toast: FC<Props> = ({
+     () =>
+       toast.position === ToastPosition.TOP
+         ? -(toast.height || DEFAULT_TOAST_HEIGHT) - insets.top - 50
+-        : height - insets.bottom - Platform.select({ ios: 0, default: 32 }),
+-    [height, toast.position, insets.bottom, insets.top, toast.height]
++        : (sheetHeight ?? height) - Platform.select({ ios: 0, default: 32 }),
++    [sheetHeight, height, toast.position, insets.bottom, insets.top, toast.height]
+   );
+ 
+   const opacity = useSharedValue(0);
+@@ -150,7 +157,7 @@ export const Toast: FC<Props> = ({
+           kbHeight -
+           insets.bottom -
+           (extraInsets?.bottom ?? 0) -
+-          24
++          0
+         : startingY;
+ 
+       offsetY.value = animation(
+@@ -261,6 +268,7 @@ export const Toast: FC<Props> = ({
+           endPause();
+         }}
+         onPress={onPress}
++        pointerEvents="box-none"
+         style={[
+           {
+             backgroundColor: !toast.customToast
+@@ -288,6 +296,7 @@ export const Toast: FC<Props> = ({
+               updateHeight(toast.id, event.nativeEvent.layout.height)
+             }
+             key={toast.id}
++            pointerEvents="box-none"
+           >
+             {toast.customToast({
+               ...toast,
+diff --git a/src/components/Toasts.tsx b/src/components/Toasts.tsx
+index 09e1bdab9c0da0c40f1e21f715824ebe7b9f04eb..860f81e93227610e3ed3d7a4e677e3ae2822e54b 100644
+--- a/src/components/Toasts.tsx
++++ b/src/components/Toasts.tsx
+@@ -13,6 +13,7 @@ import { useScreenReader } from '../utils';
+ import { useKeyboard } from '../utils';
+ 
+ type Props = {
++  sheetHeight?: number;
+   overrideDarkMode?: boolean;
+   extraInsets?: ExtraInsets;
+   onToastShow?: (toast: T) => void;
+@@ -31,6 +32,7 @@ type Props = {
+ };
+ 
+ export const Toasts: FunctionComponent<Props> = ({
++  sheetHeight,
+   overrideDarkMode,
+   extraInsets,
+   onToastHide,
+@@ -59,7 +61,7 @@ export const Toasts: FunctionComponent<Props> = ({
+         top: insets.top + (extraInsets?.top ?? 0) + 16,
+         left: insets.left + (extraInsets?.left ?? 0),
+         right: insets.right + (extraInsets?.right ?? 0),
+-        bottom: insets.bottom + (extraInsets?.bottom ?? 0) + 16,
++        bottom: (extraInsets?.bottom ?? 0),
+       }}
+       pointerEvents={'box-none'}
+     >
+@@ -78,6 +80,7 @@ export const Toasts: FunctionComponent<Props> = ({
+           offset={handlers.calculateOffset(t, {
+             reverseOrder: true,
+           })}
++          sheetHeight={sheetHeight}
+           overrideDarkMode={overrideDarkMode}
+           onToastHide={onToastHide}
+           onToastPress={onToastPress}

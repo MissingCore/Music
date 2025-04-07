@@ -1,3 +1,4 @@
+import { Toasts } from "@backpackapp-io/react-native-toast";
 import type { TrueSheetProps } from "@lodev09/react-native-true-sheet";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import type { ParseKeys } from "i18next";
@@ -38,6 +39,8 @@ export const Sheet = forwardRef<TrueSheet, SheetProps>(function Sheet(
     contentContainerClassName,
     contentContainerStyle,
     children,
+    onPresent,
+    onDismiss,
     ...props
   },
   ref,
@@ -45,10 +48,13 @@ export const Sheet = forwardRef<TrueSheet, SheetProps>(function Sheet(
   const { t } = useTranslation();
   const { canvasAlt } = useTheme();
   const { height: screenHeight } = useWindowDimensions();
+  const [enableToast, setEnableToast] = useState(false);
+  const [sheetHeight, setSheetHeight] = useState(0);
   const [headerHeight, setHeaderHeight] = useState(0);
 
   return (
     <TrueSheet
+      onLayout={(e) => setSheetHeight(e.nativeEvent.layout.height)}
       ref={ref}
       name={globalKey}
       sizes={[snapTop ? "large" : "auto"]}
@@ -57,6 +63,14 @@ export const Sheet = forwardRef<TrueSheet, SheetProps>(function Sheet(
       // Sheet max height will be just before the `<TopAppBar />`.
       maxHeight={screenHeight - 56}
       grabber={false}
+      onPresent={(e) => {
+        if (onPresent) onPresent(e);
+        setEnableToast(true);
+      }}
+      onDismiss={() => {
+        if (onDismiss) onDismiss();
+        setEnableToast(false);
+      }}
       {...props}
     >
       <SheetHeader
@@ -79,6 +93,9 @@ export const Sheet = forwardRef<TrueSheet, SheetProps>(function Sheet(
       >
         {children}
       </View>
+
+      {/* @ts-expect-error - We added the `sheetHeight` prop via a patch. */}
+      {enableToast ? <Toasts sheetHeight={sheetHeight - 28} /> : null}
     </TrueSheet>
   );
 });
