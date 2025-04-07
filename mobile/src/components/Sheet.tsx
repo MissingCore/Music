@@ -7,6 +7,7 @@ import { forwardRef, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { StyleProp, ViewStyle } from "react-native";
 import { View, useWindowDimensions } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useTheme } from "~/hooks/useTheme";
 
@@ -47,6 +48,7 @@ export const Sheet = forwardRef<TrueSheet, SheetProps>(function Sheet(
 ) {
   const { t } = useTranslation();
   const { canvasAlt } = useTheme();
+  const insets = useSafeAreaInsets();
   const { height: screenHeight } = useWindowDimensions();
   const [enableToast, setEnableToast] = useState(false);
   const [sheetHeight, setSheetHeight] = useState(0);
@@ -93,9 +95,15 @@ export const Sheet = forwardRef<TrueSheet, SheetProps>(function Sheet(
       >
         {children}
       </View>
-
-      {/* @ts-expect-error - We added the `sheetHeight` prop via a patch. */}
-      {enableToast ? <Toasts sheetHeight={sheetHeight - 28} /> : null}
+      {enableToast ? (
+        <Toasts
+          // @ts-expect-error - We added the `sheetOpts` prop via a patch.
+          sheetOpts={{
+            height: sheetHeight - 24 - insets.bottom,
+            needKeyboardOffset: props.keyboardMode === "pan",
+          }}
+        />
+      ) : null}
     </TrueSheet>
   );
 });
