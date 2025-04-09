@@ -11,7 +11,7 @@ const searchScope = ["album", "track"] as const;
 /** Enables us to add music to a playlist. */
 export function AddMusicSheet(props: {
   sheetRef: TrueSheetRef;
-  callbacks: Pick<SearchCallbacks, "album" | "track">;
+  callbacks: Pick<SearchCallbacks, (typeof searchScope)[number]>;
 }) {
   const { canvasAlt } = useTheme();
   return (
