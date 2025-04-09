@@ -1,0 +1,54 @@
+diff --git a/dist/Slider.js b/dist/Slider.js
+index 1f0f041bfefa7329f603cf0e2907fe587e760d22..9f18c4d4c1e2e195f0310aabde7e24447501b8bf 100644
+--- a/dist/Slider.js
++++ b/dist/Slider.js
+@@ -42,7 +42,7 @@ const Slider = react_1.default.forwardRef((props, forwardedRef) => {
+     const marksProps = { CustomMark, step, minimumValue, maximumValue, activeValues: [value], inverted, vertical };
+     return (react_1.default.createElement(ResponderView_1.default, { ...others, ref: forwardedRef, maximumValue: maximumValue, minimumValue: minimumValue, step: step, onPress: onPress, onMove: onMove, onRelease: onRelease, enabled: enabled, vertical: vertical, inverted: inverted },
+         react_1.default.createElement(Track_1.default, { ...trackProps, color: minimumTrackTintColor, style: minStyle, length: percentage * 100, track: 'min' }),
+-        react_1.default.createElement(Thumb_1.default, { ...thumbProps, updateValue: updateValue, value: value }),
++        percentage !== 1 ? react_1.default.createElement(Thumb_1.default, { ...thumbProps, updateValue: updateValue, value: value }) : null,
+         react_1.default.createElement(Track_1.default, { ...trackProps, color: maximumTrackTintColor, style: maxStyle, length: (1 - percentage) * 100, track: 'max' }),
+         react_1.default.createElement(Marks_1.default, { ...marksProps })));
+ });
+diff --git a/dist/components/Thumb.js b/dist/components/Thumb.js
+index ff1d51080e3f7e3e69b13bf342e7646b23477ef7..10a3746d79999914b711dd1dc128df140e287d74 100644
+--- a/dist/components/Thumb.js
++++ b/dist/components/Thumb.js
+@@ -66,7 +66,6 @@ function getThumbStyle(size, color) {
+             backgroundColor: color,
+             borderRadius: size / 2,
+             overflow: 'hidden',
+-            elevation: 10,
+             zIndex: 10
+         }
+     }).thumb;
+diff --git a/dist/components/Track.js b/dist/components/Track.js
+index 6d33f31c3e00d8ab8b113c45755d06bbfefb9fb3..ccfc60f8615aa537d0c7cbfe8bd4468ed4cd49e0 100644
+--- a/dist/components/Track.js
++++ b/dist/components/Track.js
+@@ -24,12 +24,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
+ Object.defineProperty(exports, "__esModule", { value: true });
+ const react_1 = __importDefault(require("react"));
+ const RN = __importStar(require("react-native"));
+-function getTrackStyle(length, thickness, color, vertical) {
++function getTrackStyle(length, thickness, color, vertical, track) {
+     return RN.StyleSheet.create({
+         thumb: {
+             flexGrow: length,
+             flexBasis: 0,
+-            borderRadius: thickness / 2,
++            [track === 'min' ? "borderTopLeftRadius" : "borderTopRightRadius"]: thickness / 2,
++            [track === 'min' ? "borderBottomLeftRadius" : "borderBottomRightRadius"]: thickness / 2,
+             backgroundColor: color,
+             // This is for web
+             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+@@ -41,7 +42,7 @@ function getTrackStyle(length, thickness, color, vertical) {
+ }
+ const Track = ({ style, thickness, length, vertical, color = 'grey', CustomTrack, track }) => {
+     const trackViewStyle = react_1.default.useMemo(() => [
+-        getTrackStyle(length, thickness, color, vertical), style
++        getTrackStyle(length, thickness, color, vertical, track), style
+     ], [length, thickness, color, vertical, style]);
+     return CustomTrack ? react_1.default.createElement(CustomTrack, { style: trackViewStyle, color: color, length: length, thickness: thickness, vertical: vertical, track: track }) : react_1.default.createElement(RN.View, { style: trackViewStyle });
+ };

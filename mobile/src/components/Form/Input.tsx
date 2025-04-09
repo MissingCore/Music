@@ -54,7 +54,6 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
 //#region Hook
 /** Hook to get a ref for the input element. */
 export function useInputRef() {
-  const inputRef = useRef<RNTextInput>(null);
-  return inputRef;
+  return useRef<RNTextInput>(null);
 }
 //#endregion

@@ -6,11 +6,12 @@ import {
 import { ListItem } from "~/components/Containment/List";
 import { FlatList } from "~/components/Defaults";
 import { Radio } from "~/components/Form/Selection";
+import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
 import { TStyledText } from "~/components/Typography/StyledText";
 
-/** Sheet allowing us visually change the sort order on the `/track` screen. */
-export default function TrackSortSheet() {
+/** Enables us to visually change the sort order on the `/track` screen. */
+export function TrackSortSheet(props: { sheetRef: TrueSheetRef }) {
   const isAsc = useSortPreferencesStore((state) => state.isAsc);
   const toggleIsAsc = useSortPreferencesStore((state) => state.toggleIsAsc);
   const orderedBy = useSortPreferencesStore((state) => state.orderedBy);
@@ -18,7 +19,7 @@ export default function TrackSortSheet() {
 
   return (
     <Sheet
-      id="TrackSortSheet"
+      ref={props.sheetRef}
       titleKey="feat.modalSort.title"
       contentContainerClassName="gap-4"
     >

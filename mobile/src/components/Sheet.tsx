@@ -1,65 +1,90 @@
 import { Toasts } from "@backpackapp-io/react-native-toast";
+import type { TrueSheetProps } from "@lodev09/react-native-true-sheet";
+import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import type { ParseKeys } from "i18next";
-import { cssInterop } from "nativewind";
+import type { RefObject } from "react";
+import { forwardRef, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { StyleProp, ViewStyle } from "react-native";
-import { View } from "react-native";
-import type { ActionSheetProps } from "react-native-actions-sheet";
-import ActionSheet from "react-native-actions-sheet";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { View, useWindowDimensions } from "react-native";
 
+import { useTheme } from "~/hooks/useTheme";
+
+import { BorderRadius } from "~/constants/Styles";
 import { cn } from "~/lib/style";
 import { Marquee } from "./Containment/Marquee";
 import { StyledText } from "./Typography/StyledText";
 
-const WrappedActionSheet = cssInterop(ActionSheet, {
-  containerClassName: "containerStyle",
-  indicatorClassName: "indicatorStyle",
-});
-
-/** Pre-styled sheet. */
-export function Sheet({
-  titleKey,
-  snapTop,
-  contentContainerClassName,
-  contentContainerStyle,
-  children,
-  ...props
-}: ActionSheetProps & {
+interface SheetProps extends TrueSheetProps {
   titleKey?: ParseKeys;
+  /** Makes sheet accessible globally using this key. */
+  globalKey?: string;
   /** If the sheet should open at max screen height. */
   snapTop?: boolean;
   contentContainerClassName?: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
-}) {
+}
+
+export type TrueSheetRef = RefObject<TrueSheet>;
+
+export function useSheetRef() {
+  return useRef<TrueSheet>(null);
+}
+
+export const Sheet = forwardRef<TrueSheet, SheetProps>(function Sheet(
+  {
+    titleKey,
+    globalKey,
+    snapTop,
+    contentContainerClassName,
+    contentContainerStyle,
+    children,
+    onPresent,
+    onDismiss,
+    ...props
+  },
+  ref,
+) {
   const { t } = useTranslation();
-  const insets = useSafeAreaInsets();
+  const { canvasAlt } = useTheme();
+  const { height: screenHeight } = useWindowDimensions();
+  const [enableToast, setEnableToast] = useState(false);
+  const [sheetHeight, setSheetHeight] = useState(0);
+  const [headerHeight, setHeaderHeight] = useState(0);
 
   return (
-    <WrappedActionSheet
-      gestureEnabled
-      keyboardHandlerEnabled={false}
-      CustomHeaderComponent={
-        <SheetHeader title={titleKey ? t(titleKey) : undefined} />
-      }
-      ExtraOverlayComponent={<Toasts />}
-      containerClassName={cn("rounded-t-lg bg-canvasAlt", {
-        "h-full": snapTop,
-      })}
-      // Have sheet max height be right before the top app bar.
-      //  - Note 1: We've patched the package as it only relies on the top
-      //  insets for IOS
-      //  - Note 2: The recommended way is to set a `maxHeight`, but that doesn't
-      //  work as mentioned:
-      //    - https://github.com/ammarahm-ed/react-native-actions-sheet/issues/322#issuecomment-2029560154
-      //  - Note 3: With edge-to-edge mode, having the `bottom` was adding
-      //  extra bottom padding. This might be related to:
-      //    - https://github.com/facebook/react-native/pull/47254
-      safeAreaInsets={{ ...insets, top: insets.top + 56, bottom: 0 }}
+    <TrueSheet
+      onLayout={(e) => setSheetHeight(e.nativeEvent.layout.height)}
+      ref={ref}
+      name={globalKey}
+      sizes={[snapTop ? "large" : "auto"]}
+      backgroundColor={canvasAlt}
+      cornerRadius={BorderRadius.lg}
+      // Sheet max height will be just before the `<TopAppBar />`.
+      maxHeight={screenHeight - 56}
+      grabber={false}
+      onPresent={(e) => {
+        if (onPresent) onPresent(e);
+        setEnableToast(true);
+      }}
+      onDismiss={() => {
+        if (onDismiss) onDismiss();
+        setEnableToast(false);
+      }}
       {...props}
     >
+      <SheetHeader
+        title={titleKey ? t(titleKey) : undefined}
+        getHeight={setHeaderHeight}
+      />
       <View
-        style={contentContainerStyle}
+        style={[
+          // TrueSheet doesn't know the actual scrollable area, so we
+          // need to exclude the height taken up by the "SheetHeader"
+          // from the container that can hold a scrollable.
+          [{ maxHeight: screenHeight - 56 - headerHeight }],
+          contentContainerStyle,
+        ]}
         className={cn(
           "p-4 pt-0",
           { "h-full pb-0": snapTop },
@@ -68,18 +93,33 @@ export function Sheet({
       >
         {children}
       </View>
-    </WrappedActionSheet>
+      {enableToast ? (
+        <Toasts
+          // @ts-expect-error - We added the `sheetOpts` prop via a patch.
+          sheetOpts={{
+            height: sheetHeight,
+            needKeyboardOffset: props.keyboardMode === "pan",
+          }}
+        />
+      ) : null}
+    </TrueSheet>
   );
-}
+});
 
 /** Header component to be used in `<Sheet />`. */
-function SheetHeader({ title }: { title?: string }) {
+function SheetHeader(props: {
+  getHeight: (height: number) => void;
+  title?: string;
+}) {
   return (
-    <View className={cn("gap-2 px-4 pb-2", { "pb-6": !!title })}>
+    <View
+      onLayout={(e) => props.getHeight(e.nativeEvent.layout.height)}
+      className={cn("gap-2 px-4 pb-2", { "pb-6": !!props.title })}
+    >
       <View className="mx-auto my-[10px] h-1 w-8 rounded-full bg-onSurface" />
-      {title ? (
+      {props.title ? (
         <Marquee center>
-          <StyledText className="text-lg">{title}</StyledText>
+          <StyledText className="text-lg">{props.title}</StyledText>
         </Marquee>
       ) : null}
     </View>

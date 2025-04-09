@@ -1,11 +1,9 @@
 import { Toasts } from "@backpackapp-io/react-native-toast";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { View } from "react-native";
-import { SheetProvider } from "react-native-actions-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import "~/screens/Sheets";
 import { RouteHandlers } from "./RouteHandlers";
 import { ThemeProvider } from "./ThemeProvider";
 
@@ -20,10 +18,8 @@ export function AppProvider(props: { children: React.ReactNode }) {
       <GestureHandlerRootView>
         <QueryClientProvider client={queryClient}>
           <RouteHandlers />
-          <SheetProvider context="global">
-            <ChildrenWrapper {...props} />
-            <Toasts />
-          </SheetProvider>
+          <ChildrenWrapper {...props} />
+          <Toasts />
         </QueryClientProvider>
       </GestureHandlerRootView>
     </ThemeProvider>

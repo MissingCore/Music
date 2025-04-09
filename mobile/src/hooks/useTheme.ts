@@ -16,7 +16,7 @@ const Themes = {
   dark: {
     theme: "dark",
     canvas: Colors.neutral0,
-    canvasAlt: Colors.neutral5,
+    canvasAlt: Colors.neutral7,
     surface: Colors.neutral10,
     onSurface: Colors.neutral20,
     foreground: Colors.neutral100,

@@ -2,7 +2,6 @@ import type { Href } from "expo-router";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
-import { SheetManager } from "react-native-actions-sheet";
 import { useProgress } from "react-native-track-player";
 
 import type { TrackWithAlbum } from "~/db/schema";
@@ -17,8 +16,10 @@ import { useMusicStore } from "~/modules/media/services/Music";
 import { MusicControls } from "~/modules/media/services/Playback";
 import { Router } from "~/services/NavigationStore";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
-import { useSeekStore } from "~/screens/NowPlaying/SeekService";
+import { presentTrackSheet } from "~/services/SessionPreferences";
+import { useSeekStore } from "~/screens/NowPlaying/helpers/SeekService";
 import { NowPlayingArtwork } from "~/screens/NowPlaying/Artwork";
+import { NowPlayingSheets } from "~/screens/NowPlaying/Sheets";
 
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
@@ -27,6 +28,7 @@ import { Marquee } from "~/components/Containment/Marquee";
 import { SafeContainer } from "~/components/Containment/SafeContainer";
 import { IconButton } from "~/components/Form/Button";
 import { Slider } from "~/components/Form/Slider";
+import { useSheetRef } from "~/components/Sheet";
 import { Back } from "~/components/Transition/Back";
 import { StyledText } from "~/components/Typography/StyledText";
 import {
@@ -76,9 +78,7 @@ function Metadata({ track }: { track: TrackWithAlbum }) {
         <IconButton
           kind="ripple"
           accessibilityLabel={t("template.entrySeeMore", { name: track.name })}
-          onPress={() =>
-            SheetManager.show("TrackSheet", { payload: { id: track.id } })
-          }
+          onPress={() => presentTrackSheet(track.id)}
           rippleRadius={24}
           className="p-2"
         >
@@ -196,30 +196,39 @@ function PlaybackControls() {
 /** Actions rendered on the bottom of the screen. */
 function BottomAppBar() {
   const { t } = useTranslation();
+  const playbackOptionsSheetRef = useSheetRef();
+  const upcomingTracksSheetRef = useSheetRef();
+
   return (
-    <View className="flex-row items-center justify-between gap-4 p-4">
-      <BackButton />
-      <View className="flex-row items-center gap-4">
-        <IconButton
-          kind="ripple"
-          accessibilityLabel={t("feat.playback.extra.options")}
-          onPress={() => SheetManager.show("PlaybackOptionsSheet")}
-          rippleRadius={24}
-          className="p-2"
-        >
-          <InstantMix size={32} />
-        </IconButton>
-        <IconButton
-          kind="ripple"
-          accessibilityLabel={t("term.upcoming")}
-          onPress={() => SheetManager.show("TrackUpcomingSheet")}
-          rippleRadius={24}
-          className="p-2"
-        >
-          <LibraryMusic size={32} />
-        </IconButton>
+    <>
+      <NowPlayingSheets
+        playbackOptionsRef={playbackOptionsSheetRef}
+        upcomingTracksRef={upcomingTracksSheetRef}
+      />
+      <View className="flex-row items-center justify-between gap-4 p-4">
+        <BackButton />
+        <View className="flex-row items-center gap-4">
+          <IconButton
+            kind="ripple"
+            accessibilityLabel={t("feat.playback.extra.options")}
+            onPress={() => playbackOptionsSheetRef.current?.present()}
+            rippleRadius={24}
+            className="p-2"
+          >
+            <InstantMix size={32} />
+          </IconButton>
+          <IconButton
+            kind="ripple"
+            accessibilityLabel={t("term.upcoming")}
+            onPress={() => upcomingTracksSheetRef.current?.present()}
+            rippleRadius={24}
+            className="p-2"
+          >
+            <LibraryMusic size={32} />
+          </IconButton>
+        </View>
       </View>
-    </View>
+    </>
   );
 }
 

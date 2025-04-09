@@ -12,7 +12,7 @@ import Animated, {
 import { useMusicStore } from "~/modules/media/services/Music";
 import { MusicControls } from "~/modules/media/services/Playback";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
-import { useVinylSeekbar } from "./useVinylSeekbar";
+import { useVinylSeekbar } from "./helpers/useVinylSeekbar";
 
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import { Vinyl } from "~/modules/media/components/Vinyl";

@@ -1,8 +1,9 @@
+import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { usePathname } from "expo-router";
 import type { ParseKeys } from "i18next";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
-import { SheetManager } from "react-native-actions-sheet";
 
 import type { TrackWithAlbum } from "~/db/schema";
 
@@ -13,8 +14,15 @@ import { List } from "~/icons/List";
 import { PlaylistAdd } from "~/icons/PlaylistAdd";
 import { QueueMusic } from "~/icons/QueueMusic";
 import { Schedule } from "~/icons/Schedule";
-import { useTrack, useFavoriteTrack } from "~/queries/track";
+import { usePlaylists } from "~/queries/playlist";
+import {
+  useAddToPlaylist,
+  useFavoriteTrack,
+  useRemoveFromPlaylist,
+  useTrackPlaylists,
+} from "~/queries/track";
 import { Router } from "~/services/NavigationStore";
+import { useSessionPreferencesStore } from "~/services/SessionPreferences";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { useTheme } from "~/hooks/useTheme";
 import { Queue, useMusicStore } from "~/modules/media/services/Music";
@@ -28,8 +36,10 @@ import {
   formatSeconds,
 } from "~/utils/number";
 import { Marquee } from "~/components/Containment/Marquee";
+import { FlashList } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { IconButton } from "~/components/Form/Button";
+import { Checkbox } from "~/components/Form/Selection";
 import { Sheet } from "~/components/Sheet";
 import {
   StyledText,
@@ -39,22 +49,23 @@ import {
 import { ReservedPlaylists } from "~/modules/media/constants";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 
-/** Sheet containing information and actions for a track. */
-export default function TrackSheet(props: { payload: { id: string } }) {
-  const { isPending, error, data } = useTrack(props.payload.id);
+//#region Track Sheet
+/** Displays information about a track and enables adding it to playlists. */
+export function TrackSheet() {
+  const data = useSessionPreferencesStore((state) => state.displayedTrack);
   return (
-    <Sheet id="TrackSheet" contentContainerClassName="gap-4">
-      {isPending || error ? null : (
-        <>
-          <TrackIntro data={data} />
-          <Divider />
-          <Stats data={data} />
-          <Divider />
-          <AddActions data={data} />
-          <TrackLinks data={data} />
-        </>
-      )}
-    </Sheet>
+    <>
+      <Sheet globalKey="TrackSheet" contentContainerClassName="gap-4">
+        {data !== null ? (
+          <>
+            <TrackIntro key={data._checked} data={data} />
+            <PrimaryTrackContent data={data} />
+            <TrackLinks data={data} />
+          </>
+        ) : null}
+      </Sheet>
+      <TrackToPlaylistSheet key={data?.id} id={data?.id ?? ""} />
+    </>
   );
 }
 
@@ -64,15 +75,17 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
   const { t } = useTranslation();
   const { foreground } = useTheme();
   const favoriteTrack = useFavoriteTrack(data.id);
-
-  const isFav = favoriteTrack.isPending ? !data.isFavorite : data.isFavorite;
+  const [favState, setFavState] = useState(data.isFavorite);
 
   return (
     <View className="flex-row gap-2">
       <Pressable
-        accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
-        onPress={() => mutateGuard(favoriteTrack, !data.isFavorite)}
-        className="relative flex-row items-center rounded active:opacity-75"
+        accessibilityLabel={t(`term.${favState ? "unF" : "f"}avorite`)}
+        onPress={() => {
+          mutateGuard(favoriteTrack, !favState);
+          setFavState((prev) => !prev);
+        }}
+        className="relative rounded active:opacity-75"
       >
         <MediaImage
           type="track"
@@ -81,7 +94,7 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
           className="rounded"
         />
         <View className="absolute right-1 top-1 rounded-full bg-neutral0/75 p-1">
-          <Favorite size={16} color={Colors.neutral100} filled={isFav} />
+          <Favorite size={16} color={Colors.neutral100} filled={favState} />
         </View>
       </Pressable>
 
@@ -116,65 +129,60 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
 }
 //#endregion
 
-//#region Stats
-/** Display stats about the file. */
-function Stats({ data }: { data: TrackWithAlbum }) {
+//#region Primary Content
+/** Track information and add actions. */
+function PrimaryTrackContent({ data }: { data: TrackWithAlbum }) {
   return (
-    <View className="gap-2">
+    <>
+      <Divider />
+      {/* Stats */}
+      <View className="gap-2">
+        <View className="flex-row gap-2">
+          <StatItem
+            titleKey="feat.modalTrack.extra.bitrate"
+            description={
+              data.bitrate !== null ? abbreviateBitRate(data.bitrate) : "—"
+            }
+          />
+          <StatItem
+            titleKey="feat.modalTrack.extra.sampleRate"
+            description={
+              data.sampleRate !== null ? `${data.sampleRate} Hz` : "—"
+            }
+          />
+        </View>
+        <View className="flex-row gap-2">
+          <StatItem
+            titleKey="feat.modalTrack.extra.size"
+            description={abbreviateSize(data.size)}
+          />
+          <StatItem
+            titleKey="feat.modalSort.extra.modified"
+            description={formatEpoch(data.modificationTime)}
+          />
+        </View>
+        <View className="flex-row">
+          <StatItem
+            titleKey="feat.modalTrack.extra.filePath"
+            description={data.uri}
+          />
+        </View>
+      </View>
+      <Divider />
+      {/* Add Actions */}
       <View className="flex-row gap-2">
-        <StatItem
-          titleKey="feat.modalTrack.extra.bitrate"
-          description={
-            data.bitrate !== null ? abbreviateBitRate(data.bitrate) : "—"
-          }
+        <SheetButton
+          onPress={() => TrueSheet.present("TrackToPlaylistSheet")}
+          Icon={<PlaylistAdd />}
+          textKey="feat.modalTrack.extra.addToPlaylist"
         />
-        <StatItem
-          titleKey="feat.modalTrack.extra.sampleRate"
-          description={data.sampleRate !== null ? `${data.sampleRate} Hz` : "—"}
-        />
-      </View>
-      <View className="flex-row gap-2">
-        <StatItem
-          titleKey="feat.modalTrack.extra.size"
-          description={abbreviateSize(data.size)}
-        />
-        <StatItem
-          titleKey="feat.modalSort.extra.modified"
-          description={formatEpoch(data.modificationTime)}
+        <SheetButton
+          onPress={() => Queue.add({ id: data.id, name: data.name })}
+          Icon={<QueueMusic />}
+          textKey="feat.modalTrack.extra.addToQueue"
         />
       </View>
-      <View className="flex-row">
-        <StatItem
-          titleKey="feat.modalTrack.extra.filePath"
-          description={data.uri}
-        />
-      </View>
-    </View>
-  );
-}
-//#endregion
-
-//#region Add Actions
-/** Add track to a playlist or queue. */
-function AddActions({ data }: { data: TrackWithAlbum }) {
-  return (
-    <View className="flex-row gap-2">
-      <SheetButton
-        onPress={() =>
-          SheetManager.show("TrackToPlaylistSheet", {
-            payload: { id: data.id },
-          })
-        }
-        Icon={<PlaylistAdd />}
-        textKey="feat.modalTrack.extra.addToPlaylist"
-        preventClose
-      />
-      <SheetButton
-        onPress={() => Queue.add({ id: data.id, name: data.name })}
-        Icon={<QueueMusic />}
-        textKey="feat.modalTrack.extra.addToQueue"
-      />
-    </View>
+    </>
   );
 }
 //#endregion
@@ -253,14 +261,13 @@ function SheetButton(props: {
   onPress: () => void;
   Icon: React.JSX.Element;
   textKey: ParseKeys;
-  preventClose?: boolean;
 }) {
   const { width } = useGetColumn({ cols: 2, gap: 8, gutters: 32 });
   return (
     <IconButton
       kind="extended"
       onPress={() => {
-        if (!props.preventClose) SheetManager.hide("TrackSheet");
+        TrueSheet.dismiss("TrackSheet");
         props.onPress();
       }}
       style={{ width }}
@@ -269,6 +276,55 @@ function SheetButton(props: {
       {props.Icon}
       <TStyledText textKey={props.textKey} className="shrink text-xs" />
     </IconButton>
+  );
+}
+//#endregion
+//#endregion
+
+//#region Track To Playlist Sheet
+/** Enables us to select which playlists the track belongs to. */
+function TrackToPlaylistSheet({ id }: { id: string }) {
+  const { canvasAlt, surface } = useTheme();
+  const { data } = usePlaylists();
+  const { data: inList } = useTrackPlaylists(id);
+  const addToPlaylist = useAddToPlaylist(id);
+  const removeFromPlaylist = useRemoveFromPlaylist(id);
+
+  return (
+    <Sheet
+      globalKey="TrackToPlaylistSheet"
+      titleKey="feat.modalTrack.extra.addToPlaylist"
+      snapTop
+    >
+      <FlashList
+        estimatedItemSize={58} // 54px Height + 4px Margin Top
+        data={data}
+        keyExtractor={({ name }) => name}
+        renderItem={({ item, index }) => {
+          const selected = inList?.includes(item.name) ?? false;
+          return (
+            <Checkbox
+              selected={selected}
+              onSelect={() =>
+                mutateGuard(
+                  // @ts-expect-error - We don't care about return type.
+                  selected ? removeFromPlaylist : addToPlaylist,
+                  item.name,
+                )
+              }
+              wrapperClassName={index > 0 ? "mt-1" : undefined}
+            >
+              <Marquee color={selected ? surface : canvasAlt}>
+                <StyledText>{item.name}</StyledText>
+              </Marquee>
+            </Checkbox>
+          );
+        }}
+        nestedScrollEnabled
+        contentContainerClassName="pb-4"
+        emptyMsgKey="err.msg.noPlaylists"
+      />
+    </Sheet>
   );
 }
 //#endregion

@@ -16,7 +16,7 @@ import { Search } from "~/icons/Search";
 import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
-import { FlashList, SheetsFlashList } from "~/components/Defaults";
+import { FlashList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { TextInput, useInputRef } from "~/components/Form/Input";
 import { TEm, TStyledText } from "~/components/Typography/StyledText";
@@ -52,10 +52,6 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
     [props.bgColor, canvas],
   );
 
-  const ListComponent = useMemo(() => {
-    return props.withGesture ? SheetsFlashList : FlashList;
-  }, [props.withGesture]);
-
   return (
     <View className="grow">
       {/* Search input. */}
@@ -82,7 +78,7 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
       </View>
       {/* Results list w/ scroll shadow. */}
       <View className="relative grow">
-        <ListComponent
+        <FlashList
           estimatedItemSize={56} // 48px Height + 8px Margin Top
           data={data}
           keyExtractor={(_, index) => `${index}`}
@@ -115,6 +111,7 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
               <TStyledText textKey="err.msg.noResults" center />
             ) : undefined
           }
+          nestedScrollEnabled={props.withGesture}
           contentContainerClassName="pb-4 pt-6"
         />
 

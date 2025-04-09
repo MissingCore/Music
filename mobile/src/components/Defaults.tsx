@@ -7,8 +7,6 @@ import {
   FlatList as RNFlatList,
   ScrollView as RNScrollView,
 } from "react-native";
-import { FlatList as RNASFlatList } from "react-native-actions-sheet";
-import { FlashList as RNASFlashList } from "react-native-actions-sheet/dist/src/views/FlashList";
 import type { DragListProps } from "react-native-draglist";
 import RNDragList from "react-native-draglist";
 import type { FlashDragListProps } from "react-native-draglist/dist/FlashList";
@@ -68,24 +66,6 @@ export function FlashList<TData>(
   const { isPending, emptyMsgKey, ...rest } = props;
   const listPresets = useListPresets({ isPending, emptyMsgKey });
   return <SFlashList {...listPresets} {...rest} />;
-}
-
-/** `<FlatList />` from `react-native-actions-sheet` with some defaults applied. */
-export function SheetsFlatList<TData>(
-  props: WithListEmptyProps<FlatListProps<TData>>,
-) {
-  const { isPending, emptyMsgKey, ...rest } = props;
-  const listPresets = useListPresets({ isPending, emptyMsgKey });
-  return <RNASFlatList {...listPresets} {...rest} />;
-}
-
-/** `<FlashList />` from `react-native-actions-sheet` with some defaults applied. */
-export function SheetsFlashList<TData>(
-  props: WithListEmptyProps<FlashListProps<TData>>,
-) {
-  const { isPending, emptyMsgKey, ...rest } = props;
-  const listPresets = useListPresets({ isPending, emptyMsgKey });
-  return <RNASFlashList {...listPresets} {...rest} />;
 }
 //#endregion
 
