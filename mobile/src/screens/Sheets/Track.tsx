@@ -22,7 +22,7 @@ import {
   useTrackPlaylists,
 } from "~/queries/track";
 import { Router } from "~/services/NavigationStore";
-import { useSessionPreferencesStore } from "~/services/SessionPreferences";
+import { useSessionStore } from "~/services/SessionStore";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { useTheme } from "~/hooks/useTheme";
 import { Queue, useMusicStore } from "~/modules/media/services/Music";
@@ -52,7 +52,7 @@ import { MediaImage } from "~/modules/media/components/MediaImage";
 //#region Track Sheet
 /** Displays information about a track and enables adding it to playlists. */
 export function TrackSheet() {
-  const data = useSessionPreferencesStore((state) => state.displayedTrack);
+  const data = useSessionStore((state) => state.displayedTrack);
   return (
     <>
       <Sheet globalKey="TrackSheet" contentContainerClassName="gap-4">

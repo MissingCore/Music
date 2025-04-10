@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { MoreVert } from "~/icons/MoreVert";
-import { presentTrackSheet } from "~/services/SessionPreferences";
+import { presentTrackSheet } from "~/services/SessionStore";
 import { playFromMediaList } from "../services/Playback";
 import type { PlayListSource } from "../types";
 

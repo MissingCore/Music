@@ -8,10 +8,7 @@ import { Remove } from "~/icons/Remove";
 import { SlowMotionVideo } from "~/icons/SlowMotionVideo";
 import { VolumeUp } from "~/icons/VolumeUp";
 import { Queue, useMusicStore } from "~/modules/media/services/Music";
-import {
-  sessionPreferencesStore,
-  useSessionPreferencesStore,
-} from "~/services/SessionPreferences";
+import { sessionStore, useSessionStore } from "~/services/SessionStore";
 import { useUpcomingStore } from "./helpers/UpcomingStore";
 
 import { Colors } from "~/constants/Styles";
@@ -40,10 +37,8 @@ export function NowPlayingSheets(
 /** Enables us to specify  how the media is played. */
 function PlaybackOptionsSheet(props: { sheetRef: TrueSheetRef }) {
   const { t } = useTranslation();
-  const playbackSpeed = useSessionPreferencesStore(
-    (state) => state.playbackSpeed,
-  );
-  const volume = useSessionPreferencesStore((state) => state.volume);
+  const playbackSpeed = useSessionStore((state) => state.playbackSpeed);
+  const volume = useSessionStore((state) => state.volume);
 
   return (
     <Sheet ref={props.sheetRef} contentContainerClassName="gap-4">
@@ -73,7 +68,7 @@ const PlaybackSpeedSliderOptions = {
   trackMarks: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
   icon: <SlowMotionVideo />,
   onChange: async (playbackSpeed: number) => {
-    sessionPreferencesStore.setState({ playbackSpeed });
+    sessionStore.setState({ playbackSpeed });
     await TrackPlayer.setRate(playbackSpeed).catch();
   },
   formatValue: (playbackSpeed: number) =>
@@ -87,7 +82,7 @@ const VolumeSliderOptions = {
   trackMarks: [0, 0.25, 0.5, 0.75, 1],
   icon: <VolumeUp />,
   onChange: async (volume: number) => {
-    sessionPreferencesStore.setState({ volume });
+    sessionStore.setState({ volume });
     await TrackPlayer.setVolume(volume).catch();
   },
   formatValue: (volume: number) => `${Math.round(volume * 100)}%`,
