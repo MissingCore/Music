@@ -49,7 +49,7 @@
   },
   "@react-native-assets/slider": {
     "name": "@react-native-assets/slider",
-    "version": "10.0.2",
+    "version": "11.0.5",
     "copyright": "Copyright 2020 François Billioud",
     "source": "https://github.com/Sharcoux/slider",
     "license": "ISC",
@@ -65,7 +65,7 @@
   },
   "@react-navigation/material-top-tabs": {
     "name": "@react-navigation/material-top-tabs",
-    "version": "7.2.2",
+    "version": "7.2.10",
     "copyright": "Copyright (c) 2017 React Navigation Contributors",
     "source": "https://github.com/react-navigation/react-navigation/tree/main/packages/material-top-tabs",
     "license": "MIT",
@@ -73,7 +73,7 @@
   },
   "@react-navigation/native": {
     "name": "@react-navigation/native",
-    "version": "7.0.18",
+    "version": "7.1.6",
     "copyright": "Copyright (c) 2017 React Navigation Contributors",
     "source": "https://github.com/react-navigation/react-navigation/tree/main/packages/native",
     "license": "MIT",
@@ -81,7 +81,7 @@
   },
   "@sentry/react-native": {
     "name": "@sentry/react-native",
-    "version": "6.9.1",
+    "version": "6.10.0",
     "copyright": "Copyright (c) 2017-2024 Sentry",
     "source": "https://github.com/getsentry/sentry-react-native",
     "license": "MIT",
@@ -89,7 +89,7 @@
   },
   "@shopify/flash-list": {
     "name": "@shopify/flash-list",
-    "version": "1.7.6",
+    "version": "1.8.0",
     "copyright": "Copyright 2022-present, Shopify Inc.",
     "source": "https://github.com/Shopify/flash-list",
     "license": "MIT",
@@ -97,7 +97,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.69.0",
+    "version": "5.72.2",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -121,7 +121,7 @@
   },
   "expo": {
     "name": "expo",
-    "version": "52.0.40",
+    "version": "52.0.44",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo",
     "license": "MIT",
@@ -153,7 +153,7 @@
   },
   "expo-image": {
     "name": "expo-image",
-    "version": "2.0.6",
+    "version": "2.0.7",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-image",
     "license": "MIT",
@@ -201,7 +201,7 @@
   },
   "expo-router": {
     "name": "expo-router",
-    "version": "4.0.19",
+    "version": "4.0.20",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-router",
     "license": "MIT",
@@ -209,7 +209,7 @@
   },
   "expo-sqlite": {
     "name": "expo-sqlite",
-    "version": "15.1.2",
+    "version": "15.1.4",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-sqlite",
     "license": "MIT",
@@ -297,7 +297,7 @@
   },
   "react-native": {
     "name": "react-native",
-    "version": "0.76.7",
+    "version": "0.76.9",
     "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates.",
     "source": "https://github.com/facebook/react-native",
     "license": "MIT",
@@ -321,7 +321,7 @@
   },
   "react-native-edge-to-edge": {
     "name": "react-native-edge-to-edge",
-    "version": "1.4.3",
+    "version": "1.5.1",
     "copyright": "Copyright (c) 2024 Mathieu Acthernoene",
     "source": "https://github.com/zoontek/react-native-edge-to-edge",
     "license": "MIT",
@@ -329,7 +329,7 @@
   },
   "react-native-gesture-handler": {
     "name": "react-native-gesture-handler",
-    "version": "2.24.0",
+    "version": "2.25.0",
     "copyright": "Copyright (c) 2016 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-gesture-handler",
     "license": "MIT",
@@ -369,7 +369,7 @@
   },
   "react-native-screens": {
     "name": "react-native-screens",
-    "version": "4.9.2",
+    "version": "4.10.0",
     "copyright": "Copyright (c) 2018 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-screens",
     "license": "MIT",
