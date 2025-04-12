@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@backpackapp-io/react-native-toast": "^0.13.0",
+    "@legendapp/list": "1.0.0-beta.35",
     "@lodev09/react-native-true-sheet": "^2.0.5",
     "@lukemorales/query-key-factory": "^1.3.4",
     "@miblanchard/react-native-slider": "^2.6.0",
