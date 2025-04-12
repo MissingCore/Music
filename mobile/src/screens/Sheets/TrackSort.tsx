@@ -4,7 +4,7 @@ import {
 } from "~/modules/media/services/SortPreferences";
 
 import { ListItem } from "~/components/Containment/List";
-import { FlatList } from "~/components/Defaults";
+import { FlatList } from "~/components/Defaults/Legacy";
 import { Radio } from "~/components/Form/Selection";
 import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";

@@ -16,7 +16,7 @@ import { Search } from "~/icons/Search";
 import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
-import { FlashList } from "~/components/Defaults";
+import { FlashList } from "~/components/Defaults/Legacy";
 import { IconButton } from "~/components/Form/Button";
 import { TextInput, useInputRef } from "~/components/Form/Input";
 import { TEm, TStyledText } from "~/components/Typography/StyledText";

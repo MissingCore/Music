@@ -13,7 +13,7 @@ import { useUpcomingStore } from "./helpers/UpcomingStore";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
-import { FlashList } from "~/components/Defaults";
+import { FlashList } from "~/components/Defaults/Legacy";
 import { IconButton } from "~/components/Form/Button";
 import { NSlider } from "~/components/Form/Slider";
 import type { TrueSheetRef } from "~/components/Sheet";

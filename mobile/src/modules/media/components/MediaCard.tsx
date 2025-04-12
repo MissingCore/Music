@@ -10,8 +10,8 @@ import { useGetColumn } from "~/hooks/useGetColumn";
 
 import { cn } from "~/lib/style";
 import type { Maybe, Prettify } from "~/utils/types";
-import type { WithListEmptyProps } from "~/components/Defaults";
-import { useListPresets } from "~/components/Defaults";
+import type { WithListEmptyProps } from "~/components/Defaults/Legacy";
+import { useListPresets } from "~/components/Defaults/Legacy";
 import { StyledText } from "~/components/Typography/StyledText";
 import { MediaImage } from "./MediaImage";
 

@@ -8,7 +8,7 @@ import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 import { CurrentListLayout } from "~/layouts/CurrentList";
 
 import { mutateGuard } from "~/lib/react-query";
-import { FlashList } from "~/components/Defaults";
+import { FlashList } from "~/components/Defaults/Legacy";
 import { IconButton } from "~/components/Form/Button";
 import { PagePlaceholder } from "~/components/Transition/Placeholder";
 import { Em, StyledText } from "~/components/Typography/StyledText";

@@ -26,7 +26,7 @@ import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { Marquee } from "~/components/Containment/Marquee";
-import { FlashList } from "~/components/Defaults";
+import { FlashList } from "~/components/Defaults/Legacy";
 import { IconButton } from "~/components/Form/Button";
 import { NumericInput, TextInput, useInputRef } from "~/components/Form/Input";
 import type { TrueSheetRef } from "~/components/Sheet";

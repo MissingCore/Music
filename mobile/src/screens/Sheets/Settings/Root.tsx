@@ -8,7 +8,7 @@ import { LANGUAGES } from "~/modules/i18n/constants";
 import { useExportBackup, useImportBackup } from "./helpers/BackupData";
 
 import { mutateGuard } from "~/lib/react-query";
-import { FlatList } from "~/components/Defaults";
+import { FlatList } from "~/components/Defaults/Legacy";
 import { Button } from "~/components/Form/Button";
 import { Radio } from "~/components/Form/Selection";
 import type { TrueSheetRef } from "~/components/Sheet";

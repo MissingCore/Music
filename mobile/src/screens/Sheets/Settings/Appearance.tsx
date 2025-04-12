@@ -12,7 +12,7 @@ import {
 
 import { getFont } from "~/lib/style";
 import { toLowerCase } from "~/utils/string";
-import { FlatList } from "~/components/Defaults";
+import { FlatList } from "~/components/Defaults/Legacy";
 import { Radio } from "~/components/Form/Selection";
 import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";

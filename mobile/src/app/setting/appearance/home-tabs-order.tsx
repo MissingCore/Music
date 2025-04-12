@@ -18,7 +18,7 @@ import {
 
 import { cn } from "~/lib/style";
 import { moveArray } from "~/utils/object";
-import { FlashDragList } from "~/components/Defaults";
+import { FlashDragList } from "~/components/Defaults/Legacy";
 import { Divider } from "~/components/Divider";
 import { IconButton } from "~/components/Form/Button";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";

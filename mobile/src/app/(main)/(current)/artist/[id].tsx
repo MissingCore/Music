@@ -9,7 +9,7 @@ import { CurrentListLayout } from "~/layouts/CurrentList";
 
 import { cn } from "~/lib/style";
 import { isYearDefined } from "~/utils/number";
-import { FlashList } from "~/components/Defaults";
+import { FlashList } from "~/components/Defaults/Legacy";
 import { PagePlaceholder } from "~/components/Transition/Placeholder";
 import { TEm } from "~/components/Typography/StyledText";
 import { MediaCard } from "~/modules/media/components/MediaCard";

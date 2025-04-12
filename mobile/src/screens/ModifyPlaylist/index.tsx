@@ -23,7 +23,7 @@ import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { wait } from "~/utils/promise";
-import { FlashDragList } from "~/components/Defaults";
+import { FlashDragList } from "~/components/Defaults/Legacy";
 import { IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import type { SwipeableRef } from "~/components/Swipeable";

@@ -8,7 +8,7 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { GITHUB } from "~/constants/Links";
-import { ScrollPresets } from "~/components/Defaults";
+import { ScrollPresets } from "~/components/Defaults/Legacy";
 import { Button } from "~/components/Form/Button";
 import { AccentText } from "~/components/Typography/AccentText";
 import { TStyledText } from "~/components/Typography/StyledText";

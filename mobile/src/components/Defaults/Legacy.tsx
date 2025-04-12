@@ -12,7 +12,7 @@ import RNDragList from "react-native-draglist";
 import type { FlashDragListProps } from "react-native-draglist/dist/FlashList";
 import RNFlashDragList from "react-native-draglist/dist/FlashList";
 
-import { ContentPlaceholder } from "./Transition/Placeholder";
+import { ContentPlaceholder } from "../Transition/Placeholder";
 
 //#region Preset Values
 /** Presets for scrollview-like components. */

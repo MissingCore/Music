@@ -9,8 +9,8 @@ import type { PlayListSource } from "../types";
 
 import { cn } from "~/lib/style";
 import type { Maybe, Prettify } from "~/utils/types";
-import type { WithListEmptyProps } from "~/components/Defaults";
-import { useListPresets } from "~/components/Defaults";
+import type { WithListEmptyProps } from "~/components/Defaults/Legacy";
+import { useListPresets } from "~/components/Defaults/Legacy";
 import type { PressProps } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button";
 import { SearchResult } from "~/modules/search/components/SearchResult";

@@ -36,7 +36,7 @@ import {
   formatSeconds,
 } from "~/utils/number";
 import { Marquee } from "~/components/Containment/Marquee";
-import { FlashList } from "~/components/Defaults";
+import { FlashList } from "~/components/Defaults/Legacy";
 import { Divider } from "~/components/Divider";
 import { IconButton } from "~/components/Form/Button";
 import { Checkbox } from "~/components/Form/Selection";
