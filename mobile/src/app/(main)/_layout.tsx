@@ -141,6 +141,7 @@ function NavigationList() {
     <View className="relative shrink grow">
       <LegendList
         ref={listRef}
+        estimatedItemSize={72}
         horizontal
         data={NavRoutes}
         keyExtractor={({ href }) => href as string}

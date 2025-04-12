@@ -4,7 +4,7 @@ import {
 } from "~/modules/media/services/SortPreferences";
 
 import { ListItem } from "~/components/Containment/List";
-import { FlatList } from "~/components/Defaults/Legacy";
+import { LegendList } from "~/components/Defaults";
 import { Radio } from "~/components/Form/Selection";
 import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
@@ -29,19 +29,21 @@ export function TrackSortSheet(props: { sheetRef: TrueSheetRef }) {
         switchState={isAsc}
         {...{ largeTitle: true, first: true, last: true }}
       />
-      <FlatList
+      <LegendList
         accessibilityRole="radiogroup"
+        estimatedItemSize={54}
         data={OrderedByOptions}
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => (
+        keyExtractor={(sortOption) => sortOption}
+        extraData={orderedBy}
+        renderItem={({ item: sortOption }) => (
           <Radio
-            selected={item === orderedBy}
-            onSelect={() => setOrderedBy(item)}
+            selected={orderedBy === sortOption}
+            onSelect={() => setOrderedBy(sortOption)}
           >
-            <TStyledText textKey={`feat.modalSort.extra.${item}`} />
+            <TStyledText textKey={`feat.modalSort.extra.${sortOption}`} />
           </Radio>
         )}
-        contentContainerClassName="gap-1"
+        columnWrapperStyle={{ gap: 4 }}
       />
     </Sheet>
   );
