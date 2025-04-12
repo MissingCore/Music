@@ -1,12 +1,10 @@
-import type { LegendListRef } from "@legendapp/list";
-import { LegendList } from "@legendapp/list";
 import type { NavigationState } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import type { Href } from "expo-router";
 import { Stack, router, useRootNavigationState } from "expo-router";
 import type { ParseKeys } from "i18next";
 import { useTranslation } from "react-i18next";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import { View } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
 
@@ -19,7 +17,7 @@ import { useHasNewUpdate } from "~/hooks/useHasNewUpdate";
 import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
-import { ScrollPresets } from "~/components/Defaults/Legacy";
+import { LegendList, useLegendListRef } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { StyledText } from "~/components/Typography/StyledText";
 import { MiniPlayer } from "~/modules/media/components/MiniPlayer";
@@ -98,7 +96,7 @@ function NavigationList() {
   const { t, i18n } = useTranslation();
   const { surface } = useTheme();
   const navState = useRootNavigationState() as NavigationState;
-  const listRef = useRef<LegendListRef>(null);
+  const listRef = useLegendListRef();
   const { displayedTabs } = useTabsByVisibility();
 
   // Buttons for the routes we can navigate to on the "home" screen, whose
@@ -127,8 +125,6 @@ function NavigationList() {
     return routeNames[index];
   }, [navState]);
 
-  const legendListDependencies = useMemo(() => [t, routeName], [t, routeName]);
-
   useEffect(() => {
     if (!listRef.current || !routeName) return;
     try {
@@ -139,7 +135,7 @@ function NavigationList() {
       //  when we go from a language with longer words to one with shorter words.
       listRef.current.scrollToIndex({ index: tabIndex, viewPosition: 0.5 });
     } catch {}
-  }, [i18n.language, routeName, NavRoutes]);
+  }, [listRef, i18n.language, routeName, NavRoutes]);
 
   return (
     <View className="relative shrink grow">
@@ -148,7 +144,7 @@ function NavigationList() {
         horizontal
         data={NavRoutes}
         keyExtractor={({ href }) => href as string}
-        extraData={legendListDependencies}
+        extraData={routeName}
         renderItem={({ item: { href, key, name } }) => (
           <Button
             onPress={() => Router.navigateMTT(href)}
@@ -162,8 +158,7 @@ function NavigationList() {
             </StyledText>
           </Button>
         )}
-        contentContainerStyle={{ paddingHorizontal: 8 }}
-        {...ScrollPresets}
+        contentContainerClassName="px-2"
       />
       {/* Scroll Shadow */}
       <LinearGradient
