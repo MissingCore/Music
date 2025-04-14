@@ -5,6 +5,7 @@ import type { ForwardedRef } from "react";
 import { forwardRef, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import type { ScrollViewProps } from "react-native";
+import { ScrollView as RNScrollView } from "react-native";
 
 /** Presets for scrollview-like components. */
 export const ScrollablePresets = {
@@ -12,6 +13,12 @@ export const ScrollablePresets = {
   showsHorizontalScrollIndicator: false,
   showsVerticalScrollIndicator: false,
 } satisfies ScrollViewProps;
+
+//#region Scroll View
+export function ScrollView(props: ScrollViewProps) {
+  return <RNScrollView {...ScrollablePresets} {...props} />;
+}
+//#endregion
 
 //#region Legend List
 const WrappedLegendList = cssInterop(RawLegendList, {

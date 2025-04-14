@@ -10,7 +10,7 @@ import {
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { useRecentListStore } from "~/modules/media/services/RecentList";
-import { StickyActionScrollLayout } from "~/layouts/StickyActionScroll";
+import { StandardScrollLayout } from "~/layouts/StandardScroll";
 
 import { cn } from "~/lib/style";
 import { abbreviateNum } from "~/utils/number";
@@ -27,11 +27,11 @@ import {
 /** Screen for `/` route. */
 export default function HomeScreen() {
   return (
-    <StickyActionScrollLayout titleKey="term.home">
+    <StandardScrollLayout titleKey="term.home" forHomeScreen>
       <RecentlyPlayed />
       <TEm textKey="term.favorites" className="-mb-4" />
       <Favorites />
-    </StickyActionScrollLayout>
+    </StandardScrollLayout>
   );
 }
 
