@@ -21,10 +21,12 @@ export function ScrollView(props: ScrollViewProps) {
 //#endregion
 
 //#region Legend List
+type LegendListSignature = typeof RawLegendList;
+
 const WrappedLegendList = cssInterop(RawLegendList, {
   className: "style",
   contentContainerClassName: "contentContainerStyle",
-});
+}) as LegendListSignature;
 
 function LegendListImpl<T>(
   { extraData, recycleItems = true, ...props }: LegendListProps<T>,
@@ -38,7 +40,6 @@ function LegendListImpl<T>(
   );
 
   return (
-    // @ts-ignore: TS complains due to `cssInterop` being unable to bring along the generic.
     <WrappedLegendList
       ref={ref}
       {...ScrollablePresets}
@@ -50,9 +51,7 @@ function LegendListImpl<T>(
 }
 
 /** Legend List supporting NativeWind styles. */
-export const LegendList = forwardRef(LegendListImpl) as <T>(
-  props: LegendListProps<T> & { ref?: ForwardedRef<LegendListRef> },
-) => React.JSX.Element;
+export const LegendList = forwardRef(LegendListImpl) as LegendListSignature;
 
 export function useLegendListRef() {
   return useRef<LegendListRef>(null);
