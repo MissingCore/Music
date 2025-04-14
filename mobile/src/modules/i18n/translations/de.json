@@ -182,7 +182,7 @@
     },
     "ignoreInterrupt": {
       "title": "Unterbrechungen ignorieren",
-      "brief": "Wiedergabe von Audio fortsetzen, wenn eine Unterbrechung wie eine Benachrichtigung oder ein Anruf auftritt. Du musst die Musik in diesen Situationen manuell pausieren und aufheben."
+      "brief": "Wiedergabe von Audio fortsetzen, wenn eine Unterbrechung wie eine Benachrichtigung oder ein Anruf auftritt. Du musst die Musik in diesen Situationen manuell pausieren/abspielen."
     },
     "repeatOnSkip": {
       "title": "Wiederholungsmodus beim Überspringen behalten",

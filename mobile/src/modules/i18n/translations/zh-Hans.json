@@ -25,7 +25,7 @@
     "home": "首页",
     "settings": "设置",
     "upcoming": "即将播放",
-    "playingFrom": null,
+    "playingFrom": "正在播放来自",
     "disc": "碟片 {{count}}"
   },
   "template": {
@@ -110,7 +110,7 @@
     "font": {
       "extra": {
         "accent": "强调字体",
-        "primary": null
+        "primary": "首选字体"
       }
     },
     "theme": {
@@ -134,7 +134,7 @@
       "extra": {
         "plain": "普通封面",
         "vinyl": "黑胶唱片",
-        "vinylOld": null
+        "vinylOld": "黑胶唱片(经典)"
       }
     },
     "language": {
@@ -172,7 +172,7 @@
       "brief": "支持的 Nothing 功能。"
     },
     "playback": {
-      "title": null,
+      "title": "回放",
       "brief": null,
       "extra": {
         "options": null,
@@ -185,8 +185,8 @@
       "brief": null
     },
     "repeatOnSkip": {
-      "title": null,
-      "brief": null
+      "title": "跳过时保持单曲循环",
+      "brief": "不要在跳过时从“单曲循环”切换模式到“循环播放”。"
     },
     "scanning": {
       "title": "扫描",
