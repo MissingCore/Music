@@ -96,7 +96,7 @@ function FontSheet<T extends (typeof AccentFontOptions)[number]>(props: {
             </Text>
           </Radio>
         )}
-        columnWrapperStyle={{ gap: 4 }}
+        columnWrapperStyle={{ rowGap: 4 }}
       />
     </Sheet>
   );
@@ -127,7 +127,7 @@ function ThemeSheet(props: { sheetRef: TrueSheetRef }) {
             <TStyledText textKey={`feat.theme.extra.${theme}`} />
           </Radio>
         )}
-        columnWrapperStyle={{ gap: 4 }}
+        columnWrapperStyle={{ rowGap: 4 }}
       />
     </Sheet>
   );
@@ -154,7 +154,7 @@ function NowPlayingDesignSheet(props: { sheetRef: TrueSheetRef }) {
             <TStyledText textKey={`feat.nowPlayingDesign.extra.${design}`} />
           </Radio>
         )}
-        columnWrapperStyle={{ gap: 4 }}
+        columnWrapperStyle={{ rowGap: 4 }}
       />
     </Sheet>
   );

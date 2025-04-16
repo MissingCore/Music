@@ -98,7 +98,7 @@ function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
           </Radio>
         )}
         nestedScrollEnabled
-        columnWrapperStyle={{ gap: 4 }}
+        columnWrapperStyle={{ rowGap: 4 }}
         contentContainerClassName="pb-4"
       />
     </Sheet>

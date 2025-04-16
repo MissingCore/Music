@@ -43,7 +43,7 @@ export function TrackSortSheet(props: { sheetRef: TrueSheetRef }) {
             <TStyledText textKey={`feat.modalSort.extra.${sortOption}`} />
           </Radio>
         )}
-        columnWrapperStyle={{ gap: 4 }}
+        columnWrapperStyle={{ rowGap: 4 }}
       />
     </Sheet>
   );
