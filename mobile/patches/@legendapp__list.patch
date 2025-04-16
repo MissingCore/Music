@@ -1,0 +1,172 @@
+diff --git a/animated.d.mts b/animated.d.mts
+index 1f80d580d690734a2258fe1ef374dc3830b5c7f3..b91c77a0b4bd6c794f42ba13dd3f7402cbce5a43 100644
+--- a/animated.d.mts
++++ b/animated.d.mts
+@@ -6,7 +6,7 @@ import { Animated } from 'react-native';
+ declare const AnimatedLegendList: Animated.AnimatedComponent<(<T>(props: Omit<react_native.ScrollViewProps, "maintainVisibleContentPosition" | "stickyHeaderIndices" | "contentInset" | "contentOffset"> & {
+     alignItemsAtEnd?: boolean;
+     columnWrapperStyle?: _legendapp_list.ColumnWrapperStyle;
+-    data: readonly T[];
++    data?: readonly T[];
+     drawDistance?: number;
+     estimatedItemSize?: number;
+     extraData?: any;
+diff --git a/animated.d.ts b/animated.d.ts
+index 1f80d580d690734a2258fe1ef374dc3830b5c7f3..b91c77a0b4bd6c794f42ba13dd3f7402cbce5a43 100644
+--- a/animated.d.ts
++++ b/animated.d.ts
+@@ -6,7 +6,7 @@ import { Animated } from 'react-native';
+ declare const AnimatedLegendList: Animated.AnimatedComponent<(<T>(props: Omit<react_native.ScrollViewProps, "maintainVisibleContentPosition" | "stickyHeaderIndices" | "contentInset" | "contentOffset"> & {
+     alignItemsAtEnd?: boolean;
+     columnWrapperStyle?: _legendapp_list.ColumnWrapperStyle;
+-    data: readonly T[];
++    data?: readonly T[];
+     drawDistance?: number;
+     estimatedItemSize?: number;
+     extraData?: any;
+diff --git a/index.d.mts b/index.d.mts
+index 7727ca5f2913bb6f7853b0b61e2653d9aca7ddda..73f83ebeb88442fc0ec12232fe084c15497681ef 100644
+--- a/index.d.mts
++++ b/index.d.mts
+@@ -32,9 +32,8 @@ type LegendListPropsBase<ItemT, TScrollView extends ComponentProps<typeof Scroll
+     columnWrapperStyle?: ColumnWrapperStyle;
+     /**
+      * Array of items to render in the list.
+-     * @required
+      */
+-    data: ReadonlyArray<ItemT>;
++    data?: ReadonlyArray<ItemT>;
+     /**
+      * Distance in pixels to pre-render items ahead of the visible area.
+      * @default 250
+@@ -232,7 +231,7 @@ interface InternalState {
+     isEndReached: boolean;
+     isAtBottom: boolean;
+     isAtTop: boolean;
+-    data: readonly any[];
++    data?: readonly any[];
+     hasScrolled?: boolean;
+     scrollLength: number;
+     startBuffered: number;
+@@ -456,7 +455,7 @@ declare const typedMemo: TypedMemo;
+ declare const LegendList: <T>(props: Omit<react_native.ScrollViewProps, "maintainVisibleContentPosition" | "stickyHeaderIndices" | "contentInset" | "contentOffset"> & {
+     alignItemsAtEnd?: boolean;
+     columnWrapperStyle?: ColumnWrapperStyle;
+-    data: readonly T[];
++    data?: readonly T[];
+     drawDistance?: number;
+     estimatedItemSize?: number;
+     extraData?: any;
+diff --git a/index.d.ts b/index.d.ts
+index 7727ca5f2913bb6f7853b0b61e2653d9aca7ddda..73f83ebeb88442fc0ec12232fe084c15497681ef 100644
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -32,9 +32,8 @@ type LegendListPropsBase<ItemT, TScrollView extends ComponentProps<typeof Scroll
+     columnWrapperStyle?: ColumnWrapperStyle;
+     /**
+      * Array of items to render in the list.
+-     * @required
+      */
+-    data: ReadonlyArray<ItemT>;
++    data?: ReadonlyArray<ItemT>;
+     /**
+      * Distance in pixels to pre-render items ahead of the visible area.
+      * @default 250
+@@ -232,7 +231,7 @@ interface InternalState {
+     isEndReached: boolean;
+     isAtBottom: boolean;
+     isAtTop: boolean;
+-    data: readonly any[];
++    data?: readonly any[];
+     hasScrolled?: boolean;
+     scrollLength: number;
+     startBuffered: number;
+@@ -456,7 +455,7 @@ declare const typedMemo: TypedMemo;
+ declare const LegendList: <T>(props: Omit<react_native.ScrollViewProps, "maintainVisibleContentPosition" | "stickyHeaderIndices" | "contentInset" | "contentOffset"> & {
+     alignItemsAtEnd?: boolean;
+     columnWrapperStyle?: ColumnWrapperStyle;
+-    data: readonly T[];
++    data?: readonly T[];
+     drawDistance?: number;
+     estimatedItemSize?: number;
+     extraData?: any;
+diff --git a/keyboard-controller.d.mts b/keyboard-controller.d.mts
+index 933851c6b94b1fd966d1a78fe89ffe5fbdb18673..43f0b88698a373dd6739d272e1a38ced7edd0ac7 100644
+--- a/keyboard-controller.d.mts
++++ b/keyboard-controller.d.mts
+@@ -9,7 +9,7 @@ import * as React from 'react';
+ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.ScrollViewProps, "contentOffset" | "contentInset" | "maintainVisibleContentPosition" | "stickyHeaderIndices"> & {
+     alignItemsAtEnd?: boolean;
+     columnWrapperStyle?: _legendapp_list.ColumnWrapperStyle;
+-    data: readonly T[];
++    data?: readonly T[];
+     drawDistance?: number;
+     estimatedItemSize?: number;
+     extraData?: any;
+@@ -59,7 +59,7 @@ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.Sc
+ } & React.RefAttributes<LegendListRef>) => React.ReactNode) | react_native.Animated.AnimatedComponent<(<T>(props: Omit<react_native.ScrollViewProps, "contentOffset" | "contentInset" | "maintainVisibleContentPosition" | "stickyHeaderIndices"> & {
+     alignItemsAtEnd?: boolean;
+     columnWrapperStyle?: _legendapp_list.ColumnWrapperStyle;
+-    data: readonly T[];
++    data?: readonly T[];
+     drawDistance?: number;
+     estimatedItemSize?: number;
+     extraData?: any;
+@@ -292,7 +292,7 @@ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.Sc
+ }) => React.ReactElement | null) = <T>(props: Omit<react_native.ScrollViewProps, "contentOffset" | "contentInset" | "maintainVisibleContentPosition" | "stickyHeaderIndices"> & {
+     alignItemsAtEnd?: boolean;
+     columnWrapperStyle?: _legendapp_list.ColumnWrapperStyle;
+-    data: readonly T[];
++    data?: readonly T[];
+     drawDistance?: number;
+     estimatedItemSize?: number;
+     extraData?: any;
+@@ -342,7 +342,7 @@ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.Sc
+ } & React.RefAttributes<LegendListRef>) => React.ReactNode>(props: Omit<react_native.ScrollViewProps, "contentOffset" | "contentInset" | "maintainVisibleContentPosition" | "stickyHeaderIndices"> & {
+     alignItemsAtEnd?: boolean;
+     columnWrapperStyle?: _legendapp_list.ColumnWrapperStyle;
+-    data: readonly ItemT[];
++    data?: readonly ItemT[];
+     drawDistance?: number;
+     estimatedItemSize?: number;
+     extraData?: any;
+diff --git a/keyboard-controller.d.ts b/keyboard-controller.d.ts
+index 933851c6b94b1fd966d1a78fe89ffe5fbdb18673..43f0b88698a373dd6739d272e1a38ced7edd0ac7 100644
+--- a/keyboard-controller.d.ts
++++ b/keyboard-controller.d.ts
+@@ -9,7 +9,7 @@ import * as React from 'react';
+ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.ScrollViewProps, "contentOffset" | "contentInset" | "maintainVisibleContentPosition" | "stickyHeaderIndices"> & {
+     alignItemsAtEnd?: boolean;
+     columnWrapperStyle?: _legendapp_list.ColumnWrapperStyle;
+-    data: readonly T[];
++    data?: readonly T[];
+     drawDistance?: number;
+     estimatedItemSize?: number;
+     extraData?: any;
+@@ -59,7 +59,7 @@ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.Sc
+ } & React.RefAttributes<LegendListRef>) => React.ReactNode) | react_native.Animated.AnimatedComponent<(<T>(props: Omit<react_native.ScrollViewProps, "contentOffset" | "contentInset" | "maintainVisibleContentPosition" | "stickyHeaderIndices"> & {
+     alignItemsAtEnd?: boolean;
+     columnWrapperStyle?: _legendapp_list.ColumnWrapperStyle;
+-    data: readonly T[];
++    data?: readonly T[];
+     drawDistance?: number;
+     estimatedItemSize?: number;
+     extraData?: any;
+@@ -292,7 +292,7 @@ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.Sc
+ }) => React.ReactElement | null) = <T>(props: Omit<react_native.ScrollViewProps, "contentOffset" | "contentInset" | "maintainVisibleContentPosition" | "stickyHeaderIndices"> & {
+     alignItemsAtEnd?: boolean;
+     columnWrapperStyle?: _legendapp_list.ColumnWrapperStyle;
+-    data: readonly T[];
++    data?: readonly T[];
+     drawDistance?: number;
+     estimatedItemSize?: number;
+     extraData?: any;
+@@ -342,7 +342,7 @@ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.Sc
+ } & React.RefAttributes<LegendListRef>) => React.ReactNode>(props: Omit<react_native.ScrollViewProps, "contentOffset" | "contentInset" | "maintainVisibleContentPosition" | "stickyHeaderIndices"> & {
+     alignItemsAtEnd?: boolean;
+     columnWrapperStyle?: _legendapp_list.ColumnWrapperStyle;
+-    data: readonly ItemT[];
++    data?: readonly ItemT[];
+     drawDistance?: number;
+     estimatedItemSize?: number;
+     extraData?: any;

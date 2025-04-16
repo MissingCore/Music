@@ -11,6 +11,9 @@ patchedDependencies:
   '@backpackapp-io/react-native-toast':
     hash: zgygxsuuqk33jr3gwbxpbkmczi
     path: patches/@backpackapp-io__react-native-toast.patch
+  '@legendapp/list':
+    hash: rdcmm5sc5ztju662qo25trf6la
+    path: patches/@legendapp__list.patch
   '@react-native-assets/slider':
     hash: q6v3llicmqqfpxxpnwpftecnbi
     path: patches/@react-native-assets__slider.patch
@@ -27,7 +30,7 @@ importers:
         version: 0.13.0(patch_hash=zgygxsuuqk33jr3gwbxpbkmczi)(react-native-gesture-handler@2.25.0(patch_hash=rjhgnwrqf5shhovxtmq2tgj2qm)(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.26.10)(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))(react-native-safe-area-context@5.3.0(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
       '@legendapp/list':
         specifier: 1.0.0-beta.42
-        version: 1.0.0-beta.42(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
+        version: 1.0.0-beta.42(patch_hash=rdcmm5sc5ztju662qo25trf6la)(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
       '@lodev09/react-native-true-sheet':
         specifier: ^2.0.5
         version: 2.0.5(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
@@ -7849,7 +7852,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@legendapp/list@1.0.0-beta.42(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)':
+  '@legendapp/list@1.0.0-beta.42(patch_hash=rdcmm5sc5ztju662qo25trf6la)(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)':
     dependencies:
       react: 18.3.1
       react-native: 0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1)
