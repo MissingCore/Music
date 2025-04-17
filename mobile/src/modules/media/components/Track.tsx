@@ -60,9 +60,10 @@ export function Track({ id, trackSource, className, ...props }: Track.Props) {
 //#endregion
 
 //#region Track List
-type TrackListProps = React.ComponentProps<typeof ContentPlaceholder> & {
+type TrackListProps = {
   data?: readonly Track.Content[];
   trackSource: PlayListSource;
+  isPending?: boolean;
 };
 
 /** Presets used in the FlashList containing a list of `<Track />`. */
@@ -78,7 +79,7 @@ export function useTrackListPreset(props: TrackListProps) {
       ListEmptyComponent: (
         <ContentPlaceholder
           isPending={props.isPending}
-          errMsgKey={props.errMsgKey}
+          errMsgKey="err.msg.noTracks"
         />
       ),
       columnWrapperStyle: { rowGap: 8 },
