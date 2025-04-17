@@ -1,5 +1,4 @@
-import type { FlashListProps } from "@shopify/flash-list";
-import { FlashList } from "@shopify/flash-list";
+import type { LegendListProps } from "@legendapp/list";
 import type { Href } from "expo-router";
 import { useMemo } from "react";
 import type { LayoutChangeEvent } from "react-native";
@@ -9,9 +8,9 @@ import { Router } from "~/services/NavigationStore";
 import { useGetColumn } from "~/hooks/useGetColumn";
 
 import { cn } from "~/lib/style";
-import type { Maybe, Prettify } from "~/utils/types";
-import type { WithListEmptyProps } from "~/components/Defaults/Legacy";
-import { useListPresets } from "~/components/Defaults/Legacy";
+import type { Prettify } from "~/utils/types";
+import { LegendList } from "~/components/Defaults";
+import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { StyledText } from "~/components/Typography/StyledText";
 import { MediaImage } from "./MediaImage";
 
@@ -82,56 +81,47 @@ export const MediaCardPlaceholderContent: MediaCard.Content = {
 //#endregion
 
 //#region Media Card List
-type MediaCardListProps = WithListEmptyProps<{
-  data: Maybe<readonly MediaCard.Content[]>;
+type MediaCardListProps = React.ComponentProps<typeof ContentPlaceholder> & {
+  data?: readonly MediaCard.Content[];
   /**
    * Renders a special entry before all other data. This assumes at `data[0]`,
    * we have a `MediaCardPlaceholderContent`.
    */
-  RenderFirst?: (props: {
-    size: number;
-    className: string;
-  }) => React.JSX.Element;
-}>;
+  RenderFirst?: (props: { size: number }) => React.JSX.Element;
+};
 
-/** Hook for getting the presets used in the FlashList for `<MediaCardList />`. */
+/** Hook for getting the presets used in `<MediaCardList />`. */
 export function useMediaCardListPreset(props: MediaCardListProps) {
   const { count, width } = useGetColumn({
     ...{ cols: 2, gap: 12, gutters: 32, minWidth: 175 },
   });
-  const listPresets = useListPresets({
-    isPending: props.isPending,
-    emptyMsgKey: props.emptyMsgKey,
-  });
-
   return useMemo(
     () => ({
-      ...listPresets,
       numColumns: count,
-      // ~40px for text content under `<MediaImage />` + 16px Margin Bottom
-      estimatedItemSize: width + 40 + 12,
+      estimatedItemSize: width + 40, // ~40px for text content under `<MediaImage />`
       data: props.data,
       keyExtractor: ({ href }) => href,
-      /*
-        Utilized janky margin method to implement gaps in FlashList with columns.
-          - https://github.com/shopify/flash-list/discussions/804#discussioncomment-5509022
-      */
       renderItem: ({ item, index }) =>
         props.RenderFirst && index === 0 ? (
-          <props.RenderFirst size={width} className="mx-1.5 mb-3" />
+          <props.RenderFirst size={width} />
         ) : (
-          <MediaCard {...item} size={width} className="mx-1.5 mb-3" />
+          <MediaCard {...item} size={width} />
         ),
-      ListHeaderComponentStyle: { paddingHorizontal: 8 },
-      className: "-mx-1.5 -mb-3",
+      ListEmptyComponent: (
+        <ContentPlaceholder
+          isPending={props.isPending}
+          errMsgKey={props.errMsgKey}
+        />
+      ),
+      columnWrapperStyle: { gap: 12 },
     }),
-    [count, width, props, listPresets],
-  ) satisfies FlashListProps<MediaCard.Content>;
+    [count, width, props],
+  ) satisfies LegendListProps<MediaCard.Content>;
 }
 
 /** Lists out `<MediaCard />` in a grid. */
 export function MediaCardList(props: MediaCardListProps) {
   const presets = useMediaCardListPreset(props);
-  return <FlashList {...presets} />;
+  return <LegendList {...presets} />;
 }
 //#endregion

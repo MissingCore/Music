@@ -21,9 +21,9 @@ const trackSource = {
 /** Screen for `/track` route. */
 export default function TrackScreen() {
   const { isPending, data } = useTracksForTrackCard();
-  const listPresets = useTrackListPreset({
-    ...{ data, trackSource, isPending },
-    emptyMsgKey: "err.msg.noTracks",
+  const presets = useTrackListPreset({
+    ...{ data, isPending, trackSource },
+    errMsgKey: "err.msg.noTracks",
   });
   const trackSortSheetRef = useSheetRef();
 
@@ -38,7 +38,7 @@ export default function TrackScreen() {
           />
         }
         estimatedActionSize={48}
-        {...listPresets}
+        {...presets}
       />
     </>
   );

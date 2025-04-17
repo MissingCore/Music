@@ -3,27 +3,25 @@ import { router } from "expo-router";
 import { useArtistsForIndex } from "~/queries/artist";
 import { StickyActionListLayout } from "~/layouts/StickyActionScroll";
 
-import { useListPresets } from "~/components/Defaults/Legacy";
+import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { Em } from "~/components/Typography/StyledText";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 
 /** Screen for `/artist` route. */
 export default function ArtistScreen() {
   const { isPending, data } = useArtistsForIndex();
-  const listPresets = useListPresets({
-    isPending,
-    emptyMsgKey: "err.msg.noArtists",
-  });
-
   return (
     <StickyActionListLayout
       titleKey="term.artists"
-      estimatedItemSize={56} // 48px Height + 8px Margin Top
+      getEstimatedItemSize={(index, item) => {
+        if (typeof item === "string") return index === 0 ? 14 : 22;
+        else return 48;
+      }}
       data={data}
       keyExtractor={(item) => (typeof item === "string" ? item : item.name)}
       renderItem={({ item, index }) =>
         typeof item === "string" ? (
-          <Em className={index > 0 ? "mt-4" : undefined}>{item}</Em>
+          <Em className={index > 0 ? "mt-2" : undefined}>{item}</Em>
         ) : (
           <SearchResult
             {...{ as: "ripple", type: "artist", title: item.name }}
@@ -31,12 +29,18 @@ export default function ArtistScreen() {
             onPress={() =>
               router.navigate(`/artist/${encodeURIComponent(item.name)}`)
             }
-            wrapperClassName="mt-2 rounded-full"
+            wrapperClassName="rounded-full"
             className="pr-4"
           />
         )
       }
-      {...listPresets}
+      ListEmptyComponent={
+        <ContentPlaceholder
+          isPending={isPending}
+          errMsgKey="err.msg.noArtists"
+        />
+      }
+      columnWrapperStyle={{ rowGap: 8 }}
     />
   );
 }

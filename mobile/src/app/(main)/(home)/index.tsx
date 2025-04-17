@@ -12,7 +12,6 @@ import { useGetColumn } from "~/hooks/useGetColumn";
 import { useRecentListStore } from "~/modules/media/services/RecentList";
 import { StandardScrollLayout } from "~/layouts/StandardScroll";
 
-import { cn } from "~/lib/style";
 import { abbreviateNum } from "~/utils/number";
 import { Button } from "~/components/Form/Button";
 import { AccentText } from "~/components/Typography/AccentText";
@@ -115,7 +114,7 @@ function Favorites() {
  * Displays the number of favorited tracks and opens up the playlist of
  * favorited tracks.
  */
-function FavoriteTracks(props: { size: number; className: string }) {
+function FavoriteTracks(props: { size: number }) {
   const { isPending, error, data } = useFavoriteTracksCount();
 
   const trackCount = isPending || error ? "" : abbreviateNum(data);
@@ -126,7 +125,7 @@ function FavoriteTracks(props: { size: number; className: string }) {
         router.navigate(`/playlist/${ReservedPlaylists.favorites}`)
       }
       style={{ width: props.size, height: props.size }}
-      className={cn("gap-0 rounded-lg bg-red", props.className)}
+      className="gap-0 rounded-lg bg-red"
     >
       <AccentText className="text-[3rem] text-neutral100">
         {trackCount}

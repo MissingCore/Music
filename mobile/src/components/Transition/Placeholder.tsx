@@ -10,10 +10,14 @@ export function ContentPlaceholder(props: {
   /** Key to error messaeg in translations. */
   errMsgKey?: ParseKeys;
 }) {
-  return props.isPending ? (
-    <Loading />
-  ) : (
-    <TStyledText textKey={props.errMsgKey ?? "err.msg.noContent"} center />
+  return (
+    <View className="p-4">
+      {props.isPending ? (
+        <Loading />
+      ) : (
+        <TStyledText textKey={props.errMsgKey ?? "err.msg.noContent"} center />
+      )}
+    </View>
   );
 }
 
