@@ -35,6 +35,7 @@ export default function TrackScreen() {
           />
         }
         estimatedActionSize={48}
+        disableScrollTopOnDataChange
         {...presets}
       />
     </>

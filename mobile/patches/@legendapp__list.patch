@@ -1,5 +1,5 @@
 diff --git a/animated.d.mts b/animated.d.mts
-index 1f80d580d690734a2258fe1ef374dc3830b5c7f3..b91c77a0b4bd6c794f42ba13dd3f7402cbce5a43 100644
+index 1f80d580d690734a2258fe1ef374dc3830b5c7f3..4f21cd66a918787bfec337839b297b80b7d8100e 100644
 --- a/animated.d.mts
 +++ b/animated.d.mts
 @@ -6,7 +6,7 @@ import { Animated } from 'react-native';
@@ -11,8 +11,16 @@ index 1f80d580d690734a2258fe1ef374dc3830b5c7f3..b91c77a0b4bd6c794f42ba13dd3f7402
      drawDistance?: number;
      estimatedItemSize?: number;
      extraData?: any;
+@@ -53,6 +53,7 @@ declare const AnimatedLegendList: Animated.AnimatedComponent<(<T>(props: Omit<re
+     viewabilityConfig?: _legendapp_list.ViewabilityConfig;
+     viewabilityConfigCallbackPairs?: _legendapp_list.ViewabilityConfigCallbackPairs | undefined;
+     waitForInitialLayout?: boolean;
++    disableScrollTopOnDataChange?: boolean;
+ } & React$1.RefAttributes<_legendapp_list.LegendListRef>) => React.ReactNode)>;
+ 
+ export { AnimatedLegendList };
 diff --git a/animated.d.ts b/animated.d.ts
-index 1f80d580d690734a2258fe1ef374dc3830b5c7f3..b91c77a0b4bd6c794f42ba13dd3f7402cbce5a43 100644
+index 1f80d580d690734a2258fe1ef374dc3830b5c7f3..4f21cd66a918787bfec337839b297b80b7d8100e 100644
 --- a/animated.d.ts
 +++ b/animated.d.ts
 @@ -6,7 +6,7 @@ import { Animated } from 'react-native';
@@ -24,8 +32,16 @@ index 1f80d580d690734a2258fe1ef374dc3830b5c7f3..b91c77a0b4bd6c794f42ba13dd3f7402
      drawDistance?: number;
      estimatedItemSize?: number;
      extraData?: any;
+@@ -53,6 +53,7 @@ declare const AnimatedLegendList: Animated.AnimatedComponent<(<T>(props: Omit<re
+     viewabilityConfig?: _legendapp_list.ViewabilityConfig;
+     viewabilityConfigCallbackPairs?: _legendapp_list.ViewabilityConfigCallbackPairs | undefined;
+     waitForInitialLayout?: boolean;
++    disableScrollTopOnDataChange?: boolean;
+ } & React$1.RefAttributes<_legendapp_list.LegendListRef>) => React.ReactNode)>;
+ 
+ export { AnimatedLegendList };
 diff --git a/index.d.mts b/index.d.mts
-index 7727ca5f2913bb6f7853b0b61e2653d9aca7ddda..73f83ebeb88442fc0ec12232fe084c15497681ef 100644
+index 7727ca5f2913bb6f7853b0b61e2653d9aca7ddda..2468b4d091d112fe895863882b23b96f243de1a8 100644
 --- a/index.d.mts
 +++ b/index.d.mts
 @@ -32,9 +32,8 @@ type LegendListPropsBase<ItemT, TScrollView extends ComponentProps<typeof Scroll
@@ -39,7 +55,19 @@ index 7727ca5f2913bb6f7853b0b61e2653d9aca7ddda..73f83ebeb88442fc0ec12232fe084c15
      /**
       * Distance in pixels to pre-render items ahead of the visible area.
       * @default 250
-@@ -232,7 +231,7 @@ interface InternalState {
+@@ -204,6 +203,11 @@ type LegendListPropsBase<ItemT, TScrollView extends ComponentProps<typeof Scroll
+      * @default false
+      */
+     waitForInitialLayout?: boolean;
++    /**
++     * If true, prevent the list from scrolling to the top when the data changes.
++     * @default false
++     */
++    disableScrollTopOnDataChange?: boolean;
+ };
+ interface ColumnWrapperStyle {
+     rowGap?: number;
+@@ -232,7 +236,7 @@ interface InternalState {
      isEndReached: boolean;
      isAtBottom: boolean;
      isAtTop: boolean;
@@ -48,7 +76,7 @@ index 7727ca5f2913bb6f7853b0b61e2653d9aca7ddda..73f83ebeb88442fc0ec12232fe084c15
      hasScrolled?: boolean;
      scrollLength: number;
      startBuffered: number;
-@@ -456,7 +455,7 @@ declare const typedMemo: TypedMemo;
+@@ -456,7 +460,7 @@ declare const typedMemo: TypedMemo;
  declare const LegendList: <T>(props: Omit<react_native.ScrollViewProps, "maintainVisibleContentPosition" | "stickyHeaderIndices" | "contentInset" | "contentOffset"> & {
      alignItemsAtEnd?: boolean;
      columnWrapperStyle?: ColumnWrapperStyle;
@@ -57,8 +85,16 @@ index 7727ca5f2913bb6f7853b0b61e2653d9aca7ddda..73f83ebeb88442fc0ec12232fe084c15
      drawDistance?: number;
      estimatedItemSize?: number;
      extraData?: any;
+@@ -503,6 +507,7 @@ declare const LegendList: <T>(props: Omit<react_native.ScrollViewProps, "maintai
+     viewabilityConfig?: ViewabilityConfig;
+     viewabilityConfigCallbackPairs?: ViewabilityConfigCallbackPairs | undefined;
+     waitForInitialLayout?: boolean;
++    disableScrollTopOnDataChange?: boolean;
+ } & React$1.RefAttributes<LegendListRef>) => React$1.ReactNode;
+ 
+ declare function useViewability(configId: string, callback: ViewabilityCallback): void;
 diff --git a/index.d.ts b/index.d.ts
-index 7727ca5f2913bb6f7853b0b61e2653d9aca7ddda..73f83ebeb88442fc0ec12232fe084c15497681ef 100644
+index 7727ca5f2913bb6f7853b0b61e2653d9aca7ddda..2468b4d091d112fe895863882b23b96f243de1a8 100644
 --- a/index.d.ts
 +++ b/index.d.ts
 @@ -32,9 +32,8 @@ type LegendListPropsBase<ItemT, TScrollView extends ComponentProps<typeof Scroll
@@ -72,7 +108,19 @@ index 7727ca5f2913bb6f7853b0b61e2653d9aca7ddda..73f83ebeb88442fc0ec12232fe084c15
      /**
       * Distance in pixels to pre-render items ahead of the visible area.
       * @default 250
-@@ -232,7 +231,7 @@ interface InternalState {
+@@ -204,6 +203,11 @@ type LegendListPropsBase<ItemT, TScrollView extends ComponentProps<typeof Scroll
+      * @default false
+      */
+     waitForInitialLayout?: boolean;
++    /**
++     * If true, prevent the list from scrolling to the top when the data changes.
++     * @default false
++     */
++    disableScrollTopOnDataChange?: boolean;
+ };
+ interface ColumnWrapperStyle {
+     rowGap?: number;
+@@ -232,7 +236,7 @@ interface InternalState {
      isEndReached: boolean;
      isAtBottom: boolean;
      isAtTop: boolean;
@@ -81,7 +129,7 @@ index 7727ca5f2913bb6f7853b0b61e2653d9aca7ddda..73f83ebeb88442fc0ec12232fe084c15
      hasScrolled?: boolean;
      scrollLength: number;
      startBuffered: number;
-@@ -456,7 +455,7 @@ declare const typedMemo: TypedMemo;
+@@ -456,7 +460,7 @@ declare const typedMemo: TypedMemo;
  declare const LegendList: <T>(props: Omit<react_native.ScrollViewProps, "maintainVisibleContentPosition" | "stickyHeaderIndices" | "contentInset" | "contentOffset"> & {
      alignItemsAtEnd?: boolean;
      columnWrapperStyle?: ColumnWrapperStyle;
@@ -90,8 +138,46 @@ index 7727ca5f2913bb6f7853b0b61e2653d9aca7ddda..73f83ebeb88442fc0ec12232fe084c15
      drawDistance?: number;
      estimatedItemSize?: number;
      extraData?: any;
+@@ -503,6 +507,7 @@ declare const LegendList: <T>(props: Omit<react_native.ScrollViewProps, "maintai
+     viewabilityConfig?: ViewabilityConfig;
+     viewabilityConfigCallbackPairs?: ViewabilityConfigCallbackPairs | undefined;
+     waitForInitialLayout?: boolean;
++    disableScrollTopOnDataChange?: boolean;
+ } & React$1.RefAttributes<LegendListRef>) => React$1.ReactNode;
+ 
+ declare function useViewability(configId: string, callback: ViewabilityCallback): void;
+diff --git a/index.js b/index.js
+index 61e6958b9ba27b38b1d582e0936f289dfebf15b2..086a06f44eb915c105eedec905ba6c3984fc9cb6 100644
+--- a/index.js
++++ b/index.js
+@@ -876,6 +876,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
+     viewabilityConfig,
+     viewabilityConfigCallbackPairs,
+     onViewableItemsChanged,
++    disableScrollTopOnDataChange = false,
+     ...rest
+   } = props;
+   const callbacks = React6.useRef({
+@@ -1588,7 +1589,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
+             };
+             refState.current.anchorElement = newAnchorElement;
+             (_b2 = refState.current.belowAnchorElementPositions) == null ? void 0 : _b2.clear();
+-            scrollTo(0, false);
++            if (!disableScrollTopOnDataChange) scrollTo(0, false);
+             setTimeout(() => {
+               calculateItemsInView();
+             }, 0);
+@@ -1603,7 +1604,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
+           } else {
+             refState.current.startBufferedId = void 0;
+           }
+-          scrollTo(0, false);
++          if (!disableScrollTopOnDataChange) scrollTo(0, false);
+           setTimeout(() => {
+             calculateItemsInView();
+           }, 0);
 diff --git a/keyboard-controller.d.mts b/keyboard-controller.d.mts
-index 933851c6b94b1fd966d1a78fe89ffe5fbdb18673..43f0b88698a373dd6739d272e1a38ced7edd0ac7 100644
+index 933851c6b94b1fd966d1a78fe89ffe5fbdb18673..404e4e09518ecb5cc148ef078fa6d8ee34210895 100644
 --- a/keyboard-controller.d.mts
 +++ b/keyboard-controller.d.mts
 @@ -9,7 +9,7 @@ import * as React from 'react';
@@ -103,7 +189,11 @@ index 933851c6b94b1fd966d1a78fe89ffe5fbdb18673..43f0b88698a373dd6739d272e1a38ced
      drawDistance?: number;
      estimatedItemSize?: number;
      extraData?: any;
-@@ -59,7 +59,7 @@ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.Sc
+@@ -56,10 +56,11 @@ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.Sc
+     viewabilityConfig?: _legendapp_list.ViewabilityConfig;
+     viewabilityConfigCallbackPairs?: _legendapp_list.ViewabilityConfigCallbackPairs | undefined;
+     waitForInitialLayout?: boolean;
++    disableScrollTopOnDataChange?: boolean;
  } & React.RefAttributes<LegendListRef>) => React.ReactNode) | react_native.Animated.AnimatedComponent<(<T>(props: Omit<react_native.ScrollViewProps, "contentOffset" | "contentInset" | "maintainVisibleContentPosition" | "stickyHeaderIndices"> & {
      alignItemsAtEnd?: boolean;
      columnWrapperStyle?: _legendapp_list.ColumnWrapperStyle;
@@ -112,7 +202,15 @@ index 933851c6b94b1fd966d1a78fe89ffe5fbdb18673..43f0b88698a373dd6739d272e1a38ced
      drawDistance?: number;
      estimatedItemSize?: number;
      extraData?: any;
-@@ -292,7 +292,7 @@ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.Sc
+@@ -106,6 +107,7 @@ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.Sc
+     viewabilityConfig?: _legendapp_list.ViewabilityConfig;
+     viewabilityConfigCallbackPairs?: _legendapp_list.ViewabilityConfigCallbackPairs | undefined;
+     waitForInitialLayout?: boolean;
++    disableScrollTopOnDataChange?: boolean;
+ } & React.RefAttributes<LegendListRef>) => React.ReactNode)> | (<ItemT_1>(props: Omit<_legendapp_list_reanimated.AnimatedLegendListPropsBase<ItemT_1>, "refLegendList"> & {
+     getEstimatedItemSize?: ((index: number, item: ItemT_1) => number) | undefined;
+     ItemSeparatorComponent?: React.ComponentType<{
+@@ -292,7 +294,7 @@ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.Sc
  }) => React.ReactElement | null) = <T>(props: Omit<react_native.ScrollViewProps, "contentOffset" | "contentInset" | "maintainVisibleContentPosition" | "stickyHeaderIndices"> & {
      alignItemsAtEnd?: boolean;
      columnWrapperStyle?: _legendapp_list.ColumnWrapperStyle;
@@ -121,7 +219,11 @@ index 933851c6b94b1fd966d1a78fe89ffe5fbdb18673..43f0b88698a373dd6739d272e1a38ced
      drawDistance?: number;
      estimatedItemSize?: number;
      extraData?: any;
-@@ -342,7 +342,7 @@ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.Sc
+@@ -339,10 +341,11 @@ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.Sc
+     viewabilityConfig?: _legendapp_list.ViewabilityConfig;
+     viewabilityConfigCallbackPairs?: _legendapp_list.ViewabilityConfigCallbackPairs | undefined;
+     waitForInitialLayout?: boolean;
++    disableScrollTopOnDataChange?: boolean;
  } & React.RefAttributes<LegendListRef>) => React.ReactNode>(props: Omit<react_native.ScrollViewProps, "contentOffset" | "contentInset" | "maintainVisibleContentPosition" | "stickyHeaderIndices"> & {
      alignItemsAtEnd?: boolean;
      columnWrapperStyle?: _legendapp_list.ColumnWrapperStyle;
@@ -130,8 +232,16 @@ index 933851c6b94b1fd966d1a78fe89ffe5fbdb18673..43f0b88698a373dd6739d272e1a38ced
      drawDistance?: number;
      estimatedItemSize?: number;
      extraData?: any;
+@@ -389,6 +392,7 @@ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.Sc
+     viewabilityConfig?: _legendapp_list.ViewabilityConfig;
+     viewabilityConfigCallbackPairs?: _legendapp_list.ViewabilityConfigCallbackPairs | undefined;
+     waitForInitialLayout?: boolean;
++    disableScrollTopOnDataChange?: boolean;
+ } & {
+     LegendList?: ListT;
+ } & React.RefAttributes<LegendListRef>) => React.ReactNode;
 diff --git a/keyboard-controller.d.ts b/keyboard-controller.d.ts
-index 933851c6b94b1fd966d1a78fe89ffe5fbdb18673..43f0b88698a373dd6739d272e1a38ced7edd0ac7 100644
+index 933851c6b94b1fd966d1a78fe89ffe5fbdb18673..404e4e09518ecb5cc148ef078fa6d8ee34210895 100644
 --- a/keyboard-controller.d.ts
 +++ b/keyboard-controller.d.ts
 @@ -9,7 +9,7 @@ import * as React from 'react';
@@ -143,7 +253,11 @@ index 933851c6b94b1fd966d1a78fe89ffe5fbdb18673..43f0b88698a373dd6739d272e1a38ced
      drawDistance?: number;
      estimatedItemSize?: number;
      extraData?: any;
-@@ -59,7 +59,7 @@ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.Sc
+@@ -56,10 +56,11 @@ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.Sc
+     viewabilityConfig?: _legendapp_list.ViewabilityConfig;
+     viewabilityConfigCallbackPairs?: _legendapp_list.ViewabilityConfigCallbackPairs | undefined;
+     waitForInitialLayout?: boolean;
++    disableScrollTopOnDataChange?: boolean;
  } & React.RefAttributes<LegendListRef>) => React.ReactNode) | react_native.Animated.AnimatedComponent<(<T>(props: Omit<react_native.ScrollViewProps, "contentOffset" | "contentInset" | "maintainVisibleContentPosition" | "stickyHeaderIndices"> & {
      alignItemsAtEnd?: boolean;
      columnWrapperStyle?: _legendapp_list.ColumnWrapperStyle;
@@ -152,7 +266,15 @@ index 933851c6b94b1fd966d1a78fe89ffe5fbdb18673..43f0b88698a373dd6739d272e1a38ced
      drawDistance?: number;
      estimatedItemSize?: number;
      extraData?: any;
-@@ -292,7 +292,7 @@ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.Sc
+@@ -106,6 +107,7 @@ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.Sc
+     viewabilityConfig?: _legendapp_list.ViewabilityConfig;
+     viewabilityConfigCallbackPairs?: _legendapp_list.ViewabilityConfigCallbackPairs | undefined;
+     waitForInitialLayout?: boolean;
++    disableScrollTopOnDataChange?: boolean;
+ } & React.RefAttributes<LegendListRef>) => React.ReactNode)> | (<ItemT_1>(props: Omit<_legendapp_list_reanimated.AnimatedLegendListPropsBase<ItemT_1>, "refLegendList"> & {
+     getEstimatedItemSize?: ((index: number, item: ItemT_1) => number) | undefined;
+     ItemSeparatorComponent?: React.ComponentType<{
+@@ -292,7 +294,7 @@ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.Sc
  }) => React.ReactElement | null) = <T>(props: Omit<react_native.ScrollViewProps, "contentOffset" | "contentInset" | "maintainVisibleContentPosition" | "stickyHeaderIndices"> & {
      alignItemsAtEnd?: boolean;
      columnWrapperStyle?: _legendapp_list.ColumnWrapperStyle;
@@ -161,7 +283,11 @@ index 933851c6b94b1fd966d1a78fe89ffe5fbdb18673..43f0b88698a373dd6739d272e1a38ced
      drawDistance?: number;
      estimatedItemSize?: number;
      extraData?: any;
-@@ -342,7 +342,7 @@ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.Sc
+@@ -339,10 +341,11 @@ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.Sc
+     viewabilityConfig?: _legendapp_list.ViewabilityConfig;
+     viewabilityConfigCallbackPairs?: _legendapp_list.ViewabilityConfigCallbackPairs | undefined;
+     waitForInitialLayout?: boolean;
++    disableScrollTopOnDataChange?: boolean;
  } & React.RefAttributes<LegendListRef>) => React.ReactNode>(props: Omit<react_native.ScrollViewProps, "contentOffset" | "contentInset" | "maintainVisibleContentPosition" | "stickyHeaderIndices"> & {
      alignItemsAtEnd?: boolean;
      columnWrapperStyle?: _legendapp_list.ColumnWrapperStyle;
@@ -170,3 +296,11 @@ index 933851c6b94b1fd966d1a78fe89ffe5fbdb18673..43f0b88698a373dd6739d272e1a38ced
      drawDistance?: number;
      estimatedItemSize?: number;
      extraData?: any;
+@@ -389,6 +392,7 @@ declare const LegendList: <ItemT, ListT extends (<T>(props: Omit<react_native.Sc
+     viewabilityConfig?: _legendapp_list.ViewabilityConfig;
+     viewabilityConfigCallbackPairs?: _legendapp_list.ViewabilityConfigCallbackPairs | undefined;
+     waitForInitialLayout?: boolean;
++    disableScrollTopOnDataChange?: boolean;
+ } & {
+     LegendList?: ListT;
+ } & React.RefAttributes<LegendListRef>) => React.ReactNode;
