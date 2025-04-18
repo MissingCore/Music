@@ -26,7 +26,7 @@ import {
 /** Screen for `/` route. */
 export default function HomeScreen() {
   return (
-    <StandardScrollLayout titleKey="term.home" forHomeScreen>
+    <StandardScrollLayout titleKey="term.home">
       <RecentlyPlayed />
       <TEm textKey="term.favorites" className="-mb-4" />
       <Favorites />

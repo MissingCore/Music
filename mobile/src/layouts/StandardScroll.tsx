@@ -14,19 +14,12 @@ export function StandardScrollLayout(props: {
   contentContainerClassName?: string;
   /** Key to title in translations. */
   titleKey?: ParseKeys;
-  /**
-   * Whether this is used on the home screen, which need extra padding
-   * to account for the navbar and miniplayer.
-   */
-  forHomeScreen?: boolean;
 }) {
   const { bottomInset } = useBottomActionsContext();
   return (
     <ScrollView
       contentContainerStyle={
-        props.forHomeScreen
-          ? { paddingBottom: bottomInset.withNav + 16 }
-          : undefined
+        props.titleKey ? { paddingBottom: bottomInset.withNav + 16 } : undefined
       }
       contentContainerClassName={cn(
         "grow gap-6 p-4",
