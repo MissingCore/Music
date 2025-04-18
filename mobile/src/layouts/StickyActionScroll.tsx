@@ -1,6 +1,7 @@
+import type { LegendListRef } from "@legendapp/list";
 import type { AnimatedLegendListProps } from "@legendapp/list/reanimated";
 import type { ParseKeys } from "i18next";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import type { LayoutChangeEvent, TextProps } from "react-native";
 import { useWindowDimensions } from "react-native";
@@ -15,7 +16,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 
-import { AnimatedLegendList, useLegendListRef } from "~/components/Defaults";
+import { AnimatedLegendList } from "~/components/Defaults";
 import { AccentText } from "~/components/Typography/AccentText";
 
 /**
@@ -26,7 +27,7 @@ export function StickyActionListLayout<TData>({
   titleKey,
   StickyAction,
   estimatedActionSize = 0,
-  resetScrollPositionOnDataChange = false,
+  listRef,
   ...props
 }: AnimatedLegendListProps<TData> & {
   /** Key to title in translations. */
@@ -35,14 +36,13 @@ export function StickyActionListLayout<TData>({
   StickyAction?: React.JSX.Element;
   /** Height of the StickyAction. */
   estimatedActionSize?: number;
-  /** Reset scroll position when data changes. */
-  resetScrollPositionOnDataChange?: boolean;
+  /** Pass a ref to the animated Legend List. */
+  listRef?: React.RefObject<LegendListRef>;
 }) {
   const { t } = useTranslation();
   const { top } = useSafeAreaInsets();
   const { width: ScreenWidth } = useWindowDimensions();
   const { bottomInset } = useBottomActionsContext();
-  const listRef = useLegendListRef();
 
   const initActionPos = useSharedValue(0);
   const scrollAmount = useSharedValue(0);
@@ -71,12 +71,6 @@ export function StickyActionListLayout<TData>({
       initActionPos.value,
     ),
   }));
-
-  useEffect(() => {
-    if (resetScrollPositionOnDataChange) {
-      listRef.current?.scrollToOffset({ offset: 0 });
-    }
-  }, [listRef, props.data, resetScrollPositionOnDataChange]);
 
   return (
     <>
