@@ -12,7 +12,7 @@ patchedDependencies:
     hash: zgygxsuuqk33jr3gwbxpbkmczi
     path: patches/@backpackapp-io__react-native-toast.patch
   '@legendapp/list':
-    hash: kmninspoik37eifnssv4v4o254
+    hash: k7kktnp7l6hscs5qnjzy65knfm
     path: patches/@legendapp__list.patch
   '@react-native-assets/slider':
     hash: q6v3llicmqqfpxxpnwpftecnbi
@@ -29,8 +29,8 @@ importers:
         specifier: ^0.13.0
         version: 0.13.0(patch_hash=zgygxsuuqk33jr3gwbxpbkmczi)(react-native-gesture-handler@2.25.0(patch_hash=rjhgnwrqf5shhovxtmq2tgj2qm)(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.26.10)(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))(react-native-safe-area-context@5.3.0(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
       '@legendapp/list':
-        specifier: 1.0.0-beta.42
-        version: 1.0.0-beta.42(patch_hash=kmninspoik37eifnssv4v4o254)(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
+        specifier: 1.0.0-beta.45
+        version: 1.0.0-beta.45(patch_hash=k7kktnp7l6hscs5qnjzy65knfm)(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
       '@lodev09/react-native-true-sheet':
         specifier: ^2.0.5
         version: 2.0.5(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
@@ -1467,8 +1467,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@legendapp/list@1.0.0-beta.42':
-    resolution: {integrity: sha512-lkjp+ZBuwGwkv4EbMDTXC0ZVHHptSFiQWxP1+2xZ9n69c4s/JEnnAm9wiDYsXvb1WOSbgnvXxc2qQ3cmiSsV5Q==}
+  '@legendapp/list@1.0.0-beta.45':
+    resolution: {integrity: sha512-WXvFd2qfhS9BzLkOX2bDcCrBxNAVYo42W4VwFhdHER5LP0eRYOTqpnFy6UCm/YV1bLIRdI6yOMpV3T10xFrj6g==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -7852,7 +7852,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@legendapp/list@1.0.0-beta.42(patch_hash=kmninspoik37eifnssv4v4o254)(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)':
+  '@legendapp/list@1.0.0-beta.45(patch_hash=k7kktnp7l6hscs5qnjzy65knfm)(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)':
     dependencies:
       react: 18.3.1
       react-native: 0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1)
