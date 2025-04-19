@@ -8,7 +8,6 @@ import { useGetColumn } from "~/hooks/useGetColumn";
 
 import { cn } from "~/lib/style";
 import type { Prettify } from "~/utils/types";
-import { LegendList } from "~/components/Defaults";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { StyledText } from "~/components/Typography/StyledText";
 import { MediaImage } from "./MediaImage";
@@ -84,7 +83,7 @@ type MediaCardListProps = Omit<
   RenderFirst?: (props: { size: number }) => React.JSX.Element;
 };
 
-/** Hook for getting the presets used in `<MediaCardList />`. */
+/** Presets used to render a list of `<MediaCard />`. */
 export function useMediaCardListPreset(props: MediaCardListProps) {
   const { count, width } = useGetColumn({
     ...{ cols: 2, gap: 12, gutters: 32, minWidth: 175 },
@@ -111,11 +110,5 @@ export function useMediaCardListPreset(props: MediaCardListProps) {
     }),
     [count, width, props],
   ) satisfies LegendListProps<MediaCard.Content>;
-}
-
-/** Lists out `<MediaCard />` in a grid. */
-export function MediaCardList(props: MediaCardListProps) {
-  const presets = useMediaCardListPreset(props);
-  return <LegendList {...presets} />;
 }
 //#endregion

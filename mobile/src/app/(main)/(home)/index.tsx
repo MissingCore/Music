@@ -1,4 +1,6 @@
 import { router } from "expo-router";
+import type { ScrollViewProps } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
 import {
   useFavoriteListsForCards,
@@ -17,8 +19,8 @@ import { TEm, TStyledText } from "~/components/Typography/StyledText";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import {
   MediaCard,
-  MediaCardList,
   MediaCardPlaceholderContent,
+  useMediaCardListPreset,
 } from "~/modules/media/components/MediaCard";
 
 /** Screen for `/` route. */
@@ -60,6 +62,7 @@ function RecentlyPlayed() {
             className="my-4"
           />
         }
+        renderScrollComponent={CustomScrollComponent}
         columnWrapperStyle={{ columnGap: 12 }}
         // To avoid warning for the list having a height of 0.
         style={
@@ -71,18 +74,22 @@ function RecentlyPlayed() {
     </>
   );
 }
+
+function CustomScrollComponent(props: ScrollViewProps) {
+  return <ScrollView {...props} />;
+}
 //#endregion
 
 //#region Favorites
 /** Display list of content we've favorited. */
 function Favorites() {
   const { data } = useFavoriteListsForCards();
-  return (
-    <MediaCardList
-      data={[MediaCardPlaceholderContent, ...(data ?? [])]}
-      RenderFirst={FavoriteTracks}
-    />
-  );
+  const presets = useMediaCardListPreset({
+    data: [MediaCardPlaceholderContent, ...(data ?? [])],
+    RenderFirst: FavoriteTracks,
+  });
+
+  return <LegendList {...presets} />;
 }
 
 /**
