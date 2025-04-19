@@ -70,21 +70,18 @@ export const MediaCardPlaceholderContent: MediaCard.Content = {
 };
 //#endregion
 
-//#region Media Card List
-type MediaCardListProps = Omit<
-  React.ComponentProps<typeof ContentPlaceholder>,
-  "className"
-> & {
-  data?: readonly MediaCard.Content[];
-  /**
-   * Renders a special entry before all other data. This assumes at `data[0]`,
-   * we have a `MediaCardPlaceholderContent`.
-   */
-  RenderFirst?: (props: { size: number }) => React.JSX.Element;
-};
-
+//#region useMediaCardListPreset
 /** Presets used to render a list of `<MediaCard />`. */
-export function useMediaCardListPreset(props: MediaCardListProps) {
+export function useMediaCardListPreset(
+  props: Omit<React.ComponentProps<typeof ContentPlaceholder>, "className"> & {
+    data?: readonly MediaCard.Content[];
+    /**
+     * Renders a special entry before all other data. This assumes at `data[0]`,
+     * we have a `MediaCardPlaceholderContent`.
+     */
+    RenderFirst?: (props: { size: number }) => React.JSX.Element;
+  },
+) {
   const { count, width } = useGetColumn({
     ...{ cols: 2, gap: 12, gutters: 32, minWidth: 175 },
   });

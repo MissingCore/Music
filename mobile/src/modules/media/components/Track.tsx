@@ -59,15 +59,13 @@ export function Track({ id, trackSource, className, ...props }: Track.Props) {
 }
 //#endregion
 
-//#region Track List
-type TrackListProps = {
+//#region useTrackListPreset
+/** Presets used to render a list of `<Track />`. */
+export function useTrackListPreset(props: {
   data?: readonly Track.Content[];
   trackSource: PlayListSource;
   isPending?: boolean;
-};
-
-/** Presets used in the FlashList containing a list of `<Track />`. */
-export function useTrackListPreset(props: TrackListProps) {
+}) {
   return useMemo(
     () => ({
       estimatedItemSize: 56, // +8px to prevent gap not being initially applied when data changes.
