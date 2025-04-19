@@ -1,7 +1,6 @@
 import type { LegendListProps } from "@legendapp/list";
 import type { Href } from "expo-router";
 import { useMemo } from "react";
-import type { LayoutChangeEvent } from "react-native";
 import { Pressable } from "react-native";
 
 import { Router } from "~/services/NavigationStore";
@@ -24,13 +23,7 @@ export namespace MediaCard {
     }
   >;
 
-  export type Props = Prettify<
-    Content & {
-      size: number;
-      className?: string;
-      onLayout?: (e: LayoutChangeEvent) => void;
-    }
-  >;
+  export type Props = Prettify<Content & { size: number; className?: string }>;
 }
 
 /**
@@ -42,12 +35,10 @@ export function MediaCard({
   title,
   description,
   className,
-  onLayout,
   ...imgProps
 }: MediaCard.Props) {
   return (
     <Pressable
-      onLayout={onLayout}
       onPress={() => Router.navigate(href as Href)}
       style={{ maxWidth: imgProps.size }}
       // The `w-full` is to ensure the component takes up all the space
@@ -81,7 +72,10 @@ export const MediaCardPlaceholderContent: MediaCard.Content = {
 //#endregion
 
 //#region Media Card List
-type MediaCardListProps = React.ComponentProps<typeof ContentPlaceholder> & {
+type MediaCardListProps = Omit<
+  React.ComponentProps<typeof ContentPlaceholder>,
+  "className"
+> & {
   data?: readonly MediaCard.Content[];
   /**
    * Renders a special entry before all other data. This assumes at `data[0]`,
