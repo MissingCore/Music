@@ -53,7 +53,7 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
   );
 
   return (
-    <View className="grow">
+    <View className="shrink grow">
       {/* Search input. */}
       <View className="flex-row items-center gap-2 rounded-full bg-surface pl-4">
         <Search />
@@ -77,7 +77,7 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
         </IconButton>
       </View>
       {/* Results list w/ scroll shadow. */}
-      <View className="relative grow">
+      <View className="relative shrink grow">
         <LegendList
           getEstimatedItemSize={(index, item) => {
             if (typeof item === "string") return index === 0 ? 14 : 22;
@@ -113,12 +113,15 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
           }}
           ListEmptyComponent={
             query.length > 0 ? (
-              <ContentPlaceholder errMsgKey="err.msg.noResults" />
+              <ContentPlaceholder
+                errMsgKey="err.msg.noResults"
+                className="pt-10"
+              />
             ) : undefined
           }
           nestedScrollEnabled={props.withGesture}
           columnWrapperStyle={{ rowGap: 8 }}
-          contentContainerClassName="mt-6 pb-4"
+          contentContainerClassName="pt-6 pb-4"
         />
 
         <LinearGradient
