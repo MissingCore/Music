@@ -8,7 +8,7 @@ import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 import { CurrentListLayout } from "~/layouts/CurrentList";
 
 import { mutateGuard } from "~/lib/react-query";
-import { FlashList } from "~/components/Defaults/Legacy";
+import { LegendList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { PagePlaceholder } from "~/components/Transition/Placeholder";
 import { Em, StyledText } from "~/components/Typography/StyledText";
@@ -22,7 +22,7 @@ export default function CurrentAlbumScreen() {
   const { isPending, error, data } = useAlbumForScreen(albumId);
   const favoriteAlbum = useFavoriteAlbum(albumId);
 
-  if (isPending || error) return <PagePlaceholder {...{ isPending }} />;
+  if (isPending || error) return <PagePlaceholder isPending={isPending} />;
 
   // Add optimistic UI updates.
   const isToggled = favoriteAlbum.isPending
@@ -60,26 +60,26 @@ export default function CurrentAlbumScreen() {
         imageSource={data.imageSource}
         mediaSource={trackSource}
       >
-        <FlashList
-          estimatedItemSize={56} // 48px Height + 8px Margin Top
+        <LegendList
+          estimatedItemSize={48}
           data={data.tracks}
           keyExtractor={({ id }) => id}
           renderItem={({ item, index }) => (
             <>
               {item.disc !== null && discLocation[item.disc] === index ? (
-                <Em dim className={index === 0 ? "mb-2" : "mt-4"}>
+                <Em dim className={index === 0 ? "mb-2" : "my-2"}>
                   {t("term.disc", { count: item.disc })}
                 </Em>
               ) : null}
               <Track
-                {...{ ...item, trackSource }}
+                {...item}
+                trackSource={trackSource}
                 LeftElement={<TrackNumber track={item.track} />}
-                className={index > 0 ? "mt-2" : undefined}
               />
             </>
           )}
-          className="mx-4"
-          contentContainerClassName="pt-4"
+          columnWrapperStyle={{ rowGap: 8 }}
+          contentContainerClassName="px-4 pt-4"
           contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
         />
       </CurrentListLayout>

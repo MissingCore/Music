@@ -13,6 +13,7 @@ import { useUpcomingStore } from "./helpers/UpcomingStore";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
+import { LegendList } from "~/components/Defaults";
 import { FlashList } from "~/components/Defaults/Legacy";
 import { IconButton } from "~/components/Form/Button";
 import { NSlider } from "~/components/Form/Slider";
@@ -20,6 +21,7 @@ import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
 import { Swipeable } from "~/components/Swipeable";
 import { SearchResult } from "~/modules/search/components/SearchResult";
+import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 
 /** All the sheets used on `/now-playing` route. */
 export function NowPlayingSheets(
@@ -120,8 +122,8 @@ function TrackUpcomingSheet(props: { sheetRef: TrueSheetRef }) {
       contentContainerClassName="px-0"
     >
       <GestureHandlerRootView>
-        <FlashList
-          estimatedItemSize={52} // 48px Height + 4px Margin Top
+        <LegendList
+          estimatedItemSize={48}
           data={data}
           keyExtractor={(item, index) => (item ? item.id : `${index}`)}
           renderItem={({ item, index }) =>
@@ -130,16 +132,16 @@ function TrackUpcomingSheet(props: { sheetRef: TrueSheetRef }) {
                 title={item.name}
                 description={item.artistName ?? "—"}
                 imageSource={getTrackCover(item)}
-                className={cn("px-4", {
-                  "opacity-25": index >= disableIndex,
-                  "mt-1": index > 0,
-                })}
+                className={cn("px-4", { "opacity-25": index >= disableIndex })}
               />
             ) : null
           }
           ListHeaderComponent={<QueueList />}
-          isPending={trackList.length === 0}
+          ListEmptyComponent={
+            <ContentPlaceholder isPending={trackList.length === 0} />
+          }
           nestedScrollEnabled
+          columnWrapperStyle={{ rowGap: 4 }}
           contentContainerClassName="pb-4"
         />
       </GestureHandlerRootView>

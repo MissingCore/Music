@@ -15,11 +15,11 @@ import { Close } from "~/icons/Close";
 import { Search } from "~/icons/Search";
 import { useTheme } from "~/hooks/useTheme";
 
-import { cn } from "~/lib/style";
-import { FlashList } from "~/components/Defaults/Legacy";
+import { LegendList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { TextInput, useInputRef } from "~/components/Form/Input";
-import { TEm, TStyledText } from "~/components/Typography/StyledText";
+import { ContentPlaceholder } from "~/components/Transition/Placeholder";
+import { TEm } from "~/components/Typography/StyledText";
 import { SearchResult } from "./SearchResult";
 import { useSearch } from "../hooks/useSearch";
 import type {
@@ -78,16 +78,18 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
       </View>
       {/* Results list w/ scroll shadow. */}
       <View className="relative grow">
-        <FlashList
-          estimatedItemSize={56} // 48px Height + 8px Margin Top
+        <LegendList
+          estimatedItemSize={56} // +8px to prevent gap not being initially applied when data changes.
           data={data}
-          keyExtractor={(_, index) => `${index}`}
+          keyExtractor={(item, index) =>
+            typeof item === "string" ? item : `${index}`
+          }
           renderItem={({ item, index }) => {
             if (typeof item === "string") {
               return (
                 <TEm
                   textKey={`term.${item}`}
-                  className={index > 0 ? "mt-4" : undefined}
+                  className={index > 0 ? "mt-2" : undefined}
                 />
               );
             }
@@ -98,9 +100,9 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
                 as="ripple"
                 /* @ts-expect-error - `type` should be limited to our scope. */
                 onPress={() => props.callbacks[rest.type](entry)}
-                wrapperClassName={cn("mt-2", {
-                  "rounded-full": rest.type === "artist",
-                })}
+                wrapperClassName={
+                  rest.type === "artist" ? "rounded-full" : undefined
+                }
                 className="pr-4"
                 {...rest}
               />
@@ -108,11 +110,12 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
           }}
           ListEmptyComponent={
             query.length > 0 ? (
-              <TStyledText textKey="err.msg.noResults" center />
+              <ContentPlaceholder errMsgKey="err.msg.noResults" />
             ) : undefined
           }
           nestedScrollEnabled={props.withGesture}
-          contentContainerClassName="pb-4 pt-6"
+          columnWrapperStyle={{ rowGap: 8 }}
+          contentContainerClassName="mt-6 pb-4"
         />
 
         <LinearGradient

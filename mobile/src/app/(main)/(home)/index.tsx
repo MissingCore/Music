@@ -51,7 +51,7 @@ function RecentlyPlayed() {
     <>
       <TEm textKey="feat.playedRecent.title" className="-mb-4" />
       <LegendList
-        estimatedItemSize={width + 12} // Column width + gap from padding left
+        estimatedItemSize={width}
         horizontal
         data={recentlyPlayedData}
         keyExtractor={({ href }) => href}
