@@ -41,7 +41,7 @@ index ca6e0abb7577ef0c0d76fe5db344c3b56e2c5d9c..a784527350fe745041f7dc952f157975
  
  export { AnimatedLegendList };
 diff --git a/index.d.mts b/index.d.mts
-index eaca6b0b8f438a561efb55a16b49cb4f68791e57..c9f5b35f24a53825080ca09841c55bbc1f3b45f3 100644
+index 1a684d6951ee11acaaf1384f77bd77d0c6d5e149..b275f8f6442c8a2696d61d714fe643658e8a368d 100644
 --- a/index.d.mts
 +++ b/index.d.mts
 @@ -32,9 +32,8 @@ type LegendListPropsBase<ItemT, TScrollView extends ComponentProps<typeof Scroll
@@ -94,7 +94,7 @@ index eaca6b0b8f438a561efb55a16b49cb4f68791e57..c9f5b35f24a53825080ca09841c55bbc
  
  declare function useViewability(callback: ViewabilityCallback, configId?: string): void;
 diff --git a/index.d.ts b/index.d.ts
-index eaca6b0b8f438a561efb55a16b49cb4f68791e57..c9f5b35f24a53825080ca09841c55bbc1f3b45f3 100644
+index 1a684d6951ee11acaaf1384f77bd77d0c6d5e149..b275f8f6442c8a2696d61d714fe643658e8a368d 100644
 --- a/index.d.ts
 +++ b/index.d.ts
 @@ -32,9 +32,8 @@ type LegendListPropsBase<ItemT, TScrollView extends ComponentProps<typeof Scroll
@@ -147,10 +147,10 @@ index eaca6b0b8f438a561efb55a16b49cb4f68791e57..c9f5b35f24a53825080ca09841c55bbc
  
  declare function useViewability(callback: ViewabilityCallback, configId?: string): void;
 diff --git a/index.js b/index.js
-index b9d51ae07649e8bea405f69983d00d60cadfafbd..0b8c681aa0514eedfbe399c8d254bc9f32d0a597 100644
+index cd5c8fe34c9ef95cbd7a63f70c844dbc09101cd6..ca7c065a9601b6f182260238938bd648b314ccb8 100644
 --- a/index.js
 +++ b/index.js
-@@ -895,6 +895,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
+@@ -914,6 +914,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
      viewabilityConfig,
      viewabilityConfigCallbackPairs,
      onViewableItemsChanged,
@@ -158,7 +158,7 @@ index b9d51ae07649e8bea405f69983d00d60cadfafbd..0b8c681aa0514eedfbe399c8d254bc9f
      ...rest
    } = props;
    const callbacks = React6.useRef({
-@@ -1648,7 +1649,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
+@@ -1731,7 +1732,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
              };
              refState.current.anchorElement = newAnchorElement;
              (_b = refState.current.belowAnchorElementPositions) == null ? void 0 : _b.clear();
@@ -167,7 +167,7 @@ index b9d51ae07649e8bea405f69983d00d60cadfafbd..0b8c681aa0514eedfbe399c8d254bc9f
              setTimeout(() => {
                calculateItemsInView();
              }, 0);
-@@ -1663,7 +1664,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
+@@ -1746,7 +1747,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
            } else {
              refState.current.startBufferedId = void 0;
            }
@@ -177,10 +177,10 @@ index b9d51ae07649e8bea405f69983d00d60cadfafbd..0b8c681aa0514eedfbe399c8d254bc9f
              calculateItemsInView();
            }, 0);
 diff --git a/index.mjs b/index.mjs
-index fa7c3b4537fab47992b22e21518c05227344d05c..31c14afad28118e23edc5a4c92d5f07fc0682264 100644
+index 7b666b843d074d92a968c14c51fe4238647777eb..10f1d55bcc9b2631739d4e38fa8c2a181ffab7b8 100644
 --- a/index.mjs
 +++ b/index.mjs
-@@ -874,6 +874,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
+@@ -893,6 +893,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
      viewabilityConfig,
      viewabilityConfigCallbackPairs,
      onViewableItemsChanged,
@@ -188,7 +188,7 @@ index fa7c3b4537fab47992b22e21518c05227344d05c..31c14afad28118e23edc5a4c92d5f07f
      ...rest
    } = props;
    const callbacks = useRef({
-@@ -1627,7 +1628,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
+@@ -1710,7 +1711,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
              };
              refState.current.anchorElement = newAnchorElement;
              (_b = refState.current.belowAnchorElementPositions) == null ? void 0 : _b.clear();
@@ -197,7 +197,7 @@ index fa7c3b4537fab47992b22e21518c05227344d05c..31c14afad28118e23edc5a4c92d5f07f
              setTimeout(() => {
                calculateItemsInView();
              }, 0);
-@@ -1642,7 +1643,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
+@@ -1725,7 +1726,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
            } else {
              refState.current.startBufferedId = void 0;
            }
@@ -207,10 +207,10 @@ index fa7c3b4537fab47992b22e21518c05227344d05c..31c14afad28118e23edc5a4c92d5f07f
              calculateItemsInView();
            }, 0);
 diff --git a/keyboard-controller.d.mts b/keyboard-controller.d.mts
-index 780881b64cb87e39c664a83c7333782a8060d86e..2a8e3ff3389bb9484bebdd387df0ed69b25be4e6 100644
+index a9425a016c3a2e10b7b53c0e894f8bb475d14442..02b680b4f1cdb209aaf4140bce8fcced23f5b3da 100644
 --- a/keyboard-controller.d.mts
 +++ b/keyboard-controller.d.mts
-@@ -192,7 +192,7 @@ declare const LegendList: <ItemT, ListT extends (<ItemT_1>(props: Omit<_legendap
+@@ -193,7 +193,7 @@ declare const LegendList: <ItemT, ListT extends (<ItemT_1>(props: Omit<_legendap
  }) => React.ReactElement | null) | (<T>(props: Omit<react_native.ScrollViewProps, "stickyHeaderIndices" | "contentInset" | "contentOffset" | "maintainVisibleContentPosition"> & {
      alignItemsAtEnd?: boolean;
      columnWrapperStyle?: _legendapp_list.ColumnWrapperStyle;
@@ -219,7 +219,7 @@ index 780881b64cb87e39c664a83c7333782a8060d86e..2a8e3ff3389bb9484bebdd387df0ed69
      drawDistance?: number;
      estimatedItemSize?: number;
      extraData?: any;
-@@ -239,10 +239,11 @@ declare const LegendList: <ItemT, ListT extends (<ItemT_1>(props: Omit<_legendap
+@@ -240,10 +240,11 @@ declare const LegendList: <ItemT, ListT extends (<ItemT_1>(props: Omit<_legendap
      viewabilityConfig?: _legendapp_list.ViewabilityConfig;
      viewabilityConfigCallbackPairs?: _legendapp_list.ViewabilityConfigCallbackPairs | undefined;
      waitForInitialLayout?: boolean;
@@ -232,7 +232,7 @@ index 780881b64cb87e39c664a83c7333782a8060d86e..2a8e3ff3389bb9484bebdd387df0ed69
      drawDistance?: number;
      estimatedItemSize?: number;
      extraData?: any;
-@@ -289,10 +290,11 @@ declare const LegendList: <ItemT, ListT extends (<ItemT_1>(props: Omit<_legendap
+@@ -290,10 +291,11 @@ declare const LegendList: <ItemT, ListT extends (<ItemT_1>(props: Omit<_legendap
      viewabilityConfig?: _legendapp_list.ViewabilityConfig;
      viewabilityConfigCallbackPairs?: _legendapp_list.ViewabilityConfigCallbackPairs | undefined;
      waitForInitialLayout?: boolean;
@@ -245,7 +245,7 @@ index 780881b64cb87e39c664a83c7333782a8060d86e..2a8e3ff3389bb9484bebdd387df0ed69
      drawDistance?: number;
      estimatedItemSize?: number;
      extraData?: any;
-@@ -339,10 +341,11 @@ declare const LegendList: <ItemT, ListT extends (<ItemT_1>(props: Omit<_legendap
+@@ -340,10 +342,11 @@ declare const LegendList: <ItemT, ListT extends (<ItemT_1>(props: Omit<_legendap
      viewabilityConfig?: _legendapp_list.ViewabilityConfig;
      viewabilityConfigCallbackPairs?: _legendapp_list.ViewabilityConfigCallbackPairs | undefined;
      waitForInitialLayout?: boolean;
@@ -258,7 +258,7 @@ index 780881b64cb87e39c664a83c7333782a8060d86e..2a8e3ff3389bb9484bebdd387df0ed69
      drawDistance?: number;
      estimatedItemSize?: number;
      extraData?: any;
-@@ -389,6 +392,7 @@ declare const LegendList: <ItemT, ListT extends (<ItemT_1>(props: Omit<_legendap
+@@ -390,6 +393,7 @@ declare const LegendList: <ItemT, ListT extends (<ItemT_1>(props: Omit<_legendap
      viewabilityConfig?: _legendapp_list.ViewabilityConfig;
      viewabilityConfigCallbackPairs?: _legendapp_list.ViewabilityConfigCallbackPairs | undefined;
      waitForInitialLayout?: boolean;
@@ -267,10 +267,10 @@ index 780881b64cb87e39c664a83c7333782a8060d86e..2a8e3ff3389bb9484bebdd387df0ed69
      LegendList?: ListT;
  } & React.RefAttributes<LegendListRef>) => React.ReactNode;
 diff --git a/keyboard-controller.d.ts b/keyboard-controller.d.ts
-index 780881b64cb87e39c664a83c7333782a8060d86e..2a8e3ff3389bb9484bebdd387df0ed69b25be4e6 100644
+index a9425a016c3a2e10b7b53c0e894f8bb475d14442..02b680b4f1cdb209aaf4140bce8fcced23f5b3da 100644
 --- a/keyboard-controller.d.ts
 +++ b/keyboard-controller.d.ts
-@@ -192,7 +192,7 @@ declare const LegendList: <ItemT, ListT extends (<ItemT_1>(props: Omit<_legendap
+@@ -193,7 +193,7 @@ declare const LegendList: <ItemT, ListT extends (<ItemT_1>(props: Omit<_legendap
  }) => React.ReactElement | null) | (<T>(props: Omit<react_native.ScrollViewProps, "stickyHeaderIndices" | "contentInset" | "contentOffset" | "maintainVisibleContentPosition"> & {
      alignItemsAtEnd?: boolean;
      columnWrapperStyle?: _legendapp_list.ColumnWrapperStyle;
@@ -279,7 +279,7 @@ index 780881b64cb87e39c664a83c7333782a8060d86e..2a8e3ff3389bb9484bebdd387df0ed69
      drawDistance?: number;
      estimatedItemSize?: number;
      extraData?: any;
-@@ -239,10 +239,11 @@ declare const LegendList: <ItemT, ListT extends (<ItemT_1>(props: Omit<_legendap
+@@ -240,10 +240,11 @@ declare const LegendList: <ItemT, ListT extends (<ItemT_1>(props: Omit<_legendap
      viewabilityConfig?: _legendapp_list.ViewabilityConfig;
      viewabilityConfigCallbackPairs?: _legendapp_list.ViewabilityConfigCallbackPairs | undefined;
      waitForInitialLayout?: boolean;
@@ -292,7 +292,7 @@ index 780881b64cb87e39c664a83c7333782a8060d86e..2a8e3ff3389bb9484bebdd387df0ed69
      drawDistance?: number;
      estimatedItemSize?: number;
      extraData?: any;
-@@ -289,10 +290,11 @@ declare const LegendList: <ItemT, ListT extends (<ItemT_1>(props: Omit<_legendap
+@@ -290,10 +291,11 @@ declare const LegendList: <ItemT, ListT extends (<ItemT_1>(props: Omit<_legendap
      viewabilityConfig?: _legendapp_list.ViewabilityConfig;
      viewabilityConfigCallbackPairs?: _legendapp_list.ViewabilityConfigCallbackPairs | undefined;
      waitForInitialLayout?: boolean;
@@ -305,7 +305,7 @@ index 780881b64cb87e39c664a83c7333782a8060d86e..2a8e3ff3389bb9484bebdd387df0ed69
      drawDistance?: number;
      estimatedItemSize?: number;
      extraData?: any;
-@@ -339,10 +341,11 @@ declare const LegendList: <ItemT, ListT extends (<ItemT_1>(props: Omit<_legendap
+@@ -340,10 +342,11 @@ declare const LegendList: <ItemT, ListT extends (<ItemT_1>(props: Omit<_legendap
      viewabilityConfig?: _legendapp_list.ViewabilityConfig;
      viewabilityConfigCallbackPairs?: _legendapp_list.ViewabilityConfigCallbackPairs | undefined;
      waitForInitialLayout?: boolean;
@@ -318,7 +318,7 @@ index 780881b64cb87e39c664a83c7333782a8060d86e..2a8e3ff3389bb9484bebdd387df0ed69
      drawDistance?: number;
      estimatedItemSize?: number;
      extraData?: any;
-@@ -389,6 +392,7 @@ declare const LegendList: <ItemT, ListT extends (<ItemT_1>(props: Omit<_legendap
+@@ -390,6 +393,7 @@ declare const LegendList: <ItemT, ListT extends (<ItemT_1>(props: Omit<_legendap
      viewabilityConfig?: _legendapp_list.ViewabilityConfig;
      viewabilityConfigCallbackPairs?: _legendapp_list.ViewabilityConfigCallbackPairs | undefined;
      waitForInitialLayout?: boolean;
