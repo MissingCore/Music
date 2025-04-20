@@ -61,7 +61,11 @@ export default function CurrentAlbumScreen() {
         mediaSource={trackSource}
       >
         <LegendList
-          estimatedItemSize={48}
+          getEstimatedItemSize={(index, item) => {
+            if (item.disc === null || discLocation[item.disc] !== index) {
+              return 48;
+            } else return index === 0 ? 70 : 78; // Include the height + margin on the "DISC *" text.
+          }}
           data={data.tracks}
           keyExtractor={({ id }) => id}
           renderItem={({ item, index }) => (

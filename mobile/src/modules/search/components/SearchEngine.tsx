@@ -79,7 +79,10 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
       {/* Results list w/ scroll shadow. */}
       <View className="relative grow">
         <LegendList
-          estimatedItemSize={56} // +8px to prevent gap not being initially applied when data changes.
+          getEstimatedItemSize={(index, item) => {
+            if (typeof item === "string") return index === 0 ? 14 : 22;
+            else return 48;
+          }}
           data={data}
           keyExtractor={(item, index) =>
             typeof item === "string" ? item : `${index}`
