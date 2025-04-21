@@ -134,7 +134,7 @@
       "extra": {
         "plain": "Plain",
         "vinyl": "Vinyl",
-        "vinylOld": null
+        "vinylOld": "Vinyl (Lama)"
       }
     },
     "language": {
@@ -181,7 +181,7 @@
       }
     },
     "ignoreInterrupt": {
-      "title": null,
+      "title": "Abaikan Interupsi",
       "brief": null
     },
     "repeatOnSkip": {
