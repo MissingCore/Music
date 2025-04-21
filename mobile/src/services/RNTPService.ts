@@ -88,7 +88,18 @@ export async function PlaybackService() {
       // Since we played this track naturally, the index hasn't been updated
       // in the store.
       const nextTrack = await RNTPManager.getNextTrack();
-      musicStore.setState(nextTrack);
+      if (
+        nextTrack.activeId === undefined ||
+        nextTrack.activeId === activeTrack.id
+      ) {
+        // There was some cases of displaying the following track when letting
+        // the next track play naturally. This should prevent those cases.
+        musicStore.setState(nextTrack);
+      } else {
+        console.log(
+          `Got "${nextTrack.activeId}" from \`RNTPManager.getNextTrack()\` when playing track is "${activeTrack.id}".`,
+        );
+      }
 
       // Check if we should pause after looping logic.
       if (nextTrack.listIdx === 0 && repeat === "no-repeat") {
