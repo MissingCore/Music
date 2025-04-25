@@ -11,9 +11,6 @@ patchedDependencies:
   '@backpackapp-io/react-native-toast':
     hash: zgygxsuuqk33jr3gwbxpbkmczi
     path: patches/@backpackapp-io__react-native-toast.patch
-  '@legendapp/list':
-    hash: alidbpnawcfixpynx53cmu7z3a
-    path: patches/@legendapp__list.patch
   '@react-native-assets/slider':
     hash: q6v3llicmqqfpxxpnwpftecnbi
     path: patches/@react-native-assets__slider.patch
@@ -29,8 +26,8 @@ importers:
         specifier: ^0.13.0
         version: 0.13.0(patch_hash=zgygxsuuqk33jr3gwbxpbkmczi)(react-native-gesture-handler@2.25.0(patch_hash=rjhgnwrqf5shhovxtmq2tgj2qm)(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.26.10)(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))(react-native-safe-area-context@5.3.0(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
       '@legendapp/list':
-        specifier: 1.0.1
-        version: 1.0.1(patch_hash=alidbpnawcfixpynx53cmu7z3a)(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
+        specifier: https://github.com/MissingCore/legend-list/releases/download/v1.0.3.1/legendapp-list-1.0.3.1.tgz
+        version: https://github.com/MissingCore/legend-list/releases/download/v1.0.3.1/legendapp-list-1.0.3.1.tgz(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
       '@lodev09/react-native-true-sheet':
         specifier: ^2.0.5
         version: 2.0.5(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
@@ -1467,8 +1464,9 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@legendapp/list@1.0.1':
-    resolution: {integrity: sha512-kioDNhZ85JYqLWeXu7AX/fRYCYhjPOfykVNX3Rxg56AQSw8YgZhokSJMzmOjXvcGPiPYFyAo6m5bT1UnA19VKw==}
+  '@legendapp/list@https://github.com/MissingCore/legend-list/releases/download/v1.0.3.1/legendapp-list-1.0.3.1.tgz':
+    resolution: {tarball: https://github.com/MissingCore/legend-list/releases/download/v1.0.3.1/legendapp-list-1.0.3.1.tgz}
+    version: 1.0.3
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -7855,7 +7853,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@legendapp/list@1.0.1(patch_hash=alidbpnawcfixpynx53cmu7z3a)(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)':
+  '@legendapp/list@https://github.com/MissingCore/legend-list/releases/download/v1.0.3.1/legendapp-list-1.0.3.1.tgz(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)':
     dependencies:
       react: 18.3.1
       react-native: 0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1)
