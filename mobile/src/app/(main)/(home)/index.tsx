@@ -89,7 +89,9 @@ function Favorites() {
     RenderFirst: FavoriteTracks,
   });
 
-  return <LegendList {...presets} />;
+  // Similar issue to the one with `<SearchEngine />` in which the first
+  // change in the data causes nothing to render.
+  return <LegendList {...presets} resetWithUndefined />;
 }
 
 /**

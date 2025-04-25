@@ -9,7 +9,7 @@
   },
   "@legendapp/list": {
     "name": "@legendapp/list",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "copyright": "Copyright (c) 2022 Moo.do LLC",
     "source": "https://github.com/LegendApp/legend-list",
     "license": "MIT",
