@@ -78,7 +78,9 @@ export default function FolderScreen() {
     <StickyActionListLayout
       listRef={listRef}
       titleKey="term.folders"
-      estimatedItemSize={56} // +8px to prevent gap not being initially applied when data changes.
+      // Hack as "average item size" is prioritized over `estimatedItemSize`. This
+      // prevents the "jumpiness" of the items when we change directories.
+      getEstimatedItemSize={() => 56} // +8px to prevent gap not being initially applied when data changes.
       data={renderedData}
       keyExtractor={(item) => (isTrackContent(item) ? item.id : item.path)}
       renderItem={({ item }) =>
