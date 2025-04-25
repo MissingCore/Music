@@ -163,7 +163,7 @@ index 5c4b60348d17d4c5f9c810363d3e7cc014e81b2b..3e32402c2de4187cc03d202de105490f
  
  declare function useViewability(callback: ViewabilityCallback, configId?: string): void;
 diff --git a/index.js b/index.js
-index 433d44f11524512c53e8a28755220d6e09d4d07e..6ee36065dfb037f2a46e74ec1d155722ee5a7940 100644
+index af49f4c418c95899d836d7b0a4d03f287e56f3b0..f6f16f2043c070cb754e698a93550f7ee07c6cfb 100644
 --- a/index.js
 +++ b/index.js
 @@ -924,6 +924,8 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
@@ -175,16 +175,7 @@ index 433d44f11524512c53e8a28755220d6e09d4d07e..6ee36065dfb037f2a46e74ec1d155722
      ...rest
    } = props;
    const callbacks = React2.useRef({
-@@ -959,7 +961,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
-   };
-   const getItemSize = (key, index, data, useAverageSize = false) => {
-     const state = refState.current;
--    const sizeKnown = state.sizesKnown.get(key);
-+    const sizeKnown = state.sizes.get(key);
-     if (sizeKnown !== void 0) {
-       return sizeKnown;
-     }
-@@ -1735,8 +1737,8 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
+@@ -1738,8 +1740,8 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
          for (let i = 0; i < numContainers; i++) {
            const itemKey = peek$(ctx, `containerItemKey${i}`);
            if (!keyExtractorProp || itemKey && state.indexByKey.get(itemKey) === void 0) {
@@ -195,7 +186,7 @@ index 433d44f11524512c53e8a28755220d6e09d4d07e..6ee36065dfb037f2a46e74ec1d155722
              set$(ctx, `containerPosition${i}`, ANCHORED_POSITION_OUT_OF_VIEW);
              set$(ctx, `containerColumn${i}`, -1);
            }
-@@ -1795,7 +1797,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
+@@ -1798,7 +1800,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
              };
              state.anchorElement = newAnchorElement;
              (_b = state.belowAnchorElementPositions) == null ? void 0 : _b.clear();
@@ -204,7 +195,7 @@ index 433d44f11524512c53e8a28755220d6e09d4d07e..6ee36065dfb037f2a46e74ec1d155722
              setTimeout(() => {
                calculateItemsInView();
              }, 0);
-@@ -1810,7 +1812,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
+@@ -1813,7 +1815,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
            } else {
              state.startBufferedId = void 0;
            }
@@ -214,7 +205,7 @@ index 433d44f11524512c53e8a28755220d6e09d4d07e..6ee36065dfb037f2a46e74ec1d155722
              calculateItemsInView();
            }, 0);
 diff --git a/index.mjs b/index.mjs
-index 2d60b7aa51e1db7ae47af1adc4f3915724fc7848..b0f444bbb087bad95c815e71042cdfd51e9b33b3 100644
+index 33bc6bc5e70a95e2828899531ec67c62e2616624..0980332724f1153a959c992da504c6759c816657 100644
 --- a/index.mjs
 +++ b/index.mjs
 @@ -903,6 +903,8 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
@@ -226,16 +217,7 @@ index 2d60b7aa51e1db7ae47af1adc4f3915724fc7848..b0f444bbb087bad95c815e71042cdfd5
      ...rest
    } = props;
    const callbacks = useRef({
-@@ -938,7 +940,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
-   };
-   const getItemSize = (key, index, data, useAverageSize = false) => {
-     const state = refState.current;
--    const sizeKnown = state.sizesKnown.get(key);
-+    const sizeKnown = state.sizes.get(key);
-     if (sizeKnown !== void 0) {
-       return sizeKnown;
-     }
-@@ -1714,8 +1716,8 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
+@@ -1717,8 +1719,8 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
          for (let i = 0; i < numContainers; i++) {
            const itemKey = peek$(ctx, `containerItemKey${i}`);
            if (!keyExtractorProp || itemKey && state.indexByKey.get(itemKey) === void 0) {
@@ -246,7 +228,7 @@ index 2d60b7aa51e1db7ae47af1adc4f3915724fc7848..b0f444bbb087bad95c815e71042cdfd5
              set$(ctx, `containerPosition${i}`, ANCHORED_POSITION_OUT_OF_VIEW);
              set$(ctx, `containerColumn${i}`, -1);
            }
-@@ -1774,7 +1776,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
+@@ -1777,7 +1779,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
              };
              state.anchorElement = newAnchorElement;
              (_b = state.belowAnchorElementPositions) == null ? void 0 : _b.clear();
@@ -255,7 +237,7 @@ index 2d60b7aa51e1db7ae47af1adc4f3915724fc7848..b0f444bbb087bad95c815e71042cdfd5
              setTimeout(() => {
                calculateItemsInView();
              }, 0);
-@@ -1789,7 +1791,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
+@@ -1792,7 +1794,7 @@ var LegendListInner = typedForwardRef(function LegendListInner2(props, forwarded
            } else {
              state.startBufferedId = void 0;
            }
