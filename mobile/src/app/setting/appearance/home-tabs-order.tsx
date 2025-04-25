@@ -11,10 +11,7 @@ import {
   userPreferencesStore,
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
-import {
-  areRenderItemPropsEqual,
-  useDragListState,
-} from "~/lib/react-native-draglist";
+import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 
 import { cn } from "~/lib/style";
 import { moveArray } from "~/utils/object";
@@ -28,7 +25,6 @@ type RenderItemProps = DragListRenderItemInfo<OrderableTab>;
 /** Screen for `/setting/appearance/home-tabs-order` route. */
 export default function HomeTabsOrderScreen() {
   const data = useUserPreferencesStore((state) => state.tabsOrder);
-  const { items, onReordered } = useDragListState({ data, onMove });
 
   const renderItem = useCallback(
     (args: RenderItemProps) => <RenderItem {...args} />,
@@ -38,10 +34,10 @@ export default function HomeTabsOrderScreen() {
   return (
     <FlashDragList
       estimatedItemSize={52} // 48px Height + 4px Margin top
-      data={items}
+      data={data}
       keyExtractor={(tabKey) => tabKey}
       renderItem={renderItem}
-      onReordered={onReordered}
+      onReordered={onMove}
       ListHeaderComponent={ListHeaderComponent}
       contentContainerClassName="py-4"
       className="mx-4"
