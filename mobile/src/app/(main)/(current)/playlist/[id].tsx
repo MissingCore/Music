@@ -20,10 +20,13 @@ import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
-import { FlashDragList } from "~/components/Defaults/Legacy";
+import { FlashDragList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
-import { PagePlaceholder } from "~/components/Transition/Placeholder";
+import {
+  ContentPlaceholder,
+  PagePlaceholder,
+} from "~/components/Transition/Placeholder";
 import { Track } from "~/modules/media/components/Track";
 import type { PlayListSource } from "~/modules/media/types";
 
@@ -100,9 +103,11 @@ export default function CurrentPlaylistScreen() {
           keyExtractor={({ id }) => id}
           renderItem={renderItem}
           onReordered={onMove}
+          ListEmptyComponent={
+            <ContentPlaceholder errMsgKey="err.msg.noTracks" />
+          }
           contentContainerClassName="pt-4"
           contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
-          emptyMsgKey="err.msg.noTracks"
         />
       </CurrentListLayout>
     </>

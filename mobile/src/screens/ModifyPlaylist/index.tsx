@@ -23,11 +23,12 @@ import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { wait } from "~/utils/promise";
-import { FlashDragList } from "~/components/Defaults/Legacy";
+import { FlashDragList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
 import { useSheetRef } from "~/components/Sheet";
+import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 
@@ -130,8 +131,10 @@ function PageContent() {
               showSheet={() => addMusicSheetRef.current?.present()}
             />
           }
+          ListEmptyComponent={
+            <ContentPlaceholder errMsgKey="err.msg.noTracks" />
+          }
           contentContainerClassName="py-4" // Applies to the internal `<FlashList />`.
-          emptyMsgKey="err.msg.noTracks"
         />
       </View>
     </>
