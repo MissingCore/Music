@@ -1,5 +1,5 @@
 import { Stack, router, useLocalSearchParams } from "expo-router";
-import { memo, useCallback, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
@@ -22,8 +22,7 @@ import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { FlashDragList } from "~/components/Defaults/Legacy";
 import { IconButton } from "~/components/Form/Button";
-import type { SwipeableRef } from "~/components/Swipeable";
-import { Swipeable } from "~/components/Swipeable";
+import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
 import { PagePlaceholder } from "~/components/Transition/Placeholder";
 import { Track } from "~/modules/media/components/Track";
 import type { PlayListSource } from "~/modules/media/types";
@@ -118,7 +117,7 @@ const RenderItem = memo(
     ...info
   }: RenderItemProps & { trackSource: PlayListSource }) {
     const { t } = useTranslation();
-    const swipeableRef = useRef<SwipeableRef>(null);
+    const swipeableRef = useSwipeableRef();
     const [lastItemId, setLastItemId] = useState(item.id);
     const removeTrack = useRemoveFromPlaylist(item.id);
 

@@ -24,14 +24,14 @@ import {
 
 import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
-import { cn } from "~/lib/style";
 import { Marquee } from "~/components/Containment/Marquee";
-import { FlashList } from "~/components/Defaults/Legacy";
+import { LegendList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { NumericInput, TextInput, useInputRef } from "~/components/Form/Input";
 import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
 import { Swipeable } from "~/components/Swipeable";
+import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
 /** All the sheets used on `/setting/scanning` route. */
@@ -83,39 +83,38 @@ function ScanFilterListSheet({
       <FilterForm {...{ listType, listEntries }} />
 
       <GestureHandlerRootView>
-        <FlashList
-          estimatedItemSize={58} // 54px Height + 4px Margin Top
+        <LegendList
+          estimatedItemSize={54}
           data={listEntries}
           keyExtractor={(item) => item}
-          renderItem={({ item, index }) => (
+          renderItem={({ item }) => (
             <Swipeable
-              containerClassName={cn("px-4", { "mt-1": index > 0 })}
+              containerClassName="px-4"
               renderRightActions={() => (
-                <View className="pr-4">
-                  <IconButton
-                    accessibilityLabel={t("template.entryRemove", {
-                      name: item,
-                    })}
-                    onPress={() => removePath({ list: listType, path: item })}
-                    className="aspect-square grow bg-red"
-                  >
-                    <Remove color={Colors.neutral100} />
-                  </IconButton>
-                </View>
+                <IconButton
+                  accessibilityLabel={t("template.entryRemove", { name: item })}
+                  onPress={() => removePath({ list: listType, path: item })}
+                  className="mr-4 aspect-square h-full bg-red"
+                >
+                  <Remove color={Colors.neutral100} />
+                </IconButton>
               )}
             >
               <Marquee
                 color={surface}
                 topOffset={16}
-                wrapperClassName="min-h-12 py-4 rounded-md bg-surface"
+                wrapperClassName="py-4 rounded-md bg-surface"
               >
                 <StyledText className="px-4">{item}</StyledText>
               </Marquee>
             </Swipeable>
           )}
+          ListEmptyComponent={
+            <ContentPlaceholder errMsgKey="err.msg.noFilters" />
+          }
           nestedScrollEnabled
+          columnWrapperStyle={{ rowGap: 4 }}
           contentContainerClassName="pb-4"
-          emptyMsgKey="err.msg.noFilters"
         />
       </GestureHandlerRootView>
     </Sheet>
