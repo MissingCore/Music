@@ -1,5 +1,5 @@
 import { useIsFocused } from "@react-navigation/native";
-import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { BackHandler, Pressable, useWindowDimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
@@ -19,7 +19,6 @@ import { useFolderContent } from "~/queries/folder";
 import { StickyActionListLayout } from "~/layouts/StickyActionScroll";
 
 import { cn } from "~/lib/style";
-import { useLegendListRef } from "~/components/Defaults";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { StyledText } from "~/components/Typography/StyledText";
 import { Track } from "~/modules/media/components/Track";
@@ -31,8 +30,7 @@ const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 /** Screen for `/folder` route. */
 export default function FolderScreen() {
   const isFocused = useIsFocused();
-  const listRef = useLegendListRef();
-  const [dirSegments, _setDirSegments] = useState<string[]>([]);
+  const [dirSegments, setDirSegments] = useState<string[]>([]);
 
   const fullPath = dirSegments.join("/");
 
@@ -42,17 +40,6 @@ export default function FolderScreen() {
     () => [...(data?.subDirectories ?? []), ...(data?.tracks ?? [])],
     [data],
   );
-
-  /** Modified state setter that scrolls to the top of the page. */
-  const setDirSegments: React.Dispatch<React.SetStateAction<string[]>> =
-    useCallback(
-      (value) => {
-        // Make sure we start at the beginning whenever the directory segments change.
-        listRef.current?.scrollToOffset({ offset: 0 });
-        _setDirSegments(value);
-      },
-      [listRef],
-    );
 
   useEffect(() => {
     // Prevent event from working when this screen isn't focused.
@@ -76,7 +63,6 @@ export default function FolderScreen() {
 
   return (
     <StickyActionListLayout
-      listRef={listRef}
       titleKey="term.folders"
       // Hack as "average item size" is prioritized over `estimatedItemSize`. This
       // prevents the "jumpiness" of the items when we change directories.
@@ -106,7 +92,6 @@ export default function FolderScreen() {
         />
       }
       estimatedActionSize={48}
-      disableScrollTopOnDataChange
     />
   );
 }

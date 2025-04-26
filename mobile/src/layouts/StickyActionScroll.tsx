@@ -1,4 +1,3 @@
-import type { LegendListRef } from "@legendapp/list";
 import type { AnimatedLegendListProps } from "@legendapp/list/reanimated";
 import type { ParseKeys } from "i18next";
 import { useCallback } from "react";
@@ -27,17 +26,14 @@ export function StickyActionListLayout<TData>({
   titleKey,
   StickyAction,
   estimatedActionSize = 0,
-  listRef,
   ...props
-}: AnimatedLegendListProps<TData> & {
+}: Omit<AnimatedLegendListProps<TData>, "ref"> & {
   /** Key to title in translations. */
   titleKey: ParseKeys;
   /** Optional action displayed in layout. */
   StickyAction?: React.JSX.Element;
   /** Height of the StickyAction. */
   estimatedActionSize?: number;
-  /** Pass a ref to the animated Legend List. */
-  listRef?: React.RefObject<LegendListRef>;
 }) {
   const { t } = useTranslation();
   const { top } = useSafeAreaInsets();
@@ -75,8 +71,6 @@ export function StickyActionListLayout<TData>({
   return (
     <>
       <AnimatedLegendList
-        // @ts-expect-error - Ref should be compatible with Animated Legend List.
-        ref={listRef}
         onScroll={scrollHandler}
         ListHeaderComponent={
           <LayoutHeader
