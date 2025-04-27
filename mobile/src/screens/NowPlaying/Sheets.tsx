@@ -162,7 +162,7 @@ function QueueList() {
   if (queueList.filter((t) => t !== undefined).length === 0) return null;
   return (
     <LegendList
-      estimatedItemSize={52} // + 4px Margin Bottom
+      estimatedItemSize={52} // +4px Margin Bottom
       data={queueList}
       keyExtractor={(item, index) => `${item?.id}_${index}`}
       renderItem={(args) => <RenderQueueItem {...args} />}
