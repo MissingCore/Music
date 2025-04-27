@@ -93,11 +93,6 @@ function PageContent() {
   const addCallbacks = usePlaylistStore((state) => state.SearchCallbacks);
   const addMusicSheetRef = useSheetRef();
 
-  const renderItem = useCallback(
-    (args: RenderItemProps) => <RenderItem {...args} />,
-    [],
-  );
-
   useEffect(() => {
     const subscription = BackHandler.addEventListener(
       "hardwareBackPress",
@@ -124,7 +119,7 @@ function PageContent() {
           estimatedItemSize={56} // 48px Height + 8px Margin Top
           data={tracks}
           keyExtractor={({ id }) => id}
-          renderItem={renderItem}
+          renderItem={(args) => <RenderItem {...args} />}
           onReordered={moveTrack}
           ListHeaderComponent={
             <ListHeaderComponent

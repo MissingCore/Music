@@ -1,4 +1,4 @@
-import { memo, useCallback } from "react";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
@@ -25,18 +25,12 @@ type RenderItemProps = DragListRenderItemInfo<OrderableTab>;
 /** Screen for `/setting/appearance/home-tabs-order` route. */
 export default function HomeTabsOrderScreen() {
   const data = useUserPreferencesStore((state) => state.tabsOrder);
-
-  const renderItem = useCallback(
-    (args: RenderItemProps) => <RenderItem {...args} />,
-    [],
-  );
-
   return (
     <FlashDragList
       estimatedItemSize={52} // 48px Height + 4px Margin top
       data={data}
       keyExtractor={(tabKey) => tabKey}
-      renderItem={renderItem}
+      renderItem={(args) => <RenderItem {...args} />}
       onReordered={onMove}
       ListHeaderComponent={ListHeaderComponent}
       contentContainerClassName="py-4"

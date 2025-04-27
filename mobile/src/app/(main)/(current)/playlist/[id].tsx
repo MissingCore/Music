@@ -51,11 +51,6 @@ export default function CurrentPlaylistScreen() {
   // Information about this track list.
   const trackSource = useMemo(() => ({ type: "playlist", id }) as const, [id]);
 
-  const renderItem = useCallback(
-    (args: RenderItemProps) => <RenderItem {...{ ...args, trackSource }} />,
-    [trackSource],
-  );
-
   if (isPending || error) return <PagePlaceholder {...{ isPending }} />;
 
   // Add optimistic UI updates.
@@ -99,9 +94,11 @@ export default function CurrentPlaylistScreen() {
       >
         <FlashDragList
           estimatedItemSize={56} // 48px Height + 8px Margin Top
-          data={data?.tracks}
+          data={data.tracks}
           keyExtractor={({ id }) => id}
-          renderItem={renderItem}
+          renderItem={(args) => (
+            <RenderItem {...args} trackSource={trackSource} />
+          )}
           onReordered={onMove}
           ListEmptyComponent={
             <ContentPlaceholder errMsgKey="err.msg.noTracks" />

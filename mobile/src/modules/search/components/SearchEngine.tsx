@@ -84,33 +84,31 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
             else return 48;
           }}
           data={data}
+          // Note: We use `index` instead of the `id` or `name` field on the
+          // `entry` due to there being potentially shared values (ie: between
+          // artist & playlist names).
           keyExtractor={(item, index) =>
             typeof item === "string" ? item : `${index}`
           }
-          renderItem={({ item, index }) => {
-            if (typeof item === "string") {
-              return (
-                <TEm
-                  textKey={`term.${item}`}
-                  className={index > 0 ? "mt-2" : undefined}
-                />
-              );
-            }
-            const { entry, ...rest } = item;
-
-            return (
+          renderItem={({ item, index }) =>
+            typeof item === "string" ? (
+              <TEm
+                textKey={`term.${item}`}
+                className={index > 0 ? "mt-2" : undefined}
+              />
+            ) : (
               <SearchResult
                 as="ripple"
                 /* @ts-expect-error - `type` should be limited to our scope. */
-                onPress={() => props.callbacks[rest.type](entry)}
+                onPress={() => props.callbacks[item.type](item.entry)}
                 wrapperClassName={
-                  rest.type === "artist" ? "rounded-full" : undefined
+                  item.type === "artist" ? "rounded-full" : undefined
                 }
                 className="pr-4"
-                {...rest}
+                {...item}
               />
-            );
-          }}
+            )
+          }
           ListEmptyComponent={
             query.length > 0 ? (
               <ContentPlaceholder
