@@ -162,13 +162,11 @@ function QueueList() {
   if (queueList.filter((t) => t !== undefined).length === 0) return null;
   return (
     <LegendList
-      estimatedItemSize={48}
+      estimatedItemSize={52} // + 4px Margin Bottom
       data={queueList}
       keyExtractor={(item, index) => `${item?.id}_${index}`}
       renderItem={(args) => <RenderQueueItem {...args} />}
       resetWithUndefined
-      columnWrapperStyle={{ rowGap: 4 }}
-      contentContainerClassName="pb-1"
     />
   );
 }
@@ -189,7 +187,7 @@ function RenderQueueItem({
     <Swipeable
       // @ts-expect-error - Error assigning ref to class component.
       ref={swipeableRef}
-      containerClassName="px-4"
+      containerClassName="mb-1 px-4"
       renderRightActions={() => (
         <IconButton
           accessibilityLabel={t("template.entryRemove", { name: item.name })}
