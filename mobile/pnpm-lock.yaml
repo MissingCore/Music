@@ -25,6 +25,9 @@ importers:
       '@backpackapp-io/react-native-toast':
         specifier: ^0.13.0
         version: 0.13.0(patch_hash=zgygxsuuqk33jr3gwbxpbkmczi)(react-native-gesture-handler@2.25.0(patch_hash=rjhgnwrqf5shhovxtmq2tgj2qm)(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.26.10)(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))(react-native-safe-area-context@5.3.0(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
+      '@legendapp/list':
+        specifier: https://github.com/MissingCore/legend-list/releases/download/v1.0.3.1/legendapp-list-1.0.3.1.tgz
+        version: https://github.com/MissingCore/legend-list/releases/download/v1.0.3.1/legendapp-list-1.0.3.1.tgz(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
       '@lodev09/react-native-true-sheet':
         specifier: ^2.0.5
         version: 2.0.5(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
@@ -128,8 +131,8 @@ importers:
         specifier: ^6.3.4
         version: 6.3.4(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
       react-native-draglist:
-        specifier: github:MissingCore/react-native-draglist#6e926d101e6293785d5cab4c014ccdc4812c19d2
-        version: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/6e926d101e6293785d5cab4c014ccdc4812c19d2(@shopify/flash-list@1.8.0(@babel/runtime@7.27.0)(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
+        specifier: github:MissingCore/react-native-draglist#948868efb2fde4ea32604f01a47f044453bb7af3
+        version: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/948868efb2fde4ea32604f01a47f044453bb7af3(@shopify/flash-list@1.8.0(@babel/runtime@7.27.0)(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
       react-native-edge-to-edge:
         specifier: ^1.5.1
         version: 1.5.1(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
@@ -1460,6 +1463,13 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@legendapp/list@https://github.com/MissingCore/legend-list/releases/download/v1.0.3.1/legendapp-list-1.0.3.1.tgz':
+    resolution: {tarball: https://github.com/MissingCore/legend-list/releases/download/v1.0.3.1/legendapp-list-1.0.3.1.tgz}
+    version: 1.0.3
+    peerDependencies:
+      react: '*'
+      react-native: '*'
 
   '@lodev09/react-native-true-sheet@2.0.5':
     resolution: {integrity: sha512-io836GkxMDL48/oHiSvo0/WeiaOrCBwGTsCxVaydF6aHcbewDD/gFcLvJKLIZ7raQqiymZLiSKGWLwNAPKlIrw==}
@@ -5137,13 +5147,16 @@ packages:
       react-native-svg:
         optional: true
 
-  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/6e926d101e6293785d5cab4c014ccdc4812c19d2:
-    resolution: {tarball: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/6e926d101e6293785d5cab4c014ccdc4812c19d2}
-    version: 3.8.2
+  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/948868efb2fde4ea32604f01a47f044453bb7af3:
+    resolution: {tarball: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/948868efb2fde4ea32604f01a47f044453bb7af3}
+    version: 3.9.5
     peerDependencies:
       '@shopify/flash-list': '*'
       react: '>=17.0.1'
       react-native: '>=0.64.0'
+    peerDependenciesMeta:
+      '@shopify/flash-list':
+        optional: true
 
   react-native-edge-to-edge@1.5.1:
     resolution: {integrity: sha512-x9ldVAgSzxlgudxd8FDbl5fYJjXiFBpwaiTBvmUY3u6Tl7Own5DFSH6UUEbS57NWVYGJftvnsNyuNH/6c9Kvrg==}
@@ -7839,6 +7852,11 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@legendapp/list@https://github.com/MissingCore/legend-list/releases/download/v1.0.3.1/legendapp-list-1.0.3.1.tgz(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      react: 18.3.1
+      react-native: 0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1)
 
   '@lodev09/react-native-true-sheet@2.0.5(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -12005,11 +12023,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/6e926d101e6293785d5cab4c014ccdc4812c19d2(@shopify/flash-list@1.8.0(@babel/runtime@7.27.0)(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1):
+  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/948868efb2fde4ea32604f01a47f044453bb7af3(@shopify/flash-list@1.8.0(@babel/runtime@7.27.0)(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1):
     dependencies:
-      '@shopify/flash-list': 1.8.0(@babel/runtime@7.27.0)(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-native: 0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1)
+    optionalDependencies:
+      '@shopify/flash-list': 1.8.0(@babel/runtime@7.27.0)(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1)
 
   react-native-edge-to-edge@1.5.1(react-native@0.76.9(@babel/core@7.26.10)(@babel/preset-env@7.26.0(@babel/core@7.26.10))(@types/react@18.3.20)(react@18.3.1))(react@18.3.1):
     dependencies:

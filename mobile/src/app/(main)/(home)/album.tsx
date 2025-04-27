@@ -8,7 +8,7 @@ export default function AlbumScreen() {
   const { isPending, data } = useAlbumsForCards();
   const presets = useMediaCardListPreset({
     ...{ data, isPending },
-    emptyMsgKey: "err.msg.noAlbums",
+    errMsgKey: "err.msg.noAlbums",
   });
 
   return <StickyActionListLayout titleKey="term.albums" {...presets} />;

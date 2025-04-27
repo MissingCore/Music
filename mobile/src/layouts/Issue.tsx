@@ -8,7 +8,7 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { GITHUB } from "~/constants/Links";
-import { ScrollPresets } from "~/components/Defaults";
+import { ScrollablePresets } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
 import { AccentText } from "~/components/Typography/AccentText";
 import { TStyledText } from "~/components/Typography/StyledText";
@@ -32,7 +32,7 @@ export function IssueLayout(props: {
     <View className="flex-1">
       <Animated.ScrollView
         contentContainerClassName="grow gap-6 p-4"
-        {...ScrollPresets}
+        {...ScrollablePresets}
       >
         <AccentText style={{ paddingTop: top + 16 }} className="text-4xl">
           {t(`err.flow.${props.issueType}.title`)}

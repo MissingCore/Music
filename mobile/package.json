@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@backpackapp-io/react-native-toast": "^0.13.0",
+    "@legendapp/list": "https://github.com/MissingCore/legend-list/releases/download/v1.0.3.1/legendapp-list-1.0.3.1.tgz",
     "@lodev09/react-native-true-sheet": "^2.0.5",
     "@lukemorales/query-key-factory": "^1.3.4",
     "@miblanchard/react-native-slider": "^2.6.0",
@@ -58,7 +59,7 @@
     "react-i18next": "^15.4.1",
     "react-native": "^0.76.9",
     "react-native-bootsplash": "^6.3.4",
-    "react-native-draglist": "github:MissingCore/react-native-draglist#6e926d101e6293785d5cab4c014ccdc4812c19d2",
+    "react-native-draglist": "github:MissingCore/react-native-draglist#948868efb2fde4ea32604f01a47f044453bb7af3",
     "react-native-edge-to-edge": "^1.5.1",
     "react-native-gesture-handler": "~2.25.0",
     "react-native-markdown-display": "^7.0.2",

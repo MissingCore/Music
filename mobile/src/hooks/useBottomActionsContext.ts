@@ -31,7 +31,7 @@ export function useBottomActionsContext() {
   const hideNavBar = hideNavRoutes.some((route) => pathname.startsWith(route));
 
   // Bottom inset on home screen.
-  let withNav = 76; // 60px Navbar Height + 16px Bottom Padding
+  let withNav = 72; // 56px Navbar Height + 16px Bottom Padding
   if (isMiniPlayerRendered) withNav += 67; // 64px MiniPlayer Height + 3px Gap
   // Bottom inset on screens with only MiniPlayer.
   let onlyPlayer = 0;

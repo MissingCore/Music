@@ -1,5 +1,5 @@
 import { useIsFocused } from "@react-navigation/native";
-import { Fragment, useCallback, useEffect, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { BackHandler, Pressable, useWindowDimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
@@ -15,16 +15,11 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import type { FileNode } from "~/db/schema";
-
 import { useFolderContent } from "~/queries/folder";
-import {
-  StickyActionListLayout,
-  useStickyActionListLayoutRef,
-} from "~/layouts/StickyActionScroll";
+import { StickyActionListLayout } from "~/layouts/StickyActionScroll";
 
 import { cn } from "~/lib/style";
-import { useListPresets } from "~/components/Defaults";
+import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { StyledText } from "~/components/Typography/StyledText";
 import { Track } from "~/modules/media/components/Track";
 import { SearchResult } from "~/modules/search/components/SearchResult";
@@ -32,29 +27,19 @@ import { SearchResult } from "~/modules/search/components/SearchResult";
 /** Animated scrollview supporting gestures. */
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
-type FolderData = FileNode | Track.Content;
-
 /** Screen for `/folder` route. */
 export default function FolderScreen() {
   const isFocused = useIsFocused();
-  const listRef = useStickyActionListLayoutRef<FolderData>();
-  const [dirSegments, _setDirSegments] = useState<string[]>([]);
+  const [dirSegments, setDirSegments] = useState<string[]>([]);
 
   const fullPath = dirSegments.join("/");
 
   const { isPending, data } = useFolderContent(fullPath);
-  const listPresets = useListPresets({ isPending });
 
-  /** Modified state setter that scrolls to the top of the page. */
-  const setDirSegments: React.Dispatch<React.SetStateAction<string[]>> =
-    useCallback(
-      (value) => {
-        // Make sure we start at the beginning whenever the directory segments change.
-        listRef.current?.scrollToOffset({ offset: 0 });
-        _setDirSegments(value);
-      },
-      [listRef],
-    );
+  const renderedData = useMemo(
+    () => [...(data?.subDirectories ?? []), ...(data?.tracks ?? [])],
+    [data],
+  );
 
   useEffect(() => {
     // Prevent event from working when this screen isn't focused.
@@ -78,29 +63,28 @@ export default function FolderScreen() {
 
   return (
     <StickyActionListLayout
-      listRef={listRef}
       titleKey="term.folders"
-      estimatedItemSize={56} // 48px Height + 8px Margin Top
-      data={[data?.subDirectories ?? [], data?.tracks ?? []].flat()}
-      keyExtractor={(_, index) => `${index}`}
-      renderItem={({ item, index }) => (
-        <>
-          {isTrackContent(item) ? (
-            <Track
-              {...{ ...item, trackSource }}
-              className={index > 0 ? "mt-2" : undefined}
-            />
-          ) : (
-            <SearchResult
-              {...{ as: "ripple", type: "folder", title: item.name }}
-              onPress={() => setDirSegments((prev) => [...prev, item.name])}
-              wrapperClassName={index > 0 ? "mt-2" : undefined}
-              className="pr-4"
-            />
-          )}
-        </>
-      )}
-      {...listPresets}
+      // Hack as "average item size" is prioritized over `estimatedItemSize`. This
+      // prevents the "jumpiness" of the items when we change directories.
+      getEstimatedItemSize={() => 56} // +8px to prevent gap not being initially applied when data changes.
+      data={renderedData}
+      keyExtractor={(item) => (isTrackContent(item) ? item.id : item.path)}
+      renderItem={({ item }) =>
+        isTrackContent(item) ? (
+          <Track {...item} trackSource={trackSource} />
+        ) : (
+          <SearchResult
+            {...{ as: "ripple", type: "folder", title: item.name }}
+            onPress={() => setDirSegments((prev) => [...prev, item.name])}
+            className="pr-4"
+          />
+        )
+      }
+      ListEmptyComponent={
+        <ContentPlaceholder isPending={isPending} className="h-screen" />
+      }
+      scrollEnabled={!isPending}
+      columnWrapperStyle={{ rowGap: 8 }}
       StickyAction={
         <Breadcrumbs
           dirSegments={dirSegments}

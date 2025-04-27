@@ -12,7 +12,7 @@ import {
 
 import { getFont } from "~/lib/style";
 import { toLowerCase } from "~/utils/string";
-import { FlatList } from "~/components/Defaults";
+import { LegendList } from "~/components/Defaults";
 import { Radio } from "~/components/Form/Selection";
 import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
@@ -77,10 +77,12 @@ function FontSheet<T extends (typeof AccentFontOptions)[number]>(props: {
       ref={props.sheetRef}
       titleKey={`feat.font.extra.${toLowerCase(props.kind)}`}
     >
-      <FlatList
+      <LegendList
         accessibilityRole="radiogroup"
+        estimatedItemSize={54}
         data={props.fontOptions}
         keyExtractor={(font) => font}
+        extraData={props.selectedFont}
         renderItem={({ item: font }) => (
           <Radio
             selected={props.selectedFont === font}
@@ -94,7 +96,7 @@ function FontSheet<T extends (typeof AccentFontOptions)[number]>(props: {
             </Text>
           </Radio>
         )}
-        contentContainerClassName="gap-1"
+        columnWrapperStyle={{ rowGap: 4 }}
       />
     </Sheet>
   );
@@ -104,26 +106,28 @@ function FontSheet<T extends (typeof AccentFontOptions)[number]>(props: {
 /** Enables changing the theme of the app. */
 function ThemeSheet(props: { sheetRef: TrueSheetRef }) {
   const { setColorScheme } = useColorScheme();
-  const theme = useUserPreferencesStore((state) => state.theme);
+  const selectedTheme = useUserPreferencesStore((state) => state.theme);
 
   return (
     <Sheet ref={props.sheetRef} titleKey="feat.theme.title">
-      <FlatList
+      <LegendList
         accessibilityRole="radiogroup"
+        estimatedItemSize={54}
         data={ThemeOptions}
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => (
+        keyExtractor={(theme) => theme}
+        extraData={selectedTheme}
+        renderItem={({ item: theme }) => (
           <Radio
-            selected={item === theme}
+            selected={selectedTheme === theme}
             onSelect={() => {
-              setColorScheme(item);
-              setTheme(item);
+              setColorScheme(theme);
+              setTheme(theme);
             }}
           >
-            <TStyledText textKey={`feat.theme.extra.${item}`} />
+            <TStyledText textKey={`feat.theme.extra.${theme}`} />
           </Radio>
         )}
-        contentContainerClassName="gap-1"
+        columnWrapperStyle={{ rowGap: 4 }}
       />
     </Sheet>
   );
@@ -136,10 +140,12 @@ function NowPlayingDesignSheet(props: { sheetRef: TrueSheetRef }) {
   );
   return (
     <Sheet ref={props.sheetRef} titleKey="feat.nowPlayingDesign.title">
-      <FlatList
+      <LegendList
         accessibilityRole="radiogroup"
+        estimatedItemSize={54}
         data={NowPlayingDesignOptions}
         keyExtractor={(design) => design}
+        extraData={nowPlayingDesign}
         renderItem={({ item: design }) => (
           <Radio
             selected={nowPlayingDesign === design}
@@ -148,7 +154,7 @@ function NowPlayingDesignSheet(props: { sheetRef: TrueSheetRef }) {
             <TStyledText textKey={`feat.nowPlayingDesign.extra.${design}`} />
           </Radio>
         )}
-        contentContainerClassName="gap-1"
+        columnWrapperStyle={{ rowGap: 4 }}
       />
     </Sheet>
   );

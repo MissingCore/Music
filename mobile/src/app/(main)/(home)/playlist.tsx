@@ -15,7 +15,7 @@ export default function PlaylistScreen() {
   const { isPending, data } = usePlaylistsForCards();
   const presets = useMediaCardListPreset({
     ...{ data, isPending },
-    emptyMsgKey: "err.msg.noPlaylists",
+    errMsgKey: "err.msg.noPlaylists",
   });
 
   return (

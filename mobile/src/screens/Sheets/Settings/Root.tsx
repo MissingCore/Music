@@ -8,7 +8,7 @@ import { LANGUAGES } from "~/modules/i18n/constants";
 import { useExportBackup, useImportBackup } from "./helpers/BackupData";
 
 import { mutateGuard } from "~/lib/react-query";
-import { FlatList } from "~/components/Defaults";
+import { LegendList } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
 import { Radio } from "~/components/Form/Selection";
 import type { TrueSheetRef } from "~/components/Sheet";
@@ -83,20 +83,23 @@ function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
       titleKey="feat.language.title"
       contentContainerClassName="pb-0"
     >
-      <FlatList
+      <LegendList
         accessibilityRole="radiogroup"
+        estimatedItemSize={54}
         data={LANGUAGES}
         keyExtractor={({ code }) => code}
+        extraData={languageCode}
         renderItem={({ item }) => (
           <Radio
-            selected={item.code === languageCode}
+            selected={languageCode === item.code}
             onSelect={() => setLanguage(item.code)}
           >
             <StyledText>{item.name}</StyledText>
           </Radio>
         )}
         nestedScrollEnabled
-        contentContainerClassName="gap-1 pb-4"
+        columnWrapperStyle={{ rowGap: 4 }}
+        contentContainerClassName="pb-4"
       />
     </Sheet>
   );

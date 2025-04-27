@@ -7,9 +7,8 @@ import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { CurrentListLayout } from "~/layouts/CurrentList";
 
-import { cn } from "~/lib/style";
 import { isYearDefined } from "~/utils/number";
-import { FlashList } from "~/components/Defaults";
+import { LegendList } from "~/components/Defaults";
 import { PagePlaceholder } from "~/components/Transition/Placeholder";
 import { TEm } from "~/components/Typography/StyledText";
 import { MediaCard } from "~/modules/media/components/MediaCard";
@@ -21,7 +20,7 @@ export default function CurrentArtistScreen() {
   const { id: artistName } = useLocalSearchParams<{ id: string }>();
   const { isPending, error, data } = useArtistForScreen(artistName);
 
-  if (isPending || error) return <PagePlaceholder {...{ isPending }} />;
+  if (isPending || error) return <PagePlaceholder isPending={isPending} />;
 
   // Information about this track list.
   const trackSource = { type: "artist", id: artistName } as const;
@@ -33,18 +32,14 @@ export default function CurrentArtistScreen() {
       imageSource={data.imageSource}
       mediaSource={trackSource}
     >
-      <FlashList
-        estimatedItemSize={56} // 48px Height + 8px Margin Top
+      <LegendList
+        estimatedItemSize={48}
         data={data.tracks}
         keyExtractor={({ id }) => id}
-        renderItem={({ item, index }) => (
-          <Track
-            {...{ ...item, trackSource }}
-            className={cn("mx-4", { "mt-2": index > 0 })}
-          />
-        )}
+        renderItem={({ item }) => <Track {...item} trackSource={trackSource} />}
         ListHeaderComponent={<ArtistAlbums albums={data.albums} />}
-        contentContainerClassName="pt-4"
+        columnWrapperStyle={{ rowGap: 8 }}
+        contentContainerClassName="px-4 pt-4"
         contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
       />
     </CurrentListLayout>
@@ -64,13 +59,13 @@ function ArtistAlbums({ albums }: { albums: Album[] | null }) {
 
   return (
     <>
-      <TEm dim textKey="term.albums" className="mx-4 mb-2" />
-      <FlashList
-        estimatedItemSize={width + 12} // Column width + gap from padding left
+      <TEm dim textKey="term.albums" className="mb-2" />
+      <LegendList
+        estimatedItemSize={width}
         horizontal
         data={albums}
         keyExtractor={({ id }) => id}
-        renderItem={({ item, index }) => (
+        renderItem={({ item }) => (
           <MediaCard
             type="album"
             size={width}
@@ -78,12 +73,14 @@ function ArtistAlbums({ albums }: { albums: Album[] | null }) {
             href={`/album/${item.id}`}
             title={item.name}
             description={`${isYearDefined(item.releaseYear) ? item.releaseYear : "————"}`}
-            className={index > 0 ? "ml-3" : undefined}
           />
         )}
+        columnWrapperStyle={{ columnGap: 12 }}
+        style={{ height: width + 39 }}
+        className="-mx-4"
         contentContainerClassName="px-4"
       />
-      <TEm dim textKey="term.tracks" className="m-4 mb-2" />
+      <TEm dim textKey="term.tracks" className="mb-2 mt-4" />
     </>
   );
 }

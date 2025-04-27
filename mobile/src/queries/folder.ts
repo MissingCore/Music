@@ -9,6 +9,7 @@ import { queries as q } from "./keyStore";
 export function useFolderContent(folderPath?: string) {
   return useQuery({
     ...q.folders.detail(folderPath),
+    staleTime: 1000 * 60 * 5, // 5 Minutes
     select: ({ subDirectories, tracks }) => ({
       subDirectories,
       tracks: tracks.map((track) => formatForTrack("track", track)),

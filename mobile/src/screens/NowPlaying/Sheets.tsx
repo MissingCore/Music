@@ -1,3 +1,5 @@
+import type { LegendListRenderItemProps } from "@legendapp/list";
+import { useRecyclingEffect } from "@legendapp/list";
 import { useTranslation } from "react-i18next";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import TrackPlayer from "react-native-track-player";
@@ -9,17 +11,21 @@ import { SlowMotionVideo } from "~/icons/SlowMotionVideo";
 import { VolumeUp } from "~/icons/VolumeUp";
 import { Queue, useMusicStore } from "~/modules/media/services/Music";
 import { sessionStore, useSessionStore } from "~/services/SessionStore";
+import type { UpcomingStore } from "./helpers/UpcomingStore";
 import { useUpcomingStore } from "./helpers/UpcomingStore";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
-import { FlashList } from "~/components/Defaults";
+import { LegendList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { NSlider } from "~/components/Form/Slider";
 import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
-import { Swipeable } from "~/components/Swipeable";
+import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
 import { SearchResult } from "~/modules/search/components/SearchResult";
+import { ContentPlaceholder } from "~/components/Transition/Placeholder";
+
+type PartialTrack = UpcomingStore["currentTrackList"][0];
 
 /** All the sheets used on `/now-playing` route. */
 export function NowPlayingSheets(
@@ -120,8 +126,8 @@ function TrackUpcomingSheet(props: { sheetRef: TrueSheetRef }) {
       contentContainerClassName="px-0"
     >
       <GestureHandlerRootView>
-        <FlashList
-          estimatedItemSize={52} // 48px Height + 4px Margin Top
+        <LegendList
+          estimatedItemSize={48}
           data={data}
           keyExtractor={(item, index) => (item ? item.id : `${index}`)}
           renderItem={({ item, index }) =>
@@ -130,16 +136,16 @@ function TrackUpcomingSheet(props: { sheetRef: TrueSheetRef }) {
                 title={item.name}
                 description={item.artistName ?? "—"}
                 imageSource={getTrackCover(item)}
-                className={cn("px-4", {
-                  "opacity-25": index >= disableIndex,
-                  "mt-1": index > 0,
-                })}
+                className={cn("px-4", { "opacity-25": index >= disableIndex })}
               />
             ) : null
           }
           ListHeaderComponent={<QueueList />}
-          isPending={trackList.length === 0}
+          ListEmptyComponent={
+            <ContentPlaceholder isPending={trackList.length === 0} />
+          }
           nestedScrollEnabled
+          columnWrapperStyle={{ rowGap: 4 }}
           contentContainerClassName="pb-4"
         />
       </GestureHandlerRootView>
@@ -152,42 +158,53 @@ function TrackUpcomingSheet(props: { sheetRef: TrueSheetRef }) {
  * in the main list.
  */
 function QueueList() {
-  const { t } = useTranslation();
   const queueList = useUpcomingStore((state) => state.queuedTrackList);
-
   if (queueList.filter((t) => t !== undefined).length === 0) return null;
-
   return (
-    <FlashList
-      estimatedItemSize={52} // 48px Height + 4px Margin Bottom
+    <LegendList
+      estimatedItemSize={52} // +4px Margin Bottom
       data={queueList}
-      keyExtractor={(item, index) => `${item?.name}_${index}`}
-      renderItem={({ item, index }) =>
-        item ? (
-          <Swipeable
-            containerClassName="mb-1 px-4"
-            renderRightActions={() => (
-              <IconButton
-                accessibilityLabel={t("template.entryRemove", {
-                  name: item.name,
-                })}
-                onPress={() => Queue.removeAtIndex(index)}
-                className="mr-4 bg-red"
-              >
-                <Remove color={Colors.neutral100} />
-              </IconButton>
-            )}
-          >
-            <TrackItem
-              title={item.name}
-              description={item.artistName ?? "—"}
-              imageSource={getTrackCover(item)}
-              inQueue
-            />
-          </Swipeable>
-        ) : null
-      }
+      keyExtractor={(item, index) => `${item?.id}_${index}`}
+      renderItem={(args) => <RenderQueueItem {...args} />}
+      resetWithUndefined
     />
+  );
+}
+
+function RenderQueueItem({
+  item,
+  index,
+}: LegendListRenderItemProps<PartialTrack>) {
+  const { t } = useTranslation();
+  const swipeableRef = useSwipeableRef();
+
+  useRecyclingEffect(() => {
+    swipeableRef.current?.resetIfNeeded();
+  });
+
+  if (!item) return null;
+  return (
+    <Swipeable
+      // @ts-expect-error - Error assigning ref to class component.
+      ref={swipeableRef}
+      containerClassName="mb-1 px-4"
+      renderRightActions={() => (
+        <IconButton
+          accessibilityLabel={t("template.entryRemove", { name: item.name })}
+          onPress={() => Queue.removeAtIndex(index)}
+          className="mr-4 bg-red"
+        >
+          <Remove color={Colors.neutral100} />
+        </IconButton>
+      )}
+    >
+      <TrackItem
+        title={item.name}
+        description={item.artistName ?? "—"}
+        imageSource={getTrackCover(item)}
+        inQueue
+      />
+    </Swipeable>
   );
 }
 

@@ -1,6 +1,6 @@
 import { Stack, router } from "expo-router";
 import type { ParseKeys } from "i18next";
-import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler, Modal, Pressable, View } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
@@ -26,9 +26,9 @@ import { wait } from "~/utils/promise";
 import { FlashDragList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
-import type { SwipeableRef } from "~/components/Swipeable";
-import { Swipeable } from "~/components/Swipeable";
+import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
 import { useSheetRef } from "~/components/Sheet";
+import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 
@@ -93,11 +93,6 @@ function PageContent() {
   const addCallbacks = usePlaylistStore((state) => state.SearchCallbacks);
   const addMusicSheetRef = useSheetRef();
 
-  const renderItem = useCallback(
-    (args: RenderItemProps) => <RenderItem {...args} />,
-    [],
-  );
-
   useEffect(() => {
     const subscription = BackHandler.addEventListener(
       "hardwareBackPress",
@@ -124,15 +119,17 @@ function PageContent() {
           estimatedItemSize={56} // 48px Height + 8px Margin Top
           data={tracks}
           keyExtractor={({ id }) => id}
-          renderItem={renderItem}
+          renderItem={(args) => <RenderItem {...args} />}
           onReordered={moveTrack}
           ListHeaderComponent={
             <ListHeaderComponent
               showSheet={() => addMusicSheetRef.current?.present()}
             />
           }
+          ListEmptyComponent={
+            <ContentPlaceholder errMsgKey="err.msg.noTracks" />
+          }
           contentContainerClassName="py-4" // Applies to the internal `<FlashList />`.
-          emptyMsgKey="err.msg.noTracks"
         />
       </View>
     </>
@@ -144,7 +141,7 @@ function PageContent() {
 const RenderItem = memo(
   function RenderItem({ item, ...info }: RenderItemProps) {
     const { t } = useTranslation();
-    const swipeableRef = useRef<SwipeableRef>(null);
+    const swipeableRef = useSwipeableRef();
     const [lastItemId, setLastItemId] = useState(item.id);
 
     const removeTrack = usePlaylistStore((state) => state.removeTrack);

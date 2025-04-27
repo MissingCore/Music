@@ -36,11 +36,12 @@ import {
   formatSeconds,
 } from "~/utils/number";
 import { Marquee } from "~/components/Containment/Marquee";
-import { FlashList } from "~/components/Defaults";
+import { LegendList } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { IconButton } from "~/components/Form/Button";
 import { Checkbox } from "~/components/Form/Selection";
 import { Sheet } from "~/components/Sheet";
+import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import {
   StyledText,
   TEm,
@@ -296,11 +297,11 @@ function TrackToPlaylistSheet({ id }: { id: string }) {
       titleKey="feat.modalTrack.extra.addToPlaylist"
       snapTop
     >
-      <FlashList
-        estimatedItemSize={58} // 54px Height + 4px Margin Top
+      <LegendList
+        estimatedItemSize={54}
         data={data}
         keyExtractor={({ name }) => name}
-        renderItem={({ item, index }) => {
+        renderItem={({ item }) => {
           const selected = inList?.includes(item.name) ?? false;
           return (
             <Checkbox
@@ -312,7 +313,6 @@ function TrackToPlaylistSheet({ id }: { id: string }) {
                   item.name,
                 )
               }
-              wrapperClassName={index > 0 ? "mt-1" : undefined}
             >
               <Marquee color={selected ? surface : canvasAlt}>
                 <StyledText>{item.name}</StyledText>
@@ -320,9 +320,12 @@ function TrackToPlaylistSheet({ id }: { id: string }) {
             </Checkbox>
           );
         }}
+        ListEmptyComponent={
+          <ContentPlaceholder errMsgKey="err.msg.noPlaylists" />
+        }
         nestedScrollEnabled
+        columnWrapperStyle={{ rowGap: 4 }}
         contentContainerClassName="pb-4"
-        emptyMsgKey="err.msg.noPlaylists"
       />
     </Sheet>
   );

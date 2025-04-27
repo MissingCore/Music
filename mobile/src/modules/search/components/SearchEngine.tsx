@@ -15,11 +15,11 @@ import { Close } from "~/icons/Close";
 import { Search } from "~/icons/Search";
 import { useTheme } from "~/hooks/useTheme";
 
-import { cn } from "~/lib/style";
-import { FlashList } from "~/components/Defaults";
+import { LegendList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { TextInput, useInputRef } from "~/components/Form/Input";
-import { TEm, TStyledText } from "~/components/Typography/StyledText";
+import { ContentPlaceholder } from "~/components/Transition/Placeholder";
+import { TEm } from "~/components/Typography/StyledText";
 import { SearchResult } from "./SearchResult";
 import { useSearch } from "../hooks/useSearch";
 import type {
@@ -41,7 +41,7 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
   const [query, setQuery] = useState("");
   const results = useSearch(props.searchScope, query);
 
-  // Format results to be used in `<FlashList />`.
+  // Format results to be used in list.
   const data = useMemo(
     () => (results ? formatResults(results) : undefined),
     [results],
@@ -53,7 +53,7 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
   );
 
   return (
-    <View className="grow">
+    <View className="shrink grow">
       {/* Search input. */}
       <View className="flex-row items-center gap-2 rounded-full bg-surface pl-4">
         <Search />
@@ -77,42 +77,53 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
         </IconButton>
       </View>
       {/* Results list w/ scroll shadow. */}
-      <View className="relative grow">
-        <FlashList
-          estimatedItemSize={56} // 48px Height + 8px Margin Top
+      <View className="relative shrink grow">
+        <LegendList
+          getEstimatedItemSize={(index, item) => {
+            if (typeof item === "string") return index === 0 ? 14 : 22;
+            else return 48;
+          }}
           data={data}
-          keyExtractor={(_, index) => `${index}`}
-          renderItem={({ item, index }) => {
-            if (typeof item === "string") {
-              return (
-                <TEm
-                  textKey={`term.${item}`}
-                  className={index > 0 ? "mt-4" : undefined}
-                />
-              );
-            }
-            const { entry, ...rest } = item;
-
-            return (
+          // Note: We use `index` instead of the `id` or `name` field on the
+          // `entry` due to there being potentially shared values (ie: between
+          // artist & playlist names).
+          keyExtractor={(item, index) =>
+            typeof item === "string" ? item : `${index}`
+          }
+          renderItem={({ item, index }) =>
+            typeof item === "string" ? (
+              <TEm
+                textKey={`term.${item}`}
+                className={index > 0 ? "mt-2" : undefined}
+              />
+            ) : (
               <SearchResult
                 as="ripple"
                 /* @ts-expect-error - `type` should be limited to our scope. */
-                onPress={() => props.callbacks[rest.type](entry)}
-                wrapperClassName={cn("mt-2", {
-                  "rounded-full": rest.type === "artist",
-                })}
+                onPress={() => props.callbacks[item.type](item.entry)}
+                wrapperClassName={
+                  item.type === "artist" ? "rounded-full" : undefined
+                }
                 className="pr-4"
-                {...rest}
+                {...item}
               />
-            );
-          }}
+            )
+          }
           ListEmptyComponent={
             query.length > 0 ? (
-              <TStyledText textKey="err.msg.noResults" center />
+              <ContentPlaceholder
+                errMsgKey="err.msg.noResults"
+                className="pt-10"
+              />
             ) : undefined
           }
           nestedScrollEnabled={props.withGesture}
-          contentContainerClassName="pb-4 pt-6"
+          // Uses `undefined` (original behavior) instead of `null` when
+          // we reset containers. When we used `null`, the first query
+          // doesn't render anything.
+          resetWithUndefined
+          columnWrapperStyle={{ rowGap: 8 }}
+          contentContainerClassName="pt-6 pb-4"
         />
 
         <LinearGradient
@@ -131,9 +142,9 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
 const withArtistName = ["album", "track"];
 
 /**
- * Flatten results to be used in a `<FlashList />` that functions like a
- * `<SectionList />`. Ensure the "sections" are in alphabetical order and
- * remove any groups with no items before formatting.
+ * Flatten results to be used in a list that functions like a `<SectionList />`.
+ * Ensure the "sections" are in alphabetical order and remove any groups with
+ * no items before formatting.
  */
 function formatResults(results: Partial<SearchResults>) {
   return Object.entries(results)

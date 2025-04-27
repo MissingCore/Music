@@ -1,22 +1,26 @@
 import { useSaveErrors } from "~/queries/setting";
-import { StandardScrollLayout } from "~/layouts/StandardScroll";
 
-import { ListRenderer } from "~/components/Containment/List";
+import { useListPresets } from "~/components/Containment/List";
+import { LegendList } from "~/components/Defaults";
+import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 
 /** Screen for `/setting/insights/save-errors` route. */
 export default function SaveErrorsScreen() {
   const { data } = useSaveErrors();
+  const presets = useListPresets({
+    data,
+    renderOptions: {
+      getTitle: (item) => item.uri,
+      getDescription: (item) => `[${item.errorName}] ${item.errorMessage}`,
+    },
+  });
+
   return (
-    <StandardScrollLayout>
-      <ListRenderer
-        data={data}
-        keyExtractor={({ id }) => id}
-        renderOptions={{
-          getTitle: (item) => item.uri,
-          getDescription: (item) => `[${item.errorName}] ${item.errorMessage}`,
-        }}
-        emptyMsgKey="err.msg.noErrors"
-      />
-    </StandardScrollLayout>
+    <LegendList
+      keyExtractor={({ id }) => id}
+      ListEmptyComponent={<ContentPlaceholder errMsgKey="err.msg.noErrors" />}
+      contentContainerClassName="p-4"
+      {...presets}
+    />
   );
 }

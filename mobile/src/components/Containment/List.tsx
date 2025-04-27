@@ -1,12 +1,10 @@
-import type { FlashListProps } from "@shopify/flash-list";
 import type { ParseKeys } from "i18next";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 
 import type { TextColor } from "~/lib/style";
 import { cn } from "~/lib/style";
-import type { WithListEmptyProps } from "../Defaults";
-import { FlashList } from "../Defaults";
 import { Switch } from "../Form/Switch";
 import { StyledText } from "../Typography/StyledText";
 
@@ -19,40 +17,35 @@ export function List(props: { children: React.ReactNode; className?: string }) {
 }
 //#endregion
 
-//#region List Renderer
-/** Represent structured data as `<ListItem />` in a `<FlashList />`. */
-export function ListRenderer<TData extends Record<string, any>>({
+//#region useListPresets
+/** Presets used to render a list of `<ListItem />`. */
+export function useListPresets<TData extends Record<string, any>>({
   data,
   renderOptions: { getTitle, getDescription, onPress },
-  ...props
-}: WithListEmptyProps<
-  Omit<FlashListProps<TData>, "renderItem"> & {
-    renderOptions: {
-      getTitle: (item: TData) => string;
-      getDescription?: (item: TData) => string;
-      onPress?: (item: TData) => () => void;
-    };
-  }
->) {
-  return (
-    <FlashList
-      estimatedItemSize={70}
-      data={data}
-      renderItem={({ item, index }) => {
-        const first = index === 0;
-        const last = index === data!.length - 1;
-        return (
-          <ListItem
-            title={getTitle(item)}
-            description={getDescription ? getDescription(item) : undefined}
-            onPress={onPress ? onPress(item) : undefined}
-            {...{ first, last }}
-            className={!last ? "mb-[3px]" : undefined}
-          />
-        );
-      }}
-      {...props}
-    />
+}: {
+  data?: readonly TData[];
+  renderOptions: {
+    getTitle: (item: TData) => string;
+    getDescription?: (item: TData) => string;
+    onPress?: (item: TData) => () => void;
+  };
+}) {
+  return useMemo(
+    () => ({
+      estimatedItemSize: 70,
+      data,
+      renderItem: ({ item, index }: { item: TData; index: number }) => (
+        <ListItem
+          title={getTitle(item)}
+          description={getDescription ? getDescription(item) : undefined}
+          onPress={onPress ? onPress(item) : undefined}
+          first={index === 0}
+          last={index === (data?.length ?? 0) - 1}
+        />
+      ),
+      columnWrapperStyle: { rowGap: 3 },
+    }),
+    [data, getTitle, getDescription, onPress],
   );
 }
 //#endregion

@@ -1,4 +1,4 @@
-import type { FlashListProps } from "@shopify/flash-list";
+import type { LegendListProps } from "@legendapp/list";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -8,11 +8,10 @@ import { playFromMediaList } from "../services/Playback";
 import type { PlayListSource } from "../types";
 
 import { cn } from "~/lib/style";
-import type { Maybe, Prettify } from "~/utils/types";
-import type { WithListEmptyProps } from "~/components/Defaults";
-import { useListPresets } from "~/components/Defaults";
+import type { Prettify } from "~/utils/types";
 import type { PressProps } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button";
+import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 
 //#region Track
@@ -60,32 +59,30 @@ export function Track({ id, trackSource, className, ...props }: Track.Props) {
 }
 //#endregion
 
-//#region Track List
-type TrackListProps = WithListEmptyProps<{
-  data: Maybe<readonly Track.Content[]>;
+//#region useTrackListPreset
+/** Presets used to render a list of `<Track />`. */
+export function useTrackListPreset(props: {
+  data?: readonly Track.Content[];
   trackSource: PlayListSource;
-}>;
-
-/** Presets used in the FlashList containing a list of `<Track />`. */
-export function useTrackListPreset(props: TrackListProps) {
-  const listPresets = useListPresets({
-    isPending: props.isPending,
-    emptyMsgKey: props.emptyMsgKey,
-  });
+  isPending?: boolean;
+}) {
   return useMemo(
     () => ({
-      ...listPresets,
-      estimatedItemSize: 56, // 48px Height + 8px Margin Top
+      estimatedItemSize: 56, // +8px to prevent gap not being initially applied when data changes.
       data: props.data,
       keyExtractor: ({ id }) => id,
-      renderItem: ({ item, index }) => (
-        <Track
-          {...{ ...item, trackSource: props.trackSource }}
-          className={index > 0 ? "mt-2" : undefined}
+      renderItem: ({ item }) => (
+        <Track {...item} trackSource={props.trackSource} />
+      ),
+      ListEmptyComponent: (
+        <ContentPlaceholder
+          isPending={props.isPending}
+          errMsgKey="err.msg.noTracks"
         />
       ),
+      columnWrapperStyle: { rowGap: 8 },
     }),
-    [props, listPresets],
-  ) satisfies FlashListProps<Track.Content>;
+    [props],
+  ) satisfies LegendListProps<Track.Content>;
 }
 //#endregion
