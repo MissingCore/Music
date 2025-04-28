@@ -89,7 +89,7 @@
   },
   "@sentry/react-native": {
     "name": "@sentry/react-native",
-    "version": "6.10.0",
+    "version": "6.11.0",
     "copyright": "Copyright (c) 2017-2024 Sentry",
     "source": "https://github.com/getsentry/sentry-react-native",
     "license": "MIT",
@@ -105,7 +105,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.72.2",
+    "version": "5.74.7",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -121,7 +121,7 @@
   },
   "drizzle-orm": {
     "name": "drizzle-orm",
-    "version": "0.41.0",
+    "version": "0.43.1",
     "copyright": "Copyright (c) 2022 Drizzle Team",
     "source": "https://github.com/drizzle-team/drizzle-orm",
     "license": "Apache-2.0",
@@ -129,7 +129,7 @@
   },
   "expo": {
     "name": "expo",
-    "version": "52.0.44",
+    "version": "52.0.46",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo",
     "license": "MIT",
@@ -241,7 +241,7 @@
   },
   "i18next": {
     "name": "i18next",
-    "version": "24.2.3",
+    "version": "25.0.1",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/i18next",
     "license": "MIT",
@@ -297,11 +297,11 @@
   },
   "react-i18next": {
     "name": "react-i18next",
-    "version": "15.4.1",
-    "copyright": "Copyright (c) 2024 i18next",
+    "version": "15.5.1",
+    "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/react-i18next",
     "license": "MIT",
-    "licenseText": "The MIT License (MIT)\n\nCopyright (c) 2024 i18next\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
+    "licenseText": "The MIT License (MIT)\n\nCopyright (c) 2025 i18next\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
   },
   "react-native": {
     "name": "react-native",
@@ -313,7 +313,7 @@
   },
   "react-native-bootsplash": {
     "name": "react-native-bootsplash",
-    "version": "6.3.4",
+    "version": "6.3.6",
     "copyright": "Copyright (c) 2021 Mathieu Acthernoene",
     "source": "https://github.com/zoontek/react-native-bootsplash",
     "license": "MIT",
@@ -329,7 +329,7 @@
   },
   "react-native-edge-to-edge": {
     "name": "react-native-edge-to-edge",
-    "version": "1.5.1",
+    "version": "1.6.0",
     "copyright": "Copyright (c) 2024 Mathieu Acthernoene",
     "source": "https://github.com/zoontek/react-native-edge-to-edge",
     "license": "MIT",
@@ -353,7 +353,7 @@
   },
   "react-native-pager-view": {
     "name": "react-native-pager-view",
-    "version": "6.7.0",
+    "version": "6.7.1",
     "copyright": "Copyright (c) 2021 Callstack",
     "source": "https://github.com/callstack/react-native-pager-view",
     "license": "MIT",
@@ -369,7 +369,7 @@
   },
   "react-native-safe-area-context": {
     "name": "react-native-safe-area-context",
-    "version": "5.3.0",
+    "version": "5.4.0",
     "copyright": "Copyright (c) 2019 Th3rd Wave",
     "source": "https://github.com/th3rdwave/react-native-safe-area-context",
     "license": "MIT",
@@ -417,7 +417,7 @@
   },
   "zod": {
     "name": "zod",
-    "version": "3.24.2",
+    "version": "3.24.3",
     "copyright": "Copyright (c) 2020 Colin McDonnell",
     "source": "https://github.com/colinhacks/zod",
     "license": "MIT",
