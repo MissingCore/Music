@@ -166,7 +166,6 @@ function QueueList() {
       data={queueList}
       keyExtractor={(item, index) => `${item?.id}_${index}`}
       renderItem={(args) => <RenderQueueItem {...args} />}
-      resetWithUndefined
     />
   );
 }

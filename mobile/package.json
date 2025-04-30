@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@backpackapp-io/react-native-toast": "^0.13.0",
-    "@legendapp/list": "https://github.com/MissingCore/legend-list/releases/download/v1.0.3.1/legendapp-list-1.0.3.1.tgz",
+    "@legendapp/list": "https://github.com/MissingCore/legend-list/releases/download/v1.0.6.1/legendapp-list-1.0.6.1.tgz",
     "@lodev09/react-native-true-sheet": "^2.0.5",
     "@lukemorales/query-key-factory": "^1.3.4",
     "@miblanchard/react-native-slider": "^2.6.0",

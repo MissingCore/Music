@@ -118,10 +118,6 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
             ) : undefined
           }
           nestedScrollEnabled={props.withGesture}
-          // Uses `undefined` (original behavior) instead of `null` when
-          // we reset containers. When we used `null`, the first query
-          // doesn't render anything.
-          resetWithUndefined
           columnWrapperStyle={{ rowGap: 8 }}
           contentContainerClassName="pt-6 pb-4"
         />
