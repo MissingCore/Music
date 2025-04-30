@@ -42,6 +42,7 @@ export function useFavoriteTracksForScreen() {
       ...formatForCurrentScreen({ type: "playlist", data, t }),
       imageSource: ReservedPlaylists.favorites,
     }),
+    staleTime: Infinity,
   });
 }
 //#endregion

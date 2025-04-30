@@ -39,6 +39,7 @@ export function usePlaylistForScreen(playlistName: string) {
       ...formatForCurrentScreen({ type: "playlist", data, t }),
       isFavorite: data.isFavorite,
     }),
+    staleTime: Infinity,
   });
 }
 
@@ -73,6 +74,7 @@ export function useCreatePlaylist() {
       // Invalidate all playlist & track queries.
       queryClient.invalidateQueries({ queryKey: q.playlists._def });
       queryClient.invalidateQueries({ queryKey: q.tracks._def });
+      queryClient.invalidateQueries({ queryKey: ["search"] });
     },
   });
 }
@@ -87,6 +89,7 @@ export function useDeletePlaylist(playlistName: string) {
       // Invalidate all playlist queries and the favorite lists query.
       queryClient.invalidateQueries({ queryKey: q.playlists._def });
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
+      queryClient.invalidateQueries({ queryKey: ["search"] });
     },
   });
 }
@@ -137,6 +140,7 @@ export function useUpdatePlaylist(playlistName: string) {
       queryClient.resetQueries({ queryKey: q.playlists._def });
       // Invalidate favorite lists query to update the artwork or name used.
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
+      queryClient.invalidateQueries({ queryKey: ["search"] });
 
       // Don't need a try-catch as `name` should be valid (as it's called
       // in `updatePlaylist()`).

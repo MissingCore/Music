@@ -23,6 +23,7 @@ export function useArtistForScreen(artistName: string) {
       ...formatForCurrentScreen({ type: "artist", data: artist, t }),
       albums: albums.length > 0 ? albums : null,
     }),
+    staleTime: Infinity,
   });
 }
 

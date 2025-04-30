@@ -26,6 +26,7 @@ export function useAlbumForScreen(albumId: string) {
       ...formatForCurrentScreen({ type: "album", data, t }),
       ...pickKeys(data, ["artistName", "isFavorite"]),
     }),
+    staleTime: Infinity,
   });
 }
 

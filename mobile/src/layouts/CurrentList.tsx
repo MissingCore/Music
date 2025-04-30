@@ -22,6 +22,7 @@ import {
   PlaylistArtworkSheet,
 } from "~/screens/Sheets/Artwork";
 
+import { DeferRender } from "~/lib/react";
 import { getFont } from "~/lib/style";
 import { pickKeys } from "~/utils/object";
 import { toLowerCase } from "~/utils/string";
@@ -108,7 +109,7 @@ export function CurrentListLayout(
         </View>
       </View>
       <Divider className="m-4 mb-0" />
-      {props.children}
+      <DeferRender delayMs={1}>{props.children}</DeferRender>
     </>
   );
 }
@@ -129,7 +130,9 @@ function ContentImage(props: AnimatedVinylProps) {
 
   return (
     <>
-      <RenderedSheet sheetRef={artworkSheetRef} id={props.mediaSource.id} />
+      <DeferRender>
+        <RenderedSheet sheetRef={artworkSheetRef} id={props.mediaSource.id} />
+      </DeferRender>
       <Pressable
         aria-label={t("feat.artwork.extra.change")}
         delayLongPress={100}

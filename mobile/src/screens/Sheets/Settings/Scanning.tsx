@@ -23,6 +23,7 @@ import {
 } from "./helpers/ScanFilterData";
 
 import { Colors } from "~/constants/Styles";
+import { deferInitialRender } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
 import { Marquee } from "~/components/Containment/Marquee";
 import { LegendList } from "~/components/Defaults";
@@ -35,20 +36,28 @@ import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
 /** All the sheets used on `/setting/scanning` route. */
-export function ScanningSettingsSheets(
-  props: Record<
-    "allowListRef" | "blockListRef" | "minDurationRef",
-    TrueSheetRef
-  >,
-) {
-  return (
-    <>
-      <ScanFilterListSheet listType="listAllow" sheetRef={props.allowListRef} />
-      <ScanFilterListSheet listType="listBlock" sheetRef={props.blockListRef} />
-      <MinDurationSheet sheetRef={props.minDurationRef} />
-    </>
-  );
-}
+export const ScanningSettingsSheets = deferInitialRender(
+  function ScanningSettingsSheets(
+    props: Record<
+      "allowListRef" | "blockListRef" | "minDurationRef",
+      TrueSheetRef
+    >,
+  ) {
+    return (
+      <>
+        <ScanFilterListSheet
+          listType="listAllow"
+          sheetRef={props.allowListRef}
+        />
+        <ScanFilterListSheet
+          listType="listBlock"
+          sheetRef={props.blockListRef}
+        />
+        <MinDurationSheet sheetRef={props.minDurationRef} />
+      </>
+    );
+  },
+);
 
 //#region Filter List
 /** Enables us to specify the paths in the allowlist or blocklist. */
