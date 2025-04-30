@@ -64,19 +64,21 @@ export default function FolderScreen() {
   return (
     <StickyActionListLayout
       titleKey="term.folders"
-      // Hack as "average item size" is prioritized over `estimatedItemSize`. This
-      // prevents the "jumpiness" of the items when we change directories.
-      getEstimatedItemSize={() => 56} // +8px to prevent gap not being initially applied when data changes.
+      getEstimatedItemSize={(index) => (index === 0 ? 48 : 56)}
       data={renderedData}
       keyExtractor={(item) => (isTrackContent(item) ? item.id : item.path)}
-      renderItem={({ item }) =>
+      renderItem={({ item, index }) =>
         isTrackContent(item) ? (
-          <Track {...item} trackSource={trackSource} />
+          <Track
+            {...item}
+            trackSource={trackSource}
+            className={index > 0 ? "mt-2" : undefined}
+          />
         ) : (
           <SearchResult
             {...{ as: "ripple", type: "folder", title: item.name }}
             onPress={() => setDirSegments((prev) => [...prev, item.name])}
-            className="pr-4"
+            className={cn("pr-4", { "mt-2": index > 0 })}
           />
         )
       }
@@ -84,7 +86,6 @@ export default function FolderScreen() {
         <ContentPlaceholder isPending={isPending} className="h-screen" />
       }
       scrollEnabled={!isPending}
-      columnWrapperStyle={{ rowGap: 8 }}
       StickyAction={
         <Breadcrumbs
           dirSegments={dirSegments}
