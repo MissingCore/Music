@@ -22,6 +22,7 @@ import { IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import { Sheet } from "~/components/Sheet";
 import { Swipeable } from "~/components/Swipeable";
+import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { StyledText } from "~/components/Typography/StyledText";
 
 //#region Sheet
@@ -81,8 +82,10 @@ export default function ScanFilterListSheet(props: {
             </Marquee>
           </Swipeable>
         )}
+        ListEmptyComponent={
+          <ContentPlaceholder errMsgKey="err.msg.noFilters" />
+        }
         contentContainerClassName="pb-4"
-        emptyMsgKey="err.msg.noFilters"
       />
     </Sheet>
   );
