@@ -14,6 +14,7 @@ import { StandardScrollLayout } from "~/layouts/StandardScroll";
 
 import { cn } from "~/lib/style";
 import { abbreviateNum } from "~/utils/number";
+import { ScrollablePresets } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
 import { AccentText } from "~/components/Typography/AccentText";
 import { TEm, TStyledText } from "~/components/Typography/StyledText";
@@ -92,8 +93,7 @@ function RecentlyPlayed() {
           />
         }
         renderScrollComponent={ScrollView}
-        overScrollMode="never"
-        showsHorizontalScrollIndicator={false}
+        {...ScrollablePresets}
         className="-mx-4"
         contentContainerClassName="px-4"
       />
