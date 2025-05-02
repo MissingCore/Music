@@ -1,5 +1,5 @@
 import { Stack, router, useLocalSearchParams } from "expo-router";
-import { memo, useCallback, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
@@ -15,10 +15,7 @@ import {
 import { useRemoveFromPlaylist } from "~/queries/track";
 import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 import { CurrentListLayout } from "~/layouts/CurrentList";
-import {
-  areRenderItemPropsEqual,
-  useDragListState,
-} from "~/lib/react-native-draglist";
+import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 
 import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
@@ -49,25 +46,15 @@ export default function CurrentPlaylistScreen() {
     [moveInPlaylist],
   );
 
-  const { items, onReordered } = useDragListState({
-    data: data?.tracks,
-    onMove,
-  });
-
-  // Information about this track list.
-  const trackSource = useMemo(() => ({ type: "playlist", id }) as const, [id]);
-
-  const renderItem = useCallback(
-    (args: RenderItemProps) => <RenderItem {...{ ...args, trackSource }} />,
-    [trackSource],
-  );
-
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
 
   // Add optimistic UI updates.
   const isToggled = favoritePlaylist.isPending
     ? !data.isFavorite
     : data.isFavorite;
+
+  // Information about this track list.
+  const trackSource = { type: "playlist", id } as const;
 
   return (
     <>
@@ -105,10 +92,12 @@ export default function CurrentPlaylistScreen() {
       >
         <FlashDragList
           estimatedItemSize={56} // 48px Height + 8px Margin Top
-          data={items}
+          data={data.tracks}
           keyExtractor={({ id }) => id}
-          renderItem={renderItem}
-          onReordered={onReordered}
+          renderItem={(args) => (
+            <RenderItem {...args} trackSource={trackSource} />
+          )}
+          onReordered={onMove}
           contentContainerClassName="pt-4"
           contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
           emptyMsgKey="err.msg.noTracks"

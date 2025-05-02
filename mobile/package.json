@@ -58,7 +58,7 @@
     "react-native": "0.75.4",
     "react-native-actions-sheet": "^0.9.7",
     "react-native-bootsplash": "^6.3.3",
-    "react-native-draglist": "github:MissingCore/react-native-draglist#6e926d101e6293785d5cab4c014ccdc4812c19d2",
+    "react-native-draglist": "github:MissingCore/react-native-draglist#948868efb2fde4ea32604f01a47f044453bb7af3",
     "react-native-edge-to-edge": "^1.4.3",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-markdown-display": "^7.0.2",
