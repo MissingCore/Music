@@ -1,7 +1,12 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import * as DocumentPicker from "expo-document-picker";
-import * as FileSystem from "expo-file-system";
+import { getDocumentAsync } from "expo-document-picker";
+import {
+  EncodingType,
+  StorageAccessFramework as SAF,
+  deleteAsync,
+  readAsStringAsync,
+} from "expo-file-system";
 import { eq, inArray } from "drizzle-orm";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
@@ -22,8 +27,6 @@ import { Resynchronize } from "~/modules/media/services/Resynchronize";
 import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
 import { pickKeys } from "~/utils/object";
-
-const SAF = FileSystem.StorageAccessFramework;
 
 //#region Schemas
 const RawAlbum = z.object({
@@ -122,7 +125,7 @@ async function exportBackup() {
         return { name, tracks: tracks.map(getRawTrack) };
       }),
     }),
-    { encoding: FileSystem.EncodingType.UTF8 },
+    { encoding: EncodingType.UTF8 },
   );
 }
 //#endregion
@@ -130,7 +133,7 @@ async function exportBackup() {
 //#region Import
 async function importBackup() {
   // Select the `music_backup.json` file we'll be importing from.
-  const { assets, canceled } = await DocumentPicker.getDocumentAsync({
+  const { assets, canceled } = await getDocumentAsync({
     type: ["application/json", "application/octet-stream"],
   });
   if (canceled) throw new Error(i18next.t("err.msg.actionCancel"));
@@ -138,14 +141,14 @@ async function importBackup() {
   if (!document) throw new Error(i18next.t("err.msg.noSelect"));
 
   // Read, parse, and validate file contents.
-  const docContents = await FileSystem.readAsStringAsync(document.uri);
+  const docContents = await readAsStringAsync(document.uri);
   let backupContents;
   try {
     // Validate the data structure.
     backupContents = MusicBackup.parse(JSON.parse(docContents));
   } catch (err) {
     // Delete cached file before throwing a more readable error.
-    await FileSystem.deleteAsync(document.uri);
+    await deleteAsync(document.uri);
     throw new Error(i18next.t("err.msg.invalidStructure"));
   }
 
@@ -198,7 +201,7 @@ async function importBackup() {
   ]);
 
   // Delete the cached document.
-  await FileSystem.deleteAsync(document.uri);
+  await deleteAsync(document.uri);
 
   const currPlayingFrom = musicStore.getState().playingSource;
   if (currPlayingFrom) await Resynchronize.onTracks(currPlayingFrom);

@@ -1,4 +1,4 @@
-import * as MediaLibrary from "expo-media-library";
+import { usePermissions as useMediaLibraryPermissions } from "expo-media-library";
 import { useCallback, useEffect, useState } from "react";
 
 import { useSetup } from "~/hooks/useSetup";
@@ -15,7 +15,7 @@ import { Stopwatch } from "~/utils/debug";
  * SQLite database.
  */
 export function useOnboarding() {
-  const [permissionResponse, requestPermission] = MediaLibrary.usePermissions({
+  const [permissionResponse, requestPermission] = useMediaLibraryPermissions({
     granularPermissions: ["audio"],
   });
   const isReady = useSetup();

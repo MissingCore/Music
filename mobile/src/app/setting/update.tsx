@@ -1,4 +1,4 @@
-import * as WebBrowser from "expo-web-browser";
+import { openBrowserAsync } from "expo-web-browser";
 import { Text, View } from "react-native";
 import Markdown from "react-native-markdown-display";
 
@@ -99,9 +99,7 @@ export default function AppUpdateScreen() {
         <IconButton
           kind="extended"
           onPress={() =>
-            WebBrowser.openBrowserAsync(
-              `${LINKS.GITHUB}/releases/tag/${release.version}`,
-            )
+            openBrowserAsync(`${LINKS.GITHUB}/releases/tag/${release.version}`)
           }
           className="gap-4 py-4"
         >
@@ -114,7 +112,7 @@ export default function AppUpdateScreen() {
         {!isRC ? (
           <IconButton
             kind="extended"
-            onPress={() => WebBrowser.openBrowserAsync(LINKS.PLAYSTORE)}
+            onPress={() => openBrowserAsync(LINKS.PLAYSTORE)}
             className="gap-4 py-4"
           >
             <LogoPlayStore />

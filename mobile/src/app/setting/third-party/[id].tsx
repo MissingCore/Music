@@ -1,5 +1,5 @@
 import { Stack, useLocalSearchParams } from "expo-router";
-import * as WebBrowser from "expo-web-browser";
+import { openBrowserAsync } from "expo-web-browser";
 import { useTranslation } from "react-i18next";
 
 import { OpenInNew } from "~/icons/OpenInNew";
@@ -30,7 +30,7 @@ export default function PackageLicenseScreen() {
               accessibilityLabel={t("template.entrySeeMore", {
                 name: licenseInfo.name,
               })}
-              onPress={() => WebBrowser.openBrowserAsync(licenseInfo.source)}
+              onPress={() => openBrowserAsync(licenseInfo.source)}
             >
               <OpenInNew />
             </IconButton>

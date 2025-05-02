@@ -1,4 +1,4 @@
-import * as WebBrowser from "expo-web-browser";
+import { openBrowserAsync } from "expo-web-browser";
 import { useTranslation } from "react-i18next";
 import { View, useWindowDimensions } from "react-native";
 import Animated, {
@@ -53,7 +53,7 @@ export function IssueLayout(props: {
           onLayout={(e) => {
             reportButtonHeight.value = e.nativeEvent.layout.height;
           }}
-          onPress={() => WebBrowser.openBrowserAsync(`${GITHUB}/issues`)}
+          onPress={() => openBrowserAsync(`${GITHUB}/issues`)}
           style={{ maxWidth: ScreenWidth - 32 }}
           className="bg-red"
         >
