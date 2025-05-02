@@ -21,7 +21,11 @@ import { RecentList } from "~/modules/media/services/RecentList";
 import { onboardingStore } from "../services/Onboarding";
 
 import { clearAllQueries } from "~/lib/react-query";
-import { addTrailingSlash, removeFileExtension } from "~/utils/string";
+import {
+  addTrailingSlash,
+  getSafeUri,
+  removeFileExtension,
+} from "~/utils/string";
 import { Stopwatch } from "~/utils/debug";
 import { BATCH_PRESETS, batch } from "~/utils/promise";
 import { savePathComponents } from "./folder";
@@ -195,7 +199,7 @@ async function getTrackEntry({
   filename,
 }: MediaLibraryAsset) {
   const { bitrate, sampleRate, ...t } = await getMetadata(uri, wantedMetadata);
-  const assetInfo = await getInfoAsync(uri);
+  const assetInfo = await getInfoAsync(getSafeUri(uri));
 
   // Add new artists to the database.
   await Promise.allSettled(
