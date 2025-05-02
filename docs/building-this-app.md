@@ -33,10 +33,10 @@ This will build the app directly onto your connected device. In addition, you ca
    cd Music/mobile
    ```
 
-3. Install dependencies (we use `pnpm`, but you can use `npm`).
+3. Install dependencies (you need to use `pnpm` due to us patching packages).
 
    ```sh
-   npm i
+   pnpm i
    ```
 
 4. Connect your Android device to your computer via a USB cable.
@@ -44,7 +44,7 @@ This will build the app directly onto your connected device. In addition, you ca
 5. Run the following command to build the app locally on your computer via Expo, which will add the app to your phone upon completion.
 
    ```sh
-   npm run android:prod
+   pnpm android:prod
    ```
 
 > [!NOTE]  
