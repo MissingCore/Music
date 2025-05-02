@@ -62,7 +62,7 @@ export default function CurrentPlaylistScreen() {
     [trackSource],
   );
 
-  if (isPending || error) return <PagePlaceholder {...{ isPending }} />;
+  if (isPending || error) return <PagePlaceholder isPending={isPending} />;
 
   // Add optimistic UI updates.
   const isToggled = favoritePlaylist.isPending

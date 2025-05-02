@@ -23,7 +23,7 @@ export default function FavoriteTracksScreen() {
     emptyMsgKey: "err.msg.noTracks",
   });
 
-  if (isPending || error) return <PagePlaceholder {...{ isPending }} />;
+  if (isPending || error) return <PagePlaceholder isPending={isPending} />;
 
   return (
     <CurrentListLayout

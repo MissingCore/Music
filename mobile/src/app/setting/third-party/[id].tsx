@@ -6,10 +6,10 @@ import { OpenInNew } from "~/icons/OpenInNew";
 import LicensesList from "~/resources/licenses.json";
 import { useTheme } from "~/hooks/useTheme";
 import { StandardScrollLayout } from "~/layouts/StandardScroll";
-import { StickyActionHeader } from "~/layouts/StickyActionScroll";
 
 import { Card } from "~/components/Containment/Card";
 import { IconButton } from "~/components/Form/Button";
+import { AccentText } from "~/components/Typography/AccentText";
 import { StyledText } from "~/components/Typography/StyledText";
 
 /** Screen for `/setting/third-party/[id]` route. */
@@ -38,9 +38,9 @@ export default function PackageLicenseScreen() {
         }}
       />
       <StandardScrollLayout contentContainerClassName="pt-2">
-        <StickyActionHeader noOffset originalText>
+        <AccentText className="text-4xl" originalText>
           {licenseInfo.name}
-        </StickyActionHeader>
+        </AccentText>
 
         <Card
           className={theme === "dark" ? "bg-foreground/15" : "bg-foreground/5"}

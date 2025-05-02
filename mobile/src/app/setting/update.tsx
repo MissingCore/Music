@@ -8,12 +8,12 @@ import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useHasNewUpdate } from "~/hooks/useHasNewUpdate";
 import { useTheme } from "~/hooks/useTheme";
 import { StandardScrollLayout } from "~/layouts/StandardScroll";
-import { StickyActionHeader } from "~/layouts/StickyActionScroll";
 
 import * as LINKS from "~/constants/Links";
 import { FontSize } from "~/constants/Styles";
 import { getFont } from "~/lib/style";
 import { IconButton } from "~/components/Form/Button";
+import { AccentText } from "~/components/Typography/AccentText";
 import { TStyledText } from "~/components/Typography/StyledText";
 
 /** Screen for `/setting/update` route. */
@@ -30,9 +30,9 @@ export default function AppUpdateScreen() {
 
   return (
     <StandardScrollLayout>
-      <StickyActionHeader noOffset originalText>
+      <AccentText className="text-4xl" originalText>
         {release.version}
-      </StickyActionHeader>
+      </AccentText>
 
       <Markdown
         style={{

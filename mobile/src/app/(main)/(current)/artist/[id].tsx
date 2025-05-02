@@ -21,7 +21,7 @@ export default function CurrentArtistScreen() {
   const { id: artistName } = useLocalSearchParams<{ id: string }>();
   const { isPending, error, data } = useArtistForScreen(artistName);
 
-  if (isPending || error) return <PagePlaceholder {...{ isPending }} />;
+  if (isPending || error) return <PagePlaceholder isPending={isPending} />;
 
   // Information about this track list.
   const trackSource = { type: "artist", id: artistName } as const;

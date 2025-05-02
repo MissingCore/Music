@@ -1,4 +1,5 @@
 import { Stack, useLocalSearchParams } from "expo-router";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
@@ -22,7 +23,23 @@ export default function CurrentAlbumScreen() {
   const { isPending, error, data } = useAlbumForScreen(albumId);
   const favoriteAlbum = useFavoriteAlbum(albumId);
 
-  if (isPending || error) return <PagePlaceholder {...{ isPending }} />;
+  const formattedData = useMemo(() => {
+    if (!data) return [];
+
+    const foundDisc = new Set<number>();
+    const sectionListTracks = [];
+    for (const track of data.tracks) {
+      if (track.disc !== null && !foundDisc.has(track.disc)) {
+        foundDisc.add(track.disc);
+        sectionListTracks.push(track.disc);
+      }
+      sectionListTracks.push(track);
+    }
+
+    return sectionListTracks;
+  }, [data]);
+
+  if (isPending || error) return <PagePlaceholder isPending={isPending} />;
 
   // Add optimistic UI updates.
   const isToggled = favoriteAlbum.isPending
@@ -31,12 +48,6 @@ export default function CurrentAlbumScreen() {
 
   // Information about this track list.
   const trackSource = { type: "album", id: albumId } as const;
-
-  const discLocation: Record<number, number> = {};
-  data.tracks.forEach(({ disc }, index) => {
-    if (disc === null) return;
-    if (!Object.hasOwn(discLocation, disc)) discLocation[disc] = index;
-  });
 
   return (
     <>
@@ -62,22 +73,24 @@ export default function CurrentAlbumScreen() {
       >
         <FlashList
           estimatedItemSize={56} // 48px Height + 8px Margin Top
-          data={data.tracks}
-          keyExtractor={({ id }) => id}
-          renderItem={({ item, index }) => (
-            <>
-              {item.disc !== null && discLocation[item.disc] === index ? (
-                <Em dim className={index === 0 ? "mb-2" : "mt-4"}>
-                  {t("term.disc", { count: item.disc })}
-                </Em>
-              ) : null}
+          data={formattedData}
+          keyExtractor={(item) =>
+            typeof item === "number" ? `${item}` : item.id
+          }
+          renderItem={({ item, index }) =>
+            typeof item === "number" ? (
+              <Em dim className={index > 0 ? "mt-4" : undefined}>
+                {t("term.disc", { count: item })}
+              </Em>
+            ) : (
               <Track
-                {...{ ...item, trackSource }}
+                {...item}
+                trackSource={trackSource}
                 LeftElement={<TrackNumber track={item.track} />}
                 className={index > 0 ? "mt-2" : undefined}
               />
-            </>
-          )}
+            )
+          }
           className="mx-4"
           contentContainerClassName="pt-4"
           contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
