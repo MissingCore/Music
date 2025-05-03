@@ -17,6 +17,7 @@ import { useHasNewUpdate } from "~/hooks/useHasNewUpdate";
 import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
+import { ScrollablePresets } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { StyledText } from "~/components/Typography/StyledText";
 import { MiniPlayer } from "~/modules/media/components/MiniPlayer";
@@ -159,8 +160,7 @@ function NavigationList() {
         // Suppresses error from `scrollToIndex` when we remount this layout
         // as a result of using the `push` navigation on the `/search` screen.
         onScrollToIndexFailed={() => {}}
-        overScrollMode="never"
-        showsHorizontalScrollIndicator={false}
+        {...ScrollablePresets}
         contentContainerClassName="px-2"
       />
       {/* Scroll Shadow */}

@@ -1,5 +1,5 @@
 import { useIsFocused } from "@react-navigation/native";
-import { Fragment, useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { BackHandler, Pressable, useWindowDimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
@@ -24,7 +24,7 @@ import {
 } from "~/layouts/StickyActionScroll";
 
 import { cn } from "~/lib/style";
-import { useListPresets } from "~/components/Defaults";
+import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { StyledText } from "~/components/Typography/StyledText";
 import { Track } from "~/modules/media/components/Track";
 import { SearchResult } from "~/modules/search/components/SearchResult";
@@ -43,7 +43,11 @@ export default function FolderScreen() {
   const fullPath = dirSegments.join("/");
 
   const { isPending, data } = useFolderContent(fullPath);
-  const listPresets = useListPresets({ isPending });
+
+  const renderedData = useMemo(
+    () => [...(data?.subDirectories ?? []), ...(data?.tracks ?? [])],
+    [data],
+  );
 
   /** Modified state setter that scrolls to the top of the page. */
   const setDirSegments: React.Dispatch<React.SetStateAction<string[]>> =
@@ -81,26 +85,27 @@ export default function FolderScreen() {
       listRef={listRef}
       titleKey="term.folders"
       estimatedItemSize={56} // 48px Height + 8px Margin Top
-      data={[data?.subDirectories ?? [], data?.tracks ?? []].flat()}
-      keyExtractor={(_, index) => `${index}`}
-      renderItem={({ item, index }) => (
-        <>
-          {isTrackContent(item) ? (
-            <Track
-              {...{ ...item, trackSource }}
-              className={index > 0 ? "mt-2" : undefined}
-            />
-          ) : (
-            <SearchResult
-              {...{ as: "ripple", type: "folder", title: item.name }}
-              onPress={() => setDirSegments((prev) => [...prev, item.name])}
-              wrapperClassName={index > 0 ? "mt-2" : undefined}
-              className="pr-4"
-            />
-          )}
-        </>
-      )}
-      {...listPresets}
+      data={renderedData}
+      keyExtractor={(item) => (isTrackContent(item) ? item.id : item.path)}
+      renderItem={({ item, index }) =>
+        isTrackContent(item) ? (
+          <Track
+            {...item}
+            trackSource={trackSource}
+            className={index > 0 ? "mt-2" : undefined}
+          />
+        ) : (
+          <SearchResult
+            {...{ as: "ripple", type: "folder", title: item.name }}
+            onPress={() => setDirSegments((prev) => [...prev, item.name])}
+            className={cn("pr-4", { "mt-2": index > 0 })}
+          />
+        )
+      }
+      ListEmptyComponent={
+        <ContentPlaceholder isPending={isPending} className="h-screen" />
+      }
+      scrollEnabled={!isPending}
       StickyAction={
         <Breadcrumbs
           dirSegments={dirSegments}

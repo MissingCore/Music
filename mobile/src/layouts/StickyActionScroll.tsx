@@ -16,6 +16,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 
+import { ScrollablePresets } from "~/components/Defaults";
 import { AccentText } from "~/components/Typography/AccentText";
 
 /**
@@ -93,8 +94,7 @@ export function StickyActionListLayout<TData>({
             {t(titleKey)}
           </LayoutHeader>
         }
-        overScrollMode="never"
-        showsVerticalScrollIndicator={false}
+        {...ScrollablePresets}
         {...flashListProps}
         contentContainerStyle={{
           padding: 16,

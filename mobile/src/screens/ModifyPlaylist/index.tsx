@@ -28,6 +28,7 @@ import { IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import type { SwipeableRef } from "~/components/Swipeable";
 import { Swipeable } from "~/components/Swipeable";
+import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 
@@ -117,8 +118,8 @@ function PageContent() {
         renderItem={(args) => <RenderItem {...args} />}
         onReordered={moveTrack}
         ListHeaderComponent={ListHeaderComponent}
+        ListEmptyComponent={<ContentPlaceholder errMsgKey="err.msg.noTracks" />}
         contentContainerClassName="py-4" // Applies to the internal `<FlashList />`.
-        emptyMsgKey="err.msg.noTracks"
       />
     </View>
   );

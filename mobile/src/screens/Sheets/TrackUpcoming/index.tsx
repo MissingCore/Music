@@ -13,6 +13,7 @@ import { FlashList, SheetsFlashList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { Sheet } from "~/components/Sheet";
 import { Swipeable } from "~/components/Swipeable";
+import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 
 /**
@@ -67,6 +68,9 @@ export default function TrackUpcomingSheet() {
           ) : null
         }
         ListHeaderComponent={<QueueList />}
+        ListEmptyComponent={
+          <ContentPlaceholder isPending={trackList.length === 0} />
+        }
         contentContainerClassName="pb-4"
       />
     </Sheet>

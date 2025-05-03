@@ -1,5 +1,4 @@
 import type { FlashListProps } from "@shopify/flash-list";
-import { FlashList } from "@shopify/flash-list";
 import type { Href } from "expo-router";
 import { router } from "expo-router";
 import { useMemo } from "react";
@@ -9,9 +8,8 @@ import { Pressable } from "react-native";
 import { useGetColumn } from "~/hooks/useGetColumn";
 
 import { cn } from "~/lib/style";
-import type { Maybe, Prettify } from "~/utils/types";
-import type { WithListEmptyProps } from "~/components/Defaults";
-import { useListPresets } from "~/components/Defaults";
+import type { Prettify } from "~/utils/types";
+import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { StyledText } from "~/components/Typography/StyledText";
 import { MediaImage } from "./MediaImage";
 
@@ -81,32 +79,26 @@ export const MediaCardPlaceholderContent: MediaCard.Content = {
 };
 //#endregion
 
-//#region Media Card List
-type MediaCardListProps = WithListEmptyProps<{
-  data: Maybe<readonly MediaCard.Content[]>;
-  /**
-   * Renders a special entry before all other data. This assumes at `data[0]`,
-   * we have a `MediaCardPlaceholderContent`.
-   */
-  RenderFirst?: (props: {
-    size: number;
-    className: string;
-  }) => React.JSX.Element;
-}>;
-
-/** Hook for getting the presets used in the FlashList for `<MediaCardList />`. */
-export function useMediaCardListPreset(props: MediaCardListProps) {
+//#region useMediaCardListPreset
+/** Presets used to render a list of `<MediaCard />`. */
+export function useMediaCardListPreset(
+  props: Omit<React.ComponentProps<typeof ContentPlaceholder>, "className"> & {
+    data?: readonly MediaCard.Content[];
+    /**
+     * Renders a special entry before all other data. This assumes at `data[0]`,
+     * we have a `MediaCardPlaceholderContent`.
+     */
+    RenderFirst?: (props: {
+      size: number;
+      className: string;
+    }) => React.JSX.Element;
+  },
+) {
   const { count, width } = useGetColumn({
     ...{ cols: 2, gap: 12, gutters: 32, minWidth: 175 },
   });
-  const listPresets = useListPresets({
-    isPending: props.isPending,
-    emptyMsgKey: props.emptyMsgKey,
-  });
-
   return useMemo(
     () => ({
-      ...listPresets,
       numColumns: count,
       // ~40px for text content under `<MediaImage />` + 16px Margin Bottom
       estimatedItemSize: width + 40 + 12,
@@ -122,16 +114,16 @@ export function useMediaCardListPreset(props: MediaCardListProps) {
         ) : (
           <MediaCard {...item} size={width} className="mx-1.5 mb-3" />
         ),
+      ListEmptyComponent: (
+        <ContentPlaceholder
+          isPending={props.isPending}
+          errMsgKey={props.errMsgKey}
+        />
+      ),
       ListHeaderComponentStyle: { paddingHorizontal: 8 },
       className: "-mx-1.5 -mb-3",
     }),
-    [count, width, props, listPresets],
+    [count, width, props],
   ) satisfies FlashListProps<MediaCard.Content>;
-}
-
-/** Lists out `<MediaCard />` in a grid. */
-export function MediaCardList(props: MediaCardListProps) {
-  const presets = useMediaCardListPreset(props);
-  return <FlashList {...presets} />;
 }
 //#endregion

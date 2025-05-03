@@ -24,7 +24,10 @@ import { FlashDragList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import type { SwipeableRef } from "~/components/Swipeable";
 import { Swipeable } from "~/components/Swipeable";
-import { PagePlaceholder } from "~/components/Transition/Placeholder";
+import {
+  ContentPlaceholder,
+  PagePlaceholder,
+} from "~/components/Transition/Placeholder";
 import { Track } from "~/modules/media/components/Track";
 import type { PlayListSource } from "~/modules/media/types";
 
@@ -98,9 +101,11 @@ export default function CurrentPlaylistScreen() {
             <RenderItem {...args} trackSource={trackSource} />
           )}
           onReordered={onMove}
+          ListEmptyComponent={
+            <ContentPlaceholder errMsgKey="err.msg.noTracks" />
+          }
           contentContainerClassName="pt-4"
           contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
-          emptyMsgKey="err.msg.noTracks"
         />
       </CurrentListLayout>
     </>

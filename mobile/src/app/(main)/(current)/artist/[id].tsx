@@ -39,7 +39,8 @@ export default function CurrentArtistScreen() {
         keyExtractor={({ id }) => id}
         renderItem={({ item, index }) => (
           <Track
-            {...{ ...item, trackSource }}
+            {...item}
+            trackSource={trackSource}
             className={cn("mx-4", { "mt-2": index > 0 })}
           />
         )}
