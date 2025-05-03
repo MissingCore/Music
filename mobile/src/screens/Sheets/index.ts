@@ -1,12 +1,9 @@
 import type { SheetDefinition } from "react-native-actions-sheet";
 import { registerSheet } from "react-native-actions-sheet";
 
-import { FontAccentSheet, FontPrimarySheet } from "./Font";
 import MinDurationSheet from "./MinDuration";
-import NowPlayingDesignSheet from "./NowPlayingDesign";
 import PlaybackOptionsSheet from "./PlaybackOptions";
 import ScanFilterListSheet from "./ScanFilterList";
-import ThemeSheet from "./Theme";
 import TrackSheet from "./Track";
 import TrackSortSheet from "./TrackSort";
 import TrackToPlaylistSheet from "./TrackToPlaylist";
@@ -17,13 +14,9 @@ import TrackUpcomingSheet from "./TrackUpcoming";
   return `null` due waiting for data (ie: React Query), when the data
   appears, the sheet won't render as it expects a sheet on initial render.
 */
-registerSheet("FontAccentSheet", FontAccentSheet);
-registerSheet("FontPrimarySheet", FontPrimarySheet);
 registerSheet("MinDurationSheet", MinDurationSheet);
-registerSheet("NowPlayingDesignSheet", NowPlayingDesignSheet);
 registerSheet("PlaybackOptionsSheet", PlaybackOptionsSheet);
 registerSheet("ScanFilterListSheet", ScanFilterListSheet);
-registerSheet("ThemeSheet", ThemeSheet);
 registerSheet("TrackSheet", TrackSheet);
 registerSheet("TrackSortSheet", TrackSortSheet);
 registerSheet("TrackToPlaylistSheet", TrackToPlaylistSheet);
@@ -33,15 +26,11 @@ registerSheet("TrackUpcomingSheet", TrackUpcomingSheet);
 // across the app for all registered sheets.
 declare module "react-native-actions-sheet" {
   interface Sheets {
-    FontAccentSheet: SheetDefinition;
-    FontPrimarySheet: SheetDefinition;
     MinDurationSheet: SheetDefinition;
-    NowPlayingDesignSheet: SheetDefinition;
     PlaybackOptionsSheet: SheetDefinition;
     ScanFilterListSheet: SheetDefinition<{
       payload: { listType: "listAllow" | "listBlock" };
     }>;
-    ThemeSheet: SheetDefinition;
     TrackSheet: SheetDefinition<{ payload: { id: string } }>;
     TrackSortSheet: SheetDefinition;
     TrackToPlaylistSheet: SheetDefinition<{ payload: { id: string } }>;
