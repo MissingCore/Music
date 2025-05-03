@@ -3,18 +3,13 @@ import { router } from "expo-router";
 import { useArtistsForIndex } from "~/queries/artist";
 import { StickyActionListLayout } from "~/layouts/StickyActionScroll";
 
-import { useListPresets } from "~/components/Defaults";
+import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { Em } from "~/components/Typography/StyledText";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 
 /** Screen for `/artist` route. */
 export default function ArtistScreen() {
   const { isPending, data } = useArtistsForIndex();
-  const listPresets = useListPresets({
-    isPending,
-    emptyMsgKey: "err.msg.noArtists",
-  });
-
   return (
     <StickyActionListLayout
       titleKey="term.artists"
@@ -36,7 +31,12 @@ export default function ArtistScreen() {
           />
         )
       }
-      {...listPresets}
+      ListEmptyComponent={
+        <ContentPlaceholder
+          isPending={isPending}
+          errMsgKey="err.msg.noArtists"
+        />
+      }
     />
   );
 }
