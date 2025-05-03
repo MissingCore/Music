@@ -1,7 +1,7 @@
 import { Toasts } from "@backpackapp-io/react-native-toast";
 import type { ParseKeys } from "i18next";
 import { cssInterop } from "nativewind";
-import { forwardRef } from "react";
+import { forwardRef, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import type { StyleProp, ViewStyle } from "react-native";
 import { View } from "react-native";
@@ -27,6 +27,10 @@ interface SheetProps extends ActionSheetProps {
   snapTop?: boolean;
   contentContainerClassName?: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
+}
+
+export function useSheetRef() {
+  return useRef<ActionSheetRef>(null);
 }
 
 export const Sheet = forwardRef<ActionSheetRef, SheetProps>(function Sheet(

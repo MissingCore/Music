@@ -1,7 +1,6 @@
 import type { SheetDefinition } from "react-native-actions-sheet";
 import { registerSheet } from "react-native-actions-sheet";
 
-import AddMusicSheet from "./AddMusic";
 import {
   AlbumArtworkSheet,
   ArtistArtworkSheet,
@@ -20,14 +19,11 @@ import TrackSortSheet from "./TrackSort";
 import TrackToPlaylistSheet from "./TrackToPlaylist";
 import TrackUpcomingSheet from "./TrackUpcoming";
 
-import type { SearchCallbacks } from "~/modules/search/types";
-
 /*
   Note: Our sheets need to always render some (ie: not `null`). If we
   return `null` due waiting for data (ie: React Query), when the data
   appears, the sheet won't render as it expects a sheet on initial render.
 */
-registerSheet("AddMusicSheet", AddMusicSheet);
 registerSheet("AlbumArtworkSheet", AlbumArtworkSheet);
 registerSheet("ArtistArtworkSheet", ArtistArtworkSheet);
 registerSheet("BackupSheet", BackupSheet);
@@ -49,9 +45,6 @@ registerSheet("TrackUpcomingSheet", TrackUpcomingSheet);
 // across the app for all registered sheets.
 declare module "react-native-actions-sheet" {
   interface Sheets {
-    AddMusicSheet: SheetDefinition<{
-      payload: { callbacks: Pick<SearchCallbacks, "album" | "track"> };
-    }>;
     AlbumArtworkSheet: SheetDefinition<{ payload: { id: string } }>;
     ArtistArtworkSheet: SheetDefinition<{ payload: { id: string } }>;
     BackupSheet: SheetDefinition;
