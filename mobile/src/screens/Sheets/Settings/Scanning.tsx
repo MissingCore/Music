@@ -2,16 +2,25 @@ import {
   PrimaryDirectoryPath,
   StorageVolumesDirectoryPaths,
 } from "@missingcore/react-native-metadata-retriever";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Keyboard, View } from "react-native";
+import type { ActionSheetRef } from "react-native-actions-sheet";
 
 import { Add } from "~/icons/Add";
 import { CreateNewFolder } from "~/icons/CreateNewFolder";
 import { Remove } from "~/icons/Remove";
-import { useUserPreferencesStore } from "~/services/UserPreferences";
+import {
+  userPreferencesStore,
+  useUserPreferencesStore,
+} from "~/services/UserPreferences";
 import { useTheme } from "~/hooks/useTheme";
-import { pickPath, removePath, useAddPathToList, validatePath } from "./data";
+import {
+  pickPath,
+  removePath,
+  useAddPathToList,
+  validatePath,
+} from "./helpers/ScanFilterData";
 
 import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
@@ -19,26 +28,44 @@ import { cn } from "~/lib/style";
 import { Marquee } from "~/components/Containment/Marquee";
 import { SheetsFlashList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
-import { TextInput } from "~/components/Form/Input";
+import { NumericInput, TextInput } from "~/components/Form/Input";
+import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { Sheet } from "~/components/Sheet";
 import { Swipeable } from "~/components/Swipeable";
-import { ContentPlaceholder } from "~/components/Transition/Placeholder";
-import { StyledText } from "~/components/Typography/StyledText";
+import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
-//#region Sheet
-/** Sheet used to edit the paths in the allowlist or blocklist. */
-export default function ScanFilterListSheet(props: {
-  payload: { listType: "listAllow" | "listBlock" };
+/** All the sheets used on `/setting/scanning` route. */
+export function ScanningSettingsSheets(
+  props: Record<
+    "allowListRef" | "blockListRef" | "minDurationRef",
+    React.RefObject<ActionSheetRef>
+  >,
+) {
+  return (
+    <>
+      <ScanFilterListSheet listType="listAllow" sheetRef={props.allowListRef} />
+      <ScanFilterListSheet listType="listBlock" sheetRef={props.blockListRef} />
+      <MinDurationSheet sheetRef={props.minDurationRef} />
+    </>
+  );
+}
+
+//#region Filter List
+/** Enables us to specify the paths in the allowlist or blocklist. */
+function ScanFilterListSheet({
+  listType,
+  sheetRef,
+}: {
+  listType: "listAllow" | "listBlock";
+  sheetRef: React.RefObject<ActionSheetRef>;
 }) {
-  const listType = props.payload.listType;
-
   const { t } = useTranslation();
   const { surface } = useTheme();
   const listEntries = useUserPreferencesStore((state) => state[listType]);
 
   return (
     <Sheet
-      id="ScanFilterListSheet"
+      ref={sheetRef}
       titleKey={`feat.${listType}.title`}
       contentContainerClassName="gap-4 px-0"
       snapTop
@@ -90,9 +117,7 @@ export default function ScanFilterListSheet(props: {
     </Sheet>
   );
 }
-//#endregion
 
-//#region Form
 /** Form for adding filters to the list. */
 function FilterForm(props: {
   listType: "listAllow" | "listBlock";
@@ -153,5 +178,51 @@ function FilterForm(props: {
       </IconButton>
     </View>
   );
+}
+//#endregion
+
+/** Enables us to specify the minimum track duration we want to save. */
+function MinDurationSheet(props: {
+  sheetRef: React.RefObject<ActionSheetRef>;
+}) {
+  const minSeconds = useUserPreferencesStore((state) => state.minSeconds);
+  const [newMin, setNewMin] = useState<string | undefined>();
+
+  useEffect(() => {
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      // Update user preference when we close the keyboard.
+      updateMinDuration(newMin);
+    });
+    return () => {
+      hideSubscription.remove();
+    };
+  }, [newMin]);
+
+  return (
+    <Sheet
+      ref={props.sheetRef}
+      titleKey="feat.ignoreDuration.title"
+      contentContainerClassName="gap-4"
+    >
+      <TStyledText
+        dim
+        textKey="feat.ignoreDuration.description"
+        className="text-center text-sm"
+      />
+      <NumericInput
+        defaultValue={`${minSeconds}`}
+        onChangeText={(text) => setNewMin(text)}
+        className="mx-auto w-full max-w-[50%] border-b border-foreground/60 text-center"
+      />
+    </Sheet>
+  );
+}
+
+//#region Helpers
+async function updateMinDuration(newDuration: string | undefined) {
+  const asNum = Number(newDuration);
+  // Validate that it's a positive integer.
+  if (!Number.isInteger(asNum) || asNum < 0) return;
+  userPreferencesStore.setState({ minSeconds: asNum });
 }
 //#endregion
