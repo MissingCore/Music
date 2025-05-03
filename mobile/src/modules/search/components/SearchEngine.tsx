@@ -19,7 +19,8 @@ import { cn } from "~/lib/style";
 import { FlashList, SheetsFlashList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { TextInput, useInputRef } from "~/components/Form/Input";
-import { TEm, TStyledText } from "~/components/Typography/StyledText";
+import { ContentPlaceholder } from "~/components/Transition/Placeholder";
+import { TEm } from "~/components/Typography/StyledText";
 import { SearchResult } from "./SearchResult";
 import { useSearch } from "../hooks/useSearch";
 import type {
@@ -85,37 +86,37 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
         <ListComponent
           estimatedItemSize={56} // 48px Height + 8px Margin Top
           data={data}
-          keyExtractor={(_, index) => `${index}`}
-          renderItem={({ item, index }) => {
-            if (typeof item === "string") {
-              return (
-                <TEm
-                  textKey={`term.${item}`}
-                  className={index > 0 ? "mt-4" : undefined}
-                />
-              );
-            }
-            const { entry, ...rest } = item;
-
-            return (
+          // Note: We use `index` instead of the `id` or `name` field on the
+          // `entry` due to there being potentially shared values (ie: between
+          // artist & playlist names).
+          keyExtractor={(item, index) =>
+            typeof item === "string" ? item : `${index}`
+          }
+          renderItem={({ item, index }) =>
+            typeof item === "string" ? (
+              <TEm
+                textKey={`term.${item}`}
+                className={index > 0 ? "mt-4" : undefined}
+              />
+            ) : (
               <SearchResult
                 as="ripple"
                 /* @ts-expect-error - `type` should be limited to our scope. */
-                onPress={() => props.callbacks[rest.type](entry)}
+                onPress={() => props.callbacks[item.type](item.entry)}
                 wrapperClassName={cn("mt-2", {
-                  "rounded-full": rest.type === "artist",
+                  "rounded-full": item.type === "artist",
                 })}
                 className="pr-4"
-                {...rest}
+                {...item}
               />
-            );
-          }}
+            )
+          }
           ListEmptyComponent={
             query.length > 0 ? (
-              <TStyledText textKey="err.msg.noResults" center />
+              <ContentPlaceholder errMsgKey="err.msg.noResults" />
             ) : undefined
           }
-          contentContainerClassName="pb-4 pt-6"
+          contentContainerClassName="pt-6 pb-4"
         />
 
         <LinearGradient
