@@ -28,8 +28,8 @@ export function useArtistForScreen(artistName: string) {
 
 /**
  * Group artists by their first character (or in a group of special
- * characters), like an index in a book for a `<FlashList />` that
- * functions like a `<SectionList />`.
+ * characters), like an index in a book for a list that functions like
+ * a `<SectionList />`.
  */
 export function useArtistsForIndex() {
   return useQuery({
@@ -47,8 +47,7 @@ export function useArtistsForIndex() {
         } else groupedArtists[key] = [artist];
       });
 
-      // Convert object to array to be used in a `<FlashList />` that acts
-      // like a `<SectionList />`.
+      // Convert object to array to be used in a list that acts like a `<SectionList />`.
       return Object.entries(groupedArtists)
         .sort((a, b) => a[0].localeCompare(b[0])) // Moves the `#` group to the front
         .map(([character, artists]) => [character, ...artists])

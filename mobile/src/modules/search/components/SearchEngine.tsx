@@ -41,7 +41,7 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
   const [query, setQuery] = useState("");
   const results = useSearch(props.searchScope, query);
 
-  // Format results to be used in `<FlashList />`.
+  // Format results to be used in list.
   const data = useMemo(
     () => (results ? formatResults(results) : undefined),
     [results],
@@ -134,9 +134,9 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
 const withArtistName = ["album", "track"];
 
 /**
- * Flatten results to be used in a `<FlashList />` that functions like a
- * `<SectionList />`. Ensure the "sections" are in alphabetical order and
- * remove any groups with no items before formatting.
+ * Flatten results to be used in a list that functions like a `<SectionList />`.
+ * Ensure the "sections" are in alphabetical order and remove any groups with
+ * no items before formatting.
  */
 function formatResults(results: Partial<SearchResults>) {
   return Object.entries(results)
