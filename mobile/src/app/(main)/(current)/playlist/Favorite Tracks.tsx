@@ -1,9 +1,8 @@
-import { FlashList } from "@shopify/flash-list";
-
 import { useFavoriteTracksForScreen } from "~/queries/favorite";
 import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 import { CurrentListLayout } from "~/layouts/CurrentList";
 
+import { FlashList } from "~/components/Defaults";
 import { PagePlaceholder } from "~/components/Transition/Placeholder";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import { useTrackListPreset } from "~/modules/media/components/Track";
@@ -18,10 +17,7 @@ export default function FavoriteTracksScreen() {
 
   const { bottomInset } = useBottomActionsContext();
   const { isPending, error, data } = useFavoriteTracksForScreen();
-  const listPresets = useTrackListPreset({
-    ...{ data: data?.tracks, trackSource },
-    emptyMsgKey: "err.msg.noTracks",
-  });
+  const presets = useTrackListPreset({ data: data?.tracks, trackSource });
 
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
 
@@ -33,10 +29,10 @@ export default function FavoriteTracksScreen() {
       mediaSource={trackSource}
     >
       <FlashList
-        {...listPresets}
         className="mx-4"
         contentContainerClassName="pt-4"
         contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
+        {...presets}
       />
     </CurrentListLayout>
   );
