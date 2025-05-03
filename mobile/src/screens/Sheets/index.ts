@@ -1,9 +1,7 @@
 import type { SheetDefinition } from "react-native-actions-sheet";
 import { registerSheet } from "react-native-actions-sheet";
 
-import BackupSheet from "./Backup";
 import { FontAccentSheet, FontPrimarySheet } from "./Font";
-import LanguageSheet from "./Language";
 import MinDurationSheet from "./MinDuration";
 import NowPlayingDesignSheet from "./NowPlayingDesign";
 import PlaybackOptionsSheet from "./PlaybackOptions";
@@ -19,10 +17,8 @@ import TrackUpcomingSheet from "./TrackUpcoming";
   return `null` due waiting for data (ie: React Query), when the data
   appears, the sheet won't render as it expects a sheet on initial render.
 */
-registerSheet("BackupSheet", BackupSheet);
 registerSheet("FontAccentSheet", FontAccentSheet);
 registerSheet("FontPrimarySheet", FontPrimarySheet);
-registerSheet("LanguageSheet", LanguageSheet);
 registerSheet("MinDurationSheet", MinDurationSheet);
 registerSheet("NowPlayingDesignSheet", NowPlayingDesignSheet);
 registerSheet("PlaybackOptionsSheet", PlaybackOptionsSheet);
@@ -37,10 +33,8 @@ registerSheet("TrackUpcomingSheet", TrackUpcomingSheet);
 // across the app for all registered sheets.
 declare module "react-native-actions-sheet" {
   interface Sheets {
-    BackupSheet: SheetDefinition;
     FontAccentSheet: SheetDefinition;
     FontPrimarySheet: SheetDefinition;
-    LanguageSheet: SheetDefinition;
     MinDurationSheet: SheetDefinition;
     NowPlayingDesignSheet: SheetDefinition;
     PlaybackOptionsSheet: SheetDefinition;
