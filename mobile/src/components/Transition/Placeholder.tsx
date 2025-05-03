@@ -1,6 +1,7 @@
 import type { ParseKeys } from "i18next";
 import { View } from "react-native";
 
+import { cn } from "~/lib/style";
 import { Loading } from "./Loading";
 import { TStyledText } from "../Typography/StyledText";
 
@@ -9,11 +10,16 @@ export function ContentPlaceholder(props: {
   isPending?: boolean;
   /** Key to error messaeg in translations. */
   errMsgKey?: ParseKeys;
+  className?: string;
 }) {
-  return props.isPending ? (
-    <Loading />
-  ) : (
-    <TStyledText textKey={props.errMsgKey ?? "err.msg.noContent"} center />
+  return (
+    <View className={cn("p-4", props.className)}>
+      {props.isPending ? (
+        <Loading />
+      ) : (
+        <TStyledText textKey={props.errMsgKey ?? "err.msg.noContent"} center />
+      )}
+    </View>
   );
 }
 
