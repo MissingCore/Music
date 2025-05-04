@@ -89,21 +89,19 @@ function ScanFilterListSheet({
           <Swipeable
             containerClassName={cn("px-4", { "mt-1": index > 0 })}
             renderRightActions={() => (
-              <View className="pr-4">
-                <IconButton
-                  accessibilityLabel={t("template.entryRemove", { name: item })}
-                  onPress={() => removePath({ list: listType, path: item })}
-                  className="aspect-square grow bg-red"
-                >
-                  <Remove color={Colors.neutral100} />
-                </IconButton>
-              </View>
+              <IconButton
+                accessibilityLabel={t("template.entryRemove", { name: item })}
+                onPress={() => removePath({ list: listType, path: item })}
+                className="mr-4 aspect-square h-full bg-red"
+              >
+                <Remove color={Colors.neutral100} />
+              </IconButton>
             )}
           >
             <Marquee
               color={surface}
               topOffset={16}
-              wrapperClassName="min-h-12 py-4 rounded-md bg-surface"
+              wrapperClassName="py-4 rounded-md bg-surface"
             >
               <StyledText className="px-4">{item}</StyledText>
             </Marquee>

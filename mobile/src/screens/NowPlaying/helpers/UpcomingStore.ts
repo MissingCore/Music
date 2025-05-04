@@ -9,7 +9,7 @@ import { musicStore } from "~/modules/media/services/Music";
 
 type PartialTrack = SlimTrack & Required<TrackArtwork>;
 
-interface UpcomingStore {
+export interface UpcomingStore {
   currentTrackList: Array<PartialTrack | undefined>;
   queuedTrackList: Array<PartialTrack | undefined>;
 

@@ -1,3 +1,5 @@
+import type { ListRenderItemInfo } from "@shopify/flash-list";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { ActionSheetRef } from "react-native-actions-sheet";
 import TrackPlayer from "react-native-track-player";
@@ -9,6 +11,7 @@ import { SlowMotionVideo } from "~/icons/SlowMotionVideo";
 import { VolumeUp } from "~/icons/VolumeUp";
 import { Queue, useMusicStore } from "~/modules/media/services/Music";
 import { sessionStore, useSessionStore } from "~/services/SessionStore";
+import type { UpcomingStore } from "./helpers/UpcomingStore";
 import { useUpcomingStore } from "./helpers/UpcomingStore";
 
 import { Colors } from "~/constants/Styles";
@@ -17,9 +20,11 @@ import { FlashList, SheetsFlashList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { NSlider } from "~/components/Form/Slider";
 import { Sheet } from "~/components/Sheet";
-import { Swipeable } from "~/components/Swipeable";
+import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { SearchResult } from "~/modules/search/components/SearchResult";
+
+type PartialTrack = UpcomingStore["currentTrackList"][0];
 
 /** All the sheets used on `/now-playing` route. */
 export function NowPlayingSheets(
@@ -157,42 +162,51 @@ function TrackUpcomingSheet(props: {
  * in the main list.
  */
 function QueueList() {
-  const { t } = useTranslation();
   const queueList = useUpcomingStore((state) => state.queuedTrackList);
-
   if (queueList.filter((t) => t !== undefined).length === 0) return null;
-
   return (
     <FlashList
       estimatedItemSize={52} // 48px Height + 4px Margin Bottom
       data={queueList}
-      keyExtractor={(item, index) => `${item?.name}_${index}`}
-      renderItem={({ item, index }) =>
-        item ? (
-          <Swipeable
-            containerClassName="mb-1 px-4"
-            renderRightActions={() => (
-              <IconButton
-                accessibilityLabel={t("template.entryRemove", {
-                  name: item.name,
-                })}
-                onPress={() => Queue.removeAtIndex(index)}
-                className="mr-4 bg-red"
-              >
-                <Remove color={Colors.neutral100} />
-              </IconButton>
-            )}
-          >
-            <TrackItem
-              title={item.name}
-              description={item.artistName ?? "—"}
-              imageSource={getTrackCover(item)}
-              inQueue
-            />
-          </Swipeable>
-        ) : null
-      }
+      keyExtractor={(item, index) => `${item?.id}_${index}`}
+      renderItem={(args) => <RenderQueueItem {...args} />}
     />
+  );
+}
+
+function RenderQueueItem({ item, index }: ListRenderItemInfo<PartialTrack>) {
+  const { t } = useTranslation();
+  const swipeableRef = useSwipeableRef();
+  const [lastItemId, setLastItemId] = useState(item?.id);
+
+  if (item?.id !== lastItemId) {
+    setLastItemId(item?.id);
+    if (swipeableRef.current) swipeableRef.current.resetIfNeeded();
+  }
+
+  if (!item) return null;
+  return (
+    <Swipeable
+      // @ts-expect-error - Error assigning ref to class component.
+      ref={swipeableRef}
+      containerClassName="mb-1 px-4"
+      renderRightActions={() => (
+        <IconButton
+          accessibilityLabel={t("template.entryRemove", { name: item.name })}
+          onPress={() => Queue.removeAtIndex(index)}
+          className="mr-4 bg-red"
+        >
+          <Remove color={Colors.neutral100} />
+        </IconButton>
+      )}
+    >
+      <TrackItem
+        title={item.name}
+        description={item.artistName ?? "—"}
+        imageSource={getTrackCover(item)}
+        inQueue
+      />
+    </Swipeable>
   );
 }
 
