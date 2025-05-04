@@ -3,7 +3,6 @@ import { registerSheet } from "react-native-actions-sheet";
 
 import PlaybackOptionsSheet from "./PlaybackOptions";
 import TrackSheet from "./Track";
-import TrackSortSheet from "./TrackSort";
 import TrackToPlaylistSheet from "./TrackToPlaylist";
 import TrackUpcomingSheet from "./TrackUpcoming";
 
@@ -14,7 +13,6 @@ import TrackUpcomingSheet from "./TrackUpcoming";
 */
 registerSheet("PlaybackOptionsSheet", PlaybackOptionsSheet);
 registerSheet("TrackSheet", TrackSheet);
-registerSheet("TrackSortSheet", TrackSortSheet);
 registerSheet("TrackToPlaylistSheet", TrackToPlaylistSheet);
 registerSheet("TrackUpcomingSheet", TrackUpcomingSheet);
 
@@ -24,7 +22,6 @@ declare module "react-native-actions-sheet" {
   interface Sheets {
     PlaybackOptionsSheet: SheetDefinition;
     TrackSheet: SheetDefinition<{ payload: { id: string } }>;
-    TrackSortSheet: SheetDefinition;
     TrackToPlaylistSheet: SheetDefinition<{ payload: { id: string } }>;
     TrackUpcomingSheet: SheetDefinition;
   }
