@@ -35,13 +35,13 @@ export function TrackSortSheet(props: {
       <FlatList
         accessibilityRole="radiogroup"
         data={OrderedByOptions}
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => (
+        keyExtractor={(sortOption) => sortOption}
+        renderItem={({ item: sortOption }) => (
           <Radio
-            selected={item === orderedBy}
-            onSelect={() => setOrderedBy(item)}
+            selected={orderedBy === sortOption}
+            onSelect={() => setOrderedBy(sortOption)}
           >
-            <TStyledText textKey={`feat.modalSort.extra.${item}`} />
+            <TStyledText textKey={`feat.modalSort.extra.${sortOption}`} />
           </Radio>
         )}
         contentContainerClassName="gap-1"

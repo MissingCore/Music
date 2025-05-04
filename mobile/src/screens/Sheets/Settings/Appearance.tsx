@@ -106,23 +106,23 @@ function FontSheet<T extends (typeof AccentFontOptions)[number]>(props: {
 /** Enables changing the theme of the app. */
 function ThemeSheet(props: { sheetRef: React.RefObject<ActionSheetRef> }) {
   const { setColorScheme } = useColorScheme();
-  const theme = useUserPreferencesStore((state) => state.theme);
+  const selectedTheme = useUserPreferencesStore((state) => state.theme);
 
   return (
     <Sheet ref={props.sheetRef} titleKey="feat.theme.title">
       <FlatList
         accessibilityRole="radiogroup"
         data={ThemeOptions}
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => (
+        keyExtractor={(theme) => theme}
+        renderItem={({ item: theme }) => (
           <Radio
-            selected={item === theme}
+            selected={selectedTheme === theme}
             onSelect={() => {
-              setColorScheme(item);
-              setTheme(item);
+              setColorScheme(theme);
+              setTheme(theme);
             }}
           >
-            <TStyledText textKey={`feat.theme.extra.${item}`} />
+            <TStyledText textKey={`feat.theme.extra.${theme}`} />
           </Radio>
         )}
         contentContainerClassName="gap-1"

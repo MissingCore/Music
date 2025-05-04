@@ -89,7 +89,7 @@ function LanguageSheet(props: { sheetRef: React.RefObject<ActionSheetRef> }) {
         keyExtractor={({ code }) => code}
         renderItem={({ item }) => (
           <Radio
-            selected={item.code === languageCode}
+            selected={languageCode === item.code}
             onSelect={() => setLanguage(item.code)}
           >
             <StyledText>{item.name}</StyledText>
