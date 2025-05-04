@@ -1,8 +1,7 @@
 import type { SheetDefinition } from "react-native-actions-sheet";
 import { registerSheet } from "react-native-actions-sheet";
 
-import TrackSheet from "./Track";
-import TrackToPlaylistSheet from "./TrackToPlaylist";
+import { TrackToPlaylistSheet, TrackSheet } from "./Track";
 
 /*
   Note: Our sheets need to always render some (ie: not `null`). If we

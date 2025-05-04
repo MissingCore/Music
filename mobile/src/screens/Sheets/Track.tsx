@@ -13,7 +13,14 @@ import { List } from "~/icons/List";
 import { PlaylistAdd } from "~/icons/PlaylistAdd";
 import { QueueMusic } from "~/icons/QueueMusic";
 import { Schedule } from "~/icons/Schedule";
-import { useTrack, useFavoriteTrack } from "~/queries/track";
+import { usePlaylists } from "~/queries/playlist";
+import {
+  useAddToPlaylist,
+  useFavoriteTrack,
+  useRemoveFromPlaylist,
+  useTrack,
+  useTrackPlaylists,
+} from "~/queries/track";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { useTheme } from "~/hooks/useTheme";
 import { Queue, useMusicStore } from "~/modules/media/services/Music";
@@ -27,9 +34,12 @@ import {
   formatSeconds,
 } from "~/utils/number";
 import { Marquee } from "~/components/Containment/Marquee";
+import { SheetsFlashList } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { IconButton } from "~/components/Form/Button";
+import { Checkbox } from "~/components/Form/Selection";
 import { Sheet } from "~/components/Sheet";
+import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import {
   StyledText,
   TEm,
@@ -38,18 +48,16 @@ import {
 import { ReservedPlaylists } from "~/modules/media/constants";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 
-/** Sheet containing information and actions for a track. */
-export default function TrackSheet(props: { payload: { id: string } }) {
+//#region Track Sheet
+/** Displays information about a track and enables adding it to playlists. */
+export function TrackSheet(props: { payload: { id: string } }) {
   const { isPending, error, data } = useTrack(props.payload.id);
   return (
     <Sheet id="TrackSheet" contentContainerClassName="gap-4">
       {isPending || error ? null : (
         <>
           <TrackIntro data={data} />
-          <Divider />
-          <Stats data={data} />
-          <Divider />
-          <AddActions data={data} />
+          <PrimaryTrackContent data={data} />
           <TrackLinks data={data} />
         </>
       )}
@@ -115,65 +123,65 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
 }
 //#endregion
 
-//#region Stats
-/** Display stats about the file. */
-function Stats({ data }: { data: TrackWithAlbum }) {
+//#region Primary Content
+/** Track information and add actions. */
+function PrimaryTrackContent({ data }: { data: TrackWithAlbum }) {
   return (
-    <View className="gap-2">
+    <>
+      <Divider />
+      {/* Stats */}
+      <View className="gap-2">
+        <View className="flex-row gap-2">
+          <StatItem
+            titleKey="feat.modalTrack.extra.bitrate"
+            description={
+              data.bitrate !== null ? abbreviateBitRate(data.bitrate) : "—"
+            }
+          />
+          <StatItem
+            titleKey="feat.modalTrack.extra.sampleRate"
+            description={
+              data.sampleRate !== null ? `${data.sampleRate} Hz` : "—"
+            }
+          />
+        </View>
+        <View className="flex-row gap-2">
+          <StatItem
+            titleKey="feat.modalTrack.extra.size"
+            description={abbreviateSize(data.size)}
+          />
+          <StatItem
+            titleKey="feat.modalSort.extra.modified"
+            description={formatEpoch(data.modificationTime)}
+          />
+        </View>
+        <View className="flex-row">
+          <StatItem
+            titleKey="feat.modalTrack.extra.filePath"
+            description={data.uri}
+          />
+        </View>
+      </View>
+      <Divider />
+      {/* Add Actions */}
       <View className="flex-row gap-2">
-        <StatItem
-          titleKey="feat.modalTrack.extra.bitrate"
-          description={
-            data.bitrate !== null ? abbreviateBitRate(data.bitrate) : "—"
+        <SheetButton
+          onPress={() =>
+            SheetManager.show("TrackToPlaylistSheet", {
+              payload: { id: data.id },
+            })
           }
+          Icon={<PlaylistAdd />}
+          textKey="feat.modalTrack.extra.addToPlaylist"
+          preventClose
         />
-        <StatItem
-          titleKey="feat.modalTrack.extra.sampleRate"
-          description={data.sampleRate !== null ? `${data.sampleRate} Hz` : "—"}
-        />
-      </View>
-      <View className="flex-row gap-2">
-        <StatItem
-          titleKey="feat.modalTrack.extra.size"
-          description={abbreviateSize(data.size)}
-        />
-        <StatItem
-          titleKey="feat.modalSort.extra.modified"
-          description={formatEpoch(data.modificationTime)}
+        <SheetButton
+          onPress={() => Queue.add({ id: data.id, name: data.name })}
+          Icon={<QueueMusic />}
+          textKey="feat.modalTrack.extra.addToQueue"
         />
       </View>
-      <View className="flex-row">
-        <StatItem
-          titleKey="feat.modalTrack.extra.filePath"
-          description={data.uri}
-        />
-      </View>
-    </View>
-  );
-}
-//#endregion
-
-//#region Add Actions
-/** Add track to a playlist or queue. */
-function AddActions({ data }: { data: TrackWithAlbum }) {
-  return (
-    <View className="flex-row gap-2">
-      <SheetButton
-        onPress={() =>
-          SheetManager.show("TrackToPlaylistSheet", {
-            payload: { id: data.id },
-          })
-        }
-        Icon={<PlaylistAdd />}
-        textKey="feat.modalTrack.extra.addToPlaylist"
-        preventClose
-      />
-      <SheetButton
-        onPress={() => Queue.add({ id: data.id, name: data.name })}
-        Icon={<QueueMusic />}
-        textKey="feat.modalTrack.extra.addToQueue"
-      />
-    </View>
+    </>
   );
 }
 //#endregion
@@ -270,4 +278,57 @@ function SheetButton(props: {
     </IconButton>
   );
 }
+//#endregion
+//#endregion
+
+//#region Track To Playlist Sheet
+/** Enables us to select which playlists the track belongs to. */
+export function TrackToPlaylistSheet(props: { payload: { id: string } }) {
+  const { canvasAlt, surface } = useTheme();
+  const { data } = usePlaylists();
+  const { data: inList } = useTrackPlaylists(props.payload.id);
+  const addToPlaylist = useAddToPlaylist(props.payload.id);
+  const removeFromPlaylist = useRemoveFromPlaylist(props.payload.id);
+
+  return (
+    <Sheet
+      id="TrackToPlaylistSheet"
+      titleKey="feat.modalTrack.extra.addToPlaylist"
+      // Hide the Track sheet when we close this sheet since it's still open.
+      onBeforeClose={() => SheetManager.hide("TrackSheet")}
+      snapTop
+    >
+      <SheetsFlashList
+        estimatedItemSize={58} // 54px Height + 4px Margin Top
+        data={data}
+        keyExtractor={({ name }) => name}
+        renderItem={({ item, index }) => {
+          const selected = inList?.includes(item.name) ?? false;
+          return (
+            <Checkbox
+              selected={selected}
+              onSelect={() =>
+                mutateGuard(
+                  // @ts-expect-error - We don't care about return type.
+                  selected ? removeFromPlaylist : addToPlaylist,
+                  item.name,
+                )
+              }
+              wrapperClassName={index > 0 ? "mt-1" : undefined}
+            >
+              <Marquee color={selected ? surface : canvasAlt}>
+                <StyledText>{item.name}</StyledText>
+              </Marquee>
+            </Checkbox>
+          );
+        }}
+        ListEmptyComponent={
+          <ContentPlaceholder errMsgKey="err.msg.noPlaylists" />
+        }
+        contentContainerClassName="pb-4"
+      />
+    </Sheet>
+  );
+}
+
 //#endregion
