@@ -17,7 +17,7 @@ import { useTheme } from "~/hooks/useTheme";
 import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import type { InitStoreProps } from "./context";
 import { PlaylistStoreProvider, usePlaylistStore } from "./context";
-import { AddMusicSheet } from "./AddMusic";
+import { AddMusicSheet } from "./Sheets";
 
 import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
