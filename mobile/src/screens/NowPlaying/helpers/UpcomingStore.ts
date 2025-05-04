@@ -53,6 +53,10 @@ musicStore.subscribe(
     const listTracks = await getTracksFromIds(queueList);
     upcomingStore.setState({ queuedTrackList: listTracks });
   },
+  // Ensure `queueList` is populated as prior, this would be initialized
+  // at app launch, but now, it's when we open the "Now Playing" screen,
+  // which leads to this being empty.
+  { fireImmediately: true },
 );
 
 /**
