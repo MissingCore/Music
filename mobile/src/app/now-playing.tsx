@@ -2,7 +2,6 @@ import type { Href } from "expo-router";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
-import { SheetManager } from "react-native-actions-sheet";
 import { useProgress } from "react-native-track-player";
 
 import type { TrackWithAlbum } from "~/db/schema";
@@ -15,6 +14,7 @@ import { MoreVert } from "~/icons/MoreVert";
 import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { useMusicStore } from "~/modules/media/services/Music";
 import { MusicControls } from "~/modules/media/services/Playback";
+import { presentTrackSheet } from "~/services/SessionStore";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useSeekStore } from "~/screens/NowPlaying/helpers/SeekService";
 import { NowPlayingArtwork } from "~/screens/NowPlaying/Artwork";
@@ -77,9 +77,7 @@ function Metadata({ track }: { track: TrackWithAlbum }) {
         <IconButton
           kind="ripple"
           accessibilityLabel={t("template.entrySeeMore", { name: track.name })}
-          onPress={() =>
-            SheetManager.show("TrackSheet", { payload: { id: track.id } })
-          }
+          onPress={() => presentTrackSheet(track.id)}
           rippleRadius={24}
           className="p-2"
         >
