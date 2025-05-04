@@ -6,6 +6,10 @@ import { useUserPreferencesStore } from "~/services/UserPreferences";
 
 import { cn, getFont } from "~/lib/style";
 
+export function useInputRef() {
+  return useRef<RNTextInput>(null);
+}
+
 //#region Numeric Input
 /** Numeric input using the accent font. */
 export const NumericInput = forwardRef<RNTextInput, TextInputProps>(
@@ -49,12 +53,4 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
     );
   },
 );
-//#endregion
-
-//#region Hook
-/** Hook to get a ref for the input element. */
-export function useInputRef() {
-  const inputRef = useRef<RNTextInput>(null);
-  return inputRef;
-}
 //#endregion

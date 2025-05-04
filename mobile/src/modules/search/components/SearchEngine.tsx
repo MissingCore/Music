@@ -30,35 +30,15 @@ import type {
 } from "../types";
 
 /** All-in-one search - tracks the query and displays results. */
-export function SearchEngine<TScope extends SearchCategories>(props: {
-  searchScope: TScope;
-  callbacks: Pick<SearchCallbacks, TScope[number]>;
-  bgColor?: string;
-  withGesture?: boolean;
-}) {
+export function SearchEngine<TScope extends SearchCategories>(
+  props: SearchResultsListProps<TScope>,
+) {
   const { t } = useTranslation();
-  const { canvas } = useTheme();
   const inputRef = useInputRef();
   const [query, setQuery] = useState("");
-  const results = useSearch(props.searchScope, query);
-
-  // Format results to be used in list.
-  const data = useMemo(
-    () => (results ? formatResults(results) : undefined),
-    [results],
-  );
-
-  const shadowColor = useMemo(
-    () => props.bgColor ?? canvas,
-    [props.bgColor, canvas],
-  );
-
-  const ListComponent = useMemo(() => {
-    return props.withGesture ? SheetsFlashList : FlashList;
-  }, [props.withGesture]);
 
   return (
-    <View className="grow">
+    <View className="shrink grow">
       {/* Search input. */}
       <View className="flex-row items-center gap-2 rounded-full bg-surface pl-4">
         <Search />
@@ -81,51 +61,83 @@ export function SearchEngine<TScope extends SearchCategories>(props: {
           <Close />
         </IconButton>
       </View>
-      {/* Results list w/ scroll shadow. */}
-      <View className="relative grow">
-        <ListComponent
-          estimatedItemSize={56} // 48px Height + 8px Margin Top
-          data={data}
-          // Note: We use `index` instead of the `id` or `name` field on the
-          // `entry` due to there being potentially shared values (ie: between
-          // artist & playlist names).
-          keyExtractor={(item, index) =>
-            typeof item === "string" ? item : `${index}`
-          }
-          renderItem={({ item, index }) =>
-            typeof item === "string" ? (
-              <TEm
-                textKey={`term.${item}`}
-                className={index > 0 ? "mt-4" : undefined}
-              />
-            ) : (
-              <SearchResult
-                as="ripple"
-                /* @ts-expect-error - `type` should be limited to our scope. */
-                onPress={() => props.callbacks[item.type](item.entry)}
-                wrapperClassName={cn("mt-2", {
-                  "rounded-full": item.type === "artist",
-                })}
-                className="pr-4"
-                {...item}
-              />
-            )
-          }
-          ListEmptyComponent={
-            query.length > 0 ? (
-              <ContentPlaceholder errMsgKey="err.msg.noResults" />
-            ) : undefined
-          }
-          contentContainerClassName="pt-6 pb-4"
-        />
+      <SearchResultsList {...props} query={query} />
+    </View>
+  );
+}
 
-        <LinearGradient
-          colors={[`${shadowColor}FF`, `${shadowColor}00`]}
-          start={{ x: 0.0, y: 0.0 }}
-          end={{ x: 0.0, y: 1.0 }}
-          className="absolute left-0 top-0 h-6 w-full"
-        />
-      </View>
+type SearchResultsListProps<TScope extends SearchCategories> = {
+  searchScope: TScope;
+  callbacks: Pick<SearchCallbacks, TScope[number]>;
+  bgColor?: string;
+  withGesture?: boolean;
+};
+
+function SearchResultsList<TScope extends SearchCategories>(
+  props: SearchResultsListProps<TScope> & { query: string },
+) {
+  const { canvas } = useTheme();
+  const results = useSearch(props.searchScope, props.query);
+
+  // Format results to be used in list.
+  const data = useMemo(
+    () => (results ? formatResults(results) : undefined),
+    [results],
+  );
+
+  const shadowColor = useMemo(
+    () => props.bgColor ?? canvas,
+    [props.bgColor, canvas],
+  );
+
+  const ListComponent = useMemo(() => {
+    return props.withGesture ? SheetsFlashList : FlashList;
+  }, [props.withGesture]);
+
+  return (
+    <View className="relative shrink grow">
+      <ListComponent
+        estimatedItemSize={56} // 48px Height + 8px Margin Top
+        data={data}
+        // Note: We use `index` instead of the `id` or `name` field on the
+        // `entry` due to there being potentially shared values (ie: between
+        // artist & playlist names).
+        keyExtractor={(item, index) =>
+          typeof item === "string" ? item : `${index}`
+        }
+        renderItem={({ item, index }) =>
+          typeof item === "string" ? (
+            <TEm
+              textKey={`term.${item}`}
+              className={index > 0 ? "mt-4" : undefined}
+            />
+          ) : (
+            <SearchResult
+              as="ripple"
+              /* @ts-expect-error - `type` should be limited to our scope. */
+              onPress={() => props.callbacks[item.type](item.entry)}
+              wrapperClassName={cn("mt-2", {
+                "rounded-full": item.type === "artist",
+              })}
+              className="pr-4"
+              {...item}
+            />
+          )
+        }
+        ListEmptyComponent={
+          props.query.length > 0 ? (
+            <ContentPlaceholder errMsgKey="err.msg.noResults" />
+          ) : undefined
+        }
+        contentContainerClassName="pt-6 pb-4"
+      />
+
+      <LinearGradient
+        colors={[`${shadowColor}FF`, `${shadowColor}00`]}
+        start={{ x: 0.0, y: 0.0 }}
+        end={{ x: 0.0, y: 1.0 }}
+        className="absolute left-0 top-0 h-6 w-full"
+      />
     </View>
   );
 }
