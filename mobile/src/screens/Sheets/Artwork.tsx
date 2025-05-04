@@ -1,6 +1,7 @@
 import type { UseMutationResult } from "@tanstack/react-query";
 import { useState } from "react";
 import { View, useWindowDimensions } from "react-native";
+import type { ActionSheetRef } from "react-native-actions-sheet";
 
 import { useAlbum, useUpdateAlbumArtwork } from "~/queries/album";
 import { useArtist, useUpdateArtist } from "~/queries/artist";
@@ -14,16 +15,18 @@ import { TStyledText } from "~/components/Typography/StyledText";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import type { MediaType } from "~/modules/media/types";
 
+type ArtworkSheetProps = {
+  id: string;
+  sheetRef: React.RefObject<ActionSheetRef>;
+};
+
 /** Sheet allowing us to change the artwork of an album. */
-export function AlbumArtworkSheet(props: { payload: { id: string } }) {
-  const { data } = useAlbum(props.payload.id);
-  const updateAlbumArtwork = useUpdateAlbumArtwork(props.payload.id);
+export function AlbumArtworkSheet(props: ArtworkSheetProps) {
+  const { data } = useAlbum(props.id);
+  const updateAlbumArtwork = useUpdateAlbumArtwork(props.id);
 
   return (
-    <Sheet
-      id="AlbumArtworkSheet"
-      contentContainerClassName="items-center gap-6"
-    >
+    <Sheet ref={props.sheetRef} contentContainerClassName="items-center gap-6">
       <BaseArtworkSheetContent
         type="album"
         imageSource={data?.altArtwork ?? data?.artwork ?? null}
@@ -35,15 +38,12 @@ export function AlbumArtworkSheet(props: { payload: { id: string } }) {
 }
 
 /** Sheet allowing us to change the artwork of an artist. */
-export function ArtistArtworkSheet(props: { payload: { id: string } }) {
-  const { data } = useArtist(props.payload.id);
-  const updateArtist = useUpdateArtist(props.payload.id);
+export function ArtistArtworkSheet(props: ArtworkSheetProps) {
+  const { data } = useArtist(props.id);
+  const updateArtist = useUpdateArtist(props.id);
 
   return (
-    <Sheet
-      id="ArtistArtworkSheet"
-      contentContainerClassName="items-center gap-6"
-    >
+    <Sheet ref={props.sheetRef} contentContainerClassName="items-center gap-6">
       <BaseArtworkSheetContent
         type="artist"
         imageSource={data?.artwork ?? null}
@@ -54,15 +54,12 @@ export function ArtistArtworkSheet(props: { payload: { id: string } }) {
 }
 
 /** Sheet allowing us to change the artwork of a playlist. */
-export function PlaylistArtworkSheet(props: { payload: { id: string } }) {
-  const { data } = usePlaylist(props.payload.id);
-  const updatePlaylist = useUpdatePlaylist(props.payload.id);
+export function PlaylistArtworkSheet(props: ArtworkSheetProps) {
+  const { data } = usePlaylist(props.id);
+  const updatePlaylist = useUpdatePlaylist(props.id);
 
   return (
-    <Sheet
-      id="PlaylistArtworkSheet"
-      contentContainerClassName="items-center gap-6"
-    >
+    <Sheet ref={props.sheetRef} contentContainerClassName="items-center gap-6">
       <BaseArtworkSheetContent
         type="playlist"
         imageSource={data?.imageSource ?? null}

@@ -1,3 +1,5 @@
+import type { ActionSheetRef } from "react-native-actions-sheet";
+
 import {
   OrderedByOptions,
   useSortPreferencesStore,
@@ -9,8 +11,10 @@ import { Radio } from "~/components/Form/Selection";
 import { Sheet } from "~/components/Sheet";
 import { TStyledText } from "~/components/Typography/StyledText";
 
-/** Sheet allowing us visually change the sort order on the `/track` screen. */
-export default function TrackSortSheet() {
+/** Enables us to visually change the sort order on the `/track` screen. */
+export function TrackSortSheet(props: {
+  sheetRef: React.RefObject<ActionSheetRef>;
+}) {
   const isAsc = useSortPreferencesStore((state) => state.isAsc);
   const toggleIsAsc = useSortPreferencesStore((state) => state.toggleIsAsc);
   const orderedBy = useSortPreferencesStore((state) => state.orderedBy);
@@ -18,7 +22,7 @@ export default function TrackSortSheet() {
 
   return (
     <Sheet
-      id="TrackSortSheet"
+      ref={props.sheetRef}
       titleKey="feat.modalSort.title"
       contentContainerClassName="gap-4"
     >
@@ -31,13 +35,13 @@ export default function TrackSortSheet() {
       <FlatList
         accessibilityRole="radiogroup"
         data={OrderedByOptions}
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => (
+        keyExtractor={(sortOption) => sortOption}
+        renderItem={({ item: sortOption }) => (
           <Radio
-            selected={item === orderedBy}
-            onSelect={() => setOrderedBy(item)}
+            selected={orderedBy === sortOption}
+            onSelect={() => setOrderedBy(sortOption)}
           >
-            <TStyledText textKey={`feat.modalSort.extra.${item}`} />
+            <TStyledText textKey={`feat.modalSort.extra.${sortOption}`} />
           </Radio>
         )}
         contentContainerClassName="gap-1"

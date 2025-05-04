@@ -1,9 +1,9 @@
 import type { FlashListProps } from "@shopify/flash-list";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { SheetManager } from "react-native-actions-sheet";
 
 import { MoreVert } from "~/icons/MoreVert";
+import { presentTrackSheet } from "~/services/SessionStore";
 import { playFromMediaList } from "../services/Playback";
 import type { PlayListSource } from "../types";
 
@@ -46,7 +46,7 @@ export function Track({ id, trackSource, className, ...props }: Track.Props) {
         <IconButton
           kind="ripple"
           accessibilityLabel={t("template.entrySeeMore", { name: props.title })}
-          onPress={() => SheetManager.show("TrackSheet", { payload: { id } })}
+          onPress={() => presentTrackSheet(id)}
           disabled={props.disabled}
         >
           <MoreVert />

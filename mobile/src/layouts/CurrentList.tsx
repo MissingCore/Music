@@ -1,8 +1,7 @@
 import { Link } from "expo-router";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
-import { SheetManager } from "react-native-actions-sheet";
 import Animated, {
   Easing,
   cancelAnimation,
@@ -17,12 +16,18 @@ import { Schedule } from "~/icons/Schedule";
 import { useMusicStore } from "~/modules/media/services/Music";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useTheme } from "~/hooks/useTheme";
+import {
+  AlbumArtworkSheet,
+  ArtistArtworkSheet,
+  PlaylistArtworkSheet,
+} from "~/screens/Sheets/Artwork";
 
 import { getFont } from "~/lib/style";
 import { pickKeys } from "~/utils/object";
-import { capitalize, toLowerCase } from "~/utils/string";
+import { toLowerCase } from "~/utils/string";
 import { Marquee } from "~/components/Containment/Marquee";
 import { Divider } from "~/components/Divider";
+import { useSheetRef } from "~/components/Sheet";
 import { StyledText, TEm } from "~/components/Typography/StyledText";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import { MediaImage } from "~/modules/media/components/MediaImage";
@@ -104,32 +109,38 @@ export function CurrentListLayout(
 /** Determines the look and features of the image displayed. */
 function ContentImage(props: AnimatedVinylProps) {
   const { t } = useTranslation();
+  const artworkSheetRef = useSheetRef();
+
+  const RenderedSheet = useMemo(() => {
+    if (props.mediaSource.type === "album") return AlbumArtworkSheet;
+    if (props.mediaSource.type === "artist") return ArtistArtworkSheet;
+    return PlaylistArtworkSheet;
+  }, [props.mediaSource.type]);
 
   if (getIsFavoritePlaylist(props.mediaSource))
     return <AnimatedVinyl {...props} />;
 
   return (
-    <Pressable
-      aria-label={t("feat.artwork.extra.change")}
-      delayLongPress={100}
-      onLongPress={() => {
-        SheetManager.show(`${capitalize(props.mediaSource.type)}ArtworkSheet`, {
-          payload: { id: props.mediaSource.id },
-        });
-      }}
-      className="group"
-    >
-      {props.mediaSource.type === "artist" ? (
-        <MediaImage
-          type="artist"
-          source={props.imageSource as string | null}
-          size={128}
-          className="ml-4 group-active:opacity-75"
-        />
-      ) : (
-        <AnimatedVinyl {...props} />
-      )}
-    </Pressable>
+    <>
+      <RenderedSheet sheetRef={artworkSheetRef} id={props.mediaSource.id} />
+      <Pressable
+        aria-label={t("feat.artwork.extra.change")}
+        delayLongPress={100}
+        onLongPress={() => artworkSheetRef.current?.show()}
+        className="group"
+      >
+        {props.mediaSource.type === "artist" ? (
+          <MediaImage
+            type="artist"
+            source={props.imageSource as string | null}
+            size={128}
+            className="ml-4 group-active:opacity-75"
+          />
+        ) : (
+          <AnimatedVinyl {...props} />
+        )}
+      </Pressable>
+    </>
   );
 }
 
