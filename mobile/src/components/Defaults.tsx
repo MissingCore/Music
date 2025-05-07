@@ -6,7 +6,6 @@ import {
   FlatList as RNFlatList,
   ScrollView as RNScrollView,
 } from "react-native";
-import { FlatList as RNASFlatList } from "react-native-actions-sheet";
 import { FlashList as RNASFlashList } from "react-native-actions-sheet/dist/src/views/FlashList";
 import type { FlashDragListProps } from "react-native-draglist/dist/FlashList";
 import RawFlashDragList from "react-native-draglist/dist/FlashList";
@@ -59,11 +58,6 @@ export function useFlashListRef() {
 //#endregion
 
 //#region Sheet Lists
-/** `<FlatList />` from `react-native-actions-sheet` with some defaults applied. */
-export function SheetsFlatList<T>(props: FlatListProps<T>) {
-  return <RNASFlatList {...ScrollablePresets} {...props} />;
-}
-
 /** `<FlashList />` from `react-native-actions-sheet` with some defaults applied. */
 export function SheetsFlashList<T>(props: FlashListProps<T>) {
   return <RNASFlashList {...ScrollablePresets} {...props} />;
