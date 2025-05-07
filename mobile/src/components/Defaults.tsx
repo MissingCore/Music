@@ -1,5 +1,6 @@
 import type { FlashListProps } from "@shopify/flash-list";
 import { FlashList as SFlashList } from "@shopify/flash-list";
+import { forwardRef, useRef } from "react";
 import type { FlatListProps, ScrollViewProps } from "react-native";
 import {
   FlatList as RNFlatList,
@@ -18,9 +19,15 @@ export const ScrollablePresets = {
 } satisfies ScrollViewProps;
 
 //#region Native Components
-export function FlatList<TData>(props: FlatListProps<TData>) {
-  return <RNFlatList {...ScrollablePresets} {...props} />;
+export function useFlatListRef() {
+  return useRef<RNFlatList>(null);
 }
+
+export const FlatList = forwardRef(function FlatList(props, ref) {
+  return <RNFlatList ref={ref} {...ScrollablePresets} {...props} />;
+}) as <TData>(
+  props: FlatListProps<TData> & { ref?: React.ForwardedRef<RNFlatList> },
+) => React.JSX.Element;
 
 export function ScrollView(props: ScrollViewProps) {
   return <RNScrollView {...ScrollablePresets} {...props} />;
