@@ -1,5 +1,5 @@
 import type { FlashListProps } from "@shopify/flash-list";
-import { FlashList as SFlashList } from "@shopify/flash-list";
+import { FlashList as RawFlashList } from "@shopify/flash-list";
 import { forwardRef, useRef } from "react";
 import type { FlatListProps, ScrollViewProps } from "react-native";
 import {
@@ -9,7 +9,8 @@ import {
 import { FlatList as RNASFlatList } from "react-native-actions-sheet";
 import { FlashList as RNASFlashList } from "react-native-actions-sheet/dist/src/views/FlashList";
 import type { FlashDragListProps } from "react-native-draglist/dist/FlashList";
-import RNFlashDragList from "react-native-draglist/dist/FlashList";
+import RawFlashDragList from "react-native-draglist/dist/FlashList";
+import Animated from "react-native-reanimated";
 
 /** Presets for scrollview-like components. */
 export const ScrollablePresets = {
@@ -25,8 +26,8 @@ export function useFlatListRef() {
 
 export const FlatList = forwardRef(function FlatList(props, ref) {
   return <RNFlatList ref={ref} {...ScrollablePresets} {...props} />;
-}) as <TData>(
-  props: FlatListProps<TData> & { ref?: React.ForwardedRef<RNFlatList> },
+}) as <T>(
+  props: FlatListProps<T> & { ref?: React.ForwardedRef<RNFlatList> },
 ) => React.JSX.Element;
 
 export function ScrollView(props: ScrollViewProps) {
@@ -34,26 +35,44 @@ export function ScrollView(props: ScrollViewProps) {
 }
 //#endregion
 
-//#region Flash Lists
-/** `<FlashList />` with some defaults applied. */
-export function FlashList<TData>(props: FlashListProps<TData>) {
-  return <SFlashList {...ScrollablePresets} {...props} />;
-}
+//#region Flash List
+type FlashListSignature = <T>(
+  props: FlashListProps<T> & { ref?: React.ForwardedRef<RawFlashList<T>> },
+) => React.JSX.Element;
 
+const RawAnimatedFlashList = Animated.createAnimatedComponent(RawFlashList);
+
+export const FlashList = forwardRef(function FlashList(props, ref) {
+  return <RawFlashList ref={ref} {...ScrollablePresets} {...props} />;
+}) as FlashListSignature;
+
+export const AnimatedFlashList = forwardRef(
+  function AnimatedFlashList(props, ref) {
+    // @ts-expect-error - Ref should be compatible.
+    return <RawAnimatedFlashList ref={ref} {...ScrollablePresets} {...props} />;
+  },
+) as FlashListSignature;
+
+export function useFlashListRef() {
+  return useRef<RawFlashList<any>>(null);
+}
+//#endregion
+
+//#region Sheet Lists
 /** `<FlatList />` from `react-native-actions-sheet` with some defaults applied. */
-export function SheetsFlatList<TData>(props: FlatListProps<TData>) {
+export function SheetsFlatList<T>(props: FlatListProps<T>) {
   return <RNASFlatList {...ScrollablePresets} {...props} />;
 }
 
 /** `<FlashList />` from `react-native-actions-sheet` with some defaults applied. */
-export function SheetsFlashList<TData>(props: FlashListProps<TData>) {
+export function SheetsFlashList<T>(props: FlashListProps<T>) {
   return <RNASFlashList {...ScrollablePresets} {...props} />;
 }
 //#endregion
 
 //#region Flash Drag List
 /** `<FlashDragList />` with some defaults. */
-export function FlashDragList<TData>(props: FlashDragListProps<TData>) {
-  return <RNFlashDragList {...ScrollablePresets} {...props} />;
+export function FlashDragList<T>(props: FlashDragListProps<T>) {
+  return <RawFlashDragList {...ScrollablePresets} {...props} />;
 }
 //#endregion

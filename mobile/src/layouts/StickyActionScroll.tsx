@@ -1,7 +1,6 @@
-import type { FlashListProps } from "@shopify/flash-list";
-import { FlashList } from "@shopify/flash-list";
+import type { FlashList, FlashListProps } from "@shopify/flash-list";
 import type { ParseKeys } from "i18next";
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import type { LayoutChangeEvent, TextProps } from "react-native";
 import { useWindowDimensions } from "react-native";
@@ -16,11 +15,11 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 
-import { ScrollablePresets } from "~/components/Defaults";
+import { AnimatedFlashList } from "~/components/Defaults";
 import { AccentText } from "~/components/Typography/AccentText";
 
 /**
- * FlashList layout with optional action component that gets stickied
+ * Flash List layout with optional action component that gets stickied
  * after scrolling.
  */
 export function StickyActionListLayout<TData>({
@@ -28,7 +27,7 @@ export function StickyActionListLayout<TData>({
   StickyAction,
   estimatedActionSize = 0,
   listRef,
-  ...flashListProps
+  ...props
 }: FlashListProps<TData> & {
   /** Key to title in translations. */
   titleKey: ParseKeys;
@@ -37,7 +36,7 @@ export function StickyActionListLayout<TData>({
   /** Height of the StickyAction. */
   estimatedActionSize?: number;
   /** Pass a ref to the animated FlashList. */
-  listRef?: React.RefObject<Animated.FlatList<TData>>;
+  listRef?: React.RefObject<FlashList<any>>;
 }) {
   const { t } = useTranslation();
   const { top } = useSafeAreaInsets();
@@ -46,12 +45,6 @@ export function StickyActionListLayout<TData>({
 
   const initActionPos = useSharedValue(0);
   const scrollAmount = useSharedValue(0);
-
-  // Declare inside the component to ensure type-safety.
-  const AnimatedFlashList = useMemo(
-    () => Animated.createAnimatedComponent<FlashListProps<TData>>(FlashList),
-    [],
-  );
 
   /** Calculate the initial starting position of `StickyAction`. */
   const calcInitStartPos = useCallback(
@@ -81,7 +74,6 @@ export function StickyActionListLayout<TData>({
   return (
     <>
       <AnimatedFlashList
-        // @ts-expect-error An Animated.FlatList shares the general methods we want to access.
         ref={listRef}
         onScroll={scrollHandler}
         ListHeaderComponent={
@@ -94,8 +86,7 @@ export function StickyActionListLayout<TData>({
             {t(titleKey)}
           </LayoutHeader>
         }
-        {...ScrollablePresets}
-        {...flashListProps}
+        {...props}
         contentContainerStyle={{
           padding: 16,
           paddingBottom: bottomInset.withNav + 16,
@@ -115,14 +106,6 @@ export function StickyActionListLayout<TData>({
     </>
   );
 }
-
-//#region Hooks
-/** Custom hook for getting a ref to a `<StickyActionListLayout />`. */
-export function useStickyActionListLayoutRef<TData>() {
-  const ref = useRef<Animated.FlatList<TData>>(null);
-  return ref;
-}
-//#endregion
 
 function LayoutHeader({
   style,

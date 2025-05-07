@@ -15,15 +15,11 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import type { FileNode } from "~/db/schema";
-
 import { useFolderContent } from "~/queries/folder";
-import {
-  StickyActionListLayout,
-  useStickyActionListLayoutRef,
-} from "~/layouts/StickyActionScroll";
+import { StickyActionListLayout } from "~/layouts/StickyActionScroll";
 
 import { cn } from "~/lib/style";
+import { useFlashListRef } from "~/components/Defaults";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { StyledText } from "~/components/Typography/StyledText";
 import { Track } from "~/modules/media/components/Track";
@@ -32,12 +28,10 @@ import { SearchResult } from "~/modules/search/components/SearchResult";
 /** Animated scrollview supporting gestures. */
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
-type FolderData = FileNode | Track.Content;
-
 /** Screen for `/folder` route. */
 export default function FolderScreen() {
   const isFocused = useIsFocused();
-  const listRef = useStickyActionListLayoutRef<FolderData>();
+  const listRef = useFlashListRef();
   const [dirSegments, _setDirSegments] = useState<string[]>([]);
 
   const fullPath = dirSegments.join("/");
