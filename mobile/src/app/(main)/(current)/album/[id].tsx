@@ -9,6 +9,7 @@ import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 import { CurrentListLayout } from "~/layouts/CurrentList";
 
 import { mutateGuard } from "~/lib/react-query";
+import { isNumber } from "~/utils/validation";
 import { FlashList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { PagePlaceholder } from "~/components/Transition/Placeholder";
@@ -74,11 +75,10 @@ export default function CurrentAlbumScreen() {
         <FlashList
           estimatedItemSize={56} // 48px Height + 8px Margin Top
           data={formattedData}
-          keyExtractor={(item) =>
-            typeof item === "number" ? `${item}` : item.id
-          }
+          keyExtractor={(item) => (isNumber(item) ? `${item}` : item.id)}
+          getItemType={(item) => (isNumber(item) ? "label" : "row")}
           renderItem={({ item, index }) =>
-            typeof item === "number" ? (
+            isNumber(item) ? (
               <Em dim className={index > 0 ? "mt-4" : undefined}>
                 {t("term.disc", { count: item })}
               </Em>
