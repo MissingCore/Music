@@ -19,7 +19,6 @@ export default function SaveErrorsScreen() {
     <FlashList
       keyExtractor={({ id }) => id}
       ListEmptyComponent={<ContentPlaceholder errMsgKey="err.msg.noErrors" />}
-      className="mx-4"
       contentContainerClassName="p-4"
       {...presets}
     />

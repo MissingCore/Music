@@ -1,5 +1,6 @@
 import type { FlashListProps } from "@shopify/flash-list";
 import { FlashList as RawFlashList } from "@shopify/flash-list";
+import { cssInterop } from "nativewind";
 import { forwardRef, useRef } from "react";
 import type { FlatListProps, ScrollViewProps } from "react-native";
 import {
@@ -38,11 +39,14 @@ export function ScrollView(props: ScrollViewProps) {
 type FlashListSignature = <T>(
   props: FlashListProps<T> & { ref?: React.ForwardedRef<RawFlashList<T>> },
 ) => React.JSX.Element;
+const WrappedFlashList = cssInterop(RawFlashList, {
+  contentContainerClassName: "contentContainerStyle",
+}) as FlashListSignature;
 
-const RawAnimatedFlashList = Animated.createAnimatedComponent(RawFlashList);
+const RawAnimatedFlashList = Animated.createAnimatedComponent(WrappedFlashList);
 
 export const FlashList = forwardRef(function FlashList(props, ref) {
-  return <RawFlashList ref={ref} {...ScrollablePresets} {...props} />;
+  return <WrappedFlashList ref={ref} {...ScrollablePresets} {...props} />;
 }) as FlashListSignature;
 
 export const AnimatedFlashList = forwardRef(
@@ -65,8 +69,12 @@ export function SheetsFlashList<T>(props: FlashListProps<T>) {
 //#endregion
 
 //#region Flash Drag List
+const WrappedFlashDragList = cssInterop(RawFlashDragList, {
+  contentContainerClassName: "contentContainerStyle",
+}) as typeof RawFlashDragList;
+
 /** `<FlashDragList />` with some defaults. */
 export function FlashDragList<T>(props: FlashDragListProps<T>) {
-  return <RawFlashDragList {...ScrollablePresets} {...props} />;
+  return <WrappedFlashDragList {...ScrollablePresets} {...props} />;
 }
 //#endregion

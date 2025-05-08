@@ -33,8 +33,7 @@ export default function HomeTabsOrderScreen() {
       renderItem={(args) => <RenderItem {...args} />}
       onReordered={onMove}
       ListHeaderComponent={ListHeaderComponent}
-      contentContainerClassName="py-4"
-      className="mx-4"
+      contentContainerClassName="p-4"
     />
   );
 }

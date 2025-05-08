@@ -78,12 +78,7 @@ function BackupSheet(props: { sheetRef: React.RefObject<ActionSheetRef> }) {
 function LanguageSheet(props: { sheetRef: React.RefObject<ActionSheetRef> }) {
   const languageCode = useUserPreferencesStore((state) => state.language);
   return (
-    <Sheet
-      ref={props.sheetRef}
-      titleKey="feat.language.title"
-      contentContainerClassName="pb-0"
-      snapTop
-    >
+    <Sheet ref={props.sheetRef} titleKey="feat.language.title" snapTop>
       <SheetsFlashList
         estimatedItemSize={58} // 54px Height + 4px Margin Top
         accessibilityRole="radiogroup"

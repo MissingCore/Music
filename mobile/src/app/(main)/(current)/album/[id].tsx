@@ -91,8 +91,7 @@ export default function CurrentAlbumScreen() {
               />
             )
           }
-          className="mx-4"
-          contentContainerClassName="pt-4"
+          contentContainerClassName="px-4 pt-4"
           contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
         />
       </CurrentListLayout>

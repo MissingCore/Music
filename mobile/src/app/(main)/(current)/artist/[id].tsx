@@ -7,7 +7,6 @@ import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { CurrentListLayout } from "~/layouts/CurrentList";
 
-import { cn } from "~/lib/style";
 import { isYearDefined } from "~/utils/number";
 import { FlashList } from "~/components/Defaults";
 import { PagePlaceholder } from "~/components/Transition/Placeholder";
@@ -41,11 +40,11 @@ export default function CurrentArtistScreen() {
           <Track
             {...item}
             trackSource={trackSource}
-            className={cn("mx-4", { "mt-2": index > 0 })}
+            className={index > 0 ? "mt-2" : undefined}
           />
         )}
         ListHeaderComponent={<ArtistAlbums albums={data.albums} />}
-        contentContainerClassName="pt-4"
+        contentContainerClassName="px-4 pt-4"
         contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
       />
     </CurrentListLayout>
@@ -65,7 +64,7 @@ function ArtistAlbums({ albums }: { albums: Album[] | null }) {
 
   return (
     <>
-      <TEm dim textKey="term.albums" className="mx-4 mb-2" />
+      <TEm dim textKey="term.albums" className="mb-2" />
       <FlashList
         estimatedItemSize={width + 12} // Column width + gap from padding left
         horizontal
@@ -82,9 +81,10 @@ function ArtistAlbums({ albums }: { albums: Album[] | null }) {
             className={index > 0 ? "ml-3" : undefined}
           />
         )}
+        className="-mx-4"
         contentContainerClassName="px-4"
       />
-      <TEm dim textKey="term.tracks" className="m-4 mb-2" />
+      <TEm dim textKey="term.tracks" className="mb-2 mt-4" />
     </>
   );
 }

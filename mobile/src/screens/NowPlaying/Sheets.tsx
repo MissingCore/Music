@@ -140,7 +140,7 @@ function TrackUpcomingSheet(props: {
               title={item.name}
               description={item.artistName ?? "—"}
               imageSource={getTrackCover(item)}
-              className={cn("px-4", {
+              className={cn({
                 "opacity-25": index >= disableIndex,
                 "mt-1": index > 0,
               })}
@@ -151,7 +151,8 @@ function TrackUpcomingSheet(props: {
         ListEmptyComponent={
           <ContentPlaceholder isPending={trackList.length === 0} />
         }
-        contentContainerClassName="pb-4"
+        ListHeaderComponentStyle={{ marginHorizontal: -16 }}
+        contentContainerClassName="px-4 pb-4"
       />
     </Sheet>
   );
