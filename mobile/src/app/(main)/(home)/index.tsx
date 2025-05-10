@@ -1,6 +1,5 @@
-import { FlashList as SFlashList } from "@shopify/flash-list";
 import { router } from "expo-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 
 import {
@@ -14,7 +13,7 @@ import { StandardScrollLayout } from "~/layouts/StandardScroll";
 
 import { cn } from "~/lib/style";
 import { abbreviateNum } from "~/utils/number";
-import { FlashList, ScrollablePresets } from "~/components/Defaults";
+import { FlashList, useFlashListRef } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
 import { AccentText } from "~/components/Typography/AccentText";
 import { TEm, TStyledText } from "~/components/Typography/StyledText";
@@ -50,7 +49,7 @@ function RecentlyPlayed() {
 
   const [initNoData, setInitNoData] = useState(false);
   const [itemHeight, setItemHeight] = useState(0);
-  const listRef = useRef<SFlashList<MediaCard.Content>>(null);
+  const listRef = useFlashListRef();
 
   useEffect(() => {
     // Fix incorrect `<FlashList />` height due to it only being calculated
@@ -65,14 +64,14 @@ function RecentlyPlayed() {
       });
       setInitNoData(false);
     }
-  }, [initNoData, itemHeight]);
+  }, [listRef, initNoData, itemHeight]);
 
   if (!shouldShow) return null;
 
   return (
     <>
       <TEm textKey="feat.playedRecent.title" className="-mb-4" />
-      <SFlashList
+      <FlashList
         ref={listRef}
         estimatedItemSize={width + 12} // Column width + gap from padding left
         horizontal
@@ -93,7 +92,6 @@ function RecentlyPlayed() {
           />
         }
         renderScrollComponent={ScrollView}
-        {...ScrollablePresets}
         className="-mx-4"
         contentContainerClassName="px-4"
       />

@@ -1,13 +1,11 @@
 import { LinearGradient } from "expo-linear-gradient";
+import type { Href } from "expo-router";
 import { Stack, router, useRootNavigationState } from "expo-router";
 import type { ParseKeys } from "i18next";
 import { useTranslation } from "react-i18next";
-import { useEffect, useMemo, useRef } from "react";
-import { FlatList, View } from "react-native";
-import Animated, {
-  LinearTransition,
-  SlideInDown,
-} from "react-native-reanimated";
+import { useEffect, useMemo } from "react";
+import { View } from "react-native";
+import Animated, { LinearTransition } from "react-native-reanimated";
 
 import { Search } from "~/icons/Search";
 import { Settings } from "~/icons/Settings";
@@ -17,7 +15,7 @@ import { useHasNewUpdate } from "~/hooks/useHasNewUpdate";
 import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
-import { ScrollablePresets } from "~/components/Defaults";
+import { FlatList, useFlatListRef } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { StyledText } from "~/components/Typography/StyledText";
 import { MiniPlayer } from "~/modules/media/components/MiniPlayer";
@@ -43,7 +41,6 @@ function BottomActions() {
   const { isRendered } = useBottomActionsContext();
   return (
     <Animated.View
-      entering={SlideInDown.duration(1000)}
       layout={LinearTransition}
       pointerEvents="box-none"
       className="absolute bottom-0 left-0 w-full gap-[3px] p-4 pt-0"
@@ -97,17 +94,17 @@ function NavigationList() {
   const { t, i18n } = useTranslation();
   const { surface } = useTheme();
   const navState = useRootNavigationState();
-  const listRef = useRef<FlatList>(null);
+  const listRef = useFlatListRef();
   const { displayedTabs } = useTabsByVisibility();
 
   // Buttons for the routes we can navigate to on the "home" screen, whose
   // order can be customized.
-  const NavRoutes: Array<{ href: string; key: ParseKeys; name: string }> =
+  const NavRoutes: Array<{ href: Href; key: ParseKeys; name: string }> =
     useMemo(
       () => [
         { href: "/", key: "term.home", name: "index" },
         ...displayedTabs.map((tabKey) => ({
-          href: `/${tabKey}`,
+          href: `/${tabKey}` satisfies Href,
           key: `term.${tabKey}s` satisfies ParseKeys,
           name: tabKey,
         })),
@@ -132,10 +129,11 @@ function NavigationList() {
       const tabIndex = NavRoutes.findIndex(({ name }) => routeName === name);
       if (tabIndex === -1) return;
       // Scroll to active tab (positioned in the middle of the visible area).
-      //  - Also fire when language changes due to word length being different.
+      //  - Also fire when language changes to prevent a large gap at the end
+      //  when we go from a language with longer words to one with shorter words.
       listRef.current.scrollToIndex({ index: tabIndex, viewPosition: 0.5 });
     } catch {}
-  }, [i18n.language, routeName, NavRoutes]);
+  }, [listRef, i18n.language, routeName, NavRoutes]);
 
   return (
     <View className="relative shrink grow">
@@ -143,7 +141,7 @@ function NavigationList() {
         ref={listRef}
         horizontal
         data={NavRoutes}
-        keyExtractor={({ href }) => href}
+        keyExtractor={({ href }) => href as string}
         renderItem={({ item: { href, key, name } }) => (
           <Button
             onPress={() => router.navigate(href)}
@@ -160,7 +158,6 @@ function NavigationList() {
         // Suppresses error from `scrollToIndex` when we remount this layout
         // as a result of using the `push` navigation on the `/search` screen.
         onScrollToIndexFailed={() => {}}
-        {...ScrollablePresets}
         contentContainerClassName="px-2"
       />
       {/* Scroll Shadow */}

@@ -9,7 +9,7 @@ import { LANGUAGES } from "~/modules/i18n/constants";
 import { useExportBackup, useImportBackup } from "./helpers/BackupData";
 
 import { mutateGuard } from "~/lib/react-query";
-import { SheetsFlatList } from "~/components/Defaults";
+import { SheetsFlashList } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
 import { Radio } from "~/components/Form/Selection";
 import { Sheet } from "~/components/Sheet";
@@ -78,24 +78,23 @@ function BackupSheet(props: { sheetRef: React.RefObject<ActionSheetRef> }) {
 function LanguageSheet(props: { sheetRef: React.RefObject<ActionSheetRef> }) {
   const languageCode = useUserPreferencesStore((state) => state.language);
   return (
-    <Sheet
-      ref={props.sheetRef}
-      titleKey="feat.language.title"
-      contentContainerClassName="pb-0"
-    >
-      <SheetsFlatList
+    <Sheet ref={props.sheetRef} titleKey="feat.language.title" snapTop>
+      <SheetsFlashList
         accessibilityRole="radiogroup"
+        estimatedItemSize={58} // 54px Height + 4px Margin Top
         data={LANGUAGES}
         keyExtractor={({ code }) => code}
-        renderItem={({ item }) => (
+        extraData={languageCode}
+        renderItem={({ item, index }) => (
           <Radio
             selected={languageCode === item.code}
             onSelect={() => setLanguage(item.code)}
+            wrapperClassName={index > 0 ? "mt-1" : undefined}
           >
             <StyledText>{item.name}</StyledText>
           </Radio>
         )}
-        contentContainerClassName="gap-1 pb-4"
+        contentContainerClassName="pb-4"
       />
     </Sheet>
   );

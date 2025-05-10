@@ -16,6 +16,7 @@ import { Search } from "~/icons/Search";
 import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
+import { isString } from "~/utils/validation";
 import { FlashList, SheetsFlashList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { TextInput, useInputRef } from "~/components/Form/Input";
@@ -102,11 +103,10 @@ function SearchResultsList<TScope extends SearchCategories>(
         // Note: We use `index` instead of the `id` or `name` field on the
         // `entry` due to there being potentially shared values (ie: between
         // artist & playlist names).
-        keyExtractor={(item, index) =>
-          typeof item === "string" ? item : `${index}`
-        }
+        keyExtractor={(item, index) => (isString(item) ? item : `${index}`)}
+        getItemType={(item) => (isString(item) ? "label" : "row")}
         renderItem={({ item, index }) =>
-          typeof item === "string" ? (
+          isString(item) ? (
             <TEm
               textKey={`term.${item}`}
               className={index > 0 ? "mt-4" : undefined}

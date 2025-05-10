@@ -21,7 +21,6 @@ export default function ThirdPartyScreen() {
   return (
     <FlashList
       keyExtractor={([id]) => id}
-      className="mx-4"
       contentContainerClassName="p-4"
       {...presets}
     />
