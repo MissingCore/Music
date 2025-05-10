@@ -80,8 +80,8 @@ function LanguageSheet(props: { sheetRef: React.RefObject<ActionSheetRef> }) {
   return (
     <Sheet ref={props.sheetRef} titleKey="feat.language.title" snapTop>
       <SheetsFlashList
-        estimatedItemSize={58} // 54px Height + 4px Margin Top
         accessibilityRole="radiogroup"
+        estimatedItemSize={58} // 54px Height + 4px Margin Top
         data={LANGUAGES}
         keyExtractor={({ code }) => code}
         extraData={languageCode}
