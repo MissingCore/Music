@@ -1,6 +1,6 @@
 import { createId } from "@paralleldrive/cuid2";
-import type { InferSelectModel } from "drizzle-orm";
-import { relations } from "drizzle-orm";
+import type { InferSelectModel, SQL } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import type { AnySQLiteColumn } from "drizzle-orm/sqlite-core";
 import {
   integer,
@@ -73,6 +73,10 @@ export const tracks = sqliteTable("tracks", {
   modificationTime: integer().notNull(),
   // Data checking fields.
   fetchedArt: integer({ mode: "boolean" }).notNull().default(false),
+  parentFolder: text().generatedAlwaysAs(
+    // Ref: https://stackoverflow.com/a/38330814
+    (): SQL => sql`rtrim(${tracks.uri}, replace(${tracks.uri}, '/', ''))`,
+  ),
 });
 
 export const tracksRelations = relations(tracks, ({ one, many }) => ({

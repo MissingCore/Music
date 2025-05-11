@@ -57,6 +57,13 @@
       "when": 1741378747816,
       "tag": "0007_cooing_the_stranger",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1746997035959,
+      "tag": "0008_tranquil_eddie_brock",
+      "breakpoints": true
     }
   ]
 }

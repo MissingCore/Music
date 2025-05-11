@@ -36,13 +36,11 @@ export async function getFolderSubdirectories(path: Maybe<string>) {
 /** Get the direct tracks in a given folder. */
 export async function getFolderTracks(path: Maybe<string>) {
   if (!path) return [];
-  const fullPath = `file:///${addTrailingSlash(path)}`;
-  return (
-    await db.query.tracks.findMany({
-      where: (fields, { like }) => like(fields.uri, `${fullPath}%`),
-      with: { album: true },
-      orderBy: (fields) => iAsc(fields.name),
-    })
-  ).filter(({ uri }) => !uri.slice(fullPath.length).includes("/"));
+  return db.query.tracks.findMany({
+    where: (fields, { eq }) =>
+      eq(fields.parentFolder, `file:///${addTrailingSlash(path)}`),
+    with: { album: true },
+    orderBy: (fields) => iAsc(fields.name),
+  });
 }
 //#endregion
