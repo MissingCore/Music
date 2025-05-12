@@ -68,7 +68,7 @@ export async function findAndSaveArtwork() {
     await saveSinglesArtwork(
       values,
       async ({ artworkUri }) => {
-        await updateAlbum(albumId, { artwork: artworkUri });
+        await updateAlbum(albumId, { embeddedArtwork: artworkUri });
         newArtworkCount++;
       },
       { endEarly: true },
@@ -138,7 +138,7 @@ export async function cleanupImages() {
   // Get all the uris of images saved in the database.
   const usedUris = (
     await Promise.all([
-      ...[albums, artists, playlists, tracks].map((schema) =>
+      ...[artists, playlists, tracks].map((schema) =>
         db
           .select({ artwork: schema.artwork })
           .from(schema)
@@ -148,6 +148,10 @@ export async function cleanupImages() {
         .select({ artwork: albums.altArtwork })
         .from(albums)
         .where(isNotNull(albums.altArtwork)),
+      db
+        .select({ artwork: albums.embeddedArtwork })
+        .from(albums)
+        .where(isNotNull(albums.embeddedArtwork)),
     ])
   )
     .flat()

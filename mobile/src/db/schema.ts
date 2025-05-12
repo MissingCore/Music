@@ -38,7 +38,10 @@ export const albums = sqliteTable(
       for users who have "duplicate" album where `releaseYear = null`.
     */
     releaseYear: integer("release_year").default(-1),
-    artwork: text(),
+    artwork: text().generatedAlwaysAs(
+      (): SQL => sql`coalesce(${albums.altArtwork}, ${albums.embeddedArtwork})`,
+    ),
+    embeddedArtwork: text(),
     altArtwork: text(),
     isFavorite: integer({ mode: "boolean" }).notNull().default(false),
   },

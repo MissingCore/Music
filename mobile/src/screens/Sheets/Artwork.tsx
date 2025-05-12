@@ -29,7 +29,7 @@ export function AlbumArtworkSheet(props: ArtworkSheetProps) {
     <Sheet ref={props.sheetRef} contentContainerClassName="items-center gap-6">
       <BaseArtworkSheetContent
         type="album"
-        imageSource={data?.altArtwork ?? data?.artwork ?? null}
+        imageSource={data?.artwork ?? null}
         mutationResult={updateAlbumArtwork}
         disabled={data?.altArtwork === null}
       />

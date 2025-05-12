@@ -6,14 +6,11 @@ export type Artwork = string | null;
 /** Minimum fields required to get `artwork` from tracks. */
 export type TrackArtwork = {
   artwork: Artwork;
-  album?: { artwork: Artwork; altArtwork: Artwork } | null;
+  album?: { artwork: Artwork } | null;
 };
 
 /** Minimum data typically used from `Album`. */
-export type SlimAlbum = Pick<
-  Album,
-  "id" | "name" | "artistName" | "artwork" | "altArtwork"
->;
+export type SlimAlbum = Pick<Album, "id" | "name" | "artistName" | "artwork">;
 export type SlimAlbumWithTracks = SlimAlbum & { tracks: SlimTrack[] };
 
 /** Minimum data typically used from `Artist`. */
@@ -26,5 +23,5 @@ export type SlimPlaylistWithTracks = SlimPlaylist & { tracks: TrackArtwork[] };
 /** Minimum data typically used from `Track`. */
 export type SlimTrack = Pick<Track, "id" | "name" | "artistName" | "artwork">;
 export type SlimTrackWithAlbum = SlimTrack & {
-  album: { name: string; artwork: Artwork; altArtwork: Artwork } | null;
+  album: { name: string; artwork: Artwork } | null;
 };

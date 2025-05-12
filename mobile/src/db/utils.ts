@@ -37,7 +37,7 @@ export function getPlaylistCover(playlist: {
 
 /** Get the cover of a track. */
 export function getTrackCover({ artwork, album }: TrackArtwork) {
-  return artwork ?? album?.altArtwork ?? album?.artwork ?? null;
+  return artwork ?? album?.artwork ?? null;
 }
 //#endregion
 
@@ -70,7 +70,6 @@ export function formatForMediaCard({ type, data, t }: MediaCardFormatter) {
   let href = `/${type}/${encodeURIComponent(data.name)}`;
   let description = t("plural.track", { count: data.tracks.length });
   if (type === "album") {
-    if (data.altArtwork !== null) source = data.altArtwork;
     href = `/album/${data.id}`;
     description = data.artistName;
   } else if (type === "playlist") {
@@ -90,10 +89,7 @@ export function formatForTrack(
     Track,
     "id" | "name" | "artistName" | "duration" | "artwork"
   > & {
-    album: AtLeast<
-      Album,
-      "name" | "artistName" | "artwork" | "altArtwork"
-    > | null;
+    album: AtLeast<Album, "name" | "artistName" | "artwork"> | null;
   },
 ) {
   const { id, name, artistName, duration, album } = track;
@@ -136,7 +132,6 @@ export function formatForCurrentScreen({ type, data, t }: ScreenFormatter) {
   const albumInfo = type === "album" ? omitKeys(data, ["tracks"]) : null;
   let imgSrc: string | string[] | null = data.artwork;
   if (type === "playlist") imgSrc = getPlaylistCover(data);
-  if (type === "album" && data.altArtwork !== null) imgSrc = data.altArtwork;
 
   return {
     name: data.name,

@@ -78,7 +78,7 @@ async function getTracksFromIds(trackIds: string[]) {
   const unorderedTracks = await getTracks({
     where: [inArray(tracks.id, trackIds)],
     columns: ["id", "name", "artistName", "artwork"],
-    albumColumns: ["artwork", "altArtwork"],
+    albumColumns: ["artwork"],
   });
   return trackIds.map((tId) => unorderedTracks.find(({ id }) => id === tId));
 }
