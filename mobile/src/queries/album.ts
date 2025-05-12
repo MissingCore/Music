@@ -35,9 +35,10 @@ export function useAlbumsForCards() {
   return useQuery({
     ...q.albums.all,
     select: (data) =>
-      data.map((album) =>
-        formatForMediaCard({ type: "album", data: album, t }),
-      ),
+      data.map((album) => {
+        const albumData = { ...album, tracks: [] };
+        return formatForMediaCard({ type: "album", data: albumData, t });
+      }),
   });
 }
 //#endregion

@@ -68,10 +68,11 @@ recentListStore.subscribe(
     for (const { id, type } of sources) {
       try {
         if (type === "album") {
-          const data = await getAlbum(id, {
+          const albumData = await getAlbum(id, {
             columns: ["id", "name", "artistName", "artwork", "altArtwork"],
-            trackColumns: ["id"],
+            withTracks: false,
           });
+          const data = { ...albumData, tracks: [] };
           entry = formatForMediaCard({ type: "album", data, t: i18next.t });
         } else if (type === "artist") {
           const data = await getArtist(id, {

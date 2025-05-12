@@ -26,7 +26,7 @@ export const queries = createQueryKeyStore({
       queryFn: () =>
         getAlbums({
           columns: ["id", "name", "artistName", "artwork", "altArtwork"],
-          trackColumns: ["id"],
+          withTracks: false,
         }),
     },
     detail: (albumId: string) => ({
@@ -148,7 +148,7 @@ async function getFavoriteLists() {
     getAlbums({
       where: [eq(albums.isFavorite, true)],
       columns: ["id", "name", "artistName", "artwork", "altArtwork"],
-      trackColumns: ["id"],
+      withTracks: false,
     }),
     getPlaylists({
       where: [eq(playlists.isFavorite, true)],

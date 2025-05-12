@@ -15,9 +15,10 @@ export function useFavoriteListsForCards() {
     ...q.favorites.lists,
     select: (data) =>
       [
-        ...data.albums.map((album) =>
-          formatForMediaCard({ type: "album", data: album, t }),
-        ),
+        ...data.albums.map((album) => {
+          const albumData = { ...album, tracks: [] };
+          return formatForMediaCard({ type: "album", data: albumData, t });
+        }),
         ...data.playlists.map((playlist) =>
           formatForMediaCard({ type: "playlist", data: playlist, t }),
         ),
