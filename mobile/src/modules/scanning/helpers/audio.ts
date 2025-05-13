@@ -27,7 +27,7 @@ import {
   removeFileExtension,
 } from "~/utils/string";
 import { Stopwatch } from "~/utils/debug";
-import { BATCH_PRESETS, batch } from "~/utils/promise";
+import { BATCH_PRESETS, batch, wait } from "~/utils/promise";
 import { savePathComponents } from "./folder";
 
 //#region Saving Function
@@ -119,6 +119,7 @@ export async function findAndSaveAudio() {
   );
   // Set the current phase to `tracks` if we find tracks that need saving/updating.
   if (unstagedTracks.length > 0) onboardingStore.setState({ phase: "tracks" });
+  await wait(1); // Slight buffer to prevent blocking onboarding screen animation.
   await batch({
     data: unstagedTracks,
     batchAmount: BATCH_PRESETS.PROGRESS,
