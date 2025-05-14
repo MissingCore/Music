@@ -55,7 +55,13 @@ export function TrackSheet() {
   const data = useSessionStore((state) => state.displayedTrack);
   return (
     <>
-      <Sheet globalKey="TrackSheet" contentContainerClassName="gap-4">
+      <Sheet
+        globalKey="TrackSheet"
+        // Required to get auto-resizing to work when content height changes.
+        // Ref: https://github.com/lodev09/react-native-true-sheet/issues/7
+        sizes={["auto", "large"]}
+        contentContainerClassName="gap-4"
+      >
         {data !== null ? (
           <>
             <TrackIntro key={data._checked} data={data} />
@@ -82,10 +88,9 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
       <Pressable
         accessibilityLabel={t(`term.${favState ? "unF" : "f"}avorite`)}
         onPress={() => {
-          mutateGuard(favoriteTrack, !favState, {
-            onSuccess: () => {
-              setFavState((prev) => !prev);
-            },
+          const newFavState = !favState;
+          mutateGuard(favoriteTrack, newFavState, {
+            onSuccess: () => setFavState(newFavState),
           });
         }}
         className="relative rounded active:opacity-75"
