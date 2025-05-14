@@ -16,8 +16,8 @@
     "prev": "Önceki",
     "next": "Sonraki",
     "shuffle": "Karıştır",
-    "repeat": "Yinele",
-    "repeatOne": "Birini Yinele",
+    "repeat": "Tekrarla",
+    "repeatOne": "Birini Tekrarla",
     "favorite": "Favori",
     "favorites": "Favoriler",
     "unFavorite": "Favorilerden Çıkar",
@@ -32,7 +32,7 @@
     "entryAdded": "`{{- name}}` eklendi.",
     "entryRemove": "`{{- name}}` kaldır.",
     "entryRemoved": "`{{- name}}` kaldırıldı.",
-    "entrySeeMore": "`{{- name}}` hakkında daha fazla bilgi.",
+    "entrySeeMore": "`{{- name}}` hakkında daha fazla bilgi gör.",
     "notFound": "`{{- name}}` mevcut değil.",
     "entryShow": "`{{- name}}` göster",
     "entryHide": "`{{- name}}` gizle",
@@ -41,7 +41,7 @@
   },
   "plural": {
     "entry_one": "{{count}} giriş",
-    "entry_other": "{{count}} girişler",
+    "entry_other": "{{count}} giriş",
     "second_one": "{{count}} saniye",
     "second_other": "{{count}} saniye",
     "track_one": "{{count}} $t(term.track)",
@@ -54,7 +54,7 @@
     "confirm": "Onayla",
     "unsaved": "Kaydedilmemiş değişiklikleriniz olabilir.",
     "stay": "Kal",
-    "leave": "Çık",
+    "leave": "Ayrıl",
     "clear": "Temizle",
     "validation": {
       "unique": "Benzersiz"
@@ -63,16 +63,16 @@
   "err": {
     "flow": {
       "route": {
-        "title": "Eşleşmeyen Yönlendirme",
-        "brief": "Geçersiz bir yönlendirmeye yönlendirilmişsiniz.",
+        "title": "Eşleşmeyen Rota",
+        "brief": "Bir şekilde geçersiz bir rotaya yönlendirildiniz.",
         "extra": {
           "missing": "Eksik",
-          "from": "Nereden"
+          "from": "Şuradan"
         }
       },
       "generic": {
-        "title": "Bir Hata Oluştu",
-        "brief": "Beklenmedik bir hata ile karşılaştınız."
+        "title": "Bir Şeyler Ters Gitti",
+        "brief": "Beklenmedik bir hatayla karşılaştınız."
       },
       "report": {
         "title": "Sorun Bildir",
@@ -84,14 +84,14 @@
       "invalidStructure": "Geçersiz yapı.",
       "noSelect": "Hiçbir şey seçilmedi.",
       "usedName": "Bu isim kullanılamaz.",
-      "noContent": "Hiç içerik bulunamadı.",
-      "noErrors": "Hiç hata bulunamadı.",
-      "noFilters": "Hiç filtre bulunamadı.",
-      "noResults": "Hiç sonuç bulunamadı.",
-      "noAlbums": "Hiç albüm bulunamadı.",
-      "noArtists": "Hiç sanatçı bulunamadı.",
-      "noPlaylists": "Hiç çalma listesi bulunamadı.",
-      "noTracks": "Hiç parça bulunamadı."
+      "noContent": "İçerik bulunamadı.",
+      "noErrors": "Hata bulunamadı.",
+      "noFilters": "Filtre bulunamadı.",
+      "noResults": "Sonuç bulunamadı.",
+      "noAlbums": "Albüm bulunamadı.",
+      "noArtists": "Sanatçı bulunamadı.",
+      "noPlaylists": "Çalma listesi bulunamadı.",
+      "noTracks": "Parça bulunamadı."
     }
   },
   "feat": {
@@ -99,42 +99,42 @@
       "title": "Uygulama Güncellemesi",
       "brief": "Yeni bir güncelleme mevcut!",
       "extra": {
-        "downloadAPK": "Son APK'yı indir",
+        "downloadAPK": "En son APK'yi indir",
         "updateGoogle": "Play Store üzerinden güncelle"
       }
     },
     "appearance": {
       "title": "Görünüm",
-      "brief": "Uygulamanın görünümünü kişiselleştir."
+      "brief": "Uygulamanın görünümünü kişiselleştirin."
     },
     "font": {
       "extra": {
-        "accent": "Vurgulu Yazı Tipi",
+        "accent": "Vurgu Yazı Tipi",
         "primary": "Birincil Yazı Tipi"
       }
     },
     "theme": {
       "title": "Tema",
       "extra": {
-        "light": "Aydınlık",
-        "dark": "Karanlık",
+        "light": "Açık",
+        "dark": "Koyu",
         "system": "Sistem"
       }
     },
     "homeTabsOrder": {
       "title": "Ana Sayfa Sekmeleri Sırası",
-      "brief": "Sekmelerin sırasını ve görünürlüğünü özelleştir.",
+      "brief": "Sekmelerin sırasını ve görünürlüğünü özelleştirin.",
       "description": {
-        "line1": "Sekmeleri \"Ana Sayfa\" sekmesinden sonra sürükleyip bırakarak yeniden sıralayın. Sekme görünürlüğünü göz simgesini kullanarak geçiş yapın.",
-        "line2": "Dikkat: Gizli bir sekmeye geçerken beklenmedik davranışlar olabilir."
+        "line1": "\"Ana Sayfa\" sekmesinden sonraki sekmeleri sürükleyip bırakarak yeniden sıralayın. Göz simgesini kullanarak sekme görünürlüğünü değiştirin.",
+        "line2": "Dikkat: Gizli bir sekmeye gitmeye çalışırken beklenmedik davranışlar meydana gelebilir."
       }
     },
     "nowPlayingDesign": {
-      "title": "Şu An Çalan Ekran Tasarımı",
+      "title": "Şu Anda Çalan Ekran Tasarımı",
       "extra": {
-        "plain": "Sade",
-        "vinyl": "Vinil",
-        "vinylOld": "Vinyl (Eski)"
+        "plain": "Düz",
+        "vinyl": "Plak",
+        "vinylOld": "Plak (Eski)"
       }
     },
     "language": {
@@ -142,22 +142,22 @@
     },
     "backup": {
       "title": "Yedekleme",
-      "brief": "Veriyi cihazlar arasında taşı.",
+      "brief": "Verileri cihazlar arasında taşıyın.",
       "description": "Bu uygulamadan verileri `music_backup.json` dosyası aracılığıyla cihazlar arasında aktarın.",
       "extra": {
         "export": "Dışa Aktar",
-        "exportSuccess": "Yedek başarıyla oluşturuldu.",
+        "exportSuccess": "Yedekleme başarıyla oluşturuldu.",
         "import": "İçe Aktar",
-        "importSuccess": "Yedek başarıyla içe aktarıldı."
+        "importSuccess": "Yedekleme içe aktarma tamamlandı."
       }
     },
     "insights": {
-      "title": "Veri Analizleri",
-      "brief": "Uygulama kullanımı ve istatistikler.",
+      "title": "İstatistikler",
+      "brief": "Uygulama kullanımı ve istatistikleri.",
       "extra": {
         "cache": "Önbellek",
         "database": "Veritabanı",
-        "images": "Resimler",
+        "images": "Görüntüler",
         "other": "Diğer",
         "total": "Toplam",
         "totalDuration": "Toplam Süre"
@@ -177,16 +177,16 @@
       "extra": {
         "options": "Oynatma Seçenekleri",
         "speed": "Oynatma Hızı",
-        "volume": "Uygulama Ses Düzeyi"
+        "volume": "Uygulama Sesi"
       }
     },
     "ignoreInterrupt": {
       "title": "Kesintileri Yoksay",
-      "brief": "Bir bildirim veya arama gibi bir kesinti meydana geldiğinde sesi çalmaya devam et. Bu durumlarda müziği manuel olarak duraklatıp devam ettirmeniz gerekecek."
+      "brief": "Bildirim veya arama gibi bir kesinti meydana geldiğinde ses çalmaya devam edin. Bu durumlarda müziği manuel olarak duraklatmanız ve devam ettirmeniz gerekecek."
     },
     "repeatOnSkip": {
-      "title": "Atlama sırasında tekrar modunu açık tut",
-      "brief": "Atlama sırasında modu \"Tekrar Tek\"ten \"Tekrar\" moduna değiştirme."
+      "title": "Atlamada Tekrar Modunu Koru",
+      "brief": "Atlama sırasında \"Birini Tekrarla\" modundan \"Tekrarla\" moduna geçmeyin."
     },
     "scanning": {
       "title": "Tarama",
@@ -194,36 +194,36 @@
     },
     "rescan": {
       "title": "Yeniden Tara",
-      "brief": "Yeni medya arayın.",
+      "brief": "Herhangi bir yeni medyayı arayın.",
       "extra": {
         "start": "Kütüphane yeniden taranıyor...",
         "success": "Kütüphane yeniden tarama tamamlandı.",
-        "fail": "Kütüphane yeniden taranamadı."
+        "fail": "Kütüphane yeniden tarama başarısız oldu."
       }
     },
     "deepRescan": {
-      "title": "Derin Tarama",
-      "brief": "Normal yeniden tarama özelliğini hızlandıran her türlü geçişi yoksayar."
+      "title": "Derin Yeniden Tarama",
+      "brief": "Normal yeniden tarama özelliğini hızlandıran atlama önlemlerini yoksayar."
     },
     "listAllow": {
       "title": "İzin Listesi",
-      "description": "Boşsa varsayılan olarak şunları kabul eder:"
+      "description": "Boşsa aşağıdaki varsayılanları kullanır:"
     },
     "listBlock": {
-      "title": "Engellenmiş Liste",
-      "description": "İzin listesinde bulunan öğelere göre daha yüksek önceliğe sahiptir."
+      "title": "Engelleme Listesi",
+      "description": "İzin listesindeki girişlere göre daha yüksek önceliğe sahiptir."
     },
     "ignoreDuration": {
       "title": "Kısa Sesleri Yoksay",
-      "description": "Kaydetmek istemediğimiz sesin saniye cinsinden süresi."
+      "description": "Kaydetmek istemediğimiz seslerin saniye cinsinden süresi."
     },
     "translate": {
-      "title": "Çevirilere Katkı Sağlayın",
-      "brief": "Uygulamayı başka dillere çevirmeye yardımcı olun."
+      "title": "Çevirilere Katkıda Bulun",
+      "brief": "Uygulamanın diğer dillere çevrilmesine yardımcı olun."
     },
     "code": {
       "title": "GitHub Deposu",
-      "brief": "Sorun bildirin, katkı sağlayın veya yeni özellikler isteyin."
+      "brief": "Sorunları bildirin, katkıda bulunun veya yeni özellikler isteyin."
     },
     "license": {
       "title": "Lisans"
@@ -232,14 +232,14 @@
       "title": "Gizlilik Politikası"
     },
     "thirdParty": {
-      "title": "Üçüncü Taraf Yazılımlar",
-      "brief": "Bu uygulamayı mümkün kılan unsurlar."
+      "title": "Üçüncü Taraf Yazılım",
+      "brief": "Bu uygulamayı mümkün kılan şeyler."
     },
     "version": {
       "title": "Sürüm"
     },
     "onboardPreprocess": {
-      "title": "Ön İşlem",
+      "title": "Ön İşleme",
       "brief": "Mevcut verilerin değişikliklerle uyumlu olduğundan emin olun."
     },
     "onboardTracks": {
@@ -251,7 +251,7 @@
       }
     },
     "onboardImages": {
-      "title": "Resimleri Kaydetme",
+      "title": "Görüntüleri Kaydetme",
       "extra": {
         "checked": "{{amount}}/{{total}} Kontrol Edildi",
         "found": "{{amount}} Bulundu"
@@ -260,8 +260,8 @@
     "playedRecent": {
       "title": "Son Oynatılanlar",
       "extra": {
-        "empty": "Henüz bir şey çalmadınız!",
-        "section": "Son Oynanan Bölüm"
+        "empty": "Henüz hiçbir şey oynatmadınız!",
+        "section": "Son Oynatılanlar Bölümü"
       }
     },
     "search": {
@@ -273,8 +273,8 @@
     },
     "artwork": {
       "extra": {
-        "change": "Sanatı Değiştir",
-        "remove": "Sanatı Kaldır"
+        "change": "Kapak Resmini Değiştir",
+        "remove": "Kapak Resmini Kaldır"
       }
     },
     "directory": {
@@ -294,9 +294,9 @@
     "modalSort": {
       "title": "Sıralama Düzeni",
       "extra": {
-        "asc": "Artan Sıra",
+        "asc": "Artan Sıralama",
         "alphabetical": "Alfabetik",
-        "modified": "Son Düzenleme"
+        "modified": "Son Değiştirilme"
       }
     },
     "modalTrack": {
