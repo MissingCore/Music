@@ -1,4 +1,4 @@
-import { SheetManager } from "react-native-actions-sheet";
+import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { useStore } from "zustand";
 import { createStore } from "zustand/vanilla";
 
@@ -36,7 +36,7 @@ export async function presentTrackSheet(trackId: string) {
       displayedTrack: { ...sheetTrack, _checked: Date.now() },
     });
     await wait(25); // Let content get rendered in the sheet.
-    SheetManager.show("TrackSheet");
+    TrueSheet.present("TrackSheet");
   } catch {
     // If `getTrack()` fails, it throws an error, which is caught here.
     sessionStore.setState({ displayedTrack: null });

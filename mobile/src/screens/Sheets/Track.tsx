@@ -1,10 +1,9 @@
+import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { router, usePathname } from "expo-router";
 import type { ParseKeys } from "i18next";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
-import type { ActionSheetRef } from "react-native-actions-sheet";
-import { SheetManager } from "react-native-actions-sheet";
 
 import type { TrackWithAlbum } from "~/db/schema";
 
@@ -36,11 +35,11 @@ import {
   formatSeconds,
 } from "~/utils/number";
 import { Marquee } from "~/components/Containment/Marquee";
-import { SheetsFlashList } from "~/components/Defaults";
+import { FlashList } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { IconButton } from "~/components/Form/Button";
 import { Checkbox } from "~/components/Form/Selection";
-import { Sheet, useSheetRef } from "~/components/Sheet";
+import { Sheet } from "~/components/Sheet";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import {
   StyledText,
@@ -54,27 +53,19 @@ import { MediaImage } from "~/modules/media/components/MediaImage";
 /** Displays information about a track and enables adding it to playlists. */
 export function TrackSheet() {
   const data = useSessionStore((state) => state.displayedTrack);
-  const trackToPlaylistSheetRef = useSheetRef();
   return (
-    <Sheet id="TrackSheet" contentContainerClassName="gap-4">
-      {data !== null ? (
-        <>
-          <TrackIntro key={data._checked} data={data} />
-          <PrimaryTrackContent
-            data={data}
-            showTrackToPlaylistSheet={() =>
-              trackToPlaylistSheetRef.current?.show()
-            }
-          />
-          <TrackLinks data={data} />
-        </>
-      ) : null}
-      <TrackToPlaylistSheet
-        key={data?.id}
-        id={data?.id ?? ""}
-        sheetRef={trackToPlaylistSheetRef}
-      />
-    </Sheet>
+    <>
+      <Sheet globalKey="TrackSheet" contentContainerClassName="gap-4">
+        {data !== null ? (
+          <>
+            <TrackIntro key={data._checked} data={data} />
+            <PrimaryTrackContent data={data} />
+            <TrackLinks data={data} />
+          </>
+        ) : null}
+      </Sheet>
+      <TrackToPlaylistSheet key={data?.id} id={data?.id ?? ""} />
+    </>
   );
 }
 
@@ -143,17 +134,7 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
 
 //#region Primary Content
 /** Track information and add actions. */
-function PrimaryTrackContent({
-  data,
-  showTrackToPlaylistSheet,
-}: {
-  data: TrackWithAlbum;
-  /**
-   * FIXME: Temporary prop.
-   * @deprecated
-   */
-  showTrackToPlaylistSheet: () => void;
-}) {
+function PrimaryTrackContent({ data }: { data: TrackWithAlbum }) {
   return (
     <>
       <Divider />
@@ -194,10 +175,9 @@ function PrimaryTrackContent({
       {/* Add Actions */}
       <View className="flex-row gap-2">
         <SheetButton
-          onPress={showTrackToPlaylistSheet}
+          onPress={() => TrueSheet.present("TrackToPlaylistSheet")}
           Icon={<PlaylistAdd />}
           textKey="feat.modalTrack.extra.addToPlaylist"
-          preventClose
         />
         <SheetButton
           onPress={() => Queue.add({ id: data.id, name: data.name })}
@@ -284,14 +264,13 @@ function SheetButton(props: {
   onPress: () => void;
   Icon: React.JSX.Element;
   textKey: ParseKeys;
-  preventClose?: boolean;
 }) {
   const { width } = useGetColumn({ cols: 2, gap: 8, gutters: 32 });
   return (
     <IconButton
       kind="extended"
       onPress={() => {
-        if (!props.preventClose) SheetManager.hide("TrackSheet");
+        TrueSheet.dismiss("TrackSheet");
         props.onPress();
       }}
       style={{ width }}
@@ -307,17 +286,7 @@ function SheetButton(props: {
 
 //#region Track To Playlist Sheet
 /** Enables us to select which playlists the track belongs to. */
-function TrackToPlaylistSheet({
-  id,
-  sheetRef,
-}: {
-  id: string;
-  /**
-   * FIXME: Temporary prop.
-   * @deprecated
-   */
-  sheetRef: React.RefObject<ActionSheetRef>;
-}) {
+function TrackToPlaylistSheet({ id }: { id: string }) {
   const { canvasAlt, surface } = useTheme();
   const { data } = usePlaylists();
   const { data: inList } = useTrackPlaylists(id);
@@ -326,14 +295,11 @@ function TrackToPlaylistSheet({
 
   return (
     <Sheet
-      // id="TrackToPlaylistSheet"
-      ref={sheetRef}
+      globalKey="TrackToPlaylistSheet"
       titleKey="feat.modalTrack.extra.addToPlaylist"
-      // Hide the Track sheet when we close this sheet since it's still open.
-      onBeforeClose={() => SheetManager.hide("TrackSheet")}
       snapTop
     >
-      <SheetsFlashList
+      <FlashList
         estimatedItemSize={58} // 54px Height + 4px Margin Top
         data={data}
         keyExtractor={({ name }) => name}
@@ -360,10 +326,10 @@ function TrackToPlaylistSheet({
         ListEmptyComponent={
           <ContentPlaceholder errMsgKey="err.msg.noPlaylists" />
         }
+        nestedScrollEnabled
         contentContainerClassName="pb-4"
       />
     </Sheet>
   );
 }
-
 //#endregion

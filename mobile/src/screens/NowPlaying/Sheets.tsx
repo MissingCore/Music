@@ -1,7 +1,6 @@
 import type { ListRenderItemInfo } from "@shopify/flash-list";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { ActionSheetRef } from "react-native-actions-sheet";
 import TrackPlayer from "react-native-track-player";
 
 import { getTrackCover } from "~/db/utils";
@@ -16,9 +15,10 @@ import { useUpcomingStore } from "./helpers/UpcomingStore";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
-import { FlashList, SheetsFlashList } from "~/components/Defaults";
+import { FlashList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { NSlider } from "~/components/Form/Slider";
+import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
@@ -28,10 +28,7 @@ type PartialTrack = UpcomingStore["currentTrackList"][0];
 
 /** All the sheets used on `/now-playing` route. */
 export function NowPlayingSheets(
-  props: Record<
-    "playbackOptionsRef" | "upcomingTracksRef",
-    React.RefObject<ActionSheetRef>
-  >,
+  props: Record<"playbackOptionsRef" | "upcomingTracksRef", TrueSheetRef>,
 ) {
   return (
     <>
@@ -43,9 +40,7 @@ export function NowPlayingSheets(
 
 //#region Playback Options
 /** Enables us to specify  how the media is played. */
-function PlaybackOptionsSheet(props: {
-  sheetRef: React.RefObject<ActionSheetRef>;
-}) {
+function PlaybackOptionsSheet(props: { sheetRef: TrueSheetRef }) {
   const { t } = useTranslation();
   const playbackSpeed = useSessionStore((state) => state.playbackSpeed);
   const volume = useSessionStore((state) => state.volume);
@@ -101,9 +96,7 @@ const VolumeSliderOptions = {
 
 //#region Upcoming Tracks
 /** Enables user to see what tracks are coming up and remove tracks from the queue. */
-function TrackUpcomingSheet(props: {
-  sheetRef: React.RefObject<ActionSheetRef>;
-}) {
+function TrackUpcomingSheet(props: { sheetRef: TrueSheetRef }) {
   const populateCurrentTrackList = useUpcomingStore(
     (state) => state.populateCurrentTrackList,
   );
@@ -127,10 +120,10 @@ function TrackUpcomingSheet(props: {
       ref={props.sheetRef}
       titleKey="term.upcoming"
       snapTop
-      onOpen={populateCurrentTrackList}
+      onPresent={populateCurrentTrackList}
       contentContainerClassName="px-0"
     >
-      <SheetsFlashList
+      <FlashList
         estimatedItemSize={52} // 48px Height + 4px Margin Top
         data={data}
         keyExtractor={(item, index) => (item ? item.id : `${index}`)}

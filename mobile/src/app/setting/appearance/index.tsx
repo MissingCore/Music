@@ -41,18 +41,18 @@ export default function AppearanceScreen() {
           <ListItem
             titleKey="feat.font.extra.accent"
             description={accentFont}
-            onPress={() => accentFontSheetRef.current?.show()}
+            onPress={() => accentFontSheetRef.current?.present()}
             first
           />
           <ListItem
             titleKey="feat.font.extra.primary"
             description={primaryFont}
-            onPress={() => primaryFontSheetRef.current?.show()}
+            onPress={() => primaryFontSheetRef.current?.present()}
           />
           <ListItem
             titleKey="feat.theme.title"
             description={t(`feat.theme.extra.${theme}`)}
-            onPress={() => themeSheetRef.current?.show()}
+            onPress={() => themeSheetRef.current?.present()}
             last
           />
         </List>
@@ -69,7 +69,7 @@ export default function AppearanceScreen() {
           <ListItem
             titleKey="feat.nowPlayingDesign.title"
             description={t(`feat.nowPlayingDesign.extra.${nowPlayingDesign}`)}
-            onPress={() => nowPlayingDesignSheetRef.current?.show()}
+            onPress={() => nowPlayingDesignSheetRef.current?.present()}
           />
           <ListItem
             titleKey="feat.playedRecent.extra.section"

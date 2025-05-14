@@ -126,7 +126,7 @@ function ContentImage(props: AnimatedVinylProps) {
       <Pressable
         aria-label={t("feat.artwork.extra.change")}
         delayLongPress={100}
-        onLongPress={() => artworkSheetRef.current?.show()}
+        onLongPress={() => artworkSheetRef.current?.present()}
         className="group"
       >
         {props.mediaSource.type === "artist" ? (

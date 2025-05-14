@@ -5,7 +5,6 @@ import {
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Keyboard, View } from "react-native";
-import type { ActionSheetRef } from "react-native-actions-sheet";
 
 import { Add } from "~/icons/Add";
 import { CreateNewFolder } from "~/icons/CreateNewFolder";
@@ -24,12 +23,12 @@ import {
 
 import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
-import { cn } from "~/lib/style";
 import { Marquee } from "~/components/Containment/Marquee";
-import { SheetsFlashList } from "~/components/Defaults";
+import { FlatList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { NumericInput, TextInput } from "~/components/Form/Input";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
+import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
 import { Swipeable } from "~/components/Swipeable";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
@@ -38,7 +37,7 @@ import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 export function ScanningSettingsSheets(
   props: Record<
     "allowListRef" | "blockListRef" | "minDurationRef",
-    React.RefObject<ActionSheetRef>
+    TrueSheetRef
   >,
 ) {
   return (
@@ -57,7 +56,7 @@ function ScanFilterListSheet({
   sheetRef,
 }: {
   listType: "listAllow" | "listBlock";
-  sheetRef: React.RefObject<ActionSheetRef>;
+  sheetRef: TrueSheetRef;
 }) {
   const { t } = useTranslation();
   const { surface } = useTheme();
@@ -81,13 +80,12 @@ function ScanFilterListSheet({
       </StyledText>
       <FilterForm {...{ listType, listEntries }} />
 
-      <SheetsFlashList
-        estimatedItemSize={58} // 54px Height + 4px Margin Top
+      <FlatList
         data={listEntries}
         keyExtractor={(item) => item}
-        renderItem={({ item, index }) => (
+        renderItem={({ item }) => (
           <Swipeable
-            containerClassName={cn("px-4", { "mt-1": index > 0 })}
+            containerClassName="px-4"
             renderRightActions={() => (
               <IconButton
                 accessibilityLabel={t("template.entryRemove", { name: item })}
@@ -110,7 +108,8 @@ function ScanFilterListSheet({
         ListEmptyComponent={
           <ContentPlaceholder errMsgKey="err.msg.noFilters" />
         }
-        contentContainerClassName="pb-4"
+        nestedScrollEnabled
+        contentContainerClassName="gap-1 pb-4"
       />
     </Sheet>
   );
@@ -180,9 +179,7 @@ function FilterForm(props: {
 //#endregion
 
 /** Enables us to specify the minimum track duration we want to save. */
-function MinDurationSheet(props: {
-  sheetRef: React.RefObject<ActionSheetRef>;
-}) {
+function MinDurationSheet(props: { sheetRef: TrueSheetRef }) {
   const minSeconds = useUserPreferencesStore((state) => state.minSeconds);
   const [newMin, setNewMin] = useState<string | undefined>();
 

@@ -1,5 +1,3 @@
-import type { ActionSheetRef } from "react-native-actions-sheet";
-
 import {
   OrderedByOptions,
   useSortPreferencesStore,
@@ -8,13 +6,12 @@ import {
 import { ListItem } from "~/components/Containment/List";
 import { FlatList } from "~/components/Defaults";
 import { Radio } from "~/components/Form/Selection";
+import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
 import { TStyledText } from "~/components/Typography/StyledText";
 
 /** Enables us to visually change the sort order on the `/track` screen. */
-export function TrackSortSheet(props: {
-  sheetRef: React.RefObject<ActionSheetRef>;
-}) {
+export function TrackSortSheet(props: { sheetRef: TrueSheetRef }) {
   const isAsc = useSortPreferencesStore((state) => state.isAsc);
   const toggleIsAsc = useSortPreferencesStore((state) => state.toggleIsAsc);
   const orderedBy = useSortPreferencesStore((state) => state.orderedBy);

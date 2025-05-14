@@ -123,7 +123,7 @@ function PageContent() {
           onReordered={moveTrack}
           ListHeaderComponent={
             <ListHeaderComponent
-              showSheet={() => addMusicSheetRef.current?.show()}
+              showSheet={() => addMusicSheetRef.current?.present()}
             />
           }
           ListEmptyComponent={

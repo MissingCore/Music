@@ -1,7 +1,6 @@
 import type { UseMutationResult } from "@tanstack/react-query";
 import { useState } from "react";
 import { View, useWindowDimensions } from "react-native";
-import type { ActionSheetRef } from "react-native-actions-sheet";
 
 import { useAlbum, useUpdateAlbumArtwork } from "~/queries/album";
 import { useArtist, useUpdateArtist } from "~/queries/artist";
@@ -10,15 +9,13 @@ import { usePlaylist, useUpdatePlaylist } from "~/queries/playlist";
 import { pickImage } from "~/lib/file-system";
 import { mutateGuard } from "~/lib/react-query";
 import { Button } from "~/components/Form/Button";
+import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
 import { TStyledText } from "~/components/Typography/StyledText";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import type { MediaType } from "~/modules/media/types";
 
-type ArtworkSheetProps = {
-  id: string;
-  sheetRef: React.RefObject<ActionSheetRef>;
-};
+type ArtworkSheetProps = { id: string; sheetRef: TrueSheetRef };
 
 /** Sheet allowing us to change the artwork of an album. */
 export function AlbumArtworkSheet(props: ArtworkSheetProps) {

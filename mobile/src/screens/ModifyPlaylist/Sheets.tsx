@@ -1,7 +1,6 @@
-import type { ActionSheetRef } from "react-native-actions-sheet";
-
 import { useTheme } from "~/hooks/useTheme";
 
+import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
 import { SearchEngine } from "~/modules/search/components/SearchEngine";
 import type { SearchCallbacks } from "~/modules/search/types";
@@ -11,7 +10,7 @@ const searchScope = ["album", "track"] as const;
 
 /** Enables us to add music to a playlist. */
 export function AddMusicSheet(props: {
-  sheetRef: React.RefObject<ActionSheetRef>;
+  sheetRef: TrueSheetRef;
   callbacks: Pick<SearchCallbacks, (typeof searchScope)[number]>;
 }) {
   const { canvasAlt } = useTheme();
