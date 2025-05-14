@@ -10,6 +10,7 @@ import {
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
 
+import { deferInitialRender } from "~/lib/react";
 import { getFont } from "~/lib/style";
 import { toLowerCase } from "~/utils/string";
 import { FlatList } from "~/components/Defaults";
@@ -19,21 +20,23 @@ import { Sheet } from "~/components/Sheet";
 import { TStyledText } from "~/components/Typography/StyledText";
 
 /** All the sheets used on `/setting/appearance` route. */
-export function AppearanceSettingsSheets(
-  props: Record<
-    "accentFontRef" | "primaryFontRef" | "themeRef" | "nowPlayingDesignRef",
-    TrueSheetRef
-  >,
-) {
-  return (
-    <>
-      <FontAccentSheet sheetRef={props.accentFontRef} />
-      <FontPrimarySheet sheetRef={props.primaryFontRef} />
-      <ThemeSheet sheetRef={props.themeRef} />
-      <NowPlayingDesignSheet sheetRef={props.nowPlayingDesignRef} />
-    </>
-  );
-}
+export const AppearanceSettingsSheets = deferInitialRender(
+  function AppearanceSettingsSheets(
+    props: Record<
+      "accentFontRef" | "primaryFontRef" | "themeRef" | "nowPlayingDesignRef",
+      TrueSheetRef
+    >,
+  ) {
+    return (
+      <>
+        <FontAccentSheet sheetRef={props.accentFontRef} />
+        <FontPrimarySheet sheetRef={props.primaryFontRef} />
+        <ThemeSheet sheetRef={props.themeRef} />
+        <NowPlayingDesignSheet sheetRef={props.nowPlayingDesignRef} />
+      </>
+    );
+  },
+);
 
 //#region Font
 /** Enables changing the font used primarily for headings. */
