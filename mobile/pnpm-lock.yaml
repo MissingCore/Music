@@ -18,9 +18,6 @@ patchedDependencies:
   expo-modules-core@1.12.26:
     hash: qgzrnekgdcskd36hv2w3tv2zwu
     path: patches/expo-modules-core@1.12.26.patch
-  react-native-actions-sheet@0.9.7:
-    hash: dmf2cvt7t24xk2qlczkgl6j5zu
-    path: patches/react-native-actions-sheet@0.9.7.patch
   react-native-gesture-handler:
     hash: rjhgnwrqf5shhovxtmq2tgj2qm
     path: patches/react-native-gesture-handler.patch
@@ -131,9 +128,6 @@ importers:
       react-native:
         specifier: 0.75.5
         version: 0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3)
-      react-native-actions-sheet:
-        specifier: ^0.9.7
-        version: 0.9.7(patch_hash=dmf2cvt7t24xk2qlczkgl6j5zu)(react-native-gesture-handler@2.25.0(patch_hash=rjhgnwrqf5shhovxtmq2tgj2qm)(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1))(react-native-safe-area-context@5.4.0(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1))(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))
       react-native-bootsplash:
         specifier: ^6.3.8
         version: 6.3.8(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1)
@@ -5343,13 +5337,6 @@ packages:
 
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
-
-  react-native-actions-sheet@0.9.7:
-    resolution: {integrity: sha512-rjUwxUr5dxbdSLDtLDUFAdSlFxpNSpJsbXLhHkBzEBMxEMPUhRT3zqbvKqsPj0JUkjwuRligxrhbIJZkg/6ZDw==}
-    peerDependencies:
-      react-native: '*'
-      react-native-gesture-handler: '*'
-      react-native-safe-area-context: '*'
 
   react-native-bootsplash@6.3.8:
     resolution: {integrity: sha512-EvkNWta0tBSPf87JpHAG1aKilma0TVsToMPhy4L8sev70wVewpiuNfhFqvLvp8U7pnE5hi6ld6S8sA0Zhtrs/g==}
@@ -12546,12 +12533,6 @@ snapshots:
   react-is@17.0.2: {}
 
   react-is@18.3.1: {}
-
-  react-native-actions-sheet@0.9.7(patch_hash=dmf2cvt7t24xk2qlczkgl6j5zu)(react-native-gesture-handler@2.25.0(patch_hash=rjhgnwrqf5shhovxtmq2tgj2qm)(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1))(react-native-safe-area-context@5.4.0(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1))(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3)):
-    dependencies:
-      react-native: 0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3)
-      react-native-gesture-handler: 2.25.0(patch_hash=rjhgnwrqf5shhovxtmq2tgj2qm)(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1)
-      react-native-safe-area-context: 5.4.0(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1)
 
   react-native-bootsplash@6.3.8(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1):
     dependencies:

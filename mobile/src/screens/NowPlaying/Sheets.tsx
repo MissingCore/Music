@@ -145,6 +145,7 @@ function TrackUpcomingSheet(props: { sheetRef: TrueSheetRef }) {
           <ContentPlaceholder isPending={trackList.length === 0} />
         }
         ListHeaderComponentStyle={{ marginHorizontal: -16 }}
+        nestedScrollEnabled
         contentContainerClassName="px-4 pb-4"
       />
     </Sheet>

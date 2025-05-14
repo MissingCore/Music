@@ -4,7 +4,6 @@ import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import "~/screens/Sheets";
 import { RouteHandlers } from "./RouteHandlers";
 import { ThemeProvider } from "./ThemeProvider";
 

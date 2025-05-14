@@ -17,7 +17,7 @@ import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
 import { isString } from "~/utils/validation";
-import { FlashList, SheetsFlashList } from "~/components/Defaults";
+import { FlashList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { TextInput, useInputRef } from "~/components/Form/Input";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
@@ -91,13 +91,9 @@ function SearchResultsList<TScope extends SearchCategories>(
     [props.bgColor, canvas],
   );
 
-  const ListComponent = useMemo(() => {
-    return props.withGesture ? SheetsFlashList : FlashList;
-  }, [props.withGesture]);
-
   return (
     <View className="relative shrink grow">
-      <ListComponent
+      <FlashList
         estimatedItemSize={56} // 48px Height + 8px Margin Top
         data={data}
         // Note: We use `index` instead of the `id` or `name` field on the
@@ -129,6 +125,7 @@ function SearchResultsList<TScope extends SearchCategories>(
             <ContentPlaceholder errMsgKey="err.msg.noResults" />
           ) : undefined
         }
+        nestedScrollEnabled={props.withGesture}
         contentContainerClassName="pt-6 pb-4"
       />
 
