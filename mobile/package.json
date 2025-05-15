@@ -29,6 +29,7 @@
     "@miblanchard/react-native-slider": "^2.6.0",
     "@missingcore/react-native-metadata-retriever": "^0.8.0",
     "@paralleldrive/cuid2": "^2.2.2",
+    "@react-native-assets/slider": "^11.0.7",
     "@react-native-async-storage/async-storage": "2.1.2",
     "@react-navigation/material-top-tabs": "^6.6.14",
     "@react-navigation/native": "^6.1.18",
@@ -112,7 +113,8 @@
       "@backpackapp-io/react-native-toast@0.13.0": "patches/@backpackapp-io__react-native-toast@0.13.0.patch",
       "expo-modules-core@1.12.26": "patches/expo-modules-core@1.12.26.patch",
       "react-native-gesture-handler": "patches/react-native-gesture-handler.patch",
-      "@lodev09/react-native-true-sheet": "patches/@lodev09__react-native-true-sheet.patch"
+      "@lodev09/react-native-true-sheet": "patches/@lodev09__react-native-true-sheet.patch",
+      "@react-native-assets/slider": "patches/@react-native-assets__slider.patch"
     }
   }
 }
