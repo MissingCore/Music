@@ -65,6 +65,10 @@ async function getAllMedia() {
 const queryKey = ["search"];
 
 function useAllMedia() {
-  return useQuery({ queryKey, queryFn: getAllMedia });
+  // We can perpetually cache this data since track deletion will clear this
+  // query. For other places (ie: modifying playlists), we can manually add
+  // that in.
+  //  - FIXME: If we add the "Hide Track" feature, things might need to change.
+  return useQuery({ queryKey, queryFn: getAllMedia, staleTime: Infinity });
 }
 //#endregion
