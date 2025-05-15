@@ -16,7 +16,12 @@ export const AddMusicSheet = deferInitialRender(function AddMusicSheet(props: {
 }) {
   const { canvasAlt } = useTheme();
   return (
-    <Sheet ref={props.sheetRef} titleKey="feat.search.extra.musicAdd" snapTop>
+    <Sheet
+      ref={props.sheetRef}
+      titleKey="feat.search.extra.musicAdd"
+      keyboardMode="pan"
+      snapTop
+    >
       <SearchEngine
         searchScope={searchScope}
         callbacks={props.callbacks}

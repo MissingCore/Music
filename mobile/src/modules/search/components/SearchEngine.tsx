@@ -45,6 +45,7 @@ export function SearchEngine<TScope extends SearchCategories>(
         <Search />
         <TextInput
           ref={inputRef}
+          autoFocus={!props.forSheets}
           onChangeText={(text) => setQuery(text)}
           placeholder={t("feat.search.extra.searchMedia")}
           className="shrink grow"

@@ -75,6 +75,7 @@ function ScanFilterListSheet({
     <Sheet
       ref={sheetRef}
       titleKey={`feat.${listType}.title`}
+      keyboardMode="pan"
       contentContainerClassName="gap-4 px-0"
       snapTop
     >
