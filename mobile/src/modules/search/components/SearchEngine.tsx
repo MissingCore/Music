@@ -71,7 +71,7 @@ type SearchResultsListProps<TScope extends SearchCategories> = {
   searchScope: TScope;
   callbacks: Pick<SearchCallbacks, TScope[number]>;
   bgColor?: string;
-  withGesture?: boolean;
+  forSheets?: boolean;
 };
 
 function SearchResultsList<TScope extends SearchCategories>(
@@ -125,7 +125,7 @@ function SearchResultsList<TScope extends SearchCategories>(
             <ContentPlaceholder errMsgKey="err.msg.noResults" />
           ) : undefined
         }
-        nestedScrollEnabled={props.withGesture}
+        nestedScrollEnabled={props.forSheets}
         contentContainerClassName="pt-6 pb-4"
       />
 

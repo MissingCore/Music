@@ -21,7 +21,7 @@ export const AddMusicSheet = deferInitialRender(function AddMusicSheet(props: {
         searchScope={searchScope}
         callbacks={props.callbacks}
         bgColor={canvasAlt}
-        withGesture
+        forSheets
       />
     </Sheet>
   );
