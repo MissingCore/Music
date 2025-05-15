@@ -151,7 +151,6 @@ function FilterForm(props: {
     <View className="flex-row gap-2 px-4">
       <View className="shrink grow flex-row items-center gap-2 border-b border-foreground/60">
         <TextInput
-          autoFocus={false}
           editable={!onSubmit.isPending}
           value={newPath}
           onChangeText={(text) => setNewPath(text)}

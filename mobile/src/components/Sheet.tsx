@@ -2,11 +2,13 @@ import { Toasts } from "@backpackapp-io/react-native-toast";
 import type { TrueSheetProps } from "@lodev09/react-native-true-sheet";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import type { ParseKeys } from "i18next";
+import { cssInterop } from "nativewind";
 import type { RefObject } from "react";
 import { forwardRef, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { StyleProp, ViewStyle } from "react-native";
 import { View, useWindowDimensions } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { useTheme } from "~/hooks/useTheme";
 
@@ -14,6 +16,10 @@ import { BorderRadius } from "~/constants/Styles";
 import { cn } from "~/lib/style";
 import { Marquee } from "./Containment/Marquee";
 import { StyledText } from "./Typography/StyledText";
+
+const WrappedGestureHandlerRootView = cssInterop(GestureHandlerRootView, {
+  className: "style",
+});
 
 interface SheetProps extends Omit<TrueSheetProps, "name"> {
   titleKey?: ParseKeys;
@@ -77,7 +83,7 @@ export const Sheet = forwardRef<TrueSheet, SheetProps>(function Sheet(
         title={titleKey ? t(titleKey) : undefined}
         getHeight={setHeaderHeight}
       />
-      <View
+      <WrappedGestureHandlerRootView
         style={[
           // TrueSheet doesn't know the actual scrollable area, so we
           // need to exclude the height taken up by the "SheetHeader"
@@ -92,7 +98,7 @@ export const Sheet = forwardRef<TrueSheet, SheetProps>(function Sheet(
         )}
       >
         {children}
-      </View>
+      </WrappedGestureHandlerRootView>
       {enableToast ? (
         <Toasts
           // @ts-expect-error - We added the `sheetOpts` prop via a patch.

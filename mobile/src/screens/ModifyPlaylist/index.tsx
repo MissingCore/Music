@@ -213,7 +213,6 @@ function ListHeaderComponent(props: { showSheet: () => void }) {
     <>
       <View className="gap-2 px-4">
         <TextInput
-          autoFocus={false}
           editable={!isSubmitting}
           defaultValue={initialName}
           onChangeText={setPlaylistName}

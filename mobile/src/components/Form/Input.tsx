@@ -1,6 +1,6 @@
 import { forwardRef, useRef } from "react";
 import type { TextInputProps } from "react-native";
-import { TextInput as RNTextInput } from "react-native";
+import { TextInput as RNTextInput } from "react-native-gesture-handler";
 
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 
@@ -18,7 +18,6 @@ export const NumericInput = forwardRef<RNTextInput, TextInputProps>(
     return (
       <RNTextInput
         ref={ref}
-        autoFocus
         inputMode="numeric"
         className={cn(
           "min-h-12 text-[3rem] text-foreground placeholder:text-foreground/60",
@@ -41,7 +40,6 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
     return (
       <RNTextInput
         ref={ref}
-        autoFocus
         className={cn(
           "min-h-12 text-base text-foreground placeholder:text-foreground/60",
           { "opacity-25": props.editable === false },
