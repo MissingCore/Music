@@ -1,5 +1,4 @@
 import { router } from "expo-router";
-import { useEffect, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 
 import {
@@ -13,7 +12,7 @@ import { StandardScrollLayout } from "~/layouts/StandardScroll";
 
 import { cn } from "~/lib/style";
 import { abbreviateNum } from "~/utils/number";
-import { FlashList, useFlashListRef } from "~/components/Defaults";
+import { FlashList } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
 import { AccentText } from "~/components/Typography/AccentText";
 import { TEm, TStyledText } from "~/components/Typography/StyledText";
@@ -47,46 +46,25 @@ function RecentlyPlayed() {
   const recentlyPlayedData = useRecentListStore((state) => state.recentList);
   const shouldShow = useUserPreferencesStore((state) => state.showRecent);
 
-  const [initNoData, setInitNoData] = useState(false);
-  const [itemHeight, setItemHeight] = useState(0);
-  const listRef = useFlashListRef();
-
-  useEffect(() => {
-    // Fix incorrect `<FlashList />` height due to it only being calculated
-    // on initial render.
-    //  - See: https://github.com/Shopify/flash-list/issues/881
-    if (initNoData && itemHeight !== 0) {
-      // @ts-ignore: Bypass private property access warning
-      listRef.current?.rlvRef?._onSizeChanged({
-        // @ts-ignore: Bypass private property access warning
-        width: listRef.current.rlvRef._layout.width,
-        height: itemHeight,
-      });
-      setInitNoData(false);
-    }
-  }, [listRef, initNoData, itemHeight]);
-
   if (!shouldShow) return null;
-
   return (
     <>
       <TEm textKey="feat.playedRecent.title" className="-mb-4" />
       <FlashList
-        ref={listRef}
+        key={`${recentlyPlayedData.length === 0}`}
         estimatedItemSize={width + 12} // Column width + gap from padding left
         horizontal
         data={recentlyPlayedData}
         keyExtractor={({ href }) => href}
         renderItem={({ item, index }) => (
           <MediaCard
-            onLayout={(e) => setItemHeight(e.nativeEvent.layout.height)}
-            {...{ ...item, size: width }}
+            {...item}
+            size={width}
             className={index > 0 ? "ml-3" : undefined}
           />
         )}
         ListEmptyComponent={
           <TStyledText
-            onLayout={() => setInitNoData(true)}
             textKey="feat.playedRecent.extra.empty"
             className="my-4"
           />

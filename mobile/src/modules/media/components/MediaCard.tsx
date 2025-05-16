@@ -2,7 +2,6 @@ import type { FlashListProps } from "@shopify/flash-list";
 import type { Href } from "expo-router";
 import { router } from "expo-router";
 import { useMemo } from "react";
-import type { LayoutChangeEvent } from "react-native";
 import { Pressable } from "react-native";
 
 import { useGetColumn } from "~/hooks/useGetColumn";
@@ -23,13 +22,7 @@ export namespace MediaCard {
     }
   >;
 
-  export type Props = Prettify<
-    Content & {
-      size: number;
-      className?: string;
-      onLayout?: (e: LayoutChangeEvent) => void;
-    }
-  >;
+  export type Props = Prettify<Content & { size: number; className?: string }>;
 }
 
 /**
@@ -41,12 +34,10 @@ export function MediaCard({
   title,
   description,
   className,
-  onLayout,
   ...imgProps
 }: MediaCard.Props) {
   return (
     <Pressable
-      onLayout={onLayout}
       onPress={() => router.navigate(href as Href)}
       style={{ maxWidth: imgProps.size }}
       // The `w-full` is to ensure the component takes up all the space
