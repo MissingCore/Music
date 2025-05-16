@@ -9,9 +9,9 @@ overrides:
   send: 0.19.0
 
 patchedDependencies:
-  '@backpackapp-io/react-native-toast@0.13.0':
-    hash: nmohijms62xwkaqt33qfrtxrvm
-    path: patches/@backpackapp-io__react-native-toast@0.13.0.patch
+  '@backpackapp-io/react-native-toast':
+    hash: zgygxsuuqk33jr3gwbxpbkmczi
+    path: patches/@backpackapp-io__react-native-toast.patch
   '@lodev09/react-native-true-sheet':
     hash: ghs6dseqpw4nrudp3xphy4ptkq
     path: patches/@lodev09__react-native-true-sheet.patch
@@ -31,7 +31,7 @@ importers:
     dependencies:
       '@backpackapp-io/react-native-toast':
         specifier: ^0.13.0
-        version: 0.13.0(patch_hash=nmohijms62xwkaqt33qfrtxrvm)(react-native-gesture-handler@2.25.0(patch_hash=rjhgnwrqf5shhovxtmq2tgj2qm)(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.27.1)(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1))(react-native-safe-area-context@5.4.0(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1))(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1)
+        version: 0.13.0(patch_hash=zgygxsuuqk33jr3gwbxpbkmczi)(react-native-gesture-handler@2.25.0(patch_hash=rjhgnwrqf5shhovxtmq2tgj2qm)(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.27.1)(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1))(react-native-safe-area-context@5.4.0(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1))(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1)
       '@lodev09/react-native-true-sheet':
         specifier: ^2.0.5
         version: 2.0.5(patch_hash=ghs6dseqpw4nrudp3xphy4ptkq)(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1)
@@ -7517,7 +7517,7 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.27.1
 
-  '@backpackapp-io/react-native-toast@0.13.0(patch_hash=nmohijms62xwkaqt33qfrtxrvm)(react-native-gesture-handler@2.25.0(patch_hash=rjhgnwrqf5shhovxtmq2tgj2qm)(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.27.1)(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1))(react-native-safe-area-context@5.4.0(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1))(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1)':
+  '@backpackapp-io/react-native-toast@0.13.0(patch_hash=zgygxsuuqk33jr3gwbxpbkmczi)(react-native-gesture-handler@2.25.0(patch_hash=rjhgnwrqf5shhovxtmq2tgj2qm)(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.27.1)(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1))(react-native-safe-area-context@5.4.0(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1))(react-native@0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3))(react@18.3.1)':
     dependencies:
       react: 18.3.1
       react-native: 0.75.5(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@types/react@18.3.21)(react@18.3.1)(typescript@5.8.3)

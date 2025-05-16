@@ -110,11 +110,11 @@
       "send": "0.19.0"
     },
     "patchedDependencies": {
-      "@backpackapp-io/react-native-toast@0.13.0": "patches/@backpackapp-io__react-native-toast@0.13.0.patch",
       "expo-modules-core@1.12.26": "patches/expo-modules-core@1.12.26.patch",
       "react-native-gesture-handler": "patches/react-native-gesture-handler.patch",
       "@lodev09/react-native-true-sheet": "patches/@lodev09__react-native-true-sheet.patch",
-      "@react-native-assets/slider": "patches/@react-native-assets__slider.patch"
+      "@react-native-assets/slider": "patches/@react-native-assets__slider.patch",
+      "@backpackapp-io/react-native-toast": "patches/@backpackapp-io__react-native-toast.patch"
     }
   }
 }
