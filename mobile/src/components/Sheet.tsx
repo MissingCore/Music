@@ -55,8 +55,10 @@ export const Sheet = forwardRef<TrueSheet, SheetProps>(function Sheet(
   const { canvasAlt } = useTheme();
   const { height: screenHeight } = useWindowDimensions();
   const [enableToast, setEnableToast] = useState(false);
+  const [disableToastAnim, setDisableToastAnim] = useState(true);
   const [sheetHeight, setSheetHeight] = useState(0);
   const [headerHeight, setHeaderHeight] = useState(0);
+  const disableAnimTimerRef = useRef<NodeJS.Timeout>();
 
   return (
     <TrueSheet
@@ -72,10 +74,23 @@ export const Sheet = forwardRef<TrueSheet, SheetProps>(function Sheet(
       onPresent={(e) => {
         if (onPresent) onPresent(e);
         setEnableToast(true);
+
+        // Temporarily disable toast mount animation when sheet is presenting.
+        if (disableAnimTimerRef.current)
+          clearTimeout(disableAnimTimerRef.current);
+        disableAnimTimerRef.current = setTimeout(
+          () => setDisableToastAnim(false),
+          250,
+        );
       }}
       onDismiss={() => {
         if (onDismiss) onDismiss();
         setEnableToast(false);
+
+        // Ensure that toast mount animation is disabled when sheet presents.
+        if (disableAnimTimerRef.current)
+          clearTimeout(disableAnimTimerRef.current);
+        setDisableToastAnim(true);
       }}
       {...props}
     >
@@ -106,6 +121,8 @@ export const Sheet = forwardRef<TrueSheet, SheetProps>(function Sheet(
             height: sheetHeight,
             needKeyboardOffset: props.keyboardMode === "pan",
           }}
+          // A duration of 0 doesn't work.
+          globalAnimationConfig={disableToastAnim ? { duration: 1 } : undefined}
         />
       ) : null}
     </TrueSheet>
