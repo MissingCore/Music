@@ -49,18 +49,18 @@ export default function ScanningScreen() {
           <ListItem
             titleKey="feat.listAllow.title"
             description={t("plural.entry", { count: allowList.length })}
-            onPress={() => allowListSheetRef.current?.show()}
+            onPress={() => allowListSheetRef.current?.present()}
             first
           />
           <ListItem
             titleKey="feat.listBlock.title"
             description={t("plural.entry", { count: blockList.length })}
-            onPress={() => blockListSheetRef.current?.show()}
+            onPress={() => blockListSheetRef.current?.present()}
           />
           <ListItem
             titleKey="feat.ignoreDuration.title"
             description={t("plural.second", { count: ignoreDuration })}
-            onPress={() => minDurationSheetRef.current?.show()}
+            onPress={() => minDurationSheetRef.current?.present()}
             last
           />
         </List>

@@ -1,7 +1,7 @@
-import { Link } from "expo-router";
+import { router } from "expo-router";
 import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import Animated, {
   Easing,
   cancelAnimation,
@@ -22,6 +22,7 @@ import {
   PlaylistArtworkSheet,
 } from "~/screens/Sheets/Artwork";
 
+import { DeferRender } from "~/lib/react";
 import { getFont } from "~/lib/style";
 import { pickKeys } from "~/utils/object";
 import { toLowerCase } from "~/utils/string";
@@ -73,13 +74,20 @@ export function CurrentListLayout(
           </Marquee>
           {props.artist ? (
             <Marquee color={canvas}>
-              <Link
-                href={`/artist/${encodeURIComponent(props.artist)}`}
-                style={{ fontFamily: getFont(primaryFont) }}
-                className="text-xs text-red"
+              <Pressable
+                onPress={() =>
+                  router.navigate(
+                    `/artist/${encodeURIComponent(props.artist!)}`,
+                  )
+                }
               >
-                {props.artist}
-              </Link>
+                <Text
+                  style={{ fontFamily: getFont(primaryFont) }}
+                  className="text-xs text-red"
+                >
+                  {props.artist}
+                </Text>
+              </Pressable>
             </Marquee>
           ) : null}
           <Marquee color={canvas} wrapperClassName="my-1">
@@ -122,11 +130,13 @@ function ContentImage(props: AnimatedVinylProps) {
 
   return (
     <>
-      <RenderedSheet sheetRef={artworkSheetRef} id={props.mediaSource.id} />
+      <DeferRender>
+        <RenderedSheet sheetRef={artworkSheetRef} id={props.mediaSource.id} />
+      </DeferRender>
       <Pressable
         aria-label={t("feat.artwork.extra.change")}
         delayLongPress={100}
-        onLongPress={() => artworkSheetRef.current?.show()}
+        onLongPress={() => artworkSheetRef.current?.present()}
         className="group"
       >
         {props.mediaSource.type === "artist" ? (

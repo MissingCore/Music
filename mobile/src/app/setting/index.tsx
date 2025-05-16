@@ -49,7 +49,7 @@ export default function SettingScreen() {
           <ListItem
             titleKey="feat.language.title"
             description={currLang ?? "English"}
-            onPress={() => languageSheetRef.current?.show()}
+            onPress={() => languageSheetRef.current?.present()}
             last
           />
         </List>
@@ -58,7 +58,7 @@ export default function SettingScreen() {
           <ListItem
             titleKey="feat.backup.title"
             description={t("feat.backup.brief")}
-            onPress={() => backupSheetRef.current?.show()}
+            onPress={() => backupSheetRef.current?.present()}
             first
           />
           <ListItem

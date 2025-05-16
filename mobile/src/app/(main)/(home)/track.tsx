@@ -30,7 +30,9 @@ export default function TrackScreen() {
       <StickyActionListLayout
         titleKey="term.tracks"
         StickyAction={
-          <TrackActions showSheet={() => trackSortSheetRef.current?.show()} />
+          <TrackActions
+            showSheet={() => trackSortSheetRef.current?.present()}
+          />
         }
         estimatedActionSize={48}
         {...presets}

@@ -210,7 +210,7 @@ function BottomAppBar() {
           <IconButton
             kind="ripple"
             accessibilityLabel={t("feat.playback.extra.options")}
-            onPress={() => playbackOptionsSheetRef.current?.show()}
+            onPress={() => playbackOptionsSheetRef.current?.present()}
             rippleRadius={24}
             className="p-2"
           >
@@ -219,7 +219,7 @@ function BottomAppBar() {
           <IconButton
             kind="ripple"
             accessibilityLabel={t("term.upcoming")}
-            onPress={() => upcomingTracksSheetRef.current?.show()}
+            onPress={() => upcomingTracksSheetRef.current?.present()}
             rippleRadius={24}
             className="p-2"
           >

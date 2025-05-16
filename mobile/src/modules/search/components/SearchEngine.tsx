@@ -17,7 +17,7 @@ import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
 import { isString } from "~/utils/validation";
-import { FlashList, SheetsFlashList } from "~/components/Defaults";
+import { FlashList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { TextInput, useInputRef } from "~/components/Form/Input";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
@@ -45,6 +45,7 @@ export function SearchEngine<TScope extends SearchCategories>(
         <Search />
         <TextInput
           ref={inputRef}
+          autoFocus={!props.forSheets}
           onChangeText={(text) => setQuery(text)}
           placeholder={t("feat.search.extra.searchMedia")}
           className="shrink grow"
@@ -71,7 +72,7 @@ type SearchResultsListProps<TScope extends SearchCategories> = {
   searchScope: TScope;
   callbacks: Pick<SearchCallbacks, TScope[number]>;
   bgColor?: string;
-  withGesture?: boolean;
+  forSheets?: boolean;
 };
 
 function SearchResultsList<TScope extends SearchCategories>(
@@ -91,13 +92,9 @@ function SearchResultsList<TScope extends SearchCategories>(
     [props.bgColor, canvas],
   );
 
-  const ListComponent = useMemo(() => {
-    return props.withGesture ? SheetsFlashList : FlashList;
-  }, [props.withGesture]);
-
   return (
     <View className="relative shrink grow">
-      <ListComponent
+      <FlashList
         estimatedItemSize={56} // 48px Height + 8px Margin Top
         data={data}
         // Note: We use `index` instead of the `id` or `name` field on the
@@ -129,6 +126,7 @@ function SearchResultsList<TScope extends SearchCategories>(
             <ContentPlaceholder errMsgKey="err.msg.noResults" />
           ) : undefined
         }
+        nestedScrollEnabled={props.forSheets}
         contentContainerClassName="pt-6 pb-4"
       />
 

@@ -1,10 +1,12 @@
 | Name | License | Source |
 | ---- | ------- | ------ |
 | @backpackapp-io/react-native-toast | MIT | https://github.com/backpackapp-io/react-native-toast |
+| @lodev09/react-native-true-sheet | MIT | https://github.com/lodev09/react-native-true-sheet |
 | @lukemorales/query-key-factory | MIT | https://github.com/lukemorales/query-key-factory |
 | @miblanchard/react-native-slider | MIT | https://github.com/miblanchard/react-native-slider |
 | @missingcore/react-native-metadata-retriever | MIT | https://github.com/MissingCore/react-native-metadata-retriever |
 | @paralleldrive/cuid2 | MIT | https://github.com/paralleldrive/cuid2 |
+| @react-native-assets/slider | ISC | https://github.com/Sharcoux/slider |
 | @react-native-async-storage/async-storage | MIT | https://github.com/react-native-async-storage/async-storage |
 | @react-navigation/material-top-tabs | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/material-top-tabs |
 | @react-navigation/native | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/native |
@@ -37,7 +39,6 @@
 | react | MIT | https://github.com/facebook/react |
 | react-i18next | MIT | https://github.com/i18next/react-i18next |
 | react-native | MIT | https://github.com/facebook/react-native |
-| react-native-actions-sheet | MIT | https://github.com/ammarahm-ed/react-native-actions-sheet |
 | react-native-bootsplash | MIT | https://github.com/zoontek/react-native-bootsplash |
 | react-native-draglist | MIT | https://github.com/fivecar/react-native-draglist |
 | react-native-edge-to-edge | MIT | https://github.com/zoontek/react-native-edge-to-edge |

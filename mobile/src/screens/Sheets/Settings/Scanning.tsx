@@ -5,7 +5,6 @@ import {
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Keyboard, View } from "react-native";
-import type { ActionSheetRef } from "react-native-actions-sheet";
 
 import { Add } from "~/icons/Add";
 import { CreateNewFolder } from "~/icons/CreateNewFolder";
@@ -23,32 +22,41 @@ import {
 } from "./helpers/ScanFilterData";
 
 import { Colors } from "~/constants/Styles";
+import { deferInitialRender } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
-import { cn } from "~/lib/style";
 import { Marquee } from "~/components/Containment/Marquee";
-import { SheetsFlashList } from "~/components/Defaults";
+import { FlatList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { NumericInput, TextInput } from "~/components/Form/Input";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
+import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
 import { Swipeable } from "~/components/Swipeable";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
 /** All the sheets used on `/setting/scanning` route. */
-export function ScanningSettingsSheets(
-  props: Record<
-    "allowListRef" | "blockListRef" | "minDurationRef",
-    React.RefObject<ActionSheetRef>
-  >,
-) {
-  return (
-    <>
-      <ScanFilterListSheet listType="listAllow" sheetRef={props.allowListRef} />
-      <ScanFilterListSheet listType="listBlock" sheetRef={props.blockListRef} />
-      <MinDurationSheet sheetRef={props.minDurationRef} />
-    </>
-  );
-}
+export const ScanningSettingsSheets = deferInitialRender(
+  function ScanningSettingsSheets(
+    props: Record<
+      "allowListRef" | "blockListRef" | "minDurationRef",
+      TrueSheetRef
+    >,
+  ) {
+    return (
+      <>
+        <ScanFilterListSheet
+          listType="listAllow"
+          sheetRef={props.allowListRef}
+        />
+        <ScanFilterListSheet
+          listType="listBlock"
+          sheetRef={props.blockListRef}
+        />
+        <MinDurationSheet sheetRef={props.minDurationRef} />
+      </>
+    );
+  },
+);
 
 //#region Filter List
 /** Enables us to specify the paths in the allowlist or blocklist. */
@@ -57,7 +65,7 @@ function ScanFilterListSheet({
   sheetRef,
 }: {
   listType: "listAllow" | "listBlock";
-  sheetRef: React.RefObject<ActionSheetRef>;
+  sheetRef: TrueSheetRef;
 }) {
   const { t } = useTranslation();
   const { surface } = useTheme();
@@ -67,6 +75,7 @@ function ScanFilterListSheet({
     <Sheet
       ref={sheetRef}
       titleKey={`feat.${listType}.title`}
+      keyboardMode="pan"
       contentContainerClassName="gap-4 px-0"
       snapTop
     >
@@ -81,13 +90,12 @@ function ScanFilterListSheet({
       </StyledText>
       <FilterForm {...{ listType, listEntries }} />
 
-      <SheetsFlashList
-        estimatedItemSize={58} // 54px Height + 4px Margin Top
+      <FlatList
         data={listEntries}
         keyExtractor={(item) => item}
-        renderItem={({ item, index }) => (
+        renderItem={({ item }) => (
           <Swipeable
-            containerClassName={cn("px-4", { "mt-1": index > 0 })}
+            containerClassName="px-4"
             renderRightActions={() => (
               <IconButton
                 accessibilityLabel={t("template.entryRemove", { name: item })}
@@ -110,7 +118,8 @@ function ScanFilterListSheet({
         ListEmptyComponent={
           <ContentPlaceholder errMsgKey="err.msg.noFilters" />
         }
-        contentContainerClassName="pb-4"
+        nestedScrollEnabled
+        contentContainerClassName="gap-1 pb-4"
       />
     </Sheet>
   );
@@ -143,7 +152,6 @@ function FilterForm(props: {
     <View className="flex-row gap-2 px-4">
       <View className="shrink grow flex-row items-center gap-2 border-b border-foreground/60">
         <TextInput
-          autoFocus={false}
           editable={!onSubmit.isPending}
           value={newPath}
           onChangeText={(text) => setNewPath(text)}
@@ -180,9 +188,7 @@ function FilterForm(props: {
 //#endregion
 
 /** Enables us to specify the minimum track duration we want to save. */
-function MinDurationSheet(props: {
-  sheetRef: React.RefObject<ActionSheetRef>;
-}) {
+function MinDurationSheet(props: { sheetRef: TrueSheetRef }) {
   const minSeconds = useUserPreferencesStore((state) => state.minSeconds);
   const [newMin, setNewMin] = useState<string | undefined>();
 

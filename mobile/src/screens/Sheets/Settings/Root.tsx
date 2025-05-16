@@ -1,4 +1,3 @@
-import type { ActionSheetRef } from "react-native-actions-sheet";
 import { View } from "react-native";
 
 import {
@@ -8,16 +7,18 @@ import {
 import { LANGUAGES } from "~/modules/i18n/constants";
 import { useExportBackup, useImportBackup } from "./helpers/BackupData";
 
+import { deferInitialRender } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
-import { SheetsFlashList } from "~/components/Defaults";
+import { FlatList } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
 import { Radio } from "~/components/Form/Selection";
+import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
 /** All the sheets used on `/setting` route. */
-export function SettingsSheets(
-  props: Record<"backupRef" | "languageRef", React.RefObject<ActionSheetRef>>,
+export const SettingsSheets = deferInitialRender(function SettingsSheets(
+  props: Record<"backupRef" | "languageRef", TrueSheetRef>,
 ) {
   return (
     <>
@@ -25,10 +26,10 @@ export function SettingsSheets(
       <LanguageSheet sheetRef={props.languageRef} />
     </>
   );
-}
+});
 
 /** Enables import & export of a backup of your media organization in this app. */
-function BackupSheet(props: { sheetRef: React.RefObject<ActionSheetRef> }) {
+function BackupSheet(props: { sheetRef: TrueSheetRef }) {
   const exportBackup = useExportBackup();
   const importBackup = useImportBackup();
 
@@ -75,26 +76,28 @@ function BackupSheet(props: { sheetRef: React.RefObject<ActionSheetRef> }) {
 }
 
 /** Enables the ability to change the language used. */
-function LanguageSheet(props: { sheetRef: React.RefObject<ActionSheetRef> }) {
+function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
   const languageCode = useUserPreferencesStore((state) => state.language);
   return (
-    <Sheet ref={props.sheetRef} titleKey="feat.language.title" snapTop>
-      <SheetsFlashList
+    <Sheet
+      ref={props.sheetRef}
+      titleKey="feat.language.title"
+      contentContainerClassName="pb-0"
+    >
+      <FlatList
         accessibilityRole="radiogroup"
-        estimatedItemSize={58} // 54px Height + 4px Margin Top
         data={LANGUAGES}
         keyExtractor={({ code }) => code}
-        extraData={languageCode}
-        renderItem={({ item, index }) => (
+        renderItem={({ item }) => (
           <Radio
             selected={languageCode === item.code}
             onSelect={() => setLanguage(item.code)}
-            wrapperClassName={index > 0 ? "mt-1" : undefined}
           >
             <StyledText>{item.name}</StyledText>
           </Radio>
         )}
-        contentContainerClassName="pb-4"
+        nestedScrollEnabled
+        contentContainerClassName="gap-1 pb-4"
       />
     </Sheet>
   );

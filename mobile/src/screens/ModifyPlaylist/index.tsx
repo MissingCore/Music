@@ -123,7 +123,7 @@ function PageContent() {
           onReordered={moveTrack}
           ListHeaderComponent={
             <ListHeaderComponent
-              showSheet={() => addMusicSheetRef.current?.show()}
+              showSheet={() => addMusicSheetRef.current?.present()}
             />
           }
           ListEmptyComponent={
@@ -213,7 +213,6 @@ function ListHeaderComponent(props: { showSheet: () => void }) {
     <>
       <View className="gap-2 px-4">
         <TextInput
-          autoFocus={false}
           editable={!isSubmitting}
           defaultValue={initialName}
           onChangeText={setPlaylistName}
