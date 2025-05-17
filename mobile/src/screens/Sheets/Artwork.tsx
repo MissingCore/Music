@@ -8,6 +8,7 @@ import { usePlaylist, useUpdatePlaylist } from "~/queries/playlist";
 
 import { pickImage } from "~/lib/file-system";
 import { mutateGuard } from "~/lib/react-query";
+import { wait } from "~/utils/promise";
 import { Button } from "~/components/Form/Button";
 import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
@@ -87,8 +88,9 @@ function BaseArtworkSheetContent(props: {
       />
       <View className="flex-row gap-2">
         <Button
-          onPress={() => {
+          onPress={async () => {
             setDisabled(true);
+            await wait(1);
             mutateGuard(props.mutationResult, { artwork: null });
             setDisabled(false);
           }}
