@@ -36,7 +36,7 @@ export function RepeatButton({ size = 32 }: MediaControlProps) {
     >
       <RepeatIcon
         size={size}
-        {...(repeatMode !== "no-repeat" ? { color: Colors.red } : {})}
+        color={repeatMode !== "no-repeat" ? Colors.red : undefined}
       />
     </IconButton>
   );
@@ -55,7 +55,7 @@ export function ShuffleButton({ size = 32 }: MediaControlProps) {
       rippleRadius={size * 0.75}
       className="p-2"
     >
-      <Shuffle size={size} {...(isActive ? { color: Colors.red } : {})} />
+      <Shuffle size={size} color={isActive ? Colors.red : undefined} />
     </IconButton>
   );
 }

@@ -122,11 +122,11 @@ export function PlaylistStoreProvider({
             set((prev) => ({
               tracks: mergeTracks(
                 prev.tracks,
-                tracks.map((t) => ({
-                  ...t,
-                  artwork: getTrackCover({ ...t, album }),
-                  album,
-                })),
+                (tracks as SlimTrackWithAlbum[]).map((t) => {
+                  t.album = album;
+                  t.artwork = getTrackCover(t);
+                  return t;
+                }),
               ),
             }));
             toast(

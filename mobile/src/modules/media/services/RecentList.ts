@@ -1,5 +1,6 @@
 import { useStore } from "zustand";
 
+import type { AlbumWithTracks } from "~/db/schema";
 import { formatForMediaCard } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
@@ -68,11 +69,11 @@ recentListStore.subscribe(
     for (const { id, type } of sources) {
       try {
         if (type === "album") {
-          const albumData = await getAlbum(id, {
+          let data = (await getAlbum(id, {
             columns: ["id", "name", "artistName", "artwork"],
             withTracks: false,
-          });
-          const data = { ...albumData, tracks: [] };
+          })) as AlbumWithTracks;
+          data.tracks = [];
           entry = formatForMediaCard({ type: "album", data, t: i18next.t });
         } else if (type === "artist") {
           const data = await getArtist(id, {

@@ -57,7 +57,10 @@ export default function CurrentArtistScreen() {
  */
 function ArtistAlbums({ albums }: { albums: Album[] | null }) {
   const { width } = useGetColumn({
-    ...{ cols: 1, gap: 0, gutters: 32, minWidth: 100 },
+    cols: 1,
+    gap: 0,
+    gutters: 32,
+    minWidth: 100,
   });
 
   if (!albums) return null;

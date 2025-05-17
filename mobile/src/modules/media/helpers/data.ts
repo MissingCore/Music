@@ -69,7 +69,10 @@ export async function getTrackList({ type, id }: PlayListSource) {
   try {
     if (type === "album") {
       const { tracks: trks, ...albumInfo } = await getAlbum(id);
-      sortedTracks = trks.map((track) => ({ ...track, album: albumInfo }));
+      sortedTracks = (trks as TrackWithAlbum[]).map((track) => {
+        track.album = albumInfo;
+        return track;
+      });
     } else if (type === "artist") {
       const data = await getArtist(id);
       sortedTracks = data.tracks;

@@ -222,11 +222,20 @@ async function getTrackEntry({
   }
 
   return {
-    ...{ id, name: t.title?.trim() || removeFileExtension(filename) },
-    ...{ artistName: t.artist?.trim() || null, albumId, track: t.trackNumber },
-    ...{ disc: t.discNumber, format: t.sampleMimeType, bitrate },
-    ...{ sampleRate, duration, uri, modificationTime, fetchedArt: false },
-    ...{ size: assetInfo.exists ? (assetInfo.size ?? 0) : 0 },
+    id,
+    name: t.title?.trim() || removeFileExtension(filename),
+    artistName: t.artist?.trim() || null,
+    albumId,
+    track: t.trackNumber,
+    disc: t.discNumber,
+    format: t.sampleMimeType,
+    bitrate,
+    sampleRate,
+    duration,
+    uri,
+    modificationTime,
+    fetchedArt: false,
+    size: assetInfo.exists ? (assetInfo.size ?? 0) : 0,
   };
 }
 //#endregion

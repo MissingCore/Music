@@ -90,7 +90,9 @@ export default function FolderScreen() {
           />
         ) : (
           <SearchResult
-            {...{ as: "ripple", type: "folder", title: item.name }}
+            as="ripple"
+            type="folder"
+            title={item.name}
             onPress={() => setDirSegments((prev) => [...prev, item.name])}
             className={cn("pr-4", { "mt-2": index > 0 })}
           />

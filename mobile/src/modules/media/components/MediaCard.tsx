@@ -86,7 +86,10 @@ export function useMediaCardListPreset(
   },
 ) {
   const { count, width } = useGetColumn({
-    ...{ cols: 2, gap: 12, gutters: 32, minWidth: 175 },
+    cols: 2,
+    gap: 12,
+    gutters: 32,
+    minWidth: 175,
   });
   return useMemo(
     () => ({

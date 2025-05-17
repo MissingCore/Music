@@ -26,7 +26,8 @@ export default function InsightsScreen() {
         titleKey="feat.saveErrors.title"
         description={t("feat.saveErrors.brief")}
         onPress={() => router.navigate("/setting/insights/save-errors")}
-        {...{ first: true, last: true }}
+        first
+        last
       />
     </StandardScrollLayout>
   );

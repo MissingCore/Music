@@ -7,7 +7,8 @@ import { useMediaCardListPreset } from "~/modules/media/components/MediaCard";
 export default function AlbumScreen() {
   const { isPending, data } = useAlbumsForCards();
   const presets = useMediaCardListPreset({
-    ...{ data, isPending },
+    data,
+    isPending,
     errMsgKey: "err.msg.noAlbums",
   });
 

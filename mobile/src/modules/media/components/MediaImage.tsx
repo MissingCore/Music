@@ -54,7 +54,10 @@ export function MediaImage({
   if (type === "playlist" && Array.isArray(source) && source.length > 0) {
     return (
       <CollageImage
-        {...{ sources: source, size, className: usedClasses, noPlaceholder }}
+        sources={source}
+        size={size}
+        className={usedClasses}
+        noPlaceholder={noPlaceholder}
       />
     );
   } else if (type === "folder") {

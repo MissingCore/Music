@@ -25,7 +25,10 @@ export default function ModifyPlaylistScreen() {
 
   const initialTracks = useMemo(() => {
     if (!data?.tracks) return [];
-    return data.tracks.map((t) => ({ ...t, artwork: getTrackCover(t) }));
+    return data.tracks.map((t) => {
+      t.artwork = getTrackCover(t);
+      return t;
+    });
   }, [data?.tracks]);
 
   return (

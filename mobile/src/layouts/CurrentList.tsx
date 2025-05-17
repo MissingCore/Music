@@ -24,7 +24,6 @@ import {
 
 import { DeferRender } from "~/lib/react";
 import { getFont } from "~/lib/style";
-import { pickKeys } from "~/utils/object";
 import { toLowerCase } from "~/utils/string";
 import { Marquee } from "~/components/Containment/Marquee";
 import { Divider } from "~/components/Divider";
@@ -60,7 +59,10 @@ export function CurrentListLayout(
   return (
     <>
       <View className="flex-row gap-2 pr-4">
-        <ContentImage {...pickKeys(props, ["mediaSource", "imageSource"])} />
+        <ContentImage
+          mediaSource={props.mediaSource}
+          imageSource={props.imageSource}
+        />
         <View className="shrink grow justify-end">
           <TEm
             dim

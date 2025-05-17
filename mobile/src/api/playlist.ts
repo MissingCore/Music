@@ -168,9 +168,12 @@ export async function moveInPlaylist(info: {
       .returning();
     await tx.insert(tracksToPlaylists).values(
       moveArray(
-        [...tracksInPlaylist].sort((a, b) => a.position - b.position),
+        tracksInPlaylist.sort((a, b) => a.position - b.position),
         { fromIndex: info.fromIndex, toIndex: info.toIndex },
-      ).map((t, position) => ({ ...t, position })),
+      ).map((t, position) => {
+        t.position = position;
+        return t;
+      }),
     );
   });
 }

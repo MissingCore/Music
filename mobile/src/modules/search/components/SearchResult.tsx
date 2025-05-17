@@ -48,7 +48,7 @@ export function SearchResult(props: SearchResult.Props) {
 
   if (as === "ripple") {
     return (
-      <Ripple {...{ ...rippleProps, className }}>
+      <Ripple {...rippleProps} className={className}>
         <SearchResultContent {...contentProps} />
       </Ripple>
     );

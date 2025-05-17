@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
+import type { AlbumWithTracks } from "~/db/schema";
 import { formatForCurrentScreen, formatForMediaCard } from "~/db/utils";
 
 import { queries as q } from "./keyStore";
@@ -15,9 +16,9 @@ export function useFavoriteListsForCards() {
     ...q.favorites.lists,
     select: (data) =>
       [
-        ...data.albums.map((album) => {
-          const albumData = { ...album, tracks: [] };
-          return formatForMediaCard({ type: "album", data: albumData, t });
+        ...(data.albums as AlbumWithTracks[]).map((album) => {
+          album.tracks = [];
+          return formatForMediaCard({ type: "album", data: album, t });
         }),
         ...data.playlists.map((playlist) =>
           formatForMediaCard({ type: "playlist", data: playlist, t }),

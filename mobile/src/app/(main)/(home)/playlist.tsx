@@ -14,7 +14,8 @@ import { useMediaCardListPreset } from "~/modules/media/components/MediaCard";
 export default function PlaylistScreen() {
   const { isPending, data } = usePlaylistsForCards();
   const presets = useMediaCardListPreset({
-    ...{ data, isPending },
+    data,
+    isPending,
     errMsgKey: "err.msg.noPlaylists",
   });
 

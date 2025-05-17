@@ -88,7 +88,7 @@ function ScanFilterListSheet({
           </StyledText>
         ) : null}
       </StyledText>
-      <FilterForm {...{ listType, listEntries }} />
+      <FilterForm listType={listType} listEntries={listEntries} />
 
       <FlatList
         data={listEntries}

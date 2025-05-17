@@ -111,7 +111,9 @@ async function exportBackup() {
 
   // Create a new file in specified directory & write contents.
   const fileUri = await SAF.createFileAsync(
-    ...[perms.directoryUri, "music_backup", "application/json"],
+    perms.directoryUri,
+    "music_backup",
+    "application/json",
   );
   await SAF.writeAsStringAsync(
     fileUri,

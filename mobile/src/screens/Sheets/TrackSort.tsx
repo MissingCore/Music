@@ -29,7 +29,9 @@ export const TrackSortSheet = deferInitialRender(
           titleKey="feat.modalSort.extra.asc"
           onPress={toggleIsAsc}
           switchState={isAsc}
-          {...{ largeTitle: true, first: true, last: true }}
+          largeTitle
+          first
+          last
         />
         <FlatList
           accessibilityRole="radiogroup"

@@ -35,7 +35,7 @@ export async function fixAlbumFracturization() {
     // Don't need to check last index for duplicate.
     if (idx === nullYearAlbums.length - 1) return;
     // See if this album appears again later on.
-    const exists = [...nullYearAlbums]
+    const exists = nullYearAlbums
       .slice(idx + 1)
       .some((al2) => doesAlbumCopyExists(al, al2));
     if (exists) {

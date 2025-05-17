@@ -70,10 +70,10 @@ export async function getTracks<
   const hasArtwork =
     options?.columns === undefined ||
     options?.columns.includes("artwork" as TCols);
-  return allTracks.map((t) => ({
-    ...t,
-    ...(hasArtwork ? { artwork: getTrackCover(t) } : {}),
-  })) as Array<
+  return allTracks.map((t) => {
+    if (hasArtwork) t.artwork = getTrackCover(t);
+    return t;
+  }) as Array<
     QueriedTrack<BooleanPriority<WithAlbum_User, true>, TCols, ACols>
   >;
 }

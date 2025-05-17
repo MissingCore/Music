@@ -23,7 +23,9 @@ export default function ArtistScreen() {
           <Em className={index > 0 ? "mt-4" : undefined}>{item}</Em>
         ) : (
           <SearchResult
-            {...{ as: "ripple", type: "artist", title: item.name }}
+            as="ripple"
+            type="artist"
+            title={item.name}
             imageSource={item.artwork}
             onPress={() =>
               router.navigate(`/artist/${encodeURIComponent(item.name)}`)

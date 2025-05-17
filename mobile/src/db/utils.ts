@@ -78,7 +78,11 @@ export function formatForMediaCard({ type, data, t }: MediaCardFormatter) {
   }
 
   return {
-    ...{ type, source, href, title: data.name, description },
+    type,
+    source,
+    href,
+    title: data.name,
+    description,
   } as MediaCard.Content;
 }
 
@@ -117,6 +121,11 @@ type ScreenFormatter = Prettify<
   )
 >;
 
+type ScreenTrack = TrackC.Content & {
+  disc: number | null;
+  track: number | null;
+};
+
 /** Format data to be used in the `(current)` routes. */
 export function formatForCurrentScreen({ type, data, t }: ScreenFormatter) {
   const metadata = [
@@ -137,13 +146,13 @@ export function formatForCurrentScreen({ type, data, t }: ScreenFormatter) {
     name: data.name,
     imageSource: imgSrc,
     metadata,
-    tracks: data.tracks.map((track) => ({
-      ...formatForTrack(
-        type,
-        isTrackWithAlbum(track) ? track : { ...track, album: albumInfo },
-      ),
-      ...{ disc: track.disc, track: track.track },
-    })),
+    tracks: (data.tracks as TrackWithAlbum[]).map((track) => {
+      if (!isTrackWithAlbum(track)) (track as TrackWithAlbum).album = albumInfo;
+      const formattedTrack = formatForTrack(type, track) as ScreenTrack;
+      formattedTrack.disc = track.disc;
+      formattedTrack.track = track.track;
+      return formattedTrack;
+    }),
   };
 }
 //#endregion
