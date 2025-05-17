@@ -63,7 +63,7 @@ export default function RootLayout() {
     return <ErrorBoundary error={error} retry={() => Promise.resolve()} />;
   } else if (!isLoaded) {
     return (
-      <AppProvider>
+      <AppProvider systemTheme>
         <OnboardingScreen />
       </AppProvider>
     );

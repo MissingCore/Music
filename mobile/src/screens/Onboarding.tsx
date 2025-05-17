@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Dimensions } from "react-native";
 import BootSplash from "react-native-bootsplash";
-import { useTranslation } from "react-i18next";
 import Animated, {
   FadeOut,
   LinearTransition,
@@ -12,7 +12,6 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { useOnboardingStore } from "~/modules/scanning/services/Onboarding";
-import { SystemTheme } from "~/providers/ThemeProvider";
 
 import { SafeContainer } from "~/components/Containment/SafeContainer";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
@@ -44,19 +43,17 @@ export function OnboardingScreen() {
   const opacity = useAnimatedStyle(() => ({ opacity: infoOpacity.value }));
 
   return (
-    <SystemTheme>
-      <SafeContainer animated {...container} exiting={FadeOut.duration(500)}>
-        <Animated.Image {...logo} style={[logo.style]} />
+    <SafeContainer animated {...container} exiting={FadeOut.duration(500)}>
+      <Animated.Image {...logo} style={[logo.style]} />
 
-        <Animated.View
-          layout={LinearTransition}
-          style={[{ width: Dimensions.get("window").width - 32 }, opacity]}
-          className="absolute bottom-4 left-4 gap-1 rounded-md bg-surface p-4"
-        >
-          <OnboardingPhase />
-        </Animated.View>
-      </SafeContainer>
-    </SystemTheme>
+      <Animated.View
+        layout={LinearTransition}
+        style={[{ width: Dimensions.get("window").width - 32 }, opacity]}
+        className="absolute bottom-4 left-4 gap-1 rounded-md bg-surface p-4"
+      >
+        <OnboardingPhase />
+      </Animated.View>
+    </SafeContainer>
   );
 }
 
