@@ -81,7 +81,7 @@
   },
   "@sentry/react-native": {
     "name": "@sentry/react-native",
-    "version": "6.13.1",
+    "version": "6.14.0",
     "copyright": "Copyright (c) 2017-2024 Sentry",
     "source": "https://github.com/getsentry/sentry-react-native",
     "license": "MIT",
@@ -97,7 +97,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.75.7",
+    "version": "5.76.1",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -233,7 +233,7 @@
   },
   "i18next": {
     "name": "i18next",
-    "version": "25.1.2",
+    "version": "25.1.3",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/i18next",
     "license": "MIT",
@@ -385,7 +385,7 @@
   },
   "react-native-svg": {
     "name": "react-native-svg",
-    "version": "15.11.2",
+    "version": "15.12.0",
     "copyright": "Copyright (c) [2015-2016] [Horcrux]",
     "source": "https://github.com/software-mansion/react-native-svg",
     "license": "MIT",
@@ -441,7 +441,7 @@
   },
   "zustand-computed": {
     "name": "zustand-computed",
-    "version": "2.0.2",
+    "version": "2.1.0",
     "copyright": "Copyright (c) 2022 Christian van der Loo",
     "source": "https://github.com/chrisvander/zustand-computed",
     "license": "MIT",
