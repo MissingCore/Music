@@ -6,15 +6,11 @@ settings:
 
 overrides:
   markdown-it: 14.1.0
-  send: 0.19.0
 
 patchedDependencies:
   '@backpackapp-io/react-native-toast':
     hash: zgygxsuuqk33jr3gwbxpbkmczi
     path: patches/@backpackapp-io__react-native-toast.patch
-  '@lodev09/react-native-true-sheet':
-    hash: ghs6dseqpw4nrudp3xphy4ptkq
-    path: patches/@lodev09__react-native-true-sheet.patch
   '@react-native-assets/slider':
     hash: r2mjdjwkbzsvohkwkhe7tpugg4
     path: patches/@react-native-assets__slider.patch
@@ -31,7 +27,7 @@ importers:
         version: 0.13.0(patch_hash=zgygxsuuqk33jr3gwbxpbkmczi)(react-native-gesture-handler@2.25.0(patch_hash=rjhgnwrqf5shhovxtmq2tgj2qm)(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@react-native-community/cli@14.1.0(typescript@5.8.3))(@types/react@18.3.21)(react@18.3.1))(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.27.1)(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@react-native-community/cli@14.1.0(typescript@5.8.3))(@types/react@18.3.21)(react@18.3.1))(react@18.3.1))(react-native-safe-area-context@5.4.0(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@react-native-community/cli@14.1.0(typescript@5.8.3))(@types/react@18.3.21)(react@18.3.1))(react@18.3.1))(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@react-native-community/cli@14.1.0(typescript@5.8.3))(@types/react@18.3.21)(react@18.3.1))(react@18.3.1)
       '@lodev09/react-native-true-sheet':
         specifier: ^2.0.5
-        version: 2.0.5(patch_hash=ghs6dseqpw4nrudp3xphy4ptkq)(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@react-native-community/cli@14.1.0(typescript@5.8.3))(@types/react@18.3.21)(react@18.3.1))(react@18.3.1)
+        version: 2.0.5(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@react-native-community/cli@14.1.0(typescript@5.8.3))(@types/react@18.3.21)(react@18.3.1))(react@18.3.1)
       '@lukemorales/query-key-factory':
         specifier: ^1.3.4
         version: 1.3.4(@tanstack/query-core@5.76.0)(@tanstack/react-query@5.76.1(react@18.3.1))
@@ -5754,6 +5750,10 @@ packages:
     resolution: {integrity: sha512-dW41u5VfLXu8SJh5bwRmyYUbAoSB3c9uQh6L8h/KtsFREPWpbX1lrljJo186Jc4nmci/sGUZ9a0a0J2zgfq2hw==}
     engines: {node: '>= 0.8.0'}
 
+  send@0.19.1:
+    resolution: {integrity: sha512-p4rRk4f23ynFEfcD9LA0xRYngj+IyGiEYyqqOak8kaN0TvNmuxC2dcVeBn62GpCeR2CpWqyHCNScTP91QbAVFg==}
+    engines: {node: '>= 0.8.0'}
+
   serialize-error@2.1.0:
     resolution: {integrity: sha512-ghgmKt5o4Tly5yEG/UJp8qTd0AN7Xalw4XBtDEKP655B699qMEtra1WlXeE6WIvdEG481JvRxULKsInq/iNysw==}
     engines: {node: '>=0.10.0'}
@@ -7779,7 +7779,7 @@ snapshots:
       resolve-from: 5.0.0
       resolve.exports: 2.0.3
       semver: 7.7.2
-      send: 0.19.0
+      send: 0.19.1
       slugify: 1.6.6
       source-map-support: 0.5.21
       stacktrace-parser: 0.1.11
@@ -8262,7 +8262,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@lodev09/react-native-true-sheet@2.0.5(patch_hash=ghs6dseqpw4nrudp3xphy4ptkq)(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@react-native-community/cli@14.1.0(typescript@5.8.3))(@types/react@18.3.21)(react@18.3.1))(react@18.3.1)':
+  '@lodev09/react-native-true-sheet@2.0.5(react-native@0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@react-native-community/cli@14.1.0(typescript@5.8.3))(@types/react@18.3.21)(react@18.3.1))(react@18.3.1)':
     dependencies:
       react: 18.3.1
       react-native: 0.76.9(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@react-native-community/cli@14.1.0(typescript@5.8.3))(@types/react@18.3.21)(react@18.3.1)
@@ -13179,6 +13179,24 @@ snapshots:
       depd: 2.0.0
       destroy: 1.2.0
       encodeurl: 1.0.2
+      escape-html: 1.0.3
+      etag: 1.8.1
+      fresh: 0.5.2
+      http-errors: 2.0.0
+      mime: 1.6.0
+      ms: 2.1.3
+      on-finished: 2.4.1
+      range-parser: 1.2.1
+      statuses: 2.0.1
+    transitivePeerDependencies:
+      - supports-color
+
+  send@0.19.1:
+    dependencies:
+      debug: 2.6.9
+      depd: 2.0.0
+      destroy: 1.2.0
+      encodeurl: 2.0.0
       escape-html: 1.0.3
       etag: 1.8.1
       fresh: 0.5.2
