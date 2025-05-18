@@ -6,7 +6,7 @@ import {
   getInfoAsync,
   makeDirectoryAsync,
 } from "expo-file-system";
-import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
+import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 import { launchImageLibraryAsync } from "expo-image-picker";
 
 import type { Maybe } from "~/utils/types";
@@ -51,7 +51,8 @@ export async function pickImage() {
  * base64 image string.
  */
 export async function saveImage(uri: string) {
-  const { uri: webpUri } = await manipulateAsync(uri, [], {
+  const img = await ImageManipulator.manipulate(uri).renderAsync();
+  const { uri: webpUri } = await img.saveAsync({
     compress: 0.85, // Preserve 85% of original image quality.
     format: SaveFormat.WEBP,
   });
