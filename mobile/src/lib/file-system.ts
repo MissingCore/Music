@@ -9,7 +9,7 @@ import type { Maybe } from "~/utils/types";
 export const ImageDirectory = Paths.join(Paths.document, "images");
 
 /** Creates "image" directory if it doesn't already exist. */
-export async function createImageDirectory() {
+export function createImageDirectory() {
   const imgDir = new Directory(ImageDirectory);
   if (!imgDir.exists) imgDir.create();
 }
@@ -48,7 +48,9 @@ export async function pickImage() {
  * base64 image string.
  */
 export async function saveImage(uri: string) {
+  // Apply any manipulations (we did none).
   const img = await ImageManipulator.manipulate(uri).renderAsync();
+  // Saves image to cache directory.
   const { uri: webpUri } = await img.saveAsync({
     compress: 0.85, // Preserve 85% of original image quality.
     format: SaveFormat.WEBP,
