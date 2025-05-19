@@ -132,9 +132,7 @@ function ContentImage(props: AnimatedVinylProps) {
 
   return (
     <>
-      <DeferRender
-        delayMs={props.mediaSource.type === "artist" ? 1000 : undefined}
-      >
+      <DeferRender>
         <RenderedSheet sheetRef={artworkSheetRef} id={props.mediaSource.id} />
       </DeferRender>
       <Pressable
