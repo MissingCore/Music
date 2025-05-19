@@ -189,7 +189,7 @@
       "brief": "Evita que \"Repetir una\" cambie a \"Repetir\" al saltar."
     },
     "scanning": {
-      "title": "Escaneando",
+      "title": "Escaneo",
       "brief": "Opciones de descubrimiento de música."
     },
     "rescan": {
@@ -261,7 +261,7 @@
       "title": "Reproducido recientemente",
       "extra": {
         "empty": "¡Aún no has reproducido nada!",
-        "section": "Sección Reproducida Recientemente"
+        "section": "Reproducido recientemente"
       }
     },
     "search": {
