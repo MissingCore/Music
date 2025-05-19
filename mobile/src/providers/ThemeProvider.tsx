@@ -1,9 +1,9 @@
 import type { Theme } from "@react-navigation/native";
 import { ThemeProvider as NavigationThemeProvider } from "@react-navigation/native";
 import { vars } from "nativewind";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import type { ViewStyle } from "react-native";
-import { View, useColorScheme } from "react-native";
+import { Appearance, View, useColorScheme } from "react-native";
 import { SystemBars } from "react-native-edge-to-edge";
 
 import { useUserPreferencesStore } from "~/services/UserPreferences";
@@ -57,14 +57,18 @@ export function SystemTheme(props: {
   children: React.ReactNode;
   style?: ViewStyle;
 }) {
-  const deviceTheme = useColorScheme();
   const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  const getInitialSystemTheme = useCallback(() => {
+    setTheme(Appearance.getColorScheme() ?? "light");
+  }, []);
 
   return (
     <View
       // Use the initial theme as it'll change when we get the values from
-      // the user preference store.
-      onLayout={() => setTheme(deviceTheme ?? "light")}
+      // the user preference store. The order when a callback ref is fired
+      // allow us to keep the system theme during the onboarding process.
+      ref={getInitialSystemTheme}
       style={[Themes[theme], props.style]}
       className="flex-1 bg-canvas"
     >
