@@ -17,7 +17,7 @@ export function useSearch<TScope extends SearchCategories>(
   const { data } = useAllMedia();
   return useMemo(() => {
     if (!data || !query) return undefined;
-    let q = query.toLocaleLowerCase();
+    const q = query.toLocaleLowerCase();
     return Object.fromEntries(
       scope.map((mediaType) => [
         mediaType,

@@ -69,7 +69,7 @@ recentListStore.subscribe(
     for (const { id, type } of sources) {
       try {
         if (type === "album") {
-          let data = (await getAlbum(id, {
+          const data = (await getAlbum(id, {
             columns: ["id", "name", "artistName", "artwork"],
             withTracks: false,
           })) as AlbumWithTracks;

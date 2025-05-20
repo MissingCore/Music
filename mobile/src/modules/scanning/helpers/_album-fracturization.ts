@@ -22,7 +22,7 @@ export async function fixAlbumFracturization() {
 
   // Find which `name` + `artistName` combinations have been duplicated
   // with `releaseYear = null`.
-  let duplicateCombos: Array<{ key: UniqueFields; ids: string[] }> = [];
+  const duplicateCombos: Array<{ key: UniqueFields; ids: string[] }> = [];
   nullYearAlbums.forEach((al, idx) => {
     // See if we found this album earlier.
     const existsIdx = duplicateCombos.findIndex((dupAl) =>

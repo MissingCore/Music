@@ -31,7 +31,7 @@ export async function checkForMigrations() {
   onboardingStore.setState({ phase: "preprocess" });
 
   // Get the list of migrations we need to make.
-  let pendingMigrations: MigrationOption[] = [];
+  const pendingMigrations: MigrationOption[] = [];
   for (let i = lastMigrationCode; i < lastestMigrationCode; i++) {
     pendingMigrations.push(...(MigrationHistory[i + 1]?.changes ?? []));
   }

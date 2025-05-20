@@ -79,7 +79,7 @@ export function sortTracks<TData extends PartialTrack>(
 
   // FIXME: Once Hermes supports `toSorted` & `toReversed`, use those
   // instead of the in-place methods.
-  let sortedTracks = [...tracks];
+  const sortedTracks = [...tracks];
   // Order track by attribute (by default, tracks are sorted in alphabetical
   // order in the database).
   if (orderedBy === "modified") {

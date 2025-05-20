@@ -186,7 +186,7 @@ export async function updatePlaylist(
   },
 ) {
   const { tracks, name, ...rest } = values;
-  let sanitizedName = name ? sanitizePlaylistName(name) : undefined;
+  const sanitizedName = name ? sanitizePlaylistName(name) : undefined;
   return db.transaction(async (tx) => {
     try {
       await tx
