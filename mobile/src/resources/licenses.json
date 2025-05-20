@@ -233,7 +233,7 @@
   },
   "i18next": {
     "name": "i18next",
-    "version": "25.1.3",
+    "version": "25.2.0",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/i18next",
     "license": "MIT",
@@ -353,7 +353,7 @@
   },
   "react-native-pager-view": {
     "name": "react-native-pager-view",
-    "version": "6.7.1",
+    "version": "6.8.0",
     "copyright": "Copyright (c) 2021 Callstack",
     "source": "https://github.com/callstack/react-native-pager-view",
     "license": "MIT",
