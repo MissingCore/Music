@@ -4,7 +4,7 @@ import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 
-import nonNPMLicenses from "./nonNPMLicenses.json" assert { type: "json" };
+import nonNPMLicenses from "./nonNPMLicenses.json" with { type: "json" };
 
 const ConsoleColor = {
   reset: "\x1b[0m",
