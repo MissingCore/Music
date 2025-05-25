@@ -2,7 +2,6 @@ import type { Href } from "expo-router";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
-import { useProgress } from "react-native-track-player";
 
 import type { TrackWithAlbum } from "~/db/schema";
 
@@ -13,10 +12,9 @@ import { LibraryMusic } from "~/icons/LibraryMusic";
 import { MoreVert } from "~/icons/MoreVert";
 import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { useMusicStore } from "~/modules/media/services/Music";
-import { MusicControls } from "~/modules/media/services/Playback";
 import { presentTrackSheet } from "~/services/SessionStore";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
-import { useSeekStore } from "~/screens/NowPlaying/helpers/SeekService";
+import { usePlayerProgress } from "~/screens/NowPlaying/helpers/usePlayerProgress";
 import { NowPlayingArtwork } from "~/screens/NowPlaying/Artwork";
 import { NowPlayingSheets } from "~/screens/NowPlaying/Sheets";
 
@@ -147,24 +145,17 @@ function MarqueeLink({
 //#region Seek Bar
 /** Allows us to change the current positon of the playing track. */
 function SeekBar({ duration }: { duration: number }) {
-  const { position } = useProgress(200);
-  const sliderPos = useSeekStore((state) => state.sliderPos);
-  const setSliderPos = useSeekStore((state) => state.setSliderPos);
+  const { position, setPosition, seekToPosition } = usePlayerProgress();
 
-  const displayedPos = sliderPos ?? position;
-  const clampedPos = displayedPos > duration ? duration : displayedPos;
+  const clampedPos = position > duration ? duration : position;
 
   return (
     <View>
       <Slider
         value={clampedPos}
         max={duration}
-        onChange={(newPos) => setSliderPos(newPos)}
-        onComplete={async (newPos) => {
-          await MusicControls.seekTo(newPos);
-          // Helps prevents "rubberbanding".
-          setTimeout(() => setSliderPos(null), 250);
-        }}
+        onChange={setPosition}
+        onComplete={seekToPosition}
         thumbSize={16}
       />
       <View className="flex-row justify-between">

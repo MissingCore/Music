@@ -9,17 +9,14 @@ import {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import TrackPlayer, { useProgress } from "react-native-track-player";
 
 import { useMusicStore } from "~/modules/media/services/Music";
-import { useSeekStore } from "./SeekService";
+import { usePlayerProgress } from "./usePlayerProgress";
 
 /** Controls the rotation of the vinyl on the "Now Playing" screen. */
 export function useVinylSeekbar() {
-  const { position } = useProgress(200);
+  const { position, setPosition, seekToPosition } = usePlayerProgress();
   const activeTrack = useMusicStore((state) => state.activeTrack);
-  const sliderPos = useSeekStore((state) => state.sliderPos);
-  const setSliderPos = useSeekStore((state) => state.setSliderPos);
 
   const wrapperRef = useRef<Animated.View>(null);
   const hasMounted = useRef(false);
@@ -52,24 +49,21 @@ export function useVinylSeekbar() {
 
   const onEnd = useCallback(
     async (seconds: number) => {
-      await TrackPlayer.seekTo(seconds);
+      await seekToPosition(seconds);
       trueProgress.value = convertUnit(seconds);
       debounceAngle.value = seekProgress.value = null;
-      // Helps prevents "rubberbanding" in seekbar.
-      setTimeout(() => setSliderPos(null), 250);
     },
-    [debounceAngle, setSliderPos, seekProgress, trueProgress],
+    [debounceAngle, seekToPosition, seekProgress, trueProgress],
   );
 
   useEffect(() => {
-    const renderedPosition = sliderPos ?? position;
-    if (renderedPosition === 0) {
+    if (position === 0) {
       // Reset animation when position goes back to 0s.
       cancelAnimation(trueProgress);
       trueProgress.value = 0;
-    } else if (renderedPosition < duration - 1) {
+    } else if (position < duration - 1) {
       trueProgress.value = withTiming(
-        convertUnit(renderedPosition),
+        convertUnit(position),
         // Prevent vinyl rotation on mount.
         { duration: hasMounted.current ? 500 : 0, easing: Easing.linear },
       );
@@ -79,14 +73,14 @@ export function useVinylSeekbar() {
       // the following image is large in size (ie: "animation spike").
       cancelAnimation(trueProgress);
     }
-  }, [duration, position, sliderPos, trueProgress]);
+  }, [duration, position, trueProgress]);
 
   const seekGesture = Gesture.Pan()
     .shouldCancelWhenOutside(true)
     .hitSlop(32)
     .onStart(({ absoluteX, absoluteY }) => {
       runOnJS(setIsActive)(true);
-      runOnJS(setSliderPos)(position);
+      runOnJS(setPosition)(position);
       debounceAngle.value = seekProgress.value = convertUnit(position);
       prevAngle.value = Math.atan2(
         absoluteY - centerY.value,
@@ -110,7 +104,7 @@ export function useVinylSeekbar() {
 
       // Only run `setSliderPos` when we've rotated ~15deg (which is ~1s).
       if (Math.abs((debounceAngle.value ?? 0) - seekProgress.value) > 15) {
-        runOnJS(setSliderPos)(convertUnit(seekProgress.value, "degrees"));
+        runOnJS(setPosition)(convertUnit(seekProgress.value, "degrees"));
         debounceAngle.value = seekProgress.value;
       }
       prevAngle.value = currAngle;
