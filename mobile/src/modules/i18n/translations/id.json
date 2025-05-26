@@ -182,11 +182,11 @@
     },
     "ignoreInterrupt": {
       "title": "Abaikan Interupsi",
-      "brief": null
+      "brief": "Lanjutkan memutar audio ketika interupsi seperti notifikasi atau panggilan telepon. Anda harus menjeda secara manual dan melanjutkan musik dalam situasi ini."
     },
     "repeatOnSkip": {
-      "title": null,
-      "brief": null
+      "title": "Tetap dalam Mode Mengulang saat Melewati",
+      "brief": "Jangan mengalihkan mode ke \"Ulangi\" dari \"Ulangi Sekali\" saat melewati."
     },
     "scanning": {
       "title": "Memindai",

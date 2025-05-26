@@ -25,7 +25,7 @@
     "home": "Accueil",
     "settings": "Paramètres",
     "upcoming": "À venir",
-    "playingFrom": null,
+    "playingFrom": "Joue depuis",
     "disc": "CD {{count}}"
   },
   "template": {
@@ -110,7 +110,7 @@
     "font": {
       "extra": {
         "accent": "Police Accentuée",
-        "primary": null
+        "primary": "Police Principale"
       }
     },
     "theme": {
@@ -134,7 +134,7 @@
       "extra": {
         "plain": "Classique",
         "vinyl": "Vinyle",
-        "vinylOld": null
+        "vinylOld": "Vinyle (Legacy)"
       }
     },
     "language": {
@@ -172,21 +172,21 @@
       "brief": "Fonctionnalités Nothing supportées."
     },
     "playback": {
-      "title": null,
-      "brief": null,
+      "title": "Lecture",
+      "brief": "Changer le comportement de lecture de la musique.",
       "extra": {
-        "options": null,
-        "speed": null,
-        "volume": null
+        "options": "Options de Lecture",
+        "speed": "Vitesse de lecture",
+        "volume": "Volume de l'application"
       }
     },
     "ignoreInterrupt": {
-      "title": null,
-      "brief": null
+      "title": "Ignorer les interruptions",
+      "brief": "Continuer à lire l'audio quand une interruption comme une notification ou un appel se produit. Vous devrez mettre manuellement la musique en pause et la remettre en pause pendant ces situations."
     },
     "repeatOnSkip": {
-      "title": null,
-      "brief": null
+      "title": "Garder le mode Répéter lors du passage au titre suivant",
+      "brief": "Ne pas basculer en mode « Répéter » depuis « Répéter le titre » lors du saut."
     },
     "scanning": {
       "title": "Recherche de musique",
@@ -261,7 +261,7 @@
       "title": "Écouté récemment",
       "extra": {
         "empty": "Vous n'avez encore rien écouté!",
-        "section": null
+        "section": "Récemment Joués"
       }
     },
     "search": {
