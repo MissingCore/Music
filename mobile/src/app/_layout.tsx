@@ -1,10 +1,8 @@
 import { Stack } from "expo-router";
-import { useCallback } from "react";
 import { View } from "react-native";
 import Bootsplash from "react-native-bootsplash";
 import TrackPlayer from "react-native-track-player";
 
-import { musicStore } from "~/modules/media/services/Music";
 import { useLoadResources } from "~/hooks/useLoadResources";
 import { AppProvider } from "~/providers";
 import { ErrorBoundary } from "~/screens/ErrorBoundary";
@@ -13,6 +11,7 @@ import { TrackSheet } from "~/screens/Sheets/Track";
 
 import "~/resources/global.css";
 import "~/modules/i18n"; // Make sure translations are bundled.
+import { SENTRY_ENABLED, Sentry } from "~/lib/sentry";
 import { TopAppBar } from "~/components/TopAppBar";
 import { NowPlayingTopAppBar } from "~/screens/NowPlaying/TopAppBar";
 
@@ -24,12 +23,7 @@ export const unstable_settings = {
   initialRouteName: "(main)/(home)",
 };
 
-let Sentry: any;
-const WithSentry = process.env.EXPO_PUBLIC_PRIVACY_BUILD !== "true";
-
-if (WithSentry) {
-  // Dynamically import Sentry if we want to use it.
-  Sentry = require("@sentry/react-native");
+if (SENTRY_ENABLED) {
   Sentry.init({
     dsn: "https://bbd726405356cdfb20b85f5f924fd3e3@o4507687432617984.ingest.us.sentry.io/4507687447101440",
     ignoreErrors: [
@@ -43,23 +37,10 @@ if (WithSentry) {
 export default function RootLayout() {
   const { isLoaded, error } = useLoadResources();
 
-  const onError = useCallback(
-    (node: any) => {
-      if (node !== null && error) {
-        // Display error message to user if encountered.
-        Bootsplash.hide();
-        musicStore.getState().resetOnCrash();
-        // Send error message to Sentry.
-        if (WithSentry && !__DEV__) Sentry.captureException(error);
-      }
-    },
-    [error],
-  );
-
   if (error) {
     return (
       <>
-        <View ref={onError} />
+        <View ref={handleAppLifeCycle} />
         <ErrorBoundary error={error} retry={() => Promise.resolve()} />
       </>
     );
@@ -70,6 +51,7 @@ export default function RootLayout() {
       </AppProvider>
     );
   }
+
   return (
     <>
       <View ref={handleAppLifeCycle} />
