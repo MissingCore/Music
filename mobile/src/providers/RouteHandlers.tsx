@@ -16,17 +16,13 @@ export function RouteHandlers() {
 /** Handle deep links by `react-native-track-player`.  */
 export function DeepLinkHandler() {
   useEffect(() => {
-    function deepLinkHandler(data: { url: string }) {
+    // Fired when the app is already open and the notification is clicked.
+    const subscription = Linking.addEventListener("url", (data) => {
       if (data.url === "trackplayer://notification.click") {
         router.navigate("/now-playing");
       }
-    }
-    // This event will be fired when the app is already open and the notification is clicked
-    const subscription = Linking.addEventListener("url", deepLinkHandler);
-
-    return () => {
-      subscription.remove();
-    };
+    });
+    return () => subscription.remove();
   }, []);
 
   return null;
@@ -43,7 +39,7 @@ export function PrevRouteTracker() {
   useEffect(() => {
     setPrevRoute(prevPathname.current);
     prevPathname.current = pathname;
-  }, [setPrevRoute, pathname]);
+  }, [pathname, setPrevRoute]);
 
   return null;
 }

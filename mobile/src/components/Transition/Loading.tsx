@@ -13,10 +13,7 @@ export function Loading() {
     const interval = setInterval(() => {
       setIdx((prev) => (prev + 1) % 3);
     }, 250);
-
-    return () => {
-      clearInterval(interval);
-    };
+    return () => clearInterval(interval);
   }, []);
 
   return (

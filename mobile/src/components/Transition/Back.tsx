@@ -1,11 +1,11 @@
 import { router } from "expo-router";
-import { useEffect } from "react";
+import { View } from "react-native";
 
 /** Navigate back when rendered. */
 export function Back() {
-  useEffect(() => {
-    router.back();
-  }, []);
+  return <View ref={goBack} />;
+}
 
-  return null;
+function goBack(node: any) {
+  if (node !== null) router.back();
 }

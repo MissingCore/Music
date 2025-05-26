@@ -193,13 +193,12 @@ function MinDurationSheet(props: { sheetRef: TrueSheetRef }) {
   const [newMin, setNewMin] = useState<string | undefined>();
 
   useEffect(() => {
-    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+    const subscription = Keyboard.addListener(
+      "keyboardDidHide",
       // Update user preference when we close the keyboard.
-      updateMinDuration(newMin);
-    });
-    return () => {
-      hideSubscription.remove();
-    };
+      () => updateMinDuration(newMin),
+    );
+    return () => subscription.remove();
   }, [newMin]);
 
   return (

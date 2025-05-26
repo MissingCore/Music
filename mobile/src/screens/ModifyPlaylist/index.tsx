@@ -102,9 +102,7 @@ function PageContent() {
         return true;
       },
     );
-    return () => {
-      subscription.remove();
-    };
+    return () => subscription.remove();
   }, [isSubmitting, isUnchanged, setShowConfirmation]);
 
   return (

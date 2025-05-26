@@ -1,5 +1,6 @@
 import { Stack } from "expo-router";
-import { useEffect } from "react";
+import { useCallback } from "react";
+import { View } from "react-native";
 import Bootsplash from "react-native-bootsplash";
 import TrackPlayer from "react-native-track-player";
 
@@ -42,25 +43,26 @@ if (WithSentry) {
 export default function RootLayout() {
   const { isLoaded, error } = useLoadResources();
 
-  // Ensure the RNTP service closes on app close.
-  useEffect(() => {
-    return () => {
-      TrackPlayer.reset().catch();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (error) {
-      // Display error message to user if encountered.
-      Bootsplash.hide();
-      musicStore.getState().resetOnCrash();
-      // Send error message to Sentry.
-      if (WithSentry && !__DEV__) Sentry.captureException(error);
-    }
-  }, [error]);
+  const onError = useCallback(
+    (node: any) => {
+      if (node !== null && error) {
+        // Display error message to user if encountered.
+        Bootsplash.hide();
+        musicStore.getState().resetOnCrash();
+        // Send error message to Sentry.
+        if (WithSentry && !__DEV__) Sentry.captureException(error);
+      }
+    },
+    [error],
+  );
 
   if (error) {
-    return <ErrorBoundary error={error} retry={() => Promise.resolve()} />;
+    return (
+      <>
+        <View ref={onError} />
+        <ErrorBoundary error={error} retry={() => Promise.resolve()} />
+      </>
+    );
   } else if (!isLoaded) {
     return (
       <AppProvider systemTheme>
@@ -68,41 +70,45 @@ export default function RootLayout() {
       </AppProvider>
     );
   }
-  return <RootLayoutNav />;
+  return (
+    <>
+      <View ref={handleAppLifeCycle} />
+      <AppProvider>
+        <Stack screenOptions={{ header: TopAppBar, headerShown: false }}>
+          <Stack.Screen name="(main)" />
+          <Stack.Screen
+            name="now-playing"
+            options={{
+              animation: "slide_from_bottom",
+              header: NowPlayingTopAppBar,
+              headerTransparent: true,
+              headerShown: true,
+              headerTitle: "",
+            }}
+          />
+          <Stack.Screen
+            name="search"
+            options={{ headerShown: true, title: "" }}
+          />
+          <Stack.Screen name="setting" />
+          <Stack.Screen name="notification.click" />
+        </Stack>
+
+        <TrackSheet />
+      </AppProvider>
+    </>
+  );
 }
 
-function RootLayoutNav() {
-  useEffect(() => {
+function handleAppLifeCycle(node: any) {
+  if (node !== null) {
     // Encountered issue in Android 12+ where one of the bootsplashes
     // persisted when it shouldn't. Make sure we close at least the bootsplash
     // from `react-native-bootsplash` whenever we render the app (in case its
     // "autohide" behavior doesn't work as expected).
     Bootsplash.hide();
-  }, []);
-
-  return (
-    <AppProvider>
-      <Stack screenOptions={{ header: TopAppBar, headerShown: false }}>
-        <Stack.Screen name="(main)" />
-        <Stack.Screen
-          name="now-playing"
-          options={{
-            animation: "slide_from_bottom",
-            header: NowPlayingTopAppBar,
-            headerTransparent: true,
-            headerShown: true,
-            headerTitle: "",
-          }}
-        />
-        <Stack.Screen
-          name="search"
-          options={{ headerShown: true, title: "" }}
-        />
-        <Stack.Screen name="setting" />
-        <Stack.Screen name="notification.click" />
-      </Stack>
-
-      <TrackSheet />
-    </AppProvider>
-  );
+  } else {
+    // Ensure the RNTP service gets destroyed on app close.
+    TrackPlayer.reset().catch();
+  }
 }

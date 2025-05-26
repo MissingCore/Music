@@ -32,15 +32,13 @@ export function useSetup() {
   );
 
   useEffect(() => {
-    const initRNTP = async () => {
+    (async () => {
       await setupPlayer();
       // Ensure RNTP is successfully setup before initializing stores that
       // rely on its initialization.
       await userPreferencesStore.persist.rehydrate();
       await musicStore.persist.rehydrate();
-    };
-
-    initRNTP();
+    })();
   }, []);
 
   return (

@@ -66,9 +66,7 @@ export default function FolderScreen() {
         return true;
       },
     );
-    return () => {
-      subscription.remove();
-    };
+    return () => subscription.remove();
   }, [dirSegments, isFocused, setDirSegments]);
 
   // Information about this track list.
