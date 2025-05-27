@@ -19,10 +19,9 @@ export function useSearch<TScope extends SearchCategories>(
     if (!data || !query) return undefined;
     const q = query.toLocaleLowerCase();
     return Object.fromEntries(
-      scope.map((mediaType) => [
-        mediaType,
-        data[mediaType].filter((i) => {
-          return (
+      scope.map((mediaType) => {
+        const filteredResults = data[mediaType].filter(
+          (i) =>
             // Partial match with the `name` field.
             i.name.toLocaleLowerCase().includes(q) ||
             // Album's or track's artist name starts with the query.
@@ -31,10 +30,19 @@ export function useSearch<TScope extends SearchCategories>(
             (!!i.artistName && i.artistName.toLocaleLowerCase().startsWith(q)) ||
             // Track's album starts with the query.
             // @ts-expect-error - We ensured the `album` field is present.
-            (!!i.album && i.album.name.toLocaleLowerCase().startsWith(q))
-          );
-        }),
-      ]),
+            (!!i.album && i.album.name.toLocaleLowerCase().startsWith(q)),
+        );
+
+        // Have results that start with the query first.
+        const goodMatch = Array<(typeof filteredResults)[number]>();
+        const partialMatch = Array<(typeof filteredResults)[number]>();
+        filteredResults.forEach((data) => {
+          if (data.name.toLocaleLowerCase().startsWith(q)) goodMatch.push(data);
+          else partialMatch.push(data);
+        });
+
+        return [mediaType, goodMatch.concat(partialMatch)];
+      }),
     ) as Pick<SearchResults, TScope[number]>;
   }, [data, query, scope]);
 }
