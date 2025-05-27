@@ -22,6 +22,7 @@
     "favorites": "お気に入り",
     "unFavorite": "お気に入りを解除",
     "favoriteTracks": "お気に入りのトラック",
+    "all": null,
     "home": "ホーム",
     "settings": "設定",
     "upcoming": "次に再生",
