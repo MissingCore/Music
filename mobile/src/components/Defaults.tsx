@@ -55,8 +55,8 @@ export const AnimatedFlashList = forwardRef(
   },
 ) as FlashListSignature;
 
-export function useFlashListRef() {
-  return useRef<RawFlashList<any>>(null);
+export function useFlashListRef<T = any>() {
+  return useRef<RawFlashList<T>>(null);
 }
 //#endregion
 

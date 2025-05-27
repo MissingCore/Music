@@ -17,8 +17,8 @@ import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
 import { isString } from "~/utils/validation";
-import { FlashList } from "~/components/Defaults";
-import { IconButton } from "~/components/Form/Button";
+import { FlashList, FlatList, useFlashListRef } from "~/components/Defaults";
+import { Button, IconButton } from "~/components/Form/Button";
 import { TextInput, useInputRef } from "~/components/Form/Input";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { TEm } from "~/components/Typography/StyledText";
@@ -29,6 +29,8 @@ import type {
   SearchCategories,
   SearchResults,
 } from "../types";
+
+type SearchTab = SearchCategories[number] | "all";
 
 /** All-in-one search - tracks the query and displays results. */
 export function SearchEngine<TScope extends SearchCategories>(
@@ -79,12 +81,35 @@ function SearchResultsList<TScope extends SearchCategories>(
   props: SearchResultsListProps<TScope> & { query: string },
 ) {
   const { canvas } = useTheme();
+  const listRef = useFlashListRef<ReturnType<typeof formatResults>>();
   const results = useSearch(props.searchScope, props.query);
+  const [selectedTab, setSelectedTab] = useState<TScope[number] | "all">("all");
+  const [filterHeight, setFilterHeight] = useState(53); // Height will be ~53px
+
+  // Reset tab if we're on a tab with no results or clear the query.
+  if (
+    selectedTab !== "all" &&
+    (results?.[selectedTab]?.length === 0 || props.query === "")
+  ) {
+    // Scroll to top of list when we change tabs.
+    listRef.current?.scrollToOffset({ offset: 0 });
+    setSelectedTab("all");
+  }
+
+  // Get the "tabs" we can filter the search results by.
+  const tabsWithData = useMemo(() => {
+    if (!results) return [];
+    const availableTabs = Object.entries(results)
+      .filter(([_, data]) => (data as unknown[]).length > 0)
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .map(([key]) => key);
+    return availableTabs.length > 0 ? ["all", ...availableTabs] : [];
+  }, [results]) as Array<TScope[number] | "all">;
 
   // Format results to be used in list.
   const data = useMemo(
-    () => (results ? formatResults(results) : undefined),
-    [results],
+    () => (results ? formatResults(results, selectedTab) : undefined),
+    [results, selectedTab],
   );
 
   const shadowColor = useMemo(
@@ -94,7 +119,19 @@ function SearchResultsList<TScope extends SearchCategories>(
 
   return (
     <View className="relative shrink grow">
+      <SearchFilters
+        tabs={tabsWithData}
+        selectedTab={selectedTab}
+        onSelectTab={(tab) => {
+          // Scroll to top of list when we change tabs.
+          listRef.current?.scrollToOffset({ offset: 0 });
+          setSelectedTab(tab);
+        }}
+        getHeight={setFilterHeight}
+      />
       <FlashList
+        // @ts-expect-error - Type conflicts with data.
+        ref={listRef}
         estimatedItemSize={56} // 48px Height + 8px Margin Top
         data={data}
         // Note: We use `index` instead of the `id` or `name` field on the
@@ -127,16 +164,58 @@ function SearchResultsList<TScope extends SearchCategories>(
           ) : undefined
         }
         nestedScrollEnabled={props.forSheets}
-        contentContainerClassName="pt-6 pb-4"
+        contentContainerStyle={{
+          paddingTop: tabsWithData.length > 0 ? filterHeight : 24,
+        }}
+        contentContainerClassName="pb-4"
       />
 
       <LinearGradient
         colors={[`${shadowColor}FF`, `${shadowColor}00`]}
         start={{ x: 0.0, y: 0.0 }}
         end={{ x: 0.0, y: 1.0 }}
-        className="absolute left-0 top-0 h-6 w-full"
+        style={{ height: filterHeight }}
+        className="absolute left-0 top-0 w-full"
       />
     </View>
+  );
+}
+
+/** Specify the type of content we want displayed. */
+function SearchFilters(props: {
+  tabs: SearchTab[];
+  selectedTab: SearchTab;
+  onSelectTab: (tab: SearchTab) => void;
+  getHeight: (containerHeight: number) => void;
+}) {
+  if (props.tabs.length === 0) return null;
+  return (
+    <FlatList
+      onLayout={(e) => props.getHeight(e.nativeEvent.layout.height)}
+      horizontal
+      data={props.tabs}
+      renderItem={({ item: tab }) => {
+        const selected = props.selectedTab === tab;
+        return (
+          <View className="rounded bg-canvas">
+            <Button
+              onPress={() => props.onSelectTab(tab)}
+              className={cn("min-h-0 rounded px-3 py-1.5", {
+                "bg-red": selected,
+              })}
+            >
+              <TEm
+                textKey={`term.${tab}`}
+                className={cn("text-xs", { "text-neutral100": selected })}
+                bold={false}
+              />
+            </Button>
+          </View>
+        );
+      }}
+      className="absolute left-0 top-0 z-10 -mx-4 py-3"
+      contentContainerClassName="gap-1.5 px-4"
+    />
   );
 }
 
@@ -149,12 +228,15 @@ const withArtistName = ["album", "track"];
  * Ensure the "sections" are in alphabetical order and remove any groups with
  * no items before formatting.
  */
-function formatResults(results: Partial<SearchResults>) {
+function formatResults(results: Partial<SearchResults>, tab: SearchTab) {
   return Object.entries(results)
-    .filter(([_, data]) => data.length > 0)
+    .filter(([key, data]) => {
+      if (tab !== "all" && tab !== key) return false;
+      return data.length > 0;
+    })
     .sort((a, b) => a[0].localeCompare(b[0]))
     .map(([key, data]) => [
-      key as SearchCategories[number],
+      ...(tab === "all" ? [key as SearchCategories[number]] : []),
       ...data.map((item) => ({
         type: key as SearchCategories[number],
         // @ts-expect-error - Values are of correct types.
