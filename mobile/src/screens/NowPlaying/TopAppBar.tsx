@@ -38,9 +38,11 @@ function AppBarContent() {
   const usedDesign = useUserPreferencesStore((state) => state.nowPlayingDesign);
 
   const listHref = useMemo(() => {
-    if (!playingSource || playingSource.type === "folder") return undefined;
+    if (!playingSource) return undefined;
     const { type, id } = playingSource;
     if (type === "playlist" && id === ReservedPlaylists.tracks) return "/track";
+    else if (type === "folder")
+      return `/folder?path=${encodeURIComponent(id)}` satisfies Href;
     return `/${type}/${encodeURIComponent(id)}` satisfies Href;
   }, [playingSource]);
 

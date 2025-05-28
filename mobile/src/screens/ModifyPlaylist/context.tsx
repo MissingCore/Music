@@ -49,7 +49,7 @@ type PlaylistStore = InitStoreProps & {
   setShowConfirmation: (status: boolean) => void;
 
   /** Callbacks to add searched tracks to the `tracks` state. */
-  SearchCallbacks: Pick<SearchCallbacks, "album" | "track">;
+  SearchCallbacks: Pick<SearchCallbacks, "album" | "folder" | "track">;
 
   /** Validates our inputs before passing those values to `onSubmit`. */
   INTERNAL_onSubmit: () => Promise<void>;
@@ -133,6 +133,10 @@ export function PlaylistStoreProvider({
               i18next.t("template.entryAdded", { name: album.name }),
               ToastOptions,
             );
+          },
+          folder: ({ name, tracks }) => {
+            set((prev) => ({ tracks: mergeTracks(prev.tracks, tracks) }));
+            toast(i18next.t("template.entryAdded", { name }), ToastOptions);
           },
           track: (track) => {
             set((prev) => ({

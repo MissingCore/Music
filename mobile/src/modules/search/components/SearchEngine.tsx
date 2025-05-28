@@ -237,16 +237,23 @@ function formatResults(results: Partial<SearchResults>, tab: SearchTab) {
     .sort((a, b) => a[0].localeCompare(b[0]))
     .map(([key, data]) => [
       ...(tab === "all" ? [key as SearchCategories[number]] : []),
-      ...data.map((item) => ({
-        type: key as SearchCategories[number],
-        // @ts-expect-error - Values are of correct types.
-        imageSource: getArtwork({ type: key, data: item }),
-        title: item.name,
-        // prettier-ignore
+      ...data.map((item) => {
+        let description: string | undefined;
         // @ts-expect-error - `artistName` should be present in these cases.
-        description: withArtistName.includes(key) ? (item.artistName ?? "—") : undefined,
-        entry: item,
-      })),
+        if (withArtistName.includes(key)) description = item.artistName ?? "—";
+        // @ts-expect-error - `path` should be present in these cases.
+        else if (item.path) description = item.path;
+
+        return {
+          type: key as SearchCategories[number],
+          imageSource:
+            // @ts-expect-error - Values are of correct types.
+            key !== "folder" ? getArtwork({ type: key, data: item }) : null,
+          title: item.name,
+          description,
+          entry: item,
+        };
+      }),
     ])
     .flat();
 }

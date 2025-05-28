@@ -7,7 +7,7 @@ import { SearchEngine } from "~/modules/search/components/SearchEngine";
 import type { SearchCallbacks } from "~/modules/search/types";
 
 /** List of media we want to appear in the search. */
-const searchScope = ["album", "track"] as const;
+const searchScope = ["album", "folder", "track"] as const;
 
 /** Enables us to add music to a playlist. */
 export const AddMusicSheet = deferInitialRender(function AddMusicSheet(props: {

@@ -14,6 +14,9 @@ patchedDependencies:
   '@react-native-assets/slider':
     hash: r2mjdjwkbzsvohkwkhe7tpugg4
     path: patches/@react-native-assets__slider.patch
+  expo-router:
+    hash: 57vunnovuvb4cthgesct5jkexy
+    path: patches/expo-router.patch
   react-native-gesture-handler:
     hash: rjhgnwrqf5shhovxtmq2tgj2qm
     path: patches/react-native-gesture-handler.patch
@@ -99,7 +102,7 @@ importers:
         version: 17.0.6(expo@52.0.46(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@expo/metro-runtime@3.2.3(react-native@0.77.2(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@react-native-community/cli@14.1.0(typescript@5.8.3))(@types/react@18.3.22)(react@18.3.1)))(graphql@15.8.0)(react-native@0.77.2(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@react-native-community/cli@14.1.0(typescript@5.8.3))(@types/react@18.3.22)(react@18.3.1))(react@18.3.1))(react-native@0.77.2(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@react-native-community/cli@14.1.0(typescript@5.8.3))(@types/react@18.3.22)(react@18.3.1))
       expo-router:
         specifier: ~3.5.24
-        version: 3.5.24(sdbw2itehpgjii3b5dbhtw2mkm)
+        version: 3.5.24(patch_hash=57vunnovuvb4cthgesct5jkexy)(sdbw2itehpgjii3b5dbhtw2mkm)
       expo-sqlite:
         specifier: ~15.1.4
         version: 15.1.4(expo@52.0.46(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@expo/metro-runtime@3.2.3(react-native@0.77.2(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@react-native-community/cli@14.1.0(typescript@5.8.3))(@types/react@18.3.22)(react@18.3.1)))(graphql@15.8.0)(react-native@0.77.2(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@react-native-community/cli@14.1.0(typescript@5.8.3))(@types/react@18.3.22)(react@18.3.1))(react@18.3.1))(react-native@0.77.2(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@react-native-community/cli@14.1.0(typescript@5.8.3))(@types/react@18.3.22)(react@18.3.1))(react@18.3.1)
@@ -10904,7 +10907,7 @@ snapshots:
     dependencies:
       invariant: 2.2.4
 
-  expo-router@3.5.24(sdbw2itehpgjii3b5dbhtw2mkm):
+  expo-router@3.5.24(patch_hash=57vunnovuvb4cthgesct5jkexy)(sdbw2itehpgjii3b5dbhtw2mkm):
     dependencies:
       '@expo/metro-runtime': 3.2.3(react-native@0.77.2(@babel/core@7.27.1)(@babel/preset-env@7.26.0(@babel/core@7.27.1))(@react-native-community/cli@14.1.0(typescript@5.8.3))(@types/react@18.3.22)(react@18.3.1))
       '@expo/server': 0.4.4(typescript@5.8.3)

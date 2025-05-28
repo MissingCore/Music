@@ -1,5 +1,9 @@
 import OldAsyncStorage from "@react-native-async-storage/async-storage";
+import { inArray } from "drizzle-orm";
 import AsyncStorage from "expo-sqlite/kv-store";
+
+import { db } from "~/db";
+import { fileNodes } from "~/db/schema";
 
 import { musicStore } from "~/modules/media/services/Music";
 import { recentListStore } from "~/modules/media/services/RecentList";
@@ -7,6 +11,7 @@ import { sortPreferencesStore } from "~/modules/media/services/SortPreferences";
 import { userPreferencesStore } from "~/services/UserPreferences";
 import { onboardingStore } from "../services/Onboarding";
 
+import { savePathComponents } from "./folder";
 import type { MigrationOption } from "../constants";
 import { MigrationHistory } from "../constants";
 
@@ -61,5 +66,23 @@ export const MigrationFunctionMap: Record<
 
     // Delete data in the old AsyncStorage provider afterwards.
     await OldAsyncStorage.clear();
+  },
+  "fileNodes-adjustment": async () => {
+    const oldRootNodes = await db.query.fileNodes.findMany({
+      where: (fields, { isNull }) => isNull(fields.parentPath),
+    });
+    // Delete these old "shortcut"s.
+    await db.delete(fileNodes).where(
+      inArray(
+        fileNodes.path,
+        oldRootNodes.map((node) => node.path),
+      ),
+    );
+    await Promise.allSettled(
+      // The "placeholder" portion won't get saved.
+      oldRootNodes.map((node) =>
+        savePathComponents("file:///" + node.path + "placeholder"),
+      ),
+    );
   },
 };

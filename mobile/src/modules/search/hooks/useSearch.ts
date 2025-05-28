@@ -1,11 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
+import { db } from "~/db";
+import type { SlimFolder, SlimTrackWithAlbum } from "~/db/slimTypes";
+
 import { getAlbums } from "~/api/album";
 import { getArtists } from "~/api/artist";
 import { getPlaylists } from "~/api/playlist";
 import { getTracks } from "~/api/track";
 
+import { addTrailingSlash } from "~/utils/string";
 import type { Prettify } from "~/utils/types";
 import type { SearchCategories, SearchResults } from "../types";
 
@@ -30,7 +34,10 @@ export function useSearch<TScope extends SearchCategories>(
             (!!i.artistName && i.artistName.toLocaleLowerCase().startsWith(q)) ||
             // Track's album starts with the query.
             // @ts-expect-error - We ensured the `album` field is present.
-            (!!i.album && i.album.name.toLocaleLowerCase().startsWith(q)),
+            (!!i.album && i.album.name.toLocaleLowerCase().startsWith(q)) ||
+            // Folder's path includes the query.
+            // @ts-expect-error - We ensured the `path` field is present.
+            (!!i.path && i.path.toLocaleLowerCase().includes(q)),
         );
 
         // Have results that start with the query first.
@@ -49,6 +56,27 @@ export function useSearch<TScope extends SearchCategories>(
 
 //#region Helpers
 async function getAllMedia() {
+  // Maybe manually building the query would be faster, but would be a bit
+  // too complicated to read.
+  const [allTracks, allFolders] = await Promise.all([
+    getTracks({
+      columns: ["id", "name", "artistName", "artwork", "parentFolder"],
+      albumColumns: ["name", "artwork"],
+    }),
+    db.query.fileNodes.findMany({
+      orderBy: (f, { asc }) => [asc(f.parentPath), asc(f.name)],
+    }),
+  ]);
+
+  // Pre-group the tracks by their `parentFolder` to make things a lot faster.
+  const groupedTracks: Record<string, SlimTrackWithAlbum[]> = {};
+  allTracks.forEach(({ parentFolder, ...t }) => {
+    if (!parentFolder) return;
+
+    if (groupedTracks[parentFolder]) groupedTracks[parentFolder].push(t);
+    else groupedTracks[parentFolder] = [t];
+  });
+
   return {
     album: await getAlbums({
       columns: ["id", "name", "artistName", "artwork"],
@@ -58,15 +86,16 @@ async function getAllMedia() {
       columns: ["name", "artwork"],
       withTracks: false,
     }),
+    folder: (allFolders as SlimFolder[]).map((f) => {
+      f.tracks = groupedTracks[`file:///${addTrailingSlash(f.path)}`] ?? [];
+      return f;
+    }),
     playlist: await getPlaylists({
       columns: ["name", "artwork"],
       trackColumns: ["artwork"],
       albumColumns: ["artwork"],
     }),
-    track: await getTracks({
-      columns: ["id", "name", "artistName", "artwork"],
-      albumColumns: ["name", "artwork"],
-    }),
+    track: allTracks.map(({ parentFolder: _, ...t }) => t),
   } satisfies SearchResults;
 }
 

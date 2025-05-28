@@ -21,7 +21,7 @@ export default function SearchScreen() {
 }
 
 /** List of media we want to appear in the search. */
-const searchScope = ["album", "artist", "playlist", "track"] as const;
+const searchScope = ["album", "artist", "folder", "playlist", "track"] as const;
 
 /** Actions that we want to run when we click on a search item. */
 const searchCallbacks: SearchCallbacks = {
@@ -35,4 +35,16 @@ const searchCallbacks: SearchCallbacks = {
       trackId: id,
       source: { type: "playlist", id: ReservedPlaylists.tracks },
     }),
+  /*
+    Navigate to the folder route, meaning a "back" action won't bring us
+    back to this screen.
+    
+    Although using `push()` works, things become a bit janky as:
+      1. The navigation bar won't work the way we expect.
+      2. If we use this pushed screen, at a certain point when using the
+      "back" gesture, we'll end up back to this screen, which might be a
+      bit unexpected.
+  */
+  folder: ({ path }) =>
+    router.navigate(`/folder?path=${encodeURIComponent(path)}`),
 };

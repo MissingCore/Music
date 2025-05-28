@@ -6,6 +6,7 @@ import { formatForMediaCard } from "~/db/utils";
 import i18next from "~/modules/i18n";
 import { getAlbum } from "~/api/album";
 import { getArtist } from "~/api/artist";
+import { getFolderTracks } from "~/api/folder";
 import { getPlaylist, getSpecialPlaylist } from "~/api/playlist";
 
 import { createPersistedSubscribedStore } from "~/lib/zustand";
@@ -83,8 +84,14 @@ recentListStore.subscribe(
           });
           entry = formatForMediaCard({ type: "artist", data, t: i18next.t });
         } else if (type === "folder") {
-          // TODO: Eventually support folders in the recent list.
-          entry = undefined;
+          const numTracks = (await getFolderTracks(id)).length;
+          entry = {
+            type: "folder",
+            source: null,
+            href: `/folder?path=${encodeURIComponent(id)}`,
+            title: id.split("/").at(-2) ?? id,
+            description: i18next.t("plural.track", { count: numTracks }),
+          };
         } else {
           let data = null;
           if (ReservedNames.has(id)) {
