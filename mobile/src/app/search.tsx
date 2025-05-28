@@ -28,8 +28,6 @@ const searchCallbacks: SearchCallbacks = {
   /* Visit the media's page. */
   album: ({ id }) => router.push(`/album/${id}`),
   artist: ({ name }) => router.push(`/artist/${encodeURIComponent(name)}`),
-  folder: ({ path }) =>
-    console.log("Navigating to `/folder` screen for:", path),
   playlist: ({ name }) => router.push(`/playlist/${encodeURIComponent(name)}`),
   /* Play the specified track. */
   track: ({ id }) =>
@@ -37,4 +35,16 @@ const searchCallbacks: SearchCallbacks = {
       trackId: id,
       source: { type: "playlist", id: ReservedPlaylists.tracks },
     }),
+  /*
+    Navigate to the folder route, meaning a "back" action won't bring us
+    back to this screen.
+    
+    Although using `push()` works, things become a bit janky as:
+      1. The navigation bar won't work the way we expect.
+      2. If we use this pushed screen, at a certain point when using the
+      "back" gesture, we'll end up back to this screen, which might be a
+      bit unexpected.
+  */
+  folder: ({ path }) =>
+    router.navigate(`/folder?path=${encodeURIComponent(path)}`),
 };
