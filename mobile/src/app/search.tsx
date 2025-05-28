@@ -21,13 +21,15 @@ export default function SearchScreen() {
 }
 
 /** List of media we want to appear in the search. */
-const searchScope = ["album", "artist", "playlist", "track"] as const;
+const searchScope = ["album", "artist", "folder", "playlist", "track"] as const;
 
 /** Actions that we want to run when we click on a search item. */
 const searchCallbacks: SearchCallbacks = {
   /* Visit the media's page. */
   album: ({ id }) => router.push(`/album/${id}`),
   artist: ({ name }) => router.push(`/artist/${encodeURIComponent(name)}`),
+  folder: ({ path }) =>
+    console.log("Navigating to `/folder` screen for:", path),
   playlist: ({ name }) => router.push(`/playlist/${encodeURIComponent(name)}`),
   /* Play the specified track. */
   track: ({ id }) =>
