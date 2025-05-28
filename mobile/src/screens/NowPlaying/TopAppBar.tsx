@@ -41,9 +41,10 @@ function AppBarContent() {
     if (!playingSource) return undefined;
     const { type, id } = playingSource;
     if (type === "playlist" && id === ReservedPlaylists.tracks) return "/track";
-    else if (type === "folder") return `/folder?path=${encodeURIComponent(id)}`;
-    return `/${type}/${encodeURIComponent(id)}`;
-  }, [playingSource]) as Href;
+    else if (type === "folder")
+      return `/folder?path=${encodeURIComponent(id)}` satisfies Href;
+    return `/${type}/${encodeURIComponent(id)}` satisfies Href;
+  }, [playingSource]);
 
   if (usedDesign === "vinylOld") return null;
 
