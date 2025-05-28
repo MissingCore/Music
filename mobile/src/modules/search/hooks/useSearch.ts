@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
 import { db } from "~/db";
+import type { SlimFolder, SlimTrackWithAlbum } from "~/db/slimTypes";
 
 import { getAlbums } from "~/api/album";
 import { getArtists } from "~/api/artist";
@@ -55,12 +56,25 @@ export function useSearch<TScope extends SearchCategories>(
 
 //#region Helpers
 async function getAllMedia() {
-  const allTracks = await getTracks({
-    columns: ["id", "name", "artistName", "artwork", "parentFolder"],
-    albumColumns: ["name", "artwork"],
-  });
-  const allFolders = await db.query.fileNodes.findMany({
-    orderBy: (fields, { asc }) => [asc(fields.parentPath), asc(fields.name)],
+  // Maybe manually building the query would be faster, but would be a bit
+  // too complicated to read.
+  const [allTracks, allFolders] = await Promise.all([
+    getTracks({
+      columns: ["id", "name", "artistName", "artwork", "parentFolder"],
+      albumColumns: ["name", "artwork"],
+    }),
+    db.query.fileNodes.findMany({
+      orderBy: (f, { asc }) => [asc(f.parentPath), asc(f.name)],
+    }),
+  ]);
+
+  // Pre-group the tracks by their `parentFolder` to make things a lot faster.
+  const groupedTracks: Record<string, SlimTrackWithAlbum[]> = {};
+  allTracks.forEach(({ parentFolder, ...t }) => {
+    if (!parentFolder) return;
+
+    if (groupedTracks[parentFolder]) groupedTracks[parentFolder].push(t);
+    else groupedTracks[parentFolder] = [t];
   });
 
   return {
@@ -72,12 +86,10 @@ async function getAllMedia() {
       columns: ["name", "artwork"],
       withTracks: false,
     }),
-    folder: allFolders.map((f) => ({
-      ...f,
-      tracks: allTracks
-        .filter((t) => t.parentFolder === `file:///${addTrailingSlash(f.path)}`)
-        .map(({ parentFolder: _, ...t }) => t),
-    })),
+    folder: (allFolders as SlimFolder[]).map((f) => {
+      f.tracks = groupedTracks[`file:///${addTrailingSlash(f.path)}`] ?? [];
+      return f;
+    }),
     playlist: await getPlaylists({
       columns: ["name", "artwork"],
       trackColumns: ["artwork"],

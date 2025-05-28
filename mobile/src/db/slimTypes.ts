@@ -17,7 +17,7 @@ export type SlimAlbumWithTracks = SlimAlbum & { tracks: SlimTrack[] };
 export type SlimArtist = Pick<Artist, "name" | "artwork">;
 
 /** Minimum data typically used from `Folder`. */
-export type SlimFolder = FileNode & { tracks: SlimTrack[] };
+export type SlimFolder = FileNode & { tracks: SlimTrackWithAlbum[] };
 
 /** Minimum data typically used from `Playlist`. */
 export type SlimPlaylist = Pick<Playlist, "name" | "artwork">;
