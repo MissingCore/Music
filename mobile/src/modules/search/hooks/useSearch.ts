@@ -1,11 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
+import { db } from "~/db";
+
 import { getAlbums } from "~/api/album";
 import { getArtists } from "~/api/artist";
 import { getPlaylists } from "~/api/playlist";
 import { getTracks } from "~/api/track";
 
+import { addTrailingSlash } from "~/utils/string";
 import type { Prettify } from "~/utils/types";
 import type { SearchCategories, SearchResults } from "../types";
 
@@ -30,7 +33,10 @@ export function useSearch<TScope extends SearchCategories>(
             (!!i.artistName && i.artistName.toLocaleLowerCase().startsWith(q)) ||
             // Track's album starts with the query.
             // @ts-expect-error - We ensured the `album` field is present.
-            (!!i.album && i.album.name.toLocaleLowerCase().startsWith(q)),
+            (!!i.album && i.album.name.toLocaleLowerCase().startsWith(q)) ||
+            // Folder's path includes the query.
+            // @ts-expect-error - We ensured the `path` field is present.
+            (!!i.path && i.path.toLocaleLowerCase().includes(q)),
         );
 
         // Have results that start with the query first.
@@ -49,6 +55,14 @@ export function useSearch<TScope extends SearchCategories>(
 
 //#region Helpers
 async function getAllMedia() {
+  const allTracks = await getTracks({
+    columns: ["id", "name", "artistName", "artwork", "parentFolder"],
+    albumColumns: ["name", "artwork"],
+  });
+  const allFolders = await db.query.fileNodes.findMany({
+    orderBy: (fields, { asc }) => [asc(fields.parentPath), asc(fields.name)],
+  });
+
   return {
     album: await getAlbums({
       columns: ["id", "name", "artistName", "artwork"],
@@ -58,15 +72,18 @@ async function getAllMedia() {
       columns: ["name", "artwork"],
       withTracks: false,
     }),
+    folder: allFolders.map((f) => ({
+      ...f,
+      tracks: allTracks
+        .filter((t) => t.parentFolder === `file:///${addTrailingSlash(f.path)}`)
+        .map(({ parentFolder: _, ...t }) => t),
+    })),
     playlist: await getPlaylists({
       columns: ["name", "artwork"],
       trackColumns: ["artwork"],
       albumColumns: ["artwork"],
     }),
-    track: await getTracks({
-      columns: ["id", "name", "artistName", "artwork"],
-      albumColumns: ["name", "artwork"],
-    }),
+    track: allTracks.map(({ parentFolder: _, ...t }) => t),
   } satisfies SearchResults;
 }
 
