@@ -1,4 +1,4 @@
-const MigrationOptions = ["kv-store"] as const;
+const MigrationOptions = ["kv-store", "fileNodes-adjustment"] as const;
 
 export type MigrationOption = (typeof MigrationOptions)[number];
 
@@ -17,5 +17,5 @@ export const MigrationHistory: Record<
   number,
   { version: string; changes: MigrationOption[] }
 > = {
-  0: { version: "v2.3.0", changes: ["kv-store"] },
+  0: { version: "v2.3.0", changes: ["kv-store", "fileNodes-adjustment"] },
 };
