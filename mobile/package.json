@@ -111,7 +111,8 @@
     "patchedDependencies": {
       "react-native-gesture-handler": "patches/react-native-gesture-handler.patch",
       "@react-native-assets/slider": "patches/@react-native-assets__slider.patch",
-      "@backpackapp-io/react-native-toast": "patches/@backpackapp-io__react-native-toast.patch"
+      "@backpackapp-io/react-native-toast": "patches/@backpackapp-io__react-native-toast.patch",
+      "expo-router": "patches/expo-router.patch"
     }
   }
 }
