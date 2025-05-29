@@ -66,12 +66,12 @@ export default function SettingScreen() {
             description={t("feat.insights.brief")}
             onPress={() => router.navigate("/setting/insights")}
           />
-          <ListItem
+          {/* <ListItem
             titleKey="feat.interactions.title"
             description={t("feat.interactions.brief")}
             icon={<OpenInNew />}
             onPress={() => openBrowserAsync(LINKS.NOTHING_INTERACTIONS)}
-          />
+          /> */}
           <ListItem
             titleKey="feat.playback.title"
             description={t("feat.playback.brief")}
