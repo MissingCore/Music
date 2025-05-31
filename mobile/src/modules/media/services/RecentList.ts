@@ -85,6 +85,7 @@ recentListStore.subscribe(
           entry = formatForMediaCard({ type: "artist", data, t: i18next.t });
         } else if (type === "folder") {
           const numTracks = (await getFolderTracks(id)).length;
+          if (numTracks === 0) throw new Error("Folder is empty.");
           entry = {
             type: "folder",
             source: null,

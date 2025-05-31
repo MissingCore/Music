@@ -30,7 +30,15 @@ export async function getFolderSubdirectories(path: Maybe<string>) {
       }),
     ),
   );
-  return subDirs.filter((_, idx) => !!dirHasChild[idx]);
+  return subDirs
+    .filter((_, idx) => !!dirHasChild[idx])
+    .sort((a, b) =>
+      a.name.localeCompare(b.name, undefined, {
+        // So folder order is: "1-10", "11-20" instead of: "1-10", "101-110".
+        numeric: true,
+        caseFirst: "upper",
+      }),
+    );
 }
 
 /** Get the direct tracks in a given folder. */
