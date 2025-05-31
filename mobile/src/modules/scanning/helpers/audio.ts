@@ -1,6 +1,5 @@
 import {
   MetadataPresets,
-  StorageVolumesDirectoryPaths,
   getMetadata,
 } from "@missingcore/react-native-metadata-retriever";
 import { eq, inArray } from "drizzle-orm";
@@ -38,9 +37,13 @@ export async function findAndSaveAudio() {
   // Reset tracked values when saving/updating tracks in onboarding store.
   onboardingStore.setState({ staged: 0, saveErrors: 0 });
 
-  const { listAllow, listBlock, minSeconds } = userPreferencesStore.getState();
-  const usedDirs =
-    listAllow.length > 0 ? listAllow : StorageVolumesDirectoryPaths;
+  const {
+    listAllow: _listAllow,
+    listBlock: _listBlock,
+    minSeconds,
+  } = userPreferencesStore.getState();
+  const listAllow = _listAllow.map((p) => `file://${addTrailingSlash(p)}`);
+  const listBlock = _listBlock.map((p) => `file://${addTrailingSlash(p)}`);
 
   // Get all audio files discoverable by `expo-media-library`.
   const incomingData: MediaLibraryAsset[] = [];
@@ -60,12 +63,9 @@ export async function findAndSaveAudio() {
   // not in blocklist, and meets the minimum duration requirements).
   const discoveredTracks = incomingData.filter(
     (a) =>
-      usedDirs.some((path) =>
-        a.uri.startsWith(`file://${addTrailingSlash(path)}`),
-      ) &&
-      !listBlock.some((path) =>
-        a.uri.startsWith(`file://${addTrailingSlash(path)}`),
-      ) &&
+      // If allowlist is empty, we want the check to resolve to `true`.
+      (listAllow.length === 0 || listAllow.some((p) => a.uri.startsWith(p))) &&
+      !listBlock.some((p) => a.uri.startsWith(p)) &&
       a.duration > minSeconds,
   );
   console.log(

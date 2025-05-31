@@ -1,8 +1,5 @@
 import { toast } from "@backpackapp-io/react-native-toast";
-import {
-  PrimaryDirectoryPath,
-  StorageVolumesDirectoryPaths,
-} from "@missingcore/react-native-metadata-retriever";
+import { getActualPath } from "@missingcore/react-native-actual-path";
 import { useMutation } from "@tanstack/react-query";
 import { StorageAccessFramework as SAF, getInfoAsync } from "expo-file-system";
 
@@ -11,11 +8,6 @@ import { userPreferencesStore } from "~/services/UserPreferences";
 
 import { ToastOptions } from "~/lib/toast";
 import { addTrailingSlash } from "~/utils/string";
-
-/** `StorageVolumesDirectoryPaths` without `PrimaryDirectoryPath`. */
-const NonPrimaryDirectoryPaths = StorageVolumesDirectoryPaths.filter(
-  (path) => path !== PrimaryDirectoryPath,
-);
 
 //#region Helpers
 /** Removes a path from the user preferences store. */
@@ -44,27 +36,25 @@ export async function pickPath() {
     return;
   }
 
-  // The "path" portion of the `content://` uri is encoded, so we can
-  // split by `/` and extract the path with the volume uuid.
-  const treeUri = decodeURIComponent(
-    permissions.directoryUri.split("/").at(-1)!,
-  );
-  // Format is: `uuid:some/path`
-  const [volumeUUID, ..._path] = treeUri.split(":");
-  const path = _path.join(":");
+  let dirUri: string | null = null;
+  try {
+    // `getActualPath()` doesn't work with the `content://` URIs returned by
+    // `SAF.requestDirectoryPermissionsAsync()`, but works when passing a
+    // file or directory inside the selected directory.
+    const dirContents = await SAF.readDirectoryAsync(permissions.directoryUri);
+    const dirItem = dirContents[0];
+    if (dirItem) {
+      const resolved = await getActualPath(dirItem);
+      dirUri = resolved ? resolved.split("/").slice(0, -1).join("/") : null;
+    }
+  } catch {}
 
-  // Find the storage volume for that given uuid.
-  let usedVolume = PrimaryDirectoryPath;
-  if (volumeUUID !== "primary") {
-    const actualVolume = NonPrimaryDirectoryPaths.filter((path) =>
-      path.includes(`/${volumeUUID}`),
-    );
-    // Used the found volume or a "guess".
-    if (actualVolume[0]) usedVolume = actualVolume[0];
-    else usedVolume = `/storage/${volumeUUID}`;
+  if (!dirUri) {
+    toast.error(i18next.t("err.flow.generic.title"), ToastOptions);
+    return;
   }
 
-  return `${addTrailingSlash(usedVolume)}${path}`;
+  return `${dirUri.startsWith("/") ? "" : "/"}${addTrailingSlash(dirUri)}`;
 }
 //#endregion
 

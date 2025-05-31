@@ -5,6 +5,9 @@
   "@lodev09/react-native-true-sheet@2.0.5": {
     "copyright": "Copyright (c) 2025 lodev09"
   },
+  "@missingcore/react-native-actual-path@0.1.0": {
+    "copyright": "Copyright (c) 2025 Solanki Yogesh.\nCopyright (c) 2025 MissingCore <missingcoredev@outlook.com>"
+  },
   "@paralleldrive/cuid2@2.2.2": {
     "repository": "https://github.com/paralleldrive/cuid2"
   },

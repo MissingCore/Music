@@ -1,7 +1,3 @@
-import {
-  PrimaryDirectoryPath,
-  StorageVolumesDirectoryPaths,
-} from "@missingcore/react-native-metadata-retriever";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Keyboard, View } from "react-native";
@@ -79,15 +75,11 @@ function ScanFilterListSheet({
       contentContainerClassName="gap-4 px-0"
       snapTop
     >
-      <StyledText dim center className="px-4 text-sm">
-        {t(`feat.${listType}.description`)}
-        {listType === "listAllow" ? (
-          <StyledText className="text-xs text-foreground/50">
-            {"\n"}
-            {StorageVolumesDirectoryPaths.map((dir) => `\n${dir}`)}
-          </StyledText>
-        ) : null}
-      </StyledText>
+      {listType === "listBlock" ? (
+        <StyledText dim center className="px-4 text-sm">
+          {t("feat.listBlock.description")}
+        </StyledText>
+      ) : null}
       <FilterForm listType={listType} listEntries={listEntries} />
 
       <FlatList
@@ -155,7 +147,7 @@ function FilterForm(props: {
           editable={!onSubmit.isPending}
           value={newPath}
           onChangeText={(text) => setNewPath(text)}
-          placeholder={PrimaryDirectoryPath}
+          placeholder="/storage/emulated/0"
           className="shrink grow"
         />
         <IconButton
