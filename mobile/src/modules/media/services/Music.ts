@@ -132,19 +132,24 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
     setShuffle: async (status) => {
       const { currentList, listIdx, playingList, shuffledPlayingList } = get();
 
-      const newPlayingList = status ? shuffledPlayingList : playingList;
+      const newPlayingList = status
+        ? shuffleArray(shuffledPlayingList)
+        : playingList;
       // Shuffle around the track at `listIdx` and not `activeId`.
       const trackAtListIdx = currentList[listIdx];
       const newListIdx = newPlayingList.findIndex(
         (id) => id === trackAtListIdx,
       );
 
-      musicStore.setState({
+      set({
+        shuffle: status,
         currentList: newPlayingList,
+        // When we shuffle, we need to update the saved `shuffledPlayingList`
+        // as we reshuffled it.
+        ...(status === true ? { shuffledPlayingList: newPlayingList } : {}),
         listIdx: newListIdx === -1 ? 0 : newListIdx,
       });
       await RNTPManager.reloadNextTrack();
-      set({ shuffle: status });
     },
 
     playingSource: undefined,
