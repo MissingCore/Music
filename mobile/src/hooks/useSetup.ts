@@ -3,7 +3,6 @@ import TrackPlayer from "react-native-track-player";
 
 import "~/modules/media/services/_subscriptions";
 import { musicStore, useMusicStore } from "~/modules/media/services/Music";
-import { MusicControls } from "~/modules/media/services/Playback";
 import { useRecentListStore } from "~/modules/media/services/RecentList";
 import { useSortPreferencesStore } from "~/modules/media/services/SortPreferences";
 import {
@@ -43,8 +42,11 @@ export function useSetup() {
         await TrackPlayer.updateOptions(
           getTrackPlayerOptions({ progressUpdateEventInterval: 1 }),
         );
-        const lastPosition = musicStore.getState().lastPosition;
-        if (lastPosition !== null) await MusicControls.seekTo(lastPosition);
+        musicStore.setState({
+          _restoredTrackId: musicStore.getState().activeId,
+        });
+      } else {
+        musicStore.setState({ _hasRestoredPosition: true });
       }
     })();
   }, []);

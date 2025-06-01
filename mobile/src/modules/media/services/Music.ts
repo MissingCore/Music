@@ -32,10 +32,15 @@ interface MusicStore {
   /** Logic we run if we catch when the app crashes. */
   resetOnCrash: () => Promise<void>;
 
+  /** Determines if the playback position has been restored. */
+  _hasRestoredPosition: boolean;
+  /** The track we want to restore the position for. */
+  _restoredTrackId: string | undefined;
+
   /** If we're currently playing a track. */
   isPlaying: boolean;
   /** The last played position of the track. */
-  lastPosition: number | null;
+  lastPosition: number | undefined;
 
   /** Behavior of how we'll loop in this list of tracks. */
   repeat: (typeof RepeatModes)[number];
@@ -103,7 +108,7 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
     },
     reset: async () => {
       set({
-        lastPosition: null,
+        lastPosition: undefined,
         playingSource: undefined,
         sourceName: "",
         playingList: [],
@@ -122,8 +127,11 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
       } catch {}
     },
 
+    _hasRestoredPosition: false,
+    _restoredTrackId: undefined,
+
     isPlaying: false,
-    lastPosition: null,
+    lastPosition: undefined,
 
     repeat: "no-repeat",
     cycleRepeat: () => {

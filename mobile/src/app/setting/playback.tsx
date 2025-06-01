@@ -65,13 +65,13 @@ const toggleRepeatOnSkip = () =>
   }));
 
 const toggleSaveLastPosition = async () => {
-  const prevState = userPreferencesStore.getState().saveLastPosition;
-  if (prevState) musicStore.setState({ lastPosition: null });
-  userPreferencesStore.setState({ saveLastPosition: !prevState });
+  const didSaveLastPosition = userPreferencesStore.getState().saveLastPosition;
+  if (didSaveLastPosition) musicStore.setState({ lastPosition: undefined });
+  userPreferencesStore.setState({ saveLastPosition: !didSaveLastPosition });
 
   await TrackPlayer.updateOptions(
     getTrackPlayerOptions({
-      progressUpdateEventInterval: prevState ? undefined : 1,
+      progressUpdateEventInterval: didSaveLastPosition ? undefined : 1,
     }),
   );
 };

@@ -70,6 +70,21 @@ export async function PlaybackService() {
   TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (e) => {
     if (e.index === undefined || e.track === undefined) return;
 
+    // When this triggers for the 1st time, we want to see if we should seek
+    // to the last played position.
+    const { _hasRestoredPosition, _restoredTrackId, activeId, lastPosition } =
+      musicStore.getState();
+    if (!_hasRestoredPosition) {
+      musicStore.setState({ _hasRestoredPosition: true });
+      if (
+        lastPosition !== undefined &&
+        _restoredTrackId !== undefined &&
+        _restoredTrackId === activeId
+      ) {
+        await MusicControls.seekTo(lastPosition);
+      }
+    }
+
     const { repeat, queueList } = musicStore.getState();
     const activeTrack = e.track;
     const trackStatus: TrackStatus = activeTrack["music::status"];
@@ -117,7 +132,7 @@ export async function PlaybackService() {
 
     if (e.index === 1) await TrackPlayer.remove(0);
     await RNTPManager.reloadNextTrack();
-    musicStore.setState({ lastPosition: null });
+    musicStore.setState({ lastPosition: undefined });
   });
 
   TrackPlayer.addEventListener(Event.PlaybackError, async (e) => {
