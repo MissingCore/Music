@@ -47,9 +47,6 @@ interface UserPreferencesStore {
   /** Design used for the "Now Playing" screen. */
   nowPlayingDesign: (typeof NowPlayingDesignOptions)[number];
 
-  /** If tips to alert the users of features will be displayed. */
-  visualTips: boolean;
-
   /** Order of tabs on the home screen. */
   tabsOrder: OrderableTab[];
   /** Visibility of the tabs on the home screen. */
@@ -58,10 +55,16 @@ interface UserPreferencesStore {
   /** Whether we'll show the "Recently Played" section on the home screen. */
   showRecent: boolean;
 
+  /** If tips to alert the users of features will be displayed. */
+  visualTips: boolean;
+
   /** Whether we'll continue playback through any interruptions. */
   ignoreInterrupt: boolean;
   /** Whether we stay on "Repeat One" mode when we skip. */
   repeatOnSkip: boolean;
+
+  /** Whether we'll keep track of the last played position. */
+  saveLastPosition: boolean;
 
   /** Directories we'll limit to when looking for tracks. */
   listAllow: string[];
@@ -105,8 +108,6 @@ export const userPreferencesStore =
 
       nowPlayingDesign: "vinyl",
 
-      visualTips: true,
-
       tabsOrder: ["folder", "playlist", "track", "album", "artist"],
       tabsVisibility: {
         album: true,
@@ -118,8 +119,12 @@ export const userPreferencesStore =
 
       showRecent: true,
 
+      visualTips: true,
+
       ignoreInterrupt: false,
       repeatOnSkip: false,
+
+      saveLastPosition: true,
 
       listAllow: [],
       listBlock: [],

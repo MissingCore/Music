@@ -34,6 +34,8 @@ interface MusicStore {
 
   /** If we're currently playing a track. */
   isPlaying: boolean;
+  /** The last played position of the track. */
+  lastPosition: number | null;
 
   /** Behavior of how we'll loop in this list of tracks. */
   repeat: (typeof RepeatModes)[number];
@@ -79,6 +81,7 @@ interface MusicStore {
 
 /** Fields stored in AsyncStorage. */
 const STORED_FIELDS: string[] = [
+  "lastPosition",
   "repeat",
   "shuffle",
   "playingSource",
@@ -100,6 +103,7 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
     },
     reset: async () => {
       set({
+        lastPosition: null,
         playingSource: undefined,
         sourceName: "",
         playingList: [],
@@ -119,6 +123,7 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
     },
 
     isPlaying: false,
+    lastPosition: null,
 
     repeat: "no-repeat",
     cycleRepeat: () => {

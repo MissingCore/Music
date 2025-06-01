@@ -44,6 +44,13 @@ export async function PlaybackService() {
     await MusicControls.seekTo(position);
   });
 
+  TrackPlayer.addEventListener(
+    Event.PlaybackProgressUpdated,
+    ({ position }) => {
+      musicStore.setState({ lastPosition: position });
+    },
+  );
+
   TrackPlayer.addEventListener(Event.RemoteDuck, async (e) => {
     // Keep playing media when an interruption is detected.
     if (userPreferencesStore.getState().ignoreInterrupt) return;
@@ -110,6 +117,7 @@ export async function PlaybackService() {
 
     if (e.index === 1) await TrackPlayer.remove(0);
     await RNTPManager.reloadNextTrack();
+    musicStore.setState({ lastPosition: null });
   });
 
   TrackPlayer.addEventListener(Event.PlaybackError, async (e) => {

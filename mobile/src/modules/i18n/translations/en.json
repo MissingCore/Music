@@ -210,6 +210,9 @@
       "title": "Keep Repeat Mode on Skip",
       "brief": "Don't switch mode to \"Repeat\" from \"Repeat One\" on skip."
     },
+    "saveLastPosition": {
+      "title": "Save Last Played Position"
+    },
     "scanning": {
       "title": "Scanning",
       "brief": "Music discovery options."
