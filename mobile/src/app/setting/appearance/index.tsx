@@ -23,6 +23,7 @@ export default function AppearanceScreen() {
   const showRecentlyPlayed = useUserPreferencesStore(
     (state) => state.showRecent,
   );
+  const showVisualTips = useUserPreferencesStore((state) => state.visualTips);
   const accentFontSheetRef = useSheetRef();
   const primaryFontSheetRef = useSheetRef();
   const themeSheetRef = useSheetRef();
@@ -78,6 +79,16 @@ export default function AppearanceScreen() {
             last
           />
         </List>
+
+        <List>
+          <ListItem
+            titleKey="feat.visualTips.title"
+            onPress={toggleVisualTips}
+            switchState={showVisualTips}
+            first
+            last
+          />
+        </List>
       </StandardScrollLayout>
     </>
   );
@@ -85,3 +96,6 @@ export default function AppearanceScreen() {
 
 const toggleShowRecent = () =>
   userPreferencesStore.setState((prev) => ({ showRecent: !prev.showRecent }));
+
+const toggleVisualTips = () =>
+  userPreferencesStore.setState((prev) => ({ visualTips: !prev.visualTips }));

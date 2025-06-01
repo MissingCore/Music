@@ -156,6 +156,9 @@
         "vinylOld": "Vinyl (Legacy)"
       }
     },
+    "visualTips": {
+      "title": "Visual Tips"
+    },
     "language": {
       "title": "Language"
     },

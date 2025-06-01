@@ -28,6 +28,7 @@ import { toLowerCase } from "~/utils/string";
 import { Marquee } from "~/components/Containment/Marquee";
 import { Divider } from "~/components/Divider";
 import { useSheetRef } from "~/components/Sheet";
+import { LongPressIndicator } from "~/components/Tips";
 import { StyledText, TEm } from "~/components/Typography/StyledText";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import { MediaImage } from "~/modules/media/components/MediaImage";
@@ -142,14 +143,17 @@ function ContentImage(props: AnimatedVinylProps) {
         className="group"
       >
         {props.mediaSource.type === "artist" ? (
-          <MediaImage
-            type="artist"
-            source={props.imageSource as string | null}
-            size={128}
-            className="ml-4 group-active:opacity-75"
-          />
+          <>
+            <MediaImage
+              type="artist"
+              source={props.imageSource as string | null}
+              size={128}
+              className="ml-4 group-active:opacity-75"
+            />
+            <LongPressIndicator />
+          </>
         ) : (
-          <AnimatedVinyl {...props} />
+          <AnimatedVinyl {...props} pressable />
         )}
       </Pressable>
     </>
@@ -162,7 +166,7 @@ type AnimatedVinylProps = {
 };
 
 /** Have the vinyl spin if the playing media list is this source. */
-function AnimatedVinyl(props: AnimatedVinylProps) {
+function AnimatedVinyl(props: AnimatedVinylProps & { pressable?: boolean }) {
   const isPlaying = useMusicStore((state) => state.isPlaying);
   const playingSource = useMusicStore((state) => state.playingSource);
   const coverPosition = useSharedValue(0);
@@ -217,6 +221,7 @@ function AnimatedVinyl(props: AnimatedVinylProps) {
           source={props.imageSource}
           size={128}
         />
+        {props.pressable ? <LongPressIndicator /> : null}
       </Animated.View>
     </Animated.View>
   );

@@ -47,6 +47,9 @@ interface UserPreferencesStore {
   /** Design used for the "Now Playing" screen. */
   nowPlayingDesign: (typeof NowPlayingDesignOptions)[number];
 
+  /** If tips to alert the users of features will be displayed. */
+  visualTips: boolean;
+
   /** Order of tabs on the home screen. */
   tabsOrder: OrderableTab[];
   /** Visibility of the tabs on the home screen. */
@@ -101,6 +104,8 @@ export const userPreferencesStore =
       primaryFont: "Roboto",
 
       nowPlayingDesign: "vinyl",
+
+      visualTips: true,
 
       tabsOrder: ["folder", "playlist", "track", "album", "artist"],
       tabsVisibility: {
