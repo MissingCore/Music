@@ -59,10 +59,14 @@ export const MigrationFunctionMap: Record<
 
     // We need to rehydrate the stores that references the data in AsyncStorage
     // in order for it to take effect.
-    await userPreferencesStore.persist.rehydrate();
-    await musicStore.persist.rehydrate();
+    //  - Note: We need to rehydrate the "Recent List" store first as when
+    //  the "User Preference" store hydrates, it calls `RecentList.refresh()`,
+    //  which will clear the migrated "Recent List" store data as it hasn't
+    //  hydrated in yet.
     await recentListStore.persist.rehydrate();
     await sortPreferencesStore.persist.rehydrate();
+    await userPreferencesStore.persist.rehydrate();
+    await musicStore.persist.rehydrate();
 
     // Delete data in the old AsyncStorage provider afterwards.
     await OldAsyncStorage.clear();
