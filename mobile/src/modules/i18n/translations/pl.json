@@ -22,6 +22,7 @@
     "favorites": "Ulubione",
     "unFavorite": "Usuń z ulubionych",
     "favoriteTracks": "Ulubione utwory",
+    "all": null,
     "home": "Start",
     "settings": "Ustawienia",
     "upcoming": "Następne",
@@ -137,6 +138,9 @@
         "vinylOld": "Winyl (Poprzedni)"
       }
     },
+    "visualTips": {
+      "title": null
+    },
     "language": {
       "title": "Język"
     },
@@ -187,6 +191,9 @@
     "repeatOnSkip": {
       "title": "Zachowaj zapętlenie po pominięciu",
       "brief": "Nie zmieniaj trybu na `Zapętl` z `Zapętl jedną` po pominięciu."
+    },
+    "saveLastPosition": {
+      "title": null
     },
     "scanning": {
       "title": "Skanowanie",

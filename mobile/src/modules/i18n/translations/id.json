@@ -22,6 +22,7 @@
     "favorites": "Difavoritkan",
     "unFavorite": "Batal Sukai",
     "favoriteTracks": "Trek Favorit",
+    "all": null,
     "home": "Beranda",
     "settings": "Pengaturan",
     "upcoming": "Yang akan Datang",
@@ -137,6 +138,9 @@
         "vinylOld": "Vinyl (Lama)"
       }
     },
+    "visualTips": {
+      "title": null
+    },
     "language": {
       "title": "Bahasa"
     },
@@ -187,6 +191,9 @@
     "repeatOnSkip": {
       "title": "Tetap dalam Mode Mengulang saat Melewati",
       "brief": "Jangan mengalihkan mode ke \"Ulangi\" dari \"Ulangi Sekali\" saat melewati."
+    },
+    "saveLastPosition": {
+      "title": null
     },
     "scanning": {
       "title": "Memindai",
