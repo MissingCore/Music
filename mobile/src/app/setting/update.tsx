@@ -86,7 +86,11 @@ export default function AppUpdateScreen() {
             </View>
           ),
           link: (node, children, _parent, styles) => (
-            <Text key={node.key} style={styles.link}>
+            <Text
+              key={node.key}
+              style={styles.link}
+              onPress={() => openBrowserAsync(node.attributes.href)}
+            >
               {children}
             </Text>
           ),
