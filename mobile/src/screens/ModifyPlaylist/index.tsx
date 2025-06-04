@@ -24,7 +24,7 @@ import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { wait } from "~/utils/promise";
 import { FlashDragList } from "~/components/Defaults";
-import { IconButton } from "~/components/Form/Button";
+import { Button, IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import { useSheetRef } from "~/components/Sheet";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
@@ -63,13 +63,11 @@ function ScreenConfig() {
         headerLeft: isSubmitting ? () => undefined : undefined,
         headerRight: () => (
           <IconButton
-            kind="ripple"
+            Icon={Check}
             accessibilityLabel={t("form.apply")}
-            disabled={isUnchanged || !isUnique || isSubmitting}
             onPress={onSubmit}
-          >
-            <Check />
-          </IconButton>
+            disabled={isUnchanged || !isUnique || isSubmitting}
+          />
         ),
       }}
     />
@@ -167,15 +165,15 @@ const RenderItem = memo(
           enabled={!info.isDragging}
           renderRightActions={() =>
             info.isActive ? undefined : (
-              <IconButton
+              <Button
                 accessibilityLabel={t("template.entryRemove", {
                   name: item.name,
                 })}
                 onPress={onPress}
-                className="mr-4 bg-red"
+                className="mr-4 bg-red p-3"
               >
                 <Remove color={Colors.neutral100} />
-              </IconButton>
+              </Button>
             )
           }
         >
@@ -229,13 +227,11 @@ function ListHeaderComponent(props: { showSheet: () => void }) {
       <View className="mb-2 ml-4 mr-1 mt-6 shrink grow flex-row items-center justify-between">
         <TStyledText textKey="term.tracks" />
         <IconButton
-          kind="ripple"
+          Icon={Add}
           accessibilityLabel={t("feat.modalTrack.extra.addToPlaylist")}
-          disabled={isSubmitting}
           onPress={props.showSheet}
-        >
-          <Add />
-        </IconButton>
+          disabled={isSubmitting}
+        />
       </View>
     </>
   );

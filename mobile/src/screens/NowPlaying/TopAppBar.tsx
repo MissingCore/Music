@@ -51,12 +51,10 @@ function AppBarContent() {
   return (
     <>
       <IconButton
-        kind="ripple"
+        Icon={ArrowBack}
         accessibilityLabel={t("form.back")}
         onPress={() => router.back()}
-      >
-        <ArrowBack />
-      </IconButton>
+      />
       <Pressable
         onPress={() => (listHref ? router.navigate(listHref) : undefined)}
         disabled={listHref === undefined}

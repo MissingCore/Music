@@ -21,7 +21,7 @@ import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { FlashDragList } from "~/components/Defaults";
-import { IconButton } from "~/components/Form/Button";
+import { Button, IconButton } from "~/components/Form/Button";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
 import {
   ContentPlaceholder,
@@ -65,23 +65,20 @@ export default function CurrentPlaylistScreen() {
           headerRight: () => (
             <View className="flex-row gap-1">
               <IconButton
-                kind="ripple"
+                Icon={Favorite}
                 accessibilityLabel={t(`term.${isToggled ? "unF" : "f"}avorite`)}
                 onPress={() => mutateGuard(favoritePlaylist, !data.isFavorite)}
-              >
-                <Favorite filled={isToggled} />
-              </IconButton>
+                filled={isToggled}
+              />
               <IconButton
-                kind="ripple"
+                Icon={Edit}
                 accessibilityLabel={t("feat.playlist.extra.edit")}
                 onPress={() =>
                   router.navigate(
                     `/playlist/modify?id=${encodeURIComponent(id)}`,
                   )
                 }
-              >
-                <Edit />
-              </IconButton>
+              />
             </View>
           ),
         }}
@@ -141,15 +138,15 @@ const RenderItem = memo(
           enabled={!info.isDragging}
           renderRightActions={() =>
             info.isActive ? undefined : (
-              <IconButton
+              <Button
                 accessibilityLabel={t("template.entryRemove", {
                   name: item.title,
                 })}
                 onPress={() => mutateGuard(removeTrack, trackSource.id)}
-                className="mr-4 bg-red"
+                className="mr-4 bg-red p-3"
               >
                 <Remove color={Colors.neutral100} />
-              </IconButton>
+              </Button>
             )
           }
         >

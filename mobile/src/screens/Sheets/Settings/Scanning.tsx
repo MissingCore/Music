@@ -22,7 +22,7 @@ import { deferInitialRender } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
 import { Marquee } from "~/components/Containment/Marquee";
 import { FlatList } from "~/components/Defaults";
-import { IconButton } from "~/components/Form/Button";
+import { Button, IconButton } from "~/components/Form/Button";
 import { NumericInput, TextInput } from "~/components/Form/Input";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import type { TrueSheetRef } from "~/components/Sheet";
@@ -89,13 +89,13 @@ function ScanFilterListSheet({
           <Swipeable
             containerClassName="px-4"
             renderRightActions={() => (
-              <IconButton
+              <Button
                 accessibilityLabel={t("template.entryRemove", { name: item })}
                 onPress={() => removePath({ list: listType, path: item })}
-                className="mr-4 aspect-square h-full bg-red"
+                className="mr-4 aspect-square h-full bg-red p-3"
               >
                 <Remove color={Colors.neutral100} />
-              </IconButton>
+              </Button>
             )}
           >
             <Marquee
@@ -151,15 +151,13 @@ function FilterForm(props: {
           className="shrink grow"
         />
         <IconButton
-          kind="ripple"
+          Icon={CreateNewFolder}
           accessibilityLabel={t("feat.directory.extra.select")}
           onPress={selectDirectory}
           disabled={onSubmit.isPending}
-        >
-          <CreateNewFolder />
-        </IconButton>
+        />
       </View>
-      <IconButton
+      <Button
         accessibilityLabel={t("feat.directory.extra.add")}
         onPress={() => {
           Keyboard.dismiss();
@@ -170,10 +168,10 @@ function FilterForm(props: {
           });
         }}
         disabled={!isValidPath || onSubmit.isPending}
-        className="bg-red"
+        className="bg-red p-3"
       >
         <Add color={Colors.neutral100} />
-      </IconButton>
+      </Button>
     </View>
   );
 }

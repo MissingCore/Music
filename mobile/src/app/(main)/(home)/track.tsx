@@ -48,12 +48,10 @@ function TrackActions(props: { showSheet: () => void }) {
   return (
     <View className="w-full flex-row items-center justify-between rounded-md bg-surface">
       <IconButton
-        kind="ripple"
+        Icon={Sort}
         accessibilityLabel={t("feat.modalSort.title")}
         onPress={props.showSheet}
-      >
-        <Sort />
-      </IconButton>
+      />
       <MediaListControls trackSource={trackSource} />
     </View>
   );

@@ -44,13 +44,11 @@ export function Track({ id, trackSource, className, ...props }: Track.Props) {
       onPress={() => playFromMediaList({ trackId: id, source: trackSource })}
       RightElement={
         <IconButton
-          kind="ripple"
+          Icon={MoreVert}
           accessibilityLabel={t("template.entrySeeMore", { name: props.title })}
           onPress={() => presentTrackSheet(id)}
           disabled={props.disabled}
-        >
-          <MoreVert />
-        </IconButton>
+        />
       }
       wrapperClassName={cn("bg-canvas", className)}
       {...props}

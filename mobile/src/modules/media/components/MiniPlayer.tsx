@@ -9,7 +9,6 @@ import { useMusicStore } from "../services/Music";
 import { MusicControls } from "../services/Playback";
 import { useTheme } from "~/hooks/useTheme";
 
-import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
 import { Marquee } from "~/components/Containment/Marquee";
 import { IconButton } from "~/components/Form/Button";
@@ -28,9 +27,6 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
   const track = useMusicStore((state) => state.activeTrack);
 
   if (!track || hidden) return null;
-
-  const Icon = isPlaying ? Pause : PlayArrow;
-
   return (
     <Animated.View
       layout={LinearTransition}
@@ -61,14 +57,12 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
         <View className="flex-row items-center">
           <PreviousButton />
           <IconButton
-            kind="ripple"
+            Icon={isPlaying ? Pause : PlayArrow}
             accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
             onPress={MusicControls.playToggle}
-            rippleRadius={24}
-            className="p-2"
-          >
-            <Icon size={32} color={Colors.red} />
-          </IconButton>
+            active
+            large
+          />
           <NextButton />
         </View>
       </Pressable>

@@ -1,12 +1,18 @@
 import type { PressableProps, StyleProp, ViewStyle } from "react-native";
 import { Pressable, View } from "react-native";
 
+import type { Icon } from "~/icons/type";
 import { useTheme } from "~/hooks/useTheme";
 
+import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
 
 export const PressPropsKeys = [
-  ...["disabled", "delayLongPress", "onLongPress", "onPress", "onPressOut"],
+  "disabled",
+  "delayLongPress",
+  "onLongPress",
+  "onPress",
+  "onPressOut",
 ] as const;
 
 /** The most "used" action props used on `<Pressable />`. */
@@ -18,7 +24,7 @@ export function Button({ className, ...props }: PressableProps) {
   return (
     <Pressable
       className={cn(
-        "min-h-12 items-center justify-center gap-2 rounded-md bg-surface p-4",
+        "min-h-12 min-w-12 items-center justify-center gap-2 rounded-md bg-surface p-4",
         "active:opacity-75 disabled:opacity-25",
         className,
       )}
@@ -29,44 +35,41 @@ export function Button({ className, ...props }: PressableProps) {
 //#endregion
 
 //#region Icon Button
-type ConditionalIconButtonProps =
-  | { kind?: "default" | "ripple"; accessibilityLabel: string }
-  | { kind: "extended"; accessibilityLabel?: string };
-
-/** Button specifically built for icons. */
+/** Icon with ripple effect. Automatically sized to `48px`. */
 export function IconButton({
-  kind = "default",
-  accessibilityLabel,
-  rippleRadius,
+  Icon,
+  large = false,
+  active,
+  filled,
   className,
   ...pressableProps
-}: ConditionalIconButtonProps &
-  PressProps & {
-    children: React.ReactNode;
-    /** Radius of ripple if we don't use a standard `24px` icon. */
-    rippleRadius?: number;
-    style?: StyleProp<ViewStyle>;
-    className?: string;
-  }) {
+}: {
+  Icon: (props: Icon) => React.JSX.Element;
+  accessibilityLabel: string;
+  onPress: PressableProps["onPress"];
+  /** Scale the icon up to `32px`. */
+  large?: boolean;
+  /** Switches the icon color to red. */
+  active?: boolean;
+  /** Use the `filled` variant on the icon if available. */
+  filled?: boolean;
+  disabled?: PressableProps["disabled"];
+  className?: string;
+}) {
   const { onSurface } = useTheme();
+  const iconColor = active ? Colors.red : undefined;
   return (
     <Pressable
-      accessibilityLabel={accessibilityLabel}
-      android_ripple={
-        kind === "ripple"
-          ? { color: onSurface, radius: rippleRadius ?? 18 }
-          : undefined
-      }
+      android_ripple={{ color: onSurface, radius: large ? 24 : 18 }}
       className={cn(
-        "min-h-12 min-w-12 items-center justify-center p-3 disabled:opacity-25",
-        {
-          "rounded-md bg-surface active:opacity-75": kind !== "ripple",
-          "flex-row justify-start gap-2": kind === "extended",
-        },
+        "items-center justify-center p-3 disabled:opacity-25",
+        { "p-2": large },
         className,
       )}
       {...pressableProps}
-    />
+    >
+      <Icon size={large ? 32 : 24} color={iconColor} filled={filled} />
+    </Pressable>
   );
 }
 //#endregion

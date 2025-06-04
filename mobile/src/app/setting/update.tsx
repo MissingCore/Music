@@ -12,7 +12,7 @@ import { StandardScrollLayout } from "~/layouts/StandardScroll";
 import * as LINKS from "~/constants/Links";
 import { FontSize } from "~/constants/Styles";
 import { getFont } from "~/lib/style";
-import { IconButton } from "~/components/Form/Button";
+import { Button } from "~/components/Form/Button";
 import { AccentText } from "~/components/Typography/AccentText";
 import { TStyledText } from "~/components/Typography/StyledText";
 
@@ -86,7 +86,11 @@ export default function AppUpdateScreen() {
             </View>
           ),
           link: (node, children, _parent, styles) => (
-            <Text key={node.key} style={styles.link}>
+            <Text
+              key={node.key}
+              style={styles.link}
+              onPress={() => openBrowserAsync(node.attributes.href)}
+            >
               {children}
             </Text>
           ),
@@ -96,31 +100,29 @@ export default function AppUpdateScreen() {
       </Markdown>
 
       <View className="gap-2">
-        <IconButton
-          kind="extended"
+        <Button
           onPress={() =>
             openBrowserAsync(`${LINKS.GITHUB}/releases/tag/${release.version}`)
           }
-          className="gap-4 py-4"
+          className="flex-row justify-start gap-4"
         >
           <LogoGitHub />
           <TStyledText
             textKey="feat.appUpdate.extra.downloadAPK"
             className="text-center text-sm"
           />
-        </IconButton>
+        </Button>
         {!isRC ? (
-          <IconButton
-            kind="extended"
+          <Button
             onPress={() => openBrowserAsync(LINKS.PLAYSTORE)}
-            className="gap-4 py-4"
+            className="flex-row justify-start gap-4"
           >
             <LogoPlayStore />
             <TStyledText
               textKey="feat.appUpdate.extra.updateGoogle"
               className="text-center text-sm"
             />
-          </IconButton>
+          </Button>
         ) : null}
       </View>
     </StandardScrollLayout>

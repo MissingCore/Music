@@ -8,7 +8,7 @@ import { MusicControls, playFromMediaList } from "../services/Playback";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
-import { IconButton } from "~/components/Form/Button";
+import { Button } from "~/components/Form/Button";
 import { RepeatButton, ShuffleButton } from "./MediaControls";
 import { arePlaybackSourceEqual } from "../helpers/data";
 import type { PlayListSource } from "../types";
@@ -20,8 +20,8 @@ export function MediaListControls(props: {
 }) {
   return (
     <View className={cn("flex-row items-center gap-1", props.className)}>
-      <RepeatButton size={24} />
-      <ShuffleButton size={24} />
+      <RepeatButton large={false} />
+      <ShuffleButton large={false} />
       <PlayMediaListButton trackSource={props.trackSource} />
     </View>
   );
@@ -43,16 +43,16 @@ function PlayMediaListButton({ trackSource }: { trackSource: PlayListSource }) {
   const Icon = displayPause ? Pause : PlayArrow;
 
   return (
-    <IconButton
+    <Button
       accessibilityLabel={t(`term.${displayPause ? "pause" : "play"}`)}
       onPress={
         displayPause
           ? MusicControls.pause
           : () => playFromMediaList({ source: trackSource })
       }
-      className={displayPause ? "bg-onSurface" : "bg-red"}
+      className={cn("bg-red p-3", { "bg-onSurface": displayPause })}
     >
       <Icon color={Colors.neutral100} />
-    </IconButton>
+    </Button>
   );
 }

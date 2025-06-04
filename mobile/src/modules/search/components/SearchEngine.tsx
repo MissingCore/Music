@@ -53,7 +53,7 @@ export function SearchEngine<TScope extends SearchCategories>(
           className="shrink grow"
         />
         <IconButton
-          kind="ripple"
+          Icon={Close}
           accessibilityLabel={t("form.clear")}
           onPress={() => {
             inputRef?.current?.clear();
@@ -61,9 +61,7 @@ export function SearchEngine<TScope extends SearchCategories>(
           }}
           disabled={query === ""}
           className="mr-1 disabled:invisible"
-        >
-          <Close />
-        </IconButton>
+        />
       </View>
       <SearchResultsList {...props} query={query} />
     </View>
@@ -200,7 +198,7 @@ function SearchFilters(props: {
           <View className="rounded bg-canvas">
             <Button
               onPress={() => props.onSelectTab(tab)}
-              className={cn("min-h-0 rounded px-3 py-1.5", {
+              className={cn("min-h-0 min-w-0 rounded px-3 py-1.5", {
                 "bg-red": selected,
               })}
             >

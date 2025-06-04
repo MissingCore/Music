@@ -68,23 +68,20 @@ function TabBar({ stacked = false, hidden = false }) {
     >
       <NavigationList />
       <IconButton
-        kind="ripple"
+        Icon={Search}
         accessibilityLabel={t("feat.search.title")}
         onPress={() => router.navigate("/search")}
-      >
-        <Search />
-      </IconButton>
-      <IconButton
-        kind="ripple"
-        accessibilityLabel={t("term.settings")}
-        onPress={() => router.navigate("/setting")}
-        className="relative"
-      >
-        <Settings />
+      />
+      <View className="relative">
+        <IconButton
+          Icon={Settings}
+          accessibilityLabel={t("term.settings")}
+          onPress={() => router.navigate("/setting")}
+        />
         {hasNewUpdate && (
           <View className="absolute right-3 top-3 size-2 rounded-full bg-red" />
         )}
-      </IconButton>
+      </View>
     </Animated.View>
   );
 }
@@ -146,7 +143,7 @@ function NavigationList() {
           <Button
             onPress={() => router.navigate(href)}
             disabled={routeName === name}
-            className="bg-transparent px-2 disabled:opacity-100"
+            className="min-w-0 bg-transparent px-2 disabled:opacity-100"
           >
             <StyledText
               className={cn("text-sm", { "text-red": routeName === name })}

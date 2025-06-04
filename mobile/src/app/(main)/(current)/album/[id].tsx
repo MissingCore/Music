@@ -56,12 +56,11 @@ export default function CurrentAlbumScreen() {
         options={{
           headerRight: () => (
             <IconButton
-              kind="ripple"
+              Icon={Favorite}
               accessibilityLabel={t(`term.${isToggled ? "unF" : "f"}avorite`)}
               onPress={() => mutateGuard(favoriteAlbum, !data.isFavorite)}
-            >
-              <Favorite filled={isToggled} />
-            </IconButton>
+              filled={isToggled}
+            />
           ),
         }}
       />

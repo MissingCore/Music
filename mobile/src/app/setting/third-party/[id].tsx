@@ -26,14 +26,12 @@ export default function PackageLicenseScreen() {
         options={{
           headerRight: () => (
             <IconButton
-              kind="ripple"
+              Icon={OpenInNew}
               accessibilityLabel={t("template.entrySeeMore", {
                 name: licenseInfo.name,
               })}
               onPress={() => openBrowserAsync(licenseInfo.source)}
-            >
-              <OpenInNew />
-            </IconButton>
+            />
           ),
         }}
       />
