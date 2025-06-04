@@ -37,7 +37,7 @@ import {
 import { Marquee } from "~/components/Containment/Marquee";
 import { FlashList } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
-import { IconButton } from "~/components/Form/Button";
+import { Button } from "~/components/Form/Button";
 import { Checkbox } from "~/components/Form/Selection";
 import { Sheet } from "~/components/Sheet";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
@@ -272,18 +272,17 @@ function SheetButton(props: {
 }) {
   const { width } = useGetColumn({ cols: 2, gap: 8, gutters: 32 });
   return (
-    <IconButton
-      kind="extended"
+    <Button
       onPress={() => {
         TrueSheet.dismiss("TrackSheet");
         props.onPress();
       }}
       style={{ width }}
-      className="p-2"
+      className="flex-row justify-start p-2"
     >
       {props.Icon}
       <TStyledText textKey={props.textKey} className="shrink text-xs" />
-    </IconButton>
+    </Button>
   );
 }
 //#endregion
