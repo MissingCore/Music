@@ -24,7 +24,7 @@ import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { wait } from "~/utils/promise";
 import { FlashDragList } from "~/components/Defaults";
-import { IconButton, NextIconButton } from "~/components/Form/Button";
+import { Button, NextIconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import { useSheetRef } from "~/components/Sheet";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
@@ -165,16 +165,15 @@ const RenderItem = memo(
           enabled={!info.isDragging}
           renderRightActions={() =>
             info.isActive ? undefined : (
-              <IconButton
-                kind="default"
+              <Button
                 accessibilityLabel={t("template.entryRemove", {
                   name: item.name,
                 })}
                 onPress={onPress}
-                className="mr-4 bg-red"
+                className="mr-4 min-w-12 bg-red p-3"
               >
                 <Remove color={Colors.neutral100} />
-              </IconButton>
+              </Button>
             )
           }
         >

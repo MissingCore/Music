@@ -169,7 +169,7 @@ function PlaybackControls() {
     <View className="flex-row items-center justify-center gap-2">
       <ShuffleButton />
       <PreviousButton />
-      <PlayToggleButton className="rounded-full px-6" />
+      <PlayToggleButton />
       <NextButton />
       <RepeatButton />
     </View>

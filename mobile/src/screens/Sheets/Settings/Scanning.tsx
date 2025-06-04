@@ -22,7 +22,7 @@ import { deferInitialRender } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
 import { Marquee } from "~/components/Containment/Marquee";
 import { FlatList } from "~/components/Defaults";
-import { IconButton, NextIconButton } from "~/components/Form/Button";
+import { Button, NextIconButton } from "~/components/Form/Button";
 import { NumericInput, TextInput } from "~/components/Form/Input";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import type { TrueSheetRef } from "~/components/Sheet";
@@ -89,14 +89,13 @@ function ScanFilterListSheet({
           <Swipeable
             containerClassName="px-4"
             renderRightActions={() => (
-              <IconButton
-                kind="default"
+              <Button
                 accessibilityLabel={t("template.entryRemove", { name: item })}
                 onPress={() => removePath({ list: listType, path: item })}
-                className="mr-4 aspect-square h-full bg-red"
+                className="mr-4 aspect-square h-full min-w-12 bg-red p-3"
               >
                 <Remove color={Colors.neutral100} />
-              </IconButton>
+              </Button>
             )}
           >
             <Marquee
@@ -158,8 +157,7 @@ function FilterForm(props: {
           disabled={onSubmit.isPending}
         />
       </View>
-      <IconButton
-        kind="default"
+      <Button
         accessibilityLabel={t("feat.directory.extra.add")}
         onPress={() => {
           Keyboard.dismiss();
@@ -170,10 +168,10 @@ function FilterForm(props: {
           });
         }}
         disabled={!isValidPath || onSubmit.isPending}
-        className="bg-red"
+        className="min-w-12 bg-red p-3"
       >
         <Add color={Colors.neutral100} />
-      </IconButton>
+      </Button>
     </View>
   );
 }

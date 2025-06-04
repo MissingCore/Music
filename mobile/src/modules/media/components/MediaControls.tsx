@@ -12,7 +12,7 @@ import { MusicControls } from "../services/Playback";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
-import { IconButton, NextIconButton } from "~/components/Form/Button";
+import { Button, NextIconButton } from "~/components/Form/Button";
 
 /** Toggles the repeat status. */
 export function RepeatButton({ large = true }) {
@@ -50,19 +50,20 @@ export function ShuffleButton({ large = true }) {
 }
 
 /** Toggles whether we're playing or not. */
-export function PlayToggleButton({ size = 32, className = "" }) {
+export function PlayToggleButton() {
   const { t } = useTranslation();
   const isPlaying = useMusicStore((state) => state.isPlaying);
   const Icon = isPlaying ? Pause : PlayArrow;
   return (
-    <IconButton
-      kind="default"
+    <Button
       accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
       onPress={MusicControls.playToggle}
-      className={cn("bg-red p-2", { "bg-onSurface": isPlaying }, className)}
+      className={cn("min-w-12 rounded-full bg-red px-6 py-2", {
+        "bg-onSurface": isPlaying,
+      })}
     >
-      <Icon size={size} color={Colors.neutral100} />
-    </IconButton>
+      <Icon size={32} color={Colors.neutral100} />
+    </Button>
   );
 }
 

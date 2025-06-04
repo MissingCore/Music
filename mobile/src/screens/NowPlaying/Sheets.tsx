@@ -16,7 +16,7 @@ import { useUpcomingStore } from "./helpers/UpcomingStore";
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
 import { FlashList } from "~/components/Defaults";
-import { IconButton } from "~/components/Form/Button";
+import { Button } from "~/components/Form/Button";
 import { NSlider } from "~/components/Form/Slider";
 import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
@@ -186,14 +186,13 @@ function RenderQueueItem({ item, index }: ListRenderItemInfo<PartialTrack>) {
       ref={swipeableRef}
       containerClassName="mb-1 px-4"
       renderRightActions={() => (
-        <IconButton
-          kind="default"
+        <Button
           accessibilityLabel={t("template.entryRemove", { name: item.name })}
           onPress={() => Queue.removeAtIndex(index)}
-          className="mr-4 bg-red"
+          className="mr-4 min-w-12 bg-red p-3"
         >
           <Remove color={Colors.neutral100} />
-        </IconButton>
+        </Button>
       )}
     >
       <TrackItem
