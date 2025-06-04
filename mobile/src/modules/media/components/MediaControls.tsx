@@ -58,7 +58,7 @@ export function PlayToggleButton() {
     <Button
       accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
       onPress={MusicControls.playToggle}
-      className={cn("min-w-12 rounded-full bg-red px-6 py-2", {
+      className={cn("rounded-full bg-red px-6 py-2", {
         "bg-onSurface": isPlaying,
       })}
     >

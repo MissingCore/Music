@@ -189,7 +189,7 @@ function RenderQueueItem({ item, index }: ListRenderItemInfo<PartialTrack>) {
         <Button
           accessibilityLabel={t("template.entryRemove", { name: item.name })}
           onPress={() => Queue.removeAtIndex(index)}
-          className="mr-4 min-w-12 bg-red p-3"
+          className="mr-4 bg-red p-3"
         >
           <Remove color={Colors.neutral100} />
         </Button>

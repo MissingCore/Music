@@ -38,7 +38,7 @@ function PlaylistActions() {
       <Button
         accessibilityLabel={t("feat.playlist.extra.create")}
         onPress={() => router.navigate("/playlist/create")}
-        className="min-w-12 bg-red p-3"
+        className="bg-red p-3"
       >
         <Add color={Colors.neutral100} />
       </Button>

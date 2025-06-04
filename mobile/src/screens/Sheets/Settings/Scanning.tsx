@@ -92,7 +92,7 @@ function ScanFilterListSheet({
               <Button
                 accessibilityLabel={t("template.entryRemove", { name: item })}
                 onPress={() => removePath({ list: listType, path: item })}
-                className="mr-4 aspect-square h-full min-w-12 bg-red p-3"
+                className="mr-4 aspect-square h-full bg-red p-3"
               >
                 <Remove color={Colors.neutral100} />
               </Button>
@@ -168,7 +168,7 @@ function FilterForm(props: {
           });
         }}
         disabled={!isValidPath || onSubmit.isPending}
-        className="min-w-12 bg-red p-3"
+        className="bg-red p-3"
       >
         <Add color={Colors.neutral100} />
       </Button>

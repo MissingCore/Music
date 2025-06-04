@@ -143,7 +143,7 @@ const RenderItem = memo(
                   name: item.title,
                 })}
                 onPress={() => mutateGuard(removeTrack, trackSource.id)}
-                className="mr-4 min-w-12 bg-red p-3"
+                className="mr-4 bg-red p-3"
               >
                 <Remove color={Colors.neutral100} />
               </Button>

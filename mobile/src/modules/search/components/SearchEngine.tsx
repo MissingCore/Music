@@ -198,7 +198,7 @@ function SearchFilters(props: {
           <View className="rounded bg-canvas">
             <Button
               onPress={() => props.onSelectTab(tab)}
-              className={cn("min-h-0 rounded px-3 py-1.5", {
+              className={cn("min-h-0 min-w-0 rounded px-3 py-1.5", {
                 "bg-red": selected,
               })}
             >

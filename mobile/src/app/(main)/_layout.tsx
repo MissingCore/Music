@@ -143,7 +143,7 @@ function NavigationList() {
           <Button
             onPress={() => router.navigate(href)}
             disabled={routeName === name}
-            className="bg-transparent px-2 disabled:opacity-100"
+            className="min-w-0 bg-transparent px-2 disabled:opacity-100"
           >
             <StyledText
               className={cn("text-sm", { "text-red": routeName === name })}
