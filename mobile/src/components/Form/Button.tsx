@@ -35,8 +35,8 @@ export function Button({ className, ...props }: PressableProps) {
 //#endregion
 
 //#region Icon Button
-/** Icon with ripple effect. Automatically sized to at least `48px`. */
-export function NextIconButton({
+/** Icon with ripple effect. Automatically sized to `48px`. */
+export function IconButton({
   Icon,
   large = false,
   active,
@@ -58,7 +58,6 @@ export function NextIconButton({
 }) {
   const { onSurface } = useTheme();
   const iconColor = active ? Colors.red : undefined;
-
   return (
     <Pressable
       android_ripple={{ color: onSurface, radius: large ? 24 : 18 }}
@@ -71,47 +70,6 @@ export function NextIconButton({
     >
       <Icon size={large ? 32 : 24} color={iconColor} filled={filled} />
     </Pressable>
-  );
-}
-
-type ConditionalIconButtonProps =
-  | { kind?: "default" | "ripple"; accessibilityLabel: string }
-  | { kind: "extended"; accessibilityLabel?: string };
-
-/** Button specifically built for icons. */
-export function IconButton({
-  kind = "default",
-  accessibilityLabel,
-  rippleRadius,
-  className,
-  ...pressableProps
-}: ConditionalIconButtonProps &
-  PressProps & {
-    children: React.ReactNode;
-    /** Radius of ripple if we don't use a standard `24px` icon. */
-    rippleRadius?: number;
-    style?: StyleProp<ViewStyle>;
-    className?: string;
-  }) {
-  const { onSurface } = useTheme();
-  return (
-    <Pressable
-      accessibilityLabel={accessibilityLabel}
-      android_ripple={
-        kind === "ripple"
-          ? { color: onSurface, radius: rippleRadius ?? 18 }
-          : undefined
-      }
-      className={cn(
-        "min-h-12 min-w-12 items-center justify-center p-3 disabled:opacity-25",
-        {
-          "rounded-md bg-surface active:opacity-75": kind !== "ripple",
-          "flex-row justify-start gap-2": kind === "extended",
-        },
-        className,
-      )}
-      {...pressableProps}
-    />
   );
 }
 //#endregion

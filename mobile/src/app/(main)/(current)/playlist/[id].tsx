@@ -21,7 +21,7 @@ import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { FlashDragList } from "~/components/Defaults";
-import { Button, NextIconButton } from "~/components/Form/Button";
+import { Button, IconButton } from "~/components/Form/Button";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
 import {
   ContentPlaceholder,
@@ -64,13 +64,13 @@ export default function CurrentPlaylistScreen() {
         options={{
           headerRight: () => (
             <View className="flex-row gap-1">
-              <NextIconButton
+              <IconButton
                 Icon={Favorite}
                 accessibilityLabel={t(`term.${isToggled ? "unF" : "f"}avorite`)}
                 onPress={() => mutateGuard(favoritePlaylist, !data.isFavorite)}
                 filled={isToggled}
               />
-              <NextIconButton
+              <IconButton
                 Icon={Edit}
                 accessibilityLabel={t("feat.playlist.extra.edit")}
                 onPress={() =>

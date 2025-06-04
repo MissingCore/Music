@@ -23,7 +23,7 @@ import { cn } from "~/lib/style";
 import { formatSeconds } from "~/utils/number";
 import { Marquee } from "~/components/Containment/Marquee";
 import { SafeContainer } from "~/components/Containment/SafeContainer";
-import { NextIconButton } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button";
 import { Slider } from "~/components/Form/Slider";
 import { useSheetRef } from "~/components/Sheet";
 import { Back } from "~/components/Transition/Back";
@@ -72,7 +72,7 @@ function Metadata({ track }: { track: TrackWithAlbum }) {
       </View>
       <View className="flex-row items-center gap-2">
         <FavoriteButton trackId={track.id} />
-        <NextIconButton
+        <IconButton
           Icon={MoreVert}
           accessibilityLabel={t("template.entrySeeMore", { name: track.name })}
           onPress={() => presentTrackSheet(track.id)}
@@ -108,7 +108,7 @@ function FavoriteButton(props: { trackId: string }) {
     : (data?.isFavorite ?? false);
 
   return (
-    <NextIconButton
+    <IconButton
       Icon={Favorite}
       accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
       onPress={() => mutateGuard(favoriteTrack, !data?.isFavorite)}
@@ -193,13 +193,13 @@ function BottomAppBar() {
       <View className="flex-row items-center justify-between gap-4 p-4">
         <BackButton />
         <View className="flex-row items-center gap-4">
-          <NextIconButton
+          <IconButton
             Icon={InstantMix}
             accessibilityLabel={t("feat.playback.extra.options")}
             onPress={() => playbackOptionsSheetRef.current?.present()}
             large
           />
-          <NextIconButton
+          <IconButton
             Icon={LibraryMusic}
             accessibilityLabel={t("term.upcoming")}
             onPress={() => upcomingTracksSheetRef.current?.present()}
@@ -221,7 +221,7 @@ function BackButton() {
 
   if (usedDesign !== "vinylOld") return <View />;
   return (
-    <NextIconButton
+    <IconButton
       Icon={KeyboardArrowDown}
       accessibilityLabel={t("form.back")}
       onPress={() => router.back()}

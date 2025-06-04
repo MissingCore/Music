@@ -7,7 +7,7 @@ import { View } from "react-native";
 import { ArrowBack } from "~/icons/ArrowBack";
 
 import { SafeContainer } from "./Containment/SafeContainer";
-import { NextIconButton } from "./Form/Button";
+import { IconButton } from "./Form/Button";
 import { StyledText } from "./Typography/StyledText";
 
 /**
@@ -21,7 +21,7 @@ export function TopAppBar({ options, route }: NativeStackHeaderProps) {
   return (
     <SafeContainer className="bg-canvas">
       <View className="h-14 flex-row items-center justify-between gap-4 p-1">
-        <NextIconButton
+        <IconButton
           Icon={ArrowBack}
           accessibilityLabel={t("form.back")}
           onPress={() => router.back()}

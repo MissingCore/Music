@@ -24,7 +24,7 @@ import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { wait } from "~/utils/promise";
 import { FlashDragList } from "~/components/Defaults";
-import { Button, NextIconButton } from "~/components/Form/Button";
+import { Button, IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import { useSheetRef } from "~/components/Sheet";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
@@ -62,7 +62,7 @@ function ScreenConfig() {
         // Hacky solution to disable the back button when submitting.
         headerLeft: isSubmitting ? () => undefined : undefined,
         headerRight: () => (
-          <NextIconButton
+          <IconButton
             Icon={Check}
             accessibilityLabel={t("form.apply")}
             onPress={onSubmit}
@@ -226,7 +226,7 @@ function ListHeaderComponent(props: { showSheet: () => void }) {
       </View>
       <View className="mb-2 ml-4 mr-1 mt-6 shrink grow flex-row items-center justify-between">
         <TStyledText textKey="term.tracks" />
-        <NextIconButton
+        <IconButton
           Icon={Add}
           accessibilityLabel={t("feat.modalTrack.extra.addToPlaylist")}
           onPress={props.showSheet}

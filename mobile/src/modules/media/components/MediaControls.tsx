@@ -12,7 +12,7 @@ import { MusicControls } from "../services/Playback";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
-import { Button, NextIconButton } from "~/components/Form/Button";
+import { Button, IconButton } from "~/components/Form/Button";
 
 /** Toggles the repeat status. */
 export function RepeatButton({ large = true }) {
@@ -21,7 +21,7 @@ export function RepeatButton({ large = true }) {
   const cycleRepeat = useMusicStore((state) => state.cycleRepeat);
 
   return (
-    <NextIconButton
+    <IconButton
       Icon={repeatMode === "repeat-one" ? RepeatOne : Repeat}
       accessibilityLabel={t(
         `term.repeat${repeatMode === "repeat-one" ? "One" : ""}`,
@@ -39,7 +39,7 @@ export function ShuffleButton({ large = true }) {
   const isActive = useMusicStore((state) => state.shuffle);
   const setShuffle = useMusicStore((state) => state.setShuffle);
   return (
-    <NextIconButton
+    <IconButton
       Icon={Shuffle}
       accessibilityLabel={t("term.shuffle")}
       onPress={() => setShuffle(!isActive)}
@@ -71,7 +71,7 @@ export function PlayToggleButton() {
 export function NextButton({ large = true }) {
   const { t } = useTranslation();
   return (
-    <NextIconButton
+    <IconButton
       Icon={SkipNext}
       accessibilityLabel={t("term.next")}
       onPress={MusicControls.next}
@@ -84,7 +84,7 @@ export function NextButton({ large = true }) {
 export function PreviousButton({ large = true }) {
   const { t } = useTranslation();
   return (
-    <NextIconButton
+    <IconButton
       Icon={SkipPrevious}
       accessibilityLabel={t("term.prev")}
       onPress={MusicControls.prev}

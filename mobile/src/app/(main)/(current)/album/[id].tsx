@@ -11,7 +11,7 @@ import { CurrentListLayout } from "~/layouts/CurrentList";
 import { mutateGuard } from "~/lib/react-query";
 import { isNumber } from "~/utils/validation";
 import { FlashList } from "~/components/Defaults";
-import { NextIconButton } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button";
 import { PagePlaceholder } from "~/components/Transition/Placeholder";
 import { Em, StyledText } from "~/components/Typography/StyledText";
 import { Track } from "~/modules/media/components/Track";
@@ -55,7 +55,7 @@ export default function CurrentAlbumScreen() {
       <Stack.Screen
         options={{
           headerRight: () => (
-            <NextIconButton
+            <IconButton
               Icon={Favorite}
               accessibilityLabel={t(`term.${isToggled ? "unF" : "f"}avorite`)}
               onPress={() => mutateGuard(favoriteAlbum, !data.isFavorite)}

@@ -11,7 +11,7 @@ import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
 import { Marquee } from "~/components/Containment/Marquee";
-import { NextIconButton } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button";
 import { StyledText } from "~/components/Typography/StyledText";
 import { NextButton, PreviousButton } from "./MediaControls";
 import { MediaImage } from "./MediaImage";
@@ -56,7 +56,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
 
         <View className="flex-row items-center">
           <PreviousButton />
-          <NextIconButton
+          <IconButton
             Icon={isPlaying ? Pause : PlayArrow}
             accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
             onPress={MusicControls.playToggle}

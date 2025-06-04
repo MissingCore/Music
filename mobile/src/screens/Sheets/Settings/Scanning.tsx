@@ -22,7 +22,7 @@ import { deferInitialRender } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
 import { Marquee } from "~/components/Containment/Marquee";
 import { FlatList } from "~/components/Defaults";
-import { Button, NextIconButton } from "~/components/Form/Button";
+import { Button, IconButton } from "~/components/Form/Button";
 import { NumericInput, TextInput } from "~/components/Form/Input";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import type { TrueSheetRef } from "~/components/Sheet";
@@ -150,7 +150,7 @@ function FilterForm(props: {
           placeholder="/storage/emulated/0"
           className="shrink grow"
         />
-        <NextIconButton
+        <IconButton
           Icon={CreateNewFolder}
           accessibilityLabel={t("feat.directory.extra.select")}
           onPress={selectDirectory}

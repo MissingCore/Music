@@ -6,7 +6,7 @@ import { useTracksForTrackCard } from "~/queries/track";
 import { StickyActionListLayout } from "~/layouts/StickyActionScroll";
 import { TrackSortSheet } from "~/screens/Sheets/TrackSort";
 
-import { NextIconButton } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button";
 import { useSheetRef } from "~/components/Sheet";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import { MediaListControls } from "~/modules/media/components/MediaListControls";
@@ -47,7 +47,7 @@ function TrackActions(props: { showSheet: () => void }) {
   const { t } = useTranslation();
   return (
     <View className="w-full flex-row items-center justify-between rounded-md bg-surface">
-      <NextIconButton
+      <IconButton
         Icon={Sort}
         accessibilityLabel={t("feat.modalSort.title")}
         onPress={props.showSheet}

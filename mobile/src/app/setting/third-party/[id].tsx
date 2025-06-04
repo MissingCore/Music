@@ -8,7 +8,7 @@ import { useTheme } from "~/hooks/useTheme";
 import { StandardScrollLayout } from "~/layouts/StandardScroll";
 
 import { Card } from "~/components/Containment/Card";
-import { NextIconButton } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button";
 import { AccentText } from "~/components/Typography/AccentText";
 import { StyledText } from "~/components/Typography/StyledText";
 
@@ -25,7 +25,7 @@ export default function PackageLicenseScreen() {
       <Stack.Screen
         options={{
           headerRight: () => (
-            <NextIconButton
+            <IconButton
               Icon={OpenInNew}
               accessibilityLabel={t("template.entrySeeMore", {
                 name: licenseInfo.name,

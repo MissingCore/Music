@@ -16,7 +16,7 @@ import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
 import { FlatList, useFlatListRef } from "~/components/Defaults";
-import { Button, NextIconButton } from "~/components/Form/Button";
+import { Button, IconButton } from "~/components/Form/Button";
 import { StyledText } from "~/components/Typography/StyledText";
 import { MiniPlayer } from "~/modules/media/components/MiniPlayer";
 
@@ -67,13 +67,13 @@ function TabBar({ stacked = false, hidden = false }) {
       )}
     >
       <NavigationList />
-      <NextIconButton
+      <IconButton
         Icon={Search}
         accessibilityLabel={t("feat.search.title")}
         onPress={() => router.navigate("/search")}
       />
       <View className="relative">
-        <NextIconButton
+        <IconButton
           Icon={Settings}
           accessibilityLabel={t("term.settings")}
           onPress={() => router.navigate("/setting")}
