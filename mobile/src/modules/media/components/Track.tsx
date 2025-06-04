@@ -10,7 +10,7 @@ import type { PlayListSource } from "../types";
 import { cn } from "~/lib/style";
 import type { Prettify } from "~/utils/types";
 import type { PressProps } from "~/components/Form/Button";
-import { IconButton } from "~/components/Form/Button";
+import { NextIconButton } from "~/components/Form/Button";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 
@@ -43,14 +43,12 @@ export function Track({ id, trackSource, className, ...props }: Track.Props) {
       type="track"
       onPress={() => playFromMediaList({ trackId: id, source: trackSource })}
       RightElement={
-        <IconButton
-          kind="ripple"
+        <NextIconButton
+          Icon={MoreVert}
           accessibilityLabel={t("template.entrySeeMore", { name: props.title })}
           onPress={() => presentTrackSheet(id)}
           disabled={props.disabled}
-        >
-          <MoreVert />
-        </IconButton>
+        />
       }
       wrapperClassName={cn("bg-canvas", className)}
       {...props}

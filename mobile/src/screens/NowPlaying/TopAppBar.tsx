@@ -11,7 +11,7 @@ import { useTheme } from "~/hooks/useTheme";
 
 import { Marquee } from "~/components/Containment/Marquee";
 import { SafeContainer } from "~/components/Containment/SafeContainer";
-import { IconButton } from "~/components/Form/Button";
+import { NextIconButton } from "~/components/Form/Button";
 import { StyledText } from "~/components/Typography/StyledText";
 import { ReservedPlaylists } from "~/modules/media/constants";
 
@@ -50,13 +50,11 @@ function AppBarContent() {
 
   return (
     <>
-      <IconButton
-        kind="ripple"
+      <NextIconButton
+        Icon={ArrowBack}
         accessibilityLabel={t("form.back")}
         onPress={() => router.back()}
-      >
-        <ArrowBack />
-      </IconButton>
+      />
       <Pressable
         onPress={() => (listHref ? router.navigate(listHref) : undefined)}
         disabled={listHref === undefined}

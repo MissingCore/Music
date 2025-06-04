@@ -20,8 +20,8 @@ export function MediaListControls(props: {
 }) {
   return (
     <View className={cn("flex-row items-center gap-1", props.className)}>
-      <RepeatButton size={24} />
-      <ShuffleButton size={24} />
+      <RepeatButton large={false} />
+      <ShuffleButton large={false} />
       <PlayMediaListButton trackSource={props.trackSource} />
     </View>
   );
@@ -44,6 +44,7 @@ function PlayMediaListButton({ trackSource }: { trackSource: PlayListSource }) {
 
   return (
     <IconButton
+      kind="default"
       accessibilityLabel={t(`term.${displayPause ? "pause" : "play"}`)}
       onPress={
         displayPause

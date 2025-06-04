@@ -36,6 +36,7 @@ function PlaylistActions() {
   return (
     <View className="rounded-md bg-canvas">
       <IconButton
+        kind="default"
         accessibilityLabel={t("feat.playlist.extra.create")}
         onPress={() => router.navigate("/playlist/create")}
         className="bg-red"

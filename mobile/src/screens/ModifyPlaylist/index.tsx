@@ -24,7 +24,7 @@ import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { wait } from "~/utils/promise";
 import { FlashDragList } from "~/components/Defaults";
-import { IconButton } from "~/components/Form/Button";
+import { IconButton, NextIconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import { useSheetRef } from "~/components/Sheet";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
@@ -62,14 +62,12 @@ function ScreenConfig() {
         // Hacky solution to disable the back button when submitting.
         headerLeft: isSubmitting ? () => undefined : undefined,
         headerRight: () => (
-          <IconButton
-            kind="ripple"
+          <NextIconButton
+            Icon={Check}
             accessibilityLabel={t("form.apply")}
-            disabled={isUnchanged || !isUnique || isSubmitting}
             onPress={onSubmit}
-          >
-            <Check />
-          </IconButton>
+            disabled={isUnchanged || !isUnique || isSubmitting}
+          />
         ),
       }}
     />
@@ -168,6 +166,7 @@ const RenderItem = memo(
           renderRightActions={() =>
             info.isActive ? undefined : (
               <IconButton
+                kind="default"
                 accessibilityLabel={t("template.entryRemove", {
                   name: item.name,
                 })}
@@ -228,14 +227,12 @@ function ListHeaderComponent(props: { showSheet: () => void }) {
       </View>
       <View className="mb-2 ml-4 mr-1 mt-6 shrink grow flex-row items-center justify-between">
         <TStyledText textKey="term.tracks" />
-        <IconButton
-          kind="ripple"
+        <NextIconButton
+          Icon={Add}
           accessibilityLabel={t("feat.modalTrack.extra.addToPlaylist")}
-          disabled={isSubmitting}
           onPress={props.showSheet}
-        >
-          <Add />
-        </IconButton>
+          disabled={isSubmitting}
+        />
       </View>
     </>
   );

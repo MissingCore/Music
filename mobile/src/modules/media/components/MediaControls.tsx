@@ -12,51 +12,40 @@ import { MusicControls } from "../services/Playback";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
-import { IconButton } from "~/components/Form/Button";
-
-type MediaControlProps = { size?: number };
+import { IconButton, NextIconButton } from "~/components/Form/Button";
 
 /** Toggles the repeat status. */
-export function RepeatButton({ size = 32 }: MediaControlProps) {
+export function RepeatButton({ large = true }) {
   const { t } = useTranslation();
   const repeatMode = useMusicStore((state) => state.repeat);
   const cycleRepeat = useMusicStore((state) => state.cycleRepeat);
 
-  const RepeatIcon = repeatMode === "repeat-one" ? RepeatOne : Repeat;
-
   return (
-    <IconButton
-      kind="ripple"
+    <NextIconButton
+      Icon={repeatMode === "repeat-one" ? RepeatOne : Repeat}
       accessibilityLabel={t(
         `term.repeat${repeatMode === "repeat-one" ? "One" : ""}`,
       )}
       onPress={cycleRepeat}
-      rippleRadius={size * 0.75}
-      className="p-2"
-    >
-      <RepeatIcon
-        size={size}
-        color={repeatMode !== "no-repeat" ? Colors.red : undefined}
-      />
-    </IconButton>
+      active={repeatMode !== "no-repeat"}
+      large={large}
+    />
   );
 }
 
 /** Toggles the shuffle status. */
-export function ShuffleButton({ size = 32 }: MediaControlProps) {
+export function ShuffleButton({ large = true }) {
   const { t } = useTranslation();
   const isActive = useMusicStore((state) => state.shuffle);
   const setShuffle = useMusicStore((state) => state.setShuffle);
   return (
-    <IconButton
-      kind="ripple"
+    <NextIconButton
+      Icon={Shuffle}
       accessibilityLabel={t("term.shuffle")}
       onPress={() => setShuffle(!isActive)}
-      rippleRadius={size * 0.75}
-      className="p-2"
-    >
-      <Shuffle size={size} color={isActive ? Colors.red : undefined} />
-    </IconButton>
+      active={isActive}
+      large={large}
+    />
   );
 }
 
@@ -67,6 +56,7 @@ export function PlayToggleButton({ size = 32, className = "" }) {
   const Icon = isPlaying ? Pause : PlayArrow;
   return (
     <IconButton
+      kind="default"
       accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
       onPress={MusicControls.playToggle}
       className={cn("bg-red p-2", { "bg-onSurface": isPlaying }, className)}
@@ -77,33 +67,27 @@ export function PlayToggleButton({ size = 32, className = "" }) {
 }
 
 /** Play the next track. */
-export function NextButton({ size = 32 }: MediaControlProps) {
+export function NextButton({ large = true }) {
   const { t } = useTranslation();
   return (
-    <IconButton
-      kind="ripple"
+    <NextIconButton
+      Icon={SkipNext}
       accessibilityLabel={t("term.next")}
       onPress={MusicControls.next}
-      rippleRadius={size * 0.75}
-      className="p-2"
-    >
-      <SkipNext size={size} />
-    </IconButton>
+      large={large}
+    />
   );
 }
 
 /** Play the previous track. */
-export function PreviousButton({ size = 32 }: MediaControlProps) {
+export function PreviousButton({ large = true }) {
   const { t } = useTranslation();
   return (
-    <IconButton
-      kind="ripple"
+    <NextIconButton
+      Icon={SkipPrevious}
       accessibilityLabel={t("term.prev")}
       onPress={MusicControls.prev}
-      rippleRadius={size * 0.75}
-      className="p-2"
-    >
-      <SkipPrevious size={size} />
-    </IconButton>
+      large={large}
+    />
   );
 }

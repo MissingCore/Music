@@ -17,7 +17,7 @@ import { cn } from "~/lib/style";
 import { moveArray } from "~/utils/object";
 import { FlashDragList } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
-import { IconButton } from "~/components/Form/Button";
+import { NextIconButton } from "~/components/Form/Button";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
 type RenderItemProps = DragListRenderItemInfo<OrderableTab>;
@@ -61,7 +61,6 @@ const RenderItem = memo(
     );
 
     const isVisible = tabsVisibility[item];
-    const Icon = isVisible ? Eye : EyeOff;
     const tabNameKey = `term.${item}s` as const;
 
     return (
@@ -79,17 +78,15 @@ const RenderItem = memo(
       >
         <DragIndicator />
         <TStyledText textKey={tabNameKey} className="shrink grow p-4 pr-2" />
-        <IconButton
-          kind="ripple"
+        <NextIconButton
+          Icon={isVisible ? Eye : EyeOff}
           accessibilityLabel={t(
             isVisible ? "template.entryHide" : "template.entryShow",
             { name: t(tabNameKey) },
           )}
           onPress={() => toggleTabVisibility(item)}
           disabled={info.isDragging}
-        >
-          <Icon />
-        </IconButton>
+        />
       </Pressable>
     );
   },

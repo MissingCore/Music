@@ -187,6 +187,7 @@ function RenderQueueItem({ item, index }: ListRenderItemInfo<PartialTrack>) {
       containerClassName="mb-1 px-4"
       renderRightActions={() => (
         <IconButton
+          kind="default"
           accessibilityLabel={t("template.entryRemove", { name: item.name })}
           onPress={() => Queue.removeAtIndex(index)}
           className="mr-4 bg-red"

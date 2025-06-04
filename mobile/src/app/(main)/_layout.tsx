@@ -16,7 +16,7 @@ import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
 import { FlatList, useFlatListRef } from "~/components/Defaults";
-import { Button, IconButton } from "~/components/Form/Button";
+import { Button, NextIconButton } from "~/components/Form/Button";
 import { StyledText } from "~/components/Typography/StyledText";
 import { MiniPlayer } from "~/modules/media/components/MiniPlayer";
 
@@ -67,24 +67,21 @@ function TabBar({ stacked = false, hidden = false }) {
       )}
     >
       <NavigationList />
-      <IconButton
-        kind="ripple"
+      <NextIconButton
+        Icon={Search}
         accessibilityLabel={t("feat.search.title")}
         onPress={() => router.navigate("/search")}
-      >
-        <Search />
-      </IconButton>
-      <IconButton
-        kind="ripple"
-        accessibilityLabel={t("term.settings")}
-        onPress={() => router.navigate("/setting")}
-        className="relative"
-      >
-        <Settings />
+      />
+      <View className="relative">
+        <NextIconButton
+          Icon={Settings}
+          accessibilityLabel={t("term.settings")}
+          onPress={() => router.navigate("/setting")}
+        />
         {hasNewUpdate && (
           <View className="absolute right-3 top-3 size-2 rounded-full bg-red" />
         )}
-      </IconButton>
+      </View>
     </Animated.View>
   );
 }

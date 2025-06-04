@@ -8,7 +8,7 @@ import { useTheme } from "~/hooks/useTheme";
 import { StandardScrollLayout } from "~/layouts/StandardScroll";
 
 import { Card } from "~/components/Containment/Card";
-import { IconButton } from "~/components/Form/Button";
+import { NextIconButton } from "~/components/Form/Button";
 import { AccentText } from "~/components/Typography/AccentText";
 import { StyledText } from "~/components/Typography/StyledText";
 
@@ -25,15 +25,13 @@ export default function PackageLicenseScreen() {
       <Stack.Screen
         options={{
           headerRight: () => (
-            <IconButton
-              kind="ripple"
+            <NextIconButton
+              Icon={OpenInNew}
               accessibilityLabel={t("template.entrySeeMore", {
                 name: licenseInfo.name,
               })}
               onPress={() => openBrowserAsync(licenseInfo.source)}
-            >
-              <OpenInNew />
-            </IconButton>
+            />
           ),
         }}
       />

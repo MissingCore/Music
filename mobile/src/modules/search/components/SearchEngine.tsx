@@ -18,7 +18,7 @@ import { useTheme } from "~/hooks/useTheme";
 import { cn } from "~/lib/style";
 import { isString } from "~/utils/validation";
 import { FlashList, FlatList, useFlashListRef } from "~/components/Defaults";
-import { Button, IconButton } from "~/components/Form/Button";
+import { Button, NextIconButton } from "~/components/Form/Button";
 import { TextInput, useInputRef } from "~/components/Form/Input";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { TEm } from "~/components/Typography/StyledText";
@@ -52,8 +52,8 @@ export function SearchEngine<TScope extends SearchCategories>(
           placeholder={t("feat.search.extra.searchMedia")}
           className="shrink grow"
         />
-        <IconButton
-          kind="ripple"
+        <NextIconButton
+          Icon={Close}
           accessibilityLabel={t("form.clear")}
           onPress={() => {
             inputRef?.current?.clear();
@@ -61,9 +61,7 @@ export function SearchEngine<TScope extends SearchCategories>(
           }}
           disabled={query === ""}
           className="mr-1 disabled:invisible"
-        >
-          <Close />
-        </IconButton>
+        />
       </View>
       <SearchResultsList {...props} query={query} />
     </View>

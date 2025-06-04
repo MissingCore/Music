@@ -21,7 +21,7 @@ import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { FlashDragList } from "~/components/Defaults";
-import { IconButton } from "~/components/Form/Button";
+import { IconButton, NextIconButton } from "~/components/Form/Button";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
 import {
   ContentPlaceholder,
@@ -64,24 +64,21 @@ export default function CurrentPlaylistScreen() {
         options={{
           headerRight: () => (
             <View className="flex-row gap-1">
-              <IconButton
-                kind="ripple"
+              <NextIconButton
+                Icon={Favorite}
                 accessibilityLabel={t(`term.${isToggled ? "unF" : "f"}avorite`)}
                 onPress={() => mutateGuard(favoritePlaylist, !data.isFavorite)}
-              >
-                <Favorite filled={isToggled} />
-              </IconButton>
-              <IconButton
-                kind="ripple"
+                filled={isToggled}
+              />
+              <NextIconButton
+                Icon={Edit}
                 accessibilityLabel={t("feat.playlist.extra.edit")}
                 onPress={() =>
                   router.navigate(
                     `/playlist/modify?id=${encodeURIComponent(id)}`,
                   )
                 }
-              >
-                <Edit />
-              </IconButton>
+              />
             </View>
           ),
         }}
@@ -142,6 +139,7 @@ const RenderItem = memo(
           renderRightActions={() =>
             info.isActive ? undefined : (
               <IconButton
+                kind="default"
                 accessibilityLabel={t("template.entryRemove", {
                   name: item.title,
                 })}
