@@ -22,6 +22,7 @@
     "favorites": "Favoritter",
     "unFavorite": "Favorisér ikke længere",
     "favoriteTracks": "Yndlingssange",
+    "all": null,
     "home": "Startside",
     "settings": "Indstillinger",
     "upcoming": "Næste sange",
@@ -137,6 +138,9 @@
         "vinylOld": "Vinyl og cover"
       }
     },
+    "visualTips": {
+      "title": null
+    },
     "language": {
       "title": "Sprog"
     },
@@ -187,6 +191,9 @@
     "repeatOnSkip": {
       "title": "Behold gentagelsesindstilling ved næste sang",
       "brief": "Ændr ikke gentagelsesindstillingen fra \"Gentag én\" til \"Gentag\", når der skiftes til næste sang."
+    },
+    "saveLastPosition": {
+      "title": null
     },
     "scanning": {
       "title": "Scanning",
