@@ -28,8 +28,8 @@ export class Resynchronize {
   }
 
   /** Resynchronize when we update the artwork. */
-  static onImage() {
-    RecentList.refresh();
+  static onImage(ref: PlayListSource) {
+    RecentList.refresh(ref);
   }
 
   /** Resynchronize when we rename a playlist. */
@@ -50,7 +50,7 @@ export class Resynchronize {
 
   /** Resynchronize when we update the tracks in a media list. */
   static async onTracks(ref: PlayListSource) {
-    RecentList.refresh();
+    RecentList.refresh(ref);
     // Check if we were playing this list.
     const { playingSource } = musicStore.getState();
     const isPlayingRef = arePlaybackSourceEqual(playingSource, ref);

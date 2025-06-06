@@ -67,7 +67,9 @@ export function useUpdateArtist(artistName: string) {
     ) => updateArtist(artistName, updatedValues),
     onSuccess: (_, { artwork }) => {
       queryClient.invalidateQueries({ queryKey: q.artists._def });
-      if (artwork !== undefined) Resynchronize.onImage();
+      if (artwork !== undefined) {
+        Resynchronize.onImage({ type: "artist", id: artistName });
+      }
     },
   });
 }

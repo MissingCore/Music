@@ -72,7 +72,7 @@ export function useUpdateAlbumArtwork(albumId: string) {
       // Changing the album artwork affects a lot of things, so we'll just
       // clear all the queries.
       clearAllQueries();
-      Resynchronize.onImage();
+      Resynchronize.onImage({ type: "album", id: albumId });
     },
   });
 }

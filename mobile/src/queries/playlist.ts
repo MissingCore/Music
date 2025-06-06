@@ -155,7 +155,9 @@ export function useUpdatePlaylist(playlistName: string) {
       // in `updatePlaylist()`).
       const sanitizedName = name ? sanitizePlaylistName(name) : undefined;
 
-      if (artwork !== undefined) Resynchronize.onImage();
+      if (artwork !== undefined) {
+        Resynchronize.onImage({ type: "playlist", id: playlistName });
+      }
       if (sanitizedName) {
         await Resynchronize.onRename({
           oldSource: { type: "playlist", id: playlistName },

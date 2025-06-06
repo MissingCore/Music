@@ -171,8 +171,9 @@ export class RecentList {
   }
 
   /** Determines if a `PlayListSource` already exists in a `PlayListSource[]`. */
-  static isInRecentList(source: PlayListSource, sourceList: PlayListSource[]) {
-    return sourceList.some(RecentList.#compare(source));
+  static isInRecentList(source: PlayListSource, sourceList?: PlayListSource[]) {
+    let sources = sourceList ? sourceList : recentListStore.getState().sources;
+    return sources.some(RecentList.#compare(source));
   }
 
   /** Replace a specific entry in the recent list. */
@@ -199,7 +200,8 @@ export class RecentList {
    * Force revalidation of the values in `recentList`. Useful for when content
    * in `recentList` changes (ie: playlist cover/name) or gets deleted.
    */
-  static refresh() {
+  static refresh(ref?: PlayListSource) {
+    if (ref && !this.isInRecentList(ref)) return;
     recentListStore.setState((prev) => ({ sources: [...prev.sources] }));
   }
 }
