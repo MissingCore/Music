@@ -64,68 +64,12 @@ recentListStore.subscribe(
   (state) => state.sources,
   async (sources) => {
     const newRecentList: MediaCard.Content[] = [];
-    let entry: MediaCard.Content | undefined;
     const errors: PlayListSource[] = [];
 
-    for (const { id, type } of sources) {
-      try {
-        if (type === "album") {
-          const data = (await getAlbum(id, {
-            columns: ["id", "name", "artistName", "artwork"],
-            withTracks: false,
-          })) as AlbumWithTracks;
-          data.tracks = [];
-          entry = formatForMediaCard({ type: "album", data, t: i18next.t });
-        } else if (type === "artist") {
-          const data = await getArtist(id, {
-            columns: ["name", "artwork"],
-            trackColumns: ["id"],
-            withAlbum: false,
-          });
-          entry = formatForMediaCard({ type: "artist", data, t: i18next.t });
-        } else if (type === "folder") {
-          const numTracks = (await getFolderTracks(id)).length;
-          if (numTracks === 0) throw new Error("Folder is empty.");
-          entry = {
-            type: "folder",
-            source: null,
-            href: `/folder?path=${encodeURIComponent(id)}`,
-            title: id.split("/").at(-2) ?? id,
-            description: i18next.t("plural.track", { count: numTracks }),
-          };
-        } else {
-          let data = null;
-          if (ReservedNames.has(id)) {
-            const specialList = await getSpecialPlaylist(
-              id as ReservedPlaylistName,
-              { trackColumns: ["id"], withAlbum: false },
-            );
-            data = {
-              ...specialList,
-              tracks: specialList.tracks.map(() => ({
-                artwork: null,
-                album: null,
-              })),
-            };
-          } else {
-            data = await getPlaylist(id, {
-              columns: ["name", "artwork"],
-              trackColumns: ["artwork"],
-              albumColumns: ["artwork"],
-            });
-          }
-          entry = formatForMediaCard({ type: "playlist", data, t: i18next.t });
-
-          // Translate the names of these special playlists.
-          if (entry && ReservedNames.has(id)) {
-            const tKey = id === ReservedPlaylists.tracks ? "t" : "favoriteT";
-            entry.title = i18next.t(`term.${tKey}racks`);
-          }
-        }
-        if (entry) newRecentList.push(entry);
-      } catch {
-        errors.push({ id, type });
-      }
+    for (const source of sources) {
+      const entry = await getRecentListEntry(source);
+      if (entry.error) errors.push(source);
+      else newRecentList.push(entry.data);
     }
 
     // Remove any `PlayListSource` in `sources` that are invalid.
@@ -203,6 +147,71 @@ export class RecentList {
   static refresh(ref?: PlayListSource) {
     if (ref && !this.isInRecentList(ref)) return;
     recentListStore.setState((prev) => ({ sources: [...prev.sources] }));
+  }
+}
+//#endregion
+
+//#region Utils
+/** Get a `MediaCard.Content` from a source in the recent list. */
+async function getRecentListEntry({ id, type }: PlayListSource) {
+  try {
+    let entry: MediaCard.Content;
+    if (type === "album") {
+      const data = (await getAlbum(id, {
+        columns: ["id", "name", "artistName", "artwork"],
+        withTracks: false,
+      })) as AlbumWithTracks;
+      data.tracks = [];
+      entry = formatForMediaCard({ type: "album", data, t: i18next.t });
+    } else if (type === "artist") {
+      const data = await getArtist(id, {
+        columns: ["name", "artwork"],
+        trackColumns: ["id"],
+        withAlbum: false,
+      });
+      entry = formatForMediaCard({ type: "artist", data, t: i18next.t });
+    } else if (type === "folder") {
+      const numTracks = (await getFolderTracks(id)).length;
+      if (numTracks === 0) throw new Error("Folder is empty.");
+      entry = {
+        type: "folder",
+        source: null,
+        href: `/folder?path=${encodeURIComponent(id)}`,
+        title: id.split("/").at(-2) ?? id,
+        description: i18next.t("plural.track", { count: numTracks }),
+      };
+    } else {
+      let data = null;
+      if (ReservedNames.has(id)) {
+        const specialList = await getSpecialPlaylist(
+          id as ReservedPlaylistName,
+          { trackColumns: ["id"], withAlbum: false },
+        );
+        data = {
+          ...specialList,
+          tracks: specialList.tracks.map(() => ({
+            artwork: null,
+            album: null,
+          })),
+        };
+      } else {
+        data = await getPlaylist(id, {
+          columns: ["name", "artwork"],
+          trackColumns: ["artwork"],
+          albumColumns: ["artwork"],
+        });
+      }
+      entry = formatForMediaCard({ type: "playlist", data, t: i18next.t });
+
+      // Translate the names of these special playlists.
+      if (entry && ReservedNames.has(id)) {
+        const tKey = id === ReservedPlaylists.tracks ? "t" : "favoriteT";
+        entry.title = i18next.t(`term.${tKey}racks`);
+      }
+    }
+    return { data: entry, error: false } as const;
+  } catch {
+    return { data: undefined, error: true } as const;
   }
 }
 //#endregion
