@@ -55,8 +55,9 @@ export function useFavoriteAlbum(albumId: string) {
       await favoriteAlbum(albumId, isFavorite);
     },
     onSuccess: () => {
-      // Invalidate all album queries and the favorite lists query.
-      queryClient.invalidateQueries({ queryKey: q.albums._def });
+      queryClient.invalidateQueries({
+        queryKey: q.albums.detail(albumId).queryKey,
+      });
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
     },
   });

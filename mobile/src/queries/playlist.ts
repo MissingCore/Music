@@ -70,8 +70,9 @@ export function useCreatePlaylist() {
       tracks?: Array<{ id: string }>;
     }) => createPlaylist({ name: args.playlistName, tracks: args.tracks }),
     onSuccess: () => {
-      // Invalidate all playlist & track queries.
       queryClient.invalidateQueries({ queryKey: q.playlists._def });
+      // The `q.tracks.detail()._ctx.playlists` key needs to be updated for
+      // each track added to this playlist on creation.
       queryClient.invalidateQueries({ queryKey: q.tracks._def });
       queryClient.invalidateQueries({ queryKey: ["search"] });
     },
@@ -85,7 +86,6 @@ export function useDeletePlaylist(playlistName: string) {
     mutationFn: () => deletePlaylist(playlistName),
     onSuccess: () => {
       Resynchronize.onDelete({ type: "playlist", id: playlistName });
-      // Invalidate all playlist queries and the favorite lists query.
       queryClient.invalidateQueries({ queryKey: q.playlists._def });
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
       queryClient.invalidateQueries({ queryKey: ["search"] });
@@ -103,8 +103,9 @@ export function useFavoritePlaylist(playlistName: string) {
       await favoritePlaylist(playlistName, isFavorite);
     },
     onSuccess: () => {
-      // Invalidate all playlist queries and the favorite lists query.
-      queryClient.invalidateQueries({ queryKey: q.playlists._def });
+      queryClient.invalidateQueries({
+        queryKey: q.playlists.detail(playlistName).queryKey,
+      });
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
     },
   });
@@ -117,8 +118,9 @@ export function useMoveInPlaylist(playlistName: string) {
     mutationFn: (movement: { fromIndex: number; toIndex: number }) =>
       moveInPlaylist({ ...movement, playlistName }),
     onSuccess: () => {
-      // Invalidate all playlist queries.
-      queryClient.invalidateQueries({ queryKey: q.playlists._def });
+      queryClient.invalidateQueries({
+        queryKey: q.playlists.detail(playlistName).queryKey,
+      });
       // Ensure that the order of the tracks in the playlist is correct.
       Resynchronize.onTracks({ type: "playlist", id: playlistName });
     },
@@ -135,7 +137,6 @@ export function useUpdatePlaylist(playlistName: string) {
       > & { tracks?: Array<{ id: string }> },
     ) => updatePlaylist(playlistName, updatedValues),
     onSuccess: async (_, { name, artwork, tracks }) => {
-      // Invalidate all playlist queries.
       queryClient.resetQueries({ queryKey: q.playlists._def });
       // Invalidate favorite lists query to update the artwork or name used.
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });

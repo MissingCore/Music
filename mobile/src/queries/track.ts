@@ -40,8 +40,9 @@ export function useAddToPlaylist(trackId: string) {
     mutationFn: (playlistName: string) =>
       addToPlaylist({ trackId, playlistName }),
     onSuccess: (_, playlistName) => {
-      // Invalidate all track queries, favorite tracks query, and all playlist queries.
-      queryClient.invalidateQueries({ queryKey: q.tracks._def });
+      queryClient.invalidateQueries({
+        queryKey: q.tracks.detail(trackId)._ctx.playlists.queryKey,
+      });
       queryClient.invalidateQueries({ queryKey: q.playlists._def });
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
       // Ensure that if we're currently playing from the playlist we added
@@ -61,8 +62,9 @@ export function useFavoriteTrack(trackId: string) {
       await favoriteTrack(trackId, isFavorite);
     },
     onSuccess: () => {
-      // Invalidate all track queries and the favorite tracks query.
-      queryClient.invalidateQueries({ queryKey: q.tracks._def });
+      queryClient.invalidateQueries({
+        queryKey: q.tracks.detail(trackId).queryKey,
+      });
       queryClient.invalidateQueries({ queryKey: q.favorites.tracks.queryKey });
       Resynchronize.onTracks({
         type: "playlist",
@@ -79,8 +81,9 @@ export function useRemoveFromPlaylist(trackId: string) {
     mutationFn: (playlistName: string) =>
       removeFromPlaylist({ trackId, playlistName }),
     onSuccess: (_, playlistName) => {
-      // Invalidate all track queries, favorite tracks query, and all playlist queries.
-      queryClient.invalidateQueries({ queryKey: q.tracks._def });
+      queryClient.invalidateQueries({
+        queryKey: q.tracks.detail(trackId)._ctx.playlists.queryKey,
+      });
       queryClient.invalidateQueries({ queryKey: q.playlists._def });
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
       // Ensure that if we're currently playing from the playlist we removed
