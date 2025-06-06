@@ -69,11 +69,17 @@ export function useCreatePlaylist() {
       playlistName: string;
       tracks?: Array<{ id: string }>;
     }) => createPlaylist({ name: args.playlistName, tracks: args.tracks }),
-    onSuccess: () => {
+    onSuccess: (_, { tracks }) => {
       queryClient.invalidateQueries({ queryKey: q.playlists._def });
       // The `q.tracks.detail()._ctx.playlists` key needs to be updated for
       // each track added to this playlist on creation.
-      queryClient.invalidateQueries({ queryKey: q.tracks._def });
+      if (tracks) {
+        tracks.forEach(({ id }) =>
+          queryClient.invalidateQueries({
+            queryKey: q.tracks.detail(id)._ctx.playlists.queryKey,
+          }),
+        );
+      }
       queryClient.invalidateQueries({ queryKey: ["search"] });
     },
   });
@@ -138,6 +144,9 @@ export function useUpdatePlaylist(playlistName: string) {
     ) => updatePlaylist(playlistName, updatedValues),
     onSuccess: async (_, { name, artwork, tracks }) => {
       queryClient.resetQueries({ queryKey: q.playlists._def });
+      // Need to update all track queries as we don't exactly know which
+      // were removed.
+      queryClient.invalidateQueries({ queryKey: q.tracks._def });
       // Invalidate favorite lists query to update the artwork or name used.
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
       queryClient.invalidateQueries({ queryKey: ["search"] });
