@@ -11,7 +11,6 @@ import { getTracks, updateTrack } from "~/api/track";
 import { onboardingStore } from "../services/Onboarding";
 
 import { ImageDirectory, deleteImage, saveImage } from "~/lib/file-system";
-import { clearAllQueries } from "~/lib/react-query";
 import { Stopwatch } from "~/utils/debug";
 import { BATCH_PRESETS, batch } from "~/utils/promise";
 
@@ -101,8 +100,6 @@ export async function findAndSaveArtwork() {
   console.log(
     `Finished saving ${newArtworkCount} new cover images in ${stopwatch.lapTime()}.`,
   );
-
-  if (newArtworkCount > 0) clearAllQueries();
 }
 
 /** Iterate over a list of tracks, finding and saving its artwork. */
