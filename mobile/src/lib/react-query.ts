@@ -6,6 +6,8 @@ import { queries as q } from "~/queries/keyStore";
 const queryConfig: DefaultOptions = {
   queries: {
     networkMode: "always",
+    staleTime: Infinity,
+    gcTime: 2.5 * 60 * 1000,
   },
   mutations: {
     networkMode: "always",
