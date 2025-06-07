@@ -69,44 +69,34 @@ export class RecentList {
     };
   }
 
-  /** Remove a `PlayListSource` inside a `PlayListSource[]`. */
-  static #removeSourceInList(
-    removedSource: PlayListSource,
-    sourceList: PlayListSource[],
-  ) {
-    return sourceList.filter(RecentList.#compare(removedSource, true));
-  }
-
   /** Add the latest media list played into the recent list. */
   static async add(newSource: PlayListSource) {
-    let { sources: ogSources } = recentListStore.getState();
-    let oldSources = recentListStore.getState().sources;
-    const prevInList = RecentList.isInRecentList(newSource, oldSources);
-    if (prevInList) {
-      oldSources = RecentList.#removeSourceInList(newSource, oldSources);
-    }
+    const { sources, recentList } = recentListStore.getState();
+    const [inList, atIndex] = this.containsSource(newSource, sources);
 
     // Get the entry we want to add.
-    let newEntry: MediaCard.Content;
-    const remainingList = recentListStore.getState().recentList;
-    if (prevInList) {
-      const atIndex = ogSources.findIndex(RecentList.#compare(newSource));
-      newEntry = remainingList[atIndex]!;
-      remainingList.splice(atIndex, 1);
-    } else {
-      newEntry = (await getRecentListEntry(newSource)).data!;
+    let newEntry = recentList[atIndex]!;
+    if (!inList) newEntry = (await getRecentListEntry(newSource)).data!;
+    // Get the values that we'll append our new values in front of.
+    let [oldSources, oldEntries] = [sources, recentList];
+    if (inList) {
+      oldSources = oldSources.filter(this.#compare(newSource, true));
+      oldEntries = oldEntries.toSpliced(atIndex, 1);
     }
 
     recentListStore.setState({
       sources: [newSource, ...oldSources].slice(0, 15),
-      recentList: [newEntry].concat(remainingList).slice(0, 15),
+      recentList: [newEntry, ...oldEntries].slice(0, 15),
     });
   }
 
   /** Determines if a `PlayListSource` already exists in a `PlayListSource[]`. */
-  static isInRecentList(source: PlayListSource, sourceList?: PlayListSource[]) {
-    let sources = sourceList ? sourceList : recentListStore.getState().sources;
-    return sources.some(RecentList.#compare(source));
+  static containsSource(source: PlayListSource, sourceList?: PlayListSource[]) {
+    const sources = sourceList
+      ? sourceList
+      : recentListStore.getState().sources;
+    const atIndex = sources.findIndex(this.#compare(source));
+    return [atIndex !== -1, atIndex] as const;
   }
 
   /**
@@ -118,35 +108,32 @@ export class RecentList {
     oldSource,
     newSource,
   }: Record<"oldSource" | "newSource", PlayListSource>) {
-    const { sources: oldSources, recentList } = recentListStore.getState();
-    const entryIdx = oldSources.findIndex(RecentList.#compare(oldSource));
-    if (entryIdx === -1) return;
+    const { sources, recentList } = recentListStore.getState();
+    const [inList, atIndex] = this.containsSource(oldSource, sources);
+
+    if (!inList) return;
     recentListStore.setState({
-      sources: oldSources.with(entryIdx, newSource),
-      recentList: recentList.map((entry, idx) => {
-        if (idx !== entryIdx) return entry;
-        return {
-          ...entry,
-          title: newSource.id,
-          href: `/playlist/${encodeURIComponent(newSource.id)}`,
-        };
+      sources: sources.with(atIndex, newSource),
+      recentList: recentList.with(atIndex, {
+        ...recentList[atIndex]!,
+        title: newSource.id,
+        href: `/playlist/${encodeURIComponent(newSource.id)}`,
       }),
     });
   }
 
   /** Remove multiple entries in the recent list. */
   static removeEntries(removedSources: PlayListSource[]) {
-    let { sources: ogSources, recentList } = recentListStore.getState();
-    let oldSources = recentListStore.getState().sources;
+    const { sources, recentList } = recentListStore.getState();
+
     const removedIndices: number[] = [];
     removedSources.forEach((removedSource) => {
-      oldSources = RecentList.#removeSourceInList(removedSource, oldSources);
-      removedIndices.push(
-        ogSources.findIndex(RecentList.#compare(removedSource)),
-      );
+      const [inList, atIndex] = this.containsSource(removedSource, sources);
+      if (inList) removedIndices.push(atIndex);
     });
+
     recentListStore.setState({
-      sources: oldSources,
+      sources: sources.filter((_, idx) => !removedIndices.includes(idx)),
       recentList: recentList.filter((_, idx) => !removedIndices.includes(idx)),
     });
   }
@@ -156,17 +143,16 @@ export class RecentList {
    * in `recentList` changes (ie: playlist cover/name) or gets deleted.
    */
   static async refresh(ref?: PlayListSource) {
-    const { sources } = recentListStore.getState();
+    const { sources, recentList } = recentListStore.getState();
+
     if (ref) {
-      if (!this.isInRecentList(ref)) return;
-      // Only refresh the single source.
+      const [inList, atIndex] = this.containsSource(ref, sources);
+      if (!inList) return;
+      // Only refresh the data of the source.
       const { data: updatedEntry } = await getRecentListEntry(ref);
-      const atIndex = sources.findIndex(RecentList.#compare(ref));
-      recentListStore.setState((prev) => ({
-        recentList: prev.recentList.map((entry, idx) =>
-          idx === atIndex ? updatedEntry! : entry,
-        ),
-      }));
+      recentListStore.setState({
+        recentList: recentList.with(atIndex, updatedEntry!),
+      });
       return;
     }
 
@@ -180,13 +166,9 @@ export class RecentList {
       else newRecentList.push(entry.data);
     }
 
-    // Remove any `PlayListSource` in `sources` that are invalid.
-    const revisedSources = sources.filter(
-      (s1) => !errors.some((s2) => arePlaybackSourceEqual(s1, s2)),
-    );
-
     recentListStore.setState({
-      sources: revisedSources,
+      // Remove any `PlayListSource` in `sources` that are invalid.
+      sources: sources.filter((s1) => !errors.some(this.#compare(s1))),
       recentList: newRecentList,
     });
   }

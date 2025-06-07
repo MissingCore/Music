@@ -21,7 +21,7 @@ export class Resynchronize {
     const currSource = musicStore.getState().playingSource;
     if (!currSource) return;
     const isPlayingRef = Array.isArray(removedRefs)
-      ? RecentList.isInRecentList(currSource, removedRefs)
+      ? RecentList.containsSource(currSource, removedRefs)[0]
       : arePlaybackSourceEqual(currSource, removedRefs);
     // If we're playing a list we've deleted, reset the state.
     if (isPlayingRef) await musicStore.getState().reset();
