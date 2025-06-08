@@ -6,8 +6,6 @@ import type { TrackWithAlbum } from "~/db/schema";
 
 import { getTrack } from "~/api/track";
 
-import { wait } from "~/utils/promise";
-
 interface SessionStore {
   /** The rate at which the media is played (from 0.25 to 2). */
   playbackSpeed: number;
@@ -35,7 +33,6 @@ export async function presentTrackSheet(trackId: string) {
     sessionStore.setState({
       displayedTrack: { ...sheetTrack, _checked: Date.now() },
     });
-    await wait(25); // Let content get rendered in the sheet.
     TrueSheet.present("TrackSheet");
   } catch {
     // If `getTrack()` fails, it throws an error, which is caught here.
