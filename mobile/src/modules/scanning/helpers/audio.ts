@@ -76,15 +76,19 @@ export async function findAndSaveAudio() {
     columns: ["id", "modificationTime", "uri"],
     withAlbum: false,
   });
+  const allTracksMap = Object.fromEntries(allTracks.map((t) => [t.id, t]));
   const allInvalidTracks = await getSaveErrors();
+  const allInvalidTracksMap = Object.fromEntries(
+    allInvalidTracks.map((t) => [t.id, t]),
+  );
   onboardingStore.setState({ prevSaved: allTracks.length });
 
   // Find the tracks we can skip indexing or need updating.
   const modifiedTracks = new Set<string>();
   const unmodifiedTracks = new Set<string>();
   discoveredTracks.forEach(({ id, modificationTime, uri }) => {
-    const isSaved = allTracks.find((t) => t.id === id);
-    const isInvalid = allInvalidTracks.find((t) => t.id === id);
+    const isSaved = allTracksMap[id];
+    const isInvalid = allInvalidTracksMap[id];
     if (!isSaved && !isInvalid) return; // If we have a new track.
 
     const lastModified = (isSaved ?? isInvalid)!.modificationTime;
@@ -124,7 +128,7 @@ export async function findAndSaveAudio() {
     batchAmount: BATCH_PRESETS.PROGRESS,
     callback: async (mediaAsset) => {
       const { id, uri, modificationTime } = mediaAsset;
-      const isRetry = allInvalidTracks.find((t) => t.id === id);
+      const isRetry = allInvalidTracksMap[id];
 
       try {
         const trackEntry = await getTrackEntry(mediaAsset);
