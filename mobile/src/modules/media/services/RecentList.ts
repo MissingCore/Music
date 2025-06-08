@@ -78,11 +78,8 @@ export class RecentList {
     let newEntry = recentList[atIndex]!;
     if (!inList) newEntry = (await getRecentListEntry(newSource)).data!;
     // Get the values that we'll append our new values in front of.
-    let [oldSources, oldEntries] = [sources, recentList];
-    if (inList) {
-      oldSources = oldSources.filter(this.#compare(newSource, true));
-      oldEntries = oldEntries.toSpliced(atIndex, 1);
-    }
+    const oldSources = inList ? sources.toSpliced(atIndex, 1) : sources;
+    const oldEntries = inList ? recentList.toSpliced(atIndex, 1) : recentList;
 
     recentListStore.setState({
       sources: [newSource, ...oldSources].slice(0, 15),
@@ -149,9 +146,9 @@ export class RecentList {
       const [inList, atIndex] = this.containsSource(ref, sources);
       if (!inList) return;
       // Only refresh the data of the source.
-      const { data: updatedEntry } = await getRecentListEntry(ref);
+      const updatedEntry = (await getRecentListEntry(ref)).data!;
       recentListStore.setState({
-        recentList: recentList.with(atIndex, updatedEntry!),
+        recentList: recentList.with(atIndex, updatedEntry),
       });
       return;
     }
