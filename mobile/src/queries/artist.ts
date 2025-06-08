@@ -66,10 +66,10 @@ export function useUpdateArtist(artistName: string) {
       updatedValues: Partial<Omit<typeof artists.$inferInsert, "name">>,
     ) => updateArtist(artistName, updatedValues),
     onSuccess: (_, { artwork }) => {
-      // Invalidate all artist queries.
       queryClient.invalidateQueries({ queryKey: q.artists._def });
-
-      if (artwork !== undefined) Resynchronize.onImage();
+      if (artwork !== undefined) {
+        Resynchronize.onImage({ type: "artist", id: artistName });
+      }
     },
   });
 }

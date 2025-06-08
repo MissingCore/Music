@@ -106,6 +106,6 @@ function useAllMedia() {
   // query. For other places (ie: modifying playlists), we can manually add
   // that in.
   //  - FIXME: If we add the "Hide Track" feature, things might need to change.
-  return useQuery({ queryKey, queryFn: getAllMedia, staleTime: Infinity });
+  return useQuery({ queryKey, queryFn: getAllMedia });
 }
 //#endregion

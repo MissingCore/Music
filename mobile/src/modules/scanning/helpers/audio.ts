@@ -19,7 +19,6 @@ import { Queue, musicStore } from "~/modules/media/services/Music";
 import { RecentList } from "~/modules/media/services/RecentList";
 import { onboardingStore } from "../services/Onboarding";
 
-import { clearAllQueries } from "~/lib/react-query";
 import {
   addTrailingSlash,
   getSafeUri,
@@ -270,8 +269,6 @@ export async function cleanupDatabase(usedTrackIds: string[]) {
 
   // Remove anything else that's unused.
   await removeUnusedCategories();
-
-  if (unusedTrackIds.length > 0) clearAllQueries();
 }
 
 /** Remove any albums or artists that aren't used. */

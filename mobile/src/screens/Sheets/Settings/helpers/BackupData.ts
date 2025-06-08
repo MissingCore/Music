@@ -1,5 +1,5 @@
 import { toast } from "@backpackapp-io/react-native-toast";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { getDocumentAsync } from "expo-document-picker";
 import {
   EncodingType,
@@ -228,12 +228,10 @@ export const useExportBackup = () => {
 
 export const useImportBackup = () => {
   const { t } = useTranslation();
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: importBackup,
     onSuccess: () => {
-      clearAllQueries(queryClient);
+      clearAllQueries();
       toast(t("feat.backup.extra.importSuccess"), ToastOptions);
     },
     onError: (err) => {

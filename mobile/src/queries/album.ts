@@ -55,8 +55,9 @@ export function useFavoriteAlbum(albumId: string) {
       await favoriteAlbum(albumId, isFavorite);
     },
     onSuccess: () => {
-      // Invalidate all album queries and the favorite lists query.
-      queryClient.invalidateQueries({ queryKey: q.albums._def });
+      queryClient.invalidateQueries({
+        queryKey: q.albums.detail(albumId).queryKey,
+      });
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
     },
   });
@@ -71,7 +72,7 @@ export function useUpdateAlbumArtwork(albumId: string) {
       // Changing the album artwork affects a lot of things, so we'll just
       // clear all the queries.
       clearAllQueries();
-      Resynchronize.onImage();
+      Resynchronize.onImage({ type: "album", id: albumId });
     },
   });
 }
