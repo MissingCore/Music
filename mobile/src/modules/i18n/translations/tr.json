@@ -22,6 +22,7 @@
     "favorites": "Favoriler",
     "unFavorite": "Favorilerden Çıkar",
     "favoriteTracks": "Favori Parçalar",
+    "all": "Tümü",
     "home": "Ana Sayfa",
     "settings": "Ayarlar",
     "upcoming": "Yaklaşan",
@@ -137,6 +138,9 @@
         "vinylOld": "Plak (Eski)"
       }
     },
+    "visualTips": {
+      "title": "Görsel İpuçları"
+    },
     "language": {
       "title": "Dil"
     },
@@ -187,6 +191,9 @@
     "repeatOnSkip": {
       "title": "Atlamada Tekrar Modunu Koru",
       "brief": "Atlama sırasında \"Birini Tekrarla\" modundan \"Tekrarla\" moduna geçmeyin."
+    },
+    "saveLastPosition": {
+      "title": "Son Oynatılan Konumu Kaydet"
     },
     "scanning": {
       "title": "Tarama",

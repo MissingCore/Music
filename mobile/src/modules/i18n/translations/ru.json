@@ -22,6 +22,7 @@
     "favorites": "Любимые",
     "unFavorite": "Убрать из любимых",
     "favoriteTracks": "Любимые Треки",
+    "all": null,
     "home": "Главная",
     "settings": "Настройки",
     "upcoming": "Предстоящее",
@@ -137,6 +138,9 @@
         "vinylOld": "Винил (устаревший)"
       }
     },
+    "visualTips": {
+      "title": null
+    },
     "language": {
       "title": "Язык"
     },
@@ -187,6 +191,9 @@
     "repeatOnSkip": {
       "title": "Не выключать режим повтора при пропуске",
       "brief": "Не переключаться в режим \"Повтор\" с режима \"Повторять одну\" после пропуска."
+    },
+    "saveLastPosition": {
+      "title": null
     },
     "scanning": {
       "title": "Сканирование",

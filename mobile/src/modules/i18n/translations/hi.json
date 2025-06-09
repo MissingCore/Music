@@ -22,6 +22,7 @@
     "favorites": "पसंदीदा",
     "unFavorite": "पसंदीदा हटाएँ",
     "favoriteTracks": "पसंदीदा ट्रैक्स",
+    "all": null,
     "home": "होम",
     "settings": "सेटिंग्स",
     "upcoming": "आगामी",
@@ -137,6 +138,9 @@
         "vinylOld": null
       }
     },
+    "visualTips": {
+      "title": null
+    },
     "language": {
       "title": "भाषा"
     },
@@ -187,6 +191,9 @@
     "repeatOnSkip": {
       "title": null,
       "brief": null
+    },
+    "saveLastPosition": {
+      "title": null
     },
     "scanning": {
       "title": "स्कैनिंग",
