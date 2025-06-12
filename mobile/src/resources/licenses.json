@@ -89,7 +89,7 @@
   },
   "@sentry/react-native": {
     "name": "@sentry/react-native",
-    "version": "6.14.0",
+    "version": "6.15.1",
     "copyright": "Copyright (c) 2017-2024 Sentry",
     "source": "https://github.com/getsentry/sentry-react-native",
     "license": "MIT",
@@ -105,7 +105,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.79.0",
+    "version": "5.80.7",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -121,7 +121,7 @@
   },
   "drizzle-orm": {
     "name": "drizzle-orm",
-    "version": "0.44.1",
+    "version": "0.44.2",
     "copyright": "Copyright (c) 2022 Drizzle Team",
     "source": "https://github.com/drizzle-team/drizzle-orm",
     "license": "Apache-2.0",
@@ -321,7 +321,7 @@
   },
   "react-native-bootsplash": {
     "name": "react-native-bootsplash",
-    "version": "6.3.8",
+    "version": "6.3.9",
     "copyright": "Copyright (c) 2021 Mathieu Acthernoene",
     "source": "https://github.com/zoontek/react-native-bootsplash",
     "license": "MIT",
@@ -337,7 +337,7 @@
   },
   "react-native-edge-to-edge": {
     "name": "react-native-edge-to-edge",
-    "version": "1.6.0",
+    "version": "1.6.1",
     "copyright": "Copyright (c) 2024 Mathieu Acthernoene",
     "source": "https://github.com/zoontek/react-native-edge-to-edge",
     "license": "MIT",
