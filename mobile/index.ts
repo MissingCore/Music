@@ -3,7 +3,7 @@ import "intl-pluralrules";
 
 import "expo-router/entry";
 import { configureReanimatedLogger } from "react-native-reanimated";
-import TrackPlayer from "react-native-track-player";
+import TrackPlayer from "@weights-ai/react-native-track-player";
 
 import { setupPlayer } from "./src/lib/react-native-track-player";
 import { PlaybackService } from "./src/services/RNTPService";

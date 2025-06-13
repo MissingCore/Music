@@ -1,9 +1,9 @@
-import type { UpdateOptions } from "react-native-track-player";
+import type { UpdateOptions } from "@weights-ai/react-native-track-player";
 import TrackPlayer, {
   AppKilledPlaybackBehavior,
   Capability,
   RepeatMode,
-} from "react-native-track-player";
+} from "@weights-ai/react-native-track-player";
 
 import { wait } from "~/utils/promise";
 

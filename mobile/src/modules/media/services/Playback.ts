@@ -1,4 +1,4 @@
-import TrackPlayer from "react-native-track-player";
+import TrackPlayer from "@weights-ai/react-native-track-player";
 
 import { getTrack } from "~/api/track";
 import { userPreferencesStore } from "~/services/UserPreferences";

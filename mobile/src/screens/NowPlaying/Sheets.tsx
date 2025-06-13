@@ -1,7 +1,7 @@
 import type { ListRenderItemInfo } from "@shopify/flash-list";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import TrackPlayer from "react-native-track-player";
+import TrackPlayer from "@weights-ai/react-native-track-player";
 
 import { getTrackCover } from "~/db/utils";
 

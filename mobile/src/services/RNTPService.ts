@@ -1,6 +1,6 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { router } from "expo-router";
-import TrackPlayer, { Event } from "react-native-track-player";
+import TrackPlayer, { Event } from "@weights-ai/react-native-track-player";
 
 import i18next from "~/modules/i18n";
 import { deleteTrack } from "~/api/track";

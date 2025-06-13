@@ -1,7 +1,7 @@
 import { Stack } from "expo-router";
 import { View } from "react-native";
 import Bootsplash from "react-native-bootsplash";
-import TrackPlayer from "react-native-track-player";
+import TrackPlayer from "@weights-ai/react-native-track-player";
 
 import { useLoadResources } from "~/hooks/useLoadResources";
 import { AppProvider } from "~/providers";

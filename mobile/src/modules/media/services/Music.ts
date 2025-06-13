@@ -1,5 +1,5 @@
 import { toast } from "@backpackapp-io/react-native-toast";
-import TrackPlayer, { State } from "react-native-track-player";
+import TrackPlayer, { State } from "@weights-ai/react-native-track-player";
 import { useStore } from "zustand";
 
 import type { TrackWithAlbum } from "~/db/schema";

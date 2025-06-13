@@ -67,6 +67,9 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.80.7
         version: 5.80.7(react@18.3.1)
+      '@weights-ai/react-native-track-player':
+        specifier: ^4.1.5
+        version: 4.1.5(react-native@0.77.2(@babel/core@7.27.4)(@babel/preset-env@7.27.2(@babel/core@7.27.4))(@types/react@18.3.23)(react@18.3.1))(react@18.3.1)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -166,9 +169,6 @@ importers:
       react-native-tab-view:
         specifier: ^3.5.2
         version: 3.5.2(react-native-pager-view@6.8.1(react-native@0.77.2(@babel/core@7.27.4)(@babel/preset-env@7.27.2(@babel/core@7.27.4))(@types/react@18.3.23)(react@18.3.1))(react@18.3.1))(react-native@0.77.2(@babel/core@7.27.4)(@babel/preset-env@7.27.2(@babel/core@7.27.4))(@types/react@18.3.23)(react@18.3.1))(react@18.3.1)
-      react-native-track-player:
-        specifier: ^4.1.1
-        version: 4.1.1(react-native@0.77.2(@babel/core@7.27.4)(@babel/preset-env@7.27.2(@babel/core@7.27.4))(@types/react@18.3.23)(react@18.3.1))(react@18.3.1)
       tailwind-merge:
         specifier: ^2.6.0
         version: 2.6.0
@@ -2220,6 +2220,19 @@ packages:
 
   '@web3-storage/multipart-parser@1.0.0':
     resolution: {integrity: sha512-BEO6al7BYqcnfX15W2cnGR+Q566ACXAT9UQykORCWW80lmkpWsnEob6zJS1ZVBKsSJC8+7vJkHwlp+lXG1UCdw==}
+
+  '@weights-ai/react-native-track-player@4.1.5':
+    resolution: {integrity: sha512-c+dvDSjuZEGPl6gqfzayCpGN+cqEousgnfAuMWtOhqJXx0pt4U343aZmy7MQUjFCXeGgNX2/N0eOTGrzag6uJQ==}
+    peerDependencies:
+      react: '>=18'
+      react-native: '>=0.77'
+      react-native-windows: '>=0.77'
+      shaka-player: ^4.7.9
+    peerDependenciesMeta:
+      react-native-windows:
+        optional: true
+      shaka-player:
+        optional: true
 
   '@xmldom/xmldom@0.7.13':
     resolution: {integrity: sha512-lm2GW5PkosIzccsaZIz7tp8cPADSIlIHWDFTR1N0SzfinhhYgeIQjFMz4rYzanCScr3DqQLeomUDArp6MWKm+g==}
@@ -5414,19 +5427,6 @@ packages:
       react: '*'
       react-native: '*'
       react-native-pager-view: '*'
-
-  react-native-track-player@4.1.1:
-    resolution: {integrity: sha512-E5N/eK/+HtAVJUAzXpm1cWz8ROheV9jb0TI6h2bM+333U+DWibTTnT2T1122FkCoXLXIYavtm2FR2if+5jH8cA==}
-    peerDependencies:
-      react: '>=16.8.6'
-      react-native: '>=0.60.0-rc.2'
-      react-native-windows: '>=0.63.0'
-      shaka-player: ^4.7.9
-    peerDependenciesMeta:
-      react-native-windows:
-        optional: true
-      shaka-player:
-        optional: true
 
   react-native-web@0.20.0:
     resolution: {integrity: sha512-OOSgrw+aON6R3hRosCau/xVxdLzbjEcsLysYedka0ZON4ZZe6n9xgeN9ZkoejhARM36oTlUgHIQqxGutEJ9Wxg==}
@@ -9067,6 +9067,11 @@ snapshots:
 
   '@web3-storage/multipart-parser@1.0.0': {}
 
+  '@weights-ai/react-native-track-player@4.1.5(react-native@0.77.2(@babel/core@7.27.4)(@babel/preset-env@7.27.2(@babel/core@7.27.4))(@types/react@18.3.23)(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      react: 18.3.1
+      react-native: 0.77.2(@babel/core@7.27.4)(@babel/preset-env@7.27.2(@babel/core@7.27.4))(@types/react@18.3.23)(react@18.3.1)
+
   '@xmldom/xmldom@0.7.13': {}
 
   '@xmldom/xmldom@0.8.10': {}
@@ -12600,11 +12605,6 @@ snapshots:
       react-native: 0.77.2(@babel/core@7.27.4)(@babel/preset-env@7.27.2(@babel/core@7.27.4))(@types/react@18.3.23)(react@18.3.1)
       react-native-pager-view: 6.8.1(react-native@0.77.2(@babel/core@7.27.4)(@babel/preset-env@7.27.2(@babel/core@7.27.4))(@types/react@18.3.23)(react@18.3.1))(react@18.3.1)
       use-latest-callback: 0.1.11(react@18.3.1)
-
-  react-native-track-player@4.1.1(react-native@0.77.2(@babel/core@7.27.4)(@babel/preset-env@7.27.2(@babel/core@7.27.4))(@types/react@18.3.23)(react@18.3.1))(react@18.3.1):
-    dependencies:
-      react: 18.3.1
-      react-native: 0.77.2(@babel/core@7.27.4)(@babel/preset-env@7.27.2(@babel/core@7.27.4))(@types/react@18.3.23)(react@18.3.1)
 
   react-native-web@0.20.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:

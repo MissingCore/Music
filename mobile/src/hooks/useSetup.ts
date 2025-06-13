@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import TrackPlayer from "react-native-track-player";
+import TrackPlayer from "@weights-ai/react-native-track-player";
 
 import "~/modules/media/services/_subscriptions";
 import { musicStore, useMusicStore } from "~/modules/media/services/Music";

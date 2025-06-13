@@ -3,7 +3,7 @@
  * Player Interface.
  */
 
-import type { AddTrack } from "react-native-track-player";
+import type { AddTrack } from "@weights-ai/react-native-track-player";
 
 import type { TrackWithAlbum } from "~/db/schema";
 import { getTrackCover } from "~/db/utils";

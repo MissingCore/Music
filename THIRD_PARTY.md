@@ -14,6 +14,7 @@
 | @sentry/react-native | MIT | https://github.com/getsentry/sentry-react-native |
 | @shopify/flash-list | MIT | https://github.com/Shopify/flash-list |
 | @tanstack/react-query | MIT | https://github.com/TanStack/query |
+| @weights-ai/react-native-track-player | Apache-2.0 | https://github.com/doublesymmetry/react-native-track-player |
 | clsx | MIT | https://github.com/lukeed/clsx |
 | drizzle-orm | Apache-2.0 | https://github.com/drizzle-team/drizzle-orm |
 | expo | MIT | https://github.com/expo/expo/tree/main/packages/expo |
@@ -51,7 +52,6 @@
 | react-native-screens | MIT | https://github.com/software-mansion/react-native-screens |
 | react-native-svg | MIT | https://github.com/software-mansion/react-native-svg |
 | react-native-tab-view | MIT | https://github.com/react-navigation/react-navigation |
-| react-native-track-player | Apache-2.0 | https://github.com/doublesymmetry/react-native-track-player |
 | Roboto Font | Apache-2.0 | https://github.com/googlefonts/roboto |
 | tailwind-merge | MIT | https://github.com/dcastil/tailwind-merge |
 | zod | MIT | https://github.com/colinhacks/zod |
