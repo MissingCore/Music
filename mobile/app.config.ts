@@ -59,6 +59,7 @@ export default (): ExpoConfig => ({
       { android: { enforceNavigationBarContrast: false } },
     ],
   ],
+  newArchEnabled: false,
   experiments: {
     typedRoutes: true,
   },
