@@ -36,7 +36,7 @@ export function StickyActionListLayout<TData>({
   /** Height of the StickyAction. */
   estimatedActionSize?: number;
   /** Pass a ref to the animated FlashList. */
-  listRef?: React.RefObject<FlashList<any>>;
+  listRef?: React.Ref<FlashList<any>>;
 }) {
   const { t } = useTranslation();
   const { top } = useSafeAreaInsets();

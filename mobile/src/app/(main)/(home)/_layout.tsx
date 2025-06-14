@@ -18,7 +18,7 @@ export default function HomeLayout() {
   const { displayedTabs, hiddenTabs } = useTabsByVisibility();
   // Should be fine to store navigation state in ref as it doesn't affect rendering.
   //  - https://react.dev/learn/referencing-values-with-refs#when-to-use-refs
-  const prevTabState = useRef<TabState>();
+  const prevTabState = useRef<TabState>(null);
 
   /** Have Tab history operate like Stack history. */
   const manageAsStackHistory = useCallback(

@@ -1,7 +1,7 @@
-import type { FlashListProps } from "@shopify/flash-list";
+import type { FlashListProps as RawFlashListProps } from "@shopify/flash-list";
 import { FlashList as RawFlashList } from "@shopify/flash-list";
 import { cssInterop } from "nativewind";
-import { forwardRef, useRef } from "react";
+import { useRef } from "react";
 import type { FlatListProps, ScrollViewProps } from "react-native";
 import {
   FlatList as RNFlatList,
@@ -23,11 +23,11 @@ export function useFlatListRef() {
   return useRef<RNFlatList>(null);
 }
 
-export const FlatList = forwardRef(function FlatList(props, ref) {
-  return <RNFlatList ref={ref} {...ScrollablePresets} {...props} />;
-}) as <T>(
-  props: FlatListProps<T> & { ref?: React.ForwardedRef<RNFlatList> },
-) => React.JSX.Element;
+export function FlatList<T>(
+  props: FlatListProps<T> & { ref?: React.Ref<RNFlatList> },
+) {
+  return <RNFlatList {...ScrollablePresets} {...props} />;
+}
 
 export function ScrollView(props: ScrollViewProps) {
   return <RNScrollView {...ScrollablePresets} {...props} />;
@@ -35,25 +35,25 @@ export function ScrollView(props: ScrollViewProps) {
 //#endregion
 
 //#region Flash List
-type FlashListSignature = <T>(
-  props: FlashListProps<T> & { ref?: React.ForwardedRef<RawFlashList<T>> },
-) => React.JSX.Element;
+type FlashListProps<T> = RawFlashListProps<T> & {
+  ref?: React.Ref<RawFlashList<T>>;
+};
+
+type FlashListSignature = <T>(props: FlashListProps<T>) => React.JSX.Element;
 const WrappedFlashList = cssInterop(RawFlashList, {
   contentContainerClassName: "contentContainerStyle",
 }) as FlashListSignature;
 
 const RawAnimatedFlashList = Animated.createAnimatedComponent(WrappedFlashList);
 
-export const FlashList = forwardRef(function FlashList(props, ref) {
-  return <WrappedFlashList ref={ref} {...ScrollablePresets} {...props} />;
-}) as FlashListSignature;
+export function FlashList<T>(props: FlashListProps<T>) {
+  return <WrappedFlashList {...ScrollablePresets} {...props} />;
+}
 
-export const AnimatedFlashList = forwardRef(
-  function AnimatedFlashList(props, ref) {
-    // @ts-expect-error - Ref should be compatible.
-    return <RawAnimatedFlashList ref={ref} {...ScrollablePresets} {...props} />;
-  },
-) as FlashListSignature;
+export function AnimatedFlashList<T>(props: FlashListProps<T>) {
+  // @ts-expect-error - Ref should be compatible.
+  return <RawAnimatedFlashList {...ScrollablePresets} {...props} />;
+}
 
 export function useFlashListRef<T = any>() {
   return useRef<RawFlashList<T>>(null);

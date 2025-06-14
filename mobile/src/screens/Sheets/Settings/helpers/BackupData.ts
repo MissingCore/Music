@@ -148,7 +148,7 @@ async function importBackup() {
   try {
     // Validate the data structure.
     backupContents = MusicBackup.parse(JSON.parse(docContents));
-  } catch (err) {
+  } catch {
     // Delete cached file before throwing a more readable error.
     await deleteAsync(document.uri);
     throw new Error(i18next.t("err.msg.invalidStructure"));

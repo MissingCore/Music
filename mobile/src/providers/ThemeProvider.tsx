@@ -59,8 +59,9 @@ export function SystemTheme(props: {
 }) {
   const [theme, setTheme] = useState<"light" | "dark">("light");
 
-  const getInitialSystemTheme = useCallback((node: any) => {
-    if (node !== null) setTheme(Appearance.getColorScheme() ?? "light");
+  const getInitialSystemTheme = useCallback(() => {
+    setTheme(Appearance.getColorScheme() ?? "light");
+    return () => {};
   }, []);
 
   return (

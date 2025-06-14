@@ -1,5 +1,4 @@
-import { File } from "expo-file-system/next";
-import { Directory, Paths } from "expo-file-system/next";
+import { Directory, File, Paths } from "expo-file-system/next";
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 import { launchImageLibraryAsync } from "expo-image-picker";
 

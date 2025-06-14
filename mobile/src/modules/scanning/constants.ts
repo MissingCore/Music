@@ -1,6 +1,4 @@
-const MigrationOptions = ["kv-store", "fileNodes-adjustment"] as const;
-
-export type MigrationOption = (typeof MigrationOptions)[number];
+export type MigrationOption = "kv-store" | "fileNodes-adjustment";
 
 /**
  * History of data migrations due to "breaking" changes.

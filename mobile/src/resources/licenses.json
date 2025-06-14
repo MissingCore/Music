@@ -137,7 +137,7 @@
   },
   "expo": {
     "name": "expo",
-    "version": "52.0.46",
+    "version": "53.0.11",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo",
     "license": "MIT",
@@ -145,23 +145,15 @@
   },
   "expo-document-picker": {
     "name": "expo-document-picker",
-    "version": "13.0.3",
+    "version": "13.1.5",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-document-picker",
     "license": "MIT",
     "licenseText": "The MIT License (MIT)\n\nCopyright (c) 2015-present 650 Industries, Inc. (aka Expo)\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
   },
-  "expo-drizzle-studio-plugin": {
-    "name": "expo-drizzle-studio-plugin",
-    "version": "0.1.2",
-    "copyright": "Copyright (c) 2024 Drizzle Team",
-    "source": "https://github.com/drizzle-team/drizzle-studio-expo",
-    "license": "MIT",
-    "licenseText": "No license file found, visit source with link above."
-  },
   "expo-file-system": {
     "name": "expo-file-system",
-    "version": "18.0.12",
+    "version": "18.1.10",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-file-system",
     "license": "MIT",
@@ -169,7 +161,7 @@
   },
   "expo-image": {
     "name": "expo-image",
-    "version": "2.0.7",
+    "version": "2.3.0",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-image",
     "license": "MIT",
@@ -177,7 +169,7 @@
   },
   "expo-image-manipulator": {
     "name": "expo-image-manipulator",
-    "version": "13.0.6",
+    "version": "13.1.7",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-image-manipulator",
     "license": "MIT",
@@ -185,7 +177,7 @@
   },
   "expo-image-picker": {
     "name": "expo-image-picker",
-    "version": "16.0.6",
+    "version": "16.1.4",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-image-picker",
     "license": "MIT",
@@ -193,7 +185,7 @@
   },
   "expo-linear-gradient": {
     "name": "expo-linear-gradient",
-    "version": "14.0.2",
+    "version": "14.1.5",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-linear-gradient",
     "license": "MIT",
@@ -201,7 +193,7 @@
   },
   "expo-localization": {
     "name": "expo-localization",
-    "version": "16.0.1",
+    "version": "16.1.5",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-localization",
     "license": "MIT",
@@ -209,7 +201,7 @@
   },
   "expo-media-library": {
     "name": "expo-media-library",
-    "version": "17.0.6",
+    "version": "17.1.7",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-media-library",
     "license": "MIT",
@@ -225,15 +217,23 @@
   },
   "expo-sqlite": {
     "name": "expo-sqlite",
-    "version": "15.1.4",
+    "version": "15.2.12",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-sqlite",
     "license": "MIT",
     "licenseText": "The MIT License (MIT)\n\nCopyright (c) 2015-present 650 Industries, Inc. (aka Expo)\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
   },
+  "expo-sqlite-devtools": {
+    "name": "expo-sqlite-devtools",
+    "version": "0.0.2",
+    "copyright": "Copyright (c) 2025 Jatin Nagar",
+    "source": "https://github.com/itsjatinnagar/expo-sqlite-devtools",
+    "license": "MIT",
+    "licenseText": "MIT License\n\nCopyright (c) 2025 Jatin Nagar\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
+  },
   "expo-web-browser": {
     "name": "expo-web-browser",
-    "version": "14.0.2",
+    "version": "14.1.6",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-web-browser",
     "license": "MIT",
@@ -305,11 +305,11 @@
   },
   "react": {
     "name": "react",
-    "version": "18.3.1",
-    "copyright": "Copyright (c) Facebook, Inc. and its affiliates.",
+    "version": "19.0.0",
+    "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates.",
     "source": "https://github.com/facebook/react",
     "license": "MIT",
-    "licenseText": "MIT License\n\nCopyright (c) Facebook, Inc. and its affiliates.\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
+    "licenseText": "MIT License\n\nCopyright (c) Meta Platforms, Inc. and affiliates.\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
   },
   "react-i18next": {
     "name": "react-i18next",
@@ -321,7 +321,7 @@
   },
   "react-native": {
     "name": "react-native",
-    "version": "0.77.2",
+    "version": "0.79.3",
     "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates.",
     "source": "https://github.com/facebook/react-native",
     "license": "MIT",
@@ -353,7 +353,7 @@
   },
   "react-native-gesture-handler": {
     "name": "react-native-gesture-handler",
-    "version": "2.25.0",
+    "version": "2.26.0",
     "copyright": "Copyright (c) 2016 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-gesture-handler",
     "license": "MIT",
@@ -377,7 +377,7 @@
   },
   "react-native-reanimated": {
     "name": "react-native-reanimated",
-    "version": "3.16.7",
+    "version": "3.18.0",
     "copyright": "Copyright (c) 2016 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-reanimated",
     "license": "MIT",

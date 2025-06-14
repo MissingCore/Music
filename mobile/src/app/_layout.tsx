@@ -82,15 +82,15 @@ export default function RootLayout() {
   );
 }
 
-function handleAppLifeCycle(node: any) {
-  if (node !== null) {
-    // Encountered issue in Android 12+ where one of the bootsplashes
-    // persisted when it shouldn't. Make sure we close at least the bootsplash
-    // from `react-native-bootsplash` whenever we render the app (in case its
-    // "autohide" behavior doesn't work as expected).
-    Bootsplash.hide();
-  } else {
-    // Ensure the RNTP service gets destroyed on app close.
+function handleAppLifeCycle() {
+  // Encountered issue in Android 12+ where one of the bootsplashes
+  // persisted when it shouldn't. Make sure we close at least the bootsplash
+  // from `react-native-bootsplash` whenever we render the app (in case its
+  // "autohide" behavior doesn't work as expected).
+  Bootsplash.hide();
+
+  // Ensure the RNTP service gets destroyed on app close.
+  return () => {
     TrackPlayer.reset().catch();
-  }
+  };
 }

@@ -10,7 +10,7 @@ export default (): ExpoConfig => ({
   orientation: "portrait",
   primaryColor: "#C8102E",
   icon: "./assets/icon.png",
-  scheme: "music",
+  scheme: ["music", "com.cyanchill.missingcore.music"],
   backgroundColor: "#F2F2F2",
   userInterfaceStyle: "automatic",
   assetBundlePatterns: ["**/*"],
@@ -59,6 +59,7 @@ export default (): ExpoConfig => ({
       { android: { enforceNavigationBarContrast: false } },
     ],
   ],
+  newArchEnabled: false,
   experiments: {
     typedRoutes: true,
   },
