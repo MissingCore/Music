@@ -10,7 +10,7 @@ const NextSliderPositionAtom = atom<number | null>(null);
 
 /** Safely manages the visible seekbar position to prevent "rubberbanding". */
 export function usePlayerProgress() {
-  const debounceRef = useRef<NodeJS.Timeout>();
+  const debounceRef = useRef<number>(null);
   const [updateInterval, setUpdateInterval] = useState(200);
   const restoredPosition = useRestorePosition();
   const { position } = useProgress(updateInterval);

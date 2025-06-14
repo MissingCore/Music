@@ -93,7 +93,7 @@ export function PlaylistStoreProvider({
   children,
   ...initProps
 }: InitStoreProps & { children: React.ReactNode }) {
-  const storeRef = useRef<StoreApi<PlaylistStore>>();
+  const storeRef = useRef<StoreApi<PlaylistStore>>(null);
   if (!storeRef.current) {
     storeRef.current = createStore<PlaylistStore>()(
       computed((set, get) => ({

@@ -54,7 +54,7 @@ export function Sheet({
   const [disableToastAnim, setDisableToastAnim] = useState(true);
   const [sheetHeight, setSheetHeight] = useState(0);
   const [headerHeight, setHeaderHeight] = useState(0);
-  const disableAnimTimerRef = useRef<NodeJS.Timeout>();
+  const disableAnimTimerRef = useRef<number>(null);
 
   return (
     <TrueSheet
