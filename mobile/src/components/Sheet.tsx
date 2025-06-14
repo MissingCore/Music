@@ -3,8 +3,7 @@ import type { TrueSheetProps } from "@lodev09/react-native-true-sheet";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import type { ParseKeys } from "i18next";
 import { cssInterop } from "nativewind";
-import type { RefObject } from "react";
-import { forwardRef, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { StyleProp, ViewStyle } from "react-native";
 import { View, useWindowDimensions } from "react-native";
@@ -31,26 +30,23 @@ interface SheetProps extends Omit<TrueSheetProps, "name"> {
   contentContainerStyle?: StyleProp<ViewStyle>;
 }
 
-export type TrueSheetRef = RefObject<TrueSheet>;
+export type TrueSheetRef = React.Ref<TrueSheet>;
 
 export function useSheetRef() {
   return useRef<TrueSheet>(null);
 }
 
-export const Sheet = forwardRef<TrueSheet, SheetProps>(function Sheet(
-  {
-    titleKey,
-    globalKey,
-    snapTop,
-    contentContainerClassName,
-    contentContainerStyle,
-    children,
-    onPresent,
-    onDismiss,
-    ...props
-  },
-  ref,
-) {
+export function Sheet({
+  titleKey,
+  globalKey,
+  snapTop,
+  contentContainerClassName,
+  contentContainerStyle,
+  children,
+  onPresent,
+  onDismiss,
+  ...props
+}: SheetProps & { ref?: TrueSheetRef }) {
   const { t } = useTranslation();
   const { canvasAlt } = useTheme();
   const { height: screenHeight } = useWindowDimensions();
@@ -63,7 +59,6 @@ export const Sheet = forwardRef<TrueSheet, SheetProps>(function Sheet(
   return (
     <TrueSheet
       onLayout={(e) => setSheetHeight(e.nativeEvent.layout.height)}
-      ref={ref}
       name={globalKey}
       sizes={[snapTop ? "large" : "auto"]}
       backgroundColor={canvasAlt}
@@ -127,7 +122,7 @@ export const Sheet = forwardRef<TrueSheet, SheetProps>(function Sheet(
       ) : null}
     </TrueSheet>
   );
-});
+}
 
 /** Header component to be used in `<Sheet />`. */
 function SheetHeader(props: {
