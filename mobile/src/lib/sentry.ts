@@ -8,6 +8,7 @@ const SENTRY_ENABLED = process.env.EXPO_PUBLIC_PRIVACY_BUILD !== "true";
 */
 if (process.env.EXPO_PUBLIC_PRIVACY_BUILD !== "true") {
   // Dynamically import Sentry if we want to use it.
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   Sentry = require("@sentry/react-native");
 }
 

@@ -80,12 +80,10 @@
     "@babel/core": "^7.27.4",
     "@tanstack/eslint-plugin-query": "^5.78.0",
     "@types/react": "~19.0.14",
-    "@typescript-eslint/eslint-plugin": "^7.18.0",
-    "@typescript-eslint/parser": "^7.18.0",
     "babel-plugin-inline-import": "^3.0.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "drizzle-kit": "^0.31.1",
-    "eslint": "^8.57.1",
+    "eslint": "^9.29.0",
     "eslint-config-expo": "^9.2.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-drizzle": "^0.2.3",
@@ -96,7 +94,8 @@
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.12",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.34.0"
   },
   "expo": {
     "autolinking": {

@@ -121,7 +121,7 @@ async function saveSinglesArtwork(
         onboardingStore.setState((prev) => ({ found: prev.found + 1 }));
         if (options?.endEarly) return;
       }
-    } catch (err) {
+    } catch {
       // In case we fail to save an image due to having an invalid base64 string.
       console.log(`[Error] Failed to get or save image for "${name}".`);
     }
