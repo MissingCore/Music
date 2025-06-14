@@ -6,6 +6,7 @@ export function Back() {
   return <View ref={goBack} />;
 }
 
-function goBack(node: any) {
-  if (node !== null) router.back();
+function goBack() {
+  router.back();
+  return () => {};
 }

@@ -13,19 +13,16 @@ import { StyledText } from "~/components/Typography/StyledText";
 
 /** Screen displayed when an error is thrown in a component. */
 export function ErrorBoundary({ error }: ErrorBoundaryProps) {
-  const onError = useCallback(
-    (node: any) => {
-      if (node !== null) {
-        // Display error message to user if encountered.
-        Bootsplash.hide();
-        musicStore.getState().resetOnCrash();
+  const onError = useCallback(() => {
+    // Display error message to user if encountered.
+    Bootsplash.hide();
+    musicStore.getState().resetOnCrash();
 
-        // Send error message to Sentry.
-        if (SENTRY_ENABLED && !__DEV__) Sentry.captureException(error);
-      }
-    },
-    [error],
-  );
+    // Send error message to Sentry.
+    if (SENTRY_ENABLED && !__DEV__) Sentry.captureException(error);
+
+    return () => {};
+  }, [error]);
 
   return (
     <>
