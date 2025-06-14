@@ -1,4 +1,4 @@
-import { createContext, useContext, useRef } from "react";
+import { createContext, use, useRef } from "react";
 import { toast } from "@backpackapp-io/react-native-toast";
 import type { StoreApi } from "zustand";
 import { createStore, useStore } from "zustand";
@@ -167,14 +167,14 @@ export function PlaylistStoreProvider({
   }
 
   return (
-    <PlaylistStoreContext.Provider value={storeRef.current}>
+    <PlaylistStoreContext value={storeRef.current}>
       {children}
-    </PlaylistStoreContext.Provider>
+    </PlaylistStoreContext>
   );
 }
 
 export function usePlaylistStore<T>(selector: (state: PlaylistStore) => T) {
-  const store = useContext(PlaylistStoreContext);
+  const store = use(PlaylistStoreContext);
   if (!store) {
     throw new Error(
       "usePlaylistStore must be called within a PlaylistStoreProvider.",
