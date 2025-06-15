@@ -1,13 +1,15 @@
 import { Toasts } from "@backpackapp-io/react-native-toast";
 import type { TrueSheetProps } from "@lodev09/react-native-true-sheet";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
+import { platformApiLevel } from "expo-device";
 import type { ParseKeys } from "i18next";
 import { cssInterop } from "nativewind";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { StyleProp, ViewStyle } from "react-native";
 import { View, useWindowDimensions } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useTheme } from "~/hooks/useTheme";
 
@@ -49,12 +51,21 @@ export function Sheet({
 }: SheetProps & { ref?: TrueSheetRef }) {
   const { t } = useTranslation();
   const { canvasAlt } = useTheme();
+  const insets = useSafeAreaInsets();
   const { height: screenHeight } = useWindowDimensions();
   const [enableToast, setEnableToast] = useState(false);
   const [disableToastAnim, setDisableToastAnim] = useState(true);
   const [sheetHeight, setSheetHeight] = useState(0);
   const [headerHeight, setHeaderHeight] = useState(0);
   const disableAnimTimerRef = useRef<number>(null);
+
+  // In Android API 35+, the "height" now includes the system decoration
+  // areas and display cutout (status & navigation bar heights).
+  //  - https://github.com/facebook/react-native/issues/47080#issuecomment-2421914957
+  const trueScreenHeight = useMemo(() => {
+    if (!platformApiLevel || platformApiLevel < 35) return screenHeight;
+    return screenHeight - insets.top - insets.bottom;
+  }, [insets.bottom, insets.top, screenHeight]);
 
   return (
     <TrueSheet
@@ -64,7 +75,7 @@ export function Sheet({
       backgroundColor={canvasAlt}
       cornerRadius={BorderRadius.lg}
       // Sheet max height will be just before the `<TopAppBar />`.
-      maxHeight={screenHeight - 56}
+      maxHeight={trueScreenHeight - 56}
       grabber={false}
       onPresent={(e) => {
         if (onPresent) onPresent(e);
