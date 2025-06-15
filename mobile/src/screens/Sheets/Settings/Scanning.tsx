@@ -142,7 +142,8 @@ function FilterForm(props: {
 
   return (
     <View className="flex-row gap-2 px-4">
-      <View className="shrink grow flex-row items-center gap-2 border-b border-foreground/60">
+      {/* FIXME: Noticed w/ RN 0.79, but having a border seems to contribute to the height when it shouldn't. */}
+      <View className="h-12 shrink grow flex-row items-center gap-2 border-b border-foreground/60">
         <TextInput
           editable={!onSubmit.isPending}
           value={newPath}
