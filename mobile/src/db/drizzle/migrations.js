@@ -9,8 +9,7 @@ import m0004 from "./0004_past_starfox.sql";
 import m0005 from "./0005_equal_cerise.sql";
 import m0006 from "./0006_wild_gabe_jones.sql";
 import m0007 from "./0007_cooing_the_stranger.sql";
-import m0008 from "./0008_tranquil_eddie_brock.sql";
-import m0009 from "./0009_milky_jane_foster.sql";
+import m0008 from "./0008_little_toad.sql";
 
 export default {
   journal,
@@ -24,6 +23,5 @@ export default {
     m0006,
     m0007,
     m0008,
-    m0009,
   },
 };

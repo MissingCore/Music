@@ -1,1 +1,0 @@
-ALTER TABLE `tracks` ADD `parent_folder` text GENERATED ALWAYS AS (rtrim("uri", replace("uri", '/', ''))) VIRTUAL;

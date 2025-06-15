@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "21f4938e-bf84-4248-b8d9-ef8d17c2b592",
+  "id": "af61eb21-e6b1-403c-8b27-a871c4c4a5dd",
   "prevId": "bf10b95e-6764-42cd-b031-df23e3bb31f7",
   "tables": {
     "albums": {
@@ -38,6 +38,17 @@
         },
         "artwork": {
           "name": "artwork",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "generated": {
+            "as": "(coalesce(\"alt_artwork\", \"embedded_artwork\"))",
+            "type": "virtual"
+          }
+        },
+        "embedded_artwork": {
+          "name": "embedded_artwork",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -470,7 +481,9 @@
   "_meta": {
     "schemas": {},
     "tables": {},
-    "columns": {}
+    "columns": {
+      "\"albums\".\"artwork\"": "\"albums\".\"embedded_artwork\""
+    }
   },
   "internal": {
     "indexes": {}
