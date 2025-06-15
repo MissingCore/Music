@@ -1,12 +1,8 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { useMutation } from "@tanstack/react-query";
 import { getDocumentAsync } from "expo-document-picker";
-import {
-  EncodingType,
-  StorageAccessFramework as SAF,
-  deleteAsync,
-  readAsStringAsync,
-} from "expo-file-system";
+import { EncodingType, StorageAccessFramework as SAF } from "expo-file-system";
+import { File } from "expo-file-system/next";
 import { eq, inArray } from "drizzle-orm";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
@@ -139,18 +135,18 @@ async function importBackup() {
     type: ["application/json", "application/octet-stream"],
   });
   if (canceled) throw new Error(i18next.t("err.msg.actionCancel"));
-  const document = assets[0];
-  if (!document) throw new Error(i18next.t("err.msg.noSelect"));
+  if (!assets[0]) throw new Error(i18next.t("err.msg.noSelect"));
+  const documentFile = new File(assets[0].uri);
 
   // Read, parse, and validate file contents.
-  const docContents = await readAsStringAsync(document.uri);
+  const docContents = documentFile.text();
   let backupContents;
   try {
     // Validate the data structure.
     backupContents = MusicBackup.parse(JSON.parse(docContents));
   } catch {
     // Delete cached file before throwing a more readable error.
-    await deleteAsync(document.uri);
+    documentFile.delete();
     throw new Error(i18next.t("err.msg.invalidStructure"));
   }
 
@@ -203,7 +199,7 @@ async function importBackup() {
   ]);
 
   // Delete the cached document.
-  await deleteAsync(document.uri);
+  documentFile.delete();
 
   const currPlayingFrom = musicStore.getState().playingSource;
   if (currPlayingFrom) await Resynchronize.onTracks(currPlayingFrom);

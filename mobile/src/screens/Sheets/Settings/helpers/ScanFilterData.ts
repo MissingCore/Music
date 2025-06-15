@@ -1,13 +1,14 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { getActualPath } from "@missingcore/react-native-actual-path";
 import { useMutation } from "@tanstack/react-query";
-import { StorageAccessFramework as SAF, getInfoAsync } from "expo-file-system";
+import { StorageAccessFramework as SAF } from "expo-file-system";
+import { Directory } from "expo-file-system/next";
 
 import i18next from "~/modules/i18n";
 import { userPreferencesStore } from "~/services/UserPreferences";
 
 import { ToastOptions } from "~/lib/toast";
-import { addTrailingSlash } from "~/utils/string";
+import { addTrailingSlash, getSafeUri } from "~/utils/string";
 
 //#region Helpers
 /** Removes a path from the user preferences store. */
@@ -67,8 +68,8 @@ async function addPathToList(props: {
   const trimmed = props.path.trim();
   // Check to see if directory exists before we add it.
   try {
-    const { exists, isDirectory } = await getInfoAsync(`file://${trimmed}`);
-    if (!exists || !isDirectory) throw Error();
+    const directory = new Directory(getSafeUri(`file://${trimmed}`));
+    if (!directory.exists) throw Error();
   } catch {
     toast.error(
       i18next.t("template.notFound", { name: trimmed }),

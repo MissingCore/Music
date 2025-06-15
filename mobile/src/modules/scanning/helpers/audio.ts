@@ -3,7 +3,7 @@ import {
   getMetadata,
 } from "@missingcore/react-native-metadata-retriever";
 import { eq, inArray } from "drizzle-orm";
-import { getInfoAsync } from "expo-file-system";
+import { File } from "expo-file-system/next";
 import type { Asset as MediaLibraryAsset } from "expo-media-library";
 import { getAssetsAsync } from "expo-media-library";
 
@@ -203,7 +203,7 @@ async function getTrackEntry({
   filename,
 }: MediaLibraryAsset) {
   const { bitrate, sampleRate, ...t } = await getMetadata(uri, wantedMetadata);
-  const assetInfo = await getInfoAsync(getSafeUri(uri));
+  const file = new File(getSafeUri(uri));
 
   // Add new artists to the database.
   await Promise.allSettled(
@@ -238,7 +238,7 @@ async function getTrackEntry({
     uri,
     modificationTime,
     fetchedArt: false,
-    size: assetInfo.exists ? (assetInfo.size ?? 0) : 0,
+    size: file.exists ? (file.size ?? 0) : 0,
   };
 }
 //#endregion
