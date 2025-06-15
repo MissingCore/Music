@@ -109,7 +109,7 @@ export function Sheet({
           // TrueSheet doesn't know the actual scrollable area, so we
           // need to exclude the height taken up by the "SheetHeader"
           // from the container that can hold a scrollable.
-          [{ maxHeight: screenHeight - 56 - headerHeight }],
+          [{ maxHeight: trueScreenHeight - 56 - headerHeight }],
           contentContainerStyle,
         ]}
         className={cn(
