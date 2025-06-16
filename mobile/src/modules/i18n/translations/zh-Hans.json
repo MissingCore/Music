@@ -22,6 +22,7 @@
     "favorites": "收藏",
     "unFavorite": "取消收藏",
     "favoriteTracks": "收藏的歌曲",
+    "all": null,
     "home": "首页",
     "settings": "设置",
     "upcoming": "即将播放",
@@ -137,6 +138,9 @@
         "vinylOld": "黑胶唱片(经典)"
       }
     },
+    "visualTips": {
+      "title": null
+    },
     "language": {
       "title": "语言"
     },
@@ -187,6 +191,9 @@
     "repeatOnSkip": {
       "title": "跳过时保持单曲循环",
       "brief": "不要在跳过时从“单曲循环”切换模式到“循环播放”。"
+    },
+    "saveLastPosition": {
+      "title": null
     },
     "scanning": {
       "title": "扫描",

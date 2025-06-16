@@ -22,6 +22,7 @@
     "favorites": "お気に入り",
     "unFavorite": "お気に入りを解除",
     "favoriteTracks": "お気に入りのトラック",
+    "all": "すべて",
     "home": "ホーム",
     "settings": "設定",
     "upcoming": "次に再生",
@@ -137,6 +138,9 @@
         "vinylOld": "ヴァイナル (従来)"
       }
     },
+    "visualTips": {
+      "title": "視覚的なヒント"
+    },
     "language": {
       "title": "言語"
     },
@@ -187,6 +191,9 @@
     "repeatOnSkip": {
       "title": "スキップ時にリピートモードを維持する",
       "brief": "スキップ時に「1 回リピート」を「リピート」に切り替えないようにします。"
+    },
+    "saveLastPosition": {
+      "title": "最後に再生した位置を保存"
     },
     "scanning": {
       "title": "音楽のスキャン",
