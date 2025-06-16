@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { AppState } from "react-native";
 import { Gesture } from "react-native-gesture-handler";
 import type Animated from "react-native-reanimated";
 import {
@@ -25,6 +26,8 @@ export function useVinylSeekbar() {
   const centerX = useSharedValue(0);
   const centerY = useSharedValue(0);
 
+  // The position we've backgrounded the app at.
+  const [bgPosition, setBgPosition] = useState<number | null>(null);
   // Rotation progress based on `position`.
   const trueProgress = useSharedValue(0);
   // Rotation progress based on "seeking" on vinyl.
@@ -56,24 +59,35 @@ export function useVinylSeekbar() {
     [debounceAngle, seekToPosition, seekProgress, trueProgress],
   );
 
+  // To help ensure the vinyl doesn't spin fast to its new position afer
+  // opening the app from backgrounding on the "Now Playing" screen.
+  if (AppState.currentState !== "active" && bgPosition === null) {
+    setBgPosition(position);
+  }
+
   useEffect(() => {
     if (position === 0) {
       // Reset animation when position goes back to 0s.
       cancelAnimation(trueProgress);
       trueProgress.value = 0;
     } else if (position < duration - 1) {
-      trueProgress.value = withTiming(
-        convertUnit(position),
-        // Prevent vinyl rotation on mount.
-        { duration: hasMounted.current ? 500 : 0, easing: Easing.linear },
-      );
+      const resumedFromBackground =
+        bgPosition !== null ? Math.abs(position - bgPosition) > 2 : false;
+      // Prevent vinyl rotation on mount.
+      const animateSpin = hasMounted.current && !resumedFromBackground;
+      trueProgress.value = withTiming(convertUnit(position), {
+        duration: animateSpin ? 500 : 0,
+        easing: Easing.linear,
+      });
       if (!hasMounted.current) hasMounted.current = true;
     } else {
       // Cancel animation ~1s before the end due to weird behaviors if
       // the following image is large in size (ie: "animation spike").
       cancelAnimation(trueProgress);
     }
-  }, [duration, position, trueProgress]);
+
+    if (bgPosition !== null) setBgPosition(null);
+  }, [duration, position, bgPosition, trueProgress]);
 
   const seekGesture = Gesture.Pan()
     .shouldCancelWhenOutside(true)
