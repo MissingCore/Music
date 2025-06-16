@@ -22,6 +22,7 @@
     "favorites": "Favoris",
     "unFavorite": "Retirer des favoris",
     "favoriteTracks": "Titres favoris",
+    "all": null,
     "home": "Accueil",
     "settings": "Paramètres",
     "upcoming": "À venir",
@@ -137,6 +138,9 @@
         "vinylOld": "Vinyle (Legacy)"
       }
     },
+    "visualTips": {
+      "title": null
+    },
     "language": {
       "title": "Langue"
     },
@@ -187,6 +191,9 @@
     "repeatOnSkip": {
       "title": "Garder le mode Répéter lors du passage au titre suivant",
       "brief": "Ne pas basculer en mode « Répéter » depuis « Répéter le titre » lors du saut."
+    },
+    "saveLastPosition": {
+      "title": null
     },
     "scanning": {
       "title": "Recherche de musique",

@@ -22,6 +22,7 @@
     "favorites": "Favoritos",
     "unFavorite": "Quitar de favoritos",
     "favoriteTracks": "Canciones favoritas",
+    "all": "Todo",
     "home": "Inicio",
     "settings": "Configuración",
     "upcoming": "Próximamente",
@@ -137,6 +138,9 @@
         "vinylOld": "Vinilo (tradicional)"
       }
     },
+    "visualTips": {
+      "title": "Consejos visuales"
+    },
     "language": {
       "title": "Idioma"
     },
@@ -187,6 +191,9 @@
     "repeatOnSkip": {
       "title": "Mantener el modo de repetición al saltar",
       "brief": "Evita que \"Repetir una\" cambie a \"Repetir\" al saltar."
+    },
+    "saveLastPosition": {
+      "title": "Guardar la última posición reproducida"
     },
     "scanning": {
       "title": "Escaneo",

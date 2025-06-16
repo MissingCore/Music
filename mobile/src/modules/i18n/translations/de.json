@@ -22,6 +22,7 @@
     "favorites": "Favoriten",
     "unFavorite": "Aus deinen Favoriten entfernen",
     "favoriteTracks": "Lieblingslieder",
+    "all": null,
     "home": "Homepage",
     "settings": "Einstellungen",
     "upcoming": "Bevorstehend",
@@ -137,6 +138,9 @@
         "vinylOld": "Vinyl (Alt)"
       }
     },
+    "visualTips": {
+      "title": null
+    },
     "language": {
       "title": "Sprache"
     },
@@ -187,6 +191,9 @@
     "repeatOnSkip": {
       "title": "Wiederholungsmodus beim Überspringen behalten",
       "brief": "Beim Überspringen nicht von \"Ein Lied wiederholen\" auf \"Wiederholen\" umschalten."
+    },
+    "saveLastPosition": {
+      "title": null
     },
     "scanning": {
       "title": "Scannen",
