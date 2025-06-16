@@ -345,7 +345,7 @@
   },
   "react-native-draglist": {
     "name": "react-native-draglist",
-    "version": "3.9.5",
+    "version": "3.8.2",
     "copyright": "Copyright (c) 2022 fivecar",
     "source": "https://github.com/fivecar/react-native-draglist",
     "license": "MIT",
