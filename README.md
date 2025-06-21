@@ -2,6 +2,12 @@
 
 # Music
 
+![Android-API][Android-API]
+[![Release][Release]][Release-url]
+[![Pre-release][Pre-release]][Pre-release-url]
+[![License][License]][License-url]
+![GitHub-Downloads][GitHub-Downloads]
+
 A Nothing inspired **local** music player.
 
 [<img height="80" alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" />](https://play.google.com/store/apps/details?id=com.cyanchill.missingcore.music)
@@ -125,3 +131,12 @@ Refer to [THIRD_PARTY.md](./THIRD_PARTY.md).
 [TypeScript-url]: https://www.typescriptlang.org/
 [Zustand]: https://img.shields.io/badge/Zustand-101417?style=for-the-badge&logo=data:image/png;base64,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
 [Zustand-url]: https://zustand.docs.pmnd.rs/
+
+[Android-API]: https://img.shields.io/badge/API-24%2B-A4C639?style=for-the-badge&logo=Android&labelColor=555555
+[Release]: https://img.shields.io/github/v/release/MissingCore/Music?style=for-the-badge
+[Release-url]: https://github.com/MissingCore/Music/releases/latest
+[Pre-release]: https://img.shields.io/github/v/release/MissingCore/Music?style=for-the-badge&include_prereleases&label=Pre-release
+[Pre-release-url]: https://github.com/MissingCore/Music/releases
+[License]: https://img.shields.io/github/license/MissingCore/Music?style=for-the-badge
+[License-url]: https://github.com/MissingCore/Music/blob/dev/LICENSE
+[GitHub-Downloads]: https://img.shields.io/github/downloads/MissingCore/Music/total?style=for-the-badge&logo=GitHub
