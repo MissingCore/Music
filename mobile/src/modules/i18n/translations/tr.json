@@ -17,24 +17,24 @@
     "next": "Sonraki",
     "shuffle": "Karıştır",
     "repeat": "Tekrarla",
-    "repeatOne": "Birini Tekrarla",
-    "favorite": "Favori",
+    "repeatOne": "Tek Parçayı Tekrarla",
+    "favorite": "Favorilere Ekle",
     "favorites": "Favoriler",
     "unFavorite": "Favorilerden Çıkar",
     "favoriteTracks": "Favori Parçalar",
     "all": "Tümü",
     "home": "Ana Sayfa",
     "settings": "Ayarlar",
-    "upcoming": "Yaklaşan",
+    "upcoming": "Sıradaki",
     "playingFrom": "Şuradan Oynatılıyor",
     "disc": "Disk {{count}}"
   },
   "template": {
     "entryAdded": "`{{- name}}` eklendi.",
-    "entryRemove": "`{{- name}}` kaldır.",
+    "entryRemove": "`{{- name}}` adlı öğeyi kaldır.",
     "entryRemoved": "`{{- name}}` kaldırıldı.",
-    "entrySeeMore": "`{{- name}}` hakkında daha fazla bilgi gör.",
-    "notFound": "`{{- name}}` mevcut değil.",
+    "entrySeeMore": "`{{- name}}` hakkında daha fazlasını gör.",
+    "notFound": "`{{- name}}` bulunamadı.",
     "entryShow": "`{{- name}}` göster",
     "entryHide": "`{{- name}}` gizle",
     "entryEnable": "`{{- name}}` etkinleştir",
@@ -46,7 +46,7 @@
     "second_one": "{{count}} saniye",
     "second_other": "{{count}} saniye",
     "track_one": "{{count}} $t(term.track)",
-    "track_other": "{{count}} $t(term.tracks)"
+    "track_other": "{{count}} $t(term.track)"
   },
   "form": {
     "apply": "Değişiklikleri Uygula",
@@ -68,7 +68,7 @@
         "brief": "Bir şekilde geçersiz bir rotaya yönlendirildiniz.",
         "extra": {
           "missing": "Eksik",
-          "from": "Şuradan"
+          "from": "Kaynak"
         }
       },
       "generic": {
@@ -111,7 +111,7 @@
     "font": {
       "extra": {
         "accent": "Vurgu Yazı Tipi",
-        "primary": "Birincil Yazı Tipi"
+        "primary": "Ana Yazı Tipi"
       }
     },
     "theme": {
@@ -123,17 +123,17 @@
       }
     },
     "homeTabsOrder": {
-      "title": "Ana Sayfa Sekmeleri Sırası",
+      "title": "Ana Sayfa Sekme Sırası",
       "brief": "Sekmelerin sırasını ve görünürlüğünü özelleştirin.",
       "description": {
-        "line1": "\"Ana Sayfa\" sekmesinden sonraki sekmeleri sürükleyip bırakarak yeniden sıralayın. Göz simgesini kullanarak sekme görünürlüğünü değiştirin.",
-        "line2": "Dikkat: Gizli bir sekmeye gitmeye çalışırken beklenmedik davranışlar meydana gelebilir."
+        "line1": "Sürükle bırak yöntemiyle \"Ana Sayfa\" sekmesinden sonraki sekmeleri yeniden sıralayın. Göz simgesini kullanarak sekme görünürlüğünü değiştirin.",
+        "line2": "Uyarı: Gizli bir sekmeye gidildiğinde beklenmedik davranışlar meydana gelebilir."
       }
     },
     "nowPlayingDesign": {
-      "title": "Şu Anda Çalan Ekran Tasarımı",
+      "title": "Şu An Çalan Ekranı Tasarımı",
       "extra": {
-        "plain": "Düz",
+        "plain": "Sade",
         "vinyl": "Plak",
         "vinylOld": "Plak (Eski)"
       }
@@ -146,22 +146,22 @@
     },
     "backup": {
       "title": "Yedekleme",
-      "brief": "Verileri cihazlar arasında taşıyın.",
-      "description": "Bu uygulamadan verileri `music_backup.json` dosyası aracılığıyla cihazlar arasında aktarın.",
+      "brief": "Cihazlar arasında veri taşıyın.",
+      "description": "Bu uygulamadaki verileri, bir `music_backup.json` dosyası aracılığıyla cihazlar arasında aktarın.",
       "extra": {
         "export": "Dışa Aktar",
         "exportSuccess": "Yedekleme başarıyla oluşturuldu.",
         "import": "İçe Aktar",
-        "importSuccess": "Yedekleme içe aktarma tamamlandı."
+        "importSuccess": "Yedek içe aktarımı tamamlandı."
       }
     },
     "insights": {
       "title": "İstatistikler",
-      "brief": "Uygulama kullanımı ve istatistikleri.",
+      "brief": "Uygulama kullanımı ve istatistikler.",
       "extra": {
         "cache": "Önbellek",
         "database": "Veritabanı",
-        "images": "Görüntüler",
+        "images": "Görseller",
         "other": "Diğer",
         "total": "Toplam",
         "totalDuration": "Toplam Süre"
@@ -186,39 +186,39 @@
     },
     "ignoreInterrupt": {
       "title": "Kesintileri Yoksay",
-      "brief": "Bildirim veya arama gibi bir kesinti meydana geldiğinde ses çalmaya devam edin. Bu durumlarda müziği manuel olarak duraklatmanız ve devam ettirmeniz gerekecek."
+      "brief": "Bildirim veya arama gibi bir kesinti olduğunda sesi çalmaya devam edin. Bu durumlarda müziği manuel olarak duraklatıp devam ettirmeniz gerekecektir."
     },
     "repeatOnSkip": {
-      "title": "Atlamada Tekrar Modunu Koru",
-      "brief": "Atlama sırasında \"Birini Tekrarla\" modundan \"Tekrarla\" moduna geçmeyin."
+      "title": "Parça Atlandığında Tekrarlama Modunu Koru",
+      "brief": "Parça atlandığında modu \"Tek Parçayı Tekrarla\" konumundan \"Tekrarla\" konumuna değiştirmeyin."
     },
     "saveLastPosition": {
-      "title": "Son Oynatılan Konumu Kaydet"
+      "title": "Son Çalınan Konumu Kaydet"
     },
     "scanning": {
       "title": "Tarama",
-      "brief": "Müzik keşif seçenekleri."
+      "brief": "Müzik keşfetme seçenekleri."
     },
     "rescan": {
       "title": "Yeniden Tara",
-      "brief": "Herhangi bir yeni medyayı arayın.",
+      "brief": "Yeni medya dosyalarını arayın.",
       "extra": {
         "start": "Kütüphane yeniden taranıyor...",
-        "success": "Kütüphane yeniden tarama tamamlandı.",
-        "fail": "Kütüphane yeniden tarama başarısız oldu."
+        "success": "Kütüphane yeniden tarama işlemi bitti.",
+        "fail": "Kütüphane yeniden taranamadı."
       }
     },
     "deepRescan": {
-      "title": "Derin Yeniden Tarama",
+      "title": "Derin Tarama",
       "brief": "Normal yeniden tarama özelliğini hızlandıran atlama önlemlerini yoksayar."
     },
     "listAllow": {
       "title": "İzin Listesi",
-      "description": "Boşsa aşağıdaki varsayılanları kullanır:"
+      "description": "Boş bırakılırsa varsayılan olarak aşağıdakiler kullanılır:"
     },
     "listBlock": {
       "title": "Engelleme Listesi",
-      "description": "İzin listesindeki girişlere göre daha yüksek önceliğe sahiptir."
+      "description": "İzin listesindeki girdilere göre daha yüksek önceliğe sahiptir."
     },
     "ignoreDuration": {
       "title": "Kısa Sesleri Yoksay",
@@ -230,7 +230,7 @@
     },
     "code": {
       "title": "GitHub Deposu",
-      "brief": "Sorunları bildirin, katkıda bulunun veya yeni özellikler isteyin."
+      "brief": "Sorun bildirin, katkıda bulunun veya yeni özellikler talep edin."
     },
     "license": {
       "title": "Lisans"
@@ -239,49 +239,49 @@
       "title": "Gizlilik Politikası"
     },
     "thirdParty": {
-      "title": "Üçüncü Taraf Yazılım",
-      "brief": "Bu uygulamayı mümkün kılan şeyler."
+      "title": "Üçüncü Taraf Yazılımlar",
+      "brief": "Bu uygulamayı mümkün kılanlar."
     },
     "version": {
       "title": "Sürüm"
     },
     "onboardPreprocess": {
       "title": "Ön İşleme",
-      "brief": "Mevcut verilerin değişikliklerle uyumlu olduğundan emin olun."
+      "brief": "Mevcut verilerin herhangi bir değişikliğe uyduğundan emin olma."
     },
     "onboardTracks": {
-      "title": "Parçaları Kaydetme",
+      "title": "Parçalar Kaydediliyor",
       "extra": {
-        "prevSaved": "{{amount}} Önceden Kaydedilmiş",
+        "prevSaved": "{{amount}} Önceki Kayıt",
         "saved": "{{amount}}/{{total}} Kaydedildi/Güncellendi",
         "errors": "{{amount}} Hata"
       }
     },
     "onboardImages": {
-      "title": "Görüntüleri Kaydetme",
+      "title": "Görseller Kaydediliyor",
       "extra": {
         "checked": "{{amount}}/{{total}} Kontrol Edildi",
         "found": "{{amount}} Bulundu"
       }
     },
     "playedRecent": {
-      "title": "Son Oynatılanlar",
+      "title": "Son Çalınanlar",
       "extra": {
-        "empty": "Henüz hiçbir şey oynatmadınız!",
-        "section": "Son Oynatılanlar Bölümü"
+        "empty": "Henüz hiçbir şey çalmadınız!",
+        "section": "Son Çalınanlar Bölümü"
       }
     },
     "search": {
       "title": "Ara",
       "extra": {
         "musicAdd": "Müzik Ekle",
-        "searchMedia": "Medya Ara"
+        "searchMedia": "Medyada Ara"
       }
     },
     "artwork": {
       "extra": {
-        "change": "Kapak Resmini Değiştir",
-        "remove": "Kapak Resmini Kaldır"
+        "change": "Albüm Kapağını Değiştir",
+        "remove": "Albüm Kapağını Kaldır"
       }
     },
     "directory": {
@@ -313,8 +313,8 @@
         "sampleRate": "Örnekleme Hızı",
         "size": "Boyut",
         "addToPlaylist": "Çalma Listesine Ekle",
-        "addToQueue": "Kuyruğa Ekle",
-        "queueAdd": "`{{- name}}` kuyruğa eklendi."
+        "addToQueue": "Sıraya Ekle",
+        "queueAdd": "`{{- name}}` sıraya eklendi."
       }
     }
   }

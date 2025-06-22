@@ -22,7 +22,7 @@
     "favorites": "Preferides",
     "unFavorite": "Treu de preferides",
     "favoriteTracks": "Pistes preferides",
-    "all": null,
+    "all": "Tot",
     "home": "Inici",
     "settings": "Ajusts",
     "upcoming": "Pròxima",
@@ -139,7 +139,7 @@
       }
     },
     "visualTips": {
-      "title": null
+      "title": "Pistes visuals"
     },
     "language": {
       "title": "Llengua"
@@ -193,7 +193,7 @@
       "brief": "Evita que \"Repetir una vegada\" canviï a \"Repetir\" en saltar."
     },
     "saveLastPosition": {
-      "title": null
+      "title": "Guardar l'última posició reproduïda"
     },
     "scanning": {
       "title": "Escanejant",
