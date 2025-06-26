@@ -19,7 +19,7 @@ type TrackMetadataForm = {
 /** "Derived" state subscribed to changes. */
 const computed = createComputed(
   ({
-    initialData,
+    initialFormData,
     name,
     artistName,
     album,
@@ -28,17 +28,15 @@ const computed = createComputed(
     disc,
     track,
   }: Omit<TrackMetadataStore, "isUnchanged">) => {
-    const isNameUnchanged = initialData.name === name.trim();
+    const isNameUnchanged = initialFormData.name === name.trim();
     const isArtistNameUnchanged =
-      initialData.artistName === (artistName.trim() || null);
-    const isAlbumUnchanged = initialData.album === (album.trim() || null);
+      initialFormData.artistName === artistName.trim();
+    const isAlbumUnchanged = initialFormData.album === album.trim();
     const isAlbumArtistUnchanged =
-      initialData.album?.artistName === (albumArtist.trim() || null);
-    const isYearUnchanged =
-      initialData.album?.releaseYear === (Number(year.trim()) || null);
-    const isDiscUnchanged = initialData.disc === (Number(disc.trim()) || null);
-    const isTrackUnchanged =
-      initialData.track === (Number(track.trim()) || null);
+      initialFormData.albumArtist === albumArtist.trim();
+    const isYearUnchanged = initialFormData.year === year.trim();
+    const isDiscUnchanged = initialFormData.disc === disc.trim();
+    const isTrackUnchanged = initialFormData.track === track.trim();
 
     return {
       isUnchanged:
@@ -63,6 +61,7 @@ type TrackMetadataStore = InitStoreProps &
       fieldName: TKey,
     ) => (value: string) => void;
 
+    initialFormData: TrackMetadataForm;
     isUnchanged: boolean;
 
     /** If we're firing the `onSubmit` function. */
@@ -85,17 +84,22 @@ export function TrackMetadataStoreProvider({
 }: InitStoreProps & { children: React.ReactNode }) {
   const storeRef = useRef<StoreApi<TrackMetadataStore>>(null);
   if (!storeRef.current) {
+    const initialFormData = {
+      name: initialData.name,
+      artistName: initialData.artistName ?? "",
+      album: initialData.album?.name ?? "",
+      albumArtist: initialData.album?.artistName ?? "",
+      year: initialData.album?.releaseYear?.toString() ?? "",
+      disc: initialData.disc?.toString() ?? "",
+      track: initialData.track?.toString() ?? "",
+    };
+
     storeRef.current = createStore<TrackMetadataStore>()(
       computed((set, get) => ({
         initialData,
 
-        name: initialData.name,
-        artistName: initialData.artistName ?? "",
-        album: initialData.album?.name ?? "",
-        albumArtist: initialData.album?.artistName ?? "",
-        year: initialData.album?.releaseYear?.toString() ?? "",
-        disc: initialData.disc?.toString() ?? "",
-        track: initialData.track?.toString() ?? "",
+        initialFormData,
+        ...initialFormData,
 
         setField: (fieldName) => (value) => set({ [fieldName]: value }),
 
