@@ -330,6 +330,7 @@
         "albumArtist": "Album Artist",
         "disc": "Disc",
         "name": "Name",
+        "trackNumber": "Track Number",
         "year": "Year"
       }
     },
