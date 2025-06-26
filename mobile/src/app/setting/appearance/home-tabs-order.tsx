@@ -4,8 +4,8 @@ import { Pressable } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
 import { DragIndicator } from "~/icons/DragIndicator";
-import { Eye } from "~/icons/Eye";
-import { EyeOff } from "~/icons/EyeOff";
+import { Visibility } from "~/icons/Visibility";
+import { VisibilityOff } from "~/icons/VisibilityOff";
 import type { OrderableTab } from "~/services/UserPreferences";
 import {
   userPreferencesStore,
@@ -83,7 +83,7 @@ const RenderItem = memo(
         <DragIndicator />
         <TStyledText textKey={tabNameKey} className="shrink grow p-4 pr-2" />
         <IconButton
-          Icon={isVisible ? Eye : EyeOff}
+          Icon={isVisible ? Visibility : VisibilityOff}
           accessibilityLabel={t(
             isVisible ? "template.entryHide" : "template.entryShow",
             { name: t(tabNameKey) },
