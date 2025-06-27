@@ -4,6 +4,7 @@ import { platformApiLevel } from "expo-device";
 import { useMemo } from "react";
 import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { RouteHandlers } from "./RouteHandlers";
@@ -16,15 +17,17 @@ export function AppProvider(props: ChildrenWrapperProps) {
   // NOTE: `expo-router` automatically adds `<SafeAreaProvider />`
   //  - https://docs.expo.dev/router/migrate/from-react-navigation/#delete-unused-or-managed-code
   return (
-    <ThemeProvider>
-      <GestureHandlerRootView>
-        <QueryClientProvider client={queryClient}>
-          <RouteHandlers />
-          <ChildrenWrapper {...props} />
-          <ToastProvider />
-        </QueryClientProvider>
-      </GestureHandlerRootView>
-    </ThemeProvider>
+    <KeyboardProvider>
+      <ThemeProvider>
+        <GestureHandlerRootView>
+          <QueryClientProvider client={queryClient}>
+            <RouteHandlers />
+            <ChildrenWrapper {...props} />
+            <ToastProvider />
+          </QueryClientProvider>
+        </GestureHandlerRootView>
+      </ThemeProvider>
+    </KeyboardProvider>
   );
 }
 
