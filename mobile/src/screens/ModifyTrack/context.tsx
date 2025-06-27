@@ -5,7 +5,7 @@ import { createComputed } from "zustand-computed";
 
 import type { TrackWithAlbum } from "~/db/schema";
 
-type TrackMetadataForm = {
+export type TrackMetadataForm = {
   name: string;
   // Nullable Fields:
   artistName: string;

@@ -13,6 +13,7 @@ export default function CurrentLayout() {
       <Stack.Screen name="playlist/[id]" />
       <Stack.Screen name="album/[id]" />
       <Stack.Screen name="artist/[id]" />
+      <Stack.Screen name="track/modify" />
     </Stack>
   );
 }
