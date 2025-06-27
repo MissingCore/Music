@@ -212,9 +212,9 @@ function ResetWorkflow() {
         artistName: trackMetadata.artist ?? "",
         album: trackMetadata.albumTitle ?? "",
         albumArtist: trackMetadata.albumArtist ?? "",
-        year: (trackMetadata.year ?? "").toString(),
-        disc: (trackMetadata.discNumber ?? "").toString(),
-        track: (trackMetadata.trackNumber ?? "").toString(),
+        year: trackMetadata.year?.toString() ?? "",
+        disc: trackMetadata.discNumber?.toString() ?? "",
+        track: trackMetadata.trackNumber?.toString() ?? "",
       });
     } catch {}
     setIsSubmitting(false);
