@@ -60,6 +60,7 @@ type TrackMetadataStore = InitStoreProps &
     setField: <TKey extends keyof TrackMetadataForm>(
       fieldName: TKey,
     ) => (value: string) => void;
+    setFields: (data: Partial<TrackMetadataForm>) => void;
 
     initialFormData: TrackMetadataForm;
     isUnchanged: boolean;
@@ -102,6 +103,7 @@ export function TrackMetadataStoreProvider({
         ...initialFormData,
 
         setField: (fieldName) => (value) => set({ [fieldName]: value }),
+        setFields: (data) => set({ ...data }),
 
         isSubmitting: false,
         setIsSubmitting: (status) => set({ isSubmitting: status }),

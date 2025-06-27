@@ -1,12 +1,19 @@
+import {
+  MetadataPresets,
+  getMetadata,
+} from "@missingcore/react-native-metadata-retriever";
 import { Stack, router } from "expo-router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { BackHandler, View } from "react-native";
+import { BackHandler, Pressable, View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 import { Check } from "~/icons/Check";
+import { useTheme } from "~/hooks/useTheme";
 import type { InitStoreProps, TrackMetadataForm } from "./context";
 import { TrackMetadataStoreProvider, useTrackMetadataStore } from "./context";
 
+import { ScrollablePresets } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
@@ -23,6 +30,7 @@ export function ModifyTrack(props: InitStoreProps) {
       <ScreenConfig />
       <MetadataForm />
       <ConfirmationModal />
+      <ResetWorkflow />
     </TrackMetadataStoreProvider>
   );
 }
@@ -82,7 +90,11 @@ function MetadataForm() {
   }, [isSubmitting, isUnchanged, setShowConfirmation]);
 
   return (
-    <View className="gap-6 p-4">
+    <KeyboardAwareScrollView
+      bottomOffset={16}
+      {...ScrollablePresets}
+      contentContainerClassName="gap-6 p-4"
+    >
       <StyledText dim className="text-center text-sm">
         {t("feat.trackMetadata.description.line1")}
         {"\n\n"}
@@ -120,7 +132,7 @@ function MetadataForm() {
         <TEm textKey="feat.trackMetadata.extra.disc" dim />
         <FormInput field="disc" numeric />
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 }
 
@@ -130,6 +142,7 @@ function FormInput(props: {
 }) {
   const initFormData = useTrackMetadataStore((state) => state.initialFormData);
   const isSubmitting = useTrackMetadataStore((state) => state.isSubmitting);
+  const field = useTrackMetadataStore((state) => state[props.field]);
   const setField = useTrackMetadataStore((state) => state.setField);
 
   return (
@@ -137,6 +150,7 @@ function FormInput(props: {
       inputMode={props.numeric ? "numeric" : undefined}
       editable={!isSubmitting}
       defaultValue={initFormData[props.field]}
+      value={field}
       onChangeText={setField(props.field)}
       className="w-full border-b border-foreground/60"
     />
@@ -169,6 +183,54 @@ function ConfirmationModal() {
         />
       </View>
     </Modal>
+  );
+}
+//#endregion
+
+//#region Reset Workflow
+/** Logic to set the form fields to the embedded metadata from the track. */
+function ResetWorkflow() {
+  const { t } = useTranslation();
+  const { canvas } = useTheme();
+
+  const { uri } = useTrackMetadataStore((state) => state.initialData);
+  const isSubmitting = useTrackMetadataStore((state) => state.isSubmitting);
+  const setIsSubmitting = useTrackMetadataStore(
+    (state) => state.setIsSubmitting,
+  );
+  const setFields = useTrackMetadataStore((state) => state.setFields);
+
+  const onReset = async () => {
+    setIsSubmitting(true);
+    try {
+      const trackMetadata = await getMetadata(uri, [
+        ...MetadataPresets.standard,
+        "discNumber",
+      ]);
+      setFields({
+        name: trackMetadata.title ?? "",
+        artistName: trackMetadata.artist ?? "",
+        album: trackMetadata.albumTitle ?? "",
+        albumArtist: trackMetadata.albumArtist ?? "",
+        year: (trackMetadata.year ?? "").toString(),
+        disc: (trackMetadata.discNumber ?? "").toString(),
+        track: (trackMetadata.trackNumber ?? "").toString(),
+      });
+    } catch {}
+    setIsSubmitting(false);
+  };
+
+  return (
+    <Pressable
+      android_ripple={{ color: canvas }}
+      onPress={onReset}
+      disabled={isSubmitting}
+      className="min-h-12 justify-center bg-surface disabled:opacity-25"
+    >
+      <StyledText className="text-center text-sm text-red">
+        {t("form.reset").toLocaleUpperCase()}
+      </StyledText>
+    </Pressable>
   );
 }
 //#endregion
