@@ -1,15 +1,21 @@
 import { Stack, router } from "expo-router";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { BackHandler, View } from "react-native";
 
 import { Check } from "~/icons/Check";
 import type { InitStoreProps, TrackMetadataForm } from "./context";
 import { TrackMetadataStoreProvider, useTrackMetadataStore } from "./context";
 
+import { Divider } from "~/components/Divider";
 import { IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import { Modal, ModalAction } from "~/components/Modal";
-import { TEm, TStyledText } from "~/components/Typography/StyledText";
+import {
+  StyledText,
+  TEm,
+  TStyledText,
+} from "~/components/Typography/StyledText";
 
 export function ModifyTrack(props: InitStoreProps) {
   return (
@@ -26,6 +32,7 @@ export function ModifyTrack(props: InitStoreProps) {
 function ScreenConfig() {
   const { t } = useTranslation();
 
+  const trackName = useTrackMetadataStore((state) => state.name);
   const isUnchanged = useTrackMetadataStore((state) => state.isUnchanged);
   const isSubmitting = useTrackMetadataStore((state) => state.isSubmitting);
   const onSubmit = useTrackMetadataStore((state) => state.onSubmit);
@@ -41,7 +48,9 @@ function ScreenConfig() {
             Icon={Check}
             accessibilityLabel={t("form.apply")}
             onPress={onSubmit}
-            disabled={isUnchanged || isSubmitting}
+            disabled={
+              isUnchanged || trackName.trim().length === 0 || isSubmitting
+            }
           />
         ),
       }}
@@ -52,36 +61,63 @@ function ScreenConfig() {
 
 //#region Metadata Form
 function MetadataForm() {
+  const { t } = useTranslation();
+
+  const isUnchanged = useTrackMetadataStore((state) => state.isUnchanged);
+  const isSubmitting = useTrackMetadataStore((state) => state.isSubmitting);
+  const setShowConfirmation = useTrackMetadataStore(
+    (state) => state.setShowConfirmation,
+  );
+
+  useEffect(() => {
+    const subscription = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        if (isUnchanged) return false;
+        if (!isSubmitting) setShowConfirmation(true);
+        return true;
+      },
+    );
+    return () => subscription.remove();
+  }, [isSubmitting, isUnchanged, setShowConfirmation]);
+
   return (
-    <View className="gap-2 py-4">
+    <View className="gap-6 p-4">
+      <StyledText dim className="text-center text-sm">
+        {t("feat.trackMetadata.description.line1")}
+        {"\n\n"}
+        {t("feat.trackMetadata.description.line2")}
+      </StyledText>
+      <Divider />
+
       <View>
-        <TEm textKey="feat.trackMetadata.extra.name" />
+        <TEm textKey="feat.trackMetadata.extra.name" dim />
         <FormInput field="name" />
       </View>
       <View>
-        <TEm textKey="term.artist" />
+        <TEm textKey="term.artist" dim />
         <FormInput field="artistName" />
       </View>
       <View>
-        <TEm textKey="term.album" />
+        <TEm textKey="term.album" dim />
         <FormInput field="album" />
       </View>
       <View>
-        <TEm textKey="feat.trackMetadata.extra.albumArtist" />
+        <TEm textKey="feat.trackMetadata.extra.albumArtist" dim />
         <FormInput field="albumArtist" />
       </View>
-      <View className="flex-row gap-2">
+      <View className="flex-row items-end gap-6">
         <View className="flex-1">
-          <TEm textKey="feat.trackMetadata.extra.year" />
+          <TEm textKey="feat.trackMetadata.extra.year" dim />
           <FormInput field="year" numeric />
         </View>
         <View className="flex-1">
-          <TEm textKey="feat.trackMetadata.extra.trackNumber" />
+          <TEm textKey="feat.trackMetadata.extra.trackNumber" dim />
           <FormInput field="track" numeric />
         </View>
       </View>
       <View>
-        <TEm textKey="feat.trackMetadata.extra.disc" />
+        <TEm textKey="feat.trackMetadata.extra.disc" dim />
         <FormInput field="disc" numeric />
       </View>
     </View>
@@ -102,7 +138,7 @@ function FormInput(props: {
       editable={!isSubmitting}
       defaultValue={initFormData[props.field]}
       onChangeText={setField(props.field)}
-      className="shrink grow border-b border-foreground/60"
+      className="w-full border-b border-foreground/60"
     />
   );
 }
