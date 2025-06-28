@@ -61,20 +61,25 @@ export const tracks = sqliteTable("tracks", {
   name: text().notNull(),
   artistName: text().references(() => artists.name),
   albumId: text().references(() => albums.id),
-  artwork: text(),
-  isFavorite: integer({ mode: "boolean" }).notNull().default(false),
-  duration: integer().notNull(), // Track duration in seconds
   // Album relations
   disc: integer(),
   track: integer(),
   // Other metadata
+  duration: integer().notNull(), // Track duration in seconds
   format: text(), // Currently the mimetype of the file
   bitrate: integer(),
   sampleRate: integer(),
   size: integer().notNull(),
   uri: text().notNull(),
   modificationTime: integer().notNull(),
+  // Artwork
+  artwork: text().generatedAlwaysAs(
+    (): SQL => sql`coalesce(${tracks.altArtwork}, ${tracks.embeddedArtwork})`,
+  ),
+  embeddedArtwork: text(),
+  altArtwork: text(),
   // Data checking fields.
+  isFavorite: integer({ mode: "boolean" }).notNull().default(false),
   fetchedArt: integer({ mode: "boolean" }).notNull().default(false),
   parentFolder: text().generatedAlwaysAs(
     // Ref: https://stackoverflow.com/a/38330814
