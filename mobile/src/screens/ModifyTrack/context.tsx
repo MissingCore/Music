@@ -1,3 +1,5 @@
+import { toast } from "@backpackapp-io/react-native-toast";
+import { getArtwork } from "@missingcore/react-native-metadata-retriever";
 import { router } from "expo-router";
 import { createContext, use, useRef } from "react";
 import type { StoreApi } from "zustand";
@@ -6,11 +8,15 @@ import { createComputed } from "zustand-computed";
 
 import type { TrackWithAlbum } from "~/db/schema";
 
+import i18next from "~/modules/i18n";
 import { upsertAlbum } from "~/api/album";
 import { createArtist } from "~/api/artist";
 import { updateTrack } from "~/api/track";
+import { cleanupImages } from "~/modules/scanning/helpers/artwork";
 import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
 
+import { saveImage } from "~/lib/file-system";
+import { ToastOptions } from "~/lib/toast";
 import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
 
@@ -124,6 +130,7 @@ export function TrackMetadataStoreProvider({
           // Slight buffer before running heavy async task.
           await wait(1);
           try {
+            const { id, uri } = get().initialData;
             const { name, artistName, album, albumArtist, year, disc, track } =
               get();
             if (name.trim().length === 0) throw new Error("Track has no name.");
@@ -133,6 +140,7 @@ export function TrackMetadataStoreProvider({
               artistName: asNonEmptyString(artistName),
               track: asNaturalNumber(track),
               disc: asNaturalNumber(disc),
+              artwork: null as string | null,
             };
             const updatedAlbum = {
               name: asNonEmptyString(album),
@@ -147,6 +155,8 @@ export function TrackMetadataStoreProvider({
                 .map((name) => createArtist({ name })),
             );
 
+            const artworkUri = await getArtworkUri(uri);
+
             // Add new album to the database. The unique key on `Album` covers the rare
             // case where an artist releases multiple albums with the same name.
             let albumId: string | null = null;
@@ -155,19 +165,21 @@ export function TrackMetadataStoreProvider({
                 name: updatedAlbum.name,
                 artistName: updatedAlbum.artistName,
                 releaseYear: updatedAlbum.year,
+                embeddedArtwork: artworkUri,
               });
               if (newAlbum) albumId = newAlbum.id;
             }
+            if (!albumId) updatedTrack.artwork = artworkUri;
 
-            await updateTrack(get().initialData.id, {
-              ...updatedTrack,
-              albumId,
-            });
+            await updateTrack(id, { ...updatedTrack, albumId });
 
+            await cleanupImages();
             await removeUnusedCategories();
             clearAllQueries();
             router.back();
-          } catch {}
+          } catch {
+            toast.error(i18next.t("err.flow.generic.title"), ToastOptions);
+          }
           set({ isSubmitting: false });
         },
       })),
@@ -204,5 +216,16 @@ function asNaturalNumber(numStr: string) {
 /** Returns `null` if empty string. */
 function asNonEmptyString(str: string) {
   return str.trim() || null;
+}
+
+/** Save the artwork embedded on the track and return the uri to it. */
+async function getArtworkUri(uri: string) {
+  try {
+    const base64Artwork = await getArtwork(uri);
+    if (!base64Artwork) return null;
+    return await saveImage(base64Artwork);
+  } catch {
+    return null;
+  }
 }
 //#endregion
