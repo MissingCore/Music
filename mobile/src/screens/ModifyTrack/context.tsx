@@ -140,7 +140,7 @@ export function TrackMetadataStoreProvider({
               artistName: asNonEmptyString(artistName),
               track: asNaturalNumber(track),
               disc: asNaturalNumber(disc),
-              artwork: null as string | null,
+              embeddedArtwork: null as string | null,
             };
             const updatedAlbum = {
               name: asNonEmptyString(album),
@@ -169,7 +169,7 @@ export function TrackMetadataStoreProvider({
               });
               if (newAlbum) albumId = newAlbum.id;
             }
-            if (!albumId) updatedTrack.artwork = artworkUri;
+            if (!albumId) updatedTrack.embeddedArtwork = artworkUri;
 
             await updateTrack(id, { ...updatedTrack, albumId });
 
