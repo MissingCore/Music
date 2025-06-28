@@ -52,7 +52,7 @@
     "track_one": "{{count}} utwór",
     "track_few": "{{count}} utwory",
     "track_many": "{{count}} utworów",
-    "track_other": "{{count}} utworów",
+    "track_other": "{{count}} utworów"
   },
   "form": {
     "apply": "Zapisz zmiany",
