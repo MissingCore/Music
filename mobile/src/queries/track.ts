@@ -2,11 +2,17 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { formatForTrack } from "~/db/utils";
 
-import { addToPlaylist, favoriteTrack, removeFromPlaylist } from "~/api/track";
+import {
+  addToPlaylist,
+  favoriteTrack,
+  removeFromPlaylist,
+  updateTrack,
+} from "~/api/track";
 import { Resynchronize } from "~/modules/media/services/Resynchronize";
 import { useSortTracks } from "~/modules/media/services/SortPreferences";
 import { queries as q } from "./keyStore";
 
+import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
 import { ReservedPlaylists } from "~/modules/media/constants";
 
@@ -89,6 +95,19 @@ export function useRemoveFromPlaylist(trackId: string) {
       // Ensure that if we're currently playing from the playlist we removed
       // the track from, we update it.
       Resynchronize.onTracks({ type: "playlist", id: playlistName });
+    },
+  });
+}
+
+/** Update specified track artwork. */
+export function useUpdateTrackArtwork(trackId: string) {
+  return useMutation({
+    mutationFn: ({ artwork }: { artwork?: string | null }) =>
+      updateTrack(trackId, { altArtwork: artwork }),
+    onSuccess: () => {
+      // Changing the track artwork affects a lot of things, so we'll just
+      // clear all the queries.
+      clearAllQueries();
     },
   });
 }
