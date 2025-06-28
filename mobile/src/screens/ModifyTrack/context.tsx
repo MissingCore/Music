@@ -1,9 +1,18 @@
+import { router } from "expo-router";
 import { createContext, use, useRef } from "react";
 import type { StoreApi } from "zustand";
 import { createStore, useStore } from "zustand";
 import { createComputed } from "zustand-computed";
 
 import type { TrackWithAlbum } from "~/db/schema";
+
+import { upsertAlbum } from "~/api/album";
+import { createArtist } from "~/api/artist";
+import { updateTrack } from "~/api/track";
+import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
+
+import { clearAllQueries } from "~/lib/react-query";
+import { wait } from "~/utils/promise";
 
 export type TrackMetadataForm = {
   name: string;
@@ -111,22 +120,53 @@ export function TrackMetadataStoreProvider({
         setShowConfirmation: (status) => set({ showConfirmation: status }),
 
         onSubmit: async () => {
+          set({ isSubmitting: true });
+          // Slight buffer before running heavy async task.
+          await wait(1);
           try {
-            /*
-              TODO: Need to implement logic
-            */
             const { name, artistName, album, albumArtist, year, disc, track } =
               get();
-            set({ isSubmitting: true });
-            console.log({
-              name,
-              artistName,
-              album,
-              albumArtist,
-              year,
-              disc,
-              track,
+            if (name.trim().length === 0) throw new Error("Track has no name.");
+
+            const updatedTrack = {
+              name: name.trim(),
+              artistName: asNonEmptyString(artistName),
+              track: asNaturalNumber(track),
+              disc: asNaturalNumber(disc),
+            };
+            const updatedAlbum = {
+              name: asNonEmptyString(album),
+              artistName: asNonEmptyString(albumArtist),
+              year: asNaturalNumber(year) ?? -1,
+            };
+
+            // Add new artists to the database.
+            await Promise.allSettled(
+              [updatedTrack.artistName, updatedAlbum.artistName]
+                .filter((name) => name !== null)
+                .map((name) => createArtist({ name })),
+            );
+
+            // Add new album to the database. The unique key on `Album` covers the rare
+            // case where an artist releases multiple albums with the same name.
+            let albumId: string | null = null;
+            if (updatedAlbum.name && updatedAlbum.artistName) {
+              const newAlbum = await upsertAlbum({
+                name: updatedAlbum.name,
+                artistName: updatedAlbum.artistName,
+                releaseYear: updatedAlbum.year,
+              });
+              if (newAlbum) albumId = newAlbum.id;
+            }
+
+            await updateTrack(get().initialData.id, {
+              ...updatedTrack,
+              albumId,
             });
+
+            await removeUnusedCategories();
+            clearAllQueries();
+            router.back();
           } catch {}
           set({ isSubmitting: false });
         },
@@ -152,3 +192,17 @@ export function useTrackMetadataStore<T>(
   }
   return useStore(store, selector);
 }
+
+//#region Internal Helpers
+/** Formats string number as a natural number. */
+function asNaturalNumber(numStr: string) {
+  const num = Number(numStr);
+  if (!Number.isInteger(num) || num < 1) return null;
+  return num;
+}
+
+/** Returns `null` if empty string. */
+function asNonEmptyString(str: string) {
+  return str.trim() || null;
+}
+//#endregion
