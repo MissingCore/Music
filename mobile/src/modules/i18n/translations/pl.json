@@ -22,7 +22,7 @@
     "favorites": "Ulubione",
     "unFavorite": "Usuń z ulubionych",
     "favoriteTracks": "Ulubione utwory",
-    "all": null,
+    "all": "Wszystkie",
     "home": "Start",
     "settings": "Ustawienia",
     "upcoming": "Następne",
@@ -42,11 +42,17 @@
   },
   "plural": {
     "entry_one": "{{count}} element",
-    "entry_other": "{{count}} elementy|ów",
-    "second_one": "{{count}} sekunda",
-    "second_other": "{{count}} sekund|y",
-    "track_one": "{{count}} $t(term.track)",
-    "track_other": "{{count}} $t(term.tracks)"
+    "entry_few": "{{count}} elementy",
+    "entry_many": "{{count}} elementów",
+    "entry_other": "{{count}} elementów",
+    "second_one": "{{count}} sekundę",
+    "second_few": "{{count}} sekundy",
+    "second_many": "{{count}} sekund",
+    "second_other": "{{count}} sekund",
+    "track_one": "{{count}} utwór",
+    "track_few": "{{count}} utwory",
+    "track_many": "{{count}} utworów",
+    "track_other": "{{count}} utworów",
   },
   "form": {
     "apply": "Zapisz zmiany",
@@ -67,7 +73,7 @@
         "title": "Nieprawidłowa ścieżka",
         "brief": "Taki katalog nie istnieje.",
         "extra": {
-          "missing": "Brakujące",
+          "missing": "Brakuje",
           "from": "z"
         }
       },
@@ -131,7 +137,7 @@
       }
     },
     "nowPlayingDesign": {
-      "title": "Wygląd ekranu `Grane teraz`",
+      "title": "Wygląd ekranu `Odtwarzane teraz`",
       "extra": {
         "plain": "Zwykły",
         "vinyl": "Winyl",
@@ -139,7 +145,7 @@
       }
     },
     "visualTips": {
-      "title": null
+      "title": "Wizualne podpowiedzi"
     },
     "language": {
       "title": "Język"
@@ -168,7 +174,7 @@
       }
     },
     "saveErrors": {
-      "title": "Zapisane błędy",
+      "title": "Przechwycone błędy",
       "brief": "Zobacz dlaczego niektóre utwory nie zostały dodane."
     },
     "interactions": {
@@ -193,7 +199,7 @@
       "brief": "Nie zmieniaj trybu na `Zapętl` z `Zapętl jedną` po pominięciu."
     },
     "saveLastPosition": {
-      "title": null
+      "title": "Zapisz ostatnio odtwarzaną pozycję"
     },
     "scanning": {
       "title": "Skanowanie",
