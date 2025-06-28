@@ -140,7 +140,6 @@ function FormInput(props: {
   field: keyof TrackMetadataForm;
   numeric?: boolean;
 }) {
-  const initFormData = useTrackMetadataStore((state) => state.initialFormData);
   const isSubmitting = useTrackMetadataStore((state) => state.isSubmitting);
   const field = useTrackMetadataStore((state) => state[props.field]);
   const setField = useTrackMetadataStore((state) => state.setField);
@@ -149,7 +148,6 @@ function FormInput(props: {
     <TextInput
       inputMode={props.numeric ? "numeric" : undefined}
       editable={!isSubmitting}
-      defaultValue={initFormData[props.field]}
       value={field}
       onChangeText={setField(props.field)}
       className="w-full border-b border-foreground/60"
