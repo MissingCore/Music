@@ -1,6 +1,6 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { useMutation } from "@tanstack/react-query";
-import { and, eq, isNull } from "drizzle-orm";
+import { and, eq, isNull, ne } from "drizzle-orm";
 
 import { db } from "~/db";
 import { fileNodes, invalidTracks, tracks } from "~/db/schema";
@@ -14,7 +14,7 @@ import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
 import { batch, wait } from "~/utils/promise";
 import { findAndSaveArtwork, cleanupImages } from "./artwork";
-import { cleanupDatabase, findAndSaveAudio } from "./audio";
+import { IGNORE_RECHECK, cleanupDatabase, findAndSaveAudio } from "./audio";
 import { savePathComponents } from "./folder";
 
 /** Look through our library for any new or updated tracks. */
@@ -49,13 +49,16 @@ export async function rescanForTracks(deepScan = false) {
       .set({ fetchedArt: false })
       .where(and(eq(tracks.fetchedArt, true), isNull(tracks.artwork)));
 
-    // Update all tracks even if its `modificationTime` hasn't changed.
+    // Update all tracks whose metadata hasn't been manually changed by
+    // the user, even if its `modificationTime` hasn't changed.
     // Useful to update tracks to comply with new saving behavior (ie:
     // trimming the album, album artist, artist, and track names to prevent
     // unexpected uniqueness).
     if (deepScan) {
-      // eslint-disable-next-line drizzle/enforce-update-with-where
-      await db.update(tracks).set({ modificationTime: -1 });
+      await db
+        .update(tracks)
+        .set({ modificationTime: -1 })
+        .where(ne(tracks.modificationTime, IGNORE_RECHECK));
     }
 
     // Rescan library for any new tracks and delete any old ones.

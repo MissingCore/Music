@@ -13,7 +13,10 @@ import { upsertAlbum } from "~/api/album";
 import { createArtist } from "~/api/artist";
 import { updateTrack } from "~/api/track";
 import { cleanupImages } from "~/modules/scanning/helpers/artwork";
-import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
+import {
+  IGNORE_RECHECK,
+  removeUnusedCategories,
+} from "~/modules/scanning/helpers/audio";
 
 import { saveImage } from "~/lib/file-system";
 import { ToastOptions } from "~/lib/toast";
@@ -141,6 +144,7 @@ export function TrackMetadataStoreProvider({
               track: asNaturalNumber(track),
               disc: asNaturalNumber(disc),
               embeddedArtwork: null as string | null,
+              modificationTime: IGNORE_RECHECK,
             };
             const updatedAlbum = {
               name: asNonEmptyString(album),

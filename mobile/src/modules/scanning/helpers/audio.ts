@@ -28,6 +28,14 @@ import { Stopwatch } from "~/utils/debug";
 import { BATCH_PRESETS, batch, wait } from "~/utils/promise";
 import { savePathComponents } from "./folder";
 
+/**
+ * When setting `modificationTime` to this value, we'l prevent the data
+ * from being overridden (ie: when we modify the track's metadata).
+ *
+ * This will no longer work on: Wednesday, November 16, 5138 9:46:39 AM.
+ */
+export const IGNORE_RECHECK = 99999999999;
+
 //#region Saving Function
 /** Index tracks with their metadata into our database. */
 export async function findAndSaveAudio() {
@@ -105,7 +113,10 @@ export async function findAndSaveAudio() {
     else if (!isDifferentUri && modifiedTracks.has(id)) isDifferentUri = true;
 
     // Retry indexing if modification time or uri is different.
-    if (modificationTime !== lastModified || isDifferentUri) {
+    if (
+      (lastModified !== IGNORE_RECHECK && modificationTime !== lastModified) ||
+      isDifferentUri
+    ) {
       modifiedTracks.add(id);
     } else {
       unmodifiedTracks.add(id);
