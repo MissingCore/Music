@@ -5,6 +5,7 @@ import { View, useWindowDimensions } from "react-native";
 import { useAlbum, useUpdateAlbumArtwork } from "~/queries/album";
 import { useArtist, useUpdateArtist } from "~/queries/artist";
 import { usePlaylist, useUpdatePlaylist } from "~/queries/playlist";
+import { useTrack, useUpdateTrackArtwork } from "~/queries/track";
 
 import { pickImage } from "~/lib/file-system";
 import { mutateGuard } from "~/lib/react-query";
@@ -62,6 +63,23 @@ export function PlaylistArtworkSheet(props: ArtworkSheetProps) {
         type="playlist"
         imageSource={data?.imageSource ?? null}
         mutationResult={updatePlaylist}
+      />
+    </Sheet>
+  );
+}
+
+/** Sheet allowing us to change the artwork of a track. */
+export function TrackArtworkSheet(props: ArtworkSheetProps) {
+  const { data } = useTrack(props.id);
+  const updateTrackArtwork = useUpdateTrackArtwork(props.id);
+
+  return (
+    <Sheet ref={props.sheetRef} contentContainerClassName="items-center gap-6">
+      <BaseArtworkSheetContent
+        type="track"
+        imageSource={data?.artwork ?? null}
+        mutationResult={updateTrackArtwork}
+        disabled={data?.altArtwork === null}
       />
     </Sheet>
   );

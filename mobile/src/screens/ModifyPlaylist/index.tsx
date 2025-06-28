@@ -1,8 +1,7 @@
 import { Stack, router } from "expo-router";
-import type { ParseKeys } from "i18next";
 import { memo, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { BackHandler, Modal, Pressable, View } from "react-native";
+import { BackHandler, Pressable, View } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
 import type { SlimTrackWithAlbum } from "~/db/slimTypes";
@@ -26,6 +25,7 @@ import { wait } from "~/utils/promise";
 import { FlashDragList } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
+import { Modal, ModalAction } from "~/components/Modal";
 import { useSheetRef } from "~/components/Sheet";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
@@ -248,20 +248,20 @@ function ConfirmationModal() {
   );
 
   return (
-    <ModalBase visible={showConfirmation}>
+    <Modal visible={showConfirmation}>
       <TStyledText textKey="form.unsaved" className="pt-8 text-center" />
       <View className="flex-row justify-end gap-4">
-        <ModalButton
+        <ModalAction
           textKey="form.stay"
           onPress={() => setShowConfirmation(false)}
         />
-        <ModalButton
+        <ModalAction
           textKey="form.leave"
           onPress={() => router.back()}
           danger
         />
       </View>
-    </ModalBase>
+    </Modal>
   );
 }
 //#endregion
@@ -306,61 +306,20 @@ function DeleteWorkflow() {
           {t("feat.playlist.extra.delete").toLocaleUpperCase()}
         </StyledText>
       </Pressable>
-      <ModalBase visible={lastChance}>
+      <Modal visible={lastChance}>
         <TStyledText
           textKey="feat.playlist.extra.delete"
           className="pt-8 text-center"
         />
         <View className="flex-row justify-end gap-4">
-          <ModalButton
+          <ModalAction
             textKey="form.cancel"
             onPress={() => setLastChance(false)}
           />
-          <ModalButton textKey="form.confirm" onPress={onDelete} danger />
+          <ModalAction textKey="form.confirm" onPress={onDelete} danger />
         </View>
-      </ModalBase>
+      </Modal>
     </>
-  );
-}
-//#endregion
-
-//#region Modal
-/** Base layout for native modals. */
-function ModalBase(props: { visible: boolean; children: React.ReactNode }) {
-  return (
-    <Modal
-      animationType="fade"
-      visible={props.visible}
-      statusBarTranslucent
-      transparent
-    >
-      <View className="flex-1 items-center justify-center bg-neutral0/50 px-4">
-        <View className="w-full gap-8 rounded-md bg-canvasAlt px-4">
-          {props.children}
-        </View>
-      </View>
-    </Modal>
-  );
-}
-
-/** Base implementation of modal button. */
-function ModalButton(props: {
-  textKey: ParseKeys;
-  onPress: () => void | Promise<void>;
-  danger?: boolean;
-}) {
-  const { t } = useTranslation();
-  return (
-    <Pressable
-      onPress={props.onPress}
-      className="min-h-12 min-w-12 shrink px-2 py-4 active:opacity-50"
-    >
-      <StyledText
-        className={cn("text-right text-sm", { "text-red": props.danger })}
-      >
-        {t(props.textKey).toLocaleUpperCase()}
-      </StyledText>
-    </Pressable>
   );
 }
 //#endregion

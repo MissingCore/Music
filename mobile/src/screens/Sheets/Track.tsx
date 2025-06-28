@@ -1,7 +1,7 @@
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { router, usePathname } from "expo-router";
 import type { ParseKeys } from "i18next";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 
@@ -9,7 +9,9 @@ import type { TrackWithAlbum } from "~/db/schema";
 
 import { Album } from "~/icons/Album";
 import { Artist } from "~/icons/Artist";
+import { Edit } from "~/icons/Edit";
 import { Favorite } from "~/icons/Favorite";
+import { Image } from "~/icons/Image";
 import { List } from "~/icons/List";
 import { PlaylistAdd } from "~/icons/PlaylistAdd";
 import { QueueMusic } from "~/icons/QueueMusic";
@@ -24,6 +26,7 @@ import {
 import { useSessionStore } from "~/services/SessionStore";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { useTheme } from "~/hooks/useTheme";
+import { TrackArtworkSheet } from "~/screens/Sheets/Artwork";
 import { Queue, useMusicStore } from "~/modules/media/services/Music";
 
 import { Colors } from "~/constants/Styles";
@@ -35,11 +38,11 @@ import {
   formatSeconds,
 } from "~/utils/number";
 import { Marquee } from "~/components/Containment/Marquee";
-import { FlashList } from "~/components/Defaults";
+import { FlashList, ScrollView } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { Button } from "~/components/Form/Button";
 import { Checkbox } from "~/components/Form/Selection";
-import { Sheet } from "~/components/Sheet";
+import { Sheet, useSheetRef } from "~/components/Sheet";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import {
   StyledText,
@@ -53,6 +56,12 @@ import { MediaImage } from "~/modules/media/components/MediaImage";
 /** Displays information about a track and enables adding it to playlists. */
 export function TrackSheet() {
   const data = useSessionStore((state) => state.displayedTrack);
+  const trackArtworkSheetRef = useSheetRef();
+
+  const editArtwork = useCallback(() => {
+    trackArtworkSheetRef.current?.present();
+  }, [trackArtworkSheetRef]);
+
   return (
     <>
       <Sheet
@@ -60,17 +69,19 @@ export function TrackSheet() {
         // Required to get auto-resizing to work when content height changes.
         // Ref: https://github.com/lodev09/react-native-true-sheet/issues/7
         sizes={["auto", "large"]}
-        contentContainerClassName="gap-4"
       >
         {data !== null ? (
-          <>
+          <ScrollView nestedScrollEnabled contentContainerClassName="gap-4">
             <TrackIntro key={data._checked} data={data} />
-            <PrimaryTrackContent data={data} />
+            <PrimaryTrackContent data={data} editArtwork={editArtwork} />
             <TrackLinks data={data} />
-          </>
+          </ScrollView>
         ) : null}
       </Sheet>
       <TrackToPlaylistSheet key={data?.id} id={data?.id ?? ""} />
+      {data !== null && (
+        <TrackArtworkSheet sheetRef={trackArtworkSheetRef} id={data.id} />
+      )}
     </>
   );
 }
@@ -139,7 +150,13 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
 
 //#region Primary Content
 /** Track information and add actions. */
-function PrimaryTrackContent({ data }: { data: TrackWithAlbum }) {
+function PrimaryTrackContent({
+  data,
+  editArtwork,
+}: {
+  data: TrackWithAlbum;
+  editArtwork: () => void;
+}) {
   return (
     <>
       <Divider />
@@ -177,6 +194,21 @@ function PrimaryTrackContent({ data }: { data: TrackWithAlbum }) {
         </View>
       </View>
       <Divider />
+      {/* General Actions */}
+      <View className="flex-row gap-2">
+        <SheetButton
+          onPress={() =>
+            router.push(`/track/modify?id=${encodeURIComponent(data.id)}`)
+          }
+          Icon={<Edit />}
+          textKey="feat.trackMetadata.title"
+        />
+        <SheetButton
+          onPress={editArtwork}
+          Icon={<Image />}
+          textKey="feat.artwork.extra.change"
+        />
+      </View>
       {/* Add Actions */}
       <View className="flex-row gap-2">
         <SheetButton

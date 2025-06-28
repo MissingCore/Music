@@ -7,6 +7,7 @@ import { useMusicStore } from "~/modules/media/services/Music";
 const overrideVisible = [
   "/playlist/create",
   "/playlist/modify",
+  "/track/modify",
 ] satisfies Partial<Href[]>;
 
 /** Routes where we should hide the navigation bar. */

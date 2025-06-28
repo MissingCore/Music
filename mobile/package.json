@@ -65,6 +65,7 @@
     "react-native-draglist": "github:MissingCore/react-native-draglist#6e926d101e6293785d5cab4c014ccdc4812c19d2",
     "react-native-edge-to-edge": "^1.6.1",
     "react-native-gesture-handler": "~2.26.0",
+    "react-native-keyboard-controller": "^1.17.5",
     "react-native-markdown-display": "^7.0.2",
     "react-native-pager-view": "^6.8.1",
     "react-native-reanimated": "~3.18.0",

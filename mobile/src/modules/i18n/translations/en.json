@@ -69,6 +69,7 @@
     "leave": "Leave",
 
     "clear": "Clear",
+    "reset": "Reset",
 
     "validation": {
       "unique": "Unique"
@@ -317,6 +318,20 @@
         "delete": "Delete Playlist",
         "edit": "Edit Playlist",
         "name": "Playlist Name"
+      }
+    },
+    "trackMetadata": {
+      "title": "Edit Metadata",
+      "description": {
+        "line1": "Edit how the track appears for this app. This does not modify the file itself.",
+        "line2": "Note: Your changes may get reset if this file changes."
+      },
+      "extra": {
+        "albumArtist": "Album Artist",
+        "disc": "Disc",
+        "name": "Name",
+        "trackNumber": "Track Number",
+        "year": "Year"
       }
     },
 
