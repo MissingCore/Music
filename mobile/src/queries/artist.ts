@@ -50,8 +50,7 @@ export function useArtistsForIndex() {
       // Convert object to array to be used in a list that acts like a `<SectionList />`.
       return Object.entries(groupedArtists)
         .sort((a, b) => a[0].localeCompare(b[0])) // Moves the `#` group to the front
-        .map(([character, artists]) => [character, ...artists])
-        .flat();
+        .flatMap(([character, artists]) => [character, ...artists]);
     },
   });
 }

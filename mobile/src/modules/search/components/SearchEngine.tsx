@@ -233,7 +233,7 @@ function formatResults(results: Partial<SearchResults>, tab: SearchTab) {
       return data.length > 0;
     })
     .sort((a, b) => a[0].localeCompare(b[0]))
-    .map(([key, data]) => [
+    .flatMap(([key, data]) => [
       ...(tab === "all" ? [key as SearchCategories[number]] : []),
       ...data.map((item) => {
         let description: string | undefined;
@@ -252,8 +252,7 @@ function formatResults(results: Partial<SearchResults>, tab: SearchTab) {
           entry: item,
         };
       }),
-    ])
-    .flat();
+    ]);
 }
 
 type MediaRelations =
