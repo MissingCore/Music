@@ -8,6 +8,7 @@ import {
   removeFromPlaylist,
   updateTrack,
 } from "~/api/track";
+import { revalidateActiveTrack } from "~/modules/media/helpers/revalidate";
 import { Resynchronize } from "~/modules/media/services/Resynchronize";
 import { useSortTracks } from "~/modules/media/services/SortPreferences";
 import { queries as q } from "./keyStore";
@@ -104,10 +105,13 @@ export function useUpdateTrackArtwork(trackId: string) {
   return useMutation({
     mutationFn: ({ artwork }: { artwork?: string | null }) =>
       updateTrack(trackId, { altArtwork: artwork }),
-    onSuccess: () => {
+    onSuccess: async () => {
       // Changing the track artwork affects a lot of things, so we'll just
       // clear all the queries.
       clearAllQueries();
+
+      // Revalidate `activeTrack` in Music store if needed.
+      await revalidateActiveTrack({ type: "track", id: trackId });
     },
   });
 }

@@ -5,6 +5,7 @@ import type { AlbumWithTracks } from "~/db/schema";
 import { formatForCurrentScreen, formatForMediaCard } from "~/db/utils";
 
 import { favoriteAlbum, updateAlbum } from "~/api/album";
+import { revalidateActiveTrack } from "~/modules/media/helpers/revalidate";
 import { Resynchronize } from "~/modules/media/services/Resynchronize";
 import { queries as q } from "./keyStore";
 
@@ -68,11 +69,14 @@ export function useUpdateAlbumArtwork(albumId: string) {
   return useMutation({
     mutationFn: ({ artwork }: { artwork?: string | null }) =>
       updateAlbum(albumId, { altArtwork: artwork }),
-    onSuccess: () => {
+    onSuccess: async () => {
       // Changing the album artwork affects a lot of things, so we'll just
       // clear all the queries.
       clearAllQueries();
       Resynchronize.onImage({ type: "album", id: albumId });
+
+      // Revalidate `activeTrack` in Music store if needed.
+      await revalidateActiveTrack({ type: "album", id: albumId });
     },
   });
 }

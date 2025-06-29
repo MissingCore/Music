@@ -12,6 +12,7 @@ import i18next from "~/modules/i18n";
 import { upsertAlbum } from "~/api/album";
 import { createArtist } from "~/api/artist";
 import { updateTrack } from "~/api/track";
+import { revalidateActiveTrack } from "~/modules/media/helpers/revalidate";
 import { cleanupImages } from "~/modules/scanning/helpers/artwork";
 import {
   IGNORE_RECHECK,
@@ -177,6 +178,8 @@ export function TrackMetadataStoreProvider({
 
             await updateTrack(id, { ...updatedTrack, albumId });
 
+            // Revalidate `activeTrack` in Music store if needed.
+            await revalidateActiveTrack({ type: "track", id });
             await cleanupImages();
             await removeUnusedCategories();
             clearAllQueries();
