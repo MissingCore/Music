@@ -5,6 +5,7 @@ import Animated, { LinearTransition } from "react-native-reanimated";
 
 import { Pause } from "~/icons/Pause";
 import { PlayArrow } from "~/icons/PlayArrow";
+import { useActiveTrack } from "../hooks/useActiveTrack";
 import { useMusicStore } from "../services/Music";
 import { MusicControls } from "../services/Playback";
 import { useTheme } from "~/hooks/useTheme";
@@ -24,7 +25,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
   const { t } = useTranslation();
   const { surface } = useTheme();
   const isPlaying = useMusicStore((state) => state.isPlaying);
-  const track = useMusicStore((state) => state.activeTrack);
+  const track = useActiveTrack();
 
   if (!track || hidden) return null;
   return (
