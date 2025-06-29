@@ -11,7 +11,7 @@ import { KeyboardArrowDown } from "~/icons/KeyboardArrowDown";
 import { LibraryMusic } from "~/icons/LibraryMusic";
 import { MoreVert } from "~/icons/MoreVert";
 import { useFavoriteTrack, useTrack } from "~/queries/track";
-import { useActiveTrack } from "~/modules/media/hooks/useActiveTrack";
+import { useMusicStore } from "~/modules/media/services/Music";
 import { presentTrackSheet } from "~/services/SessionStore";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { usePlayerProgress } from "~/screens/NowPlaying/helpers/usePlayerProgress";
@@ -38,7 +38,7 @@ import {
 
 /** Screen for `/now-playing` route. */
 export default function NowPlayingScreen() {
-  const track = useActiveTrack();
+  const track = useMusicStore((state) => state.activeTrack);
   if (!track) return <Back />;
   return (
     <SafeContainer additionalTopOffset={56} className="flex-1 gap-8">

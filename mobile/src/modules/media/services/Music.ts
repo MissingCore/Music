@@ -10,9 +10,8 @@ import {
   getTrack,
   removeInvalidTrackRelations,
 } from "~/api/track";
-import { queries as q } from "~/queries/keyStore";
 
-import { clearAllQueries, queryClient } from "~/lib/react-query";
+import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
 import { createPersistedSubscribedStore } from "~/lib/zustand";
 import { shuffleArray } from "~/utils/object";
@@ -329,13 +328,7 @@ export class RNTPManager {
     const nextTrackId = nextInQueue ? queueList[0] : currentList[nextIndex];
     let nextTrack: TrackWithAlbum | undefined = undefined;
     try {
-      if (nextTrackId) {
-        nextTrack = await getTrack(nextTrackId);
-        queryClient.setQueryData(
-          q.tracks.detail(nextTrackId).queryKey,
-          nextTrack,
-        );
-      }
+      if (nextTrackId) nextTrack = await getTrack(nextTrackId);
     } catch {}
 
     return {
@@ -356,13 +349,7 @@ export class RNTPManager {
     const prevTrackId = currentList[prevIndex];
     let prevTrack: TrackWithAlbum | undefined = undefined;
     try {
-      if (prevTrackId) {
-        prevTrack = await getTrack(prevTrackId);
-        queryClient.setQueryData(
-          q.tracks.detail(prevTrackId).queryKey,
-          prevTrack,
-        );
-      }
+      if (prevTrackId) prevTrack = await getTrack(prevTrackId);
     } catch {}
 
     return {
