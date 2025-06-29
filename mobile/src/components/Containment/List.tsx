@@ -27,7 +27,7 @@ export function useListPresets<TData extends Record<string, any>>({
   renderOptions: {
     getTitle: (item: TData) => string;
     getDescription?: (item: TData) => string;
-    onPress?: (item: TData) => () => void;
+    onPress?: (item: TData) => VoidFunction;
   };
 }) {
   return useMemo(
@@ -55,7 +55,7 @@ export function useListPresets<TData extends Record<string, any>>({
 export function ListItem(
   props: {
     // Interactivity props.
-    onPress?: () => void;
+    onPress?: VoidFunction;
     disabled?: boolean;
     switchState?: boolean;
     // Content props.

@@ -63,7 +63,7 @@ export async function pickPath() {
 async function addPathToList(props: {
   list: "listAllow" | "listBlock";
   path: string;
-  onSuccess: () => void;
+  onSuccess: VoidFunction;
 }) {
   const trimmed = props.path.trim();
   // Check to see if directory exists before we add it.

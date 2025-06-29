@@ -8,7 +8,7 @@ import { cn } from "~/lib/style";
 /** Shared props between `<Checkbox />` and `<Radio />`. */
 type SelectionProps = {
   children: React.JSX.Element;
-  onSelect: () => void;
+  onSelect: VoidFunction;
   selected: boolean;
   /** Styles applied to the `<View />` wrapping the `<Pressable />`. */
   wrapperStyle?: StyleProp<ViewStyle>;

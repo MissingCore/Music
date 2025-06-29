@@ -155,7 +155,7 @@ function PrimaryTrackContent({
   editArtwork,
 }: {
   data: TrackWithAlbum;
-  editArtwork: () => void;
+  editArtwork: VoidFunction;
 }) {
   return (
     <>
@@ -298,7 +298,7 @@ function StatItem(props: { titleKey: ParseKeys; description: string }) {
 //#region Sheet Button
 /** Clicking this button will also close the model */
 function SheetButton(props: {
-  onPress: () => void;
+  onPress: VoidFunction;
   Icon: React.JSX.Element;
   textKey: ParseKeys;
 }) {

@@ -197,7 +197,7 @@ const RenderItem = memo(
 
 //#region ListHeaderComponent
 /** Contains the input to change the playlist name and button to add tracks. */
-function ListHeaderComponent(props: { showSheet: () => void }) {
+function ListHeaderComponent(props: { showSheet: VoidFunction }) {
   const { t } = useTranslation();
 
   const initialName = usePlaylistStore((state) => state.initialName);

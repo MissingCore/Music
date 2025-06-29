@@ -23,7 +23,7 @@ interface SortPreferencesStore {
 
   /** Should tracks be displayed in ascending order. */
   isAsc: boolean;
-  toggleIsAsc: () => void;
+  toggleIsAsc: VoidFunction;
   /** The attribute which tracks will be ordered by. */
   orderedBy: (typeof OrderedByOptions)[number];
   setOrderedBy: (sortType: SortPreferencesStore["orderedBy"]) => void;

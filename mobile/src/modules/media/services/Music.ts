@@ -45,7 +45,7 @@ interface MusicStore {
   /** Behavior of how we'll loop in this list of tracks. */
   repeat: (typeof RepeatModes)[number];
   /** Switch to the next repeat mode. */
-  cycleRepeat: () => void;
+  cycleRepeat: VoidFunction;
   /**
    * If we should use `shuffledPlayingList` instead of `playingList` for
    * the order of the tracks played.

@@ -43,7 +43,7 @@ export default function TrackScreen() {
 
 //#region Actions
 /** Actions used on the `/track` screen. */
-function TrackActions(props: { showSheet: () => void }) {
+function TrackActions(props: { showSheet: VoidFunction }) {
   const { t } = useTranslation();
   return (
     <View className="w-full flex-row items-center justify-between rounded-md bg-surface">

@@ -106,7 +106,7 @@ export async function findAndSaveArtwork() {
 async function saveSinglesArtwork(
   singles: PartialTrack[],
   onSave: (info: { artworkUri: string; trackId: string }) => Promise<void>,
-  options?: { endEarly?: boolean; onEndIteration?: () => void },
+  options?: { endEarly?: boolean; onEndIteration?: VoidFunction },
 ) {
   for (const { id: trackId, uri, name } of singles) {
     // Indicate we attempted to find artwork for a track. Do this before
