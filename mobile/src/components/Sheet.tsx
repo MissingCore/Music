@@ -51,21 +51,13 @@ export function Sheet({
 }: SheetProps & { ref?: TrueSheetRef }) {
   const { t } = useTranslation();
   const { canvasAlt } = useTheme();
-  const insets = useSafeAreaInsets();
-  const { height: screenHeight } = useWindowDimensions();
   const [enableToast, setEnableToast] = useState(false);
   const [disableToastAnim, setDisableToastAnim] = useState(true);
   const [sheetHeight, setSheetHeight] = useState(0);
   const [headerHeight, setHeaderHeight] = useState(0);
   const disableAnimTimerRef = useRef<number>(null);
 
-  // In Android API 35+, the "height" now includes the system decoration
-  // areas and display cutout (status & navigation bar heights).
-  //  - https://github.com/facebook/react-native/issues/47080#issuecomment-2421914957
-  const trueScreenHeight = useMemo(() => {
-    if (!platformApiLevel || platformApiLevel < 35) return screenHeight;
-    return screenHeight - insets.top - insets.bottom;
-  }, [insets.bottom, insets.top, screenHeight]);
+  const maxSheetHeight = useMaxSheetHeight();
 
   return (
     <TrueSheet
@@ -74,8 +66,7 @@ export function Sheet({
       sizes={[snapTop ? "large" : "auto"]}
       backgroundColor={canvasAlt}
       cornerRadius={BorderRadius.lg}
-      // Sheet max height will be just before the `<TopAppBar />`.
-      maxHeight={trueScreenHeight - 56}
+      maxHeight={maxSheetHeight}
       grabber={false}
       onPresent={(e) => {
         if (onPresent) onPresent(e);
@@ -109,7 +100,7 @@ export function Sheet({
           // TrueSheet doesn't know the actual scrollable area, so we
           // need to exclude the height taken up by the "SheetHeader"
           // from the container that can hold a scrollable.
-          [{ maxHeight: trueScreenHeight - 56 - headerHeight }],
+          [{ maxHeight: maxSheetHeight - headerHeight }],
           contentContainerStyle,
         ]}
         className={cn(
@@ -153,4 +144,21 @@ function SheetHeader(props: {
       ) : null}
     </View>
   );
+}
+
+/** Returns the max height of the sheet. */
+function useMaxSheetHeight() {
+  const insets = useSafeAreaInsets();
+  const { height: screenHeight } = useWindowDimensions();
+
+  // In Android API 35+, the "height" now includes the system decoration
+  // areas and display cutout (status & navigation bar heights).
+  //  - https://github.com/facebook/react-native/issues/47080#issuecomment-2421914957
+  const trueScreenHeight = useMemo(() => {
+    if (!platformApiLevel || platformApiLevel < 35) return screenHeight;
+    return screenHeight - insets.top - insets.bottom;
+  }, [insets.bottom, insets.top, screenHeight]);
+
+  // Sheet max height will be just before the `<TopAppBar />`.
+  return useMemo(() => trueScreenHeight - 56, [trueScreenHeight]);
 }
