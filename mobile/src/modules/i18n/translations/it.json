@@ -57,6 +57,7 @@
     "stay": "Aspetta",
     "leave": "Esci",
     "clear": "Cancella",
+    "reset": null,
     "validation": {
       "unique": "Unico"
     }
@@ -296,6 +297,20 @@
         "delete": "Elimina $t(term.playlist)",
         "edit": "Modifica $t(term.playlist)",
         "name": "Nome $t(term.playlist)"
+      }
+    },
+    "trackMetadata": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      },
+      "extra": {
+        "albumArtist": null,
+        "disc": null,
+        "name": null,
+        "trackNumber": null,
+        "year": null
       }
     },
     "modalSort": {

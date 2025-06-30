@@ -57,6 +57,7 @@
     "stay": "Bleiben",
     "leave": "Verlassen",
     "clear": "Leeren",
+    "reset": null,
     "validation": {
       "unique": "Einzigartig"
     }
@@ -296,6 +297,20 @@
         "delete": "Playlist löschen",
         "edit": "Playlist bearbeiten",
         "name": "Playlistname"
+      }
+    },
+    "trackMetadata": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      },
+      "extra": {
+        "albumArtist": null,
+        "disc": null,
+        "name": null,
+        "trackNumber": null,
+        "year": null
       }
     },
     "modalSort": {
