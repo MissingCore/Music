@@ -1,8 +1,12 @@
 import type { FlashListProps as RawFlashListProps } from "@shopify/flash-list";
 import { FlashList as RawFlashList } from "@shopify/flash-list";
 import { cssInterop } from "nativewind";
-import { useRef } from "react";
-import type { FlatListProps, ScrollViewProps } from "react-native";
+import { useMemo, useRef, useState } from "react";
+import type {
+  FlatListProps,
+  LayoutChangeEvent,
+  ScrollViewProps,
+} from "react-native";
 import {
   FlatList as RNFlatList,
   ScrollView as RNScrollView,
@@ -17,6 +21,29 @@ export const ScrollablePresets = {
   showsHorizontalScrollIndicator: false,
   showsVerticalScrollIndicator: false,
 } satisfies ScrollViewProps;
+
+/**
+ * Returns whether a scrollable container is scrollable (ie: if its content
+ * height is greater than the container size).
+ */
+export function useIsScrollable() {
+  const layoutHeight = useRef(0);
+  const [isScrollable, setIsScrollable] = useState(false);
+
+  const handlers = useMemo(
+    () => ({
+      onLayout: (e: LayoutChangeEvent) => {
+        layoutHeight.current = e.nativeEvent.layout.height;
+      },
+      onContentSizeChange: (_w: number, h: number) => {
+        setIsScrollable(h !== layoutHeight.current);
+      },
+    }),
+    [],
+  );
+
+  return useMemo(() => ({ handlers, isScrollable }), [handlers, isScrollable]);
+}
 
 //#region Native Components
 export function useFlatListRef() {

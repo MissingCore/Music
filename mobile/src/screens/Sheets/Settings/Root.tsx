@@ -9,7 +9,7 @@ import { useExportBackup, useImportBackup } from "./helpers/BackupData";
 
 import { deferInitialRender } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
-import { FlatList } from "~/components/Defaults";
+import { FlatList, useIsScrollable } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
 import { Radio } from "~/components/Form/Selection";
 import type { TrueSheetRef } from "~/components/Sheet";
@@ -78,6 +78,8 @@ function BackupSheet(props: { sheetRef: TrueSheetRef }) {
 /** Enables the ability to change the language used. */
 function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
   const languageCode = useUserPreferencesStore((state) => state.language);
+  const { handlers, isScrollable } = useIsScrollable();
+
   return (
     <Sheet
       ref={props.sheetRef}
@@ -96,7 +98,8 @@ function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
             <StyledText>{item.name}</StyledText>
           </Radio>
         )}
-        nestedScrollEnabled
+        {...handlers}
+        nestedScrollEnabled={isScrollable}
         contentContainerClassName="gap-1 pb-4"
       />
     </Sheet>

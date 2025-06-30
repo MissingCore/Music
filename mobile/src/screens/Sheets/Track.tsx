@@ -38,7 +38,7 @@ import {
   formatSeconds,
 } from "~/utils/number";
 import { Marquee } from "~/components/Containment/Marquee";
-import { FlashList, ScrollView } from "~/components/Defaults";
+import { FlashList, ScrollView, useIsScrollable } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { Button } from "~/components/Form/Button";
 import { Checkbox } from "~/components/Form/Selection";
@@ -57,6 +57,7 @@ import { MediaImage } from "~/modules/media/components/MediaImage";
 export function TrackSheet() {
   const data = useSessionStore((state) => state.displayedTrack);
   const trackArtworkSheetRef = useSheetRef();
+  const { handlers, isScrollable } = useIsScrollable();
 
   const editArtwork = useCallback(() => {
     trackArtworkSheetRef.current?.present();
@@ -71,7 +72,11 @@ export function TrackSheet() {
         sizes={["auto", "large"]}
       >
         {data !== null ? (
-          <ScrollView nestedScrollEnabled contentContainerClassName="gap-4">
+          <ScrollView
+            {...handlers}
+            nestedScrollEnabled={isScrollable}
+            contentContainerClassName="gap-4"
+          >
             <TrackIntro key={data._checked} data={data} />
             <PrimaryTrackContent data={data} editArtwork={editArtwork} />
             <TrackLinks data={data} />
