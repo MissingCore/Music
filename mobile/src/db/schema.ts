@@ -33,17 +33,21 @@ export const albums = sqliteTable(
     artistName: text("artist_name")
       .notNull()
       .references(() => artists.name),
-    /*
-      FIXME: This is technically `.notNull()`, but the migration will fail
-      for users who have "duplicate" album where `releaseYear = null`.
-    */
-    releaseYear: integer("release_year").default(-1),
     artwork: text().generatedAlwaysAs(
       (): SQL => sql`coalesce(${albums.altArtwork}, ${albums.embeddedArtwork})`,
     ),
     embeddedArtwork: text(),
     altArtwork: text(),
     isFavorite: integer({ mode: "boolean" }).notNull().default(false),
+
+    /*
+      FIXME: This is technically `.notNull()`, but the migration will fail
+      for users who have "duplicate" album where `releaseYear = null`.
+    */
+    /**
+     * @deprecated Remove along with its use in the Unique key in a future release.
+     */
+    releaseYear: integer("release_year").default(-1),
   },
   (t) => [unique().on(t.name, t.artistName, t.releaseYear)],
 );
@@ -64,6 +68,7 @@ export const tracks = sqliteTable("tracks", {
   // Album relations
   disc: integer(),
   track: integer(),
+  year: integer(),
   // Other metadata
   duration: integer().notNull(), // Track duration in seconds
   format: text(), // Currently the mimetype of the file
