@@ -3,6 +3,7 @@ import { and, eq } from "drizzle-orm";
 import { db } from "~/db";
 import type { Artist } from "~/db/schema";
 import { artists } from "~/db/schema";
+import { getYearRange } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
 
@@ -29,9 +30,20 @@ export const getArtist = _getArtist();
 
 /** Get the albums an artist has released in descending order. */
 export async function getArtistAlbums(id: string) {
-  return db.query.albums.findMany({
+  const allAlbums = await db.query.albums.findMany({
     where: (fields, { eq }) => eq(fields.artistName, id),
-    orderBy: (fields, { desc }) => desc(fields.releaseYear),
+    with: { tracks: { columns: { year: true } } },
+  });
+  const albumWithYear = allAlbums.map((album) => {
+    return { ...album, year: getYearRange(album.tracks) };
+  });
+  // FIXME: Once Hermes supports `toSorted`, use it instead.
+  albumWithYear.sort(
+    (a, b) =>
+      b.year.maxYear - a.year.maxYear || b.year.minYear - a.year.minYear,
+  );
+  return albumWithYear.map(({ tracks: _, year, ...album }) => {
+    return { ...album, releaseYear: year.range };
   });
 }
 

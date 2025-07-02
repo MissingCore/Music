@@ -61,7 +61,7 @@ export function getYearRange<TData extends { year: number | null }>(
   const years = entries
     .filter(({ year }) => year !== null)
     .map(({ year }) => year) as number[];
-  if (years.length === 0) return { minYear: null, maxYear: null, range: null };
+  if (years.length === 0) return { minYear: -1, maxYear: -1, range: null };
   const minYear = Math.min(...years);
   const maxYear = Math.max(...years);
   const range = minYear === maxYear ? `${maxYear}` : `${minYear} - ${maxYear}`;
