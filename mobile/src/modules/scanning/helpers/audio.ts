@@ -223,14 +223,12 @@ async function getTrackEntry({
       .map((name) => createArtist({ name: name!.trim() })),
   );
 
-  // Add new album to the database. The unique key on `Album` covers the rare
-  // case where an artist releases multiple albums with the same name.
+  // Add new album to the database.
   let albumId: string | null = null;
   if (!!t.albumTitle?.trim() && !!t.albumArtist?.trim()) {
     const newAlbum = await upsertAlbum({
       name: t.albumTitle.trim(),
       artistName: t.albumArtist.trim(),
-      releaseYear: t.year ?? -1,
     });
     if (newAlbum) albumId = newAlbum.id;
   }
@@ -242,6 +240,7 @@ async function getTrackEntry({
     albumId,
     track: t.trackNumber,
     disc: t.discNumber,
+    year: t.year,
     format: t.sampleMimeType,
     bitrate,
     sampleRate,
