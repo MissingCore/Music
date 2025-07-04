@@ -57,6 +57,7 @@
     "stay": "रहें",
     "leave": "छोड़ें",
     "clear": null,
+    "reset": null,
     "validation": {
       "unique": "अद्वितीय"
     }
@@ -296,6 +297,20 @@
         "delete": "प्लेलिस्ट हटाएँ",
         "edit": "प्लेलिस्ट संपादित करें",
         "name": "प्लेलिस्ट नाम"
+      }
+    },
+    "trackMetadata": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      },
+      "extra": {
+        "albumArtist": null,
+        "disc": null,
+        "name": null,
+        "trackNumber": null,
+        "year": null
       }
     },
     "modalSort": {

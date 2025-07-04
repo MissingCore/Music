@@ -57,6 +57,7 @@
     "stay": "留在此处",
     "leave": "离开",
     "clear": "清除",
+    "reset": null,
     "validation": {
       "unique": "唯一"
     }
@@ -296,6 +297,20 @@
         "delete": "删除播放列表",
         "edit": "编辑播放列表",
         "name": "播放列表名称"
+      }
+    },
+    "trackMetadata": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      },
+      "extra": {
+        "albumArtist": null,
+        "disc": null,
+        "name": null,
+        "trackNumber": null,
+        "year": null
       }
     },
     "modalSort": {

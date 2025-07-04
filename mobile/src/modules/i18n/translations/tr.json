@@ -57,6 +57,7 @@
     "stay": "Kal",
     "leave": "Ayrıl",
     "clear": "Temizle",
+    "reset": "Sıfırla",
     "validation": {
       "unique": "Benzersiz"
     }
@@ -296,6 +297,20 @@
         "delete": "Çalma Listesini Sil",
         "edit": "Çalma Listesini Düzenle",
         "name": "Çalma Listesi Adı"
+      }
+    },
+    "trackMetadata": {
+      "title": "Meta Verileri Düzenle",
+      "description": {
+        "line1": "Parçanın bu uygulamada nasıl görüneceğini düzenleyin. Bu, dosyanın kendisini değiştirmez.",
+        "line2": "Not: Bu dosya değişirse yaptığınız değişiklikler sıfırlanabilir."
+      },
+      "extra": {
+        "albumArtist": "Albüm Sanatçısı",
+        "disc": "Disk",
+        "name": "Ad",
+        "trackNumber": "Parça Numarası",
+        "year": "Yıl"
       }
     },
     "modalSort": {
