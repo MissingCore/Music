@@ -16,12 +16,12 @@ export async function revalidateActiveTrack(args: {
   if (args.type === "track" && activeTrack.id !== args.id) return;
 
   try {
-    const rntpTrack = await TrackPlayer.getActiveTrack();
-    if (!rntpTrack) return;
-
     const updatedTrackData = await getTrack(activeTrack.id);
     musicStore.setState({ activeTrack: updatedTrackData });
+
     // Update media notification with updated metadata.
+    const rntpTrack = await TrackPlayer.getActiveTrack();
+    if (!rntpTrack) return;
     await TrackPlayer.updateMetadataForTrack(0, {
       ...formatTrackforPlayer(updatedTrackData),
       // @ts-expect-error - Should allow for custom properties.
