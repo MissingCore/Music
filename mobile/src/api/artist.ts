@@ -34,15 +34,15 @@ export async function getArtistAlbums(id: string) {
     where: (fields, { eq }) => eq(fields.artistName, id),
     with: { tracks: { columns: { year: true } } },
   });
-  const albumWithYear = allAlbums.map((album) => {
-    return { ...album, year: getYearRange(album.tracks) };
+  const albumWithYear = allAlbums.map(({ tracks, ...album }) => {
+    return { ...album, year: getYearRange(tracks) };
   });
   // FIXME: Once Hermes supports `toSorted`, use it instead.
   albumWithYear.sort(
     (a, b) =>
       b.year.maxYear - a.year.maxYear || b.year.minYear - a.year.minYear,
   );
-  return albumWithYear.map(({ tracks: _, year, ...album }) => {
+  return albumWithYear.map(({ year, ...album }) => {
     return { ...album, releaseYear: year.range };
   });
 }
