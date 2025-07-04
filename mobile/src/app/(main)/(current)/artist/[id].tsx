@@ -7,12 +7,13 @@ import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { CurrentListLayout } from "~/layouts/CurrentList";
 
-import { isYearDefined } from "~/utils/number";
 import { FlashList } from "~/components/Defaults";
 import { PagePlaceholder } from "~/components/Transition/Placeholder";
 import { TEm } from "~/components/Typography/StyledText";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import { Track } from "~/modules/media/components/Track";
+
+type ArtistAlbum = Omit<Album, "releaseYear"> & { releaseYear: string | null };
 
 /** Screen for `/artist/[id]` route. */
 export default function CurrentArtistScreen() {
@@ -55,7 +56,7 @@ export default function CurrentArtistScreen() {
  * Display a list of the artist's albums. Renders a heading for the track
  * list only if the artist has albums.
  */
-function ArtistAlbums({ albums }: { albums: Album[] | null }) {
+function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
   const { width } = useGetColumn({
     cols: 1,
     gap: 0,
@@ -80,7 +81,7 @@ function ArtistAlbums({ albums }: { albums: Album[] | null }) {
             source={item.artwork}
             href={`/album/${item.id}`}
             title={item.name}
-            description={`${isYearDefined(item.releaseYear) ? item.releaseYear : "————"}`}
+            description={item.releaseYear || "————"}
             className={index > 0 ? "ml-3" : undefined}
           />
         )}

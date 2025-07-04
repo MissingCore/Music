@@ -18,7 +18,7 @@ import type {
 
 import i18next from "~/modules/i18n";
 
-import { formatSeconds, isYearDefined } from "~/utils/number";
+import { formatSeconds } from "~/utils/number";
 import { omitKeys } from "~/utils/object";
 import type { AtLeast, Prettify } from "~/utils/types";
 import { ReservedNames, ReservedPlaylists } from "~/modules/media/constants";
@@ -52,6 +52,20 @@ export function mergeTracks<TData extends { id: string }>(
 ) {
   const trackIds = new Set(arr2.map(({ id }) => id));
   return arr1.filter(({ id }) => !trackIds.has(id)).concat(arr2);
+}
+
+/** Get the year range from the `year` field on tracks. */
+export function getYearRange<TData extends { year: number | null }>(
+  entries: TData[],
+) {
+  const years = entries
+    .filter(({ year }) => year !== null)
+    .map(({ year }) => year) as number[];
+  if (years.length === 0) return { minYear: -1, maxYear: -1, range: null };
+  const minYear = Math.min(...years);
+  const maxYear = Math.max(...years);
+  const range = minYear === maxYear ? `${maxYear}` : `${minYear} - ${maxYear}`;
+  return { minYear, maxYear, range };
 }
 //#endregion
 
@@ -134,8 +148,9 @@ export function formatForCurrentScreen({ type, data, t }: ScreenFormatter) {
       data.tracks.reduce((total, curr) => total + curr.duration, 0),
     ),
   ];
-  if (type === "album" && isYearDefined(data.releaseYear)) {
-    metadata.unshift(String(data.releaseYear));
+  if (type === "album") {
+    const { range } = getYearRange(data.tracks);
+    if (range !== null) metadata.unshift(range);
   }
 
   const albumInfo = type === "album" ? omitKeys(data, ["tracks"]) : null;

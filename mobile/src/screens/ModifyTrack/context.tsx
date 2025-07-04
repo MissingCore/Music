@@ -109,7 +109,7 @@ export function TrackMetadataStoreProvider({
       artistName: initialData.artistName ?? "",
       album: initialData.album?.name ?? "",
       albumArtist: initialData.album?.artistName ?? "",
-      year: initialData.album?.releaseYear?.toString() ?? "",
+      year: initialData.year?.toString() ?? "",
       disc: initialData.disc?.toString() ?? "",
       track: initialData.track?.toString() ?? "",
     };
@@ -144,13 +144,13 @@ export function TrackMetadataStoreProvider({
               artistName: asNonEmptyString(artistName),
               track: asNaturalNumber(track),
               disc: asNaturalNumber(disc),
+              year: asNaturalNumber(year),
               embeddedArtwork: null as string | null,
               modificationTime: IGNORE_RECHECK,
             };
             const updatedAlbum = {
               name: asNonEmptyString(album),
               artistName: asNonEmptyString(albumArtist),
-              year: asNaturalNumber(year) ?? -1,
             };
 
             // Add new artists to the database.
@@ -162,14 +162,12 @@ export function TrackMetadataStoreProvider({
 
             const artworkUri = await getArtworkUri(uri);
 
-            // Add new album to the database. The unique key on `Album` covers the rare
-            // case where an artist releases multiple albums with the same name.
+            // Add new album to the database.
             let albumId: string | null = null;
             if (updatedAlbum.name && updatedAlbum.artistName) {
               const newAlbum = await upsertAlbum({
                 name: updatedAlbum.name,
                 artistName: updatedAlbum.artistName,
-                releaseYear: updatedAlbum.year,
                 embeddedArtwork: artworkUri,
               });
               if (newAlbum) albumId = newAlbum.id;
