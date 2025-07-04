@@ -1,5 +1,4 @@
 import { toast } from "@backpackapp-io/react-native-toast";
-import { getArtwork } from "@missingcore/react-native-metadata-retriever";
 import { router } from "expo-router";
 import { createContext, use, useRef } from "react";
 import type { StoreApi } from "zustand";
@@ -13,13 +12,15 @@ import { upsertAlbum } from "~/api/album";
 import { createArtist } from "~/api/artist";
 import { updateTrack } from "~/api/track";
 import { revalidateActiveTrack } from "~/modules/media/helpers/revalidate";
-import { cleanupImages } from "~/modules/scanning/helpers/artwork";
+import {
+  cleanupImages,
+  getArtworkUri,
+} from "~/modules/scanning/helpers/artwork";
 import {
   IGNORE_RECHECK,
   removeUnusedCategories,
 } from "~/modules/scanning/helpers/audio";
 
-import { saveImage } from "~/lib/file-system";
 import { ToastOptions } from "~/lib/toast";
 import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
@@ -160,7 +161,7 @@ export function TrackMetadataStoreProvider({
                 .map((name) => createArtist({ name })),
             );
 
-            const artworkUri = await getArtworkUri(uri);
+            const { uri: artworkUri } = await getArtworkUri(uri);
 
             // Add new album to the database.
             let albumId: string | null = null;
@@ -221,16 +222,5 @@ function asNaturalNumber(numStr: string) {
 /** Returns `null` if empty string. */
 function asNonEmptyString(str: string) {
   return str.trim() || null;
-}
-
-/** Save the artwork embedded on the track and return the uri to it. */
-async function getArtworkUri(uri: string) {
-  try {
-    const base64Artwork = await getArtwork(uri);
-    if (!base64Artwork) return null;
-    return await saveImage(base64Artwork);
-  } catch {
-    return null;
-  }
 }
 //#endregion

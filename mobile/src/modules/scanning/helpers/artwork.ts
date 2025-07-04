@@ -108,24 +108,36 @@ async function saveSinglesArtwork(
   onSave: (info: { artworkUri: string; trackId: string }) => Promise<void>,
   options?: { endEarly?: boolean; onEndIteration?: VoidFunction },
 ) {
-  for (const { id: trackId, uri, name } of singles) {
+  for (const { id: trackId, uri } of singles) {
     // Indicate we attempted to find artwork for a track. Do this before
     // physically attempting to save the artwork in case an OOM error occurs,
     // in which the app will essentially become "bricked".
     await updateTrack(trackId, { fetchedArt: true });
-    try {
-      const base64Artwork = await getArtwork(uri);
-      if (base64Artwork) {
-        const artworkUri = await saveImage(base64Artwork);
-        await onSave({ artworkUri, trackId });
-        onboardingStore.setState((prev) => ({ found: prev.found + 1 }));
-        if (options?.endEarly) return;
-      }
-    } catch {
-      // In case we fail to save an image due to having an invalid base64 string.
-      console.log(`[Error] Failed to get or save image for "${name}".`);
+    const { uri: artworkUri } = await getArtworkUri(uri);
+    if (artworkUri) {
+      await onSave({ artworkUri, trackId });
+      onboardingStore.setState((prev) => ({ found: prev.found + 1 }));
+      if (options?.endEarly) return;
     }
     if (options?.onEndIteration) options.onEndIteration();
+  }
+}
+
+/**
+ * Create a uri associated with the artwork on the track.
+ *
+ * **Note:** Will not throw an error.
+ */
+export async function getArtworkUri(uri: string) {
+  try {
+    const base64Artwork = await getArtwork(uri);
+    if (!base64Artwork) return { error: false, uri: null };
+    const artworkUri = await saveImage(base64Artwork);
+    return { error: false, uri: artworkUri };
+  } catch {
+    // In case we fail to save an image due to having an invalid base64 string.
+    console.log(`[Error] Failed to get or save image for "${uri}".`);
+    return { error: true, uri: null };
   }
 }
 //#endregion
