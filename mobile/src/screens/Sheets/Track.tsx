@@ -124,7 +124,12 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
                   <StyledText className="text-xs">|</StyledText>
                 ) : null}
                 <Pressable onPress={sheetAction(() => router.navigate(href))}>
-                  <StyledText dim className={cn({ "text-red": idx === 1 })}>
+                  <StyledText
+                    dim
+                    className={cn({
+                      "text-red": (href as string).startsWith("/artist/"),
+                    })}
+                  >
                     {value}
                   </StyledText>
                 </Pressable>
