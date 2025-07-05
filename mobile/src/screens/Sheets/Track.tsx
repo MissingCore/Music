@@ -4,10 +4,12 @@ import { router, usePathname } from "expo-router";
 import type { ParseKeys } from "i18next";
 import { Fragment, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import type { ViewStyle } from "react-native";
 import { Pressable, View } from "react-native";
 
 import type { TrackWithAlbum } from "~/db/schema";
 
+import type { Icon } from "~/icons/type";
 import { Album } from "~/icons/Album";
 import { Artist } from "~/icons/Artist";
 import { Edit } from "~/icons/Edit";
@@ -82,7 +84,8 @@ export function TrackSheet() {
           >
             <TrackIntro data={data} />
             <TrackMetadata data={data} />
-            <TrackActions id={data.id} editArtwork={editArtwork} />
+            <TrackIconActions id={data.id} editArtwork={editArtwork} />
+            <TrackTextActions data={data} />
           </ScrollView>
         ) : null}
       </Sheet>
@@ -94,7 +97,7 @@ export function TrackSheet() {
   );
 }
 
-//#region Track Introduction
+//#region Introduction
 function TrackIntro({ data }: { data: TrackWithAlbum }) {
   const navLinks = [
     {
@@ -179,7 +182,8 @@ function TrackMetadata({ data }: { data: TrackWithAlbum }) {
 //#endregion
 
 //#region Actions
-function TrackActions(props: { id: string; editArtwork: VoidFunction }) {
+/** Actions that can be understood with just an icon. */
+function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
   const { t } = useTranslation();
   const { data } = useTrack(props.id);
   const favoriteTrack = useFavoriteTrack(props.id);
@@ -188,7 +192,7 @@ function TrackActions(props: { id: string; editArtwork: VoidFunction }) {
   const isFav = favoriteTrack.isPending ? !favStatus : favStatus;
 
   return (
-    <Card className="flex-row justify-evenly py-1">
+    <Card className="flex-row justify-evenly gap-4 py-1">
       <IconButton
         Icon={Favorite}
         accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
@@ -210,14 +214,91 @@ function TrackActions(props: { id: string; editArtwork: VoidFunction }) {
     </Card>
   );
 }
+
+/** Actions that require a visual description. */
+function TrackTextActions({ data }: { data: TrackWithAlbum }) {
+  const pathname = usePathname();
+  const { width } = useGetColumn({ cols: 2, gap: 3, gutters: 32 });
+  const playingSource = useMusicStore((state) => state.playingSource);
+  const sourceName = useMusicStore((state) => state.sourceName);
+  const playingList = useMusicStore((state) => state.playingList);
+
+  const showPlaylistBtn =
+    pathname === "/now-playing" &&
+    playingSource?.type === "playlist" &&
+    playingList.some((id) => id === data.id);
+
+  return (
+    <View className="gap-[3px]">
+      <View className="flex-row gap-[3px]">
+        <ListButton
+          Icon={PlaylistAdd}
+          textKey="feat.modalTrack.extra.addToPlaylist"
+          onPress={sheetAction(() => TrueSheet.present("TrackToPlaylistSheet"))}
+          style={{ width }}
+          className={cn("rounded-tl-md", { "rounded-bl-md": !showPlaylistBtn })}
+        />
+        <ListButton
+          Icon={QueueMusic}
+          textKey="feat.modalTrack.extra.addToQueue"
+          onPress={() => Queue.add({ id: data.id, name: data.name })}
+          style={{ width }}
+          className={cn("rounded-tr-md", { "rounded-br-md": !showPlaylistBtn })}
+        />
+      </View>
+      {showPlaylistBtn ? (
+        <ListButton
+          Icon={List}
+          textKey="term.playingFrom"
+          description={sourceName}
+          onPress={sheetAction(() =>
+            router.navigate(
+              playingSource?.id === ReservedPlaylists.tracks
+                ? "/track"
+                : `/playlist/${encodeURIComponent(playingSource?.id ?? "")}`,
+            ),
+          )}
+          className="grow rounded-b-md"
+        />
+      ) : null}
+    </View>
+  );
+}
 //#endregion
 
-//#region Sheet Helpers
+//#region Track Sheet Helpers
 function Badge(props: { children: string }) {
   return (
     <View className="rounded-sm bg-onSurface px-2 py-1">
       <Em {...props} />
     </View>
+  );
+}
+
+function ListButton(props: {
+  Icon: (props: Icon) => React.JSX.Element;
+  onPress: VoidFunction;
+  textKey: ParseKeys;
+  description?: string;
+  style?: ViewStyle;
+  className?: string;
+}) {
+  return (
+    <Button
+      onPress={props.onPress}
+      style={props.style}
+      className={cn("flex-row justify-start gap-4 rounded-sm", props.className)}
+    >
+      <props.Icon />
+      <View className="gap-0.5">
+        <TStyledText textKey={props.textKey} className="text-xs" />
+        {props.description ? (
+          <StyledText numberOfLines={1} dim className="text-xxs">
+            {props.description}
+          </StyledText>
+        ) : null}
+      </View>
+    </Button>
   );
 }
 
