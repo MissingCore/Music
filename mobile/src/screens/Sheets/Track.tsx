@@ -1,14 +1,14 @@
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { router, usePathname } from "expo-router";
 import type { ParseKeys } from "i18next";
-import { useCallback, useState } from "react";
+import { Fragment, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import type { ViewStyle } from "react-native";
 import { Pressable, View } from "react-native";
 
 import type { TrackWithAlbum } from "~/db/schema";
 
-import { Album } from "~/icons/Album";
-import { Artist } from "~/icons/Artist";
+import type { Icon } from "~/icons/type";
 import { Edit } from "~/icons/Edit";
 import { Favorite } from "~/icons/Favorite";
 import { Image } from "~/icons/Image";
@@ -21,6 +21,7 @@ import {
   useAddToPlaylist,
   useFavoriteTrack,
   useRemoveFromPlaylist,
+  useTrack,
   useTrackPlaylists,
 } from "~/queries/track";
 import { useSessionStore } from "~/services/SessionStore";
@@ -31,25 +32,23 @@ import { Queue, useMusicStore } from "~/modules/media/services/Music";
 
 import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
+import { cn } from "~/lib/style";
 import {
   abbreviateBitRate,
   abbreviateSize,
   formatEpoch,
   formatSeconds,
 } from "~/utils/number";
+import { Card } from "~/components/Containment/Card";
 import { Marquee } from "~/components/Containment/Marquee";
 import { FlashList, ScrollView, useIsScrollable } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
-import { Button } from "~/components/Form/Button";
+import { Button, IconButton } from "~/components/Form/Button";
 import { Checkbox } from "~/components/Form/Selection";
 import { Sheet, useSheetRef } from "~/components/Sheet";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
-import {
-  StyledText,
-  TEm,
-  TStyledText,
-} from "~/components/Typography/StyledText";
-import { ReservedPlaylists } from "~/modules/media/constants";
+import { StyledText, TStyledText } from "~/components/Typography/StyledText";
+import { getSourceLink } from "~/modules/media/helpers/data";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 
 //#region Track Sheet
@@ -77,9 +76,10 @@ export function TrackSheet() {
             nestedScrollEnabled={isScrollable}
             contentContainerClassName="gap-4"
           >
-            <TrackIntro key={data._checked} data={data} />
-            <PrimaryTrackContent data={data} editArtwork={editArtwork} />
-            <TrackLinks data={data} />
+            <TrackIntro data={data} />
+            <TrackMetadata data={data} />
+            <TrackIconActions id={data.id} editArtwork={editArtwork} />
+            <TrackTextActions id={data.id} name={data.name} />
           </ScrollView>
         ) : null}
       </Sheet>
@@ -91,236 +91,233 @@ export function TrackSheet() {
   );
 }
 
-//#region Track Introduction
-/** Contains the favorite toggle. */
+//#region Introduction
 function TrackIntro({ data }: { data: TrackWithAlbum }) {
-  const { t } = useTranslation();
-  const { foreground } = useTheme();
-  const favoriteTrack = useFavoriteTrack(data.id);
-  const [favState, setFavState] = useState(data.isFavorite);
+  const navLinks = [
+    {
+      href: getSourceLink({ type: "album", id: data.albumId ?? "" }),
+      value: data.album?.name,
+    },
+    {
+      href: getSourceLink({ type: "artist", id: data.artistName ?? "" }),
+      value: data.artistName,
+    },
+  ].filter(({ value }) => typeof value === "string");
 
   return (
-    <View className="flex-row gap-2">
-      <Pressable
-        accessibilityLabel={t(`term.${favState ? "unF" : "f"}avorite`)}
-        onPress={() => {
-          const newFavState = !favState;
-          mutateGuard(favoriteTrack, newFavState, {
-            onSuccess: () => setFavState(newFavState),
-          });
-        }}
-        className="relative rounded active:opacity-75"
-      >
-        <MediaImage
-          type="track"
-          size={98}
-          source={data.artwork}
-          className="rounded"
-        />
-        <View className="absolute right-1 top-1 rounded-full bg-neutral0/75 p-1">
-          <Favorite size={16} color={Colors.neutral100} filled={favState} />
-        </View>
-      </Pressable>
-
-      <View className="shrink self-end">
-        {data.artistName ? (
-          <Marquee>
-            <StyledText dim>{data.artistName}</StyledText>
-          </Marquee>
-        ) : null}
+    <View className="mb-2 flex-row items-end gap-3">
+      <MediaImage
+        type="track"
+        size={64}
+        source={data.artwork}
+        className="rounded"
+      />
+      <View className="shrink py-2">
         <Marquee>
-          <StyledText>{data.name}</StyledText>
+          <StyledText className="text-lg">{data.name}</StyledText>
         </Marquee>
-        {data.album ? (
+        {navLinks.length > 0 ? (
           <Marquee>
-            <StyledText dim className="text-xxs">
-              {data.album.name}
-            </StyledText>
+            {navLinks.map(({ href, value }, idx) => (
+              <Fragment key={idx}>
+                {idx === 1 ? (
+                  <StyledText className="text-xs">|</StyledText>
+                ) : null}
+                <Pressable onPress={sheetAction(() => router.navigate(href))}>
+                  <StyledText
+                    dim
+                    className={cn({
+                      "text-red": (href as string).startsWith("/artist/"),
+                    })}
+                  >
+                    {value}
+                  </StyledText>
+                </Pressable>
+              </Fragment>
+            ))}
           </Marquee>
         ) : null}
-        <Marquee wrapperClassName="mt-2">
-          <View className="flex-row items-center">
-            <Schedule size={12} color={`${foreground}80`} />
-            <StyledText dim className="text-xxs">
-              {` ${formatSeconds(data.duration)}`}
-              {data.format ? ` | ${data.format}` : undefined}
-            </StyledText>
-          </View>
-        </Marquee>
       </View>
     </View>
   );
 }
 //#endregion
 
-//#region Primary Content
-/** Track information and add actions. */
-function PrimaryTrackContent({
-  data,
-  editArtwork,
-}: {
-  data: TrackWithAlbum;
-  editArtwork: VoidFunction;
-}) {
+//#region Metadata
+function TrackMetadata({ data }: { data: TrackWithAlbum }) {
+  const { foreground, surface } = useTheme();
   return (
-    <>
+    <Card className="gap-4">
+      <Marquee
+        color={surface}
+        contentContainerClassName="grow justify-between gap-4"
+      >
+        <MetadataText>
+          {data.bitrate !== null ? abbreviateBitRate(data.bitrate) : "—"}
+        </MetadataText>
+        <MetadataText>
+          {data.sampleRate !== null ? `${data.sampleRate} Hz` : "—"}
+        </MetadataText>
+        <MetadataText>{abbreviateSize(data.size)}</MetadataText>
+        <View className="flex-row items-center gap-1">
+          <Edit size={14} color={foreground} />
+          <MetadataText>{formatEpoch(data.modificationTime)}</MetadataText>
+        </View>
+      </Marquee>
       <Divider />
-      {/* Stats */}
-      <View className="gap-2">
+      <View className="flex-row items-center justify-between gap-4">
+        <Marquee color={surface} wrapperClassName="shrink">
+          <MetadataText>{data.uri}</MetadataText>
+        </Marquee>
         <View className="flex-row gap-2">
-          <StatItem
-            titleKey="feat.modalTrack.extra.bitrate"
-            description={
-              data.bitrate !== null ? abbreviateBitRate(data.bitrate) : "—"
-            }
-          />
-          <StatItem
-            titleKey="feat.modalTrack.extra.sampleRate"
-            description={
-              data.sampleRate !== null ? `${data.sampleRate} Hz` : "—"
-            }
-          />
-        </View>
-        <View className="flex-row gap-2">
-          <StatItem
-            titleKey="feat.modalTrack.extra.size"
-            description={abbreviateSize(data.size)}
-          />
-          <StatItem
-            titleKey="feat.modalSort.extra.modified"
-            description={formatEpoch(data.modificationTime)}
-          />
-        </View>
-        <View className="flex-row">
-          <StatItem
-            titleKey="feat.modalTrack.extra.filePath"
-            description={data.uri}
-          />
+          {data.format ? <Badge>{data.format.toUpperCase()}</Badge> : null}
+          <Badge Icon={Schedule}>{formatSeconds(data.duration)}</Badge>
         </View>
       </View>
-      <Divider />
-      {/* General Actions */}
-      <View className="flex-row gap-2">
-        <SheetButton
-          onPress={() =>
-            router.push(`/track/modify?id=${encodeURIComponent(data.id)}`)
-          }
-          Icon={<Edit />}
-          textKey="feat.trackMetadata.title"
-        />
-        <SheetButton
-          onPress={editArtwork}
-          Icon={<Image />}
-          textKey="feat.artwork.extra.change"
-        />
-      </View>
-      {/* Add Actions */}
-      <View className="flex-row gap-2">
-        <SheetButton
-          onPress={() => TrueSheet.present("TrackToPlaylistSheet")}
-          Icon={<PlaylistAdd />}
-          textKey="feat.modalTrack.extra.addToPlaylist"
-        />
-        <SheetButton
-          onPress={() => Queue.add({ id: data.id, name: data.name })}
-          Icon={<QueueMusic />}
-          textKey="feat.modalTrack.extra.addToQueue"
-        />
-      </View>
-    </>
+    </Card>
   );
 }
 //#endregion
 
-//#region Track Links
-function TrackLinks({ data }: { data: TrackWithAlbum }) {
+//#region Actions
+/** Actions that can be understood with just an icon. */
+function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
+  const { t } = useTranslation();
+  const { data } = useTrack(props.id);
+  const favoriteTrack = useFavoriteTrack(props.id);
+
+  const favStatus = data?.isFavorite ?? false;
+  const isFav = favoriteTrack.isPending ? !favStatus : favStatus;
+
+  return (
+    <Card className="flex-row justify-evenly gap-4 py-1">
+      <IconButton
+        Icon={Favorite}
+        accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
+        onPress={() => mutateGuard(favoriteTrack, !favStatus)}
+        filled={isFav}
+      />
+      <IconButton
+        Icon={Edit}
+        accessibilityLabel={t("feat.trackMetadata.title")}
+        onPress={sheetAction(() =>
+          router.push(`/track/modify?id=${encodeURIComponent(props.id)}`),
+        )}
+      />
+      <IconButton
+        Icon={Image}
+        accessibilityLabel={t("feat.artwork.extra.change")}
+        onPress={sheetAction(props.editArtwork)}
+      />
+    </Card>
+  );
+}
+
+/** Actions that require a visual description. */
+function TrackTextActions({ id, name }: Record<"id" | "name", string>) {
   const pathname = usePathname();
+  const { width } = useGetColumn({ cols: 2, gap: 3, gutters: 32 });
   const playingSource = useMusicStore((state) => state.playingSource);
+  const sourceName = useMusicStore((state) => state.sourceName);
   const playingList = useMusicStore((state) => state.playingList);
 
-  const canShowPlaylistBtn =
-    pathname === "/now-playing" && playingSource?.type === "playlist";
-  const isInList = playingList.some((id) => id === data.id);
+  const showPlayingFrom =
+    pathname === "/now-playing" && playingList.some((tId) => tId === id);
 
-  // Don't render the last `<Divider />` if there's no content in this row.
-  if (!data.artistName && !data.album && (!canShowPlaylistBtn || !isInList)) {
-    return null;
-  }
+  const listHref = useMemo(() => getSourceLink(playingSource), [playingSource]);
 
   return (
-    <>
-      <Divider />
-      <View className="flex-row flex-wrap gap-2">
-        {data.artistName ? (
-          <SheetButton
-            onPress={() => router.navigate(`/artist/${data.artistName}`)}
-            Icon={<Artist />}
-            textKey="term.artist"
-          />
-        ) : null}
-        {data.album ? (
-          <SheetButton
-            onPress={() => router.navigate(`/album/${data.album?.id}`)}
-            Icon={<Album />}
-            textKey="term.album"
-          />
-        ) : null}
-        {canShowPlaylistBtn && isInList ? (
-          <SheetButton
-            onPress={() =>
-              router.navigate(
-                playingSource?.id === ReservedPlaylists.tracks
-                  ? "/track"
-                  : `/playlist/${encodeURIComponent(playingSource?.id ?? "")}`,
-              )
-            }
-            Icon={<List />}
-            textKey="term.playlist"
-          />
-        ) : null}
+    <View className="gap-[3px]">
+      <View className="flex-row gap-[3px]">
+        <ListButton
+          Icon={PlaylistAdd}
+          textKey="feat.modalTrack.extra.addToPlaylist"
+          onPress={sheetAction(() => TrueSheet.present("TrackToPlaylistSheet"))}
+          style={{ width }}
+          className={cn("rounded-tl-md", { "rounded-bl-md": !showPlayingFrom })}
+        />
+        <ListButton
+          Icon={QueueMusic}
+          textKey="feat.modalTrack.extra.addToQueue"
+          onPress={sheetAction(() => Queue.add({ id, name }))}
+          style={{ width }}
+          className={cn("rounded-tr-md", { "rounded-br-md": !showPlayingFrom })}
+        />
       </View>
-    </>
-  );
-}
-//#endregion
-
-//#region Stat Item
-/** Represents a statistical piece of information about the file. */
-function StatItem(props: { titleKey: ParseKeys; description: string }) {
-  return (
-    <View className="flex-1">
-      <Marquee>
-        <TEm dim textKey={props.titleKey} />
-      </Marquee>
-      <Marquee>
-        <StyledText className="text-xs">{props.description}</StyledText>
-      </Marquee>
+      {showPlayingFrom ? (
+        <ListButton
+          Icon={List}
+          textKey="term.playingFrom"
+          description={sourceName}
+          onPress={sheetAction(() => router.navigate(listHref!))}
+          className="grow rounded-b-md"
+        />
+      ) : null}
     </View>
   );
 }
 //#endregion
 
-//#region Sheet Button
-/** Clicking this button will also close the model */
-function SheetButton(props: {
-  onPress: VoidFunction;
-  Icon: React.JSX.Element;
-  textKey: ParseKeys;
+//#region Track Sheet Helpers
+function Badge(props: {
+  Icon?: (props: Icon) => React.JSX.Element;
+  children: string;
 }) {
-  const { width } = useGetColumn({ cols: 2, gap: 8, gutters: 32 });
+  const { theme } = useTheme();
+  return (
+    <View
+      className={cn(
+        "flex-row items-center gap-1 rounded-[6px] bg-neutral80 px-2 py-1",
+        { "bg-neutral70": theme === "dark" },
+      )}
+    >
+      {props.Icon ? <props.Icon size={14} color={Colors.neutral0} /> : null}
+      <MetadataText className="text-neutral0">{props.children}</MetadataText>
+    </View>
+  );
+}
+
+function MetadataText({
+  className,
+  ...props
+}: React.ComponentProps<typeof StyledText>) {
+  return (
+    <StyledText className={cn("text-xs leading-tight", className)} {...props} />
+  );
+}
+
+function ListButton(props: {
+  Icon: (props: Icon) => React.JSX.Element;
+  onPress: VoidFunction;
+  textKey: ParseKeys;
+  description?: string;
+  style?: ViewStyle;
+  className?: string;
+}) {
   return (
     <Button
-      onPress={() => {
-        TrueSheet.dismiss("TrackSheet");
-        props.onPress();
-      }}
-      style={{ width }}
-      className="flex-row justify-start p-2"
+      onPress={props.onPress}
+      style={props.style}
+      className={cn("flex-row justify-start gap-4 rounded-sm", props.className)}
     >
-      {props.Icon}
-      <TStyledText textKey={props.textKey} className="shrink text-xs" />
+      <props.Icon />
+      <View className="shrink gap-0.5">
+        <TStyledText textKey={props.textKey} className="text-sm" />
+        {props.description ? (
+          <MetadataText numberOfLines={1} dim>
+            {props.description}
+          </MetadataText>
+        ) : null}
+      </View>
     </Button>
   );
+}
+
+function sheetAction(onPress: VoidFunction) {
+  return () => {
+    TrueSheet.dismiss("TrackSheet");
+    onPress();
+  };
 }
 //#endregion
 //#endregion

@@ -1,4 +1,3 @@
-import type { Href } from "expo-router";
 import { router } from "expo-router";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -13,7 +12,7 @@ import { Marquee } from "~/components/Containment/Marquee";
 import { SafeContainer } from "~/components/Containment/SafeContainer";
 import { IconButton } from "~/components/Form/Button";
 import { StyledText } from "~/components/Typography/StyledText";
-import { ReservedPlaylists } from "~/modules/media/constants";
+import { getSourceLink } from "~/modules/media/helpers/data";
 
 /**
  * Header bar design for "Now Playing" screen which automatically displays
@@ -37,14 +36,7 @@ function AppBarContent() {
   const listName = useMusicStore((state) => state.sourceName);
   const usedDesign = useUserPreferencesStore((state) => state.nowPlayingDesign);
 
-  const listHref = useMemo(() => {
-    if (!playingSource) return undefined;
-    const { type, id } = playingSource;
-    if (type === "playlist" && id === ReservedPlaylists.tracks) return "/track";
-    else if (type === "folder")
-      return `/folder?path=${encodeURIComponent(id)}` satisfies Href;
-    return `/${type}/${encodeURIComponent(id)}` satisfies Href;
-  }, [playingSource]);
+  const listHref = useMemo(() => getSourceLink(playingSource), [playingSource]);
 
   if (usedDesign === "vinylOld") return null;
 
