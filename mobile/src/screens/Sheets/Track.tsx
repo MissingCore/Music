@@ -30,6 +30,7 @@ import { useTheme } from "~/hooks/useTheme";
 import { TrackArtworkSheet } from "~/screens/Sheets/Artwork";
 import { Queue, useMusicStore } from "~/modules/media/services/Music";
 
+import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import {
@@ -151,7 +152,7 @@ function TrackMetadata({ data }: { data: TrackWithAlbum }) {
         </MetadataText>
         <MetadataText>{abbreviateSize(data.size)}</MetadataText>
         <View className="flex-row items-center gap-1">
-          <Edit size={12} color={foreground} />
+          <Edit size={14} color={foreground} />
           <MetadataText>{formatEpoch(data.modificationTime)}</MetadataText>
         </View>
       </View>
@@ -254,11 +255,16 @@ function Badge(props: {
   Icon?: (props: Icon) => React.JSX.Element;
   children: string;
 }) {
-  const { foreground } = useTheme();
+  const { theme } = useTheme();
   return (
-    <View className="flex-row items-center gap-1 rounded-[6px] bg-onSurface px-2 py-1">
-      {props.Icon ? <props.Icon size={12} color={foreground} /> : null}
-      <MetadataText>{props.children}</MetadataText>
+    <View
+      className={cn(
+        "flex-row items-center gap-1 rounded-[6px] bg-neutral80 px-2 py-1",
+        { "bg-neutral70": theme === "dark" },
+      )}
+    >
+      {props.Icon ? <props.Icon size={14} color={Colors.neutral0} /> : null}
+      <MetadataText className="text-neutral0">{props.children}</MetadataText>
     </View>
   );
 }
@@ -268,10 +274,7 @@ function MetadataText({
   ...props
 }: React.ComponentProps<typeof StyledText>) {
   return (
-    <StyledText
-      className={cn("text-xxs leading-tight", className)}
-      {...props}
-    />
+    <StyledText className={cn("text-xs leading-tight", className)} {...props} />
   );
 }
 
@@ -291,7 +294,7 @@ function ListButton(props: {
     >
       <props.Icon />
       <View className="shrink gap-0.5">
-        <TStyledText textKey={props.textKey} className="text-xs" />
+        <TStyledText textKey={props.textKey} className="text-sm" />
         {props.description ? (
           <MetadataText numberOfLines={1} dim>
             {props.description}
