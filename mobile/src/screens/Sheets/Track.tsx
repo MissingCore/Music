@@ -2,7 +2,7 @@ import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import type { Href } from "expo-router";
 import { router, usePathname } from "expo-router";
 import type { ParseKeys } from "i18next";
-import { Fragment, useCallback, useState } from "react";
+import { Fragment, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 
@@ -22,6 +22,7 @@ import {
   useAddToPlaylist,
   useFavoriteTrack,
   useRemoveFromPlaylist,
+  useTrack,
   useTrackPlaylists,
 } from "~/queries/track";
 import { useSessionStore } from "~/services/SessionStore";
@@ -81,6 +82,7 @@ export function TrackSheet() {
           >
             <TrackIntro data={data} />
             <TrackMetadata data={data} />
+            <TrackActions id={data.id} editArtwork={editArtwork} />
           </ScrollView>
         ) : null}
       </Sheet>
@@ -171,6 +173,40 @@ function TrackMetadata({ data }: { data: TrackWithAlbum }) {
           <Badge>{abbreviateSize(data.size)}</Badge>
         </View>
       </View>
+    </Card>
+  );
+}
+//#endregion
+
+//#region Actions
+function TrackActions(props: { id: string; editArtwork: VoidFunction }) {
+  const { t } = useTranslation();
+  const { data } = useTrack(props.id);
+  const favoriteTrack = useFavoriteTrack(props.id);
+
+  const favStatus = data?.isFavorite ?? false;
+  const isFav = favoriteTrack.isPending ? !favStatus : favStatus;
+
+  return (
+    <Card className="flex-row justify-evenly py-1">
+      <IconButton
+        Icon={Favorite}
+        accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
+        onPress={() => mutateGuard(favoriteTrack, !favStatus)}
+        filled={isFav}
+      />
+      <IconButton
+        Icon={Edit}
+        accessibilityLabel={t("feat.trackMetadata.title")}
+        onPress={sheetAction(() =>
+          router.push(`/track/modify?id=${encodeURIComponent(props.id)}`),
+        )}
+      />
+      <IconButton
+        Icon={Image}
+        accessibilityLabel={t("feat.artwork.extra.change")}
+        onPress={sheetAction(props.editArtwork)}
+      />
     </Card>
   );
 }
