@@ -2,7 +2,7 @@ import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import type { Href } from "expo-router";
 import { router, usePathname } from "expo-router";
 import type { ParseKeys } from "i18next";
-import { Fragment, useCallback } from "react";
+import { Fragment, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import type { ViewStyle } from "react-native";
 import { Pressable, View } from "react-native";
@@ -221,10 +221,17 @@ function TrackTextActions({ id, name }: Record<"id" | "name", string>) {
   const sourceName = useMusicStore((state) => state.sourceName);
   const playingList = useMusicStore((state) => state.playingList);
 
-  const showPlaylistBtn =
-    pathname === "/now-playing" &&
-    playingSource?.type === "playlist" &&
-    playingList.some((tId) => tId === id);
+  const showPlayingFrom =
+    pathname === "/now-playing" && playingList.some((tId) => tId === id);
+
+  const listHref = useMemo(() => {
+    if (!playingSource) return undefined;
+    const { type, id } = playingSource;
+    if (type === "playlist" && id === ReservedPlaylists.tracks) return "/track";
+    else if (type === "folder")
+      return `/folder?path=${encodeURIComponent(id)}` satisfies Href;
+    return `/${type}/${encodeURIComponent(id)}` satisfies Href;
+  }, [playingSource]);
 
   return (
     <View className="gap-[3px]">
@@ -234,28 +241,22 @@ function TrackTextActions({ id, name }: Record<"id" | "name", string>) {
           textKey="feat.modalTrack.extra.addToPlaylist"
           onPress={sheetAction(() => TrueSheet.present("TrackToPlaylistSheet"))}
           style={{ width }}
-          className={cn("rounded-tl-md", { "rounded-bl-md": !showPlaylistBtn })}
+          className={cn("rounded-tl-md", { "rounded-bl-md": !showPlayingFrom })}
         />
         <ListButton
           Icon={QueueMusic}
           textKey="feat.modalTrack.extra.addToQueue"
           onPress={sheetAction(() => Queue.add({ id, name }))}
           style={{ width }}
-          className={cn("rounded-tr-md", { "rounded-br-md": !showPlaylistBtn })}
+          className={cn("rounded-tr-md", { "rounded-br-md": !showPlayingFrom })}
         />
       </View>
-      {showPlaylistBtn ? (
+      {showPlayingFrom ? (
         <ListButton
           Icon={List}
           textKey="term.playingFrom"
           description={sourceName}
-          onPress={sheetAction(() =>
-            router.navigate(
-              playingSource?.id === ReservedPlaylists.tracks
-                ? "/track"
-                : `/playlist/${encodeURIComponent(playingSource?.id ?? "")}`,
-            ),
-          )}
+          onPress={sheetAction(() => router.navigate(listHref!))}
           className="grow rounded-b-md"
         />
       ) : null}
@@ -288,7 +289,7 @@ function ListButton(props: {
       className={cn("flex-row justify-start gap-4 rounded-sm", props.className)}
     >
       <props.Icon />
-      <View className="gap-0.5">
+      <View className="shrink gap-0.5">
         <TStyledText textKey={props.textKey} className="text-xs" />
         {props.description ? (
           <StyledText numberOfLines={1} dim className="text-xxs">
