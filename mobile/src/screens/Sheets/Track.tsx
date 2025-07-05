@@ -1,5 +1,4 @@
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
-import type { Href } from "expo-router";
 import { router, usePathname } from "expo-router";
 import type { ParseKeys } from "i18next";
 import { Fragment, useCallback, useMemo } from "react";
@@ -52,7 +51,7 @@ import {
   StyledText,
   TStyledText,
 } from "~/components/Typography/StyledText";
-import { ReservedPlaylists } from "~/modules/media/constants";
+import { getSourceLink } from "~/modules/media/helpers/data";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 
 //#region Track Sheet
@@ -99,11 +98,11 @@ export function TrackSheet() {
 function TrackIntro({ data }: { data: TrackWithAlbum }) {
   const navLinks = [
     {
-      href: `/album/${encodeURIComponent(data.album?.id ?? "")}` as Href,
+      href: getSourceLink({ type: "album", id: data.albumId ?? "" }),
       value: data.album?.name,
     },
     {
-      href: `/artist/${encodeURIComponent(data.artistName ?? "")}` as Href,
+      href: getSourceLink({ type: "artist", id: data.artistName ?? "" }),
       value: data.artistName,
     },
   ].filter(({ value }) => typeof value === "string");
@@ -224,14 +223,7 @@ function TrackTextActions({ id, name }: Record<"id" | "name", string>) {
   const showPlayingFrom =
     pathname === "/now-playing" && playingList.some((tId) => tId === id);
 
-  const listHref = useMemo(() => {
-    if (!playingSource) return undefined;
-    const { type, id } = playingSource;
-    if (type === "playlist" && id === ReservedPlaylists.tracks) return "/track";
-    else if (type === "folder")
-      return `/folder?path=${encodeURIComponent(id)}` satisfies Href;
-    return `/${type}/${encodeURIComponent(id)}` satisfies Href;
-  }, [playingSource]);
+  const listHref = useMemo(() => getSourceLink(playingSource), [playingSource]);
 
   return (
     <View className="gap-[3px]">
