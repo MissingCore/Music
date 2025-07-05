@@ -143,7 +143,10 @@ function TrackMetadata({ data }: { data: TrackWithAlbum }) {
   const { foreground, surface } = useTheme();
   return (
     <Card className="gap-4">
-      <View className="flex-row items-center justify-between gap-2">
+      <Marquee
+        color={surface}
+        contentContainerClassName="grow justify-between gap-4"
+      >
         <MetadataText>
           {data.bitrate !== null ? abbreviateBitRate(data.bitrate) : "—"}
         </MetadataText>
@@ -155,7 +158,7 @@ function TrackMetadata({ data }: { data: TrackWithAlbum }) {
           <Edit size={14} color={foreground} />
           <MetadataText>{formatEpoch(data.modificationTime)}</MetadataText>
         </View>
-      </View>
+      </Marquee>
       <Divider />
       <View className="flex-row items-center justify-between gap-4">
         <Marquee color={surface} wrapperClassName="shrink">

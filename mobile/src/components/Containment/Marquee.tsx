@@ -35,6 +35,8 @@ export function Marquee({
    * the scrollable content.
    */
   wrapperClassName?: string;
+  /** Styles the `<View />` wrapping `children`. */
+  contentContainerClassName?: string;
 }) {
   const { canvasAlt } = useTheme();
   const shadowColor = useMemo(() => color ?? canvasAlt, [color, canvasAlt]);
@@ -116,7 +118,10 @@ export function Marquee({
         <Animated.View
           onLayout={(e) => setContentWidth(e.nativeEvent.layout.width)}
           style={contentStyles}
-          className="flex-row items-center gap-2"
+          className={cn(
+            "flex-row items-center gap-2",
+            props.contentContainerClassName,
+          )}
         >
           {props.children}
         </Animated.View>
