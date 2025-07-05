@@ -10,8 +10,6 @@ import { Pressable, View } from "react-native";
 import type { TrackWithAlbum } from "~/db/schema";
 
 import type { Icon } from "~/icons/type";
-import { Album } from "~/icons/Album";
-import { Artist } from "~/icons/Artist";
 import { Edit } from "~/icons/Edit";
 import { Favorite } from "~/icons/Favorite";
 import { Image } from "~/icons/Image";
@@ -85,7 +83,7 @@ export function TrackSheet() {
             <TrackIntro data={data} />
             <TrackMetadata data={data} />
             <TrackIconActions id={data.id} editArtwork={editArtwork} />
-            <TrackTextActions data={data} />
+            <TrackTextActions id={data.id} name={data.name} />
           </ScrollView>
         ) : null}
       </Sheet>
@@ -216,7 +214,7 @@ function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
 }
 
 /** Actions that require a visual description. */
-function TrackTextActions({ data }: { data: TrackWithAlbum }) {
+function TrackTextActions({ id, name }: Record<"id" | "name", string>) {
   const pathname = usePathname();
   const { width } = useGetColumn({ cols: 2, gap: 3, gutters: 32 });
   const playingSource = useMusicStore((state) => state.playingSource);
@@ -226,7 +224,7 @@ function TrackTextActions({ data }: { data: TrackWithAlbum }) {
   const showPlaylistBtn =
     pathname === "/now-playing" &&
     playingSource?.type === "playlist" &&
-    playingList.some((id) => id === data.id);
+    playingList.some((tId) => tId === id);
 
   return (
     <View className="gap-[3px]">
@@ -241,7 +239,7 @@ function TrackTextActions({ data }: { data: TrackWithAlbum }) {
         <ListButton
           Icon={QueueMusic}
           textKey="feat.modalTrack.extra.addToQueue"
-          onPress={() => Queue.add({ id: data.id, name: data.name })}
+          onPress={sheetAction(() => Queue.add({ id, name }))}
           style={{ width }}
           className={cn("rounded-tr-md", { "rounded-br-md": !showPlaylistBtn })}
         />
