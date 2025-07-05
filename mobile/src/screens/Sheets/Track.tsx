@@ -47,8 +47,8 @@ import { Checkbox } from "~/components/Form/Selection";
 import { Sheet, useSheetRef } from "~/components/Sheet";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import {
+  Em,
   StyledText,
-  TEm,
   TStyledText,
 } from "~/components/Typography/StyledText";
 import { ReservedPlaylists } from "~/modules/media/constants";
@@ -80,6 +80,7 @@ export function TrackSheet() {
             contentContainerClassName="gap-4"
           >
             <TrackIntro data={data} />
+            <TrackMetadata data={data} />
           </ScrollView>
         ) : null}
       </Sheet>
@@ -112,7 +113,7 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
         source={data.artwork}
         className="rounded"
       />
-      <View className="py-2">
+      <View className="shrink py-2">
         <Marquee>
           <StyledText className="text-lg">{data.name}</StyledText>
         </Marquee>
@@ -121,7 +122,7 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
             {navLinks.map(({ href, value }, idx) => (
               <Fragment key={idx}>
                 {idx === 1 ? (
-                  <StyledText className="text-sm">|</StyledText>
+                  <StyledText className="text-xs">|</StyledText>
                 ) : null}
                 <Pressable onPress={sheetAction(() => router.navigate(href))}>
                   <StyledText dim className={cn({ "text-red": idx === 1 })}>
@@ -138,7 +139,52 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
 }
 //#endregion
 
+//#region Metadata
+function TrackMetadata({ data }: { data: TrackWithAlbum }) {
+  const { foreground, surface } = useTheme();
+  return (
+    <Card className="gap-4">
+      <View className="flex-row items-center justify-between gap-2">
+        <View className="flex-row items-center gap-1">
+          <Schedule size={12} color={foreground} />
+          <StyledText className="text-xxs">
+            {formatSeconds(data.duration)}
+          </StyledText>
+        </View>
+        <StyledText className="text-xxs">
+          {data.bitrate !== null ? abbreviateBitRate(data.bitrate) : "—"}
+        </StyledText>
+        <StyledText className="text-xxs">
+          {data.sampleRate !== null ? `${data.sampleRate} Hz` : "—"}
+        </StyledText>
+        <StyledText className="text-xxs">
+          {formatEpoch(data.modificationTime)}
+        </StyledText>
+      </View>
+      <Divider />
+      <View className="flex-row items-center justify-between gap-4">
+        <Marquee color={surface} wrapperClassName="shrink">
+          <StyledText className="text-xxs">{data.uri}</StyledText>
+        </Marquee>
+        <View className="flex-row gap-2">
+          {data.format ? <Badge>{data.format.toUpperCase()}</Badge> : null}
+          <Badge>{abbreviateSize(data.size)}</Badge>
+        </View>
+      </View>
+    </Card>
+  );
+}
+//#endregion
+
 //#region Sheet Helpers
+function Badge(props: { children: string }) {
+  return (
+    <View className="rounded-sm bg-onSurface px-2 py-1">
+      <Em {...props} />
+    </View>
+  );
+}
+
 function sheetAction(onPress: VoidFunction) {
   return () => {
     TrueSheet.dismiss("TrackSheet");
