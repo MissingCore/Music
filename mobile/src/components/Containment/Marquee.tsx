@@ -116,6 +116,7 @@ export function Marquee({
         <Animated.View
           onLayout={(e) => setContentWidth(e.nativeEvent.layout.width)}
           style={contentStyles}
+          className="flex-row items-center gap-2"
         >
           {props.children}
         </Animated.View>
