@@ -46,11 +46,7 @@ import { Button, IconButton } from "~/components/Form/Button";
 import { Checkbox } from "~/components/Form/Selection";
 import { Sheet, useSheetRef } from "~/components/Sheet";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
-import {
-  Em,
-  StyledText,
-  TStyledText,
-} from "~/components/Typography/StyledText";
+import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { getSourceLink } from "~/modules/media/helpers/data";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 
@@ -147,30 +143,26 @@ function TrackMetadata({ data }: { data: TrackWithAlbum }) {
   return (
     <Card className="gap-4">
       <View className="flex-row items-center justify-between gap-2">
-        <View className="flex-row items-center gap-1">
-          <Schedule size={12} color={foreground} />
-          <StyledText className="text-xxs">
-            {formatSeconds(data.duration)}
-          </StyledText>
-        </View>
-        <StyledText className="text-xxs">
+        <MetadataText>
           {data.bitrate !== null ? abbreviateBitRate(data.bitrate) : "—"}
-        </StyledText>
-        <StyledText className="text-xxs">
+        </MetadataText>
+        <MetadataText>
           {data.sampleRate !== null ? `${data.sampleRate} Hz` : "—"}
-        </StyledText>
-        <StyledText className="text-xxs">
-          {formatEpoch(data.modificationTime)}
-        </StyledText>
+        </MetadataText>
+        <MetadataText>{abbreviateSize(data.size)}</MetadataText>
+        <View className="flex-row items-center gap-1">
+          <Edit size={12} color={foreground} />
+          <MetadataText>{formatEpoch(data.modificationTime)}</MetadataText>
+        </View>
       </View>
       <Divider />
       <View className="flex-row items-center justify-between gap-4">
         <Marquee color={surface} wrapperClassName="shrink">
-          <StyledText className="text-xxs">{data.uri}</StyledText>
+          <MetadataText>{data.uri}</MetadataText>
         </Marquee>
         <View className="flex-row gap-2">
           {data.format ? <Badge>{data.format.toUpperCase()}</Badge> : null}
-          <Badge>{abbreviateSize(data.size)}</Badge>
+          <Badge Icon={Schedule}>{formatSeconds(data.duration)}</Badge>
         </View>
       </View>
     </Card>
@@ -258,11 +250,28 @@ function TrackTextActions({ id, name }: Record<"id" | "name", string>) {
 //#endregion
 
 //#region Track Sheet Helpers
-function Badge(props: { children: string }) {
+function Badge(props: {
+  Icon?: (props: Icon) => React.JSX.Element;
+  children: string;
+}) {
+  const { foreground } = useTheme();
   return (
-    <View className="rounded-sm bg-onSurface px-2 py-1">
-      <Em {...props} />
+    <View className="flex-row items-center gap-1 rounded-[6px] bg-onSurface px-2 py-1">
+      {props.Icon ? <props.Icon size={12} color={foreground} /> : null}
+      <MetadataText>{props.children}</MetadataText>
     </View>
+  );
+}
+
+function MetadataText({
+  className,
+  ...props
+}: React.ComponentProps<typeof StyledText>) {
+  return (
+    <StyledText
+      className={cn("text-xxs leading-tight", className)}
+      {...props}
+    />
   );
 }
 
@@ -284,9 +293,9 @@ function ListButton(props: {
       <View className="shrink gap-0.5">
         <TStyledText textKey={props.textKey} className="text-xs" />
         {props.description ? (
-          <StyledText numberOfLines={1} dim className="text-xxs">
+          <MetadataText numberOfLines={1} dim>
             {props.description}
-          </StyledText>
+          </MetadataText>
         ) : null}
       </View>
     </Button>
