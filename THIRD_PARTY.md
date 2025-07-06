@@ -20,6 +20,7 @@
 | expo | MIT | https://github.com/expo/expo/tree/main/packages/expo |
 | expo-device | MIT | https://github.com/expo/expo/tree/main/packages/expo-device |
 | expo-document-picker | MIT | https://github.com/expo/expo/tree/main/packages/expo-document-picker |
+| expo-drizzle-studio-plugin | MIT | https://github.com/drizzle-team/drizzle-studio-expo |
 | expo-file-system | MIT | https://github.com/expo/expo/tree/main/packages/expo-file-system |
 | expo-image | MIT | https://github.com/expo/expo/tree/main/packages/expo-image |
 | expo-image-manipulator | MIT | https://github.com/expo/expo/tree/main/packages/expo-image-manipulator |
@@ -29,7 +30,6 @@
 | expo-media-library | MIT | https://github.com/expo/expo/tree/main/packages/expo-media-library |
 | expo-router | MIT | https://github.com/expo/expo/tree/main/packages/expo-router |
 | expo-sqlite | MIT | https://github.com/expo/expo/tree/main/packages/expo-sqlite |
-| expo-sqlite-devtools | MIT | https://github.com/itsjatinnagar/expo-sqlite-devtools |
 | expo-web-browser | MIT | https://github.com/expo/expo/tree/main/packages/expo-web-browser |
 | Geist Mono Font | OFL-1.1 | https://github.com/vercel/geist-font |
 | i18next | MIT | https://github.com/i18next/i18next |
