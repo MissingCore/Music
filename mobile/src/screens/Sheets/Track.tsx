@@ -298,15 +298,15 @@ function ListButton(props: {
     <Button
       onPress={props.onPress}
       style={props.style}
-      className={cn("flex-row justify-start gap-4 rounded-sm", props.className)}
+      className={cn("flex-row justify-start gap-3 rounded-sm", props.className)}
     >
       <props.Icon />
       <View className="shrink gap-0.5">
-        <TStyledText textKey={props.textKey} className="text-sm" />
+        <TStyledText textKey={props.textKey} className="text-xs" />
         {props.description ? (
-          <MetadataText numberOfLines={1} dim>
+          <StyledText numberOfLines={1} dim className="text-xxs">
             {props.description}
-          </MetadataText>
+          </StyledText>
         ) : null}
       </View>
     </Button>
