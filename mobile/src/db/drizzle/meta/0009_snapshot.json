@@ -28,14 +28,6 @@
           "notNull": true,
           "autoincrement": false
         },
-        "release_year": {
-          "name": "release_year",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": -1
-        },
         "artwork": {
           "name": "artwork",
           "type": "text",
@@ -68,6 +60,14 @@
           "notNull": true,
           "autoincrement": false,
           "default": false
+        },
+        "release_year": {
+          "name": "release_year",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": -1
         }
       },
       "indexes": {
@@ -291,6 +291,13 @@
           "notNull": false,
           "autoincrement": false
         },
+        "year": {
+          "name": "year",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "duration": {
           "name": "duration",
           "type": "integer",
@@ -380,6 +387,13 @@
           "notNull": true,
           "autoincrement": false,
           "default": false
+        },
+        "edited_metadata": {
+          "name": "edited_metadata",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
         },
         "parent_folder": {
           "name": "parent_folder",

@@ -11,8 +11,6 @@ import m0006 from "./0006_wild_gabe_jones.sql";
 import m0007 from "./0007_cooing_the_stranger.sql";
 import m0008 from "./0008_little_toad.sql";
 import m0009 from "./0009_ambitious_puppet_master.sql";
-import m0010 from "./0010_brief_exodus.sql";
-import m0011 from "./0011_perpetual_carnage.sql";
 
 export default {
   journal,
@@ -27,7 +25,5 @@ export default {
     m0007,
     m0008,
     m0009,
-    m0010,
-    m0011,
   },
 };
