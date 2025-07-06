@@ -267,8 +267,8 @@ function Badge(props: {
   return (
     <View
       className={cn(
-        "flex-row items-center gap-1 rounded-[6px] bg-neutral80 px-2 py-1",
-        { "bg-neutral70": theme === "dark" },
+        "flex-row items-center gap-1 rounded-[6px] bg-neutral85 px-2 py-1",
+        { "bg-neutral65": theme === "dark" },
       )}
     >
       {props.Icon ? <props.Icon size={14} color={Colors.neutral0} /> : null}
