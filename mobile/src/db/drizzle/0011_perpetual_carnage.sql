@@ -1,0 +1,1 @@
+ALTER TABLE `tracks` ADD `edited_metadata` integer;
