@@ -16,10 +16,7 @@ import {
   cleanupImages,
   getArtworkUri,
 } from "~/modules/scanning/helpers/artwork";
-import {
-  IGNORE_RECHECK,
-  removeUnusedCategories,
-} from "~/modules/scanning/helpers/audio";
+import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
 
 import { ToastOptions } from "~/lib/toast";
 import { clearAllQueries } from "~/lib/react-query";
@@ -147,7 +144,8 @@ export function TrackMetadataStoreProvider({
               disc: asNaturalNumber(disc),
               year: asNaturalNumber(year),
               embeddedArtwork: null as string | null,
-              modificationTime: IGNORE_RECHECK,
+              modificationTime: Date.now(),
+              editedMetadata: Date.now(),
             };
             const updatedAlbum = {
               name: asNonEmptyString(album),
