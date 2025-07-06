@@ -81,7 +81,7 @@ export async function findAndSaveAudio() {
 
   // Get relevant entries inside our database.
   const allTracks = await getTracks({
-    columns: ["id", "modificationTime", "uri"],
+    columns: ["id", "modificationTime", "uri", "editedMetadata"],
     withAlbum: false,
   });
   const allTracksMap = Object.fromEntries(allTracks.map((t) => [t.id, t]));
@@ -100,6 +100,10 @@ export async function findAndSaveAudio() {
     if (!isSaved && !isInvalid) return; // If we have a new track.
 
     const lastModified = (isSaved ?? isInvalid)!.modificationTime;
+    const hasEdited =
+      isSaved?.editedMetadata !== undefined
+        ? isSaved.editedMetadata !== null
+        : false;
     let isDifferentUri = (isSaved ?? isInvalid)!.uri !== uri;
 
     // Moving folders in Android is kind of weird; sometimes, the URI of
@@ -113,10 +117,7 @@ export async function findAndSaveAudio() {
     else if (!isDifferentUri && modifiedTracks.has(id)) isDifferentUri = true;
 
     // Retry indexing if modification time or uri is different.
-    if (
-      (lastModified !== IGNORE_RECHECK && modificationTime !== lastModified) ||
-      isDifferentUri
-    ) {
+    if ((!hasEdited && modificationTime !== lastModified) || isDifferentUri) {
       modifiedTracks.add(id);
     } else {
       unmodifiedTracks.add(id);

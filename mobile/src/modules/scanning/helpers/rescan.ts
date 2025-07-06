@@ -1,6 +1,6 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { useMutation } from "@tanstack/react-query";
-import { and, eq, isNull, ne } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 
 import { db } from "~/db";
 import { fileNodes, invalidTracks, tracks } from "~/db/schema";
@@ -14,7 +14,7 @@ import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
 import { batch, wait } from "~/utils/promise";
 import { findAndSaveArtwork, cleanupImages } from "./artwork";
-import { IGNORE_RECHECK, cleanupDatabase, findAndSaveAudio } from "./audio";
+import { cleanupDatabase, findAndSaveAudio } from "./audio";
 import { savePathComponents } from "./folder";
 
 /** Look through our library for any new or updated tracks. */
@@ -58,7 +58,7 @@ export async function rescanForTracks(deepScan = false) {
       await db
         .update(tracks)
         .set({ modificationTime: -1 })
-        .where(ne(tracks.modificationTime, IGNORE_RECHECK));
+        .where(isNull(tracks.editedMetadata));
     }
 
     // Rescan library for any new tracks and delete any old ones.
