@@ -57,6 +57,7 @@
     "stay": "Tetap disini",
     "leave": "Keluar",
     "clear": "Hapus",
+    "reset": null,
     "validation": {
       "unique": "Unik"
     }
@@ -296,6 +297,20 @@
         "delete": "Hapus Daftar Putar",
         "edit": "Sunting Daftar Putar",
         "name": "Nama Daftar Putar"
+      }
+    },
+    "trackMetadata": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      },
+      "extra": {
+        "albumArtist": null,
+        "disc": null,
+        "name": null,
+        "trackNumber": null,
+        "year": null
       }
     },
     "modalSort": {
