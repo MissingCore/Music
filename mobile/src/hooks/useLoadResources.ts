@@ -1,6 +1,6 @@
 import type { SQLiteDatabase } from "expo-sqlite";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
-import { useSQLiteDevTools } from "expo-sqlite-devtools";
+import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
 
 import { useOnboarding } from "~/modules/scanning/hooks/useOnboarding";
 
@@ -25,6 +25,6 @@ export function useLoadResources() {
 
 /** Only run Expo dev tools plugins during development. */
 function useDevOnly(db: SQLiteDatabase | null) {
-  const hook = __DEV__ ? useSQLiteDevTools : () => {};
+  const hook = __DEV__ ? useDrizzleStudio : () => {};
   return hook(db);
 }

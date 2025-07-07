@@ -41,7 +41,7 @@
   },
   "@missingcore/react-native-metadata-retriever": {
     "name": "@missingcore/react-native-metadata-retriever",
-    "version": "0.9.0",
+    "version": "1.0.0",
     "copyright": "Copyright (c) 2024 MissingCore <missingcoredev@outlook.com>",
     "source": "https://github.com/MissingCore/react-native-metadata-retriever",
     "license": "MIT",
@@ -89,7 +89,7 @@
   },
   "@sentry/react-native": {
     "name": "@sentry/react-native",
-    "version": "6.15.1",
+    "version": "6.16.1",
     "copyright": "Copyright (c) 2017-2024 Sentry",
     "source": "https://github.com/getsentry/sentry-react-native",
     "license": "MIT",
@@ -105,7 +105,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.80.10",
+    "version": "5.81.5",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -137,7 +137,7 @@
   },
   "expo": {
     "name": "expo",
-    "version": "53.0.12",
+    "version": "53.0.17",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo",
     "license": "MIT",
@@ -159,9 +159,17 @@
     "license": "MIT",
     "licenseText": "The MIT License (MIT)\n\nCopyright (c) 2015-present 650 Industries, Inc. (aka Expo)\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
   },
+  "expo-drizzle-studio-plugin": {
+    "name": "expo-drizzle-studio-plugin",
+    "version": "0.2.0",
+    "copyright": "Copyright (c) 2024 Drizzle Team",
+    "source": "https://github.com/drizzle-team/drizzle-studio-expo",
+    "license": "MIT",
+    "licenseText": "No license file found, visit source with link above."
+  },
   "expo-file-system": {
     "name": "expo-file-system",
-    "version": "18.1.10",
+    "version": "18.1.11",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-file-system",
     "license": "MIT",
@@ -169,7 +177,7 @@
   },
   "expo-image": {
     "name": "expo-image",
-    "version": "2.3.0",
+    "version": "2.3.2",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-image",
     "license": "MIT",
@@ -201,7 +209,7 @@
   },
   "expo-localization": {
     "name": "expo-localization",
-    "version": "16.1.5",
+    "version": "16.1.6",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-localization",
     "license": "MIT",
@@ -225,19 +233,11 @@
   },
   "expo-sqlite": {
     "name": "expo-sqlite",
-    "version": "15.2.12",
+    "version": "15.2.13",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-sqlite",
     "license": "MIT",
     "licenseText": "The MIT License (MIT)\n\nCopyright (c) 2015-present 650 Industries, Inc. (aka Expo)\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
-  },
-  "expo-sqlite-devtools": {
-    "name": "expo-sqlite-devtools",
-    "version": "0.0.2",
-    "copyright": "Copyright (c) 2025 Jatin Nagar",
-    "source": "https://github.com/itsjatinnagar/expo-sqlite-devtools",
-    "license": "MIT",
-    "licenseText": "MIT License\n\nCopyright (c) 2025 Jatin Nagar\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
   },
   "expo-web-browser": {
     "name": "expo-web-browser",
@@ -257,7 +257,7 @@
   },
   "i18next": {
     "name": "i18next",
-    "version": "25.2.1",
+    "version": "25.3.1",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/i18next",
     "license": "MIT",
@@ -321,7 +321,7 @@
   },
   "react-i18next": {
     "name": "react-i18next",
-    "version": "15.5.3",
+    "version": "15.6.0",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/react-i18next",
     "license": "MIT",
@@ -329,7 +329,7 @@
   },
   "react-native": {
     "name": "react-native",
-    "version": "0.79.4",
+    "version": "0.79.5",
     "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates.",
     "source": "https://github.com/facebook/react-native",
     "license": "MIT",
@@ -337,7 +337,7 @@
   },
   "react-native-bootsplash": {
     "name": "react-native-bootsplash",
-    "version": "6.3.9",
+    "version": "6.3.10",
     "copyright": "Copyright (c) 2021 Mathieu Acthernoene",
     "source": "https://github.com/zoontek/react-native-bootsplash",
     "license": "MIT",
@@ -353,7 +353,7 @@
   },
   "react-native-edge-to-edge": {
     "name": "react-native-edge-to-edge",
-    "version": "1.6.1",
+    "version": "1.6.2",
     "copyright": "Copyright (c) 2024 Mathieu Acthernoene",
     "source": "https://github.com/zoontek/react-native-edge-to-edge",
     "license": "MIT",
@@ -361,7 +361,7 @@
   },
   "react-native-gesture-handler": {
     "name": "react-native-gesture-handler",
-    "version": "2.26.0",
+    "version": "2.27.1",
     "copyright": "Copyright (c) 2016 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-gesture-handler",
     "license": "MIT",
@@ -401,7 +401,7 @@
   },
   "react-native-safe-area-context": {
     "name": "react-native-safe-area-context",
-    "version": "5.5.0",
+    "version": "5.5.1",
     "copyright": "Copyright (c) 2019 Th3rd Wave",
     "source": "https://github.com/th3rdwave/react-native-safe-area-context",
     "license": "MIT",
@@ -457,7 +457,7 @@
   },
   "zustand": {
     "name": "zustand",
-    "version": "5.0.5",
+    "version": "5.0.6",
     "copyright": "Copyright (c) 2019 Paul Henschel",
     "source": "https://github.com/pmndrs/zustand",
     "license": "MIT",
