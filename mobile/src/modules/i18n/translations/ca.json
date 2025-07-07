@@ -57,6 +57,7 @@
     "stay": "Queda't",
     "leave": "Eixir",
     "clear": "Netejar",
+    "reset": null,
     "validation": {
       "unique": "Únic"
     }
@@ -296,6 +297,20 @@
         "delete": "Esborra llista",
         "edit": "Edita llista",
         "name": "Títol de la Llista"
+      }
+    },
+    "trackMetadata": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      },
+      "extra": {
+        "albumArtist": null,
+        "disc": null,
+        "name": null,
+        "trackNumber": null,
+        "year": null
       }
     },
     "modalSort": {
