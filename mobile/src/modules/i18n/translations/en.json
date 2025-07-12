@@ -243,6 +243,18 @@
       "title": "Ignore Short Audio",
       "description": "Duration in seconds of audio we don't want to save."
     },
+    "experimental": {
+      "title": "Experimental Features",
+      "brief": "Features that may not get official support or work as expected. Use at your own risk."
+    },
+    "sleepTimer": {
+      "title": "Sleep Timer",
+      "description": "Stop playing audio after the specified amount of minutes.",
+      "extra": {
+        "start": "Start",
+        "stopTime": "Audio will stop playing at {{time}}."
+      }
+    },
     "translate": {
       "title": "Contribute Translations",
       "brief": "Help translate the app in other languages."
