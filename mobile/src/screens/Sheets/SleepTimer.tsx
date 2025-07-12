@@ -1,9 +1,10 @@
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { Keyboard, View } from "react-native";
 
 import { useSessionStore } from "~/services/SessionStore";
 
+import { wait } from "~/utils/promise";
 import { Button } from "~/components/Form/Button";
 import { NumericInput } from "~/components/Form/Input";
 import type { TrueSheetRef } from "~/components/Sheet";
@@ -29,10 +30,12 @@ export function SleepTimerSheet(props: { sheetRef: TrueSheetRef }) {
     });
   }, [endAt]);
 
-  const onSubmit = useCallback(() => {
+  const onSubmit = useCallback(async () => {
     const asNum = Number(minutes);
     // Validate that it's a positive integer.
     if (!Number.isInteger(asNum) || asNum <= 0) return;
+    Keyboard.dismiss();
+    await wait(1);
     createSleepTimer(asNum);
   }, [createSleepTimer, minutes]);
 
