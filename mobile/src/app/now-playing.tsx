@@ -18,6 +18,7 @@ import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { usePlayerProgress } from "~/screens/NowPlaying/helpers/usePlayerProgress";
 import { NowPlayingArtwork } from "~/screens/NowPlaying/Artwork";
 import { NowPlayingSheets } from "~/screens/NowPlaying/Sheets";
+import { SleepTimerSheet } from "~/screens/Sheets/SleepTimer";
 
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
@@ -184,6 +185,7 @@ function BottomAppBar() {
   const { t } = useTranslation();
   const playbackOptionsSheetRef = useSheetRef();
   const upcomingTracksSheetRef = useSheetRef();
+  const sleepTimerSheetRef = useSheetRef();
   const showSleepTimer = useUserPreferencesStore((state) => state.sleepTimer);
 
   return (
@@ -192,6 +194,7 @@ function BottomAppBar() {
         playbackOptionsRef={playbackOptionsSheetRef}
         upcomingTracksRef={upcomingTracksSheetRef}
       />
+      <SleepTimerSheet sheetRef={sleepTimerSheetRef} />
       <View className="flex-row items-center justify-between gap-4 p-4">
         <BackButton />
         <View className="flex-row items-center gap-4">
@@ -199,10 +202,10 @@ function BottomAppBar() {
             <IconButton
               Icon={Timer}
               accessibilityLabel={t("feat.sleepTimer.title")}
-              onPress={() => {}}
+              onPress={() => sleepTimerSheetRef.current?.present()}
               large
             />
-          ) : undefined}
+          ) : null}
           <IconButton
             Icon={InstantMix}
             accessibilityLabel={t("feat.playback.extra.options")}
