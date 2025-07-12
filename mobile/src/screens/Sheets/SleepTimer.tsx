@@ -23,14 +23,16 @@ export function SleepTimerSheet(props: { sheetRef: TrueSheetRef }) {
 
   const endString = useMemo(() => {
     if (endAt === null) return;
-    return new Date(endAt).toString();
+    return new Date(endAt).toLocaleTimeString(undefined, {
+      hour: "numeric",
+      minute: "numeric",
+    });
   }, [endAt]);
 
   const onSubmit = useCallback(() => {
     const asNum = Number(minutes);
     // Validate that it's a positive integer.
     if (!Number.isInteger(asNum) || asNum <= 0) return;
-
     createSleepTimer(asNum);
   }, [createSleepTimer, minutes]);
 
