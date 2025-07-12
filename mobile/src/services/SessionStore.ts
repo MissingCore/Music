@@ -1,6 +1,5 @@
 import BackgroundTimer from "@boterop/react-native-background-timer";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
-import TrackPlayer from "@weights-ai/react-native-track-player";
 import { useStore } from "zustand";
 import { createStore } from "zustand/vanilla";
 
@@ -40,9 +39,9 @@ export const sessionStore = createStore<SessionStore>()((set, get) => ({
     const currTimer = get().sleepTimer;
     if (currTimer !== null) BackgroundTimer.clearTimeout(currTimer);
     const durationMS = minutes * 60 * 1000;
-    const newTimer = setTimeout(async () => {
-      await MusicControls.stop();
-      await TrackPlayer.reset();
+    const newTimer = BackgroundTimer.setTimeout(() => {
+      MusicControls.stop();
+      get().clearSleepTimer();
     }, durationMS);
     set({ sleepTimer: newTimer, endAt: Date.now() + durationMS });
   },

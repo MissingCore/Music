@@ -27,7 +27,7 @@ export function SleepTimerSheet(props: { sheetRef: TrueSheetRef }) {
   const onSubmit = useCallback(() => {
     const asNum = Number(minutes);
     // Validate that it's a positive integer.
-    if (!Number.isInteger(asNum) || asNum < 0) return;
+    if (!Number.isInteger(asNum) || asNum <= 0) return;
 
     createSleepTimer(asNum);
   }, [createSleepTimer, minutes]);
