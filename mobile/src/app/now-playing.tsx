@@ -13,7 +13,7 @@ import { MoreVert } from "~/icons/MoreVert";
 import { Timer } from "~/icons/Timer";
 import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { useMusicStore } from "~/modules/media/services/Music";
-import { presentTrackSheet } from "~/services/SessionStore";
+import { presentTrackSheet, useSessionStore } from "~/services/SessionStore";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { usePlayerProgress } from "~/screens/NowPlaying/helpers/usePlayerProgress";
 import { NowPlayingArtwork } from "~/screens/NowPlaying/Artwork";
@@ -187,6 +187,8 @@ function BottomAppBar() {
   const upcomingTracksSheetRef = useSheetRef();
   const sleepTimerSheetRef = useSheetRef();
   const showSleepTimer = useUserPreferencesStore((state) => state.sleepTimer);
+  const sleepTimerActive =
+    useSessionStore((state) => state.sleepTimerEndAt) !== null;
 
   return (
     <>
@@ -199,12 +201,17 @@ function BottomAppBar() {
         <BackButton />
         <View className="flex-row items-center gap-4">
           {showSleepTimer ? (
-            <IconButton
-              Icon={Timer}
-              accessibilityLabel={t("feat.sleepTimer.title")}
-              onPress={() => sleepTimerSheetRef.current?.present()}
-              large
-            />
+            <View className="relative">
+              <IconButton
+                Icon={Timer}
+                accessibilityLabel={t("feat.sleepTimer.title")}
+                onPress={() => sleepTimerSheetRef.current?.present()}
+                large
+              />
+              {sleepTimerActive && (
+                <View className="absolute right-2 top-2 size-2 rounded-full bg-red" />
+              )}
+            </View>
           ) : null}
           <IconButton
             Icon={InstantMix}
