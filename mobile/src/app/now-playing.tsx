@@ -10,6 +10,7 @@ import { InstantMix } from "~/icons/InstantMix";
 import { KeyboardArrowDown } from "~/icons/KeyboardArrowDown";
 import { LibraryMusic } from "~/icons/LibraryMusic";
 import { MoreVert } from "~/icons/MoreVert";
+import { Timer } from "~/icons/Timer";
 import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { useMusicStore } from "~/modules/media/services/Music";
 import { presentTrackSheet } from "~/services/SessionStore";
@@ -183,6 +184,7 @@ function BottomAppBar() {
   const { t } = useTranslation();
   const playbackOptionsSheetRef = useSheetRef();
   const upcomingTracksSheetRef = useSheetRef();
+  const showSleepTimer = useUserPreferencesStore((state) => state.sleepTimer);
 
   return (
     <>
@@ -193,6 +195,14 @@ function BottomAppBar() {
       <View className="flex-row items-center justify-between gap-4 p-4">
         <BackButton />
         <View className="flex-row items-center gap-4">
+          {showSleepTimer ? (
+            <IconButton
+              Icon={Timer}
+              accessibilityLabel={t("feat.sleepTimer.title")}
+              onPress={() => {}}
+              large
+            />
+          ) : undefined}
           <IconButton
             Icon={InstantMix}
             accessibilityLabel={t("feat.playback.extra.options")}
