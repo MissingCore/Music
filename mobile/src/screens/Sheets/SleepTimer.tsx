@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
 
 import { useSessionStore } from "~/services/SessionStore";
 
@@ -47,12 +48,14 @@ export function SleepTimerSheet(props: { sheetRef: TrueSheetRef }) {
         textKey="feat.sleepTimer.description"
         className="text-center text-sm"
       />
-      <NumericInput
-        defaultValue={`${sleepTimerLength}`}
-        editable={!hasTimer}
-        onChangeText={(text) => setMinutes(text)}
-        className="mx-auto w-full max-w-[50%] border-b border-foreground/60 text-center"
-      />
+      <View pointerEvents={hasTimer ? "none" : "auto"}>
+        <NumericInput
+          defaultValue={`${sleepTimerLength}`}
+          editable={!hasTimer}
+          onChangeText={(text) => setMinutes(text)}
+          className="mx-auto w-full max-w-[50%] border-b border-foreground/60 text-center"
+        />
+      </View>
       {hasTimer ? (
         <StyledText dim center>
           {t("feat.sleepTimer.extra.stopTime", { time: endString })}
