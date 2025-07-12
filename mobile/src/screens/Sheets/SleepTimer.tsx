@@ -12,7 +12,8 @@ import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 /** Allows the user to set a time when the music will stop playing. */
 export function SleepTimerSheet(props: { sheetRef: TrueSheetRef }) {
   const { t } = useTranslation();
-  const endAt = useSessionStore((state) => state.endAt);
+  const sleepTimerLength = useSessionStore((state) => state.sleepTimerDuration);
+  const endAt = useSessionStore((state) => state.sleepTimerEndAt);
   const createSleepTimer = useSessionStore((state) => state.createSleepTimer);
   const clearSleepTimer = useSessionStore((state) => state.clearSleepTimer);
   const [minutes, setMinutes] = useState("5");
@@ -47,7 +48,7 @@ export function SleepTimerSheet(props: { sheetRef: TrueSheetRef }) {
         className="text-center text-sm"
       />
       <NumericInput
-        defaultValue="5"
+        defaultValue={`${sleepTimerLength}`}
         editable={!hasTimer}
         onChangeText={(text) => setMinutes(text)}
         className="mx-auto w-full max-w-[50%] border-b border-foreground/60 text-center"

@@ -18,9 +18,11 @@ interface SessionStore {
   displayedTrack: (TrackWithAlbum & { _checked: number }) | null;
 
   /** Stores the current sleep timer. */
-  sleepTimer: ReturnType<typeof BackgroundTimer.setTimeout> | null;
+  sleepTimerRef: ReturnType<typeof BackgroundTimer.setTimeout> | null;
+  /** Length of sleep timer in minutes. */
+  sleepTimerDuration: number;
   /** Epoch time where this sleep timer will end. */
-  endAt: number | null;
+  sleepTimerEndAt: number | null;
   /** Create a sleep timer. */
   createSleepTimer: (minutes: number) => void;
   /** Clear the current sleep timer. */
@@ -33,22 +35,27 @@ export const sessionStore = createStore<SessionStore>()((set, get) => ({
 
   displayedTrack: null,
 
-  sleepTimer: null,
-  endAt: null,
+  sleepTimerRef: null,
+  sleepTimerDuration: 5,
+  sleepTimerEndAt: null,
   createSleepTimer: (minutes) => {
-    const currTimer = get().sleepTimer;
+    const currTimer = get().sleepTimerRef;
     if (currTimer !== null) BackgroundTimer.clearTimeout(currTimer);
     const durationMS = minutes * 60 * 1000;
     const newTimer = BackgroundTimer.setTimeout(() => {
       MusicControls.stop();
       get().clearSleepTimer();
     }, durationMS);
-    set({ sleepTimer: newTimer, endAt: Date.now() + durationMS });
+    set({
+      sleepTimerRef: newTimer,
+      sleepTimerDuration: minutes,
+      sleepTimerEndAt: Date.now() + durationMS,
+    });
   },
   clearSleepTimer: () => {
-    const currTimer = get().sleepTimer;
+    const currTimer = get().sleepTimerRef;
     if (currTimer !== null) BackgroundTimer.clearTimeout(currTimer);
-    set({ sleepTimer: null, endAt: null });
+    set({ sleepTimerRef: null, sleepTimerEndAt: null });
   },
 }));
 
