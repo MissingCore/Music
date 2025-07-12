@@ -85,6 +85,14 @@ export default function SettingScreen() {
           />
         </List>
 
+        <ListItem
+          titleKey="feat.experimental.title"
+          description={t("feat.experimental.brief")}
+          onPress={() => router.navigate("/setting/experimental")}
+          first
+          last
+        />
+
         <List>
           <ListItem
             titleKey="feat.translate.title"
