@@ -1,6 +1,7 @@
 | Name | License | Source |
 | ---- | ------- | ------ |
 | @backpackapp-io/react-native-toast | MIT | https://github.com/backpackapp-io/react-native-toast |
+| @boterop/react-native-background-timer | MIT | https://github.com/boterop/react-native-background-timer |
 | @lodev09/react-native-true-sheet | MIT | https://github.com/lodev09/react-native-true-sheet |
 | @lukemorales/query-key-factory | MIT | https://github.com/lukemorales/query-key-factory |
 | @miblanchard/react-native-slider | MIT | https://github.com/miblanchard/react-native-slider |
