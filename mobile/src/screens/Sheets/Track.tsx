@@ -64,7 +64,7 @@ export function TrackSheet() {
 
   return (
     <>
-      <Sheet globalKey="TrackSheet">
+      <Sheet key={data?._checked ?? Date.now()} globalKey="TrackSheet">
         {data !== null ? (
           <ScrollView
             {...handlers}
