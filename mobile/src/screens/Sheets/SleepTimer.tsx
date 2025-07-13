@@ -43,9 +43,6 @@ export function SleepTimerSheet(props: { sheetRef: TrueSheetRef }) {
     <Sheet
       ref={props.sheetRef}
       titleKey="feat.sleepTimer.title"
-      // Required to get auto-resizing to work when content height changes.
-      // Ref: https://github.com/lodev09/react-native-true-sheet/issues/7
-      sizes={["auto", "large"]}
       contentContainerClassName="gap-4"
     >
       <TStyledText

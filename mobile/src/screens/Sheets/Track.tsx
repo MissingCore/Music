@@ -64,12 +64,7 @@ export function TrackSheet() {
 
   return (
     <>
-      <Sheet
-        globalKey="TrackSheet"
-        // Required to get auto-resizing to work when content height changes.
-        // Ref: https://github.com/lodev09/react-native-true-sheet/issues/7
-        sizes={["auto", "large"]}
-      >
+      <Sheet globalKey="TrackSheet">
         {data !== null ? (
           <ScrollView
             {...handlers}
