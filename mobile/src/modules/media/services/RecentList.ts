@@ -75,8 +75,9 @@ export class RecentList {
     const [inList, atIndex] = this.containsSource(newSource, sources);
 
     // Get the entry we want to add.
-    let newEntry = recentList[atIndex]!;
-    if (!inList) newEntry = (await getRecentListEntry(newSource)).data!;
+    let newEntry = recentList[atIndex];
+    if (!inList) newEntry = (await getRecentListEntry(newSource)).data;
+    if (newEntry === undefined) return;
     // Get the values that we'll append our new values in front of.
     const oldSources = inList ? sources.toSpliced(atIndex, 1) : sources;
     const oldEntries = inList ? recentList.toSpliced(atIndex, 1) : recentList;
@@ -146,11 +147,15 @@ export class RecentList {
       const [inList, atIndex] = this.containsSource(ref, sources);
       if (!inList) return;
       // Only refresh the data of the source.
-      const updatedEntry = (await getRecentListEntry(ref)).data!;
-      recentListStore.setState({
-        recentList: recentList.with(atIndex, updatedEntry),
-      });
-      return;
+      const updatedEntry = (await getRecentListEntry(ref)).data;
+      // If the updated entry is found, update that specific entry. Otherwise,
+      // remove it from the Recent List (by going through the normal flow).
+      if (updatedEntry) {
+        recentListStore.setState({
+          recentList: recentList.with(atIndex, updatedEntry),
+        });
+        return;
+      }
     }
 
     // Recreate the entries.
