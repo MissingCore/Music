@@ -1,4 +1,8 @@
-import type { DefaultOptions, UseMutationResult } from "@tanstack/react-query";
+import type {
+  DefaultOptions,
+  UseMutationResult,
+  UseQueryResult,
+} from "@tanstack/react-query";
 import { QueryClient } from "@tanstack/react-query";
 
 import { queries as q } from "~/queries/keyStore";
@@ -49,3 +53,8 @@ export function clearAllQueries(client: QueryClient = queryClient) {
     predicate: ({ queryKey }) => queryKey !== q.settings.releaseNote.queryKey,
   });
 }
+
+/** Extracts the type of the `data` returned from `useQuery`. */
+export type ExtractQueryData<T extends () => UseQueryResult<any>> = NonNullable<
+  ReturnType<T>["data"]
+>;

@@ -1,4 +1,5 @@
 import { router } from "expo-router";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useDatabaseSummary, useStorageSummary } from "~/queries/setting";
@@ -6,6 +7,7 @@ import { useTheme } from "~/hooks/useTheme";
 import { StandardScrollLayout } from "~/layouts/StandardScroll";
 
 import { Colors } from "~/constants/Styles";
+import type { ExtractQueryData } from "~/lib/react-query";
 import { abbreviateSize, formatSeconds } from "~/utils/number";
 import { Card } from "~/components/Containment/Card";
 import { List, ListItem } from "~/components/Containment/List";
@@ -36,46 +38,50 @@ export default function InsightsScreen() {
 /** Breaks down what this app stores on the device. */
 function StorageWidget() {
   const { foreground } = useTheme();
-  const { isPending, error, data } = useStorageSummary();
+  const { data } = useStorageSummary();
 
-  if (isPending || error) return null;
+  const getValue = useCallback(
+    (field: keyof ExtractQueryData<typeof useStorageSummary>) =>
+      data ? abbreviateSize(data[field]) : "—",
+    [data],
+  );
 
   return (
     <Card className="gap-2 rounded-b-sm">
       <ProgressBar
         entries={[
-          { color: Colors.red, value: data.images },
-          { color: Colors.yellow, value: data.database },
-          { color: "#4142BE", value: data.other },
-          { color: `${foreground}40`, value: data.cache },
+          { color: Colors.red, value: data?.images ?? 0 },
+          { color: Colors.yellow, value: data?.database ?? 0 },
+          { color: "#4142BE", value: data?.other ?? 0 },
+          { color: `${foreground}40`, value: data?.cache ?? 0 },
         ]}
-        total={data.total}
+        total={data?.total ?? 0}
       />
       <Legend className="py-2">
         <LegendItem
           nameKey="feat.insights.extra.images"
-          value={abbreviateSize(data.images)}
+          value={getValue("images")}
           color={Colors.red}
         />
         <LegendItem
           nameKey="feat.insights.extra.database"
-          value={abbreviateSize(data.database)}
+          value={getValue("database")}
           color={Colors.yellow}
         />
         <LegendItem
           nameKey="feat.insights.extra.other"
-          value={abbreviateSize(data.other)}
+          value={getValue("other")}
           color="#4142BE"
         />
         <LegendItem
           nameKey="feat.insights.extra.cache"
-          value={abbreviateSize(data.cache)}
+          value={getValue("cache")}
           color={`${foreground}40`} // 25% Opacity
         />
       </Legend>
       <LegendItem
         nameKey="feat.insights.extra.total"
-        value={abbreviateSize(data.total)}
+        value={getValue("total")}
       />
     </Card>
   );
@@ -83,21 +89,36 @@ function StorageWidget() {
 
 /** Summarizes what is stored in the database. */
 function DBSummaryWidget() {
-  const { isPending, error, data } = useDatabaseSummary();
-  if (isPending || error) return null;
+  const { data } = useDatabaseSummary();
+
+  const getValue = useCallback(
+    (field: keyof ExtractQueryData<typeof useDatabaseSummary>) => {
+      if (!data) return "—";
+      if (field === "totalDuration") return formatSeconds(data[field], false);
+      return data[field];
+    },
+    [data],
+  );
+
   return (
     <Card className="gap-2 rounded-t-sm">
       <Legend className="pb-2">
-        <LegendItem nameKey="term.albums" value={data.albums} />
-        <LegendItem nameKey="term.artists" value={data.artists} />
-        <LegendItem nameKey="feat.insights.extra.images" value={data.images} />
-        <LegendItem nameKey="term.playlists" value={data.playlists} />
-        <LegendItem nameKey="term.tracks" value={data.tracks} />
-        <LegendItem nameKey="feat.saveErrors.title" value={data.saveErrors} />
+        <LegendItem nameKey="term.albums" value={getValue("albums")} />
+        <LegendItem nameKey="term.artists" value={getValue("artists")} />
+        <LegendItem
+          nameKey="feat.insights.extra.images"
+          value={getValue("images")}
+        />
+        <LegendItem nameKey="term.playlists" value={getValue("playlists")} />
+        <LegendItem nameKey="term.tracks" value={getValue("tracks")} />
+        <LegendItem
+          nameKey="feat.saveErrors.title"
+          value={getValue("saveErrors")}
+        />
       </Legend>
       <LegendItem
         nameKey="feat.insights.extra.totalDuration"
-        value={formatSeconds(data.totalDuration, false)}
+        value={getValue("totalDuration")}
       />
     </Card>
   );
