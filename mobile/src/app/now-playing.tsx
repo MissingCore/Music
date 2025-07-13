@@ -10,6 +10,7 @@ import { InstantMix } from "~/icons/InstantMix";
 import { KeyboardArrowDown } from "~/icons/KeyboardArrowDown";
 import { LibraryMusic } from "~/icons/LibraryMusic";
 import { MoreVert } from "~/icons/MoreVert";
+import { Timer } from "~/icons/Timer";
 import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { useMusicStore } from "~/modules/media/services/Music";
 import { presentTrackSheet } from "~/services/SessionStore";
@@ -17,6 +18,8 @@ import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { usePlayerProgress } from "~/screens/NowPlaying/helpers/usePlayerProgress";
 import { NowPlayingArtwork } from "~/screens/NowPlaying/Artwork";
 import { NowPlayingSheets } from "~/screens/NowPlaying/Sheets";
+import { SleepTimerSheet } from "~/screens/Sheets/SleepTimer";
+import { useSleepTimerStore } from "~/screens/Sheets/SleepTimer/store";
 
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
@@ -183,6 +186,9 @@ function BottomAppBar() {
   const { t } = useTranslation();
   const playbackOptionsSheetRef = useSheetRef();
   const upcomingTracksSheetRef = useSheetRef();
+  const sleepTimerSheetRef = useSheetRef();
+  const showSleepTimer = useUserPreferencesStore((state) => state.sleepTimer);
+  const sleepTimerActive = useSleepTimerStore((state) => state.endAt) !== null;
 
   return (
     <>
@@ -190,9 +196,23 @@ function BottomAppBar() {
         playbackOptionsRef={playbackOptionsSheetRef}
         upcomingTracksRef={upcomingTracksSheetRef}
       />
+      <SleepTimerSheet sheetRef={sleepTimerSheetRef} />
       <View className="flex-row items-center justify-between gap-4 p-4">
         <BackButton />
         <View className="flex-row items-center gap-4">
+          {showSleepTimer ? (
+            <View className="relative">
+              <IconButton
+                Icon={Timer}
+                accessibilityLabel={t("feat.sleepTimer.title")}
+                onPress={() => sleepTimerSheetRef.current?.present()}
+                large
+              />
+              {sleepTimerActive && (
+                <View className="absolute right-2 top-2 size-2 rounded-full bg-red" />
+              )}
+            </View>
+          ) : null}
           <IconButton
             Icon={InstantMix}
             accessibilityLabel={t("feat.playback.extra.options")}

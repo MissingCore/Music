@@ -72,6 +72,12 @@ interface UserPreferencesStore {
   listBlock: string[];
   /** Minimum number of seconds a track needs to have to be saved. */
   minSeconds: number;
+
+  /*
+    Experimental Features
+  */
+  /** If we display the option to create a sleep timer in the "Now Playing" screen. */
+  sleepTimer: boolean;
 }
 //#endregion
 
@@ -129,6 +135,8 @@ export const userPreferencesStore =
       listAllow: [],
       listBlock: [],
       minSeconds: 15,
+
+      sleepTimer: false,
     }),
     {
       name: "music::user-preferences",

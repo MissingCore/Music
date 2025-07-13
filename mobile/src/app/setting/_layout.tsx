@@ -37,6 +37,10 @@ export default function SettingsLayout() {
         options={{ title: t("feat.scanning.title") }}
       />
       <Stack.Screen
+        name="experimental"
+        options={{ title: t("feat.experimental.title") }}
+      />
+      <Stack.Screen
         name="third-party/index"
         options={{ title: t("feat.thirdParty.title") }}
       />

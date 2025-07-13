@@ -37,6 +37,9 @@ importers:
       '@backpackapp-io/react-native-toast':
         specifier: ^0.13.0
         version: 0.13.0(patch_hash=zgygxsuuqk33jr3gwbxpbkmczi)(react-native-gesture-handler@2.27.1(patch_hash=rjhgnwrqf5shhovxtmq2tgj2qm)(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.18.0(patch_hash=5ozonhsw63ib6jnzhhywtxas6q)(@babel/core@7.28.0)(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-safe-area-context@5.5.1(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      '@boterop/react-native-background-timer':
+        specifier: ^2.6.0
+        version: 2.6.0(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))
       '@lodev09/react-native-true-sheet':
         specifier: ^2.0.5
         version: 2.0.5(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -802,6 +805,11 @@ packages:
       react-native-gesture-handler: '>=2.2.1'
       react-native-reanimated: '>=2.8.0'
       react-native-safe-area-context: '>=4.2.4'
+
+  '@boterop/react-native-background-timer@2.6.0':
+    resolution: {integrity: sha512-pYFl+qo/UJwfR092cOGJzekSPBQikfA/smPjuQZk0dYNhhr05j7zA2dRSIiGf1EzEG5iSg5215+TDfKtlZmKDw==}
+    peerDependencies:
+      react-native: '>=0.47.0'
 
   '@drizzle-team/brocli@0.10.2':
     resolution: {integrity: sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w==}
@@ -6640,6 +6648,10 @@ snapshots:
       react-native-gesture-handler: 2.27.1(patch_hash=rjhgnwrqf5shhovxtmq2tgj2qm)(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-reanimated: 3.18.0(patch_hash=5ozonhsw63ib6jnzhhywtxas6q)(@babel/core@7.28.0)(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-safe-area-context: 5.5.1(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+
+  '@boterop/react-native-background-timer@2.6.0(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))':
+    dependencies:
+      react-native: 0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0)
 
   '@drizzle-team/brocli@0.10.2': {}
 
