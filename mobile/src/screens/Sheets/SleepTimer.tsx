@@ -18,7 +18,7 @@ export function SleepTimerSheet(props: { sheetRef: TrueSheetRef }) {
   const endAt = useSessionStore((state) => state.sleepTimerEndAt);
   const createSleepTimer = useSessionStore((state) => state.createSleepTimer);
   const clearSleepTimer = useSessionStore((state) => state.clearSleepTimer);
-  const [minutes, setMinutes] = useState("5");
+  const [minutes, setMinutes] = useState(`${sleepTimerLength}`);
 
   const hasTimer = endAt !== null;
 
