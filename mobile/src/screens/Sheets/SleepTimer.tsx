@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Keyboard, View } from "react-native";
 
-import { useSessionStore } from "~/services/SessionStore";
+import { useSleepTimerStore } from "./SleepTimer/store";
 
 import { wait } from "~/utils/promise";
 import { Button } from "~/components/Form/Button";
@@ -14,10 +14,10 @@ import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 /** Allows the user to set a time when the music will stop playing. */
 export function SleepTimerSheet(props: { sheetRef: TrueSheetRef }) {
   const { t } = useTranslation();
-  const sleepTimerLength = useSessionStore((state) => state.sleepTimerDuration);
-  const endAt = useSessionStore((state) => state.sleepTimerEndAt);
-  const createSleepTimer = useSessionStore((state) => state.createSleepTimer);
-  const clearSleepTimer = useSessionStore((state) => state.clearSleepTimer);
+  const sleepTimerLength = useSleepTimerStore((state) => state.duration);
+  const endAt = useSleepTimerStore((state) => state.endAt);
+  const createTimer = useSleepTimerStore((state) => state.create);
+  const clearTimer = useSleepTimerStore((state) => state.clear);
   const [minutes, setMinutes] = useState(`${sleepTimerLength}`);
 
   const hasTimer = endAt !== null;
@@ -36,8 +36,8 @@ export function SleepTimerSheet(props: { sheetRef: TrueSheetRef }) {
     if (!Number.isInteger(asNum) || asNum <= 0) return;
     Keyboard.dismiss();
     await wait(1);
-    createSleepTimer(asNum);
-  }, [createSleepTimer, minutes]);
+    createTimer(asNum);
+  }, [createTimer, minutes]);
 
   return (
     <Sheet
@@ -68,7 +68,7 @@ export function SleepTimerSheet(props: { sheetRef: TrueSheetRef }) {
       ) : null}
 
       <Button
-        onPress={hasTimer ? clearSleepTimer : onSubmit}
+        onPress={hasTimer ? clearTimer : onSubmit}
         className="rounded-full"
       >
         <StyledText>

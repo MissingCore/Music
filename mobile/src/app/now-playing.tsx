@@ -13,12 +13,13 @@ import { MoreVert } from "~/icons/MoreVert";
 import { Timer } from "~/icons/Timer";
 import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { useMusicStore } from "~/modules/media/services/Music";
-import { presentTrackSheet, useSessionStore } from "~/services/SessionStore";
+import { presentTrackSheet } from "~/services/SessionStore";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { usePlayerProgress } from "~/screens/NowPlaying/helpers/usePlayerProgress";
 import { NowPlayingArtwork } from "~/screens/NowPlaying/Artwork";
 import { NowPlayingSheets } from "~/screens/NowPlaying/Sheets";
 import { SleepTimerSheet } from "~/screens/Sheets/SleepTimer";
+import { useSleepTimerStore } from "~/screens/Sheets/SleepTimer/store";
 
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
@@ -187,8 +188,7 @@ function BottomAppBar() {
   const upcomingTracksSheetRef = useSheetRef();
   const sleepTimerSheetRef = useSheetRef();
   const showSleepTimer = useUserPreferencesStore((state) => state.sleepTimer);
-  const sleepTimerActive =
-    useSessionStore((state) => state.sleepTimerEndAt) !== null;
+  const sleepTimerActive = useSleepTimerStore((state) => state.endAt) !== null;
 
   return (
     <>
