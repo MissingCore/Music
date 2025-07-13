@@ -7,6 +7,7 @@ import { deleteTrack } from "~/api/track";
 import type { TrackStatus } from "~/modules/media/services/Music";
 import { Queue, RNTPManager, musicStore } from "~/modules/media/services/Music";
 import { MusicControls } from "~/modules/media/services/Playback";
+import { getIsPlaying } from "~/modules/media/hooks/useIsPlaying";
 import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
 import { userPreferencesStore } from "./UserPreferences";
 
@@ -58,7 +59,7 @@ export async function PlaybackService() {
       await MusicControls.stop();
     } else {
       if (e.paused) {
-        resumeAfterDuck = musicStore.getState().isPlaying;
+        resumeAfterDuck = await getIsPlaying();
         await MusicControls.pause();
       } else if (resumeAfterDuck) {
         await MusicControls.play();

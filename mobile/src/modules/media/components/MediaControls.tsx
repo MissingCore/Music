@@ -9,6 +9,7 @@ import { SkipNext } from "~/icons/SkipNext";
 import { SkipPrevious } from "~/icons/SkipPrevious";
 import { useMusicStore } from "../services/Music";
 import { MusicControls } from "../services/Playback";
+import { useIsPlaying } from "../hooks/useIsPlaying";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
@@ -52,7 +53,7 @@ export function ShuffleButton({ large = true }) {
 /** Toggles whether we're playing or not. */
 export function PlayToggleButton() {
   const { t } = useTranslation();
-  const isPlaying = useMusicStore((state) => state.isPlaying);
+  const isPlaying = useIsPlaying();
   const Icon = isPlaying ? Pause : PlayArrow;
   return (
     <Button

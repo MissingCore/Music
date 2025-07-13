@@ -37,8 +37,6 @@ interface MusicStore {
   /** The track we want to restore the position for. */
   _restoredTrackId: string | undefined;
 
-  /** If we're currently playing a track. */
-  isPlaying: boolean;
   /** The last played position of the track. */
   lastPosition: number | undefined;
 
@@ -130,7 +128,6 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
     _hasRestoredPosition: false,
     _restoredTrackId: undefined,
 
-    isPlaying: false,
     lastPosition: undefined,
 
     repeat: "no-repeat",

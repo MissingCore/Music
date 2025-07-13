@@ -15,6 +15,7 @@ import Animated, {
 import { Schedule } from "~/icons/Schedule";
 import { useMusicStore } from "~/modules/media/services/Music";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
+import { useIsPlaying } from "~/modules/media/hooks/useIsPlaying";
 import { useTheme } from "~/hooks/useTheme";
 import {
   AlbumArtworkSheet,
@@ -167,7 +168,7 @@ type AnimatedVinylProps = {
 
 /** Have the vinyl spin if the playing media list is this source. */
 function AnimatedVinyl(props: AnimatedVinylProps & { pressable?: boolean }) {
-  const isPlaying = useMusicStore((state) => state.isPlaying);
+  const isPlaying = useIsPlaying();
   const playingSource = useMusicStore((state) => state.playingSource);
   const coverPosition = useSharedValue(0);
   const rotationProgress = useSharedValue(0);

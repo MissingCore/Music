@@ -7,6 +7,7 @@ import { Pause } from "~/icons/Pause";
 import { PlayArrow } from "~/icons/PlayArrow";
 import { useMusicStore } from "../services/Music";
 import { MusicControls } from "../services/Playback";
+import { useIsPlaying } from "../hooks/useIsPlaying";
 import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
@@ -23,7 +24,7 @@ import { MediaImage } from "./MediaImage";
 export function MiniPlayer({ hidden = false, stacked = false }) {
   const { t } = useTranslation();
   const { surface } = useTheme();
-  const isPlaying = useMusicStore((state) => state.isPlaying);
+  const isPlaying = useIsPlaying();
   const track = useMusicStore((state) => state.activeTrack);
 
   if (!track || hidden) return null;
