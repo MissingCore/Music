@@ -57,6 +57,7 @@
     "stay": "Bleiben",
     "leave": "Verlassen",
     "clear": "Leeren",
+    "reset": null,
     "validation": {
       "unique": "Einzigartig"
     }
@@ -224,6 +225,18 @@
       "title": "Ignoriere kurzes Audio",
       "description": "Dauer in Sekunden des Audios, das wir nicht speichern möchten."
     },
+    "experimental": {
+      "title": null,
+      "brief": null
+    },
+    "sleepTimer": {
+      "title": null,
+      "description": null,
+      "extra": {
+        "start": null,
+        "stopTime": null
+      }
+    },
     "translate": {
       "title": "Übersetzungen beitragen",
       "brief": "Uns helfen, die App in deine Sprache zu Übersetzen."
@@ -296,6 +309,20 @@
         "delete": "Playlist löschen",
         "edit": "Playlist bearbeiten",
         "name": "Playlistname"
+      }
+    },
+    "trackMetadata": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      },
+      "extra": {
+        "albumArtist": null,
+        "disc": null,
+        "name": null,
+        "trackNumber": null,
+        "year": null
       }
     },
     "modalSort": {

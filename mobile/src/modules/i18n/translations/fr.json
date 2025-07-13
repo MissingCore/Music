@@ -57,6 +57,7 @@
     "stay": "Rester",
     "leave": "Quitter",
     "clear": "Réinitialiser",
+    "reset": null,
     "validation": {
       "unique": "Unique"
     }
@@ -224,6 +225,18 @@
       "title": "Ignorer les audios courts",
       "description": "Durée en seconde des audios à ignorer."
     },
+    "experimental": {
+      "title": null,
+      "brief": null
+    },
+    "sleepTimer": {
+      "title": null,
+      "description": null,
+      "extra": {
+        "start": null,
+        "stopTime": null
+      }
+    },
     "translate": {
       "title": "Contribuer aux traductions",
       "brief": "Aidez à traduire cette application dans d'autres langues."
@@ -296,6 +309,20 @@
         "delete": "Supprimer playlist",
         "edit": "Modifier playlist",
         "name": "Nom de la Playlist"
+      }
+    },
+    "trackMetadata": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      },
+      "extra": {
+        "albumArtist": null,
+        "disc": null,
+        "name": null,
+        "trackNumber": null,
+        "year": null
       }
     },
     "modalSort": {

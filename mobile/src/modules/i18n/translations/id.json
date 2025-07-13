@@ -57,6 +57,7 @@
     "stay": "Tetap disini",
     "leave": "Keluar",
     "clear": "Hapus",
+    "reset": null,
     "validation": {
       "unique": "Unik"
     }
@@ -224,6 +225,18 @@
       "title": "Abaikan Audio Pendek",
       "description": "Durasi audio dalam detik yang tidak ingin kami simpan."
     },
+    "experimental": {
+      "title": null,
+      "brief": null
+    },
+    "sleepTimer": {
+      "title": null,
+      "description": null,
+      "extra": {
+        "start": null,
+        "stopTime": null
+      }
+    },
     "translate": {
       "title": "Kontribusi Penerjemahan",
       "brief": "Bantu menerjemahkan aplikasi ini ke dalam bahasa lainnya."
@@ -296,6 +309,20 @@
         "delete": "Hapus Daftar Putar",
         "edit": "Sunting Daftar Putar",
         "name": "Nama Daftar Putar"
+      }
+    },
+    "trackMetadata": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      },
+      "extra": {
+        "albumArtist": null,
+        "disc": null,
+        "name": null,
+        "trackNumber": null,
+        "year": null
       }
     },
     "modalSort": {

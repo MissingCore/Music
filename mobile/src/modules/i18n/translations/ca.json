@@ -57,6 +57,7 @@
     "stay": "Queda't",
     "leave": "Eixir",
     "clear": "Netejar",
+    "reset": null,
     "validation": {
       "unique": "Únic"
     }
@@ -224,6 +225,18 @@
       "title": "Ignora àudios curts",
       "description": "Durada en segons dels àudios que no vols guardar."
     },
+    "experimental": {
+      "title": null,
+      "brief": null
+    },
+    "sleepTimer": {
+      "title": null,
+      "description": null,
+      "extra": {
+        "start": null,
+        "stopTime": null
+      }
+    },
     "translate": {
       "title": "Contribueix amb traduccions",
       "brief": "Ajuda a traduir l'aplicació a altres llengües."
@@ -296,6 +309,20 @@
         "delete": "Esborra llista",
         "edit": "Edita llista",
         "name": "Títol de la Llista"
+      }
+    },
+    "trackMetadata": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      },
+      "extra": {
+        "albumArtist": null,
+        "disc": null,
+        "name": null,
+        "trackNumber": null,
+        "year": null
       }
     },
     "modalSort": {
