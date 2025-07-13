@@ -186,6 +186,13 @@
         "totalDuration": "Total Duration"
       }
     },
+    "hiddenTracks": {
+      "title": "Hidden Tracks",
+      "brief": "Tracks not shown in the app.",
+      "extra": {
+        "hiddenAt": "Hidden at {{date}}."
+      }
+    },
     "saveErrors": {
       "title": "Save Errors",
       "brief": "See the reason why some tracks weren't saved."
