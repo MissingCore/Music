@@ -34,9 +34,10 @@ export function useIsScrollable() {
     () => ({
       onLayout: (e: LayoutChangeEvent) => {
         layoutHeight.current = e.nativeEvent.layout.height;
+        setIsScrollable(false);
       },
       onContentSizeChange: (_w: number, h: number) => {
-        setIsScrollable(h !== layoutHeight.current);
+        setIsScrollable(h > layoutHeight.current && layoutHeight.current !== 0);
       },
     }),
     [],
