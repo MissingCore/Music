@@ -17,7 +17,7 @@
   },
   "@lodev09/react-native-true-sheet": {
     "name": "@lodev09/react-native-true-sheet",
-    "version": "2.0.5",
+    "version": "2.0.6",
     "copyright": "Copyright (c) 2025 lodev09",
     "source": "https://github.com/lodev09/react-native-true-sheet",
     "license": "MIT",
@@ -97,7 +97,7 @@
   },
   "@sentry/react-native": {
     "name": "@sentry/react-native",
-    "version": "6.16.1",
+    "version": "6.17.0",
     "copyright": "Copyright (c) 2017-2024 Sentry",
     "source": "https://github.com/getsentry/sentry-react-native",
     "license": "MIT",
@@ -113,7 +113,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.81.5",
+    "version": "5.83.0",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -145,7 +145,7 @@
   },
   "expo": {
     "name": "expo",
-    "version": "53.0.17",
+    "version": "53.0.19",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo",
     "license": "MIT",
@@ -241,7 +241,7 @@
   },
   "expo-sqlite": {
     "name": "expo-sqlite",
-    "version": "15.2.13",
+    "version": "15.2.14",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-sqlite",
     "license": "MIT",
@@ -265,7 +265,7 @@
   },
   "i18next": {
     "name": "i18next",
-    "version": "25.3.1",
+    "version": "25.3.2",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/i18next",
     "license": "MIT",
@@ -409,7 +409,7 @@
   },
   "react-native-safe-area-context": {
     "name": "react-native-safe-area-context",
-    "version": "5.5.1",
+    "version": "5.5.2",
     "copyright": "Copyright (c) 2019 Th3rd Wave",
     "source": "https://github.com/th3rdwave/react-native-safe-area-context",
     "license": "MIT",
