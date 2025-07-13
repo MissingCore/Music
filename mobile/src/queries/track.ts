@@ -9,6 +9,8 @@ import {
   updateTrack,
 } from "~/api/track";
 import { revalidateActiveTrack } from "~/modules/media/helpers/revalidate";
+import { musicStore, Queue } from "~/modules/media/services/Music";
+import { RecentList } from "~/modules/media/services/RecentList";
 import { Resynchronize } from "~/modules/media/services/Resynchronize";
 import { useSortTracks } from "~/modules/media/services/SortPreferences";
 import { queries as q } from "./keyStore";
@@ -96,6 +98,26 @@ export function useRemoveFromPlaylist(trackId: string) {
       // Ensure that if we're currently playing from the playlist we removed
       // the track from, we update it.
       Resynchronize.onTracks({ type: "playlist", id: playlistName });
+    },
+  });
+}
+
+/** Toggle whether a track is hidden in the app. */
+export function useToggleHideTrack() {
+  return useMutation({
+    mutationFn: ({ trackId, hide }: { trackId: string; hide: boolean }) =>
+      updateTrack(trackId, { hiddenAt: hide ? Date.now() : null }),
+    onSuccess: async (_, { trackId }) => {
+      // There's a lot of places where this track may appear.
+      clearAllQueries();
+
+      const { currentList, playingSource } = musicStore.getState();
+      // Need to resynchronize the Music store if we're playing this track.
+      if (currentList.includes(trackId)) {
+        await Resynchronize.onTracks(playingSource!);
+      }
+      await Queue.removeIds([trackId]);
+      RecentList.refresh();
     },
   });
 }
