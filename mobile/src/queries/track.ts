@@ -61,7 +61,7 @@ export function useAddToPlaylist(trackId: string) {
   });
 }
 
-/** Set the favorite status of an track. */
+/** Set the favorite status of a track. */
 export function useFavoriteTrack(trackId: string) {
   const queryClient = useQueryClient();
   return useMutation({
@@ -83,6 +83,28 @@ export function useFavoriteTrack(trackId: string) {
   });
 }
 
+/** Set the hidden status of a track. */
+export function useHideTrack() {
+  return useMutation({
+    mutationFn: (args: { trackId: string; isHidden: boolean }) =>
+      updateTrack(args.trackId, {
+        hiddenAt: args.isHidden ? Date.now() : null,
+      }),
+    onSuccess: async (_, { trackId }) => {
+      // There's a lot of places where this track may appear.
+      clearAllQueries();
+
+      const { currentList, playingSource } = musicStore.getState();
+      // Need to resynchronize the Music store if we're playing this track.
+      if (currentList.includes(trackId)) {
+        await Resynchronize.onTracks(playingSource!);
+      }
+      await Queue.removeIds([trackId]);
+      RecentList.refresh();
+    },
+  });
+}
+
 /** Remove track from playlist. */
 export function useRemoveFromPlaylist(trackId: string) {
   const queryClient = useQueryClient();
@@ -98,26 +120,6 @@ export function useRemoveFromPlaylist(trackId: string) {
       // Ensure that if we're currently playing from the playlist we removed
       // the track from, we update it.
       Resynchronize.onTracks({ type: "playlist", id: playlistName });
-    },
-  });
-}
-
-/** Toggle whether a track is hidden in the app. */
-export function useToggleHideTrack() {
-  return useMutation({
-    mutationFn: ({ trackId, hide }: { trackId: string; hide: boolean }) =>
-      updateTrack(trackId, { hiddenAt: hide ? Date.now() : null }),
-    onSuccess: async (_, { trackId }) => {
-      // There's a lot of places where this track may appear.
-      clearAllQueries();
-
-      const { currentList, playingSource } = musicStore.getState();
-      // Need to resynchronize the Music store if we're playing this track.
-      if (currentList.includes(trackId)) {
-        await Resynchronize.onTracks(playingSource!);
-      }
-      await Queue.removeIds([trackId]);
-      RecentList.refresh();
     },
   });
 }

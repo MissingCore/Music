@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 
 import { VisibilityOff } from "~/icons/VisibilityOff";
 import { useHiddenTracks } from "~/queries/setting";
-import { useToggleHideTrack } from "~/queries/track";
+import { useHideTrack } from "~/queries/track";
 
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
@@ -15,7 +15,7 @@ import { SearchResult } from "~/modules/search/components/SearchResult";
 export default function HiddenTracksScreen() {
   const { t } = useTranslation();
   const { isPending, data } = useHiddenTracks();
-  const toggleHideTrack = useToggleHideTrack();
+  const hideTrack = useHideTrack();
 
   return (
     <FlashList
@@ -35,9 +35,9 @@ export default function HiddenTracksScreen() {
               Icon={VisibilityOff}
               accessibilityLabel={t("template.entryShow", { name: item.name })}
               onPress={() =>
-                mutateGuard(toggleHideTrack, { trackId: item.id, hide: false })
+                mutateGuard(hideTrack, { trackId: item.id, isHidden: false })
               }
-              disabled={toggleHideTrack.isPending}
+              disabled={hideTrack.isPending}
             />
           }
           className={cn("bg-canvas", { "mt-2": index > 0 })}

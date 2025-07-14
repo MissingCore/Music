@@ -23,7 +23,7 @@ import {
   useAddToPlaylist,
   useFavoriteTrack,
   useRemoveFromPlaylist,
-  useToggleHideTrack,
+  useHideTrack,
   useTrack,
   useTrackPlaylists,
 } from "~/queries/track";
@@ -183,7 +183,7 @@ function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
   const { t } = useTranslation();
   const { data } = useTrack(props.id);
   const favoriteTrack = useFavoriteTrack(props.id);
-  const toggleHideTrack = useToggleHideTrack();
+  const hideTrack = useHideTrack();
 
   const favStatus = data?.isFavorite ?? false;
   const isFav = favoriteTrack.isPending ? !favStatus : favStatus;
@@ -215,9 +215,9 @@ function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
           { name: data?.name },
         )}
         onPress={sheetAction(() =>
-          mutateGuard(toggleHideTrack, {
+          mutateGuard(hideTrack, {
             trackId: props.id,
-            hide: !data?.hiddenAt,
+            isHidden: !data?.hiddenAt,
           }),
         )}
       />
