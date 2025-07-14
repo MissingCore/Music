@@ -57,6 +57,7 @@
     "stay": "रहें",
     "leave": "छोड़ें",
     "clear": null,
+    "reset": null,
     "validation": {
       "unique": "अद्वितीय"
     }
@@ -224,6 +225,18 @@
       "title": "छोटे ऑडियो को अनदेखा करें",
       "description": "ऑडियो की अवधि (सेकंड में) जिसे हम सहेजना नहीं चाहते।"
     },
+    "experimental": {
+      "title": null,
+      "brief": null
+    },
+    "sleepTimer": {
+      "title": null,
+      "description": null,
+      "extra": {
+        "start": null,
+        "stopTime": null
+      }
+    },
     "translate": {
       "title": "अनुवाद में योगदान दें",
       "brief": "ऐप को अन्य भाषाओं में अनुवाद करने में मदद करें।"
@@ -296,6 +309,20 @@
         "delete": "प्लेलिस्ट हटाएँ",
         "edit": "प्लेलिस्ट संपादित करें",
         "name": "प्लेलिस्ट नाम"
+      }
+    },
+    "trackMetadata": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      },
+      "extra": {
+        "albumArtist": null,
+        "disc": null,
+        "name": null,
+        "trackNumber": null,
+        "year": null
       }
     },
     "modalSort": {

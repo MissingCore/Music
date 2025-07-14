@@ -57,6 +57,7 @@
     "stay": "Bliv her",
     "leave": "Luk",
     "clear": "Ryd",
+    "reset": null,
     "validation": {
       "unique": "Navn er ikke blevet brugt"
     }
@@ -224,6 +225,18 @@
       "title": "Ignorér korte audiofiler",
       "description": "Varighed i sekunder af audiofiler, der ikke skal gemmes."
     },
+    "experimental": {
+      "title": null,
+      "brief": null
+    },
+    "sleepTimer": {
+      "title": null,
+      "description": null,
+      "extra": {
+        "start": null,
+        "stopTime": null
+      }
+    },
     "translate": {
       "title": "Bidrag oversættelser",
       "brief": "Hjælp med at oversætte denne app til andre sprog."
@@ -296,6 +309,20 @@
         "delete": "Slet playliste",
         "edit": "Tilpas playliste",
         "name": "Playlistens navn"
+      }
+    },
+    "trackMetadata": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      },
+      "extra": {
+        "albumArtist": null,
+        "disc": null,
+        "name": null,
+        "trackNumber": null,
+        "year": null
       }
     },
     "modalSort": {

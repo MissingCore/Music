@@ -57,6 +57,7 @@
     "stay": "Esperar",
     "leave": "Salir",
     "clear": "Limpiar",
+    "reset": null,
     "validation": {
       "unique": "Único"
     }
@@ -224,6 +225,18 @@
       "title": "Ignorar audio corto",
       "description": "Duración en segundos del audio que no queremos guardar."
     },
+    "experimental": {
+      "title": null,
+      "brief": null
+    },
+    "sleepTimer": {
+      "title": null,
+      "description": null,
+      "extra": {
+        "start": null,
+        "stopTime": null
+      }
+    },
     "translate": {
       "title": "Contribuir con las traducciones",
       "brief": "Ayuda a traducir la app a otros idiomas."
@@ -296,6 +309,20 @@
         "delete": "Eliminar lista de reproducción",
         "edit": "Editar lista de reproducción",
         "name": "Nombre de la lista de reproducción"
+      }
+    },
+    "trackMetadata": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      },
+      "extra": {
+        "albumArtist": null,
+        "disc": null,
+        "name": null,
+        "trackNumber": null,
+        "year": null
       }
     },
     "modalSort": {

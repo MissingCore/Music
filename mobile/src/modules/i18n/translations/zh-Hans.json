@@ -57,6 +57,7 @@
     "stay": "留在此处",
     "leave": "离开",
     "clear": "清除",
+    "reset": null,
     "validation": {
       "unique": "唯一"
     }
@@ -224,6 +225,18 @@
       "title": "忽略较短的音频",
       "description": "不想保存的音频时长（秒）。"
     },
+    "experimental": {
+      "title": null,
+      "brief": null
+    },
+    "sleepTimer": {
+      "title": null,
+      "description": null,
+      "extra": {
+        "start": null,
+        "stopTime": null
+      }
+    },
     "translate": {
       "title": "协助翻译",
       "brief": "帮助翻译应用到其他语言。"
@@ -296,6 +309,20 @@
         "delete": "删除播放列表",
         "edit": "编辑播放列表",
         "name": "播放列表名称"
+      }
+    },
+    "trackMetadata": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      },
+      "extra": {
+        "albumArtist": null,
+        "disc": null,
+        "name": null,
+        "trackNumber": null,
+        "year": null
       }
     },
     "modalSort": {
