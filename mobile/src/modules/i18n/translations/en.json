@@ -190,7 +190,7 @@
       "title": "Hidden Tracks",
       "brief": "Tracks not shown in the app.",
       "extra": {
-        "hiddenAt": "Hidden at {{date}}."
+        "hiddenAt": "Hidden on {{- date}}."
       }
     },
     "saveErrors": {
@@ -259,7 +259,7 @@
       "description": "Stop playing audio after the specified amount of minutes.",
       "extra": {
         "start": "Start",
-        "stopTime": "Audio will stop playing at {{time}}."
+        "stopTime": "Audio will stop playing at {{- time}}."
       }
     },
     "translate": {

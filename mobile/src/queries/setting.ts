@@ -23,13 +23,8 @@ export function useHiddenTracks() {
     ...q.settings.hiddenTracks,
     select: (data) => {
       // FIXME: Once Hermes supports `toSorted`, use it instead.
-      data.sort((a, b) => {
-        // Both `hiddenAt` should technically be not `null`.
-        if (a.hiddenAt === b.hiddenAt) return 0;
-        if (a.hiddenAt === null) return 1;
-        if (b.hiddenAt === null) return -1;
-        return b.hiddenAt - a.hiddenAt;
-      });
+      // Both `hiddenAt` should technically be not `null`.
+      data.sort((a, b) => b.hiddenAt! - a.hiddenAt!);
       return data;
     },
     staleTime: 0,
