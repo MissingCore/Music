@@ -17,6 +17,25 @@ export function useLatestRelease() {
   });
 }
 
+/** Return tracks that we've hidden. */
+export function useHiddenTracks() {
+  return useQuery({
+    ...q.settings.hiddenTracks,
+    select: (data) => {
+      // FIXME: Once Hermes supports `toSorted`, use it instead.
+      data.sort((a, b) => {
+        // Both `hiddenAt` should technically be not `null`.
+        if (a.hiddenAt === b.hiddenAt) return 0;
+        if (a.hiddenAt === null) return 1;
+        if (b.hiddenAt === null) return -1;
+        return b.hiddenAt - a.hiddenAt;
+      });
+      return data;
+    },
+    staleTime: 0,
+  });
+}
+
 /** Return the tracks that resulted in an error while saving. */
 export function useSaveErrors() {
   return useQuery({ ...q.settings.saveErrors, staleTime: 0 });
