@@ -16,6 +16,12 @@ export async function getDatabaseSummary() {
     images: imgDir.exists ? imgDir.list().length : 0,
     playlists: await db.$count(playlists),
     tracks: await db.$count(tracks),
+    hiddenTracks: (
+      await db.query.tracks.findMany({
+        where: (fields, { isNotNull }) => isNotNull(fields.hiddenAt),
+        columns: { id: true },
+      })
+    ).length,
     saveErrors: await db.$count(invalidTracks),
     totalDuration:
       Number(
