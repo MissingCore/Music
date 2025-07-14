@@ -24,13 +24,20 @@ export default function InsightsScreen() {
         <DBSummaryWidget />
       </List>
 
-      <ListItem
-        titleKey="feat.saveErrors.title"
-        description={t("feat.saveErrors.brief")}
-        onPress={() => router.navigate("/setting/insights/save-errors")}
-        first
-        last
-      />
+      <List>
+        <ListItem
+          titleKey="feat.hiddenTracks.title"
+          description={t("feat.hiddenTracks.brief")}
+          onPress={() => router.navigate("/setting/insights/hidden")}
+          first
+        />
+        <ListItem
+          titleKey="feat.saveErrors.title"
+          description={t("feat.saveErrors.brief")}
+          onPress={() => router.navigate("/setting/insights/save-errors")}
+          last
+        />
+      </List>
     </StandardScrollLayout>
   );
 }
