@@ -86,10 +86,12 @@ async function getAllMedia() {
       columns: ["name", "artwork"],
       withTracks: false,
     }),
-    folder: (allFolders as SlimFolder[]).map((f) => {
-      f.tracks = groupedTracks[`file:///${addTrailingSlash(f.path)}`] ?? [];
-      return f;
-    }),
+    folder: (allFolders as SlimFolder[])
+      .map((f) => {
+        f.tracks = groupedTracks[`file:///${addTrailingSlash(f.path)}`] ?? [];
+        return f;
+      })
+      .filter(({ tracks }) => tracks.length > 0),
     playlist: await getPlaylists({
       columns: ["name", "artwork"],
       trackColumns: ["artwork"],
