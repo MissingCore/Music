@@ -79,6 +79,7 @@ async function getTracksFromIds(trackIds: string[]) {
     where: [inArray(tracks.id, trackIds)],
     columns: ["id", "name", "artistName", "artwork"],
     albumColumns: ["artwork"],
+    withHidden: true,
   });
   return trackIds.map((tId) => unorderedTracks.find(({ id }) => id === tId));
 }
