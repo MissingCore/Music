@@ -22,6 +22,7 @@ export default function HiddenTracksScreen() {
       estimatedItemSize={56} // 48px Height + 8px Margin Top
       data={data}
       keyExtractor={({ id }) => id}
+      extraData={hideTrack.isPending}
       renderItem={({ item, index }) => (
         <SearchResult
           type="track"

@@ -86,20 +86,21 @@ export function useFavoriteTrack(trackId: string) {
 /** Set the hidden status of a track. */
 export function useHideTrack() {
   return useMutation({
-    mutationFn: (args: { trackId: string; isHidden: boolean }) =>
-      updateTrack(args.trackId, {
+    mutationFn: async (args: { trackId: string; isHidden: boolean }) => {
+      await wait(1);
+      await updateTrack(args.trackId, {
         hiddenAt: args.isHidden ? Date.now() : null,
-      }),
+      });
+    },
     onSuccess: async (_, { trackId }) => {
       // There's a lot of places where this track may appear.
       clearAllQueries();
-
       const { currentList, playingSource } = musicStore.getState();
       // Need to resynchronize the Music store if we're playing this track.
       if (currentList.includes(trackId)) {
         await Resynchronize.onTracks(playingSource!);
       }
-      await Queue.removeIds([trackId]);
+      Queue.removeIds([trackId]);
       RecentList.refresh();
     },
   });
