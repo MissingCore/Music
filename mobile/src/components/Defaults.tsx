@@ -75,12 +75,36 @@ const WrappedFlashList = cssInterop(RawFlashList, {
 const RawAnimatedFlashList = Animated.createAnimatedComponent(WrappedFlashList);
 
 export function FlashList<T>(props: FlashListProps<T>) {
-  return <WrappedFlashList {...ScrollablePresets} {...props} />;
+  return (
+    <WrappedFlashList
+      // To prevent `TypeError: Cannot read property 'y' of undefined`
+      // crash from a list with `numColumns` and `ListEmptyComponent`.
+      key={
+        props.data?.length === 0
+          ? `empty-list-with-${props.numColumns}-cols`
+          : `non-empty-list-with-${props.numColumns}-cols`
+      }
+      {...ScrollablePresets}
+      {...props}
+    />
+  );
 }
 
 export function AnimatedFlashList<T>(props: FlashListProps<T>) {
-  // @ts-expect-error - Ref should be compatible.
-  return <RawAnimatedFlashList {...ScrollablePresets} {...props} />;
+  return (
+    // @ts-expect-error - Ref should be compatible.
+    <RawAnimatedFlashList
+      // To prevent `TypeError: Cannot read property 'y' of undefined`
+      // crash from a list with `numColumns` and `ListEmptyComponent`.
+      key={
+        props.data?.length === 0
+          ? `empty-list-with-${props.numColumns}-cols`
+          : `non-empty-list-with-${props.numColumns}-cols`
+      }
+      {...ScrollablePresets}
+      {...props}
+    />
+  );
 }
 
 export function useFlashListRef<T = any>() {
