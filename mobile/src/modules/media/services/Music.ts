@@ -271,9 +271,10 @@ export class Queue {
   /** Remove list of track ids in the current queue. */
   static async removeIds(ids: string[]) {
     const idSet = new Set(ids);
-    musicStore.setState((prev) => ({
-      queueList: prev.queueList.filter((tId) => !idSet.has(tId)),
-    }));
+    const prevQueueList = musicStore.getState().queueList;
+    const updatedQueueList = prevQueueList.filter((tId) => !idSet.has(tId));
+    if (prevQueueList.length === updatedQueueList.length) return;
+    musicStore.setState({ queueList: updatedQueueList });
     await RNTPManager.reloadNextTrack();
   }
 }
