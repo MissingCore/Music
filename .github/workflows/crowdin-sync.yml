@@ -1,13 +1,13 @@
 name: Sync Crowdin Translations
 
 on:
-  push:
-    branches:
-      - dev
-    paths:
-      - "mobile/src/modules/i18n/translations/en.json"
-  schedule:
-    - cron: "0 0 * * 1" # Run every Monday
+  # push:
+  #   branches:
+  #     - dev
+  #   paths:
+  #     - "mobile/src/modules/i18n/translations/en.json"
+  # schedule:
+  #   - cron: "0 0 * * 1" # Run every Monday
   workflow_dispatch: # Allow for manual trigger
 
 jobs:

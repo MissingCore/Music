@@ -78,20 +78,14 @@ async function getAllMedia() {
   });
 
   return {
-    album: (
-      await getAlbums({
-        columns: ["id", "name", "artistName", "artwork"],
-        trackColumns: ["id", "name", "artistName", "artwork"],
-      })
-    ).filter(({ tracks }) => tracks.length > 0),
-    artist: (
-      await getArtists({
-        columns: ["name", "artwork"],
-        trackColumns: ["id"],
-      })
-    )
-      .filter(({ tracks }) => tracks.length > 0)
-      .map(({ tracks: _, ...rest }) => rest),
+    album: await getAlbums({
+      columns: ["id", "name", "artistName", "artwork"],
+      trackColumns: ["id", "name", "artistName", "artwork"],
+    }),
+    artist: await getArtists({
+      columns: ["name", "artwork"],
+      withTracks: false,
+    }),
     folder: (allFolders as SlimFolder[])
       .map((f) => {
         f.tracks = groupedTracks[`file:///${addTrailingSlash(f.path)}`] ?? [];
