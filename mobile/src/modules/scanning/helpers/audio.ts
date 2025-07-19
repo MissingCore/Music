@@ -10,7 +10,7 @@ import { getAssetsAsync } from "expo-media-library";
 import { db } from "~/db";
 import { albums, artists, invalidTracks, tracks } from "~/db/schema";
 
-import { getAlbums, upsertAlbum } from "~/api/album";
+import { upsertAlbum } from "~/api/album";
 import { createArtist } from "~/api/artist";
 import { getSaveErrors } from "~/api/setting";
 import { createTrack, deleteTrack, getTracks, updateTrack } from "~/api/track";
@@ -75,6 +75,7 @@ export async function findAndSaveAudio() {
   const allTracks = await getTracks({
     columns: ["id", "modificationTime", "uri", "editedMetadata"],
     withAlbum: false,
+    withHidden: true,
   });
   const allTracksMap = Object.fromEntries(allTracks.map((t) => [t.id, t]));
   const allInvalidTracks = await getSaveErrors();
@@ -281,7 +282,10 @@ export async function cleanupDatabase(usedTrackIds: string[]) {
 /** Remove any albums or artists that aren't used. */
 export async function removeUnusedCategories() {
   // Remove unused albums.
-  const allAlbums = await getAlbums({ columns: ["id"], trackColumns: ["id"] });
+  const allAlbums = await db.query.albums.findMany({
+    columns: { id: true },
+    with: { tracks: { columns: { id: true } } },
+  });
   const unusedAlbumIds = allAlbums
     .filter(({ tracks }) => tracks.length === 0)
     .map(({ id }) => id);

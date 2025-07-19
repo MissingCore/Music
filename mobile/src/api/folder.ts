@@ -25,7 +25,8 @@ export async function getFolderSubdirectories(path: Maybe<string>) {
   const dirHasChild = await Promise.all(
     subDirs.map(({ path: subDir }) =>
       db.query.tracks.findFirst({
-        where: (fields, { like }) => like(fields.uri, `file:///${subDir}%`),
+        where: (fields, { and, like, isNull }) =>
+          and(like(fields.uri, `file:///${subDir}%`), isNull(fields.hiddenAt)),
         columns: { id: true },
       }),
     ),
@@ -45,8 +46,11 @@ export async function getFolderSubdirectories(path: Maybe<string>) {
 export async function getFolderTracks(path: Maybe<string>) {
   if (!path) return [];
   return db.query.tracks.findMany({
-    where: (fields, { eq }) =>
-      eq(fields.parentFolder, `file:///${addTrailingSlash(path)}`),
+    where: (fields, { and, eq, isNull }) =>
+      and(
+        eq(fields.parentFolder, `file:///${addTrailingSlash(path)}`),
+        isNull(fields.hiddenAt),
+      ),
     with: { album: true },
     orderBy: (fields) => iAsc(fields.name),
   });
