@@ -6,7 +6,6 @@ import { db } from "~/db";
 import { fileNodes, invalidTracks, tracks } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
-import { getTracks } from "~/api/track";
 import { RecentList } from "~/modules/media/services/RecentList";
 import { Resynchronize } from "~/modules/media/services/Resynchronize";
 
@@ -33,7 +32,9 @@ export async function rescanForTracks(deepScan = false) {
     // Re-create the "folder" structure for tracks we've already saved.
     // eslint-disable-next-line drizzle/enforce-delete-with-where
     await db.delete(fileNodes);
-    const allTracks = await getTracks({ columns: ["uri"], withAlbum: false });
+    const allTracks = await db.query.tracks.findMany({
+      columns: { uri: true },
+    });
     await batch({
       data: allTracks,
       callback: ({ uri }) => savePathComponents(uri),

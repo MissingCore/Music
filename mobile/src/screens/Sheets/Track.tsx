@@ -16,11 +16,14 @@ import { List } from "~/icons/List";
 import { PlaylistAdd } from "~/icons/PlaylistAdd";
 import { QueueMusic } from "~/icons/QueueMusic";
 import { Schedule } from "~/icons/Schedule";
+import { Visibility } from "~/icons/Visibility";
+import { VisibilityOff } from "~/icons/VisibilityOff";
 import { usePlaylists } from "~/queries/playlist";
 import {
   useAddToPlaylist,
   useFavoriteTrack,
   useRemoveFromPlaylist,
+  useHideTrack,
   useTrack,
   useTrackPlaylists,
 } from "~/queries/track";
@@ -185,6 +188,7 @@ function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
   const { t } = useTranslation();
   const { data } = useTrack(props.id);
   const favoriteTrack = useFavoriteTrack(props.id);
+  const hideTrack = useHideTrack();
 
   const favStatus = data?.isFavorite ?? false;
   const isFav = favoriteTrack.isPending ? !favStatus : favStatus;
@@ -208,6 +212,19 @@ function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
         Icon={Image}
         accessibilityLabel={t("feat.artwork.extra.change")}
         onPress={sheetAction(props.editArtwork)}
+      />
+      <IconButton
+        Icon={data?.hiddenAt ? VisibilityOff : Visibility}
+        accessibilityLabel={t(
+          `template.entry${data?.hiddenAt ? "Show" : "Hide"}`,
+          { name: data?.name },
+        )}
+        onPress={sheetAction(() =>
+          mutateGuard(hideTrack, {
+            trackId: props.id,
+            isHidden: !data?.hiddenAt,
+          }),
+        )}
       />
     </Card>
   );

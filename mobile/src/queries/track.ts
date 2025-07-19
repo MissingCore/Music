@@ -9,11 +9,13 @@ import {
   updateTrack,
 } from "~/api/track";
 import { revalidateActiveTrack } from "~/modules/media/helpers/revalidate";
+import { musicStore, Queue } from "~/modules/media/services/Music";
+import { RecentList } from "~/modules/media/services/RecentList";
 import { Resynchronize } from "~/modules/media/services/Resynchronize";
 import { useSortTracks } from "~/modules/media/services/SortPreferences";
 import { queries as q } from "./keyStore";
 
-import { clearAllQueries } from "~/lib/react-query";
+import { clearAllQueries, useFocusedQuery } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
 import { ReservedPlaylists } from "~/modules/media/constants";
 
@@ -31,7 +33,7 @@ export function useTrackPlaylists(trackId: string) {
 /** Return list of `Track.Content` from tracks. */
 export function useTracksForTrackCard() {
   const sortTracksFn = useSortTracks();
-  return useQuery({
+  return useFocusedQuery({
     ...q.tracks.all,
     select: (data) =>
       sortTracksFn(data).map((track) => formatForTrack("track", track)),
@@ -59,7 +61,7 @@ export function useAddToPlaylist(trackId: string) {
   });
 }
 
-/** Set the favorite status of an track. */
+/** Set the favorite status of a track. */
 export function useFavoriteTrack(trackId: string) {
   const queryClient = useQueryClient();
   return useMutation({
@@ -77,6 +79,29 @@ export function useFavoriteTrack(trackId: string) {
         type: "playlist",
         id: ReservedPlaylists.favorites,
       });
+    },
+  });
+}
+
+/** Set the hidden status of a track. */
+export function useHideTrack() {
+  return useMutation({
+    mutationFn: async (args: { trackId: string; isHidden: boolean }) => {
+      await wait(1);
+      await updateTrack(args.trackId, {
+        hiddenAt: args.isHidden ? Date.now() : null,
+      });
+    },
+    onSuccess: async (_, { trackId }) => {
+      // There's a lot of places where this track may appear.
+      clearAllQueries();
+      const { currentList, playingSource } = musicStore.getState();
+      // Need to resynchronize the Music store if we're playing this track.
+      if (currentList.includes(trackId)) {
+        await Resynchronize.onTracks(playingSource!);
+      }
+      Queue.removeIds([trackId]);
+      RecentList.refresh();
     },
   });
 }

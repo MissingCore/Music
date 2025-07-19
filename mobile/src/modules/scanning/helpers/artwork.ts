@@ -39,6 +39,7 @@ export async function findAndSaveArtwork() {
     columns: ["id", "name", "albumId", "uri"],
     withAlbum: false,
     where: [eq(tracks.fetchedArt, false)],
+    withHidden: true,
   });
   // Sort tracks to optimize SQL queries.
   const singles: PartialTrack[] = [];

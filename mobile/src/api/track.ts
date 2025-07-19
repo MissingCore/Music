@@ -1,4 +1,4 @@
-import { and, eq, inArray } from "drizzle-orm";
+import { and, eq, inArray, isNull } from "drizzle-orm";
 
 import { db } from "~/db";
 import type { Album, Track } from "~/db/schema";
@@ -60,9 +60,13 @@ export async function getTracks<
   columns?: TCols[];
   albumColumns?: [ACols, ...ACols[]];
   withAlbum?: WithAlbum_User;
+  withHidden?: boolean;
 }) {
   const allTracks = await db.query.tracks.findMany({
-    where: and(...(options?.where ?? [])),
+    where: and(
+      ...(options?.where ??
+        (!options?.withHidden ? [isNull(tracks.hiddenAt)] : [])),
+    ),
     columns: getColumns(options?.columns),
     ...withAlbum({ defaultWithAlbum: true, ...options }),
     orderBy: (fields) => iAsc(fields.name),

@@ -1,9 +1,10 @@
+import { useIsFocused } from "@react-navigation/native";
 import type {
   DefaultOptions,
   UseMutationResult,
   UseQueryResult,
 } from "@tanstack/react-query";
-import { QueryClient } from "@tanstack/react-query";
+import { QueryClient, useQuery } from "@tanstack/react-query";
 
 import { queries as q } from "~/queries/keyStore";
 
@@ -58,3 +59,10 @@ export function clearAllQueries(client: QueryClient = queryClient) {
 export type ExtractQueryData<T extends () => UseQueryResult<any>> = NonNullable<
   ReturnType<T>["data"]
 >;
+
+/** `useQuery`, but it only refetches when the screen is in focus. */
+// @ts-expect-error - Type conflict.
+export const useFocusedQuery: typeof useQuery = (options) => {
+  const isFocused = useIsFocused();
+  return useQuery({ subscribed: isFocused, ...options });
+};

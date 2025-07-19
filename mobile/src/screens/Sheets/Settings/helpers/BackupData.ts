@@ -72,7 +72,7 @@ async function findExistingAlbumsFactory() {
 
 /** Creates a factory function that finds tracks associated to `RawTrack`. */
 async function findExistingTracksFactory() {
-  const allTracks = await getTracks();
+  const allTracks = await getTracks({ withHidden: true });
   return (entries: Array<z.infer<typeof RawTrack>>) => {
     return entries
       .map((entry) =>

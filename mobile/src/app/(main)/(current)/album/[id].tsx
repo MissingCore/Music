@@ -12,7 +12,10 @@ import { mutateGuard } from "~/lib/react-query";
 import { isNumber } from "~/utils/validation";
 import { FlashList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
-import { PagePlaceholder } from "~/components/Transition/Placeholder";
+import {
+  ContentPlaceholder,
+  PagePlaceholder,
+} from "~/components/Transition/Placeholder";
 import { Em, StyledText } from "~/components/Typography/StyledText";
 import { Track } from "~/modules/media/components/Track";
 
@@ -89,6 +92,13 @@ export default function CurrentAlbumScreen() {
                 className={index > 0 ? "mt-2" : undefined}
               />
             )
+          }
+          ListEmptyComponent={
+            <ContentPlaceholder
+              errMsg={t("feat.hiddenTracks.extra.hasHiddenTracks", {
+                name: t("term.album"),
+              })}
+            />
           }
           contentContainerClassName="px-4 pt-4"
           contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}

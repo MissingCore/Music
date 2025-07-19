@@ -5,6 +5,7 @@ import type {
   Playlist,
   PlaylistWithJunction,
   PlaylistWithTracks,
+  TrackWithAlbum,
 } from "~/db/schema";
 import { playlists, tracksToPlaylists } from "~/db/schema";
 import { sanitizePlaylistName } from "~/db/utils";
@@ -26,11 +27,17 @@ const _getPlaylist: QueryOneWithTracksFn<Playlist> =
       where: eq(playlists.name, id),
       columns: getColumns(options?.columns),
       with: {
+        // Note: `where` only works on the 1st "with" block.
         tracksToPlaylists: {
           columns: {},
           with: {
             track: {
-              columns: getColumns(options?.trackColumns),
+              // Note: If columns are provided, ensure `hiddenAt` is included.
+              columns: getColumns(
+                options?.trackColumns
+                  ? [...options.trackColumns, "hiddenAt"]
+                  : undefined,
+              ),
               ...withAlbum({ defaultWithAlbum: true, ...options }),
             },
           },
@@ -55,11 +62,17 @@ const _getPlaylists: QueryManyWithTracksFn<Playlist> =
       where: and(...(options?.where ?? [])),
       columns: getColumns(options?.columns),
       with: {
+        // Note: `where` only works on the 1st "with" block.
         tracksToPlaylists: {
           columns: {},
           with: {
             track: {
-              columns: getColumns(options?.trackColumns),
+              // Note: If columns are provided, ensure `hiddenAt` is included.
+              columns: getColumns(
+                options?.trackColumns
+                  ? [...options.trackColumns, "hiddenAt"]
+                  : undefined,
+              ),
               ...withAlbum({ defaultWithAlbum: true, ...options }),
             },
           },
@@ -94,10 +107,12 @@ const _getSpecialPlaylist: QueryOneWithTracksFn<
     ...withAlbum({ defaultWithAlbum: true, ...options }),
     ...(ReservedPlaylists.favorites === id
       ? {
-          where: (fields, { eq }) => eq(fields.isFavorite, true),
+          where: (fields, { and, eq, isNull }) =>
+            and(eq(fields.isFavorite, true), isNull(fields.hiddenAt)),
           orderBy: (fields) => iAsc(fields.name),
         }
       : {
+          where: (fields, { isNull }) => isNull(fields.hiddenAt),
           orderBy: (fields) =>
             isAsc
               ? iAsc(
@@ -246,7 +261,8 @@ function fixPlaylistJunction(data: PlaylistWithJunction): PlaylistWithTracks {
     // but failed to do so (resulting in an invalid track floating around).
     tracks: tracksToPlaylists
       .map(({ track }) => track)
-      .filter((t) => t !== null),
+      .filter((t) => t !== null && t.hiddenAt === null)
+      .map(({ hiddenAt: _, ...t }) => t) as TrackWithAlbum[],
   };
 }
 //#endregion

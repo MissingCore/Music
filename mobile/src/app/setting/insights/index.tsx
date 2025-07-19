@@ -24,13 +24,20 @@ export default function InsightsScreen() {
         <DBSummaryWidget />
       </List>
 
-      <ListItem
-        titleKey="feat.saveErrors.title"
-        description={t("feat.saveErrors.brief")}
-        onPress={() => router.navigate("/setting/insights/save-errors")}
-        first
-        last
-      />
+      <List>
+        <ListItem
+          titleKey="feat.hiddenTracks.title"
+          description={t("feat.hiddenTracks.brief")}
+          onPress={() => router.navigate("/setting/insights/hidden")}
+          first
+        />
+        <ListItem
+          titleKey="feat.saveErrors.title"
+          description={t("feat.saveErrors.brief")}
+          onPress={() => router.navigate("/setting/insights/save-errors")}
+          last
+        />
+      </List>
     </StandardScrollLayout>
   );
 }
@@ -47,7 +54,7 @@ function StorageWidget() {
   );
 
   return (
-    <Card className="gap-2 rounded-b-sm">
+    <Card className="gap-4 rounded-b-sm">
       <ProgressBar
         entries={[
           { color: Colors.red, value: data?.images ?? 0 },
@@ -57,7 +64,7 @@ function StorageWidget() {
         ]}
         total={data?.total ?? 0}
       />
-      <Legend className="py-2">
+      <Legend>
         <LegendItem
           nameKey="feat.insights.extra.images"
           value={getValue("images")}
@@ -101,8 +108,8 @@ function DBSummaryWidget() {
   );
 
   return (
-    <Card className="gap-2 rounded-t-sm">
-      <Legend className="pb-2">
+    <Card className="gap-4 rounded-t-sm">
+      <Legend>
         <LegendItem nameKey="term.albums" value={getValue("albums")} />
         <LegendItem nameKey="term.artists" value={getValue("artists")} />
         <LegendItem
@@ -111,6 +118,12 @@ function DBSummaryWidget() {
         />
         <LegendItem nameKey="term.playlists" value={getValue("playlists")} />
         <LegendItem nameKey="term.tracks" value={getValue("tracks")} />
+      </Legend>
+      <Legend>
+        <LegendItem
+          nameKey="feat.hiddenTracks.title"
+          value={getValue("hiddenTracks")}
+        />
         <LegendItem
           nameKey="feat.saveErrors.title"
           value={getValue("saveErrors")}

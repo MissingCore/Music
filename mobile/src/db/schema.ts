@@ -86,8 +86,10 @@ export const tracks = sqliteTable("tracks", {
   // Data checking fields.
   isFavorite: integer({ mode: "boolean" }).notNull().default(false),
   fetchedArt: integer({ mode: "boolean" }).notNull().default(false),
-  // Use Epoch time instead of boolean to track when we edited the metadata.
+  // Use Epoch time instead of boolean to track when we did the action.
   editedMetadata: integer(),
+  hiddenAt: integer(),
+
   parentFolder: text().generatedAlwaysAs(
     // Ref: https://stackoverflow.com/a/38330814
     (): SQL => sql`rtrim(${tracks.uri}, replace(${tracks.uri}, '/', ''))`,

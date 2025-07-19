@@ -25,6 +25,10 @@ export default function SettingsLayout() {
         options={{ title: t("feat.insights.title") }}
       />
       <Stack.Screen
+        name="insights/hidden"
+        options={{ title: t("feat.hiddenTracks.title") }}
+      />
+      <Stack.Screen
         name="insights/save-errors"
         options={{ title: t("feat.saveErrors.title") }}
       />

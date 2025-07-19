@@ -186,6 +186,15 @@
         "totalDuration": "Total Duration"
       }
     },
+    "hiddenTracks": {
+      "title": "Hidden Tracks",
+      "brief": "Tracks not shown in the app.",
+      "extra": {
+        "hiddenAt": "Hidden on {{- date}}.",
+        "hasHiddenTracks": "{{- name}} has hidden tracks.",
+        "notFound": "No hidden tracks found."
+      }
+    },
     "saveErrors": {
       "title": "Save Errors",
       "brief": "See the reason why some tracks weren't saved."
@@ -252,7 +261,7 @@
       "description": "Stop playing audio after the specified amount of minutes.",
       "extra": {
         "start": "Start",
-        "stopTime": "Audio will stop playing at {{time}}."
+        "stopTime": "Audio will stop playing at {{- time}}."
       }
     },
     "translate": {

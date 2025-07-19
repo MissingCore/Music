@@ -1,4 +1,5 @@
 import { useLocalSearchParams } from "expo-router";
+import { useTranslation } from "react-i18next";
 
 import type { Album } from "~/db/schema";
 
@@ -8,7 +9,10 @@ import { useGetColumn } from "~/hooks/useGetColumn";
 import { CurrentListLayout } from "~/layouts/CurrentList";
 
 import { FlashList } from "~/components/Defaults";
-import { PagePlaceholder } from "~/components/Transition/Placeholder";
+import {
+  ContentPlaceholder,
+  PagePlaceholder,
+} from "~/components/Transition/Placeholder";
 import { TEm } from "~/components/Typography/StyledText";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import { Track } from "~/modules/media/components/Track";
@@ -17,6 +21,7 @@ type ArtistAlbum = Omit<Album, "releaseYear"> & { releaseYear: string | null };
 
 /** Screen for `/artist/[id]` route. */
 export default function CurrentArtistScreen() {
+  const { t } = useTranslation();
   const { bottomInset } = useBottomActionsContext();
   const { id: artistName } = useLocalSearchParams<{ id: string }>();
   const { isPending, error, data } = useArtistForScreen(artistName);
@@ -45,6 +50,13 @@ export default function CurrentArtistScreen() {
           />
         )}
         ListHeaderComponent={<ArtistAlbums albums={data.albums} />}
+        ListEmptyComponent={
+          <ContentPlaceholder
+            errMsg={t("feat.hiddenTracks.extra.hasHiddenTracks", {
+              name: t("term.artist"),
+            })}
+          />
+        }
         contentContainerClassName="px-4 pt-4"
         contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
       />
