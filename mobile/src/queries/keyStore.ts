@@ -42,11 +42,15 @@ export const queries = createQueryKeyStore({
   artists: {
     all: {
       queryKey: null,
-      queryFn: () =>
-        getArtists({
+      queryFn: async () => {
+        const allArtists = await getArtists({
           columns: ["name", "artwork"],
-          withTracks: false,
-        }),
+          trackColumns: ["id"],
+        });
+        return allArtists
+          .filter(({ tracks }) => tracks.length > 0)
+          .map(({ tracks: _, ...rest }) => rest);
+      },
     },
     detail: (artistName: string) => ({
       queryKey: [artistName],
