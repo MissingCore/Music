@@ -23,15 +23,11 @@ export const queries = createQueryKeyStore({
   albums: {
     all: {
       queryKey: null,
-      queryFn: async () => {
-        const allAlbums = await getAlbums({
+      queryFn: () =>
+        getAlbums({
           columns: ["id", "name", "artistName", "artwork"],
-          trackColumns: ["id"],
-        });
-        return allAlbums
-          .filter(({ tracks }) => tracks.length > 0)
-          .map(({ tracks: _, ...rest }) => rest);
-      },
+          withTracks: false,
+        }),
     },
     detail: (albumId: string) => ({
       queryKey: [albumId],
@@ -42,15 +38,11 @@ export const queries = createQueryKeyStore({
   artists: {
     all: {
       queryKey: null,
-      queryFn: async () => {
-        const allArtists = await getArtists({
+      queryFn: () =>
+        getArtists({
           columns: ["name", "artwork"],
-          trackColumns: ["id"],
-        });
-        return allArtists
-          .filter(({ tracks }) => tracks.length > 0)
-          .map(({ tracks: _, ...rest }) => rest);
-      },
+          withTracks: false,
+        }),
     },
     detail: (artistName: string) => ({
       queryKey: [artistName],
@@ -166,7 +158,7 @@ async function getFavoriteLists() {
     getAlbums({
       where: [eq(albums.isFavorite, true)],
       columns: ["id", "name", "artistName", "artwork"],
-      trackColumns: ["id"],
+      withTracks: false,
     }),
     getPlaylists({
       where: [eq(playlists.isFavorite, true)],
@@ -175,10 +167,5 @@ async function getFavoriteLists() {
       albumColumns: ["artwork"],
     }),
   ]);
-  return {
-    albums: favAlbums
-      .filter(({ tracks }) => tracks.length > 0)
-      .map(({ tracks: _, ...rest }) => rest),
-    playlists: favPlaylists,
-  };
+  return { albums: favAlbums, playlists: favPlaylists };
 }

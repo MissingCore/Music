@@ -190,7 +190,8 @@
       "title": "Hidden Tracks",
       "brief": "Tracks not shown in the app.",
       "extra": {
-        "hiddenAt": "Hidden on {{- date}}."
+        "hiddenAt": "Hidden on {{- date}}.",
+        "hasHiddenTracks": "{{- name}} has hidden tracks."
       }
     },
     "saveErrors": {
