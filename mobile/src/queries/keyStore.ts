@@ -23,11 +23,15 @@ export const queries = createQueryKeyStore({
   albums: {
     all: {
       queryKey: null,
-      queryFn: () =>
-        getAlbums({
+      queryFn: async () => {
+        const allAlbums = await getAlbums({
           columns: ["id", "name", "artistName", "artwork"],
-          withTracks: false,
-        }),
+          trackColumns: ["id"],
+        });
+        return allAlbums
+          .filter(({ tracks }) => tracks.length > 0)
+          .map(({ tracks: _, ...rest }) => rest);
+      },
     },
     detail: (albumId: string) => ({
       queryKey: [albumId],
@@ -158,7 +162,7 @@ async function getFavoriteLists() {
     getAlbums({
       where: [eq(albums.isFavorite, true)],
       columns: ["id", "name", "artistName", "artwork"],
-      withTracks: false,
+      trackColumns: ["id"],
     }),
     getPlaylists({
       where: [eq(playlists.isFavorite, true)],
@@ -167,5 +171,10 @@ async function getFavoriteLists() {
       albumColumns: ["artwork"],
     }),
   ]);
-  return { albums: favAlbums, playlists: favPlaylists };
+  return {
+    albums: favAlbums
+      .filter(({ tracks }) => tracks.length > 0)
+      .map(({ tracks: _, ...rest }) => rest),
+    playlists: favPlaylists,
+  };
 }
