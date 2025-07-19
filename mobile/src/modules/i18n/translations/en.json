@@ -191,7 +191,8 @@
       "brief": "Tracks not shown in the app.",
       "extra": {
         "hiddenAt": "Hidden on {{- date}}.",
-        "hasHiddenTracks": "{{- name}} has hidden tracks."
+        "hasHiddenTracks": "{{- name}} has hidden tracks.",
+        "notFound": "No hidden tracks found."
       }
     },
     "saveErrors": {

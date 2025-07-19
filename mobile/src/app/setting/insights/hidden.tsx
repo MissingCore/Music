@@ -5,7 +5,6 @@ import { useHiddenTracks } from "~/queries/setting";
 import { useHideTrack } from "~/queries/track";
 
 import { mutateGuard } from "~/lib/react-query";
-import { cn } from "~/lib/style";
 import { FlashList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
@@ -41,13 +40,13 @@ export default function HiddenTracksScreen() {
               disabled={hideTrack.isPending}
             />
           }
-          className={cn("bg-canvas", { "mt-2": index > 0 })}
+          className={index > 0 ? "mt-2" : undefined}
         />
       )}
       ListEmptyComponent={
         <ContentPlaceholder
           isPending={isPending}
-          errMsgKey="err.msg.noContent"
+          errMsgKey="feat.hiddenTracks.extra.notFound"
         />
       }
       contentContainerClassName="p-4"
