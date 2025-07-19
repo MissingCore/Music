@@ -32,7 +32,12 @@ const _getPlaylist: QueryOneWithTracksFn<Playlist> =
           columns: {},
           with: {
             track: {
-              columns: { ...getColumns(options?.trackColumns), hiddenAt: true },
+              // Note: If columns are provided, ensure `hiddenAt` is included.
+              columns: getColumns(
+                options?.trackColumns
+                  ? [...options.trackColumns, "hiddenAt"]
+                  : undefined,
+              ),
               ...withAlbum({ defaultWithAlbum: true, ...options }),
             },
           },
@@ -41,7 +46,6 @@ const _getPlaylist: QueryOneWithTracksFn<Playlist> =
       },
     });
     if (!playlist) throw new Error(i18next.t("err.msg.noPlaylists"));
-    // @ts-expect-error - Data is compatible.
     return fixPlaylistJunction(playlist);
   };
 
@@ -63,7 +67,12 @@ const _getPlaylists: QueryManyWithTracksFn<Playlist> =
           columns: {},
           with: {
             track: {
-              columns: { ...getColumns(options?.trackColumns), hiddenAt: true },
+              // Note: If columns are provided, ensure `hiddenAt` is included.
+              columns: getColumns(
+                options?.trackColumns
+                  ? [...options.trackColumns, "hiddenAt"]
+                  : undefined,
+              ),
               ...withAlbum({ defaultWithAlbum: true, ...options }),
             },
           },
@@ -72,7 +81,6 @@ const _getPlaylists: QueryManyWithTracksFn<Playlist> =
       },
       orderBy: (fields) => iAsc(fields.name),
     });
-    // @ts-expect-error - Data is compatible.
     return allPlaylists.map((data) => fixPlaylistJunction(data));
   };
 
