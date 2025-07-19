@@ -8,6 +8,8 @@ import { updateArtist } from "~/api/artist";
 import { Resynchronize } from "~/modules/media/services/Resynchronize";
 import { queries as q } from "./keyStore";
 
+import { useFocusedQuery } from "~/lib/react-query";
+
 //#region Queries
 /** Get specified artist. */
 export function useArtist(artistName: string) {
@@ -17,7 +19,7 @@ export function useArtist(artistName: string) {
 /** Format artist information for artist's `(current)` screen. */
 export function useArtistForScreen(artistName: string) {
   const { t } = useTranslation();
-  return useQuery({
+  return useFocusedQuery({
     ...q.artists.detail(artistName),
     select: ({ albums, ...artist }) => ({
       ...formatForCurrentScreen({ type: "artist", data: artist, t }),

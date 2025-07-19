@@ -15,7 +15,7 @@ import { Resynchronize } from "~/modules/media/services/Resynchronize";
 import { useSortTracks } from "~/modules/media/services/SortPreferences";
 import { queries as q } from "./keyStore";
 
-import { clearAllQueries } from "~/lib/react-query";
+import { clearAllQueries, useFocusedQuery } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
 import { ReservedPlaylists } from "~/modules/media/constants";
 
@@ -33,7 +33,7 @@ export function useTrackPlaylists(trackId: string) {
 /** Return list of `Track.Content` from tracks. */
 export function useTracksForTrackCard() {
   const sortTracksFn = useSortTracks();
-  return useQuery({
+  return useFocusedQuery({
     ...q.tracks.all,
     select: (data) =>
       sortTracksFn(data).map((track) => formatForTrack("track", track)),
