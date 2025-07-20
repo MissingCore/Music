@@ -98,6 +98,7 @@ export const queries = createQueryKeyStore({
             "artistName",
             "duration",
             "artwork",
+            "discoverTime",
             "modificationTime",
           ],
           albumColumns: ["name", "artistName", "artwork"],
