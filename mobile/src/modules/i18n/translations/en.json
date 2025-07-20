@@ -364,6 +364,7 @@
       "extra": {
         "asc": "Ascending Order",
         "alphabetical": "Alphabetical",
+        "discover": "Discover Time",
         "modified": "Last Modified"
       }
     },

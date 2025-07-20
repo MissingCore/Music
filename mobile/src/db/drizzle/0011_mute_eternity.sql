@@ -1,0 +1,1 @@
+ALTER TABLE `tracks` ADD `discover_time` integer DEFAULT -1 NOT NULL;

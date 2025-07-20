@@ -145,8 +145,8 @@ export async function findAndSaveAudio() {
           // Update existing track.
           await updateTrack(id, trackEntry);
         } else {
-          // Save new track.
-          await createTrack(trackEntry);
+          // Save new track. Only set `discoverTime` when we create a Track entry.
+          await createTrack({ ...trackEntry, discoverTime: Date.now() });
           // Remove track from `InvalidTrack` if it was there previously.
           if (isRetry) {
             await db.delete(invalidTracks).where(eq(invalidTracks.id, id));

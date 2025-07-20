@@ -91,6 +91,13 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
     );
   },
 
+  "discover-time-field": async () => {
+    await db
+      .update(tracks)
+      .set({ discoverTime: tracks.modificationTime })
+      .where(eq(tracks.discoverTime, -1));
+  },
+
   "duplicate-album-fix": async () => {
     /* 1. Copy `releaseYear` to `year` field. */
     const allAlbums = await getAlbums();

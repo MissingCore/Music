@@ -6,7 +6,11 @@ import type { TrackWithAlbum } from "~/db/schema";
 import { createPersistedSubscribedStore } from "~/lib/zustand";
 
 /** Options for how we can order tracks. */
-export const OrderedByOptions = ["alphabetical", "modified"] as const;
+export const OrderedByOptions = [
+  "alphabetical",
+  "discover",
+  "modified",
+] as const;
 
 /*
   FIXME: Currently, the store state only supports sorting for the `/tracks`
@@ -65,7 +69,10 @@ export const useSortPreferencesStore = <T>(
 //#endregion
 
 //#region Helpers
-type PartialTrack = Pick<TrackWithAlbum, "name" | "modificationTime">;
+type PartialTrack = Pick<
+  TrackWithAlbum,
+  "name" | "discoverTime" | "modificationTime"
+>;
 
 /** Sort tracks based on filters for `/track` screen. */
 export function sortTracks<TData extends PartialTrack>(
@@ -82,7 +89,9 @@ export function sortTracks<TData extends PartialTrack>(
   const sortedTracks = [...tracks];
   // Order track by attribute (by default, tracks are sorted in alphabetical
   // order in the database).
-  if (orderedBy === "modified") {
+  if (orderedBy === "discover") {
+    sortedTracks.sort((a, b) => a.discoverTime - b.discoverTime);
+  } else if (orderedBy === "modified") {
     sortedTracks.sort((a, b) => a.modificationTime - b.modificationTime);
   }
   // Sort tracks in descending order.

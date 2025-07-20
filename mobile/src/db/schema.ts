@@ -77,6 +77,7 @@ export const tracks = sqliteTable("tracks", {
   size: integer().notNull(),
   uri: text().notNull(),
   modificationTime: integer().notNull(),
+  discoverTime: integer().notNull().default(-1),
   // Artwork
   artwork: text().generatedAlwaysAs(
     (): SQL => sql`coalesce(${tracks.altArtwork}, ${tracks.embeddedArtwork})`,
