@@ -283,7 +283,10 @@
       "brief": "What makes this app possible."
     },
     "version": {
-      "title": "Version"
+      "title": "Version",
+      "extra": {
+        "rcNotification": "Pre-Release Notification"
+      }
     },
 
     "onboardPreprocess": {

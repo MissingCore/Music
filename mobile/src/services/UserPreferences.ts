@@ -73,6 +73,9 @@ interface UserPreferencesStore {
   /** Minimum number of seconds a track needs to have to be saved. */
   minSeconds: number;
 
+  /** If the user should be notified about `-rc` versions. */
+  rcNotification: boolean;
+
   /*
     Experimental Features
   */
@@ -135,6 +138,8 @@ export const userPreferencesStore =
       listAllow: [],
       listBlock: [],
       minSeconds: 15,
+
+      rcNotification: false,
 
       sleepTimer: false,
     }),

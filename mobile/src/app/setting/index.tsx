@@ -3,6 +3,11 @@ import { openBrowserAsync } from "expo-web-browser";
 import { useTranslation } from "react-i18next";
 
 import { OpenInNew } from "~/icons/OpenInNew";
+import { queries as q } from "~/queries/keyStore";
+import {
+  userPreferencesStore,
+  useUserPreferencesStore,
+} from "~/services/UserPreferences";
 import { useHasNewUpdate } from "~/hooks/useHasNewUpdate";
 import { StandardScrollLayout } from "~/layouts/StandardScroll";
 import { SettingsSheets } from "~/screens/Sheets/Settings/Root";
@@ -10,13 +15,19 @@ import { LANGUAGES } from "~/modules/i18n/constants";
 
 import { APP_VERSION } from "~/constants/Config";
 import * as LINKS from "~/constants/Links";
+import { queryClient } from "~/lib/react-query";
+import { Card } from "~/components/Containment/Card";
 import { List, ListItem } from "~/components/Containment/List";
+import { Divider } from "~/components/Divider";
 import { useSheetRef } from "~/components/Sheet";
 
 /** Screen for `/setting` route. */
 export default function SettingScreen() {
   const { t, i18n } = useTranslation();
   const { hasNewUpdate } = useHasNewUpdate();
+  const showRCNotification = useUserPreferencesStore(
+    (state) => state.rcNotification,
+  );
   const backupSheetRef = useSheetRef();
   const languageSheetRef = useSheetRef();
 
@@ -122,13 +133,31 @@ export default function SettingScreen() {
             description={t("feat.thirdParty.brief")}
             onPress={() => router.navigate("/setting/third-party")}
           />
-          <ListItem
-            titleKey="feat.version.title"
-            description={APP_VERSION}
-            last
-          />
+          <Card className="overflow-hidden rounded-t-sm p-0">
+            <ListItem
+              titleKey="feat.version.title"
+              description={APP_VERSION}
+              icon={<OpenInNew />}
+              onPress={() => openBrowserAsync(LINKS.VERSION_CHANGELOG)}
+              className="rounded-none"
+            />
+            <Divider className="mx-4" />
+            <ListItem
+              titleKey="feat.version.extra.rcNotification"
+              onPress={toggleRCNotification}
+              switchState={showRCNotification}
+              className="rounded-none"
+            />
+          </Card>
         </List>
       </StandardScrollLayout>
     </>
   );
 }
+
+const toggleRCNotification = () => {
+  userPreferencesStore.setState((prev) => ({
+    rcNotification: !prev.rcNotification,
+  }));
+  queryClient.invalidateQueries({ queryKey: q.settings.releaseNote.queryKey });
+};
