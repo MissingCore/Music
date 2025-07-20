@@ -5,7 +5,7 @@ import { EncodingType, StorageAccessFramework as SAF } from "expo-file-system";
 import { File } from "expo-file-system/next";
 import { eq, inArray } from "drizzle-orm";
 import { useTranslation } from "react-i18next";
-import { z } from "zod";
+import { z } from "zod/mini";
 
 import { db } from "~/db";
 import type { TrackWithAlbum } from "~/db/schema";
@@ -25,29 +25,36 @@ import { ToastOptions } from "~/lib/toast";
 import { pickKeys } from "~/utils/object";
 
 //#region Schemas
+const NonEmptyStringSchema = z.string().check(z.trim(), z.minLength(1));
+const NullableNonEmptyStringSchema = z.nullish(NonEmptyStringSchema);
+const PlaylistNameSchema = z.pipe(
+  z.string(),
+  z.transform(sanitizePlaylistName),
+);
+
 const RawAlbum = z.object({
-  name: z.string().trim().min(1),
-  artistName: z.string().trim().min(1),
+  name: NonEmptyStringSchema,
+  artistName: NonEmptyStringSchema,
 });
 
 const RawTrack = z.object({
-  name: z.string().trim().min(1),
-  artistName: z.string().trim().min(1).nullish(),
-  albumName: z.string().trim().min(1).nullish(),
+  name: NonEmptyStringSchema,
+  artistName: NullableNonEmptyStringSchema,
+  albumName: NullableNonEmptyStringSchema,
 });
 
 const MusicBackup = z.object({
   favorites: z.object({
-    albums: RawAlbum.array(),
-    playlists: z.string().transform(sanitizePlaylistName).array(),
-    tracks: RawTrack.array(),
+    albums: z.array(RawAlbum),
+    playlists: z.array(PlaylistNameSchema),
+    tracks: z.array(RawTrack),
   }),
-  playlists: z
-    .object({
-      name: z.string().transform(sanitizePlaylistName),
-      tracks: RawTrack.array(),
-    })
-    .array(),
+  playlists: z.array(
+    z.object({
+      name: PlaylistNameSchema,
+      tracks: z.array(RawTrack),
+    }),
+  ),
 });
 //#endregion
 
