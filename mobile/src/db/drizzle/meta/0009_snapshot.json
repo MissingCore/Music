@@ -347,6 +347,14 @@
           "notNull": true,
           "autoincrement": false
         },
+        "discover_time": {
+          "name": "discover_time",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": -1
+        },
         "artwork": {
           "name": "artwork",
           "type": "text",
@@ -390,6 +398,13 @@
         },
         "edited_metadata": {
           "name": "edited_metadata",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "hidden_at": {
+          "name": "hidden_at",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,

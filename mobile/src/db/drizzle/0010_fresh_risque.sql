@@ -1,1 +1,0 @@
-ALTER TABLE `tracks` ADD `hidden_at` integer;

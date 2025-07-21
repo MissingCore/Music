@@ -71,20 +71,6 @@
       "when": 1751075864737,
       "tag": "0009_ambitious_puppet_master",
       "breakpoints": true
-    },
-    {
-      "idx": 10,
-      "version": "6",
-      "when": 1752446464645,
-      "tag": "0010_fresh_risque",
-      "breakpoints": true
-    },
-    {
-      "idx": 11,
-      "version": "6",
-      "when": 1753052860009,
-      "tag": "0011_mute_eternity",
-      "breakpoints": true
     }
   ]
 }
