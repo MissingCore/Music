@@ -1,6 +1,6 @@
 import type { UseMutationResult } from "@tanstack/react-query";
 import { useState } from "react";
-import { View, useWindowDimensions } from "react-native";
+import { useWindowDimensions } from "react-native";
 
 import { useAlbum, useUpdateAlbumArtwork } from "~/queries/album";
 import { useArtist, useUpdateArtist } from "~/queries/artist";
@@ -10,10 +10,8 @@ import { useTrack, useUpdateTrackArtwork } from "~/queries/track";
 import { pickImage } from "~/lib/file-system";
 import { mutateGuard } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
-import { Button } from "~/components/Form/Button";
 import type { TrueSheetRef } from "~/components/Sheet";
-import { Sheet } from "~/components/Sheet";
-import { TStyledText } from "~/components/Typography/StyledText";
+import { Sheet, SheetButtonGroup } from "~/components/Sheet";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import type { MediaType } from "~/modules/media/types";
 
@@ -104,46 +102,35 @@ function BaseArtworkSheetContent(props: {
         size={width - 96 > height - 256 ? height - 256 : width - 96}
         className="mx-4"
       />
-      <View className="flex-row gap-2">
-        <Button
-          onPress={async () => {
+      <SheetButtonGroup
+        leftButton={{
+          textKey: "feat.artwork.extra.remove",
+          onPress: async () => {
             setDisabled(true);
             await wait(1);
             mutateGuard(props.mutationResult, { artwork: null });
             setDisabled(false);
-          }}
-          disabled={
+          },
+          disabled:
             props.disabled ||
             disabled ||
             props.imageSource === null ||
-            Array.isArray(props.imageSource)
-          }
-          className="flex-1"
-        >
-          <TStyledText
-            textKey="feat.artwork.extra.remove"
-            bold
-            className="text-center text-sm"
-          />
-        </Button>
-        <Button
-          onPress={async () => {
+            Array.isArray(props.imageSource),
+          className: "flex-1",
+        }}
+        rightButton={{
+          textKey: "feat.artwork.extra.change",
+          onPress: async () => {
             setDisabled(true);
             try {
               mutateGuard(props.mutationResult, { artwork: await pickImage() });
             } catch {}
             setDisabled(false);
-          }}
-          disabled={disabled}
-          className="flex-1"
-        >
-          <TStyledText
-            textKey="feat.artwork.extra.change"
-            bold
-            className="text-center text-sm"
-          />
-        </Button>
-      </View>
+          },
+          disabled,
+          className: "flex-1",
+        }}
+      />
     </>
   );
 }
