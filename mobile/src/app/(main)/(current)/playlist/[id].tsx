@@ -15,10 +15,7 @@ import {
 import { useRemoveFromPlaylist } from "~/queries/track";
 import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 import { CurrentListLayout } from "~/layouts/CurrentList";
-import {
-  areRenderItemPropsEqual,
-  useDragListState,
-} from "~/lib/react-native-draglist";
+import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 
 import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
@@ -50,11 +47,6 @@ export default function CurrentPlaylistScreen() {
       mutateGuard(moveInPlaylist, { fromIndex, toIndex }),
     [moveInPlaylist],
   );
-
-  const { items, onReordered } = useDragListState({
-    data: data?.tracks,
-    onMove,
-  });
 
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
 
@@ -99,12 +91,12 @@ export default function CurrentPlaylistScreen() {
       >
         <FlashDragList
           estimatedItemSize={56} // 48px Height + 8px Margin Top
-          data={items}
+          data={data?.tracks}
           keyExtractor={({ id }) => id}
           renderItem={(args) => (
             <RenderItem {...args} trackSource={trackSource} />
           )}
-          onReordered={onReordered}
+          onReordered={onMove}
           ListEmptyComponent={
             <ContentPlaceholder errMsgKey="err.msg.noTracks" />
           }

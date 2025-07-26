@@ -63,7 +63,7 @@
     "react-i18next": "^15.6.0",
     "react-native": "^0.79.5",
     "react-native-bootsplash": "^6.3.10",
-    "react-native-draglist": "github:MissingCore/react-native-draglist#6e926d101e6293785d5cab4c014ccdc4812c19d2",
+    "react-native-draglist": "github:MissingCore/react-native-draglist#3f2e92cccf28e9192ff330c9ac7c5813156f0d4e",
     "react-native-edge-to-edge": "^1.6.2",
     "react-native-gesture-handler": "~2.27.1",
     "react-native-keyboard-controller": "^1.17.5",
