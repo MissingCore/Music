@@ -1,0 +1,12 @@
+diff --git a/android/src/main/java/com/lodev09/truesheet/TrueSheetDialog.kt b/android/src/main/java/com/lodev09/truesheet/TrueSheetDialog.kt
+index f05e63e5df5e9217d713a978f77992fee1decb17..faf3374c59bff2fe3682b6ab9d20a332144b6d78 100644
+--- a/android/src/main/java/com/lodev09/truesheet/TrueSheetDialog.kt
++++ b/android/src/main/java/com/lodev09/truesheet/TrueSheetDialog.kt
+@@ -87,6 +87,7 @@ class TrueSheetDialog(private val reactContext: ThemedReactContext, private val
+     setContentView(rootSheetView)
+ 
+     sheetContainerView?.setBackgroundColor(backgroundColor)
++    sheetContainerView?.setOutlineProvider(null)
+     sheetContainerView?.clipToOutline = true
+ 
+     // Setup window params to adjust layout based on Keyboard state
