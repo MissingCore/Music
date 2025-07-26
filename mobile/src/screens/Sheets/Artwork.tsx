@@ -116,7 +116,6 @@ function BaseArtworkSheetContent(props: {
             disabled ||
             props.imageSource === null ||
             Array.isArray(props.imageSource),
-          className: "flex-1",
         }}
         rightButton={{
           textKey: "feat.artwork.extra.change",
@@ -128,7 +127,6 @@ function BaseArtworkSheetContent(props: {
             setDisabled(false);
           },
           disabled,
-          className: "flex-1",
         }}
       />
     </>

@@ -148,7 +148,10 @@ export function SheetButtonGroup(props: {
     <View className={cn("flex-row gap-[3px]", props.className)}>
       <Button
         {...props.leftButton}
-        className={cn("min-h-14 rounded-r-sm", props.leftButton.className)}
+        className={cn(
+          "min-h-14 flex-1 rounded-r-sm",
+          props.leftButton.className,
+        )}
       >
         <TStyledText
           textKey={props.leftButton.textKey}
@@ -158,7 +161,10 @@ export function SheetButtonGroup(props: {
       </Button>
       <Button
         {...props.rightButton}
-        className={cn("min-h-14 rounded-l-sm", props.rightButton.className)}
+        className={cn(
+          "min-h-14 flex-1 rounded-l-sm",
+          props.rightButton.className,
+        )}
       >
         <TStyledText
           textKey={props.rightButton.textKey}
@@ -185,7 +191,7 @@ function HeaderApplicator(props: {
       easeGradient({
         colorStops: { 0: { color: `${canvasAlt}00` }, 1: { color: canvasAlt } },
       }),
-    [],
+    [canvasAlt],
   );
   return (
     <>

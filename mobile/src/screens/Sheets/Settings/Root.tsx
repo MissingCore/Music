@@ -48,13 +48,11 @@ function BackupSheet(props: { sheetRef: TrueSheetRef }) {
           textKey: "feat.backup.extra.export",
           onPress: () => mutateGuard(exportBackup, undefined),
           disabled: inProgress,
-          className: "flex-1",
         }}
         rightButton={{
           textKey: "feat.backup.extra.import",
           onPress: () => mutateGuard(importBackup, undefined),
           disabled: inProgress,
-          className: "flex-1",
         }}
       />
     </Sheet>
