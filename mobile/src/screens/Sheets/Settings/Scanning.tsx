@@ -72,7 +72,7 @@ function ScanFilterListSheet({
       ref={sheetRef}
       titleKey={`feat.${listType}.title`}
       keyboardMode="pan"
-      contentContainerClassName="gap-6 px-0"
+      contentContainerClassName="px-0"
       snapTop
     >
       {listType === "listBlock" ? (
@@ -194,11 +194,7 @@ function MinDurationSheet(props: { sheetRef: TrueSheetRef }) {
   }, [newMin]);
 
   return (
-    <Sheet
-      ref={props.sheetRef}
-      titleKey="feat.ignoreDuration.title"
-      contentContainerClassName="gap-6"
-    >
+    <Sheet ref={props.sheetRef} titleKey="feat.ignoreDuration.title">
       <TStyledText
         dim
         textKey="feat.ignoreDuration.description"

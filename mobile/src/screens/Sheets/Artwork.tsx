@@ -23,7 +23,7 @@ export function AlbumArtworkSheet(props: ArtworkSheetProps) {
   const updateAlbumArtwork = useUpdateAlbumArtwork(props.id);
 
   return (
-    <Sheet ref={props.sheetRef} contentContainerClassName="items-center gap-6">
+    <Sheet ref={props.sheetRef} contentContainerClassName="items-center">
       <BaseArtworkSheetContent
         type="album"
         imageSource={data?.artwork ?? null}
@@ -40,7 +40,7 @@ export function ArtistArtworkSheet(props: ArtworkSheetProps) {
   const updateArtist = useUpdateArtist(props.id);
 
   return (
-    <Sheet ref={props.sheetRef} contentContainerClassName="items-center gap-6">
+    <Sheet ref={props.sheetRef} contentContainerClassName="items-center">
       <BaseArtworkSheetContent
         type="artist"
         imageSource={data?.artwork ?? null}
@@ -56,7 +56,7 @@ export function PlaylistArtworkSheet(props: ArtworkSheetProps) {
   const updatePlaylist = useUpdatePlaylist(props.id);
 
   return (
-    <Sheet ref={props.sheetRef} contentContainerClassName="items-center gap-6">
+    <Sheet ref={props.sheetRef} contentContainerClassName="items-center">
       <BaseArtworkSheetContent
         type="playlist"
         imageSource={data?.imageSource ?? null}
@@ -72,7 +72,7 @@ export function TrackArtworkSheet(props: ArtworkSheetProps) {
   const updateTrackArtwork = useUpdateTrackArtwork(props.id);
 
   return (
-    <Sheet ref={props.sheetRef} contentContainerClassName="items-center gap-6">
+    <Sheet ref={props.sheetRef} contentContainerClassName="items-center">
       <BaseArtworkSheetContent
         type="track"
         imageSource={data?.artwork ?? null}

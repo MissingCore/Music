@@ -33,11 +33,7 @@ function BackupSheet(props: { sheetRef: TrueSheetRef }) {
   const inProgress = exportBackup.isPending || importBackup.isPending;
 
   return (
-    <Sheet
-      ref={props.sheetRef}
-      titleKey="feat.backup.title"
-      contentContainerClassName="gap-6"
-    >
+    <Sheet ref={props.sheetRef} titleKey="feat.backup.title">
       <TStyledText
         dim
         textKey="feat.backup.description"

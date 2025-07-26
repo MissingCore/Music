@@ -40,11 +40,7 @@ export function SleepTimerSheet(props: { sheetRef: TrueSheetRef }) {
   }, [createTimer, minutes]);
 
   return (
-    <Sheet
-      ref={props.sheetRef}
-      titleKey="feat.sleepTimer.title"
-      contentContainerClassName="gap-4"
-    >
+    <Sheet ref={props.sheetRef} titleKey="feat.sleepTimer.title">
       <TStyledText
         dim
         textKey="feat.sleepTimer.description"
@@ -68,7 +64,7 @@ export function SleepTimerSheet(props: { sheetRef: TrueSheetRef }) {
         onPress={hasTimer ? clearTimer : onSubmit}
         className="rounded-full"
       >
-        <StyledText>
+        <StyledText className="text-center" bold>
           {t(hasTimer ? "form.clear" : "feat.sleepTimer.extra.start")}
         </StyledText>
       </Button>
