@@ -2,28 +2,21 @@
   <!-- Remove permissions added by Expo that aren't used. -->
   <uses-permission android:name="android.permission.CAMERA" tools:node="remove" />
   <uses-permission android:name="android.permission.RECORD_AUDIO" tools:node="remove" />
-  <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" tools:node="remove" />
   <uses-permission android:name="android.permission.VIBRATE" tools:node="remove" />
 
   <uses-permission android:name="android.permission.INTERNET" />
 
   <!--
     In Android 13 (API Level 33), `READ_EXTERNAL_STORAGE` is replaced by
-    more granular permissions: `READ_MEDIA_AUDIO`, `READ_MEDIA_IMAGES`,
-    and `READ_MEDIA_VIDEO`.
-      - We only care about audio files.
+    more granular permissions. We only care about audio files, so we only
+    want `READ_MEDIA_AUDIO`.
   -->
-  <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" tools:node="remove" />
   <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" tools:node="remove" />
   <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED"
     tools:node="remove" />
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-  <!--
-    Does nothing in Android 11 (API Level 30) and above; however, `expo-media-library`
-    still needs it on Android 11+ as it throws an error.
-      - https://developer.android.com/reference/android/Manifest.permission#WRITE_EXTERNAL_STORAGE
-  -->
+  <!-- Does nothing in Android 11 (API Level 30) and above. -->
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
   <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />

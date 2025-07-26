@@ -23,10 +23,11 @@ export default (): ExpoConfig => ({
       backgroundColor: "#000000",
     },
     blockedPermissions: [
-      "android.permission.CAMERA",
-      "android.permission.RECORD_AUDIO",
-      "android.permission.MODIFY_AUDIO_SETTINGS",
+      // Optional permissions that Expo adds.
       "android.permission.VIBRATE",
+      // From `expo-image-picker`.
+      "android.permission.CAMERA",
+      // From `expo-media-library`.
       "android.permission.READ_MEDIA_IMAGES",
       "android.permission.READ_MEDIA_VIDEO",
       "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
@@ -47,6 +48,7 @@ export default (): ExpoConfig => ({
         ],
       },
     ],
+    ["expo-image-picker", { microphonePermission: false }],
     [
       "react-native-bootsplash",
       {
