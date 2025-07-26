@@ -7,7 +7,7 @@ import type { ParseKeys } from "i18next";
 import { cssInterop } from "nativewind";
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { StyleProp, ViewStyle } from "react-native";
+import type { PressableProps, StyleProp, ViewStyle } from "react-native";
 import { View, useWindowDimensions } from "react-native";
 import { easeGradient } from "react-native-easing-gradient";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -17,7 +17,8 @@ import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
 import { Marquee } from "./Containment/Marquee";
-import { StyledText } from "./Typography/StyledText";
+import { Button } from "./Form/Button";
+import { StyledText, TStyledText } from "./Typography/StyledText";
 
 const WrappedGestureHandlerRootView = cssInterop(GestureHandlerRootView, {
   className: "style",
@@ -39,6 +40,7 @@ export function useSheetRef() {
   return useRef<TrueSheet>(null);
 }
 
+//#region Sheet
 export function Sheet({
   titleKey,
   globalKey,
@@ -134,7 +136,42 @@ export function Sheet({
     </TrueSheet>
   );
 }
+//#endregion
 
+//#region List Button
+export function SheetButtonGroup(props: {
+  leftButton: Omit<PressableProps, "children"> & { textKey: ParseKeys };
+  rightButton: Omit<PressableProps, "children"> & { textKey: ParseKeys };
+  className?: string;
+}) {
+  return (
+    <View className={cn("flex-row gap-[3px]", props.className)}>
+      <Button
+        {...props.leftButton}
+        className={cn("min-h-14 rounded-r-sm", props.leftButton.className)}
+      >
+        <TStyledText
+          textKey={props.leftButton.textKey}
+          className="text-center text-sm"
+          bold
+        />
+      </Button>
+      <Button
+        {...props.rightButton}
+        className={cn("min-h-14 rounded-l-sm", props.rightButton.className)}
+      >
+        <TStyledText
+          textKey={props.rightButton.textKey}
+          className="text-center text-sm"
+          bold
+        />
+      </Button>
+    </View>
+  );
+}
+//#endregion
+
+//#region Internal
 const GRADIENT_HEIGHT = 96;
 
 function HeaderApplicator(props: {
@@ -179,3 +216,4 @@ function HeaderApplicator(props: {
     </>
   );
 }
+//#endregion
