@@ -99,26 +99,27 @@ export function Sheet({
       }}
       {...props}
     >
-      <SheetHeader
+      <HeaderApplicator
         title={titleKey ? t(titleKey) : undefined}
         getHeight={setHeaderHeight}
-      />
-      <WrappedGestureHandlerRootView
-        style={[
-          // TrueSheet doesn't know the actual scrollable area, so we
-          // need to exclude the height taken up by the "SheetHeader"
-          // from the container that can hold a scrollable.
-          [{ maxHeight: trueScreenHeight - headerHeight }],
-          contentContainerStyle,
-        ]}
-        className={cn(
-          "bg-canvasAlt p-4 pt-0",
-          { "h-full pb-0": snapTop },
-          contentContainerClassName,
-        )}
       >
-        {children}
-      </WrappedGestureHandlerRootView>
+        <WrappedGestureHandlerRootView
+          style={[
+            // TrueSheet doesn't know the actual scrollable area, so we
+            // need to exclude the height taken up by the "SheetHeader"
+            // from the container that can hold a scrollable.
+            [{ maxHeight: trueScreenHeight - headerHeight }],
+            contentContainerStyle,
+          ]}
+          className={cn(
+            "p-4 pt-0",
+            { "h-full pb-0": snapTop },
+            contentContainerClassName,
+          )}
+        >
+          {children}
+        </WrappedGestureHandlerRootView>
+      </HeaderApplicator>
       {enableToast ? (
         <Toasts
           // @ts-expect-error - We added the `sheetOpts` prop via a patch.
@@ -134,10 +135,12 @@ export function Sheet({
   );
 }
 
-/** Header component to be used in `<Sheet />`. */
-function SheetHeader(props: {
+const GRADIENT_HEIGHT = 96;
+
+function HeaderApplicator(props: {
   getHeight: (height: number) => void;
   title?: string;
+  children: React.ReactNode;
 }) {
   const { canvasAlt } = useTheme();
   const { colors, locations } = useMemo(
@@ -148,19 +151,31 @@ function SheetHeader(props: {
     [],
   );
   return (
-    <View onLayout={(e) => props.getHeight(e.nativeEvent.layout.height)}>
+    <>
       <LinearGradient
-        colors={colors}
-        locations={locations}
-        style={{ height: 96 }}
+        colors={colors as [string, string, ...string[]]}
+        locations={locations as [number, number, ...number[]]}
+        style={{ height: GRADIENT_HEIGHT }}
       />
-      <View className={cn("bg-canvasAlt px-4 pb-2", { "pb-6": !!props.title })}>
-        {props.title ? (
-          <Marquee center>
-            <StyledText className="text-lg">{props.title}</StyledText>
-          </Marquee>
-        ) : null}
+      {/*
+        FIXME: Weird issue which occurs on some devices, which is a random
+        horizontal line appears under the header depending on the bottom padding.
+      */}
+      <View className="bg-canvasAlt">
+        <View
+          onLayout={(e) =>
+            props.getHeight(e.nativeEvent.layout.height + GRADIENT_HEIGHT)
+          }
+          className={cn("px-4 pb-6", { "pb-2": !props.title })}
+        >
+          {props.title ? (
+            <Marquee center>
+              <StyledText className="text-lg">{props.title}</StyledText>
+            </Marquee>
+          ) : null}
+        </View>
+        {props.children}
       </View>
-    </View>
+    </>
   );
 }
