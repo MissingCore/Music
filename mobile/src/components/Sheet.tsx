@@ -2,18 +2,19 @@ import { Toasts } from "@backpackapp-io/react-native-toast";
 import type { TrueSheetProps } from "@lodev09/react-native-true-sheet";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { platformApiLevel } from "expo-device";
+import { LinearGradient } from "expo-linear-gradient";
 import type { ParseKeys } from "i18next";
 import { cssInterop } from "nativewind";
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { StyleProp, ViewStyle } from "react-native";
 import { View, useWindowDimensions } from "react-native";
+import { easeGradient } from "react-native-easing-gradient";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useTheme } from "~/hooks/useTheme";
 
-import { BorderRadius } from "~/constants/Styles";
 import { cn } from "~/lib/style";
 import { Marquee } from "./Containment/Marquee";
 import { StyledText } from "./Typography/StyledText";
@@ -50,7 +51,6 @@ export function Sheet({
   ...props
 }: SheetProps & { ref?: TrueSheetRef }) {
   const { t } = useTranslation();
-  const { canvasAlt } = useTheme();
   const insets = useSafeAreaInsets();
   const { height: screenHeight } = useWindowDimensions();
   const [enableToast, setEnableToast] = useState(false);
@@ -72,10 +72,9 @@ export function Sheet({
       onLayout={(e) => setSheetHeight(e.nativeEvent.layout.height)}
       name={globalKey}
       sizes={[snapTop ? "large" : "auto"]}
-      backgroundColor={canvasAlt}
-      cornerRadius={BorderRadius.lg}
-      // Sheet max height will be just before the `<TopAppBar />`.
-      maxHeight={trueScreenHeight - 56}
+      backgroundColor="transparent"
+      cornerRadius={0}
+      maxHeight={trueScreenHeight}
       grabber={false}
       onPresent={(e) => {
         if (onPresent) onPresent(e);
@@ -109,11 +108,11 @@ export function Sheet({
           // TrueSheet doesn't know the actual scrollable area, so we
           // need to exclude the height taken up by the "SheetHeader"
           // from the container that can hold a scrollable.
-          [{ maxHeight: trueScreenHeight - 56 - headerHeight }],
+          [{ maxHeight: trueScreenHeight - headerHeight }],
           contentContainerStyle,
         ]}
         className={cn(
-          "p-4 pt-0",
+          "bg-canvasAlt p-4 pt-0",
           { "h-full pb-0": snapTop },
           contentContainerClassName,
         )}
@@ -140,17 +139,28 @@ function SheetHeader(props: {
   getHeight: (height: number) => void;
   title?: string;
 }) {
+  const { canvasAlt } = useTheme();
+  const { colors, locations } = useMemo(
+    () =>
+      easeGradient({
+        colorStops: { 0: { color: `${canvasAlt}00` }, 1: { color: canvasAlt } },
+      }),
+    [],
+  );
   return (
-    <View
-      onLayout={(e) => props.getHeight(e.nativeEvent.layout.height)}
-      className={cn("gap-2 px-4 pb-2", { "pb-6": !!props.title })}
-    >
-      <View className="mx-auto my-[10px] h-1 w-8 rounded-full bg-onSurface" />
-      {props.title ? (
-        <Marquee center>
-          <StyledText className="text-lg">{props.title}</StyledText>
-        </Marquee>
-      ) : null}
+    <View onLayout={(e) => props.getHeight(e.nativeEvent.layout.height)}>
+      <LinearGradient
+        colors={colors}
+        locations={locations}
+        style={{ height: 96 }}
+      />
+      <View className={cn("bg-canvasAlt px-4 pb-2", { "pb-6": !!props.title })}>
+        {props.title ? (
+          <Marquee center>
+            <StyledText className="text-lg">{props.title}</StyledText>
+          </Marquee>
+        ) : null}
+      </View>
     </View>
   );
 }
