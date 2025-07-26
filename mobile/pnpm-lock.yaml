@@ -160,6 +160,9 @@ importers:
       react-native-draglist:
         specifier: github:MissingCore/react-native-draglist#3f2e92cccf28e9192ff330c9ac7c5813156f0d4e
         version: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/3f2e92cccf28e9192ff330c9ac7c5813156f0d4e(@shopify/flash-list@1.8.3(@babel/runtime@7.27.6)(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      react-native-easing-gradient:
+        specifier: ^1.1.1
+        version: 1.1.1(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-edge-to-edge:
         specifier: ^1.6.2
         version: 1.6.2(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -4828,6 +4831,12 @@ packages:
     peerDependenciesMeta:
       '@shopify/flash-list':
         optional: true
+
+  react-native-easing-gradient@1.1.1:
+    resolution: {integrity: sha512-KrGU97kPTMrLNzVXxFirFMgl65uo70gVNoKw2OngDzcDfoswb648I3ggeCnoY+JgMWkPyx4LlG7n3ZNgSPFnLw==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
 
   react-native-edge-to-edge@1.6.0:
     resolution: {integrity: sha512-2WCNdE3Qd6Fwg9+4BpbATUxCLcouF6YRY7K+J36KJ4l3y+tWN6XCqAC4DuoGblAAbb2sLkhEDp4FOlbOIot2Og==}
@@ -11078,6 +11087,11 @@ snapshots:
       react-native: 0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0)
     optionalDependencies:
       '@shopify/flash-list': 1.8.3(@babel/runtime@7.27.6)(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+
+  react-native-easing-gradient@1.1.1(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+      react-native: 0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0)
 
   react-native-edge-to-edge@1.6.0(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:
