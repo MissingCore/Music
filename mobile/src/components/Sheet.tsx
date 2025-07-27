@@ -8,7 +8,7 @@ import { cssInterop } from "nativewind";
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { PressableProps, StyleProp, ViewStyle } from "react-native";
-import { View, useWindowDimensions } from "react-native";
+import { Easing, View, useWindowDimensions } from "react-native";
 import { easeGradient } from "react-native-easing-gradient";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -185,13 +185,24 @@ function HeaderApplicator(props: {
   title?: string;
   children: React.ReactNode;
 }) {
-  const { canvasAlt } = useTheme();
+  const { theme, canvasAlt } = useTheme();
   const { colors, locations } = useMemo(
     () =>
       easeGradient({
-        colorStops: { 0: { color: `${canvasAlt}00` }, 1: { color: canvasAlt } },
+        colorStops: {
+          0: { color: `${canvasAlt}00` },
+          ...(theme === "dark"
+            ? {
+                0.25: { color: `${canvasAlt}66` },
+                0.65: { color: `${canvasAlt}D9` },
+                0.8: { color: canvasAlt },
+              }
+            : {}),
+          1: { color: canvasAlt },
+        } as Record<number, { color: string }>,
+        easing: theme === "dark" ? Easing.linear : undefined,
       }),
-    [canvasAlt],
+    [theme, canvasAlt],
   );
   return (
     <>
