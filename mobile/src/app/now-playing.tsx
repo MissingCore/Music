@@ -15,6 +15,7 @@ import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { useMusicStore } from "~/modules/media/services/Music";
 import { presentTrackSheet } from "~/services/SessionStore";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
+import { useUpcomingStore } from "~/screens/NowPlaying/helpers/UpcomingStore";
 import { usePlayerProgress } from "~/screens/NowPlaying/helpers/usePlayerProgress";
 import { NowPlayingArtwork } from "~/screens/NowPlaying/Artwork";
 import { NowPlayingSheets } from "~/screens/NowPlaying/Sheets";
@@ -187,6 +188,9 @@ function BottomAppBar() {
   const playbackOptionsSheetRef = useSheetRef();
   const upcomingTracksSheetRef = useSheetRef();
   const sleepTimerSheetRef = useSheetRef();
+  const populateCurrentTrackList = useUpcomingStore(
+    (state) => state.populateCurrentTrackList,
+  );
   const showSleepTimer = useUserPreferencesStore((state) => state.sleepTimer);
   const sleepTimerActive = useSleepTimerStore((state) => state.endAt) !== null;
 
@@ -222,7 +226,10 @@ function BottomAppBar() {
           <IconButton
             Icon={LibraryMusic}
             accessibilityLabel={t("term.upcoming")}
-            onPress={() => upcomingTracksSheetRef.current?.present()}
+            onPress={async () => {
+              await populateCurrentTrackList();
+              upcomingTracksSheetRef.current?.present();
+            }}
             large
           />
         </View>

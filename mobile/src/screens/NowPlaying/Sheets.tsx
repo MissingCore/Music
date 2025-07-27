@@ -97,9 +97,6 @@ const VolumeSliderOptions = {
 //#region Upcoming Tracks
 /** Enables user to see what tracks are coming up and remove tracks from the queue. */
 function TrackUpcomingSheet(props: { sheetRef: TrueSheetRef }) {
-  const populateCurrentTrackList = useUpcomingStore(
-    (state) => state.populateCurrentTrackList,
-  );
   const trackList = useUpcomingStore((state) => state.currentTrackList);
   const listIndex = useMusicStore((state) => state.listIdx);
   const repeat = useMusicStore((state) => state.repeat);
@@ -119,9 +116,8 @@ function TrackUpcomingSheet(props: { sheetRef: TrueSheetRef }) {
     <Sheet
       ref={props.sheetRef}
       titleKey="term.upcoming"
-      snapTop
-      onPresent={populateCurrentTrackList}
       contentContainerClassName="px-0"
+      snapTop
     >
       <FlashList
         estimatedItemSize={52} // 48px Height + 4px Margin Top
