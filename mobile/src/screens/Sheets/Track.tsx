@@ -315,7 +315,10 @@ function ListButton(props: {
     <Button
       onPress={props.onPress}
       style={props.style}
-      className={cn("flex-row justify-start gap-3 rounded-sm", props.className)}
+      className={cn(
+        "flex-1 flex-row justify-start gap-3 rounded-sm",
+        props.className,
+      )}
     >
       <props.Icon />
       <View className="shrink gap-0.5">
