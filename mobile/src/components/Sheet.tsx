@@ -133,6 +133,14 @@ export function Sheet({
           globalAnimationConfig={disableToastAnim ? { duration: 1 } : undefined}
         />
       ) : null}
+      {/*
+        FIXME: A hack to give a non-transparent background to the area not
+        taken up by our content.
+      */}
+      <View
+        style={{ height: screenHeight }}
+        className="absolute left-0 top-full w-full bg-canvasAlt"
+      />
     </TrueSheet>
   );
 }
