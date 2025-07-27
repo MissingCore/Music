@@ -45,6 +45,7 @@
 | react-native | MIT | https://github.com/facebook/react-native |
 | react-native-bootsplash | MIT | https://github.com/zoontek/react-native-bootsplash |
 | react-native-draglist | MIT | https://github.com/fivecar/react-native-draglist |
+| react-native-easing-gradient | MIT | https://github.com/phamfoo/react-native-easing-gradient |
 | react-native-edge-to-edge | MIT | https://github.com/zoontek/react-native-edge-to-edge |
 | react-native-gesture-handler | MIT | https://github.com/software-mansion/react-native-gesture-handler |
 | react-native-keyboard-controller | MIT | https://github.com/kirillzyusko/react-native-keyboard-controller |

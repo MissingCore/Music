@@ -1,5 +1,3 @@
-import { View } from "react-native";
-
 import {
   userPreferencesStore,
   useUserPreferencesStore,
@@ -10,10 +8,9 @@ import { useExportBackup, useImportBackup } from "./helpers/BackupData";
 import { deferInitialRender } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
 import { FlatList, useIsScrollable } from "~/components/Defaults";
-import { Button } from "~/components/Form/Button";
 import { Radio } from "~/components/Form/Selection";
 import type { TrueSheetRef } from "~/components/Sheet";
-import { Sheet } from "~/components/Sheet";
+import { Sheet, SheetButtonGroup } from "~/components/Sheet";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
 /** All the sheets used on `/setting` route. */
@@ -36,41 +33,24 @@ function BackupSheet(props: { sheetRef: TrueSheetRef }) {
   const inProgress = exportBackup.isPending || importBackup.isPending;
 
   return (
-    <Sheet
-      ref={props.sheetRef}
-      titleKey="feat.backup.title"
-      contentContainerClassName="gap-4"
-    >
+    <Sheet ref={props.sheetRef} titleKey="feat.backup.title">
       <TStyledText
         dim
         textKey="feat.backup.description"
         className="text-center text-sm"
       />
-
-      <View className="mt-2 flex-row gap-2">
-        <Button
-          onPress={() => mutateGuard(exportBackup, undefined)}
-          disabled={inProgress}
-          className="flex-1"
-        >
-          <TStyledText
-            textKey="feat.backup.extra.export"
-            bold
-            className="text-center text-sm"
-          />
-        </Button>
-        <Button
-          onPress={() => mutateGuard(importBackup, undefined)}
-          disabled={inProgress}
-          className="flex-1"
-        >
-          <TStyledText
-            textKey="feat.backup.extra.import"
-            bold
-            className="text-center text-sm"
-          />
-        </Button>
-      </View>
+      <SheetButtonGroup
+        leftButton={{
+          textKey: "feat.backup.extra.export",
+          onPress: () => mutateGuard(exportBackup, undefined),
+          disabled: inProgress,
+        }}
+        rightButton={{
+          textKey: "feat.backup.extra.import",
+          onPress: () => mutateGuard(importBackup, undefined),
+          disabled: inProgress,
+        }}
+      />
     </Sheet>
   );
 }

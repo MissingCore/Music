@@ -72,7 +72,7 @@ function ScanFilterListSheet({
       ref={sheetRef}
       titleKey={`feat.${listType}.title`}
       keyboardMode="pan"
-      contentContainerClassName="gap-4 px-0"
+      contentContainerClassName="px-0"
       snapTop
     >
       {listType === "listBlock" ? (
@@ -178,6 +178,7 @@ function FilterForm(props: {
 }
 //#endregion
 
+//#region Min Duration
 /** Enables us to specify the minimum track duration we want to save. */
 function MinDurationSheet(props: { sheetRef: TrueSheetRef }) {
   const minSeconds = useUserPreferencesStore((state) => state.minSeconds);
@@ -193,11 +194,7 @@ function MinDurationSheet(props: { sheetRef: TrueSheetRef }) {
   }, [newMin]);
 
   return (
-    <Sheet
-      ref={props.sheetRef}
-      titleKey="feat.ignoreDuration.title"
-      contentContainerClassName="gap-4"
-    >
+    <Sheet ref={props.sheetRef} titleKey="feat.ignoreDuration.title">
       <TStyledText
         dim
         textKey="feat.ignoreDuration.description"
@@ -206,11 +203,12 @@ function MinDurationSheet(props: { sheetRef: TrueSheetRef }) {
       <NumericInput
         defaultValue={`${minSeconds}`}
         onChangeText={(text) => setNewMin(text)}
-        className="mx-auto w-full max-w-[50%] border-b border-foreground/60 text-center"
+        className="mx-auto mb-2 w-full max-w-[50%] border-b border-foreground/60 text-center"
       />
     </Sheet>
   );
 }
+//#endregion
 
 //#region Helpers
 async function updateMinDuration(newDuration: string | undefined) {

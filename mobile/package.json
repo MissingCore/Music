@@ -64,6 +64,7 @@
     "react-native": "^0.79.5",
     "react-native-bootsplash": "^6.3.10",
     "react-native-draglist": "github:MissingCore/react-native-draglist#3f2e92cccf28e9192ff330c9ac7c5813156f0d4e",
+    "react-native-easing-gradient": "^1.1.1",
     "react-native-edge-to-edge": "^1.6.2",
     "react-native-gesture-handler": "~2.27.1",
     "react-native-keyboard-controller": "^1.17.5",
@@ -118,7 +119,8 @@
       "expo-router": "patches/expo-router.patch",
       "react-native-reanimated": "patches/react-native-reanimated.patch",
       "expo-file-system": "patches/expo-file-system.patch",
-      "react-native-screens": "patches/react-native-screens.patch"
+      "react-native-screens": "patches/react-native-screens.patch",
+      "@lodev09/react-native-true-sheet": "patches/@lodev09__react-native-true-sheet.patch"
     }
   }
 }
