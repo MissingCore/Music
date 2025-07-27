@@ -203,7 +203,7 @@ function MinDurationSheet(props: { sheetRef: TrueSheetRef }) {
       <NumericInput
         defaultValue={`${minSeconds}`}
         onChangeText={(text) => setNewMin(text)}
-        className="mx-auto w-full max-w-[50%] border-b border-foreground/60 text-center"
+        className="mx-auto mb-2 w-full max-w-[50%] border-b border-foreground/60 text-center"
       />
     </Sheet>
   );
