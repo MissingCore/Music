@@ -5,10 +5,16 @@ import { platformApiLevel } from "expo-device";
 import { LinearGradient } from "expo-linear-gradient";
 import type { ParseKeys } from "i18next";
 import { cssInterop } from "nativewind";
-import { useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import type { PressableProps, StyleProp, ViewStyle } from "react-native";
-import { Easing, View, useWindowDimensions } from "react-native";
+import { Easing, Pressable, View, useWindowDimensions } from "react-native";
 import { easeGradient } from "react-native-easing-gradient";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -42,6 +48,7 @@ export function useSheetRef() {
 
 //#region Sheet
 export function Sheet({
+  ref,
   titleKey,
   globalKey,
   snapTop,
@@ -52,6 +59,9 @@ export function Sheet({
   onDismiss,
   ...props
 }: SheetProps & { ref?: TrueSheetRef }) {
+  const internalRef = useSheetRef();
+  useImperativeHandle(ref, () => internalRef.current!, [internalRef]);
+
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const { height: screenHeight } = useWindowDimensions();
@@ -69,8 +79,14 @@ export function Sheet({
     return screenHeight - insets.top - insets.bottom;
   }, [insets.bottom, insets.top, screenHeight]);
 
+  const closeSheet = useCallback(
+    () => internalRef.current?.dismiss(),
+    [internalRef],
+  );
+
   return (
     <TrueSheet
+      ref={internalRef}
       onLayout={(e) => setSheetHeight(e.nativeEvent.layout.height)}
       name={globalKey}
       sizes={[snapTop ? "large" : "auto"]}
@@ -104,6 +120,7 @@ export function Sheet({
       <HeaderApplicator
         title={titleKey ? t(titleKey) : undefined}
         getHeight={setHeaderHeight}
+        onClose={closeSheet}
       >
         <WrappedGestureHandlerRootView
           style={[
@@ -189,6 +206,7 @@ export function SheetButtonGroup(props: {
 const GRADIENT_HEIGHT = 96;
 
 function HeaderApplicator(props: {
+  onClose: VoidFunction;
   getHeight: (height: number) => void;
   title?: string;
   children: React.ReactNode;
@@ -214,6 +232,11 @@ function HeaderApplicator(props: {
   );
   return (
     <>
+      <Pressable
+        accessible={false}
+        onPress={props.onClose}
+        className="absolute left-0 top-0 z-50 h-14 w-full"
+      />
       <LinearGradient
         colors={colors as [string, string, ...string[]]}
         locations={locations as [number, number, ...number[]]}
