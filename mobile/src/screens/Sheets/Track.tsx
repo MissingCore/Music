@@ -319,7 +319,7 @@ function ListButton(props: {
     >
       <props.Icon />
       <View className="shrink gap-0.5">
-        <TStyledText textKey={props.textKey} className="text-xs" />
+        <TStyledText textKey={props.textKey} className="text-sm" />
         {props.description ? (
           <StyledText numberOfLines={1} dim className="text-xxs">
             {props.description}
