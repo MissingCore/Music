@@ -10,6 +10,8 @@ import {
   unique,
 } from "drizzle-orm/sqlite-core";
 
+import type { PlayListSource } from "~/modules/media/types";
+
 import type { Prettify } from "~/utils/types";
 
 export const artists = sqliteTable("artists", {
@@ -90,7 +92,9 @@ export const tracks = sqliteTable("tracks", {
   // Use Epoch time instead of boolean to track when we did the action.
   editedMetadata: integer(),
   hiddenAt: integer(),
+  lastPlayedAt: integer().notNull().default(-1),
 
+  playCount: integer().notNull().default(0),
   parentFolder: text().generatedAlwaysAs(
     // Ref: https://stackoverflow.com/a/38330814
     (): SQL => sql`rtrim(${tracks.uri}, replace(${tracks.uri}, '/', ''))`,
@@ -167,6 +171,16 @@ export const fileNodesRelations = relations(fileNodes, ({ one }) => ({
   }),
 }));
 
+export const playedMediaLists = sqliteTable(
+  "played_media_list",
+  {
+    id: text().notNull(),
+    type: text().notNull(),
+    lastPlayedAt: integer().notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.id, t.type] })],
+);
+
 export type Artist = InferSelectModel<typeof artists>;
 export type ArtistWithTracks = Prettify<Artist & { tracks: TrackWithAlbum[] }>;
 
@@ -191,4 +205,8 @@ export type TrackToPlaylist = InferSelectModel<typeof tracksToPlaylists>;
 export type FileNode = InferSelectModel<typeof fileNodes>;
 export type FileNodeWithParent = Prettify<
   FileNode & { parent: FileNode | null }
+>;
+
+export type PlayedMediaList = Prettify<
+  InferSelectModel<typeof playedMediaLists> & PlayListSource
 >;
