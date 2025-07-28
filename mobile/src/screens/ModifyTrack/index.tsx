@@ -17,12 +17,8 @@ import { ScrollablePresets } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
-import { Modal, ModalAction } from "~/components/Modal";
-import {
-  StyledText,
-  TEm,
-  TStyledText,
-} from "~/components/Typography/StyledText";
+import { ModalTemplate } from "~/components/Modal";
+import { StyledText, TEm } from "~/components/Typography/StyledText";
 
 export function ModifyTrack(props: InitStoreProps) {
   return (
@@ -165,22 +161,19 @@ function ConfirmationModal() {
   const setShowConfirmation = useTrackMetadataStore(
     (state) => state.setShowConfirmation,
   );
-
   return (
-    <Modal visible={showConfirmation}>
-      <TStyledText textKey="form.unsaved" className="pt-8 text-center" />
-      <View className="flex-row justify-end gap-4">
-        <ModalAction
-          textKey="form.stay"
-          onPress={() => setShowConfirmation(false)}
-        />
-        <ModalAction
-          textKey="form.leave"
-          onPress={() => router.back()}
-          danger
-        />
-      </View>
-    </Modal>
+    <ModalTemplate
+      visible={showConfirmation}
+      titleKey="form.unsaved"
+      leftAction={{
+        textKey: "form.stay",
+        onPress: () => setShowConfirmation(false),
+      }}
+      rightAction={{
+        textKey: "form.leave",
+        onPress: () => router.back(),
+      }}
+    />
   );
 }
 //#endregion

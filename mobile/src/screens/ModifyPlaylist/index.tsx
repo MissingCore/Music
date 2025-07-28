@@ -25,7 +25,7 @@ import { wait } from "~/utils/promise";
 import { FlashDragList } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
-import { Modal, ModalAction } from "~/components/Modal";
+import { ModalTemplate } from "~/components/Modal";
 import { useSheetRef } from "~/components/Sheet";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
@@ -246,22 +246,19 @@ function ConfirmationModal() {
   const setShowConfirmation = usePlaylistStore(
     (state) => state.setShowConfirmation,
   );
-
   return (
-    <Modal visible={showConfirmation}>
-      <TStyledText textKey="form.unsaved" className="pt-8 text-center" />
-      <View className="flex-row justify-end gap-4">
-        <ModalAction
-          textKey="form.stay"
-          onPress={() => setShowConfirmation(false)}
-        />
-        <ModalAction
-          textKey="form.leave"
-          onPress={() => router.back()}
-          danger
-        />
-      </View>
-    </Modal>
+    <ModalTemplate
+      visible={showConfirmation}
+      titleKey="form.unsaved"
+      leftAction={{
+        textKey: "form.stay",
+        onPress: () => setShowConfirmation(false),
+      }}
+      rightAction={{
+        textKey: "form.leave",
+        onPress: () => router.back(),
+      }}
+    />
   );
 }
 //#endregion
@@ -306,19 +303,18 @@ function DeleteWorkflow() {
           {t("feat.playlist.extra.delete").toLocaleUpperCase()}
         </StyledText>
       </Pressable>
-      <Modal visible={lastChance}>
-        <TStyledText
-          textKey="feat.playlist.extra.delete"
-          className="pt-8 text-center"
-        />
-        <View className="flex-row justify-end gap-4">
-          <ModalAction
-            textKey="form.cancel"
-            onPress={() => setLastChance(false)}
-          />
-          <ModalAction textKey="form.confirm" onPress={onDelete} danger />
-        </View>
-      </Modal>
+      <ModalTemplate
+        visible={lastChance}
+        titleKey="feat.playlist.extra.delete"
+        leftAction={{
+          textKey: "form.cancel",
+          onPress: () => setLastChance(false),
+        }}
+        rightAction={{
+          textKey: "form.confirm",
+          onPress: onDelete,
+        }}
+      />
     </>
   );
 }

@@ -163,10 +163,12 @@ export function Sheet({
 }
 //#endregion
 
-//#region List Button
+//#region Sheet Button Group
+type ButtonOptions = Omit<PressableProps, "children"> & { textKey: ParseKeys };
+
 export function SheetButtonGroup(props: {
-  leftButton: Omit<PressableProps, "children"> & { textKey: ParseKeys };
-  rightButton: Omit<PressableProps, "children"> & { textKey: ParseKeys };
+  leftButton: ButtonOptions;
+  rightButton: ButtonOptions;
   className?: string;
 }) {
   return (
