@@ -144,21 +144,16 @@ export async function PlaybackService() {
     }
     // Only mark a track as played after we play 10s of it. This prevents
     // the track being marked as "played" if we skip it.
-    if (
-      lastPosition === undefined ||
-      lastPosition < 10 ||
-      resolvedLastPosition
-    ) {
-      // Get number of seconds before we mark a track as "played" when it
-      // hits the 10s mark.
-      let playBuffer = activeTrack.duration! < 10 ? activeTrack.duration! : 10;
-      if (!resolvedLastPosition && lastPosition && lastPosition < 10) {
-        playBuffer = playBuffer - lastPosition;
-      }
-
+    if (lastPosition === undefined || resolvedLastPosition) {
+      // Track should start playing at 0s.
       playbackCountUpdator = BackgroundTimer.setTimeout(
         async () => await addPlayedTrack(activeTrack.id),
-        playBuffer * 1000,
+        Math.min(activeTrack.duration!, 10) * 1000,
+      );
+    } else if (lastPosition < 10) {
+      playbackCountUpdator = BackgroundTimer.setTimeout(
+        async () => await addPlayedTrack(activeTrack.id),
+        (Math.min(activeTrack.duration!, 10) - lastPosition) * 1000,
       );
     }
     if (!resolvedLastPosition) resolvedLastPosition = true;
