@@ -5,7 +5,6 @@ import {
   useFavoriteListsForCards,
   useFavoriteTracksCount,
 } from "~/queries/favorite";
-import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { useRecentListStore } from "~/modules/media/services/RecentList";
 import { StandardScrollLayout } from "~/layouts/StandardScroll";
@@ -47,9 +46,6 @@ function RecentlyPlayed() {
     minWidth: 100,
   });
   const recentlyPlayedData = useRecentListStore((state) => state.recentList);
-  const shouldShow = useUserPreferencesStore((state) => state.showRecent);
-
-  if (!shouldShow) return null;
   return (
     <>
       <TEm textKey="feat.playedRecent.title" className="-mb-4" />

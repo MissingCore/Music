@@ -51,9 +51,6 @@ interface UserPreferencesStore {
   /** Visibility of the tabs on the home screen. */
   tabsVisibility: Record<OrderableTab, boolean>;
 
-  /** Whether we'll show the "Recently Played" section on the home screen. */
-  showRecent: boolean;
-
   /** If tips to alert the users of features will be displayed. */
   visualTips: boolean;
 
@@ -124,8 +121,6 @@ export const userPreferencesStore =
         playlist: true,
         track: true,
       },
-
-      showRecent: true,
 
       visualTips: true,
 
