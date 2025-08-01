@@ -1,6 +1,8 @@
 import { router } from "expo-router";
+import { useTranslation } from "react-i18next";
 import { ScrollView } from "react-native-gesture-handler";
 
+import { History } from "~/icons/History";
 import {
   useFavoriteListsForCards,
   useFavoriteTracksCount,
@@ -12,7 +14,7 @@ import { StandardScrollLayout } from "~/layouts/StandardScroll";
 import { cn } from "~/lib/style";
 import { abbreviateNum } from "~/utils/number";
 import { FlashList } from "~/components/Defaults";
-import { Button } from "~/components/Form/Button";
+import { Button, IconButton } from "~/components/Form/Button";
 import { AccentText } from "~/components/Typography/AccentText";
 import { TEm, TStyledText } from "~/components/Typography/StyledText";
 import { ReservedPlaylists } from "~/modules/media/constants";
@@ -24,9 +26,18 @@ import {
 
 /** Screen for `/` route. */
 export default function HomeScreen() {
+  const { t } = useTranslation();
   return (
     <StandardScrollLayout
       titleKey="term.home"
+      titleAction={
+        <IconButton
+          Icon={History}
+          accessibilityLabel={t("feat.playedRecent.title")}
+          onPress={() => router.navigate("/recently-played")}
+          large
+        />
+      }
       contentContainerClassName="grow-0"
     >
       <RecentlyPlayed />

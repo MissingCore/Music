@@ -17,6 +17,7 @@ const hideNavRoutes = [
   "/artist/",
   "/playlist/",
   "/now-playing",
+  "/recently-played",
 ] satisfies Partial<Href[]>;
 
 /**
