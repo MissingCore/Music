@@ -3,7 +3,6 @@ import TrackPlayer from "@weights-ai/react-native-track-player";
 
 import "~/modules/media/services/_subscriptions";
 import { musicStore, useMusicStore } from "~/modules/media/services/Music";
-import { useRecentListStore } from "~/modules/media/services/RecentList";
 import { useSortPreferencesStore } from "~/modules/media/services/SortPreferences";
 import {
   userPreferencesStore,
@@ -22,7 +21,6 @@ import {
  */
 export function useSetup() {
   const musicHydrated = useMusicStore((state) => state._hasHydrated);
-  const recentListHydrated = useRecentListStore((state) => state._hasHydrated);
   const sortPreferencesHydrated = useSortPreferencesStore(
     (state) => state._hasHydrated,
   );
@@ -51,10 +49,5 @@ export function useSetup() {
     })();
   }, []);
 
-  return (
-    musicHydrated &&
-    recentListHydrated &&
-    sortPreferencesHydrated &&
-    userPreferencesHydrated
-  );
+  return musicHydrated && sortPreferencesHydrated && userPreferencesHydrated;
 }

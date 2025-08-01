@@ -8,7 +8,6 @@ import { albums, fileNodes, playedMediaLists, tracks } from "~/db/schema";
 
 import { getAlbums } from "~/api/album";
 import { musicStore } from "~/modules/media/services/Music";
-import { recentListStore } from "~/modules/media/services/RecentList";
 import { sortPreferencesStore } from "~/modules/media/services/SortPreferences";
 import { userPreferencesStore } from "~/services/UserPreferences";
 import { onboardingStore } from "../services/Onboarding";
@@ -60,11 +59,6 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
 
     // We need to rehydrate the stores that references the data in AsyncStorage
     // in order for it to take effect.
-    //  - Note: We need to rehydrate the "Recent List" store first as when
-    //  the "User Preference" store hydrates, it calls `RecentList.refresh()`,
-    //  which will clear the migrated "Recent List" store data as it hasn't
-    //  hydrated in yet.
-    await recentListStore.persist.rehydrate();
     await sortPreferencesStore.persist.rehydrate();
     await userPreferencesStore.persist.rehydrate();
     await musicStore.persist.rehydrate();
