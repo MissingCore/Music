@@ -312,8 +312,7 @@
     "playedRecent": {
       "title": "Recently Played",
       "extra": {
-        "empty": "You haven't played anything yet!",
-        "section": "Recently Played Section"
+        "notFound": "Nothing was played in the last {{amount}} days."
       }
     },
     "search": {
