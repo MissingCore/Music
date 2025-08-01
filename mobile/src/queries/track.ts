@@ -10,7 +10,6 @@ import {
 } from "~/api/track";
 import { revalidateActiveTrack } from "~/modules/media/helpers/revalidate";
 import { musicStore, Queue } from "~/modules/media/services/Music";
-import { RecentList } from "~/modules/media/services/RecentList";
 import { Resynchronize } from "~/modules/media/services/Resynchronize";
 import { useSortTracks } from "~/modules/media/services/SortPreferences";
 import { queries as q } from "./keyStore";
@@ -101,7 +100,6 @@ export function useHideTrack() {
         await Resynchronize.onTracks(playingSource!);
       }
       Queue.removeIds([trackId]);
-      RecentList.refresh();
     },
   });
 }

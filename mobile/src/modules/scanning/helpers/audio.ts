@@ -16,7 +16,6 @@ import { getSaveErrors } from "~/api/setting";
 import { createTrack, deleteTrack, getTracks, updateTrack } from "~/api/track";
 import { userPreferencesStore } from "~/services/UserPreferences";
 import { Queue, musicStore } from "~/modules/media/services/Music";
-import { RecentList } from "~/modules/media/services/RecentList";
 import { onboardingStore } from "../services/Onboarding";
 
 import {
@@ -303,12 +302,5 @@ export async function removeUnusedCategories() {
     .filter(({ albums, tracks }) => albums.length === 0 && tracks.length === 0)
     .map(({ name }) => name);
   await db.delete(artists).where(inArray(artists.name, unusedArtistNames));
-
-  // Remove these values from the recent list.
-  const removedLists = [
-    ...unusedAlbumIds.map((id) => ({ type: "album", id })),
-    ...unusedArtistNames.map((name) => ({ type: "artist", id: name })),
-  ] as Array<{ type: "album" | "artist"; id: string }>;
-  if (removedLists.length > 0) RecentList.removeEntries(removedLists);
 }
 //#endregion

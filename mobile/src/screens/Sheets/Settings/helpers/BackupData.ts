@@ -17,7 +17,6 @@ import { getAlbums } from "~/api/album";
 import { createPlaylist, getPlaylists, updatePlaylist } from "~/api/playlist";
 import { getTracks } from "~/api/track";
 import { musicStore } from "~/modules/media/services/Music";
-import { RecentList } from "~/modules/media/services/RecentList";
 import { Resynchronize } from "~/modules/media/services/Resynchronize";
 
 import { clearAllQueries } from "~/lib/react-query";
@@ -220,7 +219,6 @@ export const useExportBackup = () => {
   return useMutation({
     mutationFn: exportBackup,
     onSuccess: () => {
-      RecentList.refresh();
       toast(t("feat.backup.extra.exportSuccess"), ToastOptions);
     },
     onError: (err) => {
