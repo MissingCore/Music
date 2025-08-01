@@ -1,4 +1,4 @@
-import { updatePlayedMediaList } from "~/api/recent";
+import { removePlayedMediaList, updatePlayedMediaList } from "~/api/recent";
 import { RNTPManager, musicStore } from "./Music";
 
 import {
@@ -31,7 +31,13 @@ export class Resynchronize {
     oldSource,
     newSource,
   }: Record<"oldSource" | "newSource", PlayListSource>) {
-    await updatePlayedMediaList({ oldSource, newSource });
+    try {
+      await updatePlayedMediaList({ oldSource, newSource });
+    } catch {
+      // This means `newSource` already exists in the Recent List, so
+      // just delete `oldSource`.
+      await removePlayedMediaList(oldSource);
+    }
     // Check if we were playing this list.
     const currSource = musicStore.getState().playingSource;
     const isPlayingRef = arePlaybackSourceEqual(currSource, oldSource);
