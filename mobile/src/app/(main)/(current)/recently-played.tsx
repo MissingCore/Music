@@ -1,12 +1,100 @@
-import { View } from "react-native";
+import { useTranslation } from "react-i18next";
+import { ScrollView } from "react-native-gesture-handler";
 
-import { StyledText } from "~/components/Typography/StyledText";
+import { RECENT_DAY_RANGE } from "~/api/recent";
+import {
+  useRecentlyPlayedMediaLists,
+  useRecentlyPlayedTracks,
+} from "~/queries/recent";
+import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
+import { useGetColumn } from "~/hooks/useGetColumn";
+
+import { FlashList } from "~/components/Defaults";
+import { PagePlaceholder } from "~/components/Transition/Placeholder";
+import { ReservedPlaylists } from "~/modules/media/constants";
+import { MediaCard } from "~/modules/media/components/MediaCard";
+import { Track } from "~/modules/media/components/Track";
+
+// Information about this track list.
+const trackSource = {
+  type: "playlist",
+  id: ReservedPlaylists.tracks,
+} as const;
 
 /** Screen for `/recently-played` route. */
 export default function RecentlyPlayedScreen() {
+  const { t } = useTranslation();
+  const { bottomInset } = useBottomActionsContext();
+  const recentlyPlayedMediaLists = useRecentlyPlayedMediaLists();
+  const recentlyPlayedTracks = useRecentlyPlayedTracks();
+
+  const isAwaitingContent =
+    recentlyPlayedMediaLists.isPending && recentlyPlayedTracks.isPending;
+  const hasNoContent =
+    recentlyPlayedMediaLists.data?.length === 0 &&
+    recentlyPlayedTracks.data?.length === 0;
+
+  if (isAwaitingContent || hasNoContent) {
+    return (
+      <PagePlaceholder
+        isPending={isAwaitingContent}
+        errMsg={t("feat.playedRecent.extra.notFound", {
+          amount: RECENT_DAY_RANGE,
+        })}
+      />
+    );
+  }
+
   return (
-    <View className="p-4">
-      <StyledText>Recently Played</StyledText>
-    </View>
+    <FlashList
+      estimatedItemSize={56} // 48px Height + 8px Margin Top
+      data={recentlyPlayedTracks.data}
+      keyExtractor={({ id }) => id}
+      renderItem={({ item, index }) => (
+        <Track
+          {...item}
+          trackSource={trackSource}
+          className={index > 0 ? "mt-2" : undefined}
+        />
+      )}
+      ListHeaderComponent={
+        <RecentlyPlayedLists
+          data={recentlyPlayedMediaLists.data}
+          hasTracks={(recentlyPlayedTracks.data || []).length > 0}
+        />
+      }
+      contentContainerClassName="px-4 pt-4"
+      contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
+    />
+  );
+}
+
+function RecentlyPlayedLists(props: {
+  data?: MediaCard.Content[];
+  hasTracks?: boolean;
+}) {
+  const { width } = useGetColumn({
+    cols: 1,
+    gap: 0,
+    gutters: 32,
+    minWidth: 100,
+  });
+  return (
+    <FlashList
+      estimatedItemSize={width + 12} // Column width + gap from padding left
+      horizontal
+      data={props.data}
+      keyExtractor={({ href }) => href}
+      renderItem={({ item, index }) => (
+        <MediaCard
+          {...item}
+          size={width}
+          className={index > 0 ? "ml-3" : undefined}
+        />
+      )}
+      renderScrollComponent={ScrollView}
+      className="-mx-4"
+      contentContainerClassName="px-4 pb-4"
+    />
   );
 }
