@@ -4,7 +4,7 @@ import TrackPlayer, { Event } from "@weights-ai/react-native-track-player";
 import { router } from "expo-router";
 
 import i18next from "~/modules/i18n";
-import { addPlayedTrack } from "~/api/recent";
+import { addPlayedMediaList, addPlayedTrack } from "~/api/recent";
 import { deleteTrack } from "~/api/track";
 import type { TrackStatus } from "~/modules/media/services/Music";
 import { Queue, RNTPManager, musicStore } from "~/modules/media/services/Music";
@@ -94,7 +94,7 @@ export async function PlaybackService() {
       }
     }
 
-    const { repeat, queueList } = musicStore.getState();
+    const { playingSource, repeat, queueList } = musicStore.getState();
     const activeTrack = e.track;
     const trackStatus: TrackStatus = activeTrack["music::status"];
 
@@ -156,7 +156,10 @@ export async function PlaybackService() {
         (Math.min(activeTrack.duration!, 10) - lastPosition) * 1000,
       );
     }
-    if (!resolvedLastPosition) resolvedLastPosition = true;
+    if (!resolvedLastPosition) {
+      if (playingSource) await addPlayedMediaList(playingSource);
+      resolvedLastPosition = true;
+    }
 
     if (e.index === 1) await TrackPlayer.remove(0);
     await RNTPManager.reloadNextTrack();
