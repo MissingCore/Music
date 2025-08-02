@@ -17,14 +17,16 @@ import { ReservedNames, ReservedPlaylists } from "~/modules/media/constants";
 import type { MediaCard } from "~/modules/media/components/MediaCard";
 
 // 7 days in milliseconds.
-const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
+export const RECENT_DAY_RANGE = 7;
+const RECENT_RANGE_MS = RECENT_DAY_RANGE * 24 * 60 * 60 * 1000;
 
 //#region GET Methods
 /** Get a list of recently played media lists. */
 export async function getRecentlyPlayedMediaLists() {
   const currTime = Date.now();
   const sources = (await db.query.playedMediaLists.findMany({
-    where: (fields, { gt }) => gt(fields.lastPlayedAt, currTime - SEVEN_DAYS),
+    where: (fields, { gt }) =>
+      gt(fields.lastPlayedAt, currTime - RECENT_RANGE_MS),
     orderBy: (fields, { desc }) => desc(fields.lastPlayedAt),
   })) as PlayedMediaList[];
 
@@ -47,7 +49,8 @@ export async function getRecentlyPlayedMediaLists() {
 export async function getRecentlyPlayedTracks() {
   const currTime = Date.now();
   const recentTracks = await db.query.tracks.findMany({
-    where: (fields, { gt }) => gt(fields.lastPlayedAt, currTime - SEVEN_DAYS),
+    where: (fields, { gt }) =>
+      gt(fields.lastPlayedAt, currTime - RECENT_RANGE_MS),
     columns: {
       id: true,
       name: true,
