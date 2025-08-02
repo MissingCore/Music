@@ -1,7 +1,10 @@
+import { useIsFocused } from "@react-navigation/native";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView } from "react-native-gesture-handler";
 
 import { RECENT_DAY_RANGE } from "~/api/recent";
+import { queries as q } from "~/queries/keyStore";
 import {
   useRecentlyPlayedMediaLists,
   useRecentlyPlayedTracks,
@@ -9,6 +12,7 @@ import {
 import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 import { useGetColumn } from "~/hooks/useGetColumn";
 
+import { queryClient } from "~/lib/react-query";
 import { FlashList } from "~/components/Defaults";
 import { PagePlaceholder } from "~/components/Transition/Placeholder";
 import { ReservedPlaylists } from "~/modules/media/constants";
@@ -24,6 +28,7 @@ const trackSource = {
 /** Screen for `/recently-played` route. */
 export default function RecentlyPlayedScreen() {
   const { t } = useTranslation();
+  const isFocused = useIsFocused();
   const { bottomInset } = useBottomActionsContext();
   const recentlyPlayedMediaLists = useRecentlyPlayedMediaLists();
   const recentlyPlayedTracks = useRecentlyPlayedTracks();
@@ -33,6 +38,16 @@ export default function RecentlyPlayedScreen() {
   const hasNoContent =
     recentlyPlayedMediaLists.data?.length === 0 &&
     recentlyPlayedTracks.data?.length === 0;
+
+  useEffect(() => {
+    if (isFocused) {
+      queryClient.invalidateQueries({
+        predicate: ({ queryKey }) =>
+          queryKey === q.recent.mediaLists.queryKey ||
+          queryKey === q.recent.tracks.queryKey,
+      });
+    }
+  }, [isFocused]);
 
   if (isAwaitingContent || hasNoContent) {
     return (
