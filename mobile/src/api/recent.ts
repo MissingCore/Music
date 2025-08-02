@@ -18,7 +18,7 @@ import type { MediaCard } from "~/modules/media/components/MediaCard";
 
 // 7 days in milliseconds.
 export const RECENT_DAY_RANGE = 7;
-const RECENT_RANGE_MS = RECENT_DAY_RANGE * 24 * 60 * 60 * 1000;
+export const RECENT_RANGE_MS = RECENT_DAY_RANGE * 24 * 60 * 60 * 1000;
 
 //#region GET Methods
 /** Get a list of recently played media lists. */

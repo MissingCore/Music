@@ -2,16 +2,23 @@ import {
   MetadataPresets,
   getMetadata,
 } from "@missingcore/react-native-metadata-retriever";
-import { eq, inArray } from "drizzle-orm";
+import { eq, inArray, lt } from "drizzle-orm";
 import { File } from "expo-file-system/next";
 import type { Asset as MediaLibraryAsset } from "expo-media-library";
 import { getAssetsAsync } from "expo-media-library";
 
 import { db } from "~/db";
-import { albums, artists, invalidTracks, tracks } from "~/db/schema";
+import {
+  albums,
+  artists,
+  invalidTracks,
+  playedMediaLists,
+  tracks,
+} from "~/db/schema";
 
 import { upsertAlbum } from "~/api/album";
 import { createArtist } from "~/api/artist";
+import { RECENT_RANGE_MS } from "~/api/recent";
 import { getSaveErrors } from "~/api/setting";
 import { createTrack, deleteTrack, getTracks, updateTrack } from "~/api/track";
 import { userPreferencesStore } from "~/services/UserPreferences";
@@ -273,6 +280,11 @@ export async function cleanupDatabase(usedTrackIds: string[]) {
   if (hasRemovedTrack) await musicStore.getState().reset();
   // Clear the queue of deleted tracks.
   await Queue.removeIds(unusedTrackIds);
+
+  // Remove recently played media that's beyond what we display.
+  await db
+    .delete(playedMediaLists)
+    .where(lt(playedMediaLists.lastPlayedAt, Date.now() - RECENT_RANGE_MS));
 
   // Remove anything else that's unused.
   await removeUnusedCategories();
