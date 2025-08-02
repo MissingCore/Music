@@ -16,17 +16,13 @@ import type { ReservedPlaylistName } from "~/modules/media/constants";
 import { ReservedNames, ReservedPlaylists } from "~/modules/media/constants";
 import type { MediaCard } from "~/modules/media/components/MediaCard";
 
-// 7 days in milliseconds.
 export const RECENT_DAY_RANGE = 7;
 export const RECENT_RANGE_MS = RECENT_DAY_RANGE * 24 * 60 * 60 * 1000;
 
 //#region GET Methods
 /** Get a list of recently played media lists. */
 export async function getRecentlyPlayedMediaLists() {
-  const currTime = Date.now();
   const sources = (await db.query.playedMediaLists.findMany({
-    where: (fields, { gt }) =>
-      gt(fields.lastPlayedAt, currTime - RECENT_RANGE_MS),
     orderBy: (fields, { desc }) => desc(fields.lastPlayedAt),
   })) as PlayedMediaList[];
 
@@ -47,11 +43,10 @@ export async function getRecentlyPlayedMediaLists() {
 
 /** Get a list of recently played tracks. */
 export async function getRecentlyPlayedTracks() {
-  const currTime = Date.now();
   const recentTracks = await db.query.tracks.findMany({
     where: (fields, { and, gt, isNull }) =>
       and(
-        gt(fields.lastPlayedAt, currTime - RECENT_RANGE_MS),
+        gt(fields.lastPlayedAt, Date.now() - RECENT_RANGE_MS),
         isNull(tracks.hiddenAt),
       ),
     columns: {
