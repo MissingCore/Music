@@ -94,6 +94,7 @@ function RecentlyPlayedLists(props: {
     gutters: 32,
     minWidth: 100,
   });
+  if (props.data?.length === 0) return null;
   return (
     <FlashList
       estimatedItemSize={width + 12} // Column width + gap from padding left
@@ -109,7 +110,7 @@ function RecentlyPlayedLists(props: {
       )}
       renderScrollComponent={ScrollView}
       className="-mx-4"
-      contentContainerClassName="px-4 pb-4"
+      contentContainerClassName="px-4 pb-6"
     />
   );
 }
