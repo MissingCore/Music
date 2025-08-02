@@ -49,8 +49,11 @@ export async function getRecentlyPlayedMediaLists() {
 export async function getRecentlyPlayedTracks() {
   const currTime = Date.now();
   const recentTracks = await db.query.tracks.findMany({
-    where: (fields, { gt }) =>
-      gt(fields.lastPlayedAt, currTime - RECENT_RANGE_MS),
+    where: (fields, { and, gt, isNull }) =>
+      and(
+        gt(fields.lastPlayedAt, currTime - RECENT_RANGE_MS),
+        isNull(tracks.hiddenAt),
+      ),
     columns: {
       id: true,
       name: true,
