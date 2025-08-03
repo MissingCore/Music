@@ -85,22 +85,16 @@ export async function updatePlayedMediaList({
 //#endregion
 
 //#region PUT Methods
-/**
- * Insert a new recently played media list, or updating an existing one.
- * Returns the created entry.
- */
+/** Insert a new recently played media list, or updating an existing one. */
 export async function addPlayedMediaList(entry: PlayListSource) {
   const lastPlayedAt = Date.now();
-  return (
-    await db
-      .insert(playedMediaLists)
-      .values({ ...entry, lastPlayedAt })
-      .onConflictDoUpdate({
-        target: [playedMediaLists.id, playedMediaLists.type],
-        set: { lastPlayedAt },
-      })
-      .returning()
-  )[0];
+  return db
+    .insert(playedMediaLists)
+    .values({ ...entry, lastPlayedAt })
+    .onConflictDoUpdate({
+      target: [playedMediaLists.id, playedMediaLists.type],
+      set: { lastPlayedAt },
+    });
 }
 
 /** Update the track's `lastPlayedAt` & `playCount` values. */
