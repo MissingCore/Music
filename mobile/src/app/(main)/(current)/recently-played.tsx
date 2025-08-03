@@ -73,10 +73,7 @@ export default function RecentlyPlayedScreen() {
         />
       )}
       ListHeaderComponent={
-        <RecentlyPlayedLists
-          data={recentlyPlayedMediaLists.data}
-          hasTracks={(recentlyPlayedTracks.data || []).length > 0}
-        />
+        <RecentlyPlayedLists data={recentlyPlayedMediaLists.data} />
       }
       contentContainerClassName="px-4 pt-4"
       contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
@@ -84,10 +81,7 @@ export default function RecentlyPlayedScreen() {
   );
 }
 
-function RecentlyPlayedLists(props: {
-  data?: MediaCard.Content[];
-  hasTracks?: boolean;
-}) {
+function RecentlyPlayedLists(props: { data?: MediaCard.Content[] }) {
   const { width } = useGetColumn({
     cols: 1,
     gap: 0,
