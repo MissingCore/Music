@@ -5,28 +5,33 @@ import {
 import { Stack, router } from "expo-router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { BackHandler, Pressable, View } from "react-native";
+import { BackHandler, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 import { Check } from "~/icons/Check";
-import { useTheme } from "~/hooks/useTheme";
+import { useFloatingContent } from "~/hooks/useFloatingContent";
 import type { InitStoreProps, TrackMetadataForm } from "./context";
 import { TrackMetadataStoreProvider, useTrackMetadataStore } from "./context";
 
 import { ScrollablePresets } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
-import { IconButton } from "~/components/Form/Button";
+import { Button, IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import { ModalTemplate } from "~/components/Modal";
-import { StyledText, TEm } from "~/components/Typography/StyledText";
+import {
+  StyledText,
+  TEm,
+  TStyledText,
+} from "~/components/Typography/StyledText";
 
 export function ModifyTrack(props: InitStoreProps) {
+  const { offset, ...rest } = useFloatingContent();
   return (
     <TrackMetadataStoreProvider {...props}>
       <ScreenConfig />
-      <MetadataForm />
+      <MetadataForm bottomOffset={offset} />
       <ConfirmationModal />
-      <ResetWorkflow />
+      <ResetWorkflow {...rest} />
     </TrackMetadataStoreProvider>
   );
 }
@@ -64,7 +69,7 @@ function ScreenConfig() {
 //#endregion
 
 //#region Metadata Form
-function MetadataForm() {
+function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
   const { t } = useTranslation();
 
   const isUnchanged = useTrackMetadataStore((state) => state.isUnchanged);
@@ -89,6 +94,9 @@ function MetadataForm() {
     <KeyboardAwareScrollView
       bottomOffset={16}
       {...ScrollablePresets}
+      // Remove 24px as `KeyboardAwareScrollView` adds an element at the
+      // end of the ScrollView, causing an additional application of `gap`.
+      contentContainerStyle={{ paddingBottom: bottomOffset - 24 }}
       contentContainerClassName="gap-6 p-4"
     >
       <StyledText dim className="text-center text-sm">
@@ -180,10 +188,10 @@ function ConfirmationModal() {
 
 //#region Reset Workflow
 /** Logic to set the form fields to the embedded metadata from the track. */
-function ResetWorkflow() {
-  const { t } = useTranslation();
-  const { canvas } = useTheme();
-
+function ResetWorkflow({
+  onLayout,
+  wrapperStyling,
+}: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
   const { uri } = useTrackMetadataStore((state) => state.initialData);
   const isSubmitting = useTrackMetadataStore((state) => state.isSubmitting);
   const setIsSubmitting = useTrackMetadataStore(
@@ -212,16 +220,18 @@ function ResetWorkflow() {
   };
 
   return (
-    <Pressable
-      android_ripple={{ color: canvas }}
-      onPress={onReset}
-      disabled={isSubmitting}
-      className="min-h-12 justify-center bg-surface disabled:opacity-25"
-    >
-      <StyledText className="text-center text-sm text-red">
-        {t("form.reset").toLocaleUpperCase()}
-      </StyledText>
-    </Pressable>
+    <View onLayout={onLayout} {...wrapperStyling}>
+      <Button
+        onPress={onReset}
+        disabled={isSubmitting}
+        className="w-full bg-red"
+      >
+        <TStyledText
+          textKey="form.reset"
+          className="text-center text-neutral100"
+        />
+      </Button>
+    </View>
   );
 }
 //#endregion

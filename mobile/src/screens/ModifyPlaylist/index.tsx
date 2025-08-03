@@ -12,7 +12,7 @@ import { CheckCircle } from "~/icons/CheckCircle";
 import { Check } from "~/icons/Check";
 import { Remove } from "~/icons/Remove";
 import { useDeletePlaylist } from "~/queries/playlist";
-import { useTheme } from "~/hooks/useTheme";
+import { useFloatingContent } from "~/hooks/useFloatingContent";
 import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import type { InitStoreProps } from "./context";
 import { PlaylistStoreProvider, usePlaylistStore } from "./context";
@@ -29,16 +29,17 @@ import { ModalTemplate } from "~/components/Modal";
 import { useSheetRef } from "~/components/Sheet";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
-import { StyledText, TStyledText } from "~/components/Typography/StyledText";
+import { TStyledText } from "~/components/Typography/StyledText";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 
 /** Resuable screen to modify (create or edit) a playlist. */
 export function ModifyPlaylist(props: InitStoreProps) {
+  const { offset, ...rest } = useFloatingContent();
   return (
     <PlaylistStoreProvider {...props}>
       <ScreenConfig />
-      <PageContent />
-      <DeleteWorkflow />
+      <PageContent bottomOffset={offset} />
+      <DeleteWorkflow {...rest} />
       <ConfirmationModal />
     </PlaylistStoreProvider>
   );
@@ -80,7 +81,7 @@ function ScreenConfig() {
 type RenderItemProps = DragListRenderItemInfo<SlimTrackWithAlbum>;
 
 /** Contains the logic for editing the playlist name and tracks. */
-function PageContent() {
+function PageContent({ bottomOffset }: { bottomOffset: number }) {
   const tracks = usePlaylistStore((state) => state.tracks);
   const isUnchanged = usePlaylistStore((state) => state.isUnchanged);
   const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
@@ -125,7 +126,8 @@ function PageContent() {
           ListEmptyComponent={
             <ContentPlaceholder errMsgKey="err.msg.noTracks" />
           }
-          contentContainerClassName="py-4" // Applies to the internal `<FlashList />`.
+          contentContainerStyle={{ paddingBottom: bottomOffset }}
+          contentContainerClassName="pt-4" // Applies to the internal `<FlashList />`.
         />
       </View>
     </>
@@ -265,9 +267,10 @@ function ConfirmationModal() {
 
 //#region Delete Workflow
 /** Logic to handle us deleting the playlist. */
-function DeleteWorkflow() {
-  const { t } = useTranslation();
-  const { canvas } = useTheme();
+function DeleteWorkflow({
+  onLayout,
+  wrapperStyling,
+}: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
   const [lastChance, setLastChance] = useState(false);
 
   const mode = usePlaylistStore((state) => state.mode);
@@ -293,16 +296,18 @@ function DeleteWorkflow() {
 
   return (
     <>
-      <Pressable
-        android_ripple={{ color: canvas }}
-        onPress={() => setLastChance(true)}
-        disabled={lastChance || isSubmitting}
-        className="min-h-12 justify-center bg-surface disabled:opacity-25"
-      >
-        <StyledText className="text-center text-sm text-red">
-          {t("feat.playlist.extra.delete").toLocaleUpperCase()}
-        </StyledText>
-      </Pressable>
+      <View onLayout={onLayout} {...wrapperStyling}>
+        <Button
+          onPress={() => setLastChance(true)}
+          disabled={lastChance || isSubmitting}
+          className="w-full bg-red"
+        >
+          <TStyledText
+            textKey="feat.playlist.extra.delete"
+            className="text-center text-neutral100"
+          />
+        </Button>
+      </View>
       <ModalTemplate
         visible={lastChance}
         titleKey="feat.playlist.extra.delete"
