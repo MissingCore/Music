@@ -71,13 +71,6 @@
       "when": 1751075864737,
       "tag": "0009_ambitious_puppet_master",
       "breakpoints": true
-    },
-    {
-      "idx": 10,
-      "version": "6",
-      "when": 1753668787739,
-      "tag": "0010_steep_shinko_yamashiro",
-      "breakpoints": true
     }
   ]
 }
