@@ -97,7 +97,7 @@
   },
   "@sentry/react-native": {
     "name": "@sentry/react-native",
-    "version": "6.17.0",
+    "version": "6.19.0",
     "copyright": "Copyright (c) 2017-2024 Sentry",
     "source": "https://github.com/getsentry/sentry-react-native",
     "license": "MIT",
@@ -113,7 +113,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.83.0",
+    "version": "5.84.1",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -137,7 +137,7 @@
   },
   "drizzle-orm": {
     "name": "drizzle-orm",
-    "version": "0.44.3",
+    "version": "0.44.4",
     "copyright": "Copyright (c) 2022 Drizzle Team",
     "source": "https://github.com/drizzle-team/drizzle-orm",
     "license": "Apache-2.0",
@@ -329,7 +329,7 @@
   },
   "react-i18next": {
     "name": "react-i18next",
-    "version": "15.6.0",
+    "version": "15.6.1",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/react-i18next",
     "license": "MIT",
@@ -377,7 +377,7 @@
   },
   "react-native-gesture-handler": {
     "name": "react-native-gesture-handler",
-    "version": "2.27.1",
+    "version": "2.27.2",
     "copyright": "Copyright (c) 2016 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-gesture-handler",
     "license": "MIT",
@@ -385,7 +385,7 @@
   },
   "react-native-keyboard-controller": {
     "name": "react-native-keyboard-controller",
-    "version": "1.17.5",
+    "version": "1.18.2",
     "copyright": "Copyright (c) 2021 Kiryl Ziusko",
     "source": "https://github.com/kirillzyusko/react-native-keyboard-controller",
     "license": "MIT",
@@ -409,7 +409,7 @@
   },
   "react-native-reanimated": {
     "name": "react-native-reanimated",
-    "version": "3.18.0",
+    "version": "3.19.0",
     "copyright": "Copyright (c) 2016 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-reanimated",
     "license": "MIT",
@@ -433,7 +433,7 @@
   },
   "react-native-svg": {
     "name": "react-native-svg",
-    "version": "15.12.0",
+    "version": "15.12.1",
     "copyright": "Copyright (c) [2015-2016] [Horcrux]",
     "source": "https://github.com/software-mansion/react-native-svg",
     "license": "MIT",
@@ -465,7 +465,7 @@
   },
   "zod": {
     "name": "zod",
-    "version": "4.0.5",
+    "version": "4.0.14",
     "copyright": "Copyright (c) 2025 Colin McDonnell",
     "source": "https://github.com/colinhacks/zod",
     "license": "MIT",
@@ -473,7 +473,7 @@
   },
   "zustand": {
     "name": "zustand",
-    "version": "5.0.6",
+    "version": "5.0.7",
     "copyright": "Copyright (c) 2019 Paul Henschel",
     "source": "https://github.com/pmndrs/zustand",
     "license": "MIT",
