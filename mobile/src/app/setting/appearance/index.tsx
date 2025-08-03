@@ -20,9 +20,6 @@ export default function AppearanceScreen() {
   const nowPlayingDesign = useUserPreferencesStore(
     (state) => state.nowPlayingDesign,
   );
-  const showRecentlyPlayed = useUserPreferencesStore(
-    (state) => state.showRecent,
-  );
   const showVisualTips = useUserPreferencesStore((state) => state.visualTips);
   const accentFontSheetRef = useSheetRef();
   const primaryFontSheetRef = useSheetRef();
@@ -71,11 +68,6 @@ export default function AppearanceScreen() {
             titleKey="feat.nowPlayingDesign.title"
             description={t(`feat.nowPlayingDesign.extra.${nowPlayingDesign}`)}
             onPress={() => nowPlayingDesignSheetRef.current?.present()}
-          />
-          <ListItem
-            titleKey="feat.playedRecent.extra.section"
-            onPress={toggleShowRecent}
-            switchState={showRecentlyPlayed}
             last
           />
         </List>
@@ -93,9 +85,6 @@ export default function AppearanceScreen() {
     </>
   );
 }
-
-const toggleShowRecent = () =>
-  userPreferencesStore.setState((prev) => ({ showRecent: !prev.showRecent }));
 
 const toggleVisualTips = () =>
   userPreferencesStore.setState((prev) => ({ visualTips: !prev.visualTips }));

@@ -1,8 +1,10 @@
 import { toast } from "@backpackapp-io/react-native-toast";
-import { router } from "expo-router";
+import BackgroundTimer from "@boterop/react-native-background-timer";
 import TrackPlayer, { Event } from "@weights-ai/react-native-track-player";
+import { router } from "expo-router";
 
 import i18next from "~/modules/i18n";
+import { addPlayedMediaList, addPlayedTrack } from "~/api/recent";
 import { deleteTrack } from "~/api/track";
 import type { TrackStatus } from "~/modules/media/services/Music";
 import { Queue, RNTPManager, musicStore } from "~/modules/media/services/Music";
@@ -16,6 +18,12 @@ import { ToastOptions } from "~/lib/toast";
 
 /** Context to whether we should resume playback after ducking. */
 let resumeAfterDuck: boolean = false;
+
+/** Whether `lastPosition` can be ignored - ie: when we're skipping tracks. */
+let resolvedLastPosition = false;
+/** Increase playback count after a certain duration of play time. */
+let playbackCountUpdator: ReturnType<typeof BackgroundTimer.setTimeout> | null =
+  null;
 
 /** Errors which should cause us to "delete" a track. */
 const ValidErrors = [
@@ -86,7 +94,7 @@ export async function PlaybackService() {
       }
     }
 
-    const { repeat, queueList } = musicStore.getState();
+    const { playingSource, repeat, queueList } = musicStore.getState();
     const activeTrack = e.track;
     const trackStatus: TrackStatus = activeTrack["music::status"];
 
@@ -129,6 +137,28 @@ export async function PlaybackService() {
         await MusicControls.pause();
         await TrackPlayer.seekTo(0);
       }
+    }
+
+    if (playbackCountUpdator !== null) {
+      BackgroundTimer.clearTimeout(playbackCountUpdator);
+    }
+    // Only mark a track as played after we play 10s of it. This prevents
+    // the track being marked as "played" if we skip it.
+    if (lastPosition === undefined || resolvedLastPosition) {
+      // Track should start playing at 0s.
+      playbackCountUpdator = BackgroundTimer.setTimeout(
+        async () => await addPlayedTrack(activeTrack.id),
+        Math.min(activeTrack.duration!, 10) * 1000,
+      );
+    } else if (lastPosition < 10) {
+      playbackCountUpdator = BackgroundTimer.setTimeout(
+        async () => await addPlayedTrack(activeTrack.id),
+        (Math.min(activeTrack.duration!, 10) - lastPosition) * 1000,
+      );
+    }
+    if (!resolvedLastPosition) {
+      if (playingSource) await addPlayedMediaList(playingSource);
+      resolvedLastPosition = true;
     }
 
     if (e.index === 1) await TrackPlayer.remove(0);

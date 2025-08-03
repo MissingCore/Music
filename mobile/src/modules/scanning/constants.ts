@@ -2,7 +2,8 @@ export type MigrationOption =
   | "kv-store"
   | "fileNodes-adjustment"
   | "duplicate-album-fix"
-  | "discover-time-field";
+  | "discover-time-field"
+  | "recent-list-db-migration";
 
 /**
  * History of data migrations due to "breaking" changes.
@@ -22,6 +23,10 @@ export const MigrationHistory: Record<
   0: { version: "v2.3.0", changes: ["kv-store", "fileNodes-adjustment"] },
   1: {
     version: "v2.4.0",
-    changes: ["discover-time-field", "duplicate-album-fix"],
+    changes: [
+      "discover-time-field",
+      "duplicate-album-fix",
+      "recent-list-db-migration",
+    ],
   },
 };

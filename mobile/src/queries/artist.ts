@@ -5,7 +5,6 @@ import type { Artist, artists } from "~/db/schema";
 import { formatForCurrentScreen } from "~/db/utils";
 
 import { updateArtist } from "~/api/artist";
-import { Resynchronize } from "~/modules/media/services/Resynchronize";
 import { queries as q } from "./keyStore";
 
 import { useFocusedQuery } from "~/lib/react-query";
@@ -66,11 +65,8 @@ export function useUpdateArtist(artistName: string) {
     mutationFn: (
       updatedValues: Partial<Omit<typeof artists.$inferInsert, "name">>,
     ) => updateArtist(artistName, updatedValues),
-    onSuccess: (_, { artwork }) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: q.artists._def });
-      if (artwork !== undefined) {
-        Resynchronize.onImage({ type: "artist", id: artistName });
-      }
     },
   });
 }

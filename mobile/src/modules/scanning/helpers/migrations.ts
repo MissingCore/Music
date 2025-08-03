@@ -4,15 +4,15 @@ import AsyncStorage from "expo-sqlite/kv-store";
 
 import { db } from "~/db";
 import type { AlbumWithTracks } from "~/db/schema";
-import { albums, fileNodes, tracks } from "~/db/schema";
+import { albums, fileNodes, playedMediaLists, tracks } from "~/db/schema";
 
 import { getAlbums } from "~/api/album";
 import { musicStore } from "~/modules/media/services/Music";
-import { recentListStore } from "~/modules/media/services/RecentList";
 import { sortPreferencesStore } from "~/modules/media/services/SortPreferences";
 import { userPreferencesStore } from "~/services/UserPreferences";
 import { onboardingStore } from "../services/Onboarding";
 
+import type { PlayListSource } from "~/modules/media/types";
 import { removeUnusedCategories } from "./audio";
 import { savePathComponents } from "./folder";
 import type { MigrationOption } from "../constants";
@@ -59,11 +59,6 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
 
     // We need to rehydrate the stores that references the data in AsyncStorage
     // in order for it to take effect.
-    //  - Note: We need to rehydrate the "Recent List" store first as when
-    //  the "User Preference" store hydrates, it calls `RecentList.refresh()`,
-    //  which will clear the migrated "Recent List" store data as it hasn't
-    //  hydrated in yet.
-    await recentListStore.persist.rehydrate();
     await sortPreferencesStore.persist.rehydrate();
     await userPreferencesStore.persist.rehydrate();
     await musicStore.persist.rehydrate();
@@ -149,5 +144,25 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
     /* 3. Set `releaseYear = -1` to preserve unique key behavior. */
     // eslint-disable-next-line drizzle/enforce-update-with-where
     await db.update(albums).set({ releaseYear: -1 });
+  },
+
+  "recent-list-db-migration": async () => {
+    const storeKey = "music::recent-list-store";
+    try {
+      const recentListStore = await AsyncStorage.getItem(storeKey);
+      if (!recentListStore) return;
+      // Structure currently is: `{ state: <Recent List store>, version: 0 }`.
+      const formattedData = JSON.parse(recentListStore).state
+        .sources as PlayListSource[];
+      const currentTime = Date.now();
+      // Have `lastPlayedAt` reflect the current order.
+      await db.insert(playedMediaLists).values(
+        formattedData.map((list, idx) => {
+          return { ...list, lastPlayedAt: currentTime - idx };
+        }),
+      );
+      // Delete data at old key when finished.
+      await AsyncStorage.removeItem(storeKey);
+    } catch {}
   },
 };

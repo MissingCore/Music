@@ -6,7 +6,6 @@ import { useStore } from "zustand";
 import i18next from "~/modules/i18n";
 import { LANGUAGES } from "~/modules/i18n/constants";
 import { musicStore } from "~/modules/media/services/Music";
-import { RecentList } from "~/modules/media/services/RecentList";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { createPersistedSubscribedStore } from "~/lib/zustand";
@@ -51,9 +50,6 @@ interface UserPreferencesStore {
   tabsOrder: OrderableTab[];
   /** Visibility of the tabs on the home screen. */
   tabsVisibility: Record<OrderableTab, boolean>;
-
-  /** Whether we'll show the "Recently Played" section on the home screen. */
-  showRecent: boolean;
 
   /** If tips to alert the users of features will be displayed. */
   visualTips: boolean;
@@ -126,8 +122,6 @@ export const userPreferencesStore =
         track: true,
       },
 
-      showRecent: true,
-
       visualTips: true,
 
       ignoreInterrupt: false,
@@ -196,9 +190,6 @@ userPreferencesStore.subscribe(
     await i18next.changeLanguage(languageCode);
     // Make sure our queries that use translated values are updated.
     clearAllQueries();
-    // Make sure the recent list data is also updated as we don't get
-    // it from React Query.
-    RecentList.refresh();
     // Make sure to refresh the playing source name if it's one of the favorite playlists.
     const { playingSource } = musicStore.getState();
     if (playingSource) {

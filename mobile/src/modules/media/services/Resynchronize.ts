@@ -1,10 +1,11 @@
+import { removePlayedMediaList, updatePlayedMediaList } from "~/api/recent";
 import { RNTPManager, musicStore } from "./Music";
-import { RecentList } from "./RecentList";
 
 import {
   arePlaybackSourceEqual,
   getSourceName,
   getTrackList,
+  isPlaybackSourceInList,
 } from "../helpers/data";
 import type { PlayListSource } from "../types";
 
@@ -15,21 +16,14 @@ import type { PlayListSource } from "../types";
 export class Resynchronize {
   /** Resynchronize when we delete one or more media lists. */
   static async onDelete(removedRefs: PlayListSource | PlayListSource[]) {
-    if (Array.isArray(removedRefs)) RecentList.removeEntries(removedRefs);
-    else RecentList.removeEntries([removedRefs]);
     // Check if we were playing this list.
     const currSource = musicStore.getState().playingSource;
     if (!currSource) return;
     const isPlayingRef = Array.isArray(removedRefs)
-      ? RecentList.containsSource(currSource, removedRefs)[0]
+      ? isPlaybackSourceInList(currSource, removedRefs)[0]
       : arePlaybackSourceEqual(currSource, removedRefs);
     // If we're playing a list we've deleted, reset the state.
     if (isPlayingRef) await musicStore.getState().reset();
-  }
-
-  /** Resynchronize when we update the artwork. */
-  static onImage(ref: PlayListSource) {
-    RecentList.refresh(ref);
   }
 
   /** Resynchronize when we rename a playlist. */
@@ -37,7 +31,13 @@ export class Resynchronize {
     oldSource,
     newSource,
   }: Record<"oldSource" | "newSource", PlayListSource>) {
-    RecentList.replaceEntry({ oldSource, newSource });
+    try {
+      await updatePlayedMediaList({ oldSource, newSource });
+    } catch {
+      // This means `newSource` already exists in the Recent List, so
+      // just delete `oldSource`.
+      await removePlayedMediaList(oldSource);
+    }
     // Check if we were playing this list.
     const currSource = musicStore.getState().playingSource;
     const isPlayingRef = arePlaybackSourceEqual(currSource, oldSource);
@@ -50,7 +50,6 @@ export class Resynchronize {
 
   /** Resynchronize when we update the tracks in a media list. */
   static async onTracks(ref: PlayListSource) {
-    RecentList.refresh(ref);
     // Check if we were playing this list.
     const { playingSource } = musicStore.getState();
     const isPlayingRef = arePlaybackSourceEqual(playingSource, ref);

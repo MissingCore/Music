@@ -6,7 +6,6 @@ import { formatForCurrentScreen, formatForMediaCard } from "~/db/utils";
 
 import { favoriteAlbum, updateAlbum } from "~/api/album";
 import { revalidateActiveTrack } from "~/modules/media/helpers/revalidate";
-import { Resynchronize } from "~/modules/media/services/Resynchronize";
 import { queries as q } from "./keyStore";
 
 import { clearAllQueries } from "~/lib/react-query";
@@ -73,7 +72,6 @@ export function useUpdateAlbumArtwork(albumId: string) {
       // Changing the album artwork affects a lot of things, so we'll just
       // clear all the queries.
       clearAllQueries();
-      Resynchronize.onImage({ type: "album", id: albumId });
 
       // Revalidate `activeTrack` in Music store if needed.
       await revalidateActiveTrack({ type: "album", id: albumId });

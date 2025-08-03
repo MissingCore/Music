@@ -1,9 +1,9 @@
 import TrackPlayer from "@weights-ai/react-native-track-player";
 
+import { addPlayedMediaList } from "~/api/recent";
 import { getTrack } from "~/api/track";
 import { userPreferencesStore } from "~/services/UserPreferences";
 import { Queue, RNTPManager, musicStore } from "./Music";
-import { RecentList } from "./RecentList";
 import { getIsPlaying } from "../hooks/useIsPlaying";
 
 import {
@@ -158,7 +158,7 @@ export async function playFromMediaList({
   await TrackPlayer.play();
 
   // 6. Add media list to recent lists.
-  RecentList.add(source);
+  await addPlayedMediaList(source);
 }
 //#endregion
 

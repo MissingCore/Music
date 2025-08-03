@@ -8,6 +8,10 @@ import { getArtist, getArtistAlbums, getArtists } from "~/api/artist";
 import { getFolder } from "~/api/folder";
 import { getPlaylist, getPlaylists, getSpecialPlaylist } from "~/api/playlist";
 import {
+  getRecentlyPlayedMediaLists,
+  getRecentlyPlayedTracks,
+} from "~/api/recent";
+import {
   getDatabaseSummary,
   getLatestRelease,
   getSaveErrors,
@@ -117,6 +121,17 @@ export const queries = createQueryKeyStore({
     }),
   },
 
+  /** Query keys used in `useQuery` for recently played media. */
+  recent: {
+    mediaLists: {
+      queryKey: null,
+      queryFn: () => getRecentlyPlayedMediaLists(),
+    },
+    tracks: {
+      queryKey: null,
+      queryFn: () => getRecentlyPlayedTracks(),
+    },
+  },
   /** Query keys used in `useQuery` for "setting" related features. */
   settings: {
     releaseNote: {

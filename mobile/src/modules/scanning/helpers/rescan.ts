@@ -6,7 +6,6 @@ import { db } from "~/db";
 import { fileNodes, invalidTracks, tracks } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
-import { RecentList } from "~/modules/media/services/RecentList";
 import { Resynchronize } from "~/modules/media/services/Resynchronize";
 
 import { clearAllQueries } from "~/lib/react-query";
@@ -71,9 +70,6 @@ export async function rescanForTracks(deepScan = false) {
     // Find and save any images.
     await findAndSaveArtwork();
     await cleanupImages();
-
-    // Make sure the "recents" list is correct.
-    RecentList.refresh();
 
     // Ensure queries are all up-to-date.
     clearAllQueries();

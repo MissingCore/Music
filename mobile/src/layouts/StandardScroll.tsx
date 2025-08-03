@@ -1,5 +1,6 @@
 import type { ParseKeys } from "i18next";
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
@@ -14,6 +15,8 @@ export function StandardScrollLayout(props: {
   contentContainerClassName?: string;
   /** Key to title in translations. */
   titleKey?: ParseKeys;
+  /** Action rendered adjacent to the title. */
+  titleAction?: React.ReactNode;
 }) {
   const { bottomInset } = useBottomActionsContext();
   return (
@@ -26,18 +29,32 @@ export function StandardScrollLayout(props: {
         props.contentContainerClassName,
       )}
     >
-      {props.titleKey ? <LayoutHeader titleKey={props.titleKey} /> : undefined}
+      {props.titleKey ? (
+        <LayoutHeader
+          titleKey={props.titleKey}
+          titleAction={props.titleAction}
+        />
+      ) : undefined}
       {props.children}
     </ScrollView>
   );
 }
 
-function LayoutHeader({ titleKey }: { titleKey: ParseKeys }) {
+function LayoutHeader(props: {
+  titleKey: ParseKeys;
+  titleAction?: React.ReactNode;
+}) {
   const { t } = useTranslation();
   const { top } = useSafeAreaInsets();
   return (
-    <AccentText style={{ paddingTop: top + 16 }} className="text-4xl">
-      {t(titleKey)}
-    </AccentText>
+    <View
+      style={{ paddingTop: top + 16 }}
+      className="flex-row items-center justify-between gap-4"
+    >
+      <AccentText className="text-4xl">{t(props.titleKey)}</AccentText>
+      {props.titleAction ? (
+        <View className="-mr-2">{props.titleAction}</View>
+      ) : undefined}
+    </View>
   );
 }

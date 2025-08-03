@@ -143,7 +143,7 @@ export function useUpdatePlaylist(playlistName: string) {
         Omit<typeof playlists.$inferInsert, "isFavorite">
       > & { tracks?: Array<{ id: string }> },
     ) => updatePlaylist(playlistName, updatedValues),
-    onSuccess: async (_, { name, artwork, tracks }) => {
+    onSuccess: async (_, { name, tracks }) => {
       queryClient.resetQueries({ queryKey: q.playlists._def });
       // Need to update all track queries as we don't exactly know which
       // were removed.
@@ -156,9 +156,6 @@ export function useUpdatePlaylist(playlistName: string) {
       // in `updatePlaylist()`).
       const sanitizedName = name ? sanitizePlaylistName(name) : undefined;
 
-      if (artwork !== undefined) {
-        Resynchronize.onImage({ type: "playlist", id: playlistName });
-      }
       if (sanitizedName) {
         await Resynchronize.onRename({
           oldSource: { type: "playlist", id: playlistName },

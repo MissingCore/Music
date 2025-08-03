@@ -2,21 +2,27 @@ import {
   MetadataPresets,
   getMetadata,
 } from "@missingcore/react-native-metadata-retriever";
-import { eq, inArray } from "drizzle-orm";
+import { eq, inArray, lt } from "drizzle-orm";
 import { File } from "expo-file-system/next";
 import type { Asset as MediaLibraryAsset } from "expo-media-library";
 import { getAssetsAsync } from "expo-media-library";
 
 import { db } from "~/db";
-import { albums, artists, invalidTracks, tracks } from "~/db/schema";
+import {
+  albums,
+  artists,
+  invalidTracks,
+  playedMediaLists,
+  tracks,
+} from "~/db/schema";
 
 import { upsertAlbum } from "~/api/album";
 import { createArtist } from "~/api/artist";
+import { RECENT_RANGE_MS } from "~/api/recent";
 import { getSaveErrors } from "~/api/setting";
 import { createTrack, deleteTrack, getTracks, updateTrack } from "~/api/track";
 import { userPreferencesStore } from "~/services/UserPreferences";
 import { Queue, musicStore } from "~/modules/media/services/Music";
-import { RecentList } from "~/modules/media/services/RecentList";
 import { onboardingStore } from "../services/Onboarding";
 
 import {
@@ -275,6 +281,11 @@ export async function cleanupDatabase(usedTrackIds: string[]) {
   // Clear the queue of deleted tracks.
   await Queue.removeIds(unusedTrackIds);
 
+  // Remove recently played media that's beyond what we display.
+  await db
+    .delete(playedMediaLists)
+    .where(lt(playedMediaLists.lastPlayedAt, Date.now() - RECENT_RANGE_MS));
+
   // Remove anything else that's unused.
   await removeUnusedCategories();
 }
@@ -303,12 +314,5 @@ export async function removeUnusedCategories() {
     .filter(({ albums, tracks }) => albums.length === 0 && tracks.length === 0)
     .map(({ name }) => name);
   await db.delete(artists).where(inArray(artists.name, unusedArtistNames));
-
-  // Remove these values from the recent list.
-  const removedLists = [
-    ...unusedAlbumIds.map((id) => ({ type: "album", id })),
-    ...unusedArtistNames.map((name) => ({ type: "artist", id: name })),
-  ] as Array<{ type: "album" | "artist"; id: string }>;
-  if (removedLists.length > 0) RecentList.removeEntries(removedLists);
 }
 //#endregion
