@@ -1,7 +1,6 @@
 import { useIsFocused } from "@react-navigation/native";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollView } from "react-native-gesture-handler";
 
 import { RECENT_DAY_RANGE } from "~/api/recent";
 import { queries as q } from "~/queries/keyStore";
@@ -102,7 +101,6 @@ function RecentlyPlayedLists(props: { data?: MediaCard.Content[] }) {
           className={index > 0 ? "ml-3" : undefined}
         />
       )}
-      renderScrollComponent={ScrollView}
       className="-mx-4"
       contentContainerClassName="px-4 pb-6"
     />
