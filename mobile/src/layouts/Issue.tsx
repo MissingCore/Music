@@ -1,14 +1,12 @@
 import { openBrowserAsync } from "expo-web-browser";
 import { useTranslation } from "react-i18next";
-import { View, useWindowDimensions } from "react-native";
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-} from "react-native-reanimated";
+import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { useFloatingContent } from "~/hooks/useFloatingContent";
+
 import { GITHUB } from "~/constants/Links";
-import { ScrollablePresets } from "~/components/Defaults";
+import { ScrollView } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
 import { AccentText } from "~/components/Typography/AccentText";
 import { TStyledText } from "~/components/Typography/StyledText";
@@ -20,19 +18,13 @@ export function IssueLayout(props: {
 }) {
   const { t } = useTranslation();
   const { top } = useSafeAreaInsets();
-  const { width: ScreenWidth } = useWindowDimensions();
-
-  const reportButtonHeight = useSharedValue(0);
-
-  const bottomPad = useAnimatedStyle(() => ({
-    paddingBottom: reportButtonHeight.value,
-  }));
+  const { onLayout, offset, wrapperStyling } = useFloatingContent();
 
   return (
-    <View className="flex-1">
-      <Animated.ScrollView
+    <View className="relative flex-1">
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: offset }}
         contentContainerClassName="grow gap-6 p-4"
-        {...ScrollablePresets}
       >
         <AccentText style={{ paddingTop: top + 16 }} className="text-4xl">
           {t(`err.flow.${props.issueType}.title`)}
@@ -42,20 +34,12 @@ export function IssueLayout(props: {
           textKey={`err.flow.${props.issueType}.brief`}
           className="text-base"
         />
-
         {props.children}
-
-        {/* Seems like animatd styles can't be passed to `contentContainerStyle`. */}
-        <Animated.View style={bottomPad} />
-      </Animated.ScrollView>
-      <View className="absolute bottom-4 left-4 w-full gap-0.5 rounded-md bg-canvas">
+      </ScrollView>
+      <View onLayout={onLayout} {...wrapperStyling}>
         <Button
-          onLayout={(e) => {
-            reportButtonHeight.value = e.nativeEvent.layout.height;
-          }}
           onPress={() => openBrowserAsync(`${GITHUB}/issues`)}
-          style={{ maxWidth: ScreenWidth - 32 }}
-          className="bg-red"
+          className="w-full bg-red"
         >
           <TStyledText
             textKey="err.flow.report.title"
