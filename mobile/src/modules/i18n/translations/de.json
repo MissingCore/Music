@@ -57,6 +57,7 @@
     "stay": "Bleiben",
     "leave": "Verlassen",
     "clear": "Leeren",
+    "reset": null,
     "validation": {
       "unique": "Einzigartig"
     }
@@ -167,6 +168,15 @@
         "totalDuration": "Gesamtdauer"
       }
     },
+    "hiddenTracks": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "hiddenAt": null,
+        "hasHiddenTracks": null,
+        "notFound": null
+      }
+    },
     "saveErrors": {
       "title": "Fehler beim Speichern",
       "brief": "Der Grund, warum nicht einige Lieder gespeichert wurden schauen."
@@ -224,6 +234,18 @@
       "title": "Ignoriere kurzes Audio",
       "description": "Dauer in Sekunden des Audios, das wir nicht speichern möchten."
     },
+    "experimental": {
+      "title": null,
+      "brief": null
+    },
+    "sleepTimer": {
+      "title": null,
+      "description": null,
+      "extra": {
+        "start": null,
+        "stopTime": null
+      }
+    },
     "translate": {
       "title": "Übersetzungen beitragen",
       "brief": "Uns helfen, die App in deine Sprache zu Übersetzen."
@@ -243,7 +265,10 @@
       "brief": "Was macht diese App möglich."
     },
     "version": {
-      "title": "Version"
+      "title": "Version",
+      "extra": {
+        "rcNotification": null
+      }
     },
     "onboardPreprocess": {
       "title": "Vorverarbeitung",
@@ -267,8 +292,7 @@
     "playedRecent": {
       "title": "Kürzlich gehört",
       "extra": {
-        "empty": "Du hast noch nichts gehört!",
-        "section": "Zuletzt-abgespielt-Sektion"
+        "notFound": null
       }
     },
     "search": {
@@ -298,11 +322,26 @@
         "name": "Playlistname"
       }
     },
+    "trackMetadata": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      },
+      "extra": {
+        "albumArtist": null,
+        "disc": null,
+        "name": null,
+        "trackNumber": null,
+        "year": "Jahr"
+      }
+    },
     "modalSort": {
       "title": "Sortierreihenfolge",
       "extra": {
         "asc": "Aufsteigende Reihenfolge",
         "alphabetical": "Alphabetische Reihenfolge",
+        "discover": null,
         "modified": "Zuletzt Geändert"
       }
     },

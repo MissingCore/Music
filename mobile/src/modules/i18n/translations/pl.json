@@ -63,6 +63,7 @@
     "stay": "Zostań",
     "leave": "Wyjdź",
     "clear": "Wyczyść",
+    "reset": null,
     "validation": {
       "unique": "Unikalna"
     }
@@ -173,6 +174,15 @@
         "totalDuration": "Łączna długość"
       }
     },
+    "hiddenTracks": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "hiddenAt": null,
+        "hasHiddenTracks": null,
+        "notFound": null
+      }
+    },
     "saveErrors": {
       "title": "Przechwycone błędy",
       "brief": "Zobacz dlaczego niektóre utwory nie zostały dodane."
@@ -230,6 +240,18 @@
       "title": "Ignoruj krótkie nagrania",
       "description": "Nagrania krótsze niż poniższa wartość sekund nie będą zapisywane."
     },
+    "experimental": {
+      "title": null,
+      "brief": null
+    },
+    "sleepTimer": {
+      "title": null,
+      "description": null,
+      "extra": {
+        "start": null,
+        "stopTime": null
+      }
+    },
     "translate": {
       "title": "Rozwijaj tłumaczenia",
       "brief": "Pomóż przetłumaczyć interfejs aplikacji na inne języki."
@@ -249,7 +271,10 @@
       "brief": "Komponenty, dzięki którym ta aplikacja działa."
     },
     "version": {
-      "title": "Wersja"
+      "title": "Wersja",
+      "extra": {
+        "rcNotification": null
+      }
     },
     "onboardPreprocess": {
       "title": "Przeprocesuj",
@@ -273,8 +298,7 @@
     "playedRecent": {
       "title": "Ostatnio odtwarzane",
       "extra": {
-        "empty": "Niczego nie słuchano w ostatnim czasie!",
-        "section": "Sekcja `Ostatnio odtwarzane`"
+        "notFound": null
       }
     },
     "search": {
@@ -304,11 +328,26 @@
         "name": "Nazwa dla playlisty"
       }
     },
+    "trackMetadata": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      },
+      "extra": {
+        "albumArtist": null,
+        "disc": null,
+        "name": null,
+        "trackNumber": null,
+        "year": null
+      }
+    },
     "modalSort": {
       "title": "Kolejność sortowania",
       "extra": {
         "asc": "Rosnąco",
         "alphabetical": "Alfabetycznie",
+        "discover": null,
         "modified": "Data modyfikacji"
       }
     },

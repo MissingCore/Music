@@ -15,6 +15,7 @@
 
 - [@The-Ladle](https://www.github.com/The-Ladle)
 - [@friiskoch](https://github.com/friiskoch)
+- [@Costeer](https://github.com/Costeer)
 
 ## [Indonesia] Indonesian
 

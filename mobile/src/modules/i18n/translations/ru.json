@@ -57,6 +57,7 @@
     "stay": "Остаться",
     "leave": "Выйти",
     "clear": "Очистить",
+    "reset": null,
     "validation": {
       "unique": "Уникальный"
     }
@@ -167,6 +168,15 @@
         "totalDuration": "Полная длительность"
       }
     },
+    "hiddenTracks": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "hiddenAt": null,
+        "hasHiddenTracks": null,
+        "notFound": null
+      }
+    },
     "saveErrors": {
       "title": "Ошибки сохранения",
       "brief": "Узнать причину, по которой некоторые треки не были сохранены."
@@ -224,6 +234,18 @@
       "title": "Игнорирование коротких аудио",
       "description": "Длительность аудио в секундах, которую мы не сохраняем."
     },
+    "experimental": {
+      "title": null,
+      "brief": null
+    },
+    "sleepTimer": {
+      "title": null,
+      "description": null,
+      "extra": {
+        "start": null,
+        "stopTime": null
+      }
+    },
     "translate": {
       "title": "Внести вклад в перевод",
       "brief": "Помогите перевести приложение на другие языки."
@@ -243,7 +265,10 @@
       "brief": "Что делает это приложение возможным."
     },
     "version": {
-      "title": "Версия"
+      "title": "Версия",
+      "extra": {
+        "rcNotification": null
+      }
     },
     "onboardPreprocess": {
       "title": "Предварительная обработка",
@@ -267,8 +292,7 @@
     "playedRecent": {
       "title": "Недавно сыграно",
       "extra": {
-        "empty": "Вы еще ничего не послушали!",
-        "section": "Последний раздел"
+        "notFound": null
       }
     },
     "search": {
@@ -298,11 +322,26 @@
         "name": "Название плейлиста"
       }
     },
+    "trackMetadata": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      },
+      "extra": {
+        "albumArtist": null,
+        "disc": null,
+        "name": null,
+        "trackNumber": null,
+        "year": null
+      }
+    },
     "modalSort": {
       "title": "Порядок сортировки",
       "extra": {
         "asc": "По возрастанию",
         "alphabetical": "Алфавитный",
+        "discover": null,
         "modified": "Последнее изменение"
       }
     },
