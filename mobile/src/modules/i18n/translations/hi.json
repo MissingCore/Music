@@ -57,6 +57,7 @@
     "stay": "रहें",
     "leave": "छोड़ें",
     "clear": null,
+    "reset": null,
     "validation": {
       "unique": "अद्वितीय"
     }
@@ -167,6 +168,15 @@
         "totalDuration": "कुल अवधि"
       }
     },
+    "hiddenTracks": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "hiddenAt": null,
+        "hasHiddenTracks": null,
+        "notFound": null
+      }
+    },
     "saveErrors": {
       "title": "त्रुटियाँ सहेजें",
       "brief": "कुछ ट्रैक्स क्यों नहीं सहेजे गए, इसका कारण देखें।"
@@ -224,6 +234,18 @@
       "title": "छोटे ऑडियो को अनदेखा करें",
       "description": "ऑडियो की अवधि (सेकंड में) जिसे हम सहेजना नहीं चाहते।"
     },
+    "experimental": {
+      "title": null,
+      "brief": null
+    },
+    "sleepTimer": {
+      "title": null,
+      "description": null,
+      "extra": {
+        "start": null,
+        "stopTime": null
+      }
+    },
     "translate": {
       "title": "अनुवाद में योगदान दें",
       "brief": "ऐप को अन्य भाषाओं में अनुवाद करने में मदद करें।"
@@ -243,7 +265,10 @@
       "brief": "ऐप को संभव बनाने वाला क्या है।"
     },
     "version": {
-      "title": "संस्करण"
+      "title": "संस्करण",
+      "extra": {
+        "rcNotification": null
+      }
     },
     "onboardPreprocess": {
       "title": "पूर्व-प्रसंस्करण",
@@ -267,8 +292,7 @@
     "playedRecent": {
       "title": "हाल ही में चलाए गए",
       "extra": {
-        "empty": "आपने अभी तक कुछ भी नहीं चलाया है!",
-        "section": null
+        "notFound": null
       }
     },
     "search": {
@@ -298,11 +322,26 @@
         "name": "प्लेलिस्ट नाम"
       }
     },
+    "trackMetadata": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      },
+      "extra": {
+        "albumArtist": null,
+        "disc": null,
+        "name": null,
+        "trackNumber": null,
+        "year": null
+      }
+    },
     "modalSort": {
       "title": "क्रम",
       "extra": {
         "asc": "आरोही क्रम",
         "alphabetical": "वर्णमाला क्रम",
+        "discover": null,
         "modified": "अंतिम बदलाव"
       }
     },

@@ -57,6 +57,7 @@
     "stay": "Tetap disini",
     "leave": "Keluar",
     "clear": "Hapus",
+    "reset": null,
     "validation": {
       "unique": "Unik"
     }
@@ -167,6 +168,15 @@
         "totalDuration": "Durasi Total"
       }
     },
+    "hiddenTracks": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "hiddenAt": null,
+        "hasHiddenTracks": null,
+        "notFound": null
+      }
+    },
     "saveErrors": {
       "title": "Simpan Galat",
       "brief": "Lihat mengapa beberapa trek tidak disimpan."
@@ -224,6 +234,18 @@
       "title": "Abaikan Audio Pendek",
       "description": "Durasi audio dalam detik yang tidak ingin kami simpan."
     },
+    "experimental": {
+      "title": null,
+      "brief": null
+    },
+    "sleepTimer": {
+      "title": null,
+      "description": null,
+      "extra": {
+        "start": null,
+        "stopTime": null
+      }
+    },
     "translate": {
       "title": "Kontribusi Penerjemahan",
       "brief": "Bantu menerjemahkan aplikasi ini ke dalam bahasa lainnya."
@@ -243,7 +265,10 @@
       "brief": "Apa yang membuat aplikasi ini memungkinkan."
     },
     "version": {
-      "title": "Versi"
+      "title": "Versi",
+      "extra": {
+        "rcNotification": null
+      }
     },
     "onboardPreprocess": {
       "title": "Praproses",
@@ -267,8 +292,7 @@
     "playedRecent": {
       "title": "Baru Saja Diputar",
       "extra": {
-        "empty": "Anda belum memutar apapun!",
-        "section": "Bagian yang Baru Diputar"
+        "notFound": null
       }
     },
     "search": {
@@ -298,11 +322,26 @@
         "name": "Nama Daftar Putar"
       }
     },
+    "trackMetadata": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      },
+      "extra": {
+        "albumArtist": null,
+        "disc": null,
+        "name": null,
+        "trackNumber": null,
+        "year": null
+      }
+    },
     "modalSort": {
       "title": "urutan penyortiran",
       "extra": {
         "asc": "Urutan Naik",
         "alphabetical": "Alfabet",
+        "discover": null,
         "modified": "Terakhir Diubah"
       }
     },

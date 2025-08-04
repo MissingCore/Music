@@ -57,6 +57,7 @@
     "stay": "Bliv her",
     "leave": "Luk",
     "clear": "Ryd",
+    "reset": null,
     "validation": {
       "unique": "Navn er ikke blevet brugt"
     }
@@ -167,6 +168,15 @@
         "totalDuration": "Varighed i alt"
       }
     },
+    "hiddenTracks": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "hiddenAt": null,
+        "hasHiddenTracks": null,
+        "notFound": null
+      }
+    },
     "saveErrors": {
       "title": "Fejl under gemning",
       "brief": "Se grunden til eventuelle fejl."
@@ -224,6 +234,18 @@
       "title": "Ignorér korte audiofiler",
       "description": "Varighed i sekunder af audiofiler, der ikke skal gemmes."
     },
+    "experimental": {
+      "title": null,
+      "brief": null
+    },
+    "sleepTimer": {
+      "title": null,
+      "description": null,
+      "extra": {
+        "start": null,
+        "stopTime": null
+      }
+    },
     "translate": {
       "title": "Bidrag oversættelser",
       "brief": "Hjælp med at oversætte denne app til andre sprog."
@@ -243,7 +265,10 @@
       "brief": "Hvad der gør denne app muligt."
     },
     "version": {
-      "title": "App-Version"
+      "title": "App-Version",
+      "extra": {
+        "rcNotification": null
+      }
     },
     "onboardPreprocess": {
       "title": "Forudberegninger",
@@ -267,8 +292,7 @@
     "playedRecent": {
       "title": "Nyligt afspillet",
       "extra": {
-        "empty": "Du har ikke afspillet noget endnu!",
-        "section": "Nyligt-afspillet-sektion"
+        "notFound": null
       }
     },
     "search": {
@@ -298,11 +322,26 @@
         "name": "Playlistens navn"
       }
     },
+    "trackMetadata": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      },
+      "extra": {
+        "albumArtist": null,
+        "disc": null,
+        "name": null,
+        "trackNumber": null,
+        "year": null
+      }
+    },
     "modalSort": {
       "title": "Sortering",
       "extra": {
         "asc": "Stigende rækkefølge",
         "alphabetical": "Alfabetisk",
+        "discover": null,
         "modified": "Senest gemt/ændret"
       }
     },

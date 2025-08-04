@@ -57,6 +57,7 @@
     "stay": "Queda't",
     "leave": "Eixir",
     "clear": "Netejar",
+    "reset": null,
     "validation": {
       "unique": "Únic"
     }
@@ -167,6 +168,15 @@
         "totalDuration": "Durada total"
       }
     },
+    "hiddenTracks": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "hiddenAt": null,
+        "hasHiddenTracks": null,
+        "notFound": null
+      }
+    },
     "saveErrors": {
       "title": "Errors al guardar",
       "brief": "Raó per la que no s'han desat algunes pistes."
@@ -224,6 +234,18 @@
       "title": "Ignora àudios curts",
       "description": "Durada en segons dels àudios que no vols guardar."
     },
+    "experimental": {
+      "title": null,
+      "brief": null
+    },
+    "sleepTimer": {
+      "title": null,
+      "description": null,
+      "extra": {
+        "start": null,
+        "stopTime": null
+      }
+    },
     "translate": {
       "title": "Contribueix amb traduccions",
       "brief": "Ajuda a traduir l'aplicació a altres llengües."
@@ -243,7 +265,10 @@
       "brief": "Què fa possible aquesta aplicació."
     },
     "version": {
-      "title": "Versió"
+      "title": "Versió",
+      "extra": {
+        "rcNotification": null
+      }
     },
     "onboardPreprocess": {
       "title": "Preprocessar",
@@ -267,8 +292,7 @@
     "playedRecent": {
       "title": "Reproduït fa poc",
       "extra": {
-        "empty": "Encara no has reproduït rés!",
-        "section": "Recentment reproduït"
+        "notFound": null
       }
     },
     "search": {
@@ -298,11 +322,26 @@
         "name": "Títol de la Llista"
       }
     },
+    "trackMetadata": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      },
+      "extra": {
+        "albumArtist": null,
+        "disc": null,
+        "name": null,
+        "trackNumber": null,
+        "year": null
+      }
+    },
     "modalSort": {
       "title": "Ordre",
       "extra": {
         "asc": "Ordre ascendent",
         "alphabetical": "Alfabètic",
+        "discover": null,
         "modified": "Darrera modificació"
       }
     },

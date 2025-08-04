@@ -57,6 +57,7 @@
     "stay": "留まる",
     "leave": "離れる",
     "clear": "消去",
+    "reset": "リセット",
     "validation": {
       "unique": "ユニーク"
     }
@@ -167,6 +168,15 @@
         "totalDuration": "合計の再生時間"
       }
     },
+    "hiddenTracks": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "hiddenAt": null,
+        "hasHiddenTracks": null,
+        "notFound": null
+      }
+    },
     "saveErrors": {
       "title": "エラーの保存",
       "brief": "一部のトラックが保存されなかった理由を確認します。"
@@ -224,6 +234,18 @@
       "title": "再生時間が短い音楽を無視する",
       "description": "保存をしない音楽の再生時間 (秒数)。"
     },
+    "experimental": {
+      "title": null,
+      "brief": null
+    },
+    "sleepTimer": {
+      "title": null,
+      "description": null,
+      "extra": {
+        "start": null,
+        "stopTime": null
+      }
+    },
     "translate": {
       "title": "翻訳に貢献する",
       "brief": "アプリを他の言語に翻訳しませんか？"
@@ -243,7 +265,10 @@
       "brief": "このアプリを可能にした物の一覧です。"
     },
     "version": {
-      "title": "バージョン"
+      "title": "バージョン",
+      "extra": {
+        "rcNotification": null
+      }
     },
     "onboardPreprocess": {
       "title": "前処理",
@@ -267,8 +292,7 @@
     "playedRecent": {
       "title": "最近に再生",
       "extra": {
-        "empty": "まだ何も再生していません！",
-        "section": "最近に再生のセクション"
+        "notFound": null
       }
     },
     "search": {
@@ -298,11 +322,26 @@
         "name": "プレイリスト名"
       }
     },
+    "trackMetadata": {
+      "title": "メタデータを編集",
+      "description": {
+        "line1": "このアプリでのトラックの表示方法を編集します。ファイル自体は変更されません。",
+        "line2": "注意: このファイルが変更されると、変更内容がリセットされる可能性があります。"
+      },
+      "extra": {
+        "albumArtist": "アルバムアーティスト",
+        "disc": "ディスク",
+        "name": "名前",
+        "trackNumber": "トラック番号",
+        "year": "年"
+      }
+    },
     "modalSort": {
       "title": "並べ替え順",
       "extra": {
         "asc": "昇順",
         "alphabetical": "アルファベット",
+        "discover": null,
         "modified": "最終更新"
       }
     },

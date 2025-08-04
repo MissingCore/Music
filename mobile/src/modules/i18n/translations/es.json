@@ -57,6 +57,7 @@
     "stay": "Esperar",
     "leave": "Salir",
     "clear": "Limpiar",
+    "reset": "Restablecer",
     "validation": {
       "unique": "Único"
     }
@@ -167,6 +168,15 @@
         "totalDuration": "Duración total"
       }
     },
+    "hiddenTracks": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "hiddenAt": null,
+        "hasHiddenTracks": null,
+        "notFound": null
+      }
+    },
     "saveErrors": {
       "title": "Errores al guardar",
       "brief": "Ver por qué no se guardaron algunas canciones."
@@ -224,6 +234,18 @@
       "title": "Ignorar audio corto",
       "description": "Duración en segundos del audio que no queremos guardar."
     },
+    "experimental": {
+      "title": "Funciones experimentales",
+      "brief": "Funciones que pueden no obtener soporte oficial o funcionar como se esperaba. Úsalas bajo tu propio riesgo."
+    },
+    "sleepTimer": {
+      "title": "Apagado automático",
+      "description": "Detener la reproducción de audio después de la cantidad de minutos especificada.",
+      "extra": {
+        "start": "Iniciar",
+        "stopTime": "El audio se detendrá en {{- time}}."
+      }
+    },
     "translate": {
       "title": "Contribuir con las traducciones",
       "brief": "Ayuda a traducir la app a otros idiomas."
@@ -243,7 +265,10 @@
       "brief": "Lo que hace posible esta app."
     },
     "version": {
-      "title": "Versión"
+      "title": "Versión",
+      "extra": {
+        "rcNotification": null
+      }
     },
     "onboardPreprocess": {
       "title": "Pre procesar",
@@ -267,8 +292,7 @@
     "playedRecent": {
       "title": "Reproducido recientemente",
       "extra": {
-        "empty": "¡Aún no has reproducido nada!",
-        "section": "Reproducido recientemente"
+        "notFound": null
       }
     },
     "search": {
@@ -298,11 +322,26 @@
         "name": "Nombre de la lista de reproducción"
       }
     },
+    "trackMetadata": {
+      "title": "Editar metadatos",
+      "description": {
+        "line1": "Edita cómo aparece la canción para esta aplicación. Esto no modifica el archivo.",
+        "line2": "Nota: Los cambios pueden restablecerse si este archivo cambia."
+      },
+      "extra": {
+        "albumArtist": "Álbum Artista",
+        "disc": "Disco",
+        "name": "Nombre",
+        "trackNumber": "Número de pista",
+        "year": "Año"
+      }
+    },
     "modalSort": {
       "title": "Orden",
       "extra": {
         "asc": "Orden ascendente",
         "alphabetical": "Alfabético",
+        "discover": null,
         "modified": "Última modificación"
       }
     },

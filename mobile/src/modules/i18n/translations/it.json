@@ -57,6 +57,7 @@
     "stay": "Aspetta",
     "leave": "Esci",
     "clear": "Cancella",
+    "reset": null,
     "validation": {
       "unique": "Unico"
     }
@@ -167,6 +168,15 @@
         "totalDuration": "Durata totale"
       }
     },
+    "hiddenTracks": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "hiddenAt": null,
+        "hasHiddenTracks": null,
+        "notFound": null
+      }
+    },
     "saveErrors": {
       "title": "Salva errori",
       "brief": "Controlla perché alcuni $t(term.tracks) non sono stati salvati."
@@ -224,6 +234,18 @@
       "title": "Ignora audio corti",
       "description": "Durata (in secondi) degli audio da non salvare."
     },
+    "experimental": {
+      "title": null,
+      "brief": null
+    },
+    "sleepTimer": {
+      "title": null,
+      "description": null,
+      "extra": {
+        "start": null,
+        "stopTime": null
+      }
+    },
     "translate": {
       "title": "Contribuisci alle traduzioni",
       "brief": "Aiuta traducendo l'app in altre lingue."
@@ -243,7 +265,10 @@
       "brief": "Ciò che rende quest'app possibile."
     },
     "version": {
-      "title": "Versione"
+      "title": "Versione",
+      "extra": {
+        "rcNotification": null
+      }
     },
     "onboardPreprocess": {
       "title": null,
@@ -267,8 +292,7 @@
     "playedRecent": {
       "title": "Riprodotti di recente",
       "extra": {
-        "empty": "Non hai ancora riprodotto niente!",
-        "section": "Sezione \"$t(feat.playedRecent.title)\""
+        "notFound": null
       }
     },
     "search": {
@@ -298,11 +322,26 @@
         "name": "Nome $t(term.playlist)"
       }
     },
+    "trackMetadata": {
+      "title": null,
+      "description": {
+        "line1": null,
+        "line2": null
+      },
+      "extra": {
+        "albumArtist": null,
+        "disc": null,
+        "name": null,
+        "trackNumber": null,
+        "year": null
+      }
+    },
     "modalSort": {
       "title": "Ordine",
       "extra": {
         "asc": "Ordine ascendente",
         "alphabetical": "Alfabetico",
+        "discover": null,
         "modified": "Ultima modifica"
       }
     },
