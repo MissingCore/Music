@@ -16,7 +16,7 @@ interface SleepTimerStore {
   /** Create a sleep timer. */
   create: (minutes: number) => void;
   /** Clear the current sleep timer. */
-  clear: () => void;
+  clear: VoidFunction;
 }
 
 export const sleepTimerStore = createStore<SleepTimerStore>()((set, get) => ({
