@@ -57,13 +57,13 @@
     "expo-web-browser": "~14.2.0",
     "i18next": "^25.3.2",
     "intl-pluralrules": "^2.0.1",
-    "jotai": "^2.12.5",
+    "jotai": "^2.13.0",
     "nativewind": "4.1.23",
     "react": "~19.0.0",
     "react-i18next": "^15.6.1",
     "react-native": "^0.79.5",
     "react-native-bootsplash": "^6.3.10",
-    "react-native-draglist": "github:MissingCore/react-native-draglist#3f2e92cccf28e9192ff330c9ac7c5813156f0d4e",
+    "react-native-draglist": "github:MissingCore/react-native-draglist#a3847ce4f9265853a12b865ba30902e907d43c20",
     "react-native-edge-to-edge": "^1.6.2",
     "react-native-gesture-handler": "~2.27.2",
     "react-native-keyboard-controller": "^1.18.2",
@@ -75,7 +75,7 @@
     "react-native-svg": "^15.12.1",
     "react-native-tab-view": "^3.5.2",
     "tailwind-merge": "^2.6.0",
-    "zod": "~4.0.14",
+    "zod": "~4.0.15",
     "zustand": "^5.0.7",
     "zustand-computed": "^2.1.0"
   },
@@ -98,7 +98,7 @@
     "prettier-plugin-tailwindcss": "^0.6.14",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.9.2",
-    "typescript-eslint": "^8.38.0"
+    "typescript-eslint": "^8.39.0"
   },
   "expo": {
     "autolinking": {

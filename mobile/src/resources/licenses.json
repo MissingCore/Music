@@ -289,7 +289,7 @@
   },
   "jotai": {
     "name": "jotai",
-    "version": "2.12.5",
+    "version": "2.13.0",
     "copyright": "Copyright (c) 2020 Poimandres",
     "source": "https://github.com/pmndrs/jotai",
     "license": "MIT",
@@ -457,7 +457,7 @@
   },
   "zod": {
     "name": "zod",
-    "version": "4.0.14",
+    "version": "4.0.15",
     "copyright": "Copyright (c) 2025 Colin McDonnell",
     "source": "https://github.com/colinhacks/zod",
     "license": "MIT",
