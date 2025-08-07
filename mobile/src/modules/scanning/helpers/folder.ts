@@ -15,13 +15,23 @@ export async function savePathComponents(uris: string[]) {
 
   // List of `FileNode` entries that make up the uri.
   const foundNodes: FileNode[] = [];
+  const nodeMap: Record<string, Set<string>> = {};
   filePaths.forEach((filePath) => {
     filePath.split("/").forEach((name, idx) => {
       if (idx === 0) {
         foundNodes.push({ name, path: `${name}/`, parentPath: null });
       } else {
         const parentPath = foundNodes[idx - 1]!.path;
-        foundNodes.push({ name, path: `${parentPath}${name}/`, parentPath });
+        const path = `${parentPath}${name}/`;
+        // Prevent over-inserting paths (to prevent `RangeError: Maximum call
+        // stack size exceeded (native stack depth)` with Drizzle ORM).
+        const parentPreSaved = Object.hasOwn(nodeMap, parentPath);
+        const exists = parentPreSaved ? nodeMap[parentPath]!.has(path) : false;
+        if (!exists) {
+          if (parentPreSaved) nodeMap[parentPath]!.add(path);
+          else nodeMap[parentPath] = new Set([path]);
+          foundNodes.push({ name, path, parentPath });
+        }
       }
     });
   });
