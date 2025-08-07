@@ -16,10 +16,16 @@ export async function savePathComponents(uris: string[]) {
   // List of `FileNode` entries that make up the uri.
   const foundNodes: FileNode[] = [];
   const nodeMap: Record<string, Set<string>> = {};
-  filePaths.forEach((filePath) => {
+  const rootNodes = new Set<string>();
+  filePaths.forEach((filePath, _idx) => {
     filePath.split("/").forEach((name, idx) => {
       if (idx === 0) {
-        foundNodes.push({ name, path: `${name}/`, parentPath: null });
+        const path = `${name}/`;
+        // Prevent over-inserting root-node paths.
+        if (!rootNodes.has(path)) {
+          rootNodes.add(path);
+          foundNodes.push({ name, path, parentPath: null });
+        }
       } else {
         const parentPath = foundNodes[idx - 1]!.path;
         const path = `${parentPath}${name}/`;
