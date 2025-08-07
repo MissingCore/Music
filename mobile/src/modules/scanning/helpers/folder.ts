@@ -9,8 +9,8 @@ import { fileNodes } from "~/db/schema";
  */
 export async function savePathComponents(uris: string[]) {
   // Removes the `file:///` at the start and the filename at the end of the uri.
-  const filePaths = uris.map((uri) =>
-    uri.slice(8).split("/").slice(0, -1).join("/"),
+  const filePaths = new Set(
+    uris.map((uri) => uri.slice(8).split("/").slice(0, -1).join("/")),
   );
 
   // List of `FileNode` entries that make up the uri.
