@@ -145,7 +145,7 @@ export async function findAndSaveAudio() {
         const trackEntry = await getTrackEntry(mediaAsset);
 
         // Make sure we have the "folder" structure to this file.
-        await savePathComponents(uri);
+        await savePathComponents([uri]);
 
         if (modifiedTracks.has(id) && !isRetry) {
           // Update existing track.
