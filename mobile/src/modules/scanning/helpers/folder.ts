@@ -17,7 +17,7 @@ export async function savePathComponents(uris: string[]) {
   const foundNodes: FileNode[] = [];
   const nodeMap: Record<string, Set<string>> = {};
   const rootNodes = new Set<string>();
-  filePaths.forEach((filePath, _idx) => {
+  filePaths.forEach((filePath) => {
     const filePathParts = filePath.split("/");
     filePathParts.forEach((name, idx) => {
       if (idx === 0) {
