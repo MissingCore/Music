@@ -33,8 +33,7 @@ export async function savePathComponents(uris: string[]) {
         // Prevent over-inserting paths (to prevent `RangeError: Maximum call
         // stack size exceeded (native stack depth)` with Drizzle ORM).
         const parentPreSaved = Object.hasOwn(nodeMap, parentPath);
-        const exists = parentPreSaved ? nodeMap[parentPath]!.has(path) : false;
-        if (!exists) {
+        if (!nodeMap[parentPath]?.has(path)) {
           if (parentPreSaved) nodeMap[parentPath]!.add(path);
           else nodeMap[parentPath] = new Set([path]);
           foundNodes.push({ name, path, parentPath });
