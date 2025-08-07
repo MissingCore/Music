@@ -78,11 +78,9 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
         oldRootNodes.map((node) => node.path),
       ),
     );
-    await Promise.allSettled(
-      // The "placeholder" portion won't get saved.
-      oldRootNodes.map((node) =>
-        savePathComponents("file:///" + node.path + "placeholder"),
-      ),
+    // The "placeholder" portion won't get saved.
+    await savePathComponents(
+      oldRootNodes.map((node) => "file:///" + node.path + "placeholder"),
     );
   },
 

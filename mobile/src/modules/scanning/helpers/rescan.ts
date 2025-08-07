@@ -10,7 +10,7 @@ import { Resynchronize } from "~/modules/media/services/Resynchronize";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
-import { batch, wait } from "~/utils/promise";
+import { wait } from "~/utils/promise";
 import { findAndSaveArtwork, cleanupImages } from "./artwork";
 import { cleanupDatabase, findAndSaveAudio } from "./audio";
 import { savePathComponents } from "./folder";
@@ -34,10 +34,7 @@ export async function rescanForTracks(deepScan = false) {
     const allTracks = await db.query.tracks.findMany({
       columns: { uri: true },
     });
-    await batch({
-      data: allTracks,
-      callback: ({ uri }) => savePathComponents(uri),
-    });
+    await savePathComponents(allTracks.map(({ uri }) => uri));
 
     // Make sure we retry invalid tracks.
     // eslint-disable-next-line drizzle/enforce-delete-with-where
