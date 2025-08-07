@@ -18,7 +18,8 @@ export async function savePathComponents(uris: string[]) {
   const nodeMap: Record<string, Set<string>> = {};
   const rootNodes = new Set<string>();
   filePaths.forEach((filePath, _idx) => {
-    filePath.split("/").forEach((name, idx) => {
+    const filePathParts = filePath.split("/");
+    filePathParts.forEach((name, idx) => {
       if (idx === 0) {
         const path = `${name}/`;
         // Prevent over-inserting root-node paths.
@@ -27,7 +28,7 @@ export async function savePathComponents(uris: string[]) {
           foundNodes.push({ name, path, parentPath: null });
         }
       } else {
-        const parentPath = foundNodes[idx - 1]!.path;
+        const parentPath = `${filePathParts.slice(0, idx).join("/")}/`;
         const path = `${parentPath}${name}/`;
         // Prevent over-inserting paths (to prevent `RangeError: Maximum call
         // stack size exceeded (native stack depth)` with Drizzle ORM).
