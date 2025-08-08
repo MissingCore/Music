@@ -209,6 +209,8 @@ export async function findAndSaveAudio() {
     else albumIdMap[artistName] = { [name]: id };
   });
 
+  await savePathComponents(rawTrackEntries.map(({ uri }) => uri));
+
   const { staged, saveErrors } = onboardingStore.getState();
   console.log(
     `Found/updated ${staged} tracks & encountered ${saveErrors} errors in ${stopwatch.lapTime()}.`,
