@@ -1,3 +1,12 @@
+/** Split an array into "chunks". */
+export function chunkArray<T>(arr: T[], chunkSize: number) {
+  const chunkedArray: T[][] = [];
+  for (let i = 0; i < arr.length; i += chunkSize) {
+    chunkedArray.push(arr.slice(i, i + chunkSize));
+  }
+  return chunkedArray;
+}
+
 /** Returns a copy of the array with the value at the specified index moved. */
 export function moveArray<T>(
   arr: T[],

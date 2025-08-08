@@ -3,6 +3,7 @@ import {
   getMetadata,
 } from "@missingcore/react-native-metadata-retriever";
 import { eq, inArray, lt, sql } from "drizzle-orm";
+import { toSnakeCase } from "drizzle-orm/casing";
 import { File } from "expo-file-system/next";
 import type { Asset as MediaLibraryAsset } from "expo-media-library";
 import { getAssetsAsync } from "expo-media-library";
@@ -32,6 +33,7 @@ import {
   removeFileExtension,
 } from "~/utils/string";
 import { Stopwatch } from "~/utils/debug";
+import { chunkArray, omitKeys } from "~/utils/object";
 import { BATCH_PRESETS, batch, wait } from "~/utils/promise";
 import { savePathComponents } from "./folder";
 
@@ -210,6 +212,27 @@ export async function findAndSaveAudio() {
   });
 
   await savePathComponents(rawTrackEntries.map(({ uri }) => uri));
+
+  const formattedTrackEntries = rawTrackEntries.map(({ album, ...t }) => ({
+    ...t,
+    albumId: album ? albumIdMap[album.artistName]?.[album.name] || null : null,
+    discoverTime: Date.now(),
+  }));
+  if (formattedTrackEntries.length > 0) {
+    const trackBatches = chunkArray(formattedTrackEntries, 1000);
+    const setTrackUpsert = Object.fromEntries(
+      Object.keys(omitKeys(formattedTrackEntries[0]!, ["id", "discoverTime"]))
+        // For some reason, `tracks[key].name` isn't in snake_case, which would
+        // cause the `excluded` to fail.
+        .map((k) => [k, sql.raw(`excluded.${toSnakeCase(k)}`)]),
+    );
+    for (const tBatch of trackBatches) {
+      await db.insert(tracks).values(tBatch).onConflictDoUpdate({
+        target: tracks.id,
+        set: setTrackUpsert,
+      });
+    }
+  }
 
   const { staged, saveErrors } = onboardingStore.getState();
   console.log(
