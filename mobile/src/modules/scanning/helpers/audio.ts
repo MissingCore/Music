@@ -8,6 +8,7 @@ import type { Asset as MediaLibraryAsset } from "expo-media-library";
 import { getAssetsAsync } from "expo-media-library";
 
 import { db } from "~/db";
+import type { InvalidTrack } from "~/db/schema";
 import {
   albums,
   artists,
@@ -134,30 +135,17 @@ export async function findAndSaveAudio() {
   // Set the current phase to `tracks` if we find tracks that need saving/updating.
   if (unstagedTracks.length > 0) onboardingStore.setState({ phase: "tracks" });
   await wait(1); // Slight buffer to prevent blocking onboarding screen animation.
+  const rawTrackEntries: Array<Awaited<ReturnType<typeof getTrackEntry>>> = [];
+  const erroredTracks: InvalidTrack[] = [];
   await batch({
     data: unstagedTracks,
     batchAmount: BATCH_PRESETS.PROGRESS,
     callback: async (mediaAsset) => {
       const { id, uri, modificationTime } = mediaAsset;
-      const isRetry = allInvalidTracksMap[id];
 
       try {
         const trackEntry = await getTrackEntry(mediaAsset);
-
-        // Make sure we have the "folder" structure to this file.
-        await savePathComponents([uri]);
-
-        if (modifiedTracks.has(id) && !isRetry) {
-          // Update existing track.
-          await updateTrack(id, trackEntry);
-        } else {
-          // Save new track. Only set `discoverTime` when we create a Track entry.
-          await createTrack({ ...trackEntry, discoverTime: Date.now() });
-          // Remove track from `InvalidTrack` if it was there previously.
-          if (isRetry) {
-            await db.delete(invalidTracks).where(eq(invalidTracks.id, id));
-          }
-        }
+        rawTrackEntries.push(trackEntry);
       } catch (err) {
         const isError = err instanceof Error;
         const errorInfo = {
@@ -167,17 +155,7 @@ export async function findAndSaveAudio() {
         // We may end up here if the track at the given uri doesn't exist anymore.
         console.log(`[Track ${id}] ${errorInfo.errorMessage}`);
 
-        // Delete the track and its relation, then manually add it to
-        // `InvalidTrack` schema (as the track may not exist prior).
-        await deleteTrack(id);
-        await db
-          .insert(invalidTracks)
-          .values({ id, uri, modificationTime, ...errorInfo })
-          .onConflictDoUpdate({
-            target: invalidTracks.id,
-            set: { modificationTime, ...errorInfo },
-          });
-
+        erroredTracks.push({ id, uri, modificationTime, ...errorInfo });
         throw new Error(id);
       }
     },
@@ -216,28 +194,16 @@ async function getTrackEntry({
   const { bitrate, sampleRate, ...t } = await getMetadata(uri, wantedMetadata);
   const file = new File(getSafeUri(uri));
 
-  // Add new artists to the database.
-  await Promise.allSettled(
-    [t.artist, t.albumArtist]
-      .filter((name) => name !== null && name.trim() !== "")
-      .map((name) => createArtist({ name: name!.trim() })),
-  );
-
-  // Add new album to the database.
-  let albumId: string | null = null;
+  let newAlbum: { name: string; artistName: string } | undefined;
   if (!!t.albumTitle?.trim() && !!t.albumArtist?.trim()) {
-    const newAlbum = await upsertAlbum({
-      name: t.albumTitle.trim(),
-      artistName: t.albumArtist.trim(),
-    });
-    if (newAlbum) albumId = newAlbum.id;
+    newAlbum = { name: t.albumTitle.trim(), artistName: t.albumArtist.trim() };
   }
 
   return {
     id,
     name: t.title?.trim() || removeFileExtension(filename),
     artistName: t.artist?.trim() || null,
-    albumId,
+    album: newAlbum,
     track: t.trackNumber,
     disc: t.discNumber,
     year: t.year,
