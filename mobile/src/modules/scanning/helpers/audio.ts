@@ -2,7 +2,7 @@ import {
   MetadataPresets,
   getMetadata,
 } from "@missingcore/react-native-metadata-retriever";
-import { eq, inArray, lt } from "drizzle-orm";
+import { eq, inArray, lt, sql } from "drizzle-orm";
 import { File } from "expo-file-system/next";
 import type { Asset as MediaLibraryAsset } from "expo-media-library";
 import { getAssetsAsync } from "expo-media-library";
@@ -166,6 +166,49 @@ export async function findAndSaveAudio() {
       }));
     },
   });
+
+  const newArtists = new Set<string>();
+  const albumMap: Record<string, Set<string>> = {};
+  rawTrackEntries.forEach(({ artistName, album }) => {
+    if (artistName) newArtists.add(artistName);
+    if (album) {
+      const { name, artistName } = album;
+      newArtists.add(artistName);
+      if (!albumMap[artistName]?.has(name)) {
+        if (albumMap[artistName]) albumMap[artistName].add(name);
+        else albumMap[artistName] = new Set([name]);
+      }
+    }
+  });
+
+  await db
+    .insert(artists)
+    .values([...newArtists].map((name) => ({ name })))
+    .onConflictDoNothing();
+  const createdAlbums = await db
+    .insert(albums)
+    .values(
+      Object.entries(albumMap).flatMap(([artistName, names]) =>
+        [...names].map((name) => ({ name, artistName })),
+      ),
+    )
+    .onConflictDoUpdate({
+      target: [albums.name, albums.artistName, albums.releaseYear],
+      // Set `name` to the `name` from the row that wasn't inserted. This
+      // allows `.returning()` to return a value.
+      set: { name: sql`excluded.name` },
+    })
+    .returning({
+      id: albums.id,
+      name: albums.name,
+      artistName: albums.artistName,
+    });
+  const albumIdMap: Record<string, Record<string, string>> = {};
+  createdAlbums.map(({ id, name, artistName }) => {
+    if (albumIdMap[artistName]) albumIdMap[artistName][name] = id;
+    else albumIdMap[artistName] = { [name]: id };
+  });
+
   const { staged, saveErrors } = onboardingStore.getState();
   console.log(
     `Found/updated ${staged} tracks & encountered ${saveErrors} errors in ${stopwatch.lapTime()}.`,
