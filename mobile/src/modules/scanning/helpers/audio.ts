@@ -2,7 +2,7 @@ import {
   MetadataPresets,
   getMetadata,
 } from "@missingcore/react-native-metadata-retriever";
-import { eq, inArray, lt, sql } from "drizzle-orm";
+import { eq, inArray, lt } from "drizzle-orm";
 import { File } from "expo-file-system/next";
 import type { Asset as MediaLibraryAsset } from "expo-media-library";
 import { getAssetsAsync } from "expo-media-library";
@@ -17,15 +17,17 @@ import {
   tracks,
 } from "~/db/schema";
 
+import { upsertAlbums } from "~/api/album";
+import { createArtists } from "~/api/artist";
 import { RECENT_RANGE_MS } from "~/api/recent";
-import { deleteTrack } from "~/api/track";
+import { deleteTrack, upsertTracks } from "~/api/track";
 import { userPreferencesStore } from "~/services/UserPreferences";
 import { Queue, musicStore } from "~/modules/media/services/Music";
 import { onboardingStore } from "../services/Onboarding";
 
 import { getExcludedColumns, withColumns } from "~/lib/drizzle";
 import { Stopwatch } from "~/utils/debug";
-import { chunkArray, omitKeys } from "~/utils/object";
+import { chunkArray } from "~/utils/object";
 import {
   BATCH_PRESETS,
   batch,
@@ -38,7 +40,6 @@ import {
   getSafeUri,
   removeFileExtension,
 } from "~/utils/string";
-import type { ExtractFnReturnType } from "~/utils/types";
 import { savePathComponents } from "./folder";
 
 /** Return references to tracks that fit our criteria. */
@@ -133,8 +134,6 @@ const wantedMetadata = [
   ...["discNumber", "bitrate", "sampleMimeType", "sampleRate"],
 ] as const;
 
-type TrackMetadata = ExtractFnReturnType<typeof getTrackMetadata>;
-
 /**
  * Get the metadata associated with a track.
  *
@@ -188,6 +187,46 @@ async function safeRetrieveMetadata(asset: MediaLibraryAsset) {
   }
 }
 
+//#region Internal Helpers
+const UpsertInvalidTrackFields = getExcludedColumns([
+  "uri",
+  "errorName",
+  "errorMessage",
+  "modificationTime",
+]);
+
+function addArtist(args: {
+  artistName: string | null | undefined;
+  newArtists: string[];
+  insertedArtists: Set<string>;
+}) {
+  const { artistName, newArtists, insertedArtists } = args;
+  if (artistName && !insertedArtists.has(artistName)) {
+    insertedArtists.add(artistName);
+    newArtists.push(artistName);
+  }
+}
+
+function addAlbum(args: {
+  album: { name: string; artistName: string } | undefined;
+  newAlbums: Record<string, string[]>;
+  insertedAlbums: Record<string, Set<string>>;
+}) {
+  const { album, newAlbums, insertedAlbums } = args;
+  if (!album) return;
+  const { name, artistName } = album;
+  if (insertedAlbums[artistName]?.has(name)) return;
+
+  if (insertedAlbums[artistName]) insertedAlbums[artistName].add(name);
+  else insertedAlbums[artistName] = new Set([name]);
+
+  if (newAlbums[artistName]) newAlbums[artistName].push(name);
+  else newAlbums[artistName] = [name];
+
+  return album;
+}
+//#endregion
+
 //#region Saving Function
 /** Index tracks with their metadata into our database. */
 export async function findAndSaveAudio() {
@@ -210,107 +249,64 @@ export async function findAndSaveAudio() {
   if (unstagedTracks.length > 0) onboardingStore.setState({ phase: "tracks" });
   await wait(1); // Slight buffer to prevent blocking onboarding screen animation.
 
-  const trackBatches = chunkArray(unstagedTracks, 50);
+  const trackBatches = chunkArray(unstagedTracks, 100);
+  const insertedArtists = new Set<string>();
+  const insertedAlbums: Record<string, Set<string>> = {};
   const albumIdMap: Record<string, Record<string, string>> = {};
   for (const tBatch of trackBatches) {
     const res = await Promise.allSettled(tBatch.map(safeRetrieveMetadata));
-    const rawTrackEntries = res.filter(isFulfilled).map((r) => r.value);
+    const rawEntries = res.filter(isFulfilled).map((r) => r.value);
     const errored: InvalidTrack[] = res.filter(isRejected).map((r) => r.reason);
     onboardingStore.setState((prev) => ({
-      staged: prev.staged + rawTrackEntries.length,
+      staged: prev.staged + rawEntries.length,
       saveErrors: prev.saveErrors + errored.length,
     }));
 
-    const newArtists = new Set<string>();
-    const albumMap: Record<string, Set<string>> = {};
-    rawTrackEntries.forEach(({ artistName, album }) => {
-      if (artistName) newArtists.add(artistName);
-      if (album) {
-        const { name, artistName } = album;
-        newArtists.add(artistName);
-        if (!albumMap[artistName]?.has(name)) {
-          if (albumMap[artistName]) albumMap[artistName].add(name);
-          else albumMap[artistName] = new Set([name]);
-        }
-      }
-    });
-
-    if (newArtists.size > 0) {
-      await db
-        .insert(artists)
-        .values([...newArtists].map((name) => ({ name })))
-        .onConflictDoNothing();
+    if (errored.length > 0) {
+      const erroredIds = errored.map(({ id }) => id);
+      await db.delete(tracks).where(inArray(tracks.id, erroredIds));
+      await db.insert(invalidTracks).values(errored).onConflictDoUpdate({
+        target: invalidTracks.id,
+        set: UpsertInvalidTrackFields,
+      });
     }
 
-    if (Object.keys(albumMap).length > 0) {
-      const createdAlbums = await db
-        .insert(albums)
-        .values(
-          Object.entries(albumMap).flatMap(([artistName, names]) =>
-            [...names].map((name) => ({ name, artistName })),
-          ),
-        )
-        .onConflictDoUpdate({
-          target: [albums.name, albums.artistName, albums.releaseYear],
-          // Set `name` to the `name` from the row that wasn't inserted. This
-          // allows `.returning()` to return a value.
-          set: { name: sql`excluded.name` },
-        })
-        .returning({
-          id: albums.id,
-          name: albums.name,
-          artistName: albums.artistName,
-        });
+    if (rawEntries.length === 0) continue;
+    await savePathComponents(rawEntries.map(({ uri }) => uri));
+
+    // Insert artists & albums that haven't been inserted yet.
+    const newArtists: string[] = [];
+    const newAlbums: Record<string, string[]> = {};
+    rawEntries.forEach(({ artistName, album }) => {
+      addArtist({ artistName, insertedArtists, newArtists });
+      addArtist({ artistName: album?.artistName, insertedArtists, newArtists });
+      addAlbum({ album, insertedAlbums, newAlbums });
+    });
+
+    if (newArtists.length > 0) {
+      await createArtists(newArtists.map((name) => ({ name })));
+    }
+    if (Object.keys(newAlbums).length > 0) {
+      const createdAlbums = await upsertAlbums(
+        Object.entries(newAlbums).flatMap(([artistName, names]) =>
+          names.map((name) => ({ name, artistName })),
+        ),
+      );
       createdAlbums.map(({ id, name, artistName }) => {
         if (albumIdMap[artistName]) albumIdMap[artistName][name] = id;
         else albumIdMap[artistName] = { [name]: id };
       });
     }
 
-    if (rawTrackEntries.length > 0) {
-      await savePathComponents(rawTrackEntries.map(({ uri }) => uri));
-    }
-
-    const formattedTrackEntries = rawTrackEntries.map(({ album, ...t }) => ({
-      ...t,
-      albumId: album
-        ? albumIdMap[album.artistName]?.[album.name] || null
-        : null,
-      discoverTime: Date.now(),
-    }));
-    if (formattedTrackEntries.length > 0) {
-      const setTrackUpsert = getExcludedColumns(
-        Object.keys(
-          omitKeys(formattedTrackEntries[0]!, ["id", "discoverTime"]),
-        ),
-      );
-      await db.insert(tracks).values(formattedTrackEntries).onConflictDoUpdate({
-        target: tracks.id,
-        set: setTrackUpsert,
-      });
-      await db.delete(invalidTracks).where(
-        inArray(
-          invalidTracks.id,
-          tBatch.map(({ id }) => id),
-        ),
-      );
-    }
-
-    if (errored.length > 0) {
-      const setInvalidTracksUpsert = getExcludedColumns(
-        Object.keys(omitKeys(errored[0]!, ["id"])),
-      );
-      await db.delete(tracks).where(
-        inArray(
-          tracks.id,
-          errored.map(({ id }) => id),
-        ),
-      );
-      await db.insert(invalidTracks).values(errored).onConflictDoUpdate({
-        target: invalidTracks.id,
-        set: setInvalidTracksUpsert,
-      });
-    }
+    // Create or update tracks.
+    const newTracks = rawEntries.map(({ album, ...t }) => {
+      let albumId: string | null = null;
+      if (album) albumId = albumIdMap[album.artistName]?.[album.name] || null;
+      return { ...t, albumId, discoverTime: Date.now() };
+    });
+    const newIds = newTracks.map(({ id }) => id);
+    await upsertTracks(newTracks);
+    await db.delete(invalidTracks).where(inArray(invalidTracks.id, newIds));
   }
 
   const { staged, saveErrors } = onboardingStore.getState();
