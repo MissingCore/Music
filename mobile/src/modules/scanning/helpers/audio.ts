@@ -234,6 +234,16 @@ export async function findAndSaveAudio() {
     }
   }
 
+  if (erroredTracks.length > 0) {
+    await db.delete(tracks).where(
+      inArray(
+        tracks.id,
+        erroredTracks.map(({ id }) => id),
+      ),
+    );
+    await db.insert(invalidTracks).values(erroredTracks);
+  }
+
   const { staged, saveErrors } = onboardingStore.getState();
   console.log(
     `Found/updated ${staged} tracks & encountered ${saveErrors} errors in ${stopwatch.lapTime()}.`,
