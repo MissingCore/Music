@@ -25,14 +25,15 @@ import { Queue, musicStore } from "~/modules/media/services/Music";
 import { onboardingStore } from "../services/Onboarding";
 
 import { withColumns } from "~/lib/drizzle";
+import { Stopwatch } from "~/utils/debug";
+import { chunkArray, omitKeys } from "~/utils/object";
+import { BATCH_PRESETS, batch, wait } from "~/utils/promise";
 import {
   addTrailingSlash,
   getSafeUri,
   removeFileExtension,
 } from "~/utils/string";
-import { Stopwatch } from "~/utils/debug";
-import { chunkArray, omitKeys } from "~/utils/object";
-import { BATCH_PRESETS, batch, wait } from "~/utils/promise";
+import type { ExtractFnReturnType } from "~/utils/types";
 import { savePathComponents } from "./folder";
 
 /** Return references to tracks that fit our criteria. */
@@ -122,6 +123,48 @@ async function getLibraryModifications(assets: MediaLibraryAsset[]) {
   };
 }
 
+const wantedMetadata = [
+  ...MetadataPresets.standard,
+  ...["discNumber", "bitrate", "sampleMimeType", "sampleRate"],
+] as const;
+
+type TrackMetadata = ExtractFnReturnType<typeof getTrackMetadata>;
+
+/**
+ * Get the metadata associated with a track.
+ *
+ * **Note:** We return `album`, which is non-standard and should be used
+ * to create an Album and then swapped out with the created `albumId`.
+ */
+async function getTrackMetadata(asset: MediaLibraryAsset) {
+  const { id, uri, duration, modificationTime, filename } = asset;
+  const { bitrate, sampleRate, ...t } = await getMetadata(uri, wantedMetadata);
+  const file = new File(getSafeUri(uri));
+
+  let newAlbum: { name: string; artistName: string } | undefined;
+  if (!!t.albumTitle?.trim() && !!t.albumArtist?.trim()) {
+    newAlbum = { name: t.albumTitle.trim(), artistName: t.albumArtist.trim() };
+  }
+
+  return {
+    id,
+    name: t.title?.trim() || removeFileExtension(filename),
+    artistName: t.artist?.trim() || null,
+    album: newAlbum,
+    track: t.trackNumber,
+    disc: t.discNumber,
+    year: t.year,
+    format: t.sampleMimeType,
+    bitrate,
+    sampleRate,
+    duration,
+    uri,
+    modificationTime,
+    fetchedArt: false,
+    size: file.exists ? (file.size ?? 0) : 0,
+  };
+}
+
 //#region Saving Function
 /** Index tracks with their metadata into our database. */
 export async function findAndSaveAudio() {
@@ -143,7 +186,8 @@ export async function findAndSaveAudio() {
   // Set the current phase to `tracks` if we find tracks that need saving/updating.
   if (unstagedTracks.length > 0) onboardingStore.setState({ phase: "tracks" });
   await wait(1); // Slight buffer to prevent blocking onboarding screen animation.
-  const rawTrackEntries: Array<Awaited<ReturnType<typeof getTrackEntry>>> = [];
+
+  const rawTrackEntries: TrackMetadata[] = [];
   const erroredTracks: InvalidTrack[] = [];
   await batch({
     data: unstagedTracks,
@@ -152,7 +196,7 @@ export async function findAndSaveAudio() {
       const { id, uri, modificationTime } = mediaAsset;
 
       try {
-        const trackEntry = await getTrackEntry(mediaAsset);
+        const trackEntry = await getTrackMetadata(mediaAsset);
         rawTrackEntries.push(trackEntry);
       } catch (err) {
         const isError = err instanceof Error;
@@ -281,45 +325,6 @@ export async function findAndSaveAudio() {
     foundFiles: discoveredTracks,
     unstagedFiles: unstagedTracks,
     changed: stats.unstaged,
-  };
-}
-
-const wantedMetadata = [
-  ...MetadataPresets.standard,
-  ...["discNumber", "bitrate", "sampleMimeType", "sampleRate"],
-] as const;
-
-async function getTrackEntry({
-  id,
-  uri,
-  duration,
-  modificationTime,
-  filename,
-}: MediaLibraryAsset) {
-  const { bitrate, sampleRate, ...t } = await getMetadata(uri, wantedMetadata);
-  const file = new File(getSafeUri(uri));
-
-  let newAlbum: { name: string; artistName: string } | undefined;
-  if (!!t.albumTitle?.trim() && !!t.albumArtist?.trim()) {
-    newAlbum = { name: t.albumTitle.trim(), artistName: t.albumArtist.trim() };
-  }
-
-  return {
-    id,
-    name: t.title?.trim() || removeFileExtension(filename),
-    artistName: t.artist?.trim() || null,
-    album: newAlbum,
-    track: t.trackNumber,
-    disc: t.discNumber,
-    year: t.year,
-    format: t.sampleMimeType,
-    bitrate,
-    sampleRate,
-    duration,
-    uri,
-    modificationTime,
-    fetchedArt: false,
-    size: file.exists ? (file.size ?? 0) : 0,
   };
 }
 //#endregion
