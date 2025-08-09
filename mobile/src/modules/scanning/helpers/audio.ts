@@ -2,7 +2,7 @@ import {
   MetadataPresets,
   getMetadata,
 } from "@missingcore/react-native-metadata-retriever";
-import { eq, inArray, lt } from "drizzle-orm";
+import { inArray, lt } from "drizzle-orm";
 import { File } from "expo-file-system/next";
 import type { Asset as MediaLibraryAsset } from "expo-media-library";
 import { getAssetsAsync } from "expo-media-library";
@@ -20,7 +20,7 @@ import {
 import { upsertAlbums } from "~/api/album";
 import { createArtists } from "~/api/artist";
 import { RECENT_RANGE_MS } from "~/api/recent";
-import { deleteTrack, upsertTracks } from "~/api/track";
+import { upsertTracks } from "~/api/track";
 import { userPreferencesStore } from "~/services/UserPreferences";
 import { Queue, musicStore } from "~/modules/media/services/Music";
 import { onboardingStore } from "../services/Onboarding";
@@ -28,7 +28,7 @@ import { onboardingStore } from "../services/Onboarding";
 import { getExcludedColumns, withColumns } from "~/lib/drizzle";
 import { Stopwatch } from "~/utils/debug";
 import { chunkArray } from "~/utils/object";
-import { BATCH_PRESETS, batch, isFulfilled, isRejected } from "~/utils/promise";
+import { BATCH_PRESETS, isFulfilled, isRejected } from "~/utils/promise";
 import {
   addTrailingSlash,
   getSafeUri,
@@ -144,16 +144,14 @@ export async function cleanupDatabase(usedTrackIds: string[]) {
       [invalidTracks, tracks].map((sch) => db.select({ id: sch.id }).from(sch)),
     )
   )
-    .flat()
-    .map(({ id }) => id)
+    .flatMap((ids) => ids.map(({ id }) => id))
     .filter((id) => !usedTrackIds.includes(id));
-  await batch({
-    data: unusedTrackIds,
-    callback: async (id) => {
-      await db.delete(invalidTracks).where(eq(invalidTracks.id, id));
-      await deleteTrack(id);
-    },
-  });
+  if (unusedTrackIds.length > 0) {
+    await Promise.allSettled([
+      db.delete(invalidTracks).where(inArray(invalidTracks.id, unusedTrackIds)),
+      db.delete(tracks).where(inArray(tracks.id, unusedTrackIds)),
+    ]);
+  }
 
   // Ensure we didn't reference deleted tracks in the playback store.
   const { playingList, activeId } = musicStore.getState();
