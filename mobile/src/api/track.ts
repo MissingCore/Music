@@ -7,7 +7,7 @@ import { getTrackCover } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
 
-import { iAsc } from "~/lib/drizzle";
+import { getExcludedColumns, iAsc } from "~/lib/drizzle";
 import type { BooleanPriority } from "~/utils/types";
 import type { DrizzleFilter, QueriedTrack } from "./types";
 import { getColumns, withAlbum } from "./utils";
@@ -80,13 +80,6 @@ export async function getTracks<
   }) as Array<
     QueriedTrack<BooleanPriority<WithAlbum_User, true>, TCols, ACols>
   >;
-}
-//#endregion
-
-//#region POST Methods
-/** Create a new track entry. */
-export async function createTrack(entry: typeof tracks.$inferInsert) {
-  return db.insert(tracks).values(entry).onConflictDoNothing();
 }
 //#endregion
 
@@ -191,4 +184,31 @@ export async function removeInvalidTrackRelations() {
     }
   } catch {}
 }
+
+/** Create new track entries, or update existing ones. */
+export function upsertTracks(entries: Array<typeof tracks.$inferInsert>) {
+  return db.insert(tracks).values(entries).onConflictDoUpdate({
+    target: tracks.id,
+    set: UpsertFields,
+  });
+}
+//#endregion
+
+//#region Internal Utils
+const UpsertFields = getExcludedColumns([
+  "name",
+  "artistName",
+  "albumId",
+  "track",
+  "disc",
+  "year",
+  "format",
+  "bitrate",
+  "sampleRate",
+  "duration",
+  "uri",
+  "modificationTime",
+  "fetchedArt",
+  "size",
+]);
 //#endregion
