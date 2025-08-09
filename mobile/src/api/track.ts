@@ -120,6 +120,14 @@ export async function addToPlaylist(
       });
   });
 }
+
+/** Create new track entries, or update existing ones. */
+export function upsertTracks(entries: Array<typeof tracks.$inferInsert>) {
+  return db.insert(tracks).values(entries).onConflictDoUpdate({
+    target: tracks.id,
+    set: UpsertFields,
+  });
+}
 //#endregion
 
 //#region DELETE Methods
@@ -183,14 +191,6 @@ export async function removeInvalidTrackRelations() {
         .where(inArray(tracksToPlaylists.trackId, invalidTracks));
     }
   } catch {}
-}
-
-/** Create new track entries, or update existing ones. */
-export function upsertTracks(entries: Array<typeof tracks.$inferInsert>) {
-  return db.insert(tracks).values(entries).onConflictDoUpdate({
-    target: tracks.id,
-    set: UpsertFields,
-  });
 }
 //#endregion
 
