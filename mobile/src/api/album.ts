@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 
 import { db } from "~/db";
 import type { Album } from "~/db/schema";
@@ -67,17 +67,17 @@ export async function updateAlbum(
 //#endregion
 
 //#region PUT Methods
-/** Create a new album entry, or update an existing one. Returns the created album. */
-export async function upsertAlbum(entry: typeof albums.$inferInsert) {
-  return (
-    await db
-      .insert(albums)
-      .values(entry)
-      .onConflictDoUpdate({
-        target: [albums.name, albums.artistName, albums.releaseYear],
-        set: entry,
-      })
-      .returning()
-  )[0];
+/** Create new album entries, or update existing ones. Returns the created albums. */
+export async function upsertAlbums(entries: Array<typeof albums.$inferInsert>) {
+  return db
+    .insert(albums)
+    .values(entries)
+    .onConflictDoUpdate({
+      target: [albums.name, albums.artistName, albums.releaseYear],
+      // Set `name` to the `name` from the row that wasn't inserted. This
+      // allows `.returning()` to return a value.
+      set: { name: sql`excluded.name` },
+    })
+    .returning();
 }
 //#endregion

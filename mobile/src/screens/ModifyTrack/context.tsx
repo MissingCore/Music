@@ -8,8 +8,8 @@ import { createComputed } from "zustand-computed";
 import type { TrackWithAlbum } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
-import { upsertAlbum } from "~/api/album";
-import { createArtist } from "~/api/artist";
+import { upsertAlbums } from "~/api/album";
+import { createArtists } from "~/api/artist";
 import { updateTrack } from "~/api/track";
 import { revalidateActiveTrack } from "~/modules/media/helpers/revalidate";
 import {
@@ -156,7 +156,7 @@ export function TrackMetadataStoreProvider({
             await Promise.allSettled(
               [updatedTrack.artistName, updatedAlbum.artistName]
                 .filter((name) => name !== null)
-                .map((name) => createArtist({ name })),
+                .map((name) => createArtists([{ name }])),
             );
 
             const { uri: artworkUri } = await getArtworkUri(uri);
@@ -164,11 +164,13 @@ export function TrackMetadataStoreProvider({
             // Add new album to the database.
             let albumId: string | null = null;
             if (updatedAlbum.name && updatedAlbum.artistName) {
-              const newAlbum = await upsertAlbum({
-                name: updatedAlbum.name,
-                artistName: updatedAlbum.artistName,
-                embeddedArtwork: artworkUri,
-              });
+              const [newAlbum] = await upsertAlbums([
+                {
+                  name: updatedAlbum.name,
+                  artistName: updatedAlbum.artistName,
+                  embeddedArtwork: artworkUri,
+                },
+              ]);
               if (newAlbum) albumId = newAlbum.id;
             }
             if (!albumId) updatedTrack.embeddedArtwork = artworkUri;
