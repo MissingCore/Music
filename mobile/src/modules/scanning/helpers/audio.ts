@@ -28,13 +28,7 @@ import { onboardingStore } from "../services/Onboarding";
 import { getExcludedColumns, withColumns } from "~/lib/drizzle";
 import { Stopwatch } from "~/utils/debug";
 import { chunkArray } from "~/utils/object";
-import {
-  BATCH_PRESETS,
-  batch,
-  isFulfilled,
-  isRejected,
-  wait,
-} from "~/utils/promise";
+import { BATCH_PRESETS, batch, isFulfilled, isRejected } from "~/utils/promise";
 import {
   addTrailingSlash,
   getSafeUri,
@@ -42,6 +36,170 @@ import {
 } from "~/utils/string";
 import { savePathComponents } from "./folder";
 
+//#region Saving Function
+/** Index tracks with their metadata into our database. */
+export async function findAndSaveAudio() {
+  // Reset tracked values when saving/updating tracks in onboarding store.
+  onboardingStore.setState({ staged: 0, saveErrors: 0 });
+  const stopwatch = new Stopwatch();
+
+  // Find the tracks that we should show in the app.
+  const { _all: foundAssets, valid: discoveredTracks } = await discoverTracks();
+  console.log(
+    `Found ${foundAssets.length} tracks, filtered down to ${discoveredTracks.length} in ${stopwatch.lapTime()}.`,
+  );
+
+  // Figure out which tracks are new or have changes.
+  const { stats, unstagedTracks } =
+    await getLibraryModifications(discoveredTracks);
+  onboardingStore.setState((prev) => ({
+    ...stats,
+    phase: unstagedTracks.length > 0 ? "tracks" : prev.phase,
+  }));
+  console.log(`Determined unstaged content in ${stopwatch.lapTime()}.`);
+
+  // Track what albums & artists has been previously saved so that we don't
+  // waste time inserting unnecessary values.
+  const insertedArtists = new Set<string>();
+  const insertedAlbums: Record<string, Set<string>> = {};
+  const albumIdMap: Record<string, Record<string, string>> = {};
+
+  // Save tracks in batches of 50 (a good number if the user leaves midway
+  // as we would have saved at least some tracks).
+  const trackBatches = chunkArray(unstagedTracks, 50);
+  for (const tBatch of trackBatches) {
+    const res = await Promise.allSettled(tBatch.map(safeRetrieveMetadata));
+    const rawEntries = res.filter(isFulfilled).map((r) => r.value);
+    const errored: InvalidTrack[] = res.filter(isRejected).map((r) => r.reason);
+    onboardingStore.setState((prev) => ({
+      staged: prev.staged + rawEntries.length,
+      saveErrors: prev.saveErrors + errored.length,
+    }));
+
+    if (errored.length > 0) {
+      const erroredIds = errored.map(({ id }) => id);
+      await db.delete(tracks).where(inArray(tracks.id, erroredIds));
+      await db.insert(invalidTracks).values(errored).onConflictDoUpdate({
+        target: invalidTracks.id,
+        set: UpsertInvalidTrackFields,
+      });
+    }
+    if (rawEntries.length === 0) continue;
+    await savePathComponents(rawEntries.map(({ uri }) => uri));
+
+    // Save artists & albums that haven't been inserted yet.
+    const newArtists: string[] = [];
+    const newAlbums: Record<string, string[]> = {};
+    rawEntries.forEach(({ artistName, album }) => {
+      addArtist({ artistName, insertedArtists, newArtists });
+      addArtist({ artistName: album?.artistName, insertedArtists, newArtists });
+      addAlbum({ album, insertedAlbums, newAlbums });
+    });
+
+    const newArtistEntries = newArtists.map((name) => ({ name }));
+    const newAlbumEntries = Object.entries(newAlbums).flatMap(
+      ([artistName, names]) => names.map((name) => ({ name, artistName })),
+    );
+
+    if (newArtists.length > 0) await createArtists(newArtistEntries);
+    if (newAlbumEntries.length > 0) {
+      const createdAlbums = await upsertAlbums(newAlbumEntries);
+      createdAlbums.map(({ id, name, artistName }) => {
+        if (albumIdMap[artistName]) albumIdMap[artistName][name] = id;
+        else albumIdMap[artistName] = { [name]: id };
+      });
+    }
+
+    // Create or update tracks.
+    const newTracks = rawEntries.map(({ album, ...t }) => {
+      let albumId: string | null = null;
+      if (album) albumId = albumIdMap[album.artistName]?.[album.name] || null;
+      return { ...t, albumId, discoverTime: Date.now() };
+    });
+    const newIds = newTracks.map(({ id }) => id);
+    await upsertTracks(newTracks);
+    await db.delete(invalidTracks).where(inArray(invalidTracks.id, newIds));
+  }
+
+  const { staged, saveErrors } = onboardingStore.getState();
+  console.log(
+    `Found/updated ${staged} tracks & encountered ${saveErrors} errors in ${stopwatch.lapTime()}.` +
+      `\nCompleted finding & saving audio in ${stopwatch.stop()}`,
+  );
+
+  return {
+    foundFiles: discoveredTracks,
+    unstagedFiles: unstagedTracks,
+    changed: stats.unstaged,
+  };
+}
+//#endregion
+
+//#region Cleanup Functions
+/** Clean up all unused content from a validated list of found content. */
+export async function cleanupDatabase(usedTrackIds: string[]) {
+  // Remove any unused tracks.
+  const unusedTrackIds = (
+    await Promise.all(
+      [invalidTracks, tracks].map((sch) => db.select({ id: sch.id }).from(sch)),
+    )
+  )
+    .flat()
+    .map(({ id }) => id)
+    .filter((id) => !usedTrackIds.includes(id));
+  await batch({
+    data: unusedTrackIds,
+    callback: async (id) => {
+      await db.delete(invalidTracks).where(eq(invalidTracks.id, id));
+      await deleteTrack(id);
+    },
+  });
+
+  // Ensure we didn't reference deleted tracks in the playback store.
+  const { playingList, activeId } = musicStore.getState();
+  const currList = activeId ? playingList.concat(activeId) : playingList;
+  const hasRemovedTrack = currList.some((tId) => unusedTrackIds.includes(tId));
+  if (hasRemovedTrack) await musicStore.getState().reset();
+  // Clear the queue of deleted tracks.
+  await Queue.removeIds(unusedTrackIds);
+
+  // Remove recently played media that's beyond what we display.
+  await db
+    .delete(playedMediaLists)
+    .where(lt(playedMediaLists.lastPlayedAt, Date.now() - RECENT_RANGE_MS));
+
+  // Remove anything else that's unused.
+  await removeUnusedCategories();
+}
+
+/** Remove any albums or artists that aren't used. */
+export async function removeUnusedCategories() {
+  // Remove unused albums.
+  const allAlbums = await db.query.albums.findMany({
+    columns: { id: true },
+    with: { tracks: { columns: { id: true } } },
+  });
+  const unusedAlbumIds = allAlbums
+    .filter(({ tracks }) => tracks.length === 0)
+    .map(({ id }) => id);
+  await db.delete(albums).where(inArray(albums.id, unusedAlbumIds));
+
+  // Remove unused artists.
+  const allArtists = await db.query.artists.findMany({
+    columns: { name: true },
+    with: {
+      albums: { columns: { id: true } },
+      tracks: { columns: { id: true } },
+    },
+  });
+  const unusedArtistNames = allArtists
+    .filter(({ albums, tracks }) => albums.length === 0 && tracks.length === 0)
+    .map(({ name }) => name);
+  await db.delete(artists).where(inArray(artists.name, unusedArtistNames));
+}
+//#endregion
+
+//#region Internal Helpers
 /** Return references to tracks that fit our criteria. */
 async function discoverTracks() {
   const {
@@ -187,7 +345,6 @@ async function safeRetrieveMetadata(asset: MediaLibraryAsset) {
   }
 }
 
-//#region Internal Helpers
 const UpsertInvalidTrackFields = getExcludedColumns([
   "uri",
   "errorName",
@@ -195,6 +352,7 @@ const UpsertInvalidTrackFields = getExcludedColumns([
   "modificationTime",
 ]);
 
+/** Mark this artist as a new value if it hasn't been inserted before. */
 function addArtist(args: {
   artistName: string | null | undefined;
   newArtists: string[];
@@ -207,6 +365,7 @@ function addArtist(args: {
   }
 }
 
+/** Mark this album as a new value if it hasn't been inserted before. */
 function addAlbum(args: {
   album: { name: string; artistName: string } | undefined;
   newAlbums: Record<string, string[]>;
@@ -224,165 +383,5 @@ function addAlbum(args: {
   else newAlbums[artistName] = [name];
 
   return album;
-}
-//#endregion
-
-//#region Saving Function
-/** Index tracks with their metadata into our database. */
-export async function findAndSaveAudio() {
-  const stopwatch = new Stopwatch();
-
-  // Reset tracked values when saving/updating tracks in onboarding store.
-  onboardingStore.setState({ staged: 0, saveErrors: 0 });
-
-  const { _all: foundAssets, valid: discoveredTracks } = await discoverTracks();
-  console.log(
-    `Found ${foundAssets.length} tracks, filtered down to ${discoveredTracks.length} in ${stopwatch.lapTime()}.`,
-  );
-
-  const { stats, unstagedTracks } =
-    await getLibraryModifications(discoveredTracks);
-  onboardingStore.setState(stats);
-  console.log(`Determined unstaged content in ${stopwatch.lapTime()}.`);
-
-  // Set the current phase to `tracks` if we find tracks that need saving/updating.
-  if (unstagedTracks.length > 0) onboardingStore.setState({ phase: "tracks" });
-  await wait(1); // Slight buffer to prevent blocking onboarding screen animation.
-
-  const trackBatches = chunkArray(unstagedTracks, 100);
-  const insertedArtists = new Set<string>();
-  const insertedAlbums: Record<string, Set<string>> = {};
-  const albumIdMap: Record<string, Record<string, string>> = {};
-  for (const tBatch of trackBatches) {
-    const res = await Promise.allSettled(tBatch.map(safeRetrieveMetadata));
-    const rawEntries = res.filter(isFulfilled).map((r) => r.value);
-    const errored: InvalidTrack[] = res.filter(isRejected).map((r) => r.reason);
-    onboardingStore.setState((prev) => ({
-      staged: prev.staged + rawEntries.length,
-      saveErrors: prev.saveErrors + errored.length,
-    }));
-
-    if (errored.length > 0) {
-      const erroredIds = errored.map(({ id }) => id);
-      await db.delete(tracks).where(inArray(tracks.id, erroredIds));
-      await db.insert(invalidTracks).values(errored).onConflictDoUpdate({
-        target: invalidTracks.id,
-        set: UpsertInvalidTrackFields,
-      });
-    }
-
-    if (rawEntries.length === 0) continue;
-    await savePathComponents(rawEntries.map(({ uri }) => uri));
-
-    // Insert artists & albums that haven't been inserted yet.
-    const newArtists: string[] = [];
-    const newAlbums: Record<string, string[]> = {};
-    rawEntries.forEach(({ artistName, album }) => {
-      addArtist({ artistName, insertedArtists, newArtists });
-      addArtist({ artistName: album?.artistName, insertedArtists, newArtists });
-      addAlbum({ album, insertedAlbums, newAlbums });
-    });
-
-    if (newArtists.length > 0) {
-      await createArtists(newArtists.map((name) => ({ name })));
-    }
-    if (Object.keys(newAlbums).length > 0) {
-      const createdAlbums = await upsertAlbums(
-        Object.entries(newAlbums).flatMap(([artistName, names]) =>
-          names.map((name) => ({ name, artistName })),
-        ),
-      );
-      createdAlbums.map(({ id, name, artistName }) => {
-        if (albumIdMap[artistName]) albumIdMap[artistName][name] = id;
-        else albumIdMap[artistName] = { [name]: id };
-      });
-    }
-
-    // Create or update tracks.
-    const newTracks = rawEntries.map(({ album, ...t }) => {
-      let albumId: string | null = null;
-      if (album) albumId = albumIdMap[album.artistName]?.[album.name] || null;
-      return { ...t, albumId, discoverTime: Date.now() };
-    });
-    const newIds = newTracks.map(({ id }) => id);
-    await upsertTracks(newTracks);
-    await db.delete(invalidTracks).where(inArray(invalidTracks.id, newIds));
-  }
-
-  const { staged, saveErrors } = onboardingStore.getState();
-  console.log(
-    `Found/updated ${staged} tracks & encountered ${saveErrors} errors in ${stopwatch.lapTime()}.`,
-  );
-  console.log(`Completed finding & saving audio in ${stopwatch.stop()}`);
-
-  return {
-    foundFiles: discoveredTracks,
-    unstagedFiles: unstagedTracks,
-    changed: stats.unstaged,
-  };
-}
-//#endregion
-
-//#region Cleanup Functions
-/** Clean up all unused content from a validated list of found content. */
-export async function cleanupDatabase(usedTrackIds: string[]) {
-  // Remove any unused tracks.
-  const unusedTrackIds = (
-    await Promise.all(
-      [invalidTracks, tracks].map((sch) => db.select({ id: sch.id }).from(sch)),
-    )
-  )
-    .flat()
-    .map(({ id }) => id)
-    .filter((id) => !usedTrackIds.includes(id));
-  await batch({
-    data: unusedTrackIds,
-    callback: async (id) => {
-      await db.delete(invalidTracks).where(eq(invalidTracks.id, id));
-      await deleteTrack(id);
-    },
-  });
-
-  // Ensure we didn't reference deleted tracks in the playback store.
-  const { playingList, activeId } = musicStore.getState();
-  const currList = activeId ? playingList.concat(activeId) : playingList;
-  const hasRemovedTrack = currList.some((tId) => unusedTrackIds.includes(tId));
-  if (hasRemovedTrack) await musicStore.getState().reset();
-  // Clear the queue of deleted tracks.
-  await Queue.removeIds(unusedTrackIds);
-
-  // Remove recently played media that's beyond what we display.
-  await db
-    .delete(playedMediaLists)
-    .where(lt(playedMediaLists.lastPlayedAt, Date.now() - RECENT_RANGE_MS));
-
-  // Remove anything else that's unused.
-  await removeUnusedCategories();
-}
-
-/** Remove any albums or artists that aren't used. */
-export async function removeUnusedCategories() {
-  // Remove unused albums.
-  const allAlbums = await db.query.albums.findMany({
-    columns: { id: true },
-    with: { tracks: { columns: { id: true } } },
-  });
-  const unusedAlbumIds = allAlbums
-    .filter(({ tracks }) => tracks.length === 0)
-    .map(({ id }) => id);
-  await db.delete(albums).where(inArray(albums.id, unusedAlbumIds));
-
-  // Remove unused artists.
-  const allArtists = await db.query.artists.findMany({
-    columns: { name: true },
-    with: {
-      albums: { columns: { id: true } },
-      tracks: { columns: { id: true } },
-    },
-  });
-  const unusedArtistNames = allArtists
-    .filter(({ albums, tracks }) => albums.length === 0 && tracks.length === 0)
-    .map(({ name }) => name);
-  await db.delete(artists).where(inArray(artists.name, unusedArtistNames));
 }
 //#endregion
