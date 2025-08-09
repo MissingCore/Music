@@ -101,7 +101,7 @@ export async function findAndSaveAudio() {
       ([artistName, names]) => names.map((name) => ({ name, artistName })),
     );
 
-    if (newArtists.length > 0) await createArtists(newArtistEntries);
+    if (newArtistEntries.length > 0) await createArtists(newArtistEntries);
     if (newAlbumEntries.length > 0) {
       const createdAlbums = await upsertAlbums(newAlbumEntries);
       createdAlbums.map(({ id, name, artistName }) => {
