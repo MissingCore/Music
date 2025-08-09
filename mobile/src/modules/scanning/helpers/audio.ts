@@ -18,11 +18,9 @@ import {
   tracks,
 } from "~/db/schema";
 
-import { upsertAlbum } from "~/api/album";
-import { createArtist } from "~/api/artist";
 import { RECENT_RANGE_MS } from "~/api/recent";
 import { getSaveErrors } from "~/api/setting";
-import { createTrack, deleteTrack, getTracks, updateTrack } from "~/api/track";
+import { deleteTrack, getTracks } from "~/api/track";
 import { userPreferencesStore } from "~/services/UserPreferences";
 import { Queue, musicStore } from "~/modules/media/services/Music";
 import { onboardingStore } from "../services/Onboarding";
@@ -231,6 +229,12 @@ export async function findAndSaveAudio() {
         target: tracks.id,
         set: setTrackUpsert,
       });
+      await db.delete(invalidTracks).where(
+        inArray(
+          invalidTracks.id,
+          tBatch.map(({ id }) => id),
+        ),
+      );
     }
   }
 
