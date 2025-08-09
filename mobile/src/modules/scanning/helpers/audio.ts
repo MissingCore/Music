@@ -3,7 +3,6 @@ import {
   getMetadata,
 } from "@missingcore/react-native-metadata-retriever";
 import { eq, inArray, lt, sql } from "drizzle-orm";
-import { toSnakeCase } from "drizzle-orm/casing";
 import { File } from "expo-file-system/next";
 import type { Asset as MediaLibraryAsset } from "expo-media-library";
 import { getAssetsAsync } from "expo-media-library";
@@ -24,7 +23,7 @@ import { userPreferencesStore } from "~/services/UserPreferences";
 import { Queue, musicStore } from "~/modules/media/services/Music";
 import { onboardingStore } from "../services/Onboarding";
 
-import { withColumns } from "~/lib/drizzle";
+import { getExcludedColumns, withColumns } from "~/lib/drizzle";
 import { Stopwatch } from "~/utils/debug";
 import { chunkArray, omitKeys } from "~/utils/object";
 import { BATCH_PRESETS, batch, wait } from "~/utils/promise";
@@ -276,11 +275,8 @@ export async function findAndSaveAudio() {
   }));
   if (formattedTrackEntries.length > 0) {
     const trackBatches = chunkArray(formattedTrackEntries, 1000);
-    const setTrackUpsert = Object.fromEntries(
-      Object.keys(omitKeys(formattedTrackEntries[0]!, ["id", "discoverTime"]))
-        // For some reason, `tracks[key].name` isn't in snake_case, which would
-        // cause the `excluded` to fail.
-        .map((k) => [k, sql.raw(`excluded.${toSnakeCase(k)}`)]),
+    const setTrackUpsert = getExcludedColumns(
+      Object.keys(omitKeys(formattedTrackEntries[0]!, ["id", "discoverTime"])),
     );
     for (const tBatch of trackBatches) {
       await db.insert(tracks).values(tBatch).onConflictDoUpdate({
@@ -297,11 +293,8 @@ export async function findAndSaveAudio() {
   }
 
   if (erroredTracks.length > 0) {
-    const setInvalidTracksUpsert = Object.fromEntries(
-      Object.keys(omitKeys(erroredTracks[0]!, ["id"])).map((k) => [
-        k,
-        sql.raw(`excluded.${toSnakeCase(k)}`),
-      ]),
+    const setInvalidTracksUpsert = getExcludedColumns(
+      Object.keys(omitKeys(erroredTracks[0]!, ["id"])),
     );
     await db.delete(tracks).where(
       inArray(

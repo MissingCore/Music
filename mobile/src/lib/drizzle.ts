@@ -1,5 +1,6 @@
 import type { SQLiteColumn } from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
+import { toSnakeCase } from "drizzle-orm/casing";
 
 /*
   References:
@@ -27,4 +28,11 @@ export const iDesc = (column: SQLiteColumn) =>
 export function withColumns<T extends string>(columns: T[]) {
   const columnsObj = Object.fromEntries(columns.map((col) => [col, true]));
   return columnsObj as Record<T, true>;
+}
+
+/** Returns an object mapping columns to its `excluded.` notation. */
+export function getExcludedColumns<T extends string>(columns: T[]) {
+  return Object.fromEntries(
+    columns.map((k) => [k, sql.raw(`excluded.${toSnakeCase(k)}`)]),
+  );
 }
