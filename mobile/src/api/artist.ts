@@ -69,9 +69,11 @@ export const getArtists = _getArtists();
 //#endregion
 
 //#region POST Methods
-/** Create a new artist entry. */
-export async function createArtist(entry: typeof artists.$inferInsert) {
-  return db.insert(artists).values(entry).onConflictDoNothing();
+/** Create new artist entries. */
+export async function createArtists(
+  entries: Array<typeof artists.$inferInsert>,
+) {
+  return db.insert(artists).values(entries).onConflictDoNothing();
 }
 //#endregion
 

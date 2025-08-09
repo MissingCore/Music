@@ -7,7 +7,7 @@ import { getTrackCover } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
 
-import { iAsc } from "~/lib/drizzle";
+import { getExcludedColumns, iAsc } from "~/lib/drizzle";
 import type { BooleanPriority } from "~/utils/types";
 import type { DrizzleFilter, QueriedTrack } from "./types";
 import { getColumns, withAlbum } from "./utils";
@@ -83,13 +83,6 @@ export async function getTracks<
 }
 //#endregion
 
-//#region POST Methods
-/** Create a new track entry. */
-export async function createTrack(entry: typeof tracks.$inferInsert) {
-  return db.insert(tracks).values(entry).onConflictDoNothing();
-}
-//#endregion
-
 //#region PATCH Methods
 /** Update the `favorite` status of a track. */
 export async function favoriteTrack(id: string, isFavorite: boolean) {
@@ -125,6 +118,14 @@ export async function addToPlaylist(
         target: [tracksToPlaylists.trackId, tracksToPlaylists.playlistName],
         set: { position: entry.position ?? nextPos },
       });
+  });
+}
+
+/** Create new track entries, or update existing ones. */
+export function upsertTracks(entries: Array<typeof tracks.$inferInsert>) {
+  return db.insert(tracks).values(entries).onConflictDoUpdate({
+    target: tracks.id,
+    set: UpsertFields,
   });
 }
 //#endregion
@@ -191,4 +192,23 @@ export async function removeInvalidTrackRelations() {
     }
   } catch {}
 }
+//#endregion
+
+//#region Internal Utils
+const UpsertFields = getExcludedColumns([
+  "name",
+  "artistName",
+  "albumId",
+  "track",
+  "disc",
+  "year",
+  "format",
+  "bitrate",
+  "sampleRate",
+  "duration",
+  "uri",
+  "modificationTime",
+  "fetchedArt",
+  "size",
+]);
 //#endregion
