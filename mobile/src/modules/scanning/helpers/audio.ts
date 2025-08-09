@@ -26,7 +26,13 @@ import { onboardingStore } from "../services/Onboarding";
 import { getExcludedColumns, withColumns } from "~/lib/drizzle";
 import { Stopwatch } from "~/utils/debug";
 import { chunkArray, omitKeys } from "~/utils/object";
-import { BATCH_PRESETS, batch, wait } from "~/utils/promise";
+import {
+  BATCH_PRESETS,
+  batch,
+  isFulfilled,
+  isRejected,
+  wait,
+} from "~/utils/promise";
 import {
   addTrailingSlash,
   getSafeUri,
@@ -164,6 +170,24 @@ async function getTrackMetadata(asset: MediaLibraryAsset) {
   };
 }
 
+/** Returns `TrackMetadata` or `InvalidTrack`. */
+async function safeRetrieveMetadata(asset: MediaLibraryAsset) {
+  const { id, uri, modificationTime } = asset;
+  try {
+    const trackEntry = await getTrackMetadata(asset);
+    return Promise.resolve(trackEntry);
+  } catch (err) {
+    const isError = err instanceof Error;
+    const errorInfo = {
+      errorName: isError ? err.name : "UnknownError",
+      errorMessage: isError ? err.message : "Rejected for unknown reasons.",
+    };
+    // We may end up here if the track at the given uri doesn't exist anymore.
+    console.log(`[Track ${id}] ${errorInfo.errorMessage}`);
+    return Promise.reject({ id, uri, modificationTime, ...errorInfo });
+  }
+}
+
 //#region Saving Function
 /** Index tracks with their metadata into our database. */
 export async function findAndSaveAudio() {
@@ -186,100 +210,81 @@ export async function findAndSaveAudio() {
   if (unstagedTracks.length > 0) onboardingStore.setState({ phase: "tracks" });
   await wait(1); // Slight buffer to prevent blocking onboarding screen animation.
 
-  const rawTrackEntries: TrackMetadata[] = [];
-  const erroredTracks: InvalidTrack[] = [];
-  await batch({
-    data: unstagedTracks,
-    batchAmount: BATCH_PRESETS.PROGRESS,
-    callback: async (mediaAsset) => {
-      const { id, uri, modificationTime } = mediaAsset;
-
-      try {
-        const trackEntry = await getTrackMetadata(mediaAsset);
-        rawTrackEntries.push(trackEntry);
-      } catch (err) {
-        const isError = err instanceof Error;
-        const errorInfo = {
-          errorName: isError ? err.name : "UnknownError",
-          errorMessage: isError ? err.message : "Rejected for unknown reasons.",
-        };
-        // We may end up here if the track at the given uri doesn't exist anymore.
-        console.log(`[Track ${id}] ${errorInfo.errorMessage}`);
-
-        erroredTracks.push({ id, uri, modificationTime, ...errorInfo });
-        throw new Error(id);
-      }
-    },
-    onBatchComplete: (fulfilled, rejected) => {
-      onboardingStore.setState((prev) => ({
-        staged: prev.staged + fulfilled.length,
-        saveErrors: prev.saveErrors + rejected.length,
-      }));
-    },
-  });
-
-  const newArtists = new Set<string>();
-  const albumMap: Record<string, Set<string>> = {};
-  rawTrackEntries.forEach(({ artistName, album }) => {
-    if (artistName) newArtists.add(artistName);
-    if (album) {
-      const { name, artistName } = album;
-      newArtists.add(artistName);
-      if (!albumMap[artistName]?.has(name)) {
-        if (albumMap[artistName]) albumMap[artistName].add(name);
-        else albumMap[artistName] = new Set([name]);
-      }
-    }
-  });
-
-  if (newArtists.size > 0) {
-    await db
-      .insert(artists)
-      .values([...newArtists].map((name) => ({ name })))
-      .onConflictDoNothing();
-  }
+  const trackBatches = chunkArray(unstagedTracks, 50);
   const albumIdMap: Record<string, Record<string, string>> = {};
-  if (Object.keys(albumMap).length > 0) {
-    const createdAlbums = await db
-      .insert(albums)
-      .values(
-        Object.entries(albumMap).flatMap(([artistName, names]) =>
-          [...names].map((name) => ({ name, artistName })),
-        ),
-      )
-      .onConflictDoUpdate({
-        target: [albums.name, albums.artistName, albums.releaseYear],
-        // Set `name` to the `name` from the row that wasn't inserted. This
-        // allows `.returning()` to return a value.
-        set: { name: sql`excluded.name` },
-      })
-      .returning({
-        id: albums.id,
-        name: albums.name,
-        artistName: albums.artistName,
-      });
-    createdAlbums.map(({ id, name, artistName }) => {
-      if (albumIdMap[artistName]) albumIdMap[artistName][name] = id;
-      else albumIdMap[artistName] = { [name]: id };
+  for (const tBatch of trackBatches) {
+    const res = await Promise.allSettled(tBatch.map(safeRetrieveMetadata));
+    const rawTrackEntries = res.filter(isFulfilled).map((r) => r.value);
+    const errored: InvalidTrack[] = res.filter(isRejected).map((r) => r.reason);
+    onboardingStore.setState((prev) => ({
+      staged: prev.staged + rawTrackEntries.length,
+      saveErrors: prev.saveErrors + errored.length,
+    }));
+
+    const newArtists = new Set<string>();
+    const albumMap: Record<string, Set<string>> = {};
+    rawTrackEntries.forEach(({ artistName, album }) => {
+      if (artistName) newArtists.add(artistName);
+      if (album) {
+        const { name, artistName } = album;
+        newArtists.add(artistName);
+        if (!albumMap[artistName]?.has(name)) {
+          if (albumMap[artistName]) albumMap[artistName].add(name);
+          else albumMap[artistName] = new Set([name]);
+        }
+      }
     });
-  }
 
-  if (rawTrackEntries.length > 0) {
-    await savePathComponents(rawTrackEntries.map(({ uri }) => uri));
-  }
+    if (newArtists.size > 0) {
+      await db
+        .insert(artists)
+        .values([...newArtists].map((name) => ({ name })))
+        .onConflictDoNothing();
+    }
 
-  const formattedTrackEntries = rawTrackEntries.map(({ album, ...t }) => ({
-    ...t,
-    albumId: album ? albumIdMap[album.artistName]?.[album.name] || null : null,
-    discoverTime: Date.now(),
-  }));
-  if (formattedTrackEntries.length > 0) {
-    const trackBatches = chunkArray(formattedTrackEntries, 1000);
-    const setTrackUpsert = getExcludedColumns(
-      Object.keys(omitKeys(formattedTrackEntries[0]!, ["id", "discoverTime"])),
-    );
-    for (const tBatch of trackBatches) {
-      await db.insert(tracks).values(tBatch).onConflictDoUpdate({
+    if (Object.keys(albumMap).length > 0) {
+      const createdAlbums = await db
+        .insert(albums)
+        .values(
+          Object.entries(albumMap).flatMap(([artistName, names]) =>
+            [...names].map((name) => ({ name, artistName })),
+          ),
+        )
+        .onConflictDoUpdate({
+          target: [albums.name, albums.artistName, albums.releaseYear],
+          // Set `name` to the `name` from the row that wasn't inserted. This
+          // allows `.returning()` to return a value.
+          set: { name: sql`excluded.name` },
+        })
+        .returning({
+          id: albums.id,
+          name: albums.name,
+          artistName: albums.artistName,
+        });
+      createdAlbums.map(({ id, name, artistName }) => {
+        if (albumIdMap[artistName]) albumIdMap[artistName][name] = id;
+        else albumIdMap[artistName] = { [name]: id };
+      });
+    }
+
+    if (rawTrackEntries.length > 0) {
+      await savePathComponents(rawTrackEntries.map(({ uri }) => uri));
+    }
+
+    const formattedTrackEntries = rawTrackEntries.map(({ album, ...t }) => ({
+      ...t,
+      albumId: album
+        ? albumIdMap[album.artistName]?.[album.name] || null
+        : null,
+      discoverTime: Date.now(),
+    }));
+    if (formattedTrackEntries.length > 0) {
+      const setTrackUpsert = getExcludedColumns(
+        Object.keys(
+          omitKeys(formattedTrackEntries[0]!, ["id", "discoverTime"]),
+        ),
+      );
+      await db.insert(tracks).values(formattedTrackEntries).onConflictDoUpdate({
         target: tracks.id,
         set: setTrackUpsert,
       });
@@ -290,22 +295,22 @@ export async function findAndSaveAudio() {
         ),
       );
     }
-  }
 
-  if (erroredTracks.length > 0) {
-    const setInvalidTracksUpsert = getExcludedColumns(
-      Object.keys(omitKeys(erroredTracks[0]!, ["id"])),
-    );
-    await db.delete(tracks).where(
-      inArray(
-        tracks.id,
-        erroredTracks.map(({ id }) => id),
-      ),
-    );
-    await db.insert(invalidTracks).values(erroredTracks).onConflictDoUpdate({
-      target: invalidTracks.id,
-      set: setInvalidTracksUpsert,
-    });
+    if (errored.length > 0) {
+      const setInvalidTracksUpsert = getExcludedColumns(
+        Object.keys(omitKeys(errored[0]!, ["id"])),
+      );
+      await db.delete(tracks).where(
+        inArray(
+          tracks.id,
+          errored.map(({ id }) => id),
+        ),
+      );
+      await db.insert(invalidTracks).values(errored).onConflictDoUpdate({
+        target: invalidTracks.id,
+        set: setInvalidTracksUpsert,
+      });
+    }
   }
 
   const { staged, saveErrors } = onboardingStore.getState();
