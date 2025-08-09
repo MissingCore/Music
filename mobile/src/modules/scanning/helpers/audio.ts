@@ -19,12 +19,12 @@ import {
 } from "~/db/schema";
 
 import { RECENT_RANGE_MS } from "~/api/recent";
-import { getSaveErrors } from "~/api/setting";
-import { deleteTrack, getTracks } from "~/api/track";
+import { deleteTrack } from "~/api/track";
 import { userPreferencesStore } from "~/services/UserPreferences";
 import { Queue, musicStore } from "~/modules/media/services/Music";
 import { onboardingStore } from "../services/Onboarding";
 
+import { withColumns } from "~/lib/drizzle";
 import {
   addTrailingSlash,
   getSafeUri,
@@ -35,14 +35,8 @@ import { chunkArray, omitKeys } from "~/utils/object";
 import { BATCH_PRESETS, batch, wait } from "~/utils/promise";
 import { savePathComponents } from "./folder";
 
-//#region Saving Function
-/** Index tracks with their metadata into our database. */
-export async function findAndSaveAudio() {
-  const stopwatch = new Stopwatch();
-
-  // Reset tracked values when saving/updating tracks in onboarding store.
-  onboardingStore.setState({ staged: 0, saveErrors: 0 });
-
+/** Return references to tracks that fit our criteria. */
+async function discoverTracks() {
   const {
     listAllow: _listAllow,
     listBlock: _listBlock,
@@ -65,45 +59,40 @@ export async function findAndSaveAudio() {
     lastRead = endCursor;
     isComplete = !hasNextPage;
   } while (!isComplete);
-  // Filter through the audio files and keep the tracks we want (in allowlist,
-  // not in blocklist, and meets the minimum duration requirements).
-  const discoveredTracks = incomingData.filter(
+
+  const validTracks = incomingData.filter(
     (a) =>
-      // If allowlist is empty, we want the check to resolve to `true`.
+      // Ensure track is in the allowlist if it's non-empty.
       (listAllow.length === 0 || listAllow.some((p) => a.uri.startsWith(p))) &&
+      // Ensure track isn't in the blocklist.
       !listBlock.some((p) => a.uri.startsWith(p)) &&
+      // Ensure track meets the minimum duration requirement.
       a.duration > minSeconds,
   );
-  console.log(
-    `Found ${incomingData.length} tracks, filtered down to ${discoveredTracks.length} in ${stopwatch.lapTime()}.`,
-  );
 
-  // Get relevant entries inside our database.
-  const allTracks = await getTracks({
-    columns: ["id", "modificationTime", "uri", "editedMetadata"],
-    withAlbum: false,
-    withHidden: true,
+  return { _all: incomingData, valid: validTracks };
+}
+
+/** Figure out whether we have new or modified tracks. */
+async function getLibraryModifications(assets: MediaLibraryAsset[]) {
+  const savedTracks = await db.query.tracks.findMany({
+    columns: withColumns(["id", "modificationTime", "uri", "editedMetadata"]),
   });
-  const allTracksMap = Object.fromEntries(allTracks.map((t) => [t.id, t]));
-  const allInvalidTracks = await getSaveErrors();
-  const allInvalidTracksMap = Object.fromEntries(
-    allInvalidTracks.map((t) => [t.id, t]),
-  );
-  onboardingStore.setState({ prevSaved: allTracks.length });
+  const erroredTracks = await db.query.invalidTracks.findMany();
+  // Format data as objects for faster reads inside a loop.
+  const savedMap = Object.fromEntries(savedTracks.map((t) => [t.id, t]));
+  const erroredMap = Object.fromEntries(erroredTracks.map((t) => [t.id, t]));
 
   // Find the tracks we can skip indexing or need updating.
-  const modifiedTracks = new Set<string>();
-  const unmodifiedTracks = new Set<string>();
-  discoveredTracks.forEach(({ id, modificationTime, uri }) => {
-    const isSaved = allTracksMap[id];
-    const isInvalid = allInvalidTracksMap[id];
+  const modified = new Set<string>();
+  const unmodified = new Set<string>();
+  assets.forEach(({ id, modificationTime, uri }) => {
+    const isSaved = savedMap[id];
+    const isInvalid = erroredMap[id];
     if (!isSaved && !isInvalid) return; // If we have a new track.
 
     const lastModified = (isSaved ?? isInvalid)!.modificationTime;
-    const hasEdited =
-      isSaved?.editedMetadata !== undefined
-        ? isSaved.editedMetadata !== null
-        : false;
+    const hasEdited = typeof isSaved?.editedMetadata === "number";
     let isDifferentUri = (isSaved ?? isInvalid)!.uri !== uri;
 
     // Moving folders in Android is kind of weird; sometimes, the URI of
@@ -113,25 +102,44 @@ export async function findAndSaveAudio() {
     // The logic below makes sure that if the file has the same id and is
     // detected in 2 different locations, we make sure the track is marked
     // as being "modified".
-    if (isDifferentUri && unmodifiedTracks.has(id)) unmodifiedTracks.delete(id);
-    else if (!isDifferentUri && modifiedTracks.has(id)) isDifferentUri = true;
+    if (isDifferentUri && unmodified.has(id)) unmodified.delete(id);
+    else if (!isDifferentUri && modified.has(id)) isDifferentUri = true;
 
     // Retry indexing if modification time or uri is different.
     if ((!hasEdited && modificationTime !== lastModified) || isDifferentUri) {
-      modifiedTracks.add(id);
+      modified.add(id);
     } else {
-      unmodifiedTracks.add(id);
+      unmodified.add(id);
     }
   });
-  onboardingStore.setState({
-    unstaged: discoveredTracks.length - unmodifiedTracks.size,
-  });
+
+  return {
+    stats: {
+      prevSaved: savedTracks.length,
+      unstaged: assets.length - unmodified.size,
+    },
+    unstagedTracks: assets.filter(({ id }) => !unmodified.has(id)),
+  };
+}
+
+//#region Saving Function
+/** Index tracks with their metadata into our database. */
+export async function findAndSaveAudio() {
+  const stopwatch = new Stopwatch();
+
+  // Reset tracked values when saving/updating tracks in onboarding store.
+  onboardingStore.setState({ staged: 0, saveErrors: 0 });
+
+  const { _all: foundAssets, valid: discoveredTracks } = await discoverTracks();
+  console.log(
+    `Found ${foundAssets.length} tracks, filtered down to ${discoveredTracks.length} in ${stopwatch.lapTime()}.`,
+  );
+
+  const { stats, unstagedTracks } =
+    await getLibraryModifications(discoveredTracks);
+  onboardingStore.setState(stats);
   console.log(`Determined unstaged content in ${stopwatch.lapTime()}.`);
 
-  // Create track entries from the minimum amount of data.
-  const unstagedTracks = discoveredTracks.filter(
-    ({ id }) => !unmodifiedTracks.has(id),
-  );
   // Set the current phase to `tracks` if we find tracks that need saving/updating.
   if (unstagedTracks.length > 0) onboardingStore.setState({ phase: "tracks" });
   await wait(1); // Slight buffer to prevent blocking onboarding screen animation.
@@ -272,7 +280,7 @@ export async function findAndSaveAudio() {
   return {
     foundFiles: discoveredTracks,
     unstagedFiles: unstagedTracks,
-    changed: discoveredTracks.length - unmodifiedTracks.size,
+    changed: stats.unstaged,
   };
 }
 
