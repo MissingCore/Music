@@ -181,35 +181,41 @@ export async function findAndSaveAudio() {
     }
   });
 
-  await db
-    .insert(artists)
-    .values([...newArtists].map((name) => ({ name })))
-    .onConflictDoNothing();
-  const createdAlbums = await db
-    .insert(albums)
-    .values(
-      Object.entries(albumMap).flatMap(([artistName, names]) =>
-        [...names].map((name) => ({ name, artistName })),
-      ),
-    )
-    .onConflictDoUpdate({
-      target: [albums.name, albums.artistName, albums.releaseYear],
-      // Set `name` to the `name` from the row that wasn't inserted. This
-      // allows `.returning()` to return a value.
-      set: { name: sql`excluded.name` },
-    })
-    .returning({
-      id: albums.id,
-      name: albums.name,
-      artistName: albums.artistName,
-    });
+  if (newArtists.size > 0) {
+    await db
+      .insert(artists)
+      .values([...newArtists].map((name) => ({ name })))
+      .onConflictDoNothing();
+  }
   const albumIdMap: Record<string, Record<string, string>> = {};
-  createdAlbums.map(({ id, name, artistName }) => {
-    if (albumIdMap[artistName]) albumIdMap[artistName][name] = id;
-    else albumIdMap[artistName] = { [name]: id };
-  });
+  if (Object.keys(albumMap).length > 0) {
+    const createdAlbums = await db
+      .insert(albums)
+      .values(
+        Object.entries(albumMap).flatMap(([artistName, names]) =>
+          [...names].map((name) => ({ name, artistName })),
+        ),
+      )
+      .onConflictDoUpdate({
+        target: [albums.name, albums.artistName, albums.releaseYear],
+        // Set `name` to the `name` from the row that wasn't inserted. This
+        // allows `.returning()` to return a value.
+        set: { name: sql`excluded.name` },
+      })
+      .returning({
+        id: albums.id,
+        name: albums.name,
+        artistName: albums.artistName,
+      });
+    createdAlbums.map(({ id, name, artistName }) => {
+      if (albumIdMap[artistName]) albumIdMap[artistName][name] = id;
+      else albumIdMap[artistName] = { [name]: id };
+    });
+  }
 
-  await savePathComponents(rawTrackEntries.map(({ uri }) => uri));
+  if (rawTrackEntries.length > 0) {
+    await savePathComponents(rawTrackEntries.map(({ uri }) => uri));
+  }
 
   const formattedTrackEntries = rawTrackEntries.map(({ album, ...t }) => ({
     ...t,
