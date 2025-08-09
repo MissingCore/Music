@@ -239,13 +239,22 @@ export async function findAndSaveAudio() {
   }
 
   if (erroredTracks.length > 0) {
+    const setInvalidTracksUpsert = Object.fromEntries(
+      Object.keys(omitKeys(erroredTracks[0]!, ["id"])).map((k) => [
+        k,
+        sql.raw(`excluded.${toSnakeCase(k)}`),
+      ]),
+    );
     await db.delete(tracks).where(
       inArray(
         tracks.id,
         erroredTracks.map(({ id }) => id),
       ),
     );
-    await db.insert(invalidTracks).values(erroredTracks);
+    await db.insert(invalidTracks).values(erroredTracks).onConflictDoUpdate({
+      target: invalidTracks.id,
+      set: setInvalidTracksUpsert,
+    });
   }
 
   const { staged, saveErrors } = onboardingStore.getState();
