@@ -20,30 +20,17 @@ A Nothing inspired **local** music player.
 - Supports Android 7+
 - Works with Nothing Music Widget & Glyph Music Visualization
 - Diverse music organization: Albums, Artists, Favorites, Folder Structure, Playlists
-- Artwork customizability for: Albums, Artists, Playlists (long-press the artwork on their screen)
+- Local metadata editor for quick changes (doesn't modify the actual file)
+- Artwork customizability
+  - Changing the artwork for Albums, Artists, and Playlists requires long-pressing the artwork on their individual screens
 - Background playback w/ media control notification
 - Queues
 - Theoretical support of [these media formats](https://developer.android.com/media/platform/supported-formats#audio-formats)
 - [Community translations](#translations)
-
-# Design
-
-The current version of Music is inspired by the designs presented in the [`Introducing Ear (open) and OS 3.0` video](https://youtu.be/eV3Ch2lEr9Q?si=nof-tZ135NuI04eX).
+- **`[🧪 Experimental]`** Sleep timer support (enable feature in settings)
 
 > [!NOTE]  
 > This app is designed to work best on "phone" layouts and isn't tested for larger screens (ie: tablets). We may improve the layout for larger screens in the future.
-
-> [!IMPORTANT]  
-> Be careful when clearing the cache of the app as if you accidentally clear the storage, all the data in the app will be deleted (ie: playlists, favorited tracks, artwork).
-
-## Version 1
-
-Version 1 of Music is based on the design seen in this [comment on the Nothing Community forums](https://nothing.community/d/1825-nothing-music-player-app/2), created by [Alkid Shuli (alKid)](https://bento.me/alkid).
-
-<details>
-  <summary>Version 1 Promotional Image & Design</summary>
-  <img src="./.github/assets/SOCIAL_PREVIEW_v1.png" alt="Promotional image used for version 1 of the app, showcasing some of the old design.">
-</details>
 
 ## Built With
 
