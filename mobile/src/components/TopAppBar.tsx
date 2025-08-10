@@ -28,7 +28,7 @@ export function TopAppBar({ options, route }: NativeStackHeaderProps) {
           disabled={!!options.headerLeft}
         />
 
-        <StyledText numberOfLines={2} className="shrink text-xs">
+        <StyledText numberOfLines={2} className="shrink text-center text-xs">
           {title.toLocaleUpperCase()}
         </StyledText>
 
