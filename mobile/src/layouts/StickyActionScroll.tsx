@@ -51,8 +51,10 @@ export function StickyActionListLayout<TData>({
     (e: LayoutChangeEvent) => {
       // 16px Padding Top + Header Height
       initActionPos.value = 16 + e.nativeEvent.layout.height;
+      // `onScroll` no longer seems to fire when we re-layout.
+      scrollAmount.value = 0;
     },
-    [initActionPos],
+    [initActionPos, scrollAmount],
   );
 
   const scrollHandler = useAnimatedScrollHandler({
