@@ -147,6 +147,9 @@
       "description": {
         "line1": "Reorder the tabs after the \"Home\" tab by dragging and dropping. Toggle tab visibility using the eye icon.",
         "line2": "Caution: Unexpected behavior may occur when navigating to a hidden tab."
+      },
+      "extra": {
+        "setHomeTab": "Open {{- name}} tab on app launch."
       }
     },
     "nowPlayingDesign": {

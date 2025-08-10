@@ -1,4 +1,4 @@
-import { router } from "expo-router";
+import { Redirect, router } from "expo-router";
 import { useTranslation } from "react-i18next";
 
 import { History } from "~/icons/History";
@@ -6,6 +6,7 @@ import {
   useFavoriteListsForCards,
   useFavoriteTracksCount,
 } from "~/queries/favorite";
+import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { StandardScrollLayout } from "~/layouts/StandardScroll";
 
 import { cn } from "~/lib/style";
@@ -20,9 +21,20 @@ import {
   useMediaCardListPreset,
 } from "~/modules/media/components/MediaCard";
 
+let hasRedirected = false;
+
 /** Screen for `/` route. */
 export default function HomeScreen() {
   const { t } = useTranslation();
+  const homeTab = useUserPreferencesStore((state) => state.homeTab);
+
+  // Immediately redirect to the tab we set as the "Home Tab" in the settings
+  // on app launch.
+  if (!hasRedirected) {
+    hasRedirected = true;
+    if (homeTab !== "home") return <Redirect href={`/${homeTab}`} />;
+  }
+
   return (
     <StandardScrollLayout
       titleKey="term.home"

@@ -46,6 +46,8 @@ interface UserPreferencesStore {
   /** Design used for the "Now Playing" screen. */
   nowPlayingDesign: (typeof NowPlayingDesignOptions)[number];
 
+  /** Tab that we open up to on app launch. */
+  homeTab: "home" | OrderableTab;
   /** Order of tabs on the home screen. */
   tabsOrder: OrderableTab[];
   /** Visibility of the tabs on the home screen. */
@@ -113,6 +115,7 @@ export const userPreferencesStore =
 
       nowPlayingDesign: "vinyl",
 
+      homeTab: "home",
       tabsOrder: ["folder", "playlist", "track", "album", "artist"],
       tabsVisibility: {
         album: true,
