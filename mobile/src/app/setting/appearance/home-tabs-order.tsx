@@ -83,10 +83,9 @@ const RenderItem = memo(
         <TStyledText textKey={tabNameKey} className="shrink grow p-4 pr-2" />
         <IconButton
           Icon={Home}
-          accessibilityLabel={t(
-            isHomeTab ? "template.entryHide" : "template.entryShow",
-            { name: t(tabNameKey) },
-          )}
+          accessibilityLabel={t("feat.homeTabsOrder.extra.setHomeTab", {
+            name: t(isHomeTab ? "term.home" : tabNameKey),
+          })}
           onPress={() => toggleHomeTab(item)}
           disabled={info.isDragging}
           filled={isHomeTab}
