@@ -87,7 +87,7 @@ const RenderItem = memo(
             name: t(isHomeTab ? "term.home" : tabNameKey),
           })}
           onPress={() => toggleHomeTab(item)}
-          disabled={info.isDragging}
+          disabled={info.isDragging || !isVisible}
           filled={isHomeTab}
         />
         <IconButton
