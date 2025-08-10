@@ -46,7 +46,7 @@ interface UserPreferencesStore {
   /** Design used for the "Now Playing" screen. */
   nowPlayingDesign: (typeof NowPlayingDesignOptions)[number];
 
-  /** Tab that we open up to on launch. */
+  /** Tab that we open up to on app launch. */
   homeTab: "home" | OrderableTab;
   /** Order of tabs on the home screen. */
   tabsOrder: OrderableTab[];
