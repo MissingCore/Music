@@ -80,7 +80,7 @@ export function FlashList<T>(props: FlashListProps<T>) {
       // To prevent `TypeError: Cannot read property 'y' of undefined`
       // crash from a list with `numColumns` and `ListEmptyComponent`.
       key={
-        props.data?.length === 0
+        props.data?.length === 0 && props.numColumns !== undefined
           ? `empty-list-with-${props.numColumns}-cols`
           : `non-empty-list-with-${props.numColumns}-cols`
       }
@@ -97,7 +97,7 @@ export function AnimatedFlashList<T>(props: FlashListProps<T>) {
       // To prevent `TypeError: Cannot read property 'y' of undefined`
       // crash from a list with `numColumns` and `ListEmptyComponent`.
       key={
-        props.data?.length === 0
+        props.data?.length === 0 && props.numColumns !== undefined
           ? `empty-list-with-${props.numColumns}-cols`
           : `non-empty-list-with-${props.numColumns}-cols`
       }
