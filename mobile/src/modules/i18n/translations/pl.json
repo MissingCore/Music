@@ -135,6 +135,9 @@
       "description": {
         "line1": "Zmień kolejność zakładek dalszych niż `Start` przez przeciąganie i upuszczanie. Ustaw widoczność używając ikony oka.",
         "line2": "Ostrzeżenie: Mogą występować nieoczekiwane błędy podczas przechodzenia do ukrytych zakładek."
+      },
+      "extra": {
+        "setHomeTab": null
       }
     },
     "nowPlayingDesign": {

@@ -129,6 +129,9 @@
       "description": {
         "line1": "Reordena las pestañas después de la pestaña \"Inicio\" arrastrando y soltando. Alterna la visibilidad de las pestañas usando el icono del ojo.",
         "line2": "Atención: Puede ocurrir un comportamiento inesperado al navegar a una pestaña oculta."
+      },
+      "extra": {
+        "setHomeTab": null
       }
     },
     "nowPlayingDesign": {

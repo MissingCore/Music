@@ -129,6 +129,9 @@
       "description": {
         "line1": "Tilpas fanernes rækkefølge med Drag-and-Drop. Gem eller vis fanerne med øje-ikonet.",
         "line2": "Bemærk: Uventet adfærd kan forekomme, når du navigerer til en gemt fane."
+      },
+      "extra": {
+        "setHomeTab": null
       }
     },
     "nowPlayingDesign": {

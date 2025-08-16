@@ -129,6 +129,9 @@
       "description": {
         "line1": "Riordina le schede dopo la scheda \"$t(term.home)\" trascinando e rilasciando. Cambia la visibilità utilizzando l'icona dell'occhio.",
         "line2": "Attenzione: Potrebbero verificarsi comportamenti imprevisti navigando ad una scheda nascosta."
+      },
+      "extra": {
+        "setHomeTab": null
       }
     },
     "nowPlayingDesign": {
