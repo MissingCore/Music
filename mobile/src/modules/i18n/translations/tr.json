@@ -129,6 +129,9 @@
       "description": {
         "line1": "Sürükle bırak yöntemiyle \"Ana Sayfa\" sekmesinden sonraki sekmeleri yeniden sıralayın. Göz simgesini kullanarak sekme görünürlüğünü değiştirin.",
         "line2": "Uyarı: Gizli bir sekmeye gidildiğinde beklenmedik davranışlar meydana gelebilir."
+      },
+      "extra": {
+        "setHomeTab": "Uygulama başlatıldığında {{- name}} sekmesini aç."
       }
     },
     "nowPlayingDesign": {
@@ -169,12 +172,12 @@
       }
     },
     "hiddenTracks": {
-      "title": null,
-      "brief": null,
+      "title": "Gizli Parçalar",
+      "brief": "Uygulamada gösterilmeyen parçalar.",
       "extra": {
-        "hiddenAt": null,
-        "hasHiddenTracks": null,
-        "notFound": null
+        "hiddenAt": "{{- date}} tarihinde gizlendi.",
+        "hasHiddenTracks": "{{- name}} gizli parçalara sahip.",
+        "notFound": "Gizli parça bulunamadı."
       }
     },
     "saveErrors": {
@@ -267,7 +270,7 @@
     "version": {
       "title": "Sürüm",
       "extra": {
-        "rcNotification": null
+        "rcNotification": "Ön Sürüm Bildirimi"
       }
     },
     "onboardPreprocess": {
@@ -292,7 +295,7 @@
     "playedRecent": {
       "title": "Son Çalınanlar",
       "extra": {
-        "notFound": null
+        "notFound": "Son {{amount}} günde hiçbir şey çalınmadı."
       }
     },
     "search": {
@@ -341,7 +344,7 @@
       "extra": {
         "asc": "Artan Sıralama",
         "alphabetical": "Alfabetik",
-        "discover": null,
+        "discover": "Keşif Zamanı",
         "modified": "Son Değiştirilme"
       }
     },

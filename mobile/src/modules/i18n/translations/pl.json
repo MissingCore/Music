@@ -42,16 +42,10 @@
   },
   "plural": {
     "entry_one": "{{count}} element",
-    "entry_few": "{{count}} elementy",
-    "entry_many": "{{count}} elementów",
     "entry_other": "{{count}} elementów",
     "second_one": "{{count}} sekundę",
-    "second_few": "{{count}} sekundy",
-    "second_many": "{{count}} sekund",
     "second_other": "{{count}} sekund",
     "track_one": "{{count}} utwór",
-    "track_few": "{{count}} utwory",
-    "track_many": "{{count}} utworów",
     "track_other": "{{count}} utworów"
   },
   "form": {
@@ -135,6 +129,9 @@
       "description": {
         "line1": "Zmień kolejność zakładek dalszych niż `Start` przez przeciąganie i upuszczanie. Ustaw widoczność używając ikony oka.",
         "line2": "Ostrzeżenie: Mogą występować nieoczekiwane błędy podczas przechodzenia do ukrytych zakładek."
+      },
+      "extra": {
+        "setHomeTab": null
       }
     },
     "nowPlayingDesign": {

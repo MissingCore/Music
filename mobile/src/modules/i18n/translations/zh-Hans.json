@@ -129,6 +129,9 @@
       "description": {
         "line1": "通过拖放来重新排列“主页”标签后的标签页。使用眼睛图标切换标签可见性。",
         "line2": "注意：导航到隐藏标签时可能会发生意外行为。"
+      },
+      "extra": {
+        "setHomeTab": null
       }
     },
     "nowPlayingDesign": {

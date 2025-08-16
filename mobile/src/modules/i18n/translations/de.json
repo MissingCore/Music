@@ -129,6 +129,9 @@
       "description": {
         "line1": "Ordnen die Registerkarten nach der Registerkarte \"Home\" durch Ziehen und Ablegen neu. Schalt die Registerkarte mit dem Augensymbol um.",
         "line2": "Achtung: Unerwartetes Verhalten kann auftreten, wenn du zu einem versteckten Tab wechselst."
+      },
+      "extra": {
+        "setHomeTab": null
       }
     },
     "nowPlayingDesign": {
