@@ -42,16 +42,10 @@
   },
   "plural": {
     "entry_one": "{{count}} element",
-    "entry_few": "{{count}} elementy",
-    "entry_many": "{{count}} elementów",
     "entry_other": "{{count}} elementów",
     "second_one": "{{count}} sekundę",
-    "second_few": "{{count}} sekundy",
-    "second_many": "{{count}} sekund",
     "second_other": "{{count}} sekund",
     "track_one": "{{count}} utwór",
-    "track_few": "{{count}} utwory",
-    "track_many": "{{count}} utworów",
     "track_other": "{{count}} utworów"
   },
   "form": {
@@ -63,7 +57,7 @@
     "stay": "Zostań",
     "leave": "Wyjdź",
     "clear": "Wyczyść",
-    "reset": null,
+    "reset": "Odrzuć zmiany",
     "validation": {
       "unique": "Unikalna"
     }
@@ -137,7 +131,7 @@
         "line2": "Ostrzeżenie: Mogą występować nieoczekiwane błędy podczas przechodzenia do ukrytych zakładek."
       },
       "extra": {
-        "setHomeTab": null
+        "setHomeTab": "Otwórz zakładkę {{- name}} przy uruchomieniu aplkacji."
       }
     },
     "nowPlayingDesign": {
@@ -178,12 +172,12 @@
       }
     },
     "hiddenTracks": {
-      "title": null,
-      "brief": null,
+      "title": "Ukryte utwory",
+      "brief": "Utwory, które nie są wyświetlane w aplikacji.",
       "extra": {
-        "hiddenAt": null,
-        "hasHiddenTracks": null,
-        "notFound": null
+        "hiddenAt": "Data ukrycia: {{- date}}.",
+        "hasHiddenTracks": "{{- name}} ma ukryte utwory.",
+        "notFound": "Brak ukrytych utworów."
       }
     },
     "saveErrors": {
@@ -241,18 +235,18 @@
     },
     "ignoreDuration": {
       "title": "Ignoruj krótkie nagrania",
-      "description": "Nagrania krótsze niż poniższa wartość sekund nie będą zapisywane."
+      "description": "Nagrania krótsze niż poniższa ilość sekund nie będą zapisywane."
     },
     "experimental": {
-      "title": null,
-      "brief": null
+      "title": "Funkcje eksperymentalne",
+      "brief": "Te funkcje mogą nie mieć oficjalnego wsparcia i działać inaczej niż oczekiwano. Używasz na własne ryzyko."
     },
     "sleepTimer": {
-      "title": null,
-      "description": null,
+      "title": "Wyłącznik czasowy",
+      "description": "Zatrzymaj odtwarzanie po upływie określonej ilości minut.",
       "extra": {
-        "start": null,
-        "stopTime": null
+        "start": "Start",
+        "stopTime": "Odtwarzanie zostanie zatrzymane o {{- time}}."
       }
     },
     "translate": {
@@ -276,7 +270,7 @@
     "version": {
       "title": "Wersja",
       "extra": {
-        "rcNotification": null
+        "rcNotification": "Powiadomienia o wersjach Pre-Release"
       }
     },
     "onboardPreprocess": {
@@ -301,7 +295,7 @@
     "playedRecent": {
       "title": "Ostatnio odtwarzane",
       "extra": {
-        "notFound": null
+        "notFound": "Nic nie odtwarzono w przeciągu ostatnich {{amount}} dni."
       }
     },
     "search": {
@@ -332,17 +326,17 @@
       }
     },
     "trackMetadata": {
-      "title": null,
+      "title": "Edytuj metadane",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "Zmień jak utwory będą wyświetlane w aplikacji. To nie modyfkuje plików.",
+        "line2": "Uwaga: Twoje zmiany mogę zostać odrzucone po modyfikacji pliku."
       },
       "extra": {
-        "albumArtist": null,
-        "disc": null,
-        "name": null,
-        "trackNumber": null,
-        "year": null
+        "albumArtist": "Wykonawca albumu",
+        "disc": "CD",
+        "name": "Tytuł",
+        "trackNumber": "Numer ścieżki",
+        "year": "Rok"
       }
     },
     "modalSort": {
@@ -350,7 +344,7 @@
       "extra": {
         "asc": "Rosnąco",
         "alphabetical": "Alfabetycznie",
-        "discover": null,
+        "discover": "Data wydania",
         "modified": "Data modyfikacji"
       }
     },
