@@ -162,6 +162,9 @@ export async function PlaybackService() {
     }
 
     if (e.index === 1) await TrackPlayer.remove(0);
+    // FIXME: Hack to get notification artwork to be the one we pass in
+    // `TrackPlayer.add()` & `TrackPlayer.load()`.
+    await TrackPlayer.updateMetadataForTrack(0, e.track);
     await RNTPManager.reloadNextTrack();
     musicStore.setState({ lastPosition: undefined });
   });
