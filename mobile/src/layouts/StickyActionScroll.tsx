@@ -1,12 +1,14 @@
 import type { FlashList, FlashListProps } from "@shopify/flash-list";
+import { LinearGradient } from "expo-linear-gradient";
 import type { ParseKeys } from "i18next";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { LayoutChangeEvent, TextProps } from "react-native";
 import { useWindowDimensions } from "react-native";
 import Animated, {
   FadeIn,
   clamp,
+  runOnJS,
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
@@ -14,6 +16,7 @@ import Animated, {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
+import { useTheme } from "~/hooks/useTheme";
 
 import { AnimatedFlashList } from "~/components/Defaults";
 import { AccentText } from "~/components/Typography/AccentText";
@@ -42,7 +45,9 @@ export function StickyActionListLayout<TData>({
   const { top } = useSafeAreaInsets();
   const { width: ScreenWidth } = useWindowDimensions();
   const { bottomInset } = useBottomActionsContext();
+  const { canvas } = useTheme();
 
+  const [renderStatusBarShadow, setRenderStatusBarShadow] = useState(false);
   const initActionPos = useSharedValue(0);
   const scrollAmount = useSharedValue(0);
 
@@ -55,9 +60,20 @@ export function StickyActionListLayout<TData>({
     [initActionPos],
   );
 
+  const shouldRenderStatusBarShadow = useCallback(
+    (shouldShow: boolean) => {
+      if (shouldShow && !renderStatusBarShadow) setRenderStatusBarShadow(true);
+      if (!shouldShow && renderStatusBarShadow) setRenderStatusBarShadow(false);
+    },
+    [renderStatusBarShadow],
+  );
+
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (e) => {
       scrollAmount.value = e.contentOffset.y;
+      runOnJS(shouldRenderStatusBarShadow)(
+        initActionPos.value - 40 < scrollAmount.value,
+      );
     },
   });
 
@@ -93,12 +109,22 @@ export function StickyActionListLayout<TData>({
         }}
       />
 
+      {/* Render shadow under status bar when title is off-screen. */}
+      {renderStatusBarShadow ? (
+        <LinearGradient
+          colors={[`${canvas}FF`, `${canvas}00`]}
+          locations={[0.2, 1]}
+          style={{ height: top + 56 }}
+          pointerEvents="none"
+          className="absolute left-0 top-0 w-full"
+        />
+      ) : null}
       {StickyAction ? (
         <Animated.View
           entering={FadeIn}
           pointerEvents="box-none"
           style={[{ maxWidth: ScreenWidth - 32 }, actionOffset]}
-          className="absolute right-4"
+          className="absolute right-4 z-50"
         >
           {StickyAction}
         </Animated.View>
