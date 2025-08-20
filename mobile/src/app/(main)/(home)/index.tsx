@@ -47,6 +47,7 @@ export default function HomeScreen() {
         />
       }
       contentContainerClassName="grow-0"
+      showStatusBarShadow
     >
       <TEm textKey="term.favorites" className="-mb-4" />
       <Favorites />
