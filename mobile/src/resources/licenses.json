@@ -49,7 +49,7 @@
   },
   "@missingcore/react-native-metadata-retriever": {
     "name": "@missingcore/react-native-metadata-retriever",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "copyright": "Copyright (c) 2024 MissingCore <missingcoredev@outlook.com>",
     "source": "https://github.com/MissingCore/react-native-metadata-retriever",
     "license": "MIT",
@@ -65,7 +65,7 @@
   },
   "@react-native-assets/slider": {
     "name": "@react-native-assets/slider",
-    "version": "11.0.8",
+    "version": "11.0.10",
     "copyright": "Copyright 2020 François Billioud",
     "source": "https://github.com/Sharcoux/slider",
     "license": "ISC",
@@ -113,7 +113,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.85.3",
+    "version": "5.85.5",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -265,7 +265,7 @@
   },
   "i18next": {
     "name": "i18next",
-    "version": "25.3.6",
+    "version": "25.4.0",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/i18next",
     "license": "MIT",
@@ -329,7 +329,7 @@
   },
   "react-i18next": {
     "name": "react-i18next",
-    "version": "15.6.1",
+    "version": "15.7.1",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/react-i18next",
     "license": "MIT",
@@ -409,7 +409,7 @@
   },
   "react-native-safe-area-context": {
     "name": "react-native-safe-area-context",
-    "version": "5.6.0",
+    "version": "5.6.1",
     "copyright": "Copyright (c) 2019 Th3rd Wave",
     "source": "https://github.com/th3rdwave/react-native-safe-area-context",
     "license": "MIT",
@@ -465,7 +465,7 @@
   },
   "zustand": {
     "name": "zustand",
-    "version": "5.0.7",
+    "version": "5.0.8",
     "copyright": "Copyright (c) 2019 Paul Henschel",
     "source": "https://github.com/pmndrs/zustand",
     "license": "MIT",

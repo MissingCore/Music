@@ -105,10 +105,11 @@ const RenderItem = memo(
   areRenderItemPropsEqual((o, n) => o.item === n.item),
 );
 
-const onMove = (fromIndex: number, toIndex: number) =>
+const onMove = (fromIndex: number, toIndex: number) => {
   userPreferencesStore.setState(({ tabsOrder }) => ({
     tabsOrder: moveArray(tabsOrder, { fromIndex, toIndex }),
   }));
+};
 
 const toggleHomeTab = (tab: OrderableTab) => {
   userPreferencesStore.setState(({ homeTab }) => ({
@@ -116,7 +117,8 @@ const toggleHomeTab = (tab: OrderableTab) => {
   }));
 };
 
-const toggleTabVisibility = (tab: OrderableTab) =>
+const toggleTabVisibility = (tab: OrderableTab) => {
   userPreferencesStore.setState(({ tabsVisibility }) => ({
     tabsVisibility: { ...tabsVisibility, [tab]: !tabsVisibility[tab] },
   }));
+};
