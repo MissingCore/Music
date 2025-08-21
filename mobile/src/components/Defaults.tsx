@@ -60,6 +60,10 @@ export function FlatList<T>(
 export function ScrollView(props: ScrollViewProps) {
   return <RNScrollView {...ScrollablePresets} {...props} />;
 }
+
+export function AnimatedScrollView(props: ScrollViewProps) {
+  return <Animated.ScrollView {...ScrollablePresets} {...props} />;
+}
 //#endregion
 
 //#region Flash List

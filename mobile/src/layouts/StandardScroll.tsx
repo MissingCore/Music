@@ -1,16 +1,20 @@
 import { LinearGradient } from "expo-linear-gradient";
 import type { ParseKeys } from "i18next";
-import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
 import { View } from "react-native";
+import Animated, {
+  clamp,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useSharedValue,
+} from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
-import { ScrollView } from "~/components/Defaults";
+import { AnimatedScrollView } from "~/components/Defaults";
 import { AccentText } from "~/components/Typography/AccentText";
 
 /** Standard scrollable layout with an option to display a title. */
@@ -28,28 +32,26 @@ export function StandardScrollLayout(props: {
   const { bottomInset } = useBottomActionsContext();
   const { canvas } = useTheme();
 
-  const [headerHeight, setHeaderHeight] = useState(0);
-  const [renderStatusBarShadow, setRenderStatusBarShadow] = useState(false);
+  const headerHeight = useSharedValue(0);
+  const scrollAmount = useSharedValue(0);
 
-  const handleScroll = useCallback(
-    (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-      if (!props.titleKey || !props.showStatusBarShadow) return;
-      const canShow = headerHeight < e.nativeEvent.contentOffset.y;
-      if (canShow && !renderStatusBarShadow) setRenderStatusBarShadow(true);
-      if (!canShow && renderStatusBarShadow) setRenderStatusBarShadow(false);
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (e) => {
+      scrollAmount.value = e.contentOffset.y;
     },
-    [
-      props.titleKey,
-      props.showStatusBarShadow,
-      headerHeight,
-      renderStatusBarShadow,
-    ],
-  );
+  });
+
+  const statusBarShadowVisibility = useAnimatedStyle(() => {
+    if (!props.titleKey || !props.showStatusBarShadow) return { opacity: 0 };
+    return {
+      opacity: clamp(scrollAmount.value / headerHeight.value, 0, 1),
+    };
+  });
 
   return (
     <>
-      <ScrollView
-        onScroll={handleScroll}
+      <AnimatedScrollView
+        onScroll={scrollHandler}
         contentContainerStyle={
           props.titleKey
             ? { paddingBottom: bottomInset.withNav + 16 }
@@ -64,22 +66,27 @@ export function StandardScrollLayout(props: {
           <LayoutHeader
             titleKey={props.titleKey}
             titleAction={props.titleAction}
-            getHeaderHeight={(height) => setHeaderHeight(height)}
+            getHeaderHeight={(height) => {
+              headerHeight.value = height;
+            }}
           />
         ) : undefined}
         {props.children}
-      </ScrollView>
+      </AnimatedScrollView>
 
       {/* Render shadow under status bar when title is off-screen. */}
-      {renderStatusBarShadow ? (
+      <Animated.View
+        pointerEvents="none"
+        style={[{ height: top + 56 }, statusBarShadowVisibility]}
+        className="absolute left-0 right-0 top-0"
+      >
         <LinearGradient
           colors={[`${canvas}FF`, `${canvas}00`]}
           locations={[0.2, 1]}
-          style={{ height: top + 56 }}
           pointerEvents="none"
-          className="absolute left-0 top-0 w-full"
+          className="h-full"
         />
-      ) : null}
+      </Animated.View>
     </>
   );
 }
