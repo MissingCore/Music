@@ -131,7 +131,7 @@
         "line2": "Ostrzeżenie: Mogą występować nieoczekiwane błędy podczas przechodzenia do ukrytych zakładek."
       },
       "extra": {
-        "setHomeTab": "Otwórz zakładkę {{- name}} przy uruchomieniu aplkacji."
+        "setHomeTab": "Otwórz zakładkę {{- name}} przy uruchomieniu aplikacji."
       }
     },
     "nowPlayingDesign": {
@@ -328,7 +328,7 @@
     "trackMetadata": {
       "title": "Edytuj metadane",
       "description": {
-        "line1": "Zmień jak utwory będą wyświetlane w aplikacji. To nie modyfkuje plików.",
+        "line1": "Zmień jak utwory będą wyświetlane w aplikacji. To nie modyfikuje plików.",
         "line2": "Uwaga: Twoje zmiany mogę zostać odrzucone po modyfikacji pliku."
       },
       "extra": {

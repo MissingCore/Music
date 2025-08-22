@@ -131,7 +131,7 @@
         "line2": "Atención: Puede ocurrir un comportamiento inesperado al navegar a una pestaña oculta."
       },
       "extra": {
-        "setHomeTab": null
+        "setHomeTab": "Abrir la pestaña {{- name}} al iniciar la aplicación."
       }
     },
     "nowPlayingDesign": {
@@ -172,12 +172,12 @@
       }
     },
     "hiddenTracks": {
-      "title": null,
-      "brief": null,
+      "title": "Canciones ocultas",
+      "brief": "Canciones no mostradas en la aplicación.",
       "extra": {
-        "hiddenAt": null,
-        "hasHiddenTracks": null,
-        "notFound": null
+        "hiddenAt": "Ocultado en {{- date}}.",
+        "hasHiddenTracks": "{{- name}} tiene canciones ocultas.",
+        "notFound": "No se encontraron canciones ocultas."
       }
     },
     "saveErrors": {
@@ -270,7 +270,7 @@
     "version": {
       "title": "Versión",
       "extra": {
-        "rcNotification": null
+        "rcNotification": "Notificación de pre-lanzamiento"
       }
     },
     "onboardPreprocess": {
@@ -295,7 +295,7 @@
     "playedRecent": {
       "title": "Reproducido recientemente",
       "extra": {
-        "notFound": null
+        "notFound": "Nada ha sido reproducido en los últimos {{amount}} días."
       }
     },
     "search": {
@@ -344,7 +344,7 @@
       "extra": {
         "asc": "Orden ascendente",
         "alphabetical": "Alfabético",
-        "discover": null,
+        "discover": "Descubrir",
         "modified": "Última modificación"
       }
     },
