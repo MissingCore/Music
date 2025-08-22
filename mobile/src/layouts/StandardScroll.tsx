@@ -82,7 +82,7 @@ export function StandardScrollLayout(props: {
       >
         <LinearGradient
           colors={[`${canvas}FF`, `${canvas}00`]}
-          locations={[0.2, 1]}
+          locations={[0.3, 1]}
           pointerEvents="none"
           className="h-full"
         />
