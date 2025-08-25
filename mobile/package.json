@@ -40,7 +40,7 @@
     "@tanstack/react-query": "^5.85.5",
     "@weights-ai/react-native-track-player": "^4.1.6",
     "clsx": "^2.1.1",
-    "drizzle-orm": "^0.44.4",
+    "drizzle-orm": "^0.44.5",
     "expo": "~53.0.20",
     "expo-device": "~7.1.4",
     "expo-document-picker": "~13.1.6",
@@ -55,12 +55,12 @@
     "expo-router": "~3.5.24",
     "expo-sqlite": "~15.2.14",
     "expo-web-browser": "~14.2.0",
-    "i18next": "^25.4.0",
+    "i18next": "^25.4.2",
     "intl-pluralrules": "^2.0.1",
     "jotai": "^2.13.1",
     "nativewind": "4.1.23",
     "react": "19.0.0",
-    "react-i18next": "^15.7.1",
+    "react-i18next": "^15.7.2",
     "react-native": "^0.79.6",
     "react-native-bootsplash": "^6.3.10",
     "react-native-draglist": "github:MissingCore/react-native-draglist#a3847ce4f9265853a12b865ba30902e907d43c20",
@@ -75,7 +75,7 @@
     "react-native-svg": "^15.12.1",
     "react-native-tab-view": "^3.5.2",
     "tailwind-merge": "^2.6.0",
-    "zod": "~4.0.17",
+    "zod": "~4.1.1",
     "zustand": "^5.0.8",
     "zustand-computed": "^2.1.0"
   },
@@ -86,7 +86,7 @@
     "babel-plugin-inline-import": "^3.0.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "drizzle-kit": "^0.31.4",
-    "eslint": "^9.33.0",
+    "eslint": "^9.34.0",
     "eslint-config-expo": "^9.2.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-drizzle": "^0.2.3",
@@ -98,7 +98,7 @@
     "prettier-plugin-tailwindcss": "^0.6.14",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.9.2",
-    "typescript-eslint": "^8.40.0"
+    "typescript-eslint": "^8.41.0"
   },
   "expo": {
     "autolinking": {

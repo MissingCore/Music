@@ -137,7 +137,7 @@
   },
   "drizzle-orm": {
     "name": "drizzle-orm",
-    "version": "0.44.4",
+    "version": "0.44.5",
     "copyright": "Copyright (c) 2022 Drizzle Team",
     "source": "https://github.com/drizzle-team/drizzle-orm",
     "license": "Apache-2.0",
@@ -265,7 +265,7 @@
   },
   "i18next": {
     "name": "i18next",
-    "version": "25.4.0",
+    "version": "25.4.2",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/i18next",
     "license": "MIT",
@@ -329,7 +329,7 @@
   },
   "react-i18next": {
     "name": "react-i18next",
-    "version": "15.7.1",
+    "version": "15.7.2",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/react-i18next",
     "license": "MIT",
@@ -457,7 +457,7 @@
   },
   "zod": {
     "name": "zod",
-    "version": "4.0.17",
+    "version": "4.1.1",
     "copyright": "Copyright (c) 2025 Colin McDonnell",
     "source": "https://github.com/colinhacks/zod",
     "license": "MIT",
