@@ -24,7 +24,7 @@ export function Marquee({
   children: React.ReactNode;
   /**
    * Color of the container this `<Marquee />` will be on. Defaults to
-   * `canvasAlt` color in `useTheme()` since this is mostly used in the sheets.
+   * `canvas` color in `useTheme()`.
    */
   color?: string;
   /** Offset to apply to scroll shadow if top padding is applied. */
@@ -38,8 +38,8 @@ export function Marquee({
   /** Styles the `<View />` wrapping `children`. */
   contentContainerClassName?: string;
 }) {
-  const { canvasAlt } = useTheme();
-  const shadowColor = useMemo(() => color ?? canvasAlt, [color, canvasAlt]);
+  const { canvas } = useTheme();
+  const shadowColor = useMemo(() => color ?? canvas, [color, canvas]);
   // This will enable support of hexadecimal colors with opacity.
   const startColor = useMemo(
     () =>

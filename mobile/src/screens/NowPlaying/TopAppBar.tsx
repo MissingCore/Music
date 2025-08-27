@@ -6,7 +6,6 @@ import { Pressable, View } from "react-native";
 import { ArrowBack } from "~/icons/ArrowBack";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useMusicStore } from "~/modules/media/services/Music";
-import { useTheme } from "~/hooks/useTheme";
 
 import { Marquee } from "~/components/Containment/Marquee";
 import { SafeContainer } from "~/components/Containment/SafeContainer";
@@ -31,7 +30,6 @@ export function NowPlayingTopAppBar() {
 /** Conditionally render the header content depending on the design used. */
 function AppBarContent() {
   const { t } = useTranslation();
-  const { canvas } = useTheme();
   const playingSource = useMusicStore((state) => state.playingSource);
   const listName = useMusicStore((state) => state.sourceName);
   const usedDesign = useUserPreferencesStore((state) => state.nowPlayingDesign);
@@ -52,12 +50,12 @@ function AppBarContent() {
         disabled={listHref === undefined}
         className="shrink gap-0.5"
       >
-        <Marquee color={canvas} center wrapperClassName="shrink">
+        <Marquee center wrapperClassName="shrink">
           <StyledText className="text-xxs/[1.125]" dim>
             {t("term.playingFrom")}
           </StyledText>
         </Marquee>
-        <Marquee color={canvas} center wrapperClassName="shrink">
+        <Marquee center wrapperClassName="shrink">
           <StyledText className="text-xs/[1.125]">{listName}</StyledText>
         </Marquee>
       </Pressable>

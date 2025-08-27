@@ -96,6 +96,8 @@ export function TrackSheet() {
 
 //#region Introduction
 function TrackIntro({ data }: { data: TrackWithAlbum }) {
+  const { canvasAlt } = useTheme();
+
   const navLinks = [
     {
       href: getSourceLink({ type: "album", id: data.albumId ?? "" }),
@@ -116,11 +118,11 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
         className="rounded"
       />
       <View className="shrink py-2">
-        <Marquee>
+        <Marquee color={canvasAlt}>
           <StyledText className="text-lg">{data.name}</StyledText>
         </Marquee>
         {navLinks.length > 0 ? (
-          <Marquee>
+          <Marquee color={canvasAlt}>
             {navLinks.map(({ href, value }, idx) => (
               <Fragment key={idx}>
                 {idx === 1 ? (

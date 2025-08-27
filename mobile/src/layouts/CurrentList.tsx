@@ -53,7 +53,7 @@ export function CurrentListLayout(
   } & AnimatedVinylProps,
 ) {
   const { t } = useTranslation();
-  const { canvas, foreground } = useTheme();
+  const { foreground } = useTheme();
   const primaryFont = useUserPreferencesStore((state) => state.primaryFont);
 
   const isFavorite = getIsFavoritePlaylist(props.mediaSource);
@@ -71,13 +71,13 @@ export function CurrentListLayout(
             textKey={`term.${toLowerCase(props.mediaSource.type)}`}
             style={{ fontSize: 8 }}
           />
-          <Marquee color={canvas}>
+          <Marquee>
             <StyledText>
               {isFavorite ? t("term.favoriteTracks") : props.title}
             </StyledText>
           </Marquee>
           {props.artist ? (
-            <Marquee color={canvas}>
+            <Marquee>
               <Pressable
                 onPress={() =>
                   router.navigate(
@@ -94,7 +94,7 @@ export function CurrentListLayout(
               </Pressable>
             </Marquee>
           ) : null}
-          <Marquee color={canvas} wrapperClassName="my-1">
+          <Marquee wrapperClassName="my-1">
             <View className="flex-row items-center">
               <StyledText dim className="text-xxs">
                 {props.metadata.toSpliced(-1).join(" • ")}
