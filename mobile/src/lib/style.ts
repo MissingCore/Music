@@ -41,7 +41,10 @@ export function getFont(
   bold = false,
 ) {
   const fontCode = font === "Geist Mono" ? "geistMono" : toLowerCase(font);
-  if (bold && (fontCode === "geistMono" || fontCode === "roboto")) {
+  if (
+    bold &&
+    (fontCode === "geistMono" || fontCode === "roboto" || fontCode === "inter")
+  ) {
     return FontFamily[`${fontCode}Medium`];
   }
   return FontFamily[fontCode];
