@@ -131,7 +131,7 @@
         "line2": "注意: 非表示のタブに移動すると予期しない動作が発生する可能性があります。"
       },
       "extra": {
-        "setHomeTab": null
+        "setHomeTab": "アプリの起動時に「{{- name}}」のタブを開きます。"
       }
     },
     "nowPlayingDesign": {
@@ -172,12 +172,12 @@
       }
     },
     "hiddenTracks": {
-      "title": null,
-      "brief": null,
+      "title": "非表示のトラック",
+      "brief": "アプリから非表示にしたトラックです。",
       "extra": {
-        "hiddenAt": null,
-        "hasHiddenTracks": null,
-        "notFound": null
+        "hiddenAt": "{{- date}} に非表示にしました。",
+        "hasHiddenTracks": "「{{- name}}」には非表示のトラックがあります。",
+        "notFound": "非表示のトラックは見つかりません。"
       }
     },
     "saveErrors": {
@@ -238,15 +238,19 @@
       "description": "保存をしない音楽の再生時間 (秒数)。"
     },
     "experimental": {
+      "title": "試験的な機能",
+      "brief": "公式サポートが受けられない、または期待通りに動作しない可能性のある機能があります。自己責任で使用してください。"
+    },
+    "continuePlaybackOnDismiss": {
       "title": null,
-      "brief": null
+      "description": null
     },
     "sleepTimer": {
-      "title": null,
-      "description": null,
+      "title": "スリープタイマー",
+      "description": "指定した分数が経過後にオーディオの再生を停止します。",
       "extra": {
-        "start": null,
-        "stopTime": null
+        "start": "開始",
+        "stopTime": "オーディオの再生は {{- time}} に停止します。"
       }
     },
     "translate": {
@@ -270,11 +274,11 @@
     "version": {
       "title": "バージョン",
       "extra": {
-        "rcNotification": null
+        "rcNotification": "プレリリースの通知"
       }
     },
     "onboardPreprocess": {
-      "title": "前処理",
+      "title": "事前処理",
       "brief": "既存のデータが変更に対応しているか確認します。"
     },
     "onboardTracks": {
@@ -295,7 +299,7 @@
     "playedRecent": {
       "title": "最近に再生",
       "extra": {
-        "notFound": null
+        "notFound": "過去 {{amount}} 日間何も再生されませんでした。"
       }
     },
     "search": {
@@ -344,7 +348,7 @@
       "extra": {
         "asc": "昇順",
         "alphabetical": "アルファベット",
-        "discover": null,
+        "discover": "時間を見つける",
         "modified": "最終更新"
       }
     },

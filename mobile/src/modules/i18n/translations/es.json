@@ -241,6 +241,10 @@
       "title": "Funciones experimentales",
       "brief": "Funciones que pueden no obtener soporte oficial o funcionar como se esperaba. Úsalas bajo tu propio riesgo."
     },
+    "continuePlaybackOnDismiss": {
+      "title": null,
+      "description": null
+    },
     "sleepTimer": {
       "title": "Apagado automático",
       "description": "Detener la reproducción de audio después de la cantidad de minutos especificada.",

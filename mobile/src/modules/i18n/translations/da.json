@@ -241,6 +241,10 @@
       "title": null,
       "brief": null
     },
+    "continuePlaybackOnDismiss": {
+      "title": null,
+      "description": null
+    },
     "sleepTimer": {
       "title": null,
       "description": null,
