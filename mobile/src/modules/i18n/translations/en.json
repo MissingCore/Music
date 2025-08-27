@@ -259,6 +259,10 @@
       "title": "Experimental Features",
       "brief": "Features that may not get official support or work as expected. Use at your own risk."
     },
+    "continuePlaybackOnDismiss": {
+      "title": "Continue Playback on Dismiss",
+      "description": "Let music playback continue when you dismiss the app from recent tasks. Force stop the app to stop playback."
+    },
     "sleepTimer": {
       "title": "Sleep Timer",
       "description": "Stop playing audio after the specified amount of minutes.",

@@ -70,8 +70,6 @@ const toggleSaveLastPosition = async () => {
   userPreferencesStore.setState({ saveLastPosition: !didSaveLastPosition });
 
   await TrackPlayer.updateOptions(
-    getTrackPlayerOptions({
-      progressUpdateEventInterval: didSaveLastPosition ? undefined : 1,
-    }),
+    getTrackPlayerOptions({ saveLastPosition: !didSaveLastPosition }),
   );
 };

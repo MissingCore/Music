@@ -77,6 +77,8 @@ interface UserPreferencesStore {
   /*
     Experimental Features
   */
+  /** If playback will continue when we dismiss the app. */
+  continuePlaybackOnDismiss: boolean;
   /** If we display the option to create a sleep timer in the "Now Playing" screen. */
   sleepTimer: boolean;
 }
@@ -138,6 +140,7 @@ export const userPreferencesStore =
 
       rcNotification: false,
 
+      continuePlaybackOnDismiss: false,
       sleepTimer: false,
     }),
     {
