@@ -36,16 +36,15 @@ export function useSetup() {
       await userPreferencesStore.persist.rehydrate();
       await musicStore.persist.rehydrate();
 
-      if (userPreferencesStore.getState().saveLastPosition) {
-        await TrackPlayer.updateOptions(
-          getTrackPlayerOptions({ progressUpdateEventInterval: 1 }),
-        );
-        musicStore.setState({
-          _restoredTrackId: musicStore.getState().activeId,
-        });
-      } else {
-        musicStore.setState({ _hasRestoredPosition: true });
-      }
+      const { activeId } = musicStore.getState();
+      const { saveLastPosition, continuePlaybackOnDismiss } =
+        userPreferencesStore.getState();
+      if (saveLastPosition) musicStore.setState({ _restoredTrackId: activeId });
+      else musicStore.setState({ _hasRestoredPosition: true });
+
+      await TrackPlayer.updateOptions(
+        getTrackPlayerOptions({ continuePlaybackOnDismiss, saveLastPosition }),
+      );
     })();
   }, []);
 

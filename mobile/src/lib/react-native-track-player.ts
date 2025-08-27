@@ -8,17 +8,28 @@ import { wait } from "~/utils/promise";
 
 type AdditionalConfig = {
   continuePlaybackOnDismiss?: boolean;
-  progressUpdateEventInterval?: number;
+  saveLastPosition?: boolean;
 };
+
+const prevSetConfigs: AdditionalConfig = {};
 
 /**
  * Whenever we use `TrackPlayer.updateOptions()`, we need to include all
  * the options (ie: we can't just change one key, leaving the rest the same).
  */
 export function getTrackPlayerOptions(options?: AdditionalConfig) {
+  // Merge current & previous config changes when only some keys are specified.
+  if (options) {
+    for (const [field, value] of Object.entries(options)) {
+      // @ts-expect-error - Typing of field-value pair is correct.
+      prevSetConfigs[field] = value;
+    }
+  }
+  const { continuePlaybackOnDismiss, saveLastPosition } = prevSetConfigs;
+
   return {
     android: {
-      appKilledPlaybackBehavior: options?.continuePlaybackOnDismiss
+      appKilledPlaybackBehavior: continuePlaybackOnDismiss
         ? AppKilledPlaybackBehavior.ContinuePlayback
         : AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification,
     },
@@ -36,7 +47,7 @@ export function getTrackPlayerOptions(options?: AdditionalConfig) {
       Capability.SkipToPrevious,
     ],
     icon: require("~/resources/images/music-glyph.png"),
-    progressUpdateEventInterval: options?.progressUpdateEventInterval,
+    progressUpdateEventInterval: saveLastPosition ? 1 : undefined,
   };
 }
 
