@@ -241,6 +241,10 @@
       "title": "Funkcje eksperymentalne",
       "brief": "Te funkcje mogą nie mieć oficjalnego wsparcia i działać inaczej niż oczekiwano. Używasz na własne ryzyko."
     },
+    "continuePlaybackOnDismiss": {
+      "title": null,
+      "description": null
+    },
     "sleepTimer": {
       "title": "Wyłącznik czasowy",
       "description": "Zatrzymaj odtwarzanie po upływie określonej ilości minut.",

@@ -241,6 +241,10 @@
       "title": "Deneysel Özellikler",
       "brief": "Resmi destek almayabilecek veya beklendiği gibi çalışmayabilecek özelliklerdir. Kendi sorumluluğunuzda kullanın."
     },
+    "continuePlaybackOnDismiss": {
+      "title": null,
+      "description": null
+    },
     "sleepTimer": {
       "title": "Uyku Zamanlayıcısı",
       "description": "Belirtilen dakika süresi geçtikten sonra ses çalmayı durdur.",
