@@ -44,7 +44,7 @@ export function StandardScrollLayout(props: {
   const statusBarShadowVisibility = useAnimatedStyle(() => {
     if (!props.titleKey || !props.showStatusBarShadow) return { opacity: 0 };
     return {
-      opacity: clamp(scrollAmount.value / headerHeight.value, 0, 1),
+      opacity: clamp(scrollAmount.value / headerHeight.value || 0, 0, 1),
     };
   });
 
