@@ -34,6 +34,7 @@
 | expo-web-browser | MIT | https://github.com/expo/expo/tree/main/packages/expo-web-browser |
 | Geist Mono Font | OFL-1.1 | https://github.com/vercel/geist-font |
 | i18next | MIT | https://github.com/i18next/i18next |
+| Inter Font | OFL-1.1 | https://rsms.me/inter |
 | intl-pluralrules | ISC | https://github.com/eemeli/intl-pluralrules |
 | ionicons | MIT | https://github.com/ionic-team/ionicons |
 | jotai | MIT | https://github.com/pmndrs/jotai |
