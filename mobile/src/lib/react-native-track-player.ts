@@ -1,4 +1,3 @@
-import type { UpdateOptions } from "@weights-ai/react-native-track-player";
 import TrackPlayer, {
   AppKilledPlaybackBehavior,
   Capability,
@@ -7,15 +6,21 @@ import TrackPlayer, {
 
 import { wait } from "~/utils/promise";
 
+type AdditionalConfig = {
+  continuePlaybackOnDismiss?: boolean;
+  progressUpdateEventInterval?: number;
+};
+
 /**
  * Whenever we use `TrackPlayer.updateOptions()`, we need to include all
  * the options (ie: we can't just change one key, leaving the rest the same).
  */
-export function getTrackPlayerOptions(options?: UpdateOptions) {
+export function getTrackPlayerOptions(options?: AdditionalConfig) {
   return {
     android: {
-      appKilledPlaybackBehavior:
-        AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification,
+      appKilledPlaybackBehavior: options?.continuePlaybackOnDismiss
+        ? AppKilledPlaybackBehavior.ContinuePlayback
+        : AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification,
     },
     capabilities: [
       Capability.Play,
@@ -31,7 +36,7 @@ export function getTrackPlayerOptions(options?: UpdateOptions) {
       Capability.SkipToPrevious,
     ],
     icon: require("~/resources/images/music-glyph.png"),
-    ...options,
+    progressUpdateEventInterval: options?.progressUpdateEventInterval,
   };
 }
 
