@@ -261,7 +261,7 @@
     },
     "continuePlaybackOnDismiss": {
       "title": "Continue Playback on Dismiss",
-      "description": "Let music playback continue when you dismiss the app from recent tasks."
+      "description": "Let music playback continue when you dismiss the app from recent tasks. Force-stop the app to stop playback."
     },
     "sleepTimer": {
       "title": "Sleep Timer",
