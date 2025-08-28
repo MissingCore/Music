@@ -26,7 +26,6 @@ export function Vinyl(props: {
   onPress?: () => Promise<void> | void;
   size: number;
   source: MediaImage.ImageSource | MediaImage.ImageSource[];
-  noCache?: boolean;
 }) {
   const { canvas } = useTheme();
 
@@ -48,7 +47,6 @@ export function Vinyl(props: {
         source={props.source}
         size={props.size / 2}
         className="absolute translate-x-1/2 translate-y-1/2 rounded-full bg-red"
-        noCache={props.noCache}
         noPlaceholder
       />
       <Svg width={props.size} height={props.size} viewBox="0 0 768 768">

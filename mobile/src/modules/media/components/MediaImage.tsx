@@ -26,8 +26,6 @@ export namespace MediaImage {
   export type ImageConfig = {
     size: number;
     className?: string;
-    /** Only available when rendering a single image and not a collage. */
-    noCache?: boolean;
     noPlaceholder?: boolean;
   };
 
@@ -40,7 +38,6 @@ export function MediaImage({
   size,
   source,
   className,
-  noCache,
   noPlaceholder,
 }: MediaImage.Props) {
   const usedClasses = cn("rounded-lg bg-onSurface", className);
@@ -74,7 +71,6 @@ export function MediaImage({
   return (
     <RenderedEl
       {...additionalProps}
-      cachePolicy={noCache ? "none" : undefined}
       placeholderContentFit="cover"
       style={{ width: size, height: size }}
       className={cn(usedClasses, {

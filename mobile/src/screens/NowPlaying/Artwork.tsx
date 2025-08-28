@@ -65,7 +65,7 @@ function PlainArtwork(props: ArtworkProps) {
       accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
       onPress={MusicControls.playToggle}
     >
-      <MediaImage type="track" {...props} noCache />
+      <MediaImage type="track" {...props} />
     </Pressable>
   );
 }
@@ -80,7 +80,6 @@ function VinylSeekBar(props: ArtworkProps) {
         <Vinyl
           onPress={!isActive ? MusicControls.playToggle : undefined}
           {...props}
-          noCache
         />
       </Animated.View>
     </GestureDetector>
@@ -109,7 +108,7 @@ function VinylLegacy(props: ArtworkProps) {
         style={coverStyle}
         className="absolute left-0 top-0 z-10"
       >
-        <MediaImage type="track" {...props} noCache />
+        <MediaImage type="track" {...props} />
       </Animated.View>
     </View>
   );
