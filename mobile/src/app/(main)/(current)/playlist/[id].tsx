@@ -91,7 +91,7 @@ export default function CurrentPlaylistScreen() {
       >
         <FlashDragList
           estimatedItemSize={56} // 48px Height + 8px Margin Top
-          data={data?.tracks}
+          data={data.tracks}
           keyExtractor={({ id }) => id}
           renderItem={(args) => (
             <RenderItem {...args} trackSource={trackSource} />
