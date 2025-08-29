@@ -242,8 +242,8 @@
       "brief": "Resmi destek almayabilecek veya beklendiği gibi çalışmayabilecek özelliklerdir. Kendi sorumluluğunuzda kullanın."
     },
     "continuePlaybackOnDismiss": {
-      "title": null,
-      "description": null
+      "title": "Kapatıldığında Oynatmaya Devam Et",
+      "description": "Uygulamayı son görevlerden kapattığınızda müzik çalmaya devam etsin. Çalmayı durdurmak için uygulamayı zorla durdurun."
     },
     "sleepTimer": {
       "title": "Uyku Zamanlayıcısı",

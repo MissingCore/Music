@@ -242,8 +242,8 @@
       "brief": "公式サポートが受けられない、または期待通りに動作しない可能性のある機能があります。自己責任で使用してください。"
     },
     "continuePlaybackOnDismiss": {
-      "title": null,
-      "description": null
+      "title": "閉じても再生を続行する",
+      "description": "最近のタスクからアプリを終了しても音楽の再生を継続します。再生を停止するには、アプリを強制停止してください。"
     },
     "sleepTimer": {
       "title": "スリープタイマー",
