@@ -65,7 +65,7 @@
   },
   "@react-native-assets/slider": {
     "name": "@react-native-assets/slider",
-    "version": "11.0.10",
+    "version": "11.0.11",
     "copyright": "Copyright 2020 François Billioud",
     "source": "https://github.com/Sharcoux/slider",
     "license": "ISC",
@@ -337,7 +337,7 @@
   },
   "react-i18next": {
     "name": "react-i18next",
-    "version": "15.7.2",
+    "version": "15.7.3",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/react-i18next",
     "license": "MIT",
@@ -369,7 +369,7 @@
   },
   "react-native-edge-to-edge": {
     "name": "react-native-edge-to-edge",
-    "version": "1.6.2",
+    "version": "1.7.0",
     "copyright": "Copyright (c) 2024 Mathieu Acthernoene",
     "source": "https://github.com/zoontek/react-native-edge-to-edge",
     "license": "MIT",
@@ -465,7 +465,7 @@
   },
   "zod": {
     "name": "zod",
-    "version": "4.1.1",
+    "version": "4.1.5",
     "copyright": "Copyright (c) 2025 Colin McDonnell",
     "source": "https://github.com/colinhacks/zod",
     "license": "MIT",
