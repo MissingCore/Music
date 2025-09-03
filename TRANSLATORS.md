@@ -67,4 +67,4 @@
 
 ## [العربية] Arabic
 
-- [@tariqsaidofficial](tariqsaidofficial)
+- [@tariqsaidofficial](https://github.com/tariqsaidofficial)
