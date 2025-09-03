@@ -140,7 +140,6 @@ export async function getArtworkUri(uri: string) {
       format: SaveFormat.WEBP,
       saveUri: `${ImageDirectory}/${createId()}.webp`,
     });
-    if (!artworkUri) return { error: false, uri: null };
     return { error: false, uri: artworkUri };
   } catch {
     console.log(`[Error] Failed to save image for "${uri}".`);
