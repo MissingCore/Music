@@ -69,28 +69,28 @@ export async function findAndSaveAudio() {
   const trackBatches = chunkArray(unstagedTracks, 50);
   for (const tBatch of trackBatches) {
     const res = await Promise.allSettled(tBatch.map(safeRetrieveMetadata));
-    const rawEntries = res.filter(isFulfilled).map((r) => r.value);
-    const errored: InvalidTrack[] = res.filter(isRejected).map((r) => r.reason);
+    const results = res.filter(isFulfilled).map((r) => r.value);
+    const errors: InvalidTrack[] = res.filter(isRejected).map((r) => r.reason);
     onboardingStore.setState((prev) => ({
-      staged: prev.staged + rawEntries.length,
-      saveErrors: prev.saveErrors + errored.length,
+      staged: prev.staged + results.length,
+      saveErrors: prev.saveErrors + errors.length,
     }));
 
-    if (errored.length > 0) {
-      const erroredIds = errored.map(({ id }) => id);
+    if (errors.length > 0) {
+      const erroredIds = errors.map(({ id }) => id);
       await db.delete(tracks).where(inArray(tracks.id, erroredIds));
-      await db.insert(invalidTracks).values(errored).onConflictDoUpdate({
+      await db.insert(invalidTracks).values(errors).onConflictDoUpdate({
         target: invalidTracks.id,
         set: UpsertInvalidTrackFields,
       });
     }
-    if (rawEntries.length === 0) continue;
-    await savePathComponents(rawEntries.map(({ uri }) => uri));
+    if (results.length === 0) continue;
+    await savePathComponents(results.map(({ uri }) => uri));
 
     // Save artists & albums that haven't been inserted yet.
     const newArtists: string[] = [];
     const newAlbums: Record<string, string[]> = {};
-    rawEntries.forEach(({ artistName, album }) => {
+    results.forEach(({ artistName, album }) => {
       addArtist({ artistName, insertedArtists, newArtists });
       addArtist({ artistName: album?.artistName, insertedArtists, newArtists });
       addAlbum({ album, insertedAlbums, newAlbums });
@@ -111,7 +111,7 @@ export async function findAndSaveAudio() {
     }
 
     // Create or update tracks.
-    const newTracks = rawEntries.map(({ album, ...t }) => {
+    const newTracks = results.map(({ album, ...t }) => {
       let albumId: string | null = null;
       if (album) albumId = albumIdMap[album.artistName]?.[album.name] || null;
       return { ...t, albumId, discoverTime: Date.now() };

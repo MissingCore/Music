@@ -1,4 +1,8 @@
-import { getArtwork } from "@missingcore/react-native-metadata-retriever";
+import {
+  SaveFormat,
+  saveArtwork,
+} from "@missingcore/react-native-metadata-retriever";
+import { createId } from "@paralleldrive/cuid2";
 import { eq, inArray, isNotNull, or } from "drizzle-orm";
 import { Directory } from "expo-file-system/next";
 
@@ -10,7 +14,7 @@ import { getAlbums, updateAlbum } from "~/api/album";
 import { getTracks, updateTrack } from "~/api/track";
 import { onboardingStore } from "../services/Onboarding";
 
-import { ImageDirectory, deleteImage, saveImage } from "~/lib/file-system";
+import { ImageDirectory, deleteImage } from "~/lib/file-system";
 import { Stopwatch } from "~/utils/debug";
 import { BATCH_PRESETS, batch } from "~/utils/promise";
 
@@ -131,13 +135,14 @@ async function saveSinglesArtwork(
  */
 export async function getArtworkUri(uri: string) {
   try {
-    const base64Artwork = await getArtwork(uri);
-    if (!base64Artwork) return { error: false, uri: null };
-    const artworkUri = await saveImage(base64Artwork);
+    const artworkUri = await saveArtwork(uri, {
+      compress: 0.85,
+      format: SaveFormat.WEBP,
+      saveUri: `${ImageDirectory}/${createId()}.webp`,
+    });
     return { error: false, uri: artworkUri };
   } catch {
-    // In case we fail to save an image due to having an invalid base64 string.
-    console.log(`[Error] Failed to get or save image for "${uri}".`);
+    console.log(`[Error] Failed to save image for "${uri}".`);
     return { error: true, uri: null };
   }
 }
