@@ -1,3 +1,4 @@
+import ar from "./ar.json";
 import ca from "./ca.json";
 import da from "./da.json";
 import de from "./de.json";
@@ -14,6 +15,7 @@ import tr from "./tr.json";
 import zhHans from "./zh-Hans.json";
 
 export const resources = {
+  ar: { translation: ar },
   ca: { translation: ca },
   da: { translation: da },
   de: { translation: de },
