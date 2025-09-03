@@ -1,6 +1,6 @@
 import {
   MetadataPresets,
-  getMetadata,
+  getBulkMetadata,
 } from "@missingcore/react-native-metadata-retriever";
 import { inArray, lt } from "drizzle-orm";
 import { File } from "expo-file-system/next";
@@ -8,7 +8,6 @@ import type { Asset as MediaLibraryAsset } from "expo-media-library";
 import { getAssetsAsync } from "expo-media-library";
 
 import { db } from "~/db";
-import type { InvalidTrack } from "~/db/schema";
 import {
   albums,
   artists,
@@ -28,7 +27,7 @@ import { onboardingStore } from "../services/Onboarding";
 import { getExcludedColumns, withColumns } from "~/lib/drizzle";
 import { Stopwatch } from "~/utils/debug";
 import { chunkArray } from "~/utils/object";
-import { BATCH_PRESETS, isFulfilled, isRejected } from "~/utils/promise";
+import { BATCH_PRESETS } from "~/utils/promise";
 import {
   addTrailingSlash,
   getSafeUri,
@@ -68,29 +67,27 @@ export async function findAndSaveAudio() {
   // as we would have saved at least some tracks).
   const trackBatches = chunkArray(unstagedTracks, 50);
   for (const tBatch of trackBatches) {
-    const res = await Promise.allSettled(tBatch.map(safeRetrieveMetadata));
-    const rawEntries = res.filter(isFulfilled).map((r) => r.value);
-    const errored: InvalidTrack[] = res.filter(isRejected).map((r) => r.reason);
+    const { results, errors } = await bulkRetrieveMetadata(tBatch);
     onboardingStore.setState((prev) => ({
-      staged: prev.staged + rawEntries.length,
-      saveErrors: prev.saveErrors + errored.length,
+      staged: prev.staged + results.length,
+      saveErrors: prev.saveErrors + errors.length,
     }));
 
-    if (errored.length > 0) {
-      const erroredIds = errored.map(({ id }) => id);
+    if (errors.length > 0) {
+      const erroredIds = errors.map(({ id }) => id);
       await db.delete(tracks).where(inArray(tracks.id, erroredIds));
-      await db.insert(invalidTracks).values(errored).onConflictDoUpdate({
+      await db.insert(invalidTracks).values(errors).onConflictDoUpdate({
         target: invalidTracks.id,
         set: UpsertInvalidTrackFields,
       });
     }
-    if (rawEntries.length === 0) continue;
-    await savePathComponents(rawEntries.map(({ uri }) => uri));
+    if (results.length === 0) continue;
+    await savePathComponents(results.map(({ uri }) => uri));
 
     // Save artists & albums that haven't been inserted yet.
     const newArtists: string[] = [];
     const newAlbums: Record<string, string[]> = {};
-    rawEntries.forEach(({ artistName, album }) => {
+    results.forEach(({ artistName, album }) => {
       addArtist({ artistName, insertedArtists, newArtists });
       addArtist({ artistName: album?.artistName, insertedArtists, newArtists });
       addAlbum({ album, insertedAlbums, newAlbums });
@@ -111,7 +108,7 @@ export async function findAndSaveAudio() {
     }
 
     // Create or update tracks.
-    const newTracks = rawEntries.map(({ album, ...t }) => {
+    const newTracks = results.map(({ album, ...t }) => {
       let albumId: string | null = null;
       if (album) albumId = albumIdMap[album.artistName]?.[album.name] || null;
       return { ...t, albumId, discoverTime: Date.now() };
@@ -291,56 +288,63 @@ const wantedMetadata = [
 ] as const;
 
 /**
- * Get the metadata associated with a track.
+ * Returns an array of `TrackMetadata` & `InvalidTrack`.
  *
  * **Note:** We return `album`, which is non-standard and should be used
  * to create an Album and then swapped out with the created `albumId`.
  */
-async function getTrackMetadata(asset: MediaLibraryAsset) {
-  const { id, uri, duration, modificationTime, filename } = asset;
-  const { bitrate, sampleRate, ...t } = await getMetadata(uri, wantedMetadata);
-  const file = new File(getSafeUri(uri));
+async function bulkRetrieveMetadata(assets: MediaLibraryAsset[]) {
+  const assetURIMap = Object.fromEntries(assets.map((a) => [a.uri, a]));
+  const { results, errors } = await getBulkMetadata(
+    assets.map(({ uri }) => uri),
+    wantedMetadata,
+  );
 
-  let newAlbum: { name: string; artistName: string } | undefined;
-  if (!!t.albumTitle?.trim() && !!t.albumArtist?.trim()) {
-    newAlbum = { name: t.albumTitle.trim(), artistName: t.albumArtist.trim() };
-  }
+  const formattedResults = results.map(({ uri, data }) => {
+    const { id, duration, modificationTime, filename } = assetURIMap[uri]!;
+    const { bitrate, sampleRate, ...t } = data;
 
-  return {
-    id,
-    name: t.title?.trim() || removeFileExtension(filename),
-    artistName: t.artist?.trim() || null,
-    album: newAlbum,
-    track: t.trackNumber,
-    disc: t.discNumber,
-    year: t.year,
-    format: t.sampleMimeType,
-    bitrate,
-    sampleRate,
-    duration,
-    uri,
-    modificationTime,
-    fetchedArt: false,
-    size: file.exists ? (file.size ?? 0) : 0,
-  };
-}
+    const file = new File(getSafeUri(uri));
 
-/** Returns `TrackMetadata` or `InvalidTrack`. */
-async function safeRetrieveMetadata(asset: MediaLibraryAsset) {
-  const { id, uri, modificationTime } = asset;
-  try {
-    const trackEntry = await getTrackMetadata(asset);
-    return Promise.resolve(trackEntry);
-  } catch (err) {
-    const isError = err instanceof Error;
+    let newAlbum: { name: string; artistName: string } | undefined;
+    if (!!t.albumTitle?.trim() && !!t.albumArtist?.trim()) {
+      newAlbum = {
+        name: t.albumTitle.trim(),
+        artistName: t.albumArtist.trim(),
+      };
+    }
+
+    return {
+      id,
+      name: t.title?.trim() || removeFileExtension(filename),
+      artistName: t.artist?.trim() || null,
+      album: newAlbum,
+      track: t.trackNumber,
+      disc: t.discNumber,
+      year: t.year,
+      format: t.sampleMimeType,
+      bitrate,
+      sampleRate,
+      duration,
+      uri,
+      modificationTime,
+      fetchedArt: false,
+      size: file.exists ? (file.size ?? 0) : 0,
+    };
+  });
+
+  const formattedErrors = errors.map(({ uri, data }) => {
+    const { id, modificationTime } = assetURIMap[uri]!;
     const errorInfo = {
-      errorName: isError ? err.name : "UnknownError",
-      errorMessage: isError ? err.message : "Rejected for unknown reasons.",
+      errorName: data.name || "UnknownError",
+      errorMessage: data.message || "Rejected for unknown reasons.",
     };
     // We may end up here if the track at the given uri doesn't exist anymore.
     console.log(`[Track ${id}] ${errorInfo.errorMessage}`);
-    return Promise.reject({ id, uri, modificationTime, ...errorInfo });
-  }
+    return { id, uri, modificationTime, ...errorInfo };
+  });
+
+  return { results: formattedResults, errors: formattedErrors };
 }
 
 const UpsertInvalidTrackFields = getExcludedColumns([
