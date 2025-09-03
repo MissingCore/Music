@@ -143,8 +143,7 @@ export async function getArtworkUri(uri: string) {
     if (!artworkUri) return { error: false, uri: null };
     return { error: false, uri: artworkUri };
   } catch {
-    // In case we fail to save an image due to having an invalid base64 string.
-    console.log(`[Error] Failed to get or save image for "${uri}".`);
+    console.log(`[Error] Failed to save image for "${uri}".`);
     return { error: true, uri: null };
   }
 }
