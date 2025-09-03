@@ -64,3 +64,7 @@
 ## [Italiano] Italian
 
 - [@R1D3R175](https://github.com/R1D3R175)
+
+## [العربية] Arabic
+
+- [@tariqsaidofficial](https://github.com/tariqsaidofficial)

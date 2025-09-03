@@ -1,5 +1,6 @@
 /** List of available languages that our app supports. */
 export const LANGUAGES = [
+  { code: "ar", name: "العربية" },
   { code: "ca", name: "Català" },
   { code: "da", name: "Dansk" },
   { code: "de", name: "Deutsch" },
