@@ -1,3 +1,4 @@
+import { I18nManager } from "react-native";
 import Animated, {
   useAnimatedStyle,
   withTiming,
@@ -19,8 +20,8 @@ export function Switch({ enabled }: { enabled: boolean }) {
       })}
     >
       <Animated.View
-        style={thumbStyle}
-        className="absolute left-0.5 top-0.5 size-[20px] rounded-full bg-neutral100"
+        style={[{ [I18nManager.isRTL ? "right" : "left"]: 2 }, thumbStyle]}
+        className="absolute top-0.5 size-[20px] rounded-full bg-neutral100"
       />
     </Animated.View>
   );
