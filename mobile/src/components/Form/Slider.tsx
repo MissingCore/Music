@@ -63,7 +63,7 @@ export function NSlider(
         accessible
         accessibilityLabel={`${props.label}: ${formattedValue}`}
         pointerEvents="none"
-        className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 flex-row items-center gap-2"
+        className="absolute top-1/2 z-10 w-full -translate-y-1/2 flex-row items-center justify-center gap-2"
       >
         {props.icon}
         <StyledText className="min-w-12 text-sm" bold>
