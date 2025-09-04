@@ -19,7 +19,7 @@ export function AccentText({
   return (
     <Text
       className={cn(
-        "text-foreground",
+        "text-left text-foreground",
         { uppercase: accentFont === "NDot" && !originalText },
         className,
         "leading-tight",

@@ -1,6 +1,7 @@
 import { useIsFocused } from "@react-navigation/native";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { I18nManager } from "react-native";
 
 import { RECENT_DAY_RANGE } from "~/api/recent";
 import { queries as q } from "~/queries/keyStore";
@@ -11,6 +12,7 @@ import {
 import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 import { useGetColumn } from "~/hooks/useGetColumn";
 
+import { OnRTL } from "~/lib/react";
 import { queryClient } from "~/lib/react-query";
 import { FlashList } from "~/components/Defaults";
 import { PagePlaceholder } from "~/components/Transition/Placeholder";
@@ -98,11 +100,12 @@ function RecentlyPlayedLists(props: { data?: MediaCard.Content[] }) {
         <MediaCard
           {...item}
           size={width}
-          className={index > 0 ? "ml-3" : undefined}
+          className={index > 0 ? OnRTL.decide("mr-3", "ml-3") : undefined}
         />
       )}
       className="-mx-4"
       contentContainerClassName="px-4 pb-6"
+      disableAutoLayout={I18nManager.isRTL}
     />
   );
 }

@@ -12,7 +12,7 @@ patchedDependencies:
     hash: zgygxsuuqk33jr3gwbxpbkmczi
     path: patches/@backpackapp-io__react-native-toast.patch
   '@react-native-assets/slider':
-    hash: r2mjdjwkbzsvohkwkhe7tpugg4
+    hash: t2vslaq3o2r5rmxjymsu3p2x2m
     path: patches/@react-native-assets__slider.patch
   expo-file-system:
     hash: hgu53i2ax26gwnr5j43lvhx4h4
@@ -57,7 +57,7 @@ importers:
         version: 2.2.2
       '@react-native-assets/slider':
         specifier: ^11.0.11
-        version: 11.0.11(patch_hash=r2mjdjwkbzsvohkwkhe7tpugg4)(react-native@0.79.6(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        version: 11.0.11(patch_hash=t2vslaq3o2r5rmxjymsu3p2x2m)(react-native@0.79.6(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@react-native-async-storage/async-storage':
         specifier: 2.1.2
         version: 2.1.2(react-native@0.79.6(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))
@@ -7240,7 +7240,7 @@ snapshots:
       '@radix-ui/react-compose-refs': 1.0.0(react@19.0.0)
       react: 19.0.0
 
-  '@react-native-assets/slider@11.0.11(patch_hash=r2mjdjwkbzsvohkwkhe7tpugg4)(react-native@0.79.6(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
+  '@react-native-assets/slider@11.0.11(patch_hash=t2vslaq3o2r5rmxjymsu3p2x2m)(react-native@0.79.6(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
     dependencies:
       react: 19.0.0
       react-native: 0.79.6(@babel/core@7.28.3)(@types/react@19.0.14)(react@19.0.0)

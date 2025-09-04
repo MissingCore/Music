@@ -2,7 +2,7 @@ import type { FlashListProps } from "@shopify/flash-list";
 import type { Href } from "expo-router";
 import { router } from "expo-router";
 import { useMemo } from "react";
-import { Pressable } from "react-native";
+import { I18nManager, Pressable } from "react-native";
 
 import { useGetColumn } from "~/hooks/useGetColumn";
 
@@ -116,6 +116,8 @@ export function useMediaCardListPreset(
       ),
       ListHeaderComponentStyle: { paddingHorizontal: 8 },
       className: "-mx-1.5 -mb-3",
+      /** If in RTL, layout breaks with columns. */
+      disableAutoLayout: I18nManager.isRTL,
     }),
     [count, width, props],
   ) satisfies FlashListProps<MediaCard.Content>;

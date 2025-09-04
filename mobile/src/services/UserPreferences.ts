@@ -1,6 +1,6 @@
 import { getLocales } from "expo-localization";
 import { useMemo } from "react";
-import { Appearance } from "react-native";
+import { Appearance, I18nManager } from "react-native";
 import { useStore } from "zustand";
 
 import i18next from "~/modules/i18n";
@@ -101,6 +101,8 @@ export const userPreferencesStore =
         // Try to use device language if no language is specified.
         if (state.language === "") {
           await i18next.changeLanguage(getLocales()[0]?.languageTag || "en");
+          I18nManager.allowRTL(i18next.dir() === "rtl");
+          I18nManager.forceRTL(i18next.dir() === "rtl");
           const usedLanguage = i18next.resolvedLanguage;
           // Ensured the resolved value exists.
           const exists = LANGUAGES.some((l) => l.code === usedLanguage);
@@ -194,6 +196,8 @@ userPreferencesStore.subscribe(
   async (languageCode) => {
     // Set the language used by the app.
     await i18next.changeLanguage(languageCode);
+    I18nManager.allowRTL(i18next.dir() === "rtl");
+    I18nManager.forceRTL(i18next.dir() === "rtl");
     // Make sure our queries that use translated values are updated.
     clearAllQueries();
     // Make sure to refresh the playing source name if it's one of the favorite playlists.

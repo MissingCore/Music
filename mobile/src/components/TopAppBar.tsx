@@ -6,6 +6,7 @@ import { View } from "react-native";
 
 import { ArrowBack } from "~/icons/ArrowBack";
 
+import { OnRTL } from "~/lib/react";
 import { SafeContainer } from "./Containment/SafeContainer";
 import { IconButton } from "./Form/Button";
 import { StyledText } from "./Typography/StyledText";
@@ -26,6 +27,7 @@ export function TopAppBar({ options, route }: NativeStackHeaderProps) {
           accessibilityLabel={t("form.back")}
           onPress={() => router.back()}
           disabled={!!options.headerLeft}
+          className={OnRTL._use("rotate-180")}
         />
 
         <StyledText numberOfLines={2} className="shrink text-center text-xs">

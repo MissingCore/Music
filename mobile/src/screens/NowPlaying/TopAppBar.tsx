@@ -7,6 +7,7 @@ import { ArrowBack } from "~/icons/ArrowBack";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useMusicStore } from "~/modules/media/services/Music";
 
+import { OnRTL } from "~/lib/react";
 import { Marquee } from "~/components/Containment/Marquee";
 import { SafeContainer } from "~/components/Containment/SafeContainer";
 import { IconButton } from "~/components/Form/Button";
@@ -44,6 +45,7 @@ function AppBarContent() {
         Icon={ArrowBack}
         accessibilityLabel={t("form.back")}
         onPress={() => router.back()}
+        className={OnRTL._use("rotate-180")}
       />
       <Pressable
         onPress={() => (listHref ? router.navigate(listHref) : undefined)}

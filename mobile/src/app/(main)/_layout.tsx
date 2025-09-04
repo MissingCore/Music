@@ -14,6 +14,7 @@ import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 import { useHasNewUpdate } from "~/hooks/useHasNewUpdate";
 import { useTheme } from "~/hooks/useTheme";
 
+import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { FlatList, useFlatListRef } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
@@ -162,13 +163,15 @@ function NavigationList() {
         pointerEvents="none"
         colors={[`${surface}E6`, `${surface}00`]}
         {...ShadowProps}
-        className="absolute left-0 h-full w-4"
+        style={{ [OnRTL.decide("right", "left")]: 0 }}
+        className="absolute h-full w-4"
       />
       <LinearGradient
         pointerEvents="none"
         colors={[`${surface}00`, `${surface}E6`]}
         {...ShadowProps}
-        className="absolute right-0 h-full w-4"
+        style={{ [OnRTL.decide("left", "right")]: 0 }}
+        className="absolute h-full w-4"
       />
     </View>
   );

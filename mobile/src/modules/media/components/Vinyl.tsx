@@ -41,12 +41,12 @@ export function Vinyl(props: {
   }, [props.source]);
 
   return (
-    <View className="relative">
+    <View className="relative items-center justify-center">
       <MediaImage
         type="playlist"
         source={props.source}
         size={props.size / 2}
-        className="absolute translate-x-1/2 translate-y-1/2 rounded-full bg-red"
+        className="absolute rounded-full bg-red"
         noPlaceholder
       />
       <Svg width={props.size} height={props.size} viewBox="0 0 768 768">

@@ -90,7 +90,7 @@ function FontSheet<T extends (typeof AccentFontOptions)[number]>(props: {
             onSelect={() => props.updateFont(font)}
           >
             <Text
-              className="text-base leading-tight text-foreground"
+              className="text-left text-base leading-tight text-foreground"
               style={{ fontFamily: getFont(font) }}
             >
               {font}

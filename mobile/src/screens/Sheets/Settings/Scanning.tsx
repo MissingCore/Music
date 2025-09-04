@@ -18,8 +18,9 @@ import {
 } from "./helpers/ScanFilterData";
 
 import { Colors } from "~/constants/Styles";
-import { deferInitialRender } from "~/lib/react";
+import { deferInitialRender, OnRTL } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
+import { cn } from "~/lib/style";
 import { Marquee } from "~/components/Containment/Marquee";
 import { FlatList } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
@@ -92,7 +93,10 @@ function ScanFilterListSheet({
               <Button
                 accessibilityLabel={t("template.entryRemove", { name: item })}
                 onPress={() => removePath({ list: listType, path: item })}
-                className="mr-4 aspect-square h-full bg-red p-3"
+                className={cn(
+                  "aspect-square h-full bg-red p-3",
+                  OnRTL.decide("ml-4", "mr-4"),
+                )}
               >
                 <Remove color={Colors.neutral100} />
               </Button>
