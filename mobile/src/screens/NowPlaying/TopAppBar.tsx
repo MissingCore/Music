@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, View } from "react-native";
+import { I18nManager, Pressable, View } from "react-native";
 
 import { ArrowBack } from "~/icons/ArrowBack";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
@@ -44,6 +44,7 @@ function AppBarContent() {
         Icon={ArrowBack}
         accessibilityLabel={t("form.back")}
         onPress={() => router.back()}
+        className={I18nManager.isRTL ? "rotate-180" : undefined}
       />
       <Pressable
         onPress={() => (listHref ? router.navigate(listHref) : undefined)}

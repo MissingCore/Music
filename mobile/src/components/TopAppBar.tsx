@@ -2,7 +2,7 @@ import { getHeaderTitle } from "@react-navigation/elements";
 import type { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { I18nManager, View } from "react-native";
 
 import { ArrowBack } from "~/icons/ArrowBack";
 
@@ -26,6 +26,7 @@ export function TopAppBar({ options, route }: NativeStackHeaderProps) {
           accessibilityLabel={t("form.back")}
           onPress={() => router.back()}
           disabled={!!options.headerLeft}
+          className={I18nManager.isRTL ? "rotate-180" : undefined}
         />
 
         <StyledText numberOfLines={2} className="shrink text-center text-xs">
