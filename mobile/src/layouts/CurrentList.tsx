@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { I18nManager, Pressable, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import Animated, {
   Easing,
   cancelAnimation,
@@ -23,7 +23,7 @@ import {
   PlaylistArtworkSheet,
 } from "~/screens/Sheets/Artwork";
 
-import { DeferRender } from "~/lib/react";
+import { DeferRender, OnRTLWorklet } from "~/lib/react";
 import { getFont } from "~/lib/style";
 import { toLowerCase } from "~/utils/string";
 import { Marquee } from "~/components/Containment/Marquee";
@@ -193,9 +193,7 @@ function AnimatedVinyl(props: AnimatedVinylProps & { pressable?: boolean }) {
 
   // Since the cover size is fixed, we know how much to translate.
   const coverStyle = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: (I18nManager.isRTL ? -1 : 1) * coverPosition.value },
-    ],
+    transform: [{ translateX: OnRTLWorklet.flipSign(coverPosition.value) }],
   }));
 
   const diskStyle = useAnimatedStyle(() => ({

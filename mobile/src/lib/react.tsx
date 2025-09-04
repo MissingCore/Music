@@ -1,3 +1,5 @@
+import { I18nManager } from "react-native";
+
 import { useDelayedReady } from "~/hooks/useDelayedReady";
 
 /**
@@ -31,3 +33,20 @@ export function DeferRender(props: {
   if (!shouldRender) return null;
   return props.children;
 }
+
+export const OnRTL = {
+  _use<T>(val: T) {
+    if (I18nManager.isRTL) return val;
+  },
+
+  decide<T, U>(a: T, b: U) {
+    return I18nManager.isRTL ? a : b;
+  },
+};
+
+export const OnRTLWorklet = {
+  flipSign: (num: number) => {
+    "worklet";
+    return (I18nManager.isRTL ? -1 : 1) * num;
+  },
+};
