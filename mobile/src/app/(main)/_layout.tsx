@@ -171,7 +171,7 @@ function NavigationList() {
         colors={[`${surface}00`, `${surface}E6`]}
         {...ShadowProps}
         style={{ [OnRTL.decide("left", "right")]: 0 }}
-        className="absolute right-0 h-full w-4"
+        className="absolute h-full w-4"
       />
     </View>
   );
