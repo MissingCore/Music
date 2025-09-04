@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, Text, View } from "react-native";
+import { I18nManager, Pressable, Text, View } from "react-native";
 import Animated, {
   Easing,
   cancelAnimation,
@@ -193,7 +193,9 @@ function AnimatedVinyl(props: AnimatedVinylProps & { pressable?: boolean }) {
 
   // Since the cover size is fixed, we know how much to translate.
   const coverStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: coverPosition.value }],
+    transform: [
+      { translateX: (I18nManager.isRTL ? -1 : 1) * coverPosition.value },
+    ],
   }));
 
   const diskStyle = useAnimatedStyle(() => ({
