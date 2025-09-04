@@ -102,6 +102,7 @@ export const userPreferencesStore =
         if (state.language === "") {
           await i18next.changeLanguage(getLocales()[0]?.languageTag || "en");
           I18nManager.allowRTL(i18next.dir() === "rtl");
+          I18nManager.forceRTL(i18next.dir() === "rtl");
           const usedLanguage = i18next.resolvedLanguage;
           // Ensured the resolved value exists.
           const exists = LANGUAGES.some((l) => l.code === usedLanguage);
@@ -196,6 +197,7 @@ userPreferencesStore.subscribe(
     // Set the language used by the app.
     await i18next.changeLanguage(languageCode);
     I18nManager.allowRTL(i18next.dir() === "rtl");
+    I18nManager.forceRTL(i18next.dir() === "rtl");
     // Make sure our queries that use translated values are updated.
     clearAllQueries();
     // Make sure to refresh the playing source name if it's one of the favorite playlists.
