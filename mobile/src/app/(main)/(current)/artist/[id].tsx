@@ -1,5 +1,6 @@
 import { useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
+import { I18nManager } from "react-native";
 
 import type { Album } from "~/db/schema";
 
@@ -8,6 +9,7 @@ import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { CurrentListLayout } from "~/layouts/CurrentList";
 
+import { OnRTL } from "~/lib/react";
 import { FlashList } from "~/components/Defaults";
 import {
   ContentPlaceholder,
@@ -94,11 +96,12 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
             href={`/album/${item.id}`}
             title={item.name}
             description={item.releaseYear || "————"}
-            className={index > 0 ? "ml-3" : undefined}
+            className={index > 0 ? OnRTL.decide("mr-3", "ml-3") : undefined}
           />
         )}
         className="-mx-4"
         contentContainerClassName="px-4"
+        disableAutoLayout={I18nManager.isRTL}
       />
       <TEm dim textKey="term.tracks" className="mb-2 mt-4" />
     </>
