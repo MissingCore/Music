@@ -87,7 +87,7 @@ export function CurrentListLayout(
               >
                 <Text
                   style={{ fontFamily: getFont(primaryFont) }}
-                  className="text-xs text-red"
+                  className="text-left text-xs text-red"
                 >
                   {props.artist}
                 </Text>
