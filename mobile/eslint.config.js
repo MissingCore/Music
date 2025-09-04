@@ -1,11 +1,12 @@
 // https://docs.expo.dev/guides/using-eslint/
 const tanstackQueryConfig = require("@tanstack/eslint-plugin-query");
+const { defineConfig } = require("eslint/config");
 const drizzleConfig = require("eslint-plugin-drizzle");
 const expoConfig = require("eslint-config-expo/flat");
 const eslintPluginPrettierRecommended = require("eslint-plugin-prettier/recommended");
 const tseslintConfig = require("typescript-eslint");
 
-module.exports = tseslintConfig.config([
+module.exports = defineConfig([
   tseslintConfig.configs.recommended,
   expoConfig,
   eslintPluginPrettierRecommended,

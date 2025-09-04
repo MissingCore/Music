@@ -35,13 +35,13 @@
     "@react-native-async-storage/async-storage": "2.1.2",
     "@react-navigation/material-top-tabs": "^6.6.14",
     "@react-navigation/native": "^6.1.18",
-    "@sentry/react-native": "~6.20.0",
+    "@sentry/react-native": "~7.0.1",
     "@shopify/flash-list": "^1.8.3",
-    "@tanstack/react-query": "^5.85.5",
+    "@tanstack/react-query": "^5.86.0",
     "@weights-ai/react-native-track-player": "^4.1.6",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.44.5",
-    "expo": "~53.0.20",
+    "expo": "~53.0.22",
     "expo-device": "~7.1.4",
     "expo-document-picker": "~13.1.6",
     "expo-drizzle-studio-plugin": "^0.2.0",
@@ -55,7 +55,7 @@
     "expo-router": "~3.5.24",
     "expo-sqlite": "~15.2.14",
     "expo-web-browser": "~14.2.0",
-    "i18next": "^25.4.2",
+    "i18next": "^25.5.0",
     "intl-pluralrules": "^2.0.1",
     "jotai": "^2.13.1",
     "nativewind": "4.1.23",
@@ -66,7 +66,7 @@
     "react-native-draglist": "github:MissingCore/react-native-draglist#a3847ce4f9265853a12b865ba30902e907d43c20",
     "react-native-edge-to-edge": "^1.7.0",
     "react-native-gesture-handler": "~2.28.0",
-    "react-native-keyboard-controller": "^1.18.5",
+    "react-native-keyboard-controller": "^1.18.6",
     "react-native-markdown-display": "^7.0.2",
     "react-native-pager-view": "^6.9.1",
     "react-native-reanimated": "~3.19.0",
@@ -81,7 +81,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.28.3",
-    "@tanstack/eslint-plugin-query": "^5.83.1",
+    "@tanstack/eslint-plugin-query": "^5.86.0",
     "@types/react": "~19.0.14",
     "babel-plugin-inline-import": "^3.0.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
@@ -98,7 +98,7 @@
     "prettier-plugin-tailwindcss": "^0.6.14",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.9.2",
-    "typescript-eslint": "^8.41.0"
+    "typescript-eslint": "^8.42.0"
   },
   "expo": {
     "autolinking": {
