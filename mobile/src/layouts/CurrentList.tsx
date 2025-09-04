@@ -55,15 +55,26 @@ export function CurrentListLayout(
   const { t } = useTranslation();
   const { foreground } = useTheme();
   const primaryFont = useUserPreferencesStore((state) => state.primaryFont);
+  const artworkSheetRef = useSheetRef();
 
   const isFavorite = getIsFavoritePlaylist(props.mediaSource);
 
+  const RenderedSheet = useMemo(() => {
+    if (props.mediaSource.type === "album") return AlbumArtworkSheet;
+    if (props.mediaSource.type === "artist") return ArtistArtworkSheet;
+    return PlaylistArtworkSheet;
+  }, [props.mediaSource.type]);
+
   return (
     <>
+      <DeferRender>
+        <RenderedSheet sheetRef={artworkSheetRef} id={props.mediaSource.id} />
+      </DeferRender>
       <View className="flex-row gap-2 pr-4">
         <ContentImage
           mediaSource={props.mediaSource}
           imageSource={props.imageSource}
+          present={() => artworkSheetRef.current?.present()}
         />
         <View className="shrink grow justify-end">
           <TEm
@@ -119,45 +130,32 @@ export function CurrentListLayout(
 }
 
 /** Determines the look and features of the image displayed. */
-function ContentImage(props: AnimatedVinylProps) {
+function ContentImage(props: AnimatedVinylProps & { present: VoidFunction }) {
   const { t } = useTranslation();
-  const artworkSheetRef = useSheetRef();
-
-  const RenderedSheet = useMemo(() => {
-    if (props.mediaSource.type === "album") return AlbumArtworkSheet;
-    if (props.mediaSource.type === "artist") return ArtistArtworkSheet;
-    return PlaylistArtworkSheet;
-  }, [props.mediaSource.type]);
-
   if (getIsFavoritePlaylist(props.mediaSource))
     return <AnimatedVinyl {...props} />;
 
   return (
-    <>
-      <DeferRender>
-        <RenderedSheet sheetRef={artworkSheetRef} id={props.mediaSource.id} />
-      </DeferRender>
-      <Pressable
-        aria-label={t("feat.artwork.extra.change")}
-        delayLongPress={100}
-        onLongPress={() => artworkSheetRef.current?.present()}
-        className="group"
-      >
-        {props.mediaSource.type === "artist" ? (
-          <>
-            <MediaImage
-              type="artist"
-              source={props.imageSource as string | null}
-              size={128}
-              className="ml-4 group-active:opacity-75"
-            />
-            <LongPressIndicator />
-          </>
-        ) : (
-          <AnimatedVinyl {...props} pressable />
-        )}
-      </Pressable>
-    </>
+    <Pressable
+      aria-label={t("feat.artwork.extra.change")}
+      delayLongPress={100}
+      onLongPress={props.present}
+      className="group"
+    >
+      {props.mediaSource.type === "artist" ? (
+        <>
+          <MediaImage
+            type="artist"
+            source={props.imageSource as string | null}
+            size={128}
+            className="ml-4 group-active:opacity-75"
+          />
+          <LongPressIndicator />
+        </>
+      ) : (
+        <AnimatedVinyl {...props} pressable />
+      )}
+    </Pressable>
   );
 }
 
