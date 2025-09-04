@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import type { TextInputProps } from "react-native";
+import { I18nManager } from "react-native";
 import { TextInput as RNTextInput } from "react-native-gesture-handler";
 
 import { useUserPreferencesStore } from "~/services/UserPreferences";
@@ -28,6 +29,7 @@ export function NumericInput({ className, style, ...props }: InputProps) {
         className,
       )}
       style={[{ fontFamily: getFont(accentFont) }, style]}
+      textAlign={I18nManager.isRTL ? "right" : undefined}
       {...props}
     />
   );
@@ -50,6 +52,7 @@ export function TextInput({ className, style, ...props }: InputProps) {
         className,
       )}
       style={[{ fontFamily: getFont(primaryFont) }, style]}
+      textAlign={I18nManager.isRTL ? "right" : undefined}
       {...props}
     />
   );
