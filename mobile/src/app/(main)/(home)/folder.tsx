@@ -5,6 +5,7 @@ import { BackHandler, Pressable, useWindowDimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Animated, {
   FadeInLeft,
+  FadeOutLeft,
   FadeOutRight,
   scrollTo,
   useAnimatedRef,
@@ -19,6 +20,7 @@ import Animated, {
 import { useFolderContent } from "~/queries/folder";
 import { StickyActionListLayout } from "~/layouts/StickyActionScroll";
 
+import { OnRTL, OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { addTrailingSlash } from "~/utils/string";
 import { useFlashListRef } from "~/components/Defaults";
@@ -156,7 +158,12 @@ function Breadcrumbs({
   };
 
   useDerivedValue(() => {
-    scrollTo(breadcrumbsRef, newScrollPos.value, 0, true);
+    scrollTo(
+      breadcrumbsRef,
+      OnRTLWorklet.decide(0, newScrollPos.value),
+      0,
+      true,
+    );
   });
 
   const offsetStyle = useAnimatedStyle(() => ({
@@ -179,11 +186,17 @@ function Breadcrumbs({
         {[undefined, ...dirSegments].map((dirName, idx) => (
           <Fragment key={idx}>
             {idx > 0 ? (
-              <Animated.View entering={FadeInLeft} exiting={FadeOutRight}>
+              <Animated.View
+                entering={FadeInLeft}
+                exiting={OnRTL.decide(FadeOutLeft, FadeOutRight)}
+              >
                 <StyledText className="px-1 text-xs">/</StyledText>
               </Animated.View>
             ) : null}
-            <Animated.View entering={FadeInLeft} exiting={FadeOutRight}>
+            <Animated.View
+              entering={FadeInLeft}
+              exiting={OnRTL.decide(FadeOutLeft, FadeOutRight)}
+            >
               <Pressable
                 // Pop the segments we pushed onto the stack and update
                 // the path segments atom accordingly.
