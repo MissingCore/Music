@@ -14,6 +14,7 @@ import type { UpcomingStore } from "./helpers/UpcomingStore";
 import { useUpcomingStore } from "./helpers/UpcomingStore";
 
 import { Colors } from "~/constants/Styles";
+import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { FlashList } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
@@ -185,7 +186,7 @@ function RenderQueueItem({ item, index }: ListRenderItemInfo<PartialTrack>) {
         <Button
           accessibilityLabel={t("template.entryRemove", { name: item.name })}
           onPress={() => Queue.removeAtIndex(index)}
-          className="mr-4 bg-red p-3"
+          className={cn("bg-red p-3", OnRTL.decide("ml-4", "mr-4"))}
         >
           <Remove color={Colors.neutral100} />
         </Button>

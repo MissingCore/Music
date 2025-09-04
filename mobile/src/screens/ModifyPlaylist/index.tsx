@@ -19,6 +19,7 @@ import { PlaylistStoreProvider, usePlaylistStore } from "./context";
 import { AddMusicSheet } from "./Sheets";
 
 import { Colors } from "~/constants/Styles";
+import { OnRTL } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { wait } from "~/utils/promise";
@@ -172,7 +173,7 @@ const RenderItem = memo(
                   name: item.name,
                 })}
                 onPress={onPress}
-                className="mr-4 bg-red p-3"
+                className={cn("bg-red p-3", OnRTL.decide("ml-4", "mr-4"))}
               >
                 <Remove color={Colors.neutral100} />
               </Button>

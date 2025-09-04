@@ -18,6 +18,7 @@ import { CurrentListLayout } from "~/layouts/CurrentList";
 import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 
 import { Colors } from "~/constants/Styles";
+import { OnRTL } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { FlashDragList } from "~/components/Defaults";
@@ -143,7 +144,7 @@ const RenderItem = memo(
                   name: item.title,
                 })}
                 onPress={() => mutateGuard(removeTrack, trackSource.id)}
-                className="mr-4 bg-red p-3"
+                className={cn("bg-red p-3", OnRTL.decide("ml-4", "mr-4"))}
               >
                 <Remove color={Colors.neutral100} />
               </Button>
