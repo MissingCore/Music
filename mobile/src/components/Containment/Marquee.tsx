@@ -13,6 +13,7 @@ import { View } from "react-native";
 
 import { useTheme } from "~/hooks/useTheme";
 
+import { OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";
 
 /** Used to progressively display long content. */
@@ -88,20 +89,26 @@ export function Marquee({
   }, [containerWidth, contentWidth, offset]);
 
   const contentStyles = useAnimatedStyle(() => ({
-    transform: [{ translateX: -offset.value }],
+    transform: [{ translateX: OnRTLWorklet.flipSign(-offset.value) }],
   }));
 
   // Styles to determine when to render the scroll shadow.
   const isLeftVisible = useAnimatedStyle(() => ({
-    display: offset.value === 0 ? "none" : "flex",
+    display:
+      offset.value === OnRTLWorklet.decide(contentWidth - containerWidth, 0)
+        ? "none"
+        : "flex",
     top: topOffset,
+    [OnRTLWorklet.decide("right", "left")]: 0,
   }));
   const isRightVisible = useAnimatedStyle(() => ({
     display:
-      !isStatic && offset.value < contentWidth - containerWidth
+      !isStatic &&
+      offset.value !== OnRTLWorklet.decide(0, contentWidth - containerWidth)
         ? "flex"
         : "none",
     top: topOffset,
+    [OnRTLWorklet.decide("left", "right")]: 0,
   }));
 
   return (
@@ -130,14 +137,14 @@ export function Marquee({
       <Animated.View
         pointerEvents="none"
         style={isLeftVisible}
-        className={cn("absolute left-0 h-full", { hidden: isStatic })}
+        className={cn("absolute h-full", { hidden: isStatic })}
       >
         <LinearGradient colors={[endColor, startColor]} {...ShadowProps} />
       </Animated.View>
       <Animated.View
         pointerEvents="none"
         style={isRightVisible}
-        className={cn("absolute right-0 h-full", { hidden: isStatic })}
+        className={cn("absolute h-full", { hidden: isStatic })}
       >
         <LinearGradient colors={[startColor, endColor]} {...ShadowProps} />
       </Animated.View>
