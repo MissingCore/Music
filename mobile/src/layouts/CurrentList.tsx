@@ -67,9 +67,11 @@ export function CurrentListLayout(
 
   return (
     <>
-      <DeferRender>
-        <RenderedSheet sheetRef={artworkSheetRef} id={props.mediaSource.id} />
-      </DeferRender>
+      {!isFavorite ? (
+        <DeferRender>
+          <RenderedSheet sheetRef={artworkSheetRef} id={props.mediaSource.id} />
+        </DeferRender>
+      ) : null}
       <View className="flex-row gap-2 pr-4">
         <ContentImage
           mediaSource={props.mediaSource}
@@ -132,6 +134,7 @@ export function CurrentListLayout(
 /** Determines the look and features of the image displayed. */
 function ContentImage(props: AnimatedVinylProps & { present: VoidFunction }) {
   const { t } = useTranslation();
+
   if (getIsFavoritePlaylist(props.mediaSource))
     return <AnimatedVinyl {...props} />;
 
