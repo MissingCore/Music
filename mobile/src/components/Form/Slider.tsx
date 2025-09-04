@@ -1,7 +1,7 @@
 import { Slider as RNSlider } from "@miblanchard/react-native-slider";
 import SheetSlider from "@react-native-assets/slider";
 import { useState } from "react";
-import { Pressable, View } from "react-native";
+import { I18nManager, Pressable, View } from "react-native";
 
 import { useTheme } from "~/hooks/useTheme";
 
@@ -85,6 +85,7 @@ export function NSlider(
         thumbStyle={{ height: 64, backgroundColor: Colors.red }}
         // The wrapper adds some extra padding, which this will negate.
         style={{ height: 64 }}
+        inverted={I18nManager.isRTL}
       />
       {width !== undefined ? <NSliderMarks width={width} {...props} /> : null}
     </View>

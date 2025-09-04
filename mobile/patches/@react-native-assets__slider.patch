@@ -11,11 +11,24 @@ index 242b83b5325bb5db4bd64a176a95176675c8ca73..bba3f83b575ba80d923cbc88d412ec34
          react_1.default.createElement(Track_1.default, { ...trackProps, color: maximumTrackTintColor, style: maxStyle, length: (1 - percentage) * 100, track: 'max' }),
          react_1.default.createElement(Marks_1.default, { type: 'slider', ...marksProps })));
  });
+diff --git a/dist/components/ResponderView.js b/dist/components/ResponderView.js
+index 9c9c8765f517c31f977dc11e4c54b9d069ee7a82..cb3e9f52215f2a2f3b1e17999dadad17f0edd8b1 100644
+--- a/dist/components/ResponderView.js
++++ b/dist/components/ResponderView.js
+@@ -120,7 +120,7 @@ const ResponderView = react_1.default.forwardRef((props, ref) => {
+     });
+     const containerStyle = react_1.default.useMemo(() => [styleSheet[vertical ? 'vertical' : 'horizontal'], style], [vertical, style]);
+     return (react_1.default.createElement(RN.View, { ...others, focusable: false, pointerEvents: 'box-only', ref: forwardRef, onLayout: onLayout, style: containerStyle, onStartShouldSetResponder: isEnabled, onMoveShouldSetResponder: isEnabled, onResponderGrant: onPress, onResponderRelease: onRelease, onResponderMove: onMove, onResponderTerminationRequest: keepResponder, onResponderTerminate: onRelease },
+-        react_1.default.createElement(SliderView_1.default, { vertical: vertical, inverted: inverted }, props.children)));
++        react_1.default.createElement(SliderView_1.default, { vertical: vertical }, props.children)));
+ });
+ ResponderView.displayName = 'ResponderView';
+ exports.default = react_1.default.memo(ResponderView);
 diff --git a/dist/components/Thumb.js b/dist/components/Thumb.js
-index 6cefc1eed8978efee4cdb0f5cba95dbf2d74413a..10a3746d79999914b711dd1dc128df140e287d74 100644
+index f6b20d6fff19456405d65e40976cdccef58d3d74..007eccc8682bc899cab9dae06f00b6f479647674 100644
 --- a/dist/components/Thumb.js
 +++ b/dist/components/Thumb.js
-@@ -66,7 +66,6 @@ function getThumbStyle(size, color) {
+@@ -80,7 +80,6 @@ function getThumbStyle(size, color) {
              backgroundColor: color,
              borderRadius: size / 2,
              overflow: 'hidden',
@@ -24,10 +37,10 @@ index 6cefc1eed8978efee4cdb0f5cba95dbf2d74413a..10a3746d79999914b711dd1dc128df14
          }
      }).thumb;
 diff --git a/dist/components/Track.js b/dist/components/Track.js
-index 6d33f31c3e00d8ab8b113c45755d06bbfefb9fb3..ccfc60f8615aa537d0c7cbfe8bd4468ed4cd49e0 100644
+index 41517e995d9403c0f435dc0fe98e058af6e36176..69b3beb69c8e301c3f8b48cd58ab358dbcac2580 100644
 --- a/dist/components/Track.js
 +++ b/dist/components/Track.js
-@@ -24,12 +24,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
+@@ -38,12 +38,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
  Object.defineProperty(exports, "__esModule", { value: true });
  const react_1 = __importDefault(require("react"));
  const RN = __importStar(require("react-native"));
@@ -43,7 +56,7 @@ index 6d33f31c3e00d8ab8b113c45755d06bbfefb9fb3..ccfc60f8615aa537d0c7cbfe8bd4468e
              backgroundColor: color,
              // This is for web
              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-@@ -41,7 +42,7 @@ function getTrackStyle(length, thickness, color, vertical) {
+@@ -55,7 +56,7 @@ function getTrackStyle(length, thickness, color, vertical) {
  }
  const Track = ({ style, thickness, length, vertical, color = 'grey', CustomTrack, track }) => {
      const trackViewStyle = react_1.default.useMemo(() => [
