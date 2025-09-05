@@ -29,12 +29,11 @@ export function NumericInput({ className, style, ...props }: InputProps) {
         className,
       )}
       style={[{ fontFamily: getFont(accentFont) }, style]}
-      textAlign={OnRTL._use("right")}
+      textAlign={OnRTL.decide("right", "left")}
       {...props}
     />
   );
 }
-
 //#endregion
 
 //#region Text Input
@@ -52,7 +51,7 @@ export function TextInput({ className, style, ...props }: InputProps) {
         className,
       )}
       style={[{ fontFamily: getFont(primaryFont) }, style]}
-      textAlign={OnRTL._use("right")}
+      textAlign={OnRTL.decide("right", "left")}
       {...props}
     />
   );

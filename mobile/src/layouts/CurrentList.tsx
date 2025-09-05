@@ -111,6 +111,9 @@ export function CurrentListLayout(
             <View className="flex-row items-center">
               <StyledText dim className="text-xxs">
                 {props.metadata.toSpliced(-1).join(" • ")}
+              </StyledText>
+              {/* Work around for RTL languages. */}
+              <StyledText dim className="text-xxs">
                 {" • "}
               </StyledText>
               <Schedule size={12} color={`${foreground}99`} />
