@@ -22,7 +22,7 @@
     "favorites": "Любимые",
     "unFavorite": "Убрать из любимых",
     "favoriteTracks": "Любимые Треки",
-    "all": null,
+    "all": "Всё",
     "home": "Главная",
     "settings": "Настройки",
     "upcoming": "Предстоящее",
@@ -57,7 +57,7 @@
     "stay": "Остаться",
     "leave": "Выйти",
     "clear": "Очистить",
-    "reset": null,
+    "reset": "Сброс",
     "validation": {
       "unique": "Уникальный"
     }
@@ -131,7 +131,7 @@
         "line2": "Внимание: При переходе к скрытой вкладке могут произойти неожиданные ситуации."
       },
       "extra": {
-        "setHomeTab": null
+        "setHomeTab": "Откройте вкладку {{- name}} при запуске."
       }
     },
     "nowPlayingDesign": {
@@ -143,7 +143,7 @@
       }
     },
     "visualTips": {
-      "title": null
+      "title": "Визуальные подсказки"
     },
     "language": {
       "title": "Язык"
@@ -172,12 +172,12 @@
       }
     },
     "hiddenTracks": {
-      "title": null,
-      "brief": null,
+      "title": "Скрытые треки",
+      "brief": "Неотображаемые треки.",
       "extra": {
-        "hiddenAt": null,
-        "hasHiddenTracks": null,
-        "notFound": null
+        "hiddenAt": "Скрыто с {{- date}}.",
+        "hasHiddenTracks": "{{- name}} скрыл трек.",
+        "notFound": "Нет скрытых треков."
       }
     },
     "saveErrors": {
@@ -206,7 +206,7 @@
       "brief": "Не переключаться в режим \"Повтор\" с режима \"Повторять одну\" после пропуска."
     },
     "saveLastPosition": {
-      "title": null
+      "title": "Сохранить на последнем остановившемся моменте"
     },
     "scanning": {
       "title": "Сканирование",
@@ -238,19 +238,19 @@
       "description": "Длительность аудио в секундах, которую мы не сохраняем."
     },
     "experimental": {
-      "title": null,
-      "brief": null
+      "title": "Экспериментальные функции",
+      "brief": "Функции, которые могут быть неподдерживаемыми либо работать не должным образом. Используйте на свой страх и риск."
     },
     "continuePlaybackOnDismiss": {
-      "title": null,
-      "description": null
+      "title": "Воспроизводить при свёртывании",
+      "description": "Музыка продолжит воспроизводиться, когда приложение закрыто. Полное закрытие остановить воспроизведение."
     },
     "sleepTimer": {
-      "title": null,
-      "description": null,
+      "title": "Таймер сна",
+      "description": "Прекратить произведение музыки по истечении указанного количества минут.",
       "extra": {
-        "start": null,
-        "stopTime": null
+        "start": "Начать",
+        "stopTime": "Музыка перестанет играть в {{- time}}."
       }
     },
     "translate": {
@@ -274,7 +274,7 @@
     "version": {
       "title": "Версия",
       "extra": {
-        "rcNotification": null
+        "rcNotification": "Предрелизные уведомления"
       }
     },
     "onboardPreprocess": {
@@ -299,7 +299,7 @@
     "playedRecent": {
       "title": "Недавно сыграно",
       "extra": {
-        "notFound": null
+        "notFound": "Вы не во что не играли за последние {{amount}} дней."
       }
     },
     "search": {
@@ -330,17 +330,17 @@
       }
     },
     "trackMetadata": {
-      "title": null,
+      "title": "Изменить содержание",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "Редактировать способ отображения трека для этого приложения. Это не изменяет сам файл.",
+        "line2": "Внимание! Ваши изменения могут быть сброшены при изменении файла."
       },
       "extra": {
-        "albumArtist": null,
-        "disc": null,
-        "name": null,
-        "trackNumber": null,
-        "year": null
+        "albumArtist": "Альбом исполнителя",
+        "disc": "Диск",
+        "name": "Имя",
+        "trackNumber": "Номер трека",
+        "year": "Год"
       }
     },
     "modalSort": {
@@ -348,7 +348,7 @@
       "extra": {
         "asc": "По возрастанию",
         "alphabetical": "Алфавитный",
-        "discover": null,
+        "discover": "Время на прослушивание музыки",
         "modified": "Последнее изменение"
       }
     },
