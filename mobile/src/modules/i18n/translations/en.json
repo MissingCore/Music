@@ -163,6 +163,10 @@
     "visualTips": {
       "title": "Visual Tips"
     },
+    "ignoreRTLLayout": {
+      "title": "Ignore RTL Layout",
+      "brief": "Use LTR layout with a RTL language. Restart required."
+    },
     "language": {
       "title": "Language"
     },

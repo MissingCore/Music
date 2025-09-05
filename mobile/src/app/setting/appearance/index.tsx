@@ -1,6 +1,8 @@
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
+import { I18nManager } from "react-native";
 
+import i18next from "~/modules/i18n";
 import {
   userPreferencesStore,
   useUserPreferencesStore,
@@ -21,6 +23,9 @@ export default function AppearanceScreen() {
     (state) => state.nowPlayingDesign,
   );
   const showVisualTips = useUserPreferencesStore((state) => state.visualTips);
+  const ignoreRTLLayout = useUserPreferencesStore(
+    (state) => state.ignoreRTLLayout,
+  );
   const accentFontSheetRef = useSheetRef();
   const primaryFontSheetRef = useSheetRef();
   const themeSheetRef = useSheetRef();
@@ -78,6 +83,12 @@ export default function AppearanceScreen() {
             onPress={toggleVisualTips}
             switchState={showVisualTips}
             first
+          />
+          <ListItem
+            titleKey="feat.ignoreRTLLayout.title"
+            description={t("feat.ignoreRTLLayout.brief")}
+            onPress={toggleIgnoreRTLLayout}
+            switchState={ignoreRTLLayout}
             last
           />
         </List>
@@ -88,3 +99,10 @@ export default function AppearanceScreen() {
 
 const toggleVisualTips = () =>
   userPreferencesStore.setState((prev) => ({ visualTips: !prev.visualTips }));
+
+const toggleIgnoreRTLLayout = () => {
+  const nextState = !userPreferencesStore.getState().ignoreRTLLayout;
+  userPreferencesStore.setState({ ignoreRTLLayout: nextState });
+  I18nManager.allowRTL(nextState ? false : i18next.dir() === "rtl");
+  I18nManager.forceRTL(nextState ? false : i18next.dir() === "rtl");
+};

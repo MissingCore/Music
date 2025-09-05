@@ -35,6 +35,8 @@ interface UserPreferencesStore {
 
   /** Language code of the displayed content. */
   language: string;
+  /** If we should use LTR layout with a RTL language. */
+  ignoreRTLLayout: boolean;
 
   /** "Color" the overall app will look like. */
   theme: (typeof ThemeOptions)[number];
@@ -112,6 +114,7 @@ export const userPreferencesStore =
       },
 
       language: "",
+      ignoreRTLLayout: false,
 
       theme: "system",
       accentFont: "NType",
@@ -196,8 +199,10 @@ userPreferencesStore.subscribe(
   async (languageCode) => {
     // Set the language used by the app.
     await i18next.changeLanguage(languageCode);
-    I18nManager.allowRTL(i18next.dir() === "rtl");
-    I18nManager.forceRTL(i18next.dir() === "rtl");
+    if (!userPreferencesStore.getState().ignoreRTLLayout) {
+      I18nManager.allowRTL(i18next.dir() === "rtl");
+      I18nManager.forceRTL(i18next.dir() === "rtl");
+    }
     // Make sure our queries that use translated values are updated.
     clearAllQueries();
     // Make sure to refresh the playing source name if it's one of the favorite playlists.
