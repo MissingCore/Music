@@ -52,12 +52,12 @@ function AppBarContent() {
         disabled={listHref === undefined}
         className="shrink gap-0.5"
       >
-        <Marquee center wrapperClassName="shrink">
+        <Marquee center>
           <StyledText className="text-xxs/[1.125]" dim>
             {t("term.playingFrom")}
           </StyledText>
         </Marquee>
-        <Marquee center wrapperClassName="shrink">
+        <Marquee center>
           <StyledText className="text-xs/[1.125]">{listName}</StyledText>
         </Marquee>
       </Pressable>

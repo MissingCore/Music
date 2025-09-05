@@ -96,8 +96,6 @@ export function TrackSheet() {
 
 //#region Introduction
 function TrackIntro({ data }: { data: TrackWithAlbum }) {
-  const { canvasAlt } = useTheme();
-
   const navLinks = [
     {
       href: getSourceLink({ type: "album", id: data.albumId ?? "" }),
@@ -108,7 +106,6 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
       value: data.artistName,
     },
   ].filter(({ value }) => typeof value === "string");
-
   return (
     <View className="mb-2 flex-row items-end gap-3">
       <MediaImage
@@ -118,11 +115,11 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
         className="rounded"
       />
       <View className="shrink py-2">
-        <Marquee color={canvasAlt}>
+        <Marquee color="canvasAlt">
           <StyledText className="text-lg">{data.name}</StyledText>
         </Marquee>
         {navLinks.length > 0 ? (
-          <Marquee color={canvasAlt}>
+          <Marquee color="canvasAlt">
             {navLinks.map(({ href, value }, idx) => (
               <Fragment key={idx}>
                 {idx === 1 ? (
@@ -150,11 +147,11 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
 
 //#region Metadata
 function TrackMetadata({ data }: { data: TrackWithAlbum }) {
-  const { foreground, surface } = useTheme();
+  const { foreground } = useTheme();
   return (
     <Card className="gap-4">
       <Marquee
-        color={surface}
+        color="surface"
         contentContainerClassName="grow justify-between gap-4"
       >
         <MetadataText>
@@ -171,7 +168,7 @@ function TrackMetadata({ data }: { data: TrackWithAlbum }) {
       </Marquee>
       <Divider />
       <View className="flex-row items-center justify-between gap-4">
-        <Marquee color={surface} wrapperClassName="shrink">
+        <Marquee color="surface">
           <MetadataText>{data.uri}</MetadataText>
         </Marquee>
         <View className="flex-row gap-2">
@@ -347,7 +344,6 @@ function sheetAction(onPress: VoidFunction) {
 //#region Track To Playlist Sheet
 /** Enables us to select which playlists the track belongs to. */
 function TrackToPlaylistSheet({ id }: { id: string }) {
-  const { canvasAlt, surface } = useTheme();
   const { data } = usePlaylists();
   const { data: inList } = useTrackPlaylists(id);
   const addToPlaylist = useAddToPlaylist(id);
@@ -377,7 +373,7 @@ function TrackToPlaylistSheet({ id }: { id: string }) {
               }
               wrapperClassName={index > 0 ? "mt-1" : undefined}
             >
-              <Marquee color={selected ? surface : canvasAlt}>
+              <Marquee color={selected ? "surface" : "canvasAlt"}>
                 <StyledText>{item.name}</StyledText>
               </Marquee>
             </Checkbox>

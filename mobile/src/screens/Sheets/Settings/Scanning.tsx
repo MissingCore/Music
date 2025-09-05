@@ -9,7 +9,6 @@ import {
   userPreferencesStore,
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
-import { useTheme } from "~/hooks/useTheme";
 import {
   pickPath,
   removePath,
@@ -65,7 +64,6 @@ function ScanFilterListSheet({
   sheetRef: TrueSheetRef;
 }) {
   const { t } = useTranslation();
-  const { surface } = useTheme();
   const listEntries = useUserPreferencesStore((state) => state[listType]);
 
   return (
@@ -103,9 +101,9 @@ function ScanFilterListSheet({
             )}
           >
             <Marquee
-              color={surface}
-              topOffset={16}
-              wrapperClassName="py-4 rounded-md bg-surface"
+              color="surface"
+              wrapperClassName="rounded-md bg-surface"
+              contentContainerClassName="py-4"
             >
               <StyledText className="px-4">{item}</StyledText>
             </Marquee>

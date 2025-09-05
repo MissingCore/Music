@@ -184,7 +184,6 @@ function SheetHeader(props: {
   getHeight: (height: number) => void;
   title?: string;
 }) {
-  const { canvasAlt } = useTheme();
   return (
     <View
       onLayout={(e) => props.getHeight(e.nativeEvent.layout.height)}
@@ -192,7 +191,7 @@ function SheetHeader(props: {
     >
       <View className="mx-auto my-[10px] h-1 w-8 rounded-full bg-onSurface" />
       {props.title ? (
-        <Marquee color={canvasAlt} center>
+        <Marquee color="canvasAlt" center>
           <StyledText className="text-lg">{props.title}</StyledText>
         </Marquee>
       ) : null}

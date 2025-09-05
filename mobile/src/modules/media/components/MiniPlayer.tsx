@@ -8,7 +8,6 @@ import { PlayArrow } from "~/icons/PlayArrow";
 import { useMusicStore } from "../services/Music";
 import { MusicControls } from "../services/Playback";
 import { useIsPlaying } from "../hooks/useIsPlaying";
-import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
 import { Marquee } from "~/components/Containment/Marquee";
@@ -23,7 +22,6 @@ import { MediaImage } from "./MediaImage";
  */
 export function MiniPlayer({ hidden = false, stacked = false }) {
   const { t } = useTranslation();
-  const { surface } = useTheme();
   const isPlaying = useIsPlaying();
   const track = useMusicStore((state) => state.activeTrack);
 
@@ -47,10 +45,10 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
         />
 
         <View className="ml-2 shrink grow">
-          <Marquee color={surface}>
+          <Marquee color="surface">
             <StyledText>{track.name}</StyledText>
           </Marquee>
-          <Marquee color={surface}>
+          <Marquee color="surface">
             <StyledText dim>{track.artistName ?? "—"}</StyledText>
           </Marquee>
         </View>

@@ -19,17 +19,11 @@ import { cn } from "~/lib/style";
 /** Used to progressively display long content. */
 export function Marquee({
   color,
-  topOffset = 0,
   ...props
 }: {
   children: React.ReactNode;
-  /**
-   * Color of the container this `<Marquee />` will be on. Defaults to
-   * `canvas` color in `useTheme()`.
-   */
-  color?: string;
-  /** Offset to apply to scroll shadow if top padding is applied. */
-  topOffset?: number;
+  /** Color of the container this `<Marquee />` will be on. Defaults to `canvas`. */
+  color?: Exclude<keyof ReturnType<typeof useTheme>, "theme">;
   center?: boolean;
   /**
    * Styles the `<View />` wrapping the `<Animated.ScrollView />` containing
@@ -39,18 +33,14 @@ export function Marquee({
   /** Styles the `<View />` wrapping `children`. */
   contentContainerClassName?: string;
 }) {
-  const { canvas } = useTheme();
-  const shadowColor = useMemo(() => color ?? canvas, [color, canvas]);
+  const themeColors = useTheme();
+  const shadowColor = useMemo(
+    () => themeColors[color ?? "canvas"],
+    [themeColors, color],
+  );
   // This will enable support of hexadecimal colors with opacity.
-  const startColor = useMemo(
-    () =>
-      `${shadowColor.length === 7 ? shadowColor : shadowColor.slice(0, 7)}00`,
-    [shadowColor],
-  );
-  const endColor = useMemo(
-    () => (shadowColor.length === 7 ? `${shadowColor}E6` : shadowColor),
-    [shadowColor],
-  );
+  const startColor = useMemo(() => `${shadowColor}00`, [shadowColor]);
+  const endColor = useMemo(() => `${shadowColor}E6`, [shadowColor]);
 
   const offset = useSharedValue(0);
   const [containerWidth, setContainerWidth] = useState(-1);
@@ -98,7 +88,6 @@ export function Marquee({
       offset.value === OnRTLWorklet.decide(contentWidth - containerWidth, 0)
         ? "none"
         : "flex",
-    top: topOffset,
     [OnRTLWorklet.decide("right", "left")]: 0,
   }));
   const isRightVisible = useAnimatedStyle(() => ({
@@ -107,12 +96,13 @@ export function Marquee({
       offset.value !== OnRTLWorklet.decide(0, contentWidth - containerWidth)
         ? "flex"
         : "none",
-    top: topOffset,
     [OnRTLWorklet.decide("left", "right")]: 0,
   }));
 
   return (
-    <View className={cn("relative", props.wrapperClassName)}>
+    <View
+      className={cn("relative shrink overflow-hidden", props.wrapperClassName)}
+    >
       <Animated.ScrollView
         onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}
         horizontal
