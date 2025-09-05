@@ -15,7 +15,12 @@ import { useDeletePlaylist } from "~/queries/playlist";
 import { useFloatingContent } from "~/hooks/useFloatingContent";
 import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import type { InitStoreProps } from "./context";
-import { PlaylistStoreProvider, usePlaylistStore } from "./context";
+import {
+  PlaylistStoreProvider,
+  useIsPlaylistUnchanged,
+  useIsPlaylistUnique,
+  usePlaylistStore,
+} from "./context";
 import { AddMusicSheet } from "./Sheets";
 
 import { Colors } from "~/constants/Styles";
@@ -51,9 +56,9 @@ export function ModifyPlaylist(props: InitStoreProps) {
 function ScreenConfig() {
   const { t } = useTranslation();
 
+  const isUnchanged = useIsPlaylistUnchanged();
+  const isUnique = useIsPlaylistUnique();
   const mode = usePlaylistStore((state) => state.mode);
-  const isUnchanged = usePlaylistStore((state) => state.isUnchanged);
-  const isUnique = usePlaylistStore((state) => state.isUnique);
   const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
   const onSubmit = usePlaylistStore((state) => state.INTERNAL_onSubmit);
 
@@ -83,8 +88,8 @@ type RenderItemProps = DragListRenderItemInfo<SlimTrackWithAlbum>;
 
 /** Contains the logic for editing the playlist name and tracks. */
 function PageContent({ bottomOffset }: { bottomOffset: number }) {
+  const isUnchanged = useIsPlaylistUnchanged();
   const tracks = usePlaylistStore((state) => state.tracks);
-  const isUnchanged = usePlaylistStore((state) => state.isUnchanged);
   const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
   const moveTrack = usePlaylistStore((state) => state.moveTrack);
   const setShowConfirmation = usePlaylistStore(
@@ -203,8 +208,8 @@ const RenderItem = memo(
 function ListHeaderComponent(props: { showSheet: VoidFunction }) {
   const { t } = useTranslation();
 
+  const isUnique = useIsPlaylistUnique();
   const initialName = usePlaylistStore((state) => state.initialName);
-  const isUnique = usePlaylistStore((state) => state.isUnique);
   const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
   const setPlaylistName = usePlaylistStore((state) => state.setPlaylistName);
 

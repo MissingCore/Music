@@ -11,7 +11,11 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { Check } from "~/icons/Check";
 import { useFloatingContent } from "~/hooks/useFloatingContent";
 import type { InitStoreProps, TrackMetadataForm } from "./context";
-import { TrackMetadataStoreProvider, useTrackMetadataStore } from "./context";
+import {
+  TrackMetadataStoreProvider,
+  useTrackMetadataIsUnchanged,
+  useTrackMetadataStore,
+} from "./context";
 
 import { ScrollablePresets } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
@@ -41,8 +45,8 @@ export function ModifyTrack(props: InitStoreProps) {
 function ScreenConfig() {
   const { t } = useTranslation();
 
+  const isUnchanged = useTrackMetadataIsUnchanged();
   const trackName = useTrackMetadataStore((state) => state.name);
-  const isUnchanged = useTrackMetadataStore((state) => state.isUnchanged);
   const isSubmitting = useTrackMetadataStore((state) => state.isSubmitting);
   const onSubmit = useTrackMetadataStore((state) => state.onSubmit);
 
@@ -72,7 +76,7 @@ function ScreenConfig() {
 function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
   const { t } = useTranslation();
 
-  const isUnchanged = useTrackMetadataStore((state) => state.isUnchanged);
+  const isUnchanged = useTrackMetadataIsUnchanged();
   const isSubmitting = useTrackMetadataStore((state) => state.isSubmitting);
   const setShowConfirmation = useTrackMetadataStore(
     (state) => state.setShowConfirmation,

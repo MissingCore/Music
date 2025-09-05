@@ -1,9 +1,8 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { router } from "expo-router";
-import { createContext, use, useRef } from "react";
+import { createContext, use, useMemo, useRef } from "react";
 import type { StoreApi } from "zustand";
 import { createStore, useStore } from "zustand";
-import { createComputed } from "zustand-computed";
 
 import type { TrackWithAlbum } from "~/db/schema";
 
@@ -33,41 +32,6 @@ export type TrackMetadataForm = {
   track: string; // Ignore if not a number or less than 1.
 };
 
-/** "Derived" state subscribed to changes. */
-const computed = createComputed(
-  ({
-    initialFormData,
-    name,
-    artistName,
-    album,
-    albumArtist,
-    year,
-    disc,
-    track,
-  }: Omit<TrackMetadataStore, "isUnchanged">) => {
-    const isNameUnchanged = initialFormData.name === name.trim();
-    const isArtistNameUnchanged =
-      initialFormData.artistName === artistName.trim();
-    const isAlbumUnchanged = initialFormData.album === album.trim();
-    const isAlbumArtistUnchanged =
-      initialFormData.albumArtist === albumArtist.trim();
-    const isYearUnchanged = initialFormData.year === year.trim();
-    const isDiscUnchanged = initialFormData.disc === disc.trim();
-    const isTrackUnchanged = initialFormData.track === track.trim();
-
-    return {
-      isUnchanged:
-        isNameUnchanged &&
-        isArtistNameUnchanged &&
-        isAlbumUnchanged &&
-        isAlbumArtistUnchanged &&
-        isYearUnchanged &&
-        isDiscUnchanged &&
-        isTrackUnchanged,
-    };
-  },
-);
-
 export type InitStoreProps = {
   initialData: TrackWithAlbum;
 };
@@ -80,7 +44,6 @@ type TrackMetadataStore = InitStoreProps &
     setFields: (data: Partial<TrackMetadataForm>) => void;
 
     initialFormData: TrackMetadataForm;
-    isUnchanged: boolean;
 
     /** If we're firing the `onSubmit` function. */
     isSubmitting: boolean;
@@ -112,84 +75,82 @@ export function TrackMetadataStoreProvider({
       track: initialData.track?.toString() ?? "",
     };
 
-    storeRef.current = createStore<TrackMetadataStore>()(
-      computed((set, get) => ({
-        initialData,
+    storeRef.current = createStore<TrackMetadataStore>()((set, get) => ({
+      initialData,
 
-        initialFormData,
-        ...initialFormData,
+      initialFormData,
+      ...initialFormData,
 
-        setField: (fieldName) => (value) => set({ [fieldName]: value }),
-        setFields: (data) => set({ ...data }),
+      setField: (fieldName) => (value) => set({ [fieldName]: value }),
+      setFields: (data) => set({ ...data }),
 
-        isSubmitting: false,
-        setIsSubmitting: (status) => set({ isSubmitting: status }),
-        showConfirmation: false,
-        setShowConfirmation: (status) => set({ showConfirmation: status }),
+      isSubmitting: false,
+      setIsSubmitting: (status) => set({ isSubmitting: status }),
+      showConfirmation: false,
+      setShowConfirmation: (status) => set({ showConfirmation: status }),
 
-        onSubmit: async () => {
-          set({ isSubmitting: true });
-          // Slight buffer before running heavy async task.
-          await wait(1);
-          try {
-            const { id, uri } = get().initialData;
-            const { name, artistName, album, albumArtist, year, disc, track } =
-              get();
-            if (name.trim().length === 0) throw new Error("Track has no name.");
+      onSubmit: async () => {
+        set({ isSubmitting: true });
+        // Slight buffer before running heavy async task.
+        await wait(1);
+        try {
+          const { id, uri } = get().initialData;
+          const { name, artistName, album, albumArtist, year, disc, track } =
+            get();
+          if (name.trim().length === 0) throw new Error("Track has no name.");
 
-            const updatedTrack = {
-              name: name.trim(),
-              artistName: asNonEmptyString(artistName),
-              track: asNaturalNumber(track),
-              disc: asNaturalNumber(disc),
-              year: asNaturalNumber(year),
-              embeddedArtwork: null as string | null,
-              modificationTime: Date.now(),
-              editedMetadata: Date.now(),
-            };
-            const updatedAlbum = {
-              name: asNonEmptyString(album),
-              artistName: asNonEmptyString(albumArtist),
-            };
+          const updatedTrack = {
+            name: name.trim(),
+            artistName: asNonEmptyString(artistName),
+            track: asNaturalNumber(track),
+            disc: asNaturalNumber(disc),
+            year: asNaturalNumber(year),
+            embeddedArtwork: null as string | null,
+            modificationTime: Date.now(),
+            editedMetadata: Date.now(),
+          };
+          const updatedAlbum = {
+            name: asNonEmptyString(album),
+            artistName: asNonEmptyString(albumArtist),
+          };
 
-            // Add new artists to the database.
-            await Promise.allSettled(
-              [updatedTrack.artistName, updatedAlbum.artistName]
-                .filter((name) => name !== null)
-                .map((name) => createArtists([{ name }])),
-            );
+          // Add new artists to the database.
+          await Promise.allSettled(
+            [updatedTrack.artistName, updatedAlbum.artistName]
+              .filter((name) => name !== null)
+              .map((name) => createArtists([{ name }])),
+          );
 
-            const { uri: artworkUri } = await getArtworkUri(uri);
+          const { uri: artworkUri } = await getArtworkUri(uri);
 
-            // Add new album to the database.
-            let albumId: string | null = null;
-            if (updatedAlbum.name && updatedAlbum.artistName) {
-              const [newAlbum] = await upsertAlbums([
-                {
-                  name: updatedAlbum.name,
-                  artistName: updatedAlbum.artistName,
-                  embeddedArtwork: artworkUri,
-                },
-              ]);
-              if (newAlbum) albumId = newAlbum.id;
-            }
-            if (!albumId) updatedTrack.embeddedArtwork = artworkUri;
-
-            await updateTrack(id, { ...updatedTrack, albumId });
-
-            // Revalidate `activeTrack` in Music store if needed.
-            await revalidateActiveTrack({ type: "track", id });
-            await cleanupImages();
-            await removeUnusedCategories();
-            clearAllQueries();
-            router.back();
-          } catch {
-            toast.error(i18next.t("err.flow.generic.title"), ToastOptions);
+          // Add new album to the database.
+          let albumId: string | null = null;
+          if (updatedAlbum.name && updatedAlbum.artistName) {
+            const [newAlbum] = await upsertAlbums([
+              {
+                name: updatedAlbum.name,
+                artistName: updatedAlbum.artistName,
+                embeddedArtwork: artworkUri,
+              },
+            ]);
+            if (newAlbum) albumId = newAlbum.id;
           }
-          set({ isSubmitting: false });
-        },
-      })),
-    );
+          if (!albumId) updatedTrack.embeddedArtwork = artworkUri;
+
+          await updateTrack(id, { ...updatedTrack, albumId });
+
+          // Revalidate `activeTrack` in Music store if needed.
+          await revalidateActiveTrack({ type: "track", id });
+          await cleanupImages();
+          await removeUnusedCategories();
+          clearAllQueries();
+          router.back();
+        } catch {
+          toast.error(i18next.t("err.flow.generic.title"), ToastOptions);
+        }
+        set({ isSubmitting: false });
+      },
+    }));
   }
 
   return (
@@ -209,6 +170,49 @@ export function useTrackMetadataStore<T>(
     );
   }
   return useStore(store, selector);
+}
+
+/** See if we've changed this track's metadata. */
+export function useTrackMetadataIsUnchanged() {
+  const initialFormData = useTrackMetadataStore((s) => s.initialFormData);
+  const name = useTrackMetadataStore((s) => s.name);
+  const artistName = useTrackMetadataStore((s) => s.artistName);
+  const album = useTrackMetadataStore((s) => s.album);
+  const albumArtist = useTrackMetadataStore((s) => s.albumArtist);
+  const year = useTrackMetadataStore((s) => s.year);
+  const disc = useTrackMetadataStore((s) => s.disc);
+  const track = useTrackMetadataStore((s) => s.track);
+
+  return useMemo(() => {
+    const isNameUnchanged = initialFormData.name === name.trim();
+    const isArtistNameUnchanged =
+      initialFormData.artistName === artistName.trim();
+    const isAlbumUnchanged = initialFormData.album === album.trim();
+    const isAlbumArtistUnchanged =
+      initialFormData.albumArtist === albumArtist.trim();
+    const isYearUnchanged = initialFormData.year === year.trim();
+    const isDiscUnchanged = initialFormData.disc === disc.trim();
+    const isTrackUnchanged = initialFormData.track === track.trim();
+
+    return (
+      isNameUnchanged &&
+      isArtistNameUnchanged &&
+      isAlbumUnchanged &&
+      isAlbumArtistUnchanged &&
+      isYearUnchanged &&
+      isDiscUnchanged &&
+      isTrackUnchanged
+    );
+  }, [
+    initialFormData,
+    name,
+    artistName,
+    album,
+    albumArtist,
+    year,
+    disc,
+    track,
+  ]);
 }
 
 //#region Internal Helpers

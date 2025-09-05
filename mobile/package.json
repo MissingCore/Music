@@ -76,8 +76,7 @@
     "react-native-tab-view": "^3.5.2",
     "tailwind-merge": "^2.6.0",
     "zod": "~4.1.5",
-    "zustand": "^5.0.8",
-    "zustand-computed": "^2.1.0"
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@babel/core": "^7.28.3",
