@@ -40,6 +40,7 @@
 - [Nonameguy48 (thenonameguy295)](https://crowdin.com/profile/thenonameguy295)
 - [Artem Yakovlev (socutezyy)](https://crowdin.com/profile/socutezyy)
 - [Да Угу (Tytocka)](https://crowdin.com/profile/tytocka)
+- [zfraaaa (Zbot_fraffrog)](https://crowdin.com/profile/zbot_fraffrog)
 
 ## [Türkçe] Turkish
 
