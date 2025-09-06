@@ -145,6 +145,10 @@
     "visualTips": {
       "title": "視覚的なヒント"
     },
+    "ignoreRTLLayout": {
+      "title": null,
+      "brief": null
+    },
     "language": {
       "title": "言語"
     },

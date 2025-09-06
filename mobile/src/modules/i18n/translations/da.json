@@ -145,6 +145,10 @@
     "visualTips": {
       "title": null
     },
+    "ignoreRTLLayout": {
+      "title": null,
+      "brief": null
+    },
     "language": {
       "title": "Sprog"
     },
