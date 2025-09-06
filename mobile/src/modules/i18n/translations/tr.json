@@ -145,6 +145,10 @@
     "visualTips": {
       "title": "Görsel İpuçları"
     },
+    "ignoreRTLLayout": {
+      "title": "RTL Düzenini Görmezden Gel",
+      "brief": "RTL bir dil ile LTR düzenini kullan. Yeniden başlatma gereklidir."
+    },
     "language": {
       "title": "Dil"
     },

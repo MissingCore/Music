@@ -145,6 +145,10 @@
     "visualTips": {
       "title": "نصائح مرئية"
     },
+    "ignoreRTLLayout": {
+      "title": null,
+      "brief": null
+    },
     "language": {
       "title": "اللغة"
     },
