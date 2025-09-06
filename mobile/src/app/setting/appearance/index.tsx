@@ -79,16 +79,16 @@ export default function AppearanceScreen() {
 
         <List>
           <ListItem
-            titleKey="feat.visualTips.title"
-            onPress={toggleVisualTips}
-            switchState={showVisualTips}
-            first
-          />
-          <ListItem
             titleKey="feat.ignoreRTLLayout.title"
             description={t("feat.ignoreRTLLayout.brief")}
             onPress={toggleIgnoreRTLLayout}
             switchState={ignoreRTLLayout}
+            first
+          />
+          <ListItem
+            titleKey="feat.visualTips.title"
+            onPress={toggleVisualTips}
+            switchState={showVisualTips}
             last
           />
         </List>
