@@ -10,6 +10,7 @@ export default (): ExpoConfig => ({
   orientation: "portrait",
   primaryColor: "#C8102E",
   icon: "./assets/icon.png",
+  scheme: ["com.cyanchill.missingcore.music"],
   backgroundColor: "#F2F2F2",
   userInterfaceStyle: "automatic",
   assetBundlePatterns: ["**/*"],
@@ -37,13 +38,6 @@ export default (): ExpoConfig => ({
       {
         action: "MAIN",
         category: ["DEFAULT", "LAUNCHER", "APP_MUSIC"],
-      },
-      // To attempt to launch the app by default after building instead of
-      // an app with the "content" or "uri" schemes.
-      {
-        action: "VIEW",
-        category: ["DEFAULT", "BROWSABLE"],
-        data: [{ scheme: "com.cyanchill.missingcore.music" }],
       },
       // Allows us to "Open With" on music files.
       {
