@@ -3,7 +3,8 @@ import { getActualPath } from "@missingcore/react-native-actual-path";
 import { db } from "~/db";
 
 import { playFromMediaList } from "~/modules/media/services/Playback";
-import { ReservedPlaylists } from "~/modules/media/constants";
+
+import { addTrailingSlash } from "~/utils/string";
 
 type Props = {
   path: string;
@@ -28,7 +29,11 @@ export async function redirectSystemPath({ path, initial }: Props) {
 
       if (track) {
         await playFromMediaList({
-          source: { type: "playlist", id: ReservedPlaylists.tracks },
+          source: {
+            type: "folder",
+            // Remove the `file:///` at the front of the uri.
+            id: addTrailingSlash(track.parentFolder!.slice(8)),
+          },
           trackId: track.id,
         });
       }
