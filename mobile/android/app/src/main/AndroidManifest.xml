@@ -36,26 +36,26 @@
       <intent-filter>
         <!-- Expose that we're a music player. -->
         <action android:name="android.intent.action.MAIN"/>
-
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.LAUNCHER"/>
         <category android:name="android.intent.category.APP_MUSIC"/>
       </intent-filter>
-      <intent-filter>
+      <intent-filter data-generated="true">
         <action android:name="android.intent.action.VIEW"/>
-
+        <data android:scheme="com.cyanchill.missingcore.music"/>
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
-
-        <!-- Recieve intent from `file://` & `content://` URIs. -->
+      </intent-filter>
+      <intent-filter data-generated="true">
+        <action android:name="android.intent.action.VIEW"/>
         <data android:scheme="content"/>
         <data android:scheme="file"/>
-
-        <!-- Normal audio mime types + weird mime types -->
         <data android:mimeType="audio/*"/>
         <data android:mimeType="application/ogg"/>
         <data android:mimeType="application/x-ogg"/>
         <data android:mimeType="application/itunes"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
       </intent-filter>
     </activity>
 

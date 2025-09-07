@@ -10,7 +10,6 @@ export default (): ExpoConfig => ({
   orientation: "portrait",
   primaryColor: "#C8102E",
   icon: "./assets/icon.png",
-  scheme: ["music", "com.cyanchill.missingcore.music"],
   backgroundColor: "#F2F2F2",
   userInterfaceStyle: "automatic",
   assetBundlePatterns: ["**/*"],
@@ -31,6 +30,36 @@ export default (): ExpoConfig => ({
       "android.permission.READ_MEDIA_IMAGES",
       "android.permission.READ_MEDIA_VIDEO",
       "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
+    ],
+    intentFilters: [
+      // Whenever we rebuild the `AndroidManifest.xml` file, we should delete
+      // the generated "MAIN" intent filter.
+      {
+        action: "MAIN",
+        category: ["DEFAULT", "LAUNCHER", "APP_MUSIC"],
+      },
+      // To attempt to launch the app by default after building instead of
+      // an app with the "content" or "uri" schemes.
+      {
+        action: "VIEW",
+        category: ["DEFAULT", "BROWSABLE"],
+        data: [{ scheme: "com.cyanchill.missingcore.music" }],
+      },
+      // Allows us to "Open With" on music files.
+      {
+        action: "VIEW",
+        category: ["DEFAULT", "BROWSABLE"],
+        data: [
+          // Recieve intent from `file://` & `content://` URIs.
+          { scheme: "content" },
+          { scheme: "file" },
+          // Normal audio mime types + weird mime types we can "Open With".
+          { mimeType: "audio/*" },
+          { mimeType: "application/ogg" },
+          { mimeType: "application/x-ogg" },
+          { mimeType: "application/itunes" },
+        ],
+      },
     ],
   },
   plugins: [
