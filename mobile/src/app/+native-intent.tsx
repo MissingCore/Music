@@ -1,3 +1,7 @@
+import { getActualPath } from "@missingcore/react-native-actual-path";
+
+import { db } from "~/db";
+
 type Props = {
   path: string;
   initial: boolean;
@@ -15,6 +19,7 @@ type Props = {
  */
 export async function redirectSystemPath({ path, initial }: Props) {
   try {
+    await handleFileOpenWith(path);
     if (initial) {
       // Handle when we click on the player notification when we don't have
       // the app opened.
@@ -30,4 +35,27 @@ export async function redirectSystemPath({ path, initial }: Props) {
     // to a custom route to handle unexpected errors, where they are able to report the incident
     return path;
   }
+}
+
+async function handleFileOpenWith(path: string) {
+  const track = await getTrackFromContentPath(path);
+  console.log(track);
+}
+
+/** Get the track that we used "Open With" on. */
+async function getTrackFromContentPath(path: string) {
+  // 1. See if file uri is part of `path`.
+  const [_, ...uriSegments] = path.slice(10).split("/");
+  const track = await db.query.tracks.findFirst({
+    where: (fields, { eq }) =>
+      eq(fields.uri, `file:///${uriSegments.join("/")}`),
+  });
+  if (track) return track;
+
+  // 2. Get track from file uri derived from content uri.
+  const derivedPath = await getActualPath(path);
+  if (!derivedPath) return;
+  return await db.query.tracks.findFirst({
+    where: (fields, { eq }) => eq(fields.uri, `file://${derivedPath}`),
+  });
 }
