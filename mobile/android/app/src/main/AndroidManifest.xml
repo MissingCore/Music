@@ -34,15 +34,29 @@
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS" android:value="0"/>
     <activity android:name=".MainActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|uiMode" android:launchMode="singleTask" android:windowSoftInputMode="adjustResize" android:theme="@style/BootTheme" android:exported="true" android:screenOrientation="portrait">
       <intent-filter>
+        <!-- Expose that we're a music player. -->
         <action android:name="android.intent.action.MAIN"/>
+        <action android:name="android.intent.action.MUSIC_PLAYER"/>
+
+        <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.LAUNCHER"/>
+        <category android:name="android.intent.category.APP_MUSIC"/>
       </intent-filter>
       <intent-filter>
         <action android:name="android.intent.action.VIEW"/>
+
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="music"/>
-        <data android:scheme="com.cyanchill.missingcore.music"/>
+
+        <!-- Recieve intent from `file://` & `content://` URIs. -->
+        <data android:scheme="content"/>
+        <data android:scheme="file"/>
+
+        <!-- Normal audio mime types + weird mime types -->
+        <data android:mimeType="audio/*"/>
+        <data android:mimeType="application/ogg"/>
+        <data android:mimeType="application/x-ogg"/>
+        <data android:mimeType="application/itunes"/>
       </intent-filter>
     </activity>
 
