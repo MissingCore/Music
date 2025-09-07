@@ -2,6 +2,9 @@ import { getActualPath } from "@missingcore/react-native-actual-path";
 
 import { db } from "~/db";
 
+import { playFromMediaList } from "~/modules/media/services/Playback";
+import { ReservedPlaylists } from "~/modules/media/constants";
+
 type Props = {
   path: string;
   initial: boolean;
@@ -19,7 +22,20 @@ type Props = {
  */
 export async function redirectSystemPath({ path, initial }: Props) {
   try {
-    await handleFileOpenWith(path);
+    // Handle if we open from a `content://` uri.
+    if (path.startsWith("content://")) {
+      const track = await getTrackFromContentPath(path);
+
+      if (track) {
+        await playFromMediaList({
+          source: { type: "playlist", id: ReservedPlaylists.tracks },
+          trackId: track.id,
+        });
+      }
+
+      return "/";
+    }
+
     if (initial) {
       // Handle when we click on the player notification when we don't have
       // the app opened.
@@ -35,11 +51,6 @@ export async function redirectSystemPath({ path, initial }: Props) {
     // to a custom route to handle unexpected errors, where they are able to report the incident
     return path;
   }
-}
-
-async function handleFileOpenWith(path: string) {
-  const track = await getTrackFromContentPath(path);
-  console.log(track);
 }
 
 /** Get the track that we used "Open With" on. */
