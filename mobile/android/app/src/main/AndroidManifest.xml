@@ -36,7 +36,6 @@
       <intent-filter>
         <!-- Expose that we're a music player. -->
         <action android:name="android.intent.action.MAIN"/>
-        <action android:name="android.intent.action.MUSIC_PLAYER"/>
 
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.LAUNCHER"/>
