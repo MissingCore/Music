@@ -60,8 +60,8 @@ export async function redirectSystemPath({ path, initial }: Props) {
 
 /** Get the track that we used "Open With" on. */
 async function getTrackFromContentPath(path: string) {
-  // 1. See if file uri is part of `path`.
-  const [_, ...uriSegments] = path.slice(10).split("/");
+  // 1. See if file uri is part of `path` ((after removing `content://`).
+  const [_referrer, ...uriSegments] = path.slice(10).split("/");
   const track = await db.query.tracks.findFirst({
     where: (fields, { and, eq, isNull }) =>
       and(
