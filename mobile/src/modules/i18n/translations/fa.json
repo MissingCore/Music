@@ -1,6 +1,5 @@
 {
   "language": "فارسی",
-
   "term": {
     "album": "آلبوم",
     "albums": "آلبوم ها",
@@ -12,7 +11,6 @@
     "playlists": "لیست های پخش",
     "track": "آهنگ",
     "tracks": "آهنگ ها",
-
     "play": "پخش",
     "pause": "توقف",
     "prev": "قبلی",
@@ -20,35 +18,28 @@
     "shuffle": "تصادفی",
     "repeat": "تکرار",
     "repeatOne": "تکرار یکی",
-
     "favorite": "علاقه‌مندی",
     "favorites": "علاقه‌مندی ها",
     "unFavorite": "حذف علاقه‌مندی",
     "favoriteTracks": "آهنگ های مورد علاقه",
-
     "all": "همه",
     "home": "خانه",
     "settings": "تنظیمات",
     "upcoming": "آینده",
     "playingFrom": "در حال پخش از",
-
     "disc": "دیسک {{count}}"
   },
-
   "template": {
     "entryAdded": "`{{- name}}` اضافه شد.",
     "entryRemove": "حذف `{{- name}}`.",
     "entryRemoved": "`{{- name}}` حذف شد.",
-
     "entrySeeMore": "اطلاعات بیشتر درباره `{{- name}}`.",
     "notFound": "`{{- name}}` وجود ندارد.",
-
     "entryShow": "نمایش `{{- name}}`",
     "entryHide": "مخفی کردن `{{- name}}`",
     "entryEnable": "فعال کردن `{{- name}}`",
     "entryDisable": "غیرفعال کردن `{{- name}}`"
   },
-
   "plural": {
     "entry_one": "{{count}} مورد",
     "entry_other": "{{count}} موارد",
@@ -57,25 +48,20 @@
     "track_one": "{{count}} $t(term.track)",
     "track_other": "{{count}} $t(term.tracks)"
   },
-
   "form": {
     "apply": "اعمال تغییرات",
     "back": "بازگشت",
     "cancel": "لغو",
     "confirm": "تأیید",
-
     "unsaved": "ممکن است تغییرات ذخیره نشده‌ای داشته باشید.",
     "stay": "ماندن",
     "leave": "خروج",
-
     "clear": "پاک کردن",
     "reset": "بازنشانی",
-
     "validation": {
       "unique": "منحصر به فرد"
     }
   },
-
   "err": {
     "flow": {
       "route": {
@@ -95,25 +81,21 @@
         "brief": "یک تصویر از این صفحه ضمیمه کنید."
       }
     },
-
     "msg": {
       "actionCancel": "عملیات لغو شد.",
       "invalidStructure": "ساختار نامعتبر.",
       "noSelect": "هیچ چیز انتخاب نشده.",
       "usedName": "این نام قابل استفاده نیست.",
-
       "noContent": "هیچ محتوایی یافت نشد.",
       "noErrors": "هیچ خطایی یافت نشد.",
       "noFilters": "هیچ فیلتری یافت نشد.",
       "noResults": "هیچ نتیجه‌ای یافت نشد.",
-
       "noAlbums": "هیچ آلبومی یافت نشد.",
       "noArtists": "هیچ خواننده‌ای یافت نشد.",
       "noPlaylists": "هیچ لیست پخشی یافت نشد.",
       "noTracks": "هیچ آهنگی یافت نشد."
     }
   },
-
   "feat": {
     "appUpdate": {
       "title": "به‌روزرسانی برنامه",
@@ -299,7 +281,6 @@
         "rcNotification": "اعلان پیش انتشار"
       }
     },
-
     "onboardPreprocess": {
       "title": "پیش پردازش",
       "brief": "اطمینان حاصل کنید که داده های موجود با تغییرات مطابقت دارند."
@@ -319,7 +300,6 @@
         "found": "{{amount}} یافت شد"
       }
     },
-
     "playedRecent": {
       "title": "اخیراً پخش شده",
       "extra": {
@@ -333,7 +313,6 @@
         "searchMedia": "جستجوی رسانه"
       }
     },
-
     "artwork": {
       "extra": {
         "change": "تغییر تصویر جلد",
@@ -368,7 +347,6 @@
         "year": "سال"
       }
     },
-
     "modalSort": {
       "title": "ترتیب مرتب سازی",
       "extra": {
@@ -384,10 +362,8 @@
         "filePath": "مسیر فایل",
         "sampleRate": "نرخ نمونه برداری",
         "size": "اندازه",
-
         "addToPlaylist": "اضافه به لیست پخش",
         "addToQueue": "اضافه به صف",
-
         "queueAdd": "`{{- name}}` به صف اضافه شد."
       }
     }
