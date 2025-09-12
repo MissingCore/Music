@@ -69,3 +69,7 @@
 ## [العربية] Arabic
 
 - [@tariqsaidofficial](https://github.com/tariqsaidofficial)
+
+## [فارسی] Persian
+
+- [@soorosh-st](https://github.com/soorosh-st)

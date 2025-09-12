@@ -6,6 +6,7 @@ export const LANGUAGES = [
   { code: "de", name: "Deutsch" },
   { code: "en", name: "English" },
   { code: "es", name: "Español" },
+  { code: "fa", name: "فارسی" },
   { code: "fr", name: "Français" },
   { code: "hi", name: "हिंदी" },
   { code: "id", name: "Indonesia" },
