@@ -4,9 +4,9 @@ import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
-import { Edit } from "~/icons/Edit";
-import { Favorite } from "~/icons/Favorite";
-import { Remove } from "~/icons/Remove";
+import { Edit } from "~/resources/icons/Edit";
+import { Favorite } from "~/resources/icons/Favorite";
+import { Remove } from "~/resources/icons/Remove";
 import {
   useFavoritePlaylist,
   useMoveInPlaylist,

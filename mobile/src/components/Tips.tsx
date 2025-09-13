@@ -6,7 +6,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import { TouchLong } from "~/icons/TouchLong";
+import { TouchLong } from "~/resources/icons/TouchLong";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 
 import { Colors } from "~/constants/Styles";

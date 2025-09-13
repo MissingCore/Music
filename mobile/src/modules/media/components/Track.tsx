@@ -2,7 +2,7 @@ import type { FlashListProps } from "@shopify/flash-list";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
-import { MoreVert } from "~/icons/MoreVert";
+import { MoreVert } from "~/resources/icons/MoreVert";
 import { presentTrackSheet } from "~/services/SessionStore";
 import { playFromMediaList } from "../services/Playback";
 import type { PlayListSource } from "../types";

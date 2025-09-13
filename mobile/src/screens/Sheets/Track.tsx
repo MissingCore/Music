@@ -8,16 +8,16 @@ import { Pressable, View } from "react-native";
 
 import type { TrackWithAlbum } from "~/db/schema";
 
-import type { Icon } from "~/icons/type";
-import { Edit } from "~/icons/Edit";
-import { Favorite } from "~/icons/Favorite";
-import { Image } from "~/icons/Image";
-import { List } from "~/icons/List";
-import { PlaylistAdd } from "~/icons/PlaylistAdd";
-import { QueueMusic } from "~/icons/QueueMusic";
-import { Schedule } from "~/icons/Schedule";
-import { Visibility } from "~/icons/Visibility";
-import { VisibilityOff } from "~/icons/VisibilityOff";
+import type { Icon } from "~/resources/icons/type";
+import { Edit } from "~/resources/icons/Edit";
+import { Favorite } from "~/resources/icons/Favorite";
+import { Image } from "~/resources/icons/Image";
+import { List } from "~/resources/icons/List";
+import { PlaylistAdd } from "~/resources/icons/PlaylistAdd";
+import { QueueMusic } from "~/resources/icons/QueueMusic";
+import { Schedule } from "~/resources/icons/Schedule";
+import { Visibility } from "~/resources/icons/Visibility";
+import { VisibilityOff } from "~/resources/icons/VisibilityOff";
 import { usePlaylists } from "~/queries/playlist";
 import {
   useAddToPlaylist,

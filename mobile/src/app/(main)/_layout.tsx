@@ -7,8 +7,8 @@ import { useEffect, useMemo } from "react";
 import { View } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
 
-import { Search } from "~/icons/Search";
-import { Settings } from "~/icons/Settings";
+import { Search } from "~/resources/icons/Search";
+import { Settings } from "~/resources/icons/Settings";
 import { useTabsByVisibility } from "~/services/UserPreferences";
 import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 import { useHasNewUpdate } from "~/hooks/useHasNewUpdate";

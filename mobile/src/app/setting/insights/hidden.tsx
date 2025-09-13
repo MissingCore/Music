@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-import { VisibilityOff } from "~/icons/VisibilityOff";
+import { VisibilityOff } from "~/resources/icons/VisibilityOff";
 import { useHiddenTracks } from "~/queries/setting";
 import { useHideTrack } from "~/queries/track";
 

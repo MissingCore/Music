@@ -11,8 +11,8 @@ import type {
 } from "~/db/slimTypes";
 import { getPlaylistCover, getTrackCover } from "~/db/utils";
 
-import { Close } from "~/icons/Close";
-import { Search } from "~/icons/Search";
+import { Close } from "~/resources/icons/Close";
+import { Search } from "~/resources/icons/Search";
 import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";

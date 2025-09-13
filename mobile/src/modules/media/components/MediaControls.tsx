@@ -1,12 +1,12 @@
 import { useTranslation } from "react-i18next";
 
-import { Pause } from "~/icons/Pause";
-import { PlayArrow } from "~/icons/PlayArrow";
-import { Repeat } from "~/icons/Repeat";
-import { RepeatOne } from "~/icons/RepeatOne";
-import { Shuffle } from "~/icons/Shuffle";
-import { SkipNext } from "~/icons/SkipNext";
-import { SkipPrevious } from "~/icons/SkipPrevious";
+import { Pause } from "~/resources/icons/Pause";
+import { PlayArrow } from "~/resources/icons/PlayArrow";
+import { Repeat } from "~/resources/icons/Repeat";
+import { RepeatOne } from "~/resources/icons/RepeatOne";
+import { Shuffle } from "~/resources/icons/Shuffle";
+import { SkipNext } from "~/resources/icons/SkipNext";
+import { SkipPrevious } from "~/resources/icons/SkipPrevious";
 import { useMusicStore } from "../services/Music";
 import { MusicControls } from "../services/Playback";
 import { useIsPlaying } from "../hooks/useIsPlaying";

@@ -5,12 +5,12 @@ import { Pressable, View } from "react-native";
 
 import type { TrackWithAlbum } from "~/db/schema";
 
-import { Favorite } from "~/icons/Favorite";
-import { InstantMix } from "~/icons/InstantMix";
-import { KeyboardArrowDown } from "~/icons/KeyboardArrowDown";
-import { LibraryMusic } from "~/icons/LibraryMusic";
-import { MoreVert } from "~/icons/MoreVert";
-import { Timer } from "~/icons/Timer";
+import { Favorite } from "~/resources/icons/Favorite";
+import { InstantMix } from "~/resources/icons/InstantMix";
+import { KeyboardArrowDown } from "~/resources/icons/KeyboardArrowDown";
+import { LibraryMusic } from "~/resources/icons/LibraryMusic";
+import { MoreVert } from "~/resources/icons/MoreVert";
+import { Timer } from "~/resources/icons/Timer";
 import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { useMusicStore } from "~/modules/media/services/Music";
 import { presentTrackSheet } from "~/services/SessionStore";

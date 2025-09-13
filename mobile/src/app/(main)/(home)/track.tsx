@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { Sort } from "~/icons/Sort";
+import { Sort } from "~/resources/icons/Sort";
 import { useTracksForTrackCard } from "~/queries/track";
 import { StickyActionListLayout } from "~/layouts/StickyActionScroll";
 import { TrackSortSheet } from "~/screens/Sheets/TrackSort";

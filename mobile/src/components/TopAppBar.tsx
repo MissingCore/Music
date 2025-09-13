@@ -4,7 +4,7 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { ArrowBack } from "~/icons/ArrowBack";
+import { ArrowBack } from "~/resources/icons/ArrowBack";
 
 import { OnRTL } from "~/lib/react";
 import { SafeContainer } from "./Containment/SafeContainer";

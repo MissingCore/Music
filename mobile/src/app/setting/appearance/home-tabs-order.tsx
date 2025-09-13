@@ -3,10 +3,10 @@ import { useTranslation } from "react-i18next";
 import { Pressable } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
-import { DragIndicator } from "~/icons/DragIndicator";
-import { Home } from "~/icons/Home";
-import { Visibility } from "~/icons/Visibility";
-import { VisibilityOff } from "~/icons/VisibilityOff";
+import { DragIndicator } from "~/resources/icons/DragIndicator";
+import { Home } from "~/resources/icons/Home";
+import { Visibility } from "~/resources/icons/Visibility";
+import { VisibilityOff } from "~/resources/icons/VisibilityOff";
 import type { OrderableTab } from "~/services/UserPreferences";
 import {
   userPreferencesStore,

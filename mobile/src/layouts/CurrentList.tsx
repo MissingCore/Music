@@ -12,7 +12,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import { Schedule } from "~/icons/Schedule";
+import { Schedule } from "~/resources/icons/Schedule";
 import { useMusicStore } from "~/modules/media/services/Music";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useIsPlaying } from "~/modules/media/hooks/useIsPlaying";

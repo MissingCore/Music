@@ -1,7 +1,7 @@
 import type { PressableProps, StyleProp, ViewStyle } from "react-native";
 import { Pressable, View } from "react-native";
 
-import type { Icon } from "~/icons/type";
+import type { Icon } from "~/resources/icons/type";
 import { useTheme } from "~/hooks/useTheme";
 
 import { Colors } from "~/constants/Styles";

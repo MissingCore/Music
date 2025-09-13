@@ -5,9 +5,9 @@ import TrackPlayer from "@weights-ai/react-native-track-player";
 
 import { getTrackCover } from "~/db/utils";
 
-import { Remove } from "~/icons/Remove";
-import { SlowMotionVideo } from "~/icons/SlowMotionVideo";
-import { VolumeUp } from "~/icons/VolumeUp";
+import { Remove } from "~/resources/icons/Remove";
+import { SlowMotionVideo } from "~/resources/icons/SlowMotionVideo";
+import { VolumeUp } from "~/resources/icons/VolumeUp";
 import { Queue, useMusicStore } from "~/modules/media/services/Music";
 import { sessionStore, useSessionStore } from "~/services/SessionStore";
 import type { UpcomingStore } from "./helpers/UpcomingStore";

@@ -2,7 +2,7 @@ import { Stack, useLocalSearchParams } from "expo-router";
 import { openBrowserAsync } from "expo-web-browser";
 import { useTranslation } from "react-i18next";
 
-import { OpenInNew } from "~/icons/OpenInNew";
+import { OpenInNew } from "~/resources/icons/OpenInNew";
 import LicensesList from "~/resources/licenses.json";
 import { useTheme } from "~/hooks/useTheme";
 import { StandardScrollLayout } from "~/layouts/StandardScroll";

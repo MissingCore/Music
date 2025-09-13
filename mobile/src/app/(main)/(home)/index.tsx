@@ -1,7 +1,7 @@
 import { Redirect, router } from "expo-router";
 import { useTranslation } from "react-i18next";
 
-import { History } from "~/icons/History";
+import { History } from "~/resources/icons/History";
 import {
   useFavoriteListsForCards,
   useFavoriteTracksCount,

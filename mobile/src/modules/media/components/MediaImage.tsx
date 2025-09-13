@@ -3,7 +3,7 @@ import { cssInterop } from "nativewind";
 import { useMemo } from "react";
 import { View } from "react-native";
 
-import { Folder } from "~/icons/Folder";
+import { Folder } from "~/resources/icons/Folder";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";

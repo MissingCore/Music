@@ -2,7 +2,7 @@ import { router } from "expo-router";
 import { openBrowserAsync } from "expo-web-browser";
 import { useTranslation } from "react-i18next";
 
-import { OpenInNew } from "~/icons/OpenInNew";
+import { OpenInNew } from "~/resources/icons/OpenInNew";
 import { queries as q } from "~/queries/keyStore";
 import {
   userPreferencesStore,

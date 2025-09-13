@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
 
-import { Pause } from "~/icons/Pause";
-import { PlayArrow } from "~/icons/PlayArrow";
+import { Pause } from "~/resources/icons/Pause";
+import { PlayArrow } from "~/resources/icons/PlayArrow";
 import { useMusicStore } from "../services/Music";
 import { MusicControls } from "../services/Playback";
 import { useIsPlaying } from "../hooks/useIsPlaying";

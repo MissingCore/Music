@@ -6,11 +6,11 @@ import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashLis
 
 import type { SlimTrackWithAlbum } from "~/db/slimTypes";
 
-import { Add } from "~/icons/Add";
-import { Cancel } from "~/icons/Cancel";
-import { CheckCircle } from "~/icons/CheckCircle";
-import { Check } from "~/icons/Check";
-import { Remove } from "~/icons/Remove";
+import { Add } from "~/resources/icons/Add";
+import { Cancel } from "~/resources/icons/Cancel";
+import { CheckCircle } from "~/resources/icons/CheckCircle";
+import { Check } from "~/resources/icons/Check";
+import { Remove } from "~/resources/icons/Remove";
 import { useDeletePlaylist } from "~/queries/playlist";
 import { useFloatingContent } from "~/hooks/useFloatingContent";
 import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";

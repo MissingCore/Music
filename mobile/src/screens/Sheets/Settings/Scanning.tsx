@@ -2,9 +2,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Keyboard, View } from "react-native";
 
-import { Add } from "~/icons/Add";
-import { CreateNewFolder } from "~/icons/CreateNewFolder";
-import { Remove } from "~/icons/Remove";
+import { Add } from "~/resources/icons/Add";
+import { CreateNewFolder } from "~/resources/icons/CreateNewFolder";
+import { Remove } from "~/resources/icons/Remove";
 import {
   userPreferencesStore,
   useUserPreferencesStore,
