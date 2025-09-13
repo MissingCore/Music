@@ -26,6 +26,8 @@ export namespace Track {
   export type Props = Prettify<
     Content &
       Omit<PressProps, "onPress"> & {
+        /** Indicate that this track is being played. */
+        showIndicator?: boolean;
         trackSource: PlayListSource;
         LeftElement?: React.JSX.Element;
         /** Note: Maps to `wrapperClassName` on `<SearchResult />`. */
@@ -42,25 +44,15 @@ export function Track({
   id,
   trackSource,
   className,
+  showIndicator,
   LeftElement,
   ...props
 }: Track.Props) {
   const { t } = useTranslation();
-  const currSource = useMusicStore((state) => state.playingSource);
-  const activeId = useMusicStore((state) => state.activeId);
-  const isQueuedTrack = useMusicStore((state) => state.isInQueue);
-
-  const showPlayingIndicator = useMemo(
-    () =>
-      arePlaybackSourceEqual(currSource, trackSource) &&
-      id === activeId &&
-      !isQueuedTrack,
-    [id, trackSource, currSource, activeId, isQueuedTrack],
-  );
 
   const overriddenLeftElement = useMemo(
-    () => (showPlayingIndicator ? <PlayingIndicator /> : LeftElement),
-    [LeftElement, showPlayingIndicator],
+    () => (showIndicator ? <PlayingIndicator /> : LeftElement),
+    [LeftElement, showIndicator],
   );
 
   return (
@@ -77,10 +69,29 @@ export function Track({
         />
       }
       wrapperClassName={cn("bg-canvas", className)}
-      poppyLabel={showPlayingIndicator}
+      poppyLabel={showIndicator}
       LeftElement={overriddenLeftElement}
       {...props}
     />
+  );
+}
+//#endregion
+
+//#region useIsTrackPlayed
+/** Determines if we should add a "playing" indicator for the given track. */
+export function useIsTrackPlayed(listSource: PlayListSource) {
+  const currSource = useMusicStore((state) => state.playingSource);
+  const activeId = useMusicStore((state) => state.activeId);
+  const isQueuedTrack = useMusicStore((state) => state.isInQueue);
+
+  const passPreCheck = useMemo(
+    () => arePlaybackSourceEqual(currSource, listSource) && !isQueuedTrack,
+    [currSource, isQueuedTrack, listSource],
+  );
+
+  return useMemo(
+    () => [passPreCheck, (id: string) => id === activeId] as const,
+    [passPreCheck, activeId],
   );
 }
 //#endregion
@@ -92,16 +103,20 @@ export function useTrackListPreset(props: {
   trackSource: PlayListSource;
   isPending?: boolean;
 }) {
+  const [passPreCheck, showIndicator] = useIsTrackPlayed(props.trackSource);
   return useMemo(
     () => ({
       estimatedItemSize: 56, // 48px Height + 8px Margin Top
       data: props.data,
       keyExtractor: ({ id }) => id,
+      // Helps re-render items when a child is now being played.
+      extraData: passPreCheck ? showIndicator : false,
       renderItem: ({ item, index }) => (
         <Track
           {...item}
           trackSource={props.trackSource}
           className={index > 0 ? "mt-2" : undefined}
+          showIndicator={passPreCheck ? showIndicator(item.id) : undefined}
         />
       ),
       ListEmptyComponent: (
@@ -111,7 +126,7 @@ export function useTrackListPreset(props: {
         />
       ),
     }),
-    [props],
+    [props, passPreCheck, showIndicator],
   ) satisfies FlashListProps<Track.Content>;
 }
 //#endregion
