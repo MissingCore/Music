@@ -4,7 +4,9 @@ import { useTranslation } from "react-i18next";
 
 import { MoreVert } from "~/icons/MoreVert";
 import { presentTrackSheet } from "~/services/SessionStore";
+import { useMusicStore } from "../services/Music";
 import { playFromMediaList } from "../services/Playback";
+import { arePlaybackSourceEqual } from "../helpers/data";
 import type { PlayListSource } from "../types";
 
 import { cn } from "~/lib/style";
@@ -13,6 +15,7 @@ import type { PressProps } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { SearchResult } from "~/modules/search/components/SearchResult";
+import { PlayingIndicator } from "./AnimatedBars";
 
 //#region Track
 export namespace Track {
@@ -35,8 +38,31 @@ export namespace Track {
  * Displays information about the current track with 2 different press
  * scenarios (pressing the icon or the whole card will do different actions).
  */
-export function Track({ id, trackSource, className, ...props }: Track.Props) {
+export function Track({
+  id,
+  trackSource,
+  className,
+  LeftElement,
+  ...props
+}: Track.Props) {
   const { t } = useTranslation();
+  const currSource = useMusicStore((state) => state.playingSource);
+  const activeId = useMusicStore((state) => state.activeId);
+  const isQueuedTrack = useMusicStore((state) => state.isInQueue);
+
+  const showPlayingIndicator = useMemo(
+    () =>
+      arePlaybackSourceEqual(currSource, trackSource) &&
+      id === activeId &&
+      !isQueuedTrack,
+    [id, trackSource, currSource, activeId, isQueuedTrack],
+  );
+
+  const overriddenLeftElement = useMemo(
+    () => (showPlayingIndicator ? <PlayingIndicator /> : LeftElement),
+    [LeftElement, showPlayingIndicator],
+  );
+
   return (
     <SearchResult
       as="ripple"
@@ -51,6 +77,8 @@ export function Track({ id, trackSource, className, ...props }: Track.Props) {
         />
       }
       wrapperClassName={cn("bg-canvas", className)}
+      poppyLabel={showPlayingIndicator}
+      LeftElement={overriddenLeftElement}
       {...props}
     />
   );
