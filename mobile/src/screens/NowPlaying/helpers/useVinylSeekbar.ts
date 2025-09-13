@@ -22,6 +22,8 @@ export function useVinylSeekbar() {
   const wrapperRef = useRef<Animated.View>(null);
   const hasMounted = useRef(false);
   const [isActive, setIsActive] = useState(false);
+  const [isCancelled, setIsCancelled] = useState(false);
+  const radius = useSharedValue(0);
   // Coordinates pointing to the center of the vinyl.
   const centerX = useSharedValue(0);
   const centerY = useSharedValue(0);
@@ -47,8 +49,20 @@ export function useVinylSeekbar() {
     wrapperRef.current?.measure((_x, _y, width, height, pageX, pageY) => {
       centerX.value = pageX + width / 2;
       centerY.value = pageY + height / 2;
+      radius.value = Math.min(width, height) / 2;
     });
-  }, [centerX, centerY]);
+  }, [centerX, centerY, radius]);
+
+  const gestureWithinArea = useCallback(
+    ({ absoluteX, absoluteY }: { absoluteX: number; absoluteY: number }) => {
+      "worklet";
+      const a = centerX.value - absoluteX;
+      const b = centerY.value - absoluteY;
+      const c = Math.sqrt(a ** 2 + b ** 2);
+      return c <= radius.value;
+    },
+    [centerX, centerY, radius],
+  );
 
   const onEnd = useCallback(
     async (seconds: number) => {
@@ -91,41 +105,54 @@ export function useVinylSeekbar() {
 
   const seekGesture = Gesture.Pan()
     .shouldCancelWhenOutside(true)
-    .hitSlop(32)
+    .enabled(!isCancelled)
     .onStart(({ absoluteX, absoluteY }) => {
-      runOnJS(setIsActive)(true);
-      runOnJS(setPosition)(position);
-      debounceAngle.value = seekProgress.value = convertUnit(position);
-      prevAngle.value = Math.atan2(
-        absoluteY - centerY.value,
-        absoluteX - centerX.value,
-      );
+      if (gestureWithinArea({ absoluteX, absoluteY })) {
+        runOnJS(setIsActive)(true);
+        runOnJS(setPosition)(position);
+        debounceAngle.value = seekProgress.value = convertUnit(position);
+        prevAngle.value = Math.atan2(
+          absoluteY - centerY.value,
+          absoluteX - centerX.value,
+        );
+      } else {
+        runOnJS(setIsCancelled)(true);
+      }
     })
     .onUpdate(({ absoluteX, absoluteY }) => {
-      let currAngle = Math.atan2(
-        absoluteY - centerY.value,
-        absoluteX - centerX.value,
-      );
-      // Ensure arctan calculation is continuous.
-      while (currAngle < prevAngle.value - Math.PI) currAngle += 2 * Math.PI;
-      while (currAngle > prevAngle.value + Math.PI) currAngle -= 2 * Math.PI;
-      // Calculate new rotation position.
-      const rotateAmount = ((currAngle - prevAngle.value) * 180) / Math.PI;
-      const newPosition = (seekProgress.value ?? 0) + rotateAmount;
-      if (newPosition < 0) seekProgress.value = 0;
-      else if (newPosition > maxDegrees) seekProgress.value = maxDegrees;
-      else seekProgress.value = newPosition;
+      if (gestureWithinArea({ absoluteX, absoluteY })) {
+        let currAngle = Math.atan2(
+          absoluteY - centerY.value,
+          absoluteX - centerX.value,
+        );
+        // Ensure arctan calculation is continuous.
+        while (currAngle < prevAngle.value - Math.PI) currAngle += 2 * Math.PI;
+        while (currAngle > prevAngle.value + Math.PI) currAngle -= 2 * Math.PI;
+        // Calculate new rotation position.
+        const rotateAmount = ((currAngle - prevAngle.value) * 180) / Math.PI;
+        const newPosition = (seekProgress.value ?? 0) + rotateAmount;
+        if (newPosition < 0) seekProgress.value = 0;
+        else if (newPosition > maxDegrees) seekProgress.value = maxDegrees;
+        else seekProgress.value = newPosition;
 
-      // Only run `setSliderPos` when we've rotated ~15deg (which is ~1s).
-      if (Math.abs((debounceAngle.value ?? 0) - seekProgress.value) > 15) {
-        runOnJS(setPosition)(convertUnit(seekProgress.value, "degrees"));
-        debounceAngle.value = seekProgress.value;
+        // Only run `setSliderPos` when we've rotated ~15deg (which is ~1s).
+        if (Math.abs((debounceAngle.value ?? 0) - seekProgress.value) > 15) {
+          runOnJS(setPosition)(convertUnit(seekProgress.value, "degrees"));
+          debounceAngle.value = seekProgress.value;
+        }
+        prevAngle.value = currAngle;
+      } else {
+        runOnJS(setIsCancelled)(true);
       }
-      prevAngle.value = currAngle;
     })
     .onEnd(() => {
       runOnJS(setIsActive)(false);
-      runOnJS(onEnd)(convertUnit(seekProgress.value ?? 0, "degrees"));
+      runOnJS(setIsCancelled)(false);
+      // Check to prevent going to 0s if we initiated the gesture outside
+      // of our range.
+      if (seekProgress.value !== null) {
+        runOnJS(onEnd)(convertUnit(seekProgress.value ?? 0, "degrees"));
+      }
     });
 
   const vinylStyle = useAnimatedStyle(() => {
