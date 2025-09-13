@@ -26,7 +26,7 @@ import { addTrailingSlash } from "~/utils/string";
 import { useFlashListRef } from "~/components/Defaults";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { StyledText } from "~/components/Typography/StyledText";
-import { Track, useIsTrackPlayed } from "~/modules/media/components/Track";
+import { Track } from "~/modules/media/components/Track";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 
 /** Animated scrollview supporting gestures. */
@@ -40,10 +40,7 @@ export default function FolderScreen() {
   const [dirSegments, _setDirSegments] = useState<string[]>([]);
 
   const fullPath = dirSegments.join("/");
-  // Information about this track list.
-  const trackSource = { type: "folder", id: `${fullPath}/` } as const;
 
-  const [passPreCheck, showIndicator] = useIsTrackPlayed(trackSource);
   const { isPending, data } = useFolderContent(fullPath);
 
   const renderedData = useMemo(
@@ -87,6 +84,9 @@ export default function FolderScreen() {
     return () => subscription.remove();
   }, [dirSegments, isFocused, setDirSegments]);
 
+  // Information about this track list.
+  const trackSource = { type: "folder", id: `${fullPath}/` } as const;
+
   return (
     <StickyActionListLayout
       listRef={listRef}
@@ -94,15 +94,12 @@ export default function FolderScreen() {
       estimatedItemSize={56} // 48px Height + 8px Margin Top
       data={renderedData}
       keyExtractor={(item) => (isTrackContent(item) ? item.id : item.path)}
-      // Helps re-render items when a child is now being played.
-      extraData={passPreCheck ? showIndicator : false}
       renderItem={({ item, index }) =>
         isTrackContent(item) ? (
           <Track
             {...item}
             trackSource={trackSource}
             className={index > 0 ? "mt-2" : undefined}
-            showIndicator={passPreCheck ? showIndicator(item.id) : undefined}
           />
         ) : (
           <SearchResult
