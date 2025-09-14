@@ -1,4 +1,4 @@
-import { Stack, router, useLocalSearchParams } from "expo-router";
+// import { Stack, router, useLocalSearchParams } from "expo-router";
 import { memo, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
@@ -37,7 +37,8 @@ type RenderItemProps = DragListRenderItemInfo<ScreenData>;
 export default function Playlist() {
   const { t } = useTranslation();
   const { bottomInset } = useBottomActionsContext();
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const id = "Clancy Alt";
+  // const { id } = useLocalSearchParams<{ id: string }>();
   const { isPending, error, data } = usePlaylistForScreen(id);
   const moveInPlaylist = useMoveInPlaylist(id);
   const favoritePlaylist = useFavoritePlaylist(id);
@@ -60,7 +61,7 @@ export default function Playlist() {
 
   return (
     <>
-      <Stack.Screen
+      {/* <Stack.Screen
         options={{
           headerRight: () => (
             <View className="flex-row gap-1">
@@ -82,7 +83,7 @@ export default function Playlist() {
             </View>
           ),
         }}
-      />
+      /> */}
       <CurrentListLayout
         title={data.name}
         metadata={data.metadata}

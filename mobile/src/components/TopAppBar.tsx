@@ -1,10 +1,10 @@
 import { getHeaderTitle } from "@react-navigation/elements";
 import type { NativeStackHeaderProps } from "@react-navigation/native-stack";
-import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { ArrowBack } from "~/resources/icons/ArrowBack";
+import { router } from "~/navigation/utils/router";
 
 import { OnRTL } from "~/lib/react";
 import { SafeContainer } from "./Containment/SafeContainer";

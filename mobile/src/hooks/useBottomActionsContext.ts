@@ -1,5 +1,5 @@
-import type { Href } from "expo-router";
-import { usePathname } from "expo-router";
+// import type { Href } from "expo-router";
+// import { usePathname } from "expo-router";
 
 import { useMusicStore } from "~/modules/media/services/Music";
 
@@ -8,7 +8,8 @@ const overrideVisible = [
   "/playlist/create",
   "/playlist/modify",
   "/track/modify",
-] satisfies Partial<Href[]>;
+  // ] satisfies Partial<Href[]>;
+];
 
 /** Routes where we should hide the navigation bar. */
 const hideNavRoutes = [
@@ -18,14 +19,16 @@ const hideNavRoutes = [
   "/playlist/",
   "/now-playing",
   "/recently-played",
-] satisfies Partial<Href[]>;
+  // ] satisfies Partial<Href[]>;
+];
 
 /**
  * Returns information about what "bottom actions" are displayed in the
  * `(main)` group along with the additional bottom padding required.
  */
 export function useBottomActionsContext() {
-  const pathname = usePathname(); // Fires whenever we navigate to a different screen.
+  const pathname = "";
+  // const pathname = usePathname(); // Fires whenever we navigate to a different screen.
   const activeTrackId = useMusicStore((state) => state.activeId);
 
   const isMiniPlayerRendered =

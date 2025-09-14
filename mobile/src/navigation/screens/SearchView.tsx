@@ -1,8 +1,8 @@
-import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { playFromMediaList } from "~/modules/media/services/Playback";
+import { router } from "../utils/router";
 
 import { AccentText } from "~/components/Typography/AccentText";
 import { ReservedPlaylists } from "~/modules/media/constants";

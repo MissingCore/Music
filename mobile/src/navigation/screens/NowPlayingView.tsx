@@ -1,5 +1,3 @@
-import type { Href } from "expo-router";
-import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 
@@ -15,6 +13,7 @@ import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { useMusicStore } from "~/modules/media/services/Music";
 import { presentTrackSheet } from "~/services/SessionStore";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
+import { router } from "../utils/router";
 import { useUpcomingStore } from "~/screens/NowPlaying/helpers/UpcomingStore";
 import { usePlayerProgress } from "~/screens/NowPlaying/helpers/usePlayerProgress";
 import { NowPlayingArtwork } from "~/screens/NowPlaying/Artwork";
@@ -126,7 +125,7 @@ function MarqueeLink({
   className,
   children,
   ...rest
-}: React.ComponentProps<typeof StyledText> & { href: Href }) {
+}: React.ComponentProps<typeof StyledText> & { href: string }) {
   if (!children) return null;
   return (
     <Marquee>

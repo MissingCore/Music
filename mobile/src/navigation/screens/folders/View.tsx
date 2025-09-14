@@ -1,5 +1,5 @@
 import { useIsFocused } from "@react-navigation/native";
-import { router, useLocalSearchParams } from "expo-router";
+// import { router, useLocalSearchParams } from "expo-router";
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { BackHandler, Pressable, useWindowDimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -18,6 +18,7 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { useFolderContent } from "~/queries/folder";
+import { router } from "../../utils/router";
 import { StickyActionListLayout } from "~/layouts/StickyActionScroll";
 
 import { OnRTL, OnRTLWorklet } from "~/lib/react";
@@ -35,7 +36,8 @@ const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 export default function Folders() {
   const isFocused = useIsFocused();
   const listRef = useFlashListRef();
-  const { path } = useLocalSearchParams<{ path?: string }>();
+  const path = undefined;
+  // const { path } = useLocalSearchParams<{ path?: string }>();
   const [dirSegments, _setDirSegments] = useState<string[]>([]);
 
   const fullPath = dirSegments.join("/");

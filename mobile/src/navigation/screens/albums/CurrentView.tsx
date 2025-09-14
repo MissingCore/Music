@@ -1,4 +1,4 @@
-import { Stack, useLocalSearchParams } from "expo-router";
+// import { Stack, useLocalSearchParams } from "expo-router";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -22,7 +22,8 @@ import { Track } from "~/modules/media/components/Track";
 export default function Album() {
   const { t } = useTranslation();
   const { bottomInset } = useBottomActionsContext();
-  const { id: albumId } = useLocalSearchParams<{ id: string }>();
+  const albumId = "";
+  // const { id: albumId } = useLocalSearchParams<{ id: string }>();
   const { isPending, error, data } = useAlbumForScreen(albumId);
   const favoriteAlbum = useFavoriteAlbum(albumId);
 
@@ -54,7 +55,7 @@ export default function Album() {
 
   return (
     <>
-      <Stack.Screen
+      {/* <Stack.Screen
         options={{
           headerRight: () => (
             <IconButton
@@ -65,7 +66,7 @@ export default function Album() {
             />
           ),
         }}
-      />
+      /> */}
       <CurrentListLayout
         title={data.name}
         artist={data.artistName}

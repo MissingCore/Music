@@ -1,4 +1,4 @@
-import { Stack, router } from "expo-router";
+// import { Stack, router } from "expo-router";
 import { memo, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler, Pressable, View } from "react-native";
@@ -14,6 +14,7 @@ import { Remove } from "~/resources/icons/Remove";
 import { useDeletePlaylist } from "~/queries/playlist";
 import { useFloatingContent } from "~/hooks/useFloatingContent";
 import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
+import { router } from "~/navigation/utils/router";
 import type { InitStoreProps } from "./context";
 import {
   PlaylistStoreProvider,
@@ -62,23 +63,25 @@ function ScreenConfig() {
   const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
   const onSubmit = usePlaylistStore((state) => state.INTERNAL_onSubmit);
 
-  return (
-    <Stack.Screen
-      options={{
-        headerTitle: t(`feat.playlist.extra.${mode ?? "create"}`),
-        // Hacky solution to disable the back button when submitting.
-        headerLeft: isSubmitting ? () => undefined : undefined,
-        headerRight: () => (
-          <IconButton
-            Icon={Check}
-            accessibilityLabel={t("form.apply")}
-            onPress={onSubmit}
-            disabled={isUnchanged || !isUnique || isSubmitting}
-          />
-        ),
-      }}
-    />
-  );
+  return <></>;
+
+  // return (
+  // <Stack.Screen
+  //   options={{
+  //     headerTitle: t(`feat.playlist.extra.${mode ?? "create"}`),
+  //     // Hacky solution to disable the back button when submitting.
+  //     headerLeft: isSubmitting ? () => undefined : undefined,
+  //     headerRight: () => (
+  //       <IconButton
+  //         Icon={Check}
+  //         accessibilityLabel={t("form.apply")}
+  //         onPress={onSubmit}
+  //         disabled={isUnchanged || !isUnique || isSubmitting}
+  //       />
+  //     ),
+  //   }}
+  // />
+  // );
 }
 //#endregion
 

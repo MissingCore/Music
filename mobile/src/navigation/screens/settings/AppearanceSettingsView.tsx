@@ -1,4 +1,3 @@
-import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { I18nManager } from "react-native";
 
@@ -7,6 +6,7 @@ import {
   userPreferencesStore,
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
+import { router } from "../../utils/router";
 import { StandardScrollLayout } from "~/layouts/StandardScroll";
 import { AppearanceSettingsSheets } from "~/screens/Sheets/Settings/Appearance";
 

@@ -1,7 +1,9 @@
 import { atom, useSetAtom } from "jotai";
-import { router, usePathname } from "expo-router";
+// import { router, usePathname } from "expo-router";
 import { useEffect, useRef } from "react";
 import { Linking } from "react-native";
+
+import { router } from "~/navigation/utils/router";
 
 /** All of the route handlers inside a single component. */
 export function RouteHandlers() {

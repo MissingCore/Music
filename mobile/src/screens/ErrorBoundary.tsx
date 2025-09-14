@@ -1,4 +1,4 @@
-import type { ErrorBoundaryProps } from "expo-router";
+// import type { ErrorBoundaryProps } from "expo-router";
 import { useCallback } from "react";
 import { View } from "react-native";
 import Bootsplash from "react-native-bootsplash";
@@ -12,7 +12,8 @@ import { Card } from "~/components/Containment/Card";
 import { StyledText } from "~/components/Typography/StyledText";
 
 /** Screen displayed when an error is thrown in a component. */
-export function ErrorBoundary({ error }: ErrorBoundaryProps) {
+export function ErrorBoundary({ error }: { error: Error }) {
+  // export function ErrorBoundary({ error }: ErrorBoundaryProps) {
   const onError = useCallback(() => {
     // Display error message to user if encountered.
     Bootsplash.hide();

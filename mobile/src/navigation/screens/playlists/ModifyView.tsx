@@ -1,5 +1,5 @@
 import { toast } from "@backpackapp-io/react-native-toast";
-import { router, useLocalSearchParams } from "expo-router";
+// import { router, useLocalSearchParams } from "expo-router";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -10,6 +10,7 @@ import {
   usePlaylists,
   useUpdatePlaylist,
 } from "~/queries/playlist";
+import { router } from "../../utils/router";
 import { ModifyPlaylist as ModifyPlaylistBase } from "~/screens/ModifyPlaylist";
 
 import { mutateGuardAsync } from "~/lib/react-query";
@@ -17,7 +18,8 @@ import { ToastOptions } from "~/lib/toast";
 
 export default function ModifyPlaylist() {
   const { t } = useTranslation();
-  const { id } = useLocalSearchParams<{ id: string }>();
+  // const { id } = useLocalSearchParams<{ id: string }>();
+  const id = "Clancy Alt";
   const { data: allPlaylists } = usePlaylists();
   const { data } = usePlaylist(id);
   const updatePlaylist = useUpdatePlaylist(id);

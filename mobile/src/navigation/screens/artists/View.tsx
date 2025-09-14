@@ -1,6 +1,5 @@
-import { router } from "expo-router";
-
 import { useArtistsForIndex } from "~/queries/artist";
+import { router } from "../../utils/router";
 import { StickyActionListLayout } from "~/layouts/StickyActionScroll";
 
 import { isString } from "~/utils/validation";

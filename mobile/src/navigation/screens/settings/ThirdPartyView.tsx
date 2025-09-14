@@ -1,6 +1,5 @@
-import { router } from "expo-router";
-
 import LicensesList from "~/resources/licenses.json";
+import { router } from "../../utils/router";
 
 import { useListPresets } from "~/components/Containment/List";
 import { FlashList } from "~/components/Defaults";

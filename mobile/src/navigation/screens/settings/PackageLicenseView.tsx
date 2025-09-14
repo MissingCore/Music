@@ -1,4 +1,4 @@
-import { Stack, useLocalSearchParams } from "expo-router";
+// import { Stack, useLocalSearchParams } from "expo-router";
 import { openBrowserAsync } from "expo-web-browser";
 import { useTranslation } from "react-i18next";
 
@@ -13,7 +13,8 @@ import { AccentText } from "~/components/Typography/AccentText";
 import { StyledText } from "~/components/Typography/StyledText";
 
 export default function PackageLicense() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  // const { id } = useLocalSearchParams<{ id: string }>();
+  const id = "@missingcore/react-native-metadata-retriever";
   const { t } = useTranslation();
   const { theme } = useTheme();
 
@@ -21,7 +22,7 @@ export default function PackageLicense() {
 
   return (
     <>
-      <Stack.Screen
+      {/* <Stack.Screen
         options={{
           headerRight: () => (
             <IconButton
@@ -33,7 +34,7 @@ export default function PackageLicense() {
             />
           ),
         }}
-      />
+      /> */}
       <StandardScrollLayout contentContainerClassName="pt-2">
         <AccentText className="text-4xl" originalText>
           {licenseInfo.name}

@@ -1,4 +1,3 @@
-import { router } from "expo-router";
 import { openBrowserAsync } from "expo-web-browser";
 import { useTranslation } from "react-i18next";
 
@@ -9,6 +8,7 @@ import {
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
 import { useHasNewUpdate } from "~/hooks/useHasNewUpdate";
+import { router } from "../../utils/router";
 import { StandardScrollLayout } from "~/layouts/StandardScroll";
 import { SettingsSheets } from "~/screens/Sheets/Settings/Root";
 import { LANGUAGES } from "~/modules/i18n/constants";

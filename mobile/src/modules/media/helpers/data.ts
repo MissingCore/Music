@@ -4,7 +4,6 @@
  */
 
 import type { AddTrack } from "@weights-ai/react-native-track-player";
-import type { Href } from "expo-router";
 
 import type { TrackWithAlbum } from "~/db/schema";
 import { getTrackCover } from "~/db/utils";
@@ -77,7 +76,7 @@ export async function getSourceName({ type, id }: PlayListSource) {
 /** Get the link to a media list. */
 export function getSourceLink<T extends PlayListSource | undefined>(
   props: T,
-): undefined extends T ? undefined : Href {
+): undefined extends T ? undefined : string {
   // @ts-expect-error - Return type is correct.
   if (!props) return;
   const { type, id } = props;
@@ -85,9 +84,9 @@ export function getSourceLink<T extends PlayListSource | undefined>(
   if (type === "playlist" && id === ReservedPlaylists.tracks) return "/track";
   else if (type === "folder")
     // @ts-expect-error - Return type is correct.
-    return `/folder?path=${encodeURIComponent(id)}` satisfies Href;
+    return `/folder?path=${encodeURIComponent(id)}` satisfies string;
   // @ts-expect-error - Return type is correct.
-  return `/${type}/${encodeURIComponent(id)}` satisfies Href;
+  return `/${type}/${encodeURIComponent(id)}` satisfies string;
 }
 
 /** Get list of tracks from a `PlayListSource`. */

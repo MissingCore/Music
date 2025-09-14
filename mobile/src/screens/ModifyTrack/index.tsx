@@ -2,7 +2,7 @@ import {
   MetadataPresets,
   getMetadata,
 } from "@missingcore/react-native-metadata-retriever";
-import { Stack, router } from "expo-router";
+// import { Stack, router } from "expo-router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler, View } from "react-native";
@@ -10,6 +10,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 import { Check } from "~/resources/icons/Check";
 import { useFloatingContent } from "~/hooks/useFloatingContent";
+import { router } from "~/navigation/utils/router";
 import type { InitStoreProps, TrackMetadataForm } from "./context";
 import {
   TrackMetadataStoreProvider,
@@ -50,25 +51,27 @@ function ScreenConfig() {
   const isSubmitting = useTrackMetadataStore((state) => state.isSubmitting);
   const onSubmit = useTrackMetadataStore((state) => state.onSubmit);
 
-  return (
-    <Stack.Screen
-      options={{
-        headerTitle: t("feat.trackMetadata.title"),
-        // Hacky solution to disable the back button when submitting.
-        headerLeft: isSubmitting ? () => undefined : undefined,
-        headerRight: () => (
-          <IconButton
-            Icon={Check}
-            accessibilityLabel={t("form.apply")}
-            onPress={onSubmit}
-            disabled={
-              isUnchanged || trackName.trim().length === 0 || isSubmitting
-            }
-          />
-        ),
-      }}
-    />
-  );
+  return <></>;
+
+  // return (
+  //   <Stack.Screen
+  //     options={{
+  //       headerTitle: t("feat.trackMetadata.title"),
+  //       // Hacky solution to disable the back button when submitting.
+  //       headerLeft: isSubmitting ? () => undefined : undefined,
+  //       headerRight: () => (
+  //         <IconButton
+  //           Icon={Check}
+  //           accessibilityLabel={t("form.apply")}
+  //           onPress={onSubmit}
+  //           disabled={
+  //             isUnchanged || trackName.trim().length === 0 || isSubmitting
+  //           }
+  //         />
+  //       ),
+  //     }}
+  //   />
+  // );
 }
 //#endregion
 

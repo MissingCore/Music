@@ -1,5 +1,4 @@
 import { toast } from "@backpackapp-io/react-native-toast";
-import { router } from "expo-router";
 import { createContext, use, useMemo, useRef } from "react";
 import type { StoreApi } from "zustand";
 import { createStore, useStore } from "zustand";
@@ -16,6 +15,7 @@ import {
   getArtworkUri,
 } from "~/modules/scanning/helpers/artwork";
 import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
+import { router } from "~/navigation/utils/router";
 
 import { ToastOptions } from "~/lib/toast";
 import { clearAllQueries } from "~/lib/react-query";

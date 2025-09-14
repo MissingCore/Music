@@ -1,4 +1,3 @@
-import { router } from "expo-router";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
@@ -6,6 +5,7 @@ import { Pressable, View } from "react-native";
 import { ArrowBack } from "~/resources/icons/ArrowBack";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useMusicStore } from "~/modules/media/services/Music";
+import { router } from "~/navigation/utils/router";
 
 import { OnRTL } from "~/lib/react";
 import { Marquee } from "~/components/Containment/Marquee";

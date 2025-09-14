@@ -1,10 +1,10 @@
-import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
 
 import { Pause } from "~/resources/icons/Pause";
 import { PlayArrow } from "~/resources/icons/PlayArrow";
+import { router } from "~/navigation/utils/router";
 import { useMusicStore } from "../services/Music";
 import { MusicControls } from "../services/Playback";
 import { useIsPlaying } from "../hooks/useIsPlaying";

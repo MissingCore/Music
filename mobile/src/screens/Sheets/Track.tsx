@@ -1,5 +1,5 @@
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
-import { router, usePathname } from "expo-router";
+// import { router, usePathname } from "expo-router";
 import type { ParseKeys } from "i18next";
 import { Fragment, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -30,6 +30,7 @@ import {
 import { useSessionStore } from "~/services/SessionStore";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { useTheme } from "~/hooks/useTheme";
+import { router } from "~/navigation/utils/router";
 import { TrackArtworkSheet } from "~/screens/Sheets/Artwork";
 import { Queue, useMusicStore } from "~/modules/media/services/Music";
 
@@ -231,7 +232,8 @@ function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
 
 /** Actions that require a visual description. */
 function TrackTextActions({ id, name }: Record<"id" | "name", string>) {
-  const pathname = usePathname();
+  // const pathname = usePathname();
+  const pathname = "";
   const { width } = useGetColumn({ cols: 2, gap: 3, gutters: 32 });
   const playingSource = useMusicStore((state) => state.playingSource);
   const sourceName = useMusicStore((state) => state.sourceName);
