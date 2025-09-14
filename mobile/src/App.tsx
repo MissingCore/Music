@@ -5,8 +5,8 @@ import Bootsplash from "react-native-bootsplash";
 import { userPreferencesStore } from "~/services/UserPreferences";
 import { useLoadResources } from "~/hooks/useLoadResources";
 import { AppProvider } from "~/providers";
-import { Navigation } from "./navigation/routes";
-import { navigationRef } from "./navigation/utils/router";
+import { Navigation } from "~/navigation/routes";
+import { navigationRef } from "~/navigation/utils/router";
 import { ErrorBoundary } from "~/screens/ErrorBoundary";
 import { OnboardingScreen } from "~/screens/Onboarding";
 import { TrackSheet } from "~/screens/Sheets/Track";
@@ -73,7 +73,7 @@ export default function App() {
           <Stack.Screen name="setting" />
           <Stack.Screen name="notification.click" />
         </Stack> */}
-        <Navigation ref={navigationRef} />;
+        <Navigation ref={navigationRef} />
         <TrackSheet />
       </AppProvider>
     </>

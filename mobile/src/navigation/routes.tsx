@@ -132,12 +132,12 @@ function RootScreens() {
 
 //#region Static Route Config
 export const RootStack = createNativeStackNavigator({
-  initialRouteName: "Home",
+  initialRouteName: "HomeScreens",
   screenOptions: {
     headerShown: false,
   },
   screens: {
-    Home: RootScreens,
+    HomeScreens: RootScreens,
   },
   groups: {
     Current: {

@@ -164,7 +164,7 @@ importers:
         specifier: ^6.9.1
         version: 6.9.1(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-reanimated:
-        specifier: ~3.19.0
+        specifier: ~3.19.1
         version: 3.19.1(@babel/core@7.28.4)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-safe-area-context:
         specifier: ^5.6.1
