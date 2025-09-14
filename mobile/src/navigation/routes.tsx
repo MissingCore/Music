@@ -115,6 +115,9 @@ function RootScreens() {
       backBehavior="history"
       tabBar={noop}
       screenListeners={listeners}
+      screenOptions={{
+        sceneStyle: { backgroundColor: "transparent" },
+      }}
     >
       <MaterialTopTab.Screen name="Home" component={Home} />
       {displayedTabs.map((tabKey) => (
@@ -135,6 +138,9 @@ export const RootStack = createNativeStackNavigator({
   initialRouteName: "HomeScreens",
   screenOptions: {
     headerShown: false,
+    contentStyle: {
+      backgroundColor: "transparent",
+    },
   },
   screens: {
     HomeScreens: RootScreens,
