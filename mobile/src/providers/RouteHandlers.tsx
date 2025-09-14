@@ -35,7 +35,8 @@ export const prevRouteAtom = atom("/");
 /** Keeps track of the last route we've navigated to. */
 export function PrevRouteTracker() {
   const prevPathname = useRef("/");
-  const pathname = usePathname();
+  // const pathname = usePathname();
+  const pathname = "";
   const setPrevRoute = useSetAtom(prevRouteAtom);
 
   useEffect(() => {

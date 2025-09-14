@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from "expo-router";
+// import { useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { I18nManager } from "react-native";
 
@@ -24,7 +24,8 @@ type ArtistAlbum = Omit<Album, "releaseYear"> & { releaseYear: string | null };
 export default function Artist() {
   const { t } = useTranslation();
   const { bottomInset } = useBottomActionsContext();
-  const { id: artistName } = useLocalSearchParams<{ id: string }>();
+  const artistName = "twenty one pilots";
+  // const { id: artistName } = useLocalSearchParams<{ id: string }>();
   const { isPending, error, data } = useArtistForScreen(artistName);
 
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;

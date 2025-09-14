@@ -131,7 +131,7 @@ function RootScreens() {
 //#endregion
 
 //#region Static Route Config
-const RootStack = createNativeStackNavigator({
+export const RootStack = createNativeStackNavigator({
   initialRouteName: "Home",
   screenOptions: {
     headerShown: false,
