@@ -4,6 +4,7 @@ import type {
   ParamListBase,
   TabNavigationState,
 } from "@react-navigation/native";
+import { createStaticNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useCallback, useMemo, useRef } from "react";
 
@@ -130,7 +131,7 @@ function RootScreens() {
 //#endregion
 
 //#region Static Route Config
-export const RootStack = createNativeStackNavigator({
+const RootStack = createNativeStackNavigator({
   initialRouteName: "Home",
   screenOptions: {
     headerShown: false,
@@ -239,4 +240,6 @@ export const RootStack = createNativeStackNavigator({
     },
   },
 });
+
+export const Navigation = createStaticNavigation(RootStack);
 //#endregion
