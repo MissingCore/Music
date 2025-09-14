@@ -17,6 +17,9 @@ import com.facebook.soloader.SoLoader
 import expo.modules.ApplicationLifecycleDispatcher
 import expo.modules.ReactNativeHostWrapper
 
+import android.os.Bundle;
+import com.swmansion.rnscreens.fragment.restoration.RNScreensFragmentFactory;
+
 class MainApplication : Application(), ReactApplication {
 
   override val reactNativeHost: ReactNativeHost = ReactNativeHostWrapper(
@@ -41,8 +44,10 @@ class MainApplication : Application(), ReactApplication {
   override val reactHost: ReactHost
     get() = ReactNativeHostWrapper.createReactHost(applicationContext, reactNativeHost)
 
-  override fun onCreate() {
-    super.onCreate()
+  //react-native-screens override
+  override fun onCreate(savedInstanceState: Bundle?) {
+    supportFragmentManager.fragmentFactory = RNScreensFragmentFactory()
+    super.onCreate(savedInstanceState);
     // @generated begin xml-fonts-init - expo prebuild (DO NOT MODIFY) sync-da39a3ee5e6b4b0d3255bfef95601890afd80709
 
     // @generated end xml-fonts-init
