@@ -1,7 +1,6 @@
 /* Polyfills */
 import "intl-pluralrules";
 
-import "expo-router/entry";
 import TrackPlayer from "@weights-ai/react-native-track-player";
 import { AppRegistry } from "react-native";
 

@@ -19,11 +19,6 @@ import { NowPlayingTopAppBar } from "~/screens/NowPlaying/TopAppBar";
 // Catch any errors thrown by the Layout component.
 export { ErrorBoundary };
 
-export const unstable_settings = {
-  // Ensure that reloading on `/settings` keeps a back button present.
-  initialRouteName: "(main)/(home)",
-};
-
 if (SENTRY_ENABLED) {
   Sentry.init({
     dsn: "https://bbd726405356cdfb20b85f5f924fd3e3@o4507687432617984.ingest.us.sentry.io/4507687447101440",
