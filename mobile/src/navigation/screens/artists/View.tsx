@@ -1,5 +1,6 @@
+import { useNavigation } from "@react-navigation/native";
+
 import { useArtistsForIndex } from "~/queries/artist";
-import { router } from "../../utils/router";
 import { StickyActionListLayout } from "~/layouts/StickyActionScroll";
 
 import { isString } from "~/utils/validation";
@@ -8,7 +9,9 @@ import { Em } from "~/components/Typography/StyledText";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 
 export default function Artists() {
+  const navigation = useNavigation();
   const { isPending, data } = useArtistsForIndex();
+
   return (
     <StickyActionListLayout
       titleKey="term.artists"
@@ -25,9 +28,7 @@ export default function Artists() {
             type="artist"
             title={item.name}
             imageSource={item.artwork}
-            onPress={() =>
-              router.navigate(`/artist/${encodeURIComponent(item.name)}`)
-            }
+            onPress={() => navigation.navigate("Artist", { id: item.name })}
             wrapperClassName="mt-2 rounded-full"
             className="pr-4"
           />
