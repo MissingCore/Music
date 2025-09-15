@@ -74,7 +74,14 @@ const RootScreenComponents = {
 } as const;
 
 type RootScreensProps = StaticScreenProps<
-  NavigatorScreenParams<Record<HomeScreenNames, undefined>>
+  NavigatorScreenParams<{
+    Home: undefined;
+    Folders: { path?: string } | undefined;
+    Playlists: undefined;
+    Tracks: undefined;
+    Albums: undefined;
+    Artists: undefined;
+  }>
 >;
 
 function RootScreens(_: RootScreensProps) {
@@ -152,6 +159,7 @@ function RootScreens(_: RootScreensProps) {
           <MaterialTopTab.Screen
             key={tabKey}
             name={getHomeScreenName(tabKey)}
+            // @ts-expect-error - Typing for screens should be compatible.
             component={RootScreenComponents[tabKey]}
             options={{ lazy: true }}
           />
@@ -197,8 +205,7 @@ export const RootStack = createNativeStackNavigator({
   groups: {
     Current: {
       screenOptions: {
-        animation: "fade",
-        header: TopAppBar,
+        headerShown: true,
       },
       screens: {
         FavoriteTracks: { screen: FavoriteTracks, options: { title: "" } },
@@ -217,7 +224,6 @@ export const RootStack = createNativeStackNavigator({
     Setting: {
       screenOptions: {
         animation: "fade",
-        header: TopAppBar,
         headerShown: true,
       },
       screens: {
