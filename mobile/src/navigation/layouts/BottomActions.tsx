@@ -1,4 +1,4 @@
-import { useNavigationState } from "@react-navigation/native";
+import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import type { ParseKeys } from "i18next";
 import { useTranslation } from "react-i18next";
@@ -12,7 +12,6 @@ import { useTabsByVisibility } from "~/services/UserPreferences";
 import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 import { useHasNewUpdate } from "~/hooks/useHasNewUpdate";
 import { useTheme } from "~/hooks/useTheme";
-import { router } from "../utils/router";
 
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
@@ -43,6 +42,7 @@ export function BottomActions() {
 /** Custom tab bar only visible while in routes in the `(main)` group. */
 function TabBar({ stacked = false, hidden = false }) {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const { hasNewUpdate } = useHasNewUpdate();
 
   return (
@@ -57,13 +57,13 @@ function TabBar({ stacked = false, hidden = false }) {
       <IconButton
         Icon={Search}
         accessibilityLabel={t("feat.search.title")}
-        onPress={() => router.navigate("/search")}
+        onPress={() => navigation.navigate("Search")}
       />
       <View className="relative">
         <IconButton
           Icon={Settings}
           accessibilityLabel={t("term.settings")}
-          onPress={() => router.navigate("/setting")}
+          onPress={() => navigation.navigate("Settings")}
         />
         {hasNewUpdate && (
           <View className="absolute right-3 top-3 size-2 rounded-full bg-red" />
@@ -77,24 +77,23 @@ function TabBar({ stacked = false, hidden = false }) {
 function NavigationList() {
   const { t, i18n } = useTranslation();
   const { surface } = useTheme();
+  const navigation = useNavigation();
   const currNavRoutes = useNavigationState((s) => s.routes);
   const listRef = useFlatListRef();
   const { displayedTabs } = useTabsByVisibility();
 
   // Buttons for the routes we can navigate to on the "home" screen, whose
   // order can be customized.
-  const NavRoutes: Array<{ href: string; key: ParseKeys; name: string }> =
-    useMemo(
-      () => [
-        { href: "/", key: "term.home", name: "Home" },
-        ...displayedTabs.map((tabKey) => ({
-          href: `/${tabKey}`,
-          key: `term.${tabKey}s` satisfies ParseKeys,
-          name: `${capitalize(tabKey)}s`,
-        })),
-      ],
-      [displayedTabs],
-    );
+  const NavRoutes: Array<{ key: ParseKeys; name: string }> = useMemo(
+    () => [
+      { key: "term.home", name: "Home" },
+      ...displayedTabs.map((tabKey) => ({
+        key: `term.${tabKey}s` satisfies ParseKeys,
+        name: `${capitalize(tabKey)}s`,
+      })),
+    ],
+    [displayedTabs],
+  );
 
   // Name of the current route.
   const routeName = useMemo(() => {
@@ -124,10 +123,11 @@ function NavigationList() {
         ref={listRef}
         horizontal
         data={NavRoutes}
-        keyExtractor={({ href }) => href as string}
-        renderItem={({ item: { href, key, name } }) => (
+        keyExtractor={({ key }) => key}
+        renderItem={({ item: { key, name } }) => (
           <Button
-            onPress={() => router.navigate(href)}
+            // @ts-expect-error - No type-safety of nested screens due to being dynamic.
+            onPress={() => navigation.navigate("HomeScreens", { screen: name })}
             disabled={routeName === name}
             className="min-w-0 bg-transparent px-2 disabled:opacity-100"
           >
