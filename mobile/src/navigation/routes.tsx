@@ -154,6 +154,7 @@ function RootScreens() {
 export const RootStack = createNativeStackNavigator({
   initialRouteName: "HomeScreens",
   screenOptions: {
+    header: TopAppBar,
     headerShown: false,
     contentStyle: {
       backgroundColor: "transparent",
@@ -161,6 +162,24 @@ export const RootStack = createNativeStackNavigator({
   },
   screens: {
     HomeScreens: RootScreens,
+    NowPlaying: {
+      screen: NowPlaying,
+      options: {
+        animation: "slide_from_bottom",
+        header: NowPlayingTopAppBar,
+        headerTransparent: true,
+        headerShown: true,
+        headerTitle: "",
+      },
+    },
+    Search: {
+      screen: Search,
+      options: { headerShown: true, title: "" },
+    },
+    Settings: {
+      screen: Settings,
+      options: { headerShown: true, title: "term.settings" },
+    },
   },
   groups: {
     Current: {
@@ -182,32 +201,6 @@ export const RootStack = createNativeStackNavigator({
         ModifyTrack: { screen: ModifyTrack, options: { title: "" } },
       },
     },
-    Root: {
-      screenOptions: {
-        animation: "fade",
-        header: TopAppBar,
-      },
-      screens: {
-        NowPlaying: {
-          screen: NowPlaying,
-          options: {
-            animation: "slide_from_bottom",
-            header: NowPlayingTopAppBar,
-            headerTransparent: true,
-            headerShown: true,
-            headerTitle: "",
-          },
-        },
-        Search: {
-          screen: Search,
-          options: {
-            header: TopAppBar,
-            headerShown: true,
-            title: "",
-          },
-        },
-      },
-    },
     Setting: {
       screenOptions: {
         animation: "fade",
@@ -215,10 +208,6 @@ export const RootStack = createNativeStackNavigator({
         headerShown: true,
       },
       screens: {
-        Settings: {
-          screen: Settings,
-          options: { title: "term.settings" },
-        },
         AppUpdate: {
           screen: AppUpdate,
           options: { title: "feat.appUpdate.title" },

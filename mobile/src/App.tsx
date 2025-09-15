@@ -14,8 +14,6 @@ import { TrackSheet } from "~/screens/Sheets/Track";
 import "~/resources/global.css";
 import "~/modules/i18n"; // Make sure translations are bundled.
 import { SENTRY_ENABLED, Sentry } from "~/lib/sentry";
-import { TopAppBar } from "~/components/TopAppBar";
-import { NowPlayingTopAppBar } from "~/screens/NowPlaying/TopAppBar";
 import React from "react";
 
 // Catch any errors thrown by the Layout component.
@@ -54,25 +52,6 @@ export default function App() {
     <>
       <View ref={handleAppLifeCycle} />
       <AppProvider>
-        {/* <Stack screenOptions={{ header: TopAppBar, headerShown: false }}>
-          <Stack.Screen name="(main)" />
-          <Stack.Screen
-            name="now-playing"
-            options={{
-              animation: "slide_from_bottom",
-              header: NowPlayingTopAppBar,
-              headerTransparent: true,
-              headerShown: true,
-              headerTitle: "",
-            }}
-          />
-          <Stack.Screen
-            name="search"
-            options={{ headerShown: true, title: "" }}
-          />
-          <Stack.Screen name="setting" />
-          <Stack.Screen name="notification.click" />
-        </Stack> */}
         <Navigation ref={navigationRef} />
         <TrackSheet />
       </AppProvider>
