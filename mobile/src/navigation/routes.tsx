@@ -13,7 +13,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useCallback, useMemo, useRef } from "react";
 import { BackHandler, View } from "react-native";
 
-import { BottomActions } from "./layouts/BottomActions";
+import { BottomActions, getHomeScreenName } from "./layouts/BottomActions";
 import Home from "./screens/HomeView";
 import { ModifyTrack } from "~/screens/ModifyTrack";
 import NowPlaying from "./screens/NowPlayingView";
@@ -49,7 +49,6 @@ import {
 } from "~/services/UserPreferences";
 import { NowPlayingTopAppBar } from "~/screens/NowPlaying/TopAppBar";
 
-import { capitalize } from "~/utils/string";
 import { TopAppBar } from "~/components/TopAppBar";
 
 //#region Root Screens
@@ -74,15 +73,12 @@ const RootScreenComponents = {
 function RootScreens() {
   const navigation = useNavigation();
   const homeTab = useUserPreferencesStore((s) => s.homeTab);
-  const { displayedTabs, hiddenTabs } = useTabsByVisibility();
+  const { displayedTabs } = useTabsByVisibility();
   // Should be fine to store history stack in ref as it doesn't affect rendering.
   //  - https://react.dev/learn/referencing-values-with-refs#when-to-use-refs
   const historyStack = useRef<string[]>([]);
 
-  const homeTabName = useMemo(
-    () => (homeTab === "home" ? "Home" : `${capitalize(homeTab)}s`),
-    [homeTab],
-  );
+  const homeTabName = useMemo(() => getHomeScreenName(homeTab), [homeTab]);
 
   /** Manually handle the back gesture since the old strategy no longer works. */
   const onBackGesture = useCallback(() => {
@@ -102,28 +98,25 @@ function RootScreens() {
   useFocusEffect(onBackGesture);
 
   /** Have Tab history operate like Stack history. */
-  const trackHistoryStack = useCallback(
-    (e: TabState) => {
-      // Get top of history.
-      const { key: currKey } = e.data.state.history.at(-1)!;
-      const currIndex = e.data.state.index;
-      if (historyStack.current.length === 0) {
-        // Initiate the current history stack by putting in the "Home" route.
-        historyStack.current.push(currKey);
+  const trackHistoryStack = useCallback((e: TabState) => {
+    // Get top of history.
+    const { key: currKey } = e.data.state.history.at(-1)!;
+    const currIndex = e.data.state.index;
+    if (historyStack.current.length === 0) {
+      // Initiate the current history stack by putting in the "Home" route.
+      historyStack.current.push(currKey);
+    } else {
+      // See if route was seen previously.
+      const atIndex = historyStack.current.findIndex((k) => currKey === k);
+      // Handle if we visited this tab earlier.
+      if (atIndex !== -1) {
+        const endAt = currIndex === 0 ? 1 : atIndex + 1;
+        historyStack.current = historyStack.current.toSpliced(endAt);
       } else {
-        // See if route was seen previously.
-        const atIndex = historyStack.current.findIndex((k) => currKey === k);
-        // Handle if we visited this tab earlier.
-        if (atIndex !== -1) {
-          const endAt = currIndex === 0 ? 1 : atIndex + 1;
-          historyStack.current = historyStack.current.toSpliced(endAt);
-        } else {
-          historyStack.current.push(currKey);
-        }
+        historyStack.current.push(currKey);
       }
-    },
-    [navigation, hiddenTabs],
-  );
+    }
+  }, []);
 
   const listeners = useMemo(
     () => ({ state: trackHistoryStack }),
@@ -145,7 +138,7 @@ function RootScreens() {
         {displayedTabs.map((tabKey) => (
           <MaterialTopTab.Screen
             key={tabKey}
-            name={`${capitalize(tabKey)}s`}
+            name={getHomeScreenName(tabKey)}
             component={RootScreenComponents[tabKey]}
             options={{ lazy: true }}
           />

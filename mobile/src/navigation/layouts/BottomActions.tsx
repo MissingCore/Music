@@ -8,6 +8,7 @@ import Animated, { LinearTransition } from "react-native-reanimated";
 
 import { Search } from "~/resources/icons/Search";
 import { Settings } from "~/resources/icons/Settings";
+import type { OrderableTab } from "~/services/UserPreferences";
 import { useTabsByVisibility } from "~/services/UserPreferences";
 import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 import { useHasNewUpdate } from "~/hooks/useHasNewUpdate";
@@ -89,7 +90,7 @@ function NavigationList() {
       { key: "term.home", name: "Home" },
       ...displayedTabs.map((tabKey) => ({
         key: `term.${tabKey}s` satisfies ParseKeys,
-        name: `${capitalize(tabKey)}s`,
+        name: getHomeScreenName(tabKey),
       })),
     ],
     [displayedTabs],
@@ -163,4 +164,11 @@ function NavigationList() {
 }
 
 const ShadowProps = { start: { x: 0.0, y: 1.0 }, end: { x: 1.0, y: 1.0 } };
+//#endregion
+
+//#region Utils
+export function getHomeScreenName(tabKey: OrderableTab | "home") {
+  if (tabKey === "home") return "Home";
+  return `${capitalize(tabKey)}s` as const;
+}
 //#endregion
