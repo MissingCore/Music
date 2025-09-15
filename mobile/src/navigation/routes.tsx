@@ -4,10 +4,14 @@ import type {
   ParamListBase,
   TabNavigationState,
 } from "@react-navigation/native";
-import { createStaticNavigation } from "@react-navigation/native";
+import {
+  createStaticNavigation,
+  useFocusEffect,
+  useNavigation,
+} from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useCallback, useMemo, useRef } from "react";
-import { View } from "react-native";
+import { BackHandler, View } from "react-native";
 
 import { BottomActions } from "./layouts/BottomActions";
 import Home from "./screens/HomeView";
@@ -68,54 +72,69 @@ const RootScreenComponents = {
 } as const;
 
 function RootScreens() {
+  const navigation = useNavigation();
   const homeTab = useUserPreferencesStore((s) => s.homeTab);
   const { displayedTabs, hiddenTabs } = useTabsByVisibility();
-  // Should be fine to store navigation state in ref as it doesn't affect rendering.
+  // Should be fine to store history stack in ref as it doesn't affect rendering.
   //  - https://react.dev/learn/referencing-values-with-refs#when-to-use-refs
-  const prevTabState = useRef<TabState>(null);
+  const historyStack = useRef<string[]>([]);
 
   const homeTabName = useMemo(
     () => (homeTab === "home" ? "Home" : `${capitalize(homeTab)}s`),
     [homeTab],
   );
 
+  /** Manually handle the back gesture since the old strategy no longer works. */
+  const onBackGesture = useCallback(() => {
+    const subscription = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        if (historyStack.current.length === 1) return false;
+        const prevScreenName = historyStack.current.at(-2)!.split("-")[0]!;
+        // @ts-expect-error - Screen name should exist.
+        navigation.navigate("HomeScreens", { screen: prevScreenName });
+        return true;
+      },
+    );
+    return () => subscription.remove();
+  }, [navigation]);
+
+  useFocusEffect(onBackGesture);
+
   /** Have Tab history operate like Stack history. */
-  const manageAsStackHistory = useCallback(
+  const trackHistoryStack = useCallback(
     (e: TabState) => {
-      if (prevTabState.current) {
-        // Get top of history.
-        const currRoute = e.data.state.history.at(-1)!;
-        const currIndex = e.data.state.index;
+      // Get top of history.
+      const { key: currKey } = e.data.state.history.at(-1)!;
+      const currIndex = e.data.state.index;
+      if (historyStack.current.length === 0) {
+        // Initiate the current history stack by putting in the "Home" route.
+        historyStack.current.push(currKey);
+      } else {
         // See if route was seen previously.
-        const oldHistory = prevTabState.current.data.state.history;
-        const atIndex = oldHistory.findIndex((r) => currRoute.key === r.key);
+        const atIndex = historyStack.current.findIndex((k) => currKey === k);
         // Handle if we visited this tab earlier.
         if (atIndex !== -1) {
-          // FIXME: Modifying the value in `e` for some reason modifies the
-          // original reference (even if we cloned `e` via object spreading).
-          //  - This might be fragile code, so we might swap over to the use
-          //  of the `reset` function.
-          //  - https://reactnavigation.org/docs/navigation-actions/#reset
-          e.data.state.history = oldHistory
-            .toSpliced(currIndex === 0 ? 1 : atIndex + 1)
-            .filter((r) => !hiddenTabs.some((t) => r.key.startsWith(`${t}-`)));
+          const endAt = currIndex === 0 ? 1 : atIndex + 1;
+          historyStack.current = historyStack.current.toSpliced(endAt);
+        } else {
+          historyStack.current.push(currKey);
         }
       }
-      prevTabState.current = e;
     },
-    [hiddenTabs],
+    [navigation, hiddenTabs],
   );
 
   const listeners = useMemo(
-    () => ({ state: manageAsStackHistory }),
-    [manageAsStackHistory],
+    () => ({ state: trackHistoryStack }),
+    [trackHistoryStack],
   );
 
   return (
     <View className="flex-1">
       <MaterialTopTab.Navigator
         initialRouteName={homeTabName}
-        backBehavior="history"
+        backBehavior="none"
         tabBar={noop}
         screenListeners={listeners}
         screenOptions={{
