@@ -1,4 +1,5 @@
-// import { Stack, router, useLocalSearchParams } from "expo-router";
+import type { StaticScreenProps } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { memo, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
@@ -14,11 +15,12 @@ import {
 } from "~/queries/playlist";
 import { useRemoveFromPlaylist } from "~/queries/track";
 import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
+import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 import { CurrentListLayout } from "~/layouts/CurrentList";
-import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 
 import { Colors } from "~/constants/Styles";
 import { OnRTL } from "~/lib/react";
+import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { FlashDragList } from "~/components/Defaults";
@@ -31,14 +33,19 @@ import {
 import { Track } from "~/modules/media/components/Track";
 import type { PlayListSource } from "~/modules/media/types";
 
+type Props = StaticScreenProps<{ id: string }>;
+
 type ScreenData = Track.Content & { disc: number | null; track: number | null };
 type RenderItemProps = DragListRenderItemInfo<ScreenData>;
 
-export default function Playlist() {
+export default function Playlist({
+  route: {
+    params: { id },
+  },
+}: Props) {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const { bottomInset } = useBottomActionsContext();
-  const id = "Clancy Alt";
-  // const { id } = useLocalSearchParams<{ id: string }>();
   const { isPending, error, data } = usePlaylistForScreen(id);
   const moveInPlaylist = useMoveInPlaylist(id);
   const favoritePlaylist = useFavoritePlaylist(id);
@@ -61,29 +68,23 @@ export default function Playlist() {
 
   return (
     <>
-      {/* <Stack.Screen
-        options={{
-          headerRight: () => (
-            <View className="flex-row gap-1">
-              <IconButton
-                Icon={Favorite}
-                accessibilityLabel={t(`term.${isToggled ? "unF" : "f"}avorite`)}
-                onPress={() => mutateGuard(favoritePlaylist, !data.isFavorite)}
-                filled={isToggled}
-              />
-              <IconButton
-                Icon={Edit}
-                accessibilityLabel={t("feat.playlist.extra.edit")}
-                onPress={() =>
-                  router.navigate(
-                    `/playlist/modify?id=${encodeURIComponent(id)}`,
-                  )
-                }
-              />
-            </View>
-          ),
-        }}
-      /> */}
+      <ScreenOptions
+        headerRight={() => (
+          <View className="flex-row gap-1">
+            <IconButton
+              Icon={Favorite}
+              accessibilityLabel={t(`term.${isToggled ? "unF" : "f"}avorite`)}
+              onPress={() => mutateGuard(favoritePlaylist, !data.isFavorite)}
+              filled={isToggled}
+            />
+            <IconButton
+              Icon={Edit}
+              accessibilityLabel={t("feat.playlist.extra.edit")}
+              onPress={() => navigation.navigate("ModifyPlaylist", { id })}
+            />
+          </View>
+        )}
+      />
       <CurrentListLayout
         title={data.name}
         metadata={data.metadata}

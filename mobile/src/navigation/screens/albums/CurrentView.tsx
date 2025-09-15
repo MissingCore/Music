@@ -1,4 +1,4 @@
-// import { Stack, useLocalSearchParams } from "expo-router";
+import type { StaticScreenProps } from "@react-navigation/native";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -6,6 +6,7 @@ import { View } from "react-native";
 import { Favorite } from "~/resources/icons/Favorite";
 import { useAlbumForScreen, useFavoriteAlbum } from "~/queries/album";
 import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
+import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 import { CurrentListLayout } from "~/layouts/CurrentList";
 
 import { mutateGuard } from "~/lib/react-query";
@@ -19,11 +20,15 @@ import {
 import { Em, StyledText } from "~/components/Typography/StyledText";
 import { Track } from "~/modules/media/components/Track";
 
-export default function Album() {
+type Props = StaticScreenProps<{ id: string }>;
+
+export default function Album({
+  route: {
+    params: { id: albumId },
+  },
+}: Props) {
   const { t } = useTranslation();
   const { bottomInset } = useBottomActionsContext();
-  const albumId = "";
-  // const { id: albumId } = useLocalSearchParams<{ id: string }>();
   const { isPending, error, data } = useAlbumForScreen(albumId);
   const favoriteAlbum = useFavoriteAlbum(albumId);
 
@@ -55,18 +60,16 @@ export default function Album() {
 
   return (
     <>
-      {/* <Stack.Screen
-        options={{
-          headerRight: () => (
-            <IconButton
-              Icon={Favorite}
-              accessibilityLabel={t(`term.${isToggled ? "unF" : "f"}avorite`)}
-              onPress={() => mutateGuard(favoriteAlbum, !data.isFavorite)}
-              filled={isToggled}
-            />
-          ),
-        }}
-      /> */}
+      <ScreenOptions
+        headerRight={() => (
+          <IconButton
+            Icon={Favorite}
+            accessibilityLabel={t(`term.${isToggled ? "unF" : "f"}avorite`)}
+            onPress={() => mutateGuard(favoriteAlbum, !data.isFavorite)}
+            filled={isToggled}
+          />
+        )}
+      />
       <CurrentListLayout
         title={data.name}
         artist={data.artistName}

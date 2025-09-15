@@ -1,6 +1,6 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { openBrowserAsync } from "expo-web-browser";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { OpenInNew } from "~/resources/icons/OpenInNew";
@@ -27,22 +27,19 @@ export default function PackageLicense({ route }: Props) {
     [route.params.id],
   );
 
-  const HeaderRight = useCallback(
-    () => (
-      <IconButton
-        Icon={OpenInNew}
-        accessibilityLabel={t("template.entrySeeMore", {
-          name: licenseInfo.name,
-        })}
-        onPress={() => openBrowserAsync(licenseInfo.source)}
-      />
-    ),
-    [t, licenseInfo],
-  );
-
   return (
     <>
-      <ScreenOptions headerRight={HeaderRight} />
+      <ScreenOptions
+        headerRight={() => (
+          <IconButton
+            Icon={OpenInNew}
+            accessibilityLabel={t("template.entrySeeMore", {
+              name: licenseInfo.name,
+            })}
+            onPress={() => openBrowserAsync(licenseInfo.source)}
+          />
+        )}
+      />
       <StandardScrollLayout contentContainerClassName="pt-2">
         <AccentText className="text-4xl" originalText>
           {licenseInfo.name}

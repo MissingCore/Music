@@ -1,5 +1,5 @@
-import { useIsFocused } from "@react-navigation/native";
-// import { router, useLocalSearchParams } from "expo-router";
+import type { StaticScreenProps } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { BackHandler, Pressable, useWindowDimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -18,7 +18,6 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { useFolderContent } from "~/queries/folder";
-import { router } from "../../utils/router";
 import { StickyActionListLayout } from "~/layouts/StickyActionScroll";
 
 import { OnRTL, OnRTLWorklet } from "~/lib/react";
@@ -33,11 +32,16 @@ import { SearchResult } from "~/modules/search/components/SearchResult";
 /** Animated scrollview supporting gestures. */
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
-export default function Folders() {
+type Props = StaticScreenProps<{ path?: string }>;
+
+export default function Folders({
+  route: {
+    params: { path },
+  },
+}: Props) {
+  const navigation = useNavigation();
   const isFocused = useIsFocused();
   const listRef = useFlashListRef();
-  const path = undefined;
-  // const { path } = useLocalSearchParams<{ path?: string }>();
   const [dirSegments, _setDirSegments] = useState<string[]>([]);
 
   const fullPath = dirSegments.join("/");
@@ -66,8 +70,8 @@ export default function Folders() {
     // Exclude the `/` at the end of the path.
     setDirSegments(addTrailingSlash(path).split("/").slice(0, -1));
     // Clear search params after reading from it.
-    router.setParams({ path: undefined });
-  }, [isFocused, path, setDirSegments]);
+    navigation.setParams({ path: undefined });
+  }, [navigation, isFocused, path, setDirSegments]);
 
   // Enables our "fake tabs" be affected by the navigation back gesture.
   useEffect(() => {

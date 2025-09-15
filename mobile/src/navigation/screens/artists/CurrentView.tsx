@@ -1,4 +1,4 @@
-// import { useLocalSearchParams } from "expo-router";
+import type { StaticScreenProps } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { I18nManager } from "react-native";
 
@@ -19,13 +19,17 @@ import { TEm } from "~/components/Typography/StyledText";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import { Track } from "~/modules/media/components/Track";
 
+type Props = StaticScreenProps<{ id: string }>;
+
 type ArtistAlbum = Omit<Album, "releaseYear"> & { releaseYear: string | null };
 
-export default function Artist() {
+export default function Artist({
+  route: {
+    params: { id: artistName },
+  },
+}: Props) {
   const { t } = useTranslation();
   const { bottomInset } = useBottomActionsContext();
-  const artistName = "twenty one pilots";
-  // const { id: artistName } = useLocalSearchParams<{ id: string }>();
   const { isPending, error, data } = useArtistForScreen(artistName);
 
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
