@@ -7,7 +7,9 @@ import type {
 import { createStaticNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useCallback, useMemo, useRef } from "react";
+import { View } from "react-native";
 
+import { BottomActions } from "./layouts/BottomActions";
 import Home from "./screens/HomeView";
 import { ModifyTrack } from "~/screens/ModifyTrack";
 import NowPlaying from "./screens/NowPlayingView";
@@ -136,6 +138,12 @@ function RootScreens() {
 //#region Static Route Config
 export const RootStack = createNativeStackNavigator({
   initialRouteName: "HomeScreens",
+  screenLayout: ({ children }) => (
+    <View className="relative flex-1">
+      {children}
+      <BottomActions />
+    </View>
+  ),
   screenOptions: {
     headerShown: false,
     contentStyle: {

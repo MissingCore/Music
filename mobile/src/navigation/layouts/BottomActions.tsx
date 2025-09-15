@@ -1,6 +1,5 @@
+import { useNavigationState } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import type { Href } from "expo-router";
-import { Stack, router, useRootNavigationState } from "expo-router";
 import type { ParseKeys } from "i18next";
 import { useTranslation } from "react-i18next";
 import { useEffect, useMemo } from "react";
@@ -13,32 +12,19 @@ import { useTabsByVisibility } from "~/services/UserPreferences";
 import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 import { useHasNewUpdate } from "~/hooks/useHasNewUpdate";
 import { useTheme } from "~/hooks/useTheme";
+import { router } from "../utils/router";
 
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
+import { capitalize } from "~/utils/string";
 import { FlatList, useFlatListRef } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { StyledText } from "~/components/Typography/StyledText";
 import { MiniPlayer } from "~/modules/media/components/MiniPlayer";
 
-//#region Layout
-/** Contains content that doesn't take up the full-screen. */
-export default function MainLayout() {
-  return (
-    <>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(home)" />
-        <Stack.Screen name="(current)" />
-      </Stack>
-      <BottomActions />
-    </>
-  );
-}
-//#endregion
-
 //#region Bottom Actions
 /** Actions stickied to the bottom of the screens in the `(main)` group. */
-function BottomActions() {
+export function BottomActions() {
   const { isRendered } = useBottomActionsContext();
   return (
     <Animated.View
@@ -91,20 +77,20 @@ function TabBar({ stacked = false, hidden = false }) {
 function NavigationList() {
   const { t, i18n } = useTranslation();
   const { surface } = useTheme();
-  const navState = useRootNavigationState();
+  const currNavRoutes = useNavigationState((s) => s.routes);
   const listRef = useFlatListRef();
   const { displayedTabs } = useTabsByVisibility();
 
   // Buttons for the routes we can navigate to on the "home" screen, whose
   // order can be customized.
-  const NavRoutes: Array<{ href: Href; key: ParseKeys; name: string }> =
+  const NavRoutes: Array<{ href: string; key: ParseKeys; name: string }> =
     useMemo(
       () => [
-        { href: "/", key: "term.home", name: "index" },
+        { href: "/", key: "term.home", name: "Home" },
         ...displayedTabs.map((tabKey) => ({
-          href: `/${tabKey}` satisfies Href,
+          href: `/${tabKey}`,
           key: `term.${tabKey}s` satisfies ParseKeys,
-          name: tabKey,
+          name: `${capitalize(tabKey)}s`,
         })),
       ],
       [displayedTabs],
@@ -112,14 +98,13 @@ function NavigationList() {
 
   // Name of the current route.
   const routeName = useMemo(() => {
-    const mainRoute = navState.routes.find((r) => r.name === "(main)");
-    if (!mainRoute || !mainRoute.state) return undefined;
-    const homeRoute = mainRoute.state.routes.find((r) => r.name === "(home)");
-    if (!homeRoute || !homeRoute.state) return undefined;
+    const homeRoute = currNavRoutes.find((r) => r.name === "HomeScreens");
+    if (!homeRoute) return undefined;
+    if (!homeRoute.state) return "Home";
     const { index, routeNames } = homeRoute.state;
     if (index === undefined || !routeNames) return undefined;
     return routeNames[index];
-  }, [navState]);
+  }, [currNavRoutes]);
 
   useEffect(() => {
     if (!listRef.current || !routeName) return;
