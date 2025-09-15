@@ -167,6 +167,8 @@ const ShadowProps = { start: { x: 0.0, y: 1.0 }, end: { x: 1.0, y: 1.0 } };
 //#endregion
 
 //#region Utils
+export type HomeScreenNames = "Home" | `${Capitalize<OrderableTab>}s`;
+
 export function getHomeScreenName(tabKey: OrderableTab | "home") {
   if (tabKey === "home") return "Home";
   return `${capitalize(tabKey)}s` as const;

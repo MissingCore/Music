@@ -1,7 +1,9 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import type {
   EventArg,
+  NavigatorScreenParams,
   ParamListBase,
+  StaticScreenProps,
   TabNavigationState,
 } from "@react-navigation/native";
 import {
@@ -13,6 +15,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useCallback, useMemo, useRef } from "react";
 import { BackHandler, View } from "react-native";
 
+import type { HomeScreenNames } from "./layouts/BottomActions";
 import { BottomActions, getHomeScreenName } from "./layouts/BottomActions";
 import Home from "./screens/HomeView";
 import { ModifyTrack } from "~/screens/ModifyTrack";
@@ -70,7 +73,11 @@ const RootScreenComponents = {
   track: Tracks,
 } as const;
 
-function RootScreens() {
+type RootScreensProps = StaticScreenProps<
+  NavigatorScreenParams<Record<HomeScreenNames, undefined>>
+>;
+
+function RootScreens(_: RootScreensProps) {
   const navigation = useNavigation();
   const homeTab = useUserPreferencesStore((s) => s.homeTab);
   const { displayedTabs } = useTabsByVisibility();
@@ -87,8 +94,9 @@ function RootScreens() {
       () => {
         if (historyStack.current.length === 1) return false;
         const prevScreenName = historyStack.current.at(-2)!.split("-")[0]!;
-        // @ts-expect-error - Screen name should exist.
-        navigation.navigate("HomeScreens", { screen: prevScreenName });
+        navigation.navigate("HomeScreens", {
+          screen: prevScreenName as HomeScreenNames,
+        });
         return true;
       },
     );
