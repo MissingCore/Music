@@ -1,6 +1,6 @@
 import type { StaticParamList } from "@react-navigation/native";
 
-import type { RootStack } from "./src/navigation/routes";
+import type { RootStack } from "../src/navigation/routes";
 
 interface String {
   // https://github.com/microsoft/TypeScript/issues/41638#issuecomment-1858309778
@@ -8,6 +8,8 @@ interface String {
   split(splitter: string): [string, ...string[]];
 }
 
-namespace ReactNavigation {
-  interface RootParamList extends StaticParamList<typeof RootStack> {}
+declare global {
+  namespace ReactNavigation {
+    interface RootParamList extends StaticParamList<typeof RootStack> {}
+  }
 }
