@@ -1,9 +1,9 @@
+import { useNavigation } from "@react-navigation/native";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useDatabaseSummary, useStorageSummary } from "~/queries/setting";
 import { useTheme } from "~/hooks/useTheme";
-import { router } from "../../utils/router";
 import { StandardScrollLayout } from "~/layouts/StandardScroll";
 
 import { Colors } from "~/constants/Styles";
@@ -16,6 +16,8 @@ import { ProgressBar } from "~/components/Form/ProgressBar";
 
 export default function Insights() {
   const { t } = useTranslation();
+  const navigation = useNavigation();
+
   return (
     <StandardScrollLayout>
       <List>
@@ -27,13 +29,13 @@ export default function Insights() {
         <ListItem
           titleKey="feat.hiddenTracks.title"
           description={t("feat.hiddenTracks.brief")}
-          onPress={() => router.navigate("/setting/insights/hidden")}
+          onPress={() => navigation.navigate("HiddenTracks")}
           first
         />
         <ListItem
           titleKey="feat.saveErrors.title"
           description={t("feat.saveErrors.brief")}
-          onPress={() => router.navigate("/setting/insights/save-errors")}
+          onPress={() => navigation.navigate("SaveErrors")}
           last
         />
       </List>

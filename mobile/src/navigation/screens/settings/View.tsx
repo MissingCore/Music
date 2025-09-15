@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { openBrowserAsync } from "expo-web-browser";
 import { useTranslation } from "react-i18next";
 
@@ -8,7 +9,6 @@ import {
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
 import { useHasNewUpdate } from "~/hooks/useHasNewUpdate";
-import { router } from "../../utils/router";
 import { StandardScrollLayout } from "~/layouts/StandardScroll";
 import { SettingsSheets } from "~/screens/Sheets/Settings/Root";
 import { LANGUAGES } from "~/modules/i18n/constants";
@@ -23,6 +23,7 @@ import { useSheetRef } from "~/components/Sheet";
 
 export default function Settings() {
   const { t, i18n } = useTranslation();
+  const navigation = useNavigation();
   const { hasNewUpdate } = useHasNewUpdate();
   const showRCNotification = useUserPreferencesStore(
     (state) => state.rcNotification,
@@ -43,7 +44,7 @@ export default function Settings() {
           <ListItem
             titleKey="feat.appUpdate.title"
             description={t("feat.appUpdate.brief")}
-            onPress={() => router.navigate("/setting/update")}
+            onPress={() => navigation.navigate("AppUpdate")}
             className="rounded-full bg-yellow"
             textColor="text-neutral0"
           />
@@ -53,7 +54,7 @@ export default function Settings() {
           <ListItem
             titleKey="feat.appearance.title"
             description={t("feat.appearance.brief")}
-            onPress={() => router.navigate("/setting/appearance")}
+            onPress={() => navigation.navigate("AppearanceSettings")}
             first
           />
           <ListItem
@@ -74,7 +75,7 @@ export default function Settings() {
           <ListItem
             titleKey="feat.insights.title"
             description={t("feat.insights.brief")}
-            onPress={() => router.navigate("/setting/insights")}
+            onPress={() => navigation.navigate("Insights")}
           />
           {/* <ListItem
             titleKey="feat.interactions.title"
@@ -85,12 +86,12 @@ export default function Settings() {
           <ListItem
             titleKey="feat.playback.title"
             description={t("feat.playback.brief")}
-            onPress={() => router.navigate("/setting/playback")}
+            onPress={() => navigation.navigate("PlaybackSettings")}
           />
           <ListItem
             titleKey="feat.scanning.title"
             description={t("feat.scanning.brief")}
-            onPress={() => router.navigate("/setting/scanning")}
+            onPress={() => navigation.navigate("ScanningSettings")}
             last
           />
         </List>
@@ -98,7 +99,7 @@ export default function Settings() {
         <ListItem
           titleKey="feat.experimental.title"
           description={t("feat.experimental.brief")}
-          onPress={() => router.navigate("/setting/experimental")}
+          onPress={() => navigation.navigate("ExperimentalSettings")}
           first
           last
         />
@@ -130,7 +131,7 @@ export default function Settings() {
           <ListItem
             titleKey="feat.thirdParty.title"
             description={t("feat.thirdParty.brief")}
-            onPress={() => router.navigate("/setting/third-party")}
+            onPress={() => navigation.navigate("ThirdParty")}
           />
           <Card className="overflow-hidden rounded-t-sm p-0">
             <ListItem

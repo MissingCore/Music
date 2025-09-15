@@ -1,10 +1,12 @@
-// import { Stack, useLocalSearchParams } from "expo-router";
+import type { StaticScreenProps } from "@react-navigation/native";
 import { openBrowserAsync } from "expo-web-browser";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { OpenInNew } from "~/resources/icons/OpenInNew";
 import LicensesList from "~/resources/licenses.json";
 import { useTheme } from "~/hooks/useTheme";
+import { ScreenOptions } from "../../components/ScreenOptions";
 import { StandardScrollLayout } from "~/layouts/StandardScroll";
 
 import { Card } from "~/components/Containment/Card";
@@ -12,29 +14,35 @@ import { IconButton } from "~/components/Form/Button";
 import { AccentText } from "~/components/Typography/AccentText";
 import { StyledText } from "~/components/Typography/StyledText";
 
-export default function PackageLicense() {
-  // const { id } = useLocalSearchParams<{ id: string }>();
-  const id = "@missingcore/react-native-metadata-retriever";
+type Props = StaticScreenProps<{
+  id: string;
+}>;
+
+export default function PackageLicense({ route }: Props) {
   const { t } = useTranslation();
   const { theme } = useTheme();
 
-  const licenseInfo = LicensesList[id as keyof typeof LicensesList];
+  const licenseInfo = useMemo(
+    () => LicensesList[route.params.id as keyof typeof LicensesList],
+    [route.params.id],
+  );
+
+  const HeaderRight = useCallback(
+    () => (
+      <IconButton
+        Icon={OpenInNew}
+        accessibilityLabel={t("template.entrySeeMore", {
+          name: licenseInfo.name,
+        })}
+        onPress={() => openBrowserAsync(licenseInfo.source)}
+      />
+    ),
+    [t, licenseInfo],
+  );
 
   return (
     <>
-      {/* <Stack.Screen
-        options={{
-          headerRight: () => (
-            <IconButton
-              Icon={OpenInNew}
-              accessibilityLabel={t("template.entrySeeMore", {
-                name: licenseInfo.name,
-              })}
-              onPress={() => openBrowserAsync(licenseInfo.source)}
-            />
-          ),
-        }}
-      /> */}
+      <ScreenOptions headerRight={HeaderRight} />
       <StandardScrollLayout contentContainerClassName="pt-2">
         <AccentText className="text-4xl" originalText>
           {licenseInfo.name}

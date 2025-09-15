@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { I18nManager } from "react-native";
 
@@ -6,7 +7,6 @@ import {
   userPreferencesStore,
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
-import { router } from "../../utils/router";
 import { StandardScrollLayout } from "~/layouts/StandardScroll";
 import { AppearanceSettingsSheets } from "~/screens/Sheets/Settings/Appearance";
 
@@ -15,6 +15,7 @@ import { useSheetRef } from "~/components/Sheet";
 
 export default function AppearanceSettings() {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const accentFont = useUserPreferencesStore((state) => state.accentFont);
   const primaryFont = useUserPreferencesStore((state) => state.primaryFont);
   const theme = useUserPreferencesStore((state) => state.theme);
@@ -63,9 +64,7 @@ export default function AppearanceSettings() {
           <ListItem
             titleKey="feat.homeTabsOrder.title"
             description={t("feat.homeTabsOrder.brief")}
-            onPress={() =>
-              router.navigate("/setting/appearance/home-tabs-order")
-            }
+            onPress={() => navigation.navigate("HomeTabOrderSettings")}
             first
           />
           <ListItem
