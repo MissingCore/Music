@@ -80,7 +80,7 @@ type RootScreensProps = StaticScreenProps<
 function RootScreens(_: RootScreensProps) {
   const navigation = useNavigation();
   const homeTab = useUserPreferencesStore((s) => s.homeTab);
-  const { displayedTabs } = useTabsByVisibility();
+  const { displayedTabs, hiddenTabs } = useTabsByVisibility();
   // Should be fine to store history stack in ref as it doesn't affect rendering.
   //  - https://react.dev/learn/referencing-values-with-refs#when-to-use-refs
   const historyStack = useRef<string[]>([]);
@@ -92,6 +92,13 @@ function RootScreens(_: RootScreensProps) {
     const subscription = BackHandler.addEventListener(
       "hardwareBackPress",
       () => {
+        // Remove hidden tabs before handling back gesture.
+        historyStack.current = historyStack.current.filter(
+          (screenName) =>
+            !hiddenTabs.some((t) =>
+              screenName.startsWith(`${getHomeScreenName(t)}-`),
+            ),
+        );
         if (historyStack.current.length === 1) return false;
         const prevScreenName = historyStack.current.at(-2)!.split("-")[0]!;
         navigation.navigate("HomeScreens", {
@@ -101,7 +108,7 @@ function RootScreens(_: RootScreensProps) {
       },
     );
     return () => subscription.remove();
-  }, [navigation]);
+  }, [navigation, hiddenTabs]);
 
   useFocusEffect(onBackGesture);
 
@@ -109,7 +116,6 @@ function RootScreens(_: RootScreensProps) {
   const trackHistoryStack = useCallback((e: TabState) => {
     // Get top of history.
     const { key: currKey } = e.data.state.history.at(-1)!;
-    const currIndex = e.data.state.index;
     if (historyStack.current.length === 0) {
       // Initiate the current history stack by putting in the "Home" route.
       historyStack.current.push(currKey);
@@ -118,8 +124,7 @@ function RootScreens(_: RootScreensProps) {
       const atIndex = historyStack.current.findIndex((k) => currKey === k);
       // Handle if we visited this tab earlier.
       if (atIndex !== -1) {
-        const endAt = currIndex === 0 ? 1 : atIndex + 1;
-        historyStack.current = historyStack.current.toSpliced(endAt);
+        historyStack.current = historyStack.current.toSpliced(atIndex + 1);
       } else {
         historyStack.current.push(currKey);
       }

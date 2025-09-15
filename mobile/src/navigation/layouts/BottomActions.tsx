@@ -2,14 +2,17 @@ import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import type { ParseKeys } from "i18next";
 import { useTranslation } from "react-i18next";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
 
 import { Search } from "~/resources/icons/Search";
 import { Settings } from "~/resources/icons/Settings";
 import type { OrderableTab } from "~/services/UserPreferences";
-import { useTabsByVisibility } from "~/services/UserPreferences";
+import {
+  useTabsByVisibility,
+  useUserPreferencesStore,
+} from "~/services/UserPreferences";
 import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
 import { useHasNewUpdate } from "~/hooks/useHasNewUpdate";
 import { useTheme } from "~/hooks/useTheme";
@@ -80,8 +83,10 @@ function NavigationList() {
   const { surface } = useTheme();
   const navigation = useNavigation();
   const currNavRoutes = useNavigationState((s) => s.routes);
-  const listRef = useFlatListRef();
+  const homeTab = useUserPreferencesStore((s) => s.homeTab);
   const { displayedTabs } = useTabsByVisibility();
+  const listRef = useFlatListRef();
+  const [mounted, setMounted] = useState(false);
 
   // Buttons for the routes we can navigate to on the "home" screen, whose
   // order can be customized.
@@ -100,14 +105,14 @@ function NavigationList() {
   const routeName = useMemo(() => {
     const homeRoute = currNavRoutes.find((r) => r.name === "HomeScreens");
     if (!homeRoute) return undefined;
-    if (!homeRoute.state) return "Home";
+    if (!homeRoute.state) return getHomeScreenName(homeTab);
     const { index, routeNames } = homeRoute.state;
     if (index === undefined || !routeNames) return undefined;
     return routeNames[index];
-  }, [currNavRoutes]);
+  }, [currNavRoutes, homeTab]);
 
   useEffect(() => {
-    if (!listRef.current || !routeName) return;
+    if (!listRef.current || !routeName || !mounted) return;
     try {
       const tabIndex = NavRoutes.findIndex(({ name }) => routeName === name);
       if (tabIndex === -1) return;
@@ -116,12 +121,14 @@ function NavigationList() {
       //  when we go from a language with longer words to one with shorter words.
       listRef.current.scrollToIndex({ index: tabIndex, viewPosition: 0.5 });
     } catch {}
-  }, [listRef, i18n.language, routeName, NavRoutes]);
+  }, [listRef, mounted, i18n.language, routeName, NavRoutes]);
 
   return (
     <View className="relative shrink grow">
       <FlatList
         ref={listRef}
+        // `setMounted` to prevent firing `scrollToIndex` on an unmounted list.
+        onLayout={() => setMounted(true)}
         horizontal
         data={NavRoutes}
         keyExtractor={({ key }) => key}
