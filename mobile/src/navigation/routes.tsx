@@ -112,25 +112,28 @@ function RootScreens() {
   );
 
   return (
-    <MaterialTopTab.Navigator
-      initialRouteName={homeTabName}
-      backBehavior="history"
-      tabBar={noop}
-      screenListeners={listeners}
-      screenOptions={{
-        sceneStyle: { backgroundColor: "transparent" },
-      }}
-    >
-      <MaterialTopTab.Screen name="Home" component={Home} />
-      {displayedTabs.map((tabKey) => (
-        <MaterialTopTab.Screen
-          key={tabKey}
-          name={`${capitalize(tabKey)}s`}
-          component={RootScreenComponents[tabKey]}
-          options={{ lazy: true }}
-        />
-      ))}
-    </MaterialTopTab.Navigator>
+    <View className="flex-1">
+      <MaterialTopTab.Navigator
+        initialRouteName={homeTabName}
+        backBehavior="history"
+        tabBar={noop}
+        screenListeners={listeners}
+        screenOptions={{
+          sceneStyle: { backgroundColor: "transparent" },
+        }}
+      >
+        <MaterialTopTab.Screen name="Home" component={Home} />
+        {displayedTabs.map((tabKey) => (
+          <MaterialTopTab.Screen
+            key={tabKey}
+            name={`${capitalize(tabKey)}s`}
+            component={RootScreenComponents[tabKey]}
+            options={{ lazy: true }}
+          />
+        ))}
+      </MaterialTopTab.Navigator>
+      <BottomActions />
+    </View>
   );
 }
 //#endregion
@@ -138,12 +141,6 @@ function RootScreens() {
 //#region Static Route Config
 export const RootStack = createNativeStackNavigator({
   initialRouteName: "HomeScreens",
-  screenLayout: ({ children }) => (
-    <View className="relative flex-1">
-      {children}
-      <BottomActions />
-    </View>
-  ),
   screenOptions: {
     headerShown: false,
     contentStyle: {
@@ -203,6 +200,7 @@ export const RootStack = createNativeStackNavigator({
       screenOptions: {
         animation: "fade",
         header: TopAppBar,
+        headerShown: true,
       },
       screens: {
         Settings: {

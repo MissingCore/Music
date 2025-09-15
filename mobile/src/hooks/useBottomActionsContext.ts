@@ -1,5 +1,4 @@
-// import type { Href } from "expo-router";
-// import { usePathname } from "expo-router";
+import { useRoute } from "@react-navigation/native";
 
 import { useMusicStore } from "~/modules/media/services/Music";
 
@@ -8,18 +7,6 @@ const overrideVisible = [
   "/playlist/create",
   "/playlist/modify",
   "/track/modify",
-  // ] satisfies Partial<Href[]>;
-];
-
-/** Routes where we should hide the navigation bar. */
-const hideNavRoutes = [
-  ...overrideVisible,
-  "/album/",
-  "/artist/",
-  "/playlist/",
-  "/now-playing",
-  "/recently-played",
-  // ] satisfies Partial<Href[]>;
 ];
 
 /**
@@ -27,13 +14,14 @@ const hideNavRoutes = [
  * `(main)` group along with the additional bottom padding required.
  */
 export function useBottomActionsContext() {
+  const { name } = useRoute();
+
   const pathname = "";
   // const pathname = usePathname(); // Fires whenever we navigate to a different screen.
   const activeTrackId = useMusicStore((state) => state.activeId);
 
   const isMiniPlayerRendered =
     !!activeTrackId && !overrideVisible.some((route) => pathname === route);
-  const hideNavBar = hideNavRoutes.some((route) => pathname.startsWith(route));
 
   // Bottom inset on home screen.
   let withNav = 76; // 60px Navbar Height + 16px Bottom Padding
@@ -43,7 +31,13 @@ export function useBottomActionsContext() {
   if (isMiniPlayerRendered) onlyPlayer += 80; // 64px MiniPlayer Height + 16px Bottom Padding
 
   return {
-    isRendered: { miniPlayer: isMiniPlayerRendered, navBar: !hideNavBar },
+    isRendered: {
+      miniPlayer: isMiniPlayerRendered,
+      // Show navbar when displaying `HomeScreens` navigator. Since this is
+      // adjacent to the `MaterialTopTab.Navigator`, `useRoute` should only
+      // return `HomeScreens` when on any of those screens.
+      navBar: name === "HomeScreens",
+    },
     bottomInset: { withNav, onlyPlayer },
   };
 }
