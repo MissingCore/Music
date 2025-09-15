@@ -15,8 +15,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useCallback, useMemo, useRef } from "react";
 import { BackHandler, View } from "react-native";
 
-import type { HomeScreenNames } from "./layouts/BottomActions";
-import { BottomActions, getHomeScreenName } from "./layouts/BottomActions";
 import Home from "./screens/HomeView";
 import { ModifyTrack } from "~/screens/ModifyTrack";
 import NowPlaying from "./screens/NowPlayingView";
@@ -53,6 +51,8 @@ import {
 import { NowPlayingTopAppBar } from "~/screens/NowPlaying/TopAppBar";
 
 import { TopAppBar } from "~/components/TopAppBar";
+import type { HomeScreenNames } from "./components/BottomActions";
+import { BottomActions, getHomeScreenName } from "./components/BottomActions";
 
 //#region Root Screens
 type TabState = EventArg<

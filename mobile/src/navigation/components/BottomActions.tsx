@@ -26,7 +26,7 @@ import { StyledText } from "~/components/Typography/StyledText";
 import { MiniPlayer } from "~/modules/media/components/MiniPlayer";
 
 //#region Bottom Actions
-/** Actions stickied to the bottom of the screens in the `(main)` group. */
+/** Actions stickied to the bottom of the screens. */
 export function BottomActions() {
   const { isRendered } = useBottomActionsContext();
   return (
@@ -36,15 +36,15 @@ export function BottomActions() {
       className="absolute bottom-0 left-0 w-full gap-[3px] p-4 pt-0"
     >
       <MiniPlayer stacked={isRendered.navBar} hidden={!isRendered.miniPlayer} />
-      <TabBar stacked={isRendered.miniPlayer} hidden={!isRendered.navBar} />
+      <Navbar stacked={isRendered.miniPlayer} hidden={!isRendered.navBar} />
     </Animated.View>
   );
 }
 //#endregion
 
-//#region Tab Bar
-/** Custom tab bar only visible while in routes in the `(main)` group. */
-function TabBar({ stacked = false, hidden = false }) {
+//#region Navbar
+/** Custom navbar while on the home screens. */
+function Navbar({ stacked = false, hidden = false }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { hasNewUpdate } = useHasNewUpdate();
@@ -77,7 +77,6 @@ function TabBar({ stacked = false, hidden = false }) {
   );
 }
 
-/** List of routes in `(home)` group. */
 function NavigationList() {
   const { t, i18n } = useTranslation();
   const { surface } = useTheme();
@@ -90,13 +89,16 @@ function NavigationList() {
 
   // Buttons for the routes we can navigate to on the "home" screen, whose
   // order can be customized.
-  const NavRoutes: Array<{ key: ParseKeys; name: string }> = useMemo(
+  const NavRoutes: Array<{ key: ParseKeys; name: HomeScreenNames }> = useMemo(
     () => [
       { key: "term.home", name: "Home" },
-      ...displayedTabs.map((tabKey) => ({
-        key: `term.${tabKey}s` satisfies ParseKeys,
-        name: getHomeScreenName(tabKey),
-      })),
+      ...displayedTabs.map(
+        (tabKey) =>
+          ({
+            key: `term.${tabKey}s`,
+            name: getHomeScreenName(tabKey),
+          }) as const,
+      ),
     ],
     [displayedTabs],
   );
@@ -134,7 +136,6 @@ function NavigationList() {
         keyExtractor={({ key }) => key}
         renderItem={({ item: { key, name } }) => (
           <Button
-            // @ts-expect-error - No type-safety of nested screens due to being dynamic.
             onPress={() => navigation.navigate("HomeScreens", { screen: name })}
             disabled={routeName === name}
             className="min-w-0 bg-transparent px-2 disabled:opacity-100"
