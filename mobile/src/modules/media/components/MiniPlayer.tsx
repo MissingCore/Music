@@ -1,10 +1,10 @@
+import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
 
 import { Pause } from "~/resources/icons/Pause";
 import { PlayArrow } from "~/resources/icons/PlayArrow";
-import { router } from "~/navigation/utils/router";
 import { useMusicStore } from "../services/Music";
 import { MusicControls } from "../services/Playback";
 import { useIsPlaying } from "../hooks/useIsPlaying";
@@ -22,6 +22,7 @@ import { MediaImage } from "./MediaImage";
  */
 export function MiniPlayer({ hidden = false, stacked = false }) {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const isPlaying = useIsPlaying();
   const track = useMusicStore((state) => state.activeTrack);
 
@@ -34,7 +35,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
       })}
     >
       <Pressable
-        onPress={() => router.navigate("/now-playing")}
+        onPress={() => navigation.navigate("NowPlaying")}
         className="flex-row items-center bg-surface p-2 active:opacity-75"
       >
         <MediaImage

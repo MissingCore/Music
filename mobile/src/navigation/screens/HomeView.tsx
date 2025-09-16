@@ -6,7 +6,6 @@ import {
   useFavoriteListsForCards,
   useFavoriteTracksCount,
 } from "~/queries/favorite";
-import { router } from "../utils/router";
 import { StandardScrollLayout } from "~/layouts/StandardScroll";
 
 import { cn } from "~/lib/style";
@@ -22,6 +21,7 @@ import {
 
 export default function Home() {
   const { t } = useTranslation();
+  const navigation = useNavigation();
 
   return (
     <StandardScrollLayout
@@ -30,7 +30,7 @@ export default function Home() {
         <IconButton
           Icon={History}
           accessibilityLabel={t("feat.playedRecent.title")}
-          onPress={() => router.navigate("/recently-played")}
+          onPress={() => navigation.navigate("RecentlyPlayed")}
           large
         />
       }
