@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
 import { History } from "~/resources/icons/History";
@@ -14,7 +15,6 @@ import { FlashList } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { AccentText } from "~/components/Typography/AccentText";
 import { TEm, TStyledText } from "~/components/Typography/StyledText";
-import { ReservedPlaylists } from "~/modules/media/constants";
 import {
   MediaCardPlaceholderContent,
   useMediaCardListPreset,
@@ -60,15 +60,14 @@ function Favorites() {
  * favorited tracks.
  */
 function FavoriteTracks(props: { size: number; className: string }) {
+  const navigation = useNavigation();
   const { isPending, error, data } = useFavoriteTracksCount();
 
   const trackCount = isPending || error ? "" : abbreviateNum(data);
 
   return (
     <Button
-      onPress={() =>
-        router.navigate(`/playlist/${ReservedPlaylists.favorites}`)
-      }
+      onPress={() => navigation.navigate("FavoriteTracks")}
       style={{ width: props.size, height: props.size }}
       className={cn("gap-0 rounded-lg bg-red", props.className)}
     >

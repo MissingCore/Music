@@ -1,4 +1,4 @@
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { I18nManager } from "react-native";
@@ -17,7 +17,11 @@ import { queryClient } from "~/lib/react-query";
 import { FlashList } from "~/components/Defaults";
 import { PagePlaceholder } from "~/components/Transition/Placeholder";
 import { ReservedPlaylists } from "~/modules/media/constants";
-import { MediaCard } from "~/modules/media/components/MediaCard";
+import {
+  MediaCard,
+  decodeMediaCardLink,
+  getMediaCardKey,
+} from "~/modules/media/components/MediaCard";
 import { Track } from "~/modules/media/components/Track";
 
 // Information about this track list.
@@ -82,6 +86,7 @@ export default function RecentlyPlayed() {
 }
 
 function RecentlyPlayedLists(props: { data?: MediaCard.Content[] }) {
+  const navigation = useNavigation();
   const { width } = useGetColumn({
     cols: 1,
     gap: 0,
@@ -89,16 +94,19 @@ function RecentlyPlayedLists(props: { data?: MediaCard.Content[] }) {
     minWidth: 100,
   });
   if (props.data?.length === 0) return null;
+
   return (
     <FlashList
       estimatedItemSize={width + 12} // Column width + gap from padding left
       horizontal
       data={props.data}
-      keyExtractor={({ href }) => href}
+      keyExtractor={getMediaCardKey}
       renderItem={({ item, index }) => (
         <MediaCard
           {...item}
           size={width}
+          // @ts-expect-error - The spreaded values are valid navigation arguments.
+          onPress={() => navigation.navigate(...decodeMediaCardLink(item))}
           className={index > 0 ? OnRTL.decide("mr-3", "ml-3") : undefined}
         />
       )}

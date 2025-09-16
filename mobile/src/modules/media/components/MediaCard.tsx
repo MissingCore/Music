@@ -1,27 +1,31 @@
+import { useNavigation } from "@react-navigation/native";
 import type { FlashListProps } from "@shopify/flash-list";
 import { useMemo } from "react";
 import { I18nManager, Pressable } from "react-native";
 
 import { useGetColumn } from "~/hooks/useGetColumn";
-import { router } from "~/navigation/utils/router";
 
 import { cn } from "~/lib/style";
 import type { Prettify } from "~/utils/types";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { StyledText } from "~/components/Typography/StyledText";
 import { MediaImage } from "./MediaImage";
+import { ReservedPlaylists } from "../constants";
 
 //#region Media Card
 export namespace MediaCard {
   export type Content = Prettify<
     MediaImage.ImageContent & {
-      href: string;
+      /** Mainly used for `useMediaCardListPreset`. */
+      id: string;
       title: string;
       description: string;
     }
   >;
 
-  export type Props = Prettify<Content & { size: number; className?: string }>;
+  export type Props = Prettify<
+    Content & { onPress: VoidFunction; size: number; className?: string }
+  >;
 }
 
 /**
@@ -29,15 +33,16 @@ export namespace MediaCard {
  * page on click.
  */
 export function MediaCard({
-  href,
+  id: _,
   title,
   description,
+  onPress,
   className,
   ...imgProps
 }: MediaCard.Props) {
   return (
     <Pressable
-      onPress={() => router.navigate(href)}
+      onPress={onPress}
       style={{ maxWidth: imgProps.size }}
       // The `w-full` is to ensure the component takes up all the space
       // specified by `maxWidth`.
@@ -61,7 +66,7 @@ export function MediaCard({
  * something special for the first item.
  */
 export const MediaCardPlaceholderContent: MediaCard.Content = {
-  href: "invalid-href",
+  id: "",
   source: null,
   title: "",
   description: "",
@@ -84,19 +89,21 @@ export function useMediaCardListPreset(
     }) => React.JSX.Element;
   },
 ) {
+  const navigation = useNavigation();
   const { count, width } = useGetColumn({
     cols: 2,
     gap: 12,
     gutters: 32,
     minWidth: 175,
   });
+
   return useMemo(
     () => ({
       numColumns: count,
       // ~40px for text content under `<MediaImage />` + 16px Margin Bottom
       estimatedItemSize: width + 40 + 12,
       data: props.data,
-      keyExtractor: ({ href }) => href,
+      keyExtractor: getMediaCardKey,
       /*
         Utilized janky margin method to implement gaps in FlashList with columns.
           - https://github.com/shopify/flash-list/discussions/804#discussioncomment-5509022
@@ -105,7 +112,13 @@ export function useMediaCardListPreset(
         props.RenderFirst && index === 0 ? (
           <props.RenderFirst size={width} className="mx-1.5 mb-3" />
         ) : (
-          <MediaCard {...item} size={width} className="mx-1.5 mb-3" />
+          <MediaCard
+            {...item}
+            size={width}
+            // @ts-expect-error - The spreaded values are valid navigation arguments.
+            onPress={() => navigation.navigate(...decodeMediaCardLink(item))}
+            className="mx-1.5 mb-3"
+          />
         ),
       ListEmptyComponent: (
         <ContentPlaceholder
@@ -118,7 +131,28 @@ export function useMediaCardListPreset(
       /** If in RTL, layout breaks with columns. */
       disableAutoLayout: I18nManager.isRTL,
     }),
-    [count, width, props],
+    [navigation, count, width, props],
   ) satisfies FlashListProps<MediaCard.Content>;
+}
+//#endregion
+
+//#region Utils
+/** Get arguments for `useNavigation` navigation functions. */
+export function decodeMediaCardLink({ id, type }: MediaCard.Content) {
+  if (type === "album") return ["Album", { id }] as const;
+  else if (type === "artist") return ["Artist", { id }] as const;
+  else if (type === "folder") return ["Folders", { path: id }] as const;
+  else if (type === "playlist") {
+    if (id === ReservedPlaylists.favorites) return ["FavoriteTracks"] as const;
+    else if (id === ReservedPlaylists.tracks) return ["Tracks"] as const;
+    return ["Playlist", { id }] as const;
+  } else if (type === "track") {
+    throw new Error("`MediaCard` linking doesn't support `track`.");
+  }
+}
+
+/** Drop-in for `keyExtractor` when the data is `MediaCard.Content`. */
+export function getMediaCardKey({ id, type }: MediaCard.Content) {
+  return `${type}_${id}`;
 }
 //#endregion

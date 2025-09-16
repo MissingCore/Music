@@ -1,4 +1,5 @@
 import type { StaticScreenProps } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { I18nManager } from "react-native";
 
@@ -75,6 +76,7 @@ export default function Artist({
  * list only if the artist has albums.
  */
 function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
+  const navigation = useNavigation();
   const { width } = useGetColumn({
     cols: 1,
     gap: 0,
@@ -83,7 +85,6 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
   });
 
   if (!albums) return null;
-
   return (
     <>
       <TEm dim textKey="term.albums" className="mb-2" />
@@ -95,11 +96,12 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
         renderItem={({ item, index }) => (
           <MediaCard
             type="album"
+            id={item.id}
             size={width}
             source={item.artwork}
-            href={`/album/${item.id}`}
             title={item.name}
             description={item.releaseYear || "————"}
+            onPress={() => navigation.navigate("Album", { id: item.id })}
             className={index > 0 ? OnRTL.decide("mr-3", "ml-3") : undefined}
           />
         )}
