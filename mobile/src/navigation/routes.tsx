@@ -149,9 +149,6 @@ function RootScreens(_: RootScreensProps) {
       backBehavior="none"
       tabBar={noop}
       screenListeners={listeners}
-      screenOptions={{
-        sceneStyle: { backgroundColor: "transparent" },
-      }}
     >
       <MaterialTopTab.Screen name="Home" component={Home} />
       {displayedTabs.map((tabKey) => (
@@ -180,37 +177,32 @@ export const RootStack = createNativeStackNavigator({
   ),
   screenOptions: {
     header: TopAppBar,
-    headerShown: false,
-    contentStyle: {
-      backgroundColor: "transparent",
-    },
   },
   screens: {
-    HomeScreens: RootScreens,
+    HomeScreens: {
+      screen: RootScreens,
+      options: { headerShown: false },
+    },
     NowPlaying: {
       screen: NowPlaying,
       options: {
         animation: "slide_from_bottom",
         header: NowPlayingTopAppBar,
         headerTransparent: true,
-        headerShown: true,
         headerTitle: "",
       },
     },
     Search: {
       screen: Search,
-      options: { headerShown: true, title: "" },
+      options: { title: "" },
     },
     Settings: {
       screen: Settings,
-      options: { headerShown: true, title: "term.settings" },
+      options: { title: "term.settings" },
     },
   },
   groups: {
     Current: {
-      screenOptions: {
-        headerShown: true,
-      },
       screens: {
         FavoriteTracks: { screen: FavoriteTracks, options: { title: "" } },
         CreatePlaylist: { screen: CreatePlaylist, options: { title: "" } },
@@ -228,7 +220,6 @@ export const RootStack = createNativeStackNavigator({
     Setting: {
       screenOptions: {
         animation: "fade",
-        headerShown: true,
       },
       screens: {
         AppUpdate: {

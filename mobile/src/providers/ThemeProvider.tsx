@@ -1,17 +1,10 @@
-import type { Theme } from "@react-navigation/native";
-import {
-  DefaultTheme,
-  ThemeProvider as NavigationThemeProvider,
-} from "@react-navigation/native";
 import { vars } from "nativewind";
 import { useCallback, useState } from "react";
 import type { ViewStyle } from "react-native";
-import { Appearance, View, useColorScheme } from "react-native";
+import { Appearance, View } from "react-native";
 import { SystemBars } from "react-native-edge-to-edge";
 
-import { useUserPreferencesStore } from "~/services/UserPreferences";
-
-import { Colors } from "~/constants/Styles";
+import { useCurrentTheme } from "~/hooks/useTheme";
 
 /** Used themed colors through a single Tailwind color via CSS Variables. */
 const Themes = {
@@ -36,22 +29,16 @@ const Themes = {
  * text color and the React Navigation theme colors.
  */
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const deviceTheme = useColorScheme();
-  const savedTheme = useUserPreferencesStore((state) => state.theme);
-
-  const currentTheme =
-    savedTheme === "system" ? (deviceTheme ?? "light") : savedTheme;
+  const currentTheme = useCurrentTheme();
   const iconColor = currentTheme === "light" ? "dark" : "light";
 
   return (
-    <NavigationThemeProvider
-      value={currentTheme === "light" ? LightNavTheme : DarkNavTheme}
-    >
+    <>
       <SystemBars style={{ statusBar: iconColor, navigationBar: iconColor }} />
       <View style={Themes[currentTheme]} className="flex-1 bg-canvas">
         {children}
       </View>
-    </NavigationThemeProvider>
+    </>
   );
 }
 
@@ -80,31 +67,3 @@ export function SystemTheme(props: {
     </View>
   );
 }
-
-/** Light theme for React Navigation components. */
-const LightNavTheme = {
-  dark: false,
-  colors: {
-    primary: Colors.red,
-    background: Colors.neutral95,
-    card: Colors.neutral95,
-    text: Colors.neutral0,
-    border: Colors.neutral95,
-    notification: Colors.red,
-  },
-  fonts: DefaultTheme.fonts,
-} satisfies Theme;
-
-/** Dark theme for React Navigation components. */
-const DarkNavTheme = {
-  dark: true,
-  colors: {
-    primary: Colors.red,
-    background: Colors.neutral0,
-    card: Colors.neutral0,
-    text: Colors.neutral100,
-    border: Colors.neutral0,
-    notification: Colors.red,
-  },
-  fonts: DefaultTheme.fonts,
-} satisfies Theme;

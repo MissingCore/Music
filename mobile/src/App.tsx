@@ -4,6 +4,7 @@ import Bootsplash from "react-native-bootsplash";
 
 import { userPreferencesStore } from "~/services/UserPreferences";
 import { useLoadResources } from "~/hooks/useLoadResources";
+import { useNavigationTheme } from "~/hooks/useTheme";
 import { AppProvider } from "~/providers";
 import { Navigation } from "~/navigation/routes";
 import { navigationRef } from "~/navigation/utils/router";
@@ -14,7 +15,6 @@ import { TrackSheet } from "~/screens/Sheets/Track";
 import "~/resources/global.css";
 import "~/modules/i18n"; // Make sure translations are bundled.
 import { SENTRY_ENABLED, Sentry } from "~/lib/sentry";
-import React from "react";
 
 // Catch any errors thrown by the Layout component.
 export { ErrorBoundary };
@@ -32,6 +32,7 @@ if (SENTRY_ENABLED) {
 
 export default function App() {
   const { isLoaded, error } = useLoadResources();
+  const navigationTheme = useNavigationTheme();
 
   if (error) {
     return (
@@ -52,7 +53,7 @@ export default function App() {
     <>
       <View ref={handleAppLifeCycle} />
       <AppProvider>
-        <Navigation ref={navigationRef} />
+        <Navigation ref={navigationRef} theme={navigationTheme} />
         <TrackSheet />
       </AppProvider>
     </>
