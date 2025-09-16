@@ -5,7 +5,7 @@ import { I18nManager } from "react-native";
 import type { Album } from "~/db/schema";
 
 import { useArtistForScreen } from "~/queries/artist";
-import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
+import { useBottomActionsInset } from "~/hooks/useBottomActions";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { CurrentListLayout } from "~/layouts/CurrentList";
 
@@ -29,7 +29,7 @@ export default function Artist({
   },
 }: Props) {
   const { t } = useTranslation();
-  const { bottomInset } = useBottomActionsContext();
+  const bottomInset = useBottomActionsInset();
   const { isPending, error, data } = useArtistForScreen(artistName);
 
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;

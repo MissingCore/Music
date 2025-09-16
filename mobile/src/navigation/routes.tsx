@@ -144,30 +144,27 @@ function RootScreens(_: RootScreensProps) {
   );
 
   return (
-    <View className="flex-1">
-      <MaterialTopTab.Navigator
-        initialRouteName={homeTabName}
-        backBehavior="none"
-        tabBar={noop}
-        screenListeners={listeners}
-        screenOptions={{
-          sceneStyle: { backgroundColor: "transparent" },
-        }}
-      >
-        <MaterialTopTab.Screen name="Home" component={Home} />
-        {displayedTabs.map((tabKey) => (
-          <MaterialTopTab.Screen
-            key={tabKey}
-            name={getHomeScreenName(tabKey)}
-            // @ts-expect-error - Typing for screens should be compatible.
-            component={RootScreenComponents[tabKey]}
-            initialParams={tabKey === "folder" ? { path: undefined } : {}}
-            options={{ lazy: true }}
-          />
-        ))}
-      </MaterialTopTab.Navigator>
-      <BottomActions />
-    </View>
+    <MaterialTopTab.Navigator
+      initialRouteName={homeTabName}
+      backBehavior="none"
+      tabBar={noop}
+      screenListeners={listeners}
+      screenOptions={{
+        sceneStyle: { backgroundColor: "transparent" },
+      }}
+    >
+      <MaterialTopTab.Screen name="Home" component={Home} />
+      {displayedTabs.map((tabKey) => (
+        <MaterialTopTab.Screen
+          key={tabKey}
+          name={getHomeScreenName(tabKey)}
+          // @ts-expect-error - Typing for screens should be compatible.
+          component={RootScreenComponents[tabKey]}
+          initialParams={tabKey === "folder" ? { path: undefined } : {}}
+          options={{ lazy: true }}
+        />
+      ))}
+    </MaterialTopTab.Navigator>
   );
 }
 //#endregion
@@ -175,6 +172,12 @@ function RootScreens(_: RootScreensProps) {
 //#region Static Route Config
 export const RootStack = createNativeStackNavigator({
   initialRouteName: "HomeScreens",
+  layout: ({ children }) => (
+    <View className="relative flex-1">
+      {children}
+      <BottomActions />
+    </View>
+  ),
   screenOptions: {
     header: TopAppBar,
     headerShown: false,

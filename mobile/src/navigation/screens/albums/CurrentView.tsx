@@ -5,7 +5,7 @@ import { View } from "react-native";
 
 import { Favorite } from "~/resources/icons/Favorite";
 import { useAlbumForScreen, useFavoriteAlbum } from "~/queries/album";
-import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
+import { useBottomActionsInset } from "~/hooks/useBottomActions";
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 import { CurrentListLayout } from "~/layouts/CurrentList";
 
@@ -28,7 +28,7 @@ export default function Album({
   },
 }: Props) {
   const { t } = useTranslation();
-  const { bottomInset } = useBottomActionsContext();
+  const bottomInset = useBottomActionsInset();
   const { isPending, error, data } = useAlbumForScreen(albumId);
   const favoriteAlbum = useFavoriteAlbum(albumId);
 

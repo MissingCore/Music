@@ -1,5 +1,5 @@
 import { useFavoriteTracksForScreen } from "~/queries/favorite";
-import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
+import { useBottomActionsInset } from "~/hooks/useBottomActions";
 import { CurrentListLayout } from "~/layouts/CurrentList";
 
 import { FlashList } from "~/components/Defaults";
@@ -14,7 +14,7 @@ export default function FavoriteTracks() {
     id: ReservedPlaylists.favorites,
   } as const;
 
-  const { bottomInset } = useBottomActionsContext();
+  const bottomInset = useBottomActionsInset();
   const { isPending, error, data } = useFavoriteTracksForScreen();
   const presets = useTrackListPreset({ data: data?.tracks, trackSource });
 

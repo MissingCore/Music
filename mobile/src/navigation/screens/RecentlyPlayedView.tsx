@@ -9,7 +9,7 @@ import {
   useRecentlyPlayedMediaLists,
   useRecentlyPlayedTracks,
 } from "~/queries/recent";
-import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
+import { useBottomActionsInset } from "~/hooks/useBottomActions";
 import { useGetColumn } from "~/hooks/useGetColumn";
 
 import { OnRTL } from "~/lib/react";
@@ -29,7 +29,7 @@ const trackSource = {
 export default function RecentlyPlayed() {
   const { t } = useTranslation();
   const isFocused = useIsFocused();
-  const { bottomInset } = useBottomActionsContext();
+  const bottomInset = useBottomActionsInset();
   const recentlyPlayedMediaLists = useRecentlyPlayedMediaLists();
   const recentlyPlayedTracks = useRecentlyPlayedTracks();
 

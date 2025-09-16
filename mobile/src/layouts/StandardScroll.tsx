@@ -10,7 +10,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
+import { useBottomActionsInset } from "~/hooks/useBottomActions";
 import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
@@ -29,7 +29,7 @@ export function StandardScrollLayout(props: {
   showStatusBarShadow?: boolean;
 }) {
   const { top } = useSafeAreaInsets();
-  const { bottomInset } = useBottomActionsContext();
+  const bottomInset = useBottomActionsInset();
   const { canvas } = useTheme();
 
   const headerHeight = useSharedValue(0);

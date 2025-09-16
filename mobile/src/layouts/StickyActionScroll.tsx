@@ -14,7 +14,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
+import { useBottomActionsInset } from "~/hooks/useBottomActions";
 import { useTheme } from "~/hooks/useTheme";
 
 import { AnimatedFlashList } from "~/components/Defaults";
@@ -43,7 +43,7 @@ export function StickyActionListLayout<TData>({
   const { t } = useTranslation();
   const { top } = useSafeAreaInsets();
   const { width: ScreenWidth } = useWindowDimensions();
-  const { bottomInset } = useBottomActionsContext();
+  const bottomInset = useBottomActionsInset();
   const { canvas } = useTheme();
 
   const initActionPos = useSharedValue(0);

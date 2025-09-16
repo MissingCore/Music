@@ -13,7 +13,7 @@ import {
   useTabsByVisibility,
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
-import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
+import { useRenderBottomActions } from "~/hooks/useBottomActions";
 import { useHasNewUpdate } from "~/hooks/useHasNewUpdate";
 import { useTheme } from "~/hooks/useTheme";
 
@@ -28,7 +28,7 @@ import { MiniPlayer } from "~/modules/media/components/MiniPlayer";
 //#region Bottom Actions
 /** Actions stickied to the bottom of the screens. */
 export function BottomActions() {
-  const { isRendered } = useBottomActionsContext();
+  const isRendered = useRenderBottomActions();
   return (
     <Animated.View
       layout={LinearTransition}

@@ -14,7 +14,7 @@ import {
   usePlaylistForScreen,
 } from "~/queries/playlist";
 import { useRemoveFromPlaylist } from "~/queries/track";
-import { useBottomActionsContext } from "~/hooks/useBottomActionsContext";
+import { useBottomActionsInset } from "~/hooks/useBottomActions";
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 import { CurrentListLayout } from "~/layouts/CurrentList";
 
@@ -45,7 +45,7 @@ export default function Playlist({
 }: Props) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const { bottomInset } = useBottomActionsContext();
+  const bottomInset = useBottomActionsInset();
   const { isPending, error, data } = usePlaylistForScreen(id);
   const moveInPlaylist = useMoveInPlaylist(id);
   const favoritePlaylist = useFavoritePlaylist(id);
