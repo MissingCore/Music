@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
@@ -16,7 +17,6 @@ import { useMusicStore } from "~/modules/media/services/Music";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useIsPlaying } from "~/modules/media/hooks/useIsPlaying";
 import { useTheme } from "~/hooks/useTheme";
-import { router } from "~/navigation/utils/router";
 import {
   AlbumArtworkSheet,
   ArtistArtworkSheet,
@@ -53,6 +53,7 @@ export function CurrentListLayout(
   } & AnimatedVinylProps,
 ) {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const { foreground } = useTheme();
   const primaryFont = useUserPreferencesStore((state) => state.primaryFont);
   const artworkSheetRef = useSheetRef();
@@ -93,8 +94,10 @@ export function CurrentListLayout(
             <Marquee>
               <Pressable
                 onPress={() =>
-                  router.navigate(
-                    `/artist/${encodeURIComponent(props.artist!)}`,
+                  navigation.navigate(
+                    "Artist",
+                    { id: props.artist! },
+                    { pop: true }, // For old `navigate` behavior.
                   )
                 }
               >

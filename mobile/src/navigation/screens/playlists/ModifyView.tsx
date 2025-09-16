@@ -1,6 +1,7 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import type { StaticScreenProps } from "@react-navigation/native";
-// import { router, useLocalSearchParams } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -11,7 +12,6 @@ import {
   usePlaylists,
   useUpdatePlaylist,
 } from "~/queries/playlist";
-import { router } from "../../utils/router";
 import { ModifyPlaylist as ModifyPlaylistBase } from "~/screens/ModifyPlaylist";
 
 import { mutateGuardAsync } from "~/lib/react-query";
@@ -25,6 +25,7 @@ export default function ModifyPlaylist({
   },
 }: Props) {
   const { t } = useTranslation();
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const { data: allPlaylists } = usePlaylists();
   const { data } = usePlaylist(id);
   const updatePlaylist = useUpdatePlaylist(id);
@@ -56,10 +57,10 @@ export default function ModifyPlaylist({
           { name: newName, tracks: tracksUnchanged ? undefined : tracks },
           {
             onSuccess: () => {
-              router.back();
+              navigation.goBack();
               // If playlist name changed, see the new playlist page.
               if (newName !== undefined) {
-                router.replace(`/playlist/${encodeURIComponent(newName)}`);
+                navigation.replace("Playlist", { id: newName });
               }
             },
             onError: () => {

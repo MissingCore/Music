@@ -1,10 +1,10 @@
 import { getHeaderTitle } from "@react-navigation/elements";
+import { useNavigation } from "@react-navigation/native";
 import type { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { ArrowBack } from "~/resources/icons/ArrowBack";
-import { router } from "~/navigation/utils/router";
 
 import { OnRTL } from "~/lib/react";
 import { SafeContainer } from "./Containment/SafeContainer";
@@ -17,6 +17,7 @@ import { StyledText } from "./Typography/StyledText";
  */
 export function TopAppBar({ options, route }: NativeStackHeaderProps) {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const title = getHeaderTitle(options, route.name);
 
   return (
@@ -25,7 +26,7 @@ export function TopAppBar({ options, route }: NativeStackHeaderProps) {
         <IconButton
           Icon={ArrowBack}
           accessibilityLabel={t("form.back")}
-          onPress={() => router.back()}
+          onPress={() => navigation.goBack()}
           disabled={!!options.headerLeft}
           className={OnRTL._use("rotate-180")}
         />

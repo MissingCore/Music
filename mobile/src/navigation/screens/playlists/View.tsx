@@ -1,9 +1,9 @@
+import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { Add } from "~/resources/icons/Add";
 import { usePlaylistsForCards } from "~/queries/playlist";
-import { router } from "../../utils/router";
 import { StickyActionListLayout } from "~/layouts/StickyActionScroll";
 
 import { Colors } from "~/constants/Styles";
@@ -32,11 +32,13 @@ export default function Playlists() {
 /** Actions used on the `/playlist` screen. */
 function PlaylistActions() {
   const { t } = useTranslation();
+  const navigation = useNavigation();
+
   return (
     <View className="rounded-md bg-canvas">
       <Button
         accessibilityLabel={t("feat.playlist.extra.create")}
-        onPress={() => router.navigate("/playlist/create")}
+        onPress={() => navigation.navigate("CreatePlaylist")}
         className="bg-red p-3"
       >
         <Add color={Colors.neutral100} />
