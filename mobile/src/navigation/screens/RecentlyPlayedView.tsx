@@ -105,8 +105,15 @@ function RecentlyPlayedLists(props: { data?: MediaCard.Content[] }) {
         <MediaCard
           {...item}
           size={width}
-          // @ts-expect-error - The spreaded values are valid navigation arguments.
-          onPress={() => navigation.navigate(...decodeMediaCardLink(item))}
+          onPress={() => {
+            const linkInfo = decodeMediaCardLink(item);
+            if (linkInfo[0] === "HomeScreens") {
+              // @ts-expect-error - The following is valid.
+              navigation.popTo(...linkInfo);
+            } else {
+              navigation.navigate(...linkInfo);
+            }
+          }}
           className={index > 0 ? OnRTL.decide("mr-3", "ml-3") : undefined}
         />
       )}

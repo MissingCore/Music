@@ -115,7 +115,6 @@ export function useMediaCardListPreset(
           <MediaCard
             {...item}
             size={width}
-            // @ts-expect-error - The spreaded values are valid navigation arguments.
             onPress={() => navigation.navigate(...decodeMediaCardLink(item))}
             className="mx-1.5 mb-3"
           />
@@ -141,14 +140,19 @@ export function useMediaCardListPreset(
 export function decodeMediaCardLink({ id, type }: MediaCard.Content) {
   if (type === "album") return ["Album", { id }] as const;
   else if (type === "artist") return ["Artist", { id }] as const;
-  else if (type === "folder") return ["Folders", { path: id }] as const;
-  else if (type === "playlist") {
+  else if (type === "folder") {
+    return [
+      "HomeScreens",
+      { screen: "Folders", params: { path: id } },
+    ] as const;
+  } else if (type === "playlist") {
     if (id === ReservedPlaylists.favorites) return ["FavoriteTracks"] as const;
-    else if (id === ReservedPlaylists.tracks) return ["Tracks"] as const;
+    else if (id === ReservedPlaylists.tracks) {
+      return ["HomeScreens", { screen: "Tracks" }] as const;
+    }
     return ["Playlist", { id }] as const;
-  } else if (type === "track") {
-    throw new Error("`MediaCard` linking doesn't support `track`.");
   }
+  throw new Error("`MediaCard` linking doesn't support `track`.");
 }
 
 /** Drop-in for `keyExtractor` when the data is `MediaCard.Content`. */
