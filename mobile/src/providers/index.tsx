@@ -10,7 +10,7 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 
-import { RouteHandlers } from "./RouteHandlers";
+import { DeepLinkHandler } from "./RouteHandlers";
 import { SystemTheme, ThemeProvider } from "./ThemeProvider";
 
 import { queryClient } from "~/lib/react-query";
@@ -23,7 +23,7 @@ export function AppProvider(props: ChildrenWrapperProps) {
         <ThemeProvider>
           <GestureHandlerRootView>
             <QueryClientProvider client={queryClient}>
-              <RouteHandlers />
+              <DeepLinkHandler />
               <ChildrenWrapper {...props} />
               <ToastProvider />
             </QueryClientProvider>
