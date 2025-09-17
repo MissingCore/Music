@@ -17,6 +17,7 @@ export function Slider(props: {
   thumbSize: number;
   onChange: (value: number) => void | Promise<void>;
   onComplete?: (value: number) => void | Promise<void>;
+  inverted?: boolean;
 }) {
   const { onSurface } = useTheme();
   return (
@@ -34,6 +35,7 @@ export function Slider(props: {
       thumbStyle={{ height: props.thumbSize, width: props.thumbSize }}
       trackStyle={{ height: props.thumbSize / 2, borderRadius: 999 }}
       containerStyle={{ height: props.thumbSize + 16 }}
+      inverted={props.inverted}
     />
   );
 }
