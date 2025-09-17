@@ -146,8 +146,8 @@
       "title": "Consejos visuales"
     },
     "ignoreRTLLayout": {
-      "title": null,
-      "brief": null
+      "title": "Ignorar diseño RTL",
+      "brief": "Usar diseño LTR con un lenguaje RTL. Requiere reiniciar."
     },
     "language": {
       "title": "Idioma"
@@ -246,8 +246,8 @@
       "brief": "Funciones que pueden no obtener soporte oficial o funcionar como se esperaba. Úsalas bajo tu propio riesgo."
     },
     "continuePlaybackOnDismiss": {
-      "title": null,
-      "description": null
+      "title": "Continúa reproduciendo al descartar",
+      "description": "Permite que la reproducción de música continúe cuando descartes la aplicación de tareas recientes. Fuerza a detener la aplicación para detener la reproducción."
     },
     "sleepTimer": {
       "title": "Apagado automático",
