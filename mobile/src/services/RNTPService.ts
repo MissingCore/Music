@@ -185,7 +185,7 @@ export async function PlaybackService() {
         await deleteTrack(erroredTrack.id, { errorName: e.code, errorMessage });
         await removeUnusedCategories();
         clearAllQueries();
-        router.navigate("/");
+        router.navigate("HomeScreens", undefined, { pop: true });
       }
 
       toast.error(

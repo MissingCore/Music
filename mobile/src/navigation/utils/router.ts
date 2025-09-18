@@ -6,11 +6,15 @@ import type { MediaCard } from "~/modules/media/components/MediaCard";
 
 export const navigationRef = createNavigationContainerRef();
 
+/** Ability to navigate outside of React context. **Use as little as possible.** */
 export const router = {
-  back: () => {},
-  navigate: (href: string) => {},
-  push: (href: string) => {},
-  replace: (href: string) => {},
+  back: () => {
+    if (navigationRef.isReady()) navigationRef.goBack();
+  },
+  navigate: (...args: any[]) => {
+    // @ts-expect-error - Arguments should be compatible.
+    if (navigationRef.isReady()) navigationRef.navigate(...args);
+  },
 };
 
 /** Get arguments for `useNavigation` navigation functions. */
