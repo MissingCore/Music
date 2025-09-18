@@ -11,17 +11,14 @@ import {
 } from "~/queries/recent";
 import { useBottomActionsInset } from "~/hooks/useBottomActions";
 import { useGetColumn } from "~/hooks/useGetColumn";
+import { getMediaLinkContext } from "../utils/router";
 
 import { OnRTL } from "~/lib/react";
 import { queryClient } from "~/lib/react-query";
 import { FlashList } from "~/components/Defaults";
 import { PagePlaceholder } from "~/components/Transition/Placeholder";
 import { ReservedPlaylists } from "~/modules/media/constants";
-import {
-  MediaCard,
-  decodeMediaCardLink,
-  getMediaCardKey,
-} from "~/modules/media/components/MediaCard";
+import { MediaCard } from "~/modules/media/components/MediaCard";
 import { Track } from "~/modules/media/components/Track";
 
 // Information about this track list.
@@ -100,13 +97,13 @@ function RecentlyPlayedLists(props: { data?: MediaCard.Content[] }) {
       estimatedItemSize={width + 12} // Column width + gap from padding left
       horizontal
       data={props.data}
-      keyExtractor={getMediaCardKey}
+      keyExtractor={({ id, type }) => `${type}_${id}`}
       renderItem={({ item, index }) => (
         <MediaCard
           {...item}
           size={width}
           onPress={() => {
-            const linkInfo = decodeMediaCardLink(item);
+            const linkInfo = getMediaLinkContext(item);
             if (linkInfo[0] === "HomeScreens") {
               // @ts-expect-error - The following is valid.
               navigation.popTo(...linkInfo);

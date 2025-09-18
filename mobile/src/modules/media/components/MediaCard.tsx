@@ -4,13 +4,13 @@ import { useMemo } from "react";
 import { I18nManager, Pressable } from "react-native";
 
 import { useGetColumn } from "~/hooks/useGetColumn";
+import { getMediaLinkContext } from "~/navigation/utils/router";
 
 import { cn } from "~/lib/style";
 import type { Prettify } from "~/utils/types";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { StyledText } from "~/components/Typography/StyledText";
 import { MediaImage } from "./MediaImage";
-import { ReservedPlaylists } from "../constants";
 
 //#region Media Card
 export namespace MediaCard {
@@ -103,7 +103,7 @@ export function useMediaCardListPreset(
       // ~40px for text content under `<MediaImage />` + 16px Margin Bottom
       estimatedItemSize: width + 40 + 12,
       data: props.data,
-      keyExtractor: getMediaCardKey,
+      keyExtractor: ({ id, type }) => `${type}_${id}`,
       /*
         Utilized janky margin method to implement gaps in FlashList with columns.
           - https://github.com/shopify/flash-list/discussions/804#discussioncomment-5509022
@@ -115,7 +115,7 @@ export function useMediaCardListPreset(
           <MediaCard
             {...item}
             size={width}
-            onPress={() => navigation.navigate(...decodeMediaCardLink(item))}
+            onPress={() => navigation.navigate(...getMediaLinkContext(item))}
             className="mx-1.5 mb-3"
           />
         ),
@@ -132,31 +132,5 @@ export function useMediaCardListPreset(
     }),
     [navigation, count, width, props],
   ) satisfies FlashListProps<MediaCard.Content>;
-}
-//#endregion
-
-//#region Utils
-/** Get arguments for `useNavigation` navigation functions. */
-export function decodeMediaCardLink({ id, type }: MediaCard.Content) {
-  if (type === "album") return ["Album", { id }] as const;
-  else if (type === "artist") return ["Artist", { id }] as const;
-  else if (type === "folder") {
-    return [
-      "HomeScreens",
-      { screen: "Folders", params: { path: id } },
-    ] as const;
-  } else if (type === "playlist") {
-    if (id === ReservedPlaylists.favorites) return ["FavoriteTracks"] as const;
-    else if (id === ReservedPlaylists.tracks) {
-      return ["HomeScreens", { screen: "Tracks" }] as const;
-    }
-    return ["Playlist", { id }] as const;
-  }
-  throw new Error("`MediaCard` linking doesn't support `track`.");
-}
-
-/** Drop-in for `keyExtractor` when the data is `MediaCard.Content`. */
-export function getMediaCardKey({ id, type }: MediaCard.Content) {
-  return `${type}_${id}`;
 }
 //#endregion
