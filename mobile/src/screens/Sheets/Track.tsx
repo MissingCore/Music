@@ -1,5 +1,6 @@
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
-// import { router, usePathname } from "expo-router";
+import { useNavigation, useNavigationState } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { ParseKeys } from "i18next";
 import { Fragment, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -30,7 +31,7 @@ import {
 import { useSessionStore } from "~/services/SessionStore";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { useTheme } from "~/hooks/useTheme";
-import { router } from "~/navigation/utils/router";
+import { getMediaLinkContext } from "~/navigation/utils/router";
 import { TrackArtworkSheet } from "~/screens/Sheets/Artwork";
 import { Queue, useMusicStore } from "~/modules/media/services/Music";
 
@@ -52,7 +53,6 @@ import { Checkbox } from "~/components/Form/Selection";
 import { Sheet, useSheetRef } from "~/components/Sheet";
 import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
-import { getSourceLink } from "~/modules/media/helpers/data";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 
 //#region Track Sheet
@@ -97,16 +97,19 @@ export function TrackSheet() {
 
 //#region Introduction
 function TrackIntro({ data }: { data: TrackWithAlbum }) {
+  const [_, navigate] = useNavigationAction();
+
   const navLinks = [
     {
-      href: getSourceLink({ type: "album", id: data.albumId ?? "" }),
+      linkInfo: ["Album", { id: data.albumId }] as const,
       value: data.album?.name,
     },
     {
-      href: getSourceLink({ type: "artist", id: data.artistName ?? "" }),
+      linkInfo: ["Artist", { id: data.artistName }] as const,
       value: data.artistName,
     },
   ].filter(({ value }) => typeof value === "string");
+
   return (
     <View className="mb-2 flex-row items-end gap-3">
       <MediaImage
@@ -121,17 +124,15 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
         </Marquee>
         {navLinks.length > 0 ? (
           <Marquee color="canvasAlt">
-            {navLinks.map(({ href, value }, idx) => (
+            {navLinks.map(({ linkInfo, value }, idx) => (
               <Fragment key={idx}>
                 {idx === 1 ? (
                   <StyledText className="text-xs">|</StyledText>
                 ) : null}
-                <Pressable onPress={sheetAction(() => router.navigate(href))}>
+                <Pressable onPress={sheetAction(() => navigate(...linkInfo))}>
                   <StyledText
                     dim
-                    className={cn({
-                      "text-red": (href as string).startsWith("/artist/"),
-                    })}
+                    className={cn({ "text-red": linkInfo[0] === "Artist" })}
                   >
                     {value}
                   </StyledText>
@@ -186,6 +187,7 @@ function TrackMetadata({ data }: { data: TrackWithAlbum }) {
 /** Actions that can be understood with just an icon. */
 function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
   const { t } = useTranslation();
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const { data } = useTrack(props.id);
   const favoriteTrack = useFavoriteTrack(props.id);
   const hideTrack = useHideTrack();
@@ -205,7 +207,7 @@ function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
         Icon={Edit}
         accessibilityLabel={t("feat.trackMetadata.title")}
         onPress={sheetAction(() =>
-          router.push(`/track/modify?id=${encodeURIComponent(props.id)}`),
+          navigation.navigate("ModifyTrack", { id: props.id }),
         )}
       />
       <IconButton
@@ -232,17 +234,19 @@ function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
 
 /** Actions that require a visual description. */
 function TrackTextActions({ id, name }: Record<"id" | "name", string>) {
-  // const pathname = usePathname();
-  const pathname = "";
+  const [onNowPlayingScreen, navigate] = useNavigationAction();
   const { width } = useGetColumn({ cols: 2, gap: 3, gutters: 32 });
   const playingSource = useMusicStore((state) => state.playingSource);
   const sourceName = useMusicStore((state) => state.sourceName);
   const playingList = useMusicStore((state) => state.playingList);
 
   const showPlayingFrom =
-    pathname === "/now-playing" && playingList.some((tId) => tId === id);
+    onNowPlayingScreen && playingList.some((tId) => tId === id);
 
-  const listHref = useMemo(() => getSourceLink(playingSource), [playingSource]);
+  const listLinkInfo = useMemo(
+    () => (playingSource ? getMediaLinkContext(playingSource) : undefined),
+    [playingSource],
+  );
 
   return (
     <View className="gap-[3px]">
@@ -267,7 +271,9 @@ function TrackTextActions({ id, name }: Record<"id" | "name", string>) {
           Icon={List}
           textKey="term.playingFrom"
           description={sourceName}
-          onPress={sheetAction(() => router.navigate(listHref!))}
+          onPress={sheetAction(() =>
+            listLinkInfo ? navigate(...listLinkInfo) : undefined,
+          )}
           className="grow rounded-b-md"
         />
       ) : null}
@@ -339,6 +345,29 @@ function sheetAction(onPress: VoidFunction) {
     TrueSheet.dismiss("TrackSheet");
     onPress();
   };
+}
+
+function useNavigationAction() {
+  const navigation = useNavigation();
+  const currNavRoutes = useNavigationState((s) => s.routes);
+
+  const onNowPlaying = useMemo(
+    () => currNavRoutes.at(-1)?.name === "NowPlaying",
+    [currNavRoutes],
+  );
+
+  return useMemo(
+    () =>
+      [
+        onNowPlaying,
+        (...args: any[]) => {
+          if (onNowPlaying) navigation.goBack();
+          // @ts-expect-error - Arguments should be compatible.
+          navigation.navigate(...args);
+        },
+      ] as const,
+    [navigation, onNowPlaying],
+  );
 }
 //#endregion
 //#endregion

@@ -13,10 +13,11 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useCallback, useMemo, useRef } from "react";
-import { BackHandler, View } from "react-native";
+import { BackHandler } from "react-native";
 
+import { AppProvider } from "~/providers";
+import { TrackSheet } from "~/screens/Sheets/Track";
 import Home from "./screens/HomeView";
-import { ModifyTrack } from "~/screens/ModifyTrack";
 import NowPlaying from "./screens/NowPlayingView";
 import RecentlyPlayed from "./screens/RecentlyPlayedView";
 import Search from "./screens/SearchView";
@@ -42,6 +43,7 @@ import ScanningSettings from "./screens/settings/ScanningSettingsView";
 import ThirdParty from "./screens/settings/ThirdPartyView";
 import Settings from "./screens/settings/View";
 import FavoriteTracks from "./screens/tracks/FavoritesView";
+import ModifyTrack from "./screens/tracks/ModifyView";
 import Tracks from "./screens/tracks/View";
 
 import {
@@ -170,10 +172,11 @@ function RootScreens(_: RootScreensProps) {
 export const RootStack = createNativeStackNavigator({
   initialRouteName: "HomeScreens",
   layout: ({ children }) => (
-    <View className="relative flex-1">
+    <AppProvider>
       {children}
       <BottomActions />
-    </View>
+      <TrackSheet />
+    </AppProvider>
   ),
   screenOptions: {
     header: TopAppBar,

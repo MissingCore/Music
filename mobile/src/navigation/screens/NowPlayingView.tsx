@@ -1,3 +1,5 @@
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
 import { I18nManager, Pressable, View } from "react-native";
 
@@ -13,7 +15,6 @@ import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { useMusicStore } from "~/modules/media/services/Music";
 import { presentTrackSheet } from "~/services/SessionStore";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
-import { router } from "../utils/router";
 import { useUpcomingStore } from "~/screens/NowPlaying/helpers/UpcomingStore";
 import { usePlayerProgress } from "~/screens/NowPlaying/helpers/usePlayerProgress";
 import { NowPlayingArtwork } from "~/screens/NowPlaying/Artwork";
@@ -60,16 +61,32 @@ export default function NowPlaying() {
 /** Brief information and actions on the current playing track. */
 function Metadata({ track }: { track: TrackWithAlbum }) {
   const { t } = useTranslation();
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+
   return (
     <View className="flex-row items-center gap-4">
       <View className="shrink grow gap-1">
         <Marquee>
           <StyledText className="text-xl/[1.125]">{track.name}</StyledText>
         </Marquee>
-        <MarqueeLink href={`/artist/${track.artistName}`} className="text-red">
+        <MarqueeLink
+          onPress={() => {
+            if (track.artistName) {
+              navigation.popTo("Artist", { id: track.artistName });
+            }
+          }}
+          className="text-red"
+        >
           {track.artistName}
         </MarqueeLink>
-        <MarqueeLink href={`/album/${track.album?.id}`} dim>
+        <MarqueeLink
+          onPress={() => {
+            if (track.album?.id) {
+              navigation.popTo("Album", { id: track.album.id });
+            }
+          }}
+          dim
+        >
           {track.album?.name}
         </MarqueeLink>
       </View>
@@ -122,15 +139,15 @@ function FavoriteButton(props: { trackId: string }) {
 }
 
 function MarqueeLink({
-  href,
+  onPress,
   className,
   children,
   ...rest
-}: React.ComponentProps<typeof StyledText> & { href: string }) {
+}: React.ComponentProps<typeof StyledText> & { onPress: VoidFunction }) {
   if (!children) return null;
   return (
     <Marquee>
-      <Pressable onPress={() => router.navigate(href)}>
+      <Pressable onPress={onPress}>
         <StyledText className={cn("text-sm/[1.125]", className)} {...rest}>
           {children}
         </StyledText>
@@ -250,6 +267,7 @@ function BottomAppBar() {
  */
 function BackButton() {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const usedDesign = useUserPreferencesStore((state) => state.nowPlayingDesign);
 
   if (usedDesign !== "vinylOld") return <View />;
@@ -257,7 +275,7 @@ function BackButton() {
     <IconButton
       Icon={KeyboardArrowDown}
       accessibilityLabel={t("form.back")}
-      onPress={() => router.back()}
+      onPress={() => navigation.goBack()}
       large
     />
   );

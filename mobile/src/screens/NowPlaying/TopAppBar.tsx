@@ -1,3 +1,5 @@
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
@@ -5,14 +7,13 @@ import { Pressable, View } from "react-native";
 import { ArrowBack } from "~/resources/icons/ArrowBack";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useMusicStore } from "~/modules/media/services/Music";
-import { router } from "~/navigation/utils/router";
+import { getMediaLinkContext } from "~/navigation/utils/router";
 
 import { OnRTL } from "~/lib/react";
 import { Marquee } from "~/components/Containment/Marquee";
 import { SafeContainer } from "~/components/Containment/SafeContainer";
 import { IconButton } from "~/components/Form/Button";
 import { StyledText } from "~/components/Typography/StyledText";
-import { getSourceLink } from "~/modules/media/helpers/data";
 
 /**
  * Header bar design for "Now Playing" screen which automatically displays
@@ -31,11 +32,15 @@ export function NowPlayingTopAppBar() {
 /** Conditionally render the header content depending on the design used. */
 function AppBarContent() {
   const { t } = useTranslation();
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const playingSource = useMusicStore((state) => state.playingSource);
   const listName = useMusicStore((state) => state.sourceName);
   const usedDesign = useUserPreferencesStore((state) => state.nowPlayingDesign);
 
-  const listHref = useMemo(() => getSourceLink(playingSource), [playingSource]);
+  const listLinkInfo = useMemo(
+    () => (playingSource ? getMediaLinkContext(playingSource) : undefined),
+    [playingSource],
+  );
 
   if (usedDesign === "vinylOld") return null;
 
@@ -44,12 +49,14 @@ function AppBarContent() {
       <IconButton
         Icon={ArrowBack}
         accessibilityLabel={t("form.back")}
-        onPress={() => router.back()}
+        onPress={() => navigation.goBack()}
         className={OnRTL._use("rotate-180")}
       />
       <Pressable
-        onPress={() => (listHref ? router.navigate(listHref) : undefined)}
-        disabled={listHref === undefined}
+        onPress={() =>
+          listLinkInfo ? navigation.popTo(...listLinkInfo) : undefined
+        }
+        disabled={listLinkInfo === undefined}
         className="shrink gap-0.5"
       >
         <Marquee center>

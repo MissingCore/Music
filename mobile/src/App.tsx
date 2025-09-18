@@ -11,7 +11,6 @@ import { Navigation } from "~/navigation/routes";
 import { navigationRef } from "~/navigation/utils/router";
 import { ErrorBoundary } from "~/screens/ErrorBoundary";
 import { OnboardingScreen } from "~/screens/Onboarding";
-import { TrackSheet } from "~/screens/Sheets/Track";
 
 import "~/resources/global.css";
 import "~/modules/i18n"; // Make sure translations are bundled.
@@ -53,14 +52,11 @@ export default function App() {
   return (
     <>
       <View ref={handleAppLifeCycle} />
-      <AppProvider>
-        <Navigation
-          ref={navigationRef}
-          theme={navigationTheme}
-          linking={linkingConfig}
-        />
-        <TrackSheet />
-      </AppProvider>
+      <Navigation
+        ref={navigationRef}
+        theme={navigationTheme}
+        linking={linkingConfig}
+      />
     </>
   );
 }

@@ -73,22 +73,6 @@ export async function getSourceName({ type, id }: PlayListSource) {
   return name;
 }
 
-/** Get the link to a media list. */
-export function getSourceLink<T extends PlayListSource | undefined>(
-  props: T,
-): undefined extends T ? undefined : string {
-  // @ts-expect-error - Return type is correct.
-  if (!props) return;
-  const { type, id } = props;
-  // @ts-expect-error - Return type is correct.
-  if (type === "playlist" && id === ReservedPlaylists.tracks) return "/track";
-  else if (type === "folder")
-    // @ts-expect-error - Return type is correct.
-    return `/folder?path=${encodeURIComponent(id)}` satisfies string;
-  // @ts-expect-error - Return type is correct.
-  return `/${type}/${encodeURIComponent(id)}` satisfies string;
-}
-
 /** Get list of tracks from a `PlayListSource`. */
 export async function getTrackList({ type, id }: PlayListSource) {
   let sortedTracks: TrackWithAlbum[] = [];
