@@ -361,6 +361,8 @@ function useNavigationAction() {
       [
         onNowPlaying,
         (...args: any[]) => {
+          // Call `goBack()` to mimic `popTo` since we don't have access
+          // to that function in the sheet.
           if (onNowPlaying) navigation.goBack();
           // @ts-expect-error - Arguments should be compatible.
           navigation.navigate(...args);
