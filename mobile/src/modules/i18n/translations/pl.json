@@ -12,13 +12,13 @@
     "track": "Utwór",
     "tracks": "Utwory",
     "play": "Odtwórz",
-    "pause": "Zatrzymaj",
+    "pause": "Wstrzymaj",
     "prev": "Poprzednia",
     "next": "Następna",
     "shuffle": "Losuj",
     "repeat": "Zapętl",
-    "repeatOne": "Zapętl jedną",
-    "favorite": "Ulubiona",
+    "repeatOne": "Zapętl jeden",
+    "favorite": "Ulubiony",
     "favorites": "Ulubione",
     "unFavorite": "Usuń z ulubionych",
     "favoriteTracks": "Ulubione utwory",
@@ -146,8 +146,8 @@
       "title": "Wizualne podpowiedzi"
     },
     "ignoreRTLLayout": {
-      "title": null,
-      "brief": null
+      "title": "Ignoruj układ RTL",
+      "brief": "Używaj układu LTR z językami RTL. Wymagany restart."
     },
     "language": {
       "title": "Język"
@@ -164,7 +164,7 @@
       }
     },
     "insights": {
-      "title": "Statystyki",
+      "title": "Wgląd",
       "brief": "Rozmiary i ilości danych.",
       "extra": {
         "cache": "Pamięć podręczna",
@@ -185,7 +185,7 @@
       }
     },
     "saveErrors": {
-      "title": "Przechwycone błędy",
+      "title": "Błędy zapisu",
       "brief": "Zobacz dlaczego niektóre utwory nie zostały dodane."
     },
     "interactions": {
@@ -246,8 +246,8 @@
       "brief": "Te funkcje mogą nie mieć oficjalnego wsparcia i działać inaczej niż oczekiwano. Używasz na własne ryzyko."
     },
     "continuePlaybackOnDismiss": {
-      "title": null,
-      "description": null
+      "title": "Odtwarzanie po zamknięciu",
+      "description": "Pozwól na kontynuowanie odtwarzania po zamknięciu aplikacji. Wymuś zatrzymanie aplikacji, aby zatrzymać odtwarzanie."
     },
     "sleepTimer": {
       "title": "Wyłącznik czasowy",
@@ -337,7 +337,7 @@
       "title": "Edytuj metadane",
       "description": {
         "line1": "Zmień jak utwory będą wyświetlane w aplikacji. To nie modyfikuje plików.",
-        "line2": "Uwaga: Twoje zmiany mogę zostać odrzucone po modyfikacji pliku."
+        "line2": "Uwaga: Twoje zmiany mogą zostać odrzucone po modyfikacji pliku."
       },
       "extra": {
         "albumArtist": "Wykonawca albumu",
