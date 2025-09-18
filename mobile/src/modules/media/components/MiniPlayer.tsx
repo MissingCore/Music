@@ -9,6 +9,7 @@ import { useMusicStore } from "../services/Music";
 import { MusicControls } from "../services/Playback";
 import { useIsPlaying } from "../hooks/useIsPlaying";
 
+import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { Marquee } from "~/components/Containment/Marquee";
 import { IconButton } from "~/components/Form/Button";
@@ -54,7 +55,10 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
           </Marquee>
         </View>
 
-        <View className="flex-row items-center">
+        <View
+          style={{ flexDirection: OnRTL.decide("row-reverse", "row") }}
+          className="items-center"
+        >
           <PreviousButton />
           <IconButton
             Icon={isPlaying ? Pause : PlayArrow}

@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Pressable, View } from "react-native";
+import { I18nManager, Pressable, View } from "react-native";
 
 import type { TrackWithAlbum } from "~/db/schema";
 
@@ -21,6 +21,7 @@ import { NowPlayingSheets } from "~/screens/NowPlaying/Sheets";
 import { SleepTimerSheet } from "~/screens/Sheets/SleepTimer";
 import { useSleepTimerStore } from "~/screens/Sheets/SleepTimer/store";
 
+import { OnRTL } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { formatSeconds } from "~/utils/number";
@@ -154,8 +155,12 @@ function SeekBar({ duration }: { duration: number }) {
         onChange={setPosition}
         onComplete={seekToPosition}
         thumbSize={16}
+        inverted={I18nManager.isRTL}
       />
-      <View className="flex-row justify-between">
+      <View
+        style={{ flexDirection: OnRTL.decide("row-reverse", "row") }}
+        className="justify-between"
+      >
         <StyledText className="text-sm">{formatSeconds(clampedPos)}</StyledText>
         <StyledText className="text-sm">{formatSeconds(duration)}</StyledText>
       </View>
@@ -168,7 +173,10 @@ function SeekBar({ duration }: { duration: number }) {
 /** Playback controls for the current track. */
 function PlaybackControls() {
   return (
-    <View className="flex-row items-center justify-center gap-2">
+    <View
+      style={{ flexDirection: OnRTL.decide("row-reverse", "row") }}
+      className="items-center justify-center gap-2"
+    >
       <ShuffleButton />
       <PreviousButton />
       <PlayToggleButton />
