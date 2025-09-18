@@ -3,7 +3,9 @@ import { useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 
 type SupportedScreenOptions = {
+  headerLeft?: () => React.ReactNode;
   headerRight?: () => React.ReactNode;
+  headerTitle?: string;
 };
 
 export function ScreenOptions(options: SupportedScreenOptions) {

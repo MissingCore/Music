@@ -2,7 +2,7 @@ import {
   MetadataPresets,
   getMetadata,
 } from "@missingcore/react-native-metadata-retriever";
-// import { Stack, router } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler, View } from "react-native";
@@ -10,7 +10,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 import { Check } from "~/resources/icons/Check";
 import { useFloatingContent } from "~/hooks/useFloatingContent";
-import { router } from "~/navigation/utils/router";
+import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 import type { InitStoreProps, TrackMetadataForm } from "./context";
 import {
   TrackMetadataStoreProvider,
@@ -51,27 +51,23 @@ function ScreenConfig() {
   const isSubmitting = useTrackMetadataStore((state) => state.isSubmitting);
   const onSubmit = useTrackMetadataStore((state) => state.onSubmit);
 
-  return <></>;
-
-  // return (
-  //   <Stack.Screen
-  //     options={{
-  //       headerTitle: t("feat.trackMetadata.title"),
-  //       // Hacky solution to disable the back button when submitting.
-  //       headerLeft: isSubmitting ? () => undefined : undefined,
-  //       headerRight: () => (
-  //         <IconButton
-  //           Icon={Check}
-  //           accessibilityLabel={t("form.apply")}
-  //           onPress={onSubmit}
-  //           disabled={
-  //             isUnchanged || trackName.trim().length === 0 || isSubmitting
-  //           }
-  //         />
-  //       ),
-  //     }}
-  //   />
-  // );
+  return (
+    <ScreenOptions
+      headerTitle={t("feat.trackMetadata.title")}
+      // Hacky solution to disable the back button when submitting.
+      headerLeft={isSubmitting ? () => undefined : undefined}
+      headerRight={() => (
+        <IconButton
+          Icon={Check}
+          accessibilityLabel={t("form.apply")}
+          onPress={onSubmit}
+          disabled={
+            isUnchanged || trackName.trim().length === 0 || isSubmitting
+          }
+        />
+      )}
+    />
+  );
 }
 //#endregion
 
@@ -170,12 +166,14 @@ function FormInput(props: {
 //#region Confirmation Modal
 /** Modal that's rendered if we have unsaved changes. */
 function ConfirmationModal() {
+  const navigation = useNavigation();
   const showConfirmation = useTrackMetadataStore(
     (state) => state.showConfirmation,
   );
   const setShowConfirmation = useTrackMetadataStore(
     (state) => state.setShowConfirmation,
   );
+
   return (
     <ModalTemplate
       visible={showConfirmation}
@@ -186,7 +184,7 @@ function ConfirmationModal() {
       }}
       rightAction={{
         textKey: "form.leave",
-        onPress: () => router.back(),
+        onPress: () => navigation.goBack(),
       }}
     />
   );

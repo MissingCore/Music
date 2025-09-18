@@ -1,4 +1,4 @@
-// import { Stack, router } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 import { memo, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler, Pressable, View } from "react-native";
@@ -13,8 +13,7 @@ import { Check } from "~/resources/icons/Check";
 import { Remove } from "~/resources/icons/Remove";
 import { useDeletePlaylist } from "~/queries/playlist";
 import { useFloatingContent } from "~/hooks/useFloatingContent";
-import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
-import { router } from "~/navigation/utils/router";
+import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 import type { InitStoreProps } from "./context";
 import {
   PlaylistStoreProvider,
@@ -26,6 +25,7 @@ import { AddMusicSheet } from "./Sheets";
 
 import { Colors } from "~/constants/Styles";
 import { OnRTL } from "~/lib/react";
+import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { wait } from "~/utils/promise";
@@ -63,25 +63,21 @@ function ScreenConfig() {
   const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
   const onSubmit = usePlaylistStore((state) => state.INTERNAL_onSubmit);
 
-  return <></>;
-
-  // return (
-  // <Stack.Screen
-  //   options={{
-  //     headerTitle: t(`feat.playlist.extra.${mode ?? "create"}`),
-  //     // Hacky solution to disable the back button when submitting.
-  //     headerLeft: isSubmitting ? () => undefined : undefined,
-  //     headerRight: () => (
-  //       <IconButton
-  //         Icon={Check}
-  //         accessibilityLabel={t("form.apply")}
-  //         onPress={onSubmit}
-  //         disabled={isUnchanged || !isUnique || isSubmitting}
-  //       />
-  //     ),
-  //   }}
-  // />
-  // );
+  return (
+    <ScreenOptions
+      headerTitle={t(`feat.playlist.extra.${mode ?? "create"}`)}
+      // Hacky solution to disable the back button when submitting.
+      headerLeft={isSubmitting ? () => undefined : undefined}
+      headerRight={() => (
+        <IconButton
+          Icon={Check}
+          accessibilityLabel={t("form.apply")}
+          onPress={onSubmit}
+          disabled={isUnchanged || !isUnique || isSubmitting}
+        />
+      )}
+    />
+  );
 }
 //#endregion
 
@@ -253,10 +249,12 @@ function ListHeaderComponent(props: { showSheet: VoidFunction }) {
 //#region Confirmation Modal
 /** Modal that's rendered if we have unsaved changes. */
 function ConfirmationModal() {
+  const navigation = useNavigation();
   const showConfirmation = usePlaylistStore((state) => state.showConfirmation);
   const setShowConfirmation = usePlaylistStore(
     (state) => state.setShowConfirmation,
   );
+
   return (
     <ModalTemplate
       visible={showConfirmation}
@@ -267,7 +265,7 @@ function ConfirmationModal() {
       }}
       rightAction={{
         textKey: "form.leave",
-        onPress: () => router.back(),
+        onPress: () => navigation.goBack(),
       }}
     />
   );
@@ -280,6 +278,7 @@ function DeleteWorkflow({
   onLayout,
   wrapperStyling,
 }: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
+  const navigation = useNavigation();
   const [lastChance, setLastChance] = useState(false);
 
   const mode = usePlaylistStore((state) => state.mode);
@@ -297,8 +296,8 @@ function DeleteWorkflow({
     await wait(1);
     mutateGuard(deletePlaylist, undefined, {
       onSuccess: () => {
-        router.back();
-        router.back();
+        navigation.goBack();
+        navigation.goBack();
       },
     });
   };
