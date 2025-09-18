@@ -6,6 +6,7 @@ import { userPreferencesStore } from "~/services/UserPreferences";
 import { useLoadResources } from "~/hooks/useLoadResources";
 import { useNavigationTheme } from "~/hooks/useTheme";
 import { AppProvider } from "~/providers";
+import { linkingConfig } from "~/navigation/linkingConfig";
 import { Navigation } from "~/navigation/routes";
 import { navigationRef } from "~/navigation/utils/router";
 import { ErrorBoundary } from "~/screens/ErrorBoundary";
@@ -53,7 +54,11 @@ export default function App() {
     <>
       <View ref={handleAppLifeCycle} />
       <AppProvider>
-        <Navigation ref={navigationRef} theme={navigationTheme} />
+        <Navigation
+          ref={navigationRef}
+          theme={navigationTheme}
+          linking={linkingConfig}
+        />
         <TrackSheet />
       </AppProvider>
     </>

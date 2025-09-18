@@ -185,6 +185,9 @@ export const RootStack = createNativeStackNavigator({
     },
     NowPlaying: {
       screen: NowPlaying,
+      linking: {
+        path: "now-playing",
+      },
       options: {
         animation: "slide_from_bottom",
         header: NowPlayingTopAppBar,
