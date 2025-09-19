@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { musicStore } from "~/modules/media/services/Music";
 import { useFloatingContent } from "~/hooks/useFloatingContent";
-import { AppProvider } from "~/providers";
+import { AppProvider } from "../providers/AppProvider";
 
 import { GITHUB } from "~/constants/Links";
 import { SENTRY_ENABLED, Sentry } from "~/lib/sentry";

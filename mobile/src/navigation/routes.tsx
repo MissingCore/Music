@@ -15,8 +15,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useCallback, useMemo, useRef } from "react";
 import { BackHandler } from "react-native";
 
-import { AppProvider } from "~/providers";
 import { TrackSheet } from "~/screens/Sheets/Track";
+import { AppProvider } from "./providers/AppProvider";
 import Home from "./screens/HomeView";
 import NowPlaying from "./screens/NowPlayingView";
 import RecentlyPlayed from "./screens/RecentlyPlayedView";

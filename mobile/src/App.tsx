@@ -4,8 +4,8 @@ import Bootsplash from "react-native-bootsplash";
 
 import { userPreferencesStore } from "~/services/UserPreferences";
 import { useLoadResources } from "~/hooks/useLoadResources";
-import { AppProvider } from "~/providers";
 import NavigationContainer from "~/navigation";
+import { AppProvider } from "~/navigation/providers/AppProvider";
 import { ErrorBoundary } from "~/navigation/components/ErrorBoundary";
 import { OnboardingScreen } from "~/screens/Onboarding";
 
