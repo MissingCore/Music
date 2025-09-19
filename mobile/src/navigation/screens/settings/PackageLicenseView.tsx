@@ -14,17 +14,19 @@ import { IconButton } from "~/components/Form/Button";
 import { AccentText } from "~/components/Typography/AccentText";
 import { StyledText } from "~/components/Typography/StyledText";
 
-type Props = StaticScreenProps<{
-  id: string;
-}>;
+type Props = StaticScreenProps<{ id: string }>;
 
-export default function PackageLicense({ route }: Props) {
+export default function PackageLicense({
+  route: {
+    params: { id },
+  },
+}: Props) {
   const { t } = useTranslation();
   const { theme } = useTheme();
 
   const licenseInfo = useMemo(
-    () => LicensesList[route.params.id as keyof typeof LicensesList],
-    [route.params.id],
+    () => LicensesList[id as keyof typeof LicensesList],
+    [id],
   );
 
   return (

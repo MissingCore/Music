@@ -36,5 +36,5 @@ export function getMediaLinkContext({
     }
     return ["Playlist", { id }] as const;
   }
-  throw new Error("`MediaCard` linking doesn't support `track`.");
+  throw new Error(`Can't parse route with arguments: ${type} ${id}`);
 }
