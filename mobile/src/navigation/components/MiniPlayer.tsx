@@ -5,17 +5,20 @@ import Animated, { LinearTransition } from "react-native-reanimated";
 
 import { Pause } from "~/resources/icons/Pause";
 import { PlayArrow } from "~/resources/icons/PlayArrow";
-import { useMusicStore } from "../services/Music";
-import { MusicControls } from "../services/Playback";
-import { useIsPlaying } from "../hooks/useIsPlaying";
+import { useMusicStore } from "~/modules/media/services/Music";
+import { MusicControls } from "~/modules/media/services/Playback";
+import { useIsPlaying } from "~/modules/media/hooks/useIsPlaying";
 
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { Marquee } from "~/components/Containment/Marquee";
 import { IconButton } from "~/components/Form/Button";
 import { StyledText } from "~/components/Typography/StyledText";
-import { NextButton, PreviousButton } from "./MediaControls";
-import { MediaImage } from "./MediaImage";
+import {
+  NextButton,
+  PreviousButton,
+} from "~/modules/media/components/MediaControls";
+import { MediaImage } from "~/modules/media/components/MediaImage";
 
 /**
  * Displays a player that appears at the bottom of the screen if we have

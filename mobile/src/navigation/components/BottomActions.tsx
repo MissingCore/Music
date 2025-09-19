@@ -23,7 +23,7 @@ import { capitalize } from "~/utils/string";
 import { FlatList, useFlatListRef } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { StyledText } from "~/components/Typography/StyledText";
-import { MiniPlayer } from "~/modules/media/components/MiniPlayer";
+import { MiniPlayer } from "./MiniPlayer";
 
 //#region Bottom Actions
 /** Actions stickied to the bottom of the screens. */
