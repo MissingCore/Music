@@ -70,21 +70,17 @@ function Metadata({ track }: { track: TrackWithAlbum }) {
           <StyledText className="text-xl/[1.125]">{track.name}</StyledText>
         </Marquee>
         <MarqueeLink
-          onPress={() => {
-            if (track.artistName) {
-              navigation.popTo("Artist", { id: track.artistName });
-            }
-          }}
+          onPress={() =>
+            navigation.popTo("Artist", { id: track.artistName ?? "" })
+          }
           className="text-red"
         >
           {track.artistName}
         </MarqueeLink>
         <MarqueeLink
-          onPress={() => {
-            if (track.album?.id) {
-              navigation.popTo("Album", { id: track.album.id });
-            }
-          }}
+          onPress={() =>
+            navigation.popTo("Album", { id: track.album?.id ?? "" })
+          }
           dim
         >
           {track.album?.name}
