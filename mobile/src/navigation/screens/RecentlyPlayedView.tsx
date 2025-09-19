@@ -104,12 +104,9 @@ function RecentlyPlayedLists(props: { data?: MediaCard.Content[] }) {
           size={width}
           onPress={() => {
             const linkInfo = getMediaLinkContext(item);
-            if (linkInfo[0] === "HomeScreens") {
-              // @ts-expect-error - The following is valid.
-              navigation.popTo(...linkInfo);
-            } else {
-              navigation.navigate(...linkInfo);
-            }
+            // @ts-expect-error - The following is valid.
+            if (linkInfo[0] === "HomeScreens") navigation.popTo(...linkInfo);
+            else navigation.navigate(...linkInfo);
           }}
           className={index > 0 ? OnRTL.decide("mr-3", "ml-3") : undefined}
         />

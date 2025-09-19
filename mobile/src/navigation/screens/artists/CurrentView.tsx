@@ -101,7 +101,9 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
             source={item.artwork}
             title={item.name}
             description={item.releaseYear || "————"}
-            onPress={() => navigation.navigate("Album", { id: item.id })}
+            onPress={() =>
+              navigation.navigate("Album", { id: item.id }, { pop: true })
+            }
             className={index > 0 ? OnRTL.decide("mr-3", "ml-3") : undefined}
           />
         )}

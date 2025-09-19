@@ -97,7 +97,7 @@ export function CurrentListLayout(
                   navigation.navigate(
                     "Artist",
                     { id: props.artist! },
-                    { pop: true }, // For old `navigate` behavior.
+                    { pop: true },
                   )
                 }
               >

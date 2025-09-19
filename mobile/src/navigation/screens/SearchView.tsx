@@ -39,11 +39,10 @@ export default function Search() {
           bit unexpected.
       */
       folder: ({ path }) =>
-        navigation.navigate(
-          "HomeScreens",
-          { screen: "Folders", params: { path } },
-          { pop: true }, // For old `navigate` behavior.
-        ),
+        navigation.popTo("HomeScreens", {
+          screen: "Folders",
+          params: { path },
+        }),
     }),
     [navigation],
   );
