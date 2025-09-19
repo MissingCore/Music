@@ -28,16 +28,19 @@ import { MiniPlayer } from "~/modules/media/components/MiniPlayer";
 //#region Bottom Actions
 /** Actions stickied to the bottom of the screens. */
 export function BottomActions() {
-  const isRendered = useRenderBottomActions();
+  const rendered = useRenderBottomActions();
+  //  Extra `View` is to fix positioning when button navigation is selected.
   return (
-    <Animated.View
-      layout={LinearTransition}
-      pointerEvents="box-none"
-      className="absolute bottom-0 left-0 w-full gap-[3px] p-4 pt-0"
-    >
-      <MiniPlayer stacked={isRendered.navBar} hidden={!isRendered.miniPlayer} />
-      <Navbar stacked={isRendered.miniPlayer} hidden={!isRendered.navBar} />
-    </Animated.View>
+    <View>
+      <Animated.View
+        layout={LinearTransition}
+        pointerEvents="box-none"
+        className="absolute bottom-0 left-0 w-full gap-[3px] p-4 pt-0"
+      >
+        <MiniPlayer stacked={rendered.navBar} hidden={!rendered.miniPlayer} />
+        <Navbar stacked={rendered.miniPlayer} hidden={!rendered.navBar} />
+      </Animated.View>
+    </View>
   );
 }
 //#endregion
