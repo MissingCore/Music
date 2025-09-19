@@ -4,11 +4,8 @@ import Bootsplash from "react-native-bootsplash";
 
 import { userPreferencesStore } from "~/services/UserPreferences";
 import { useLoadResources } from "~/hooks/useLoadResources";
-import { useNavigationTheme } from "~/hooks/useTheme";
 import { AppProvider } from "~/providers";
-import { linkingConfig } from "~/navigation/linkingConfig";
-import { Navigation } from "~/navigation/routes";
-import { navigationRef } from "~/navigation/utils/router";
+import NavigationContainer from "~/navigation";
 import { ErrorBoundary } from "~/navigation/components/ErrorBoundary";
 import { OnboardingScreen } from "~/screens/Onboarding";
 
@@ -29,7 +26,6 @@ if (SENTRY_ENABLED) {
 
 export default function App() {
   const { isLoaded, error } = useLoadResources();
-  const navigationTheme = useNavigationTheme();
 
   if (error) {
     return (
@@ -49,11 +45,7 @@ export default function App() {
   return (
     <ErrorBoundary>
       <View ref={handleAppLifeCycle} />
-      <Navigation
-        ref={navigationRef}
-        theme={navigationTheme}
-        linking={linkingConfig}
-      />
+      <NavigationContainer />
     </ErrorBoundary>
   );
 }

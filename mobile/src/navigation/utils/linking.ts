@@ -10,7 +10,7 @@ import { addTrailingSlash } from "~/utils/string";
 
 let handledInitialURL = false;
 
-export const linkingConfig: LinkingOptions<ParamListBase> = {
+export const linking: LinkingOptions<ParamListBase> = {
   prefixes: ["music://"],
 
   subscribe(listener) {

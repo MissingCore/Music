@@ -1,5 +1,3 @@
-import type { Theme } from "@react-navigation/native";
-import { DefaultTheme } from "@react-navigation/native";
 import { useMemo } from "react";
 import { useColorScheme } from "react-native";
 
@@ -7,7 +5,6 @@ import { useUserPreferencesStore } from "~/services/UserPreferences";
 
 import { Colors } from "~/constants/Styles";
 
-//#region Regular
 const Themes = {
   light: {
     theme: "light",
@@ -26,37 +23,6 @@ const Themes = {
     foreground: Colors.neutral100,
   },
 } as const;
-//#endregion
-
-//#region React Navigation
-/** Light theme for React Navigation components. */
-const LightNavTheme = {
-  dark: false,
-  colors: {
-    primary: Colors.red,
-    background: Colors.neutral95,
-    card: Colors.neutral95,
-    text: Colors.neutral0,
-    border: Colors.neutral95,
-    notification: Colors.red,
-  },
-  fonts: DefaultTheme.fonts,
-} satisfies Theme;
-
-/** Dark theme for React Navigation components. */
-const DarkNavTheme = {
-  dark: true,
-  colors: {
-    primary: Colors.red,
-    background: Colors.neutral0,
-    card: Colors.neutral0,
-    text: Colors.neutral100,
-    border: Colors.neutral0,
-    notification: Colors.red,
-  },
-  fonts: DefaultTheme.fonts,
-} satisfies Theme;
-//#endregion
 
 /** Returns if we're using light or dark theme. */
 export function useCurrentTheme() {
@@ -73,13 +39,4 @@ export function useCurrentTheme() {
 export function useTheme() {
   const currentTheme = useCurrentTheme();
   return useMemo(() => Themes[currentTheme], [currentTheme]);
-}
-
-/** Returns the theme used by React Navigation. */
-export function useNavigationTheme() {
-  const currentTheme = useCurrentTheme();
-  return useMemo(
-    () => (currentTheme === "light" ? LightNavTheme : DarkNavTheme),
-    [currentTheme],
-  );
 }
