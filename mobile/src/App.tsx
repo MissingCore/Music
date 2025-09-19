@@ -9,15 +9,12 @@ import { AppProvider } from "~/providers";
 import { linkingConfig } from "~/navigation/linkingConfig";
 import { Navigation } from "~/navigation/routes";
 import { navigationRef } from "~/navigation/utils/router";
-import { ErrorBoundary } from "~/screens/ErrorBoundary";
+import { ErrorBoundary } from "~/navigation/components/ErrorBoundary";
 import { OnboardingScreen } from "~/screens/Onboarding";
 
 import "~/resources/global.css";
 import "~/modules/i18n"; // Make sure translations are bundled.
 import { SENTRY_ENABLED, Sentry } from "~/lib/sentry";
-
-// Catch any errors thrown by the Layout component.
-export { ErrorBoundary };
 
 if (SENTRY_ENABLED) {
   Sentry.init({
@@ -38,7 +35,7 @@ export default function App() {
     return (
       <>
         <View ref={handleAppLifeCycle} />
-        {/* <ErrorBoundary error={error} retry={() => Promise.resolve()} /> */}
+        <ErrorBoundary error={error} />
       </>
     );
   } else if (!isLoaded) {
@@ -50,14 +47,14 @@ export default function App() {
   }
 
   return (
-    <>
+    <ErrorBoundary>
       <View ref={handleAppLifeCycle} />
       <Navigation
         ref={navigationRef}
         theme={navigationTheme}
         linking={linkingConfig}
       />
-    </>
+    </ErrorBoundary>
   );
 }
 
