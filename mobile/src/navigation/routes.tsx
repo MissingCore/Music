@@ -180,6 +180,7 @@ export const RootStack = createNativeStackNavigator({
   ),
   screenOptions: {
     header: TopAppBar,
+    title: "",
   },
   screens: {
     HomeScreens: {
@@ -195,13 +196,9 @@ export const RootStack = createNativeStackNavigator({
         animation: "slide_from_bottom",
         header: NowPlayingTopAppBar,
         headerTransparent: true,
-        headerTitle: "",
       },
     },
-    Search: {
-      screen: Search,
-      options: { title: "" },
-    },
+    Search,
     Settings: {
       screen: Settings,
       options: { title: "term.settings" },
@@ -210,17 +207,17 @@ export const RootStack = createNativeStackNavigator({
   groups: {
     Current: {
       screens: {
-        FavoriteTracks: { screen: FavoriteTracks, options: { title: "" } },
-        CreatePlaylist: { screen: CreatePlaylist, options: { title: "" } },
-        ModifyPlaylist: { screen: ModifyPlaylist, options: { title: "" } },
-        Playlist: { screen: Playlist, options: { title: "" } },
-        Album: { screen: Album, options: { title: "" } },
-        Artist: { screen: Artist, options: { title: "" } },
+        FavoriteTracks,
+        CreatePlaylist,
+        ModifyPlaylist,
+        Playlist,
+        Album,
+        Artist,
         RecentlyPlayed: {
           screen: RecentlyPlayed,
           options: { title: "feat.playedRecent.title" },
         },
-        ModifyTrack: { screen: ModifyTrack, options: { title: "" } },
+        ModifyTrack,
       },
     },
     Setting: {
@@ -268,7 +265,7 @@ export const RootStack = createNativeStackNavigator({
           screen: ThirdParty,
           options: { title: "feat.thirdParty.title" },
         },
-        PackageLicense: { screen: PackageLicense, options: { title: "" } },
+        PackageLicense,
       },
     },
   },
