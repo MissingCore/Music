@@ -23,7 +23,7 @@ import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
 type RenderItemProps = DragListRenderItemInfo<OrderableTab>;
 
-export default function HomeTabOrderSettings() {
+export default function HomeTabsOrderSettings() {
   const data = useUserPreferencesStore((state) => state.tabsOrder);
   return (
     <FlashDragList

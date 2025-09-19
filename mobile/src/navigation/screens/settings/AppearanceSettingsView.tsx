@@ -64,7 +64,7 @@ export default function AppearanceSettings() {
           <ListItem
             titleKey="feat.homeTabsOrder.title"
             description={t("feat.homeTabsOrder.brief")}
-            onPress={() => navigation.navigate("HomeTabOrderSettings")}
+            onPress={() => navigation.navigate("HomeTabsOrderSettings")}
             first
           />
           <ListItem
