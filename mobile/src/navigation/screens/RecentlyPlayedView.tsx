@@ -16,10 +16,10 @@ import { getMediaLinkContext } from "../utils/router";
 import { OnRTL } from "~/lib/react";
 import { queryClient } from "~/lib/react-query";
 import { FlashList } from "~/components/Defaults";
-import { PagePlaceholder } from "~/components/Transition/Placeholder";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import { Track } from "~/modules/media/components/Track";
+import { PagePlaceholder } from "../components/Placeholder";
 
 // Information about this track list.
 const trackSource = {

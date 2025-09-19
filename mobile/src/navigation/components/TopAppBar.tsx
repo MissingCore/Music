@@ -8,9 +8,9 @@ import { View } from "react-native";
 import { ArrowBack } from "~/resources/icons/ArrowBack";
 
 import { OnRTL } from "~/lib/react";
-import { SafeContainer } from "./Containment/SafeContainer";
-import { IconButton } from "./Form/Button";
-import { StyledText } from "./Typography/StyledText";
+import { SafeContainer } from "~/components/Containment/SafeContainer";
+import { IconButton } from "~/components/Form/Button";
+import { StyledText } from "~/components/Typography/StyledText";
 
 /**
  * Custom header bar for React Navigation. The "title" can span at most

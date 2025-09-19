@@ -2,7 +2,7 @@ import { useSaveErrors } from "~/queries/setting";
 
 import { useListPresets } from "~/components/Containment/List";
 import { FlashList } from "~/components/Defaults";
-import { ContentPlaceholder } from "~/components/Transition/Placeholder";
+import { ContentPlaceholder } from "../../components/Placeholder";
 
 export default function SaveErrors() {
   const { data } = useSaveErrors();

@@ -10,7 +10,6 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 import { Check } from "~/resources/icons/Check";
 import { useFloatingContent } from "~/hooks/useFloatingContent";
-import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 import type { InitStoreProps, TrackMetadataForm } from "./context";
 import {
   TrackMetadataStoreProvider,
@@ -28,6 +27,7 @@ import {
   TEm,
   TStyledText,
 } from "~/components/Typography/StyledText";
+import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 
 export function ModifyTrack(props: InitStoreProps) {
   const { offset, ...rest } = useFloatingContent();

@@ -52,9 +52,9 @@ import {
 } from "~/services/UserPreferences";
 import { NowPlayingTopAppBar } from "~/screens/NowPlaying/TopAppBar";
 
-import { TopAppBar } from "~/components/TopAppBar";
 import type { HomeScreenNames } from "./components/BottomActions";
 import { BottomActions, getHomeScreenName } from "./components/BottomActions";
+import { TopAppBar } from "./components/TopAppBar";
 
 //#region Root Screens
 type TabState = EventArg<

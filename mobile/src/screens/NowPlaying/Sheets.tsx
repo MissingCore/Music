@@ -22,8 +22,8 @@ import { NSlider } from "~/components/Form/Slider";
 import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
-import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { SearchResult } from "~/modules/search/components/SearchResult";
+import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 type PartialTrack = UpcomingStore["currentTrackList"][0];
 

@@ -24,10 +24,10 @@ import { OnRTL, OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { addTrailingSlash } from "~/utils/string";
 import { useFlashListRef } from "~/components/Defaults";
-import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { StyledText } from "~/components/Typography/StyledText";
 import { Track } from "~/modules/media/components/Track";
 import { SearchResult } from "~/modules/search/components/SearchResult";
+import { ContentPlaceholder } from "../../components/Placeholder";
 
 /** Animated scrollview supporting gestures. */
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);

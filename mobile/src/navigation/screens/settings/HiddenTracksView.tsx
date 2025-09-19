@@ -7,8 +7,8 @@ import { useHideTrack } from "~/queries/track";
 import { mutateGuard } from "~/lib/react-query";
 import { FlashList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
-import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { SearchResult } from "~/modules/search/components/SearchResult";
+import { ContentPlaceholder } from "../../components/Placeholder";
 
 export default function HiddenTracks() {
   const { t } = useTranslation();

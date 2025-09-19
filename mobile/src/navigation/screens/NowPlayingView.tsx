@@ -31,7 +31,6 @@ import { SafeContainer } from "~/components/Containment/SafeContainer";
 import { IconButton } from "~/components/Form/Button";
 import { Slider } from "~/components/Form/Slider";
 import { useSheetRef } from "~/components/Sheet";
-import { Back } from "~/components/Transition/Back";
 import { StyledText } from "~/components/Typography/StyledText";
 import {
   NextButton,
@@ -40,6 +39,7 @@ import {
   RepeatButton,
   ShuffleButton,
 } from "~/modules/media/components/MediaControls";
+import { Back } from "../components/Back";
 
 export default function NowPlaying() {
   const track = useMusicStore((state) => state.activeTrack);

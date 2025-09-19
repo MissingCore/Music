@@ -24,11 +24,11 @@ import { Marquee } from "~/components/Containment/Marquee";
 import { FlatList } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { NumericInput, TextInput } from "~/components/Form/Input";
-import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
 import { Swipeable } from "~/components/Swipeable";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
+import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 /** All the sheets used on `/setting/scanning` route. */
 export const ScanningSettingsSheets = deferInitialRender(

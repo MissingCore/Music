@@ -11,8 +11,8 @@ import { cn } from "~/lib/style";
 import type { Prettify } from "~/utils/types";
 import type { PressProps } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button";
-import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { SearchResult } from "~/modules/search/components/SearchResult";
+import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 //#region Track
 export namespace Track {

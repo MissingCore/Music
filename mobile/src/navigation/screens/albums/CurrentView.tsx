@@ -6,19 +6,19 @@ import { View } from "react-native";
 import { Favorite } from "~/resources/icons/Favorite";
 import { useAlbumForScreen, useFavoriteAlbum } from "~/queries/album";
 import { useBottomActionsInset } from "~/hooks/useBottomActions";
-import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 import { CurrentListLayout } from "~/layouts/CurrentList";
 
 import { mutateGuard } from "~/lib/react-query";
 import { isNumber } from "~/utils/validation";
 import { FlashList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
+import { Em, StyledText } from "~/components/Typography/StyledText";
+import { Track } from "~/modules/media/components/Track";
 import {
   ContentPlaceholder,
   PagePlaceholder,
-} from "~/components/Transition/Placeholder";
-import { Em, StyledText } from "~/components/Typography/StyledText";
-import { Track } from "~/modules/media/components/Track";
+} from "../../components/Placeholder";
+import { ScreenOptions } from "../../components/ScreenOptions";
 
 type Props = StaticScreenProps<{ id: string }>;
 

@@ -6,13 +6,13 @@ import { useTranslation } from "react-i18next";
 import { OpenInNew } from "~/resources/icons/OpenInNew";
 import LicensesList from "~/resources/licenses.json";
 import { useTheme } from "~/hooks/useTheme";
-import { ScreenOptions } from "../../components/ScreenOptions";
 import { StandardScrollLayout } from "~/layouts/StandardScroll";
 
 import { Card } from "~/components/Containment/Card";
 import { IconButton } from "~/components/Form/Button";
 import { AccentText } from "~/components/Typography/AccentText";
 import { StyledText } from "~/components/Typography/StyledText";
+import { ScreenOptions } from "../../components/ScreenOptions";
 
 type Props = StaticScreenProps<{ id: string }>;
 

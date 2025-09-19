@@ -4,9 +4,9 @@ import { useArtistsForIndex } from "~/queries/artist";
 import { StickyActionListLayout } from "~/layouts/StickyActionScroll";
 
 import { isString } from "~/utils/validation";
-import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { Em } from "~/components/Typography/StyledText";
 import { SearchResult } from "~/modules/search/components/SearchResult";
+import { ContentPlaceholder } from "../../components/Placeholder";
 
 export default function Artists() {
   const navigation = useNavigation();

@@ -12,13 +12,13 @@ import { CurrentListLayout } from "~/layouts/CurrentList";
 
 import { OnRTL } from "~/lib/react";
 import { FlashList } from "~/components/Defaults";
-import {
-  ContentPlaceholder,
-  PagePlaceholder,
-} from "~/components/Transition/Placeholder";
 import { TEm } from "~/components/Typography/StyledText";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import { Track } from "~/modules/media/components/Track";
+import {
+  ContentPlaceholder,
+  PagePlaceholder,
+} from "../../components/Placeholder";
 
 type Props = StaticScreenProps<{ id: string }>;
 

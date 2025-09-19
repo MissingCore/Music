@@ -15,7 +15,6 @@ import {
 } from "~/queries/playlist";
 import { useRemoveFromPlaylist } from "~/queries/track";
 import { useBottomActionsInset } from "~/hooks/useBottomActions";
-import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 import { CurrentListLayout } from "~/layouts/CurrentList";
 
 import { Colors } from "~/constants/Styles";
@@ -26,12 +25,13 @@ import { cn } from "~/lib/style";
 import { FlashDragList } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
+import { Track } from "~/modules/media/components/Track";
+import type { PlayListSource } from "~/modules/media/types";
 import {
   ContentPlaceholder,
   PagePlaceholder,
-} from "~/components/Transition/Placeholder";
-import { Track } from "~/modules/media/components/Track";
-import type { PlayListSource } from "~/modules/media/types";
+} from "../../components/Placeholder";
+import { ScreenOptions } from "../../components/ScreenOptions";
 
 type Props = StaticScreenProps<{ id: string }>;
 

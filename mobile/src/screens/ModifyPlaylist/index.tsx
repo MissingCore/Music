@@ -13,7 +13,6 @@ import { Check } from "~/resources/icons/Check";
 import { Remove } from "~/resources/icons/Remove";
 import { useDeletePlaylist } from "~/queries/playlist";
 import { useFloatingContent } from "~/hooks/useFloatingContent";
-import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 import type { InitStoreProps } from "./context";
 import {
   PlaylistStoreProvider,
@@ -35,9 +34,10 @@ import { TextInput } from "~/components/Form/Input";
 import { ModalTemplate } from "~/components/Modal";
 import { useSheetRef } from "~/components/Sheet";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
-import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { TStyledText } from "~/components/Typography/StyledText";
 import { SearchResult } from "~/modules/search/components/SearchResult";
+import { ContentPlaceholder } from "~/navigation/components/Placeholder";
+import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 
 /** Resuable screen to modify (create or edit) a playlist. */
 export function ModifyPlaylist(props: InitStoreProps) {

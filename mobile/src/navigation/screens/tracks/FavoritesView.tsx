@@ -3,9 +3,9 @@ import { useBottomActionsInset } from "~/hooks/useBottomActions";
 import { CurrentListLayout } from "~/layouts/CurrentList";
 
 import { FlashList } from "~/components/Defaults";
-import { PagePlaceholder } from "~/components/Transition/Placeholder";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import { useTrackListPreset } from "~/modules/media/components/Track";
+import { PagePlaceholder } from "../../components/Placeholder";
 
 export default function FavoriteTracks() {
   // Information about this track list.

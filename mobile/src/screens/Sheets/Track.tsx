@@ -51,9 +51,9 @@ import { Divider } from "~/components/Divider";
 import { Button, IconButton } from "~/components/Form/Button";
 import { Checkbox } from "~/components/Form/Selection";
 import { Sheet, useSheetRef } from "~/components/Sheet";
-import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { MediaImage } from "~/modules/media/components/MediaImage";
+import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 //#region Track Sheet
 /** Displays information about a track and enables adding it to playlists. */

@@ -8,8 +8,8 @@ import { getMediaLinkContext } from "~/navigation/utils/router";
 
 import { cn } from "~/lib/style";
 import type { Prettify } from "~/utils/types";
-import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { StyledText } from "~/components/Typography/StyledText";
+import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { MediaImage } from "./MediaImage";
 
 //#region Media Card
