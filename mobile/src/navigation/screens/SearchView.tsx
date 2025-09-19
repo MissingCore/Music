@@ -11,6 +11,9 @@ import { ReservedPlaylists } from "~/modules/media/constants";
 import { SearchEngine } from "~/modules/search/components/SearchEngine";
 import type { SearchCallbacks } from "~/modules/search/types";
 
+/** List of media we want to appear in the search. */
+const searchScope = ["album", "artist", "folder", "playlist", "track"] as const;
+
 export default function Search() {
   const { t } = useTranslation();
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
@@ -54,6 +57,3 @@ export default function Search() {
     </View>
   );
 }
-
-/** List of media we want to appear in the search. */
-const searchScope = ["album", "artist", "folder", "playlist", "track"] as const;
