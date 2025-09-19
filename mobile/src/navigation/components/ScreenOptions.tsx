@@ -1,11 +1,11 @@
-import type {} from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
+import type { ParseKeys } from "i18next";
 import { useEffect } from "react";
 
 type SupportedScreenOptions = {
   headerLeft?: () => React.ReactNode;
   headerRight?: () => React.ReactNode;
-  headerTitle?: string;
+  title?: ParseKeys;
 };
 
 export function ScreenOptions(options: SupportedScreenOptions) {

@@ -65,7 +65,7 @@ function ScreenConfig() {
 
   return (
     <ScreenOptions
-      headerTitle={t(`feat.playlist.extra.${mode ?? "create"}`)}
+      title={`feat.playlist.extra.${mode ?? "create"}`}
       // Hacky solution to disable the back button when submitting.
       headerLeft={isSubmitting ? () => undefined : undefined}
       headerRight={() => (

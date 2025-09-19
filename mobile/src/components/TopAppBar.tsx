@@ -1,6 +1,7 @@
 import { getHeaderTitle } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackHeaderProps } from "@react-navigation/native-stack";
+import type { ParseKeys } from "i18next";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
@@ -18,7 +19,7 @@ import { StyledText } from "./Typography/StyledText";
 export function TopAppBar({ options, route }: NativeStackHeaderProps) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const title = getHeaderTitle(options, route.name);
+  const title = getHeaderTitle(options, route.name) as ParseKeys;
 
   return (
     <SafeContainer className="bg-canvas">
@@ -32,7 +33,7 @@ export function TopAppBar({ options, route }: NativeStackHeaderProps) {
         />
 
         <StyledText numberOfLines={2} className="shrink text-center text-xs">
-          {title.toLocaleUpperCase()}
+          {t(title).toLocaleUpperCase()}
         </StyledText>
 
         {options.headerRight ? (

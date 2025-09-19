@@ -53,7 +53,7 @@ function ScreenConfig() {
 
   return (
     <ScreenOptions
-      headerTitle={t("feat.trackMetadata.title")}
+      title="feat.trackMetadata.title"
       // Hacky solution to disable the back button when submitting.
       headerLeft={isSubmitting ? () => undefined : undefined}
       headerRight={() => (
