@@ -17,7 +17,7 @@ import {
 } from "./Sheets.utils";
 
 import { Colors } from "~/constants/Styles";
-import { deferInitialRender, OnRTL } from "~/lib/react";
+import { OnRTL } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { Marquee } from "~/components/Containment/Marquee";
@@ -28,6 +28,7 @@ import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
 import { Swipeable } from "~/components/Swipeable";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
+import { deferInitialRender } from "../../../components/DeferredRender";
 import { ContentPlaceholder } from "../../../components/Placeholder";
 
 /** All the sheets used on `/setting/scanning` route. */

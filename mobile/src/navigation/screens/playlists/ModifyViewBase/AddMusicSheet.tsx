@@ -1,10 +1,10 @@
 import { useTheme } from "~/hooks/useTheme";
 
-import { deferInitialRender } from "~/lib/react";
 import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
 import { SearchEngine } from "~/modules/search/components/SearchEngine";
 import type { SearchCallbacks } from "~/modules/search/types";
+import { deferInitialRender } from "../../../components/DeferredRender";
 
 /** List of media we want to appear in the search. */
 const searchScope = ["album", "folder", "track"] as const;

@@ -5,7 +5,6 @@ import {
 import { LANGUAGES } from "~/modules/i18n/constants";
 import { useExportBackup, useImportBackup } from "./Sheets.utils";
 
-import { deferInitialRender } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
 import { FlatList, useIsScrollable } from "~/components/Defaults";
 import { Radio } from "~/components/Form/Selection";
@@ -14,7 +13,7 @@ import { Sheet, SheetButtonGroup } from "~/components/Sheet";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
 /** All the sheets used on `/setting` route. */
-export const SettingsSheets = deferInitialRender(function SettingsSheets(
+export function SettingsSheets(
   props: Record<"backupRef" | "languageRef", TrueSheetRef>,
 ) {
   return (
@@ -23,7 +22,7 @@ export const SettingsSheets = deferInitialRender(function SettingsSheets(
       <LanguageSheet sheetRef={props.languageRef} />
     </>
   );
-});
+}
 
 /** Enables import & export of a backup of your media organization in this app. */
 function BackupSheet(props: { sheetRef: TrueSheetRef }) {

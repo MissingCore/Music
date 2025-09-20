@@ -23,7 +23,7 @@ import {
   PlaylistArtworkSheet,
 } from "../screens/ArtworkSheet";
 
-import { DeferRender, OnRTLWorklet } from "~/lib/react";
+import { OnRTLWorklet } from "~/lib/react";
 import { getFont } from "~/lib/style";
 import { toLowerCase } from "~/utils/string";
 import { Marquee } from "~/components/Containment/Marquee";
@@ -69,9 +69,7 @@ export function CurrentListLayout(
   return (
     <>
       {!isFavorite ? (
-        <DeferRender>
-          <RenderedSheet sheetRef={artworkSheetRef} id={props.mediaSource.id} />
-        </DeferRender>
+        <RenderedSheet sheetRef={artworkSheetRef} id={props.mediaSource.id} />
       ) : null}
       <View className="flex-row gap-2 pr-4">
         <ContentImage

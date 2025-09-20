@@ -10,7 +10,6 @@ import {
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
 
-import { deferInitialRender } from "~/lib/react";
 import { getFont } from "~/lib/style";
 import { toLowerCase } from "~/utils/string";
 import { FlatList } from "~/components/Defaults";
@@ -18,6 +17,7 @@ import { Radio } from "~/components/Form/Selection";
 import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
 import { TStyledText } from "~/components/Typography/StyledText";
+import { deferInitialRender } from "../../../components/DeferredRender";
 
 /** All the sheets used on `/setting/appearance` route. */
 export const AppearanceSettingsSheets = deferInitialRender(

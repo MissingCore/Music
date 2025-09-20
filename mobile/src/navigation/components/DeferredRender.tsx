@@ -1,5 +1,3 @@
-import { I18nManager } from "react-native";
-
 import { useDelayedReady } from "~/hooks/useDelayedReady";
 
 /**
@@ -22,9 +20,12 @@ export function deferInitialRender<T, U extends React.FunctionComponent<T>>(
 
 /**
  * Delay the initial render of children by a set amount of milliseconds
- *  (defaults to `1ms`).
+ * (defaults to `1ms`).
+ *
+ * Useful in React Navigation v7 as async actions are fired before the
+ * screen is mounted, leading to a longer visual delay compared to v6.
  */
-export function DeferRender(props: {
+export function DeferredRender(props: {
   /** Defaults to `1ms`. */
   delayMs?: number;
   children: React.ReactNode;
@@ -33,25 +34,3 @@ export function DeferRender(props: {
   if (!shouldRender) return null;
   return props.children;
 }
-
-export const OnRTL = {
-  _use<T>(val: T) {
-    if (I18nManager.isRTL) return val;
-  },
-
-  decide<T, U>(valIfTrue: T, valIfFalse: U) {
-    return I18nManager.isRTL ? valIfTrue : valIfFalse;
-  },
-};
-
-export const OnRTLWorklet = {
-  decide<T, U>(valIfTrue: T, valIfFalse: U) {
-    "worklet";
-    return I18nManager.isRTL ? valIfTrue : valIfFalse;
-  },
-
-  flipSign: (num: number) => {
-    "worklet";
-    return (I18nManager.isRTL ? -1 : 1) * num;
-  },
-};

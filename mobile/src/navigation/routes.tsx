@@ -53,6 +53,7 @@ import {
 
 import type { HomeScreenNames } from "./components/BottomActions";
 import { BottomActions, getHomeScreenName } from "./components/BottomActions";
+import { DeferredRender } from "./components/DeferredRender";
 import { TopAppBar } from "./components/TopAppBar";
 import { NowPlayingTopAppBar } from "./screens/now-playing/components/TopAppBar";
 
@@ -177,6 +178,7 @@ export const RootStack = createNativeStackNavigator({
       <TrackSheet />
     </AppProvider>
   ),
+  screenLayout: ({ children }) => <DeferredRender>{children}</DeferredRender>,
   screenOptions: {
     header: TopAppBar,
     title: "",
@@ -184,6 +186,7 @@ export const RootStack = createNativeStackNavigator({
   screens: {
     HomeScreens: {
       screen: RootScreens,
+      layout: ({ children }) => children,
       options: { headerShown: false },
     },
     NowPlaying: {
@@ -208,7 +211,10 @@ export const RootStack = createNativeStackNavigator({
       screens: {
         FavoriteTracks,
         CreatePlaylist,
-        ModifyPlaylist,
+        ModifyPlaylist: {
+          screen: ModifyPlaylist,
+          layout: ({ children }) => children,
+        },
         Playlist,
         Album,
         Artist,
@@ -220,6 +226,7 @@ export const RootStack = createNativeStackNavigator({
       },
     },
     Setting: {
+      screenLayout: ({ children }) => children,
       screenOptions: {
         animation: "fade",
       },
@@ -238,6 +245,7 @@ export const RootStack = createNativeStackNavigator({
         },
         Insights: {
           screen: Insights,
+          layout: ({ children }) => <DeferredRender>{children}</DeferredRender>,
           options: { title: "feat.insights.title" },
         },
         HiddenTracks: {
