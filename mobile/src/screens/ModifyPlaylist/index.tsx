@@ -12,7 +12,7 @@ import { CheckCircle } from "~/resources/icons/CheckCircle";
 import { Check } from "~/resources/icons/Check";
 import { Remove } from "~/resources/icons/Remove";
 import { useDeletePlaylist } from "~/queries/playlist";
-import { useFloatingContent } from "~/hooks/useFloatingContent";
+import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 import type { InitStoreProps } from "./context";
 import {
   PlaylistStoreProvider,

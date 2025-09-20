@@ -13,9 +13,9 @@ import {
   useTabsByVisibility,
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
-import { useRenderBottomActions } from "~/hooks/useBottomActions";
-import { useHasNewUpdate } from "~/hooks/useHasNewUpdate";
 import { useTheme } from "~/hooks/useTheme";
+import { useRenderBottomActions } from "../hooks/useBottomActions";
+import { useHasNewUpdate } from "../hooks/useHasNewUpdate";
 
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";

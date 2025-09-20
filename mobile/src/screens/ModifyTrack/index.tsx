@@ -9,7 +9,7 @@ import { BackHandler, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 import { Check } from "~/resources/icons/Check";
-import { useFloatingContent } from "~/hooks/useFloatingContent";
+import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 import type { InitStoreProps, TrackMetadataForm } from "./context";
 import {
   TrackMetadataStoreProvider,

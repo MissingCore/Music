@@ -14,8 +14,8 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { useBottomActionsInset } from "~/hooks/useBottomActions";
 import { useTheme } from "~/hooks/useTheme";
+import { useBottomActionsInset } from "../hooks/useBottomActions";
 
 import { AnimatedFlashList } from "~/components/Defaults";
 import { AccentText } from "~/components/Typography/AccentText";

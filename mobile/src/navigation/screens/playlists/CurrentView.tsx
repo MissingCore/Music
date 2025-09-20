@@ -14,7 +14,7 @@ import {
   usePlaylistForScreen,
 } from "~/queries/playlist";
 import { useRemoveFromPlaylist } from "~/queries/track";
-import { useBottomActionsInset } from "~/hooks/useBottomActions";
+import { useBottomActionsInset } from "../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../layouts/CurrentList";
 
 import { Colors } from "~/constants/Styles";

@@ -5,8 +5,8 @@ import Markdown from "react-native-markdown-display";
 import { LogoGitHub } from "~/resources/icons/LogoGitHub";
 import { LogoPlayStore } from "~/resources/icons/LogoPlayStore";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
-import { useHasNewUpdate } from "~/hooks/useHasNewUpdate";
 import { useTheme } from "~/hooks/useTheme";
+import { useHasNewUpdate } from "../../hooks/useHasNewUpdate";
 import { StandardScrollLayout } from "../../layouts/StandardScroll";
 
 import * as LINKS from "~/constants/Links";

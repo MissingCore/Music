@@ -6,8 +6,8 @@ import { I18nManager } from "react-native";
 import type { Album } from "~/db/schema";
 
 import { useArtistForScreen } from "~/queries/artist";
-import { useBottomActionsInset } from "~/hooks/useBottomActions";
 import { useGetColumn } from "~/hooks/useGetColumn";
+import { useBottomActionsInset } from "../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../layouts/CurrentList";
 
 import { OnRTL } from "~/lib/react";

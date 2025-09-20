@@ -8,7 +8,7 @@ import {
   userPreferencesStore,
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
-import { useHasNewUpdate } from "~/hooks/useHasNewUpdate";
+import { useHasNewUpdate } from "../../hooks/useHasNewUpdate";
 import { StandardScrollLayout } from "../../layouts/StandardScroll";
 import { SettingsSheets } from "~/screens/Sheets/Settings/Root";
 
