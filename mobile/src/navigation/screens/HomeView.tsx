@@ -34,7 +34,6 @@ export default function Home() {
           large
         />
       }
-      contentContainerClassName="grow-0"
       showStatusBarShadow
     >
       <TEm textKey="term.favorites" className="-mb-4" />
