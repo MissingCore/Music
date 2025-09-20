@@ -57,7 +57,6 @@ export default (): ExpoConfig => ({
     ],
   },
   plugins: [
-    "expo-router",
     [
       "expo-font",
       {
@@ -87,7 +86,4 @@ export default (): ExpoConfig => ({
     ],
   ],
   newArchEnabled: false,
-  experiments: {
-    typedRoutes: true,
-  },
 });

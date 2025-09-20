@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useColorScheme } from "react-native";
 
 import { useUserPreferencesStore } from "~/services/UserPreferences";
@@ -23,13 +24,19 @@ const Themes = {
   },
 } as const;
 
-/** Returns the dynamic colors determined by the current theme. */
-export function useTheme() {
+/** Returns if we're using light or dark theme. */
+export function useCurrentTheme() {
   const deviceTheme = useColorScheme();
   const savedTheme = useUserPreferencesStore((state) => state.theme);
 
-  const currentTheme =
-    savedTheme === "system" ? (deviceTheme ?? "light") : savedTheme;
+  return useMemo(
+    () => (savedTheme === "system" ? (deviceTheme ?? "light") : savedTheme),
+    [deviceTheme, savedTheme],
+  );
+}
 
-  return Themes[currentTheme];
+/** Returns the dynamic colors determined by the current theme. */
+export function useTheme() {
+  const currentTheme = useCurrentTheme();
+  return useMemo(() => Themes[currentTheme], [currentTheme]);
 }

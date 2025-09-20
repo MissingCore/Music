@@ -1,7 +1,6 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import BackgroundTimer from "@boterop/react-native-background-timer";
 import TrackPlayer, { Event } from "@weights-ai/react-native-track-player";
-import { router } from "expo-router";
 
 import i18next from "~/modules/i18n";
 import { addPlayedMediaList, addPlayedTrack } from "~/api/recent";
@@ -12,6 +11,7 @@ import { MusicControls } from "~/modules/media/services/Playback";
 import { getIsPlaying } from "~/modules/media/hooks/useIsPlaying";
 import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
 import { userPreferencesStore } from "./UserPreferences";
+import { router } from "~/navigation/utils/router";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
@@ -185,7 +185,7 @@ export async function PlaybackService() {
         await deleteTrack(erroredTrack.id, { errorName: e.code, errorMessage });
         await removeUnusedCategories();
         clearAllQueries();
-        router.navigate("/");
+        router.navigate("HomeScreens", undefined, { pop: true });
       }
 
       toast.error(

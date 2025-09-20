@@ -21,7 +21,7 @@ import i18next from "~/modules/i18n";
 import { formatSeconds } from "~/utils/number";
 import { omitKeys } from "~/utils/object";
 import type { AtLeast, Prettify } from "~/utils/types";
-import { ReservedNames, ReservedPlaylists } from "~/modules/media/constants";
+import { ReservedNames } from "~/modules/media/constants";
 import type { MediaCard } from "~/modules/media/components/MediaCard";
 import type { Track as TrackC } from "~/modules/media/components/Track";
 import type { MediaType } from "~/modules/media/types";
@@ -81,20 +81,19 @@ type MediaCardFormatter = Prettify<
 /** Format data to be used in `<MediaCard />`. */
 export function formatForMediaCard({ type, data, t }: MediaCardFormatter) {
   let source: string | string[] | null = data.artwork;
-  let href = `/${type}/${encodeURIComponent(data.name)}`;
+  let id = data.name;
   let description = t("plural.track", { count: data.tracks.length });
   if (type === "album") {
-    href = `/album/${data.id}`;
+    id = data.id;
     description = data.artistName;
   } else if (type === "playlist") {
     source = getPlaylistCover(data);
-    if (data.name === ReservedPlaylists.tracks) href = "/track";
   }
 
   return {
     type,
     source,
-    href,
+    id,
     title: data.name,
     description,
   } as MediaCard.Content;

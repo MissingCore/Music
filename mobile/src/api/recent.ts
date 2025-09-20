@@ -148,7 +148,7 @@ async function getRecentListEntry({ id, type }: PlayListSource) {
       entry = {
         type: "folder",
         source: null,
-        href: `/folder?path=${encodeURIComponent(id)}`,
+        id,
         title: id.split("/").at(-2) ?? id,
         description: i18next.t("plural.track", { count: numTracks }),
       };

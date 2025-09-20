@@ -78,14 +78,6 @@
 
   "err": {
     "flow": {
-      "route": {
-        "title": "Unmatched Route",
-        "brief": "You somehow navigated to an invalid route.",
-        "extra": {
-          "missing": "Missing",
-          "from": "From"
-        }
-      },
       "generic": {
         "title": "Something Went Wrong",
         "brief": "You encountered an unexpected error."

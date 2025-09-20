@@ -12,6 +12,7 @@
 | @react-native-async-storage/async-storage | MIT | https://github.com/react-native-async-storage/async-storage |
 | @react-navigation/material-top-tabs | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/material-top-tabs |
 | @react-navigation/native | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/native |
+| @react-navigation/native-stack | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/native-stack |
 | @sentry/react-native | MIT | https://github.com/getsentry/sentry-react-native |
 | @shopify/flash-list | MIT | https://github.com/Shopify/flash-list |
 | @tanstack/react-query | MIT | https://github.com/TanStack/query |
@@ -29,7 +30,6 @@
 | expo-linear-gradient | MIT | https://github.com/expo/expo/tree/main/packages/expo-linear-gradient |
 | expo-localization | MIT | https://github.com/expo/expo/tree/main/packages/expo-localization |
 | expo-media-library | MIT | https://github.com/expo/expo/tree/main/packages/expo-media-library |
-| expo-router | MIT | https://github.com/expo/expo/tree/main/packages/expo-router |
 | expo-sqlite | MIT | https://github.com/expo/expo/tree/main/packages/expo-sqlite |
 | expo-web-browser | MIT | https://github.com/expo/expo/tree/main/packages/expo-web-browser |
 | Geist Mono Font | OFL-1.1 | https://github.com/vercel/geist-font |
@@ -55,7 +55,6 @@
 | react-native-safe-area-context | MIT | https://github.com/th3rdwave/react-native-safe-area-context |
 | react-native-screens | MIT | https://github.com/software-mansion/react-native-screens |
 | react-native-svg | MIT | https://github.com/software-mansion/react-native-svg |
-| react-native-tab-view | MIT | https://github.com/react-navigation/react-navigation |
 | Roboto Font | Apache-2.0 | https://github.com/googlefonts/roboto |
 | tailwind-merge | MIT | https://github.com/dcastil/tailwind-merge |
 | zod | MIT | https://github.com/colinhacks/zod |

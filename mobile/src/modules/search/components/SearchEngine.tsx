@@ -20,8 +20,8 @@ import { isString } from "~/utils/validation";
 import { FlashList, FlatList, useFlashListRef } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { TextInput, useInputRef } from "~/components/Form/Input";
-import { ContentPlaceholder } from "~/components/Transition/Placeholder";
 import { TEm } from "~/components/Typography/StyledText";
+import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { SearchResult } from "./SearchResult";
 import { useSearch } from "../hooks/useSearch";
 import type {
