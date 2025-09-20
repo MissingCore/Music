@@ -15,10 +15,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useCallback, useMemo, useRef } from "react";
 import { BackHandler } from "react-native";
 
-import { TrackSheet } from "~/screens/Sheets/Track";
 import { AppProvider } from "./providers/AppProvider";
 import Home from "./screens/HomeView";
-import NowPlaying from "./screens/NowPlayingView";
 import RecentlyPlayed from "./screens/RecentlyPlayedView";
 import Search from "./screens/SearchView";
 import Album from "./screens/albums/CurrentView";
@@ -26,6 +24,7 @@ import Albums from "./screens/albums/View";
 import Artist from "./screens/artists/CurrentView";
 import Artists from "./screens/artists/View";
 import Folders from "./screens/folders/View";
+import NowPlaying from "./screens/now-playing/View";
 import CreatePlaylist from "./screens/playlists/CreateView";
 import Playlist from "./screens/playlists/CurrentView";
 import ModifyPlaylist from "./screens/playlists/ModifyView";
@@ -44,17 +43,18 @@ import ThirdParty from "./screens/settings/ThirdPartyView";
 import Settings from "./screens/settings/View";
 import FavoriteTracks from "./screens/tracks/FavoritesView";
 import ModifyTrack from "./screens/tracks/ModifyView";
+import { TrackSheet } from "./screens/tracks/Sheet";
 import Tracks from "./screens/tracks/View";
 
 import {
   useTabsByVisibility,
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
-import { NowPlayingTopAppBar } from "~/screens/NowPlaying/TopAppBar";
 
 import type { HomeScreenNames } from "./components/BottomActions";
 import { BottomActions, getHomeScreenName } from "./components/BottomActions";
 import { TopAppBar } from "./components/TopAppBar";
+import { NowPlayingTopAppBar } from "./screens/now-playing/components/TopAppBar";
 
 //#region Root Screens
 type TabState = EventArg<

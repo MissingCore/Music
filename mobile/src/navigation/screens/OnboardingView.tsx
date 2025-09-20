@@ -21,7 +21,7 @@ import { StyledText, TStyledText } from "~/components/Typography/StyledText";
  * screen is to prevent the user from being able to use the app in it's
  * unoptimal state.
  */
-export function OnboardingScreen() {
+export function Onboarding() {
   const { container, logo } = BootSplash.useHideAnimation({
     manifest: require("../../assets/bootsplash/manifest.json"),
     logo: require("../../assets/bootsplash/logo.png"),

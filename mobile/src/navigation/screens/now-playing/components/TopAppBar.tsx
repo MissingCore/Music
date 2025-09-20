@@ -7,7 +7,7 @@ import { Pressable, View } from "react-native";
 import { ArrowBack } from "~/resources/icons/ArrowBack";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useMusicStore } from "~/modules/media/services/Music";
-import { getMediaLinkContext } from "~/navigation/utils/router";
+import { getMediaLinkContext } from "../../../utils/router";
 
 import { OnRTL } from "~/lib/react";
 import { Marquee } from "~/components/Containment/Marquee";

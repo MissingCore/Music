@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Keyboard, View } from "react-native";
 
-import { useSleepTimerStore } from "./SleepTimer/store";
+import { useSleepTimerStore } from "./store";
 
 import { wait } from "~/utils/promise";
 import { Button } from "~/components/Form/Button";

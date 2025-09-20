@@ -1,8 +1,8 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 
 import { useTrack } from "~/queries/track";
+import { ModifyTrackBase } from "./ModifyViewBase";
 
-import { ModifyTrack as ModifyTrackBase } from "~/screens/ModifyTrack";
 import { PagePlaceholder } from "../../components/Placeholder";
 
 type Props = StaticScreenProps<{ id: string }>;

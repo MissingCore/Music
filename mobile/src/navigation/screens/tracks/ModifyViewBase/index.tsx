@@ -9,13 +9,13 @@ import { BackHandler, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 import { Check } from "~/resources/icons/Check";
-import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
-import type { InitStoreProps, TrackMetadataForm } from "./context";
+import { useFloatingContent } from "../../../hooks/useFloatingContent";
+import type { InitStoreProps, TrackMetadataForm } from "./store";
 import {
   TrackMetadataStoreProvider,
   useTrackMetadataIsUnchanged,
   useTrackMetadataStore,
-} from "./context";
+} from "./store";
 
 import { ScrollablePresets } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
@@ -27,9 +27,9 @@ import {
   TEm,
   TStyledText,
 } from "~/components/Typography/StyledText";
-import { ScreenOptions } from "~/navigation/components/ScreenOptions";
+import { ScreenOptions } from "../../../components/ScreenOptions";
 
-export function ModifyTrack(props: InitStoreProps) {
+export function ModifyTrackBase(props: InitStoreProps) {
   const { offset, ...rest } = useFloatingContent();
   return (
     <TrackMetadataStoreProvider {...props}>

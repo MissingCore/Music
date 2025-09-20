@@ -28,12 +28,12 @@ import {
   useTrack,
   useTrackPlaylists,
 } from "~/queries/track";
+import { Queue, useMusicStore } from "~/modules/media/services/Music";
 import { useSessionStore } from "~/services/SessionStore";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { useTheme } from "~/hooks/useTheme";
-import { getMediaLinkContext } from "~/navigation/utils/router";
-import { TrackArtworkSheet } from "~/screens/Sheets/Artwork";
-import { Queue, useMusicStore } from "~/modules/media/services/Music";
+import { getMediaLinkContext } from "../../utils/router";
+import { TrackArtworkSheet } from "../ArtworkSheet";
 
 import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
@@ -53,7 +53,7 @@ import { Checkbox } from "~/components/Form/Selection";
 import { Sheet, useSheetRef } from "~/components/Sheet";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { MediaImage } from "~/modules/media/components/MediaImage";
-import { ContentPlaceholder } from "~/navigation/components/Placeholder";
+import { ContentPlaceholder } from "../../components/Placeholder";
 
 //#region Track Sheet
 /** Displays information about a track and enables adding it to playlists. */

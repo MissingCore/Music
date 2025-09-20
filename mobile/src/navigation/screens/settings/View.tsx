@@ -10,7 +10,7 @@ import {
 } from "~/services/UserPreferences";
 import { useHasNewUpdate } from "../../hooks/useHasNewUpdate";
 import { StandardScrollLayout } from "../../layouts/StandardScroll";
-import { SettingsSheets } from "~/screens/Sheets/Settings/Root";
+import { SettingsSheets } from "./Sheets";
 
 import { APP_VERSION } from "~/constants/Config";
 import * as LINKS from "~/constants/Links";

@@ -9,12 +9,7 @@ import {
   userPreferencesStore,
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
-import {
-  pickPath,
-  removePath,
-  useAddPathToList,
-  validatePath,
-} from "./helpers/ScanFilterData";
+import { pickPath, removePath, useAddPathToList, validatePath } from "./utils";
 
 import { Colors } from "~/constants/Styles";
 import { deferInitialRender, OnRTL } from "~/lib/react";
@@ -28,7 +23,7 @@ import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
 import { Swipeable } from "~/components/Swipeable";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
-import { ContentPlaceholder } from "~/navigation/components/Placeholder";
+import { ContentPlaceholder } from "../../../components/Placeholder";
 
 /** All the sheets used on `/setting/scanning` route. */
 export const ScanningSettingsSheets = deferInitialRender(

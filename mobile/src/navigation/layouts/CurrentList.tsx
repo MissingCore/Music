@@ -21,7 +21,7 @@ import {
   AlbumArtworkSheet,
   ArtistArtworkSheet,
   PlaylistArtworkSheet,
-} from "~/screens/Sheets/Artwork";
+} from "../screens/ArtworkSheet";
 
 import { DeferRender, OnRTLWorklet } from "~/lib/react";
 import { getFont } from "~/lib/style";

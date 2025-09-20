@@ -12,7 +12,7 @@ import {
   usePlaylists,
   useUpdatePlaylist,
 } from "~/queries/playlist";
-import { ModifyPlaylist as ModifyPlaylistBase } from "~/screens/ModifyPlaylist";
+import { ModifyPlaylistBase } from "./ModifyViewBase";
 
 import { mutateGuardAsync } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";

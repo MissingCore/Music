@@ -1,6 +1,6 @@
+import { useProgress } from "@weights-ai/react-native-track-player";
 import { atom, useAtomValue, useSetAtom } from "jotai";
 import { useCallback, useMemo, useRef, useState } from "react";
-import { useProgress } from "@weights-ai/react-native-track-player";
 
 import { useMusicStore } from "~/modules/media/services/Music";
 import { MusicControls } from "~/modules/media/services/Playback";

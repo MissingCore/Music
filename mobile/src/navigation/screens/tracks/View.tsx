@@ -4,7 +4,7 @@ import { View } from "react-native";
 import { Sort } from "~/resources/icons/Sort";
 import { useTracksForTrackCard } from "~/queries/track";
 import { StickyActionListLayout } from "../../layouts/StickyActionScroll";
-import { TrackSortSheet } from "~/screens/Sheets/TrackSort";
+import { TrackSortSheet } from "./SortSheet";
 
 import { IconButton } from "~/components/Form/Button";
 import { useSheetRef } from "~/components/Sheet";

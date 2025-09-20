@@ -7,7 +7,7 @@ import { useLoadResources } from "~/hooks/useLoadResources";
 import NavigationContainer from "~/navigation";
 import { AppProvider } from "~/navigation/providers/AppProvider";
 import { ErrorBoundary } from "~/navigation/components/ErrorBoundary";
-import { OnboardingScreen } from "~/screens/Onboarding";
+import { Onboarding } from "~/navigation/screens/OnboardingView";
 
 import "~/resources/global.css";
 import "~/modules/i18n"; // Make sure translations are bundled.
@@ -37,7 +37,7 @@ export default function App() {
   } else if (!isLoaded) {
     return (
       <AppProvider systemTheme>
-        <OnboardingScreen />
+        <Onboarding />
       </AppProvider>
     );
   }

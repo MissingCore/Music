@@ -12,15 +12,15 @@ import { CheckCircle } from "~/resources/icons/CheckCircle";
 import { Check } from "~/resources/icons/Check";
 import { Remove } from "~/resources/icons/Remove";
 import { useDeletePlaylist } from "~/queries/playlist";
-import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
-import type { InitStoreProps } from "./context";
+import { useFloatingContent } from "../../../hooks/useFloatingContent";
+import type { InitStoreProps } from "./store";
 import {
   PlaylistStoreProvider,
   useIsPlaylistUnchanged,
   useIsPlaylistUnique,
   usePlaylistStore,
-} from "./context";
-import { AddMusicSheet } from "./Sheets";
+} from "./store";
+import { AddMusicSheet } from "./AddMusicSheet";
 
 import { Colors } from "~/constants/Styles";
 import { OnRTL } from "~/lib/react";
@@ -36,11 +36,11 @@ import { useSheetRef } from "~/components/Sheet";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
 import { TStyledText } from "~/components/Typography/StyledText";
 import { SearchResult } from "~/modules/search/components/SearchResult";
-import { ContentPlaceholder } from "~/navigation/components/Placeholder";
-import { ScreenOptions } from "~/navigation/components/ScreenOptions";
+import { ContentPlaceholder } from "../../../components/Placeholder";
+import { ScreenOptions } from "../../../components/ScreenOptions";
 
 /** Resuable screen to modify (create or edit) a playlist. */
-export function ModifyPlaylist(props: InitStoreProps) {
+export function ModifyPlaylistBase(props: InitStoreProps) {
   const { offset, ...rest } = useFloatingContent();
   return (
     <PlaylistStoreProvider {...props}>

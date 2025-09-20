@@ -15,12 +15,12 @@ import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { useMusicStore } from "~/modules/media/services/Music";
 import { presentTrackSheet } from "~/services/SessionStore";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
-import { useUpcomingStore } from "~/screens/NowPlaying/helpers/UpcomingStore";
-import { usePlayerProgress } from "~/screens/NowPlaying/helpers/usePlayerProgress";
-import { NowPlayingArtwork } from "~/screens/NowPlaying/Artwork";
-import { NowPlayingSheets } from "~/screens/NowPlaying/Sheets";
-import { SleepTimerSheet } from "~/screens/Sheets/SleepTimer";
-import { useSleepTimerStore } from "~/screens/Sheets/SleepTimer/store";
+import { useUpcomingStore } from "./helpers/UpcomingStore";
+import { usePlayerProgress } from "./helpers/usePlayerProgress";
+import { NowPlayingArtwork } from "./components/Artwork";
+import { NowPlayingSheets } from "./Sheets";
+import { SleepTimerSheet } from "./SleepTimerSheet";
+import { useSleepTimerStore } from "./SleepTimerSheet/store";
 
 import { OnRTL } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
@@ -39,7 +39,7 @@ import {
   RepeatButton,
   ShuffleButton,
 } from "~/modules/media/components/MediaControls";
-import { Back } from "../components/Back";
+import { Back } from "../../components/Back";
 
 export default function NowPlaying() {
   const track = useMusicStore((state) => state.activeTrack);

@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useRescanForTracks } from "~/modules/scanning/helpers/rescan";
 import { StandardScrollLayout } from "../../layouts/StandardScroll";
-import { ScanningSettingsSheets } from "~/screens/Sheets/Settings/Scanning";
+import { ScanningSettingsSheets } from "./ScanningSettingsSheets";
 
 import { mutateGuard } from "~/lib/react-query";
 import { List, ListItem } from "~/components/Containment/List";

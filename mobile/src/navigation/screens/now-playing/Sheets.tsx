@@ -1,7 +1,7 @@
 import type { ListRenderItemInfo } from "@shopify/flash-list";
+import TrackPlayer from "@weights-ai/react-native-track-player";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import TrackPlayer from "@weights-ai/react-native-track-player";
 
 import { getTrackCover } from "~/db/utils";
 
@@ -23,7 +23,7 @@ import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
 import { SearchResult } from "~/modules/search/components/SearchResult";
-import { ContentPlaceholder } from "~/navigation/components/Placeholder";
+import { ContentPlaceholder } from "../../components/Placeholder";
 
 type PartialTrack = UpcomingStore["currentTrackList"][0];
 

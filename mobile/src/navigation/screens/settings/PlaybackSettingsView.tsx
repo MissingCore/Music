@@ -1,5 +1,5 @@
-import { useTranslation } from "react-i18next";
 import TrackPlayer from "@weights-ai/react-native-track-player";
+import { useTranslation } from "react-i18next";
 
 import { musicStore } from "~/modules/media/services/Music";
 import {

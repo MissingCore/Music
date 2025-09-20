@@ -15,7 +15,7 @@ import {
   getArtworkUri,
 } from "~/modules/scanning/helpers/artwork";
 import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
-import { router } from "~/navigation/utils/router";
+import { router } from "../../../utils/router";
 
 import { ToastOptions } from "~/lib/toast";
 import { clearAllQueries } from "~/lib/react-query";
