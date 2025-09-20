@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { OpenInNew } from "~/resources/icons/OpenInNew";
 import LicensesList from "~/resources/licenses.json";
 import { useTheme } from "~/hooks/useTheme";
-import { StandardScrollLayout } from "~/layouts/StandardScroll";
+import { StandardScrollLayout } from "../../layouts/StandardScroll";
 
 import { Card } from "~/components/Containment/Card";
 import { IconButton } from "~/components/Form/Button";

@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 
 import { useArtistsForIndex } from "~/queries/artist";
-import { StickyActionListLayout } from "~/layouts/StickyActionScroll";
+import { StickyActionListLayout } from "../../layouts/StickyActionScroll";
 
 import { isString } from "~/utils/validation";
 import { Em } from "~/components/Typography/StyledText";

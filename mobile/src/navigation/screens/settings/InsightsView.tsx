@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { useDatabaseSummary, useStorageSummary } from "~/queries/setting";
 import { useTheme } from "~/hooks/useTheme";
-import { StandardScrollLayout } from "~/layouts/StandardScroll";
+import { StandardScrollLayout } from "../../layouts/StandardScroll";
 
 import { Colors } from "~/constants/Styles";
 import type { ExtractQueryData } from "~/lib/react-query";

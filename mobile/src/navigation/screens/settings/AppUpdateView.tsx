@@ -7,7 +7,7 @@ import { LogoPlayStore } from "~/resources/icons/LogoPlayStore";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useHasNewUpdate } from "~/hooks/useHasNewUpdate";
 import { useTheme } from "~/hooks/useTheme";
-import { StandardScrollLayout } from "~/layouts/StandardScroll";
+import { StandardScrollLayout } from "../../layouts/StandardScroll";
 
 import * as LINKS from "~/constants/Links";
 import { FontSize } from "~/constants/Styles";

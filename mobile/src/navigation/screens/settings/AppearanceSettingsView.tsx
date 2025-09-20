@@ -7,7 +7,7 @@ import {
   userPreferencesStore,
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
-import { StandardScrollLayout } from "~/layouts/StandardScroll";
+import { StandardScrollLayout } from "../../layouts/StandardScroll";
 import { AppearanceSettingsSheets } from "~/screens/Sheets/Settings/Appearance";
 
 import { List, ListItem } from "~/components/Containment/List";

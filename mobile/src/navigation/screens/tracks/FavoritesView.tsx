@@ -1,6 +1,6 @@
 import { useFavoriteTracksForScreen } from "~/queries/favorite";
 import { useBottomActionsInset } from "~/hooks/useBottomActions";
-import { CurrentListLayout } from "~/layouts/CurrentList";
+import { CurrentListLayout } from "../../layouts/CurrentList";
 
 import { FlashList } from "~/components/Defaults";
 import { ReservedPlaylists } from "~/modules/media/constants";

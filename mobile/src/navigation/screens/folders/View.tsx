@@ -18,7 +18,7 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { useFolderContent } from "~/queries/folder";
-import { StickyActionListLayout } from "~/layouts/StickyActionScroll";
+import { StickyActionListLayout } from "../../layouts/StickyActionScroll";
 
 import { OnRTL, OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";

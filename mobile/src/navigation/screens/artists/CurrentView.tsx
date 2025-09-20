@@ -8,7 +8,7 @@ import type { Album } from "~/db/schema";
 import { useArtistForScreen } from "~/queries/artist";
 import { useBottomActionsInset } from "~/hooks/useBottomActions";
 import { useGetColumn } from "~/hooks/useGetColumn";
-import { CurrentListLayout } from "~/layouts/CurrentList";
+import { CurrentListLayout } from "../../layouts/CurrentList";
 
 import { OnRTL } from "~/lib/react";
 import { FlashList } from "~/components/Defaults";

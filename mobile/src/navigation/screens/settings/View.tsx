@@ -9,9 +9,8 @@ import {
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
 import { useHasNewUpdate } from "~/hooks/useHasNewUpdate";
-import { StandardScrollLayout } from "~/layouts/StandardScroll";
+import { StandardScrollLayout } from "../../layouts/StandardScroll";
 import { SettingsSheets } from "~/screens/Sheets/Settings/Root";
-import { LANGUAGES } from "~/modules/i18n/constants";
 
 import { APP_VERSION } from "~/constants/Config";
 import * as LINKS from "~/constants/Links";
@@ -20,6 +19,7 @@ import { Card } from "~/components/Containment/Card";
 import { List, ListItem } from "~/components/Containment/List";
 import { Divider } from "~/components/Divider";
 import { useSheetRef } from "~/components/Sheet";
+import { LANGUAGES } from "~/modules/i18n/constants";
 
 export default function Settings() {
   const { t, i18n } = useTranslation();

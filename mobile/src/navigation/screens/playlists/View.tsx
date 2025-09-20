@@ -4,7 +4,7 @@ import { View } from "react-native";
 
 import { Add } from "~/resources/icons/Add";
 import { usePlaylistsForCards } from "~/queries/playlist";
-import { StickyActionListLayout } from "~/layouts/StickyActionScroll";
+import { StickyActionListLayout } from "../../layouts/StickyActionScroll";
 
 import { Colors } from "~/constants/Styles";
 import { Button } from "~/components/Form/Button";

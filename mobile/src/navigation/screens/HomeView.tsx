@@ -6,7 +6,7 @@ import {
   useFavoriteListsForCards,
   useFavoriteTracksCount,
 } from "~/queries/favorite";
-import { StandardScrollLayout } from "~/layouts/StandardScroll";
+import { StandardScrollLayout } from "../layouts/StandardScroll";
 
 import { cn } from "~/lib/style";
 import { abbreviateNum } from "~/utils/number";

@@ -6,7 +6,7 @@ import {
   userPreferencesStore,
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
-import { StandardScrollLayout } from "~/layouts/StandardScroll";
+import { StandardScrollLayout } from "../../layouts/StandardScroll";
 
 import { getTrackPlayerOptions } from "~/lib/react-native-track-player";
 import { List, ListItem } from "~/components/Containment/List";
