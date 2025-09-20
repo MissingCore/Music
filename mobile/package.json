@@ -17,6 +17,7 @@
     "atlas": "npx expo export --platform android && npx expo-atlas",
     "typecheck": "tsc --noEmit",
     "lint": "expo lint",
+    "circular-dep": "npx dpdm ./src/* --circular --exit-code circular:1 --warning=false",
     "db:generate": "drizzle-kit generate",
     "gen:splashscreen": "npx react-native-bootsplash generate --platforms android --background #F2F2F2 ./assets/splash-icon.png",
     "sync:licenses": "license-checker-rseidelsohn --production --depth=0 --excludePrivatePackages --clarificationsFile ./scripts/licenses/licenseClarification.json --customPath ./scripts/licenses/customLicenseFormat.json --json | node ./scripts/licenses/updateLicenses.mjs",
