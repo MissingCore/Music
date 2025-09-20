@@ -105,7 +105,7 @@
   },
   "@sentry/react-native": {
     "name": "@sentry/react-native",
-    "version": "7.0.1",
+    "version": "7.1.0",
     "copyright": "Copyright (c) 2017-2024 Sentry",
     "source": "https://github.com/getsentry/sentry-react-native",
     "license": "MIT",
@@ -121,7 +121,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.87.1",
+    "version": "5.89.0",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -297,7 +297,7 @@
   },
   "jotai": {
     "name": "jotai",
-    "version": "2.13.1",
+    "version": "2.14.0",
     "copyright": "Copyright (c) 2020 Poimandres",
     "source": "https://github.com/pmndrs/jotai",
     "license": "MIT",
@@ -353,7 +353,7 @@
   },
   "react-native-bootsplash": {
     "name": "react-native-bootsplash",
-    "version": "6.3.10",
+    "version": "6.3.11",
     "copyright": "Copyright (c) 2021 Mathieu Acthernoene",
     "source": "https://github.com/zoontek/react-native-bootsplash",
     "license": "MIT",
@@ -433,7 +433,7 @@
   },
   "react-native-svg": {
     "name": "react-native-svg",
-    "version": "15.12.1",
+    "version": "15.13.0",
     "copyright": "Copyright (c) [2015-2016] [Horcrux]",
     "source": "https://github.com/software-mansion/react-native-svg",
     "license": "MIT",
@@ -457,7 +457,7 @@
   },
   "zod": {
     "name": "zod",
-    "version": "4.1.5",
+    "version": "4.1.11",
     "copyright": "Copyright (c) 2025 Colin McDonnell",
     "source": "https://github.com/colinhacks/zod",
     "license": "MIT",
