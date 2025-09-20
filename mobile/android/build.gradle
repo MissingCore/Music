@@ -39,5 +39,15 @@ allprojects {
   }
 }
 
+subprojects {
+  configurations.all {
+    // If `music.CREATE_PRIVACY_BUILD` defined in `gradle.properties`
+    // is `true`, we don't run this code.
+    if (!findProperty('music.CREATE_PRIVACY_BUILD')?.toBoolean()) {
+      exclude group: 'io.sentry', module: 'sentry-android-replay'
+    }
+  }
+}
+
 apply plugin: "expo-root-project"
 apply plugin: "com.facebook.react.rootproject"
