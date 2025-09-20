@@ -10,8 +10,8 @@ import { SlowMotionVideo } from "~/resources/icons/SlowMotionVideo";
 import { VolumeUp } from "~/resources/icons/VolumeUp";
 import { Queue, useMusicStore } from "~/modules/media/services/Music";
 import { sessionStore, useSessionStore } from "~/services/SessionStore";
-import type { UpcomingStore } from "./helpers/UpcomingStore";
-import { useUpcomingStore } from "./helpers/UpcomingStore";
+import type { UpcomingStore } from "../helpers/UpcomingStore";
+import { useUpcomingStore } from "../helpers/UpcomingStore";
 
 import { Colors } from "~/constants/Styles";
 import { OnRTL } from "~/lib/react";
@@ -23,7 +23,7 @@ import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
 import { SearchResult } from "~/modules/search/components/SearchResult";
-import { ContentPlaceholder } from "../../components/Placeholder";
+import { ContentPlaceholder } from "../../../components/Placeholder";
 
 type PartialTrack = UpcomingStore["currentTrackList"][0];
 

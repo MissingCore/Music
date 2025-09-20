@@ -7,8 +7,8 @@ import {
   userPreferencesStore,
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
-import { StandardScrollLayout } from "../../layouts/StandardScroll";
-import { AppearanceSettingsSheets } from "./AppearanceSettingsSheets";
+import { StandardScrollLayout } from "../../../layouts/StandardScroll";
+import { AppearanceSettingsSheets } from "./Sheets";
 
 import { List, ListItem } from "~/components/Containment/List";
 import { useSheetRef } from "~/components/Sheet";

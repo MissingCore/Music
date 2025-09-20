@@ -9,7 +9,12 @@ import {
   userPreferencesStore,
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
-import { pickPath, removePath, useAddPathToList, validatePath } from "./utils";
+import {
+  pickPath,
+  removePath,
+  useAddPathToList,
+  validatePath,
+} from "./Sheets.utils";
 
 import { Colors } from "~/constants/Styles";
 import { deferInitialRender, OnRTL } from "~/lib/react";

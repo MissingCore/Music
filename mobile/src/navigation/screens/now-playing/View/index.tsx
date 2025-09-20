@@ -15,9 +15,9 @@ import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { useMusicStore } from "~/modules/media/services/Music";
 import { presentTrackSheet } from "~/services/SessionStore";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
-import { useUpcomingStore } from "./helpers/UpcomingStore";
-import { usePlayerProgress } from "./helpers/usePlayerProgress";
-import { NowPlayingArtwork } from "./components/Artwork";
+import { useUpcomingStore } from "../helpers/UpcomingStore";
+import { usePlayerProgress } from "../helpers/usePlayerProgress";
+import { NowPlayingArtwork } from "../components/Artwork";
 import { NowPlayingSheets } from "./Sheets";
 import { SleepTimerSheet } from "./SleepTimerSheet";
 import { useSleepTimerStore } from "./SleepTimerSheet/store";
@@ -39,7 +39,7 @@ import {
   RepeatButton,
   ShuffleButton,
 } from "~/modules/media/components/MediaControls";
-import { Back } from "../../components/Back";
+import { Back } from "../../../components/Back";
 
 export default function NowPlaying() {
   const track = useMusicStore((state) => state.activeTrack);
