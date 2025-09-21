@@ -243,7 +243,7 @@ export const RootStack = createNativeStackNavigator({
         },
         HomeTabsOrderSettings: {
           screen: HomeTabsOrderSettings,
-          options: { title: "feat.homeTabsOrder.title" },
+          options: { title: "feat.tabsOrder.title" },
         },
         Insights: {
           screen: Insights,

@@ -43,9 +43,9 @@ function ListHeaderComponent() {
   return (
     <>
       <StyledText dim className="text-center text-sm">
-        {t("feat.homeTabsOrder.description.line1")}
+        {t("feat.tabsOrder.description.line1")}
         {"\n\n"}
-        {t("feat.homeTabsOrder.description.line2")}
+        {t("feat.tabsOrder.description.line2")}
       </StyledText>
       <Divider className="my-6" />
     </>
@@ -83,7 +83,7 @@ const RenderItem = memo(
         <TStyledText textKey={tabNameKey} className="shrink grow p-4 pr-2" />
         <IconButton
           Icon={Home}
-          accessibilityLabel={t("feat.homeTabsOrder.extra.setHomeTab", {
+          accessibilityLabel={t("feat.tabsOrder.extra.setHomeTab", {
             name: t(tabNameKey),
           })}
           onPress={() => setHomeTab(item)}

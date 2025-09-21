@@ -133,11 +133,11 @@
         "system": "System"
       }
     },
-    "homeTabsOrder": {
-      "title": "Home Tabs Order",
+    "tabsOrder": {
+      "title": "Tabs Order",
       "brief": "Customize the order and visibility of the tabs.",
       "description": {
-        "line1": "Reorder the tabs after the \"Home\" tab by dragging and dropping. Toggle tab visibility using the eye icon.",
+        "line1": "Reorder the tabs by dragging and dropping. Toggle tab visibility using the eye icon. Change the home tab using the house icon.",
         "line2": "Caution: Unexpected behavior may occur when navigating to a hidden tab."
       },
       "extra": {
