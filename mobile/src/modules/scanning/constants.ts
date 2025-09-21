@@ -3,7 +3,8 @@ export type MigrationOption =
   | "fileNodes-adjustment"
   | "duplicate-album-fix"
   | "discover-time-field"
-  | "recent-list-db-migration";
+  | "recent-list-db-migration"
+  | "hide-home-tab";
 
 /**
  * History of data migrations due to "breaking" changes.
@@ -29,4 +30,5 @@ export const MigrationHistory: Record<
       "recent-list-db-migration",
     ],
   },
+  2: { version: "v2.6.0", changes: ["hide-home-tab"] },
 };

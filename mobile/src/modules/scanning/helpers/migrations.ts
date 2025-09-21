@@ -9,6 +9,7 @@ import { albums, fileNodes, playedMediaLists, tracks } from "~/db/schema";
 import { getAlbums } from "~/api/album";
 import { musicStore } from "~/modules/media/services/Music";
 import { sortPreferencesStore } from "~/modules/media/services/SortPreferences";
+import type { OrderableTab } from "~/services/UserPreferences";
 import { userPreferencesStore } from "~/services/UserPreferences";
 import { onboardingStore } from "../services/Onboarding";
 
@@ -162,5 +163,22 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
       // Delete data at old key when finished.
       await AsyncStorage.removeItem(storeKey);
     } catch {}
+  },
+
+  "hide-home-tab": async () => {
+    userPreferencesStore.setState((prev) => {
+      const updatedTabOrder = [...prev.tabsOrder];
+      // Don't add "home" if it's already in there.
+      if (!prev.tabsOrder.includes("home")) updatedTabOrder.unshift("home");
+
+      const updatedTabsVisibility = Object.fromEntries(
+        Object.entries(prev.tabsVisibility).concat([["home", true]]),
+      ) as Record<OrderableTab, boolean>;
+
+      return {
+        tabsOrder: updatedTabOrder,
+        tabsVisibility: updatedTabsVisibility,
+      };
+    });
   },
 };
