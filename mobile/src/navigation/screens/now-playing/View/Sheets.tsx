@@ -23,12 +23,13 @@ import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
 import { SearchResult } from "~/modules/search/components/SearchResult";
+import { deferInitialRender } from "~/navigation/components/DeferredRender";
 import { ContentPlaceholder } from "../../../components/Placeholder";
 
 type PartialTrack = UpcomingStore["currentTrackList"][0];
 
 /** All the sheets used on `/now-playing` route. */
-export function NowPlayingSheets(
+export const NowPlayingSheets = deferInitialRender(function NowPlayingSheets(
   props: Record<"playbackOptionsRef" | "upcomingTracksRef", TrueSheetRef>,
 ) {
   return (
@@ -37,7 +38,7 @@ export function NowPlayingSheets(
       <TrackUpcomingSheet sheetRef={props.upcomingTracksRef} />
     </>
   );
-}
+});
 
 //#region Playback Options
 /** Enables us to specify  how the media is played. */
