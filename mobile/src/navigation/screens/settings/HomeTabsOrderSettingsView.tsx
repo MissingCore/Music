@@ -12,8 +12,8 @@ import {
   userPreferencesStore,
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
-import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 
+import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import { cn } from "~/lib/style";
 import { moveArray } from "~/utils/object";
 import { FlashDragList } from "~/components/Defaults";
