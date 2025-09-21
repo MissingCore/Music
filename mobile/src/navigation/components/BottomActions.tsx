@@ -93,16 +93,14 @@ function NavigationList() {
   // Buttons for the routes we can navigate to on the "home" screen, whose
   // order can be customized.
   const NavRoutes: Array<{ key: ParseKeys; name: HomeScreenNames }> = useMemo(
-    () => [
-      { key: "term.home", name: "Home" },
-      ...displayedTabs.map(
+    () =>
+      displayedTabs.map(
         (tabKey) =>
           ({
-            key: `term.${tabKey}s`,
+            key: tabKey === "home" ? "term.home" : `term.${tabKey}s`,
             name: getHomeScreenName(tabKey),
           }) as const,
       ),
-    ],
     [displayedTabs],
   );
 
@@ -178,9 +176,11 @@ const ShadowProps = { start: { x: 0.0, y: 1.0 }, end: { x: 1.0, y: 1.0 } };
 //#endregion
 
 //#region Utils
-export type HomeScreenNames = "Home" | `${Capitalize<OrderableTab>}s`;
+export type HomeScreenNames =
+  | "Home"
+  | `${Capitalize<Exclude<OrderableTab, "home">>}s`;
 
-export function getHomeScreenName(tabKey: OrderableTab | "home") {
+export function getHomeScreenName(tabKey: OrderableTab) {
   if (tabKey === "home") return "Home";
   return `${capitalize(tabKey)}s` as const;
 }

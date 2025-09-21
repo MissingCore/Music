@@ -72,6 +72,7 @@ const RootScreenComponents = {
   album: Albums,
   artist: Artists,
   folder: Folders,
+  home: Home,
   playlist: Playlists,
   track: Tracks,
 } as const;
@@ -153,7 +154,6 @@ function RootScreens(_: RootScreensProps) {
       tabBar={noop}
       screenListeners={listeners}
     >
-      <MaterialTopTab.Screen name="Home" component={Home} />
       {displayedTabs.map((tabKey) => (
         <MaterialTopTab.Screen
           key={tabKey}
