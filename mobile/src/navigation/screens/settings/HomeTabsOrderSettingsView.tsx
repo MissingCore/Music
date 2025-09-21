@@ -63,7 +63,8 @@ const RenderItem = memo(
 
     const isVisible = tabsVisibility[item];
     const isHomeTab = homeTab === item;
-    const tabNameKey = `term.${item}s` as const;
+    const tabNameKey =
+      item === "home" ? "term.home" : (`term.${item}s` as const);
 
     return (
       <Pressable
@@ -83,11 +84,12 @@ const RenderItem = memo(
         <IconButton
           Icon={Home}
           accessibilityLabel={t("feat.homeTabsOrder.extra.setHomeTab", {
-            name: t(isHomeTab ? "term.home" : tabNameKey),
+            name: t(tabNameKey),
           })}
-          onPress={() => toggleHomeTab(item)}
-          disabled={info.isDragging || !isVisible}
+          onPress={() => setHomeTab(item)}
+          disabled={info.isDragging || !isVisible || isHomeTab}
           filled={isHomeTab}
+          className="disabled:opacity-100"
         />
         <IconButton
           Icon={isVisible ? Visibility : VisibilityOff}
@@ -110,10 +112,8 @@ const onMove = (fromIndex: number, toIndex: number) => {
   }));
 };
 
-const toggleHomeTab = (tab: OrderableTab) => {
-  userPreferencesStore.setState(({ homeTab }) => ({
-    homeTab: homeTab === tab ? "home" : tab,
-  }));
+const setHomeTab = (tab: OrderableTab) => {
+  userPreferencesStore.setState({ homeTab: tab });
 };
 
 const toggleTabVisibility = (tab: OrderableTab) => {
