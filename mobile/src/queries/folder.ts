@@ -1,13 +1,13 @@
+import { useQuery } from "@tanstack/react-query";
+
 import { formatForTrack } from "~/db/utils";
 
 import { queries as q } from "./keyStore";
 
-import { useFocusedQuery } from "~/lib/react-query";
-
 //#region Queries
 /** Return the subdirectories and tracks in this current directory. */
 export function useFolderContent(folderPath?: string) {
-  return useFocusedQuery({
+  return useQuery({
     ...q.folders.detail(folderPath),
     select: ({ subDirectories, tracks }) => ({
       subDirectories,

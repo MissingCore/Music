@@ -19,7 +19,6 @@ import {
 import { Resynchronize } from "~/modules/media/services/Resynchronize";
 import { queries as q } from "./keyStore";
 
-import { useFocusedQuery } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
 
 //#region Queries
@@ -34,7 +33,7 @@ export function usePlaylist(playlistName: string) {
 /** Format playlist information for playlist's `(current)` screen. */
 export function usePlaylistForScreen(playlistName: string) {
   const { t } = useTranslation();
-  return useFocusedQuery({
+  return useQuery({
     ...q.playlists.detail(playlistName),
     select: (data) => ({
       ...formatForCurrentScreen({ type: "playlist", data, t }),

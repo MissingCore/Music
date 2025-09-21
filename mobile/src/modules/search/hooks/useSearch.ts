@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
 import { db } from "~/db";
@@ -8,7 +9,6 @@ import { getArtists } from "~/api/artist";
 import { getPlaylists } from "~/api/playlist";
 import { getTracks } from "~/api/track";
 
-import { useFocusedQuery } from "~/lib/react-query";
 import { addTrailingSlash } from "~/utils/string";
 import type { Prettify } from "~/utils/types";
 import type { SearchCategories, SearchResults } from "../types";
@@ -104,10 +104,6 @@ async function getAllMedia() {
 const queryKey = ["search"];
 
 function useAllMedia() {
-  // We can perpetually cache this data since track deletion will clear this
-  // query. For other places (ie: modifying playlists), we can manually add
-  // that in.
-  //  - FIXME: If we add the "Hide Track" feature, things might need to change.
-  return useFocusedQuery({ queryKey, queryFn: getAllMedia });
+  return useQuery({ queryKey, queryFn: getAllMedia });
 }
 //#endregion
