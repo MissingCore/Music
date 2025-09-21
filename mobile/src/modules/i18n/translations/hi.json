@@ -123,7 +123,7 @@
         "system": "सिस्टम"
       }
     },
-    "homeTabsOrder": {
+    "tabsOrder": {
       "title": "होम टैब्स क्रम",
       "brief": "टैब्स के क्रम और दृश्यता को अनुकूलित करें।",
       "description": {

@@ -123,7 +123,7 @@
         "system": "النظام"
       }
     },
-    "homeTabsOrder": {
+    "tabsOrder": {
       "title": "ترتيب علامات تبويب الرئيسية",
       "brief": "تخصيص ترتيب ووضوح علامات التبويب.",
       "description": {

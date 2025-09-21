@@ -123,7 +123,7 @@
         "system": "システム"
       }
     },
-    "homeTabsOrder": {
+    "tabsOrder": {
       "title": "ホームタブの順序",
       "brief": "タブの順序と表示をカスタマイズします。",
       "description": {

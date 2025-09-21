@@ -123,7 +123,7 @@
         "system": "System"
       }
     },
-    "homeTabsOrder": {
+    "tabsOrder": {
       "title": "Home-Tabs Reihenfolge",
       "brief": "Reihenfolge und Sichtbarkeit der Tabs ändern.",
       "description": {

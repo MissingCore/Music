@@ -123,7 +123,7 @@
         "system": "Système"
       }
     },
-    "homeTabsOrder": {
+    "tabsOrder": {
       "title": "Ordre des onglets",
       "brief": "Personnalisez l'ordre et la visibilité des onglets.",
       "description": {

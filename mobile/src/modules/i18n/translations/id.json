@@ -123,7 +123,7 @@
         "system": "Sistem"
       }
     },
-    "homeTabsOrder": {
+    "tabsOrder": {
       "title": "Urutan Tab Beranda",
       "brief": "Kustomisasikan urutan dan visibilitas tab.",
       "description": {
