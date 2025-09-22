@@ -29,6 +29,7 @@ export function StickyActionListLayout<TData>({
   StickyAction,
   estimatedActionSize = 0,
   listRef,
+  insetDelta = 0,
   ...props
 }: FlashListProps<TData> & {
   /** Key to title in translations. */
@@ -39,6 +40,11 @@ export function StickyActionListLayout<TData>({
   estimatedActionSize?: number;
   /** Pass a ref to the animated FlashList. */
   listRef?: React.Ref<FlashList<any>>;
+  /**
+   * How much we want to cut away from the bottom inset adjustment. Useful
+   * for giving a more accurate `estimatedItemSize` when faking "gaps".
+   */
+  insetDelta?: number;
 }) {
   const { t } = useTranslation();
   const { top } = useSafeAreaInsets();
@@ -96,7 +102,7 @@ export function StickyActionListLayout<TData>({
         {...props}
         contentContainerStyle={{
           padding: 16,
-          paddingBottom: bottomInset.withNav + 16,
+          paddingBottom: bottomInset.withNav + 16 - insetDelta,
         }}
       />
 

@@ -96,23 +96,20 @@ export default function Folders({
     <StickyActionListLayout
       listRef={listRef}
       titleKey="term.folders"
+      insetDelta={8}
       estimatedItemSize={56} // 48px Height + 8px Margin Top
       data={renderedData}
       keyExtractor={(item) => (isTrackContent(item) ? item.id : item.path)}
-      renderItem={({ item, index }) =>
+      renderItem={({ item }) =>
         isTrackContent(item) ? (
-          <Track
-            {...item}
-            trackSource={trackSource}
-            className={index > 0 ? "mt-2" : undefined}
-          />
+          <Track {...item} trackSource={trackSource} className="mb-2" />
         ) : (
           <SearchResult
             as="ripple"
             type="folder"
             title={item.name}
             onPress={() => setDirSegments((prev) => [...prev, item.name])}
-            className={cn("pr-4", { "mt-2": index > 0 })}
+            className="mb-2 pr-4"
           />
         )
       }
