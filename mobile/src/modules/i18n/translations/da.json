@@ -123,7 +123,7 @@
         "system": "System-standard"
       }
     },
-    "homeTabsOrder": {
+    "tabsOrder": {
       "title": "Rækkefølge af faner",
       "brief": "Tilpas rækkefølgen og synligheden af fanerne.",
       "description": {

@@ -12,8 +12,8 @@ import {
   userPreferencesStore,
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
-import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 
+import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import { cn } from "~/lib/style";
 import { moveArray } from "~/utils/object";
 import { FlashDragList } from "~/components/Defaults";
@@ -43,9 +43,9 @@ function ListHeaderComponent() {
   return (
     <>
       <StyledText dim className="text-center text-sm">
-        {t("feat.homeTabsOrder.description.line1")}
+        {t("feat.tabsOrder.description.line1")}
         {"\n\n"}
-        {t("feat.homeTabsOrder.description.line2")}
+        {t("feat.tabsOrder.description.line2")}
       </StyledText>
       <Divider className="my-6" />
     </>
@@ -63,7 +63,8 @@ const RenderItem = memo(
 
     const isVisible = tabsVisibility[item];
     const isHomeTab = homeTab === item;
-    const tabNameKey = `term.${item}s` as const;
+    const tabNameKey =
+      item === "home" ? "term.home" : (`term.${item}s` as const);
 
     return (
       <Pressable
@@ -82,12 +83,15 @@ const RenderItem = memo(
         <TStyledText textKey={tabNameKey} className="shrink grow p-4 pr-2" />
         <IconButton
           Icon={Home}
-          accessibilityLabel={t("feat.homeTabsOrder.extra.setHomeTab", {
-            name: t(isHomeTab ? "term.home" : tabNameKey),
+          accessibilityLabel={t("feat.tabsOrder.extra.setHomeTab", {
+            name: t(tabNameKey),
           })}
-          onPress={() => toggleHomeTab(item)}
-          disabled={info.isDragging || !isVisible}
+          onPress={() => setHomeTab(item)}
+          disabled={info.isDragging || !isVisible || isHomeTab}
           filled={isHomeTab}
+          className={cn({
+            "disabled:opacity-100": !info.isDragging && isHomeTab,
+          })}
         />
         <IconButton
           Icon={isVisible ? Visibility : VisibilityOff}
@@ -110,10 +114,8 @@ const onMove = (fromIndex: number, toIndex: number) => {
   }));
 };
 
-const toggleHomeTab = (tab: OrderableTab) => {
-  userPreferencesStore.setState(({ homeTab }) => ({
-    homeTab: homeTab === tab ? "home" : tab,
-  }));
+const setHomeTab = (tab: OrderableTab) => {
+  userPreferencesStore.setState({ homeTab: tab });
 };
 
 const toggleTabVisibility = (tab: OrderableTab) => {

@@ -123,7 +123,7 @@
         "system": "Sistema"
       }
     },
-    "homeTabsOrder": {
+    "tabsOrder": {
       "title": "Ordre de les pestanyes",
       "brief": "Personalitza l'ordre i visibilitat de les pestanyes.",
       "description": {

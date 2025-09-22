@@ -123,7 +123,7 @@
         "system": "Sistema"
       }
     },
-    "homeTabsOrder": {
+    "tabsOrder": {
       "title": "Orden de pestañas de Inicio",
       "brief": "Personalizar el orden y la visibilidad de las pestañas.",
       "description": {

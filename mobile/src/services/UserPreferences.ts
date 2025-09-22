@@ -23,7 +23,13 @@ export const AccentFontOptions = [
 /** Options for "Now Playing" screen designs. */
 export const NowPlayingDesignOptions = ["vinyl", "vinylOld", "plain"] as const;
 /** Options for the tabs we can reorder. */
-export type OrderableTab = "album" | "artist" | "folder" | "playlist" | "track";
+export type OrderableTab =
+  | "album"
+  | "artist"
+  | "folder"
+  | "home"
+  | "playlist"
+  | "track";
 
 //#region Zustand Store
 //#region UserPreferencesStore Interface
@@ -49,7 +55,7 @@ interface UserPreferencesStore {
   nowPlayingDesign: (typeof NowPlayingDesignOptions)[number];
 
   /** Tab that we open up to on app launch. */
-  homeTab: "home" | OrderableTab;
+  homeTab: OrderableTab;
   /** Order of tabs on the home screen. */
   tabsOrder: OrderableTab[];
   /** Visibility of the tabs on the home screen. */
@@ -123,11 +129,12 @@ export const userPreferencesStore =
       nowPlayingDesign: "vinyl",
 
       homeTab: "home",
-      tabsOrder: ["folder", "playlist", "track", "album", "artist"],
+      tabsOrder: ["home", "folder", "playlist", "track", "album", "artist"],
       tabsVisibility: {
         album: true,
         artist: true,
         folder: true,
+        home: true,
         playlist: true,
         track: true,
       },

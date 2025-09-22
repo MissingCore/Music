@@ -123,7 +123,7 @@
         "system": "Sistema"
       }
     },
-    "homeTabsOrder": {
+    "tabsOrder": {
       "title": "Ordine schede $t(term.home)",
       "brief": "Personalizza l'ordine e la visibilità delle schede.",
       "description": {

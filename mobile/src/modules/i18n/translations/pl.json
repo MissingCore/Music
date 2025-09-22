@@ -123,7 +123,7 @@
         "system": "Systemowy"
       }
     },
-    "homeTabsOrder": {
+    "tabsOrder": {
       "title": "Kolejność zakładek",
       "brief": "Spersonalizuj kolejność i widoczność zakładek.",
       "description": {

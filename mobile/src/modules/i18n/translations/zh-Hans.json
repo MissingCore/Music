@@ -123,7 +123,7 @@
         "system": "跟随系统"
       }
     },
-    "homeTabsOrder": {
+    "tabsOrder": {
       "title": "主页标签顺序",
       "brief": "自定义标签的顺序和可见性。",
       "description": {
