@@ -25,7 +25,7 @@ import { cn } from "~/lib/style";
 import { addTrailingSlash } from "~/utils/string";
 import { useFlashListRef } from "~/components/Defaults";
 import { StyledText } from "~/components/Typography/StyledText";
-import { Track, useIsTrackPlayed } from "~/modules/media/components/Track";
+import { Track } from "~/modules/media/components/Track";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { ContentPlaceholder } from "../../components/Placeholder";
 
@@ -45,10 +45,7 @@ export default function Folders({
   const [dirSegments, _setDirSegments] = useState<string[]>([]);
 
   const fullPath = dirSegments.join("/");
-  // Information about this track list.
-  const trackSource = { type: "folder", id: `${fullPath}/` } as const;
 
-  const [passPreCheck, showIndicator] = useIsTrackPlayed(trackSource);
   const { isPending, data } = useFolderContent(fullPath);
 
   const renderedData = useMemo(
@@ -92,6 +89,9 @@ export default function Folders({
     return () => subscription.remove();
   }, [dirSegments, isFocused, setDirSegments]);
 
+  // Information about this track list.
+  const trackSource = { type: "folder", id: `${fullPath}/` } as const;
+
   return (
     <StickyActionListLayout
       listRef={listRef}
@@ -100,16 +100,9 @@ export default function Folders({
       estimatedItemSize={56} // 48px Height + 8px Margin Top
       data={renderedData}
       keyExtractor={(item) => (isTrackContent(item) ? item.id : item.path)}
-      // Helps re-render items when a child is now being played.
-      extraData={passPreCheck ? showIndicator : false}
       renderItem={({ item }) =>
         isTrackContent(item) ? (
-          <Track
-            {...item}
-            trackSource={trackSource}
-            className="mb-2"
-            showIndicator={passPreCheck ? showIndicator(item.id) : undefined}
-          />
+          <Track {...item} trackSource={trackSource} className="mb-2" />
         ) : (
           <SearchResult
             as="ripple"
