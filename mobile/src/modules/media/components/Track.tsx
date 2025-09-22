@@ -1,3 +1,4 @@
+import { useIsFocused } from "@react-navigation/native";
 import type { FlashListProps } from "@shopify/flash-list";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -46,11 +47,11 @@ export function Track({
   ...props
 }: Track.Props) {
   const { t } = useTranslation();
-  const [_, shouldShowIndicator] = useIsTrackPlayed(trackSource);
+  const [passPreCheck, shouldShowIndicator] = useIsTrackPlayed(trackSource);
 
   const showIndicator = useMemo(
-    () => shouldShowIndicator(id),
-    [shouldShowIndicator, id],
+    () => passPreCheck && shouldShowIndicator(id),
+    [passPreCheck, shouldShowIndicator, id],
   );
 
   const overriddenLeftElement = useMemo(
@@ -83,13 +84,17 @@ export function Track({
 //#region useIsTrackPlayed
 /** Determines if we should add a "playing" indicator for the given track. */
 export function useIsTrackPlayed(listSource: PlayListSource) {
+  const isFocused = useIsFocused();
   const currSource = useMusicStore((state) => state.playingSource);
   const activeId = useMusicStore((state) => state.activeId);
   const isQueuedTrack = useMusicStore((state) => state.isInQueue);
 
   const passPreCheck = useMemo(
-    () => arePlaybackSourceEqual(currSource, listSource) && !isQueuedTrack,
-    [currSource, isQueuedTrack, listSource],
+    () =>
+      isFocused &&
+      arePlaybackSourceEqual(currSource, listSource) &&
+      !isQueuedTrack,
+    [isFocused, currSource, isQueuedTrack, listSource],
   );
 
   return useMemo(

@@ -183,6 +183,7 @@ export const RootStack = createNativeStackNavigator({
   screenOptions: {
     header: TopAppBar,
     title: "",
+    freezeOnBlur: true,
   },
   screens: {
     HomeScreens: {
