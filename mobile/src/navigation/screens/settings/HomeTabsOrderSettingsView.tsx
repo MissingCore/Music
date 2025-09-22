@@ -89,7 +89,9 @@ const RenderItem = memo(
           onPress={() => setHomeTab(item)}
           disabled={info.isDragging || !isVisible || isHomeTab}
           filled={isHomeTab}
-          className="disabled:opacity-100"
+          className={cn({
+            "disabled:opacity-100": !info.isDragging && isHomeTab,
+          })}
         />
         <IconButton
           Icon={isVisible ? Visibility : VisibilityOff}
