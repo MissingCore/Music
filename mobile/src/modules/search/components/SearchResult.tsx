@@ -32,6 +32,8 @@ export namespace SearchResult {
     Variations & {
       /** Letter that's placed next to the title. */
       contentLabel?: string;
+      /** Make this stand out more. */
+      poppyLabel?: boolean;
       RightElement?: React.JSX.Element;
     };
 }
@@ -82,7 +84,10 @@ function SearchResultContent(
           {props.contentLabel ? <Kbd text={props.contentLabel} /> : undefined}
           <StyledText
             numberOfLines={1}
-            className={cn("shrink grow", { "text-sm": !!props.description })}
+            className={cn("shrink grow", {
+              "text-red": props.poppyLabel,
+              "text-sm": !!props.description,
+            })}
           >
             {props.title}
           </StyledText>
