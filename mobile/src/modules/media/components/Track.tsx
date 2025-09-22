@@ -1,4 +1,3 @@
-import { useIsFocused } from "@react-navigation/native";
 import type { FlashListProps } from "@shopify/flash-list";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -27,6 +26,8 @@ export namespace Track {
   export type Props = Prettify<
     Content &
       Omit<PressProps, "onPress"> & {
+        /** Indicate that this track is being played. */
+        showIndicator?: boolean;
         trackSource: PlayListSource;
         LeftElement?: React.JSX.Element;
         /** Note: Maps to `wrapperClassName` on `<SearchResult />`. */
@@ -43,16 +44,11 @@ export function Track({
   id,
   trackSource,
   className,
+  showIndicator,
   LeftElement,
   ...props
 }: Track.Props) {
   const { t } = useTranslation();
-  const [passPreCheck, shouldShowIndicator] = useIsTrackPlayed(trackSource);
-
-  const showIndicator = useMemo(
-    () => passPreCheck && shouldShowIndicator(id),
-    [passPreCheck, shouldShowIndicator, id],
-  );
 
   const overriddenLeftElement = useMemo(
     () => (showIndicator ? <PlayingIndicator /> : LeftElement),
@@ -81,26 +77,37 @@ export function Track({
 }
 //#endregion
 
-//#region useIsTrackPlayed
-/** Determines if we should add a "playing" indicator for the given track. */
-export function useIsTrackPlayed(listSource: PlayListSource) {
-  const isFocused = useIsFocused();
+//#region useTrackListPlayingIndication
+/** Mark the track that's currently being played in the data. */
+export function useTrackListPlayingIndication<T extends Track.Content>(
+  listSource: PlayListSource,
+  tracks?: T[],
+) {
   const currSource = useMusicStore((state) => state.playingSource);
   const activeId = useMusicStore((state) => state.activeId);
   const isQueuedTrack = useMusicStore((state) => state.isInQueue);
 
   const passPreCheck = useMemo(
-    () =>
-      isFocused &&
-      arePlaybackSourceEqual(currSource, listSource) &&
-      !isQueuedTrack,
-    [isFocused, currSource, isQueuedTrack, listSource],
+    () => arePlaybackSourceEqual(currSource, listSource) && !isQueuedTrack,
+    [currSource, isQueuedTrack, listSource],
   );
 
-  return useMemo(
-    () => [passPreCheck, (id: string) => id === activeId] as const,
-    [passPreCheck, activeId],
-  );
+  const tracksMap = useMemo(() => {
+    const map = new Map<string, T>();
+    if (!tracks) return map;
+    tracks.forEach((t) => map.set(t.id, t));
+    return map;
+  }, [tracks]);
+
+  return useMemo(() => {
+    if (!passPreCheck || !tracks || !activeId) return tracks;
+    const mapCopy = new Map(tracksMap);
+    if (mapCopy.get(activeId)) {
+      // @ts-expect-error - We should get a compatible value.
+      mapCopy.set(activeId, { ...mapCopy.get(activeId), showIndicator: true });
+    }
+    return [...mapCopy.values()];
+  }, [passPreCheck, activeId, tracks, tracksMap]);
 }
 //#endregion
 
@@ -111,10 +118,12 @@ export function useTrackListPreset(props: {
   trackSource: PlayListSource;
   isPending?: boolean;
 }) {
+  // @ts-expect-error - Readonly is fine.
+  const data = useTrackListPlayingIndication(props.trackSource, props.data);
   return useMemo(
     () => ({
       estimatedItemSize: 56, // 48px Height + 8px Margin Top
-      data: props.data,
+      data,
       keyExtractor: ({ id }) => id,
       renderItem: ({ item, index }) => (
         <Track
@@ -130,7 +139,7 @@ export function useTrackListPreset(props: {
         />
       ),
     }),
-    [props],
+    [props, data],
   ) satisfies FlashListProps<Track.Content>;
 }
 //#endregion

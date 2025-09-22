@@ -13,7 +13,10 @@ import { isNumber } from "~/utils/validation";
 import { FlashList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { Em, StyledText } from "~/components/Typography/StyledText";
-import { Track } from "~/modules/media/components/Track";
+import {
+  Track,
+  useTrackListPlayingIndication,
+} from "~/modules/media/components/Track";
 import {
   ContentPlaceholder,
   PagePlaceholder,
@@ -32,12 +35,15 @@ export default function Album({
   const { isPending, error, data } = useAlbumForScreen(albumId);
   const favoriteAlbum = useFavoriteAlbum(albumId);
 
+  const trackSource = { type: "album", id: albumId } as const;
+  const listData = useTrackListPlayingIndication(trackSource, data?.tracks);
+
   const formattedData = useMemo(() => {
-    if (!data) return [];
+    if (!listData) return [];
 
     const foundDisc = new Set<number>();
     const sectionListTracks = [];
-    for (const track of data.tracks) {
+    for (const track of listData) {
       if (track.disc !== null && !foundDisc.has(track.disc)) {
         foundDisc.add(track.disc);
         sectionListTracks.push(track.disc);
@@ -46,7 +52,7 @@ export default function Album({
     }
 
     return sectionListTracks;
-  }, [data]);
+  }, [listData]);
 
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
 
@@ -54,9 +60,6 @@ export default function Album({
   const isToggled = favoriteAlbum.isPending
     ? !data.isFavorite
     : data.isFavorite;
-
-  // Information about this track list.
-  const trackSource = { type: "album", id: albumId } as const;
 
   return (
     <>

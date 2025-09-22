@@ -25,7 +25,10 @@ import { cn } from "~/lib/style";
 import { addTrailingSlash } from "~/utils/string";
 import { useFlashListRef } from "~/components/Defaults";
 import { StyledText } from "~/components/Typography/StyledText";
-import { Track } from "~/modules/media/components/Track";
+import {
+  Track,
+  useTrackListPlayingIndication,
+} from "~/modules/media/components/Track";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { ContentPlaceholder } from "../../components/Placeholder";
 
@@ -45,12 +48,14 @@ export default function Folders({
   const [dirSegments, _setDirSegments] = useState<string[]>([]);
 
   const fullPath = dirSegments.join("/");
+  const trackSource = { type: "folder", id: `${fullPath}/` } as const;
 
   const { isPending, data } = useFolderContent(fullPath);
+  const listData = useTrackListPlayingIndication(trackSource, data?.tracks);
 
   const renderedData = useMemo(
-    () => [...(data?.subDirectories ?? []), ...(data?.tracks ?? [])],
-    [data],
+    () => [...(data?.subDirectories ?? []), ...(listData ?? [])],
+    [data, listData],
   );
 
   /** Modified state setter that scrolls to the top of the page. */
@@ -88,9 +93,6 @@ export default function Folders({
     );
     return () => subscription.remove();
   }, [dirSegments, isFocused, setDirSegments]);
-
-  // Information about this track list.
-  const trackSource = { type: "folder", id: `${fullPath}/` } as const;
 
   return (
     <StickyActionListLayout
