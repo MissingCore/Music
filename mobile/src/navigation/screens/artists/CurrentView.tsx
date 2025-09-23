@@ -14,7 +14,10 @@ import { OnRTL } from "~/lib/react";
 import { FlashList } from "~/components/Defaults";
 import { TEm } from "~/components/Typography/StyledText";
 import { MediaCard } from "~/modules/media/components/MediaCard";
-import { Track } from "~/modules/media/components/Track";
+import {
+  Track,
+  useTrackListPlayingIndication,
+} from "~/modules/media/components/Track";
 import {
   ContentPlaceholder,
   PagePlaceholder,
@@ -33,10 +36,10 @@ export default function Artist({
   const bottomInset = useBottomActionsInset();
   const { isPending, error, data } = useArtistForScreen(artistName);
 
-  if (isPending || error) return <PagePlaceholder isPending={isPending} />;
-
-  // Information about this track list.
   const trackSource = { type: "artist", id: artistName } as const;
+  const listData = useTrackListPlayingIndication(trackSource, data?.tracks);
+
+  if (isPending || error) return <PagePlaceholder isPending={isPending} />;
 
   return (
     <CurrentListLayout
@@ -47,7 +50,7 @@ export default function Artist({
     >
       <FlashList
         estimatedItemSize={56} // 48px Height + 8px Margin Top
-        data={data.tracks}
+        data={listData}
         keyExtractor={({ id }) => id}
         renderItem={({ item, index }) => (
           <Track

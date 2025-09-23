@@ -25,7 +25,10 @@ import { cn } from "~/lib/style";
 import { FlashDragList } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
-import { Track } from "~/modules/media/components/Track";
+import {
+  Track,
+  useTrackListPlayingIndication,
+} from "~/modules/media/components/Track";
 import type { PlayListSource } from "~/modules/media/types";
 import {
   ContentPlaceholder,
@@ -56,15 +59,15 @@ export default function Playlist({
     [moveInPlaylist],
   );
 
+  const trackSource = { type: "playlist", id } as const;
+  const listData = useTrackListPlayingIndication(trackSource, data?.tracks);
+
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
 
   // Add optimistic UI updates.
   const isToggled = favoritePlaylist.isPending
     ? !data.isFavorite
     : data.isFavorite;
-
-  // Information about this track list.
-  const trackSource = { type: "playlist", id } as const;
 
   return (
     <>
@@ -93,7 +96,7 @@ export default function Playlist({
       >
         <FlashDragList
           estimatedItemSize={56} // 48px Height + 8px Margin Top
-          data={data.tracks}
+          data={listData!}
           keyExtractor={({ id }) => id}
           renderItem={(args) => (
             <RenderItem {...args} trackSource={trackSource} />
