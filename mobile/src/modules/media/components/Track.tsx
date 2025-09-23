@@ -6,8 +6,6 @@ import { MoreVert } from "~/resources/icons/MoreVert";
 import { presentTrackSheet } from "~/services/SessionStore";
 import { useMusicStore } from "../services/Music";
 import { playFromMediaList } from "../services/Playback";
-import { arePlaybackSourceEqual } from "../helpers/data";
-import type { PlayListSource } from "../types";
 
 import { cn } from "~/lib/style";
 import type { Prettify } from "~/utils/types";
@@ -16,6 +14,8 @@ import { IconButton } from "~/components/Form/Button";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { PlayingIndicator } from "./AnimatedBars";
+import { arePlaybackSourceEqual } from "../helpers/data";
+import type { PlayListSource } from "../types";
 
 //#region Track
 export namespace Track {
