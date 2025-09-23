@@ -92,22 +92,13 @@ export function useTrackListPlayingIndication<T extends Track.Content>(
     [currSource, isQueuedTrack, listSource],
   );
 
-  const tracksMap = useMemo(() => {
-    const map = new Map<string, T>();
-    if (!tracks) return map;
-    tracks.forEach((t) => map.set(t.id, t));
-    return map;
-  }, [tracks]);
-
   return useMemo(() => {
     if (!passPreCheck || !tracks || !activeId) return tracks;
-    const mapCopy = new Map(tracksMap);
-    if (mapCopy.get(activeId)) {
-      // @ts-expect-error - We should get a compatible value.
-      mapCopy.set(activeId, { ...mapCopy.get(activeId), showIndicator: true });
-    }
-    return [...mapCopy.values()];
-  }, [passPreCheck, activeId, tracks, tracksMap]);
+    return tracks.map((t) => {
+      if (t.id !== activeId) return t;
+      return { ...t, showIndicator: true };
+    });
+  }, [passPreCheck, activeId, tracks]);
 }
 //#endregion
 
