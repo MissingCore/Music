@@ -1,9 +1,12 @@
 import { getActualPath } from "@missingcore/react-native-actual-path";
+import { inArray } from "drizzle-orm";
 import { getDocumentAsync } from "expo-document-picker";
 import { StorageAccessFramework as SAF } from "expo-file-system";
 import { Paths } from "expo-file-system/next";
 
 import { db } from "~/db";
+import { tracks } from "~/db/schema";
+import { getTracks } from "~/api/track";
 
 import i18next from "~/modules/i18n";
 
@@ -50,8 +53,11 @@ export async function readM3UPlaylist() {
         ? trackPaths.map((path) => `file://${Paths.join(fileDirectory, path)}`)
         : trackPaths;
 
-  const playlistTracks = await db.query.tracks.findMany({
-    where: (fields, { inArray }) => inArray(fields.uri, trackUris),
+  const playlistTracks = await getTracks({
+    where: [inArray(tracks.uri, trackUris)],
+    columns: ["id", "name", "artistName", "artwork", "uri"],
+    albumColumns: ["name", "artwork"],
+    withHidden: true,
   });
 
   // Ensure found values are in order.
