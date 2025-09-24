@@ -30,7 +30,8 @@ export async function readM3UPlaylist() {
   // List of "file names" in the playlist.
   const trackPaths = documentFile
     .split(/\r?\n/)
-    .filter((line) => !!line && !line.startsWith("#"));
+    .filter((line) => !!line && !line.startsWith("#"))
+    .map((line) => line.replace(/\\/g, "/"));
   if (trackPaths.length === 0) throw new Error(i18next.t("err.msg.noContent"));
 
   // Determine "strategy" (absolute or relative paths).
