@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler, Pressable, View } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
@@ -36,17 +36,24 @@ import { useSheetRef } from "~/components/Sheet";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
 import { TStyledText } from "~/components/Typography/StyledText";
 import { SearchResult } from "~/modules/search/components/SearchResult";
+import { readM3UPlaylist } from "~/modules/backup/M3U";
 import { ContentPlaceholder } from "../../../components/Placeholder";
 import { ScreenOptions } from "../../../components/ScreenOptions";
 
 /** Resuable screen to modify (create or edit) a playlist. */
 export function ModifyPlaylistBase(props: InitStoreProps) {
   const { offset, ...rest } = useFloatingContent();
+
+  const RenderedWorkflow = useMemo(
+    () => (props.mode === "edit" ? DeleteWorkflow : ImportM3UWorkflow),
+    [props.mode],
+  );
+
   return (
     <PlaylistStoreProvider {...props}>
       <ScreenConfig />
       <PageContent bottomOffset={offset} />
-      <DeleteWorkflow {...rest} />
+      <RenderedWorkflow {...rest} />
       <ConfirmationModal />
     </PlaylistStoreProvider>
   );
@@ -281,13 +288,10 @@ function DeleteWorkflow({
   const navigation = useNavigation();
   const [lastChance, setLastChance] = useState(false);
 
-  const mode = usePlaylistStore((state) => state.mode);
   const initialPlaylistName = usePlaylistStore((state) => state.initialName);
   const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
   const setIsSubmitting = usePlaylistStore((state) => state.setIsSubmitting);
   const deletePlaylist = useDeletePlaylist(initialPlaylistName ?? "");
-
-  if (mode !== "edit") return null;
 
   const onDelete = async () => {
     setLastChance(false);
@@ -329,6 +333,43 @@ function DeleteWorkflow({
         }}
       />
     </>
+  );
+}
+//#endregion
+
+//#region Import M3U Workflow
+/** Logic to handle importing a playlist from an M3U file. */
+function ImportM3UWorkflow({
+  onLayout,
+  wrapperStyling,
+}: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
+  const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
+  const setIsSubmitting = usePlaylistStore((state) => state.setIsSubmitting);
+
+  const onImport = async () => {
+    setIsSubmitting(true);
+    try {
+      await readM3UPlaylist();
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <View onLayout={onLayout} {...wrapperStyling}>
+      <Button
+        onPress={onImport}
+        disabled={isSubmitting}
+        className="w-full bg-yellow"
+      >
+        <TStyledText
+          textKey="feat.backup.extra.import"
+          className="text-center text-neutral0"
+        />
+      </Button>
+    </View>
   );
 }
 //#endregion
