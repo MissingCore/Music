@@ -345,6 +345,8 @@ function ImportM3UWorkflow({
   onLayout,
   wrapperStyling,
 }: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
+  const { t } = useTranslation();
+
   const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
   const setIsSubmitting = usePlaylistStore((state) => state.setIsSubmitting);
   const _setTracks = usePlaylistStore((state) => state._setTracks);
@@ -353,6 +355,7 @@ function ImportM3UWorkflow({
     setIsSubmitting(true);
     try {
       const playlistTracks = await readM3UPlaylist();
+      toast(t("feat.backup.extra.importSuccess"), ToastOptions);
       _setTracks(playlistTracks);
     } catch (err) {
       toast.error((err as Error).message, ToastOptions);
@@ -369,7 +372,7 @@ function ImportM3UWorkflow({
         className="w-full bg-yellow"
       >
         <TStyledText
-          textKey="feat.backup.extra.import"
+          textKey="feat.playlist.extra.m3uImport"
           className="text-center text-neutral0"
         />
       </Button>
