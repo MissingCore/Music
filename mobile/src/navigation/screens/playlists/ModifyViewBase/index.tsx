@@ -217,8 +217,8 @@ function ListHeaderComponent(props: { showSheet: VoidFunction }) {
   const { t } = useTranslation();
 
   const isUnique = useIsPlaylistUnique();
-  const initialName = usePlaylistStore((state) => state.initialName);
   const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
+  const playlistName = usePlaylistStore((state) => state.playlistName);
   const setPlaylistName = usePlaylistStore((state) => state.setPlaylistName);
 
   return (
@@ -226,7 +226,7 @@ function ListHeaderComponent(props: { showSheet: VoidFunction }) {
       <View className="gap-2 px-4">
         <TextInput
           editable={!isSubmitting}
-          defaultValue={initialName}
+          value={playlistName}
           onChangeText={setPlaylistName}
           placeholder={t("feat.playlist.extra.name")}
           className="shrink grow border-b border-foreground/60"
@@ -350,13 +350,16 @@ function ImportM3UWorkflow({
   const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
   const setIsSubmitting = usePlaylistStore((state) => state.setIsSubmitting);
   const _setTracks = usePlaylistStore((state) => state._setTracks);
+  const playlistName = usePlaylistStore((state) => state.playlistName);
+  const setPlaylistName = usePlaylistStore((state) => state.setPlaylistName);
 
   const onImport = async () => {
     setIsSubmitting(true);
     try {
-      const playlistTracks = await readM3UPlaylist();
+      const { name, tracks: playlistTracks } = await readM3UPlaylist();
       toast(t("feat.backup.extra.importSuccess"), ToastOptions);
       _setTracks(playlistTracks);
+      if (!playlistName && !!name) setPlaylistName(name);
     } catch (err) {
       toast.error((err as Error).message, ToastOptions);
     } finally {

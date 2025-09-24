@@ -24,6 +24,7 @@ export async function readM3UPlaylist() {
   const fileLocation = await getActualPath(assets[0].uri);
   if (!fileLocation) throw new Error(i18next.t("err.flow.generic.title"));
   const fileDirectory = fileLocation.split("/").slice(0, -1).join("/");
+  const fileName = fileLocation.split("/").at(-1)?.split(".")[0];
   // FIXME: Current version of `expo-file-system/next` doesn't support SAF.
   const documentFile = await SAF.readAsStringAsync(assets[0].uri);
 
@@ -65,6 +66,9 @@ export async function readM3UPlaylist() {
   const playlistTrackMap = Object.fromEntries(
     playlistTracks.map((t) => [t.uri, t]),
   );
-  return trackUris.map((uri) => playlistTrackMap[uri]).filter((t) => !!t);
+  return {
+    name: fileName,
+    tracks: trackUris.map((uri) => playlistTrackMap[uri]).filter((t) => !!t),
+  };
 }
 //#endregion
