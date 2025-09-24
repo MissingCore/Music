@@ -39,7 +39,9 @@ import { ScreenOptions } from "../../components/ScreenOptions";
 type Props = StaticScreenProps<{ id: string }>;
 
 type ScreenData = Track.Content & { disc: number | null; track: number | null };
-type RenderItemProps = DragListRenderItemInfo<ScreenData>;
+type RenderItemProps = DragListRenderItemInfo<
+  ScreenData & { showIndicator?: boolean }
+>;
 
 export default function Playlist({
   route: {
@@ -170,5 +172,8 @@ const RenderItem = memo(
       </Pressable>
     );
   },
-  areRenderItemPropsEqual((o, n) => o.item.id === n.item.id),
+  areRenderItemPropsEqual(
+    (o, n) =>
+      o.item.id === n.item.id && o.item.showIndicator === n.item.showIndicator,
+  ),
 );

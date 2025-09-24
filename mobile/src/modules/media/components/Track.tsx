@@ -82,7 +82,7 @@ export function Track({
 export function useTrackListPlayingIndication<T extends Track.Content>(
   listSource: PlayListSource,
   tracks?: T[],
-) {
+): Array<T & { showIndicator?: boolean }> | undefined {
   const currSource = useMusicStore((state) => state.playingSource);
   const activeId = useMusicStore((state) => state.activeId);
   const isQueuedTrack = useMusicStore((state) => state.isInQueue);
