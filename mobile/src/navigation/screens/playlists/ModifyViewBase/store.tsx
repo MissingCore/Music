@@ -34,6 +34,7 @@ type PlaylistStore = InitStoreProps & {
   setPlaylistName: (newName: string) => void;
 
   tracks: SlimTrackWithAlbum[];
+  _setTracks: (tracks: SlimTrackWithAlbum[]) => void;
   moveTrack: (fromIndex: number, toIndex: number) => void;
   removeTrack: (id: string) => void;
 
@@ -68,6 +69,7 @@ export function PlaylistStoreProvider({
       setPlaylistName: (newName) => set({ playlistName: newName }),
 
       tracks: initProps.initialTracks ?? [],
+      _setTracks: (tracks) => set({ tracks }),
       moveTrack: (fromIndex, toIndex) => {
         set((prev) => ({
           tracks: moveArray(prev.tracks, { fromIndex, toIndex }),

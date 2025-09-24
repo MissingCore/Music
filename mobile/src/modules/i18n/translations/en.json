@@ -168,9 +168,9 @@
       "description": "Transfer data from this app across devices through a `music_backup.json` file.",
       "extra": {
         "export": "Export",
-        "exportSuccess": "Created backup successfully.",
+        "exportSuccess": "Export completed successfully.",
         "import": "Import",
-        "importSuccess": "Backup import completed."
+        "importSuccess": "Import completed successfully."
       }
     },
     "insights": {
@@ -343,7 +343,9 @@
         "create": "Create Playlist",
         "delete": "Delete Playlist",
         "edit": "Edit Playlist",
-        "name": "Playlist Name"
+        "name": "Playlist Name",
+
+        "m3uImport": "Import M3U Playlist"
       }
     },
     "trackMetadata": {

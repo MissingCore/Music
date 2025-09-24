@@ -1,5 +1,6 @@
+import { toast } from "@backpackapp-io/react-native-toast";
 import { useNavigation } from "@react-navigation/native";
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler, Pressable, View } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
@@ -26,6 +27,7 @@ import { Colors } from "~/constants/Styles";
 import { OnRTL } from "~/lib/react";
 import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import { mutateGuard } from "~/lib/react-query";
+import { ToastOptions } from "~/lib/toast";
 import { cn } from "~/lib/style";
 import { wait } from "~/utils/promise";
 import { FlashDragList } from "~/components/Defaults";
@@ -36,17 +38,24 @@ import { useSheetRef } from "~/components/Sheet";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
 import { TStyledText } from "~/components/Typography/StyledText";
 import { SearchResult } from "~/modules/search/components/SearchResult";
+import { readM3UPlaylist } from "~/modules/backup/M3U";
 import { ContentPlaceholder } from "../../../components/Placeholder";
 import { ScreenOptions } from "../../../components/ScreenOptions";
 
 /** Resuable screen to modify (create or edit) a playlist. */
 export function ModifyPlaylistBase(props: InitStoreProps) {
   const { offset, ...rest } = useFloatingContent();
+
+  const RenderedWorkflow = useMemo(
+    () => (props.mode === "edit" ? DeleteWorkflow : ImportM3UWorkflow),
+    [props.mode],
+  );
+
   return (
     <PlaylistStoreProvider {...props}>
       <ScreenConfig />
       <PageContent bottomOffset={offset} />
-      <DeleteWorkflow {...rest} />
+      <RenderedWorkflow {...rest} />
       <ConfirmationModal />
     </PlaylistStoreProvider>
   );
@@ -208,8 +217,8 @@ function ListHeaderComponent(props: { showSheet: VoidFunction }) {
   const { t } = useTranslation();
 
   const isUnique = useIsPlaylistUnique();
-  const initialName = usePlaylistStore((state) => state.initialName);
   const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
+  const playlistName = usePlaylistStore((state) => state.playlistName);
   const setPlaylistName = usePlaylistStore((state) => state.setPlaylistName);
 
   return (
@@ -217,7 +226,7 @@ function ListHeaderComponent(props: { showSheet: VoidFunction }) {
       <View className="gap-2 px-4">
         <TextInput
           editable={!isSubmitting}
-          defaultValue={initialName}
+          value={playlistName}
           onChangeText={setPlaylistName}
           placeholder={t("feat.playlist.extra.name")}
           className="shrink grow border-b border-foreground/60"
@@ -281,13 +290,10 @@ function DeleteWorkflow({
   const navigation = useNavigation();
   const [lastChance, setLastChance] = useState(false);
 
-  const mode = usePlaylistStore((state) => state.mode);
   const initialPlaylistName = usePlaylistStore((state) => state.initialName);
   const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
   const setIsSubmitting = usePlaylistStore((state) => state.setIsSubmitting);
   const deletePlaylist = useDeletePlaylist(initialPlaylistName ?? "");
-
-  if (mode !== "edit") return null;
 
   const onDelete = async () => {
     setLastChance(false);
@@ -329,6 +335,51 @@ function DeleteWorkflow({
         }}
       />
     </>
+  );
+}
+//#endregion
+
+//#region Import M3U Workflow
+/** Logic to handle importing a playlist from an M3U file. */
+function ImportM3UWorkflow({
+  onLayout,
+  wrapperStyling,
+}: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
+  const { t } = useTranslation();
+
+  const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
+  const setIsSubmitting = usePlaylistStore((state) => state.setIsSubmitting);
+  const _setTracks = usePlaylistStore((state) => state._setTracks);
+  const playlistName = usePlaylistStore((state) => state.playlistName);
+  const setPlaylistName = usePlaylistStore((state) => state.setPlaylistName);
+
+  const onImport = async () => {
+    setIsSubmitting(true);
+    try {
+      const { name, tracks: playlistTracks } = await readM3UPlaylist();
+      toast(t("feat.backup.extra.importSuccess"), ToastOptions);
+      _setTracks(playlistTracks);
+      if (!playlistName && !!name) setPlaylistName(name);
+    } catch (err) {
+      toast.error((err as Error).message, ToastOptions);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <View onLayout={onLayout} {...wrapperStyling}>
+      <Button
+        onPress={onImport}
+        disabled={isSubmitting}
+        className="w-full bg-yellow"
+      >
+        <TStyledText
+          textKey="feat.playlist.extra.m3uImport"
+          className="text-center text-neutral0"
+        />
+      </Button>
+    </View>
   );
 }
 //#endregion

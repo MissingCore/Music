@@ -2,6 +2,8 @@ import type { ParseKeys } from "i18next";
 import type { PressableProps } from "react-native";
 import { Modal as RNModal, View } from "react-native";
 
+import { useTheme } from "~/hooks/useTheme";
+
 import { cn } from "~/lib/style";
 import { Button } from "./Form/Button";
 import { TStyledText } from "./Typography/StyledText";
@@ -51,12 +53,14 @@ type ModalActionsProp = {
 };
 
 export function ModalActions(props: ModalActionsProp) {
+  const { theme } = useTheme();
   return (
     <View className="flex-row gap-[3px]">
       <Button
         {...props.leftAction}
         className={cn(
           "flex-1 rounded-r-sm bg-canvas",
+          { "bg-onSurface": theme === "dark" },
           props.leftAction.className,
         )}
       >
@@ -70,6 +74,7 @@ export function ModalActions(props: ModalActionsProp) {
         {...props.rightAction}
         className={cn(
           "flex-1 rounded-l-sm bg-canvas",
+          { "bg-onSurface": theme === "dark" },
           props.rightAction.className,
         )}
       >
