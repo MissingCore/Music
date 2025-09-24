@@ -1,3 +1,4 @@
+import { toast } from "@backpackapp-io/react-native-toast";
 import { useNavigation } from "@react-navigation/native";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -26,6 +27,7 @@ import { Colors } from "~/constants/Styles";
 import { OnRTL } from "~/lib/react";
 import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import { mutateGuard } from "~/lib/react-query";
+import { ToastOptions } from "~/lib/toast";
 import { cn } from "~/lib/style";
 import { wait } from "~/utils/promise";
 import { FlashDragList } from "~/components/Defaults";
@@ -345,13 +347,15 @@ function ImportM3UWorkflow({
 }: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
   const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
   const setIsSubmitting = usePlaylistStore((state) => state.setIsSubmitting);
+  const _setTracks = usePlaylistStore((state) => state._setTracks);
 
   const onImport = async () => {
     setIsSubmitting(true);
     try {
-      await readM3UPlaylist();
+      const playlistTracks = await readM3UPlaylist();
+      _setTracks(playlistTracks);
     } catch (err) {
-      console.log(err);
+      toast.error((err as Error).message, ToastOptions);
     } finally {
       setIsSubmitting(false);
     }
