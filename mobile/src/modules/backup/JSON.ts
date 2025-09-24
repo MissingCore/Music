@@ -215,7 +215,6 @@ async function importBackup() {
 //#region Mutation Hooks
 export const useExportBackup = () => {
   const { t } = useTranslation();
-
   return useMutation({
     mutationFn: exportBackup,
     onSuccess: () => {
