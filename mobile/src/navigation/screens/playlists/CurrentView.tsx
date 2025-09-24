@@ -132,7 +132,7 @@ const RenderItem = memo(
 
     return (
       <Pressable
-        delayLongPress={100}
+        delayLongPress={250}
         onLongPress={info.onDragStart}
         onPressOut={info.onDragEnd}
         className={cn("group", { "mt-2": info.index > 0 })}
@@ -156,7 +156,7 @@ const RenderItem = memo(
           }
         >
           <Track
-            delayLongPress={100}
+            delayLongPress={250}
             onLongPress={info.onDragStart}
             onPressOut={info.onDragEnd}
             disabled={info.isDragging}
