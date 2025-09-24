@@ -12,7 +12,7 @@ import i18next from "~/modules/i18n";
 
 //#region Import
 export async function readM3UPlaylist() {
-  // Select the `music_backup.m3u` file we'll be importing from.
+  // Select the M3U file we'll be importing from.
   //  - We want the `content://` uri instead of the cached uri.
   const { assets, canceled } = await getDocumentAsync({
     type: ["audio/x-mpegurl"],
@@ -20,9 +20,10 @@ export async function readM3UPlaylist() {
   });
   if (canceled) throw new Error(i18next.t("err.msg.actionCancel"));
   if (!assets[0]) throw new Error(i18next.t("err.msg.noSelect"));
-  // Using `getActualPath()` on `documentFile.uri` will give the wrong value.
+
   const fileLocation = await getActualPath(assets[0].uri);
   if (!fileLocation) throw new Error(i18next.t("err.flow.generic.title"));
+
   const fileDirectory = fileLocation.split("/").slice(0, -1).join("/");
   const fileName = fileLocation.split("/").at(-1)?.split(".")[0];
   // FIXME: Current version of `expo-file-system/next` doesn't support SAF.
