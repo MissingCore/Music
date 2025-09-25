@@ -8,7 +8,7 @@ import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashLis
 
 import { Edit } from "~/resources/icons/Edit";
 import { Favorite } from "~/resources/icons/Favorite";
-import { FileExport } from "~/resources/icons/FileExport";
+import { FileSave } from "~/resources/icons/FileSave";
 import { Remove } from "~/resources/icons/Remove";
 import {
   useFavoritePlaylist,
@@ -202,7 +202,7 @@ function ExportPlaylist({ id }: { id: string }) {
 
   return (
     <IconButton
-      Icon={FileExport}
+      Icon={FileSave}
       accessibilityLabel={t("feat.backup.extra.export")}
       onPress={onExport}
       disabled={isExporting}
