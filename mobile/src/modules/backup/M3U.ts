@@ -95,8 +95,8 @@ export async function exportPlaylistAsM3U(id: string, absolute?: boolean) {
   if (!fileLocation) throw new Error(i18next.t("err.flow.generic.title"));
   const fileDirectory = fileLocation.split("/").slice(0, -1).join("/");
 
-  // Get relative path to files in playlist from where we'll put this M3U file.
-  const relativePaths = playlist.tracks.map((t) => {
+  // Get the absolute or relative paths.
+  const filePaths = playlist.tracks.map((t) => {
     const uri = t.uri.slice(7); // Remove the `file://` at the front.
     return absolute ? uri : Paths.relative(fileDirectory, uri);
   });
@@ -106,7 +106,7 @@ export async function exportPlaylistAsM3U(id: string, absolute?: boolean) {
   //  - https://en.wikipedia.org/wiki/M3U#Extended_M3U
   playlist.tracks.forEach(({ name, artistName, duration }, idx) => {
     fileContent.push(`#EXTINF:${Math.round(duration)},${artistName} - ${name}`);
-    fileContent.push(relativePaths[idx]!);
+    fileContent.push(filePaths[idx]!);
   });
   fileContent.push(""); // Add an empty line at the end of the file.
 
