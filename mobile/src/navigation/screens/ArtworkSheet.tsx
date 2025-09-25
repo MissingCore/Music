@@ -14,11 +14,14 @@ import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet, SheetButtonGroup } from "~/components/Sheet";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import type { MediaType } from "~/modules/media/types";
+import { deferInitialRender } from "../components/DeferredRender";
 
 type ArtworkSheetProps = { id: string; sheetRef: TrueSheetRef };
 
 /** Sheet allowing us to change the artwork of an album. */
-export function AlbumArtworkSheet(props: ArtworkSheetProps) {
+export const AlbumArtworkSheet = deferInitialRender(function AlbumArtworkSheet(
+  props: ArtworkSheetProps,
+) {
   const { data } = useAlbum(props.id);
   const updateAlbumArtwork = useUpdateAlbumArtwork(props.id);
 
@@ -32,39 +35,43 @@ export function AlbumArtworkSheet(props: ArtworkSheetProps) {
       />
     </Sheet>
   );
-}
+});
 
 /** Sheet allowing us to change the artwork of an artist. */
-export function ArtistArtworkSheet(props: ArtworkSheetProps) {
-  const { data } = useArtist(props.id);
-  const updateArtist = useUpdateArtist(props.id);
+export const ArtistArtworkSheet = deferInitialRender(
+  function ArtistArtworkSheet(props: ArtworkSheetProps) {
+    const { data } = useArtist(props.id);
+    const updateArtist = useUpdateArtist(props.id);
 
-  return (
-    <Sheet ref={props.sheetRef} contentContainerClassName="items-center">
-      <BaseArtworkSheetContent
-        type="artist"
-        imageSource={data?.artwork ?? null}
-        mutationResult={updateArtist}
-      />
-    </Sheet>
-  );
-}
+    return (
+      <Sheet ref={props.sheetRef} contentContainerClassName="items-center">
+        <BaseArtworkSheetContent
+          type="artist"
+          imageSource={data?.artwork ?? null}
+          mutationResult={updateArtist}
+        />
+      </Sheet>
+    );
+  },
+);
 
 /** Sheet allowing us to change the artwork of a playlist. */
-export function PlaylistArtworkSheet(props: ArtworkSheetProps) {
-  const { data } = usePlaylist(props.id);
-  const updatePlaylist = useUpdatePlaylist(props.id);
+export const PlaylistArtworkSheet = deferInitialRender(
+  function PlaylistArtworkSheet(props: ArtworkSheetProps) {
+    const { data } = usePlaylist(props.id);
+    const updatePlaylist = useUpdatePlaylist(props.id);
 
-  return (
-    <Sheet ref={props.sheetRef} contentContainerClassName="items-center">
-      <BaseArtworkSheetContent
-        type="playlist"
-        imageSource={data?.imageSource ?? null}
-        mutationResult={updatePlaylist}
-      />
-    </Sheet>
-  );
-}
+    return (
+      <Sheet ref={props.sheetRef} contentContainerClassName="items-center">
+        <BaseArtworkSheetContent
+          type="playlist"
+          imageSource={data?.imageSource ?? null}
+          mutationResult={updatePlaylist}
+        />
+      </Sheet>
+    );
+  },
+);
 
 /** Sheet allowing us to change the artwork of a track. */
 export function TrackArtworkSheet(props: ArtworkSheetProps) {
