@@ -1,4 +1,3 @@
-import { toast } from "@backpackapp-io/react-native-toast";
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { memo, useCallback, useState } from "react";
@@ -16,19 +15,19 @@ import {
   usePlaylistForScreen,
 } from "~/queries/playlist";
 import { useRemoveFromPlaylist } from "~/queries/track";
-import { useBottomActionsInset } from "../../hooks/useBottomActions";
-import { CurrentListLayout } from "../../layouts/CurrentList";
+import { useBottomActionsInset } from "../../../hooks/useBottomActions";
+import { CurrentListLayout } from "../../../layouts/CurrentList";
+import { ExportM3USheet } from "./ExportM3USheet";
 
 import { Colors } from "~/constants/Styles";
 import { OnRTL } from "~/lib/react";
 import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
-import { ToastOptions } from "~/lib/toast";
 import { FlashDragList } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
+import { useSheetRef } from "~/components/Sheet";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
-import { exportPlaylistAsM3U } from "~/modules/backup/M3U";
 import {
   Track,
   useTrackListPlayingIndication,
@@ -37,8 +36,8 @@ import type { PlayListSource } from "~/modules/media/types";
 import {
   ContentPlaceholder,
   PagePlaceholder,
-} from "../../components/Placeholder";
-import { ScreenOptions } from "../../components/ScreenOptions";
+} from "../../../components/Placeholder";
+import { ScreenOptions } from "../../../components/ScreenOptions";
 
 type Props = StaticScreenProps<{ id: string }>;
 
@@ -186,26 +185,16 @@ const RenderItem = memo(
 /** Button to initiate an export of this playlist as an M3U file. */
 function ExportPlaylist({ id }: { id: string }) {
   const { t } = useTranslation();
-  const [isExporting, setIsExporting] = useState(false);
-
-  const onExport = async () => {
-    setIsExporting(true);
-    try {
-      await exportPlaylistAsM3U(id);
-      toast(t("feat.backup.extra.exportSuccess"), ToastOptions);
-    } catch (err) {
-      toast.error((err as Error).message, ToastOptions);
-    } finally {
-      setIsExporting(false);
-    }
-  };
+  const exportSheetRef = useSheetRef();
 
   return (
-    <IconButton
-      Icon={FileSave}
-      accessibilityLabel={t("feat.backup.extra.export")}
-      onPress={onExport}
-      disabled={isExporting}
-    />
+    <>
+      <IconButton
+        Icon={FileSave}
+        accessibilityLabel={t("feat.backup.extra.export")}
+        onPress={() => exportSheetRef.current?.present()}
+      />
+      <ExportM3USheet sheetRef={exportSheetRef} id={id} />
+    </>
   );
 }

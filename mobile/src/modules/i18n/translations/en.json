@@ -345,7 +345,10 @@
         "edit": "Edit Playlist",
         "name": "Playlist Name",
 
-        "m3uImport": "Import M3U Playlist"
+        "m3uImport": "Import M3U Playlist",
+        "m3uExport": "Export as M3U",
+        "absolute": "Absolute",
+        "relative": "Relative"
       }
     },
     "trackMetadata": {
