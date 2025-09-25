@@ -10,7 +10,6 @@
 | @paralleldrive/cuid2 | MIT | https://github.com/paralleldrive/cuid2 |
 | @react-native-assets/slider | ISC | https://github.com/Sharcoux/slider |
 | @react-native-async-storage/async-storage | MIT | https://github.com/react-native-async-storage/async-storage |
-| @react-native-menu/menu | MIT | https://github.com/react-native-menu/menu |
 | @react-navigation/material-top-tabs | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/material-top-tabs |
 | @react-navigation/native | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/native |
 | @react-navigation/native-stack | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/native-stack |
@@ -52,6 +51,7 @@
 | react-native-keyboard-controller | MIT | https://github.com/kirillzyusko/react-native-keyboard-controller |
 | react-native-markdown-display | MIT | https://github.com/iamacup/react-native-markdown-display |
 | react-native-pager-view | MIT | https://github.com/callstack/react-native-pager-view |
+| react-native-paper | MIT | https://github.com/callstack/react-native-paper |
 | react-native-reanimated | MIT | https://github.com/software-mansion/react-native-reanimated |
 | react-native-safe-area-context | MIT | https://github.com/th3rdwave/react-native-safe-area-context |
 | react-native-screens | MIT | https://github.com/software-mansion/react-native-screens |
