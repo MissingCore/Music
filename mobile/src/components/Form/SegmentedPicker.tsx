@@ -82,7 +82,7 @@ export function SegmentedPicker({
             key={idx}
             dim
             bold={selectedIndex === idx}
-            className={cn("flex-1 px-1 text-center", {
+            className={cn("flex-1 px-2 text-center", {
               "text-foreground": selectedIndex === idx,
             })}
           >
