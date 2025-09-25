@@ -1,3 +1,4 @@
+import { toast } from "@backpackapp-io/react-native-toast";
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { memo, useCallback, useState } from "react";
@@ -7,6 +8,7 @@ import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashLis
 
 import { Edit } from "~/resources/icons/Edit";
 import { Favorite } from "~/resources/icons/Favorite";
+import { FileExport } from "~/resources/icons/FileExport";
 import { Remove } from "~/resources/icons/Remove";
 import {
   useFavoritePlaylist,
@@ -22,9 +24,11 @@ import { OnRTL } from "~/lib/react";
 import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
+import { ToastOptions } from "~/lib/toast";
 import { FlashDragList } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
+import { exportPlaylistAsM3U } from "~/modules/backup/M3U";
 import {
   Track,
   useTrackListPlayingIndication,
@@ -82,6 +86,7 @@ export default function Playlist({
               onPress={() => mutateGuard(favoritePlaylist, !data.isFavorite)}
               filled={isToggled}
             />
+            <ExportPlaylist id={id} />
             <IconButton
               Icon={Edit}
               accessibilityLabel={t("feat.playlist.extra.edit")}
@@ -177,3 +182,30 @@ const RenderItem = memo(
       o.item.id === n.item.id && o.item.showIndicator === n.item.showIndicator,
   ),
 );
+
+/** Button to initiate an export of this playlist as an M3U file. */
+function ExportPlaylist({ id }: { id: string }) {
+  const { t } = useTranslation();
+  const [isExporting, setIsExporting] = useState(false);
+
+  const onExport = async () => {
+    setIsExporting(true);
+    try {
+      await exportPlaylistAsM3U(id);
+      toast(t("feat.backup.extra.exportSuccess"), ToastOptions);
+    } catch (err) {
+      toast.error((err as Error).message, ToastOptions);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  return (
+    <IconButton
+      Icon={FileExport}
+      accessibilityLabel={t("feat.backup.extra.export")}
+      onPress={onExport}
+      disabled={isExporting}
+    />
+  );
+}
