@@ -76,7 +76,7 @@ export async function readM3UPlaylist() {
 //#endregion
 
 //#region Export
-export async function exportPlaylistAsM3U(id: string) {
+export async function exportPlaylistAsM3U(id: string, absolute?: boolean) {
   const playlist = await getPlaylist(id);
 
   // User selects location to put M3U file.
@@ -98,7 +98,7 @@ export async function exportPlaylistAsM3U(id: string) {
   // Get relative path to files in playlist from where we'll put this M3U file.
   const relativePaths = playlist.tracks.map((t) => {
     const uri = t.uri.slice(7); // Remove the `file://` at the front.
-    return Paths.relative(fileDirectory, uri);
+    return absolute ? uri : Paths.relative(fileDirectory, uri);
   });
   const fileContent = ["#EXTM3U"];
 
