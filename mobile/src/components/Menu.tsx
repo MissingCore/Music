@@ -4,9 +4,11 @@ import { useTranslation } from "react-i18next";
 import { Menu as PaperMenu } from "react-native-paper";
 
 import { MoreVert } from "~/resources/icons/MoreVert";
+import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useTheme } from "~/hooks/useTheme";
 
 import { BorderRadius, FontSize } from "~/constants/Styles";
+import { getFont } from "~/lib/style";
 import { IconButton } from "./Form/Button";
 
 export type MenuAction = {
@@ -21,6 +23,7 @@ export function Menu(props: {
   const { t } = useTranslation();
   const { surface, onSurface, foreground } = useTheme();
   const [visible, setVisible] = useState(false);
+  const primaryFont = useUserPreferencesStore((state) => state.primaryFont);
 
   return (
     <PaperMenu
@@ -53,7 +56,8 @@ export function Menu(props: {
           rippleColor={onSurface}
           titleStyle={{
             color: foreground,
-            fontSize: FontSize.base,
+            fontFamily: getFont(primaryFont),
+            fontSize: FontSize.sm,
           }}
         />
       ))}
