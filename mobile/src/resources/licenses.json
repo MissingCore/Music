@@ -81,7 +81,7 @@
   },
   "@react-native-menu/menu": {
     "name": "@react-native-menu/menu",
-    "version": "2.0.0",
+    "version": "1.2.4",
     "copyright": "Copyright (c) 2020 Jesse Katsumata",
     "source": "https://github.com/react-native-menu/menu",
     "license": "MIT",
