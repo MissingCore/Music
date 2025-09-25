@@ -191,7 +191,7 @@ function ExportPlaylist({ id }: { id: string }) {
     <>
       <IconButton
         Icon={FileSave}
-        accessibilityLabel={t("feat.backup.extra.export")}
+        accessibilityLabel={t("feat.playlist.extra.m3uExport")}
         onPress={() => exportSheetRef.current?.present()}
       />
       <ExportM3USheet sheetRef={exportSheetRef} id={id} />
