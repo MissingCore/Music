@@ -2,8 +2,8 @@ import { toast } from "@backpackapp-io/react-native-toast";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Fullscreen } from "~/resources/icons/FullScreen";
-import { FullscreenExit } from "~/resources/icons/FullscreenExit";
+import { ConversionPath } from "~/resources/icons/ConversionPath";
+import { Graph1 } from "~/resources/icons/Graph1";
 
 import { ToastOptions } from "~/lib/toast";
 import { Button } from "~/components/Form/Button";
@@ -24,8 +24,8 @@ export const ExportM3USheet = deferInitialRender(
 
     const pickerOptions: PickerOption[] = useMemo(
       () => [
-        { Icon: Fullscreen, label: t("feat.playlist.extra.absolute") },
-        { Icon: FullscreenExit, label: t("feat.playlist.extra.relative") },
+        { Icon: ConversionPath, label: t("feat.playlist.extra.absolute") },
+        { Icon: Graph1, label: t("feat.playlist.extra.relative") },
       ],
       [t],
     );
