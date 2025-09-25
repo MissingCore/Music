@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 import Animated, {
@@ -17,19 +17,12 @@ import { useMusicStore } from "~/modules/media/services/Music";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useIsPlaying } from "~/modules/media/hooks/useIsPlaying";
 import { useTheme } from "~/hooks/useTheme";
-import {
-  AlbumArtworkSheet,
-  ArtistArtworkSheet,
-  PlaylistArtworkSheet,
-} from "../screens/ArtworkSheet";
 
 import { OnRTLWorklet } from "~/lib/react";
 import { getFont } from "~/lib/style";
 import { toLowerCase } from "~/utils/string";
 import { Marquee } from "~/components/Containment/Marquee";
 import { Divider } from "~/components/Divider";
-import { useSheetRef } from "~/components/Sheet";
-import { LongPressIndicator } from "~/components/Tips";
 import { StyledText, TEm } from "~/components/Typography/StyledText";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import { MediaImage } from "~/modules/media/components/MediaImage";
@@ -56,26 +49,15 @@ export function CurrentListLayout(
   const navigation = useNavigation();
   const { foreground } = useTheme();
   const primaryFont = useUserPreferencesStore((state) => state.primaryFont);
-  const artworkSheetRef = useSheetRef();
 
   const isFavorite = getIsFavoritePlaylist(props.mediaSource);
 
-  const RenderedSheet = useMemo(() => {
-    if (props.mediaSource.type === "album") return AlbumArtworkSheet;
-    if (props.mediaSource.type === "artist") return ArtistArtworkSheet;
-    return PlaylistArtworkSheet;
-  }, [props.mediaSource.type]);
-
   return (
     <>
-      {!isFavorite ? (
-        <RenderedSheet sheetRef={artworkSheetRef} id={props.mediaSource.id} />
-      ) : null}
       <View className="flex-row gap-2 pr-4">
         <ContentImage
           mediaSource={props.mediaSource}
           imageSource={props.imageSource}
-          present={() => artworkSheetRef.current?.present()}
         />
         <View className="shrink grow justify-end">
           <TEm
@@ -136,34 +118,19 @@ export function CurrentListLayout(
 }
 
 /** Determines the look and features of the image displayed. */
-function ContentImage(props: AnimatedVinylProps & { present: VoidFunction }) {
-  const { t } = useTranslation();
-
-  if (getIsFavoritePlaylist(props.mediaSource))
+function ContentImage(props: AnimatedVinylProps) {
+  if (props.mediaSource.type === "artist") {
+    return (
+      <MediaImage
+        type="artist"
+        source={props.imageSource as string | null}
+        size={128}
+        className="ml-4"
+      />
+    );
+  } else {
     return <AnimatedVinyl {...props} />;
-
-  return (
-    <Pressable
-      aria-label={t("feat.artwork.extra.change")}
-      delayLongPress={100}
-      onLongPress={props.present}
-      className="group"
-    >
-      {props.mediaSource.type === "artist" ? (
-        <>
-          <MediaImage
-            type="artist"
-            source={props.imageSource as string | null}
-            size={128}
-            className="ml-4 group-active:opacity-75"
-          />
-          <LongPressIndicator />
-        </>
-      ) : (
-        <AnimatedVinyl {...props} pressable />
-      )}
-    </Pressable>
-  );
+  }
 }
 
 type AnimatedVinylProps = {
@@ -172,7 +139,7 @@ type AnimatedVinylProps = {
 };
 
 /** Have the vinyl spin if the playing media list is this source. */
-function AnimatedVinyl(props: AnimatedVinylProps & { pressable?: boolean }) {
+function AnimatedVinyl(props: AnimatedVinylProps) {
   const isPlaying = useIsPlaying();
   const playingSource = useMusicStore((state) => state.playingSource);
   const coverPosition = useSharedValue(0);
@@ -215,7 +182,7 @@ function AnimatedVinyl(props: AnimatedVinylProps & { pressable?: boolean }) {
       }}
       className="ml-4"
     >
-      <View needsOffscreenAlphaCompositing className="group-active:opacity-75">
+      <View needsOffscreenAlphaCompositing>
         <Animated.View style={diskStyle}>
           <Vinyl source={props.imageSource} size={128} />
         </Animated.View>
@@ -227,7 +194,6 @@ function AnimatedVinyl(props: AnimatedVinylProps & { pressable?: boolean }) {
           source={props.imageSource}
           size={128}
         />
-        {props.pressable ? <LongPressIndicator /> : null}
       </Animated.View>
     </Animated.View>
   );
