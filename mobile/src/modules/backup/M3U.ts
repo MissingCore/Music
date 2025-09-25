@@ -6,6 +6,7 @@ import { Paths } from "expo-file-system/next";
 
 import { db } from "~/db";
 import { tracks } from "~/db/schema";
+import { getPlaylist } from "~/api/playlist";
 import { getTracks } from "~/api/track";
 
 import i18next from "~/modules/i18n";
@@ -71,5 +72,45 @@ export async function readM3UPlaylist() {
     name: fileName,
     tracks: trackUris.map((uri) => playlistTrackMap[uri]).filter((t) => !!t),
   };
+}
+//#endregion
+
+//#region Export
+export async function exportPlaylistAsM3U(id: string, absolute?: boolean) {
+  const playlist = await getPlaylist(id);
+
+  // User selects location to put M3U file.
+  const perms = await SAF.requestDirectoryPermissionsAsync();
+  if (!perms.granted) throw new Error(i18next.t("err.msg.actionCancel"));
+
+  // Create a new file in specified directory & write contents.
+  const fileUri = await SAF.createFileAsync(
+    perms.directoryUri,
+    playlist.name,
+    "application/x-mpegURL", // For specifically `.m3u8`.
+  );
+
+  // Get readable `file://` location from SAF uri.
+  const fileLocation = await getActualPath(fileUri);
+  if (!fileLocation) throw new Error(i18next.t("err.flow.generic.title"));
+  const fileDirectory = fileLocation.split("/").slice(0, -1).join("/");
+
+  // Get the absolute or relative paths.
+  const filePaths = playlist.tracks.map((t) => {
+    const uri = t.uri.slice(7); // Remove the `file://` at the front.
+    return absolute ? uri : Paths.relative(fileDirectory, uri);
+  });
+
+  const fileContent = ["#EXTM3U"];
+  // Generate content structure for file.
+  //  - https://en.wikipedia.org/wiki/M3U#Extended_M3U
+  playlist.tracks.forEach(({ name, artistName, duration }, idx) => {
+    fileContent.push(`#EXTINF:${Math.round(duration)},${artistName} - ${name}`);
+    fileContent.push(filePaths[idx]!);
+  });
+  fileContent.push(""); // Add an empty line at the end of the file.
+
+  // Write to file.
+  await SAF.writeAsStringAsync(fileUri, fileContent.join("\r\n"));
 }
 //#endregion

@@ -7,6 +7,7 @@ import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashLis
 
 import { Edit } from "~/resources/icons/Edit";
 import { Favorite } from "~/resources/icons/Favorite";
+import { FileSave } from "~/resources/icons/FileSave";
 import { Remove } from "~/resources/icons/Remove";
 import {
   useFavoritePlaylist,
@@ -14,8 +15,9 @@ import {
   usePlaylistForScreen,
 } from "~/queries/playlist";
 import { useRemoveFromPlaylist } from "~/queries/track";
-import { useBottomActionsInset } from "../../hooks/useBottomActions";
-import { CurrentListLayout } from "../../layouts/CurrentList";
+import { useBottomActionsInset } from "../../../hooks/useBottomActions";
+import { CurrentListLayout } from "../../../layouts/CurrentList";
+import { ExportM3USheet } from "./ExportM3USheet";
 
 import { Colors } from "~/constants/Styles";
 import { OnRTL } from "~/lib/react";
@@ -24,6 +26,7 @@ import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { FlashDragList } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
+import { useSheetRef } from "~/components/Sheet";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
 import {
   Track,
@@ -33,8 +36,8 @@ import type { PlayListSource } from "~/modules/media/types";
 import {
   ContentPlaceholder,
   PagePlaceholder,
-} from "../../components/Placeholder";
-import { ScreenOptions } from "../../components/ScreenOptions";
+} from "../../../components/Placeholder";
+import { ScreenOptions } from "../../../components/ScreenOptions";
 
 type Props = StaticScreenProps<{ id: string }>;
 
@@ -82,6 +85,7 @@ export default function Playlist({
               onPress={() => mutateGuard(favoritePlaylist, !data.isFavorite)}
               filled={isToggled}
             />
+            <ExportPlaylist id={id} />
             <IconButton
               Icon={Edit}
               accessibilityLabel={t("feat.playlist.extra.edit")}
@@ -177,3 +181,20 @@ const RenderItem = memo(
       o.item.id === n.item.id && o.item.showIndicator === n.item.showIndicator,
   ),
 );
+
+/** Button to initiate an export of this playlist as an M3U file. */
+function ExportPlaylist({ id }: { id: string }) {
+  const { t } = useTranslation();
+  const exportSheetRef = useSheetRef();
+
+  return (
+    <>
+      <IconButton
+        Icon={FileSave}
+        accessibilityLabel={t("feat.playlist.extra.m3uExport")}
+        onPress={() => exportSheetRef.current?.present()}
+      />
+      <ExportM3USheet sheetRef={exportSheetRef} id={id} />
+    </>
+  );
+}
