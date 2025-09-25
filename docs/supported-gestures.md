@@ -38,7 +38,6 @@ This involves swiping left on some content to reveal actions related to that con
 
 This involves long-pressing an item to reveal some action. It's currently present in the following features.
 
-- **`Album, Artist, and Playlist Artwork`:** You can long-press on the artist or playlist artwork on their respective screens to reveal a modal to change or remove the specified artwork.
 - **`Playlist Tracks`:** You can long-press on tracks in the playlist screen or playlist modification screen (create or edit) to change its order/position in the playlist.
 
 ## Drag for Action

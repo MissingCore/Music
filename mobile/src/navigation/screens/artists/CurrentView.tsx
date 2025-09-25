@@ -1,5 +1,6 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { I18nManager } from "react-native";
 
@@ -9,9 +10,13 @@ import { useArtistForScreen } from "~/queries/artist";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { useBottomActionsInset } from "../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../layouts/CurrentList";
+import { ArtistArtworkSheet } from "../ArtworkSheet";
 
 import { OnRTL } from "~/lib/react";
 import { FlashList } from "~/components/Defaults";
+import type { MenuAction } from "~/components/Menu";
+import { Menu } from "~/components/Menu";
+import { useSheetRef } from "~/components/Sheet";
 import { TEm } from "~/components/Typography/StyledText";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import {
@@ -22,6 +27,7 @@ import {
   ContentPlaceholder,
   PagePlaceholder,
 } from "../../components/Placeholder";
+import { ScreenOptions } from "../../components/ScreenOptions";
 
 type Props = StaticScreenProps<{ id: string }>;
 
@@ -42,35 +48,40 @@ export default function Artist({
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
 
   return (
-    <CurrentListLayout
-      title={data.name}
-      metadata={data.metadata}
-      imageSource={data.imageSource}
-      mediaSource={trackSource}
-    >
-      <FlashList
-        estimatedItemSize={56} // 48px Height + 8px Margin Top
-        data={listData}
-        keyExtractor={({ id }) => id}
-        renderItem={({ item, index }) => (
-          <Track
-            {...item}
-            trackSource={trackSource}
-            className={index > 0 ? "mt-2" : undefined}
-          />
-        )}
-        ListHeaderComponent={<ArtistAlbums albums={data.albums} />}
-        ListEmptyComponent={
-          <ContentPlaceholder
-            errMsg={t("feat.hiddenTracks.extra.hasHiddenTracks", {
-              name: t("term.artist"),
-            })}
-          />
-        }
-        contentContainerClassName="px-4 pt-4"
-        contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
+    <>
+      <ScreenOptions
+        headerRight={() => <AdditionalActions id={artistName} />}
       />
-    </CurrentListLayout>
+      <CurrentListLayout
+        title={data.name}
+        metadata={data.metadata}
+        imageSource={data.imageSource}
+        mediaSource={trackSource}
+      >
+        <FlashList
+          estimatedItemSize={56} // 48px Height + 8px Margin Top
+          data={listData}
+          keyExtractor={({ id }) => id}
+          renderItem={({ item, index }) => (
+            <Track
+              {...item}
+              trackSource={trackSource}
+              className={index > 0 ? "mt-2" : undefined}
+            />
+          )}
+          ListHeaderComponent={<ArtistAlbums albums={data.albums} />}
+          ListEmptyComponent={
+            <ContentPlaceholder
+              errMsg={t("feat.hiddenTracks.extra.hasHiddenTracks", {
+                name: t("term.artist"),
+              })}
+            />
+          }
+          contentContainerClassName="px-4 pt-4"
+          contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
+        />
+      </CurrentListLayout>
+    </>
   );
 }
 
@@ -115,6 +126,27 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
         disableAutoLayout={I18nManager.isRTL}
       />
       <TEm dim textKey="term.tracks" className="mb-2 mt-4" />
+    </>
+  );
+}
+
+function AdditionalActions({ id }: { id: string }) {
+  const artworkSheetRef = useSheetRef();
+
+  const menuActions = useMemo<MenuAction[]>(
+    () => [
+      {
+        labelKey: "feat.artwork.extra.change",
+        onPress: () => artworkSheetRef.current?.present(),
+      },
+    ],
+    [artworkSheetRef],
+  );
+
+  return (
+    <>
+      <Menu actions={menuActions} />
+      <ArtistArtworkSheet sheetRef={artworkSheetRef} id={id} />
     </>
   );
 }

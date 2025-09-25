@@ -163,6 +163,9 @@ importers:
       react-native-pager-view:
         specifier: ^6.9.1
         version: 6.9.1(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      react-native-paper:
+        specifier: ^5.14.5
+        version: 5.14.5(react-native-safe-area-context@5.6.1(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-reanimated:
         specifier: ~3.19.1
         version: 3.19.1(@babel/core@7.28.4)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -767,6 +770,11 @@ packages:
     resolution: {integrity: sha512-pYFl+qo/UJwfR092cOGJzekSPBQikfA/smPjuQZk0dYNhhr05j7zA2dRSIiGf1EzEG5iSg5215+TDfKtlZmKDw==}
     peerDependencies:
       react-native: '>=0.47.0'
+
+  '@callstack/react-theme-provider@3.0.9':
+    resolution: {integrity: sha512-tTQ0uDSCL0ypeMa8T/E9wAZRGKWj8kXP7+6RYgPTfOPs9N07C9xM8P02GJ3feETap4Ux5S69D9nteq9mEj86NA==}
+    peerDependencies:
+      react: '>=16.3.0'
 
   '@drizzle-team/brocli@0.10.2':
     resolution: {integrity: sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w==}
@@ -2282,6 +2290,9 @@ packages:
   color-string@1.9.1:
     resolution: {integrity: sha512-shrVawQFojnZv6xM40anx4CkoDP+fZsw/ZerEMsW/pyzsRbElpsL/DBVW7q3ExxwusdNXI3lXpuhEZkzs8p5Eg==}
 
+  color@3.2.1:
+    resolution: {integrity: sha512-aBl7dZI9ENN6fUGC7mWpMTPNHmWUSNan9tuWN6ahh5ZLNk9baLJOnSMlrQkHcrfFgz2/RigjUVAjdx36VcemKA==}
+
   color@4.2.3:
     resolution: {integrity: sha512-1rXeuUUiGGrykh+CeBdu5Ie7OJwinCgQY0bc7GCRxy5xVHy+moaqkpL/jqQq0MtQOeYcrqEz4abc5f0KtU7W4A==}
     engines: {node: '>=12.5.0'}
@@ -2437,6 +2448,10 @@ packages:
 
   deep-is@0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
+
+  deepmerge@3.3.0:
+    resolution: {integrity: sha512-GRQOafGHwMHpjPx9iCvTgpu9NojZ49q794EEL94JVEw6VaeA8XTUyBKvAkOOjBX9oJNiV6G3P+T+tihFjo2TqA==}
+    engines: {node: '>=0.10.0'}
 
   deepmerge@4.3.1:
     resolution: {integrity: sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==}
@@ -4641,6 +4656,13 @@ packages:
       react: '*'
       react-native: '*'
 
+  react-native-paper@5.14.5:
+    resolution: {integrity: sha512-eaIH5bUQjJ/mYm4AkI6caaiyc7BcHDwX6CqNDi6RIxfxfWxROsHpll1oBuwn/cFvknvA8uEAkqLk/vzVihI3AQ==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+      react-native-safe-area-context: '*'
+
   react-native-reanimated@3.19.1:
     resolution: {integrity: sha512-ILL0FSNzSVIg6WuawrsMBvNxk2yJFiTUcahimXDAeNiE/09eagVUlHhYWXAAmH0umvAOafBaGjO7YfBhUrf5ZQ==}
     peerDependencies:
@@ -6180,6 +6202,12 @@ snapshots:
   '@boterop/react-native-background-timer@2.6.0(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))':
     dependencies:
       react-native: 0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0)
+
+  '@callstack/react-theme-provider@3.0.9(react@19.0.0)':
+    dependencies:
+      deepmerge: 3.3.0
+      hoist-non-react-statics: 3.3.2
+      react: 19.0.0
 
   '@drizzle-team/brocli@0.10.2': {}
 
@@ -7960,6 +7988,11 @@ snapshots:
       color-name: 1.1.4
       simple-swizzle: 0.2.4
 
+  color@3.2.1:
+    dependencies:
+      color-convert: 1.9.3
+      color-string: 1.9.1
+
   color@4.2.3:
     dependencies:
       color-convert: 2.0.1
@@ -8109,6 +8142,8 @@ snapshots:
   deep-extend@0.6.0: {}
 
   deep-is@0.1.4: {}
+
+  deepmerge@3.3.0: {}
 
   deepmerge@4.3.1: {}
 
@@ -10464,6 +10499,15 @@ snapshots:
     dependencies:
       react: 19.0.0
       react-native: 0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0)
+
+  react-native-paper@5.14.5(react-native-safe-area-context@5.6.1(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+    dependencies:
+      '@callstack/react-theme-provider': 3.0.9(react@19.0.0)
+      color: 3.2.1
+      react: 19.0.0
+      react-native: 0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0)
+      react-native-safe-area-context: 5.6.1(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      use-latest-callback: 0.2.4(react@19.0.0)
 
   react-native-reanimated@3.19.1(@babel/core@7.28.4)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:

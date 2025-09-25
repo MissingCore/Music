@@ -1,13 +1,11 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
-import { Edit } from "~/resources/icons/Edit";
 import { Favorite } from "~/resources/icons/Favorite";
-import { FileSave } from "~/resources/icons/FileSave";
 import { Remove } from "~/resources/icons/Remove";
 import {
   useFavoritePlaylist,
@@ -18,6 +16,7 @@ import { useRemoveFromPlaylist } from "~/queries/track";
 import { useBottomActionsInset } from "../../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../../layouts/CurrentList";
 import { ExportM3USheet } from "./ExportM3USheet";
+import { PlaylistArtworkSheet } from "../../ArtworkSheet";
 
 import { Colors } from "~/constants/Styles";
 import { OnRTL } from "~/lib/react";
@@ -26,6 +25,8 @@ import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { FlashDragList } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
+import type { MenuAction } from "~/components/Menu";
+import { Menu } from "~/components/Menu";
 import { useSheetRef } from "~/components/Sheet";
 import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
 import {
@@ -52,7 +53,6 @@ export default function Playlist({
   },
 }: Props) {
   const { t } = useTranslation();
-  const navigation = useNavigation();
   const bottomInset = useBottomActionsInset();
   const { isPending, error, data } = usePlaylistForScreen(id);
   const moveInPlaylist = useMoveInPlaylist(id);
@@ -85,12 +85,7 @@ export default function Playlist({
               onPress={() => mutateGuard(favoritePlaylist, !data.isFavorite)}
               filled={isToggled}
             />
-            <ExportPlaylist id={id} />
-            <IconButton
-              Icon={Edit}
-              accessibilityLabel={t("feat.playlist.extra.edit")}
-              onPress={() => navigation.navigate("ModifyPlaylist", { id })}
-            />
+            <AdditionalActions id={id} />
           </View>
         )}
       />
@@ -182,18 +177,33 @@ const RenderItem = memo(
   ),
 );
 
-/** Button to initiate an export of this playlist as an M3U file. */
-function ExportPlaylist({ id }: { id: string }) {
-  const { t } = useTranslation();
+function AdditionalActions({ id }: { id: string }) {
+  const navigation = useNavigation();
+  const artworkSheetRef = useSheetRef();
   const exportSheetRef = useSheetRef();
+
+  const menuActions = useMemo<MenuAction[]>(
+    () => [
+      {
+        labelKey: "feat.artwork.extra.change",
+        onPress: () => artworkSheetRef.current?.present(),
+      },
+      {
+        labelKey: "feat.playlist.extra.edit",
+        onPress: () => navigation.navigate("ModifyPlaylist", { id }),
+      },
+      {
+        labelKey: "feat.playlist.extra.m3uExport",
+        onPress: () => exportSheetRef.current?.present(),
+      },
+    ],
+    [navigation, id, artworkSheetRef, exportSheetRef],
+  );
 
   return (
     <>
-      <IconButton
-        Icon={FileSave}
-        accessibilityLabel={t("feat.playlist.extra.m3uExport")}
-        onPress={() => exportSheetRef.current?.present()}
-      />
+      <Menu actions={menuActions} />
+      <PlaylistArtworkSheet sheetRef={artworkSheetRef} id={id} />
       <ExportM3USheet sheetRef={exportSheetRef} id={id} />
     </>
   );

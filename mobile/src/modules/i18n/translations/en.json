@@ -27,6 +27,7 @@
     "favoriteTracks": "Favorite Tracks",
 
     "all": "All",
+    "more": "More",
     "home": "Home",
     "settings": "Settings",
     "upcoming": "Upcoming",
@@ -151,9 +152,6 @@
         "vinyl": "Vinyl",
         "vinylOld": "Vinyl (Legacy)"
       }
-    },
-    "visualTips": {
-      "title": "Visual Tips"
     },
     "ignoreRTLLayout": {
       "title": "Ignore RTL Layout",

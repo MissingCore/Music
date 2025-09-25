@@ -22,7 +22,6 @@ export default function AppearanceSettings() {
   const nowPlayingDesign = useUserPreferencesStore(
     (state) => state.nowPlayingDesign,
   );
-  const showVisualTips = useUserPreferencesStore((state) => state.visualTips);
   const ignoreRTLLayout = useUserPreferencesStore(
     (state) => state.ignoreRTLLayout,
   );
@@ -75,28 +74,18 @@ export default function AppearanceSettings() {
           />
         </List>
 
-        <List>
-          <ListItem
-            titleKey="feat.ignoreRTLLayout.title"
-            description={t("feat.ignoreRTLLayout.brief")}
-            onPress={toggleIgnoreRTLLayout}
-            switchState={ignoreRTLLayout}
-            first
-          />
-          <ListItem
-            titleKey="feat.visualTips.title"
-            onPress={toggleVisualTips}
-            switchState={showVisualTips}
-            last
-          />
-        </List>
+        <ListItem
+          titleKey="feat.ignoreRTLLayout.title"
+          description={t("feat.ignoreRTLLayout.brief")}
+          onPress={toggleIgnoreRTLLayout}
+          switchState={ignoreRTLLayout}
+          first
+          last
+        />
       </StandardScrollLayout>
     </>
   );
 }
-
-const toggleVisualTips = () =>
-  userPreferencesStore.setState((prev) => ({ visualTips: !prev.visualTips }));
 
 const toggleIgnoreRTLLayout = () => {
   const nextState = !userPreferencesStore.getState().ignoreRTLLayout;

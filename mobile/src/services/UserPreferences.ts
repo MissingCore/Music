@@ -61,9 +61,6 @@ interface UserPreferencesStore {
   /** Visibility of the tabs on the home screen. */
   tabsVisibility: Record<OrderableTab, boolean>;
 
-  /** If tips to alert the users of features will be displayed. */
-  visualTips: boolean;
-
   /** Whether we'll continue playback through any interruptions. */
   ignoreInterrupt: boolean;
   /** Whether we stay on "Repeat One" mode when we skip. */
@@ -138,8 +135,6 @@ export const userPreferencesStore =
         playlist: true,
         track: true,
       },
-
-      visualTips: true,
 
       ignoreInterrupt: false,
       repeatOnSkip: false,

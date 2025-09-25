@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
+import { Provider as PaperProvider } from "react-native-paper";
 import {
   SafeAreaProvider,
   useSafeAreaInsets,
@@ -20,12 +21,14 @@ export function AppProvider(props: ChildrenWrapperProps) {
     <SafeAreaProvider>
       <KeyboardProvider>
         <ThemeProvider>
-          <GestureHandlerRootView>
-            <QueryClientProvider client={queryClient}>
-              <ChildrenWrapper {...props} />
-              <ToastProvider />
-            </QueryClientProvider>
-          </GestureHandlerRootView>
+          <PaperProvider>
+            <GestureHandlerRootView>
+              <QueryClientProvider client={queryClient}>
+                <ChildrenWrapper {...props} />
+                <ToastProvider />
+              </QueryClientProvider>
+            </GestureHandlerRootView>
+          </PaperProvider>
         </ThemeProvider>
       </KeyboardProvider>
     </SafeAreaProvider>
