@@ -101,6 +101,9 @@ export async function exportPlaylistAsM3U(id: string) {
     return Paths.relative(fileDirectory, uri);
   });
   const fileContent = ["#EXTM3U"];
+
+  // Generate content structure for file.
+  //  - https://en.wikipedia.org/wiki/M3U#Extended_M3U
   playlist.tracks.forEach(({ name, artistName, duration }, idx) => {
     fileContent.push(`#EXTINF:${Math.round(duration)},${artistName} - ${name}`);
     fileContent.push(relativePaths[idx]!);
