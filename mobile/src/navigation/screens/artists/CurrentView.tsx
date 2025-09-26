@@ -1,6 +1,5 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { I18nManager } from "react-native";
 
@@ -10,13 +9,10 @@ import { useArtistForScreen } from "~/queries/artist";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { useBottomActionsInset } from "../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../layouts/CurrentList";
-import { ArtistArtworkSheet } from "../ArtworkSheet";
+import { ArtworkSheetPresenter } from "../ArtworkSheet";
 
 import { OnRTL } from "~/lib/react";
 import { FlashList } from "~/components/Defaults";
-import type { MenuAction } from "~/components/Menu";
-import { Menu } from "~/components/Menu";
-import { useSheetRef } from "~/components/Sheet";
 import { TEm } from "~/components/Typography/StyledText";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import {
@@ -50,7 +46,9 @@ export default function Artist({
   return (
     <>
       <ScreenOptions
-        headerRight={() => <AdditionalActions id={artistName} />}
+        headerRight={() => (
+          <ArtworkSheetPresenter type="artist" id={artistName} />
+        )}
       />
       <CurrentListLayout
         title={data.name}
@@ -126,27 +124,6 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
         disableAutoLayout={I18nManager.isRTL}
       />
       <TEm dim textKey="term.tracks" className="mb-2 mt-4" />
-    </>
-  );
-}
-
-function AdditionalActions({ id }: { id: string }) {
-  const artworkSheetRef = useSheetRef();
-
-  const menuActions = useMemo<MenuAction[]>(
-    () => [
-      {
-        labelKey: "feat.artwork.extra.change",
-        onPress: () => artworkSheetRef.current?.present(),
-      },
-    ],
-    [artworkSheetRef],
-  );
-
-  return (
-    <>
-      <Menu actions={menuActions} />
-      <ArtistArtworkSheet sheetRef={artworkSheetRef} id={id} />
     </>
   );
 }

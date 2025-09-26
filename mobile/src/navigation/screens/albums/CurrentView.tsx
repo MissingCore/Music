@@ -7,15 +7,12 @@ import { Favorite } from "~/resources/icons/Favorite";
 import { useAlbumForScreen, useFavoriteAlbum } from "~/queries/album";
 import { useBottomActionsInset } from "../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../layouts/CurrentList";
-import { AlbumArtworkSheet } from "../ArtworkSheet";
+import { ArtworkSheetPresenter } from "../ArtworkSheet";
 
 import { mutateGuard } from "~/lib/react-query";
 import { isNumber } from "~/utils/validation";
 import { FlashList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
-import type { MenuAction } from "~/components/Menu";
-import { Menu } from "~/components/Menu";
-import { useSheetRef } from "~/components/Sheet";
 import { Em, StyledText } from "~/components/Typography/StyledText";
 import {
   Track,
@@ -76,7 +73,7 @@ export default function Album({
               onPress={() => mutateGuard(favoriteAlbum, !data.isFavorite)}
               filled={isToggled}
             />
-            <AdditionalActions id={albumId} />
+            <ArtworkSheetPresenter type="album" id={albumId} />
           </View>
         )}
       />
@@ -127,26 +124,5 @@ function TrackNumber({ track }: { track: number | null }) {
     <View className="size-12 items-center justify-center">
       <StyledText>{track !== null ? track : "—"}</StyledText>
     </View>
-  );
-}
-
-function AdditionalActions({ id }: { id: string }) {
-  const artworkSheetRef = useSheetRef();
-
-  const menuActions = useMemo<MenuAction[]>(
-    () => [
-      {
-        labelKey: "feat.artwork.extra.change",
-        onPress: () => artworkSheetRef.current?.present(),
-      },
-    ],
-    [artworkSheetRef],
-  );
-
-  return (
-    <>
-      <Menu actions={menuActions} />
-      <AlbumArtworkSheet sheetRef={artworkSheetRef} id={id} />
-    </>
   );
 }
