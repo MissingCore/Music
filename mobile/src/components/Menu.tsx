@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Menu as PaperMenu } from "react-native-paper";
 
+import type { Icon } from "~/resources/icons/type";
 import { MoreVert } from "~/resources/icons/MoreVert";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useTheme } from "~/hooks/useTheme";
@@ -12,6 +13,7 @@ import { getFont } from "~/lib/style";
 import { IconButton } from "./Form/Button";
 
 export type MenuAction = {
+  Icon?: (props: Icon) => React.ReactNode;
   labelKey: ParseKeys;
   onPress: VoidFunction;
 };
@@ -45,10 +47,12 @@ export function Menu(props: {
         borderRadius: BorderRadius.md,
       }}
     >
-      {props.actions.map(({ labelKey, onPress }) => (
+      {props.actions.map(({ Icon, labelKey, onPress }) => (
         <PaperMenu.Item
           key={labelKey}
           title={t(labelKey)}
+          // Icon size in menu is by default `24`.
+          leadingIcon={() => (Icon ? <Icon /> : undefined)}
           onPress={() => {
             onPress();
             setVisible(false);
