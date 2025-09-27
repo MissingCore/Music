@@ -58,13 +58,21 @@ export function useSearch<TScope extends SearchCategories>(
 async function getAllMedia() {
   // Maybe manually building the query would be faster, but would be a bit
   // too complicated to read.
-  const [allTracks, allFolders] = await Promise.all([
-    getTracks({
-      columns: ["id", "name", "artistName", "artwork", "parentFolder"],
-      albumColumns: ["name", "artwork"],
+  const [allAlbums, allArtists, allFolders, allTracks] = await Promise.all([
+    getAlbums({
+      columns: ["id", "name", "artistName", "artwork"],
+      trackColumns: ["id", "name", "artistName", "artwork"],
+    }),
+    getArtists({
+      columns: ["name", "artwork"],
+      trackColumns: ["id"],
     }),
     db.query.fileNodes.findMany({
       orderBy: (f, { asc }) => [asc(f.parentPath), asc(f.name)],
+    }),
+    getTracks({
+      columns: ["id", "name", "artistName", "artwork", "parentFolder"],
+      albumColumns: ["name", "artwork"],
     }),
   ]);
 
@@ -78,14 +86,10 @@ async function getAllMedia() {
   });
 
   return {
-    album: await getAlbums({
-      columns: ["id", "name", "artistName", "artwork"],
-      trackColumns: ["id", "name", "artistName", "artwork"],
-    }),
-    artist: await getArtists({
-      columns: ["name", "artwork"],
-      withTracks: false,
-    }),
+    album: allAlbums.filter(({ tracks }) => tracks.length > 0),
+    artist: allArtists
+      .filter(({ tracks }) => tracks.length > 0)
+      .map(({ tracks: _, ...artist }) => artist),
     folder: (allFolders as SlimFolder[])
       .map((f) => {
         f.tracks = groupedTracks[`file:///${addTrailingSlash(f.path)}`] ?? [];

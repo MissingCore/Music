@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import type { AlbumWithTracks } from "~/db/schema";
 import { formatForCurrentScreen, formatForMediaCard } from "~/db/utils";
 
 import { favoriteAlbum, updateAlbum } from "~/api/album";
@@ -36,10 +35,9 @@ export function useAlbumsForCards() {
   return useQuery({
     ...q.albums.all,
     select: (data) =>
-      (data as AlbumWithTracks[]).map((album) => {
-        album.tracks = [];
-        return formatForMediaCard({ type: "album", data: album, t });
-      }),
+      data
+        .filter(({ tracks }) => tracks.length > 0)
+        .map((album) => formatForMediaCard({ type: "album", data: album, t })),
   });
 }
 //#endregion

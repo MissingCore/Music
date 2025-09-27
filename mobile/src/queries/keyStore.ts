@@ -30,7 +30,7 @@ export const queries = createQueryKeyStore({
       queryFn: () =>
         getAlbums({
           columns: ["id", "name", "artistName", "artwork"],
-          withTracks: false,
+          trackColumns: ["id"],
         }),
     },
     detail: (albumId: string) => ({
@@ -45,7 +45,7 @@ export const queries = createQueryKeyStore({
       queryFn: () =>
         getArtists({
           columns: ["name", "artwork"],
-          withTracks: false,
+          trackColumns: ["id"],
         }),
     },
     detail: (artistName: string) => ({

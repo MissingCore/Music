@@ -34,10 +34,13 @@ export function useArtistsForIndex() {
   return useQuery({
     ...q.artists.all,
     select: (data) => {
+      const filteredData = data
+        .filter(({ tracks }) => tracks.length > 0)
+        .map(({ tracks: _, ...artist }) => artist);
       // Group artists by their 1st character (artists are already
       // pre-sorted by their name).
       const groupedArtists: Record<string, Artist[]> = {};
-      data.forEach((artist) => {
+      filteredData.forEach((artist) => {
         const key = /[a-zA-Z]/.test(artist.name.charAt(0))
           ? artist.name.charAt(0).toLocaleUpperCase()
           : "#";
