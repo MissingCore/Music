@@ -162,7 +162,6 @@ export async function PlaybackService() {
     }
 
     if (e.index === 1) await TrackPlayer.remove(0);
-    // if (e.index === 1) await TrackPlayer.remove(0);
     await RNTPManager.reloadNextTrack();
     musicStore.setState({ lastPosition: undefined });
   });
