@@ -1,10 +1,11 @@
 import { createQueryKeyStore } from "@lukemorales/query-key-factory";
 import { eq, isNotNull } from "drizzle-orm";
 
+import { db } from "~/db";
 import { albums, playlists, tracks } from "~/db/schema";
 
 import { getAlbum, getAlbums } from "~/api/album";
-import { getArtist, getArtistAlbums, getArtists } from "~/api/artist";
+import { getArtist, getArtistAlbums } from "~/api/artist";
 import { getFolder } from "~/api/folder";
 import { getPlaylist, getPlaylists, getSpecialPlaylist } from "~/api/playlist";
 import {
@@ -19,6 +20,7 @@ import {
 } from "~/api/setting";
 import { getTrack, getTrackPlaylists, getTracks } from "~/api/track";
 
+import { iAsc } from "~/lib/drizzle";
 import { ReservedPlaylists } from "~/modules/media/constants";
 
 /** All of the reusuable query keys. */
@@ -28,9 +30,16 @@ export const queries = createQueryKeyStore({
     all: {
       queryKey: null,
       queryFn: () =>
-        getAlbums({
-          columns: ["id", "name", "artistName", "artwork"],
-          trackColumns: ["id"],
+        db.query.albums.findMany({
+          columns: { id: true, name: true, artistName: true, artwork: true },
+          with: {
+            tracks: {
+              where: (fields, { isNull }) => isNull(fields.hiddenAt),
+              columns: { id: true },
+              limit: 1,
+            },
+          },
+          orderBy: (fields) => [iAsc(fields.name), iAsc(fields.artistName)],
         }),
     },
     detail: (albumId: string) => ({
@@ -43,9 +52,16 @@ export const queries = createQueryKeyStore({
     all: {
       queryKey: null,
       queryFn: () =>
-        getArtists({
-          columns: ["name", "artwork"],
-          trackColumns: ["id"],
+        db.query.artists.findMany({
+          columns: { name: true, artwork: true },
+          with: {
+            tracks: {
+              where: (fields, { isNull }) => isNull(fields.hiddenAt),
+              columns: { id: true },
+              limit: 1,
+            },
+          },
+          orderBy: (fields) => iAsc(fields.name),
         }),
     },
     detail: (artistName: string) => ({
