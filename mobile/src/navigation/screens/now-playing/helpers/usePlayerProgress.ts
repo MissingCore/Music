@@ -1,6 +1,6 @@
 import { useProgress } from "@weights-ai/react-native-track-player";
 import { atom, useAtomValue, useSetAtom } from "jotai";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 import { useMusicStore } from "~/modules/media/services/Music";
 import { MusicControls } from "~/modules/media/services/Playback";
@@ -17,20 +17,17 @@ export function usePlayerProgress() {
   const nextSliderPosition = useAtomValue(NextSliderPositionAtom);
   const setNextSliderPosition = useSetAtom(NextSliderPositionAtom);
 
-  const seekToPosition = useCallback(
-    async (progress: number) => {
-      await MusicControls.seekTo(progress);
-      setUpdateInterval(1);
+  const seekToPosition = async (progress: number) => {
+    await MusicControls.seekTo(progress);
+    setUpdateInterval(1);
 
-      // Helps prevents "rubberbanding".
-      if (debounceRef.current) clearTimeout(debounceRef.current);
-      debounceRef.current = setTimeout(() => {
-        setNextSliderPosition(null);
-        setUpdateInterval(200);
-      }, 200);
-    },
-    [setNextSliderPosition],
-  );
+    // Helps prevents "rubberbanding".
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setNextSliderPosition(null);
+      setUpdateInterval(200);
+    }, 200);
+  };
 
   return {
     position: nextSliderPosition ?? restoredPosition ?? position,

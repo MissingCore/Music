@@ -2,7 +2,7 @@ import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { ParseKeys } from "i18next";
-import { Fragment, useCallback, useMemo } from "react";
+import { Fragment, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import type { ViewStyle } from "react-native";
 import { Pressable, View } from "react-native";
@@ -62,10 +62,6 @@ export function TrackSheet() {
   const trackArtworkSheetRef = useSheetRef();
   const { handlers, isScrollable } = useIsScrollable();
 
-  const editArtwork = useCallback(() => {
-    trackArtworkSheetRef.current?.present();
-  }, [trackArtworkSheetRef]);
-
   return (
     <>
       <Sheet
@@ -82,7 +78,10 @@ export function TrackSheet() {
           >
             <TrackIntro data={data} />
             <TrackMetadata data={data} />
-            <TrackIconActions id={data.id} editArtwork={editArtwork} />
+            <TrackIconActions
+              id={data.id}
+              editArtwork={() => trackArtworkSheetRef.current?.present()}
+            />
             <TrackTextActions id={data.id} name={data.name} />
           </ScrollView>
         ) : null}

@@ -1,6 +1,6 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { useNavigation } from "@react-navigation/native";
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler, Pressable, View } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
@@ -158,11 +158,6 @@ const RenderItem = memo(
 
     const removeTrack = usePlaylistStore((state) => state.removeTrack);
 
-    const onPress = useCallback(
-      () => removeTrack(item.id),
-      [item.id, removeTrack],
-    );
-
     if (item.id !== lastItemId) {
       setLastItemId(item.id);
       if (swipeableRef.current) swipeableRef.current.resetIfNeeded();
@@ -185,7 +180,7 @@ const RenderItem = memo(
                 accessibilityLabel={t("template.entryRemove", {
                   name: item.name,
                 })}
-                onPress={onPress}
+                onPress={() => removeTrack(item.id)}
                 className={cn("bg-red p-3", OnRTL.decide("ml-4", "mr-4"))}
               >
                 <Remove color={Colors.neutral100} />

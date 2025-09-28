@@ -1,6 +1,6 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
@@ -77,12 +77,6 @@ export default function Playlist({
     [navigation, id, exportSheetRef],
   );
 
-  const onMove = useCallback(
-    (fromIndex: number, toIndex: number) =>
-      mutateGuard(moveInPlaylist, { fromIndex, toIndex }),
-    [moveInPlaylist],
-  );
-
   const trackSource = { type: "playlist", id } as const;
   const listData = useTrackListPlayingIndication(trackSource, data?.tracks);
 
@@ -125,7 +119,9 @@ export default function Playlist({
           renderItem={(args) => (
             <RenderItem {...args} trackSource={trackSource} />
           )}
-          onReordered={onMove}
+          onReordered={(fromIndex, toIndex) =>
+            mutateGuard(moveInPlaylist, { fromIndex, toIndex })
+          }
           ListEmptyComponent={
             <ContentPlaceholder errMsgKey="err.msg.noTracks" />
           }

@@ -1,5 +1,4 @@
 import { useNavigation } from "@react-navigation/native";
-import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useDatabaseSummary, useStorageSummary } from "~/queries/setting";
@@ -48,11 +47,11 @@ function StorageWidget() {
   const { foreground } = useTheme();
   const { data } = useStorageSummary();
 
-  const getValue = useCallback(
-    (field: keyof ExtractQueryData<typeof useStorageSummary>) =>
-      data ? abbreviateSize(data[field]) : "—",
-    [data],
-  );
+  const getValue = (
+    field: keyof ExtractQueryData<typeof useStorageSummary>,
+  ) => {
+    return data ? abbreviateSize(data[field]) : "—";
+  };
 
   return (
     <Card className="gap-4 rounded-b-sm">
@@ -99,14 +98,13 @@ function StorageWidget() {
 function DBSummaryWidget() {
   const { data } = useDatabaseSummary();
 
-  const getValue = useCallback(
-    (field: keyof ExtractQueryData<typeof useDatabaseSummary>) => {
-      if (!data) return "—";
-      if (field === "totalDuration") return formatSeconds(data[field], false);
-      return data[field];
-    },
-    [data],
-  );
+  const getValue = (
+    field: keyof ExtractQueryData<typeof useDatabaseSummary>,
+  ) => {
+    if (!data) return "—";
+    if (field === "totalDuration") return formatSeconds(data[field], false);
+    return data[field];
+  };
 
   return (
     <Card className="gap-4 rounded-t-sm">

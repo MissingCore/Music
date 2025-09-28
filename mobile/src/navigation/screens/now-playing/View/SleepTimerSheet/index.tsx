@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Keyboard, View } from "react-native";
 
@@ -32,14 +32,14 @@ export const SleepTimerSheet = deferInitialRender(
       });
     }, [endAt]);
 
-    const onSubmit = useCallback(async () => {
+    const onSubmit = async () => {
       const asNum = Number(minutes);
       // Validate that it's a positive integer.
       if (!Number.isInteger(asNum) || asNum <= 0) return;
       Keyboard.dismiss();
       await wait(1);
       createTimer(asNum);
-    }, [createTimer, minutes]);
+    };
 
     return (
       <Sheet ref={props.sheetRef} titleKey="feat.sleepTimer.title">

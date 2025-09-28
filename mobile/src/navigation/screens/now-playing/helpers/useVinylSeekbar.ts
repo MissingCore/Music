@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AppState } from "react-native";
 import { Gesture } from "react-native-gesture-handler";
 import type Animated from "react-native-reanimated";
@@ -45,33 +45,33 @@ export function useVinylSeekbar() {
    * Obtain the center coordinate of the vinyl which is used to calculate
    * the angles used to determine seek progress.
    */
-  const initCenter = useCallback(() => {
+  const initCenter = () => {
     wrapperRef.current?.measure((_x, _y, width, height, pageX, pageY) => {
       centerX.value = pageX + width / 2;
       centerY.value = pageY + height / 2;
       radius.value = Math.min(width, height) / 2;
     });
-  }, [centerX, centerY, radius]);
+  };
 
-  const gestureWithinArea = useCallback(
-    ({ absoluteX, absoluteY }: { absoluteX: number; absoluteY: number }) => {
-      "worklet";
-      const a = centerX.value - absoluteX;
-      const b = centerY.value - absoluteY;
-      const c = Math.sqrt(a ** 2 + b ** 2);
-      return c <= radius.value;
-    },
-    [centerX, centerY, radius],
-  );
+  const gestureWithinArea = ({
+    absoluteX,
+    absoluteY,
+  }: {
+    absoluteX: number;
+    absoluteY: number;
+  }) => {
+    "worklet";
+    const a = centerX.value - absoluteX;
+    const b = centerY.value - absoluteY;
+    const c = Math.sqrt(a ** 2 + b ** 2);
+    return c <= radius.value;
+  };
 
-  const onEnd = useCallback(
-    async (seconds: number) => {
-      await seekToPosition(seconds);
-      trueProgress.value = convertUnit(seconds);
-      debounceAngle.value = seekProgress.value = null;
-    },
-    [debounceAngle, seekToPosition, seekProgress, trueProgress],
-  );
+  const onEnd = async (seconds: number) => {
+    await seekToPosition(seconds);
+    trueProgress.value = convertUnit(seconds);
+    debounceAngle.value = seekProgress.value = null;
+  };
 
   // To help ensure the vinyl doesn't spin fast to its new position afer
   // opening the app from backgrounding on the "Now Playing" screen.

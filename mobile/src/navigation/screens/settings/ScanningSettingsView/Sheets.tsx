@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Keyboard, View } from "react-native";
 
@@ -134,14 +134,14 @@ function FilterForm(props: {
     return validatePath(newPath) && !props.listEntries.includes(trimmed);
   }, [props.listEntries, newPath]);
 
-  const selectDirectory = useCallback(async () => {
+  const selectDirectory = async () => {
     try {
       const selectedPath = await pickPath();
       if (selectedPath) setNewPath(selectedPath);
     } catch {
       /* Catch weird `expo-file-system` SAF errors. */
     }
-  }, []);
+  };
 
   return (
     <View className="flex-row gap-2 px-4">
