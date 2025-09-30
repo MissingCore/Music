@@ -13,7 +13,7 @@ import Animated, {
 import { NothingArrowRight } from "~/resources/icons/NothingArrowRight";
 import { useTheme } from "~/hooks/useTheme";
 
-import { OnRTLWorklet } from "~/lib/react";
+import { OnRTL, OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";
 
 type BounceSwipeableProps = {
@@ -136,11 +136,17 @@ export function BounceSwipeable({
           style={containerStyle}
           className={cn("absolute left-0 right-0 top-1/2", props.className)}
         >
-          <View className="absolute left-0 top-1/2 -translate-x-full -translate-y-1/2">
+          <View
+            style={{ [OnRTL.decide("right", "left")]: 0 }}
+            className="absolute top-1/2 -translate-x-full -translate-y-1/2"
+          >
             {LeftIndicator}
           </View>
           {props.children}
-          <View className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full">
+          <View
+            style={{ [OnRTL.decide("left", "right")]: 0 }}
+            className="absolute top-1/2 -translate-y-1/2 translate-x-full"
+          >
             {RightIndicator}
           </View>
         </Animated.View>
@@ -173,7 +179,9 @@ const ShadowProps = {
 function SwipeIndicator({ rotate = false }) {
   const { foreground } = useTheme();
   return (
-    <View className={cn("pl-3", { "rotate-180": rotate })}>
+    <View
+      className={cn(OnRTL.decide("pr-3", "pl-3"), { "rotate-180": rotate })}
+    >
       <NothingArrowRight size={32} color={foreground} />
     </View>
   );
