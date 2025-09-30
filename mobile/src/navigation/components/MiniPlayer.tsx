@@ -10,7 +10,7 @@ import { MusicControls } from "~/modules/media/services/Playback";
 import { useIsPlaying } from "~/modules/media/hooks/useIsPlaying";
 
 import { cn } from "~/lib/style";
-import { BounceSwipe } from "~/components/BounceSwipe";
+import { BounceSwipeable } from "~/components/BounceSwipeable";
 import { Marquee } from "~/components/Containment/Marquee";
 import { IconButton } from "~/components/Form/Button";
 import { StyledText } from "~/components/Typography/StyledText";
@@ -45,7 +45,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
           className="rounded-sm"
         />
 
-        <BounceSwipe
+        <BounceSwipeable
           onLeftIndicatorVisible={MusicControls.prev}
           onRightIndicatorVisible={MusicControls.next}
           wrapperClassName="ml-2 shrink grow"
@@ -56,7 +56,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
           <Marquee color="surface">
             <StyledText dim>{track.artistName ?? "—"}</StyledText>
           </Marquee>
-        </BounceSwipe>
+        </BounceSwipeable>
 
         <IconButton
           Icon={isPlaying ? Pause : PlayArrow}

@@ -14,7 +14,7 @@ import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
 
-type BounceSwipeProps = {
+type BounceSwipeableProps = {
   children: React.ReactNode;
   /** Distance to swipe to trigger an action (defaults to `24`). */
   activationThreshold?: number;
@@ -39,14 +39,14 @@ type BounceSwipeProps = {
   wrapperClassName?: string;
 };
 
-export function BounceSwipe({
+export function BounceSwipeable({
   activationThreshold = 32,
   swipeThreshold = 48,
   bounceBackDelay = 150,
   LeftIndicator = <SwipeIndicator rotate />,
   RightIndicator = <SwipeIndicator />,
   ...props
-}: BounceSwipeProps) {
+}: BounceSwipeableProps) {
   const contentHeight = useSharedValue(0);
   const initX = useSharedValue<number | null>(null);
   const swipeAmount = useSharedValue(0);
