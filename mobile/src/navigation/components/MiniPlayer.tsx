@@ -48,6 +48,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
         <BounceSwipeable
           onLeftIndicatorVisible={MusicControls.prev}
           onRightIndicatorVisible={MusicControls.next}
+          shadowConfig={{ color: "surface" }}
           wrapperClassName="ml-2 shrink grow"
         >
           <Marquee color="surface">
