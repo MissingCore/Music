@@ -5,6 +5,7 @@ import Animated, {
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
+  withDelay,
   withTiming,
 } from "react-native-reanimated";
 
@@ -19,6 +20,12 @@ type BounceSwipeProps = {
   activationThreshold?: number;
   /** Max distance we can swipe (defaults to `48`). */
   swipeThreshold?: number;
+  /**
+   * Delay for the swiped content bounces back. This helps prevent
+   * the animation from freezing if the callback blocks the JS thread.
+   */
+  bounceBackDelay?: number;
+
   /** Callback when we the right indicator is shown. */
   onLeftIndicatorVisible?: VoidFunction;
   /** Callback when we the left indicator is shown. */
@@ -27,6 +34,7 @@ type BounceSwipeProps = {
   LeftIndicator?: React.ReactNode;
   /** Visual element when swiping left. */
   RightIndicator?: React.ReactNode;
+
   className?: string;
   wrapperClassName?: string;
 };
@@ -34,6 +42,7 @@ type BounceSwipeProps = {
 export function BounceSwipe({
   activationThreshold = 32,
   swipeThreshold = 48,
+  bounceBackDelay = 150,
   LeftIndicator = <SwipeIndicator rotate />,
   RightIndicator = <SwipeIndicator />,
   ...props
@@ -64,7 +73,8 @@ export function BounceSwipe({
 
       // Cleanup
       initX.value = null;
-      swipeAmount.value = withTiming(0, { duration: 150 });
+      // Call after a delay in case the callback blocks the JS thread.
+      swipeAmount.value = withDelay(bounceBackDelay, withTiming(0));
     });
 
   const containerStyle = useAnimatedStyle(() => ({
