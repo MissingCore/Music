@@ -30,19 +30,17 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
   return (
     <Animated.View
       layout={LinearTransition}
-      className={cn("overflow-hidden rounded-md bg-canvas", {
-        "rounded-b-sm": stacked,
-      })}
+      className={cn("overflow-hidden rounded-md", { "rounded-b-sm": stacked })}
     >
       <Pressable
         onPress={() => navigation.navigate("NowPlaying")}
-        className="flex-row items-center bg-surface p-2 active:opacity-75"
+        className="flex-row items-center bg-surface px-2"
       >
         <MediaImage
           type="track"
           size={48}
           source={track.artwork}
-          className="rounded-sm"
+          className="my-2 rounded-sm"
         />
 
         <BounceSwipeable
