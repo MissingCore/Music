@@ -51,6 +51,8 @@ interface UserPreferencesStore {
   /** Font used for text. */
   primaryFont: (typeof PrimaryFontOptions)[number];
 
+  /** If we want swipe controls on the miniplayer. */
+  miniplayerGestures: boolean;
   /** Design used for the "Now Playing" screen. */
   nowPlayingDesign: (typeof NowPlayingDesignOptions)[number];
 
@@ -123,6 +125,7 @@ export const userPreferencesStore =
       accentFont: "NType",
       primaryFont: "Roboto",
 
+      miniplayerGestures: false,
       nowPlayingDesign: "vinyl",
 
       homeTab: "home",

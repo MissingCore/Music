@@ -19,6 +19,9 @@ export default function AppearanceSettings() {
   const accentFont = useUserPreferencesStore((state) => state.accentFont);
   const primaryFont = useUserPreferencesStore((state) => state.primaryFont);
   const theme = useUserPreferencesStore((state) => state.theme);
+  const miniplayerGestures = useUserPreferencesStore(
+    (state) => state.miniplayerGestures,
+  );
   const nowPlayingDesign = useUserPreferencesStore(
     (state) => state.nowPlayingDesign,
   );
@@ -67,6 +70,11 @@ export default function AppearanceSettings() {
             first
           />
           <ListItem
+            titleKey="feat.miniplayerGestures.title"
+            onPress={toggleMiniplayerGestures}
+            switchState={miniplayerGestures}
+          />
+          <ListItem
             titleKey="feat.nowPlayingDesign.title"
             description={t(`feat.nowPlayingDesign.extra.${nowPlayingDesign}`)}
             onPress={() => nowPlayingDesignSheetRef.current?.present()}
@@ -86,6 +94,11 @@ export default function AppearanceSettings() {
     </>
   );
 }
+
+const toggleMiniplayerGestures = () =>
+  userPreferencesStore.setState((prev) => ({
+    miniplayerGestures: !prev.miniplayerGestures,
+  }));
 
 const toggleIgnoreRTLLayout = () => {
   const nextState = !userPreferencesStore.getState().ignoreRTLLayout;
