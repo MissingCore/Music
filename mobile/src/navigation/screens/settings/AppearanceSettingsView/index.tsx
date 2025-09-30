@@ -70,7 +70,7 @@ export default function AppearanceSettings() {
             first
           />
           <ListItem
-            titleKey="feat.miniplayerGesture.title"
+            titleKey="feat.miniplayerGestures.title"
             onPress={toggleMiniplayerGestures}
             switchState={miniplayerGestures}
           />
