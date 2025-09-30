@@ -8,6 +8,9 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
+import { NothingArrowRight } from "~/resources/icons/NothingArrowRight";
+import { useTheme } from "~/hooks/useTheme";
+
 import { cn } from "~/lib/style";
 
 type BounceSwipeProps = {
@@ -29,8 +32,10 @@ type BounceSwipeProps = {
 };
 
 export function BounceSwipe({
-  activationThreshold = 24,
+  activationThreshold = 32,
   swipeThreshold = 48,
+  LeftIndicator = <SwipeIndicator rotate />,
+  RightIndicator = <SwipeIndicator />,
   ...props
 }: BounceSwipeProps) {
   const contentHeight = useSharedValue(0);
@@ -72,7 +77,9 @@ export function BounceSwipe({
   }));
 
   return (
-    <View className={cn("relative h-full", props.wrapperClassName)}>
+    <View
+      className={cn("relative h-full overflow-hidden", props.wrapperClassName)}
+    >
       <GestureDetector gesture={swipeGesture}>
         <Animated.View
           onLayout={({ nativeEvent }) => {
@@ -81,9 +88,24 @@ export function BounceSwipe({
           style={containerStyle}
           className={cn("absolute left-0 right-0 top-1/2", props.className)}
         >
-          <View>{props.children}</View>
+          <View className="absolute left-0 top-1/2 -translate-x-full -translate-y-1/2">
+            {LeftIndicator}
+          </View>
+          {props.children}
+          <View className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full">
+            {RightIndicator}
+          </View>
         </Animated.View>
       </GestureDetector>
+    </View>
+  );
+}
+
+function SwipeIndicator({ rotate = false }) {
+  const { foreground } = useTheme();
+  return (
+    <View className={cn("pl-3", { "rotate-180": rotate })}>
+      <NothingArrowRight size={32} color={foreground} />
     </View>
   );
 }
