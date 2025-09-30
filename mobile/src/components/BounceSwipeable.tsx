@@ -3,10 +3,8 @@ import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
   clamp,
   runOnJS,
-  runOnUI,
   useAnimatedStyle,
   useSharedValue,
-  withDelay,
   withTiming,
 } from "react-native-reanimated";
 
@@ -21,16 +19,11 @@ type BounceSwipeableProps = {
   activationThreshold?: number;
   /** Max distance we can swipe (defaults to `48`). */
   swipeThreshold?: number;
-  /**
-   * Delay for the swiped content bounces back. This helps prevent
-   * the animation from freezing if the callback blocks the JS thread.
-   */
-  bounceBackDelay?: number;
 
   /** Callback when we the right indicator is shown. */
-  onLeftIndicatorVisible?: () => void | Promise<void>;
+  onLeftIndicatorVisible?: () => VoidFunction;
   /** Callback when we the left indicator is shown. */
-  onRightIndicatorVisible?: () => void | Promise<void>;
+  onRightIndicatorVisible?: () => VoidFunction;
   /** Visual element when swiping left. */
   LeftIndicator?: React.ReactNode;
   /** Visual element when swiping left. */
@@ -43,7 +36,6 @@ type BounceSwipeableProps = {
 export function BounceSwipeable({
   activationThreshold = 32,
   swipeThreshold = 48,
-  bounceBackDelay = 25,
   LeftIndicator = <SwipeIndicator rotate />,
   RightIndicator = <SwipeIndicator />,
   ...props
@@ -51,23 +43,6 @@ export function BounceSwipeable({
   const contentHeight = useSharedValue(0);
   const initX = useSharedValue<number | null>(null);
   const swipeAmount = useSharedValue(0);
-
-  const onCleanp = () => {
-    "worklet";
-    initX.value = null;
-    // Call after a delay in case the callback blocks the JS thread.
-    swipeAmount.value = withDelay(bounceBackDelay, withTiming(0));
-  };
-
-  const handleLeftIndicatorVisible = async () => {
-    if (props.onLeftIndicatorVisible) await props.onLeftIndicatorVisible();
-    runOnUI(onCleanp)();
-  };
-
-  const handleRightIndicatorVisible = async () => {
-    if (props.onRightIndicatorVisible) await props.onRightIndicatorVisible();
-    runOnUI(onCleanp)();
-  };
 
   const swipeGesture = Gesture.Pan()
     .onStart(({ absoluteX }) => {
@@ -80,12 +55,19 @@ export function BounceSwipeable({
         props.onRightIndicatorVisible ? swipeThreshold : 0,
       );
     })
-    .onEnd(() => {
-      // Run code if we met the threshold.
-      if (Math.abs(swipeAmount.value) >= activationThreshold) {
-        if (swipeAmount.value < 0) runOnJS(handleLeftIndicatorVisible)();
-        else runOnJS(handleRightIndicatorVisible)();
-      }
+    .onEnd(async () => {
+      const metThreshold = Math.abs(swipeAmount.value) >= activationThreshold;
+      const usedRightAction = swipeAmount.value < 0;
+
+      // Cleanup
+      initX.value = null;
+      swipeAmount.value = withTiming(0, { duration: 150 }, (finished) => {
+        // Run code if we met the threshold.
+        if (finished && metThreshold) {
+          if (usedRightAction) runOnJS(props.onRightIndicatorVisible!)();
+          else runOnJS(props.onLeftIndicatorVisible!)();
+        }
+      });
     });
 
   const containerStyle = useAnimatedStyle(() => ({
