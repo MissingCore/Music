@@ -145,6 +145,9 @@
         "setHomeTab": "Open {{- name}} tab on app launch."
       }
     },
+    "miniplayerGesture": {
+      "title": "Miniplayer Gestures"
+    },
     "nowPlayingDesign": {
       "title": "Now Playing Screen Design",
       "extra": {
