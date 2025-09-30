@@ -1,19 +1,26 @@
 import { useNavigation } from "@react-navigation/native";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable } from "react-native";
+import { Pressable, View } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
 
 import { Pause } from "~/resources/icons/Pause";
 import { PlayArrow } from "~/resources/icons/PlayArrow";
+import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useMusicStore } from "~/modules/media/services/Music";
 import { MusicControls } from "~/modules/media/services/Playback";
 import { useIsPlaying } from "~/modules/media/hooks/useIsPlaying";
 
+import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { BounceSwipeable } from "~/components/BounceSwipeable";
 import { Marquee } from "~/components/Containment/Marquee";
 import { IconButton } from "~/components/Form/Button";
 import { StyledText } from "~/components/Typography/StyledText";
+import {
+  NextButton,
+  PreviousButton,
+} from "~/modules/media/components/MediaControls";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 
 /**
@@ -24,7 +31,13 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const isPlaying = useIsPlaying();
-  const track = useMusicStore((state) => state.activeTrack);
+  const track = useMusicStore((s) => s.activeTrack);
+  const gestureUI = useUserPreferencesStore((s) => s.miniplayerGestures);
+
+  const TextWrapper = useMemo(
+    () => (gestureUI ? BounceSwipeable : View),
+    [gestureUI],
+  );
 
   if (!track || hidden) return null;
   return (
@@ -43,11 +56,13 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
           className="my-2 rounded-sm"
         />
 
-        <BounceSwipeable
+        <TextWrapper
           onLeftIndicatorVisible={MusicControls.prev}
           onRightIndicatorVisible={MusicControls.next}
           shadowConfig={{ color: "surface" }}
-          wrapperClassName="ml-2 shrink grow"
+          {...{
+            [`${gestureUI ? "wrapperC" : "c"}lassName`]: "mx-2 shrink grow",
+          }}
         >
           <Marquee color="surface">
             <StyledText>{track.name}</StyledText>
@@ -55,15 +70,22 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
           <Marquee color="surface">
             <StyledText dim>{track.artistName ?? "—"}</StyledText>
           </Marquee>
-        </BounceSwipeable>
+        </TextWrapper>
 
-        <IconButton
-          Icon={isPlaying ? Pause : PlayArrow}
-          accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
-          onPress={MusicControls.playToggle}
-          active
-          large
-        />
+        <View
+          style={{ flexDirection: OnRTL.decide("row-reverse", "row") }}
+          className="items-center"
+        >
+          {!gestureUI ? <PreviousButton /> : null}
+          <IconButton
+            Icon={isPlaying ? Pause : PlayArrow}
+            accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
+            onPress={MusicControls.playToggle}
+            active
+            large
+          />
+          {!gestureUI ? <NextButton /> : null}
+        </View>
       </Pressable>
     </Animated.View>
   );
