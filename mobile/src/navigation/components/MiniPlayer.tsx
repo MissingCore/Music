@@ -22,6 +22,7 @@ import {
   PreviousButton,
 } from "~/modules/media/components/MediaControls";
 import { MediaImage } from "~/modules/media/components/MediaImage";
+import { usePlayerProgress } from "../screens/now-playing/helpers/usePlayerProgress";
 
 /**
  * Displays a player that appears at the bottom of the screen if we have
@@ -43,17 +44,19 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
   return (
     <Animated.View
       layout={LinearTransition}
-      className={cn("overflow-hidden rounded-md", { "rounded-b-sm": stacked })}
+      className={cn("overflow-hidden rounded-md bg-surface", {
+        "rounded-b-sm": stacked,
+      })}
     >
       <Pressable
         onPress={() => navigation.navigate("NowPlaying")}
-        className="flex-row items-center bg-surface px-2"
+        className="flex-row items-center px-2"
       >
         <MediaImage
           type="track"
           size={48}
           source={track.artwork}
-          className="my-2 rounded-sm"
+          className="mb-1.5 mt-2 rounded-sm"
         />
 
         <TextWrapper
@@ -87,6 +90,23 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
           {!gestureUI ? <NextButton /> : null}
         </View>
       </Pressable>
+      <TrackProgress duration={track.duration} />
     </Animated.View>
+  );
+}
+
+function TrackProgress({ duration }: { duration: number }) {
+  const { position } = usePlayerProgress();
+  const progressPercent = `${(position / duration) * 100}%` as const;
+
+  return (
+    <View className="px-2">
+      <View className="h-0.5 w-full rounded-full bg-onSurface">
+        <View
+          style={{ width: progressPercent }}
+          className="h-full rounded-full bg-red"
+        />
+      </View>
+    </View>
   );
 }
