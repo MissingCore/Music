@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-import { Pressable, View } from "react-native";
+import { Pressable } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
 
 import { Pause } from "~/resources/icons/Pause";
@@ -9,15 +9,11 @@ import { useMusicStore } from "~/modules/media/services/Music";
 import { MusicControls } from "~/modules/media/services/Playback";
 import { useIsPlaying } from "~/modules/media/hooks/useIsPlaying";
 
-import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
+import { BounceSwipe } from "~/components/BounceSwipe";
 import { Marquee } from "~/components/Containment/Marquee";
 import { IconButton } from "~/components/Form/Button";
 import { StyledText } from "~/components/Typography/StyledText";
-import {
-  NextButton,
-  PreviousButton,
-} from "~/modules/media/components/MediaControls";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 
 /**
@@ -49,29 +45,26 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
           className="rounded-sm"
         />
 
-        <View className="ml-2 shrink grow">
+        <BounceSwipe
+          onLeftSwipe={MusicControls.prev}
+          onRightSwipe={MusicControls.next}
+          wrapperClassName="ml-2 shrink grow"
+        >
           <Marquee color="surface">
             <StyledText>{track.name}</StyledText>
           </Marquee>
           <Marquee color="surface">
             <StyledText dim>{track.artistName ?? "—"}</StyledText>
           </Marquee>
-        </View>
+        </BounceSwipe>
 
-        <View
-          style={{ flexDirection: OnRTL.decide("row-reverse", "row") }}
-          className="items-center"
-        >
-          <PreviousButton />
-          <IconButton
-            Icon={isPlaying ? Pause : PlayArrow}
-            accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
-            onPress={MusicControls.playToggle}
-            active
-            large
-          />
-          <NextButton />
-        </View>
+        <IconButton
+          Icon={isPlaying ? Pause : PlayArrow}
+          accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
+          onPress={MusicControls.playToggle}
+          active
+          large
+        />
       </Pressable>
     </Animated.View>
   );
