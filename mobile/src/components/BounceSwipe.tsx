@@ -19,10 +19,10 @@ type BounceSwipeProps = {
   activationThreshold?: number;
   /** Max distance we can swipe (defaults to `48`). */
   swipeThreshold?: number;
-  /** Callback when we swipe fully to the left. */
-  onLeftSwipe?: VoidFunction;
-  /** Callback when we swipe fully to the right. */
-  onRightSwipe?: VoidFunction;
+  /** Callback when we the right indicator is shown. */
+  onLeftIndicatorVisible?: VoidFunction;
+  /** Callback when we the left indicator is shown. */
+  onRightIndicatorVisible?: VoidFunction;
   /** Visual element when swiping left. */
   LeftIndicator?: React.ReactNode;
   /** Visual element when swiping left. */
@@ -48,9 +48,9 @@ export function BounceSwipe({
     })
     .onUpdate(({ absoluteX }) => {
       swipeAmount.value = clamp(
-        props.onLeftSwipe ? -swipeThreshold : 0,
+        props.onLeftIndicatorVisible ? -swipeThreshold : 0,
         absoluteX - initX.value!,
-        props.onRightSwipe ? swipeThreshold : 0,
+        props.onRightIndicatorVisible ? swipeThreshold : 0,
       );
     })
     .onEnd(() => {
@@ -58,8 +58,8 @@ export function BounceSwipe({
 
       if (metThreshold) {
         const usedRightAction = swipeAmount.value < 0;
-        if (usedRightAction) runOnJS(props.onRightSwipe!)();
-        else runOnJS(props.onLeftSwipe!)();
+        if (usedRightAction) runOnJS(props.onRightIndicatorVisible!)();
+        else runOnJS(props.onLeftIndicatorVisible!)();
       }
 
       // Cleanup

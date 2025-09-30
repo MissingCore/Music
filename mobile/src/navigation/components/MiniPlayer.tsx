@@ -46,8 +46,8 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
         />
 
         <BounceSwipe
-          onLeftSwipe={MusicControls.prev}
-          onRightSwipe={MusicControls.next}
+          onLeftIndicatorVisible={MusicControls.prev}
+          onRightIndicatorVisible={MusicControls.next}
           wrapperClassName="ml-2 shrink grow"
         >
           <Marquee color="surface">
