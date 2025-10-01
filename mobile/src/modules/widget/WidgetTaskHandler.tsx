@@ -1,5 +1,7 @@
 import type { WidgetTaskHandlerProps } from "react-native-android-widget";
 
+import { MusicControls } from "~/modules/media/services/Playback";
+
 import { getMusicWidgetData } from "./utils";
 import { MusicPlayerWidget } from "./MusicPlayerWidget";
 
@@ -27,6 +29,9 @@ export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
       break;
 
     case "WIDGET_CLICK":
+      if (props.clickAction === "PLAY_PAUSE") {
+        await MusicControls.playToggle();
+      }
       break;
 
     default:

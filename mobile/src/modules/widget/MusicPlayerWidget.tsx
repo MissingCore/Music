@@ -19,7 +19,11 @@ export function MusicPlayerWidget(props: WidgetProps) {
   return (
     <WidgetAlignment>
       <SquareWidgetBase size={size}>
-        <Artwork size={size} artwork={props.track.artwork} />
+        <Artwork
+          clickAction="PLAY_PAUSE"
+          size={size}
+          artwork={props.track.artwork}
+        />
       </SquareWidgetBase>
     </WidgetAlignment>
   );
@@ -79,13 +83,18 @@ function SquareWidgetBase({
   );
 }
 
-function Artwork({ size, artwork }: { size: number; artwork: string | null }) {
+function Artwork({
+  size,
+  artwork,
+  ...props
+}: ClickActionProps & { size: number; artwork: string | null }) {
   const imageSize = !artwork ? (size * 5) / 6 : size;
   return (
     <ImageWidget
       image={artwork ?? require("~/resources/images/music-glyph.png")}
       imageHeight={imageSize}
       imageWidth={imageSize}
+      {...props}
     />
   );
 }
