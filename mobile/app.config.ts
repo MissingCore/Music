@@ -5,7 +5,7 @@ const widgetConfig: WithAndroidWidgetsParams = {
   fonts: ["./assets/fonts/Inter-Regular.ttf"],
   widgets: [
     {
-      name: "ResizableMusic",
+      name: "ResizeableMusic",
       label: "Resizeable Music",
       minWidth: "320dp",
       minHeight: "120dp",
