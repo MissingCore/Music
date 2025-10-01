@@ -116,7 +116,8 @@
       "react-native-gesture-handler": "patches/react-native-gesture-handler.patch",
       "@react-native-assets/slider": "patches/@react-native-assets__slider.patch",
       "@backpackapp-io/react-native-toast": "patches/@backpackapp-io__react-native-toast.patch",
-      "expo-file-system": "patches/expo-file-system.patch"
+      "expo-file-system": "patches/expo-file-system.patch",
+      "@weights-ai/react-native-track-player": "patches/@weights-ai__react-native-track-player.patch"
     }
   }
 }
