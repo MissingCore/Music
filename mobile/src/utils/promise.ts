@@ -1,3 +1,5 @@
+import BackgroundTimer from "@boterop/react-native-background-timer";
+
 /** Typeguard for finding promises that were fulfilled in `Promise.allsettled()`. */
 export const isFulfilled = <T>(
   input: PromiseSettledResult<T>,
@@ -70,4 +72,16 @@ export async function batch<TData, TResult>({
  */
 export async function wait(durationMs: number) {
   await new Promise<void>((resolve) => setTimeout(resolve, durationMs));
+}
+
+/**
+ * Asynchronously pause logic for the specified amount of time. Useful to
+ * prevent code blocking due to an async task.
+ *
+ * **Can run in the background.**
+ */
+export async function bgWait(durationMs: number) {
+  await new Promise<void>((resolve) =>
+    BackgroundTimer.setTimeout(resolve, durationMs),
+  );
 }
