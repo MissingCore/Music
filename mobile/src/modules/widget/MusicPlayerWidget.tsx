@@ -16,6 +16,7 @@ type WidgetProps = WidgetBaseProps & {
   height: number;
   width: number;
   overlayState?: number;
+  openApp?: boolean;
 };
 
 export function MusicPlayerWidget(props: WidgetProps) {
@@ -28,7 +29,13 @@ export function MusicPlayerWidget(props: WidgetProps) {
       <SquareWidgetBase size={size}>
         <OverlapWidget>
           <Artwork
-            clickAction={!overlayShown ? "PLAY_PAUSE" : undefined}
+            clickAction={
+              props.openApp
+                ? "OPEN_APP"
+                : !overlayShown
+                  ? "PLAY_PAUSE"
+                  : undefined
+            }
             size={size}
             artwork={props.track.artwork}
           />

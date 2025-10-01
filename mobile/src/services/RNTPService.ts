@@ -34,6 +34,10 @@ const ValidErrors = [
 
 /** How we handle the actions in the media control notification. */
 export async function PlaybackService() {
+  TrackPlayer.addEventListener(Event.ServiceKilled, async () => {
+    await revalidateMusicWidget({ openApp: true });
+  });
+
   TrackPlayer.addEventListener(Event.RemotePlay, async () => {
     await MusicControls.play();
   });

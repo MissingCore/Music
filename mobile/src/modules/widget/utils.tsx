@@ -2,6 +2,7 @@ import { requestWidgetUpdate } from "react-native-android-widget";
 
 import { getTrackCover } from "~/db/utils";
 
+import { sessionStore } from "~/services/SessionStore";
 import { musicStore } from "~/modules/media/services/Music";
 import { getIsPlaying } from "~/modules/media/hooks/useIsPlaying";
 
@@ -19,17 +20,25 @@ export async function getMusicWidgetData(): Promise<WidgetBaseProps> {
     };
   }
   const isPlaying = await getIsPlaying();
+  const widgetData = { track, isPlaying };
+  sessionStore.setState({ latestWidgetData: widgetData });
 
-  return { track, isPlaying };
+  return widgetData;
 }
 
-export async function revalidateMusicWidget() {
-  const musicContextData = await getMusicWidgetData();
+export async function revalidateMusicWidget(options?: { openApp?: boolean }) {
+  const musicContextData = options?.openApp
+    ? sessionStore.getState().latestWidgetData
+    : await getMusicWidgetData();
 
   requestWidgetUpdate({
     widgetName: "MusicPlayer",
     renderWidget: (props) => (
-      <MusicPlayerWidget {...props} {...musicContextData} />
+      <MusicPlayerWidget
+        {...props}
+        {...musicContextData}
+        openApp={options?.openApp}
+      />
     ),
     widgetNotFound: () => {},
   });
