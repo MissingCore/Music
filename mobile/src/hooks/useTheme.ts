@@ -1,7 +1,10 @@
 import { useMemo } from "react";
-import { useColorScheme } from "react-native";
+import { Appearance, useColorScheme } from "react-native";
 
-import { useUserPreferencesStore } from "~/services/UserPreferences";
+import {
+  userPreferencesStore,
+  useUserPreferencesStore,
+} from "~/services/UserPreferences";
 
 import { Colors } from "~/constants/Styles";
 
@@ -39,4 +42,14 @@ export function useCurrentTheme() {
 export function useTheme() {
   const currentTheme = useCurrentTheme();
   return useMemo(() => Themes[currentTheme], [currentTheme]);
+}
+
+/** Get current theme outside of the React context. */
+export function getTheme() {
+  const deviceTheme = Appearance.getColorScheme();
+  const savedTheme = userPreferencesStore.getState().theme;
+
+  const usedTheme =
+    savedTheme === "system" ? (deviceTheme ?? "light") : savedTheme;
+  return Themes[usedTheme];
 }

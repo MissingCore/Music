@@ -5,11 +5,16 @@ import {
   TextWidget,
 } from "react-native-android-widget";
 
+import { BorderRadius } from "~/constants/Styles";
 import type { WidgetBaseProps } from "./types";
 
 type WidgetProps = WidgetBaseProps & {
   height: number;
   width: number;
+  theme: Record<
+    "canvas" | "surface" | "onSurface" | "foreground",
+    `#${string}`
+  >;
 };
 
 function Artwork({
@@ -26,7 +31,7 @@ function Artwork({
       <ImageWidget
         image={artwork ?? require("~/resources/images/music-glyph.png")}
         imageHeight={height}
-        imageWidth={width}
+        imageWidth={height}
       />
     </OverlapWidget>
   );
@@ -62,24 +67,15 @@ export function MusicPlayerWidget(props: WidgetProps) {
       style={{
         height: "match_parent",
         width: "match_parent",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#ffffff",
-        borderRadius: 24,
+        overflow: "hidden",
+        backgroundColor: props.theme.canvas,
+        borderRadius: BorderRadius.xl,
       }}
     >
-      <TextWidget
-        text={props.track.title}
-        style={{
-          fontSize: 32,
-          fontFamily: "Inter-Regular",
-          color: "#000000",
-        }}
-      />
       <Artwork
         artwork={props.track.artwork}
         height={props.height}
-        width={props.width / 4}
+        width={props.width}
       />
     </FlexWidget>
   );
