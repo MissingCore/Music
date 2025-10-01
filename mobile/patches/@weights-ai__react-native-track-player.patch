@@ -11,17 +11,17 @@ index 9a2ee90172ab9800fd5196ef8f9281b9ee981fbb..12e526cba091ff2400db4f24f3395166
          const val EVENT_INTENT = "com.doublesymmetry.trackplayer.event"
      }
 diff --git a/android/src/main/java/com/doublesymmetry/trackplayer/service/MusicService.kt b/android/src/main/java/com/doublesymmetry/trackplayer/service/MusicService.kt
-index 3e1c23e88c33a8197fc45180063fd192896ae829..16adb95c422ba0e9369eae04c0c65a3080039c1f 100644
+index 3e1c23e88c33a8197fc45180063fd192896ae829..30b3b1ecf4d2b87d0d3ab26c24f1950f9dfcc538 100644
 --- a/android/src/main/java/com/doublesymmetry/trackplayer/service/MusicService.kt
 +++ b/android/src/main/java/com/doublesymmetry/trackplayer/service/MusicService.kt
-@@ -792,6 +792,7 @@ class MusicService : HeadlessJsTaskService() {
-                     stopForeground(true)
-                 }
- 
+@@ -782,6 +782,7 @@ class MusicService : HeadlessJsTaskService() {
+         when (appKilledPlaybackBehavior) {
+             AppKilledPlaybackBehavior.PAUSE_PLAYBACK -> player.pause()
+             AppKilledPlaybackBehavior.STOP_PLAYBACK_AND_REMOVE_NOTIFICATION -> {
 +                emit(MusicEvents.SERVICE_KILLED)
-                 stopSelf()
-                 exitProcess(0)
-             }
+                 player.clear()
+                 player.stop()
+ 
 diff --git a/lib/src/constants/Event.d.ts b/lib/src/constants/Event.d.ts
 index 1abe5418f6c3a143f6c7884f6a33efe343e236f9..6e6e17be8ec791621b4255ea9331995e81d3b7f3 100644
 --- a/lib/src/constants/Event.d.ts
