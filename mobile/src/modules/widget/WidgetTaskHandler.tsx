@@ -4,7 +4,7 @@ import { getMusicWidgetData } from "./utils";
 import { MusicPlayerWidget } from "./MusicPlayerWidget";
 
 const nameToWidget = {
-  Music: MusicPlayerWidget,
+  MusicPlayer: MusicPlayerWidget,
 };
 
 export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
