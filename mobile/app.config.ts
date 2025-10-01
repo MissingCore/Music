@@ -5,14 +5,16 @@ const widgetConfig: WithAndroidWidgetsParams = {
   fonts: ["./assets/fonts/Inter-Regular.ttf"],
   widgets: [
     {
-      name: "ResizeableMusic",
-      label: "Resizeable Music",
+      name: "MusicPlayer",
+      label: "Music Player",
       minWidth: "320dp",
       minHeight: "120dp",
-      targetCellWidth: 5,
-      targetCellHeight: 2,
+      targetCellWidth: 2,
+      targetCellHeight: 1,
       description: "Controls media played from MissingCore Music app.",
-      previewImage: "./assets/widget/resizeable-music.png",
+      previewImage: "./assets/widget/music-player.png",
+
+      resizeMode: "horizontal",
     },
   ],
 };

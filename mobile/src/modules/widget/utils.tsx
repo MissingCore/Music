@@ -6,7 +6,7 @@ import { musicStore } from "~/modules/media/services/Music";
 import { getIsPlaying } from "~/modules/media/hooks/useIsPlaying";
 
 import type { WidgetBaseProps, WidgetTrack } from "./types";
-import { ResizeableMusicWidget } from "./ResizableMusicWidget";
+import { MusicPlayerWidget } from "./MusicPlayerWidget";
 
 export async function getMusicWidgetData(): Promise<WidgetBaseProps> {
   const { activeTrack } = musicStore.getState();
@@ -27,9 +27,9 @@ export async function revalidateMusicWidget() {
   const musicContextData = await getMusicWidgetData();
 
   requestWidgetUpdate({
-    widgetName: "ResizeableMusic",
+    widgetName: "MusicPlayer",
     renderWidget: (props) => (
-      <ResizeableMusicWidget {...props} {...musicContextData} />
+      <MusicPlayerWidget {...props} {...musicContextData} />
     ),
     widgetNotFound: () => {},
   });

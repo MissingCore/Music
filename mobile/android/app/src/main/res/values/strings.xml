@@ -1,4 +1,4 @@
 <resources>
   <string name="app_name">Music</string>
-  <string name="widget_resizeablemusic_description" translatable="false">Controls media played from MissingCore Music app.</string>
+  <string name="widget_musicplayer_description" translatable="false">Controls media played from MissingCore Music app.</string>
 </resources>

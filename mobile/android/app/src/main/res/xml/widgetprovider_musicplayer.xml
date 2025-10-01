@@ -2,17 +2,17 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="320dp"
     android:minHeight="120dp"
-    android:targetCellWidth="5"
-    android:targetCellHeight="2"
+    android:targetCellWidth="2"
+    android:targetCellHeight="1"
 
 
 
-    android:resizeMode="none"
+    android:resizeMode="horizontal"
 
-    android:description="@string/widget_resizeablemusic_description"
+    android:description="@string/widget_musicplayer_description"
 
     android:initialLayout="@layout/rn_widget"
-    android:previewImage="@drawable/resizeablemusic_preview"
+    android:previewImage="@drawable/musicplayer_preview"
 
 
 

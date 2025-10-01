@@ -60,12 +60,12 @@
     </activity>
 
     <service android:name="com.reactnativeandroidwidget.RNWidgetCollectionService" android:permission="android.permission.BIND_REMOTEVIEWS"/>
-    <receiver android:name=".widget.ResizeableMusic" android:exported="false" android:label="Resizeable Music">
+    <receiver android:name=".widget.MusicPlayer" android:exported="false" android:label="Music Player">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
         <action android:name="com.cyanchill.missingcore.music.WIDGET_CLICK"/>
       </intent-filter>
-      <meta-data android:name="android.appwidget.provider" android:resource="@xml/widgetprovider_resizeablemusic"/>
+      <meta-data android:name="android.appwidget.provider" android:resource="@xml/widgetprovider_musicplayer"/>
     </receiver>
 
     <!-- Disable Sentry's ANR feature. -->

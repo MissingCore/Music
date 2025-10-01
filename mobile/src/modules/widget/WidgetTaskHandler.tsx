@@ -1,10 +1,10 @@
 import type { WidgetTaskHandlerProps } from "react-native-android-widget";
 
 import { getMusicWidgetData } from "./utils";
-import { ResizeableMusicWidget } from "./ResizableMusicWidget";
+import { MusicPlayerWidget } from "./MusicPlayerWidget";
 
 const nameToWidget = {
-  ResizeableMusic: ResizeableMusicWidget,
+  Music: MusicPlayerWidget,
 };
 
 export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {

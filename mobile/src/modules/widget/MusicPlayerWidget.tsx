@@ -32,7 +32,7 @@ function Artwork({
   );
 }
 
-export function ResizeableMusicWidget(props: WidgetProps) {
+export function MusicPlayerWidget(props: WidgetProps) {
   if (!props.track) {
     return (
       <FlexWidget
