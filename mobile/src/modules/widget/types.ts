@@ -7,5 +7,4 @@ export type WidgetTrack = {
 export type WidgetBaseProps = {
   track: WidgetTrack | undefined;
   isPlaying: boolean;
-  // progress: `${string}%`;
 };

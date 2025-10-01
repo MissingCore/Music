@@ -1,82 +1,92 @@
-import {
-  FlexWidget,
-  ImageWidget,
-  OverlapWidget,
-  TextWidget,
+import type {
+  ClickActionProps,
+  FlexWidgetStyle,
 } from "react-native-android-widget";
+import { FlexWidget, ImageWidget } from "react-native-android-widget";
 
-import { BorderRadius } from "~/constants/Styles";
+import { BorderRadius, Colors } from "~/constants/Styles";
 import type { WidgetBaseProps } from "./types";
 
 type WidgetProps = WidgetBaseProps & {
   height: number;
   width: number;
-  theme: Record<
-    "canvas" | "surface" | "onSurface" | "foreground",
-    `#${string}`
-  >;
 };
 
-function Artwork({
-  height,
-  width,
-  artwork,
-}: {
-  height: number;
-  width: number;
-  artwork: string | null;
-}) {
+export function MusicPlayerWidget(props: WidgetProps) {
+  const size = Math.min(props.width, props.height);
+
+  if (!props.track) return <NotFoundWidget size={size} />;
   return (
-    <OverlapWidget style={{ height, width }}>
-      <ImageWidget
-        image={artwork ?? require("~/resources/images/music-glyph.png")}
-        imageHeight={height}
-        imageWidth={height}
-      />
-    </OverlapWidget>
+    <WidgetAlignment>
+      <SquareWidgetBase size={size}>
+        <Artwork size={size} artwork={props.track.artwork} />
+      </SquareWidgetBase>
+    </WidgetAlignment>
   );
 }
 
-export function MusicPlayerWidget(props: WidgetProps) {
-  if (!props.track) {
-    return (
-      <FlexWidget
-        style={{
-          height: "match_parent",
-          width: "match_parent",
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "#ffffff",
-          borderRadius: 24,
-        }}
+/** Default placeholder widget when we have no data. */
+function NotFoundWidget({ size }: { size: number }) {
+  return (
+    <WidgetAlignment>
+      <SquareWidgetBase
+        clickAction="OPEN_APP"
+        size={size}
+        style={{ alignItems: "center", justifyContent: "center" }}
       >
-        <TextWidget
-          text="No Track Found"
-          style={{
-            fontSize: 32,
-            fontFamily: "Inter-Regular",
-            color: "#000000",
-          }}
-        />
-      </FlexWidget>
-    );
-  }
+        <Artwork size={size} artwork={null} />
+      </SquareWidgetBase>
+    </WidgetAlignment>
+  );
+}
 
+//#region Layout Helpers
+function WidgetAlignment(props: { children: React.ReactNode }) {
   return (
     <FlexWidget
       style={{
         height: "match_parent",
         width: "match_parent",
-        overflow: "hidden",
-        backgroundColor: props.theme.canvas,
-        borderRadius: BorderRadius.xl,
+        alignItems: "center",
+        justifyContent: "center",
       }}
-    >
-      <Artwork
-        artwork={props.track.artwork}
-        height={props.height}
-        width={props.width}
-      />
-    </FlexWidget>
+      {...props}
+    />
   );
 }
+
+function SquareWidgetBase({
+  size,
+  style,
+  ...props
+}: ClickActionProps & {
+  size: number;
+  children: React.ReactNode;
+  style?: FlexWidgetStyle;
+}) {
+  return (
+    <FlexWidget
+      style={{
+        overflow: "hidden",
+        height: size,
+        width: size,
+        backgroundColor: Colors.neutral10,
+        borderRadius: BorderRadius.xl,
+        ...style,
+      }}
+      {...props}
+    />
+  );
+}
+
+function Artwork({ size, artwork }: { size: number; artwork: string | null }) {
+  const imageSize = !artwork ? (size * 5) / 6 : size;
+  return (
+    <ImageWidget
+      image={artwork ?? require("~/resources/images/music-glyph.png")}
+      imageHeight={imageSize}
+      imageWidth={imageSize}
+    />
+  );
+}
+//#endregion
