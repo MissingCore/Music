@@ -1,7 +1,5 @@
 import type { WidgetTaskHandlerProps } from "react-native-android-widget";
 
-import { getTheme } from "~/hooks/useTheme";
-
 import { getMusicWidgetData } from "./utils";
 import { MusicPlayerWidget } from "./MusicPlayerWidget";
 
@@ -15,8 +13,7 @@ export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
     nameToWidget[widgetInfo.widgetName as keyof typeof nameToWidget];
 
   const musicContextData = await getMusicWidgetData();
-  const currTheme = getTheme();
-  const widgetData = { ...widgetInfo, ...musicContextData, theme: currTheme };
+  const widgetData = { ...widgetInfo, ...musicContextData };
 
   switch (props.widgetAction) {
     case "WIDGET_ADDED":

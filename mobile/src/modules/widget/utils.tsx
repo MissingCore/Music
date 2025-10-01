@@ -4,7 +4,6 @@ import { getTrackCover } from "~/db/utils";
 
 import { musicStore } from "~/modules/media/services/Music";
 import { getIsPlaying } from "~/modules/media/hooks/useIsPlaying";
-import { getTheme } from "~/hooks/useTheme";
 
 import type { WidgetBaseProps, WidgetTrack } from "./types";
 import { MusicPlayerWidget } from "./MusicPlayerWidget";
@@ -26,12 +25,11 @@ export async function getMusicWidgetData(): Promise<WidgetBaseProps> {
 
 export async function revalidateMusicWidget() {
   const musicContextData = await getMusicWidgetData();
-  const currTheme = getTheme();
 
   requestWidgetUpdate({
     widgetName: "MusicPlayer",
     renderWidget: (props) => (
-      <MusicPlayerWidget {...props} {...musicContextData} theme={currTheme} />
+      <MusicPlayerWidget {...props} {...musicContextData} />
     ),
     widgetNotFound: () => {},
   });
