@@ -1,5 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
+import { WidgetPreview } from "react-native-android-widget";
 
 import { History } from "~/resources/icons/History";
 import {
@@ -18,10 +20,21 @@ import {
   MediaCardPlaceholderContent,
   useMediaCardListPreset,
 } from "~/modules/media/components/MediaCard";
+import { ResizeableMusicWidget } from "~/modules/widget/ResizableMusicWidget";
 
 export default function Home() {
   const { t } = useTranslation();
   const navigation = useNavigation();
+
+  return (
+    <View className="flex-1 items-center justify-center">
+      <WidgetPreview
+        renderWidget={() => <ResizeableMusicWidget />}
+        width={320}
+        height={200}
+      />
+    </View>
+  );
 
   return (
     <StandardScrollLayout
