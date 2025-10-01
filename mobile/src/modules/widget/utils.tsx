@@ -26,10 +26,16 @@ export async function getMusicWidgetData(): Promise<WidgetBaseProps> {
   return widgetData;
 }
 
-export async function revalidateMusicWidget(options?: { openApp?: boolean }) {
-  const musicContextData = options?.openApp
-    ? sessionStore.getState().latestWidgetData
-    : await getMusicWidgetData();
+export async function revalidateMusicWidget(options?: {
+  /** Switch the widget's click event to open the app. */
+  openApp?: boolean;
+  /** Don't read the data from the cache. */
+  fetchLatest?: boolean;
+}) {
+  let musicContextData = sessionStore.getState().latestWidgetData;
+  if (!options?.openApp || options.fetchLatest) {
+    musicContextData = await getMusicWidgetData();
+  }
 
   requestWidgetUpdate({
     widgetName: "MusicPlayer",
