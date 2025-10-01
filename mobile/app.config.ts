@@ -7,14 +7,12 @@ const widgetConfig: WithAndroidWidgetsParams = {
     {
       name: "MusicPlayer",
       label: "Music Player",
-      minWidth: "250dp",
+      minWidth: "110dp",
       minHeight: "110dp",
-      targetCellWidth: 4,
+      targetCellWidth: 2,
       targetCellHeight: 2,
       description: "Controls media played from MissingCore Music app.",
       previewImage: "./assets/widget/music-player.png",
-
-      resizeMode: "horizontal",
     },
   ],
 };
