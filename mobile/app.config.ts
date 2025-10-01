@@ -1,4 +1,21 @@
 import type { ExpoConfig } from "expo/config";
+import type { WithAndroidWidgetsParams } from "react-native-android-widget";
+
+const widgetConfig: WithAndroidWidgetsParams = {
+  fonts: ["./assets/fonts/Inter-Regular.ttf"],
+  widgets: [
+    {
+      name: "ResizableMusic",
+      label: "Resizeable Music",
+      minWidth: "320dp",
+      minHeight: "120dp",
+      targetCellWidth: 5,
+      targetCellHeight: 2,
+      description: "Controls media played from MissingCore Music app.",
+      previewImage: "./assets/widget/resizeable-music.png",
+    },
+  ],
+};
 
 export default (): ExpoConfig => ({
   name: "Music",
@@ -84,6 +101,7 @@ export default (): ExpoConfig => ({
       "react-native-edge-to-edge",
       { android: { enforceNavigationBarContrast: false } },
     ],
+    ["react-native-android-widget", widgetConfig],
   ],
   newArchEnabled: false,
 });

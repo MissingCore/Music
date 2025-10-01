@@ -16,7 +16,7 @@ export function ResizeableMusicWidget() {
         text="Hello"
         style={{
           fontSize: 32,
-          fontFamily: "Inter",
+          fontFamily: "Inter-Regular",
           color: "#000000",
         }}
       />

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="320dp"
+    android:minHeight="120dp"
+    android:targetCellWidth="5"
+    android:targetCellHeight="2"
+
+
+
+    android:resizeMode="none"
+
+    android:description="@string/widget_resizablemusic_description"
+
+    android:initialLayout="@layout/rn_widget"
+    android:previewImage="@drawable/resizablemusic_preview"
+
+
+
+    android:updatePeriodMillis="0"
+    android:widgetCategory="home_screen">
+</appwidget-provider>
