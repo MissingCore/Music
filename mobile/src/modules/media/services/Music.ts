@@ -118,8 +118,7 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
         queueList: [],
       });
       await TrackPlayer.reset();
-
-      resetMusicPlayerWidget();
+      await resetMusicPlayerWidget();
     },
     resetOnCrash: async () => {
       try {

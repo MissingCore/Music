@@ -1,13 +1,11 @@
-import { requestWidgetUpdate } from "react-native-android-widget";
-
 import { getTrackCover } from "~/db/utils";
 
 import { sessionStore } from "~/services/SessionStore";
 import { musicStore } from "~/modules/media/services/Music";
 import { getIsPlaying } from "~/modules/media/hooks/useIsPlaying";
 
-import type { WidgetBaseProps, WidgetTrack } from "./types";
-import { MusicPlayerWidget } from "./MusicPlayerWidget";
+import { updateMusicPlayerWidget } from "./update";
+import type { WidgetBaseProps, WidgetTrack } from "../types";
 
 export async function getMusicWidgetData(): Promise<WidgetBaseProps> {
   const { activeTrack } = musicStore.getState();
@@ -26,7 +24,7 @@ export async function getMusicWidgetData(): Promise<WidgetBaseProps> {
   return widgetData;
 }
 
-export async function revalidateMusicWidget(options?: {
+export async function revalidateMusicPlayerWidget(options?: {
   /** Switch the widget's click event to open the app. */
   openApp?: boolean;
   /** Don't read the data from the cache. */
@@ -37,15 +35,8 @@ export async function revalidateMusicWidget(options?: {
     musicContextData = await getMusicWidgetData();
   }
 
-  requestWidgetUpdate({
-    widgetName: "MusicPlayer",
-    renderWidget: (props) => (
-      <MusicPlayerWidget
-        {...props}
-        {...musicContextData}
-        openApp={options?.openApp}
-      />
-    ),
-    widgetNotFound: () => {},
+  await updateMusicPlayerWidget({
+    ...musicContextData,
+    openApp: options?.openApp,
   });
 }
