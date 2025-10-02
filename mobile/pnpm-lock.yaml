@@ -14,6 +14,9 @@ patchedDependencies:
   '@react-native-assets/slider':
     hash: t2vslaq3o2r5rmxjymsu3p2x2m
     path: patches/@react-native-assets__slider.patch
+  '@weights-ai/react-native-track-player':
+    hash: kbptbpw4jqfx4t5zx4c5wzbroy
+    path: patches/@weights-ai__react-native-track-player.patch
   expo-file-system:
     hash: hgu53i2ax26gwnr5j43lvhx4h4
     path: patches/expo-file-system.patch
@@ -75,7 +78,7 @@ importers:
         version: 5.90.2(react@19.0.0)
       '@weights-ai/react-native-track-player':
         specifier: ^4.1.6
-        version: 4.1.6(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        version: 4.1.6(patch_hash=kbptbpw4jqfx4t5zx4c5wzbroy)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -142,6 +145,9 @@ importers:
       react-native:
         specifier: ^0.79.6
         version: 0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0)
+      react-native-android-widget:
+        specifier: ^0.17.1
+        version: 0.17.1(expo@53.0.23(@babel/core@7.28.4)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-bootsplash:
         specifier: ^6.3.11
         version: 6.3.11(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -4563,6 +4569,16 @@ packages:
   react-is@19.1.1:
     resolution: {integrity: sha512-tr41fA15Vn8p4X9ntI+yCyeGSf1TlYaY5vlTZfQmeLBrFo3psOPX6HhTDnFNL9uj3EhP0KAQ80cugCl4b4BERA==}
 
+  react-native-android-widget@0.17.1:
+    resolution: {integrity: sha512-VWq+rHzJsRmLZK1qwMeD18N9Br6E0UdamztVnbu/5xJKp21lRMDljk1llCnTSPJPyyzqhCprU3mmPu/WWCqFLA==}
+    peerDependencies:
+      expo: '>=47.0.0'
+      react: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      expo:
+        optional: true
+
   react-native-bootsplash@6.3.11:
     resolution: {integrity: sha512-VA102LDBPyqMJzRtIb5H6MWsKSSpjzW49e34E2kpOivmkYllLlOpkpB/Q6Yvrt4u3EbkgOxB5gerJERhvcO4Tg==}
     hasBin: true
@@ -7438,7 +7454,7 @@ snapshots:
 
   '@vscode/sudo-prompt@9.3.1': {}
 
-  '@weights-ai/react-native-track-player@4.1.6(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
+  '@weights-ai/react-native-track-player@4.1.6(patch_hash=kbptbpw4jqfx4t5zx4c5wzbroy)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
     dependencies:
       react: 19.0.0
       react-native: 0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0)
@@ -10390,6 +10406,13 @@ snapshots:
   react-is@18.3.1: {}
 
   react-is@19.1.1: {}
+
+  react-native-android-widget@0.17.1(expo@53.0.23(@babel/core@7.28.4)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+      react-native: 0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0)
+    optionalDependencies:
+      expo: 53.0.23(@babel/core@7.28.4)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
 
   react-native-bootsplash@6.3.11(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:

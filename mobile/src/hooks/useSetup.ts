@@ -13,6 +13,7 @@ import {
   getTrackPlayerOptions,
   setupPlayer,
 } from "~/lib/react-native-track-player";
+import { revalidateArtworkPlayerWidget } from "~/modules/widget/utils";
 
 /**
  * Ensure our Zustand stores are hydrated before we do anything, making
@@ -35,6 +36,10 @@ export function useSetup() {
       // rely on its initialization.
       await userPreferencesStore.persist.rehydrate();
       await musicStore.persist.rehydrate();
+
+      // Ensure widget has up-to-date data as the Music store isn't
+      // immediately hydrated.
+      await revalidateArtworkPlayerWidget({ openApp: true, fetchLatest: true });
 
       const { activeId } = musicStore.getState();
       const { saveLastPosition, continuePlaybackOnDismiss } =

@@ -1,6 +1,7 @@
 {
   "name": "music",
   "private": true,
+  "main": "index.ts",
   "version": "2.5.2",
   "description": "A Nothing inspired music player.",
   "license": "AGPL-3.0-only",
@@ -62,6 +63,7 @@
     "react": "19.0.0",
     "react-i18next": "^16.0.0",
     "react-native": "^0.79.6",
+    "react-native-android-widget": "^0.17.1",
     "react-native-bootsplash": "^6.3.11",
     "react-native-draglist": "github:MissingCore/react-native-draglist#a3847ce4f9265853a12b865ba30902e907d43c20",
     "react-native-edge-to-edge": "^1.7.0",
@@ -114,7 +116,8 @@
       "react-native-gesture-handler": "patches/react-native-gesture-handler.patch",
       "@react-native-assets/slider": "patches/@react-native-assets__slider.patch",
       "@backpackapp-io/react-native-toast": "patches/@backpackapp-io__react-native-toast.patch",
-      "expo-file-system": "patches/expo-file-system.patch"
+      "expo-file-system": "patches/expo-file-system.patch",
+      "@weights-ai/react-native-track-player": "patches/@weights-ai__react-native-track-player.patch"
     }
   }
 }

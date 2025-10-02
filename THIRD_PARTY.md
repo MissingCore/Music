@@ -44,6 +44,7 @@
 | react | MIT | https://github.com/facebook/react |
 | react-i18next | MIT | https://github.com/i18next/react-i18next |
 | react-native | MIT | https://github.com/facebook/react-native |
+| react-native-android-widget | MIT | https://github.com/sAleksovski/react-native-android-widget |
 | react-native-bootsplash | MIT | https://github.com/zoontek/react-native-bootsplash |
 | react-native-draglist | MIT | https://github.com/fivecar/react-native-draglist |
 | react-native-edge-to-edge | MIT | https://github.com/zoontek/react-native-edge-to-edge |

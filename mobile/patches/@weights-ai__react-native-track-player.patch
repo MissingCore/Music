@@ -1,0 +1,106 @@
+diff --git a/android/src/main/java/com/doublesymmetry/trackplayer/module/MusicEvents.kt b/android/src/main/java/com/doublesymmetry/trackplayer/module/MusicEvents.kt
+index 9a2ee90172ab9800fd5196ef8f9281b9ee981fbb..12e526cba091ff2400db4f24f339516653ad89bf 100644
+--- a/android/src/main/java/com/doublesymmetry/trackplayer/module/MusicEvents.kt
++++ b/android/src/main/java/com/doublesymmetry/trackplayer/module/MusicEvents.kt
+@@ -54,6 +54,7 @@ class MusicEvents(private val reactContext: ReactContext) : BroadcastReceiver()
+ 
+         // Other
+         const val PLAYER_ERROR = "player-error"
++        const val SERVICE_KILLED = "service-killed"
+ 
+         const val EVENT_INTENT = "com.doublesymmetry.trackplayer.event"
+     }
+diff --git a/android/src/main/java/com/doublesymmetry/trackplayer/service/MusicService.kt b/android/src/main/java/com/doublesymmetry/trackplayer/service/MusicService.kt
+index 3e1c23e88c33a8197fc45180063fd192896ae829..93185a2bbffcea1eee63e368ee298afd5367d312 100644
+--- a/android/src/main/java/com/doublesymmetry/trackplayer/service/MusicService.kt
++++ b/android/src/main/java/com/doublesymmetry/trackplayer/service/MusicService.kt
+@@ -782,18 +782,23 @@ class MusicService : HeadlessJsTaskService() {
+         when (appKilledPlaybackBehavior) {
+             AppKilledPlaybackBehavior.PAUSE_PLAYBACK -> player.pause()
+             AppKilledPlaybackBehavior.STOP_PLAYBACK_AND_REMOVE_NOTIFICATION -> {
++                emit(MusicEvents.SERVICE_KILLED)
+                 player.clear()
+                 player.stop()
+ 
+-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+-                    stopForeground(STOP_FOREGROUND_REMOVE)
+-                } else {
+-                    @Suppress("DEPRECATION")
+-                    stopForeground(true)
+-                }
++                scope.launch {
++                    delay(1000)
+ 
+-                stopSelf()
+-                exitProcess(0)
++                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
++                        stopForeground(STOP_FOREGROUND_REMOVE)
++                    } else {
++                        @Suppress("DEPRECATION")
++                        stopForeground(true)
++                    }
++
++                    stopSelf()
++                    exitProcess(0)
++                }
+             }
+             else -> {}
+         }
+diff --git a/lib/src/constants/Event.d.ts b/lib/src/constants/Event.d.ts
+index 1abe5418f6c3a143f6c7884f6a33efe343e236f9..6e6e17be8ec791621b4255ea9331995e81d3b7f3 100644
+--- a/lib/src/constants/Event.d.ts
++++ b/lib/src/constants/Event.d.ts
+@@ -1,5 +1,6 @@
+ export declare enum Event {
+     PlayerError = "player-error",
++    ServiceKilled = "service-killed",
+     /** Fired when the state of the player changes. */
+     PlaybackState = "playback-state",
+     /** Fired when a playback error occurs. */
+diff --git a/lib/src/constants/Event.js b/lib/src/constants/Event.js
+index 9a5676d066c767b312a2958edf3bf47806a4404f..39faa10719cbdcd9e0f09715676ecf485db73861 100644
+--- a/lib/src/constants/Event.js
++++ b/lib/src/constants/Event.js
+@@ -1,6 +1,7 @@
+ export var Event;
+ (function (Event) {
+     Event["PlayerError"] = "player-error";
++    Event["ServiceKilled"] = "service-killed";
+     /** Fired when the state of the player changes. */
+     Event["PlaybackState"] = "playback-state";
+     /** Fired when a playback error occurs. */
+diff --git a/lib/src/interfaces/events/EventPayloadByEvent.d.ts b/lib/src/interfaces/events/EventPayloadByEvent.d.ts
+index 00082362b41e4d37d2d71f7b72393124014b2fb2..4e0bf20f2540f0590f56021a2aac501a71bbad9d 100644
+--- a/lib/src/interfaces/events/EventPayloadByEvent.d.ts
++++ b/lib/src/interfaces/events/EventPayloadByEvent.d.ts
+@@ -20,6 +20,7 @@ import type { RemoteSetRatingEvent } from './RemoteSetRatingEvent';
+ import type { RemoteSkipEvent } from './RemoteSkipEvent';
+ export type EventPayloadByEvent = {
+     [Event.PlayerError]: PlayerErrorEvent;
++    [Event.ServiceKilled]: never;
+     [Event.PlaybackState]: PlaybackState;
+     [Event.PlaybackError]: PlaybackErrorEvent;
+     [Event.PlaybackQueueEnded]: PlaybackQueueEndedEvent;
+diff --git a/src/constants/Event.ts b/src/constants/Event.ts
+index 09149463f9f00a669fb08e8110aee0fa114bdc30..5759c6bcdb154ffb1a96558658b0abb4b50143d7 100644
+--- a/src/constants/Event.ts
++++ b/src/constants/Event.ts
+@@ -1,5 +1,6 @@
+ export enum Event {
+   PlayerError = 'player-error',
++  ServiceKilled = 'service-killed',
+ 
+   /** Fired when the state of the player changes. */
+   PlaybackState = 'playback-state',
+diff --git a/src/interfaces/events/EventPayloadByEvent.ts b/src/interfaces/events/EventPayloadByEvent.ts
+index a9d11920a69f0e3c6d358cd3aae796fb3dd1bad3..f5f90fb3f6f213b5820713e820659ae139fdabf8 100644
+--- a/src/interfaces/events/EventPayloadByEvent.ts
++++ b/src/interfaces/events/EventPayloadByEvent.ts
+@@ -22,6 +22,7 @@ import type { RemoteSkipEvent } from './RemoteSkipEvent';
+ 
+ export type EventPayloadByEvent = {
+   [Event.PlayerError]: PlayerErrorEvent;
++  [Event.ServiceKilled]: never;
+   [Event.PlaybackState]: PlaybackState;
+   [Event.PlaybackError]: PlaybackErrorEvent;
+   [Event.PlaybackQueueEnded]: PlaybackQueueEndedEvent;

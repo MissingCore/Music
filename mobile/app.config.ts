@@ -1,4 +1,21 @@
 import type { ExpoConfig } from "expo/config";
+import type { WithAndroidWidgetsParams } from "react-native-android-widget";
+
+const widgetConfig: WithAndroidWidgetsParams = {
+  widgets: [
+    {
+      name: "ArtworkPlayer",
+      label: "🧪 Artwork Player",
+      minWidth: "110dp",
+      minHeight: "110dp",
+      targetCellWidth: 2,
+      targetCellHeight: 2,
+      description:
+        "[Experimental] Displays track artwork and allows for play/pause.",
+      previewImage: "./assets/widget/artwork-player.png",
+    },
+  ],
+};
 
 export default (): ExpoConfig => ({
   name: "Music",
@@ -84,6 +101,7 @@ export default (): ExpoConfig => ({
       "react-native-edge-to-edge",
       { android: { enforceNavigationBarContrast: false } },
     ],
+    ["react-native-android-widget", widgetConfig],
   ],
   newArchEnabled: false,
 });
