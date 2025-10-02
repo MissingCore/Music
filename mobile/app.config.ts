@@ -2,17 +2,16 @@ import type { ExpoConfig } from "expo/config";
 import type { WithAndroidWidgetsParams } from "react-native-android-widget";
 
 const widgetConfig: WithAndroidWidgetsParams = {
-  fonts: ["./assets/fonts/Inter-Regular.ttf"],
   widgets: [
     {
-      name: "MusicPlayer",
-      label: "Music Player",
+      name: "ArtworkPlayer",
+      label: "Artwork Player",
       minWidth: "110dp",
       minHeight: "110dp",
       targetCellWidth: 2,
       targetCellHeight: 2,
-      description: "Controls media played from MissingCore Music app.",
-      previewImage: "./assets/widget/music-player.png",
+      description: "Displays track artwork and allows for play/pause.",
+      previewImage: "./assets/widget/artwork-player.png",
     },
   ],
 };

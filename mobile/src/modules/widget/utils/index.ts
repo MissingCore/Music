@@ -4,10 +4,10 @@ import { sessionStore } from "~/services/SessionStore";
 import { musicStore } from "~/modules/media/services/Music";
 import { getIsPlaying } from "~/modules/media/hooks/useIsPlaying";
 
-import { updateMusicPlayerWidget } from "./update";
+import { updateArtworkPlayerWidget } from "./update";
 import type { WidgetBaseProps, WidgetTrack } from "../types";
 
-export async function getMusicWidgetData(): Promise<WidgetBaseProps> {
+export async function getArtworkPlayerWidgetData(): Promise<WidgetBaseProps> {
   const { activeTrack } = musicStore.getState();
   let track: WidgetTrack | undefined = undefined;
   if (activeTrack) {
@@ -24,7 +24,7 @@ export async function getMusicWidgetData(): Promise<WidgetBaseProps> {
   return widgetData;
 }
 
-export async function revalidateMusicPlayerWidget(options?: {
+export async function revalidateArtworkPlayerWidget(options?: {
   /** Switch the widget's click event to open the app. */
   openApp?: boolean;
   /** Don't read the data from the cache. */
@@ -32,10 +32,10 @@ export async function revalidateMusicPlayerWidget(options?: {
 }) {
   let musicContextData = sessionStore.getState().latestWidgetData;
   if (!options?.openApp || options.fetchLatest) {
-    musicContextData = await getMusicWidgetData();
+    musicContextData = await getArtworkPlayerWidgetData();
   }
 
-  await updateMusicPlayerWidget({
+  await updateArtworkPlayerWidget({
     ...musicContextData,
     openApp: options?.openApp,
   });

@@ -32,6 +32,7 @@
     <meta-data android:name="expo.modules.updates.ENABLED" android:value="false"/>
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH" android:value="ALWAYS"/>
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS" android:value="0"/>
+    <service android:name="com.reactnativeandroidwidget.RNWidgetCollectionService" android:permission="android.permission.BIND_REMOTEVIEWS"/>
     <activity android:name=".MainActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|uiMode" android:launchMode="singleTask" android:windowSoftInputMode="adjustResize" android:theme="@style/BootTheme" android:exported="true" android:screenOrientation="portrait">
       <intent-filter>
         <!-- Expose that we're a music player. -->
@@ -59,13 +60,12 @@
       </intent-filter>
     </activity>
 
-    <service android:name="com.reactnativeandroidwidget.RNWidgetCollectionService" android:permission="android.permission.BIND_REMOTEVIEWS"/>
-    <receiver android:name=".widget.MusicPlayer" android:exported="false" android:label="Music Player">
+    <receiver android:name=".widget.ArtworkPlayer" android:exported="false" android:label="Artwork Player">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
         <action android:name="com.cyanchill.missingcore.music.WIDGET_CLICK"/>
       </intent-filter>
-      <meta-data android:name="android.appwidget.provider" android:resource="@xml/widgetprovider_musicplayer"/>
+      <meta-data android:name="android.appwidget.provider" android:resource="@xml/widgetprovider_artworkplayer"/>
     </receiver>
 
     <!-- Disable Sentry's ANR feature. -->

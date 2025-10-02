@@ -9,10 +9,10 @@
 
     android:resizeMode="none"
 
-    android:description="@string/widget_musicplayer_description"
+    android:description="@string/widget_artworkplayer_description"
 
     android:initialLayout="@layout/rn_widget"
-    android:previewImage="@drawable/musicplayer_preview"
+    android:previewImage="@drawable/artworkplayer_preview"
 
 
 

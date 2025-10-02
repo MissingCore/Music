@@ -19,7 +19,7 @@ type WidgetProps = WidgetBaseProps & {
   openApp?: boolean;
 };
 
-export function MusicPlayerWidget(props: WidgetProps) {
+export function ArtworkPlayerWidget(props: WidgetProps) {
   const size = Math.min(props.width, props.height);
   const overlayShown = props.overlayState !== undefined;
 

@@ -15,7 +15,7 @@ import { router } from "~/navigation/utils/router";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
-import { revalidateMusicPlayerWidget } from "~/modules/widget/utils";
+import { revalidateArtworkPlayerWidget } from "~/modules/widget/utils";
 
 /** Context to whether we should resume playback after ducking. */
 let resumeAfterDuck: boolean = false;
@@ -35,7 +35,7 @@ const ValidErrors = [
 /** How we handle the actions in the media control notification. */
 export async function PlaybackService() {
   TrackPlayer.addEventListener(Event.ServiceKilled, async () => {
-    await revalidateMusicPlayerWidget({ openApp: true });
+    await revalidateArtworkPlayerWidget({ openApp: true });
   });
 
   TrackPlayer.addEventListener(Event.RemotePlay, async () => {
@@ -169,7 +169,7 @@ export async function PlaybackService() {
     if (e.index === 1) await TrackPlayer.remove(0);
     await RNTPManager.reloadNextTrack();
     musicStore.setState({ lastPosition: undefined });
-    await revalidateMusicPlayerWidget();
+    await revalidateArtworkPlayerWidget();
   });
 
   TrackPlayer.addEventListener(Event.PlaybackError, async (e) => {

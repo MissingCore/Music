@@ -3,19 +3,19 @@ import { requestWidgetUpdate } from "react-native-android-widget";
 import { sessionStore } from "~/services/SessionStore";
 
 import type { WidgetBaseProps } from "../types";
-import { MusicPlayerWidget } from "../MusicPlayerWidget";
+import { ArtworkPlayerWidget } from "../ArtworkPlayerWidget";
 
 /** Have widget render "not found" state which opens the app on click. */
-export async function resetMusicPlayerWidget() {
+export async function resetArtworkPlayerWidget() {
   const emptyState = { track: undefined, isPlaying: false };
   sessionStore.setState({ latestWidgetData: emptyState });
-  await updateMusicPlayerWidget(emptyState);
+  await updateArtworkPlayerWidget(emptyState);
 }
 
-/** Abstract updating the music player widget. */
-export async function updateMusicPlayerWidget(args: WidgetBaseProps) {
+/** Abstract updating the artwork player widget. */
+export async function updateArtworkPlayerWidget(args: WidgetBaseProps) {
   return requestWidgetUpdate({
-    widgetName: "MusicPlayer",
-    renderWidget: (props) => <MusicPlayerWidget {...props} {...args} />,
+    widgetName: "ArtworkPlayer",
+    renderWidget: (props) => <ArtworkPlayerWidget {...props} {...args} />,
   });
 }
