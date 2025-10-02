@@ -6,7 +6,7 @@ import type { TrackWithAlbum } from "~/db/schema";
 
 import { getTrack } from "~/api/track";
 
-import type { WidgetBaseProps } from "~/modules/widget/types";
+import type { PlayerWidgetData } from "~/modules/widget/types";
 
 interface SessionStore {
   /** The rate at which the media is played (from 0.25 to 2). */
@@ -18,7 +18,7 @@ interface SessionStore {
   displayedTrack: (TrackWithAlbum & { _checked: number }) | null;
 
   /** Store information about the last track displayed in the widget. */
-  latestWidgetData: WidgetBaseProps;
+  latestWidgetData: PlayerWidgetData;
 }
 
 export const sessionStore = createStore<SessionStore>()(() => ({

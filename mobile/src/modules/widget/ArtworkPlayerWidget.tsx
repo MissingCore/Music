@@ -1,7 +1,4 @@
-import type {
-  ClickActionProps,
-  FlexWidgetStyle,
-} from "react-native-android-widget";
+import type { ClickActionProps } from "react-native-android-widget";
 import {
   FlexWidget,
   ImageWidget,
@@ -10,14 +7,12 @@ import {
 } from "react-native-android-widget";
 
 import { Colors } from "~/constants/Styles";
-import type { WidgetBaseProps } from "./types";
+import type { PlayerWidgetData, WithDimensions } from "./types";
+import { WidgetBaseLayout } from "./components/WidgetBaseLayout";
 
-type WidgetProps = WidgetBaseProps & {
-  height: number;
-  width: number;
-  overlayState?: number;
-  openApp?: boolean;
-};
+type WidgetProps = WithDimensions<
+  PlayerWidgetData & { overlayState?: number; openApp?: boolean }
+>;
 
 export function ArtworkPlayerWidget(props: WidgetProps) {
   const size = Math.min(props.width, props.height);
@@ -25,89 +20,46 @@ export function ArtworkPlayerWidget(props: WidgetProps) {
 
   if (!props.track) return <NotFoundWidget size={size} />;
   return (
-    <WidgetAlignment>
-      <SquareWidgetBase size={size}>
-        <OverlapWidget>
-          <Artwork
-            clickAction={
-              props.openApp
-                ? "OPEN_APP"
-                : !overlayShown
-                  ? "PLAY_PAUSE"
-                  : undefined
-            }
+    <WidgetBaseLayout height={size} width={size}>
+      <OverlapWidget>
+        <Artwork
+          clickAction={
+            props.openApp
+              ? "OPEN_APP"
+              : !overlayShown
+                ? "PLAY_PAUSE"
+                : undefined
+          }
+          size={size}
+          artwork={props.track.artwork}
+        />
+        {overlayShown ? (
+          <SVGOverlay
             size={size}
-            artwork={props.track.artwork}
+            svgString={props.isPlaying ? playArrowSVG : pauseSVG}
+            opacityState={props.overlayState!}
           />
-          {overlayShown ? (
-            <SVGOverlay
-              size={size}
-              svgString={props.isPlaying ? playArrowSVG : pauseSVG}
-              opacityState={props.overlayState!}
-            />
-          ) : null}
-        </OverlapWidget>
-      </SquareWidgetBase>
-    </WidgetAlignment>
+        ) : null}
+      </OverlapWidget>
+    </WidgetBaseLayout>
   );
 }
 
 /** Default placeholder widget when we have no data. */
 function NotFoundWidget({ size }: { size: number }) {
   return (
-    <WidgetAlignment>
-      <SquareWidgetBase
-        clickAction="OPEN_APP"
-        size={size}
-        style={{ alignItems: "center", justifyContent: "center" }}
-      >
-        <Artwork size={size} artwork={null} />
-      </SquareWidgetBase>
-    </WidgetAlignment>
+    <WidgetBaseLayout
+      clickAction="OPEN_APP"
+      height={size}
+      width={size}
+      style={{ alignItems: "center", justifyContent: "center" }}
+    >
+      <Artwork size={size} artwork={null} />
+    </WidgetBaseLayout>
   );
 }
 
 //#region Layout Helpers
-function WidgetAlignment(props: { children: React.ReactNode }) {
-  return (
-    <FlexWidget
-      style={{
-        height: "match_parent",
-        width: "match_parent",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-      {...props}
-    />
-  );
-}
-
-function SquareWidgetBase({
-  size,
-  style,
-  ...props
-}: ClickActionProps & {
-  size: number;
-  children: React.ReactNode;
-  style?: FlexWidgetStyle;
-}) {
-  return (
-    <FlexWidget
-      style={{
-        overflow: "hidden",
-        height: size,
-        width: size,
-        // Nothing widget color from color picker.
-        backgroundColor: "#1A1B21",
-        // Estimated radius used by Nothing widgets from experimentation.
-        borderRadius: 20,
-        ...style,
-      }}
-      {...props}
-    />
-  );
-}
-
 function Artwork({
   size,
   artwork,

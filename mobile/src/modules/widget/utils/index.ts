@@ -5,14 +5,14 @@ import { musicStore } from "~/modules/media/services/Music";
 import { getIsPlaying } from "~/modules/media/hooks/useIsPlaying";
 
 import { updateArtworkPlayerWidget } from "./update";
-import type { WidgetBaseProps, WidgetTrack } from "../types";
+import type { PlayerWidgetData } from "../types";
 
-export async function getArtworkPlayerWidgetData(): Promise<WidgetBaseProps> {
+export async function getArtworkPlayerWidgetData(): Promise<PlayerWidgetData> {
   try {
     const isPlaying = await getIsPlaying();
 
     const { activeTrack } = musicStore.getState();
-    let track: WidgetTrack | undefined = undefined;
+    let track: PlayerWidgetData["track"] = undefined;
     if (activeTrack) {
       track = {
         title: activeTrack.name,

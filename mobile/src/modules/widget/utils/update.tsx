@@ -2,7 +2,7 @@ import { requestWidgetUpdate } from "react-native-android-widget";
 
 import { sessionStore } from "~/services/SessionStore";
 
-import type { WidgetBaseProps } from "../types";
+import type { PlayerWidgetData } from "../types";
 import { ArtworkPlayerWidget } from "../ArtworkPlayerWidget";
 
 /** Have widget render "not found" state which opens the app on click. */
@@ -13,7 +13,7 @@ export async function resetArtworkPlayerWidget() {
 }
 
 /** Abstract updating the artwork player widget. */
-export async function updateArtworkPlayerWidget(args: WidgetBaseProps) {
+export async function updateArtworkPlayerWidget(args: PlayerWidgetData) {
   return requestWidgetUpdate({
     widgetName: "ArtworkPlayer",
     renderWidget: (props) => <ArtworkPlayerWidget {...props} {...args} />,
