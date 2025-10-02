@@ -9,7 +9,6 @@ import { SkipNext } from "~/resources/icons/SkipNext";
 import { SkipPrevious } from "~/resources/icons/SkipPrevious";
 import { useMusicStore } from "../services/Music";
 import { MusicControls } from "../services/Playback";
-import { useIsPlaying } from "../hooks/useIsPlaying";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
@@ -18,8 +17,8 @@ import { Button, IconButton } from "~/components/Form/Button";
 /** Toggles the repeat status. */
 export function RepeatButton({ large = true }) {
   const { t } = useTranslation();
-  const repeatMode = useMusicStore((state) => state.repeat);
-  const cycleRepeat = useMusicStore((state) => state.cycleRepeat);
+  const repeatMode = useMusicStore((s) => s.repeat);
+  const cycleRepeat = useMusicStore((s) => s.cycleRepeat);
 
   return (
     <IconButton
@@ -37,8 +36,8 @@ export function RepeatButton({ large = true }) {
 /** Toggles the shuffle status. */
 export function ShuffleButton({ large = true }) {
   const { t } = useTranslation();
-  const isActive = useMusicStore((state) => state.shuffle);
-  const setShuffle = useMusicStore((state) => state.setShuffle);
+  const isActive = useMusicStore((s) => s.shuffle);
+  const setShuffle = useMusicStore((s) => s.setShuffle);
   return (
     <IconButton
       Icon={Shuffle}
@@ -53,7 +52,7 @@ export function ShuffleButton({ large = true }) {
 /** Toggles whether we're playing or not. */
 export function PlayToggleButton() {
   const { t } = useTranslation();
-  const isPlaying = useIsPlaying();
+  const isPlaying = useMusicStore((s) => s.isPlaying);
   const Icon = isPlaying ? Pause : PlayArrow;
   return (
     <Button

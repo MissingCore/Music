@@ -4,7 +4,6 @@ import { addPlayedMediaList } from "~/api/recent";
 import { getTrack } from "~/api/track";
 import { userPreferencesStore } from "~/services/UserPreferences";
 import { Queue, RNTPManager, musicStore } from "./Music";
-import { getIsPlaying } from "../hooks/useIsPlaying";
 
 import {
   arePlaybackSourceEqual,
@@ -21,23 +20,26 @@ import type { PlayListSource } from "../types";
 export class MusicControls {
   /** Play the current track. */
   static async play() {
+    musicStore.setState({ isPlaying: true });
     await RNTPManager.preload();
     await TrackPlayer.play();
   }
 
   /** Pause the current playing track. */
   static async pause() {
+    musicStore.setState({ isPlaying: false });
     await TrackPlayer.pause();
   }
 
   /** Stop & unload the current playing track (stops loading/buffering). */
   static async stop() {
+    musicStore.setState({ isPlaying: false });
     await TrackPlayer.stop();
   }
 
   /** Toggle `isPlaying`, playing or pausing the current track. */
   static async playToggle() {
-    if (await getIsPlaying()) await MusicControls.pause();
+    if (musicStore.getState().isPlaying) await MusicControls.pause();
     else await MusicControls.play();
   }
 
@@ -144,6 +146,7 @@ export async function playFromMediaList({
 
   // 5. Update the persistent storage.
   musicStore.setState({
+    isPlaying: true,
     ...newListsInfo,
     playingSource: source,
     sourceName: await getSourceName(source),

@@ -1,6 +1,9 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import BackgroundTimer from "@boterop/react-native-background-timer";
-import TrackPlayer, { Event } from "@weights-ai/react-native-track-player";
+import TrackPlayer, {
+  Event,
+  State,
+} from "@weights-ai/react-native-track-player";
 
 import i18next from "~/modules/i18n";
 import { addPlayedMediaList, addPlayedTrack } from "~/api/recent";
@@ -8,7 +11,6 @@ import { deleteTrack } from "~/api/track";
 import type { TrackStatus } from "~/modules/media/services/Music";
 import { Queue, RNTPManager, musicStore } from "~/modules/media/services/Music";
 import { MusicControls } from "~/modules/media/services/Playback";
-import { getIsPlaying } from "~/modules/media/hooks/useIsPlaying";
 import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
 import { userPreferencesStore } from "./UserPreferences";
 import { router } from "~/navigation/utils/router";
@@ -58,6 +60,12 @@ export async function PlaybackService() {
     await MusicControls.seekTo(position);
   });
 
+  TrackPlayer.addEventListener(Event.PlaybackState, (e) => {
+    // Only place where we get notified for unexpected pauses such as
+    // when disconnecting headphones.
+    if (e.state === State.Paused) musicStore.setState({ isPlaying: false });
+  });
+
   TrackPlayer.addEventListener(
     Event.PlaybackProgressUpdated,
     ({ position }) => {
@@ -72,7 +80,7 @@ export async function PlaybackService() {
       await MusicControls.stop();
     } else {
       if (e.paused) {
-        resumeAfterDuck = await getIsPlaying();
+        resumeAfterDuck = musicStore.getState().isPlaying;
         await MusicControls.pause();
       } else if (resumeAfterDuck) {
         await MusicControls.play();

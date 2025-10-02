@@ -9,7 +9,6 @@ import { PlayArrow } from "~/resources/icons/PlayArrow";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useMusicStore } from "~/modules/media/services/Music";
 import { MusicControls } from "~/modules/media/services/Playback";
-import { useIsPlaying } from "~/modules/media/hooks/useIsPlaying";
 
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
@@ -31,7 +30,7 @@ import { usePlayerProgress } from "../screens/now-playing/helpers/usePlayerProgr
 export function MiniPlayer({ hidden = false, stacked = false }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const isPlaying = useIsPlaying();
+  const isPlaying = useMusicStore((s) => s.isPlaying);
   const track = useMusicStore((s) => s.activeTrack);
   const gestureUI = useUserPreferencesStore((s) => s.miniplayerGestures);
 

@@ -9,12 +9,12 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import { useIsPlaying } from "../hooks/useIsPlaying";
+import { useMusicStore } from "../services/Music";
 
 import { withPause } from "~/utils/animation/pause";
 
 export function PlayingIndicator() {
-  const isPlaying = useIsPlaying();
+  const isPlaying = useMusicStore((s) => s.isPlaying);
   return <AnimatedBars active={isPlaying} />;
 }
 

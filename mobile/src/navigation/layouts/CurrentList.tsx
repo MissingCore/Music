@@ -15,7 +15,6 @@ import Animated, {
 import { Schedule } from "~/resources/icons/Schedule";
 import { useMusicStore } from "~/modules/media/services/Music";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
-import { useIsPlaying } from "~/modules/media/hooks/useIsPlaying";
 import { useTheme } from "~/hooks/useTheme";
 
 import { OnRTLWorklet } from "~/lib/react";
@@ -48,7 +47,7 @@ export function CurrentListLayout(
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { foreground } = useTheme();
-  const primaryFont = useUserPreferencesStore((state) => state.primaryFont);
+  const primaryFont = useUserPreferencesStore((s) => s.primaryFont);
 
   const isFavorite = getIsFavoritePlaylist(props.mediaSource);
 
@@ -140,8 +139,8 @@ type AnimatedVinylProps = {
 
 /** Have the vinyl spin if the playing media list is this source. */
 function AnimatedVinyl(props: AnimatedVinylProps) {
-  const isPlaying = useIsPlaying();
-  const playingSource = useMusicStore((state) => state.playingSource);
+  const isPlaying = useMusicStore((s) => s.isPlaying);
+  const playingSource = useMusicStore((s) => s.playingSource);
   const coverPosition = useSharedValue(0);
   const rotationProgress = useSharedValue(0);
   const _discOpacity = useSharedValue(0);

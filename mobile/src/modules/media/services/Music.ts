@@ -1,5 +1,8 @@
 import { toast } from "@backpackapp-io/react-native-toast";
-import TrackPlayer, { State } from "@weights-ai/react-native-track-player";
+import TrackPlayer, {
+  State,
+  isPlaying as rntpIsPlaying,
+} from "@weights-ai/react-native-track-player";
 import { useStore } from "zustand";
 
 import type { TrackWithAlbum } from "~/db/schema";
@@ -38,6 +41,8 @@ interface MusicStore {
   /** The track we want to restore the position for. */
   _restoredTrackId: string | undefined;
 
+  /** If we're currently playing a track. */
+  isPlaying: boolean;
   /** The last played position of the track. */
   lastPosition: number | undefined;
 
@@ -103,10 +108,16 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
     _init: async ({ playingSource }) => {
       let sourceName = "";
       if (playingSource) sourceName = await getSourceName(playingSource);
-      set({ _hasHydrated: true, sourceName });
+      // Ensure `isPlaying` is correct when we rehydrate the store.
+      let upToDateIsPlaying = false;
+      try {
+        upToDateIsPlaying = (await rntpIsPlaying()).playing ?? false;
+      } catch {}
+      set({ _hasHydrated: true, sourceName, isPlaying: upToDateIsPlaying });
     },
     reset: async () => {
       set({
+        isPlaying: false,
         lastPosition: undefined,
         playingSource: undefined,
         sourceName: "",
@@ -130,6 +141,7 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
     _hasRestoredPosition: false,
     _restoredTrackId: undefined,
 
+    isPlaying: false,
     lastPosition: undefined,
 
     repeat: "no-repeat",

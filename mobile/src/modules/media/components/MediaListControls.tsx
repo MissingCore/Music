@@ -5,7 +5,6 @@ import { Pause } from "~/resources/icons/Pause";
 import { PlayArrow } from "~/resources/icons/PlayArrow";
 import { useMusicStore } from "../services/Music";
 import { MusicControls, playFromMediaList } from "../services/Playback";
-import { useIsPlaying } from "../hooks/useIsPlaying";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
@@ -35,8 +34,8 @@ export function MediaListControls(props: {
  */
 function PlayMediaListButton({ trackSource }: { trackSource: PlayListSource }) {
   const { t } = useTranslation();
-  const currSource = useMusicStore((state) => state.playingSource);
-  const isPlaying = useIsPlaying();
+  const currSource = useMusicStore((s) => s.playingSource);
+  const isPlaying = useMusicStore((s) => s.isPlaying);
 
   const isThisSource = arePlaybackSourceEqual(currSource, trackSource);
   const displayPause = isThisSource && isPlaying;

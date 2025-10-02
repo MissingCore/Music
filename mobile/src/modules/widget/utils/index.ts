@@ -2,16 +2,13 @@ import { getTrackCover } from "~/db/utils";
 
 import { sessionStore } from "~/services/SessionStore";
 import { musicStore } from "~/modules/media/services/Music";
-import { getIsPlaying } from "~/modules/media/hooks/useIsPlaying";
 
 import { updateArtworkPlayerWidget } from "./update";
 import type { PlayerWidgetData } from "../types";
 
 export async function getArtworkPlayerWidgetData(): Promise<PlayerWidgetData> {
   try {
-    const isPlaying = await getIsPlaying();
-
-    const { activeTrack } = musicStore.getState();
+    const { activeTrack, isPlaying } = musicStore.getState();
     let track: PlayerWidgetData["track"] = undefined;
     if (activeTrack) {
       track = {
