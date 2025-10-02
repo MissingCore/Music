@@ -1,4 +1,5 @@
 <resources>
-  <string name="app_name">Music</string>
-  <string name="widget_artworkplayer_description" translatable="false">Displays track artwork and allows for play/pause.</string>
+  <string name="app_name" translatable="false">Music</string>
+  <string name="widget_artworkplayer_name">🧪 Artwork Player</string>
+  <string name="widget_artworkplayer_description">[Experimental] Displays track artwork and allows for play/pause.</string>
 </resources>

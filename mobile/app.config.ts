@@ -5,12 +5,13 @@ const widgetConfig: WithAndroidWidgetsParams = {
   widgets: [
     {
       name: "ArtworkPlayer",
-      label: "Artwork Player",
+      label: "🧪 Artwork Player",
       minWidth: "110dp",
       minHeight: "110dp",
       targetCellWidth: 2,
       targetCellHeight: 2,
-      description: "Displays track artwork and allows for play/pause.",
+      description:
+        "[Experimental] Displays track artwork and allows for play/pause.",
       previewImage: "./assets/widget/artwork-player.png",
     },
   ],
