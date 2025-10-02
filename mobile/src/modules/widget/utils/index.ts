@@ -8,20 +8,27 @@ import { updateArtworkPlayerWidget } from "./update";
 import type { WidgetBaseProps, WidgetTrack } from "../types";
 
 export async function getArtworkPlayerWidgetData(): Promise<WidgetBaseProps> {
-  const { activeTrack } = musicStore.getState();
-  let track: WidgetTrack | undefined = undefined;
-  if (activeTrack) {
-    track = {
-      title: activeTrack.name,
-      artist: activeTrack.artistName,
-      artwork: getTrackCover(activeTrack),
-    };
-  }
-  const isPlaying = await getIsPlaying();
-  const widgetData = { track, isPlaying };
-  sessionStore.setState({ latestWidgetData: widgetData });
+  try {
+    const isPlaying = await getIsPlaying();
 
-  return widgetData;
+    const { activeTrack } = musicStore.getState();
+    let track: WidgetTrack | undefined = undefined;
+    if (activeTrack) {
+      track = {
+        title: activeTrack.name,
+        artist: activeTrack.artistName,
+        artwork: getTrackCover(activeTrack),
+      };
+    }
+
+    const widgetData = { track, isPlaying };
+    sessionStore.setState({ latestWidgetData: widgetData });
+
+    return widgetData;
+  } catch {
+    // We'll end up here if the RNTP service isn't set up yet.
+    return { track: undefined, isPlaying: false };
+  }
 }
 
 export async function revalidateArtworkPlayerWidget(options?: {
