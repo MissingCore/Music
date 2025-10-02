@@ -9,7 +9,7 @@ import {
   SvgWidget,
 } from "react-native-android-widget";
 
-import { BorderRadius, Colors } from "~/constants/Styles";
+import { Colors } from "~/constants/Styles";
 import type { WidgetBaseProps } from "./types";
 
 type WidgetProps = WidgetBaseProps & {
@@ -97,8 +97,10 @@ function SquareWidgetBase({
         overflow: "hidden",
         height: size,
         width: size,
-        backgroundColor: Colors.neutral10,
-        borderRadius: BorderRadius.xl,
+        // Nothing widget color from color picker.
+        backgroundColor: "#1A1B21",
+        // Estimated radius used by Nothing widgets from experimentation.
+        borderRadius: 20,
         ...style,
       }}
       {...props}
