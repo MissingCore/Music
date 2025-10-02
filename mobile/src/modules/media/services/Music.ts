@@ -15,6 +15,7 @@ import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
 import { createPersistedSubscribedStore } from "~/lib/zustand";
 import { shuffleArray } from "~/utils/object";
+import { resetMusicPlayerWidget } from "~/modules/widget/utils/update";
 import { formatTrackforPlayer, getSourceName } from "../helpers/data";
 import type { PlayListSource } from "../types";
 
@@ -117,6 +118,8 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
         queueList: [],
       });
       await TrackPlayer.reset();
+
+      resetMusicPlayerWidget();
     },
     resetOnCrash: async () => {
       try {
