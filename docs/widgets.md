@@ -12,7 +12,7 @@ Widget design is pretty limited as we have to account for the different Android 
 
 ## Current Widgets
 
-### Artwork Player
+### [2×2] Artwork Player
 
 <img src="../mobile/assets/widget/artwork-player.png" alt="Artwork Player widget preview image" height="128" width="128" />
 
@@ -23,5 +23,5 @@ Displays the current playing track artwork. Clicking on the widget will play/pau
 ## Known Issues
 
 - The widget when placed might be initially invisible (launching the app at least once should fix it).
-- Dismissing the app (with `Continue Playback on Dismiss` disabled) then immediately clicking the widget will "crash" the app (you get the app launch notification, then it closes).
+- Dismissing the app (with `Continue Playback on Dismiss` disabled) then immediately clicking the widget may "crash" the app (you get the app launch animation, then it closes).
   - This is probably due to us delaying destroying the foreground service by `1s` to let the widget get updated one final time.
