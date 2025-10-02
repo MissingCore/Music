@@ -125,7 +125,7 @@ function Artwork({
 }
 
 // Hex Opacities.
-const bgOpacities = ["66", "5E"]; // 40%, 37%
+const bgOpacities = ["4D", "40"]; // 30%, 25%
 
 function SVGOverlay({
   size,

@@ -36,7 +36,7 @@ export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
         // Briefly indicate that we switched "states" in the widget.
         for (let i = 0; i < 2; i++) {
           props.renderWidget(<Widget {...widgetData} overlayState={i} />);
-          await bgWait(i === 0 ? 500 : 0);
+          await bgWait(i === 0 ? 500 : 50);
         }
         props.renderWidget(<Widget {...widgetData} />);
       }
