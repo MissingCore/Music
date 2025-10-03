@@ -39,7 +39,7 @@ export function useSetup() {
 
       // Ensure widget has up-to-date data as the Music store isn't
       // immediately hydrated.
-      await revalidateWidgets({ openApp: true, fetchLatest: true });
+      await revalidateWidgets({ openApp: true });
 
       const { activeId } = musicStore.getState();
       const { saveLastPosition, continuePlaybackOnDismiss } =

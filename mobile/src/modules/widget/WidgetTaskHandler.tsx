@@ -17,8 +17,7 @@ export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
   const Widget =
     nameToWidget[widgetInfo.widgetName as keyof typeof nameToWidget];
 
-  const musicContextData = await getWidgetData();
-  const widgetData = { ...widgetInfo, ...musicContextData };
+  const widgetData = { ...widgetInfo, ...getWidgetData() };
 
   switch (props.widgetAction) {
     case "WIDGET_ADDED":

@@ -1,12 +1,11 @@
 import { getTrackCover } from "~/db/utils";
 
-import { sessionStore } from "~/services/SessionStore";
 import { musicStore } from "~/modules/media/services/Music";
 
 import { updateWidgets } from "./update";
 import type { PlayerWidgetData } from "../types";
 
-export async function getWidgetData(): Promise<PlayerWidgetData> {
+export function getWidgetData(): PlayerWidgetData {
   try {
     const { activeTrack, isPlaying } = musicStore.getState();
     let track: PlayerWidgetData["track"] = undefined;
@@ -17,11 +16,7 @@ export async function getWidgetData(): Promise<PlayerWidgetData> {
         artwork: getTrackCover(activeTrack),
       };
     }
-
-    const widgetData = { track, isPlaying };
-    sessionStore.setState({ latestWidgetData: widgetData });
-
-    return widgetData;
+    return { track, isPlaying };
   } catch {
     // We'll end up here if the RNTP service isn't set up yet.
     return { track: undefined, isPlaying: false };
@@ -31,13 +26,9 @@ export async function getWidgetData(): Promise<PlayerWidgetData> {
 export async function revalidateWidgets(options?: {
   /** Switch the widget's click event to open the app. */
   openApp?: boolean;
-  /** Don't read the data from the cache. */
-  fetchLatest?: boolean;
 }) {
-  let musicContextData = sessionStore.getState().latestWidgetData;
-  if (!options?.openApp || options.fetchLatest) {
-    musicContextData = await getWidgetData();
-  }
+  const musicContextData = getWidgetData();
+  if (options?.openApp) musicContextData.isPlaying = false;
 
   await updateWidgets({
     ...musicContextData,
