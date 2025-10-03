@@ -5,6 +5,7 @@ import type {
 import { FlexWidget } from "react-native-android-widget";
 
 import type { WithDimensions } from "../types";
+import { Styles } from "../constants/Styles";
 
 /**
  * General layout for widget while also center-aligning it on devices where
@@ -13,10 +14,15 @@ import type { WithDimensions } from "../types";
 export function WidgetBaseLayout({
   height,
   width,
+  transparent,
   style,
   ...props
 }: WithDimensions<
-  ClickActionProps & { children: React.ReactNode; style?: FlexWidgetStyle }
+  ClickActionProps & {
+    children: React.ReactNode;
+    transparent?: boolean;
+    style?: FlexWidgetStyle;
+  }
 >) {
   return (
     <FlexWidget
@@ -32,10 +38,10 @@ export function WidgetBaseLayout({
           overflow: "hidden",
           height,
           width,
-          // Nothing widget color from color picker.
-          backgroundColor: "#1A1B21",
-          // Estimated radius used by Nothing widgets from experimentation.
-          borderRadius: 20,
+          backgroundColor: transparent
+            ? Styles.color.transparent
+            : Styles.color.background,
+          borderRadius: Styles.radius,
           ...style,
         }}
         {...props}
