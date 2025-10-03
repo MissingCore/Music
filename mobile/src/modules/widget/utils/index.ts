@@ -3,10 +3,10 @@ import { getTrackCover } from "~/db/utils";
 import { sessionStore } from "~/services/SessionStore";
 import { musicStore } from "~/modules/media/services/Music";
 
-import { updateArtworkPlayerWidget } from "./update";
+import { updateWidgets } from "./update";
 import type { PlayerWidgetData } from "../types";
 
-export async function getArtworkPlayerWidgetData(): Promise<PlayerWidgetData> {
+export async function getWidgetData(): Promise<PlayerWidgetData> {
   try {
     const { activeTrack, isPlaying } = musicStore.getState();
     let track: PlayerWidgetData["track"] = undefined;
@@ -28,7 +28,7 @@ export async function getArtworkPlayerWidgetData(): Promise<PlayerWidgetData> {
   }
 }
 
-export async function revalidateArtworkPlayerWidget(options?: {
+export async function revalidateWidgets(options?: {
   /** Switch the widget's click event to open the app. */
   openApp?: boolean;
   /** Don't read the data from the cache. */
@@ -36,10 +36,10 @@ export async function revalidateArtworkPlayerWidget(options?: {
 }) {
   let musicContextData = sessionStore.getState().latestWidgetData;
   if (!options?.openApp || options.fetchLatest) {
-    musicContextData = await getArtworkPlayerWidgetData();
+    musicContextData = await getWidgetData();
   }
 
-  await updateArtworkPlayerWidget({
+  await updateWidgets({
     ...musicContextData,
     openApp: options?.openApp,
   });

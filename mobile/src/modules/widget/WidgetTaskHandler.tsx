@@ -3,7 +3,7 @@ import type { WidgetTaskHandlerProps } from "react-native-android-widget";
 import { MusicControls } from "~/modules/media/services/Playback";
 
 import { bgWait } from "~/utils/promise";
-import { getArtworkPlayerWidgetData } from "./utils";
+import { getWidgetData } from "./utils";
 import { ArtworkPlayerWidget } from "./ArtworkPlayerWidget";
 import { NowPlayingWidget } from "./NowPlayingWidget";
 
@@ -17,7 +17,7 @@ export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
   const Widget =
     nameToWidget[widgetInfo.widgetName as keyof typeof nameToWidget];
 
-  const musicContextData = await getArtworkPlayerWidgetData();
+  const musicContextData = await getWidgetData();
   const widgetData = { ...widgetInfo, ...musicContextData };
 
   switch (props.widgetAction) {
