@@ -5,9 +5,11 @@ import { MusicControls } from "~/modules/media/services/Playback";
 import { bgWait } from "~/utils/promise";
 import { getArtworkPlayerWidgetData } from "./utils";
 import { ArtworkPlayerWidget } from "./ArtworkPlayerWidget";
+import { NowPlayingWidget } from "./NowPlayingWidget";
 
 const nameToWidget = {
   ArtworkPlayer: ArtworkPlayerWidget,
+  NowPlaying: NowPlayingWidget,
 };
 
 export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {

@@ -14,6 +14,16 @@ const widgetConfig: WithAndroidWidgetsParams = {
         "[Experimental] Displays track artwork and allows for play/pause.",
       previewImage: "./assets/widget/artwork-player.png",
     },
+    {
+      name: "NowPlaying",
+      label: "🧪 Now Playing",
+      minWidth: "250dp",
+      minHeight: "110dp",
+      targetCellWidth: 4,
+      targetCellHeight: 2,
+      description: "[Experimental] Quick access to your media controls.",
+      previewImage: "./assets/widget/now-playing.png",
+    },
   ],
 };
 
