@@ -5,6 +5,7 @@ import { MusicControls } from "~/modules/media/services/Playback";
 import { bgWait } from "~/utils/promise";
 import { WidgetAction } from "./constants";
 import { getWidgetData } from "./utils";
+import { updateWidgets } from "./utils/update";
 import { ArtworkPlayerWidget } from "./ArtworkPlayerWidget";
 import { NowPlayingWidget } from "./NowPlayingWidget";
 
@@ -13,18 +14,22 @@ const nameToWidget = {
   NowPlaying: NowPlayingWidget,
 };
 
-export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
-  const widgetInfo = props.widgetInfo;
+export async function widgetTaskHandler({
+  widgetInfo,
+  widgetAction,
+  clickAction,
+  renderWidget,
+}: WidgetTaskHandlerProps) {
   const Widget =
     nameToWidget[widgetInfo.widgetName as keyof typeof nameToWidget];
 
   const widgetData = { ...widgetInfo, ...getWidgetData() };
 
-  switch (props.widgetAction) {
+  switch (widgetAction) {
     case "WIDGET_ADDED":
     case "WIDGET_RESIZED":
     case "WIDGET_UPDATE":
-      props.renderWidget(<Widget {...widgetData} />);
+      renderWidget(<Widget {...widgetData} />);
       break;
 
     case "WIDGET_DELETED":
@@ -32,15 +37,27 @@ export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
       break;
 
     case "WIDGET_CLICK":
-      if (props.clickAction === WidgetAction.PlayPause) {
-        MusicControls.playToggle();
+      if (clickAction === WidgetAction.PlayPause) {
         widgetData.isPlaying = !widgetData.isPlaying;
-        // Briefly indicate that we switched "states" in the widget.
-        for (let i = 0; i < 2; i++) {
-          props.renderWidget(<Widget {...widgetData} overlayState={i} />);
-          await bgWait(i === 0 ? 500 : 50);
+        updateWidgets({
+          track: widgetData.track,
+          isPlaying: widgetData.isPlaying,
+        });
+        await MusicControls.playToggle();
+
+        // Run special animation for `ArtworkPlayer` widget.
+        if (widgetInfo.widgetName === "ArtworkPlayer") {
+          // Briefly indicate that we switched "states" in the widget.
+          for (let i = 0; i < 2; i++) {
+            renderWidget(<Widget {...widgetData} overlayState={i} />);
+            await bgWait(i === 0 ? 500 : 50);
+          }
+          renderWidget(<Widget {...widgetData} />);
         }
-        props.renderWidget(<Widget {...widgetData} />);
+      } else {
+        if (clickAction === WidgetAction.Prev) await MusicControls.prev();
+        else if (clickAction === WidgetAction.Next) await MusicControls.next();
+        await updateWidgets(getWidgetData());
       }
       break;
 
