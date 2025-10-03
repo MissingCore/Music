@@ -23,6 +23,7 @@ const widgetConfig: WithAndroidWidgetsParams = {
       targetCellHeight: 2,
       description: "[Experimental] Quick access to your media controls.",
       previewImage: "./assets/widget/now-playing.png",
+      resizeMode: "horizontal",
     },
   ],
 };

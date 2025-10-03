@@ -7,7 +7,7 @@
 
 
 
-    android:resizeMode="none"
+    android:resizeMode="horizontal"
 
     android:description="@string/widget_nowplaying_description"
 
