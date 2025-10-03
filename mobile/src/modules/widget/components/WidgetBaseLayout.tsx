@@ -13,10 +13,15 @@ import type { WithDimensions } from "../types";
 export function WidgetBaseLayout({
   height,
   width,
+  transparent,
   style,
   ...props
 }: WithDimensions<
-  ClickActionProps & { children: React.ReactNode; style?: FlexWidgetStyle }
+  ClickActionProps & {
+    children: React.ReactNode;
+    transparent?: boolean;
+    style?: FlexWidgetStyle;
+  }
 >) {
   return (
     <FlexWidget
@@ -33,7 +38,7 @@ export function WidgetBaseLayout({
           height,
           width,
           // Nothing widget color from color picker.
-          backgroundColor: "#1A1B21",
+          backgroundColor: transparent ? "#00000000" : "#1A1B21",
           // Estimated radius used by Nothing widgets from experimentation.
           borderRadius: 20,
           ...style,
