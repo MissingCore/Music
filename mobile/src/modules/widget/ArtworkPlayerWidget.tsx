@@ -1,13 +1,12 @@
-import type { ClickActionProps } from "react-native-android-widget";
 import {
   FlexWidget,
-  ImageWidget,
   OverlapWidget,
   SvgWidget,
 } from "react-native-android-widget";
 
 import { Colors } from "~/constants/Styles";
 import type { PlayerWidgetData, WithDimensions } from "./types";
+import { WidgetArtwork } from "./components/WidgetArtwork";
 import { WidgetBaseLayout } from "./components/WidgetBaseLayout";
 
 type WidgetProps = WithDimensions<
@@ -22,7 +21,7 @@ export function ArtworkPlayerWidget(props: WidgetProps) {
   return (
     <WidgetBaseLayout height={size} width={size}>
       <OverlapWidget>
-        <Artwork
+        <WidgetArtwork
           clickAction={
             props.openApp
               ? "OPEN_APP"
@@ -54,28 +53,12 @@ function NotFoundWidget({ size }: { size: number }) {
       width={size}
       style={{ alignItems: "center", justifyContent: "center" }}
     >
-      <Artwork size={size} artwork={null} />
+      <WidgetArtwork size={size} artwork={null} />
     </WidgetBaseLayout>
   );
 }
 
 //#region Layout Helpers
-function Artwork({
-  size,
-  artwork,
-  ...props
-}: ClickActionProps & { size: number; artwork: string | null }) {
-  const imageSize = !artwork ? (size * 5) / 6 : size;
-  return (
-    <ImageWidget
-      image={artwork ?? require("~/resources/images/music-glyph.png")}
-      imageHeight={imageSize}
-      imageWidth={imageSize}
-      {...props}
-    />
-  );
-}
-
 // Hex Opacities.
 const bgOpacities = ["4D", "40"]; // 30%, 25%
 
