@@ -3,6 +3,7 @@ import type { WidgetTaskHandlerProps } from "react-native-android-widget";
 import { MusicControls } from "~/modules/media/services/Playback";
 
 import { bgWait } from "~/utils/promise";
+import { WidgetAction } from "./constants";
 import { getWidgetData } from "./utils";
 import { ArtworkPlayerWidget } from "./ArtworkPlayerWidget";
 import { NowPlayingWidget } from "./NowPlayingWidget";
@@ -31,7 +32,7 @@ export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
       break;
 
     case "WIDGET_CLICK":
-      if (props.clickAction === "PLAY_PAUSE") {
+      if (props.clickAction === WidgetAction.PlayPause) {
         MusicControls.playToggle();
         widgetData.isPlaying = !widgetData.isPlaying;
         // Briefly indicate that we switched "states" in the widget.

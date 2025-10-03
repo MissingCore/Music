@@ -1,7 +1,8 @@
 import { OverlapWidget } from "react-native-android-widget";
 
+import { Colors } from "~/constants/Styles";
 import type { PlayerWidgetData, WithDimensions } from "./types";
-import { WidgetDesign } from "./constants";
+import { WidgetAction, WidgetDesign } from "./constants";
 import { WidgetArtwork } from "./components/WidgetArtwork";
 import { WidgetBaseLayout } from "./components/WidgetBaseLayout";
 import { WidgetCell } from "./components/WidgetCell";
@@ -21,25 +22,37 @@ export function NowPlayingWidget(props: WidgetProps) {
     <WidgetBaseLayout height={size} width={size} transparent>
       <OverlapWidget>
         <WidgetCell
-          clickAction="OPEN_APP"
+          clickAction={WidgetAction.Open}
           size={cellSize}
           style={{ borderRadius: WidgetDesign.radius }}
         >
           <WidgetArtwork
             size={cellSize}
-            artwork={props.track?.artist ?? null}
+            artwork={props.track?.artwork ?? null}
           />
         </WidgetCell>
 
-        <WidgetCell size={cellSize} style={{ marginLeft: positionOffset }}>
-          <WidgetSVG name={props.isPlaying ? "play" : "pause"} size={svgSize} />
+        <WidgetCell
+          clickAction={withAction(WidgetAction.PlayPause, props.openApp)}
+          size={cellSize}
+          style={{
+            marginLeft: positionOffset,
+            ...(!props.isPlaying ? { backgroundColor: Colors.red } : {}),
+          }}
+        >
+          <WidgetSVG name={props.isPlaying ? "pause" : "play"} size={svgSize} />
         </WidgetCell>
 
-        <WidgetCell size={cellSize} style={{ marginTop: positionOffset }}>
+        <WidgetCell
+          clickAction={withAction(WidgetAction.Prev, props.openApp)}
+          size={cellSize}
+          style={{ marginTop: positionOffset }}
+        >
           <WidgetSVG name="prev" size={svgSize} />
         </WidgetCell>
 
         <WidgetCell
+          clickAction={withAction(WidgetAction.Next, props.openApp)}
           size={cellSize}
           style={{ marginLeft: positionOffset, marginTop: positionOffset }}
         >
@@ -48,4 +61,8 @@ export function NowPlayingWidget(props: WidgetProps) {
       </OverlapWidget>
     </WidgetBaseLayout>
   );
+}
+
+function withAction(action: string, openApp?: boolean) {
+  return openApp ? WidgetAction.Open : action;
 }
