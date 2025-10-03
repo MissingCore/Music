@@ -14,6 +14,8 @@ Widget design is pretty limited as we have to account for the different Android 
 
 What all widgets have in common is that if no track is queued / the app has been dismissed when `Continue Playback on Dismiss` is disabled, clicking on the widget will open the app instead.
 
+There's no indicator for playback progress as I don't want to trigger a widget update every second.
+
 ### [2×2] Artwork Player
 
 <img src="../mobile/assets/widget/artwork-player.png" alt="Artwork Player widget preview image" height="128" width="128" />
@@ -31,3 +33,4 @@ Offers quick access to media controls (Play/Pause, Prev, Next). Clicking on the 
 - The widget when placed might be initially invisible (launching the app at least once should fix it).
 - Dismissing the app (with `Continue Playback on Dismiss` disabled) then immediately clicking the widget may "crash" the app (you get the app launch animation, then it closes).
   - This is probably due to us delaying destroying the foreground service by `1s` to let the widget get updated one final time.
+- Widget won't update on screen reorientation ([ref](https://github.com/sAleksovski/react-native-android-widget/issues/96)).
