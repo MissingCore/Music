@@ -12,13 +12,19 @@ Widget design is pretty limited as we have to account for the different Android 
 
 ## Current Widgets
 
+What all widgets have in common is that if no track is queued / the app has been dismissed when `Continue Playback on Dismiss` is disabled, clicking on the widget will open the app instead.
+
 ### [2×2] Artwork Player
 
 <img src="../mobile/assets/widget/artwork-player.png" alt="Artwork Player widget preview image" height="128" width="128" />
 
 Displays the current playing track artwork. Clicking on the widget will play/pause the current track.
 
-- If no track is queued / the app has been dismissed when `Continue Playback on Dismiss` is disabled, the app will be opened instead.
+### [2×2] Now Playing
+
+<img src="../mobile/assets/widget/now-playing.png" alt="Now Playing widget preview image" height="128" width="128" />
+
+Offers quick access to media controls (Play/Pause, Prev, Next). Clicking on the artwork will open the app.
 
 ## Known Issues
 
