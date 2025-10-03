@@ -22,7 +22,10 @@ export async function widgetTaskHandler({
     case "WIDGET_ADDED":
     case "WIDGET_RESIZED":
     case "WIDGET_UPDATE":
-      renderWidget(<Widget {...widgetData} />);
+      // Have widget open app to prevent things breaking due to the Music
+      // store requiring a RNTP service active (or else the data will
+      // get cleared).
+      renderWidget(<Widget {...widgetData} openApp />);
       break;
 
     case "WIDGET_DELETED":
