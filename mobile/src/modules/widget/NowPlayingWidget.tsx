@@ -18,6 +18,7 @@ export function NowPlayingWidget(props: WidgetProps) {
   const svgSize = cellSize / 2;
 
   const positionOffset = cellSize + Styles.layoutGap;
+  const openApp = props.openApp || props.track === undefined;
 
   return (
     <WidgetBaseLayout height={size} width={size} transparent>
@@ -34,7 +35,7 @@ export function NowPlayingWidget(props: WidgetProps) {
         </WidgetCell>
 
         <WidgetCell
-          clickAction={withAction(Action.PlayPause, props.openApp)}
+          clickAction={withAction(Action.PlayPause, openApp)}
           size={cellSize}
           style={{
             marginLeft: positionOffset,
@@ -45,7 +46,7 @@ export function NowPlayingWidget(props: WidgetProps) {
         </WidgetCell>
 
         <WidgetCell
-          clickAction={withAction(Action.Prev, props.openApp)}
+          clickAction={withAction(Action.Prev, openApp)}
           size={cellSize}
           style={{ marginTop: positionOffset }}
         >
@@ -53,7 +54,7 @@ export function NowPlayingWidget(props: WidgetProps) {
         </WidgetCell>
 
         <WidgetCell
-          clickAction={withAction(Action.Next, props.openApp)}
+          clickAction={withAction(Action.Next, openApp)}
           size={cellSize}
           style={{ marginLeft: positionOffset, marginTop: positionOffset }}
         >
