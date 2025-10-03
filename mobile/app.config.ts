@@ -17,13 +17,12 @@ const widgetConfig: WithAndroidWidgetsParams = {
     {
       name: "NowPlaying",
       label: "🧪 Now Playing",
-      minWidth: "250dp",
+      minWidth: "110dp",
       minHeight: "110dp",
-      targetCellWidth: 4,
+      targetCellWidth: 2,
       targetCellHeight: 2,
       description: "[Experimental] Quick access to your media controls.",
       previewImage: "./assets/widget/now-playing.png",
-      resizeMode: "horizontal",
     },
   ],
 };
