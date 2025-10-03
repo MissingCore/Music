@@ -2,7 +2,7 @@ import { FlexWidget, OverlapWidget } from "react-native-android-widget";
 
 import { Colors } from "~/constants/Styles";
 import type { PlayerWidgetData, WithDimensions } from "./types";
-import { Action } from "./constants/Action";
+import { Action, withAction } from "./constants/Action";
 import { WidgetArtwork } from "./components/WidgetArtwork";
 import { WidgetBaseLayout } from "./components/WidgetBaseLayout";
 import { WidgetSVG } from "./components/WidgetSVG";
@@ -15,20 +15,22 @@ export function ArtworkPlayerWidget(props: WidgetProps) {
   const size = Math.min(props.width, props.height);
   const overlayShown = props.overlayState !== undefined;
 
-  if (!props.track) return <NotFoundWidget size={size} />;
+  const openApp = props.openApp || props.track === undefined;
+
   return (
-    <WidgetBaseLayout height={size} width={size}>
+    <WidgetBaseLayout
+      height={size}
+      width={size}
+      style={{ alignItems: "center", justifyContent: "center" }}
+    >
       <OverlapWidget>
         <WidgetArtwork
-          clickAction={
-            props.openApp
-              ? Action.Open
-              : !overlayShown
-                ? Action.PlayPause
-                : undefined
-          }
+          clickAction={withAction(
+            !overlayShown ? Action.PlayPause : undefined,
+            openApp,
+          )}
           size={size}
-          artwork={props.track.artwork}
+          artwork={props.track?.artwork ?? null}
         />
         {overlayShown ? (
           <SVGOverlay
@@ -38,20 +40,6 @@ export function ArtworkPlayerWidget(props: WidgetProps) {
           />
         ) : null}
       </OverlapWidget>
-    </WidgetBaseLayout>
-  );
-}
-
-/** Default placeholder widget when we have no data. */
-function NotFoundWidget({ size }: { size: number }) {
-  return (
-    <WidgetBaseLayout
-      clickAction={Action.Open}
-      height={size}
-      width={size}
-      style={{ alignItems: "center", justifyContent: "center" }}
-    >
-      <WidgetArtwork size={size} artwork={null} />
     </WidgetBaseLayout>
   );
 }

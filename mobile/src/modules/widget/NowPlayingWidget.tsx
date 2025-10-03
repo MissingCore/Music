@@ -2,7 +2,7 @@ import { OverlapWidget } from "react-native-android-widget";
 
 import { Colors } from "~/constants/Styles";
 import type { PlayerWidgetData, WithDimensions } from "./types";
-import { Action } from "./constants/Action";
+import { Action, withAction } from "./constants/Action";
 import { Styles } from "./constants/Styles";
 import { WidgetArtwork } from "./components/WidgetArtwork";
 import { WidgetBaseLayout } from "./components/WidgetBaseLayout";
@@ -63,8 +63,4 @@ export function NowPlayingWidget(props: WidgetProps) {
       </OverlapWidget>
     </WidgetBaseLayout>
   );
-}
-
-function withAction(action: string, openApp?: boolean) {
-  return openApp ? Action.Open : action;
 }

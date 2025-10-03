@@ -4,3 +4,8 @@ export const Action = {
   Prev: "PREV",
   Next: "NEXT",
 } as const;
+
+/** Have widget call specified action or open the app instead. */
+export function withAction(action?: string, openApp?: boolean) {
+  return openApp ? Action.Open : action;
+}
