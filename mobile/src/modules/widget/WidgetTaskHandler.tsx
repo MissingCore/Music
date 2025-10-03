@@ -3,16 +3,10 @@ import type { WidgetTaskHandlerProps } from "react-native-android-widget";
 import { MusicControls } from "~/modules/media/services/Playback";
 
 import { bgWait } from "~/utils/promise";
-import { WidgetAction } from "./constants";
+import { Action } from "./constants/Action";
+import { nameToWidget } from "./constants/Widgets";
 import { getWidgetData } from "./utils";
 import { updateWidgets } from "./utils/update";
-import { ArtworkPlayerWidget } from "./ArtworkPlayerWidget";
-import { NowPlayingWidget } from "./NowPlayingWidget";
-
-const nameToWidget = {
-  ArtworkPlayer: ArtworkPlayerWidget,
-  NowPlaying: NowPlayingWidget,
-};
 
 export async function widgetTaskHandler({
   widgetInfo,
@@ -22,7 +16,6 @@ export async function widgetTaskHandler({
 }: WidgetTaskHandlerProps) {
   const Widget =
     nameToWidget[widgetInfo.widgetName as keyof typeof nameToWidget];
-
   const widgetData = { ...widgetInfo, ...getWidgetData() };
 
   switch (widgetAction) {
@@ -37,7 +30,7 @@ export async function widgetTaskHandler({
       break;
 
     case "WIDGET_CLICK":
-      if (clickAction === WidgetAction.PlayPause) {
+      if (clickAction === Action.PlayPause) {
         widgetData.isPlaying = !widgetData.isPlaying;
         updateWidgets({
           track: widgetData.track,
@@ -55,8 +48,8 @@ export async function widgetTaskHandler({
           renderWidget(<Widget {...widgetData} />);
         }
       } else {
-        if (clickAction === WidgetAction.Prev) await MusicControls.prev();
-        else if (clickAction === WidgetAction.Next) await MusicControls.next();
+        if (clickAction === Action.Prev) await MusicControls.prev();
+        else if (clickAction === Action.Next) await MusicControls.next();
         await updateWidgets(getWidgetData());
       }
       break;

@@ -1,4 +1,4 @@
-export const WidgetDesign = {
+export const Styles = {
   color: {
     /** Nothing widget color from color picker. */
     background: "#1A1B21",
@@ -11,11 +11,4 @@ export const WidgetDesign = {
 
   /** Estimated gap in layout grid for home screen. */
   layoutGap: 16,
-} as const;
-
-export const WidgetAction = {
-  Open: "OPEN_APP",
-  PlayPause: "PLAY_PAUSE",
-  Prev: "PREV",
-  Next: "NEXT",
 } as const;

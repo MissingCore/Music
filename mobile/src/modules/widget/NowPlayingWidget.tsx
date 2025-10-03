@@ -2,7 +2,8 @@ import { OverlapWidget } from "react-native-android-widget";
 
 import { Colors } from "~/constants/Styles";
 import type { PlayerWidgetData, WithDimensions } from "./types";
-import { WidgetAction, WidgetDesign } from "./constants";
+import { Action } from "./constants/Action";
+import { Styles } from "./constants/Styles";
 import { WidgetArtwork } from "./components/WidgetArtwork";
 import { WidgetBaseLayout } from "./components/WidgetBaseLayout";
 import { WidgetCell } from "./components/WidgetCell";
@@ -13,18 +14,18 @@ type WidgetProps = WithDimensions<PlayerWidgetData & { openApp?: boolean }>;
 export function NowPlayingWidget(props: WidgetProps) {
   const size = Math.min(props.width, props.height);
 
-  const cellSize = (size - WidgetDesign.layoutGap) / 2;
+  const cellSize = (size - Styles.layoutGap) / 2;
   const svgSize = cellSize / 2;
 
-  const positionOffset = cellSize + WidgetDesign.layoutGap;
+  const positionOffset = cellSize + Styles.layoutGap;
 
   return (
     <WidgetBaseLayout height={size} width={size} transparent>
       <OverlapWidget>
         <WidgetCell
-          clickAction={WidgetAction.Open}
+          clickAction={Action.Open}
           size={cellSize}
-          style={{ borderRadius: WidgetDesign.radius }}
+          style={{ borderRadius: Styles.radius }}
         >
           <WidgetArtwork
             size={cellSize}
@@ -33,7 +34,7 @@ export function NowPlayingWidget(props: WidgetProps) {
         </WidgetCell>
 
         <WidgetCell
-          clickAction={withAction(WidgetAction.PlayPause, props.openApp)}
+          clickAction={withAction(Action.PlayPause, props.openApp)}
           size={cellSize}
           style={{
             marginLeft: positionOffset,
@@ -44,7 +45,7 @@ export function NowPlayingWidget(props: WidgetProps) {
         </WidgetCell>
 
         <WidgetCell
-          clickAction={withAction(WidgetAction.Prev, props.openApp)}
+          clickAction={withAction(Action.Prev, props.openApp)}
           size={cellSize}
           style={{ marginTop: positionOffset }}
         >
@@ -52,7 +53,7 @@ export function NowPlayingWidget(props: WidgetProps) {
         </WidgetCell>
 
         <WidgetCell
-          clickAction={withAction(WidgetAction.Next, props.openApp)}
+          clickAction={withAction(Action.Next, props.openApp)}
           size={cellSize}
           style={{ marginLeft: positionOffset, marginTop: positionOffset }}
         >
@@ -64,5 +65,5 @@ export function NowPlayingWidget(props: WidgetProps) {
 }
 
 function withAction(action: string, openApp?: boolean) {
-  return openApp ? WidgetAction.Open : action;
+  return openApp ? Action.Open : action;
 }

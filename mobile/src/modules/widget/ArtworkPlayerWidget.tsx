@@ -2,7 +2,7 @@ import { FlexWidget, OverlapWidget } from "react-native-android-widget";
 
 import { Colors } from "~/constants/Styles";
 import type { PlayerWidgetData, WithDimensions } from "./types";
-import { WidgetAction } from "./constants";
+import { Action } from "./constants/Action";
 import { WidgetArtwork } from "./components/WidgetArtwork";
 import { WidgetBaseLayout } from "./components/WidgetBaseLayout";
 import { WidgetSVG } from "./components/WidgetSVG";
@@ -22,9 +22,9 @@ export function ArtworkPlayerWidget(props: WidgetProps) {
         <WidgetArtwork
           clickAction={
             props.openApp
-              ? WidgetAction.Open
+              ? Action.Open
               : !overlayShown
-                ? WidgetAction.PlayPause
+                ? Action.PlayPause
                 : undefined
           }
           size={size}
@@ -46,7 +46,7 @@ export function ArtworkPlayerWidget(props: WidgetProps) {
 function NotFoundWidget({ size }: { size: number }) {
   return (
     <WidgetBaseLayout
-      clickAction={WidgetAction.Open}
+      clickAction={Action.Open}
       height={size}
       width={size}
       style={{ alignItems: "center", justifyContent: "center" }}

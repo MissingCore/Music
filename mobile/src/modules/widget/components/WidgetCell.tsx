@@ -4,7 +4,7 @@ import type {
 } from "react-native-android-widget";
 import { FlexWidget } from "react-native-android-widget";
 
-import { WidgetDesign } from "../constants";
+import { Styles } from "../constants/Styles";
 
 /** Styling for a 1×1 cell. */
 export function WidgetCell({
@@ -24,7 +24,7 @@ export function WidgetCell({
         width: size,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: WidgetDesign.color.background,
+        backgroundColor: Styles.color.background,
         // By default, shape is circular.
         borderRadius: 999,
         ...style,

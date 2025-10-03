@@ -5,7 +5,7 @@ import type {
 import { FlexWidget } from "react-native-android-widget";
 
 import type { WithDimensions } from "../types";
-import { WidgetDesign } from "../constants";
+import { Styles } from "../constants/Styles";
 
 /**
  * General layout for widget while also center-aligning it on devices where
@@ -39,9 +39,9 @@ export function WidgetBaseLayout({
           height,
           width,
           backgroundColor: transparent
-            ? WidgetDesign.color.transparent
-            : WidgetDesign.color.background,
-          borderRadius: WidgetDesign.radius,
+            ? Styles.color.transparent
+            : Styles.color.background,
+          borderRadius: Styles.radius,
           ...style,
         }}
         {...props}
