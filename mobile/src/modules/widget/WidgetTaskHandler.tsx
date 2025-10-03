@@ -35,8 +35,9 @@ export async function widgetTaskHandler({
         updateWidgets({
           track: widgetData.track,
           isPlaying: widgetData.isPlaying,
+          exclude: ["ArtworkPlayer"],
         });
-        await MusicControls.playToggle();
+        MusicControls.playToggle();
 
         // Run special animation for `ArtworkPlayer` widget.
         if (widgetInfo.widgetName === "ArtworkPlayer") {
