@@ -8,4 +8,7 @@ export const WidgetDesign = {
 
   /** Estimated radius used by Nothing widgets from experimentation. */
   radius: 20,
+
+  /** Estimated gap in layout grid for home screen. */
+  layoutGap: 16,
 } as const;
