@@ -31,6 +31,10 @@ export function ResizeableNowPlayingWidget(props: WidgetProps) {
   const contentPadding = Styles.layoutGap / 2;
   const contentWidth = props.width - widgetHeight - 2 * contentPadding;
 
+  // Calculate scaled font size for text.
+  const maxTextHeight = widgetHeight / 2 - 3 * contentPadding;
+  const textFontSize = maxTextHeight / 4;
+
   const openApp = props.openApp || props.track === undefined;
 
   return (
@@ -57,12 +61,12 @@ export function ResizeableNowPlayingWidget(props: WidgetProps) {
           <WidgetText
             text={props.track?.title ?? "—"}
             maxLines={2}
-            style={{ fontSize: 10, color: Colors.neutral100 }}
+            style={{ fontSize: textFontSize, color: Colors.neutral100 }}
           />
           <WidgetText
             text={props.track?.artist ?? "—"}
             maxLines={1}
-            style={{ fontSize: 10, color: `${Colors.neutral100}99` }} // 60% opacity
+            style={{ fontSize: textFontSize, color: `${Colors.neutral100}99` }} // 60% opacity
           />
           <MediaControls
             maxWidth={contentWidth}
@@ -76,6 +80,7 @@ export function ResizeableNowPlayingWidget(props: WidgetProps) {
   );
 }
 
+//#region Layout Helpers
 function WidgetText({ style, ...props }: TextWidgetProps) {
   return (
     <TextWidget
@@ -131,3 +136,4 @@ function MediaControls(props: {
     </FlexWidget>
   );
 }
+//#endregion
