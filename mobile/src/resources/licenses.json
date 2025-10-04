@@ -49,7 +49,7 @@
   },
   "@missingcore/react-native-metadata-retriever": {
     "name": "@missingcore/react-native-metadata-retriever",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "copyright": "Copyright (c) 2024 MissingCore <missingcoredev@outlook.com>",
     "source": "https://github.com/MissingCore/react-native-metadata-retriever",
     "license": "MIT",
@@ -81,7 +81,7 @@
   },
   "@react-navigation/material-top-tabs": {
     "name": "@react-navigation/material-top-tabs",
-    "version": "7.3.7",
+    "version": "7.3.8",
     "copyright": "Copyright (c) 2017 React Navigation Contributors",
     "source": "https://github.com/react-navigation/react-navigation/tree/main/packages/material-top-tabs",
     "license": "MIT",
@@ -89,7 +89,7 @@
   },
   "@react-navigation/native": {
     "name": "@react-navigation/native",
-    "version": "7.1.17",
+    "version": "7.1.18",
     "copyright": "Copyright (c) 2017 React Navigation Contributors",
     "source": "https://github.com/react-navigation/react-navigation/tree/main/packages/native",
     "license": "MIT",
@@ -97,7 +97,7 @@
   },
   "@react-navigation/native-stack": {
     "name": "@react-navigation/native-stack",
-    "version": "7.3.26",
+    "version": "7.3.27",
     "copyright": "Copyright (c) 2017 React Navigation Contributors",
     "source": "https://github.com/react-navigation/react-navigation/tree/main/packages/native-stack",
     "license": "MIT",
@@ -145,7 +145,7 @@
   },
   "drizzle-orm": {
     "name": "drizzle-orm",
-    "version": "0.44.5",
+    "version": "0.44.6",
     "copyright": "Copyright (c) 2022 Drizzle Team",
     "source": "https://github.com/drizzle-team/drizzle-orm",
     "license": "Apache-2.0",
@@ -265,7 +265,7 @@
   },
   "i18next": {
     "name": "i18next",
-    "version": "25.5.2",
+    "version": "25.5.3",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/i18next",
     "license": "MIT",
@@ -353,7 +353,7 @@
   },
   "react-native-android-widget": {
     "name": "react-native-android-widget",
-    "version": "0.17.1",
+    "version": "0.17.2",
     "copyright": "Copyright (c) 2022 Stefan Aleksovski",
     "source": "https://github.com/sAleksovski/react-native-android-widget",
     "license": "MIT",
