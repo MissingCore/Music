@@ -24,6 +24,17 @@ const widgetConfig: WithAndroidWidgetsParams = {
       description: "[Experimental] Quick access to your media controls.",
       previewImage: "./assets/widget/now-playing.png",
     },
+    {
+      name: "ResizeableNowPlaying",
+      label: "🧪 Now Playing",
+      minWidth: "250dp",
+      minHeight: "110dp",
+      targetCellWidth: 4,
+      targetCellHeight: 2,
+      description: "[Experimental] Quick access to your media controls.",
+      previewImage: "./assets/widget/resizeable-now-playing.png",
+      resizeMode: "horizontal",
+    },
   ],
 };
 
