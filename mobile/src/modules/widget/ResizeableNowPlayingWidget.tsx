@@ -1,3 +1,4 @@
+import type { TextWidgetProps } from "react-native-android-widget";
 import {
   FlexWidget,
   OverlapWidget,
@@ -30,8 +31,6 @@ export function ResizeableNowPlayingWidget(props: WidgetProps) {
   const contentPadding = Styles.layoutGap / 2;
   const contentWidth = props.width - widgetHeight - 2 * contentPadding;
 
-  const svgSize = contentWidth / 5;
-
   const openApp = props.openApp || props.track === undefined;
 
   return (
@@ -55,75 +54,90 @@ export function ResizeableNowPlayingWidget(props: WidgetProps) {
             marginLeft: widgetHeight,
           }}
         >
-          <TextWidget
+          <WidgetText
             text={props.track?.title ?? "—"}
             maxLines={2}
-            truncate="END"
-            allowFontScaling={false}
-            style={{
-              fontFamily: "Inter-Regular",
-              fontSize: 10,
-              color: Colors.neutral100,
-            }}
+            style={{ fontSize: 10, color: Colors.neutral100 }}
           />
-          <TextWidget
+          <WidgetText
             text={props.track?.artist ?? "—"}
             maxLines={1}
-            truncate="END"
-            allowFontScaling={false}
-            style={{
-              fontFamily: "Inter-Regular",
-              fontSize: 10,
-              color: `${Colors.neutral100}99`, // 60% opacity
-            }}
+            style={{ fontSize: 10, color: `${Colors.neutral100}99` }} // 60% opacity
           />
-          <FlexWidget
-            style={{
-              width: contentWidth,
-              flexDirection: "row",
-              justifyContent: "space-evenly",
-              paddingTop: Styles.layoutGap / 2,
-            }}
-          >
-            <FlexWidget
-              clickAction={withAction(Action.Prev, openApp)}
-              style={{
-                padding: 2,
-                backgroundColor: Colors.neutral20,
-                borderRadius: 999,
-              }}
-            >
-              <WidgetSVG name="prev" size={svgSize} />
-            </FlexWidget>
-            <FlexWidget
-              clickAction={withAction(Action.PlayPause, openApp)}
-              style={{
-                padding: 2,
-                paddingHorizontal: 8,
-                backgroundColor: !props.isPlaying
-                  ? Colors.red
-                  : Colors.neutral20,
-                borderRadius: 999,
-              }}
-            >
-              <WidgetSVG
-                name={props.isPlaying ? "pause" : "play"}
-                size={svgSize}
-              />
-            </FlexWidget>
-            <FlexWidget
-              clickAction={withAction(Action.Next, openApp)}
-              style={{
-                padding: 2,
-                backgroundColor: Colors.neutral20,
-                borderRadius: 999,
-              }}
-            >
-              <WidgetSVG name="next" size={svgSize} />
-            </FlexWidget>
-          </FlexWidget>
+          <MediaControls
+            width={contentWidth}
+            openApp={openApp}
+            isPlaying={props.isPlaying}
+          />
         </FlexWidget>
       </OverlapWidget>
     </WidgetBaseLayout>
+  );
+}
+
+function WidgetText({ style, ...props }: TextWidgetProps) {
+  return (
+    <TextWidget
+      truncate="END"
+      allowFontScaling={false}
+      style={{ fontFamily: "Inter-Regular", ...style }}
+      {...props}
+    />
+  );
+}
+
+function MediaControls({
+  width,
+  openApp,
+  isPlaying,
+}: {
+  width: number;
+  openApp: boolean;
+  isPlaying: boolean;
+}) {
+  const svgSize = width / 5;
+
+  return (
+    <FlexWidget
+      style={{
+        width,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-evenly",
+        paddingTop: Styles.layoutGap / 2,
+      }}
+    >
+      <FlexWidget
+        clickAction={withAction(Action.Prev, openApp)}
+        style={{
+          padding: 2,
+          backgroundColor: Colors.neutral20,
+          borderRadius: 999,
+        }}
+      >
+        <WidgetSVG name="prev" size={svgSize} />
+      </FlexWidget>
+      <FlexWidget
+        clickAction={withAction(Action.PlayPause, openApp)}
+        style={{
+          padding: 2,
+          paddingHorizontal: 8,
+          backgroundColor: !isPlaying ? Colors.red : Colors.neutral20,
+          borderRadius: 999,
+        }}
+      >
+        <WidgetSVG name={isPlaying ? "pause" : "play"} size={svgSize} />
+      </FlexWidget>
+      <FlexWidget
+        clickAction={withAction(Action.Next, openApp)}
+        style={{
+          padding: 2,
+          backgroundColor: Colors.neutral20,
+          borderRadius: 999,
+        }}
+      >
+        <WidgetSVG name="next" size={svgSize} />
+      </FlexWidget>
+    </FlexWidget>
   );
 }
