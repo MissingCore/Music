@@ -28,7 +28,10 @@ export function ResizeableNowPlayingWidget(props: WidgetProps) {
     }
   }
 
-  const contentPadding = Styles.layoutGap / 2;
+  const contentPadding = Math.max(
+    Styles.layoutGap / 2,
+    Math.min(widgetHeight / 14, Styles.layoutGap),
+  );
   const contentWidth = props.width - widgetHeight - 2 * contentPadding;
 
   // Calculate scaled font size for text.
@@ -69,7 +72,11 @@ export function ResizeableNowPlayingWidget(props: WidgetProps) {
           <WidgetText
             text={props.track?.artist ?? "—"}
             maxLines={1}
-            style={{ fontSize: textFontSize, color: `${Colors.neutral100}99` }} // 60% opacity
+            style={{
+              fontSize: textFontSize,
+              color: `${Colors.neutral100}99`, // 60% opacity
+              paddingBottom: contentPadding,
+            }}
           />
           <MediaControls
             maxWidth={contentWidth}
@@ -101,9 +108,9 @@ function MediaControls(props: {
   openApp: boolean;
   isPlaying: boolean;
 }) {
-  const svgSize = Math.min(props.maxWidth / 6, (props.maxHeight * 2) / 3);
-  const paddingY = svgSize / 8;
-  const paddingX = paddingY * 4;
+  const svgSize = Math.min(props.maxWidth / 7, (props.maxHeight * 2) / 3);
+  const paddingY = svgSize / 9;
+  const paddingX = paddingY * 5;
 
   return (
     <FlexWidget
@@ -112,7 +119,6 @@ function MediaControls(props: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-evenly",
-        paddingTop: Styles.layoutGap / 2,
       }}
     >
       <WidgetSVG
