@@ -30,7 +30,7 @@ Offers quick access to media controls (Play/Pause, Prev, Next). Clicking on the 
 
 ### [4×2] Now Playing
 
-<img src="../mobile/assets/widget/resizeable-now-playing.png" alt="Resizeable Now Playing widget preview image" height="128" width="274" />
+<img src="../mobile/assets/widget/resizable-now-playing.png" alt="Resizable Now Playing widget preview image" height="128" width="274" />
 
 Offers quick access to media controls (Play/Pause, Prev, Next). Clicking anywhere but the media controls will open the app.
 

@@ -16,7 +16,7 @@ import { WidgetSVG } from "./components/WidgetSVG";
 
 type WidgetProps = WithDimensions<PlayerWidgetData & { openApp?: boolean }>;
 
-export function ResizeableNowPlayingWidget(props: WidgetProps) {
+export function ResizableNowPlayingWidget(props: WidgetProps) {
   const canUseFullArea = props.width - props.height > 2 * props.height;
   let widgetHeight = props.height;
 

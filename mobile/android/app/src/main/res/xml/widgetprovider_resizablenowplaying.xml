@@ -12,7 +12,7 @@
     android:description="@string/widget_nowplaying_description"
 
     android:initialLayout="@layout/rn_widget"
-    android:previewImage="@drawable/resizeablenowplaying_preview"
+    android:previewImage="@drawable/resizablenowplaying_preview"
 
 
 
