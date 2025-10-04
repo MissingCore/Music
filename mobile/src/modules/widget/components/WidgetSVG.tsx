@@ -1,3 +1,4 @@
+import type { ClickActionProps } from "react-native-android-widget";
 import { SvgWidget } from "react-native-android-widget";
 
 import { Colors } from "~/constants/Styles";
@@ -31,9 +32,13 @@ export type WidgetSVGName = keyof typeof SVGMap;
 export function WidgetSVG({
   name,
   size,
-}: {
-  name: WidgetSVGName;
-  size: number;
-}) {
-  return <SvgWidget svg={SVGMap[name]} style={{ height: size, width: size }} />;
+  ...props
+}: ClickActionProps & { name: WidgetSVGName; size: number }) {
+  return (
+    <SvgWidget
+      svg={SVGMap[name]}
+      style={{ height: size, width: size }}
+      {...props}
+    />
+  );
 }

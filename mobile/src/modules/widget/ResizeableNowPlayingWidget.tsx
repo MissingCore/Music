@@ -65,7 +65,8 @@ export function ResizeableNowPlayingWidget(props: WidgetProps) {
             style={{ fontSize: 10, color: `${Colors.neutral100}99` }} // 60% opacity
           />
           <MediaControls
-            width={contentWidth}
+            maxWidth={contentWidth}
+            maxHeight={widgetHeight / 4}
             openApp={openApp}
             isPlaying={props.isPlaying}
           />
@@ -86,58 +87,47 @@ function WidgetText({ style, ...props }: TextWidgetProps) {
   );
 }
 
-function MediaControls({
-  width,
-  openApp,
-  isPlaying,
-}: {
-  width: number;
+function MediaControls(props: {
+  maxWidth: number;
+  maxHeight: number;
   openApp: boolean;
   isPlaying: boolean;
 }) {
-  const svgSize = width / 5;
+  const svgSize = Math.min(props.maxWidth / 6, (props.maxHeight * 2) / 3);
+  const paddingY = svgSize / 8;
+  const paddingX = paddingY * 4;
 
   return (
     <FlexWidget
       style={{
-        width,
+        width: props.maxWidth,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-evenly",
         paddingTop: Styles.layoutGap / 2,
       }}
     >
+      <WidgetSVG
+        clickAction={withAction(Action.Prev, props.openApp)}
+        name="prev"
+        size={svgSize}
+      />
       <FlexWidget
-        clickAction={withAction(Action.Prev, openApp)}
+        clickAction={withAction(Action.PlayPause, props.openApp)}
         style={{
-          padding: 2,
-          backgroundColor: Colors.neutral20,
+          paddingHorizontal: paddingX,
+          paddingVertical: paddingY,
+          backgroundColor: !props.isPlaying ? Colors.red : Colors.neutral20,
           borderRadius: 999,
         }}
       >
-        <WidgetSVG name="prev" size={svgSize} />
+        <WidgetSVG name={props.isPlaying ? "pause" : "play"} size={svgSize} />
       </FlexWidget>
-      <FlexWidget
-        clickAction={withAction(Action.PlayPause, openApp)}
-        style={{
-          padding: 2,
-          paddingHorizontal: 8,
-          backgroundColor: !isPlaying ? Colors.red : Colors.neutral20,
-          borderRadius: 999,
-        }}
-      >
-        <WidgetSVG name={isPlaying ? "pause" : "play"} size={svgSize} />
-      </FlexWidget>
-      <FlexWidget
-        clickAction={withAction(Action.Next, openApp)}
-        style={{
-          padding: 2,
-          backgroundColor: Colors.neutral20,
-          borderRadius: 999,
-        }}
-      >
-        <WidgetSVG name="next" size={svgSize} />
-      </FlexWidget>
+      <WidgetSVG
+        clickAction={withAction(Action.Next, props.openApp)}
+        name="next"
+        size={svgSize}
+      />
     </FlexWidget>
   );
 }
