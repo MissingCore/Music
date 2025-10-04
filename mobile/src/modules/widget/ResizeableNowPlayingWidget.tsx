@@ -44,7 +44,10 @@ export function ResizeableNowPlayingWidget(props: WidgetProps) {
       width={props.width}
     >
       <OverlapWidget>
-        <WidgetCell size={widgetHeight} style={{ borderRadius: 0 }}>
+        <WidgetCell
+          size={widgetHeight}
+          style={{ borderRadius: 0, backgroundColor: Colors.neutral20 }}
+        >
           <WidgetArtwork
             size={widgetHeight}
             artwork={props.track?.artwork ?? null}
