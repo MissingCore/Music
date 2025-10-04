@@ -28,6 +28,12 @@ Displays the current playing track artwork. Clicking on the widget will play/pau
 
 Offers quick access to media controls (Play/Pause, Prev, Next). Clicking on the artwork will open the app.
 
+### [4×2] Now Playing
+
+<img src="../mobile/assets/widget/resizeable-now-playing.png" alt="Resizeable Now Playing widget preview image" height="128" width="274" />
+
+Offers quick access to media controls (Play/Pause, Prev, Next). Clicking anywhere but the media controls will open the app.
+
 ## Known Issues
 
 - The widget when placed might be initially invisible (launching the app at least once should fix it).
