@@ -12,17 +12,20 @@ import { WidgetSVG } from "./components/WidgetSVG";
 type WidgetProps = WithDimensions<PlayerWidgetData & { openApp?: boolean }>;
 
 export function ResizeableNowPlayingWidget(props: WidgetProps) {
-  const size = Math.min(props.width, props.height);
+  const canUseFullArea = props.width - props.height > 2 * props.height;
+  let widgetHeight = props.height;
 
-  const cellSize = (size - Styles.layoutGap) / 2;
-  const svgSize = cellSize / 2;
-
-  const positionOffset = cellSize + Styles.layoutGap;
-  const openApp = props.openApp || props.track === undefined;
+  // We want the width to be ~(2x the widget height + Styles.layoutGap).
+  if (!canUseFullArea) {
+    const threshold = (props.width - Styles.layoutGap) / 2;
+    while (widgetHeight > threshold) {
+      widgetHeight -= 1;
+    }
+  }
 
   return (
-    <WidgetBaseLayout height={size} width={size} transparent>
-      <OverlapWidget>
+    <WidgetBaseLayout height={widgetHeight} width={props.width}>
+      {/* <OverlapWidget>
         <WidgetCell
           clickAction={Action.Open}
           size={cellSize}
@@ -60,7 +63,7 @@ export function ResizeableNowPlayingWidget(props: WidgetProps) {
         >
           <WidgetSVG name="next" size={svgSize} />
         </WidgetCell>
-      </OverlapWidget>
+      </OverlapWidget> */}
     </WidgetBaseLayout>
   );
 }
