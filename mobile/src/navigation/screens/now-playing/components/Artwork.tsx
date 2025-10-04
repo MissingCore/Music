@@ -63,7 +63,7 @@ function PlainArtwork(props: ArtworkProps) {
   return (
     <Pressable
       accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
-      onPress={MusicControls.playToggle}
+      onPress={() => MusicControls.playToggle()}
     >
       <MediaImage type="track" {...props} />
     </Pressable>

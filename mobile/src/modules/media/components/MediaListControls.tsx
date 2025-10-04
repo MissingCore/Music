@@ -47,7 +47,7 @@ function PlayMediaListButton({ trackSource }: { trackSource: PlayListSource }) {
       accessibilityLabel={t(`term.${displayPause ? "pause" : "play"}`)}
       onPress={
         displayPause
-          ? MusicControls.pause
+          ? () => MusicControls.pause()
           : () => playFromMediaList({ source: trackSource })
       }
       className={cn("bg-red p-3", { "bg-onSurface": displayPause })}

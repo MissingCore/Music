@@ -82,7 +82,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
           <IconButton
             Icon={isPlaying ? Pause : PlayArrow}
             accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
-            onPress={MusicControls.playToggle}
+            onPress={() => MusicControls.playToggle()}
             active
             large
           />
