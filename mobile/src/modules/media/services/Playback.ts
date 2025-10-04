@@ -29,14 +29,18 @@ export class MusicControls {
     musicStore.setState({ isPlaying: true });
     await RNTPManager.preload();
     await TrackPlayer.play();
-    if (!opts?.noRevalidation) revalidateWidgets();
+    if (!opts?.noRevalidation) {
+      revalidateWidgets({ exclude: ["ArtworkPlayer"] });
+    }
   }
 
   /** Pause the current playing track. */
   static async pause(opts?: PlayPauseOptions) {
     musicStore.setState({ isPlaying: false });
     await TrackPlayer.pause();
-    if (!opts?.noRevalidation) revalidateWidgets();
+    if (!opts?.noRevalidation) {
+      revalidateWidgets({ exclude: ["ArtworkPlayer"] });
+    }
   }
 
   /** Stop & unload the current playing track (stops loading/buffering). */
