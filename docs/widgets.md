@@ -1,4 +1,4 @@
-# Widgets
+# [🧪 Experimental] Widgets
 
 > [!IMPORTANT]  
 > Widgets are an experimental feature and as such, may not get official support or work as expected.
@@ -28,9 +28,18 @@ Displays the current playing track artwork. Clicking on the widget will play/pau
 
 Offers quick access to media controls (Play/Pause, Prev, Next). Clicking on the artwork will open the app.
 
+### [4×2] Now Playing
+
+<img src="../mobile/assets/widget/resizable-now-playing.png" alt="Resizable Now Playing widget preview image" height="128" width="274" />
+
+Offers quick access to media controls (Play/Pause, Prev, Next). Clicking anywhere but the media controls will open the app.
+
 ## Known Issues
 
 - The widget when placed might be initially invisible (launching the app at least once should fix it).
 - Dismissing the app (with `Continue Playback on Dismiss` disabled) then immediately clicking the widget may "crash" the app (you get the app launch animation, then it closes).
   - This is probably due to us delaying destroying the foreground service by `1s` to let the widget get updated one final time.
 - Widget won't update on screen reorientation ([ref](https://github.com/sAleksovski/react-native-android-widget/issues/96)).
+- Some interactions/animations may become slower/laggier when using the "Now Playing" widget (or in general multiple widgets).
+  - ie: This can be seen when pressing the play/pause button and see the "pressed" state lasting a bit longer.
+  - This is probably due to the JS thread becoming blocked/busy as we're notifying each widget to update.

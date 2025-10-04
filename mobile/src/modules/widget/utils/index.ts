@@ -3,6 +3,7 @@ import { getTrackCover } from "~/db/utils";
 import { musicStore } from "~/modules/media/services/Music";
 
 import { updateWidgets } from "./update";
+import type { WidgetName } from "../constants/Widgets";
 import type { PlayerWidgetData } from "../types";
 
 export function getWidgetData(): PlayerWidgetData {
@@ -26,12 +27,10 @@ export function getWidgetData(): PlayerWidgetData {
 export async function revalidateWidgets(options?: {
   /** Switch the widget's click event to open the app. */
   openApp?: boolean;
+  exclude?: WidgetName[];
 }) {
   const musicContextData = getWidgetData();
   if (options?.openApp) musicContextData.isPlaying = false;
 
-  await updateWidgets({
-    ...musicContextData,
-    openApp: options?.openApp,
-  });
+  await updateWidgets({ ...musicContextData, ...(options ?? {}) });
 }

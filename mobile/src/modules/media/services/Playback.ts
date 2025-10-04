@@ -5,12 +5,18 @@ import { getTrack } from "~/api/track";
 import { userPreferencesStore } from "~/services/UserPreferences";
 import { Queue, RNTPManager, musicStore } from "./Music";
 
+import { revalidateWidgets } from "~/modules/widget/utils";
 import {
   arePlaybackSourceEqual,
   getSourceName,
   getTrackList,
 } from "../helpers/data";
 import type { PlayListSource } from "../types";
+
+type PlayPauseOptions = {
+  /** If we shouldn't revalidate widgets when playback state changes. */
+  noRevalidation?: boolean;
+};
 
 //#region MusicControls
 /**
@@ -19,28 +25,35 @@ import type { PlayListSource } from "../types";
  */
 export class MusicControls {
   /** Play the current track. */
-  static async play() {
+  static async play(opts?: PlayPauseOptions) {
     musicStore.setState({ isPlaying: true });
     await RNTPManager.preload();
     await TrackPlayer.play();
+    if (!opts?.noRevalidation) {
+      revalidateWidgets({ exclude: ["ArtworkPlayer"] });
+    }
   }
 
   /** Pause the current playing track. */
-  static async pause() {
+  static async pause(opts?: PlayPauseOptions) {
     musicStore.setState({ isPlaying: false });
     await TrackPlayer.pause();
+    if (!opts?.noRevalidation) {
+      revalidateWidgets({ exclude: ["ArtworkPlayer"] });
+    }
   }
 
   /** Stop & unload the current playing track (stops loading/buffering). */
   static async stop() {
     musicStore.setState({ isPlaying: false });
     await TrackPlayer.stop();
+    revalidateWidgets({ openApp: true });
   }
 
   /** Toggle `isPlaying`, playing or pausing the current track. */
-  static async playToggle() {
-    if (musicStore.getState().isPlaying) await MusicControls.pause();
-    else await MusicControls.play();
+  static async playToggle(opts?: PlayPauseOptions) {
+    if (musicStore.getState().isPlaying) await MusicControls.pause(opts);
+    else await MusicControls.play(opts);
   }
 
   /** Play the previous track. */
