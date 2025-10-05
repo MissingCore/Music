@@ -21,6 +21,15 @@
 
   <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
+  <!--
+    This was added in by `androidx.work:work-runtime`, which is used by
+    `react-native-android-widgets`.
+
+    This may not be necessary as long as the app becomes alive in another way.
+      - https://issuetracker.google.com/issues/129362589
+  -->
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" tools:node="remove" />
+
   <queries>
     <intent>
       <action android:name="android.intent.action.VIEW"/>
