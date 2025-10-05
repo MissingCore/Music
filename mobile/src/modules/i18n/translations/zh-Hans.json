@@ -23,6 +23,7 @@
     "unFavorite": "取消收藏",
     "favoriteTracks": "收藏的歌曲",
     "all": null,
+    "more": null,
     "home": "首页",
     "settings": "设置",
     "upcoming": "即将播放",
@@ -64,14 +65,6 @@
   },
   "err": {
     "flow": {
-      "route": {
-        "title": "无效路由",
-        "brief": "你不知怎的导航到了一个无效路由。",
-        "extra": {
-          "missing": "缺失",
-          "from": "来自"
-        }
-      },
       "generic": {
         "title": "出现错误",
         "brief": "你遇到了一个意外错误。"
@@ -134,6 +127,9 @@
         "setHomeTab": null
       }
     },
+    "miniplayerGestures": {
+      "title": null
+    },
     "nowPlayingDesign": {
       "title": "播放器设计风格",
       "extra": {
@@ -141,9 +137,6 @@
         "vinyl": "黑胶唱片",
         "vinylOld": "黑胶唱片(经典)"
       }
-    },
-    "visualTips": {
-      "title": null
     },
     "ignoreRTLLayout": {
       "title": null,
@@ -330,7 +323,11 @@
         "create": "创建播放列表",
         "delete": "删除播放列表",
         "edit": "编辑播放列表",
-        "name": "播放列表名称"
+        "name": "播放列表名称",
+        "m3uImport": null,
+        "m3uExport": null,
+        "absolute": null,
+        "relative": null
       }
     },
     "trackMetadata": {

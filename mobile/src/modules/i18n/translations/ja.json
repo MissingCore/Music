@@ -23,6 +23,7 @@
     "unFavorite": "お気に入りを解除",
     "favoriteTracks": "お気に入りのトラック",
     "all": "すべて",
+    "more": null,
     "home": "ホーム",
     "settings": "設定",
     "upcoming": "次に再生",
@@ -64,14 +65,6 @@
   },
   "err": {
     "flow": {
-      "route": {
-        "title": "一致しないルート",
-        "brief": "何らかの理由で無効なルートに移動しました。",
-        "extra": {
-          "missing": "なし",
-          "from": "元のルート"
-        }
-      },
       "generic": {
         "title": "問題が発生しました",
         "brief": "予期しないエラーが発生しました。"
@@ -134,6 +127,9 @@
         "setHomeTab": "アプリの起動時に「{{- name}}」のタブを開きます。"
       }
     },
+    "miniplayerGestures": {
+      "title": null
+    },
     "nowPlayingDesign": {
       "title": "再生中画面のデザイン",
       "extra": {
@@ -141,9 +137,6 @@
         "vinyl": "ヴァイナル",
         "vinylOld": "ヴァイナル (従来)"
       }
-    },
-    "visualTips": {
-      "title": "視覚的なヒント"
     },
     "ignoreRTLLayout": {
       "title": "RTL レイアウトを無視",
@@ -330,7 +323,11 @@
         "create": "プレイリストを作成",
         "delete": "プレイリストを削除",
         "edit": "プレイリストを編集",
-        "name": "プレイリスト名"
+        "name": "プレイリスト名",
+        "m3uImport": null,
+        "m3uExport": null,
+        "absolute": null,
+        "relative": null
       }
     },
     "trackMetadata": {

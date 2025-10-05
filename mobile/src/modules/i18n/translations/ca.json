@@ -23,6 +23,7 @@
     "unFavorite": "Treu de preferides",
     "favoriteTracks": "Pistes preferides",
     "all": "Tot",
+    "more": null,
     "home": "Inici",
     "settings": "Ajusts",
     "upcoming": "Pròxima",
@@ -64,14 +65,6 @@
   },
   "err": {
     "flow": {
-      "route": {
-        "title": "La ruta no coincideix",
-        "brief": "D'alguna manera has navegat a una ruta invàlida.",
-        "extra": {
-          "missing": "No està",
-          "from": "De"
-        }
-      },
       "generic": {
         "title": "Alguna cosa ha anat malament",
         "brief": "Ha sorgit un error inesperat."
@@ -134,6 +127,9 @@
         "setHomeTab": null
       }
     },
+    "miniplayerGestures": {
+      "title": null
+    },
     "nowPlayingDesign": {
       "title": "Disseny pantalla de reproducció",
       "extra": {
@@ -141,9 +137,6 @@
         "vinyl": "Vinil",
         "vinylOld": "Vinil (tradicional)"
       }
-    },
-    "visualTips": {
-      "title": "Pistes visuals"
     },
     "ignoreRTLLayout": {
       "title": null,
@@ -330,7 +323,11 @@
         "create": "Crea llista",
         "delete": "Esborra llista",
         "edit": "Edita llista",
-        "name": "Títol de la Llista"
+        "name": "Títol de la Llista",
+        "m3uImport": null,
+        "m3uExport": null,
+        "absolute": null,
+        "relative": null
       }
     },
     "trackMetadata": {

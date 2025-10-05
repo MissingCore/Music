@@ -23,6 +23,7 @@
     "unFavorite": "Quitar de favoritos",
     "favoriteTracks": "Canciones favoritas",
     "all": "Todo",
+    "more": null,
     "home": "Inicio",
     "settings": "Configuración",
     "upcoming": "Próximamente",
@@ -64,14 +65,6 @@
   },
   "err": {
     "flow": {
-      "route": {
-        "title": "Ruta no coincide",
-        "brief": "De alguna forma has navegado a una ruta inválida.",
-        "extra": {
-          "missing": "Falta",
-          "from": "De"
-        }
-      },
       "generic": {
         "title": "Algo salió mal",
         "brief": "Has encontrado un error inesperado."
@@ -134,6 +127,9 @@
         "setHomeTab": "Abrir la pestaña {{- name}} al iniciar la aplicación."
       }
     },
+    "miniplayerGestures": {
+      "title": null
+    },
     "nowPlayingDesign": {
       "title": "Diseño de la pantalla de reproducción.",
       "extra": {
@@ -141,9 +137,6 @@
         "vinyl": "Vinilo",
         "vinylOld": "Vinilo (tradicional)"
       }
-    },
-    "visualTips": {
-      "title": "Consejos visuales"
     },
     "ignoreRTLLayout": {
       "title": "Ignorar diseño RTL",
@@ -330,7 +323,11 @@
         "create": "Crear lista de reproducción",
         "delete": "Eliminar lista de reproducción",
         "edit": "Editar lista de reproducción",
-        "name": "Nombre de la lista de reproducción"
+        "name": "Nombre de la lista de reproducción",
+        "m3uImport": null,
+        "m3uExport": null,
+        "absolute": null,
+        "relative": null
       }
     },
     "trackMetadata": {

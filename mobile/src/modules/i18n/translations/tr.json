@@ -23,6 +23,7 @@
     "unFavorite": "Favorilerden Çıkar",
     "favoriteTracks": "Favori Parçalar",
     "all": "Tümü",
+    "more": null,
     "home": "Ana Sayfa",
     "settings": "Ayarlar",
     "upcoming": "Sıradaki",
@@ -64,14 +65,6 @@
   },
   "err": {
     "flow": {
-      "route": {
-        "title": "Eşleşmeyen Rota",
-        "brief": "Bir şekilde geçersiz bir rotaya yönlendirildiniz.",
-        "extra": {
-          "missing": "Eksik",
-          "from": "Kaynak"
-        }
-      },
       "generic": {
         "title": "Bir Şeyler Ters Gitti",
         "brief": "Beklenmedik bir hatayla karşılaştınız."
@@ -134,6 +127,9 @@
         "setHomeTab": "Uygulama başlatıldığında {{- name}} sekmesini aç."
       }
     },
+    "miniplayerGestures": {
+      "title": null
+    },
     "nowPlayingDesign": {
       "title": "Şu An Çalan Ekranı Tasarımı",
       "extra": {
@@ -141,9 +137,6 @@
         "vinyl": "Plak",
         "vinylOld": "Plak (Eski)"
       }
-    },
-    "visualTips": {
-      "title": "Görsel İpuçları"
     },
     "ignoreRTLLayout": {
       "title": "RTL Düzenini Görmezden Gel",
@@ -330,7 +323,11 @@
         "create": "Çalma Listesi Oluştur",
         "delete": "Çalma Listesini Sil",
         "edit": "Çalma Listesini Düzenle",
-        "name": "Çalma Listesi Adı"
+        "name": "Çalma Listesi Adı",
+        "m3uImport": null,
+        "m3uExport": null,
+        "absolute": null,
+        "relative": null
       }
     },
     "trackMetadata": {

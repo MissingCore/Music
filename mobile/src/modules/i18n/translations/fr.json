@@ -23,6 +23,7 @@
     "unFavorite": "Retirer des favoris",
     "favoriteTracks": "Titres favoris",
     "all": null,
+    "more": null,
     "home": "Accueil",
     "settings": "Paramètres",
     "upcoming": "À venir",
@@ -64,14 +65,6 @@
   },
   "err": {
     "flow": {
-      "route": {
-        "title": "Route non trouvée",
-        "brief": "Vous avez d'une manière ou d'une autre navigué vers une route invalide.",
-        "extra": {
-          "missing": "Manquant",
-          "from": "Depuis"
-        }
-      },
       "generic": {
         "title": "Quelque chose s'est mal passé",
         "brief": "Vous avez rencontré une erreur inattendue."
@@ -134,6 +127,9 @@
         "setHomeTab": null
       }
     },
+    "miniplayerGestures": {
+      "title": null
+    },
     "nowPlayingDesign": {
       "title": "Design de l'écran \"En cours de lecture\"",
       "extra": {
@@ -141,9 +137,6 @@
         "vinyl": "Vinyle",
         "vinylOld": "Vinyle (Legacy)"
       }
-    },
-    "visualTips": {
-      "title": null
     },
     "ignoreRTLLayout": {
       "title": null,
@@ -330,7 +323,11 @@
         "create": "Créer playlist",
         "delete": "Supprimer playlist",
         "edit": "Modifier playlist",
-        "name": "Nom de la Playlist"
+        "name": "Nom de la Playlist",
+        "m3uImport": null,
+        "m3uExport": null,
+        "absolute": null,
+        "relative": null
       }
     },
     "trackMetadata": {

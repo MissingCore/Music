@@ -23,6 +23,7 @@
     "unFavorite": "पसंदीदा हटाएँ",
     "favoriteTracks": "पसंदीदा ट्रैक्स",
     "all": null,
+    "more": null,
     "home": "होम",
     "settings": "सेटिंग्स",
     "upcoming": "आगामी",
@@ -64,14 +65,6 @@
   },
   "err": {
     "flow": {
-      "route": {
-        "title": "मेल नहीं खाने वाला मार्ग",
-        "brief": "आप किसी अमान्य मार्ग पर नेविगेट हो गए हैं।",
-        "extra": {
-          "missing": "लापता",
-          "from": "से"
-        }
-      },
       "generic": {
         "title": "कुछ गड़बड़ हो गई",
         "brief": "आपको एक अप्रत्याशित त्रुटि का सामना करना पड़ा।"
@@ -134,6 +127,9 @@
         "setHomeTab": null
       }
     },
+    "miniplayerGestures": {
+      "title": null
+    },
     "nowPlayingDesign": {
       "title": "अभी चल रहा स्क्रीन डिज़ाइन",
       "extra": {
@@ -141,9 +137,6 @@
         "vinyl": "विनाइल",
         "vinylOld": null
       }
-    },
-    "visualTips": {
-      "title": null
     },
     "ignoreRTLLayout": {
       "title": null,
@@ -330,7 +323,11 @@
         "create": "प्लेलिस्ट बनाएँ",
         "delete": "प्लेलिस्ट हटाएँ",
         "edit": "प्लेलिस्ट संपादित करें",
-        "name": "प्लेलिस्ट नाम"
+        "name": "प्लेलिस्ट नाम",
+        "m3uImport": null,
+        "m3uExport": null,
+        "absolute": null,
+        "relative": null
       }
     },
     "trackMetadata": {
