@@ -23,6 +23,7 @@
     "unFavorite": "Batal Sukai",
     "favoriteTracks": "Trek Favorit",
     "all": null,
+    "more": null,
     "home": "Beranda",
     "settings": "Pengaturan",
     "upcoming": "Yang akan Datang",
@@ -64,14 +65,6 @@
   },
   "err": {
     "flow": {
-      "route": {
-        "title": "Rute tidak sesuai",
-        "brief": "Anda menavigasikan ke rute yang tidak valid.",
-        "extra": {
-          "missing": "Hilang",
-          "from": "Dari"
-        }
-      },
       "generic": {
         "title": "Terjadi Kesalahan",
         "brief": "Anda mengalami kesalahan yang tidak terduga."
@@ -134,6 +127,9 @@
         "setHomeTab": null
       }
     },
+    "miniplayerGestures": {
+      "title": null
+    },
     "nowPlayingDesign": {
       "title": "Desain Layar Pemutaran Saat Ini",
       "extra": {
@@ -141,9 +137,6 @@
         "vinyl": "Vinyl",
         "vinylOld": "Vinyl (Lama)"
       }
-    },
-    "visualTips": {
-      "title": null
     },
     "ignoreRTLLayout": {
       "title": null,
@@ -330,7 +323,11 @@
         "create": "Buat Daftar Putar",
         "delete": "Hapus Daftar Putar",
         "edit": "Sunting Daftar Putar",
-        "name": "Nama Daftar Putar"
+        "name": "Nama Daftar Putar",
+        "m3uImport": null,
+        "m3uExport": null,
+        "absolute": null,
+        "relative": null
       }
     },
     "trackMetadata": {

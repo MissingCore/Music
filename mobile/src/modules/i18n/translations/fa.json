@@ -23,6 +23,7 @@
     "unFavorite": "حذف علاقه‌مندی",
     "favoriteTracks": "آهنگ های مورد علاقه",
     "all": "همه",
+    "more": null,
     "home": "خانه",
     "settings": "تنظیمات",
     "upcoming": "بعدی",
@@ -64,14 +65,6 @@
   },
   "err": {
     "flow": {
-      "route": {
-        "title": "مسیر نامعلوم",
-        "brief": "به نحوی به مسیر نامعتبری هدایت شدید.",
-        "extra": {
-          "missing": "گم شده",
-          "from": "از"
-        }
-      },
       "generic": {
         "title": "مشکلی پیش آمده",
         "brief": "با خطای غیرمنتظره‌ای مواجه شدید."
@@ -134,6 +127,9 @@
         "setHomeTab": "باز کردن تب {{- name}} هنگام اجرای برنامه."
       }
     },
+    "miniplayerGestures": {
+      "title": null
+    },
     "nowPlayingDesign": {
       "title": "طراحی صفحه در حال پخش",
       "extra": {
@@ -141,9 +137,6 @@
         "vinyl": "گرامافون",
         "vinylOld": "گرامافون (قدیمی)"
       }
-    },
-    "visualTips": {
-      "title": "نکات بصری"
     },
     "ignoreRTLLayout": {
       "title": "نادیده گرفتن چیدمان راست به چپ",
@@ -330,7 +323,11 @@
         "create": "ایجاد لیست پخش",
         "delete": "حذف لیست پخش",
         "edit": "ویرایش لیست پخش",
-        "name": "نام لیست پخش"
+        "name": "نام لیست پخش",
+        "m3uImport": null,
+        "m3uExport": null,
+        "absolute": null,
+        "relative": null
       }
     },
     "trackMetadata": {

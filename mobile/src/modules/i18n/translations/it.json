@@ -23,6 +23,7 @@
     "unFavorite": "Rimuovi dai preferiti",
     "favoriteTracks": "Brani preferiti",
     "all": null,
+    "more": null,
     "home": "Home",
     "settings": "Impostazioni",
     "upcoming": "Prossimamente",
@@ -64,14 +65,6 @@
   },
   "err": {
     "flow": {
-      "route": {
-        "title": "Percorso non esistente",
-        "brief": "In qualche modo sei arrivato ad un percorso non esistente.",
-        "extra": {
-          "missing": "Mancante",
-          "from": "Da"
-        }
-      },
       "generic": {
         "title": "Qualcosa è andato storto",
         "brief": "Si è verificato un errore imprevisto."
@@ -134,6 +127,9 @@
         "setHomeTab": null
       }
     },
+    "miniplayerGestures": {
+      "title": null
+    },
     "nowPlayingDesign": {
       "title": "Schermata \"Riproduzione in corso\"",
       "extra": {
@@ -141,9 +137,6 @@
         "vinyl": "Vinile",
         "vinylOld": "Vinile (legacy)"
       }
-    },
-    "visualTips": {
-      "title": null
     },
     "ignoreRTLLayout": {
       "title": null,
@@ -330,7 +323,11 @@
         "create": "Crea $t(term.playlist)",
         "delete": "Elimina $t(term.playlist)",
         "edit": "Modifica $t(term.playlist)",
-        "name": "Nome $t(term.playlist)"
+        "name": "Nome $t(term.playlist)",
+        "m3uImport": null,
+        "m3uExport": null,
+        "absolute": null,
+        "relative": null
       }
     },
     "trackMetadata": {

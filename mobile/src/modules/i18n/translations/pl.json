@@ -23,6 +23,7 @@
     "unFavorite": "Usuń z ulubionych",
     "favoriteTracks": "Ulubione utwory",
     "all": "Wszystkie",
+    "more": null,
     "home": "Start",
     "settings": "Ustawienia",
     "upcoming": "Następne",
@@ -64,14 +65,6 @@
   },
   "err": {
     "flow": {
-      "route": {
-        "title": "Nieprawidłowa ścieżka",
-        "brief": "Taki katalog nie istnieje.",
-        "extra": {
-          "missing": "Brakuje",
-          "from": "z"
-        }
-      },
       "generic": {
         "title": "Coś poszło nie tak",
         "brief": "Wystąpił nieoczekiwany błąd."
@@ -134,6 +127,9 @@
         "setHomeTab": "Otwórz zakładkę {{- name}} przy uruchomieniu aplikacji."
       }
     },
+    "miniplayerGestures": {
+      "title": null
+    },
     "nowPlayingDesign": {
       "title": "Wygląd ekranu `Odtwarzane teraz`",
       "extra": {
@@ -141,9 +137,6 @@
         "vinyl": "Winyl",
         "vinylOld": "Winyl (Poprzedni)"
       }
-    },
-    "visualTips": {
-      "title": "Wizualne podpowiedzi"
     },
     "ignoreRTLLayout": {
       "title": "Ignoruj układ RTL",
@@ -330,7 +323,11 @@
         "create": "Utwórz playlistę",
         "delete": "Usuń playlistę",
         "edit": "Edytuj playlistę",
-        "name": "Nazwa dla playlisty"
+        "name": "Nazwa dla playlisty",
+        "m3uImport": null,
+        "m3uExport": null,
+        "absolute": null,
+        "relative": null
       }
     },
     "trackMetadata": {

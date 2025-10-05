@@ -23,6 +23,7 @@
     "unFavorite": "Favorisér ikke længere",
     "favoriteTracks": "Yndlingssange",
     "all": null,
+    "more": null,
     "home": "Startside",
     "settings": "Indstillinger",
     "upcoming": "Næste sange",
@@ -64,14 +65,6 @@
   },
   "err": {
     "flow": {
-      "route": {
-        "title": "Stien stemmer ikke overens",
-        "brief": "Du har prøvet at navigere til en ugyldig sti.",
-        "extra": {
-          "missing": "Mangler",
-          "from": "Fra"
-        }
-      },
       "generic": {
         "title": "Noget gik galt",
         "brief": "Du stødte på en uventet fejl."
@@ -134,6 +127,9 @@
         "setHomeTab": null
       }
     },
+    "miniplayerGestures": {
+      "title": null
+    },
     "nowPlayingDesign": {
       "title": "Design af Afspiller-nu-skærmen",
       "extra": {
@@ -141,9 +137,6 @@
         "vinyl": "Kun vinyl",
         "vinylOld": "Vinyl og cover"
       }
-    },
-    "visualTips": {
-      "title": null
     },
     "ignoreRTLLayout": {
       "title": null,
@@ -330,7 +323,11 @@
         "create": "Lav ny playliste",
         "delete": "Slet playliste",
         "edit": "Tilpas playliste",
-        "name": "Playlistens navn"
+        "name": "Playlistens navn",
+        "m3uImport": null,
+        "m3uExport": null,
+        "absolute": null,
+        "relative": null
       }
     },
     "trackMetadata": {

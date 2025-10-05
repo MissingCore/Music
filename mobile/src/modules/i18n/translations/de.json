@@ -22,7 +22,8 @@
     "favorites": "Favoriten",
     "unFavorite": "Aus deinen Favoriten entfernen",
     "favoriteTracks": "Lieblingslieder",
-    "all": null,
+    "all": "Alles",
+    "more": null,
     "home": "Homepage",
     "settings": "Einstellungen",
     "upcoming": "Bevorstehend",
@@ -57,21 +58,13 @@
     "stay": "Bleiben",
     "leave": "Verlassen",
     "clear": "Leeren",
-    "reset": null,
+    "reset": "Zurücksetzen",
     "validation": {
       "unique": "Einzigartig"
     }
   },
   "err": {
     "flow": {
-      "route": {
-        "title": "Unübertroffene Route",
-        "brief": "Du hast irgendwie zu einer ungültigen Route navigiert.",
-        "extra": {
-          "missing": "Fehlt",
-          "from": "Von"
-        }
-      },
       "generic": {
         "title": "Etwas ist schiefgelaufen",
         "brief": "Es ist ein unerwarteter Fehler aufgetreten."
@@ -134,6 +127,9 @@
         "setHomeTab": null
       }
     },
+    "miniplayerGestures": {
+      "title": null
+    },
     "nowPlayingDesign": {
       "title": "Design des Jetzt-Läuft-Bildschirms",
       "extra": {
@@ -142,12 +138,9 @@
         "vinylOld": "Vinyl (Alt)"
       }
     },
-    "visualTips": {
-      "title": null
-    },
     "ignoreRTLLayout": {
-      "title": null,
-      "brief": null
+      "title": "RTL-Layout ignorieren",
+      "brief": "LTR-Layout mit einer RTL-Sprache verwenden. Ein Neustart ist erforderlich."
     },
     "language": {
       "title": "Sprache"
@@ -176,7 +169,7 @@
       }
     },
     "hiddenTracks": {
-      "title": null,
+      "title": "Versteckte Tracks",
       "brief": null,
       "extra": {
         "hiddenAt": null,
@@ -330,7 +323,11 @@
         "create": "Playlist erstellen",
         "delete": "Playlist löschen",
         "edit": "Playlist bearbeiten",
-        "name": "Playlistname"
+        "name": "Playlistname",
+        "m3uImport": null,
+        "m3uExport": null,
+        "absolute": null,
+        "relative": null
       }
     },
     "trackMetadata": {
