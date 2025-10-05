@@ -35,7 +35,7 @@ export function ResizableNowPlayingWidget(props: WidgetProps) {
   const contentWidth = props.width - widgetHeight - 2 * contentPadding;
 
   // Calculate scaled font size for text.
-  const maxTextHeight = widgetHeight / 2 - 3 * contentPadding;
+  const maxTextHeight = widgetHeight * 0.55 - 3 * contentPadding;
   const textFontSize = maxTextHeight / 4;
 
   const openApp = props.openApp || props.track === undefined;

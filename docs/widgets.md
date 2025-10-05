@@ -41,5 +41,5 @@ Offers quick access to media controls (Play/Pause, Prev, Next). Clicking anywher
   - This is probably due to us delaying destroying the foreground service by `1s` to let the widget get updated one final time.
 - Widget won't update on screen reorientation ([ref](https://github.com/sAleksovski/react-native-android-widget/issues/96)).
 - Some interactions/animations may become slower/laggier when using the "Now Playing" widget (or in general multiple widgets).
-  - ie: This can be seen when pressing the play/pause button and see the "pressed" state lasting a bit longer.
+  - This can be seen when pressing the play/pause button and seeing the "pressed" state lasting a bit longer.
   - This is probably due to the JS thread becoming blocked/busy as we're notifying each widget to update.
