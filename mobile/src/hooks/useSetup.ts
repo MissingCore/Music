@@ -1,6 +1,7 @@
 import TrackPlayer from "@weights-ai/react-native-track-player";
 import { useEffect } from "react";
 
+import "~/services/_subscriptions";
 import "~/modules/media/services/_subscriptions";
 import { musicStore, useMusicStore } from "~/modules/media/services/Music";
 import { useSortPreferencesStore } from "~/modules/media/services/SortPreferences";
