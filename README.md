@@ -21,16 +21,16 @@ A Nothing inspired **local** music player.
 - Works with Nothing Music Widget & Glyph Music Visualization
 - Diverse music organization: Albums, Artists, Favorites, Folder Structure, Playlists
 - Local metadata editor for quick changes (doesn't modify the actual file)
-- Artwork customizability
-  - Changing the artwork for Albums, Artists, and Playlists requires long-pressing the artwork on their individual screens
+- Artwork customizability for Albums, Artists, Playlists, and Tracks
 - Background playback w/ media control notification
-- Queues
 - Theoretical support of [these media formats](https://developer.android.com/media/platform/supported-formats#audio-formats)
 - [Community translations](#translations)
 - **`[🧪 Experimental]`** Sleep timer support (enable feature in settings)
+- **`[🧪 Experimental]`** Importing/Exporting playlists from/as M3U files
+- **`[🧪 Experimental]`** [3 widget variants](./docs/widgets.md)
 
 > [!NOTE]  
-> This app is designed to work best on "phone" layouts and isn't tested for larger screens (ie: tablets). We may improve the layout for larger screens in the future.
+> This app is designed to work best on "phone" layouts and isn't tested for larger screens (ie: foldables/tablets). We may improve the layout for larger screens in the future.
 
 ## Built With
 
