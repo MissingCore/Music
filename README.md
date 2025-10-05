@@ -15,6 +15,17 @@ A Nothing inspired **local** music player.
 
 **The default branch (`dev`) is the development version of the repository. For the stable version, see the `main` branch.**
 
+## Screenshots
+
+<div align="center">
+  <img src="./.github/assets/Promo - UI.png" width=250>
+  <img src="./.github/assets/Promo - Playlist Track Order.png" width=250>
+  <img src="./.github/assets/Promo - Artwork.png" width=250>
+  <img src="./.github/assets/Promo - Themes.png" width=250>
+  <img src="./.github/assets/Promo - Community Translations.png" width=250>
+  <img src="./.github/assets/Promo - Experimental Widgets.png" width=250>
+</div>
+
 ## Features
 
 - Supports Android 7+
