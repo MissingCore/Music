@@ -8,11 +8,13 @@ These widgets are made through the awesome [`react-native-android-widget` packag
 Widget design is pretty limited as we have to account for the different Android versions and home screen layouts. For example, a `1×1` area on the home screen might not necessarily be a square.
 
 > [!NOTE]  
-> For the best experience, it's recommended to enable the `Continue Playback on Dismiss` experimental feature as well. Otherwise, when you dismiss the app, clicking on the widget (should) open the app instead of their expected behavior.
+> `react-native-android-widget` uses the [`WorkManager` API](https://developer.android.com/jetpack/androidx/releases/work) which adds in the [`android.permission.RECEIVE_BOOT_COMPLETED` permission](https://developer.android.com/reference/android/Manifest.permission#RECEIVE_BOOT_COMPLETED). This permission has been explicitly removed as [it should be fine as long as our app becomes "alive" in a different way](https://issuetracker.google.com/issues/129362589), but it might break something unexpectedly.
 
 ## Current Widgets
 
 What all widgets have in common is that if no track is queued / the app has been dismissed when `Continue Playback on Dismiss` is disabled, clicking on the widget will open the app instead.
+
+- So for the "best" experience, it's recommended to enable the `Continue Playback on Dismiss` experimental feature as well.
 
 There's no indicator for playback progress as I don't want to trigger a widget update every second.
 
