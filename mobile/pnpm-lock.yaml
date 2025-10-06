@@ -15,7 +15,7 @@ patchedDependencies:
     hash: t2vslaq3o2r5rmxjymsu3p2x2m
     path: patches/@react-native-assets__slider.patch
   '@weights-ai/react-native-track-player':
-    hash: kbptbpw4jqfx4t5zx4c5wzbroy
+    hash: p4fqffvyo44eze4h5yj4kgxus4
     path: patches/@weights-ai__react-native-track-player.patch
   expo-file-system:
     hash: hgu53i2ax26gwnr5j43lvhx4h4
@@ -78,7 +78,7 @@ importers:
         version: 5.90.2(react@19.0.0)
       '@weights-ai/react-native-track-player':
         specifier: ^4.1.6
-        version: 4.1.6(patch_hash=kbptbpw4jqfx4t5zx4c5wzbroy)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        version: 4.1.6(patch_hash=p4fqffvyo44eze4h5yj4kgxus4)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -7459,7 +7459,7 @@ snapshots:
 
   '@vscode/sudo-prompt@9.3.1': {}
 
-  '@weights-ai/react-native-track-player@4.1.6(patch_hash=kbptbpw4jqfx4t5zx4c5wzbroy)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
+  '@weights-ai/react-native-track-player@4.1.6(patch_hash=p4fqffvyo44eze4h5yj4kgxus4)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
     dependencies:
       react: 19.0.0
       react-native: 0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0)
