@@ -22,7 +22,6 @@ export async function widgetTaskHandler({
   switch (widgetAction) {
     case "WIDGET_ADDED":
     case "WIDGET_RESIZED":
-    case "WIDGET_UPDATE":
       // Have widget open app if the RNTP service isn't available to
       // prevent things breaking due to the Music store requiring a RNTP
       // service active (or else the data will get cleared).
@@ -35,6 +34,7 @@ export async function widgetTaskHandler({
       renderWidget(<Widget {...widgetData} openApp={shouldOpen} />);
       break;
 
+    case "WIDGET_UPDATE":
     case "WIDGET_DELETED":
       // Do nothing
       break;
