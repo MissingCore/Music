@@ -23,7 +23,7 @@
     "unFavorite": "Usuń z ulubionych",
     "favoriteTracks": "Ulubione utwory",
     "all": "Wszystkie",
-    "more": null,
+    "more": "Więcej",
     "home": "Start",
     "settings": "Ustawienia",
     "upcoming": "Następne",
@@ -71,7 +71,7 @@
       },
       "report": {
         "title": "Zgłoś problem",
-        "brief": "Dołącz zrzut ekranu tego co teraz widzisz."
+        "brief": "Dołącz zrzut ekranu tego, co teraz widzisz."
       }
     },
     "msg": {
@@ -128,7 +128,7 @@
       }
     },
     "miniplayerGestures": {
-      "title": null
+      "title": "Gesty miniodtwarzacza"
     },
     "nowPlayingDesign": {
       "title": "Wygląd ekranu `Odtwarzane teraz`",
@@ -324,16 +324,16 @@
         "delete": "Usuń playlistę",
         "edit": "Edytuj playlistę",
         "name": "Nazwa dla playlisty",
-        "m3uImport": null,
-        "m3uExport": null,
-        "absolute": null,
-        "relative": null
+        "m3uImport": "Importuj z pliku M3U",
+        "m3uExport": "Eksportuj do pliku M3U",
+        "absolute": "Absolutne",
+        "relative": "Względne"
       }
     },
     "trackMetadata": {
       "title": "Edytuj metadane",
       "description": {
-        "line1": "Zmień jak utwory będą wyświetlane w aplikacji. To nie modyfikuje plików.",
+        "line1": "Zmień sposób wyświetlania utworów w aplikacji. To nie modyfikuje plików.",
         "line2": "Uwaga: Twoje zmiany mogą zostać odrzucone po modyfikacji pliku."
       },
       "extra": {
