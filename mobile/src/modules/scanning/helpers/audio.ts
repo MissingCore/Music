@@ -236,6 +236,13 @@ async function discoverTracks() {
   return { _all: incomingData, valid: validTracks };
 }
 
+/**
+ * Difference in `modificiationTime` to trigger a refetch.
+ *  - Use the "Deep Rescan" feature if there's an actual update within 5
+ *  minutes.
+ */
+const CHANGE_DELTA = 5 * 60 * 1000;
+
 /** Figure out whether we have new or modified tracks. */
 async function getLibraryModifications(assets: MediaLibraryAsset[]) {
   const savedTracks = await db.query.tracks.findMany({
@@ -269,7 +276,16 @@ async function getLibraryModifications(assets: MediaLibraryAsset[]) {
     else if (!isDifferentUri && modified.has(id)) isDifferentUri = true;
 
     // Retry indexing if modification time or uri is different.
-    if ((!hasEdited && modificationTime !== lastModified) || isDifferentUri) {
+    //  - Android will sometimes change the `lastModified` value even
+    //  when we don't touch the file.
+    //  - Ref:
+    //    - https://stackoverflow.com/a/8354791
+    //    - https://stackoverflow.com/a/11547476
+    if (
+      (!hasEdited &&
+        Math.abs(modificationTime - lastModified) > CHANGE_DELTA) ||
+      isDifferentUri
+    ) {
       modified.add(id);
     } else {
       unmodified.add(id);
