@@ -40,7 +40,7 @@
     "@sentry/react-native": "~7.2.0",
     "@shopify/flash-list": "^1.8.3",
     "@tanstack/react-query": "^5.90.2",
-    "@weights-ai/react-native-track-player": "^4.1.6",
+    "@weights-ai/react-native-track-player": "github:MissingCore/react-native-track-player#a8c5601b3675d83cdb99ee6a3a9c04c7db8df7fc",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.44.6",
     "expo": "~53.0.23",
@@ -116,8 +116,7 @@
       "react-native-gesture-handler": "patches/react-native-gesture-handler.patch",
       "@react-native-assets/slider": "patches/@react-native-assets__slider.patch",
       "@backpackapp-io/react-native-toast": "patches/@backpackapp-io__react-native-toast.patch",
-      "expo-file-system": "patches/expo-file-system.patch",
-      "@weights-ai/react-native-track-player": "patches/@weights-ai__react-native-track-player.patch"
+      "expo-file-system": "patches/expo-file-system.patch"
     }
   }
 }
