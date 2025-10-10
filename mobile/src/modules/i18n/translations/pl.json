@@ -120,7 +120,7 @@
       "title": "Kolejność zakładek",
       "brief": "Spersonalizuj kolejność i widoczność zakładek.",
       "description": {
-        "line1": "Zmień kolejność zakładek dalszych niż `Start` przez przeciąganie i upuszczanie. Ustaw widoczność używając ikony oka.",
+        "line1": "Zmień kolejność zakładek przez przeciąganie i upuszczanie. Przełącz widoczność używając ikony oka. Ustaw startową zakładkę używając ikony domu.",
         "line2": "Ostrzeżenie: Mogą występować nieoczekiwane błędy podczas przechodzenia do ukrytych zakładek."
       },
       "extra": {
