@@ -1,4 +1,3 @@
-import OldAsyncStorage from "@react-native-async-storage/async-storage";
 import { eq, inArray } from "drizzle-orm";
 import AsyncStorage from "expo-sqlite/kv-store";
 
@@ -7,8 +6,6 @@ import type { AlbumWithTracks } from "~/db/schema";
 import { albums, fileNodes, playedMediaLists, tracks } from "~/db/schema";
 
 import { getAlbums } from "~/api/album";
-import { musicStore } from "~/modules/media/services/Music";
-import { sortPreferencesStore } from "~/modules/media/services/SortPreferences";
 import type { OrderableTab } from "~/services/UserPreferences";
 import { userPreferencesStore } from "~/services/UserPreferences";
 import { onboardingStore } from "../services/Onboarding";
@@ -51,23 +48,6 @@ export async function checkForMigrations() {
 
 /** Logic we want to run depending on what migrations we need to do. */
 const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
-  "kv-store": async () => {
-    const allKeys = await OldAsyncStorage.getAllKeys();
-    if (allKeys.length === 0) return;
-    await AsyncStorage.clear();
-    // @ts-expect-error - Should be able to pass the data without problems.
-    await AsyncStorage.multiSet(await OldAsyncStorage.multiGet(allKeys));
-
-    // We need to rehydrate the stores that references the data in AsyncStorage
-    // in order for it to take effect.
-    await sortPreferencesStore.persist.rehydrate();
-    await userPreferencesStore.persist.rehydrate();
-    await musicStore.persist.rehydrate();
-
-    // Delete data in the old AsyncStorage provider afterwards.
-    await OldAsyncStorage.clear();
-  },
-
   "fileNodes-adjustment": async () => {
     const oldRootNodes = await db.query.fileNodes.findMany({
       where: (fields, { isNull }) => isNull(fields.parentPath),
@@ -105,7 +85,7 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
       }),
     );
 
-    //* 2. Remove duplicate album entries. */
+    /* 2. Remove duplicate album entries. */
     // Get mapping of albums that have the same album names.
     const duplicateAlbumNameMap = Object.values(
       allAlbums.reduce<Record<string, AlbumWithTracks[]>>((accum, album) => {
