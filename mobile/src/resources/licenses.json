@@ -105,7 +105,7 @@
   },
   "@sentry/react-native": {
     "name": "@sentry/react-native",
-    "version": "7.2.0",
+    "version": "7.3.0",
     "copyright": "Copyright (c) 2017-2024 Sentry",
     "source": "https://github.com/getsentry/sentry-react-native",
     "license": "MIT",
@@ -193,7 +193,7 @@
   },
   "expo-image": {
     "name": "expo-image",
-    "version": "2.4.0",
+    "version": "2.4.1",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-image",
     "license": "MIT",
@@ -265,7 +265,7 @@
   },
   "i18next": {
     "name": "i18next",
-    "version": "25.5.3",
+    "version": "25.6.0",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/i18next",
     "license": "MIT",
@@ -393,7 +393,7 @@
   },
   "react-native-keyboard-controller": {
     "name": "react-native-keyboard-controller",
-    "version": "1.18.6",
+    "version": "1.19.0",
     "copyright": "Copyright (c) 2021 Kiryl Ziusko",
     "source": "https://github.com/kirillzyusko/react-native-keyboard-controller",
     "license": "MIT",
@@ -425,7 +425,7 @@
   },
   "react-native-reanimated": {
     "name": "react-native-reanimated",
-    "version": "3.19.1",
+    "version": "3.19.2",
     "copyright": "Copyright (c) 2016 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-reanimated",
     "license": "MIT",
@@ -449,7 +449,7 @@
   },
   "react-native-svg": {
     "name": "react-native-svg",
-    "version": "15.13.0",
+    "version": "15.14.0",
     "copyright": "Copyright (c) [2015-2016] [Horcrux]",
     "source": "https://github.com/software-mansion/react-native-svg",
     "license": "MIT",
@@ -473,7 +473,7 @@
   },
   "zod": {
     "name": "zod",
-    "version": "4.1.11",
+    "version": "4.1.12",
     "copyright": "Copyright (c) 2025 Colin McDonnell",
     "source": "https://github.com/colinhacks/zod",
     "license": "MIT",
