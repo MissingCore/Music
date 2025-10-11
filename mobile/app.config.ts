@@ -58,7 +58,7 @@ export default (): ExpoConfig => ({
     adaptiveIcon: {
       foregroundImage: "./assets/adaptive-icon.png",
       monochromeImage: "./assets/adaptive-icon-monochrome.png",
-      backgroundColor: "#000000",
+      backgroundColor: "#FFFFFF",
     },
     blockedPermissions: [
       // Optional permissions that Expo adds.
