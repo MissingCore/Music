@@ -22,8 +22,8 @@
     "favorites": "Favoris",
     "unFavorite": "Retirer des favoris",
     "favoriteTracks": "Titres favoris",
-    "all": null,
-    "more": null,
+    "all": "Tout",
+    "more": "Plus",
     "home": "Accueil",
     "settings": "Paramètres",
     "upcoming": "À venir",
@@ -58,7 +58,7 @@
     "stay": "Rester",
     "leave": "Quitter",
     "clear": "Réinitialiser",
-    "reset": null,
+    "reset": "Réinitialiser",
     "validation": {
       "unique": "Unique"
     }
@@ -124,11 +124,11 @@
         "line2": "Attention : Un comportement inattendu peut survenir lors de la navigation vers un onglet caché."
       },
       "extra": {
-        "setHomeTab": null
+        "setHomeTab": "Ouvrir l’onglet {{- name}} au lancement de l’application."
       }
     },
     "miniplayerGestures": {
-      "title": null
+      "title": "Gestes du mini-lecteur"
     },
     "nowPlayingDesign": {
       "title": "Design de l'écran \"En cours de lecture\"",
@@ -140,7 +140,7 @@
     },
     "ignoreRTLLayout": {
       "title": null,
-      "brief": null
+      "brief": "Utilisez la disposition LTR avec un langage RTL. Redémarrage requis."
     },
     "language": {
       "title": "Langue"
@@ -169,10 +169,10 @@
       }
     },
     "hiddenTracks": {
-      "title": null,
-      "brief": null,
+      "title": "Pistes Masqués",
+      "brief": "Pistes non affichées dans l'application.",
       "extra": {
-        "hiddenAt": null,
+        "hiddenAt": "Caché le {{- date}}.",
         "hasHiddenTracks": null,
         "notFound": null
       }
@@ -334,14 +334,14 @@
       "title": null,
       "description": {
         "line1": null,
-        "line2": null
+        "line2": "Remarque : vos modifications peuvent être réinitialisées si ce fichier est modifié."
       },
       "extra": {
         "albumArtist": null,
         "disc": null,
         "name": null,
-        "trackNumber": null,
-        "year": null
+        "trackNumber": "Numéro de Piste",
+        "year": "Année"
       }
     },
     "modalSort": {
