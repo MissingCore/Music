@@ -1,20 +1,42 @@
 import { isPlaying as rntpIsPlaying } from "@weights-ai/react-native-track-player";
 import { useStore } from "zustand";
 
+import { db } from "~/db";
+
 import { createPersistedSubscribedStore } from "~/lib/zustand";
 import type { PlaybackStore } from "./constants";
 import { PersistedFields, RepeatModes } from "./constants";
 
 export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
-  (set) => ({
+  (set, _, store) => ({
     _hasHydrated: false,
-    _init: async () => {
+    _init: async ({ activeId }) => {
+      // Ensure we populate the `activeTrack` from `activeId`.
+      let activeTrack: PlaybackStore["activeTrack"];
+      if (activeId) {
+        activeTrack = await db.query.tracks.findFirst({
+          where: (fields, { eq }) => eq(fields.id, activeId),
+          with: { album: true },
+        });
+        if (activeTrack) {
+          activeTrack.artwork =
+            activeTrack.artwork ?? activeTrack.album?.artwork ?? null;
+        } else {
+          console.log(
+            `[Database Mismatch] Track (${activeId}) doesn't exist in the database.`,
+          );
+          // Reset the store since `activeTrack` doesn't exist.
+          set({ ...store.getInitialState(), _hasHydrated: true });
+          return;
+        }
+      }
+
       // Ensure `isPlaying` is correct when we rehydrate the store.
       let upToDateIsPlaying = false;
       try {
         upToDateIsPlaying = (await rntpIsPlaying()).playing ?? false;
       } catch {}
-      set({ _hasHydrated: true, isPlaying: upToDateIsPlaying });
+      set({ _hasHydrated: true, isPlaying: upToDateIsPlaying, activeTrack });
     },
 
     _hasRestoredPosition: false,
