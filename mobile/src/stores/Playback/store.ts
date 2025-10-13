@@ -8,7 +8,7 @@ import type { PlaybackStore } from "./constants";
 import { PersistedFields, RepeatModes } from "./constants";
 
 export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
-  (set, _, store) => ({
+  (set, get) => ({
     _hasHydrated: false,
     _init: async ({ activeId }) => {
       // Ensure we populate the `activeTrack` from `activeId`.
@@ -26,7 +26,7 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
             `[Database Mismatch] Track (${activeId}) doesn't exist in the database.`,
           );
           // Reset the store since `activeTrack` doesn't exist.
-          set({ ...store.getInitialState(), _hasHydrated: true });
+          get()._resetStore();
           return;
         }
       }
@@ -37,6 +37,22 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
         upToDateIsPlaying = (await rntpIsPlaying()).playing ?? false;
       } catch {}
       set({ _hasHydrated: true, isPlaying: upToDateIsPlaying, activeTrack });
+    },
+    _resetStore: () => {
+      set({
+        _hasHydrated: true,
+        _hasRestoredPosition: false,
+        _restoredTrackId: undefined,
+        isPlaying: false,
+        lastPosition: undefined,
+        playingFrom: undefined,
+        playingFromName: "",
+        orderSnapshot: [],
+        queue: [],
+        activeId: undefined,
+        activeTrack: undefined,
+        queuePosition: 0,
+      });
     },
 
     _hasRestoredPosition: false,

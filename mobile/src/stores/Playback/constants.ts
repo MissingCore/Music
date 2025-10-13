@@ -19,6 +19,8 @@ export interface PlaybackStore {
   _hasHydrated: boolean;
   /** Get a more accurate initial state. */
   _init: (state: PlaybackStore) => Promise<void>;
+  /** Revert to default store settings (except for `repeat` & `shuffle`). */
+  _resetStore: VoidFunction;
 
   /** Determines if the playback position has been restored. */
   _hasRestoredPosition: boolean;
