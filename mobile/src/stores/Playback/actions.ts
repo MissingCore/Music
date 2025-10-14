@@ -213,8 +213,9 @@ export async function playFromList({
   );
 
   // 4. Get the track from this new info.
-  const newTrack = newPlayingList[newListInfo.queuePosition]!;
-  newTrack.artwork = newTrack.artwork ?? newTrack.album?.artwork ?? null;
+  const newTrack = (await getTrack(
+    newListInfo.queue[newListInfo.queuePosition]!,
+  ))!;
   isDiffTrack = activeId !== newTrack.id;
 
   // 5. Update the persistent storage.
