@@ -38,20 +38,25 @@ export async function toggleShuffle() {
     return;
   }
 
-  let updatedQueue: string[] = [];
+  let updatedQueue: string[] = queue;
   if (newShuffleStatus) updatedQueue = shuffleArray(queue);
-  else {
-    // Re-order tracks to match `orderSnapshot`, and then append the rest
-    // at the end.
-    const queueCopy = [...queue];
-    orderSnapshot.forEach((trackId) => {
-      const atIndex = queueCopy.findIndex((id) => trackId === id);
-      if (atIndex !== -1) {
-        updatedQueue.push(trackId);
-        queueCopy.splice(atIndex, 1);
-      }
+  else if (orderSnapshot.length === queue.length) {
+    // Revert to `orderSnapshot` only if the queue copy has the same contents.
+    const referenceSet = orderSnapshot.reduce(
+      (map, tId) => {
+        if (map[tId]) map[tId]++;
+        else map[tId] = 1;
+        return map;
+      },
+      {} as Record<string, number>,
+    );
+    const canSwitch = queue.every((tId) => {
+      if (referenceSet[tId] === undefined) return false;
+      referenceSet[tId]--;
+      if (referenceSet[tId] === 0) delete referenceSet[tId];
+      return true;
     });
-    updatedQueue.concat(queueCopy);
+    if (canSwitch) updatedQueue = orderSnapshot;
   }
 
   playbackStore.setState({
