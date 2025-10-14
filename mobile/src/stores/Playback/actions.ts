@@ -63,12 +63,11 @@ export async function toggleShuffle() {
 //#endregion
 
 //#region Playback Actions
-/** Loads the track specified by `activeTrack`. */
-export async function loadCurrentTrack(args?: { restart?: boolean }) {
+/** Loads the track specified by `activeTrack`. Track will start at `0s`. */
+export async function loadCurrentTrack() {
   const { activeTrack } = playbackStore.getState();
   if (!activeTrack) return;
   await TrackPlayer.load(formatTrackforPlayer(activeTrack));
-  if (args?.restart) await TrackPlayer.seekTo(0);
 }
 
 /** Initialize the RNTP queue. */
@@ -133,7 +132,7 @@ export async function prev() {
     });
   }
 
-  await loadCurrentTrack({ restart: true });
+  await loadCurrentTrack();
 }
 
 /** Loads the track after `queuePosition`. */
@@ -157,7 +156,7 @@ export async function next(naturalProgression = false) {
   });
 
   if (nextIndex === 0 && repeat === RepeatModes.NO_REPEAT) await pause();
-  await loadCurrentTrack({ restart: true });
+  await loadCurrentTrack();
 }
 
 /** Seek to a certain position in the current playing track. */
@@ -178,7 +177,7 @@ export async function playFromList({
 
   // 1. See if we're playing from a new media list.
   const isSameSource = arePlaybackSourceEqual(playingFrom, source);
-  const isDiffTrack = activeId === undefined || activeId !== trackId;
+  let isDiffTrack = activeId === undefined || activeId !== trackId;
 
   // 2. Handle case when we're playing from the same media list.
   if (isSameSource) {
@@ -210,6 +209,7 @@ export async function playFromList({
 
   // 4. Get the track from this new info.
   const newTrack = newPlayingList[newListInfo.queuePosition]!;
+  isDiffTrack = activeId !== newTrack.id;
 
   // 5. Update the persistent storage.
   playbackStore.setState({
@@ -222,7 +222,7 @@ export async function playFromList({
   });
 
   // 6. Play this new media list.
-  await loadCurrentTrack();
+  if (isDiffTrack) await loadCurrentTrack();
   await TrackPlayer.play();
 
   // 7. Add media list to recent lists.
