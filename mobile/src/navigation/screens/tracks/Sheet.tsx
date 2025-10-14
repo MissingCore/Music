@@ -28,7 +28,8 @@ import {
   useTrack,
   useTrackPlaylists,
 } from "~/queries/track";
-import { Queue, useMusicStore } from "~/modules/media/services/Music";
+import { usePlaybackStore } from "~/stores/Playback/store";
+import { Queue } from "~/modules/media/services/Music";
 import { useSessionStore } from "~/services/SessionStore";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { useTheme } from "~/hooks/useTheme";
@@ -235,9 +236,9 @@ function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
 function TrackTextActions({ id, name }: Record<"id" | "name", string>) {
   const [onNowPlayingScreen, navigate] = useNavigationAction();
   const { width } = useGetColumn({ cols: 2, gap: 3, gutters: 32 });
-  const playingSource = useMusicStore((state) => state.playingSource);
-  const sourceName = useMusicStore((state) => state.sourceName);
-  const playingList = useMusicStore((state) => state.playingList);
+  const playingSource = usePlaybackStore((s) => s.playingFrom);
+  const sourceName = usePlaybackStore((s) => s.playingFromName);
+  const playingList = usePlaybackStore((s) => s.queue);
 
   const showPlayingFrom =
     onNowPlayingScreen && playingList.some((tId) => tId === id);

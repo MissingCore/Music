@@ -12,7 +12,7 @@ import { LibraryMusic } from "~/resources/icons/LibraryMusic";
 import { MoreVert } from "~/resources/icons/MoreVert";
 import { Timer } from "~/resources/icons/Timer";
 import { useFavoriteTrack, useTrack } from "~/queries/track";
-import { useMusicStore } from "~/modules/media/services/Music";
+import { usePlaybackStore } from "~/stores/Playback/store";
 import { presentTrackSheet } from "~/services/SessionStore";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useUpcomingStore } from "../helpers/UpcomingStore";
@@ -42,7 +42,7 @@ import {
 import { Back } from "../../../components/Back";
 
 export default function NowPlaying() {
-  const track = useMusicStore((state) => state.activeTrack);
+  const track = usePlaybackStore((s) => s.activeTrack);
   if (!track) return <Back />;
   return (
     <SafeContainer additionalTopOffset={56} className="flex-1 gap-8">
@@ -208,10 +208,10 @@ function BottomAppBar() {
   const upcomingTracksSheetRef = useSheetRef();
   const sleepTimerSheetRef = useSheetRef();
   const populateCurrentTrackList = useUpcomingStore(
-    (state) => state.populateCurrentTrackList,
+    (s) => s.populateCurrentTrackList,
   );
-  const showSleepTimer = useUserPreferencesStore((state) => state.sleepTimer);
-  const sleepTimerActive = useSleepTimerStore((state) => state.endAt) !== null;
+  const showSleepTimer = useUserPreferencesStore((s) => s.sleepTimer);
+  const sleepTimerActive = useSleepTimerStore((s) => s.endAt) !== null;
 
   return (
     <>
@@ -264,7 +264,7 @@ function BottomAppBar() {
 function BackButton() {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const usedDesign = useUserPreferencesStore((state) => state.nowPlayingDesign);
+  const usedDesign = useUserPreferencesStore((s) => s.nowPlayingDesign);
 
   if (usedDesign !== "vinylOld") return <View />;
   return (

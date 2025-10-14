@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 import "~/services/_subscriptions";
 import "~/modules/media/services/_subscriptions";
-import { musicStore, useMusicStore } from "~/modules/media/services/Music";
+import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { useSortPreferencesStore } from "~/modules/media/services/SortPreferences";
 import {
   userPreferencesStore,
@@ -22,12 +22,12 @@ import { revalidateWidgets } from "~/modules/widget/utils";
  * RNTP is initialized.
  */
 export function useSetup() {
-  const musicHydrated = useMusicStore((state) => state._hasHydrated);
+  const playbackHydrated = usePlaybackStore((s) => s._hasHydrated);
   const sortPreferencesHydrated = useSortPreferencesStore(
-    (state) => state._hasHydrated,
+    (s) => s._hasHydrated,
   );
   const userPreferencesHydrated = useUserPreferencesStore(
-    (state) => state._hasHydrated,
+    (s) => s._hasHydrated,
   );
 
   useEffect(() => {
@@ -36,17 +36,18 @@ export function useSetup() {
       // Ensure RNTP is successfully setup before initializing stores that
       // rely on its initialization.
       await userPreferencesStore.persist.rehydrate();
-      await musicStore.persist.rehydrate();
+      await playbackStore.persist.rehydrate();
 
       // Ensure widget has up-to-date data as the Music store isn't
       // immediately hydrated.
       await revalidateWidgets({ openApp: true });
 
-      const { activeId } = musicStore.getState();
+      const { activeId } = playbackStore.getState();
       const { saveLastPosition, continuePlaybackOnDismiss } =
         userPreferencesStore.getState();
-      if (saveLastPosition) musicStore.setState({ _restoredTrackId: activeId });
-      else musicStore.setState({ _hasRestoredPosition: true });
+      if (saveLastPosition)
+        playbackStore.setState({ _restoredTrackId: activeId });
+      else playbackStore.setState({ _hasRestoredPosition: true });
 
       await TrackPlayer.updateOptions(
         getTrackPlayerOptions({ continuePlaybackOnDismiss, saveLastPosition }),
@@ -54,5 +55,5 @@ export function useSetup() {
     })();
   }, []);
 
-  return musicHydrated && sortPreferencesHydrated && userPreferencesHydrated;
+  return playbackHydrated && sortPreferencesHydrated && userPreferencesHydrated;
 }

@@ -9,8 +9,8 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
+import { usePlaybackStore } from "~/stores/Playback/store";
 import { playToggle } from "~/stores/Playback/actions";
-import { useMusicStore } from "~/modules/media/services/Music";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useVinylSeekbar } from "../helpers/useVinylSeekbar";
 
@@ -59,7 +59,7 @@ function ArtworkPicker(props: ArtworkProps) {
 /** Plain artwork design. */
 function PlainArtwork(props: ArtworkProps) {
   const { t } = useTranslation();
-  const isPlaying = useMusicStore((s) => s.isPlaying);
+  const isPlaying = usePlaybackStore((s) => s.isPlaying);
   return (
     <Pressable
       accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}

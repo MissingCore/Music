@@ -13,7 +13,7 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { Schedule } from "~/resources/icons/Schedule";
-import { useMusicStore } from "~/modules/media/services/Music";
+import { usePlaybackStore } from "~/stores/Playback/store";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useTheme } from "~/hooks/useTheme";
 
@@ -139,8 +139,8 @@ type AnimatedVinylProps = {
 
 /** Have the vinyl spin if the playing media list is this source. */
 function AnimatedVinyl(props: AnimatedVinylProps) {
-  const isPlaying = useMusicStore((s) => s.isPlaying);
-  const playingSource = useMusicStore((s) => s.playingSource);
+  const isPlaying = usePlaybackStore((s) => s.isPlaying);
+  const playingSource = usePlaybackStore((s) => s.playingFrom);
   const coverPosition = useSharedValue(0);
   const rotationProgress = useSharedValue(0);
   const _discOpacity = useSharedValue(0);

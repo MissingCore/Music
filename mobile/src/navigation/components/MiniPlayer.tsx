@@ -6,9 +6,9 @@ import Animated, { LinearTransition } from "react-native-reanimated";
 
 import { Pause } from "~/resources/icons/Pause";
 import { PlayArrow } from "~/resources/icons/PlayArrow";
+import { usePlaybackStore } from "~/stores/Playback/store";
 import { next, playToggle, prev } from "~/stores/Playback/actions";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
-import { useMusicStore } from "~/modules/media/services/Music";
 
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
@@ -30,8 +30,8 @@ import { usePlayerProgress } from "../screens/now-playing/helpers/usePlayerProgr
 export function MiniPlayer({ hidden = false, stacked = false }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const isPlaying = useMusicStore((s) => s.isPlaying);
-  const track = useMusicStore((s) => s.activeTrack);
+  const isPlaying = usePlaybackStore((s) => s.isPlaying);
+  const track = usePlaybackStore((s) => s.activeTrack);
   const gestureUI = useUserPreferencesStore((s) => s.miniplayerGestures);
 
   const TextWrapper = useMemo(

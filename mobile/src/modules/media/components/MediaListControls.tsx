@@ -3,8 +3,8 @@ import { View } from "react-native";
 
 import { Pause } from "~/resources/icons/Pause";
 import { PlayArrow } from "~/resources/icons/PlayArrow";
+import { usePlaybackStore } from "~/stores/Playback/store";
 import { pause, playFromList } from "~/stores/Playback/actions";
-import { useMusicStore } from "../services/Music";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
@@ -34,8 +34,8 @@ export function MediaListControls(props: {
  */
 function PlayMediaListButton({ trackSource }: { trackSource: PlayListSource }) {
   const { t } = useTranslation();
-  const currSource = useMusicStore((s) => s.playingSource);
-  const isPlaying = useMusicStore((s) => s.isPlaying);
+  const currSource = usePlaybackStore((s) => s.playingFrom);
+  const isPlaying = usePlaybackStore((s) => s.isPlaying);
 
   const isThisSource = arePlaybackSourceEqual(currSource, trackSource);
   const displayPause = isThisSource && isPlaying;

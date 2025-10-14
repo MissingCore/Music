@@ -3,9 +3,9 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { MoreVert } from "~/resources/icons/MoreVert";
+import { usePlaybackStore } from "~/stores/Playback/store";
 import { playFromList } from "~/stores/Playback/actions";
 import { presentTrackSheet } from "~/services/SessionStore";
-import { useMusicStore } from "../services/Music";
 
 import { cn } from "~/lib/style";
 import type { Prettify } from "~/utils/types";
@@ -83,13 +83,12 @@ export function useTrackListPlayingIndication<T extends Track.Content>(
   listSource: PlayListSource,
   tracks?: T[],
 ): Array<T & { showIndicator?: boolean }> | undefined {
-  const currSource = useMusicStore((state) => state.playingSource);
-  const activeId = useMusicStore((state) => state.activeId);
-  const isQueuedTrack = useMusicStore((state) => state.isInQueue);
+  const currSource = usePlaybackStore((s) => s.playingFrom);
+  const activeId = usePlaybackStore((s) => s.activeId);
 
   const passPreCheck = useMemo(
-    () => arePlaybackSourceEqual(currSource, listSource) && !isQueuedTrack,
-    [currSource, isQueuedTrack, listSource],
+    () => arePlaybackSourceEqual(currSource, listSource),
+    [currSource, listSource],
   );
 
   return useMemo(() => {

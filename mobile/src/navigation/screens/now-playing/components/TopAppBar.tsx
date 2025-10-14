@@ -5,8 +5,8 @@ import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 
 import { ArrowBack } from "~/resources/icons/ArrowBack";
+import { usePlaybackStore } from "~/stores/Playback/store";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
-import { useMusicStore } from "~/modules/media/services/Music";
 import { getMediaLinkContext } from "../../../utils/router";
 
 import { OnRTL } from "~/lib/react";
@@ -33,8 +33,8 @@ export function NowPlayingTopAppBar() {
 function AppBarContent() {
   const { t } = useTranslation();
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
-  const playingSource = useMusicStore((state) => state.playingSource);
-  const listName = useMusicStore((state) => state.sourceName);
+  const playingSource = usePlaybackStore((s) => s.playingFrom);
+  const listName = usePlaybackStore((s) => s.playingFromName);
   const usedDesign = useUserPreferencesStore((state) => state.nowPlayingDesign);
 
   const listLinkInfo = useMemo(

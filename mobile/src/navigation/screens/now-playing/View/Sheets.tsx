@@ -8,7 +8,8 @@ import { getTrackCover } from "~/db/utils";
 import { Remove } from "~/resources/icons/Remove";
 import { SlowMotionVideo } from "~/resources/icons/SlowMotionVideo";
 import { VolumeUp } from "~/resources/icons/VolumeUp";
-import { Queue, useMusicStore } from "~/modules/media/services/Music";
+import { usePlaybackStore } from "~/stores/Playback/store";
+import { Queue } from "~/modules/media/services/Music";
 import { sessionStore, useSessionStore } from "~/services/SessionStore";
 import type { UpcomingStore } from "../helpers/UpcomingStore";
 import { useUpcomingStore } from "../helpers/UpcomingStore";
@@ -44,8 +45,8 @@ export const NowPlayingSheets = deferInitialRender(function NowPlayingSheets(
 /** Enables us to specify  how the media is played. */
 function PlaybackOptionsSheet(props: { sheetRef: TrueSheetRef }) {
   const { t } = useTranslation();
-  const playbackSpeed = useSessionStore((state) => state.playbackSpeed);
-  const volume = useSessionStore((state) => state.volume);
+  const playbackSpeed = useSessionStore((s) => s.playbackSpeed);
+  const volume = useSessionStore((s) => s.volume);
 
   return (
     <Sheet ref={props.sheetRef} contentContainerClassName="gap-4">
@@ -99,9 +100,9 @@ const VolumeSliderOptions = {
 //#region Upcoming Tracks
 /** Enables user to see what tracks are coming up and remove tracks from the queue. */
 function TrackUpcomingSheet(props: { sheetRef: TrueSheetRef }) {
-  const trackList = useUpcomingStore((state) => state.currentTrackList);
-  const listIndex = useMusicStore((state) => state.listIdx);
-  const repeat = useMusicStore((state) => state.repeat);
+  const trackList = useUpcomingStore((s) => s.currentTrackList);
+  const listIndex = usePlaybackStore((s) => s.queuePosition);
+  const repeat = usePlaybackStore((s) => s.repeat);
 
   // Get the tracks that'll be rendered.
   const data = [
@@ -155,7 +156,7 @@ function TrackUpcomingSheet(props: { sheetRef: TrueSheetRef }) {
  * in the main list.
  */
 function QueueList() {
-  const queueList = useUpcomingStore((state) => state.queuedTrackList);
+  const queueList = useUpcomingStore((s) => s.queuedTrackList);
   if (queueList.filter((t) => t !== undefined).length === 0) return null;
   return (
     <FlashList
