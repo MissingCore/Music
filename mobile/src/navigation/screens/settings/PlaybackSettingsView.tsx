@@ -1,7 +1,7 @@
 import TrackPlayer from "@weights-ai/react-native-track-player";
 import { useTranslation } from "react-i18next";
 
-import { musicStore } from "~/modules/media/services/Music";
+import { playbackStore } from "~/stores/Playback/store";
 import {
   userPreferencesStore,
   useUserPreferencesStore,
@@ -13,13 +13,9 @@ import { List, ListItem } from "~/components/Containment/List";
 
 export default function PlaybackSettings() {
   const { t } = useTranslation();
-  const ignoreInterrupt = useUserPreferencesStore(
-    (state) => state.ignoreInterrupt,
-  );
-  const repeatOnSkip = useUserPreferencesStore((state) => state.repeatOnSkip);
-  const saveLastPosition = useUserPreferencesStore(
-    (state) => state.saveLastPosition,
-  );
+  const ignoreInterrupt = useUserPreferencesStore((s) => s.ignoreInterrupt);
+  const repeatOnSkip = useUserPreferencesStore((s) => s.repeatOnSkip);
+  const saveLastPosition = useUserPreferencesStore((s) => s.saveLastPosition);
 
   return (
     <StandardScrollLayout>
@@ -65,7 +61,7 @@ const toggleRepeatOnSkip = () =>
 
 const toggleSaveLastPosition = async () => {
   const didSaveLastPosition = userPreferencesStore.getState().saveLastPosition;
-  if (didSaveLastPosition) musicStore.setState({ lastPosition: undefined });
+  if (didSaveLastPosition) playbackStore.setState({ lastPosition: undefined });
   userPreferencesStore.setState({ saveLastPosition: !didSaveLastPosition });
 
   await TrackPlayer.updateOptions(

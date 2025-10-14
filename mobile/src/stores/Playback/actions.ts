@@ -153,7 +153,7 @@ export async function next(naturalProgression = false) {
     activeTrack: nextTrack,
     queuePosition: nextIndex,
     // Only update repeate state if we explictly click the next button.
-    ...(naturalProgression ? getNewRepeatState() : {}),
+    ...(naturalProgression ? {} : getNewRepeatState()),
   });
 
   if (nextIndex === 0 && repeat === RepeatModes.NO_REPEAT) await pause();
@@ -235,8 +235,8 @@ export async function playFromList({
 function getNewRepeatState() {
   const { repeat } = playbackStore.getState();
   const { repeatOnSkip } = userPreferencesStore.getState();
-  if (repeat === "repeat-one" && !repeatOnSkip) {
-    return { repeat: "repeat" } as const;
+  if (repeat === RepeatModes.REPEAT_ONE && !repeatOnSkip) {
+    return { repeat: RepeatModes.REPEAT } as const;
   } else {
     return {};
   }
