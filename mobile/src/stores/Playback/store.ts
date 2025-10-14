@@ -1,9 +1,14 @@
-import { isPlaying as rntpIsPlaying } from "@weights-ai/react-native-track-player";
+import TrackPlayer, {
+  isPlaying as rntpIsPlaying,
+} from "@weights-ai/react-native-track-player";
+import { inArray } from "drizzle-orm";
 import { useStore } from "zustand";
 
 import { db } from "~/db";
+import { tracksToPlaylists } from "~/db/schema";
 
 import { createPersistedSubscribedStore } from "~/lib/zustand";
+import { resetWidgets } from "~/modules/widget/utils/update";
 import type { PlaybackStore } from "./constants";
 import { PersistedFields, RepeatModes } from "./constants";
 
@@ -14,23 +19,10 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
       // Ensure we populate the `activeTrack` from `activeId`.
       let activeTrack: PlaybackStore["activeTrack"];
       if (activeId) {
-        activeTrack = await db.query.tracks.findFirst({
-          where: (fields, { eq }) => eq(fields.id, activeId),
-          with: { album: true },
-        });
-        if (activeTrack) {
-          activeTrack.artwork =
-            activeTrack.artwork ?? activeTrack.album?.artwork ?? null;
-        } else {
-          console.log(
-            `[Database Mismatch] Track (${activeId}) doesn't exist in the database.`,
-          );
-          // Reset the store since `activeTrack` doesn't exist.
-          get()._resetStore();
-          return;
-        }
+        activeTrack = await get().getTrack(activeId);
+        // The track should exist if `activeId` is defined.
+        if (!activeTrack) return;
       }
-
       // Ensure `isPlaying` is correct when we rehydrate the store.
       let upToDateIsPlaying = false;
       try {
@@ -38,7 +30,26 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
       } catch {}
       set({ _hasHydrated: true, isPlaying: upToDateIsPlaying, activeTrack });
     },
-    _resetStore: () => {
+
+    getTrack: async (trackId) => {
+      const wantedTrack = await db.query.tracks.findFirst({
+        where: (fields, { eq }) => eq(fields.id, trackId),
+        with: { album: true },
+      });
+
+      if (wantedTrack) {
+        wantedTrack.artwork =
+          wantedTrack.artwork ?? wantedTrack.album?.artwork ?? null;
+        return wantedTrack;
+      } else {
+        console.log(
+          `[Database Mismatch] Track (${trackId}) doesn't exist in the database.`,
+        );
+        // Reset the store since `activeTrack` doesn't exist.
+        await get().reset();
+      }
+    },
+    reset: async () => {
       set({
         _hasHydrated: true,
         _hasRestoredPosition: false,
@@ -53,6 +64,31 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
         activeTrack: undefined,
         queuePosition: 0,
       });
+      await TrackPlayer.reset();
+      await resetWidgets();
+    },
+    resetOnCrash: async () => {
+      try {
+        await get().reset();
+
+        // Delete any `TracksToPlaylists` entries where the `trackId` doesn't exist.
+        const [allTracks, trackRels] = await Promise.all([
+          db.query.tracks.findMany({ columns: { id: true } }),
+          db
+            .selectDistinct({ id: tracksToPlaylists.trackId })
+            .from(tracksToPlaylists),
+        ]);
+        const trackIds = new Set(allTracks.map((t) => t.id));
+        const relTrackIds = trackRels.map((t) => t.id);
+        // Get ids in the track to playlist relationship where the track id
+        // doesn't exist and delete them.
+        const invalidTracks = relTrackIds.filter((id) => !trackIds.has(id));
+        if (invalidTracks.length > 0) {
+          await db
+            .delete(tracksToPlaylists)
+            .where(inArray(tracksToPlaylists.trackId, invalidTracks));
+        }
+      } catch {}
     },
 
     _hasRestoredPosition: false,

@@ -8,11 +8,7 @@ import { useStore } from "zustand";
 import type { TrackWithAlbum } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
-import {
-  deleteTrack,
-  getTrack,
-  removeInvalidTrackRelations,
-} from "~/api/track";
+import { deleteTrack, getTrack } from "~/api/track";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
@@ -134,7 +130,6 @@ export const musicStore = createPersistedSubscribedStore<MusicStore>(
     resetOnCrash: async () => {
       try {
         await get().reset();
-        await removeInvalidTrackRelations();
       } catch {}
     },
 

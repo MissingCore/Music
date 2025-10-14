@@ -19,8 +19,13 @@ export interface PlaybackStore {
   _hasHydrated: boolean;
   /** Get a more accurate initial state. */
   _init: (state: PlaybackStore) => Promise<void>;
-  /** Revert to default store settings (except for `repeat` & `shuffle`). */
-  _resetStore: VoidFunction;
+
+  /** [Util] Find specified track. If track is not found, reset the store. */
+  getTrack: (trackId: string) => Promise<TrackWithAlbum | undefined>;
+  /** [Util] Revert to default store settings (except for `repeat` & `shuffle`). */
+  reset: () => Promise<void>;
+  /** [Util] Run when we catch when the app crashes. */
+  resetOnCrash: () => Promise<void>;
 
   /** Determines if the playback position has been restored. */
   _hasRestoredPosition: boolean;
