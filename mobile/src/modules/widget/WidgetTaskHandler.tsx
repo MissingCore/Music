@@ -1,7 +1,7 @@
 import TrackPlayer from "@weights-ai/react-native-track-player";
 import type { WidgetTaskHandlerProps } from "react-native-android-widget";
 
-import { MusicControls } from "~/modules/media/services/Playback";
+import { next, playToggle, prev } from "~/stores/Playback/actions";
 
 import { bgWait } from "~/utils/promise";
 import { Action } from "./constants/Action";
@@ -47,7 +47,7 @@ export async function widgetTaskHandler({
           isPlaying: widgetData.isPlaying,
           exclude: ["ArtworkPlayer"],
         });
-        MusicControls.playToggle({ noRevalidation: true });
+        playToggle({ noRevalidation: true });
 
         // Run special animation for `ArtworkPlayer` widget.
         if (widgetInfo.widgetName === "ArtworkPlayer") {
@@ -59,8 +59,8 @@ export async function widgetTaskHandler({
           renderWidget(<Widget {...widgetData} />);
         }
       } else {
-        if (clickAction === Action.Prev) await MusicControls.prev();
-        else if (clickAction === Action.Next) await MusicControls.next();
+        if (clickAction === Action.Prev) await prev();
+        else if (clickAction === Action.Next) await next();
         await updateWidgets(getWidgetData());
       }
       break;

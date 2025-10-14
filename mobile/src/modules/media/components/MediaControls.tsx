@@ -7,8 +7,8 @@ import { RepeatOne } from "~/resources/icons/RepeatOne";
 import { Shuffle } from "~/resources/icons/Shuffle";
 import { SkipNext } from "~/resources/icons/SkipNext";
 import { SkipPrevious } from "~/resources/icons/SkipPrevious";
+import { next, playToggle, prev } from "~/stores/Playback/actions";
 import { useMusicStore } from "../services/Music";
-import { MusicControls } from "../services/Playback";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
@@ -57,7 +57,7 @@ export function PlayToggleButton() {
   return (
     <Button
       accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
-      onPress={() => MusicControls.playToggle()}
+      onPress={() => playToggle()}
       className={cn("rounded-full bg-red px-6 py-2", {
         "bg-onSurface": isPlaying,
       })}
@@ -74,7 +74,7 @@ export function NextButton({ large = true }) {
     <IconButton
       Icon={SkipNext}
       accessibilityLabel={t("term.next")}
-      onPress={MusicControls.next}
+      onPress={() => next()}
       large={large}
     />
   );
@@ -87,7 +87,7 @@ export function PreviousButton({ large = true }) {
     <IconButton
       Icon={SkipPrevious}
       accessibilityLabel={t("term.prev")}
-      onPress={MusicControls.prev}
+      onPress={prev}
       large={large}
     />
   );

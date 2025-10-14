@@ -3,8 +3,8 @@ import { View } from "react-native";
 
 import { Pause } from "~/resources/icons/Pause";
 import { PlayArrow } from "~/resources/icons/PlayArrow";
+import { pause, playFromList } from "~/stores/Playback/actions";
 import { useMusicStore } from "../services/Music";
-import { MusicControls, playFromMediaList } from "../services/Playback";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
@@ -45,10 +45,8 @@ function PlayMediaListButton({ trackSource }: { trackSource: PlayListSource }) {
   return (
     <Button
       accessibilityLabel={t(`term.${displayPause ? "pause" : "play"}`)}
-      onPress={
-        displayPause
-          ? () => MusicControls.pause()
-          : () => playFromMediaList({ source: trackSource })
+      onPress={() =>
+        displayPause ? pause() : playFromList({ source: trackSource })
       }
       className={cn("bg-red p-3", { "bg-onSurface": displayPause })}
     >

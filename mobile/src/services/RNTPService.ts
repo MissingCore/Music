@@ -8,9 +8,16 @@ import TrackPlayer, {
 import i18next from "~/modules/i18n";
 import { addPlayedMediaList, addPlayedTrack } from "~/api/recent";
 import { deleteTrack } from "~/api/track";
+import {
+  next,
+  pause,
+  play,
+  prev,
+  seekTo,
+  stop,
+} from "~/stores/Playback/actions";
 import type { TrackStatus } from "~/modules/media/services/Music";
 import { Queue, RNTPManager, musicStore } from "~/modules/media/services/Music";
-import { MusicControls } from "~/modules/media/services/Playback";
 import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
 import { userPreferencesStore } from "./UserPreferences";
 import { router } from "~/navigation/utils/router";
@@ -41,23 +48,23 @@ export async function PlaybackService() {
   });
 
   TrackPlayer.addEventListener(Event.RemotePlay, async () => {
-    await MusicControls.play();
+    await play();
   });
 
   TrackPlayer.addEventListener(Event.RemotePause, async () => {
-    await MusicControls.pause();
+    await pause();
   });
 
   TrackPlayer.addEventListener(Event.RemoteNext, async () => {
-    await MusicControls.next();
+    await next();
   });
 
   TrackPlayer.addEventListener(Event.RemotePrevious, async () => {
-    await MusicControls.prev();
+    await prev();
   });
 
   TrackPlayer.addEventListener(Event.RemoteSeek, async ({ position }) => {
-    await MusicControls.seekTo(position);
+    await seekTo(position);
   });
 
   TrackPlayer.addEventListener(Event.PlaybackState, (e) => {
@@ -77,13 +84,13 @@ export async function PlaybackService() {
     // Keep playing media when an interruption is detected.
     if (userPreferencesStore.getState().ignoreInterrupt) return;
     if (e.permanent) {
-      await MusicControls.stop();
+      await stop();
     } else {
       if (e.paused) {
         resumeAfterDuck = musicStore.getState().isPlaying;
-        await MusicControls.pause();
+        await pause();
       } else if (resumeAfterDuck) {
-        await MusicControls.play();
+        await play();
         resumeAfterDuck = false;
       }
     }
@@ -103,7 +110,7 @@ export async function PlaybackService() {
         _restoredTrackId !== undefined &&
         _restoredTrackId === activeId
       ) {
-        await MusicControls.seekTo(lastPosition);
+        await seekTo(lastPosition);
       }
     }
 
@@ -147,7 +154,7 @@ export async function PlaybackService() {
 
       // Check if we should pause after looping logic.
       if (nextTrack.listIdx === 0 && repeat === "no-repeat") {
-        await MusicControls.pause();
+        await pause();
         await TrackPlayer.seekTo(0);
       }
     }

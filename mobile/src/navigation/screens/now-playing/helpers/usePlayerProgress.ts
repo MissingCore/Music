@@ -2,8 +2,8 @@ import { useProgress } from "@weights-ai/react-native-track-player";
 import { atom, useAtomValue, useSetAtom } from "jotai";
 import { useMemo, useRef, useState } from "react";
 
+import { seekTo } from "~/stores/Playback/actions";
 import { useMusicStore } from "~/modules/media/services/Music";
-import { MusicControls } from "~/modules/media/services/Playback";
 
 /** Dragging slider position. */
 const NextSliderPositionAtom = atom<number | null>(null);
@@ -18,7 +18,7 @@ export function usePlayerProgress() {
   const setNextSliderPosition = useSetAtom(NextSliderPositionAtom);
 
   const seekToPosition = async (progress: number) => {
-    await MusicControls.seekTo(progress);
+    await seekTo(progress);
     setUpdateInterval(1);
 
     // Helps prevents "rubberbanding".

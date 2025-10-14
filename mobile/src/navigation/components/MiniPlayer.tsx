@@ -6,9 +6,9 @@ import Animated, { LinearTransition } from "react-native-reanimated";
 
 import { Pause } from "~/resources/icons/Pause";
 import { PlayArrow } from "~/resources/icons/PlayArrow";
+import { next, playToggle, prev } from "~/stores/Playback/actions";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useMusicStore } from "~/modules/media/services/Music";
-import { MusicControls } from "~/modules/media/services/Playback";
 
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
@@ -59,8 +59,8 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
         />
 
         <TextWrapper
-          onLeftIndicatorVisible={MusicControls.prev}
-          onRightIndicatorVisible={MusicControls.next}
+          onLeftIndicatorVisible={prev}
+          onRightIndicatorVisible={next}
           shadowConfig={{ color: "surface" }}
           {...{
             [`${gestureUI ? "wrapperC" : "c"}lassName`]: "mx-2 shrink grow",
@@ -82,7 +82,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
           <IconButton
             Icon={isPlaying ? Pause : PlayArrow}
             accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
-            onPress={() => MusicControls.playToggle()}
+            onPress={() => playToggle()}
             active
             large
           />
