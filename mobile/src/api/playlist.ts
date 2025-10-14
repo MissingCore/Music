@@ -118,12 +118,16 @@ const _getSpecialPlaylist: QueryOneWithTracksFn<
               ? iAsc(
                   orderedBy === "alphabetical"
                     ? fields.name
-                    : fields.modificationTime,
+                    : orderedBy === "discover"
+                      ? fields.discoverTime
+                      : fields.modificationTime,
                 )
               : iDesc(
                   orderedBy === "alphabetical"
                     ? fields.name
-                    : fields.modificationTime,
+                    : orderedBy === "discover"
+                      ? fields.discoverTime
+                      : fields.modificationTime,
                 ),
         }),
   });
