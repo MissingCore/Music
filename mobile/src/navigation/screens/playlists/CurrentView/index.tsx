@@ -1,52 +1,28 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-import { memo, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, View } from "react-native";
-import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
+import { View } from "react-native";
 
 import { Edit } from "~/resources/icons/Edit";
 import { Favorite } from "~/resources/icons/Favorite";
 import { FileSave } from "~/resources/icons/FileSave";
-import { Remove } from "~/resources/icons/Remove";
-import {
-  useFavoritePlaylist,
-  useMoveInPlaylist,
-  usePlaylistForScreen,
-} from "~/queries/playlist";
-import { useRemoveFromPlaylist } from "~/queries/track";
+import { useFavoritePlaylist, usePlaylistForScreen } from "~/queries/playlist";
 import { useBottomActionsInset } from "../../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../../layouts/CurrentList";
 import { ExportM3USheet } from "./ExportM3USheet";
 import { ArtworkSheetPresenter } from "../../ArtworkSheet";
 
-import { Colors } from "~/constants/Styles";
-import { OnRTL } from "~/lib/react";
-import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import { mutateGuard } from "~/lib/react-query";
-import { cn } from "~/lib/style";
-import { FlashDragList } from "~/components/Defaults";
-import { Button, IconButton } from "~/components/Form/Button";
+import { FlashList } from "~/components/Defaults";
+import { IconButton } from "~/components/Form/Button";
 import type { MenuAction } from "~/components/Menu";
 import { useSheetRef } from "~/components/Sheet";
-import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
-import {
-  Track,
-  useTrackListPlayingIndication,
-} from "~/modules/media/components/Track";
-import type { PlayListSource } from "~/modules/media/types";
-import {
-  ContentPlaceholder,
-  PagePlaceholder,
-} from "../../../components/Placeholder";
+import { useTrackListPreset } from "~/modules/media/components/Track";
+import { PagePlaceholder } from "../../../components/Placeholder";
 import { ScreenOptions } from "../../../components/ScreenOptions";
 
 type Props = StaticScreenProps<{ id: string }>;
-
-type ScreenData = Track.Content & { disc: number | null; track: number | null };
-type RenderItemProps = DragListRenderItemInfo<
-  ScreenData & { showIndicator?: boolean }
->;
 
 export default function Playlist({
   route: {
@@ -57,9 +33,11 @@ export default function Playlist({
   const navigation = useNavigation();
   const bottomInset = useBottomActionsInset();
   const { isPending, error, data } = usePlaylistForScreen(id);
-  const moveInPlaylist = useMoveInPlaylist(id);
   const favoritePlaylist = useFavoritePlaylist(id);
   const exportSheetRef = useSheetRef();
+
+  const trackSource = { type: "playlist", id } as const;
+  const presets = useTrackListPreset({ data: data?.tracks, trackSource });
 
   const menuActions = useMemo<MenuAction[]>(
     () => [
@@ -76,9 +54,6 @@ export default function Playlist({
     ],
     [navigation, id, exportSheetRef],
   );
-
-  const trackSource = { type: "playlist", id } as const;
-  const listData = useTrackListPlayingIndication(trackSource, data?.tracks);
 
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
 
@@ -112,20 +87,9 @@ export default function Playlist({
         imageSource={data.imageSource}
         mediaSource={trackSource}
       >
-        <FlashDragList
-          estimatedItemSize={56} // 48px Height + 8px Margin Top
-          data={listData!}
-          keyExtractor={({ id }) => id}
-          renderItem={(args) => (
-            <RenderItem {...args} trackSource={trackSource} />
-          )}
-          onReordered={(fromIndex, toIndex) =>
-            mutateGuard(moveInPlaylist, { fromIndex, toIndex })
-          }
-          ListEmptyComponent={
-            <ContentPlaceholder errMsgKey="err.msg.noTracks" />
-          }
-          contentContainerClassName="pt-4"
+        <FlashList
+          {...presets}
+          contentContainerClassName="px-4 pt-4"
           contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
         />
       </CurrentListLayout>
@@ -133,66 +97,3 @@ export default function Playlist({
     </>
   );
 }
-
-/** Item rendered in the `<DragList />`. */
-const RenderItem = memo(
-  function RenderItem({
-    item,
-    trackSource,
-    ...info
-  }: RenderItemProps & { trackSource: PlayListSource }) {
-    const { t } = useTranslation();
-    const swipeableRef = useSwipeableRef();
-    const [lastItemId, setLastItemId] = useState(item.id);
-    const removeTrack = useRemoveFromPlaylist(item.id);
-
-    if (item.id !== lastItemId) {
-      setLastItemId(item.id);
-      if (swipeableRef.current) swipeableRef.current.resetIfNeeded();
-    }
-
-    return (
-      <Pressable
-        delayLongPress={250}
-        onLongPress={info.onDragStart}
-        onPressOut={info.onDragEnd}
-        className={cn("group", { "mt-2": info.index > 0 })}
-      >
-        <Swipeable
-          // @ts-expect-error - Error assigning ref to class component.
-          ref={swipeableRef}
-          enabled={!info.isDragging}
-          renderRightActions={() =>
-            info.isActive ? undefined : (
-              <Button
-                accessibilityLabel={t("template.entryRemove", {
-                  name: item.title,
-                })}
-                onPress={() => mutateGuard(removeTrack, trackSource.id)}
-                className={cn("bg-red p-3", OnRTL.decide("ml-4", "mr-4"))}
-              >
-                <Remove color={Colors.neutral100} />
-              </Button>
-            )
-          }
-        >
-          <Track
-            delayLongPress={250}
-            onLongPress={info.onDragStart}
-            onPressOut={info.onDragEnd}
-            disabled={info.isDragging}
-            {...item}
-            trackSource={trackSource}
-            className={cn("mx-4 group-active:bg-surface/50", {
-              "!bg-surface": info.isActive,
-            })}
-          />
-        </Swipeable>
-      </Pressable>
-    );
-  },
-  areRenderItemPropsEqual(
-    (o, n) =>
-      o.item.id === n.item.id && o.item.showIndicator === n.item.showIndicator,
-  ),
-);
