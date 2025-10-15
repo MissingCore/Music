@@ -1,9 +1,10 @@
-import TrackPlayer from "@weights-ai/react-native-track-player";
+import TrackPlayer, { RepeatMode } from "@weights-ai/react-native-track-player";
 import { useEffect } from "react";
 
 import "~/services/_subscriptions";
 import "~/modules/media/services/_subscriptions";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
+import { RepeatModes } from "~/stores/Playback/constants";
 import { useSortPreferencesStore } from "~/modules/media/services/SortPreferences";
 import {
   userPreferencesStore,
@@ -42,16 +43,20 @@ export function useSetup() {
       // immediately hydrated.
       await revalidateWidgets({ openApp: true });
 
-      const { activeId } = playbackStore.getState();
+      const { repeat, activeId } = playbackStore.getState();
       const { saveLastPosition, continuePlaybackOnDismiss } =
         userPreferencesStore.getState();
       if (saveLastPosition)
         playbackStore.setState({ _restoredTrackId: activeId });
       else playbackStore.setState({ _hasRestoredPosition: true });
 
+      // Ensure correct RNTP settings.
       await TrackPlayer.updateOptions(
         getTrackPlayerOptions({ continuePlaybackOnDismiss, saveLastPosition }),
       );
+      if (repeat === RepeatModes.REPEAT_ONE) {
+        await TrackPlayer.setRepeatMode(RepeatMode.Track);
+      }
     })();
   }, []);
 

@@ -1,4 +1,7 @@
-import TrackPlayer, { State } from "@weights-ai/react-native-track-player";
+import TrackPlayer, {
+  RepeatMode as RNTPRepeatMode,
+  State,
+} from "@weights-ai/react-native-track-player";
 
 import { addPlayedMediaList } from "~/api/recent";
 import { userPreferencesStore } from "~/services/UserPreferences";
@@ -25,6 +28,12 @@ export async function cycleRepeat() {
   if (repeat === RepeatModes.REPEAT) newMode = RepeatModes.REPEAT_ONE;
   else if (repeat === RepeatModes.REPEAT_ONE) newMode = RepeatModes.NO_REPEAT;
   playbackStore.setState({ repeat: newMode });
+
+  await TrackPlayer.setRepeatMode(
+    newMode === RepeatModes.REPEAT_ONE
+      ? RNTPRepeatMode.Track
+      : RNTPRepeatMode.Off,
+  );
 }
 
 /** Update the `shuffle` field along with `currentList` & `listIdx`. */
