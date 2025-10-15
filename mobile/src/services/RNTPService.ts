@@ -8,6 +8,7 @@ import TrackPlayer, {
 import i18next from "~/modules/i18n";
 import { addPlayedMediaList, addPlayedTrack } from "~/api/recent";
 import { deleteTrack } from "~/api/track";
+import { playbackStore } from "~/stores/Playback/store";
 import {
   next,
   pause,
@@ -16,8 +17,6 @@ import {
   seekTo,
   stop,
 } from "~/stores/Playback/actions";
-import type { TrackStatus } from "~/modules/media/services/Music";
-import { Queue, RNTPManager, musicStore } from "~/modules/media/services/Music";
 import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
 import { userPreferencesStore } from "./UserPreferences";
 import { router } from "~/navigation/utils/router";
@@ -70,15 +69,12 @@ export async function PlaybackService() {
   TrackPlayer.addEventListener(Event.PlaybackState, (e) => {
     // Only place where we get notified for unexpected pauses such as
     // when disconnecting headphones.
-    if (e.state === State.Paused) musicStore.setState({ isPlaying: false });
+    if (e.state === State.Paused) playbackStore.setState({ isPlaying: false });
   });
 
-  TrackPlayer.addEventListener(
-    Event.PlaybackProgressUpdated,
-    ({ position }) => {
-      musicStore.setState({ lastPosition: position });
-    },
-  );
+  TrackPlayer.addEventListener(Event.PlaybackProgressUpdated, (e) => {
+    playbackStore.setState({ lastPosition: e.position });
+  });
 
   TrackPlayer.addEventListener(Event.RemoteDuck, async (e) => {
     // Keep playing media when an interruption is detected.
@@ -87,7 +83,7 @@ export async function PlaybackService() {
       await stop();
     } else {
       if (e.paused) {
-        resumeAfterDuck = musicStore.getState().isPlaying;
+        resumeAfterDuck = playbackStore.getState().isPlaying;
         await pause();
       } else if (resumeAfterDuck) {
         await play();
@@ -96,66 +92,32 @@ export async function PlaybackService() {
     }
   });
 
+  // Only triggered if repeat mode is `RepeatMode.Off`. This is also called
+  // after the `ServiceKilled` event is emitted.
+  TrackPlayer.addEventListener(Event.PlaybackQueueEnded, async () => {
+    await next(true);
+  });
+
   TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (e) => {
     if (e.index === undefined || e.track === undefined) return;
 
     // When this triggers for the 1st time, we want to see if we should seek
     // to the last played position.
-    const { _hasRestoredPosition, _restoredTrackId, activeId, lastPosition } =
-      musicStore.getState();
+    const {
+      _hasRestoredPosition,
+      _restoredTrackId,
+      lastPosition,
+      playingFrom,
+      activeTrack,
+    } = playbackStore.getState();
     if (!_hasRestoredPosition) {
-      musicStore.setState({ _hasRestoredPosition: true });
+      playbackStore.setState({ _hasRestoredPosition: true });
       if (
         lastPosition !== undefined &&
         _restoredTrackId !== undefined &&
-        _restoredTrackId === activeId
+        _restoredTrackId === activeTrack?.id
       ) {
         await seekTo(lastPosition);
-      }
-    }
-
-    const { playingSource, repeat, queueList } = musicStore.getState();
-    const activeTrack = e.track;
-    const trackStatus: TrackStatus = activeTrack["music::status"];
-
-    if (trackStatus === "END") {
-      return await musicStore.getState().reset();
-    } else if (trackStatus === "QUEUE") {
-      // Remove 1st item in `queueList` if they're the same (doesn't
-      // fire if we manually forced the next track to play - which would
-      // cause `e.index` to be `0`).
-      if (e.index > 0 && activeTrack.id === queueList[0]) {
-        // Update the displayed track (let the `activeId` subscription
-        // handle updating `activeTrack`).
-        musicStore.setState({ activeId: activeTrack.id, isInQueue: true });
-        await Queue.removeAtIndex(0);
-      } else {
-        musicStore.setState({ isInQueue: true });
-      }
-    } else if (repeat !== "repeat-one" && trackStatus === undefined) {
-      // If `trackStatus = undefined`, it means the player naturally played
-      // the next track (which isn't part of `queueList`).
-
-      // Since we played this track naturally, the index hasn't been updated
-      // in the store.
-      const nextTrack = await RNTPManager.getNextTrack();
-      if (
-        nextTrack.activeId === undefined ||
-        nextTrack.activeId === activeTrack.id
-      ) {
-        // There was some cases of displaying the following track when letting
-        // the next track play naturally. This should prevent those cases.
-        musicStore.setState(nextTrack);
-      } else {
-        console.log(
-          `Got "${nextTrack.activeId}" from \`RNTPManager.getNextTrack()\` when playing track is "${activeTrack.id}".`,
-        );
-      }
-
-      // Check if we should pause after looping logic.
-      if (nextTrack.listIdx === 0 && repeat === "no-repeat") {
-        await pause();
-        await TrackPlayer.seekTo(0);
       }
     }
 
@@ -167,23 +129,21 @@ export async function PlaybackService() {
     if (lastPosition === undefined || resolvedLastPosition) {
       // Track should start playing at 0s.
       playbackCountUpdator = BackgroundTimer.setTimeout(
-        async () => await addPlayedTrack(activeTrack.id),
-        Math.min(activeTrack.duration!, 10) * 1000,
+        async () => await addPlayedTrack(activeTrack!.id),
+        Math.min(activeTrack!.duration, 10) * 1000,
       );
     } else if (lastPosition < 10) {
       playbackCountUpdator = BackgroundTimer.setTimeout(
-        async () => await addPlayedTrack(activeTrack.id),
-        (Math.min(activeTrack.duration!, 10) - lastPosition) * 1000,
+        async () => await addPlayedTrack(activeTrack!.id),
+        (Math.min(activeTrack!.duration, 10) - lastPosition) * 1000,
       );
     }
     if (!resolvedLastPosition) {
-      if (playingSource) await addPlayedMediaList(playingSource);
+      if (playingFrom) await addPlayedMediaList(playingFrom);
       resolvedLastPosition = true;
     }
 
-    if (e.index === 1) await TrackPlayer.remove(0);
-    await RNTPManager.reloadNextTrack();
-    musicStore.setState({ lastPosition: undefined });
+    playbackStore.setState({ lastPosition: undefined });
     await revalidateWidgets();
   });
 
@@ -216,6 +176,6 @@ export async function PlaybackService() {
     }
 
     // Clear all reference of the current playing track.
-    await musicStore.getState().reset();
+    await playbackStore.getState().reset();
   });
 }

@@ -1,7 +1,6 @@
 import TrackPlayer, {
   AppKilledPlaybackBehavior,
   Capability,
-  RepeatMode,
 } from "@weights-ai/react-native-track-player";
 
 import { wait } from "~/utils/promise";
@@ -74,10 +73,6 @@ export async function setupPlayer() {
     // and we'll try this again.
     await wait(1);
   }
-
-  // Repeat mode is needed for the "next" button to show up in the widget
-  // if we're on the last track.
-  await TrackPlayer.setRepeatMode(RepeatMode.Queue);
 
   await TrackPlayer.updateOptions(getTrackPlayerOptions());
 }
