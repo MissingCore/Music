@@ -16,7 +16,7 @@ import i18next from "~/modules/i18n";
 import { getAlbums } from "~/api/album";
 import { createPlaylist, getPlaylists, updatePlaylist } from "~/api/playlist";
 import { getTracks } from "~/api/track";
-import { musicStore } from "~/modules/media/services/Music";
+import { playbackStore } from "~/stores/Playback/store";
 import { Resynchronize } from "~/modules/media/services/Resynchronize";
 
 import { clearAllQueries } from "~/lib/react-query";
@@ -207,7 +207,7 @@ async function importBackup() {
   // Delete the cached document.
   documentFile.delete();
 
-  const currPlayingFrom = musicStore.getState().playingSource;
+  const currPlayingFrom = playbackStore.getState().playingFrom;
   if (currPlayingFrom) await Resynchronize.onTracks(currPlayingFrom);
 }
 //#endregion

@@ -5,7 +5,7 @@ import { View } from "react-native";
 import Bootsplash from "react-native-bootsplash";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { musicStore } from "~/modules/media/services/Music";
+import { playbackStore } from "~/stores/Playback/store";
 import { useFloatingContent } from "../hooks/useFloatingContent";
 import { AppProvider } from "../providers/AppProvider";
 
@@ -56,7 +56,7 @@ function ErrorLayout({ error }: { error: Error }) {
   const onError = useCallback(() => {
     // Display error message to user if encountered.
     Bootsplash.hide();
-    musicStore.getState().resetOnCrash();
+    playbackStore.getState().resetOnCrash();
 
     // Send error message to Sentry.
     if (SENTRY_ENABLED && !__DEV__) Sentry.captureException(error);

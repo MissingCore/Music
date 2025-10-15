@@ -1,7 +1,7 @@
 import TrackPlayer from "@weights-ai/react-native-track-player";
 
 import { getTrack } from "~/api/track";
-import { musicStore } from "../services/Music";
+import { playbackStore } from "~/stores/Playback/store";
 
 import { formatTrackforPlayer } from "./data";
 
@@ -10,14 +10,14 @@ export async function revalidateActiveTrack(args: {
   type: "album" | "track";
   id: string;
 }) {
-  const { activeTrack } = musicStore.getState();
+  const { activeTrack } = playbackStore.getState();
   if (!activeTrack) return;
   if (args.type === "album" && activeTrack.album?.id !== args.id) return;
   if (args.type === "track" && activeTrack.id !== args.id) return;
 
   try {
     const updatedTrackData = await getTrack(activeTrack.id);
-    musicStore.setState({ activeTrack: updatedTrackData });
+    playbackStore.setState({ activeTrack: updatedTrackData });
 
     // Update media notification with updated metadata.
     const rntpTrack = await TrackPlayer.getActiveTrack();
