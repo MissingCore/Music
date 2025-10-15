@@ -9,8 +9,8 @@ import {
   updateTrack,
 } from "~/api/track";
 import { playbackStore } from "~/stores/Playback/store";
+import { removeIds } from "~/stores/Playback/actions";
 import { revalidateActiveTrack } from "~/modules/media/helpers/revalidate";
-import { Queue } from "~/modules/media/services/Music";
 import { Resynchronize } from "~/modules/media/services/Resynchronize";
 import { useSortTracks } from "~/modules/media/services/SortPreferences";
 import { queries as q } from "./keyStore";
@@ -100,7 +100,7 @@ export function useHideTrack() {
       if (queue.includes(trackId)) {
         await Resynchronize.onTracks(playingFrom!);
       }
-      Queue.removeIds([trackId]);
+      removeIds([trackId]);
     },
   });
 }

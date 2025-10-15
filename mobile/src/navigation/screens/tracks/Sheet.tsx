@@ -29,7 +29,7 @@ import {
   useTrackPlaylists,
 } from "~/queries/track";
 import { usePlaybackStore } from "~/stores/Playback/store";
-import { Queue } from "~/modules/media/services/Music";
+import { add } from "~/stores/Playback/actions";
 import { useSessionStore } from "~/services/SessionStore";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { useTheme } from "~/hooks/useTheme";
@@ -261,7 +261,7 @@ function TrackTextActions({ id, name }: Record<"id" | "name", string>) {
         <ListButton
           Icon={QueueMusic}
           textKey="feat.modalTrack.extra.addToQueue"
-          onPress={sheetAction(() => Queue.add({ id, name }))}
+          onPress={sheetAction(() => add({ id, name }))}
           style={{ width }}
           className={cn("rounded-tr-md", { "rounded-br-md": !showPlayingFrom })}
         />

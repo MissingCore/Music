@@ -9,7 +9,7 @@ import { Remove } from "~/resources/icons/Remove";
 import { SlowMotionVideo } from "~/resources/icons/SlowMotionVideo";
 import { VolumeUp } from "~/resources/icons/VolumeUp";
 import { usePlaybackStore } from "~/stores/Playback/store";
-import { Queue } from "~/modules/media/services/Music";
+import { removeAtIndex } from "~/stores/Playback/actions";
 import { sessionStore, useSessionStore } from "~/services/SessionStore";
 import type { UpcomingStore } from "../helpers/UpcomingStore";
 import { useUpcomingStore } from "../helpers/UpcomingStore";
@@ -187,7 +187,7 @@ function RenderQueueItem({ item, index }: ListRenderItemInfo<PartialTrack>) {
       renderRightActions={() => (
         <Button
           accessibilityLabel={t("template.entryRemove", { name: item.name })}
-          onPress={() => Queue.removeAtIndex(index)}
+          onPress={() => removeAtIndex(index)}
           className={cn("bg-red p-3", OnRTL.decide("ml-4", "mr-4"))}
         >
           <Remove color={Colors.neutral100} />
