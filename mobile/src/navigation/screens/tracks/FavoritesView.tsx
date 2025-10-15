@@ -28,9 +28,9 @@ export default function FavoriteTracks() {
       mediaSource={trackSource}
     >
       <FlashList
+        {...presets}
         contentContainerClassName="px-4 pt-4"
         contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
-        {...presets}
       />
     </CurrentListLayout>
   );
