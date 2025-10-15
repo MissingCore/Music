@@ -1,14 +1,11 @@
-import TrackPlayer from "@weights-ai/react-native-track-player";
 import { useTranslation } from "react-i18next";
 
-import { playbackStore } from "~/stores/Playback/store";
 import {
   userPreferencesStore,
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
 import { StandardScrollLayout } from "../../layouts/StandardScroll";
 
-import { getTrackPlayerOptions } from "~/lib/react-native-track-player";
 import { List, ListItem } from "~/components/Containment/List";
 
 export default function PlaybackSettings() {
@@ -59,12 +56,7 @@ const toggleRepeatOnSkip = () =>
     repeatOnSkip: !prev.repeatOnSkip,
   }));
 
-const toggleSaveLastPosition = async () => {
-  const didSaveLastPosition = userPreferencesStore.getState().saveLastPosition;
-  if (didSaveLastPosition) playbackStore.setState({ lastPosition: undefined });
-  userPreferencesStore.setState({ saveLastPosition: !didSaveLastPosition });
-
-  await TrackPlayer.updateOptions(
-    getTrackPlayerOptions({ saveLastPosition: !didSaveLastPosition }),
-  );
-};
+const toggleSaveLastPosition = async () =>
+  userPreferencesStore.setState((prev) => ({
+    saveLastPosition: !prev.saveLastPosition,
+  }));

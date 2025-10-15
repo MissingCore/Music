@@ -52,7 +52,7 @@ export function useSetup() {
 
       // Ensure correct RNTP settings.
       await TrackPlayer.updateOptions(
-        getTrackPlayerOptions({ continuePlaybackOnDismiss, saveLastPosition }),
+        getTrackPlayerOptions({ continuePlaybackOnDismiss }),
       );
       if (repeat === RepeatModes.REPEAT_ONE) {
         await TrackPlayer.setRepeatMode(RepeatMode.Track);

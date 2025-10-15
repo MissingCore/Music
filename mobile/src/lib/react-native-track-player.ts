@@ -7,7 +7,6 @@ import { wait } from "~/utils/promise";
 
 type AdditionalConfig = {
   continuePlaybackOnDismiss?: boolean;
-  saveLastPosition?: boolean;
 };
 
 const prevSetConfigs: AdditionalConfig = {};
@@ -24,7 +23,7 @@ export function getTrackPlayerOptions(options?: AdditionalConfig) {
       prevSetConfigs[field] = value;
     }
   }
-  const { continuePlaybackOnDismiss, saveLastPosition } = prevSetConfigs;
+  const { continuePlaybackOnDismiss } = prevSetConfigs;
 
   return {
     android: {
@@ -46,7 +45,7 @@ export function getTrackPlayerOptions(options?: AdditionalConfig) {
       Capability.SkipToPrevious,
     ],
     icon: require("~/resources/images/music-glyph.png"),
-    progressUpdateEventInterval: saveLastPosition ? 1 : undefined,
+    progressUpdateEventInterval: 1,
   };
 }
 

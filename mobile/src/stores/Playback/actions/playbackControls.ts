@@ -68,7 +68,8 @@ export async function playToggle(opts?: PlayPauseOptions) {
 
 /** Loads the track before `queuePosition`. */
 export async function prev() {
-  const { getTrack, reset, queue, queuePosition } = playbackStore.getState();
+  const { getTrack, reset, lastPosition, queue, queuePosition } =
+    playbackStore.getState();
 
   const prevIndex = queuePosition === 0 ? queue.length - 1 : queuePosition - 1;
   const prevTrackId = queue[prevIndex];
@@ -79,7 +80,7 @@ export async function prev() {
 
   // If the RNTP queue isn't loaded or if we played <=10s of the track,
   // simply update the `currPlayingIdx` & `currPlayingId`
-  if (!(await isLoaded()) || (await TrackPlayer.getProgress()).position <= 10) {
+  if ((lastPosition ?? 0) <= 10 || !(await isLoaded())) {
     playbackStore.setState({
       activeId: prevTrack.id,
       activeTrack: prevTrack,
