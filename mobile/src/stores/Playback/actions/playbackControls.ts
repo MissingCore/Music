@@ -180,7 +180,7 @@ export async function playFromList({
   });
 
   // 6. Play this new media list.
-  if (isDiffTrack) await loadCurrentTrack();
+  if (isDiffTrack || !(await isLoaded())) await loadCurrentTrack();
   await TrackPlayer.play();
 
   // 7. Add media list to recent lists.
