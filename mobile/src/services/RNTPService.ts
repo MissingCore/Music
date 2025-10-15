@@ -9,14 +9,7 @@ import i18next from "~/modules/i18n";
 import { addPlayedMediaList, addPlayedTrack } from "~/api/recent";
 import { deleteTrack } from "~/api/track";
 import { playbackStore } from "~/stores/Playback/store";
-import {
-  next,
-  pause,
-  play,
-  prev,
-  seekTo,
-  stop,
-} from "~/stores/Playback/actions";
+import { PlaybackControls } from "~/stores/Playback/actions";
 import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
 import { userPreferencesStore } from "./UserPreferences";
 import { router } from "~/navigation/utils/router";
@@ -47,23 +40,23 @@ export async function PlaybackService() {
   });
 
   TrackPlayer.addEventListener(Event.RemotePlay, async () => {
-    await play();
+    await PlaybackControls.play();
   });
 
   TrackPlayer.addEventListener(Event.RemotePause, async () => {
-    await pause();
+    await PlaybackControls.pause();
   });
 
   TrackPlayer.addEventListener(Event.RemoteNext, async () => {
-    await next();
+    await PlaybackControls.next();
   });
 
   TrackPlayer.addEventListener(Event.RemotePrevious, async () => {
-    await prev();
+    await PlaybackControls.prev();
   });
 
   TrackPlayer.addEventListener(Event.RemoteSeek, async ({ position }) => {
-    await seekTo(position);
+    await PlaybackControls.seekTo(position);
   });
 
   TrackPlayer.addEventListener(Event.PlaybackState, (e) => {
@@ -80,13 +73,13 @@ export async function PlaybackService() {
     // Keep playing media when an interruption is detected.
     if (userPreferencesStore.getState().ignoreInterrupt) return;
     if (e.permanent) {
-      await stop();
+      await PlaybackControls.stop();
     } else {
       if (e.paused) {
         resumeAfterDuck = playbackStore.getState().isPlaying;
-        await pause();
+        await PlaybackControls.pause();
       } else if (resumeAfterDuck) {
-        await play();
+        await PlaybackControls.play();
         resumeAfterDuck = false;
       }
     }
@@ -95,7 +88,7 @@ export async function PlaybackService() {
   // Only triggered if repeat mode is `RepeatMode.Off`. This is also called
   // after the `ServiceKilled` event is emitted.
   TrackPlayer.addEventListener(Event.PlaybackQueueEnded, async () => {
-    await next(true);
+    await PlaybackControls.next(true);
   });
 
   TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (e) => {
@@ -117,7 +110,7 @@ export async function PlaybackService() {
         _restoredTrackId !== undefined &&
         _restoredTrackId === activeTrack?.id
       ) {
-        await seekTo(lastPosition);
+        await PlaybackControls.seekTo(lastPosition);
       }
     }
 

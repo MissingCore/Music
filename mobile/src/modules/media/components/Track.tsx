@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { MoreVert } from "~/resources/icons/MoreVert";
 import { usePlaybackStore } from "~/stores/Playback/store";
-import { playFromList } from "~/stores/Playback/actions";
+import { PlaybackControls } from "~/stores/Playback/actions";
 import { presentTrackSheet } from "~/services/SessionStore";
 
 import { cn } from "~/lib/style";
@@ -59,7 +59,9 @@ export function Track({
     <SearchResult
       as="ripple"
       type="track"
-      onPress={() => playFromList({ trackId: id, source: trackSource })}
+      onPress={() =>
+        PlaybackControls.playFromList({ trackId: id, source: trackSource })
+      }
       RightElement={
         <IconButton
           Icon={MoreVert}

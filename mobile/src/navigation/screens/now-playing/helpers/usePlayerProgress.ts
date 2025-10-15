@@ -3,7 +3,7 @@ import { atom, useAtomValue, useSetAtom } from "jotai";
 import { useMemo, useRef, useState } from "react";
 
 import { usePlaybackStore } from "~/stores/Playback/store";
-import { seekTo } from "~/stores/Playback/actions";
+import { PlaybackControls } from "~/stores/Playback/actions";
 
 /** Dragging slider position. */
 const NextSliderPositionAtom = atom<number | null>(null);
@@ -18,7 +18,7 @@ export function usePlayerProgress() {
   const setNextSliderPosition = useSetAtom(NextSliderPositionAtom);
 
   const seekToPosition = async (progress: number) => {
-    await seekTo(progress);
+    await PlaybackControls.seekTo(progress);
     setUpdateInterval(1);
 
     // Helps prevents "rubberbanding".

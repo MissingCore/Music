@@ -22,7 +22,7 @@ import { createArtists } from "~/api/artist";
 import { RECENT_RANGE_MS } from "~/api/recent";
 import { upsertTracks } from "~/api/track";
 import { playbackStore } from "~/stores/Playback/store";
-import { removeIds } from "~/stores/Playback/actions";
+import { Queue } from "~/stores/Playback/actions";
 import { userPreferencesStore } from "~/services/UserPreferences";
 import { onboardingStore } from "../services/Onboarding";
 
@@ -159,7 +159,7 @@ export async function cleanupDatabase(usedTrackIds: string[]) {
   const hasRemovedTrack = queue.some((tId) => unusedTrackIds.includes(tId));
   if (hasRemovedTrack) await playbackStore.getState().reset();
   // Clear the queue of deleted tracks.
-  removeIds(unusedTrackIds);
+  Queue.removeIds(unusedTrackIds);
 
   // Remove recently played media that's beyond what we display.
   await db

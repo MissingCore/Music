@@ -2,7 +2,7 @@ import BackgroundTimer from "@boterop/react-native-background-timer";
 import { useStore } from "zustand";
 import { createStore } from "zustand/vanilla";
 
-import { stop } from "~/stores/Playback/actions";
+import { PlaybackControls } from "~/stores/Playback/actions";
 
 interface SleepTimerStore {
   /** Reference to current active timer. */
@@ -31,7 +31,7 @@ export const sleepTimerStore = createStore<SleepTimerStore>()((set, get) => ({
 
     const durationMS = minutes * 60 * 1000;
     const timerRef = BackgroundTimer.setTimeout(() => {
-      stop();
+      PlaybackControls.stop();
       clearSleepTimer();
     }, durationMS);
 

@@ -8,13 +8,7 @@ import { Shuffle } from "~/resources/icons/Shuffle";
 import { SkipNext } from "~/resources/icons/SkipNext";
 import { SkipPrevious } from "~/resources/icons/SkipPrevious";
 import { usePlaybackStore } from "~/stores/Playback/store";
-import {
-  cycleRepeat,
-  toggleShuffle,
-  next,
-  playToggle,
-  prev,
-} from "~/stores/Playback/actions";
+import { PlaybackControls, PlaybackSettings } from "~/stores/Playback/actions";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
@@ -31,7 +25,7 @@ export function RepeatButton({ large = true }) {
       accessibilityLabel={t(
         `term.repeat${repeatMode === "repeat-one" ? "One" : ""}`,
       )}
-      onPress={cycleRepeat}
+      onPress={PlaybackSettings.cycleRepeat}
       active={repeatMode !== "no-repeat"}
       large={large}
     />
@@ -46,7 +40,7 @@ export function ShuffleButton({ large = true }) {
     <IconButton
       Icon={Shuffle}
       accessibilityLabel={t("term.shuffle")}
-      onPress={toggleShuffle}
+      onPress={PlaybackSettings.toggleShuffle}
       active={isActive}
       large={large}
     />
@@ -61,7 +55,7 @@ export function PlayToggleButton() {
   return (
     <Button
       accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
-      onPress={() => playToggle()}
+      onPress={() => PlaybackControls.playToggle()}
       className={cn("rounded-full bg-red px-6 py-2", {
         "bg-onSurface": isPlaying,
       })}
@@ -78,7 +72,7 @@ export function NextButton({ large = true }) {
     <IconButton
       Icon={SkipNext}
       accessibilityLabel={t("term.next")}
-      onPress={() => next()}
+      onPress={() => PlaybackControls.next()}
       large={large}
     />
   );
@@ -91,7 +85,7 @@ export function PreviousButton({ large = true }) {
     <IconButton
       Icon={SkipPrevious}
       accessibilityLabel={t("term.prev")}
-      onPress={prev}
+      onPress={PlaybackControls.prev}
       large={large}
     />
   );

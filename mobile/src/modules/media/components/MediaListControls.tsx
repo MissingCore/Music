@@ -4,7 +4,7 @@ import { View } from "react-native";
 import { Pause } from "~/resources/icons/Pause";
 import { PlayArrow } from "~/resources/icons/PlayArrow";
 import { usePlaybackStore } from "~/stores/Playback/store";
-import { pause, playFromList } from "~/stores/Playback/actions";
+import { PlaybackControls } from "~/stores/Playback/actions";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
@@ -46,7 +46,9 @@ function PlayMediaListButton({ trackSource }: { trackSource: PlayListSource }) {
     <Button
       accessibilityLabel={t(`term.${displayPause ? "pause" : "play"}`)}
       onPress={() =>
-        displayPause ? pause() : playFromList({ source: trackSource })
+        displayPause
+          ? PlaybackControls.pause()
+          : PlaybackControls.playFromList({ source: trackSource })
       }
       className={cn("bg-red p-3", { "bg-onSurface": displayPause })}
     >

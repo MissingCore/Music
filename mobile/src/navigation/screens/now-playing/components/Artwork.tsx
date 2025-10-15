@@ -10,7 +10,7 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { usePlaybackStore } from "~/stores/Playback/store";
-import { playToggle } from "~/stores/Playback/actions";
+import { PlaybackControls } from "~/stores/Playback/actions";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { useVinylSeekbar } from "../helpers/useVinylSeekbar";
 
@@ -63,7 +63,7 @@ function PlainArtwork(props: ArtworkProps) {
   return (
     <Pressable
       accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
-      onPress={() => playToggle()}
+      onPress={() => PlaybackControls.playToggle()}
     >
       <MediaImage type="track" {...props} />
     </Pressable>
@@ -77,7 +77,10 @@ function VinylSeekBar(props: ArtworkProps) {
   return (
     <GestureDetector gesture={seekGesture}>
       <Animated.View ref={wrapperRef} onLayout={initCenter} style={vinylStyle}>
-        <Vinyl onPress={!isActive ? playToggle : undefined} {...props} />
+        <Vinyl
+          onPress={!isActive ? PlaybackControls.playToggle : undefined}
+          {...props}
+        />
       </Animated.View>
     </GestureDetector>
   );

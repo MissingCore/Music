@@ -9,7 +9,7 @@ import {
   updateTrack,
 } from "~/api/track";
 import { playbackStore } from "~/stores/Playback/store";
-import { removeIds } from "~/stores/Playback/actions";
+import { Queue } from "~/stores/Playback/actions";
 import { revalidateActiveTrack } from "~/modules/media/helpers/revalidate";
 import { Resynchronize } from "~/modules/media/services/Resynchronize";
 import { useSortTracks } from "~/modules/media/services/SortPreferences";
@@ -100,7 +100,7 @@ export function useHideTrack() {
       if (queue.includes(trackId)) {
         await Resynchronize.onTracks(playingFrom!);
       }
-      removeIds([trackId]);
+      Queue.removeIds([trackId]);
     },
   });
 }

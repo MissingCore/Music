@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { playFromList } from "~/stores/Playback/actions";
+import { PlaybackControls } from "~/stores/Playback/actions";
 
 import { AccentText } from "~/components/Typography/AccentText";
 import { ReservedPlaylists } from "~/modules/media/constants";
@@ -27,7 +27,7 @@ export default function Search() {
       playlist: ({ name }) => navigation.push("Playlist", { id: name }),
       /* Play the specified track. */
       track: ({ id }) =>
-        playFromList({
+        PlaybackControls.playFromList({
           trackId: id,
           source: { type: "playlist", id: ReservedPlaylists.tracks },
         }),

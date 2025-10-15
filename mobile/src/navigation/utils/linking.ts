@@ -4,7 +4,7 @@ import { Linking } from "react-native";
 
 import { db } from "~/db";
 
-import { playFromList } from "~/stores/Playback/actions";
+import { PlaybackControls } from "~/stores/Playback/actions";
 
 import { addTrailingSlash } from "~/utils/string";
 
@@ -49,7 +49,7 @@ async function handleContentURL(url: string | null) {
     const track = await getTrackFromContentPath(url);
 
     if (track) {
-      await playFromList({
+      await PlaybackControls.playFromList({
         source: {
           type: "folder",
           // Remove the `file:///` at the front of the uri.
