@@ -73,32 +73,45 @@ export async function getSourceName({ type, id }: PlayListSource) {
   return name;
 }
 
-/** Get list of tracks from a `PlayListSource`. */
-export async function getTrackList({ type, id }: PlayListSource) {
-  let sortedTracks: TrackWithAlbum[] = [];
+/** Get list of tracks ids from a `PlayListSource`. */
+export async function getTrackIdsList({ type, id }: PlayListSource) {
+  let trackIds: string[] = [];
 
   try {
     if (type === "album") {
-      const { tracks: trks, ...albumInfo } = await getAlbum(id);
-      sortedTracks = (trks as TrackWithAlbum[]).map((track) => {
-        track.album = albumInfo;
-        return track;
+      const data = await getAlbum(id, {
+        columns: [],
+        trackColumns: ["id"],
       });
+      trackIds = data.tracks.map(({ id }) => id);
     } else if (type === "artist") {
-      const data = await getArtist(id);
-      sortedTracks = data.tracks;
+      const data = await getArtist(id, {
+        columns: [],
+        trackColumns: ["id"],
+        withAlbum: false,
+      });
+      trackIds = data.tracks.map(({ id }) => id);
     } else if (type === "folder") {
-      sortedTracks = await getFolderTracks(id); // `id` contains pathname.
+      const data = await getFolderTracks(id); // `id` contains pathname.
+      trackIds = data.map(({ id }) => id);
     } else {
       if (ReservedNames.has(id)) {
-        sortedTracks = (await getSpecialPlaylist(id as ReservedPlaylistName))
-          .tracks;
+        const data = await getSpecialPlaylist(id as ReservedPlaylistName, {
+          columns: [],
+          trackColumns: ["id"],
+          withAlbum: false,
+        });
+        trackIds = data.tracks.map(({ id }) => id);
       } else {
-        const data = await getPlaylist(id);
-        sortedTracks = data.tracks;
+        const data = await getPlaylist(id, {
+          columns: [],
+          trackColumns: ["id"],
+          withAlbum: false,
+        });
+        trackIds = data.tracks.map(({ id }) => id);
       }
     }
   } catch {}
 
-  return sortedTracks;
+  return trackIds;
 }

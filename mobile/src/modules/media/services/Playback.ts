@@ -9,7 +9,7 @@ import { revalidateWidgets } from "~/modules/widget/utils";
 import {
   arePlaybackSourceEqual,
   getSourceName,
-  getTrackList,
+  getTrackIdsList,
 } from "../helpers/data";
 import type { PlayListSource } from "../types";
 
@@ -138,7 +138,7 @@ export async function playFromMediaList({
   }
 
   // 3. Handle case when the media list is new.
-  const newPlayingList = (await getTrackList(source)).map(({ id }) => id);
+  const newPlayingList = await getTrackIdsList(source);
   if (newPlayingList.length === 0) return; // Don't do anything if list is empty.
   const { isInQueue: _, ...newListsInfo } = RNTPManager.getUpdatedLists(
     newPlayingList,

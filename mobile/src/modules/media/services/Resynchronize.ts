@@ -4,7 +4,7 @@ import { RNTPManager, musicStore } from "./Music";
 import {
   arePlaybackSourceEqual,
   getSourceName,
-  getTrackList,
+  getTrackIdsList,
   isPlaybackSourceInList,
 } from "../helpers/data";
 import type { PlayListSource } from "../types";
@@ -55,7 +55,7 @@ export class Resynchronize {
     const isPlayingRef = arePlaybackSourceEqual(playingSource, ref);
     if (!isPlayingRef) return;
     // Make sure our track lists along with the current index are up-to-date.
-    const newPlayingList = (await getTrackList(ref)).map(({ id }) => id);
+    const newPlayingList = await getTrackIdsList(ref);
     const newListsInfo = RNTPManager.getUpdatedLists(newPlayingList, {
       contextAware: true,
     });
@@ -70,8 +70,8 @@ export class Resynchronize {
     const currSource = musicStore.getState().playingSource;
     if (!currSource) return;
     // See if the playling list has any of the specified tracks.
-    const hasUnstagedTrack = (await getTrackList(currSource)).some(
-      ({ id: tId }) => newIds.includes(tId),
+    const hasUnstagedTrack = (await getTrackIdsList(currSource)).some((tId) =>
+      newIds.includes(tId),
     );
     if (hasUnstagedTrack) await Resynchronize.onTracks(currSource);
   }

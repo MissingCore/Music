@@ -11,7 +11,7 @@ import type { PlayListSource } from "~/modules/media/types";
 import {
   arePlaybackSourceEqual,
   getSourceName,
-  getTrackList,
+  getTrackIdsList,
   formatTrackforPlayer,
 } from "~/modules/media/helpers/data";
 import { revalidateWidgets } from "~/modules/widget/utils";
@@ -157,12 +157,9 @@ export async function playFromList({
   }
 
   // 3. Handle case when the media list is new.
-  const newPlayingList = await getTrackList(source);
+  const newPlayingList = await getTrackIdsList(source);
   if (newPlayingList.length === 0) return; // Don't do anything if list is empty.
-  const newListInfo = getUpdatedLists(
-    newPlayingList.map(({ id }) => id),
-    trackId ?? activeId,
-  );
+  const newListInfo = getUpdatedLists(newPlayingList, trackId ?? activeId);
 
   // 4. Get the track from this new info.
   const newTrack = (await getTrack(
@@ -182,10 +179,10 @@ export async function playFromList({
 
   // 6. Play this new media list.
   if (isDiffTrack || !(await isLoaded())) await loadCurrentTrack();
-  await TrackPlayer.play();
+  TrackPlayer.play();
 
   // 7. Add media list to recent lists.
-  await addPlayedMediaList(source);
+  addPlayedMediaList(source);
 }
 //#endregion
 
