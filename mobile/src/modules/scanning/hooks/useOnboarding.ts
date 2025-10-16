@@ -1,8 +1,8 @@
 import { usePermissions as useMediaLibraryPermissions } from "expo-media-library";
 import { useCallback, useEffect, useState } from "react";
 
+import { Resynchronize } from "~/stores/Playback/actions";
 import { useSetup } from "~/hooks/useSetup";
-import { Resynchronize } from "~/modules/media/services/Resynchronize";
 import { findAndSaveArtwork, cleanupImages } from "../helpers/artwork";
 import { findAndSaveAudio, cleanupDatabase } from "../helpers/audio";
 import { checkForMigrations } from "../helpers/migrations";
@@ -45,8 +45,8 @@ export function useOnboarding() {
     // Find and save any audio files to the database.
     const { foundFiles, unstagedFiles } = await findAndSaveAudio();
     await cleanupDatabase(foundFiles.map(({ id }) => id));
-    // Make sure any modified tracks doesn't belong in the current playing list.
-    await Resynchronize.onUpdatedList(unstagedFiles.map(({ id }) => id));
+    // Make sure any modified tracks isn't being played.
+    await Resynchronize.onModifiedTracks(unstagedFiles.map(({ id }) => id));
 
     // Find and save any images. We've previously did this in the background,
     // however it caused some weird bugs due to the lag generated. Since this

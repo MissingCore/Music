@@ -5,7 +5,7 @@ import { playbackStore } from "~/stores/Playback/store";
 
 import { formatTrackforPlayer } from "./data";
 
-/** See if we should revalidate the `activeTrack` value stored in the Music store. */
+/** See if we should revalidate the `activeTrack` value stored in the Playback store. */
 export async function revalidateActiveTrack(args: {
   type: "album" | "track";
   id: string;

@@ -8,10 +8,8 @@ import {
   removeFromPlaylist,
   updateTrack,
 } from "~/api/track";
-import { playbackStore } from "~/stores/Playback/store";
 import { Queue } from "~/stores/Playback/actions";
 import { revalidateActiveTrack } from "~/modules/media/helpers/revalidate";
-import { Resynchronize } from "~/modules/media/services/Resynchronize";
 import { useSortTracks } from "~/modules/media/services/SortPreferences";
 import { queries as q } from "./keyStore";
 
@@ -87,11 +85,6 @@ export function useHideTrack() {
     onSuccess: async (_, { trackId }) => {
       // There's a lot of places where this track may appear.
       clearAllQueries();
-      const { queue, playingFrom } = playbackStore.getState();
-      // Need to resynchronize the Music store if we're playing this track.
-      if (queue.includes(trackId)) {
-        await Resynchronize.onTracks(playingFrom!);
-      }
       Queue.removeIds([trackId]);
     },
   });

@@ -16,7 +16,7 @@ import {
   moveInPlaylist,
   updatePlaylist,
 } from "~/api/playlist";
-import { Resynchronize } from "~/modules/media/services/Resynchronize";
+import { Resynchronize } from "~/stores/Playback/actions";
 import { queries as q } from "./keyStore";
 
 import { wait } from "~/utils/promise";

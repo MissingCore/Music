@@ -6,7 +6,7 @@ import { db } from "~/db";
 import { fileNodes, invalidTracks, tracks } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
-import { Resynchronize } from "~/modules/media/services/Resynchronize";
+import { Resynchronize } from "~/stores/Playback/actions";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
@@ -61,8 +61,8 @@ export async function rescanForTracks(deepScan = false) {
     // Rescan library for any new tracks and delete any old ones.
     const { foundFiles, unstagedFiles } = await findAndSaveAudio();
     await cleanupDatabase(foundFiles.map(({ id }) => id));
-    // Make sure any modified tracks doesn't belong in the current playing list.
-    await Resynchronize.onUpdatedList(unstagedFiles.map(({ id }) => id));
+    // Make sure any modified tracks isn't being played.
+    await Resynchronize.onModifiedTracks(unstagedFiles.map(({ id }) => id));
 
     // Find and save any images.
     await findAndSaveArtwork();
