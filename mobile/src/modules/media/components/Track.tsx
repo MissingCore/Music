@@ -8,33 +8,15 @@ import { useMusicStore } from "../services/Music";
 import { playFromMediaList } from "../services/Playback";
 
 import { cn } from "~/lib/style";
-import type { Prettify } from "~/utils/types";
-import type { PressProps } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { PlayingIndicator } from "./AnimatedBars";
+import type { TrackContent, TrackProps } from "./Track.type";
 import { arePlaybackSourceEqual } from "../helpers/data";
 import type { PlayListSource } from "../types";
 
 //#region Track
-export namespace Track {
-  export type Content = Required<
-    Pick<SearchResult.Content, "title" | "description" | "imageSource">
-  > & { id: string };
-
-  export type Props = Prettify<
-    Content &
-      Omit<PressProps, "onPress"> & {
-        /** Indicate that this track is being played. */
-        showIndicator?: boolean;
-        trackSource: PlayListSource;
-        LeftElement?: React.JSX.Element;
-        /** Note: Maps to `wrapperClassName` on `<SearchResult />`. */
-        className?: string;
-      }
-  >;
-}
 
 /**
  * Displays information about the current track with 2 different press
@@ -47,7 +29,7 @@ export function Track({
   showIndicator,
   LeftElement,
   ...props
-}: Track.Props) {
+}: TrackProps) {
   const { t } = useTranslation();
 
   const overriddenLeftElement = useMemo(
@@ -79,7 +61,7 @@ export function Track({
 
 //#region useTrackListPlayingIndication
 /** Mark the track that's currently being played in the data. */
-export function useTrackListPlayingIndication<T extends Track.Content>(
+export function useTrackListPlayingIndication<T extends TrackContent>(
   listSource: PlayListSource,
   tracks?: T[],
 ): Array<T & { showIndicator?: boolean }> | undefined {
@@ -105,7 +87,7 @@ export function useTrackListPlayingIndication<T extends Track.Content>(
 //#region useTrackListPreset
 /** Presets used to render a list of `<Track />`. */
 export function useTrackListPreset(props: {
-  data?: readonly Track.Content[];
+  data?: readonly TrackContent[];
   trackSource: PlayListSource;
   isPending?: boolean;
 }) {
@@ -131,6 +113,6 @@ export function useTrackListPreset(props: {
       ),
     }),
     [props, data],
-  ) satisfies FlashListProps<Track.Content>;
+  ) satisfies FlashListProps<TrackContent>;
 }
 //#endregion

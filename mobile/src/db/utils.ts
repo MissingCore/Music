@@ -22,8 +22,8 @@ import { formatSeconds } from "~/utils/number";
 import { omitKeys } from "~/utils/object";
 import type { AtLeast, Prettify } from "~/utils/types";
 import { ReservedNames } from "~/modules/media/constants";
-import type { MediaCard } from "~/modules/media/components/MediaCard";
-import type { Track as TrackC } from "~/modules/media/components/Track";
+import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
+import type { TrackContent } from "~/modules/media/components/Track.type";
 import type { MediaType } from "~/modules/media/types";
 
 //#region Artwork Formatters
@@ -96,7 +96,7 @@ export function formatForMediaCard({ type, data, t }: MediaCardFormatter) {
     id,
     title: data.name,
     description,
-  } as MediaCard.Content;
+  } as MediaCardContent;
 }
 
 /** Format data to be used in `<Track />`. */
@@ -121,7 +121,7 @@ export function formatForTrack(
     }
   }
 
-  return { id, imageSource, title: name, description } satisfies TrackC.Content;
+  return { id, imageSource, title: name, description } satisfies TrackContent;
 }
 //#endregion
 
@@ -134,7 +134,7 @@ type ScreenFormatter = Prettify<
   )
 >;
 
-type ScreenTrack = TrackC.Content & {
+type ScreenTrack = TrackContent & {
   disc: number | null;
   track: number | null;
 };

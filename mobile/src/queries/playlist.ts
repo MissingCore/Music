@@ -47,7 +47,7 @@ export function usePlaylists() {
   return useQuery({ ...q.playlists.all });
 }
 
-/** Return list of `MediaCard.Content` from playlists. */
+/** Return list of `MediaCardContent` from playlists. */
 export function usePlaylistsForCards() {
   const { t } = useTranslation();
   return useQuery({

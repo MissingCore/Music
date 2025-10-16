@@ -14,7 +14,7 @@ import { getPlaylist, getSpecialPlaylist } from "./playlist";
 import type { PlayListSource } from "~/modules/media/types";
 import type { ReservedPlaylistName } from "~/modules/media/constants";
 import { ReservedNames, ReservedPlaylists } from "~/modules/media/constants";
-import type { MediaCard } from "~/modules/media/components/MediaCard";
+import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
 
 export const RECENT_DAY_RANGE = 7;
 export const RECENT_RANGE_MS = RECENT_DAY_RANGE * 24 * 60 * 60 * 1000;
@@ -26,7 +26,7 @@ export async function getRecentlyPlayedMediaLists() {
     orderBy: (fields, { desc }) => desc(fields.lastPlayedAt),
   })) as PlayedMediaList[];
 
-  const newRecentList: MediaCard.Content[] = [];
+  const newRecentList: MediaCardContent[] = [];
   const errors: PlayListSource[] = [];
 
   for (const source of sources) {
@@ -124,10 +124,10 @@ export async function removePlayedMediaList(entry: PlayListSource) {
 //#endregion
 
 //#region Internal Utils
-/** Get a `MediaCard.Content` from a source in the recent list. */
+/** Get a `MediaCardContent` from a source in the recent list. */
 async function getRecentListEntry({ id, type }: PlayListSource) {
   try {
-    let entry: MediaCard.Content;
+    let entry: MediaCardContent;
     if (type === "album") {
       const data = (await getAlbum(id, {
         columns: ["id", "name", "artistName", "artwork"],

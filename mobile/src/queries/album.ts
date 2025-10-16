@@ -29,7 +29,7 @@ export function useAlbumForScreen(albumId: string) {
   });
 }
 
-/** Return list of `MediaCard.Content` from albums. */
+/** Return list of `MediaCardContent` from albums. */
 export function useAlbumsForCards() {
   const { t } = useTranslation();
   return useQuery({

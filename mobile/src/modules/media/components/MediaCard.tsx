@@ -7,27 +7,12 @@ import { useGetColumn } from "~/hooks/useGetColumn";
 import { getMediaLinkContext } from "~/navigation/utils/router";
 
 import { cn } from "~/lib/style";
-import type { Prettify } from "~/utils/types";
 import { StyledText } from "~/components/Typography/StyledText";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
+import type { MediaCardContent, MediaCardProps } from "./MediaCard.type";
 import { MediaImage } from "./MediaImage";
 
 //#region Media Card
-export namespace MediaCard {
-  export type Content = Prettify<
-    MediaImage.ImageContent & {
-      /** Mainly used for `useMediaCardListPreset`. */
-      id: string;
-      title: string;
-      description: string;
-    }
-  >;
-
-  export type Props = Prettify<
-    Content & { onPress: VoidFunction; size: number; className?: string }
-  >;
-}
-
 /**
  * Card containing information about some media and navigate to that media's
  * page on click.
@@ -39,7 +24,7 @@ export function MediaCard({
   onPress,
   className,
   ...imgProps
-}: MediaCard.Props) {
+}: MediaCardProps) {
   return (
     <Pressable
       onPress={onPress}
@@ -65,7 +50,7 @@ export function MediaCard({
  * Placeholder content — useful in `<FlatList />` if we want to do
  * something special for the first item.
  */
-export const MediaCardPlaceholderContent: MediaCard.Content = {
+export const MediaCardPlaceholderContent: MediaCardContent = {
   id: "",
   source: null,
   title: "",
@@ -78,7 +63,7 @@ export const MediaCardPlaceholderContent: MediaCard.Content = {
 /** Presets used to render a list of `<MediaCard />`. */
 export function useMediaCardListPreset(
   props: Omit<React.ComponentProps<typeof ContentPlaceholder>, "className"> & {
-    data?: readonly MediaCard.Content[];
+    data?: readonly MediaCardContent[];
     /**
      * Renders a special entry before all other data. This assumes at `data[0]`,
      * we have a `MediaCardPlaceholderContent`.
@@ -131,6 +116,6 @@ export function useMediaCardListPreset(
       disableAutoLayout: I18nManager.isRTL,
     }),
     [navigation, count, width, props],
-  ) satisfies FlashListProps<MediaCard.Content>;
+  ) satisfies FlashListProps<MediaCardContent>;
 }
 //#endregion

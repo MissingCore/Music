@@ -18,6 +18,7 @@ import { queryClient } from "~/lib/react-query";
 import { FlashList } from "~/components/Defaults";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import { MediaCard } from "~/modules/media/components/MediaCard";
+import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
 import { Track } from "~/modules/media/components/Track";
 import { PagePlaceholder } from "../components/Placeholder";
 
@@ -82,7 +83,7 @@ export default function RecentlyPlayed() {
   );
 }
 
-function RecentlyPlayedLists(props: { data?: MediaCard.Content[] }) {
+function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
   const navigation = useNavigation();
   const { width } = useGetColumn({
     cols: 1,

@@ -29,6 +29,7 @@ import {
   Track,
   useTrackListPlayingIndication,
 } from "~/modules/media/components/Track";
+import type { TrackContent } from "~/modules/media/components/Track.type";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { ContentPlaceholder } from "../../components/Placeholder";
 
@@ -130,8 +131,8 @@ export default function Folders({
   );
 }
 
-function isTrackContent(data: unknown): data is Track.Content {
-  return Object.hasOwn(data as Track.Content, "id");
+function isTrackContent(data: unknown): data is TrackContent {
+  return Object.hasOwn(data as TrackContent, "id");
 }
 
 //#region Breadcrumbs
