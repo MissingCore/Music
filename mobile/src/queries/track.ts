@@ -27,7 +27,7 @@ export function useTrackPlaylists(trackId: string) {
   return useQuery({ ...q.tracks.detail(trackId)._ctx.playlists });
 }
 
-/** Return list of `Track.Content` from tracks. */
+/** Return list of `TrackContent` from tracks. */
 export function useTracksForTrackCard() {
   const sortTracksFn = useSortTracks();
   return useQuery({

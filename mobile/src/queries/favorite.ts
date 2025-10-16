@@ -9,7 +9,7 @@ import { queries as q } from "./keyStore";
 import { ReservedPlaylists } from "~/modules/media/constants";
 
 //#region Queries
-/** Return list of `MediaCard.Content` of favorited albums & playlists. */
+/** Return list of `MediaCardContent` of favorited albums & playlists. */
 export function useFavoriteListsForCards() {
   const { t } = useTranslation();
   return useQuery({
