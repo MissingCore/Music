@@ -8,8 +8,7 @@ import {
   removeFromPlaylist,
   updateTrack,
 } from "~/api/track";
-import { Queue } from "~/stores/Playback/actions";
-import { revalidateActiveTrack } from "~/modules/media/helpers/revalidate";
+import { Queue, Resynchronize } from "~/stores/Playback/actions";
 import { useSortTracks } from "~/modules/media/services/SortPreferences";
 import { queries as q } from "./keyStore";
 
@@ -117,7 +116,7 @@ export function useUpdateTrackArtwork(trackId: string) {
       clearAllQueries();
 
       // Revalidate `activeTrack` in Playback store if needed.
-      await revalidateActiveTrack({ type: "track", id: trackId });
+      await Resynchronize.onActiveTrack({ type: "track", id: trackId });
     },
   });
 }

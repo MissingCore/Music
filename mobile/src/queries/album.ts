@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { formatForCurrentScreen, formatForMediaCard } from "~/db/utils";
 
 import { favoriteAlbum, updateAlbum } from "~/api/album";
-import { revalidateActiveTrack } from "~/modules/media/helpers/revalidate";
+import { Resynchronize } from "~/stores/Playback/actions";
 import { queries as q } from "./keyStore";
 
 import { clearAllQueries } from "~/lib/react-query";
@@ -72,7 +72,7 @@ export function useUpdateAlbumArtwork(albumId: string) {
       clearAllQueries();
 
       // Revalidate `activeTrack` in Playback store if needed.
-      await revalidateActiveTrack({ type: "album", id: albumId });
+      await Resynchronize.onActiveTrack({ type: "album", id: albumId });
     },
   });
 }

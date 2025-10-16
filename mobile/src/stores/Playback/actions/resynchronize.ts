@@ -1,13 +1,40 @@
+import TrackPlayer from "@weights-ai/react-native-track-player";
+
 import { removePlayedMediaList, updatePlayedMediaList } from "~/api/recent";
+import { getTrack } from "~/api/track";
 
 import { playbackStore } from "../store";
 
 import type { PlayListSource } from "~/modules/media/types";
 import {
   arePlaybackSourceEqual,
+  formatTrackforPlayer,
   getSourceName,
 } from "~/modules/media/helpers/data";
-import { revalidateActiveTrack } from "~/modules/media/helpers/revalidate";
+
+/** See if we should revalidate the `activeTrack` value stored in the Playback store. */
+export async function onActiveTrack(args: {
+  type: "album" | "track";
+  id: string;
+}) {
+  const { activeTrack } = playbackStore.getState();
+  if (!activeTrack) return;
+  if (args.type === "album" && activeTrack.album?.id !== args.id) return;
+  if (args.type === "track" && activeTrack.id !== args.id) return;
+
+  try {
+    const updatedTrackData = await getTrack(activeTrack.id);
+    playbackStore.setState({ activeTrack: updatedTrackData });
+
+    // Update media notification with updated metadata.
+    const rntpTrack = await TrackPlayer.getActiveTrack();
+    if (!rntpTrack) return;
+    await TrackPlayer.updateMetadataForTrack(
+      0,
+      formatTrackforPlayer(updatedTrackData),
+    );
+  } catch {}
+}
 
 /**
  * Resynchronize when we delete a media list.
@@ -26,7 +53,7 @@ export async function onModifiedTracks(trackIds: string[]) {
   const idSet = new Set(trackIds);
   const { activeId } = playbackStore.getState();
   if (!activeId || !idSet.has(activeId)) return;
-  await revalidateActiveTrack({ type: "track", id: activeId });
+  await onActiveTrack({ type: "track", id: activeId });
 }
 
 /** Resynchronize when we rename a playlist. */
