@@ -70,6 +70,7 @@ See all the [available documentation here](./docs). Some highlights include:
 - [`Building this App`](./docs/building-this-app.md)
 - [`Nothing Interactions`](./docs/nothing-interactions.md)
 - [`Supported Gestures`](./docs/supported-gestures.md)
+- [`[🧪 Experimental] Widgets`](./docs/widgets.md)
 
 # Translations
 
