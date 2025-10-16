@@ -17,7 +17,6 @@ import { queries as q } from "./keyStore";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
-import { ReservedPlaylists } from "~/modules/media/constants";
 
 //#region Queries
 /** Get specified track. */
@@ -48,15 +47,12 @@ export function useAddToPlaylist(trackId: string) {
   return useMutation({
     mutationFn: (playlistName: string) =>
       addToPlaylist({ trackId, playlistName }),
-    onSuccess: (_, playlistName) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: q.tracks.detail(trackId)._ctx.playlists.queryKey,
       });
       queryClient.invalidateQueries({ queryKey: q.playlists._def });
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
-      // Ensure that if we're currently playing from the playlist we added
-      // the track to, we update it.
-      Resynchronize.onTracks({ type: "playlist", id: playlistName });
     },
   });
 }
@@ -75,10 +71,6 @@ export function useFavoriteTrack(trackId: string) {
         queryKey: q.tracks.detail(trackId).queryKey,
       });
       queryClient.invalidateQueries({ queryKey: q.favorites.tracks.queryKey });
-      Resynchronize.onTracks({
-        type: "playlist",
-        id: ReservedPlaylists.favorites,
-      });
     },
   });
 }
@@ -111,15 +103,12 @@ export function useRemoveFromPlaylist(trackId: string) {
   return useMutation({
     mutationFn: (playlistName: string) =>
       removeFromPlaylist({ trackId, playlistName }),
-    onSuccess: (_, playlistName) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: q.tracks.detail(trackId)._ctx.playlists.queryKey,
       });
       queryClient.invalidateQueries({ queryKey: q.playlists._def });
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
-      // Ensure that if we're currently playing from the playlist we removed
-      // the track from, we update it.
-      Resynchronize.onTracks({ type: "playlist", id: playlistName });
     },
   });
 }
