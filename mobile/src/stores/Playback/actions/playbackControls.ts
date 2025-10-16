@@ -130,7 +130,8 @@ export async function playFromList({
   source: PlayListSource;
   trackId?: string;
 }) {
-  const { getTrack, playingFrom, queue, activeId } = playbackStore.getState();
+  const { getTrack, playingFrom, queue, activeId, activeTrack } =
+    playbackStore.getState();
 
   // 1. See if we're playing from a new media list.
   const isSameSource = arePlaybackSourceEqual(playingFrom, source);
@@ -162,10 +163,10 @@ export async function playFromList({
   const newListInfo = getUpdatedLists(newPlayingList, trackId ?? activeId);
 
   // 4. Get the track from this new info.
-  const newTrack = (await getTrack(
-    newListInfo.queue[newListInfo.queuePosition]!,
-  ))!;
-  isDiffTrack = activeId !== newTrack.id;
+  const newTrackId = newListInfo.queue[newListInfo.queuePosition]!;
+  isDiffTrack = activeId !== newTrackId;
+  let newTrack = activeTrack;
+  if (isDiffTrack) newTrack = await getTrack(newTrackId);
 
   // 5. Update the persistent storage.
   playbackStore.setState({
@@ -173,7 +174,7 @@ export async function playFromList({
     ...newListInfo,
     playingFrom: source,
     playingFromName: await getSourceName(source),
-    activeId: newTrack.id,
+    activeId: newTrackId,
     activeTrack: newTrack,
   });
 

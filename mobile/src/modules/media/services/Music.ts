@@ -1,4 +1,3 @@
-import { toast } from "@backpackapp-io/react-native-toast";
 import TrackPlayer, {
   State,
   isPlaying as rntpIsPlaying,
@@ -7,11 +6,9 @@ import { useStore } from "zustand";
 
 import type { TrackWithAlbum } from "~/db/schema";
 
-import i18next from "~/modules/i18n";
 import { deleteTrack, getTrack } from "~/api/track";
 
 import { clearAllQueries } from "~/lib/react-query";
-import { ToastOptions } from "~/lib/toast";
 import { createPersistedSubscribedStore } from "~/lib/zustand";
 import { shuffleArray } from "~/utils/object";
 import { resetWidgets } from "~/modules/widget/utils/update";
@@ -258,37 +255,6 @@ musicStore.subscribe(
 //#endregion
 
 //#region Helpers
-//#region Queue Helpers
-/** Helpers to manipulate the current queue. */
-export class Queue {
-  /** Add a track id at the end of the current queue. */
-  static async add({ id, name }: { id: string; name: string }) {
-    const prevQueueLength = musicStore.getState().queueList.length;
-    musicStore.setState((prev) => ({ queueList: [...prev.queueList, id] }));
-    toast(i18next.t("feat.modalTrack.extra.queueAdd", { name }), ToastOptions);
-    if (prevQueueLength === 0) await RNTPManager.reloadNextTrack();
-  }
-
-  /** Remove track id at specified index of current queue. */
-  static async removeAtIndex(index: number) {
-    musicStore.setState((prev) => ({
-      queueList: prev.queueList.toSpliced(index, 1),
-    }));
-    if (index === 0) await RNTPManager.reloadNextTrack();
-  }
-
-  /** Remove list of track ids in the current queue. */
-  static async removeIds(ids: string[]) {
-    const idSet = new Set(ids);
-    const prevQueueList = musicStore.getState().queueList;
-    const updatedQueueList = prevQueueList.filter((tId) => !idSet.has(tId));
-    if (prevQueueList.length === updatedQueueList.length) return;
-    musicStore.setState({ queueList: updatedQueueList });
-    await RNTPManager.reloadNextTrack();
-  }
-}
-//#endregion
-
 //#region RNTP Manager
 /**
  * Helps identifies the track played in the `PlaybackActiveTrackChanged`

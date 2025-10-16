@@ -11,7 +11,8 @@ import { revalidateActiveTrack } from "~/modules/media/helpers/revalidate";
 
 /**
  * Resynchronize when we delete a media list.
- * @deprecated
+ *
+ * @deprecated Don't want to reset store when the original list is deleted.
  */
 export async function onDelete(removedRef: PlayListSource) {
   const { reset, playingFrom } = playbackStore.getState();
@@ -45,6 +46,7 @@ export async function onRename({
   }
 
   const { playingFrom } = playbackStore.getState();
+  // Update `playingFrom` if we renamed that source.
   if (arePlaybackSourceEqual(playingFrom, oldSource)) {
     playbackStore.setState({
       playingFrom: newSource,
