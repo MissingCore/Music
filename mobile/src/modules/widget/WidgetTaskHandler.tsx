@@ -23,7 +23,7 @@ export async function widgetTaskHandler({
     case "WIDGET_ADDED":
     case "WIDGET_RESIZED":
       // Have widget open app if the RNTP service isn't available to
-      // prevent things breaking due to the Music store requiring a RNTP
+      // prevent things breaking due to the Playback store requiring a RNTP
       // service active (or else the data will get cleared).
       let shouldOpen = false;
       try {

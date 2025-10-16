@@ -120,7 +120,7 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
     // Listen to when the store is hydrated.
     onRehydrateStorage: () => {
       return (state, error) => {
-        if (error) console.log("[Music Store]", error);
+        if (error) console.log("[Playback Store]", error);
         else state?._init(state);
       };
     },

@@ -139,7 +139,7 @@ export function TrackMetadataStoreProvider({
 
           await updateTrack(id, { ...updatedTrack, albumId });
 
-          // Revalidate `activeTrack` in Music store if needed.
+          // Revalidate `activeTrack` in Playback store if needed.
           await revalidateActiveTrack({ type: "track", id });
           await cleanupImages();
           await removeUnusedCategories();

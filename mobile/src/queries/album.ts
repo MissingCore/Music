@@ -71,7 +71,7 @@ export function useUpdateAlbumArtwork(albumId: string) {
       // clear all the queries.
       clearAllQueries();
 
-      // Revalidate `activeTrack` in Music store if needed.
+      // Revalidate `activeTrack` in Playback store if needed.
       await revalidateActiveTrack({ type: "album", id: albumId });
     },
   });
