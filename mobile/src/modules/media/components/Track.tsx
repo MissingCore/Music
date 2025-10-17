@@ -5,16 +5,16 @@ import { useTranslation } from "react-i18next";
 import { MoreVert } from "~/resources/icons/MoreVert";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
-import type { PlayFromSource } from "~/stores/Playback/types";
 import { presentTrackSheet } from "~/services/SessionStore";
 
 import { cn } from "~/lib/style";
 import { IconButton } from "~/components/Form/Button";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
+import type { PlayFromSource } from "~/stores/Playback/types";
+import { arePlaybackSourceEqual } from "~/stores/Playback/utils";
 import { PlayingIndicator } from "./AnimatedBars";
 import type { TrackContent, TrackProps } from "./Track.type";
-import { arePlaybackSourceEqual } from "../helpers/data";
 
 //#region Track
 

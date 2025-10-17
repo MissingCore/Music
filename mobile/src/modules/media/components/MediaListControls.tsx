@@ -5,13 +5,13 @@ import { Pause } from "~/resources/icons/Pause";
 import { PlayArrow } from "~/resources/icons/PlayArrow";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
-import type { PlayFromSource } from "~/stores/Playback/types";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
 import { Button } from "~/components/Form/Button";
+import type { PlayFromSource } from "~/stores/Playback/types";
+import { arePlaybackSourceEqual } from "~/stores/Playback/utils";
 import { RepeatButton, ShuffleButton } from "./MediaControls";
-import { arePlaybackSourceEqual } from "../helpers/data";
 
 /** Media controls used on media list pages. */
 export function MediaListControls(props: {

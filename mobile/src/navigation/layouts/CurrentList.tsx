@@ -27,7 +27,7 @@ import { ReservedPlaylists } from "~/modules/media/constants";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import { MediaListControls } from "~/modules/media/components/MediaListControls";
 import { Vinyl } from "~/modules/media/components/Vinyl";
-import { arePlaybackSourceEqual } from "~/modules/media/helpers/data";
+import { arePlaybackSourceEqual } from "~/stores/Playback/utils";
 
 type SupportedMedia = "album" | "artist" | "playlist";
 type MediaListSource = { type: SupportedMedia; id: string };

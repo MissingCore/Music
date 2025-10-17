@@ -5,7 +5,7 @@ import { playbackStore } from "~/stores/Playback/store";
 import { userPreferencesStore } from "./UserPreferences";
 
 import { clearAllQueries } from "~/lib/react-query";
-import { getSourceName } from "~/modules/media/helpers/data";
+import { getSourceName } from "~/stores/Playback/utils";
 
 //#region User Preference Store
 /** Set the app's language from what's stored in AsyncStorage. */

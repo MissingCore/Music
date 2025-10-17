@@ -5,12 +5,11 @@ import { getTrack } from "~/api/track";
 
 import { playbackStore } from "../store";
 import type { PlayFromSource } from "../types";
-
 import {
   arePlaybackSourceEqual,
   formatTrackforPlayer,
   getSourceName,
-} from "~/modules/media/helpers/data";
+} from "../utils";
 
 /** See if we should revalidate the `activeTrack` value stored in the Playback store. */
 export async function onActiveTrack(args: {

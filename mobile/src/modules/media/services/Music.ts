@@ -7,13 +7,13 @@ import { useStore } from "zustand";
 import type { TrackWithAlbum } from "~/db/schema";
 
 import { deleteTrack, getTrack } from "~/api/track";
-import type { PlayFromSource } from "~/stores/Playback/types";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { createPersistedSubscribedStore } from "~/lib/zustand";
 import { shuffleArray } from "~/utils/object";
 import { resetWidgets } from "~/modules/widget/utils/update";
-import { formatTrackforPlayer, getSourceName } from "../helpers/data";
+import type { PlayFromSource } from "~/stores/Playback/types";
+import { formatTrackforPlayer, getSourceName } from "~/stores/Playback/utils";
 
 /** Options for repeat status. */
 export const RepeatModes = ["no-repeat", "repeat", "repeat-one"] as const;

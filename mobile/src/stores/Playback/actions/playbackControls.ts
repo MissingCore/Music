@@ -6,14 +6,14 @@ import { userPreferencesStore } from "~/services/UserPreferences";
 import { playbackStore } from "../store";
 import { RepeatModes } from "../constants";
 import type { PlayFromSource } from "../types";
-
-import { shuffleArray } from "~/utils/object";
 import {
   arePlaybackSourceEqual,
   getSourceName,
   getTrackIdsList,
   formatTrackforPlayer,
-} from "~/modules/media/helpers/data";
+} from "../utils";
+
+import { shuffleArray } from "~/utils/object";
 import { revalidateWidgets } from "~/modules/widget/utils";
 
 //#region Loaders
