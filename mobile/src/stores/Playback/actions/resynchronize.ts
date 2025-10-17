@@ -4,8 +4,8 @@ import { removePlayedMediaList, updatePlayedMediaList } from "~/api/recent";
 import { getTrack } from "~/api/track";
 
 import { playbackStore } from "../store";
+import type { PlayFromSource } from "../types";
 
-import type { PlayListSource } from "~/modules/media/types";
 import {
   arePlaybackSourceEqual,
   formatTrackforPlayer,
@@ -41,7 +41,7 @@ export async function onActiveTrack(args: {
  *
  * @deprecated Don't want to reset store when the original list is deleted.
  */
-export async function onDelete(removedRef: PlayListSource) {
+export async function onDelete(removedRef: PlayFromSource) {
   const { reset, playingFrom } = playbackStore.getState();
   if (!playingFrom) return;
   // If we're playing a list we've deleted, reset the state.
@@ -61,8 +61,8 @@ export async function onRename({
   oldSource,
   newSource,
 }: {
-  oldSource: PlayListSource;
-  newSource: PlayListSource;
+  oldSource: PlayFromSource;
+  newSource: PlayFromSource;
 }) {
   try {
     await updatePlayedMediaList({ oldSource, newSource });

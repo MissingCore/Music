@@ -5,17 +5,17 @@ import { Pause } from "~/resources/icons/Pause";
 import { PlayArrow } from "~/resources/icons/PlayArrow";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
+import type { PlayFromSource } from "~/stores/Playback/types";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
 import { Button } from "~/components/Form/Button";
 import { RepeatButton, ShuffleButton } from "./MediaControls";
 import { arePlaybackSourceEqual } from "../helpers/data";
-import type { PlayListSource } from "../types";
 
 /** Media controls used on media list pages. */
 export function MediaListControls(props: {
-  trackSource: PlayListSource;
+  trackSource: PlayFromSource;
   className?: string;
 }) {
   return (
@@ -32,7 +32,7 @@ export function MediaListControls(props: {
  * currently playing (ie: show play button if we're not playing a track
  * from this media list).
  */
-function PlayMediaListButton({ trackSource }: { trackSource: PlayListSource }) {
+function PlayMediaListButton({ trackSource }: { trackSource: PlayFromSource }) {
   const { t } = useTranslation();
   const currSource = usePlaybackStore((s) => s.playingFrom);
   const isPlaying = usePlaybackStore((s) => s.isPlaying);

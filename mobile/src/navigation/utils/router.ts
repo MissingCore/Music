@@ -1,6 +1,7 @@
 import { createNavigationContainerRef } from "@react-navigation/native";
 
-import type { PlayListSource } from "~/modules/media/types";
+import type { PlayFromSource } from "~/stores/Playback/types";
+
 import { ReservedPlaylists } from "~/modules/media/constants";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
 
@@ -21,7 +22,7 @@ export const router = {
 export function getMediaLinkContext({
   id,
   type,
-}: PlayListSource | MediaCardContent) {
+}: PlayFromSource | MediaCardContent) {
   if (type === "album") return ["Album", { id }] as const;
   else if (type === "artist") return ["Artist", { id }] as const;
   else if (type === "folder") {

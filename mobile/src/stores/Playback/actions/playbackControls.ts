@@ -3,11 +3,11 @@ import TrackPlayer, { State } from "@weights-ai/react-native-track-player";
 import { addPlayedMediaList } from "~/api/recent";
 import { userPreferencesStore } from "~/services/UserPreferences";
 
-import { RepeatModes } from "../constants";
 import { playbackStore } from "../store";
+import { RepeatModes } from "../constants";
+import type { PlayFromSource } from "../types";
 
 import { shuffleArray } from "~/utils/object";
-import type { PlayListSource } from "~/modules/media/types";
 import {
   arePlaybackSourceEqual,
   getSourceName,
@@ -127,7 +127,7 @@ export async function playFromList({
   source,
   trackId,
 }: {
-  source: PlayListSource;
+  source: PlayFromSource;
   trackId?: string;
 }) {
   const { getTrack, playingFrom, queue, activeId, activeTrack } =

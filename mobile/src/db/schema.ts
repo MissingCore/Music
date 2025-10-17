@@ -10,7 +10,7 @@ import {
   unique,
 } from "drizzle-orm/sqlite-core";
 
-import type { PlayListSource } from "~/modules/media/types";
+import type { PlayFromSource } from "~/stores/Playback/types";
 
 import type { Prettify } from "~/utils/types";
 
@@ -208,5 +208,5 @@ export type FileNodeWithParent = Prettify<
 >;
 
 export type PlayedMediaList = Prettify<
-  InferSelectModel<typeof playedMediaLists> & PlayListSource
+  InferSelectModel<typeof playedMediaLists> & PlayFromSource
 >;

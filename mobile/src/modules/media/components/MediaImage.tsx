@@ -4,11 +4,11 @@ import { useMemo } from "react";
 import { View } from "react-native";
 
 import { Folder } from "~/resources/icons/Folder";
+import type { MediaType } from "~/stores/Playback/types";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
 import { ReservedNames, ReservedPlaylists } from "../constants";
-import type { MediaType } from "../types";
 
 // https://www.nativewind.dev/v4/api/css-interop
 const Image = cssInterop(ExpoImage, { className: "style" });

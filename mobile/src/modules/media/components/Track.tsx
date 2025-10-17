@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { MoreVert } from "~/resources/icons/MoreVert";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
+import type { PlayFromSource } from "~/stores/Playback/types";
 import { presentTrackSheet } from "~/services/SessionStore";
 
 import { cn } from "~/lib/style";
@@ -14,7 +15,6 @@ import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { PlayingIndicator } from "./AnimatedBars";
 import type { TrackContent, TrackProps } from "./Track.type";
 import { arePlaybackSourceEqual } from "../helpers/data";
-import type { PlayListSource } from "../types";
 
 //#region Track
 
@@ -64,7 +64,7 @@ export function Track({
 //#region useTrackListPlayingIndication
 /** Mark the track that's currently being played in the data. */
 export function useTrackListPlayingIndication<T extends TrackContent>(
-  listSource: PlayListSource,
+  listSource: PlayFromSource,
   tracks?: T[],
 ): Array<T & { showIndicator?: boolean }> | undefined {
   const currSource = usePlaybackStore((s) => s.playingFrom);
@@ -89,7 +89,7 @@ export function useTrackListPlayingIndication<T extends TrackContent>(
 /** Presets used to render a list of `<Track />`. */
 export function useTrackListPreset(props: {
   data?: readonly TrackContent[];
-  trackSource: PlayListSource;
+  trackSource: PlayFromSource;
   isPending?: boolean;
 }) {
   // @ts-expect-error - Readonly is fine.

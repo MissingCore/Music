@@ -1,7 +1,7 @@
 import type { TrackWithAlbum } from "~/db/schema";
 
 import type { ObjectValues } from "~/utils/types";
-import type { PlayListSource } from "~/modules/media/types";
+import type { PlayFromSource } from "./types";
 
 //#region Repeat Mode
 export const RepeatModes = {
@@ -38,7 +38,7 @@ export interface PlaybackStore {
   repeat: RepeatMode;
   shuffle: boolean;
 
-  playingFrom: PlayListSource | undefined;
+  playingFrom: PlayFromSource | undefined;
   playingFromName: string;
 
   /** A copy of the original list order at the time of playing. */

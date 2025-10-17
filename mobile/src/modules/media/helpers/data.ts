@@ -13,26 +13,26 @@ import { getAlbum } from "~/api/album";
 import { getArtist } from "~/api/artist";
 import { getFolderTracks } from "~/api/folder";
 import { getPlaylist, getSpecialPlaylist } from "~/api/playlist";
+import type { PlayFromSource } from "~/stores/Playback/types";
 
 import { getSafeUri } from "~/utils/string";
 import type { ReservedPlaylistName } from "../constants";
 import { ReservedNames, ReservedPlaylists } from "../constants";
-import type { PlayListSource } from "../types";
 
 /** Check if 2 `PlayListSource` are equivalent. */
 export function arePlaybackSourceEqual(
-  source1: PlayListSource | undefined,
-  source2: PlayListSource,
+  source1: PlayFromSource | undefined,
+  source2: PlayFromSource,
 ) {
   if (!source1) return false;
-  const keys = Object.keys(source1) as Array<keyof PlayListSource>;
+  const keys = Object.keys(source1) as Array<keyof PlayFromSource>;
   return keys.every((key) => source1[key] === source2[key]);
 }
 
 /** See if a `PlayListSource` exists in the list of sources. */
 export function isPlaybackSourceInList(
-  source: PlayListSource,
-  sourceList: PlayListSource[],
+  source: PlayFromSource,
+  sourceList: PlayFromSource[],
 ) {
   const atIndex = sourceList.findIndex((listSource) =>
     arePlaybackSourceEqual(source, listSource),
@@ -53,7 +53,7 @@ export function formatTrackforPlayer(track: TrackWithAlbum) {
 }
 
 /** Returns the name of the `PlayListSource`. */
-export async function getSourceName({ type, id }: PlayListSource) {
+export async function getSourceName({ type, id }: PlayFromSource) {
   let name = "";
   try {
     if (ReservedNames.has(id)) {
@@ -74,7 +74,7 @@ export async function getSourceName({ type, id }: PlayListSource) {
 }
 
 /** Get list of tracks ids from a `PlayListSource`. */
-export async function getTrackIdsList({ type, id }: PlayListSource) {
+export async function getTrackIdsList({ type, id }: PlayFromSource) {
   let trackIds: string[] = [];
 
   try {

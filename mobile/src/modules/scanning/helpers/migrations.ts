@@ -6,11 +6,11 @@ import type { AlbumWithTracks } from "~/db/schema";
 import { albums, fileNodes, playedMediaLists, tracks } from "~/db/schema";
 
 import { getAlbums } from "~/api/album";
+import type { PlayFromSource } from "~/stores/Playback/types";
 import type { OrderableTab } from "~/services/UserPreferences";
 import { userPreferencesStore } from "~/services/UserPreferences";
 import { onboardingStore } from "../services/Onboarding";
 
-import type { PlayListSource } from "~/modules/media/types";
 import { removeUnusedCategories } from "./audio";
 import { savePathComponents } from "./folder";
 import type { MigrationOption } from "../constants";
@@ -132,7 +132,7 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
       if (!recentListStore) return;
       // Structure currently is: `{ state: <Recent List store>, version: 0 }`.
       const formattedData = JSON.parse(recentListStore).state
-        .sources as PlayListSource[];
+        .sources as PlayFromSource[];
       const currentTime = Date.now();
       // Have `lastPlayedAt` reflect the current order.
       await db.insert(playedMediaLists).values(

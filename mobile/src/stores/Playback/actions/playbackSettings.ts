@@ -2,9 +2,9 @@ import TrackPlayer, {
   RepeatMode as RNTPRepeatMode,
 } from "@weights-ai/react-native-track-player";
 
+import { playbackStore } from "../store";
 import type { RepeatMode } from "../constants";
 import { RepeatModes } from "../constants";
-import { playbackStore } from "../store";
 
 import { shuffleArray } from "~/utils/object";
 

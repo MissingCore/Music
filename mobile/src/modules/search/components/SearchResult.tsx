@@ -1,5 +1,7 @@
 import { View } from "react-native";
 
+import type { MediaType } from "~/stores/Playback/types";
+
 import { cn } from "~/lib/style";
 import { omitKeys, pickKeys } from "~/utils/object";
 import type { UniformObject } from "~/utils/types";
@@ -8,7 +10,6 @@ import { PressPropsKeys, Ripple } from "~/components/Form/Button";
 import { Kbd } from "~/components/Typography/Kbd";
 import { StyledText } from "~/components/Typography/StyledText";
 import { MediaImage } from "~/modules/media/components/MediaImage";
-import type { MediaType } from "~/modules/media/types";
 
 export namespace SearchResult {
   export type Content = {
