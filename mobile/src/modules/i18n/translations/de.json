@@ -23,7 +23,7 @@
     "unFavorite": "Aus deinen Favoriten entfernen",
     "favoriteTracks": "Lieblingslieder",
     "all": "Alles",
-    "more": null,
+    "more": "Mehr",
     "home": "Homepage",
     "settings": "Einstellungen",
     "upcoming": "Bevorstehend",
@@ -124,11 +124,11 @@
         "line2": "Achtung: Unerwartetes Verhalten kann auftreten, wenn du zu einem versteckten Tab wechselst."
       },
       "extra": {
-        "setHomeTab": null
+        "setHomeTab": "{{- name}} Tab beim Start öffnen."
       }
     },
     "miniplayerGestures": {
-      "title": null
+      "title": "Miniplayer Gesten"
     },
     "nowPlayingDesign": {
       "title": "Design des Jetzt-Läuft-Bildschirms",
