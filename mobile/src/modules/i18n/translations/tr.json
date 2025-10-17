@@ -23,7 +23,7 @@
     "unFavorite": "Favorilerden Çıkar",
     "favoriteTracks": "Favori Parçalar",
     "all": "Tümü",
-    "more": null,
+    "more": "Daha Fazla",
     "home": "Ana Sayfa",
     "settings": "Ayarlar",
     "upcoming": "Sıradaki",
@@ -117,18 +117,18 @@
       }
     },
     "tabsOrder": {
-      "title": "Ana Sayfa Sekme Sırası",
+      "title": "Sekme Sırası",
       "brief": "Sekmelerin sırasını ve görünürlüğünü özelleştirin.",
       "description": {
-        "line1": "Sürükle bırak yöntemiyle \"Ana Sayfa\" sekmesinden sonraki sekmeleri yeniden sıralayın. Göz simgesini kullanarak sekme görünürlüğünü değiştirin.",
-        "line2": "Uyarı: Gizli bir sekmeye gidildiğinde beklenmedik davranışlar meydana gelebilir."
+        "line1": "Sekmeleri sürükleyip bırakarak yeniden sıralayın. Göz simgesini kullanarak sekme görünürlüğünü açıp kapatın. Ev simgesini kullanarak ana sekmeyi değiştirin.",
+        "line2": "Uyarı: Gizli bir sekmeye gidildiğinde beklenmedik davranışlar ortaya çıkabilir."
       },
       "extra": {
         "setHomeTab": "Uygulama başlatıldığında {{- name}} sekmesini aç."
       }
     },
     "miniplayerGestures": {
-      "title": null
+      "title": "Mini Oynatıcı Hareketleri"
     },
     "nowPlayingDesign": {
       "title": "Şu An Çalan Ekranı Tasarımı",
@@ -151,9 +151,9 @@
       "description": "Bu uygulamadaki verileri, bir `music_backup.json` dosyası aracılığıyla cihazlar arasında aktarın.",
       "extra": {
         "export": "Dışa Aktar",
-        "exportSuccess": "Yedekleme başarıyla oluşturuldu.",
+        "exportSuccess": "Dışa aktarma başarıyla tamamlandı.",
         "import": "İçe Aktar",
-        "importSuccess": "Yedek içe aktarımı tamamlandı."
+        "importSuccess": "İçe aktarma başarıyla tamamlandı."
       }
     },
     "insights": {
@@ -324,10 +324,10 @@
         "delete": "Çalma Listesini Sil",
         "edit": "Çalma Listesini Düzenle",
         "name": "Çalma Listesi Adı",
-        "m3uImport": null,
-        "m3uExport": null,
-        "absolute": null,
-        "relative": null
+        "m3uImport": "M3U Çalma Listesini İçe Aktar",
+        "m3uExport": "M3U Olarak Dışa Aktar",
+        "absolute": "Mutlak",
+        "relative": "Göreceli"
       }
     },
     "trackMetadata": {
