@@ -24,17 +24,6 @@ export function arePlaybackSourceEqual(
   return keys.every((key) => source1[key] === source2[key]);
 }
 
-/** See if a `PlayFromSource` exists in the list of sources. */
-export function isPlaybackSourceInList(
-  source: PlayFromSource,
-  sourceList: PlayFromSource[],
-) {
-  const atIndex = sourceList.findIndex((listSource) =>
-    arePlaybackSourceEqual(source, listSource),
-  );
-  return [atIndex !== -1, atIndex] as const;
-}
-
 /** Format track data to be used with the RNTP queue. */
 export function formatTrackforPlayer(track: TrackWithAlbum) {
   return {
