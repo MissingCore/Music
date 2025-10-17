@@ -4,10 +4,10 @@ import { useMemo } from "react";
 import { View } from "react-native";
 
 import { Folder } from "~/resources/icons/Folder";
-import type { MediaType } from "~/stores/Playback/types";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
+import type { MediaType } from "~/stores/Playback/types";
 import { ReservedNames, ReservedPlaylists } from "../constants";
 
 // https://www.nativewind.dev/v4/api/css-interop

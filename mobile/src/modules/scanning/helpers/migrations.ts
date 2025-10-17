@@ -6,11 +6,11 @@ import type { AlbumWithTracks } from "~/db/schema";
 import { albums, fileNodes, playedMediaLists, tracks } from "~/db/schema";
 
 import { getAlbums } from "~/api/album";
-import type { PlayFromSource } from "~/stores/Playback/types";
 import type { OrderableTab } from "~/services/UserPreferences";
 import { userPreferencesStore } from "~/services/UserPreferences";
 import { onboardingStore } from "../services/Onboarding";
 
+import type { PlayFromSource } from "~/stores/Playback/types";
 import { removeUnusedCategories } from "./audio";
 import { savePathComponents } from "./folder";
 import type { MigrationOption } from "../constants";

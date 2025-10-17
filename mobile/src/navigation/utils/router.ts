@@ -1,9 +1,8 @@
 import { createNavigationContainerRef } from "@react-navigation/native";
 
-import type { PlayFromSource } from "~/stores/Playback/types";
-
 import { ReservedPlaylists } from "~/modules/media/constants";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
+import type { PlayFromSource } from "~/stores/Playback/types";
 
 export const navigationRef = createNavigationContainerRef();
 

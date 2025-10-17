@@ -10,9 +10,8 @@ import {
   unique,
 } from "drizzle-orm/sqlite-core";
 
-import type { PlayFromSource } from "~/stores/Playback/types";
-
 import type { Prettify } from "~/utils/types";
+import type { PlayFromSource } from "~/stores/Playback/types";
 
 export const artists = sqliteTable("artists", {
   name: text().primaryKey(),
