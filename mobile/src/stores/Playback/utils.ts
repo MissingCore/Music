@@ -14,7 +14,7 @@ import { getSafeUri } from "~/utils/string";
 import type { ReservedPlaylistName } from "~/modules/media/constants";
 import { ReservedNames, ReservedPlaylists } from "~/modules/media/constants";
 
-/** Check if 2 `PlayListSource` are equivalent. */
+/** Check if 2 `PlayFromSource` are equivalent. */
 export function arePlaybackSourceEqual(
   source1: PlayFromSource | undefined,
   source2: PlayFromSource,
@@ -24,7 +24,7 @@ export function arePlaybackSourceEqual(
   return keys.every((key) => source1[key] === source2[key]);
 }
 
-/** See if a `PlayListSource` exists in the list of sources. */
+/** See if a `PlayFromSource` exists in the list of sources. */
 export function isPlaybackSourceInList(
   source: PlayFromSource,
   sourceList: PlayFromSource[],
@@ -47,7 +47,7 @@ export function formatTrackforPlayer(track: TrackWithAlbum) {
   } satisfies AddTrack;
 }
 
-/** Returns the name of the `PlayListSource`. */
+/** Returns the name of the `PlayFromSource`. */
 export async function getSourceName({ type, id }: PlayFromSource) {
   let name = "";
   try {
@@ -68,7 +68,7 @@ export async function getSourceName({ type, id }: PlayFromSource) {
   return name;
 }
 
-/** Get list of tracks ids from a `PlayListSource`. */
+/** Get list of tracks ids from a `PlayFromSource`. */
 export async function getTrackIdsList({ type, id }: PlayFromSource) {
   let trackIds: string[] = [];
 

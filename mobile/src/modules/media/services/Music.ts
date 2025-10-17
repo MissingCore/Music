@@ -53,7 +53,7 @@ interface MusicStore {
 
   /** Where the contents of `playingList` is from. */
   playingSource: PlayFromSource | undefined;
-  /** Name representing the current `PlayListSource`. */
+  /** Name representing the current `PlayFromSource`. */
   sourceName: string;
   /** Ordered list of track ids based on the `playingSource`. */
   playingList: string[];
