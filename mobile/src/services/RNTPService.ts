@@ -88,6 +88,7 @@ export async function PlaybackService() {
   // Only triggered if repeat mode is `RepeatMode.Off`. This is also called
   // after the `ServiceKilled` event is emitted.
   TrackPlayer.addEventListener(Event.PlaybackQueueEnded, async () => {
+    // `true` provided to prevent updating the repeat setting.
     await PlaybackControls.next(true);
   });
 

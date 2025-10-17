@@ -6,6 +6,7 @@ import { useStore } from "zustand";
 
 import { db } from "~/db";
 import { tracksToPlaylists } from "~/db/schema";
+import { getTrack } from "~/api/track";
 
 import { createPersistedSubscribedStore } from "~/lib/zustand";
 import { resetWidgets } from "~/modules/widget/utils/update";
@@ -32,16 +33,10 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
     },
 
     getTrack: async (trackId) => {
-      const wantedTrack = await db.query.tracks.findFirst({
-        where: (fields, { eq }) => eq(fields.id, trackId),
-        with: { album: true },
-      });
-
-      if (wantedTrack) {
-        wantedTrack.artwork =
-          wantedTrack.artwork ?? wantedTrack.album?.artwork ?? null;
+      try {
+        const wantedTrack = await getTrack(trackId);
         return wantedTrack;
-      } else {
+      } catch {
         console.log(
           `[Database Mismatch] Track (${trackId}) doesn't exist in the database.`,
         );
