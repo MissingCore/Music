@@ -3,18 +3,18 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { MoreVert } from "~/resources/icons/MoreVert";
+import { usePlaybackStore } from "~/stores/Playback/store";
+import { PlaybackControls } from "~/stores/Playback/actions";
 import { presentTrackSheet } from "~/services/SessionStore";
-import { useMusicStore } from "../services/Music";
-import { playFromMediaList } from "../services/Playback";
 
 import { cn } from "~/lib/style";
 import { IconButton } from "~/components/Form/Button";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
+import type { PlayFromSource } from "~/stores/Playback/types";
+import { arePlaybackSourceEqual } from "~/stores/Playback/utils";
 import { PlayingIndicator } from "./AnimatedBars";
 import type { TrackContent, TrackProps } from "./Track.type";
-import { arePlaybackSourceEqual } from "../helpers/data";
-import type { PlayListSource } from "../types";
 
 //#region Track
 
@@ -41,7 +41,9 @@ export function Track({
     <SearchResult
       as="ripple"
       type="track"
-      onPress={() => playFromMediaList({ trackId: id, source: trackSource })}
+      onPress={() =>
+        PlaybackControls.playFromList({ trackId: id, source: trackSource })
+      }
       RightElement={
         <IconButton
           Icon={MoreVert}
@@ -62,16 +64,15 @@ export function Track({
 //#region useTrackListPlayingIndication
 /** Mark the track that's currently being played in the data. */
 export function useTrackListPlayingIndication<T extends TrackContent>(
-  listSource: PlayListSource,
+  listSource: PlayFromSource,
   tracks?: T[],
 ): Array<T & { showIndicator?: boolean }> | undefined {
-  const currSource = useMusicStore((state) => state.playingSource);
-  const activeId = useMusicStore((state) => state.activeId);
-  const isQueuedTrack = useMusicStore((state) => state.isInQueue);
+  const currSource = usePlaybackStore((s) => s.playingFrom);
+  const activeId = usePlaybackStore((s) => s.activeId);
 
   const passPreCheck = useMemo(
-    () => arePlaybackSourceEqual(currSource, listSource) && !isQueuedTrack,
-    [currSource, isQueuedTrack, listSource],
+    () => arePlaybackSourceEqual(currSource, listSource),
+    [currSource, listSource],
   );
 
   return useMemo(() => {
@@ -88,7 +89,7 @@ export function useTrackListPlayingIndication<T extends TrackContent>(
 /** Presets used to render a list of `<Track />`. */
 export function useTrackListPreset(props: {
   data?: readonly TrackContent[];
-  trackSource: PlayListSource;
+  trackSource: PlayFromSource;
   isPending?: boolean;
 }) {
   // @ts-expect-error - Readonly is fine.

@@ -8,15 +8,12 @@ import {
   removeFromPlaylist,
   updateTrack,
 } from "~/api/track";
-import { revalidateActiveTrack } from "~/modules/media/helpers/revalidate";
-import { musicStore, Queue } from "~/modules/media/services/Music";
-import { Resynchronize } from "~/modules/media/services/Resynchronize";
+import { Queue, Resynchronize } from "~/stores/Playback/actions";
 import { useSortTracks } from "~/modules/media/services/SortPreferences";
 import { queries as q } from "./keyStore";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
-import { ReservedPlaylists } from "~/modules/media/constants";
 
 //#region Queries
 /** Get specified track. */
@@ -47,15 +44,12 @@ export function useAddToPlaylist(trackId: string) {
   return useMutation({
     mutationFn: (playlistName: string) =>
       addToPlaylist({ trackId, playlistName }),
-    onSuccess: (_, playlistName) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: q.tracks.detail(trackId)._ctx.playlists.queryKey,
       });
       queryClient.invalidateQueries({ queryKey: q.playlists._def });
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
-      // Ensure that if we're currently playing from the playlist we added
-      // the track to, we update it.
-      Resynchronize.onTracks({ type: "playlist", id: playlistName });
     },
   });
 }
@@ -74,10 +68,6 @@ export function useFavoriteTrack(trackId: string) {
         queryKey: q.tracks.detail(trackId).queryKey,
       });
       queryClient.invalidateQueries({ queryKey: q.favorites.tracks.queryKey });
-      Resynchronize.onTracks({
-        type: "playlist",
-        id: ReservedPlaylists.favorites,
-      });
     },
   });
 }
@@ -94,11 +84,6 @@ export function useHideTrack() {
     onSuccess: async (_, { trackId }) => {
       // There's a lot of places where this track may appear.
       clearAllQueries();
-      const { currentList, playingSource } = musicStore.getState();
-      // Need to resynchronize the Music store if we're playing this track.
-      if (currentList.includes(trackId)) {
-        await Resynchronize.onTracks(playingSource!);
-      }
       Queue.removeIds([trackId]);
     },
   });
@@ -110,15 +95,12 @@ export function useRemoveFromPlaylist(trackId: string) {
   return useMutation({
     mutationFn: (playlistName: string) =>
       removeFromPlaylist({ trackId, playlistName }),
-    onSuccess: (_, playlistName) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: q.tracks.detail(trackId)._ctx.playlists.queryKey,
       });
       queryClient.invalidateQueries({ queryKey: q.playlists._def });
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
-      // Ensure that if we're currently playing from the playlist we removed
-      // the track from, we update it.
-      Resynchronize.onTracks({ type: "playlist", id: playlistName });
     },
   });
 }
@@ -133,8 +115,8 @@ export function useUpdateTrackArtwork(trackId: string) {
       // clear all the queries.
       clearAllQueries();
 
-      // Revalidate `activeTrack` in Music store if needed.
-      await revalidateActiveTrack({ type: "track", id: trackId });
+      // Revalidate `activeTrack` in Playback store if needed.
+      await Resynchronize.onActiveTrack({ type: "track", id: trackId });
     },
   });
 }

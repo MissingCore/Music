@@ -71,8 +71,8 @@ importers:
         specifier: ^5.90.2
         version: 5.90.2(react@19.0.0)
       '@weights-ai/react-native-track-player':
-        specifier: github:MissingCore/react-native-track-player#a8c5601b3675d83cdb99ee6a3a9c04c7db8df7fc
-        version: https://codeload.github.com/MissingCore/react-native-track-player/tar.gz/a8c5601b3675d83cdb99ee6a3a9c04c7db8df7fc(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        specifier: github:MissingCore/react-native-track-player#2b363286ac7e8c34238b16b35737016cd3a4abf5
+        version: https://codeload.github.com/MissingCore/react-native-track-player/tar.gz/2b363286ac7e8c34238b16b35737016cd3a4abf5(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -1823,8 +1823,8 @@ packages:
   '@vscode/sudo-prompt@9.3.1':
     resolution: {integrity: sha512-9ORTwwS74VaTn38tNbQhsA5U44zkJfcb0BdTSyyG6frP4e8KMtHuTXYmwefe5dpL8XB1aGSIVTaLjD3BbWb5iA==}
 
-  '@weights-ai/react-native-track-player@https://codeload.github.com/MissingCore/react-native-track-player/tar.gz/a8c5601b3675d83cdb99ee6a3a9c04c7db8df7fc':
-    resolution: {tarball: https://codeload.github.com/MissingCore/react-native-track-player/tar.gz/a8c5601b3675d83cdb99ee6a3a9c04c7db8df7fc}
+  '@weights-ai/react-native-track-player@https://codeload.github.com/MissingCore/react-native-track-player/tar.gz/2b363286ac7e8c34238b16b35737016cd3a4abf5':
+    resolution: {tarball: https://codeload.github.com/MissingCore/react-native-track-player/tar.gz/2b363286ac7e8c34238b16b35737016cd3a4abf5}
     version: 4.1.6
     peerDependencies:
       react: '>=18'
@@ -7441,7 +7441,7 @@ snapshots:
 
   '@vscode/sudo-prompt@9.3.1': {}
 
-  '@weights-ai/react-native-track-player@https://codeload.github.com/MissingCore/react-native-track-player/tar.gz/a8c5601b3675d83cdb99ee6a3a9c04c7db8df7fc(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
+  '@weights-ai/react-native-track-player@https://codeload.github.com/MissingCore/react-native-track-player/tar.gz/2b363286ac7e8c34238b16b35737016cd3a4abf5(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
     dependencies:
       react: 19.0.0
       react-native: 0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0)

@@ -2,4 +2,4 @@
 export type MediaType = "album" | "artist" | "folder" | "playlist" | "track";
 
 /** Identifies a list of tracks that will be played. */
-export type PlayListSource = { type: Exclude<MediaType, "track">; id: string };
+export type PlayFromSource = { type: Exclude<MediaType, "track">; id: string };

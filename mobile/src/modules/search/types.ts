@@ -6,7 +6,7 @@ import type {
   SlimTrackWithAlbum,
 } from "~/db/slimTypes";
 
-import type { MediaType } from "~/modules/media/types";
+import type { MediaType } from "~/stores/Playback/types";
 
 /** Categories of media that can be returned by search. */
 export type SearchCategories = readonly MediaType[];

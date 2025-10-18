@@ -16,7 +16,7 @@ import {
   moveInPlaylist,
   updatePlaylist,
 } from "~/api/playlist";
-import { Resynchronize } from "~/modules/media/services/Resynchronize";
+import { Resynchronize } from "~/stores/Playback/actions";
 import { queries as q } from "./keyStore";
 
 import { wait } from "~/utils/promise";
@@ -127,8 +127,6 @@ export function useMoveInPlaylist(playlistName: string) {
       queryClient.invalidateQueries({
         queryKey: q.playlists.detail(playlistName).queryKey,
       });
-      // Ensure that the order of the tracks in the playlist is correct.
-      Resynchronize.onTracks({ type: "playlist", id: playlistName });
     },
   });
 }
@@ -142,7 +140,7 @@ export function useUpdatePlaylist(playlistName: string) {
         Omit<typeof playlists.$inferInsert, "isFavorite">
       > & { tracks?: Array<{ id: string }> },
     ) => updatePlaylist(playlistName, updatedValues),
-    onSuccess: async (_, { name, tracks }) => {
+    onSuccess: async (_, { name }) => {
       queryClient.resetQueries({ queryKey: q.playlists._def });
       // Need to update all track queries as we don't exactly know which
       // were removed.
@@ -159,14 +157,6 @@ export function useUpdatePlaylist(playlistName: string) {
         await Resynchronize.onRename({
           oldSource: { type: "playlist", id: playlistName },
           newSource: { type: "playlist", id: sanitizedName },
-        });
-      }
-      // Do this after checking for `sanitizedName` as the tracks will be
-      // referenced on the new list name instead of `playlistName`.
-      if (tracks !== undefined) {
-        await Resynchronize.onTracks({
-          type: "playlist",
-          id: sanitizedName ?? playlistName,
         });
       }
     },

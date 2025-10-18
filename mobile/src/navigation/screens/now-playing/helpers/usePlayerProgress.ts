@@ -2,8 +2,8 @@ import { useProgress } from "@weights-ai/react-native-track-player";
 import { atom, useAtomValue, useSetAtom } from "jotai";
 import { useMemo, useRef, useState } from "react";
 
-import { useMusicStore } from "~/modules/media/services/Music";
-import { MusicControls } from "~/modules/media/services/Playback";
+import { usePlaybackStore } from "~/stores/Playback/store";
+import { PlaybackControls } from "~/stores/Playback/actions";
 
 /** Dragging slider position. */
 const NextSliderPositionAtom = atom<number | null>(null);
@@ -18,7 +18,7 @@ export function usePlayerProgress() {
   const setNextSliderPosition = useSetAtom(NextSliderPositionAtom);
 
   const seekToPosition = async (progress: number) => {
-    await MusicControls.seekTo(progress);
+    await PlaybackControls.seekTo(progress);
     setUpdateInterval(1);
 
     // Helps prevents "rubberbanding".
@@ -38,12 +38,10 @@ export function usePlayerProgress() {
 
 /** Have the seekbar visually reflect the last saved position. */
 function useRestorePosition() {
-  const _hasRestoredPosition = useMusicStore(
-    (state) => state._hasRestoredPosition,
-  );
-  const _restoredTrackId = useMusicStore((state) => state._restoredTrackId);
-  const activeId = useMusicStore((state) => state.activeId);
-  const lastPosition = useMusicStore((state) => state.lastPosition);
+  const _hasRestoredPosition = usePlaybackStore((s) => s._hasRestoredPosition);
+  const _restoredTrackId = usePlaybackStore((s) => s._restoredTrackId);
+  const activeId = usePlaybackStore((s) => s.activeId);
+  const lastPosition = usePlaybackStore((s) => s.lastPosition);
 
   return useMemo(() => {
     if (

@@ -1,7 +1,7 @@
 import type { NavigationRoute, ParamListBase } from "@react-navigation/native";
 import { useNavigationState } from "@react-navigation/native";
 
-import { useMusicStore } from "~/modules/media/services/Music";
+import { usePlaybackStore } from "~/stores/Playback/store";
 
 /** Routes where the miniplayer is visible. */
 const miniPlayerRoutes = [
@@ -29,7 +29,7 @@ export function useRenderBottomActions() {
   // Wanted structure of `availableRoutes` should be:
   //  - [{ key: "HomeScreens-*"}, { key: miniPlayerVisibleRoutes[number] }]
   const availableRoutes = useNavigationState((s) => s.routes);
-  const activeTrackId = useMusicStore((state) => state.activeId);
+  const activeTrackId = usePlaybackStore((s) => s.activeId);
 
   // Show navbar when displaying `HomeScreens` navigator. This is only
   // true when the returned routes only contain this entry.
@@ -48,7 +48,7 @@ export function useBottomActionsInset() {
   // Wanted structure of `availableRoutes` should be:
   //  - Array<{ key: miniPlayerVisibleRoutes[number] }>
   const availableRoutes = useNavigationState((s) => s.routes);
-  const activeTrackId = useMusicStore((state) => state.activeId);
+  const activeTrackId = usePlaybackStore((s) => s.activeId);
 
   const canShowMiniPlayer = showMiniPlayerOnRoute(availableRoutes);
   const isMiniPlayerRendered = !!activeTrackId && canShowMiniPlayer;
