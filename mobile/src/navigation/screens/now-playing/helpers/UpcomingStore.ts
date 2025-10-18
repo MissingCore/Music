@@ -5,13 +5,12 @@ import { tracks } from "~/db/schema";
 import type { SlimTrack, TrackArtwork } from "~/db/slimTypes";
 
 import { getTracks } from "~/api/track";
-import { musicStore } from "~/modules/media/services/Music";
+import { playbackStore } from "~/stores/Playback/store";
 
 type PartialTrack = SlimTrack & Required<TrackArtwork>;
 
 export interface UpcomingStore {
   currentTrackList: Array<PartialTrack | undefined>;
-  queuedTrackList: Array<PartialTrack | undefined>;
 
   /**
    * Indicates that we need to update the data in `currentTrackList` when
@@ -28,13 +27,12 @@ export interface UpcomingStore {
 
 const upcomingStore = createStore<UpcomingStore>()((set, get) => ({
   currentTrackList: [],
-  queuedTrackList: [],
 
   shouldRepopulate: true,
   populateCurrentTrackList: async () => {
     if (!get().shouldRepopulate) return;
-    const { currentList } = musicStore.getState();
-    const listTracks = await getTracksFromIds(currentList);
+    const { queue } = playbackStore.getState();
+    const listTracks = await getTracksFromIds(queue);
     set({ shouldRepopulate: false, currentTrackList: listTracks });
   },
 }));
@@ -44,27 +42,13 @@ export const useUpcomingStore = <T>(selector: (state: UpcomingStore) => T): T =>
 
 //#region Subscriptions
 /**
- * Populate the `queueList` on app launch since it won't impact performance
- * as much due to usually being small.
- */
-musicStore.subscribe(
-  (state) => state.queueList,
-  async (queueList) => {
-    const listTracks = await getTracksFromIds(queueList);
-    upcomingStore.setState({ queuedTrackList: listTracks });
-  },
-  // Ensure `queueList` is populated as prior, this would be initialized
-  // at app launch, but now, it's when we open the "Now Playing" screen,
-  // which leads to this being empty.
-  { fireImmediately: true },
-);
-
-/**
  * Whenever `currentList` changes, `currentTrackList` may no longer
  * contain accurate data.
+ *
+ * @deprecated Temporary for removal of Music store.
  */
-musicStore.subscribe(
-  (state) => state.currentList,
+playbackStore.subscribe(
+  (state) => state.queue,
   () => {
     upcomingStore.setState({ shouldRepopulate: true, currentTrackList: [] });
   },
