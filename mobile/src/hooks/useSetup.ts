@@ -2,7 +2,6 @@ import TrackPlayer, { RepeatMode } from "@weights-ai/react-native-track-player";
 import { useEffect } from "react";
 
 import "~/services/_subscriptions";
-import "~/modules/media/services/_subscriptions";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { RepeatModes } from "~/stores/Playback/constants";
 import { useSortPreferencesStore } from "~/modules/media/services/SortPreferences";
