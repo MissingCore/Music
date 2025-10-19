@@ -1,7 +1,7 @@
 import TrackPlayer from "@weights-ai/react-native-track-player";
 import type { WidgetTaskHandlerProps } from "react-native-android-widget";
 
-import { MusicControls } from "~/modules/media/services/Playback";
+import { PlaybackControls } from "~/stores/Playback/actions";
 
 import { bgWait } from "~/utils/promise";
 import { Action } from "./constants/Action";
@@ -23,7 +23,7 @@ export async function widgetTaskHandler({
     case "WIDGET_ADDED":
     case "WIDGET_RESIZED":
       // Have widget open app if the RNTP service isn't available to
-      // prevent things breaking due to the Music store requiring a RNTP
+      // prevent things breaking due to the Playback store requiring a RNTP
       // service active (or else the data will get cleared).
       let shouldOpen = false;
       try {
@@ -47,7 +47,7 @@ export async function widgetTaskHandler({
           isPlaying: widgetData.isPlaying,
           exclude: ["ArtworkPlayer"],
         });
-        MusicControls.playToggle({ noRevalidation: true });
+        PlaybackControls.playToggle({ noRevalidation: true });
 
         // Run special animation for `ArtworkPlayer` widget.
         if (widgetInfo.widgetName === "ArtworkPlayer") {
@@ -59,8 +59,8 @@ export async function widgetTaskHandler({
           renderWidget(<Widget {...widgetData} />);
         }
       } else {
-        if (clickAction === Action.Prev) await MusicControls.prev();
-        else if (clickAction === Action.Next) await MusicControls.next();
+        if (clickAction === Action.Prev) await PlaybackControls.prev();
+        else if (clickAction === Action.Next) await PlaybackControls.next();
         await updateWidgets(getWidgetData());
       }
       break;

@@ -11,10 +11,10 @@ import { getArtist } from "./artist";
 import { getFolderTracks } from "./folder";
 import { getPlaylist, getSpecialPlaylist } from "./playlist";
 
-import type { PlayListSource } from "~/modules/media/types";
 import type { ReservedPlaylistName } from "~/modules/media/constants";
 import { ReservedNames, ReservedPlaylists } from "~/modules/media/constants";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
+import type { PlayFromSource } from "~/stores/Playback/types";
 
 export const RECENT_DAY_RANGE = 7;
 export const RECENT_RANGE_MS = RECENT_DAY_RANGE * 24 * 60 * 60 * 1000;
@@ -27,7 +27,7 @@ export async function getRecentlyPlayedMediaLists() {
   })) as PlayedMediaList[];
 
   const newRecentList: MediaCardContent[] = [];
-  const errors: PlayListSource[] = [];
+  const errors: PlayFromSource[] = [];
 
   for (const source of sources) {
     const entry = await getRecentListEntry(source);
@@ -71,7 +71,7 @@ export async function getRecentlyPlayedTracks() {
 export async function updatePlayedMediaList({
   oldSource,
   newSource,
-}: Record<"oldSource" | "newSource", PlayListSource>) {
+}: Record<"oldSource" | "newSource", PlayFromSource>) {
   return db
     .update(playedMediaLists)
     .set(newSource)
@@ -86,7 +86,7 @@ export async function updatePlayedMediaList({
 
 //#region PUT Methods
 /** Insert a new recently played media list, or updating an existing one. */
-export async function addPlayedMediaList(entry: PlayListSource) {
+export async function addPlayedMediaList(entry: PlayFromSource) {
   const lastPlayedAt = Date.now();
   return db
     .insert(playedMediaLists)
@@ -111,7 +111,7 @@ export async function addPlayedTrack(id: string) {
 
 //#region DELETE Methods
 /** Delete specified `PlayedMediaList` entry. */
-export async function removePlayedMediaList(entry: PlayListSource) {
+export async function removePlayedMediaList(entry: PlayFromSource) {
   return db
     .delete(playedMediaLists)
     .where(
@@ -125,7 +125,7 @@ export async function removePlayedMediaList(entry: PlayListSource) {
 
 //#region Internal Utils
 /** Get a `MediaCardContent` from a source in the recent list. */
-async function getRecentListEntry({ id, type }: PlayListSource) {
+async function getRecentListEntry({ id, type }: PlayFromSource) {
   try {
     let entry: MediaCardContent;
     if (type === "album") {

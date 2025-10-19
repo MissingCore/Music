@@ -9,7 +9,7 @@ import i18next from "~/modules/i18n";
 import { upsertAlbums } from "~/api/album";
 import { createArtists } from "~/api/artist";
 import { updateTrack } from "~/api/track";
-import { revalidateActiveTrack } from "~/modules/media/helpers/revalidate";
+import { Resynchronize } from "~/stores/Playback/actions";
 import {
   cleanupImages,
   getArtworkUri,
@@ -139,8 +139,8 @@ export function TrackMetadataStoreProvider({
 
           await updateTrack(id, { ...updatedTrack, albumId });
 
-          // Revalidate `activeTrack` in Music store if needed.
-          await revalidateActiveTrack({ type: "track", id });
+          // Revalidate `activeTrack` in Playback store if needed.
+          await Resynchronize.onActiveTrack({ type: "track", id });
           await cleanupImages();
           await removeUnusedCategories();
           clearAllQueries();

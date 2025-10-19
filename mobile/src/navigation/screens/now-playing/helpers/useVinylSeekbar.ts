@@ -11,13 +11,13 @@ import {
   withTiming,
 } from "react-native-reanimated";
 
-import { useMusicStore } from "~/modules/media/services/Music";
+import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePlayerProgress } from "./usePlayerProgress";
 
 /** Controls the rotation of the vinyl on the "Now Playing" screen. */
 export function useVinylSeekbar() {
   const { position, setPosition, seekToPosition } = usePlayerProgress();
-  const activeTrack = useMusicStore((state) => state.activeTrack);
+  const activeTrack = usePlaybackStore((s) => s.activeTrack);
 
   const wrapperRef = useRef<Animated.View>(null);
   const hasMounted = useRef(false);

@@ -1,14 +1,12 @@
 import TrackPlayer, {
   AppKilledPlaybackBehavior,
   Capability,
-  RepeatMode,
 } from "@weights-ai/react-native-track-player";
 
 import { wait } from "~/utils/promise";
 
 type AdditionalConfig = {
   continuePlaybackOnDismiss?: boolean;
-  saveLastPosition?: boolean;
 };
 
 const prevSetConfigs: AdditionalConfig = {};
@@ -25,7 +23,7 @@ export function getTrackPlayerOptions(options?: AdditionalConfig) {
       prevSetConfigs[field] = value;
     }
   }
-  const { continuePlaybackOnDismiss, saveLastPosition } = prevSetConfigs;
+  const { continuePlaybackOnDismiss } = prevSetConfigs;
 
   return {
     android: {
@@ -47,7 +45,7 @@ export function getTrackPlayerOptions(options?: AdditionalConfig) {
       Capability.SkipToPrevious,
     ],
     icon: require("~/resources/images/music-glyph.png"),
-    progressUpdateEventInterval: saveLastPosition ? 1 : undefined,
+    progressUpdateEventInterval: 1,
   };
 }
 
@@ -74,10 +72,6 @@ export async function setupPlayer() {
     // and we'll try this again.
     await wait(1);
   }
-
-  // Repeat mode is needed for the "next" button to show up in the widget
-  // if we're on the last track.
-  await TrackPlayer.setRepeatMode(RepeatMode.Queue);
 
   await TrackPlayer.updateOptions(getTrackPlayerOptions());
 }

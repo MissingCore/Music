@@ -16,7 +16,7 @@ import { Menu } from "~/components/Menu";
 import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet, SheetButtonGroup, useSheetRef } from "~/components/Sheet";
 import { MediaImage } from "~/modules/media/components/MediaImage";
-import type { MediaType } from "~/modules/media/types";
+import type { MediaType } from "~/stores/Playback/types";
 import { deferInitialRender } from "../components/DeferredRender";
 
 type ArtworkSheetProps = { id: string; sheetRef: TrueSheetRef };

@@ -24,7 +24,7 @@ import type { AtLeast, Prettify } from "~/utils/types";
 import { ReservedNames } from "~/modules/media/constants";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
 import type { TrackContent } from "~/modules/media/components/Track.type";
-import type { MediaType } from "~/modules/media/types";
+import type { MediaType } from "~/stores/Playback/types";
 
 //#region Artwork Formatters
 /** Get the cover of a playlist. */

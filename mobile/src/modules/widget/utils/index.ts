@@ -1,6 +1,6 @@
 import { getTrackCover } from "~/db/utils";
 
-import { musicStore } from "~/modules/media/services/Music";
+import { playbackStore } from "~/stores/Playback/store";
 
 import { updateWidgets } from "./update";
 import type { WidgetName } from "../constants/Widgets";
@@ -8,7 +8,7 @@ import type { PlayerWidgetData } from "../types";
 
 export function getWidgetData(): PlayerWidgetData {
   try {
-    const { activeTrack, isPlaying } = musicStore.getState();
+    const { activeTrack, isPlaying } = playbackStore.getState();
     let track: PlayerWidgetData["track"] = undefined;
     if (activeTrack) {
       track = {

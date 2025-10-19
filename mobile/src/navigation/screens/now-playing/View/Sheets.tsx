@@ -1,32 +1,33 @@
-import type { ListRenderItemInfo } from "@shopify/flash-list";
+// import type { ListRenderItemInfo } from "@shopify/flash-list";
 import TrackPlayer from "@weights-ai/react-native-track-player";
-import { useState } from "react";
+// import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { getTrackCover } from "~/db/utils";
 
-import { Remove } from "~/resources/icons/Remove";
+// import { Remove } from "~/resources/icons/Remove";
 import { SlowMotionVideo } from "~/resources/icons/SlowMotionVideo";
 import { VolumeUp } from "~/resources/icons/VolumeUp";
-import { Queue, useMusicStore } from "~/modules/media/services/Music";
+import { usePlaybackStore } from "~/stores/Playback/store";
+// import { Queue } from "~/stores/Playback/actions";
 import { sessionStore, useSessionStore } from "~/services/SessionStore";
-import type { UpcomingStore } from "../helpers/UpcomingStore";
+// import type { UpcomingStore } from "../helpers/UpcomingStore";
 import { useUpcomingStore } from "../helpers/UpcomingStore";
 
-import { Colors } from "~/constants/Styles";
-import { OnRTL } from "~/lib/react";
+// import { Colors } from "~/constants/Styles";
+// import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { FlashList } from "~/components/Defaults";
-import { Button } from "~/components/Form/Button";
+// import { Button } from "~/components/Form/Button";
 import { NSlider } from "~/components/Form/Slider";
 import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
-import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
+// import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { deferInitialRender } from "~/navigation/components/DeferredRender";
 import { ContentPlaceholder } from "../../../components/Placeholder";
 
-type PartialTrack = UpcomingStore["currentTrackList"][0];
+// type PartialTrack = UpcomingStore["currentTrackList"][0];
 
 /** All the sheets used on `/now-playing` route. */
 export const NowPlayingSheets = deferInitialRender(function NowPlayingSheets(
@@ -44,8 +45,8 @@ export const NowPlayingSheets = deferInitialRender(function NowPlayingSheets(
 /** Enables us to specify  how the media is played. */
 function PlaybackOptionsSheet(props: { sheetRef: TrueSheetRef }) {
   const { t } = useTranslation();
-  const playbackSpeed = useSessionStore((state) => state.playbackSpeed);
-  const volume = useSessionStore((state) => state.volume);
+  const playbackSpeed = useSessionStore((s) => s.playbackSpeed);
+  const volume = useSessionStore((s) => s.volume);
 
   return (
     <Sheet ref={props.sheetRef} contentContainerClassName="gap-4">
@@ -99,9 +100,9 @@ const VolumeSliderOptions = {
 //#region Upcoming Tracks
 /** Enables user to see what tracks are coming up and remove tracks from the queue. */
 function TrackUpcomingSheet(props: { sheetRef: TrueSheetRef }) {
-  const trackList = useUpcomingStore((state) => state.currentTrackList);
-  const listIndex = useMusicStore((state) => state.listIdx);
-  const repeat = useMusicStore((state) => state.repeat);
+  const trackList = useUpcomingStore((s) => s.currentTrackList);
+  const listIndex = usePlaybackStore((s) => s.queuePosition);
+  const repeat = usePlaybackStore((s) => s.repeat);
 
   // Get the tracks that'll be rendered.
   const data = [
@@ -124,7 +125,7 @@ function TrackUpcomingSheet(props: { sheetRef: TrueSheetRef }) {
       <FlashList
         estimatedItemSize={52} // 48px Height + 4px Margin Top
         data={data}
-        keyExtractor={(item, index) => (item ? item.id : `${index}`)}
+        keyExtractor={(item, index) => `${item?.id}_${index}`}
         renderItem={({ item, index }) =>
           item ? (
             <TrackItem
@@ -138,7 +139,6 @@ function TrackUpcomingSheet(props: { sheetRef: TrueSheetRef }) {
             />
           ) : null
         }
-        ListHeaderComponent={<QueueList />}
         ListEmptyComponent={
           <ContentPlaceholder isPending={trackList.length === 0} />
         }
@@ -150,58 +150,41 @@ function TrackUpcomingSheet(props: { sheetRef: TrueSheetRef }) {
   );
 }
 
-/**
- * Separate component to render the queue list to optimize recycling
- * in the main list.
- */
-function QueueList() {
-  const queueList = useUpcomingStore((state) => state.queuedTrackList);
-  if (queueList.filter((t) => t !== undefined).length === 0) return null;
-  return (
-    <FlashList
-      estimatedItemSize={52} // 48px Height + 4px Margin Bottom
-      data={queueList}
-      keyExtractor={(item, index) => `${item?.id}_${index}`}
-      renderItem={(args) => <RenderQueueItem {...args} />}
-    />
-  );
-}
+// function RenderQueueItem({ item, index }: ListRenderItemInfo<PartialTrack>) {
+//   const { t } = useTranslation();
+//   const swipeableRef = useSwipeableRef();
+//   const [lastItemId, setLastItemId] = useState(item?.id);
 
-function RenderQueueItem({ item, index }: ListRenderItemInfo<PartialTrack>) {
-  const { t } = useTranslation();
-  const swipeableRef = useSwipeableRef();
-  const [lastItemId, setLastItemId] = useState(item?.id);
+//   if (item?.id !== lastItemId) {
+//     setLastItemId(item?.id);
+//     if (swipeableRef.current) swipeableRef.current.resetIfNeeded();
+//   }
 
-  if (item?.id !== lastItemId) {
-    setLastItemId(item?.id);
-    if (swipeableRef.current) swipeableRef.current.resetIfNeeded();
-  }
-
-  if (!item) return null;
-  return (
-    <Swipeable
-      // @ts-expect-error - Error assigning ref to class component.
-      ref={swipeableRef}
-      containerClassName="mb-1 px-4"
-      renderRightActions={() => (
-        <Button
-          accessibilityLabel={t("template.entryRemove", { name: item.name })}
-          onPress={() => Queue.removeAtIndex(index)}
-          className={cn("bg-red p-3", OnRTL.decide("ml-4", "mr-4"))}
-        >
-          <Remove color={Colors.neutral100} />
-        </Button>
-      )}
-    >
-      <TrackItem
-        title={item.name}
-        description={item.artistName ?? "—"}
-        imageSource={getTrackCover(item)}
-        inQueue
-      />
-    </Swipeable>
-  );
-}
+//   if (!item) return null;
+//   return (
+//     <Swipeable
+//       // @ts-expect-error - Error assigning ref to class component.
+//       ref={swipeableRef}
+//       containerClassName="mb-1 px-4"
+//       renderRightActions={() => (
+//         <Button
+//           accessibilityLabel={t("template.entryRemove", { name: item.name })}
+//           onPress={() => Queue.removeAtIndex(index)}
+//           className={cn("bg-red p-3", OnRTL.decide("ml-4", "mr-4"))}
+//         >
+//           <Remove color={Colors.neutral100} />
+//         </Button>
+//       )}
+//     >
+//       <TrackItem
+//         title={item.name}
+//         description={item.artistName ?? "—"}
+//         imageSource={getTrackCover(item)}
+//         inQueue
+//       />
+//     </Swipeable>
+//   );
+// }
 
 /**
  * Essentially `<Track />` without any playing functionality. Has special

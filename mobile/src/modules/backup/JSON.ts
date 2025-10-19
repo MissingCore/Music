@@ -16,8 +16,6 @@ import i18next from "~/modules/i18n";
 import { getAlbums } from "~/api/album";
 import { createPlaylist, getPlaylists, updatePlaylist } from "~/api/playlist";
 import { getTracks } from "~/api/track";
-import { musicStore } from "~/modules/media/services/Music";
-import { Resynchronize } from "~/modules/media/services/Resynchronize";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
@@ -206,9 +204,6 @@ async function importBackup() {
 
   // Delete the cached document.
   documentFile.delete();
-
-  const currPlayingFrom = musicStore.getState().playingSource;
-  if (currPlayingFrom) await Resynchronize.onTracks(currPlayingFrom);
 }
 //#endregion
 

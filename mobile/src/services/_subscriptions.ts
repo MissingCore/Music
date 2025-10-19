@@ -1,11 +1,11 @@
 import { I18nManager } from "react-native";
 
 import i18next from "~/modules/i18n";
-import { musicStore } from "~/modules/media/services/Music";
+import { playbackStore } from "~/stores/Playback/store";
 import { userPreferencesStore } from "./UserPreferences";
 
 import { clearAllQueries } from "~/lib/react-query";
-import { getSourceName } from "~/modules/media/helpers/data";
+import { getSourceName } from "~/stores/Playback/utils";
 
 //#region User Preference Store
 /** Set the app's language from what's stored in AsyncStorage. */
@@ -21,9 +21,11 @@ userPreferencesStore.subscribe(
     // Make sure our queries that use translated values are updated.
     clearAllQueries();
     // Make sure to refresh the playing source name if it's one of the favorite playlists.
-    const { playingSource } = musicStore.getState();
-    if (playingSource) {
-      musicStore.setState({ sourceName: await getSourceName(playingSource) });
+    const { playingFrom } = playbackStore.getState();
+    if (playingFrom) {
+      playbackStore.setState({
+        playingFromName: await getSourceName(playingFrom),
+      });
     }
   },
 );

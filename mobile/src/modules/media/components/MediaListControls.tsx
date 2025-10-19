@@ -3,19 +3,19 @@ import { View } from "react-native";
 
 import { Pause } from "~/resources/icons/Pause";
 import { PlayArrow } from "~/resources/icons/PlayArrow";
-import { useMusicStore } from "../services/Music";
-import { MusicControls, playFromMediaList } from "../services/Playback";
+import { usePlaybackStore } from "~/stores/Playback/store";
+import { PlaybackControls } from "~/stores/Playback/actions";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
 import { Button } from "~/components/Form/Button";
+import type { PlayFromSource } from "~/stores/Playback/types";
+import { arePlaybackSourceEqual } from "~/stores/Playback/utils";
 import { RepeatButton, ShuffleButton } from "./MediaControls";
-import { arePlaybackSourceEqual } from "../helpers/data";
-import type { PlayListSource } from "../types";
 
 /** Media controls used on media list pages. */
 export function MediaListControls(props: {
-  trackSource: PlayListSource;
+  trackSource: PlayFromSource;
   className?: string;
 }) {
   return (
@@ -32,10 +32,10 @@ export function MediaListControls(props: {
  * currently playing (ie: show play button if we're not playing a track
  * from this media list).
  */
-function PlayMediaListButton({ trackSource }: { trackSource: PlayListSource }) {
+function PlayMediaListButton({ trackSource }: { trackSource: PlayFromSource }) {
   const { t } = useTranslation();
-  const currSource = useMusicStore((s) => s.playingSource);
-  const isPlaying = useMusicStore((s) => s.isPlaying);
+  const currSource = usePlaybackStore((s) => s.playingFrom);
+  const isPlaying = usePlaybackStore((s) => s.isPlaying);
 
   const isThisSource = arePlaybackSourceEqual(currSource, trackSource);
   const displayPause = isThisSource && isPlaying;
@@ -45,10 +45,10 @@ function PlayMediaListButton({ trackSource }: { trackSource: PlayListSource }) {
   return (
     <Button
       accessibilityLabel={t(`term.${displayPause ? "pause" : "play"}`)}
-      onPress={
+      onPress={() =>
         displayPause
-          ? () => MusicControls.pause()
-          : () => playFromMediaList({ source: trackSource })
+          ? PlaybackControls.pause()
+          : PlaybackControls.playFromList({ source: trackSource })
       }
       className={cn("bg-red p-3", { "bg-onSurface": displayPause })}
     >

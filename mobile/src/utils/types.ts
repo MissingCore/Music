@@ -23,3 +23,6 @@ export type Prettify<T> = {
 export type UniformObject<TObj extends Record<any, any>, TData> = {
   [K in keyof TObj]: TData;
 };
+
+/** Get the values of an object. */
+export type ObjectValues<T> = T[keyof T];
