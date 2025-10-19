@@ -47,6 +47,7 @@ import { TrackSheet } from "./screens/tracks/Sheet";
 import Tracks from "./screens/tracks/View";
 
 import {
+  userPreferencesStore,
   useTabsByVisibility,
   useUserPreferencesStore,
 } from "~/services/UserPreferences";
@@ -66,6 +67,7 @@ type TabState = EventArg<
 
 const MaterialTopTab = createMaterialTopTabNavigator();
 
+let canResetHomeScreens = false;
 const noop = () => null;
 
 const RootScreenComponents = {
@@ -96,7 +98,36 @@ function RootScreens(_: RootScreensProps) {
   //  - https://react.dev/learn/referencing-values-with-refs#when-to-use-refs
   const historyStack = useRef<string[]>([]);
 
-  const homeTabName = useMemo(() => getHomeScreenName(homeTab), [homeTab]);
+  const homeTabName = useMemo(() => {
+    if (!displayedTabs.includes(homeTab)) {
+      // FIXME: Current workaround to `Couldn't find a screen named 'Home'
+      // to use as 'initialRouteName'.` after the `v2.6.0` release.
+      //  - One of the potential causes is the migration failing as some
+      //  users also encountered `Call to function 'NativeDatabase.prepareAsync'
+      //  has been rejected.`.
+      //  - Though there were some users got the screen error but didn't encounter
+      //  the database issue.
+      if (!canResetHomeScreens) {
+        canResetHomeScreens = true;
+        // Reset home tab preferences if we have a mismatch.
+        userPreferencesStore.setState({
+          homeTab: "home",
+          tabsOrder: ["home", "folder", "playlist", "track", "album", "artist"],
+          tabsVisibility: {
+            album: true,
+            artist: true,
+            folder: true,
+            home: true,
+            playlist: true,
+            track: true,
+          },
+        });
+      }
+      if (!displayedTabs[0]) return undefined;
+      return getHomeScreenName(displayedTabs[0]);
+    }
+    return getHomeScreenName(homeTab);
+  }, [displayedTabs, homeTab]);
 
   /** Manually handle the back gesture since the old strategy no longer works. */
   const onBackGesture = useCallback(() => {
