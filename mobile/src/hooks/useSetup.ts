@@ -12,7 +12,7 @@ import {
 
 import {
   getTrackPlayerOptions,
-  setupPlayer,
+  onAppStartUpInit,
 } from "~/lib/react-native-track-player";
 import { revalidateWidgets } from "~/modules/widget/utils";
 
@@ -32,7 +32,7 @@ export function useSetup() {
 
   useEffect(() => {
     (async () => {
-      await setupPlayer();
+      await onAppStartUpInit;
       // Ensure RNTP is successfully setup before initializing stores that
       // rely on its initialization.
       await userPreferencesStore.persist.rehydrate();

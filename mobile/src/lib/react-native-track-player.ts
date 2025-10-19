@@ -55,7 +55,7 @@ export function getTrackPlayerOptions(options?: AdditionalConfig) {
  * Ensure we setup `react-native-track-player` in the foreground in addition
  * to its configurations.
  */
-export async function setupPlayer() {
+async function setupPlayer() {
   const setup = async () => {
     try {
       await TrackPlayer.setupPlayer();
@@ -81,3 +81,6 @@ export async function setupPlayer() {
 
   await TrackPlayer.updateOptions(getTrackPlayerOptions());
 }
+
+/** Promise that sets up RNTP. */
+export const onAppStartUpInit = setupPlayer();
