@@ -84,3 +84,13 @@ async function setupPlayer() {
 
 /** Promise that sets up RNTP. */
 export const onAppStartUpInit = setupPlayer();
+
+/** Checks to see if the RNTP service is set up. */
+export async function isRNTPSetUp() {
+  try {
+    await TrackPlayer.getVolume();
+    return true;
+  } catch {
+    return false;
+  }
+}

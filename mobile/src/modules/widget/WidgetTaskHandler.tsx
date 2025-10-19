@@ -1,8 +1,10 @@
-import TrackPlayer from "@weights-ai/react-native-track-player";
 import type { WidgetTaskHandlerProps } from "react-native-android-widget";
+// @ts-expect-error - Function we export by patching the package.
+import { openApp } from "react-native-android-widget";
 
 import { MusicControls } from "~/modules/media/services/Playback";
 
+import { isRNTPSetUp } from "~/lib/react-native-track-player";
 import { bgWait } from "~/utils/promise";
 import { Action } from "./constants/Action";
 import { nameToWidget } from "./constants/Widgets";
@@ -21,25 +23,25 @@ export async function widgetTaskHandler({
 
   switch (widgetAction) {
     case "WIDGET_ADDED":
+    case "WIDGET_UPDATE":
     case "WIDGET_RESIZED":
       // Have widget open app if the RNTP service isn't available to
       // prevent things breaking due to the Music store requiring a RNTP
       // service active (or else the data will get cleared).
-      let shouldOpen = false;
-      try {
-        await TrackPlayer.getVolume();
-      } catch {
-        shouldOpen = true;
-      }
+      const shouldOpen = !(await isRNTPSetUp());
       renderWidget(<Widget {...widgetData} openApp={shouldOpen} />);
       break;
 
-    case "WIDGET_UPDATE":
     case "WIDGET_DELETED":
       // Do nothing
       break;
 
     case "WIDGET_CLICK":
+      if (!(await isRNTPSetUp())) {
+        openApp();
+        return;
+      }
+
       if (clickAction === Action.PlayPause) {
         widgetData.isPlaying = !widgetData.isPlaying;
         updateWidgets({
