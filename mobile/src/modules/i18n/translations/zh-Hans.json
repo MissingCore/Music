@@ -127,6 +127,10 @@
         "setHomeTab": "应用启动时打开{{- name}} tab"
       }
     },
+    "albumLengthFilter": {
+      "title": null,
+      "description": null
+    },
     "miniplayerGestures": {
       "title": null
     },

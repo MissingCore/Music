@@ -127,6 +127,10 @@
         "setHomeTab": "Abrir la pestaña {{- name}} al iniciar la aplicación."
       }
     },
+    "albumLengthFilter": {
+      "title": null,
+      "description": null
+    },
     "miniplayerGestures": {
       "title": null
     },

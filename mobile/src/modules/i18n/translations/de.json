@@ -127,6 +127,10 @@
         "setHomeTab": "{{- name}} Tab beim Start öffnen."
       }
     },
+    "albumLengthFilter": {
+      "title": null,
+      "description": null
+    },
     "miniplayerGestures": {
       "title": "Miniplayer Gesten"
     },
@@ -170,11 +174,11 @@
     },
     "hiddenTracks": {
       "title": "Versteckte Tracks",
-      "brief": null,
+      "brief": "Tracks nicht in der App angezeigt.",
       "extra": {
-        "hiddenAt": null,
-        "hasHiddenTracks": null,
-        "notFound": null
+        "hiddenAt": "Versteckt an {{- date}}.",
+        "hasHiddenTracks": "{{- name}} hat versteckte Tracks.",
+        "notFound": "Keine versteckten Tracks gefunden."
       }
     },
     "saveErrors": {
@@ -203,7 +207,7 @@
       "brief": "Beim Überspringen nicht von \"Ein Lied wiederholen\" auf \"Wiederholen\" umschalten."
     },
     "saveLastPosition": {
-      "title": null
+      "title": "Zuletzt gespielte Position speichern"
     },
     "scanning": {
       "title": "Scannen",
@@ -235,11 +239,11 @@
       "description": "Dauer in Sekunden des Audios, das wir nicht speichern möchten."
     },
     "experimental": {
-      "title": null,
-      "brief": null
+      "title": "Experimentelle Funktionen",
+      "brief": "Funktionen, für die möglicherweise kein offizieller Support verfügbar ist oder die nicht wie erwartet funktionieren. Die Verwendung erfolgt auf eigene Gefahr."
     },
     "continuePlaybackOnDismiss": {
-      "title": null,
+      "title": "Wiedergabe beim Schließen fortsetzen",
       "description": null
     },
     "sleepTimer": {

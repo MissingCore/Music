@@ -127,6 +127,10 @@
         "setHomeTab": "باز کردن تب {{- name}} هنگام اجرای برنامه."
       }
     },
+    "albumLengthFilter": {
+      "title": null,
+      "description": null
+    },
     "miniplayerGestures": {
       "title": null
     },

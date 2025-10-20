@@ -127,6 +127,10 @@
         "setHomeTab": "Otwórz zakładkę {{- name}} przy uruchomieniu aplikacji."
       }
     },
+    "albumLengthFilter": {
+      "title": null,
+      "description": null
+    },
     "miniplayerGestures": {
       "title": "Gesty miniodtwarzacza"
     },
