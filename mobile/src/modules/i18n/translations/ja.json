@@ -202,7 +202,7 @@
       "title": "スキップ時にリピートモードを維持する",
       "brief": "スキップ時に「1 回リピート」を「リピート」に切り替えないようにします。"
     },
-    "saveLastPosition": {
+    "restoreLastPosition": {
       "title": "最後に再生した位置を保存"
     },
     "scanning": {

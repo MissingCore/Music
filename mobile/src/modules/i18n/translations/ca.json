@@ -202,7 +202,7 @@
       "title": "Mantenir el mode de repetició al saltar",
       "brief": "Evita que \"Repetir una vegada\" canviï a \"Repetir\" en saltar."
     },
-    "saveLastPosition": {
+    "restoreLastPosition": {
       "title": "Guardar l'última posició reproduïda"
     },
     "scanning": {

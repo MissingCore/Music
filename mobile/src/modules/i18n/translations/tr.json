@@ -202,7 +202,7 @@
       "title": "Parça Atlandığında Tekrarlama Modunu Koru",
       "brief": "Parça atlandığında modu \"Tek Parçayı Tekrarla\" konumundan \"Tekrarla\" konumuna değiştirmeyin."
     },
-    "saveLastPosition": {
+    "restoreLastPosition": {
       "title": "Son Çalınan Konumu Kaydet"
     },
     "scanning": {

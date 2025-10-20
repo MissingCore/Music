@@ -202,7 +202,7 @@
       "title": "Garder le mode Répéter lors du passage au titre suivant",
       "brief": "Ne pas basculer en mode « Répéter » depuis « Répéter le titre » lors du saut."
     },
-    "saveLastPosition": {
+    "restoreLastPosition": {
       "title": null
     },
     "scanning": {

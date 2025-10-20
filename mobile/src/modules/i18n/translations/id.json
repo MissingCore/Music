@@ -202,7 +202,7 @@
       "title": "Tetap dalam Mode Mengulang saat Melewati",
       "brief": "Jangan mengalihkan mode ke \"Ulangi\" dari \"Ulangi Sekali\" saat melewati."
     },
-    "saveLastPosition": {
+    "restoreLastPosition": {
       "title": null
     },
     "scanning": {

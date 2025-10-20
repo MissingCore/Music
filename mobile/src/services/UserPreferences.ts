@@ -65,8 +65,8 @@ interface UserPreferencesStore {
   /** Whether we stay on "Repeat One" mode when we skip. */
   repeatOnSkip: boolean;
 
-  /** Whether we'll keep track of the last played position. */
-  saveLastPosition: boolean;
+  /** Whether we'll restore the track to the last played position. */
+  restoreLastPosition: boolean;
 
   /** Directories we'll limit to when looking for tracks. */
   listAllow: string[];
@@ -139,7 +139,7 @@ export const userPreferencesStore =
       ignoreInterrupt: false,
       repeatOnSkip: false,
 
-      saveLastPosition: true,
+      restoreLastPosition: true,
 
       listAllow: [],
       listBlock: [],

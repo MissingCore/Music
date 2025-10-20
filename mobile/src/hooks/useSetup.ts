@@ -43,11 +43,11 @@ export function useSetup() {
       await revalidateWidgets({ openApp: true });
 
       const { repeat, activeId } = playbackStore.getState();
-      const { saveLastPosition, continuePlaybackOnDismiss } =
+      const { restoreLastPosition, continuePlaybackOnDismiss } =
         userPreferencesStore.getState();
-      if (saveLastPosition)
+      if (restoreLastPosition) {
         playbackStore.setState({ _restoredTrackId: activeId });
-      else playbackStore.setState({ _hasRestoredPosition: true });
+      } else playbackStore.setState({ _hasRestoredPosition: true });
 
       // Ensure correct RNTP settings.
       await TrackPlayer.updateOptions(

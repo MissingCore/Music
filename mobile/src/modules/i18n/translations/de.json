@@ -202,7 +202,7 @@
       "title": "Wiederholungsmodus beim Überspringen behalten",
       "brief": "Beim Überspringen nicht von \"Ein Lied wiederholen\" auf \"Wiederholen\" umschalten."
     },
-    "saveLastPosition": {
+    "restoreLastPosition": {
       "title": null
     },
     "scanning": {

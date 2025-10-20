@@ -12,7 +12,9 @@ export default function PlaybackSettings() {
   const { t } = useTranslation();
   const ignoreInterrupt = useUserPreferencesStore((s) => s.ignoreInterrupt);
   const repeatOnSkip = useUserPreferencesStore((s) => s.repeatOnSkip);
-  const saveLastPosition = useUserPreferencesStore((s) => s.saveLastPosition);
+  const restoreLastPosition = useUserPreferencesStore(
+    (s) => s.restoreLastPosition,
+  );
 
   return (
     <StandardScrollLayout>
@@ -35,9 +37,9 @@ export default function PlaybackSettings() {
 
       <List>
         <ListItem
-          titleKey="feat.saveLastPosition.title"
-          onPress={toggleSaveLastPosition}
-          switchState={saveLastPosition}
+          titleKey="feat.restoreLastPosition.title"
+          onPress={toggleRestoreLastPosition}
+          switchState={restoreLastPosition}
           first
           last
         />
@@ -56,7 +58,7 @@ const toggleRepeatOnSkip = () =>
     repeatOnSkip: !prev.repeatOnSkip,
   }));
 
-const toggleSaveLastPosition = async () =>
+const toggleRestoreLastPosition = async () =>
   userPreferencesStore.setState((prev) => ({
-    saveLastPosition: !prev.saveLastPosition,
+    restoreLastPosition: !prev.restoreLastPosition,
   }));

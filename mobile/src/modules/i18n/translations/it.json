@@ -202,7 +202,7 @@
       "title": "Mantieni modalità \"$t(term.repeat)\" al cambio brano",
       "brief": "Non cambiare a \"$t(term.repeat)\" da \"$t(term.repeatOne)\" quando salti un brano."
     },
-    "saveLastPosition": {
+    "restoreLastPosition": {
       "title": null
     },
     "scanning": {

@@ -202,7 +202,7 @@
       "title": "Zachowaj zapętlenie po pominięciu",
       "brief": "Nie zmieniaj trybu na `Zapętl` z `Zapętl jedną` po pominięciu."
     },
-    "saveLastPosition": {
+    "restoreLastPosition": {
       "title": "Zapisz ostatnio odtwarzaną pozycję"
     },
     "scanning": {
