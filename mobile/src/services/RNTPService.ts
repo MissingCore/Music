@@ -107,11 +107,11 @@ export async function PlaybackService() {
     if (!_hasRestoredPosition) {
       playbackStore.setState({ _hasRestoredPosition: true });
       if (
-        lastPosition !== undefined &&
         _restoredTrackId !== undefined &&
         _restoredTrackId === activeTrack?.id
       ) {
-        await PlaybackControls.seekTo(lastPosition);
+        // Fallback to `0` to support legacy behavior where we could store `undefined`.
+        await PlaybackControls.seekTo(lastPosition ?? 0);
       }
     }
 
@@ -120,7 +120,7 @@ export async function PlaybackService() {
     }
     // Only mark a track as played after we play 10s of it. This prevents
     // the track being marked as "played" if we skip it.
-    if (lastPosition === undefined || resolvedLastPosition) {
+    if (resolvedLastPosition) {
       // Track should start playing at 0s.
       playbackCountUpdator = BackgroundTimer.setTimeout(
         async () => await addPlayedTrack(activeTrack!.id),
@@ -137,7 +137,6 @@ export async function PlaybackService() {
       resolvedLastPosition = true;
     }
 
-    playbackStore.setState({ lastPosition: undefined });
     await revalidateWidgets();
   });
 

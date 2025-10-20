@@ -46,7 +46,6 @@ function useRestorePosition() {
   return useMemo(() => {
     if (
       _hasRestoredPosition ||
-      lastPosition === undefined ||
       _restoredTrackId === undefined ||
       _restoredTrackId !== activeId
     ) {

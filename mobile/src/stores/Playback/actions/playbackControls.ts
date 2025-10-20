@@ -85,7 +85,7 @@ export async function prev() {
 
   // If the RNTP queue isn't loaded or if we played <=10s of the track,
   // simply update the `currPlayingIdx` & `currPlayingId`
-  if ((lastPosition ?? 0) <= 10 || !(await isLoaded())) {
+  if (lastPosition <= 10 || !(await isLoaded())) {
     playbackStore.setState({
       activeId: prevTrack.id,
       activeTrack: prevTrack,

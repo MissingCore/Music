@@ -50,7 +50,7 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
         _hasRestoredPosition: false,
         _restoredTrackId: undefined,
         isPlaying: false,
-        lastPosition: undefined,
+        lastPosition: 0,
         playingFrom: undefined,
         playingFromName: "",
         orderSnapshot: [],
@@ -90,7 +90,7 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
     _restoredTrackId: undefined,
 
     isPlaying: false,
-    lastPosition: undefined,
+    lastPosition: 0,
 
     repeat: RepeatModes.NO_REPEAT,
     shuffle: false,

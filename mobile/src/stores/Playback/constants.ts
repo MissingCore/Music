@@ -33,7 +33,7 @@ export interface PlaybackStore {
   _restoredTrackId: string | undefined;
 
   isPlaying: boolean;
-  lastPosition: number | undefined;
+  lastPosition: number;
 
   repeat: RepeatMode;
   shuffle: boolean;
