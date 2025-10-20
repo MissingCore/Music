@@ -127,6 +127,10 @@
         "setHomeTab": null
       }
     },
+    "albumLengthFilter": {
+      "title": null,
+      "description": null
+    },
     "miniplayerGestures": {
       "title": null
     },

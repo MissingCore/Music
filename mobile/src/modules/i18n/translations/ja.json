@@ -127,6 +127,10 @@
         "setHomeTab": "アプリの起動時に「{{- name}}」のタブを開きます。"
       }
     },
+    "albumLengthFilter": {
+      "title": null,
+      "description": null
+    },
     "miniplayerGestures": {
       "title": null
     },
