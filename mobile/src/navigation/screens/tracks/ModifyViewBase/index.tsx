@@ -178,13 +178,13 @@ function ConfirmationModal() {
     <ModalTemplate
       visible={showConfirmation}
       titleKey="form.unsaved"
-      leftAction={{
-        textKey: "form.stay",
-        onPress: () => setShowConfirmation(false),
-      }}
-      rightAction={{
+      topAction={{
         textKey: "form.leave",
         onPress: () => navigation.goBack(),
+      }}
+      bottomAction={{
+        textKey: "form.stay",
+        onPress: () => setShowConfirmation(false),
       }}
     />
   );

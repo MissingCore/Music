@@ -263,13 +263,13 @@ function ConfirmationModal() {
     <ModalTemplate
       visible={showConfirmation}
       titleKey="form.unsaved"
-      leftAction={{
-        textKey: "form.stay",
-        onPress: () => setShowConfirmation(false),
-      }}
-      rightAction={{
+      topAction={{
         textKey: "form.leave",
         onPress: () => navigation.goBack(),
+      }}
+      bottomAction={{
+        textKey: "form.stay",
+        onPress: () => setShowConfirmation(false),
       }}
     />
   );
@@ -320,13 +320,13 @@ function DeleteWorkflow({
       <ModalTemplate
         visible={lastChance}
         titleKey="feat.playlist.extra.delete"
-        leftAction={{
-          textKey: "form.cancel",
-          onPress: () => setLastChance(false),
-        }}
-        rightAction={{
+        topAction={{
           textKey: "form.confirm",
           onPress: onDelete,
+        }}
+        bottomAction={{
+          textKey: "form.cancel",
+          onPress: () => setLastChance(false),
         }}
       />
     </>

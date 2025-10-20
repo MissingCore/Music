@@ -35,8 +35,8 @@ export function ModalTemplate(
         style={{ fontSize: 18, textAlign: "center" }}
       />
       <ModalActions
-        leftAction={props.leftAction}
-        rightAction={props.rightAction}
+        topAction={props.topAction}
+        bottomAction={props.bottomAction}
       />
     </Modal>
   );
@@ -45,44 +45,44 @@ export function ModalTemplate(
 //#region Modal Actions
 type ActionOptions = Omit<PressableProps, "children"> & { textKey: ParseKeys };
 type ModalActionsProp = {
-  leftAction: ActionOptions;
-  rightAction: ActionOptions & {
+  topAction: ActionOptions & {
     /** Defaults to `true`. */
     danger?: boolean;
   };
+  bottomAction: ActionOptions;
 };
 
 export function ModalActions(props: ModalActionsProp) {
   const { theme } = useTheme();
   return (
-    <View className="flex-row gap-[3px]">
+    <View className="gap-[3px]">
       <Button
-        {...props.leftAction}
+        {...props.topAction}
         className={cn(
-          "flex-1 rounded-r-sm bg-canvas",
+          "flex-1 rounded-b-sm bg-canvas",
           { "bg-onSurface": theme === "dark" },
-          props.leftAction.className,
+          props.topAction.className,
         )}
       >
         <TStyledText
-          textKey={props.leftAction.textKey}
-          className="text-center text-sm"
+          textKey={props.topAction.textKey}
+          className={cn("text-center text-sm", {
+            "text-red": props.topAction.danger ?? true,
+          })}
           bold
         />
       </Button>
       <Button
-        {...props.rightAction}
+        {...props.bottomAction}
         className={cn(
-          "flex-1 rounded-l-sm bg-canvas",
+          "flex-1 rounded-t-sm bg-canvas",
           { "bg-onSurface": theme === "dark" },
-          props.rightAction.className,
+          props.bottomAction.className,
         )}
       >
         <TStyledText
-          textKey={props.rightAction.textKey}
-          className={cn("text-center text-sm", {
-            "text-red": props.rightAction.danger ?? true,
-          })}
+          textKey={props.bottomAction.textKey}
+          className="text-center text-sm"
           bold
         />
       </Button>
