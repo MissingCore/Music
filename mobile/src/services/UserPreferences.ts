@@ -48,6 +48,8 @@ interface UserPreferencesStore {
   /** Font used for text. */
   primaryFont: (typeof PrimaryFontOptions)[number];
 
+  /** Minimum number of tracks for album to show in `Albums` screen. */
+  minAlbumLength: number;
   /** If we want swipe controls on the miniplayer. */
   miniplayerGestures: boolean;
   /** Design used for the "Now Playing" screen. */
@@ -122,6 +124,7 @@ export const userPreferencesStore =
       accentFont: "NType",
       primaryFont: "Roboto",
 
+      minAlbumLength: 0,
       miniplayerGestures: false,
       nowPlayingDesign: "vinyl",
 

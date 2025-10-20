@@ -16,21 +16,19 @@ import { useSheetRef } from "~/components/Sheet";
 export default function AppearanceSettings() {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const accentFont = useUserPreferencesStore((state) => state.accentFont);
-  const primaryFont = useUserPreferencesStore((state) => state.primaryFont);
-  const theme = useUserPreferencesStore((state) => state.theme);
+  const accentFont = useUserPreferencesStore((s) => s.accentFont);
+  const primaryFont = useUserPreferencesStore((s) => s.primaryFont);
+  const theme = useUserPreferencesStore((s) => s.theme);
+  const minAlbumLength = useUserPreferencesStore((s) => s.minAlbumLength);
   const miniplayerGestures = useUserPreferencesStore(
-    (state) => state.miniplayerGestures,
+    (s) => s.miniplayerGestures,
   );
-  const nowPlayingDesign = useUserPreferencesStore(
-    (state) => state.nowPlayingDesign,
-  );
-  const ignoreRTLLayout = useUserPreferencesStore(
-    (state) => state.ignoreRTLLayout,
-  );
+  const nowPlayingDesign = useUserPreferencesStore((s) => s.nowPlayingDesign);
+  const ignoreRTLLayout = useUserPreferencesStore((s) => s.ignoreRTLLayout);
   const accentFontSheetRef = useSheetRef();
   const primaryFontSheetRef = useSheetRef();
   const themeSheetRef = useSheetRef();
+  const albumLengthFilterSheetRef = useSheetRef();
   const nowPlayingDesignSheetRef = useSheetRef();
 
   return (
@@ -39,6 +37,7 @@ export default function AppearanceSettings() {
         accentFontRef={accentFontSheetRef}
         primaryFontRef={primaryFontSheetRef}
         themeRef={themeSheetRef}
+        albumLengthFilterRef={albumLengthFilterSheetRef}
         nowPlayingDesignRef={nowPlayingDesignSheetRef}
       />
       <StandardScrollLayout>
@@ -62,11 +61,19 @@ export default function AppearanceSettings() {
           />
         </List>
 
+        <ListItem
+          titleKey="feat.tabsOrder.title"
+          description={t("feat.tabsOrder.brief")}
+          onPress={() => navigation.navigate("HomeTabsOrderSettings")}
+          first
+          last
+        />
+
         <List>
           <ListItem
-            titleKey="feat.tabsOrder.title"
-            description={t("feat.tabsOrder.brief")}
-            onPress={() => navigation.navigate("HomeTabsOrderSettings")}
+            titleKey="feat.albumLengthFilter.title"
+            description={t("plural.track", { count: minAlbumLength })}
+            onPress={() => albumLengthFilterSheetRef.current?.present()}
             first
           />
           <ListItem

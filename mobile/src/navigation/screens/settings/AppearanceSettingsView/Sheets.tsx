@@ -1,5 +1,6 @@
 import { useColorScheme } from "nativewind";
-import { Text } from "react-native";
+import { useEffect, useState } from "react";
+import { Keyboard, Text } from "react-native";
 
 import {
   AccentFontOptions,
@@ -13,6 +14,7 @@ import {
 import { getFont } from "~/lib/style";
 import { toLowerCase } from "~/utils/string";
 import { FlatList } from "~/components/Defaults";
+import { NumericInput } from "~/components/Form/Input";
 import { Radio } from "~/components/Form/Selection";
 import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
@@ -21,17 +23,19 @@ import { deferInitialRender } from "../../../components/DeferredRender";
 
 /** All the sheets used on `/setting/appearance` route. */
 export const AppearanceSettingsSheets = deferInitialRender(
-  function AppearanceSettingsSheets(
-    props: Record<
-      "accentFontRef" | "primaryFontRef" | "themeRef" | "nowPlayingDesignRef",
-      TrueSheetRef
-    >,
-  ) {
+  function AppearanceSettingsSheets(props: {
+    accentFontRef: TrueSheetRef;
+    primaryFontRef: TrueSheetRef;
+    themeRef: TrueSheetRef;
+    albumLengthFilterRef: TrueSheetRef;
+    nowPlayingDesignRef: TrueSheetRef;
+  }) {
     return (
       <>
         <FontAccentSheet sheetRef={props.accentFontRef} />
         <FontPrimarySheet sheetRef={props.primaryFontRef} />
         <ThemeSheet sheetRef={props.themeRef} />
+        <MinAlbumLengthSheet sheetRef={props.albumLengthFilterRef} />
         <NowPlayingDesignSheet sheetRef={props.nowPlayingDesignRef} />
       </>
     );
@@ -41,7 +45,7 @@ export const AppearanceSettingsSheets = deferInitialRender(
 //#region Font
 /** Enables changing the font used primarily for headings. */
 function FontAccentSheet(props: { sheetRef: TrueSheetRef }) {
-  const accentFont = useUserPreferencesStore((state) => state.accentFont);
+  const accentFont = useUserPreferencesStore((s) => s.accentFont);
   return (
     <FontSheet
       sheetRef={props.sheetRef}
@@ -55,7 +59,7 @@ function FontAccentSheet(props: { sheetRef: TrueSheetRef }) {
 
 /** Enables changing the font used by all text in the app. */
 function FontPrimarySheet(props: { sheetRef: TrueSheetRef }) {
-  const primaryFont = useUserPreferencesStore((state) => state.primaryFont);
+  const primaryFont = useUserPreferencesStore((s) => s.primaryFont);
   return (
     <FontSheet
       sheetRef={props.sheetRef}
@@ -104,10 +108,11 @@ function FontSheet<T extends (typeof AccentFontOptions)[number]>(props: {
 }
 //#endregion
 
+//#region Theme
 /** Enables changing the theme of the app. */
 function ThemeSheet(props: { sheetRef: TrueSheetRef }) {
   const { setColorScheme } = useColorScheme();
-  const selectedTheme = useUserPreferencesStore((state) => state.theme);
+  const selectedTheme = useUserPreferencesStore((s) => s.theme);
 
   return (
     <Sheet ref={props.sheetRef} titleKey="feat.theme.title">
@@ -131,12 +136,47 @@ function ThemeSheet(props: { sheetRef: TrueSheetRef }) {
     </Sheet>
   );
 }
+//#endregion
 
+//#region Min Album Length
+/**
+ * Enables us to specify the minimum number of tracks required for an
+ * album to be displayed in the Albums screen.
+ */
+function MinAlbumLengthSheet(props: { sheetRef: TrueSheetRef }) {
+  const minAlbumLength = useUserPreferencesStore((s) => s.minAlbumLength);
+  const [newMin, setNewMin] = useState<string | undefined>();
+
+  useEffect(() => {
+    const subscription = Keyboard.addListener(
+      "keyboardDidHide",
+      // Update user preference when we close the keyboard.
+      () => updateMinAlbumLength(newMin),
+    );
+    return () => subscription.remove();
+  }, [newMin]);
+
+  return (
+    <Sheet ref={props.sheetRef} titleKey="feat.albumLengthFilter.title">
+      <TStyledText
+        dim
+        textKey="feat.albumLengthFilter.description"
+        className="text-center text-sm"
+      />
+      <NumericInput
+        defaultValue={`${minAlbumLength}`}
+        onChangeText={(text) => setNewMin(text)}
+        className="mx-auto mb-2 w-full max-w-[50%] border-b border-foreground/60 text-center"
+      />
+    </Sheet>
+  );
+}
+//#endregion
+
+//#region Now Playing Design
 /** Enables changing the appearance of the artwork on the "Now Playing" screen. */
 function NowPlayingDesignSheet(props: { sheetRef: TrueSheetRef }) {
-  const nowPlayingDesign = useUserPreferencesStore(
-    (state) => state.nowPlayingDesign,
-  );
+  const nowPlayingDesign = useUserPreferencesStore((s) => s.nowPlayingDesign);
   return (
     <Sheet ref={props.sheetRef} titleKey="feat.nowPlayingDesign.title">
       <FlatList
@@ -156,6 +196,7 @@ function NowPlayingDesignSheet(props: { sheetRef: TrueSheetRef }) {
     </Sheet>
   );
 }
+//#endregion
 
 //#region Setter Functions
 const setAccentFont = (newFont: (typeof AccentFontOptions)[number]) =>
@@ -170,4 +211,11 @@ const setTheme = (newTheme: (typeof ThemeOptions)[number]) =>
 const setNowPlayingDesign = (
   newDesign: (typeof NowPlayingDesignOptions)[number],
 ) => userPreferencesStore.setState({ nowPlayingDesign: newDesign });
+
+async function updateMinAlbumLength(newLength: string | undefined) {
+  const asNum = Number(newLength);
+  // Validate that it's a positive integer.
+  if (!Number.isInteger(asNum) || asNum < 0) return;
+  userPreferencesStore.setState({ minAlbumLength: asNum });
+}
 //#endregion
