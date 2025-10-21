@@ -1,0 +1,78 @@
+diff --git a/dist/commonjs/index.js b/dist/commonjs/index.js
+index ce92b4e5df0cf6cc6e01f9f27c2f5a448cb57b8e..badfdd59ff4b5a279c333c90819e2f25a91f7ff5 100644
+--- a/dist/commonjs/index.js
++++ b/dist/commonjs/index.js
+@@ -19,6 +19,7 @@ function hide(config = {}) {
+   } = config;
+   return _NativeRNBootSplash.default.hide(fade).then(() => {});
+ }
++export const isSystemDarkMode = _NativeRNBootSplash.default.getConstants().darkModeEnabled;
+ function isVisible() {
+   return _NativeRNBootSplash.default.isVisible();
+ }
+@@ -154,6 +155,7 @@ function useHideAnimation(config) {
+ }
+ var _default = exports.default = {
+   hide,
++  isSystemDarkMode,
+   isVisible,
+   useHideAnimation
+ };
+diff --git a/dist/module/index.js b/dist/module/index.js
+index 1c2b2da434f26d94b001aa39c8b7e1adab176b60..3988da5788e922db6c17fdb5cbb2856bc09aeead 100644
+--- a/dist/module/index.js
++++ b/dist/module/index.js
+@@ -11,6 +11,7 @@ export function hide(config = {}) {
+   } = config;
+   return NativeModule.hide(fade).then(() => {});
+ }
++export const isSystemDarkMode = NativeModule.getConstants().darkModeEnabled;
+ export function isVisible() {
+   return NativeModule.isVisible();
+ }
+@@ -146,6 +147,7 @@ export function useHideAnimation(config) {
+ }
+ export default {
+   hide,
++  isSystemDarkMode,
+   isVisible,
+   useHideAnimation
+ };
+diff --git a/dist/typescript/index.d.ts b/dist/typescript/index.d.ts
+index c0d4b8e836803d7dd9951ea27f52d8e51d8ec8d7..4737696c26553378887812893d9d12892616d8ad 100644
+--- a/dist/typescript/index.d.ts
++++ b/dist/typescript/index.d.ts
+@@ -50,10 +50,12 @@ export type UseHideAnimation = {
+     brand: BrandProps;
+ };
+ export declare function hide(config?: Config): Promise<void>;
++export declare const isSystemDarkMode: boolean;
+ export declare function isVisible(): Promise<boolean>;
+ export declare function useHideAnimation(config: UseHideAnimationConfig): UseHideAnimation;
+ declare const _default: {
+     hide: typeof hide;
++    isSystemDarkMode: typeof isSystemDarkMode;
+     isVisible: typeof isVisible;
+     useHideAnimation: typeof useHideAnimation;
+ };
+diff --git a/src/index.ts b/src/index.ts
+index 4bc14fc407ca7e926ab3c3f05289bdd99c9f61bd..546a9c5bab2421dadc38d222461e87e7ae935cc4 100644
+--- a/src/index.ts
++++ b/src/index.ts
+@@ -81,6 +81,8 @@ export function hide(config: Config = {}): Promise<void> {
+   return NativeModule.hide(fade).then(() => {});
+ }
+ 
++export const isSystemDarkMode = NativeModule.getConstants().darkModeEnabled;
++
+ export function isVisible(): Promise<boolean> {
+   return NativeModule.isVisible();
+ }
+@@ -278,6 +280,7 @@ export function useHideAnimation(config: UseHideAnimationConfig) {
+ 
+ export default {
+   hide,
++  isSystemDarkMode,
+   isVisible,
+   useHideAnimation,
+ };

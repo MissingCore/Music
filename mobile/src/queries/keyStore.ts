@@ -36,7 +36,6 @@ export const queries = createQueryKeyStore({
             tracks: {
               where: (fields, { isNull }) => isNull(fields.hiddenAt),
               columns: { id: true },
-              limit: 1,
             },
           },
           orderBy: (fields) => [iAsc(fields.name), iAsc(fields.artistName)],

@@ -20,6 +20,9 @@ patchedDependencies:
   react-native-android-widget:
     hash: xf3x7denwghlvu46ncfmxxprli
     path: patches/react-native-android-widget.patch
+  react-native-bootsplash:
+    hash: rg27khsleipd2xp3egotvvkzo4
+    path: patches/react-native-bootsplash.patch
   react-native-gesture-handler:
     hash: rjhgnwrqf5shhovxtmq2tgj2qm
     path: patches/react-native-gesture-handler.patch
@@ -47,8 +50,8 @@ importers:
         specifier: ^0.1.0
         version: 0.1.0(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@missingcore/react-native-metadata-retriever':
-        specifier: ^2.1.0
-        version: 2.1.0(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        specifier: ^2.2.0
+        version: 2.2.0(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@paralleldrive/cuid2':
         specifier: ^2.2.2
         version: 2.2.2
@@ -147,7 +150,7 @@ importers:
         version: 0.17.2(patch_hash=xf3x7denwghlvu46ncfmxxprli)(expo@53.0.23(@babel/core@7.28.4)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-bootsplash:
         specifier: ^6.3.11
-        version: 6.3.11(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        version: 6.3.11(patch_hash=rg27khsleipd2xp3egotvvkzo4)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-draglist:
         specifier: github:MissingCore/react-native-draglist#a3847ce4f9265853a12b865ba30902e907d43c20
         version: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a3847ce4f9265853a12b865ba30902e907d43c20(@shopify/flash-list@1.8.3(@babel/runtime@7.28.4)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -1312,8 +1315,8 @@ packages:
       react: '*'
       react-native: '*'
 
-  '@missingcore/react-native-metadata-retriever@2.1.0':
-    resolution: {integrity: sha512-qXDMuYKmj0A0xW+xrA1ufTXf8LXMbXyPn1A0nf49FiAFymtJFoERvLkuCyuH+3K5oKgGCFhOrcOVyX+99L3I7A==}
+  '@missingcore/react-native-metadata-retriever@2.2.0':
+    resolution: {integrity: sha512-KWnOmQj6zuHHsy1bOHNujgBPWlXchpzy4q6VZzmXfXMR+QI45Gic9oLBiDsAipXge5In63MAi1KV9m3D369Pkg==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -6825,7 +6828,7 @@ snapshots:
       react: 19.0.0
       react-native: 0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0)
 
-  '@missingcore/react-native-metadata-retriever@2.1.0(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
+  '@missingcore/react-native-metadata-retriever@2.2.0(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
     dependencies:
       react: 19.0.0
       react-native: 0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0)
@@ -10405,7 +10408,7 @@ snapshots:
     optionalDependencies:
       expo: 53.0.23(@babel/core@7.28.4)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
 
-  react-native-bootsplash@6.3.11(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+  react-native-bootsplash@6.3.11(patch_hash=rg27khsleipd2xp3egotvvkzo4)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:
       '@expo/config-plugins': 10.1.2
       '@react-native-community/cli-config-android': 18.0.0

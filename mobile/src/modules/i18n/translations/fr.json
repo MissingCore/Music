@@ -127,6 +127,10 @@
         "setHomeTab": "Ouvrir l’onglet {{- name}} au lancement de l’application."
       }
     },
+    "albumLengthFilter": {
+      "title": null,
+      "description": null
+    },
     "miniplayerGestures": {
       "title": "Gestes du mini-lecteur"
     },

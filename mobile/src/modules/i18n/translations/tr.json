@@ -127,6 +127,10 @@
         "setHomeTab": "Uygulama başlatıldığında {{- name}} sekmesini aç."
       }
     },
+    "albumLengthFilter": {
+      "title": null,
+      "description": null
+    },
     "miniplayerGestures": {
       "title": "Mini Oynatıcı Hareketleri"
     },

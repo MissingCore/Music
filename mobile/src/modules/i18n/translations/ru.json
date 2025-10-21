@@ -127,6 +127,10 @@
         "setHomeTab": "Откройте вкладку {{- name}} при запуске."
       }
     },
+    "albumLengthFilter": {
+      "title": null,
+      "description": null
+    },
     "miniplayerGestures": {
       "title": null
     },

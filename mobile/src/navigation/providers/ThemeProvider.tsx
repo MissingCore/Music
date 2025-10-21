@@ -1,7 +1,7 @@
 import { vars } from "nativewind";
-import { useCallback, useState } from "react";
 import type { ViewStyle } from "react-native";
-import { Appearance, View } from "react-native";
+import { View } from "react-native";
+import { isSystemDarkMode } from "react-native-bootsplash";
 import { SystemBars } from "react-native-edge-to-edge";
 
 import { useCurrentTheme } from "~/hooks/useTheme";
@@ -47,20 +47,9 @@ export function SystemTheme(props: {
   children: React.ReactNode;
   style?: ViewStyle;
 }) {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
-
-  const getInitialSystemTheme = useCallback(() => {
-    setTheme(Appearance.getColorScheme() ?? "light");
-    return () => {};
-  }, []);
-
   return (
     <View
-      // Use the initial theme as it'll change when we get the values from
-      // the user preference store. The order when a callback ref is fired
-      // allow us to keep the system theme during the onboarding process.
-      ref={getInitialSystemTheme}
-      style={[Themes[theme], props.style]}
+      style={[Themes[isSystemDarkMode ? "dark" : "light"], props.style]}
       className="flex-1 bg-canvas"
     >
       {props.children}
