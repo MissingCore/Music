@@ -49,7 +49,7 @@
   },
   "@missingcore/react-native-metadata-retriever": {
     "name": "@missingcore/react-native-metadata-retriever",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "copyright": "Copyright (c) 2024 MissingCore <missingcoredev@outlook.com>",
     "source": "https://github.com/MissingCore/react-native-metadata-retriever",
     "license": "MIT",
