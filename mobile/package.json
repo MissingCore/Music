@@ -116,7 +116,8 @@
       "@react-native-assets/slider": "patches/@react-native-assets__slider.patch",
       "@backpackapp-io/react-native-toast": "patches/@backpackapp-io__react-native-toast.patch",
       "expo-file-system": "patches/expo-file-system.patch",
-      "react-native-android-widget": "patches/react-native-android-widget.patch"
+      "react-native-android-widget": "patches/react-native-android-widget.patch",
+      "react-native-bootsplash": "patches/react-native-bootsplash.patch"
     }
   }
 }
