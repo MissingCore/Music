@@ -233,6 +233,7 @@ export const RootStack = createNativeStackNavigator({
         animation: "slide_from_bottom",
         header: NowPlayingTopAppBar,
         headerTransparent: true,
+        freezeOnBlur: false,
       },
     },
     Search,
