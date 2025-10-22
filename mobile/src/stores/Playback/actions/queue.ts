@@ -5,6 +5,7 @@ import i18next from "~/modules/i18n";
 import { playbackStore } from "../store";
 
 import { ToastOptions } from "~/lib/toast";
+import { moveArray } from "~/utils/object";
 
 /** Add a track after the current playing track. */
 export function add({ id, name }: { id: string; name: string }) {
@@ -14,6 +15,26 @@ export function add({ id, name }: { id: string; name: string }) {
   if (queue.length === 0) return;
   playbackStore.setState({
     queue: queue.toSpliced(queuePosition + 1, 0, id),
+  });
+}
+
+/** Move a track in the queue. */
+export function moveTrack(fromIndex: number, toIndex: number) {
+  const { queue, queuePosition } = playbackStore.getState();
+
+  let newQueuePosition = queuePosition;
+  if (fromIndex === queuePosition) newQueuePosition = toIndex;
+  else if (fromIndex < queuePosition && toIndex >= queuePosition) {
+    // If we move a track before the active track to after it.
+    newQueuePosition -= 1;
+  } else if (fromIndex > queuePosition && toIndex <= queuePosition) {
+    // If we move a track after the active track to before it.
+    newQueuePosition += 1;
+  }
+
+  playbackStore.setState({
+    queue: moveArray(queue, { fromIndex, toIndex }),
+    queuePosition: newQueuePosition,
   });
 }
 

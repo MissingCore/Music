@@ -127,6 +127,26 @@ export async function seekTo(position: number) {
   await TrackPlayer.seekTo(position);
 }
 
+/** Play track at specified index in queue. */
+export async function playAtIndex(index: number) {
+  const { getTrack, reset, queue } = playbackStore.getState();
+
+  const nextTrackId = queue[index];
+  if (!nextTrackId) return await reset();
+  // If no track is found, reset the state.
+  const nextTrack = await getTrack(nextTrackId);
+  if (!nextTrack) return;
+
+  playbackStore.setState({
+    activeId: nextTrack.id,
+    activeTrack: nextTrack,
+    queuePosition: index,
+    ...getNewRepeatState(),
+  });
+
+  await loadCurrentTrack();
+}
+
 /** Play a track from a media list. */
 export async function playFromList({
   source,
