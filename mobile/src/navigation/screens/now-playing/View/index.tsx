@@ -15,10 +15,9 @@ import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { presentTrackSheet } from "~/services/SessionStore";
 import { useUserPreferencesStore } from "~/services/UserPreferences";
-import { useUpcomingStore } from "../helpers/UpcomingStore";
 import { usePlayerProgress } from "../helpers/usePlayerProgress";
 import { NowPlayingArtwork } from "../components/Artwork";
-import { NowPlayingSheets } from "./Sheets";
+import { PlaybackOptionsSheet } from "./PlaybackOptionsSheet";
 import { SleepTimerSheet } from "./SleepTimerSheet";
 import { useSleepTimerStore } from "./SleepTimerSheet/store";
 
@@ -204,21 +203,15 @@ function PlaybackControls() {
 /** Actions rendered on the bottom of the screen. */
 function BottomAppBar() {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const playbackOptionsSheetRef = useSheetRef();
-  const upcomingTracksSheetRef = useSheetRef();
   const sleepTimerSheetRef = useSheetRef();
-  const populateCurrentTrackList = useUpcomingStore(
-    (s) => s.populateCurrentTrackList,
-  );
   const showSleepTimer = useUserPreferencesStore((s) => s.sleepTimer);
   const sleepTimerActive = useSleepTimerStore((s) => s.endAt) !== null;
 
   return (
     <>
-      <NowPlayingSheets
-        playbackOptionsRef={playbackOptionsSheetRef}
-        upcomingTracksRef={upcomingTracksSheetRef}
-      />
+      <PlaybackOptionsSheet sheetRef={playbackOptionsSheetRef} />
       <SleepTimerSheet sheetRef={sleepTimerSheetRef} />
       <View className="flex-row items-center justify-between gap-4 p-4">
         <BackButton />
@@ -245,10 +238,7 @@ function BottomAppBar() {
           <IconButton
             Icon={LibraryMusic}
             accessibilityLabel={t("term.upcoming")}
-            onPress={async () => {
-              await populateCurrentTrackList();
-              upcomingTracksSheetRef.current?.present();
-            }}
+            onPress={() => navigation.navigate("Upcoming")}
             large
           />
         </View>

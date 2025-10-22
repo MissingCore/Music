@@ -24,6 +24,7 @@ import Albums from "./screens/albums/View";
 import Artist from "./screens/artists/CurrentView";
 import Artists from "./screens/artists/View";
 import Folders from "./screens/folders/View";
+import Upcoming from "./screens/now-playing/UpcomingView";
 import NowPlaying from "./screens/now-playing/View";
 import CreatePlaylist from "./screens/playlists/CreateView";
 import Playlist from "./screens/playlists/CurrentView";
@@ -238,6 +239,10 @@ export const RootStack = createNativeStackNavigator({
     Settings: {
       screen: Settings,
       options: { title: "term.settings" },
+    },
+    Upcoming: {
+      screen: Upcoming,
+      options: { title: "term.upcoming" },
     },
   },
   groups: {

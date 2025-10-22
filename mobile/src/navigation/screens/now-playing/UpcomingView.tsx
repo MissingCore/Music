@@ -1,108 +1,36 @@
 // import type { ListRenderItemInfo } from "@shopify/flash-list";
-import TrackPlayer from "@weights-ai/react-native-track-player";
+import { useQuery } from "@tanstack/react-query";
+import { inArray } from "drizzle-orm";
 // import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { View } from "react-native";
 
+import { tracks } from "~/db/schema";
 import { getTrackCover } from "~/db/utils";
 
 // import { Remove } from "~/resources/icons/Remove";
-import { SlowMotionVideo } from "~/resources/icons/SlowMotionVideo";
-import { VolumeUp } from "~/resources/icons/VolumeUp";
-import { usePlaybackStore } from "~/stores/Playback/store";
+import { getTracks } from "~/api/track";
+import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 // import { Queue } from "~/stores/Playback/actions";
-import { sessionStore, useSessionStore } from "~/services/SessionStore";
 // import type { UpcomingStore } from "../helpers/UpcomingStore";
-import { useUpcomingStore } from "../helpers/UpcomingStore";
 
 // import { Colors } from "~/constants/Styles";
 // import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { FlashList } from "~/components/Defaults";
 // import { Button } from "~/components/Form/Button";
-import { NSlider } from "~/components/Form/Slider";
-import type { TrueSheetRef } from "~/components/Sheet";
-import { Sheet } from "~/components/Sheet";
 // import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
 import { SearchResult } from "~/modules/search/components/SearchResult";
-import { deferInitialRender } from "~/navigation/components/DeferredRender";
-import { ContentPlaceholder } from "../../../components/Placeholder";
+import {
+  ContentPlaceholder,
+  PagePlaceholder,
+} from "../../components/Placeholder";
 
-// type PartialTrack = UpcomingStore["currentTrackList"][0];
-
-/** All the sheets used on `/now-playing` route. */
-export const NowPlayingSheets = deferInitialRender(function NowPlayingSheets(
-  props: Record<"playbackOptionsRef" | "upcomingTracksRef", TrueSheetRef>,
-) {
-  return (
-    <>
-      <PlaybackOptionsSheet sheetRef={props.playbackOptionsRef} />
-      <TrackUpcomingSheet sheetRef={props.upcomingTracksRef} />
-    </>
-  );
-});
-
-//#region Playback Options
-/** Enables us to specify  how the media is played. */
-function PlaybackOptionsSheet(props: { sheetRef: TrueSheetRef }) {
-  const { t } = useTranslation();
-  const playbackSpeed = useSessionStore((s) => s.playbackSpeed);
-  const volume = useSessionStore((s) => s.volume);
-
-  return (
-    <Sheet ref={props.sheetRef} contentContainerClassName="gap-4">
-      <NSlider
-        label={t("feat.playback.extra.speed")}
-        value={playbackSpeed}
-        {...PlaybackSpeedSliderOptions}
-      />
-      <NSlider
-        label={t("feat.playback.extra.volume")}
-        value={volume}
-        {...VolumeSliderOptions}
-      />
-    </Sheet>
-  );
-}
-
-const rateFormatter = new Intl.NumberFormat("en-US", {
-  notation: "compact",
-  maximumFractionDigits: 2,
-});
-
-const PlaybackSpeedSliderOptions = {
-  min: 0.25,
-  max: 2,
-  step: 0.05,
-  trackMarks: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
-  icon: <SlowMotionVideo />,
-  onChange: async (playbackSpeed: number) => {
-    sessionStore.setState({ playbackSpeed });
-    await TrackPlayer.setRate(playbackSpeed).catch();
-  },
-  formatValue: (playbackSpeed: number) =>
-    `${rateFormatter.format(playbackSpeed)}x`,
-};
-
-const VolumeSliderOptions = {
-  min: 0,
-  max: 1,
-  step: 0.01,
-  trackMarks: [0, 0.25, 0.5, 0.75, 1],
-  icon: <VolumeUp />,
-  onChange: async (volume: number) => {
-    sessionStore.setState({ volume });
-    await TrackPlayer.setVolume(volume).catch();
-  },
-  formatValue: (volume: number) => `${Math.round(volume * 100)}%`,
-};
-//#endregion
-
-//#region Upcoming Tracks
-/** Enables user to see what tracks are coming up and remove tracks from the queue. */
-function TrackUpcomingSheet(props: { sheetRef: TrueSheetRef }) {
-  const trackList = useUpcomingStore((s) => s.currentTrackList);
+export default function Upcoming() {
+  const { isPending, error, data: trackList } = useQueueTracks();
   const listIndex = usePlaybackStore((s) => s.queuePosition);
   const repeat = usePlaybackStore((s) => s.repeat);
+
+  if (isPending || error) return <PagePlaceholder isPending={isPending} />;
 
   // Get the tracks that'll be rendered.
   const data = [
@@ -116,12 +44,7 @@ function TrackUpcomingSheet(props: { sheetRef: TrueSheetRef }) {
       : trackList.length - 1 - listIndex;
 
   return (
-    <Sheet
-      ref={props.sheetRef}
-      titleKey="term.upcoming"
-      contentContainerClassName="px-0"
-      snapTop
-    >
+    <View className="flex-1">
       <FlashList
         estimatedItemSize={52} // 48px Height + 4px Margin Top
         data={data}
@@ -146,7 +69,7 @@ function TrackUpcomingSheet(props: { sheetRef: TrueSheetRef }) {
         nestedScrollEnabled
         contentContainerClassName="px-4 pb-4"
       />
-    </Sheet>
+    </View>
   );
 }
 
@@ -205,5 +128,36 @@ function TrackItem({
       className={cn(props.className, "bg-canvasAlt pr-2", { "pr-6": !inQueue })}
     />
   );
+}
+
+//#region Query
+async function getQueueTracks() {
+  const { queue } = playbackStore.getState();
+  if (queue.length === 0) return [];
+
+  // Since there's potentially duplicate tracks.
+  const queueSet = new Set(queue);
+  const unorderedTracks = await getTracks({
+    where: [inArray(tracks.id, [...queueSet])],
+    columns: ["id", "name", "artistName", "artwork"],
+    albumColumns: ["artwork"],
+  });
+  // Structure as a map for faster searching.
+  const trackMap = Object.fromEntries(
+    unorderedTracks.filter((t) => t !== undefined).map((t) => [t.id, t]),
+  );
+
+  return queue.map((tId) => trackMap[tId]);
+}
+
+const queryKey = ["queue"];
+
+function useQueueTracks() {
+  return useQuery({
+    queryKey,
+    queryFn: getQueueTracks,
+    gcTime: 0,
+    staleTime: 0,
+  });
 }
 //#endregion
