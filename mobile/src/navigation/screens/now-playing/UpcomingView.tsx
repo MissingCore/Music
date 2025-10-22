@@ -2,7 +2,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { inArray } from "drizzle-orm";
 // import { useState } from "react";
-import { View } from "react-native";
 
 import { tracks } from "~/db/schema";
 import { getTrackCover } from "~/db/utils";
@@ -11,7 +10,6 @@ import { getTrackCover } from "~/db/utils";
 import { getTracks } from "~/api/track";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 // import { Queue } from "~/stores/Playback/actions";
-// import type { UpcomingStore } from "../helpers/UpcomingStore";
 
 // import { Colors } from "~/constants/Styles";
 // import { OnRTL } from "~/lib/react";
@@ -20,56 +18,46 @@ import { FlashList } from "~/components/Defaults";
 // import { Button } from "~/components/Form/Button";
 // import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
 import { SearchResult } from "~/modules/search/components/SearchResult";
+import { RepeatModes } from "~/stores/Playback/constants";
 import {
   ContentPlaceholder,
   PagePlaceholder,
 } from "../../components/Placeholder";
 
 export default function Upcoming() {
-  const { isPending, error, data: trackList } = useQueueTracks();
+  const { isPending, error, data } = useQueueTracks();
   const listIndex = usePlaybackStore((s) => s.queuePosition);
   const repeat = usePlaybackStore((s) => s.repeat);
 
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
 
-  // Get the tracks that'll be rendered.
-  const data = [
-    ...trackList.slice(listIndex + 1),
-    ...trackList.slice(0, listIndex + 1),
-  ];
   // Index where the tracks won't be played.
-  const disableIndex =
-    repeat !== "no-repeat"
-      ? trackList.length
-      : trackList.length - 1 - listIndex;
+  const disableIndex = repeat === RepeatModes.NO_REPEAT ? listIndex : 0;
 
   return (
-    <View className="flex-1">
-      <FlashList
-        estimatedItemSize={52} // 48px Height + 4px Margin Top
-        data={data}
-        keyExtractor={(item, index) => `${item?.id}_${index}`}
-        renderItem={({ item, index }) =>
-          item ? (
-            <TrackItem
-              title={item.name}
-              description={item.artistName ?? "—"}
-              imageSource={getTrackCover(item)}
-              className={cn({
-                "opacity-25": index >= disableIndex,
-                "mt-1": index > 0,
-              })}
-            />
-          ) : null
-        }
-        ListEmptyComponent={
-          <ContentPlaceholder isPending={trackList.length === 0} />
-        }
-        ListHeaderComponentStyle={{ marginHorizontal: -16 }}
-        nestedScrollEnabled
-        contentContainerClassName="px-4 pb-4"
-      />
-    </View>
+    <FlashList
+      estimatedItemSize={56} // 48px Height + 8px Margin Top
+      initialScrollIndex={listIndex}
+      estimatedFirstItemOffset={8}
+      data={data}
+      keyExtractor={(item, index) => `${item?.id}_${index}`}
+      renderItem={({ item, index }) =>
+        item ? (
+          <TrackItem
+            title={item.name}
+            description={item.artistName ?? "—"}
+            imageSource={getTrackCover(item)}
+            className={cn({
+              "opacity-25": index < disableIndex,
+              "mt-2": index > 0,
+            })}
+          />
+        ) : null
+      }
+      ListEmptyComponent={<ContentPlaceholder isPending={data.length === 0} />}
+      nestedScrollEnabled
+      contentContainerClassName="p-4"
+    />
   );
 }
 
@@ -113,24 +101,22 @@ export default function Upcoming() {
  * Essentially `<Track />` without any playing functionality. Has special
  * behavior if the rendered track is part of the queue.
  */
-function TrackItem({
-  inQueue,
-  ...props
-}: Pick<
-  SearchResult.Content,
-  "title" | "description" | "imageSource" | "className"
-> & { inQueue?: boolean }) {
+function TrackItem(
+  props: Pick<
+    SearchResult.Content,
+    "title" | "description" | "imageSource" | "className"
+  >,
+) {
   return (
     <SearchResult
       type="track"
       {...props}
-      contentLabel={inQueue ? "Q" : undefined}
-      className={cn(props.className, "bg-canvasAlt pr-2", { "pr-6": !inQueue })}
+      className={cn(props.className, "bg-canvasAlt pr-6")}
     />
   );
 }
 
-//#region Query
+//#region Data Query
 async function getQueueTracks() {
   const { queue } = playbackStore.getState();
   if (queue.length === 0) return [];
