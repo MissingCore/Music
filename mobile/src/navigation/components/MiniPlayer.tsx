@@ -12,7 +12,7 @@ import { useUserPreferencesStore } from "~/services/UserPreferences";
 
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
-import { RNBounceSwipeable } from "~/components/RNBounceSwipeable";
+import { BounceSwipeable } from "~/components/BounceSwipeable";
 import { Marquee } from "~/components/Containment/Marquee";
 import { IconButton } from "~/components/Form/Button";
 import { StyledText } from "~/components/Typography/StyledText";
@@ -35,7 +35,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
   const gestureUI = useUserPreferencesStore((s) => s.miniplayerGestures);
 
   const TextWrapper = useMemo(
-    () => (gestureUI ? RNBounceSwipeable : View),
+    () => (gestureUI ? BounceSwipeable : View),
     [gestureUI],
   );
 

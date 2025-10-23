@@ -1,188 +1,179 @@
-import { LinearGradient } from "expo-linear-gradient";
-import { useMemo } from "react";
-import { View } from "react-native";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { LayoutChangeEvent } from "react-native";
+import { Animated, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import Animated, {
-  clamp,
-  runOnJS,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
 
 import { NothingArrowRight } from "~/resources/icons/NothingArrowRight";
 import { useTheme } from "~/hooks/useTheme";
 
-import { OnRTL, OnRTLWorklet } from "~/lib/react";
+import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 
-type BounceSwipeableProps = {
+interface BounceSwipeableProps {
   children: React.ReactNode;
-  /** Distance to swipe to trigger an action (defaults to `24`). */
-  activationThreshold?: number;
-  /** Max distance we can swipe (defaults to `48`). */
-  swipeThreshold?: number;
 
-  /** Callback when we the right indicator is shown. */
-  onLeftIndicatorVisible?: VoidFunction;
-  /** Callback when we the left indicator is shown. */
-  onRightIndicatorVisible?: VoidFunction;
-  /** Visual element when swiping left. */
+  /** Distance to swipe to trigger an action (defaults to `125`). */
+  activationThreshold?: number;
+  /** Percentage of container to swipe to trigger an action (defaults to `0.5`). */
+  activationThresholdRatio?: number;
+  /** If we send the item off screen when the swipe action is activated. */
+  overshootSwipe?: boolean;
+  /** Duration for the animation (defaults to `250`). */
+  durationMS?: number;
+
+  /** Callback when we swipe to the left. */
+  onSwipeLeft?: VoidFunction;
+  /** Callback when we swipe to the right. */
+  onSwipeRight?: VoidFunction;
+  /** Visual element when swiping right. */
   LeftIndicator?: React.ReactNode;
   /** Visual element when swiping left. */
   RightIndicator?: React.ReactNode;
 
-  /** Customize the shadows that appear on either ends when swiping. */
-  shadowConfig?: {
-    /** Color of the container this `<Marquee />` will be on. Defaults to `canvas`. */
-    color?: Exclude<keyof ReturnType<typeof useTheme>, "theme">;
-    width?: number;
-  };
-
   className?: string;
   wrapperClassName?: string;
-};
+}
 
 export function BounceSwipeable({
-  activationThreshold = 32,
-  swipeThreshold = 48,
+  activationThreshold = 125,
+  activationThresholdRatio = 0.5,
+  overshootSwipe = true,
+  durationMS = 250,
   LeftIndicator = <SwipeIndicator rotate />,
   RightIndicator = <SwipeIndicator />,
   ...props
 }: BounceSwipeableProps) {
-  const themeColors = useTheme();
-  const contentHeight = useSharedValue(0);
-  const initX = useSharedValue<number | null>(null);
-  const swipeAmount = useSharedValue(0);
+  const initX = useRef(0);
+  // Need to be state to trigger re-render for indicator styles.
+  const [swipeAmount, setSwipeAmount] = useState(0);
+  const [rowWidth, setRowWidth] = useState(0);
 
-  const shadowConfig = useMemo(
-    () => ({
-      color: "canvas" as const,
-      width: 24,
-      ...props.shadowConfig,
-    }),
-    [props.shadowConfig],
-  );
-  const shadowColor = useMemo(
-    () => themeColors[shadowConfig.color],
-    [themeColors, shadowConfig.color],
-  );
-  // This will enable support of hexadecimal colors with opacity.
-  const startColor = useMemo(() => `${shadowColor}00`, [shadowColor]);
-  const endColor = useMemo(() => `${shadowColor}E6`, [shadowColor]);
+  const dragX = useRef(new Animated.Value(0)).current;
+  const animationRef = useRef<Animated.CompositeAnimation>(null);
+
+  useEffect(() => {
+    const listener = dragX.addListener(({ value }) => setSwipeAmount(value));
+    return () => dragX.removeListener(listener);
+  }, [dragX]);
 
   const swipeGesture = Gesture.Pan()
+    // Since we're not using `react-native-reanimated`.
+    .runOnJS(true)
+    // Allows scrolling to work without triggering gesture.
+    .activeOffsetX([-10, 10])
     .onStart(({ absoluteX }) => {
-      initX.value = absoluteX;
+      animationRef.current?.stop();
+      initX.current = absoluteX;
     })
     .onUpdate(({ absoluteX }) => {
-      swipeAmount.value = clamp(
-        props.onLeftIndicatorVisible ? -swipeThreshold : 0,
-        absoluteX - initX.value!,
-        props.onRightIndicatorVisible ? swipeThreshold : 0,
+      dragX.setValue(
+        clamp(
+          props.onSwipeLeft ? -rowWidth : 0,
+          absoluteX - initX.current,
+          props.onSwipeRight ? rowWidth : 0,
+        ),
       );
     })
     .onEnd(async () => {
-      const metThreshold = Math.abs(swipeAmount.value) >= activationThreshold;
-      const usedRightAction = swipeAmount.value < 0;
+      const metThreshold =
+        Math.abs(swipeAmount) >=
+        Math.min(activationThreshold, rowWidth * activationThresholdRatio);
+      const swipedLeft = swipeAmount < 0;
 
       // Cleanup
-      initX.value = null;
-      swipeAmount.value = withTiming(0, { duration: 150 }, (finished) => {
+      initX.current = 0;
+
+      // Create animation the swiped item will translate to.
+      const animateToOnSuccess = overshootSwipe
+        ? (swipedLeft ? -1 : 1) * rowWidth
+        : 0;
+      animationRef.current = Animated.timing(dragX, {
+        duration: durationMS,
+        toValue: metThreshold ? animateToOnSuccess : 0,
+        useNativeDriver: true,
+      });
+
+      animationRef.current.start(({ finished }) => {
         // Run code if we met the threshold.
         if (finished && metThreshold) {
-          if (usedRightAction) runOnJS(props.onRightIndicatorVisible!)();
-          else runOnJS(props.onLeftIndicatorVisible!)();
+          if (swipedLeft) props.onSwipeLeft!();
+          else props.onSwipeRight!();
         }
       });
     });
 
-  const containerStyle = useAnimatedStyle(() => ({
-    // Prevent visual layout shift on mount.
-    opacity: contentHeight.value === 0 ? 0 : 1,
-    transform: [
-      { translateX: swipeAmount.value ?? 0 },
-      { translateY: -contentHeight.value / 2 },
-    ],
-  }));
+  const onRowLayout = useCallback((e: LayoutChangeEvent) => {
+    setRowWidth(e.nativeEvent.layout.width);
+  }, []);
 
-  // Styles to determine when to render the scroll shadow.
-  const leftShadowStyle = useAnimatedStyle(() => ({
-    display:
-      swipeAmount.value === 0 || swipeAmount.value === swipeThreshold
-        ? "none"
-        : undefined,
-    width: shadowConfig.width,
-    [OnRTLWorklet.decide("right", "left")]: 0,
-  }));
-  const rightShadowStyle = useAnimatedStyle(() => ({
-    display:
-      swipeAmount.value === 0 || swipeAmount.value === -swipeThreshold
-        ? "none"
-        : undefined,
-    width: shadowConfig.width,
-    [OnRTLWorklet.decide("left", "right")]: 0,
-  }));
+  const leftIndicator = useMemo(() => {
+    if (!props.onSwipeRight || rowWidth === 0 || swipeAmount <= 0) {
+      return null;
+    }
+    return (
+      <View
+        style={{
+          maxWidth: rowWidth,
+          alignItems: OnRTL.decide("flex-end", "flex-start"),
+        }}
+        className="absolute h-full w-full"
+      >
+        {LeftIndicator}
+      </View>
+    );
+  }, [LeftIndicator, props.onSwipeRight, rowWidth, swipeAmount]);
+
+  const rightIndicator = useMemo(() => {
+    if (!props.onSwipeLeft || rowWidth === 0 || swipeAmount >= 0) {
+      return null;
+    }
+    return (
+      <View
+        style={{
+          maxWidth: rowWidth,
+          alignItems: OnRTL.decide("flex-start", "flex-end"),
+        }}
+        className="absolute h-full w-full"
+      >
+        {RightIndicator}
+      </View>
+    );
+  }, [RightIndicator, props.onSwipeLeft, rowWidth, swipeAmount]);
 
   return (
-    <View
-      className={cn("relative h-full overflow-hidden", props.wrapperClassName)}
-    >
+    <View className={cn("relative", props.wrapperClassName)}>
+      {leftIndicator}
+      {rightIndicator}
       <GestureDetector gesture={swipeGesture}>
         <Animated.View
-          onLayout={({ nativeEvent }) => {
-            contentHeight.value = nativeEvent.layout.height;
+          onLayout={onRowLayout}
+          style={{
+            transform: [{ translateX: dragX }],
           }}
-          style={containerStyle}
-          className={cn("absolute left-0 right-0 top-1/2", props.className)}
+          className={props.className}
         >
-          <View
-            style={{ [OnRTL.decide("right", "left")]: 0 }}
-            className="absolute top-1/2 -translate-x-full -translate-y-1/2"
-          >
-            {LeftIndicator}
-          </View>
           {props.children}
-          <View
-            style={{ [OnRTL.decide("left", "right")]: 0 }}
-            className="absolute top-1/2 -translate-y-1/2 translate-x-full"
-          >
-            {RightIndicator}
-          </View>
         </Animated.View>
       </GestureDetector>
-
-      <Animated.View
-        pointerEvents="none"
-        style={leftShadowStyle}
-        className="absolute top-0 h-full"
-      >
-        <LinearGradient colors={[endColor, startColor]} {...ShadowProps} />
-      </Animated.View>
-      <Animated.View
-        pointerEvents="none"
-        style={rightShadowStyle}
-        className="absolute top-0 h-full"
-      >
-        <LinearGradient colors={[startColor, endColor]} {...ShadowProps} />
-      </Animated.View>
     </View>
   );
 }
-
-const ShadowProps = {
-  start: { x: 0.0, y: 1.0 },
-  end: { x: 1.0, y: 1.0 },
-  className: "h-full",
-};
 
 function SwipeIndicator({ rotate = false }) {
   const { foreground } = useTheme();
   return (
-    <View
-      className={cn(OnRTL.decide("pr-3", "pl-3"), { "rotate-180": rotate })}
-    >
-      <NothingArrowRight size={32} color={foreground} />
+    <View className="h-full justify-center">
+      <View
+        className={cn(OnRTL.decide("pl-3", "pr-3"), { "rotate-180": rotate })}
+      >
+        <NothingArrowRight size={32} color={foreground} />
+      </View>
     </View>
   );
 }
+
+//#region Helpers
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
+}
+//#endregion
