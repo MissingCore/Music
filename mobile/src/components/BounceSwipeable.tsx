@@ -23,8 +23,18 @@ interface BounceSwipeableProps {
 
   /** Callback when we swipe to the left. */
   onSwipeLeft?: VoidFunction;
+  /** Icon displayed on the right when swiping left. */
+  RightIcon?: React.ReactNode;
+  /** Style the container containing `RightIcon` (ie: background color, border radius). */
+  rightIconContainerClassName?: string;
+
   /** Callback when we swipe to the right. */
   onSwipeRight?: VoidFunction;
+  /** Icon displayed on the left when swiping right. */
+  LeftIcon?: React.ReactNode;
+  /** Style the container containing `LeftIcon` (ie: background color, border radius). */
+  leftIconContainerClassName?: string;
+
   /** Visual element when swiping right. */
   LeftIndicator?: React.ReactNode;
   /** Visual element when swiping left. */
@@ -39,8 +49,8 @@ export function BounceSwipeable({
   activationThresholdRatio = 0.5,
   overshootSwipe = true,
   durationMS = 250,
-  LeftIndicator = <SwipeIndicator rotate />,
-  RightIndicator = <SwipeIndicator />,
+  RightIcon = <SwipeIcon />,
+  LeftIcon = <SwipeIcon rotate />,
   ...props
 }: BounceSwipeableProps) {
   const initX = useRef(0);
@@ -116,32 +126,40 @@ export function BounceSwipeable({
   const leftIndicator = useMemo(() => {
     if (!props.onSwipeRight || swipeAmount <= 0) return null;
     return (
-      <View
-        style={{
-          maxWidth: rowWidth.current,
-          alignItems: OnRTL.decide("flex-end", "flex-start"),
-        }}
-        className="absolute h-full w-full"
-      >
-        {LeftIndicator}
-      </View>
+      <SwipeIconWrapper
+        direction="left"
+        maxWidth={rowWidth.current}
+        Icon={LeftIcon}
+        dragAmount={dragX}
+        className={props.leftIconContainerClassName}
+      />
     );
-  }, [LeftIndicator, props.onSwipeRight, swipeAmount]);
+  }, [
+    LeftIcon,
+    props.leftIconContainerClassName,
+    props.onSwipeRight,
+    dragX,
+    swipeAmount,
+  ]);
 
   const rightIndicator = useMemo(() => {
     if (!props.onSwipeLeft || swipeAmount >= 0) return null;
     return (
-      <View
-        style={{
-          maxWidth: rowWidth.current,
-          alignItems: OnRTL.decide("flex-start", "flex-end"),
-        }}
-        className="absolute h-full w-full"
-      >
-        {RightIndicator}
-      </View>
+      <SwipeIconWrapper
+        direction="right"
+        maxWidth={rowWidth.current}
+        Icon={RightIcon}
+        dragAmount={dragX}
+        className={props.rightIconContainerClassName}
+      />
     );
-  }, [RightIndicator, props.onSwipeLeft, swipeAmount]);
+  }, [
+    RightIcon,
+    props.rightIconContainerClassName,
+    props.onSwipeLeft,
+    dragX,
+    swipeAmount,
+  ]);
 
   return (
     <View className={cn("relative", props.wrapperClassName)}>
@@ -150,9 +168,7 @@ export function BounceSwipeable({
       <GestureDetector gesture={swipeGesture}>
         <Animated.View
           onLayout={onRowLayout}
-          style={{
-            transform: [{ translateX: dragX }],
-          }}
+          style={{ transform: [{ translateX: dragX }] }}
           className={props.className}
         >
           {props.children}
@@ -162,18 +178,80 @@ export function BounceSwipeable({
   );
 }
 
-function SwipeIndicator({ rotate = false }) {
-  const { foreground } = useTheme();
+//#region Swipe Indicator
+type Direction = "left" | "right";
+
+const IconPosition: Record<Direction, [string, string]> = {
+  left: ["right", "left"],
+  right: ["left", "right"],
+};
+
+const InterpolateOptions: Record<
+  Direction,
+  (maxWidth: number, iconWidth: number) => Animated.InterpolationConfigType
+> = {
+  left: (maxWidth: number, iconWidth: number) => ({
+    inputRange: [0, 1],
+    // When `dragX = maxWidth`, we want the icon to be at the half-way point.
+    //  - Do things in terms of percent (include offset for icon width).
+    outputRange: [0, (maxWidth - iconWidth) / (2 * maxWidth)],
+  }),
+  right: (maxWidth: number, iconWidth: number) => ({
+    inputRange: [-1, 0],
+    outputRange: [-(maxWidth - iconWidth) / (2 * maxWidth), 0],
+  }),
+};
+
+function SwipeIconWrapper(props: {
+  direction: Direction;
+  maxWidth: number;
+  Icon: React.ReactNode;
+  dragAmount: Animated.Value;
+  className?: string;
+}) {
+  const iconWidth = useRef(0);
+
+  const onIconLayout = useCallback((e: LayoutChangeEvent) => {
+    iconWidth.current = e.nativeEvent.layout.width;
+  }, []);
+
   return (
-    <View className="h-full justify-center">
-      <View
-        className={cn(OnRTL.decide("pl-3", "pr-3"), { "rotate-180": rotate })}
+    <View
+      style={{ maxWidth: props.maxWidth }}
+      className={cn("absolute h-full w-full justify-center", props.className)}
+    >
+      <Animated.View
+        onLayout={onIconLayout}
+        style={{
+          [OnRTL.decide(...IconPosition[props.direction])]: 0,
+          transform: [
+            {
+              translateX: props.dragAmount.interpolate(
+                InterpolateOptions[props.direction](
+                  props.maxWidth,
+                  iconWidth.current,
+                ),
+              ),
+            },
+          ],
+        }}
+        className="absolute"
       >
-        <NothingArrowRight size={32} color={foreground} />
-      </View>
+        {props.Icon}
+      </Animated.View>
     </View>
   );
 }
+
+function SwipeIcon({ rotate = false }) {
+  const { foreground } = useTheme();
+  return (
+    <View className={rotate ? "rotate-180" : undefined}>
+      <NothingArrowRight size={32} color={foreground} />
+    </View>
+  );
+}
+//#endregion
 
 //#region Helpers
 function clamp(value: number, min: number, max: number) {
