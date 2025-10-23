@@ -1,7 +1,13 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
-import { Animated } from "react-native";
+import { Animated, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
+
+import { NothingArrowRight } from "~/resources/icons/NothingArrowRight";
+import { useTheme } from "~/hooks/useTheme";
+
+import { OnRTL } from "~/lib/react";
+import { cn } from "~/lib/style";
 
 interface RNBounceSwipeableProps {
   children: React.ReactNode;
@@ -13,23 +19,31 @@ interface RNBounceSwipeableProps {
   onSwipeLeft?: VoidFunction;
   /** Callback when we swipe to the right. */
   onSwipeRight?: VoidFunction;
+  /** Visual element when swiping right. */
+  LeftIndicator?: React.ReactNode;
+  /** Visual element when swiping left. */
+  RightIndicator?: React.ReactNode;
+
+  className?: string;
+  wrapperClassName?: string;
 }
 
 export function RNBounceSwipeable({
   overshootSwipe = true,
+  LeftIndicator = <SwipeIndicator rotate />,
+  RightIndicator = <SwipeIndicator />,
   ...props
 }: RNBounceSwipeableProps) {
   const initX = useRef(0);
-  const swipeAmount = useRef(0);
-  const rowWidth = useRef(0);
+  // Need to be state to trigger re-render for indicator styles.
+  const [swipeAmount, setSwipeAmount] = useState(0);
+  const [rowWidth, setRowWidth] = useState(0);
 
   const dragX = useRef(new Animated.Value(0)).current;
   const animationRef = useRef<Animated.CompositeAnimation>(null);
 
   useEffect(() => {
-    const listener = dragX.addListener(
-      ({ value }) => (swipeAmount.current = value),
-    );
+    const listener = dragX.addListener(({ value }) => setSwipeAmount(value));
     return () => dragX.removeListener(listener);
   }, [dragX]);
 
@@ -45,23 +59,22 @@ export function RNBounceSwipeable({
     .onUpdate(({ absoluteX }) => {
       dragX.setValue(
         clamp(
-          props.onSwipeLeft ? -rowWidth.current : 0,
+          props.onSwipeLeft ? -rowWidth : 0,
           absoluteX - initX.current,
-          props.onSwipeRight ? -rowWidth.current : 0,
+          props.onSwipeRight ? rowWidth : 0,
         ),
       );
     })
     .onEnd(async () => {
-      const metThreshold =
-        Math.abs(swipeAmount.current) >= Math.min(125, rowWidth.current / 2);
-      const usedRightAction = swipeAmount.current < 0;
+      const metThreshold = Math.abs(swipeAmount) >= Math.min(125, rowWidth / 2);
+      const usedRightAction = swipeAmount < 0;
 
       // Cleanup
       initX.current = 0;
 
       // Create animation the swiped item will translate to.
       const animateToOnSuccess = overshootSwipe
-        ? (usedRightAction ? -1 : 1) * rowWidth.current
+        ? (usedRightAction ? -1 : 1) * rowWidth
         : 0;
       animationRef.current = Animated.timing(dragX, {
         duration: 250,
@@ -79,20 +92,72 @@ export function RNBounceSwipeable({
     });
 
   const onRowLayout = useCallback((e: LayoutChangeEvent) => {
-    rowWidth.current = e.nativeEvent.layout.width;
+    setRowWidth(e.nativeEvent.layout.width);
   }, []);
 
-  return (
-    <GestureDetector gesture={swipeGesture}>
-      <Animated.View
-        onLayout={onRowLayout}
+  const leftIndicator = useMemo(() => {
+    if (!props.onSwipeRight || rowWidth === 0 || swipeAmount <= 0) {
+      return null;
+    }
+    return (
+      <View
         style={{
-          transform: [{ translateX: dragX }],
+          maxWidth: rowWidth,
+          alignItems: OnRTL.decide("flex-end", "flex-start"),
         }}
+        className="absolute h-full w-full"
       >
-        {props.children}
-      </Animated.View>
-    </GestureDetector>
+        {LeftIndicator}
+      </View>
+    );
+  }, [LeftIndicator, props.onSwipeRight, rowWidth, swipeAmount]);
+
+  const rightIndicator = useMemo(() => {
+    if (!props.onSwipeLeft || rowWidth === 0 || swipeAmount >= 0) {
+      return null;
+    }
+    return (
+      <View
+        style={{
+          maxWidth: rowWidth,
+          alignItems: OnRTL.decide("flex-start", "flex-end"),
+        }}
+        className="absolute h-full w-full"
+      >
+        {RightIndicator}
+      </View>
+    );
+  }, [RightIndicator, props.onSwipeLeft, rowWidth, swipeAmount]);
+
+  return (
+    <View className={cn("relative", props.wrapperClassName)}>
+      {leftIndicator}
+      {rightIndicator}
+      <GestureDetector gesture={swipeGesture}>
+        <Animated.View
+          onLayout={onRowLayout}
+          style={{
+            transform: [{ translateX: dragX }],
+          }}
+          className={props.className}
+        >
+          {props.children}
+        </Animated.View>
+      </GestureDetector>
+    </View>
+  );
+}
+
+function SwipeIndicator({ rotate = false }) {
+  const { foreground } = useTheme();
+  return (
+    <View className="h-full justify-center">
+      <View
+        className={cn(OnRTL.decide("pl-3", "pr-3"), { "rotate-180": rotate })}
+      >
+        <NothingArrowRight size={32} color={foreground} />
+      </View>
+    </View>
   );
 }
 
