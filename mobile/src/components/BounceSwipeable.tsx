@@ -44,9 +44,9 @@ export function BounceSwipeable({
   ...props
 }: BounceSwipeableProps) {
   const initX = useRef(0);
+  const rowWidth = useRef(0);
   // Need to be state to trigger re-render for indicator styles.
   const [swipeAmount, setSwipeAmount] = useState(0);
-  const [rowWidth, setRowWidth] = useState(0);
 
   const dragX = useRef(new Animated.Value(0)).current;
   const animationRef = useRef<Animated.CompositeAnimation>(null);
@@ -68,9 +68,9 @@ export function BounceSwipeable({
     .onUpdate(({ absoluteX }) => {
       dragX.setValue(
         clamp(
-          props.onSwipeLeft ? -rowWidth : 0,
+          props.onSwipeLeft ? -rowWidth.current : 0,
           absoluteX - initX.current,
-          props.onSwipeRight ? rowWidth : 0,
+          props.onSwipeRight ? rowWidth.current : 0,
         ),
       );
     })
@@ -81,7 +81,10 @@ export function BounceSwipeable({
       const trueSwipeAmount = absoluteX - initX.current;
       const metThreshold =
         Math.abs(trueSwipeAmount) >=
-        Math.min(activationThreshold, rowWidth * activationThresholdRatio);
+        Math.min(
+          activationThreshold,
+          rowWidth.current * activationThresholdRatio,
+        );
       const swipedLeft = trueSwipeAmount < 0;
 
       // Cleanup
@@ -89,7 +92,7 @@ export function BounceSwipeable({
 
       // Create animation the swiped item will translate to.
       const animateToOnSuccess = overshootSwipe
-        ? (swipedLeft ? -1 : 1) * rowWidth
+        ? (swipedLeft ? -1 : 1) * rowWidth.current
         : 0;
       animationRef.current = Animated.timing(dragX, {
         duration: durationMS,
@@ -107,17 +110,15 @@ export function BounceSwipeable({
     });
 
   const onRowLayout = useCallback((e: LayoutChangeEvent) => {
-    setRowWidth(e.nativeEvent.layout.width);
+    rowWidth.current = e.nativeEvent.layout.width;
   }, []);
 
   const leftIndicator = useMemo(() => {
-    if (!props.onSwipeRight || rowWidth === 0 || swipeAmount <= 0) {
-      return null;
-    }
+    if (!props.onSwipeRight || swipeAmount <= 0) return null;
     return (
       <View
         style={{
-          maxWidth: rowWidth,
+          maxWidth: rowWidth.current,
           alignItems: OnRTL.decide("flex-end", "flex-start"),
         }}
         className="absolute h-full w-full"
@@ -125,16 +126,14 @@ export function BounceSwipeable({
         {LeftIndicator}
       </View>
     );
-  }, [LeftIndicator, props.onSwipeRight, rowWidth, swipeAmount]);
+  }, [LeftIndicator, props.onSwipeRight, swipeAmount]);
 
   const rightIndicator = useMemo(() => {
-    if (!props.onSwipeLeft || rowWidth === 0 || swipeAmount >= 0) {
-      return null;
-    }
+    if (!props.onSwipeLeft || swipeAmount >= 0) return null;
     return (
       <View
         style={{
-          maxWidth: rowWidth,
+          maxWidth: rowWidth.current,
           alignItems: OnRTL.decide("flex-start", "flex-end"),
         }}
         className="absolute h-full w-full"
@@ -142,7 +141,7 @@ export function BounceSwipeable({
         {RightIndicator}
       </View>
     );
-  }, [RightIndicator, props.onSwipeLeft, rowWidth, swipeAmount]);
+  }, [RightIndicator, props.onSwipeLeft, swipeAmount]);
 
   return (
     <View className={cn("relative", props.wrapperClassName)}>
