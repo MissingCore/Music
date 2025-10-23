@@ -12,6 +12,10 @@ import { cn } from "~/lib/style";
 interface RNBounceSwipeableProps {
   children: React.ReactNode;
 
+  /** Distance to swipe to trigger an action (defaults to `125`). */
+  activationThreshold?: number;
+  /** Percentage of container to swipe to trigger an action (defaults to `0.5`). */
+  activationThresholdRatio?: number;
   /** If we send the item off screen when the swipe action is activated. */
   overshootSwipe?: boolean;
 
@@ -29,6 +33,8 @@ interface RNBounceSwipeableProps {
 }
 
 export function RNBounceSwipeable({
+  activationThreshold = 125,
+  activationThresholdRatio = 0.5,
   overshootSwipe = true,
   LeftIndicator = <SwipeIndicator rotate />,
   RightIndicator = <SwipeIndicator />,
@@ -66,7 +72,9 @@ export function RNBounceSwipeable({
       );
     })
     .onEnd(async () => {
-      const metThreshold = Math.abs(swipeAmount) >= Math.min(125, rowWidth / 2);
+      const metThreshold =
+        Math.abs(swipeAmount) >=
+        Math.min(activationThreshold, rowWidth * activationThresholdRatio);
       const usedRightAction = swipeAmount < 0;
 
       // Cleanup

@@ -59,6 +59,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
         />
 
         <TextWrapper
+          activationThreshold={24}
           onSwipeLeft={PlaybackControls.next}
           onSwipeRight={PlaybackControls.prev}
           overshootSwipe={false}
