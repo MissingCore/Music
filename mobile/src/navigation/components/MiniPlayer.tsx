@@ -60,9 +60,10 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
 
         <TextWrapper
           activationThreshold={24}
+          overshootSwipe={false}
+          durationMS={150}
           onSwipeLeft={PlaybackControls.next}
           onSwipeRight={PlaybackControls.prev}
-          overshootSwipe={false}
           wrapperClassName="shrink grow justify-center overflow-hidden"
           className={gestureUI ? "bg-surface px-2" : "mx-2 shrink grow"}
         >

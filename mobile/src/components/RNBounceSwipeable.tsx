@@ -18,6 +18,8 @@ interface RNBounceSwipeableProps {
   activationThresholdRatio?: number;
   /** If we send the item off screen when the swipe action is activated. */
   overshootSwipe?: boolean;
+  /** Duration for the animation (defaults to `250`). */
+  durationMS?: number;
 
   /** Callback when we swipe to the left. */
   onSwipeLeft?: VoidFunction;
@@ -36,6 +38,7 @@ export function RNBounceSwipeable({
   activationThreshold = 125,
   activationThresholdRatio = 0.5,
   overshootSwipe = true,
+  durationMS = 250,
   LeftIndicator = <SwipeIndicator rotate />,
   RightIndicator = <SwipeIndicator />,
   ...props
@@ -75,17 +78,17 @@ export function RNBounceSwipeable({
       const metThreshold =
         Math.abs(swipeAmount) >=
         Math.min(activationThreshold, rowWidth * activationThresholdRatio);
-      const usedRightAction = swipeAmount < 0;
+      const swipedLeft = swipeAmount < 0;
 
       // Cleanup
       initX.current = 0;
 
       // Create animation the swiped item will translate to.
       const animateToOnSuccess = overshootSwipe
-        ? (usedRightAction ? -1 : 1) * rowWidth
+        ? (swipedLeft ? -1 : 1) * rowWidth
         : 0;
       animationRef.current = Animated.timing(dragX, {
-        duration: 250,
+        duration: durationMS,
         toValue: metThreshold ? animateToOnSuccess : 0,
         useNativeDriver: true,
       });
@@ -93,8 +96,8 @@ export function RNBounceSwipeable({
       animationRef.current.start(({ finished }) => {
         // Run code if we met the threshold.
         if (finished && metThreshold) {
-          if (usedRightAction) props.onSwipeLeft!();
-          else props.onSwipeLeft!();
+          if (swipedLeft) props.onSwipeLeft!();
+          else props.onSwipeRight!();
         }
       });
     });
