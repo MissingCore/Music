@@ -23,7 +23,7 @@
     "unFavorite": "حذف علاقه‌مندی",
     "favoriteTracks": "آهنگ های مورد علاقه",
     "all": "همه",
-    "more": null,
+    "more": "بیشتر",
     "home": "خانه",
     "settings": "تنظیمات",
     "upcoming": "بعدی",
@@ -128,11 +128,11 @@
       }
     },
     "albumLengthFilter": {
-      "title": null,
-      "description": null
+      "title": "فیتر اندازه آلبوم",
+      "description": "حداقل تعداد آهنگ های یک آلبوم, تا آن البوم در صفحه آلبوم ها نمایش داده شود."
     },
     "miniplayerGestures": {
-      "title": null
+      "title": "انیمیشن های مینی پلیر"
     },
     "nowPlayingDesign": {
       "title": "طراحی صفحه در حال پخش",
@@ -328,10 +328,10 @@
         "delete": "حذف لیست پخش",
         "edit": "ویرایش لیست پخش",
         "name": "نام لیست پخش",
-        "m3uImport": null,
-        "m3uExport": null,
-        "absolute": null,
-        "relative": null
+        "m3uImport": "وارد کردن لیست پخش M3U",
+        "m3uExport": "صادر کردن به عنوان M3U",
+        "absolute": "مطلق",
+        "relative": "نسبی"
       }
     },
     "trackMetadata": {
