@@ -36,7 +36,7 @@ export function RNBounceSwipeable({
   const swipeGesture = Gesture.Pan()
     // Since we're not using `react-native-reanimated`.
     .runOnJS(true)
-    // Allows for scrolling to work without triggering gesture.
+    // Allows scrolling to work without triggering gesture.
     .activeOffsetX([-10, 10])
     .onStart(({ absoluteX }) => {
       animationRef.current?.stop();
@@ -53,7 +53,7 @@ export function RNBounceSwipeable({
     })
     .onEnd(async () => {
       const metThreshold =
-        Math.abs(swipeAmount.current) >= Math.min(100, rowWidth.current / 3);
+        Math.abs(swipeAmount.current) >= Math.min(125, rowWidth.current / 2);
       const usedRightAction = swipeAmount.current < 0;
 
       // Cleanup
