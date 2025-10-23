@@ -74,11 +74,15 @@ export function BounceSwipeable({
         ),
       );
     })
-    .onEnd(async () => {
+    .onEnd(({ absoluteX }) => {
+      // When swiping very fast and since we're updating `swipeAmount`
+      // on the JS thread so it can be read, `swipeAmount` may not actually
+      // contain the value represented by the pan gesture.
+      const trueSwipeAmount = absoluteX - initX.current;
       const metThreshold =
-        Math.abs(swipeAmount) >=
+        Math.abs(trueSwipeAmount) >=
         Math.min(activationThreshold, rowWidth * activationThresholdRatio);
-      const swipedLeft = swipeAmount < 0;
+      const swipedLeft = trueSwipeAmount < 0;
 
       // Cleanup
       initX.current = 0;
