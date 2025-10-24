@@ -115,6 +115,9 @@ export function BounceSwipeable({
       });
 
       animationRef.current.start(({ finished }) => {
+        // Reset to prevent the recycled item being stuck in the swiped state.
+        dragX.setValue(0);
+
         // Run code if we met the threshold.
         if (finished && metThreshold) {
           if (swipedLeft) props.onSwipeLeft!();
