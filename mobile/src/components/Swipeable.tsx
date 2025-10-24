@@ -9,7 +9,7 @@ import { useTheme } from "~/hooks/useTheme";
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 
-interface BounceSwipeableProps {
+interface SwipeableProps {
   children: React.ReactNode;
 
   /** Distance to swipe to trigger an action (defaults to `125`). */
@@ -44,7 +44,7 @@ interface BounceSwipeableProps {
   wrapperClassName?: string;
 }
 
-export function BounceSwipeable({
+export function Swipeable({
   activationThreshold = 125,
   activationThresholdRatio = 0.5,
   overshootSwipe = true,
@@ -52,7 +52,7 @@ export function BounceSwipeable({
   RightIcon = <SwipeIcon />,
   LeftIcon = <SwipeIcon rotate />,
   ...props
-}: BounceSwipeableProps) {
+}: SwipeableProps) {
   const initX = useRef(0);
   const rowWidth = useRef(0);
   // Need to be state to trigger re-render for indicator styles.

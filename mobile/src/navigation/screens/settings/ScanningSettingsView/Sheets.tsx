@@ -18,13 +18,13 @@ import {
 
 import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
-import { BounceSwipeable } from "~/components/BounceSwipeable";
 import { Marquee } from "~/components/Containment/Marquee";
 import { FlatList } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { NumericInput, TextInput } from "~/components/Form/Input";
 import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
+import { Swipeable } from "~/components/Swipeable";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { deferInitialRender } from "../../../components/DeferredRender";
 import { ContentPlaceholder } from "../../../components/Placeholder";
@@ -84,7 +84,7 @@ function ScanFilterListSheet({
         data={listEntries}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
-          <BounceSwipeable
+          <Swipeable
             onSwipeLeft={() => removePath({ list: listType, path: item })}
             RightIcon={<Delete color={Colors.neutral100} />}
             rightIconContainerClassName="rounded-md bg-red"
@@ -97,7 +97,7 @@ function ScanFilterListSheet({
             >
               <StyledText className="px-4">{item}</StyledText>
             </Marquee>
-          </BounceSwipeable>
+          </Swipeable>
         )}
         ListEmptyComponent={
           <ContentPlaceholder errMsgKey="err.msg.noFilters" />

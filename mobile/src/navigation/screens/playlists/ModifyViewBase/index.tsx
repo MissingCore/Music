@@ -29,12 +29,12 @@ import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { ToastOptions } from "~/lib/toast";
 import { wait } from "~/utils/promise";
-import { BounceSwipeable } from "~/components/BounceSwipeable";
 import { FlashDragList } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import { ModalTemplate } from "~/components/Modal";
 import { useSheetRef } from "~/components/Sheet";
+import { Swipeable } from "~/components/Swipeable";
 import { TStyledText } from "~/components/Typography/StyledText";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { readM3UPlaylist } from "~/modules/backup/M3U";
@@ -159,7 +159,7 @@ const RenderItem = memo(
         onPressOut={info.onDragEnd}
         className={cn("group", { "mt-2": info.index > 0 })}
       >
-        <BounceSwipeable
+        <Swipeable
           onSwipeLeft={() => removeTrack(item.id)}
           RightIcon={<Delete color={Colors.neutral100} />}
           rightIconContainerClassName="rounded-sm bg-red"
@@ -176,7 +176,7 @@ const RenderItem = memo(
               })}
             />
           </View>
-        </BounceSwipeable>
+        </Swipeable>
       </Pressable>
     );
   },
