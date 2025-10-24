@@ -85,6 +85,7 @@ function ScanFilterListSheet({
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
           <Swipeable
+            freezeDurationMS={150}
             onSwipeLeft={() => removePath({ list: listType, path: item })}
             RightIcon={<Delete color={Colors.neutral100} />}
             rightIconContainerClassName="rounded-md bg-red"

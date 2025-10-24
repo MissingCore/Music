@@ -8,18 +8,21 @@ import { useTheme } from "~/hooks/useTheme";
 
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
+import { wait } from "~/utils/promise";
 
 interface SwipeableProps {
   children: React.ReactNode;
 
-  /** Distance to swipe to trigger an action (defaults to `125`). */
+  /** Distance to swipe to trigger an action. Defaults to `125`. */
   activationThreshold?: number;
-  /** Percentage of container to swipe to trigger an action (defaults to `0.5`). */
+  /** Percentage of container to swipe to trigger an action. Defaults to `0.5`. */
   activationThresholdRatio?: number;
-  /** If we send the item off screen when the swipe action is activated. */
+  /** If we send the item off screen when the swipe action is activated. Defaults to `true`. */
   overshootSwipe?: boolean;
-  /** Duration for the animation (defaults to `250`). */
+  /** Duration for the animation. Defaults to `250`. */
   durationMS?: number;
+  /** Duration we stay in the fully open state before firing the callback. Defaults to `50`. */
+  freezeDurationMS?: number;
 
   /** Callback when we swipe to the left. */
   onSwipeLeft?: VoidFunction;
@@ -49,6 +52,7 @@ export function Swipeable({
   activationThresholdRatio = 0.5,
   overshootSwipe = true,
   durationMS = 250,
+  freezeDurationMS = 50,
   RightIcon = <SwipeIcon />,
   LeftIcon = <SwipeIcon rotate />,
   ...props
@@ -114,15 +118,18 @@ export function Swipeable({
         useNativeDriver: true,
       });
 
-      animationRef.current.start(({ finished }) => {
-        // Reset to prevent the recycled item being stuck in the swiped state.
-        dragX.setValue(0);
-
+      animationRef.current.start(async ({ finished }) => {
         // Run code if we met the threshold.
         if (finished && metThreshold) {
+          // If we want to overshoot, show the final state for a bit.
+          if (overshootSwipe) await wait(freezeDurationMS);
+
           if (swipedLeft) props.onSwipeLeft!();
           else props.onSwipeRight!();
         }
+
+        // Reset to prevent the recycled item being stuck in the swiped state.
+        dragX.setValue(0);
       });
     });
 
