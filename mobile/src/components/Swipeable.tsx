@@ -8,7 +8,6 @@ import { useTheme } from "~/hooks/useTheme";
 
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
-import { wait } from "~/utils/promise";
 
 interface SwipeableProps {
   children: React.ReactNode;
@@ -19,10 +18,6 @@ interface SwipeableProps {
   activationThresholdRatio?: number;
   /** If we send the item off screen when the swipe action is activated. Defaults to `true`. */
   overshootSwipe?: boolean;
-  /** Duration for the animation. Defaults to `250`. */
-  durationMS?: number;
-  /** Duration we stay in the fully open state before firing the callback. Defaults to `50`. */
-  freezeDurationMS?: number;
 
   /** Callback when we swipe to the left. */
   onSwipeLeft?: VoidFunction;
@@ -51,8 +46,6 @@ export function Swipeable({
   activationThreshold = 125,
   activationThresholdRatio = 0.5,
   overshootSwipe = true,
-  durationMS = 250,
-  freezeDurationMS = 50,
   RightIcon = <SwipeIcon />,
   LeftIcon = <SwipeIcon rotate />,
   ...props
@@ -92,7 +85,7 @@ export function Swipeable({
     .onUpdate(({ absoluteX }) => {
       dragX.setValue(clampSwipeAmount(absoluteX));
     })
-    .onEnd(({ absoluteX }) => {
+    .onEnd(({ absoluteX, velocityX }) => {
       // When swiping very fast and since we're updating `swipeAmount`
       // on the JS thread so it can be read, `swipeAmount` may not actually
       // contain the value represented by the pan gesture.
@@ -107,23 +100,30 @@ export function Swipeable({
 
       // Cleanup
       initX.current = 0;
+      // Don't run animation if we haven't moved.
+      if (trueSwipeAmount === 0) return;
 
       // Create animation the swiped item will translate to.
-      const animateToOnSuccess = overshootSwipe
-        ? (swipedLeft ? -1 : 1) * rowWidth.current
-        : 0;
-      animationRef.current = Animated.timing(dragX, {
-        duration: durationMS,
-        toValue: metThreshold ? animateToOnSuccess : 0,
-        useNativeDriver: true,
-      });
+      animationRef.current = overshootSwipe
+        ? Animated.spring(dragX, {
+            toValue: metThreshold
+              ? (swipedLeft ? -1 : 1) * rowWidth.current
+              : 0,
+            bounciness: 0, // This prevents it from bouncing below `toValue`.
+            restDisplacementThreshold: 0.4,
+            restSpeedThreshold: 1.7,
+            velocity: velocityX * 2,
+            useNativeDriver: true,
+          })
+        : Animated.timing(dragX, {
+            duration: 125,
+            toValue: 0,
+            useNativeDriver: true,
+          });
 
       animationRef.current.start(async ({ finished }) => {
         // Run code if we met the threshold.
         if (finished && metThreshold) {
-          // If we want to overshoot, show the final state for a bit.
-          if (overshootSwipe) await wait(freezeDurationMS);
-
           if (swipedLeft) props.onSwipeLeft!();
           else props.onSwipeRight!();
         }

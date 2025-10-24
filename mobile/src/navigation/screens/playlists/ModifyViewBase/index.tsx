@@ -165,13 +165,13 @@ const RenderItem = memo(
           rightIconContainerClassName="rounded-sm bg-red"
           wrapperClassName="mx-4"
         >
-          <View className="bg-canvas">
+          <View className="rounded-sm bg-canvas">
             <SearchResult
               type="track"
               title={item.name}
               description={item.artistName ?? "—"}
               imageSource={item.artwork}
-              className={cn("rounded-sm pr-4 group-active:bg-surface/50", {
+              className={cn("pr-4 group-active:bg-surface/50", {
                 "!bg-surface": info.isActive,
               })}
             />

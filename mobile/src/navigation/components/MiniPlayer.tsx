@@ -61,7 +61,6 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
         <TextWrapper
           activationThreshold={24}
           overshootSwipe={false}
-          durationMS={150}
           onSwipeLeft={PlaybackControls.next}
           onSwipeRight={PlaybackControls.prev}
           wrapperClassName="shrink grow justify-center overflow-hidden"
