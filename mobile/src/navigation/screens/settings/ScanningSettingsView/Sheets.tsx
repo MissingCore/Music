@@ -4,7 +4,7 @@ import { Keyboard, View } from "react-native";
 
 import { Add } from "~/resources/icons/Add";
 import { CreateNewFolder } from "~/resources/icons/CreateNewFolder";
-import { Remove } from "~/resources/icons/Remove";
+import { Delete } from "~/resources/icons/Delete";
 import {
   userPreferencesStore,
   useUserPreferencesStore,
@@ -17,16 +17,14 @@ import {
 } from "./Sheets.utils";
 
 import { Colors } from "~/constants/Styles";
-import { OnRTL } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
-import { cn } from "~/lib/style";
+import { BounceSwipeable } from "~/components/BounceSwipeable";
 import { Marquee } from "~/components/Containment/Marquee";
 import { FlatList } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { NumericInput, TextInput } from "~/components/Form/Input";
 import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
-import { Swipeable } from "~/components/Swipeable";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { deferInitialRender } from "../../../components/DeferredRender";
 import { ContentPlaceholder } from "../../../components/Placeholder";
@@ -86,20 +84,11 @@ function ScanFilterListSheet({
         data={listEntries}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
-          <Swipeable
-            containerClassName="px-4"
-            renderRightActions={() => (
-              <Button
-                accessibilityLabel={t("template.entryRemove", { name: item })}
-                onPress={() => removePath({ list: listType, path: item })}
-                className={cn(
-                  "aspect-square h-full bg-red p-3",
-                  OnRTL.decide("ml-4", "mr-4"),
-                )}
-              >
-                <Remove color={Colors.neutral100} />
-              </Button>
-            )}
+          <BounceSwipeable
+            onSwipeLeft={() => removePath({ list: listType, path: item })}
+            RightIcon={<Delete color={Colors.neutral100} />}
+            rightIconContainerClassName="rounded-md bg-red"
+            wrapperClassName="mx-4"
           >
             <Marquee
               color="surface"
@@ -108,7 +97,7 @@ function ScanFilterListSheet({
             >
               <StyledText className="px-4">{item}</StyledText>
             </Marquee>
-          </Swipeable>
+          </BounceSwipeable>
         )}
         ListEmptyComponent={
           <ContentPlaceholder errMsgKey="err.msg.noFilters" />
