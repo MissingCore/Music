@@ -9,7 +9,7 @@ import { useTheme } from "~/hooks/useTheme";
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 
-const DRAG_TOSS = 0.01;
+const DRAG_TOSS = 0.02;
 
 interface SwipeableProps {
   children: React.ReactNode;
@@ -45,7 +45,7 @@ interface SwipeableProps {
 }
 
 export function Swipeable({
-  activationThreshold = 125,
+  activationThreshold = 175,
   activationThresholdRatio = 0.5,
   overshootSwipe = true,
   RightIcon = <SwipeIcon />,
