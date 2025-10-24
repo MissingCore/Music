@@ -9,6 +9,8 @@ import { useTheme } from "~/hooks/useTheme";
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 
+const DRAG_TOSS = 0.01;
+
 interface SwipeableProps {
   children: React.ReactNode;
 
@@ -50,7 +52,6 @@ export function Swipeable({
   LeftIcon = <SwipeIcon rotate />,
   ...props
 }: SwipeableProps) {
-  const initX = useRef(0);
   const rowWidth = useRef(0);
   // Need to be state to trigger re-render for indicator styles.
   const [swipeAmount, setSwipeAmount] = useState(0);
@@ -64,10 +65,10 @@ export function Swipeable({
   }, [dragX]);
 
   const clampSwipeAmount = useCallback(
-    (currentX: number) =>
+    (translateX: number) =>
       clamp(
         props.onSwipeLeft ? -rowWidth.current : 0,
-        currentX - initX.current,
+        translateX,
         props.onSwipeRight ? rowWidth.current : 0,
       ),
     [props.onSwipeLeft, props.onSwipeRight],
@@ -78,30 +79,27 @@ export function Swipeable({
     .runOnJS(true)
     // Allows scrolling to work without triggering gesture.
     .activeOffsetX([-10, 10])
-    .onStart(({ absoluteX }) => {
+    .onStart(() => {
       animationRef.current?.stop();
-      initX.current = absoluteX;
     })
-    .onUpdate(({ absoluteX }) => {
-      dragX.setValue(clampSwipeAmount(absoluteX));
+    .onUpdate(({ translationX }) => {
+      dragX.setValue(clampSwipeAmount(translationX));
     })
-    .onEnd(({ absoluteX, velocityX }) => {
-      // When swiping very fast and since we're updating `swipeAmount`
-      // on the JS thread so it can be read, `swipeAmount` may not actually
-      // contain the value represented by the pan gesture.
-      const trueSwipeAmount = clampSwipeAmount(absoluteX);
+    .onEnd(({ translationX, velocityX }) => {
+      // Include velocity in final translated amount.
+      const clampedTranslation = clampSwipeAmount(
+        translationX + velocityX * DRAG_TOSS,
+      );
       const metThreshold =
-        Math.abs(trueSwipeAmount) >=
+        Math.abs(clampedTranslation) >=
         Math.min(
           activationThreshold,
           rowWidth.current * activationThresholdRatio,
         );
-      const swipedLeft = trueSwipeAmount < 0;
+      const swipedLeft = clampedTranslation < 0;
 
-      // Cleanup
-      initX.current = 0;
       // Don't run animation if we haven't moved.
-      if (trueSwipeAmount === 0) return;
+      if (clampedTranslation === 0) return;
 
       // Create animation the swiped item will translate to.
       animationRef.current = overshootSwipe
