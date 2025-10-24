@@ -66,6 +66,16 @@ export function BounceSwipeable({
     return () => dragX.removeListener(listener);
   }, [dragX]);
 
+  const clampSwipeAmount = useCallback(
+    (currentX: number) =>
+      clamp(
+        props.onSwipeLeft ? -rowWidth.current : 0,
+        currentX - initX.current,
+        props.onSwipeRight ? rowWidth.current : 0,
+      ),
+    [props.onSwipeLeft, props.onSwipeRight],
+  );
+
   const swipeGesture = Gesture.Pan()
     // Since we're not using `react-native-reanimated`.
     .runOnJS(true)
@@ -76,19 +86,13 @@ export function BounceSwipeable({
       initX.current = absoluteX;
     })
     .onUpdate(({ absoluteX }) => {
-      dragX.setValue(
-        clamp(
-          props.onSwipeLeft ? -rowWidth.current : 0,
-          absoluteX - initX.current,
-          props.onSwipeRight ? rowWidth.current : 0,
-        ),
-      );
+      dragX.setValue(clampSwipeAmount(absoluteX));
     })
     .onEnd(({ absoluteX }) => {
       // When swiping very fast and since we're updating `swipeAmount`
       // on the JS thread so it can be read, `swipeAmount` may not actually
       // contain the value represented by the pan gesture.
-      const trueSwipeAmount = absoluteX - initX.current;
+      const trueSwipeAmount = clampSwipeAmount(absoluteX);
       const metThreshold =
         Math.abs(trueSwipeAmount) >=
         Math.min(
