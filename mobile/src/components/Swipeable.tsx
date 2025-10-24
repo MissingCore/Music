@@ -86,9 +86,10 @@ export function Swipeable({
       dragX.setValue(clampSwipeAmount(translationX));
     })
     .onEnd(({ translationX, velocityX }) => {
-      // Include velocity in final translated amount.
+      // Include velocity in final translated amount if overshoot is enabled.
+      const velocityDistance = (overshootSwipe ? 1 : 0) * velocityX * DRAG_TOSS;
       const clampedTranslation = clampSwipeAmount(
-        translationX + velocityX * DRAG_TOSS,
+        translationX + velocityDistance,
       );
       const metThreshold =
         Math.abs(clampedTranslation) >=
