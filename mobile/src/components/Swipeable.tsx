@@ -35,11 +35,6 @@ interface SwipeableProps {
   /** Style the container containing `LeftIcon` (ie: background color, border radius). */
   leftIconContainerClassName?: string;
 
-  /** Visual element when swiping right. */
-  LeftIndicator?: React.ReactNode;
-  /** Visual element when swiping left. */
-  RightIndicator?: React.ReactNode;
-
   className?: string;
   wrapperClassName?: string;
 }
