@@ -4,7 +4,7 @@ import { Keyboard, View } from "react-native";
 
 import { Add } from "~/resources/icons/Add";
 import { CreateNewFolder } from "~/resources/icons/CreateNewFolder";
-import { Remove } from "~/resources/icons/Remove";
+import { Delete } from "~/resources/icons/Delete";
 import {
   userPreferencesStore,
   useUserPreferencesStore,
@@ -17,9 +17,7 @@ import {
 } from "./Sheets.utils";
 
 import { Colors } from "~/constants/Styles";
-import { OnRTL } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
-import { cn } from "~/lib/style";
 import { Marquee } from "~/components/Containment/Marquee";
 import { FlatList } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
@@ -87,19 +85,10 @@ function ScanFilterListSheet({
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
           <Swipeable
-            containerClassName="px-4"
-            renderRightActions={() => (
-              <Button
-                accessibilityLabel={t("template.entryRemove", { name: item })}
-                onPress={() => removePath({ list: listType, path: item })}
-                className={cn(
-                  "aspect-square h-full bg-red p-3",
-                  OnRTL.decide("ml-4", "mr-4"),
-                )}
-              >
-                <Remove color={Colors.neutral100} />
-              </Button>
-            )}
+            onSwipeLeft={() => removePath({ list: listType, path: item })}
+            RightIcon={<Delete color={Colors.neutral100} />}
+            rightIconContainerClassName="rounded-md bg-red"
+            wrapperClassName="mx-4"
           >
             <Marquee
               color="surface"

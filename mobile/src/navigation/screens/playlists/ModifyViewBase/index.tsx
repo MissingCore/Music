@@ -11,7 +11,7 @@ import { Add } from "~/resources/icons/Add";
 import { Cancel } from "~/resources/icons/Cancel";
 import { CheckCircle } from "~/resources/icons/CheckCircle";
 import { Check } from "~/resources/icons/Check";
-import { Remove } from "~/resources/icons/Remove";
+import { Delete } from "~/resources/icons/Delete";
 import { useDeletePlaylist } from "~/queries/playlist";
 import { useFloatingContent } from "../../../hooks/useFloatingContent";
 import type { InitStoreProps } from "./store";
@@ -24,7 +24,6 @@ import {
 import { AddMusicSheet } from "./AddMusicSheet";
 
 import { Colors } from "~/constants/Styles";
-import { OnRTL } from "~/lib/react";
 import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
@@ -35,7 +34,7 @@ import { Button, IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import { ModalTemplate } from "~/components/Modal";
 import { useSheetRef } from "~/components/Sheet";
-import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
+import { Swipeable } from "~/components/Swipeable";
 import { TStyledText } from "~/components/Typography/StyledText";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { readM3UPlaylist } from "~/modules/backup/M3U";
@@ -152,17 +151,7 @@ function PageContent({ bottomOffset }: { bottomOffset: number }) {
 /** Item rendered in the `<DragList />`. */
 const RenderItem = memo(
   function RenderItem({ item, ...info }: RenderItemProps) {
-    const { t } = useTranslation();
-    const swipeableRef = useSwipeableRef();
-    const [lastItemId, setLastItemId] = useState(item.id);
-
     const removeTrack = usePlaylistStore((state) => state.removeTrack);
-
-    if (item.id !== lastItemId) {
-      setLastItemId(item.id);
-      if (swipeableRef.current) swipeableRef.current.resetIfNeeded();
-    }
-
     return (
       <Pressable
         delayLongPress={250}
@@ -171,33 +160,22 @@ const RenderItem = memo(
         className={cn("group", { "mt-2": info.index > 0 })}
       >
         <Swipeable
-          // @ts-expect-error - Error assigning ref to class component.
-          ref={swipeableRef}
-          enabled={!info.isDragging}
-          renderRightActions={() =>
-            info.isActive ? undefined : (
-              <Button
-                accessibilityLabel={t("template.entryRemove", {
-                  name: item.name,
-                })}
-                onPress={() => removeTrack(item.id)}
-                className={cn("bg-red p-3", OnRTL.decide("ml-4", "mr-4"))}
-              >
-                <Remove color={Colors.neutral100} />
-              </Button>
-            )
-          }
+          onSwipeLeft={() => removeTrack(item.id)}
+          RightIcon={<Delete color={Colors.neutral100} />}
+          rightIconContainerClassName="rounded-sm bg-red"
+          wrapperClassName="mx-4"
         >
-          <SearchResult
-            type="track"
-            title={item.name}
-            description={item.artistName ?? "—"}
-            imageSource={item.artwork}
-            className={cn(
-              "mx-4 rounded-sm bg-canvas pr-4 group-active:bg-surface/50",
-              { "!bg-surface": info.isActive },
-            )}
-          />
+          <View className="rounded-sm bg-canvas">
+            <SearchResult
+              type="track"
+              title={item.name}
+              description={item.artistName ?? "—"}
+              imageSource={item.artwork}
+              className={cn("pr-4 group-active:bg-surface/50", {
+                "!bg-surface": info.isActive,
+              })}
+            />
+          </View>
         </Swipeable>
       </Pressable>
     );
