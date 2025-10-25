@@ -1,5 +1,6 @@
 import { getActualPath } from "@missingcore/react-native-actual-path";
 import type { LinkingOptions, ParamListBase } from "@react-navigation/native";
+import { getActionFromState } from "@react-navigation/native";
 import { Linking } from "react-native";
 
 import { db } from "~/db";
@@ -12,6 +13,14 @@ let handledInitialURL = false;
 
 export const linking: LinkingOptions<ParamListBase> = {
   prefixes: ["music://"],
+
+  // Have deep links use essentially `NAVIGATE_DEPRECATED`.
+  getActionFromState(state, options) {
+    const action = getActionFromState(state, options);
+    // @ts-expect-error - `payload.pop` option should exist.
+    if (action?.type === "NAVIGATE") action.payload.pop = true;
+    return action;
+  },
 
   subscribe(listener) {
     // Handle the deep link used to open the app.
