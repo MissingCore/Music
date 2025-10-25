@@ -1,7 +1,7 @@
-// import type { ListRenderItemInfo } from "@shopify/flash-list";
+import type { ListRenderItemInfo } from "@shopify/flash-list";
 import { useQuery } from "@tanstack/react-query";
 import { inArray } from "drizzle-orm";
-// import { useState } from "react";
+import { useMemo } from "react";
 
 import { tracks } from "~/db/schema";
 import { getTrackCover } from "~/db/utils";
@@ -9,7 +9,7 @@ import { getTrackCover } from "~/db/utils";
 // import { Remove } from "~/resources/icons/Remove";
 import { getTracks } from "~/api/track";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
-// import { Queue } from "~/stores/Playback/actions";
+import { PlaybackControls } from "~/stores/Playback/actions";
 
 // import { Colors } from "~/constants/Styles";
 // import { OnRTL } from "~/lib/react";
@@ -17,6 +17,7 @@ import { cn } from "~/lib/style";
 import { FlashList } from "~/components/Defaults";
 // import { Button } from "~/components/Form/Button";
 // import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
+import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { RepeatModes } from "~/stores/Playback/constants";
 import {
@@ -29,6 +30,13 @@ export default function Upcoming() {
   const listIndex = usePlaybackStore((s) => s.queuePosition);
   const repeat = usePlaybackStore((s) => s.repeat);
 
+  const modifiedData = useMemo(() => {
+    if (!data || data.length === 0) return [];
+    const activeTrack = data[listIndex];
+    if (!activeTrack) return data;
+    return data.toSpliced(listIndex, 1, { ...activeTrack, active: true });
+  }, [data, listIndex]);
+
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
 
   // Index where the tracks won't be played.
@@ -39,19 +47,11 @@ export default function Upcoming() {
       estimatedItemSize={56} // 48px Height + 8px Margin Top
       initialScrollIndex={listIndex}
       estimatedFirstItemOffset={8}
-      data={data}
+      data={modifiedData}
       keyExtractor={(item, index) => `${item?.id}_${index}`}
-      renderItem={({ item, index }) =>
+      renderItem={({ item, ...args }) =>
         item ? (
-          <TrackItem
-            title={item.name}
-            description={item.artistName ?? "—"}
-            imageSource={getTrackCover(item)}
-            className={cn({
-              "opacity-25": index < disableIndex,
-              "mt-2": index > 0,
-            })}
-          />
+          <TrackItem item={item} disableAfter={disableIndex} {...args} />
         ) : null
       }
       ListEmptyComponent={<ContentPlaceholder isPending={data.length === 0} />}
@@ -97,26 +97,35 @@ export default function Upcoming() {
 //   );
 // }
 
-/**
- * Essentially `<Track />` without any playing functionality. Has special
- * behavior if the rendered track is part of the queue.
- */
-function TrackItem(
-  props: Pick<
-    SearchResult.Content,
-    "title" | "description" | "imageSource" | "className"
-  >,
-) {
+function TrackItem({
+  item: { active, ...item },
+  index,
+  disableAfter,
+}: ListRenderItemInfo<TrackData> & { disableAfter: number }) {
   return (
+    // @ts-expect-error - Valid conditional use of `onPress`.
     <SearchResult
+      as={active ? "default" : "ripple"}
       type="track"
-      {...props}
-      className={cn(props.className, "bg-canvasAlt pr-6")}
+      onPress={!active ? () => PlaybackControls.playAtIndex(index) : undefined}
+      title={item.name}
+      description={item.artistName ?? "—"}
+      imageSource={getTrackCover(item)}
+      LeftElement={active ? <PlayingIndicator /> : undefined}
+      poppyLabel={active}
+      className={cn("bg-canvasAlt pr-6", {
+        "opacity-25": index < disableAfter,
+        "mt-2": index > 0,
+      })}
     />
   );
 }
 
 //#region Data Query
+type TrackData = NonNullable<
+  Awaited<ReturnType<typeof getQueueTracks>>[number]
+>;
+
 async function getQueueTracks() {
   const { queue } = playbackStore.getState();
   if (queue.length === 0) return [];
@@ -133,7 +142,9 @@ async function getQueueTracks() {
     unorderedTracks.filter((t) => t !== undefined).map((t) => [t.id, t]),
   );
 
-  return queue.map((tId) => trackMap[tId]);
+  return queue.map((tId) => trackMap[tId]) as Array<
+    (typeof unorderedTracks)[number] & { active?: boolean }
+  >;
 }
 
 const queryKey = ["queue"];

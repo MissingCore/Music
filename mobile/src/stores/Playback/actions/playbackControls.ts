@@ -151,6 +151,7 @@ export async function playAtIndex(index: number) {
   });
 
   await loadCurrentTrack();
+  await play();
 }
 
 /** Play a track from a media list. */
