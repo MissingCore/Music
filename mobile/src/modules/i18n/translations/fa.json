@@ -155,9 +155,9 @@
       "description": "انتقال داده ها از این برنامه بین دستگاه ها از طریق فایل `music_backup.json`.",
       "extra": {
         "export": "صادر کردن",
-        "exportSuccess": "پشتیبان با موفقیت ایجاد شد.",
+        "exportSuccess": "خروجی با موفقیت ایجاد شد.",
         "import": "وارد کردن",
-        "importSuccess": "وارد کردن پشتیبان کامل شد."
+        "importSuccess": "ورود با موفقیت انجام شد."
       }
     },
     "insights": {
