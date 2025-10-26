@@ -58,17 +58,14 @@ export default function Upcoming() {
       initialScrollIndex={listIndex}
       estimatedFirstItemOffset={8}
       data={modifiedData}
-      keyExtractor={(item, index) => `${item?.id}_${index}`}
-      renderItem={({ item, ...args }) =>
-        item ? (
-          <RenderItem
-            item={item}
-            disableAfter={disableIndex}
-            onRemoveAtIndex={onRemoveAtIndex}
-            {...args}
-          />
-        ) : null
-      }
+      keyExtractor={(item, index) => `${item.id}_${index}`}
+      renderItem={(args) => (
+        <RenderItem
+          disableAfter={disableIndex}
+          onRemoveAtIndex={onRemoveAtIndex}
+          {...args}
+        />
+      )}
       ListEmptyComponent={<ContentPlaceholder isPending={data.length === 0} />}
       nestedScrollEnabled
       contentContainerClassName="py-4"
@@ -145,9 +142,7 @@ function TrackItem({
 //#endregion
 
 //#region Data Query
-type TrackData = NonNullable<
-  Awaited<ReturnType<typeof getQueueTracks>>[number]
->;
+type TrackData = Awaited<ReturnType<typeof getQueueTracks>>[number];
 
 async function getQueueTracks() {
   const { queue } = playbackStore.getState();
@@ -160,14 +155,24 @@ async function getQueueTracks() {
     columns: ["id", "name", "artistName", "artwork"],
     albumColumns: ["artwork"],
   });
+
   // Structure as a map for faster searching.
   const trackMap = Object.fromEntries(
     unorderedTracks.filter((t) => t !== undefined).map((t) => [t.id, t]),
   );
 
-  return queue.map((tId) => trackMap[tId]) as Array<
+  // Ensure all the tracks exist.
+  const trackList: Array<
     (typeof unorderedTracks)[number] & { active?: boolean }
-  >;
+  > = [];
+  const missingTracks: string[] = [];
+  for (const tId of queue) {
+    if (trackMap[tId]) trackList.push(trackMap[tId]);
+    else missingTracks.push(tId);
+  }
+  Queue.removeIds(missingTracks);
+
+  return trackList;
 }
 
 const queryKey = ["queue"];
