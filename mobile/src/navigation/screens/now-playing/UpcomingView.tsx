@@ -1,22 +1,20 @@
 import type { ListRenderItemInfo } from "@shopify/flash-list";
 import { useQuery } from "@tanstack/react-query";
 import { inArray } from "drizzle-orm";
-import { useMemo } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 
 import { tracks } from "~/db/schema";
 import { getTrackCover } from "~/db/utils";
 
-// import { Remove } from "~/resources/icons/Remove";
+import { Delete } from "~/resources/icons/Delete";
 import { getTracks } from "~/api/track";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
-import { PlaybackControls } from "~/stores/Playback/actions";
+import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 
-// import { Colors } from "~/constants/Styles";
-// import { OnRTL } from "~/lib/react";
+import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
 import { FlashList } from "~/components/Defaults";
-// import { Button } from "~/components/Form/Button";
-// import { Swipeable, useSwipeableRef } from "~/components/Swipeable";
+import { Swipeable } from "~/components/Swipeable";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { RepeatModes } from "~/stores/Playback/constants";
@@ -29,13 +27,25 @@ export default function Upcoming() {
   const { isPending, error, data } = useQueueTracks();
   const listIndex = usePlaybackStore((s) => s.queuePosition);
   const repeat = usePlaybackStore((s) => s.repeat);
+  const [cachedData, setCachedData] = useState<TrackData[]>([]);
+
+  // Sync our local state with the store data (this should be called twice
+  // since we won't revalidate the query on changes).
+  useEffect(() => {
+    if (data) setCachedData(data);
+  }, [data]);
 
   const modifiedData = useMemo(() => {
-    if (!data || data.length === 0) return [];
-    const activeTrack = data[listIndex];
-    if (!activeTrack) return data;
-    return data.toSpliced(listIndex, 1, { ...activeTrack, active: true });
-  }, [data, listIndex]);
+    if (cachedData.length === 0) return [];
+    const activeTrack = cachedData[listIndex];
+    if (!activeTrack) return cachedData;
+    return cachedData.toSpliced(listIndex, 1, { ...activeTrack, active: true });
+  }, [cachedData, listIndex]);
+
+  const onRemoveAtIndex = useCallback((index: number) => {
+    Queue.removeAtIndex(index);
+    setCachedData((prev) => prev.toSpliced(index, 1));
+  }, []);
 
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
 
@@ -51,75 +61,88 @@ export default function Upcoming() {
       keyExtractor={(item, index) => `${item?.id}_${index}`}
       renderItem={({ item, ...args }) =>
         item ? (
-          <TrackItem item={item} disableAfter={disableIndex} {...args} />
+          <RenderItem
+            item={item}
+            disableAfter={disableIndex}
+            onRemoveAtIndex={onRemoveAtIndex}
+            {...args}
+          />
         ) : null
       }
       ListEmptyComponent={<ContentPlaceholder isPending={data.length === 0} />}
       nestedScrollEnabled
-      contentContainerClassName="p-4"
+      contentContainerClassName="py-4"
     />
   );
 }
 
-// function RenderQueueItem({ item, index }: ListRenderItemInfo<PartialTrack>) {
-//   const { t } = useTranslation();
-//   const swipeableRef = useSwipeableRef();
-//   const [lastItemId, setLastItemId] = useState(item?.id);
+//#region Rendered Track
+type RenderItemProps = ListRenderItemInfo<TrackData> & {
+  disableAfter: number;
+  onRemoveAtIndex: (index: number) => void;
+};
 
-//   if (item?.id !== lastItemId) {
-//     setLastItemId(item?.id);
-//     if (swipeableRef.current) swipeableRef.current.resetIfNeeded();
-//   }
+const RenderItem = memo(function RenderItem({
+  item,
+  index,
+  disableAfter,
+  onRemoveAtIndex,
+}: RenderItemProps) {
+  if (!item) return null;
 
-//   if (!item) return null;
-//   return (
-//     <Swipeable
-//       // @ts-expect-error - Error assigning ref to class component.
-//       ref={swipeableRef}
-//       containerClassName="mb-1 px-4"
-//       renderRightActions={() => (
-//         <Button
-//           accessibilityLabel={t("template.entryRemove", { name: item.name })}
-//           onPress={() => Queue.removeAtIndex(index)}
-//           className={cn("bg-red p-3", OnRTL.decide("ml-4", "mr-4"))}
-//         >
-//           <Remove color={Colors.neutral100} />
-//         </Button>
-//       )}
-//     >
-//       <TrackItem
-//         title={item.name}
-//         description={item.artistName ?? "—"}
-//         imageSource={getTrackCover(item)}
-//         inQueue
-//       />
-//     </Swipeable>
-//   );
-// }
+  if (item.active) {
+    return (
+      <TrackItem
+        item={item}
+        LeftElement={<PlayingIndicator />}
+        className={cn("mx-4", { "mt-2": index > 0 })}
+      />
+    );
+  }
+
+  return (
+    <Swipeable
+      onSwipeLeft={() => onRemoveAtIndex(index)}
+      RightIcon={<Delete color={Colors.neutral100} />}
+      rightIconContainerClassName="rounded-sm bg-red"
+      wrapperClassName={cn("mx-4", { "mt-2": index > 0 })}
+      className="rounded-sm bg-canvas"
+    >
+      <TrackItem
+        item={item}
+        onPress={() => PlaybackControls.playAtIndex(index)}
+        className={cn({ "opacity-25": index < disableAfter })}
+      />
+    </Swipeable>
+  );
+});
 
 function TrackItem({
   item: { active, ...item },
-  index,
-  disableAfter,
-}: ListRenderItemInfo<TrackData> & { disableAfter: number }) {
+  className,
+  ...props
+}: {
+  item: TrackData;
+  onPress?: VoidFunction;
+  /** If we have a `LeftElement`, it means this track is active. */
+  LeftElement?: SearchResult.Props["LeftElement"];
+  className: string;
+}) {
   return (
     // @ts-expect-error - Valid conditional use of `onPress`.
     <SearchResult
       as={active ? "default" : "ripple"}
       type="track"
-      onPress={!active ? () => PlaybackControls.playAtIndex(index) : undefined}
       title={item.name}
       description={item.artistName ?? "—"}
       imageSource={getTrackCover(item)}
-      LeftElement={active ? <PlayingIndicator /> : undefined}
       poppyLabel={active}
-      className={cn("bg-canvasAlt pr-6", {
-        "opacity-25": index < disableAfter,
-        "mt-2": index > 0,
-      })}
+      className={cn("pr-6", className)}
+      {...props}
     />
   );
 }
+//#endregion
 
 //#region Data Query
 type TrackData = NonNullable<
