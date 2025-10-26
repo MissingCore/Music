@@ -36,7 +36,7 @@ A Nothing inspired **local** music player.
 - Background playback w/ media control notification
 - Theoretical support of [these media formats](https://developer.android.com/media/platform/supported-formats#audio-formats)
 - [Community translations](#translations)
-- **`[🧪 Experimental]`** Sleep timer support (enable feature in settings)
+- **`[🧪 Experimental]`** Sleep timer support
 - **`[🧪 Experimental]`** Importing/Exporting playlists from/as M3U files
 - **`[🧪 Experimental]`** [3 widget variants](./docs/widgets.md)
 
