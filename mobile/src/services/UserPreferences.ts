@@ -62,8 +62,6 @@ interface UserPreferencesStore {
   /** Visibility of the tabs on the home screen. */
   tabsVisibility: Record<OrderableTab, boolean>;
 
-  /** Whether we'll continue playback through any interruptions. */
-  ignoreInterrupt: boolean;
   /** Whether we stay on "Repeat One" mode when we skip. */
   repeatOnSkip: boolean;
 
@@ -85,8 +83,8 @@ interface UserPreferencesStore {
   */
   /** If playback will continue when we dismiss the app. */
   continuePlaybackOnDismiss: boolean;
-  /** If we display the option to create a sleep timer in the "Now Playing" screen. */
-  sleepTimer: boolean;
+  /** Whether we'll continue playback through any interruptions. */
+  ignoreInterrupt: boolean;
 }
 //#endregion
 
@@ -139,7 +137,6 @@ export const userPreferencesStore =
         track: true,
       },
 
-      ignoreInterrupt: false,
       repeatOnSkip: false,
 
       restoreLastPosition: true,
@@ -151,7 +148,7 @@ export const userPreferencesStore =
       rcNotification: false,
 
       continuePlaybackOnDismiss: false,
-      sleepTimer: false,
+      ignoreInterrupt: false,
     }),
     {
       name: "music::user-preferences",

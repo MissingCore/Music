@@ -206,7 +206,6 @@ function BottomAppBar() {
   const navigation = useNavigation();
   const playbackOptionsSheetRef = useSheetRef();
   const sleepTimerSheetRef = useSheetRef();
-  const showSleepTimer = useUserPreferencesStore((s) => s.sleepTimer);
   const sleepTimerActive = useSleepTimerStore((s) => s.endAt) !== null;
 
   return (
@@ -216,19 +215,17 @@ function BottomAppBar() {
       <View className="flex-row items-center justify-between gap-4 p-4">
         <BackButton />
         <View className="flex-row items-center gap-4">
-          {showSleepTimer ? (
-            <View className="relative">
-              <IconButton
-                Icon={Timer}
-                accessibilityLabel={t("feat.sleepTimer.title")}
-                onPress={() => sleepTimerSheetRef.current?.present()}
-                large
-              />
-              {sleepTimerActive && (
-                <View className="absolute right-2 top-2 size-2 rounded-full bg-red" />
-              )}
-            </View>
-          ) : null}
+          <View className="relative">
+            <IconButton
+              Icon={Timer}
+              accessibilityLabel={t("feat.sleepTimer.title")}
+              onPress={() => sleepTimerSheetRef.current?.present()}
+              large
+            />
+            {sleepTimerActive && (
+              <View className="absolute right-2 top-2 size-2 rounded-full bg-red" />
+            )}
+          </View>
           <IconButton
             Icon={InstantMix}
             accessibilityLabel={t("feat.playback.extra.options")}

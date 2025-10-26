@@ -15,7 +15,7 @@ export default function ExperimentalSettings() {
   const continuePlaybackOnDismiss = useUserPreferencesStore(
     (state) => state.continuePlaybackOnDismiss,
   );
-  const showSleepTimer = useUserPreferencesStore((state) => state.sleepTimer);
+  const ignoreInterrupt = useUserPreferencesStore((s) => s.ignoreInterrupt);
 
   return (
     <StandardScrollLayout>
@@ -28,10 +28,10 @@ export default function ExperimentalSettings() {
           first
         />
         <ListItem
-          titleKey="feat.sleepTimer.title"
-          description={t("feat.sleepTimer.description")}
-          onPress={toggleSleepTimer}
-          switchState={showSleepTimer}
+          titleKey="feat.ignoreInterrupt.title"
+          description={t("feat.ignoreInterrupt.brief")}
+          onPress={toggleIgnoreInterrupt}
+          switchState={ignoreInterrupt}
           last
         />
       </List>
@@ -47,5 +47,7 @@ const toggleContinuePlaybackOnDismiss = async () => {
   );
 };
 
-const toggleSleepTimer = () =>
-  userPreferencesStore.setState((prev) => ({ sleepTimer: !prev.sleepTimer }));
+const toggleIgnoreInterrupt = () =>
+  userPreferencesStore.setState((prev) => ({
+    ignoreInterrupt: !prev.ignoreInterrupt,
+  }));

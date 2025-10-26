@@ -10,7 +10,6 @@ import { List, ListItem } from "~/components/Containment/List";
 
 export default function PlaybackSettings() {
   const { t } = useTranslation();
-  const ignoreInterrupt = useUserPreferencesStore((s) => s.ignoreInterrupt);
   const repeatOnSkip = useUserPreferencesStore((s) => s.repeatOnSkip);
   const restoreLastPosition = useUserPreferencesStore(
     (s) => s.restoreLastPosition,
@@ -18,22 +17,14 @@ export default function PlaybackSettings() {
 
   return (
     <StandardScrollLayout>
-      <List>
-        <ListItem
-          titleKey="feat.ignoreInterrupt.title"
-          description={t("feat.ignoreInterrupt.brief")}
-          onPress={toggleIgnoreInterrupt}
-          switchState={ignoreInterrupt}
-          first
-        />
-        <ListItem
-          titleKey="feat.repeatOnSkip.title"
-          description={t("feat.repeatOnSkip.brief")}
-          onPress={toggleRepeatOnSkip}
-          switchState={repeatOnSkip}
-          last
-        />
-      </List>
+      <ListItem
+        titleKey="feat.repeatOnSkip.title"
+        description={t("feat.repeatOnSkip.brief")}
+        onPress={toggleRepeatOnSkip}
+        switchState={repeatOnSkip}
+        first
+        last
+      />
 
       <List>
         <ListItem
@@ -47,11 +38,6 @@ export default function PlaybackSettings() {
     </StandardScrollLayout>
   );
 }
-
-const toggleIgnoreInterrupt = () =>
-  userPreferencesStore.setState((prev) => ({
-    ignoreInterrupt: !prev.ignoreInterrupt,
-  }));
 
 const toggleRepeatOnSkip = () =>
   userPreferencesStore.setState((prev) => ({
