@@ -43,9 +43,19 @@ export interface PlaybackStore {
 
   /** A copy of the original list order at the time of playing. */
   orderSnapshot: string[];
-  /** A copy of the original list we're playing from which we can modify. */
+  /**
+   * A copy of the original list we're playing from which we can modify, which
+   * may potentially contain duplicates whose values are formatted as:
+   *  - `${track_id}`
+   *  - `${track_id}__${unique_id}`
+   */
   queue: string[];
 
+  /**
+   * Value is formatted as:
+   *  - `${track_id}`
+   *  - `${track_id}__${unique_id}`
+   */
   activeId: string | undefined;
   activeTrack: TrackWithAlbum | undefined;
   /** Index in current queue where `activeId` is located. */
