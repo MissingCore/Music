@@ -1,7 +1,7 @@
-import type { ListRenderItemInfo } from "@shopify/flash-list";
 import { useQuery } from "@tanstack/react-query";
 import { inArray } from "drizzle-orm";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
 import { tracks } from "~/db/schema";
 import { getTrackCover } from "~/db/utils";
@@ -12,8 +12,11 @@ import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 
 import { Colors } from "~/constants/Styles";
+import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import { cn } from "~/lib/style";
-import { FlashList } from "~/components/Defaults";
+import { moveArray } from "~/utils/object";
+import { FlashDragList } from "~/components/Defaults";
+import type { PressProps } from "~/components/Form/Button";
 import { Swipeable } from "~/components/Swipeable";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
 import { SearchResult } from "~/modules/search/components/SearchResult";
@@ -42,6 +45,11 @@ export default function Upcoming() {
     return cachedData.toSpliced(listIndex, 1, { ...activeTrack, active: true });
   }, [cachedData, listIndex]);
 
+  const onMove = useCallback((fromIndex: number, toIndex: number) => {
+    Queue.moveTrack(fromIndex, toIndex);
+    setCachedData((prev) => moveArray(prev, { fromIndex, toIndex }));
+  }, []);
+
   const onRemoveAtIndex = useCallback((index: number) => {
     Queue.removeAtIndex(index);
     setCachedData((prev) => prev.toSpliced(index, 1));
@@ -53,7 +61,7 @@ export default function Upcoming() {
   const disableIndex = repeat === RepeatModes.NO_REPEAT ? listIndex : 0;
 
   return (
-    <FlashList
+    <FlashDragList
       estimatedItemSize={56} // 48px Height + 8px Margin Top
       initialScrollIndex={listIndex}
       estimatedFirstItemOffset={8}
@@ -66,6 +74,7 @@ export default function Upcoming() {
           {...args}
         />
       )}
+      onReordered={onMove}
       ListEmptyComponent={<ContentPlaceholder isPending={data.length === 0} />}
       nestedScrollEnabled
       contentContainerClassName="py-4"
@@ -74,45 +83,62 @@ export default function Upcoming() {
 }
 
 //#region Rendered Track
-type RenderItemProps = ListRenderItemInfo<TrackData> & {
+type RenderItemProps = DragListRenderItemInfo<TrackData> & {
   disableAfter: number;
   onRemoveAtIndex: (index: number) => void;
 };
 
-const RenderItem = memo(function RenderItem({
-  item,
-  index,
-  disableAfter,
-  onRemoveAtIndex,
-}: RenderItemProps) {
-  if (!item) return null;
+const RenderItem = memo(
+  function RenderItem({
+    item,
+    index,
+    disableAfter,
+    onRemoveAtIndex,
+    ...info
+  }: RenderItemProps) {
+    if (item.active) {
+      return (
+        <TrackItem
+          item={item}
+          onLongPress={info.onDragStart}
+          onPressOut={info.onDragEnd}
+          LeftElement={<PlayingIndicator />}
+          wrapperClassName={cn("mx-4", { "mt-2": index > 0 })}
+          className={cn({ "bg-surface": info.isActive })}
+        />
+      );
+    }
 
-  if (item.active) {
     return (
-      <TrackItem
-        item={item}
-        LeftElement={<PlayingIndicator />}
-        className={cn("mx-4", { "mt-2": index > 0 })}
-      />
+      <Swipeable
+        disabled={info.isDragging}
+        onSwipeLeft={() => onRemoveAtIndex(index)}
+        RightIcon={<Delete color={Colors.neutral100} />}
+        rightIconContainerClassName="rounded-sm bg-red"
+        wrapperClassName={cn("mx-4", { "mt-2": index > 0 })}
+        className={cn("rounded-sm bg-canvas", { "bg-surface": info.isActive })}
+      >
+        <TrackItem
+          item={item}
+          onPress={() => PlaybackControls.playAtIndex(index)}
+          onLongPress={info.onDragStart}
+          onPressOut={info.onDragEnd}
+          className={cn({
+            "opacity-25": index < disableAfter && !info.isActive,
+          })}
+        />
+      </Swipeable>
     );
-  }
-
-  return (
-    <Swipeable
-      onSwipeLeft={() => onRemoveAtIndex(index)}
-      RightIcon={<Delete color={Colors.neutral100} />}
-      rightIconContainerClassName="rounded-sm bg-red"
-      wrapperClassName={cn("mx-4", { "mt-2": index > 0 })}
-      className="rounded-sm bg-canvas"
-    >
-      <TrackItem
-        item={item}
-        onPress={() => PlaybackControls.playAtIndex(index)}
-        className={cn({ "opacity-25": index < disableAfter })}
-      />
-    </Swipeable>
-  );
-});
+  },
+  areRenderItemPropsEqual(
+    (o, n) =>
+      o.item.id === n.item.id &&
+      o.item.instance === n.item.instance &&
+      o.item.active === n.item.active &&
+      // @ts-expect-error - Field exists on data.
+      o.disableAfter === n.disableAfter,
+  ),
+);
 
 function TrackItem({
   item: { active, ...item },
@@ -120,15 +146,14 @@ function TrackItem({
   ...props
 }: {
   item: TrackData;
-  onPress?: VoidFunction;
   /** If we have a `LeftElement`, it means this track is active. */
   LeftElement?: SearchResult.Props["LeftElement"];
   className: string;
-}) {
+  wrapperClassName?: string;
+} & PressProps) {
   return (
-    // @ts-expect-error - Valid conditional use of `onPress`.
     <SearchResult
-      as={active ? "default" : "ripple"}
+      as="ripple"
       type="track"
       title={item.name}
       description={item.artistName ?? "—"}
