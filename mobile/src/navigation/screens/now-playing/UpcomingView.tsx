@@ -124,7 +124,8 @@ const RenderItem = memo(
           onLongPress={info.onDragStart}
           onPressOut={info.onDragEnd}
           className={cn({
-            "opacity-25": index < disableAfter && !info.isActive,
+            "opacity-25 active:opacity-100":
+              index < disableAfter && !info.isActive,
           })}
         />
       </Swipeable>
