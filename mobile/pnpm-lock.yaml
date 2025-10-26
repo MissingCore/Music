@@ -12,7 +12,7 @@ patchedDependencies:
     hash: zgygxsuuqk33jr3gwbxpbkmczi
     path: patches/@backpackapp-io__react-native-toast.patch
   '@react-native-assets/slider':
-    hash: t2vslaq3o2r5rmxjymsu3p2x2m
+    hash: bqoknc62ex4oh6leybytriowfi
     path: patches/@react-native-assets__slider.patch
   expo-file-system:
     hash: hgu53i2ax26gwnr5j43lvhx4h4
@@ -53,8 +53,8 @@ importers:
         specifier: 2.2.2
         version: 2.2.2
       '@react-native-assets/slider':
-        specifier: 11.0.11
-        version: 11.0.11(patch_hash=t2vslaq3o2r5rmxjymsu3p2x2m)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        specifier: ^11.0.12
+        version: 11.0.12(patch_hash=bqoknc62ex4oh6leybytriowfi)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@react-navigation/material-top-tabs':
         specifier: ^7.3.9
         version: 7.3.9(@react-navigation/native@7.1.18(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-pager-view@6.9.1(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-safe-area-context@5.6.1(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -1356,8 +1356,8 @@ packages:
     resolution: {integrity: sha512-QNqXyfVS2wm9hweSYD2O7F0G06uurj9kZ96TRQE5Y9hU7+tgdZwIkbAKc5Ocy1HxEY2kuDQa6cQ1WRs/O5LFKA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
 
-  '@react-native-assets/slider@11.0.11':
-    resolution: {integrity: sha512-nj45JFe+fLUBw8cdv+uqnzh5VxTF6L9FF3AOgr+66uhd7Oc88KrCSC625Ou+kaidDKSsVKfjBYa7+JFRtp7Gww==}
+  '@react-native-assets/slider@11.0.12':
+    resolution: {integrity: sha512-ZszYcJgI68STqFnkIOHzcutrRo7RSm2Bl2BIB2cuCX95hrh/GFGRZwBmenNuaAno+x0SSuCE0yXo6julUsxUbQ==}
     peerDependencies:
       react: '>=16.13.1'
       react-native: '>=0.61.4'
@@ -6881,7 +6881,7 @@ snapshots:
 
   '@pkgr/core@0.2.9': {}
 
-  '@react-native-assets/slider@11.0.11(patch_hash=t2vslaq3o2r5rmxjymsu3p2x2m)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
+  '@react-native-assets/slider@11.0.12(patch_hash=bqoknc62ex4oh6leybytriowfi)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
     dependencies:
       react: 19.0.0
       react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)

@@ -65,7 +65,7 @@
   },
   "@react-native-assets/slider": {
     "name": "@react-native-assets/slider",
-    "version": "11.0.11",
+    "version": "11.0.12",
     "copyright": "Copyright 2020 François Billioud",
     "source": "https://github.com/Sharcoux/slider",
     "license": "ISC",
