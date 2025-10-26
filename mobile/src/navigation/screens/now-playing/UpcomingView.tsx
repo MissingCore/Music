@@ -58,7 +58,7 @@ export default function Upcoming() {
       initialScrollIndex={listIndex}
       estimatedFirstItemOffset={8}
       data={modifiedData}
-      keyExtractor={(item, index) => `${item.id}_${index}`}
+      keyExtractor={(item) => `${item.id}_${item.instance}`}
       renderItem={(args) => (
         <RenderItem
           disableAfter={disableIndex}
@@ -160,15 +160,20 @@ async function getQueueTracks() {
   const trackMap = Object.fromEntries(
     unorderedTracks.filter((t) => t !== undefined).map((t) => [t.id, t]),
   );
+  const instanceCountMap = Object.fromEntries(
+    Object.keys(trackMap).map((id) => [id, 0]),
+  );
 
   // Ensure all the tracks exist.
   const trackList: Array<
-    (typeof unorderedTracks)[number] & { active?: boolean }
+    (typeof unorderedTracks)[number] & { instance: number; active?: boolean }
   > = [];
   const missingTracks: string[] = [];
   for (const tId of queue) {
-    if (trackMap[tId]) trackList.push(trackMap[tId]);
-    else missingTracks.push(tId);
+    if (trackMap[tId]) {
+      trackList.push({ ...trackMap[tId], instance: instanceCountMap[tId]! });
+      instanceCountMap[tId]! += 1;
+    } else missingTracks.push(tId);
   }
   Queue.removeIds(missingTracks);
 
