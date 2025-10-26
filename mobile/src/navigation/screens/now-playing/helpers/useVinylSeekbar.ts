@@ -1,3 +1,4 @@
+import { useIsFocused } from "@react-navigation/native";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AppState } from "react-native";
 import { Gesture } from "react-native-gesture-handler";
@@ -16,6 +17,7 @@ import { usePlayerProgress } from "./usePlayerProgress";
 
 /** Controls the rotation of the vinyl on the "Now Playing" screen. */
 export function useVinylSeekbar() {
+  const isFocused = useIsFocused();
   const { position, setPosition, seekToPosition } = usePlayerProgress();
   const activeTrack = usePlaybackStore((s) => s.activeTrack);
 
@@ -89,10 +91,12 @@ export function useVinylSeekbar() {
         bgPosition !== null ? Math.abs(position - bgPosition) > 2 : false;
       // Prevent vinyl rotation on mount.
       const animateSpin = hasMounted.current && !resumedFromBackground;
-      trueProgress.value = withTiming(convertUnit(position), {
-        duration: animateSpin ? 500 : 0,
-        easing: Easing.linear,
-      });
+      trueProgress.value = isFocused
+        ? withTiming(convertUnit(position), {
+            duration: animateSpin ? 500 : 0,
+            easing: Easing.linear,
+          })
+        : convertUnit(position);
       if (!hasMounted.current) hasMounted.current = true;
     } else {
       // Cancel animation ~1s before the end due to weird behaviors if
@@ -101,7 +105,7 @@ export function useVinylSeekbar() {
     }
 
     if (bgPosition !== null) setBgPosition(null);
-  }, [duration, position, bgPosition, trueProgress]);
+  }, [isFocused, duration, position, bgPosition, trueProgress]);
 
   const seekGesture = Gesture.Pan()
     .shouldCancelWhenOutside(true)

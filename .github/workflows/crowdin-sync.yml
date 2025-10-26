@@ -34,8 +34,9 @@ jobs:
 
             New or updated translations from Crowdin project: https://crowdin.com/project/missingcore-music.
           pull_request_labels: Translations
-          pull_request_base_branch_name: "dev"
+          pull_request_base_branch_name: ${{ env.BRANCH_NAME }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+          BRANCH_NAME: ${{ github.ref_name || 'dev' }}

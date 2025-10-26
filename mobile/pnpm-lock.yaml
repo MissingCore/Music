@@ -23,9 +23,6 @@ patchedDependencies:
   react-native-bootsplash:
     hash: rg27khsleipd2xp3egotvvkzo4
     path: patches/react-native-bootsplash.patch
-  react-native-gesture-handler:
-    hash: rjhgnwrqf5shhovxtmq2tgj2qm
-    path: patches/react-native-gesture-handler.patch
 
 importers:
 
@@ -33,7 +30,7 @@ importers:
     dependencies:
       '@backpackapp-io/react-native-toast':
         specifier: ^0.13.0
-        version: 0.13.0(patch_hash=zgygxsuuqk33jr3gwbxpbkmczi)(react-native-gesture-handler@2.28.0(patch_hash=rjhgnwrqf5shhovxtmq2tgj2qm)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.19.2(@babel/core@7.28.4)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-safe-area-context@5.6.1(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        version: 0.13.0(patch_hash=zgygxsuuqk33jr3gwbxpbkmczi)(react-native-gesture-handler@2.28.0(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.19.2(@babel/core@7.28.4)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-safe-area-context@5.6.1(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@boterop/react-native-background-timer':
         specifier: ^2.6.0
         version: 2.6.0(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))
@@ -159,7 +156,7 @@ importers:
         version: 1.7.0(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-gesture-handler:
         specifier: ~2.28.0
-        version: 2.28.0(patch_hash=rjhgnwrqf5shhovxtmq2tgj2qm)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        version: 2.28.0(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-keyboard-controller:
         specifier: ^1.19.0
         version: 1.19.0(react-native-reanimated@3.19.2(@babel/core@7.28.4)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -6196,11 +6193,11 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.27.1
 
-  '@backpackapp-io/react-native-toast@0.13.0(patch_hash=zgygxsuuqk33jr3gwbxpbkmczi)(react-native-gesture-handler@2.28.0(patch_hash=rjhgnwrqf5shhovxtmq2tgj2qm)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.19.2(@babel/core@7.28.4)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-safe-area-context@5.6.1(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
+  '@backpackapp-io/react-native-toast@0.13.0(patch_hash=zgygxsuuqk33jr3gwbxpbkmczi)(react-native-gesture-handler@2.28.0(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.19.2(@babel/core@7.28.4)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-safe-area-context@5.6.1(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
     dependencies:
       react: 19.0.0
       react-native: 0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0)
-      react-native-gesture-handler: 2.28.0(patch_hash=rjhgnwrqf5shhovxtmq2tgj2qm)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      react-native-gesture-handler: 2.28.0(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-reanimated: 3.19.2(@babel/core@7.28.4)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-safe-area-context: 5.6.1(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
 
@@ -10471,7 +10468,7 @@ snapshots:
     dependencies:
       prop-types: 15.8.1
 
-  react-native-gesture-handler@2.28.0(patch_hash=rjhgnwrqf5shhovxtmq2tgj2qm)(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+  react-native-gesture-handler@2.28.0(react-native@0.79.6(@babel/core@7.28.4)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:
       '@egjs/hammerjs': 2.0.17
       hoist-non-react-statics: 3.3.2

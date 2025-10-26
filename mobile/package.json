@@ -2,7 +2,7 @@
   "name": "music",
   "private": true,
   "main": "index.ts",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "description": "A Nothing inspired music player.",
   "license": "AGPL-3.0-only",
   "repository": {
@@ -112,7 +112,6 @@
       "markdown-it": "14.1.0"
     },
     "patchedDependencies": {
-      "react-native-gesture-handler": "patches/react-native-gesture-handler.patch",
       "@react-native-assets/slider": "patches/@react-native-assets__slider.patch",
       "@backpackapp-io/react-native-toast": "patches/@backpackapp-io__react-native-toast.patch",
       "expo-file-system": "patches/expo-file-system.patch",

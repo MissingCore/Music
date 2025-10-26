@@ -12,9 +12,9 @@ import { useUserPreferencesStore } from "~/services/UserPreferences";
 
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
-import { BounceSwipeable } from "~/components/BounceSwipeable";
 import { Marquee } from "~/components/Containment/Marquee";
 import { IconButton } from "~/components/Form/Button";
+import { Swipeable } from "~/components/Swipeable";
 import { StyledText } from "~/components/Typography/StyledText";
 import {
   NextButton,
@@ -35,7 +35,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
   const gestureUI = useUserPreferencesStore((s) => s.miniplayerGestures);
 
   const TextWrapper = useMemo(
-    () => (gestureUI ? BounceSwipeable : View),
+    () => (gestureUI ? Swipeable : View),
     [gestureUI],
   );
 
@@ -59,12 +59,12 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
         />
 
         <TextWrapper
-          onLeftIndicatorVisible={PlaybackControls.prev}
-          onRightIndicatorVisible={PlaybackControls.next}
-          shadowConfig={{ color: "surface" }}
-          {...{
-            [`${gestureUI ? "wrapperC" : "c"}lassName`]: "mx-2 shrink grow",
-          }}
+          activationThreshold={32}
+          overshootSwipe={false}
+          onSwipeLeft={PlaybackControls.next}
+          onSwipeRight={PlaybackControls.prev}
+          wrapperClassName="shrink grow justify-center overflow-hidden"
+          className={gestureUI ? "bg-surface px-2" : "mx-2 shrink grow"}
         >
           <Marquee color="surface">
             <StyledText>{track.name}</StyledText>

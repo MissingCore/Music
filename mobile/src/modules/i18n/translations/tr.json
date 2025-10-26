@@ -128,8 +128,8 @@
       }
     },
     "albumLengthFilter": {
-      "title": null,
-      "description": null
+      "title": "Albüm Süresi Filtresi",
+      "description": "Albümler ekranında görünmesi için albümde bulunması gereken minimum parça sayısı."
     },
     "miniplayerGestures": {
       "title": "Mini Oynatıcı Hareketleri"

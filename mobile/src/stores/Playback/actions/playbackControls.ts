@@ -87,11 +87,14 @@ export async function prev() {
   // simply update the `currPlayingIdx` & `currPlayingId`
   if (lastPosition <= 10 || !(await isLoaded())) {
     playbackStore.setState({
+      lastPosition: 0,
       activeId: prevTrack.id,
       activeTrack: prevTrack,
       queuePosition: prevIndex,
       ...getNewRepeatState(),
     });
+  } else {
+    playbackStore.setState({ lastPosition: 0 });
   }
 
   await loadCurrentTrack();
@@ -110,6 +113,7 @@ export async function next(naturalProgression = false) {
   if (!nextTrack) return;
 
   playbackStore.setState({
+    lastPosition: 0,
     activeId: nextTrack.id,
     activeTrack: nextTrack,
     queuePosition: nextIndex,
@@ -124,7 +128,30 @@ export async function next(naturalProgression = false) {
 /** Seek to a certain position in the current playing track. */
 export async function seekTo(position: number) {
   await preloadCurrentTrack();
+  playbackStore.setState({ lastPosition: position });
   await TrackPlayer.seekTo(position);
+}
+
+/** Play track at specified index in queue. */
+export async function playAtIndex(index: number) {
+  const { getTrack, reset, queue } = playbackStore.getState();
+
+  const nextTrackId = queue[index];
+  if (!nextTrackId) return await reset();
+  // If no track is found, reset the state.
+  const nextTrack = await getTrack(nextTrackId);
+  if (!nextTrack) return;
+
+  playbackStore.setState({
+    lastPosition: 0,
+    activeId: nextTrack.id,
+    activeTrack: nextTrack,
+    queuePosition: index,
+    ...getNewRepeatState(),
+  });
+
+  await loadCurrentTrack();
+  await play();
 }
 
 /** Play a track from a media list. */

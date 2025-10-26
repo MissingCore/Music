@@ -7,9 +7,9 @@ This document aims to document any gesture behavior/interactions that this app i
 This involves swiping left on some content to reveal actions related to that content. It's currently present in the following features.
 
 - **`Home Navigation`:** You can swipe on the home screen to navigate through the 6 different screens instead of using the navigation bar.
-- **`Filter List Entries`:** You can swipe left to reveal the delete button on an allowlist or blocklist filter. This makes it harder to accidentally delete a filter (as this would require 2 steps to delete) as we've previously not had a modal to confirm the action.
-- **`Queue List`:** You can swipe left on tracks that are part of the queue in the "Upcoming" modal (indicated by the `Q`) to reveal the remove button.
-- **`Playlist Tracks`:** You can swipe left on tracks in the playlist modification screen (create or edit) to reveal an option to remove the track from that playlist.
+- **`Filter List Entries`:** You can swipe left `175px` or halfway (whichever is smaller) to delete the filter in the allowlist or blocklist filter.
+- **`Upcoming List`:** You can swipe left `175px` or halfway (whichever is smaller) on tracks (excluding the playing track) to remove it from the list.
+- **`Playlist Tracks`:** You can swipe left `175px` or halfway (whichever is smaller) on tracks in the playlist modification screen (create or edit) to remove it from that playlist.
 - **`Miniplayer`:** Given miniplayer gestures are enabled, swiping on the **text** portion left/right will play the next/prev track.
 
 <table>
@@ -17,7 +17,6 @@ This involves swiping left on some content to reveal actions related to that con
     <tr>
       <th align="center"><code>Home Navigation</code></th>
       <th align="center"><code>Filter List Entries</code></th>
-      <th align="center"><code>Queue List</code></th>
     </tr>
   </thead>
   <tbody>
@@ -27,9 +26,6 @@ This involves swiping left on some content to reveal actions related to that con
       </td>
       <td align="center">
         <img src="./assets/supported-gestures/filter-list-gestures.gif" alt="Swipe gesture on allowlist filter to reveal delete button." width="200" />
-      </td>
-      <td align="center">
-        <img src="./assets/supported-gestures/upcoming-list-gestures.gif" alt="Swipe gesture on upcoming list to remove track in queue list." width="200" />
       </td>
     </tr>
   </tbody>
