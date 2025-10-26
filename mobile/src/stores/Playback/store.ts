@@ -12,6 +12,7 @@ import { createPersistedSubscribedStore } from "~/lib/zustand";
 import { resetWidgets } from "~/modules/widget/utils/update";
 import type { PlaybackStore } from "./constants";
 import { PersistedFields, RepeatModes } from "./constants";
+import { extractTrackId } from "./utils";
 
 export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
   (set, get) => ({
@@ -33,12 +34,13 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
     },
 
     getTrack: async (trackId) => {
+      const tId = extractTrackId(trackId);
       try {
-        const wantedTrack = await getTrack(trackId);
+        const wantedTrack = await getTrack(tId);
         return wantedTrack;
       } catch {
         console.log(
-          `[Database Mismatch] Track (${trackId}) doesn't exist in the database.`,
+          `[Database Mismatch] Track (${tId}) doesn't exist in the database.`,
         );
         // Reset the store since `activeTrack` doesn't exist.
         await get().reset();
