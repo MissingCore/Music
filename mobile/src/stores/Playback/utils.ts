@@ -20,6 +20,11 @@ export function arePlaybackSourceEqual(
   return keys.every((key) => source1[key] === source2[key]);
 }
 
+/** Extract the track id if formatted as `${track_id}__${unique_id}`. */
+export function extractTrackId(key: string) {
+  return key.split("__")[0]!;
+}
+
 /** Format track data to be used with the RNTP queue. */
 export function formatTrackforPlayer(track: TrackWithAlbum) {
   return {
