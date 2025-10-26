@@ -61,11 +61,11 @@ export function removeAtIndex(index: number) {
 /** Remove list of track ids in the current queue. */
 export function removeIds(ids: string[]) {
   const idSet = new Set(ids.map(extractTrackId));
-  const { reset, orderSnapshot, queue, activeId, queuePosition } =
+  const { reset, orderSnapshot, queue, activeTrack, queuePosition } =
     playbackStore.getState();
 
   // If active track is removed, reset the playback store.
-  if (activeId && idSet.has(extractTrackId(activeId))) {
+  if (activeTrack && idSet.has(activeTrack.id)) {
     reset();
     return;
   }
