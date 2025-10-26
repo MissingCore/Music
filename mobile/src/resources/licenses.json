@@ -73,7 +73,7 @@
   },
   "@react-navigation/material-top-tabs": {
     "name": "@react-navigation/material-top-tabs",
-    "version": "7.3.8",
+    "version": "7.3.9",
     "copyright": "Copyright (c) 2017 React Navigation Contributors",
     "source": "https://github.com/react-navigation/react-navigation/tree/main/packages/material-top-tabs",
     "license": "MIT",
@@ -89,7 +89,7 @@
   },
   "@react-navigation/native-stack": {
     "name": "@react-navigation/native-stack",
-    "version": "7.3.27",
+    "version": "7.5.1",
     "copyright": "Copyright (c) 2017 React Navigation Contributors",
     "source": "https://github.com/react-navigation/react-navigation/tree/main/packages/native-stack",
     "license": "MIT",
@@ -97,7 +97,7 @@
   },
   "@sentry/react-native": {
     "name": "@sentry/react-native",
-    "version": "7.3.0",
+    "version": "7.4.0",
     "copyright": "Copyright (c) 2017-2024 Sentry",
     "source": "https://github.com/getsentry/sentry-react-native",
     "license": "MIT",
@@ -113,7 +113,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.90.2",
+    "version": "5.90.5",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -137,7 +137,7 @@
   },
   "drizzle-orm": {
     "name": "drizzle-orm",
-    "version": "0.44.6",
+    "version": "0.44.7",
     "copyright": "Copyright (c) 2022 Drizzle Team",
     "source": "https://github.com/drizzle-team/drizzle-orm",
     "license": "Apache-2.0",
@@ -329,7 +329,7 @@
   },
   "react-i18next": {
     "name": "react-i18next",
-    "version": "16.0.0",
+    "version": "16.2.0",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/react-i18next",
     "license": "MIT",
@@ -337,7 +337,7 @@
   },
   "react-native": {
     "name": "react-native",
-    "version": "0.79.6",
+    "version": "0.79.7",
     "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates.",
     "source": "https://github.com/facebook/react-native",
     "license": "MIT",
@@ -377,7 +377,7 @@
   },
   "react-native-gesture-handler": {
     "name": "react-native-gesture-handler",
-    "version": "2.28.0",
+    "version": "2.29.0",
     "copyright": "Copyright (c) 2016 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-gesture-handler",
     "license": "MIT",
@@ -385,7 +385,7 @@
   },
   "react-native-keyboard-controller": {
     "name": "react-native-keyboard-controller",
-    "version": "1.19.0",
+    "version": "1.19.2",
     "copyright": "Copyright (c) 2021 Kiryl Ziusko",
     "source": "https://github.com/kirillzyusko/react-native-keyboard-controller",
     "license": "MIT",
@@ -417,7 +417,7 @@
   },
   "react-native-reanimated": {
     "name": "react-native-reanimated",
-    "version": "3.19.2",
+    "version": "3.19.3",
     "copyright": "Copyright (c) 2016 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-reanimated",
     "license": "MIT",
@@ -433,7 +433,7 @@
   },
   "react-native-screens": {
     "name": "react-native-screens",
-    "version": "4.16.0",
+    "version": "4.18.0",
     "copyright": "Copyright (c) 2018 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-screens",
     "license": "MIT",
