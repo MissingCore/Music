@@ -160,22 +160,22 @@ const RenderItem = memo(
         className={cn("group", { "mt-2": info.index > 0 })}
       >
         <Swipeable
+          disabled={info.isDragging}
           onSwipeLeft={() => removeTrack(item.id)}
           RightIcon={<Delete color={Colors.neutral100} />}
           rightIconContainerClassName="rounded-sm bg-red"
           wrapperClassName="mx-4"
+          className="overflow-hidden rounded-sm bg-canvas"
         >
-          <View className="rounded-sm bg-canvas">
-            <SearchResult
-              type="track"
-              title={item.name}
-              description={item.artistName ?? "—"}
-              imageSource={item.artwork}
-              className={cn("pr-4 group-active:bg-surface/50", {
-                "!bg-surface": info.isActive,
-              })}
-            />
-          </View>
+          <SearchResult
+            type="track"
+            title={item.name}
+            description={item.artistName ?? "—"}
+            imageSource={item.artwork}
+            className={cn("pr-4 group-active:bg-surface/50", {
+              "!bg-surface": info.isActive,
+            })}
+          />
         </Swipeable>
       </Pressable>
     );

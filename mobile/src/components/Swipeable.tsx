@@ -14,6 +14,9 @@ const DRAG_TOSS = 0.02;
 interface SwipeableProps {
   children: React.ReactNode;
 
+  /** If the swipe gesture should be disabled. */
+  disabled?: boolean;
+
   /** Distance to swipe to trigger an action. Defaults to `125`. */
   activationThreshold?: number;
   /** Percentage of container to swipe to trigger an action. Defaults to `0.5`. */
@@ -40,6 +43,7 @@ interface SwipeableProps {
 }
 
 export function Swipeable({
+  disabled = false,
   activationThreshold = 175,
   activationThresholdRatio = 0.5,
   overshootSwipe = true,
@@ -74,6 +78,7 @@ export function Swipeable({
     .runOnJS(true)
     // Allows scrolling to work without triggering gesture.
     .activeOffsetX([-10, 10])
+    .enabled(!disabled)
     .onStart(() => {
       animationRef.current?.stop();
     })
@@ -94,8 +99,9 @@ export function Swipeable({
         );
       const swipedLeft = clampedTranslation < 0;
 
-      // Don't run animation if we haven't moved.
-      if (clampedTranslation === 0) return;
+      // Don't run animation if we haven't moved (don't use `clampedTranslation`
+      // as it includes a change in distance that isn't rendered).
+      if (clampSwipeAmount(translationX) === 0) return;
 
       // Create animation the swiped item will translate to.
       animationRef.current = overshootSwipe
@@ -104,6 +110,7 @@ export function Swipeable({
               ? (swipedLeft ? -1 : 1) * rowWidth.current
               : 0,
             bounciness: 0, // This prevents it from bouncing below `toValue`.
+            overshootClamping: !metThreshold, // Prevents bouncing on failed swipe.
             restDisplacementThreshold: 0.4,
             restSpeedThreshold: 1.7,
             velocity: velocityX * 2,
