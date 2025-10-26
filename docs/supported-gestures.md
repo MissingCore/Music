@@ -36,6 +36,7 @@ This involves swiping left on some content to reveal actions related to that con
 This involves long-pressing an item to reveal some action. It's currently present in the following features.
 
 - **`Playlist Tracks`:** You can long-press on tracks in the playlist modification screen (create or edit) to change its order/position in the playlist.
+- **`Upcoming List`:** You can long-press on tracks in the Upcoming screen to move their position in the queue.
 
 ## Drag for Action
 
