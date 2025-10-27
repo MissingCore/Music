@@ -71,26 +71,32 @@ export function removeIds(ids: string[]) {
 }
 
 /**
- * Remove a key in the `queue`. Different than `Queue.removeIds()`, which
- * removes tracks with the underlying id.
+ * Remove multiple keys in the `queue`. Different than `Queue.removeIds()`,
+ * which removes tracks with the underlying id.
+ *
+ * **Note:** This should be used with debouncing.
  */
-export function removeKey(key: string) {
+export function removeKeys(keys: Set<string>) {
   const { reset, queue, activeKey, queuePosition } = playbackStore.getState();
 
   // If active track is removed, reset the playback store.
-  if (activeKey && activeKey === key) {
+  if (activeKey && keys.has(activeKey)) {
     reset();
     return;
   }
 
   // If we removed a track before the active track, decremenet `queuePosition`.
   let newQueuePosition = queuePosition;
-  const atIndex = queue.findIndex((tKey) => tKey === key);
-  if (atIndex === -1) return;
-  if (atIndex < queuePosition) newQueuePosition -= 1;
 
+  const updatedQueue = queue.filter((tKey, index) => {
+    const isRemoved = keys.has(tKey);
+    if (isRemoved && index < queuePosition) newQueuePosition -= 1;
+    return !isRemoved;
+  });
+
+  if (queue.length === updatedQueue.length) return;
   playbackStore.setState({
-    queue: queue.toSpliced(atIndex, 1),
+    queue: updatedQueue,
     queuePosition: newQueuePosition,
   });
 }

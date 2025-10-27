@@ -14,6 +14,7 @@ import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import { Colors } from "~/constants/Styles";
 import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import { cn } from "~/lib/style";
+import { debounceWithAccumulation } from "~/utils/debounce";
 import { moveArray } from "~/utils/object";
 import { FlashDragList } from "~/components/Defaults";
 import type { PressProps } from "~/components/Form/Button";
@@ -51,10 +52,15 @@ export default function Upcoming() {
     setCachedData((prev) => moveArray(prev, { fromIndex, toIndex }));
   }, []);
 
-  const onRemoveTrack = useCallback((tKey: string) => {
-    Queue.removeKey(tKey);
-    setCachedData((prev) => prev.filter((t) => t.key !== tKey));
-  }, []);
+  const onRemoveTrack = useMemo(
+    () =>
+      debounceWithAccumulation((tKeys: string[]) => {
+        const keySet = new Set(tKeys);
+        Queue.removeKeys(keySet);
+        setCachedData((prev) => prev.filter((t) => !keySet.has(t.key)));
+      }),
+    [],
+  );
 
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
 
@@ -114,6 +120,7 @@ const RenderItem = memo(
     return (
       <Swipeable
         disabled={info.isDragging}
+        fireCallbackBeforeCompletion
         onSwipeLeft={() => onRemoveTrack(item.key)}
         RightIcon={<Delete color={Colors.neutral100} />}
         rightIconContainerClassName="rounded-sm bg-red"
