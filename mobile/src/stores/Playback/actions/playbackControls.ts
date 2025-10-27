@@ -12,8 +12,9 @@ import { RepeatModes } from "../constants";
 import type { PlayFromSource } from "../types";
 import {
   arePlaybackSourceEqual,
-  getSourceName,
+  extractTrackId,
   formatTrackforPlayer,
+  getSourceName,
 } from "../utils";
 
 import { shuffleArray } from "~/utils/object";
@@ -88,7 +89,7 @@ export async function prev() {
   if (lastPosition <= 10 || !(await isLoaded())) {
     playbackStore.setState({
       lastPosition: 0,
-      activeId: prevTrack.id,
+      activeId: prevTrackId,
       activeTrack: prevTrack,
       queuePosition: prevIndex,
       ...getNewRepeatState(),
@@ -114,7 +115,7 @@ export async function next(naturalProgression = false) {
 
   playbackStore.setState({
     lastPosition: 0,
-    activeId: nextTrack.id,
+    activeId: nextTrackId,
     activeTrack: nextTrack,
     queuePosition: nextIndex,
     // Only update repeate state if we explictly click the next button.
@@ -144,7 +145,7 @@ export async function playAtIndex(index: number) {
 
   playbackStore.setState({
     lastPosition: 0,
-    activeId: nextTrack.id,
+    activeId: nextTrackId,
     activeTrack: nextTrack,
     queuePosition: index,
     ...getNewRepeatState(),
@@ -162,12 +163,12 @@ export async function playFromList({
   source: PlayFromSource;
   trackId?: string;
 }) {
-  const { getTrack, playingFrom, queue, activeId, activeTrack } =
+  const { getTrack, playingFrom, queue, activeTrack } =
     playbackStore.getState();
 
   // 1. See if we're playing from a new media list.
   const isSameSource = arePlaybackSourceEqual(playingFrom, source);
-  let isDiffTrack = activeId === undefined || activeId !== trackId;
+  let isDiffTrack = activeTrack === undefined || activeTrack.id !== trackId;
 
   // 2. Handle case when we're playing from the same media list.
   if (isSameSource) {
@@ -175,11 +176,13 @@ export async function playFromList({
       // Case where we play a different track in this media list.
       if (!!trackId && isDiffTrack) {
         // Find index of new track in list.
-        const listIndex = queue.findIndex((id) => id === trackId);
+        const listIndex = queue.findIndex(
+          (id) => extractTrackId(id) === trackId,
+        );
         // If it doesn't exist, then reset the current queue.
         if (listIndex === -1) break handleSameSource;
         playbackStore.setState({
-          activeId: trackId,
+          activeId: queue[listIndex],
           activeTrack: (await getTrack(trackId))!,
           queuePosition: listIndex,
         });
@@ -192,11 +195,14 @@ export async function playFromList({
   // 3. Handle case when the media list is new.
   const newPlayingList = await getTrackIdsList(source);
   if (newPlayingList.length === 0) return; // Don't do anything if list is empty.
-  const newListInfo = getUpdatedLists(newPlayingList, trackId ?? activeId);
+  const newListInfo = getUpdatedLists(
+    newPlayingList,
+    trackId ?? activeTrack?.id,
+  );
 
   // 4. Get the track from this new info.
   const newTrackId = newListInfo.queue[newListInfo.queuePosition]!;
-  isDiffTrack = activeId !== newTrackId;
+  isDiffTrack = activeTrack?.id !== newTrackId;
   let newTrack = activeTrack;
   if (isDiffTrack) newTrack = await getTrack(newTrackId);
 
@@ -285,11 +291,11 @@ async function getTrackIdsList({ type, id }: PlayFromSource) {
 
 /** Returns information necessary to switch `queue` seamlessly. */
 function getUpdatedLists(newPlayingList: string[], startTrackId?: string) {
-  const { shuffle, activeId } = playbackStore.getState();
+  const { shuffle, activeTrack } = playbackStore.getState();
   const usedList = shuffle ? shuffleArray(newPlayingList) : newPlayingList;
 
   // The tracks we should attempt to start from.
-  const startFromIds = [startTrackId, activeId];
+  const startFromIds = [startTrackId, activeTrack?.id];
   // Get the index we should start at in the new list.
   let newLocation = -1;
   startFromIds.forEach((startId) => {
