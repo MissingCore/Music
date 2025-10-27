@@ -101,6 +101,7 @@ const RenderItem = memo(
       return (
         <TrackItem
           item={item}
+          onPress={() => PlaybackControls.playToggle()}
           onLongPress={info.onDragStart}
           onPressOut={info.onDragEnd}
           LeftElement={<PlayingIndicator />}
