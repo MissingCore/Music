@@ -51,9 +51,9 @@ export default function Upcoming() {
     setCachedData((prev) => moveArray(prev, { fromIndex, toIndex }));
   }, []);
 
-  const onRemoveTrackAtIndex = useCallback((key: string, index: number) => {
-    Queue.removeIds([key]);
-    setCachedData((prev) => prev.toSpliced(index, 1));
+  const onRemoveTrack = useCallback((tKey: string) => {
+    Queue.removeKey(tKey);
+    setCachedData((prev) => prev.filter((t) => t.key !== tKey));
   }, []);
 
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
@@ -71,7 +71,7 @@ export default function Upcoming() {
       renderItem={(args) => (
         <RenderItem
           disableAfter={disableIndex}
-          onRemoveTrackAtIndex={onRemoveTrackAtIndex}
+          onRemoveTrack={onRemoveTrack}
           {...args}
         />
       )}
@@ -86,7 +86,7 @@ export default function Upcoming() {
 //#region Rendered Track
 type RenderItemProps = DragListRenderItemInfo<TrackData> & {
   disableAfter: number;
-  onRemoveTrackAtIndex: (key: string, index: number) => void;
+  onRemoveTrack: (tKey: string) => void;
 };
 
 const RenderItem = memo(
@@ -94,7 +94,7 @@ const RenderItem = memo(
     item,
     index,
     disableAfter,
-    onRemoveTrackAtIndex,
+    onRemoveTrack,
     ...info
   }: RenderItemProps) {
     if (item.active) {
@@ -113,7 +113,7 @@ const RenderItem = memo(
     return (
       <Swipeable
         disabled={info.isDragging}
-        onSwipeLeft={() => onRemoveTrackAtIndex(item.key, index)}
+        onSwipeLeft={() => onRemoveTrack(item.key)}
         RightIcon={<Delete color={Colors.neutral100} />}
         rightIconContainerClassName="rounded-sm bg-red"
         wrapperClassName={cn("mx-4", { "mt-2": index > 0 })}
