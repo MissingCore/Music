@@ -68,7 +68,7 @@ export function useTrackListPlayingIndication<T extends TrackContent>(
   tracks?: T[],
 ): Array<T & { showIndicator?: boolean }> | undefined {
   const currSource = usePlaybackStore((s) => s.playingFrom);
-  const activeId = usePlaybackStore((s) => s.activeId);
+  const activeKey = usePlaybackStore((s) => s.activeKey);
 
   const passPreCheck = useMemo(
     () => arePlaybackSourceEqual(currSource, listSource),
@@ -76,12 +76,12 @@ export function useTrackListPlayingIndication<T extends TrackContent>(
   );
 
   return useMemo(() => {
-    if (!passPreCheck || !tracks || !activeId) return tracks;
+    if (!passPreCheck || !tracks || !activeKey) return tracks;
     return tracks.map((t) => {
-      if (t.id !== activeId) return t;
+      if (t.id !== activeKey) return t;
       return { ...t, showIndicator: true };
     });
-  }, [passPreCheck, activeId, tracks]);
+  }, [passPreCheck, activeKey, tracks]);
 }
 //#endregion
 

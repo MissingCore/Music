@@ -78,10 +78,10 @@ export async function prev() {
     playbackStore.getState();
 
   const prevIndex = queuePosition === 0 ? queue.length - 1 : queuePosition - 1;
-  const prevTrackId = queue[prevIndex];
-  if (!prevTrackId) return await reset();
+  const prevTrackKey = queue[prevIndex];
+  if (!prevTrackKey) return await reset();
   // If no track is found, reset the state.
-  const prevTrack = await getTrack(prevTrackId);
+  const prevTrack = await getTrack(prevTrackKey);
   if (!prevTrack) return;
 
   // If the RNTP queue isn't loaded or if we played <=10s of the track,
@@ -89,7 +89,7 @@ export async function prev() {
   if (lastPosition <= 10 || !(await isLoaded())) {
     playbackStore.setState({
       lastPosition: 0,
-      activeId: prevTrackId,
+      activeKey: prevTrackKey,
       activeTrack: prevTrack,
       queuePosition: prevIndex,
       ...getNewRepeatState(),
@@ -107,15 +107,15 @@ export async function next(naturalProgression = false) {
     playbackStore.getState();
 
   const nextIndex = queuePosition === queue.length - 1 ? 0 : queuePosition + 1;
-  const nextTrackId = queue[nextIndex];
-  if (!nextTrackId) return await reset();
+  const nextTrackKey = queue[nextIndex];
+  if (!nextTrackKey) return await reset();
   // If no track is found, reset the state.
-  const nextTrack = await getTrack(nextTrackId);
+  const nextTrack = await getTrack(nextTrackKey);
   if (!nextTrack) return;
 
   playbackStore.setState({
     lastPosition: 0,
-    activeId: nextTrackId,
+    activeKey: nextTrackKey,
     activeTrack: nextTrack,
     queuePosition: nextIndex,
     // Only update repeate state if we explictly click the next button.
@@ -137,15 +137,15 @@ export async function seekTo(position: number) {
 export async function playAtIndex(index: number) {
   const { getTrack, reset, queue } = playbackStore.getState();
 
-  const nextTrackId = queue[index];
-  if (!nextTrackId) return await reset();
+  const nextTrackKey = queue[index];
+  if (!nextTrackKey) return await reset();
   // If no track is found, reset the state.
-  const nextTrack = await getTrack(nextTrackId);
+  const nextTrack = await getTrack(nextTrackKey);
   if (!nextTrack) return;
 
   playbackStore.setState({
     lastPosition: 0,
-    activeId: nextTrackId,
+    activeKey: nextTrackKey,
     activeTrack: nextTrack,
     queuePosition: index,
     ...getNewRepeatState(),
@@ -182,7 +182,7 @@ export async function playFromList({
         // If it doesn't exist, then reset the current queue.
         if (listIndex === -1) break handleSameSource;
         playbackStore.setState({
-          activeId: queue[listIndex],
+          activeKey: queue[listIndex],
           activeTrack: (await getTrack(trackId))!,
           queuePosition: listIndex,
         });
@@ -212,7 +212,7 @@ export async function playFromList({
     ...newListInfo,
     playingFrom: source,
     playingFromName: await getSourceName(source),
-    activeId: newTrackId,
+    activeKey: newTrackId,
     activeTrack: newTrack,
   });
 

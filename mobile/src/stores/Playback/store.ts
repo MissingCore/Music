@@ -17,12 +17,12 @@ import { extractTrackId } from "./utils";
 export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
   (set, get) => ({
     _hasHydrated: false,
-    _init: async ({ activeId }) => {
-      // Ensure we populate the `activeTrack` from `activeId`.
+    _init: async ({ activeKey }) => {
+      // Ensure we populate the `activeTrack` from `activeKey`.
       let activeTrack: PlaybackStore["activeTrack"];
-      if (activeId) {
-        activeTrack = await get().getTrack(activeId);
-        // The track should exist if `activeId` is defined.
+      if (activeKey) {
+        activeTrack = await get().getTrack(activeKey);
+        // The track should exist if `activeKey` is defined.
         if (!activeTrack) return;
       }
       // Ensure `isPlaying` is correct when we rehydrate the store.
@@ -33,8 +33,8 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
       set({ _hasHydrated: true, isPlaying: upToDateIsPlaying, activeTrack });
     },
 
-    getTrack: async (trackId) => {
-      const tId = extractTrackId(trackId);
+    getTrack: async (trackKey) => {
+      const tId = extractTrackId(trackKey);
       try {
         const wantedTrack = await getTrack(tId);
         return wantedTrack;
@@ -57,7 +57,7 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
         playingFromName: "",
         orderSnapshot: [],
         queue: [],
-        activeId: undefined,
+        activeKey: undefined,
         activeTrack: undefined,
         queuePosition: 0,
       });
@@ -103,7 +103,7 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
     orderSnapshot: [],
     queue: [],
 
-    activeId: undefined,
+    activeKey: undefined,
     activeTrack: undefined,
     queuePosition: 0,
   }),

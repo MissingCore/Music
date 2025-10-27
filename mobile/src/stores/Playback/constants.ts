@@ -21,7 +21,7 @@ export interface PlaybackStore {
   _init: (state: PlaybackStore) => Promise<void>;
 
   /** [Util] Find specified track. If track is not found, reset the store. */
-  getTrack: (trackId: string) => Promise<TrackWithAlbum | undefined>;
+  getTrack: (trackKey: string) => Promise<TrackWithAlbum | undefined>;
   /** [Util] Revert to default store settings (except for `repeat` & `shuffle`). */
   reset: () => Promise<void>;
   /** [Util] Run when we catch when the app crashes. */
@@ -56,9 +56,9 @@ export interface PlaybackStore {
    *  - `${track_id}`
    *  - `${track_id}__${unique_id}`
    */
-  activeId: string | undefined;
+  activeKey: string | undefined;
   activeTrack: TrackWithAlbum | undefined;
-  /** Index in current queue where `activeId` is located. */
+  /** Index in current queue where `activeKey` is located. */
   queuePosition: number;
 }
 
@@ -70,7 +70,7 @@ export const PersistedFields: string[] = [
   "playingFromName",
   "orderSnapshot",
   "queue",
-  "activeId",
+  "activeKey",
   "queuePosition",
 ] satisfies Array<keyof PlaybackStore>;
 //#endregion

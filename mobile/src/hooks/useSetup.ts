@@ -42,7 +42,7 @@ export function useSetup() {
       // immediately hydrated.
       await revalidateWidgets({ openApp: true });
 
-      const { repeat, activeId } = playbackStore.getState();
+      const { repeat, activeKey: activeId } = playbackStore.getState();
       const { restoreLastPosition, continuePlaybackOnDismiss } =
         userPreferencesStore.getState();
       if (restoreLastPosition) {

@@ -40,18 +40,18 @@ export function usePlayerProgress() {
 function useRestorePosition() {
   const _hasRestoredPosition = usePlaybackStore((s) => s._hasRestoredPosition);
   const _restoredTrackId = usePlaybackStore((s) => s._restoredTrackId);
-  const activeId = usePlaybackStore((s) => s.activeId);
+  const activeKey = usePlaybackStore((s) => s.activeKey);
   const lastPosition = usePlaybackStore((s) => s.lastPosition);
 
   return useMemo(() => {
     if (
       _hasRestoredPosition ||
       _restoredTrackId === undefined ||
-      _restoredTrackId !== activeId
+      _restoredTrackId !== activeKey
     ) {
       return undefined;
     }
     return lastPosition;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [_hasRestoredPosition, activeId]);
+  }, [_hasRestoredPosition, activeKey]);
 }

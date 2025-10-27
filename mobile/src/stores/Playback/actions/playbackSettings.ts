@@ -26,11 +26,11 @@ export async function cycleRepeat() {
 
 /** Update the `shuffle` field along with `currentList` & `listIdx`. */
 export async function toggleShuffle() {
-  const { shuffle, orderSnapshot, queue, activeId } = playbackStore.getState();
+  const { shuffle, orderSnapshot, queue, activeKey } = playbackStore.getState();
   const newShuffleStatus = !shuffle;
 
   // Exit early if we don't have a list loaded.
-  if (queue.length === 0 || !activeId) {
+  if (queue.length === 0 || !activeKey) {
     playbackStore.setState({ shuffle: newShuffleStatus });
     return;
   }
@@ -61,12 +61,12 @@ export async function toggleShuffle() {
     }
   }
 
-  const trackKey = isOrderSnapshot ? extractTrackId(activeId) : activeId;
+  const trackKey = isOrderSnapshot ? extractTrackId(activeKey) : activeKey;
 
   playbackStore.setState({
     shuffle: newShuffleStatus,
     queue: updatedQueue,
-    activeId: trackKey,
+    activeKey: trackKey,
     queuePosition: updatedQueue.findIndex((id) => id === trackKey),
   });
 }
