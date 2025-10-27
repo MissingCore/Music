@@ -21,6 +21,7 @@ import { Swipeable } from "~/components/Swipeable";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { RepeatModes } from "~/stores/Playback/constants";
+import { extractTrackId } from "~/stores/Playback/utils";
 import {
   ContentPlaceholder,
   PagePlaceholder,
@@ -50,9 +51,9 @@ export default function Upcoming() {
     setCachedData((prev) => moveArray(prev, { fromIndex, toIndex }));
   }, []);
 
-  const onRemoveAtIndex = useCallback((index: number) => {
-    Queue.removeAtIndex(index);
-    setCachedData((prev) => prev.toSpliced(index, 1));
+  const onRemoveTrack = useCallback((tKey: string) => {
+    Queue.removeKey(tKey);
+    setCachedData((prev) => prev.filter((t) => t.key !== tKey));
   }, []);
 
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
@@ -66,11 +67,11 @@ export default function Upcoming() {
       initialScrollIndex={listIndex}
       estimatedFirstItemOffset={8}
       data={modifiedData}
-      keyExtractor={(item, index) => `${item.id}_${index}`}
+      keyExtractor={(item) => item.key}
       renderItem={(args) => (
         <RenderItem
           disableAfter={disableIndex}
-          onRemoveAtIndex={onRemoveAtIndex}
+          onRemoveTrack={onRemoveTrack}
           {...args}
         />
       )}
@@ -85,7 +86,7 @@ export default function Upcoming() {
 //#region Rendered Track
 type RenderItemProps = DragListRenderItemInfo<TrackData> & {
   disableAfter: number;
-  onRemoveAtIndex: (index: number) => void;
+  onRemoveTrack: (tKey: string) => void;
 };
 
 const RenderItem = memo(
@@ -93,7 +94,7 @@ const RenderItem = memo(
     item,
     index,
     disableAfter,
-    onRemoveAtIndex,
+    onRemoveTrack,
     ...info
   }: RenderItemProps) {
     if (item.active) {
@@ -112,7 +113,7 @@ const RenderItem = memo(
     return (
       <Swipeable
         disabled={info.isDragging}
-        onSwipeLeft={() => onRemoveAtIndex(index)}
+        onSwipeLeft={() => onRemoveTrack(item.key)}
         RightIcon={<Delete color={Colors.neutral100} />}
         rightIconContainerClassName="rounded-sm bg-red"
         wrapperClassName={cn("mx-4", { "mt-2": index > 0 })}
@@ -133,7 +134,7 @@ const RenderItem = memo(
   },
   areRenderItemPropsEqual(
     (o, n) =>
-      o.item.id === n.item.id &&
+      o.item.key === n.item.key &&
       o.item.active === n.item.active &&
       // @ts-expect-error - Field exists on data.
       o.disableAfter === n.disableAfter,
@@ -174,7 +175,8 @@ async function getQueueTracks() {
   if (queue.length === 0) return [];
 
   // Since there's potentially duplicate tracks.
-  const queueSet = new Set(queue);
+  const queueTrackIds = queue.map(extractTrackId);
+  const queueSet = new Set(queueTrackIds);
   const unorderedTracks = await getTracks({
     where: [inArray(tracks.id, [...queueSet])],
     columns: ["id", "name", "artistName", "artwork"],
@@ -188,13 +190,13 @@ async function getQueueTracks() {
 
   // Ensure all the tracks exist.
   const trackList: Array<
-    (typeof unorderedTracks)[number] & { active?: boolean }
+    (typeof unorderedTracks)[number] & { key: string; active?: boolean }
   > = [];
   const missingTracks: string[] = [];
-  for (const tId of queue) {
-    if (trackMap[tId]) trackList.push(trackMap[tId]);
+  queueTrackIds.forEach((tId, index) => {
+    if (trackMap[tId]) trackList.push({ ...trackMap[tId], key: queue[index]! });
     else missingTracks.push(tId);
-  }
+  });
   Queue.removeIds(missingTracks);
 
   return trackList;

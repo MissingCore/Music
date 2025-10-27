@@ -35,6 +35,7 @@ import {
   getSafeUri,
   removeFileExtension,
 } from "~/utils/string";
+import { extractTrackId } from "~/stores/Playback/utils";
 import { savePathComponents } from "./folder";
 
 //#region Saving Function
@@ -156,7 +157,9 @@ export async function cleanupDatabase(usedTrackIds: string[]) {
 
   // Ensure we didn't reference deleted tracks in the playback store.
   const { queue } = playbackStore.getState();
-  const hasRemovedTrack = queue.some((tId) => unusedTrackIds.includes(tId));
+  const hasRemovedTrack = queue.some((tKey) =>
+    unusedTrackIds.includes(extractTrackId(tKey)),
+  );
   if (hasRemovedTrack) await playbackStore.getState().reset();
   // Clear the queue of deleted tracks.
   Queue.removeIds(unusedTrackIds);

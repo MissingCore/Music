@@ -1,8 +1,10 @@
 import { toast } from "@backpackapp-io/react-native-toast";
+import { createId } from "@paralleldrive/cuid2";
 
 import i18next from "~/modules/i18n";
 
 import { playbackStore } from "../store";
+import { extractTrackId } from "../utils";
 
 import { ToastOptions } from "~/lib/toast";
 import { moveArray } from "~/utils/object";
@@ -14,7 +16,7 @@ export function add({ id, name }: { id: string; name: string }) {
 
   if (queue.length === 0) return;
   playbackStore.setState({
-    queue: queue.toSpliced(queuePosition + 1, 0, id),
+    queue: queue.toSpliced(queuePosition + 1, 0, `${id}__${createId()}`),
   });
 }
 
@@ -38,28 +40,14 @@ export function moveTrack(fromIndex: number, toIndex: number) {
   });
 }
 
-/** Remove track at specified index of current queue. */
-export function removeAtIndex(index: number) {
-  const { queue, queuePosition } = playbackStore.getState();
-
-  // If we removed a track before the active track, decremenet `queuePosition`.
-  let newQueuePosition = queuePosition;
-  if (index < queuePosition) newQueuePosition -= 1;
-
-  playbackStore.setState({
-    queue: queue.toSpliced(index, 1),
-    queuePosition: newQueuePosition,
-  });
-}
-
 /** Remove list of track ids in the current queue. */
 export function removeIds(ids: string[]) {
-  const idSet = new Set(ids);
-  const { reset, orderSnapshot, queue, activeId, queuePosition } =
+  const idSet = new Set(ids.map(extractTrackId));
+  const { reset, orderSnapshot, queue, activeTrack, queuePosition } =
     playbackStore.getState();
 
   // If active track is removed, reset the playback store.
-  if (activeId && idSet.has(activeId)) {
+  if (activeTrack && idSet.has(activeTrack.id)) {
     reset();
     return;
   }
@@ -68,8 +56,8 @@ export function removeIds(ids: string[]) {
   let newQueuePosition = queuePosition;
 
   const updatedSnapshot = orderSnapshot.filter((tId) => !idSet.has(tId));
-  const updatedQueue = queue.filter((tId, index) => {
-    const isRemoved = idSet.has(tId);
+  const updatedQueue = queue.filter((tKey, index) => {
+    const isRemoved = idSet.has(extractTrackId(tKey));
     if (isRemoved && index < queuePosition) newQueuePosition -= 1;
     return !isRemoved;
   });
@@ -78,6 +66,31 @@ export function removeIds(ids: string[]) {
   playbackStore.setState({
     orderSnapshot: updatedSnapshot,
     queue: updatedQueue,
+    queuePosition: newQueuePosition,
+  });
+}
+
+/**
+ * Remove a key in the `queue`. Different than `Queue.removeIds()`, which
+ * removes tracks with the underlying id.
+ */
+export function removeKey(key: string) {
+  const { reset, queue, activeKey, queuePosition } = playbackStore.getState();
+
+  // If active track is removed, reset the playback store.
+  if (activeKey && activeKey === key) {
+    reset();
+    return;
+  }
+
+  // If we removed a track before the active track, decremenet `queuePosition`.
+  let newQueuePosition = queuePosition;
+  const atIndex = queue.findIndex((tKey) => tKey === key);
+  if (atIndex === -1) return;
+  if (atIndex < queuePosition) newQueuePosition -= 1;
+
+  playbackStore.setState({
+    queue: queue.toSpliced(atIndex, 1),
     queuePosition: newQueuePosition,
   });
 }

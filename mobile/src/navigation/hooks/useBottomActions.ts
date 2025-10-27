@@ -29,7 +29,7 @@ export function useRenderBottomActions() {
   // Wanted structure of `availableRoutes` should be:
   //  - [{ key: "HomeScreens-*"}, { key: miniPlayerVisibleRoutes[number] }]
   const availableRoutes = useNavigationState((s) => s.routes);
-  const activeTrackId = usePlaybackStore((s) => s.activeId);
+  const activeTrack = usePlaybackStore((s) => s.activeTrack);
 
   // Show navbar when displaying `HomeScreens` navigator. This is only
   // true when the returned routes only contain this entry.
@@ -37,8 +37,7 @@ export function useRenderBottomActions() {
 
   return {
     miniPlayer:
-      !!activeTrackId &&
-      (onHomeScreen || showMiniPlayerOnRoute(availableRoutes)),
+      !!activeTrack && (onHomeScreen || showMiniPlayerOnRoute(availableRoutes)),
     navBar: onHomeScreen,
   };
 }
@@ -48,10 +47,10 @@ export function useBottomActionsInset() {
   // Wanted structure of `availableRoutes` should be:
   //  - Array<{ key: miniPlayerVisibleRoutes[number] }>
   const availableRoutes = useNavigationState((s) => s.routes);
-  const activeTrackId = usePlaybackStore((s) => s.activeId);
+  const activeTrack = usePlaybackStore((s) => s.activeTrack);
 
   const canShowMiniPlayer = showMiniPlayerOnRoute(availableRoutes);
-  const isMiniPlayerRendered = !!activeTrackId && canShowMiniPlayer;
+  const isMiniPlayerRendered = !!activeTrack && canShowMiniPlayer;
 
   // Bottom inset on home screen.
   let withNav = 76; // 60px Navbar Height + 16px Bottom Padding

@@ -5,6 +5,7 @@ import TrackPlayer, {
 import { playbackStore } from "../store";
 import type { RepeatMode } from "../constants";
 import { RepeatModes } from "../constants";
+import { extractTrackId } from "../utils";
 
 import { shuffleArray } from "~/utils/object";
 
@@ -25,16 +26,17 @@ export async function cycleRepeat() {
 
 /** Update the `shuffle` field along with `currentList` & `listIdx`. */
 export async function toggleShuffle() {
-  const { shuffle, orderSnapshot, queue, activeId } = playbackStore.getState();
+  const { shuffle, orderSnapshot, queue, activeKey } = playbackStore.getState();
   const newShuffleStatus = !shuffle;
 
   // Exit early if we don't have a list loaded.
-  if (queue.length === 0 || !activeId) {
+  if (queue.length === 0 || !activeKey) {
     playbackStore.setState({ shuffle: newShuffleStatus });
     return;
   }
 
   let updatedQueue: string[] = queue;
+  let isOrderSnapshot = false;
   if (newShuffleStatus) updatedQueue = shuffleArray(queue);
   else if (orderSnapshot.length === queue.length) {
     // Revert to `orderSnapshot` only if the queue copy has the same contents.
@@ -46,18 +48,26 @@ export async function toggleShuffle() {
       },
       {} as Record<string, number>,
     );
-    const canSwitch = queue.every((tId) => {
+    const canSwitch = queue.every((tKey) => {
+      const tId = extractTrackId(tKey);
       if (referenceSet[tId] === undefined) return false;
       referenceSet[tId]--;
       if (referenceSet[tId] === 0) delete referenceSet[tId];
       return true;
     });
-    if (canSwitch) updatedQueue = orderSnapshot;
+    if (canSwitch) {
+      isOrderSnapshot = true;
+      updatedQueue = orderSnapshot;
+    }
   }
+
+  // `activeKey` shouldn't have the unqiue id portion if switching to `orderSnapshot`.
+  const trackKey = isOrderSnapshot ? extractTrackId(activeKey) : activeKey;
 
   playbackStore.setState({
     shuffle: newShuffleStatus,
     queue: updatedQueue,
-    queuePosition: updatedQueue.findIndex((id) => id === activeId),
+    activeKey: trackKey,
+    queuePosition: updatedQueue.findIndex((id) => id === trackKey),
   });
 }

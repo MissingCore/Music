@@ -12,16 +12,17 @@ import { createPersistedSubscribedStore } from "~/lib/zustand";
 import { resetWidgets } from "~/modules/widget/utils/update";
 import type { PlaybackStore } from "./constants";
 import { PersistedFields, RepeatModes } from "./constants";
+import { extractTrackId } from "./utils";
 
 export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
   (set, get) => ({
     _hasHydrated: false,
-    _init: async ({ activeId }) => {
-      // Ensure we populate the `activeTrack` from `activeId`.
+    _init: async ({ activeKey }) => {
+      // Ensure we populate the `activeTrack` from `activeKey`.
       let activeTrack: PlaybackStore["activeTrack"];
-      if (activeId) {
-        activeTrack = await get().getTrack(activeId);
-        // The track should exist if `activeId` is defined.
+      if (activeKey) {
+        activeTrack = await get().getTrack(activeKey);
+        // The track should exist if `activeKey` is defined.
         if (!activeTrack) return;
       }
       // Ensure `isPlaying` is correct when we rehydrate the store.
@@ -32,13 +33,14 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
       set({ _hasHydrated: true, isPlaying: upToDateIsPlaying, activeTrack });
     },
 
-    getTrack: async (trackId) => {
+    getTrack: async (trackKey) => {
+      const tId = extractTrackId(trackKey);
       try {
-        const wantedTrack = await getTrack(trackId);
+        const wantedTrack = await getTrack(tId);
         return wantedTrack;
       } catch {
         console.log(
-          `[Database Mismatch] Track (${trackId}) doesn't exist in the database.`,
+          `[Database Mismatch] Track (${tId}) doesn't exist in the database.`,
         );
         // Reset the store since `activeTrack` doesn't exist.
         await get().reset();
@@ -48,14 +50,14 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
       set({
         _hasHydrated: true,
         _hasRestoredPosition: false,
-        _restoredTrackId: undefined,
+        _restoredTrackKey: undefined,
         isPlaying: false,
         lastPosition: 0,
         playingFrom: undefined,
         playingFromName: "",
         orderSnapshot: [],
         queue: [],
-        activeId: undefined,
+        activeKey: undefined,
         activeTrack: undefined,
         queuePosition: 0,
       });
@@ -87,7 +89,7 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
     },
 
     _hasRestoredPosition: false,
-    _restoredTrackId: undefined,
+    _restoredTrackKey: undefined,
 
     isPlaying: false,
     lastPosition: 0,
@@ -101,7 +103,7 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
     orderSnapshot: [],
     queue: [],
 
-    activeId: undefined,
+    activeKey: undefined,
     activeTrack: undefined,
     queuePosition: 0,
   }),
