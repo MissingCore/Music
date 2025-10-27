@@ -61,6 +61,7 @@ export async function toggleShuffle() {
     }
   }
 
+  // `activeKey` shouldn't have the unqiue id portion if switching to `orderSnapshot`.
   const trackKey = isOrderSnapshot ? extractTrackId(activeKey) : activeKey;
 
   playbackStore.setState({
