@@ -42,11 +42,11 @@ export function useSetup() {
       // immediately hydrated.
       await revalidateWidgets({ openApp: true });
 
-      const { repeat, activeKey: activeId } = playbackStore.getState();
+      const { repeat, activeKey } = playbackStore.getState();
       const { restoreLastPosition, continuePlaybackOnDismiss } =
         userPreferencesStore.getState();
       if (restoreLastPosition) {
-        playbackStore.setState({ _restoredTrackId: activeId });
+        playbackStore.setState({ _restoredTrackId: activeKey });
       } else playbackStore.setState({ _hasRestoredPosition: true });
 
       // Ensure correct RNTP settings.
