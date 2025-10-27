@@ -5,6 +5,7 @@ import TrackPlayer, {
 import { playbackStore } from "../store";
 import type { RepeatMode } from "../constants";
 import { RepeatModes } from "../constants";
+import { extractTrackId } from "../utils";
 
 import { shuffleArray } from "~/utils/object";
 
@@ -35,6 +36,7 @@ export async function toggleShuffle() {
   }
 
   let updatedQueue: string[] = queue;
+  let isOrderSnapshot = false;
   if (newShuffleStatus) updatedQueue = shuffleArray(queue);
   else if (orderSnapshot.length === queue.length) {
     // Revert to `orderSnapshot` only if the queue copy has the same contents.
@@ -46,18 +48,25 @@ export async function toggleShuffle() {
       },
       {} as Record<string, number>,
     );
-    const canSwitch = queue.every((tId) => {
+    const canSwitch = queue.every((tKey) => {
+      const tId = extractTrackId(tKey);
       if (referenceSet[tId] === undefined) return false;
       referenceSet[tId]--;
       if (referenceSet[tId] === 0) delete referenceSet[tId];
       return true;
     });
-    if (canSwitch) updatedQueue = orderSnapshot;
+    if (canSwitch) {
+      isOrderSnapshot = true;
+      updatedQueue = orderSnapshot;
+    }
   }
+
+  const trackKey = isOrderSnapshot ? extractTrackId(activeId) : activeId;
 
   playbackStore.setState({
     shuffle: newShuffleStatus,
     queue: updatedQueue,
-    queuePosition: updatedQueue.findIndex((id) => id === activeId),
+    activeId: trackKey,
+    queuePosition: updatedQueue.findIndex((id) => id === trackKey),
   });
 }
