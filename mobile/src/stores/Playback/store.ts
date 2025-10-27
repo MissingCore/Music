@@ -50,7 +50,7 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
       set({
         _hasHydrated: true,
         _hasRestoredPosition: false,
-        _restoredTrackId: undefined,
+        _restoredTrackKey: undefined,
         isPlaying: false,
         lastPosition: 0,
         playingFrom: undefined,
@@ -89,7 +89,7 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
     },
 
     _hasRestoredPosition: false,
-    _restoredTrackId: undefined,
+    _restoredTrackKey: undefined,
 
     isPlaying: false,
     lastPosition: 0,

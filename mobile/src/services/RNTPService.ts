@@ -17,6 +17,7 @@ import { router } from "~/navigation/utils/router";
 import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
 import { revalidateWidgets } from "~/modules/widget/utils";
+import { extractTrackId } from "~/stores/Playback/utils";
 
 /** Context to whether we should resume playback after ducking. */
 let resumeAfterDuck: boolean = false;
@@ -99,7 +100,7 @@ export async function PlaybackService() {
     // to the last played position.
     const {
       _hasRestoredPosition,
-      _restoredTrackId,
+      _restoredTrackKey,
       lastPosition,
       playingFrom,
       activeTrack,
@@ -107,8 +108,8 @@ export async function PlaybackService() {
     if (!_hasRestoredPosition) {
       playbackStore.setState({ _hasRestoredPosition: true });
       if (
-        _restoredTrackId !== undefined &&
-        _restoredTrackId === activeTrack?.id
+        _restoredTrackKey !== undefined &&
+        extractTrackId(_restoredTrackKey) === activeTrack?.id
       ) {
         // Fallback to `0` to support legacy behavior where we could store `undefined`.
         await PlaybackControls.seekTo(lastPosition ?? 0);

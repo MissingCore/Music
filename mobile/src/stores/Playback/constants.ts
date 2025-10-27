@@ -30,7 +30,7 @@ export interface PlaybackStore {
   /** Determines if the playback position has been restored. */
   _hasRestoredPosition: boolean;
   /** The track we want to restore the position for. */
-  _restoredTrackId: string | undefined;
+  _restoredTrackKey: string | undefined;
 
   isPlaying: boolean;
   lastPosition: number;

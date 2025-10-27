@@ -3,7 +3,6 @@ import { useEffect } from "react";
 
 import "~/services/_subscriptions";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
-import { RepeatModes } from "~/stores/Playback/constants";
 import { useSortPreferencesStore } from "~/modules/media/services/SortPreferences";
 import {
   userPreferencesStore,
@@ -15,6 +14,7 @@ import {
   onAppStartUpInit,
 } from "~/lib/react-native-track-player";
 import { revalidateWidgets } from "~/modules/widget/utils";
+import { RepeatModes } from "~/stores/Playback/constants";
 
 /**
  * Ensure our Zustand stores are hydrated before we do anything, making
@@ -46,7 +46,7 @@ export function useSetup() {
       const { restoreLastPosition, continuePlaybackOnDismiss } =
         userPreferencesStore.getState();
       if (restoreLastPosition) {
-        playbackStore.setState({ _restoredTrackId: activeKey });
+        playbackStore.setState({ _restoredTrackKey: activeKey });
       } else playbackStore.setState({ _hasRestoredPosition: true });
 
       // Ensure correct RNTP settings.
