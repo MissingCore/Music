@@ -40,24 +40,6 @@ export function moveTrack(fromIndex: number, toIndex: number) {
   });
 }
 
-/**
- * Remove track at specified index of current queue.
- *
- * @deprecated Use `Queue.removeIds()`.
- */
-export function removeAtIndex(index: number) {
-  const { queue, queuePosition } = playbackStore.getState();
-
-  // If we removed a track before the active track, decremenet `queuePosition`.
-  let newQueuePosition = queuePosition;
-  if (index < queuePosition) newQueuePosition -= 1;
-
-  playbackStore.setState({
-    queue: queue.toSpliced(index, 1),
-    queuePosition: newQueuePosition,
-  });
-}
-
 /** Remove list of track ids in the current queue. */
 export function removeIds(ids: string[]) {
   const idSet = new Set(ids.map(extractTrackId));
@@ -74,8 +56,8 @@ export function removeIds(ids: string[]) {
   let newQueuePosition = queuePosition;
 
   const updatedSnapshot = orderSnapshot.filter((tId) => !idSet.has(tId));
-  const updatedQueue = queue.filter((tId, index) => {
-    const isRemoved = idSet.has(extractTrackId(tId));
+  const updatedQueue = queue.filter((tKey, index) => {
+    const isRemoved = idSet.has(extractTrackId(tKey));
     if (isRemoved && index < queuePosition) newQueuePosition -= 1;
     return !isRemoved;
   });
