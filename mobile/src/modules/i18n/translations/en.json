@@ -190,6 +190,13 @@
         "totalDuration": "Total Duration"
       }
     },
+    "mostPlayed": {
+      "title": "Most Played",
+      "brief": "Discover what is truly your favorite of all time.",
+      "extra": {
+        "playCount": "{{count}} plays"
+      }
+    },
     "hiddenTracks": {
       "title": "Hidden Tracks",
       "brief": "Tracks not shown in the app.",

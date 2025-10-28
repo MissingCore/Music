@@ -24,6 +24,14 @@ export default function Insights() {
         <DBSummaryWidget />
       </List>
 
+      <ListItem
+        titleKey="feat.mostPlayed.title"
+        description={t("feat.mostPlayed.brief")}
+        onPress={() => navigation.navigate("MostPlayed")}
+        first
+        last
+      />
+
       <List>
         <ListItem
           titleKey="feat.hiddenTracks.title"

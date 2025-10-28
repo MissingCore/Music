@@ -36,6 +36,7 @@ import ExperimentalSettings from "./screens/settings/ExperimentalSettingsView";
 import HiddenTracks from "./screens/settings/HiddenTracksView";
 import HomeTabsOrderSettings from "./screens/settings/HomeTabsOrderSettingsView";
 import Insights from "./screens/settings/InsightsView";
+import MostPlayed from "./screens/settings/MostPlayedView";
 import PackageLicense from "./screens/settings/PackageLicenseView";
 import PlaybackSettings from "./screens/settings/PlaybackSettingsView";
 import SaveErrors from "./screens/settings/SaveErrorsView";
@@ -292,6 +293,10 @@ export const RootStack = createNativeStackNavigator({
         HiddenTracks: {
           screen: HiddenTracks,
           options: { title: "feat.hiddenTracks.title" },
+        },
+        MostPlayed: {
+          screen: MostPlayed,
+          options: { title: "feat.mostPlayed.title" },
         },
         SaveErrors: {
           screen: SaveErrors,
