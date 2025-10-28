@@ -215,13 +215,15 @@ export const RootStack = createNativeStackNavigator({
   screenOptions: {
     header: TopAppBar,
     title: "",
-    freezeOnBlur: true,
   },
   screens: {
     HomeScreens: {
       screen: RootScreens,
       layout: ({ children }) => children,
-      options: { headerShown: false },
+      options: {
+        headerShown: false,
+        freezeOnBlur: true,
+      },
     },
     NowPlaying: {
       screen: NowPlaying,
@@ -233,7 +235,6 @@ export const RootStack = createNativeStackNavigator({
         animation: "slide_from_bottom",
         header: NowPlayingTopAppBar,
         headerTransparent: true,
-        freezeOnBlur: false,
       },
     },
     Search,
