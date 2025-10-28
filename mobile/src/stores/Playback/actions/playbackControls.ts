@@ -1,9 +1,5 @@
 import TrackPlayer, { State } from "@weights-ai/react-native-track-player";
 
-import { getAlbum } from "~/api/album";
-import { getArtist } from "~/api/artist";
-import { getFolderTracks } from "~/api/folder";
-import { getPlaylist, getSpecialPlaylist } from "~/api/playlist";
 import { addPlayedMediaList } from "~/api/recent";
 import { userPreferencesStore } from "~/services/UserPreferences";
 
@@ -15,11 +11,10 @@ import {
   extractTrackId,
   formatTrackforPlayer,
   getSourceName,
+  getTrackIdsList,
+  getUpdatedLists,
 } from "../utils";
 
-import { shuffleArray } from "~/utils/object";
-import type { ReservedPlaylistName } from "~/modules/media/constants";
-import { ReservedNames } from "~/modules/media/constants";
 import { revalidateWidgets } from "~/modules/widget/utils";
 
 //#region Loaders
@@ -163,7 +158,7 @@ export async function playFromList({
   source: PlayFromSource;
   trackId?: string;
 }) {
-  const { getTrack, playingFrom, queue, activeTrack } =
+  const { getTrack, shuffle, playingFrom, queue, activeTrack } =
     playbackStore.getState();
 
   // 1. See if we're playing from a new media list.
@@ -197,6 +192,7 @@ export async function playFromList({
   if (newPlayingList.length === 0) return; // Don't do anything if list is empty.
   const newListInfo = getUpdatedLists(
     newPlayingList,
+    shuffle,
     trackId ?? activeTrack?.id,
   );
 
@@ -244,69 +240,5 @@ async function isLoaded() {
   } catch {
     return false;
   }
-}
-
-/** Get list of tracks ids from a `PlayFromSource`. */
-async function getTrackIdsList({ type, id }: PlayFromSource) {
-  let trackIds: string[] = [];
-
-  try {
-    if (type === "album") {
-      const data = await getAlbum(id, {
-        columns: [],
-        trackColumns: ["id"],
-      });
-      trackIds = data.tracks.map(({ id }) => id);
-    } else if (type === "artist") {
-      const data = await getArtist(id, {
-        columns: [],
-        trackColumns: ["id"],
-        withAlbum: false,
-      });
-      trackIds = data.tracks.map(({ id }) => id);
-    } else if (type === "folder") {
-      const data = await getFolderTracks(id); // `id` contains pathname.
-      trackIds = data.map(({ id }) => id);
-    } else {
-      if (ReservedNames.has(id)) {
-        const data = await getSpecialPlaylist(id as ReservedPlaylistName, {
-          columns: [],
-          trackColumns: ["id"],
-          withAlbum: false,
-        });
-        trackIds = data.tracks.map(({ id }) => id);
-      } else {
-        const data = await getPlaylist(id, {
-          columns: [],
-          trackColumns: ["id"],
-          withAlbum: false,
-        });
-        trackIds = data.tracks.map(({ id }) => id);
-      }
-    }
-  } catch {}
-
-  return trackIds;
-}
-
-/** Returns information necessary to switch `queue` seamlessly. */
-function getUpdatedLists(newPlayingList: string[], startTrackId?: string) {
-  const { shuffle, activeTrack } = playbackStore.getState();
-  const usedList = shuffle ? shuffleArray(newPlayingList) : newPlayingList;
-
-  // The tracks we should attempt to start from.
-  const startFromIds = [startTrackId, activeTrack?.id];
-  // Get the index we should start at in the new list.
-  let newLocation = -1;
-  startFromIds.forEach((startId) => {
-    if (!startId || newLocation !== -1) return;
-    newLocation = usedList.findIndex((tId) => startId === tId);
-  });
-
-  return {
-    orderSnapshot: newPlayingList,
-    queue: usedList,
-    queuePosition: newLocation === -1 ? 0 : newLocation,
-  };
 }
 //#endregion

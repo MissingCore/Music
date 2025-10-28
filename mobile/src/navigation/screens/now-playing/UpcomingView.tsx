@@ -1,11 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { inArray } from "drizzle-orm";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
 import { tracks } from "~/db/schema";
 import { getTrackCover } from "~/db/utils";
 
+import { Cached } from "~/resources/icons/Cached";
 import { Delete } from "~/resources/icons/Delete";
 import { getTracks } from "~/api/track";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
@@ -16,8 +18,10 @@ import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import { cn } from "~/lib/style";
 import { debounceWithAccumulation } from "~/utils/debounce";
 import { moveArray } from "~/utils/object";
+import { wait } from "~/utils/promise";
 import { FlashDragList } from "~/components/Defaults";
 import type { PressProps } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button";
 import { Swipeable } from "~/components/Swipeable";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
 import { SearchResult } from "~/modules/search/components/SearchResult";
@@ -27,12 +31,16 @@ import {
   ContentPlaceholder,
   PagePlaceholder,
 } from "../../components/Placeholder";
+import { ScreenOptions } from "../../components/ScreenOptions";
 
 export default function Upcoming() {
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
   const { isPending, error, data } = useQueueTracks();
   const listIndex = usePlaybackStore((s) => s.queuePosition);
   const repeat = usePlaybackStore((s) => s.repeat);
   const [cachedData, setCachedData] = useState<TrackData[]>([]);
+  const [isSynchronizing, setIsSynchronizing] = useState(false);
 
   // Sync our local state with the store data (this should be called twice
   // since we won't revalidate the query on changes).
@@ -62,30 +70,53 @@ export default function Upcoming() {
     [],
   );
 
+  const onSynchronizeQueue = useCallback(async () => {
+    setIsSynchronizing(true);
+    await wait(1);
+    await Queue.synchronize();
+    // `removeQueries` will reset the `isPending` state unlike `resetQueries`.
+    queryClient.removeQueries({ queryKey });
+    setIsSynchronizing(false);
+  }, [queryClient]);
+
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
 
   // Index where the tracks won't be played.
   const disableIndex = repeat === RepeatModes.NO_REPEAT ? listIndex : 0;
 
   return (
-    <FlashDragList
-      estimatedItemSize={56} // 48px Height + 8px Margin Top
-      initialScrollIndex={listIndex}
-      estimatedFirstItemOffset={8}
-      data={modifiedData}
-      keyExtractor={(item) => item.key}
-      renderItem={(args) => (
-        <RenderItem
-          disableAfter={disableIndex}
-          onRemoveTrack={onRemoveTrack}
-          {...args}
-        />
-      )}
-      onReordered={onMove}
-      ListEmptyComponent={<ContentPlaceholder isPending={data.length === 0} />}
-      nestedScrollEnabled
-      contentContainerClassName="py-4"
-    />
+    <>
+      <ScreenOptions
+        headerRight={() => (
+          <IconButton
+            Icon={Cached}
+            accessibilityLabel={t("form.reset")}
+            onPress={onSynchronizeQueue}
+            disabled={isSynchronizing}
+          />
+        )}
+      />
+      <FlashDragList
+        estimatedItemSize={56} // 48px Height + 8px Margin Top
+        initialScrollIndex={listIndex}
+        estimatedFirstItemOffset={8}
+        data={modifiedData}
+        keyExtractor={(item) => item.key}
+        renderItem={(args) => (
+          <RenderItem
+            disableAfter={disableIndex}
+            onRemoveTrack={onRemoveTrack}
+            {...args}
+          />
+        )}
+        onReordered={onMove}
+        ListEmptyComponent={
+          <ContentPlaceholder isPending={data.length === 0} />
+        }
+        nestedScrollEnabled
+        contentContainerClassName="py-4"
+      />
+    </>
   );
 }
 

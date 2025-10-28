@@ -1,10 +1,16 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { createId } from "@paralleldrive/cuid2";
+import TrackPlayer from "@weights-ai/react-native-track-player";
 
 import i18next from "~/modules/i18n";
 
 import { playbackStore } from "../store";
-import { extractTrackId } from "../utils";
+import {
+  extractTrackId,
+  formatTrackforPlayer,
+  getTrackIdsList,
+  getUpdatedLists,
+} from "../utils";
 
 import { ToastOptions } from "~/lib/toast";
 import { moveArray } from "~/utils/object";
@@ -99,4 +105,35 @@ export function removeKeys(keys: Set<string>) {
     queue: updatedQueue,
     queuePosition: newQueuePosition,
   });
+}
+
+/** Have the queue contents match the original list source. */
+export async function synchronize() {
+  const { getTrack, shuffle, playingFrom, activeTrack } =
+    playbackStore.getState();
+
+  if (!playingFrom || !activeTrack) return;
+  const updatedQueue = await getTrackIdsList(playingFrom);
+  // Don't do anything if the list no longer exists / is empty.
+  if (updatedQueue.length === 0) return;
+  const updatedListInfo = getUpdatedLists(
+    updatedQueue,
+    shuffle,
+    activeTrack.id,
+  );
+
+  // Handle if the active track isn't in the updated list.
+  const newTrackId = updatedListInfo.queue[updatedListInfo.queuePosition]!;
+  const isDiffTrack = activeTrack.id !== newTrackId;
+  let newTrack = activeTrack;
+  if (isDiffTrack) newTrack = (await getTrack(newTrackId))!;
+
+  playbackStore.setState({
+    ...updatedListInfo,
+    activeKey: newTrackId,
+    activeTrack: newTrack,
+  });
+
+  // Change playing track if the previous active track doesn't exist in the updated list.
+  if (isDiffTrack) await TrackPlayer.load(formatTrackforPlayer(newTrack));
 }
