@@ -83,13 +83,11 @@ export function removeIds(ids: string[]) {
  * **Note:** This should be used with debouncing.
  */
 export function removeKeys(keys: Set<string>) {
-  const { reset, queue, activeKey, queuePosition } = playbackStore.getState();
+  const { queue, activeKey, queuePosition } = playbackStore.getState();
 
-  // If active track is removed, reset the playback store.
-  if (activeKey && keys.has(activeKey)) {
-    reset();
-    return;
-  }
+  if (!activeKey) return;
+  // You shouldn't be able to remove the active track with this method.
+  keys.delete(activeKey);
 
   // If we removed a track before the active track, decremenet `queuePosition`.
   let newQueuePosition = queuePosition;
