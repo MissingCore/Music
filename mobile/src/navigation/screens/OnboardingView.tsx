@@ -24,8 +24,8 @@ import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 export function Onboarding() {
   const { container, logo } = BootSplash.useHideAnimation({
     manifest: require("../../../assets/bootsplash/manifest.json"),
-    logo: require("../../../assets/bootsplash/logo.png"),
-    darkLogo: require("../../../assets/bootsplash/dark-logo.png"),
+    logo: require("../../../assets/bootsplash/light-logo.png"),
+    darkLogo: require("../../../assets/bootsplash/logo.png"),
 
     animate: () => {},
   });
