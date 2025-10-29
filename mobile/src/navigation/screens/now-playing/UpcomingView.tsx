@@ -236,7 +236,7 @@ async function getQueueTracks() {
     if (trackMap[tId]) trackList.push({ ...trackMap[tId], key: queue[index]! });
     else missingTracks.push(tId);
   });
-  Queue.removeIds(missingTracks);
+  await Queue.removeIds(missingTracks);
 
   return trackList;
 }
