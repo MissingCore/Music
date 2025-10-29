@@ -2,6 +2,8 @@ import { toast } from "@backpackapp-io/react-native-toast";
 import { createId } from "@paralleldrive/cuid2";
 import TrackPlayer from "@weights-ai/react-native-track-player";
 
+import type { TrackWithAlbum } from "~/db/schema";
+
 import i18next from "~/modules/i18n";
 
 import { playbackStore } from "../store";
@@ -47,31 +49,50 @@ export function moveTrack(fromIndex: number, toIndex: number) {
 }
 
 /** Remove list of track ids in the current queue. */
-export function removeIds(ids: string[]) {
+export async function removeIds(ids: string[]) {
   const idSet = new Set(ids.map(extractTrackId));
-  const { reset, orderSnapshot, queue, activeTrack, queuePosition } =
+  const { reset, getTrack, orderSnapshot, queue, activeTrack, queuePosition } =
     playbackStore.getState();
 
-  // If active track is removed, reset the playback store.
-  if (activeTrack && idSet.has(activeTrack.id)) {
-    reset();
-    return;
-  }
+  if (!activeTrack) return;
 
   // If we removed a track before the active track, decremenet `queuePosition`.
   let newQueuePosition = queuePosition;
+  const activeTrackRemoved = idSet.has(activeTrack.id);
 
   const updatedSnapshot = orderSnapshot.filter((tId) => !idSet.has(tId));
   const updatedQueue = queue.filter((tKey, index) => {
     const isRemoved = idSet.has(extractTrackId(tKey));
+    // If the active track is removed (`index === queuePosition`), then
+    // `queuePosition` will represent the following track.
     if (isRemoved && index < queuePosition) newQueuePosition -= 1;
     return !isRemoved;
   });
 
+  // If no tracks were removed.
   if (queue.length === updatedQueue.length) return;
+  // If all tracks were removed.
+  if (updatedQueue.length === 0) return reset();
+
+  let newActiveTrack: TrackWithAlbum | undefined = activeTrack;
+  // If the active track was removed.
+  if (activeTrackRemoved) {
+    const newActiveTrackKey = updatedQueue[newQueuePosition];
+    // FIXME: To simplify things, if the next track doesn't exist, but
+    // exist before the current position, we reset.
+    if (newActiveTrackKey === undefined) return reset();
+    newActiveTrack = await getTrack(newActiveTrackKey);
+    // If no track was found, then `reset()` was called.
+    if (!newActiveTrack) return;
+
+    await TrackPlayer.load(formatTrackforPlayer(newActiveTrack));
+  }
+
   playbackStore.setState({
     orderSnapshot: updatedSnapshot,
     queue: updatedQueue,
+    activeKey: updatedQueue[newQueuePosition],
+    activeTrack: newActiveTrack,
     queuePosition: newQueuePosition,
   });
 }
