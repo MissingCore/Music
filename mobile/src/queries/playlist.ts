@@ -91,7 +91,6 @@ export function useDeletePlaylist(playlistName: string) {
   return useMutation({
     mutationFn: () => deletePlaylist(playlistName),
     onSuccess: () => {
-      Resynchronize.onDelete({ type: "playlist", id: playlistName });
       queryClient.invalidateQueries({ queryKey: q.playlists._def });
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
       queryClient.invalidateQueries({ queryKey: ["search"] });
