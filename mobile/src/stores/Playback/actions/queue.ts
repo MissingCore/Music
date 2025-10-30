@@ -79,7 +79,7 @@ export async function removeIds(ids: string[]) {
   if (activeTrackRemoved) {
     const newActiveTrackKey = updatedQueue[newQueuePosition];
     // FIXME: To simplify things, if the next track doesn't exist, but
-    // exist before the current position, we reset.
+    // maybe exists before the current position, we reset.
     if (newActiveTrackKey === undefined) return reset();
     newActiveTrack = await getTrack(newActiveTrackKey);
     // If no track was found, then `reset()` was called.
