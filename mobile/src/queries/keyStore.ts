@@ -15,7 +15,6 @@ import {
 import {
   getDatabaseSummary,
   getLatestRelease,
-  getSaveErrors,
   getStorageSummary,
 } from "~/api/setting";
 import { getTrack, getTrackPlaylists, getTracks } from "~/api/track";
@@ -152,10 +151,6 @@ export const queries = createQueryKeyStore({
     releaseNote: {
       queryKey: null,
       queryFn: () => getLatestRelease(),
-    },
-    saveErrors: {
-      queryKey: null,
-      queryFn: () => getSaveErrors(),
     },
     summary: {
       queryKey: null,

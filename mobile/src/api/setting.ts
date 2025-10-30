@@ -43,11 +43,6 @@ export async function getLatestRelease() {
   };
 }
 
-/** Get the list of tracks we failed to save along with their error message. */
-export async function getSaveErrors() {
-  return db.query.invalidTracks.findMany();
-}
-
 /** A summary of what consists of "user data" that's stored by the app. */
 export async function getStorageSummary() {
   const dbSize = getDirectorySize(new Directory(Paths.document, "SQLite"));

@@ -17,11 +17,6 @@ export function useLatestRelease() {
   });
 }
 
-/** Return the tracks that resulted in an error while saving. */
-export function useSaveErrors() {
-  return useQuery({ ...q.settings.saveErrors, staleTime: 0 });
-}
-
 /** Return a summary of the "user data" stored by the app. */
 export function useStorageSummary() {
   return useQuery({ ...q.settings.summary._ctx.storage, staleTime: 0 });

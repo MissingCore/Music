@@ -1,4 +1,6 @@
-import { useSaveErrors } from "~/queries/setting";
+import { useQuery } from "@tanstack/react-query";
+
+import { db } from "~/db";
 
 import { useListPresets } from "~/components/Containment/List";
 import { FlashList } from "~/components/Defaults";
@@ -23,3 +25,15 @@ export default function SaveErrors() {
     />
   );
 }
+
+//#region Data Query
+async function getSaveErrors() {
+  return db.query.invalidTracks.findMany();
+}
+
+const queryKey = ["settings", "save-errors"];
+
+function useSaveErrors() {
+  return useQuery({ queryKey, queryFn: getSaveErrors, staleTime: 0 });
+}
+//#endregion
