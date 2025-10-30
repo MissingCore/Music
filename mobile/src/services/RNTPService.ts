@@ -9,7 +9,7 @@ import i18next from "~/modules/i18n";
 import { addPlayedMediaList, addPlayedTrack } from "~/api/recent";
 import { deleteTrack } from "~/api/track";
 import { playbackStore } from "~/stores/Playback/store";
-import { PlaybackControls } from "~/stores/Playback/actions";
+import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
 import { userPreferencesStore } from "./UserPreferences";
 import { router } from "~/navigation/utils/router";
@@ -158,18 +158,25 @@ export async function PlaybackService() {
             "Unexpected runtime error. For example, this may happen if the file has a sample rate greater than or equal to 352.8kHz.";
 
         await deleteTrack(erroredTrack.id, { errorName: e.code, errorMessage });
+        // Attempt to play the next track.
+        await Queue.removeIds([erroredTrack.id]);
         await removeUnusedCategories();
         clearAllQueries();
-        router.navigate("HomeScreens", undefined, { pop: true });
+
+        // If the queue is empty as a result of `Queue.removeIds()`, `reset()`
+        // gets called internally, in which, we want to return to the Home screens.
+        if (playbackStore.getState().queue.length === 0) {
+          router.navigate("HomeScreens", undefined, { pop: true });
+        }
       }
 
       toast.error(
         i18next.t("template.notFound", { name: erroredTrack.title }),
         ToastOptions,
       );
+    } else {
+      // If we get this event when there's no active track, just reset.
+      await playbackStore.getState().reset();
     }
-
-    // Clear all reference of the current playing track.
-    await playbackStore.getState().reset();
   });
 }

@@ -36,18 +36,6 @@ export async function onActiveTrack(args: {
   } catch {}
 }
 
-/**
- * Resynchronize when we delete a media list.
- *
- * @deprecated Don't want to reset store when the original list is deleted.
- */
-export async function onDelete(removedRef: PlayFromSource) {
-  const { reset, playingFrom } = playbackStore.getState();
-  if (!playingFrom) return;
-  // If we're playing a list we've deleted, reset the state.
-  if (arePlaybackSourceEqual(playingFrom, removedRef)) await reset();
-}
-
 /** Resynchronize on tracks that have been modified. */
 export async function onModifiedTracks(trackIds: string[]) {
   const idSet = new Set(trackIds);

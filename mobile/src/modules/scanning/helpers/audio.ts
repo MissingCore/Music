@@ -15,13 +15,13 @@ import {
   invalidTracks,
   playedMediaLists,
   tracks,
+  tracksToPlaylists,
 } from "~/db/schema";
 
 import { upsertAlbums } from "~/api/album";
 import { createArtists } from "~/api/artist";
 import { RECENT_RANGE_MS } from "~/api/recent";
 import { upsertTracks } from "~/api/track";
-import { playbackStore } from "~/stores/Playback/store";
 import { Queue } from "~/stores/Playback/actions";
 import { userPreferencesStore } from "~/services/UserPreferences";
 import { onboardingStore } from "../services/Onboarding";
@@ -35,7 +35,6 @@ import {
   getSafeUri,
   removeFileExtension,
 } from "~/utils/string";
-import { extractTrackId } from "~/stores/Playback/utils";
 import { savePathComponents } from "./folder";
 
 //#region Saving Function
@@ -152,17 +151,14 @@ export async function cleanupDatabase(usedTrackIds: string[]) {
     await Promise.allSettled([
       db.delete(invalidTracks).where(inArray(invalidTracks.id, unusedTrackIds)),
       db.delete(tracks).where(inArray(tracks.id, unusedTrackIds)),
+      db
+        .delete(tracksToPlaylists)
+        .where(inArray(tracksToPlaylists.trackId, unusedTrackIds)),
     ]);
   }
 
-  // Ensure we didn't reference deleted tracks in the playback store.
-  const { queue } = playbackStore.getState();
-  const hasRemovedTrack = queue.some((tKey) =>
-    unusedTrackIds.includes(extractTrackId(tKey)),
-  );
-  if (hasRemovedTrack) await playbackStore.getState().reset();
   // Clear the queue of deleted tracks.
-  Queue.removeIds(unusedTrackIds);
+  await Queue.removeIds(unusedTrackIds);
 
   // Remove recently played media that's beyond what we display.
   await db

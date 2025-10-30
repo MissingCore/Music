@@ -84,7 +84,7 @@ export function useHideTrack() {
     onSuccess: async (_, { trackId }) => {
       // There's a lot of places where this track may appear.
       clearAllQueries();
-      Queue.removeIds([trackId]);
+      await Queue.removeIds([trackId]);
     },
   });
 }
