@@ -162,7 +162,10 @@ export async function PlaybackService() {
         await Queue.removeIds([erroredTrack.id]);
         await removeUnusedCategories();
         clearAllQueries();
-        router.navigate("HomeScreens", undefined, { pop: true });
+
+        if (playbackStore.getState().queue.length === 0) {
+          router.navigate("HomeScreens", undefined, { pop: true });
+        }
       }
 
       toast.error(
