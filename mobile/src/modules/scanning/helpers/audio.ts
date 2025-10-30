@@ -15,6 +15,7 @@ import {
   invalidTracks,
   playedMediaLists,
   tracks,
+  tracksToPlaylists,
 } from "~/db/schema";
 
 import { upsertAlbums } from "~/api/album";
@@ -150,6 +151,9 @@ export async function cleanupDatabase(usedTrackIds: string[]) {
     await Promise.allSettled([
       db.delete(invalidTracks).where(inArray(invalidTracks.id, unusedTrackIds)),
       db.delete(tracks).where(inArray(tracks.id, unusedTrackIds)),
+      db
+        .delete(tracksToPlaylists)
+        .where(inArray(tracksToPlaylists.trackId, unusedTrackIds)),
     ]);
   }
 
