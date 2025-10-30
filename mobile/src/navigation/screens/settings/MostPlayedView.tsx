@@ -125,7 +125,7 @@ async function getMostPlayedTracks() {
   return groupedPlacement;
 }
 
-const queryKey = ["most-played"];
+const queryKey = ["settings", "most-played"];
 
 function useMostPlayedTracks() {
   return useQuery({
