@@ -12,7 +12,6 @@ import {
   getRecentlyPlayedMediaLists,
   getRecentlyPlayedTracks,
 } from "~/api/recent";
-import { getDatabaseSummary, getStorageSummary } from "~/api/setting";
 import { getTrack, getTrackPlaylists, getTracks } from "~/api/track";
 
 import { iAsc } from "~/lib/drizzle";
@@ -140,22 +139,6 @@ export const queries = createQueryKeyStore({
     tracks: {
       queryKey: null,
       queryFn: () => getRecentlyPlayedTracks(),
-    },
-  },
-  /** Query keys used in `useQuery` for "setting" related features. */
-  settings: {
-    summary: {
-      queryKey: null,
-      contextQueries: {
-        database: {
-          queryKey: null,
-          queryFn: () => getDatabaseSummary(),
-        },
-        storage: {
-          queryKey: null,
-          queryFn: () => getStorageSummary(),
-        },
-      },
     },
   },
 });
