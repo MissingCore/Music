@@ -1,8 +1,8 @@
 import { createQueryKeyStore } from "@lukemorales/query-key-factory";
-import { eq, isNotNull } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 import { db } from "~/db";
-import { albums, playlists, tracks } from "~/db/schema";
+import { albums, playlists } from "~/db/schema";
 
 import { getAlbum, getAlbums } from "~/api/album";
 import { getArtist, getArtistAlbums } from "~/api/artist";
@@ -152,16 +152,6 @@ export const queries = createQueryKeyStore({
     releaseNote: {
       queryKey: null,
       queryFn: () => getLatestRelease(),
-    },
-    hiddenTracks: {
-      queryKey: null,
-      queryFn: () =>
-        getTracks({
-          where: [isNotNull(tracks.hiddenAt)],
-          columns: ["id", "name", "artwork", "hiddenAt"],
-          albumColumns: ["artwork"],
-          withHidden: true,
-        }),
     },
     saveErrors: {
       queryKey: null,
