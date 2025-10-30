@@ -9,17 +9,10 @@ import { cn } from "~/lib/style";
 import { FlatList } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { StyledText } from "~/components/Typography/StyledText";
-import { PagePlaceholder } from "../../components/Placeholder";
+import { ContentPlaceholder } from "../../components/Placeholder";
 
 export default function MostPlayed() {
-  const { isPending, error, data } = useMostPlayedTracks();
-
-  if (isPending || error || data.length === 0) {
-    return (
-      <PagePlaceholder isPending={isPending} errMsgKey="err.msg.noResults" />
-    );
-  }
-
+  const { isPending, data } = useMostPlayedTracks();
   return (
     <FlatList
       data={data}
@@ -28,13 +21,19 @@ export default function MostPlayed() {
         <View
           className={cn("flex-row rounded-sm bg-surface p-1", {
             "rounded-t-md": index === 0,
-            "rounded-b-md": data.length - 1 === index,
+            "rounded-b-md": (data?.length ?? 0) - 1 === index,
           })}
         >
           <PlacementNumber placement={item.placement} />
           <PlayCountList tracks={item.tracks} />
         </View>
       )}
+      ListEmptyComponent={
+        <ContentPlaceholder
+          isPending={isPending}
+          errMsgKey="err.msg.noResults"
+        />
+      }
       contentContainerClassName="gap-[3px] p-4"
     />
   );
