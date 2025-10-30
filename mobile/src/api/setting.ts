@@ -31,18 +31,6 @@ export async function getDatabaseSummary() {
   };
 }
 
-/** Get the latest stable & pre-release release notes from GitHub. */
-export async function getLatestRelease() {
-  return {
-    latestStable: await fetch(`${RELEASE_NOTES_LINK}/latest`)
-      .then((res) => res.json())
-      .then((data) => formatGitHubRelease(data)),
-    latestRelease: await fetch(`${RELEASE_NOTES_LINK}?per_page=1`)
-      .then((res) => res.json())
-      .then(([data]) => formatGitHubRelease(data)),
-  };
-}
-
 /** A summary of what consists of "user data" that's stored by the app. */
 export async function getStorageSummary() {
   const dbSize = getDirectorySize(new Directory(Paths.document, "SQLite"));
@@ -61,24 +49,6 @@ export async function getStorageSummary() {
 //#endregion
 
 //#region Internal Utils
-const RELEASE_NOTES_LINK =
-  "https://api.github.com/repos/MissingCore/Music/releases";
-
-type ReleaseNotes =
-  | { releaseNotes: undefined; version: undefined }
-  | { releaseNotes: string; version: string };
-
-/** Formats the data returned from the GitHub API. */
-function formatGitHubRelease(data: any): ReleaseNotes {
-  return {
-    version: data.tag_name,
-    // Remove markdown comments w/ regex.
-    releaseNotes: data.body
-      ? data.body.replace(/<!--[\s\S]*?(?:-->)/g, "")
-      : undefined,
-  };
-}
-
 /** Gets the size of a directory. */
 function getDirectorySize(dir: Directory): number {
   if (!dir.exists) return 0;

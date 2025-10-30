@@ -8,15 +8,6 @@ export function useDatabaseSummary() {
   return useQuery({ ...q.settings.summary._ctx.database, staleTime: 0 });
 }
 
-/** Returns latest stable & pre-release release notes from GitHub. */
-export function useLatestRelease() {
-  return useQuery({
-    ...q.settings.releaseNote,
-    gcTime: Infinity,
-    retry: false,
-  });
-}
-
 /** Return a summary of the "user data" stored by the app. */
 export function useStorageSummary() {
   return useQuery({ ...q.settings.summary._ctx.storage, staleTime: 0 });
