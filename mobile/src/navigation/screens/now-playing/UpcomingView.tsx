@@ -241,7 +241,7 @@ async function getQueueTracks() {
   return trackList;
 }
 
-const queryKey = ["queue"];
+const queryKey = ["now-playing", "queue"];
 
 function useQueueTracks() {
   return useQuery({

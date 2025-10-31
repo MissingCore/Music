@@ -13,7 +13,6 @@ import {
   createPlaylist,
   deletePlaylist,
   favoritePlaylist,
-  moveInPlaylist,
   updatePlaylist,
 } from "~/api/playlist";
 import { Resynchronize } from "~/stores/Playback/actions";
@@ -112,20 +111,6 @@ export function useFavoritePlaylist(playlistName: string) {
         queryKey: q.playlists.detail(playlistName).queryKey,
       });
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
-    },
-  });
-}
-
-/** Move a track in playlist. */
-export function useMoveInPlaylist(playlistName: string) {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (movement: { fromIndex: number; toIndex: number }) =>
-      moveInPlaylist({ ...movement, playlistName }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: q.playlists.detail(playlistName).queryKey,
-      });
     },
   });
 }

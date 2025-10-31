@@ -3,7 +3,6 @@ import { openBrowserAsync } from "expo-web-browser";
 import { useTranslation } from "react-i18next";
 
 import { OpenInNew } from "~/resources/icons/OpenInNew";
-import { queries as q } from "~/queries/keyStore";
 import {
   userPreferencesStore,
   useUserPreferencesStore,
@@ -14,7 +13,6 @@ import { SettingsSheets } from "./Sheets";
 
 import { APP_VERSION } from "~/constants/Config";
 import * as LINKS from "~/constants/Links";
-import { queryClient } from "~/lib/react-query";
 import { Card } from "~/components/Containment/Card";
 import { List, ListItem } from "~/components/Containment/List";
 import { Divider } from "~/components/Divider";
@@ -159,5 +157,4 @@ const toggleRCNotification = () => {
   userPreferencesStore.setState((prev) => ({
     rcNotification: !prev.rcNotification,
   }));
-  queryClient.invalidateQueries({ queryKey: q.settings.releaseNote.queryKey });
 };
