@@ -62,9 +62,11 @@ interface UserPreferencesStore {
   /** Visibility of the tabs on the home screen. */
   tabsVisibility: Record<OrderableTab, boolean>;
 
+  /** Delay before next track is naturally played. */
+  playbackDelay: number;
+
   /** Whether we stay on "Repeat One" mode when we skip. */
   repeatOnSkip: boolean;
-
   /** Whether we'll restore the track to the last played position. */
   restoreLastPosition: boolean;
 
@@ -137,8 +139,9 @@ export const userPreferencesStore =
         track: true,
       },
 
-      repeatOnSkip: false,
+      playbackDelay: 0,
 
+      repeatOnSkip: false,
       restoreLastPosition: true,
 
       listAllow: [],

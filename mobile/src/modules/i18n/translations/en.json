@@ -227,6 +227,10 @@
       "title": "Ignore Interruptions",
       "brief": "Continue playing audio when an interruption such as a notification or a call occurs. You will need to manually pause and unpause the music during these situations."
     },
+    "playbackDelay": {
+      "title": "Natural Playback Delay",
+      "description": "Delay in seconds before the next track is naturally played."
+    },
     "repeatOnSkip": {
       "title": "Keep Repeat Mode on Skip",
       "brief": "Don't switch mode to \"Repeat\" from \"Repeat One\" on skip."

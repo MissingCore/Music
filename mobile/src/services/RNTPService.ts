@@ -16,6 +16,7 @@ import { router } from "~/navigation/utils/router";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
+import { bgWait } from "~/utils/promise";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { extractTrackId } from "~/stores/Playback/utils";
 
@@ -89,6 +90,9 @@ export async function PlaybackService() {
   // Only triggered if repeat mode is `RepeatMode.Off`. This is also called
   // after the `ServiceKilled` event is emitted.
   TrackPlayer.addEventListener(Event.PlaybackQueueEnded, async () => {
+    const { playbackDelay } = userPreferencesStore.getState();
+    if (playbackDelay > 0) await bgWait(playbackDelay * 1000);
+
     // `true` provided to prevent updating the repeat setting.
     await PlaybackControls.next(true);
   });
