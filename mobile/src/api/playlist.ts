@@ -14,7 +14,7 @@ import i18next from "~/modules/i18n";
 import { sortPreferencesStore } from "~/modules/media/services/SortPreferences";
 
 import { iAsc, iDesc } from "~/lib/drizzle";
-import { moveArray, pickKeys } from "~/utils/object";
+import { pickKeys } from "~/utils/object";
 import type { ReservedPlaylistName } from "~/modules/media/constants";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import type { QueryManyWithTracksFn, QueryOneWithTracksFn } from "./types";
@@ -172,29 +172,6 @@ export async function createPlaylist(
 /** Update the `favorite` status of a playlist. */
 export async function favoritePlaylist(id: string, isFavorite: boolean) {
   return updatePlaylist(id, { isFavorite });
-}
-
-/** Move a track in a playlist. */
-export async function moveInPlaylist(info: {
-  playlistName: string;
-  fromIndex: number;
-  toIndex: number;
-}) {
-  return db.transaction(async (tx) => {
-    const tracksInPlaylist = await tx
-      .delete(tracksToPlaylists)
-      .where(eq(tracksToPlaylists.playlistName, info.playlistName))
-      .returning();
-    await tx.insert(tracksToPlaylists).values(
-      moveArray(
-        tracksInPlaylist.sort((a, b) => a.position - b.position),
-        { fromIndex: info.fromIndex, toIndex: info.toIndex },
-      ).map((t, position) => {
-        t.position = position;
-        return t;
-      }),
-    );
-  });
 }
 
 /** Update specified playlist. */
