@@ -1,6 +1,5 @@
 import { useColorScheme } from "nativewind";
-import { useEffect, useState } from "react";
-import { Keyboard, Text } from "react-native";
+import { Text } from "react-native";
 
 import {
   AccentFontOptions,
@@ -14,10 +13,9 @@ import {
 import { getFont } from "~/lib/style";
 import { toLowerCase } from "~/utils/string";
 import { FlatList } from "~/components/Defaults";
-import { NumericInput } from "~/components/Form/Input";
 import { Radio } from "~/components/Form/Selection";
 import type { TrueSheetRef } from "~/components/Sheet";
-import { Sheet } from "~/components/Sheet";
+import { NumericSheet, Sheet } from "~/components/Sheet";
 import { TStyledText } from "~/components/Typography/StyledText";
 import { deferInitialRender } from "../../../components/DeferredRender";
 
@@ -145,30 +143,14 @@ function ThemeSheet(props: { sheetRef: TrueSheetRef }) {
  */
 function MinAlbumLengthSheet(props: { sheetRef: TrueSheetRef }) {
   const minAlbumLength = useUserPreferencesStore((s) => s.minAlbumLength);
-  const [newMin, setNewMin] = useState<string | undefined>();
-
-  useEffect(() => {
-    const subscription = Keyboard.addListener(
-      "keyboardDidHide",
-      // Update user preference when we close the keyboard.
-      () => updateMinAlbumLength(newMin),
-    );
-    return () => subscription.remove();
-  }, [newMin]);
-
   return (
-    <Sheet ref={props.sheetRef} titleKey="feat.albumLengthFilter.title">
-      <TStyledText
-        dim
-        textKey="feat.albumLengthFilter.description"
-        className="text-center text-sm"
-      />
-      <NumericInput
-        defaultValue={`${minAlbumLength}`}
-        onChangeText={(text) => setNewMin(text)}
-        className="mx-auto mb-2 w-full max-w-[50%] border-b border-foreground/60 text-center"
-      />
-    </Sheet>
+    <NumericSheet
+      sheetRef={props.sheetRef}
+      titleKey="feat.albumLengthFilter.title"
+      descriptionKey="feat.albumLengthFilter.description"
+      value={minAlbumLength}
+      setValue={setMinAlbumLength}
+    />
   );
 }
 //#endregion
@@ -212,10 +194,6 @@ const setNowPlayingDesign = (
   newDesign: (typeof NowPlayingDesignOptions)[number],
 ) => userPreferencesStore.setState({ nowPlayingDesign: newDesign });
 
-async function updateMinAlbumLength(newLength: string | undefined) {
-  const asNum = Number(newLength);
-  // Validate that it's a positive integer.
-  if (!Number.isInteger(asNum) || asNum < 0) return;
-  userPreferencesStore.setState({ minAlbumLength: asNum });
-}
+const setMinAlbumLength = (newLength: number) =>
+  userPreferencesStore.setState({ minAlbumLength: newLength });
 //#endregion
