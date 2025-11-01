@@ -172,6 +172,13 @@
         "totalDuration": "Durée Totale"
       }
     },
+    "mostPlayed": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "playCount": null
+      }
+    },
     "hiddenTracks": {
       "title": "Pistes Masqués",
       "brief": "Pistes non affichées dans l'application.",
@@ -201,6 +208,10 @@
     "ignoreInterrupt": {
       "title": "Ignorer les interruptions",
       "brief": "Continuer à lire l'audio quand une interruption comme une notification ou un appel se produit. Vous devrez mettre manuellement la musique en pause et la remettre en pause pendant ces situations."
+    },
+    "playbackDelay": {
+      "title": null,
+      "description": null
     },
     "repeatOnSkip": {
       "title": "Garder le mode Répéter lors du passage au titre suivant",

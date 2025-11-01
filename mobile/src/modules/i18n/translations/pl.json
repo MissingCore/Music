@@ -172,6 +172,13 @@
         "totalDuration": "Łączna długość"
       }
     },
+    "mostPlayed": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "playCount": null
+      }
+    },
     "hiddenTracks": {
       "title": "Ukryte utwory",
       "brief": "Utwory, które nie są wyświetlane w aplikacji.",
@@ -201,6 +208,10 @@
     "ignoreInterrupt": {
       "title": "Ignoruj przerwania",
       "brief": "Powiadomienia i połączenia nie będą zatrzymywać odtwarzania. Wymagane będzie ręczne zatrzymanie."
+    },
+    "playbackDelay": {
+      "title": null,
+      "description": null
     },
     "repeatOnSkip": {
       "title": "Zachowaj zapętlenie po pominięciu",

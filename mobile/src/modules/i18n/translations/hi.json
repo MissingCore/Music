@@ -172,6 +172,13 @@
         "totalDuration": "कुल अवधि"
       }
     },
+    "mostPlayed": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "playCount": null
+      }
+    },
     "hiddenTracks": {
       "title": null,
       "brief": null,
@@ -201,6 +208,10 @@
     "ignoreInterrupt": {
       "title": null,
       "brief": null
+    },
+    "playbackDelay": {
+      "title": null,
+      "description": null
     },
     "repeatOnSkip": {
       "title": null,

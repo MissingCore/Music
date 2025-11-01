@@ -172,6 +172,13 @@
         "totalDuration": "Durasi Total"
       }
     },
+    "mostPlayed": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "playCount": null
+      }
+    },
     "hiddenTracks": {
       "title": null,
       "brief": null,
@@ -201,6 +208,10 @@
     "ignoreInterrupt": {
       "title": "Abaikan Interupsi",
       "brief": "Lanjutkan memutar audio ketika interupsi seperti notifikasi atau panggilan telepon. Anda harus menjeda secara manual dan melanjutkan musik dalam situasi ini."
+    },
+    "playbackDelay": {
+      "title": null,
+      "description": null
     },
     "repeatOnSkip": {
       "title": "Tetap dalam Mode Mengulang saat Melewati",

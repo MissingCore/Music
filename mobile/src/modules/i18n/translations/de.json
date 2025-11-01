@@ -172,6 +172,13 @@
         "totalDuration": "Gesamtdauer"
       }
     },
+    "mostPlayed": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "playCount": null
+      }
+    },
     "hiddenTracks": {
       "title": "Versteckte Tracks",
       "brief": "Tracks nicht in der App angezeigt.",
@@ -201,6 +208,10 @@
     "ignoreInterrupt": {
       "title": "Unterbrechungen ignorieren",
       "brief": "Wiedergabe von Audio fortsetzen, wenn eine Unterbrechung wie eine Benachrichtigung oder ein Anruf auftritt. Du musst die Musik in diesen Situationen manuell pausieren/abspielen."
+    },
+    "playbackDelay": {
+      "title": null,
+      "description": null
     },
     "repeatOnSkip": {
       "title": "Wiederholungsmodus beim Überspringen behalten",

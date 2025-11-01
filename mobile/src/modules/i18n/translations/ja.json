@@ -172,6 +172,13 @@
         "totalDuration": "合計の再生時間"
       }
     },
+    "mostPlayed": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "playCount": null
+      }
+    },
     "hiddenTracks": {
       "title": "非表示のトラック",
       "brief": "アプリから非表示にしたトラックです。",
@@ -201,6 +208,10 @@
     "ignoreInterrupt": {
       "title": "中断を無視する",
       "brief": "通知や通話などのイベントが発生しても音楽の再生を継続します。この機能を有効化すると手動で音楽を一時停止または再開を操作する必要があります。"
+    },
+    "playbackDelay": {
+      "title": null,
+      "description": null
     },
     "repeatOnSkip": {
       "title": "スキップ時にリピートモードを維持する",
