@@ -53,7 +53,7 @@
 | react-native-pager-view | MIT | https://github.com/callstack/react-native-pager-view |
 | react-native-paper | MIT | https://github.com/callstack/react-native-paper |
 | react-native-reanimated | MIT | https://github.com/software-mansion/react-native-reanimated |
-| react-native-safe-area-context | MIT | https://github.com/th3rdwave/react-native-safe-area-context |
+| react-native-safe-area-context | MIT | https://github.com/AppAndFlow/react-native-safe-area-context |
 | react-native-screens | MIT | https://github.com/software-mansion/react-native-screens |
 | react-native-svg | MIT | https://github.com/software-mansion/react-native-svg |
 | Roboto Font | Apache-2.0 | https://github.com/googlefonts/roboto |
