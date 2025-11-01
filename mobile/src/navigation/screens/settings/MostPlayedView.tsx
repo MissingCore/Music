@@ -54,15 +54,19 @@ function PlayCountList({ tracks }: { tracks: TrackData[] }) {
     <FlatList
       data={tracks}
       keyExtractor={({ id }) => id}
-      renderItem={({ item: { name, artistName, playCount }, index }) => (
+      renderItem={({
+        item: { name, artistName, albumName, playCount },
+        index,
+      }) => (
         <View className="gap-2">
           <View>
-            <StyledText numberOfLines={1} className="text-sm">
-              {name}
-            </StyledText>
-            <StyledText numberOfLines={1} dim>
-              {artistName ?? "—"}
-            </StyledText>
+            <StyledText className="text-sm">{name}</StyledText>
+            {artistName ? (
+              <StyledText dim className="text-foreground/80">
+                {artistName}
+              </StyledText>
+            ) : null}
+            {albumName ? <StyledText dim>{albumName}</StyledText> : null}
           </View>
           <Divider />
           {tracks.length - 1 === index ? (
@@ -84,6 +88,7 @@ type TrackData = {
   name: string;
   playCount: number;
   artistName: string | null;
+  albumName: string | null;
 };
 
 type MostPlayedPlacement = { placement: number; tracks: TrackData[] };
@@ -92,21 +97,24 @@ async function getMostPlayedTracks() {
   const mostPlayedTracks = await db.query.tracks.findMany({
     where: (fields, { gt }) => gt(fields.playCount, 0),
     columns: { id: true, name: true, artistName: true, playCount: true },
+    with: { album: { columns: { name: true } } },
     orderBy: (fields, { desc }) => [desc(fields.playCount), iAsc(fields.name)],
     limit: 100,
   });
 
   const groupedPlacement: MostPlayedPlacement[] = [];
   let recentPlacement: MostPlayedPlacement | undefined;
-  mostPlayedTracks.forEach((track) => {
+  mostPlayedTracks.forEach(({ album, ...track }) => {
+    const formattedTrack = { ...track, albumName: album?.name ?? null };
+
     if (!recentPlacement) {
-      recentPlacement = { placement: 1, tracks: [track] };
+      recentPlacement = { placement: 1, tracks: [formattedTrack] };
       return;
     }
 
     // If the current track belongs in the same placement.
-    if (recentPlacement.tracks.at(-1)!.playCount === track.playCount) {
-      recentPlacement.tracks.push(track);
+    if (recentPlacement.tracks.at(-1)!.playCount === formattedTrack.playCount) {
+      recentPlacement.tracks.push(formattedTrack);
       return;
     }
 
@@ -114,7 +122,7 @@ async function getMostPlayedTracks() {
     groupedPlacement.push(recentPlacement);
     recentPlacement = {
       placement: recentPlacement.placement + recentPlacement.tracks.length,
-      tracks: [track],
+      tracks: [formattedTrack],
     };
   });
 

@@ -192,7 +192,7 @@
     },
     "mostPlayed": {
       "title": "Most Played",
-      "brief": "Discover what is truly your favorite of all time.",
+      "brief": "All-time ranking of tracks.",
       "extra": {
         "playCount": "{{count}} plays"
       }
