@@ -23,7 +23,7 @@
     "unFavorite": "Quitar de favoritos",
     "favoriteTracks": "Canciones favoritas",
     "all": "Todo",
-    "more": null,
+    "more": "Más",
     "home": "Inicio",
     "settings": "Configuración",
     "upcoming": "Próximamente",
@@ -128,11 +128,11 @@
       }
     },
     "albumLengthFilter": {
-      "title": null,
-      "description": null
+      "title": "Filtro de longitud del álbum",
+      "description": "Número mínimo de canciones para que aparezcan en la pantalla de álbumes."
     },
     "miniplayerGestures": {
-      "title": null
+      "title": "Gestos del mini-reproductor"
     },
     "nowPlayingDesign": {
       "title": "Diseño de la pantalla de reproducción.",
@@ -155,9 +155,9 @@
       "description": "Transfiere datos de esta app entre dispositivos a través de un archivo `music_backup.json`.",
       "extra": {
         "export": "Exportar",
-        "exportSuccess": "Copia de seguridad creada con éxito",
+        "exportSuccess": "Exportación completada correctamente.",
         "import": "Importar",
-        "importSuccess": "Importación de copia de seguridad completada."
+        "importSuccess": "Importación completada correctamente."
       }
     },
     "insights": {
@@ -328,10 +328,10 @@
         "delete": "Eliminar lista de reproducción",
         "edit": "Editar lista de reproducción",
         "name": "Nombre de la lista de reproducción",
-        "m3uImport": null,
-        "m3uExport": null,
-        "absolute": null,
-        "relative": null
+        "m3uImport": "Importar lista de reproducción M3U",
+        "m3uExport": "Exportar como M3U",
+        "absolute": "Absoluto",
+        "relative": "Relativo"
       }
     },
     "trackMetadata": {
