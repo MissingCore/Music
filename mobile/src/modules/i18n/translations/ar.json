@@ -172,6 +172,13 @@
         "totalDuration": "إجمالي المدة"
       }
     },
+    "mostPlayed": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "playCount": null
+      }
+    },
     "hiddenTracks": {
       "title": "أغاني مخفية",
       "brief": "أغاني غير معروضة في التطبيق.",
@@ -201,6 +208,10 @@
     "ignoreInterrupt": {
       "title": "تجاهل المقاطعات",
       "brief": "متابعة تشغيل الصوت عند حدوث مقاطعة مثل إشعار أو مكالمة. ستحتاج إلى إيقاف الموسيقى مؤقتاً يدوياً وإعادة تشغيلها أثناء هذه الحالات."
+    },
+    "playbackDelay": {
+      "title": null,
+      "description": null
     },
     "repeatOnSkip": {
       "title": "الاحتفاظ بوضع التكرار عند التخطي",

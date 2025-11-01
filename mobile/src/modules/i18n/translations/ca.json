@@ -172,6 +172,13 @@
         "totalDuration": "Durada total"
       }
     },
+    "mostPlayed": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "playCount": null
+      }
+    },
     "hiddenTracks": {
       "title": null,
       "brief": null,
@@ -201,6 +208,10 @@
     "ignoreInterrupt": {
       "title": "Ignorar interrupcions",
       "brief": "Continua reproduint àudio quan es produeixi una interrupció, com ara una notificació o trucada. Haureu de d'aturar i reactivar manualment la música durant aquestes situacions."
+    },
+    "playbackDelay": {
+      "title": null,
+      "description": null
     },
     "repeatOnSkip": {
       "title": "Mantenir el mode de repetició al saltar",

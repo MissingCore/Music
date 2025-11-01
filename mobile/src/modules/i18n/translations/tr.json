@@ -172,6 +172,13 @@
         "totalDuration": "Toplam Süre"
       }
     },
+    "mostPlayed": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "playCount": null
+      }
+    },
     "hiddenTracks": {
       "title": "Gizli Parçalar",
       "brief": "Uygulamada gösterilmeyen parçalar.",
@@ -201,6 +208,10 @@
     "ignoreInterrupt": {
       "title": "Kesintileri Yoksay",
       "brief": "Bildirim veya arama gibi bir kesinti olduğunda sesi çalmaya devam edin. Bu durumlarda müziği manuel olarak duraklatıp devam ettirmeniz gerekecektir."
+    },
+    "playbackDelay": {
+      "title": null,
+      "description": null
     },
     "repeatOnSkip": {
       "title": "Parça Atlandığında Tekrarlama Modunu Koru",

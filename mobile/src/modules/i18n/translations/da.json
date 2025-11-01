@@ -172,6 +172,13 @@
         "totalDuration": "Varighed i alt"
       }
     },
+    "mostPlayed": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "playCount": null
+      }
+    },
     "hiddenTracks": {
       "title": null,
       "brief": null,
@@ -201,6 +208,10 @@
     "ignoreInterrupt": {
       "title": "Ignorér afbrydelser",
       "brief": "Fortsæt med at afspille musik, når du får et opkald eller en notifikation. Du bliver nødt til manuelt at pause/afspille musikken i disse situationer."
+    },
+    "playbackDelay": {
+      "title": null,
+      "description": null
     },
     "repeatOnSkip": {
       "title": "Behold gentagelsesindstilling ved næste sang",
