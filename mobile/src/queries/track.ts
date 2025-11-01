@@ -81,10 +81,10 @@ export function useHideTrack() {
         hiddenAt: args.isHidden ? Date.now() : null,
       });
     },
-    onSuccess: async (_, { trackId }) => {
+    onSuccess: async (_, { trackId, isHidden }) => {
       // There's a lot of places where this track may appear.
       clearAllQueries();
-      await Queue.removeIds([trackId]);
+      if (isHidden) await Queue.removeIds([trackId]);
     },
   });
 }
