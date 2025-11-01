@@ -121,7 +121,6 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
         else state?._init(state);
       };
     },
-    skipHydration: true,
   },
 );
 

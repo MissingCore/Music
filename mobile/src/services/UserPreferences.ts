@@ -28,7 +28,6 @@ export type OrderableTab =
   | "playlist"
   | "track";
 
-//#region Zustand Store
 //#region UserPreferencesStore Interface
 interface UserPreferencesStore {
   /** Determines if the store has been hydrated from AsyncStorage. */
@@ -169,7 +168,6 @@ export const userPreferencesStore =
           else state?._init(state);
         };
       },
-      skipHydration: true,
     },
   );
 //#endregion
@@ -194,5 +192,4 @@ export function useTabsByVisibility() {
     [tabsOrder, tabsVisibility],
   );
 }
-//#endregion
 //#endregion
