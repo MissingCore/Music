@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import type { Artist, artists } from "~/db/schema";
+import type { artists } from "~/db/schema";
 import { formatForCurrentScreen } from "~/db/utils";
 
 import { updateArtist } from "~/api/artist";
@@ -25,35 +25,15 @@ export function useArtistForScreen(artistName: string) {
   });
 }
 
-/**
- * Group artists by their first character (or in a group of special
- * characters), like an index in a book for a list that functions like
- * a `<SectionList />`.
- */
-export function useArtistsForIndex() {
+/** Sort artists by their name using `localeCompare`. */
+export function useArtists() {
   return useQuery({
     ...q.artists.all,
-    select: (data) => {
-      const filteredData = data
+    select: (data) =>
+      data
         .filter(({ tracks }) => tracks.length > 0)
-        .map(({ tracks: _, ...artist }) => artist);
-      // Group artists by their 1st character (artists are already
-      // pre-sorted by their name).
-      const groupedArtists: Record<string, Artist[]> = {};
-      filteredData.forEach((artist) => {
-        const key = /[a-zA-Z]/.test(artist.name.charAt(0))
-          ? artist.name.charAt(0).toLocaleUpperCase()
-          : "#";
-        if (Object.hasOwn(groupedArtists, key)) {
-          groupedArtists[key]?.push(artist);
-        } else groupedArtists[key] = [artist];
-      });
-
-      // Convert object to array to be used in a list that acts like a `<SectionList />`.
-      return Object.entries(groupedArtists)
-        .sort((a, b) => a[0].localeCompare(b[0])) // Moves the `#` group to the front
-        .flatMap(([character, artists]) => [character, ...artists]);
-    },
+        .map(({ tracks: _, ...artist }) => artist)
+        .sort((a, b) => a.name.localeCompare(b.name)),
   });
 }
 //#endregion
