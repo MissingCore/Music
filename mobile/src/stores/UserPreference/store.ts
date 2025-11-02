@@ -1,5 +1,5 @@
 import { getLocales } from "expo-localization";
-import { Appearance, I18nManager } from "react-native";
+import { Appearance } from "react-native";
 import { useStore } from "zustand";
 
 import i18next from "~/modules/i18n";
@@ -8,6 +8,7 @@ import { LANGUAGES } from "~/modules/i18n/constants";
 import { createPersistedSubscribedStore } from "~/lib/zustand";
 import type { UserPreferenceStore } from "./constants";
 import { OmittedFields } from "./constants";
+import { resolveLanguageConfigs } from "./utils";
 
 export const userPreferenceStore =
   createPersistedSubscribedStore<UserPreferenceStore>(
@@ -18,9 +19,7 @@ export const userPreferenceStore =
         if (state.theme !== "system") Appearance.setColorScheme(state.theme);
         // Try to use device language if no language is specified.
         if (state.language === "") {
-          await i18next.changeLanguage(getLocales()[0]?.languageTag || "en");
-          I18nManager.allowRTL(i18next.dir() === "rtl");
-          I18nManager.forceRTL(i18next.dir() === "rtl");
+          await resolveLanguageConfigs(getLocales()[0]?.languageTag || "en");
           const usedLanguage = i18next.resolvedLanguage;
           // Ensured the resolved value exists.
           const exists = LANGUAGES.some((l) => l.code === usedLanguage);
