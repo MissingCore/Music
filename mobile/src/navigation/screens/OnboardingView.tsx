@@ -29,7 +29,7 @@ export function Onboarding() {
 
     animate: () => {},
   });
-  const onboardPhase = useOnboardingStore((state) => state.phase);
+  const onboardPhase = useOnboardingStore((s) => s.phase);
   const [foundPhase, setFoundPhase] = useState(false);
   const infoOpacity = useSharedValue(0);
 
@@ -60,7 +60,7 @@ export function Onboarding() {
 
 function OnboardingPhase() {
   const { t } = useTranslation();
-  const store = useOnboardingStore((state) => state);
+  const store = useOnboardingStore((s) => s);
 
   if (store.phase === undefined) {
     return null;

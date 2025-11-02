@@ -67,9 +67,9 @@ function ScreenConfig() {
 
   const isUnchanged = useIsPlaylistUnchanged();
   const isUnique = useIsPlaylistUnique();
-  const mode = usePlaylistStore((state) => state.mode);
-  const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
-  const onSubmit = usePlaylistStore((state) => state.INTERNAL_onSubmit);
+  const mode = usePlaylistStore((s) => s.mode);
+  const isSubmitting = usePlaylistStore((s) => s.isSubmitting);
+  const onSubmit = usePlaylistStore((s) => s.INTERNAL_onSubmit);
 
   return (
     <ScreenOptions
@@ -96,13 +96,11 @@ type RenderItemProps = DragListRenderItemInfo<SlimTrackWithAlbum>;
 /** Contains the logic for editing the playlist name and tracks. */
 function PageContent({ bottomOffset }: { bottomOffset: number }) {
   const isUnchanged = useIsPlaylistUnchanged();
-  const tracks = usePlaylistStore((state) => state.tracks);
-  const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
-  const moveTrack = usePlaylistStore((state) => state.moveTrack);
-  const setShowConfirmation = usePlaylistStore(
-    (state) => state.setShowConfirmation,
-  );
-  const addCallbacks = usePlaylistStore((state) => state.SearchCallbacks);
+  const tracks = usePlaylistStore((s) => s.tracks);
+  const isSubmitting = usePlaylistStore((s) => s.isSubmitting);
+  const moveTrack = usePlaylistStore((s) => s.moveTrack);
+  const setShowConfirmation = usePlaylistStore((s) => s.setShowConfirmation);
+  const addCallbacks = usePlaylistStore((s) => s.SearchCallbacks);
   const addMusicSheetRef = useSheetRef();
 
   useEffect(() => {
@@ -151,7 +149,7 @@ function PageContent({ bottomOffset }: { bottomOffset: number }) {
 /** Item rendered in the `<DragList />`. */
 const RenderItem = memo(
   function RenderItem({ item, ...info }: RenderItemProps) {
-    const removeTrack = usePlaylistStore((state) => state.removeTrack);
+    const removeTrack = usePlaylistStore((s) => s.removeTrack);
     return (
       <Pressable
         delayLongPress={250}
@@ -190,9 +188,9 @@ function ListHeaderComponent(props: { showSheet: VoidFunction }) {
   const { t } = useTranslation();
 
   const isUnique = useIsPlaylistUnique();
-  const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
-  const playlistName = usePlaylistStore((state) => state.playlistName);
-  const setPlaylistName = usePlaylistStore((state) => state.setPlaylistName);
+  const isSubmitting = usePlaylistStore((s) => s.isSubmitting);
+  const playlistName = usePlaylistStore((s) => s.playlistName);
+  const setPlaylistName = usePlaylistStore((s) => s.setPlaylistName);
 
   return (
     <>
@@ -232,10 +230,8 @@ function ListHeaderComponent(props: { showSheet: VoidFunction }) {
 /** Modal that's rendered if we have unsaved changes. */
 function ConfirmationModal() {
   const navigation = useNavigation();
-  const showConfirmation = usePlaylistStore((state) => state.showConfirmation);
-  const setShowConfirmation = usePlaylistStore(
-    (state) => state.setShowConfirmation,
-  );
+  const showConfirmation = usePlaylistStore((s) => s.showConfirmation);
+  const setShowConfirmation = usePlaylistStore((s) => s.setShowConfirmation);
 
   return (
     <ModalTemplate
@@ -263,9 +259,9 @@ function DeleteWorkflow({
   const navigation = useNavigation();
   const [lastChance, setLastChance] = useState(false);
 
-  const initialPlaylistName = usePlaylistStore((state) => state.initialName);
-  const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
-  const setIsSubmitting = usePlaylistStore((state) => state.setIsSubmitting);
+  const initialPlaylistName = usePlaylistStore((s) => s.initialName);
+  const isSubmitting = usePlaylistStore((s) => s.isSubmitting);
+  const setIsSubmitting = usePlaylistStore((s) => s.setIsSubmitting);
   const deletePlaylist = useDeletePlaylist(initialPlaylistName ?? "");
 
   const onDelete = async () => {
@@ -320,11 +316,11 @@ function ImportM3UWorkflow({
 }: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
   const { t } = useTranslation();
 
-  const isSubmitting = usePlaylistStore((state) => state.isSubmitting);
-  const setIsSubmitting = usePlaylistStore((state) => state.setIsSubmitting);
-  const _setTracks = usePlaylistStore((state) => state._setTracks);
-  const playlistName = usePlaylistStore((state) => state.playlistName);
-  const setPlaylistName = usePlaylistStore((state) => state.setPlaylistName);
+  const isSubmitting = usePlaylistStore((s) => s.isSubmitting);
+  const setIsSubmitting = usePlaylistStore((s) => s.setIsSubmitting);
+  const _setTracks = usePlaylistStore((s) => s._setTracks);
+  const playlistName = usePlaylistStore((s) => s.playlistName);
+  const setPlaylistName = usePlaylistStore((s) => s.setPlaylistName);
 
   const onImport = async () => {
     setIsSubmitting(true);

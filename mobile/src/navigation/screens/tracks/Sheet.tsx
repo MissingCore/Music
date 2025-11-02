@@ -60,7 +60,7 @@ import { ContentPlaceholder } from "../../components/Placeholder";
 //#region Track Sheet
 /** Displays information about a track and enables adding it to playlists. */
 export function TrackSheet() {
-  const data = useSessionStore((state) => state.displayedTrack);
+  const data = useSessionStore((s) => s.displayedTrack);
   const trackArtworkSheetRef = useSheetRef();
   const { handlers, isScrollable } = useIsScrollable();
 
