@@ -1,12 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-import { I18nManager } from "react-native";
 
-import i18next from "~/modules/i18n";
-import {
-  userPreferenceStore,
-  useUserPreferenceStore,
-} from "~/stores/UserPreference/store";
+import { useUserPreferenceStore } from "~/stores/UserPreference/store";
+import { PreferenceTogglers } from "~/stores/UserPreference/actions";
 import { StandardScrollLayout } from "../../../layouts/StandardScroll";
 import { AppearanceSettingsSheets } from "./Sheets";
 
@@ -78,7 +74,7 @@ export default function AppearanceSettings() {
           />
           <ListItem
             titleKey="feat.miniplayerGestures.title"
-            onPress={toggleMiniplayerGestures}
+            onPress={PreferenceTogglers.toggleMiniplayerGestures}
             switchState={miniplayerGestures}
           />
           <ListItem
@@ -92,7 +88,7 @@ export default function AppearanceSettings() {
         <ListItem
           titleKey="feat.ignoreRTLLayout.title"
           description={t("feat.ignoreRTLLayout.brief")}
-          onPress={toggleIgnoreRTLLayout}
+          onPress={PreferenceTogglers.toggleIgnoreRTLLayout}
           switchState={ignoreRTLLayout}
           first
           last
@@ -101,15 +97,3 @@ export default function AppearanceSettings() {
     </>
   );
 }
-
-const toggleMiniplayerGestures = () =>
-  userPreferenceStore.setState((prev) => ({
-    miniplayerGestures: !prev.miniplayerGestures,
-  }));
-
-const toggleIgnoreRTLLayout = () => {
-  const nextState = !userPreferenceStore.getState().ignoreRTLLayout;
-  userPreferenceStore.setState({ ignoreRTLLayout: nextState });
-  I18nManager.allowRTL(nextState ? false : i18next.dir() === "rtl");
-  I18nManager.forceRTL(nextState ? false : i18next.dir() === "rtl");
-};

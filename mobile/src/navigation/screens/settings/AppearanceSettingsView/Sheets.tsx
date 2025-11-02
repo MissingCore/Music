@@ -1,10 +1,8 @@
 import { useColorScheme } from "nativewind";
 import { Text } from "react-native";
 
-import {
-  userPreferenceStore,
-  useUserPreferenceStore,
-} from "~/stores/UserPreference/store";
+import { useUserPreferenceStore } from "~/stores/UserPreference/store";
+import { PreferenceSetters } from "~/stores/UserPreference/actions";
 
 import { getFont } from "~/lib/style";
 import { toLowerCase } from "~/utils/string";
@@ -13,12 +11,7 @@ import { Radio } from "~/components/Form/Selection";
 import type { TrueSheetRef } from "~/components/Sheet";
 import { NumericSheet, Sheet } from "~/components/Sheet";
 import { TStyledText } from "~/components/Typography/StyledText";
-import type {
-  AccentFont,
-  NowPlayingDesign,
-  PrimaryFont,
-  Theme,
-} from "~/stores/UserPreference/constants";
+import type { AccentFont } from "~/stores/UserPreference/constants";
 import {
   AccentFontOptions,
   NowPlayingDesignOptions,
@@ -58,7 +51,7 @@ function FontAccentSheet(props: { sheetRef: TrueSheetRef }) {
       kind="Accent"
       selectedFont={accentFont}
       fontOptions={AccentFontOptions}
-      updateFont={setAccentFont}
+      updateFont={PreferenceSetters.setAccentFont}
     />
   );
 }
@@ -72,7 +65,7 @@ function FontPrimarySheet(props: { sheetRef: TrueSheetRef }) {
       kind="Primary"
       selectedFont={primaryFont}
       fontOptions={PrimaryFontOptions}
-      updateFont={setPrimaryFont}
+      updateFont={PreferenceSetters.setPrimaryFont}
     />
   );
 }
@@ -131,7 +124,7 @@ function ThemeSheet(props: { sheetRef: TrueSheetRef }) {
             selected={selectedTheme === theme}
             onSelect={() => {
               setColorScheme(theme);
-              setTheme(theme);
+              PreferenceSetters.setTheme(theme);
             }}
           >
             <TStyledText textKey={`feat.theme.extra.${theme}`} />
@@ -157,7 +150,7 @@ function MinAlbumLengthSheet(props: { sheetRef: TrueSheetRef }) {
       titleKey="feat.albumLengthFilter.title"
       descriptionKey="feat.albumLengthFilter.description"
       value={minAlbumLength}
-      setValue={setMinAlbumLength}
+      setValue={PreferenceSetters.setMinAlbumLength}
     />
   );
 }
@@ -176,7 +169,7 @@ function NowPlayingDesignSheet(props: { sheetRef: TrueSheetRef }) {
         renderItem={({ item: design }) => (
           <Radio
             selected={nowPlayingDesign === design}
-            onSelect={() => setNowPlayingDesign(design)}
+            onSelect={() => PreferenceSetters.setNowPlayingDesign(design)}
           >
             <TStyledText textKey={`feat.nowPlayingDesign.extra.${design}`} />
           </Radio>
@@ -186,21 +179,4 @@ function NowPlayingDesignSheet(props: { sheetRef: TrueSheetRef }) {
     </Sheet>
   );
 }
-//#endregion
-
-//#region Setter Functions
-const setAccentFont = (newFont: AccentFont) =>
-  userPreferenceStore.setState({ accentFont: newFont });
-
-const setPrimaryFont = (newFont: PrimaryFont) =>
-  userPreferenceStore.setState({ primaryFont: newFont });
-
-const setTheme = (newTheme: Theme) =>
-  userPreferenceStore.setState({ theme: newTheme });
-
-const setNowPlayingDesign = (newDesign: NowPlayingDesign) =>
-  userPreferenceStore.setState({ nowPlayingDesign: newDesign });
-
-const setMinAlbumLength = (newLength: number) =>
-  userPreferenceStore.setState({ minAlbumLength: newLength });
 //#endregion
