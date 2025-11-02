@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-import { useUserPreferencesStore } from "~/services/UserPreferences";
+import { useUserPreferenceStore } from "~/stores/UserPreference/store";
 import { useRescanForTracks } from "~/modules/scanning/helpers/rescan";
 import { StandardScrollLayout } from "../../../layouts/StandardScroll";
 import { ScanningSettingsSheets } from "./Sheets";
@@ -11,9 +11,9 @@ import { useSheetRef } from "~/components/Sheet";
 
 export default function ScanningSettings() {
   const { t } = useTranslation();
-  const allowList = useUserPreferencesStore((state) => state.listAllow);
-  const blockList = useUserPreferencesStore((state) => state.listBlock);
-  const ignoreDuration = useUserPreferencesStore((state) => state.minSeconds);
+  const allowList = useUserPreferenceStore((s) => s.listAllow);
+  const blockList = useUserPreferenceStore((s) => s.listBlock);
+  const ignoreDuration = useUserPreferenceStore((s) => s.minSeconds);
   const rescan = useRescanForTracks();
   const allowListSheetRef = useSheetRef();
   const blockListSheetRef = useSheetRef();

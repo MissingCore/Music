@@ -7,11 +7,10 @@ import { DragIndicator } from "~/resources/icons/DragIndicator";
 import { Home } from "~/resources/icons/Home";
 import { Visibility } from "~/resources/icons/Visibility";
 import { VisibilityOff } from "~/resources/icons/VisibilityOff";
-import type { OrderableTab } from "~/services/UserPreferences";
 import {
-  userPreferencesStore,
-  useUserPreferencesStore,
-} from "~/services/UserPreferences";
+  userPreferenceStore,
+  useUserPreferenceStore,
+} from "~/stores/UserPreference/store";
 
 import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import { cn } from "~/lib/style";
@@ -20,11 +19,12 @@ import { FlashDragList } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { IconButton } from "~/components/Form/Button";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
+import type { Tab } from "~/stores/UserPreference/types";
 
-type RenderItemProps = DragListRenderItemInfo<OrderableTab>;
+type RenderItemProps = DragListRenderItemInfo<Tab>;
 
 export default function HomeTabsOrderSettings() {
-  const data = useUserPreferencesStore((state) => state.tabsOrder);
+  const data = useUserPreferenceStore((s) => s.tabsOrder);
   return (
     <FlashDragList
       estimatedItemSize={52} // 48px Height + 4px Margin top
@@ -56,10 +56,8 @@ function ListHeaderComponent() {
 const RenderItem = memo(
   function RenderItem({ item, ...info }: RenderItemProps) {
     const { t } = useTranslation();
-    const homeTab = useUserPreferencesStore((state) => state.homeTab);
-    const tabsVisibility = useUserPreferencesStore(
-      (state) => state.tabsVisibility,
-    );
+    const homeTab = useUserPreferenceStore((s) => s.homeTab);
+    const tabsVisibility = useUserPreferenceStore((s) => s.tabsVisibility);
 
     const isVisible = tabsVisibility[item];
     const isHomeTab = homeTab === item;
@@ -109,17 +107,17 @@ const RenderItem = memo(
 );
 
 const onMove = (fromIndex: number, toIndex: number) => {
-  userPreferencesStore.setState(({ tabsOrder }) => ({
+  userPreferenceStore.setState(({ tabsOrder }) => ({
     tabsOrder: moveArray(tabsOrder, { fromIndex, toIndex }),
   }));
 };
 
-const setHomeTab = (tab: OrderableTab) => {
-  userPreferencesStore.setState({ homeTab: tab });
+const setHomeTab = (tab: Tab) => {
+  userPreferenceStore.setState({ homeTab: tab });
 };
 
-const toggleTabVisibility = (tab: OrderableTab) => {
-  userPreferencesStore.setState(({ tabsVisibility }) => ({
+const toggleTabVisibility = (tab: Tab) => {
+  userPreferenceStore.setState(({ tabsVisibility }) => ({
     tabsVisibility: { ...tabsVisibility, [tab]: !tabsVisibility[tab] },
   }));
 };

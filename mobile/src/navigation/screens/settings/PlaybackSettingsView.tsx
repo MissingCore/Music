@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
 
 import {
-  userPreferencesStore,
-  useUserPreferencesStore,
-} from "~/services/UserPreferences";
+  userPreferenceStore,
+  useUserPreferenceStore,
+} from "~/stores/UserPreference/store";
 import { StandardScrollLayout } from "../../layouts/StandardScroll";
 
 import { List, ListItem } from "~/components/Containment/List";
@@ -13,9 +13,9 @@ import { deferInitialRender } from "../../components/DeferredRender";
 
 export default function PlaybackSettings() {
   const { t } = useTranslation();
-  const playbackDelay = useUserPreferencesStore((s) => s.playbackDelay);
-  const repeatOnSkip = useUserPreferencesStore((s) => s.repeatOnSkip);
-  const restoreLastPosition = useUserPreferencesStore(
+  const playbackDelay = useUserPreferenceStore((s) => s.playbackDelay);
+  const repeatOnSkip = useUserPreferenceStore((s) => s.repeatOnSkip);
+  const restoreLastPosition = useUserPreferenceStore(
     (s) => s.restoreLastPosition,
   );
   const playbackDelaySheetRef = useSheetRef();
@@ -55,9 +55,7 @@ export default function PlaybackSettings() {
 //#region Playback Delay Sheet
 const PlaybackDelaySheet = deferInitialRender(
   function PlaybackDelaySheet(props: { sheetRef: TrueSheetRef }) {
-    const playbackDelay = useUserPreferencesStore(
-      (state) => state.playbackDelay,
-    );
+    const playbackDelay = useUserPreferenceStore((s) => s.playbackDelay);
     return (
       <NumericSheet
         sheetRef={props.sheetRef}
@@ -73,15 +71,15 @@ const PlaybackDelaySheet = deferInitialRender(
 
 //#region Helpers
 const toggleRepeatOnSkip = () =>
-  userPreferencesStore.setState((prev) => ({
+  userPreferenceStore.setState((prev) => ({
     repeatOnSkip: !prev.repeatOnSkip,
   }));
 
 const toggleRestoreLastPosition = async () =>
-  userPreferencesStore.setState((prev) => ({
+  userPreferenceStore.setState((prev) => ({
     restoreLastPosition: !prev.restoreLastPosition,
   }));
 
 const setPlaybackDelay = (newDelay: number) =>
-  userPreferencesStore.setState({ playbackDelay: newDelay });
+  userPreferenceStore.setState({ playbackDelay: newDelay });
 //#endregion

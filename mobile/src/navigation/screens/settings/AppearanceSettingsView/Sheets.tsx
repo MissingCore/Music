@@ -2,13 +2,9 @@ import { useColorScheme } from "nativewind";
 import { Text } from "react-native";
 
 import {
-  AccentFontOptions,
-  NowPlayingDesignOptions,
-  PrimaryFontOptions,
-  ThemeOptions,
-  userPreferencesStore,
-  useUserPreferencesStore,
-} from "~/services/UserPreferences";
+  userPreferenceStore,
+  useUserPreferenceStore,
+} from "~/stores/UserPreference/store";
 
 import { getFont } from "~/lib/style";
 import { toLowerCase } from "~/utils/string";
@@ -17,6 +13,18 @@ import { Radio } from "~/components/Form/Selection";
 import type { TrueSheetRef } from "~/components/Sheet";
 import { NumericSheet, Sheet } from "~/components/Sheet";
 import { TStyledText } from "~/components/Typography/StyledText";
+import type {
+  AccentFont,
+  NowPlayingDesign,
+  PrimaryFont,
+  Theme,
+} from "~/stores/UserPreference/constants";
+import {
+  AccentFontOptions,
+  NowPlayingDesignOptions,
+  PrimaryFontOptions,
+  ThemeOptions,
+} from "~/stores/UserPreference/constants";
 import { deferInitialRender } from "../../../components/DeferredRender";
 
 /** All the sheets used on `/setting/appearance` route. */
@@ -43,7 +51,7 @@ export const AppearanceSettingsSheets = deferInitialRender(
 //#region Font
 /** Enables changing the font used primarily for headings. */
 function FontAccentSheet(props: { sheetRef: TrueSheetRef }) {
-  const accentFont = useUserPreferencesStore((s) => s.accentFont);
+  const accentFont = useUserPreferenceStore((s) => s.accentFont);
   return (
     <FontSheet
       sheetRef={props.sheetRef}
@@ -57,7 +65,7 @@ function FontAccentSheet(props: { sheetRef: TrueSheetRef }) {
 
 /** Enables changing the font used by all text in the app. */
 function FontPrimarySheet(props: { sheetRef: TrueSheetRef }) {
-  const primaryFont = useUserPreferencesStore((s) => s.primaryFont);
+  const primaryFont = useUserPreferenceStore((s) => s.primaryFont);
   return (
     <FontSheet
       sheetRef={props.sheetRef}
@@ -70,7 +78,7 @@ function FontPrimarySheet(props: { sheetRef: TrueSheetRef }) {
 }
 
 /** Reusable font sheet component. */
-function FontSheet<T extends (typeof AccentFontOptions)[number]>(props: {
+function FontSheet<T extends AccentFont>(props: {
   sheetRef: TrueSheetRef;
   kind: "Accent" | "Primary";
   selectedFont: T;
@@ -110,7 +118,7 @@ function FontSheet<T extends (typeof AccentFontOptions)[number]>(props: {
 /** Enables changing the theme of the app. */
 function ThemeSheet(props: { sheetRef: TrueSheetRef }) {
   const { setColorScheme } = useColorScheme();
-  const selectedTheme = useUserPreferencesStore((s) => s.theme);
+  const selectedTheme = useUserPreferenceStore((s) => s.theme);
 
   return (
     <Sheet ref={props.sheetRef} titleKey="feat.theme.title">
@@ -142,7 +150,7 @@ function ThemeSheet(props: { sheetRef: TrueSheetRef }) {
  * album to be displayed in the Albums screen.
  */
 function MinAlbumLengthSheet(props: { sheetRef: TrueSheetRef }) {
-  const minAlbumLength = useUserPreferencesStore((s) => s.minAlbumLength);
+  const minAlbumLength = useUserPreferenceStore((s) => s.minAlbumLength);
   return (
     <NumericSheet
       sheetRef={props.sheetRef}
@@ -158,7 +166,7 @@ function MinAlbumLengthSheet(props: { sheetRef: TrueSheetRef }) {
 //#region Now Playing Design
 /** Enables changing the appearance of the artwork on the "Now Playing" screen. */
 function NowPlayingDesignSheet(props: { sheetRef: TrueSheetRef }) {
-  const nowPlayingDesign = useUserPreferencesStore((s) => s.nowPlayingDesign);
+  const nowPlayingDesign = useUserPreferenceStore((s) => s.nowPlayingDesign);
   return (
     <Sheet ref={props.sheetRef} titleKey="feat.nowPlayingDesign.title">
       <FlatList
@@ -181,19 +189,18 @@ function NowPlayingDesignSheet(props: { sheetRef: TrueSheetRef }) {
 //#endregion
 
 //#region Setter Functions
-const setAccentFont = (newFont: (typeof AccentFontOptions)[number]) =>
-  userPreferencesStore.setState({ accentFont: newFont });
+const setAccentFont = (newFont: AccentFont) =>
+  userPreferenceStore.setState({ accentFont: newFont });
 
-const setPrimaryFont = (newFont: (typeof PrimaryFontOptions)[number]) =>
-  userPreferencesStore.setState({ primaryFont: newFont });
+const setPrimaryFont = (newFont: PrimaryFont) =>
+  userPreferenceStore.setState({ primaryFont: newFont });
 
-const setTheme = (newTheme: (typeof ThemeOptions)[number]) =>
-  userPreferencesStore.setState({ theme: newTheme });
+const setTheme = (newTheme: Theme) =>
+  userPreferenceStore.setState({ theme: newTheme });
 
-const setNowPlayingDesign = (
-  newDesign: (typeof NowPlayingDesignOptions)[number],
-) => userPreferencesStore.setState({ nowPlayingDesign: newDesign });
+const setNowPlayingDesign = (newDesign: NowPlayingDesign) =>
+  userPreferenceStore.setState({ nowPlayingDesign: newDesign });
 
 const setMinAlbumLength = (newLength: number) =>
-  userPreferencesStore.setState({ minAlbumLength: newLength });
+  userPreferenceStore.setState({ minAlbumLength: newLength });
 //#endregion

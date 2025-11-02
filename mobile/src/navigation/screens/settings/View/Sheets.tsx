@@ -1,7 +1,7 @@
 import {
-  userPreferencesStore,
-  useUserPreferencesStore,
-} from "~/services/UserPreferences";
+  userPreferenceStore,
+  useUserPreferenceStore,
+} from "~/stores/UserPreference/store";
 import { LANGUAGES } from "~/modules/i18n/constants";
 import { useExportBackup, useImportBackup } from "~/modules/backup/JSON";
 
@@ -56,7 +56,7 @@ function BackupSheet(props: { sheetRef: TrueSheetRef }) {
 
 /** Enables the ability to change the language used. */
 function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
-  const languageCode = useUserPreferencesStore((state) => state.language);
+  const languageCode = useUserPreferenceStore((s) => s.language);
   const { handlers, isScrollable } = useIsScrollable();
 
   return (
@@ -87,5 +87,5 @@ function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
 
 //#region Setter Functions
 const setLanguage = (languageCode: string) =>
-  userPreferencesStore.setState({ language: languageCode });
+  userPreferenceStore.setState({ language: languageCode });
 //#endregion

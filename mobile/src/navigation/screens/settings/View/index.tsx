@@ -4,9 +4,9 @@ import { useTranslation } from "react-i18next";
 
 import { OpenInNew } from "~/resources/icons/OpenInNew";
 import {
-  userPreferencesStore,
-  useUserPreferencesStore,
-} from "~/services/UserPreferences";
+  userPreferenceStore,
+  useUserPreferenceStore,
+} from "~/stores/UserPreference/store";
 import { useHasNewUpdate } from "../../../hooks/useHasNewUpdate";
 import { StandardScrollLayout } from "../../../layouts/StandardScroll";
 import { SettingsSheets } from "./Sheets";
@@ -23,9 +23,7 @@ export default function Settings() {
   const { t, i18n } = useTranslation();
   const navigation = useNavigation();
   const { hasNewUpdate } = useHasNewUpdate();
-  const showRCNotification = useUserPreferencesStore(
-    (state) => state.rcNotification,
-  );
+  const showRCNotification = useUserPreferenceStore((s) => s.rcNotification);
   const backupSheetRef = useSheetRef();
   const languageSheetRef = useSheetRef();
 
@@ -154,7 +152,7 @@ export default function Settings() {
 }
 
 const toggleRCNotification = () => {
-  userPreferencesStore.setState((prev) => ({
+  userPreferenceStore.setState((prev) => ({
     rcNotification: !prev.rcNotification,
   }));
 };

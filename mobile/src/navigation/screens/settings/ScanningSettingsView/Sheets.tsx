@@ -6,9 +6,9 @@ import { Add } from "~/resources/icons/Add";
 import { CreateNewFolder } from "~/resources/icons/CreateNewFolder";
 import { Delete } from "~/resources/icons/Delete";
 import {
-  userPreferencesStore,
-  useUserPreferencesStore,
-} from "~/services/UserPreferences";
+  userPreferenceStore,
+  useUserPreferenceStore,
+} from "~/stores/UserPreference/store";
 import {
   pickPath,
   removePath,
@@ -63,7 +63,7 @@ function ScanFilterListSheet({
   sheetRef: TrueSheetRef;
 }) {
   const { t } = useTranslation();
-  const listEntries = useUserPreferencesStore((state) => state[listType]);
+  const listEntries = useUserPreferenceStore((s) => s[listType]);
 
   return (
     <Sheet
@@ -173,7 +173,7 @@ function FilterForm(props: {
 //#region Min Duration
 /** Enables us to specify the minimum track duration we want to save. */
 function MinDurationSheet(props: { sheetRef: TrueSheetRef }) {
-  const minSeconds = useUserPreferencesStore((state) => state.minSeconds);
+  const minSeconds = useUserPreferenceStore((s) => s.minSeconds);
   return (
     <NumericSheet
       sheetRef={props.sheetRef}
@@ -188,5 +188,5 @@ function MinDurationSheet(props: { sheetRef: TrueSheetRef }) {
 
 //#region Helpers
 const setMinDuration = (newDuration: number) =>
-  userPreferencesStore.setState({ minSeconds: newDuration });
+  userPreferenceStore.setState({ minSeconds: newDuration });
 //#endregion
