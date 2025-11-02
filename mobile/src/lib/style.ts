@@ -2,11 +2,10 @@ import type { ClassValue } from "clsx";
 import { clsx } from "clsx";
 import { extendTailwindMerge } from "tailwind-merge";
 
-import type { AccentFontOptions } from "~/services/UserPreferences";
-
 import { TailwindTheme } from "~/constants/TailwindTheme";
 import { FontFamily } from "~/constants/Styles";
 import { toLowerCase } from "~/utils/string";
+import type { AccentFont } from "~/stores/UserPreference/constants";
 
 export type TextColor = `text-${string}` | `text-[${string}]`;
 
@@ -36,10 +35,7 @@ export function cn(...inputs: ClassValue[]) {
  * Returns the correct font used from the codes used to determine the
  * accent & primary font used.
  */
-export function getFont(
-  font: (typeof AccentFontOptions)[number],
-  bold = false,
-) {
+export function getFont(font: AccentFont, bold = false) {
   const fontCode = font === "Geist Mono" ? "geistMono" : toLowerCase(font);
   if (
     bold &&

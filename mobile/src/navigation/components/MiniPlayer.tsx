@@ -8,7 +8,7 @@ import { Pause } from "~/resources/icons/Pause";
 import { PlayArrow } from "~/resources/icons/PlayArrow";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
-import { useUserPreferencesStore } from "~/services/UserPreferences";
+import { useUserPreferenceStore } from "~/stores/UserPreference/store";
 
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
@@ -32,7 +32,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
   const navigation = useNavigation();
   const isPlaying = usePlaybackStore((s) => s.isPlaying);
   const track = usePlaybackStore((s) => s.activeTrack);
-  const gestureUI = useUserPreferencesStore((s) => s.miniplayerGestures);
+  const gestureUI = useUserPreferenceStore((s) => s.miniplayerGestures);
 
   const TextWrapper = useMemo(
     () => (gestureUI ? Swipeable : View),

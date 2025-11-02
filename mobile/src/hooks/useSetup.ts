@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 
 import "~/services/_subscriptions";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
-import { useSortPreferencesStore } from "~/modules/media/services/SortPreferences";
 import {
-  userPreferencesStore,
-  useUserPreferencesStore,
-} from "~/services/UserPreferences";
+  userPreferenceStore,
+  useUserPreferenceStore,
+} from "~/stores/UserPreference/store";
+import { useSortPreferencesStore } from "~/modules/media/services/SortPreferences";
 
 import {
   getTrackPlayerOptions,
@@ -29,15 +29,13 @@ export function useSetup() {
   const sortPreferencesHydrated = useSortPreferencesStore(
     (s) => s._hasHydrated,
   );
-  const userPreferencesHydrated = useUserPreferencesStore(
-    (s) => s._hasHydrated,
-  );
+  const userPreferenceHydrated = useUserPreferenceStore((s) => s._hasHydrated);
 
   useEffect(() => {
     if (
       !playbackHydrated ||
       !sortPreferencesHydrated ||
-      !userPreferencesHydrated ||
+      !userPreferenceHydrated ||
       setupState !== "idle"
     ) {
       return;
@@ -53,7 +51,7 @@ export function useSetup() {
 
       const { repeat, activeKey } = playbackStore.getState();
       const { restoreLastPosition, continuePlaybackOnDismiss } =
-        userPreferencesStore.getState();
+        userPreferenceStore.getState();
       if (restoreLastPosition) {
         playbackStore.setState({ _restoredTrackKey: activeKey });
       } else playbackStore.setState({ _hasRestoredPosition: true });
@@ -71,7 +69,7 @@ export function useSetup() {
   }, [
     playbackHydrated,
     sortPreferencesHydrated,
-    userPreferencesHydrated,
+    userPreferenceHydrated,
     setupState,
   ]);
 

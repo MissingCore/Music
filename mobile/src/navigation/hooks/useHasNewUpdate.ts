@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { useUserPreferencesStore } from "~/services/UserPreferences";
+import { useUserPreferenceStore } from "~/stores/UserPreference/store";
 
 import { APP_VERSION } from "~/constants/Config";
 
@@ -15,7 +15,7 @@ type UpdateResult =
 /** Determines if we have a new update. */
 export function useHasNewUpdate(): UpdateResult {
   const { isPending, error, data } = useLatestRelease();
-  const rcNotification = useUserPreferencesStore((s) => s.rcNotification);
+  const rcNotification = useUserPreferenceStore((s) => s.rcNotification);
 
   let isRC = false;
   if (isPending || !!error) return { hasNewUpdate: false, release: null, isRC };

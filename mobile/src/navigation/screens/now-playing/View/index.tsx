@@ -13,8 +13,8 @@ import { MoreVert } from "~/resources/icons/MoreVert";
 import { Timer } from "~/resources/icons/Timer";
 import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { usePlaybackStore } from "~/stores/Playback/store";
+import { useUserPreferenceStore } from "~/stores/UserPreference/store";
 import { presentTrackSheet } from "~/services/SessionStore";
-import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { usePlayerProgress } from "../helpers/usePlayerProgress";
 import { NowPlayingArtwork } from "../components/Artwork";
 import { PlaybackOptionsSheet } from "./PlaybackOptionsSheet";
@@ -251,7 +251,7 @@ function BottomAppBar() {
 function BackButton() {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const usedDesign = useUserPreferencesStore((s) => s.nowPlayingDesign);
+  const usedDesign = useUserPreferenceStore((s) => s.nowPlayingDesign);
 
   if (usedDesign !== "vinylOld") return <View />;
   return (
