@@ -81,4 +81,9 @@ export interface UserPreferencesStore {
   /** Whether we'll continue playback through any interruptions. */
   ignoreInterrupt: boolean;
 }
+
+export const OmittedFields: string[] = [
+  "_hasHydrated",
+  "_init",
+] satisfies Array<keyof UserPreferencesStore>;
 //#endregion
