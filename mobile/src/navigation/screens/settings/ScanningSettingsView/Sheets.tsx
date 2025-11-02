@@ -5,8 +5,8 @@ import { Keyboard, View } from "react-native";
 import { Add } from "~/resources/icons/Add";
 import { CreateNewFolder } from "~/resources/icons/CreateNewFolder";
 import { Delete } from "~/resources/icons/Delete";
-import { useUserPreferenceStore } from "~/stores/UserPreference/store";
-import { PreferenceSetters } from "~/stores/UserPreference/actions";
+import { usePreferenceStore } from "~/stores/Preference/store";
+import { PreferenceSetters } from "~/stores/Preference/actions";
 import {
   pickPath,
   removePath,
@@ -61,7 +61,7 @@ function ScanFilterListSheet({
   sheetRef: TrueSheetRef;
 }) {
   const { t } = useTranslation();
-  const listEntries = useUserPreferenceStore((s) => s[listType]);
+  const listEntries = usePreferenceStore((s) => s[listType]);
 
   return (
     <Sheet
@@ -171,7 +171,7 @@ function FilterForm(props: {
 //#region Min Duration
 /** Enables us to specify the minimum track duration we want to save. */
 function MinDurationSheet(props: { sheetRef: TrueSheetRef }) {
-  const minSeconds = useUserPreferenceStore((s) => s.minSeconds);
+  const minSeconds = usePreferenceStore((s) => s.minSeconds);
   return (
     <NumericSheet
       sheetRef={props.sheetRef}

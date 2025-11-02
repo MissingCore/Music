@@ -6,7 +6,7 @@ import { Pressable, View } from "react-native";
 
 import { ArrowBack } from "~/resources/icons/ArrowBack";
 import { usePlaybackStore } from "~/stores/Playback/store";
-import { useUserPreferenceStore } from "~/stores/UserPreference/store";
+import { usePreferenceStore } from "~/stores/Preference/store";
 import { getMediaLinkContext } from "../../../utils/router";
 
 import { OnRTL } from "~/lib/react";
@@ -35,7 +35,7 @@ function AppBarContent() {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const playingSource = usePlaybackStore((s) => s.playingFrom);
   const listName = usePlaybackStore((s) => s.playingFromName);
-  const usedDesign = useUserPreferenceStore((s) => s.nowPlayingDesign);
+  const usedDesign = usePreferenceStore((s) => s.nowPlayingDesign);
 
   const listLinkInfo = useMemo(
     () => (playingSource ? getMediaLinkContext(playingSource) : undefined),

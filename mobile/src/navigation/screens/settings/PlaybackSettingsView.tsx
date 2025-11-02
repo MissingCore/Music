@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next";
 
-import { useUserPreferenceStore } from "~/stores/UserPreference/store";
+import { usePreferenceStore } from "~/stores/Preference/store";
 import {
   PreferenceSetters,
   PreferenceTogglers,
-} from "~/stores/UserPreference/actions";
+} from "~/stores/Preference/actions";
 import { StandardScrollLayout } from "../../layouts/StandardScroll";
 
 import { List, ListItem } from "~/components/Containment/List";
@@ -14,11 +14,9 @@ import { deferInitialRender } from "../../components/DeferredRender";
 
 export default function PlaybackSettings() {
   const { t } = useTranslation();
-  const playbackDelay = useUserPreferenceStore((s) => s.playbackDelay);
-  const repeatOnSkip = useUserPreferenceStore((s) => s.repeatOnSkip);
-  const restoreLastPosition = useUserPreferenceStore(
-    (s) => s.restoreLastPosition,
-  );
+  const playbackDelay = usePreferenceStore((s) => s.playbackDelay);
+  const repeatOnSkip = usePreferenceStore((s) => s.repeatOnSkip);
+  const restoreLastPosition = usePreferenceStore((s) => s.restoreLastPosition);
   const playbackDelaySheetRef = useSheetRef();
 
   return (
@@ -56,7 +54,7 @@ export default function PlaybackSettings() {
 //#region Playback Delay Sheet
 const PlaybackDelaySheet = deferInitialRender(
   function PlaybackDelaySheet(props: { sheetRef: TrueSheetRef }) {
-    const playbackDelay = useUserPreferenceStore((s) => s.playbackDelay);
+    const playbackDelay = usePreferenceStore((s) => s.playbackDelay);
     return (
       <NumericSheet
         sheetRef={props.sheetRef}

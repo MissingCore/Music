@@ -3,8 +3,8 @@ import { openBrowserAsync } from "expo-web-browser";
 import { useTranslation } from "react-i18next";
 
 import { OpenInNew } from "~/resources/icons/OpenInNew";
-import { useUserPreferenceStore } from "~/stores/UserPreference/store";
-import { PreferenceTogglers } from "~/stores/UserPreference/actions";
+import { usePreferenceStore } from "~/stores/Preference/store";
+import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { useHasNewUpdate } from "../../../hooks/useHasNewUpdate";
 import { StandardScrollLayout } from "../../../layouts/StandardScroll";
 import { SettingsSheets } from "./Sheets";
@@ -21,7 +21,7 @@ export default function Settings() {
   const { t, i18n } = useTranslation();
   const navigation = useNavigation();
   const { hasNewUpdate } = useHasNewUpdate();
-  const showRCNotification = useUserPreferenceStore((s) => s.rcNotification);
+  const showRCNotification = usePreferenceStore((s) => s.rcNotification);
   const backupSheetRef = useSheetRef();
   const languageSheetRef = useSheetRef();
 

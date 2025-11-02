@@ -2,10 +2,7 @@ import TrackPlayer, { RepeatMode } from "@weights-ai/react-native-track-player";
 import { useEffect, useState } from "react";
 
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
-import {
-  userPreferenceStore,
-  useUserPreferenceStore,
-} from "~/stores/UserPreference/store";
+import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { useSortPreferencesStore } from "~/modules/media/services/SortPreferences";
 
 import {
@@ -28,7 +25,7 @@ export function useSetup() {
   const sortPreferencesHydrated = useSortPreferencesStore(
     (s) => s._hasHydrated,
   );
-  const userPreferenceHydrated = useUserPreferenceStore((s) => s._hasHydrated);
+  const userPreferenceHydrated = usePreferenceStore((s) => s._hasHydrated);
 
   useEffect(() => {
     if (
@@ -50,7 +47,7 @@ export function useSetup() {
 
       const { repeat, activeKey } = playbackStore.getState();
       const { restoreLastPosition, continuePlaybackOnDismiss } =
-        userPreferenceStore.getState();
+        preferenceStore.getState();
       if (restoreLastPosition) {
         playbackStore.setState({ _restoredTrackKey: activeKey });
       } else playbackStore.setState({ _hasRestoredPosition: true });

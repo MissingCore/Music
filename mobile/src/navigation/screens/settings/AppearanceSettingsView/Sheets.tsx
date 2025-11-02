@@ -1,8 +1,8 @@
 import { useColorScheme } from "nativewind";
 import { Text } from "react-native";
 
-import { useUserPreferenceStore } from "~/stores/UserPreference/store";
-import { PreferenceSetters } from "~/stores/UserPreference/actions";
+import { usePreferenceStore } from "~/stores/Preference/store";
+import { PreferenceSetters } from "~/stores/Preference/actions";
 
 import { getFont } from "~/lib/style";
 import { toLowerCase } from "~/utils/string";
@@ -11,13 +11,13 @@ import { Radio } from "~/components/Form/Selection";
 import type { TrueSheetRef } from "~/components/Sheet";
 import { NumericSheet, Sheet } from "~/components/Sheet";
 import { TStyledText } from "~/components/Typography/StyledText";
-import type { AccentFont } from "~/stores/UserPreference/constants";
+import type { AccentFont } from "~/stores/Preference/constants";
 import {
   AccentFontOptions,
   NowPlayingDesignOptions,
   PrimaryFontOptions,
   ThemeOptions,
-} from "~/stores/UserPreference/constants";
+} from "~/stores/Preference/constants";
 import { deferInitialRender } from "../../../components/DeferredRender";
 
 /** All the sheets used on `/setting/appearance` route. */
@@ -44,7 +44,7 @@ export const AppearanceSettingsSheets = deferInitialRender(
 //#region Font
 /** Enables changing the font used primarily for headings. */
 function FontAccentSheet(props: { sheetRef: TrueSheetRef }) {
-  const accentFont = useUserPreferenceStore((s) => s.accentFont);
+  const accentFont = usePreferenceStore((s) => s.accentFont);
   return (
     <FontSheet
       sheetRef={props.sheetRef}
@@ -58,7 +58,7 @@ function FontAccentSheet(props: { sheetRef: TrueSheetRef }) {
 
 /** Enables changing the font used by all text in the app. */
 function FontPrimarySheet(props: { sheetRef: TrueSheetRef }) {
-  const primaryFont = useUserPreferenceStore((s) => s.primaryFont);
+  const primaryFont = usePreferenceStore((s) => s.primaryFont);
   return (
     <FontSheet
       sheetRef={props.sheetRef}
@@ -111,7 +111,7 @@ function FontSheet<T extends AccentFont>(props: {
 /** Enables changing the theme of the app. */
 function ThemeSheet(props: { sheetRef: TrueSheetRef }) {
   const { setColorScheme } = useColorScheme();
-  const selectedTheme = useUserPreferenceStore((s) => s.theme);
+  const selectedTheme = usePreferenceStore((s) => s.theme);
 
   return (
     <Sheet ref={props.sheetRef} titleKey="feat.theme.title">
@@ -143,7 +143,7 @@ function ThemeSheet(props: { sheetRef: TrueSheetRef }) {
  * album to be displayed in the Albums screen.
  */
 function MinAlbumLengthSheet(props: { sheetRef: TrueSheetRef }) {
-  const minAlbumLength = useUserPreferenceStore((s) => s.minAlbumLength);
+  const minAlbumLength = usePreferenceStore((s) => s.minAlbumLength);
   return (
     <NumericSheet
       sheetRef={props.sheetRef}
@@ -159,7 +159,7 @@ function MinAlbumLengthSheet(props: { sheetRef: TrueSheetRef }) {
 //#region Now Playing Design
 /** Enables changing the appearance of the artwork on the "Now Playing" screen. */
 function NowPlayingDesignSheet(props: { sheetRef: TrueSheetRef }) {
-  const nowPlayingDesign = useUserPreferenceStore((s) => s.nowPlayingDesign);
+  const nowPlayingDesign = usePreferenceStore((s) => s.nowPlayingDesign);
   return (
     <Sheet ref={props.sheetRef} titleKey="feat.nowPlayingDesign.title">
       <FlatList

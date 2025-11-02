@@ -5,7 +5,7 @@ import { extendTailwindMerge } from "tailwind-merge";
 import { TailwindTheme } from "~/constants/TailwindTheme";
 import { FontFamily } from "~/constants/Styles";
 import { toLowerCase } from "~/utils/string";
-import type { AccentFont } from "~/stores/UserPreference/constants";
+import type { AccentFont } from "~/stores/Preference/constants";
 
 export type TextColor = `text-${string}` | `text-[${string}]`;
 

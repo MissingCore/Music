@@ -1,4 +1,4 @@
-import { userPreferenceStore } from "../store";
+import { preferenceStore } from "../store";
 import type {
   AccentFont,
   NowPlayingDesign,
@@ -12,15 +12,15 @@ import { getSourceName } from "../../Playback/utils";
 import { clearAllQueries } from "~/lib/react-query";
 
 export function setAccentFont(accentFont: AccentFont) {
-  userPreferenceStore.setState({ accentFont });
+  preferenceStore.setState({ accentFont });
 }
 
 export async function setLanguage(languageCode: string) {
-  userPreferenceStore.setState({ language: languageCode });
+  preferenceStore.setState({ language: languageCode });
 
   await resolveLanguageConfigs(
     languageCode,
-    userPreferenceStore.getState().ignoreRTLLayout,
+    preferenceStore.getState().ignoreRTLLayout,
   );
   // Make sure our queries that use translated values are updated.
   clearAllQueries();
@@ -34,25 +34,25 @@ export async function setLanguage(languageCode: string) {
 }
 
 export function setMinAlbumLength(minAlbumLength: number) {
-  userPreferenceStore.setState({ minAlbumLength });
+  preferenceStore.setState({ minAlbumLength });
 }
 
 export function setMinSeconds(minSeconds: number) {
-  userPreferenceStore.setState({ minSeconds });
+  preferenceStore.setState({ minSeconds });
 }
 
 export function setNowPlayingDesign(nowPlayingDesign: NowPlayingDesign) {
-  userPreferenceStore.setState({ nowPlayingDesign });
+  preferenceStore.setState({ nowPlayingDesign });
 }
 
 export function setPlaybackDelay(playbackDelay: number) {
-  userPreferenceStore.setState({ playbackDelay });
+  preferenceStore.setState({ playbackDelay });
 }
 
 export function setPrimaryFont(primaryFont: PrimaryFont) {
-  userPreferenceStore.setState({ primaryFont });
+  preferenceStore.setState({ primaryFont });
 }
 
 export function setTheme(theme: Theme) {
-  userPreferenceStore.setState({ theme });
+  preferenceStore.setState({ theme });
 }

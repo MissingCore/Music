@@ -10,7 +10,7 @@ import { addPlayedMediaList, addPlayedTrack } from "~/api/recent";
 import { deleteTrack } from "~/api/track";
 import { playbackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
-import { userPreferenceStore } from "~/stores/UserPreference/store";
+import { preferenceStore } from "~/stores/Preference/store";
 import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
 import { router } from "~/navigation/utils/router";
 
@@ -73,7 +73,7 @@ export async function PlaybackService() {
 
   TrackPlayer.addEventListener(Event.RemoteDuck, async (e) => {
     // Keep playing media when an interruption is detected.
-    if (userPreferenceStore.getState().ignoreInterrupt) return;
+    if (preferenceStore.getState().ignoreInterrupt) return;
     if (e.permanent) {
       await PlaybackControls.stop();
     } else {
@@ -90,7 +90,7 @@ export async function PlaybackService() {
   // Only triggered if repeat mode is `RepeatMode.Off`. This is also called
   // after the `ServiceKilled` event is emitted.
   TrackPlayer.addEventListener(Event.PlaybackQueueEnded, async () => {
-    const { playbackDelay } = userPreferenceStore.getState();
+    const { playbackDelay } = preferenceStore.getState();
     if (playbackDelay > 0) await bgWait(playbackDelay * 1000);
 
     // `true` provided to prevent updating the repeat setting.

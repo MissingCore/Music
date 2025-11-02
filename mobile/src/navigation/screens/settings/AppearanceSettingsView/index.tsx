@@ -1,8 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
-import { useUserPreferenceStore } from "~/stores/UserPreference/store";
-import { PreferenceTogglers } from "~/stores/UserPreference/actions";
+import { usePreferenceStore } from "~/stores/Preference/store";
+import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { StandardScrollLayout } from "../../../layouts/StandardScroll";
 import { AppearanceSettingsSheets } from "./Sheets";
 
@@ -12,15 +12,13 @@ import { useSheetRef } from "~/components/Sheet";
 export default function AppearanceSettings() {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const accentFont = useUserPreferenceStore((s) => s.accentFont);
-  const primaryFont = useUserPreferenceStore((s) => s.primaryFont);
-  const theme = useUserPreferenceStore((s) => s.theme);
-  const minAlbumLength = useUserPreferenceStore((s) => s.minAlbumLength);
-  const miniplayerGestures = useUserPreferenceStore(
-    (s) => s.miniplayerGestures,
-  );
-  const nowPlayingDesign = useUserPreferenceStore((s) => s.nowPlayingDesign);
-  const ignoreRTLLayout = useUserPreferenceStore((s) => s.ignoreRTLLayout);
+  const accentFont = usePreferenceStore((s) => s.accentFont);
+  const primaryFont = usePreferenceStore((s) => s.primaryFont);
+  const theme = usePreferenceStore((s) => s.theme);
+  const minAlbumLength = usePreferenceStore((s) => s.minAlbumLength);
+  const miniplayerGestures = usePreferenceStore((s) => s.miniplayerGestures);
+  const nowPlayingDesign = usePreferenceStore((s) => s.nowPlayingDesign);
+  const ignoreRTLLayout = usePreferenceStore((s) => s.ignoreRTLLayout);
   const accentFontSheetRef = useSheetRef();
   const primaryFontSheetRef = useSheetRef();
   const themeSheetRef = useSheetRef();

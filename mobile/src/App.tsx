@@ -2,7 +2,7 @@ import TrackPlayer from "@weights-ai/react-native-track-player";
 import { View } from "react-native";
 import Bootsplash from "react-native-bootsplash";
 
-import { userPreferenceStore } from "~/stores/UserPreference/store";
+import { preferenceStore } from "~/stores/Preference/store";
 import { useLoadResources } from "~/hooks/useLoadResources";
 import NavigationContainer from "~/navigation";
 import { AppProvider } from "~/navigation/providers/AppProvider";
@@ -59,7 +59,7 @@ function handleAppLifeCycle() {
 
   // Ensure the RNTP service gets destroyed on app close.
   return () => {
-    if (!userPreferenceStore.getState().continuePlaybackOnDismiss) {
+    if (!preferenceStore.getState().continuePlaybackOnDismiss) {
       TrackPlayer.reset().catch();
     }
   };

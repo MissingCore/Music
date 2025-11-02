@@ -1,0 +1,88 @@
+import { getLocales } from "expo-localization";
+import { Appearance } from "react-native";
+import { useStore } from "zustand";
+
+import i18next from "~/modules/i18n";
+import { LANGUAGES } from "~/modules/i18n/constants";
+
+import { createPersistedSubscribedStore } from "~/lib/zustand";
+import type { PreferenceStore } from "./constants";
+import { OmittedFields } from "./constants";
+import { resolveLanguageConfigs } from "./utils";
+
+export const preferenceStore = createPersistedSubscribedStore<PreferenceStore>(
+  (set) => ({
+    _hasHydrated: false,
+    _init: async (state) => {
+      // Set app theme on initialization.
+      if (state.theme !== "system") Appearance.setColorScheme(state.theme);
+      // Try to use device language if no language is specified.
+      await resolveLanguageConfigs(
+        state.language || getLocales()[0]?.languageTag || "en",
+      );
+      if (state.language === "") {
+        const usedLanguage = i18next.resolvedLanguage;
+        // Ensured the resolved value exists.
+        const exists = LANGUAGES.some((l) => l.code === usedLanguage);
+        set({ language: exists && usedLanguage ? usedLanguage : "en" });
+      }
+      set({ _hasHydrated: true });
+    },
+
+    language: "",
+    ignoreRTLLayout: false,
+
+    theme: "system",
+    accentFont: "NType",
+    primaryFont: "Roboto",
+
+    minAlbumLength: 0,
+    miniplayerGestures: false,
+    nowPlayingDesign: "vinyl",
+
+    homeTab: "home",
+    tabsOrder: ["home", "folder", "playlist", "track", "album", "artist"],
+    tabsVisibility: {
+      album: true,
+      artist: true,
+      folder: true,
+      home: true,
+      playlist: true,
+      track: true,
+    },
+
+    playbackDelay: 0,
+
+    repeatOnSkip: false,
+    restoreLastPosition: true,
+
+    listAllow: [],
+    listBlock: [],
+    minSeconds: 15,
+
+    rcNotification: false,
+
+    //! Experimental Features
+    continuePlaybackOnDismiss: false,
+    ignoreInterrupt: false,
+  }),
+  {
+    name: "music::user-preferences",
+    // Only store some fields in AsyncStorage.
+    partialize: (state) =>
+      Object.fromEntries(
+        Object.entries(state).filter(([key]) => !OmittedFields.includes(key)),
+      ),
+    // Listen to when the store is hydrated.
+    onRehydrateStorage: () => {
+      return (state, error) => {
+        if (error) console.log("[Preferences Store]", error);
+        else state?._init(state);
+      };
+    },
+  },
+);
+
+export function usePreferenceStore<T>(selector: (s: PreferenceStore) => T): T {
+  return useStore(preferenceStore, selector);
+}

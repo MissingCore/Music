@@ -1,7 +1,7 @@
 import type { TextProps } from "react-native";
 import { Text } from "react-native";
 
-import { useUserPreferenceStore } from "~/stores/UserPreference/store";
+import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { cn, getFont } from "~/lib/style";
 
@@ -15,7 +15,7 @@ export function AccentText({
   /** Ignore the uppercase behavior when the accent font is `NDot`. */
   originalText?: boolean;
 }) {
-  const accentFont = useUserPreferenceStore((s) => s.accentFont);
+  const accentFont = usePreferenceStore((s) => s.accentFont);
   return (
     <Text
       className={cn(

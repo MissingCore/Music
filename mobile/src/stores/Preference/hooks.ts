@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 
-import { useUserPreferenceStore } from "./store";
+import { usePreferenceStore } from "./store";
 
 export function useTabsByVisibility() {
-  const tabsOrder = useUserPreferenceStore((s) => s.tabsOrder);
-  const tabsVisibility = useUserPreferenceStore((s) => s.tabsVisibility);
+  const tabsOrder = usePreferenceStore((s) => s.tabsOrder);
+  const tabsVisibility = usePreferenceStore((s) => s.tabsVisibility);
 
   return useMemo(
     () => ({

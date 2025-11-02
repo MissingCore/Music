@@ -8,8 +8,8 @@ import Animated, { LinearTransition } from "react-native-reanimated";
 
 import { Search } from "~/resources/icons/Search";
 import { Settings } from "~/resources/icons/Settings";
-import { useUserPreferenceStore } from "~/stores/UserPreference/store";
-import { useTabsByVisibility } from "~/stores/UserPreference/hooks";
+import { usePreferenceStore } from "~/stores/Preference/store";
+import { useTabsByVisibility } from "~/stores/Preference/hooks";
 import { useTheme } from "~/hooks/useTheme";
 import { useRenderBottomActions } from "../hooks/useBottomActions";
 import { useHasNewUpdate } from "../hooks/useHasNewUpdate";
@@ -20,7 +20,7 @@ import { capitalize } from "~/utils/string";
 import { FlatList, useFlatListRef } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { StyledText } from "~/components/Typography/StyledText";
-import type { Tab } from "~/stores/UserPreference/types";
+import type { Tab } from "~/stores/Preference/types";
 import { MiniPlayer } from "./MiniPlayer";
 
 //#region Bottom Actions
@@ -83,7 +83,7 @@ function NavigationList() {
   const { surface } = useTheme();
   const navigation = useNavigation();
   const currNavRoutes = useNavigationState((s) => s.routes);
-  const homeTab = useUserPreferenceStore((s) => s.homeTab);
+  const homeTab = usePreferenceStore((s) => s.homeTab);
   const { displayedTabs } = useTabsByVisibility();
   const listRef = useFlatListRef();
   const [mounted, setMounted] = useState(false);

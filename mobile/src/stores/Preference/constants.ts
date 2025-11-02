@@ -26,11 +26,11 @@ export type NowPlayingDesign = (typeof NowPlayingDesignOptions)[number];
 //#endregion
 
 //#region Store
-export interface UserPreferenceStore {
+export interface PreferenceStore {
   /** Determines if the store has been hydrated from AsyncStorage. */
   _hasHydrated: boolean;
   /** Get a more accurate initial state. */
-  _init: (state: UserPreferenceStore) => Promise<void>;
+  _init: (state: PreferenceStore) => Promise<void>;
 
   /** Language code of the displayed content. */
   language: string;
@@ -85,5 +85,5 @@ export interface UserPreferenceStore {
 export const OmittedFields: string[] = [
   "_hasHydrated",
   "_init",
-] satisfies Array<keyof UserPreferenceStore>;
+] satisfies Array<keyof PreferenceStore>;
 //#endregion

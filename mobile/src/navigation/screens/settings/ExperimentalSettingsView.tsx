@@ -1,17 +1,17 @@
 import { useTranslation } from "react-i18next";
 
-import { useUserPreferenceStore } from "~/stores/UserPreference/store";
-import { PreferenceTogglers } from "~/stores/UserPreference/actions";
+import { usePreferenceStore } from "~/stores/Preference/store";
+import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { StandardScrollLayout } from "../../layouts/StandardScroll";
 
 import { List, ListItem } from "~/components/Containment/List";
 
 export default function ExperimentalSettings() {
   const { t } = useTranslation();
-  const continuePlaybackOnDismiss = useUserPreferenceStore(
+  const continuePlaybackOnDismiss = usePreferenceStore(
     (s) => s.continuePlaybackOnDismiss,
   );
-  const ignoreInterrupt = useUserPreferenceStore((s) => s.ignoreInterrupt);
+  const ignoreInterrupt = usePreferenceStore((s) => s.ignoreInterrupt);
 
   return (
     <StandardScrollLayout>

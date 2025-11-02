@@ -1,5 +1,5 @@
-import { useUserPreferenceStore } from "~/stores/UserPreference/store";
-import { PreferenceSetters } from "~/stores/UserPreference/actions";
+import { usePreferenceStore } from "~/stores/Preference/store";
+import { PreferenceSetters } from "~/stores/Preference/actions";
 import { LANGUAGES } from "~/modules/i18n/constants";
 import { useExportBackup, useImportBackup } from "~/modules/backup/JSON";
 
@@ -54,7 +54,7 @@ function BackupSheet(props: { sheetRef: TrueSheetRef }) {
 
 /** Enables the ability to change the language used. */
 function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
-  const languageCode = useUserPreferenceStore((s) => s.language);
+  const languageCode = usePreferenceStore((s) => s.language);
   const { handlers, isScrollable } = useIsScrollable();
 
   return (
