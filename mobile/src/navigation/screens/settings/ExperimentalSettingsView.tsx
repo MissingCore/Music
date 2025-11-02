@@ -1,13 +1,9 @@
-import TrackPlayer from "@weights-ai/react-native-track-player";
 import { useTranslation } from "react-i18next";
 
-import {
-  userPreferenceStore,
-  useUserPreferenceStore,
-} from "~/stores/UserPreference/store";
+import { useUserPreferenceStore } from "~/stores/UserPreference/store";
+import { PreferenceTogglers } from "~/stores/UserPreference/actions";
 import { StandardScrollLayout } from "../../layouts/StandardScroll";
 
-import { getTrackPlayerOptions } from "~/lib/react-native-track-player";
 import { List, ListItem } from "~/components/Containment/List";
 
 export default function ExperimentalSettings() {
@@ -23,14 +19,14 @@ export default function ExperimentalSettings() {
         <ListItem
           titleKey="feat.continuePlaybackOnDismiss.title"
           description={t("feat.continuePlaybackOnDismiss.description")}
-          onPress={toggleContinuePlaybackOnDismiss}
+          onPress={PreferenceTogglers.toggleContinuePlaybackOnDismiss}
           switchState={continuePlaybackOnDismiss}
           first
         />
         <ListItem
           titleKey="feat.ignoreInterrupt.title"
           description={t("feat.ignoreInterrupt.brief")}
-          onPress={toggleIgnoreInterrupt}
+          onPress={PreferenceTogglers.toggleIgnoreInterrupt}
           switchState={ignoreInterrupt}
           last
         />
@@ -38,16 +34,3 @@ export default function ExperimentalSettings() {
     </StandardScrollLayout>
   );
 }
-
-const toggleContinuePlaybackOnDismiss = async () => {
-  const nextState = !userPreferenceStore.getState().continuePlaybackOnDismiss;
-  userPreferenceStore.setState({ continuePlaybackOnDismiss: nextState });
-  await TrackPlayer.updateOptions(
-    getTrackPlayerOptions({ continuePlaybackOnDismiss: nextState }),
-  );
-};
-
-const toggleIgnoreInterrupt = () =>
-  userPreferenceStore.setState((prev) => ({
-    ignoreInterrupt: !prev.ignoreInterrupt,
-  }));

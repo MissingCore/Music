@@ -3,10 +3,8 @@ import { openBrowserAsync } from "expo-web-browser";
 import { useTranslation } from "react-i18next";
 
 import { OpenInNew } from "~/resources/icons/OpenInNew";
-import {
-  userPreferenceStore,
-  useUserPreferenceStore,
-} from "~/stores/UserPreference/store";
+import { useUserPreferenceStore } from "~/stores/UserPreference/store";
+import { PreferenceTogglers } from "~/stores/UserPreference/actions";
 import { useHasNewUpdate } from "../../../hooks/useHasNewUpdate";
 import { StandardScrollLayout } from "../../../layouts/StandardScroll";
 import { SettingsSheets } from "./Sheets";
@@ -140,7 +138,7 @@ export default function Settings() {
             <Divider className="mx-4" />
             <ListItem
               titleKey="feat.version.extra.rcNotification"
-              onPress={toggleRCNotification}
+              onPress={PreferenceTogglers.toggleRCNotification}
               switchState={showRCNotification}
               className="rounded-none"
             />
@@ -150,9 +148,3 @@ export default function Settings() {
     </>
   );
 }
-
-const toggleRCNotification = () => {
-  userPreferenceStore.setState((prev) => ({
-    rcNotification: !prev.rcNotification,
-  }));
-};

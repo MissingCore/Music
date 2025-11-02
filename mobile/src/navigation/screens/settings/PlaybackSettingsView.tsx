@@ -1,9 +1,10 @@
 import { useTranslation } from "react-i18next";
 
+import { useUserPreferenceStore } from "~/stores/UserPreference/store";
 import {
-  userPreferenceStore,
-  useUserPreferenceStore,
-} from "~/stores/UserPreference/store";
+  PreferenceSetters,
+  PreferenceTogglers,
+} from "~/stores/UserPreference/actions";
 import { StandardScrollLayout } from "../../layouts/StandardScroll";
 
 import { List, ListItem } from "~/components/Containment/List";
@@ -36,13 +37,13 @@ export default function PlaybackSettings() {
           <ListItem
             titleKey="feat.repeatOnSkip.title"
             description={t("feat.repeatOnSkip.brief")}
-            onPress={toggleRepeatOnSkip}
+            onPress={PreferenceTogglers.toggleRepeatOnSkip}
             switchState={repeatOnSkip}
             first
           />
           <ListItem
             titleKey="feat.restoreLastPosition.title"
-            onPress={toggleRestoreLastPosition}
+            onPress={PreferenceTogglers.toggleRestoreLastPosition}
             switchState={restoreLastPosition}
             last
           />
@@ -62,24 +63,9 @@ const PlaybackDelaySheet = deferInitialRender(
         titleKey="feat.playbackDelay.title"
         descriptionKey="feat.playbackDelay.description"
         value={playbackDelay}
-        setValue={setPlaybackDelay}
+        setValue={PreferenceSetters.setPlaybackDelay}
       />
     );
   },
 );
-//#endregion
-
-//#region Helpers
-const toggleRepeatOnSkip = () =>
-  userPreferenceStore.setState((prev) => ({
-    repeatOnSkip: !prev.repeatOnSkip,
-  }));
-
-const toggleRestoreLastPosition = async () =>
-  userPreferenceStore.setState((prev) => ({
-    restoreLastPosition: !prev.restoreLastPosition,
-  }));
-
-const setPlaybackDelay = (newDelay: number) =>
-  userPreferenceStore.setState({ playbackDelay: newDelay });
 //#endregion

@@ -5,10 +5,8 @@ import { Keyboard, View } from "react-native";
 import { Add } from "~/resources/icons/Add";
 import { CreateNewFolder } from "~/resources/icons/CreateNewFolder";
 import { Delete } from "~/resources/icons/Delete";
-import {
-  userPreferenceStore,
-  useUserPreferenceStore,
-} from "~/stores/UserPreference/store";
+import { useUserPreferenceStore } from "~/stores/UserPreference/store";
+import { PreferenceSetters } from "~/stores/UserPreference/actions";
 import {
   pickPath,
   removePath,
@@ -180,13 +178,8 @@ function MinDurationSheet(props: { sheetRef: TrueSheetRef }) {
       titleKey="feat.ignoreDuration.title"
       descriptionKey="feat.ignoreDuration.description"
       value={minSeconds}
-      setValue={setMinDuration}
+      setValue={PreferenceSetters.setMinSeconds}
     />
   );
 }
-//#endregion
-
-//#region Helpers
-const setMinDuration = (newDuration: number) =>
-  userPreferenceStore.setState({ minSeconds: newDuration });
 //#endregion

@@ -37,8 +37,16 @@ export function setMinAlbumLength(minAlbumLength: number) {
   userPreferenceStore.setState({ minAlbumLength });
 }
 
+export function setMinSeconds(minSeconds: number) {
+  userPreferenceStore.setState({ minSeconds });
+}
+
 export function setNowPlayingDesign(nowPlayingDesign: NowPlayingDesign) {
   userPreferenceStore.setState({ nowPlayingDesign });
+}
+
+export function setPlaybackDelay(playbackDelay: number) {
+  userPreferenceStore.setState({ playbackDelay });
 }
 
 export function setPrimaryFont(primaryFont: PrimaryFont) {
