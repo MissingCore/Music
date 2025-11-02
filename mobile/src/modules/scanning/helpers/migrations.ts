@@ -6,11 +6,11 @@ import type { AlbumWithTracks } from "~/db/schema";
 import { albums, fileNodes, playedMediaLists, tracks } from "~/db/schema";
 
 import { getAlbums } from "~/api/album";
-import type { OrderableTab } from "~/services/UserPreferences";
-import { userPreferencesStore } from "~/services/UserPreferences";
+import { userPreferenceStore } from "~/stores/UserPreference/store";
 import { onboardingStore } from "../services/Onboarding";
 
 import type { PlayFromSource } from "~/stores/Playback/types";
+import type { Tab } from "~/stores/UserPreference/types";
 import { removeUnusedCategories } from "./audio";
 import { savePathComponents } from "./folder";
 import type { MigrationOption } from "../constants";
@@ -146,14 +146,14 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
   },
 
   "hide-home-tab": async () => {
-    userPreferencesStore.setState((prev) => {
+    userPreferenceStore.setState((prev) => {
       const updatedTabOrder = [...prev.tabsOrder];
       // Don't add "home" if it's already in there.
       if (!prev.tabsOrder.includes("home")) updatedTabOrder.unshift("home");
 
       const updatedTabsVisibility = Object.fromEntries(
         Object.entries(prev.tabsVisibility).concat([["home", true]]),
-      ) as Record<OrderableTab, boolean>;
+      ) as Record<Tab, boolean>;
 
       return {
         tabsOrder: updatedTabOrder,

@@ -5,7 +5,7 @@ import { StorageAccessFramework as SAF } from "expo-file-system";
 import { Directory } from "expo-file-system/next";
 
 import i18next from "~/modules/i18n";
-import { userPreferencesStore } from "~/services/UserPreferences";
+import { userPreferenceStore } from "~/stores/UserPreference/store";
 
 import { ToastOptions } from "~/lib/toast";
 import { addTrailingSlash, getSafeUri } from "~/utils/string";
@@ -16,7 +16,7 @@ export function removePath(props: {
   list: "listAllow" | "listBlock";
   path: string;
 }) {
-  userPreferencesStore.setState((prev) => ({
+  userPreferenceStore.setState((prev) => ({
     [props.list]: prev[props.list].filter((path) => path !== props.path),
   }));
 }
@@ -77,7 +77,7 @@ async function addPathToList(props: {
     );
     return;
   }
-  userPreferencesStore.setState((prev) => ({
+  userPreferenceStore.setState((prev) => ({
     [props.list]: [...prev[props.list], trimmed],
   }));
   props.onSuccess();

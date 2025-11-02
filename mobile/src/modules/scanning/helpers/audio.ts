@@ -23,7 +23,7 @@ import { createArtists } from "~/api/artist";
 import { RECENT_RANGE_MS } from "~/api/recent";
 import { upsertTracks } from "~/api/track";
 import { Queue } from "~/stores/Playback/actions";
-import { userPreferencesStore } from "~/services/UserPreferences";
+import { userPreferenceStore } from "~/stores/UserPreference/store";
 import { onboardingStore } from "../services/Onboarding";
 
 import { getExcludedColumns, withColumns } from "~/lib/drizzle";
@@ -203,7 +203,7 @@ async function discoverTracks() {
     listAllow: _listAllow,
     listBlock: _listBlock,
     minSeconds,
-  } = userPreferencesStore.getState();
+  } = userPreferenceStore.getState();
   const listAllow = _listAllow.map((p) => `file://${addTrailingSlash(p)}`);
   const listBlock = _listBlock.map((p) => `file://${addTrailingSlash(p)}`);
 
