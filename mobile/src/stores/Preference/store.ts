@@ -76,7 +76,7 @@ export const preferenceStore = createPersistedSubscribedStore<PreferenceStore>(
     // Listen to when the store is hydrated.
     onRehydrateStorage: () => {
       return (state, error) => {
-        if (error) console.log("[Preferences Store]", error);
+        if (error) console.log("[Preference Store]", error);
         else state?._init(state);
       };
     },
