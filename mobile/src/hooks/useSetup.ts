@@ -25,13 +25,13 @@ export function useSetup() {
   const sortPreferencesHydrated = useSortPreferencesStore(
     (s) => s._hasHydrated,
   );
-  const userPreferenceHydrated = usePreferenceStore((s) => s._hasHydrated);
+  const preferenceHydrated = usePreferenceStore((s) => s._hasHydrated);
 
   useEffect(() => {
     if (
       !playbackHydrated ||
       !sortPreferencesHydrated ||
-      !userPreferenceHydrated ||
+      !preferenceHydrated ||
       setupState !== "idle"
     ) {
       return;
@@ -65,7 +65,7 @@ export function useSetup() {
   }, [
     playbackHydrated,
     sortPreferencesHydrated,
-    userPreferenceHydrated,
+    preferenceHydrated,
     setupState,
   ]);
 
