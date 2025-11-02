@@ -6,11 +6,11 @@ import i18next from "~/modules/i18n";
 import { LANGUAGES } from "~/modules/i18n/constants";
 
 import { createPersistedSubscribedStore } from "~/lib/zustand";
-import type { UserPreferencesStore } from "./constants";
+import type { UserPreferenceStore } from "./constants";
 import { OmittedFields } from "./constants";
 
-export const userPreferencesStore =
-  createPersistedSubscribedStore<UserPreferencesStore>(
+export const userPreferenceStore =
+  createPersistedSubscribedStore<UserPreferenceStore>(
     (set) => ({
       _hasHydrated: false,
       _init: async (state) => {
@@ -83,8 +83,8 @@ export const userPreferencesStore =
     },
   );
 
-export function useUserPreferencesStore<T>(
-  selector: (s: UserPreferencesStore) => T,
+export function useUserPreferenceStore<T>(
+  selector: (s: UserPreferenceStore) => T,
 ): T {
-  return useStore(userPreferencesStore, selector);
+  return useStore(userPreferenceStore, selector);
 }
