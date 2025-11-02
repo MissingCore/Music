@@ -8,11 +8,8 @@ import Animated, { LinearTransition } from "react-native-reanimated";
 
 import { Search } from "~/resources/icons/Search";
 import { Settings } from "~/resources/icons/Settings";
-import type { OrderableTab } from "~/services/UserPreferences";
-import {
-  useTabsByVisibility,
-  useUserPreferencesStore,
-} from "~/services/UserPreferences";
+import { useUserPreferenceStore } from "~/stores/UserPreference/store";
+import { useTabsByVisibility } from "~/stores/UserPreference/hooks";
 import { useTheme } from "~/hooks/useTheme";
 import { useRenderBottomActions } from "../hooks/useBottomActions";
 import { useHasNewUpdate } from "../hooks/useHasNewUpdate";
@@ -23,6 +20,7 @@ import { capitalize } from "~/utils/string";
 import { FlatList, useFlatListRef } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { StyledText } from "~/components/Typography/StyledText";
+import type { Tab } from "~/stores/UserPreference/types";
 import { MiniPlayer } from "./MiniPlayer";
 
 //#region Bottom Actions
@@ -85,7 +83,7 @@ function NavigationList() {
   const { surface } = useTheme();
   const navigation = useNavigation();
   const currNavRoutes = useNavigationState((s) => s.routes);
-  const homeTab = useUserPreferencesStore((s) => s.homeTab);
+  const homeTab = useUserPreferenceStore((s) => s.homeTab);
   const { displayedTabs } = useTabsByVisibility();
   const listRef = useFlatListRef();
   const [mounted, setMounted] = useState(false);
@@ -176,11 +174,9 @@ const ShadowProps = { start: { x: 0.0, y: 1.0 }, end: { x: 1.0, y: 1.0 } };
 //#endregion
 
 //#region Utils
-export type HomeScreenNames =
-  | "Home"
-  | `${Capitalize<Exclude<OrderableTab, "home">>}s`;
+export type HomeScreenNames = "Home" | `${Capitalize<Exclude<Tab, "home">>}s`;
 
-export function getHomeScreenName(tabKey: OrderableTab) {
+export function getHomeScreenName(tabKey: Tab) {
   if (tabKey === "home") return "Home";
   return `${capitalize(tabKey)}s` as const;
 }
