@@ -18,8 +18,10 @@ export const userPreferenceStore =
         // Set app theme on initialization.
         if (state.theme !== "system") Appearance.setColorScheme(state.theme);
         // Try to use device language if no language is specified.
+        await resolveLanguageConfigs(
+          state.language || getLocales()[0]?.languageTag || "en",
+        );
         if (state.language === "") {
-          await resolveLanguageConfigs(getLocales()[0]?.languageTag || "en");
           const usedLanguage = i18next.resolvedLanguage;
           // Ensured the resolved value exists.
           const exists = LANGUAGES.some((l) => l.code === usedLanguage);

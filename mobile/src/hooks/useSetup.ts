@@ -1,7 +1,6 @@
 import TrackPlayer, { RepeatMode } from "@weights-ai/react-native-track-player";
 import { useEffect, useState } from "react";
 
-import "~/services/_subscriptions";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import {
   userPreferenceStore,
