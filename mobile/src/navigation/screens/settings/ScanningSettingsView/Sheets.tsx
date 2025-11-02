@@ -5,10 +5,8 @@ import { Keyboard, View } from "react-native";
 import { Add } from "~/resources/icons/Add";
 import { CreateNewFolder } from "~/resources/icons/CreateNewFolder";
 import { Delete } from "~/resources/icons/Delete";
-import {
-  userPreferencesStore,
-  useUserPreferencesStore,
-} from "~/services/UserPreferences";
+import { usePreferenceStore } from "~/stores/Preference/store";
+import { PreferenceSetters } from "~/stores/Preference/actions";
 import {
   pickPath,
   removePath,
@@ -63,7 +61,7 @@ function ScanFilterListSheet({
   sheetRef: TrueSheetRef;
 }) {
   const { t } = useTranslation();
-  const listEntries = useUserPreferencesStore((state) => state[listType]);
+  const listEntries = usePreferenceStore((s) => s[listType]);
 
   return (
     <Sheet
@@ -173,20 +171,15 @@ function FilterForm(props: {
 //#region Min Duration
 /** Enables us to specify the minimum track duration we want to save. */
 function MinDurationSheet(props: { sheetRef: TrueSheetRef }) {
-  const minSeconds = useUserPreferencesStore((state) => state.minSeconds);
+  const minSeconds = usePreferenceStore((s) => s.minSeconds);
   return (
     <NumericSheet
       sheetRef={props.sheetRef}
       titleKey="feat.ignoreDuration.title"
       descriptionKey="feat.ignoreDuration.description"
       value={minSeconds}
-      setValue={setMinDuration}
+      setValue={PreferenceSetters.setMinSeconds}
     />
   );
 }
-//#endregion
-
-//#region Helpers
-const setMinDuration = (newDuration: number) =>
-  userPreferencesStore.setState({ minSeconds: newDuration });
 //#endregion

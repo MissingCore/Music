@@ -48,11 +48,8 @@ import ModifyTrack from "./screens/tracks/ModifyView";
 import { TrackSheet } from "./screens/tracks/Sheet";
 import Tracks from "./screens/tracks/View";
 
-import {
-  userPreferencesStore,
-  useTabsByVisibility,
-  useUserPreferencesStore,
-} from "~/services/UserPreferences";
+import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
+import { useTabsByVisibility } from "~/stores/Preference/hooks";
 
 import type { HomeScreenNames } from "./components/BottomActions";
 import { BottomActions, getHomeScreenName } from "./components/BottomActions";
@@ -94,7 +91,7 @@ type RootScreensProps = StaticScreenProps<
 
 function RootScreens(_: RootScreensProps) {
   const navigation = useNavigation();
-  const homeTab = useUserPreferencesStore((s) => s.homeTab);
+  const homeTab = usePreferenceStore((s) => s.homeTab);
   const { displayedTabs, hiddenTabs } = useTabsByVisibility();
   // Should be fine to store history stack in ref as it doesn't affect rendering.
   //  - https://react.dev/learn/referencing-values-with-refs#when-to-use-refs
@@ -112,7 +109,7 @@ function RootScreens(_: RootScreensProps) {
       if (!canResetHomeScreens) {
         canResetHomeScreens = true;
         // Reset home tab preferences if we have a mismatch.
-        userPreferencesStore.setState({
+        preferenceStore.setState({
           homeTab: "home",
           tabsOrder: ["home", "folder", "playlist", "track", "album", "artist"],
           tabsVisibility: {

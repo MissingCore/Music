@@ -2,7 +2,7 @@ import { useRef } from "react";
 import type { TextInputProps } from "react-native";
 import { TextInput as RNTextInput } from "react-native-gesture-handler";
 
-import { useUserPreferencesStore } from "~/services/UserPreferences";
+import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { OnRTL } from "~/lib/react";
 import { cn, getFont } from "~/lib/style";
@@ -16,7 +16,7 @@ type InputProps = TextInputProps & { ref?: React.Ref<RNTextInput> };
 //#region Numeric Input
 /** Numeric input using the accent font. */
 export function NumericInput({ className, style, ...props }: InputProps) {
-  const accentFont = useUserPreferencesStore((state) => state.accentFont);
+  const accentFont = usePreferenceStore((s) => s.accentFont);
   return (
     <RNTextInput
       inputMode="numeric"
@@ -39,7 +39,7 @@ export function NumericInput({ className, style, ...props }: InputProps) {
 //#region Text Input
 /** Styled text input meeting the recommended touch target size. */
 export function TextInput({ className, style, ...props }: InputProps) {
-  const primaryFont = useUserPreferencesStore((state) => state.primaryFont);
+  const primaryFont = usePreferenceStore((s) => s.primaryFont);
   return (
     <RNTextInput
       // FIXME: For some random reason, inputs have a default vertical padding

@@ -1,13 +1,9 @@
 import TrackPlayer, { RepeatMode } from "@weights-ai/react-native-track-player";
 import { useEffect, useState } from "react";
 
-import "~/services/_subscriptions";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
+import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { useSortPreferencesStore } from "~/modules/media/services/SortPreferences";
-import {
-  userPreferencesStore,
-  useUserPreferencesStore,
-} from "~/services/UserPreferences";
 
 import {
   getTrackPlayerOptions,
@@ -29,15 +25,13 @@ export function useSetup() {
   const sortPreferencesHydrated = useSortPreferencesStore(
     (s) => s._hasHydrated,
   );
-  const userPreferencesHydrated = useUserPreferencesStore(
-    (s) => s._hasHydrated,
-  );
+  const preferenceHydrated = usePreferenceStore((s) => s._hasHydrated);
 
   useEffect(() => {
     if (
       !playbackHydrated ||
       !sortPreferencesHydrated ||
-      !userPreferencesHydrated ||
+      !preferenceHydrated ||
       setupState !== "idle"
     ) {
       return;
@@ -53,7 +47,7 @@ export function useSetup() {
 
       const { repeat, activeKey } = playbackStore.getState();
       const { restoreLastPosition, continuePlaybackOnDismiss } =
-        userPreferencesStore.getState();
+        preferenceStore.getState();
       if (restoreLastPosition) {
         playbackStore.setState({ _restoredTrackKey: activeKey });
       } else playbackStore.setState({ _hasRestoredPosition: true });
@@ -71,7 +65,7 @@ export function useSetup() {
   }, [
     playbackHydrated,
     sortPreferencesHydrated,
-    userPreferencesHydrated,
+    preferenceHydrated,
     setupState,
   ]);
 

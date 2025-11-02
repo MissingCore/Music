@@ -1,12 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-import { I18nManager } from "react-native";
 
-import i18next from "~/modules/i18n";
-import {
-  userPreferencesStore,
-  useUserPreferencesStore,
-} from "~/services/UserPreferences";
+import { usePreferenceStore } from "~/stores/Preference/store";
+import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { StandardScrollLayout } from "../../../layouts/StandardScroll";
 import { AppearanceSettingsSheets } from "./Sheets";
 
@@ -16,15 +12,13 @@ import { useSheetRef } from "~/components/Sheet";
 export default function AppearanceSettings() {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const accentFont = useUserPreferencesStore((s) => s.accentFont);
-  const primaryFont = useUserPreferencesStore((s) => s.primaryFont);
-  const theme = useUserPreferencesStore((s) => s.theme);
-  const minAlbumLength = useUserPreferencesStore((s) => s.minAlbumLength);
-  const miniplayerGestures = useUserPreferencesStore(
-    (s) => s.miniplayerGestures,
-  );
-  const nowPlayingDesign = useUserPreferencesStore((s) => s.nowPlayingDesign);
-  const ignoreRTLLayout = useUserPreferencesStore((s) => s.ignoreRTLLayout);
+  const accentFont = usePreferenceStore((s) => s.accentFont);
+  const primaryFont = usePreferenceStore((s) => s.primaryFont);
+  const theme = usePreferenceStore((s) => s.theme);
+  const minAlbumLength = usePreferenceStore((s) => s.minAlbumLength);
+  const miniplayerGestures = usePreferenceStore((s) => s.miniplayerGestures);
+  const nowPlayingDesign = usePreferenceStore((s) => s.nowPlayingDesign);
+  const ignoreRTLLayout = usePreferenceStore((s) => s.ignoreRTLLayout);
   const accentFontSheetRef = useSheetRef();
   const primaryFontSheetRef = useSheetRef();
   const themeSheetRef = useSheetRef();
@@ -78,7 +72,7 @@ export default function AppearanceSettings() {
           />
           <ListItem
             titleKey="feat.miniplayerGestures.title"
-            onPress={toggleMiniplayerGestures}
+            onPress={PreferenceTogglers.toggleMiniplayerGestures}
             switchState={miniplayerGestures}
           />
           <ListItem
@@ -92,7 +86,7 @@ export default function AppearanceSettings() {
         <ListItem
           titleKey="feat.ignoreRTLLayout.title"
           description={t("feat.ignoreRTLLayout.brief")}
-          onPress={toggleIgnoreRTLLayout}
+          onPress={PreferenceTogglers.toggleIgnoreRTLLayout}
           switchState={ignoreRTLLayout}
           first
           last
@@ -101,15 +95,3 @@ export default function AppearanceSettings() {
     </>
   );
 }
-
-const toggleMiniplayerGestures = () =>
-  userPreferencesStore.setState((prev) => ({
-    miniplayerGestures: !prev.miniplayerGestures,
-  }));
-
-const toggleIgnoreRTLLayout = () => {
-  const nextState = !userPreferencesStore.getState().ignoreRTLLayout;
-  userPreferencesStore.setState({ ignoreRTLLayout: nextState });
-  I18nManager.allowRTL(nextState ? false : i18next.dir() === "rtl");
-  I18nManager.forceRTL(nextState ? false : i18next.dir() === "rtl");
-};

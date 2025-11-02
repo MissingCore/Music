@@ -1,7 +1,7 @@
 import TrackPlayer, { State } from "@weights-ai/react-native-track-player";
 
 import { addPlayedMediaList } from "~/api/recent";
-import { userPreferencesStore } from "~/services/UserPreferences";
+import { preferenceStore } from "~/stores/Preference/store";
 
 import { playbackStore } from "../store";
 import { RepeatModes } from "../constants";
@@ -225,7 +225,7 @@ export async function playFromList({
 /** Determines if we should switch the repeat mode to "repeat" from "repeat-one". */
 function getNewRepeatState() {
   const { repeat } = playbackStore.getState();
-  const { repeatOnSkip } = userPreferencesStore.getState();
+  const { repeatOnSkip } = preferenceStore.getState();
   if (repeat === RepeatModes.REPEAT_ONE && !repeatOnSkip) {
     return { repeat: RepeatModes.REPEAT } as const;
   } else {

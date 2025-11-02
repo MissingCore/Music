@@ -5,7 +5,7 @@ import { formatForCurrentScreen, formatForMediaCard } from "~/db/utils";
 
 import { favoriteAlbum, updateAlbum } from "~/api/album";
 import { Resynchronize } from "~/stores/Playback/actions";
-import { useUserPreferencesStore } from "~/services/UserPreferences";
+import { usePreferenceStore } from "~/stores/Preference/store";
 import { queries as q } from "./keyStore";
 
 import { clearAllQueries } from "~/lib/react-query";
@@ -33,7 +33,7 @@ export function useAlbumForScreen(albumId: string) {
 /** Return list of `MediaCardContent` from albums. */
 export function useAlbumsForCards() {
   const { t } = useTranslation();
-  const minAlbumLength = useUserPreferencesStore((s) => s.minAlbumLength);
+  const minAlbumLength = usePreferenceStore((s) => s.minAlbumLength);
   return useQuery({
     ...q.albums.all,
     select: (data) =>
