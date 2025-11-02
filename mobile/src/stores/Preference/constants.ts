@@ -1,7 +1,7 @@
 import type { Tab } from "./types";
 
 //#region Theme
-export const ThemeOptions = ["dark", "light", "system"] as const;
+export const ThemeOptions = ["light", "dark", "system"] as const;
 
 export type Theme = (typeof ThemeOptions)[number];
 //endregion
