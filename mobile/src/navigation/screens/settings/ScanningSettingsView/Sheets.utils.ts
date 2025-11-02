@@ -11,7 +11,7 @@ import { ToastOptions } from "~/lib/toast";
 import { addTrailingSlash, getSafeUri } from "~/utils/string";
 
 //#region Helpers
-/** Removes a path from the user preferences store. */
+/** Removes a path from the preference store. */
 export function removePath(props: {
   list: "listAllow" | "listBlock";
   path: string;
