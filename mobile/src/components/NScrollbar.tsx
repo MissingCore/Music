@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { Pressable } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -7,10 +7,12 @@ import type { ReanimatedScrollEvent } from "react-native-reanimated/lib/typescri
 import Animated, {
   clamp,
   runOnJS,
+  runOnUI,
   scrollTo,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
+  withDelay,
   withTiming,
 } from "react-native-reanimated";
 
@@ -33,6 +35,10 @@ interface ScrollbarProps {
  */
 const TOUCH_OFFSET = 14;
 
+const SCROLL_SUBSCRIPTION_ID = 1234567890;
+/** Delay before the scrollbar becomes invisible. */
+const HIDE_DELAY = 2000;
+
 export function Scrollbar({
   listRef,
   listHeight,
@@ -47,11 +53,14 @@ export function Scrollbar({
 
   const prevY = useSharedValue(-1);
   const nextScrollPosition = useSharedValue(-1);
+  const isScrollingBuffer = useSharedValue(0); // Boolean field
 
   //* Only show scrollbar if we have at least 3 screens worth of content.
   useDerivedValue(() => {
     const hasEnoughContent = listScrollHeight.value / listHeight.value > 3;
-    runOnJS(setScrollbarVisible)(isVisible && hasEnoughContent);
+    runOnJS(setScrollbarVisible)(
+      isVisible && hasEnoughContent && isScrollingBuffer.value !== 0,
+    );
   });
 
   //* How much we can actually scroll.
@@ -86,7 +95,8 @@ export function Scrollbar({
     })
     .onEnd(() => {
       nextScrollPosition.value = -1;
-      prevY.value = -1;
+      // Brief delay before we collapse the thumb.
+      prevY.value = withDelay(500, withTiming(-1, { duration: 0 }));
     });
 
   //* Scroll to given offset using Reanimated.
@@ -96,8 +106,25 @@ export function Scrollbar({
     scrollTo(listRef, 0, nextScrollPosition.value, true);
   });
 
+  //* Only show scrollbar when we're scrolling and hide it after a delay
+  //* after stopping.
+  useEffect(() => {
+    runOnUI(() =>
+      listScrollAmount.addListener(SCROLL_SUBSCRIPTION_ID, () => {
+        isScrollingBuffer.value = 1;
+        isScrollingBuffer.value = withTiming(0, { duration: HIDE_DELAY });
+      }),
+    )();
+
+    return () => {
+      runOnUI(() => listScrollAmount.removeListener(SCROLL_SUBSCRIPTION_ID))();
+    };
+  }, [listScrollAmount, isScrollingBuffer, prevY]);
+
   const thumbWrapperStyle = useAnimatedStyle(() => ({
-    opacity: scrollbarVisible ? 1 : 0,
+    opacity: withTiming(scrollbarVisible ? 1 : 0, {
+      duration: scrollbarVisible ? 150 : 500,
+    }),
     transform: [{ translateY: scaledScrollAmount.value }],
   }));
 
