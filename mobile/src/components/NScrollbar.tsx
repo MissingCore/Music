@@ -164,7 +164,7 @@ export function Scrollbar({
           <Animated.View
             pointerEvents="none"
             style={thumbStyle}
-            className="absolute w-8 rounded-full bg-red"
+            className="absolute w-8 rounded-full bg-foreground"
           />
         </Animated.View>
       </GestureDetector>
