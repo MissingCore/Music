@@ -1,7 +1,7 @@
 import type { FlashList, FlashListProps } from "@shopify/flash-list";
 import { LinearGradient } from "expo-linear-gradient";
 import type { ParseKeys } from "i18next";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { LayoutChangeEvent, TextProps } from "react-native";
 import { useWindowDimensions } from "react-native";
@@ -18,6 +18,7 @@ import { useTheme } from "~/hooks/useTheme";
 import { useBottomActionsInset } from "../hooks/useBottomActions";
 
 import { AnimatedFlashList } from "~/components/Defaults";
+import { Scrollbar } from "~/components/Scrollbar";
 import { AccentText } from "~/components/Typography/AccentText";
 
 /**
@@ -30,6 +31,7 @@ export function StickyActionListLayout<TData>({
   estimatedActionSize = 0,
   listRef,
   insetDelta = 0,
+  showScrollbar = true,
   ...props
 }: FlashListProps<TData> & {
   /** Key to title in translations. */
@@ -45,6 +47,8 @@ export function StickyActionListLayout<TData>({
    * for giving a more accurate `estimatedItemSize` when faking "gaps".
    */
   insetDelta?: number;
+  /** Whether the scrollbar should appear on scroll. */
+  showScrollbar?: boolean;
 }) {
   const { t } = useTranslation();
   const { top } = useSafeAreaInsets();
@@ -52,6 +56,7 @@ export function StickyActionListLayout<TData>({
   const bottomInset = useBottomActionsInset();
   const { canvas } = useTheme();
 
+  const [actionStartPos, setActionStartPos] = useState(0);
   const initActionPos = useSharedValue(0);
   const scrollAmount = useSharedValue(0);
 
@@ -59,7 +64,9 @@ export function StickyActionListLayout<TData>({
   const calcInitStartPos = useCallback(
     (e: LayoutChangeEvent) => {
       // 16px Padding Top + Header Height
-      initActionPos.value = 16 + e.nativeEvent.layout.height;
+      const startPos = 16 + e.nativeEvent.layout.height;
+      initActionPos.value = startPos;
+      setActionStartPos(startPos);
     },
     [initActionPos],
   );
@@ -104,6 +111,11 @@ export function StickyActionListLayout<TData>({
           padding: 16,
           paddingBottom: bottomInset.withNav + 16 - insetDelta,
         }}
+      />
+      <Scrollbar
+        disabled={!showScrollbar}
+        topOffset={actionStartPos + estimatedActionSize}
+        bottomOffset={bottomInset.withNav + 16 - insetDelta}
       />
 
       {/* Render shadow under status bar when title is off-screen. */}
