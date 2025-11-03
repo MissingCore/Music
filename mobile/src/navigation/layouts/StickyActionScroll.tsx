@@ -5,6 +5,7 @@ import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { LayoutChangeEvent, TextProps } from "react-native";
 import { useWindowDimensions } from "react-native";
+import type { AnimatedRef } from "react-native-reanimated";
 import Animated, {
   FadeIn,
   clamp,
@@ -41,7 +42,7 @@ export function StickyActionListLayout<TData>({
   /** Height of the StickyAction. */
   estimatedActionSize?: number;
   /** Pass a ref to the animated FlashList. */
-  listRef?: React.Ref<FlashList<any>>;
+  listRef?: AnimatedRef<FlashList<any>>;
   /**
    * How much we want to cut away from the bottom inset adjustment. Useful
    * for giving a more accurate `estimatedItemSize` when faking "gaps".
