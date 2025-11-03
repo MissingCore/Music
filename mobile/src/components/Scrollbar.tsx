@@ -17,7 +17,7 @@ import Animated, {
 import { OnRTLWorklet } from "~/lib/react";
 
 interface ScrollbarProps {
-  disabled?: boolean;
+  isVisible?: boolean;
 
   /** How much we scrolled so far. */
   scrollAmount: SharedValue<number>;
@@ -37,7 +37,7 @@ interface ScrollbarProps {
 const TOUCH_OFFSET = 14;
 
 export function Scrollbar({
-  disabled = false,
+  isVisible = true,
   scrollAmount,
   scrollByDelta,
   ...props
@@ -49,7 +49,7 @@ export function Scrollbar({
 
   const scrollGesture = Gesture.Pan()
     .activeOffsetY([-10, 10])
-    .enabled(!disabled || scrollEnabled)
+    .enabled(isVisible || scrollEnabled)
     .onStart(({ absoluteY }) => {
       isActive.value = true;
       prevPosition.value = absoluteY;
@@ -63,7 +63,7 @@ export function Scrollbar({
     });
 
   const thumbWrapperStyle = useAnimatedStyle(() => ({
-    opacity: disabled ? 0 : 1,
+    opacity: isVisible ? 1 : 0,
     transform: [{ translateY: scrollAmount.value }],
   }));
 
@@ -75,7 +75,7 @@ export function Scrollbar({
 
   return (
     <Animated.View
-      pointerEvents={disabled ? "none" : undefined}
+      pointerEvents={!isVisible ? "none" : undefined}
       style={[
         {
           [OnRTLWorklet.decide("left", "right")]: 8,
@@ -129,20 +129,6 @@ export function useScrollbarContext(args: {
     [args.topOffset, args.bottomOffset, layoutHeight],
   );
 
-  const onContentSizeChange = useCallback(
-    (_width: number, height: number) => {
-      scrollableHeight.value = height;
-      // Scrollbar should only be visible if we have a substantial area
-      // (3x the visible area).
-      setIsVisible(args.showScrollbar && height / layoutHeight > 3);
-    },
-    [args.showScrollbar, layoutHeight, scrollableHeight],
-  );
-
-  const onLayout = useCallback((e: LayoutChangeEvent) => {
-    setLayoutHeight(e.nativeEvent.layout.height);
-  }, []);
-
   const onScroll = useCallback(
     ({ contentOffset: { y } }: ReanimatedScrollEvent) => {
       "worklet";
@@ -153,15 +139,47 @@ export function useScrollbarContext(args: {
     [isVisible, layoutHeight, scrollableHeight, scrollPosition, scrollRange],
   );
 
-  const scrollByDelta = useCallback(
-    (delta: number) => {
-      "worklet";
-      const scrollProgress =
-        clamp(0, scrollPosition.value + delta, scrollRange) / scrollRange;
-      nextScrollPosition.value =
-        scrollProgress * (scrollableHeight.value - layoutHeight);
-    },
+  // Updates the list's scroll position.
+  useDerivedValue(() => {
+    scrollTo(args.listRef, 0, nextScrollPosition.value, false);
+  });
+
+  const listHandlers = useMemo(
+    () => ({
+      //* Determines whether the scrollbar will be presented and figures
+      //* out how much we can scroll.
+      onContentSizeChange: (_width: number, height: number) => {
+        scrollableHeight.value = height;
+        // Scrollbar should only be visible if we have a substantial area
+        // (3x the visible area).
+        setIsVisible(args.showScrollbar && height / layoutHeight > 3);
+      },
+      //* Determines the visible content area.
+      onLayout: (e: LayoutChangeEvent) => {
+        setLayoutHeight(e.nativeEvent.layout.height);
+      },
+    }),
+    [args.showScrollbar, layoutHeight, scrollableHeight],
+  );
+
+  const scrollbarProps: ScrollbarProps = useMemo(
+    () => ({
+      isVisible,
+      scrollAmount: scrollPosition,
+      scrollByDelta: (delta: number) => {
+        "worklet";
+        const scrollProgress =
+          clamp(0, scrollPosition.value + delta, scrollRange) / scrollRange;
+        nextScrollPosition.value =
+          scrollProgress * (scrollableHeight.value - layoutHeight);
+      },
+      topOffset: args.topOffset,
+      bottomOffset: args.bottomOffset,
+    }),
     [
+      args.bottomOffset,
+      args.topOffset,
+      isVisible,
       layoutHeight,
       nextScrollPosition,
       scrollableHeight,
@@ -170,27 +188,9 @@ export function useScrollbarContext(args: {
     ],
   );
 
-  useDerivedValue(() => {
-    scrollTo(args.listRef, 0, nextScrollPosition.value, false);
-  });
-
   return useMemo(
-    () => ({
-      isVisible,
-      onContentSizeChange,
-      onLayout,
-      onScroll,
-      scrollByDelta,
-      scrollPosition,
-    }),
-    [
-      isVisible,
-      onContentSizeChange,
-      onLayout,
-      onScroll,
-      scrollByDelta,
-      scrollPosition,
-    ],
+    () => ({ listHandlers, onScroll, scrollbarProps }),
+    [listHandlers, onScroll, scrollbarProps],
   );
 }
 //#endregion

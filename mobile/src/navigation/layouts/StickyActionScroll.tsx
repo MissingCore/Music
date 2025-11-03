@@ -67,13 +67,7 @@ export function StickyActionListLayout<TData>({
   const initActionPos = useSharedValue(0);
   const scrollAmount = useSharedValue(0);
 
-  const {
-    isVisible,
-    onScroll,
-    scrollByDelta,
-    scrollPosition,
-    ...layoutListeners
-  } = useScrollbarContext({
+  const { listHandlers, onScroll, scrollbarProps } = useScrollbarContext({
     listRef: internalListRef,
     showScrollbar,
     topOffset: actionStartPos,
@@ -116,7 +110,7 @@ export function StickyActionListLayout<TData>({
     <>
       <AnimatedFlashList
         ref={internalListRef}
-        {...layoutListeners}
+        {...listHandlers}
         onScroll={scrollHandler}
         ListHeaderComponent={
           <LayoutHeader
@@ -134,13 +128,7 @@ export function StickyActionListLayout<TData>({
           paddingBottom: bottomInset.withNav + 16 - insetDelta,
         }}
       />
-      <Scrollbar
-        disabled={!isVisible}
-        topOffset={actionStartPos}
-        bottomOffset={bottomInset.withNav + 16 - insetDelta}
-        scrollAmount={scrollPosition}
-        scrollByDelta={scrollByDelta}
-      />
+      <Scrollbar {...scrollbarProps} />
 
       {/* Render shadow under status bar when title is off-screen. */}
       <Animated.View
