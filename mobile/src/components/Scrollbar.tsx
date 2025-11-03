@@ -1,3 +1,4 @@
+import { useFocusEffect } from "@react-navigation/native";
 import type { FlashList } from "@shopify/flash-list";
 import { useCallback, useMemo, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
@@ -121,7 +122,7 @@ export function useScrollbarContext(args: {
   const scrollPosition = useSharedValue(0);
   // How we'll update the current scroll position as animated ref is `{}`
   // inside a worklet function.
-  const nextScrollPosition = useSharedValue(0);
+  const nextScrollPosition = useSharedValue(-1);
 
   // Area where the scrollbar is present.
   const scrollRange = useMemo(
@@ -131,7 +132,15 @@ export function useScrollbarContext(args: {
 
   // Updates the list's scroll position.
   useDerivedValue(() => {
+    if (nextScrollPosition.value === -1) return;
     scrollTo(args.listRef, 0, nextScrollPosition.value, false);
+  });
+
+  // Reset `nextScrollPosition` when we leave the screen as if we scroll
+  // without the scrollbar, leave, then return to the screen, we'll be
+  // scrolled back to `nextScrollPosition`.
+  useFocusEffect(() => {
+    nextScrollPosition.value = -1;
   });
 
   const listHandlers = useMemo(
