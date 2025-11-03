@@ -1,11 +1,15 @@
+import type { FlashList } from "@shopify/flash-list";
 import { useCallback, useMemo, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { Pressable } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import type { SharedValue } from "react-native-reanimated";
+import type { AnimatedRef, SharedValue } from "react-native-reanimated";
 import type { ReanimatedScrollEvent } from "react-native-reanimated/lib/typescript/hook/commonTypes";
 import Animated, {
+  clamp,
+  scrollTo,
   useAnimatedStyle,
+  useDerivedValue,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
@@ -17,6 +21,8 @@ interface ScrollbarProps {
 
   /** How much we scrolled so far. */
   scrollAmount: SharedValue<number>;
+  /** Modify scroll position by delta. */
+  scrollByDelta: (delta: number) => void;
 
   /** Offset from top of device for where the scrollbar will start. */
   topOffset: number;
@@ -33,15 +39,28 @@ const TOUCH_OFFSET = 14;
 export function Scrollbar({
   disabled = false,
   scrollAmount,
+  scrollByDelta,
   ...props
 }: ScrollbarProps) {
   const [scrollEnabled, setScrollEnabled] = useState(false);
 
   const isActive = useSharedValue(false);
+  const prevPosition = useSharedValue(0);
 
   const scrollGesture = Gesture.Pan()
     .activeOffsetY([-10, 10])
-    .enabled(!disabled || scrollEnabled);
+    .enabled(!disabled || scrollEnabled)
+    .onStart(({ absoluteY }) => {
+      isActive.value = true;
+      prevPosition.value = absoluteY;
+    })
+    .onUpdate(({ absoluteY }) => {
+      scrollByDelta(absoluteY - prevPosition.value);
+      prevPosition.value = absoluteY;
+    })
+    .onEnd(() => {
+      isActive.value = false;
+    });
 
   const thumbWrapperStyle = useAnimatedStyle(() => ({
     opacity: disabled ? 0 : 1,
@@ -88,6 +107,7 @@ export function Scrollbar({
 
 //#region Hook
 export function useScrollbarContext(args: {
+  listRef: AnimatedRef<FlashList<any>>;
   showScrollbar: boolean;
   topOffset: number;
   bottomOffset: number;
@@ -99,6 +119,9 @@ export function useScrollbarContext(args: {
   const scrollableHeight = useSharedValue(0);
   // List scroll position in relation to the scrollable area.
   const scrollPosition = useSharedValue(0);
+  // How we'll update the current scroll position as animated ref is `{}`
+  // inside a worklet function.
+  const nextScrollPosition = useSharedValue(0);
 
   // Area where the scrollbar is present.
   const scrollRange = useMemo(
@@ -130,15 +153,44 @@ export function useScrollbarContext(args: {
     [isVisible, layoutHeight, scrollableHeight, scrollPosition, scrollRange],
   );
 
+  const scrollByDelta = useCallback(
+    (delta: number) => {
+      "worklet";
+      const scrollProgress =
+        clamp(0, scrollPosition.value + delta, scrollRange) / scrollRange;
+      nextScrollPosition.value =
+        scrollProgress * (scrollableHeight.value - layoutHeight);
+    },
+    [
+      layoutHeight,
+      nextScrollPosition,
+      scrollableHeight,
+      scrollPosition,
+      scrollRange,
+    ],
+  );
+
+  useDerivedValue(() => {
+    scrollTo(args.listRef, 0, nextScrollPosition.value, false);
+  });
+
   return useMemo(
     () => ({
       isVisible,
       onContentSizeChange,
       onLayout,
       onScroll,
+      scrollByDelta,
       scrollPosition,
     }),
-    [isVisible, onContentSizeChange, onLayout, onScroll, scrollPosition],
+    [
+      isVisible,
+      onContentSizeChange,
+      onLayout,
+      onScroll,
+      scrollByDelta,
+      scrollPosition,
+    ],
   );
 }
 //#endregion

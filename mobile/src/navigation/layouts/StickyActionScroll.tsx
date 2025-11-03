@@ -1,7 +1,7 @@
 import type { FlashList, FlashListProps } from "@shopify/flash-list";
 import { LinearGradient } from "expo-linear-gradient";
 import type { ParseKeys } from "i18next";
-import { useCallback, useState } from "react";
+import { useCallback, useImperativeHandle, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { LayoutChangeEvent, TextProps } from "react-native";
 import { useWindowDimensions } from "react-native";
@@ -18,7 +18,10 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTheme } from "~/hooks/useTheme";
 import { useBottomActionsInset } from "../hooks/useBottomActions";
 
-import { AnimatedFlashList } from "~/components/Defaults";
+import {
+  AnimatedFlashList,
+  useAnimatedFlashListRef,
+} from "~/components/Defaults";
 import { Scrollbar, useScrollbarContext } from "~/components/Scrollbar";
 import { AccentText } from "~/components/Typography/AccentText";
 
@@ -56,17 +59,26 @@ export function StickyActionListLayout<TData>({
   const { width: ScreenWidth } = useWindowDimensions();
   const bottomInset = useBottomActionsInset();
   const { canvas } = useTheme();
+  const internalListRef = useAnimatedFlashListRef();
+  // @ts-expect-error - Should be able to synchronize refs.
+  useImperativeHandle(listRef, () => internalListRef.current);
 
   const [actionStartPos, setActionStartPos] = useState(0);
   const initActionPos = useSharedValue(0);
   const scrollAmount = useSharedValue(0);
 
-  const { isVisible, onScroll, scrollPosition, ...layoutListeners } =
-    useScrollbarContext({
-      showScrollbar,
-      topOffset: actionStartPos,
-      bottomOffset: bottomInset.withNav + 16 - insetDelta,
-    });
+  const {
+    isVisible,
+    onScroll,
+    scrollByDelta,
+    scrollPosition,
+    ...layoutListeners
+  } = useScrollbarContext({
+    listRef: internalListRef,
+    showScrollbar,
+    topOffset: actionStartPos,
+    bottomOffset: bottomInset.withNav + 16 - insetDelta,
+  });
 
   /** Calculate the initial starting position of `StickyAction`. */
   const calcInitStartPos = useCallback(
@@ -103,7 +115,7 @@ export function StickyActionListLayout<TData>({
   return (
     <>
       <AnimatedFlashList
-        ref={listRef}
+        ref={internalListRef}
         {...layoutListeners}
         onScroll={scrollHandler}
         ListHeaderComponent={
@@ -127,6 +139,7 @@ export function StickyActionListLayout<TData>({
         topOffset={actionStartPos}
         bottomOffset={bottomInset.withNav + 16 - insetDelta}
         scrollAmount={scrollPosition}
+        scrollByDelta={scrollByDelta}
       />
 
       {/* Render shadow under status bar when title is off-screen. */}
