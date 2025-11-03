@@ -22,7 +22,8 @@ import {
   AnimatedFlashList,
   useAnimatedFlashListRef,
 } from "~/components/Defaults";
-import { Scrollbar, useScrollbarContext } from "~/components/Scrollbar";
+import { Scrollbar, useScrollbarContext } from "~/components/NScrollbar";
+// import { Scrollbar, useScrollbarContext } from "~/components/Scrollbar";
 import { AccentText } from "~/components/Typography/AccentText";
 
 /**
@@ -67,12 +68,13 @@ export function StickyActionListLayout<TData>({
   const initActionPos = useSharedValue(0);
   const scrollAmount = useSharedValue(0);
 
-  const { listHandlers, onScroll, scrollbarProps } = useScrollbarContext({
-    listRef: internalListRef,
-    showScrollbar,
-    topOffset: actionStartPos,
-    bottomOffset: bottomInset.withNav + 16 - insetDelta,
-  });
+  const { layoutHandlers, layoutInfo, onScroll } = useScrollbarContext();
+  // const { listHandlers, onScroll, scrollbarProps } = useScrollbarContext({
+  //   listRef: internalListRef,
+  //   showScrollbar,
+  //   topOffset: actionStartPos,
+  //   bottomOffset: bottomInset.withNav + 16 - insetDelta,
+  // });
 
   /** Calculate the initial starting position of `StickyAction`. */
   const calcInitStartPos = useCallback(
@@ -110,7 +112,7 @@ export function StickyActionListLayout<TData>({
     <>
       <AnimatedFlashList
         ref={internalListRef}
-        {...listHandlers}
+        {...layoutHandlers}
         onScroll={scrollHandler}
         ListHeaderComponent={
           <LayoutHeader
@@ -128,7 +130,13 @@ export function StickyActionListLayout<TData>({
           paddingBottom: bottomInset.withNav + 16 - insetDelta,
         }}
       />
-      <Scrollbar {...scrollbarProps} />
+      <Scrollbar
+        scrollbarOffset={{
+          top: actionStartPos,
+          bottom: bottomInset.withNav + 16 - insetDelta,
+        }}
+        {...layoutInfo}
+      />
 
       {/* Render shadow under status bar when title is off-screen. */}
       <Animated.View
