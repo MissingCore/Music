@@ -1,5 +1,6 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
+import { Pressable } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import type { AnimatedRef, SharedValue } from "react-native-reanimated";
 import type { ReanimatedScrollEvent } from "react-native-reanimated/lib/typescript/hook/commonTypes";
@@ -36,6 +37,7 @@ export function Scrollbar({
   listScrollAmount,
   scrollbarOffset: { top, bottom },
 }: ScrollbarProps) {
+  const [thumbPressed, setThumbPressed] = useState(false);
   const scrollbarHeight = useSharedValue(0);
 
   const prevY = useSharedValue(-1);
@@ -87,7 +89,9 @@ export function Scrollbar({
   }));
 
   const thumbStyle = useAnimatedStyle(() => ({
-    height: withTiming(prevY.value !== -1 ? 32 : 4, { duration: 150 }),
+    height: withTiming(thumbPressed || prevY.value !== -1 ? 32 : 4, {
+      duration: 150,
+    }),
   }));
 
   return (
@@ -109,11 +113,17 @@ export function Scrollbar({
       <GestureDetector gesture={scrollGesture}>
         <Animated.View
           style={thumbWrapperStyle}
-          className="size-8 justify-center"
+          className="relative size-8 justify-center"
         >
+          <Pressable
+            onPressIn={() => setThumbPressed(true)}
+            onPressOut={() => setThumbPressed(false)}
+            className="size-full"
+          />
           <Animated.View
+            pointerEvents="none"
             style={thumbStyle}
-            className="w-8 rounded-full bg-red"
+            className="absolute w-8 rounded-full bg-red"
           />
         </Animated.View>
       </GestureDetector>
