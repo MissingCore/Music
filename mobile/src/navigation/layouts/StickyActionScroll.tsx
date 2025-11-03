@@ -18,7 +18,7 @@ import { useTheme } from "~/hooks/useTheme";
 import { useBottomActionsInset } from "../hooks/useBottomActions";
 
 import { AnimatedFlashList } from "~/components/Defaults";
-import { Scrollbar } from "~/components/Scrollbar";
+import { Scrollbar, useScrollbarContext } from "~/components/Scrollbar";
 import { AccentText } from "~/components/Typography/AccentText";
 
 /**
@@ -33,7 +33,7 @@ export function StickyActionListLayout<TData>({
   insetDelta = 0,
   showScrollbar = true,
   ...props
-}: FlashListProps<TData> & {
+}: Omit<FlashListProps<TData>, "onContentSizeChange" | "onLayout"> & {
   /** Key to title in translations. */
   titleKey: ParseKeys;
   /** Optional action displayed in layout. */
@@ -56,6 +56,9 @@ export function StickyActionListLayout<TData>({
   const bottomInset = useBottomActionsInset();
   const { canvas } = useTheme();
 
+  const { isVisible, onScroll, ...layoutListeners } =
+    useScrollbarContext(showScrollbar);
+
   const [actionStartPos, setActionStartPos] = useState(0);
   const initActionPos = useSharedValue(0);
   const scrollAmount = useSharedValue(0);
@@ -73,6 +76,7 @@ export function StickyActionListLayout<TData>({
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (e) => {
+      onScroll(e);
       scrollAmount.value = e.contentOffset.y;
     },
   });
@@ -95,6 +99,7 @@ export function StickyActionListLayout<TData>({
     <>
       <AnimatedFlashList
         ref={listRef}
+        {...layoutListeners}
         onScroll={scrollHandler}
         ListHeaderComponent={
           <LayoutHeader
@@ -113,7 +118,7 @@ export function StickyActionListLayout<TData>({
         }}
       />
       <Scrollbar
-        disabled={!showScrollbar}
+        disabled={!isVisible}
         topOffset={actionStartPos + estimatedActionSize}
         bottomOffset={bottomInset.withNav + 16 - insetDelta}
       />
