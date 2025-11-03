@@ -129,6 +129,7 @@ export function StickyActionListLayout<TData>({
           top: actionStartPos,
           bottom: bottomInset.withNav + 16 - insetDelta,
         }}
+        isVisible={showScrollbar}
         {...layoutInfo}
       />
 

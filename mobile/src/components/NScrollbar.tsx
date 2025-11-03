@@ -6,6 +6,7 @@ import type { AnimatedRef, SharedValue } from "react-native-reanimated";
 import type { ReanimatedScrollEvent } from "react-native-reanimated/lib/typescript/hook/commonTypes";
 import Animated, {
   clamp,
+  runOnJS,
   scrollTo,
   useAnimatedStyle,
   useDerivedValue,
@@ -22,6 +23,8 @@ interface ScrollbarProps {
   listScrollAmount: SharedValue<number>;
 
   scrollbarOffset: { top: number; bottom: number };
+
+  isVisible?: boolean;
 }
 
 /**
@@ -36,12 +39,20 @@ export function Scrollbar({
   listScrollHeight,
   listScrollAmount,
   scrollbarOffset: { top, bottom },
+  isVisible = true,
 }: ScrollbarProps) {
+  const [scrollbarVisible, setScrollbarVisible] = useState(false);
   const [thumbPressed, setThumbPressed] = useState(false);
   const scrollbarHeight = useSharedValue(0);
 
   const prevY = useSharedValue(-1);
   const nextScrollPosition = useSharedValue(-1);
+
+  //* Only show scrollbar if we have at least 3 screens worth of content.
+  useDerivedValue(() => {
+    const hasEnoughContent = listScrollHeight.value / listHeight.value > 3;
+    runOnJS(setScrollbarVisible)(isVisible && hasEnoughContent);
+  });
 
   //* How much we can actually scroll.
   const scrollableArea = useDerivedValue(
@@ -56,6 +67,7 @@ export function Scrollbar({
 
   const scrollGesture = Gesture.Pan()
     .activeOffsetY([-10, 10])
+    .enabled(scrollbarVisible)
     .onStart(({ absoluteY }) => {
       prevY.value = absoluteY;
     })
@@ -85,6 +97,7 @@ export function Scrollbar({
   });
 
   const thumbWrapperStyle = useAnimatedStyle(() => ({
+    opacity: scrollbarVisible ? 1 : 0,
     transform: [{ translateY: scaledScrollAmount.value }],
   }));
 
@@ -96,6 +109,7 @@ export function Scrollbar({
 
   return (
     <Animated.View
+      pointerEvents={!scrollbarVisible ? "none" : undefined}
       onLayout={(e) => {
         // Subtract `32px` so that at max scroll, the bottom of the thumb
         // doesn't hang over the scrollbar track.
