@@ -56,12 +56,16 @@ export function StickyActionListLayout<TData>({
   const bottomInset = useBottomActionsInset();
   const { canvas } = useTheme();
 
-  const { isVisible, onScroll, ...layoutListeners } =
-    useScrollbarContext(showScrollbar);
-
   const [actionStartPos, setActionStartPos] = useState(0);
   const initActionPos = useSharedValue(0);
   const scrollAmount = useSharedValue(0);
+
+  const { isVisible, onScroll, scrollPosition, ...layoutListeners } =
+    useScrollbarContext({
+      showScrollbar,
+      topOffset: actionStartPos,
+      bottomOffset: bottomInset.withNav + 16 - insetDelta,
+    });
 
   /** Calculate the initial starting position of `StickyAction`. */
   const calcInitStartPos = useCallback(
@@ -119,8 +123,9 @@ export function StickyActionListLayout<TData>({
       />
       <Scrollbar
         disabled={!isVisible}
-        topOffset={actionStartPos + estimatedActionSize}
+        topOffset={actionStartPos}
         bottomOffset={bottomInset.withNav + 16 - insetDelta}
+        scrollAmount={scrollPosition}
       />
 
       {/* Render shadow under status bar when title is off-screen. */}
