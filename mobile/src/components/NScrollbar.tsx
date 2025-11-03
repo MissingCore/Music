@@ -39,8 +39,17 @@ export function Scrollbar({
   scrollbarOffset: { top, bottom },
   ...props
 }: ScrollbarProps) {
+  const scrollbarHeight = useSharedValue(0);
+
+  //* Scales down `listScrollAmount` to fit inside of `scrollbarHeight`.
+  const scaledScrollAmount = useDerivedValue(() => {
+    const scrollableArea = listScrollHeight.value - listHeight.value;
+    const scrollPercent = listScrollAmount.value / scrollableArea;
+    return scrollPercent * scrollbarHeight.value;
+  });
+
   const thumbWrapperStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: listScrollAmount.value }],
+    transform: [{ translateY: scaledScrollAmount.value }],
   }));
 
   const thumbStyle = useAnimatedStyle(() => ({
@@ -49,6 +58,11 @@ export function Scrollbar({
 
   return (
     <Animated.View
+      onLayout={(e) => {
+        // Subtract `32px` so that at max scroll, the bottom of the thumb
+        // doesn't hang over the scrollbar track.
+        scrollbarHeight.value = e.nativeEvent.layout.height - 32;
+      }}
       style={[
         {
           [OnRTLWorklet.decide("left", "right")]: 8,
