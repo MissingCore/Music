@@ -129,16 +129,6 @@ export function useScrollbarContext(args: {
     [args.topOffset, args.bottomOffset, layoutHeight],
   );
 
-  const onScroll = useCallback(
-    ({ contentOffset: { y } }: ReanimatedScrollEvent) => {
-      "worklet";
-      if (!isVisible) return;
-      const scrollPercent = y / (scrollableHeight.value - layoutHeight);
-      scrollPosition.value = scrollPercent * scrollRange;
-    },
-    [isVisible, layoutHeight, scrollableHeight, scrollPosition, scrollRange],
-  );
-
   // Updates the list's scroll position.
   useDerivedValue(() => {
     scrollTo(args.listRef, 0, nextScrollPosition.value, false);
@@ -160,6 +150,16 @@ export function useScrollbarContext(args: {
       },
     }),
     [args.showScrollbar, layoutHeight, scrollableHeight],
+  );
+
+  const onScroll = useCallback(
+    ({ contentOffset: { y } }: ReanimatedScrollEvent) => {
+      "worklet";
+      if (!isVisible) return;
+      const scrollPercent = y / (scrollableHeight.value - layoutHeight);
+      scrollPosition.value = scrollPercent * scrollRange;
+    },
+    [isVisible, layoutHeight, scrollableHeight, scrollPosition, scrollRange],
   );
 
   const scrollbarProps: ScrollbarProps = useMemo(
