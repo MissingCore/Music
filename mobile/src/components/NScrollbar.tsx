@@ -1,14 +1,10 @@
-import { useFocusEffect } from "@react-navigation/native";
-import type { FlashList } from "@shopify/flash-list";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import type { LayoutChangeEvent } from "react-native";
-import { Pressable } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import type { AnimatedRef, SharedValue } from "react-native-reanimated";
 import type { ReanimatedScrollEvent } from "react-native-reanimated/lib/typescript/hook/commonTypes";
 import Animated, {
   clamp,
-  runOnUI,
   scrollTo,
   useAnimatedStyle,
   useDerivedValue,
@@ -19,6 +15,7 @@ import Animated, {
 import { OnRTLWorklet } from "~/lib/react";
 
 interface ScrollbarProps {
+  listRef: AnimatedRef<any>;
   listHeight: SharedValue<number>;
   listScrollHeight: SharedValue<number>;
   listScrollAmount: SharedValue<number>;
@@ -33,19 +30,56 @@ interface ScrollbarProps {
 const TOUCH_OFFSET = 14;
 
 export function Scrollbar({
+  listRef,
   listHeight,
   listScrollHeight,
   listScrollAmount,
   scrollbarOffset: { top, bottom },
-  ...props
 }: ScrollbarProps) {
   const scrollbarHeight = useSharedValue(0);
 
+  const prevY = useSharedValue(-1);
+  const nextScrollPosition = useSharedValue(-1);
+
+  //* How much we can actually scroll.
+  const scrollableArea = useDerivedValue(
+    () => listScrollHeight.value - listHeight.value,
+  );
+
   //* Scales down `listScrollAmount` to fit inside of `scrollbarHeight`.
   const scaledScrollAmount = useDerivedValue(() => {
-    const scrollableArea = listScrollHeight.value - listHeight.value;
-    const scrollPercent = listScrollAmount.value / scrollableArea;
+    const scrollPercent = listScrollAmount.value / scrollableArea.value;
     return scrollPercent * scrollbarHeight.value;
+  });
+
+  const scrollGesture = Gesture.Pan()
+    .activeOffsetY([-10, 10])
+    .onStart(({ absoluteY }) => {
+      prevY.value = absoluteY;
+    })
+    .onUpdate(({ absoluteY }) => {
+      const changeDelta = absoluteY - prevY.value;
+      const clampedScaledPosition = clamp(
+        0,
+        scaledScrollAmount.value + changeDelta,
+        scrollbarHeight.value,
+      );
+      const scrollPercent = clampedScaledPosition / scrollbarHeight.value;
+      const unscaledScrollAmount = scrollPercent * scrollableArea.value;
+
+      nextScrollPosition.value = unscaledScrollAmount;
+      prevY.value = absoluteY;
+    })
+    .onEnd(() => {
+      nextScrollPosition.value = -1;
+      prevY.value = -1;
+    });
+
+  //* Scroll to given offset using Reanimated.
+  useDerivedValue(() => {
+    if (nextScrollPosition.value === -1) return;
+    // `animated` argument needs to be `true` or otherwise, we get choppy scrolling.
+    scrollTo(listRef, 0, nextScrollPosition.value, true);
   });
 
   const thumbWrapperStyle = useAnimatedStyle(() => ({
@@ -53,7 +87,7 @@ export function Scrollbar({
   }));
 
   const thumbStyle = useAnimatedStyle(() => ({
-    height: 32,
+    height: withTiming(prevY.value !== -1 ? 32 : 4, { duration: 150 }),
   }));
 
   return (
@@ -72,15 +106,17 @@ export function Scrollbar({
       ]}
       className="absolute"
     >
-      <Animated.View
-        style={thumbWrapperStyle}
-        className="relative size-8 justify-center"
-      >
+      <GestureDetector gesture={scrollGesture}>
         <Animated.View
-          style={thumbStyle}
-          className="absolute w-8 rounded-full bg-red"
-        />
-      </Animated.View>
+          style={thumbWrapperStyle}
+          className="size-8 justify-center"
+        >
+          <Animated.View
+            style={thumbStyle}
+            className="w-8 rounded-full bg-red"
+          />
+        </Animated.View>
+      </GestureDetector>
     </Animated.View>
   );
 }

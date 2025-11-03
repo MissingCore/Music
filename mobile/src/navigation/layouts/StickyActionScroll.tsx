@@ -23,7 +23,6 @@ import {
   useAnimatedFlashListRef,
 } from "~/components/Defaults";
 import { Scrollbar, useScrollbarContext } from "~/components/NScrollbar";
-// import { Scrollbar, useScrollbarContext } from "~/components/Scrollbar";
 import { AccentText } from "~/components/Typography/AccentText";
 
 /**
@@ -69,12 +68,6 @@ export function StickyActionListLayout<TData>({
   const scrollAmount = useSharedValue(0);
 
   const { layoutHandlers, layoutInfo, onScroll } = useScrollbarContext();
-  // const { listHandlers, onScroll, scrollbarProps } = useScrollbarContext({
-  //   listRef: internalListRef,
-  //   showScrollbar,
-  //   topOffset: actionStartPos,
-  //   bottomOffset: bottomInset.withNav + 16 - insetDelta,
-  // });
 
   /** Calculate the initial starting position of `StickyAction`. */
   const calcInitStartPos = useCallback(
@@ -131,6 +124,7 @@ export function StickyActionListLayout<TData>({
         }}
       />
       <Scrollbar
+        listRef={internalListRef}
         scrollbarOffset={{
           top: actionStartPos,
           bottom: bottomInset.withNav + 16 - insetDelta,
