@@ -7,6 +7,7 @@ import type { ReanimatedScrollEvent } from "react-native-reanimated/lib/typescri
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
+  withTiming,
 } from "react-native-reanimated";
 
 import { OnRTLWorklet } from "~/lib/react";
@@ -23,7 +24,10 @@ interface ScrollbarProps {
   bottomOffset: number;
 }
 
-/** Distance above & below the thumb that can be pressed. */
+/**
+ * Distance above & below the thumb that can be pressed.
+ *  - Thumb is normally `4px` tall and can grow to `32px`.
+ */
 const TOUCH_OFFSET = 14;
 
 export function Scrollbar({
@@ -39,15 +43,20 @@ export function Scrollbar({
     .activeOffsetY([-10, 10])
     .enabled(!disabled || scrollEnabled);
 
-  const thumbStyle = useAnimatedStyle(() => ({
+  const thumbWrapperStyle = useAnimatedStyle(() => ({
     opacity: disabled ? 0 : 1,
-    height: isActive.value ? 32 : 4,
     transform: [{ translateY: scrollAmount.value }],
+  }));
+
+  const thumbStyle = useAnimatedStyle(() => ({
+    height: withTiming(scrollEnabled || isActive.value ? 32 : 4, {
+      duration: 150,
+    }),
   }));
 
   return (
     <Animated.View
-      pointerEvents="none"
+      pointerEvents={disabled ? "none" : undefined}
       style={[
         {
           [OnRTLWorklet.decide("left", "right")]: 8,
@@ -58,7 +67,10 @@ export function Scrollbar({
       className="absolute"
     >
       <GestureDetector gesture={scrollGesture}>
-        <Animated.View className="relative size-8 justify-center">
+        <Animated.View
+          style={thumbWrapperStyle}
+          className="relative size-8 justify-center"
+        >
           <Pressable
             onPressIn={() => setScrollEnabled(true)}
             onPressOut={() => setScrollEnabled(false)}
