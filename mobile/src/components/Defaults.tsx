@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import type { FlashDragListProps } from "react-native-draglist/dist/FlashList";
 import RawFlashDragList from "react-native-draglist/dist/FlashList";
-import Animated from "react-native-reanimated";
+import Animated, { useAnimatedRef } from "react-native-reanimated";
 
 /** Presets for scrollview-like components. */
 export const ScrollablePresets = {
@@ -96,7 +96,7 @@ export function FlashList<T>(props: FlashListProps<T>) {
 
 export function AnimatedFlashList<T>(props: FlashListProps<T>) {
   return (
-    // @ts-expect-error - Ref should be compatible.
+    // @ts-expect-error - Things are compatible.
     <RawAnimatedFlashList
       // To prevent `TypeError: Cannot read property 'y' of undefined`
       // crash from a list with `numColumns` and `ListEmptyComponent`.
@@ -114,6 +114,10 @@ export function AnimatedFlashList<T>(props: FlashListProps<T>) {
 export function useFlashListRef<T = any>() {
   return useRef<RawFlashList<T>>(null);
 }
+
+export function useAnimatedFlashListRef<T = any>() {
+  return useAnimatedRef<RawFlashList<T>>();
+}
 //#endregion
 
 //#region Flash Drag List
@@ -121,7 +125,6 @@ const WrappedFlashDragList = cssInterop(RawFlashDragList, {
   contentContainerClassName: "contentContainerStyle",
 }) as typeof RawFlashDragList;
 
-/** `<FlashDragList />` with some defaults. */
 export function FlashDragList<T>(props: FlashDragListProps<T>) {
   return <WrappedFlashDragList {...ScrollablePresets} {...props} />;
 }

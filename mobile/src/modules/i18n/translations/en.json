@@ -160,6 +160,10 @@
         "vinylOld": "Vinyl (Legacy)"
       }
     },
+    "quickScroll": {
+      "title": "Quick Scroll",
+      "brief": "Show Nothing-styled scrollbar on supported screens."
+    },
     "ignoreRTLLayout": {
       "title": "Ignore RTL Layout",
       "brief": "Use LTR layout with a RTL language. Restart required."

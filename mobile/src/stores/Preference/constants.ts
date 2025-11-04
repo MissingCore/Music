@@ -43,6 +43,13 @@ export interface PreferenceStore {
   /** Font used for text. */
   primaryFont: PrimaryFont;
 
+  /** Tab that we open up to on app launch. */
+  homeTab: Tab;
+  /** Order of tabs on the Home screen. */
+  tabsOrder: Tab[];
+  /** Visibility of the tabs on the Home screen. */
+  tabsVisibility: Record<Tab, boolean>;
+
   /** Minimum number of tracks for album to show in Albums screen. */
   minAlbumLength: number;
   /** If we want swipe controls on the miniplayer. */
@@ -50,12 +57,8 @@ export interface PreferenceStore {
   /** Design used for the Now Playing screen. */
   nowPlayingDesign: NowPlayingDesign;
 
-  /** Tab that we open up to on app launch. */
-  homeTab: Tab;
-  /** Order of tabs on the Home screen. */
-  tabsOrder: Tab[];
-  /** Visibility of the tabs on the Home screen. */
-  tabsVisibility: Record<Tab, boolean>;
+  /** Show functional Nothing-styled scrollbar on supported screens. */
+  quickScroll: boolean;
 
   /** Delay before next track is naturally played. */
   playbackDelay: number;

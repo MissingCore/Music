@@ -1,20 +1,24 @@
 import { LinearGradient } from "expo-linear-gradient";
 import type { ParseKeys } from "i18next";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import Animated, {
   clamp,
+  useAnimatedRef,
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { usePreferenceStore } from "~/stores/Preference/store";
 import { useTheme } from "~/hooks/useTheme";
 import { useBottomActionsInset } from "../hooks/useBottomActions";
 
 import { cn } from "~/lib/style";
 import { AnimatedScrollView } from "~/components/Defaults";
+import { Scrollbar, useScrollbarContext } from "~/components/NScrollbar";
 import { AccentText } from "~/components/Typography/AccentText";
 
 /** Standard scrollable layout with an option to display a title. */
@@ -27,16 +31,23 @@ export function StandardScrollLayout(props: {
   titleAction?: React.ReactNode;
   /** Only takes effect if this is `true` & `titleKey` is provided. */
   showStatusBarShadow?: boolean;
+  /** Whether the scrollbar should appear on scroll. */
+  showScrollbar?: boolean;
 }) {
   const { top } = useSafeAreaInsets();
   const bottomInset = useBottomActionsInset();
   const { canvas } = useTheme();
+  const quickScroll = usePreferenceStore((s) => s.quickScroll);
+  const scrollRef = useAnimatedRef();
 
-  const headerHeight = useSharedValue(0);
+  const { layoutHandlers, layoutInfo, onScroll } = useScrollbarContext();
+
+  const [headerHeight, setHeaderHeight] = useState(0);
   const scrollAmount = useSharedValue(0);
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (e) => {
+      onScroll(e);
       scrollAmount.value = e.contentOffset.y;
     },
   });
@@ -44,13 +55,16 @@ export function StandardScrollLayout(props: {
   const statusBarShadowVisibility = useAnimatedStyle(() => {
     if (!props.titleKey || !props.showStatusBarShadow) return { opacity: 0 };
     return {
-      opacity: clamp(scrollAmount.value / headerHeight.value || 0, 0, 1),
+      opacity: clamp(scrollAmount.value / headerHeight || 0, 0, 1),
     };
   });
 
   return (
     <>
       <AnimatedScrollView
+        // @ts-expect-error - We can pass refs since React 19.
+        ref={scrollRef}
+        {...layoutHandlers}
         onScroll={scrollHandler}
         contentContainerStyle={
           props.titleKey
@@ -66,13 +80,21 @@ export function StandardScrollLayout(props: {
           <LayoutHeader
             titleKey={props.titleKey}
             titleAction={props.titleAction}
-            getHeaderHeight={(height) => {
-              headerHeight.value = height;
-            }}
+            getHeaderHeight={setHeaderHeight}
           />
         ) : undefined}
         {props.children}
       </AnimatedScrollView>
+      <Scrollbar
+        listRef={scrollRef}
+        scrollbarOffset={{
+          // Extra `24px` because the gap isn't included.
+          top: 16 + headerHeight + 24,
+          bottom: bottomInset.withNav + 16,
+        }}
+        isVisible={(props.showScrollbar ?? false) && quickScroll}
+        {...layoutInfo}
+      />
 
       {/* Render shadow under status bar when title is off-screen. */}
       <Animated.View

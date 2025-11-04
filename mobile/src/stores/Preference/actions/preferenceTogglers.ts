@@ -15,6 +15,10 @@ export async function toggleContinuePlaybackOnDismiss() {
   );
 }
 
+export function toggleQuickScroll() {
+  preferenceStore.setState((prev) => ({ quickScroll: !prev.quickScroll }));
+}
+
 export function toggleIgnoreInterrupt() {
   preferenceStore.setState((prev) => ({
     ignoreInterrupt: !prev.ignoreInterrupt,

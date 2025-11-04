@@ -34,6 +34,7 @@ export default function Home() {
           large
         />
       }
+      showScrollbar
       showStatusBarShadow
     >
       <TEm textKey="term.favorites" className="-mb-4" />

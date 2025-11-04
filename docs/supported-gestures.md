@@ -43,3 +43,4 @@ This involves long-pressing an item to reveal some action. It's currently presen
 This involves dragging an item to do some action. It's currently present in the following features.
 
 - **`Now Playing Vinyl`:** You can drag your finger in a circular motion on the vinyl (when enabled) to have it act as a seekbar. 1 full rotation of the vinyl is equivalent to 24s.
+- **`Nothing-Styled Scrollbar`:** You can drag the scrollbar (currently only available on the Home screens) to quickly scroll through the screen. Do note that some content might not be rendered immediately.

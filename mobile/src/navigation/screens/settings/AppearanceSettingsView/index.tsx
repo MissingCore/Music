@@ -18,6 +18,7 @@ export default function AppearanceSettings() {
   const minAlbumLength = usePreferenceStore((s) => s.minAlbumLength);
   const miniplayerGestures = usePreferenceStore((s) => s.miniplayerGestures);
   const nowPlayingDesign = usePreferenceStore((s) => s.nowPlayingDesign);
+  const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const ignoreRTLLayout = usePreferenceStore((s) => s.ignoreRTLLayout);
   const accentFontSheetRef = useSheetRef();
   const primaryFontSheetRef = useSheetRef();
@@ -83,14 +84,22 @@ export default function AppearanceSettings() {
           />
         </List>
 
-        <ListItem
-          titleKey="feat.ignoreRTLLayout.title"
-          description={t("feat.ignoreRTLLayout.brief")}
-          onPress={PreferenceTogglers.toggleIgnoreRTLLayout}
-          switchState={ignoreRTLLayout}
-          first
-          last
-        />
+        <List>
+          <ListItem
+            titleKey="feat.quickScroll.title"
+            description={t("feat.quickScroll.brief")}
+            onPress={PreferenceTogglers.toggleQuickScroll}
+            switchState={quickScroll}
+            first
+          />
+          <ListItem
+            titleKey="feat.ignoreRTLLayout.title"
+            description={t("feat.ignoreRTLLayout.brief")}
+            onPress={PreferenceTogglers.toggleIgnoreRTLLayout}
+            switchState={ignoreRTLLayout}
+            last
+          />
+        </List>
       </StandardScrollLayout>
     </>
   );
