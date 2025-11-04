@@ -29,11 +29,8 @@ interface ScrollbarProps {
   isVisible?: boolean;
 }
 
-/**
- * Distance above & below the thumb that can be pressed.
- *  - Thumb is normally `4px` tall and can grow to `32px`.
- */
-const TOUCH_OFFSET = 14;
+const THUMB_SIZE = 48;
+const COLLAPSED_THUMB_SIZE = 8;
 
 const SCROLL_SUBSCRIPTION_ID = 1234567890;
 /** Delay before the scrollbar becomes invisible. */
@@ -122,6 +119,8 @@ export function Scrollbar({
   }, [listScrollAmount, isScrollingBuffer, prevY]);
 
   const thumbWrapperStyle = useAnimatedStyle(() => ({
+    height: THUMB_SIZE,
+    width: THUMB_SIZE,
     opacity: withTiming(scrollbarVisible ? 1 : 0, {
       duration: scrollbarVisible ? 150 : 500,
     }),
@@ -129,24 +128,26 @@ export function Scrollbar({
   }));
 
   const thumbStyle = useAnimatedStyle(() => ({
-    height: withTiming(thumbPressed || prevY.value !== -1 ? 32 : 4, {
-      duration: 150,
-    }),
+    height: withTiming(
+      thumbPressed || prevY.value !== -1 ? THUMB_SIZE : COLLAPSED_THUMB_SIZE,
+      { duration: 150 },
+    ),
+    width: THUMB_SIZE,
   }));
 
   return (
     <Animated.View
       pointerEvents={!scrollbarVisible ? "none" : undefined}
       onLayout={(e) => {
-        // Subtract `32px` so that at max scroll, the bottom of the thumb
-        // doesn't hang over the scrollbar track.
-        scrollbarHeight.value = e.nativeEvent.layout.height - 32;
+        // Subtract `THUMB_SIZE` so that at max scroll, the bottom of the
+        // thumb doesn't hang over the scrollbar track.
+        scrollbarHeight.value = e.nativeEvent.layout.height - THUMB_SIZE;
       }}
       style={[
         {
           [OnRTLWorklet.decide("left", "right")]: 8,
-          top: top - TOUCH_OFFSET,
-          bottom: bottom - TOUCH_OFFSET,
+          top: top - THUMB_SIZE / 2,
+          bottom,
         },
       ]}
       className="absolute"
@@ -154,7 +155,7 @@ export function Scrollbar({
       <GestureDetector gesture={scrollGesture}>
         <Animated.View
           style={thumbWrapperStyle}
-          className="relative size-8 justify-center"
+          className="relative justify-center"
         >
           <Pressable
             onPressIn={() => setThumbPressed(true)}
@@ -164,7 +165,7 @@ export function Scrollbar({
           <Animated.View
             pointerEvents="none"
             style={thumbStyle}
-            className="absolute w-8 rounded-full bg-foreground"
+            className="absolute rounded-full bg-foreground"
           />
         </Animated.View>
       </GestureDetector>
