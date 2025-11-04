@@ -73,7 +73,7 @@
   },
   "@react-navigation/material-top-tabs": {
     "name": "@react-navigation/material-top-tabs",
-    "version": "7.4.1",
+    "version": "7.4.2",
     "copyright": "Copyright (c) 2017 React Navigation Contributors",
     "source": "https://github.com/react-navigation/react-navigation/tree/main/packages/material-top-tabs",
     "license": "MIT",
@@ -89,7 +89,7 @@
   },
   "@react-navigation/native-stack": {
     "name": "@react-navigation/native-stack",
-    "version": "7.6.1",
+    "version": "7.6.2",
     "copyright": "Copyright (c) 2017 React Navigation Contributors",
     "source": "https://github.com/react-navigation/react-navigation/tree/main/packages/native-stack",
     "license": "MIT",
@@ -97,7 +97,7 @@
   },
   "@sentry/react-native": {
     "name": "@sentry/react-native",
-    "version": "7.4.0",
+    "version": "7.5.0",
     "copyright": "Copyright (c) 2017-2024 Sentry",
     "source": "https://github.com/getsentry/sentry-react-native",
     "license": "MIT",
@@ -113,7 +113,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.90.5",
+    "version": "5.90.6",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -289,7 +289,7 @@
   },
   "jotai": {
     "name": "jotai",
-    "version": "2.15.0",
+    "version": "2.15.1",
     "copyright": "Copyright (c) 2020 Poimandres",
     "source": "https://github.com/pmndrs/jotai",
     "license": "MIT",
@@ -329,7 +329,7 @@
   },
   "react-i18next": {
     "name": "react-i18next",
-    "version": "16.2.3",
+    "version": "16.2.4",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/react-i18next",
     "license": "MIT",
@@ -377,7 +377,7 @@
   },
   "react-native-gesture-handler": {
     "name": "react-native-gesture-handler",
-    "version": "2.29.0",
+    "version": "2.29.1",
     "copyright": "Copyright (c) 2016 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-gesture-handler",
     "license": "MIT",
@@ -385,7 +385,7 @@
   },
   "react-native-keyboard-controller": {
     "name": "react-native-keyboard-controller",
-    "version": "1.19.3",
+    "version": "1.19.5",
     "copyright": "Copyright (c) 2021 Kiryl Ziusko",
     "source": "https://github.com/kirillzyusko/react-native-keyboard-controller",
     "license": "MIT",
