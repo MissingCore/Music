@@ -114,8 +114,7 @@ export function Scrollbar({
     .enabled(scrollbarVisible)
     .minDuration(0)
     .onStart(persistScrollbar)
-    //? Note: `onTouchesUp` won't fire if the Pan gesture gets triggered.
-    .onTouchesUp(dismissScrollbar);
+    .onEnd(dismissScrollbar);
 
   const scrollGesture = Gesture.Pan()
     .enabled(scrollbarVisible)
@@ -124,6 +123,7 @@ export function Scrollbar({
       prevY.value = absoluteY;
     })
     .onUpdate(({ absoluteY }) => {
+      persistScrollbar();
       const changeDelta = absoluteY - prevY.value;
       const clampedScaledPosition = clamp(
         0,
