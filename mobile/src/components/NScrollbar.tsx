@@ -14,8 +14,6 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import { OnRTLWorklet } from "~/lib/react";
-
 interface ScrollbarProps {
   listRef: AnimatedRef<any>;
   listHeight: SharedValue<number>;
@@ -172,11 +170,7 @@ export function Scrollbar({
         // thumb doesn't hang over the scrollbar track.
         scrollbarHeight.value = e.nativeEvent.layout.height - THUMB_SIZE;
       }}
-      style={{
-        [OnRTLWorklet.decide("left", "right")]: 8,
-        top: top - THUMB_SIZE / 2,
-        bottom,
-      }}
+      style={{ right: 8, top: top - THUMB_SIZE / 2, bottom }}
       className="absolute"
     >
       <GestureDetector gesture={gestures}>
