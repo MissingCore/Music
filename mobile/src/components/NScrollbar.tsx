@@ -166,7 +166,7 @@ export function Scrollbar({
 
   return (
     <Animated.View
-      pointerEvents={!scrollbarVisible ? "none" : undefined}
+      pointerEvents={scrollbarVisible ? "box-none" : "none"}
       onLayout={(e) => {
         // Subtract `THUMB_SIZE` so that at max scroll, the bottom of the
         // thumb doesn't hang over the scrollbar track.
