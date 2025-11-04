@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
-import { Pressable } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import type { AnimatedRef, SharedValue } from "react-native-reanimated";
 import type { ReanimatedScrollEvent } from "react-native-reanimated/lib/typescript/hook/commonTypes";
@@ -43,21 +42,10 @@ export function Scrollbar({
   scrollbarOffset: { top, bottom },
   isVisible = true,
 }: ScrollbarProps) {
-  const [scrollbarVisible, setScrollbarVisible] = useState(false);
-  const [thumbPressed, setThumbPressed] = useState(false);
   const scrollbarHeight = useSharedValue(0);
 
   const prevY = useSharedValue(-1);
   const nextScrollPosition = useSharedValue(-1);
-  const isScrollingBuffer = useSharedValue(0); // Boolean field
-
-  //* Only show scrollbar if we have at least 3 screens worth of content.
-  useDerivedValue(() => {
-    const hasEnoughContent = listScrollHeight.value / listHeight.value > 3;
-    runOnJS(setScrollbarVisible)(
-      isVisible && hasEnoughContent && isScrollingBuffer.value !== 0,
-    );
-  });
 
   //* How much we can actually scroll.
   const scrollableArea = useDerivedValue(
@@ -70,10 +58,69 @@ export function Scrollbar({
     return scrollPercent * scrollbarHeight.value;
   });
 
-  const scrollGesture = Gesture.Pan()
-    .activeOffsetY([-10, 10])
+  //* Scroll to given offset using Reanimated.
+  useDerivedValue(() => {
+    if (nextScrollPosition.value === -1) return;
+    // `animated` argument needs to be `true` or otherwise, we get choppy scrolling.
+    scrollTo(listRef, 0, nextScrollPosition.value, true);
+  });
+
+  //#region Visibility
+  const [scrollbarVisible, setScrollbarVisible] = useState(false);
+  const isOngoing = useSharedValue(false);
+  const isScrollingBuffer = useSharedValue(0); // Boolean field
+
+  //* Keeps the scrollbar visible.
+  const persistScrollbar = useCallback(() => {
+    "worklet";
+    isOngoing.value = true;
+    isScrollingBuffer.value = 1;
+  }, [isOngoing, isScrollingBuffer]);
+
+  //* Start the timer to hide the scrollbar.
+  const dismissScrollbar = useCallback(() => {
+    "worklet";
+    isOngoing.value = false;
+    isScrollingBuffer.value = withTiming(0, { duration: HIDE_DELAY });
+  }, [isOngoing, isScrollingBuffer]);
+
+  //* Show scrollbar if we have at least 3 screens worth of content.
+  useDerivedValue(() => {
+    const hasEnoughContent = listScrollHeight.value / listHeight.value > 3;
+    runOnJS(setScrollbarVisible)(
+      isVisible && hasEnoughContent && isScrollingBuffer.value !== 0,
+    );
+  });
+
+  //* Show scrollbar when we're scrolling and hide it after a delay
+  //* after stopping when the thumb is released.
+  useEffect(() => {
+    runOnUI(() =>
+      listScrollAmount.addListener(SCROLL_SUBSCRIPTION_ID, () => {
+        isScrollingBuffer.value = 1;
+        if (isOngoing.value) return;
+        isScrollingBuffer.value = withTiming(0, { duration: HIDE_DELAY });
+      }),
+    )();
+
+    return () => {
+      runOnUI(() => listScrollAmount.removeListener(SCROLL_SUBSCRIPTION_ID))();
+    };
+  }, [isOngoing, listScrollAmount, isScrollingBuffer, prevY]);
+  //#endregion
+
+  //#region Gestures
+  const pressGesture = Gesture.LongPress()
     .enabled(scrollbarVisible)
+    .minDuration(0)
+    .onStart(persistScrollbar)
+    .onTouchesUp(dismissScrollbar);
+
+  const scrollGesture = Gesture.Pan()
+    .enabled(scrollbarVisible)
+    .activeOffsetY([-10, 10])
     .onStart(({ absoluteY }) => {
+      persistScrollbar();
       prevY.value = absoluteY;
     })
     .onUpdate(({ absoluteY }) => {
@@ -90,32 +137,15 @@ export function Scrollbar({
       prevY.value = absoluteY;
     })
     .onEnd(() => {
+      dismissScrollbar();
       nextScrollPosition.value = -1;
       prevY.value = -1;
     });
 
-  //* Scroll to given offset using Reanimated.
-  useDerivedValue(() => {
-    if (nextScrollPosition.value === -1) return;
-    // `animated` argument needs to be `true` or otherwise, we get choppy scrolling.
-    scrollTo(listRef, 0, nextScrollPosition.value, true);
-  });
+  const gestures = Gesture.Simultaneous(pressGesture, scrollGesture);
+  //#endregion
 
-  //* Only show scrollbar when we're scrolling and hide it after a delay
-  //* after stopping.
-  useEffect(() => {
-    runOnUI(() =>
-      listScrollAmount.addListener(SCROLL_SUBSCRIPTION_ID, () => {
-        isScrollingBuffer.value = 1;
-        isScrollingBuffer.value = withTiming(0, { duration: HIDE_DELAY });
-      }),
-    )();
-
-    return () => {
-      runOnUI(() => listScrollAmount.removeListener(SCROLL_SUBSCRIPTION_ID))();
-    };
-  }, [listScrollAmount, isScrollingBuffer, prevY]);
-
+  //#region Styles
   const thumbWrapperStyle = useAnimatedStyle(() => ({
     height: THUMB_SIZE,
     width: THUMB_SIZE,
@@ -127,11 +157,12 @@ export function Scrollbar({
 
   const thumbStyle = useAnimatedStyle(() => ({
     height: withTiming(
-      thumbPressed || prevY.value !== -1 ? THUMB_SIZE : COLLAPSED_THUMB_SIZE,
+      isOngoing.value || prevY.value !== -1 ? THUMB_SIZE : COLLAPSED_THUMB_SIZE,
       { duration: 150 },
     ),
     width: THUMB_SIZE,
   }));
+  //#endregion
 
   return (
     <Animated.View
@@ -150,20 +181,12 @@ export function Scrollbar({
       ]}
       className="absolute"
     >
-      <GestureDetector gesture={scrollGesture}>
-        <Animated.View
-          style={thumbWrapperStyle}
-          className="relative justify-center"
-        >
-          <Pressable
-            onPressIn={() => setThumbPressed(true)}
-            onPressOut={() => setThumbPressed(false)}
-            className="size-full"
-          />
+      <GestureDetector gesture={gestures}>
+        <Animated.View style={thumbWrapperStyle} className="justify-center">
           <Animated.View
             pointerEvents="none"
             style={thumbStyle}
-            className="absolute rounded-full bg-foreground"
+            className="rounded-full bg-foreground"
           />
         </Animated.View>
       </GestureDetector>
