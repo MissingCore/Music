@@ -142,6 +142,10 @@
         "vinylOld": "Vinilo (tradicional)"
       }
     },
+    "quickScroll": {
+      "title": null,
+      "brief": null
+    },
     "ignoreRTLLayout": {
       "title": "Ignorar diseño RTL",
       "brief": "Usar diseño LTR con un lenguaje RTL. Requiere reiniciar."
