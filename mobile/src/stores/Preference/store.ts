@@ -58,6 +58,8 @@ export const preferenceStore = createPersistedSubscribedStore<PreferenceStore>(
     repeatOnSkip: false,
     restoreLastPosition: true,
 
+    rescanOnLaunch: true,
+
     listAllow: [],
     listBlock: [],
     minSeconds: 15,

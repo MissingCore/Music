@@ -68,6 +68,9 @@ export interface PreferenceStore {
   /** Whether we'll restore the track to the last played position. */
   restoreLastPosition: boolean;
 
+  /** If we should rescan the library on app launch. */
+  rescanOnLaunch: boolean;
+
   /** Directories we'll limit to when looking for tracks. */
   listAllow: string[];
   /** Directories we'll ignore when looking for tracks. */

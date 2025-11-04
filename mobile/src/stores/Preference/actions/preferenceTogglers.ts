@@ -44,6 +44,12 @@ export function toggleRCNotification() {
   }));
 }
 
+export function toggleRescanOnLaunch() {
+  preferenceStore.setState((prev) => ({
+    rescanOnLaunch: !prev.rescanOnLaunch,
+  }));
+}
+
 export function toggleRepeatOnSkip() {
   preferenceStore.setState((prev) => ({ repeatOnSkip: !prev.repeatOnSkip }));
 }

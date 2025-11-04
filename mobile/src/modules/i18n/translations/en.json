@@ -259,6 +259,10 @@
       "title": "Deep Rescan",
       "brief": "Ignores any skip measures that speeds up the normal rescan feature."
     },
+    "rescanOnLaunch": {
+      "title": "Rescan on Launch",
+      "brief": "If disabled, use the Rescan feature to detect new, updated, and removed tracks."
+    },
     "listAllow": {
       "title": "Allowlist",
       "description": "Defaults to the following if empty:"

@@ -160,17 +160,17 @@ export async function cleanupDatabase(usedTrackIds: string[]) {
   // Clear the queue of deleted tracks.
   await Queue.removeIds(unusedTrackIds);
 
-  // Remove recently played media that's beyond what we display.
-  await db
-    .delete(playedMediaLists)
-    .where(lt(playedMediaLists.lastPlayedAt, Date.now() - RECENT_RANGE_MS));
-
   // Remove anything else that's unused.
   await removeUnusedCategories();
 }
 
 /** Remove any albums or artists that aren't used. */
 export async function removeUnusedCategories() {
+  // Remove recently played media that's beyond what we display.
+  await db
+    .delete(playedMediaLists)
+    .where(lt(playedMediaLists.lastPlayedAt, Date.now() - RECENT_RANGE_MS));
+
   // Remove unused albums.
   const allAlbums = await db.query.albums.findMany({
     columns: { id: true },
