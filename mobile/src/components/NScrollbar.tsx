@@ -172,13 +172,11 @@ export function Scrollbar({
         // thumb doesn't hang over the scrollbar track.
         scrollbarHeight.value = e.nativeEvent.layout.height - THUMB_SIZE;
       }}
-      style={[
-        {
-          [OnRTLWorklet.decide("left", "right")]: 8,
-          top: top - THUMB_SIZE / 2,
-          bottom,
-        },
-      ]}
+      style={{
+        [OnRTLWorklet.decide("left", "right")]: 8,
+        top: top - THUMB_SIZE / 2,
+        bottom,
+      }}
       className="absolute"
     >
       <GestureDetector gesture={gestures}>
@@ -196,7 +194,7 @@ export function Scrollbar({
 
 //#region Hook
 export function useScrollbarContext() {
-  const listHeight = useSharedValue(99999); // Prevent divisible by 0 error.
+  const listHeight = useSharedValue(0);
   const listScrollHeight = useSharedValue(0);
   const listScrollAmount = useSharedValue(0);
 
