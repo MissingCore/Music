@@ -12,6 +12,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { usePreferenceStore } from "~/stores/Preference/store";
 import { useTheme } from "~/hooks/useTheme";
 import { useBottomActionsInset } from "../hooks/useBottomActions";
 
@@ -36,6 +37,7 @@ export function StandardScrollLayout(props: {
   const { top } = useSafeAreaInsets();
   const bottomInset = useBottomActionsInset();
   const { canvas } = useTheme();
+  const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const scrollRef = useAnimatedRef();
 
   const { layoutHandlers, layoutInfo, onScroll } = useScrollbarContext();
@@ -90,7 +92,7 @@ export function StandardScrollLayout(props: {
           top: 16 + headerHeight + 24,
           bottom: bottomInset.withNav + 16,
         }}
-        isVisible={props.showScrollbar ?? false}
+        isVisible={(props.showScrollbar ?? false) && quickScroll}
         {...layoutInfo}
       />
 

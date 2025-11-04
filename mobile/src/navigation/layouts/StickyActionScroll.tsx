@@ -15,6 +15,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { usePreferenceStore } from "~/stores/Preference/store";
 import { useTheme } from "~/hooks/useTheme";
 import { useBottomActionsInset } from "../hooks/useBottomActions";
 
@@ -59,6 +60,7 @@ export function StickyActionListLayout<TData>({
   const { width: ScreenWidth } = useWindowDimensions();
   const bottomInset = useBottomActionsInset();
   const { canvas } = useTheme();
+  const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const internalListRef = useAnimatedFlashListRef();
   // @ts-expect-error - Should be able to synchronize refs.
   useImperativeHandle(listRef, () => internalListRef.current);
@@ -129,7 +131,7 @@ export function StickyActionListLayout<TData>({
           top: actionStartPos,
           bottom: bottomInset.withNav + 16 - insetDelta,
         }}
-        isVisible={showScrollbar}
+        isVisible={showScrollbar && quickScroll}
         {...layoutInfo}
       />
 

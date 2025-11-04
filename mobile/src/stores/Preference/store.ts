@@ -36,10 +36,6 @@ export const preferenceStore = createPersistedSubscribedStore<PreferenceStore>(
     accentFont: "NType",
     primaryFont: "Roboto",
 
-    minAlbumLength: 0,
-    miniplayerGestures: false,
-    nowPlayingDesign: "vinyl",
-
     homeTab: "home",
     tabsOrder: ["home", "folder", "playlist", "track", "album", "artist"],
     tabsVisibility: {
@@ -50,6 +46,12 @@ export const preferenceStore = createPersistedSubscribedStore<PreferenceStore>(
       playlist: true,
       track: true,
     },
+
+    minAlbumLength: 0,
+    miniplayerGestures: false,
+    nowPlayingDesign: "vinyl",
+
+    quickScroll: true,
 
     playbackDelay: 0,
 
