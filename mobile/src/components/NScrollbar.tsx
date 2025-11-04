@@ -12,7 +12,6 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
-  withDelay,
   withTiming,
 } from "react-native-reanimated";
 
@@ -30,7 +29,7 @@ interface ScrollbarProps {
 }
 
 const THUMB_SIZE = 48;
-const COLLAPSED_THUMB_SIZE = 8;
+const COLLAPSED_THUMB_SIZE = 6;
 
 const SCROLL_SUBSCRIPTION_ID = 1234567890;
 /** Delay before the scrollbar becomes invisible. */
@@ -92,8 +91,7 @@ export function Scrollbar({
     })
     .onEnd(() => {
       nextScrollPosition.value = -1;
-      // Brief delay before we collapse the thumb.
-      prevY.value = withDelay(500, withTiming(-1, { duration: 0 }));
+      prevY.value = -1;
     });
 
   //* Scroll to given offset using Reanimated.
