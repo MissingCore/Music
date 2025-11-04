@@ -84,9 +84,9 @@ export function Scrollbar({
     isScrollingBuffer.value = withTiming(0, { duration: HIDE_DELAY });
   }, [isOngoing, isScrollingBuffer]);
 
-  //* Show scrollbar if we have at least 3 screens worth of content.
+  //* Show scrollbar if we have at least 2 screens worth of content.
   useDerivedValue(() => {
-    const hasEnoughContent = listScrollHeight.value / listHeight.value > 3;
+    const hasEnoughContent = listScrollHeight.value / listHeight.value > 2;
     runOnJS(setScrollbarVisible)(
       isVisible && hasEnoughContent && isScrollingBuffer.value !== 0,
     );
