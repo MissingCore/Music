@@ -80,26 +80,24 @@ export default function AppearanceSettings() {
             titleKey="feat.nowPlayingDesign.title"
             description={t(`feat.nowPlayingDesign.extra.${nowPlayingDesign}`)}
             onPress={() => nowPlayingDesignSheetRef.current?.present()}
-            last
           />
-        </List>
-
-        <List>
           <ListItem
             titleKey="feat.quickScroll.title"
             description={t("feat.quickScroll.brief")}
             onPress={PreferenceTogglers.toggleQuickScroll}
             switchState={quickScroll}
-            first
-          />
-          <ListItem
-            titleKey="feat.ignoreRTLLayout.title"
-            description={t("feat.ignoreRTLLayout.brief")}
-            onPress={PreferenceTogglers.toggleIgnoreRTLLayout}
-            switchState={ignoreRTLLayout}
             last
           />
         </List>
+
+        <ListItem
+          titleKey="feat.ignoreRTLLayout.title"
+          description={t("feat.ignoreRTLLayout.brief")}
+          onPress={PreferenceTogglers.toggleIgnoreRTLLayout}
+          switchState={ignoreRTLLayout}
+          first
+          last
+        />
       </StandardScrollLayout>
     </>
   );

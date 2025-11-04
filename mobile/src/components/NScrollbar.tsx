@@ -150,7 +150,8 @@ export function Scrollbar({
     opacity: withTiming(scrollbarVisible ? 1 : 0, {
       duration: scrollbarVisible ? 150 : 500,
     }),
-    transform: [{ translateY: scaledScrollAmount.value }],
+    //? Prevents `dev` mode error when `scaledScrollAmount = NaN` from `0/0`.
+    transform: [{ translateY: scaledScrollAmount.value || 0 }],
   }));
 
   const thumbStyle = useAnimatedStyle(() => ({
