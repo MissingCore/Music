@@ -142,6 +142,10 @@
         "vinylOld": "黑胶唱片(经典)"
       }
     },
+    "quickScroll": {
+      "title": null,
+      "brief": null
+    },
     "ignoreRTLLayout": {
       "title": "忽略RTL布局",
       "brief": "使用RTL 语言时使用 LTR 布局，重新启动后生效。"

@@ -142,6 +142,10 @@
         "vinylOld": "Vinyle (Legacy)"
       }
     },
+    "quickScroll": {
+      "title": null,
+      "brief": null
+    },
     "ignoreRTLLayout": {
       "title": null,
       "brief": "Utilisez la disposition LTR avec un langage RTL. Redémarrage requis."

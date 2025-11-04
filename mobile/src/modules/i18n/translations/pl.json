@@ -142,6 +142,10 @@
         "vinylOld": "Winyl (Poprzedni)"
       }
     },
+    "quickScroll": {
+      "title": null,
+      "brief": null
+    },
     "ignoreRTLLayout": {
       "title": "Ignoruj układ RTL",
       "brief": "Używaj układu LTR z językami RTL. Wymagany restart."

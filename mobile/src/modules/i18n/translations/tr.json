@@ -142,6 +142,10 @@
         "vinylOld": "Plak (Eski)"
       }
     },
+    "quickScroll": {
+      "title": null,
+      "brief": null
+    },
     "ignoreRTLLayout": {
       "title": "RTL Düzenini Görmezden Gel",
       "brief": "RTL bir dil ile LTR düzenini kullan. Yeniden başlatma gereklidir."

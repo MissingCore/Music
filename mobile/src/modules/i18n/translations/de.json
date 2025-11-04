@@ -142,6 +142,10 @@
         "vinylOld": "Vinyl (Alt)"
       }
     },
+    "quickScroll": {
+      "title": null,
+      "brief": null
+    },
     "ignoreRTLLayout": {
       "title": "RTL-Layout ignorieren",
       "brief": "LTR-Layout mit einer RTL-Sprache verwenden. Ein Neustart ist erforderlich."

@@ -142,6 +142,10 @@
         "vinylOld": "ヴァイナル (従来)"
       }
     },
+    "quickScroll": {
+      "title": null,
+      "brief": null
+    },
     "ignoreRTLLayout": {
       "title": "RTL レイアウトを無視",
       "brief": "RTL 言語で LTR レイアウトを使用します。アプリの再起動が必要です。"

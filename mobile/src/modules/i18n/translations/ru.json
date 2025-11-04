@@ -142,6 +142,10 @@
         "vinylOld": "Винил (устаревший)"
       }
     },
+    "quickScroll": {
+      "title": null,
+      "brief": null
+    },
     "ignoreRTLLayout": {
       "title": null,
       "brief": null
