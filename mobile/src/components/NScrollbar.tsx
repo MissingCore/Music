@@ -114,11 +114,11 @@ export function Scrollbar({
     .enabled(scrollbarVisible)
     .minDuration(0)
     .onStart(persistScrollbar)
+    //? Note: `onTouchesUp` won't fire if the Pan gesture gets triggered.
     .onTouchesUp(dismissScrollbar);
 
   const scrollGesture = Gesture.Pan()
     .enabled(scrollbarVisible)
-    .activeOffsetY([-10, 10])
     .onStart(({ absoluteY }) => {
       persistScrollbar();
       prevY.value = absoluteY;
