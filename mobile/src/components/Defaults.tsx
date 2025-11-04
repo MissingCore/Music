@@ -96,7 +96,7 @@ export function FlashList<T>(props: FlashListProps<T>) {
 
 export function AnimatedFlashList<T>(props: FlashListProps<T>) {
   return (
-    // @ts-expect-error - Ref should be compatible.
+    // @ts-expect-error - Things are compatible.
     <RawAnimatedFlashList
       // To prevent `TypeError: Cannot read property 'y' of undefined`
       // crash from a list with `numColumns` and `ListEmptyComponent`.
@@ -125,7 +125,6 @@ const WrappedFlashDragList = cssInterop(RawFlashDragList, {
   contentContainerClassName: "contentContainerStyle",
 }) as typeof RawFlashDragList;
 
-/** `<FlashDragList />` with some defaults. */
 export function FlashDragList<T>(props: FlashDragListProps<T>) {
   return <WrappedFlashDragList {...ScrollablePresets} {...props} />;
 }
