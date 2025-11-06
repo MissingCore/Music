@@ -28,7 +28,6 @@ jobs:
       - name: Add config to create privacy build
         run: |
           echo "music.CREATE_PRIVACY_BUILD=true" >> android/gradle.properties
-          echo "EXPO_PUBLIC_PRIVACY_BUILD=true" >> .env
 
       - name: Clean generated builds
         run: rm -rf android/app/build/generated/
