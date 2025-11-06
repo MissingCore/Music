@@ -241,6 +241,10 @@
       "title": "深度扫描",
       "brief": "忽略任何可以加速正常重新扫描功能的跳过措施。"
     },
+    "rescanOnLaunch": {
+      "title": null,
+      "brief": null
+    },
     "listAllow": {
       "title": "允许列表",
       "description": "为空时使用以下默认值："
@@ -268,6 +272,9 @@
         "start": "启动",
         "stopTime": null
       }
+    },
+    "waveformSlider": {
+      "title": null
     },
     "translate": {
       "title": "协助翻译",

@@ -241,6 +241,10 @@
       "title": "Grundig scanning",
       "brief": "Scanner alle filer på enheden. Kan tage længere tid end den normale scanning."
     },
+    "rescanOnLaunch": {
+      "title": null,
+      "brief": null
+    },
     "listAllow": {
       "title": "Tilladelsesliste",
       "description": "Bruger standardmæssigt følgende:"
@@ -268,6 +272,9 @@
         "start": null,
         "stopTime": null
       }
+    },
+    "waveformSlider": {
+      "title": null
     },
     "translate": {
       "title": "Bidrag oversættelser",

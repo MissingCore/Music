@@ -241,6 +241,10 @@
       "title": "Reescaneo Profundo",
       "brief": "Ignora cualquier medida de salto que acelere la función de reescaneo normal."
     },
+    "rescanOnLaunch": {
+      "title": null,
+      "brief": null
+    },
     "listAllow": {
       "title": "Lista de permitidos",
       "description": "Predeterminado si lo siguiente está vacío:"
@@ -268,6 +272,9 @@
         "start": "Iniciar",
         "stopTime": "El audio se detendrá en {{- time}}."
       }
+    },
+    "waveformSlider": {
+      "title": null
     },
     "translate": {
       "title": "Contribuir con las traducciones",

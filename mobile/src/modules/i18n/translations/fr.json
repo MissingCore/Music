@@ -241,6 +241,10 @@
       "title": "Recherche en profondeur",
       "brief": "Ignore toutes les mesures de saut qui accélèrent la fonction normale de recherche."
     },
+    "rescanOnLaunch": {
+      "title": null,
+      "brief": null
+    },
     "listAllow": {
       "title": "Liste d'autorisation",
       "description": "Prends le suivant par défaut si vide:"
@@ -268,6 +272,9 @@
         "start": null,
         "stopTime": null
       }
+    },
+    "waveformSlider": {
+      "title": null
     },
     "translate": {
       "title": "Contribuer aux traductions",
