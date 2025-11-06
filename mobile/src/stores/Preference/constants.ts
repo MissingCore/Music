@@ -86,6 +86,8 @@ export interface PreferenceStore {
   continuePlaybackOnDismiss: boolean;
   /** Whether we'll continue playback through any interruptions. */
   ignoreInterrupt: boolean;
+  /** Display seek bar with audio waves in "Now Playing" screen. */
+  visualizedSeekBar: boolean;
 }
 
 export const OmittedFields: string[] = [

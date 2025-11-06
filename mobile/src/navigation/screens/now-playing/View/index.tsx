@@ -18,6 +18,7 @@ import { presentTrackSheet } from "~/services/SessionStore";
 import { usePlayerProgress } from "../helpers/usePlayerProgress";
 import { NowPlayingArtwork } from "../components/Artwork";
 import { PlaybackOptionsSheet } from "./PlaybackOptionsSheet";
+import { ProgressBar } from "../components/ProgressBar";
 import { SleepTimerSheet } from "./SleepTimerSheet";
 import { useSleepTimerStore } from "./SleepTimerSheet/store";
 
@@ -28,7 +29,6 @@ import { formatSeconds } from "~/utils/number";
 import { Marquee } from "~/components/Containment/Marquee";
 import { SafeContainer } from "~/components/Containment/SafeContainer";
 import { IconButton } from "~/components/Form/Button";
-import { Slider } from "~/components/Form/Slider";
 import { useSheetRef } from "~/components/Sheet";
 import { StyledText } from "~/components/Typography/StyledText";
 import {
@@ -48,7 +48,7 @@ export default function NowPlaying() {
       <NowPlayingArtwork artwork={track.artwork} />
       <View className="gap-6 px-4">
         <Metadata track={track} />
-        <SeekBar duration={track.duration} />
+        <SeekBar duration={track.duration} uri={track.uri} />
         <PlaybackControls />
       </View>
       <BottomAppBar />
@@ -154,20 +154,22 @@ function MarqueeLink({
 
 //#region Seek Bar
 /** Allows us to change the current positon of the playing track. */
-function SeekBar({ duration }: { duration: number }) {
+function SeekBar({ duration, uri }: { duration: number; uri: string }) {
   const { position, setPosition, seekToPosition } = usePlayerProgress();
+  const visualizedSeekBar = usePreferenceStore((s) => s.visualizedSeekBar);
 
   const clampedPos = position > duration ? duration : position;
 
   return (
     <View>
-      <Slider
+      <ProgressBar
+        trackPath={uri}
         value={clampedPos}
         max={duration}
-        onChange={setPosition}
-        onComplete={seekToPosition}
-        thumbSize={16}
+        onInput={setPosition}
+        onChange={seekToPosition}
         inverted={I18nManager.isRTL}
+        legacySlider={!visualizedSeekBar}
       />
       <View
         style={{ flexDirection: OnRTL.decide("row-reverse", "row") }}
