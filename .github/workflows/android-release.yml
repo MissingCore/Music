@@ -37,6 +37,11 @@ jobs:
           echo "COMMIT_TAG=${COMMIT_TAG}" >> $GITHUB_ENV
           echo "Commit Tag: $COMMIT_TAG"
 
+      - name: Add config to enable Sentry
+        run: |
+          echo "music.WITH_SENTRY=true" >> android/gradle.properties
+          echo "EXPO_PUBLIC_WITH_SENTRY=true" >> .env
+
       - name: Create `sentry.properties` file
         run: |
           echo "${{ secrets.SENTRY_PROPERTIES }}" > android/sentry.properties
@@ -94,6 +99,11 @@ jobs:
 
       - name: Setup Gradle action for optimized execution and caching
         uses: gradle/actions/setup-gradle@v4
+
+      - name: Add config to enable Sentry
+        run: |
+          echo "music.WITH_SENTRY=true" >> android/gradle.properties
+          echo "EXPO_PUBLIC_WITH_SENTRY=true" >> .env
 
       - name: Create `sentry.properties` file
         run: |
