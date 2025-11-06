@@ -1,73 +1,54 @@
 import AudioWaveView from "@kaannn/react-native-waveform";
 import { Slider as RNSlider } from "@miblanchard/react-native-slider";
 import { View } from "react-native";
-import { Slider } from "~/components/Form/Slider";
+
+import { usePreferenceStore } from "~/stores/Preference/store";
+import { useTheme } from "~/hooks/useTheme";
+
 import { Colors } from "~/constants/Styles";
-import { useCurrentTheme } from "~/hooks/useTheme";
+import { Slider } from "~/components/Form/Slider";
 
 interface ProgressBarProps {
   trackPath: string;
   value: number;
   max: number;
   onChange: (value: number) => void | Promise<void>;
-  onInput: (value: number) => void | Promise<void>;
+  onComplete: (value: number) => void | Promise<void>;
   inverted?: boolean;
-  legacySlider?: boolean;
 }
 
 export function ProgressBar(props: ProgressBarProps) {
-  const isDark = useCurrentTheme() === "dark";
+  const { onSurface } = useTheme();
+  const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
 
-  return props.legacySlider ? (
-    <Slider
-      value={props.value}
-      max={props.max}
-      onChange={props.onInput}
-      onComplete={props.onChange}
-      thumbSize={16}
-      inverted={props.inverted}
-    />
-  ) : (
-    <View className="relative isolate">
-      <View className="flex h-14">
-        <AudioWaveView
-          style={{
-            flex: 1,
-            width: "100%",
-            height: "100%",
-            zIndex: 10,
-            pointerEvents: "none",
-            transform: props.inverted ? [{ rotate: "180deg" }] : [],
-          }}
-          progress={props.value}
-          maxProgress={props.max}
-          waveWidth={4}
-          waveGap={4}
-          waveMinHeight={4}
-          waveCornerRadius={8}
-          audioSource={props.trackPath}
-          waveBackgroundColor={Colors.neutral40}
-          waveProgressColor={Colors.red}
-        />
-        <RNSlider
-          containerStyle={{
-            position: "absolute",
-            width: "100%",
-            height: "100%",
-            zIndex: 20,
-          }}
-          thumbStyle={{ height: "100%", width: 4 }}
-          thumbTintColor={isDark ? Colors.neutral85 : Colors.neutral20}
-          minimumTrackTintColor={Colors.transparent}
-          maximumTrackTintColor={Colors.transparent}
-          inverted={props.inverted}
-          value={props.value}
-          minimumValue={0}
-          maximumValue={props.max}
-          onValueChange={([newPos]) => props.onInput(newPos!)}
-          onSlidingComplete={([newPos]) => props.onChange(newPos!)}
-        />
-      </View>
+  if (!waveformSlider) return <Slider {...props} thumbSize={16} />;
+  return (
+    <View className="relative h-12">
+      <AudioWaveView
+        audioSource={props.trackPath}
+        progress={props.value}
+        maxProgress={props.max}
+        waveMinHeight={8}
+        waveWidth={6}
+        waveGap={4}
+        waveCornerRadius={8}
+        waveBackgroundColor={onSurface}
+        waveProgressColor={Colors.red}
+        style={{ width: "100%", height: "100%" }}
+      />
+      <RNSlider
+        value={props.value}
+        minimumValue={0}
+        maximumValue={props.max}
+        onSlidingComplete={([newPos]) => props.onComplete(newPos!)}
+        onValueChange={([newPos]) => props.onChange(newPos!)}
+        maximumTrackTintColor={Colors.transparent}
+        minimumTrackTintColor={Colors.transparent}
+        thumbTintColor={Colors.transparent}
+        thumbStyle={{ width: 0 }}
+        containerStyle={{ position: "absolute", width: "100%", height: "100%" }}
+        inverted={props.inverted}
+      />
     </View>
   );
 }

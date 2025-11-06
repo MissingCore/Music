@@ -273,9 +273,8 @@
         "stopTime": "Odtwarzanie zostanie zatrzymane o {{- time}}."
       }
     },
-    "visualizedSeekBar": {
-      "title": "Pasek przewijania z wizualizacją",
-      "brief": "Wyświetl pasek przewijania z wizualnymi falami dźwiękowymi w ekranie `Odtwarzane teraz`."
+    "waveformSlider": {
+      "title": "Pasek przewijania z wizualizacją"
     },
     "translate": {
       "title": "Rozwijaj tłumaczenia",

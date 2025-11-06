@@ -60,8 +60,8 @@ export function toggleRestoreLastPosition() {
   }));
 }
 
-export function toggleVisualizedSeekBar() {
+export function toggleWaveformSlider() {
   preferenceStore.setState((prev) => ({
-    visualizedSeekBar: !prev.visualizedSeekBar,
+    waveformSlider: !prev.waveformSlider,
   }));
 }

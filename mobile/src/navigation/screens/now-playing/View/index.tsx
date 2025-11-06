@@ -17,8 +17,8 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/services/SessionStore";
 import { usePlayerProgress } from "../helpers/usePlayerProgress";
 import { NowPlayingArtwork } from "../components/Artwork";
-import { PlaybackOptionsSheet } from "./PlaybackOptionsSheet";
 import { ProgressBar } from "../components/ProgressBar";
+import { PlaybackOptionsSheet } from "./PlaybackOptionsSheet";
 import { SleepTimerSheet } from "./SleepTimerSheet";
 import { useSleepTimerStore } from "./SleepTimerSheet/store";
 
@@ -156,7 +156,6 @@ function MarqueeLink({
 /** Allows us to change the current positon of the playing track. */
 function SeekBar({ duration, uri }: { duration: number; uri: string }) {
   const { position, setPosition, seekToPosition } = usePlayerProgress();
-  const visualizedSeekBar = usePreferenceStore((s) => s.visualizedSeekBar);
 
   const clampedPos = position > duration ? duration : position;
 
@@ -166,10 +165,9 @@ function SeekBar({ duration, uri }: { duration: number; uri: string }) {
         trackPath={uri}
         value={clampedPos}
         max={duration}
-        onInput={setPosition}
-        onChange={seekToPosition}
+        onChange={setPosition}
+        onComplete={seekToPosition}
         inverted={I18nManager.isRTL}
-        legacySlider={!visualizedSeekBar}
       />
       <View
         style={{ flexDirection: OnRTL.decide("row-reverse", "row") }}

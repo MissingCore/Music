@@ -69,7 +69,7 @@ export const preferenceStore = createPersistedSubscribedStore<PreferenceStore>(
     //! Experimental Features
     continuePlaybackOnDismiss: false,
     ignoreInterrupt: false,
-    visualizedSeekBar: false,
+    waveformSlider: false,
   }),
   {
     name: "music::user-preferences",

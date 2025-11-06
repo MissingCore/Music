@@ -86,8 +86,8 @@ export interface PreferenceStore {
   continuePlaybackOnDismiss: boolean;
   /** Whether we'll continue playback through any interruptions. */
   ignoreInterrupt: boolean;
-  /** Display seek bar with audio waves in "Now Playing" screen. */
-  visualizedSeekBar: boolean;
+  /** Utilize a waveform slider on the Now Playing screen. */
+  waveformSlider: boolean;
 }
 
 export const OmittedFields: string[] = [
