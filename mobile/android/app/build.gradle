@@ -64,9 +64,7 @@ react {
 }
 
 
-// If `music.CREATE_PRIVACY_BUILD` defined in `gradle.properties` is `true`,
-// we don't run this code.
-if (!findProperty('music.CREATE_PRIVACY_BUILD')?.toBoolean()) {
+if (findProperty('music.WITH_SENTRY')?.toBoolean()) {
     apply plugin: "io.sentry.android.gradle"
 
     /**
