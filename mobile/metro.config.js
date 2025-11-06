@@ -4,7 +4,7 @@ const { withNativeWind } = require("nativewind/metro");
 /** @type {import('expo/metro-config').MetroConfig} */
 let config = null;
 
-if (process.env.EXPO_PUBLIC_PRIVACY_BUILD !== "true") {
+if (process.env.EXPO_PUBLIC_WITH_SENTRY === "true") {
   const { getSentryExpoConfig } = require("@sentry/react-native/metro");
   config = getSentryExpoConfig(__dirname);
 } else {
