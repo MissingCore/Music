@@ -156,6 +156,7 @@ function MarqueeLink({
 /** Allows us to change the current positon of the playing track. */
 function SeekBar({ duration, uri }: { duration: number; uri: string }) {
   const { position, setPosition, seekToPosition } = usePlayerProgress();
+  const visualizedSeekBar = usePreferenceStore((s) => s.visualizedSeekBar);
 
   const clampedPos = position > duration ? duration : position;
 
@@ -168,6 +169,7 @@ function SeekBar({ duration, uri }: { duration: number; uri: string }) {
         onInput={setPosition}
         onChange={seekToPosition}
         inverted={I18nManager.isRTL}
+        legacySlider={!visualizedSeekBar}
       />
       <View
         style={{ flexDirection: OnRTL.decide("row-reverse", "row") }}

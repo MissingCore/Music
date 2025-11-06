@@ -12,6 +12,7 @@ export default function ExperimentalSettings() {
     (s) => s.continuePlaybackOnDismiss,
   );
   const ignoreInterrupt = usePreferenceStore((s) => s.ignoreInterrupt);
+  const visualizedSeekBar = usePreferenceStore((s) => s.visualizedSeekBar);
 
   return (
     <StandardScrollLayout>
@@ -28,6 +29,12 @@ export default function ExperimentalSettings() {
           description={t("feat.ignoreInterrupt.brief")}
           onPress={PreferenceTogglers.toggleIgnoreInterrupt}
           switchState={ignoreInterrupt}
+        />
+        <ListItem
+          titleKey="feat.visualizedSeekBar.title"
+          description={t("feat.visualizedSeekBar.brief")}
+          onPress={PreferenceTogglers.toggleVisualizedSeekBar}
+          switchState={visualizedSeekBar}
           last
         />
       </List>

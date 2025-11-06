@@ -291,6 +291,10 @@
         "stopTime": "Audio will stop playing at {{- time}}."
       }
     },
+    "visualizedSeekBar": {
+      "title": "Waveform seek bar",
+      "brief": "Display a seek bar with visualized audio waves in the Now Playing screen."
+    },
     "translate": {
       "title": "Contribute Translations",
       "brief": "Help translate the app in other languages."

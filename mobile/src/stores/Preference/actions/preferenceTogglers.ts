@@ -59,3 +59,9 @@ export function toggleRestoreLastPosition() {
     restoreLastPosition: !prev.restoreLastPosition,
   }));
 }
+
+export function toggleVisualizedSeekBar() {
+  preferenceStore.setState((prev) => ({
+    visualizedSeekBar: !prev.visualizedSeekBar,
+  }));
+}
