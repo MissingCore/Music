@@ -117,7 +117,8 @@
       "@backpackapp-io/react-native-toast": "patches/@backpackapp-io__react-native-toast.patch",
       "expo-file-system": "patches/expo-file-system.patch",
       "react-native-android-widget": "patches/react-native-android-widget.patch",
-      "react-native-bootsplash": "patches/react-native-bootsplash.patch"
+      "react-native-bootsplash": "patches/react-native-bootsplash.patch",
+      "@kaannn/react-native-waveform": "patches/@kaannn__react-native-waveform.patch"
     }
   }
 }

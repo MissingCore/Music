@@ -11,6 +11,9 @@ patchedDependencies:
   '@backpackapp-io/react-native-toast':
     hash: zgygxsuuqk33jr3gwbxpbkmczi
     path: patches/@backpackapp-io__react-native-toast.patch
+  '@kaannn/react-native-waveform':
+    hash: nxc6ktnxtytdpwfvnczjelb7cy
+    path: patches/@kaannn__react-native-waveform.patch
   '@react-native-assets/slider':
     hash: bqoknc62ex4oh6leybytriowfi
     path: patches/@react-native-assets__slider.patch
@@ -36,7 +39,7 @@ importers:
         version: 2.6.0(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))
       '@kaannn/react-native-waveform':
         specifier: ^0.1.4
-        version: 0.1.4(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        version: 0.1.4(patch_hash=nxc6ktnxtytdpwfvnczjelb7cy)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@lodev09/react-native-true-sheet':
         specifier: ^2.0.6
         version: 2.0.6(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -6829,7 +6832,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@kaannn/react-native-waveform@0.1.4(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
+  '@kaannn/react-native-waveform@0.1.4(patch_hash=nxc6ktnxtytdpwfvnczjelb7cy)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
     dependencies:
       react: 19.0.0
       react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
