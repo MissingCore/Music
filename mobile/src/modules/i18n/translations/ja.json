@@ -241,6 +241,10 @@
       "title": "ディープで再スキャン",
       "brief": "通常の再スキャンのスキップ機能による高速化を無視します。"
     },
+    "rescanOnLaunch": {
+      "title": null,
+      "brief": null
+    },
     "listAllow": {
       "title": "許可リスト",
       "description": "空の場合はデフォルトで次のようになります:"
@@ -268,6 +272,9 @@
         "start": "開始",
         "stopTime": "オーディオの再生は {{- time}} に停止します。"
       }
+    },
+    "waveformSlider": {
+      "title": null
     },
     "translate": {
       "title": "翻訳に貢献する",

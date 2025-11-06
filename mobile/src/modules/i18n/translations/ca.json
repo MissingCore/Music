@@ -241,6 +241,10 @@
       "title": "Escanejar a fons",
       "brief": "Ignora qualsevol ordre d'omissió que acceleren els reescanejos normals."
     },
+    "rescanOnLaunch": {
+      "title": null,
+      "brief": null
+    },
     "listAllow": {
       "title": "Llista de permeses",
       "description": "Predeterminat al següent si està buit:"
@@ -268,6 +272,9 @@
         "start": null,
         "stopTime": null
       }
+    },
+    "waveformSlider": {
+      "title": null
     },
     "translate": {
       "title": "Contribueix amb traduccions",

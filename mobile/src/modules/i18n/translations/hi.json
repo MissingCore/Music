@@ -241,6 +241,10 @@
       "title": "गहरा पुनः स्कैन",
       "brief": "सामान्य पुनः स्कैन फीचर को तेज करने वाले किसी भी छोड़ने वाले उपायों को अनदेखा करता है।"
     },
+    "rescanOnLaunch": {
+      "title": null,
+      "brief": null
+    },
     "listAllow": {
       "title": "अनुमति सूची",
       "description": "यदि खाली हो, तो निम्नलिखित पर डिफ़ॉल्ट:"
@@ -268,6 +272,9 @@
         "start": null,
         "stopTime": null
       }
+    },
+    "waveformSlider": {
+      "title": null
     },
     "translate": {
       "title": "अनुवाद में योगदान दें",

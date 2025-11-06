@@ -241,6 +241,10 @@
       "title": "Deep Rescan",
       "brief": "Mengabaikan tindakan apa pun yang mempercepat fitur pemindaian ulang normal."
     },
+    "rescanOnLaunch": {
+      "title": null,
+      "brief": null
+    },
     "listAllow": {
       "title": "Diizinkan",
       "description": "Defaultnya adalah berikut jika kosong:"
@@ -268,6 +272,9 @@
         "start": null,
         "stopTime": null
       }
+    },
+    "waveformSlider": {
+      "title": null
     },
     "translate": {
       "title": "Kontribusi Penerjemahan",
