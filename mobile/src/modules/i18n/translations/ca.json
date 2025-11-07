@@ -142,6 +142,10 @@
         "vinylOld": "Vinil (tradicional)"
       }
     },
+    "quickScroll": {
+      "title": null,
+      "brief": null
+    },
     "ignoreRTLLayout": {
       "title": null,
       "brief": null
@@ -170,6 +174,13 @@
         "other": "Altres",
         "total": "Total",
         "totalDuration": "Durada total"
+      }
+    },
+    "mostPlayed": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "playCount": null
       }
     },
     "hiddenTracks": {
@@ -202,6 +213,10 @@
       "title": "Ignorar interrupcions",
       "brief": "Continua reproduint àudio quan es produeixi una interrupció, com ara una notificació o trucada. Haureu de d'aturar i reactivar manualment la música durant aquestes situacions."
     },
+    "playbackDelay": {
+      "title": null,
+      "description": null
+    },
     "repeatOnSkip": {
       "title": "Mantenir el mode de repetició al saltar",
       "brief": "Evita que \"Repetir una vegada\" canviï a \"Repetir\" en saltar."
@@ -225,6 +240,10 @@
     "deepRescan": {
       "title": "Escanejar a fons",
       "brief": "Ignora qualsevol ordre d'omissió que acceleren els reescanejos normals."
+    },
+    "rescanOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "listAllow": {
       "title": "Llista de permeses",
@@ -253,6 +272,9 @@
         "start": null,
         "stopTime": null
       }
+    },
+    "waveformSlider": {
+      "title": null
     },
     "translate": {
       "title": "Contribueix amb traduccions",

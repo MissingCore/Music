@@ -1,8 +1,8 @@
 import { createQueryKeyStore } from "@lukemorales/query-key-factory";
-import { eq, isNotNull } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 import { db } from "~/db";
-import { albums, playlists, tracks } from "~/db/schema";
+import { albums, playlists } from "~/db/schema";
 
 import { getAlbum, getAlbums } from "~/api/album";
 import { getArtist, getArtistAlbums } from "~/api/artist";
@@ -12,12 +12,6 @@ import {
   getRecentlyPlayedMediaLists,
   getRecentlyPlayedTracks,
 } from "~/api/recent";
-import {
-  getDatabaseSummary,
-  getLatestRelease,
-  getSaveErrors,
-  getStorageSummary,
-} from "~/api/setting";
 import { getTrack, getTrackPlaylists, getTracks } from "~/api/track";
 
 import { iAsc } from "~/lib/drizzle";
@@ -145,40 +139,6 @@ export const queries = createQueryKeyStore({
     tracks: {
       queryKey: null,
       queryFn: () => getRecentlyPlayedTracks(),
-    },
-  },
-  /** Query keys used in `useQuery` for "setting" related features. */
-  settings: {
-    releaseNote: {
-      queryKey: null,
-      queryFn: () => getLatestRelease(),
-    },
-    hiddenTracks: {
-      queryKey: null,
-      queryFn: () =>
-        getTracks({
-          where: [isNotNull(tracks.hiddenAt)],
-          columns: ["id", "name", "artwork", "hiddenAt"],
-          albumColumns: ["artwork"],
-          withHidden: true,
-        }),
-    },
-    saveErrors: {
-      queryKey: null,
-      queryFn: () => getSaveErrors(),
-    },
-    summary: {
-      queryKey: null,
-      contextQueries: {
-        database: {
-          queryKey: null,
-          queryFn: () => getDatabaseSummary(),
-        },
-        storage: {
-          queryKey: null,
-          queryFn: () => getStorageSummary(),
-        },
-      },
     },
   },
 });

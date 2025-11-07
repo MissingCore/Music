@@ -1,10 +1,11 @@
 import type { FlashList, FlashListProps } from "@shopify/flash-list";
 import { LinearGradient } from "expo-linear-gradient";
 import type { ParseKeys } from "i18next";
-import { useCallback } from "react";
+import { useCallback, useImperativeHandle, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { LayoutChangeEvent, TextProps } from "react-native";
 import { useWindowDimensions } from "react-native";
+import type { AnimatedRef } from "react-native-reanimated";
 import Animated, {
   FadeIn,
   clamp,
@@ -14,10 +15,15 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { usePreferenceStore } from "~/stores/Preference/store";
 import { useTheme } from "~/hooks/useTheme";
 import { useBottomActionsInset } from "../hooks/useBottomActions";
 
-import { AnimatedFlashList } from "~/components/Defaults";
+import {
+  AnimatedFlashList,
+  useAnimatedFlashListRef,
+} from "~/components/Defaults";
+import { Scrollbar, useScrollbarContext } from "~/components/NScrollbar";
 import { AccentText } from "~/components/Typography/AccentText";
 
 /**
@@ -30,8 +36,9 @@ export function StickyActionListLayout<TData>({
   estimatedActionSize = 0,
   listRef,
   insetDelta = 0,
+  showScrollbar = true,
   ...props
-}: FlashListProps<TData> & {
+}: Omit<FlashListProps<TData>, "onContentSizeChange" | "onLayout"> & {
   /** Key to title in translations. */
   titleKey: ParseKeys;
   /** Optional action displayed in layout. */
@@ -39,33 +46,45 @@ export function StickyActionListLayout<TData>({
   /** Height of the StickyAction. */
   estimatedActionSize?: number;
   /** Pass a ref to the animated FlashList. */
-  listRef?: React.Ref<FlashList<any>>;
+  listRef?: AnimatedRef<FlashList<any>>;
   /**
    * How much we want to cut away from the bottom inset adjustment. Useful
    * for giving a more accurate `estimatedItemSize` when faking "gaps".
    */
   insetDelta?: number;
+  /** Whether the scrollbar should appear on scroll. */
+  showScrollbar?: boolean;
 }) {
   const { t } = useTranslation();
   const { top } = useSafeAreaInsets();
   const { width: ScreenWidth } = useWindowDimensions();
   const bottomInset = useBottomActionsInset();
   const { canvas } = useTheme();
+  const quickScroll = usePreferenceStore((s) => s.quickScroll);
+  const internalListRef = useAnimatedFlashListRef();
+  // @ts-expect-error - Should be able to synchronize refs.
+  useImperativeHandle(listRef, () => internalListRef.current);
 
+  const [actionStartPos, setActionStartPos] = useState(0);
   const initActionPos = useSharedValue(0);
   const scrollAmount = useSharedValue(0);
+
+  const { layoutHandlers, layoutInfo, onScroll } = useScrollbarContext();
 
   /** Calculate the initial starting position of `StickyAction`. */
   const calcInitStartPos = useCallback(
     (e: LayoutChangeEvent) => {
       // 16px Padding Top + Header Height
-      initActionPos.value = 16 + e.nativeEvent.layout.height;
+      const startPos = 16 + e.nativeEvent.layout.height;
+      initActionPos.value = startPos;
+      setActionStartPos(startPos);
     },
     [initActionPos],
   );
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (e) => {
+      onScroll(e);
       scrollAmount.value = e.contentOffset.y;
     },
   });
@@ -87,7 +106,8 @@ export function StickyActionListLayout<TData>({
   return (
     <>
       <AnimatedFlashList
-        ref={listRef}
+        ref={internalListRef}
+        {...layoutHandlers}
         onScroll={scrollHandler}
         ListHeaderComponent={
           <LayoutHeader
@@ -104,6 +124,15 @@ export function StickyActionListLayout<TData>({
           padding: 16,
           paddingBottom: bottomInset.withNav + 16 - insetDelta,
         }}
+      />
+      <Scrollbar
+        listRef={internalListRef}
+        scrollbarOffset={{
+          top: actionStartPos,
+          bottom: bottomInset.withNav + 16 - insetDelta,
+        }}
+        isVisible={showScrollbar && quickScroll}
+        {...layoutInfo}
       />
 
       {/* Render shadow under status bar when title is off-screen. */}

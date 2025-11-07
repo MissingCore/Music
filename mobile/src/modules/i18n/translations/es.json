@@ -23,7 +23,7 @@
     "unFavorite": "Quitar de favoritos",
     "favoriteTracks": "Canciones favoritas",
     "all": "Todo",
-    "more": null,
+    "more": "Más",
     "home": "Inicio",
     "settings": "Configuración",
     "upcoming": "Próximamente",
@@ -128,11 +128,11 @@
       }
     },
     "albumLengthFilter": {
-      "title": null,
-      "description": null
+      "title": "Filtro de longitud del álbum",
+      "description": "Número mínimo de canciones para que aparezcan en la pantalla de álbumes."
     },
     "miniplayerGestures": {
-      "title": null
+      "title": "Gestos del mini-reproductor"
     },
     "nowPlayingDesign": {
       "title": "Diseño de la pantalla de reproducción.",
@@ -141,6 +141,10 @@
         "vinyl": "Vinilo",
         "vinylOld": "Vinilo (tradicional)"
       }
+    },
+    "quickScroll": {
+      "title": null,
+      "brief": null
     },
     "ignoreRTLLayout": {
       "title": "Ignorar diseño RTL",
@@ -155,9 +159,9 @@
       "description": "Transfiere datos de esta app entre dispositivos a través de un archivo `music_backup.json`.",
       "extra": {
         "export": "Exportar",
-        "exportSuccess": "Copia de seguridad creada con éxito",
+        "exportSuccess": "Exportación completada correctamente.",
         "import": "Importar",
-        "importSuccess": "Importación de copia de seguridad completada."
+        "importSuccess": "Importación completada correctamente."
       }
     },
     "insights": {
@@ -170,6 +174,13 @@
         "other": "Otros",
         "total": "Total",
         "totalDuration": "Duración total"
+      }
+    },
+    "mostPlayed": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "playCount": null
       }
     },
     "hiddenTracks": {
@@ -202,6 +213,10 @@
       "title": "Ignorar interrupciones",
       "brief": "Seguir reproduciendo audio cuando se produce una interrupción como una notificación o una llamada. Tendrá que pausar y reanudar manualmente la música durante estas situaciones."
     },
+    "playbackDelay": {
+      "title": null,
+      "description": null
+    },
     "repeatOnSkip": {
       "title": "Mantener el modo de repetición al saltar",
       "brief": "Evita que \"Repetir una\" cambie a \"Repetir\" al saltar."
@@ -225,6 +240,10 @@
     "deepRescan": {
       "title": "Reescaneo Profundo",
       "brief": "Ignora cualquier medida de salto que acelere la función de reescaneo normal."
+    },
+    "rescanOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "listAllow": {
       "title": "Lista de permitidos",
@@ -253,6 +272,9 @@
         "start": "Iniciar",
         "stopTime": "El audio se detendrá en {{- time}}."
       }
+    },
+    "waveformSlider": {
+      "title": null
     },
     "translate": {
       "title": "Contribuir con las traducciones",
@@ -328,10 +350,10 @@
         "delete": "Eliminar lista de reproducción",
         "edit": "Editar lista de reproducción",
         "name": "Nombre de la lista de reproducción",
-        "m3uImport": null,
-        "m3uExport": null,
-        "absolute": null,
-        "relative": null
+        "m3uImport": "Importar lista de reproducción M3U",
+        "m3uExport": "Exportar como M3U",
+        "absolute": "Absoluto",
+        "relative": "Relativo"
       }
     },
     "trackMetadata": {

@@ -5,7 +5,6 @@ import { omitKeys, pickKeys } from "~/utils/object";
 import type { UniformObject } from "~/utils/types";
 import type { PressProps } from "~/components/Form/Button";
 import { PressPropsKeys, Ripple } from "~/components/Form/Button";
-import { Kbd } from "~/components/Typography/Kbd";
 import { StyledText } from "~/components/Typography/StyledText";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import type { MediaType } from "~/stores/Playback/types";
@@ -30,8 +29,6 @@ export namespace SearchResult {
 
   export type Props = Content &
     Variations & {
-      /** Letter that's placed next to the title. */
-      contentLabel?: string;
       /** Make this stand out more. */
       poppyLabel?: boolean;
       RightElement?: React.JSX.Element;
@@ -80,18 +77,15 @@ function SearchResultContent(
         />
       )}
       <View className="shrink grow">
-        <View className="shrink flex-row items-center gap-1">
-          {props.contentLabel ? <Kbd text={props.contentLabel} /> : undefined}
-          <StyledText
-            numberOfLines={1}
-            className={cn("shrink grow", {
-              "text-red": props.poppyLabel,
-              "text-sm": !!props.description,
-            })}
-          >
-            {props.title}
-          </StyledText>
-        </View>
+        <StyledText
+          numberOfLines={1}
+          className={cn({
+            "text-red": props.poppyLabel,
+            "text-sm": !!props.description,
+          })}
+        >
+          {props.title}
+        </StyledText>
         {!!props.description && (
           <StyledText dim numberOfLines={1}>
             {props.description}

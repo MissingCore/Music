@@ -1,14 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Keyboard, View } from "react-native";
 
 import { Add } from "~/resources/icons/Add";
 import { CreateNewFolder } from "~/resources/icons/CreateNewFolder";
 import { Delete } from "~/resources/icons/Delete";
-import {
-  userPreferencesStore,
-  useUserPreferencesStore,
-} from "~/services/UserPreferences";
+import { usePreferenceStore } from "~/stores/Preference/store";
+import { PreferenceSetters } from "~/stores/Preference/actions";
 import {
   pickPath,
   removePath,
@@ -21,11 +19,11 @@ import { mutateGuard } from "~/lib/react-query";
 import { Marquee } from "~/components/Containment/Marquee";
 import { FlatList } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
-import { NumericInput, TextInput } from "~/components/Form/Input";
+import { TextInput } from "~/components/Form/Input";
 import type { TrueSheetRef } from "~/components/Sheet";
-import { Sheet } from "~/components/Sheet";
+import { NumericSheet, Sheet } from "~/components/Sheet";
 import { Swipeable } from "~/components/Swipeable";
-import { StyledText, TStyledText } from "~/components/Typography/StyledText";
+import { StyledText } from "~/components/Typography/StyledText";
 import { deferInitialRender } from "../../../components/DeferredRender";
 import { ContentPlaceholder } from "../../../components/Placeholder";
 
@@ -63,7 +61,7 @@ function ScanFilterListSheet({
   sheetRef: TrueSheetRef;
 }) {
   const { t } = useTranslation();
-  const listEntries = useUserPreferencesStore((state) => state[listType]);
+  const listEntries = usePreferenceStore((s) => s[listType]);
 
   return (
     <Sheet
@@ -173,40 +171,15 @@ function FilterForm(props: {
 //#region Min Duration
 /** Enables us to specify the minimum track duration we want to save. */
 function MinDurationSheet(props: { sheetRef: TrueSheetRef }) {
-  const minSeconds = useUserPreferencesStore((state) => state.minSeconds);
-  const [newMin, setNewMin] = useState<string | undefined>();
-
-  useEffect(() => {
-    const subscription = Keyboard.addListener(
-      "keyboardDidHide",
-      // Update user preference when we close the keyboard.
-      () => updateMinDuration(newMin),
-    );
-    return () => subscription.remove();
-  }, [newMin]);
-
+  const minSeconds = usePreferenceStore((s) => s.minSeconds);
   return (
-    <Sheet ref={props.sheetRef} titleKey="feat.ignoreDuration.title">
-      <TStyledText
-        dim
-        textKey="feat.ignoreDuration.description"
-        className="text-center text-sm"
-      />
-      <NumericInput
-        defaultValue={`${minSeconds}`}
-        onChangeText={(text) => setNewMin(text)}
-        className="mx-auto mb-2 w-full max-w-[50%] border-b border-foreground/60 text-center"
-      />
-    </Sheet>
+    <NumericSheet
+      sheetRef={props.sheetRef}
+      titleKey="feat.ignoreDuration.title"
+      descriptionKey="feat.ignoreDuration.description"
+      value={minSeconds}
+      setValue={PreferenceSetters.setMinSeconds}
+    />
   );
-}
-//#endregion
-
-//#region Helpers
-async function updateMinDuration(newDuration: string | undefined) {
-  const asNum = Number(newDuration);
-  // Validate that it's a positive integer.
-  if (!Number.isInteger(asNum) || asNum < 0) return;
-  userPreferencesStore.setState({ minSeconds: asNum });
 }
 //#endregion

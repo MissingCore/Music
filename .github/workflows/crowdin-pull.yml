@@ -1,0 +1,35 @@
+name: Pull Crowdin Translations
+
+on:
+  workflow_dispatch: # Allow for manual trigger
+
+jobs:
+  pull-from-crowdin:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: crowdin action
+        uses: crowdin/github-action@v2
+        with:
+          config: mobile/crowdin.yml
+          upload_sources: false
+          upload_translations: false
+          download_translations: true
+          skip_untranslated_strings: true
+          localization_branch_name: l10n_crowdin_translations
+          create_pull_request: true
+          pull_request_title: "i18n: Translation update from Crowdin"
+          pull_request_body: |
+            > This pull request was manually triggered.
+
+            New or updated translations from Crowdin project: https://crowdin.com/project/missingcore-music.
+          pull_request_labels: Translations
+          pull_request_base_branch_name: ${{ env.BRANCH_NAME }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+          BRANCH_NAME: ${{ github.ref_name || 'dev' }}

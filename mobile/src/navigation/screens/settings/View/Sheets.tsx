@@ -1,7 +1,5 @@
-import {
-  userPreferencesStore,
-  useUserPreferencesStore,
-} from "~/services/UserPreferences";
+import { usePreferenceStore } from "~/stores/Preference/store";
+import { PreferenceSetters } from "~/stores/Preference/actions";
 import { LANGUAGES } from "~/modules/i18n/constants";
 import { useExportBackup, useImportBackup } from "~/modules/backup/JSON";
 
@@ -56,7 +54,7 @@ function BackupSheet(props: { sheetRef: TrueSheetRef }) {
 
 /** Enables the ability to change the language used. */
 function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
-  const languageCode = useUserPreferencesStore((state) => state.language);
+  const languageCode = usePreferenceStore((s) => s.language);
   const { handlers, isScrollable } = useIsScrollable();
 
   return (
@@ -72,7 +70,7 @@ function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
         renderItem={({ item }) => (
           <Radio
             selected={languageCode === item.code}
-            onSelect={() => setLanguage(item.code)}
+            onSelect={() => PreferenceSetters.setLanguage(item.code)}
           >
             <StyledText>{item.name}</StyledText>
           </Radio>
@@ -84,8 +82,3 @@ function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
     </Sheet>
   );
 }
-
-//#region Setter Functions
-const setLanguage = (languageCode: string) =>
-  userPreferencesStore.setState({ language: languageCode });
-//#endregion

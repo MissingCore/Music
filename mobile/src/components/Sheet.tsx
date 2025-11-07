@@ -4,10 +4,10 @@ import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { platformApiLevel } from "expo-device";
 import type { ParseKeys } from "i18next";
 import { cssInterop } from "nativewind";
-import { useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { PressableProps, StyleProp, ViewStyle } from "react-native";
-import { View, useWindowDimensions } from "react-native";
+import { Keyboard, View, useWindowDimensions } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -17,6 +17,7 @@ import { BorderRadius } from "~/constants/Styles";
 import { cn } from "~/lib/style";
 import { Marquee } from "./Containment/Marquee";
 import { Button } from "./Form/Button";
+import { NumericInput } from "./Form/Input";
 import { StyledText, TStyledText } from "./Typography/StyledText";
 
 const WrappedGestureHandlerRootView = cssInterop(GestureHandlerRootView, {
@@ -136,6 +137,56 @@ export function Sheet({
     </TrueSheet>
   );
 }
+//#endregion
+
+//#region Numeric Sheet
+interface NumericSheetProps {
+  sheetRef: TrueSheetRef;
+  titleKey: ParseKeys;
+  descriptionKey: ParseKeys;
+  value: number;
+  setValue: (newValue: number) => void;
+}
+
+export function NumericSheet(props: NumericSheetProps) {
+  const [newValue, setNewValue] = useState<string | undefined>();
+
+  const onUpdate = useCallback(
+    (value: string | undefined) => {
+      const asNum = Number(value);
+      // Validate that it's a positive integer.
+      if (!Number.isInteger(asNum) || asNum < 0) return;
+      props.setValue(asNum);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [props.setValue],
+  );
+
+  useEffect(() => {
+    const subscription = Keyboard.addListener(
+      "keyboardDidHide",
+      // Update value when we close the keyboard.
+      () => onUpdate(newValue),
+    );
+    return () => subscription.remove();
+  }, [newValue, onUpdate]);
+
+  return (
+    <Sheet ref={props.sheetRef} titleKey={props.titleKey}>
+      <TStyledText
+        textKey={props.descriptionKey}
+        className="text-center text-sm"
+        dim
+      />
+      <NumericInput
+        defaultValue={`${props.value}`}
+        onChangeText={(text) => setNewValue(text)}
+        className="mx-auto mb-2 w-full max-w-[50%] border-b border-foreground/60 text-center"
+      />
+    </Sheet>
+  );
+}
+
 //#endregion
 
 //#region Sheet Button Group

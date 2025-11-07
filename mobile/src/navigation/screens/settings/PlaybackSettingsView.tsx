@@ -1,64 +1,69 @@
 import { useTranslation } from "react-i18next";
 
+import { usePreferenceStore } from "~/stores/Preference/store";
 import {
-  userPreferencesStore,
-  useUserPreferencesStore,
-} from "~/services/UserPreferences";
+  PreferenceSetters,
+  PreferenceTogglers,
+} from "~/stores/Preference/actions";
 import { StandardScrollLayout } from "../../layouts/StandardScroll";
 
 import { List, ListItem } from "~/components/Containment/List";
+import type { TrueSheetRef } from "~/components/Sheet";
+import { NumericSheet, useSheetRef } from "~/components/Sheet";
+import { deferInitialRender } from "../../components/DeferredRender";
 
 export default function PlaybackSettings() {
   const { t } = useTranslation();
-  const ignoreInterrupt = useUserPreferencesStore((s) => s.ignoreInterrupt);
-  const repeatOnSkip = useUserPreferencesStore((s) => s.repeatOnSkip);
-  const restoreLastPosition = useUserPreferencesStore(
-    (s) => s.restoreLastPosition,
-  );
+  const playbackDelay = usePreferenceStore((s) => s.playbackDelay);
+  const repeatOnSkip = usePreferenceStore((s) => s.repeatOnSkip);
+  const restoreLastPosition = usePreferenceStore((s) => s.restoreLastPosition);
+  const playbackDelaySheetRef = useSheetRef();
 
   return (
-    <StandardScrollLayout>
-      <List>
+    <>
+      <PlaybackDelaySheet sheetRef={playbackDelaySheetRef} />
+      <StandardScrollLayout>
         <ListItem
-          titleKey="feat.ignoreInterrupt.title"
-          description={t("feat.ignoreInterrupt.brief")}
-          onPress={toggleIgnoreInterrupt}
-          switchState={ignoreInterrupt}
+          titleKey="feat.playbackDelay.title"
+          description={t("plural.second", { count: playbackDelay })}
+          onPress={() => playbackDelaySheetRef.current?.present()}
           first
-        />
-        <ListItem
-          titleKey="feat.repeatOnSkip.title"
-          description={t("feat.repeatOnSkip.brief")}
-          onPress={toggleRepeatOnSkip}
-          switchState={repeatOnSkip}
           last
         />
-      </List>
 
-      <List>
-        <ListItem
-          titleKey="feat.restoreLastPosition.title"
-          onPress={toggleRestoreLastPosition}
-          switchState={restoreLastPosition}
-          first
-          last
-        />
-      </List>
-    </StandardScrollLayout>
+        <List>
+          <ListItem
+            titleKey="feat.repeatOnSkip.title"
+            description={t("feat.repeatOnSkip.brief")}
+            onPress={PreferenceTogglers.toggleRepeatOnSkip}
+            switchState={repeatOnSkip}
+            first
+          />
+          <ListItem
+            titleKey="feat.restoreLastPosition.title"
+            onPress={PreferenceTogglers.toggleRestoreLastPosition}
+            switchState={restoreLastPosition}
+            last
+          />
+        </List>
+      </StandardScrollLayout>
+    </>
   );
 }
 
-const toggleIgnoreInterrupt = () =>
-  userPreferencesStore.setState((prev) => ({
-    ignoreInterrupt: !prev.ignoreInterrupt,
-  }));
-
-const toggleRepeatOnSkip = () =>
-  userPreferencesStore.setState((prev) => ({
-    repeatOnSkip: !prev.repeatOnSkip,
-  }));
-
-const toggleRestoreLastPosition = async () =>
-  userPreferencesStore.setState((prev) => ({
-    restoreLastPosition: !prev.restoreLastPosition,
-  }));
+//#region Playback Delay Sheet
+const PlaybackDelaySheet = deferInitialRender(
+  function PlaybackDelaySheet(props: { sheetRef: TrueSheetRef }) {
+    const playbackDelay = usePreferenceStore((s) => s.playbackDelay);
+    return (
+      <NumericSheet
+        sheetRef={props.sheetRef}
+        titleKey="feat.playbackDelay.title"
+        descriptionKey="feat.playbackDelay.description"
+        value={playbackDelay}
+        setValue={PreferenceSetters.setPlaybackDelay}
+      />
+    );
+  },
+);
+//#endregion

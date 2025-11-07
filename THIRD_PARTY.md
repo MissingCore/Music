@@ -2,6 +2,7 @@
 | ---- | ------- | ------ |
 | @backpackapp-io/react-native-toast | MIT | https://github.com/backpackapp-io/react-native-toast |
 | @boterop/react-native-background-timer | MIT | https://github.com/boterop/react-native-background-timer |
+| @kaannn/react-native-waveform | MIT | https://github.com/kagantemizkan/react-native-audio-wave |
 | @lodev09/react-native-true-sheet | MIT | https://github.com/lodev09/react-native-true-sheet |
 | @lukemorales/query-key-factory | MIT | https://github.com/lukemorales/query-key-factory |
 | @miblanchard/react-native-slider | MIT | https://github.com/miblanchard/react-native-slider |
@@ -53,7 +54,7 @@
 | react-native-pager-view | MIT | https://github.com/callstack/react-native-pager-view |
 | react-native-paper | MIT | https://github.com/callstack/react-native-paper |
 | react-native-reanimated | MIT | https://github.com/software-mansion/react-native-reanimated |
-| react-native-safe-area-context | MIT | https://github.com/th3rdwave/react-native-safe-area-context |
+| react-native-safe-area-context | MIT | https://github.com/AppAndFlow/react-native-safe-area-context |
 | react-native-screens | MIT | https://github.com/software-mansion/react-native-screens |
 | react-native-svg | MIT | https://github.com/software-mansion/react-native-svg |
 | Roboto Font | Apache-2.0 | https://github.com/googlefonts/roboto |

@@ -1,24 +1,23 @@
 import { useColorScheme } from "nativewind";
-import { useEffect, useState } from "react";
-import { Keyboard, Text } from "react-native";
+import { Text } from "react-native";
 
+import { usePreferenceStore } from "~/stores/Preference/store";
+import { PreferenceSetters } from "~/stores/Preference/actions";
+
+import { getFont } from "~/lib/style";
+import { toLowerCase } from "~/utils/string";
+import { FlatList } from "~/components/Defaults";
+import { Radio } from "~/components/Form/Selection";
+import type { TrueSheetRef } from "~/components/Sheet";
+import { NumericSheet, Sheet } from "~/components/Sheet";
+import { TStyledText } from "~/components/Typography/StyledText";
+import type { AccentFont } from "~/stores/Preference/constants";
 import {
   AccentFontOptions,
   NowPlayingDesignOptions,
   PrimaryFontOptions,
   ThemeOptions,
-  userPreferencesStore,
-  useUserPreferencesStore,
-} from "~/services/UserPreferences";
-
-import { getFont } from "~/lib/style";
-import { toLowerCase } from "~/utils/string";
-import { FlatList } from "~/components/Defaults";
-import { NumericInput } from "~/components/Form/Input";
-import { Radio } from "~/components/Form/Selection";
-import type { TrueSheetRef } from "~/components/Sheet";
-import { Sheet } from "~/components/Sheet";
-import { TStyledText } from "~/components/Typography/StyledText";
+} from "~/stores/Preference/constants";
 import { deferInitialRender } from "../../../components/DeferredRender";
 
 /** All the sheets used on `/setting/appearance` route. */
@@ -45,34 +44,34 @@ export const AppearanceSettingsSheets = deferInitialRender(
 //#region Font
 /** Enables changing the font used primarily for headings. */
 function FontAccentSheet(props: { sheetRef: TrueSheetRef }) {
-  const accentFont = useUserPreferencesStore((s) => s.accentFont);
+  const accentFont = usePreferenceStore((s) => s.accentFont);
   return (
     <FontSheet
       sheetRef={props.sheetRef}
       kind="Accent"
       selectedFont={accentFont}
       fontOptions={AccentFontOptions}
-      updateFont={setAccentFont}
+      updateFont={PreferenceSetters.setAccentFont}
     />
   );
 }
 
 /** Enables changing the font used by all text in the app. */
 function FontPrimarySheet(props: { sheetRef: TrueSheetRef }) {
-  const primaryFont = useUserPreferencesStore((s) => s.primaryFont);
+  const primaryFont = usePreferenceStore((s) => s.primaryFont);
   return (
     <FontSheet
       sheetRef={props.sheetRef}
       kind="Primary"
       selectedFont={primaryFont}
       fontOptions={PrimaryFontOptions}
-      updateFont={setPrimaryFont}
+      updateFont={PreferenceSetters.setPrimaryFont}
     />
   );
 }
 
 /** Reusable font sheet component. */
-function FontSheet<T extends (typeof AccentFontOptions)[number]>(props: {
+function FontSheet<T extends AccentFont>(props: {
   sheetRef: TrueSheetRef;
   kind: "Accent" | "Primary";
   selectedFont: T;
@@ -112,7 +111,7 @@ function FontSheet<T extends (typeof AccentFontOptions)[number]>(props: {
 /** Enables changing the theme of the app. */
 function ThemeSheet(props: { sheetRef: TrueSheetRef }) {
   const { setColorScheme } = useColorScheme();
-  const selectedTheme = useUserPreferencesStore((s) => s.theme);
+  const selectedTheme = usePreferenceStore((s) => s.theme);
 
   return (
     <Sheet ref={props.sheetRef} titleKey="feat.theme.title">
@@ -125,7 +124,7 @@ function ThemeSheet(props: { sheetRef: TrueSheetRef }) {
             selected={selectedTheme === theme}
             onSelect={() => {
               setColorScheme(theme);
-              setTheme(theme);
+              PreferenceSetters.setTheme(theme);
             }}
           >
             <TStyledText textKey={`feat.theme.extra.${theme}`} />
@@ -144,31 +143,15 @@ function ThemeSheet(props: { sheetRef: TrueSheetRef }) {
  * album to be displayed in the Albums screen.
  */
 function MinAlbumLengthSheet(props: { sheetRef: TrueSheetRef }) {
-  const minAlbumLength = useUserPreferencesStore((s) => s.minAlbumLength);
-  const [newMin, setNewMin] = useState<string | undefined>();
-
-  useEffect(() => {
-    const subscription = Keyboard.addListener(
-      "keyboardDidHide",
-      // Update user preference when we close the keyboard.
-      () => updateMinAlbumLength(newMin),
-    );
-    return () => subscription.remove();
-  }, [newMin]);
-
+  const minAlbumLength = usePreferenceStore((s) => s.minAlbumLength);
   return (
-    <Sheet ref={props.sheetRef} titleKey="feat.albumLengthFilter.title">
-      <TStyledText
-        dim
-        textKey="feat.albumLengthFilter.description"
-        className="text-center text-sm"
-      />
-      <NumericInput
-        defaultValue={`${minAlbumLength}`}
-        onChangeText={(text) => setNewMin(text)}
-        className="mx-auto mb-2 w-full max-w-[50%] border-b border-foreground/60 text-center"
-      />
-    </Sheet>
+    <NumericSheet
+      sheetRef={props.sheetRef}
+      titleKey="feat.albumLengthFilter.title"
+      descriptionKey="feat.albumLengthFilter.description"
+      value={minAlbumLength}
+      setValue={PreferenceSetters.setMinAlbumLength}
+    />
   );
 }
 //#endregion
@@ -176,7 +159,7 @@ function MinAlbumLengthSheet(props: { sheetRef: TrueSheetRef }) {
 //#region Now Playing Design
 /** Enables changing the appearance of the artwork on the "Now Playing" screen. */
 function NowPlayingDesignSheet(props: { sheetRef: TrueSheetRef }) {
-  const nowPlayingDesign = useUserPreferencesStore((s) => s.nowPlayingDesign);
+  const nowPlayingDesign = usePreferenceStore((s) => s.nowPlayingDesign);
   return (
     <Sheet ref={props.sheetRef} titleKey="feat.nowPlayingDesign.title">
       <FlatList
@@ -186,7 +169,7 @@ function NowPlayingDesignSheet(props: { sheetRef: TrueSheetRef }) {
         renderItem={({ item: design }) => (
           <Radio
             selected={nowPlayingDesign === design}
-            onSelect={() => setNowPlayingDesign(design)}
+            onSelect={() => PreferenceSetters.setNowPlayingDesign(design)}
           >
             <TStyledText textKey={`feat.nowPlayingDesign.extra.${design}`} />
           </Radio>
@@ -195,27 +178,5 @@ function NowPlayingDesignSheet(props: { sheetRef: TrueSheetRef }) {
       />
     </Sheet>
   );
-}
-//#endregion
-
-//#region Setter Functions
-const setAccentFont = (newFont: (typeof AccentFontOptions)[number]) =>
-  userPreferencesStore.setState({ accentFont: newFont });
-
-const setPrimaryFont = (newFont: (typeof PrimaryFontOptions)[number]) =>
-  userPreferencesStore.setState({ primaryFont: newFont });
-
-const setTheme = (newTheme: (typeof ThemeOptions)[number]) =>
-  userPreferencesStore.setState({ theme: newTheme });
-
-const setNowPlayingDesign = (
-  newDesign: (typeof NowPlayingDesignOptions)[number],
-) => userPreferencesStore.setState({ nowPlayingDesign: newDesign });
-
-async function updateMinAlbumLength(newLength: string | undefined) {
-  const asNum = Number(newLength);
-  // Validate that it's a positive integer.
-  if (!Number.isInteger(asNum) || asNum < 0) return;
-  userPreferencesStore.setState({ minAlbumLength: asNum });
 }
 //#endregion

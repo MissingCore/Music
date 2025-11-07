@@ -14,10 +14,10 @@ import { deferInitialRender } from "../../../components/DeferredRender";
 /** Enables us to visually change the sort order on the `/track` screen. */
 export const TrackSortSheet = deferInitialRender(
   function TrackSortSheet(props: { sheetRef: TrueSheetRef }) {
-    const isAsc = useSortPreferencesStore((state) => state.isAsc);
-    const toggleIsAsc = useSortPreferencesStore((state) => state.toggleIsAsc);
-    const orderedBy = useSortPreferencesStore((state) => state.orderedBy);
-    const setOrderedBy = useSortPreferencesStore((state) => state.setOrderedBy);
+    const isAsc = useSortPreferencesStore((s) => s.isAsc);
+    const toggleIsAsc = useSortPreferencesStore((s) => s.toggleIsAsc);
+    const orderedBy = useSortPreferencesStore((s) => s.orderedBy);
+    const setOrderedBy = useSortPreferencesStore((s) => s.setOrderedBy);
 
     return (
       <Sheet

@@ -1,0 +1,15 @@
+diff --git a/android/build.gradle b/android/build.gradle
+index 072a171f9b30722ab360f901416cbb73a3728b85..4dd727cfcfb033ac65099cbff38ce15ac9caeea8 100644
+--- a/android/build.gradle
++++ b/android/build.gradle
+@@ -102,8 +102,8 @@ def kotlin_version = getExtOrDefault("kotlinVersion")
+ dependencies {
+   implementation "com.facebook.react:react-android"
+   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+-  implementation 'com.github.massoudss:waveformSeekBar:5.0.2'
+-  implementation 'com.github.lincollincol:amplituda:2.2.2'
++  implementation 'com.github.NamtarR:waveformSeekBar:5.1.0'
++  implementation 'com.github.lincollincol:Amplituda:v2.3.1'
+ }
+ 
+ if (isNewArchitectureEnabled()) {

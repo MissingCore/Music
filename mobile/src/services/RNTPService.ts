@@ -9,14 +9,16 @@ import i18next from "~/modules/i18n";
 import { addPlayedMediaList, addPlayedTrack } from "~/api/recent";
 import { deleteTrack } from "~/api/track";
 import { playbackStore } from "~/stores/Playback/store";
-import { PlaybackControls } from "~/stores/Playback/actions";
+import { PlaybackControls, Queue } from "~/stores/Playback/actions";
+import { preferenceStore } from "~/stores/Preference/store";
 import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
-import { userPreferencesStore } from "./UserPreferences";
 import { router } from "~/navigation/utils/router";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
+import { bgWait } from "~/utils/promise";
 import { revalidateWidgets } from "~/modules/widget/utils";
+import { extractTrackId } from "~/stores/Playback/utils";
 
 /** Context to whether we should resume playback after ducking. */
 let resumeAfterDuck: boolean = false;
@@ -71,7 +73,7 @@ export async function PlaybackService() {
 
   TrackPlayer.addEventListener(Event.RemoteDuck, async (e) => {
     // Keep playing media when an interruption is detected.
-    if (userPreferencesStore.getState().ignoreInterrupt) return;
+    if (preferenceStore.getState().ignoreInterrupt) return;
     if (e.permanent) {
       await PlaybackControls.stop();
     } else {
@@ -88,6 +90,9 @@ export async function PlaybackService() {
   // Only triggered if repeat mode is `RepeatMode.Off`. This is also called
   // after the `ServiceKilled` event is emitted.
   TrackPlayer.addEventListener(Event.PlaybackQueueEnded, async () => {
+    const { playbackDelay } = preferenceStore.getState();
+    if (playbackDelay > 0) await bgWait(playbackDelay * 1000);
+
     // `true` provided to prevent updating the repeat setting.
     await PlaybackControls.next(true);
   });
@@ -99,7 +104,7 @@ export async function PlaybackService() {
     // to the last played position.
     const {
       _hasRestoredPosition,
-      _restoredTrackId,
+      _restoredTrackKey,
       lastPosition,
       playingFrom,
       activeTrack,
@@ -107,8 +112,8 @@ export async function PlaybackService() {
     if (!_hasRestoredPosition) {
       playbackStore.setState({ _hasRestoredPosition: true });
       if (
-        _restoredTrackId !== undefined &&
-        _restoredTrackId === activeTrack?.id
+        _restoredTrackKey !== undefined &&
+        extractTrackId(_restoredTrackKey) === activeTrack?.id
       ) {
         // Fallback to `0` to support legacy behavior where we could store `undefined`.
         await PlaybackControls.seekTo(lastPosition ?? 0);
@@ -157,18 +162,25 @@ export async function PlaybackService() {
             "Unexpected runtime error. For example, this may happen if the file has a sample rate greater than or equal to 352.8kHz.";
 
         await deleteTrack(erroredTrack.id, { errorName: e.code, errorMessage });
+        // Attempt to play the next track.
+        await Queue.removeIds([erroredTrack.id]);
         await removeUnusedCategories();
         clearAllQueries();
-        router.navigate("HomeScreens", undefined, { pop: true });
+
+        // If the queue is empty as a result of `Queue.removeIds()`, `reset()`
+        // gets called internally, in which, we want to return to the Home screens.
+        if (playbackStore.getState().queue.length === 0) {
+          router.navigate("HomeScreens", undefined, { pop: true });
+        }
       }
 
       toast.error(
         i18next.t("template.notFound", { name: erroredTrack.title }),
         ToastOptions,
       );
+    } else {
+      // If we get this event when there's no active track, just reset.
+      await playbackStore.getState().reset();
     }
-
-    // Clear all reference of the current playing track.
-    await playbackStore.getState().reset();
   });
 }

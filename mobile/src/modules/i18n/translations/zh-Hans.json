@@ -142,6 +142,10 @@
         "vinylOld": "黑胶唱片(经典)"
       }
     },
+    "quickScroll": {
+      "title": null,
+      "brief": null
+    },
     "ignoreRTLLayout": {
       "title": "忽略RTL布局",
       "brief": "使用RTL 语言时使用 LTR 布局，重新启动后生效。"
@@ -170,6 +174,13 @@
         "other": "其他",
         "total": "总计",
         "totalDuration": "总时长"
+      }
+    },
+    "mostPlayed": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "playCount": null
       }
     },
     "hiddenTracks": {
@@ -202,6 +213,10 @@
       "title": "忽略中断",
       "brief": "当出现通知或呼叫等中断时继续播放音频。 在这些情况下，您需要手动暂停和取消暂停音乐。"
     },
+    "playbackDelay": {
+      "title": null,
+      "description": null
+    },
     "repeatOnSkip": {
       "title": "跳过时保持单曲循环",
       "brief": "不要在跳过时从“单曲循环”切换模式到“循环播放”。"
@@ -225,6 +240,10 @@
     "deepRescan": {
       "title": "深度扫描",
       "brief": "忽略任何可以加速正常重新扫描功能的跳过措施。"
+    },
+    "rescanOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "listAllow": {
       "title": "允许列表",
@@ -253,6 +272,9 @@
         "start": "启动",
         "stopTime": null
       }
+    },
+    "waveformSlider": {
+      "title": null
     },
     "translate": {
       "title": "协助翻译",

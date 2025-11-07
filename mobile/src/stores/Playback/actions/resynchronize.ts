@@ -14,6 +14,7 @@ import {
 /** See if we should revalidate the `activeTrack` value stored in the Playback store. */
 export async function onActiveTrack(args: {
   type: "album" | "track";
+  /** If `type = "track"`, `id` should be the actual track id and not `${track_id}__${unique_id}`. */
   id: string;
 }) {
   const { activeTrack } = playbackStore.getState();
@@ -35,24 +36,12 @@ export async function onActiveTrack(args: {
   } catch {}
 }
 
-/**
- * Resynchronize when we delete a media list.
- *
- * @deprecated Don't want to reset store when the original list is deleted.
- */
-export async function onDelete(removedRef: PlayFromSource) {
-  const { reset, playingFrom } = playbackStore.getState();
-  if (!playingFrom) return;
-  // If we're playing a list we've deleted, reset the state.
-  if (arePlaybackSourceEqual(playingFrom, removedRef)) await reset();
-}
-
 /** Resynchronize on tracks that have been modified. */
 export async function onModifiedTracks(trackIds: string[]) {
   const idSet = new Set(trackIds);
-  const { activeId } = playbackStore.getState();
-  if (!activeId || !idSet.has(activeId)) return;
-  await onActiveTrack({ type: "track", id: activeId });
+  const { activeTrack } = playbackStore.getState();
+  if (!activeTrack || !idSet.has(activeTrack.id)) return;
+  await onActiveTrack({ type: "track", id: activeTrack.id });
 }
 
 /** Resynchronize when we rename a playlist. */

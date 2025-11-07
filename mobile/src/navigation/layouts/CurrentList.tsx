@@ -14,7 +14,7 @@ import Animated, {
 
 import { Schedule } from "~/resources/icons/Schedule";
 import { usePlaybackStore } from "~/stores/Playback/store";
-import { useUserPreferencesStore } from "~/services/UserPreferences";
+import { usePreferenceStore } from "~/stores/Preference/store";
 import { useTheme } from "~/hooks/useTheme";
 
 import { OnRTLWorklet } from "~/lib/react";
@@ -47,7 +47,7 @@ export function CurrentListLayout(
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { foreground } = useTheme();
-  const primaryFont = useUserPreferencesStore((s) => s.primaryFont);
+  const primaryFont = usePreferenceStore((s) => s.primaryFont);
 
   const isFavorite = getIsFavoritePlaylist(props.mediaSource);
 

@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 
-import { useUserPreferencesStore } from "~/services/UserPreferences";
+import { usePreferenceStore } from "~/stores/Preference/store";
+import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { useRescanForTracks } from "~/modules/scanning/helpers/rescan";
 import { StandardScrollLayout } from "../../../layouts/StandardScroll";
 import { ScanningSettingsSheets } from "./Sheets";
@@ -11,9 +12,10 @@ import { useSheetRef } from "~/components/Sheet";
 
 export default function ScanningSettings() {
   const { t } = useTranslation();
-  const allowList = useUserPreferencesStore((state) => state.listAllow);
-  const blockList = useUserPreferencesStore((state) => state.listBlock);
-  const ignoreDuration = useUserPreferencesStore((state) => state.minSeconds);
+  const rescanOnLaunch = usePreferenceStore((s) => s.rescanOnLaunch);
+  const allowList = usePreferenceStore((s) => s.listAllow);
+  const blockList = usePreferenceStore((s) => s.listBlock);
+  const ignoreDuration = usePreferenceStore((s) => s.minSeconds);
   const rescan = useRescanForTracks();
   const allowListSheetRef = useSheetRef();
   const blockListSheetRef = useSheetRef();
@@ -43,6 +45,15 @@ export default function ScanningSettings() {
             last
           />
         </List>
+
+        <ListItem
+          titleKey="feat.rescanOnLaunch.title"
+          description={t("feat.rescanOnLaunch.brief")}
+          onPress={PreferenceTogglers.toggleRescanOnLaunch}
+          switchState={rescanOnLaunch}
+          first
+          last
+        />
 
         <List>
           <ListItem

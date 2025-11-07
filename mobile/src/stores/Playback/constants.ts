@@ -21,7 +21,7 @@ export interface PlaybackStore {
   _init: (state: PlaybackStore) => Promise<void>;
 
   /** [Util] Find specified track. If track is not found, reset the store. */
-  getTrack: (trackId: string) => Promise<TrackWithAlbum | undefined>;
+  getTrack: (trackKey: string) => Promise<TrackWithAlbum | undefined>;
   /** [Util] Revert to default store settings (except for `repeat` & `shuffle`). */
   reset: () => Promise<void>;
   /** [Util] Run when we catch when the app crashes. */
@@ -30,7 +30,7 @@ export interface PlaybackStore {
   /** Determines if the playback position has been restored. */
   _hasRestoredPosition: boolean;
   /** The track we want to restore the position for. */
-  _restoredTrackId: string | undefined;
+  _restoredTrackKey: string | undefined;
 
   isPlaying: boolean;
   lastPosition: number;
@@ -43,12 +43,22 @@ export interface PlaybackStore {
 
   /** A copy of the original list order at the time of playing. */
   orderSnapshot: string[];
-  /** A copy of the original list we're playing from which we can modify. */
+  /**
+   * A copy of the original list we're playing from which we can modify, which
+   * may potentially contain duplicates whose values are formatted as:
+   *  - `${track_id}`
+   *  - `${track_id}__${unique_id}`
+   */
   queue: string[];
 
-  activeId: string | undefined;
+  /**
+   * Value is formatted as:
+   *  - `${track_id}`
+   *  - `${track_id}__${unique_id}`
+   */
+  activeKey: string | undefined;
   activeTrack: TrackWithAlbum | undefined;
-  /** Index in current queue where `activeId` is located. */
+  /** Index in current queue where `activeKey` is located. */
   queuePosition: number;
 }
 
@@ -60,7 +70,7 @@ export const PersistedFields: string[] = [
   "playingFromName",
   "orderSnapshot",
   "queue",
-  "activeId",
+  "activeKey",
   "queuePosition",
 ] satisfies Array<keyof PlaybackStore>;
 //#endregion

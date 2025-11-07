@@ -5,8 +5,6 @@ import type {
 } from "@tanstack/react-query";
 import { QueryClient } from "@tanstack/react-query";
 
-import { queries as q } from "~/queries/keyStore";
-
 const queryConfig: DefaultOptions = {
   queries: {
     networkMode: "always",
@@ -50,7 +48,7 @@ export function clearAllQueries(client: QueryClient = queryClient) {
   client.invalidateQueries({
     // Typically, `false` is never the results when comparing 2 arrays with
     // the "same" content unless they point to the same reference.
-    predicate: ({ queryKey }) => queryKey !== q.settings.releaseNote.queryKey,
+    predicate: ({ queryKey }) => queryKey[1] !== "release-notes",
   });
 }
 

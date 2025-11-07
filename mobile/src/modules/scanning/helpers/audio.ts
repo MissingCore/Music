@@ -15,15 +15,15 @@ import {
   invalidTracks,
   playedMediaLists,
   tracks,
+  tracksToPlaylists,
 } from "~/db/schema";
 
 import { upsertAlbums } from "~/api/album";
 import { createArtists } from "~/api/artist";
 import { RECENT_RANGE_MS } from "~/api/recent";
 import { upsertTracks } from "~/api/track";
-import { playbackStore } from "~/stores/Playback/store";
 import { Queue } from "~/stores/Playback/actions";
-import { userPreferencesStore } from "~/services/UserPreferences";
+import { preferenceStore } from "~/stores/Preference/store";
 import { onboardingStore } from "../services/Onboarding";
 
 import { getExcludedColumns, withColumns } from "~/lib/drizzle";
@@ -151,20 +151,14 @@ export async function cleanupDatabase(usedTrackIds: string[]) {
     await Promise.allSettled([
       db.delete(invalidTracks).where(inArray(invalidTracks.id, unusedTrackIds)),
       db.delete(tracks).where(inArray(tracks.id, unusedTrackIds)),
+      db
+        .delete(tracksToPlaylists)
+        .where(inArray(tracksToPlaylists.trackId, unusedTrackIds)),
     ]);
   }
 
-  // Ensure we didn't reference deleted tracks in the playback store.
-  const { queue } = playbackStore.getState();
-  const hasRemovedTrack = queue.some((tId) => unusedTrackIds.includes(tId));
-  if (hasRemovedTrack) await playbackStore.getState().reset();
   // Clear the queue of deleted tracks.
-  Queue.removeIds(unusedTrackIds);
-
-  // Remove recently played media that's beyond what we display.
-  await db
-    .delete(playedMediaLists)
-    .where(lt(playedMediaLists.lastPlayedAt, Date.now() - RECENT_RANGE_MS));
+  await Queue.removeIds(unusedTrackIds);
 
   // Remove anything else that's unused.
   await removeUnusedCategories();
@@ -172,6 +166,11 @@ export async function cleanupDatabase(usedTrackIds: string[]) {
 
 /** Remove any albums or artists that aren't used. */
 export async function removeUnusedCategories() {
+  // Remove recently played media that's beyond what we display.
+  await db
+    .delete(playedMediaLists)
+    .where(lt(playedMediaLists.lastPlayedAt, Date.now() - RECENT_RANGE_MS));
+
   // Remove unused albums.
   const allAlbums = await db.query.albums.findMany({
     columns: { id: true },
@@ -204,7 +203,7 @@ async function discoverTracks() {
     listAllow: _listAllow,
     listBlock: _listBlock,
     minSeconds,
-  } = userPreferencesStore.getState();
+  } = preferenceStore.getState();
   const listAllow = _listAllow.map((p) => `file://${addTrailingSlash(p)}`);
   const listBlock = _listBlock.map((p) => `file://${addTrailingSlash(p)}`);
 

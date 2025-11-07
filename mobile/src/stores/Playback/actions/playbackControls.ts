@@ -1,24 +1,20 @@
 import TrackPlayer, { State } from "@weights-ai/react-native-track-player";
 
-import { getAlbum } from "~/api/album";
-import { getArtist } from "~/api/artist";
-import { getFolderTracks } from "~/api/folder";
-import { getPlaylist, getSpecialPlaylist } from "~/api/playlist";
 import { addPlayedMediaList } from "~/api/recent";
-import { userPreferencesStore } from "~/services/UserPreferences";
+import { preferenceStore } from "~/stores/Preference/store";
 
 import { playbackStore } from "../store";
 import { RepeatModes } from "../constants";
 import type { PlayFromSource } from "../types";
 import {
   arePlaybackSourceEqual,
-  getSourceName,
+  extractTrackId,
   formatTrackforPlayer,
+  getSourceName,
+  getTrackIdsList,
+  getUpdatedLists,
 } from "../utils";
 
-import { shuffleArray } from "~/utils/object";
-import type { ReservedPlaylistName } from "~/modules/media/constants";
-import { ReservedNames } from "~/modules/media/constants";
 import { revalidateWidgets } from "~/modules/widget/utils";
 
 //#region Loaders
@@ -77,10 +73,10 @@ export async function prev() {
     playbackStore.getState();
 
   const prevIndex = queuePosition === 0 ? queue.length - 1 : queuePosition - 1;
-  const prevTrackId = queue[prevIndex];
-  if (!prevTrackId) return await reset();
+  const prevTrackKey = queue[prevIndex];
+  if (!prevTrackKey) return await reset();
   // If no track is found, reset the state.
-  const prevTrack = await getTrack(prevTrackId);
+  const prevTrack = await getTrack(prevTrackKey);
   if (!prevTrack) return;
 
   // If the RNTP queue isn't loaded or if we played <=10s of the track,
@@ -88,7 +84,7 @@ export async function prev() {
   if (lastPosition <= 10 || !(await isLoaded())) {
     playbackStore.setState({
       lastPosition: 0,
-      activeId: prevTrack.id,
+      activeKey: prevTrackKey,
       activeTrack: prevTrack,
       queuePosition: prevIndex,
       ...getNewRepeatState(),
@@ -106,15 +102,15 @@ export async function next(naturalProgression = false) {
     playbackStore.getState();
 
   const nextIndex = queuePosition === queue.length - 1 ? 0 : queuePosition + 1;
-  const nextTrackId = queue[nextIndex];
-  if (!nextTrackId) return await reset();
+  const nextTrackKey = queue[nextIndex];
+  if (!nextTrackKey) return await reset();
   // If no track is found, reset the state.
-  const nextTrack = await getTrack(nextTrackId);
+  const nextTrack = await getTrack(nextTrackKey);
   if (!nextTrack) return;
 
   playbackStore.setState({
     lastPosition: 0,
-    activeId: nextTrack.id,
+    activeKey: nextTrackKey,
     activeTrack: nextTrack,
     queuePosition: nextIndex,
     // Only update repeate state if we explictly click the next button.
@@ -136,15 +132,15 @@ export async function seekTo(position: number) {
 export async function playAtIndex(index: number) {
   const { getTrack, reset, queue } = playbackStore.getState();
 
-  const nextTrackId = queue[index];
-  if (!nextTrackId) return await reset();
+  const nextTrackKey = queue[index];
+  if (!nextTrackKey) return await reset();
   // If no track is found, reset the state.
-  const nextTrack = await getTrack(nextTrackId);
+  const nextTrack = await getTrack(nextTrackKey);
   if (!nextTrack) return;
 
   playbackStore.setState({
     lastPosition: 0,
-    activeId: nextTrack.id,
+    activeKey: nextTrackKey,
     activeTrack: nextTrack,
     queuePosition: index,
     ...getNewRepeatState(),
@@ -162,12 +158,12 @@ export async function playFromList({
   source: PlayFromSource;
   trackId?: string;
 }) {
-  const { getTrack, playingFrom, queue, activeId, activeTrack } =
+  const { getTrack, shuffle, playingFrom, queue, activeTrack } =
     playbackStore.getState();
 
   // 1. See if we're playing from a new media list.
   const isSameSource = arePlaybackSourceEqual(playingFrom, source);
-  let isDiffTrack = activeId === undefined || activeId !== trackId;
+  let isDiffTrack = activeTrack === undefined || activeTrack.id !== trackId;
 
   // 2. Handle case when we're playing from the same media list.
   if (isSameSource) {
@@ -175,11 +171,13 @@ export async function playFromList({
       // Case where we play a different track in this media list.
       if (!!trackId && isDiffTrack) {
         // Find index of new track in list.
-        const listIndex = queue.findIndex((id) => id === trackId);
+        const listIndex = queue.findIndex(
+          (id) => extractTrackId(id) === trackId,
+        );
         // If it doesn't exist, then reset the current queue.
         if (listIndex === -1) break handleSameSource;
         playbackStore.setState({
-          activeId: trackId,
+          activeKey: queue[listIndex],
           activeTrack: (await getTrack(trackId))!,
           queuePosition: listIndex,
         });
@@ -192,11 +190,15 @@ export async function playFromList({
   // 3. Handle case when the media list is new.
   const newPlayingList = await getTrackIdsList(source);
   if (newPlayingList.length === 0) return; // Don't do anything if list is empty.
-  const newListInfo = getUpdatedLists(newPlayingList, trackId ?? activeId);
+  const newListInfo = getUpdatedLists(
+    newPlayingList,
+    shuffle,
+    trackId ?? activeTrack?.id,
+  );
 
   // 4. Get the track from this new info.
   const newTrackId = newListInfo.queue[newListInfo.queuePosition]!;
-  isDiffTrack = activeId !== newTrackId;
+  isDiffTrack = activeTrack?.id !== newTrackId;
   let newTrack = activeTrack;
   if (isDiffTrack) newTrack = await getTrack(newTrackId);
 
@@ -206,7 +208,7 @@ export async function playFromList({
     ...newListInfo,
     playingFrom: source,
     playingFromName: await getSourceName(source),
-    activeId: newTrackId,
+    activeKey: newTrackId,
     activeTrack: newTrack,
   });
 
@@ -223,7 +225,7 @@ export async function playFromList({
 /** Determines if we should switch the repeat mode to "repeat" from "repeat-one". */
 function getNewRepeatState() {
   const { repeat } = playbackStore.getState();
-  const { repeatOnSkip } = userPreferencesStore.getState();
+  const { repeatOnSkip } = preferenceStore.getState();
   if (repeat === RepeatModes.REPEAT_ONE && !repeatOnSkip) {
     return { repeat: RepeatModes.REPEAT } as const;
   } else {
@@ -238,69 +240,5 @@ async function isLoaded() {
   } catch {
     return false;
   }
-}
-
-/** Get list of tracks ids from a `PlayFromSource`. */
-async function getTrackIdsList({ type, id }: PlayFromSource) {
-  let trackIds: string[] = [];
-
-  try {
-    if (type === "album") {
-      const data = await getAlbum(id, {
-        columns: [],
-        trackColumns: ["id"],
-      });
-      trackIds = data.tracks.map(({ id }) => id);
-    } else if (type === "artist") {
-      const data = await getArtist(id, {
-        columns: [],
-        trackColumns: ["id"],
-        withAlbum: false,
-      });
-      trackIds = data.tracks.map(({ id }) => id);
-    } else if (type === "folder") {
-      const data = await getFolderTracks(id); // `id` contains pathname.
-      trackIds = data.map(({ id }) => id);
-    } else {
-      if (ReservedNames.has(id)) {
-        const data = await getSpecialPlaylist(id as ReservedPlaylistName, {
-          columns: [],
-          trackColumns: ["id"],
-          withAlbum: false,
-        });
-        trackIds = data.tracks.map(({ id }) => id);
-      } else {
-        const data = await getPlaylist(id, {
-          columns: [],
-          trackColumns: ["id"],
-          withAlbum: false,
-        });
-        trackIds = data.tracks.map(({ id }) => id);
-      }
-    }
-  } catch {}
-
-  return trackIds;
-}
-
-/** Returns information necessary to switch `queue` seamlessly. */
-function getUpdatedLists(newPlayingList: string[], startTrackId?: string) {
-  const { shuffle, activeId } = playbackStore.getState();
-  const usedList = shuffle ? shuffleArray(newPlayingList) : newPlayingList;
-
-  // The tracks we should attempt to start from.
-  const startFromIds = [startTrackId, activeId];
-  // Get the index we should start at in the new list.
-  let newLocation = -1;
-  startFromIds.forEach((startId) => {
-    if (!startId || newLocation !== -1) return;
-    newLocation = usedList.findIndex((tId) => startId === tId);
-  });
-
-  return {
-    orderSnapshot: newPlayingList,
-    queue: usedList,
-    queuePosition: newLocation === -1 ? 0 : newLocation,
-  };
 }
 //#endregion

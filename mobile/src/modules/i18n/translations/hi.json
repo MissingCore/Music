@@ -142,6 +142,10 @@
         "vinylOld": null
       }
     },
+    "quickScroll": {
+      "title": null,
+      "brief": null
+    },
     "ignoreRTLLayout": {
       "title": null,
       "brief": null
@@ -170,6 +174,13 @@
         "other": "अन्य",
         "total": "कुल",
         "totalDuration": "कुल अवधि"
+      }
+    },
+    "mostPlayed": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "playCount": null
       }
     },
     "hiddenTracks": {
@@ -202,6 +213,10 @@
       "title": null,
       "brief": null
     },
+    "playbackDelay": {
+      "title": null,
+      "description": null
+    },
     "repeatOnSkip": {
       "title": null,
       "brief": null
@@ -225,6 +240,10 @@
     "deepRescan": {
       "title": "गहरा पुनः स्कैन",
       "brief": "सामान्य पुनः स्कैन फीचर को तेज करने वाले किसी भी छोड़ने वाले उपायों को अनदेखा करता है।"
+    },
+    "rescanOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "listAllow": {
       "title": "अनुमति सूची",
@@ -253,6 +272,9 @@
         "start": null,
         "stopTime": null
       }
+    },
+    "waveformSlider": {
+      "title": null
     },
     "translate": {
       "title": "अनुवाद में योगदान दें",

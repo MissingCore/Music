@@ -1,20 +1,18 @@
 import TrackPlayer, { RepeatMode } from "@weights-ai/react-native-track-player";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import "~/services/_subscriptions";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
-import { RepeatModes } from "~/stores/Playback/constants";
+import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { useSortPreferencesStore } from "~/modules/media/services/SortPreferences";
-import {
-  userPreferencesStore,
-  useUserPreferencesStore,
-} from "~/services/UserPreferences";
 
 import {
   getTrackPlayerOptions,
   onAppStartUpInit,
 } from "~/lib/react-native-track-player";
 import { revalidateWidgets } from "~/modules/widget/utils";
+import { RepeatModes } from "~/stores/Playback/constants";
+
+type SetupState = "idle" | "pending" | "ready";
 
 /**
  * Ensure our Zustand stores are hydrated before we do anything, making
@@ -22,31 +20,36 @@ import { revalidateWidgets } from "~/modules/widget/utils";
  * RNTP is initialized.
  */
 export function useSetup() {
+  const [setupState, setSetupState] = useState<SetupState>("idle");
   const playbackHydrated = usePlaybackStore((s) => s._hasHydrated);
   const sortPreferencesHydrated = useSortPreferencesStore(
     (s) => s._hasHydrated,
   );
-  const userPreferencesHydrated = useUserPreferencesStore(
-    (s) => s._hasHydrated,
-  );
+  const preferenceHydrated = usePreferenceStore((s) => s._hasHydrated);
 
   useEffect(() => {
+    if (
+      !playbackHydrated ||
+      !sortPreferencesHydrated ||
+      !preferenceHydrated ||
+      setupState !== "idle"
+    ) {
+      return;
+    }
+
     (async () => {
+      setSetupState("pending");
       await onAppStartUpInit;
-      // Ensure RNTP is successfully setup before initializing stores that
-      // rely on its initialization.
-      await userPreferencesStore.persist.rehydrate();
-      await playbackStore.persist.rehydrate();
 
       // Ensure widget has up-to-date data as the Playback store isn't
       // immediately hydrated.
       await revalidateWidgets({ openApp: true });
 
-      const { repeat, activeId } = playbackStore.getState();
+      const { repeat, activeKey } = playbackStore.getState();
       const { restoreLastPosition, continuePlaybackOnDismiss } =
-        userPreferencesStore.getState();
+        preferenceStore.getState();
       if (restoreLastPosition) {
-        playbackStore.setState({ _restoredTrackId: activeId });
+        playbackStore.setState({ _restoredTrackKey: activeKey });
       } else playbackStore.setState({ _hasRestoredPosition: true });
 
       // Ensure correct RNTP settings.
@@ -56,8 +59,15 @@ export function useSetup() {
       if (repeat === RepeatModes.REPEAT_ONE) {
         await TrackPlayer.setRepeatMode(RepeatMode.Track);
       }
-    })();
-  }, []);
 
-  return playbackHydrated && sortPreferencesHydrated && userPreferencesHydrated;
+      setSetupState("ready");
+    })();
+  }, [
+    playbackHydrated,
+    sortPreferencesHydrated,
+    preferenceHydrated,
+    setupState,
+  ]);
+
+  return setupState === "ready";
 }

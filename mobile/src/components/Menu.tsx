@@ -5,7 +5,7 @@ import { Menu as PaperMenu } from "react-native-paper";
 
 import type { Icon } from "~/resources/icons/type";
 import { MoreVert } from "~/resources/icons/MoreVert";
-import { useUserPreferencesStore } from "~/services/UserPreferences";
+import { usePreferenceStore } from "~/stores/Preference/store";
 import { useTheme } from "~/hooks/useTheme";
 
 import { BorderRadius, FontSize } from "~/constants/Styles";
@@ -25,7 +25,7 @@ export function Menu(props: {
   const { t } = useTranslation();
   const { surface, onSurface, foreground } = useTheme();
   const [visible, setVisible] = useState(false);
-  const primaryFont = useUserPreferencesStore((state) => state.primaryFont);
+  const primaryFont = usePreferenceStore((s) => s.primaryFont);
 
   return (
     <PaperMenu

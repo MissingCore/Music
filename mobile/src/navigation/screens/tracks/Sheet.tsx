@@ -54,12 +54,13 @@ import { Checkbox } from "~/components/Form/Selection";
 import { Sheet, useSheetRef } from "~/components/Sheet";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { MediaImage } from "~/modules/media/components/MediaImage";
+import { extractTrackId } from "~/stores/Playback/utils";
 import { ContentPlaceholder } from "../../components/Placeholder";
 
 //#region Track Sheet
 /** Displays information about a track and enables adding it to playlists. */
 export function TrackSheet() {
-  const data = useSessionStore((state) => state.displayedTrack);
+  const data = useSessionStore((s) => s.displayedTrack);
   const trackArtworkSheetRef = useSheetRef();
   const { handlers, isScrollable } = useIsScrollable();
 
@@ -241,7 +242,8 @@ function TrackTextActions({ id, name }: Record<"id" | "name", string>) {
   const playingList = usePlaybackStore((s) => s.queue);
 
   const showPlayingFrom =
-    onNowPlayingScreen && playingList.some((tId) => tId === id);
+    onNowPlayingScreen &&
+    playingList.some((tKey) => extractTrackId(tKey) === id);
 
   const listLinkInfo = useMemo(
     () => (playingSource ? getMediaLinkContext(playingSource) : undefined),

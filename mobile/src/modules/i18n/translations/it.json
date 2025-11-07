@@ -142,6 +142,10 @@
         "vinylOld": "Vinile (legacy)"
       }
     },
+    "quickScroll": {
+      "title": null,
+      "brief": null
+    },
     "ignoreRTLLayout": {
       "title": null,
       "brief": null
@@ -170,6 +174,13 @@
         "other": "Altro",
         "total": "Totale",
         "totalDuration": "Durata totale"
+      }
+    },
+    "mostPlayed": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "playCount": null
       }
     },
     "hiddenTracks": {
@@ -202,6 +213,10 @@
       "title": "Ignora interruzioni",
       "brief": "Continua a riprodurre quando si verifica un'interruzione come una notifica o una chiamata. In questi casi dovrai mettere in pausa o far ricominciare la riproduzione manualmente."
     },
+    "playbackDelay": {
+      "title": null,
+      "description": null
+    },
     "repeatOnSkip": {
       "title": "Mantieni modalità \"$t(term.repeat)\" al cambio brano",
       "brief": "Non cambiare a \"$t(term.repeat)\" da \"$t(term.repeatOne)\" quando salti un brano."
@@ -225,6 +240,10 @@
     "deepRescan": {
       "title": "Scansione profonda",
       "brief": "Ignora qualsiasi funzionalità che rende più veloce le scansioni successive alla prima."
+    },
+    "rescanOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "listAllow": {
       "title": null,
@@ -253,6 +272,9 @@
         "start": null,
         "stopTime": null
       }
+    },
+    "waveformSlider": {
+      "title": null
     },
     "translate": {
       "title": "Contribuisci alle traduzioni",

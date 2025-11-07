@@ -11,7 +11,7 @@ import Animated, {
 
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
-import { useUserPreferencesStore } from "~/services/UserPreferences";
+import { usePreferenceStore } from "~/stores/Preference/store";
 import { useVinylSeekbar } from "../helpers/useVinylSeekbar";
 
 import { MediaImage } from "~/modules/media/components/MediaImage";
@@ -48,7 +48,7 @@ type ArtworkProps = { source: string | null; size: number };
 
 /** Determines which artwork is rendered. */
 function ArtworkPicker(props: ArtworkProps) {
-  const usedDesign = useUserPreferencesStore((s) => s.nowPlayingDesign);
+  const usedDesign = usePreferenceStore((s) => s.nowPlayingDesign);
 
   if (usedDesign === "plain") return <PlainArtwork {...props} />;
   else if (usedDesign === "vinyl") return <VinylSeekBar {...props} />;

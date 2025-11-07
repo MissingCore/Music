@@ -1,7 +1,11 @@
+import { useQuery } from "@tanstack/react-query";
+import { isNotNull } from "drizzle-orm";
 import { useTranslation } from "react-i18next";
 
+import { tracks } from "~/db/schema";
+import { getTracks } from "~/api/track";
+
 import { VisibilityOff } from "~/resources/icons/VisibilityOff";
-import { useHiddenTracks } from "~/queries/setting";
 import { useHideTrack } from "~/queries/track";
 
 import { mutateGuard } from "~/lib/react-query";
@@ -52,3 +56,30 @@ export default function HiddenTracks() {
     />
   );
 }
+
+//#region Data Query
+async function getHiddenTracks() {
+  return getTracks({
+    where: [isNotNull(tracks.hiddenAt)],
+    columns: ["id", "name", "artwork", "hiddenAt"],
+    albumColumns: ["artwork"],
+    withHidden: true,
+  });
+}
+
+const queryKey = ["settings", "hidden-tracks"];
+
+function useHiddenTracks() {
+  return useQuery({
+    queryKey,
+    queryFn: getHiddenTracks,
+    select: (data) => {
+      // FIXME: Once Hermes supports `toSorted`, use it instead.
+      // Both `hiddenAt` should technically be not `null`.
+      data.sort((a, b) => b.hiddenAt! - a.hiddenAt!);
+      return data;
+    },
+    staleTime: 0,
+  });
+}
+//#endregion

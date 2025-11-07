@@ -10,9 +10,7 @@ buildscript {
     classpath('com.facebook.react:react-native-gradle-plugin')
     classpath('org.jetbrains.kotlin:kotlin-gradle-plugin')
 
-    // If `music.CREATE_PRIVACY_BUILD` defined in `gradle.properties`
-    // is `true`, we don't run this code.
-    if (!findProperty('music.CREATE_PRIVACY_BUILD')?.toBoolean()) {
+    if (findProperty('music.WITH_SENTRY')?.toBoolean()) {
       classpath('io.sentry:sentry-android-gradle-plugin:5.9.0')
     }
   }
@@ -41,9 +39,7 @@ allprojects {
 
 subprojects {
   configurations.all {
-    // If `music.CREATE_PRIVACY_BUILD` defined in `gradle.properties`
-    // is `true`, we don't run this code.
-    if (!findProperty('music.CREATE_PRIVACY_BUILD')?.toBoolean()) {
+    if (findProperty('music.WITH_SENTRY')?.toBoolean()) {
       exclude group: 'io.sentry', module: 'sentry-android-replay'
     }
   }

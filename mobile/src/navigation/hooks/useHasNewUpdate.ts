@@ -1,5 +1,6 @@
-import { useLatestRelease } from "~/queries/setting";
-import { userPreferencesStore } from "~/services/UserPreferences";
+import { useQuery } from "@tanstack/react-query";
+
+import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { APP_VERSION } from "~/constants/Config";
 
@@ -14,7 +15,7 @@ type UpdateResult =
 /** Determines if we have a new update. */
 export function useHasNewUpdate(): UpdateResult {
   const { isPending, error, data } = useLatestRelease();
-  const { rcNotification } = userPreferencesStore.getState();
+  const rcNotification = usePreferenceStore((s) => s.rcNotification);
 
   let isRC = false;
   if (isPending || !!error) return { hasNewUpdate: false, release: null, isRC };
@@ -38,3 +39,47 @@ export function useHasNewUpdate(): UpdateResult {
     };
   }
 }
+
+//#region Data Query
+async function getLatestRelease() {
+  return {
+    latestStable: await fetch(`${RELEASE_NOTES_LINK}/latest`)
+      .then((res) => res.json())
+      .then((data) => formatGitHubRelease(data)),
+    latestRelease: await fetch(`${RELEASE_NOTES_LINK}?per_page=1`)
+      .then((res) => res.json())
+      .then(([data]) => formatGitHubRelease(data)),
+  };
+}
+
+const queryKey = ["settings", "release-notes"];
+
+function useLatestRelease() {
+  return useQuery({
+    queryKey,
+    queryFn: getLatestRelease,
+    gcTime: Infinity,
+    retry: false,
+  });
+}
+//#endregion
+
+//#region Internal Utils
+const RELEASE_NOTES_LINK =
+  "https://api.github.com/repos/MissingCore/Music/releases";
+
+type ReleaseNotes =
+  | { releaseNotes: undefined; version: undefined }
+  | { releaseNotes: string; version: string };
+
+/** Formats the data returned from the GitHub API. */
+function formatGitHubRelease(data: any): ReleaseNotes {
+  return {
+    version: data.tag_name,
+    // Remove markdown comments w/ regex.
+    releaseNotes: data.body
+      ? data.body.replace(/<!--[\s\S]*?(?:-->)/g, "")
+      : undefined,
+  };
+}
+//#endregion

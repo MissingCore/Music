@@ -17,7 +17,7 @@
     "next": "Następna",
     "shuffle": "Losuj",
     "repeat": "Zapętl",
-    "repeatOne": "Zapętl jeden",
+    "repeatOne": "Zapętl pojedynczy",
     "favorite": "Ulubiony",
     "favorites": "Ulubione",
     "unFavorite": "Usuń z ulubionych",
@@ -120,7 +120,7 @@
       "title": "Kolejność zakładek",
       "brief": "Spersonalizuj kolejność i widoczność zakładek.",
       "description": {
-        "line1": "Zmień kolejność zakładek przez przeciąganie i upuszczanie. Przełącz widoczność używając ikony oka. Ustaw startową zakładkę używając ikony domu.",
+        "line1": "Zmień kolejność zakładek przez przeciąganie i upuszczanie. Przełączaj ich widoczność, używając ikony oka. Ustaw startową zakładkę, używając ikony domu.",
         "line2": "Ostrzeżenie: Mogą występować nieoczekiwane błędy podczas przechodzenia do ukrytych zakładek."
       },
       "extra": {
@@ -128,11 +128,11 @@
       }
     },
     "albumLengthFilter": {
-      "title": null,
-      "description": null
+      "title": "Filtr długości albumu",
+      "description": "Minimalna liczba utworów w albumie, aby go wyświetlić w zakładce `Albumy`"
     },
     "miniplayerGestures": {
-      "title": "Gesty miniodtwarzacza"
+      "title": "Gesty w miniodtwarzaczu"
     },
     "nowPlayingDesign": {
       "title": "Wygląd ekranu `Odtwarzane teraz`",
@@ -141,6 +141,10 @@
         "vinyl": "Winyl",
         "vinylOld": "Winyl (Poprzedni)"
       }
+    },
+    "quickScroll": {
+      "title": "Szybkie przewijanie",
+      "brief": "Pokazuj na wspieranych zakładkach scrollbar w stylu Nothing."
     },
     "ignoreRTLLayout": {
       "title": "Ignoruj układ RTL",
@@ -162,7 +166,7 @@
     },
     "insights": {
       "title": "Wgląd",
-      "brief": "Rozmiary i ilości danych.",
+      "brief": "Przeanalizuj dane i statystyki.",
       "extra": {
         "cache": "Pamięć podręczna",
         "database": "Baza danych",
@@ -170,6 +174,13 @@
         "other": "Inne",
         "total": "Razem",
         "totalDuration": "Łączna długość"
+      }
+    },
+    "mostPlayed": {
+      "title": "Najczęściej odtwarzane",
+      "brief": "Ranking najczęściej odtwarzanych utworów.",
+      "extra": {
+        "playCount": "{{count}} razy"
       }
     },
     "hiddenTracks": {
@@ -183,7 +194,7 @@
     },
     "saveErrors": {
       "title": "Błędy zapisu",
-      "brief": "Zobacz dlaczego niektóre utwory nie zostały dodane."
+      "brief": "Przyczyny, dla których niektóre utwory nie zostały dodane."
     },
     "interactions": {
       "title": "Interakcje z Nothing",
@@ -202,16 +213,20 @@
       "title": "Ignoruj przerwania",
       "brief": "Powiadomienia i połączenia nie będą zatrzymywać odtwarzania. Wymagane będzie ręczne zatrzymanie."
     },
+    "playbackDelay": {
+      "title": "Opóźnenie pomiędzy utworami",
+      "description": "Odtwarzacz przed odtworzeniem następnego utworu odczeka poniższą ilość sekund."
+    },
     "repeatOnSkip": {
       "title": "Zachowaj zapętlenie po pominięciu",
       "brief": "Nie zmieniaj trybu na `Zapętl` z `Zapętl jedną` po pominięciu."
     },
     "restoreLastPosition": {
-      "title": "Zapisz ostatnio odtwarzaną pozycję"
+      "title": "Przywróć ostatnio odtwarzaną pozycję"
     },
     "scanning": {
       "title": "Skanowanie",
-      "brief": "Opcje szukania muzyki."
+      "brief": "Ustaw opcje szukania muzyki."
     },
     "rescan": {
       "title": "Ponowne skanowanie",
@@ -225,6 +240,10 @@
     "deepRescan": {
       "title": "Głębokie skanowanie",
       "brief": "Ignoruje wszystkie reguły pomijania, które przyspieszają standardowe szukanie."
+    },
+    "rescanOnLaunch": {
+      "title": "Skanowanie przy uruchomienu",
+      "brief": "Po wyłączeniu będziesz musieć ręcznie uruchamiać skanowanie, by wykryć nowe lub usunięte utwory."
     },
     "listAllow": {
       "title": "Biała lista",
@@ -253,6 +272,9 @@
         "start": "Start",
         "stopTime": "Odtwarzanie zostanie zatrzymane o {{- time}}."
       }
+    },
+    "waveformSlider": {
+      "title": "Pasek przewijania z wizualizacją"
     },
     "translate": {
       "title": "Rozwijaj tłumaczenia",

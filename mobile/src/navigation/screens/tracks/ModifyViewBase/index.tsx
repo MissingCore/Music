@@ -47,9 +47,9 @@ function ScreenConfig() {
   const { t } = useTranslation();
 
   const isUnchanged = useTrackMetadataIsUnchanged();
-  const trackName = useTrackMetadataStore((state) => state.name);
-  const isSubmitting = useTrackMetadataStore((state) => state.isSubmitting);
-  const onSubmit = useTrackMetadataStore((state) => state.onSubmit);
+  const trackName = useTrackMetadataStore((s) => s.name);
+  const isSubmitting = useTrackMetadataStore((s) => s.isSubmitting);
+  const onSubmit = useTrackMetadataStore((s) => s.onSubmit);
 
   return (
     <ScreenOptions
@@ -76,9 +76,9 @@ function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
   const { t } = useTranslation();
 
   const isUnchanged = useTrackMetadataIsUnchanged();
-  const isSubmitting = useTrackMetadataStore((state) => state.isSubmitting);
+  const isSubmitting = useTrackMetadataStore((s) => s.isSubmitting);
   const setShowConfirmation = useTrackMetadataStore(
-    (state) => state.setShowConfirmation,
+    (s) => s.setShowConfirmation,
   );
 
   useEffect(() => {
@@ -147,9 +147,9 @@ function FormInput(props: {
   field: keyof TrackMetadataForm;
   numeric?: boolean;
 }) {
-  const isSubmitting = useTrackMetadataStore((state) => state.isSubmitting);
-  const field = useTrackMetadataStore((state) => state[props.field]);
-  const setField = useTrackMetadataStore((state) => state.setField);
+  const isSubmitting = useTrackMetadataStore((s) => s.isSubmitting);
+  const field = useTrackMetadataStore((s) => s[props.field]);
+  const setField = useTrackMetadataStore((s) => s.setField);
 
   return (
     <TextInput
@@ -167,11 +167,9 @@ function FormInput(props: {
 /** Modal that's rendered if we have unsaved changes. */
 function ConfirmationModal() {
   const navigation = useNavigation();
-  const showConfirmation = useTrackMetadataStore(
-    (state) => state.showConfirmation,
-  );
+  const showConfirmation = useTrackMetadataStore((s) => s.showConfirmation);
   const setShowConfirmation = useTrackMetadataStore(
-    (state) => state.setShowConfirmation,
+    (s) => s.setShowConfirmation,
   );
 
   return (
@@ -197,12 +195,10 @@ function ResetWorkflow({
   onLayout,
   wrapperStyling,
 }: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
-  const { uri } = useTrackMetadataStore((state) => state.initialData);
-  const isSubmitting = useTrackMetadataStore((state) => state.isSubmitting);
-  const setIsSubmitting = useTrackMetadataStore(
-    (state) => state.setIsSubmitting,
-  );
-  const setFields = useTrackMetadataStore((state) => state.setFields);
+  const { uri } = useTrackMetadataStore((s) => s.initialData);
+  const isSubmitting = useTrackMetadataStore((s) => s.isSubmitting);
+  const setIsSubmitting = useTrackMetadataStore((s) => s.setIsSubmitting);
+  const setFields = useTrackMetadataStore((s) => s.setFields);
 
   const onReset = async () => {
     setIsSubmitting(true);

@@ -7,31 +7,28 @@ import { DragIndicator } from "~/resources/icons/DragIndicator";
 import { Home } from "~/resources/icons/Home";
 import { Visibility } from "~/resources/icons/Visibility";
 import { VisibilityOff } from "~/resources/icons/VisibilityOff";
-import type { OrderableTab } from "~/services/UserPreferences";
-import {
-  userPreferencesStore,
-  useUserPreferencesStore,
-} from "~/services/UserPreferences";
+import { usePreferenceStore } from "~/stores/Preference/store";
+import { Tabs } from "~/stores/Preference/actions";
 
 import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import { cn } from "~/lib/style";
-import { moveArray } from "~/utils/object";
 import { FlashDragList } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { IconButton } from "~/components/Form/Button";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
+import type { Tab } from "~/stores/Preference/types";
 
-type RenderItemProps = DragListRenderItemInfo<OrderableTab>;
+type RenderItemProps = DragListRenderItemInfo<Tab>;
 
 export default function HomeTabsOrderSettings() {
-  const data = useUserPreferencesStore((state) => state.tabsOrder);
+  const data = usePreferenceStore((s) => s.tabsOrder);
   return (
     <FlashDragList
       estimatedItemSize={52} // 48px Height + 4px Margin top
       data={data}
       keyExtractor={(tabKey) => tabKey}
       renderItem={(args) => <RenderItem {...args} />}
-      onReordered={onMove}
+      onReordered={Tabs.move}
       ListHeaderComponent={ListHeaderComponent}
       contentContainerClassName="p-4"
     />
@@ -56,10 +53,8 @@ function ListHeaderComponent() {
 const RenderItem = memo(
   function RenderItem({ item, ...info }: RenderItemProps) {
     const { t } = useTranslation();
-    const homeTab = useUserPreferencesStore((state) => state.homeTab);
-    const tabsVisibility = useUserPreferencesStore(
-      (state) => state.tabsVisibility,
-    );
+    const homeTab = usePreferenceStore((s) => s.homeTab);
+    const tabsVisibility = usePreferenceStore((s) => s.tabsVisibility);
 
     const isVisible = tabsVisibility[item];
     const isHomeTab = homeTab === item;
@@ -86,7 +81,7 @@ const RenderItem = memo(
           accessibilityLabel={t("feat.tabsOrder.extra.setHomeTab", {
             name: t(tabNameKey),
           })}
-          onPress={() => setHomeTab(item)}
+          onPress={() => Tabs.setHome(item)}
           disabled={info.isDragging || !isVisible || isHomeTab}
           filled={isHomeTab}
           className={cn({
@@ -99,7 +94,7 @@ const RenderItem = memo(
             isVisible ? "template.entryHide" : "template.entryShow",
             { name: t(tabNameKey) },
           )}
-          onPress={() => toggleTabVisibility(item)}
+          onPress={() => Tabs.toggleVisibility(item)}
           disabled={info.isDragging || isHomeTab}
         />
       </Pressable>
@@ -107,19 +102,3 @@ const RenderItem = memo(
   },
   areRenderItemPropsEqual((o, n) => o.item === n.item),
 );
-
-const onMove = (fromIndex: number, toIndex: number) => {
-  userPreferencesStore.setState(({ tabsOrder }) => ({
-    tabsOrder: moveArray(tabsOrder, { fromIndex, toIndex }),
-  }));
-};
-
-const setHomeTab = (tab: OrderableTab) => {
-  userPreferencesStore.setState({ homeTab: tab });
-};
-
-const toggleTabVisibility = (tab: OrderableTab) => {
-  userPreferencesStore.setState(({ tabsVisibility }) => ({
-    tabsVisibility: { ...tabsVisibility, [tab]: !tabsVisibility[tab] },
-  }));
-};

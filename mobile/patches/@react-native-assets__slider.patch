@@ -11,19 +11,6 @@ index 242b83b5325bb5db4bd64a176a95176675c8ca73..bba3f83b575ba80d923cbc88d412ec34
          react_1.default.createElement(Track_1.default, { ...trackProps, color: maximumTrackTintColor, style: maxStyle, length: (1 - percentage) * 100, track: 'max' }),
          react_1.default.createElement(Marks_1.default, { type: 'slider', ...marksProps })));
  });
-diff --git a/dist/components/ResponderView.js b/dist/components/ResponderView.js
-index 9c9c8765f517c31f977dc11e4c54b9d069ee7a82..cb3e9f52215f2a2f3b1e17999dadad17f0edd8b1 100644
---- a/dist/components/ResponderView.js
-+++ b/dist/components/ResponderView.js
-@@ -120,7 +120,7 @@ const ResponderView = react_1.default.forwardRef((props, ref) => {
-     });
-     const containerStyle = react_1.default.useMemo(() => [styleSheet[vertical ? 'vertical' : 'horizontal'], style], [vertical, style]);
-     return (react_1.default.createElement(RN.View, { ...others, focusable: false, pointerEvents: 'box-only', ref: forwardRef, onLayout: onLayout, style: containerStyle, onStartShouldSetResponder: isEnabled, onMoveShouldSetResponder: isEnabled, onResponderGrant: onPress, onResponderRelease: onRelease, onResponderMove: onMove, onResponderTerminationRequest: keepResponder, onResponderTerminate: onRelease },
--        react_1.default.createElement(SliderView_1.default, { vertical: vertical, inverted: inverted }, props.children)));
-+        react_1.default.createElement(SliderView_1.default, { vertical: vertical }, props.children)));
- });
- ResponderView.displayName = 'ResponderView';
- exports.default = react_1.default.memo(ResponderView);
 diff --git a/dist/components/Thumb.js b/dist/components/Thumb.js
 index f6b20d6fff19456405d65e40976cdccef58d3d74..007eccc8682bc899cab9dae06f00b6f479647674 100644
 --- a/dist/components/Thumb.js

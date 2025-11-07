@@ -160,6 +160,10 @@
         "vinylOld": "Vinyl (Legacy)"
       }
     },
+    "quickScroll": {
+      "title": "Quick Scroll",
+      "brief": "Show Nothing-styled scrollbar on supported screens."
+    },
     "ignoreRTLLayout": {
       "title": "Ignore RTL Layout",
       "brief": "Use LTR layout with a RTL language. Restart required."
@@ -188,6 +192,13 @@
         "other": "Other",
         "total": "Total",
         "totalDuration": "Total Duration"
+      }
+    },
+    "mostPlayed": {
+      "title": "Most Played",
+      "brief": "All-time ranking of tracks.",
+      "extra": {
+        "playCount": "{{count}} plays"
       }
     },
     "hiddenTracks": {
@@ -220,6 +231,10 @@
       "title": "Ignore Interruptions",
       "brief": "Continue playing audio when an interruption such as a notification or a call occurs. You will need to manually pause and unpause the music during these situations."
     },
+    "playbackDelay": {
+      "title": "Natural Playback Delay",
+      "description": "Delay in seconds before the next track is naturally played."
+    },
     "repeatOnSkip": {
       "title": "Keep Repeat Mode on Skip",
       "brief": "Don't switch mode to \"Repeat\" from \"Repeat One\" on skip."
@@ -243,6 +258,10 @@
     "deepRescan": {
       "title": "Deep Rescan",
       "brief": "Ignores any skip measures that speeds up the normal rescan feature."
+    },
+    "rescanOnLaunch": {
+      "title": "Rescan on Launch",
+      "brief": "If disabled, use the Rescan feature to detect new, updated, and removed tracks."
     },
     "listAllow": {
       "title": "Allowlist",
@@ -271,6 +290,9 @@
         "start": "Start",
         "stopTime": "Audio will stop playing at {{- time}}."
       }
+    },
+    "waveformSlider": {
+      "title": "Waveform Slider"
     },
     "translate": {
       "title": "Contribute Translations",

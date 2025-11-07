@@ -16,10 +16,10 @@ import { deferInitialRender } from "../../../../components/DeferredRender";
 export const SleepTimerSheet = deferInitialRender(
   function SleepTimerSheet(props: { sheetRef: TrueSheetRef }) {
     const { t } = useTranslation();
-    const sleepTimerLength = useSleepTimerStore((state) => state.duration);
-    const endAt = useSleepTimerStore((state) => state.endAt);
-    const createTimer = useSleepTimerStore((state) => state.create);
-    const clearTimer = useSleepTimerStore((state) => state.clear);
+    const sleepTimerLength = useSleepTimerStore((s) => s.duration);
+    const endAt = useSleepTimerStore((s) => s.endAt);
+    const createTimer = useSleepTimerStore((s) => s.create);
+    const clearTimer = useSleepTimerStore((s) => s.clear);
     const [minutes, setMinutes] = useState(`${sleepTimerLength}`);
 
     const hasTimer = endAt !== null;

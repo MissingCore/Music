@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import type { TextProps } from "react-native";
 import { Text } from "react-native";
 
-import { useUserPreferencesStore } from "~/services/UserPreferences";
+import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { cn, getFont } from "~/lib/style";
 
@@ -16,7 +16,7 @@ export function StyledText({
   dim,
   ...props
 }: TextProps & Partial<Record<"bold" | "center" | "dim", boolean>>) {
-  const primaryFont = useUserPreferencesStore((state) => state.primaryFont);
+  const primaryFont = usePreferenceStore((s) => s.primaryFont);
   return (
     <Text
       className={cn(

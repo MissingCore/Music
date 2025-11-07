@@ -16,6 +16,8 @@ interface SwipeableProps {
 
   /** If the swipe gesture should be disabled. */
   disabled?: boolean;
+  /** If we should fire the callback before the animation finishes. Defaults to `false`. */
+  fireCallbackBeforeCompletion?: boolean;
 
   /** Distance to swipe to trigger an action. Defaults to `125`. */
   activationThreshold?: number;
@@ -44,6 +46,7 @@ interface SwipeableProps {
 
 export function Swipeable({
   disabled = false,
+  fireCallbackBeforeCompletion = false,
   activationThreshold = 175,
   activationThresholdRatio = 0.5,
   overshootSwipe = true,
@@ -122,9 +125,16 @@ export function Swipeable({
             useNativeDriver: true,
           });
 
+      // Run callback before the animation starts if we met the threshold.
+      if (fireCallbackBeforeCompletion && metThreshold) {
+        if (swipedLeft) props.onSwipeLeft!();
+        else props.onSwipeRight!();
+      }
+
       animationRef.current.start(async ({ finished }) => {
-        // Run code if we met the threshold.
-        if (finished && metThreshold) {
+        // Run callback after the animation finishes successfully and if
+        // we met the threshold.
+        if (!fireCallbackBeforeCompletion && finished && metThreshold) {
           if (swipedLeft) props.onSwipeLeft!();
           else props.onSwipeRight!();
         }

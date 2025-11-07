@@ -142,6 +142,10 @@
         "vinylOld": "Vinyle (Legacy)"
       }
     },
+    "quickScroll": {
+      "title": null,
+      "brief": null
+    },
     "ignoreRTLLayout": {
       "title": null,
       "brief": "Utilisez la disposition LTR avec un langage RTL. Redémarrage requis."
@@ -170,6 +174,13 @@
         "other": "Autre",
         "total": "Total",
         "totalDuration": "Durée Totale"
+      }
+    },
+    "mostPlayed": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "playCount": null
       }
     },
     "hiddenTracks": {
@@ -202,6 +213,10 @@
       "title": "Ignorer les interruptions",
       "brief": "Continuer à lire l'audio quand une interruption comme une notification ou un appel se produit. Vous devrez mettre manuellement la musique en pause et la remettre en pause pendant ces situations."
     },
+    "playbackDelay": {
+      "title": null,
+      "description": null
+    },
     "repeatOnSkip": {
       "title": "Garder le mode Répéter lors du passage au titre suivant",
       "brief": "Ne pas basculer en mode « Répéter » depuis « Répéter le titre » lors du saut."
@@ -225,6 +240,10 @@
     "deepRescan": {
       "title": "Recherche en profondeur",
       "brief": "Ignore toutes les mesures de saut qui accélèrent la fonction normale de recherche."
+    },
+    "rescanOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "listAllow": {
       "title": "Liste d'autorisation",
@@ -253,6 +272,9 @@
         "start": null,
         "stopTime": null
       }
+    },
+    "waveformSlider": {
+      "title": null
     },
     "translate": {
       "title": "Contribuer aux traductions",

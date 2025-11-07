@@ -142,6 +142,10 @@
         "vinylOld": "Винил (устаревший)"
       }
     },
+    "quickScroll": {
+      "title": null,
+      "brief": null
+    },
     "ignoreRTLLayout": {
       "title": null,
       "brief": null
@@ -170,6 +174,13 @@
         "other": "Другое",
         "total": "Полная",
         "totalDuration": "Полная длительность"
+      }
+    },
+    "mostPlayed": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "playCount": null
       }
     },
     "hiddenTracks": {
@@ -202,6 +213,10 @@
       "title": "Игнорировать прерывания",
       "brief": "Продолжить воспроизведение аудио когда происходит прерывание, например уведомление или звонок. Вам нужно будет ставить музыку на паузу вручную в таких ситуациях."
     },
+    "playbackDelay": {
+      "title": null,
+      "description": null
+    },
     "repeatOnSkip": {
       "title": "Не выключать режим повтора при пропуске",
       "brief": "Не переключаться в режим \"Повтор\" с режима \"Повторять одну\" после пропуска."
@@ -225,6 +240,10 @@
     "deepRescan": {
       "title": "Глубокое пересканирование",
       "brief": "Игнорирует любые средства пропуска, которые ускоряют нормальный процесс сканирования."
+    },
+    "rescanOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "listAllow": {
       "title": "Белый список",
@@ -253,6 +272,9 @@
         "start": "Начать",
         "stopTime": "Музыка перестанет играть в {{- time}}."
       }
+    },
+    "waveformSlider": {
+      "title": null
     },
     "translate": {
       "title": "Внести вклад в перевод",

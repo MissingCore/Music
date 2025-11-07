@@ -3,18 +3,14 @@ import { openBrowserAsync } from "expo-web-browser";
 import { useTranslation } from "react-i18next";
 
 import { OpenInNew } from "~/resources/icons/OpenInNew";
-import { queries as q } from "~/queries/keyStore";
-import {
-  userPreferencesStore,
-  useUserPreferencesStore,
-} from "~/services/UserPreferences";
+import { usePreferenceStore } from "~/stores/Preference/store";
+import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { useHasNewUpdate } from "../../../hooks/useHasNewUpdate";
 import { StandardScrollLayout } from "../../../layouts/StandardScroll";
 import { SettingsSheets } from "./Sheets";
 
 import { APP_VERSION } from "~/constants/Config";
 import * as LINKS from "~/constants/Links";
-import { queryClient } from "~/lib/react-query";
 import { Card } from "~/components/Containment/Card";
 import { List, ListItem } from "~/components/Containment/List";
 import { Divider } from "~/components/Divider";
@@ -25,9 +21,7 @@ export default function Settings() {
   const { t, i18n } = useTranslation();
   const navigation = useNavigation();
   const { hasNewUpdate } = useHasNewUpdate();
-  const showRCNotification = useUserPreferencesStore(
-    (state) => state.rcNotification,
-  );
+  const showRCNotification = usePreferenceStore((s) => s.rcNotification);
   const backupSheetRef = useSheetRef();
   const languageSheetRef = useSheetRef();
 
@@ -144,7 +138,7 @@ export default function Settings() {
             <Divider className="mx-4" />
             <ListItem
               titleKey="feat.version.extra.rcNotification"
-              onPress={toggleRCNotification}
+              onPress={PreferenceTogglers.toggleRCNotification}
               switchState={showRCNotification}
               className="rounded-none"
             />
@@ -154,10 +148,3 @@ export default function Settings() {
     </>
   );
 }
-
-const toggleRCNotification = () => {
-  userPreferencesStore.setState((prev) => ({
-    rcNotification: !prev.rcNotification,
-  }));
-  queryClient.invalidateQueries({ queryKey: q.settings.releaseNote.queryKey });
-};

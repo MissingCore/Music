@@ -64,9 +64,7 @@ react {
 }
 
 
-// If `music.CREATE_PRIVACY_BUILD` defined in `gradle.properties` is `true`,
-// we don't run this code.
-if (!findProperty('music.CREATE_PRIVACY_BUILD')?.toBoolean()) {
+if (findProperty('music.WITH_SENTRY')?.toBoolean()) {
     apply plugin: "io.sentry.android.gradle"
 
     /**
@@ -171,8 +169,8 @@ android {
         applicationId 'com.cyanchill.missingcore.music'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1040
-        versionName "2.6.2"
+        versionCode 1044
+        versionName "2.7.0-rc.2"
     }
     /**
      * https://developer.android.com/build/configure-apk-splits

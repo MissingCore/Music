@@ -15,6 +15,14 @@
     "license": "MIT",
     "licenseText": "The MIT License (MIT)\n\nCopyright (c) 2016 Dávid Ocetník\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
   },
+  "@kaannn/react-native-waveform": {
+    "name": "@kaannn/react-native-waveform",
+    "version": "0.1.4",
+    "copyright": "Copyright (c) 2025 Kağan Temizkan",
+    "source": "https://github.com/kagantemizkan/react-native-audio-wave",
+    "license": "MIT",
+    "licenseText": "MIT License\n\nCopyright (c) 2025 Kağan Temizkan\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
+  },
   "@lodev09/react-native-true-sheet": {
     "name": "@lodev09/react-native-true-sheet",
     "version": "2.0.6",
@@ -65,7 +73,7 @@
   },
   "@react-native-assets/slider": {
     "name": "@react-native-assets/slider",
-    "version": "11.0.11",
+    "version": "11.0.12",
     "copyright": "Copyright 2020 François Billioud",
     "source": "https://github.com/Sharcoux/slider",
     "license": "ISC",
@@ -73,7 +81,7 @@
   },
   "@react-navigation/material-top-tabs": {
     "name": "@react-navigation/material-top-tabs",
-    "version": "7.3.8",
+    "version": "7.4.2",
     "copyright": "Copyright (c) 2017 React Navigation Contributors",
     "source": "https://github.com/react-navigation/react-navigation/tree/main/packages/material-top-tabs",
     "license": "MIT",
@@ -81,7 +89,7 @@
   },
   "@react-navigation/native": {
     "name": "@react-navigation/native",
-    "version": "7.1.18",
+    "version": "7.1.19",
     "copyright": "Copyright (c) 2017 React Navigation Contributors",
     "source": "https://github.com/react-navigation/react-navigation/tree/main/packages/native",
     "license": "MIT",
@@ -89,7 +97,7 @@
   },
   "@react-navigation/native-stack": {
     "name": "@react-navigation/native-stack",
-    "version": "7.3.27",
+    "version": "7.6.2",
     "copyright": "Copyright (c) 2017 React Navigation Contributors",
     "source": "https://github.com/react-navigation/react-navigation/tree/main/packages/native-stack",
     "license": "MIT",
@@ -113,7 +121,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.90.2",
+    "version": "5.90.6",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -137,7 +145,7 @@
   },
   "drizzle-orm": {
     "name": "drizzle-orm",
-    "version": "0.44.6",
+    "version": "0.44.7",
     "copyright": "Copyright (c) 2022 Drizzle Team",
     "source": "https://github.com/drizzle-team/drizzle-orm",
     "license": "Apache-2.0",
@@ -289,7 +297,7 @@
   },
   "jotai": {
     "name": "jotai",
-    "version": "2.15.0",
+    "version": "2.15.1",
     "copyright": "Copyright (c) 2020 Poimandres",
     "source": "https://github.com/pmndrs/jotai",
     "license": "MIT",
@@ -329,7 +337,7 @@
   },
   "react-i18next": {
     "name": "react-i18next",
-    "version": "16.0.0",
+    "version": "16.2.4",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/react-i18next",
     "license": "MIT",
@@ -337,7 +345,7 @@
   },
   "react-native": {
     "name": "react-native",
-    "version": "0.79.6",
+    "version": "0.79.7",
     "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates.",
     "source": "https://github.com/facebook/react-native",
     "license": "MIT",
@@ -377,7 +385,7 @@
   },
   "react-native-gesture-handler": {
     "name": "react-native-gesture-handler",
-    "version": "2.28.0",
+    "version": "2.29.1",
     "copyright": "Copyright (c) 2016 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-gesture-handler",
     "license": "MIT",
@@ -385,7 +393,7 @@
   },
   "react-native-keyboard-controller": {
     "name": "react-native-keyboard-controller",
-    "version": "1.19.0",
+    "version": "1.19.5",
     "copyright": "Copyright (c) 2021 Kiryl Ziusko",
     "source": "https://github.com/kirillzyusko/react-native-keyboard-controller",
     "license": "MIT",
@@ -417,7 +425,7 @@
   },
   "react-native-reanimated": {
     "name": "react-native-reanimated",
-    "version": "3.19.2",
+    "version": "3.19.3",
     "copyright": "Copyright (c) 2016 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-reanimated",
     "license": "MIT",
@@ -425,15 +433,15 @@
   },
   "react-native-safe-area-context": {
     "name": "react-native-safe-area-context",
-    "version": "5.6.1",
+    "version": "5.6.2",
     "copyright": "Copyright (c) 2019 Th3rd Wave",
-    "source": "https://github.com/th3rdwave/react-native-safe-area-context",
+    "source": "https://github.com/AppAndFlow/react-native-safe-area-context",
     "license": "MIT",
     "licenseText": "MIT License\n\nCopyright (c) 2019 Th3rd Wave\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
   },
   "react-native-screens": {
     "name": "react-native-screens",
-    "version": "4.16.0",
+    "version": "4.18.0",
     "copyright": "Copyright (c) 2018 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-screens",
     "license": "MIT",

@@ -142,6 +142,10 @@
         "vinylOld": "ヴァイナル (従来)"
       }
     },
+    "quickScroll": {
+      "title": null,
+      "brief": null
+    },
     "ignoreRTLLayout": {
       "title": "RTL レイアウトを無視",
       "brief": "RTL 言語で LTR レイアウトを使用します。アプリの再起動が必要です。"
@@ -170,6 +174,13 @@
         "other": "その他",
         "total": "合計",
         "totalDuration": "合計の再生時間"
+      }
+    },
+    "mostPlayed": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "playCount": null
       }
     },
     "hiddenTracks": {
@@ -202,6 +213,10 @@
       "title": "中断を無視する",
       "brief": "通知や通話などのイベントが発生しても音楽の再生を継続します。この機能を有効化すると手動で音楽を一時停止または再開を操作する必要があります。"
     },
+    "playbackDelay": {
+      "title": null,
+      "description": null
+    },
     "repeatOnSkip": {
       "title": "スキップ時にリピートモードを維持する",
       "brief": "スキップ時に「1 回リピート」を「リピート」に切り替えないようにします。"
@@ -225,6 +240,10 @@
     "deepRescan": {
       "title": "ディープで再スキャン",
       "brief": "通常の再スキャンのスキップ機能による高速化を無視します。"
+    },
+    "rescanOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "listAllow": {
       "title": "許可リスト",
@@ -253,6 +272,9 @@
         "start": "開始",
         "stopTime": "オーディオの再生は {{- time}} に停止します。"
       }
+    },
+    "waveformSlider": {
+      "title": null
     },
     "translate": {
       "title": "翻訳に貢献する",

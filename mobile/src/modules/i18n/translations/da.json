@@ -142,6 +142,10 @@
         "vinylOld": "Vinyl og cover"
       }
     },
+    "quickScroll": {
+      "title": null,
+      "brief": null
+    },
     "ignoreRTLLayout": {
       "title": null,
       "brief": null
@@ -170,6 +174,13 @@
         "other": "Andet",
         "total": "I alt",
         "totalDuration": "Varighed i alt"
+      }
+    },
+    "mostPlayed": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "playCount": null
       }
     },
     "hiddenTracks": {
@@ -202,6 +213,10 @@
       "title": "Ignorér afbrydelser",
       "brief": "Fortsæt med at afspille musik, når du får et opkald eller en notifikation. Du bliver nødt til manuelt at pause/afspille musikken i disse situationer."
     },
+    "playbackDelay": {
+      "title": null,
+      "description": null
+    },
     "repeatOnSkip": {
       "title": "Behold gentagelsesindstilling ved næste sang",
       "brief": "Ændr ikke gentagelsesindstillingen fra \"Gentag én\" til \"Gentag\", når der skiftes til næste sang."
@@ -225,6 +240,10 @@
     "deepRescan": {
       "title": "Grundig scanning",
       "brief": "Scanner alle filer på enheden. Kan tage længere tid end den normale scanning."
+    },
+    "rescanOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "listAllow": {
       "title": "Tilladelsesliste",
@@ -253,6 +272,9 @@
         "start": null,
         "stopTime": null
       }
+    },
+    "waveformSlider": {
+      "title": null
     },
     "translate": {
       "title": "Bidrag oversættelser",

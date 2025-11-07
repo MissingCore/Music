@@ -142,6 +142,10 @@
         "vinylOld": "گرامافون (قدیمی)"
       }
     },
+    "quickScroll": {
+      "title": null,
+      "brief": null
+    },
     "ignoreRTLLayout": {
       "title": "نادیده گرفتن چیدمان راست به چپ",
       "brief": "استفاده از چیدمان چپ به راست با زبان راست به چپ. نیاز به راه‌اندازی مجدد."
@@ -170,6 +174,13 @@
         "other": "سایر",
         "total": "کل",
         "totalDuration": "مدت کل"
+      }
+    },
+    "mostPlayed": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "playCount": null
       }
     },
     "hiddenTracks": {
@@ -202,6 +213,10 @@
       "title": "نادیده گرفتن وقفه ها",
       "brief": "ادامه پخش صدا هنگام وقفه هایی مانند اعلان یا تماس. شما باید به صورت دستی موسیقی را در این شرایط متوقف و راه اندازی کنید."
     },
+    "playbackDelay": {
+      "title": null,
+      "description": null
+    },
     "repeatOnSkip": {
       "title": "حفظ حالت تکرار هنگام رد کردن",
       "brief": "حالت را از \"تکرار یکی\" به \"تکرار\" هنگام رد کردن تغییر نده."
@@ -225,6 +240,10 @@
     "deepRescan": {
       "title": "اسکن عمیق",
       "brief": "هر گونه اقدام رد کردنی که اسکن عادی را سریع تر می کند را نادیده می گیرد."
+    },
+    "rescanOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "listAllow": {
       "title": "لیست مجاز",
@@ -253,6 +272,9 @@
         "start": "شروع",
         "stopTime": "صدا در {{- time}} متوقف خواهد شد."
       }
+    },
+    "waveformSlider": {
+      "title": null
     },
     "translate": {
       "title": "کمک به ترجمه",

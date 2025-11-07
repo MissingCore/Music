@@ -36,9 +36,11 @@ This involves swiping left on some content to reveal actions related to that con
 This involves long-pressing an item to reveal some action. It's currently present in the following features.
 
 - **`Playlist Tracks`:** You can long-press on tracks in the playlist modification screen (create or edit) to change its order/position in the playlist.
+- **`Upcoming List`:** You can long-press on tracks in the Upcoming screen to move their position in the queue.
 
 ## Drag for Action
 
 This involves dragging an item to do some action. It's currently present in the following features.
 
 - **`Now Playing Vinyl`:** You can drag your finger in a circular motion on the vinyl (when enabled) to have it act as a seekbar. 1 full rotation of the vinyl is equivalent to 24s.
+- **`Nothing-Styled Scrollbar`:** You can drag the scrollbar (currently only available on the Home screens) to quickly scroll through the screen. Do note that some content might not be rendered immediately.

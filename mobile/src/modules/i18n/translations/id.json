@@ -142,6 +142,10 @@
         "vinylOld": "Vinyl (Lama)"
       }
     },
+    "quickScroll": {
+      "title": null,
+      "brief": null
+    },
     "ignoreRTLLayout": {
       "title": null,
       "brief": null
@@ -170,6 +174,13 @@
         "other": "Lain-lain",
         "total": "Total",
         "totalDuration": "Durasi Total"
+      }
+    },
+    "mostPlayed": {
+      "title": null,
+      "brief": null,
+      "extra": {
+        "playCount": null
       }
     },
     "hiddenTracks": {
@@ -202,6 +213,10 @@
       "title": "Abaikan Interupsi",
       "brief": "Lanjutkan memutar audio ketika interupsi seperti notifikasi atau panggilan telepon. Anda harus menjeda secara manual dan melanjutkan musik dalam situasi ini."
     },
+    "playbackDelay": {
+      "title": null,
+      "description": null
+    },
     "repeatOnSkip": {
       "title": "Tetap dalam Mode Mengulang saat Melewati",
       "brief": "Jangan mengalihkan mode ke \"Ulangi\" dari \"Ulangi Sekali\" saat melewati."
@@ -225,6 +240,10 @@
     "deepRescan": {
       "title": "Deep Rescan",
       "brief": "Mengabaikan tindakan apa pun yang mempercepat fitur pemindaian ulang normal."
+    },
+    "rescanOnLaunch": {
+      "title": null,
+      "brief": null
     },
     "listAllow": {
       "title": "Diizinkan",
@@ -253,6 +272,9 @@
         "start": null,
         "stopTime": null
       }
+    },
+    "waveformSlider": {
+      "title": null
     },
     "translate": {
       "title": "Kontribusi Penerjemahan",

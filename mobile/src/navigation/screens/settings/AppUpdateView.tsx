@@ -4,7 +4,7 @@ import Markdown from "react-native-markdown-display";
 
 import { LogoGitHub } from "~/resources/icons/LogoGitHub";
 import { LogoPlayStore } from "~/resources/icons/LogoPlayStore";
-import { useUserPreferencesStore } from "~/services/UserPreferences";
+import { usePreferenceStore } from "~/stores/Preference/store";
 import { useTheme } from "~/hooks/useTheme";
 import { useHasNewUpdate } from "../../hooks/useHasNewUpdate";
 import { StandardScrollLayout } from "../../layouts/StandardScroll";
@@ -19,8 +19,8 @@ import { TStyledText } from "~/components/Typography/StyledText";
 export default function AppUpdate() {
   const { release, isRC } = useHasNewUpdate();
   const { theme, foreground } = useTheme();
-  const accentFont = useUserPreferencesStore((state) => state.accentFont);
-  const primaryFont = useUserPreferencesStore((state) => state.primaryFont);
+  const accentFont = usePreferenceStore((s) => s.accentFont);
+  const primaryFont = usePreferenceStore((s) => s.primaryFont);
 
   if (!release) return null;
 

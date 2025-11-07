@@ -36,6 +36,7 @@ import ExperimentalSettings from "./screens/settings/ExperimentalSettingsView";
 import HiddenTracks from "./screens/settings/HiddenTracksView";
 import HomeTabsOrderSettings from "./screens/settings/HomeTabsOrderSettingsView";
 import Insights from "./screens/settings/InsightsView";
+import MostPlayed from "./screens/settings/MostPlayedView";
 import PackageLicense from "./screens/settings/PackageLicenseView";
 import PlaybackSettings from "./screens/settings/PlaybackSettingsView";
 import SaveErrors from "./screens/settings/SaveErrorsView";
@@ -47,11 +48,8 @@ import ModifyTrack from "./screens/tracks/ModifyView";
 import { TrackSheet } from "./screens/tracks/Sheet";
 import Tracks from "./screens/tracks/View";
 
-import {
-  userPreferencesStore,
-  useTabsByVisibility,
-  useUserPreferencesStore,
-} from "~/services/UserPreferences";
+import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
+import { useTabsByVisibility } from "~/stores/Preference/hooks";
 
 import type { HomeScreenNames } from "./components/BottomActions";
 import { BottomActions, getHomeScreenName } from "./components/BottomActions";
@@ -93,7 +91,7 @@ type RootScreensProps = StaticScreenProps<
 
 function RootScreens(_: RootScreensProps) {
   const navigation = useNavigation();
-  const homeTab = useUserPreferencesStore((s) => s.homeTab);
+  const homeTab = usePreferenceStore((s) => s.homeTab);
   const { displayedTabs, hiddenTabs } = useTabsByVisibility();
   // Should be fine to store history stack in ref as it doesn't affect rendering.
   //  - https://react.dev/learn/referencing-values-with-refs#when-to-use-refs
@@ -111,7 +109,7 @@ function RootScreens(_: RootScreensProps) {
       if (!canResetHomeScreens) {
         canResetHomeScreens = true;
         // Reset home tab preferences if we have a mismatch.
-        userPreferencesStore.setState({
+        preferenceStore.setState({
           homeTab: "home",
           tabsOrder: ["home", "folder", "playlist", "track", "album", "artist"],
           tabsVisibility: {
@@ -215,13 +213,15 @@ export const RootStack = createNativeStackNavigator({
   screenOptions: {
     header: TopAppBar,
     title: "",
-    freezeOnBlur: true,
   },
   screens: {
     HomeScreens: {
       screen: RootScreens,
       layout: ({ children }) => children,
-      options: { headerShown: false },
+      options: {
+        headerShown: false,
+        freezeOnBlur: true,
+      },
     },
     NowPlaying: {
       screen: NowPlaying,
@@ -233,7 +233,6 @@ export const RootStack = createNativeStackNavigator({
         animation: "slide_from_bottom",
         header: NowPlayingTopAppBar,
         headerTransparent: true,
-        freezeOnBlur: false,
       },
     },
     Search,
@@ -291,6 +290,10 @@ export const RootStack = createNativeStackNavigator({
         HiddenTracks: {
           screen: HiddenTracks,
           options: { title: "feat.hiddenTracks.title" },
+        },
+        MostPlayed: {
+          screen: MostPlayed,
+          options: { title: "feat.mostPlayed.title" },
         },
         SaveErrors: {
           screen: SaveErrors,

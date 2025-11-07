@@ -1,21 +1,18 @@
-import TrackPlayer from "@weights-ai/react-native-track-player";
 import { useTranslation } from "react-i18next";
 
-import {
-  userPreferencesStore,
-  useUserPreferencesStore,
-} from "~/services/UserPreferences";
+import { usePreferenceStore } from "~/stores/Preference/store";
+import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { StandardScrollLayout } from "../../layouts/StandardScroll";
 
-import { getTrackPlayerOptions } from "~/lib/react-native-track-player";
 import { List, ListItem } from "~/components/Containment/List";
 
 export default function ExperimentalSettings() {
   const { t } = useTranslation();
-  const continuePlaybackOnDismiss = useUserPreferencesStore(
-    (state) => state.continuePlaybackOnDismiss,
+  const continuePlaybackOnDismiss = usePreferenceStore(
+    (s) => s.continuePlaybackOnDismiss,
   );
-  const showSleepTimer = useUserPreferencesStore((state) => state.sleepTimer);
+  const ignoreInterrupt = usePreferenceStore((s) => s.ignoreInterrupt);
+  const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
 
   return (
     <StandardScrollLayout>
@@ -23,29 +20,26 @@ export default function ExperimentalSettings() {
         <ListItem
           titleKey="feat.continuePlaybackOnDismiss.title"
           description={t("feat.continuePlaybackOnDismiss.description")}
-          onPress={toggleContinuePlaybackOnDismiss}
+          onPress={PreferenceTogglers.toggleContinuePlaybackOnDismiss}
           switchState={continuePlaybackOnDismiss}
           first
         />
         <ListItem
-          titleKey="feat.sleepTimer.title"
-          description={t("feat.sleepTimer.description")}
-          onPress={toggleSleepTimer}
-          switchState={showSleepTimer}
+          titleKey="feat.ignoreInterrupt.title"
+          description={t("feat.ignoreInterrupt.brief")}
+          onPress={PreferenceTogglers.toggleIgnoreInterrupt}
+          switchState={ignoreInterrupt}
           last
         />
       </List>
+
+      <ListItem
+        titleKey="feat.waveformSlider.title"
+        onPress={PreferenceTogglers.toggleWaveformSlider}
+        switchState={waveformSlider}
+        first
+        last
+      />
     </StandardScrollLayout>
   );
 }
-
-const toggleContinuePlaybackOnDismiss = async () => {
-  const nextState = !userPreferencesStore.getState().continuePlaybackOnDismiss;
-  userPreferencesStore.setState({ continuePlaybackOnDismiss: nextState });
-  await TrackPlayer.updateOptions(
-    getTrackPlayerOptions({ continuePlaybackOnDismiss: nextState }),
-  );
-};
-
-const toggleSleepTimer = () =>
-  userPreferencesStore.setState((prev) => ({ sleepTimer: !prev.sleepTimer }));

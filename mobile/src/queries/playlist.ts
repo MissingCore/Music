@@ -13,7 +13,6 @@ import {
   createPlaylist,
   deletePlaylist,
   favoritePlaylist,
-  moveInPlaylist,
   updatePlaylist,
 } from "~/api/playlist";
 import { Resynchronize } from "~/stores/Playback/actions";
@@ -91,7 +90,6 @@ export function useDeletePlaylist(playlistName: string) {
   return useMutation({
     mutationFn: () => deletePlaylist(playlistName),
     onSuccess: () => {
-      Resynchronize.onDelete({ type: "playlist", id: playlistName });
       queryClient.invalidateQueries({ queryKey: q.playlists._def });
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
       queryClient.invalidateQueries({ queryKey: ["search"] });
@@ -113,20 +111,6 @@ export function useFavoritePlaylist(playlistName: string) {
         queryKey: q.playlists.detail(playlistName).queryKey,
       });
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
-    },
-  });
-}
-
-/** Move a track in playlist. */
-export function useMoveInPlaylist(playlistName: string) {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (movement: { fromIndex: number; toIndex: number }) =>
-      moveInPlaylist({ ...movement, playlistName }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: q.playlists.detail(playlistName).queryKey,
-      });
     },
   });
 }

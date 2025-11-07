@@ -13,10 +13,11 @@ import { MoreVert } from "~/resources/icons/MoreVert";
 import { Timer } from "~/resources/icons/Timer";
 import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { usePlaybackStore } from "~/stores/Playback/store";
+import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/services/SessionStore";
-import { useUserPreferencesStore } from "~/services/UserPreferences";
 import { usePlayerProgress } from "../helpers/usePlayerProgress";
 import { NowPlayingArtwork } from "../components/Artwork";
+import { ProgressBar } from "../components/ProgressBar";
 import { PlaybackOptionsSheet } from "./PlaybackOptionsSheet";
 import { SleepTimerSheet } from "./SleepTimerSheet";
 import { useSleepTimerStore } from "./SleepTimerSheet/store";
@@ -28,7 +29,6 @@ import { formatSeconds } from "~/utils/number";
 import { Marquee } from "~/components/Containment/Marquee";
 import { SafeContainer } from "~/components/Containment/SafeContainer";
 import { IconButton } from "~/components/Form/Button";
-import { Slider } from "~/components/Form/Slider";
 import { useSheetRef } from "~/components/Sheet";
 import { StyledText } from "~/components/Typography/StyledText";
 import {
@@ -48,7 +48,7 @@ export default function NowPlaying() {
       <NowPlayingArtwork artwork={track.artwork} />
       <View className="gap-6 px-4">
         <Metadata track={track} />
-        <SeekBar duration={track.duration} />
+        <SeekBar duration={track.duration} uri={track.uri} />
         <PlaybackControls />
       </View>
       <BottomAppBar />
@@ -154,19 +154,19 @@ function MarqueeLink({
 
 //#region Seek Bar
 /** Allows us to change the current positon of the playing track. */
-function SeekBar({ duration }: { duration: number }) {
+function SeekBar({ duration, uri }: { duration: number; uri: string }) {
   const { position, setPosition, seekToPosition } = usePlayerProgress();
 
   const clampedPos = position > duration ? duration : position;
 
   return (
     <View>
-      <Slider
+      <ProgressBar
+        trackPath={uri}
         value={clampedPos}
         max={duration}
         onChange={setPosition}
         onComplete={seekToPosition}
-        thumbSize={16}
         inverted={I18nManager.isRTL}
       />
       <View
@@ -206,7 +206,6 @@ function BottomAppBar() {
   const navigation = useNavigation();
   const playbackOptionsSheetRef = useSheetRef();
   const sleepTimerSheetRef = useSheetRef();
-  const showSleepTimer = useUserPreferencesStore((s) => s.sleepTimer);
   const sleepTimerActive = useSleepTimerStore((s) => s.endAt) !== null;
 
   return (
@@ -216,19 +215,17 @@ function BottomAppBar() {
       <View className="flex-row items-center justify-between gap-4 p-4">
         <BackButton />
         <View className="flex-row items-center gap-4">
-          {showSleepTimer ? (
-            <View className="relative">
-              <IconButton
-                Icon={Timer}
-                accessibilityLabel={t("feat.sleepTimer.title")}
-                onPress={() => sleepTimerSheetRef.current?.present()}
-                large
-              />
-              {sleepTimerActive && (
-                <View className="absolute right-2 top-2 size-2 rounded-full bg-red" />
-              )}
-            </View>
-          ) : null}
+          <View className="relative">
+            <IconButton
+              Icon={Timer}
+              accessibilityLabel={t("feat.sleepTimer.title")}
+              onPress={() => sleepTimerSheetRef.current?.present()}
+              large
+            />
+            {sleepTimerActive && (
+              <View className="absolute right-2 top-2 size-2 rounded-full bg-red" />
+            )}
+          </View>
           <IconButton
             Icon={InstantMix}
             accessibilityLabel={t("feat.playback.extra.options")}
@@ -254,7 +251,7 @@ function BottomAppBar() {
 function BackButton() {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const usedDesign = useUserPreferencesStore((s) => s.nowPlayingDesign);
+  const usedDesign = usePreferenceStore((s) => s.nowPlayingDesign);
 
   if (usedDesign !== "vinylOld") return <View />;
   return (
