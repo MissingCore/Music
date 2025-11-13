@@ -148,14 +148,19 @@ export async function PlaybackService() {
 
     //* 🧪 Smooth Playback Transition
     const { smoothPlaybackTransition } = preferenceStore.getState();
+    if (
+      smoothPlaybackTransition &&
+      //? Check for `hasLoaded` as otherwise, the `prev` controls won't work.
+      smoothTransitionContext.hasLoaded &&
+      e.index !== 0
+    ) {
+      const nextTrack = await PlaybackControls.getNextTrack();
+      playbackStore.setState(nextTrack!);
+    }
     smoothTransitionContext = {
       trackDuration: activeTrack!.duration,
       hasLoaded: false,
     };
-    if (smoothPlaybackTransition && e.index !== 0) {
-      const nextTrack = await PlaybackControls.getNextTrack();
-      playbackStore.setState(nextTrack!);
-    }
 
     //* Play Count Tracking
     if (playbackCountUpdator !== null) {
