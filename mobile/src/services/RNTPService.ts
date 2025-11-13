@@ -161,6 +161,13 @@ export async function PlaybackService() {
     ) {
       const nextTrack = await PlaybackControls.getNextTrack();
       playbackStore.setState(nextTrack!);
+
+      try {
+        // Ensure the RNTP Queue stores a single track.
+        await TrackPlayer.remove([...new Array(e.index).keys()]);
+      } catch (err) {
+        console.log(err);
+      }
     }
     smoothTransitionContext = {
       trackDuration: activeTrack!.duration,
