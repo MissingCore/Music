@@ -30,6 +30,13 @@ let playbackCountUpdator: ReturnType<typeof BackgroundTimer.setTimeout> | null =
 
 /** Duration of active track to check against with experimental smooth transitions. */
 let smoothTransitionContext = { trackDuration: -1, hasLoaded: false };
+/**
+ * Stores information about the next track. This can't be used for `hasLoaded` as
+ * `hasLoaded` will change immediately while `nextTrackInfo` is async.
+ */
+let nextTrackInfo:
+  | Awaited<ReturnType<typeof PlaybackControls.getNextTrack>>
+  | undefined;
 
 /** Errors which should cause us to "delete" a track. */
 const ValidErrors = [
@@ -88,16 +95,16 @@ export async function PlaybackService() {
       e.position + 2 - smoothTransitionContext.trackDuration > 0
     ) {
       smoothTransitionContext.hasLoaded = true;
-      const nextTrack = await PlaybackControls.getNextTrack();
+      nextTrackInfo = await PlaybackControls.getNextTrack();
       // Ensure that we handle "No Repeat" mode cleanly (no sound bleed).
       if (
-        !nextTrack ||
-        (nextTrack.queuePosition === 0 && repeat === RepeatModes.NO_REPEAT)
+        !nextTrackInfo ||
+        (nextTrackInfo.queuePosition === 0 && repeat === RepeatModes.NO_REPEAT)
       ) {
         return;
       }
       // Load the next track into the queue for smoother playback.
-      await TrackPlayer.add(formatTrackforPlayer(nextTrack.activeTrack));
+      await TrackPlayer.add(formatTrackforPlayer(nextTrackInfo.activeTrack));
     }
   });
 
@@ -157,10 +164,10 @@ export async function PlaybackService() {
       smoothPlaybackTransition &&
       //? Check for `hasLoaded` as otherwise, the `prev` controls won't work.
       smoothTransitionContext.hasLoaded &&
-      e.index !== 0
+      e.index !== 0 &&
+      nextTrackInfo
     ) {
-      const nextTrack = await PlaybackControls.getNextTrack();
-      playbackStore.setState(nextTrack!);
+      playbackStore.setState(nextTrackInfo);
 
       try {
         // Ensure the RNTP Queue stores a single track.
@@ -173,6 +180,7 @@ export async function PlaybackService() {
       trackDuration: activeTrack!.duration,
       hasLoaded: false,
     };
+    nextTrackInfo = undefined;
 
     //* Play Count Tracking
     if (playbackCountUpdator !== null) {
