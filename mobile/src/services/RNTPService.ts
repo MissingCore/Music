@@ -18,7 +18,8 @@ import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
 import { bgWait } from "~/utils/promise";
 import { revalidateWidgets } from "~/modules/widget/utils";
-import { extractTrackId } from "~/stores/Playback/utils";
+import { RepeatModes } from "~/stores/Playback/constants";
+import { extractTrackId, formatTrackforPlayer } from "~/stores/Playback/utils";
 
 /** Context to whether we should resume playback after ducking. */
 let resumeAfterDuck: boolean = false;
@@ -26,6 +27,9 @@ let resumeAfterDuck: boolean = false;
 /** Increase playback count after a certain duration of play time. */
 let playbackCountUpdator: ReturnType<typeof BackgroundTimer.setTimeout> | null =
   null;
+
+/** Duration of active track to check against with experimental smooth transitions. */
+let smoothTransitionContext = { trackDuration: -1, hasLoaded: false };
 
 /** Errors which should cause us to "delete" a track. */
 const ValidErrors = [
@@ -65,8 +69,31 @@ export async function PlaybackService() {
     if (e.state === State.Paused) playbackStore.setState({ isPlaying: false });
   });
 
-  TrackPlayer.addEventListener(Event.PlaybackProgressUpdated, (e) => {
+  TrackPlayer.addEventListener(Event.PlaybackProgressUpdated, async (e) => {
     playbackStore.setState({ lastPosition: e.position });
+
+    const { repeat } = playbackStore.getState();
+    if (
+      //? Ignore if we're repeating the current track.
+      repeat !== RepeatModes.REPEAT_ONE &&
+      preferenceStore.getState().smoothPlaybackTransition &&
+      !smoothTransitionContext.hasLoaded &&
+      //? Load the next track 2s before the current track ends to minimize the
+      //? need of resynchronizing the next track.
+      e.position + 2 - smoothTransitionContext.trackDuration > 0
+    ) {
+      smoothTransitionContext.hasLoaded = true;
+      const nextTrack = await PlaybackControls.getNextTrack();
+      // Ensure that we handle "No Repeat" mode cleanly (no sound bleed).
+      if (
+        !nextTrack ||
+        (nextTrack.queuePosition === 0 && repeat === RepeatModes.NO_REPEAT)
+      ) {
+        return;
+      }
+      // Load the next track into the queue for smoother playback.
+      await TrackPlayer.add(formatTrackforPlayer(nextTrack.activeTrack));
+    }
   });
 
   TrackPlayer.addEventListener(Event.RemoteDuck, async (e) => {
@@ -106,6 +133,8 @@ export async function PlaybackService() {
       lastPosition,
       activeTrack,
     } = playbackStore.getState();
+
+    //* Restore Last Played Position
     if (!_hasRestoredPosition) {
       playbackStore.setState({ _hasRestoredPosition: true });
       if (
@@ -117,6 +146,18 @@ export async function PlaybackService() {
       }
     }
 
+    //* 🧪 Smooth Playback Transition
+    const { smoothPlaybackTransition } = preferenceStore.getState();
+    smoothTransitionContext = {
+      trackDuration: activeTrack!.duration,
+      hasLoaded: false,
+    };
+    if (smoothPlaybackTransition && e.index !== 0) {
+      const nextTrack = await PlaybackControls.getNextTrack();
+      playbackStore.setState(nextTrack!);
+    }
+
+    //* Play Count Tracking
     if (playbackCountUpdator !== null) {
       BackgroundTimer.clearTimeout(playbackCountUpdator);
     }
