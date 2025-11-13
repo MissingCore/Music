@@ -98,26 +98,22 @@ export async function prev() {
 
 /** Loads the track after `queuePosition`. */
 export async function next(naturalProgression = false) {
-  const { getTrack, reset, repeat, queue, queuePosition } =
-    playbackStore.getState();
-
-  const nextIndex = queuePosition === queue.length - 1 ? 0 : queuePosition + 1;
-  const nextTrackKey = queue[nextIndex];
-  if (!nextTrackKey) return await reset();
-  // If no track is found, reset the state.
-  const nextTrack = await getTrack(nextTrackKey);
-  if (!nextTrack) return;
+  const nextTrackContext = await getNextTrack();
+  // Returning nothing means we've reset the queue.
+  if (!nextTrackContext) return;
 
   playbackStore.setState({
-    lastPosition: 0,
-    activeKey: nextTrackKey,
-    activeTrack: nextTrack,
-    queuePosition: nextIndex,
+    ...nextTrackContext,
     // Only update repeate state if we explictly click the next button.
     ...(naturalProgression ? {} : getNewRepeatState()),
   });
 
-  if (nextIndex === 0 && repeat === RepeatModes.NO_REPEAT) await pause();
+  if (
+    nextTrackContext.queuePosition === 0 &&
+    playbackStore.getState().repeat === RepeatModes.NO_REPEAT
+  ) {
+    await pause();
+  }
   await loadCurrentTrack();
 }
 
@@ -231,6 +227,29 @@ function getNewRepeatState() {
   } else {
     return {};
   }
+}
+
+/**
+ * Get information about the next track.
+ *
+ * **Use externally only for `🧪 Smooth Playback Transition`.**
+ */
+export async function getNextTrack() {
+  const { getTrack, reset, queue, queuePosition } = playbackStore.getState();
+
+  const nextIndex = queuePosition === queue.length - 1 ? 0 : queuePosition + 1;
+  const nextTrackKey = queue[nextIndex];
+  if (!nextTrackKey) return await reset();
+  // If no track is found, reset the state.
+  const nextTrack = await getTrack(nextTrackKey);
+  if (!nextTrack) return;
+
+  return {
+    lastPosition: 0,
+    activeKey: nextTrackKey,
+    activeTrack: nextTrack,
+    queuePosition: nextIndex,
+  };
 }
 
 /** Determine if any tracks are loaded in RNTP on launch. */
