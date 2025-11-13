@@ -6,7 +6,7 @@ import TrackPlayer, {
 } from "@weights-ai/react-native-track-player";
 
 import i18next from "~/modules/i18n";
-import { addPlayedMediaList, addPlayedTrack } from "~/api/recent";
+import { addPlayedTrack } from "~/api/recent";
 import { deleteTrack } from "~/api/track";
 import { playbackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
@@ -23,8 +23,6 @@ import { extractTrackId } from "~/stores/Playback/utils";
 /** Context to whether we should resume playback after ducking. */
 let resumeAfterDuck: boolean = false;
 
-/** Whether `lastPosition` can be ignored - ie: when we're skipping tracks. */
-let resolvedLastPosition = false;
 /** Increase playback count after a certain duration of play time. */
 let playbackCountUpdator: ReturnType<typeof BackgroundTimer.setTimeout> | null =
   null;
@@ -106,7 +104,6 @@ export async function PlaybackService() {
       _hasRestoredPosition,
       _restoredTrackKey,
       lastPosition,
-      playingFrom,
       activeTrack,
     } = playbackStore.getState();
     if (!_hasRestoredPosition) {
@@ -125,21 +122,11 @@ export async function PlaybackService() {
     }
     // Only mark a track as played after we play 10s of it. This prevents
     // the track being marked as "played" if we skip it.
-    if (resolvedLastPosition) {
-      // Track should start playing at 0s.
-      playbackCountUpdator = BackgroundTimer.setTimeout(
-        async () => await addPlayedTrack(activeTrack!.id),
-        Math.min(activeTrack!.duration, 10) * 1000,
-      );
-    } else if (lastPosition < 10) {
+    if (lastPosition < 10) {
       playbackCountUpdator = BackgroundTimer.setTimeout(
         async () => await addPlayedTrack(activeTrack!.id),
         (Math.min(activeTrack!.duration, 10) - lastPosition) * 1000,
       );
-    }
-    if (!resolvedLastPosition) {
-      if (playingFrom) await addPlayedMediaList(playingFrom);
-      resolvedLastPosition = true;
     }
 
     await revalidateWidgets();

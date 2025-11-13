@@ -1,6 +1,7 @@
 import TrackPlayer, { RepeatMode } from "@weights-ai/react-native-track-player";
 import { useEffect, useState } from "react";
 
+import { addPlayedMediaList } from "~/api/recent";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { useSortPreferencesStore } from "~/modules/media/services/SortPreferences";
@@ -45,7 +46,7 @@ export function useSetup() {
       // immediately hydrated.
       await revalidateWidgets({ openApp: true });
 
-      const { repeat, activeKey } = playbackStore.getState();
+      const { repeat, playingFrom, activeKey } = playbackStore.getState();
       const { restoreLastPosition, continuePlaybackOnDismiss } =
         preferenceStore.getState();
       if (restoreLastPosition) {
@@ -59,6 +60,9 @@ export function useSetup() {
       if (repeat === RepeatModes.REPEAT_ONE) {
         await TrackPlayer.setRepeatMode(RepeatMode.Track);
       }
+
+      // Ensure the current list is at the top of recently played lists.
+      if (playingFrom) await addPlayedMediaList(playingFrom);
 
       setSetupState("ready");
     })();
