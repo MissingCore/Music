@@ -73,10 +73,15 @@ export async function PlaybackService() {
     playbackStore.setState({ lastPosition: e.position });
 
     const { repeat } = playbackStore.getState();
+    const { playbackDelay, smoothPlaybackTransition } =
+      preferenceStore.getState();
     if (
       //? Ignore if we're repeating the current track.
       repeat !== RepeatModes.REPEAT_ONE &&
-      preferenceStore.getState().smoothPlaybackTransition &&
+      //? "Natural Playback Delay" & "Smooth Playback Transition" are mutually
+      //? exclusive features.
+      playbackDelay === 0 &&
+      smoothPlaybackTransition &&
       !smoothTransitionContext.hasLoaded &&
       //? Load the next track 2s before the current track ends to minimize the
       //? need of resynchronizing the next track.
