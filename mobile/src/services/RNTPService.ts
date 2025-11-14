@@ -156,6 +156,7 @@ export async function PlaybackService() {
 
     //* 🧪 Smooth Playback Transition
     const { smoothPlaybackTransition } = preferenceStore.getState();
+    let isNaturalPlayback = false;
     try {
       if (
         smoothPlaybackTransition &&
@@ -164,6 +165,7 @@ export async function PlaybackService() {
         e.index !== 0 &&
         nextTrackInfo
       ) {
+        isNaturalPlayback = true;
         playbackStore.setState(nextTrackInfo);
         // Ensure the RNTP Queue stores a single track.
         await TrackPlayer.remove([...new Array(e.index).keys()]);
@@ -187,7 +189,8 @@ export async function PlaybackService() {
     }
     // Only mark a track as played after we play 10s of it. This prevents
     // the track being marked as "played" if we skip it.
-    if (lastPosition < 10) {
+    //  - Also when natural playback occurs as `lastPosition` is outdated.
+    if (isNaturalPlayback || lastPosition < 10) {
       const activeTrackId: string = e.track.id;
       playbackCountUpdator = BackgroundTimer.setTimeout(
         async () => await addPlayedTrack(activeTrackId),
