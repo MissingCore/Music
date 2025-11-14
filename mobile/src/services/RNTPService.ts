@@ -90,9 +90,9 @@ export async function PlaybackService() {
       playbackDelay === 0 &&
       smoothPlaybackTransition &&
       !smoothTransitionContext.hasLoaded &&
-      //? Load the next track 2s before the current track ends to minimize the
+      //? Load the next track 5s before the current track ends to minimize the
       //? need of resynchronizing the next track.
-      e.position + 2 - smoothTransitionContext.trackDuration > 0
+      e.position + 5 - smoothTransitionContext.trackDuration > 0
     ) {
       smoothTransitionContext.hasLoaded = true;
       nextTrackInfo = await PlaybackControls.getNextTrack();
@@ -171,7 +171,7 @@ export async function PlaybackService() {
         await TrackPlayer.remove([...new Array(e.index).keys()]);
       } else {
         // Cleans up the RNTP queue if we use the media controls within the
-        // 2s track loading window.
+        // 5s track loading window.
         await TrackPlayer.removeUpcomingTracks();
       }
     } catch (err) {
