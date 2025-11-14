@@ -160,21 +160,24 @@ export async function PlaybackService() {
 
     //* 🧪 Smooth Playback Transition
     const { smoothPlaybackTransition } = preferenceStore.getState();
-    if (
-      smoothPlaybackTransition &&
-      //? Check for `hasLoaded` as otherwise, the `prev` controls won't work.
-      smoothTransitionContext.hasLoaded &&
-      e.index !== 0 &&
-      nextTrackInfo
-    ) {
-      playbackStore.setState(nextTrackInfo);
-
-      try {
+    try {
+      if (
+        smoothPlaybackTransition &&
+        //? Check for `hasLoaded` as otherwise, the `prev` controls won't work.
+        smoothTransitionContext.hasLoaded &&
+        e.index !== 0 &&
+        nextTrackInfo
+      ) {
+        playbackStore.setState(nextTrackInfo);
         // Ensure the RNTP Queue stores a single track.
         await TrackPlayer.remove([...new Array(e.index).keys()]);
-      } catch (err) {
-        console.log(err);
+      } else {
+        // Cleans up the RNTP queue if we use the media controls within the
+        // 2s track loading window.
+        await TrackPlayer.removeUpcomingTracks();
       }
+    } catch (err) {
+      console.log(err);
     }
     smoothTransitionContext = {
       trackDuration: activeTrack!.duration,
