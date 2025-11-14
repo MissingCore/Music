@@ -139,19 +139,15 @@ export async function PlaybackService() {
 
     // When this triggers for the 1st time, we want to see if we should seek
     // to the last played position.
-    const {
-      _hasRestoredPosition,
-      _restoredTrackKey,
-      lastPosition,
-      activeTrack,
-    } = playbackStore.getState();
+    const { _hasRestoredPosition, _restoredTrackKey, lastPosition } =
+      playbackStore.getState();
 
     //* Restore Last Played Position
     if (!_hasRestoredPosition) {
       playbackStore.setState({ _hasRestoredPosition: true });
       if (
         _restoredTrackKey !== undefined &&
-        extractTrackId(_restoredTrackKey) === activeTrack?.id
+        extractTrackId(_restoredTrackKey) === e.track.id
       ) {
         // Fallback to `0` to support legacy behavior where we could store `undefined`.
         await PlaybackControls.seekTo(lastPosition ?? 0);
@@ -180,7 +176,7 @@ export async function PlaybackService() {
       console.log(err);
     }
     smoothTransitionContext = {
-      trackDuration: activeTrack!.duration,
+      trackDuration: e.track.duration!,
       hasLoaded: false,
     };
     nextTrackInfo = undefined;
@@ -192,9 +188,10 @@ export async function PlaybackService() {
     // Only mark a track as played after we play 10s of it. This prevents
     // the track being marked as "played" if we skip it.
     if (lastPosition < 10) {
+      const activeTrackId: string = e.track.id;
       playbackCountUpdator = BackgroundTimer.setTimeout(
-        async () => await addPlayedTrack(activeTrack!.id),
-        (Math.min(activeTrack!.duration, 10) - lastPosition) * 1000,
+        async () => await addPlayedTrack(activeTrackId),
+        (Math.min(e.track.duration!, 10) - lastPosition) * 1000,
       );
     }
 
