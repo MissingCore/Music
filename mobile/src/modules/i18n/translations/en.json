@@ -291,10 +291,6 @@
         "stopTime": "Audio will stop playing at {{- time}}."
       }
     },
-    "smoothPlaybackTransition": {
-      "title": "Smooth Playback Transition",
-      "brief": "Hacks into the new playback implementation to have smoother transitions seen pre-v2.7.0."
-    },
     "waveformSlider": {
       "title": "Waveform Slider"
     },

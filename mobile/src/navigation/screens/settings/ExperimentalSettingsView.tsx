@@ -34,8 +34,8 @@ export default function ExperimentalSettings() {
           switchState={ignoreInterrupt}
         />
         <ListItem
-          titleKey="feat.smoothPlaybackTransition.title"
-          description={t("feat.smoothPlaybackTransition.brief")}
+          title="Smooth Playback Transition"
+          description="Restores smooth playback transitions seen pre-v2.7.0. This will eventually become stable. You should disable this if you encounter issues."
           onPress={PreferenceTogglers.toggleSmoothPlaybackTransition}
           switchState={smoothPlaybackTransition}
           last
