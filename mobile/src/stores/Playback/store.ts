@@ -2,11 +2,10 @@ import TrackPlayer, {
   isPlaying as rntpIsPlaying,
 } from "@weights-ai/react-native-track-player";
 import { inArray } from "drizzle-orm";
-import { computeAmplitude } from "react-native-audio-analyzer";
 import { useStore } from "zustand";
 
 import { db } from "~/db";
-import { tracksToPlaylists, waveformSamples } from "~/db/schema";
+import { tracksToPlaylists } from "~/db/schema";
 import { getTrackCover } from "~/db/utils";
 
 import { createPersistedSubscribedStore } from "~/lib/zustand";
@@ -43,29 +42,6 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
         });
         if (!wantedTrack) throw new Error("No tracks found.");
         wantedTrack.artwork = getTrackCover(wantedTrack);
-
-        //* Compute waveform data.
-        if (wantedTrack.waveformSample === null) {
-          let parsedUrl = wantedTrack.uri;
-          if (parsedUrl.startsWith("file://")) parsedUrl = parsedUrl.slice(8);
-          let sampleData: number[] = [];
-          try {
-            // 100 samples should be enough for most screen sizes.
-            sampleData = computeAmplitude(parsedUrl, 100);
-          } catch {}
-
-          // Normalize amplitude.
-          if (sampleData.length > 0) {
-            const multiplier = Math.pow(Math.max(...sampleData), -1);
-            sampleData = sampleData.map((n) => n * multiplier);
-          }
-
-          // Cache the data so we don't need to recompute this in the future.
-          await db
-            .insert(waveformSamples)
-            .values({ trackId: wantedTrack.id, samples: sampleData });
-        }
-
         return wantedTrack;
       } catch {
         console.log(
