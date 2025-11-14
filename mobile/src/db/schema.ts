@@ -107,6 +107,7 @@ export const tracksRelations = relations(tracks, ({ one, many }) => ({
   }),
   album: one(albums, { fields: [tracks.albumId], references: [albums.id] }),
   tracksToPlaylists: many(tracksToPlaylists),
+  waveformSamples: one(waveformSamples),
 }));
 
 export const invalidTracks = sqliteTable("invalid_tracks", {
@@ -178,6 +179,26 @@ export const playedMediaLists = sqliteTable(
     lastPlayedAt: integer().notNull(),
   },
   (t) => [primaryKey({ columns: [t.id, t.type] })],
+);
+
+export const waveformSamples = sqliteTable("waveform_sample", {
+  trackId: text()
+    .notNull()
+    .references(() => tracks.id),
+  samples: text({ mode: "json" })
+    .notNull()
+    .$type<number[]>()
+    .default(sql`(json_array())`),
+});
+
+export const trackToWaveformSampleRelations = relations(
+  waveformSamples,
+  ({ one }) => ({
+    track: one(tracks, {
+      fields: [waveformSamples.trackId],
+      references: [tracks.id],
+    }),
+  }),
 );
 
 export type Artist = InferSelectModel<typeof artists>;
