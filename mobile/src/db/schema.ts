@@ -230,3 +230,5 @@ export type FileNodeWithParent = Prettify<
 export type PlayedMediaList = Prettify<
   InferSelectModel<typeof playedMediaLists> & PlayFromSource
 >;
+
+export type WaveformSample = InferSelectModel<typeof waveformSamples>;
