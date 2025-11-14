@@ -192,9 +192,10 @@ export async function PlaybackService() {
     //  - Also when natural playback occurs as `lastPosition` is outdated.
     if (isNaturalPlayback || lastPosition < 10) {
       const activeTrackId: string = e.track.id;
+      const lastPos = isNaturalPlayback ? 0 : lastPosition;
       playbackCountUpdator = BackgroundTimer.setTimeout(
         async () => await addPlayedTrack(activeTrackId),
-        (Math.min(e.track.duration!, 10) - lastPosition) * 1000,
+        (Math.min(e.track.duration!, 10) - lastPos) * 1000,
       );
     }
 
