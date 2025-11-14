@@ -227,10 +227,6 @@
         "volume": "App Volume"
       }
     },
-    "ignoreInterrupt": {
-      "title": "Ignore Interruptions",
-      "brief": "Continue playing audio when an interruption such as a notification or a call occurs. You will need to manually pause and unpause the music during these situations."
-    },
     "playbackDelay": {
       "title": "Natural Playback Delay",
       "description": "Delay in seconds before the next track is naturally played."
@@ -282,6 +278,10 @@
     "continuePlaybackOnDismiss": {
       "title": "Continue Playback on Dismiss",
       "description": "Let music playback continue when you dismiss the app from recent tasks. Force stop the app to stop playback."
+    },
+    "ignoreInterrupt": {
+      "title": "Ignore Interruptions",
+      "brief": "Continue playing audio when an interruption such as a notification or a call occurs. You will need to manually pause and unpause the music during these situations."
     },
     "sleepTimer": {
       "title": "Sleep Timer",

@@ -12,6 +12,9 @@ export default function ExperimentalSettings() {
     (s) => s.continuePlaybackOnDismiss,
   );
   const ignoreInterrupt = usePreferenceStore((s) => s.ignoreInterrupt);
+  const smoothPlaybackTransition = usePreferenceStore(
+    (s) => s.smoothPlaybackTransition,
+  );
   const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
 
   return (
@@ -29,6 +32,12 @@ export default function ExperimentalSettings() {
           description={t("feat.ignoreInterrupt.brief")}
           onPress={PreferenceTogglers.toggleIgnoreInterrupt}
           switchState={ignoreInterrupt}
+        />
+        <ListItem
+          title="Smooth Playback Transition"
+          description="Restores smooth playback transitions seen pre-v2.7.0. This will eventually become stable. You should disable this if you encounter issues."
+          onPress={PreferenceTogglers.toggleSmoothPlaybackTransition}
+          switchState={smoothPlaybackTransition}
           last
         />
       </List>

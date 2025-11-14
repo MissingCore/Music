@@ -60,6 +60,12 @@ export function toggleRestoreLastPosition() {
   }));
 }
 
+export function toggleSmoothPlaybackTransition() {
+  preferenceStore.setState((prev) => ({
+    smoothPlaybackTransition: !prev.smoothPlaybackTransition,
+  }));
+}
+
 export function toggleWaveformSlider() {
   preferenceStore.setState((prev) => ({
     waveformSlider: !prev.waveformSlider,

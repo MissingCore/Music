@@ -69,6 +69,7 @@ export const preferenceStore = createPersistedSubscribedStore<PreferenceStore>(
     //! Experimental Features
     continuePlaybackOnDismiss: false,
     ignoreInterrupt: false,
+    smoothPlaybackTransition: true,
     waveformSlider: false,
   }),
   {

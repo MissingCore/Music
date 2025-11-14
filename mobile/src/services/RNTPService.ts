@@ -6,7 +6,7 @@ import TrackPlayer, {
 } from "@weights-ai/react-native-track-player";
 
 import i18next from "~/modules/i18n";
-import { addPlayedMediaList, addPlayedTrack } from "~/api/recent";
+import { addPlayedTrack } from "~/api/recent";
 import { deleteTrack } from "~/api/track";
 import { playbackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
@@ -18,16 +18,25 @@ import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
 import { bgWait } from "~/utils/promise";
 import { revalidateWidgets } from "~/modules/widget/utils";
-import { extractTrackId } from "~/stores/Playback/utils";
+import { RepeatModes } from "~/stores/Playback/constants";
+import { extractTrackId, formatTrackforPlayer } from "~/stores/Playback/utils";
 
 /** Context to whether we should resume playback after ducking. */
 let resumeAfterDuck: boolean = false;
 
-/** Whether `lastPosition` can be ignored - ie: when we're skipping tracks. */
-let resolvedLastPosition = false;
 /** Increase playback count after a certain duration of play time. */
 let playbackCountUpdator: ReturnType<typeof BackgroundTimer.setTimeout> | null =
   null;
+
+/** Duration of active track to check against with experimental smooth transitions. */
+let smoothTransitionContext = { trackDuration: -1, hasLoaded: false };
+/**
+ * Stores information about the next track. This can't be used for `hasLoaded` as
+ * `hasLoaded` will change immediately while `nextTrackInfo` is async.
+ */
+let nextTrackInfo:
+  | Awaited<ReturnType<typeof PlaybackControls.getNextTrack>>
+  | undefined;
 
 /** Errors which should cause us to "delete" a track. */
 const ValidErrors = [
@@ -67,8 +76,36 @@ export async function PlaybackService() {
     if (e.state === State.Paused) playbackStore.setState({ isPlaying: false });
   });
 
-  TrackPlayer.addEventListener(Event.PlaybackProgressUpdated, (e) => {
+  TrackPlayer.addEventListener(Event.PlaybackProgressUpdated, async (e) => {
     playbackStore.setState({ lastPosition: e.position });
+
+    const { repeat } = playbackStore.getState();
+    const { playbackDelay, smoothPlaybackTransition } =
+      preferenceStore.getState();
+    if (
+      //? Ignore if we're repeating the current track.
+      repeat !== RepeatModes.REPEAT_ONE &&
+      //? "Natural Playback Delay" & "Smooth Playback Transition" are mutually
+      //? exclusive features.
+      playbackDelay === 0 &&
+      smoothPlaybackTransition &&
+      !smoothTransitionContext.hasLoaded &&
+      //? Load the next track 2s before the current track ends to minimize the
+      //? need of resynchronizing the next track.
+      e.position + 2 - smoothTransitionContext.trackDuration > 0
+    ) {
+      smoothTransitionContext.hasLoaded = true;
+      nextTrackInfo = await PlaybackControls.getNextTrack();
+      // Ensure that we handle "No Repeat" mode cleanly (no sound bleed).
+      if (
+        !nextTrackInfo ||
+        (nextTrackInfo.queuePosition === 0 && repeat === RepeatModes.NO_REPEAT)
+      ) {
+        return;
+      }
+      // Load the next track into the queue for smoother playback.
+      await TrackPlayer.add(formatTrackforPlayer(nextTrackInfo.activeTrack));
+    }
   });
 
   TrackPlayer.addEventListener(Event.RemoteDuck, async (e) => {
@@ -102,44 +139,64 @@ export async function PlaybackService() {
 
     // When this triggers for the 1st time, we want to see if we should seek
     // to the last played position.
-    const {
-      _hasRestoredPosition,
-      _restoredTrackKey,
-      lastPosition,
-      playingFrom,
-      activeTrack,
-    } = playbackStore.getState();
+    const { _hasRestoredPosition, _restoredTrackKey, lastPosition } =
+      playbackStore.getState();
+
+    //* Restore Last Played Position
     if (!_hasRestoredPosition) {
       playbackStore.setState({ _hasRestoredPosition: true });
       if (
         _restoredTrackKey !== undefined &&
-        extractTrackId(_restoredTrackKey) === activeTrack?.id
+        extractTrackId(_restoredTrackKey) === e.track.id
       ) {
         // Fallback to `0` to support legacy behavior where we could store `undefined`.
         await PlaybackControls.seekTo(lastPosition ?? 0);
       }
     }
 
+    //* 🧪 Smooth Playback Transition
+    const { smoothPlaybackTransition } = preferenceStore.getState();
+    let isNaturalPlayback = false;
+    try {
+      if (
+        smoothPlaybackTransition &&
+        //? Check for `hasLoaded` as otherwise, the `prev` controls won't work.
+        smoothTransitionContext.hasLoaded &&
+        e.index !== 0 &&
+        nextTrackInfo
+      ) {
+        isNaturalPlayback = true;
+        playbackStore.setState(nextTrackInfo);
+        // Ensure the RNTP Queue stores a single track.
+        await TrackPlayer.remove([...new Array(e.index).keys()]);
+      } else {
+        // Cleans up the RNTP queue if we use the media controls within the
+        // 2s track loading window.
+        await TrackPlayer.removeUpcomingTracks();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    smoothTransitionContext = {
+      trackDuration: e.track.duration!,
+      hasLoaded: false,
+    };
+    nextTrackInfo = undefined;
+
+    //* Play Count Tracking
     if (playbackCountUpdator !== null) {
       BackgroundTimer.clearTimeout(playbackCountUpdator);
     }
     // Only mark a track as played after we play 10s of it. This prevents
     // the track being marked as "played" if we skip it.
-    if (resolvedLastPosition) {
-      // Track should start playing at 0s.
+    //  - Also when natural playback occurs as `lastPosition` is outdated.
+    if (isNaturalPlayback || lastPosition < 10) {
+      const activeTrackId: string = e.track.id;
+      const lastPos = isNaturalPlayback ? 0 : lastPosition;
       playbackCountUpdator = BackgroundTimer.setTimeout(
-        async () => await addPlayedTrack(activeTrack!.id),
-        Math.min(activeTrack!.duration, 10) * 1000,
+        async () => await addPlayedTrack(activeTrackId),
+        (Math.min(e.track.duration!, 10) - lastPos) * 1000,
       );
-    } else if (lastPosition < 10) {
-      playbackCountUpdator = BackgroundTimer.setTimeout(
-        async () => await addPlayedTrack(activeTrack!.id),
-        (Math.min(activeTrack!.duration, 10) - lastPosition) * 1000,
-      );
-    }
-    if (!resolvedLastPosition) {
-      if (playingFrom) await addPlayedMediaList(playingFrom);
-      resolvedLastPosition = true;
     }
 
     await revalidateWidgets();

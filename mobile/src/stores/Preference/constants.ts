@@ -86,6 +86,11 @@ export interface PreferenceStore {
   continuePlaybackOnDismiss: boolean;
   /** Whether we'll continue playback through any interruptions. */
   ignoreInterrupt: boolean;
+  /**
+   * Have smooth transitions that was removed with the Playback store
+   * rewrite. The plan is to eventually make this stable.
+   */
+  smoothPlaybackTransition: boolean;
   /** Utilize a waveform slider on the Now Playing screen. */
   waveformSlider: boolean;
 }
