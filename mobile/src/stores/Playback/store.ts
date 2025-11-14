@@ -39,13 +39,13 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
       try {
         const wantedTrack = await db.query.tracks.findFirst({
           where: (fields, { eq }) => eq(fields.id, tId),
-          with: { album: true, waveformSamples: true },
+          with: { album: true, waveformSample: true },
         });
         if (!wantedTrack) throw new Error("No tracks found.");
         wantedTrack.artwork = getTrackCover(wantedTrack);
 
         //* Compute waveform data.
-        if (wantedTrack.waveformSamples === null) {
+        if (wantedTrack.waveformSample === null) {
           let parsedUrl = wantedTrack.uri;
           if (parsedUrl.startsWith("file://")) parsedUrl = parsedUrl.slice(8);
           let sampleData: number[] = [];

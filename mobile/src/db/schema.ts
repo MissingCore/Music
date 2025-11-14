@@ -107,7 +107,7 @@ export const tracksRelations = relations(tracks, ({ one, many }) => ({
   }),
   album: one(albums, { fields: [tracks.albumId], references: [albums.id] }),
   tracksToPlaylists: many(tracksToPlaylists),
-  waveformSamples: one(waveformSamples),
+  waveformSample: one(waveformSamples),
 }));
 
 export const invalidTracks = sqliteTable("invalid_tracks", {
