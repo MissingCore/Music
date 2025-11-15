@@ -74,6 +74,7 @@ export function Waveform({ amplitudes, progress, maxProgress }: WaveformProps) {
         setCanvasHeight(e.nativeEvent.layout.height);
         setCanvasWidth(e.nativeEvent.layout.width);
       }}
+      className="my-1"
     >
       <Canvas style={{ height: "100%", width: "100%" }}>
         <Group>
@@ -111,7 +112,7 @@ export function useWaveformSamples(id: string, uri: string) {
     if (cachedWaveform) return;
 
     // Downsampling from a multiplier will take the same amount of time.
-    const scaledBarCount = estimatedBarCount * 10;
+    const scaledBarCount = estimatedBarCount * 8;
 
     //* Compute waveform data otherwise.
     let parsedUrl = uri;
