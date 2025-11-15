@@ -3,7 +3,9 @@ import { I18nManager } from "react-native";
 
 import i18next from "~/modules/i18n";
 
+import { findAndSetCachedWaveform } from "~/services/SessionStore";
 import { preferenceStore } from "../store";
+import { playbackStore } from "../../Playback/store";
 
 import { getTrackPlayerOptions } from "~/lib/react-native-track-player";
 
@@ -66,8 +68,10 @@ export function toggleSmoothPlaybackTransition() {
   }));
 }
 
-export function toggleWaveformSlider() {
-  preferenceStore.setState((prev) => ({
-    waveformSlider: !prev.waveformSlider,
-  }));
+export async function toggleWaveformSlider() {
+  const nextState = !preferenceStore.getState().waveformSlider;
+  preferenceStore.setState({ waveformSlider: nextState });
+
+  const { activeTrack } = playbackStore.getState();
+  if (activeTrack) await findAndSetCachedWaveform(activeTrack.id);
 }

@@ -2,7 +2,8 @@ import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { useStore } from "zustand";
 import { createStore } from "zustand/vanilla";
 
-import type { TrackWithAlbum } from "~/db/schema";
+import { db } from "~/db";
+import type { TrackWithAlbum, WaveformSample } from "~/db/schema";
 
 import { getTrack } from "~/api/track";
 
@@ -14,6 +15,9 @@ interface SessionStore {
 
   /** Track displayed in global track sheet. */
   displayedTrack: (TrackWithAlbum & { _checked: number }) | null;
+
+  /** Waveform data for the active track. */
+  activeWaveformContext: WaveformSample | null;
 }
 
 export const sessionStore = createStore<SessionStore>()(() => ({
@@ -21,6 +25,8 @@ export const sessionStore = createStore<SessionStore>()(() => ({
   volume: 1,
 
   displayedTrack: null,
+
+  activeWaveformContext: null,
 }));
 
 export const useSessionStore = <T>(selector: (state: SessionStore) => T): T =>
@@ -38,4 +44,13 @@ export async function presentTrackSheet(trackId: string) {
     // If `getTrack()` fails, it throws an error, which is caught here.
     sessionStore.setState({ displayedTrack: null });
   }
+}
+
+/** Find, return, and set the cached waveform data in the Session store. */
+export async function findAndSetCachedWaveform(trackId: string) {
+  const cachedWaveform = await db.query.waveformSamples.findFirst({
+    where: (fields, { eq }) => eq(fields.trackId, trackId),
+  });
+  sessionStore.setState({ activeWaveformContext: cachedWaveform || null });
+  return cachedWaveform;
 }
