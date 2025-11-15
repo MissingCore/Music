@@ -6,7 +6,7 @@ import { useStore } from "zustand";
 
 import { db } from "~/db";
 import { tracksToPlaylists } from "~/db/schema";
-import { getTrackCover } from "~/db/utils";
+import { getTrack } from "~/api/track";
 
 import { createPersistedSubscribedStore } from "~/lib/zustand";
 import { resetWidgets } from "~/modules/widget/utils/update";
@@ -36,12 +36,7 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
     getTrack: async (trackKey) => {
       const tId = extractTrackId(trackKey);
       try {
-        const wantedTrack = await db.query.tracks.findFirst({
-          where: (fields, { eq }) => eq(fields.id, tId),
-          with: { album: true, waveformSample: true },
-        });
-        if (!wantedTrack) throw new Error("No tracks found.");
-        wantedTrack.artwork = getTrackCover(wantedTrack);
+        const wantedTrack = await getTrack(tId);
         return wantedTrack;
       } catch {
         console.log(
