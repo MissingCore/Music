@@ -81,7 +81,7 @@
   },
   "@react-navigation/material-top-tabs": {
     "name": "@react-navigation/material-top-tabs",
-    "version": "7.4.2",
+    "version": "7.4.3",
     "copyright": "Copyright (c) 2017 React Navigation Contributors",
     "source": "https://github.com/react-navigation/react-navigation/tree/main/packages/material-top-tabs",
     "license": "MIT",
@@ -89,7 +89,7 @@
   },
   "@react-navigation/native": {
     "name": "@react-navigation/native",
-    "version": "7.1.19",
+    "version": "7.1.20",
     "copyright": "Copyright (c) 2017 React Navigation Contributors",
     "source": "https://github.com/react-navigation/react-navigation/tree/main/packages/native",
     "license": "MIT",
@@ -97,7 +97,7 @@
   },
   "@react-navigation/native-stack": {
     "name": "@react-navigation/native-stack",
-    "version": "7.6.2",
+    "version": "7.6.3",
     "copyright": "Copyright (c) 2017 React Navigation Contributors",
     "source": "https://github.com/react-navigation/react-navigation/tree/main/packages/native-stack",
     "license": "MIT",
@@ -121,7 +121,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.90.6",
+    "version": "5.90.9",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -265,7 +265,7 @@
   },
   "i18next": {
     "name": "i18next",
-    "version": "25.6.0",
+    "version": "25.6.2",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/i18next",
     "license": "MIT",
@@ -337,7 +337,7 @@
   },
   "react-i18next": {
     "name": "react-i18next",
-    "version": "16.2.4",
+    "version": "16.3.3",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/react-i18next",
     "license": "MIT",
@@ -425,7 +425,7 @@
   },
   "react-native-reanimated": {
     "name": "react-native-reanimated",
-    "version": "3.19.3",
+    "version": "3.19.4",
     "copyright": "Copyright (c) 2016 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-reanimated",
     "license": "MIT",
@@ -449,7 +449,7 @@
   },
   "react-native-svg": {
     "name": "react-native-svg",
-    "version": "15.14.0",
+    "version": "15.15.0",
     "copyright": "Copyright (c) [2015-2016] [Horcrux]",
     "source": "https://github.com/software-mansion/react-native-svg",
     "license": "MIT",
