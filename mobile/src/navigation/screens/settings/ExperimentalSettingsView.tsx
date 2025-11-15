@@ -1,7 +1,11 @@
 import { useTranslation } from "react-i18next";
 
+import { db } from "~/db";
+import { waveformSamples } from "~/db/schema";
+
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
+import { sessionStore } from "~/services/SessionStore";
 import { StandardScrollLayout } from "../../layouts/StandardScroll";
 
 import { List, ListItem } from "~/components/Containment/List";
@@ -42,13 +46,29 @@ export default function ExperimentalSettings() {
         />
       </List>
 
-      <ListItem
-        titleKey="feat.waveformSlider.title"
-        onPress={PreferenceTogglers.toggleWaveformSlider}
-        switchState={waveformSlider}
-        first
-        last
-      />
+      <List>
+        <ListItem
+          titleKey="feat.waveformSlider.title"
+          description={t("feat.waveformSlider.brief")}
+          onPress={PreferenceTogglers.toggleWaveformSlider}
+          switchState={waveformSlider}
+          first
+        />
+        <ListItem
+          titleKey="feat.waveformSlider.extra.purgeCache"
+          description={t("feat.waveformSlider.extra.purgeCacheBrief")}
+          onPress={purgeWaveformCache}
+          last
+        />
+      </List>
     </StandardScrollLayout>
   );
 }
+
+//#region Helpers
+async function purgeWaveformCache() {
+  // eslint-disable-next-line drizzle/enforce-delete-with-where
+  await db.delete(waveformSamples);
+  sessionStore.setState({ activeWaveformContext: null });
+}
+//#endregion
