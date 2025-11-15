@@ -64,21 +64,5 @@ export function useWaveformSamples(track: TrackWithAlbum) {
     waveformSlider,
   ]);
 
-  // Since we might be storing more samples than we can render.
-  const downSampledSamples = useMemo(() => {
-    if (!waveformSlider || activeWaveformContext?.samples.length === 0) {
-      return [];
-    }
-    const extraSamples = 100 - estimatedBarCount;
-    const extraSampleRatio = Math.ceil(extraSamples / estimatedBarCount) + 1;
-
-    console.log(estimatedBarCount, extraSamples, extraSampleRatio);
-
-    const newSamples: number[] = [];
-    for (let i = 0; i < 100; i += extraSampleRatio) {}
-
-    return newSamples;
-  }, [activeWaveformContext, estimatedBarCount, waveformSlider]);
-
-  return downSampledSamples;
+  return activeWaveformContext?.samples || [];
 }
