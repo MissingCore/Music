@@ -209,10 +209,6 @@
         "volume": "App-Lautstärke"
       }
     },
-    "ignoreInterrupt": {
-      "title": "Unterbrechungen ignorieren",
-      "brief": "Wiedergabe von Audio fortsetzen, wenn eine Unterbrechung wie eine Benachrichtigung oder ein Anruf auftritt. Du musst die Musik in diesen Situationen manuell pausieren/abspielen."
-    },
     "playbackDelay": {
       "title": null,
       "description": null
@@ -264,6 +260,10 @@
     "continuePlaybackOnDismiss": {
       "title": "Wiedergabe beim Schließen fortsetzen",
       "description": null
+    },
+    "ignoreInterrupt": {
+      "title": "Unterbrechungen ignorieren",
+      "brief": "Wiedergabe von Audio fortsetzen, wenn eine Unterbrechung wie eine Benachrichtigung oder ein Anruf auftritt. Du musst die Musik in diesen Situationen manuell pausieren/abspielen."
     },
     "sleepTimer": {
       "title": null,

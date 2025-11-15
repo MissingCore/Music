@@ -209,10 +209,6 @@
         "volume": "应用音量"
       }
     },
-    "ignoreInterrupt": {
-      "title": "忽略中断",
-      "brief": "当出现通知或呼叫等中断时继续播放音频。 在这些情况下，您需要手动暂停和取消暂停音乐。"
-    },
     "playbackDelay": {
       "title": null,
       "description": null
@@ -264,6 +260,10 @@
     "continuePlaybackOnDismiss": {
       "title": null,
       "description": null
+    },
+    "ignoreInterrupt": {
+      "title": "忽略中断",
+      "brief": "当出现通知或呼叫等中断时继续播放音频。 在这些情况下，您需要手动暂停和取消暂停音乐。"
     },
     "sleepTimer": {
       "title": null,
