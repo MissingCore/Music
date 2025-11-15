@@ -143,8 +143,8 @@
       }
     },
     "quickScroll": {
-      "title": null,
-      "brief": null
+      "title": "Desplazamiento rápido",
+      "brief": "Mostrar barra de desplazamiento estilo Nothing en pantallas compatibles."
     },
     "ignoreRTLLayout": {
       "title": "Ignorar diseño RTL",
@@ -177,10 +177,10 @@
       }
     },
     "mostPlayed": {
-      "title": null,
-      "brief": null,
+      "title": "Más reproducidas",
+      "brief": "Ranking de canciones más reproducidas.",
       "extra": {
-        "playCount": null
+        "playCount": "{{count}} reproducciones"
       }
     },
     "hiddenTracks": {
@@ -209,13 +209,9 @@
         "volume": "Volumen de aplicación"
       }
     },
-    "ignoreInterrupt": {
-      "title": "Ignorar interrupciones",
-      "brief": "Seguir reproduciendo audio cuando se produce una interrupción como una notificación o una llamada. Tendrá que pausar y reanudar manualmente la música durante estas situaciones."
-    },
     "playbackDelay": {
-      "title": null,
-      "description": null
+      "title": "Retraso de reproducción natural",
+      "description": "Retraso en segundos antes de que la siguiente canción se reproduzca de manera natural."
     },
     "repeatOnSkip": {
       "title": "Mantener el modo de repetición al saltar",
@@ -242,8 +238,8 @@
       "brief": "Ignora cualquier medida de salto que acelere la función de reescaneo normal."
     },
     "rescanOnLaunch": {
-      "title": null,
-      "brief": null
+      "title": "Reescanear al lanzar",
+      "brief": "Si está deshabilitado, utilice la función de reescanear para detectar canciones nuevas, actualizadas y eliminadas."
     },
     "listAllow": {
       "title": "Lista de permitidos",
@@ -265,6 +261,10 @@
       "title": "Continúa reproduciendo al descartar",
       "description": "Permite que la reproducción de música continúe cuando descartes la aplicación de tareas recientes. Fuerza a detener la aplicación para detener la reproducción."
     },
+    "ignoreInterrupt": {
+      "title": "Ignorar interrupciones",
+      "brief": "Seguir reproduciendo audio cuando se produce una interrupción como una notificación o una llamada. Tendrá que pausar y reanudar manualmente la música durante estas situaciones."
+    },
     "sleepTimer": {
       "title": "Apagado automático",
       "description": "Detener la reproducción de audio después de la cantidad de minutos especificada.",
@@ -274,7 +274,7 @@
       }
     },
     "waveformSlider": {
-      "title": null
+      "title": "Deslizador de forma de onda"
     },
     "translate": {
       "title": "Contribuir con las traducciones",

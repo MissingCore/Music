@@ -209,10 +209,6 @@
         "volume": "Appens lydstyrke"
       }
     },
-    "ignoreInterrupt": {
-      "title": "Ignorér afbrydelser",
-      "brief": "Fortsæt med at afspille musik, når du får et opkald eller en notifikation. Du bliver nødt til manuelt at pause/afspille musikken i disse situationer."
-    },
     "playbackDelay": {
       "title": null,
       "description": null
@@ -264,6 +260,10 @@
     "continuePlaybackOnDismiss": {
       "title": null,
       "description": null
+    },
+    "ignoreInterrupt": {
+      "title": "Ignorér afbrydelser",
+      "brief": "Fortsæt med at afspille musik, når du får et opkald eller en notifikation. Du bliver nødt til manuelt at pause/afspille musikken i disse situationer."
     },
     "sleepTimer": {
       "title": null,

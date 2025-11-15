@@ -209,10 +209,6 @@
         "volume": "Volume dell'app"
       }
     },
-    "ignoreInterrupt": {
-      "title": "Ignora interruzioni",
-      "brief": "Continua a riprodurre quando si verifica un'interruzione come una notifica o una chiamata. In questi casi dovrai mettere in pausa o far ricominciare la riproduzione manualmente."
-    },
     "playbackDelay": {
       "title": null,
       "description": null
@@ -264,6 +260,10 @@
     "continuePlaybackOnDismiss": {
       "title": null,
       "description": null
+    },
+    "ignoreInterrupt": {
+      "title": "Ignora interruzioni",
+      "brief": "Continua a riprodurre quando si verifica un'interruzione come una notifica o una chiamata. In questi casi dovrai mettere in pausa o far ricominciare la riproduzione manualmente."
     },
     "sleepTimer": {
       "title": null,
