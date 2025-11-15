@@ -31,9 +31,9 @@ interface WaveformProps {
   maxProgress: number;
 }
 
-const MIN_BAR_HEIGHT = 2;
-const BAR_WIDTH = 1.75;
-const BAR_GAP = 1.5;
+const MIN_BAR_HEIGHT = 4;
+const BAR_WIDTH = 2;
+const BAR_GAP = 1.75;
 
 export function Waveform({ amplitudes, progress, maxProgress }: WaveformProps) {
   const { onSurface } = useTheme();
