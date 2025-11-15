@@ -4,11 +4,13 @@ import { View } from "react-native";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { useTheme } from "~/hooks/useTheme";
+import { useWaveformSamples } from "./Waveform";
 
 import { Colors } from "~/constants/Styles";
 import { Slider } from "~/components/Form/Slider";
 
 interface ProgressBarProps {
+  trackId: string;
   trackPath: string;
   value: number;
   max: number;
@@ -20,6 +22,9 @@ interface ProgressBarProps {
 export function ProgressBar(props: ProgressBarProps) {
   const { onSurface } = useTheme();
   const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
+  const samples = useWaveformSamples(props.trackId, props.trackPath);
+
+  console.log(samples);
 
   if (!waveformSlider) return <Slider {...props} thumbSize={16} />;
   return (
