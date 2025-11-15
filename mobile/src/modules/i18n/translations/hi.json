@@ -209,10 +209,6 @@
         "volume": null
       }
     },
-    "ignoreInterrupt": {
-      "title": null,
-      "brief": null
-    },
     "playbackDelay": {
       "title": null,
       "description": null
@@ -264,6 +260,10 @@
     "continuePlaybackOnDismiss": {
       "title": null,
       "description": null
+    },
+    "ignoreInterrupt": {
+      "title": null,
+      "brief": null
     },
     "sleepTimer": {
       "title": null,

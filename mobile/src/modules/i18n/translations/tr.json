@@ -209,10 +209,6 @@
         "volume": "Uygulama Sesi"
       }
     },
-    "ignoreInterrupt": {
-      "title": "Kesintileri Yoksay",
-      "brief": "Bildirim veya arama gibi bir kesinti olduğunda sesi çalmaya devam edin. Bu durumlarda müziği manuel olarak duraklatıp devam ettirmeniz gerekecektir."
-    },
     "playbackDelay": {
       "title": "Doğal Oynatma Gecikmesi",
       "description": "Bir sonraki parça doğal olarak çalınmadan önceki saniye cinsinden gecikme."
@@ -264,6 +260,10 @@
     "continuePlaybackOnDismiss": {
       "title": "Kapatıldığında Oynatmaya Devam Et",
       "description": "Uygulamayı son görevlerden kapattığınızda müzik çalmaya devam etsin. Çalmayı durdurmak için uygulamayı zorla durdurun."
+    },
+    "ignoreInterrupt": {
+      "title": "Kesintileri Yoksay",
+      "brief": "Bildirim veya arama gibi bir kesinti olduğunda sesi çalmaya devam edin. Bu durumlarda müziği manuel olarak duraklatıp devam ettirmeniz gerekecektir."
     },
     "sleepTimer": {
       "title": "Uyku Zamanlayıcısı",

@@ -209,10 +209,6 @@
         "volume": "Głośność aplikacji"
       }
     },
-    "ignoreInterrupt": {
-      "title": "Ignoruj przerwania",
-      "brief": "Powiadomienia i połączenia nie będą zatrzymywać odtwarzania. Wymagane będzie ręczne zatrzymanie."
-    },
     "playbackDelay": {
       "title": "Opóźnenie pomiędzy utworami",
       "description": "Odtwarzacz przed odtworzeniem następnego utworu odczeka poniższą ilość sekund."
@@ -264,6 +260,10 @@
     "continuePlaybackOnDismiss": {
       "title": "Odtwarzanie po zamknięciu",
       "description": "Pozwól na kontynuowanie odtwarzania po zamknięciu aplikacji. Wymuś zatrzymanie aplikacji, aby zatrzymać odtwarzanie."
+    },
+    "ignoreInterrupt": {
+      "title": "Ignoruj przerwania",
+      "brief": "Powiadomienia i połączenia nie będą zatrzymywać odtwarzania. Wymagane będzie ręczne zatrzymanie."
     },
     "sleepTimer": {
       "title": "Wyłącznik czasowy",
