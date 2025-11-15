@@ -2,7 +2,12 @@ import { and, eq, isNull } from "drizzle-orm";
 
 import { db } from "~/db";
 import type { Album, Track } from "~/db/schema";
-import { invalidTracks, tracks, tracksToPlaylists } from "~/db/schema";
+import {
+  invalidTracks,
+  tracks,
+  tracksToPlaylists,
+  waveformSamples,
+} from "~/db/schema";
 import { getTrackCover } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
@@ -139,6 +144,8 @@ export async function deleteTrack(
   return db.transaction(async (tx) => {
     // Remember to delete the track's playlist relations.
     await tx.delete(tracksToPlaylists).where(eq(tracksToPlaylists.trackId, id));
+    // Remember to delete the cached waveform if it exists.
+    await tx.delete(waveformSamples).where(eq(waveformSamples.trackId, id));
     const [deletedTrack] = await tx
       .delete(tracks)
       .where(eq(tracks.id, id))

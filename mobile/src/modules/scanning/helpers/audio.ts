@@ -16,6 +16,7 @@ import {
   playedMediaLists,
   tracks,
   tracksToPlaylists,
+  waveformSamples,
 } from "~/db/schema";
 
 import { upsertAlbums } from "~/api/album";
@@ -154,6 +155,9 @@ export async function cleanupDatabase(usedTrackIds: string[]) {
       db
         .delete(tracksToPlaylists)
         .where(inArray(tracksToPlaylists.trackId, unusedTrackIds)),
+      db
+        .delete(waveformSamples)
+        .where(inArray(waveformSamples.trackId, unusedTrackIds)),
     ]);
   }
 
