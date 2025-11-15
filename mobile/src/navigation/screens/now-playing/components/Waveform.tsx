@@ -1,7 +1,14 @@
-import { Canvas, Group, RoundedRect } from "@shopify/react-native-skia";
+import {
+  Canvas,
+  Group,
+  LinearGradient,
+  RoundedRect,
+  vec,
+} from "@shopify/react-native-skia";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { View, useWindowDimensions } from "react-native";
 import { computeAmplitude } from "react-native-audio-analyzer";
+import { useDerivedValue } from "react-native-reanimated";
 
 import { db } from "~/db";
 import { waveformSamples } from "~/db/schema";
@@ -14,16 +21,21 @@ import {
 } from "~/services/SessionStore";
 import { useTheme } from "~/hooks/useTheme";
 
+import { Colors } from "~/constants/Styles";
+
 //#region Waveform
 interface WaveformProps {
   amplitudes: number[];
+
+  progress: number;
+  maxProgress: number;
 }
 
 const MIN_BAR_HEIGHT = 2;
 const BAR_WIDTH = 1.75;
 const BAR_GAP = 1.5;
 
-export function Waveform({ amplitudes }: WaveformProps) {
+export function Waveform({ amplitudes, progress, maxProgress }: WaveformProps) {
   const { onSurface } = useTheme();
 
   const [canvasHeight, setCanvasHeight] = useState(0);
@@ -43,12 +55,18 @@ export function Waveform({ amplitudes }: WaveformProps) {
             y={y}
             height={barHeight}
             width={BAR_WIDTH}
-            color={onSurface}
           />
         );
       }),
-    [amplitudes, canvasHeight, onSurface],
+    [amplitudes, canvasHeight],
   );
+
+  const gradientStart = useDerivedValue(() => vec(0, canvasHeight));
+  const gradientEnd = useDerivedValue(() => vec(canvasWidth, canvasHeight));
+  const gradientPositions = useDerivedValue(() => [
+    progress / maxProgress,
+    progress / maxProgress,
+  ]);
 
   return (
     <View
@@ -58,7 +76,15 @@ export function Waveform({ amplitudes }: WaveformProps) {
       }}
     >
       <Canvas style={{ height: "100%", width: "100%" }}>
-        <Group>{bars}</Group>
+        <Group>
+          {bars}
+          <LinearGradient
+            start={gradientStart}
+            end={gradientEnd}
+            positions={gradientPositions}
+            colors={[Colors.red, onSurface]}
+          />
+        </Group>
       </Canvas>
     </View>
   );
