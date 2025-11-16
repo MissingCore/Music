@@ -94,16 +94,13 @@ export function Waveform({ amplitudes, progress, maxProgress }: WaveformProps) {
 
 //#region useWaveformSamples
 export function useWaveformSamples(id: string, uri: string) {
-  const { width } = useWindowDimensions();
+  const { height, width } = useWindowDimensions();
   const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
   const activeWaveformContext = useSessionStore((s) => s.activeWaveformContext);
 
   const estimatedBarCount = useMemo(
-    // FIXME: Calculations are currently based on the deviced width as
-    // we don't support landscape mode. However, Android 16 will ignore
-    // this for larger screen sizes.
-    () => Math.round((width - 32) / (BAR_WIDTH + BAR_GAP)),
-    [width],
+    () => Math.round((Math.max(height, width) - 32) / (BAR_WIDTH + BAR_GAP)),
+    [height, width],
   );
 
   const getTrackWaveform = useCallback(async () => {
