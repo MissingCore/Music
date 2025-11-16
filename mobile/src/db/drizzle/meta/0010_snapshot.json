@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "57b6dd84-0c44-4565-8417-9fb71b76f654",
+  "id": "be8c661e-2a43-432a-96d3-19ba45b9e642",
   "prevId": "9cd3b104-a2c9-486d-aa17-4330bebfd4e4",
   "tables": {
     "albums": {
@@ -60,23 +60,14 @@
           "notNull": true,
           "autoincrement": false,
           "default": false
-        },
-        "release_year": {
-          "name": "release_year",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": -1
         }
       },
       "indexes": {
-        "albums_name_artist_name_release_year_unique": {
-          "name": "albums_name_artist_name_release_year_unique",
+        "albums_name_artist_name_unique": {
+          "name": "albums_name_artist_name_unique",
           "columns": [
             "name",
-            "artist_name",
-            "release_year"
+            "artist_name"
           ],
           "isUnique": true
         }

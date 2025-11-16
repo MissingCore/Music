@@ -73,7 +73,7 @@ export async function upsertAlbums(entries: Array<typeof albums.$inferInsert>) {
     .insert(albums)
     .values(entries)
     .onConflictDoUpdate({
-      target: [albums.name, albums.artistName, albums.releaseYear],
+      target: [albums.name, albums.artistName],
       // Set `name` to the `name` from the row that wasn't inserted. This
       // allows `.returning()` to return a value.
       set: { name: sql`excluded.name` },

@@ -40,17 +40,8 @@ export const albums = sqliteTable(
     embeddedArtwork: text(),
     altArtwork: text(),
     isFavorite: integer({ mode: "boolean" }).notNull().default(false),
-
-    /*
-      FIXME: This is technically `.notNull()`, but the migration will fail
-      for users who have "duplicate" album where `releaseYear = null`.
-    */
-    /**
-     * @deprecated Remove along with its use in the Unique key in a future release.
-     */
-    releaseYear: integer("release_year").default(-1),
   },
-  (t) => [unique().on(t.name, t.artistName, t.releaseYear)],
+  (t) => [unique().on(t.name, t.artistName)],
 );
 
 export const albumsRelations = relations(albums, ({ one, many }) => ({

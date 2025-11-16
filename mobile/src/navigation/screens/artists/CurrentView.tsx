@@ -24,7 +24,7 @@ import { ScreenOptions } from "../../components/ScreenOptions";
 
 type Props = StaticScreenProps<{ id: string }>;
 
-type ArtistAlbum = Omit<Album, "releaseYear"> & { releaseYear: string | null };
+type ArtistAlbum = Album & { releaseYear: string | null };
 
 export default function Artist({
   route: {

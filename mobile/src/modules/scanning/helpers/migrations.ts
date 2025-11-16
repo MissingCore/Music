@@ -2,16 +2,13 @@ import { eq, inArray } from "drizzle-orm";
 import AsyncStorage from "expo-sqlite/kv-store";
 
 import { db } from "~/db";
-import type { AlbumWithTracks } from "~/db/schema";
-import { albums, fileNodes, playedMediaLists, tracks } from "~/db/schema";
+import { fileNodes, playedMediaLists, tracks } from "~/db/schema";
 
-import { getAlbums } from "~/api/album";
 import { preferenceStore } from "~/stores/Preference/store";
 import { onboardingStore } from "../services/Onboarding";
 
 import type { PlayFromSource } from "~/stores/Playback/types";
 import type { Tab } from "~/stores/Preference/types";
-import { removeUnusedCategories } from "./audio";
 import { savePathComponents } from "./folder";
 import type { MigrationOption } from "../constants";
 import { MigrationHistory } from "../constants";
@@ -70,59 +67,6 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
       .update(tracks)
       .set({ discoverTime: tracks.modificationTime })
       .where(eq(tracks.discoverTime, -1));
-  },
-
-  "duplicate-album-fix": async () => {
-    /* 1. Copy `releaseYear` to `year` field. */
-    const allAlbums = await getAlbums();
-    await Promise.allSettled(
-      allAlbums.map(({ id, releaseYear }) => {
-        if (!releaseYear || releaseYear === -1) return;
-        return db
-          .update(tracks)
-          .set({ year: releaseYear })
-          .where(eq(tracks.albumId, id));
-      }),
-    );
-
-    /* 2. Remove duplicate album entries. */
-    // Get mapping of albums that have the same album names.
-    const duplicateAlbumNameMap = Object.values(
-      allAlbums.reduce<Record<string, AlbumWithTracks[]>>((accum, album) => {
-        if (accum[album.name]) accum[album.name]!.push(album);
-        else accum[album.name] = [album];
-        return accum;
-      }, {}),
-    ).filter((sameNameAlbums) => sameNameAlbums.length > 1);
-
-    // Figure out which albums are actual duplicates.
-    for (const sameNameAlbums of Object.values(duplicateAlbumNameMap)) {
-      // Record of: "Album Artist" + "Album Id"[]
-      const albumInfoMap: Record<string, string[]> = {};
-      for (const { id, artistName } of sameNameAlbums) {
-        if (albumInfoMap[artistName]) albumInfoMap[artistName].push(id);
-        else albumInfoMap[artistName] = [id];
-      }
-
-      // Have tracks use the same `albumId` if we have duplicate
-      // "Album Artist" + "Album Name" combinations.
-      await Promise.allSettled(
-        Object.values(albumInfoMap).map((ids) => {
-          if (ids.length === 1) return;
-          return db
-            .update(tracks)
-            .set({ albumId: ids[0]! })
-            .where(inArray(tracks.albumId, ids));
-        }),
-      );
-    }
-
-    // Remove albums that we remapped.
-    await removeUnusedCategories();
-
-    /* 3. Set `releaseYear = -1` to preserve unique key behavior. */
-    // eslint-disable-next-line drizzle/enforce-update-with-where
-    await db.update(albums).set({ releaseYear: -1 });
   },
 
   "recent-list-db-migration": async () => {

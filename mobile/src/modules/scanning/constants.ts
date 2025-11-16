@@ -1,6 +1,5 @@
 export type MigrationOption =
   | "fileNodes-adjustment"
-  | "duplicate-album-fix"
   | "discover-time-field"
   | "recent-list-db-migration"
   | "hide-home-tab";
@@ -23,11 +22,7 @@ export const MigrationHistory: Record<
   0: { version: "v2.3.0", changes: ["fileNodes-adjustment"] },
   1: {
     version: "v2.4.0",
-    changes: [
-      "discover-time-field",
-      "duplicate-album-fix",
-      "recent-list-db-migration",
-    ],
+    changes: ["discover-time-field", "recent-list-db-migration"],
   },
   2: { version: "v2.6.0", changes: ["hide-home-tab"] },
 };
