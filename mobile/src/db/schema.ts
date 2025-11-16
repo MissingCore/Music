@@ -184,7 +184,8 @@ export const playedMediaLists = sqliteTable(
 export const waveformSamples = sqliteTable("waveform_sample", {
   trackId: text()
     .notNull()
-    .references(() => tracks.id),
+    .references(() => tracks.id)
+    .primaryKey(),
   samples: text({ mode: "json" })
     .notNull()
     .$type<number[]>()

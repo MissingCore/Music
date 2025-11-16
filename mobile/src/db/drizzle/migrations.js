@@ -11,7 +11,7 @@ import m0006 from "./0006_wild_gabe_jones.sql";
 import m0007 from "./0007_cooing_the_stranger.sql";
 import m0008 from "./0008_little_toad.sql";
 import m0009 from "./0009_ambitious_puppet_master.sql";
-import m0010 from "./0010_tense_nick_fury.sql";
+import m0010 from "./0010_chunky_champions.sql";
 
 export default {
   journal,

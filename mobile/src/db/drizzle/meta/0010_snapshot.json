@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "1d3feb9e-c549-46e8-8470-9f7c6293a389",
+  "id": "57b6dd84-0c44-4565-8417-9fb71b76f654",
   "prevId": "9cd3b104-a2c9-486d-aa17-4330bebfd4e4",
   "tables": {
     "albums": {
@@ -583,7 +583,7 @@
         "track_id": {
           "name": "track_id",
           "type": "text",
-          "primaryKey": false,
+          "primaryKey": true,
           "notNull": true,
           "autoincrement": false
         },
