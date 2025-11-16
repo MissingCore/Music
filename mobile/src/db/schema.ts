@@ -107,6 +107,7 @@ export const tracksRelations = relations(tracks, ({ one, many }) => ({
   }),
   album: one(albums, { fields: [tracks.albumId], references: [albums.id] }),
   tracksToPlaylists: many(tracksToPlaylists),
+  waveformSample: one(waveformSamples),
 }));
 
 export const invalidTracks = sqliteTable("invalid_tracks", {
@@ -180,6 +181,27 @@ export const playedMediaLists = sqliteTable(
   (t) => [primaryKey({ columns: [t.id, t.type] })],
 );
 
+export const waveformSamples = sqliteTable("waveform_sample", {
+  trackId: text()
+    .notNull()
+    .references(() => tracks.id)
+    .primaryKey(),
+  samples: text({ mode: "json" })
+    .notNull()
+    .$type<number[]>()
+    .default(sql`(json_array())`),
+});
+
+export const trackToWaveformSampleRelations = relations(
+  waveformSamples,
+  ({ one }) => ({
+    track: one(tracks, {
+      fields: [waveformSamples.trackId],
+      references: [tracks.id],
+    }),
+  }),
+);
+
 export type Artist = InferSelectModel<typeof artists>;
 export type ArtistWithTracks = Prettify<Artist & { tracks: TrackWithAlbum[] }>;
 
@@ -209,3 +231,5 @@ export type FileNodeWithParent = Prettify<
 export type PlayedMediaList = Prettify<
   InferSelectModel<typeof playedMediaLists> & PlayFromSource
 >;
+
+export type WaveformSample = InferSelectModel<typeof waveformSamples>;

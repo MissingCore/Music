@@ -48,7 +48,7 @@ export default function NowPlaying() {
       <NowPlayingArtwork artwork={track.artwork} />
       <View className="gap-6 px-4">
         <Metadata track={track} />
-        <SeekBar duration={track.duration} uri={track.uri} />
+        <SeekBar duration={track.duration} id={track.id} uri={track.uri} />
         <PlaybackControls />
       </View>
       <BottomAppBar />
@@ -154,7 +154,15 @@ function MarqueeLink({
 
 //#region Seek Bar
 /** Allows us to change the current positon of the playing track. */
-function SeekBar({ duration, uri }: { duration: number; uri: string }) {
+function SeekBar({
+  duration,
+  id,
+  uri,
+}: {
+  duration: number;
+  id: string;
+  uri: string;
+}) {
   const { position, setPosition, seekToPosition } = usePlayerProgress();
 
   const clampedPos = position > duration ? duration : position;
@@ -162,6 +170,7 @@ function SeekBar({ duration, uri }: { duration: number; uri: string }) {
   return (
     <View>
       <ProgressBar
+        trackId={id}
         trackPath={uri}
         value={clampedPos}
         max={duration}

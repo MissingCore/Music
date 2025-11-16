@@ -12,7 +12,7 @@ patchedDependencies:
     hash: zgygxsuuqk33jr3gwbxpbkmczi
     path: patches/@backpackapp-io__react-native-toast.patch
   '@kaannn/react-native-waveform':
-    hash: nxc6ktnxtytdpwfvnczjelb7cy
+    hash: qhdylic22inn53gan2wmowffc4
     path: patches/@kaannn__react-native-waveform.patch
   '@react-native-assets/slider':
     hash: bqoknc62ex4oh6leybytriowfi
@@ -39,7 +39,7 @@ importers:
         version: 2.6.0(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))
       '@kaannn/react-native-waveform':
         specifier: ^0.1.4
-        version: 0.1.4(patch_hash=nxc6ktnxtytdpwfvnczjelb7cy)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        version: 0.1.4(patch_hash=qhdylic22inn53gan2wmowffc4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@lodev09/react-native-true-sheet':
         specifier: ^2.0.6
         version: 2.0.6(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -151,6 +151,9 @@ importers:
       react-native-android-widget:
         specifier: ^0.17.2
         version: 0.17.2(patch_hash=xf3x7denwghlvu46ncfmxxprli)(expo@53.0.23(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      react-native-audio-analyzer:
+        specifier: ^3.1.0
+        version: 3.1.0(react-native-nitro-modules@0.31.6(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-bootsplash:
         specifier: ^6.3.11
         version: 6.3.11(patch_hash=rg27khsleipd2xp3egotvvkzo4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -169,6 +172,9 @@ importers:
       react-native-markdown-display:
         specifier: ^7.0.2
         version: 7.0.2(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      react-native-nitro-modules:
+        specifier: ^0.31.6
+        version: 0.31.6(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-pager-view:
         specifier: ^6.9.1
         version: 6.9.1(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -2663,8 +2669,8 @@ packages:
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
-  electron-to-chromium@1.5.252:
-    resolution: {integrity: sha512-53uTpjtRgS7gjIxZ4qCgFdNO2q+wJt/Z8+xAvxbCqXPJrY6h7ighUkadQmNMXH96crtpa6gPFNP7BF4UBGDuaA==}
+  electron-to-chromium@1.5.253:
+    resolution: {integrity: sha512-O0tpQ/35rrgdiGQ0/OFWhy1itmd9A6TY9uQzlqj3hKSu/aYpe7UIn5d7CU2N9myH6biZiWF3VMZVuup8pw5U9w==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -4604,6 +4610,13 @@ packages:
       expo:
         optional: true
 
+  react-native-audio-analyzer@3.1.0:
+    resolution: {integrity: sha512-QzVeFcIqrjMxiL1SU4nHYlkY1vVYaLrPU+XAAdY0PBPqv7AJyaJq5lylpnyPE1dakn3Fr9nC1LKUhQykhqPy3w==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+      react-native-nitro-modules: ^0.27.3
+
   react-native-bootsplash@6.3.11:
     resolution: {integrity: sha512-VA102LDBPyqMJzRtIb5H6MWsKSSpjzW49e34E2kpOivmkYllLlOpkpB/Q6Yvrt4u3EbkgOxB5gerJERhvcO4Tg==}
     hasBin: true
@@ -4683,6 +4696,12 @@ packages:
     peerDependencies:
       react: '>=16.2.0'
       react-native: '>=0.50.4'
+
+  react-native-nitro-modules@0.31.6:
+    resolution: {integrity: sha512-EcKuLgYwOPrWSGC0VqxqTXjxsQBLCjl/1+ryuKwKDA4iyLr9C/8CBCn6sDS3wbmZDlNl+EPWTPU+VWC6SnPW8Q==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
 
   react-native-pager-view@6.9.1:
     resolution: {integrity: sha512-uUT0MMMbNtoSbxe9pRvdJJKEi9snjuJ3fXlZhG8F2vVMOBJVt/AFtqMPUHu9yMflmqOr08PewKzj9EPl/Yj+Gw==}
@@ -6832,7 +6851,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@kaannn/react-native-waveform@0.1.4(patch_hash=nxc6ktnxtytdpwfvnczjelb7cy)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
+  '@kaannn/react-native-waveform@0.1.4(patch_hash=qhdylic22inn53gan2wmowffc4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
     dependencies:
       react: 19.0.0
       react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
@@ -7911,7 +7930,7 @@ snapshots:
     dependencies:
       baseline-browser-mapping: 2.8.28
       caniuse-lite: 1.0.30001754
-      electron-to-chromium: 1.5.252
+      electron-to-chromium: 1.5.253
       node-releases: 2.0.27
       update-browserslist-db: 1.1.4(browserslist@4.28.0)
 
@@ -8295,7 +8314,7 @@ snapshots:
 
   ee-first@1.1.1: {}
 
-  electron-to-chromium@1.5.252: {}
+  electron-to-chromium@1.5.253: {}
 
   emoji-regex@8.0.0: {}
 
@@ -10472,6 +10491,12 @@ snapshots:
     optionalDependencies:
       expo: 53.0.23(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
 
+  react-native-audio-analyzer@3.1.0(react-native-nitro-modules@0.31.6(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+      react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
+      react-native-nitro-modules: 0.31.6(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+
   react-native-bootsplash@6.3.11(patch_hash=rg27khsleipd2xp3egotvvkzo4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:
       '@expo/config-plugins': 10.1.2
@@ -10568,6 +10593,11 @@ snapshots:
       react: 19.0.0
       react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
       react-native-fit-image: 1.5.5
+
+  react-native-nitro-modules@0.31.6(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+      react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
 
   react-native-pager-view@6.9.1(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:
