@@ -274,7 +274,13 @@
       }
     },
     "waveformSlider": {
-      "title": "Pasek przewijania z wizualizacją"
+      "title": "Pasek przewijania z wizualizacją",
+      "brief": null,
+      "extra": {
+        "purgeCache": null,
+        "purgeCacheBrief": null,
+        "purgeCacheToast": null
+      }
     },
     "translate": {
       "title": "Rozwijaj tłumaczenia",
