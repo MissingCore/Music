@@ -274,7 +274,13 @@
       }
     },
     "waveformSlider": {
-      "title": "Deslizador de forma de onda"
+      "title": "Deslizador de forma de onda",
+      "brief": null,
+      "extra": {
+        "purgeCache": null,
+        "purgeCacheBrief": null,
+        "purgeCacheToast": null
+      }
     },
     "translate": {
       "title": "Contribuir con las traducciones",

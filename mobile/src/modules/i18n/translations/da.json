@@ -274,7 +274,13 @@
       }
     },
     "waveformSlider": {
-      "title": "Slider i bølgeform"
+      "title": "Slider i bølgeform",
+      "brief": null,
+      "extra": {
+        "purgeCache": null,
+        "purgeCacheBrief": null,
+        "purgeCacheToast": null
+      }
     },
     "translate": {
       "title": "Bidrag oversættelser",

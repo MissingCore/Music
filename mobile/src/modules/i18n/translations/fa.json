@@ -274,7 +274,13 @@
       }
     },
     "waveformSlider": {
-      "title": "اسلایدر شکل موج"
+      "title": "اسلایدر شکل موج",
+      "brief": null,
+      "extra": {
+        "purgeCache": null,
+        "purgeCacheBrief": null,
+        "purgeCacheToast": null
+      }
     },
     "translate": {
       "title": "کمک به ترجمه",

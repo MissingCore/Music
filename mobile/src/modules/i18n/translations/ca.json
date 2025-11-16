@@ -274,7 +274,13 @@
       }
     },
     "waveformSlider": {
-      "title": null
+      "title": null,
+      "brief": null,
+      "extra": {
+        "purgeCache": null,
+        "purgeCacheBrief": null,
+        "purgeCacheToast": null
+      }
     },
     "translate": {
       "title": "Contribueix amb traduccions",
