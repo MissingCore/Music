@@ -2,7 +2,7 @@ import { Slider as RNSlider } from "@miblanchard/react-native-slider";
 import { View } from "react-native";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { useWaveformSamples, Waveform } from "./Waveform";
+import { Waveform, useWaveformSamples } from "./Waveform";
 
 import { Colors } from "~/constants/Styles";
 import { Slider } from "~/components/Form/Slider";
