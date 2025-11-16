@@ -62,6 +62,12 @@ export function useWaveformSamples(id: string, uri: string) {
     [height, width],
   );
 
+  // Results in a waveform at min height.
+  const samplesFallback: number[] = useMemo(
+    () => new Array(estimatedBarCount).fill(0),
+    [estimatedBarCount],
+  );
+
   const getTrackWaveform = useCallback(async () => {
     //* See if a cached waveform exist.
     const cachedWaveform = await findAndSetCachedWaveform(id);
@@ -90,8 +96,7 @@ export function useWaveformSamples(id: string, uri: string) {
       const multiplier = Math.pow(Math.max(...downSampledBars), -1);
       sampleData = downSampledBars.map((n) => n * multiplier);
     } else {
-      // Otherwise, fill with 0s (meaning we'll get a waveform at min height).
-      sampleData = new Array(estimatedBarCount).fill(0);
+      sampleData = samplesFallback;
     }
 
     // Cache the data so we don't need to recompute this in the future.
@@ -101,13 +106,13 @@ export function useWaveformSamples(id: string, uri: string) {
       .returning();
 
     sessionStore.setState({ activeWaveformContext: foundWaveform || null });
-  }, [estimatedBarCount, id, uri]);
+  }, [estimatedBarCount, id, samplesFallback, uri]);
 
   useEffect(() => {
     if (!waveformSlider || activeWaveformContext?.trackId === id) return;
     getTrackWaveform();
   }, [activeWaveformContext?.trackId, getTrackWaveform, id, waveformSlider]);
 
-  return activeWaveformContext?.samples || [];
+  return activeWaveformContext?.samples || samplesFallback;
 }
 //#endregion
