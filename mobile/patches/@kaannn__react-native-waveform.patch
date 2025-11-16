@@ -1,0 +1,36 @@
+diff --git a/android/build.gradle b/android/build.gradle
+index 072a171f9b30722ab360f901416cbb73a3728b85..343566ae84d2b9af129e22c39a3e34e6b6dee495 100644
+--- a/android/build.gradle
++++ b/android/build.gradle
+@@ -102,8 +102,7 @@ def kotlin_version = getExtOrDefault("kotlinVersion")
+ dependencies {
+   implementation "com.facebook.react:react-android"
+   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+-  implementation 'com.github.massoudss:waveformSeekBar:5.0.2'
+-  implementation 'com.github.lincollincol:amplituda:2.2.2'
++  implementation "com.github.MissingCore:waveformSeekBar:5.1.0-MissingCore.1"
+ }
+ 
+ if (isNewArchitectureEnabled()) {
+diff --git a/android/src/main/java/com/audiowave/AudioWaveViewManager.kt b/android/src/main/java/com/audiowave/AudioWaveViewManager.kt
+index 3658d927de5c4fc494e5e5f5db05cc2523203193..4e60111d3901a997331d7054e17446947a7f516a 100644
+--- a/android/src/main/java/com/audiowave/AudioWaveViewManager.kt
++++ b/android/src/main/java/com/audiowave/AudioWaveViewManager.kt
+@@ -185,7 +185,7 @@ class AudioWaveViewManager : SimpleViewManager<WaveformSeekBar>() {
+                 val path = uri.replace("file://", "")
+                 val file = File(path)
+                 if (file.exists()) {
+-                    view.setSampleFrom(file)
++                    // view.setSampleFrom(file)
+                 } else {
+                     // Log an error or handle the missing file case
+                     android.util.Log.e("AudioWaveViewManager", "Local file not found: $uri")
+@@ -243,7 +243,7 @@ class AudioWaveViewManager : SimpleViewManager<WaveformSeekBar>() {
+                 // Update UI on main thread
+                 withContext(Dispatchers.Main) {
+                     if (outputFile.exists()) {
+-                        view.setSampleFrom(outputFile)
++                        // view.setSampleFrom(outputFile)
+                         android.util.Log.d("AudioWaveViewManager", "Successfully loaded: $url")
+                     }
+                 }

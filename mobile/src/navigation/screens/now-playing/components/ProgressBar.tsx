@@ -1,8 +1,11 @@
+import AudioWaveView from "@kaannn/react-native-waveform";
 import { Slider as RNSlider } from "@miblanchard/react-native-slider";
+import { useState } from "react";
 import { View } from "react-native";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { useWaveformSamples, Waveform } from "./Waveform";
+import { useTheme } from "~/hooks/useTheme";
+import { useWaveformSamples } from "./Waveform";
 
 import { Colors } from "~/constants/Styles";
 import { Slider } from "~/components/Form/Slider";
@@ -18,16 +21,28 @@ interface ProgressBarProps {
 }
 
 export function ProgressBar(props: ProgressBarProps) {
+  const { onSurface } = useTheme();
+  const [canvasHeight, setCanvasHeight] = useState(0);
   const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
   const samples = useWaveformSamples(props.trackId, props.trackPath);
 
   if (!waveformSlider) return <Slider {...props} thumbSize={16} />;
   return (
-    <View className="relative h-12">
-      <Waveform
-        amplitudes={samples}
+    <View
+      onLayout={(e) => setCanvasHeight(e.nativeEvent.layout.height)}
+      className="relative h-12"
+    >
+      <AudioWaveView
+        samples={samples.map((s) => s * canvasHeight)}
         progress={props.value}
         maxProgress={props.max}
+        waveMinHeight={8}
+        waveWidth={6}
+        waveGap={4}
+        waveCornerRadius={8}
+        waveBackgroundColor={onSurface}
+        waveProgressColor={Colors.red}
+        style={{ width: "100%", height: "100%" }}
       />
       <RNSlider
         value={props.value}
