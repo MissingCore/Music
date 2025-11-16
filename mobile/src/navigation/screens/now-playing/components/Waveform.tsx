@@ -1,14 +1,7 @@
-import {
-  Canvas,
-  Group,
-  LinearGradient,
-  RoundedRect,
-  vec,
-} from "@shopify/react-native-skia";
+import AudioWaveView from "@kaannn/react-native-waveform";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { View, useWindowDimensions } from "react-native";
 import { computeAmplitude } from "react-native-audio-analyzer";
-import { useDerivedValue } from "react-native-reanimated";
 
 import { db } from "~/db";
 import { waveformSamples } from "~/db/schema";
@@ -37,56 +30,22 @@ const BAR_GAP = 1.75;
 
 export function Waveform({ amplitudes, progress, maxProgress }: WaveformProps) {
   const { onSurface } = useTheme();
-
   const [canvasHeight, setCanvasHeight] = useState(0);
-  const [canvasWidth, setCanvasWidth] = useState(0);
-
-  const bars = useMemo(
-    () =>
-      amplitudes.map((amplitude, index) => {
-        const barHeight = Math.max(MIN_BAR_HEIGHT, canvasHeight * amplitude);
-        const x = (BAR_WIDTH + BAR_GAP) * index;
-        const y = (canvasHeight - barHeight) / 2;
-        return (
-          <RoundedRect
-            key={index}
-            r={8}
-            x={x}
-            y={y}
-            height={barHeight}
-            width={BAR_WIDTH}
-          />
-        );
-      }),
-    [amplitudes, canvasHeight],
-  );
-
-  const gradientStart = useDerivedValue(() => vec(0, canvasHeight));
-  const gradientEnd = useDerivedValue(() => vec(canvasWidth, canvasHeight));
-  const gradientPositions = useDerivedValue(() => [
-    progress / maxProgress,
-    progress / maxProgress,
-  ]);
 
   return (
-    <View
-      onLayout={(e) => {
-        setCanvasHeight(e.nativeEvent.layout.height);
-        setCanvasWidth(e.nativeEvent.layout.width);
-      }}
-      className="my-1"
-    >
-      <Canvas style={{ height: "100%", width: "100%" }}>
-        <Group>
-          {bars}
-          <LinearGradient
-            start={gradientStart}
-            end={gradientEnd}
-            positions={gradientPositions}
-            colors={[Colors.red, onSurface]}
-          />
-        </Group>
-      </Canvas>
+    <View onLayout={(e) => setCanvasHeight(e.nativeEvent.layout.height)}>
+      <AudioWaveView
+        samples={amplitudes.map((s) => s * canvasHeight)}
+        progress={progress}
+        maxProgress={maxProgress}
+        waveMinHeight={MIN_BAR_HEIGHT * 2}
+        waveWidth={BAR_WIDTH * 3}
+        waveGap={4}
+        waveCornerRadius={8}
+        waveBackgroundColor={onSurface}
+        waveProgressColor={Colors.red}
+        style={{ width: "100%", height: "100%" }}
+      />
     </View>
   );
 }
