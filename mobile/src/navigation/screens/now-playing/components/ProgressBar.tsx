@@ -21,9 +21,7 @@ export function ProgressBar(props: ProgressBarProps) {
   const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
   const samples = useWaveformSamples(props.trackId, props.trackPath);
 
-  if (!waveformSlider || samples.length === 0) {
-    return <Slider {...props} thumbSize={16} />;
-  }
+  if (!waveformSlider) return <Slider {...props} thumbSize={16} />;
   return (
     <View className="relative h-12">
       <Waveform

@@ -133,6 +133,9 @@ export function useWaveformSamples(id: string, uri: string) {
       // Normalize amplitude.
       const multiplier = Math.pow(Math.max(...downSampledBars), -1);
       sampleData = downSampledBars.map((n) => n * multiplier);
+    } else {
+      // Otherwise, fill with 0s (meaning we'll get a waveform at min height).
+      sampleData = new Array(estimatedBarCount).fill(0);
     }
 
     // Cache the data so we don't need to recompute this in the future.
