@@ -418,6 +418,7 @@
         "addToPlaylist": "Add to Playlist",
         "addToQueue": "Add to Queue",
         "playNext": "Play Next",
+        "playLast": "Play Last",
 
         "queueAdd": "`{{- name}}` added to queue."
       }
