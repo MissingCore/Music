@@ -393,6 +393,8 @@
         "size": "Størrelse",
         "addToPlaylist": "Tilføj til playliste",
         "addToQueue": "Tilføj til kø",
+        "playNext": null,
+        "playLast": null,
         "queueAdd": "\"{{- name}}\" tilføjet til kø."
       }
     }

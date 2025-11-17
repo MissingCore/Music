@@ -393,6 +393,8 @@
         "size": "आकार",
         "addToPlaylist": "प्लेलिस्ट में जोड़ें",
         "addToQueue": "कतार में जोड़ें",
+        "playNext": null,
+        "playLast": null,
         "queueAdd": "`{{- name}}` कतार में जोड़ा गया।"
       }
     }

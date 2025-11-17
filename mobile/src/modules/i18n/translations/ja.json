@@ -393,6 +393,8 @@
         "size": "サイズ",
         "addToPlaylist": "プレイリストに追加",
         "addToQueue": "キューに追加",
+        "playNext": null,
+        "playLast": null,
         "queueAdd": "｢{{- name}}｣がキューに追加されました。"
       }
     }

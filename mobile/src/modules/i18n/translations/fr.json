@@ -128,8 +128,8 @@
       }
     },
     "albumLengthFilter": {
-      "title": null,
-      "description": null
+      "title": "Filtre de Durée d'Album",
+      "description": "Nombre minimum de chansons de l'album pour être affiché dans la section \"Albums\"."
     },
     "miniplayerGestures": {
       "title": "Gestes du mini-lecteur"
@@ -144,7 +144,7 @@
     },
     "quickScroll": {
       "title": null,
-      "brief": null
+      "brief": "Afficher la barre de défilement du style Nothing sur les écrans supportés."
     },
     "ignoreRTLLayout": {
       "title": null,
@@ -177,7 +177,7 @@
       }
     },
     "mostPlayed": {
-      "title": null,
+      "title": "Plus Écouté",
       "brief": null,
       "extra": {
         "playCount": null
@@ -238,7 +238,7 @@
       "brief": "Ignore toutes les mesures de saut qui accélèrent la fonction normale de recherche."
     },
     "rescanOnLaunch": {
-      "title": null,
+      "title": "Rescanner au lancement de l'app",
       "brief": null
     },
     "listAllow": {
@@ -393,6 +393,8 @@
         "size": "Taille",
         "addToPlaylist": "Ajouter à une playlist",
         "addToQueue": "Mettre à la suite",
+        "playNext": null,
+        "playLast": null,
         "queueAdd": "`{{- name}}` ajouté à la file d'attente."
       }
     }

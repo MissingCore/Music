@@ -393,6 +393,8 @@
         "size": "Mida",
         "addToPlaylist": "Afegir a la llista",
         "addToQueue": "Afegir a la cua",
+        "playNext": null,
+        "playLast": null,
         "queueAdd": "`{{- name}}` afegit a la cua."
       }
     }

@@ -393,6 +393,8 @@
         "size": "الحجم",
         "addToPlaylist": "إضافة إلى قائمة التشغيل",
         "addToQueue": "إضافة إلى قائمة الانتظار",
+        "playNext": null,
+        "playLast": null,
         "queueAdd": "تمت إضافة `{{- name}}` إلى قائمة الانتظار."
       }
     }

@@ -117,10 +117,10 @@
       }
     },
     "tabsOrder": {
-      "title": "Orden de pestañas de Inicio",
+      "title": "Orden de pestañas",
       "brief": "Personalizar el orden y la visibilidad de las pestañas.",
       "description": {
-        "line1": "Reordena las pestañas después de la pestaña \"Inicio\" arrastrando y soltando. Alterna la visibilidad de las pestañas usando el icono del ojo.",
+        "line1": "Reordenar las pestañas arrastrando y soltando. Cambia la visibilidad de la pestaña usando el icono del ojo. Cambia la pestaña de inicio usando el icono de la casa.",
         "line2": "Atención: Puede ocurrir un comportamiento inesperado al navegar a una pestaña oculta."
       },
       "extra": {
@@ -218,7 +218,7 @@
       "brief": "Evita que \"Repetir una\" cambie a \"Repetir\" al saltar."
     },
     "restoreLastPosition": {
-      "title": "Guardar la última posición reproducida"
+      "title": "Restaurar desde última posición reproducida"
     },
     "scanning": {
       "title": "Escaneo",
@@ -275,11 +275,11 @@
     },
     "waveformSlider": {
       "title": "Deslizador de forma de onda",
-      "brief": null,
+      "brief": "La reproducción puede ser un poco lenta al principio mientras se genera la caché de la Waveform.",
       "extra": {
-        "purgeCache": null,
-        "purgeCacheBrief": null,
-        "purgeCacheToast": null
+        "purgeCache": "Purgar caché de las Waveforms",
+        "purgeCacheBrief": "Libera almacenamiento para recalcular las Waveforms de las canciones reproducidas.",
+        "purgeCacheToast": "Caché Waveform limpiada."
       }
     },
     "translate": {
@@ -393,6 +393,8 @@
         "size": "Tamaño",
         "addToPlaylist": "Añadir a la lista de reproducción",
         "addToQueue": "Añadir a la cola",
+        "playNext": null,
+        "playLast": null,
         "queueAdd": "`{{- name}}` añadido a la cola."
       }
     }
