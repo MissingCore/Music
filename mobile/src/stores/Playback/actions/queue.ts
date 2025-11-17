@@ -16,16 +16,23 @@ import {
 
 import { ToastOptions } from "~/lib/toast";
 import { moveArray } from "~/utils/object";
+import { isString } from "~/utils/validation";
 
-/** Add a track after the current playing track. */
-export function add({ id, name }: { id: string; name: string }) {
-  const { queue, queuePosition } = playbackStore.getState();
-  toast(i18next.t("feat.modalTrack.extra.queueAdd", { name }), ToastOptions);
+interface QueueInsertionProps {
+  id: string | string[];
+  name: string;
+}
 
-  if (queue.length === 0) return;
-  playbackStore.setState({
-    queue: queue.toSpliced(queuePosition + 1, 0, `${id}__${createId()}`),
-  });
+/** Add track(s) after the current playing track. */
+export function add({ id, name }: QueueInsertionProps) {
+  const { queuePosition } = playbackStore.getState();
+  insertIntoQueue({ id, name, after: queuePosition + 1 });
+}
+
+/** Add track(s) after the end of the queue. */
+export function addToEnd({ id, name }: QueueInsertionProps) {
+  const { queue } = playbackStore.getState();
+  insertIntoQueue({ id, name, after: queue.length });
 }
 
 /** Move a track in the queue. */
@@ -156,3 +163,24 @@ export async function synchronize() {
   // Change playing track if the previous active track doesn't exist in the updated list.
   if (isDiffTrack) await TrackPlayer.load(formatTrackforPlayer(newTrack));
 }
+
+//#region Internal Utils
+function insertIntoQueue({
+  id,
+  name,
+  after,
+}: QueueInsertionProps & { after: number }) {
+  const { queue } = playbackStore.getState();
+  toast(i18next.t("feat.modalTrack.extra.queueAdd", { name }), ToastOptions);
+
+  if (queue.length === 0) return;
+  const uniqueId = createId();
+  playbackStore.setState({
+    queue: queue.toSpliced(
+      after,
+      0,
+      ...(isString(id) ? [id] : id).map((i) => `${i}__${uniqueId}`),
+    ),
+  });
+}
+//#endregion

@@ -262,7 +262,7 @@ function TrackTextActions({ id, name }: Record<"id" | "name", string>) {
         />
         <ListButton
           Icon={QueueMusic}
-          textKey="feat.modalTrack.extra.addToQueue"
+          textKey="feat.modalTrack.extra.playNext"
           onPress={sheetAction(() => Queue.add({ id, name }))}
           style={{ width }}
           className={cn("rounded-tr-md", { "rounded-br-md": !showPlayingFrom })}
