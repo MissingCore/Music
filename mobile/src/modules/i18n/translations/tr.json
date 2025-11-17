@@ -393,6 +393,8 @@
         "size": "Boyut",
         "addToPlaylist": "Çalma Listesine Ekle",
         "addToQueue": "Sıraya Ekle",
+        "playNext": null,
+        "playLast": null,
         "queueAdd": "`{{- name}}` sıraya eklendi."
       }
     }

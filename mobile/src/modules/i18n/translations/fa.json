@@ -393,6 +393,8 @@
         "size": "اندازه",
         "addToPlaylist": "اضافه به لیست پخش",
         "addToQueue": "اضافه به صف",
+        "playNext": null,
+        "playLast": null,
         "queueAdd": "`{{- name}}` به صف اضافه شد."
       }
     }

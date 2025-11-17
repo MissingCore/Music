@@ -393,6 +393,8 @@
         "size": "Размер",
         "addToPlaylist": "Добавить в плейлист",
         "addToQueue": "Добавить в очередь",
+        "playNext": null,
+        "playLast": null,
         "queueAdd": "`{{- name}}` добавлен в очередь."
       }
     }

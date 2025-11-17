@@ -393,6 +393,8 @@
         "size": "大小",
         "addToPlaylist": "添加到播放列表",
         "addToQueue": "添加到队列",
+        "playNext": null,
+        "playLast": null,
         "queueAdd": "已将 `{{- name}}` 添加到队列。"
       }
     }

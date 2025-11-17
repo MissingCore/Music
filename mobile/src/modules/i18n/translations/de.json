@@ -393,6 +393,8 @@
         "size": "Dateigröße",
         "addToPlaylist": "Zu einer Playlist hinzufügen",
         "addToQueue": "Zur Warteschlange hinzufügen",
+        "playNext": null,
+        "playLast": null,
         "queueAdd": "`{{- name}}` wurde zur Warteschlange hinzugefügt."
       }
     }

@@ -393,6 +393,8 @@
         "size": "Rozmiar",
         "addToPlaylist": "Dodaj do playlisty",
         "addToQueue": "Dodaj do kolejki",
+        "playNext": null,
+        "playLast": null,
         "queueAdd": "Dodano do kolejki: `{{- name}}`."
       }
     }

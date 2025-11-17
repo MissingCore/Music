@@ -393,6 +393,8 @@
         "size": "Ukuran",
         "addToPlaylist": "Tambahkan ke Daftar Putar",
         "addToQueue": "Tambahkan ke Antrian",
+        "playNext": null,
+        "playLast": null,
         "queueAdd": "`{{- name}}` ditambahkan ke antrian."
       }
     }
