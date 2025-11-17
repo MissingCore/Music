@@ -11,7 +11,6 @@ import { useFavoritePlaylist, usePlaylistForScreen } from "~/queries/playlist";
 import { useBottomActionsInset } from "../../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../../layouts/CurrentList";
 import { ExportM3USheet } from "./ExportM3USheet";
-import { ArtworkSheetPresenter } from "../../ArtworkSheet";
 
 import { mutateGuard } from "~/lib/react-query";
 import { FlashList } from "~/components/Defaults";
@@ -19,6 +18,7 @@ import { IconButton } from "~/components/Form/Button";
 import type { MenuAction } from "~/components/Menu";
 import { useSheetRef } from "~/components/Sheet";
 import { useTrackListPreset } from "~/modules/media/components/Track";
+import { CurrentListMenu } from "../../../components/CurrentListMenu";
 import { PagePlaceholder } from "../../../components/Placeholder";
 import { ScreenOptions } from "../../../components/ScreenOptions";
 
@@ -73,10 +73,12 @@ export default function Playlist({
               onPress={() => mutateGuard(favoritePlaylist, !data.isFavorite)}
               filled={isToggled}
             />
-            <ArtworkSheetPresenter
+            <CurrentListMenu
               type="playlist"
               id={id}
               actions={menuActions}
+              name={data.name}
+              trackIds={data.tracks.map(({ id }) => id)}
             />
           </View>
         )}

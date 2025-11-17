@@ -9,13 +9,13 @@ import { useArtistForScreen } from "~/queries/artist";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { useBottomActionsInset } from "../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../layouts/CurrentList";
-import { ArtworkSheetPresenter } from "../ArtworkSheet";
 
 import { OnRTL } from "~/lib/react";
 import { FlashList } from "~/components/Defaults";
 import { TEm } from "~/components/Typography/StyledText";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import { useTrackListPreset } from "~/modules/media/components/Track";
+import { CurrentListMenu } from "../../components/CurrentListMenu";
 import {
   ContentPlaceholder,
   PagePlaceholder,
@@ -44,7 +44,12 @@ export default function Artist({
     <>
       <ScreenOptions
         headerRight={() => (
-          <ArtworkSheetPresenter type="artist" id={artistName} />
+          <CurrentListMenu
+            type="artist"
+            id={artistName}
+            name={data.name}
+            trackIds={data.tracks.map(({ id }) => id)}
+          />
         )}
       />
       <CurrentListLayout

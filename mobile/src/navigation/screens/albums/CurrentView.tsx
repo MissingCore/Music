@@ -7,7 +7,6 @@ import { Favorite } from "~/resources/icons/Favorite";
 import { useAlbumForScreen, useFavoriteAlbum } from "~/queries/album";
 import { useBottomActionsInset } from "../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../layouts/CurrentList";
-import { ArtworkSheetPresenter } from "../ArtworkSheet";
 
 import { mutateGuard } from "~/lib/react-query";
 import { isNumber } from "~/utils/validation";
@@ -18,6 +17,7 @@ import {
   Track,
   useTrackListPlayingIndication,
 } from "~/modules/media/components/Track";
+import { CurrentListMenu } from "../../components/CurrentListMenu";
 import {
   ContentPlaceholder,
   PagePlaceholder,
@@ -73,7 +73,12 @@ export default function Album({
               onPress={() => mutateGuard(favoriteAlbum, !data.isFavorite)}
               filled={isToggled}
             />
-            <ArtworkSheetPresenter type="album" id={albumId} />
+            <CurrentListMenu
+              type="album"
+              id={albumId}
+              name={data.name}
+              trackIds={data.tracks.map(({ id }) => id)}
+            />
           </View>
         )}
       />
