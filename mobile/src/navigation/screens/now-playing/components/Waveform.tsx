@@ -99,13 +99,10 @@ export function useWaveformSamples(id: string, uri: string) {
       sampleData = samplesFallback;
     }
 
-    // Cache the data so we don't need to recompute this in the future.
-    const [foundWaveform] = await db
-      .insert(waveformSamples)
-      .values({ trackId: id, samples: sampleData })
-      .returning();
-
-    sessionStore.setState({ activeWaveformContext: foundWaveform || null });
+    //* Cache the data so we don't need to recompute this in the future.
+    const entry = { trackId: id, samples: sampleData };
+    await db.insert(waveformSamples).values(entry).onConflictDoNothing();
+    sessionStore.setState({ activeWaveformContext: entry });
   }, [estimatedBarCount, id, samplesFallback, uri]);
 
   useEffect(() => {
