@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 
 import { Image } from "~/resources/icons/Image";
+import { LowPriority } from "~/resources/icons/LowPriority";
 import { QueueMusic } from "~/resources/icons/QueueMusic";
 import { Queue } from "~/stores/Playback/actions";
 import {
@@ -29,17 +30,24 @@ export function CurrentListMenu(props: {
     [props.id, props.type],
   );
 
-  const addToQueueAction = useMemo<MenuAction>(
-    () => ({
-      Icon: QueueMusic,
-      labelKey: "feat.modalTrack.extra.addToQueue",
-      onPress: () => Queue.addToEnd({ id: props.trackIds, name: props.name }),
-    }),
+  const queueActions = useMemo<MenuAction[]>(
+    () => [
+      {
+        Icon: QueueMusic,
+        labelKey: "feat.modalTrack.extra.playNext",
+        onPress: () => Queue.add({ id: props.trackIds, name: props.name }),
+      },
+      {
+        Icon: LowPriority,
+        labelKey: "feat.modalTrack.extra.playLast",
+        onPress: () => Queue.addToEnd({ id: props.trackIds, name: props.name }),
+      },
+    ],
     [props.name, props.trackIds],
   );
 
   const menuActions = useMemo(() => {
-    const actions: MenuAction[] = [addToQueueAction];
+    const actions: MenuAction[] = [];
 
     if (!isFavoritesPlaylist) {
       actions.push({
@@ -49,8 +57,8 @@ export function CurrentListMenu(props: {
       });
     }
 
-    return actions.concat(props.actions ?? []);
-  }, [props.actions, addToQueueAction, artworkSheetRef, isFavoritesPlaylist]);
+    return actions.concat(props.actions ?? []).concat(queueActions);
+  }, [props.actions, queueActions, artworkSheetRef, isFavoritesPlaylist]);
 
   const RenderedSheet = useMemo(() => {
     if (props.type === "album") return AlbumArtworkSheet;
