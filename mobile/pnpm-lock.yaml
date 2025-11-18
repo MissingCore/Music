@@ -14,6 +14,9 @@ patchedDependencies:
   '@kaannn/react-native-waveform':
     hash: qhdylic22inn53gan2wmowffc4
     path: patches/@kaannn__react-native-waveform.patch
+  '@lodev09/react-native-true-sheet':
+    hash: wlo2fzlie4gyft7hlbsjnrhwfm
+    path: patches/@lodev09__react-native-true-sheet.patch
   '@react-native-assets/slider':
     hash: bqoknc62ex4oh6leybytriowfi
     path: patches/@react-native-assets__slider.patch
@@ -42,7 +45,7 @@ importers:
         version: 0.1.4(patch_hash=qhdylic22inn53gan2wmowffc4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@lodev09/react-native-true-sheet':
         specifier: ^2.0.6
-        version: 2.0.6(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        version: 2.0.6(patch_hash=wlo2fzlie4gyft7hlbsjnrhwfm)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@lukemorales/query-key-factory':
         specifier: ^1.3.4
         version: 1.3.4(@tanstack/query-core@5.90.9)(@tanstack/react-query@5.90.9(react@19.0.0))
@@ -6856,7 +6859,7 @@ snapshots:
       react: 19.0.0
       react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
 
-  '@lodev09/react-native-true-sheet@2.0.6(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
+  '@lodev09/react-native-true-sheet@2.0.6(patch_hash=wlo2fzlie4gyft7hlbsjnrhwfm)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
     dependencies:
       react: 19.0.0
       react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
