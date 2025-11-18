@@ -30,8 +30,6 @@ export default function FavoriteTracks() {
       <ScreenOptions
         headerRight={() => (
           <CurrentListMenu
-            type="playlist"
-            id={ReservedPlaylists.favorites}
             name={t("term.favoriteTracks")}
             trackIds={data.tracks.map(({ id }) => id)}
           />

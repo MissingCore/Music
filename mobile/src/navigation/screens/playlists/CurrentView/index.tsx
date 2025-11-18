@@ -11,6 +11,7 @@ import { useFavoritePlaylist, usePlaylistForScreen } from "~/queries/playlist";
 import { useBottomActionsInset } from "../../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../../layouts/CurrentList";
 import { ExportM3USheet } from "./ExportM3USheet";
+import { PlaylistArtworkSheet } from "../../ArtworkSheet";
 
 import { mutateGuard } from "~/lib/react-query";
 import { FlashList } from "~/components/Defaults";
@@ -34,6 +35,7 @@ export default function Playlist({
   const bottomInset = useBottomActionsInset();
   const { isPending, error, data } = usePlaylistForScreen(id);
   const favoritePlaylist = useFavoritePlaylist(id);
+  const artworkSheetRef = useSheetRef();
   const exportSheetRef = useSheetRef();
 
   const trackSource = { type: "playlist", id } as const;
@@ -74,11 +76,10 @@ export default function Playlist({
               filled={isToggled}
             />
             <CurrentListMenu
-              type="playlist"
-              id={id}
               actions={menuActions}
               name={data.name}
               trackIds={data.tracks.map(({ id }) => id)}
+              presentArtworkSheet={() => artworkSheetRef.current?.present()}
             />
           </View>
         )}
@@ -95,6 +96,8 @@ export default function Playlist({
           contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
         />
       </CurrentListLayout>
+
+      <PlaylistArtworkSheet sheetRef={artworkSheetRef} id={id} />
       <ExportM3USheet sheetRef={exportSheetRef} id={id} />
     </>
   );
