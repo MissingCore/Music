@@ -14,6 +14,7 @@ import { Edit } from "~/resources/icons/Edit";
 import { Favorite } from "~/resources/icons/Favorite";
 import { Image } from "~/resources/icons/Image";
 import { List } from "~/resources/icons/List";
+import { LowPriority } from "~/resources/icons/LowPriority";
 import { PlaylistAdd } from "~/resources/icons/PlaylistAdd";
 import { QueueMusic } from "~/resources/icons/QueueMusic";
 import { Schedule } from "~/resources/icons/Schedule";
@@ -197,12 +198,17 @@ function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
   const isFav = favoriteTrack.isPending ? !favStatus : favStatus;
 
   return (
-    <Card className="flex-row justify-evenly gap-4 py-1">
+    <Card className="flex-row justify-between gap-1 py-1">
       <IconButton
         Icon={Favorite}
         accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
         onPress={() => mutateGuard(favoriteTrack, !favStatus)}
         filled={isFav}
+      />
+      <IconButton
+        Icon={PlaylistAdd}
+        accessibilityLabel={t("feat.modalTrack.extra.addToPlaylist")}
+        onPress={sheetAction(() => TrueSheet.present("TrackToPlaylistSheet"))}
       />
       <IconButton
         Icon={Edit}
@@ -254,16 +260,16 @@ function TrackTextActions({ id, name }: Record<"id" | "name", string>) {
     <View className="gap-[3px]">
       <View className="flex-row gap-[3px]">
         <ListButton
-          Icon={PlaylistAdd}
-          textKey="feat.modalTrack.extra.addToPlaylist"
-          onPress={sheetAction(() => TrueSheet.present("TrackToPlaylistSheet"))}
+          Icon={QueueMusic}
+          textKey="feat.modalTrack.extra.playNext"
+          onPress={sheetAction(() => Queue.add({ id, name }))}
           style={{ width }}
           className={cn("rounded-tl-md", { "rounded-bl-md": !showPlayingFrom })}
         />
         <ListButton
-          Icon={QueueMusic}
-          textKey="feat.modalTrack.extra.playNext"
-          onPress={sheetAction(() => Queue.add({ id, name }))}
+          Icon={LowPriority}
+          textKey="feat.modalTrack.extra.playLast"
+          onPress={sheetAction(() => Queue.addToEnd({ id, name }))}
           style={{ width }}
           className={cn("rounded-tr-md", { "rounded-br-md": !showPlayingFrom })}
         />
