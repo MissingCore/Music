@@ -124,5 +124,5 @@ export default (): ExpoConfig => ({
     ],
     ["react-native-android-widget", widgetConfig],
   ],
-  newArchEnabled: false,
+  newArchEnabled: true,
 });
