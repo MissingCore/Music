@@ -55,7 +55,6 @@ import { Checkbox } from "~/components/Form/Selection";
 import { Sheet, useSheetRef } from "~/components/Sheet";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { MediaImage } from "~/modules/media/components/MediaImage";
-import { extractTrackId } from "~/stores/Playback/utils";
 import { ContentPlaceholder } from "../../components/Placeholder";
 
 //#region Track Sheet
@@ -67,12 +66,7 @@ export function TrackSheet() {
 
   return (
     <>
-      <Sheet
-        globalKey="TrackSheet"
-        // Required to get auto-resizing to work when content height changes.
-        // Ref: https://github.com/lodev09/react-native-true-sheet/issues/7
-        sizes={["auto", "large"]}
-      >
+      <Sheet globalKey="TrackSheet">
         {data !== null ? (
           <ScrollView
             {...handlers}
@@ -245,11 +239,6 @@ function TrackTextActions({ id, name }: Record<"id" | "name", string>) {
   const { width } = useGetColumn({ cols: 2, gap: 3, gutters: 32 });
   const playingSource = usePlaybackStore((s) => s.playingFrom);
   const sourceName = usePlaybackStore((s) => s.playingFromName);
-  const playingList = usePlaybackStore((s) => s.queue);
-
-  const showPlayingFrom =
-    onNowPlayingScreen &&
-    playingList.some((tKey) => extractTrackId(tKey) === id);
 
   const listLinkInfo = useMemo(
     () => (playingSource ? getMediaLinkContext(playingSource) : undefined),
@@ -264,17 +253,21 @@ function TrackTextActions({ id, name }: Record<"id" | "name", string>) {
           textKey="feat.modalTrack.extra.playNext"
           onPress={sheetAction(() => Queue.add({ id, name }))}
           style={{ width }}
-          className={cn("rounded-tl-md", { "rounded-bl-md": !showPlayingFrom })}
+          className={cn("rounded-tl-md", {
+            "rounded-bl-md": !onNowPlayingScreen,
+          })}
         />
         <ListButton
           Icon={LowPriority}
           textKey="feat.modalTrack.extra.playLast"
           onPress={sheetAction(() => Queue.addToEnd({ id, name }))}
           style={{ width }}
-          className={cn("rounded-tr-md", { "rounded-br-md": !showPlayingFrom })}
+          className={cn("rounded-tr-md", {
+            "rounded-br-md": !onNowPlayingScreen,
+          })}
         />
       </View>
-      {showPlayingFrom ? (
+      {onNowPlayingScreen ? (
         <ListButton
           Icon={List}
           textKey="term.playingFrom"
