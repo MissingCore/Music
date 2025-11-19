@@ -65,7 +65,7 @@
   },
   "@paralleldrive/cuid2": {
     "name": "@paralleldrive/cuid2",
-    "version": "2.2.2",
+    "version": "3.0.4",
     "copyright": "Copyright (c) 2022 Eric Elliott",
     "source": "https://github.com/paralleldrive/cuid2",
     "license": "MIT",
@@ -121,7 +121,7 @@
   },
   "@tanstack/react-query": {
     "name": "@tanstack/react-query",
-    "version": "5.90.9",
+    "version": "5.90.10",
     "copyright": "Copyright (c) 2021-present Tanner Linsley",
     "source": "https://github.com/TanStack/query",
     "license": "MIT",
@@ -153,7 +153,7 @@
   },
   "expo": {
     "name": "expo",
-    "version": "53.0.23",
+    "version": "53.0.24",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo",
     "license": "MIT",
@@ -265,7 +265,7 @@
   },
   "i18next": {
     "name": "i18next",
-    "version": "25.6.2",
+    "version": "25.6.3",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/i18next",
     "license": "MIT",
@@ -337,7 +337,7 @@
   },
   "react-i18next": {
     "name": "react-i18next",
-    "version": "16.3.3",
+    "version": "16.3.4",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/react-i18next",
     "license": "MIT",
@@ -417,7 +417,7 @@
   },
   "react-native-nitro-modules": {
     "name": "react-native-nitro-modules",
-    "version": "0.31.6",
+    "version": "0.31.8",
     "copyright": "Copyright (c) 2024 Marc Rousavy",
     "source": "https://github.com/mrousavy/nitro",
     "license": "MIT",
