@@ -10,6 +10,7 @@ import { Pressable, View } from "react-native";
 import type { TrackWithAlbum } from "~/db/schema";
 
 import type { Icon } from "~/resources/icons/type";
+import { Delete } from "~/resources/icons/Delete";
 import { Edit } from "~/resources/icons/Edit";
 import { Favorite } from "~/resources/icons/Favorite";
 import { Image } from "~/resources/icons/Image";
@@ -18,8 +19,6 @@ import { LowPriority } from "~/resources/icons/LowPriority";
 import { PlaylistAdd } from "~/resources/icons/PlaylistAdd";
 import { QueueMusic } from "~/resources/icons/QueueMusic";
 import { Schedule } from "~/resources/icons/Schedule";
-import { Visibility } from "~/resources/icons/Visibility";
-import { VisibilityOff } from "~/resources/icons/VisibilityOff";
 import { usePlaylists } from "~/queries/playlist";
 import {
   useAddToPlaylist,
@@ -217,11 +216,8 @@ function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
         onPress={sheetAction(props.editArtwork)}
       />
       <IconButton
-        Icon={data?.hiddenAt ? VisibilityOff : Visibility}
-        accessibilityLabel={t(
-          `template.entry${data?.hiddenAt ? "Show" : "Hide"}`,
-          { name: data?.name },
-        )}
+        Icon={Delete}
+        accessibilityLabel={t("template.entryHide", { name: data?.name })}
         onPress={sheetAction(() =>
           mutateGuard(hideTrack, {
             trackId: props.id,
