@@ -13,7 +13,6 @@ import {
 import { checkForMigrations } from "../helpers/migrations";
 
 import { createImageDirectory } from "~/lib/file-system";
-import { clearAllQueries } from "~/lib/react-query";
 import { Stopwatch } from "~/utils/debug";
 
 /**
@@ -65,9 +64,6 @@ export function useOnboarding() {
       await removeUnusedCategories();
     }
     await cleanupImages();
-
-    // Ensure queries are all up-to-date.
-    clearAllQueries();
 
     console.log(`Finished overall in ${stopwatch.stop()}.`);
     setStatus("complete");
