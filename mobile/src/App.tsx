@@ -6,6 +6,7 @@ import { preferenceStore } from "~/stores/Preference/store";
 import { useLoadResources } from "~/hooks/useLoadResources";
 import NavigationContainer from "~/navigation";
 import { AppProvider } from "~/navigation/providers/AppProvider";
+import { SystemTheme } from "./navigation/providers/ThemeProvider";
 import { ErrorBoundary } from "~/navigation/components/ErrorBoundary";
 import { Onboarding } from "~/navigation/screens/OnboardingView";
 
@@ -26,27 +27,19 @@ if (SENTRY_ENABLED) {
 
 export default function App() {
   const { isLoaded, error } = useLoadResources();
-
-  if (error) {
-    return (
-      <>
-        <View ref={handleAppLifeCycle} />
-        <ErrorBoundary error={error} />
-      </>
-    );
-  } else if (!isLoaded) {
-    return (
-      <AppProvider systemTheme>
-        <Onboarding />
-      </AppProvider>
-    );
-  }
-
   return (
-    <ErrorBoundary>
-      <View ref={handleAppLifeCycle} />
-      <NavigationContainer />
-    </ErrorBoundary>
+    <AppProvider>
+      <ErrorBoundary error={error}>
+        <View ref={handleAppLifeCycle} />
+        {isLoaded ? (
+          <NavigationContainer />
+        ) : (
+          <SystemTheme>
+            <Onboarding />
+          </SystemTheme>
+        )}
+      </ErrorBoundary>
+    </AppProvider>
   );
 }
 
