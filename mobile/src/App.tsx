@@ -1,6 +1,14 @@
 import TrackPlayer from "@weights-ai/react-native-track-player";
+import { useEffect, useState } from "react";
 import { View } from "react-native";
 import Bootsplash from "react-native-bootsplash";
+import Animated, {
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withTiming,
+} from "react-native-reanimated";
 
 import { preferenceStore } from "~/stores/Preference/store";
 import { useLoadResources } from "~/hooks/useLoadResources";
@@ -31,13 +39,13 @@ export default function App() {
     <AppProvider>
       <ErrorBoundary error={error}>
         <View ref={handleAppLifeCycle} />
-        {isLoaded ? (
-          <NavigationContainer />
-        ) : (
+        {isLoaded && <NavigationContainer />}
+
+        <FakeLayoutTransition unmount={!isLoaded}>
           <SystemTheme>
             <Onboarding />
           </SystemTheme>
-        )}
+        </FakeLayoutTransition>
       </ErrorBoundary>
     </AppProvider>
   );
@@ -57,3 +65,35 @@ function handleAppLifeCycle() {
     }
   };
 }
+
+//#region Layout Transition
+type TransitionState = "idle" | "in-progress" | "finished";
+
+function FakeLayoutTransition(props: {
+  children: React.ReactNode;
+  unmount?: boolean;
+}) {
+  const [animState, setAnimState] = useState<TransitionState>("idle");
+  const opacity = useSharedValue(1);
+
+  useEffect(() => {
+    if (!props.unmount || animState !== "idle") return;
+    setAnimState("in-progress");
+    opacity.value = withDelay(
+      500,
+      withTiming(0, { duration: 500 }, () => {
+        runOnJS(setAnimState)("finished");
+      }),
+    );
+  }, [props.unmount, animState, opacity]);
+
+  const animatedStyle = useAnimatedStyle(() => ({ opacity: opacity.value }));
+
+  if (animState === "finished") return null;
+  return (
+    <Animated.View style={animatedStyle} className="absolute inset-0">
+      {props.children}
+    </Animated.View>
+  );
+}
+//#endregion

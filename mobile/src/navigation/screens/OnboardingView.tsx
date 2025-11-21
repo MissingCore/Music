@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { Dimensions } from "react-native";
 import BootSplash from "react-native-bootsplash";
 import Animated, {
-  FadeOut,
   LinearTransition,
   useAnimatedStyle,
   useSharedValue,
@@ -44,9 +43,8 @@ export function Onboarding() {
   const opacity = useAnimatedStyle(() => ({ opacity: infoOpacity.value }));
 
   return (
-    <SafeContainer animated {...container} exiting={FadeOut.duration(500)}>
-      <Animated.Image {...logo} style={[logo.style]} />
-
+    <SafeContainer animated {...container}>
+      <Animated.Image {...logo} />
       <Animated.View
         layout={LinearTransition}
         style={[{ width: Dimensions.get("window").width - 32 }, opacity]}
