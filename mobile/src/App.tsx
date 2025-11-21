@@ -10,7 +10,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
-import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
+import { preferenceStore } from "~/stores/Preference/store";
 import { useLoadResources } from "~/hooks/useLoadResources";
 import NavigationContainer from "~/navigation";
 import { AppProvider } from "~/navigation/providers/AppProvider";
@@ -51,7 +51,7 @@ export default function App() {
         <View ref={handleAppLifeCycle} />
         {isLoaded && <NavigationContainer />}
 
-        <FakeLayoutTransition unmount={!isLoaded}>
+        <FakeLayoutTransition unmount={isLoaded}>
           <SystemTheme>
             <Onboarding />
           </SystemTheme>
@@ -85,18 +85,17 @@ function FakeLayoutTransition(props: {
 }) {
   const [animState, setAnimState] = useState<TransitionState>("idle");
   const opacity = useSharedValue(1);
-  const rescanOnLaunch = usePreferenceStore((s) => s.rescanOnLaunch);
 
   useEffect(() => {
     if (!props.unmount || animState !== "idle") return;
     setAnimState("in-progress");
     opacity.value = withDelay(
-      rescanOnLaunch ? 2000 : 500,
+      500,
       withTiming(0, { duration: 500 }, () => {
         runOnJS(setAnimState)("finished");
       }),
     );
-  }, [props.unmount, animState, opacity, rescanOnLaunch]);
+  }, [props.unmount, animState, opacity]);
 
   const animatedStyle = useAnimatedStyle(() => ({ opacity: opacity.value }));
 
