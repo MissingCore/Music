@@ -9,6 +9,7 @@ import Animated, {
   withTiming,
   withDelay,
 } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useOnboardingStore } from "~/modules/scanning/services/Onboarding";
 
@@ -28,6 +29,7 @@ export function Onboarding() {
 
     animate: () => {},
   });
+  const { bottom } = useSafeAreaInsets();
   const onboardPhase = useOnboardingStore((s) => s.phase);
   const [foundPhase, setFoundPhase] = useState(false);
   const infoOpacity = useSharedValue(0);
@@ -47,8 +49,11 @@ export function Onboarding() {
       <Animated.Image {...logo} />
       <Animated.View
         layout={LinearTransition}
-        style={[{ width: Dimensions.get("window").width - 32 }, opacity]}
-        className="absolute bottom-4 left-4 gap-1 rounded-md bg-surface p-4"
+        style={[
+          { width: Dimensions.get("window").width - 32, bottom: bottom + 16 },
+          opacity,
+        ]}
+        className="absolute left-4 gap-1 rounded-md bg-surface p-4"
       >
         <OnboardingPhase />
       </Animated.View>
