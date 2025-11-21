@@ -51,8 +51,7 @@ function Navbar({ stacked = false, hidden = false }) {
   const { hasNewUpdate } = useHasNewUpdate();
 
   return (
-    <Animated.View
-      layout={LinearTransition}
+    <View
       className={cn(
         "flex-row items-center overflow-hidden rounded-md bg-surface py-1",
         { "rounded-t-sm": stacked, "hidden opacity-0": hidden },
@@ -74,7 +73,7 @@ function Navbar({ stacked = false, hidden = false }) {
           <View className="absolute right-3 top-3 size-2 rounded-full bg-red" />
         )}
       </View>
-    </Animated.View>
+    </View>
   );
 }
 
