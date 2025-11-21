@@ -21,6 +21,7 @@ import { Onboarding } from "~/navigation/screens/OnboardingView";
 import "~/resources/global.css";
 import "~/modules/i18n"; // Make sure translations are bundled.
 import { SENTRY_ENABLED, Sentry } from "~/lib/sentry";
+import { bgWait } from "~/utils/promise";
 
 if (SENTRY_ENABLED) {
   Sentry.init({
@@ -66,7 +67,8 @@ function handleAppLifeCycle() {
   // persisted when it shouldn't. Make sure we close at least the bootsplash
   // from `react-native-bootsplash` whenever we render the app (in case its
   // "autohide" behavior doesn't work as expected).
-  Bootsplash.hide();
+  //  - Delay to prevent flicker from change in how onboarding screen is shown.
+  bgWait(1).then(() => Bootsplash.hide());
 
   // Ensure the RNTP service gets destroyed on app close.
   return () => {
