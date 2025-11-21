@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { playbackStore } from "~/stores/Playback/store";
 import { useFloatingContent } from "../hooks/useFloatingContent";
+import { AppProvider } from "../providers/AppProvider";
 
 import { GITHUB } from "~/constants/Links";
 import { SENTRY_ENABLED, Sentry } from "~/lib/sentry";
@@ -37,7 +38,9 @@ export class ErrorBoundary extends React.Component<
 
   render() {
     return this.state.error ? (
-      <ErrorLayout error={this.state.error} />
+      <AppProvider>
+        <ErrorLayout error={this.state.error} />
+      </AppProvider>
     ) : (
       this.props.children
     );

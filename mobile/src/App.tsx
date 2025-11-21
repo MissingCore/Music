@@ -35,9 +35,19 @@ if (SENTRY_ENABLED) {
 
 export default function App() {
   const { isLoaded, error } = useLoadResources();
+
+  if (error) {
+    return (
+      <>
+        <View ref={handleAppLifeCycle} />
+        <ErrorBoundary error={error} />
+      </>
+    );
+  }
+
   return (
     <AppProvider>
-      <ErrorBoundary error={error}>
+      <ErrorBoundary>
         <View ref={handleAppLifeCycle} />
         {isLoaded && <NavigationContainer />}
 
