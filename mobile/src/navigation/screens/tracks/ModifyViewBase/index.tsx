@@ -192,7 +192,7 @@ function ConfirmationModal() {
 //#region Reset Workflow
 /** Logic to set the form fields to the embedded metadata from the track. */
 function ResetWorkflow({
-  onLayout,
+  floatingRef,
   wrapperStyling,
 }: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
   const { uri } = useTrackMetadataStore((s) => s.initialData);
@@ -221,7 +221,7 @@ function ResetWorkflow({
   };
 
   return (
-    <View onLayout={onLayout} {...wrapperStyling}>
+    <View ref={floatingRef} {...wrapperStyling}>
       <Button
         onPress={onReset}
         disabled={isSubmitting}
