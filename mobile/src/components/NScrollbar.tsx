@@ -59,8 +59,10 @@ export function Scrollbar({
   //* Scroll to given offset using Reanimated.
   useDerivedValue(() => {
     if (nextScrollPosition.value === -1) return;
-    // `animated` argument needs to be `true` or otherwise, we get choppy scrolling.
-    scrollTo(listRef, 0, nextScrollPosition.value, true);
+    //? For some reason on the New Architecture, things only work if we set
+    //? this to `false`, like in our original implementation in:
+    //?   - https://github.com/MissingCore/Music/commit/e9a1ff9b66390928210ff054629b6b7d09e1af6a
+    scrollTo(listRef, 0, nextScrollPosition.value, false);
   });
 
   //#region Visibility
