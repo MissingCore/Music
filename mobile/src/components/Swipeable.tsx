@@ -140,7 +140,13 @@ export function Swipeable({
         }
 
         // Reset to prevent the recycled item being stuck in the swiped state.
-        dragX.setValue(0);
+        //  - Use `Animated.timing()` instead of `setValue()` due to the animation
+        //  resolving before the UI removes the item on the New Architecture.
+        Animated.timing(dragX, {
+          duration: 0,
+          toValue: 0,
+          useNativeDriver: true,
+        });
       });
     });
 
