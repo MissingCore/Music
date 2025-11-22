@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, View, useWindowDimensions } from "react-native";
+import { Pressable, View } from "react-native";
 import { GestureDetector } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedStyle,
@@ -22,24 +22,20 @@ import { Vinyl } from "~/modules/media/components/Vinyl";
  * of padding around the artwork).
  */
 export function NowPlayingArtwork(props: { artwork: string | null }) {
-  const { width } = useWindowDimensions();
-  const [areaHeight, setAreaHeight] = useState<number | null>(null);
+  const [size, setSize] = useState(0);
+  const containerRef = useRef<View>(null);
 
-  /* Get the height for the artwork that maximizes the space. */
-  const size = useMemo(() => {
-    if (areaHeight === null) return undefined;
-    // Exclude the padding around the image depending on which measurement is used.
-    return (areaHeight > width ? width : areaHeight) - 32;
-  }, [areaHeight, width]);
+  /* Calculate the size of the artwork that maximizes the space. */
+  useLayoutEffect(() => {
+    containerRef.current?.measure((_x, _y, width, height) => {
+      // Exclude the padding around the image depending on which measurement is used.
+      setSize((height > width ? width : height) - 32);
+    });
+  }, []);
 
   return (
-    <View
-      onLayout={({ nativeEvent }) => setAreaHeight(nativeEvent.layout.height)}
-      className="flex-1 items-center justify-center"
-    >
-      {size !== undefined ? (
-        <ArtworkPicker source={props.artwork} size={size} />
-      ) : null}
+    <View ref={containerRef} className="flex-1 items-center justify-center">
+      <ArtworkPicker source={props.artwork} size={size} />
     </View>
   );
 }
