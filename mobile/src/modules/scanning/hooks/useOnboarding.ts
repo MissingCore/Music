@@ -14,7 +14,6 @@ import { checkForMigrations } from "../helpers/migrations";
 
 import { createImageDirectory } from "~/lib/file-system";
 import { Stopwatch } from "~/utils/debug";
-import { bgWait } from "~/utils/promise";
 
 /**
  * Reads our music library on load and index all supported files in the
@@ -62,9 +61,6 @@ export function useOnboarding() {
       createImageDirectory();
       await findAndSaveArtwork();
     } else {
-      // Artifical delay to prevent `database is locked` crash on New
-      // Architecture when "Rescan on Launch" is disabled.
-      await bgWait(150);
       await removeUnusedCategories();
     }
     await cleanupImages();
