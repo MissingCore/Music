@@ -393,8 +393,8 @@
         "size": "Tamaño",
         "addToPlaylist": "Añadir a la lista de reproducción",
         "addToQueue": "Añadir a la cola",
-        "playNext": null,
-        "playLast": null,
+        "playNext": "Reproducir a continuación",
+        "playLast": "Reproducir última",
         "queueAdd": "`{{- name}}` añadido a la cola."
       }
     }

@@ -23,7 +23,7 @@
     "unFavorite": "お気に入りを解除",
     "favoriteTracks": "お気に入りのトラック",
     "all": "すべて",
-    "more": null,
+    "more": "詳細",
     "home": "ホーム",
     "settings": "設定",
     "upcoming": "次に再生",
@@ -128,11 +128,11 @@
       }
     },
     "albumLengthFilter": {
-      "title": null,
-      "description": null
+      "title": "アルバムの再生時間でフィルター",
+      "description": "アルバムの画面に表示されるアルバムのトラックの最小数を設定します。"
     },
     "miniplayerGestures": {
-      "title": null
+      "title": "ミニプレーヤージェスチャー"
     },
     "nowPlayingDesign": {
       "title": "再生中画面のデザイン",
@@ -143,8 +143,8 @@
       }
     },
     "quickScroll": {
-      "title": null,
-      "brief": null
+      "title": "クイックスクロール",
+      "brief": "対応している画面に Nothing スタイルのスクロールバーを表示します。"
     },
     "ignoreRTLLayout": {
       "title": "RTL レイアウトを無視",
@@ -177,10 +177,10 @@
       }
     },
     "mostPlayed": {
-      "title": null,
-      "brief": null,
+      "title": "再生回数が多い物",
+      "brief": "トラックの歴代人気ランキング。",
       "extra": {
-        "playCount": null
+        "playCount": "{{count}} 回再生"
       }
     },
     "hiddenTracks": {
@@ -210,8 +210,8 @@
       }
     },
     "playbackDelay": {
-      "title": null,
-      "description": null
+      "title": "自然な再生遅延",
+      "description": "次のトラックが自然に再生されるまでの遅延を秒単位で設定します。"
     },
     "repeatOnSkip": {
       "title": "スキップ時にリピートモードを維持する",
@@ -238,8 +238,8 @@
       "brief": "通常の再スキャンのスキップ機能による高速化を無視します。"
     },
     "rescanOnLaunch": {
-      "title": null,
-      "brief": null
+      "title": "起動時に再スキャン",
+      "brief": "無効化した場合は再スキャン機能を使用して新しいトラック、更新したトラック、および削除されたトラックの検出します。"
     },
     "listAllow": {
       "title": "許可リスト",
@@ -274,12 +274,12 @@
       }
     },
     "waveformSlider": {
-      "title": null,
-      "brief": null,
+      "title": "波形スライダー",
+      "brief": "波形データをキャッシュするため、トラックの再生開始時は一時的に動作が遅くなる場合があります。",
       "extra": {
-        "purgeCache": null,
-        "purgeCacheBrief": null,
-        "purgeCacheToast": null
+        "purgeCache": "キャッシュされた波形を消去",
+        "purgeCacheBrief": "ストレージを開放して再生したトラックの波形を再計算します。",
+        "purgeCacheToast": "波形キャッシュを消去しました。"
       }
     },
     "translate": {
@@ -356,10 +356,10 @@
         "delete": "プレイリストを削除",
         "edit": "プレイリストを編集",
         "name": "プレイリスト名",
-        "m3uImport": null,
-        "m3uExport": null,
-        "absolute": null,
-        "relative": null
+        "m3uImport": "M3U プレイリストをインポート",
+        "m3uExport": "M3U としてエクスポート",
+        "absolute": "絶対",
+        "relative": "相対"
       }
     },
     "trackMetadata": {
@@ -393,8 +393,8 @@
         "size": "サイズ",
         "addToPlaylist": "プレイリストに追加",
         "addToQueue": "キューに追加",
-        "playNext": null,
-        "playLast": null,
+        "playNext": "次に再生",
+        "playLast": "最後に再生",
         "queueAdd": "｢{{- name}}｣がキューに追加されました。"
       }
     }
