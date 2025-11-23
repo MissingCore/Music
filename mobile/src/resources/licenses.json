@@ -81,7 +81,7 @@
   },
   "@react-navigation/material-top-tabs": {
     "name": "@react-navigation/material-top-tabs",
-    "version": "7.4.3",
+    "version": "7.4.4",
     "copyright": "Copyright (c) 2017 React Navigation Contributors",
     "source": "https://github.com/react-navigation/react-navigation/tree/main/packages/material-top-tabs",
     "license": "MIT",
@@ -89,7 +89,7 @@
   },
   "@react-navigation/native": {
     "name": "@react-navigation/native",
-    "version": "7.1.20",
+    "version": "7.1.21",
     "copyright": "Copyright (c) 2017 React Navigation Contributors",
     "source": "https://github.com/react-navigation/react-navigation/tree/main/packages/native",
     "license": "MIT",
@@ -97,7 +97,7 @@
   },
   "@react-navigation/native-stack": {
     "name": "@react-navigation/native-stack",
-    "version": "7.6.3",
+    "version": "7.7.0",
     "copyright": "Copyright (c) 2017 React Navigation Contributors",
     "source": "https://github.com/react-navigation/react-navigation/tree/main/packages/native-stack",
     "license": "MIT",
@@ -337,7 +337,7 @@
   },
   "react-i18next": {
     "name": "react-i18next",
-    "version": "16.3.4",
+    "version": "16.3.5",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/react-i18next",
     "license": "MIT",
@@ -401,7 +401,7 @@
   },
   "react-native-keyboard-controller": {
     "name": "react-native-keyboard-controller",
-    "version": "1.19.5",
+    "version": "1.19.6",
     "copyright": "Copyright (c) 2021 Kiryl Ziusko",
     "source": "https://github.com/kirillzyusko/react-native-keyboard-controller",
     "license": "MIT",
@@ -417,7 +417,7 @@
   },
   "react-native-nitro-modules": {
     "name": "react-native-nitro-modules",
-    "version": "0.31.8",
+    "version": "0.31.9",
     "copyright": "Copyright (c) 2024 Marc Rousavy",
     "source": "https://github.com/mrousavy/nitro",
     "license": "MIT",
