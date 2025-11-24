@@ -7,11 +7,13 @@ import { Favorite } from "~/resources/icons/Favorite";
 import { useAlbumForScreen, useFavoriteAlbum } from "~/queries/album";
 import { useBottomActionsInset } from "../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../layouts/CurrentList";
+import { AlbumArtworkSheet } from "../ArtworkSheet";
 
 import { mutateGuard } from "~/lib/react-query";
 import { isNumber } from "~/utils/validation";
 import { FlashList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
+import { useSheetRef } from "~/components/Sheet";
 import { Em, StyledText } from "~/components/Typography/StyledText";
 import {
   Track,
@@ -35,6 +37,7 @@ export default function Album({
   const bottomInset = useBottomActionsInset();
   const { isPending, error, data } = useAlbumForScreen(albumId);
   const favoriteAlbum = useFavoriteAlbum(albumId);
+  const artworkSheetRef = useSheetRef();
 
   const trackSource = { type: "album", id: albumId } as const;
   const listData = useTrackListPlayingIndication(trackSource, data?.tracks);
@@ -74,10 +77,9 @@ export default function Album({
               filled={isToggled}
             />
             <CurrentListMenu
-              type="album"
-              id={albumId}
               name={data.name}
               trackIds={data.tracks.map(({ id }) => id)}
+              presentArtworkSheet={() => artworkSheetRef.current?.present()}
             />
           </View>
         )}
@@ -119,6 +121,8 @@ export default function Album({
           contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
         />
       </CurrentListLayout>
+
+      <AlbumArtworkSheet sheetRef={artworkSheetRef} id={albumId} />
     </>
   );
 }

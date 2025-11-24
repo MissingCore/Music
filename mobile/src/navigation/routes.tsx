@@ -15,7 +15,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useCallback, useMemo, useRef } from "react";
 import { BackHandler } from "react-native";
 
-import { AppProvider } from "./providers/AppProvider";
 import Home from "./screens/HomeView";
 import RecentlyPlayed from "./screens/RecentlyPlayedView";
 import Search from "./screens/SearchView";
@@ -203,11 +202,11 @@ function RootScreens(_: RootScreensProps) {
 export const RootStack = createNativeStackNavigator({
   initialRouteName: "HomeScreens",
   layout: ({ children }) => (
-    <AppProvider>
+    <>
       {children}
       <BottomActions />
       <TrackSheet />
-    </AppProvider>
+    </>
   ),
   screenLayout: ({ children }) => <DeferredRender>{children}</DeferredRender>,
   screenOptions: {

@@ -1,0 +1,49 @@
+diff --git a/android/src/main/java/com/lodev09/truesheet/TrueSheetDialog.kt b/android/src/main/java/com/lodev09/truesheet/TrueSheetDialog.kt
+index f05e63e5df5e9217d713a978f77992fee1decb17..faf3374c59bff2fe3682b6ab9d20a332144b6d78 100644
+--- a/android/src/main/java/com/lodev09/truesheet/TrueSheetDialog.kt
++++ b/android/src/main/java/com/lodev09/truesheet/TrueSheetDialog.kt
+@@ -87,6 +87,7 @@ class TrueSheetDialog(private val reactContext: ThemedReactContext, private val
+     setContentView(rootSheetView)
+ 
+     sheetContainerView?.setBackgroundColor(backgroundColor)
++    sheetContainerView?.setOutlineProvider(null)
+     sheetContainerView?.clipToOutline = true
+ 
+     // Setup window params to adjust layout based on Keyboard state
+diff --git a/lib/commonjs/TrueSheet.js b/lib/commonjs/TrueSheet.js
+index 5d5720c434615db22e73d9f83f5f2e473192c8d3..d5ff5fb4719c2f8ac2e44ea4a41642d05385bc5b 100644
+--- a/lib/commonjs/TrueSheet.js
++++ b/lib/commonjs/TrueSheet.js
+@@ -252,7 +252,6 @@ exports.TrueSheet = TrueSheet;
+ const $nativeSheet = {
+   position: 'absolute',
+   width: '100%',
+-  left: -9999,
+   zIndex: -9999
+ };
+ //# sourceMappingURL=TrueSheet.js.map
+\ No newline at end of file
+diff --git a/lib/module/TrueSheet.js b/lib/module/TrueSheet.js
+index c1ae61fdca07f3625ece9aaa89305a467d68ce19..e9469b3f4356fa82b9b6d3c2f00fa0c40a618820 100644
+--- a/lib/module/TrueSheet.js
++++ b/lib/module/TrueSheet.js
+@@ -247,7 +247,6 @@ export class TrueSheet extends PureComponent {
+ const $nativeSheet = {
+   position: 'absolute',
+   width: '100%',
+-  left: -9999,
+   zIndex: -9999
+ };
+ //# sourceMappingURL=TrueSheet.js.map
+\ No newline at end of file
+diff --git a/src/TrueSheet.tsx b/src/TrueSheet.tsx
+index a9c0eeacedc1843bca141a059496dea7d32362da..d7735e5d23afe60674e80733d2ba29f363d62c25 100644
+--- a/src/TrueSheet.tsx
++++ b/src/TrueSheet.tsx
+@@ -322,6 +322,5 @@ export class TrueSheet extends PureComponent<TrueSheetProps, TrueSheetState> {
+ const $nativeSheet: ViewStyle = {
+   position: 'absolute',
+   width: '100%',
+-  left: -9999,
+   zIndex: -9999,
+ }

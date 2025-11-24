@@ -1,10 +1,10 @@
-import { useCallback, useMemo, useState } from "react";
-import type { LayoutChangeEvent, ViewStyle } from "react-native";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import type { View, ViewStyle } from "react-native";
 import { useWindowDimensions } from "react-native";
 
 type UseFloatingContentResult = {
-  /** Get and stores the height of the floating content. */
-  onLayout: (e: LayoutChangeEvent) => void;
+  /** Container used to calculate height of floating content. */
+  floatingRef: React.RefObject<View | null>;
   /** Padding-bottom need for scrollable content underneath the floating content. */
   offset: number;
   /** Absolute-posiiton styles to apply to the wrapping container. */
@@ -15,10 +15,13 @@ type UseFloatingContentResult = {
 export function useFloatingContent(): UseFloatingContentResult {
   const { width } = useWindowDimensions();
   const [offset, setOffset] = useState(16);
+  const floatingRef = useRef<View>(null);
 
-  const onLayout = useCallback((e: LayoutChangeEvent) => {
-    // Add 16px top & bottom padding around button.
-    setOffset(e.nativeEvent.layout.height + 32);
+  useLayoutEffect(() => {
+    floatingRef.current?.measure((_x, _y, _width, height) => {
+      // Add 16px top & bottom padding around button.
+      setOffset(height + 32);
+    });
   }, []);
 
   const wrapperStyling = useMemo(
@@ -30,7 +33,7 @@ export function useFloatingContent(): UseFloatingContentResult {
   );
 
   return useMemo(
-    () => ({ onLayout, offset, wrapperStyling }),
-    [onLayout, offset, wrapperStyling],
+    () => ({ floatingRef, offset, wrapperStyling }),
+    [offset, wrapperStyling],
   );
 }

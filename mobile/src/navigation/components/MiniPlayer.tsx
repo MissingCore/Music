@@ -2,7 +2,6 @@ import { useNavigation } from "@react-navigation/native";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
-import Animated, { LinearTransition } from "react-native-reanimated";
 
 import { Pause } from "~/resources/icons/Pause";
 import { PlayArrow } from "~/resources/icons/PlayArrow";
@@ -41,8 +40,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
 
   if (!track || hidden) return null;
   return (
-    <Animated.View
-      layout={LinearTransition}
+    <View
       className={cn("overflow-hidden rounded-md bg-surface", {
         "rounded-b-sm": stacked,
       })}
@@ -90,7 +88,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
         </View>
       </Pressable>
       <TrackProgress duration={track.duration} />
-    </Animated.View>
+    </View>
   );
 }
 

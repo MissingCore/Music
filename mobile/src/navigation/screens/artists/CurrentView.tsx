@@ -9,9 +9,11 @@ import { useArtistForScreen } from "~/queries/artist";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { useBottomActionsInset } from "../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../layouts/CurrentList";
+import { ArtistArtworkSheet } from "../ArtworkSheet";
 
 import { OnRTL } from "~/lib/react";
 import { FlashList } from "~/components/Defaults";
+import { useSheetRef } from "~/components/Sheet";
 import { TEm } from "~/components/Typography/StyledText";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import { useTrackListPreset } from "~/modules/media/components/Track";
@@ -34,6 +36,7 @@ export default function Artist({
   const { t } = useTranslation();
   const bottomInset = useBottomActionsInset();
   const { isPending, error, data } = useArtistForScreen(artistName);
+  const artworkSheetRef = useSheetRef();
 
   const trackSource = { type: "artist", id: artistName } as const;
   const presets = useTrackListPreset({ data: data?.tracks, trackSource });
@@ -45,10 +48,9 @@ export default function Artist({
       <ScreenOptions
         headerRight={() => (
           <CurrentListMenu
-            type="artist"
-            id={artistName}
             name={data.name}
             trackIds={data.tracks.map(({ id }) => id)}
+            presentArtworkSheet={() => artworkSheetRef.current?.present()}
           />
         )}
       />
@@ -72,6 +74,8 @@ export default function Artist({
           contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
         />
       </CurrentListLayout>
+
+      <ArtistArtworkSheet sheetRef={artworkSheetRef} id={artistName} />
     </>
   );
 }

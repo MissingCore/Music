@@ -253,7 +253,7 @@ function ConfirmationModal() {
 //#region Delete Workflow
 /** Logic to handle us deleting the playlist. */
 function DeleteWorkflow({
-  onLayout,
+  floatingRef,
   wrapperStyling,
 }: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
   const navigation = useNavigation();
@@ -279,7 +279,7 @@ function DeleteWorkflow({
 
   return (
     <>
-      <View onLayout={onLayout} {...wrapperStyling}>
+      <View ref={floatingRef} {...wrapperStyling}>
         <Button
           onPress={() => setLastChance(true)}
           disabled={lastChance || isSubmitting}
@@ -311,7 +311,7 @@ function DeleteWorkflow({
 //#region Import M3U Workflow
 /** Logic to handle importing a playlist from an M3U file. */
 function ImportM3UWorkflow({
-  onLayout,
+  floatingRef,
   wrapperStyling,
 }: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
   const { t } = useTranslation();
@@ -337,7 +337,7 @@ function ImportM3UWorkflow({
   };
 
   return (
-    <View onLayout={onLayout} {...wrapperStyling}>
+    <View ref={floatingRef} {...wrapperStyling}>
       <Button
         onPress={onImport}
         disabled={isSubmitting}

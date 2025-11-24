@@ -14,9 +14,15 @@ patchedDependencies:
   '@kaannn/react-native-waveform':
     hash: qhdylic22inn53gan2wmowffc4
     path: patches/@kaannn__react-native-waveform.patch
+  '@lodev09/react-native-true-sheet':
+    hash: wlo2fzlie4gyft7hlbsjnrhwfm
+    path: patches/@lodev09__react-native-true-sheet.patch
   '@react-native-assets/slider':
     hash: bqoknc62ex4oh6leybytriowfi
     path: patches/@react-native-assets__slider.patch
+  '@shopify/flash-list':
+    hash: girmns2xwit73ctr4pm76bpjrq
+    path: patches/@shopify__flash-list.patch
   expo-file-system:
     hash: hgu53i2ax26gwnr5j43lvhx4h4
     path: patches/expo-file-system.patch
@@ -42,7 +48,7 @@ importers:
         version: 0.1.4(patch_hash=qhdylic22inn53gan2wmowffc4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@lodev09/react-native-true-sheet':
         specifier: ^2.0.6
-        version: 2.0.6(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        version: 2.0.6(patch_hash=wlo2fzlie4gyft7hlbsjnrhwfm)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@lukemorales/query-key-factory':
         specifier: ^1.3.4
         version: 1.3.4(@tanstack/query-core@5.90.10)(@tanstack/react-query@5.90.10(react@19.0.0))
@@ -75,13 +81,13 @@ importers:
         version: 7.3.0(expo@53.0.24(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@shopify/flash-list':
         specifier: ^1.8.3
-        version: 1.8.3(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        version: 1.8.3(patch_hash=girmns2xwit73ctr4pm76bpjrq)(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@tanstack/react-query':
         specifier: ^5.90.10
         version: 5.90.10(react@19.0.0)
       '@weights-ai/react-native-track-player':
-        specifier: github:MissingCore/react-native-track-player#2b363286ac7e8c34238b16b35737016cd3a4abf5
-        version: https://codeload.github.com/MissingCore/react-native-track-player/tar.gz/2b363286ac7e8c34238b16b35737016cd3a4abf5(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        specifier: github:MissingCore/react-native-track-player#79e1aed730a436c0e11ac7c5720a1d2dc4caa4ad
+        version: https://codeload.github.com/MissingCore/react-native-track-player/tar.gz/79e1aed730a436c0e11ac7c5720a1d2dc4caa4ad(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -159,7 +165,7 @@ importers:
         version: 6.3.11(patch_hash=rg27khsleipd2xp3egotvvkzo4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-draglist:
         specifier: github:MissingCore/react-native-draglist#a3847ce4f9265853a12b865ba30902e907d43c20
-        version: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a3847ce4f9265853a12b865ba30902e907d43c20(@shopify/flash-list@1.8.3(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        version: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a3847ce4f9265853a12b865ba30902e907d43c20(@shopify/flash-list@1.8.3(patch_hash=girmns2xwit73ctr4pm76bpjrq)(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-edge-to-edge:
         specifier: ^1.7.0
         version: 1.7.0(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -1862,8 +1868,8 @@ packages:
   '@vscode/sudo-prompt@9.3.1':
     resolution: {integrity: sha512-9ORTwwS74VaTn38tNbQhsA5U44zkJfcb0BdTSyyG6frP4e8KMtHuTXYmwefe5dpL8XB1aGSIVTaLjD3BbWb5iA==}
 
-  '@weights-ai/react-native-track-player@https://codeload.github.com/MissingCore/react-native-track-player/tar.gz/2b363286ac7e8c34238b16b35737016cd3a4abf5':
-    resolution: {tarball: https://codeload.github.com/MissingCore/react-native-track-player/tar.gz/2b363286ac7e8c34238b16b35737016cd3a4abf5}
+  '@weights-ai/react-native-track-player@https://codeload.github.com/MissingCore/react-native-track-player/tar.gz/79e1aed730a436c0e11ac7c5720a1d2dc4caa4ad':
+    resolution: {tarball: https://codeload.github.com/MissingCore/react-native-track-player/tar.gz/79e1aed730a436c0e11ac7c5720a1d2dc4caa4ad}
     version: 4.1.6
     peerDependencies:
       react: '>=18'
@@ -6868,7 +6874,7 @@ snapshots:
       react: 19.0.0
       react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
 
-  '@lodev09/react-native-true-sheet@2.0.6(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
+  '@lodev09/react-native-true-sheet@2.0.6(patch_hash=wlo2fzlie4gyft7hlbsjnrhwfm)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
     dependencies:
       react: 19.0.0
       react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
@@ -7281,7 +7287,7 @@ snapshots:
     dependencies:
       '@sentry/core': 10.18.0
 
-  '@shopify/flash-list@1.8.3(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
+  '@shopify/flash-list@1.8.3(patch_hash=girmns2xwit73ctr4pm76bpjrq)(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
     dependencies:
       '@babel/runtime': 7.28.4
       react: 19.0.0
@@ -7544,7 +7550,7 @@ snapshots:
 
   '@vscode/sudo-prompt@9.3.1': {}
 
-  '@weights-ai/react-native-track-player@https://codeload.github.com/MissingCore/react-native-track-player/tar.gz/2b363286ac7e8c34238b16b35737016cd3a4abf5(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
+  '@weights-ai/react-native-track-player@https://codeload.github.com/MissingCore/react-native-track-player/tar.gz/79e1aed730a436c0e11ac7c5720a1d2dc4caa4ad(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
     dependencies:
       react: 19.0.0
       react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
@@ -10557,12 +10563,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a3847ce4f9265853a12b865ba30902e907d43c20(@shopify/flash-list@1.8.3(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a3847ce4f9265853a12b865ba30902e907d43c20(@shopify/flash-list@1.8.3(patch_hash=girmns2xwit73ctr4pm76bpjrq)(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:
       react: 19.0.0
       react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
     optionalDependencies:
-      '@shopify/flash-list': 1.8.3(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      '@shopify/flash-list': 1.8.3(patch_hash=girmns2xwit73ctr4pm76bpjrq)(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
 
   react-native-edge-to-edge@1.6.0(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:
