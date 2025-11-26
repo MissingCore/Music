@@ -1,3 +1,5 @@
+import type { LegendListProps } from "@legendapp/list";
+import { LegendList as RawLegendList } from "@legendapp/list";
 import type { FlashListProps as RawFlashListProps } from "@shopify/flash-list";
 import { FlashList as RawFlashList } from "@shopify/flash-list";
 import { cssInterop } from "nativewind";
@@ -127,5 +129,15 @@ const WrappedFlashDragList = cssInterop(RawFlashDragList, {
 
 export function FlashDragList<T>(props: FlashDragListProps<T>) {
   return <WrappedFlashDragList {...ScrollablePresets} {...props} />;
+}
+//#endregion
+
+//#region LegendList
+const WrappedLegendList = cssInterop(RawLegendList, {
+  contentContainerClassName: "contentContainerStyle",
+}) as typeof RawLegendList;
+
+export function LegendList<T>(props: LegendListProps<T>) {
+  return <WrappedLegendList recycleItems {...ScrollablePresets} {...props} />;
 }
 //#endregion
