@@ -143,7 +143,7 @@
       }
     },
     "quickScroll": {
-      "title": null,
+      "title": "Défilement Rapide",
       "brief": "Afficher la barre de défilement du style Nothing sur les écrans supportés."
     },
     "ignoreRTLLayout": {
@@ -188,8 +188,8 @@
       "brief": "Pistes non affichées dans l'application.",
       "extra": {
         "hiddenAt": "Caché le {{- date}}.",
-        "hasHiddenTracks": null,
-        "notFound": null
+        "hasHiddenTracks": "{{- name}} possède des pistes cachées.",
+        "notFound": "Aucune piste masquée trouvée."
       }
     },
     "saveErrors": {
@@ -254,12 +254,12 @@
       "description": "Durée en seconde des audios à ignorer."
     },
     "experimental": {
-      "title": null,
-      "brief": null
+      "title": "Fonctionnalités Expérimentales",
+      "brief": "Fonctionnalités qui peuvent ne pas obtenir de support officiel ou fonctionner comme prévu. À utiliser à vos propres risques."
     },
     "continuePlaybackOnDismiss": {
-      "title": null,
-      "description": null
+      "title": "Continuer la lecture à la fermeture",
+      "description": "Laisse la lecture de la musique continuer lorsque vous fermez l'application des tâches récentes. Forcer l'arrêt de l'application pour interrompre la lecture."
     },
     "ignoreInterrupt": {
       "title": "Ignorer les interruptions",
@@ -303,7 +303,7 @@
     "version": {
       "title": "Version",
       "extra": {
-        "rcNotification": null
+        "rcNotification": "Notification de pré-version"
       }
     },
     "onboardPreprocess": {
@@ -328,7 +328,7 @@
     "playedRecent": {
       "title": "Écouté récemment",
       "extra": {
-        "notFound": null
+        "notFound": "Rien n'a été joué au cours des derniers {{amount}} jours."
       }
     },
     "search": {
@@ -356,22 +356,22 @@
         "delete": "Supprimer playlist",
         "edit": "Modifier playlist",
         "name": "Nom de la Playlist",
-        "m3uImport": null,
-        "m3uExport": null,
+        "m3uImport": "Importer une playlist M3U",
+        "m3uExport": "Exporter au format M3U",
         "absolute": null,
-        "relative": null
+        "relative": "Relatif"
       }
     },
     "trackMetadata": {
-      "title": null,
+      "title": "Modifier les Métadonnées",
       "description": {
-        "line1": null,
+        "line1": "Modifiez l'apparence de la piste pour cette application. Cela ne modifie pas le fichier lui-même.",
         "line2": "Remarque : vos modifications peuvent être réinitialisées si ce fichier est modifié."
       },
       "extra": {
-        "albumArtist": null,
-        "disc": null,
-        "name": null,
+        "albumArtist": "Artiste de l'album",
+        "disc": "Disque",
+        "name": "Nom",
         "trackNumber": "Numéro de Piste",
         "year": "Année"
       }
@@ -393,8 +393,8 @@
         "size": "Taille",
         "addToPlaylist": "Ajouter à une playlist",
         "addToQueue": "Mettre à la suite",
-        "playNext": null,
-        "playLast": null,
+        "playNext": "Jouer juste après",
+        "playLast": "Jouer en dernier",
         "queueAdd": "`{{- name}}` ajouté à la file d'attente."
       }
     }
