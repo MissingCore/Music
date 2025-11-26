@@ -46,6 +46,9 @@ importers:
       '@kaannn/react-native-waveform':
         specifier: 0.1.4
         version: 0.1.4(patch_hash=qhdylic22inn53gan2wmowffc4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      '@legendapp/list':
+        specifier: ^2.0.16
+        version: 2.0.16(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@lodev09/react-native-true-sheet':
         specifier: 2.0.6
         version: 2.0.6(patch_hash=wlo2fzlie4gyft7hlbsjnrhwfm)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -1306,6 +1309,12 @@ packages:
 
   '@kaannn/react-native-waveform@0.1.4':
     resolution: {integrity: sha512-kQnkmlQhSxOCH1FE+n5V7RfP5Owsy9gXpCQEuFd0DCFC6J+0sR+00aQHvy81hoDt+Lqg2HbTEcxk8r5aGfmpzg==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+
+  '@legendapp/list@2.0.16':
+    resolution: {integrity: sha512-pFdeR0wpxCdpfHoHp5ghWBET/9vDxrG9curw+7xMoC8kHFogpn1TYJFwPV4xXrq9sLLA4MiwBPLQCvjHS5ruag==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -6873,6 +6882,12 @@ snapshots:
     dependencies:
       react: 19.0.0
       react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
+
+  '@legendapp/list@2.0.16(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      react: 19.0.0
+      react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
+      use-sync-external-store: 1.6.0(react@19.0.0)
 
   '@lodev09/react-native-true-sheet@2.0.6(patch_hash=wlo2fzlie4gyft7hlbsjnrhwfm)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
     dependencies:
