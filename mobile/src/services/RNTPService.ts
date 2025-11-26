@@ -13,6 +13,7 @@ import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import { preferenceStore } from "~/stores/Preference/store";
 import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
 import { router } from "~/navigation/utils/router";
+import { sessionStore } from "./SessionStore";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
@@ -82,6 +83,11 @@ export async function PlaybackService() {
     const { repeat } = playbackStore.getState();
     const { playbackDelay, smoothPlaybackTransition } =
       preferenceStore.getState();
+    const { playbackSpeed } = sessionStore.getState();
+
+    // We might not be able to load the next track in time if we change the
+    // playback speed.
+    const loadingFrame = 5 * Math.max(1, playbackSpeed);
     if (
       //? Ignore if we're repeating the current track.
       repeat !== RepeatModes.REPEAT_ONE &&
@@ -90,9 +96,9 @@ export async function PlaybackService() {
       playbackDelay === 0 &&
       smoothPlaybackTransition &&
       !smoothTransitionContext.hasLoaded &&
-      //? Load the next track 2s before the current track ends to minimize the
+      //? Load the next track before the current track ends to minimize the
       //? need of resynchronizing the next track.
-      e.position + 2 - smoothTransitionContext.trackDuration > 0
+      e.position + loadingFrame - smoothTransitionContext.trackDuration > 0
     ) {
       smoothTransitionContext.hasLoaded = true;
       nextTrackInfo = await PlaybackControls.getNextTrack();
@@ -170,8 +176,7 @@ export async function PlaybackService() {
         // Ensure the RNTP Queue stores a single track.
         await TrackPlayer.remove([...new Array(e.index).keys()]);
       } else {
-        // Cleans up the RNTP queue if we use the media controls within the
-        // 2s track loading window.
+        // Cleans up the RNTP queue if we use the media controls within the track loading window.
         await TrackPlayer.removeUpcomingTracks();
       }
     } catch (err) {
