@@ -40,7 +40,7 @@
     "@sentry/react-native": "7.3.0",
     "@shopify/flash-list": "1.8.3",
     "@tanstack/react-query": "5.90.10",
-    "@weights-ai/react-native-track-player": "github:MissingCore/react-native-track-player#79e1aed730a436c0e11ac7c5720a1d2dc4caa4ad",
+    "@weights-ai/react-native-track-player": "github:MissingCore/react-native-track-player#74325fcbff1af92006d31791bcca493985f94550",
     "clsx": "2.1.1",
     "drizzle-orm": "0.44.7",
     "expo": "53.0.24",
