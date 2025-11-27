@@ -137,7 +137,7 @@ export function FlashDragList<T>(props: FlashDragListProps<T>) {
 
 //#region LegendList
 type LegendListProps<T> = Omit<RawLegendListProps<T>, "data"> & {
-  ref?: React.RefObject<LegendListRef | null>;
+  ref?: React.Ref<LegendListRef>;
   data?: readonly T[];
 };
 

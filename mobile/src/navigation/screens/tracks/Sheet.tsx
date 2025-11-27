@@ -47,7 +47,7 @@ import {
 } from "~/utils/number";
 import { Card } from "~/components/Containment/Card";
 import { Marquee } from "~/components/Containment/Marquee";
-import { FlashList, ScrollView, useIsScrollable } from "~/components/Defaults";
+import { LegendList, ScrollView, useIsScrollable } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { Button, IconButton } from "~/components/Form/Button";
 import { Checkbox } from "~/components/Form/Selection";
@@ -385,11 +385,12 @@ function TrackToPlaylistSheet({ id }: { id: string }) {
       titleKey="feat.modalTrack.extra.addToPlaylist"
       snapTop
     >
-      <FlashList
-        estimatedItemSize={58} // 54px Height + 4px Margin Top
+      <LegendList
+        estimatedItemSize={58}
         data={data}
         keyExtractor={({ name }) => name}
-        renderItem={({ item, index }) => {
+        extraData={inList}
+        renderItem={({ item }) => {
           const selected = inList?.includes(item.name) ?? false;
           return (
             <Checkbox
@@ -401,7 +402,6 @@ function TrackToPlaylistSheet({ id }: { id: string }) {
                   item.name,
                 )
               }
-              wrapperClassName={index > 0 ? "mt-1" : undefined}
             >
               <Marquee color={selected ? "surface" : "canvasAlt"}>
                 <StyledText>{item.name}</StyledText>
@@ -413,7 +413,7 @@ function TrackToPlaylistSheet({ id }: { id: string }) {
           <ContentPlaceholder errMsgKey="err.msg.noPlaylists" />
         }
         nestedScrollEnabled
-        contentContainerClassName="pb-4"
+        contentContainerClassName="gap-1 pb-3"
       />
     </Sheet>
   );

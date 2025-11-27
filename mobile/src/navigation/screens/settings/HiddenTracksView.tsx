@@ -11,7 +11,7 @@ import { VisibilityOff } from "~/resources/icons/VisibilityOff";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { bgWait } from "~/utils/promise";
-import { FlashList } from "~/components/Defaults";
+import { LegendList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import {
@@ -54,12 +54,12 @@ function ScreenContents(props: {
   }, []);
 
   return (
-    <FlashList
+    <LegendList
       ref={handleOnUnmount}
-      estimatedItemSize={56} // 48px Height + 8px Margin Top
+      estimatedItemSize={56}
       data={dataSnapshot}
       keyExtractor={({ id }) => id}
-      renderItem={({ item, index }) => (
+      renderItem={({ item }) => (
         <SearchResult
           type="track"
           title={item.name}
@@ -74,13 +74,12 @@ function ScreenContents(props: {
               onPress={() => onShowTrack(item.id)}
             />
           }
-          className={index > 0 ? "mt-2" : undefined}
         />
       )}
       ListEmptyComponent={
         <ContentPlaceholder errMsgKey="feat.hiddenTracks.extra.notFound" />
       }
-      contentContainerClassName="p-4"
+      contentContainerClassName="gap-2 p-4 pb-2"
     />
   );
 }
