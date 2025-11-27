@@ -62,11 +62,10 @@ export default function Album({
 
   const guessItemSize = useCallback(
     (index: number, item: any) => {
-      const isLast = index === formattedData.length - 1;
-      if (!isNumber(item)) return isLast ? 48 : 56;
+      if (!isNumber(item)) return 56;
       return (primaryFont === "Inter" ? 15 : 14) + (index === 0 ? 8 : 16);
     },
-    [formattedData.length, primaryFont],
+    [primaryFont],
   );
 
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
@@ -128,7 +127,7 @@ export default function Album({
             />
           }
           contentContainerClassName="gap-2 px-4 pt-4"
-          contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
+          contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 8 }}
         />
       </CurrentListLayout>
 
