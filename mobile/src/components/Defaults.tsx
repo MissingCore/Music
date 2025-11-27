@@ -1,4 +1,7 @@
-import type { LegendListProps } from "@legendapp/list";
+import type {
+  LegendListProps as RawLegendListProps,
+  LegendListRef,
+} from "@legendapp/list";
 import { LegendList as RawLegendList } from "@legendapp/list";
 import type { FlashListProps as RawFlashListProps } from "@shopify/flash-list";
 import { FlashList as RawFlashList } from "@shopify/flash-list";
@@ -133,11 +136,21 @@ export function FlashDragList<T>(props: FlashDragListProps<T>) {
 //#endregion
 
 //#region LegendList
+type LegendListProps<T> = Omit<RawLegendListProps<T>, "data"> & {
+  ref?: React.RefObject<LegendListRef | null>;
+  data?: readonly T[];
+};
+
 const WrappedLegendList = cssInterop(RawLegendList, {
   contentContainerClassName: "contentContainerStyle",
 }) as typeof RawLegendList;
 
 export function LegendList<T>(props: LegendListProps<T>) {
+  // @ts-expect-error - List internally handles recieving `undefined`.
   return <WrappedLegendList recycleItems {...ScrollablePresets} {...props} />;
+}
+
+export function useLegendListRef() {
+  return useRef<LegendListRef>(null);
 }
 //#endregion
