@@ -1,10 +1,11 @@
 import type { StaticScreenProps } from "@react-navigation/native";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { Favorite } from "~/resources/icons/Favorite";
 import { useAlbumForScreen, useFavoriteAlbum } from "~/queries/album";
+import { usePreferenceStore } from "~/stores/Preference/store";
 import { useBottomActionsInset } from "../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../layouts/CurrentList";
 import { AlbumArtworkSheet } from "../ArtworkSheet";
@@ -37,6 +38,7 @@ export default function Album({
   const bottomInset = useBottomActionsInset();
   const { isPending, error, data } = useAlbumForScreen(albumId);
   const favoriteAlbum = useFavoriteAlbum(albumId);
+  const primaryFont = usePreferenceStore((s) => s.primaryFont);
   const artworkSheetRef = useSheetRef();
 
   const trackSource = { type: "album", id: albumId } as const;
@@ -57,6 +59,15 @@ export default function Album({
 
     return sectionListTracks;
   }, [listData]);
+
+  const guessItemSize = useCallback(
+    (index: number, item: any) => {
+      const isLast = index === formattedData.length - 1;
+      if (!isNumber(item)) return isLast ? 48 : 56;
+      return (primaryFont === "Inter" ? 15 : 14) + (index === 0 ? 8 : 16);
+    },
+    [formattedData.length, primaryFont],
+  );
 
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
 
@@ -92,11 +103,7 @@ export default function Album({
         mediaSource={trackSource}
       >
         <LegendList
-          getFixedItemSize={(index, item) => {
-            const isLast = index === formattedData.length - 1;
-            if (isNumber(item)) return index === 0 ? 22 : 30;
-            else return isLast ? 48 : 56;
-          }}
+          getEstimatedItemSize={guessItemSize}
           data={formattedData}
           keyExtractor={(item) => (isNumber(item) ? `${item}` : item.id)}
           getItemType={(item) => (isNumber(item) ? "label" : "row")}
