@@ -1,5 +1,5 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
@@ -13,11 +13,12 @@ import { getPlaylistCover, getTrackCover } from "~/db/utils";
 
 import { Close } from "~/resources/icons/Close";
 import { Search } from "~/resources/icons/Search";
+import { usePreferenceStore } from "~/stores/Preference/store";
 import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
 import { isString } from "~/utils/validation";
-import { FlashList, FlatList, useFlashListRef } from "~/components/Defaults";
+import { FlatList, LegendList, useLegendListRef } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { TextInput, useInputRef } from "~/components/Form/Input";
 import { TEm } from "~/components/Typography/StyledText";
@@ -79,10 +80,11 @@ function SearchResultsList<TScope extends SearchCategories>(
   props: SearchResultsListProps<TScope> & { query: string },
 ) {
   const { canvas } = useTheme();
-  const listRef = useFlashListRef<ReturnType<typeof formatResults>>();
   const results = useSearch(props.searchScope, props.query);
+  const primaryFont = usePreferenceStore((s) => s.primaryFont);
   const [selectedTab, setSelectedTab] = useState<TScope[number] | "all">("all");
   const [filterHeight, setFilterHeight] = useState(53); // Height will be ~53px
+  const listRef = useLegendListRef();
 
   // Reset tab if we're on a tab with no results or clear the query.
   if (
@@ -115,22 +117,26 @@ function SearchResultsList<TScope extends SearchCategories>(
     [props.bgColor, canvas],
   );
 
+  const guessItemSize = useCallback(
+    (index: number, item: any) => {
+      if (!isString(item)) return 56;
+      return (primaryFont === "Inter" ? 15 : 14) + (index === 0 ? 8 : 16);
+    },
+    [primaryFont],
+  );
+
   return (
     <View className="relative shrink grow">
       <SearchFilters
         tabs={tabsWithData}
         selectedTab={selectedTab}
-        onSelectTab={(tab) => {
-          // Scroll to top of list when we change tabs.
-          listRef.current?.scrollToOffset({ offset: 0 });
-          setSelectedTab(tab);
-        }}
+        onSelectTab={setSelectedTab}
         getHeight={setFilterHeight}
       />
-      <FlashList
-        // @ts-expect-error - Type conflicts with data.
+      <LegendList
+        key={selectedTab}
         ref={listRef}
-        estimatedItemSize={56} // 48px Height + 8px Margin Top
+        getEstimatedItemSize={guessItemSize}
         data={data}
         // Note: We use `index` instead of the `id` or `name` field on the
         // `entry` due to there being potentially shared values (ie: between
@@ -141,16 +147,14 @@ function SearchResultsList<TScope extends SearchCategories>(
           isString(item) ? (
             <TEm
               textKey={`term.${item}`}
-              className={index > 0 ? "mt-4" : undefined}
+              className={cn({ "mt-2": index > 0 })}
             />
           ) : (
             <SearchResult
               as="ripple"
               /* @ts-expect-error - `type` should be limited to our scope. */
               onPress={() => props.callbacks[item.type](item.entry)}
-              wrapperClassName={cn("mt-2", {
-                "rounded-full": item.type === "artist",
-              })}
+              wrapperClassName={cn({ "rounded-full": item.type === "artist" })}
               className="pr-4"
               {...item}
             />
@@ -162,10 +166,10 @@ function SearchResultsList<TScope extends SearchCategories>(
           ) : undefined
         }
         nestedScrollEnabled={props.forSheets}
+        contentContainerClassName="gap-2 pb-2"
         contentContainerStyle={{
           paddingTop: tabsWithData.length > 0 ? filterHeight : 24,
         }}
-        contentContainerClassName="pb-4"
       />
 
       <LinearGradient
