@@ -1,7 +1,6 @@
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { I18nManager } from "react-native";
 
 import { RECENT_DAY_RANGE } from "~/api/recent";
 import { queries as q } from "~/queries/keyStore";
@@ -9,13 +8,15 @@ import {
   useRecentlyPlayedMediaLists,
   useRecentlyPlayedTracks,
 } from "~/queries/recent";
+import { usePreferenceStore } from "~/stores/Preference/store";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { useBottomActionsInset } from "../hooks/useBottomActions";
 import { getMediaLinkContext } from "../utils/router";
 
 import { OnRTL } from "~/lib/react";
 import { queryClient } from "~/lib/react-query";
-import { FlashList } from "~/components/Defaults";
+import { cn } from "~/lib/style";
+import { LegendList } from "~/components/Defaults";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
@@ -63,22 +64,16 @@ export default function RecentlyPlayed() {
   }
 
   return (
-    <FlashList
-      estimatedItemSize={56} // 48px Height + 8px Margin Top
+    <LegendList
+      estimatedItemSize={56}
       data={recentlyPlayedTracks.data}
       keyExtractor={({ id }) => id}
-      renderItem={({ item, index }) => (
-        <Track
-          {...item}
-          trackSource={trackSource}
-          className={index > 0 ? "mt-2" : undefined}
-        />
-      )}
+      renderItem={({ item }) => <Track {...item} trackSource={trackSource} />}
       ListHeaderComponent={
         <RecentlyPlayedLists data={recentlyPlayedMediaLists.data} />
       }
-      contentContainerClassName="px-4 pt-4"
-      contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
+      contentContainerClassName="gap-2 px-4 pt-4"
+      contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 8 }}
     />
   );
 }
@@ -91,15 +86,21 @@ function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
     gutters: 32,
     minWidth: 100,
   });
-  if (props.data?.length === 0) return null;
+  const primaryFont = usePreferenceStore((s) => s.primaryFont);
 
+  const listHeight = useMemo(
+    () => width + (primaryFont === "Inter" ? 42 : 39) + 24,
+    [primaryFont, width],
+  );
+
+  if (props.data?.length === 0) return null;
   return (
-    <FlashList
+    <LegendList
       estimatedItemSize={width + 12} // Column width + gap from padding left
       horizontal
       data={props.data}
       keyExtractor={({ id, type }) => `${type}_${id}`}
-      renderItem={({ item, index }) => (
+      renderItem={({ item }) => (
         <MediaCard
           {...item}
           size={width}
@@ -109,12 +110,11 @@ function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
             if (linkInfo[0] === "HomeScreens") navigation.popTo(...linkInfo);
             else navigation.navigate(...linkInfo);
           }}
-          className={index > 0 ? OnRTL.decide("mr-3", "ml-3") : undefined}
         />
       )}
-      className="-mx-4"
-      contentContainerClassName="px-4 pb-6"
-      disableAutoLayout={I18nManager.isRTL}
+      style={{ height: listHeight }}
+      className={cn("-mx-4", OnRTL.decide("-ml-7", "-mr-7"))}
+      contentContainerClassName="gap-3 px-4 pb-6"
     />
   );
 }
