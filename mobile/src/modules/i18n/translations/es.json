@@ -394,7 +394,7 @@
         "addToPlaylist": "Añadir a la lista de reproducción",
         "addToQueue": "Añadir a la cola",
         "playNext": "Reproducir a continuación",
-        "playLast": "Reproducir última",
+        "playLast": "Reproducir al final",
         "queueAdd": "`{{- name}}` añadido a la cola."
       }
     }
