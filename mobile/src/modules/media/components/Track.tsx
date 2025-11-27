@@ -1,4 +1,4 @@
-import type { FlashListProps } from "@shopify/flash-list";
+import type { LegendListProps } from "@legendapp/list";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -6,6 +6,7 @@ import { MoreVert } from "~/resources/icons/MoreVert";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { presentTrackSheet } from "~/services/SessionStore";
+import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
 
 import { cn } from "~/lib/style";
 import { IconButton } from "~/components/Form/Button";
@@ -87,33 +88,45 @@ export function useTrackListPlayingIndication<T extends TrackContent>(
 
 //#region useTrackListPreset
 /** Presets used to render a list of `<Track />`. */
-export function useTrackListPreset(props: {
-  data?: readonly TrackContent[];
-  trackSource: PlayFromSource;
-  isPending?: boolean;
-}) {
+export function useTrackListPreset(
+  args: {
+    data?: readonly TrackContent[];
+    trackSource: PlayFromSource;
+    isPending?: boolean;
+  },
+  styleless = false,
+) {
+  const bottomInset = useBottomActionsInset();
   // @ts-expect-error - Readonly is fine.
-  const data = useTrackListPlayingIndication(props.trackSource, props.data);
+  const data = useTrackListPlayingIndication(args.trackSource, args.data);
+
+  const listStyles = useMemo(
+    () => ({
+      contentContainerClassName: "gap-2 px-4 pt-4",
+      contentContainerStyle: { paddingBottom: bottomInset.onlyPlayer + 8 },
+    }),
+    [bottomInset.onlyPlayer],
+  );
+
   return useMemo(
     () => ({
-      estimatedItemSize: 56, // 48px Height + 8px Margin Top
+      estimatedItemSize: 56,
       data,
       keyExtractor: ({ id }) => id,
-      renderItem: ({ item, index }) => (
-        <Track
-          {...item}
-          trackSource={props.trackSource}
-          className={index > 0 ? "mt-2" : undefined}
-        />
+      renderItem: ({ item }) => (
+        <Track {...item} trackSource={args.trackSource} />
       ),
       ListEmptyComponent: (
         <ContentPlaceholder
-          isPending={props.isPending}
+          isPending={args.isPending}
           errMsgKey="err.msg.noTracks"
         />
       ),
+      ...(styleless ? {} : listStyles),
     }),
-    [props, data],
-  ) satisfies FlashListProps<TrackContent>;
+    [args, data, listStyles, styleless],
+  ) satisfies Omit<LegendListProps<TrackContent>, "data"> & {
+    data?: readonly TrackContent[];
+  };
 }
 //#endregion

@@ -8,13 +8,12 @@ import { Edit } from "~/resources/icons/Edit";
 import { Favorite } from "~/resources/icons/Favorite";
 import { FileSave } from "~/resources/icons/FileSave";
 import { useFavoritePlaylist, usePlaylistForScreen } from "~/queries/playlist";
-import { useBottomActionsInset } from "../../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../../layouts/CurrentList";
 import { ExportM3USheet } from "./ExportM3USheet";
 import { PlaylistArtworkSheet } from "../../ArtworkSheet";
 
 import { mutateGuard } from "~/lib/react-query";
-import { FlashList } from "~/components/Defaults";
+import { LegendList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import type { MenuAction } from "~/components/Menu";
 import { useSheetRef } from "~/components/Sheet";
@@ -32,7 +31,6 @@ export default function Playlist({
 }: Props) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const bottomInset = useBottomActionsInset();
   const { isPending, error, data } = usePlaylistForScreen(id);
   const favoritePlaylist = useFavoritePlaylist(id);
   const artworkSheetRef = useSheetRef();
@@ -90,11 +88,7 @@ export default function Playlist({
         imageSource={data.imageSource}
         mediaSource={trackSource}
       >
-        <FlashList
-          {...presets}
-          contentContainerClassName="px-4 pt-4"
-          contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
-        />
+        <LegendList {...presets} />
       </CurrentListLayout>
 
       <PlaylistArtworkSheet sheetRef={artworkSheetRef} id={id} />

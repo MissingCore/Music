@@ -20,7 +20,7 @@ const trackSource = {
 
 export default function Tracks() {
   const { isPending, data } = useTracksForTrackCard();
-  const presets = useTrackListPreset({ data, isPending, trackSource });
+  const presets = useTrackListPreset({ data, isPending, trackSource }, true);
   const trackSortSheetRef = useSheetRef();
 
   return (
