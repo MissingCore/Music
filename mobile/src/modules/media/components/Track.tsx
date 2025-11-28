@@ -1,4 +1,4 @@
-import type { FlashListProps } from "@shopify/flash-list";
+import type { LegendListProps } from "@legendapp/list";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -87,33 +87,35 @@ export function useTrackListPlayingIndication<T extends TrackContent>(
 
 //#region useTrackListPreset
 /** Presets used to render a list of `<Track />`. */
-export function useTrackListPreset(props: {
+export function useTrackListPreset(args: {
   data?: readonly TrackContent[];
   trackSource: PlayFromSource;
   isPending?: boolean;
 }) {
   // @ts-expect-error - Readonly is fine.
-  const data = useTrackListPlayingIndication(props.trackSource, props.data);
+  const data = useTrackListPlayingIndication(args.trackSource, args.data);
   return useMemo(
     () => ({
-      estimatedItemSize: 56, // 48px Height + 8px Margin Top
+      getEstimatedItemSize: (index) => (index === 0 ? 48 : 56),
       data,
       keyExtractor: ({ id }) => id,
       renderItem: ({ item, index }) => (
         <Track
           {...item}
-          trackSource={props.trackSource}
+          trackSource={args.trackSource}
           className={index > 0 ? "mt-2" : undefined}
         />
       ),
       ListEmptyComponent: (
         <ContentPlaceholder
-          isPending={props.isPending}
+          isPending={args.isPending}
           errMsgKey="err.msg.noTracks"
         />
       ),
     }),
-    [props, data],
-  ) satisfies FlashListProps<TrackContent>;
+    [args, data],
+  ) satisfies Omit<LegendListProps<TrackContent>, "data"> & {
+    data?: readonly TrackContent[];
+  };
 }
 //#endregion

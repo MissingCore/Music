@@ -10,7 +10,7 @@ import { StandardScrollLayout } from "../layouts/StandardScroll";
 
 import { cn } from "~/lib/style";
 import { abbreviateNum } from "~/utils/number";
-import { FlashList } from "~/components/Defaults";
+import { LegendList } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { AccentText } from "~/components/Typography/AccentText";
 import { TEm, TStyledText } from "~/components/Typography/StyledText";
@@ -52,7 +52,7 @@ function Favorites() {
     RenderFirst: FavoriteTracks,
   });
 
-  return <FlashList {...presets} />;
+  return <LegendList {...presets} />;
 }
 
 /**

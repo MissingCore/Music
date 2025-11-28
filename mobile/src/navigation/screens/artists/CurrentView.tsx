@@ -12,7 +12,7 @@ import { CurrentListLayout } from "../../layouts/CurrentList";
 import { ArtistArtworkSheet } from "../ArtworkSheet";
 
 import { OnRTL } from "~/lib/react";
-import { FlashList } from "~/components/Defaults";
+import { FlashList, LegendList } from "~/components/Defaults";
 import { useSheetRef } from "~/components/Sheet";
 import { TEm } from "~/components/Typography/StyledText";
 import { MediaCard } from "~/modules/media/components/MediaCard";
@@ -60,7 +60,7 @@ export default function Artist({
         imageSource={data.imageSource}
         mediaSource={trackSource}
       >
-        <FlashList
+        <LegendList
           {...presets}
           ListHeaderComponent={<ArtistAlbums albums={data.albums} />}
           ListEmptyComponent={
