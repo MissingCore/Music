@@ -1,7 +1,6 @@
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { I18nManager } from "react-native";
 
 import { RECENT_DAY_RANGE } from "~/api/recent";
 import { queries as q } from "~/queries/keyStore";
@@ -95,7 +94,6 @@ function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
   if (props.data?.length === 0) return null;
   return (
     <FlashList
-      estimatedItemSize={width + 12} // Column width + gap from padding left
       horizontal
       data={props.data}
       keyExtractor={({ id, type }) => `${type}_${id}`}
@@ -114,7 +112,6 @@ function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
       )}
       className="-mx-4"
       contentContainerClassName="px-4 pb-6"
-      disableAutoLayout={I18nManager.isRTL}
     />
   );
 }

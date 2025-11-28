@@ -1,7 +1,6 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-import { I18nManager } from "react-native";
 
 import type { Album } from "~/db/schema";
 
@@ -98,7 +97,6 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
     <>
       <TEm dim textKey="term.albums" className="mb-2" />
       <FlashList
-        estimatedItemSize={width + 12} // Column width + gap from padding left
         horizontal
         data={albums}
         keyExtractor={({ id }) => id}
@@ -118,7 +116,6 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
         )}
         className="-mx-4"
         contentContainerClassName="px-4"
-        disableAutoLayout={I18nManager.isRTL}
       />
       <TEm dim textKey="term.tracks" className="mb-2 mt-4" />
     </>

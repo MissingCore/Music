@@ -24,7 +24,6 @@ export default function HomeTabsOrderSettings() {
   const data = usePreferenceStore((s) => s.tabsOrder);
   return (
     <FlashDragList
-      estimatedItemSize={52} // 48px Height + 4px Margin top
       data={data}
       keyExtractor={(tabKey) => tabKey}
       renderItem={(args) => <RenderItem {...args} />}
