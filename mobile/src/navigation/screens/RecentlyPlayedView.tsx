@@ -12,7 +12,6 @@ import { useGetColumn } from "~/hooks/useGetColumn";
 import { useBottomActionsInset } from "../hooks/useBottomActions";
 import { getMediaLinkContext } from "../utils/router";
 
-import { OnRTL } from "~/lib/react";
 import { queryClient } from "~/lib/react-query";
 import { FlashList, LegendList } from "~/components/Defaults";
 import { ReservedPlaylists } from "~/modules/media/constants";
@@ -107,7 +106,7 @@ function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
             if (linkInfo[0] === "HomeScreens") navigation.popTo(...linkInfo);
             else navigation.navigate(...linkInfo);
           }}
-          className={index > 0 ? OnRTL.decide("mr-3", "ml-3") : undefined}
+          className={index > 0 ? "ml-3" : undefined}
         />
       )}
       className="-mx-4"

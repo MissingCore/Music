@@ -10,7 +10,6 @@ import { useBottomActionsInset } from "../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../layouts/CurrentList";
 import { ArtistArtworkSheet } from "../ArtworkSheet";
 
-import { OnRTL } from "~/lib/react";
 import { FlashList, LegendList } from "~/components/Defaults";
 import { useSheetRef } from "~/components/Sheet";
 import { TEm } from "~/components/Typography/StyledText";
@@ -111,7 +110,7 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
             onPress={() =>
               navigation.navigate("Album", { id: item.id }, { pop: true })
             }
-            className={index > 0 ? OnRTL.decide("mr-3", "ml-3") : undefined}
+            className={index > 0 ? "ml-3" : undefined}
           />
         )}
         className="-mx-4"
