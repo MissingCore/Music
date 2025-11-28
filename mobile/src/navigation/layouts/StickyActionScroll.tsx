@@ -1,11 +1,10 @@
-import type { FlashList, FlashListProps } from "@shopify/flash-list";
+import type { LegendListProps } from "@legendapp/list";
 import { LinearGradient } from "expo-linear-gradient";
 import type { ParseKeys } from "i18next";
 import { useCallback, useImperativeHandle, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { LayoutChangeEvent } from "react-native";
 import { useWindowDimensions } from "react-native";
-import type { AnimatedRef } from "react-native-reanimated";
 import Animated, {
   FadeIn,
   clamp,
@@ -19,9 +18,10 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { useTheme } from "~/hooks/useTheme";
 import { useBottomActionsInset } from "../hooks/useBottomActions";
 
+import type { AnimatedLegendListRef } from "~/components/Defaults";
 import {
-  AnimatedFlashList,
-  useAnimatedFlashListRef,
+  AnimatedLegendList,
+  useAnimatedLegendListRef,
 } from "~/components/Defaults";
 import { Scrollbar, useScrollbarContext } from "~/components/NScrollbar";
 import { AccentText } from "~/components/Typography/AccentText";
@@ -38,7 +38,7 @@ export function StickyActionListLayout<TData>({
   insetDelta = 0,
   showScrollbar = true,
   ...props
-}: Omit<FlashListProps<TData>, "onContentSizeChange" | "onLayout"> & {
+}: Omit<LegendListProps<TData>, "onContentSizeChange" | "onLayout"> & {
   /** Key to title in translations. */
   titleKey: ParseKeys;
   /** Optional action displayed in layout. */
@@ -46,7 +46,7 @@ export function StickyActionListLayout<TData>({
   /** Height of the StickyAction. */
   estimatedActionSize?: number;
   /** Pass a ref to the animated FlashList. */
-  listRef?: AnimatedRef<FlashList<any>>;
+  listRef?: AnimatedLegendListRef;
   /**
    * How much we want to cut away from the bottom inset adjustment. Useful
    * for giving a more accurate `estimatedItemSize` when faking "gaps".
@@ -61,7 +61,7 @@ export function StickyActionListLayout<TData>({
   const bottomInset = useBottomActionsInset();
   const { canvas } = useTheme();
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
-  const internalListRef = useAnimatedFlashListRef();
+  const internalListRef = useAnimatedLegendListRef();
   // @ts-expect-error - Should be able to synchronize refs.
   useImperativeHandle(listRef, () => internalListRef.current);
 
@@ -105,7 +105,7 @@ export function StickyActionListLayout<TData>({
 
   return (
     <>
-      <AnimatedFlashList
+      <AnimatedLegendList
         ref={internalListRef}
         {...layoutHandlers}
         onScroll={scrollHandler}
@@ -121,6 +121,7 @@ export function StickyActionListLayout<TData>({
             {t(titleKey)}
           </AccentText>
         }
+        maintainVisibleContentPosition={false}
         {...props}
         contentContainerStyle={{
           padding: 16,
