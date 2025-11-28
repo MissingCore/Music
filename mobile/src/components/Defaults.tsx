@@ -83,6 +83,7 @@ type FlashListProps<T> = RawFlashListProps<T> & {
 
 type FlashListSignature = <T>(props: FlashListProps<T>) => React.JSX.Element;
 const WrappedFlashList = cssInterop(RawFlashList, {
+  className: "style",
   contentContainerClassName: "contentContainerStyle",
 }) as FlashListSignature;
 
