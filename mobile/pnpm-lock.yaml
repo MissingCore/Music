@@ -20,9 +20,6 @@ patchedDependencies:
   '@react-native-assets/slider':
     hash: bqoknc62ex4oh6leybytriowfi
     path: patches/@react-native-assets__slider.patch
-  '@shopify/flash-list':
-    hash: girmns2xwit73ctr4pm76bpjrq
-    path: patches/@shopify__flash-list.patch
   expo-file-system:
     hash: hgu53i2ax26gwnr5j43lvhx4h4
     path: patches/expo-file-system.patch
@@ -83,8 +80,8 @@ importers:
         specifier: 7.3.0
         version: 7.3.0(expo@53.0.24(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@shopify/flash-list':
-        specifier: 1.8.3
-        version: 1.8.3(patch_hash=girmns2xwit73ctr4pm76bpjrq)(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        specifier: 2.2.0
+        version: 2.2.0(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@tanstack/react-query':
         specifier: 5.90.10
         version: 5.90.10(react@19.0.0)
@@ -168,7 +165,7 @@ importers:
         version: 6.3.11(patch_hash=rg27khsleipd2xp3egotvvkzo4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-draglist:
         specifier: github:MissingCore/react-native-draglist#a3847ce4f9265853a12b865ba30902e907d43c20
-        version: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a3847ce4f9265853a12b865ba30902e907d43c20(@shopify/flash-list@1.8.3(patch_hash=girmns2xwit73ctr4pm76bpjrq)(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        version: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a3847ce4f9265853a12b865ba30902e907d43c20(@shopify/flash-list@2.2.0(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-edge-to-edge:
         specifier: 1.7.0
         version: 1.7.0(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -1629,8 +1626,8 @@ packages:
     resolution: {integrity: sha512-AVUL63Lotvd7cujtch1A7Rax5syleB7jAP/I5sdCs6UvDc5VqmuTNsrg5DfjBNOOPPoGGfbSBaMBQAimvtNFaA==}
     engines: {node: '>=18'}
 
-  '@shopify/flash-list@1.8.3':
-    resolution: {integrity: sha512-vXuj6JyuMjONVOXjEhWFeaONPuWN/53Cl2LeyeM8TZ0JzUcNU+BE6iyga1/yyJeDf0K7YPgAE/PcUX2+DM1LiA==}
+  '@shopify/flash-list@2.2.0':
+    resolution: {integrity: sha512-mL61IofcfBNRZ/qazIf+pghGULkcZUQ7EZNldH1JBbIjtDb25ADSiQrt62ZTnRz0H5+bPFEZUmN9+WChHzX8pw==}
     peerDependencies:
       '@babel/runtime': '*'
       react: '*'
@@ -4809,12 +4806,6 @@ packages:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
     engines: {node: '>=8.10.0'}
 
-  recyclerlistview@4.2.3:
-    resolution: {integrity: sha512-STR/wj/FyT8EMsBzzhZ1l2goYirMkIgfV3gYEPxI3Kf3lOnu6f7Dryhyw7/IkQrgX5xtTcDrZMqytvteH9rL3g==}
-    peerDependencies:
-      react: '>= 15.2.1'
-      react-native: '>= 0.30.0'
-
   reflect.getprototypeof@1.0.10:
     resolution: {integrity: sha512-00o4I+DVrefhv+nX0ulyi3biSHCPDe+yLv5o/p6d/UVlirijB8E16FtfwSAi4g3tcqrQ4lRAqQSoFEZJehYEcw==}
     engines: {node: '>= 0.4'}
@@ -5325,9 +5316,6 @@ packages:
 
   ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
-
-  ts-object-utils@0.0.5:
-    resolution: {integrity: sha512-iV0GvHqOmilbIKJsfyfJY9/dNHCs969z3so90dQWsO1eMMozvTpnB1MEaUbb3FYtZTGjv5sIy/xmslEz0Rg2TA==}
 
   tsconfig-paths@3.15.0:
     resolution: {integrity: sha512-2Ac2RgzDe/cn48GvOe3M+o82pEFewD3UPbyoUHHdKasHwJKjds4fLXWf/Ux5kATBKN20oaFGu+jbElp1pos0mg==}
@@ -7302,13 +7290,11 @@ snapshots:
     dependencies:
       '@sentry/core': 10.18.0
 
-  '@shopify/flash-list@1.8.3(patch_hash=girmns2xwit73ctr4pm76bpjrq)(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
+  '@shopify/flash-list@2.2.0(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
     dependencies:
       '@babel/runtime': 7.28.4
       react: 19.0.0
       react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
-      recyclerlistview: 4.2.3(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
-      tslib: 2.8.1
 
   '@sinclair/typebox@0.27.8': {}
 
@@ -10578,12 +10564,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a3847ce4f9265853a12b865ba30902e907d43c20(@shopify/flash-list@1.8.3(patch_hash=girmns2xwit73ctr4pm76bpjrq)(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a3847ce4f9265853a12b865ba30902e907d43c20(@shopify/flash-list@2.2.0(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:
       react: 19.0.0
       react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
     optionalDependencies:
-      '@shopify/flash-list': 1.8.3(patch_hash=girmns2xwit73ctr4pm76bpjrq)(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      '@shopify/flash-list': 2.2.0(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
 
   react-native-edge-to-edge@1.6.0(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:
@@ -10783,14 +10769,6 @@ snapshots:
   readdirp@3.6.0:
     dependencies:
       picomatch: 2.3.1
-
-  recyclerlistview@4.2.3(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
-    dependencies:
-      lodash.debounce: 4.0.8
-      prop-types: 15.8.1
-      react: 19.0.0
-      react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
-      ts-object-utils: 0.0.5
 
   reflect.getprototypeof@1.0.10:
     dependencies:
@@ -11431,8 +11409,6 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  ts-object-utils@0.0.5: {}
-
   tsconfig-paths@3.15.0:
     dependencies:
       '@types/json5': 0.0.29
@@ -11440,7 +11416,8 @@ snapshots:
       minimist: 1.2.8
       strip-bom: 3.0.0
 
-  tslib@2.8.1: {}
+  tslib@2.8.1:
+    optional: true
 
   tunnel-agent@0.6.0:
     dependencies:
