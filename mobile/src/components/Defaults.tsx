@@ -4,7 +4,10 @@ import type {
 } from "@legendapp/list";
 import { LegendList as RawLegendList } from "@legendapp/list";
 import { AnimatedLegendList as RawAnimatedLegendList } from "@legendapp/list/reanimated";
-import type { FlashListProps as RawFlashListProps } from "@shopify/flash-list";
+import type {
+  FlashListProps as RawFlashListProps,
+  FlashListRef,
+} from "@shopify/flash-list";
 import { FlashList as RawFlashList } from "@shopify/flash-list";
 import { cssInterop } from "nativewind";
 import { useMemo, useRef, useState } from "react";
@@ -75,7 +78,7 @@ export function AnimatedScrollView(props: ScrollViewProps) {
 
 //#region Flash List
 type FlashListProps<T> = RawFlashListProps<T> & {
-  ref?: React.Ref<RawFlashList<T>>;
+  ref?: React.Ref<FlashListRef<T>>;
 };
 
 type FlashListSignature = <T>(props: FlashListProps<T>) => React.JSX.Element;
@@ -98,11 +101,6 @@ export function FlashList<T>(props: FlashListProps<T>) {
     />
   );
 }
-
-export function useFlashListRef<T = any>() {
-  return useRef<RawFlashList<T>>(null);
-}
-
 //#endregion
 
 //#region Flash Drag List
