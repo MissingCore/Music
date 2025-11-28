@@ -386,11 +386,11 @@ function TrackToPlaylistSheet({ id }: { id: string }) {
       snapTop
     >
       <LegendList
-        estimatedItemSize={58}
+        getEstimatedItemSize={(index) => (index === 0 ? 54 : 58)}
         data={data}
         keyExtractor={({ name }) => name}
         extraData={inList}
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           const selected = inList?.includes(item.name) ?? false;
           return (
             <Checkbox
@@ -402,6 +402,7 @@ function TrackToPlaylistSheet({ id }: { id: string }) {
                   item.name,
                 )
               }
+              wrapperClassName={index > 0 ? "mt-1" : undefined}
             >
               <Marquee color={selected ? "surface" : "canvasAlt"}>
                 <StyledText>{item.name}</StyledText>
@@ -413,7 +414,7 @@ function TrackToPlaylistSheet({ id }: { id: string }) {
           <ContentPlaceholder errMsgKey="err.msg.noPlaylists" />
         }
         nestedScrollEnabled
-        contentContainerClassName="gap-1 pb-3"
+        contentContainerClassName="pb-4"
       />
     </Sheet>
   );

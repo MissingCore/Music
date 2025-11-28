@@ -20,6 +20,7 @@ export default function SaveErrors() {
     <LegendList
       keyExtractor={({ id }) => id}
       ListEmptyComponent={<ContentPlaceholder errMsgKey="err.msg.noErrors" />}
+      contentContainerClassName="p-4"
       {...presets}
     />
   );

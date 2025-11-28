@@ -6,7 +6,6 @@ import { MoreVert } from "~/resources/icons/MoreVert";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { presentTrackSheet } from "~/services/SessionStore";
-import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
 
 import { cn } from "~/lib/style";
 import { IconButton } from "~/components/Form/Button";
@@ -88,33 +87,24 @@ export function useTrackListPlayingIndication<T extends TrackContent>(
 
 //#region useTrackListPreset
 /** Presets used to render a list of `<Track />`. */
-export function useTrackListPreset(
-  args: {
-    data?: readonly TrackContent[];
-    trackSource: PlayFromSource;
-    isPending?: boolean;
-  },
-  styleless = false,
-) {
-  const bottomInset = useBottomActionsInset();
+export function useTrackListPreset(args: {
+  data?: readonly TrackContent[];
+  trackSource: PlayFromSource;
+  isPending?: boolean;
+}) {
   // @ts-expect-error - Readonly is fine.
   const data = useTrackListPlayingIndication(args.trackSource, args.data);
-
-  const listStyles = useMemo(
-    () => ({
-      contentContainerClassName: "gap-2 px-4 pt-4",
-      contentContainerStyle: { paddingBottom: bottomInset.onlyPlayer + 8 },
-    }),
-    [bottomInset.onlyPlayer],
-  );
-
   return useMemo(
     () => ({
-      estimatedItemSize: 56,
+      getEstimatedItemSize: (index) => (index === 0 ? 48 : 56),
       data,
       keyExtractor: ({ id }) => id,
-      renderItem: ({ item }) => (
-        <Track {...item} trackSource={args.trackSource} />
+      renderItem: ({ item, index }) => (
+        <Track
+          {...item}
+          trackSource={args.trackSource}
+          className={index > 0 ? "mt-2" : undefined}
+        />
       ),
       ListEmptyComponent: (
         <ContentPlaceholder
@@ -122,9 +112,8 @@ export function useTrackListPreset(
           errMsgKey="err.msg.noTracks"
         />
       ),
-      ...(styleless ? {} : listStyles),
     }),
-    [args, data, listStyles, styleless],
+    [args, data],
   ) satisfies Omit<LegendListProps<TrackContent>, "data"> & {
     data?: readonly TrackContent[];
   };

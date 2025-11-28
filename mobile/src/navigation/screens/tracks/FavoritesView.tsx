@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 
 import { useFavoriteTracksForScreen } from "~/queries/favorite";
+import { useBottomActionsInset } from "../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../layouts/CurrentList";
 
 import { LegendList } from "~/components/Defaults";
@@ -18,6 +19,7 @@ const trackSource = {
 
 export default function FavoriteTracks() {
   const { t } = useTranslation();
+  const bottomInset = useBottomActionsInset();
   const { isPending, error, data } = useFavoriteTracksForScreen();
   const presets = useTrackListPreset({ data: data?.tracks, trackSource });
 
@@ -39,7 +41,11 @@ export default function FavoriteTracks() {
         imageSource={data.imageSource}
         mediaSource={trackSource}
       >
-        <LegendList {...presets} />
+        <LegendList
+          {...presets}
+          contentContainerClassName="px-4 pt-4"
+          contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
+        />
       </CurrentListLayout>
     </>
   );

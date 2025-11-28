@@ -119,8 +119,8 @@ function SearchResultsList<TScope extends SearchCategories>(
 
   const guessItemSize = useCallback(
     (index: number, item: any) => {
-      if (!isString(item)) return 56;
-      return (primaryFont === "Inter" ? 15 : 14) + (index === 0 ? 8 : 16);
+      if (!isString(item)) return index === 0 ? 48 : 56;
+      return (primaryFont === "Inter" ? 15 : 14) + (index === 0 ? 0 : 8);
     },
     [primaryFont],
   );
@@ -147,14 +147,16 @@ function SearchResultsList<TScope extends SearchCategories>(
           isString(item) ? (
             <TEm
               textKey={`term.${item}`}
-              className={cn({ "mt-2": index > 0 })}
+              className={index > 0 ? "mt-4" : undefined}
             />
           ) : (
             <SearchResult
               as="ripple"
               /* @ts-expect-error - `type` should be limited to our scope. */
               onPress={() => props.callbacks[item.type](item.entry)}
-              wrapperClassName={cn({ "rounded-full": item.type === "artist" })}
+              wrapperClassName={cn("mt-2", {
+                "rounded-full": item.type === "artist",
+              })}
               className="pr-4"
               {...item}
             />
@@ -166,7 +168,7 @@ function SearchResultsList<TScope extends SearchCategories>(
           ) : undefined
         }
         nestedScrollEnabled={props.forSheets}
-        contentContainerClassName="gap-2 pb-2"
+        contentContainerClassName="pb-4"
         contentContainerStyle={{
           paddingTop: tabsWithData.length > 0 ? filterHeight : 24,
         }}

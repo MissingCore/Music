@@ -19,5 +19,11 @@ export default function ThirdParty() {
     },
   });
 
-  return <LegendList keyExtractor={([id]) => id} {...presets} />;
+  return (
+    <LegendList
+      keyExtractor={([id]) => id}
+      contentContainerClassName="p-4"
+      {...presets}
+    />
+  );
 }

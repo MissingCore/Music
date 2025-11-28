@@ -32,7 +32,7 @@ export function useListPresets<TData extends Record<string, any>>({
 }) {
   return useMemo(
     () => ({
-      estimatedItemSize: 70,
+      getEstimatedItemSize: (index: number) => (index === 0 ? 67 : 70),
       data,
       renderItem: ({ item, index }: { item: TData; index: number }) => (
         <ListItem
@@ -41,9 +41,9 @@ export function useListPresets<TData extends Record<string, any>>({
           onPress={onPress ? onPress(item) : undefined}
           first={index === 0}
           last={index === (data?.length ?? 0) - 1}
+          className={index > 0 ? "mt-[3px]" : undefined}
         />
       ),
-      contentContainerClassName: "gap-[3px] p-4 pb-[11px]",
     }),
     [data, getTitle, getDescription, onPress],
   );

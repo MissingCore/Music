@@ -62,8 +62,8 @@ export default function Album({
 
   const guessItemSize = useCallback(
     (index: number, item: any) => {
-      if (!isNumber(item)) return 56;
-      return (primaryFont === "Inter" ? 15 : 14) + (index === 0 ? 8 : 16);
+      if (!isNumber(item)) return index === 0 ? 48 : 56;
+      return (primaryFont === "Inter" ? 15 : 14) + (index === 0 ? 0 : 8);
     },
     [primaryFont],
   );
@@ -108,7 +108,7 @@ export default function Album({
           getItemType={(item) => (isNumber(item) ? "label" : "row")}
           renderItem={({ item, index }) =>
             isNumber(item) ? (
-              <Em dim className={index > 0 ? "mt-2" : undefined}>
+              <Em dim className={index > 0 ? "mt-4" : undefined}>
                 {t("term.disc", { count: item })}
               </Em>
             ) : (
@@ -116,6 +116,7 @@ export default function Album({
                 {...item}
                 trackSource={trackSource}
                 LeftElement={<TrackNumber track={item.track} />}
+                className={index > 0 ? "mt-2" : undefined}
               />
             )
           }
@@ -126,8 +127,8 @@ export default function Album({
               })}
             />
           }
-          contentContainerClassName="gap-2 px-4 pt-4"
-          contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 8 }}
+          contentContainerClassName="px-4 pt-4"
+          contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
         />
       </CurrentListLayout>
 

@@ -64,15 +64,21 @@ export default function RecentlyPlayed() {
 
   return (
     <LegendList
-      estimatedItemSize={56}
+      getEstimatedItemSize={(index) => (index === 0 ? 48 : 56)}
       data={recentlyPlayedTracks.data}
       keyExtractor={({ id }) => id}
-      renderItem={({ item }) => <Track {...item} trackSource={trackSource} />}
+      renderItem={({ item, index }) => (
+        <Track
+          {...item}
+          trackSource={trackSource}
+          className={index > 0 ? "mt-2" : undefined}
+        />
+      )}
       ListHeaderComponent={
         <RecentlyPlayedLists data={recentlyPlayedMediaLists.data} />
       }
-      contentContainerClassName="gap-2 px-4 pt-4"
-      contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 8 }}
+      contentContainerClassName="px-4 pt-4"
+      contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
     />
   );
 }

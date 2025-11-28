@@ -7,6 +7,7 @@ import type { Album } from "~/db/schema";
 
 import { useArtistForScreen } from "~/queries/artist";
 import { useGetColumn } from "~/hooks/useGetColumn";
+import { useBottomActionsInset } from "../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../layouts/CurrentList";
 import { ArtistArtworkSheet } from "../ArtworkSheet";
 
@@ -33,6 +34,7 @@ export default function Artist({
   },
 }: Props) {
   const { t } = useTranslation();
+  const bottomInset = useBottomActionsInset();
   const { isPending, error, data } = useArtistForScreen(artistName);
   const artworkSheetRef = useSheetRef();
 
@@ -68,6 +70,8 @@ export default function Artist({
               })}
             />
           }
+          contentContainerClassName="px-4 pt-4"
+          contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
         />
       </CurrentListLayout>
 

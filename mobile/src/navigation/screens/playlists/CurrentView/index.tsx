@@ -8,6 +8,7 @@ import { Edit } from "~/resources/icons/Edit";
 import { Favorite } from "~/resources/icons/Favorite";
 import { FileSave } from "~/resources/icons/FileSave";
 import { useFavoritePlaylist, usePlaylistForScreen } from "~/queries/playlist";
+import { useBottomActionsInset } from "../../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../../layouts/CurrentList";
 import { ExportM3USheet } from "./ExportM3USheet";
 import { PlaylistArtworkSheet } from "../../ArtworkSheet";
@@ -31,6 +32,7 @@ export default function Playlist({
 }: Props) {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const bottomInset = useBottomActionsInset();
   const { isPending, error, data } = usePlaylistForScreen(id);
   const favoritePlaylist = useFavoritePlaylist(id);
   const artworkSheetRef = useSheetRef();
@@ -88,7 +90,11 @@ export default function Playlist({
         imageSource={data.imageSource}
         mediaSource={trackSource}
       >
-        <LegendList {...presets} />
+        <LegendList
+          {...presets}
+          contentContainerClassName="px-4 pt-4"
+          contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
+        />
       </CurrentListLayout>
 
       <PlaylistArtworkSheet sheetRef={artworkSheetRef} id={id} />

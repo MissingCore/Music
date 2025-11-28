@@ -56,10 +56,11 @@ function ScreenContents(props: {
   return (
     <LegendList
       ref={handleOnUnmount}
-      estimatedItemSize={56}
+      getEstimatedItemSize={(index) => (index === 0 ? 48 : 56)}
       data={dataSnapshot}
-      keyExtractor={({ id }) => id}
-      renderItem={({ item }) => (
+      //? Removing the 1st item will lead the new 1st item to have extra top margin.
+      keyExtractor={({ id }, index) => `${id}_${index}`}
+      renderItem={({ item, index }) => (
         <SearchResult
           type="track"
           title={item.name}
@@ -74,12 +75,13 @@ function ScreenContents(props: {
               onPress={() => onShowTrack(item.id)}
             />
           }
+          className={index > 0 ? "mt-2" : undefined}
         />
       )}
       ListEmptyComponent={
         <ContentPlaceholder errMsgKey="feat.hiddenTracks.extra.notFound" />
       }
-      contentContainerClassName="gap-2 p-4 pb-2"
+      contentContainerClassName="p-4"
     />
   );
 }
