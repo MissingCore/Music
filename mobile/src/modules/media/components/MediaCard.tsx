@@ -62,7 +62,7 @@ export const MediaCardPlaceholderContent: MediaCardContent = {
 //#region useMediaCardListPreset
 /** Presets used to render a list of `<MediaCard />`. */
 export function useMediaCardListPreset(
-  props: Omit<React.ComponentProps<typeof ContentPlaceholder>, "className"> & {
+  args: Omit<React.ComponentProps<typeof ContentPlaceholder>, "className"> & {
     data?: readonly MediaCardContent[];
     /**
      * Renders a special entry before all other data. This assumes at `data[0]`,
@@ -87,15 +87,15 @@ export function useMediaCardListPreset(
       numColumns: count,
       // ~40px for text content under `<MediaImage />` + 12px Margin Bottom
       estimatedItemSize: width + 40 + 12,
-      data: props.data,
+      data: args.data,
       keyExtractor: ({ id, type }) => `${type}_${id}`,
       /*
         Utilized janky margin method to implement gaps in FlashList with columns.
           - https://github.com/shopify/flash-list/discussions/804#discussioncomment-5509022
       */
       renderItem: ({ item, index }) =>
-        props.RenderFirst && index === 0 ? (
-          <props.RenderFirst size={width} className="mx-1.5 mb-3" />
+        args.RenderFirst && index === 0 ? (
+          <args.RenderFirst size={width} className="mx-1.5 mb-3" />
         ) : (
           <MediaCard
             {...item}
@@ -106,14 +106,14 @@ export function useMediaCardListPreset(
         ),
       ListEmptyComponent: (
         <ContentPlaceholder
-          isPending={props.isPending}
-          errMsgKey={props.errMsgKey}
+          isPending={args.isPending}
+          errMsgKey={args.errMsgKey}
         />
       ),
       ListHeaderComponentStyle: { paddingHorizontal: 8 },
       className: "-mx-1.5 -mb-3",
     }),
-    [navigation, count, width, props],
+    [args, navigation, count, width],
   ) satisfies Omit<LegendListProps<MediaCardContent>, "data"> & {
     data?: readonly MediaCardContent[];
   };
