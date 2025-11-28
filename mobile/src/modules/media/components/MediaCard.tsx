@@ -1,7 +1,7 @@
+import type { LegendListProps } from "@legendapp/list";
 import { useNavigation } from "@react-navigation/native";
-import type { FlashListProps } from "@shopify/flash-list";
 import { useMemo } from "react";
-import { I18nManager, Pressable } from "react-native";
+import { Pressable } from "react-native";
 
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { getMediaLinkContext } from "~/navigation/utils/router";
@@ -85,7 +85,7 @@ export function useMediaCardListPreset(
   return useMemo(
     () => ({
       numColumns: count,
-      // ~40px for text content under `<MediaImage />` + 16px Margin Bottom
+      // ~40px for text content under `<MediaImage />` + 12px Margin Bottom
       estimatedItemSize: width + 40 + 12,
       data: props.data,
       keyExtractor: ({ id, type }) => `${type}_${id}`,
@@ -112,10 +112,10 @@ export function useMediaCardListPreset(
       ),
       ListHeaderComponentStyle: { paddingHorizontal: 8 },
       className: "-mx-1.5 -mb-3",
-      /** If in RTL, layout breaks with columns. */
-      disableAutoLayout: I18nManager.isRTL,
     }),
     [navigation, count, width, props],
-  ) satisfies FlashListProps<MediaCardContent>;
+  ) satisfies Omit<LegendListProps<MediaCardContent>, "data"> & {
+    data?: readonly MediaCardContent[];
+  };
 }
 //#endregion
