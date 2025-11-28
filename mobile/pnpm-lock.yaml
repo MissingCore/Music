@@ -164,8 +164,8 @@ importers:
         specifier: 6.3.11
         version: 6.3.11(patch_hash=rg27khsleipd2xp3egotvvkzo4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-draglist:
-        specifier: github:MissingCore/react-native-draglist#a3847ce4f9265853a12b865ba30902e907d43c20
-        version: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a3847ce4f9265853a12b865ba30902e907d43c20(@shopify/flash-list@2.2.0(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        specifier: github:MissingCore/react-native-draglist#a675f18395876c72498597650a105b94e97a1439
+        version: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a675f18395876c72498597650a105b94e97a1439(@shopify/flash-list@2.2.0(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-edge-to-edge:
         specifier: 1.7.0
         version: 1.7.0(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -4659,11 +4659,11 @@ packages:
       react-native-svg:
         optional: true
 
-  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a3847ce4f9265853a12b865ba30902e907d43c20:
-    resolution: {tarball: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a3847ce4f9265853a12b865ba30902e907d43c20}
-    version: 3.9.7
+  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a675f18395876c72498597650a105b94e97a1439:
+    resolution: {tarball: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a675f18395876c72498597650a105b94e97a1439}
+    version: 3.10.0
     peerDependencies:
-      '@shopify/flash-list': <2
+      '@shopify/flash-list': '>=2.0.0'
       react: '>=17.0.1'
       react-native: '>=0.64.0'
     peerDependenciesMeta:
@@ -10564,7 +10564,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a3847ce4f9265853a12b865ba30902e907d43c20(@shopify/flash-list@2.2.0(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a675f18395876c72498597650a105b94e97a1439(@shopify/flash-list@2.2.0(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:
       react: 19.0.0
       react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
