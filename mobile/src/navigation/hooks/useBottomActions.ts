@@ -44,13 +44,14 @@ export function useRenderBottomActions() {
 
 /** Returns the inset we need to apply to account for the bottom actions. */
 export function useBottomActionsInset() {
-  // Wanted structure of `availableRoutes` should be:
-  //  - Array<{ key: miniPlayerVisibleRoutes[number] }>
-  const availableRoutes = useNavigationState((s) => s.routes);
   const activeTrack = usePlaybackStore((s) => s.activeTrack);
 
-  const canShowMiniPlayer = showMiniPlayerOnRoute(availableRoutes);
-  const isMiniPlayerRendered = !!activeTrack && canShowMiniPlayer;
+  //? We've previously accounted for whether the miniplayer can be rendered on the
+  //? route before applying the inset. This ends up changing the scroll position if
+  //? we were scrolled to the end of the list and opened a unsupported route like
+  //? the Now Playing screen. In all of our use cases, it's fine to leave the inset
+  //? if the miniplayer is rendered.
+  const isMiniPlayerRendered = !!activeTrack;
 
   // Bottom inset on home screen.
   let withNav = 76; // 60px Navbar Height + 16px Bottom Padding
