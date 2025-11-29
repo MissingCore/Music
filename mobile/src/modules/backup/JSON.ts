@@ -1,8 +1,11 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { useMutation } from "@tanstack/react-query";
 import { getDocumentAsync } from "expo-document-picker";
-import { EncodingType, StorageAccessFramework as SAF } from "expo-file-system";
-import { File } from "expo-file-system/next";
+import { File } from "expo-file-system";
+import {
+  EncodingType,
+  StorageAccessFramework as SAF,
+} from "expo-file-system/legacy";
 import { eq, inArray } from "drizzle-orm";
 import { useTranslation } from "react-i18next";
 import { z } from "zod/mini";
@@ -143,7 +146,7 @@ async function importBackup() {
   const documentFile = new File(assets[0].uri);
 
   // Read, parse, and validate file contents.
-  const docContents = documentFile.text();
+  const docContents = await documentFile.text();
   let backupContents;
   try {
     // Validate the data structure.

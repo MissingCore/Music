@@ -1,8 +1,8 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { getActualPath } from "@missingcore/react-native-actual-path";
 import { useMutation } from "@tanstack/react-query";
-import { StorageAccessFramework as SAF } from "expo-file-system";
-import { Directory } from "expo-file-system/next";
+import { Directory } from "expo-file-system";
+import { StorageAccessFramework as SAF } from "expo-file-system/legacy";
 
 import i18next from "~/modules/i18n";
 import { preferenceStore } from "~/stores/Preference/store";

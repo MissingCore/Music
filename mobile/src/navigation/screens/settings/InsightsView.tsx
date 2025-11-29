@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
 import { sum } from "drizzle-orm";
-import { Directory, Paths } from "expo-file-system/next";
+import { Directory, Paths } from "expo-file-system";
 import { useTranslation } from "react-i18next";
 
 import { db } from "~/db";

@@ -1,8 +1,8 @@
 import { getActualPath } from "@missingcore/react-native-actual-path";
 import { inArray } from "drizzle-orm";
 import { getDocumentAsync } from "expo-document-picker";
-import { StorageAccessFramework as SAF } from "expo-file-system";
-import { Paths } from "expo-file-system/next";
+import { Paths } from "expo-file-system";
+import { StorageAccessFramework as SAF } from "expo-file-system/legacy";
 
 import { db } from "~/db";
 import { tracks } from "~/db/schema";
