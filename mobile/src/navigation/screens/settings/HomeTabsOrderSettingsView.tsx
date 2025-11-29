@@ -1,7 +1,8 @@
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable } from "react-native";
-import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
+import type { DragListRenderItemInfo } from "react-native-draglist";
+import DragList from "react-native-draglist";
 
 import { DragIndicator } from "~/resources/icons/DragIndicator";
 import { Home } from "~/resources/icons/Home";
@@ -10,9 +11,8 @@ import { VisibilityOff } from "~/resources/icons/VisibilityOff";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { Tabs } from "~/stores/Preference/actions";
 
-import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import { cn } from "~/lib/style";
-import { FlashDragList } from "~/components/Defaults";
+import { ScrollablePresets } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { IconButton } from "~/components/Form/Button";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
@@ -23,13 +23,15 @@ type RenderItemProps = DragListRenderItemInfo<Tab>;
 export default function HomeTabsOrderSettings() {
   const data = usePreferenceStore((s) => s.tabsOrder);
   return (
-    <FlashDragList
+    <DragList
       data={data}
       keyExtractor={(tabKey) => tabKey}
       renderItem={(args) => <RenderItem {...args} />}
       onReordered={Tabs.move}
       ListHeaderComponent={ListHeaderComponent}
+      containerStyle={{ flex: 1 }}
       contentContainerClassName="p-4"
+      {...ScrollablePresets}
     />
   );
 }
@@ -99,5 +101,12 @@ const RenderItem = memo(
       </Pressable>
     );
   },
-  areRenderItemPropsEqual((o, n) => o.item === n.item),
+  (oldProps, newProps) => {
+    return (
+      oldProps.item === newProps.item &&
+      (["index", "isActive", "isDragging"] as const).every(
+        (k) => oldProps[k] === newProps[k],
+      )
+    );
+  },
 );
