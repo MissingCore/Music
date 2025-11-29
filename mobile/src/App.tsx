@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import { View } from "react-native";
 import Bootsplash from "react-native-bootsplash";
 import Animated, {
-  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withDelay,
   withTiming,
 } from "react-native-reanimated";
+import { scheduleOnRN } from "react-native-worklets";
 
 import { preferenceStore } from "~/stores/Preference/store";
 import { useLoadResources } from "~/hooks/useLoadResources";
@@ -94,7 +94,7 @@ function FakeLayoutTransition(props: {
     opacity.value = withDelay(
       500,
       withTiming(0, { duration: 500 }, () => {
-        runOnJS(setAnimState)("finished");
+        scheduleOnRN(setAnimState, "finished");
       }),
     );
   }, [props.unmount, animState, opacity]);

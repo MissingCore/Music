@@ -6,11 +6,11 @@ import type Animated from "react-native-reanimated";
 import {
   cancelAnimation,
   Easing,
-  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import { scheduleOnRN } from "react-native-worklets";
 
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePlayerProgress } from "./usePlayerProgress";
@@ -37,7 +37,7 @@ export function useVinylSeekbar() {
   // Rotation progress based on "seeking" on vinyl.
   const seekProgress = useSharedValue<number | null>(null);
   const prevAngle = useSharedValue(0);
-  // Angle to debounce `runOnJS`.
+  // Angle to debounce `scheduleOnRN`.
   const debounceAngle = useSharedValue<number | null>(null);
 
   const duration = useMemo(() => activeTrack?.duration ?? 0, [activeTrack]);
@@ -112,15 +112,15 @@ export function useVinylSeekbar() {
     .enabled(!isCancelled)
     .onStart(({ absoluteX, absoluteY }) => {
       if (gestureWithinArea({ absoluteX, absoluteY })) {
-        runOnJS(setIsActive)(true);
-        runOnJS(setPosition)(position);
+        scheduleOnRN(setIsActive, true);
+        scheduleOnRN(setPosition, position);
         debounceAngle.value = seekProgress.value = convertUnit(position);
         prevAngle.value = Math.atan2(
           absoluteY - centerY.value,
           absoluteX - centerX.value,
         );
       } else {
-        runOnJS(setIsCancelled)(true);
+        scheduleOnRN(setIsCancelled, true);
       }
     })
     .onUpdate(({ absoluteX, absoluteY }) => {
@@ -141,21 +141,21 @@ export function useVinylSeekbar() {
 
         // Only run `setSliderPos` when we've rotated ~15deg (which is ~1s).
         if (Math.abs((debounceAngle.value ?? 0) - seekProgress.value) > 15) {
-          runOnJS(setPosition)(convertUnit(seekProgress.value, "degrees"));
+          scheduleOnRN(setPosition, convertUnit(seekProgress.value, "degrees"));
           debounceAngle.value = seekProgress.value;
         }
         prevAngle.value = currAngle;
       } else {
-        runOnJS(setIsCancelled)(true);
+        scheduleOnRN(setIsCancelled, true);
       }
     })
     .onEnd(() => {
-      runOnJS(setIsActive)(false);
-      runOnJS(setIsCancelled)(false);
+      scheduleOnRN(setIsActive, false);
+      scheduleOnRN(setIsCancelled, false);
       // Check to prevent going to 0s if we initiated the gesture outside
       // of our range.
       if (seekProgress.value !== null) {
-        runOnJS(onEnd)(convertUnit(seekProgress.value ?? 0, "degrees"));
+        scheduleOnRN(onEnd, convertUnit(seekProgress.value ?? 0, "degrees"));
       }
     });
 

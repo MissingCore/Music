@@ -110,5 +110,9 @@
   },
   "react-native-svg@15.15.0": {
     "repository": "https://github.com/software-mansion/react-native-svg"
+  },
+  "react-native-worklets@0.6.1": {
+    "copyright": "Copyright (c) 2024 nobody",
+    "repository": "https://github.com/software-mansion/react-native-reanimated/tree/main/packages/react-native-worklets"
   }
 }
