@@ -97,9 +97,7 @@ export default function Upcoming() {
         )}
       />
       <FlashDragList
-        //! `initialScrollIndex !== 0` current crashes the app with:
-        //!   - "LayoutUnavailableException: No layout available for index: 1, js engine: hermes"
-        // initialScrollIndex={listIndex}
+        initialScrollIndex={listIndex}
         data={modifiedData}
         keyExtractor={(item) => item.key}
         renderItem={(args) => (
