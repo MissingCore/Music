@@ -1,7 +1,7 @@
-diff --git a/src/next/pathUtilities/url.ts b/src/next/pathUtilities/url.ts
-index afbf0f43d1858fd8e2fffdbcf175c49c721b5502..d81f4cdd980c328fa8571101d92773198a4fc654 100644
---- a/src/next/pathUtilities/url.ts
-+++ b/src/next/pathUtilities/url.ts
+diff --git a/src/pathUtilities/url.ts b/src/pathUtilities/url.ts
+index 1a9d5794d72394e9b262c1ac6c99ec091f45deb8..b1523de2e4340bcf97586653a36e21b7f4dd38e3 100644
+--- a/src/pathUtilities/url.ts
++++ b/src/pathUtilities/url.ts
 @@ -29,6 +29,8 @@ const tabRegEx = /\t/g;
  const questionRegex = /\?/g;
  const hashRegex = /#/g;
