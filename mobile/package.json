@@ -39,7 +39,7 @@
     "@react-navigation/native": "7.1.21",
     "@react-navigation/native-stack": "7.7.0",
     "@sentry/react-native": "7.3.0",
-    "@shopify/flash-list": "1.8.3",
+    "@shopify/flash-list": "2.2.0",
     "@tanstack/react-query": "5.90.10",
     "@weights-ai/react-native-track-player": "github:MissingCore/react-native-track-player#74325fcbff1af92006d31791bcca493985f94550",
     "clsx": "2.1.1",
@@ -67,7 +67,7 @@
     "react-native-android-widget": "0.17.2",
     "react-native-audio-analyzer": "3.1.0",
     "react-native-bootsplash": "6.3.11",
-    "react-native-draglist": "github:MissingCore/react-native-draglist#a3847ce4f9265853a12b865ba30902e907d43c20",
+    "react-native-draglist": "github:MissingCore/react-native-draglist#a675f18395876c72498597650a105b94e97a1439",
     "react-native-edge-to-edge": "1.7.0",
     "react-native-gesture-handler": "2.29.1",
     "react-native-keyboard-controller": "1.19.6",
@@ -122,8 +122,7 @@
       "react-native-android-widget": "patches/react-native-android-widget.patch",
       "react-native-bootsplash": "patches/react-native-bootsplash.patch",
       "@kaannn/react-native-waveform": "patches/@kaannn__react-native-waveform.patch",
-      "@lodev09/react-native-true-sheet": "patches/@lodev09__react-native-true-sheet.patch",
-      "@shopify/flash-list": "patches/@shopify__flash-list.patch"
+      "@lodev09/react-native-true-sheet": "patches/@lodev09__react-native-true-sheet.patch"
     }
   }
 }

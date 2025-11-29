@@ -121,7 +121,7 @@
   },
   "@shopify/flash-list": {
     "name": "@shopify/flash-list",
-    "version": "1.8.3",
+    "version": "2.2.0",
     "copyright": "Copyright 2022-present, Shopify Inc.",
     "source": "https://github.com/Shopify/flash-list",
     "license": "MIT",

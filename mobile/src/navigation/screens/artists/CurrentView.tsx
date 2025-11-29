@@ -1,7 +1,6 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-import { I18nManager } from "react-native";
 
 import type { Album } from "~/db/schema";
 
@@ -11,7 +10,6 @@ import { useBottomActionsInset } from "../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../layouts/CurrentList";
 import { ArtistArtworkSheet } from "../ArtworkSheet";
 
-import { OnRTL } from "~/lib/react";
 import { FlashList, LegendList } from "~/components/Defaults";
 import { useSheetRef } from "~/components/Sheet";
 import { TEm } from "~/components/Typography/StyledText";
@@ -98,7 +96,6 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
     <>
       <TEm dim textKey="term.albums" className="mb-2" />
       <FlashList
-        estimatedItemSize={width + 12} // Column width + gap from padding left
         horizontal
         data={albums}
         keyExtractor={({ id }) => id}
@@ -113,12 +110,11 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
             onPress={() =>
               navigation.navigate("Album", { id: item.id }, { pop: true })
             }
-            className={index > 0 ? OnRTL.decide("mr-3", "ml-3") : undefined}
+            className={index > 0 ? "ml-3" : undefined}
           />
         )}
         className="-mx-4"
         contentContainerClassName="px-4"
-        disableAutoLayout={I18nManager.isRTL}
       />
       <TEm dim textKey="term.tracks" className="mb-2 mt-4" />
     </>

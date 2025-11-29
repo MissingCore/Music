@@ -1,7 +1,6 @@
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { I18nManager } from "react-native";
 
 import { RECENT_DAY_RANGE } from "~/api/recent";
 import { queries as q } from "~/queries/keyStore";
@@ -13,7 +12,6 @@ import { useGetColumn } from "~/hooks/useGetColumn";
 import { useBottomActionsInset } from "../hooks/useBottomActions";
 import { getMediaLinkContext } from "../utils/router";
 
-import { OnRTL } from "~/lib/react";
 import { queryClient } from "~/lib/react-query";
 import { FlashList, LegendList } from "~/components/Defaults";
 import { ReservedPlaylists } from "~/modules/media/constants";
@@ -95,7 +93,6 @@ function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
   if (props.data?.length === 0) return null;
   return (
     <FlashList
-      estimatedItemSize={width + 12} // Column width + gap from padding left
       horizontal
       data={props.data}
       keyExtractor={({ id, type }) => `${type}_${id}`}
@@ -109,12 +106,11 @@ function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
             if (linkInfo[0] === "HomeScreens") navigation.popTo(...linkInfo);
             else navigation.navigate(...linkInfo);
           }}
-          className={index > 0 ? OnRTL.decide("mr-3", "ml-3") : undefined}
+          className={index > 0 ? "ml-3" : undefined}
         />
       )}
       className="-mx-4"
       contentContainerClassName="px-4 pb-6"
-      disableAutoLayout={I18nManager.isRTL}
     />
   );
 }

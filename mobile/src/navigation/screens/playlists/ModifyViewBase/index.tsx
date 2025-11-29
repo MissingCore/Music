@@ -124,7 +124,6 @@ function PageContent({ bottomOffset }: { bottomOffset: number }) {
         className={cn("flex-1", { "opacity-25": isSubmitting })}
       >
         <FlashDragList
-          estimatedItemSize={56} // 48px Height + 8px Margin Top
           data={tracks}
           keyExtractor={({ id }) => id}
           renderItem={(args) => <RenderItem {...args} />}
