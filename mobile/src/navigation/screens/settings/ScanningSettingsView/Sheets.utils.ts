@@ -2,7 +2,6 @@ import { toast } from "@backpackapp-io/react-native-toast";
 import { getActualPath } from "@missingcore/react-native-actual-path";
 import { useMutation } from "@tanstack/react-query";
 import { Directory } from "expo-file-system";
-import { StorageAccessFramework as SAF } from "expo-file-system/legacy";
 
 import i18next from "~/modules/i18n";
 import { preferenceStore } from "~/stores/Preference/store";
@@ -31,8 +30,8 @@ export function validatePath(path: string) {
 
 //#region Path Selector
 export async function pickPath() {
-  const permissions = await SAF.requestDirectoryPermissionsAsync();
-  if (!permissions.granted) {
+  const dir = await Directory.pickDirectoryAsync();
+  if (!dir.exists) {
     toast.error(i18next.t("err.msg.actionCancel"), ToastOptions);
     return;
   }
@@ -42,10 +41,10 @@ export async function pickPath() {
     // `getActualPath()` doesn't work with the `content://` URIs returned by
     // `SAF.requestDirectoryPermissionsAsync()`, but works when passing a
     // file or directory inside the selected directory.
-    const dirContents = await SAF.readDirectoryAsync(permissions.directoryUri);
+    const dirContents = dir.listAsRecords();
     const dirItem = dirContents[0];
-    if (dirItem) {
-      const resolved = await getActualPath(dirItem);
+    if (dirItem !== undefined && !dirItem.isDirectory) {
+      const resolved = await getActualPath(dirItem.uri);
       dirUri = resolved ? resolved.split("/").slice(0, -1).join("/") : null;
     }
   } catch {}

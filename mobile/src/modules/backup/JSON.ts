@@ -1,11 +1,7 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { useMutation } from "@tanstack/react-query";
 import { getDocumentAsync } from "expo-document-picker";
-import { File } from "expo-file-system";
-import {
-  EncodingType,
-  StorageAccessFramework as SAF,
-} from "expo-file-system/legacy";
+import { Directory, File } from "expo-file-system";
 import { eq, inArray } from "drizzle-orm";
 import { useTranslation } from "react-i18next";
 import { z } from "zod/mini";
@@ -106,20 +102,13 @@ async function exportBackup() {
   // Get all user-generated playlists.
   const allPlaylists = await getPlaylists();
 
-  // User selects accessible location inside the "Download" directory to
-  // save this backup file.
-  const downloadDir = SAF.getUriForDirectoryInRoot("Download");
-  const perms = await SAF.requestDirectoryPermissionsAsync(downloadDir);
-  if (!perms.granted) throw new Error(i18next.t("err.msg.actionCancel"));
+  // User selects location to save this backup file.
+  const dir = await Directory.pickDirectoryAsync();
+  if (!dir.exists) throw new Error(i18next.t("err.msg.actionCancel"));
 
   // Create a new file in specified directory & write contents.
-  const fileUri = await SAF.createFileAsync(
-    perms.directoryUri,
-    "music_backup",
-    "application/json",
-  );
-  await SAF.writeAsStringAsync(
-    fileUri,
+  const backupFile = new File(dir.uri, "music_backup.json");
+  backupFile.write(
     JSON.stringify({
       favorites: {
         playlists: favPlaylists.map(({ name }) => name),
@@ -130,7 +119,6 @@ async function exportBackup() {
         return { name, tracks: tracks.map(getRawTrack) };
       }),
     }),
-    { encoding: EncodingType.UTF8 },
   );
 }
 //#endregion
