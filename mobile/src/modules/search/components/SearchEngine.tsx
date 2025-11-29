@@ -1,5 +1,6 @@
+import type { FlashListRef } from "@shopify/flash-list";
 import { LinearGradient } from "expo-linear-gradient";
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
@@ -13,12 +14,11 @@ import { getPlaylistCover, getTrackCover } from "~/db/utils";
 
 import { Close } from "~/resources/icons/Close";
 import { Search } from "~/resources/icons/Search";
-import { usePreferenceStore } from "~/stores/Preference/store";
 import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
 import { isString } from "~/utils/validation";
-import { FlatList, LegendList, useLegendListRef } from "~/components/Defaults";
+import { FlashList, FlatList } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { TextInput, useInputRef } from "~/components/Form/Input";
 import { TEm } from "~/components/Typography/StyledText";
@@ -81,10 +81,9 @@ function SearchResultsList<TScope extends SearchCategories>(
 ) {
   const { canvas } = useTheme();
   const results = useSearch(props.searchScope, props.query);
-  const primaryFont = usePreferenceStore((s) => s.primaryFont);
   const [selectedTab, setSelectedTab] = useState<TScope[number] | "all">("all");
   const [filterHeight, setFilterHeight] = useState(53); // Height will be ~53px
-  const listRef = useLegendListRef();
+  const listRef = useRef<FlashListRef<ReturnType<typeof formatResults>>>(null);
 
   // Reset tab if we're on a tab with no results or clear the query.
   if (
@@ -117,14 +116,6 @@ function SearchResultsList<TScope extends SearchCategories>(
     [props.bgColor, canvas],
   );
 
-  const guessItemSize = useCallback(
-    (index: number, item: any) => {
-      if (!isString(item)) return index === 0 ? 48 : 56;
-      return (primaryFont === "Inter" ? 15 : 14) + (index === 0 ? 0 : 8);
-    },
-    [primaryFont],
-  );
-
   return (
     <View className="relative shrink grow">
       <SearchFilters
@@ -133,10 +124,9 @@ function SearchResultsList<TScope extends SearchCategories>(
         onSelectTab={setSelectedTab}
         getHeight={setFilterHeight}
       />
-      <LegendList
-        key={selectedTab}
+      <FlashList
+        // @ts-expect-error - Arguments should be compatible.
         ref={listRef}
-        getEstimatedItemSize={guessItemSize}
         data={data}
         // Note: We use `index` instead of the `id` or `name` field on the
         // `entry` due to there being potentially shared values (ie: between
