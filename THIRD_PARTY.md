@@ -60,6 +60,7 @@
 | react-native-safe-area-context | MIT | https://github.com/AppAndFlow/react-native-safe-area-context |
 | react-native-screens | MIT | https://github.com/software-mansion/react-native-screens |
 | react-native-svg | MIT | https://github.com/software-mansion/react-native-svg |
+| react-native-worklets | MIT | https://github.com/software-mansion/react-native-reanimated/tree/main/packages/react-native-worklets |
 | Roboto Font | Apache-2.0 | https://github.com/googlefonts/roboto |
 | tailwind-merge | MIT | https://github.com/dcastil/tailwind-merge |
 | zod | MIT | https://github.com/colinhacks/zod |
