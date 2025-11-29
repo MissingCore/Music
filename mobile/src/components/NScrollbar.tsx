@@ -5,14 +5,13 @@ import type { AnimatedRef, SharedValue } from "react-native-reanimated";
 import type { ReanimatedScrollEvent } from "react-native-reanimated/lib/typescript/hook/commonTypes";
 import Animated, {
   clamp,
-  runOnJS,
-  runOnUI,
   scrollTo,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
 
 interface ScrollbarProps {
   listRef: AnimatedRef<any>;
@@ -87,7 +86,8 @@ export function Scrollbar({
   //* Show scrollbar if we have at least 2 screens worth of content.
   useDerivedValue(() => {
     const hasEnoughContent = listScrollHeight.value / listHeight.value > 2;
-    runOnJS(setScrollbarVisible)(
+    scheduleOnRN(
+      setScrollbarVisible,
       isVisible && hasEnoughContent && isScrollingBuffer.value !== 0,
     );
   });
@@ -95,16 +95,18 @@ export function Scrollbar({
   //* Show scrollbar when we're scrolling and hide it after a delay
   //* after stopping when the thumb is released.
   useEffect(() => {
-    runOnUI(() =>
+    scheduleOnUI(() =>
       listScrollAmount.addListener(SCROLL_SUBSCRIPTION_ID, () => {
         isScrollingBuffer.value = 1;
         if (isOngoing.value) return;
         isScrollingBuffer.value = withTiming(0, { duration: HIDE_DELAY });
       }),
-    )();
+    );
 
     return () => {
-      runOnUI(() => listScrollAmount.removeListener(SCROLL_SUBSCRIPTION_ID))();
+      scheduleOnUI(() =>
+        listScrollAmount.removeListener(SCROLL_SUBSCRIPTION_ID),
+      );
     };
   }, [isOngoing, listScrollAmount, isScrollingBuffer, prevY]);
   //#endregion
