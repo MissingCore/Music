@@ -1,11 +1,13 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import type { Album } from "~/db/schema";
 
 import { useArtistForScreen } from "~/queries/artist";
 import { useGetColumn } from "~/hooks/useGetColumn";
+import { usePreferenceStore } from "~/stores/Preference/store";
 import { useBottomActionsInset } from "../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../layouts/CurrentList";
 import { ArtistArtworkSheet } from "../ArtworkSheet";
@@ -90,6 +92,12 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
     gutters: 32,
     minWidth: 100,
   });
+  const primaryFont = usePreferenceStore((s) => s.primaryFont);
+
+  const estimatedListHeight = useMemo(
+    () => width + (primaryFont === "Inter" ? 42 : 39),
+    [primaryFont, width],
+  );
 
   if (!albums) return null;
   return (
@@ -113,6 +121,7 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
             className={index > 0 ? "ml-3" : undefined}
           />
         )}
+        style={{ minHeight: estimatedListHeight }}
         className="-mx-4"
         contentContainerClassName="px-4"
       />
