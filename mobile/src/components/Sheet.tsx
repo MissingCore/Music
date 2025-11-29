@@ -60,7 +60,7 @@ export function Sheet({
   const [disableToastAnim, setDisableToastAnim] = useState(true);
   const [sheetHeight, setSheetHeight] = useState(0);
   const [headerHeight, setHeaderHeight] = useState(0);
-  const disableAnimTimerRef = useRef<number>(null);
+  const disableAnimTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
 
   // In Android API 35+, the "height" now includes the system decoration
   // areas and display cutout (status & navigation bar heights).
