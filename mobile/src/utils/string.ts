@@ -3,6 +3,11 @@ export function addTrailingSlash(path: string) {
   return path.endsWith("/") ? path : `${path}/`;
 }
 
+/** Remove the forward slash at the front of the path. */
+export function removeLeadingSlash(path: string) {
+  return path.startsWith("/") ? path.slice(1) : path;
+}
+
 /** Removes the file extension from a filename. */
 export function removeFileExtension(filename: string) {
   return filename.split(".").slice(0, -1).join(".").trim();

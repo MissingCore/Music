@@ -10,6 +10,8 @@ import { getTracks } from "~/api/track";
 
 import i18next from "~/modules/i18n";
 
+import { joinPaths } from "~/lib/file-system";
+
 //#region Import
 export async function readM3UPlaylist() {
   // Select the M3U file we'll be importing from.
@@ -53,7 +55,7 @@ export async function readM3UPlaylist() {
     strategy === "absolute"
       ? trackPaths.map((path) => `file://${slashStart ? "" : "/"}${path}`)
       : strategy === "relative"
-        ? trackPaths.map((path) => `file://${Paths.join(fileDirectory, path)}`)
+        ? trackPaths.map((path) => joinPaths(fileDirectory, path))
         : trackPaths;
 
   const playlistTracks = await getTracks({

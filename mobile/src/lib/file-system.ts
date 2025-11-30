@@ -2,6 +2,7 @@ import { Directory, File, Paths } from "expo-file-system";
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 import { launchImageLibraryAsync } from "expo-image-picker";
 
+import { addTrailingSlash, removeLeadingSlash } from "~/utils/string";
 import type { Maybe } from "~/utils/types";
 
 /** Internal app directory where we store images. */
@@ -20,6 +21,16 @@ export function deleteImage(uri: Maybe<string>) {
   // require special permissions.
   const file = new File(uri);
   if (file.exists) file.delete();
+}
+
+/** Easily join path components together to create a file. */
+export function joinPaths(baseDir: string, path: string) {
+  // `baseDir` starts with `file:///` and ends with a trailing slash.
+  let urlStart = removeLeadingSlash(addTrailingSlash(baseDir));
+  if (!urlStart.startsWith("file:///")) urlStart = `file:///${urlStart}`;
+  const baseUrl = new URL(path, urlStart);
+  // Undo any encoding caused when passing `path` with encodeable components.
+  return decodeURI(baseUrl.toString());
 }
 
 /**
