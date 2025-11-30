@@ -60,7 +60,11 @@ export function IconButton({
   const iconColor = active ? Colors.red : undefined;
   return (
     <Pressable
-      android_ripple={{ color: onSurface, radius: large ? 24 : 18 }}
+      android_ripple={{
+        color: onSurface,
+        radius: large ? 24 : 18,
+        foreground: true,
+      }}
       className={cn(
         "items-center justify-center p-3 disabled:opacity-25",
         { "p-2": large },
@@ -97,7 +101,7 @@ export function Ripple({
       className={cn("overflow-hidden rounded-sm", wrapperClassName)}
     >
       <Pressable
-        android_ripple={{ color: surface }}
+        android_ripple={{ color: surface, foreground: true }}
         className={cn("min-h-12 flex-row items-center gap-2", className)}
         {...pressableProps}
       />

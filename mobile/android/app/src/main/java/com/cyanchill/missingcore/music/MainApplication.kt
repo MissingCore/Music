@@ -13,18 +13,9 @@ import com.facebook.react.ReactHost
 import com.facebook.react.common.ReleaseLevel
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint
 import com.facebook.react.defaults.DefaultReactNativeHost
-import com.facebook.react.internal.featureflags.ReactNativeFeatureFlags
-import com.facebook.react.internal.featureflags.ReactNativeFeatureFlagsProvider
-import com.facebook.react.internal.featureflags.ReactNativeNewArchitectureFeatureFlagsDefaults
 
 import expo.modules.ApplicationLifecycleDispatcher
 import expo.modules.ReactNativeHostWrapper
-
-class FeatureFlagsProvider(
-  private val defaults: ReactNativeFeatureFlagsProvider = ReactNativeNewArchitectureFeatureFlagsDefaults()
-) : ReactNativeFeatureFlagsProvider by defaults {
-  override fun enableNewBackgroundAndBorderDrawables(): Boolean = false;
-}
 
 class MainApplication : Application(), ReactApplication {
 
@@ -59,8 +50,6 @@ class MainApplication : Application(), ReactApplication {
       ReleaseLevel.STABLE
     }
     loadReactNative(this)
-
-    ReactNativeFeatureFlags.dangerouslyForceOverride(FeatureFlagsProvider())
     ApplicationLifecycleDispatcher.onApplicationCreate(this)
   }
 
