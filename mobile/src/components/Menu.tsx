@@ -29,6 +29,9 @@ export function Menu(props: {
 
   return (
     <PaperMenu
+      //! Menu only opens once in RN 0.81. This is a hack to enable it to be opened multiple times.
+      //! - https://github.com/callstack/react-native-paper/issues/4807
+      key={String(visible)}
       visible={visible}
       onDismiss={() => setVisible(false)}
       anchor={
