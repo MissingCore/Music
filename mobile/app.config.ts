@@ -66,8 +66,6 @@ export default (): ExpoConfig => ({
       // From `expo-image-picker`.
       "android.permission.CAMERA",
       // From `expo-media-library`.
-      "android.permission.READ_MEDIA_IMAGES",
-      "android.permission.READ_MEDIA_VIDEO",
       "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
     ],
     intentFilters: [
@@ -121,6 +119,7 @@ export default (): ExpoConfig => ({
       },
     ],
     ["expo-image-picker", { microphonePermission: false }],
+    ["expo-media-library", { granularPermissions: ["audio"] }],
     [
       "react-native-bootsplash",
       {
