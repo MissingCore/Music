@@ -25,5 +25,7 @@ export function getSafeUri(uri: string) {
   return uri
     .replaceAll("%", "%25")
     .replaceAll("?", "%3F")
-    .replaceAll("#", "%23");
+    .replaceAll("#", "%23")
+    .replaceAll("[", "%5B")
+    .replaceAll("]", "%5D");
 }
