@@ -60,7 +60,7 @@ export function Menu(props: {
             onPress();
             setVisible(false);
           }}
-          rippleColor={onSurface}
+          background={{ color: onSurface, foreground: true }}
           titleStyle={{
             color: foreground,
             fontFamily: getFont(primaryFont),
