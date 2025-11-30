@@ -1,5 +1,5 @@
 diff --git a/android/build.gradle b/android/build.gradle
-index 072a171f9b30722ab360f901416cbb73a3728b85..343566ae84d2b9af129e22c39a3e34e6b6dee495 100644
+index 072a171f9b30722ab360f901416cbb73a3728b85..162f4cacfb7282db11ecbdda5f5e3fe61d5d132a 100644
 --- a/android/build.gradle
 +++ b/android/build.gradle
 @@ -102,8 +102,7 @@ def kotlin_version = getExtOrDefault("kotlinVersion")
@@ -13,7 +13,7 @@ index 072a171f9b30722ab360f901416cbb73a3728b85..343566ae84d2b9af129e22c39a3e34e6
  
  if (isNewArchitectureEnabled()) {
 diff --git a/android/src/main/java/com/audiowave/AudioWaveViewManager.kt b/android/src/main/java/com/audiowave/AudioWaveViewManager.kt
-index 3658d927de5c4fc494e5e5f5db05cc2523203193..4e60111d3901a997331d7054e17446947a7f516a 100644
+index 3658d927de5c4fc494e5e5f5db05cc2523203193..ebe9cf369e67b9e4c188bd00b1288a563139c042 100644
 --- a/android/src/main/java/com/audiowave/AudioWaveViewManager.kt
 +++ b/android/src/main/java/com/audiowave/AudioWaveViewManager.kt
 @@ -185,7 +185,7 @@ class AudioWaveViewManager : SimpleViewManager<WaveformSeekBar>() {
@@ -25,7 +25,15 @@ index 3658d927de5c4fc494e5e5f5db05cc2523203193..4e60111d3901a997331d7054e1744694
                  } else {
                      // Log an error or handle the missing file case
                      android.util.Log.e("AudioWaveViewManager", "Local file not found: $uri")
-@@ -243,7 +243,7 @@ class AudioWaveViewManager : SimpleViewManager<WaveformSeekBar>() {
+@@ -211,6 +211,7 @@ class AudioWaveViewManager : SimpleViewManager<WaveformSeekBar>() {
+         
+         try {
+             val array = samples.asArray()
++            if (array == null) return
+             val sampleArray = IntArray(array.size())
+             for (i in 0 until array.size()) {
+                 sampleArray[i] = array.getInt(i)
+@@ -243,7 +244,7 @@ class AudioWaveViewManager : SimpleViewManager<WaveformSeekBar>() {
                  // Update UI on main thread
                  withContext(Dispatchers.Main) {
                      if (outputFile.exists()) {

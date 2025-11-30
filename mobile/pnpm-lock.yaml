@@ -12,7 +12,7 @@ patchedDependencies:
     hash: 0c70c56861310dd6f14c247b027ad1bd59300079fd3c7a611805012a6a65a457
     path: patches/@backpackapp-io__react-native-toast.patch
   '@kaannn/react-native-waveform':
-    hash: 3081156a19fafea96a43750b5394a0b3fb443f55d943a53aa00387b84e19dbf4
+    hash: 02bde95462ae30a21077feabc5ad68053c8c71b2d2b8f17eb4aa29a9ba090446
     path: patches/@kaannn__react-native-waveform.patch
   '@lodev09/react-native-true-sheet':
     hash: d57ac3ae2a5ba11927eda1e45cb7145f94aa05f15a1452551405f83738dceac8
@@ -42,7 +42,7 @@ importers:
         version: 2.6.0(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))
       '@kaannn/react-native-waveform':
         specifier: 0.1.4
-        version: 0.1.4(patch_hash=3081156a19fafea96a43750b5394a0b3fb443f55d943a53aa00387b84e19dbf4)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+        version: 0.1.4(patch_hash=02bde95462ae30a21077feabc5ad68053c8c71b2d2b8f17eb4aa29a9ba090446)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       '@legendapp/list':
         specifier: ^2.0.16
         version: 2.0.16(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
@@ -7078,7 +7078,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@kaannn/react-native-waveform@0.1.4(patch_hash=3081156a19fafea96a43750b5394a0b3fb443f55d943a53aa00387b84e19dbf4)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
+  '@kaannn/react-native-waveform@0.1.4(patch_hash=02bde95462ae30a21077feabc5ad68053c8c71b2d2b8f17eb4aa29a9ba090446)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
     dependencies:
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0)
