@@ -11,7 +11,7 @@ import { useTheme } from "~/hooks/useTheme";
 import { StandardScrollLayout } from "../../layouts/StandardScroll";
 
 import { Colors } from "~/constants/Styles";
-import { ImageDirectory, isFile } from "~/lib/file-system";
+import { ImageDirectory } from "~/lib/file-system";
 import type { ExtractQueryData } from "~/lib/react-query";
 import { abbreviateSize, formatSeconds } from "~/utils/number";
 import { Card } from "~/components/Containment/Card";
@@ -181,7 +181,7 @@ async function getDatabaseSummary() {
   return {
     albums: await db.$count(albums),
     artists: await db.$count(artists),
-    images: imgDir.exists ? imgDir.list().length : 0,
+    images: imgDir.exists ? (imgDir.info().files?.length ?? 0) : 0,
     playlists: await db.$count(playlists),
     tracks: await db.$count(tracks),
     hiddenTracks: (
@@ -213,9 +213,6 @@ function useDatabaseSummary() {
 //#region Internal Utils
 function getDirectorySize(dir: Directory): number {
   if (!dir.exists) return 0;
-  return dir.list().reduce((prev, file) => {
-    if (isFile(file)) return prev + (file.size ?? 0);
-    else return prev + getDirectorySize(file);
-  }, 0);
+  return dir.info().size ?? 0;
 }
 //#endregion

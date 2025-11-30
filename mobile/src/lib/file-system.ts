@@ -22,11 +22,6 @@ export function deleteImage(uri: Maybe<string>) {
   if (file.exists) file.delete();
 }
 
-/** Helper to determine if we have a `Directory` or `File`. */
-export function isFile(file: Directory | File): file is File {
-  return (file as File).size !== undefined;
-}
-
 /**
  * Helper to open the image picker, allowing the user to pick 1 image,
  * then saves that image to our file system, returning the file uri.
