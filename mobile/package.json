@@ -97,6 +97,7 @@
     "eslint-plugin-drizzle": "0.2.3",
     "eslint-plugin-prettier": "5.5.4",
     "expo-atlas": "0.4.3",
+    "expo-build-properties": "1.0.9",
     "license-checker-rseidelsohn": "4.4.2",
     "neatjson": "0.10.6",
     "prettier": "3.7.2",
