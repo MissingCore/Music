@@ -46,7 +46,7 @@ export async function pickPath() {
     // file or directory inside the selected directory.
     const dirContents = dir.listAsRecords();
     const dirItem = dirContents[0];
-    if (dirItem !== undefined && !dirItem.isDirectory) {
+    if (dirItem) {
       const resolved = await getActualPath(dirItem.uri);
       dirUri = resolved ? resolved.split("/").slice(0, -1).join("/") : null;
     }
