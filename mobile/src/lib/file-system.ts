@@ -26,11 +26,12 @@ export function deleteImage(uri: Maybe<string>) {
 }
 
 /** Easily join path components together to create a file. */
-export function joinPaths(baseDir: string, path: string) {
-  // `baseDir` starts with `file:///` and ends with a trailing slash.
-  let urlStart = removeLeadingSlash(addTrailingSlash(baseDir));
+export function joinPaths(dirPath: string, relativeFilePath: string) {
+  // Ensure `dirPath` starts with `file:///` and ends with a trailing slash.
+  let urlStart = removeLeadingSlash(addTrailingSlash(dirPath));
   if (!urlStart.startsWith("file:///")) urlStart = `file:///${urlStart}`;
-  const baseUrl = new URL(path, urlStart);
+  // We expect `relativeFilePath` to not start with a leading slash.
+  const baseUrl = new URL(relativeFilePath, urlStart);
   // Undo any encoding caused when passing `path` with encodeable components.
   return decodeURI(baseUrl.toString());
 }
