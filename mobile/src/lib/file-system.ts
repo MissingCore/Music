@@ -2,6 +2,8 @@ import { Directory, File, Paths } from "expo-file-system";
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 import { launchImageLibraryAsync } from "expo-image-picker";
 
+import i18next from "~/modules/i18n";
+
 import { addTrailingSlash, removeLeadingSlash } from "~/utils/string";
 import type { Maybe } from "~/utils/types";
 
@@ -31,6 +33,18 @@ export function joinPaths(baseDir: string, path: string) {
   const baseUrl = new URL(path, urlStart);
   // Undo any encoding caused when passing `path` with encodeable components.
   return decodeURI(baseUrl.toString());
+}
+
+/** Returns selected directory if it exists. Throws error if nothing was selected. */
+export async function pickDirectory() {
+  try {
+    const dir = await Directory.pickDirectoryAsync();
+    if (!dir.exists) throw new Error();
+    return dir;
+  } catch {
+    // Throws error with more generic message that'll be caught by React Query and toasted.
+    throw new Error(i18next.t("err.msg.actionCancel"));
+  }
 }
 
 /**

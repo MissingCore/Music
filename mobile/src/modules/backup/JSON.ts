@@ -1,7 +1,7 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { useMutation } from "@tanstack/react-query";
 import { getDocumentAsync } from "expo-document-picker";
-import { Directory, File } from "expo-file-system";
+import { File } from "expo-file-system";
 import { eq, inArray } from "drizzle-orm";
 import { useTranslation } from "react-i18next";
 import { z } from "zod/mini";
@@ -16,6 +16,7 @@ import { getAlbums } from "~/api/album";
 import { createPlaylist, getPlaylists, updatePlaylist } from "~/api/playlist";
 import { getTracks } from "~/api/track";
 
+import { pickDirectory } from "~/lib/file-system";
 import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
 import { pickKeys } from "~/utils/object";
@@ -103,8 +104,7 @@ async function exportBackup() {
   const allPlaylists = await getPlaylists();
 
   // User selects location to save this backup file.
-  const dir = await Directory.pickDirectoryAsync();
-  if (!dir.exists) throw new Error(i18next.t("err.msg.actionCancel"));
+  const dir = await pickDirectory();
 
   // Create a new file in specified directory & write contents.
   const backupFile = dir.createFile("music_backup", "application/json");

@@ -1,7 +1,7 @@
 import { getActualPath } from "@missingcore/react-native-actual-path";
 import { inArray } from "drizzle-orm";
 import { getDocumentAsync } from "expo-document-picker";
-import { Directory, File, Paths } from "expo-file-system";
+import { File, Paths } from "expo-file-system";
 
 import { db } from "~/db";
 import { tracks } from "~/db/schema";
@@ -10,7 +10,7 @@ import { getTracks } from "~/api/track";
 
 import i18next from "~/modules/i18n";
 
-import { joinPaths } from "~/lib/file-system";
+import { joinPaths, pickDirectory } from "~/lib/file-system";
 
 //#region Import
 export async function readM3UPlaylist() {
@@ -81,8 +81,7 @@ export async function exportPlaylistAsM3U(id: string, absolute?: boolean) {
   const playlist = await getPlaylist(id);
 
   // User selects location to put M3U file.
-  const dir = await Directory.pickDirectoryAsync();
-  if (!dir.exists) throw new Error(i18next.t("err.msg.actionCancel"));
+  const dir = await pickDirectory();
 
   // Create a new file in specified directory & write contents.
   const m3uFile = dir.createFile(
