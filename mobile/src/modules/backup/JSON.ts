@@ -107,7 +107,7 @@ async function exportBackup() {
   if (!dir.exists) throw new Error(i18next.t("err.msg.actionCancel"));
 
   // Create a new file in specified directory & write contents.
-  const backupFile = new File(dir.uri, "music_backup.json");
+  const backupFile = dir.createFile("music_backup", "application/json");
   backupFile.write(
     JSON.stringify({
       favorites: {

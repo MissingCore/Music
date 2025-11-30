@@ -83,7 +83,10 @@ export async function exportPlaylistAsM3U(id: string, absolute?: boolean) {
   if (!dir.exists) throw new Error(i18next.t("err.msg.actionCancel"));
 
   // Create a new file in specified directory & write contents.
-  const m3uFile = new File(dir.uri, `${playlist.name}.m3u8`);
+  const m3uFile = dir.createFile(
+    playlist.name,
+    "application/x-mpegURL", // For specifically `.m3u8`
+  );
 
   // Get readable `file://` location from SAF uri.
   const fileLocation = await getActualPath(m3uFile.contentUri);
