@@ -274,12 +274,12 @@
       }
     },
     "waveformSlider": {
-      "title": null,
-      "brief": null,
+      "title": "Dalga Formu Kaydırıcısı",
+      "brief": "Dalga formu verileri önbelleğe alındığı için parçalar başlangıçta yavaş çalınacaktır.",
       "extra": {
-        "purgeCache": null,
-        "purgeCacheBrief": null,
-        "purgeCacheToast": null
+        "purgeCache": "Önbelleğe Alınan Dalga Formlarını Temizle",
+        "purgeCacheBrief": "Çalınan parçaların dalga formlarını yeniden hesaplamak için depolama alanında yer açar.",
+        "purgeCacheToast": "Dalga formu önbelleği temizlendi."
       }
     },
     "translate": {
@@ -393,8 +393,8 @@
         "size": "Boyut",
         "addToPlaylist": "Çalma Listesine Ekle",
         "addToQueue": "Sıraya Ekle",
-        "playNext": null,
-        "playLast": null,
+        "playNext": "Sıradakini Çal",
+        "playLast": "Sonuncuyu Çal",
         "queueAdd": "`{{- name}}` sıraya eklendi."
       }
     }
