@@ -4,7 +4,7 @@ import {
 } from "@missingcore/react-native-metadata-retriever";
 import { createId } from "@paralleldrive/cuid2";
 import { eq, inArray, isNotNull, or } from "drizzle-orm";
-import { Directory } from "expo-file-system/next";
+import { Directory } from "expo-file-system";
 
 import { db } from "~/db";
 import type { TrackWithAlbum } from "~/db/schema";

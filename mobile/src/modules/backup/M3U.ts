@@ -1,8 +1,7 @@
 import { getActualPath } from "@missingcore/react-native-actual-path";
 import { inArray } from "drizzle-orm";
 import { getDocumentAsync } from "expo-document-picker";
-import { StorageAccessFramework as SAF } from "expo-file-system";
-import { Paths } from "expo-file-system/next";
+import { File, Paths } from "expo-file-system";
 
 import { db } from "~/db";
 import { tracks } from "~/db/schema";
@@ -10,6 +9,8 @@ import { getPlaylist } from "~/api/playlist";
 import { getTracks } from "~/api/track";
 
 import i18next from "~/modules/i18n";
+
+import { joinPaths, pickDirectory } from "~/lib/file-system";
 
 //#region Import
 export async function readM3UPlaylist() {
@@ -27,11 +28,11 @@ export async function readM3UPlaylist() {
 
   const fileDirectory = fileLocation.split("/").slice(0, -1).join("/");
   const fileName = fileLocation.split("/").at(-1)?.split(".")[0];
-  // FIXME: Current version of `expo-file-system/next` doesn't support SAF.
-  const documentFile = await SAF.readAsStringAsync(assets[0].uri);
+  const m3uFile = new File(assets[0].uri);
+  const fileContent = await m3uFile.text();
 
   // List of "file names" in the playlist.
-  const trackPaths = documentFile
+  const trackPaths = fileContent
     .split(/\r?\n/)
     .filter((line) => !!line && !line.startsWith("#"))
     .map((line) => line.replace(/\\/g, "/"));
@@ -54,7 +55,7 @@ export async function readM3UPlaylist() {
     strategy === "absolute"
       ? trackPaths.map((path) => `file://${slashStart ? "" : "/"}${path}`)
       : strategy === "relative"
-        ? trackPaths.map((path) => `file://${Paths.join(fileDirectory, path)}`)
+        ? trackPaths.map((path) => joinPaths(fileDirectory, path))
         : trackPaths;
 
   const playlistTracks = await getTracks({
@@ -80,18 +81,16 @@ export async function exportPlaylistAsM3U(id: string, absolute?: boolean) {
   const playlist = await getPlaylist(id);
 
   // User selects location to put M3U file.
-  const perms = await SAF.requestDirectoryPermissionsAsync();
-  if (!perms.granted) throw new Error(i18next.t("err.msg.actionCancel"));
+  const dir = await pickDirectory();
 
   // Create a new file in specified directory & write contents.
-  const fileUri = await SAF.createFileAsync(
-    perms.directoryUri,
+  const m3uFile = dir.createFile(
     playlist.name,
-    "application/x-mpegURL", // For specifically `.m3u8`.
+    "application/x-mpegURL", // For specifically `.m3u8`
   );
 
   // Get readable `file://` location from SAF uri.
-  const fileLocation = await getActualPath(fileUri);
+  const fileLocation = await getActualPath(m3uFile.contentUri);
   if (!fileLocation) throw new Error(i18next.t("err.flow.generic.title"));
   const fileDirectory = fileLocation.split("/").slice(0, -1).join("/");
 
@@ -111,6 +110,6 @@ export async function exportPlaylistAsM3U(id: string, absolute?: boolean) {
   fileContent.push(""); // Add an empty line at the end of the file.
 
   // Write to file.
-  await SAF.writeAsStringAsync(fileUri, fileContent.join("\r\n"));
+  m3uFile.write(fileContent.join("\r\n"));
 }
 //#endregion

@@ -39,7 +39,7 @@ function Selection(props: SelectionProps & { type: "checkbox" | "radio" }) {
       <Pressable
         accessibilityRole={props.type}
         accessibilityState={{ checked: props.selected }}
-        android_ripple={{ color: surface }}
+        android_ripple={{ color: surface, foreground: true }}
         onPress={props.onSelect}
         // `<Radio />` utilizes the `disabled` prop to prevent togglability.
         disabled={props.type === "radio" ? props.selected : undefined}

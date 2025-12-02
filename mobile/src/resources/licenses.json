@@ -161,7 +161,7 @@
   },
   "expo": {
     "name": "expo",
-    "version": "53.0.24",
+    "version": "54.0.25",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo",
     "license": "MIT",
@@ -169,7 +169,7 @@
   },
   "expo-device": {
     "name": "expo-device",
-    "version": "7.1.4",
+    "version": "8.0.9",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-device",
     "license": "MIT",
@@ -177,7 +177,7 @@
   },
   "expo-document-picker": {
     "name": "expo-document-picker",
-    "version": "13.1.6",
+    "version": "14.0.7",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-document-picker",
     "license": "MIT",
@@ -185,7 +185,7 @@
   },
   "expo-drizzle-studio-plugin": {
     "name": "expo-drizzle-studio-plugin",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "copyright": "Copyright (c) 2024 Drizzle Team",
     "source": "https://github.com/drizzle-team/drizzle-studio-expo",
     "license": "MIT",
@@ -193,7 +193,7 @@
   },
   "expo-file-system": {
     "name": "expo-file-system",
-    "version": "18.1.11",
+    "version": "19.0.19",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-file-system",
     "license": "MIT",
@@ -201,7 +201,7 @@
   },
   "expo-image": {
     "name": "expo-image",
-    "version": "2.4.1",
+    "version": "3.0.10",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-image",
     "license": "MIT",
@@ -209,7 +209,7 @@
   },
   "expo-image-manipulator": {
     "name": "expo-image-manipulator",
-    "version": "13.1.7",
+    "version": "14.0.7",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-image-manipulator",
     "license": "MIT",
@@ -217,7 +217,7 @@
   },
   "expo-image-picker": {
     "name": "expo-image-picker",
-    "version": "16.1.4",
+    "version": "17.0.8",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-image-picker",
     "license": "MIT",
@@ -225,7 +225,7 @@
   },
   "expo-linear-gradient": {
     "name": "expo-linear-gradient",
-    "version": "14.1.5",
+    "version": "15.0.7",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-linear-gradient",
     "license": "MIT",
@@ -233,7 +233,7 @@
   },
   "expo-localization": {
     "name": "expo-localization",
-    "version": "16.1.6",
+    "version": "17.0.7",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-localization",
     "license": "MIT",
@@ -241,7 +241,7 @@
   },
   "expo-media-library": {
     "name": "expo-media-library",
-    "version": "17.1.7",
+    "version": "18.2.0",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-media-library",
     "license": "MIT",
@@ -249,7 +249,7 @@
   },
   "expo-sqlite": {
     "name": "expo-sqlite",
-    "version": "15.2.14",
+    "version": "16.0.9",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-sqlite",
     "license": "MIT",
@@ -257,7 +257,7 @@
   },
   "expo-web-browser": {
     "name": "expo-web-browser",
-    "version": "14.2.0",
+    "version": "15.0.9",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo-web-browser",
     "license": "MIT",
@@ -337,7 +337,7 @@
   },
   "react": {
     "name": "react",
-    "version": "19.0.0",
+    "version": "19.1.0",
     "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates.",
     "source": "https://github.com/facebook/react",
     "license": "MIT",
@@ -353,7 +353,7 @@
   },
   "react-native": {
     "name": "react-native",
-    "version": "0.79.7",
+    "version": "0.81.5",
     "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates.",
     "source": "https://github.com/facebook/react-native",
     "license": "MIT",

@@ -1,7 +1,10 @@
-import { Directory, File, Paths } from "expo-file-system/next";
+import { Directory, File, Paths } from "expo-file-system";
 import { ImageManipulator, SaveFormat } from "expo-image-manipulator";
 import { launchImageLibraryAsync } from "expo-image-picker";
 
+import i18next from "~/modules/i18n";
+
+import { addTrailingSlash, removeLeadingSlash } from "~/utils/string";
 import type { Maybe } from "~/utils/types";
 
 /** Internal app directory where we store images. */
@@ -22,9 +25,27 @@ export function deleteImage(uri: Maybe<string>) {
   if (file.exists) file.delete();
 }
 
-/** Helper to determine if we have a `Directory` or `File`. */
-export function isFile(file: Directory | File): file is File {
-  return (file as File).size !== undefined;
+/** Easily join path components together to create a file. */
+export function joinPaths(dirPath: string, relativeFilePath: string) {
+  // Ensure `dirPath` starts with `file:///` and ends with a trailing slash.
+  let urlStart = removeLeadingSlash(addTrailingSlash(dirPath));
+  if (!urlStart.startsWith("file:///")) urlStart = `file:///${urlStart}`;
+  // We expect `relativeFilePath` to not start with a leading slash.
+  const baseUrl = new URL(relativeFilePath, urlStart);
+  // Undo any encoding caused when passing `path` with encodeable components.
+  return decodeURI(baseUrl.toString());
+}
+
+/** Returns selected directory if it exists. Throws error if nothing was selected. */
+export async function pickDirectory() {
+  try {
+    const dir = await Directory.pickDirectoryAsync();
+    if (!dir.exists) throw new Error();
+    return dir;
+  } catch {
+    // Throws error with more generic message that'll be caught by React Query and toasted.
+    throw new Error(i18next.t("err.msg.actionCancel"));
+  }
 }
 
 /**
