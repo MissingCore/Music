@@ -103,10 +103,17 @@ export function Sheet({
       }}
       {...props}
     >
-      <SheetHeader
-        title={titleKey ? t(titleKey) : undefined}
-        getHeight={setHeaderHeight}
-      />
+      <View
+        onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}
+        className={cn("gap-2 px-4 pb-2", { "pb-6": !!titleKey })}
+      >
+        <View className="mx-auto my-[10px] h-1 w-8 rounded-full bg-onSurface" />
+        {titleKey ? (
+          <Marquee color="canvasAlt" center>
+            <StyledText className="text-lg">{t(titleKey)}</StyledText>
+          </Marquee>
+        ) : null}
+      </View>
       <WrappedGestureHandlerRootView
         style={[
           // TrueSheet doesn't know the actual scrollable area, so we
@@ -225,27 +232,6 @@ export function SheetButtonGroup(props: {
           bold
         />
       </Button>
-    </View>
-  );
-}
-//#endregion
-
-//#region Internal
-function SheetHeader(props: {
-  getHeight: (height: number) => void;
-  title?: string;
-}) {
-  return (
-    <View
-      onLayout={(e) => props.getHeight(e.nativeEvent.layout.height)}
-      className={cn("gap-2 px-4 pb-2", { "pb-6": !!props.title })}
-    >
-      <View className="mx-auto my-[10px] h-1 w-8 rounded-full bg-onSurface" />
-      {props.title ? (
-        <Marquee color="canvasAlt" center>
-          <StyledText className="text-lg">{props.title}</StyledText>
-        </Marquee>
-      ) : null}
     </View>
   );
 }

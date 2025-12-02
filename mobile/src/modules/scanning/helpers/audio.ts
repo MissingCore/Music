@@ -318,7 +318,15 @@ const wantedMetadata = [
 async function getTrackMetadata(asset: MediaLibraryAsset) {
   const { id, uri, duration, modificationTime, filename } = asset;
   const { bitrate, sampleRate, ...t } = await getMetadata(uri, wantedMetadata);
-  const file = new File(getSafeUri(uri));
+  let fileSize = 0;
+  try {
+    const file = new File(getSafeUri(uri));
+    if (file.exists) fileSize = file.size ?? 0;
+  } catch (err) {
+    // The new `expo-file-system` API will throw an error if certain characters are
+    // in the URI when it previously didn't.
+    console.log(err);
+  }
 
   let newAlbum: { name: string; artistName: string } | undefined;
   if (!!t.albumTitle?.trim() && !!t.albumArtist?.trim()) {
@@ -340,7 +348,7 @@ async function getTrackMetadata(asset: MediaLibraryAsset) {
     uri,
     modificationTime,
     fetchedArt: false,
-    size: file.exists ? (file.size ?? 0) : 0,
+    size: fileSize,
   };
 }
 
