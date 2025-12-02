@@ -111,6 +111,9 @@
     }
   },
   "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp"
+    ],
     "overrides": {
       "markdown-it": "14.1.0"
     },

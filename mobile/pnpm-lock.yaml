@@ -9,22 +9,22 @@ overrides:
 
 patchedDependencies:
   '@backpackapp-io/react-native-toast':
-    hash: zgygxsuuqk33jr3gwbxpbkmczi
+    hash: 0c70c56861310dd6f14c247b027ad1bd59300079fd3c7a611805012a6a65a457
     path: patches/@backpackapp-io__react-native-toast.patch
   '@kaannn/react-native-waveform':
-    hash: qhdylic22inn53gan2wmowffc4
+    hash: 3081156a19fafea96a43750b5394a0b3fb443f55d943a53aa00387b84e19dbf4
     path: patches/@kaannn__react-native-waveform.patch
   '@react-native-assets/slider':
-    hash: bqoknc62ex4oh6leybytriowfi
+    hash: bef4d8e9c3b580bf43a5dbf74b663476625186715ae2cb4141e7a4ae7bd05d46
     path: patches/@react-native-assets__slider.patch
   expo-file-system:
-    hash: hgu53i2ax26gwnr5j43lvhx4h4
+    hash: c0797f02497936c1acc0788ff9c6018358bfebee0eceb4f851b9f6ccd87c640f
     path: patches/expo-file-system.patch
   react-native-android-widget:
-    hash: xf3x7denwghlvu46ncfmxxprli
+    hash: 96926d4b630574ce4e917c35b2bb92ad922bca996cd126d0b5c181372ba6bffe
     path: patches/react-native-android-widget.patch
   react-native-bootsplash:
-    hash: rg27khsleipd2xp3egotvvkzo4
+    hash: f1925439605b77f30b038b828717080c64dc11a6b2938c7489b364fe99bd6e53
     path: patches/react-native-bootsplash.patch
 
 importers:
@@ -33,13 +33,13 @@ importers:
     dependencies:
       '@backpackapp-io/react-native-toast':
         specifier: 0.13.0
-        version: 0.13.0(patch_hash=zgygxsuuqk33jr3gwbxpbkmczi)(react-native-gesture-handler@2.29.1(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.19.4(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-safe-area-context@5.6.2(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        version: 0.13.0(patch_hash=0c70c56861310dd6f14c247b027ad1bd59300079fd3c7a611805012a6a65a457)(react-native-gesture-handler@2.29.1(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.19.4(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-safe-area-context@5.6.2(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@boterop/react-native-background-timer':
         specifier: ^2.6.0
         version: 2.6.0(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))
       '@kaannn/react-native-waveform':
         specifier: ^0.1.4
-        version: 0.1.4(patch_hash=qhdylic22inn53gan2wmowffc4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        version: 0.1.4(patch_hash=3081156a19fafea96a43750b5394a0b3fb443f55d943a53aa00387b84e19dbf4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@lodev09/react-native-true-sheet':
         specifier: ^2.0.6
         version: 2.0.6(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -60,7 +60,7 @@ importers:
         version: 3.0.4
       '@react-native-assets/slider':
         specifier: ^11.0.12
-        version: 11.0.12(patch_hash=bqoknc62ex4oh6leybytriowfi)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        version: 11.0.12(patch_hash=bef4d8e9c3b580bf43a5dbf74b663476625186715ae2cb4141e7a4ae7bd05d46)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@react-navigation/material-top-tabs':
         specifier: ^7.4.4
         version: 7.4.4(@react-navigation/native@7.1.21(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-pager-view@6.9.1(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-safe-area-context@5.6.2(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -102,7 +102,7 @@ importers:
         version: 0.2.0(expo@53.0.24(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       expo-file-system:
         specifier: ~18.1.11
-        version: 18.1.11(patch_hash=hgu53i2ax26gwnr5j43lvhx4h4)(expo@53.0.24(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))
+        version: 18.1.11(patch_hash=c0797f02497936c1acc0788ff9c6018358bfebee0eceb4f851b9f6ccd87c640f)(expo@53.0.24(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))
       expo-image:
         specifier: ~2.4.1
         version: 2.4.1(expo@53.0.24(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -150,13 +150,13 @@ importers:
         version: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
       react-native-android-widget:
         specifier: ^0.17.2
-        version: 0.17.2(patch_hash=xf3x7denwghlvu46ncfmxxprli)(expo@53.0.24(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        version: 0.17.2(patch_hash=96926d4b630574ce4e917c35b2bb92ad922bca996cd126d0b5c181372ba6bffe)(expo@53.0.24(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-audio-analyzer:
         specifier: ^3.1.0
         version: 3.1.0(react-native-nitro-modules@0.31.9(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-bootsplash:
         specifier: ^6.3.11
-        version: 6.3.11(patch_hash=rg27khsleipd2xp3egotvvkzo4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+        version: 6.3.11(patch_hash=f1925439605b77f30b038b828717080c64dc11a6b2938c7489b364fe99bd6e53)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-draglist:
         specifier: github:MissingCore/react-native-draglist#a3847ce4f9265853a12b865ba30902e907d43c20
         version: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a3847ce4f9265853a12b865ba30902e907d43c20(@shopify/flash-list@1.8.3(@babel/runtime@7.28.4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -6251,7 +6251,7 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.28.5
 
-  '@backpackapp-io/react-native-toast@0.13.0(patch_hash=zgygxsuuqk33jr3gwbxpbkmczi)(react-native-gesture-handler@2.29.1(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.19.4(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-safe-area-context@5.6.2(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
+  '@backpackapp-io/react-native-toast@0.13.0(patch_hash=0c70c56861310dd6f14c247b027ad1bd59300079fd3c7a611805012a6a65a457)(react-native-gesture-handler@2.29.1(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.19.4(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-safe-area-context@5.6.2(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
     dependencies:
       react: 19.0.0
       react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
@@ -6863,7 +6863,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@kaannn/react-native-waveform@0.1.4(patch_hash=qhdylic22inn53gan2wmowffc4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
+  '@kaannn/react-native-waveform@0.1.4(patch_hash=3081156a19fafea96a43750b5394a0b3fb443f55d943a53aa00387b84e19dbf4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
     dependencies:
       react: 19.0.0
       react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
@@ -6931,7 +6931,7 @@ snapshots:
 
   '@pkgr/core@0.2.9': {}
 
-  '@react-native-assets/slider@11.0.12(patch_hash=bqoknc62ex4oh6leybytriowfi)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
+  '@react-native-assets/slider@11.0.12(patch_hash=bef4d8e9c3b580bf43a5dbf74b663476625186715ae2cb4141e7a4ae7bd05d46)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)':
     dependencies:
       react: 19.0.0
       react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
@@ -8812,7 +8812,7 @@ snapshots:
       - react
       - react-native
 
-  expo-file-system@18.1.11(patch_hash=hgu53i2ax26gwnr5j43lvhx4h4)(expo@53.0.24(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)):
+  expo-file-system@18.1.11(patch_hash=c0797f02497936c1acc0788ff9c6018358bfebee0eceb4f851b9f6ccd87c640f)(expo@53.0.24(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)):
     dependencies:
       expo: 53.0.24(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
@@ -8903,7 +8903,7 @@ snapshots:
       babel-preset-expo: 13.2.4(@babel/core@7.28.5)
       expo-asset: 11.1.7(expo@53.0.24(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       expo-constants: 17.1.7(expo@53.0.24(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))
-      expo-file-system: 18.1.11(patch_hash=hgu53i2ax26gwnr5j43lvhx4h4)(expo@53.0.24(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))
+      expo-file-system: 18.1.11(patch_hash=c0797f02497936c1acc0788ff9c6018358bfebee0eceb4f851b9f6ccd87c640f)(expo@53.0.24(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))
       expo-font: 13.3.2(expo@53.0.24(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react@19.0.0)
       expo-keep-awake: 14.1.4(expo@53.0.24(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react@19.0.0)
       expo-modules-autolinking: 2.1.14
@@ -10502,7 +10502,7 @@ snapshots:
 
   react-is@19.2.0: {}
 
-  react-native-android-widget@0.17.2(patch_hash=xf3x7denwghlvu46ncfmxxprli)(expo@53.0.24(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+  react-native-android-widget@0.17.2(patch_hash=96926d4b630574ce4e917c35b2bb92ad922bca996cd126d0b5c181372ba6bffe)(expo@53.0.24(@babel/core@7.28.5)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:
       react: 19.0.0
       react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
@@ -10515,7 +10515,7 @@ snapshots:
       react-native: 0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0)
       react-native-nitro-modules: 0.31.9(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
 
-  react-native-bootsplash@6.3.11(patch_hash=rg27khsleipd2xp3egotvvkzo4)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+  react-native-bootsplash@6.3.11(patch_hash=f1925439605b77f30b038b828717080c64dc11a6b2938c7489b364fe99bd6e53)(react-native@0.79.7(@babel/core@7.28.5)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:
       '@expo/config-plugins': 10.1.2
       '@react-native-community/cli-config-android': 18.0.1
