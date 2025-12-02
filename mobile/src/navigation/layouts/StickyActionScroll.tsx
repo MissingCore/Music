@@ -3,7 +3,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import type { ParseKeys } from "i18next";
 import { useCallback, useImperativeHandle, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { LayoutChangeEvent, TextProps } from "react-native";
+import type { LayoutChangeEvent } from "react-native";
 import { useWindowDimensions } from "react-native";
 import type { AnimatedRef } from "react-native-reanimated";
 import Animated, {
@@ -110,14 +110,16 @@ export function StickyActionListLayout<TData>({
         {...layoutHandlers}
         onScroll={scrollHandler}
         ListHeaderComponent={
-          <LayoutHeader
+          <AccentText
             onLayout={calcInitStartPos}
             style={[
-              StickyAction ? { marginBottom: estimatedActionSize + 24 } : {},
+              { paddingTop: top + 16 },
+              StickyAction && { marginBottom: estimatedActionSize + 24 },
             ]}
+            className="pb-6 text-4xl"
           >
             {t(titleKey)}
-          </LayoutHeader>
+          </AccentText>
         }
         {...props}
         contentContainerStyle={{
@@ -159,19 +161,5 @@ export function StickyActionListLayout<TData>({
         </Animated.View>
       ) : null}
     </>
-  );
-}
-
-function LayoutHeader({
-  style,
-  ...props
-}: Pick<TextProps, "children" | "onLayout" | "style">) {
-  const { top } = useSafeAreaInsets();
-  return (
-    <AccentText
-      style={[{ paddingTop: top + 16 }, style]}
-      className="pb-6 text-4xl"
-      {...props}
-    />
   );
 }
