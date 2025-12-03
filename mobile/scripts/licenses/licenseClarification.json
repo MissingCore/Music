@@ -14,13 +14,13 @@
   "@paralleldrive/cuid2@3.0.4": {
     "repository": "https://github.com/paralleldrive/cuid2"
   },
-  "@react-navigation/material-top-tabs@7.4.5": {
+  "@react-navigation/material-top-tabs@7.4.8": {
     "repository": "https://github.com/react-navigation/react-navigation/tree/main/packages/material-top-tabs"
   },
-  "@react-navigation/native@7.1.22": {
+  "@react-navigation/native@7.1.24": {
     "repository": "https://github.com/react-navigation/react-navigation/tree/main/packages/native"
   },
-  "@react-navigation/native-stack@7.8.1": {
+  "@react-navigation/native-stack@7.8.5": {
     "repository": "https://github.com/react-navigation/react-navigation/tree/main/packages/native-stack"
   },
   "@weights-ai/react-native-track-player@4.1.6": {
@@ -105,7 +105,7 @@
     "copyright": "Copyright (c) 2024 Marc Rousavy",
     "licenseText": "MIT License\n\nCopyright (c) 2024 Marc Rousavy\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
   },
-  "react-native-svg@15.15.0": {
+  "react-native-svg@15.15.1": {
     "repository": "https://github.com/software-mansion/react-native-svg"
   },
   "react-native-worklets@0.6.1": {
