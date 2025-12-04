@@ -140,6 +140,7 @@ export function AnimatedLegendList<T>(props: LegendListProps<T>) {
   );
 }
 
+// @ts-expect-error - Argument should be compatible.
 export type AnimatedLegendListRef = AnimatedRef<LegendListRef>;
 
 export function useLegendListRef() {
