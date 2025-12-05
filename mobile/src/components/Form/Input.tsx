@@ -25,7 +25,7 @@ export function NumericInput({ className, style, ...props }: InputProps) {
       //  - Might be related to: https://github.com/facebook/react-native/pull/48523
       placeholderTextColorClassName="text-foreground/60"
       className={cn(
-        "min-h-12 py-0 text-[3rem] text-foreground",
+        "min-h-12 py-0 text-5xl text-foreground",
         { "opacity-25": props.editable === false },
         className,
       )}

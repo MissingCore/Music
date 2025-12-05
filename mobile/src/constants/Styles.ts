@@ -47,4 +47,5 @@ export const FontSize = {
   lg: 20,
   xl: 24,
   "4xl": 36,
+  "5xl": 48,
 } as const;
