@@ -16,6 +16,7 @@
     "**/*.mjs",
     "**/*.ts",
     "**/*.tsx",
+    "uniwind-types.d.ts",
   ],
   "exclude": [
     "node_modules"
