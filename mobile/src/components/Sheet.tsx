@@ -3,13 +3,13 @@ import type { TrueSheetProps } from "@lodev09/react-native-true-sheet";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { platformApiLevel } from "expo-device";
 import type { ParseKeys } from "i18next";
-import { cssInterop } from "nativewind";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { PressableProps, StyleProp, ViewStyle } from "react-native";
 import { Keyboard, View, useWindowDimensions } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { withUniwind } from "uniwind";
 
 import { useTheme } from "~/hooks/useTheme";
 
@@ -20,9 +20,7 @@ import { Button } from "./Form/Button";
 import { NumericInput } from "./Form/Input";
 import { StyledText, TStyledText } from "./Typography/StyledText";
 
-const WrappedGestureHandlerRootView = cssInterop(GestureHandlerRootView, {
-  className: "style",
-});
+const WrappedGestureHandlerRootView = withUniwind(GestureHandlerRootView);
 
 interface SheetProps extends Omit<TrueSheetProps, "name"> {
   titleKey?: ParseKeys;
