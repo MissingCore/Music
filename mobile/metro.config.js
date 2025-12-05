@@ -15,5 +15,5 @@ if (process.env.EXPO_PUBLIC_WITH_SENTRY === "true") {
 config.resolver.sourceExts.push("sql");
 
 module.exports = withUniwindConfig(config, {
-  cssEntryFile: "./src/resources/global.css",
+  cssEntryFile: "./src/global.css",
 });
