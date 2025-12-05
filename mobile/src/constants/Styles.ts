@@ -39,13 +39,7 @@ export const FontFamily = {
   ntype: "NType82-Headline",
 } as const;
 
-export const TwFontFamilies = Object.keys(FontFamily).map(
-  (f) => `font-${f}` as `font-${(typeof FontFamily)[keyof typeof FontFamily]}`,
-);
-
 export const FontSize = {
-  title: 36,
-  subtitle: 28,
   xxs: 10,
   xs: 12,
   sm: 14,
