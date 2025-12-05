@@ -11,8 +11,6 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 
-import { ThemeProvider } from "./ThemeProvider";
-
 import { queryClient } from "~/lib/react-query";
 
 /** All providers used by the app. */
@@ -20,16 +18,14 @@ export function AppProvider(props: { children: React.ReactNode }) {
   return (
     <SafeAreaProvider>
       <KeyboardProvider>
-        <ThemeProvider>
-          <PaperProvider>
-            <GestureHandlerRootView>
-              <QueryClientProvider client={queryClient}>
-                <ChildrenWrapper {...props} />
-                <ToastProvider />
-              </QueryClientProvider>
-            </GestureHandlerRootView>
-          </PaperProvider>
-        </ThemeProvider>
+        <PaperProvider>
+          <GestureHandlerRootView>
+            <QueryClientProvider client={queryClient}>
+              <ChildrenWrapper {...props} />
+              <ToastProvider />
+            </QueryClientProvider>
+          </GestureHandlerRootView>
+        </PaperProvider>
       </KeyboardProvider>
     </SafeAreaProvider>
   );
@@ -39,7 +35,11 @@ export function AppProvider(props: { children: React.ReactNode }) {
 function ChildrenWrapper(props: { children: React.ReactNode }) {
   const { bottom } = useSafeAreaInsets();
   return (
-    <View style={{ paddingBottom: bottom }} className="flex-1" {...props} />
+    <View
+      style={{ paddingBottom: bottom }}
+      className="flex-1 bg-canvas"
+      {...props}
+    />
   );
 }
 //#endregion
