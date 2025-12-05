@@ -125,7 +125,7 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
         className="-mx-4"
         contentContainerClassName="px-4"
       />
-      <TEm dim textKey="term.tracks" className="mb-2 mt-4" />
+      <TEm dim textKey="term.tracks" className="mt-4 mb-2" />
     </>
   );
 }

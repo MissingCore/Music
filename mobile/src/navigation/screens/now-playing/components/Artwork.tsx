@@ -102,7 +102,7 @@ function VinylLegacy(props: ArtworkProps) {
       <Animated.View
         pointerEvents="none"
         style={coverStyle}
-        className="absolute left-0 top-0 z-10"
+        className="absolute top-0 left-0 z-10"
       >
         <MediaImage type="track" {...props} />
       </Animated.View>

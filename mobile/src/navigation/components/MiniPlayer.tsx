@@ -53,7 +53,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
           type="track"
           size={48}
           source={track.artwork}
-          className="mb-1.5 mt-2 rounded-xs"
+          className="mt-2 mb-1.5 rounded-xs"
         />
 
         <TextWrapper

@@ -186,7 +186,7 @@ function AnimatedVinyl(props: AnimatedVinylProps) {
           <Vinyl source={props.imageSource} size={128} />
         </Animated.View>
       </View>
-      <Animated.View style={coverStyle} className="absolute left-0 top-0 z-10">
+      <Animated.View style={coverStyle} className="absolute top-0 left-0 z-10">
         {/* @ts-expect-error Things should be fine with proper usage. */}
         <MediaImage
           type={props.mediaSource.type}
