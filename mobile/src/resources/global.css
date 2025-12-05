@@ -28,8 +28,8 @@
   --font-ntype: "NType82-Headline";
 
   /** Border Radius */
-  --radius-sm: 0.25rem;
-  --radius: 0.5rem;
+  --radius-xs: 0.25rem;
+  --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
   --radius-lg: 1rem;
   --radius-xl: 1.5rem;

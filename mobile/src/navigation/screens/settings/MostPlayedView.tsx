@@ -19,7 +19,7 @@ export default function MostPlayed() {
       keyExtractor={({ placement }) => `${placement}`}
       renderItem={({ item, index }) => (
         <View
-          className={cn("flex-row rounded-sm bg-surface p-1", {
+          className={cn("flex-row rounded-xs bg-surface p-1", {
             "rounded-t-md": index === 0,
             "rounded-b-md": (data?.length ?? 0) - 1 === index,
           })}

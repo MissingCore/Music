@@ -73,7 +73,7 @@ function SearchResultContent(
           type={props.type}
           size={48}
           source={props.imageSource ?? null}
-          className="rounded-sm"
+          className="rounded-xs"
         />
       )}
       <View className="shrink grow">
