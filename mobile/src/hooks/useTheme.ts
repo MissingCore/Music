@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { useColorScheme } from "react-native";
+import { isSystemDarkMode } from "react-native-bootsplash";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 
@@ -23,6 +24,9 @@ const Themes = {
     foreground: Colors.neutral100,
   },
 } as const;
+
+/** Returns theme colors based on the system theme on app launch. */
+export const SystemTheme = Themes[isSystemDarkMode ? "dark" : "light"];
 
 /** Returns if we're using light or dark theme. */
 export function useCurrentTheme() {
