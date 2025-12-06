@@ -123,9 +123,11 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
         )}
         style={{ minHeight: estimatedListHeight }}
         className="-mx-4"
-        contentContainerClassName="px-4"
+        // FIXME: For some weird reason, only 50% of the horizontal padding
+        // gets applied on a horizontal FlashList.
+        contentContainerClassName="px-8"
       />
-      <TEm dim textKey="term.tracks" className="mb-2 mt-4" />
+      <TEm dim textKey="term.tracks" className="mt-4 mb-2" />
     </>
   );
 }

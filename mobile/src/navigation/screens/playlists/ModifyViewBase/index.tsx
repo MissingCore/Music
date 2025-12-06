@@ -99,6 +99,7 @@ function PageContent({ bottomOffset }: { bottomOffset: number }) {
   const tracks = usePlaylistStore((s) => s.tracks);
   const isSubmitting = usePlaylistStore((s) => s.isSubmitting);
   const moveTrack = usePlaylistStore((s) => s.moveTrack);
+  const removeTrack = usePlaylistStore((s) => s.removeTrack);
   const setShowConfirmation = usePlaylistStore((s) => s.setShowConfirmation);
   const addCallbacks = usePlaylistStore((s) => s.SearchCallbacks);
   const addMusicSheetRef = useSheetRef();
@@ -126,7 +127,7 @@ function PageContent({ bottomOffset }: { bottomOffset: number }) {
         <FlashDragList
           data={tracks}
           keyExtractor={({ id }) => id}
-          renderItem={(args) => <RenderItem {...args} />}
+          renderItem={(args) => <RenderItem {...args} onRemove={removeTrack} />}
           onReordered={moveTrack}
           ListHeaderComponent={
             <ListHeaderComponent
@@ -147,34 +148,35 @@ function PageContent({ bottomOffset }: { bottomOffset: number }) {
 //#region renderItem
 /** Item rendered in the `<DragList />`. */
 const RenderItem = memo(
-  function RenderItem({ item, ...info }: RenderItemProps) {
-    const removeTrack = usePlaylistStore((s) => s.removeTrack);
+  function RenderItem({
+    item,
+    onRemove,
+    ...info
+  }: RenderItemProps & { onRemove: (id: string) => void }) {
     return (
-      <Pressable
-        delayLongPress={250}
-        onLongPress={info.onDragStart}
-        onPressOut={info.onDragEnd}
-        className={cn("group", { "mt-2": info.index > 0 })}
+      <Swipeable
+        disabled={info.isDragging}
+        onSwipeLeft={() => onRemove(item.id)}
+        RightIcon={<Delete color={Colors.neutral100} />}
+        rightIconContainerClassName="rounded-xs bg-red"
+        wrapperClassName={cn("mx-4", { "mt-2": info.index > 0 })}
+        className="overflow-hidden rounded-xs bg-canvas"
       >
-        <Swipeable
-          disabled={info.isDragging}
-          onSwipeLeft={() => removeTrack(item.id)}
-          RightIcon={<Delete color={Colors.neutral100} />}
-          rightIconContainerClassName="rounded-sm bg-red"
-          wrapperClassName="mx-4"
-          className="overflow-hidden rounded-sm bg-canvas"
+        <Pressable
+          delayLongPress={250}
+          onLongPress={info.onDragStart}
+          onPressOut={info.onDragEnd}
+          className="active:bg-surface/50"
         >
           <SearchResult
             type="track"
             title={item.name}
             description={item.artistName ?? "—"}
             imageSource={item.artwork}
-            className={cn("pr-4 group-active:bg-surface/50", {
-              "!bg-surface": info.isActive,
-            })}
+            className={cn("pr-4", { "bg-surface": info.isActive })}
           />
-        </Swipeable>
-      </Pressable>
+        </Pressable>
+      </Swipeable>
     );
   },
   areRenderItemPropsEqual((o, n) => o.item.id === n.item.id),
@@ -210,7 +212,7 @@ function ListHeaderComponent(props: { showSheet: VoidFunction }) {
           <TStyledText textKey="form.validation.unique" className="text-xs" />
         </View>
       </View>
-      <View className="mb-2 ml-4 mr-1 mt-6 shrink grow flex-row items-center justify-between">
+      <View className="mt-6 mr-1 mb-2 ml-4 shrink grow flex-row items-center justify-between">
         <TStyledText textKey="term.tracks" />
         <IconButton
           Icon={Add}

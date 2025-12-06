@@ -169,7 +169,7 @@ function SearchResultsList<TScope extends SearchCategories>(
         start={{ x: 0.0, y: 0.0 }}
         end={{ x: 0.0, y: 1.0 }}
         style={{ height: filterHeight }}
-        className="absolute left-0 top-0 w-full"
+        className="absolute top-0 left-0 w-full"
       />
     </View>
   );
@@ -191,10 +191,10 @@ function SearchFilters(props: {
       renderItem={({ item: tab }) => {
         const selected = props.selectedTab === tab;
         return (
-          <View className="rounded bg-canvas">
+          <View className="rounded-sm bg-canvas">
             <Button
               onPress={() => props.onSelectTab(tab)}
-              className={cn("min-h-0 min-w-0 rounded px-3 py-1.5", {
+              className={cn("min-h-0 min-w-0 rounded-sm px-3 py-1.5", {
                 "bg-red": selected,
               })}
             >
@@ -207,7 +207,7 @@ function SearchFilters(props: {
           </View>
         );
       }}
-      className="absolute left-0 top-0 z-10 -mx-4 py-3"
+      className="absolute top-0 left-0 z-10 -mx-4 py-3"
       contentContainerClassName="gap-1.5 px-4"
     />
   );

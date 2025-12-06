@@ -71,9 +71,7 @@ function FavoriteTracks(props: { size: number; className: string }) {
       style={{ width: props.size, height: props.size }}
       className={cn("gap-0 rounded-lg bg-red", props.className)}
     >
-      <AccentText className="text-[3rem] text-neutral100">
-        {trackCount}
-      </AccentText>
+      <AccentText className="text-5xl text-neutral100">{trackCount}</AccentText>
       <TStyledText textKey="term.tracks" className="text-neutral100" />
     </Button>
   );

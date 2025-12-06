@@ -59,7 +59,7 @@ export function ModalActions(props: ModalActionsProp) {
       <Button
         {...props.topAction}
         className={cn(
-          "rounded-b-sm bg-canvas",
+          "rounded-b-xs bg-canvas",
           { "bg-onSurface": theme === "dark" },
           props.topAction.className,
         )}
@@ -75,7 +75,7 @@ export function ModalActions(props: ModalActionsProp) {
       <Button
         {...props.bottomAction}
         className={cn(
-          "rounded-t-sm bg-canvas",
+          "rounded-t-xs bg-canvas",
           { "bg-onSurface": theme === "dark" },
           props.bottomAction.className,
         )}

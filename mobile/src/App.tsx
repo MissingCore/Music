@@ -14,11 +14,9 @@ import { preferenceStore } from "~/stores/Preference/store";
 import { useLoadResources } from "~/hooks/useLoadResources";
 import NavigationContainer from "~/navigation";
 import { AppProvider } from "~/navigation/providers/AppProvider";
-import { SystemTheme } from "./navigation/providers/ThemeProvider";
 import { ErrorBoundary } from "~/navigation/components/ErrorBoundary";
 import { Onboarding } from "~/navigation/screens/OnboardingView";
 
-import "~/resources/global.css";
 import "~/modules/i18n"; // Make sure translations are bundled.
 import { SENTRY_ENABLED, Sentry } from "~/lib/sentry";
 import { bgWait } from "~/utils/promise";
@@ -53,9 +51,7 @@ export default function App() {
         {isLoaded && <NavigationContainer />}
 
         <FakeLayoutTransition unmount={isLoaded}>
-          <SystemTheme>
-            <Onboarding />
-          </SystemTheme>
+          <Onboarding />
         </FakeLayoutTransition>
       </ErrorBoundary>
     </AppProvider>

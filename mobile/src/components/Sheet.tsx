@@ -3,13 +3,13 @@ import type { TrueSheetProps } from "@lodev09/react-native-true-sheet";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { platformApiLevel } from "expo-device";
 import type { ParseKeys } from "i18next";
-import { cssInterop } from "nativewind";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { PressableProps, StyleProp, ViewStyle } from "react-native";
 import { Keyboard, View, useWindowDimensions } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { withUniwind } from "uniwind";
 
 import { useTheme } from "~/hooks/useTheme";
 
@@ -20,9 +20,7 @@ import { Button } from "./Form/Button";
 import { NumericInput } from "./Form/Input";
 import { StyledText, TStyledText } from "./Typography/StyledText";
 
-const WrappedGestureHandlerRootView = cssInterop(GestureHandlerRootView, {
-  className: "style",
-});
+const WrappedGestureHandlerRootView = withUniwind(GestureHandlerRootView);
 
 interface SheetProps extends Omit<TrueSheetProps, "name"> {
   titleKey?: ParseKeys;
@@ -107,7 +105,7 @@ export function Sheet({
         onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}
         className={cn("gap-2 px-4 pb-2", { "pb-6": !!titleKey })}
       >
-        <View className="mx-auto my-[10px] h-1 w-8 rounded-full bg-onSurface" />
+        <View className="mx-auto my-2.5 h-1 w-8 rounded-full bg-onSurface" />
         {titleKey ? (
           <Marquee color="canvasAlt" center>
             <StyledText className="text-lg">{t(titleKey)}</StyledText>
@@ -188,7 +186,7 @@ export function NumericSheet(props: NumericSheetProps) {
       <NumericInput
         defaultValue={`${props.value}`}
         onChangeText={(text) => setNewValue(text)}
-        className="mx-auto mb-2 w-full max-w-[50%] border-b border-foreground/60 text-center"
+        className="mx-auto mb-2 w-full max-w-1/2 border-b border-foreground/60 text-center"
       />
     </Sheet>
   );
@@ -209,7 +207,7 @@ export function SheetButtonGroup(props: {
       <Button
         {...props.leftButton}
         className={cn(
-          "min-h-14 flex-1 rounded-r-sm",
+          "min-h-14 flex-1 rounded-r-xs",
           props.leftButton.className,
         )}
       >
@@ -222,7 +220,7 @@ export function SheetButtonGroup(props: {
       <Button
         {...props.rightButton}
         className={cn(
-          "min-h-14 flex-1 rounded-l-sm",
+          "min-h-14 flex-1 rounded-l-xs",
           props.rightButton.className,
         )}
       >

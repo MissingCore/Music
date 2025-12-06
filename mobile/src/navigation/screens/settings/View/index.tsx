@@ -127,7 +127,7 @@ export default function Settings() {
             description={t("feat.thirdParty.brief")}
             onPress={() => navigation.navigate("ThirdParty")}
           />
-          <Card className="overflow-hidden rounded-t-sm p-0">
+          <Card className="overflow-hidden rounded-t-xs p-0">
             <ListItem
               titleKey="feat.version.title"
               description={APP_VERSION}

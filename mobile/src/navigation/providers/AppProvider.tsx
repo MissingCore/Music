@@ -3,6 +3,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { platformApiLevel } from "expo-device";
 import { useMemo } from "react";
 import { View } from "react-native";
+import { SystemBars as DeviceSystemBars } from "react-native-edge-to-edge";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { Provider as PaperProvider } from "react-native-paper";
@@ -11,7 +12,8 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 
-import { ThemeProvider } from "./ThemeProvider";
+import "../../global.css";
+import { useCurrentTheme } from "~/hooks/useTheme";
 
 import { queryClient } from "~/lib/react-query";
 
@@ -20,26 +22,39 @@ export function AppProvider(props: { children: React.ReactNode }) {
   return (
     <SafeAreaProvider>
       <KeyboardProvider>
-        <ThemeProvider>
-          <PaperProvider>
-            <GestureHandlerRootView>
-              <QueryClientProvider client={queryClient}>
-                <ChildrenWrapper {...props} />
-                <ToastProvider />
-              </QueryClientProvider>
-            </GestureHandlerRootView>
-          </PaperProvider>
-        </ThemeProvider>
+        <PaperProvider>
+          <GestureHandlerRootView>
+            <QueryClientProvider client={queryClient}>
+              <SystemBars />
+              <ChildrenWrapper {...props} />
+              <ToastProvider />
+            </QueryClientProvider>
+          </GestureHandlerRootView>
+        </PaperProvider>
       </KeyboardProvider>
     </SafeAreaProvider>
   );
 }
 
 //#region Edge-To-Edge
+function SystemBars() {
+  const currentTheme = useCurrentTheme();
+  const iconColor = currentTheme === "light" ? "dark" : "light";
+  return (
+    <DeviceSystemBars
+      style={{ statusBar: iconColor, navigationBar: iconColor }}
+    />
+  );
+}
+
 function ChildrenWrapper(props: { children: React.ReactNode }) {
   const { bottom } = useSafeAreaInsets();
   return (
-    <View style={{ paddingBottom: bottom }} className="flex-1" {...props} />
+    <View
+      style={{ paddingBottom: bottom }}
+      className="flex-1 bg-canvas"
+      {...props}
+    />
   );
 }
 //#endregion

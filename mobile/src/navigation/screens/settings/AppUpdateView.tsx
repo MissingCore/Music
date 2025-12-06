@@ -74,7 +74,7 @@ export default function AppUpdate() {
             <View
               key={node.key}
               style={{ backgroundColor: codeBg }}
-              className="translate-y-0.5 rounded-sm px-1"
+              className="translate-y-0.5 rounded-xs px-1"
             >
               <Text
                 style={{ fontFamily: "monospace" }}
