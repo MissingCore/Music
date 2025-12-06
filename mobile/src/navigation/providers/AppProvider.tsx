@@ -3,6 +3,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { platformApiLevel } from "expo-device";
 import { useMemo } from "react";
 import { View } from "react-native";
+import { SystemBars as DeviceSystemBars } from "react-native-edge-to-edge";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { Provider as PaperProvider } from "react-native-paper";
@@ -10,6 +11,8 @@ import {
   SafeAreaProvider,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
+
+import { useCurrentTheme } from "~/hooks/useTheme";
 
 import { queryClient } from "~/lib/react-query";
 
@@ -21,6 +24,7 @@ export function AppProvider(props: { children: React.ReactNode }) {
         <PaperProvider>
           <GestureHandlerRootView>
             <QueryClientProvider client={queryClient}>
+              <SystemBars />
               <ChildrenWrapper {...props} />
               <ToastProvider />
             </QueryClientProvider>
@@ -32,6 +36,16 @@ export function AppProvider(props: { children: React.ReactNode }) {
 }
 
 //#region Edge-To-Edge
+function SystemBars() {
+  const currentTheme = useCurrentTheme();
+  const iconColor = currentTheme === "light" ? "dark" : "light";
+  return (
+    <DeviceSystemBars
+      style={{ statusBar: iconColor, navigationBar: iconColor }}
+    />
+  );
+}
+
 function ChildrenWrapper(props: { children: React.ReactNode }) {
   const { bottom } = useSafeAreaInsets();
   return (
