@@ -45,7 +45,7 @@ export function addToEnd({ id, name }: QueueInsertionProps) {
 
 /** Move a track in the queue. */
 export function moveTrack(fromIndex: number, toIndex: number) {
-  const { queue, queuePosition } = playbackStore.getState();
+  const { queue, queuePosition, queuedNext } = playbackStore.getState();
 
   let newQueuePosition = queuePosition;
   if (fromIndex === queuePosition) newQueuePosition = toIndex;
@@ -57,9 +57,27 @@ export function moveTrack(fromIndex: number, toIndex: number) {
     newQueuePosition += 1;
   }
 
+  let resetQueuedNext = true;
+  const playNextStart = queuePosition + 1;
+  const playNextEnd = queuePosition + queuedNext;
+  if (
+    //? If a track added via "Play Next" has been moved to a position
+    //? within `queuedNext` tracks of `queuePosition`.
+    (isWithin(playNextStart, fromIndex, playNextEnd) &&
+      isWithin(playNextStart, toIndex, playNextEnd)) ||
+    //? If a track outside of `queuedNext` tracks of `queuePosition` has
+    //? not been moved within this range.
+    (!isWithin(playNextStart, fromIndex, playNextEnd) &&
+      !isWithin(playNextStart, toIndex, playNextEnd))
+  ) {
+    resetQueuedNext = false;
+  }
+
   playbackStore.setState({
     queue: moveArray(queue, { fromIndex, toIndex }),
     queuePosition: newQueuePosition,
+    //? Reset `queuedNext` based on how we moved the track.
+    queuedNext: resetQueuedNext ? 0 : undefined,
   });
 }
 
@@ -186,6 +204,10 @@ export async function synchronize() {
 }
 
 //#region Internal Utils
+function isWithin(min: number, value: number, max: number) {
+  return value >= min && value <= max;
+}
+
 function insertIntoQueue({
   id,
   name,
