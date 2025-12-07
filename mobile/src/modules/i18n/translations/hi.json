@@ -391,11 +391,15 @@
         "filePath": "फ़ाइल पथ",
         "sampleRate": "सैंपल रेट",
         "size": "आकार",
-        "addToPlaylist": "प्लेलिस्ट में जोड़ें",
-        "addToQueue": "कतार में जोड़ें",
+        "addToPlaylist": "प्लेलिस्ट में जोड़ें"
+      }
+    },
+    "queue": {
+      "extra": {
+        "add": "कतार में जोड़ें",
         "playNext": null,
         "playLast": null,
-        "queueAdd": "`{{- name}}` कतार में जोड़ा गया।"
+        "toast": "`{{- name}}` कतार में जोड़ा गया।"
       }
     }
   }

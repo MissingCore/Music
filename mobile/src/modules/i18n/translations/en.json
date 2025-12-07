@@ -415,12 +415,16 @@
         "sampleRate": "Sample Rate",
         "size": "Size",
 
-        "addToPlaylist": "Add to Playlist",
-        "addToQueue": "Add to Queue",
+        "addToPlaylist": "Add to Playlist"
+      }
+    },
+    "queue": {
+      "extra": {
+        "add": "Add to Queue",
         "playNext": "Play Next",
         "playLast": "Play Last",
 
-        "queueAdd": "`{{- name}}` added to queue."
+        "toast": "`{{- name}}` added to queue."
       }
     }
   }

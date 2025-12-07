@@ -391,11 +391,15 @@
         "filePath": "Percorso file",
         "sampleRate": "Frequenza di campionamento",
         "size": "Dimensioni",
-        "addToPlaylist": "Aggiungi ad una $t(term.playlist)",
-        "addToQueue": "Aggiungi alla coda",
+        "addToPlaylist": "Aggiungi ad una $t(term.playlist)"
+      }
+    },
+    "queue": {
+      "extra": {
+        "add": "Aggiungi alla coda",
         "playNext": null,
         "playLast": null,
-        "queueAdd": "`{{- name}}` aggiunto alla coda."
+        "toast": "`{{- name}}` aggiunto alla coda."
       }
     }
   }

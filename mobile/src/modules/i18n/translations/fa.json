@@ -391,11 +391,15 @@
         "filePath": "مسیر فایل",
         "sampleRate": "نرخ نمونه برداری",
         "size": "اندازه",
-        "addToPlaylist": "اضافه به لیست پخش",
-        "addToQueue": "اضافه به صف",
+        "addToPlaylist": "اضافه به لیست پخش"
+      }
+    },
+    "queue": {
+      "extra": {
+        "add": "اضافه به صف",
         "playNext": null,
         "playLast": null,
-        "queueAdd": "`{{- name}}` به صف اضافه شد."
+        "toast": "`{{- name}}` به صف اضافه شد."
       }
     }
   }
