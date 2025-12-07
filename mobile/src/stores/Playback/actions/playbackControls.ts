@@ -128,7 +128,8 @@ export async function seekTo(position: number) {
 
 /** Play track at specified index in queue. */
 export async function playAtIndex(index: number) {
-  const { getTrack, reset, queue } = playbackStore.getState();
+  const { getTrack, reset, queue, queuePosition, queuedNext } =
+    playbackStore.getState();
 
   const nextTrackKey = queue[index];
   if (!nextTrackKey) return await reset();
@@ -141,6 +142,12 @@ export async function playAtIndex(index: number) {
     activeKey: nextTrackKey,
     activeTrack: nextTrack,
     queuePosition: index,
+    //? Update `queuedNext` accordingly if `index` is within `queuedNext`
+    //? tracks after `queuePosition`.
+    queuedNext:
+      index < queuePosition || index > queuePosition + queuedNext
+        ? 0
+        : queuedNext - (index - queuePosition),
     ...getNewRepeatState(),
   });
 
