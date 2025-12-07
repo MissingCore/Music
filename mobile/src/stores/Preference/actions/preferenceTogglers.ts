@@ -44,6 +44,7 @@ export function toggleQueueAwareNext() {
   preferenceStore.setState((prev) => ({
     queueAwareNext: !prev.queueAwareNext,
   }));
+  playbackStore.setState({ queuedNext: 0 });
 }
 
 export function toggleRCNotification() {
