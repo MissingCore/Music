@@ -171,7 +171,7 @@ function insertIntoQueue({
   after,
 }: QueueInsertionProps & { after: number }) {
   const { queue } = playbackStore.getState();
-  toast(i18next.t("feat.modalTrack.extra.queueAdd", { name }), ToastOptions);
+  toast(i18next.t("feat.queue.extra.toast", { name }), ToastOptions);
 
   if (queue.length === 0) return;
   const uniqueId = createId();
