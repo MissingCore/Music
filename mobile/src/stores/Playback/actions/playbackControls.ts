@@ -145,9 +145,9 @@ export async function playAtIndex(index: number) {
     //? Update `numQueuedNext` accordingly if `index` is within `numQueuedNext`
     //? tracks after `queuePosition`.
     numQueuedNext:
-      index < queuePosition || index > queuePosition + numQueuedNext
+      index < queuePosition
         ? 0
-        : numQueuedNext - (index - queuePosition),
+        : Math.max(0, numQueuedNext - (index - queuePosition)),
     ...getNewRepeatState(),
   });
 
