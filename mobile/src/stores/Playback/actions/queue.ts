@@ -57,27 +57,22 @@ export function moveTrack(fromIndex: number, toIndex: number) {
     newQueuePosition += 1;
   }
 
-  let resetQueuedNext = true;
+  let newQueuedNext = queuedNext;
   const playNextStart = queuePosition + 1;
   const playNextEnd = queuePosition + queuedNext;
-  if (
-    //? If a track added via "Play Next" has been moved to a position
-    //? within `queuedNext` tracks of `queuePosition`.
-    (isWithin(playNextStart, fromIndex, playNextEnd) &&
-      isWithin(playNextStart, toIndex, playNextEnd)) ||
-    //? If a track outside of `queuedNext` tracks of `queuePosition` has
-    //? not been moved within this range.
-    (!isWithin(playNextStart, fromIndex, playNextEnd) &&
-      !isWithin(playNextStart, toIndex, playNextEnd))
-  ) {
-    resetQueuedNext = false;
+  if (isWithin(playNextStart, fromIndex, playNextEnd)) {
+    //? Case if we move a track within the range to outside the range.
+    if (!isWithin(playNextStart, toIndex, playNextEnd)) newQueuedNext -= 1;
+  } else {
+    //? Case if we move a track outside the range to inside the range.
+    if (isWithin(playNextStart, toIndex, playNextEnd)) newQueuedNext = 0;
   }
 
   playbackStore.setState({
     queue: moveArray(queue, { fromIndex, toIndex }),
     queuePosition: newQueuePosition,
-    //? Reset `queuedNext` based on how we moved the track.
-    queuedNext: resetQueuedNext ? 0 : queuedNext,
+    //? Adjust `queuedNext` based on how we moved the track.
+    queuedNext: Math.max(0, newQueuedNext),
   });
 }
 
