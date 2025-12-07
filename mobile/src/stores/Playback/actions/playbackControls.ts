@@ -87,8 +87,8 @@ export async function prev() {
       activeKey: prevTrackKey,
       activeTrack: prevTrack,
       queuePosition: prevIndex,
-      //? We lose the `queuedNext` context if we play the previous track.
-      queuedNext: 0,
+      //? We lose the `numQueuedNext` context if we play the previous track.
+      numQueuedNext: 0,
       ...getNewRepeatState(),
     });
   } else {
@@ -128,7 +128,7 @@ export async function seekTo(position: number) {
 
 /** Play track at specified index in queue. */
 export async function playAtIndex(index: number) {
-  const { getTrack, reset, queue, queuePosition, queuedNext } =
+  const { getTrack, reset, queue, queuePosition, numQueuedNext } =
     playbackStore.getState();
 
   const nextTrackKey = queue[index];
@@ -142,12 +142,12 @@ export async function playAtIndex(index: number) {
     activeKey: nextTrackKey,
     activeTrack: nextTrack,
     queuePosition: index,
-    //? Update `queuedNext` accordingly if `index` is within `queuedNext`
+    //? Update `numQueuedNext` accordingly if `index` is within `numQueuedNext`
     //? tracks after `queuePosition`.
-    queuedNext:
-      index < queuePosition || index > queuePosition + queuedNext
+    numQueuedNext:
+      index < queuePosition || index > queuePosition + numQueuedNext
         ? 0
-        : queuedNext - (index - queuePosition),
+        : numQueuedNext - (index - queuePosition),
     ...getNewRepeatState(),
   });
 
@@ -186,7 +186,7 @@ export async function playFromList({
           activeTrack: (await getTrack(trackId))!,
           queuePosition: listIndex,
           //? Tracks added via "Play Next" typically won't be from the original list.
-          queuedNext: 0,
+          numQueuedNext: 0,
         });
         await loadCurrentTrack();
       }
@@ -246,7 +246,7 @@ function getNewRepeatState() {
  * **Use externally only for `🧪 Smooth Playback Transition`.**
  */
 export async function getNextTrack() {
-  const { getTrack, reset, queue, queuePosition, queuedNext } =
+  const { getTrack, reset, queue, queuePosition, numQueuedNext } =
     playbackStore.getState();
 
   const nextIndex = queuePosition === queue.length - 1 ? 0 : queuePosition + 1;
@@ -261,8 +261,8 @@ export async function getNextTrack() {
     activeKey: nextTrackKey,
     activeTrack: nextTrack,
     queuePosition: nextIndex,
-    //? Decrement `queuedNext` when the next track is played.
-    queuedNext: nextIndex === 0 || queuedNext <= 0 ? 0 : queuedNext - 1,
+    //? Decrement `numQueuedNext` when the next track is played.
+    numQueuedNext: nextIndex === 0 ? 0 : Math.max(0, numQueuedNext - 1),
   };
 }
 

@@ -60,7 +60,7 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
         activeKey: undefined,
         activeTrack: undefined,
         queuePosition: 0,
-        queuedNext: 0,
+        numQueuedNext: 0,
       });
       await TrackPlayer.reset();
       await resetWidgets();
@@ -107,7 +107,7 @@ export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
     activeKey: undefined,
     activeTrack: undefined,
     queuePosition: 0,
-    queuedNext: 0,
+    numQueuedNext: 0,
   }),
   {
     name: "music::playback-store",

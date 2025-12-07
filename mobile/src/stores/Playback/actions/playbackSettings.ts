@@ -69,7 +69,7 @@ export async function toggleShuffle() {
     queue: updatedQueue,
     activeKey: trackKey,
     queuePosition: updatedQueue.findIndex((id) => id === trackKey),
-    //? Changing the shuffle status should always reset `queuedNext`.
-    queuedNext: 0,
+    //? Changing the shuffle status should always reset `numQueuedNext`.
+    numQueuedNext: 0,
   });
 }

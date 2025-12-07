@@ -61,7 +61,7 @@ export interface PlaybackStore {
   /** Index in current queue where `activeKey` is located. */
   queuePosition: number;
   /** Number of tracks queued next via "Play Next". */
-  queuedNext: number;
+  numQueuedNext: number;
 }
 
 export const PersistedFields: string[] = [
