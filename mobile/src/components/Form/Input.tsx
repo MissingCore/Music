@@ -21,8 +21,9 @@ export function NumericInput({ className, style, ...props }: InputProps) {
     <RNTextInput
       inputMode="numeric"
       // FIXME: For some random reason, inputs have a default vertical padding
-      // in React Native 0.79.
-      //  - Might be related to: https://github.com/facebook/react-native/pull/48523
+      // in React Native 0.79. Might be related to:
+      //  - https://github.com/facebook/react-native/pull/48523
+      //  - https://github.com/facebook/react-native/issues/50692
       className={cn(
         "min-h-12 py-0 text-[3rem] text-foreground placeholder:text-foreground/60",
         { "opacity-25": props.editable === false },
@@ -43,8 +44,9 @@ export function TextInput({ className, style, ...props }: InputProps) {
   return (
     <RNTextInput
       // FIXME: For some random reason, inputs have a default vertical padding
-      // in React Native 0.79.
-      //  - Might be related to: https://github.com/facebook/react-native/pull/48523
+      // in React Native 0.79. Might be related to:
+      //  - https://github.com/facebook/react-native/pull/48523
+      //  - https://github.com/facebook/react-native/issues/50692
       className={cn(
         "min-h-12 py-0 text-base text-foreground placeholder:text-foreground/60",
         { "opacity-25": props.editable === false },
