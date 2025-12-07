@@ -37,6 +37,7 @@ export function formatTrackforPlayer(track: TrackWithAlbum) {
     artwork: getTrackCover(track) ?? undefined,
     title: track.name,
     artist: track.artistName ?? "No Artist",
+    album: track.album?.name ?? undefined,
     duration: track.duration,
     id: track.id,
   } satisfies AddTrack;
