@@ -77,7 +77,7 @@ export function moveTrack(fromIndex: number, toIndex: number) {
     queue: moveArray(queue, { fromIndex, toIndex }),
     queuePosition: newQueuePosition,
     //? Reset `queuedNext` based on how we moved the track.
-    queuedNext: resetQueuedNext ? 0 : undefined,
+    queuedNext: resetQueuedNext ? 0 : queuedNext,
   });
 }
 
