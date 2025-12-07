@@ -91,6 +91,11 @@ export interface PreferenceStore {
    * rewrite. The plan is to eventually make this stable.
    */
   smoothPlaybackTransition: boolean;
+  /**
+   * Tracks added via "Play Next" will attempt to added after the previous
+   * added track.
+   */
+  queueAwareNext: boolean;
   /** Utilize a waveform slider on the Now Playing screen. */
   waveformSlider: boolean;
 }

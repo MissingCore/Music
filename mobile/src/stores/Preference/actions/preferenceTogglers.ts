@@ -40,6 +40,12 @@ export function toggleMiniplayerGestures() {
   }));
 }
 
+export function toggleQueueAwareNext() {
+  preferenceStore.setState((prev) => ({
+    queueAwareNext: !prev.queueAwareNext,
+  }));
+}
+
 export function toggleRCNotification() {
   preferenceStore.setState((prev) => ({
     rcNotification: !prev.rcNotification,
