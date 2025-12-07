@@ -34,12 +34,12 @@ export function CurrentListMenu(props: {
     () => [
       {
         Icon: QueueMusic,
-        labelKey: "feat.modalTrack.extra.playNext",
+        labelKey: "feat.queue.extra.playNext",
         onPress: () => Queue.add({ id: props.trackIds, name: props.name }),
       },
       {
         Icon: LowPriority,
-        labelKey: "feat.modalTrack.extra.playLast",
+        labelKey: "feat.queue.extra.playLast",
         onPress: () => Queue.addToEnd({ id: props.trackIds, name: props.name }),
       },
     ],

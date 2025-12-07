@@ -391,11 +391,15 @@
         "filePath": "Chemin du fichier",
         "sampleRate": "Taux d'échantillonnage",
         "size": "Taille",
-        "addToPlaylist": "Ajouter à une playlist",
-        "addToQueue": "Mettre à la suite",
+        "addToPlaylist": "Ajouter à une playlist"
+      }
+    },
+    "queue": {
+      "extra": {
+        "add": "Mettre à la suite",
         "playNext": "Jouer juste après",
         "playLast": "Jouer en dernier",
-        "queueAdd": "`{{- name}}` ajouté à la file d'attente."
+        "toast": "`{{- name}}` ajouté à la file d'attente."
       }
     }
   }

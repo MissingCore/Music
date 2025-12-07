@@ -13,6 +13,7 @@ import {
   getTrackIdsList,
   getUpdatedLists,
 } from "../utils";
+import { preferenceStore } from "../../Preference/store";
 
 import { ToastOptions } from "~/lib/toast";
 import { moveArray } from "~/utils/object";
@@ -21,12 +22,19 @@ import { isString } from "~/utils/validation";
 interface QueueInsertionProps {
   id: string | string[];
   name: string;
+  afterQueuedNext?: boolean;
 }
 
 /** Add track(s) after the current playing track. */
 export function add({ id, name }: QueueInsertionProps) {
   const { queuePosition } = playbackStore.getState();
-  insertIntoQueue({ id, name, after: queuePosition + 1 });
+  const { queueAwareNext } = preferenceStore.getState();
+  insertIntoQueue({
+    id,
+    name,
+    afterQueuedNext: queueAwareNext,
+    after: queuePosition + 1,
+  });
 }
 
 /** Add track(s) after the end of the queue. */
@@ -37,7 +45,7 @@ export function addToEnd({ id, name }: QueueInsertionProps) {
 
 /** Move a track in the queue. */
 export function moveTrack(fromIndex: number, toIndex: number) {
-  const { queue, queuePosition } = playbackStore.getState();
+  const { queue, queuePosition, numQueuedNext } = playbackStore.getState();
 
   let newQueuePosition = queuePosition;
   if (fromIndex === queuePosition) newQueuePosition = toIndex;
@@ -49,9 +57,22 @@ export function moveTrack(fromIndex: number, toIndex: number) {
     newQueuePosition += 1;
   }
 
+  let newNumQueuedNext = numQueuedNext;
+  const playNextStart = queuePosition + 1;
+  const playNextEnd = queuePosition + numQueuedNext;
+  if (isWithin(playNextStart, fromIndex, playNextEnd)) {
+    //? Case if we move a track within the range to outside the range.
+    if (!isWithin(playNextStart, toIndex, playNextEnd)) newNumQueuedNext -= 1;
+  } else {
+    //? Case if we move a track outside the range to inside the range.
+    if (isWithin(playNextStart, toIndex, playNextEnd)) newNumQueuedNext = 0;
+  }
+
   playbackStore.setState({
     queue: moveArray(queue, { fromIndex, toIndex }),
     queuePosition: newQueuePosition,
+    //? Adjust `numQueuedNext` based on how we moved the track.
+    numQueuedNext: Math.max(0, newNumQueuedNext),
   });
 }
 
@@ -101,6 +122,9 @@ export async function removeIds(ids: string[]) {
     activeKey: updatedQueue[newQueuePosition],
     activeTrack: newActiveTrack,
     queuePosition: newQueuePosition,
+    //? Reset `numQueuedNext` as this function is usually called when we
+    //? error or delete a track.
+    numQueuedNext: 0,
   });
 }
 
@@ -111,7 +135,8 @@ export async function removeIds(ids: string[]) {
  * **Note:** This should be used with debouncing.
  */
 export function removeKeys(keys: Set<string>) {
-  const { queue, activeKey, queuePosition } = playbackStore.getState();
+  const { queue, activeKey, queuePosition, numQueuedNext } =
+    playbackStore.getState();
 
   if (!activeKey) return;
   // You shouldn't be able to remove the active track with this method.
@@ -119,10 +144,16 @@ export function removeKeys(keys: Set<string>) {
 
   // If we removed a track before the active track, decremenet `queuePosition`.
   let newQueuePosition = queuePosition;
+  // If we remove a track within `numQueuedNext` tracks of `queuePosition`, decrement `numQueuedNext`.
+  let newNumQueuedNext = numQueuedNext;
 
   const updatedQueue = queue.filter((tKey, index) => {
     const isRemoved = keys.has(tKey);
-    if (isRemoved && index < queuePosition) newQueuePosition -= 1;
+    if (isRemoved) {
+      if (index < queuePosition) newQueuePosition -= 1;
+      // Remember that we'll never encounter `index === queuePosition`.
+      else if (index <= queuePosition + numQueuedNext) newNumQueuedNext -= 1;
+    }
     return !isRemoved;
   });
 
@@ -130,6 +161,9 @@ export function removeKeys(keys: Set<string>) {
   playbackStore.setState({
     queue: updatedQueue,
     queuePosition: newQueuePosition,
+    //? Update `numQueuedNext` if we manually removed track(s) within
+    //? `numQueuedNext` tracks after `queuePosition`.
+    numQueuedNext: Math.max(0, newNumQueuedNext),
   });
 }
 
@@ -165,22 +199,32 @@ export async function synchronize() {
 }
 
 //#region Internal Utils
+function isWithin(min: number, value: number, max: number) {
+  return value >= min && value <= max;
+}
+
 function insertIntoQueue({
   id,
   name,
+  afterQueuedNext = false,
   after,
 }: QueueInsertionProps & { after: number }) {
-  const { queue } = playbackStore.getState();
-  toast(i18next.t("feat.modalTrack.extra.queueAdd", { name }), ToastOptions);
+  const { queue, numQueuedNext } = playbackStore.getState();
+  toast(i18next.t("feat.queue.extra.toast", { name }), ToastOptions);
 
   if (queue.length === 0) return;
   const uniqueId = createId();
   playbackStore.setState({
     queue: queue.toSpliced(
-      after,
+      //? Adjust `after` if we're appending the ids after the previously added track.
+      afterQueuedNext ? after + numQueuedNext : after,
       0,
       ...(isString(id) ? [id] : id).map((i) => `${i}__${uniqueId}`),
     ),
+    //? Adjust `numQueuedNext` based on the number of ids inserted.
+    numQueuedNext: !afterQueuedNext
+      ? 0
+      : numQueuedNext + (isString(id) ? 1 : id.length),
   });
 }
 //#endregion

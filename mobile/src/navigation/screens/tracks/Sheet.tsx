@@ -246,7 +246,7 @@ function TrackTextActions({ id, name }: Record<"id" | "name", string>) {
       <View className="flex-row gap-[3px]">
         <ListButton
           Icon={QueueMusic}
-          textKey="feat.modalTrack.extra.playNext"
+          textKey="feat.queue.extra.playNext"
           onPress={sheetAction(() => Queue.add({ id, name }))}
           style={{ width }}
           className={cn("rounded-tl-md", {
@@ -255,7 +255,7 @@ function TrackTextActions({ id, name }: Record<"id" | "name", string>) {
         />
         <ListButton
           Icon={LowPriority}
-          textKey="feat.modalTrack.extra.playLast"
+          textKey="feat.queue.extra.playLast"
           onPress={sheetAction(() => Queue.addToEnd({ id, name }))}
           style={{ width }}
           className={cn("rounded-tr-md", {

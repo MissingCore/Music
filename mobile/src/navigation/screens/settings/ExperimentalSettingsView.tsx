@@ -22,6 +22,7 @@ export default function ExperimentalSettings() {
   const smoothPlaybackTransition = usePreferenceStore(
     (s) => s.smoothPlaybackTransition,
   );
+  const queueAwareNext = usePreferenceStore((s) => s.queueAwareNext);
   const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
 
   return (
@@ -48,6 +49,15 @@ export default function ExperimentalSettings() {
           last
         />
       </List>
+
+      <ListItem
+        titleKey="feat.queue.extra.queueAwareNext"
+        description={t("feat.queue.extra.queueAwareNextBrief")}
+        onPress={PreferenceTogglers.toggleQueueAwareNext}
+        switchState={queueAwareNext}
+        first
+        last
+      />
 
       <List>
         <ListItem

@@ -391,11 +391,15 @@
         "filePath": "ファイルのパス",
         "sampleRate": "サンプルレート",
         "size": "サイズ",
-        "addToPlaylist": "プレイリストに追加",
-        "addToQueue": "キューに追加",
+        "addToPlaylist": "プレイリストに追加"
+      }
+    },
+    "queue": {
+      "extra": {
+        "add": "キューに追加",
         "playNext": "次に再生",
         "playLast": "最後に再生",
-        "queueAdd": "｢{{- name}}｣がキューに追加されました。"
+        "toast": "｢{{- name}}｣がキューに追加されました。"
       }
     }
   }

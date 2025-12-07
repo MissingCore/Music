@@ -391,11 +391,15 @@
         "filePath": "文件路径",
         "sampleRate": "采样率",
         "size": "大小",
-        "addToPlaylist": "添加到播放列表",
-        "addToQueue": "添加到队列",
+        "addToPlaylist": "添加到播放列表"
+      }
+    },
+    "queue": {
+      "extra": {
+        "add": "添加到队列",
         "playNext": null,
         "playLast": null,
-        "queueAdd": "已将 `{{- name}}` 添加到队列。"
+        "toast": "已将 `{{- name}}` 添加到队列。"
       }
     }
   }

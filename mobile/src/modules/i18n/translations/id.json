@@ -391,11 +391,15 @@
         "filePath": "Lokasi Berkas",
         "sampleRate": "Sample Rate",
         "size": "Ukuran",
-        "addToPlaylist": "Tambahkan ke Daftar Putar",
-        "addToQueue": "Tambahkan ke Antrian",
+        "addToPlaylist": "Tambahkan ke Daftar Putar"
+      }
+    },
+    "queue": {
+      "extra": {
+        "add": "Tambahkan ke Antrian",
         "playNext": null,
         "playLast": null,
-        "queueAdd": "`{{- name}}` ditambahkan ke antrian."
+        "toast": "`{{- name}}` ditambahkan ke antrian."
       }
     }
   }

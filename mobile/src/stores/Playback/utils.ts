@@ -126,6 +126,8 @@ export function getUpdatedLists(
     orderSnapshot: newPlayingList,
     queue: usedList,
     queuePosition: newLocation === -1 ? 0 : newLocation,
+    //? Reset `numQueuedNext` as the queue gets reset to its original state.
+    numQueuedNext: 0,
   };
 }
 //#endregion

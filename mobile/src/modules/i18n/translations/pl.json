@@ -391,11 +391,15 @@
         "filePath": "Ścieżka do pliku",
         "sampleRate": "Częstotliwość próbkowania",
         "size": "Rozmiar",
-        "addToPlaylist": "Dodaj do playlisty",
-        "addToQueue": "Dodaj do kolejki",
+        "addToPlaylist": "Dodaj do playlisty"
+      }
+    },
+    "queue": {
+      "extra": {
+        "add": "Dodaj do kolejki",
         "playNext": null,
         "playLast": null,
-        "queueAdd": "Dodano do kolejki: `{{- name}}`."
+        "toast": "Dodano do kolejki: `{{- name}}`."
       }
     }
   }

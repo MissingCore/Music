@@ -391,11 +391,15 @@
         "filePath": "Ruta de archivo",
         "sampleRate": "Tasa de muestreo",
         "size": "Tamaño",
-        "addToPlaylist": "Añadir a la lista de reproducción",
-        "addToQueue": "Añadir a la cola",
+        "addToPlaylist": "Añadir a la lista de reproducción"
+      }
+    },
+    "queue": {
+      "extra": {
+        "add": "Añadir a la cola",
         "playNext": "Reproducir a continuación",
         "playLast": "Reproducir al final",
-        "queueAdd": "`{{- name}}` añadido a la cola."
+        "toast": "`{{- name}}` añadido a la cola."
       }
     }
   }
