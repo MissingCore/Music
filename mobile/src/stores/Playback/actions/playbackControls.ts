@@ -163,8 +163,15 @@ export async function playFromList({
   source: PlayFromSource;
   trackId?: string;
 }) {
-  const { getTrack, shuffle, playingFrom, queue, activeTrack } =
-    playbackStore.getState();
+  const {
+    getTrack,
+    shuffle,
+    playingFrom,
+    queue,
+    activeTrack,
+    queuePosition,
+    queuedNext,
+  } = playbackStore.getState();
 
   // 1. See if we're playing from a new media list.
   const isSameSource = arePlaybackSourceEqual(playingFrom, source);
@@ -185,6 +192,12 @@ export async function playFromList({
           activeKey: queue[listIndex],
           activeTrack: (await getTrack(trackId))!,
           queuePosition: listIndex,
+          //? Update `queuedNext` accordingly if `listIndex` is within `queuedNext`
+          //? tracks after `queuePosition`.
+          queuedNext:
+            listIndex < queuePosition || listIndex > queuePosition + queuedNext
+              ? 0
+              : queuedNext - (listIndex - queuePosition),
         });
         await loadCurrentTrack();
       }
