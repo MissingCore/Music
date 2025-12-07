@@ -244,7 +244,8 @@ function getNewRepeatState() {
  * **Use externally only for `🧪 Smooth Playback Transition`.**
  */
 export async function getNextTrack() {
-  const { getTrack, reset, queue, queuePosition } = playbackStore.getState();
+  const { getTrack, reset, queue, queuePosition, queuedNext } =
+    playbackStore.getState();
 
   const nextIndex = queuePosition === queue.length - 1 ? 0 : queuePosition + 1;
   const nextTrackKey = queue[nextIndex];
@@ -258,6 +259,8 @@ export async function getNextTrack() {
     activeKey: nextTrackKey,
     activeTrack: nextTrack,
     queuePosition: nextIndex,
+    //? Decrement `queuedNext` when the next track is played.
+    queuedNext: nextIndex === 0 || queuedNext <= 0 ? 0 : queuedNext - 1,
   };
 }
 
