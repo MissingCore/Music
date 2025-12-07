@@ -87,6 +87,8 @@ export async function prev() {
       activeKey: prevTrackKey,
       activeTrack: prevTrack,
       queuePosition: prevIndex,
+      //? We lose the `queuedNext` context if we play the previous track.
+      queuedNext: 0,
       ...getNewRepeatState(),
     });
   } else {
