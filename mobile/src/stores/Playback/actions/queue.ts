@@ -13,6 +13,7 @@ import {
   getTrackIdsList,
   getUpdatedLists,
 } from "../utils";
+import { preferenceStore } from "../../Preference/store";
 
 import { ToastOptions } from "~/lib/toast";
 import { moveArray } from "~/utils/object";
@@ -21,12 +22,19 @@ import { isString } from "~/utils/validation";
 interface QueueInsertionProps {
   id: string | string[];
   name: string;
+  afterQueuedNext?: boolean;
 }
 
 /** Add track(s) after the current playing track. */
 export function add({ id, name }: QueueInsertionProps) {
   const { queuePosition } = playbackStore.getState();
-  insertIntoQueue({ id, name, after: queuePosition + 1 });
+  const { queueAwareNext } = preferenceStore.getState();
+  insertIntoQueue({
+    id,
+    name,
+    afterQueuedNext: queueAwareNext,
+    after: queuePosition + 1,
+  });
 }
 
 /** Add track(s) after the end of the queue. */
@@ -168,19 +176,25 @@ export async function synchronize() {
 function insertIntoQueue({
   id,
   name,
+  afterQueuedNext = false,
   after,
 }: QueueInsertionProps & { after: number }) {
-  const { queue } = playbackStore.getState();
+  const { queue, queuedNext } = playbackStore.getState();
   toast(i18next.t("feat.queue.extra.toast", { name }), ToastOptions);
 
   if (queue.length === 0) return;
   const uniqueId = createId();
   playbackStore.setState({
     queue: queue.toSpliced(
-      after,
+      //? Adjust `after` if we're appending the ids after the previously added track.
+      afterQueuedNext ? after + queuedNext : after,
       0,
       ...(isString(id) ? [id] : id).map((i) => `${i}__${uniqueId}`),
     ),
+    //? Adjust `queuedNext` based on the number of ids inserted.
+    queuedNext: !afterQueuedNext
+      ? 0
+      : queuedNext + (isString(id) ? 1 : id.length),
   });
 }
 //#endregion
