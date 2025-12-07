@@ -1,9 +1,12 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Keyboard, View } from "react-native";
+import { Keyboard, Pressable, View } from "react-native";
 
+import { Check } from "~/resources/icons/Check";
 import { useSleepTimerStore } from "./store";
 
+import { Colors } from "~/constants/Styles";
+import { cn } from "~/lib/style";
 import { wait } from "~/utils/promise";
 import { Button } from "~/components/Form/Button";
 import { NumericInput } from "~/components/Form/Input";
@@ -17,6 +20,8 @@ export const SleepTimerSheet = deferInitialRender(
   function SleepTimerSheet(props: { sheetRef: TrueSheetRef }) {
     const { t } = useTranslation();
     const sleepTimerLength = useSleepTimerStore((s) => s.duration);
+    const extendTimer = useSleepTimerStore((s) => s.extension);
+    const toggleExtension = useSleepTimerStore((s) => s.toggleExtension);
     const endAt = useSleepTimerStore((s) => s.endAt);
     const createTimer = useSleepTimerStore((s) => s.create);
     const clearTimer = useSleepTimerStore((s) => s.clear);
@@ -61,6 +66,29 @@ export const SleepTimerSheet = deferInitialRender(
             {t("feat.sleepTimer.extra.stopTime", { time: endString })}
           </StyledText>
         ) : null}
+
+        <Pressable
+          onPress={toggleExtension}
+          disabled={hasTimer}
+          className="mx-auto flex-row items-center gap-2 disabled:opacity-25"
+        >
+          <View
+            className={cn(
+              "size-6 items-center justify-center rounded-sm border border-onSurface",
+              {
+                "border-red bg-red": extendTimer,
+                "border-red/25": hasTimer && extendTimer,
+              },
+            )}
+          >
+            {extendTimer ? <Check size={20} color={Colors.neutral100} /> : null}
+          </View>
+          <TStyledText
+            dim
+            textKey="feat.sleepTimer.extra.extend"
+            className="text-sm"
+          />
+        </Pressable>
 
         <Button
           onPress={hasTimer ? clearTimer : onSubmit}

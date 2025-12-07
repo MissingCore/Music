@@ -288,7 +288,8 @@
       "description": "Stop playing audio after the specified amount of minutes.",
       "extra": {
         "start": "Start",
-        "stopTime": "Audio will stop playing at {{- time}}."
+        "stopTime": "Audio will stop playing at {{- time}}.",
+        "extend": "Extend timer until track finishes."
       }
     },
     "waveformSlider": {
