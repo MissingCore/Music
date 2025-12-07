@@ -109,6 +109,9 @@ export async function removeIds(ids: string[]) {
     activeKey: updatedQueue[newQueuePosition],
     activeTrack: newActiveTrack,
     queuePosition: newQueuePosition,
+    //? Reset `queuedNext` as this function is usually called when we
+    //? error or delete a track.
+    queuedNext: 0,
   });
 }
 
@@ -119,7 +122,8 @@ export async function removeIds(ids: string[]) {
  * **Note:** This should be used with debouncing.
  */
 export function removeKeys(keys: Set<string>) {
-  const { queue, activeKey, queuePosition } = playbackStore.getState();
+  const { queue, activeKey, queuePosition, queuedNext } =
+    playbackStore.getState();
 
   if (!activeKey) return;
   // You shouldn't be able to remove the active track with this method.
@@ -127,10 +131,16 @@ export function removeKeys(keys: Set<string>) {
 
   // If we removed a track before the active track, decremenet `queuePosition`.
   let newQueuePosition = queuePosition;
+  // If we remove a track within `queuedNext` tracks of `queuePosition`, decrement `queuedNext`.
+  let newQueuedNext = queuedNext;
 
   const updatedQueue = queue.filter((tKey, index) => {
     const isRemoved = keys.has(tKey);
-    if (isRemoved && index < queuePosition) newQueuePosition -= 1;
+    if (isRemoved) {
+      if (index < queuePosition) newQueuePosition -= 1;
+      // Remember that we'll never encounter `index === queuePosition`.
+      else if (index <= queuePosition + queuedNext) newQueuedNext -= 1;
+    }
     return !isRemoved;
   });
 
@@ -138,6 +148,9 @@ export function removeKeys(keys: Set<string>) {
   playbackStore.setState({
     queue: updatedQueue,
     queuePosition: newQueuePosition,
+    //? Update `queuedNext` if we manually removed track(s) within `queuedNext`
+    //? tracks after `queuePosition`.
+    queuedNext: Math.max(0, newQueuedNext),
   });
 }
 
