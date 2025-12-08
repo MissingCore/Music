@@ -270,7 +270,8 @@
       "description": "پس از مدت زمان معین بر حسب دقیقه پخش صدا متوقف شود.",
       "extra": {
         "start": "شروع",
-        "stopTime": "صدا در {{- time}} متوقف خواهد شد."
+        "stopTime": "صدا در {{- time}} متوقف خواهد شد.",
+        "extend": null
       }
     },
     "waveformSlider": {
@@ -399,7 +400,9 @@
         "add": "اضافه به صف",
         "playNext": null,
         "playLast": null,
-        "toast": "`{{- name}}` به صف اضافه شد."
+        "toast": "`{{- name}}` به صف اضافه شد.",
+        "queueAwareNext": null,
+        "queueAwareNextBrief": null
       }
     }
   }

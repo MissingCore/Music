@@ -270,7 +270,8 @@
       "description": null,
       "extra": {
         "start": null,
-        "stopTime": null
+        "stopTime": null,
+        "extend": null
       }
     },
     "waveformSlider": {
@@ -399,7 +400,9 @@
         "add": "Tilføj til kø",
         "playNext": null,
         "playLast": null,
-        "toast": "\"{{- name}}\" tilføjet til kø."
+        "toast": "\"{{- name}}\" tilføjet til kø.",
+        "queueAwareNext": null,
+        "queueAwareNextBrief": null
       }
     }
   }

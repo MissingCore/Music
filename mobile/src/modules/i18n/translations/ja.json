@@ -270,7 +270,8 @@
       "description": "指定した分数が経過後にオーディオの再生を停止します。",
       "extra": {
         "start": "開始",
-        "stopTime": "オーディオの再生は {{- time}} に停止します。"
+        "stopTime": "オーディオの再生は {{- time}} に停止します。",
+        "extend": null
       }
     },
     "waveformSlider": {
@@ -399,7 +400,9 @@
         "add": "キューに追加",
         "playNext": "次に再生",
         "playLast": "最後に再生",
-        "toast": "｢{{- name}}｣がキューに追加されました。"
+        "toast": "｢{{- name}}｣がキューに追加されました。",
+        "queueAwareNext": null,
+        "queueAwareNextBrief": null
       }
     }
   }

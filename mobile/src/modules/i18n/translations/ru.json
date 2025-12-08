@@ -270,7 +270,8 @@
       "description": "Прекратить произведение музыки по истечении указанного количества минут.",
       "extra": {
         "start": "Начать",
-        "stopTime": "Музыка перестанет играть в {{- time}}."
+        "stopTime": "Музыка перестанет играть в {{- time}}.",
+        "extend": null
       }
     },
     "waveformSlider": {
@@ -399,7 +400,9 @@
         "add": "Добавить в очередь",
         "playNext": null,
         "playLast": null,
-        "toast": "`{{- name}}` добавлен в очередь."
+        "toast": "`{{- name}}` добавлен в очередь.",
+        "queueAwareNext": null,
+        "queueAwareNextBrief": null
       }
     }
   }

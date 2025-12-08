@@ -270,7 +270,8 @@
       "description": "Detener la reproducción de audio después de la cantidad de minutos especificada.",
       "extra": {
         "start": "Iniciar",
-        "stopTime": "El audio se detendrá en {{- time}}."
+        "stopTime": "El audio se detendrá en {{- time}}.",
+        "extend": null
       }
     },
     "waveformSlider": {
@@ -399,7 +400,9 @@
         "add": "Añadir a la cola",
         "playNext": "Reproducir a continuación",
         "playLast": "Reproducir al final",
-        "toast": "`{{- name}}` añadido a la cola."
+        "toast": "`{{- name}}` añadido a la cola.",
+        "queueAwareNext": null,
+        "queueAwareNextBrief": null
       }
     }
   }

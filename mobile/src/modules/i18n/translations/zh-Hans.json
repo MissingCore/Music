@@ -270,7 +270,8 @@
       "description": null,
       "extra": {
         "start": "启动",
-        "stopTime": null
+        "stopTime": null,
+        "extend": null
       }
     },
     "waveformSlider": {
@@ -399,7 +400,9 @@
         "add": "添加到队列",
         "playNext": null,
         "playLast": null,
-        "toast": "已将 `{{- name}}` 添加到队列。"
+        "toast": "已将 `{{- name}}` 添加到队列。",
+        "queueAwareNext": null,
+        "queueAwareNextBrief": null
       }
     }
   }
