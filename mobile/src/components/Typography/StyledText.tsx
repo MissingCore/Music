@@ -27,7 +27,11 @@ export function StyledText({
         },
         className,
       )}
-      style={[{ fontFamily: getFont(primaryFont, bold) }, style]}
+      style={[
+        { fontFamily: getFont(primaryFont, bold) },
+        bold && { fontWeight: primaryFont === "System" ? "bold" : undefined },
+        style,
+      ]}
       {...props}
     />
   );

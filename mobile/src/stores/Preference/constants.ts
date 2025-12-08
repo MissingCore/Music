@@ -7,7 +7,12 @@ export type Theme = (typeof ThemeOptions)[number];
 //endregion
 
 //#region Font
-export const PrimaryFontOptions = ["Roboto", "Inter", "Geist Mono"] as const;
+export const PrimaryFontOptions = [
+  "Roboto",
+  "Inter",
+  "Geist Mono",
+  "System",
+] as const;
 
 export const AccentFontOptions = [
   ...["NDot", "NType"],

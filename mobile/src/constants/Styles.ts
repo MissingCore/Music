@@ -37,6 +37,8 @@ export const FontFamily = {
   geistMonoMedium: "GeistMono-Medium",
   ndot: "Ndot-77_JP_Extended",
   ntype: "NType82-Headline",
+
+  system: "System",
 } as const;
 
 export const TwFontFamilies = Object.keys(FontFamily).map(
