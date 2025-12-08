@@ -270,7 +270,8 @@
       "description": null,
       "extra": {
         "start": null,
-        "stopTime": null
+        "stopTime": null,
+        "extend": null
       }
     },
     "waveformSlider": {
@@ -399,7 +400,9 @@
         "add": "Tambahkan ke Antrian",
         "playNext": null,
         "playLast": null,
-        "toast": "`{{- name}}` ditambahkan ke antrian."
+        "toast": "`{{- name}}` ditambahkan ke antrian.",
+        "queueAwareNext": null,
+        "queueAwareNextBrief": null
       }
     }
   }

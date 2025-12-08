@@ -270,7 +270,8 @@
       "description": null,
       "extra": {
         "start": null,
-        "stopTime": null
+        "stopTime": null,
+        "extend": null
       }
     },
     "waveformSlider": {
@@ -399,7 +400,9 @@
         "add": "Zur Warteschlange hinzufügen",
         "playNext": null,
         "playLast": null,
-        "toast": "`{{- name}}` wurde zur Warteschlange hinzugefügt."
+        "toast": "`{{- name}}` wurde zur Warteschlange hinzugefügt.",
+        "queueAwareNext": null,
+        "queueAwareNextBrief": null
       }
     }
   }

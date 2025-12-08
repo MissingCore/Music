@@ -270,7 +270,8 @@
       "description": null,
       "extra": {
         "start": null,
-        "stopTime": null
+        "stopTime": null,
+        "extend": null
       }
     },
     "waveformSlider": {
@@ -399,7 +400,9 @@
         "add": "कतार में जोड़ें",
         "playNext": null,
         "playLast": null,
-        "toast": "`{{- name}}` कतार में जोड़ा गया।"
+        "toast": "`{{- name}}` कतार में जोड़ा गया।",
+        "queueAwareNext": null,
+        "queueAwareNextBrief": null
       }
     }
   }

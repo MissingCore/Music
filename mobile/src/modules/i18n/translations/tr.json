@@ -270,7 +270,8 @@
       "description": "Belirtilen dakika süresi geçtikten sonra ses çalmayı durdur.",
       "extra": {
         "start": "Başlat",
-        "stopTime": "Ses {{- time}}'de çalmayı durduracak."
+        "stopTime": "Ses {{- time}}'de çalmayı durduracak.",
+        "extend": null
       }
     },
     "waveformSlider": {
@@ -399,7 +400,9 @@
         "add": "Sıraya Ekle",
         "playNext": "Sıradakini Çal",
         "playLast": "Sonuncuyu Çal",
-        "toast": "`{{- name}}` sıraya eklendi."
+        "toast": "`{{- name}}` sıraya eklendi.",
+        "queueAwareNext": null,
+        "queueAwareNextBrief": null
       }
     }
   }
