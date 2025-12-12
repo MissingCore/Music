@@ -20,6 +20,9 @@ if (SENTRY_ENABLED) {
       /Missing .* permissions/,
       // Expo development errors:
       "Unable to activate keep awake",
+      // Error caused by user configuration:
+      "No matching browser activity found",
+      "non-premultiplied bitmap",
     ],
   });
 }
