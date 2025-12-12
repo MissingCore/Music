@@ -26,7 +26,7 @@
     "more": "Más",
     "home": "Inicio",
     "settings": "Configuración",
-    "upcoming": "Próximamente",
+    "upcoming": "A continuación",
     "playingFrom": "Reproduciendo desde",
     "disc": "Disco {{count}}"
   },
@@ -55,30 +55,30 @@
     "cancel": "Cancelar",
     "confirm": "Confirmar",
     "unsaved": "Puede que tengas cambios sin guardar.",
-    "stay": "Esperar",
+    "stay": "Quedarse",
     "leave": "Salir",
     "clear": "Limpiar",
     "reset": "Restablecer",
     "validation": {
-      "unique": "Único"
+      "unique": "Debe ser único"
     }
   },
   "err": {
     "flow": {
       "generic": {
         "title": "Algo salió mal",
-        "brief": "Has encontrado un error inesperado."
+        "brief": "Ocurrió un error inesperado."
       },
       "report": {
         "title": "Reportar problema",
-        "brief": "Incluir una captura de esta pantalla."
+        "brief": "Incluye una captura de esta pantalla."
       }
     },
     "msg": {
       "actionCancel": "Acción cancelada.",
       "invalidStructure": "Estructura inválida.",
       "noSelect": "No hay elementos seleccionados.",
-      "usedName": "No se puede usar ese nombre.",
+      "usedName": "Ese nombre no puede usarse.",
       "noContent": "No se encontró contenido.",
       "noErrors": "No se encontraron errores.",
       "noFilters": "No se encontraron filtros.",
@@ -91,20 +91,20 @@
   },
   "feat": {
     "appUpdate": {
-      "title": "Actualización de la app",
-      "brief": "¡Nueva actualización disponible!",
+      "title": "Actualización disponible",
+      "brief": "Hay una nueva versión lista para instalar.",
       "extra": {
-        "downloadAPK": "Descargar la APK más reciente",
-        "updateGoogle": "Actualizar vía Play Store"
+        "downloadAPK": "Descargar APK más reciente",
+        "updateGoogle": "Actualizar desde Play Store"
       }
     },
     "appearance": {
       "title": "Apariencia",
-      "brief": "Personaliza el aspecto de la app."
+      "brief": "Personaliza cómo se ve la aplicación."
     },
     "font": {
       "extra": {
-        "accent": "Fuente con acento",
+        "accent": "Fuente de acento",
         "primary": "Fuente principal"
       }
     },
@@ -118,55 +118,55 @@
     },
     "tabsOrder": {
       "title": "Orden de pestañas",
-      "brief": "Personalizar el orden y la visibilidad de las pestañas.",
+      "brief": "Organiza y ajusta las pestañas visibles.",
       "description": {
-        "line1": "Reordenar las pestañas arrastrando y soltando. Cambia la visibilidad de la pestaña usando el icono del ojo. Cambia la pestaña de inicio usando el icono de la casa.",
-        "line2": "Atención: Puede ocurrir un comportamiento inesperado al navegar a una pestaña oculta."
+        "line1": "Arrastra para reordenar. Usa el ojo para mostrar/ocultar y la casa para definir la pestaña de inicio.",
+        "line2": "Nota: Navegar a una pestaña oculta puede causar comportamientos inesperados."
       },
       "extra": {
-        "setHomeTab": "Abrir la pestaña {{- name}} al iniciar la aplicación."
+        "setHomeTab": "Abrir la pestaña {{- name}} al iniciar."
       }
     },
     "albumLengthFilter": {
-      "title": "Filtro de longitud del álbum",
-      "description": "Número mínimo de canciones para que aparezcan en la pantalla de álbumes."
+      "title": "Filtro por tamaño de álbum",
+      "description": "Número mínimo de canciones para que un álbum sea visible."
     },
     "miniplayerGestures": {
-      "title": "Gestos del mini-reproductor"
+      "title": "Gestos del mini reproductor"
     },
     "nowPlayingDesign": {
-      "title": "Diseño de la pantalla de reproducción.",
+      "title": "Diseño de la reproducción",
       "extra": {
         "plain": "Simple",
         "vinyl": "Vinilo",
-        "vinylOld": "Vinilo (tradicional)"
+        "vinylOld": "Vinilo (clásico)"
       }
     },
     "quickScroll": {
       "title": "Desplazamiento rápido",
-      "brief": "Mostrar barra de desplazamiento estilo Nothing en pantallas compatibles."
+      "brief": "Muestra una barra de desplazamiento estilo Nothing cuando sea compatible."
     },
     "ignoreRTLLayout": {
       "title": "Ignorar diseño RTL",
-      "brief": "Usar diseño LTR con un lenguaje RTL. Requiere reiniciar."
+      "brief": "Forzar diseño LTR en idiomas RTL. Requiere reiniciar."
     },
     "language": {
       "title": "Idioma"
     },
     "backup": {
       "title": "Copia de seguridad",
-      "brief": "Mover datos entre dispositivos.",
-      "description": "Transfiere datos de esta app entre dispositivos a través de un archivo `music_backup.json`.",
+      "brief": "Mover tus datos entre dispositivos.",
+      "description": "Exporta o importa datos de esta app a otros dispositivos usando un archivo `music_backup.json`.",
       "extra": {
         "export": "Exportar",
-        "exportSuccess": "Exportación completada correctamente.",
+        "exportSuccess": "Exportación completada.",
         "import": "Importar",
-        "importSuccess": "Importación completada correctamente."
+        "importSuccess": "Importación completada."
       }
     },
     "insights": {
-      "title": "Análisis",
-      "brief": "Uso y estadísticas de la aplicación.",
+      "title": "Estadísticas",
+      "brief": "Información de uso y almacenamiento.",
       "extra": {
         "cache": "Caché",
         "database": "Base de datos",
@@ -178,88 +178,88 @@
     },
     "mostPlayed": {
       "title": "Más reproducidas",
-      "brief": "Ranking de canciones más reproducidas.",
+      "brief": "Tus canciones más escuchadas.",
       "extra": {
         "playCount": "{{count}} reproducciones"
       }
     },
     "hiddenTracks": {
       "title": "Canciones ocultas",
-      "brief": "Canciones no mostradas en la aplicación.",
+      "brief": "Canciones que no se muestran en la aplicación.",
       "extra": {
-        "hiddenAt": "Ocultado en {{- date}}.",
+        "hiddenAt": "Ocultada en {{- date}}.",
         "hasHiddenTracks": "{{- name}} tiene canciones ocultas.",
         "notFound": "No se encontraron canciones ocultas."
       }
     },
     "saveErrors": {
       "title": "Errores al guardar",
-      "brief": "Ver por qué no se guardaron algunas canciones."
+      "brief": "Revisa qué canciones no se guardaron."
     },
     "interactions": {
-      "title": "Interacciones de Nothing",
-      "brief": "Características compatibles de Nothing."
+      "title": "Interacciones Nothing",
+      "brief": "Funciones compatibles con dispositivos Nothing."
     },
     "playback": {
-      "title": "Reproduciendo",
-      "brief": "Cambiar comportamiento del reproductor.",
+      "title": "Reproducción",
+      "brief": "Ajustes de reproducción.",
       "extra": {
-        "options": "Opciones de reproducción",
-        "speed": "Velocidad de reproducción",
-        "volume": "Volumen de aplicación"
+        "options": "Opciones",
+        "speed": "Velocidad",
+        "volume": "Volumen"
       }
     },
     "playbackDelay": {
-      "title": "Retraso de reproducción natural",
-      "description": "Retraso en segundos antes de que la siguiente canción se reproduzca de manera natural."
+      "title": "Retraso natural",
+      "description": "Segundos de espera antes de que empiece la siguiente canción."
     },
     "repeatOnSkip": {
-      "title": "Mantener el modo de repetición al saltar",
-      "brief": "Evita que \"Repetir una\" cambie a \"Repetir\" al saltar."
+      "title": "Mantener repetición al saltar",
+      "brief": "Evita que \"Repetir una\" cambie al saltar canción."
     },
     "restoreLastPosition": {
-      "title": "Restaurar desde última posición reproducida"
+      "title": "Restaurar última posición"
     },
     "scanning": {
       "title": "Escaneo",
-      "brief": "Opciones de descubrimiento de música."
+      "brief": "Opciones para detectar música."
     },
     "rescan": {
       "title": "Reescaneo",
       "brief": "Buscar música y archivos nuevos.",
       "extra": {
-        "start": "Reescaneando biblioteca...",
-        "success": "Reescaneo de biblioteca finalizado.",
-        "fail": "Error al reescanear la biblioteca."
+        "start": "Reescaneando...",
+        "success": "Reescaneo completado.",
+        "fail": "Error durante el reescaneo."
       }
     },
     "deepRescan": {
-      "title": "Reescaneo Profundo",
-      "brief": "Ignora cualquier medida de salto que acelere la función de reescaneo normal."
+      "title": "Reescaneo profundo",
+      "brief": "Ignora optimizaciones y escanea todo desde cero."
     },
     "rescanOnLaunch": {
-      "title": "Reescanear al lanzar",
-      "brief": "Si está deshabilitado, utilice la función de reescanear para detectar canciones nuevas, actualizadas y eliminadas."
+      "title": "Reescaneo al abrir",
+      "brief": "Si está desactivado, usa el reescaneo manual para detectar cambios."
     },
     "listAllow": {
       "title": "Lista de permitidos",
-      "description": "Predeterminado si lo siguiente está vacío:"
+      "description": "Se usará como predeterminado si está vacía."
     },
     "listBlock": {
       "title": "Lista de bloqueados",
-      "description": "Tiene mayor prioridad sobre las entradas en la lista de permitidos."
+      "description": "Tiene prioridad sobre la lista de permitidos."
     },
     "ignoreDuration": {
       "title": "Ignorar audio corto",
-      "description": "Duración en segundos del audio que no queremos guardar."
+      "description": "Duración mínima para guardar una canción."
     },
     "experimental": {
       "title": "Funciones experimentales",
-      "brief": "Funciones que pueden no obtener soporte oficial o funcionar como se esperaba. Úsalas bajo tu propio riesgo."
+      "brief": "Podrían fallar o no recibir soporte."
     },
     "continuePlaybackOnDismiss": {
-      "title": "Continúa reproduciendo al descartar",
-      "description": "Permite que la reproducción de música continúe cuando descartes la aplicación de tareas recientes. Fuerza a detener la aplicación para detener la reproducción."
+      "title": "Seguir reproduciendo al cerrar",
+      "description": "La música continúa aunque cierres la app desde tareas recientes."
     },
     "ignoreInterrupt": {
       "title": "Ignorar interrupciones",
@@ -267,29 +267,29 @@
     },
     "sleepTimer": {
       "title": "Apagado automático",
-      "description": "Detener la reproducción de audio después de la cantidad de minutos especificada.",
+      "description": "Detén la reproducción después del tiempo indicado.",
       "extra": {
         "start": "Iniciar",
-        "stopTime": "El audio se detendrá en {{- time}}.",
-        "extend": null
+        "stopTime": "Se detendrá en {{- time}}.",
+        "extend": "Extender el temporizador hasta que la canción termine."
       }
     },
     "waveformSlider": {
       "title": "Deslizador de forma de onda",
-      "brief": "La reproducción puede ser un poco lenta al principio mientras se genera la caché de la Waveform.",
+      "brief": "Puede tardar un poco la primera vez mientras se genera la caché.",
       "extra": {
-        "purgeCache": "Purgar caché de las Waveforms",
-        "purgeCacheBrief": "Libera almacenamiento para recalcular las Waveforms de las canciones reproducidas.",
-        "purgeCacheToast": "Caché Waveform limpiada."
+        "purgeCache": "Borrar caché",
+        "purgeCacheBrief": "Libera espacio y regenera las formas de onda.",
+        "purgeCacheToast": "Caché eliminada."
       }
     },
     "translate": {
-      "title": "Contribuir con las traducciones",
-      "brief": "Ayuda a traducir la app a otros idiomas."
+      "title": "Colabora con las traducciones",
+      "brief": "Ayuda a mejorar la app en otros idiomas."
     },
     "code": {
       "title": "Repositorio en GitHub",
-      "brief": "Reporta problemas, contribuye o pide nuevas funciones."
+      "brief": "Reporta problemas o sugiere funciones."
     },
     "license": {
       "title": "Licencia"
@@ -299,44 +299,44 @@
     },
     "thirdParty": {
       "title": "Software de terceros",
-      "brief": "Lo que hace posible esta app."
+      "brief": "Tecnologías usadas en esta app."
     },
     "version": {
       "title": "Versión",
       "extra": {
-        "rcNotification": "Notificación de pre-lanzamiento"
+        "rcNotification": "Notificación de versión preliminar"
       }
     },
     "onboardPreprocess": {
-      "title": "Pre procesar",
-      "brief": "Asegurándose de que los datos existentes cumplen con los cambios."
+      "title": "Preprocesar",
+      "brief": "Preparando tus datos para la configuración inicial."
     },
     "onboardTracks": {
       "title": "Guardando canciones",
       "extra": {
-        "prevSaved": "{{amount}} guardadas anteriormente",
-        "saved": "{{amount}}/{{total}} guardadas/actualizadas",
+        "prevSaved": "{{amount}} guardadas previamente",
+        "saved": "{{amount}}/{{total}} completadas",
         "errors": "{{amount}} errores"
       }
     },
     "onboardImages": {
       "title": "Guardando imágenes",
       "extra": {
-        "checked": "{{amount}}/{{total}} comprobadas",
+        "checked": "{{amount}}/{{total}} revisadas",
         "found": "{{amount}} encontradas"
       }
     },
     "playedRecent": {
       "title": "Reproducido recientemente",
       "extra": {
-        "notFound": "Nada ha sido reproducido en los últimos {{amount}} días."
+        "notFound": "No se reprodujo nada en los últimos {{amount}} días."
       }
     },
     "search": {
       "title": "Buscar",
       "extra": {
         "musicAdd": "Añadir música",
-        "searchMedia": "Buscar medios"
+        "searchMedia": "Buscar archivos multimedia"
       }
     },
     "artwork": {
@@ -347,8 +347,8 @@
     },
     "directory": {
       "extra": {
-        "add": "Añadir Directorio",
-        "select": "Seleccionar Directorio"
+        "add": "Añadir directorio",
+        "select": "Seleccionar directorio"
       }
     },
     "playlist": {
@@ -356,8 +356,8 @@
         "create": "Crear lista de reproducción",
         "delete": "Eliminar lista de reproducción",
         "edit": "Editar lista de reproducción",
-        "name": "Nombre de la lista de reproducción",
-        "m3uImport": "Importar lista de reproducción M3U",
+        "name": "Nombre de la playlist",
+        "m3uImport": "Importar M3U",
         "m3uExport": "Exportar como M3U",
         "absolute": "Absoluto",
         "relative": "Relativo"
@@ -366,33 +366,33 @@
     "trackMetadata": {
       "title": "Editar metadatos",
       "description": {
-        "line1": "Edita cómo aparece la canción para esta aplicación. Esto no modifica el archivo.",
-        "line2": "Nota: Los cambios pueden restablecerse si este archivo cambia."
+        "line1": "Modifica cómo se muestra la canción en la app. No afecta el archivo original.",
+        "line2": "Nota: Los cambios pueden revertirse si el archivo es modificado."
       },
       "extra": {
-        "albumArtist": "Álbum Artista",
+        "albumArtist": "Artista del álbum",
         "disc": "Disco",
         "name": "Nombre",
-        "trackNumber": "Número de pista",
+        "trackNumber": "Número de canción",
         "year": "Año"
       }
     },
     "modalSort": {
-      "title": "Orden",
+      "title": "Ordenar",
       "extra": {
-        "asc": "Orden ascendente",
+        "asc": "Ascendente",
         "alphabetical": "Alfabético",
         "discover": "Descubrir",
-        "modified": "Última modificación"
+        "modified": "Fecha de modificación"
       }
     },
     "modalTrack": {
       "extra": {
         "bitrate": "Tasa de bits",
-        "filePath": "Ruta de archivo",
-        "sampleRate": "Tasa de muestreo",
+        "filePath": "Ruta del archivo",
+        "sampleRate": "Frecuencia de muestreo",
         "size": "Tamaño",
-        "addToPlaylist": "Añadir a la lista de reproducción"
+        "addToPlaylist": "Añadir a lista de reproducción"
       }
     },
     "queue": {
@@ -400,9 +400,9 @@
         "add": "Añadir a la cola",
         "playNext": "Reproducir a continuación",
         "playLast": "Reproducir al final",
-        "toast": "`{{- name}}` añadido a la cola.",
-        "queueAwareNext": null,
-        "queueAwareNextBrief": null
+        "toast": "`{{- name}}` añadida a la cola.",
+        "queueAwareNext": "Insertar como siguiente",
+        "queueAwareNextBrief": "Intenta colocar la canción después de la última marcada como \"Reproducir a continuación\"."
       }
     }
   }

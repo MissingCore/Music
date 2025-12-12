@@ -16,6 +16,7 @@
 - [@The-Ladle](https://www.github.com/The-Ladle)
 - [@friiskoch](https://github.com/friiskoch)
 - [@Costeer](https://github.com/Costeer)
+- [Jakob Staiger (staigerm62)](https://crowdin.com/profile/staigerm62)
 
 ## [Indonesia] Indonesian
 
