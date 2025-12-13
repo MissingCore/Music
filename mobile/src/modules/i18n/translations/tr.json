@@ -270,7 +270,8 @@
       "description": "Belirtilen dakika süresi geçtikten sonra ses çalmayı durdur.",
       "extra": {
         "start": "Başlat",
-        "stopTime": "Ses {{- time}}'de çalmayı durduracak."
+        "stopTime": "Ses {{- time}}'de çalmayı durduracak.",
+        "extend": null
       }
     },
     "waveformSlider": {
@@ -391,11 +392,17 @@
         "filePath": "Dosya Yolu",
         "sampleRate": "Örnekleme Hızı",
         "size": "Boyut",
-        "addToPlaylist": "Çalma Listesine Ekle",
-        "addToQueue": "Sıraya Ekle",
+        "addToPlaylist": "Çalma Listesine Ekle"
+      }
+    },
+    "queue": {
+      "extra": {
+        "add": "Sıraya Ekle",
         "playNext": "Sıradakini Çal",
         "playLast": "Sonuncuyu Çal",
-        "queueAdd": "`{{- name}}` sıraya eklendi."
+        "toast": "`{{- name}}` sıraya eklendi.",
+        "queueAwareNext": null,
+        "queueAwareNextBrief": null
       }
     }
   }

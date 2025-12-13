@@ -270,7 +270,8 @@
       "description": "Zatrzymaj odtwarzanie po upływie określonej ilości minut.",
       "extra": {
         "start": "Start",
-        "stopTime": "Odtwarzanie zostanie zatrzymane o {{- time}}."
+        "stopTime": "Odtwarzanie zostanie zatrzymane o {{- time}}.",
+        "extend": null
       }
     },
     "waveformSlider": {
@@ -391,11 +392,17 @@
         "filePath": "Ścieżka do pliku",
         "sampleRate": "Częstotliwość próbkowania",
         "size": "Rozmiar",
-        "addToPlaylist": "Dodaj do playlisty",
-        "addToQueue": "Dodaj do kolejki",
+        "addToPlaylist": "Dodaj do playlisty"
+      }
+    },
+    "queue": {
+      "extra": {
+        "add": "Dodaj do kolejki",
         "playNext": null,
         "playLast": null,
-        "queueAdd": "Dodano do kolejki: `{{- name}}`."
+        "toast": "Dodano do kolejki: `{{- name}}`.",
+        "queueAwareNext": null,
+        "queueAwareNextBrief": null
       }
     }
   }

@@ -270,7 +270,8 @@
       "description": null,
       "extra": {
         "start": null,
-        "stopTime": null
+        "stopTime": null,
+        "extend": null
       }
     },
     "waveformSlider": {
@@ -391,11 +392,17 @@
         "filePath": "Filens sti",
         "sampleRate": "Samplingfrekvens",
         "size": "Størrelse",
-        "addToPlaylist": "Tilføj til playliste",
-        "addToQueue": "Tilføj til kø",
+        "addToPlaylist": "Tilføj til playliste"
+      }
+    },
+    "queue": {
+      "extra": {
+        "add": "Tilføj til kø",
         "playNext": null,
         "playLast": null,
-        "queueAdd": "\"{{- name}}\" tilføjet til kø."
+        "toast": "\"{{- name}}\" tilføjet til kø.",
+        "queueAwareNext": null,
+        "queueAwareNextBrief": null
       }
     }
   }

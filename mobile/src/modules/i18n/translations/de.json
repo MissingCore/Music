@@ -117,7 +117,7 @@
       }
     },
     "tabsOrder": {
-      "title": "Home-Tabs Reihenfolge",
+      "title": "Menüleiste anpassen",
       "brief": "Reihenfolge und Sichtbarkeit der Tabs ändern.",
       "description": {
         "line1": "Ordnen die Registerkarten nach der Registerkarte \"Home\" durch Ziehen und Ablegen neu. Schalt die Registerkarte mit dem Augensymbol um.",
@@ -128,8 +128,8 @@
       }
     },
     "albumLengthFilter": {
-      "title": null,
-      "description": null
+      "title": "Albumlängen-Filter",
+      "description": "Mindestanzahl an Titeln, damit ein Album im Album-Bildschirm angezeigt wird."
     },
     "miniplayerGestures": {
       "title": "Miniplayer Gesten"
@@ -143,8 +143,8 @@
       }
     },
     "quickScroll": {
-      "title": null,
-      "brief": null
+      "title": "Schnell scrollen",
+      "brief": "Auf unterstützten Bildschirmen eine Scrollleiste im Nothing-Stil anzeigen."
     },
     "ignoreRTLLayout": {
       "title": "RTL-Layout ignorieren",
@@ -177,10 +177,10 @@
       }
     },
     "mostPlayed": {
-      "title": null,
-      "brief": null,
+      "title": "Meist Gespielt",
+      "brief": "Allzeit-Rangliste der Songs.",
       "extra": {
-        "playCount": null
+        "playCount": "{{count}} Wiedergaben"
       }
     },
     "hiddenTracks": {
@@ -210,8 +210,8 @@
       }
     },
     "playbackDelay": {
-      "title": null,
-      "description": null
+      "title": "Wiedergabeverzögerung",
+      "description": "Verzögerung in Sekunden bevor der nächste Titel normalerweise anfängt."
     },
     "repeatOnSkip": {
       "title": "Wiederholungsmodus beim Überspringen behalten",
@@ -225,7 +225,7 @@
       "brief": "Möglichkeiten zur Musikentdeckung."
     },
     "rescan": {
-      "title": "Noch einmal scannen",
+      "title": "Erneut scannen",
       "brief": "Nach neuen Medien suchen.",
       "extra": {
         "start": "Scannt erneut...",
@@ -238,8 +238,8 @@
       "brief": "Ignoriert alle Überspringungsmaßnahmen, die die normale Rescan Funktion beschleunigen."
     },
     "rescanOnLaunch": {
-      "title": null,
-      "brief": null
+      "title": "Beim Start erneut scannen",
+      "brief": "Wenn deaktiviert, verwenden Sie die Scan-Funktion, um neue, aktualisierte und entfernte Titel zu erkennen."
     },
     "listAllow": {
       "title": "Zulassungsliste",
@@ -259,27 +259,28 @@
     },
     "continuePlaybackOnDismiss": {
       "title": "Wiedergabe beim Schließen fortsetzen",
-      "description": null
+      "description": "Die Musikwiedergabe wird fortgesetzt, wenn die App aus den zuletzt verwendeten Apps entfernt wird. Die Wiedergabe kann mit force stop beendet werden."
     },
     "ignoreInterrupt": {
       "title": "Unterbrechungen ignorieren",
       "brief": "Wiedergabe von Audio fortsetzen, wenn eine Unterbrechung wie eine Benachrichtigung oder ein Anruf auftritt. Du musst die Musik in diesen Situationen manuell pausieren/abspielen."
     },
     "sleepTimer": {
-      "title": null,
-      "description": null,
+      "title": "Sleeptimer",
+      "description": "Die Wiedergabe wird nach der angegebenen Minutenzahl gestoppt.",
       "extra": {
-        "start": null,
-        "stopTime": null
+        "start": "Start",
+        "stopTime": "Wiedergabe stoppt um {{- time}}.",
+        "extend": "Verlängerter Timer bis zum Ende des Liedes."
       }
     },
     "waveformSlider": {
-      "title": null,
-      "brief": null,
+      "title": "Slider in Wellenform",
+      "brief": "Die Wiedergabe von Titeln ist anfangs aufgrund des Zwischenspeicherns der Wellenformdaten langsam.",
       "extra": {
-        "purgeCache": null,
-        "purgeCacheBrief": null,
-        "purgeCacheToast": null
+        "purgeCache": "Zwischengespeicherte Wellenformen löschen",
+        "purgeCacheBrief": "Gibt Speicherplatz frei, um die Wellenformen der abgespielten Spuren neu zu berechnen.",
+        "purgeCacheToast": "Wellenform-Cache gelöscht."
       }
     },
     "translate": {
@@ -303,7 +304,7 @@
     "version": {
       "title": "Version",
       "extra": {
-        "rcNotification": null
+        "rcNotification": "Benachrichtigung für Vorabversion"
       }
     },
     "onboardPreprocess": {
@@ -328,7 +329,7 @@
     "playedRecent": {
       "title": "Kürzlich gehört",
       "extra": {
-        "notFound": null
+        "notFound": "In den letzten {{amount}} Tagen wurde nichts abgespielt."
       }
     },
     "search": {
@@ -356,23 +357,23 @@
         "delete": "Playlist löschen",
         "edit": "Playlist bearbeiten",
         "name": "Playlistname",
-        "m3uImport": null,
-        "m3uExport": null,
-        "absolute": null,
-        "relative": null
+        "m3uImport": "M3U Wiedergabeliste importieren",
+        "m3uExport": "Als M3U exportieren",
+        "absolute": "Absoluter Pfad",
+        "relative": "Relativer Pfad"
       }
     },
     "trackMetadata": {
-      "title": null,
+      "title": "Metadaten bearbeiten",
       "description": {
-        "line1": null,
-        "line2": null
+        "line1": "Bearbeiten Sie die Darstellung der Tonspur in dieser App. Die Datei selbst wird dadurch nicht verändert.",
+        "line2": "Beachten Sie, dass Ihre Änderungen möglicherweise zurückgesetzt werden, wenn sich diese Datei ändert."
       },
       "extra": {
-        "albumArtist": null,
-        "disc": null,
-        "name": null,
-        "trackNumber": null,
+        "albumArtist": "Album Künstler",
+        "disc": "CD Nummer",
+        "name": "Name",
+        "trackNumber": "Titelnummer",
         "year": "Jahr"
       }
     },
@@ -381,7 +382,7 @@
       "extra": {
         "asc": "Aufsteigende Reihenfolge",
         "alphabetical": "Alphabetische Reihenfolge",
-        "discover": null,
+        "discover": "Zuletzt Hinzugefügt",
         "modified": "Zuletzt Geändert"
       }
     },
@@ -391,11 +392,17 @@
         "filePath": "Dateipfad",
         "sampleRate": "Abtastrate",
         "size": "Dateigröße",
-        "addToPlaylist": "Zu einer Playlist hinzufügen",
-        "addToQueue": "Zur Warteschlange hinzufügen",
-        "playNext": null,
-        "playLast": null,
-        "queueAdd": "`{{- name}}` wurde zur Warteschlange hinzugefügt."
+        "addToPlaylist": "Zu einer Playlist hinzufügen"
+      }
+    },
+    "queue": {
+      "extra": {
+        "add": "Zur Warteschlange hinzufügen",
+        "playNext": "Als Nächstes",
+        "playLast": "Als Letztes",
+        "toast": "`{{- name}}` wurde zur Warteschlange hinzugefügt.",
+        "queueAwareNext": "Warteschlangen-gerechtes \"Als Nächstes\"",
+        "queueAwareNextBrief": "Versuche um nach dem letzten „Nächsten abspielen“-Titel weitere Titel hinzuzufügen."
       }
     }
   }

@@ -60,6 +60,8 @@ export interface PlaybackStore {
   activeTrack: TrackWithAlbum | undefined;
   /** Index in current queue where `activeKey` is located. */
   queuePosition: number;
+  /** Number of tracks queued next via "Play Next". */
+  numQueuedNext: number;
 }
 
 export const PersistedFields: string[] = [

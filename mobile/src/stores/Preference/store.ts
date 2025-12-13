@@ -70,6 +70,7 @@ export const preferenceStore = createPersistedSubscribedStore<PreferenceStore>(
     continuePlaybackOnDismiss: false,
     ignoreInterrupt: false,
     smoothPlaybackTransition: true,
+    queueAwareNext: false,
     waveformSlider: false,
   }),
   {

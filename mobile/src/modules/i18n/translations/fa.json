@@ -270,7 +270,8 @@
       "description": "پس از مدت زمان معین بر حسب دقیقه پخش صدا متوقف شود.",
       "extra": {
         "start": "شروع",
-        "stopTime": "صدا در {{- time}} متوقف خواهد شد."
+        "stopTime": "صدا در {{- time}} متوقف خواهد شد.",
+        "extend": null
       }
     },
     "waveformSlider": {
@@ -391,11 +392,17 @@
         "filePath": "مسیر فایل",
         "sampleRate": "نرخ نمونه برداری",
         "size": "اندازه",
-        "addToPlaylist": "اضافه به لیست پخش",
-        "addToQueue": "اضافه به صف",
+        "addToPlaylist": "اضافه به لیست پخش"
+      }
+    },
+    "queue": {
+      "extra": {
+        "add": "اضافه به صف",
         "playNext": null,
         "playLast": null,
-        "queueAdd": "`{{- name}}` به صف اضافه شد."
+        "toast": "`{{- name}}` به صف اضافه شد.",
+        "queueAwareNext": null,
+        "queueAwareNextBrief": null
       }
     }
   }

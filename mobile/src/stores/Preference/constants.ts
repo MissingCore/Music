@@ -7,7 +7,12 @@ export type Theme = (typeof ThemeOptions)[number];
 //endregion
 
 //#region Font
-export const PrimaryFontOptions = ["Roboto", "Inter", "Geist Mono"] as const;
+export const PrimaryFontOptions = [
+  "Roboto",
+  "Inter",
+  "Geist Mono",
+  "System",
+] as const;
 
 export const AccentFontOptions = [
   ...["NDot", "NType"],
@@ -91,6 +96,11 @@ export interface PreferenceStore {
    * rewrite. The plan is to eventually make this stable.
    */
   smoothPlaybackTransition: boolean;
+  /**
+   * Tracks added via "Play Next" will attempt to added after the previous
+   * added track. Tracking resets after app session ends.
+   */
+  queueAwareNext: boolean;
   /** Utilize a waveform slider on the Now Playing screen. */
   waveformSlider: boolean;
 }

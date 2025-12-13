@@ -270,7 +270,8 @@
       "description": "Прекратить произведение музыки по истечении указанного количества минут.",
       "extra": {
         "start": "Начать",
-        "stopTime": "Музыка перестанет играть в {{- time}}."
+        "stopTime": "Музыка перестанет играть в {{- time}}.",
+        "extend": null
       }
     },
     "waveformSlider": {
@@ -391,11 +392,17 @@
         "filePath": "Путь к файлу",
         "sampleRate": "Частота",
         "size": "Размер",
-        "addToPlaylist": "Добавить в плейлист",
-        "addToQueue": "Добавить в очередь",
+        "addToPlaylist": "Добавить в плейлист"
+      }
+    },
+    "queue": {
+      "extra": {
+        "add": "Добавить в очередь",
         "playNext": null,
         "playLast": null,
-        "queueAdd": "`{{- name}}` добавлен в очередь."
+        "toast": "`{{- name}}` добавлен в очередь.",
+        "queueAwareNext": null,
+        "queueAwareNextBrief": null
       }
     }
   }

@@ -270,7 +270,8 @@
       "description": "إيقاف تشغيل الصوت بعد عدد الدقائق المحدد.",
       "extra": {
         "start": "بدء",
-        "stopTime": "سيتوقف الصوت عن التشغيل في {{time}}."
+        "stopTime": "سيتوقف الصوت عن التشغيل في {{time}}.",
+        "extend": null
       }
     },
     "waveformSlider": {
@@ -391,11 +392,17 @@
         "filePath": "مسار الملف",
         "sampleRate": "معدل العينة",
         "size": "الحجم",
-        "addToPlaylist": "إضافة إلى قائمة التشغيل",
-        "addToQueue": "إضافة إلى قائمة الانتظار",
+        "addToPlaylist": "إضافة إلى قائمة التشغيل"
+      }
+    },
+    "queue": {
+      "extra": {
+        "add": "إضافة إلى قائمة الانتظار",
         "playNext": null,
         "playLast": null,
-        "queueAdd": "تمت إضافة `{{- name}}` إلى قائمة الانتظار."
+        "toast": "تمت إضافة `{{- name}}` إلى قائمة الانتظار.",
+        "queueAwareNext": null,
+        "queueAwareNextBrief": null
       }
     }
   }
