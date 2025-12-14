@@ -1,6 +1,6 @@
 import AudioWaveView from "@kaannn/react-native-waveform";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { View, useWindowDimensions } from "react-native";
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useWindowDimensions } from "react-native";
 import { computeAmplitude } from "react-native-audio-analyzer";
 
 import { db } from "~/db";
@@ -19,6 +19,7 @@ import { Colors } from "~/constants/Styles";
 //#region Waveform
 interface WaveformProps {
   amplitudes: number[];
+  height: number;
 
   progress: number;
   maxProgress: number;
@@ -28,25 +29,26 @@ const MIN_BAR_HEIGHT = 4;
 const BAR_WIDTH = 2;
 const BAR_GAP = 1.75;
 
-export function Waveform({ amplitudes, progress, maxProgress }: WaveformProps) {
+export function Waveform({
+  amplitudes,
+  height,
+  progress,
+  maxProgress,
+}: WaveformProps) {
   const { onSurface } = useTheme();
-  const [canvasHeight, setCanvasHeight] = useState(0);
-
   return (
-    <View onLayout={(e) => setCanvasHeight(e.nativeEvent.layout.height)}>
-      <AudioWaveView
-        samples={amplitudes.map((s) => s * canvasHeight)}
-        progress={progress}
-        maxProgress={maxProgress}
-        waveMinHeight={MIN_BAR_HEIGHT * 2}
-        waveWidth={BAR_WIDTH * 3}
-        waveGap={4}
-        waveCornerRadius={8}
-        waveBackgroundColor={onSurface}
-        waveProgressColor={Colors.red}
-        style={{ width: "100%", height: "100%" }}
-      />
-    </View>
+    <AudioWaveView
+      samples={amplitudes.map((s) => s * height)}
+      progress={progress}
+      maxProgress={maxProgress}
+      waveMinHeight={MIN_BAR_HEIGHT * 2}
+      waveWidth={BAR_WIDTH * 3}
+      waveGap={4}
+      waveCornerRadius={8}
+      waveBackgroundColor={onSurface}
+      waveProgressColor={Colors.red}
+      style={{ width: "100%", height: "100%" }}
+    />
   );
 }
 //#endregion
@@ -56,6 +58,7 @@ export function useWaveformSamples(id: string, uri: string) {
   const { height, width } = useWindowDimensions();
   const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
   const activeWaveformContext = useSessionStore((s) => s.activeWaveformContext);
+  const lastQueriedTrack = useRef("");
 
   const estimatedBarCount = useMemo(
     () => Math.round((Math.max(height, width) - 32) / (BAR_WIDTH + BAR_GAP)),
@@ -106,10 +109,14 @@ export function useWaveformSamples(id: string, uri: string) {
   }, [estimatedBarCount, id, samplesFallback, uri]);
 
   useEffect(() => {
-    if (!waveformSlider || activeWaveformContext?.trackId === id) return;
+    if (!waveformSlider || lastQueriedTrack.current === id) return;
+    lastQueriedTrack.current = id;
     getTrackWaveform();
-  }, [activeWaveformContext?.trackId, getTrackWaveform, id, waveformSlider]);
+  }, [getTrackWaveform, id, waveformSlider]);
 
-  return activeWaveformContext?.samples || samplesFallback;
+  return useMemo(
+    () => activeWaveformContext?.samples || samplesFallback,
+    [activeWaveformContext, samplesFallback],
+  );
 }
 //#endregion

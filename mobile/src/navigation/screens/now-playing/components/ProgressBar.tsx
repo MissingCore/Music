@@ -26,6 +26,7 @@ export function ProgressBar(props: ProgressBarProps) {
     <View className="relative h-12">
       <Waveform
         amplitudes={samples}
+        height={48}
         progress={props.value}
         maxProgress={props.max}
       />
