@@ -28,7 +28,7 @@
     "@boterop/react-native-background-timer": "2.6.0",
     "@kaannn/react-native-waveform": "0.1.4",
     "@legendapp/list": "^2.0.16",
-    "@lodev09/react-native-true-sheet": "2.0.6",
+    "@lodev09/react-native-true-sheet": "3.3.4",
     "@lukemorales/query-key-factory": "1.3.4",
     "@miblanchard/react-native-slider": "github:MissingCore/react-native-slider#4fa4f2097bdabaf4bc3866202debc84482020d5f",
     "@missingcore/react-native-actual-path": "0.1.0",
@@ -125,8 +125,7 @@
       "@backpackapp-io/react-native-toast": "patches/@backpackapp-io__react-native-toast.patch",
       "react-native-android-widget": "patches/react-native-android-widget.patch",
       "react-native-bootsplash": "patches/react-native-bootsplash.patch",
-      "@kaannn/react-native-waveform": "patches/@kaannn__react-native-waveform.patch",
-      "@lodev09/react-native-true-sheet": "patches/@lodev09__react-native-true-sheet.patch"
+      "@kaannn/react-native-waveform": "patches/@kaannn__react-native-waveform.patch"
     }
   }
 }
