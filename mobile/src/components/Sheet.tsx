@@ -46,8 +46,8 @@ export function Sheet({
   contentContainerClassName,
   contentContainerStyle,
   children,
-  onPresent,
-  onDismiss,
+  onDidPresent,
+  onDidDismiss,
   ...props
 }: SheetProps & { ref?: TrueSheetRef }) {
   const { t } = useTranslation();
@@ -72,14 +72,14 @@ export function Sheet({
     <TrueSheet
       onLayout={(e) => setSheetHeight(e.nativeEvent.layout.height)}
       name={globalKey}
-      sizes={[snapTop ? "large" : "auto"]}
+      detents={[snapTop ? 1 : "auto"]}
       backgroundColor={canvasAlt}
       cornerRadius={BorderRadius.lg}
       // Sheet max height will be just before the `<TopAppBar />`.
       maxHeight={trueScreenHeight - 56}
       grabber={false}
-      onPresent={(e) => {
-        if (onPresent) onPresent(e);
+      onDidPresent={(e) => {
+        if (onDidPresent) onDidPresent(e);
         setEnableToast(true);
 
         // Temporarily disable toast mount animation when sheet is presenting.
@@ -90,8 +90,8 @@ export function Sheet({
           250,
         );
       }}
-      onDismiss={() => {
-        if (onDismiss) onDismiss();
+      onDidDismiss={(e) => {
+        if (onDidDismiss) onDidDismiss(e);
         setEnableToast(false);
 
         // Ensure that toast mount animation is disabled when sheet presents.
@@ -131,10 +131,7 @@ export function Sheet({
       {enableToast ? (
         <Toasts
           // @ts-expect-error - We added the `sheetOpts` prop via a patch.
-          sheetOpts={{
-            height: sheetHeight,
-            needKeyboardOffset: props.keyboardMode === "pan",
-          }}
+          sheetOpts={{ height: sheetHeight }}
           // A duration of 0 doesn't work.
           globalAnimationConfig={disableToastAnim ? { duration: 1 } : undefined}
         />
