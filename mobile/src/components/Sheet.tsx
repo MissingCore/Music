@@ -1,5 +1,4 @@
 import { Toasts } from "@backpackapp-io/react-native-toast";
-import type { TrueSheetProps } from "@lodev09/react-native-true-sheet";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { platformApiLevel } from "expo-device";
 import type { ParseKeys } from "i18next";
@@ -22,12 +21,16 @@ import { StyledText, TStyledText } from "./Typography/StyledText";
 
 const WrappedGestureHandlerRootView = withUniwind(GestureHandlerRootView);
 
-interface SheetProps extends Omit<TrueSheetProps, "name"> {
-  titleKey?: ParseKeys;
+interface SheetProps {
+  children: React.ReactNode;
+  ref?: TrueSheetRef;
   /** Makes sheet accessible globally using this key. */
   globalKey?: string;
+  /** Title displayed in sheet. */
+  titleKey?: ParseKeys;
   /** If the sheet should open at max screen height. */
   snapTop?: boolean;
+  /** Styles applied to the internal `GestureHandlerRootView`. */
   contentContainerClassName?: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
 }
@@ -40,16 +43,14 @@ export function useSheetRef() {
 
 //#region Sheet
 export function Sheet({
+  ref,
   titleKey,
   globalKey,
   snapTop,
   contentContainerClassName,
   contentContainerStyle,
   children,
-  onDidPresent,
-  onDidDismiss,
-  ...props
-}: SheetProps & { ref?: TrueSheetRef }) {
+}: SheetProps) {
   const { t } = useTranslation();
   const { canvasAlt } = useTheme();
   const insets = useSafeAreaInsets();
@@ -70,6 +71,7 @@ export function Sheet({
 
   return (
     <TrueSheet
+      ref={ref}
       onLayout={(e) => setSheetHeight(e.nativeEvent.layout.height)}
       name={globalKey}
       detents={[snapTop ? 1 : "auto"]}
@@ -78,8 +80,7 @@ export function Sheet({
       // Sheet max height will be just before the `<TopAppBar />`.
       maxHeight={trueScreenHeight - 56}
       grabber={false}
-      onDidPresent={(e) => {
-        if (onDidPresent) onDidPresent(e);
+      onDidPresent={() => {
         setEnableToast(true);
 
         // Temporarily disable toast mount animation when sheet is presenting.
@@ -90,8 +91,7 @@ export function Sheet({
           250,
         );
       }}
-      onDidDismiss={(e) => {
-        if (onDidDismiss) onDidDismiss(e);
+      onDidDismiss={() => {
         setEnableToast(false);
 
         // Ensure that toast mount animation is disabled when sheet presents.
@@ -99,7 +99,6 @@ export function Sheet({
           clearTimeout(disableAnimTimerRef.current);
         setDisableToastAnim(true);
       }}
-      {...props}
     >
       <View
         onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}
