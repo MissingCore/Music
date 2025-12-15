@@ -17,7 +17,7 @@ import {
 import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
 import { Marquee } from "~/components/Containment/Marquee";
-import { FlatList } from "~/components/Defaults";
+import { FlatList, useIsScrollable } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import type { TrueSheetRef } from "~/components/Sheet";
@@ -62,12 +62,14 @@ function ScanFilterListSheet({
 }) {
   const { t } = useTranslation();
   const listEntries = usePreferenceStore((s) => s[listType]);
+  const { handlers, isScrollable } = useIsScrollable();
 
   return (
     <Sheet
       ref={sheetRef}
       titleKey={`feat.${listType}.title`}
       contentContainerClassName="px-0"
+      scrollable={isScrollable}
       keyboardAndToast
       snapTop
     >
@@ -100,7 +102,8 @@ function ScanFilterListSheet({
         ListEmptyComponent={
           <ContentPlaceholder errMsgKey="err.msg.noFilters" />
         }
-        nestedScrollEnabled
+        {...handlers}
+        nestedScrollEnabled={isScrollable}
         contentContainerClassName="gap-1 pb-4"
       />
     </Sheet>

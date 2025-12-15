@@ -1,4 +1,5 @@
 import { Toasts } from "@backpackapp-io/react-native-toast";
+import type { TrueSheetProps } from "@lodev09/react-native-true-sheet";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { platformApiLevel } from "expo-device";
 import type { ParseKeys } from "i18next";
@@ -21,8 +22,7 @@ import { StyledText, TStyledText } from "./Typography/StyledText";
 
 const WrappedGestureHandlerRootView = withUniwind(GestureHandlerRootView);
 
-interface SheetProps {
-  children: React.ReactNode;
+interface SheetProps extends Pick<TrueSheetProps, "children" | "scrollable"> {
   ref?: TrueSheetRef;
   /** Makes sheet accessible globally using this key. */
   globalKey?: string;
@@ -47,7 +47,6 @@ export function useSheetRef() {
 
 //#region Sheet
 export function Sheet({
-  ref,
   titleKey,
   globalKey,
   onCleanup,
@@ -56,6 +55,7 @@ export function Sheet({
   contentContainerClassName,
   contentContainerStyle,
   children,
+  ...props
 }: SheetProps) {
   const { t } = useTranslation();
   const { canvasAlt } = useTheme();
@@ -75,7 +75,6 @@ export function Sheet({
 
   return (
     <TrueSheet
-      ref={ref}
       onLayout={(e) => setSheetHeight(e.nativeEvent.layout.height)}
       name={globalKey}
       detents={[snapTop ? 1 : "auto"]}
@@ -91,6 +90,7 @@ export function Sheet({
         // Disable toast animations when sheet is dismissed.
         setDisableToastAnim(true);
       }}
+      {...props}
     >
       <View
         onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}
