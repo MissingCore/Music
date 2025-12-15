@@ -33,6 +33,8 @@ interface SheetProps {
   /** Styles applied to the internal `GestureHandlerRootView`. */
   contentContainerClassName?: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
+  /** Indicates a sheet can display keyboard & toast. */
+  keyboardAndToast?: boolean;
 }
 
 export type TrueSheetRef = React.Ref<TrueSheet>;
@@ -49,6 +51,7 @@ export function Sheet({
   snapTop,
   contentContainerClassName,
   contentContainerStyle,
+  keyboardAndToast,
   children,
 }: SheetProps) {
   const { t } = useTranslation();
@@ -112,7 +115,10 @@ export function Sheet({
       </WrappedGestureHandlerRootView>
       <Toasts
         // @ts-expect-error - We added the `sheetOpts` prop via a patch.
-        sheetOpts={{ height: sheetHeight }}
+        sheetOpts={{
+          height: sheetHeight,
+          needKeyboardOffset: keyboardAndToast,
+        }}
         // A duration of 0 doesn't work.
         globalAnimationConfig={disableToastAnim ? { duration: 1 } : undefined}
       />

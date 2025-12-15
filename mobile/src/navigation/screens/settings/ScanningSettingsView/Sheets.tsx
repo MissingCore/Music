@@ -68,6 +68,7 @@ function ScanFilterListSheet({
       ref={sheetRef}
       titleKey={`feat.${listType}.title`}
       contentContainerClassName="px-0"
+      keyboardAndToast
       snapTop
     >
       {listType === "listBlock" ? (
