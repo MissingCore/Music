@@ -56,27 +56,42 @@ export function DetachedSheet(props: SheetProps) {
       maxHeight={maxHeight}
       grabber={false}
     >
-      <WrappedGestureHandlerRootView
-        style={[
-          [{ maxHeight: maxHeight - EDGE_SPACER, marginBottom: EDGE_SPACER }],
-          props.contentContainerStyle,
-        ]}
-        className={cn(
-          "gap-6 rounded-lg bg-canvasAlt p-4",
-          { "h-full pb-0": props.snapTop },
-          props.contentContainerClassName,
-        )}
+      <View
+        style={{
+          maxHeight: maxHeight - EDGE_SPACER,
+          marginHorizontal: EDGE_SPACER,
+          marginBottom: EDGE_SPACER,
+        }}
+        className={cn("overflow-hidden rounded-lg bg-canvasAlt", {
+          "h-full": props.snapTop,
+        })}
       >
-        <View className="gap-2 px-4">
-          <View className="mx-auto my-2.5 h-1 w-8 rounded-full bg-onSurface" />
-          {props.titleKey ? (
-            <Marquee color="canvasAlt">
-              <TStyledText textKey={props.titleKey} className="text-lg" bold />
-            </Marquee>
-          ) : null}
-        </View>
-        {props.children}
-      </WrappedGestureHandlerRootView>
+        <WrappedGestureHandlerRootView
+          style={[
+            { maxHeight: maxHeight - EDGE_SPACER },
+            props.contentContainerStyle,
+          ]}
+          className={cn(
+            "gap-6 p-4 pt-0",
+            { "h-full pb-0": props.snapTop },
+            props.contentContainerClassName,
+          )}
+        >
+          <View className="gap-2">
+            <View className="mx-auto my-2.5 h-1 w-8 rounded-full bg-onSurface" />
+            {props.titleKey ? (
+              <Marquee color="canvasAlt">
+                <TStyledText
+                  textKey={props.titleKey}
+                  bold
+                  className="text-lg"
+                />
+              </Marquee>
+            ) : null}
+          </View>
+          {props.children}
+        </WrappedGestureHandlerRootView>
+      </View>
     </TrueSheet>
   );
 }
