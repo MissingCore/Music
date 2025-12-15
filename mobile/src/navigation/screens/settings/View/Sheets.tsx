@@ -2,6 +2,7 @@ import { useMemo } from "react";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
+import { useSafeAreaHeight } from "~/hooks/useSafeAreaHeight";
 import { LANGUAGES } from "~/modules/i18n/constants";
 import { useExportBackup, useImportBackup } from "~/modules/backup/JSON";
 
@@ -9,11 +10,7 @@ import { mutateGuard } from "~/lib/react-query";
 import { FlatList } from "~/components/Defaults";
 import { Radio } from "~/components/Form/Selection";
 import type { TrueSheetRef } from "~/components/Sheet";
-import {
-  Sheet,
-  SheetButtonGroup,
-  useUseableScreenHeight,
-} from "~/components/Sheet";
+import { Sheet, SheetButtonGroup } from "~/components/Sheet";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
 /** All the sheets used on `/setting` route. */
@@ -61,7 +58,7 @@ function BackupSheet(props: { sheetRef: TrueSheetRef }) {
 /** Enables the ability to change the language used. */
 function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
   const languageCode = usePreferenceStore((s) => s.language);
-  const trueSheetHeight = useUseableScreenHeight();
+  const trueSheetHeight = useSafeAreaHeight();
 
   const shouldSnapTop = useMemo(() => {
     const estimatedHeaderHeight = 87;

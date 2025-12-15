@@ -1,16 +1,15 @@
 import { Toasts } from "@backpackapp-io/react-native-toast";
 import type { TrueSheetProps } from "@lodev09/react-native-true-sheet";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
-import { platformApiLevel } from "expo-device";
 import type { ParseKeys } from "i18next";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { PressableProps, StyleProp, ViewStyle } from "react-native";
-import { Keyboard, View, useWindowDimensions } from "react-native";
+import { Keyboard, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { withUniwind } from "uniwind";
 
+import { useSafeAreaHeight } from "~/hooks/useSafeAreaHeight";
 import { useTheme } from "~/hooks/useTheme";
 
 import { BorderRadius } from "~/constants/Styles";
@@ -45,20 +44,6 @@ export function useSheetRef() {
   return useRef<TrueSheet>(null);
 }
 
-/** Returns the height of the useable area (removes top & bottom insets). */
-export function useUseableScreenHeight() {
-  const insets = useSafeAreaInsets();
-  const { height: screenHeight } = useWindowDimensions();
-
-  // In Android API 35+, the "height" now includes the system decoration
-  // areas and display cutout (status & navigation bar heights).
-  //  - https://github.com/facebook/react-native/issues/47080#issuecomment-2421914957
-  return useMemo(() => {
-    if (!platformApiLevel || platformApiLevel < 35) return screenHeight;
-    return screenHeight - insets.top - insets.bottom;
-  }, [insets.bottom, insets.top, screenHeight]);
-}
-
 //#region Sheet
 export function Sheet({
   titleKey,
@@ -77,7 +62,7 @@ export function Sheet({
   const [sheetHeight, setSheetHeight] = useState(0);
   const [headerHeight, setHeaderHeight] = useState(0);
 
-  const trueScreenHeight = useUseableScreenHeight();
+  const trueScreenHeight = useSafeAreaHeight();
 
   return (
     <TrueSheet
