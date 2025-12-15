@@ -1,5 +1,5 @@
 diff --git a/android/src/main/java/com/lodev09/truesheet/TrueSheetViewController.kt b/android/src/main/java/com/lodev09/truesheet/TrueSheetViewController.kt
-index 79bd9eebe4ba096673d1645ef86a91e4f6d17db4..ac25a134c452781cb6928bb35a5cda0bd7c156ac 100644
+index 79bd9eebe4ba096673d1645ef86a91e4f6d17db4..552c9a5041fcb4d20476839d94a197a01e1e1d1d 100644
 --- a/android/src/main/java/com/lodev09/truesheet/TrueSheetViewController.kt
 +++ b/android/src/main/java/com/lodev09/truesheet/TrueSheetViewController.kt
 @@ -72,7 +72,7 @@ class TrueSheetViewController(private val reactContext: ThemedReactContext) :
@@ -11,6 +11,15 @@ index 79bd9eebe4ba096673d1645ef86a91e4f6d17db4..ac25a134c452781cb6928bb35a5cda0b
      private const val DISMISS_ANIMATION_DURATION = 150L
    }
  
+@@ -616,6 +616,8 @@ class TrueSheetViewController(private val reactContext: ThemedReactContext) :
+       paint.color = backgroundColor
+     }
+     bottomSheet.clipToOutline = true
++    // Removes shadow applied to sheet.
++    bottomSheet.setOutlineProvider(null)
+   }
+ 
+   /** Configures dim and touch-through behavior based on detent index. */
 diff --git a/android/src/main/res/anim/true_sheet_slide_in.xml b/android/src/main/res/anim/true_sheet_slide_in.xml
 index e5d2bcdaa0c7ca52702208248f403e1189e4e02b..16bd3db3a42457cfb3da1a42ecfd39be9cc3f0a2 100644
 --- a/android/src/main/res/anim/true_sheet_slide_in.xml
