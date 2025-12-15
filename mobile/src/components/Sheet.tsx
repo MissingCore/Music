@@ -28,13 +28,15 @@ interface SheetProps {
   globalKey?: string;
   /** Title displayed in sheet. */
   titleKey?: ParseKeys;
+  /** Fires when the sheet is dismissed. */
+  onCleanup?: VoidFunction;
   /** If the sheet should open at max screen height. */
   snapTop?: boolean;
+  /** Indicates a sheet can display keyboard & toast. */
+  keyboardAndToast?: boolean;
   /** Styles applied to the internal `GestureHandlerRootView`. */
   contentContainerClassName?: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
-  /** Indicates a sheet can display keyboard & toast. */
-  keyboardAndToast?: boolean;
 }
 
 export type TrueSheetRef = React.Ref<TrueSheet>;
@@ -48,10 +50,11 @@ export function Sheet({
   ref,
   titleKey,
   globalKey,
+  onCleanup,
   snapTop,
+  keyboardAndToast,
   contentContainerClassName,
   contentContainerStyle,
-  keyboardAndToast,
   children,
 }: SheetProps) {
   const { t } = useTranslation();
@@ -83,8 +86,11 @@ export function Sheet({
       grabber={false}
       // Re-enable toast animations after sheet is finished presenting.
       onDidPresent={() => setDisableToastAnim(false)}
-      // Disable toast animations when sheet is dismissed.
-      onDidDismiss={() => setDisableToastAnim(true)}
+      onDidDismiss={() => {
+        if (onCleanup) onCleanup();
+        // Disable toast animations when sheet is dismissed.
+        setDisableToastAnim(true);
+      }}
     >
       <View
         onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}

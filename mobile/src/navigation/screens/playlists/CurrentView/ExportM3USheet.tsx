@@ -43,7 +43,11 @@ export const ExportM3USheet = deferInitialRender(
     };
 
     return (
-      <Sheet ref={props.sheetRef} titleKey="feat.playlist.extra.m3uExport">
+      <Sheet
+        ref={props.sheetRef}
+        titleKey="feat.playlist.extra.m3uExport"
+        onCleanup={() => setSelectedIdx(0)}
+      >
         <SegmentedPicker
           options={pickerOptions}
           selectedIndex={selectedIdx}
