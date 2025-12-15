@@ -58,7 +58,6 @@ export function Sheet({
   const [disableToastAnim, setDisableToastAnim] = useState(true);
   const [sheetHeight, setSheetHeight] = useState(0);
   const [headerHeight, setHeaderHeight] = useState(0);
-  const disableAnimTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
 
   // In Android API 35+, the "height" now includes the system decoration
   // areas and display cutout (status & navigation bar heights).
@@ -79,21 +78,10 @@ export function Sheet({
       // Sheet max height will be just before the `<TopAppBar />`.
       maxHeight={trueScreenHeight - 56}
       grabber={false}
-      onDidPresent={() => {
-        // Temporarily disable toast mount animation when sheet is presenting.
-        if (disableAnimTimerRef.current)
-          clearTimeout(disableAnimTimerRef.current);
-        disableAnimTimerRef.current = setTimeout(
-          () => setDisableToastAnim(false),
-          250,
-        );
-      }}
-      onDidDismiss={() => {
-        // Ensure that toast mount animation is disabled when sheet dismisses.
-        if (disableAnimTimerRef.current)
-          clearTimeout(disableAnimTimerRef.current);
-        setDisableToastAnim(true);
-      }}
+      // Re-enable toast animations after sheet is finished presenting.
+      onDidPresent={() => setDisableToastAnim(false)}
+      // Disable toast animations when sheet is dismissed.
+      onDidDismiss={() => setDisableToastAnim(true)}
     >
       <View
         onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}
