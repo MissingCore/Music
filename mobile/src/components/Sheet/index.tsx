@@ -15,10 +15,10 @@ import { useTheme } from "~/hooks/useTheme";
 
 import { BorderRadius } from "~/constants/Styles";
 import { cn } from "~/lib/style";
-import { Marquee } from "./Containment/Marquee";
-import { Button } from "./Form/Button";
-import { NumericInput } from "./Form/Input";
-import { StyledText, TStyledText } from "./Typography/StyledText";
+import { Marquee } from "../Containment/Marquee";
+import { Button } from "../Form/Button";
+import { NumericInput } from "../Form/Input";
+import { StyledText, TStyledText } from "../Typography/StyledText";
 
 const WrappedGestureHandlerRootView = withUniwind(GestureHandlerRootView);
 
