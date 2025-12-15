@@ -22,12 +22,19 @@ import { StyledText, TStyledText } from "./Typography/StyledText";
 
 const WrappedGestureHandlerRootView = withUniwind(GestureHandlerRootView);
 
-interface SheetProps extends Omit<TrueSheetProps, "name"> {
-  titleKey?: ParseKeys;
+interface SheetProps extends Pick<TrueSheetProps, "children" | "scrollable"> {
+  ref?: TrueSheetRef;
   /** Makes sheet accessible globally using this key. */
   globalKey?: string;
+  /** Title displayed in sheet. */
+  titleKey?: ParseKeys;
+  /** Fires when the sheet is dismissed. */
+  onCleanup?: VoidFunction;
   /** If the sheet should open at max screen height. */
   snapTop?: boolean;
+  /** Indicates a sheet can display keyboard & toast. */
+  keyboardAndToast?: boolean;
+  /** Styles applied to the internal `GestureHandlerRootView`. */
   contentContainerClassName?: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
 }
@@ -38,65 +45,55 @@ export function useSheetRef() {
   return useRef<TrueSheet>(null);
 }
 
-//#region Sheet
-export function Sheet({
-  titleKey,
-  globalKey,
-  snapTop,
-  contentContainerClassName,
-  contentContainerStyle,
-  children,
-  onPresent,
-  onDismiss,
-  ...props
-}: SheetProps & { ref?: TrueSheetRef }) {
-  const { t } = useTranslation();
-  const { canvasAlt } = useTheme();
+/** Returns the height of the useable area (removes top & bottom insets). */
+export function useUseableScreenHeight() {
   const insets = useSafeAreaInsets();
   const { height: screenHeight } = useWindowDimensions();
-  const [enableToast, setEnableToast] = useState(false);
-  const [disableToastAnim, setDisableToastAnim] = useState(true);
-  const [sheetHeight, setSheetHeight] = useState(0);
-  const [headerHeight, setHeaderHeight] = useState(0);
-  const disableAnimTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
 
   // In Android API 35+, the "height" now includes the system decoration
   // areas and display cutout (status & navigation bar heights).
   //  - https://github.com/facebook/react-native/issues/47080#issuecomment-2421914957
-  const trueScreenHeight = useMemo(() => {
+  return useMemo(() => {
     if (!platformApiLevel || platformApiLevel < 35) return screenHeight;
     return screenHeight - insets.top - insets.bottom;
   }, [insets.bottom, insets.top, screenHeight]);
+}
+
+//#region Sheet
+export function Sheet({
+  titleKey,
+  globalKey,
+  onCleanup,
+  snapTop,
+  keyboardAndToast,
+  contentContainerClassName,
+  contentContainerStyle,
+  children,
+  ...props
+}: SheetProps) {
+  const { t } = useTranslation();
+  const { canvasAlt } = useTheme();
+  const [disableToastAnim, setDisableToastAnim] = useState(true);
+  const [sheetHeight, setSheetHeight] = useState(0);
+  const [headerHeight, setHeaderHeight] = useState(0);
+
+  const trueScreenHeight = useUseableScreenHeight();
 
   return (
     <TrueSheet
       onLayout={(e) => setSheetHeight(e.nativeEvent.layout.height)}
       name={globalKey}
-      sizes={[snapTop ? "large" : "auto"]}
+      detents={[snapTop ? 1 : "auto"]}
       backgroundColor={canvasAlt}
       cornerRadius={BorderRadius.lg}
       // Sheet max height will be just before the `<TopAppBar />`.
       maxHeight={trueScreenHeight - 56}
       grabber={false}
-      onPresent={(e) => {
-        if (onPresent) onPresent(e);
-        setEnableToast(true);
-
-        // Temporarily disable toast mount animation when sheet is presenting.
-        if (disableAnimTimerRef.current)
-          clearTimeout(disableAnimTimerRef.current);
-        disableAnimTimerRef.current = setTimeout(
-          () => setDisableToastAnim(false),
-          250,
-        );
-      }}
-      onDismiss={() => {
-        if (onDismiss) onDismiss();
-        setEnableToast(false);
-
-        // Ensure that toast mount animation is disabled when sheet presents.
-        if (disableAnimTimerRef.current)
-          clearTimeout(disableAnimTimerRef.current);
+      // Re-enable toast animations after sheet is finished presenting.
+      onDidPresent={() => setDisableToastAnim(false)}
+      onDidDismiss={() => {
+        if (onCleanup) onCleanup();
+        // Disable toast animations when sheet is dismissed.
         setDisableToastAnim(true);
       }}
       {...props}
@@ -128,17 +125,15 @@ export function Sheet({
       >
         {children}
       </WrappedGestureHandlerRootView>
-      {enableToast ? (
-        <Toasts
-          // @ts-expect-error - We added the `sheetOpts` prop via a patch.
-          sheetOpts={{
-            height: sheetHeight,
-            needKeyboardOffset: props.keyboardMode === "pan",
-          }}
-          // A duration of 0 doesn't work.
-          globalAnimationConfig={disableToastAnim ? { duration: 1 } : undefined}
-        />
-      ) : null}
+      <Toasts
+        // @ts-expect-error - We added the `sheetOpts` prop via a patch.
+        sheetOpts={{
+          height: sheetHeight,
+          needKeyboardOffset: keyboardAndToast,
+        }}
+        // A duration of 0 doesn't work.
+        globalAnimationConfig={disableToastAnim ? { duration: 1 } : undefined}
+      />
     </TrueSheet>
   );
 }

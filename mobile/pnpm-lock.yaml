@@ -15,7 +15,7 @@ patchedDependencies:
     hash: 02bde95462ae30a21077feabc5ad68053c8c71b2d2b8f17eb4aa29a9ba090446
     path: patches/@kaannn__react-native-waveform.patch
   '@lodev09/react-native-true-sheet':
-    hash: d57ac3ae2a5ba11927eda1e45cb7145f94aa05f15a1452551405f83738dceac8
+    hash: 2b8655c2780ef1b69d5bafb59cff556587ad92fb3b4a3ea707d5b713be51b370
     path: patches/@lodev09__react-native-true-sheet.patch
   '@react-native-assets/slider':
     hash: bef4d8e9c3b580bf43a5dbf74b663476625186715ae2cb4141e7a4ae7bd05d46
@@ -44,8 +44,8 @@ importers:
         specifier: ^2.0.16
         version: 2.0.16(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       '@lodev09/react-native-true-sheet':
-        specifier: 2.0.6
-        version: 2.0.6(patch_hash=d57ac3ae2a5ba11927eda1e45cb7145f94aa05f15a1452551405f83738dceac8)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+        specifier: 3.3.5
+        version: 3.3.5(patch_hash=2b8655c2780ef1b69d5bafb59cff556587ad92fb3b4a3ea707d5b713be51b370)(@react-navigation/native@7.1.25(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-reanimated@4.2.0(react-native-worklets@0.7.1(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-worklets@0.7.1(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       '@lukemorales/query-key-factory':
         specifier: 1.3.4
         version: 1.3.4(@tanstack/query-core@5.90.12)(@tanstack/react-query@5.90.12(react@19.1.0))
@@ -159,7 +159,7 @@ importers:
         version: 6.3.11(patch_hash=f1925439605b77f30b038b828717080c64dc11a6b2938c7489b364fe99bd6e53)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       react-native-draglist:
         specifier: github:MissingCore/react-native-draglist#a675f18395876c72498597650a105b94e97a1439
-        version: git+https://github.com/MissingCore/react-native-draglist.git#a675f18395876c72498597650a105b94e97a1439(@shopify/flash-list@2.2.0(@babel/runtime@7.28.4)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+        version: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a675f18395876c72498597650a105b94e97a1439(@shopify/flash-list@2.2.0(@babel/runtime@7.28.4)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       react-native-edge-to-edge:
         specifier: 1.7.0
         version: 1.7.0(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
@@ -1383,11 +1383,24 @@ packages:
       react: '*'
       react-native: '*'
 
-  '@lodev09/react-native-true-sheet@2.0.6':
-    resolution: {integrity: sha512-vm2t+W4u7/F6KFS3evQE7UpMyhX7ulxEwOdRoMM66ar6sXvYpXiVd1cCjMvl6PIc2uKTYcs4Tss3QvERLF/6dg==}
+  '@lodev09/react-native-true-sheet@3.3.5':
+    resolution: {integrity: sha512-t6FMdXdLVbm42bPDrkdfScek8l5b04ftpONbWjYPYgvpaJ2k+3KID27aqCAs4Z9Pjf3YHMz5E1AM32obhVGyeg==}
     peerDependencies:
+      '@gorhom/bottom-sheet': '>=5'
+      '@react-navigation/native': '>=7'
       react: '*'
       react-native: '*'
+      react-native-reanimated: '>=4'
+      react-native-worklets: '*'
+    peerDependenciesMeta:
+      '@gorhom/bottom-sheet':
+        optional: true
+      '@react-navigation/native':
+        optional: true
+      react-native-reanimated:
+        optional: true
+      react-native-worklets:
+        optional: true
 
   '@lukemorales/query-key-factory@1.3.4':
     resolution: {integrity: sha512-A3frRDdkmaNNQi6mxIshsDk4chRXWoXa05US8fBo4kci/H+lVmujS6QrwQLLGIkNIRFGjMqp2uKjC4XsLdydRw==}
@@ -4703,8 +4716,8 @@ packages:
       react: '*'
       react-native: '*'
 
-  react-native-draglist@git+https://github.com/MissingCore/react-native-draglist.git#a675f18395876c72498597650a105b94e97a1439:
-    resolution: {commit: a675f18395876c72498597650a105b94e97a1439, repo: https://github.com/MissingCore/react-native-draglist.git, type: git}
+  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a675f18395876c72498597650a105b94e97a1439:
+    resolution: {tarball: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a675f18395876c72498597650a105b94e97a1439}
     version: 3.10.0
     peerDependencies:
       '@shopify/flash-list': '>=2.0.0'
@@ -7021,10 +7034,14 @@ snapshots:
       react-native: 0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0)
       use-sync-external-store: 1.6.0(react@19.1.0)
 
-  '@lodev09/react-native-true-sheet@2.0.6(patch_hash=d57ac3ae2a5ba11927eda1e45cb7145f94aa05f15a1452551405f83738dceac8)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
+  '@lodev09/react-native-true-sheet@3.3.5(patch_hash=2b8655c2780ef1b69d5bafb59cff556587ad92fb3b4a3ea707d5b713be51b370)(@react-navigation/native@7.1.25(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-reanimated@4.2.0(react-native-worklets@0.7.1(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-worklets@0.7.1(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
     dependencies:
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0)
+    optionalDependencies:
+      '@react-navigation/native': 7.1.25(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+      react-native-reanimated: 4.2.0(react-native-worklets@0.7.1(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+      react-native-worklets: 0.7.1(@babel/core@7.28.5)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
 
   '@lukemorales/query-key-factory@1.3.4(@tanstack/query-core@5.90.12)(@tanstack/react-query@5.90.12(react@19.1.0))':
     dependencies:
@@ -10790,7 +10807,7 @@ snapshots:
       - react-native-b4a
       - supports-color
 
-  react-native-draglist@git+https://github.com/MissingCore/react-native-draglist.git#a675f18395876c72498597650a105b94e97a1439(@shopify/flash-list@2.2.0(@babel/runtime@7.28.4)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
+  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a675f18395876c72498597650a105b94e97a1439(@shopify/flash-list@2.2.0(@babel/runtime@7.28.4)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
     dependencies:
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0)

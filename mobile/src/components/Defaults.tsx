@@ -38,15 +38,21 @@ export const ScrollablePresets = {
  */
 export function useIsScrollable() {
   const layoutHeight = useRef(0);
+  const lastContentSizeChangeHeight = useRef(0);
   const [isScrollable, setIsScrollable] = useState(false);
 
   const handlers = useMemo(
     () => ({
       onLayout: (e: LayoutChangeEvent) => {
         layoutHeight.current = e.nativeEvent.layout.height;
-        setIsScrollable(false);
+        //? Encountered a situation where `onLayout` fired again, but
+        //? `onContentSizeChange` didn't.
+        setIsScrollable(
+          lastContentSizeChangeHeight.current > e.nativeEvent.layout.height,
+        );
       },
       onContentSizeChange: (_w: number, h: number) => {
+        lastContentSizeChangeHeight.current = h;
         setIsScrollable(h > layoutHeight.current && layoutHeight.current !== 0);
       },
     }),

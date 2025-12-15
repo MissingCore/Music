@@ -19,7 +19,7 @@ export const AddMusicSheet = deferInitialRender(function AddMusicSheet(props: {
     <Sheet
       ref={props.sheetRef}
       titleKey="feat.search.extra.musicAdd"
-      keyboardMode="pan"
+      keyboardAndToast
       snapTop
     >
       <SearchEngine
