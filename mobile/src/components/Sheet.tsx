@@ -55,7 +55,6 @@ export function Sheet({
   const { canvasAlt } = useTheme();
   const insets = useSafeAreaInsets();
   const { height: screenHeight } = useWindowDimensions();
-  const [enableToast, setEnableToast] = useState(false);
   const [disableToastAnim, setDisableToastAnim] = useState(true);
   const [sheetHeight, setSheetHeight] = useState(0);
   const [headerHeight, setHeaderHeight] = useState(0);
@@ -81,8 +80,6 @@ export function Sheet({
       maxHeight={trueScreenHeight - 56}
       grabber={false}
       onDidPresent={() => {
-        setEnableToast(true);
-
         // Temporarily disable toast mount animation when sheet is presenting.
         if (disableAnimTimerRef.current)
           clearTimeout(disableAnimTimerRef.current);
@@ -92,9 +89,7 @@ export function Sheet({
         );
       }}
       onDidDismiss={() => {
-        setEnableToast(false);
-
-        // Ensure that toast mount animation is disabled when sheet presents.
+        // Ensure that toast mount animation is disabled when sheet dismisses.
         if (disableAnimTimerRef.current)
           clearTimeout(disableAnimTimerRef.current);
         setDisableToastAnim(true);
@@ -127,14 +122,12 @@ export function Sheet({
       >
         {children}
       </WrappedGestureHandlerRootView>
-      {enableToast ? (
-        <Toasts
-          // @ts-expect-error - We added the `sheetOpts` prop via a patch.
-          sheetOpts={{ height: sheetHeight }}
-          // A duration of 0 doesn't work.
-          globalAnimationConfig={disableToastAnim ? { duration: 1 } : undefined}
-        />
-      ) : null}
+      <Toasts
+        // @ts-expect-error - We added the `sheetOpts` prop via a patch.
+        sheetOpts={{ height: sheetHeight }}
+        // A duration of 0 doesn't work.
+        globalAnimationConfig={disableToastAnim ? { duration: 1 } : undefined}
+      />
     </TrueSheet>
   );
 }
