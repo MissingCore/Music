@@ -51,7 +51,7 @@ importers:
         version: 1.3.4(@tanstack/query-core@5.90.12)(@tanstack/react-query@5.90.12(react@19.1.0))
       '@miblanchard/react-native-slider':
         specifier: github:MissingCore/react-native-slider#4fa4f2097bdabaf4bc3866202debc84482020d5f
-        version: git+https://github.com/MissingCore/react-native-slider.git#4fa4f2097bdabaf4bc3866202debc84482020d5f(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+        version: https://codeload.github.com/MissingCore/react-native-slider/tar.gz/4fa4f2097bdabaf4bc3866202debc84482020d5f(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       '@missingcore/react-native-actual-path':
         specifier: 0.1.0
         version: 0.1.0(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
@@ -159,7 +159,7 @@ importers:
         version: 6.3.11(patch_hash=f1925439605b77f30b038b828717080c64dc11a6b2938c7489b364fe99bd6e53)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       react-native-draglist:
         specifier: github:MissingCore/react-native-draglist#a675f18395876c72498597650a105b94e97a1439
-        version: git+https://github.com/MissingCore/react-native-draglist.git#a675f18395876c72498597650a105b94e97a1439(@shopify/flash-list@2.2.0(@babel/runtime@7.28.4)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+        version: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a675f18395876c72498597650a105b94e97a1439(@shopify/flash-list@2.2.0(@babel/runtime@7.28.4)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       react-native-edge-to-edge:
         specifier: 1.7.0
         version: 1.7.0(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
@@ -1409,8 +1409,8 @@ packages:
       '@tanstack/query-core': '>= 4.0.0'
       '@tanstack/react-query': '>= 4.0.0'
 
-  '@miblanchard/react-native-slider@git+https://github.com/MissingCore/react-native-slider.git#4fa4f2097bdabaf4bc3866202debc84482020d5f':
-    resolution: {commit: 4fa4f2097bdabaf4bc3866202debc84482020d5f, repo: https://github.com/MissingCore/react-native-slider.git, type: git}
+  '@miblanchard/react-native-slider@https://codeload.github.com/MissingCore/react-native-slider/tar.gz/4fa4f2097bdabaf4bc3866202debc84482020d5f':
+    resolution: {tarball: https://codeload.github.com/MissingCore/react-native-slider/tar.gz/4fa4f2097bdabaf4bc3866202debc84482020d5f}
     version: 2.6.0
     peerDependencies:
       react: '>=16.8'
@@ -4716,8 +4716,8 @@ packages:
       react: '*'
       react-native: '*'
 
-  react-native-draglist@git+https://github.com/MissingCore/react-native-draglist.git#a675f18395876c72498597650a105b94e97a1439:
-    resolution: {commit: a675f18395876c72498597650a105b94e97a1439, repo: https://github.com/MissingCore/react-native-draglist.git, type: git}
+  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a675f18395876c72498597650a105b94e97a1439:
+    resolution: {tarball: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a675f18395876c72498597650a105b94e97a1439}
     version: 3.10.0
     peerDependencies:
       '@shopify/flash-list': '>=2.0.0'
@@ -7048,7 +7048,7 @@ snapshots:
       '@tanstack/query-core': 5.90.12
       '@tanstack/react-query': 5.90.12(react@19.1.0)
 
-  '@miblanchard/react-native-slider@git+https://github.com/MissingCore/react-native-slider.git#4fa4f2097bdabaf4bc3866202debc84482020d5f(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
+  '@miblanchard/react-native-slider@https://codeload.github.com/MissingCore/react-native-slider/tar.gz/4fa4f2097bdabaf4bc3866202debc84482020d5f(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
     dependencies:
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0)
@@ -10807,7 +10807,7 @@ snapshots:
       - react-native-b4a
       - supports-color
 
-  react-native-draglist@git+https://github.com/MissingCore/react-native-draglist.git#a675f18395876c72498597650a105b94e97a1439(@shopify/flash-list@2.2.0(@babel/runtime@7.28.4)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
+  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a675f18395876c72498597650a105b94e97a1439(@shopify/flash-list@2.2.0(@babel/runtime@7.28.4)(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
     dependencies:
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.28.5)(@types/react@19.1.17)(react@19.1.0)
