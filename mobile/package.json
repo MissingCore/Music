@@ -125,7 +125,8 @@
       "@backpackapp-io/react-native-toast": "patches/@backpackapp-io__react-native-toast.patch",
       "react-native-android-widget": "patches/react-native-android-widget.patch",
       "react-native-bootsplash": "patches/react-native-bootsplash.patch",
-      "@kaannn/react-native-waveform": "patches/@kaannn__react-native-waveform.patch"
+      "@kaannn/react-native-waveform": "patches/@kaannn__react-native-waveform.patch",
+      "@lodev09/react-native-true-sheet": "patches/@lodev09__react-native-true-sheet.patch"
     }
   }
 }

@@ -1,49 +1,56 @@
-diff --git a/android/src/main/java/com/lodev09/truesheet/TrueSheetDialog.kt b/android/src/main/java/com/lodev09/truesheet/TrueSheetDialog.kt
-index f05e63e5df5e9217d713a978f77992fee1decb17..faf3374c59bff2fe3682b6ab9d20a332144b6d78 100644
---- a/android/src/main/java/com/lodev09/truesheet/TrueSheetDialog.kt
-+++ b/android/src/main/java/com/lodev09/truesheet/TrueSheetDialog.kt
-@@ -87,6 +87,7 @@ class TrueSheetDialog(private val reactContext: ThemedReactContext, private val
-     setContentView(rootSheetView)
+diff --git a/android/src/main/java/com/lodev09/truesheet/TrueSheetViewController.kt b/android/src/main/java/com/lodev09/truesheet/TrueSheetViewController.kt
+index 79bd9eebe4ba096673d1645ef86a91e4f6d17db4..ac25a134c452781cb6928bb35a5cda0bd7c156ac 100644
+--- a/android/src/main/java/com/lodev09/truesheet/TrueSheetViewController.kt
++++ b/android/src/main/java/com/lodev09/truesheet/TrueSheetViewController.kt
+@@ -72,7 +72,7 @@ class TrueSheetViewController(private val reactContext: ThemedReactContext) :
+     private const val DEFAULT_CORNER_RADIUS = 16 // dp
  
-     sheetContainerView?.setBackgroundColor(backgroundColor)
-+    sheetContainerView?.setOutlineProvider(null)
-     sheetContainerView?.clipToOutline = true
+     // Animation durations from res/anim/true_sheet_slide_in.xml and true_sheet_slide_out.xml
+-    private const val PRESENT_ANIMATION_DURATION = 200L
++    private const val PRESENT_ANIMATION_DURATION = 150L
+     private const val DISMISS_ANIMATION_DURATION = 150L
+   }
  
-     // Setup window params to adjust layout based on Keyboard state
-diff --git a/lib/commonjs/TrueSheet.js b/lib/commonjs/TrueSheet.js
-index 5d5720c434615db22e73d9f83f5f2e473192c8d3..d5ff5fb4719c2f8ac2e44ea4a41642d05385bc5b 100644
---- a/lib/commonjs/TrueSheet.js
-+++ b/lib/commonjs/TrueSheet.js
-@@ -252,7 +252,6 @@ exports.TrueSheet = TrueSheet;
- const $nativeSheet = {
-   position: 'absolute',
-   width: '100%',
--  left: -9999,
-   zIndex: -9999
- };
- //# sourceMappingURL=TrueSheet.js.map
-\ No newline at end of file
-diff --git a/lib/module/TrueSheet.js b/lib/module/TrueSheet.js
-index c1ae61fdca07f3625ece9aaa89305a467d68ce19..e9469b3f4356fa82b9b6d3c2f00fa0c40a618820 100644
---- a/lib/module/TrueSheet.js
-+++ b/lib/module/TrueSheet.js
-@@ -247,7 +247,6 @@ export class TrueSheet extends PureComponent {
- const $nativeSheet = {
-   position: 'absolute',
-   width: '100%',
--  left: -9999,
-   zIndex: -9999
- };
- //# sourceMappingURL=TrueSheet.js.map
-\ No newline at end of file
-diff --git a/src/TrueSheet.tsx b/src/TrueSheet.tsx
-index a9c0eeacedc1843bca141a059496dea7d32362da..d7735e5d23afe60674e80733d2ba29f363d62c25 100644
---- a/src/TrueSheet.tsx
-+++ b/src/TrueSheet.tsx
-@@ -322,6 +322,5 @@ export class TrueSheet extends PureComponent<TrueSheetProps, TrueSheetState> {
- const $nativeSheet: ViewStyle = {
-   position: 'absolute',
-   width: '100%',
--  left: -9999,
-   zIndex: -9999,
- }
+diff --git a/android/src/main/res/anim/true_sheet_slide_in.xml b/android/src/main/res/anim/true_sheet_slide_in.xml
+index e5d2bcdaa0c7ca52702208248f403e1189e4e02b..16bd3db3a42457cfb3da1a42ecfd39be9cc3f0a2 100644
+--- a/android/src/main/res/anim/true_sheet_slide_in.xml
++++ b/android/src/main/res/anim/true_sheet_slide_in.xml
+@@ -1,13 +1,13 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <set xmlns:android="http://schemas.android.com/apk/res/android">
+     <translate
+-        android:duration="250"
++        android:duration="150"
+         android:fromYDelta="20%p"
+         android:toYDelta="0"
+-        android:interpolator="@android:interpolator/decelerate_cubic" />
++        android:interpolator="@android:interpolator/fast_out_slow_in" />
+     <alpha
+         android:duration="150"
+         android:fromAlpha="0.0"
+         android:toAlpha="1.0"
+-        android:interpolator="@android:interpolator/decelerate_cubic" />
++        android:interpolator="@android:interpolator/fast_out_slow_in" />
+ </set>
+diff --git a/android/src/main/res/anim/true_sheet_slide_out.xml b/android/src/main/res/anim/true_sheet_slide_out.xml
+index 6da4b96be587de1d7e74bc9feacad5b00fee8e78..6cec10b835d0dc9a6055a3e0e1ad1273076a6541 100644
+--- a/android/src/main/res/anim/true_sheet_slide_out.xml
++++ b/android/src/main/res/anim/true_sheet_slide_out.xml
+@@ -1,14 +1,13 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <set xmlns:android="http://schemas.android.com/apk/res/android">
+     <translate
+-        android:duration="200"
++        android:duration="150"
+         android:fromYDelta="0"
+         android:toYDelta="20%p"
+-        android:interpolator="@android:interpolator/accelerate_cubic" />
++        android:interpolator="@android:interpolator/fast_out_slow_in" />
+     <alpha
+         android:duration="150"
+-        android:startOffset="50"
+         android:fromAlpha="1.0"
+         android:toAlpha="0.0"
+-        android:interpolator="@android:interpolator/accelerate_cubic" />
++        android:interpolator="@android:interpolator/fast_out_slow_in" />
+ </set>
