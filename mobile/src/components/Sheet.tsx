@@ -45,6 +45,20 @@ export function useSheetRef() {
   return useRef<TrueSheet>(null);
 }
 
+/** Returns the height of the useable area (removes top & bottom insets). */
+export function useUseableScreenHeight() {
+  const insets = useSafeAreaInsets();
+  const { height: screenHeight } = useWindowDimensions();
+
+  // In Android API 35+, the "height" now includes the system decoration
+  // areas and display cutout (status & navigation bar heights).
+  //  - https://github.com/facebook/react-native/issues/47080#issuecomment-2421914957
+  return useMemo(() => {
+    if (!platformApiLevel || platformApiLevel < 35) return screenHeight;
+    return screenHeight - insets.top - insets.bottom;
+  }, [insets.bottom, insets.top, screenHeight]);
+}
+
 //#region Sheet
 export function Sheet({
   titleKey,
@@ -59,19 +73,11 @@ export function Sheet({
 }: SheetProps) {
   const { t } = useTranslation();
   const { canvasAlt } = useTheme();
-  const insets = useSafeAreaInsets();
-  const { height: screenHeight } = useWindowDimensions();
   const [disableToastAnim, setDisableToastAnim] = useState(true);
   const [sheetHeight, setSheetHeight] = useState(0);
   const [headerHeight, setHeaderHeight] = useState(0);
 
-  // In Android API 35+, the "height" now includes the system decoration
-  // areas and display cutout (status & navigation bar heights).
-  //  - https://github.com/facebook/react-native/issues/47080#issuecomment-2421914957
-  const trueScreenHeight = useMemo(() => {
-    if (!platformApiLevel || platformApiLevel < 35) return screenHeight;
-    return screenHeight - insets.top - insets.bottom;
-  }, [insets.bottom, insets.top, screenHeight]);
+  const trueScreenHeight = useUseableScreenHeight();
 
   return (
     <TrueSheet
