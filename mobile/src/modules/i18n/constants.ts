@@ -142,4 +142,4 @@ export const LANGUAGES = [
       { display: "yang1206", link: "https://www.github.com/yang1206" },
     ],
   },
-] as const satisfies LanguageItem[];
+] satisfies LanguageItem[];
