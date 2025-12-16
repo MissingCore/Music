@@ -12,7 +12,6 @@ import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
 import { Marquee } from "~/components/Containment/Marquee";
 import { FlatList } from "~/components/Defaults";
-import { Divider } from "~/components/Divider";
 import { Button, IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import type { TrueSheetRef } from "~/components/Sheet";
@@ -44,7 +43,6 @@ export function ScanFilterListSheet(props: {
         />
       ) : null}
       <FilterForm listType={props.listType} listEntries={listEntries} />
-      <Divider />
 
       <FlatList
         data={listEntries}
@@ -97,7 +95,7 @@ function FilterForm(props: {
   return (
     <View className="flex-row gap-2">
       {/* FIXME: Noticed w/ RN 0.79, but having a border seems to contribute to the height when it shouldn't. */}
-      <View className="h-12 shrink grow flex-row items-center gap-2 border-b border-foreground/60">
+      <View className="h-12 shrink grow flex-row items-center gap-2 border-b border-foreground/10">
         <TextInput
           editable={!onSubmit.isPending}
           value={newPath}
