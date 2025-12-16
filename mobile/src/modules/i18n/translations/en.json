@@ -164,12 +164,13 @@
       "title": "Quick Scroll",
       "brief": "Show Nothing-styled scrollbar on supported screens."
     },
-    "ignoreRTLLayout": {
-      "title": "Ignore RTL Layout",
-      "brief": "Use LTR layout with a RTL language. Restart required."
-    },
     "language": {
-      "title": "Language"
+      "title": "Language",
+      "extra": {
+        "contribute": "Contribute Translations",
+        "useLTR": "Use LTR layout. Restart required.",
+        "translators": "Translators"
+      }
     },
     "backup": {
       "title": "Backup",
@@ -213,10 +214,6 @@
     "saveErrors": {
       "title": "Save Errors",
       "brief": "See the reason why some tracks weren't saved."
-    },
-    "interactions": {
-      "title": "Nothing Interactions",
-      "brief": "Supported Nothing features."
     },
     "playback": {
       "title": "Playback",
@@ -300,10 +297,6 @@
         "purgeCacheBrief": "Frees up storage to recalculate the waveforms of played tracks.",
         "purgeCacheToast": "Waveform cache cleared."
       }
-    },
-    "translate": {
-      "title": "Contribute Translations",
-      "brief": "Help translate the app in other languages."
     },
     "code": {
       "title": "GitHub Repository",

@@ -1,16 +1,13 @@
 import { useTranslation } from "react-i18next";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
-import {
-  PreferenceSetters,
-  PreferenceTogglers,
-} from "~/stores/Preference/actions";
-import { StandardScrollLayout } from "../../layouts/StandardScroll";
+import { PreferenceTogglers } from "~/stores/Preference/actions";
+
+import { StandardScrollLayout } from "~/navigation/layouts/StandardScroll";
+import { PlaybackDelaySheet } from "~/navigation/sheets/PlaybackDelaySheet";
 
 import { List, ListItem } from "~/components/Containment/List";
-import type { TrueSheetRef } from "~/components/Sheet";
-import { NumericSheet, useSheetRef } from "~/components/Sheet";
-import { deferInitialRender } from "../../components/DeferredRender";
+import { useSheetRef } from "~/components/Sheet";
 
 export default function PlaybackSettings() {
   const { t } = useTranslation();
@@ -21,7 +18,8 @@ export default function PlaybackSettings() {
 
   return (
     <>
-      <PlaybackDelaySheet sheetRef={playbackDelaySheetRef} />
+      <PlaybackDelaySheet ref={playbackDelaySheetRef} />
+
       <StandardScrollLayout>
         <ListItem
           titleKey="feat.playbackDelay.title"
@@ -50,20 +48,3 @@ export default function PlaybackSettings() {
     </>
   );
 }
-
-//#region Playback Delay Sheet
-const PlaybackDelaySheet = deferInitialRender(
-  function PlaybackDelaySheet(props: { sheetRef: TrueSheetRef }) {
-    const playbackDelay = usePreferenceStore((s) => s.playbackDelay);
-    return (
-      <NumericSheet
-        sheetRef={props.sheetRef}
-        titleKey="feat.playbackDelay.title"
-        descriptionKey="feat.playbackDelay.description"
-        value={playbackDelay}
-        setValue={PreferenceSetters.setPlaybackDelay}
-      />
-    );
-  },
-);
-//#endregion

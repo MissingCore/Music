@@ -3,8 +3,15 @@ import { useTranslation } from "react-i18next";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
-import { StandardScrollLayout } from "../../../layouts/StandardScroll";
-import { AppearanceSettingsSheets } from "./Sheets";
+
+import { StandardScrollLayout } from "~/navigation/layouts/StandardScroll";
+import {
+  AccentFontSheet,
+  PrimaryFontSheet,
+} from "~/navigation/sheets/FontSheet";
+import { MinAlbumLengthSheet } from "~/navigation/sheets/MinAlbumLengthSheet";
+import { NowPlayingDesignSheet } from "~/navigation/sheets/NowPlayingDesignSheet";
+import { ThemeSheet } from "~/navigation/sheets/ThemeSheet";
 
 import { List, ListItem } from "~/components/Containment/List";
 import { useSheetRef } from "~/components/Sheet";
@@ -19,22 +26,20 @@ export default function AppearanceSettings() {
   const miniplayerGestures = usePreferenceStore((s) => s.miniplayerGestures);
   const nowPlayingDesign = usePreferenceStore((s) => s.nowPlayingDesign);
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
-  const ignoreRTLLayout = usePreferenceStore((s) => s.ignoreRTLLayout);
   const accentFontSheetRef = useSheetRef();
   const primaryFontSheetRef = useSheetRef();
   const themeSheetRef = useSheetRef();
-  const albumLengthFilterSheetRef = useSheetRef();
+  const minAlbumLengthSheetRef = useSheetRef();
   const nowPlayingDesignSheetRef = useSheetRef();
 
   return (
     <>
-      <AppearanceSettingsSheets
-        accentFontRef={accentFontSheetRef}
-        primaryFontRef={primaryFontSheetRef}
-        themeRef={themeSheetRef}
-        albumLengthFilterRef={albumLengthFilterSheetRef}
-        nowPlayingDesignRef={nowPlayingDesignSheetRef}
-      />
+      <AccentFontSheet ref={accentFontSheetRef} />
+      <PrimaryFontSheet ref={primaryFontSheetRef} />
+      <ThemeSheet ref={themeSheetRef} />
+      <MinAlbumLengthSheet ref={minAlbumLengthSheetRef} />
+      <NowPlayingDesignSheet ref={nowPlayingDesignSheetRef} />
+
       <StandardScrollLayout>
         <List>
           <ListItem
@@ -68,7 +73,7 @@ export default function AppearanceSettings() {
           <ListItem
             titleKey="feat.albumLengthFilter.title"
             description={t("plural.track", { count: minAlbumLength })}
-            onPress={() => albumLengthFilterSheetRef.current?.present()}
+            onPress={() => minAlbumLengthSheetRef.current?.present()}
             first
           />
           <ListItem
@@ -89,15 +94,6 @@ export default function AppearanceSettings() {
             last
           />
         </List>
-
-        <ListItem
-          titleKey="feat.ignoreRTLLayout.title"
-          description={t("feat.ignoreRTLLayout.brief")}
-          onPress={PreferenceTogglers.toggleIgnoreRTLLayout}
-          switchState={ignoreRTLLayout}
-          first
-          last
-        />
       </StandardScrollLayout>
     </>
   );

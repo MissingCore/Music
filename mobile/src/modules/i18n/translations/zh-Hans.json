@@ -146,12 +146,13 @@
       "title": null,
       "brief": null
     },
-    "ignoreRTLLayout": {
-      "title": "忽略RTL布局",
-      "brief": "使用RTL 语言时使用 LTR 布局，重新启动后生效。"
-    },
     "language": {
-      "title": "语言"
+      "title": "语言",
+      "extra": {
+        "contribute": "协助翻译",
+        "useLTR": "使用RTL 语言时使用 LTR 布局，重新启动后生效。",
+        "translators": null
+      }
     },
     "backup": {
       "title": "备份",
@@ -195,10 +196,6 @@
     "saveErrors": {
       "title": "保存错误",
       "brief": "查看部分歌曲未能保存的原因。"
-    },
-    "interactions": {
-      "title": "Nothing 交互",
-      "brief": "支持的 Nothing 功能。"
     },
     "playback": {
       "title": "回放",
@@ -282,10 +279,6 @@
         "purgeCacheBrief": null,
         "purgeCacheToast": null
       }
-    },
-    "translate": {
-      "title": "协助翻译",
-      "brief": "帮助翻译应用到其他语言。"
     },
     "code": {
       "title": "GitHub 仓库",

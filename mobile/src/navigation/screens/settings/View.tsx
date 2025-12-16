@@ -5,9 +5,11 @@ import { useTranslation } from "react-i18next";
 import { OpenInNew } from "~/resources/icons/OpenInNew";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
-import { useHasNewUpdate } from "../../../hooks/useHasNewUpdate";
-import { StandardScrollLayout } from "../../../layouts/StandardScroll";
-import { SettingsSheets } from "./Sheets";
+
+import { useHasNewUpdate } from "~/navigation/hooks/useHasNewUpdate";
+import { StandardScrollLayout } from "~/navigation/layouts/StandardScroll";
+import { BackupSheet } from "~/navigation/sheets/BackupSheet";
+import { LanguageSheet } from "~/navigation/sheets/LanguageSheet";
 
 import { APP_VERSION } from "~/constants/Config";
 import * as LINKS from "~/constants/Links";
@@ -29,10 +31,9 @@ export default function Settings() {
 
   return (
     <>
-      <SettingsSheets
-        backupRef={backupSheetRef}
-        languageRef={languageSheetRef}
-      />
+      <LanguageSheet ref={languageSheetRef} />
+      <BackupSheet ref={backupSheetRef} />
+
       <StandardScrollLayout>
         {hasNewUpdate && (
           <ListItem
@@ -71,12 +72,6 @@ export default function Settings() {
             description={t("feat.insights.brief")}
             onPress={() => navigation.navigate("Insights")}
           />
-          {/* <ListItem
-            titleKey="feat.interactions.title"
-            description={t("feat.interactions.brief")}
-            icon={<OpenInNew />}
-            onPress={() => openBrowserAsync(LINKS.NOTHING_INTERACTIONS)}
-          /> */}
           <ListItem
             titleKey="feat.playback.title"
             description={t("feat.playback.brief")}
@@ -100,17 +95,11 @@ export default function Settings() {
 
         <List>
           <ListItem
-            titleKey="feat.translate.title"
-            description={t("feat.translate.brief")}
-            icon={<OpenInNew />}
-            onPress={() => openBrowserAsync(LINKS.TRANSLATIONS)}
-            first
-          />
-          <ListItem
             titleKey="feat.code.title"
             description={t("feat.code.brief")}
             icon={<OpenInNew />}
             onPress={() => openBrowserAsync(LINKS.GITHUB)}
+            first
           />
           <ListItem
             titleKey="feat.license.title"

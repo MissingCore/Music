@@ -27,9 +27,9 @@ export function toggleIgnoreInterrupt() {
   }));
 }
 
-export function toggleIgnoreRTLLayout() {
-  const nextState = !preferenceStore.getState().ignoreRTLLayout;
-  preferenceStore.setState({ ignoreRTLLayout: nextState });
+export function toggleForceLTR() {
+  const nextState = !preferenceStore.getState().forceLTR;
+  preferenceStore.setState({ forceLTR: nextState });
   I18nManager.allowRTL(nextState ? false : i18next.dir() === "rtl");
   I18nManager.forceRTL(nextState ? false : i18next.dir() === "rtl");
 }

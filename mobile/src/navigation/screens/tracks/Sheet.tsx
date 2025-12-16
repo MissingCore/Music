@@ -52,6 +52,7 @@ import { Divider } from "~/components/Divider";
 import { Button, IconButton } from "~/components/Form/Button";
 import { Checkbox } from "~/components/Form/Selection";
 import { Sheet, useSheetRef } from "~/components/Sheet";
+import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import { ContentPlaceholder } from "../../components/Placeholder";
@@ -378,13 +379,12 @@ function TrackToPlaylistSheet({ id }: { id: string }) {
   const { data: inList } = useTrackPlaylists(id);
   const addToPlaylist = useAddToPlaylist(id);
   const removeFromPlaylist = useRemoveFromPlaylist(id);
-  const { handlers, isScrollable } = useIsScrollable();
+  const sheetListHandlers = useEnableSheetScroll();
 
   return (
     <Sheet
       globalKey="TrackToPlaylistSheet"
       titleKey="feat.modalTrack.extra.addToPlaylist"
-      scrollable={isScrollable}
       snapTop
     >
       <LegendList
@@ -415,8 +415,7 @@ function TrackToPlaylistSheet({ id }: { id: string }) {
         ListEmptyComponent={
           <ContentPlaceholder errMsgKey="err.msg.noPlaylists" />
         }
-        {...handlers}
-        nestedScrollEnabled={isScrollable}
+        {...sheetListHandlers}
         contentContainerClassName="pb-4"
       />
     </Sheet>

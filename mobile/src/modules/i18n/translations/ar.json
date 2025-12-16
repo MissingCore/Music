@@ -146,12 +146,13 @@
       "title": null,
       "brief": null
     },
-    "ignoreRTLLayout": {
-      "title": null,
-      "brief": null
-    },
     "language": {
-      "title": "اللغة"
+      "title": "اللغة",
+      "extra": {
+        "contribute": "المساهمة في الترجمات",
+        "useLTR": null,
+        "translators": null
+      }
     },
     "backup": {
       "title": "النسخ الاحتياطي",
@@ -195,10 +196,6 @@
     "saveErrors": {
       "title": "حفظ الأخطاء",
       "brief": "شاهد سبب عدم حفظ بعض الأغاني."
-    },
-    "interactions": {
-      "title": "تفاعلات لا شيء",
-      "brief": "ميزات Nothing المدعومة."
     },
     "playback": {
       "title": "التشغيل",
@@ -282,10 +279,6 @@
         "purgeCacheBrief": null,
         "purgeCacheToast": null
       }
-    },
-    "translate": {
-      "title": "المساهمة في الترجمات",
-      "brief": "ساعد في ترجمة التطبيق إلى لغات أخرى."
     },
     "code": {
       "title": "مستودع GitHub",

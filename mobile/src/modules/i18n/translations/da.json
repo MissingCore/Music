@@ -146,12 +146,13 @@
       "title": null,
       "brief": null
     },
-    "ignoreRTLLayout": {
-      "title": null,
-      "brief": null
-    },
     "language": {
-      "title": "Sprog"
+      "title": "Sprog",
+      "extra": {
+        "contribute": "Bidrag oversættelser",
+        "useLTR": null,
+        "translators": null
+      }
     },
     "backup": {
       "title": "Backup",
@@ -195,10 +196,6 @@
     "saveErrors": {
       "title": "Fejl under gemning",
       "brief": "Se grunden til eventuelle fejl."
-    },
-    "interactions": {
-      "title": "Integrationer med Nothing Phone",
-      "brief": "Understøttede Nothing-funktioner"
     },
     "playback": {
       "title": "Afspilning",
@@ -282,10 +279,6 @@
         "purgeCacheBrief": null,
         "purgeCacheToast": null
       }
-    },
-    "translate": {
-      "title": "Bidrag oversættelser",
-      "brief": "Hjælp med at oversætte denne app til andre sprog."
     },
     "code": {
       "title": "GitHub Repository",

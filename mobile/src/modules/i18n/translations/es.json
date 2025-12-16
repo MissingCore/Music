@@ -146,12 +146,13 @@
       "title": "Desplazamiento rápido",
       "brief": "Muestra una barra de desplazamiento estilo Nothing cuando sea compatible."
     },
-    "ignoreRTLLayout": {
-      "title": "Ignorar diseño RTL",
-      "brief": "Forzar diseño LTR en idiomas RTL. Requiere reiniciar."
-    },
     "language": {
-      "title": "Idioma"
+      "title": "Idioma",
+      "extra": {
+        "contribute": "Colabora con las traducciones",
+        "useLTR": "Forzar diseño LTR en idiomas RTL. Requiere reiniciar.",
+        "translators": null
+      }
     },
     "backup": {
       "title": "Copia de seguridad",
@@ -195,10 +196,6 @@
     "saveErrors": {
       "title": "Errores al guardar",
       "brief": "Revisa qué canciones no se guardaron."
-    },
-    "interactions": {
-      "title": "Interacciones Nothing",
-      "brief": "Funciones compatibles con dispositivos Nothing."
     },
     "playback": {
       "title": "Reproducción",
@@ -282,10 +279,6 @@
         "purgeCacheBrief": "Libera espacio y regenera las formas de onda.",
         "purgeCacheToast": "Caché eliminada."
       }
-    },
-    "translate": {
-      "title": "Colabora con las traducciones",
-      "brief": "Ayuda a mejorar la app en otros idiomas."
     },
     "code": {
       "title": "Repositorio en GitHub",

@@ -146,12 +146,13 @@
       "title": "クイックスクロール",
       "brief": "対応している画面に Nothing スタイルのスクロールバーを表示します。"
     },
-    "ignoreRTLLayout": {
-      "title": "RTL レイアウトを無視",
-      "brief": "RTL 言語で LTR レイアウトを使用します。アプリの再起動が必要です。"
-    },
     "language": {
-      "title": "言語"
+      "title": "言語",
+      "extra": {
+        "contribute": "翻訳に貢献する",
+        "useLTR": "RTL 言語で LTR レイアウトを使用します。アプリの再起動が必要です。",
+        "translators": null
+      }
     },
     "backup": {
       "title": "バックアップ",
@@ -195,10 +196,6 @@
     "saveErrors": {
       "title": "エラーの保存",
       "brief": "一部のトラックが保存されなかった理由を確認します。"
-    },
-    "interactions": {
-      "title": "Nothing のインタラクション",
-      "brief": "Nothing でサポートされている機能について。"
     },
     "playback": {
       "title": "再生中",
@@ -282,10 +279,6 @@
         "purgeCacheBrief": "ストレージを開放して再生したトラックの波形を再計算します。",
         "purgeCacheToast": "波形キャッシュを消去しました。"
       }
-    },
-    "translate": {
-      "title": "翻訳に貢献する",
-      "brief": "アプリを他の言語に翻訳しませんか？"
     },
     "code": {
       "title": "GitHub リポジトリ",

@@ -6,7 +6,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { Colors } from "~/constants/Styles";
 
-const Themes = {
+export const Themes = {
   light: {
     theme: "light",
     canvas: Colors.neutral95,

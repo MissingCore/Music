@@ -3,8 +3,10 @@ import { useTranslation } from "react-i18next";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { useRescanForTracks } from "~/modules/scanning/helpers/rescan";
-import { StandardScrollLayout } from "../../../layouts/StandardScroll";
-import { ScanningSettingsSheets } from "./Sheets";
+
+import { StandardScrollLayout } from "~/navigation/layouts/StandardScroll";
+import { MinDurationSheet } from "~/navigation/sheets/MinDurationSheet";
+import { ScanFilterListSheet } from "~/navigation/sheets/ScanFilterListSheet";
 
 import { mutateGuard } from "~/lib/react-query";
 import { List, ListItem } from "~/components/Containment/List";
@@ -23,11 +25,10 @@ export default function ScanningSettings() {
 
   return (
     <>
-      <ScanningSettingsSheets
-        allowListRef={allowListSheetRef}
-        blockListRef={blockListSheetRef}
-        minDurationRef={minDurationSheetRef}
-      />
+      <ScanFilterListSheet ref={allowListSheetRef} listType="listAllow" />
+      <ScanFilterListSheet ref={blockListSheetRef} listType="listBlock" />
+      <MinDurationSheet ref={minDurationSheetRef} />
+
       <StandardScrollLayout>
         <List>
           <ListItem

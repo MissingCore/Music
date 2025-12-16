@@ -1,6 +1,7 @@
 import type { StyleProp, ViewStyle } from "react-native";
 import { Pressable, View } from "react-native";
 
+import { CheckCircle } from "~/resources/icons/CheckCircle";
 import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
@@ -34,7 +35,7 @@ function Selection(props: SelectionProps & { type: "checkbox" | "radio" }) {
   return (
     <View
       style={props.wrapperStyle}
-      className={cn("overflow-hidden rounded-md", props.wrapperClassName)}
+      className={cn("overflow-hidden rounded-sm", props.wrapperClassName)}
     >
       <Pressable
         accessibilityRole={props.type}
@@ -45,17 +46,12 @@ function Selection(props: SelectionProps & { type: "checkbox" | "radio" }) {
         disabled={props.type === "radio" ? props.selected : undefined}
         style={props.style}
         className={cn(
-          "min-h-12 p-4",
-          // "Selected" styling is handled differently.
-          {
-            "bg-surface active:opacity-75":
-              props.type === "checkbox" && props.selected,
-            "disabled:bg-surface": props.type === "radio",
-          },
+          "min-h-12 flex-row items-center justify-between px-2",
           props.className,
         )}
       >
         {props.children}
+        {props.selected ? <CheckCircle /> : null}
       </Pressable>
     </View>
   );

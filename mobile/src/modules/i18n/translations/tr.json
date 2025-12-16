@@ -146,12 +146,13 @@
       "title": "Hızlı Kaydırma",
       "brief": "Desteklenen ekranlarda Nothing tarzı kaydırma çubuğu göster."
     },
-    "ignoreRTLLayout": {
-      "title": "RTL Düzenini Görmezden Gel",
-      "brief": "RTL bir dil ile LTR düzenini kullan. Yeniden başlatma gereklidir."
-    },
     "language": {
-      "title": "Dil"
+      "title": "Dil",
+      "extra": {
+        "contribute": "Çevirilere Katkıda Bulun",
+        "useLTR": "RTL bir dil ile LTR düzenini kullan. Yeniden başlatma gereklidir.",
+        "translators": null
+      }
     },
     "backup": {
       "title": "Yedekleme",
@@ -195,10 +196,6 @@
     "saveErrors": {
       "title": "Kaydetme Hataları",
       "brief": "Bazı parçaların neden kaydedilmediğini görün."
-    },
-    "interactions": {
-      "title": "Nothing Etkileşimleri",
-      "brief": "Desteklenen Nothing özellikleri."
     },
     "playback": {
       "title": "Oynatma",
@@ -282,10 +279,6 @@
         "purgeCacheBrief": "Çalınan parçaların dalga formlarını yeniden hesaplamak için depolama alanında yer açar.",
         "purgeCacheToast": "Dalga formu önbelleği temizlendi."
       }
-    },
-    "translate": {
-      "title": "Çevirilere Katkıda Bulun",
-      "brief": "Uygulamanın diğer dillere çevrilmesine yardımcı olun."
     },
     "code": {
       "title": "GitHub Deposu",

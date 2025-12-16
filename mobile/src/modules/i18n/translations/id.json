@@ -146,12 +146,13 @@
       "title": null,
       "brief": null
     },
-    "ignoreRTLLayout": {
-      "title": null,
-      "brief": null
-    },
     "language": {
-      "title": "Bahasa"
+      "title": "Bahasa",
+      "extra": {
+        "contribute": "Kontribusi Penerjemahan",
+        "useLTR": null,
+        "translators": null
+      }
     },
     "backup": {
       "title": "Cadangkan",
@@ -195,10 +196,6 @@
     "saveErrors": {
       "title": "Simpan Galat",
       "brief": "Lihat mengapa beberapa trek tidak disimpan."
-    },
-    "interactions": {
-      "title": "Tidak Ada Interaksi",
-      "brief": "Fitur tidak didukung."
     },
     "playback": {
       "title": "Pemutaran",
@@ -282,10 +279,6 @@
         "purgeCacheBrief": null,
         "purgeCacheToast": null
       }
-    },
-    "translate": {
-      "title": "Kontribusi Penerjemahan",
-      "brief": "Bantu menerjemahkan aplikasi ini ke dalam bahasa lainnya."
     },
     "code": {
       "title": "Repositori GitHub",

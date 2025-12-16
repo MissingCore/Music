@@ -146,12 +146,13 @@
       "title": null,
       "brief": null
     },
-    "ignoreRTLLayout": {
-      "title": null,
-      "brief": null
-    },
     "language": {
-      "title": "Llengua"
+      "title": "Llengua",
+      "extra": {
+        "contribute": "Contribueix amb traduccions",
+        "useLTR": null,
+        "translators": null
+      }
     },
     "backup": {
       "title": "Copia de seguretat",
@@ -195,10 +196,6 @@
     "saveErrors": {
       "title": "Errors al guardar",
       "brief": "Raó per la que no s'han desat algunes pistes."
-    },
-    "interactions": {
-      "title": "Interaccions de Nothing",
-      "brief": "Funcions de Nothing suportades."
     },
     "playback": {
       "title": "Reproduint",
@@ -282,10 +279,6 @@
         "purgeCacheBrief": null,
         "purgeCacheToast": null
       }
-    },
-    "translate": {
-      "title": "Contribueix amb traduccions",
-      "brief": "Ajuda a traduir l'aplicació a altres llengües."
     },
     "code": {
       "title": "Repositori GitHub",
