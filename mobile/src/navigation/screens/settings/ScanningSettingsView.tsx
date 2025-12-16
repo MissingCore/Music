@@ -6,7 +6,7 @@ import { useRescanForTracks } from "~/modules/scanning/helpers/rescan";
 
 import { StandardScrollLayout } from "~/navigation/layouts/StandardScroll";
 import { MinDurationSheet } from "~/navigation/sheets/MinDurationSheet";
-import { ScanningSettingsSheets } from "./Sheets";
+import { ScanFilterListSheet } from "~/navigation/sheets/ScanFilterListSheet";
 
 import { mutateGuard } from "~/lib/react-query";
 import { List, ListItem } from "~/components/Containment/List";
@@ -26,10 +26,8 @@ export default function ScanningSettings() {
   return (
     <>
       <MinDurationSheet ref={minDurationSheetRef} />
-      <ScanningSettingsSheets
-        allowListRef={allowListSheetRef}
-        blockListRef={blockListSheetRef}
-      />
+      <ScanFilterListSheet ref={allowListSheetRef} listType="listAllow" />
+      <ScanFilterListSheet ref={blockListSheetRef} listType="listBlock" />
 
       <StandardScrollLayout>
         <List>

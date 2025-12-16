@@ -3,105 +3,76 @@ import { useTranslation } from "react-i18next";
 import { Keyboard, View } from "react-native";
 
 import { Add } from "~/resources/icons/Add";
+import { Close } from "~/resources/icons/Close";
 import { CreateNewFolder } from "~/resources/icons/CreateNewFolder";
-import { Delete } from "~/resources/icons/Delete";
 import { usePreferenceStore } from "~/stores/Preference/store";
-import {
-  pickPath,
-  removePath,
-  useAddPathToList,
-  validatePath,
-} from "./Sheets.utils";
+import { pickPath, removePath, useAddPathToList, validatePath } from "./utils";
 
 import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
 import { Marquee } from "~/components/Containment/Marquee";
-import { FlatList, useIsScrollable } from "~/components/Defaults";
+import { FlatList } from "~/components/Defaults";
+import { Divider } from "~/components/Divider";
 import { Button, IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import type { TrueSheetRef } from "~/components/Sheet";
-import { Sheet } from "~/components/Sheet";
-import { Swipeable } from "~/components/Swipeable";
-import { StyledText } from "~/components/Typography/StyledText";
-import { deferInitialRender } from "../../../components/DeferredRender";
-import { ContentPlaceholder } from "../../../components/Placeholder";
+import { DetachedSheet } from "~/components/Sheet/Detached";
+import { StyledText, TStyledText } from "~/components/Typography/StyledText";
+import { ContentPlaceholder } from "../../components/Placeholder";
 
-/** All the sheets used on `/setting/scanning` route. */
-export const ScanningSettingsSheets = deferInitialRender(
-  function ScanningSettingsSheets(
-    props: Record<"allowListRef" | "blockListRef", TrueSheetRef>,
-  ) {
-    return (
-      <>
-        <ScanFilterListSheet
-          listType="listAllow"
-          sheetRef={props.allowListRef}
-        />
-        <ScanFilterListSheet
-          listType="listBlock"
-          sheetRef={props.blockListRef}
-        />
-      </>
-    );
-  },
-);
-
-//#region Filter List
 /** Enables us to specify the paths in the allowlist or blocklist. */
-function ScanFilterListSheet({
-  listType,
-  sheetRef,
-}: {
+export function ScanFilterListSheet(props: {
   listType: "listAllow" | "listBlock";
-  sheetRef: TrueSheetRef;
+  ref: TrueSheetRef;
 }) {
   const { t } = useTranslation();
-  const listEntries = usePreferenceStore((s) => s[listType]);
-  const { handlers, isScrollable } = useIsScrollable();
+  const listEntries = usePreferenceStore((s) => s[props.listType]);
+  const [minHeight, setMinHeight] = useState(0);
 
   return (
-    <Sheet
-      ref={sheetRef}
-      titleKey={`feat.${listType}.title`}
-      contentContainerClassName="px-0"
-      scrollable={isScrollable}
-      keyboardAndToast
+    <DetachedSheet
+      ref={props.ref}
+      titleKey={`feat.${props.listType}.title`}
       snapTop
     >
-      {listType === "listBlock" ? (
-        <StyledText dim center className="px-4 text-sm">
-          {t("feat.listBlock.description")}
-        </StyledText>
+      {props.listType === "listBlock" ? (
+        <TStyledText
+          textKey="feat.listBlock.description"
+          dim
+          className="text-sm"
+        />
       ) : null}
-      <FilterForm listType={listType} listEntries={listEntries} />
+      <FilterForm listType={props.listType} listEntries={listEntries} />
+      <Divider />
 
       <FlatList
+        //? Hack to allow scrolling of list inside of sheet.
+        //? - https://sheet.lodev09.com/troubleshooting#unable-to-drag-on-android
+        onLayout={(e) => {
+          if (minHeight === 0) setMinHeight(e.nativeEvent.layout.height + 1);
+        }}
         data={listEntries}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
-          <Swipeable
-            onSwipeLeft={() => removePath({ list: listType, path: item })}
-            RightIcon={<Delete color={Colors.neutral100} />}
-            rightIconContainerClassName="rounded-md bg-red"
-            wrapperClassName="mx-4"
-          >
-            <Marquee
-              color="surface"
-              wrapperClassName="rounded-md bg-surface"
-              contentContainerClassName="py-4"
-            >
-              <StyledText className="px-4">{item}</StyledText>
+          <View className="flex-row items-center gap-2">
+            <Marquee color="canvasAlt">
+              <StyledText>{item}</StyledText>
             </Marquee>
-          </Swipeable>
+            <IconButton
+              Icon={Close}
+              accessibilityLabel={t("template.entryRemove", { name: item })}
+              onPress={() => removePath({ list: props.listType, path: item })}
+            />
+          </View>
         )}
         ListEmptyComponent={
           <ContentPlaceholder errMsgKey="err.msg.noFilters" />
         }
-        {...handlers}
-        nestedScrollEnabled={isScrollable}
-        contentContainerClassName="gap-1 pb-4"
+        nestedScrollEnabled
+        contentContainerStyle={{ minHeight }}
+        contentContainerClassName="gap-2 pb-4"
       />
-    </Sheet>
+    </DetachedSheet>
   );
 }
 
@@ -129,7 +100,7 @@ function FilterForm(props: {
   };
 
   return (
-    <View className="flex-row gap-2 px-4">
+    <View className="flex-row gap-2">
       {/* FIXME: Noticed w/ RN 0.79, but having a border seems to contribute to the height when it shouldn't. */}
       <View className="h-12 shrink grow flex-row items-center gap-2 border-b border-foreground/60">
         <TextInput
@@ -164,4 +135,3 @@ function FilterForm(props: {
     </View>
   );
 }
-//#endregion
