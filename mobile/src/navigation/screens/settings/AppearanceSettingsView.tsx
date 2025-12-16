@@ -14,7 +14,7 @@ import { NowPlayingDesignSheet } from "~/navigation/sheets/NowPlayingDesignSheet
 import { ThemeSheet } from "~/navigation/sheets/ThemeSheet";
 
 import { List, ListItem } from "~/components/Containment/List";
-import { useSheetRef } from "~/components/Sheet";
+import { useSheetRef } from "~/components/Sheet/useSheetRef";
 
 export default function AppearanceSettings() {
   const { t } = useTranslation();

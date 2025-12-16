@@ -10,7 +10,7 @@ import { withUniwind } from "uniwind";
 import { useSafeAreaHeight } from "~/hooks/useSafeAreaHeight";
 
 import { cn } from "~/lib/style";
-import type { TrueSheetRef } from "./index";
+import type { TrueSheetRef } from "./useSheetRef";
 import { Marquee } from "../Containment/Marquee";
 import { TStyledText } from "../Typography/StyledText";
 

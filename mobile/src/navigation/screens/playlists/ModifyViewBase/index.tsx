@@ -33,7 +33,7 @@ import { FlashDragList } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import { ModalTemplate } from "~/components/Modal";
-import { useSheetRef } from "~/components/Sheet";
+import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { Swipeable } from "~/components/Swipeable";
 import { TStyledText } from "~/components/Typography/StyledText";
 import { SearchResult } from "~/modules/search/components/SearchResult";

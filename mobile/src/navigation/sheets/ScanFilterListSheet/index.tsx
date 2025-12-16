@@ -14,9 +14,9 @@ import { Marquee } from "~/components/Containment/Marquee";
 import { FlatList } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
-import type { TrueSheetRef } from "~/components/Sheet";
 import { DetachedSheet } from "~/components/Sheet/Detached";
 import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
+import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { ContentPlaceholder } from "../../components/Placeholder";
 

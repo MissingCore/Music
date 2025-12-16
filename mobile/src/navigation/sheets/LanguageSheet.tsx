@@ -15,8 +15,8 @@ import { Marquee } from "~/components/Containment/Marquee";
 import { FlatList } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
 import { Radio } from "~/components/Form/Selection";
-import type { TrueSheetRef } from "~/components/Sheet";
-import { useSheetRef } from "~/components/Sheet";
+import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
+import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { DetachedSheet } from "~/components/Sheet/Detached";
 import {
   StyledText,
@@ -54,7 +54,7 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
             <StyledText className="text-xs">{translatorsString}</StyledText>
           </Marquee>
         </View>
-        {(selectedLanguage?.rtl ?? false) ? (
+        {selectedLanguage?.rtl ? (
           <Pressable
             onPress={PreferenceTogglers.toggleForceLTR}
             className="min-h-6 flex-row items-center gap-2"

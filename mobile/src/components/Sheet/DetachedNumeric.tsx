@@ -3,8 +3,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Keyboard, View } from "react-native";
 
-import type { TrueSheetRef } from "./index";
 import { DetachedSheet } from "./Detached";
+import type { TrueSheetRef } from "./useSheetRef";
 import { NumericInput } from "../Form/Input";
 import { StyledText, TStyledText } from "../Typography/StyledText";
 

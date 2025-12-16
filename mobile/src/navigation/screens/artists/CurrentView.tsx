@@ -13,7 +13,7 @@ import { CurrentListLayout } from "../../layouts/CurrentList";
 import { ArtistArtworkSheet } from "../ArtworkSheet";
 
 import { FlashList, LegendList } from "~/components/Defaults";
-import { useSheetRef } from "~/components/Sheet";
+import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { TEm } from "~/components/Typography/StyledText";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import { useTrackListPreset } from "~/modules/media/components/Track";

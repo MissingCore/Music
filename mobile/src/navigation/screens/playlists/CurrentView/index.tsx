@@ -17,7 +17,7 @@ import { mutateGuard } from "~/lib/react-query";
 import { LegendList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import type { MenuAction } from "~/components/Menu";
-import { useSheetRef } from "~/components/Sheet";
+import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { useTrackListPreset } from "~/modules/media/components/Track";
 import { CurrentListMenu } from "../../../components/CurrentListMenu";
 import { PagePlaceholder } from "../../../components/Placeholder";

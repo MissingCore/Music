@@ -1,7 +1,7 @@
 import { useTheme } from "~/hooks/useTheme";
 
-import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
+import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { SearchEngine } from "~/modules/search/components/SearchEngine";
 import type { SearchCallbacks } from "~/modules/search/types";
 import { deferInitialRender } from "../../../components/DeferredRender";

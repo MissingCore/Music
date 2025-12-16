@@ -7,7 +7,7 @@ import { StickyActionListLayout } from "../../../layouts/StickyActionScroll";
 import { TrackSortSheet } from "./SortSheet";
 
 import { IconButton } from "~/components/Form/Button";
-import { useSheetRef } from "~/components/Sheet";
+import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import { MediaListControls } from "~/modules/media/components/MediaListControls";
 import { useTrackListPreset } from "~/modules/media/components/Track";

@@ -1,10 +1,9 @@
 import { Toasts } from "@backpackapp-io/react-native-toast";
-import type { TrueSheetProps } from "@lodev09/react-native-true-sheet";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import type { ParseKeys } from "i18next";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { PressableProps, StyleProp, ViewStyle } from "react-native";
+import type { StyleProp, ViewStyle } from "react-native";
 import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { withUniwind } from "uniwind";
@@ -14,13 +13,14 @@ import { useTheme } from "~/hooks/useTheme";
 
 import { BorderRadius } from "~/constants/Styles";
 import { cn } from "~/lib/style";
+import type { TrueSheetRef } from "./useSheetRef";
 import { Marquee } from "../Containment/Marquee";
-import { Button } from "../Form/Button";
-import { StyledText, TStyledText } from "../Typography/StyledText";
+import { StyledText } from "../Typography/StyledText";
 
 const WrappedGestureHandlerRootView = withUniwind(GestureHandlerRootView);
 
-interface SheetProps extends Pick<TrueSheetProps, "children" | "scrollable"> {
+interface SheetProps {
+  children: React.ReactNode;
   ref?: TrueSheetRef;
   /** Makes sheet accessible globally using this key. */
   globalKey?: string;
@@ -37,24 +37,7 @@ interface SheetProps extends Pick<TrueSheetProps, "children" | "scrollable"> {
   contentContainerStyle?: StyleProp<ViewStyle>;
 }
 
-export type TrueSheetRef = React.Ref<TrueSheet>;
-
-export function useSheetRef() {
-  return useRef<TrueSheet>(null);
-}
-
-//#region Sheet
-export function Sheet({
-  titleKey,
-  globalKey,
-  onCleanup,
-  snapTop,
-  keyboardAndToast,
-  contentContainerClassName,
-  contentContainerStyle,
-  children,
-  ...props
-}: SheetProps) {
+export function Sheet(props: SheetProps) {
   const { t } = useTranslation();
   const { canvasAlt } = useTheme();
   const [disableToastAnim, setDisableToastAnim] = useState(true);
@@ -65,9 +48,10 @@ export function Sheet({
 
   return (
     <TrueSheet
+      ref={props.ref}
       onLayout={(e) => setSheetHeight(e.nativeEvent.layout.height)}
-      name={globalKey}
-      detents={[snapTop ? 1 : "auto"]}
+      name={props.globalKey}
+      detents={[props.snapTop ? 1 : "auto"]}
       backgroundColor={canvasAlt}
       cornerRadius={BorderRadius.lg}
       // Sheet max height will be just before the `<TopAppBar />`.
@@ -76,20 +60,19 @@ export function Sheet({
       // Re-enable toast animations after sheet is finished presenting.
       onDidPresent={() => setDisableToastAnim(false)}
       onDidDismiss={() => {
-        if (onCleanup) onCleanup();
+        if (props.onCleanup) props.onCleanup();
         // Disable toast animations when sheet is dismissed.
         setDisableToastAnim(true);
       }}
-      {...props}
     >
       <View
         onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}
-        className={cn("gap-2 px-4 pb-2", { "pb-6": !!titleKey })}
+        className={cn("gap-2 px-4 pb-2", { "pb-6": !!props.titleKey })}
       >
         <View className="mx-auto my-2.5 h-1 w-8 rounded-full bg-onSurface" />
-        {titleKey ? (
+        {props.titleKey ? (
           <Marquee color="canvasAlt" center>
-            <StyledText className="text-lg">{t(titleKey)}</StyledText>
+            <StyledText className="text-lg">{t(props.titleKey)}</StyledText>
           </Marquee>
         ) : null}
       </View>
@@ -99,21 +82,21 @@ export function Sheet({
           // need to exclude the height taken up by the "SheetHeader"
           // from the container that can hold a scrollable.
           [{ maxHeight: trueScreenHeight - 56 - headerHeight }],
-          contentContainerStyle,
+          props.contentContainerStyle,
         ]}
         className={cn(
           "gap-6 p-4 pt-0",
-          { "h-full pb-0": snapTop },
-          contentContainerClassName,
+          { "h-full pb-0": props.snapTop },
+          props.contentContainerClassName,
         )}
       >
-        {children}
+        {props.children}
       </WrappedGestureHandlerRootView>
       <Toasts
         // @ts-expect-error - We added the `sheetOpts` prop via a patch.
         sheetOpts={{
           height: sheetHeight,
-          needKeyboardOffset: keyboardAndToast,
+          needKeyboardOffset: props.keyboardAndToast,
         }}
         // A duration of 0 doesn't work.
         globalAnimationConfig={disableToastAnim ? { duration: 1 } : undefined}
@@ -121,39 +104,3 @@ export function Sheet({
     </TrueSheet>
   );
 }
-//#endregion
-
-//#region Sheet Button Group
-type ButtonOptions = Omit<PressableProps, "children"> & { textKey: ParseKeys };
-
-export function SheetButtonGroup(props: {
-  leftButton: ButtonOptions;
-  rightButton: ButtonOptions;
-  className?: string;
-}) {
-  return (
-    <View className={cn("flex-row gap-[3px]", props.className)}>
-      <Button
-        {...props.leftButton}
-        className={cn("flex-1 rounded-r-xs", props.leftButton.className)}
-      >
-        <TStyledText
-          textKey={props.leftButton.textKey}
-          className="text-center text-sm"
-          bold
-        />
-      </Button>
-      <Button
-        {...props.rightButton}
-        className={cn("flex-1 rounded-l-xs", props.rightButton.className)}
-      >
-        <TStyledText
-          textKey={props.rightButton.textKey}
-          className="text-center text-sm"
-          bold
-        />
-      </Button>
-    </View>
-  );
-}
-//#endregion

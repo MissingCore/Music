@@ -7,7 +7,7 @@ import { StandardScrollLayout } from "~/navigation/layouts/StandardScroll";
 import { PlaybackDelaySheet } from "~/navigation/sheets/PlaybackDelaySheet";
 
 import { List, ListItem } from "~/components/Containment/List";
-import { useSheetRef } from "~/components/Sheet";
+import { useSheetRef } from "~/components/Sheet/useSheetRef";
 
 export default function PlaybackSettings() {
   const { t } = useTranslation();
