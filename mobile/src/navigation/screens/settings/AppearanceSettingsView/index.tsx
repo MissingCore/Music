@@ -3,7 +3,12 @@ import { useTranslation } from "react-i18next";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
-import { StandardScrollLayout } from "../../../layouts/StandardScroll";
+
+import { StandardScrollLayout } from "~/navigation/layouts/StandardScroll";
+import {
+  AccentFontSheet,
+  PrimaryFontSheet,
+} from "~/navigation/sheets/FontSheet";
 import { AppearanceSettingsSheets } from "./Sheets";
 
 import { List, ListItem } from "~/components/Containment/List";
@@ -27,13 +32,14 @@ export default function AppearanceSettings() {
 
   return (
     <>
+      <AccentFontSheet ref={accentFontSheetRef} />
+      <PrimaryFontSheet ref={primaryFontSheetRef} />
       <AppearanceSettingsSheets
-        accentFontRef={accentFontSheetRef}
-        primaryFontRef={primaryFontSheetRef}
         themeRef={themeSheetRef}
         albumLengthFilterRef={albumLengthFilterSheetRef}
         nowPlayingDesignRef={nowPlayingDesignSheetRef}
       />
+
       <StandardScrollLayout>
         <List>
           <ListItem

@@ -1,21 +1,15 @@
-import { Text } from "react-native";
 import { Uniwind } from "uniwind";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
 
-import { getFont } from "~/lib/style";
-import { toLowerCase } from "~/utils/string";
 import { FlatList } from "~/components/Defaults";
 import { Radio } from "~/components/Form/Selection";
 import type { TrueSheetRef } from "~/components/Sheet";
 import { NumericSheet, Sheet } from "~/components/Sheet";
 import { TStyledText } from "~/components/Typography/StyledText";
-import type { AccentFont } from "~/stores/Preference/constants";
 import {
-  AccentFontOptions,
   NowPlayingDesignOptions,
-  PrimaryFontOptions,
   ThemeOptions,
 } from "~/stores/Preference/constants";
 import { deferInitialRender } from "../../../components/DeferredRender";
@@ -23,16 +17,12 @@ import { deferInitialRender } from "../../../components/DeferredRender";
 /** All the sheets used on `/setting/appearance` route. */
 export const AppearanceSettingsSheets = deferInitialRender(
   function AppearanceSettingsSheets(props: {
-    accentFontRef: TrueSheetRef;
-    primaryFontRef: TrueSheetRef;
     themeRef: TrueSheetRef;
     albumLengthFilterRef: TrueSheetRef;
     nowPlayingDesignRef: TrueSheetRef;
   }) {
     return (
       <>
-        <FontAccentSheet sheetRef={props.accentFontRef} />
-        <FontPrimarySheet sheetRef={props.primaryFontRef} />
         <ThemeSheet sheetRef={props.themeRef} />
         <MinAlbumLengthSheet sheetRef={props.albumLengthFilterRef} />
         <NowPlayingDesignSheet sheetRef={props.nowPlayingDesignRef} />
@@ -40,72 +30,6 @@ export const AppearanceSettingsSheets = deferInitialRender(
     );
   },
 );
-
-//#region Font
-/** Enables changing the font used primarily for headings. */
-function FontAccentSheet(props: { sheetRef: TrueSheetRef }) {
-  const accentFont = usePreferenceStore((s) => s.accentFont);
-  return (
-    <FontSheet
-      sheetRef={props.sheetRef}
-      kind="Accent"
-      selectedFont={accentFont}
-      fontOptions={AccentFontOptions}
-      updateFont={PreferenceSetters.setAccentFont}
-    />
-  );
-}
-
-/** Enables changing the font used by all text in the app. */
-function FontPrimarySheet(props: { sheetRef: TrueSheetRef }) {
-  const primaryFont = usePreferenceStore((s) => s.primaryFont);
-  return (
-    <FontSheet
-      sheetRef={props.sheetRef}
-      kind="Primary"
-      selectedFont={primaryFont}
-      fontOptions={PrimaryFontOptions}
-      updateFont={PreferenceSetters.setPrimaryFont}
-    />
-  );
-}
-
-/** Reusable font sheet component. */
-function FontSheet<T extends AccentFont>(props: {
-  sheetRef: TrueSheetRef;
-  kind: "Accent" | "Primary";
-  selectedFont: T;
-  fontOptions: readonly T[];
-  updateFont: (newFont: T) => void;
-}) {
-  return (
-    <Sheet
-      ref={props.sheetRef}
-      titleKey={`feat.font.extra.${toLowerCase(props.kind)}`}
-    >
-      <FlatList
-        accessibilityRole="radiogroup"
-        data={props.fontOptions}
-        keyExtractor={(font) => font}
-        renderItem={({ item: font }) => (
-          <Radio
-            selected={props.selectedFont === font}
-            onSelect={() => props.updateFont(font)}
-          >
-            <Text
-              className="text-left text-base leading-tight text-foreground"
-              style={{ fontFamily: getFont(font) }}
-            >
-              {font}
-            </Text>
-          </Radio>
-        )}
-        contentContainerClassName="gap-1"
-      />
-    </Sheet>
-  );
-}
-//#endregion
 
 //#region Theme
 /** Enables changing the theme of the app. */
