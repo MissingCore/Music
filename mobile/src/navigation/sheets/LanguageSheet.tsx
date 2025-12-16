@@ -8,10 +8,9 @@ import {
   PreferenceSetters,
   PreferenceTogglers,
 } from "~/stores/Preference/actions";
-import { LANGUAGES } from "~/modules/i18n/constants";
 
 import { TRANSLATIONS } from "~/constants/Links";
-import { cn } from "~/lib/style";
+import { OnRTL } from "~/lib/react";
 import { Marquee } from "~/components/Containment/Marquee";
 import { FlatList } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
@@ -24,6 +23,8 @@ import {
   TEm,
   TStyledText,
 } from "~/components/Typography/StyledText";
+import { Checkbox } from "~/components/UI/Checkbox";
+import { LANGUAGES } from "~/modules/i18n/constants";
 
 export function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
   const languageCode = usePreferenceStore((s) => s.language);
@@ -43,7 +44,7 @@ export function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
           className="min-h-10 flex-row items-center justify-between gap-1 border-b border-foreground/10"
         >
           <StyledText>{selectedLanguage?.name}</StyledText>
-          <View className="-rotate-90">
+          <View className={OnRTL.decide("rotate-90", "-rotate-90")}>
             <KeyboardArrowDown />
           </View>
         </Pressable>
@@ -56,13 +57,9 @@ export function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
         {(selectedLanguage?.rtl ?? false) ? (
           <Pressable
             onPress={PreferenceTogglers.toggleForceLTR}
-            className="flex-row items-center gap-2"
+            className="min-h-6 flex-row items-center gap-2"
           >
-            <View
-              className={cn("size-4 rounded-xs border border-foreground", {
-                "bg-foreground": forceLTR,
-              })}
-            />
+            <Checkbox checked={forceLTR} />
             <TStyledText
               textKey="feat.language.extra.useLTR"
               className="shrink grow text-sm"
@@ -71,7 +68,7 @@ export function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
         ) : null}
         <Button
           onPress={() => openBrowserAsync(TRANSLATIONS)}
-          className="flex-row rounded-full py-2"
+          className="flex-row rounded-full"
         >
           <TStyledText
             textKey="feat.language.extra.contribute"
@@ -96,7 +93,7 @@ export function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
             </Radio>
           )}
           nestedScrollEnabled
-          contentContainerClassName="gap-1 pb-4"
+          contentContainerClassName="gap-2 pb-4"
         />
       </DetachedSheet>
     </>
