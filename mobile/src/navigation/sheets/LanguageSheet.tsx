@@ -87,7 +87,10 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
           renderItem={({ item }) => (
             <Radio
               selected={languageCode === item.code}
-              onSelect={() => PreferenceSetters.setLanguage(item.code)}
+              onSelect={() => {
+                PreferenceSetters.setLanguage(item.code);
+                languageSelectionSheetRef.current?.dismiss();
+              }}
             >
               <StyledText>{item.name}</StyledText>
             </Radio>
