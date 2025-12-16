@@ -17,6 +17,7 @@ import { Button, IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import type { TrueSheetRef } from "~/components/Sheet";
 import { DetachedSheet } from "~/components/Sheet/Detached";
+import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { ContentPlaceholder } from "../../components/Placeholder";
 
@@ -27,7 +28,7 @@ export function ScanFilterListSheet(props: {
 }) {
   const { t } = useTranslation();
   const listEntries = usePreferenceStore((s) => s[props.listType]);
-  const [minHeight, setMinHeight] = useState(0);
+  const sheetListHandlers = useEnableSheetScroll();
 
   return (
     <DetachedSheet
@@ -46,11 +47,6 @@ export function ScanFilterListSheet(props: {
       <Divider />
 
       <FlatList
-        //? Hack to allow scrolling of list inside of sheet.
-        //? - https://sheet.lodev09.com/troubleshooting#unable-to-drag-on-android
-        onLayout={(e) => {
-          if (minHeight === 0) setMinHeight(e.nativeEvent.layout.height + 1);
-        }}
         data={listEntries}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
@@ -68,8 +64,7 @@ export function ScanFilterListSheet(props: {
         ListEmptyComponent={
           <ContentPlaceholder errMsgKey="err.msg.noFilters" />
         }
-        nestedScrollEnabled
-        contentContainerStyle={{ minHeight }}
+        {...sheetListHandlers}
         contentContainerClassName="gap-2 pb-4"
       />
     </DetachedSheet>
