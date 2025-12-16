@@ -9,6 +9,7 @@ import {
   AccentFontSheet,
   PrimaryFontSheet,
 } from "~/navigation/sheets/FontSheet";
+import { MinAlbumLengthSheet } from "~/navigation/sheets/MinAlbumLengthSheet";
 import { ThemeSheet } from "~/navigation/sheets/ThemeSheet";
 import { AppearanceSettingsSheets } from "./Sheets";
 
@@ -28,7 +29,7 @@ export default function AppearanceSettings() {
   const accentFontSheetRef = useSheetRef();
   const primaryFontSheetRef = useSheetRef();
   const themeSheetRef = useSheetRef();
-  const albumLengthFilterSheetRef = useSheetRef();
+  const minAlbumLengthSheetRef = useSheetRef();
   const nowPlayingDesignSheetRef = useSheetRef();
 
   return (
@@ -36,8 +37,8 @@ export default function AppearanceSettings() {
       <AccentFontSheet ref={accentFontSheetRef} />
       <PrimaryFontSheet ref={primaryFontSheetRef} />
       <ThemeSheet ref={themeSheetRef} />
+      <MinAlbumLengthSheet ref={minAlbumLengthSheetRef} />
       <AppearanceSettingsSheets
-        albumLengthFilterRef={albumLengthFilterSheetRef}
         nowPlayingDesignRef={nowPlayingDesignSheetRef}
       />
 
@@ -74,7 +75,7 @@ export default function AppearanceSettings() {
           <ListItem
             titleKey="feat.albumLengthFilter.title"
             description={t("plural.track", { count: minAlbumLength })}
-            onPress={() => albumLengthFilterSheetRef.current?.present()}
+            onPress={() => minAlbumLengthSheetRef.current?.present()}
             first
           />
           <ListItem
