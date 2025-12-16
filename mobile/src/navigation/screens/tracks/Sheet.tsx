@@ -2,7 +2,7 @@ import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { ParseKeys } from "i18next";
-import { Fragment, useMemo } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { ViewStyle } from "react-native";
 import { Pressable, View } from "react-native";
@@ -378,16 +378,20 @@ function TrackToPlaylistSheet({ id }: { id: string }) {
   const { data: inList } = useTrackPlaylists(id);
   const addToPlaylist = useAddToPlaylist(id);
   const removeFromPlaylist = useRemoveFromPlaylist(id);
-  const { handlers, isScrollable } = useIsScrollable();
+  const [minHeight, setMinHeight] = useState(0);
 
   return (
     <Sheet
       globalKey="TrackToPlaylistSheet"
       titleKey="feat.modalTrack.extra.addToPlaylist"
-      scrollable={isScrollable}
       snapTop
     >
       <LegendList
+        //? Hack to allow scrolling of list inside of sheet.
+        //? - https://sheet.lodev09.com/troubleshooting#unable-to-drag-on-android
+        onLayout={(e) => {
+          if (minHeight === 0) setMinHeight(e.nativeEvent.layout.height + 1);
+        }}
         getEstimatedItemSize={(index) => (index === 0 ? 54 : 58)}
         data={data}
         keyExtractor={({ name }) => name}
@@ -415,8 +419,8 @@ function TrackToPlaylistSheet({ id }: { id: string }) {
         ListEmptyComponent={
           <ContentPlaceholder errMsgKey="err.msg.noPlaylists" />
         }
-        {...handlers}
-        nestedScrollEnabled={isScrollable}
+        nestedScrollEnabled
+        contentContainerStyle={{ minHeight }}
         contentContainerClassName="pb-4"
       />
     </Sheet>

@@ -79,7 +79,7 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
         </Button>
       </DetachedSheet>
 
-      <DetachedSheet ref={languageSelectionSheetRef} scrollable snapTop>
+      <DetachedSheet ref={languageSelectionSheetRef} snapTop>
         <FlatList
           accessibilityRole="radiogroup"
           data={LANGUAGES}

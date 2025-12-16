@@ -131,7 +131,6 @@ export default function Upcoming() {
         ListEmptyComponent={
           <ContentPlaceholder isPending={data.length === 0} />
         }
-        nestedScrollEnabled
         contentContainerClassName="py-4"
       />
     </>

@@ -1,4 +1,3 @@
-import type { TrueSheetProps } from "@lodev09/react-native-true-sheet";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import type { ParseKeys } from "i18next";
 import { useMemo } from "react";
@@ -16,7 +15,8 @@ import { TStyledText } from "../Typography/StyledText";
 
 const WrappedGestureHandlerRootView = withUniwind(GestureHandlerRootView);
 
-interface SheetProps extends Pick<TrueSheetProps, "children" | "scrollable"> {
+interface SheetProps {
+  children: React.ReactNode;
   ref?: TrueSheetRef;
   /** Makes sheet accessible globally using this key. */
   globalKey?: string;
