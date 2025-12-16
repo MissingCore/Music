@@ -8,6 +8,7 @@ import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { useHasNewUpdate } from "../../../hooks/useHasNewUpdate";
 import { StandardScrollLayout } from "../../../layouts/StandardScroll";
 import { SettingsSheets } from "./Sheets";
+import { LanguageSheet } from "~/navigation/sheets/LanguageSheet";
 
 import { APP_VERSION } from "~/constants/Config";
 import * as LINKS from "~/constants/Links";
@@ -29,10 +30,9 @@ export default function Settings() {
 
   return (
     <>
-      <SettingsSheets
-        backupRef={backupSheetRef}
-        languageRef={languageSheetRef}
-      />
+      <SettingsSheets backupRef={backupSheetRef} />
+      <LanguageSheet sheetRef={languageSheetRef} />
+
       <StandardScrollLayout>
         {hasNewUpdate && (
           <ListItem

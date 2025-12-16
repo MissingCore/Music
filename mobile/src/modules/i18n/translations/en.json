@@ -303,7 +303,10 @@
     },
     "translate": {
       "title": "Contribute Translations",
-      "brief": "Help translate the app in other languages."
+      "brief": "Help translate the app in other languages.",
+      "extra": {
+        "translators": "Translators"
+      }
     },
     "code": {
       "title": "GitHub Repository",

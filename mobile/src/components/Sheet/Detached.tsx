@@ -16,7 +16,7 @@ import { TStyledText } from "../Typography/StyledText";
 
 const WrappedGestureHandlerRootView = withUniwind(GestureHandlerRootView);
 
-interface SheetProps extends Pick<TrueSheetProps, "children"> {
+interface SheetProps extends Pick<TrueSheetProps, "children" | "scrollable"> {
   ref?: TrueSheetRef;
   /** Makes sheet accessible globally using this key. */
   globalKey?: string;
@@ -45,7 +45,6 @@ export function useMaxDetachedSheetHeight() {
 
 export function DetachedSheet(props: SheetProps) {
   const maxHeight = useMaxDetachedSheetHeight();
-
   return (
     <TrueSheet
       ref={props.ref}
