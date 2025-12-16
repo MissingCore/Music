@@ -1,6 +1,7 @@
+import { Toasts } from "@backpackapp-io/react-native-toast";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import type { ParseKeys } from "i18next";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -20,10 +21,14 @@ interface SheetProps {
   ref?: TrueSheetRef;
   /** Makes sheet accessible globally using this key. */
   globalKey?: string;
+  /** Fires when the sheet is dismissed. */
+  onCleanup?: VoidFunction;
   /** Title displayed in sheet. */
   titleKey?: ParseKeys;
   /** If the sheet should open at max screen height. */
   snapTop?: boolean;
+  /** Indicates a sheet can display keyboard & toast. */
+  keyboardAndToast?: boolean;
   /** Styles applied to the internal `GestureHandlerRootView`. */
   contentContainerClassName?: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
@@ -45,15 +50,26 @@ export function useMaxDetachedSheetHeight() {
 
 export function DetachedSheet(props: SheetProps) {
   const maxHeight = useMaxDetachedSheetHeight();
+  const [sheetHeight, setSheetHeight] = useState(0);
+  const [disableToastAnim, setDisableToastAnim] = useState(true);
+
   return (
     <TrueSheet
       ref={props.ref}
+      onLayout={(e) => setSheetHeight(e.nativeEvent.layout.height)}
       name={props.globalKey}
       detents={[props.snapTop ? 1 : "auto"]}
       backgroundColor="transparent"
       cornerRadius={0}
       maxHeight={maxHeight}
       grabber={false}
+      // Re-enable toast animations after sheet is finished presenting.
+      onDidPresent={() => setDisableToastAnim(false)}
+      onDidDismiss={() => {
+        if (props.onCleanup) props.onCleanup();
+        // Disable toast animations when sheet is dismissed.
+        setDisableToastAnim(true);
+      }}
     >
       <View
         style={{
@@ -90,6 +106,15 @@ export function DetachedSheet(props: SheetProps) {
           </View>
           {props.children}
         </WrappedGestureHandlerRootView>
+        <Toasts
+          // @ts-expect-error - We added the `sheetOpts` prop via a patch.
+          sheetOpts={{
+            height: sheetHeight,
+            needKeyboardOffset: props.keyboardAndToast,
+          }}
+          // A duration of 0 doesn't work.
+          globalAnimationConfig={disableToastAnim ? { duration: 1 } : undefined}
+        />
       </View>
     </TrueSheet>
   );
