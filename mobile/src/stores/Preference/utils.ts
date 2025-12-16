@@ -8,7 +8,10 @@ export async function resolveLanguageConfigs(
   forceLTR = false,
 ) {
   await i18next.changeLanguage(language);
-  if (!forceLTR) {
+  // Also fire when language is LTR as if `forceLTR = true` and we're coming
+  // from an RTL language, the next app launch will have the LTR language in
+  // an RTL layout.
+  if (!forceLTR || i18next.dir() === "ltr") {
     I18nManager.allowRTL(i18next.dir() === "rtl");
     I18nManager.forceRTL(i18next.dir() === "rtl");
   }
