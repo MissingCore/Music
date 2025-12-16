@@ -146,12 +146,13 @@
       "title": null,
       "brief": null
     },
-    "ignoreRTLLayout": {
-      "title": null,
-      "brief": null
-    },
     "language": {
-      "title": "भाषा"
+      "title": "भाषा",
+      "extra": {
+        "contribute": "अनुवाद में योगदान दें",
+        "useLTR": null,
+        "translators": null
+      }
     },
     "backup": {
       "title": "बैकअप",
@@ -195,10 +196,6 @@
     "saveErrors": {
       "title": "त्रुटियाँ सहेजें",
       "brief": "कुछ ट्रैक्स क्यों नहीं सहेजे गए, इसका कारण देखें।"
-    },
-    "interactions": {
-      "title": "कोई इंटरैक्शन नहीं",
-      "brief": "समर्थित 'कुछ भी नहीं' विशेषताएँ।"
     },
     "playback": {
       "title": null,
@@ -282,10 +279,6 @@
         "purgeCacheBrief": null,
         "purgeCacheToast": null
       }
-    },
-    "translate": {
-      "title": "अनुवाद में योगदान दें",
-      "brief": "ऐप को अन्य भाषाओं में अनुवाद करने में मदद करें।"
     },
     "code": {
       "title": "GitHub रिपॉजिटरी",

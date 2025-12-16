@@ -146,12 +146,13 @@
       "title": null,
       "brief": null
     },
-    "ignoreRTLLayout": {
-      "title": null,
-      "brief": null
-    },
     "language": {
-      "title": "Lingua"
+      "title": "Lingua",
+      "extra": {
+        "contribute": "Contribuisci alle traduzioni",
+        "useLTR": null,
+        "translators": null
+      }
     },
     "backup": {
       "title": "Backup",
@@ -195,10 +196,6 @@
     "saveErrors": {
       "title": "Salva errori",
       "brief": "Controlla perché alcuni $t(term.tracks) non sono stati salvati."
-    },
-    "interactions": {
-      "title": "Interazioni Nothing",
-      "brief": "Funzionalità Nothing supportate."
     },
     "playback": {
       "title": "Riproduzione",
@@ -282,10 +279,6 @@
         "purgeCacheBrief": null,
         "purgeCacheToast": null
       }
-    },
-    "translate": {
-      "title": "Contribuisci alle traduzioni",
-      "brief": "Aiuta traducendo l'app in altre lingue."
     },
     "code": {
       "title": "Repository GitHub",

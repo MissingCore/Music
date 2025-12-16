@@ -146,12 +146,13 @@
       "title": "Schnell scrollen",
       "brief": "Auf unterstützten Bildschirmen eine Scrollleiste im Nothing-Stil anzeigen."
     },
-    "ignoreRTLLayout": {
-      "title": "RTL-Layout ignorieren",
-      "brief": "LTR-Layout mit einer RTL-Sprache verwenden. Ein Neustart ist erforderlich."
-    },
     "language": {
-      "title": "Sprache"
+      "title": "Sprache",
+      "extra": {
+        "contribute": "Übersetzungen beitragen",
+        "useLTR": "LTR-Layout mit einer RTL-Sprache verwenden. Ein Neustart ist erforderlich.",
+        "translators": null
+      }
     },
     "backup": {
       "title": "Sicherungskopie",
@@ -195,10 +196,6 @@
     "saveErrors": {
       "title": "Fehler beim Speichern",
       "brief": "Der Grund, warum nicht einige Lieder gespeichert wurden schauen."
-    },
-    "interactions": {
-      "title": "Nothing Phone Integrationen",
-      "brief": "Unterstützte Nothing Funktionen."
     },
     "playback": {
       "title": "Wiedergabe",
@@ -282,10 +279,6 @@
         "purgeCacheBrief": "Gibt Speicherplatz frei, um die Wellenformen der abgespielten Spuren neu zu berechnen.",
         "purgeCacheToast": "Wellenform-Cache gelöscht."
       }
-    },
-    "translate": {
-      "title": "Übersetzungen beitragen",
-      "brief": "Uns helfen, die App in deine Sprache zu Übersetzen."
     },
     "code": {
       "title": "GitHub Repository",

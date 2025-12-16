@@ -146,12 +146,13 @@
       "title": "Szybkie przewijanie",
       "brief": "Pokazuj na wspieranych zakładkach scrollbar w stylu Nothing."
     },
-    "ignoreRTLLayout": {
-      "title": "Ignoruj układ RTL",
-      "brief": "Używaj układu LTR z językami RTL. Wymagany restart."
-    },
     "language": {
-      "title": "Język"
+      "title": "Język",
+      "extra": {
+        "contribute": "Rozwijaj tłumaczenia",
+        "useLTR": "Używaj układu LTR z językami RTL. Wymagany restart.",
+        "translators": null
+      }
     },
     "backup": {
       "title": "Kopia zapasowa",
@@ -195,10 +196,6 @@
     "saveErrors": {
       "title": "Błędy zapisu",
       "brief": "Przyczyny, dla których niektóre utwory nie zostały dodane."
-    },
-    "interactions": {
-      "title": "Interakcje z Nothing",
-      "brief": "Wspierane funkcjonalności od Nothing."
     },
     "playback": {
       "title": "Odtwarzanie",
@@ -282,10 +279,6 @@
         "purgeCacheBrief": null,
         "purgeCacheToast": null
       }
-    },
-    "translate": {
-      "title": "Rozwijaj tłumaczenia",
-      "brief": "Pomóż przetłumaczyć interfejs aplikacji na inne języki."
     },
     "code": {
       "title": "Repozytorium GitHub",

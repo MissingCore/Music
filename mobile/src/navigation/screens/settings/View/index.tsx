@@ -71,12 +71,6 @@ export default function Settings() {
             description={t("feat.insights.brief")}
             onPress={() => navigation.navigate("Insights")}
           />
-          {/* <ListItem
-            titleKey="feat.interactions.title"
-            description={t("feat.interactions.brief")}
-            icon={<OpenInNew />}
-            onPress={() => openBrowserAsync(LINKS.NOTHING_INTERACTIONS)}
-          /> */}
           <ListItem
             titleKey="feat.playback.title"
             description={t("feat.playback.brief")}

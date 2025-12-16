@@ -146,12 +146,13 @@
       "title": null,
       "brief": null
     },
-    "ignoreRTLLayout": {
-      "title": null,
-      "brief": null
-    },
     "language": {
-      "title": "Язык"
+      "title": "Язык",
+      "extra": {
+        "contribute": "Внести вклад в перевод",
+        "useLTR": null,
+        "translators": null
+      }
     },
     "backup": {
       "title": "Резервная копия",
@@ -195,10 +196,6 @@
     "saveErrors": {
       "title": "Ошибки сохранения",
       "brief": "Узнать причину, по которой некоторые треки не были сохранены."
-    },
-    "interactions": {
-      "title": "Взаимодействия Nothing",
-      "brief": "Поддерживаемые функции Nothing."
     },
     "playback": {
       "title": "Воспроизведение",
@@ -282,10 +279,6 @@
         "purgeCacheBrief": null,
         "purgeCacheToast": null
       }
-    },
-    "translate": {
-      "title": "Внести вклад в перевод",
-      "brief": "Помогите перевести приложение на другие языки."
     },
     "code": {
       "title": "Репозиторий GitHub",

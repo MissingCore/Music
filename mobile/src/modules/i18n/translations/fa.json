@@ -146,12 +146,13 @@
       "title": "اسکرول سریع",
       "brief": "نمایش نوار اسکرول به سبک Nothing در صفحات پشتیبانی شده."
     },
-    "ignoreRTLLayout": {
-      "title": "نادیده گرفتن چیدمان راست به چپ",
-      "brief": "استفاده از چیدمان چپ به راست با زبان راست به چپ. نیاز به راه‌اندازی مجدد."
-    },
     "language": {
-      "title": "زبان"
+      "title": "زبان",
+      "extra": {
+        "contribute": "کمک به ترجمه",
+        "useLTR": "استفاده از چیدمان چپ به راست با زبان راست به چپ. نیاز به راه‌اندازی مجدد.",
+        "translators": null
+      }
     },
     "backup": {
       "title": "پشتیبان گیری",
@@ -195,10 +196,6 @@
     "saveErrors": {
       "title": "خطاهای ذخیره",
       "brief": "دلیل ذخیره نشدن برخی آهنگ ها را ببینید."
-    },
-    "interactions": {
-      "title": "تعاملات Nothing",
-      "brief": "ویژگی های پشتیبانی شده Nothing."
     },
     "playback": {
       "title": "پخش",
@@ -282,10 +279,6 @@
         "purgeCacheBrief": null,
         "purgeCacheToast": null
       }
-    },
-    "translate": {
-      "title": "کمک به ترجمه",
-      "brief": "به ترجمه برنامه به زبان های دیگر کمک کنید."
     },
     "code": {
       "title": "مخزن GitHub",

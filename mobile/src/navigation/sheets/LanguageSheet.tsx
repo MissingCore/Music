@@ -48,7 +48,7 @@ export function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
           </View>
         </Pressable>
         <View className="gap-1">
-          <TEm textKey="feat.translate.extra.translators" dim />
+          <TEm textKey="feat.language.extra.translators" dim />
           <Marquee>
             <StyledText className="text-xs">{translatorsString}</StyledText>
           </Marquee>
@@ -64,7 +64,7 @@ export function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
               })}
             />
             <TStyledText
-              textKey="feat.ignoreRTLLayout.brief"
+              textKey="feat.language.extra.useLTR"
               className="shrink grow text-sm"
             />
           </Pressable>
@@ -74,7 +74,7 @@ export function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
           className="flex-row rounded-full py-2"
         >
           <TStyledText
-            textKey="feat.translate.title"
+            textKey="feat.language.extra.contribute"
             bold
             className="text-sm"
           />

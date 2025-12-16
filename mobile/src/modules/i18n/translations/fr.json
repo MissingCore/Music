@@ -146,12 +146,13 @@
       "title": "Défilement Rapide",
       "brief": "Afficher la barre de défilement du style Nothing sur les écrans supportés."
     },
-    "ignoreRTLLayout": {
-      "title": null,
-      "brief": "Utilisez la disposition LTR avec un langage RTL. Redémarrage requis."
-    },
     "language": {
-      "title": "Langue"
+      "title": "Langue",
+      "extra": {
+        "contribute": "Contribuer aux traductions",
+        "useLTR": "Utilisez la disposition LTR avec un langage RTL. Redémarrage requis.",
+        "translators": null
+      }
     },
     "backup": {
       "title": "Sauvegarde",
@@ -195,10 +196,6 @@
     "saveErrors": {
       "title": "Erreurs d'enregistrement",
       "brief": "Voyez pourquoi certains titres n'ont pas été enregistrés."
-    },
-    "interactions": {
-      "title": "Intéractions Nothing",
-      "brief": "Fonctionnalités Nothing supportées."
     },
     "playback": {
       "title": "Lecture",
@@ -282,10 +279,6 @@
         "purgeCacheBrief": null,
         "purgeCacheToast": null
       }
-    },
-    "translate": {
-      "title": "Contribuer aux traductions",
-      "brief": "Aidez à traduire cette application dans d'autres langues."
     },
     "code": {
       "title": "Dépôt GitHub",
