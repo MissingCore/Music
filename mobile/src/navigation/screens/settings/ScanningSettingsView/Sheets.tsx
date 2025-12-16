@@ -6,7 +6,6 @@ import { Add } from "~/resources/icons/Add";
 import { CreateNewFolder } from "~/resources/icons/CreateNewFolder";
 import { Delete } from "~/resources/icons/Delete";
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { PreferenceSetters } from "~/stores/Preference/actions";
 import {
   pickPath,
   removePath,
@@ -21,7 +20,7 @@ import { FlatList, useIsScrollable } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import type { TrueSheetRef } from "~/components/Sheet";
-import { NumericSheet, Sheet } from "~/components/Sheet";
+import { Sheet } from "~/components/Sheet";
 import { Swipeable } from "~/components/Swipeable";
 import { StyledText } from "~/components/Typography/StyledText";
 import { deferInitialRender } from "../../../components/DeferredRender";
@@ -30,10 +29,7 @@ import { ContentPlaceholder } from "../../../components/Placeholder";
 /** All the sheets used on `/setting/scanning` route. */
 export const ScanningSettingsSheets = deferInitialRender(
   function ScanningSettingsSheets(
-    props: Record<
-      "allowListRef" | "blockListRef" | "minDurationRef",
-      TrueSheetRef
-    >,
+    props: Record<"allowListRef" | "blockListRef", TrueSheetRef>,
   ) {
     return (
       <>
@@ -45,7 +41,6 @@ export const ScanningSettingsSheets = deferInitialRender(
           listType="listBlock"
           sheetRef={props.blockListRef}
         />
-        <MinDurationSheet sheetRef={props.minDurationRef} />
       </>
     );
   },
@@ -167,22 +162,6 @@ function FilterForm(props: {
         <Add color={Colors.neutral100} />
       </Button>
     </View>
-  );
-}
-//#endregion
-
-//#region Min Duration
-/** Enables us to specify the minimum track duration we want to save. */
-function MinDurationSheet(props: { sheetRef: TrueSheetRef }) {
-  const minSeconds = usePreferenceStore((s) => s.minSeconds);
-  return (
-    <NumericSheet
-      sheetRef={props.sheetRef}
-      titleKey="feat.ignoreDuration.title"
-      descriptionKey="feat.ignoreDuration.description"
-      value={minSeconds}
-      setValue={PreferenceSetters.setMinSeconds}
-    />
   );
 }
 //#endregion
