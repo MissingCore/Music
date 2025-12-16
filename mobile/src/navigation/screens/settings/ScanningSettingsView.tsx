@@ -25,9 +25,9 @@ export default function ScanningSettings() {
 
   return (
     <>
-      <MinDurationSheet ref={minDurationSheetRef} />
       <ScanFilterListSheet ref={allowListSheetRef} listType="listAllow" />
       <ScanFilterListSheet ref={blockListSheetRef} listType="listBlock" />
+      <MinDurationSheet ref={minDurationSheetRef} />
 
       <StandardScrollLayout>
         <List>

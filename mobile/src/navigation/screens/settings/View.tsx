@@ -31,8 +31,8 @@ export default function Settings() {
 
   return (
     <>
-      <BackupSheet ref={backupSheetRef} />
       <LanguageSheet ref={languageSheetRef} />
+      <BackupSheet ref={backupSheetRef} />
 
       <StandardScrollLayout>
         {hasNewUpdate && (
