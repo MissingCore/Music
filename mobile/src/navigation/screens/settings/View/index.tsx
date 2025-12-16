@@ -100,17 +100,11 @@ export default function Settings() {
 
         <List>
           <ListItem
-            titleKey="feat.translate.title"
-            description={t("feat.translate.brief")}
-            icon={<OpenInNew />}
-            onPress={() => openBrowserAsync(LINKS.TRANSLATIONS)}
-            first
-          />
-          <ListItem
             titleKey="feat.code.title"
             description={t("feat.code.brief")}
             icon={<OpenInNew />}
             onPress={() => openBrowserAsync(LINKS.GITHUB)}
+            first
           />
           <ListItem
             titleKey="feat.license.title"
