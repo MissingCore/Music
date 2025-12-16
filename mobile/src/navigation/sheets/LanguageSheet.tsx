@@ -27,7 +27,7 @@ import {
 
 export function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
   const languageCode = usePreferenceStore((s) => s.language);
-  const ignoreRTLLayout = usePreferenceStore((s) => s.ignoreRTLLayout);
+  const forceLTR = usePreferenceStore((s) => s.forceLTR);
   const languageSheetRef = useSheetRef();
 
   const selectedLanguage = LANGUAGES.find(({ code }) => code === languageCode);
@@ -55,12 +55,12 @@ export function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
         </View>
         {(selectedLanguage?.rtl ?? false) ? (
           <Pressable
-            onPress={PreferenceTogglers.toggleIgnoreRTLLayout}
+            onPress={PreferenceTogglers.toggleForceLTR}
             className="flex-row items-center gap-2"
           >
             <View
               className={cn("size-4 rounded-xs border border-foreground", {
-                "bg-foreground": ignoreRTLLayout,
+                "bg-foreground": forceLTR,
               })}
             />
             <TStyledText

@@ -30,7 +30,7 @@ export const preferenceStore = createPersistedSubscribedStore<PreferenceStore>(
     },
 
     language: "",
-    ignoreRTLLayout: false,
+    forceLTR: false,
 
     theme: "system",
     accentFont: "NType",
