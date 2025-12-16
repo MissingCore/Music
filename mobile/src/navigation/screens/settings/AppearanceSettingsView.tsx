@@ -10,8 +10,8 @@ import {
   PrimaryFontSheet,
 } from "~/navigation/sheets/FontSheet";
 import { MinAlbumLengthSheet } from "~/navigation/sheets/MinAlbumLengthSheet";
+import { NowPlayingDesignSheet } from "~/navigation/sheets/NowPlayingDesignSheet";
 import { ThemeSheet } from "~/navigation/sheets/ThemeSheet";
-import { AppearanceSettingsSheets } from "./Sheets";
 
 import { List, ListItem } from "~/components/Containment/List";
 import { useSheetRef } from "~/components/Sheet";
@@ -38,9 +38,7 @@ export default function AppearanceSettings() {
       <PrimaryFontSheet ref={primaryFontSheetRef} />
       <ThemeSheet ref={themeSheetRef} />
       <MinAlbumLengthSheet ref={minAlbumLengthSheetRef} />
-      <AppearanceSettingsSheets
-        nowPlayingDesignRef={nowPlayingDesignSheetRef}
-      />
+      <NowPlayingDesignSheet ref={nowPlayingDesignSheetRef} />
 
       <StandardScrollLayout>
         <List>

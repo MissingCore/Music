@@ -4,26 +4,15 @@ import { PreferenceSetters } from "~/stores/Preference/actions";
 import { FlatList } from "~/components/Defaults";
 import { Radio } from "~/components/Form/Selection";
 import type { TrueSheetRef } from "~/components/Sheet";
-import { Sheet } from "~/components/Sheet";
+import { DetachedSheet } from "~/components/Sheet/Detached";
 import { TStyledText } from "~/components/Typography/StyledText";
 import { NowPlayingDesignOptions } from "~/stores/Preference/constants";
-import { deferInitialRender } from "../../../components/DeferredRender";
 
-/** All the sheets used on `/setting/appearance` route. */
-export const AppearanceSettingsSheets = deferInitialRender(
-  function AppearanceSettingsSheets(props: {
-    nowPlayingDesignRef: TrueSheetRef;
-  }) {
-    return <NowPlayingDesignSheet sheetRef={props.nowPlayingDesignRef} />;
-  },
-);
-
-//#region Now Playing Design
-/** Enables changing the appearance of the artwork on the "Now Playing" screen. */
-function NowPlayingDesignSheet(props: { sheetRef: TrueSheetRef }) {
+/** @deprecated We plan on integrating this setting in a different sheet. */
+export function NowPlayingDesignSheet(props: { ref: TrueSheetRef }) {
   const nowPlayingDesign = usePreferenceStore((s) => s.nowPlayingDesign);
   return (
-    <Sheet ref={props.sheetRef} titleKey="feat.nowPlayingDesign.title">
+    <DetachedSheet ref={props.ref} titleKey="feat.nowPlayingDesign.title">
       <FlatList
         accessibilityRole="radiogroup"
         data={NowPlayingDesignOptions}
@@ -36,9 +25,8 @@ function NowPlayingDesignSheet(props: { sheetRef: TrueSheetRef }) {
             <TStyledText textKey={`feat.nowPlayingDesign.extra.${design}`} />
           </Radio>
         )}
-        contentContainerClassName="gap-1"
+        contentContainerClassName="gap-2"
       />
-    </Sheet>
+    </DetachedSheet>
   );
 }
-//#endregion
