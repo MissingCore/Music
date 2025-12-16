@@ -30,7 +30,7 @@ interface SheetProps extends Pick<TrueSheetProps, "children" | "scrollable"> {
 }
 
 /** Distance between the bottom of the sheet & the navbar / bottom of screen. */
-const EDGE_SPACER = 16;
+const EDGE_SPACER = 8;
 const MAX_SHEET_HEIGHT = 512;
 
 /** Get the max height of the detached sheet (which includes the spacer at the bottom). */
