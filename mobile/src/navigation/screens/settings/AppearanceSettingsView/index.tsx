@@ -9,6 +9,7 @@ import {
   AccentFontSheet,
   PrimaryFontSheet,
 } from "~/navigation/sheets/FontSheet";
+import { ThemeSheet } from "~/navigation/sheets/ThemeSheet";
 import { AppearanceSettingsSheets } from "./Sheets";
 
 import { List, ListItem } from "~/components/Containment/List";
@@ -34,8 +35,8 @@ export default function AppearanceSettings() {
     <>
       <AccentFontSheet ref={accentFontSheetRef} />
       <PrimaryFontSheet ref={primaryFontSheetRef} />
+      <ThemeSheet ref={themeSheetRef} />
       <AppearanceSettingsSheets
-        themeRef={themeSheetRef}
         albumLengthFilterRef={albumLengthFilterSheetRef}
         nowPlayingDesignRef={nowPlayingDesignSheetRef}
       />
