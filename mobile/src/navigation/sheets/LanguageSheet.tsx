@@ -26,10 +26,10 @@ import {
 import { Checkbox } from "~/components/UI/Checkbox";
 import { LANGUAGES } from "~/modules/i18n/constants";
 
-export function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
+export function LanguageSheet(props: { ref: TrueSheetRef }) {
   const languageCode = usePreferenceStore((s) => s.language);
   const forceLTR = usePreferenceStore((s) => s.forceLTR);
-  const languageSheetRef = useSheetRef();
+  const languageSelectionSheetRef = useSheetRef();
 
   const selectedLanguage = LANGUAGES.find(({ code }) => code === languageCode);
   const translatorsString = selectedLanguage?.translators
@@ -38,9 +38,9 @@ export function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
 
   return (
     <>
-      <DetachedSheet ref={props.sheetRef} titleKey="feat.language.title">
+      <DetachedSheet ref={props.ref} titleKey="feat.language.title">
         <Pressable
-          onPress={() => languageSheetRef.current?.present()}
+          onPress={() => languageSelectionSheetRef.current?.present()}
           className="min-h-10 flex-row items-center justify-between gap-1 border-b border-foreground/10"
         >
           <StyledText>{selectedLanguage?.name}</StyledText>
@@ -79,7 +79,7 @@ export function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
         </Button>
       </DetachedSheet>
 
-      <DetachedSheet ref={languageSheetRef} scrollable snapTop>
+      <DetachedSheet ref={languageSelectionSheetRef} scrollable snapTop>
         <FlatList
           accessibilityRole="radiogroup"
           data={LANGUAGES}

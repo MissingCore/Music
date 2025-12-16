@@ -2,28 +2,19 @@ import { useExportBackup, useImportBackup } from "~/modules/backup/JSON";
 
 import { mutateGuard } from "~/lib/react-query";
 import type { TrueSheetRef } from "~/components/Sheet";
-import { Sheet, SheetButtonGroup } from "~/components/Sheet";
+import { SheetButtonGroup } from "~/components/Sheet";
+import { DetachedSheet } from "~/components/Sheet/Detached";
 import { TStyledText } from "~/components/Typography/StyledText";
 
-/** All the sheets used on `/setting` route. */
-export function SettingsSheets(props: Record<"backupRef", TrueSheetRef>) {
-  return <BackupSheet sheetRef={props.backupRef} />;
-}
-
-/** Enables import & export of a backup of your media organization in this app. */
-function BackupSheet(props: { sheetRef: TrueSheetRef }) {
+export function BackupSheet(props: { ref: TrueSheetRef }) {
   const exportBackup = useExportBackup();
   const importBackup = useImportBackup();
 
   const inProgress = exportBackup.isPending || importBackup.isPending;
 
   return (
-    <Sheet ref={props.sheetRef} titleKey="feat.backup.title">
-      <TStyledText
-        dim
-        textKey="feat.backup.description"
-        className="text-center text-sm"
-      />
+    <DetachedSheet ref={props.ref} titleKey="feat.backup.title">
+      <TStyledText textKey="feat.backup.description" dim className="text-sm" />
       <SheetButtonGroup
         leftButton={{
           textKey: "feat.backup.extra.export",
@@ -36,6 +27,6 @@ function BackupSheet(props: { sheetRef: TrueSheetRef }) {
           disabled: inProgress,
         }}
       />
-    </Sheet>
+    </DetachedSheet>
   );
 }

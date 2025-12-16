@@ -5,9 +5,10 @@ import { useTranslation } from "react-i18next";
 import { OpenInNew } from "~/resources/icons/OpenInNew";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
-import { useHasNewUpdate } from "../../../hooks/useHasNewUpdate";
-import { StandardScrollLayout } from "../../../layouts/StandardScroll";
-import { SettingsSheets } from "./Sheets";
+
+import { useHasNewUpdate } from "~/navigation/hooks/useHasNewUpdate";
+import { StandardScrollLayout } from "~/navigation/layouts/StandardScroll";
+import { BackupSheet } from "~/navigation/sheets/BackupSheet";
 import { LanguageSheet } from "~/navigation/sheets/LanguageSheet";
 
 import { APP_VERSION } from "~/constants/Config";
@@ -30,8 +31,8 @@ export default function Settings() {
 
   return (
     <>
-      <SettingsSheets backupRef={backupSheetRef} />
-      <LanguageSheet sheetRef={languageSheetRef} />
+      <BackupSheet ref={backupSheetRef} />
+      <LanguageSheet ref={languageSheetRef} />
 
       <StandardScrollLayout>
         {hasNewUpdate && (
