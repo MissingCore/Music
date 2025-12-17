@@ -271,7 +271,7 @@
       "extra": {
         "start": "Başlat",
         "stopTime": "Ses {{- time}}'de çalmayı durduracak.",
-        "extend": null
+        "extend": "Zamanlayıcıyı parça bitene kadar uzat."
       }
     },
     "waveformSlider": {
@@ -401,8 +401,8 @@
         "playNext": "Sıradakini Çal",
         "playLast": "Sonuncuyu Çal",
         "toast": "`{{- name}}` sıraya eklendi.",
-        "queueAwareNext": null,
-        "queueAwareNextBrief": null
+        "queueAwareNext": "Sıraya Duyarlı Sıradakini Çal",
+        "queueAwareNextBrief": "Son \"Sıradakini Çal\" parçasından sonra parça ekleme denemeleri."
       }
     }
   }
