@@ -5,8 +5,10 @@ import { useMemo, useState } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { withUniwind } from "uniwind";
 
+import { useIsKeyboardVisible } from "~/hooks/useIsKeyboardVisible";
 import { useSafeAreaHeight } from "~/hooks/useSafeAreaHeight";
 
 import { cn } from "~/lib/style";
@@ -38,17 +40,26 @@ interface SheetProps {
 const EDGE_SPACER = 8;
 const MAX_SHEET_HEIGHT = 512;
 
-/** Get the max height of the detached sheet (which includes the spacer at the bottom). */
+/**
+ * Get the max height of the detached sheet.
+ * - This includes the spacer & inset at the bottom.
+ */
 export function useMaxDetachedSheetHeight() {
+  const { bottom } = useSafeAreaInsets();
   const safeHeight = useSafeAreaHeight();
-  return useMemo(
-    // `safeHeight` includes `EDGE_SPACER` in the calculation.
-    () => Math.min(safeHeight, MAX_SHEET_HEIGHT + EDGE_SPACER),
-    [safeHeight],
-  );
+
+  return useMemo(() => {
+    // If sheet utilizes full height, part of the sheet will end up behind
+    // the navbar unless we include the bottom inset.
+    const maxDetachedHeight = MAX_SHEET_HEIGHT + EDGE_SPACER + bottom;
+    // `safeHeight` includes `EDGE_SPACER` & bottom inset in the calculation.
+    return Math.min(safeHeight, maxDetachedHeight);
+  }, [safeHeight, bottom]);
 }
 
 export function DetachedSheet(props: SheetProps) {
+  const { bottom } = useSafeAreaInsets();
+  const keyboardVisible = useIsKeyboardVisible();
   const maxHeight = useMaxDetachedSheetHeight();
   const [sheetHeight, setSheetHeight] = useState(0);
   const [disableToastAnim, setDisableToastAnim] = useState(true);
@@ -73,9 +84,11 @@ export function DetachedSheet(props: SheetProps) {
     >
       <View
         style={{
-          maxHeight: maxHeight - EDGE_SPACER,
+          maxHeight: maxHeight - (EDGE_SPACER + bottom),
           marginHorizontal: EDGE_SPACER,
-          marginBottom: EDGE_SPACER,
+          // When the keyboard is open, the bottom inset is applied twice
+          // if the sheet isn't at max height.
+          marginBottom: EDGE_SPACER - (keyboardVisible ? bottom : 0),
         }}
         className={cn("overflow-hidden rounded-lg bg-canvasAlt", {
           "h-full": props.snapTop,
@@ -83,7 +96,7 @@ export function DetachedSheet(props: SheetProps) {
       >
         <WrappedGestureHandlerRootView
           style={[
-            { maxHeight: maxHeight - EDGE_SPACER },
+            { maxHeight: maxHeight - (EDGE_SPACER + bottom) },
             props.contentContainerStyle,
           ]}
           className={cn(
@@ -109,7 +122,7 @@ export function DetachedSheet(props: SheetProps) {
         <Toasts
           // @ts-expect-error - We added the `sheetOpts` prop via a patch.
           sheetOpts={{
-            height: sheetHeight,
+            height: sheetHeight - bottom,
             needKeyboardOffset: props.keyboardAndToast,
           }}
           // A duration of 0 doesn't work.
