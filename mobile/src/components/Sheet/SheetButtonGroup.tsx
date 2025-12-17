@@ -17,7 +17,10 @@ export function SheetButtonGroup(props: {
     <View className={cn("flex-row gap-[3px]", props.className)}>
       <Button
         {...props.leftButton}
-        className={cn("rounded-r-xs flex-1", props.leftButton.className)}
+        className={cn(
+          "min-h-14 flex-1 rounded-r-sm",
+          props.leftButton.className,
+        )}
       >
         <TStyledText
           textKey={props.leftButton.textKey}
@@ -27,7 +30,10 @@ export function SheetButtonGroup(props: {
       </Button>
       <Button
         {...props.rightButton}
-        className={cn("rounded-l-xs flex-1", props.rightButton.className)}
+        className={cn(
+          "min-h-14 flex-1 rounded-l-sm",
+          props.rightButton.className,
+        )}
       >
         <TStyledText
           textKey={props.rightButton.textKey}
