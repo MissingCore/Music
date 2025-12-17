@@ -25,7 +25,7 @@
   },
   "@legendapp/list": {
     "name": "@legendapp/list",
-    "version": "2.0.16",
+    "version": "2.0.18",
     "copyright": "Copyright (c) 2022 Moo.do LLC",
     "source": "https://github.com/LegendApp/legend-list",
     "license": "MIT",
@@ -33,7 +33,7 @@
   },
   "@lodev09/react-native-true-sheet": {
     "name": "@lodev09/react-native-true-sheet",
-    "version": "3.3.5",
+    "version": "3.4.2",
     "copyright": "Copyright (c) 2025 lodev09",
     "source": "https://github.com/lodev09/react-native-true-sheet",
     "license": "MIT",
@@ -89,7 +89,7 @@
   },
   "@react-navigation/material-top-tabs": {
     "name": "@react-navigation/material-top-tabs",
-    "version": "7.4.9",
+    "version": "7.4.11",
     "copyright": "Copyright (c) 2017 React Navigation Contributors",
     "source": "https://github.com/react-navigation/react-navigation/tree/main/packages/material-top-tabs",
     "license": "MIT",
@@ -97,7 +97,7 @@
   },
   "@react-navigation/native": {
     "name": "@react-navigation/native",
-    "version": "7.1.25",
+    "version": "7.1.26",
     "copyright": "Copyright (c) 2017 React Navigation Contributors",
     "source": "https://github.com/react-navigation/react-navigation/tree/main/packages/native",
     "license": "MIT",
@@ -105,7 +105,7 @@
   },
   "@react-navigation/native-stack": {
     "name": "@react-navigation/native-stack",
-    "version": "7.8.6",
+    "version": "7.9.0",
     "copyright": "Copyright (c) 2017 React Navigation Contributors",
     "source": "https://github.com/react-navigation/react-navigation/tree/main/packages/native-stack",
     "license": "MIT",
@@ -273,7 +273,7 @@
   },
   "i18next": {
     "name": "i18next",
-    "version": "25.7.2",
+    "version": "25.7.3",
     "copyright": "Copyright (c) 2025 i18next",
     "source": "https://github.com/i18next/i18next",
     "license": "MIT",
@@ -401,7 +401,7 @@
   },
   "react-native-keyboard-controller": {
     "name": "react-native-keyboard-controller",
-    "version": "1.20.1",
+    "version": "1.20.2",
     "copyright": "Copyright (c) 2021 Kiryl Ziusko",
     "source": "https://github.com/kirillzyusko/react-native-keyboard-controller",
     "license": "MIT",
@@ -425,7 +425,7 @@
   },
   "react-native-pager-view": {
     "name": "react-native-pager-view",
-    "version": "7.0.2",
+    "version": "8.0.0",
     "copyright": "Copyright (c) 2021 Callstack",
     "source": "https://github.com/callstack/react-native-pager-view",
     "license": "MIT",
@@ -457,7 +457,7 @@
   },
   "react-native-screens": {
     "name": "react-native-screens",
-    "version": "4.18.0",
+    "version": "4.19.0",
     "copyright": "Copyright (c) 2018 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-screens",
     "license": "MIT",
@@ -497,7 +497,7 @@
   },
   "uniwind": {
     "name": "uniwind",
-    "version": "1.2.0",
+    "version": "1.2.2",
     "copyright": "Copyright (c) 2025 Uniwind",
     "source": "https://github.com/uni-stack/uniwind",
     "license": "MIT",
@@ -505,7 +505,7 @@
   },
   "zod": {
     "name": "zod",
-    "version": "4.1.13",
+    "version": "4.2.1",
     "copyright": "Copyright (c) 2025 Colin McDonnell",
     "source": "https://github.com/colinhacks/zod",
     "license": "MIT",

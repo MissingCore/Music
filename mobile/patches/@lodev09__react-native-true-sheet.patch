@@ -1,17 +1,17 @@
 diff --git a/android/src/main/java/com/lodev09/truesheet/TrueSheetViewController.kt b/android/src/main/java/com/lodev09/truesheet/TrueSheetViewController.kt
-index 79bd9eebe4ba096673d1645ef86a91e4f6d17db4..552c9a5041fcb4d20476839d94a197a01e1e1d1d 100644
+index 502d4704e3a08bd0b8bebd8b2ea2d26dd255d043..e53ba7e2de07614e4c6e65c785efa242cc2a9c97 100644
 --- a/android/src/main/java/com/lodev09/truesheet/TrueSheetViewController.kt
 +++ b/android/src/main/java/com/lodev09/truesheet/TrueSheetViewController.kt
-@@ -72,7 +72,7 @@ class TrueSheetViewController(private val reactContext: ThemedReactContext) :
+@@ -74,7 +74,7 @@ class TrueSheetViewController(private val reactContext: ThemedReactContext) :
      private const val DEFAULT_CORNER_RADIUS = 16 // dp
  
      // Animation durations from res/anim/true_sheet_slide_in.xml and true_sheet_slide_out.xml
--    private const val PRESENT_ANIMATION_DURATION = 200L
+-    private const val PRESENT_ANIMATION_DURATION = 250L
 +    private const val PRESENT_ANIMATION_DURATION = 150L
      private const val DISMISS_ANIMATION_DURATION = 150L
+     private const val TRANSLATE_ANIMATION_DURATION = 100L
    }
- 
-@@ -616,6 +616,8 @@ class TrueSheetViewController(private val reactContext: ThemedReactContext) :
+@@ -688,6 +688,8 @@ class TrueSheetViewController(private val reactContext: ThemedReactContext) :
        paint.color = backgroundColor
      }
      bottomSheet.clipToOutline = true
@@ -19,7 +19,7 @@ index 79bd9eebe4ba096673d1645ef86a91e4f6d17db4..552c9a5041fcb4d20476839d94a197a0
 +    bottomSheet.setOutlineProvider(null)
    }
  
-   /** Configures dim and touch-through behavior based on detent index. */
+   fun setupDimmedBackground(detentIndex: Int) {
 diff --git a/android/src/main/res/anim/true_sheet_slide_in.xml b/android/src/main/res/anim/true_sheet_slide_in.xml
 index e5d2bcdaa0c7ca52702208248f403e1189e4e02b..16bd3db3a42457cfb3da1a42ecfd39be9cc3f0a2 100644
 --- a/android/src/main/res/anim/true_sheet_slide_in.xml
@@ -42,7 +42,7 @@ index e5d2bcdaa0c7ca52702208248f403e1189e4e02b..16bd3db3a42457cfb3da1a42ecfd39be
 +        android:interpolator="@android:interpolator/fast_out_slow_in" />
  </set>
 diff --git a/android/src/main/res/anim/true_sheet_slide_out.xml b/android/src/main/res/anim/true_sheet_slide_out.xml
-index 6da4b96be587de1d7e74bc9feacad5b00fee8e78..6cec10b835d0dc9a6055a3e0e1ad1273076a6541 100644
+index 6da4b96be587de1d7e74bc9feacad5b00fee8e78..9a9d5eedf8b1bef1b2a6e7556572d33d1603ac99 100644
 --- a/android/src/main/res/anim/true_sheet_slide_out.xml
 +++ b/android/src/main/res/anim/true_sheet_slide_out.xml
 @@ -1,14 +1,13 @@
