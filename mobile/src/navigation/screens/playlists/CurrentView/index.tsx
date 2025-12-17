@@ -95,7 +95,7 @@ export default function Playlist({
           contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
         />
       </CurrentListLayout>
-      <ExportM3USheet sheetRef={exportSheetRef} id={id} />
+      <ExportM3USheet ref={exportSheetRef} id={id} />
     </>
   );
 }

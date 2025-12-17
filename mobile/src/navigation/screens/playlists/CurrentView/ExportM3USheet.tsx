@@ -17,7 +17,7 @@ import { deferInitialRender } from "../../../components/DeferredRender";
 
 /** Enables us to export a playlist as an M3U file. */
 export const ExportM3USheet = deferInitialRender(
-  function ExportM3USheet(props: { sheetRef: TrueSheetRef; id: string }) {
+  function ExportM3USheet(props: { ref: TrueSheetRef; id: string }) {
     const { t } = useTranslation();
     const [selectedIdx, setSelectedIdx] = useState(0);
     const [isExporting, setIsExporting] = useState(false);
@@ -43,7 +43,7 @@ export const ExportM3USheet = deferInitialRender(
     };
 
     return (
-      <Sheet ref={props.sheetRef} titleKey="feat.playlist.extra.m3uExport">
+      <Sheet ref={props.ref} titleKey="feat.playlist.extra.m3uExport">
         <SegmentedPicker
           options={pickerOptions}
           selectedIndex={selectedIdx}

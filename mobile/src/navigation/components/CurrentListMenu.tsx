@@ -70,7 +70,7 @@ export function CurrentListMenu(props: {
     <>
       <Menu actions={menuActions} />
       {!isFavoritesPlaylist ? (
-        <RenderedSheet sheetRef={artworkSheetRef} id={props.id} />
+        <RenderedSheet ref={artworkSheetRef} id={props.id} />
       ) : null}
     </>
   );

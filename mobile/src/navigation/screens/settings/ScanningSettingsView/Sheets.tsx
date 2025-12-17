@@ -38,15 +38,9 @@ export const ScanningSettingsSheets = deferInitialRender(
   ) {
     return (
       <>
-        <ScanFilterListSheet
-          listType="listAllow"
-          sheetRef={props.allowListRef}
-        />
-        <ScanFilterListSheet
-          listType="listBlock"
-          sheetRef={props.blockListRef}
-        />
-        <MinDurationSheet sheetRef={props.minDurationRef} />
+        <ScanFilterListSheet ref={props.allowListRef} listType="listAllow" />
+        <ScanFilterListSheet ref={props.blockListRef} listType="listBlock" />
+        <MinDurationSheet ref={props.minDurationRef} />
       </>
     );
   },
@@ -54,37 +48,34 @@ export const ScanningSettingsSheets = deferInitialRender(
 
 //#region Filter List
 /** Enables us to specify the paths in the allowlist or blocklist. */
-function ScanFilterListSheet({
-  listType,
-  sheetRef,
-}: {
+function ScanFilterListSheet(props: {
   listType: "listAllow" | "listBlock";
-  sheetRef: TrueSheetRef;
+  ref: TrueSheetRef;
 }) {
   const { t } = useTranslation();
-  const listEntries = usePreferenceStore((s) => s[listType]);
+  const listEntries = usePreferenceStore((s) => s[props.listType]);
 
   return (
     <Sheet
-      ref={sheetRef}
-      titleKey={`feat.${listType}.title`}
+      ref={props.ref}
+      titleKey={`feat.${props.listType}.title`}
       keyboardMode="pan"
       contentContainerClassName="px-0"
       snapTop
     >
-      {listType === "listBlock" ? (
+      {props.listType === "listBlock" ? (
         <StyledText dim center className="px-4 text-sm">
           {t("feat.listBlock.description")}
         </StyledText>
       ) : null}
-      <FilterForm listType={listType} listEntries={listEntries} />
+      <FilterForm listType={props.listType} listEntries={listEntries} />
 
       <FlatList
         data={listEntries}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
           <Swipeable
-            onSwipeLeft={() => removePath({ list: listType, path: item })}
+            onSwipeLeft={() => removePath({ list: props.listType, path: item })}
             RightIcon={<Delete color={Colors.neutral100} />}
             rightIconContainerClassName="rounded-md bg-red"
             wrapperClassName="mx-4"
@@ -171,11 +162,11 @@ function FilterForm(props: {
 
 //#region Min Duration
 /** Enables us to specify the minimum track duration we want to save. */
-function MinDurationSheet(props: { sheetRef: TrueSheetRef }) {
+function MinDurationSheet(props: { ref: TrueSheetRef }) {
   const minSeconds = usePreferenceStore((s) => s.minSeconds);
   return (
     <NumericSheet
-      sheetRef={props.sheetRef}
+      ref={props.ref}
       titleKey="feat.ignoreDuration.title"
       descriptionKey="feat.ignoreDuration.description"
       value={minSeconds}

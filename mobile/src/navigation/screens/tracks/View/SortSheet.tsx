@@ -13,7 +13,7 @@ import { deferInitialRender } from "../../../components/DeferredRender";
 
 /** Enables us to visually change the sort order on the `/track` screen. */
 export const TrackSortSheet = deferInitialRender(
-  function TrackSortSheet(props: { sheetRef: TrueSheetRef }) {
+  function TrackSortSheet(props: { ref: TrueSheetRef }) {
     const isAsc = useSortPreferencesStore((s) => s.isAsc);
     const toggleIsAsc = useSortPreferencesStore((s) => s.toggleIsAsc);
     const orderedBy = useSortPreferencesStore((s) => s.orderedBy);
@@ -21,7 +21,7 @@ export const TrackSortSheet = deferInitialRender(
 
     return (
       <Sheet
-        ref={props.sheetRef}
+        ref={props.ref}
         titleKey="feat.modalSort.title"
         contentContainerClassName="gap-4"
       >

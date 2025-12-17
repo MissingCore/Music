@@ -17,21 +17,21 @@ export function SettingsSheets(
 ) {
   return (
     <>
-      <BackupSheet sheetRef={props.backupRef} />
-      <LanguageSheet sheetRef={props.languageRef} />
+      <BackupSheet ref={props.backupRef} />
+      <LanguageSheet ref={props.languageRef} />
     </>
   );
 }
 
 /** Enables import & export of a backup of your media organization in this app. */
-function BackupSheet(props: { sheetRef: TrueSheetRef }) {
+function BackupSheet(props: { ref: TrueSheetRef }) {
   const exportBackup = useExportBackup();
   const importBackup = useImportBackup();
 
   const inProgress = exportBackup.isPending || importBackup.isPending;
 
   return (
-    <Sheet ref={props.sheetRef} titleKey="feat.backup.title">
+    <Sheet ref={props.ref} titleKey="feat.backup.title">
       <TStyledText
         dim
         textKey="feat.backup.description"
@@ -54,13 +54,13 @@ function BackupSheet(props: { sheetRef: TrueSheetRef }) {
 }
 
 /** Enables the ability to change the language used. */
-function LanguageSheet(props: { sheetRef: TrueSheetRef }) {
+function LanguageSheet(props: { ref: TrueSheetRef }) {
   const languageCode = usePreferenceStore((s) => s.language);
   const { handlers, isScrollable } = useIsScrollable();
 
   return (
     <Sheet
-      ref={props.sheetRef}
+      ref={props.ref}
       titleKey="feat.language.title"
       contentContainerClassName="pb-0"
     >

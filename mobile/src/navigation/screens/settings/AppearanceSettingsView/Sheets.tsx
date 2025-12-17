@@ -32,11 +32,11 @@ export const AppearanceSettingsSheets = deferInitialRender(
   }) {
     return (
       <>
-        <FontAccentSheet sheetRef={props.accentFontRef} />
-        <FontPrimarySheet sheetRef={props.primaryFontRef} />
-        <ThemeSheet sheetRef={props.themeRef} />
-        <MinAlbumLengthSheet sheetRef={props.albumLengthFilterRef} />
-        <NowPlayingDesignSheet sheetRef={props.nowPlayingDesignRef} />
+        <FontAccentSheet ref={props.accentFontRef} />
+        <FontPrimarySheet ref={props.primaryFontRef} />
+        <ThemeSheet ref={props.themeRef} />
+        <MinAlbumLengthSheet ref={props.albumLengthFilterRef} />
+        <NowPlayingDesignSheet ref={props.nowPlayingDesignRef} />
       </>
     );
   },
@@ -44,11 +44,11 @@ export const AppearanceSettingsSheets = deferInitialRender(
 
 //#region Font
 /** Enables changing the font used primarily for headings. */
-function FontAccentSheet(props: { sheetRef: TrueSheetRef }) {
+function FontAccentSheet(props: { ref: TrueSheetRef }) {
   const accentFont = usePreferenceStore((s) => s.accentFont);
   return (
     <FontSheet
-      sheetRef={props.sheetRef}
+      ref={props.ref}
       kind="Accent"
       selectedFont={accentFont}
       fontOptions={AccentFontOptions}
@@ -58,11 +58,11 @@ function FontAccentSheet(props: { sheetRef: TrueSheetRef }) {
 }
 
 /** Enables changing the font used by all text in the app. */
-function FontPrimarySheet(props: { sheetRef: TrueSheetRef }) {
+function FontPrimarySheet(props: { ref: TrueSheetRef }) {
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
   return (
     <FontSheet
-      sheetRef={props.sheetRef}
+      ref={props.ref}
       kind="Primary"
       selectedFont={primaryFont}
       fontOptions={PrimaryFontOptions}
@@ -73,7 +73,7 @@ function FontPrimarySheet(props: { sheetRef: TrueSheetRef }) {
 
 /** Reusable font sheet component. */
 function FontSheet<T extends AccentFont>(props: {
-  sheetRef: TrueSheetRef;
+  ref: TrueSheetRef;
   kind: "Accent" | "Primary";
   selectedFont: T;
   fontOptions: readonly T[];
@@ -81,7 +81,7 @@ function FontSheet<T extends AccentFont>(props: {
 }) {
   return (
     <Sheet
-      ref={props.sheetRef}
+      ref={props.ref}
       titleKey={`feat.font.extra.${toLowerCase(props.kind)}`}
     >
       <FlatList
@@ -110,12 +110,12 @@ function FontSheet<T extends AccentFont>(props: {
 
 //#region Theme
 /** Enables changing the theme of the app. */
-function ThemeSheet(props: { sheetRef: TrueSheetRef }) {
+function ThemeSheet(props: { ref: TrueSheetRef }) {
   const { setColorScheme } = useColorScheme();
   const selectedTheme = usePreferenceStore((s) => s.theme);
 
   return (
-    <Sheet ref={props.sheetRef} titleKey="feat.theme.title">
+    <Sheet ref={props.ref} titleKey="feat.theme.title">
       <FlatList
         accessibilityRole="radiogroup"
         data={ThemeOptions}
@@ -143,11 +143,11 @@ function ThemeSheet(props: { sheetRef: TrueSheetRef }) {
  * Enables us to specify the minimum number of tracks required for an
  * album to be displayed in the Albums screen.
  */
-function MinAlbumLengthSheet(props: { sheetRef: TrueSheetRef }) {
+function MinAlbumLengthSheet(props: { ref: TrueSheetRef }) {
   const minAlbumLength = usePreferenceStore((s) => s.minAlbumLength);
   return (
     <NumericSheet
-      sheetRef={props.sheetRef}
+      ref={props.ref}
       titleKey="feat.albumLengthFilter.title"
       descriptionKey="feat.albumLengthFilter.description"
       value={minAlbumLength}
@@ -159,10 +159,10 @@ function MinAlbumLengthSheet(props: { sheetRef: TrueSheetRef }) {
 
 //#region Now Playing Design
 /** Enables changing the appearance of the artwork on the "Now Playing" screen. */
-function NowPlayingDesignSheet(props: { sheetRef: TrueSheetRef }) {
+function NowPlayingDesignSheet(props: { ref: TrueSheetRef }) {
   const nowPlayingDesign = usePreferenceStore((s) => s.nowPlayingDesign);
   return (
-    <Sheet ref={props.sheetRef} titleKey="feat.nowPlayingDesign.title">
+    <Sheet ref={props.ref} titleKey="feat.nowPlayingDesign.title">
       <FlatList
         accessibilityRole="radiogroup"
         data={NowPlayingDesignOptions}

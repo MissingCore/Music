@@ -12,13 +12,13 @@ import { deferInitialRender } from "~/navigation/components/DeferredRender";
 
 /** Enables us to specify how the media is played. */
 export const PlaybackOptionsSheet = deferInitialRender(
-  function PlaybackOptionsSheet(props: { sheetRef: TrueSheetRef }) {
+  function PlaybackOptionsSheet(props: { ref: TrueSheetRef }) {
     const { t } = useTranslation();
     const playbackSpeed = useSessionStore((s) => s.playbackSpeed);
     const volume = useSessionStore((s) => s.volume);
 
     return (
-      <Sheet ref={props.sheetRef} contentContainerClassName="gap-4">
+      <Sheet ref={props.ref} contentContainerClassName="gap-4">
         <NSlider
           label={t("feat.playback.extra.speed")}
           value={playbackSpeed}

@@ -25,7 +25,7 @@ export default function Tracks() {
 
   return (
     <>
-      <TrackSortSheet sheetRef={trackSortSheetRef} />
+      <TrackSortSheet ref={trackSortSheetRef} />
       <StickyActionListLayout
         titleKey="term.tracks"
         StickyAction={

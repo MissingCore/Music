@@ -8,7 +8,7 @@ import { NumericInput } from "../Form/Input";
 import { TStyledText } from "../Typography/StyledText";
 
 interface NumericSheetProps {
-  sheetRef: TrueSheetRef;
+  ref: TrueSheetRef;
   titleKey: ParseKeys;
   descriptionKey: ParseKeys;
   value: number;
@@ -39,7 +39,7 @@ export function NumericSheet(props: NumericSheetProps) {
   }, [newValue, onUpdate]);
 
   return (
-    <Sheet ref={props.sheetRef} titleKey={props.titleKey}>
+    <Sheet ref={props.ref} titleKey={props.titleKey}>
       <TStyledText
         textKey={props.descriptionKey}
         className="text-center text-sm"

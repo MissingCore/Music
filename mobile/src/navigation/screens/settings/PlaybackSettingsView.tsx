@@ -22,7 +22,7 @@ export default function PlaybackSettings() {
 
   return (
     <>
-      <PlaybackDelaySheet sheetRef={playbackDelaySheetRef} />
+      <PlaybackDelaySheet ref={playbackDelaySheetRef} />
       <StandardScrollLayout>
         <ListItem
           titleKey="feat.playbackDelay.title"
@@ -54,11 +54,11 @@ export default function PlaybackSettings() {
 
 //#region Playback Delay Sheet
 const PlaybackDelaySheet = deferInitialRender(
-  function PlaybackDelaySheet(props: { sheetRef: TrueSheetRef }) {
+  function PlaybackDelaySheet(props: { ref: TrueSheetRef }) {
     const playbackDelay = usePreferenceStore((s) => s.playbackDelay);
     return (
       <NumericSheet
-        sheetRef={props.sheetRef}
+        ref={props.ref}
         titleKey="feat.playbackDelay.title"
         descriptionKey="feat.playbackDelay.description"
         value={playbackDelay}

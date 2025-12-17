@@ -11,13 +11,13 @@ const searchScope = ["album", "folder", "track"] as const;
 
 /** Enables us to add music to a playlist. */
 export const AddMusicSheet = deferInitialRender(function AddMusicSheet(props: {
-  sheetRef: TrueSheetRef;
+  ref: TrueSheetRef;
   callbacks: Pick<SearchCallbacks, (typeof searchScope)[number]>;
 }) {
   const { canvasAlt } = useTheme();
   return (
     <Sheet
-      ref={props.sheetRef}
+      ref={props.ref}
       titleKey="feat.search.extra.musicAdd"
       keyboardMode="pan"
       snapTop
