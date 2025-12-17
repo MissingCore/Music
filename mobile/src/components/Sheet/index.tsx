@@ -23,27 +23,24 @@ const WrappedGestureHandlerRootView = cssInterop(GestureHandlerRootView, {
   className: "style",
 });
 
-interface SheetProps extends Omit<TrueSheetProps, "name"> {
-  titleKey?: ParseKeys;
+interface SheetProps {
+  children: React.ReactNode;
+  ref?: TrueSheetRef;
   /** Makes sheet accessible globally using this key. */
   globalKey?: string;
+  /** Title displayed in sheet. */
+  titleKey?: ParseKeys;
+  /** Fires when the sheet is dismissed. */
+  onCleanup?: VoidFunction;
   /** If the sheet should open at max screen height. */
   snapTop?: boolean;
+  keyboardMode?: TrueSheetProps["keyboardMode"];
+  /** Styles applied to the internal `GestureHandlerRootView`. */
   contentContainerClassName?: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
 }
 
-export function Sheet({
-  titleKey,
-  globalKey,
-  snapTop,
-  contentContainerClassName,
-  contentContainerStyle,
-  children,
-  onPresent,
-  onDismiss,
-  ...props
-}: SheetProps & { ref?: TrueSheetRef }) {
+export function Sheet(props: SheetProps) {
   const { t } = useTranslation();
   const { canvasAlt } = useTheme();
   const insets = useSafeAreaInsets();
@@ -64,16 +61,16 @@ export function Sheet({
 
   return (
     <TrueSheet
+      ref={props.ref}
       onLayout={(e) => setSheetHeight(e.nativeEvent.layout.height)}
-      name={globalKey}
-      sizes={[snapTop ? "large" : "auto"]}
+      name={props.globalKey}
+      sizes={[props.snapTop ? "large" : "auto"]}
       backgroundColor={canvasAlt}
       cornerRadius={BorderRadius.lg}
       // Sheet max height will be just before the `<TopAppBar />`.
       maxHeight={trueScreenHeight - 56}
       grabber={false}
-      onPresent={(e) => {
-        if (onPresent) onPresent(e);
+      onPresent={() => {
         setEnableToast(true);
 
         // Temporarily disable toast mount animation when sheet is presenting.
@@ -85,7 +82,7 @@ export function Sheet({
         );
       }}
       onDismiss={() => {
-        if (onDismiss) onDismiss();
+        if (props.onCleanup) props.onCleanup();
         setEnableToast(false);
 
         // Ensure that toast mount animation is disabled when sheet presents.
@@ -93,16 +90,16 @@ export function Sheet({
           clearTimeout(disableAnimTimerRef.current);
         setDisableToastAnim(true);
       }}
-      {...props}
+      keyboardMode={props.keyboardMode}
     >
       <View
         onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}
-        className={cn("gap-2 px-4 pb-2", { "pb-6": !!titleKey })}
+        className={cn("gap-2 px-4 pb-2", { "pb-6": !!props.titleKey })}
       >
         <View className="mx-auto my-[10px] h-1 w-8 rounded-full bg-onSurface" />
-        {titleKey ? (
+        {props.titleKey ? (
           <Marquee color="canvasAlt" center>
-            <StyledText className="text-lg">{t(titleKey)}</StyledText>
+            <StyledText className="text-lg">{t(props.titleKey)}</StyledText>
           </Marquee>
         ) : null}
       </View>
@@ -112,15 +109,15 @@ export function Sheet({
           // need to exclude the height taken up by the "SheetHeader"
           // from the container that can hold a scrollable.
           [{ maxHeight: trueScreenHeight - 56 - headerHeight }],
-          contentContainerStyle,
+          props.contentContainerStyle,
         ]}
         className={cn(
           "gap-6 p-4 pt-0",
-          { "h-full pb-0": snapTop },
-          contentContainerClassName,
+          { "h-full pb-0": props.snapTop },
+          props.contentContainerClassName,
         )}
       >
-        {children}
+        {props.children}
       </WrappedGestureHandlerRootView>
       {enableToast ? (
         <Toasts
