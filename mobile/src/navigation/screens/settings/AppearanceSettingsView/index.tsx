@@ -19,7 +19,7 @@ export default function AppearanceSettings() {
   const miniplayerGestures = usePreferenceStore((s) => s.miniplayerGestures);
   const nowPlayingDesign = usePreferenceStore((s) => s.nowPlayingDesign);
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
-  const ignoreRTLLayout = usePreferenceStore((s) => s.ignoreRTLLayout);
+  const forceLTR = usePreferenceStore((s) => s.forceLTR);
   const accentFontSheetRef = useSheetRef();
   const primaryFontSheetRef = useSheetRef();
   const themeSheetRef = useSheetRef();
@@ -93,8 +93,8 @@ export default function AppearanceSettings() {
         <ListItem
           titleKey="feat.ignoreRTLLayout.title"
           description={t("feat.ignoreRTLLayout.brief")}
-          onPress={PreferenceTogglers.toggleIgnoreRTLLayout}
-          switchState={ignoreRTLLayout}
+          onPress={PreferenceTogglers.toggleForceLTR}
+          switchState={forceLTR}
           first
           last
         />

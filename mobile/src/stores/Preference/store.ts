@@ -19,6 +19,7 @@ export const preferenceStore = createPersistedSubscribedStore<PreferenceStore>(
       // Try to use device language if no language is specified.
       await resolveLanguageConfigs(
         state.language || getLocales()[0]?.languageTag || "en",
+        state.forceLTR,
       );
       if (state.language === "") {
         const usedLanguage = i18next.resolvedLanguage;
@@ -30,7 +31,7 @@ export const preferenceStore = createPersistedSubscribedStore<PreferenceStore>(
     },
 
     language: "",
-    ignoreRTLLayout: false,
+    forceLTR: false,
 
     theme: "system",
     accentFont: "NType",

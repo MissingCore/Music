@@ -20,7 +20,7 @@ export async function setLanguage(languageCode: string) {
 
   await resolveLanguageConfigs(
     languageCode,
-    preferenceStore.getState().ignoreRTLLayout,
+    preferenceStore.getState().forceLTR,
   );
   // Make sure our queries that use translated values are updated.
   clearAllQueries();

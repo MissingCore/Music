@@ -40,7 +40,7 @@ export interface PreferenceStore {
   /** Language code of the displayed content. */
   language: string;
   /** If we should use LTR layout with a RTL language. */
-  ignoreRTLLayout: boolean;
+  forceLTR: boolean;
 
   theme: Theme;
   /** Font used for some accent text (ie: major headings). */
