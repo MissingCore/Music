@@ -112,6 +112,9 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
+      "@miblanchard/react-native-slider",
+      "@weights-ai/react-native-track-player",
+      "react-native-draglist",
       "sharp"
     ],
     "overrides": {
