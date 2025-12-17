@@ -8,8 +8,9 @@ import {
 import { StandardScrollLayout } from "../../layouts/StandardScroll";
 
 import { List, ListItem } from "~/components/Containment/List";
-import type { TrueSheetRef } from "~/components/Sheet";
-import { NumericSheet, useSheetRef } from "~/components/Sheet";
+import { NumericSheet } from "~/components/Sheet/Numeric";
+import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
+import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { deferInitialRender } from "../../components/DeferredRender";
 
 export default function PlaybackSettings() {

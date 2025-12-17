@@ -8,7 +8,7 @@ import { ScanningSettingsSheets } from "./Sheets";
 
 import { mutateGuard } from "~/lib/react-query";
 import { List, ListItem } from "~/components/Containment/List";
-import { useSheetRef } from "~/components/Sheet";
+import { useSheetRef } from "~/components/Sheet/useSheetRef";
 
 export default function ScanningSettings() {
   const { t } = useTranslation();

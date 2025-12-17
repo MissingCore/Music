@@ -4,10 +4,10 @@ import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { platformApiLevel } from "expo-device";
 import type { ParseKeys } from "i18next";
 import { cssInterop } from "nativewind";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { PressableProps, StyleProp, ViewStyle } from "react-native";
-import { Keyboard, View, useWindowDimensions } from "react-native";
+import type { StyleProp, ViewStyle } from "react-native";
+import { View, useWindowDimensions } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -15,10 +15,9 @@ import { useTheme } from "~/hooks/useTheme";
 
 import { BorderRadius } from "~/constants/Styles";
 import { cn } from "~/lib/style";
-import { Marquee } from "./Containment/Marquee";
-import { Button } from "./Form/Button";
-import { NumericInput } from "./Form/Input";
-import { StyledText, TStyledText } from "./Typography/StyledText";
+import type { TrueSheetRef } from "./useSheetRef";
+import { Marquee } from "../Containment/Marquee";
+import { StyledText } from "../Typography/StyledText";
 
 const WrappedGestureHandlerRootView = cssInterop(GestureHandlerRootView, {
   className: "style",
@@ -34,13 +33,6 @@ interface SheetProps extends Omit<TrueSheetProps, "name"> {
   contentContainerStyle?: StyleProp<ViewStyle>;
 }
 
-export type TrueSheetRef = React.Ref<TrueSheet>;
-
-export function useSheetRef() {
-  return useRef<TrueSheet>(null);
-}
-
-//#region Sheet
 export function Sheet({
   titleKey,
   globalKey,
@@ -144,95 +136,3 @@ export function Sheet({
     </TrueSheet>
   );
 }
-//#endregion
-
-//#region Numeric Sheet
-interface NumericSheetProps {
-  sheetRef: TrueSheetRef;
-  titleKey: ParseKeys;
-  descriptionKey: ParseKeys;
-  value: number;
-  setValue: (newValue: number) => void;
-}
-
-export function NumericSheet(props: NumericSheetProps) {
-  const [newValue, setNewValue] = useState<string | undefined>();
-
-  const onUpdate = useCallback(
-    (value: string | undefined) => {
-      const asNum = Number(value);
-      // Validate that it's a positive integer.
-      if (!Number.isInteger(asNum) || asNum < 0) return;
-      props.setValue(asNum);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [props.setValue],
-  );
-
-  useEffect(() => {
-    const subscription = Keyboard.addListener(
-      "keyboardDidHide",
-      // Update value when we close the keyboard.
-      () => onUpdate(newValue),
-    );
-    return () => subscription.remove();
-  }, [newValue, onUpdate]);
-
-  return (
-    <Sheet ref={props.sheetRef} titleKey={props.titleKey}>
-      <TStyledText
-        textKey={props.descriptionKey}
-        className="text-center text-sm"
-        dim
-      />
-      <NumericInput
-        defaultValue={`${props.value}`}
-        onChangeText={(text) => setNewValue(text)}
-        className="mx-auto mb-2 w-full max-w-[50%] border-b border-foreground/60 text-center"
-      />
-    </Sheet>
-  );
-}
-
-//#endregion
-
-//#region Sheet Button Group
-type ButtonOptions = Omit<PressableProps, "children"> & { textKey: ParseKeys };
-
-export function SheetButtonGroup(props: {
-  leftButton: ButtonOptions;
-  rightButton: ButtonOptions;
-  className?: string;
-}) {
-  return (
-    <View className={cn("flex-row gap-[3px]", props.className)}>
-      <Button
-        {...props.leftButton}
-        className={cn(
-          "min-h-14 flex-1 rounded-r-sm",
-          props.leftButton.className,
-        )}
-      >
-        <TStyledText
-          textKey={props.leftButton.textKey}
-          className="text-center text-sm"
-          bold
-        />
-      </Button>
-      <Button
-        {...props.rightButton}
-        className={cn(
-          "min-h-14 flex-1 rounded-l-sm",
-          props.rightButton.className,
-        )}
-      >
-        <TStyledText
-          textKey={props.rightButton.textKey}
-          className="text-center text-sm"
-          bold
-        />
-      </Button>
-    </View>
-  );
-}
-//#endregion

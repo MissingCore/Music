@@ -6,8 +6,8 @@ import { VolumeUp } from "~/resources/icons/VolumeUp";
 import { sessionStore, useSessionStore } from "~/services/SessionStore";
 
 import { NSlider } from "~/components/Form/Slider";
-import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
+import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { deferInitialRender } from "~/navigation/components/DeferredRender";
 
 /** Enables us to specify how the media is played. */

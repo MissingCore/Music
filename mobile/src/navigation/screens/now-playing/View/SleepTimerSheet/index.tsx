@@ -10,8 +10,8 @@ import { cn } from "~/lib/style";
 import { wait } from "~/utils/promise";
 import { Button } from "~/components/Form/Button";
 import { NumericInput } from "~/components/Form/Input";
-import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
+import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { deferInitialRender } from "../../../../components/DeferredRender";
 

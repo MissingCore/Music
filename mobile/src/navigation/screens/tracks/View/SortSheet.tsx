@@ -6,8 +6,8 @@ import {
 import { ListItem } from "~/components/Containment/List";
 import { FlatList } from "~/components/Defaults";
 import { Radio } from "~/components/Form/Selection";
-import type { TrueSheetRef } from "~/components/Sheet";
 import { Sheet } from "~/components/Sheet";
+import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { TStyledText } from "~/components/Typography/StyledText";
 import { deferInitialRender } from "../../../components/DeferredRender";
 

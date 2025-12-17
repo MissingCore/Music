@@ -12,7 +12,7 @@ import {
 
 import type { MenuAction } from "~/components/Menu";
 import { Menu } from "~/components/Menu";
-import { useSheetRef } from "~/components/Sheet";
+import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { ReservedPlaylists } from "~/modules/media/constants";
 
 /** Icon button that opens a menu with some pre-defined options. */

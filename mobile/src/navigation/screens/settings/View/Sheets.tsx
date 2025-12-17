@@ -6,8 +6,9 @@ import { useExportBackup, useImportBackup } from "~/modules/backup/JSON";
 import { mutateGuard } from "~/lib/react-query";
 import { FlatList, useIsScrollable } from "~/components/Defaults";
 import { Radio } from "~/components/Form/Selection";
-import type { TrueSheetRef } from "~/components/Sheet";
-import { Sheet, SheetButtonGroup } from "~/components/Sheet";
+import { Sheet } from "~/components/Sheet";
+import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
+import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
 /** All the sheets used on `/setting` route. */

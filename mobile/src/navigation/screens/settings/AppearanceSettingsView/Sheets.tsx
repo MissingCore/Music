@@ -8,8 +8,9 @@ import { getFont } from "~/lib/style";
 import { toLowerCase } from "~/utils/string";
 import { FlatList } from "~/components/Defaults";
 import { Radio } from "~/components/Form/Selection";
-import type { TrueSheetRef } from "~/components/Sheet";
-import { NumericSheet, Sheet } from "~/components/Sheet";
+import { Sheet } from "~/components/Sheet";
+import { NumericSheet } from "~/components/Sheet/Numeric";
+import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { TStyledText } from "~/components/Typography/StyledText";
 import type { AccentFont } from "~/stores/Preference/constants";
 import {

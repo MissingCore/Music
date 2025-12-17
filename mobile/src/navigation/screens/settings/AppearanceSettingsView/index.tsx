@@ -7,7 +7,7 @@ import { StandardScrollLayout } from "../../../layouts/StandardScroll";
 import { AppearanceSettingsSheets } from "./Sheets";
 
 import { List, ListItem } from "~/components/Containment/List";
-import { useSheetRef } from "~/components/Sheet";
+import { useSheetRef } from "~/components/Sheet/useSheetRef";
 
 export default function AppearanceSettings() {
   const { t } = useTranslation();

@@ -14,7 +14,7 @@ import * as LINKS from "~/constants/Links";
 import { Card } from "~/components/Containment/Card";
 import { List, ListItem } from "~/components/Containment/List";
 import { Divider } from "~/components/Divider";
-import { useSheetRef } from "~/components/Sheet";
+import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { LANGUAGES } from "~/modules/i18n/constants";
 
 export default function Settings() {
