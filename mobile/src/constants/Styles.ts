@@ -2,8 +2,8 @@ import colors from "tailwindcss/colors";
 
 export const BorderRadius = {
   none: 0,
-  sm: 4,
-  DEFAULT: 8,
+  xs: 4,
+  sm: 8,
   md: 12,
   lg: 16,
   xl: 24,
@@ -41,13 +41,7 @@ export const FontFamily = {
   system: "System",
 } as const;
 
-export const TwFontFamilies = Object.keys(FontFamily).map(
-  (f) => `font-${f}` as `font-${(typeof FontFamily)[keyof typeof FontFamily]}`,
-);
-
 export const FontSize = {
-  title: 36,
-  subtitle: 28,
   xxs: 10,
   xs: 12,
   sm: 14,
@@ -55,4 +49,5 @@ export const FontSize = {
   lg: 20,
   xl: 24,
   "4xl": 36,
+  "5xl": 48,
 } as const;

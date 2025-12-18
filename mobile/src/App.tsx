@@ -9,7 +9,6 @@ import { AppProvider } from "~/navigation/providers/AppProvider";
 import { ErrorBoundary } from "~/navigation/components/ErrorBoundary";
 import { Onboarding } from "~/navigation/screens/OnboardingView";
 
-import "~/resources/global.css";
 import "~/modules/i18n"; // Make sure translations are bundled.
 import { SENTRY_ENABLED, Sentry } from "~/lib/sentry";
 

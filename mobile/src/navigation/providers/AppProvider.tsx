@@ -11,6 +11,7 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 
+import "../../global.css";
 import { SystemTheme, ThemeProvider } from "./ThemeProvider";
 
 import { queryClient } from "~/lib/react-query";

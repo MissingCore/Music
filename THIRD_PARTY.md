@@ -39,7 +39,6 @@
 | ionicons | MIT | https://github.com/ionic-team/ionicons |
 | jotai | MIT | https://github.com/pmndrs/jotai |
 | Material Symbols | Apache-2.0 | https://github.com/google/material-design-icons |
-| nativewind | MIT | https://github.com/marklawlor/nativewind |
 | NDot日本語 | OFL-1.1 | https://x.com/NdotJP_Font |
 | react | MIT | https://github.com/facebook/react |
 | react-i18next | MIT | https://github.com/i18next/react-i18next |
@@ -61,5 +60,6 @@
 | react-native-svg | MIT | https://github.com/software-mansion/react-native-svg |
 | Roboto Font | Apache-2.0 | https://github.com/googlefonts/roboto |
 | tailwind-merge | MIT | https://github.com/dcastil/tailwind-merge |
+| uniwind | MIT | https://github.com/uni-stack/uniwind |
 | zod | MIT | https://github.com/colinhacks/zod |
 | zustand | MIT | https://github.com/pmndrs/zustand |

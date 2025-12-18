@@ -59,7 +59,6 @@
     "i18next": "25.7.3",
     "intl-pluralrules": "2.0.1",
     "jotai": "2.16.0",
-    "nativewind": "4.1.23",
     "react": "19.0.0",
     "react-i18next": "16.5.0",
     "react-native": "0.79.7",
@@ -78,7 +77,8 @@
     "react-native-safe-area-context": "5.6.2",
     "react-native-screens": "4.18.0",
     "react-native-svg": "15.15.1",
-    "tailwind-merge": "2.6.0",
+    "tailwind-merge": "3.4.0",
+    "uniwind": "^1.2.2",
     "zod": "4.2.1",
     "zustand": "5.0.9"
   },
@@ -99,7 +99,7 @@
     "neatjson": "0.10.6",
     "prettier": "3.7.4",
     "prettier-plugin-tailwindcss": "0.7.2",
-    "tailwindcss": "3.4.19",
+    "tailwindcss": "4.1.18",
     "typescript": "5.9.3",
     "typescript-eslint": "8.50.0"
   },
