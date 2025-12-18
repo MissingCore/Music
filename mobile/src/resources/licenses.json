@@ -161,7 +161,7 @@
   },
   "expo": {
     "name": "expo",
-    "version": "54.0.29",
+    "version": "54.0.30",
     "copyright": "Copyright (c) 2015-present 650 Industries, Inc. (aka Expo)",
     "source": "https://github.com/expo/expo/tree/main/packages/expo",
     "license": "MIT",
@@ -441,7 +441,7 @@
   },
   "react-native-reanimated": {
     "name": "react-native-reanimated",
-    "version": "4.2.0",
+    "version": "4.2.1",
     "copyright": "Copyright (c) 2016 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-reanimated",
     "license": "MIT",
