@@ -75,7 +75,7 @@ export default function Artist({
         />
       </CurrentListLayout>
 
-      <ArtistArtworkSheet sheetRef={artworkSheetRef} id={artistName} />
+      <ArtistArtworkSheet ref={artworkSheetRef} id={artistName} />
     </>
   );
 }

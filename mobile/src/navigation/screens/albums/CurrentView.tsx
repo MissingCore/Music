@@ -132,7 +132,7 @@ export default function Album({
         />
       </CurrentListLayout>
 
-      <AlbumArtworkSheet sheetRef={artworkSheetRef} id={albumId} />
+      <AlbumArtworkSheet ref={artworkSheetRef} id={albumId} />
     </>
   );
 }

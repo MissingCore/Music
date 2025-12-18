@@ -29,18 +29,13 @@ const MIN_BAR_HEIGHT = 4;
 const BAR_WIDTH = 2;
 const BAR_GAP = 1.75;
 
-export function Waveform({
-  amplitudes,
-  height,
-  progress,
-  maxProgress,
-}: WaveformProps) {
+export function Waveform(props: WaveformProps) {
   const { onSurface } = useTheme();
   return (
     <AudioWaveView
-      samples={amplitudes.map((s) => s * height)}
-      progress={progress}
-      maxProgress={maxProgress}
+      samples={props.amplitudes.map((s) => s * props.height)}
+      progress={props.progress}
+      maxProgress={props.maxProgress}
       waveMinHeight={MIN_BAR_HEIGHT * 2}
       waveWidth={BAR_WIDTH * 3}
       waveGap={4}

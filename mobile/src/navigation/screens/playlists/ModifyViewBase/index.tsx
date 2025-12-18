@@ -118,7 +118,7 @@ function PageContent({ bottomOffset }: { bottomOffset: number }) {
 
   return (
     <>
-      <AddMusicSheet sheetRef={addMusicSheetRef} callbacks={addCallbacks} />
+      <AddMusicSheet ref={addMusicSheetRef} callbacks={addCallbacks} />
       <View
         pointerEvents={isSubmitting ? "none" : "auto"}
         needsOffscreenAlphaCompositing

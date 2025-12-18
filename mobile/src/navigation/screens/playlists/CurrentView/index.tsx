@@ -97,8 +97,8 @@ export default function Playlist({
         />
       </CurrentListLayout>
 
-      <PlaylistArtworkSheet sheetRef={artworkSheetRef} id={id} />
-      <ExportM3USheet sheetRef={exportSheetRef} id={id} />
+      <PlaylistArtworkSheet ref={artworkSheetRef} id={id} />
+      <ExportM3USheet ref={exportSheetRef} id={id} />
     </>
   );
 }

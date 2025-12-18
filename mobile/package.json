@@ -2,7 +2,7 @@
   "name": "music",
   "private": true,
   "main": "index.ts",
-  "version": "2.8.0",
+  "version": "2.8.1",
   "description": "A Nothing inspired music player.",
   "license": "AGPL-3.0-only",
   "repository": {
@@ -115,6 +115,9 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
+      "@miblanchard/react-native-slider",
+      "@weights-ai/react-native-track-player",
+      "react-native-draglist",
       "sharp"
     ],
     "overrides": {

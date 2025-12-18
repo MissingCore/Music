@@ -219,8 +219,8 @@ function BottomAppBar() {
 
   return (
     <>
-      <PlaybackOptionsSheet sheetRef={playbackOptionsSheetRef} />
-      <SleepTimerSheet sheetRef={sleepTimerSheetRef} />
+      <PlaybackOptionsSheet ref={playbackOptionsSheetRef} />
+      <SleepTimerSheet ref={sleepTimerSheetRef} />
       <View className="flex-row items-center justify-between gap-4 p-4">
         <BackButton />
         <View className="flex-row items-center gap-4">

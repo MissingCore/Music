@@ -86,7 +86,7 @@ export function TrackSheet() {
       </Sheet>
       <TrackToPlaylistSheet key={data?.id} id={data?.id ?? ""} />
       {data !== null && (
-        <TrackArtworkSheet sheetRef={trackArtworkSheetRef} id={data.id} />
+        <TrackArtworkSheet ref={trackArtworkSheetRef} id={data.id} />
       )}
     </>
   );

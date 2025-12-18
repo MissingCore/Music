@@ -17,7 +17,7 @@ import { deferInitialRender } from "../../../../components/DeferredRender";
 
 /** Allows the user to set a time when the music will stop playing. */
 export const SleepTimerSheet = deferInitialRender(
-  function SleepTimerSheet(props: { sheetRef: TrueSheetRef }) {
+  function SleepTimerSheet(props: { ref: TrueSheetRef }) {
     const { t } = useTranslation();
     const sleepTimerLength = useSleepTimerStore((s) => s.duration);
     const extendTimer = useSleepTimerStore((s) => s.extension);
@@ -47,7 +47,7 @@ export const SleepTimerSheet = deferInitialRender(
     };
 
     return (
-      <Sheet ref={props.sheetRef} titleKey="feat.sleepTimer.title">
+      <Sheet ref={props.ref} titleKey="feat.sleepTimer.title">
         <TStyledText
           dim
           textKey="feat.sleepTimer.description"

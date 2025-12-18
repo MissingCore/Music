@@ -17,7 +17,7 @@ import { MediaImage } from "~/modules/media/components/MediaImage";
 import type { MediaType } from "~/stores/Playback/types";
 import { deferInitialRender } from "../components/DeferredRender";
 
-type ArtworkSheetProps = { id: string; sheetRef: TrueSheetRef };
+type ArtworkSheetProps = { id: string; ref: TrueSheetRef };
 
 /** Sheet allowing us to change the artwork of an album. */
 export const AlbumArtworkSheet = deferInitialRender(function AlbumArtworkSheet(
@@ -27,7 +27,7 @@ export const AlbumArtworkSheet = deferInitialRender(function AlbumArtworkSheet(
   const updateAlbumArtwork = useUpdateAlbumArtwork(props.id);
 
   return (
-    <Sheet ref={props.sheetRef} contentContainerClassName="items-center">
+    <Sheet ref={props.ref} contentContainerClassName="items-center">
       <BaseArtworkSheetContent
         type="album"
         imageSource={data?.artwork ?? null}
@@ -45,7 +45,7 @@ export const ArtistArtworkSheet = deferInitialRender(
     const updateArtist = useUpdateArtist(props.id);
 
     return (
-      <Sheet ref={props.sheetRef} contentContainerClassName="items-center">
+      <Sheet ref={props.ref} contentContainerClassName="items-center">
         <BaseArtworkSheetContent
           type="artist"
           imageSource={data?.artwork ?? null}
@@ -63,7 +63,7 @@ export const PlaylistArtworkSheet = deferInitialRender(
     const updatePlaylist = useUpdatePlaylist(props.id);
 
     return (
-      <Sheet ref={props.sheetRef} contentContainerClassName="items-center">
+      <Sheet ref={props.ref} contentContainerClassName="items-center">
         <BaseArtworkSheetContent
           type="playlist"
           imageSource={data?.imageSource ?? null}
@@ -80,7 +80,7 @@ export function TrackArtworkSheet(props: ArtworkSheetProps) {
   const updateTrackArtwork = useUpdateTrackArtwork(props.id);
 
   return (
-    <Sheet ref={props.sheetRef} contentContainerClassName="items-center">
+    <Sheet ref={props.ref} contentContainerClassName="items-center">
       <BaseArtworkSheetContent
         type="track"
         imageSource={data?.artwork ?? null}
