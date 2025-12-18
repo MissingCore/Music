@@ -19,6 +19,10 @@ import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { DetachedSheet } from "~/components/Sheet/Detached";
 import {
+  DetachedDimView,
+  useDetachedDimViewContext,
+} from "~/components/Sheet/DetachedDimView";
+import {
   StyledText,
   TEm,
   TStyledText,
@@ -30,6 +34,7 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
   const languageCode = usePreferenceStore((s) => s.language);
   const forceLTR = usePreferenceStore((s) => s.forceLTR);
   const languageSelectionSheetRef = useSheetRef();
+  const { dimViewHandlers, dimness } = useDetachedDimViewContext();
 
   const selectedLanguage = LANGUAGES.find(({ code }) => code === languageCode);
   const translatorsString = selectedLanguage?.translators
@@ -77,9 +82,15 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
           />
           <OpenInNew size={20} />
         </Button>
+
+        <DetachedDimView dimness={dimness} />
       </DetachedSheet>
 
-      <DetachedSheet ref={languageSelectionSheetRef} snapTop>
+      <DetachedSheet
+        ref={languageSelectionSheetRef}
+        snapTop
+        {...dimViewHandlers}
+      >
         <FlatList
           accessibilityRole="radiogroup"
           data={LANGUAGES}
@@ -87,8 +98,8 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
           renderItem={({ item }) => (
             <Radio
               selected={languageCode === item.code}
-              onSelect={() => {
-                PreferenceSetters.setLanguage(item.code);
+              onSelect={async () => {
+                await PreferenceSetters.setLanguage(item.code);
                 languageSelectionSheetRef.current?.dismiss();
               }}
             >

@@ -20,6 +20,20 @@ index 502d4704e3a08bd0b8bebd8b2ea2d26dd255d043..e53ba7e2de07614e4c6e65c785efa242
    }
  
    fun setupDimmedBackground(detentIndex: Int) {
+diff --git a/android/src/main/java/com/lodev09/truesheet/core/TrueSheetDimView.kt b/android/src/main/java/com/lodev09/truesheet/core/TrueSheetDimView.kt
+index 0311c29aaeec70d2491d99e5fb69f4796b30200f..762ab920f7ab66d0435c8cea35d81177774a15a1 100644
+--- a/android/src/main/java/com/lodev09/truesheet/core/TrueSheetDimView.kt
++++ b/android/src/main/java/com/lodev09/truesheet/core/TrueSheetDimView.kt
+@@ -29,7 +29,8 @@ class TrueSheetDimView(private val reactContext: ThemedReactContext) : View(reac
+ 
+   fun attach(view: ViewGroup? = null, cornerRadius: Float = 0f) {
+     if (parent != null) return
+-    targetView = view ?: reactContext.currentActivity?.window?.decorView as? ViewGroup
++    // Increase dimness of backdrop by overlaying another one ontop of it.
++    targetView = reactContext.currentActivity?.window?.decorView as? ViewGroup
+ 
+     if (cornerRadius > 0f) {
+       outlineProvider = object : ViewOutlineProvider() {
 diff --git a/android/src/main/res/anim/true_sheet_slide_in.xml b/android/src/main/res/anim/true_sheet_slide_in.xml
 index e5d2bcdaa0c7ca52702208248f403e1189e4e02b..16bd3db3a42457cfb3da1a42ecfd39be9cc3f0a2 100644
 --- a/android/src/main/res/anim/true_sheet_slide_in.xml
@@ -39,27 +53,5 @@ index e5d2bcdaa0c7ca52702208248f403e1189e4e02b..16bd3db3a42457cfb3da1a42ecfd39be
          android:fromAlpha="0.0"
          android:toAlpha="1.0"
 -        android:interpolator="@android:interpolator/decelerate_cubic" />
-+        android:interpolator="@android:interpolator/fast_out_slow_in" />
- </set>
-diff --git a/android/src/main/res/anim/true_sheet_slide_out.xml b/android/src/main/res/anim/true_sheet_slide_out.xml
-index 6da4b96be587de1d7e74bc9feacad5b00fee8e78..9a9d5eedf8b1bef1b2a6e7556572d33d1603ac99 100644
---- a/android/src/main/res/anim/true_sheet_slide_out.xml
-+++ b/android/src/main/res/anim/true_sheet_slide_out.xml
-@@ -1,14 +1,13 @@
- <?xml version="1.0" encoding="utf-8"?>
- <set xmlns:android="http://schemas.android.com/apk/res/android">
-     <translate
--        android:duration="200"
-+        android:duration="150"
-         android:fromYDelta="0"
-         android:toYDelta="20%p"
--        android:interpolator="@android:interpolator/accelerate_cubic" />
-+        android:interpolator="@android:interpolator/fast_out_slow_in" />
-     <alpha
-         android:duration="150"
--        android:startOffset="50"
-         android:fromAlpha="1.0"
-         android:toAlpha="0.0"
--        android:interpolator="@android:interpolator/accelerate_cubic" />
 +        android:interpolator="@android:interpolator/fast_out_slow_in" />
  </set>

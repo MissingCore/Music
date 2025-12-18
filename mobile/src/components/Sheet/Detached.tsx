@@ -1,4 +1,5 @@
 import { Toasts } from "@backpackapp-io/react-native-toast";
+import type { TrueSheetProps } from "@lodev09/react-native-true-sheet";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import type { ParseKeys } from "i18next";
 import { useMemo, useState } from "react";
@@ -18,15 +19,17 @@ import { TStyledText } from "../Typography/StyledText";
 
 const WrappedGestureHandlerRootView = withUniwind(GestureHandlerRootView);
 
-interface SheetProps {
-  children: React.ReactNode;
+interface SheetProps extends Pick<
+  TrueSheetProps,
+  "children" | "onBackPress" | "onPositionChange"
+> {
   ref?: TrueSheetRef;
   /** Makes sheet accessible globally using this key. */
   globalKey?: string;
-  /** Fires when the sheet is dismissed. */
-  onCleanup?: VoidFunction;
   /** Title displayed in sheet. */
   titleKey?: ParseKeys;
+  /** Fires when the sheet is dismissed. */
+  onCleanup?: VoidFunction;
   /** If the sheet should open at max screen height. */
   snapTop?: boolean;
   /** Indicates a sheet can display keyboard & toast. */
@@ -81,6 +84,9 @@ export function DetachedSheet(props: SheetProps) {
         // Disable toast animations when sheet is dismissed.
         setDisableToastAnim(true);
       }}
+      // Events used for `<DetachedDimView />`.
+      onBackPress={props.onBackPress}
+      onPositionChange={props.onPositionChange}
     >
       <View
         style={{
@@ -100,7 +106,7 @@ export function DetachedSheet(props: SheetProps) {
             props.contentContainerStyle,
           ]}
           className={cn(
-            "gap-6 p-4 pt-0",
+            "relative gap-6 p-4 pt-0",
             { "h-full pb-0": props.snapTop },
             props.contentContainerClassName,
           )}
