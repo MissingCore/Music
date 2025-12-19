@@ -14,11 +14,9 @@ import { preferenceStore } from "~/stores/Preference/store";
 import { useLoadResources } from "~/hooks/useLoadResources";
 import NavigationContainer from "~/navigation";
 import { AppProvider } from "~/navigation/providers/AppProvider";
-import { SystemTheme } from "./navigation/providers/ThemeProvider";
 import { ErrorBoundary } from "~/navigation/components/ErrorBoundary";
 import { Onboarding } from "~/navigation/screens/OnboardingView";
 
-import "~/resources/global.css";
 import "~/modules/i18n"; // Make sure translations are bundled.
 import { SENTRY_ENABLED, Sentry } from "~/lib/sentry";
 import { bgWait } from "~/utils/promise";
@@ -56,9 +54,7 @@ export default function App() {
         {isLoaded && <NavigationContainer />}
 
         <FakeLayoutTransition unmount={isLoaded}>
-          <SystemTheme>
-            <Onboarding />
-          </SystemTheme>
+          <Onboarding />
         </FakeLayoutTransition>
       </ErrorBoundary>
     </AppProvider>
@@ -110,7 +106,7 @@ function FakeLayoutTransition(props: {
       style={animatedStyle}
       // FIXME: For some reason, `inset-0` isn't working. Swap back over
       // when switching to Uniwind.
-      className="absolute bottom-0 left-0 right-0 top-0"
+      className="absolute top-0 right-0 bottom-0 left-0"
     >
       {props.children}
     </Animated.View>

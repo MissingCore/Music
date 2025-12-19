@@ -1,0 +1,67 @@
+@import "tailwindcss";
+@import "uniwind";
+
+@theme {
+  /** Color */
+  --color-neutral0: #000000;
+  --color-neutral7: #121212;
+  --color-neutral10: #1b1d1f;
+  --color-neutral20: #333333;
+  --color-neutral40: #666666;
+  --color-neutral65: #a6a6a6;
+  --color-neutral80: #cccccc;
+  --color-neutral85: #d9d9d9;
+  --color-neutral95: #f2f2f2;
+  --color-neutral100: #ffffff;
+
+  --color-red: #c8102e;
+  --color-yellow: #ffd84d;
+
+  /** Font Family */
+  --font-roboto: "Roboto-Regular";
+  --font-robotoMedium: "Roboto-Medium";
+  --font-inter: "Inter-Regular";
+  --font-interMedium: "Inter-Medium";
+  --font-geistMono: "GeistMono-Regular";
+  --font-geistMonoMedium: "GeistMono-Medium";
+  --font-ndot: "Ndot-77_JP_Extended";
+  --font-ntype: "NType82-Headline";
+
+  /** Border Radius */
+  --radius-xs: 0.25rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  /** Font Size */
+  --text-xxs: 0.625rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+}
+
+@layer theme {
+  /** Themes */
+  :root {
+    @variant light {
+      --color-canvas: var(--color-neutral95);
+      --color-canvasAlt: var(--color-neutral95);
+      --color-surface: var(--color-neutral100);
+      --color-onSurface: var(--color-neutral80);
+      --color-foreground: var(--color-neutral0);
+    }
+
+    @variant dark {
+      --color-canvas: var(--color-neutral0);
+      --color-canvasAlt: var(--color-neutral7);
+      --color-surface: var(--color-neutral10);
+      --color-onSurface: var(--color-neutral20);
+      --color-foreground: var(--color-neutral100);
+    }
+  }
+}

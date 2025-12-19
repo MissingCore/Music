@@ -100,7 +100,7 @@ export function StandardScrollLayout(props: {
       <Animated.View
         pointerEvents="none"
         style={[{ height: top + 56 }, statusBarShadowVisibility]}
-        className="absolute left-0 right-0 top-0"
+        className="absolute top-0 right-0 left-0"
       >
         <LinearGradient
           colors={[`${canvas}FF`, `${canvas}00`]}

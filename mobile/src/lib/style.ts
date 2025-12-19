@@ -16,8 +16,8 @@ function replaceDefault<T extends string>(arr: T[]) {
 const customTwMerge = extendTailwindMerge({
   override: {
     theme: {
-      colors: Object.keys(TailwindTheme.colors),
-      borderRadius: replaceDefault(Object.keys(TailwindTheme.borderRadius)),
+      color: Object.keys(TailwindTheme.colors),
+      radius: replaceDefault(Object.keys(TailwindTheme.borderRadius)),
     },
     classGroups: {
       "font-family": Object.keys(TailwindTheme.fontFamily),

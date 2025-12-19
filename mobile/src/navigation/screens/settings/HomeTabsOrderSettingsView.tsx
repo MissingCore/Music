@@ -70,7 +70,7 @@ const RenderItem = memo(
           "min-h-12 flex-row items-center rounded-md pl-2 active:bg-surface/50",
           {
             "opacity-25": !info.isActive && info.isDragging,
-            "!bg-surface": info.isActive,
+            "bg-surface!": info.isActive,
             "mt-1": info.index > 0,
           },
         )}

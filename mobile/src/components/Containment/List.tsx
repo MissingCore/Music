@@ -12,7 +12,7 @@ import { StyledText } from "../Typography/StyledText";
 /** Wrapper for list of `<ListItem />` for consistent gaps. */
 export function List(props: { children: React.ReactNode; className?: string }) {
   return (
-    <View className={cn("gap-[3px]", props.className)}>{props.children}</View>
+    <View className={cn("gap-0.75", props.className)}>{props.children}</View>
   );
 }
 //#endregion
@@ -41,7 +41,7 @@ export function useListPresets<TData extends Record<string, any>>({
           onPress={onPress ? onPress(item) : undefined}
           first={index === 0}
           last={index === (data?.length ?? 0) - 1}
-          className={index > 0 ? "mt-[3px]" : undefined}
+          className={index > 0 ? "mt-0.75" : undefined}
         />
       ),
     }),
@@ -89,8 +89,8 @@ export function ListItem(
       className={cn(
         "min-h-12 rounded-md bg-surface p-4",
         {
-          "rounded-t-sm": !props.first,
-          "rounded-b-sm": !props.last,
+          "rounded-t-xs": !props.first,
+          "rounded-b-xs": !props.last,
           "active:opacity-75 disabled:opacity-25": asButton,
           "flex-row items-center gap-4": asSwitch || withIcon,
         },

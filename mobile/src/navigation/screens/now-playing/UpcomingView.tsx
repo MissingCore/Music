@@ -154,9 +154,9 @@ const RenderItem = memo(
         fireCallbackBeforeCompletion
         onSwipeLeft={() => onRemoveTrack(item.key)}
         RightIcon={<Delete color={Colors.neutral100} />}
-        rightIconContainerClassName="rounded-sm bg-red"
+        rightIconContainerClassName="rounded-xs bg-red"
         wrapperClassName={cn("mx-4", { "mt-2": index > 0 })}
-        className={cn("rounded-sm bg-canvas", { "bg-surface": info.isActive })}
+        className={cn("rounded-xs bg-canvas", { "bg-surface": info.isActive })}
       >
         <TrackItem
           item={item}

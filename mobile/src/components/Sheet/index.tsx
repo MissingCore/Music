@@ -3,13 +3,13 @@ import type { TrueSheetProps } from "@lodev09/react-native-true-sheet";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { platformApiLevel } from "expo-device";
 import type { ParseKeys } from "i18next";
-import { cssInterop } from "nativewind";
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { StyleProp, ViewStyle } from "react-native";
 import { View, useWindowDimensions } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { withUniwind } from "uniwind";
 
 import { useTheme } from "~/hooks/useTheme";
 
@@ -19,9 +19,7 @@ import type { TrueSheetRef } from "./useSheetRef";
 import { Marquee } from "../Containment/Marquee";
 import { StyledText } from "../Typography/StyledText";
 
-const WrappedGestureHandlerRootView = cssInterop(GestureHandlerRootView, {
-  className: "style",
-});
+const WrappedGestureHandlerRootView = withUniwind(GestureHandlerRootView);
 
 interface SheetProps {
   children: React.ReactNode;
@@ -96,7 +94,7 @@ export function Sheet(props: SheetProps) {
         onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}
         className={cn("gap-2 px-4 pb-2", { "pb-6": !!props.titleKey })}
       >
-        <View className="mx-auto my-[10px] h-1 w-8 rounded-full bg-onSurface" />
+        <View className="mx-auto my-2.5 h-1 w-8 rounded-full bg-onSurface" />
         {props.titleKey ? (
           <Marquee color="canvasAlt" center>
             <StyledText className="text-lg">{t(props.titleKey)}</StyledText>

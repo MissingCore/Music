@@ -232,7 +232,7 @@ function BottomAppBar() {
               large
             />
             {sleepTimerActive && (
-              <View className="absolute right-2 top-2 size-2 rounded-full bg-red" />
+              <View className="absolute top-2 right-2 size-2 rounded-full bg-red" />
             )}
           </View>
           <IconButton

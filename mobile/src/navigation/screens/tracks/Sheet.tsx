@@ -112,7 +112,7 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
         type="track"
         size={64}
         source={data.artwork}
-        className="rounded"
+        className="rounded-sm"
       />
       <View className="shrink py-2">
         <Marquee color="canvasAlt">
@@ -243,8 +243,8 @@ function TrackTextActions({ id, name }: Record<"id" | "name", string>) {
   );
 
   return (
-    <View className="gap-[3px]">
-      <View className="flex-row gap-[3px]">
+    <View className="gap-0.75">
+      <View className="flex-row gap-0.75">
         <ListButton
           Icon={QueueMusic}
           textKey="feat.queue.extra.playNext"
@@ -321,7 +321,7 @@ function ListButton(props: {
       onPress={props.onPress}
       style={props.style}
       className={cn(
-        "flex-1 flex-row justify-start gap-3 rounded-sm",
+        "flex-1 flex-row justify-start gap-3 rounded-xs",
         props.className,
       )}
     >

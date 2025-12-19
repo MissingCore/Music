@@ -55,11 +55,11 @@ type ModalActionsProp = {
 export function ModalActions(props: ModalActionsProp) {
   const { theme } = useTheme();
   return (
-    <View className="gap-[3px]">
+    <View className="gap-0.75">
       <Button
         {...props.topAction}
         className={cn(
-          "flex-1 rounded-b-sm bg-canvas",
+          "flex-1 rounded-b-xs bg-canvas",
           { "bg-onSurface": theme === "dark" },
           props.topAction.className,
         )}
@@ -75,7 +75,7 @@ export function ModalActions(props: ModalActionsProp) {
       <Button
         {...props.bottomAction}
         className={cn(
-          "flex-1 rounded-t-sm bg-canvas",
+          "flex-1 rounded-t-xs bg-canvas",
           { "bg-onSurface": theme === "dark" },
           props.bottomAction.className,
         )}

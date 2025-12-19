@@ -48,7 +48,7 @@ export function NumericSheet(props: NumericSheetProps) {
       <NumericInput
         defaultValue={`${props.value}`}
         onChangeText={(text) => setNewValue(text)}
-        className="mx-auto mb-2 w-full max-w-[50%] border-b border-foreground/60 text-center"
+        className="mx-auto mb-2 w-full max-w-1/2 border-b border-foreground/60 text-center"
       />
     </Sheet>
   );

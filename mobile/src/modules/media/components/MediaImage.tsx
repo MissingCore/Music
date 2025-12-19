@@ -1,7 +1,7 @@
 import { Image as ExpoImage } from "expo-image";
-import { cssInterop } from "nativewind";
 import { useMemo } from "react";
 import { View } from "react-native";
+import { withUniwind } from "uniwind";
 
 import { Folder } from "~/resources/icons/Folder";
 
@@ -10,8 +10,7 @@ import { cn } from "~/lib/style";
 import type { MediaType } from "~/stores/Playback/types";
 import { ReservedNames, ReservedPlaylists } from "../constants";
 
-// https://www.nativewind.dev/v4/api/css-interop
-const Image = cssInterop(ExpoImage, { className: "style" });
+const Image = withUniwind(ExpoImage);
 
 const MusicGlyph = require("~/resources/images/music-glyph.png");
 const FaceGlyph = require("~/resources/images/face-glyph.png");

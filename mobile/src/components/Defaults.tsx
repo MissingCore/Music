@@ -6,7 +6,6 @@ import { LegendList as RawLegendList } from "@legendapp/list";
 import { AnimatedLegendList as RawAnimatedLegendList } from "@legendapp/list/reanimated";
 import type { FlashListProps as RawFlashListProps } from "@shopify/flash-list";
 import { FlashList as RawFlashList } from "@shopify/flash-list";
-import { cssInterop } from "nativewind";
 import { useMemo, useRef, useState } from "react";
 import type {
   FlatListProps,
@@ -21,6 +20,7 @@ import type { FlashDragListProps } from "react-native-draglist/dist/FlashList";
 import RawFlashDragList from "react-native-draglist/dist/FlashList";
 import type { AnimatedRef } from "react-native-reanimated";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
+import { withUniwind } from "uniwind";
 
 /** Presets for scrollview-like components. */
 export const ScrollablePresets = {
@@ -79,9 +79,7 @@ type FlashListProps<T> = RawFlashListProps<T> & {
 };
 
 type FlashListSignature = <T>(props: FlashListProps<T>) => React.JSX.Element;
-const WrappedFlashList = cssInterop(RawFlashList, {
-  contentContainerClassName: "contentContainerStyle",
-}) as FlashListSignature;
+const WrappedFlashList = RawFlashList as unknown as FlashListSignature;
 
 export function FlashList<T>(props: FlashListProps<T>) {
   return (
@@ -105,9 +103,9 @@ export function useFlashListRef<T = any>() {
 //#endregion
 
 //#region Flash Drag List
-const WrappedFlashDragList = cssInterop(RawFlashDragList, {
-  contentContainerClassName: "contentContainerStyle",
-}) as typeof RawFlashDragList;
+const WrappedFlashDragList = withUniwind(
+  RawFlashDragList,
+) as typeof RawFlashDragList;
 
 export function FlashDragList<T>(props: FlashDragListProps<T>) {
   return <WrappedFlashDragList {...ScrollablePresets} {...props} />;
@@ -120,13 +118,11 @@ type LegendListProps<T> = Omit<RawLegendListProps<T>, "data"> & {
   data?: readonly T[];
 };
 
-const WrappedLegendList = cssInterop(RawLegendList, {
-  contentContainerClassName: "contentContainerStyle",
-}) as typeof RawLegendList;
+const WrappedLegendList = withUniwind(RawLegendList) as typeof RawLegendList;
 
-const WrappedAnimatedLegendList = cssInterop(RawAnimatedLegendList, {
-  contentContainerClassName: "contentContainerStyle",
-}) as typeof RawAnimatedLegendList;
+const WrappedAnimatedLegendList = withUniwind(
+  RawAnimatedLegendList,
+) as typeof RawAnimatedLegendList;
 
 export function LegendList<T>(props: LegendListProps<T>) {
   // @ts-expect-error - List internally handles recieving `undefined`.

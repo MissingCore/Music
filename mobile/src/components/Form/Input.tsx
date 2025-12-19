@@ -4,6 +4,7 @@ import { TextInput as RNTextInput } from "react-native-gesture-handler";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 
+import { FontSize } from "~/constants/Styles";
 import { OnRTL } from "~/lib/react";
 import { cn, getFont } from "~/lib/style";
 
@@ -20,17 +21,24 @@ export function NumericInput({ className, style, ...props }: InputProps) {
   return (
     <RNTextInput
       inputMode="numeric"
+      //? The order of where we define certain props is important with
+      //? Uniwind. For example, `text-align` styles don't get applied if
+      //? the `textAlign` prop is defined after `className` & `style`.
+      textAlign={OnRTL.decide("right", "left")}
+      placeholderTextColorClassName="accent-foreground/60"
       // FIXME: For some random reason, inputs have a default vertical padding
       // in React Native 0.79. Might be related to:
       //  - https://github.com/facebook/react-native/pull/48523
       //  - https://github.com/facebook/react-native/issues/50692
       className={cn(
-        "min-h-12 py-0 text-[3rem] text-foreground placeholder:text-foreground/60",
+        "min-h-12 py-0 text-foreground",
         { "opacity-25": props.editable === false },
         className,
       )}
-      style={[{ fontFamily: getFont(accentFont) }, style]}
-      textAlign={OnRTL.decide("right", "left")}
+      style={[
+        { fontFamily: getFont(accentFont), fontSize: FontSize["5xl"] },
+        style,
+      ]}
       {...props}
     />
   );
@@ -43,17 +51,18 @@ export function TextInput({ className, style, ...props }: InputProps) {
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
   return (
     <RNTextInput
+      textAlign={OnRTL.decide("right", "left")}
+      placeholderTextColorClassName="accent-foreground/60"
       // FIXME: For some random reason, inputs have a default vertical padding
       // in React Native 0.79. Might be related to:
       //  - https://github.com/facebook/react-native/pull/48523
       //  - https://github.com/facebook/react-native/issues/50692
       className={cn(
-        "min-h-12 py-0 text-base text-foreground placeholder:text-foreground/60",
+        "min-h-12 py-0 text-base text-foreground",
         { "opacity-25": props.editable === false },
         className,
       )}
       style={[{ fontFamily: getFont(primaryFont) }, style]}
-      textAlign={OnRTL.decide("right", "left")}
       {...props}
     />
   );

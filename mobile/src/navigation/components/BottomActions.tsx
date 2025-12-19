@@ -33,7 +33,7 @@ export function BottomActions() {
       <Animated.View
         layout={LinearTransition}
         pointerEvents="box-none"
-        className="absolute bottom-0 left-0 w-full gap-[3px] p-4 pt-0"
+        className="absolute bottom-0 left-0 w-full gap-0.75 p-4 pt-0"
       >
         <MiniPlayer stacked={rendered.navBar} hidden={!rendered.miniPlayer} />
         <Navbar stacked={rendered.miniPlayer} hidden={!rendered.navBar} />
@@ -55,7 +55,7 @@ function Navbar({ stacked = false, hidden = false }) {
       layout={LinearTransition}
       className={cn(
         "flex-row items-center overflow-hidden rounded-md bg-surface py-1",
-        { "rounded-t-sm": stacked, "hidden opacity-0": hidden },
+        { "rounded-t-xs": stacked, "hidden opacity-0": hidden },
       )}
     >
       <NavigationList />
@@ -71,7 +71,7 @@ function Navbar({ stacked = false, hidden = false }) {
           onPress={() => navigation.navigate("Settings")}
         />
         {hasNewUpdate && (
-          <View className="absolute right-3 top-3 size-2 rounded-full bg-red" />
+          <View className="absolute top-3 right-3 size-2 rounded-full bg-red" />
         )}
       </View>
     </Animated.View>

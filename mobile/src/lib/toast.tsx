@@ -25,7 +25,7 @@ function CustomToast({ type, message, height, width }: Toast) {
       className="items-center justify-center"
     >
       <View
-        className={cn("rounded bg-surface p-2", {
+        className={cn("rounded-sm bg-surface p-2", {
           "bg-red": type === "error",
           "border border-onSurface": type !== "error",
         })}

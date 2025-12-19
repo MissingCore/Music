@@ -1,5 +1,5 @@
 import { getLocales } from "expo-localization";
-import { Appearance } from "react-native";
+import { Uniwind } from "uniwind";
 import { useStore } from "zustand";
 
 import i18next from "~/modules/i18n";
@@ -15,7 +15,7 @@ export const preferenceStore = createPersistedSubscribedStore<PreferenceStore>(
     _hasHydrated: false,
     _init: async (state) => {
       // Set app theme on initialization.
-      if (state.theme !== "system") Appearance.setColorScheme(state.theme);
+      Uniwind.setTheme(state.theme);
       // Try to use device language if no language is specified.
       await resolveLanguageConfigs(
         state.language || getLocales()[0]?.languageTag || "en",

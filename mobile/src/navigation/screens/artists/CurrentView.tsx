@@ -116,7 +116,7 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
         contentContainerClassName="px-4"
         disableAutoLayout={I18nManager.isRTL}
       />
-      <TEm dim textKey="term.tracks" className="mb-2 mt-4" />
+      <TEm dim textKey="term.tracks" className="mt-4 mb-2" />
     </>
   );
 }
