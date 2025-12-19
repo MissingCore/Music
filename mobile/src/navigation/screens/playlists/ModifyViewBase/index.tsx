@@ -171,7 +171,7 @@ const RenderItem = memo(
             description={item.artistName ?? "—"}
             imageSource={item.artwork}
             className={cn("pr-4 group-active:bg-surface/50", {
-              "!bg-surface": info.isActive,
+              "bg-surface!": info.isActive,
             })}
           />
         </Swipeable>
