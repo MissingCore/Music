@@ -1,3 +1,9 @@
+import type {
+  LegendListProps as RawLegendListProps,
+  LegendListRef,
+} from "@legendapp/list";
+import { LegendList as RawLegendList } from "@legendapp/list";
+import { AnimatedLegendList as RawAnimatedLegendList } from "@legendapp/list/reanimated";
 import type { FlashListProps as RawFlashListProps } from "@shopify/flash-list";
 import { FlashList as RawFlashList } from "@shopify/flash-list";
 import { useMemo, useRef, useState } from "react";
@@ -12,6 +18,7 @@ import {
 } from "react-native";
 import type { FlashDragListProps } from "react-native-draglist/dist/FlashList";
 import RawFlashDragList from "react-native-draglist/dist/FlashList";
+import type { AnimatedRef } from "react-native-reanimated";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import { withUniwind } from "uniwind";
 
@@ -74,8 +81,6 @@ type FlashListProps<T> = RawFlashListProps<T> & {
 type FlashListSignature = <T>(props: FlashListProps<T>) => React.JSX.Element;
 const WrappedFlashList = RawFlashList as unknown as FlashListSignature;
 
-const RawAnimatedFlashList = Animated.createAnimatedComponent(WrappedFlashList);
-
 export function FlashList<T>(props: FlashListProps<T>) {
   return (
     <WrappedFlashList
@@ -92,29 +97,8 @@ export function FlashList<T>(props: FlashListProps<T>) {
   );
 }
 
-export function AnimatedFlashList<T>(props: FlashListProps<T>) {
-  return (
-    // @ts-expect-error - Things are compatible.
-    <RawAnimatedFlashList
-      // To prevent `TypeError: Cannot read property 'y' of undefined`
-      // crash from a list with `numColumns` and `ListEmptyComponent`.
-      key={
-        props.data?.length === 0 && props.numColumns !== undefined
-          ? `empty-list-with-${props.numColumns}-cols`
-          : `non-empty-list-with-${props.numColumns}-cols`
-      }
-      {...ScrollablePresets}
-      {...props}
-    />
-  );
-}
-
 export function useFlashListRef<T = any>() {
   return useRef<RawFlashList<T>>(null);
-}
-
-export function useAnimatedFlashListRef<T = any>() {
-  return useAnimatedRef<RawFlashList<T>>();
 }
 //#endregion
 
@@ -125,5 +109,43 @@ const WrappedFlashDragList = withUniwind(
 
 export function FlashDragList<T>(props: FlashDragListProps<T>) {
   return <WrappedFlashDragList {...ScrollablePresets} {...props} />;
+}
+//#endregion
+
+//#region LegendList
+type LegendListProps<T> = Omit<RawLegendListProps<T>, "data"> & {
+  ref?: React.Ref<LegendListRef>;
+  data?: readonly T[];
+};
+
+const WrappedLegendList = cssInterop(RawLegendList, {
+  contentContainerClassName: "contentContainerStyle",
+}) as typeof RawLegendList;
+
+const WrappedAnimatedLegendList = cssInterop(RawAnimatedLegendList, {
+  contentContainerClassName: "contentContainerStyle",
+}) as typeof RawAnimatedLegendList;
+
+export function LegendList<T>(props: LegendListProps<T>) {
+  // @ts-expect-error - List internally handles recieving `undefined`.
+  return <WrappedLegendList recycleItems {...ScrollablePresets} {...props} />;
+}
+
+export function AnimatedLegendList<T>(props: LegendListProps<T>) {
+  return (
+    // @ts-expect-error - List internally handles recieving `undefined`.
+    <WrappedAnimatedLegendList recycleItems {...ScrollablePresets} {...props} />
+  );
+}
+
+// @ts-expect-error - Things are compatible.
+export type AnimatedLegendListRef = AnimatedRef<LegendListRef>;
+
+export function useLegendListRef() {
+  return useRef<LegendListRef>(null);
+}
+
+export function useAnimatedLegendListRef() {
+  return useAnimatedRef() as unknown as AnimatedLegendListRef;
 }
 //#endregion

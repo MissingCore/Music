@@ -11,7 +11,7 @@ import { VisibilityOff } from "~/resources/icons/VisibilityOff";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { bgWait } from "~/utils/promise";
-import { FlashList } from "~/components/Defaults";
+import { LegendList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import {
@@ -54,11 +54,12 @@ function ScreenContents(props: {
   }, []);
 
   return (
-    <FlashList
+    <LegendList
       ref={handleOnUnmount}
-      estimatedItemSize={56} // 48px Height + 8px Margin Top
+      getEstimatedItemSize={(index) => (index === 0 ? 48 : 56)}
       data={dataSnapshot}
-      keyExtractor={({ id }) => id}
+      //? Removing the 1st item will lead the new 1st item to have extra top margin.
+      keyExtractor={({ id }, index) => `${id}_${index}`}
       renderItem={({ item, index }) => (
         <SearchResult
           type="track"

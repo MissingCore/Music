@@ -162,10 +162,10 @@ function SearchResultsList<TScope extends SearchCategories>(
           ) : undefined
         }
         nestedScrollEnabled={props.forSheets}
+        contentContainerClassName="pb-4"
         contentContainerStyle={{
           paddingTop: tabsWithData.length > 0 ? filterHeight : 24,
         }}
-        contentContainerClassName="pb-4"
       />
 
       <LinearGradient

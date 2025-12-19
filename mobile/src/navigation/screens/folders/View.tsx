@@ -23,7 +23,7 @@ import { StickyActionListLayout } from "../../layouts/StickyActionScroll";
 import { OnRTL, OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { addTrailingSlash } from "~/utils/string";
-import { useAnimatedFlashListRef } from "~/components/Defaults";
+import { useAnimatedLegendListRef } from "~/components/Defaults";
 import { StyledText } from "~/components/Typography/StyledText";
 import {
   Track,
@@ -45,7 +45,7 @@ export default function Folders({
 }: Props) {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
-  const listRef = useAnimatedFlashListRef();
+  const listRef = useAnimatedLegendListRef();
   const [dirSegments, _setDirSegments] = useState<string[]>([]);
 
   const fullPath = dirSegments.join("/");
