@@ -83,8 +83,6 @@ const WrappedFlashList = cssInterop(RawFlashList, {
   contentContainerClassName: "contentContainerStyle",
 }) as FlashListSignature;
 
-const RawAnimatedFlashList = Animated.createAnimatedComponent(WrappedFlashList);
-
 export function FlashList<T>(props: FlashListProps<T>) {
   return (
     <WrappedFlashList
@@ -101,29 +99,8 @@ export function FlashList<T>(props: FlashListProps<T>) {
   );
 }
 
-export function AnimatedFlashList<T>(props: FlashListProps<T>) {
-  return (
-    // @ts-expect-error - Things are compatible.
-    <RawAnimatedFlashList
-      // To prevent `TypeError: Cannot read property 'y' of undefined`
-      // crash from a list with `numColumns` and `ListEmptyComponent`.
-      key={
-        props.data?.length === 0 && props.numColumns !== undefined
-          ? `empty-list-with-${props.numColumns}-cols`
-          : `non-empty-list-with-${props.numColumns}-cols`
-      }
-      {...ScrollablePresets}
-      {...props}
-    />
-  );
-}
-
 export function useFlashListRef<T = any>() {
   return useRef<RawFlashList<T>>(null);
-}
-
-export function useAnimatedFlashListRef<T = any>() {
-  return useAnimatedRef<RawFlashList<T>>();
 }
 //#endregion
 
