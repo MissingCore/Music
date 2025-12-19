@@ -13,7 +13,7 @@ import { CurrentListLayout } from "../../../layouts/CurrentList";
 import { ExportM3USheet } from "./ExportM3USheet";
 
 import { mutateGuard } from "~/lib/react-query";
-import { FlashList } from "~/components/Defaults";
+import { LegendList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import type { MenuAction } from "~/components/Menu";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
@@ -89,7 +89,7 @@ export default function Playlist({
         imageSource={data.imageSource}
         mediaSource={trackSource}
       >
-        <FlashList
+        <LegendList
           {...presets}
           contentContainerClassName="px-4 pt-4"
           contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}

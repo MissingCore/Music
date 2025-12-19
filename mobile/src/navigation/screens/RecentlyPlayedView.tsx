@@ -15,7 +15,7 @@ import { getMediaLinkContext } from "../utils/router";
 
 import { OnRTL } from "~/lib/react";
 import { queryClient } from "~/lib/react-query";
-import { FlashList } from "~/components/Defaults";
+import { FlashList, LegendList } from "~/components/Defaults";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
@@ -63,8 +63,8 @@ export default function RecentlyPlayed() {
   }
 
   return (
-    <FlashList
-      estimatedItemSize={56} // 48px Height + 8px Margin Top
+    <LegendList
+      getEstimatedItemSize={(index) => (index === 0 ? 48 : 56)}
       data={recentlyPlayedTracks.data}
       keyExtractor={({ id }) => id}
       renderItem={({ item, index }) => (
@@ -91,8 +91,8 @@ function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
     gutters: 32,
     minWidth: 100,
   });
-  if (props.data?.length === 0) return null;
 
+  if (props.data?.length === 0) return null;
   return (
     <FlashList
       estimatedItemSize={width + 12} // Column width + gap from padding left
