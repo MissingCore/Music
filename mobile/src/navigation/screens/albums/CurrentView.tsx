@@ -1,16 +1,17 @@
 import type { StaticScreenProps } from "@react-navigation/native";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { Favorite } from "~/resources/icons/Favorite";
 import { useAlbumForScreen, useFavoriteAlbum } from "~/queries/album";
+import { usePreferenceStore } from "~/stores/Preference/store";
 import { useBottomActionsInset } from "../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../layouts/CurrentList";
 
 import { mutateGuard } from "~/lib/react-query";
 import { isNumber } from "~/utils/validation";
-import { FlashList } from "~/components/Defaults";
+import { LegendList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button";
 import { Em, StyledText } from "~/components/Typography/StyledText";
 import {
@@ -35,6 +36,7 @@ export default function Album({
   const bottomInset = useBottomActionsInset();
   const { isPending, error, data } = useAlbumForScreen(albumId);
   const favoriteAlbum = useFavoriteAlbum(albumId);
+  const primaryFont = usePreferenceStore((s) => s.primaryFont);
 
   const trackSource = { type: "album", id: albumId } as const;
   const listData = useTrackListPlayingIndication(trackSource, data?.tracks);
@@ -54,6 +56,14 @@ export default function Album({
 
     return sectionListTracks;
   }, [listData]);
+
+  const guessItemSize = useCallback(
+    (index: number, item: any) => {
+      if (!isNumber(item)) return index === 0 ? 48 : 56;
+      return (primaryFont === "Inter" ? 15 : 14) + (index === 0 ? 0 : 8);
+    },
+    [primaryFont],
+  );
 
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
 
@@ -89,8 +99,8 @@ export default function Album({
         imageSource={data.imageSource}
         mediaSource={trackSource}
       >
-        <FlashList
-          estimatedItemSize={56} // 48px Height + 8px Margin Top
+        <LegendList
+          getEstimatedItemSize={guessItemSize}
           data={formattedData}
           keyExtractor={(item) => (isNumber(item) ? `${item}` : item.id)}
           getItemType={(item) => (isNumber(item) ? "label" : "row")}
