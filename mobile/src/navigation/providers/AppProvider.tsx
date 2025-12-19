@@ -11,12 +11,12 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 
-import { SystemTheme, ThemeProvider } from "./ThemeProvider";
+import { ThemeProvider } from "./ThemeProvider";
 
 import { queryClient } from "~/lib/react-query";
 
 /** All providers used by the app. */
-export function AppProvider(props: ChildrenWrapperProps) {
+export function AppProvider(props: { children: React.ReactNode }) {
   return (
     <SafeAreaProvider>
       <KeyboardProvider>
@@ -36,22 +36,8 @@ export function AppProvider(props: ChildrenWrapperProps) {
 }
 
 //#region Edge-To-Edge
-type ChildrenWrapperProps = {
-  children: React.ReactNode;
-  systemTheme?: boolean;
-};
-
-function ChildrenWrapper(props: ChildrenWrapperProps) {
+function ChildrenWrapper(props: { children: React.ReactNode }) {
   const { bottom } = useSafeAreaInsets();
-
-  if (props.systemTheme) {
-    return (
-      <SystemTheme style={{ paddingBottom: bottom }}>
-        <View className="flex-1" {...props} />
-      </SystemTheme>
-    );
-  }
-
   return (
     <View style={{ paddingBottom: bottom }} className="flex-1" {...props} />
   );

@@ -3,13 +3,13 @@ import { useTranslation } from "react-i18next";
 import { Dimensions } from "react-native";
 import BootSplash from "react-native-bootsplash";
 import Animated, {
-  FadeOut,
   LinearTransition,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
   withDelay,
 } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useOnboardingStore } from "~/modules/scanning/services/Onboarding";
 
@@ -29,6 +29,7 @@ export function Onboarding() {
 
     animate: () => {},
   });
+  const { bottom } = useSafeAreaInsets();
   const onboardPhase = useOnboardingStore((s) => s.phase);
   const [foundPhase, setFoundPhase] = useState(false);
   const infoOpacity = useSharedValue(0);
@@ -44,13 +45,16 @@ export function Onboarding() {
   const opacity = useAnimatedStyle(() => ({ opacity: infoOpacity.value }));
 
   return (
-    <SafeContainer animated {...container} exiting={FadeOut.duration(500)}>
-      <Animated.Image {...logo} style={[logo.style]} />
+    <SafeContainer animated {...container}>
+      <Animated.Image {...logo} />
 
       <Animated.View
         layout={LinearTransition}
-        style={[{ width: Dimensions.get("window").width - 32 }, opacity]}
-        className="absolute bottom-4 left-4 gap-1 rounded-md bg-surface p-4"
+        style={[
+          { width: Dimensions.get("window").width - 32, bottom: bottom + 16 },
+          opacity,
+        ]}
+        className="absolute left-4 gap-1 rounded-md bg-surface p-4"
       >
         <OnboardingPhase />
       </Animated.View>
