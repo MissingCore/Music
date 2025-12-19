@@ -72,7 +72,7 @@ type FlashListProps<T> = RawFlashListProps<T> & {
 };
 
 type FlashListSignature = <T>(props: FlashListProps<T>) => React.JSX.Element;
-const WrappedFlashList = withUniwind(RawFlashList) as FlashListSignature;
+const WrappedFlashList = RawFlashList as unknown as FlashListSignature;
 
 const RawAnimatedFlashList = Animated.createAnimatedComponent(WrappedFlashList);
 
