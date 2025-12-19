@@ -112,7 +112,7 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
         type="track"
         size={64}
         source={data.artwork}
-        className="rounded"
+        className="rounded-sm"
       />
       <View className="shrink py-2">
         <Marquee color="canvasAlt">
@@ -321,7 +321,7 @@ function ListButton(props: {
       onPress={props.onPress}
       style={props.style}
       className={cn(
-        "flex-1 flex-row justify-start gap-3 rounded-sm",
+        "flex-1 flex-row justify-start gap-3 rounded-xs",
         props.className,
       )}
     >

@@ -161,9 +161,9 @@ const RenderItem = memo(
           disabled={info.isDragging}
           onSwipeLeft={() => removeTrack(item.id)}
           RightIcon={<Delete color={Colors.neutral100} />}
-          rightIconContainerClassName="rounded-sm bg-red"
+          rightIconContainerClassName="rounded-xs bg-red"
           wrapperClassName="mx-4"
-          className="overflow-hidden rounded-sm bg-canvas"
+          className="overflow-hidden rounded-xs bg-canvas"
         >
           <SearchResult
             type="track"

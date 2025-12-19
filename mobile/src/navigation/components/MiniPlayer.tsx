@@ -44,7 +44,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
     <Animated.View
       layout={LinearTransition}
       className={cn("overflow-hidden rounded-md bg-surface", {
-        "rounded-b-sm": stacked,
+        "rounded-b-xs": stacked,
       })}
     >
       <Pressable
@@ -55,7 +55,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
           type="track"
           size={48}
           source={track.artwork}
-          className="mb-1.5 mt-2 rounded-sm"
+          className="mb-1.5 mt-2 rounded-xs"
         />
 
         <TextWrapper

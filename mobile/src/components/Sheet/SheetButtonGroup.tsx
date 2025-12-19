@@ -18,7 +18,7 @@ export function SheetButtonGroup(props: {
       <Button
         {...props.leftButton}
         className={cn(
-          "min-h-14 flex-1 rounded-r-sm",
+          "min-h-14 flex-1 rounded-r-xs",
           props.leftButton.className,
         )}
       >
@@ -31,7 +31,7 @@ export function SheetButtonGroup(props: {
       <Button
         {...props.rightButton}
         className={cn(
-          "min-h-14 flex-1 rounded-l-sm",
+          "min-h-14 flex-1 rounded-l-xs",
           props.rightButton.className,
         )}
       >

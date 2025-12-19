@@ -94,7 +94,7 @@ export function Ripple({
   return (
     <View
       style={wrapperStyle}
-      className={cn("overflow-hidden rounded-sm", wrapperClassName)}
+      className={cn("overflow-hidden rounded-xs", wrapperClassName)}
     >
       <Pressable
         android_ripple={{ color: surface }}

@@ -68,7 +68,7 @@ function StorageWidget() {
   };
 
   return (
-    <Card className="gap-4 rounded-b-sm">
+    <Card className="gap-4 rounded-b-xs">
       <ProgressBar
         entries={[
           { color: Colors.red, value: data?.images ?? 0 },
@@ -147,7 +147,7 @@ function DBSummaryWidget() {
   };
 
   return (
-    <Card className="gap-4 rounded-t-sm">
+    <Card className="gap-4 rounded-t-xs">
       <Legend>
         <LegendItem nameKey="term.albums" value={getValue("albums")} />
         <LegendItem nameKey="term.artists" value={getValue("artists")} />

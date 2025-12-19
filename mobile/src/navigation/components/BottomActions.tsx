@@ -55,7 +55,7 @@ function Navbar({ stacked = false, hidden = false }) {
       layout={LinearTransition}
       className={cn(
         "flex-row items-center overflow-hidden rounded-md bg-surface py-1",
-        { "rounded-t-sm": stacked, "hidden opacity-0": hidden },
+        { "rounded-t-xs": stacked, "hidden opacity-0": hidden },
       )}
     >
       <NavigationList />

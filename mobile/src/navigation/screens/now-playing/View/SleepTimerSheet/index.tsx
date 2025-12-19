@@ -74,7 +74,7 @@ export const SleepTimerSheet = deferInitialRender(
         >
           <View
             className={cn(
-              "size-6 items-center justify-center rounded-sm border border-onSurface",
+              "size-6 items-center justify-center rounded-xs border border-onSurface",
               {
                 "border-red bg-red": extendTimer,
                 "border-red/25": hasTimer && extendTimer,

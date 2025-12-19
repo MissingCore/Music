@@ -89,8 +89,8 @@ export function ListItem(
       className={cn(
         "min-h-12 rounded-md bg-surface p-4",
         {
-          "rounded-t-sm": !props.first,
-          "rounded-b-sm": !props.last,
+          "rounded-t-xs": !props.first,
+          "rounded-b-xs": !props.last,
           "active:opacity-75 disabled:opacity-25": asButton,
           "flex-row items-center gap-4": asSwitch || withIcon,
         },
