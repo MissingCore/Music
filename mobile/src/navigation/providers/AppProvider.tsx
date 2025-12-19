@@ -3,6 +3,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { platformApiLevel } from "expo-device";
 import { useMemo } from "react";
 import { View } from "react-native";
+import { SystemBars as DeviceSystemBars } from "react-native-edge-to-edge";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { Provider as PaperProvider } from "react-native-paper";
@@ -12,49 +13,48 @@ import {
 } from "react-native-safe-area-context";
 
 import "../../global.css";
-import { SystemTheme, ThemeProvider } from "./ThemeProvider";
+import { useCurrentTheme } from "~/hooks/useTheme";
 
 import { queryClient } from "~/lib/react-query";
 
 /** All providers used by the app. */
-export function AppProvider(props: ChildrenWrapperProps) {
+export function AppProvider(props: { children: React.ReactNode }) {
   return (
     <SafeAreaProvider>
       <KeyboardProvider>
-        <ThemeProvider>
-          <PaperProvider>
-            <GestureHandlerRootView>
-              <QueryClientProvider client={queryClient}>
-                <ChildrenWrapper {...props} />
-                <ToastProvider />
-              </QueryClientProvider>
-            </GestureHandlerRootView>
-          </PaperProvider>
-        </ThemeProvider>
+        <PaperProvider>
+          <GestureHandlerRootView>
+            <QueryClientProvider client={queryClient}>
+              <SystemBars />
+              <ChildrenWrapper {...props} />
+              <ToastProvider />
+            </QueryClientProvider>
+          </GestureHandlerRootView>
+        </PaperProvider>
       </KeyboardProvider>
     </SafeAreaProvider>
   );
 }
 
 //#region Edge-To-Edge
-type ChildrenWrapperProps = {
-  children: React.ReactNode;
-  systemTheme?: boolean;
-};
-
-function ChildrenWrapper(props: ChildrenWrapperProps) {
-  const { bottom } = useSafeAreaInsets();
-
-  if (props.systemTheme) {
-    return (
-      <SystemTheme style={{ paddingBottom: bottom }}>
-        <View className="flex-1" {...props} />
-      </SystemTheme>
-    );
-  }
-
+function SystemBars() {
+  const currentTheme = useCurrentTheme();
+  const iconColor = currentTheme === "light" ? "dark" : "light";
   return (
-    <View style={{ paddingBottom: bottom }} className="flex-1" {...props} />
+    <DeviceSystemBars
+      style={{ statusBar: iconColor, navigationBar: iconColor }}
+    />
+  );
+}
+
+function ChildrenWrapper(props: { children: React.ReactNode }) {
+  const { bottom } = useSafeAreaInsets();
+  return (
+    <View
+      style={{ paddingBottom: bottom }}
+      className="bg-canvas flex-1"
+      {...props}
+    />
   );
 }
 //#endregion

@@ -38,7 +38,7 @@ export default function App() {
     );
   } else if (!isLoaded) {
     return (
-      <AppProvider systemTheme>
+      <AppProvider>
         <Onboarding />
       </AppProvider>
     );

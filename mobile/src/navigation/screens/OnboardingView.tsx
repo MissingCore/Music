@@ -12,6 +12,7 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { useOnboardingStore } from "~/modules/scanning/services/Onboarding";
+import { SystemTheme } from "~/hooks/useTheme";
 
 import { SafeContainer } from "~/components/Containment/SafeContainer";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
@@ -49,8 +50,14 @@ export function Onboarding() {
 
       <Animated.View
         layout={LinearTransition}
-        style={[{ width: Dimensions.get("window").width - 32 }, opacity]}
-        className="absolute bottom-4 left-4 gap-1 rounded-md bg-surface p-4"
+        style={[
+          {
+            width: Dimensions.get("window").width - 32,
+            backgroundColor: SystemTheme.surface,
+          },
+          opacity,
+        ]}
+        className="absolute bottom-4 left-4 gap-1 rounded-md p-4"
       >
         <OnboardingPhase />
       </Animated.View>
@@ -67,15 +74,25 @@ function OnboardingPhase() {
   } else if (store.phase === "preprocess") {
     return (
       <>
-        <TStyledText textKey="feat.onboardPreprocess.title" />
-        <TStyledText dim textKey="feat.onboardPreprocess.brief" />
+        <TStyledText
+          textKey="feat.onboardPreprocess.title"
+          style={{ color: SystemTheme.foreground }}
+        />
+        <TStyledText
+          dim
+          textKey="feat.onboardPreprocess.brief"
+          style={{ color: `${SystemTheme.foreground}99` }} // foreground/60
+        />
       </>
     );
   } else if (store.phase === "tracks") {
     return (
       <>
-        <TStyledText textKey="feat.onboardTracks.title" />
-        <StyledText dim>
+        <TStyledText
+          textKey="feat.onboardTracks.title"
+          style={{ color: SystemTheme.foreground }}
+        />
+        <StyledText dim style={{ color: `${SystemTheme.foreground}99` }}>
           {`${t("feat.onboardTracks.extra.prevSaved", { amount: store.prevSaved })}\n\n`}
           {`${t("feat.onboardTracks.extra.saved", { amount: store.staged, total: store.unstaged })}\n`}
           {`${t("feat.onboardTracks.extra.errors", { amount: store.saveErrors })}`}
@@ -86,8 +103,11 @@ function OnboardingPhase() {
 
   return (
     <>
-      <TStyledText textKey="feat.onboardImages.title" />
-      <StyledText dim>
+      <TStyledText
+        textKey="feat.onboardImages.title"
+        style={{ color: SystemTheme.foreground }}
+      />
+      <StyledText dim style={{ color: `${SystemTheme.foreground}99` }}>
         {`${t("feat.onboardImages.extra.checked", { amount: store.checked, total: store.unchecked })}\n`}
         {`${t("feat.onboardImages.extra.found", { amount: store.found })}`}
       </StyledText>

@@ -1,5 +1,5 @@
-import { useColorScheme } from "nativewind";
 import { Text } from "react-native";
+import { Uniwind } from "uniwind";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
@@ -111,7 +111,6 @@ function FontSheet<T extends AccentFont>(props: {
 //#region Theme
 /** Enables changing the theme of the app. */
 function ThemeSheet(props: { ref: TrueSheetRef }) {
-  const { setColorScheme } = useColorScheme();
   const selectedTheme = usePreferenceStore((s) => s.theme);
 
   return (
@@ -124,7 +123,7 @@ function ThemeSheet(props: { ref: TrueSheetRef }) {
           <Radio
             selected={selectedTheme === theme}
             onSelect={() => {
-              setColorScheme(theme);
+              Uniwind.setTheme(theme);
               PreferenceSetters.setTheme(theme);
             }}
           >
