@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import LicensesList from "~/resources/licenses.json";
 
 import { useListPresets } from "~/components/Containment/List";
-import { FlashList } from "~/components/Defaults";
+import { LegendList } from "~/components/Defaults";
 
 export default function ThirdParty() {
   const navigation = useNavigation();
@@ -20,7 +20,7 @@ export default function ThirdParty() {
   });
 
   return (
-    <FlashList
+    <LegendList
       keyExtractor={([id]) => id}
       contentContainerClassName="p-4"
       {...presets}

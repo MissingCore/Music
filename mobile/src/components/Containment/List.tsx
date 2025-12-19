@@ -32,7 +32,7 @@ export function useListPresets<TData extends Record<string, any>>({
 }) {
   return useMemo(
     () => ({
-      estimatedItemSize: 70,
+      getEstimatedItemSize: (index: number) => (index === 0 ? 67 : 70),
       data,
       renderItem: ({ item, index }: { item: TData; index: number }) => (
         <ListItem

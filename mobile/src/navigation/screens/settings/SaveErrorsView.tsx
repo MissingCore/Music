@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { db } from "~/db";
 
 import { useListPresets } from "~/components/Containment/List";
-import { FlashList } from "~/components/Defaults";
+import { LegendList } from "~/components/Defaults";
 import { ContentPlaceholder } from "../../components/Placeholder";
 
 export default function SaveErrors() {
@@ -17,7 +17,7 @@ export default function SaveErrors() {
   });
 
   return (
-    <FlashList
+    <LegendList
       keyExtractor={({ id }) => id}
       ListEmptyComponent={<ContentPlaceholder errMsgKey="err.msg.noErrors" />}
       contentContainerClassName="p-4"
