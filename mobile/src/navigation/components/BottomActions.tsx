@@ -71,7 +71,7 @@ function Navbar({ stacked = false, hidden = false }) {
           onPress={() => navigation.navigate("Settings")}
         />
         {hasNewUpdate && (
-          <View className="absolute right-3 top-3 size-2 rounded-full bg-red" />
+          <View className="absolute top-3 right-3 size-2 rounded-full bg-red" />
         )}
       </View>
     </Animated.View>

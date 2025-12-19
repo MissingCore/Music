@@ -52,7 +52,7 @@ function ChildrenWrapper(props: { children: React.ReactNode }) {
   return (
     <View
       style={{ paddingBottom: bottom }}
-      className="bg-canvas flex-1"
+      className="flex-1 bg-canvas"
       {...props}
     />
   );

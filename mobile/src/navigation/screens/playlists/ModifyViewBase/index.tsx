@@ -211,7 +211,7 @@ function ListHeaderComponent(props: { showSheet: VoidFunction }) {
           <TStyledText textKey="form.validation.unique" className="text-xs" />
         </View>
       </View>
-      <View className="mb-2 ml-4 mr-1 mt-6 shrink grow flex-row items-center justify-between">
+      <View className="mt-6 mr-1 mb-2 ml-4 shrink grow flex-row items-center justify-between">
         <TStyledText textKey="term.tracks" />
         <IconButton
           Icon={Add}

@@ -54,7 +54,7 @@ export function SegmentedPicker({
         >
           <Animated.View
             style={selectedIndicatorStyle}
-            className="absolute left-0 top-0 h-full rounded-full bg-foreground"
+            className="absolute top-0 left-0 h-full rounded-full bg-foreground"
           />
           {options.map(({ Icon }, idx) => (
             <Button
