@@ -113,7 +113,9 @@ function ArtistAlbums({ albums }: { albums: ArtistAlbum[] | null }) {
           />
         )}
         className="-mx-4"
-        contentContainerClassName="px-4"
+        // FIXME: For some weird reason, only 50% of the horizontal padding
+        // gets applied on a horizontal FlashList.
+        contentContainerClassName="px-8"
         disableAutoLayout={I18nManager.isRTL}
       />
       <TEm dim textKey="term.tracks" className="mt-4 mb-2" />
