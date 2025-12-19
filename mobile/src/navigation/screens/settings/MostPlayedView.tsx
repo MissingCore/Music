@@ -34,7 +34,7 @@ export default function MostPlayed() {
           errMsgKey="err.msg.noResults"
         />
       }
-      contentContainerClassName="gap-[3px] p-4"
+      contentContainerClassName="gap-0.75 p-4"
     />
   );
 }
