@@ -243,8 +243,8 @@ function TrackTextActions({ id, name }: Record<"id" | "name", string>) {
   );
 
   return (
-    <View className="gap-[3px]">
-      <View className="flex-row gap-[3px]">
+    <View className="gap-0.75">
+      <View className="flex-row gap-0.75">
         <ListButton
           Icon={QueueMusic}
           textKey="feat.queue.extra.playNext"

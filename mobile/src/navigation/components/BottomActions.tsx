@@ -33,7 +33,7 @@ export function BottomActions() {
       <Animated.View
         layout={LinearTransition}
         pointerEvents="box-none"
-        className="absolute bottom-0 left-0 w-full gap-[3px] p-4 pt-0"
+        className="absolute bottom-0 left-0 w-full gap-0.75 p-4 pt-0"
       >
         <MiniPlayer stacked={rendered.navBar} hidden={!rendered.miniPlayer} />
         <Navbar stacked={rendered.miniPlayer} hidden={!rendered.navBar} />

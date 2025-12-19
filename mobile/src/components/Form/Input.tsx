@@ -4,6 +4,7 @@ import { TextInput as RNTextInput } from "react-native-gesture-handler";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
 
+import { FontSize } from "~/constants/Styles";
 import { OnRTL } from "~/lib/react";
 import { cn, getFont } from "~/lib/style";
 
@@ -25,11 +26,14 @@ export function NumericInput({ className, style, ...props }: InputProps) {
       //  - https://github.com/facebook/react-native/pull/48523
       //  - https://github.com/facebook/react-native/issues/50692
       className={cn(
-        "min-h-12 py-0 text-[3rem] text-foreground placeholder:text-foreground/60",
+        "min-h-12 py-0 text-foreground placeholder:text-foreground/60",
         { "opacity-25": props.editable === false },
         className,
       )}
-      style={[{ fontFamily: getFont(accentFont) }, style]}
+      style={[
+        { fontFamily: getFont(accentFont), fontSize: FontSize["5xl"] },
+        style,
+      ]}
       textAlign={OnRTL.decide("right", "left")}
       {...props}
     />

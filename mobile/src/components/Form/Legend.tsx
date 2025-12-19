@@ -27,7 +27,7 @@ export function LegendItem(props: {
         {props.color ? (
           <View
             style={{ backgroundColor: props.color }}
-            className="size-[9px] rounded-full"
+            className="size-2.25 rounded-full"
           />
         ) : null}
         <TStyledText textKey={props.nameKey} className="shrink text-xs" />

@@ -55,7 +55,7 @@ type ModalActionsProp = {
 export function ModalActions(props: ModalActionsProp) {
   const { theme } = useTheme();
   return (
-    <View className="gap-[3px]">
+    <View className="gap-0.75">
       <Button
         {...props.topAction}
         className={cn(
