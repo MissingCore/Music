@@ -113,6 +113,7 @@ function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
         />
       )}
       className="-mx-4"
+      // FIXME: For some weird reason, bottom padding isn't being applied.
       contentContainerClassName="px-4 pb-6"
       disableAutoLayout={I18nManager.isRTL}
     />

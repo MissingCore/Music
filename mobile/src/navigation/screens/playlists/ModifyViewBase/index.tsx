@@ -138,6 +138,7 @@ function PageContent({ bottomOffset }: { bottomOffset: number }) {
           ListEmptyComponent={
             <ContentPlaceholder errMsgKey="err.msg.noTracks" />
           }
+          // FIXME: For some weird reason, bottom padding isn't being applied.
           contentContainerStyle={{ paddingBottom: bottomOffset }}
           contentContainerClassName="pt-4" // Applies to the internal `<FlashList />`.
         />
