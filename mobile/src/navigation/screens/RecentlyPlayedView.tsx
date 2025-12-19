@@ -113,9 +113,7 @@ function RecentlyPlayedLists(props: { data?: MediaCardContent[] }) {
         />
       )}
       className="-mx-4"
-      // FIXME: For some weird reason, only 50% of the horizontal padding
-      // gets applied on a horizontal FlashList.
-      contentContainerClassName="px-8 pb-6"
+      contentContainerClassName="px-4 pb-6"
       disableAutoLayout={I18nManager.isRTL}
     />
   );
