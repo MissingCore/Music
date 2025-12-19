@@ -118,13 +118,11 @@ type LegendListProps<T> = Omit<RawLegendListProps<T>, "data"> & {
   data?: readonly T[];
 };
 
-const WrappedLegendList = cssInterop(RawLegendList, {
-  contentContainerClassName: "contentContainerStyle",
-}) as typeof RawLegendList;
+const WrappedLegendList = withUniwind(RawLegendList) as typeof RawLegendList;
 
-const WrappedAnimatedLegendList = cssInterop(RawAnimatedLegendList, {
-  contentContainerClassName: "contentContainerStyle",
-}) as typeof RawAnimatedLegendList;
+const WrappedAnimatedLegendList = withUniwind(
+  RawAnimatedLegendList,
+) as typeof RawAnimatedLegendList;
 
 export function LegendList<T>(props: LegendListProps<T>) {
   // @ts-expect-error - List internally handles recieving `undefined`.
