@@ -11,7 +11,8 @@ import { sessionStore } from "~/services/SessionStore";
 import { StandardScrollLayout } from "../../layouts/StandardScroll";
 
 import { ToastOptions } from "~/lib/toast";
-import { List, ListItem } from "~/components/Containment/List";
+import { SegmentedList } from "~/components/DS-2/List/Segmented";
+import { Switch } from "~/components/Form/Switch";
 
 export default function ExperimentalSettings() {
   const { t } = useTranslation();
@@ -27,53 +28,47 @@ export default function ExperimentalSettings() {
 
   return (
     <StandardScrollLayout>
-      <List>
-        <ListItem
-          titleKey="feat.continuePlaybackOnDismiss.title"
-          description={t("feat.continuePlaybackOnDismiss.description")}
+      <SegmentedList>
+        <SegmentedList.Item
+          labelTextKey="feat.continuePlaybackOnDismiss.title"
+          supportingText={t("feat.continuePlaybackOnDismiss.description")}
           onPress={PreferenceTogglers.toggleContinuePlaybackOnDismiss}
-          switchState={continuePlaybackOnDismiss}
-          first
+          RightElement={<Switch enabled={continuePlaybackOnDismiss} />}
         />
-        <ListItem
-          titleKey="feat.ignoreInterrupt.title"
-          description={t("feat.ignoreInterrupt.brief")}
+        <SegmentedList.Item
+          labelTextKey="feat.ignoreInterrupt.title"
+          supportingText={t("feat.ignoreInterrupt.brief")}
           onPress={PreferenceTogglers.toggleIgnoreInterrupt}
-          switchState={ignoreInterrupt}
+          RightElement={<Switch enabled={ignoreInterrupt} />}
         />
-        <ListItem
-          title="Smooth Playback Transition"
-          description="Restores smooth playback transitions seen pre-v2.7.0. This will eventually become stable. You should disable this if you encounter issues."
+        <SegmentedList.Item
+          labelText="Smooth Playback Transition"
+          supportingText="Restores smooth playback transitions seen pre-v2.7.0. This will eventually become stable. You should disable this if you encounter issues."
           onPress={PreferenceTogglers.toggleSmoothPlaybackTransition}
-          switchState={smoothPlaybackTransition}
-          last
+          RightElement={<Switch enabled={smoothPlaybackTransition} />}
         />
-      </List>
+      </SegmentedList>
 
-      <ListItem
-        titleKey="feat.queue.extra.queueAwareNext"
-        description={t("feat.queue.extra.queueAwareNextBrief")}
+      <SegmentedList.Item
+        labelTextKey="feat.queue.extra.queueAwareNext"
+        supportingText={t("feat.queue.extra.queueAwareNextBrief")}
         onPress={PreferenceTogglers.toggleQueueAwareNext}
-        switchState={queueAwareNext}
-        first
-        last
+        RightElement={<Switch enabled={queueAwareNext} />}
       />
 
-      <List>
-        <ListItem
-          titleKey="feat.waveformSlider.title"
-          description={t("feat.waveformSlider.brief")}
+      <SegmentedList>
+        <SegmentedList.Item
+          labelTextKey="feat.waveformSlider.title"
+          supportingText={t("feat.waveformSlider.brief")}
           onPress={PreferenceTogglers.toggleWaveformSlider}
-          switchState={waveformSlider}
-          first
+          RightElement={<Switch enabled={waveformSlider} />}
         />
-        <ListItem
-          titleKey="feat.waveformSlider.extra.purgeCache"
-          description={t("feat.waveformSlider.extra.purgeCacheBrief")}
+        <SegmentedList.Item
+          labelTextKey="feat.waveformSlider.extra.purgeCache"
+          supportingText={t("feat.waveformSlider.extra.purgeCacheBrief")}
           onPress={purgeWaveformCache}
-          last
         />
-      </List>
+      </SegmentedList>
     </StandardScrollLayout>
   );
 }

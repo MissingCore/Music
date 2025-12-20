@@ -14,8 +14,7 @@ import { Colors } from "~/constants/Styles";
 import { ImageDirectory } from "~/lib/file-system";
 import type { ExtractQueryData } from "~/lib/react-query";
 import { abbreviateSize, formatSeconds } from "~/utils/number";
-import { Card } from "~/components/Containment/Card";
-import { List, ListItem } from "~/components/Containment/List";
+import { SegmentedList } from "~/components/DS-2/List/Segmented";
 import { Legend, LegendItem } from "~/components/Form/Legend";
 import { ProgressBar } from "~/components/Form/ProgressBar";
 
@@ -25,33 +24,29 @@ export default function Insights() {
 
   return (
     <StandardScrollLayout>
-      <List>
+      <SegmentedList>
         <StorageWidget />
         <DBSummaryWidget />
-      </List>
+      </SegmentedList>
 
-      <ListItem
-        titleKey="feat.mostPlayed.title"
-        description={t("feat.mostPlayed.brief")}
+      <SegmentedList.Item
+        labelTextKey="feat.mostPlayed.title"
+        supportingText={t("feat.mostPlayed.brief")}
         onPress={() => navigation.navigate("MostPlayed")}
-        first
-        last
       />
 
-      <List>
-        <ListItem
-          titleKey="feat.hiddenTracks.title"
-          description={t("feat.hiddenTracks.brief")}
+      <SegmentedList>
+        <SegmentedList.Item
+          labelTextKey="feat.hiddenTracks.title"
+          supportingText={t("feat.hiddenTracks.brief")}
           onPress={() => navigation.navigate("HiddenTracks")}
-          first
         />
-        <ListItem
-          titleKey="feat.saveErrors.title"
-          description={t("feat.saveErrors.brief")}
+        <SegmentedList.Item
+          labelTextKey="feat.saveErrors.title"
+          supportingText={t("feat.saveErrors.brief")}
           onPress={() => navigation.navigate("SaveErrors")}
-          last
         />
-      </List>
+      </SegmentedList>
     </StandardScrollLayout>
   );
 }
@@ -68,7 +63,7 @@ function StorageWidget() {
   };
 
   return (
-    <Card className="gap-4 rounded-b-xs">
+    <SegmentedList.ItemGroup className="gap-4 p-4">
       <ProgressBar
         entries={[
           { color: Colors.red, value: data?.images ?? 0 },
@@ -104,7 +99,7 @@ function StorageWidget() {
         nameKey="feat.insights.extra.total"
         value={getValue("total")}
       />
-    </Card>
+    </SegmentedList.ItemGroup>
   );
 }
 
@@ -147,7 +142,7 @@ function DBSummaryWidget() {
   };
 
   return (
-    <Card className="gap-4 rounded-t-xs">
+    <SegmentedList.ItemGroup className="gap-4 p-4">
       <Legend>
         <LegendItem nameKey="term.albums" value={getValue("albums")} />
         <LegendItem nameKey="term.artists" value={getValue("artists")} />
@@ -172,7 +167,7 @@ function DBSummaryWidget() {
         nameKey="feat.insights.extra.totalDuration"
         value={getValue("totalDuration")}
       />
-    </Card>
+    </SegmentedList.ItemGroup>
   );
 }
 

@@ -67,14 +67,18 @@ function SegmentedListItem(props: ListItemProps) {
 //#endregion
 
 //#region ItemGroup
-function SegmentedListItemGroup(props: { children: React.ReactNode }) {
+function SegmentedListItemGroup(props: {
+  className?: string;
+  children: React.ReactNode;
+}) {
   const { first, last } = use(ListItemPositionContext);
   return (
     <View
-      className={cn("overflow-hidden rounded-md bg-surface", {
-        "rounded-t-xs": !first,
-        "rounded-b-xs": !last,
-      })}
+      className={cn(
+        "overflow-hidden rounded-md bg-surface",
+        { "rounded-t-xs": !first, "rounded-b-xs": !last },
+        props.className,
+      )}
     >
       {props.children}
     </View>
