@@ -16,7 +16,7 @@ const ListItemPositionContext = createContext(DEFAULT_STATE);
  * Automatically applies styling to the first & last `<SegmentedListItem />`
  * or `<SegmentedListItemGroup />`.
  */
-export function SegmentedList(props: { children: React.ReactNode }) {
+function SegmentedList(props: { children: React.ReactNode }) {
   const data: React.ReactNode[] = Array.isArray(props.children)
     ? props.children
     : React.Children.toArray(props.children);
@@ -45,9 +45,7 @@ export function SegmentedList(props: { children: React.ReactNode }) {
 //#endregion
 
 //#region Item
-export const SegmentedListItem = memo(function SegmentedListItem(
-  props: ListItemProps,
-) {
+function SegmentedListItem(props: ListItemProps) {
   const { first, last } = use(ListItemPositionContext);
   return (
     <ListItem
@@ -64,27 +62,32 @@ export const SegmentedListItem = memo(function SegmentedListItem(
       _overflow
     />
   );
-});
+}
 //#endregion
 
 //#region ItemGroup
+function SegmentedListItemGroup(props: { children: React.ReactNode }) {
+  const { first, last } = use(ListItemPositionContext);
+  return (
+    <View
+      className={cn("overflow-hidden rounded-md bg-surface", {
+        "rounded-t-xs": !first,
+        "rounded-b-xs": !last,
+      })}
+    >
+      {props.children}
+    </View>
+  );
+}
+//#endregion
+
+//#region Exports
+SegmentedList.Item = memo(SegmentedListItem);
 /**
  * Wraps non-standard items while having the benefit of the automatic styling.
  *  - Set `psuedoClassName = "active:bg-canvas/30"` for color-matching on pressed state.
  */
-export const SegmentedListItemGroup = memo(
-  function SegmentedListItemGroup(props: { children: React.ReactNode }) {
-    const { first, last } = use(ListItemPositionContext);
-    return (
-      <View
-        className={cn("overflow-hidden rounded-md bg-surface", {
-          "rounded-t-xs": !first,
-          "rounded-b-xs": !last,
-        })}
-      >
-        {props.children}
-      </View>
-    );
-  },
-);
+SegmentedList.ItemGroup = memo(SegmentedListItemGroup);
+
+export { SegmentedList };
 //#endregion

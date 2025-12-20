@@ -13,11 +13,7 @@ import { LanguageSheet } from "~/navigation/sheets/LanguageSheet";
 
 import { APP_VERSION } from "~/constants/Config";
 import * as LINKS from "~/constants/Links";
-import {
-  SegmentedList,
-  SegmentedListItem,
-  SegmentedListItemGroup,
-} from "~/components/DS-2/List/Segmented";
+import { SegmentedList } from "~/components/DS-2/List/Segmented";
 import { Divider } from "~/components/Divider";
 import { Switch } from "~/components/Form/Switch";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
@@ -40,7 +36,7 @@ export default function Settings() {
 
       <StandardScrollLayout>
         {hasNewUpdate && (
-          <SegmentedListItem
+          <SegmentedList.Item
             labelTextKey="feat.appUpdate.title"
             supportingText={t("feat.appUpdate.brief")}
             onPress={() => navigation.navigate("AppUpdate")}
@@ -50,12 +46,12 @@ export default function Settings() {
         )}
 
         <SegmentedList>
-          <SegmentedListItem
+          <SegmentedList.Item
             labelTextKey="feat.appearance.title"
             supportingText={t("feat.appearance.brief")}
             onPress={() => navigation.navigate("AppearanceSettings")}
           />
-          <SegmentedListItem
+          <SegmentedList.Item
             labelTextKey="feat.language.title"
             supportingText={currLang ?? "English"}
             onPress={() => languageSheetRef.current?.present()}
@@ -63,58 +59,58 @@ export default function Settings() {
         </SegmentedList>
 
         <SegmentedList>
-          <SegmentedListItem
+          <SegmentedList.Item
             labelTextKey="feat.backup.title"
             supportingText={t("feat.backup.brief")}
             onPress={() => backupSheetRef.current?.present()}
           />
-          <SegmentedListItem
+          <SegmentedList.Item
             labelTextKey="feat.insights.title"
             supportingText={t("feat.insights.brief")}
             onPress={() => navigation.navigate("Insights")}
           />
-          <SegmentedListItem
+          <SegmentedList.Item
             labelTextKey="feat.playback.title"
             supportingText={t("feat.playback.brief")}
             onPress={() => navigation.navigate("PlaybackSettings")}
           />
-          <SegmentedListItem
+          <SegmentedList.Item
             labelTextKey="feat.scanning.title"
             supportingText={t("feat.scanning.brief")}
             onPress={() => navigation.navigate("ScanningSettings")}
           />
         </SegmentedList>
 
-        <SegmentedListItem
+        <SegmentedList.Item
           labelTextKey="feat.experimental.title"
           supportingText={t("feat.experimental.brief")}
           onPress={() => navigation.navigate("ExperimentalSettings")}
         />
 
         <SegmentedList>
-          <SegmentedListItem
+          <SegmentedList.Item
             labelTextKey="feat.code.title"
             supportingText={t("feat.code.brief")}
             onPress={() => openBrowserAsync(LINKS.GITHUB)}
             RightElement={<OpenInNew />}
           />
-          <SegmentedListItem
+          <SegmentedList.Item
             labelTextKey="feat.license.title"
             onPress={() => openBrowserAsync(LINKS.LICENSE)}
             RightElement={<OpenInNew />}
           />
-          <SegmentedListItem
+          <SegmentedList.Item
             labelTextKey="feat.privacy.title"
             onPress={() => openBrowserAsync(LINKS.PRIVACY_POLICY)}
             RightElement={<OpenInNew />}
           />
-          <SegmentedListItem
+          <SegmentedList.Item
             labelTextKey="feat.thirdParty.title"
             supportingText={t("feat.thirdParty.brief")}
             onPress={() => navigation.navigate("ThirdParty")}
           />
-          <SegmentedListItemGroup>
-            <SegmentedListItem
+          <SegmentedList.ItemGroup>
+            <SegmentedList.Item
               labelTextKey="feat.version.title"
               supportingText={APP_VERSION}
               onPress={() => openBrowserAsync(LINKS.VERSION_CHANGELOG)}
@@ -123,14 +119,14 @@ export default function Settings() {
               psuedoClassName="active:bg-canvas/30"
             />
             <Divider className="mx-4" />
-            <SegmentedListItem
+            <SegmentedList.Item
               labelTextKey="feat.version.extra.rcNotification"
               onPress={PreferenceTogglers.toggleRCNotification}
               RightElement={<Switch enabled={showRCNotification} />}
               className="rounded-none"
               psuedoClassName="active:bg-canvas/30"
             />
-          </SegmentedListItemGroup>
+          </SegmentedList.ItemGroup>
         </SegmentedList>
       </StandardScrollLayout>
     </>
