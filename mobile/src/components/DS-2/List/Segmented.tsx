@@ -1,18 +1,22 @@
 import React, { createContext, memo, use } from "react";
+import { View } from "react-native";
 
 import { cn } from "~/lib/style";
 import { FlatList } from "~/components/Defaults";
 import type { ListItemProps } from "./index";
 import { ListItem } from "./index";
 
-// If `<SegmentedListItem />` isn't wrapped, default to regular border radius.
+// If list item isn't wrapped, default to regular border radius.
 const DEFAULT_STATE = { first: true, last: true };
 const INIT_STATE = { first: false, last: false };
 const ListItemPositionContext = createContext(DEFAULT_STATE);
 
-//#region SegmentedListContainer
-/** Automatically applies styling to the first & last `<SegmentedListItem />`. */
-export function SegmentedListContainer(props: { children: React.ReactNode }) {
+//#region Container
+/**
+ * Automatically applies styling to the first & last `<SegmentedListItem />`
+ * or `<SegmentedListItemGroup />`.
+ */
+export function SegmentedList(props: { children: React.ReactNode }) {
   const data: React.ReactNode[] = Array.isArray(props.children)
     ? props.children
     : React.Children.toArray(props.children);
@@ -40,7 +44,7 @@ export function SegmentedListContainer(props: { children: React.ReactNode }) {
 }
 //#endregion
 
-//#region SegmentedListItem
+//#region Item
 export const SegmentedListItem = memo(function SegmentedListItem(
   props: ListItemProps,
 ) {
@@ -61,4 +65,26 @@ export const SegmentedListItem = memo(function SegmentedListItem(
     />
   );
 });
+//#endregion
+
+//#region ItemGroup
+/**
+ * Wraps non-standard items while having the benefit of the automatic styling.
+ *  - Set `psuedoClassName = "active:bg-canvas/30"` for color-matching on pressed state.
+ */
+export const SegmentedListItemGroup = memo(
+  function SegmentedListItemGroup(props: { children: React.ReactNode }) {
+    const { first, last } = use(ListItemPositionContext);
+    return (
+      <View
+        className={cn("overflow-hidden rounded-md bg-surface", {
+          "rounded-t-xs": !first,
+          "rounded-b-xs": !last,
+        })}
+      >
+        {props.children}
+      </View>
+    );
+  },
+);
 //#endregion

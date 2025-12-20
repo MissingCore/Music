@@ -13,9 +13,13 @@ import { LanguageSheet } from "~/navigation/sheets/LanguageSheet";
 
 import { APP_VERSION } from "~/constants/Config";
 import * as LINKS from "~/constants/Links";
-import { Card } from "~/components/Containment/Card";
-import { List, ListItem } from "~/components/Containment/List";
+import {
+  SegmentedList,
+  SegmentedListItem,
+  SegmentedListItemGroup,
+} from "~/components/DS-2/List/Segmented";
 import { Divider } from "~/components/Divider";
+import { Switch } from "~/components/Form/Switch";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { LANGUAGES } from "~/modules/i18n/constants";
 
@@ -36,103 +40,98 @@ export default function Settings() {
 
       <StandardScrollLayout>
         {hasNewUpdate && (
-          <ListItem
-            titleKey="feat.appUpdate.title"
-            description={t("feat.appUpdate.brief")}
+          <SegmentedListItem
+            labelTextKey="feat.appUpdate.title"
+            supportingText={t("feat.appUpdate.brief")}
             onPress={() => navigation.navigate("AppUpdate")}
             className="rounded-full bg-yellow"
-            textColor="text-neutral0"
+            _textColor="text-neutral0"
           />
         )}
 
-        <List>
-          <ListItem
-            titleKey="feat.appearance.title"
-            description={t("feat.appearance.brief")}
+        <SegmentedList>
+          <SegmentedListItem
+            labelTextKey="feat.appearance.title"
+            supportingText={t("feat.appearance.brief")}
             onPress={() => navigation.navigate("AppearanceSettings")}
-            first
           />
-          <ListItem
-            titleKey="feat.language.title"
-            description={currLang ?? "English"}
+          <SegmentedListItem
+            labelTextKey="feat.language.title"
+            supportingText={currLang ?? "English"}
             onPress={() => languageSheetRef.current?.present()}
-            last
           />
-        </List>
+        </SegmentedList>
 
-        <List>
-          <ListItem
-            titleKey="feat.backup.title"
-            description={t("feat.backup.brief")}
+        <SegmentedList>
+          <SegmentedListItem
+            labelTextKey="feat.backup.title"
+            supportingText={t("feat.backup.brief")}
             onPress={() => backupSheetRef.current?.present()}
-            first
           />
-          <ListItem
-            titleKey="feat.insights.title"
-            description={t("feat.insights.brief")}
+          <SegmentedListItem
+            labelTextKey="feat.insights.title"
+            supportingText={t("feat.insights.brief")}
             onPress={() => navigation.navigate("Insights")}
           />
-          <ListItem
-            titleKey="feat.playback.title"
-            description={t("feat.playback.brief")}
+          <SegmentedListItem
+            labelTextKey="feat.playback.title"
+            supportingText={t("feat.playback.brief")}
             onPress={() => navigation.navigate("PlaybackSettings")}
           />
-          <ListItem
-            titleKey="feat.scanning.title"
-            description={t("feat.scanning.brief")}
+          <SegmentedListItem
+            labelTextKey="feat.scanning.title"
+            supportingText={t("feat.scanning.brief")}
             onPress={() => navigation.navigate("ScanningSettings")}
-            last
           />
-        </List>
+        </SegmentedList>
 
-        <ListItem
-          titleKey="feat.experimental.title"
-          description={t("feat.experimental.brief")}
+        <SegmentedListItem
+          labelTextKey="feat.experimental.title"
+          supportingText={t("feat.experimental.brief")}
           onPress={() => navigation.navigate("ExperimentalSettings")}
-          first
-          last
         />
 
-        <List>
-          <ListItem
-            titleKey="feat.code.title"
-            description={t("feat.code.brief")}
-            icon={<OpenInNew />}
+        <SegmentedList>
+          <SegmentedListItem
+            labelTextKey="feat.code.title"
+            supportingText={t("feat.code.brief")}
             onPress={() => openBrowserAsync(LINKS.GITHUB)}
-            first
+            RightElement={<OpenInNew />}
           />
-          <ListItem
-            titleKey="feat.license.title"
-            icon={<OpenInNew />}
+          <SegmentedListItem
+            labelTextKey="feat.license.title"
             onPress={() => openBrowserAsync(LINKS.LICENSE)}
+            RightElement={<OpenInNew />}
           />
-          <ListItem
-            titleKey="feat.privacy.title"
-            icon={<OpenInNew />}
+          <SegmentedListItem
+            labelTextKey="feat.privacy.title"
             onPress={() => openBrowserAsync(LINKS.PRIVACY_POLICY)}
+            RightElement={<OpenInNew />}
           />
-          <ListItem
-            titleKey="feat.thirdParty.title"
-            description={t("feat.thirdParty.brief")}
+          <SegmentedListItem
+            labelTextKey="feat.thirdParty.title"
+            supportingText={t("feat.thirdParty.brief")}
             onPress={() => navigation.navigate("ThirdParty")}
           />
-          <Card className="overflow-hidden rounded-t-xs p-0">
-            <ListItem
-              titleKey="feat.version.title"
-              description={APP_VERSION}
-              icon={<OpenInNew />}
+          <SegmentedListItemGroup>
+            <SegmentedListItem
+              labelTextKey="feat.version.title"
+              supportingText={APP_VERSION}
               onPress={() => openBrowserAsync(LINKS.VERSION_CHANGELOG)}
+              RightElement={<OpenInNew />}
               className="rounded-none"
+              psuedoClassName="active:bg-canvas/30"
             />
             <Divider className="mx-4" />
-            <ListItem
-              titleKey="feat.version.extra.rcNotification"
+            <SegmentedListItem
+              labelTextKey="feat.version.extra.rcNotification"
               onPress={PreferenceTogglers.toggleRCNotification}
-              switchState={showRCNotification}
+              RightElement={<Switch enabled={showRCNotification} />}
               className="rounded-none"
+              psuedoClassName="active:bg-canvas/30"
             />
-          </Card>
-        </List>
+          </SegmentedListItemGroup>
+        </SegmentedList>
       </StandardScrollLayout>
     </>
   );
