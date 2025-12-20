@@ -37,6 +37,7 @@ function SegmentedList(props: { children: React.ReactNode }) {
           );
         }}
         scrollEnabled={false}
+        className="grow-0"
         contentContainerClassName="gap-0.75"
       />
     </ListItemPositionContext>
