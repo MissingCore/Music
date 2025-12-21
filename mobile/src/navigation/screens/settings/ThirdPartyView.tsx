@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import LicensesList from "~/resources/licenses.json";
 
 import { LegendList } from "~/components/Defaults";
-import { useGeneratedSegmentedList } from "~/components/DS-2/List/Segmented";
+import { useGeneratedSegmentedList } from "~/components/List/Segmented";
 
 export default function ThirdParty() {
   const navigation = useNavigation();

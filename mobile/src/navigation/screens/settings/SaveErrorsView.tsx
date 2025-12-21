@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { db } from "~/db";
 
 import { LegendList } from "~/components/Defaults";
-import { useGeneratedSegmentedList } from "~/components/DS-2/List/Segmented";
+import { useGeneratedSegmentedList } from "~/components/List/Segmented";
 import { ContentPlaceholder } from "../../components/Placeholder";
 
 export default function SaveErrors() {

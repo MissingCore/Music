@@ -7,7 +7,7 @@ import { db } from "~/db";
 import { iAsc } from "~/lib/drizzle";
 import { FlatList } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
-import { SegmentedList } from "~/components/DS-2/List/Segmented";
+import { SegmentedList } from "~/components/List/Segmented";
 import { StyledText } from "~/components/Typography/StyledText";
 import { ContentPlaceholder } from "../../components/Placeholder";
 

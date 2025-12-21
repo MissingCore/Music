@@ -13,8 +13,8 @@ import { MinAlbumLengthSheet } from "~/navigation/sheets/MinAlbumLengthSheet";
 import { NowPlayingDesignSheet } from "~/navigation/sheets/NowPlayingDesignSheet";
 import { ThemeSheet } from "~/navigation/sheets/ThemeSheet";
 
-import { SegmentedList } from "~/components/DS-2/List/Segmented";
 import { Switch } from "~/components/Form/Switch";
+import { SegmentedList } from "~/components/List/Segmented";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 
 export default function AppearanceSettings() {

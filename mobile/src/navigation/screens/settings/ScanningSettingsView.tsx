@@ -9,8 +9,8 @@ import { MinDurationSheet } from "~/navigation/sheets/MinDurationSheet";
 import { ScanFilterListSheet } from "~/navigation/sheets/ScanFilterListSheet";
 
 import { mutateGuard } from "~/lib/react-query";
-import { SegmentedList } from "~/components/DS-2/List/Segmented";
 import { Switch } from "~/components/Form/Switch";
+import { SegmentedList } from "~/components/List/Segmented";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 
 export default function ScanningSettings() {

@@ -5,7 +5,7 @@ import { View } from "react-native";
 
 import type { TextColor } from "~/lib/style";
 import { cn } from "~/lib/style";
-import { StyledText } from "../../Typography/StyledText";
+import { StyledText } from "../Typography/StyledText";
 
 export type ListItemContentProps = (
   | { labelText: string; labelTextKey?: never }

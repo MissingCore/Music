@@ -14,9 +14,9 @@ import { Colors } from "~/constants/Styles";
 import { ImageDirectory } from "~/lib/file-system";
 import type { ExtractQueryData } from "~/lib/react-query";
 import { abbreviateSize, formatSeconds } from "~/utils/number";
-import { SegmentedList } from "~/components/DS-2/List/Segmented";
 import { Legend, LegendItem } from "~/components/Form/Legend";
 import { ProgressBar } from "~/components/Form/ProgressBar";
+import { SegmentedList } from "~/components/List/Segmented";
 
 export default function Insights() {
   const { t } = useTranslation();
