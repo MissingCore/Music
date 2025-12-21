@@ -5,37 +5,29 @@ import { View } from "react-native";
 import { db } from "~/db";
 
 import { iAsc } from "~/lib/drizzle";
-import { cn } from "~/lib/style";
 import { FlatList } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
+import { SegmentedList } from "~/components/DS-2/List/Segmented";
 import { StyledText } from "~/components/Typography/StyledText";
 import { ContentPlaceholder } from "../../components/Placeholder";
 
 export default function MostPlayed() {
   const { isPending, data } = useMostPlayedTracks();
+
+  if (isPending || data?.length === 0) {
+    return (
+      <ContentPlaceholder isPending={isPending} errMsgKey="err.msg.noResults" />
+    );
+  }
   return (
-    <FlatList
-      data={data}
-      keyExtractor={({ placement }) => `${placement}`}
-      renderItem={({ item, index }) => (
-        <View
-          className={cn("flex-row rounded-xs bg-surface p-1", {
-            "rounded-t-md": index === 0,
-            "rounded-b-md": (data?.length ?? 0) - 1 === index,
-          })}
-        >
+    <SegmentedList scrollEnabled contentContainerClassName="p-4">
+      {data?.map((item) => (
+        <SegmentedList.CustomItem key={item.placement} className="flex-row p-1">
           <PlacementNumber placement={item.placement} />
           <PlayCountList tracks={item.tracks} />
-        </View>
-      )}
-      ListEmptyComponent={
-        <ContentPlaceholder
-          isPending={isPending}
-          errMsgKey="err.msg.noResults"
-        />
-      }
-      contentContainerClassName="gap-0.75 p-4"
-    />
+        </SegmentedList.CustomItem>
+      ))}
+    </SegmentedList>
   );
 }
 

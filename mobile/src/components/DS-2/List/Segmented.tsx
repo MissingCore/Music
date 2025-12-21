@@ -19,6 +19,7 @@ const ListItemPositionContext = createContext(DEFAULT_STATE);
  */
 function SegmentedList(props: {
   children: React.ReactNode;
+  scrollEnabled?: boolean;
   className?: string;
   style?: StyleProp<ViewStyle>;
   contentContainerClassName?: string;
@@ -44,7 +45,7 @@ function SegmentedList(props: {
             </ListItemPositionContext>
           );
         }}
-        scrollEnabled={false}
+        scrollEnabled={props.scrollEnabled ?? false}
         className={cn("grow-0", props.className)}
         style={props.style}
         contentContainerClassName={cn(
