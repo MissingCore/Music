@@ -141,13 +141,12 @@ function SearchResultsList<TScope extends SearchCategories>(
             />
           ) : (
             <SearchResult
-              as="ripple"
+              button
               /* @ts-expect-error - `type` should be limited to our scope. */
               onPress={() => props.callbacks[item.type](item.entry)}
-              wrapperClassName={cn("mt-2", {
+              className={cn("mt-2 pr-4", {
                 "rounded-full": item.type === "artist",
               })}
-              className="pr-4"
               {...item}
             />
           )

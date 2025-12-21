@@ -39,7 +39,7 @@ export function Track({
 
   return (
     <SearchResult
-      as="ripple"
+      button
       type="track"
       onPress={() =>
         PlaybackControls.playFromList({ trackId: id, source: trackSource })
@@ -52,7 +52,7 @@ export function Track({
           disabled={props.disabled}
         />
       }
-      wrapperClassName={cn("bg-canvas", className)}
+      className={cn("bg-canvas", className)}
       poppyLabel={showIndicator}
       LeftElement={overriddenLeftElement}
       {...props}

@@ -12,12 +12,14 @@ export type ListItemContentProps = (
   | { labelText?: never; labelTextKey: ParseKeys }
 ) & {
   supportingText?: string;
+  LeftElement?: React.ReactNode;
+  RightElement?: React.ReactNode;
   /** If the text shouldn't be truncated to a line. */
   _overflow?: boolean;
   /** Use a fixed text color instead of one that changes based on the theme. */
   _textColor?: TextColor;
-  LeftElement?: React.ReactNode;
-  RightElement?: React.ReactNode;
+  _labelTextClassName?: string;
+  _supportingTextClassName?: string;
 };
 
 export const ListItemContent = memo(function ListItemContent(
@@ -30,14 +32,18 @@ export const ListItemContent = memo(function ListItemContent(
       <View className="shrink grow gap-0.5">
         <StyledText
           numberOfLines={props._overflow ? undefined : 1}
-          className={cn("text-sm", props._textColor)}
+          className={cn("text-sm", props._labelTextClassName, props._textColor)}
         >
           {props.labelTextKey ? t(props.labelTextKey) : props.labelText}
         </StyledText>
         {props.supportingText ? (
           <StyledText
             numberOfLines={props._overflow ? undefined : 1}
-            className={cn("text-xs opacity-60", props._textColor)}
+            className={cn(
+              "text-xs opacity-60",
+              props._supportingTextClassName,
+              props._textColor,
+            )}
           >
             {props.supportingText}
           </StyledText>

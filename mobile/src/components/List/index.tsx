@@ -1,6 +1,6 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import type { StyleProp, ViewStyle } from "react-native";
-import { Pressable } from "react-native";
+import { Pressable, View } from "react-native";
 
 import { cn } from "~/lib/style";
 import type { ListItemContentProps } from "./ListItemContent";
@@ -13,15 +13,19 @@ export type ListItemProps = ListItemContentProps &
     style?: StyleProp<ViewStyle>;
     /** Pass pseudo-element classes via this prop (ie: `active:*`, `disabled:*`). */
     psuedoClassName?: string;
+    /** If the wrapping container should be a `View` instead of a `Pressable`. */
+    _asView?: boolean;
   };
 
 export const ListItem = memo(function StandardListItem({
   className,
   psuedoClassName = "active:bg-onSurface/25",
+  _asView = false,
   ...props
 }: ListItemProps) {
+  const Wrapper = useMemo(() => (_asView ? View : Pressable), [_asView]);
   return (
-    <Pressable
+    <Wrapper
       {...props}
       className={cn(
         "min-h-12 flex-row items-center gap-2 rounded-xs",
@@ -30,6 +34,6 @@ export const ListItem = memo(function StandardListItem({
       )}
     >
       <ListItemContent {...props} />
-    </Pressable>
+    </Wrapper>
   );
 });

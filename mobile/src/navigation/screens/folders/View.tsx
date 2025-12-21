@@ -108,7 +108,7 @@ export default function Folders({
           <Track {...item} trackSource={trackSource} className="mb-2" />
         ) : (
           <SearchResult
-            as="ripple"
+            button
             type="folder"
             title={item.name}
             onPress={() => setDirSegments((prev) => [...prev, item.name])}
