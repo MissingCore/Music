@@ -63,7 +63,7 @@ function StorageWidget() {
   };
 
   return (
-    <SegmentedList.ItemGroup className="gap-4 p-4">
+    <SegmentedList.CustomItem className="gap-4 p-4">
       <ProgressBar
         entries={[
           { color: Colors.red, value: data?.images ?? 0 },
@@ -99,7 +99,7 @@ function StorageWidget() {
         nameKey="feat.insights.extra.total"
         value={getValue("total")}
       />
-    </SegmentedList.ItemGroup>
+    </SegmentedList.CustomItem>
   );
 }
 
@@ -142,7 +142,7 @@ function DBSummaryWidget() {
   };
 
   return (
-    <SegmentedList.ItemGroup className="gap-4 p-4">
+    <SegmentedList.CustomItem className="gap-4 p-4">
       <Legend>
         <LegendItem nameKey="term.albums" value={getValue("albums")} />
         <LegendItem nameKey="term.artists" value={getValue("artists")} />
@@ -167,7 +167,7 @@ function DBSummaryWidget() {
         nameKey="feat.insights.extra.totalDuration"
         value={getValue("totalDuration")}
       />
-    </SegmentedList.ItemGroup>
+    </SegmentedList.CustomItem>
   );
 }
 

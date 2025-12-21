@@ -109,7 +109,7 @@ export default function Settings() {
             supportingText={t("feat.thirdParty.brief")}
             onPress={() => navigation.navigate("ThirdParty")}
           />
-          <SegmentedList.ItemGroup>
+          <SegmentedList.CustomItem>
             <SegmentedList.Item
               labelTextKey="feat.version.title"
               supportingText={APP_VERSION}
@@ -126,7 +126,7 @@ export default function Settings() {
               className="rounded-none"
               psuedoClassName="active:bg-canvas/30"
             />
-          </SegmentedList.ItemGroup>
+          </SegmentedList.CustomItem>
         </SegmentedList>
       </StandardScrollLayout>
     </>

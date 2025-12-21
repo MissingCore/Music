@@ -1,4 +1,5 @@
 import React, { createContext, memo, use, useMemo } from "react";
+import type { StyleProp, ViewStyle } from "react-native";
 import { View } from "react-native";
 
 import { cn } from "~/lib/style";
@@ -14,12 +15,19 @@ const ListItemPositionContext = createContext(DEFAULT_STATE);
 //#region Container
 /**
  * Automatically applies styling to the first & last `<SegmentedListItem />`
- * or `<SegmentedListItemGroup />`.
+ * or `<SegmentedListCustomItem />`.
  */
-function SegmentedList(props: { children: React.ReactNode }) {
+function SegmentedList(props: {
+  children: React.ReactNode;
+  className?: string;
+  style?: StyleProp<ViewStyle>;
+  contentContainerClassName?: string;
+  contentContainerStyle?: StyleProp<ViewStyle>;
+}) {
   const data: React.ReactNode[] = Array.isArray(props.children)
     ? props.children
-    : React.Children.toArray(props.children);
+    : // `flat(1)` is to handle fragments.
+      React.Children.toArray(props.children).flat(1);
 
   return (
     <ListItemPositionContext value={INIT_STATE}>
@@ -37,8 +45,13 @@ function SegmentedList(props: { children: React.ReactNode }) {
           );
         }}
         scrollEnabled={false}
-        className="grow-0"
-        contentContainerClassName="gap-0.75"
+        className={cn("grow-0", props.className)}
+        style={props.style}
+        contentContainerClassName={cn(
+          "gap-0.75",
+          props.contentContainerClassName,
+        )}
+        contentContainerStyle={props.contentContainerStyle}
       />
     </ListItemPositionContext>
   );
@@ -66,22 +79,22 @@ function SegmentedListItem(props: ListItemProps) {
 }
 //#endregion
 
-//#region ItemGroup
-function SegmentedListItemGroup(props: {
-  className?: string;
+//#region Custom Item
+function SegmentedListCustomItem(props: {
   children: React.ReactNode;
+  className?: string;
+  style?: StyleProp<ViewStyle>;
 }) {
   const { first, last } = use(ListItemPositionContext);
   return (
     <View
+      {...props}
       className={cn(
         "overflow-hidden rounded-md bg-surface",
         { "rounded-t-xs": !first, "rounded-b-xs": !last },
         props.className,
       )}
-    >
-      {props.children}
-    </View>
+    />
   );
 }
 //#endregion
@@ -123,10 +136,11 @@ export function useGeneratedSegmentedList<TData extends Record<string, any>>({
 //#region Exports
 SegmentedList.Item = memo(SegmentedListItem);
 /**
- * Wraps non-standard items while having the benefit of the automatic styling.
+ * Wraps non-standard content while having the benefit of the automatic styling
+ * while in `<SegmentedList />`.
  *  - Set `psuedoClassName = "active:bg-canvas/30"` for color-matching on pressed state.
  */
-SegmentedList.ItemGroup = memo(SegmentedListItemGroup);
+SegmentedList.CustomItem = memo(SegmentedListCustomItem);
 
 export { SegmentedList };
 //#endregion
