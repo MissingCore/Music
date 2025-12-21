@@ -2,16 +2,16 @@ import { useNavigation } from "@react-navigation/native";
 
 import LicensesList from "~/resources/licenses.json";
 
-import { useListPresets } from "~/components/Containment/List";
 import { LegendList } from "~/components/Defaults";
+import { useGeneratedSegmentedList } from "~/components/DS-2/List/Segmented";
 
 export default function ThirdParty() {
   const navigation = useNavigation();
-  const presets = useListPresets({
+  const listContext = useGeneratedSegmentedList({
     data: Object.entries(LicensesList),
     renderOptions: {
-      getTitle: ([_, item]) => item.name,
-      getDescription: ([_, item]) => `${item.license} (${item.version})`,
+      getLabel: ([_, item]) => item.name,
+      getSupportingText: ([_, item]) => `${item.license} (${item.version})`,
       onPress:
         ([id]) =>
         () =>
@@ -23,7 +23,7 @@ export default function ThirdParty() {
     <LegendList
       keyExtractor={([id]) => id}
       contentContainerClassName="p-4"
-      {...presets}
+      {...listContext}
     />
   );
 }

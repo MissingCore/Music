@@ -1,4 +1,4 @@
-import React, { createContext, memo, use } from "react";
+import React, { createContext, memo, use, useMemo } from "react";
 import { View } from "react-native";
 
 import { cn } from "~/lib/style";
@@ -82,6 +82,40 @@ function SegmentedListItemGroup(props: {
     >
       {props.children}
     </View>
+  );
+}
+//#endregion
+
+//#region Generator Hook
+/** Get props to render a list of `<SegmentedListItem />` inside a Legend List. */
+export function useGeneratedSegmentedList<TData extends Record<string, any>>({
+  data,
+  renderOptions: { getLabel, getSupportingText, onPress },
+}: {
+  data?: readonly TData[];
+  renderOptions: {
+    getLabel: (item: TData) => string;
+    getSupportingText: (item: TData) => string;
+    onPress?: (item: TData) => VoidFunction;
+  };
+}) {
+  return useMemo(
+    () => ({
+      getEstimatedItemSize: (index: number) => (index === 0 ? 70 : 73),
+      data,
+      renderItem: ({ item, index }: { item: TData; index: number }) => (
+        <SegmentedListItem
+          labelText={getLabel(item)}
+          supportingText={getSupportingText(item)}
+          onPress={onPress ? onPress(item) : undefined}
+          className={cn({
+            "mt-0.75 rounded-t-xs": index > 0,
+            "rounded-b-xs": index < (data?.length ?? 0) - 1,
+          })}
+        />
+      ),
+    }),
+    [data, getLabel, getSupportingText, onPress],
   );
 }
 //#endregion

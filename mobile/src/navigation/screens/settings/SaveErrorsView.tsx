@@ -2,17 +2,17 @@ import { useQuery } from "@tanstack/react-query";
 
 import { db } from "~/db";
 
-import { useListPresets } from "~/components/Containment/List";
 import { LegendList } from "~/components/Defaults";
+import { useGeneratedSegmentedList } from "~/components/DS-2/List/Segmented";
 import { ContentPlaceholder } from "../../components/Placeholder";
 
 export default function SaveErrors() {
   const { data } = useSaveErrors();
-  const presets = useListPresets({
+  const listContext = useGeneratedSegmentedList({
     data,
     renderOptions: {
-      getTitle: (item) => item.uri,
-      getDescription: (item) => `[${item.errorName}] ${item.errorMessage}`,
+      getLabel: (item) => item.uri,
+      getSupportingText: (item) => `[${item.errorName}] ${item.errorMessage}`,
     },
   });
 
@@ -21,7 +21,7 @@ export default function SaveErrors() {
       keyExtractor={({ id }) => id}
       ListEmptyComponent={<ContentPlaceholder errMsgKey="err.msg.noErrors" />}
       contentContainerClassName="p-4"
-      {...presets}
+      {...listContext}
     />
   );
 }
