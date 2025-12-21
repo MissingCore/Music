@@ -9,9 +9,9 @@ import { MinDurationSheet } from "~/navigation/sheets/MinDurationSheet";
 import { ScanFilterListSheet } from "~/navigation/sheets/ScanFilterListSheet";
 
 import { mutateGuard } from "~/lib/react-query";
-import { Switch } from "~/components/Form/Switch";
 import { SegmentedList } from "~/components/List/Segmented";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
+import { Switch } from "~/components/UI/Switch";
 
 export default function ScanningSettings() {
   const { t } = useTranslation();

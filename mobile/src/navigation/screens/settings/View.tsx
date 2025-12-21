@@ -14,9 +14,9 @@ import { LanguageSheet } from "~/navigation/sheets/LanguageSheet";
 import { APP_VERSION } from "~/constants/Config";
 import * as LINKS from "~/constants/Links";
 import { Divider } from "~/components/Divider";
-import { Switch } from "~/components/Form/Switch";
 import { SegmentedList } from "~/components/List/Segmented";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
+import { Switch } from "~/components/UI/Switch";
 import { LANGUAGES } from "~/modules/i18n/constants";
 
 export default function Settings() {

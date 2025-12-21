@@ -6,7 +6,6 @@ import Animated, {
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 
-/** Externally controlled switch component (BYO `<Pressable />`). */
 export function Switch({ enabled }: { enabled: boolean }) {
   const thumbStyle = useAnimatedStyle(() => ({
     transform: [

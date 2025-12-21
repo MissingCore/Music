@@ -11,8 +11,8 @@ import { sessionStore } from "~/services/SessionStore";
 import { StandardScrollLayout } from "../../layouts/StandardScroll";
 
 import { ToastOptions } from "~/lib/toast";
-import { Switch } from "~/components/Form/Switch";
 import { SegmentedList } from "~/components/List/Segmented";
+import { Switch } from "~/components/UI/Switch";
 
 export default function ExperimentalSettings() {
   const { t } = useTranslation();

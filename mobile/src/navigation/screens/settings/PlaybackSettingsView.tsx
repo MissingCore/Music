@@ -6,9 +6,9 @@ import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { StandardScrollLayout } from "~/navigation/layouts/StandardScroll";
 import { PlaybackDelaySheet } from "~/navigation/sheets/PlaybackDelaySheet";
 
-import { Switch } from "~/components/Form/Switch";
 import { SegmentedList } from "~/components/List/Segmented";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
+import { Switch } from "~/components/UI/Switch";
 
 export default function PlaybackSettings() {
   const { t } = useTranslation();

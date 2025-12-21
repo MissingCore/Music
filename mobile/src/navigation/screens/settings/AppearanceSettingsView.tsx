@@ -13,9 +13,9 @@ import { MinAlbumLengthSheet } from "~/navigation/sheets/MinAlbumLengthSheet";
 import { NowPlayingDesignSheet } from "~/navigation/sheets/NowPlayingDesignSheet";
 import { ThemeSheet } from "~/navigation/sheets/ThemeSheet";
 
-import { Switch } from "~/components/Form/Switch";
 import { SegmentedList } from "~/components/List/Segmented";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
+import { Switch } from "~/components/UI/Switch";
 
 export default function AppearanceSettings() {
   const { t } = useTranslation();

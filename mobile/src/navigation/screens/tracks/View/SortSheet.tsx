@@ -7,10 +7,10 @@ import {
 
 import { FlatList } from "~/components/Defaults";
 import { Radio } from "~/components/Form/Selection";
-import { Switch } from "~/components/Form/Switch";
 import { Sheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { TStyledText } from "~/components/Typography/StyledText";
+import { Switch } from "~/components/UI/Switch";
 import { deferInitialRender } from "../../../components/DeferredRender";
 
 /** Enables us to visually change the sort order on the `/track` screen. */
