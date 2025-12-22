@@ -3,19 +3,25 @@
 
 @theme {
   /** Color */
-  --color-neutral0: #000000;
-  --color-neutral7: #121212;
-  --color-neutral10: #1b1d1f;
-  --color-neutral20: #333333;
-  --color-neutral40: #666666;
-  --color-neutral65: #a6a6a6;
-  --color-neutral80: #cccccc;
-  --color-neutral85: #d9d9d9;
-  --color-neutral95: #f2f2f2;
-  --color-neutral100: #ffffff;
+  --color-neutral0: hsl(0 0% 0%);
+  --color-neutral7: hsl(0 0% 7%);
+  --color-neutral10: hsl(0 0% 11%);
+  --color-neutral15: hsl(0 0% 16%);
+  --color-neutral20: hsl(0 0% 20%);
+  --color-neutral30: hsl(0 0% 28%);
+  --color-neutral40: hsl(0 0% 38%);
+  --color-neutral50: hsl(0 0% 47%);
+  --color-neutral60: hsl(0 0% 57%);
+  --color-neutral70: hsl(0 0% 68%);
+  --color-neutral80: hsl(0 0% 78%);
+  --color-neutral90: hsl(0 0% 89%);
+  --color-neutral95: hsl(0 0% 95%);
+  --color-neutral100: hsl(0 0% 100%);
 
-  --color-red: #c8102e;
-  --color-yellow: #ffd84d;
+  --color-red: hsl(357 79% 47%);
+  --color-yellow: hsl(47 100% 50%);
+  --color-blue: hsl(239 49% 32%);
+  --color-green: hsl(144 72% 40%);
 
   /** Font Family */
   --font-roboto: "Roboto-Regular";

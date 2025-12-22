@@ -68,7 +68,7 @@ function StorageWidget() {
         entries={[
           { color: Colors.red, value: data?.images ?? 0 },
           { color: Colors.yellow, value: data?.database ?? 0 },
-          { color: "#4142BE", value: data?.other ?? 0 },
+          { color: Colors.blue, value: data?.other ?? 0 },
           { color: `${foreground}40`, value: data?.cache ?? 0 },
         ]}
         total={data?.total ?? 0}
@@ -87,7 +87,7 @@ function StorageWidget() {
         <Legend.Item
           labelTextKey="feat.insights.extra.other"
           value={getValue("other")}
-          color="#4142BE"
+          color={Colors.blue}
         />
         <Legend.Item
           labelTextKey="feat.insights.extra.cache"
