@@ -70,9 +70,9 @@ function SegmentedListItem(props: ListItemProps) {
         { "rounded-t-xs": !first, "rounded-b-xs": !last },
         props.className,
       )}
-      psuedoClassName={cn(
+      _psuedoClassName={cn(
         "active:opacity-75 disabled:opacity-25",
-        props.psuedoClassName,
+        props._psuedoClassName,
       )}
       _overflow
     />
@@ -139,7 +139,7 @@ SegmentedList.Item = memo(SegmentedListItem);
 /**
  * Wraps non-standard content while having the benefit of the automatic styling
  * while in `<SegmentedList />`.
- *  - Set `psuedoClassName = "active:bg-canvas/30"` for color-matching on pressed state.
+ *  - Set `_psuedoClassName = "active:bg-canvas/30"` for color-matching on pressed state.
  */
 SegmentedList.CustomItem = memo(SegmentedListCustomItem);
 

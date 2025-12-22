@@ -116,7 +116,7 @@ export default function Settings() {
               onPress={() => openBrowserAsync(LINKS.VERSION_CHANGELOG)}
               RightElement={<OpenInNew />}
               className="rounded-none"
-              psuedoClassName="active:bg-canvas/30"
+              _psuedoClassName="active:bg-canvas/30"
             />
             <Divider className="mx-4" />
             <SegmentedList.Item
@@ -124,7 +124,7 @@ export default function Settings() {
               onPress={PreferenceTogglers.toggleRCNotification}
               RightElement={<Switch enabled={showRCNotification} />}
               className="rounded-none"
-              psuedoClassName="active:bg-canvas/30"
+              _psuedoClassName="active:bg-canvas/30"
             />
           </SegmentedList.CustomItem>
         </SegmentedList>

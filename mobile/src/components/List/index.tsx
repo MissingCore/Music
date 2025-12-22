@@ -11,15 +11,15 @@ export type ListItemProps = ListItemContentProps &
   PressProps & {
     className?: string;
     style?: StyleProp<ViewStyle>;
-    /** Pass pseudo-element classes via this prop (ie: `active:*`, `disabled:*`). */
-    psuedoClassName?: string;
+    /** Used internally to set the default pressed & disabled styles. */
+    _psuedoClassName?: string;
     /** If the wrapping container should be a `View` instead of a `Pressable`. */
     _asView?: boolean;
   };
 
 export const ListItem = memo(function StandardListItem({
   className,
-  psuedoClassName = "active:bg-onSurface/25",
+  _psuedoClassName = "active:bg-surface/50",
   _asView = false,
   ...props
 }: ListItemProps) {
@@ -29,8 +29,8 @@ export const ListItem = memo(function StandardListItem({
       {...props}
       className={cn(
         "min-h-12 flex-row items-center gap-2 rounded-xs",
+        _psuedoClassName,
         className,
-        psuedoClassName,
       )}
     >
       <ListItemContent {...props} />
