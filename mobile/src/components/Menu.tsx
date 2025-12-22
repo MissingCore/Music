@@ -10,7 +10,7 @@ import { useTheme } from "~/hooks/useTheme";
 
 import { BorderRadius, FontSize } from "~/constants/Styles";
 import { getFont } from "~/lib/style";
-import { IconButton } from "./Form/Button";
+import { IconButton } from "./Form/Button/Icon";
 
 export type MenuAction = {
   Icon?: (props: Icon) => React.ReactNode;

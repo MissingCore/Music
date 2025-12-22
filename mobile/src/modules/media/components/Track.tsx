@@ -7,7 +7,7 @@ import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { presentTrackSheet } from "~/services/SessionStore";
 
-import { IconButton } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button/Icon";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import type { PlayFromSource } from "~/stores/Playback/types";

@@ -28,7 +28,7 @@ import { cn } from "~/lib/style";
 import { formatSeconds } from "~/utils/number";
 import { Marquee } from "~/components/Containment/Marquee";
 import { SafeContainer } from "~/components/Containment/SafeContainer";
-import { IconButton } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button/Icon";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
 import {

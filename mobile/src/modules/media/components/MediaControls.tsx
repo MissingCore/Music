@@ -12,7 +12,8 @@ import { PlaybackControls, PlaybackSettings } from "~/stores/Playback/actions";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
-import { Button, IconButton } from "~/components/Form/Button";
+import { Button } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button/Icon";
 
 /** Toggles the repeat status. */
 export function RepeatButton({ large = true }) {

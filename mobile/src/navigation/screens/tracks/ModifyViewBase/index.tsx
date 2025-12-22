@@ -19,7 +19,8 @@ import {
 
 import { ScrollablePresets } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
-import { Button, IconButton } from "~/components/Form/Button";
+import { Button } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";
 import { ModalTemplate } from "~/components/Modal";
 import {

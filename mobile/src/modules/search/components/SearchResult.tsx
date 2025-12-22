@@ -1,4 +1,4 @@
-import type { PressProps } from "~/components/Form/Button";
+import type { PressProps } from "~/components/Form/Button/types";
 import { ListItem } from "~/components/List";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import type { MediaType } from "~/stores/Playback/types";

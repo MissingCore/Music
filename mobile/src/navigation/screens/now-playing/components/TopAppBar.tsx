@@ -12,7 +12,7 @@ import { getMediaLinkContext } from "../../../utils/router";
 import { OnRTL } from "~/lib/react";
 import { Marquee } from "~/components/Containment/Marquee";
 import { SafeContainer } from "~/components/Containment/SafeContainer";
-import { IconButton } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button/Icon";
 import { StyledText } from "~/components/Typography/StyledText";
 
 /**

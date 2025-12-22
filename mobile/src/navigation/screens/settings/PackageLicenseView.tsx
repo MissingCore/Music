@@ -9,7 +9,7 @@ import { useTheme } from "~/hooks/useTheme";
 import { StandardScrollLayout } from "../../layouts/StandardScroll";
 
 import { Card } from "~/components/Containment/Card";
-import { IconButton } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button/Icon";
 import { AccentText } from "~/components/Typography/AccentText";
 import { StyledText } from "~/components/Typography/StyledText";
 import { ScreenOptions } from "../../components/ScreenOptions";
