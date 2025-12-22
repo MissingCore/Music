@@ -7,7 +7,6 @@ import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { presentTrackSheet } from "~/services/SessionStore";
 
-import { cn } from "~/lib/style";
 import { IconButton } from "~/components/Form/Button";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
@@ -25,7 +24,6 @@ import type { TrackContent, TrackProps } from "./Track.type";
 export function Track({
   id,
   trackSource,
-  className,
   showIndicator,
   LeftElement,
   ...props
@@ -44,6 +42,7 @@ export function Track({
       onPress={() =>
         PlaybackControls.playFromList({ trackId: id, source: trackSource })
       }
+      LeftElement={overriddenLeftElement}
       RightElement={
         <IconButton
           Icon={MoreVert}
@@ -52,9 +51,7 @@ export function Track({
           disabled={props.disabled}
         />
       }
-      className={cn("bg-canvas", className)}
       poppyLabel={showIndicator}
-      LeftElement={overriddenLeftElement}
       {...props}
     />
   );

@@ -2,7 +2,7 @@ import { toast } from "@backpackapp-io/react-native-toast";
 import { useNavigation } from "@react-navigation/native";
 import { memo, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { BackHandler, Pressable, View } from "react-native";
+import { BackHandler, View } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
 import type { SlimTrackWithAlbum } from "~/db/slimTypes";
@@ -162,20 +162,22 @@ const RenderItem = memo(
         wrapperClassName={cn("mx-4", { "mt-2": info.index > 0 })}
         className="overflow-hidden rounded-xs bg-canvas"
       >
-        <Pressable
+        <SearchResult
+          button
+          type="track"
+          title={item.name}
+          description={item.artistName ?? "—"}
+          imageSource={item.artwork}
           delayLongPress={250}
           onLongPress={info.onDragStart}
           onPressOut={info.onDragEnd}
-          className="active:bg-surface/50"
-        >
-          <SearchResult
-            type="track"
-            title={item.name}
-            description={item.artistName ?? "—"}
-            imageSource={item.artwork}
-            className={cn("pr-4", { "bg-surface": info.isActive })}
-          />
-        </Pressable>
+          className={cn("pr-4", {
+            // The `active:` variant is to override the default active style
+            // as `!important` isn't enough to change the background color
+            // (it'll only change to `bg-surface ` one we drag the item).
+            "bg-surface active:bg-surface": info.isActive,
+          })}
+        />
       </Swipeable>
     );
   },
