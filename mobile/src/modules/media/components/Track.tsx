@@ -16,7 +16,6 @@ import { PlayingIndicator } from "./AnimatedBars";
 import type { TrackContent, TrackProps } from "./Track.type";
 
 //#region Track
-
 /**
  * Displays information about the current track with 2 different press
  * scenarios (pressing the icon or the whole card will do different actions).
@@ -48,7 +47,6 @@ export function Track({
           Icon={MoreVert}
           accessibilityLabel={t("template.entrySeeMore", { name: props.title })}
           onPress={() => presentTrackSheet(id)}
-          disabled={props.disabled}
         />
       }
       poppyLabel={showIndicator}
