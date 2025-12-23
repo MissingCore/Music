@@ -18,7 +18,6 @@ export type ListItemProps = ListItemContentProps &
   };
 
 export const ListItem = memo(function StandardListItem({
-  className,
   _psuedoClassName = "active:bg-surface/50",
   _asView = false,
   ...props
@@ -30,7 +29,7 @@ export const ListItem = memo(function StandardListItem({
       className={cn(
         "min-h-12 flex-row items-center gap-2 rounded-xs",
         _psuedoClassName,
-        className,
+        props.className,
       )}
     >
       <ListItemContent {...props} />
