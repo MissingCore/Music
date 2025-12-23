@@ -8,8 +8,8 @@ import { View } from "react-native";
 import { ArrowBack } from "~/resources/icons/ArrowBack";
 
 import { OnRTL } from "~/lib/react";
-import { SafeContainer } from "~/components/Containment/SafeContainer";
 import { IconButton } from "~/components/Form/Button/Icon";
+import { SafeContainer } from "~/components/SafeContainer";
 import { StyledText } from "~/components/Typography/StyledText";
 
 /**

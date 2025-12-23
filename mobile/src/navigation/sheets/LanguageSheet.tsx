@@ -11,10 +11,10 @@ import {
 
 import { TRANSLATIONS } from "~/constants/Links";
 import { OnRTL } from "~/lib/react";
-import { Marquee } from "~/components/Containment/Marquee";
 import { FlatList } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
 import { Radio } from "~/components/Form/Selection";
+import { Marquee } from "~/components/Marquee";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { DetachedSheet } from "~/components/Sheet/Detached";

@@ -14,7 +14,7 @@ import { useTheme } from "~/hooks/useTheme";
 import { BorderRadius } from "~/constants/Styles";
 import { cn } from "~/lib/style";
 import type { TrueSheetRef } from "./useSheetRef";
-import { Marquee } from "../Containment/Marquee";
+import { Marquee } from "../Marquee";
 import { StyledText } from "../Typography/StyledText";
 
 const WrappedGestureHandlerRootView = withUniwind(GestureHandlerRootView);

@@ -12,8 +12,8 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { Colors } from "~/constants/Styles";
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
-import { Marquee } from "~/components/Containment/Marquee";
 import { IconButton } from "~/components/Form/Button/Icon";
+import { Marquee } from "~/components/Marquee";
 import { Swipeable } from "~/components/Swipeable";
 import { StyledText } from "~/components/Typography/StyledText";
 import {

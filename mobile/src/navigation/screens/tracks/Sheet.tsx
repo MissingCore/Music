@@ -45,12 +45,12 @@ import {
   formatEpoch,
   formatSeconds,
 } from "~/utils/number";
-import { Marquee } from "~/components/Containment/Marquee";
 import { LegendList, ScrollView, useIsScrollable } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { Button } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { Checkbox } from "~/components/Form/Selection";
+import { Marquee } from "~/components/Marquee";
 import { Sheet } from "~/components/Sheet";
 import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
