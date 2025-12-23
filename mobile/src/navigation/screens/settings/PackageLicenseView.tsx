@@ -2,13 +2,14 @@ import type { StaticScreenProps } from "@react-navigation/native";
 import { openBrowserAsync } from "expo-web-browser";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
 
 import { OpenInNew } from "~/resources/icons/OpenInNew";
 import LicensesList from "~/resources/licenses.json";
 import { useTheme } from "~/hooks/useTheme";
 import { StandardScrollLayout } from "../../layouts/StandardScroll";
 
-import { Card } from "~/components/Containment/Card";
+import { cn } from "~/lib/style";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { AccentText } from "~/components/Typography/AccentText";
 import { StyledText } from "~/components/Typography/StyledText";
@@ -47,15 +48,17 @@ export default function PackageLicense({
           {licenseInfo.name}
         </AccentText>
 
-        <Card
-          className={theme === "dark" ? "bg-foreground/15" : "bg-foreground/5"}
+        <View
+          className={cn("rounded-md bg-foreground/5 p-4", {
+            "bg-foreground/15": theme === "dark",
+          })}
         >
           <StyledText dim>
             {`${licenseInfo.version}\n\n`}
             This component is licensed under the {licenseInfo.license} license.
             {`\n\n${licenseInfo.copyright}`}
           </StyledText>
-        </Card>
+        </View>
         <StyledText dim>{licenseInfo.licenseText}</StyledText>
       </StandardScrollLayout>
     </>

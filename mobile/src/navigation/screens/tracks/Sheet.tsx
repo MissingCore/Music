@@ -45,7 +45,6 @@ import {
   formatEpoch,
   formatSeconds,
 } from "~/utils/number";
-import { Card } from "~/components/Containment/Card";
 import { Marquee } from "~/components/Containment/Marquee";
 import { LegendList, ScrollView, useIsScrollable } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
@@ -149,7 +148,7 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
 function TrackMetadata({ data }: { data: TrackWithAlbum }) {
   const { foreground } = useTheme();
   return (
-    <Card className="gap-4">
+    <View className="gap-4 rounded-md bg-surface p-4">
       <Marquee
         color="surface"
         contentContainerClassName="grow justify-between gap-4"
@@ -176,7 +175,7 @@ function TrackMetadata({ data }: { data: TrackWithAlbum }) {
           <Badge Icon={Schedule}>{formatSeconds(data.duration)}</Badge>
         </View>
       </View>
-    </Card>
+    </View>
   );
 }
 //#endregion
@@ -194,7 +193,7 @@ function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
   const isFav = favoriteTrack.isPending ? !favStatus : favStatus;
 
   return (
-    <Card className="flex-row justify-between gap-1 py-1">
+    <View className="flex-row justify-between gap-1 rounded-md bg-surface px-4 py-1">
       <IconButton
         Icon={Favorite}
         accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
@@ -228,7 +227,7 @@ function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
           }),
         )}
       />
-    </Card>
+    </View>
   );
 }
 
