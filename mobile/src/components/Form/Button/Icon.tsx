@@ -1,49 +1,72 @@
-import type { PressableProps } from "react-native";
+import { memo } from "react";
 import { Pressable } from "react-native";
 
 import type { Icon } from "~/resources/icons/type";
-import { useTheme } from "~/hooks/useTheme";
 
-import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
+import type { PressProps } from "./types";
 
-export function IconButton({
-  Icon,
-  large = false,
-  active,
-  filled,
-  className,
-  ...pressableProps
-}: {
+type ButtonSize = "sm" | "md" | "lg";
+
+const ButtonConfig = {
+  sm: { button: "size-8", icon: 20 },
+  md: { button: "size-11", icon: 24 },
+  lg: { button: "size-11", icon: 32 },
+} as const;
+
+type IconButtonProps = {
   Icon: (props: Icon) => React.JSX.Element;
   accessibilityLabel: string;
-  onPress: PressableProps["onPress"];
-  /** Scale the icon up to `32px`. */
-  large?: boolean;
-  /** Switches the icon color to red. */
-  active?: boolean;
+  onPress: PressProps["onPress"];
+  disabled?: boolean;
+  /** Defaults to `md`. */
+  size?: ButtonSize;
   /** Use the `filled` variant on the icon if available. */
   filled?: boolean;
-  disabled?: PressableProps["disabled"];
   className?: string;
-}) {
-  const { onSurface } = useTheme();
-  const iconColor = active ? Colors.red : undefined;
+  /** Used internally to set the default pressed & disabled styles. */
+  _psuedoClassName?: string;
+  _iconColor?: string;
+};
+
+//#region Default
+export const IconButton = memo(function IconButton({
+  Icon,
+  size = "md",
+  _psuedoClassName = "active:bg-onSurface/25 disabled:opacity-25",
+  filled,
+  _iconColor,
+  ...props
+}: IconButtonProps) {
   return (
     <Pressable
-      android_ripple={{
-        color: onSurface,
-        radius: large ? 24 : 18,
-        foreground: true,
-      }}
+      {...props}
       className={cn(
-        "items-center justify-center p-3 disabled:opacity-25",
-        { "p-2": large },
-        className,
+        "items-center justify-center rounded-full",
+        ButtonConfig[size].button,
+        _psuedoClassName,
+        props.className,
       )}
-      {...pressableProps}
     >
-      <Icon size={large ? 32 : 24} color={iconColor} filled={filled} />
+      <Icon size={ButtonConfig[size].icon} color={_iconColor} filled={filled} />
     </Pressable>
   );
-}
+});
+//#endregion
+
+//#region Filled
+export const FilledIconButton = memo(function FilledIconButton(
+  props: IconButtonProps,
+) {
+  return (
+    <IconButton
+      {...props}
+      className={cn("bg-surface", props.className)}
+      _psuedoClassName={cn(
+        "active:opacity-75 disabled:opacity-25",
+        props._psuedoClassName,
+      )}
+    />
+  );
+});
+//#endregion

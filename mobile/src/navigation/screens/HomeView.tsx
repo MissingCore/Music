@@ -32,7 +32,7 @@ export default function Home() {
           Icon={History}
           accessibilityLabel={t("feat.playedRecent.title")}
           onPress={() => navigation.navigate("RecentlyPlayed")}
-          large
+          size="lg"
         />
       }
       showScrollbar

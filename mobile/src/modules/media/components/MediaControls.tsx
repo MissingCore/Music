@@ -27,8 +27,8 @@ export function RepeatButton({ large = true }) {
         `term.repeat${repeatMode === "repeat-one" ? "One" : ""}`,
       )}
       onPress={PlaybackSettings.cycleRepeat}
-      active={repeatMode !== "no-repeat"}
-      large={large}
+      size={large ? "lg" : undefined}
+      _iconColor={repeatMode !== "no-repeat" ? Colors.red : undefined}
     />
   );
 }
@@ -42,8 +42,8 @@ export function ShuffleButton({ large = true }) {
       Icon={Shuffle}
       accessibilityLabel={t("term.shuffle")}
       onPress={PlaybackSettings.toggleShuffle}
-      active={isActive}
-      large={large}
+      size={large ? "lg" : undefined}
+      _iconColor={isActive ? Colors.red : undefined}
     />
   );
 }
@@ -74,7 +74,7 @@ export function NextButton({ large = true }) {
       Icon={SkipNext}
       accessibilityLabel={t("term.next")}
       onPress={() => PlaybackControls.next()}
-      large={large}
+      size={large ? "lg" : undefined}
     />
   );
 }
@@ -87,7 +87,7 @@ export function PreviousButton({ large = true }) {
       Icon={SkipPrevious}
       accessibilityLabel={t("term.prev")}
       onPress={PlaybackControls.prev}
-      large={large}
+      size={large ? "lg" : undefined}
     />
   );
 }
