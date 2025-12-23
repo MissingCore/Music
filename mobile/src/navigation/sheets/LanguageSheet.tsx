@@ -14,7 +14,7 @@ import { OnRTL } from "~/lib/react";
 import { FlatList } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
 import { ClickwrapCheckbox } from "~/components/Form/Checkbox";
-import { Radio } from "~/components/Form/Selection";
+import { RadioField } from "~/components/Form/Radio";
 import { Marquee } from "~/components/Marquee";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
@@ -91,7 +91,7 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
           data={LANGUAGES}
           keyExtractor={({ code }) => code}
           renderItem={({ item }) => (
-            <Radio
+            <RadioField
               selected={languageCode === item.code}
               onSelect={async () => {
                 await PreferenceSetters.setLanguage(item.code);
@@ -99,7 +99,7 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
               }}
             >
               <StyledText>{item.name}</StyledText>
-            </Radio>
+            </RadioField>
           )}
           nestedScrollEnabled
           contentContainerClassName="gap-2 pb-4"
