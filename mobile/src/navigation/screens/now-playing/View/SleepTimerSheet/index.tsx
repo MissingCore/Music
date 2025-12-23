@@ -68,7 +68,7 @@ export const SleepTimerSheet = deferInitialRender(
         <ClickwrapCheckbox
           textKey="feat.sleepTimer.extra.extend"
           checked={extendTimer}
-          onPress={toggleExtension}
+          onCheck={toggleExtension}
           disabled={hasTimer}
         />
 

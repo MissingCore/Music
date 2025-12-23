@@ -26,7 +26,7 @@ function Checkbox({ checked, size = 20 }: { checked: boolean; size?: number }) {
 
 type CheckboxFieldBaseProps = {
   checked: boolean;
-  onPress: VoidFunction;
+  onCheck: VoidFunction;
   disabled?: boolean;
   className?: string;
 };
@@ -36,14 +36,17 @@ const CheckboxFieldBase = memo(function CheckboxFieldBase(
 ) {
   return (
     <Pressable
-      {...props}
       accessibilityRole="checkbox"
       accessibilityState={{ checked: props.checked, disabled: props.disabled }}
+      onPress={props.onCheck}
+      disabled={props.disabled}
       className={cn(
         "flex-row items-center gap-2 active:opacity-50 disabled:opacity-25",
         props.className,
       )}
-    />
+    >
+      {props.children}
+    </Pressable>
   );
 });
 //#endregion

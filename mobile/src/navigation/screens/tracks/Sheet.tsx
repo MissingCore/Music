@@ -398,7 +398,7 @@ function TrackToPlaylistSheet({ id }: { id: string }) {
           return (
             <CheckboxField
               checked={selected}
-              onPress={() =>
+              onCheck={() =>
                 mutateGuard(
                   // @ts-expect-error - We don't care about return type.
                   selected ? removeFromPlaylist : addToPlaylist,

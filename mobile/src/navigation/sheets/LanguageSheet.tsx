@@ -63,7 +63,7 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
           <ClickwrapCheckbox
             textKey="feat.language.extra.useLTR"
             checked={forceLTR}
-            onPress={PreferenceTogglers.toggleForceLTR}
+            onCheck={PreferenceTogglers.toggleForceLTR}
           />
         ) : null}
         <Button
