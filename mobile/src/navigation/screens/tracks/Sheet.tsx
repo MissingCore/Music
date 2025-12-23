@@ -49,7 +49,7 @@ import { LegendList, ScrollView, useIsScrollable } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { Button } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button/Icon";
-import { Checkbox } from "~/components/Form/Selection";
+import { CheckboxField } from "~/components/Form/Checkbox";
 import { Marquee } from "~/components/Marquee";
 import { Sheet } from "~/components/Sheet";
 import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
@@ -396,21 +396,21 @@ function TrackToPlaylistSheet({ id }: { id: string }) {
         renderItem={({ item, index }) => {
           const selected = inList?.includes(item.name) ?? false;
           return (
-            <Checkbox
-              selected={selected}
-              onSelect={() =>
+            <CheckboxField
+              checked={selected}
+              onPress={() =>
                 mutateGuard(
                   // @ts-expect-error - We don't care about return type.
                   selected ? removeFromPlaylist : addToPlaylist,
                   item.name,
                 )
               }
-              wrapperClassName={index > 0 ? "mt-1" : undefined}
+              className={index > 0 ? "mt-2" : undefined}
             >
-              <Marquee color={selected ? "surface" : "canvasAlt"}>
+              <Marquee color="canvasAlt">
                 <StyledText>{item.name}</StyledText>
               </Marquee>
-            </Checkbox>
+            </CheckboxField>
           );
         }}
         ListEmptyComponent={

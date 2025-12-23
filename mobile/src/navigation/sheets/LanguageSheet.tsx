@@ -13,6 +13,7 @@ import { TRANSLATIONS } from "~/constants/Links";
 import { OnRTL } from "~/lib/react";
 import { FlatList } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
+import { ClickwrapCheckbox } from "~/components/Form/Checkbox";
 import { Radio } from "~/components/Form/Selection";
 import { Marquee } from "~/components/Marquee";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
@@ -27,7 +28,6 @@ import {
   TEm,
   TStyledText,
 } from "~/components/Typography/StyledText";
-import { Checkbox } from "~/components/UI/Checkbox";
 import { LANGUAGES } from "~/modules/i18n/constants";
 
 export function LanguageSheet(props: { ref: TrueSheetRef }) {
@@ -60,16 +60,11 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
           </Marquee>
         </View>
         {selectedLanguage?.rtl ? (
-          <Pressable
+          <ClickwrapCheckbox
+            textKey="feat.language.extra.useLTR"
+            checked={forceLTR}
             onPress={PreferenceTogglers.toggleForceLTR}
-            className="min-h-6 flex-row items-center gap-2"
-          >
-            <Checkbox checked={forceLTR} />
-            <TStyledText
-              textKey="feat.language.extra.useLTR"
-              className="shrink grow text-sm"
-            />
-          </Pressable>
+          />
         ) : null}
         <Button
           onPress={() => openBrowserAsync(TRANSLATIONS)}

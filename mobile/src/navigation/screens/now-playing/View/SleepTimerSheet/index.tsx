@@ -1,14 +1,12 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Keyboard, Pressable, View } from "react-native";
+import { Keyboard, View } from "react-native";
 
-import { Check } from "~/resources/icons/Check";
 import { useSleepTimerStore } from "./store";
 
-import { Colors } from "~/constants/Styles";
-import { cn } from "~/lib/style";
 import { wait } from "~/utils/promise";
 import { Button } from "~/components/Form/Button";
+import { ClickwrapCheckbox } from "~/components/Form/Checkbox";
 import { NumericInput } from "~/components/Form/Input";
 import { Sheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
@@ -67,28 +65,12 @@ export const SleepTimerSheet = deferInitialRender(
           </StyledText>
         ) : null}
 
-        <Pressable
+        <ClickwrapCheckbox
+          textKey="feat.sleepTimer.extra.extend"
+          checked={extendTimer}
           onPress={toggleExtension}
           disabled={hasTimer}
-          className="mx-auto flex-row items-center gap-2 disabled:opacity-25"
-        >
-          <View
-            className={cn(
-              "size-6 items-center justify-center rounded-xs border border-onSurface",
-              {
-                "border-red bg-red": extendTimer,
-                "border-red/25": hasTimer && extendTimer,
-              },
-            )}
-          >
-            {extendTimer ? <Check size={20} color={Colors.neutral100} /> : null}
-          </View>
-          <TStyledText
-            dim
-            textKey="feat.sleepTimer.extra.extend"
-            className="text-sm"
-          />
-        </Pressable>
+        />
 
         <Button
           onPress={hasTimer ? clearTimer : onSubmit}

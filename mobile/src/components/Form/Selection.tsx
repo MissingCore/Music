@@ -19,11 +19,6 @@ type SelectionProps = {
   className?: string;
 };
 
-/** Controlled checkbox component. */
-export function Checkbox(props: SelectionProps) {
-  return <Selection type="checkbox" {...props} />;
-}
-
 /** Controlled radio button component. */
 export function Radio(props: SelectionProps) {
   return <Selection type="radio" {...props} />;
