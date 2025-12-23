@@ -50,7 +50,7 @@ export function ScanFilterListSheet(props: {
         data={listEntries}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
-          <View className="flex-row items-center gap-2">
+          <View className="flex-row items-center justify-between gap-2">
             <Marquee color="canvasAlt">
               <StyledText>{item}</StyledText>
             </Marquee>
