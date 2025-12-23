@@ -1,7 +1,8 @@
 import { memo } from "react";
-import { Pressable } from "react-native";
+import { Pressable, View } from "react-native";
 
 import type { Icon } from "~/resources/icons/type";
+import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
 import type { PressProps } from "./types";
@@ -9,9 +10,9 @@ import type { PressProps } from "./types";
 type ButtonSize = "sm" | "md" | "lg";
 
 const ButtonConfig = {
-  sm: { button: "size-8", icon: 20 },
-  md: { button: "size-11", icon: 24 },
-  lg: { button: "size-11", icon: 32 },
+  sm: { buttonSize: "size-8", iconSize: 20 },
+  md: { buttonSize: "size-11", iconSize: 24 },
+  lg: { buttonSize: "size-11", iconSize: 32 },
 } as const;
 
 type IconButtonProps = {
@@ -24,8 +25,6 @@ type IconButtonProps = {
   /** Use the `filled` variant on the icon if available. */
   filled?: boolean;
   className?: string;
-  /** Used internally to set the default pressed & disabled styles. */
-  _psuedoClassName?: string;
   _iconColor?: string;
 };
 
@@ -33,40 +32,56 @@ type IconButtonProps = {
 export const IconButton = memo(function IconButton({
   Icon,
   size = "md",
-  _psuedoClassName = "active:bg-onSurface/25 disabled:opacity-25",
   filled,
   _iconColor,
   ...props
 }: IconButtonProps) {
+  const { onSurface } = useTheme();
+  const { buttonSize, iconSize } = ButtonConfig[size];
+
   return (
     <Pressable
       {...props}
       className={cn(
-        "items-center justify-center rounded-full",
-        ButtonConfig[size].button,
-        _psuedoClassName,
+        "items-center justify-center rounded-full disabled:opacity-25",
+        buttonSize,
         props.className,
       )}
     >
-      <Icon size={ButtonConfig[size].icon} color={_iconColor} filled={filled} />
+      {({ pressed }) => (
+        <View
+          collapsable={false} // Prevents view flattening.
+          style={[pressed && { backgroundColor: `${onSurface}80` }]}
+          className="rounded-full p-1.5"
+        >
+          <Icon size={iconSize} color={_iconColor} filled={filled} />
+        </View>
+      )}
     </Pressable>
   );
 });
 //#endregion
 
 //#region Filled
-export const FilledIconButton = memo(function FilledIconButton(
-  props: IconButtonProps,
-) {
+export const FilledIconButton = memo(function FilledIconButton({
+  Icon,
+  size = "md",
+  filled,
+  _iconColor,
+  ...props
+}: IconButtonProps) {
+  const { buttonSize, iconSize } = ButtonConfig[size];
   return (
-    <IconButton
+    <Pressable
       {...props}
-      className={cn("bg-surface", props.className)}
-      _psuedoClassName={cn(
-        "active:opacity-75 disabled:opacity-25",
-        props._psuedoClassName,
+      className={cn(
+        "items-center justify-center rounded-full bg-surface active:opacity-75 disabled:opacity-25",
+        buttonSize,
+        props.className,
       )}
-    />
+    >
+      <Icon size={iconSize} color={_iconColor} filled={filled} />
+    </Pressable>
   );
 });
 //#endregion
