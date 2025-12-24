@@ -1,4 +1,5 @@
 import type { ParseKeys } from "i18next";
+import { memo } from "react";
 import type { PressableProps } from "react-native";
 import { Pressable } from "react-native";
 
@@ -6,7 +7,10 @@ import { cn } from "~/lib/style";
 import { TStyledText } from "../../Typography/StyledText";
 
 //#region Default
-export function Button({ className, ...props }: PressableProps) {
+export const Button = memo(function Button({
+  className,
+  ...props
+}: PressableProps) {
   return (
     <Pressable
       className={cn(
@@ -17,11 +21,11 @@ export function Button({ className, ...props }: PressableProps) {
       {...props}
     />
   );
-}
+});
 //#endregion
 
 //#region Extended Translated
-export function ExtendedTButton(
+export const ExtendedTButton = memo(function ExtendedTButton(
   props: PressableProps & {
     textKey: ParseKeys;
     /** **Note:** Text will be left-aligned if provided. */
@@ -52,5 +56,5 @@ export function ExtendedTButton(
       {props.RightElement}
     </Button>
   );
-}
+});
 //#endregion
