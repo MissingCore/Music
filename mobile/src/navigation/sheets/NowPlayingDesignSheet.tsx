@@ -2,7 +2,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
 
 import { FlatList } from "~/components/Defaults";
-import { Radio } from "~/components/Form/Selection";
+import { RadioField } from "~/components/Form/Radio";
 import { DetachedSheet } from "~/components/Sheet/Detached";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { TStyledText } from "~/components/Typography/StyledText";
@@ -18,12 +18,12 @@ export function NowPlayingDesignSheet(props: { ref: TrueSheetRef }) {
         data={NowPlayingDesignOptions}
         keyExtractor={(design) => design}
         renderItem={({ item: design }) => (
-          <Radio
+          <RadioField
             selected={nowPlayingDesign === design}
             onSelect={() => PreferenceSetters.setNowPlayingDesign(design)}
           >
             <TStyledText textKey={`feat.nowPlayingDesign.extra.${design}`} />
-          </Radio>
+          </RadioField>
         )}
         contentContainerClassName="gap-2"
       />

@@ -12,7 +12,7 @@ import { PlaybackControls, PlaybackSettings } from "~/stores/Playback/actions";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
-import { Button, IconButton } from "~/components/Form/Button";
+import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 
 /** Toggles the repeat status. */
 export function RepeatButton({ large = true }) {
@@ -26,8 +26,8 @@ export function RepeatButton({ large = true }) {
         `term.repeat${repeatMode === "repeat-one" ? "One" : ""}`,
       )}
       onPress={PlaybackSettings.cycleRepeat}
-      active={repeatMode !== "no-repeat"}
-      large={large}
+      size={large ? "lg" : undefined}
+      _iconColor={repeatMode !== "no-repeat" ? Colors.red : undefined}
     />
   );
 }
@@ -41,8 +41,8 @@ export function ShuffleButton({ large = true }) {
       Icon={Shuffle}
       accessibilityLabel={t("term.shuffle")}
       onPress={PlaybackSettings.toggleShuffle}
-      active={isActive}
-      large={large}
+      size={large ? "lg" : undefined}
+      _iconColor={isActive ? Colors.red : undefined}
     />
   );
 }
@@ -51,17 +51,15 @@ export function ShuffleButton({ large = true }) {
 export function PlayToggleButton() {
   const { t } = useTranslation();
   const isPlaying = usePlaybackStore((s) => s.isPlaying);
-  const Icon = isPlaying ? Pause : PlayArrow;
   return (
-    <Button
+    <FilledIconButton
+      Icon={isPlaying ? Pause : PlayArrow}
       accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
       onPress={() => PlaybackControls.playToggle()}
-      className={cn("rounded-full bg-red px-6 py-2", {
-        "bg-onSurface": isPlaying,
-      })}
-    >
-      <Icon size={32} color={Colors.neutral100} />
-    </Button>
+      size="lg"
+      className={cn("bg-red px-6 py-2", { "bg-onSurface": isPlaying })}
+      _iconColor={Colors.neutral100}
+    />
   );
 }
 
@@ -73,7 +71,7 @@ export function NextButton({ large = true }) {
       Icon={SkipNext}
       accessibilityLabel={t("term.next")}
       onPress={() => PlaybackControls.next()}
-      large={large}
+      size={large ? "lg" : undefined}
     />
   );
 }
@@ -86,7 +84,7 @@ export function PreviousButton({ large = true }) {
       Icon={SkipPrevious}
       accessibilityLabel={t("term.prev")}
       onPress={PlaybackControls.prev}
-      large={large}
+      size={large ? "lg" : undefined}
     />
   );
 }

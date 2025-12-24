@@ -19,7 +19,8 @@ import { useTheme } from "~/hooks/useTheme";
 import { cn } from "~/lib/style";
 import { isString } from "~/utils/validation";
 import { FlashList, FlatList } from "~/components/Defaults";
-import { Button, IconButton } from "~/components/Form/Button";
+import { Button } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button/Icon";
 import { TextInput, useInputRef } from "~/components/Form/Input";
 import { TEm } from "~/components/Typography/StyledText";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
@@ -141,13 +142,12 @@ function SearchResultsList<TScope extends SearchCategories>(
             />
           ) : (
             <SearchResult
-              as="ripple"
+              button
               /* @ts-expect-error - `type` should be limited to our scope. */
               onPress={() => props.callbacks[item.type](item.entry)}
-              wrapperClassName={cn("mt-2", {
+              className={cn("mt-2 pr-4", {
                 "rounded-full": item.type === "artist",
               })}
-              className="pr-4"
               {...item}
             />
           )
@@ -194,7 +194,7 @@ function SearchFilters(props: {
           <View className="rounded-sm bg-canvas">
             <Button
               onPress={() => props.onSelectTab(tab)}
-              className={cn("min-h-0 min-w-0 rounded-sm px-3 py-1.5", {
+              className={cn("min-h-0 rounded-sm px-3 py-1.5", {
                 "bg-red": selected,
               })}
             >

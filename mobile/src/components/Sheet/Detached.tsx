@@ -14,7 +14,7 @@ import { useSafeAreaHeight } from "~/hooks/useSafeAreaHeight";
 
 import { cn } from "~/lib/style";
 import type { TrueSheetRef } from "./useSheetRef";
-import { Marquee } from "../Containment/Marquee";
+import { Marquee } from "../Marquee";
 import { TStyledText } from "../Typography/StyledText";
 
 const WrappedGestureHandlerRootView = withUniwind(GestureHandlerRootView);

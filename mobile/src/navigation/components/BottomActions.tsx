@@ -18,7 +18,8 @@ import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { capitalize } from "~/utils/string";
 import { FlatList, useFlatListRef } from "~/components/Defaults";
-import { Button, IconButton } from "~/components/Form/Button";
+import { Button } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button/Icon";
 import { StyledText } from "~/components/Typography/StyledText";
 import type { Tab } from "~/stores/Preference/types";
 import { MiniPlayer } from "./MiniPlayer";
@@ -136,7 +137,7 @@ function NavigationList() {
           <Button
             onPress={() => navigation.navigate("HomeScreens", { screen: name })}
             disabled={routeName === name}
-            className="min-w-0 bg-transparent px-2 disabled:opacity-100"
+            className="bg-transparent px-2 disabled:opacity-100"
           >
             <StyledText
               className={cn("text-sm", { "text-red": routeName === name })}

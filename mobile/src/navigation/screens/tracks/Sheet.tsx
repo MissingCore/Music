@@ -45,12 +45,12 @@ import {
   formatEpoch,
   formatSeconds,
 } from "~/utils/number";
-import { Card } from "~/components/Containment/Card";
-import { Marquee } from "~/components/Containment/Marquee";
 import { LegendList, ScrollView, useIsScrollable } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
-import { Button, IconButton } from "~/components/Form/Button";
-import { Checkbox } from "~/components/Form/Selection";
+import { Button } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button/Icon";
+import { CheckboxField } from "~/components/Form/Checkbox";
+import { Marquee } from "~/components/Marquee";
 import { Sheet } from "~/components/Sheet";
 import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
@@ -148,7 +148,7 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
 function TrackMetadata({ data }: { data: TrackWithAlbum }) {
   const { foreground } = useTheme();
   return (
-    <Card className="gap-4">
+    <View className="gap-4 rounded-md bg-surface p-4">
       <Marquee
         color="surface"
         contentContainerClassName="grow justify-between gap-4"
@@ -175,7 +175,7 @@ function TrackMetadata({ data }: { data: TrackWithAlbum }) {
           <Badge Icon={Schedule}>{formatSeconds(data.duration)}</Badge>
         </View>
       </View>
-    </Card>
+    </View>
   );
 }
 //#endregion
@@ -193,7 +193,7 @@ function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
   const isFav = favoriteTrack.isPending ? !favStatus : favStatus;
 
   return (
-    <Card className="flex-row justify-between gap-1 py-1">
+    <View className="flex-row justify-between gap-1 rounded-md bg-surface px-4 py-1">
       <IconButton
         Icon={Favorite}
         accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
@@ -227,7 +227,7 @@ function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
           }),
         )}
       />
-    </Card>
+    </View>
   );
 }
 
@@ -290,8 +290,8 @@ function Badge(props: {
   return (
     <View
       className={cn(
-        "flex-row items-center gap-1 rounded-[6px] bg-neutral85 px-2 py-1",
-        { "bg-neutral65": theme === "dark" },
+        "flex-row items-center gap-1 rounded-[6px] bg-neutral90 px-2 py-1",
+        { "bg-neutral70": theme === "dark" },
       )}
     >
       {props.Icon ? <props.Icon size={14} color={Colors.neutral0} /> : null}
@@ -396,21 +396,21 @@ function TrackToPlaylistSheet({ id }: { id: string }) {
         renderItem={({ item, index }) => {
           const selected = inList?.includes(item.name) ?? false;
           return (
-            <Checkbox
-              selected={selected}
-              onSelect={() =>
+            <CheckboxField
+              checked={selected}
+              onCheck={() =>
                 mutateGuard(
                   // @ts-expect-error - We don't care about return type.
                   selected ? removeFromPlaylist : addToPlaylist,
                   item.name,
                 )
               }
-              wrapperClassName={index > 0 ? "mt-1" : undefined}
+              className={index > 0 ? "mt-2" : undefined}
             >
-              <Marquee color={selected ? "surface" : "canvasAlt"}>
+              <Marquee color="canvasAlt">
                 <StyledText>{item.name}</StyledText>
               </Marquee>
-            </Checkbox>
+            </CheckboxField>
           );
         }}
         ListEmptyComponent={

@@ -5,7 +5,7 @@ import { Modal as RNModal, View } from "react-native";
 import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
-import { Button } from "./Form/Button";
+import { ExtendedTButton } from "./Form/Button";
 import { TStyledText } from "./Typography/StyledText";
 
 export function Modal(props: { visible: boolean; children: React.ReactNode }) {
@@ -56,36 +56,23 @@ export function ModalActions(props: ModalActionsProp) {
   const { theme } = useTheme();
   return (
     <View className="gap-0.75">
-      <Button
+      <ExtendedTButton
         {...props.topAction}
         className={cn(
           "rounded-b-xs bg-canvas",
           { "bg-onSurface": theme === "dark" },
           props.topAction.className,
         )}
-      >
-        <TStyledText
-          textKey={props.topAction.textKey}
-          className={cn("text-center text-sm", {
-            "text-red": props.topAction.danger ?? true,
-          })}
-          bold
-        />
-      </Button>
-      <Button
+        textClassName={cn({ "text-red": props.topAction.danger ?? true })}
+      />
+      <ExtendedTButton
         {...props.bottomAction}
         className={cn(
           "rounded-t-xs bg-canvas",
           { "bg-onSurface": theme === "dark" },
           props.bottomAction.className,
         )}
-      >
-        <TStyledText
-          textKey={props.bottomAction.textKey}
-          className="text-center text-sm"
-          bold
-        />
-      </Button>
+      />
     </View>
   );
 }

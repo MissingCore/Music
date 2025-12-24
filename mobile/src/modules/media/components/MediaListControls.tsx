@@ -8,7 +8,7 @@ import { PlaybackControls } from "~/stores/Playback/actions";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
-import { Button } from "~/components/Form/Button";
+import { FilledIconButton } from "~/components/Form/Button/Icon";
 import type { PlayFromSource } from "~/stores/Playback/types";
 import { arePlaybackSourceEqual } from "~/stores/Playback/utils";
 import { RepeatButton, ShuffleButton } from "./MediaControls";
@@ -40,19 +40,17 @@ function PlayMediaListButton({ trackSource }: { trackSource: PlayFromSource }) {
   const isThisSource = arePlaybackSourceEqual(currSource, trackSource);
   const displayPause = isThisSource && isPlaying;
 
-  const Icon = displayPause ? Pause : PlayArrow;
-
   return (
-    <Button
+    <FilledIconButton
+      Icon={displayPause ? Pause : PlayArrow}
       accessibilityLabel={t(`term.${displayPause ? "pause" : "play"}`)}
       onPress={() =>
         displayPause
           ? PlaybackControls.pause()
           : PlaybackControls.playFromList({ source: trackSource })
       }
-      className={cn("bg-red p-3", { "bg-onSurface": displayPause })}
-    >
-      <Icon color={Colors.neutral100} />
-    </Button>
+      className={cn("rounded-md bg-red", { "bg-onSurface": displayPause })}
+      _iconColor={Colors.neutral100}
+    />
   );
 }

@@ -14,7 +14,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useOnboardingStore } from "~/modules/scanning/services/Onboarding";
 import { SystemTheme } from "~/hooks/useTheme";
 
-import { SafeContainer } from "~/components/Containment/SafeContainer";
+import { SafeContainer } from "~/components/SafeContainer";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
 /**

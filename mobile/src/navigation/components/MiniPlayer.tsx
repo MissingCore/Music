@@ -9,10 +9,11 @@ import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
+import { Colors } from "~/constants/Styles";
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
-import { Marquee } from "~/components/Containment/Marquee";
-import { IconButton } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button/Icon";
+import { Marquee } from "~/components/Marquee";
 import { Swipeable } from "~/components/Swipeable";
 import { StyledText } from "~/components/Typography/StyledText";
 import {
@@ -81,8 +82,8 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
             Icon={isPlaying ? Pause : PlayArrow}
             accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
             onPress={() => PlaybackControls.playToggle()}
-            active
-            large
+            size="lg"
+            _iconColor={Colors.red}
           />
           {!gestureUI ? <NextButton /> : null}
         </View>

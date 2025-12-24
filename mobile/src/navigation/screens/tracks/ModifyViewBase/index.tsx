@@ -19,14 +19,11 @@ import {
 
 import { ScrollablePresets } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
-import { Button, IconButton } from "~/components/Form/Button";
+import { ExtendedTButton } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";
 import { ModalTemplate } from "~/components/Modal";
-import {
-  StyledText,
-  TEm,
-  TStyledText,
-} from "~/components/Typography/StyledText";
+import { StyledText, TEm } from "~/components/Typography/StyledText";
 import { ScreenOptions } from "../../../components/ScreenOptions";
 
 export function ModifyTrackBase(props: InitStoreProps) {
@@ -222,16 +219,13 @@ function ResetWorkflow({
 
   return (
     <View ref={floatingRef} {...wrapperStyling}>
-      <Button
+      <ExtendedTButton
+        textKey="form.reset"
         onPress={onReset}
         disabled={isSubmitting}
-        className="w-full bg-red"
-      >
-        <TStyledText
-          textKey="form.reset"
-          className="text-center text-neutral100"
-        />
-      </Button>
+        className="bg-red"
+        textClassName="text-neutral100"
+      />
     </View>
   );
 }

@@ -14,7 +14,7 @@ import { Tabs } from "~/stores/Preference/actions";
 import { cn } from "~/lib/style";
 import { ScrollablePresets } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
-import { IconButton } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button/Icon";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import type { Tab } from "~/stores/Preference/types";
 

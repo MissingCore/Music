@@ -6,8 +6,9 @@ import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { StandardScrollLayout } from "~/navigation/layouts/StandardScroll";
 import { PlaybackDelaySheet } from "~/navigation/sheets/PlaybackDelaySheet";
 
-import { List, ListItem } from "~/components/Containment/List";
+import { SegmentedList } from "~/components/List/Segmented";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
+import { Switch } from "~/components/UI/Switch";
 
 export default function PlaybackSettings() {
   const { t } = useTranslation();
@@ -21,29 +22,25 @@ export default function PlaybackSettings() {
       <PlaybackDelaySheet ref={playbackDelaySheetRef} />
 
       <StandardScrollLayout>
-        <ListItem
-          titleKey="feat.playbackDelay.title"
-          description={t("plural.second", { count: playbackDelay })}
+        <SegmentedList.Item
+          labelTextKey="feat.playbackDelay.title"
+          supportingText={t("plural.second", { count: playbackDelay })}
           onPress={() => playbackDelaySheetRef.current?.present()}
-          first
-          last
         />
 
-        <List>
-          <ListItem
-            titleKey="feat.repeatOnSkip.title"
-            description={t("feat.repeatOnSkip.brief")}
+        <SegmentedList>
+          <SegmentedList.Item
+            labelTextKey="feat.repeatOnSkip.title"
+            supportingText={t("feat.repeatOnSkip.brief")}
             onPress={PreferenceTogglers.toggleRepeatOnSkip}
-            switchState={repeatOnSkip}
-            first
+            RightElement={<Switch enabled={repeatOnSkip} />}
           />
-          <ListItem
-            titleKey="feat.restoreLastPosition.title"
+          <SegmentedList.Item
+            labelTextKey="feat.restoreLastPosition.title"
             onPress={PreferenceTogglers.toggleRestoreLastPosition}
-            switchState={restoreLastPosition}
-            last
+            RightElement={<Switch enabled={restoreLastPosition} />}
           />
-        </List>
+        </SegmentedList>
       </StandardScrollLayout>
     </>
   );

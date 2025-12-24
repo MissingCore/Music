@@ -11,10 +11,11 @@ import {
 
 import { TRANSLATIONS } from "~/constants/Links";
 import { OnRTL } from "~/lib/react";
-import { Marquee } from "~/components/Containment/Marquee";
 import { FlatList } from "~/components/Defaults";
-import { Button } from "~/components/Form/Button";
-import { Radio } from "~/components/Form/Selection";
+import { ExtendedTButton } from "~/components/Form/Button";
+import { ClickwrapCheckbox } from "~/components/Form/Checkbox";
+import { RadioField } from "~/components/Form/Radio";
+import { Marquee } from "~/components/Marquee";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { DetachedSheet } from "~/components/Sheet/Detached";
@@ -22,12 +23,7 @@ import {
   DetachedDimView,
   useDetachedDimViewContext,
 } from "~/components/Sheet/DetachedDimView";
-import {
-  StyledText,
-  TEm,
-  TStyledText,
-} from "~/components/Typography/StyledText";
-import { Checkbox } from "~/components/UI/Checkbox";
+import { StyledText, TEm } from "~/components/Typography/StyledText";
 import { LANGUAGES } from "~/modules/i18n/constants";
 
 export function LanguageSheet(props: { ref: TrueSheetRef }) {
@@ -60,28 +56,19 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
           </Marquee>
         </View>
         {selectedLanguage?.rtl ? (
-          <Pressable
-            onPress={PreferenceTogglers.toggleForceLTR}
-            className="min-h-6 flex-row items-center gap-2"
-          >
-            <Checkbox checked={forceLTR} />
-            <TStyledText
-              textKey="feat.language.extra.useLTR"
-              className="shrink grow text-sm"
-            />
-          </Pressable>
-        ) : null}
-        <Button
-          onPress={() => openBrowserAsync(TRANSLATIONS)}
-          className="flex-row rounded-full"
-        >
-          <TStyledText
-            textKey="feat.language.extra.contribute"
-            bold
-            className="text-sm"
+          <ClickwrapCheckbox
+            textKey="feat.language.extra.useLTR"
+            checked={forceLTR}
+            onCheck={PreferenceTogglers.toggleForceLTR}
           />
-          <OpenInNew size={20} />
-        </Button>
+        ) : null}
+
+        <ExtendedTButton
+          textKey="feat.language.extra.contribute"
+          onPress={() => openBrowserAsync(TRANSLATIONS)}
+          RightElement={<OpenInNew size={20} />}
+          className="rounded-full"
+        />
 
         <DetachedDimView dimness={dimness} />
       </DetachedSheet>
@@ -96,7 +83,7 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
           data={LANGUAGES}
           keyExtractor={({ code }) => code}
           renderItem={({ item }) => (
-            <Radio
+            <RadioField
               selected={languageCode === item.code}
               onSelect={async () => {
                 await PreferenceSetters.setLanguage(item.code);
@@ -104,7 +91,7 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
               }}
             >
               <StyledText>{item.name}</StyledText>
-            </Radio>
+            </RadioField>
           )}
           nestedScrollEnabled
           contentContainerClassName="gap-2 pb-4"

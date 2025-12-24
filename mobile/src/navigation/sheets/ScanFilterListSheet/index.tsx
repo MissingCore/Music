@@ -10,10 +10,10 @@ import { pickPath, removePath, useAddPathToList, validatePath } from "./utils";
 
 import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
-import { Marquee } from "~/components/Containment/Marquee";
 import { FlatList } from "~/components/Defaults";
-import { Button, IconButton } from "~/components/Form/Button";
+import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";
+import { Marquee } from "~/components/Marquee";
 import { DetachedSheet } from "~/components/Sheet/Detached";
 import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
@@ -49,7 +49,7 @@ export function ScanFilterListSheet(props: {
         data={listEntries}
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
-          <View className="flex-row items-center gap-2">
+          <View className="flex-row items-center justify-between gap-2">
             <Marquee color="canvasAlt">
               <StyledText>{item}</StyledText>
             </Marquee>
@@ -111,7 +111,8 @@ function FilterForm(props: {
           disabled={onSubmit.isPending}
         />
       </View>
-      <Button
+      <FilledIconButton
+        Icon={Add}
         accessibilityLabel={t("feat.directory.extra.add")}
         onPress={() => {
           Keyboard.dismiss();
@@ -122,10 +123,9 @@ function FilterForm(props: {
           });
         }}
         disabled={!isValidPath || onSubmit.isPending}
-        className="bg-red p-3"
-      >
-        <Add color={Colors.neutral100} />
-      </Button>
+        className="rounded-md bg-red"
+        _iconColor={Colors.neutral100}
+      />
     </View>
   );
 }

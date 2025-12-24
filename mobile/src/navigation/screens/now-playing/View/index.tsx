@@ -26,9 +26,9 @@ import { OnRTL } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { formatSeconds } from "~/utils/number";
-import { Marquee } from "~/components/Containment/Marquee";
-import { SafeContainer } from "~/components/Containment/SafeContainer";
-import { IconButton } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button/Icon";
+import { Marquee } from "~/components/Marquee";
+import { SafeContainer } from "~/components/SafeContainer";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
 import {
@@ -91,7 +91,7 @@ function Metadata({ track }: { track: TrackWithAlbum }) {
           Icon={MoreVert}
           accessibilityLabel={t("template.entrySeeMore", { name: track.name })}
           onPress={() => presentTrackSheet(track.id)}
-          large
+          size="lg"
         />
       </View>
       {/*
@@ -128,7 +128,7 @@ function FavoriteButton(props: { trackId: string }) {
       accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
       onPress={() => mutateGuard(favoriteTrack, !data?.isFavorite)}
       filled={isFav}
-      large
+      size="lg"
     />
   );
 }
@@ -229,7 +229,7 @@ function BottomAppBar() {
               Icon={Timer}
               accessibilityLabel={t("feat.sleepTimer.title")}
               onPress={() => sleepTimerSheetRef.current?.present()}
-              large
+              size="lg"
             />
             {sleepTimerActive && (
               <View className="absolute top-2 right-2 size-2 rounded-full bg-red" />
@@ -239,13 +239,13 @@ function BottomAppBar() {
             Icon={InstantMix}
             accessibilityLabel={t("feat.playback.extra.options")}
             onPress={() => playbackOptionsSheetRef.current?.present()}
-            large
+            size="lg"
           />
           <IconButton
             Icon={LibraryMusic}
             accessibilityLabel={t("term.upcoming")}
             onPress={() => navigation.navigate("Upcoming")}
-            large
+            size="lg"
           />
         </View>
       </View>
@@ -268,7 +268,7 @@ function BackButton() {
       Icon={KeyboardArrowDown}
       accessibilityLabel={t("form.back")}
       onPress={() => navigation.goBack()}
-      large
+      size="lg"
     />
   );
 }

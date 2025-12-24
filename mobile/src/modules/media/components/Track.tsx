@@ -7,8 +7,7 @@ import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { presentTrackSheet } from "~/services/SessionStore";
 
-import { cn } from "~/lib/style";
-import { IconButton } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button/Icon";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import type { PlayFromSource } from "~/stores/Playback/types";
@@ -17,7 +16,6 @@ import { PlayingIndicator } from "./AnimatedBars";
 import type { TrackContent, TrackProps } from "./Track.type";
 
 //#region Track
-
 /**
  * Displays information about the current track with 2 different press
  * scenarios (pressing the icon or the whole card will do different actions).
@@ -25,7 +23,6 @@ import type { TrackContent, TrackProps } from "./Track.type";
 export function Track({
   id,
   trackSource,
-  className,
   showIndicator,
   LeftElement,
   ...props
@@ -39,22 +36,20 @@ export function Track({
 
   return (
     <SearchResult
-      as="ripple"
+      button
       type="track"
       onPress={() =>
         PlaybackControls.playFromList({ trackId: id, source: trackSource })
       }
+      LeftElement={overriddenLeftElement}
       RightElement={
         <IconButton
           Icon={MoreVert}
           accessibilityLabel={t("template.entrySeeMore", { name: props.title })}
           onPress={() => presentTrackSheet(id)}
-          disabled={props.disabled}
         />
       }
-      wrapperClassName={cn("bg-canvas", className)}
       poppyLabel={showIndicator}
-      LeftElement={overriddenLeftElement}
       {...props}
     />
   );

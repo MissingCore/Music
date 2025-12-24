@@ -11,7 +11,8 @@ import { StandardScrollLayout } from "../layouts/StandardScroll";
 import { cn } from "~/lib/style";
 import { abbreviateNum } from "~/utils/number";
 import { LegendList } from "~/components/Defaults";
-import { Button, IconButton } from "~/components/Form/Button";
+import { Button } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button/Icon";
 import { AccentText } from "~/components/Typography/AccentText";
 import { TEm, TStyledText } from "~/components/Typography/StyledText";
 import {
@@ -31,7 +32,7 @@ export default function Home() {
           Icon={History}
           accessibilityLabel={t("feat.playedRecent.title")}
           onPress={() => navigation.navigate("RecentlyPlayed")}
-          large
+          size="lg"
         />
       }
       showScrollbar

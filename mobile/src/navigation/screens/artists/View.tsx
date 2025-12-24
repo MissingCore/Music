@@ -19,13 +19,12 @@ export default function Artists() {
       keyExtractor={({ name }) => name}
       renderItem={({ item, index }) => (
         <SearchResult
-          as="ripple"
+          button
           type="artist"
           title={item.name}
           imageSource={item.artwork}
           onPress={() => navigation.navigate("Artist", { id: item.name })}
-          wrapperClassName={cn("rounded-full", { "mt-2": index > 0 })}
-          className="pr-4"
+          className={cn("rounded-full pr-4", { "mt-2": index > 0 })}
         />
       )}
       ListEmptyComponent={

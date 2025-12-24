@@ -12,7 +12,7 @@ import { VisibilityOff } from "~/resources/icons/VisibilityOff";
 import { clearAllQueries } from "~/lib/react-query";
 import { bgWait } from "~/utils/promise";
 import { LegendList } from "~/components/Defaults";
-import { IconButton } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button/Icon";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import {
   ContentPlaceholder,

@@ -15,7 +15,7 @@ import { PlaylistArtworkSheet } from "../../ArtworkSheet";
 
 import { mutateGuard } from "~/lib/react-query";
 import { LegendList } from "~/components/Defaults";
-import { IconButton } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button/Icon";
 import type { MenuAction } from "~/components/Menu";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { useTrackListPreset } from "~/modules/media/components/Track";

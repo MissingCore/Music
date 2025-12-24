@@ -15,17 +15,23 @@ export const Colors = {
 
   neutral0: "#000000",
   neutral7: "#121212",
-  neutral10: "#1B1D1F", // Technically not the same hue or saturation.
-  neutral20: "#333333",
-  neutral40: "#666666",
-  neutral65: "#A6A6A6",
-  neutral80: "#CCCCCC",
-  neutral85: "#D9D9D9",
+  neutral10: "#1C1C1C",
+  neutral15: "#292929",
+  neutral20: "#323232",
+  neutral30: "#484848",
+  neutral40: "#606060",
+  neutral50: "#777777",
+  neutral60: "#929292",
+  neutral70: "#ADADAD",
+  neutral80: "#C8C8C8",
+  neutral90: "#E3E3E3",
   neutral95: "#F2F2F2",
   neutral100: "#FFFFFF",
 
   red: "#C8102E",
-  yellow: "#FFD84D",
+  yellow: "#FFC700",
+  blue: "#4142BE",
+  green: "#1DB159",
 } as const;
 
 export const FontFamily = {

@@ -13,7 +13,7 @@ import { AlbumArtworkSheet } from "../ArtworkSheet";
 import { mutateGuard } from "~/lib/react-query";
 import { isNumber } from "~/utils/validation";
 import { LegendList } from "~/components/Defaults";
-import { IconButton } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button/Icon";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { Em, StyledText } from "~/components/Typography/StyledText";
 import {

@@ -9,8 +9,9 @@ import { MinDurationSheet } from "~/navigation/sheets/MinDurationSheet";
 import { ScanFilterListSheet } from "~/navigation/sheets/ScanFilterListSheet";
 
 import { mutateGuard } from "~/lib/react-query";
-import { List, ListItem } from "~/components/Containment/List";
+import { SegmentedList } from "~/components/List/Segmented";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
+import { Switch } from "~/components/UI/Switch";
 
 export default function ScanningSettings() {
   const { t } = useTranslation();
@@ -30,51 +31,45 @@ export default function ScanningSettings() {
       <MinDurationSheet ref={minDurationSheetRef} />
 
       <StandardScrollLayout>
-        <List>
-          <ListItem
-            titleKey="feat.rescan.title"
-            description={t("feat.rescan.brief")}
+        <SegmentedList>
+          <SegmentedList.Item
+            labelTextKey="feat.rescan.title"
+            supportingText={t("feat.rescan.brief")}
             disabled={rescan.isPending}
             onPress={() => mutateGuard(rescan, undefined)}
-            first
           />
-          <ListItem
-            titleKey="feat.deepRescan.title"
-            description={t("feat.deepRescan.brief")}
+          <SegmentedList.Item
+            labelTextKey="feat.deepRescan.title"
+            supportingText={t("feat.deepRescan.brief")}
             disabled={rescan.isPending}
             onPress={() => mutateGuard(rescan, true)}
-            last
           />
-        </List>
+        </SegmentedList>
 
-        <ListItem
-          titleKey="feat.rescanOnLaunch.title"
-          description={t("feat.rescanOnLaunch.brief")}
+        <SegmentedList.Item
+          labelTextKey="feat.rescanOnLaunch.title"
+          supportingText={t("feat.rescanOnLaunch.brief")}
           onPress={PreferenceTogglers.toggleRescanOnLaunch}
-          switchState={rescanOnLaunch}
-          first
-          last
+          RightElement={<Switch enabled={rescanOnLaunch} />}
         />
 
-        <List>
-          <ListItem
-            titleKey="feat.listAllow.title"
-            description={t("plural.entry", { count: allowList.length })}
+        <SegmentedList>
+          <SegmentedList.Item
+            labelTextKey="feat.listAllow.title"
+            supportingText={t("plural.entry", { count: allowList.length })}
             onPress={() => allowListSheetRef.current?.present()}
-            first
           />
-          <ListItem
-            titleKey="feat.listBlock.title"
-            description={t("plural.entry", { count: blockList.length })}
+          <SegmentedList.Item
+            labelTextKey="feat.listBlock.title"
+            supportingText={t("plural.entry", { count: blockList.length })}
             onPress={() => blockListSheetRef.current?.present()}
           />
-          <ListItem
-            titleKey="feat.ignoreDuration.title"
-            description={t("plural.second", { count: ignoreDuration })}
+          <SegmentedList.Item
+            labelTextKey="feat.ignoreDuration.title"
+            supportingText={t("plural.second", { count: ignoreDuration })}
             onPress={() => minDurationSheetRef.current?.present()}
-            last
           />
-        </List>
+        </SegmentedList>
       </StandardScrollLayout>
     </>
   );

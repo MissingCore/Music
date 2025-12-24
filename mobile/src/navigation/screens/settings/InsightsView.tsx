@@ -14,10 +14,9 @@ import { Colors } from "~/constants/Styles";
 import { ImageDirectory } from "~/lib/file-system";
 import type { ExtractQueryData } from "~/lib/react-query";
 import { abbreviateSize, formatSeconds } from "~/utils/number";
-import { Card } from "~/components/Containment/Card";
-import { List, ListItem } from "~/components/Containment/List";
-import { Legend, LegendItem } from "~/components/Form/Legend";
-import { ProgressBar } from "~/components/Form/ProgressBar";
+import { SegmentedList } from "~/components/List/Segmented";
+import { Legend } from "~/components/UI/Legend";
+import { ProgressBar } from "~/components/UI/ProgressBar";
 
 export default function Insights() {
   const { t } = useTranslation();
@@ -25,33 +24,29 @@ export default function Insights() {
 
   return (
     <StandardScrollLayout>
-      <List>
+      <SegmentedList>
         <StorageWidget />
         <DBSummaryWidget />
-      </List>
+      </SegmentedList>
 
-      <ListItem
-        titleKey="feat.mostPlayed.title"
-        description={t("feat.mostPlayed.brief")}
+      <SegmentedList.Item
+        labelTextKey="feat.mostPlayed.title"
+        supportingText={t("feat.mostPlayed.brief")}
         onPress={() => navigation.navigate("MostPlayed")}
-        first
-        last
       />
 
-      <List>
-        <ListItem
-          titleKey="feat.hiddenTracks.title"
-          description={t("feat.hiddenTracks.brief")}
+      <SegmentedList>
+        <SegmentedList.Item
+          labelTextKey="feat.hiddenTracks.title"
+          supportingText={t("feat.hiddenTracks.brief")}
           onPress={() => navigation.navigate("HiddenTracks")}
-          first
         />
-        <ListItem
-          titleKey="feat.saveErrors.title"
-          description={t("feat.saveErrors.brief")}
+        <SegmentedList.Item
+          labelTextKey="feat.saveErrors.title"
+          supportingText={t("feat.saveErrors.brief")}
           onPress={() => navigation.navigate("SaveErrors")}
-          last
         />
-      </List>
+      </SegmentedList>
     </StandardScrollLayout>
   );
 }
@@ -68,43 +63,43 @@ function StorageWidget() {
   };
 
   return (
-    <Card className="gap-4 rounded-b-xs">
+    <SegmentedList.CustomItem className="gap-4 p-4">
       <ProgressBar
         entries={[
           { color: Colors.red, value: data?.images ?? 0 },
           { color: Colors.yellow, value: data?.database ?? 0 },
-          { color: "#4142BE", value: data?.other ?? 0 },
+          { color: Colors.blue, value: data?.other ?? 0 },
           { color: `${foreground}40`, value: data?.cache ?? 0 },
         ]}
         total={data?.total ?? 0}
       />
       <Legend>
-        <LegendItem
-          nameKey="feat.insights.extra.images"
+        <Legend.Item
+          labelTextKey="feat.insights.extra.images"
           value={getValue("images")}
           color={Colors.red}
         />
-        <LegendItem
-          nameKey="feat.insights.extra.database"
+        <Legend.Item
+          labelTextKey="feat.insights.extra.database"
           value={getValue("database")}
           color={Colors.yellow}
         />
-        <LegendItem
-          nameKey="feat.insights.extra.other"
+        <Legend.Item
+          labelTextKey="feat.insights.extra.other"
           value={getValue("other")}
-          color="#4142BE"
+          color={Colors.blue}
         />
-        <LegendItem
-          nameKey="feat.insights.extra.cache"
+        <Legend.Item
+          labelTextKey="feat.insights.extra.cache"
           value={getValue("cache")}
           color={`${foreground}40`} // 25% Opacity
         />
       </Legend>
-      <LegendItem
-        nameKey="feat.insights.extra.total"
+      <Legend.Item
+        labelTextKey="feat.insights.extra.total"
         value={getValue("total")}
       />
-    </Card>
+    </SegmentedList.CustomItem>
   );
 }
 
@@ -147,32 +142,35 @@ function DBSummaryWidget() {
   };
 
   return (
-    <Card className="gap-4 rounded-t-xs">
+    <SegmentedList.CustomItem className="gap-4 p-4">
       <Legend>
-        <LegendItem nameKey="term.albums" value={getValue("albums")} />
-        <LegendItem nameKey="term.artists" value={getValue("artists")} />
-        <LegendItem
-          nameKey="feat.insights.extra.images"
+        <Legend.Item labelTextKey="term.albums" value={getValue("albums")} />
+        <Legend.Item labelTextKey="term.artists" value={getValue("artists")} />
+        <Legend.Item
+          labelTextKey="feat.insights.extra.images"
           value={getValue("images")}
         />
-        <LegendItem nameKey="term.playlists" value={getValue("playlists")} />
-        <LegendItem nameKey="term.tracks" value={getValue("tracks")} />
+        <Legend.Item
+          labelTextKey="term.playlists"
+          value={getValue("playlists")}
+        />
+        <Legend.Item labelTextKey="term.tracks" value={getValue("tracks")} />
       </Legend>
       <Legend>
-        <LegendItem
-          nameKey="feat.hiddenTracks.title"
+        <Legend.Item
+          labelTextKey="feat.hiddenTracks.title"
           value={getValue("hiddenTracks")}
         />
-        <LegendItem
-          nameKey="feat.saveErrors.title"
+        <Legend.Item
+          labelTextKey="feat.saveErrors.title"
           value={getValue("saveErrors")}
         />
       </Legend>
-      <LegendItem
-        nameKey="feat.insights.extra.totalDuration"
+      <Legend.Item
+        labelTextKey="feat.insights.extra.totalDuration"
         value={getValue("totalDuration")}
       />
-    </Card>
+    </SegmentedList.CustomItem>
   );
 }
 

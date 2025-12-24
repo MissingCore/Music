@@ -21,8 +21,8 @@ import { debounceWithAccumulation } from "~/utils/debounce";
 import { moveArray } from "~/utils/object";
 import { wait } from "~/utils/promise";
 import { FlashDragList } from "~/components/Defaults";
-import type { PressProps } from "~/components/Form/Button";
-import { IconButton } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button/Icon";
+import type { PressProps } from "~/components/Form/Button/types";
 import { Swipeable } from "~/components/Swipeable";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
 import { SearchResult } from "~/modules/search/components/SearchResult";
@@ -159,8 +159,10 @@ const RenderItem = memo(
           onLongPress={info.onDragStart}
           onPressOut={info.onDragEnd}
           LeftElement={<PlayingIndicator />}
-          wrapperClassName={cn("mx-4", { "mt-2": index > 0 })}
-          className={cn({ "bg-surface": info.isActive })}
+          className={cn("mx-4", {
+            "mt-2": index > 0,
+            "bg-surface": info.isActive,
+          })}
         />
       );
     }
@@ -206,17 +208,16 @@ function TrackItem({
   /** If we have a `LeftElement`, it means this track is active. */
   LeftElement?: SearchResult.Props["LeftElement"];
   className: string;
-  wrapperClassName?: string;
 } & PressProps) {
   return (
     <SearchResult
-      as="ripple"
+      button
       type="track"
       title={item.name}
       description={item.artistName ?? "—"}
       imageSource={getTrackCover(item)}
       poppyLabel={active}
-      className={cn("pr-6", className)}
+      className={cn("pr-4", className)}
       {...props}
     />
   );

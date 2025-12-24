@@ -2,7 +2,7 @@ import { toast } from "@backpackapp-io/react-native-toast";
 import { useNavigation } from "@react-navigation/native";
 import { memo, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { BackHandler, Pressable, View } from "react-native";
+import { BackHandler, View } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
 import type { SlimTrackWithAlbum } from "~/db/slimTypes";
@@ -30,7 +30,8 @@ import { cn } from "~/lib/style";
 import { ToastOptions } from "~/lib/toast";
 import { wait } from "~/utils/promise";
 import { FlashDragList } from "~/components/Defaults";
-import { Button, IconButton } from "~/components/Form/Button";
+import { ExtendedTButton } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";
 import { ModalTemplate } from "~/components/Modal";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
@@ -162,20 +163,22 @@ const RenderItem = memo(
         wrapperClassName={cn("mx-4", { "mt-2": info.index > 0 })}
         className="overflow-hidden rounded-xs bg-canvas"
       >
-        <Pressable
+        <SearchResult
+          button
+          type="track"
+          title={item.name}
+          description={item.artistName ?? "—"}
+          imageSource={item.artwork}
           delayLongPress={250}
           onLongPress={info.onDragStart}
           onPressOut={info.onDragEnd}
-          className="active:bg-surface/50"
-        >
-          <SearchResult
-            type="track"
-            title={item.name}
-            description={item.artistName ?? "—"}
-            imageSource={item.artwork}
-            className={cn("pr-4", { "bg-surface": info.isActive })}
-          />
-        </Pressable>
+          className={cn("pr-4", {
+            // The `active:` variant is to override the default active style
+            // as `!important` isn't enough to change the background color
+            // (it'll only change to `bg-surface ` one we drag the item).
+            "bg-surface active:bg-surface": info.isActive,
+          })}
+        />
       </Swipeable>
     );
   },
@@ -281,16 +284,13 @@ function DeleteWorkflow({
   return (
     <>
       <View ref={floatingRef} {...wrapperStyling}>
-        <Button
+        <ExtendedTButton
+          textKey="feat.playlist.extra.delete"
           onPress={() => setLastChance(true)}
           disabled={lastChance || isSubmitting}
-          className="w-full bg-red"
-        >
-          <TStyledText
-            textKey="feat.playlist.extra.delete"
-            className="text-center text-neutral100"
-          />
-        </Button>
+          className="bg-red"
+          textClassName="text-neutral100"
+        />
       </View>
       <ModalTemplate
         visible={lastChance}
@@ -339,16 +339,13 @@ function ImportM3UWorkflow({
 
   return (
     <View ref={floatingRef} {...wrapperStyling}>
-      <Button
+      <ExtendedTButton
+        textKey="feat.playlist.extra.m3uImport"
         onPress={onImport}
         disabled={isSubmitting}
-        className="w-full bg-yellow"
-      >
-        <TStyledText
-          textKey="feat.playlist.extra.m3uImport"
-          className="text-center text-neutral0"
-        />
-      </Button>
+        className="bg-yellow"
+        textClassName="text-neutral0"
+      />
     </View>
   );
 }
