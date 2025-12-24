@@ -12,8 +12,7 @@ import { PlaybackControls, PlaybackSettings } from "~/stores/Playback/actions";
 
 import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
-import { Button } from "~/components/Form/Button";
-import { IconButton } from "~/components/Form/Button/Icon";
+import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 
 /** Toggles the repeat status. */
 export function RepeatButton({ large = true }) {
@@ -52,17 +51,15 @@ export function ShuffleButton({ large = true }) {
 export function PlayToggleButton() {
   const { t } = useTranslation();
   const isPlaying = usePlaybackStore((s) => s.isPlaying);
-  const Icon = isPlaying ? Pause : PlayArrow;
   return (
-    <Button
+    <FilledIconButton
+      Icon={isPlaying ? Pause : PlayArrow}
       accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
       onPress={() => PlaybackControls.playToggle()}
-      className={cn("rounded-full bg-red px-6 py-2", {
-        "bg-onSurface": isPlaying,
-      })}
-    >
-      <Icon size={32} color={Colors.neutral100} />
-    </Button>
+      size="lg"
+      className={cn("bg-red px-6 py-2", { "bg-onSurface": isPlaying })}
+      _iconColor={Colors.neutral100}
+    />
   );
 }
 

@@ -10,9 +10,9 @@ import type { PressProps } from "./types";
 type ButtonSize = "sm" | "md" | "lg";
 
 const ButtonConfig = {
-  sm: { buttonSize: "size-8", iconSize: 20 },
-  md: { buttonSize: "size-11", iconSize: 24 },
-  lg: { buttonSize: "size-11", iconSize: 32 },
+  sm: { buttonSize: "min-h-9 min-w-9", iconSize: 20 },
+  md: { buttonSize: "min-h-12 min-w-12", iconSize: 24 },
+  lg: { buttonSize: "min-h-12 min-w-12", iconSize: 32 },
 } as const;
 
 type IconButtonProps = {

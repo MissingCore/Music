@@ -11,8 +11,7 @@ import { pickPath, removePath, useAddPathToList, validatePath } from "./utils";
 import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
 import { FlatList } from "~/components/Defaults";
-import { Button } from "~/components/Form/Button";
-import { IconButton } from "~/components/Form/Button/Icon";
+import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";
 import { Marquee } from "~/components/Marquee";
 import { DetachedSheet } from "~/components/Sheet/Detached";
@@ -112,7 +111,8 @@ function FilterForm(props: {
           disabled={onSubmit.isPending}
         />
       </View>
-      <Button
+      <FilledIconButton
+        Icon={Add}
         accessibilityLabel={t("feat.directory.extra.add")}
         onPress={() => {
           Keyboard.dismiss();
@@ -123,10 +123,9 @@ function FilterForm(props: {
           });
         }}
         disabled={!isValidPath || onSubmit.isPending}
-        className="bg-red p-3"
-      >
-        <Add color={Colors.neutral100} />
-      </Button>
+        className="rounded-md bg-red"
+        _iconColor={Colors.neutral100}
+      />
     </View>
   );
 }
