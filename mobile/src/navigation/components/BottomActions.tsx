@@ -137,7 +137,7 @@ function NavigationList() {
           <Button
             onPress={() => navigation.navigate("HomeScreens", { screen: name })}
             disabled={routeName === name}
-            className="min-w-0 bg-transparent px-2 disabled:opacity-100"
+            className="bg-transparent px-2 disabled:opacity-100"
           >
             <StyledText
               className={cn("text-sm", { "text-red": routeName === name })}

@@ -5,11 +5,12 @@ import { Pressable } from "react-native";
 import { cn } from "~/lib/style";
 import { TStyledText } from "../../Typography/StyledText";
 
+//#region Default
 export function Button({ className, ...props }: PressableProps) {
   return (
     <Pressable
       className={cn(
-        "min-h-12 min-w-12 items-center justify-center gap-2 rounded-md bg-surface p-4",
+        "min-h-12 items-center justify-center gap-2 rounded-md bg-surface p-4",
         "active:opacity-75 disabled:opacity-25",
         className,
       )}
@@ -17,7 +18,9 @@ export function Button({ className, ...props }: PressableProps) {
     />
   );
 }
+//#endregion
 
+//#region Extended Translated
 export function ExtendedTButton(
   props: PressableProps & {
     textKey: ParseKeys;
@@ -50,3 +53,4 @@ export function ExtendedTButton(
     </Button>
   );
 }
+//#endregion
