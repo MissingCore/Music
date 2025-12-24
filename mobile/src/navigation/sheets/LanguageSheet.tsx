@@ -12,7 +12,7 @@ import {
 import { TRANSLATIONS } from "~/constants/Links";
 import { OnRTL } from "~/lib/react";
 import { FlatList } from "~/components/Defaults";
-import { Button } from "~/components/Form/Button";
+import { ExtendedTButton } from "~/components/Form/Button";
 import { ClickwrapCheckbox } from "~/components/Form/Checkbox";
 import { RadioField } from "~/components/Form/Radio";
 import { Marquee } from "~/components/Marquee";
@@ -23,11 +23,7 @@ import {
   DetachedDimView,
   useDetachedDimViewContext,
 } from "~/components/Sheet/DetachedDimView";
-import {
-  StyledText,
-  TEm,
-  TStyledText,
-} from "~/components/Typography/StyledText";
+import { StyledText, TEm } from "~/components/Typography/StyledText";
 import { LANGUAGES } from "~/modules/i18n/constants";
 
 export function LanguageSheet(props: { ref: TrueSheetRef }) {
@@ -66,17 +62,13 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
             onCheck={PreferenceTogglers.toggleForceLTR}
           />
         ) : null}
-        <Button
+
+        <ExtendedTButton
+          textKey="feat.language.extra.contribute"
           onPress={() => openBrowserAsync(TRANSLATIONS)}
-          className="flex-row rounded-full"
-        >
-          <TStyledText
-            textKey="feat.language.extra.contribute"
-            bold
-            className="text-sm"
-          />
-          <OpenInNew size={20} />
-        </Button>
+          RightElement={<OpenInNew size={20} />}
+          className="rounded-full"
+        />
 
         <DetachedDimView dimness={dimness} />
       </DetachedSheet>

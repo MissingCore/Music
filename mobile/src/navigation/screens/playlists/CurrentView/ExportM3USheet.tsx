@@ -6,12 +6,11 @@ import { ConversionPath } from "~/resources/icons/ConversionPath";
 import { Graph1 } from "~/resources/icons/Graph1";
 
 import { ToastOptions } from "~/lib/toast";
-import { Button } from "~/components/Form/Button";
+import { ExtendedTButton } from "~/components/Form/Button";
 import type { PickerOption } from "~/components/Form/SegmentedPicker";
 import { SegmentedPicker } from "~/components/Form/SegmentedPicker";
 import { Sheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
-import { TStyledText } from "~/components/Typography/StyledText";
 import { exportPlaylistAsM3U } from "~/modules/backup/M3U";
 import { deferInitialRender } from "../../../components/DeferredRender";
 
@@ -53,18 +52,12 @@ export const ExportM3USheet = deferInitialRender(
           selectedIndex={selectedIdx}
           onOptionSelected={setSelectedIdx}
         />
-
-        <Button
+        <ExtendedTButton
+          textKey="feat.backup.extra.export"
           onPress={onExport}
           disabled={isExporting}
           className="mt-4 rounded-full"
-        >
-          <TStyledText
-            textKey="feat.backup.extra.export"
-            className="text-center"
-            bold
-          />
-        </Button>
+        />
       </Sheet>
     );
   },

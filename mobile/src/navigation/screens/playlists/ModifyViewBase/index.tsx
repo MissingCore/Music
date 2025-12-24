@@ -30,7 +30,7 @@ import { cn } from "~/lib/style";
 import { ToastOptions } from "~/lib/toast";
 import { wait } from "~/utils/promise";
 import { FlashDragList } from "~/components/Defaults";
-import { Button } from "~/components/Form/Button";
+import { ExtendedTButton } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";
 import { ModalTemplate } from "~/components/Modal";
@@ -284,16 +284,13 @@ function DeleteWorkflow({
   return (
     <>
       <View ref={floatingRef} {...wrapperStyling}>
-        <Button
+        <ExtendedTButton
+          textKey="feat.playlist.extra.delete"
           onPress={() => setLastChance(true)}
           disabled={lastChance || isSubmitting}
-          className="w-full bg-red"
-        >
-          <TStyledText
-            textKey="feat.playlist.extra.delete"
-            className="text-center text-neutral100"
-          />
-        </Button>
+          className="bg-red"
+          textClassName="text-neutral100"
+        />
       </View>
       <ModalTemplate
         visible={lastChance}
@@ -342,16 +339,13 @@ function ImportM3UWorkflow({
 
   return (
     <View ref={floatingRef} {...wrapperStyling}>
-      <Button
+      <ExtendedTButton
+        textKey="feat.playlist.extra.m3uImport"
         onPress={onImport}
         disabled={isSubmitting}
-        className="w-full bg-yellow"
-      >
-        <TStyledText
-          textKey="feat.playlist.extra.m3uImport"
-          className="text-center text-neutral0"
-        />
-      </Button>
+        className="bg-yellow"
+        textClassName="text-neutral0"
+      />
     </View>
   );
 }

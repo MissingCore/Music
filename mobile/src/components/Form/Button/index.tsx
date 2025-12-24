@@ -1,7 +1,9 @@
+import type { ParseKeys } from "i18next";
 import type { PressableProps } from "react-native";
 import { Pressable } from "react-native";
 
 import { cn } from "~/lib/style";
+import { TStyledText } from "../../Typography/StyledText";
 
 export function Button({ className, ...props }: PressableProps) {
   return (
@@ -13,5 +15,26 @@ export function Button({ className, ...props }: PressableProps) {
       )}
       {...props}
     />
+  );
+}
+
+export function ExtendedTButton(
+  props: PressableProps & {
+    textKey: ParseKeys;
+    LeftElement?: React.ReactNode;
+    RightElement?: React.ReactNode;
+    textClassName?: string;
+  },
+) {
+  return (
+    <Button {...props} className={cn("flex-row", props.className)}>
+      {props.LeftElement}
+      <TStyledText
+        textKey={props.textKey}
+        bold
+        className={cn("shrink text-center text-sm", props.textClassName)}
+      />
+      {props.RightElement}
+    </Button>
   );
 }

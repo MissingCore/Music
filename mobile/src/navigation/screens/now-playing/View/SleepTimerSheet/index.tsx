@@ -5,7 +5,7 @@ import { Keyboard, View } from "react-native";
 import { useSleepTimerStore } from "./store";
 
 import { wait } from "~/utils/promise";
-import { Button } from "~/components/Form/Button";
+import { ExtendedTButton } from "~/components/Form/Button";
 import { ClickwrapCheckbox } from "~/components/Form/Checkbox";
 import { NumericInput } from "~/components/Form/Input";
 import { Sheet } from "~/components/Sheet";
@@ -72,14 +72,11 @@ export const SleepTimerSheet = deferInitialRender(
           disabled={hasTimer}
         />
 
-        <Button
+        <ExtendedTButton
+          textKey={hasTimer ? "form.clear" : "feat.sleepTimer.extra.start"}
           onPress={hasTimer ? clearTimer : onSubmit}
           className="rounded-full"
-        >
-          <StyledText className="text-center" bold>
-            {t(hasTimer ? "form.clear" : "feat.sleepTimer.extra.start")}
-          </StyledText>
-        </Button>
+        />
       </Sheet>
     );
   },
