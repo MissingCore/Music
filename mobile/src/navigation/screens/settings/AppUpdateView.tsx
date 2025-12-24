@@ -12,9 +12,8 @@ import { StandardScrollLayout } from "../../layouts/StandardScroll";
 import * as LINKS from "~/constants/Links";
 import { FontSize } from "~/constants/Styles";
 import { getFont } from "~/lib/style";
-import { Button } from "~/components/Form/Button";
+import { ExtendedTButton } from "~/components/Form/Button";
 import { AccentText } from "~/components/Typography/AccentText";
-import { TStyledText } from "~/components/Typography/StyledText";
 
 export default function AppUpdate() {
   const { release, isRC } = useHasNewUpdate();
@@ -99,29 +98,21 @@ export default function AppUpdate() {
       </Markdown>
 
       <View className="gap-2">
-        <Button
+        <ExtendedTButton
+          textKey="feat.appUpdate.extra.downloadAPK"
           onPress={() =>
             openBrowserAsync(`${LINKS.GITHUB}/releases/tag/${release.version}`)
           }
-          className="flex-row justify-start gap-4"
-        >
-          <LogoGitHub />
-          <TStyledText
-            textKey="feat.appUpdate.extra.downloadAPK"
-            className="text-center text-sm"
-          />
-        </Button>
+          LeftElement={<LogoGitHub />}
+          className="gap-4"
+        />
         {!isRC ? (
-          <Button
+          <ExtendedTButton
+            textKey="feat.appUpdate.extra.updateGoogle"
             onPress={() => openBrowserAsync(LINKS.PLAYSTORE)}
-            className="flex-row justify-start gap-4"
-          >
-            <LogoPlayStore />
-            <TStyledText
-              textKey="feat.appUpdate.extra.updateGoogle"
-              className="text-center text-sm"
-            />
-          </Button>
+            LeftElement={<LogoPlayStore />}
+            className="gap-4"
+          />
         ) : null}
       </View>
     </StandardScrollLayout>
