@@ -28,9 +28,9 @@ export const Colors = {
   neutral95: "#F2F2F2",
   neutral100: "#FFFFFF",
 
-  red: "#D71921",
+  red: "#C8102E",
   yellow: "#FFC700",
-  blue: "#2A2B7B",
+  blue: "#4142BE",
   green: "#1DB159",
 } as const;
 

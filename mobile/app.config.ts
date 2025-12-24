@@ -46,7 +46,7 @@ export default (): ExpoConfig => ({
   platforms: ["android"],
   githubUrl: "https://github.com/MissingCore/Music",
   orientation: "portrait",
-  primaryColor: "#D71921",
+  primaryColor: "#C8102E",
   icon: "./assets/icon.png",
   scheme: ["com.cyanchill.missingcore.music"],
   backgroundColor: "#F2F2F2",
