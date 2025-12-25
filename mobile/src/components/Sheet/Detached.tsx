@@ -127,16 +127,16 @@ export function DetachedSheet(props: SheetProps) {
           </View>
           {props.children}
         </WrappedGestureHandlerRootView>
-        <Toasts
-          // @ts-expect-error - We added the `sheetOpts` prop via a patch.
-          sheetOpts={{
-            height: sheetHeight - bottom,
-            needKeyboardOffset: props.keyboardAndToast,
-          }}
-          // A duration of 0 doesn't work.
-          globalAnimationConfig={disableToastAnim ? { duration: 1 } : undefined}
-        />
       </View>
+      <Toasts
+        // @ts-expect-error - We added the `sheetOpts` prop via a patch.
+        sheetOpts={{
+          height: sheetHeight - bottom,
+          needKeyboardOffset: props.keyboardAndToast,
+        }}
+        // A duration of 0 doesn't work.
+        globalAnimationConfig={disableToastAnim ? { duration: 1 } : undefined}
+      />
     </TrueSheet>
   );
 }
