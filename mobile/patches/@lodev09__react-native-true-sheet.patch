@@ -1,21 +1,17 @@
-diff --git a/android/src/main/java/com/lodev09/truesheet/core/TrueSheetAnimator.kt b/android/src/main/java/com/lodev09/truesheet/core/TrueSheetAnimator.kt
-index 9bdd76d905b56ff494882e668145e80c1036e78e..7767c4fbac5165bd5f09df1cbef00b640c882c22 100644
---- a/android/src/main/java/com/lodev09/truesheet/core/TrueSheetAnimator.kt
-+++ b/android/src/main/java/com/lodev09/truesheet/core/TrueSheetAnimator.kt
-@@ -24,7 +24,7 @@ interface TrueSheetAnimatorProvider {
- class TrueSheetAnimator(private val provider: TrueSheetAnimatorProvider) {
+diff --git a/android/src/main/java/com/lodev09/truesheet/TrueSheetViewController.kt b/android/src/main/java/com/lodev09/truesheet/TrueSheetViewController.kt
+index 502d4704e3a08bd0b8bebd8b2ea2d26dd255d043..d101bd605715153a00cfe66b8aa33ed23b95d1da 100644
+--- a/android/src/main/java/com/lodev09/truesheet/TrueSheetViewController.kt
++++ b/android/src/main/java/com/lodev09/truesheet/TrueSheetViewController.kt
+@@ -74,7 +74,7 @@ class TrueSheetViewController(private val reactContext: ThemedReactContext) :
+     private const val DEFAULT_CORNER_RADIUS = 16 // dp
  
-   companion object {
--    const val PRESENT_DURATION = 300L
-+    const val PRESENT_DURATION = 200L
-     const val DISMISS_DURATION = 200L
+     // Animation durations from res/anim/true_sheet_slide_in.xml and true_sheet_slide_out.xml
+-    private const val PRESENT_ANIMATION_DURATION = 250L
++    private const val PRESENT_ANIMATION_DURATION = 150L
+     private const val DISMISS_ANIMATION_DURATION = 150L
+     private const val TRANSLATE_ANIMATION_DURATION = 100L
    }
- 
-diff --git a/android/src/main/java/com/lodev09/truesheet/core/TrueSheetDialogFragment.kt b/android/src/main/java/com/lodev09/truesheet/core/TrueSheetDialogFragment.kt
-index 927f6f5a24a2c4329f0d73165a88bf6daae1c105..27442430573030857a93358ae1e91006b0eb276d 100644
---- a/android/src/main/java/com/lodev09/truesheet/core/TrueSheetDialogFragment.kt
-+++ b/android/src/main/java/com/lodev09/truesheet/core/TrueSheetDialogFragment.kt
-@@ -234,6 +234,8 @@ class TrueSheetDialogFragment : BottomSheetDialogFragment() {
+@@ -688,6 +688,8 @@ class TrueSheetViewController(private val reactContext: ThemedReactContext) :
        paint.color = backgroundColor
      }
      bottomSheet.clipToOutline = true
@@ -23,11 +19,20 @@ index 927f6f5a24a2c4329f0d73165a88bf6daae1c105..27442430573030857a93358ae1e91006
 +    bottomSheet.setOutlineProvider(null)
    }
  
-   fun setupGrabber() {
+   fun setupDimmedBackground(detentIndex: Int) {
 diff --git a/android/src/main/java/com/lodev09/truesheet/core/TrueSheetDimView.kt b/android/src/main/java/com/lodev09/truesheet/core/TrueSheetDimView.kt
-index 5c7a97afc7bb7715aa9ef7cf8501581d7852d61d..463205b2c70cfbdfe43d5e9cf11253803781c286 100644
+index 0311c29aaeec70d2491d99e5fb69f4796b30200f..4f4619597a2ce9ce56d7afd6790604c12fca6bae 100644
 --- a/android/src/main/java/com/lodev09/truesheet/core/TrueSheetDimView.kt
 +++ b/android/src/main/java/com/lodev09/truesheet/core/TrueSheetDimView.kt
+@@ -13,7 +13,7 @@ import com.lodev09.truesheet.utils.ScreenUtils
+ class TrueSheetDimView(private val reactContext: ThemedReactContext) : View(reactContext) {
+ 
+   companion object {
+-    private const val MAX_ALPHA = 0.4f
++    private const val MAX_ALPHA = 0.5f
+   }
+ 
+   private var targetView: ViewGroup? = null
 @@ -29,7 +29,8 @@ class TrueSheetDimView(private val reactContext: ThemedReactContext) : View(reac
  
    fun attach(view: ViewGroup? = null, cornerRadius: Float = 0f) {
@@ -38,3 +43,24 @@ index 5c7a97afc7bb7715aa9ef7cf8501581d7852d61d..463205b2c70cfbdfe43d5e9cf1125380
  
      if (cornerRadius > 0f) {
        outlineProvider = object : ViewOutlineProvider() {
+diff --git a/android/src/main/res/anim/true_sheet_slide_in.xml b/android/src/main/res/anim/true_sheet_slide_in.xml
+index e5d2bcdaa0c7ca52702208248f403e1189e4e02b..c6c600260fc3a3c77f153b7428a4bceb9fd0b194 100644
+--- a/android/src/main/res/anim/true_sheet_slide_in.xml
++++ b/android/src/main/res/anim/true_sheet_slide_in.xml
+@@ -1,13 +1,13 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <set xmlns:android="http://schemas.android.com/apk/res/android">
+     <translate
+-        android:duration="250"
++        android:duration="150"
+         android:fromYDelta="20%p"
+         android:toYDelta="0"
+-        android:interpolator="@android:interpolator/decelerate_cubic" />
++        android:interpolator="@android:interpolator/fast_out_slow_in" />
+     <alpha
+         android:duration="150"
+         android:fromAlpha="0.0"
+         android:toAlpha="1.0"
+-        android:interpolator="@android:interpolator/decelerate_cubic" />
++        android:interpolator="@android:interpolator/fast_out_slow_in" />
+ </set>
