@@ -40,8 +40,9 @@ interface SheetProps extends Pick<
 }
 
 /** Distance between the bottom of the sheet & the navbar / bottom of screen. */
-const EDGE_SPACER = 8;
-const MAX_SHEET_HEIGHT = 512;
+const EDGE_SPACER = 16;
+const ESTIMATED_TOPAPPBAR_HEIGHT = 56;
+const MAX_SHEET_HEIGHT = 640;
 
 /**
  * Get the max height of the detached sheet.
@@ -52,11 +53,12 @@ export function useMaxDetachedSheetHeight() {
   const safeHeight = useSafeAreaHeight();
 
   return useMemo(() => {
+    // `safeHeight` includes `EDGE_SPACER` in the calculation.
+    const workableHeight = safeHeight + bottom - ESTIMATED_TOPAPPBAR_HEIGHT;
     // If sheet utilizes full height, part of the sheet will end up behind
     // the navbar unless we include the bottom inset.
     const maxDetachedHeight = MAX_SHEET_HEIGHT + EDGE_SPACER + bottom;
-    // `safeHeight` includes `EDGE_SPACER` & bottom inset in the calculation.
-    return Math.min(safeHeight, maxDetachedHeight);
+    return Math.min(workableHeight, maxDetachedHeight);
   }, [safeHeight, bottom]);
 }
 
@@ -96,7 +98,7 @@ export function DetachedSheet(props: SheetProps) {
           // if the sheet isn't at max height.
           marginBottom: EDGE_SPACER - (keyboardVisible ? bottom : 0),
         }}
-        className={cn("overflow-hidden rounded-lg bg-canvasAlt", {
+        className={cn("overflow-hidden rounded-xl bg-canvasAlt", {
           "h-full": props.snapTop,
         })}
       >
