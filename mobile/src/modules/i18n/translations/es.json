@@ -99,8 +99,7 @@
       }
     },
     "appearance": {
-      "title": "Apariencia",
-      "brief": "Personaliza cómo se ve la aplicación."
+      "title": "Apariencia"
     },
     "font": {
       "extra": {
@@ -156,7 +155,6 @@
     },
     "backup": {
       "title": "Copia de seguridad",
-      "brief": "Mover tus datos entre dispositivos.",
       "description": "Exporta o importa datos de esta app a otros dispositivos usando un archivo `music_backup.json`.",
       "extra": {
         "export": "Exportar",
@@ -167,7 +165,6 @@
     },
     "insights": {
       "title": "Estadísticas",
-      "brief": "Información de uso y almacenamiento.",
       "extra": {
         "cache": "Caché",
         "database": "Base de datos",
@@ -199,7 +196,6 @@
     },
     "playback": {
       "title": "Reproducción",
-      "brief": "Ajustes de reproducción.",
       "extra": {
         "options": "Opciones",
         "speed": "Velocidad",
@@ -218,8 +214,7 @@
       "title": "Restaurar última posición"
     },
     "scanning": {
-      "title": "Escaneo",
-      "brief": "Opciones para detectar música."
+      "title": "Escaneo"
     },
     "rescan": {
       "title": "Reescaneo",
@@ -251,8 +246,7 @@
       "description": "Duración mínima para guardar una canción."
     },
     "experimental": {
-      "title": "Funciones experimentales",
-      "brief": "Podrían fallar o no recibir soporte."
+      "title": "Funciones experimentales"
     },
     "continuePlaybackOnDismiss": {
       "title": "Seguir reproduciendo al cerrar",

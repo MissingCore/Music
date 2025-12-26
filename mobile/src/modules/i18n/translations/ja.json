@@ -99,8 +99,7 @@
       }
     },
     "appearance": {
-      "title": "外観",
-      "brief": "アプリの外観をカスタマイズします。"
+      "title": "外観"
     },
     "font": {
       "extra": {
@@ -156,7 +155,6 @@
     },
     "backup": {
       "title": "バックアップ",
-      "brief": "デバイス間でデータを転送します。",
       "description": "｢music_backup.json｣ファイルを通じて、このアプリからデバイス間でデータを転送します。",
       "extra": {
         "export": "エクスポート",
@@ -167,7 +165,6 @@
     },
     "insights": {
       "title": "解析",
-      "brief": "アプリの使用状況と統計を表示します。",
       "extra": {
         "cache": "キャッシュ",
         "database": "データベース",
@@ -199,7 +196,6 @@
     },
     "playback": {
       "title": "再生中",
-      "brief": "音楽再生時の動作を変更します。",
       "extra": {
         "options": "再生オプション",
         "speed": "再生速度",
@@ -218,8 +214,7 @@
       "title": "最後に再生した位置を保存"
     },
     "scanning": {
-      "title": "音楽のスキャン",
-      "brief": "音楽の検索オプションを設定します。"
+      "title": "音楽のスキャン"
     },
     "rescan": {
       "title": "再スキャン",
@@ -251,8 +246,7 @@
       "description": "保存をしない音楽の再生時間 (秒数)。"
     },
     "experimental": {
-      "title": "試験的な機能",
-      "brief": "公式サポートが受けられない、または期待通りに動作しない可能性のある機能があります。自己責任で使用してください。"
+      "title": "試験的な機能"
     },
     "continuePlaybackOnDismiss": {
       "title": "閉じても再生を続行する",

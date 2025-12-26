@@ -99,8 +99,7 @@
       }
     },
     "appearance": {
-      "title": "Tampilan",
-      "brief": "Personalisasikan aplikasi."
+      "title": "Tampilan"
     },
     "font": {
       "extra": {
@@ -156,7 +155,6 @@
     },
     "backup": {
       "title": "Cadangkan",
-      "brief": "Pindahkan data antar perangkat.",
       "description": "Transfer data dari aplikasi ini antar perangkat melalui berkas `music_backup.json`.",
       "extra": {
         "export": "Ekspor",
@@ -167,7 +165,6 @@
     },
     "insights": {
       "title": "Insight",
-      "brief": "Penggunaan aplikasi & statistik.",
       "extra": {
         "cache": "Tembolok",
         "database": "Database",
@@ -199,7 +196,6 @@
     },
     "playback": {
       "title": "Pemutaran",
-      "brief": "Ubah perilaku pemutaran musik.",
       "extra": {
         "options": "Opsi Pemutaran",
         "speed": "Kecepatan Pemutaran",
@@ -218,8 +214,7 @@
       "title": null
     },
     "scanning": {
-      "title": "Memindai",
-      "brief": "Opsi jelajahi musik."
+      "title": "Memindai"
     },
     "rescan": {
       "title": "Memindai Ulang",
@@ -251,8 +246,7 @@
       "description": "Durasi audio dalam detik yang tidak ingin kami simpan."
     },
     "experimental": {
-      "title": null,
-      "brief": null
+      "title": null
     },
     "continuePlaybackOnDismiss": {
       "title": null,

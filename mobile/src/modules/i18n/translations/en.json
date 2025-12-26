@@ -117,8 +117,7 @@
       }
     },
     "appearance": {
-      "title": "Appearance",
-      "brief": "Personalize the app looks."
+      "title": "Appearance"
     },
     "font": {
       "extra": {
@@ -174,7 +173,6 @@
     },
     "backup": {
       "title": "Backup",
-      "brief": "Move data across devices.",
       "description": "Transfer data from this app across devices through a `music_backup.json` file.",
       "extra": {
         "export": "Export",
@@ -185,7 +183,6 @@
     },
     "insights": {
       "title": "Insights",
-      "brief": "App usage & statistics.",
       "extra": {
         "cache": "Cache",
         "database": "Database",
@@ -217,7 +214,6 @@
     },
     "playback": {
       "title": "Playback",
-      "brief": "Change music playing behavior.",
       "extra": {
         "options": "Playback Options",
         "speed": "Playback Speed",
@@ -236,8 +232,7 @@
       "title": "Restore From Last Played Position"
     },
     "scanning": {
-      "title": "Scanning",
-      "brief": "Music discovery options."
+      "title": "Scanning"
     },
     "rescan": {
       "title": "Rescan",
@@ -269,8 +264,7 @@
       "description": "Duration in seconds of audio we don't want to save."
     },
     "experimental": {
-      "title": "Experimental Features",
-      "brief": "Features that may not get official support or work as expected. Use at your own risk."
+      "title": "Experimental Features"
     },
     "continuePlaybackOnDismiss": {
       "title": "Continue Playback on Dismiss",

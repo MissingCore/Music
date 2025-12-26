@@ -99,8 +99,7 @@
       }
     },
     "appearance": {
-      "title": "Görünüm",
-      "brief": "Uygulamanın görünümünü kişiselleştirin."
+      "title": "Görünüm"
     },
     "font": {
       "extra": {
@@ -156,7 +155,6 @@
     },
     "backup": {
       "title": "Yedekleme",
-      "brief": "Cihazlar arasında veri taşıyın.",
       "description": "Bu uygulamadaki verileri, bir `music_backup.json` dosyası aracılığıyla cihazlar arasında aktarın.",
       "extra": {
         "export": "Dışa Aktar",
@@ -167,7 +165,6 @@
     },
     "insights": {
       "title": "İstatistikler",
-      "brief": "Uygulama kullanımı ve istatistikler.",
       "extra": {
         "cache": "Önbellek",
         "database": "Veritabanı",
@@ -199,7 +196,6 @@
     },
     "playback": {
       "title": "Oynatma",
-      "brief": "Müzik çalma davranışını değiştirin.",
       "extra": {
         "options": "Oynatma Seçenekleri",
         "speed": "Oynatma Hızı",
@@ -218,8 +214,7 @@
       "title": "Son Çalınan Konumdan Geri Yükle"
     },
     "scanning": {
-      "title": "Tarama",
-      "brief": "Müzik keşfetme seçenekleri."
+      "title": "Tarama"
     },
     "rescan": {
       "title": "Yeniden Tara",
@@ -251,8 +246,7 @@
       "description": "Kaydetmek istemediğimiz seslerin saniye cinsinden süresi."
     },
     "experimental": {
-      "title": "Deneysel Özellikler",
-      "brief": "Resmi destek almayabilecek veya beklendiği gibi çalışmayabilecek özelliklerdir. Kendi sorumluluğunuzda kullanın."
+      "title": "Deneysel Özellikler"
     },
     "continuePlaybackOnDismiss": {
       "title": "Kapatıldığında Oynatmaya Devam Et",

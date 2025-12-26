@@ -99,8 +99,7 @@
       }
     },
     "appearance": {
-      "title": "Aspetto",
-      "brief": "Personalizza l'aspetto dell'app."
+      "title": "Aspetto"
     },
     "font": {
       "extra": {
@@ -156,7 +155,6 @@
     },
     "backup": {
       "title": "Backup",
-      "brief": "Trasferisci dati tra dispositivi.",
       "description": "Trasferisci dati da quest'app tra dispositivi utilizzando il file `music_backup.json`.",
       "extra": {
         "export": "Esporta",
@@ -167,7 +165,6 @@
     },
     "insights": {
       "title": "Analisi",
-      "brief": "Utilizzo & statistiche dell'app.",
       "extra": {
         "cache": "Cache",
         "database": "Database",
@@ -199,7 +196,6 @@
     },
     "playback": {
       "title": "Riproduzione",
-      "brief": "Modifica comportamento della riproduzione.",
       "extra": {
         "options": "Opzioni di riproduzione",
         "speed": "Velocità di riproduzione",
@@ -218,8 +214,7 @@
       "title": null
     },
     "scanning": {
-      "title": "Scansione in corso",
-      "brief": "Opzioni scansione musica."
+      "title": "Scansione in corso"
     },
     "rescan": {
       "title": "Ripeti scansione",
@@ -251,8 +246,7 @@
       "description": "Durata (in secondi) degli audio da non salvare."
     },
     "experimental": {
-      "title": null,
-      "brief": null
+      "title": null
     },
     "continuePlaybackOnDismiss": {
       "title": null,

@@ -99,8 +99,7 @@
       }
     },
     "appearance": {
-      "title": "Aussehen",
-      "brief": "Aussehen der App personalisieren."
+      "title": "Aussehen"
     },
     "font": {
       "extra": {
@@ -156,7 +155,6 @@
     },
     "backup": {
       "title": "Sicherungskopie",
-      "brief": "Daten zwischen Handys verschieben.",
       "description": "Daten von dieser App geräteübergreifend als „music_backup.json“-Datei übertragen.",
       "extra": {
         "export": "Exportieren",
@@ -167,7 +165,6 @@
     },
     "insights": {
       "title": "Einsichten",
-      "brief": "App-Nutzung und Statistiken.",
       "extra": {
         "cache": "Cache",
         "database": "Datenbank",
@@ -199,7 +196,6 @@
     },
     "playback": {
       "title": "Wiedergabe",
-      "brief": "Musik-Abspielverhalten ändern.",
       "extra": {
         "options": "Wiedergabeoptionen",
         "speed": "Wiedergabegeschwindigkeit",
@@ -218,8 +214,7 @@
       "title": "Zuletzt gespielte Position speichern"
     },
     "scanning": {
-      "title": "Scannen",
-      "brief": "Möglichkeiten zur Musikentdeckung."
+      "title": "Scannen"
     },
     "rescan": {
       "title": "Erneut scannen",
@@ -251,8 +246,7 @@
       "description": "Dauer in Sekunden des Audios, das wir nicht speichern möchten."
     },
     "experimental": {
-      "title": "Experimentelle Funktionen",
-      "brief": "Funktionen, für die möglicherweise kein offizieller Support verfügbar ist oder die nicht wie erwartet funktionieren. Die Verwendung erfolgt auf eigene Gefahr."
+      "title": "Experimentelle Funktionen"
     },
     "continuePlaybackOnDismiss": {
       "title": "Wiedergabe beim Schließen fortsetzen",

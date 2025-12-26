@@ -99,8 +99,7 @@
       }
     },
     "appearance": {
-      "title": "Wygląd",
-      "brief": "Spersonalizuj wygląd aplikacji."
+      "title": "Wygląd"
     },
     "font": {
       "extra": {
@@ -156,7 +155,6 @@
     },
     "backup": {
       "title": "Kopia zapasowa",
-      "brief": "Przenieś dane pomiędzy urządzeniami.",
       "description": "Przenieś dane z tej aplikacji na inne urządzenia przez plik `music_backup.json`.",
       "extra": {
         "export": "Eksportuj",
@@ -167,7 +165,6 @@
     },
     "insights": {
       "title": "Wgląd",
-      "brief": "Przeanalizuj dane i statystyki.",
       "extra": {
         "cache": "Pamięć podręczna",
         "database": "Baza danych",
@@ -199,7 +196,6 @@
     },
     "playback": {
       "title": "Odtwarzanie",
-      "brief": "Dostosuj zachowanie odtwarzacza.",
       "extra": {
         "options": "Opcje odtwarzania",
         "speed": "Prędkość odtwarzania",
@@ -218,8 +214,7 @@
       "title": "Przywróć ostatnio odtwarzaną pozycję"
     },
     "scanning": {
-      "title": "Skanowanie",
-      "brief": "Ustaw opcje szukania muzyki."
+      "title": "Skanowanie"
     },
     "rescan": {
       "title": "Ponowne skanowanie",
@@ -251,8 +246,7 @@
       "description": "Nagrania krótsze niż poniższa ilość sekund nie będą zapisywane."
     },
     "experimental": {
-      "title": "Funkcje eksperymentalne",
-      "brief": "Te funkcje mogą nie mieć oficjalnego wsparcia i działać inaczej niż oczekiwano. Używasz na własne ryzyko."
+      "title": "Funkcje eksperymentalne"
     },
     "continuePlaybackOnDismiss": {
       "title": "Odtwarzanie po zamknięciu",

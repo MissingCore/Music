@@ -99,8 +99,7 @@
       }
     },
     "appearance": {
-      "title": "Apparence",
-      "brief": "Personnalisez l'apparence de l'application."
+      "title": "Apparence"
     },
     "font": {
       "extra": {
@@ -156,7 +155,6 @@
     },
     "backup": {
       "title": "Sauvegarde",
-      "brief": "Déplacez vos données entre appareils.",
       "description": "Transférez vos données entre appareils via un fichier `music_backup.json`.",
       "extra": {
         "export": "Exporter",
@@ -167,7 +165,6 @@
     },
     "insights": {
       "title": "Informations Approfondies",
-      "brief": "Utilisation de l'application & statistiques.",
       "extra": {
         "cache": "Cache",
         "database": "Base de données",
@@ -199,7 +196,6 @@
     },
     "playback": {
       "title": "Lecture",
-      "brief": "Changer le comportement de lecture de la musique.",
       "extra": {
         "options": "Options de Lecture",
         "speed": "Vitesse de lecture",
@@ -218,8 +214,7 @@
       "title": null
     },
     "scanning": {
-      "title": "Recherche de musique",
-      "brief": "Options de découverte de musique."
+      "title": "Recherche de musique"
     },
     "rescan": {
       "title": "Lancer une nouvelle recherche",
@@ -251,8 +246,7 @@
       "description": "Durée en seconde des audios à ignorer."
     },
     "experimental": {
-      "title": "Fonctionnalités Expérimentales",
-      "brief": "Fonctionnalités qui peuvent ne pas obtenir de support officiel ou fonctionner comme prévu. À utiliser à vos propres risques."
+      "title": "Fonctionnalités Expérimentales"
     },
     "continuePlaybackOnDismiss": {
       "title": "Continuer la lecture à la fermeture",

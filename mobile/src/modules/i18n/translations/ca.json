@@ -99,8 +99,7 @@
       }
     },
     "appearance": {
-      "title": "Aparença",
-      "brief": "Personalitza l'aspecte de l'app."
+      "title": "Aparença"
     },
     "font": {
       "extra": {
@@ -156,7 +155,6 @@
     },
     "backup": {
       "title": "Copia de seguretat",
-      "brief": "Mou dades entre dispositius.",
       "description": "Transfereix dades d'aquesta aplicació entre dispositius a través del fitxer `music_backup.json`.",
       "extra": {
         "export": "Exporta",
@@ -167,7 +165,6 @@
     },
     "insights": {
       "title": "Estadístiques",
-      "brief": "Dades d'ús i estadístiques.",
       "extra": {
         "cache": "Cache",
         "database": "Base de dades",
@@ -199,7 +196,6 @@
     },
     "playback": {
       "title": "Reproduint",
-      "brief": "Canvia el comportament del reproductor.",
       "extra": {
         "options": "Ajusts de reproducció",
         "speed": "Velocitat de reproducció",
@@ -218,8 +214,7 @@
       "title": "Guardar l'última posició reproduïda"
     },
     "scanning": {
-      "title": "Escanejant",
-      "brief": "Ajusts del descobriment de música."
+      "title": "Escanejant"
     },
     "rescan": {
       "title": "Reescanejar",
@@ -251,8 +246,7 @@
       "description": "Durada en segons dels àudios que no vols guardar."
     },
     "experimental": {
-      "title": null,
-      "brief": null
+      "title": null
     },
     "continuePlaybackOnDismiss": {
       "title": null,

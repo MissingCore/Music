@@ -99,8 +99,7 @@
       }
     },
     "appearance": {
-      "title": "दिखावट",
-      "brief": "ऐप की दिखावट को व्यक्तिगत बनाएं।"
+      "title": "दिखावट"
     },
     "font": {
       "extra": {
@@ -156,7 +155,6 @@
     },
     "backup": {
       "title": "बैकअप",
-      "brief": "डिवाइस के बीच डेटा स्थानांतरित करें।",
       "description": "एक `music_backup.json` फ़ाइल के माध्यम से इस ऐप के डेटा को डिवाइस के बीच स्थानांतरित करें।",
       "extra": {
         "export": "निर्यात करें",
@@ -167,7 +165,6 @@
     },
     "insights": {
       "title": "अंतर्दृष्टि",
-      "brief": "ऐप उपयोग और सांख्यिकी।",
       "extra": {
         "cache": "कैश",
         "database": "डेटाबेस",
@@ -199,7 +196,6 @@
     },
     "playback": {
       "title": null,
-      "brief": null,
       "extra": {
         "options": null,
         "speed": null,
@@ -218,8 +214,7 @@
       "title": null
     },
     "scanning": {
-      "title": "स्कैनिंग",
-      "brief": "संगीत खोज विकल्प।"
+      "title": "स्कैनिंग"
     },
     "rescan": {
       "title": "पुनः स्कैन करें",
@@ -251,8 +246,7 @@
       "description": "ऑडियो की अवधि (सेकंड में) जिसे हम सहेजना नहीं चाहते।"
     },
     "experimental": {
-      "title": null,
-      "brief": null
+      "title": null
     },
     "continuePlaybackOnDismiss": {
       "title": null,

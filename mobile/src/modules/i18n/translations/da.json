@@ -99,8 +99,7 @@
       }
     },
     "appearance": {
-      "title": "Udseende",
-      "brief": "Tilpas appens udseende."
+      "title": "Udseende"
     },
     "font": {
       "extra": {
@@ -156,7 +155,6 @@
     },
     "backup": {
       "title": "Backup",
-      "brief": "Flyt data på tværs af enheder.",
       "description": "Overfør data fra denne app til andre enheder via en `music_backup.json` fil.",
       "extra": {
         "export": "Eksportér",
@@ -167,7 +165,6 @@
     },
     "insights": {
       "title": "Indsigter",
-      "brief": "Dataforbrug og statistikker",
       "extra": {
         "cache": "Cache",
         "database": "Database",
@@ -199,7 +196,6 @@
     },
     "playback": {
       "title": "Afspilning",
-      "brief": "Tilpas musikafspilning.",
       "extra": {
         "options": "Ekstra optioner til afspilning",
         "speed": "Afspilningshastighed",
@@ -218,8 +214,7 @@
       "title": null
     },
     "scanning": {
-      "title": "Scanning",
-      "brief": "Tjek for musikfiler på din enhed."
+      "title": "Scanning"
     },
     "rescan": {
       "title": "Scan igen",
@@ -251,8 +246,7 @@
       "description": "Varighed i sekunder af audiofiler, der ikke skal gemmes."
     },
     "experimental": {
-      "title": null,
-      "brief": null
+      "title": null
     },
     "continuePlaybackOnDismiss": {
       "title": null,
