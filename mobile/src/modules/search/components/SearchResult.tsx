@@ -45,7 +45,6 @@ export function SearchResult(props: SearchResult.Props) {
         )
       }
       _asView={!props.button}
-      _labelTextClassName={!props.description ? "text-base" : undefined}
       _textColor={props.poppyLabel ? "text-red" : undefined}
     />
   );

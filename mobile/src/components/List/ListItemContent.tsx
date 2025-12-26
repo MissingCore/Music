@@ -12,6 +12,7 @@ export type ListItemContentProps = (
   | { labelText?: never; labelTextKey: ParseKeys }
 ) & {
   supportingText?: string;
+  /** **Note:** Label text will be larger if no supporting text is provided. */
   LeftElement?: React.ReactNode;
   RightElement?: React.ReactNode;
   /** If the text shouldn't be truncated to a line. */
@@ -32,7 +33,12 @@ export const ListItemContent = memo(function ListItemContent(
       <View className="shrink grow gap-0.5">
         <StyledText
           numberOfLines={props._overflow ? undefined : 1}
-          className={cn("text-sm", props._labelTextClassName, props._textColor)}
+          className={cn(
+            "text-sm",
+            { "text-base": !!props.LeftElement && !props.supportingText },
+            props._labelTextClassName,
+            props._textColor,
+          )}
         >
           {props.labelTextKey ? t(props.labelTextKey) : props.labelText}
         </StyledText>
