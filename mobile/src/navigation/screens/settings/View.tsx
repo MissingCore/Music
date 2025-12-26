@@ -2,7 +2,15 @@ import { useNavigation } from "@react-navigation/native";
 import { openBrowserAsync } from "expo-web-browser";
 import { useTranslation } from "react-i18next";
 
+import { Archive } from "~/resources/icons/Archive";
+import { AutoPlay } from "~/resources/icons/AutoPlay";
+import { BarChart4Bars } from "~/resources/icons/BarChart4Bars";
+import { DocumentSearch } from "~/resources/icons/DocumentSearch";
+import { Flask } from "~/resources/icons/Flask";
+import { FormatPaint } from "~/resources/icons/FormatPaint";
+import { MobileArrowDown } from "~/resources/icons/MobileArrowDown";
 import { OpenInNew } from "~/resources/icons/OpenInNew";
+import { Translate } from "~/resources/icons/Translate";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 
@@ -13,21 +21,19 @@ import { LanguageSheet } from "~/navigation/sheets/LanguageSheet";
 
 import { APP_VERSION } from "~/constants/Config";
 import * as LINKS from "~/constants/Links";
+import { Colors } from "~/constants/Styles";
 import { Divider } from "~/components/Divider";
 import { SegmentedList } from "~/components/List/Segmented";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { Switch } from "~/components/UI/Switch";
-import { LANGUAGES } from "~/modules/i18n/constants";
 
 export default function Settings() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const { hasNewUpdate } = useHasNewUpdate();
   const showRCNotification = usePreferenceStore((s) => s.rcNotification);
   const backupSheetRef = useSheetRef();
   const languageSheetRef = useSheetRef();
-
-  const currLang = LANGUAGES.find(({ code }) => code === i18n.language)?.name;
 
   return (
     <>
@@ -40,7 +46,8 @@ export default function Settings() {
             labelTextKey="feat.appUpdate.title"
             supportingText={t("feat.appUpdate.brief")}
             onPress={() => navigation.navigate("AppUpdate")}
-            className="rounded-full bg-yellow"
+            LeftElement={<MobileArrowDown color={Colors.neutral0} />}
+            className="gap-4 rounded-full bg-yellow"
             _textColor="text-neutral0"
           />
         )}
@@ -48,43 +55,50 @@ export default function Settings() {
         <SegmentedList>
           <SegmentedList.Item
             labelTextKey="feat.appearance.title"
-            supportingText={t("feat.appearance.brief")}
             onPress={() => navigation.navigate("AppearanceSettings")}
+            LeftElement={<FormatPaint />}
+            className="gap-4"
           />
           <SegmentedList.Item
             labelTextKey="feat.language.title"
-            supportingText={currLang ?? "English"}
             onPress={() => languageSheetRef.current?.present()}
+            LeftElement={<Translate />}
+            className="gap-4"
           />
         </SegmentedList>
 
         <SegmentedList>
           <SegmentedList.Item
             labelTextKey="feat.backup.title"
-            supportingText={t("feat.backup.brief")}
             onPress={() => backupSheetRef.current?.present()}
+            LeftElement={<Archive />}
+            className="gap-4"
           />
           <SegmentedList.Item
             labelTextKey="feat.insights.title"
-            supportingText={t("feat.insights.brief")}
             onPress={() => navigation.navigate("Insights")}
+            LeftElement={<BarChart4Bars />}
+            className="gap-4"
           />
           <SegmentedList.Item
             labelTextKey="feat.playback.title"
-            supportingText={t("feat.playback.brief")}
             onPress={() => navigation.navigate("PlaybackSettings")}
+            LeftElement={<AutoPlay />}
+            className="gap-4"
           />
           <SegmentedList.Item
             labelTextKey="feat.scanning.title"
-            supportingText={t("feat.scanning.brief")}
             onPress={() => navigation.navigate("ScanningSettings")}
+            LeftElement={<DocumentSearch />}
+            className="gap-4"
           />
         </SegmentedList>
 
         <SegmentedList.Item
           labelTextKey="feat.experimental.title"
-          supportingText={t("feat.experimental.brief")}
           onPress={() => navigation.navigate("ExperimentalSettings")}
+          LeftElement={<Flask />}
+          className="gap-4"
         />
 
         <SegmentedList>
@@ -109,25 +123,26 @@ export default function Settings() {
             supportingText={t("feat.thirdParty.brief")}
             onPress={() => navigation.navigate("ThirdParty")}
           />
-          <SegmentedList.CustomItem>
-            <SegmentedList.Item
-              labelTextKey="feat.version.title"
-              supportingText={APP_VERSION}
-              onPress={() => openBrowserAsync(LINKS.VERSION_CHANGELOG)}
-              RightElement={<OpenInNew />}
-              className="rounded-none"
-              _psuedoClassName="active:bg-canvas/30"
-            />
-            <Divider className="mx-4" />
-            <SegmentedList.Item
-              labelTextKey="feat.version.extra.rcNotification"
-              onPress={PreferenceTogglers.toggleRCNotification}
-              RightElement={<Switch enabled={showRCNotification} />}
-              className="rounded-none"
-              _psuedoClassName="active:bg-canvas/30"
-            />
-          </SegmentedList.CustomItem>
         </SegmentedList>
+
+        <SegmentedList.CustomItem>
+          <SegmentedList.Item
+            labelTextKey="feat.version.title"
+            supportingText={APP_VERSION}
+            onPress={() => openBrowserAsync(LINKS.VERSION_CHANGELOG)}
+            RightElement={<OpenInNew />}
+            className="rounded-none"
+            _psuedoClassName="active:bg-canvas/30"
+          />
+          <Divider className="mx-4" />
+          <SegmentedList.Item
+            labelTextKey="feat.version.extra.rcNotification"
+            onPress={PreferenceTogglers.toggleRCNotification}
+            RightElement={<Switch enabled={showRCNotification} />}
+            className="rounded-none"
+            _psuedoClassName="active:bg-canvas/30"
+          />
+        </SegmentedList.CustomItem>
       </StandardScrollLayout>
     </>
   );
