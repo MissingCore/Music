@@ -12,12 +12,11 @@ import { Tabs } from "~/stores/Preference/actions";
 import { cn } from "~/lib/style";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { DetachedSheet } from "~/components/Sheet/Detached";
+import type { SheetDragListRenderItemInfo } from "~/components/Sheet/SheetDragList";
+import { SheetDragList } from "~/components/Sheet/SheetDragList";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { TStyledText } from "~/components/Typography/StyledText";
 import type { Tab } from "~/stores/Preference/types";
-
-import type { SheetDragListRenderItemInfo } from "~/components/SheetDragList";
-import { SheetDragList } from "~/components/SheetDragList";
 
 type RenderItemProps = SheetDragListRenderItemInfo<Tab>;
 
@@ -34,8 +33,7 @@ export function TabOrderSheet(props: { ref: TrueSheetRef }) {
       <SheetDragList
         data={data}
         keyExtractor={(tabKey) => tabKey}
-        itemSize={56}
-        gap={8}
+        estimatedItemSize={64}
         renderItem={(args) => <RenderItem {...args} />}
         onDragBegin={() => setDraggable(false)}
         onDragEnd={() => setDraggable(true)}
@@ -62,7 +60,7 @@ const RenderItem = memo(
     return (
       <View
         collapsable={false}
-        className={cn("h-14 flex-row items-center rounded-md pl-2", {
+        className={cn("h-14 flex-row items-center rounded-md", {
           "opacity-25": !info.active && info.isDragging,
           "bg-surface!": info.active,
         })}
