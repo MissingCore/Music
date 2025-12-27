@@ -151,7 +151,7 @@
       "extra": {
         "contribute": "Rozwijaj tłumaczenia",
         "useLTR": "Używaj układu LTR z językami RTL. Wymagany restart.",
-        "translators": null
+        "translators": "Tłumacze"
       }
     },
     "backup": {
@@ -268,16 +268,16 @@
       "extra": {
         "start": "Start",
         "stopTime": "Odtwarzanie zostanie zatrzymane o {{- time}}.",
-        "extend": null
+        "extend": "Przedłuż czas do końca utworu."
       }
     },
     "waveformSlider": {
-      "title": "Pasek przewijania z wizualizacją",
-      "brief": null,
+      "title": "Pasek przewijania z falami dźwiękowymi",
+      "brief": "Odtwarzanie początkowo będzie opóźnione przez obliczenia dla wizualizacji.",
       "extra": {
-        "purgeCache": null,
-        "purgeCacheBrief": null,
-        "purgeCacheToast": null
+        "purgeCache": "Wyczyść dane dla wizualizacji",
+        "purgeCacheBrief": "Zwalnia pamięć i wymusza ponowne obliczenia dla wizualizacji fal dźwiękowych.",
+        "purgeCacheToast": "Dane wizualizacji fal dźwiękowych zostały wyczyszczone."
       }
     },
     "code": {
@@ -391,11 +391,11 @@
     "queue": {
       "extra": {
         "add": "Dodaj do kolejki",
-        "playNext": null,
-        "playLast": null,
+        "playNext": "Odtwórz jako następną",
+        "playLast": "Odtwórz jako ostatnią",
         "toast": "Dodano do kolejki: `{{- name}}`.",
-        "queueAwareNext": null,
-        "queueAwareNextBrief": null
+        "queueAwareNext": "Odtwórz jako następną z zachowaniem kolejności",
+        "queueAwareNextBrief": "Utwór dodany jako nastepny zostanie umiejscowiony za ostatnim dodanym jako następnym."
       }
     }
   }
