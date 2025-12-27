@@ -16,10 +16,10 @@ import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { TStyledText } from "~/components/Typography/StyledText";
 import type { Tab } from "~/stores/Preference/types";
 
-import type { RNGHListRenderItemInfo } from "~/components/RNGHDragList";
-import { RNGHDragList } from "~/components/RNGHDragList";
+import type { SheetDragListRenderItemInfo } from "~/components/SheetDragList";
+import { SheetDragList } from "~/components/SheetDragList";
 
-type RenderItemProps = RNGHListRenderItemInfo<Tab>;
+type RenderItemProps = SheetDragListRenderItemInfo<Tab>;
 
 export function TabOrderSheet(props: { ref: TrueSheetRef }) {
   const data = usePreferenceStore((s) => s.tabsOrder);
@@ -31,7 +31,7 @@ export function TabOrderSheet(props: { ref: TrueSheetRef }) {
       titleKey="feat.tabsOrder.title"
       draggable={draggable}
     >
-      <RNGHDragList
+      <SheetDragList
         data={data}
         keyExtractor={(tabKey) => tabKey}
         itemSize={56}
@@ -61,6 +61,7 @@ const RenderItem = memo(
 
     return (
       <View
+        collapsable={false}
         className={cn("h-14 flex-row items-center rounded-md pl-2", {
           "opacity-25": !info.active && info.isDragging,
           "bg-surface!": info.active,
@@ -69,8 +70,7 @@ const RenderItem = memo(
         <IconButton
           Icon={DragIndicator}
           accessibilityLabel=""
-          delayLongPress={250}
-          onLongPress={info.onInitDrag}
+          onPressIn={info.onInitDrag}
         />
         <TStyledText
           textKey={tabNameKey}
