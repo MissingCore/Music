@@ -4,13 +4,12 @@ import { View } from "react-native";
 
 import { DragIndicator } from "~/resources/icons/DragIndicator";
 import { Home } from "~/resources/icons/Home";
-import { Visibility } from "~/resources/icons/Visibility";
-import { VisibilityOff } from "~/resources/icons/VisibilityOff";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { Tabs } from "~/stores/Preference/actions";
 
 import { cn } from "~/lib/style";
 import { IconButton } from "~/components/Form/Button/Icon";
+import { CheckboxField } from "~/components/Form/Checkbox";
 import { DetachedSheet } from "~/components/Sheet/Detached";
 import type { SheetDragListRenderItemInfo } from "~/components/Sheet/SheetDragList";
 import { SheetDragList } from "~/components/Sheet/SheetDragList";
@@ -25,11 +24,7 @@ export function TabOrderSheet(props: { ref: TrueSheetRef }) {
   const [draggable, setDraggable] = useState(true);
 
   return (
-    <DetachedSheet
-      ref={props.ref}
-      titleKey="feat.tabsOrder.title"
-      draggable={draggable}
-    >
+    <DetachedSheet ref={props.ref} draggable={draggable}>
       <SheetDragList
         data={data}
         keyExtractor={(tabKey) => tabKey}
@@ -65,15 +60,14 @@ const RenderItem = memo(
           "bg-surface!": info.active,
         })}
       >
-        <IconButton
-          Icon={DragIndicator}
-          accessibilityLabel=""
-          onPressIn={info.onInitDrag}
-        />
-        <TStyledText
-          textKey={tabNameKey}
-          numberOfLines={1}
-          className="shrink grow p-4 pr-2"
+        <CheckboxField
+          accessibilityLabel={t(
+            isVisible ? "template.entryHide" : "template.entryShow",
+            { name: t(tabNameKey) },
+          )}
+          checked={isVisible}
+          onCheck={() => Tabs.toggleVisibility(item)}
+          disabled={info.isDragging || isHomeTab}
         />
         <IconButton
           Icon={Home}
@@ -87,14 +81,15 @@ const RenderItem = memo(
             "disabled:opacity-100": !info.isDragging && isHomeTab,
           })}
         />
+        <TStyledText
+          textKey={tabNameKey}
+          numberOfLines={1}
+          className="shrink grow px-2"
+        />
         <IconButton
-          Icon={isVisible ? Visibility : VisibilityOff}
-          accessibilityLabel={t(
-            isVisible ? "template.entryHide" : "template.entryShow",
-            { name: t(tabNameKey) },
-          )}
-          onPress={() => Tabs.toggleVisibility(item)}
-          disabled={info.isDragging || isHomeTab}
+          Icon={DragIndicator}
+          accessibilityLabel=""
+          onPressIn={info.onInitDrag}
         />
       </View>
     );

@@ -25,6 +25,7 @@ function Checkbox({ checked, size = 20 }: { checked: boolean; size?: number }) {
 }
 
 type CheckboxFieldBaseProps = {
+  accessibilityLabel?: string;
   checked: boolean;
   onCheck: VoidFunction;
   disabled?: boolean;
@@ -36,6 +37,7 @@ const CheckboxFieldBase = memo(function CheckboxFieldBase(
 ) {
   return (
     <Pressable
+      accessibilityLabel={props.accessibilityLabel}
       accessibilityRole="checkbox"
       accessibilityState={{ checked: props.checked, disabled: props.disabled }}
       onPress={props.onCheck}
@@ -55,7 +57,7 @@ const CheckboxFieldBase = memo(function CheckboxFieldBase(
 export const CheckboxField = memo(function CheckboxField({
   children,
   ...props
-}: CheckboxFieldBaseProps & { children: React.ReactNode }) {
+}: CheckboxFieldBaseProps & { children?: React.ReactNode }) {
   return (
     <CheckboxFieldBase
       {...props}
