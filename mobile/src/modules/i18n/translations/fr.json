@@ -118,10 +118,6 @@
     "tabsOrder": {
       "title": "Ordre des onglets",
       "brief": "Personnalisez l'ordre et la visibilité des onglets.",
-      "description": {
-        "line1": "Réorganiser les onglets après l'onglet \"Accueil\" par glisser-déposer. Activez/désactivez la visibilité des onglets en utilisant l'icône d'œil.",
-        "line2": "Attention : Un comportement inattendu peut survenir lors de la navigation vers un onglet caché."
-      },
       "extra": {
         "setHomeTab": "Ouvrir l’onglet {{- name}} au lancement de l’application."
       }

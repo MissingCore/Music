@@ -33,7 +33,6 @@ import AppearanceSettings from "./screens/settings/AppearanceSettingsView";
 import AppUpdate from "./screens/settings/AppUpdateView";
 import ExperimentalSettings from "./screens/settings/ExperimentalSettingsView";
 import HiddenTracks from "./screens/settings/HiddenTracksView";
-import HomeTabsOrderSettings from "./screens/settings/HomeTabsOrderSettingsView";
 import Insights from "./screens/settings/InsightsView";
 import MostPlayed from "./screens/settings/MostPlayedView";
 import PackageLicense from "./screens/settings/PackageLicenseView";
@@ -276,10 +275,6 @@ export const RootStack = createNativeStackNavigator({
         AppearanceSettings: {
           screen: AppearanceSettings,
           options: { title: "feat.appearance.title" },
-        },
-        HomeTabsOrderSettings: {
-          screen: HomeTabsOrderSettings,
-          options: { title: "feat.tabsOrder.title" },
         },
         Insights: {
           screen: Insights,

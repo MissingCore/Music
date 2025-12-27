@@ -118,10 +118,6 @@
     "tabsOrder": {
       "title": "Sekme Sırası",
       "brief": "Sekmelerin sırasını ve görünürlüğünü özelleştirin.",
-      "description": {
-        "line1": "Sekmeleri sürükleyip bırakarak yeniden sıralayın. Göz simgesini kullanarak sekme görünürlüğünü açıp kapatın. Ev simgesini kullanarak ana sekmeyi değiştirin.",
-        "line2": "Uyarı: Gizli bir sekmeye gidildiğinde beklenmedik davranışlar ortaya çıkabilir."
-      },
       "extra": {
         "setHomeTab": "Uygulama başlatıldığında {{- name}} sekmesini aç."
       }

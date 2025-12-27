@@ -118,10 +118,6 @@
     "tabsOrder": {
       "title": "Urutan Tab Beranda",
       "brief": "Kustomisasikan urutan dan visibilitas tab.",
-      "description": {
-        "line1": "Urutkan lagi tab setelah tab \"Beranda\" dengan menarik dan melepaskan. Tombol visibilitas tab menggunakan ikon mata.",
-        "line2": "Peringatan: Perilaku tak terduga mungkin terjadi saat menavigasi ke tab yang disembunyikan."
-      },
       "extra": {
         "setHomeTab": null
       }

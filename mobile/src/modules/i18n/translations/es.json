@@ -118,10 +118,6 @@
     "tabsOrder": {
       "title": "Orden de pestañas",
       "brief": "Organiza y ajusta las pestañas visibles.",
-      "description": {
-        "line1": "Arrastra para reordenar. Usa el ojo para mostrar/ocultar y la casa para definir la pestaña de inicio.",
-        "line2": "Nota: Navegar a una pestaña oculta puede causar comportamientos inesperados."
-      },
       "extra": {
         "setHomeTab": "Abrir la pestaña {{- name}} al iniciar."
       }

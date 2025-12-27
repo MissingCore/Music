@@ -118,10 +118,6 @@
     "tabsOrder": {
       "title": "Ordre de les pestanyes",
       "brief": "Personalitza l'ordre i visibilitat de les pestanyes.",
-      "description": {
-        "line1": "Reordena les pestanyes que segueixen a la pestanya de \"Inici\" arrossegant i deixant anar. Fes visible o invisible cada pestanya pressionant la icona de l'ull.",
-        "line2": "Precaució: al accedir a pestanyes ocultes es poden produir errors."
-      },
       "extra": {
         "setHomeTab": null
       }

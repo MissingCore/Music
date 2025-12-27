@@ -118,10 +118,6 @@
     "tabsOrder": {
       "title": "Kolejność zakładek",
       "brief": "Spersonalizuj kolejność i widoczność zakładek.",
-      "description": {
-        "line1": "Zmień kolejność zakładek przez przeciąganie i upuszczanie. Przełączaj ich widoczność, używając ikony oka. Ustaw startową zakładkę, używając ikony domu.",
-        "line2": "Ostrzeżenie: Mogą występować nieoczekiwane błędy podczas przechodzenia do ukrytych zakładek."
-      },
       "extra": {
         "setHomeTab": "Otwórz zakładkę {{- name}} przy uruchomieniu aplikacji."
       }

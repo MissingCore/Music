@@ -118,10 +118,6 @@
     "tabsOrder": {
       "title": "Rækkefølge af faner",
       "brief": "Tilpas rækkefølgen og synligheden af fanerne.",
-      "description": {
-        "line1": "Tilpas fanernes rækkefølge med Drag-and-Drop. Gem eller vis fanerne med øje-ikonet.",
-        "line2": "Bemærk: Uventet adfærd kan forekomme, når du navigerer til en gemt fane."
-      },
       "extra": {
         "setHomeTab": null
       }
