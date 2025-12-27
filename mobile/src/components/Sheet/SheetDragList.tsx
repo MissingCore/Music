@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import type { FlatListProps, ListRenderItemInfo } from "react-native";
 import {
   FlatList,
@@ -27,13 +27,10 @@ export type SheetDragListRenderItemInfo<TData> = {
 
 interface SheetDragListProps<TData> extends Pick<
   FlatListProps<TData>,
-  | "keyExtractor"
-  | "style"
-  | "className"
-  | "contentContainerStyle"
-  | "contentContainerClassName"
+  "style" | "className" | "contentContainerStyle" | "contentContainerClassName"
 > {
   data: TData[];
+  keyExtractor: (item: TData, index: number) => string;
   renderItem: (info: SheetDragListRenderItemInfo<TData>) => React.ReactElement;
   /** All items should be the same size. Include gap. */
   estimatedItemSize: number;
@@ -48,7 +45,12 @@ interface SheetDragListProps<TData> extends Pick<
 
 const INACTIVE = -1;
 
+/**
+ * Drag list that can be used inside a sheet.
+ * - **Does not have auto-scrolling support.**
+ */
 export function SheetDragList<TData>({
+  data,
   renderItem,
   estimatedItemSize,
   onDragBegin,
@@ -58,6 +60,7 @@ export function SheetDragList<TData>({
 }: SheetDragListProps<TData>) {
   const [enabled, setEnabled] = useState(true);
 
+  const dataRef = useRef(data);
   const activeIndex = useSharedValue(INACTIVE);
   const [reactiveActiveIndex, setReactiveActiveIndex] = useState(INACTIVE);
 
@@ -89,7 +92,7 @@ export function SheetDragList<TData>({
           const shiftedAmount = clamp(
             Math.round(translationY / estimatedItemSize),
             -activeIndex.value,
-            props.data.length - 1 - activeIndex.value,
+            data.length - 1 - activeIndex.value,
           );
           shifted.value = shiftedAmount;
         })
@@ -108,7 +111,7 @@ export function SheetDragList<TData>({
         }),
     [
       enabled,
-      props.data.length,
+      data.length,
       estimatedItemSize,
       activeIndex,
       pan,
@@ -153,9 +156,22 @@ export function SheetDragList<TData>({
     ],
   );
 
+  // Reset transitions during render after the data changes to prevent flashing.
+  if (dataRef.current !== data) {
+    dataRef.current = data;
+    onCleanup();
+  }
+
   return (
     <GestureDetector gesture={gesture}>
-      <FlatList {...ScrollablePresets} {...props} renderItem={renderDragItem} />
+      <FlatList
+        // Have a key based on the data to prevent flashing.
+        key={JSON.stringify(dataRef.current)}
+        {...ScrollablePresets}
+        {...props}
+        data={dataRef.current}
+        renderItem={renderDragItem}
+      />
     </GestureDetector>
   );
 }
