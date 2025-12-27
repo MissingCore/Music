@@ -15,11 +15,9 @@ const ButtonConfig = {
   lg: { buttonSize: "min-h-12 min-w-12", iconSize: 32 },
 } as const;
 
-type IconButtonProps = {
+type IconButtonProps = PressProps & {
   Icon: (props: Icon) => React.JSX.Element;
   accessibilityLabel: string;
-  onPress: PressProps["onPress"];
-  disabled?: boolean;
   /** Defaults to `md`. */
   size?: ButtonSize;
   /** Use the `filled` variant on the icon if available. */
