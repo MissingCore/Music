@@ -21,7 +21,7 @@ const WrappedGestureHandlerRootView = withUniwind(GestureHandlerRootView);
 
 interface SheetProps extends Pick<
   TrueSheetProps,
-  "children" | "onBackPress" | "onPositionChange"
+  "children" | "draggable" | "onBackPress" | "onPositionChange"
 > {
   ref?: TrueSheetRef;
   /** Makes sheet accessible globally using this key. */
@@ -79,6 +79,7 @@ export function DetachedSheet(props: SheetProps) {
       cornerRadius={0}
       maxHeight={maxHeight}
       grabber={false}
+      draggable={props.draggable}
       // Re-enable toast animations after sheet is finished presenting.
       onDidPresent={() => setDisableToastAnim(false)}
       onDidDismiss={() => {
