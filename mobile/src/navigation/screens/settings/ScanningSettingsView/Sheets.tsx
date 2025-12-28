@@ -93,7 +93,7 @@ function ScanFilterListSheet(props: {
           <ContentPlaceholder errMsgKey="err.msg.noFilters" />
         }
         nestedScrollEnabled
-        contentContainerClassName="gap-1 pb-4"
+        contentContainerClassName="gap-2 pb-4"
       />
     </Sheet>
   );

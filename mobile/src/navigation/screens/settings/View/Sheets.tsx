@@ -5,7 +5,7 @@ import { useExportBackup, useImportBackup } from "~/modules/backup/JSON";
 
 import { mutateGuard } from "~/lib/react-query";
 import { FlatList, useIsScrollable } from "~/components/Defaults";
-import { Radio } from "~/components/Form/Selection";
+import { RadioField } from "~/components/Form/Radio";
 import { Sheet } from "~/components/Sheet";
 import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
@@ -69,16 +69,16 @@ function LanguageSheet(props: { ref: TrueSheetRef }) {
         data={LANGUAGES}
         keyExtractor={({ code }) => code}
         renderItem={({ item }) => (
-          <Radio
+          <RadioField
             selected={languageCode === item.code}
             onSelect={() => PreferenceSetters.setLanguage(item.code)}
           >
             <StyledText>{item.name}</StyledText>
-          </Radio>
+          </RadioField>
         )}
         {...handlers}
         nestedScrollEnabled={isScrollable}
-        contentContainerClassName="gap-1 pb-4"
+        contentContainerClassName="gap-2 pb-4"
       />
     </Sheet>
   );

@@ -48,7 +48,7 @@ import {
 import { LegendList, ScrollView, useIsScrollable } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { Button, IconButton } from "~/components/Form/Button";
-import { Checkbox } from "~/components/Form/Selection";
+import { CheckboxField } from "~/components/Form/Checkbox";
 import { Marquee } from "~/components/Marquee";
 import { Sheet } from "~/components/Sheet";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
@@ -386,28 +386,28 @@ function TrackToPlaylistSheet({ id }: { id: string }) {
       snapTop
     >
       <LegendList
-        getEstimatedItemSize={(index) => (index === 0 ? 54 : 58)}
+        getEstimatedItemSize={(index) => (index === 0 ? 54 : 62)}
         data={data}
         keyExtractor={({ name }) => name}
         extraData={inList}
         renderItem={({ item, index }) => {
           const selected = inList?.includes(item.name) ?? false;
           return (
-            <Checkbox
-              selected={selected}
-              onSelect={() =>
+            <CheckboxField
+              checked={selected}
+              onCheck={() =>
                 mutateGuard(
                   // @ts-expect-error - We don't care about return type.
                   selected ? removeFromPlaylist : addToPlaylist,
                   item.name,
                 )
               }
-              wrapperClassName={index > 0 ? "mt-1" : undefined}
+              className={index > 0 ? "mt-2" : undefined}
             >
-              <Marquee color={selected ? "surface" : "canvasAlt"}>
+              <Marquee color="canvasAlt">
                 <StyledText>{item.name}</StyledText>
               </Marquee>
-            </Checkbox>
+            </CheckboxField>
           );
         }}
         ListEmptyComponent={

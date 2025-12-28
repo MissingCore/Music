@@ -6,7 +6,7 @@ import {
 } from "~/modules/media/services/SortPreferences";
 
 import { FlatList } from "~/components/Defaults";
-import { Radio } from "~/components/Form/Selection";
+import { RadioField } from "~/components/Form/Radio";
 import { Sheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { TStyledText } from "~/components/Typography/StyledText";
@@ -39,14 +39,14 @@ export const TrackSortSheet = deferInitialRender(
           data={OrderedByOptions}
           keyExtractor={(sortOption) => sortOption}
           renderItem={({ item: sortOption }) => (
-            <Radio
+            <RadioField
               selected={orderedBy === sortOption}
               onSelect={() => setOrderedBy(sortOption)}
             >
               <TStyledText textKey={`feat.modalSort.extra.${sortOption}`} />
-            </Radio>
+            </RadioField>
           )}
-          contentContainerClassName="gap-1"
+          contentContainerClassName="gap-2"
         />
       </Sheet>
     );

@@ -7,7 +7,7 @@ import { PreferenceSetters } from "~/stores/Preference/actions";
 import { getFont } from "~/lib/style";
 import { toLowerCase } from "~/utils/string";
 import { FlatList } from "~/components/Defaults";
-import { Radio } from "~/components/Form/Selection";
+import { RadioField } from "~/components/Form/Radio";
 import { Sheet } from "~/components/Sheet";
 import { NumericSheet } from "~/components/Sheet/Numeric";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
@@ -89,7 +89,7 @@ function FontSheet<T extends AccentFont>(props: {
         data={props.fontOptions}
         keyExtractor={(font) => font}
         renderItem={({ item: font }) => (
-          <Radio
+          <RadioField
             selected={props.selectedFont === font}
             onSelect={() => props.updateFont(font)}
           >
@@ -99,9 +99,9 @@ function FontSheet<T extends AccentFont>(props: {
             >
               {font}
             </Text>
-          </Radio>
+          </RadioField>
         )}
-        contentContainerClassName="gap-1"
+        contentContainerClassName="gap-2"
       />
     </Sheet>
   );
@@ -121,7 +121,7 @@ function ThemeSheet(props: { ref: TrueSheetRef }) {
         data={ThemeOptions}
         keyExtractor={(theme) => theme}
         renderItem={({ item: theme }) => (
-          <Radio
+          <RadioField
             selected={selectedTheme === theme}
             onSelect={() => {
               setColorScheme(theme);
@@ -129,9 +129,9 @@ function ThemeSheet(props: { ref: TrueSheetRef }) {
             }}
           >
             <TStyledText textKey={`feat.theme.extra.${theme}`} />
-          </Radio>
+          </RadioField>
         )}
-        contentContainerClassName="gap-1"
+        contentContainerClassName="gap-2"
       />
     </Sheet>
   );
@@ -168,14 +168,14 @@ function NowPlayingDesignSheet(props: { ref: TrueSheetRef }) {
         data={NowPlayingDesignOptions}
         keyExtractor={(design) => design}
         renderItem={({ item: design }) => (
-          <Radio
+          <RadioField
             selected={nowPlayingDesign === design}
             onSelect={() => PreferenceSetters.setNowPlayingDesign(design)}
           >
             <TStyledText textKey={`feat.nowPlayingDesign.extra.${design}`} />
-          </Radio>
+          </RadioField>
         )}
-        contentContainerClassName="gap-1"
+        contentContainerClassName="gap-2"
       />
     </Sheet>
   );
