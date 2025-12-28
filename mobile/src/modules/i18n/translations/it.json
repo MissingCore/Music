@@ -196,10 +196,6 @@
       "title": "Salva errori",
       "brief": "Controlla perché alcuni $t(term.tracks) non sono stati salvati."
     },
-    "interactions": {
-      "title": "Interazioni Nothing",
-      "brief": "Funzionalità Nothing supportate."
-    },
     "playback": {
       "title": "Riproduzione",
       "brief": "Modifica comportamento della riproduzione.",

@@ -196,10 +196,6 @@
       "title": "Erreurs d'enregistrement",
       "brief": "Voyez pourquoi certains titres n'ont pas été enregistrés."
     },
-    "interactions": {
-      "title": "Intéractions Nothing",
-      "brief": "Fonctionnalités Nothing supportées."
-    },
     "playback": {
       "title": "Lecture",
       "brief": "Changer le comportement de lecture de la musique.",

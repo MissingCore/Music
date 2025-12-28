@@ -196,10 +196,6 @@
       "title": "Błędy zapisu",
       "brief": "Przyczyny, dla których niektóre utwory nie zostały dodane."
     },
-    "interactions": {
-      "title": "Interakcje z Nothing",
-      "brief": "Wspierane funkcjonalności od Nothing."
-    },
     "playback": {
       "title": "Odtwarzanie",
       "brief": "Dostosuj zachowanie odtwarzacza.",

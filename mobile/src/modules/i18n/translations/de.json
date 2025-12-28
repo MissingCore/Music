@@ -196,10 +196,6 @@
       "title": "Fehler beim Speichern",
       "brief": "Der Grund, warum nicht einige Lieder gespeichert wurden schauen."
     },
-    "interactions": {
-      "title": "Nothing Phone Integrationen",
-      "brief": "Unterstützte Nothing Funktionen."
-    },
     "playback": {
       "title": "Wiedergabe",
       "brief": "Musik-Abspielverhalten ändern.",

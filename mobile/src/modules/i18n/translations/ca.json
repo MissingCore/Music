@@ -196,10 +196,6 @@
       "title": "Errors al guardar",
       "brief": "Raó per la que no s'han desat algunes pistes."
     },
-    "interactions": {
-      "title": "Interaccions de Nothing",
-      "brief": "Funcions de Nothing suportades."
-    },
     "playback": {
       "title": "Reproduint",
       "brief": "Canvia el comportament del reproductor.",

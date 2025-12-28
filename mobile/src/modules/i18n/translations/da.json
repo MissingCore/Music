@@ -196,10 +196,6 @@
       "title": "Fejl under gemning",
       "brief": "Se grunden til eventuelle fejl."
     },
-    "interactions": {
-      "title": "Integrationer med Nothing Phone",
-      "brief": "Understøttede Nothing-funktioner"
-    },
     "playback": {
       "title": "Afspilning",
       "brief": "Tilpas musikafspilning.",

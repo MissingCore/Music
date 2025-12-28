@@ -196,10 +196,6 @@
       "title": "Errores al guardar",
       "brief": "Revisa qué canciones no se guardaron."
     },
-    "interactions": {
-      "title": "Interacciones Nothing",
-      "brief": "Funciones compatibles con dispositivos Nothing."
-    },
     "playback": {
       "title": "Reproducción",
       "brief": "Ajustes de reproducción.",

@@ -196,10 +196,6 @@
       "title": "エラーの保存",
       "brief": "一部のトラックが保存されなかった理由を確認します。"
     },
-    "interactions": {
-      "title": "Nothing のインタラクション",
-      "brief": "Nothing でサポートされている機能について。"
-    },
     "playback": {
       "title": "再生中",
       "brief": "音楽再生時の動作を変更します。",

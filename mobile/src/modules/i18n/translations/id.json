@@ -196,10 +196,6 @@
       "title": "Simpan Galat",
       "brief": "Lihat mengapa beberapa trek tidak disimpan."
     },
-    "interactions": {
-      "title": "Tidak Ada Interaksi",
-      "brief": "Fitur tidak didukung."
-    },
     "playback": {
       "title": "Pemutaran",
       "brief": "Ubah perilaku pemutaran musik.",

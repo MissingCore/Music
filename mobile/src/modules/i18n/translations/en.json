@@ -214,10 +214,6 @@
       "title": "Save Errors",
       "brief": "See the reason why some tracks weren't saved."
     },
-    "interactions": {
-      "title": "Nothing Interactions",
-      "brief": "Supported Nothing features."
-    },
     "playback": {
       "title": "Playback",
       "brief": "Change music playing behavior.",

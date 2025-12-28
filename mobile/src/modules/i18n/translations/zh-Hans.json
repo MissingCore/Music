@@ -196,10 +196,6 @@
       "title": "保存错误",
       "brief": "查看部分歌曲未能保存的原因。"
     },
-    "interactions": {
-      "title": "Nothing 交互",
-      "brief": "支持的 Nothing 功能。"
-    },
     "playback": {
       "title": "回放",
       "brief": "更改播放音乐时的行为。",

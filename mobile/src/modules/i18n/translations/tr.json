@@ -196,10 +196,6 @@
       "title": "Kaydetme Hataları",
       "brief": "Bazı parçaların neden kaydedilmediğini görün."
     },
-    "interactions": {
-      "title": "Nothing Etkileşimleri",
-      "brief": "Desteklenen Nothing özellikleri."
-    },
     "playback": {
       "title": "Oynatma",
       "brief": "Müzik çalma davranışını değiştirin.",
