@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { sum } from "drizzle-orm";
 import { Directory, Paths } from "expo-file-system/next";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
 
 import { db } from "~/db";
 import { albums, artists, invalidTracks, playlists, tracks } from "~/db/schema";
@@ -15,7 +14,7 @@ import { Colors } from "~/constants/Styles";
 import { ImageDirectory, isFile } from "~/lib/file-system";
 import type { ExtractQueryData } from "~/lib/react-query";
 import { abbreviateSize, formatSeconds } from "~/utils/number";
-import { List, ListItem } from "~/components/Containment/List";
+import { SegmentedList } from "~/components/List/Segmented";
 import { Legend } from "~/components/UI/Legend";
 import { ProgressBar } from "~/components/UI/ProgressBar";
 
@@ -25,33 +24,29 @@ export default function Insights() {
 
   return (
     <StandardScrollLayout>
-      <List>
+      <SegmentedList>
         <StorageWidget />
         <DBSummaryWidget />
-      </List>
+      </SegmentedList>
 
-      <ListItem
-        titleKey="feat.mostPlayed.title"
-        description={t("feat.mostPlayed.brief")}
+      <SegmentedList.Item
+        labelTextKey="feat.mostPlayed.title"
+        supportingText={t("feat.mostPlayed.brief")}
         onPress={() => navigation.navigate("MostPlayed")}
-        first
-        last
       />
 
-      <List>
-        <ListItem
-          titleKey="feat.hiddenTracks.title"
-          description={t("feat.hiddenTracks.brief")}
+      <SegmentedList>
+        <SegmentedList.Item
+          labelTextKey="feat.hiddenTracks.title"
+          supportingText={t("feat.hiddenTracks.brief")}
           onPress={() => navigation.navigate("HiddenTracks")}
-          first
         />
-        <ListItem
-          titleKey="feat.saveErrors.title"
-          description={t("feat.saveErrors.brief")}
+        <SegmentedList.Item
+          labelTextKey="feat.saveErrors.title"
+          supportingText={t("feat.saveErrors.brief")}
           onPress={() => navigation.navigate("SaveErrors")}
-          last
         />
-      </List>
+      </SegmentedList>
     </StandardScrollLayout>
   );
 }
@@ -68,7 +63,7 @@ function StorageWidget() {
   };
 
   return (
-    <View className="gap-4 rounded-md rounded-b-sm bg-surface p-4">
+    <SegmentedList.CustomItem className="gap-4 p-4">
       <ProgressBar
         entries={[
           { color: Colors.red, value: data?.images ?? 0 },
@@ -104,7 +99,7 @@ function StorageWidget() {
         labelTextKey="feat.insights.extra.total"
         value={getValue("total")}
       />
-    </View>
+    </SegmentedList.CustomItem>
   );
 }
 
@@ -147,7 +142,7 @@ function DBSummaryWidget() {
   };
 
   return (
-    <View className="gap-4 rounded-md rounded-t-sm bg-surface p-4">
+    <SegmentedList.CustomItem className="gap-4 p-4">
       <Legend>
         <Legend.Item labelTextKey="term.albums" value={getValue("albums")} />
         <Legend.Item labelTextKey="term.artists" value={getValue("artists")} />
@@ -175,7 +170,7 @@ function DBSummaryWidget() {
         labelTextKey="feat.insights.extra.totalDuration"
         value={getValue("totalDuration")}
       />
-    </View>
+    </SegmentedList.CustomItem>
   );
 }
 

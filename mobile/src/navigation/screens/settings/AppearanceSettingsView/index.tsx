@@ -6,8 +6,9 @@ import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { StandardScrollLayout } from "../../../layouts/StandardScroll";
 import { AppearanceSettingsSheets } from "./Sheets";
 
-import { List, ListItem } from "~/components/Containment/List";
+import { SegmentedList } from "~/components/List/Segmented";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
+import { Switch } from "~/components/UI/Switch";
 
 export default function AppearanceSettings() {
   const { t } = useTranslation();
@@ -36,67 +37,61 @@ export default function AppearanceSettings() {
         nowPlayingDesignRef={nowPlayingDesignSheetRef}
       />
       <StandardScrollLayout>
-        <List>
-          <ListItem
-            titleKey="feat.font.extra.accent"
-            description={accentFont}
+        <SegmentedList>
+          <SegmentedList.Item
+            labelTextKey="feat.font.extra.accent"
+            supportingText={accentFont}
             onPress={() => accentFontSheetRef.current?.present()}
-            first
           />
-          <ListItem
-            titleKey="feat.font.extra.primary"
-            description={primaryFont}
+          <SegmentedList.Item
+            labelTextKey="feat.font.extra.primary"
+            supportingText={primaryFont}
             onPress={() => primaryFontSheetRef.current?.present()}
           />
-          <ListItem
-            titleKey="feat.theme.title"
-            description={t(`feat.theme.extra.${theme}`)}
+          <SegmentedList.Item
+            labelTextKey="feat.theme.title"
+            supportingText={t(`feat.theme.extra.${theme}`)}
             onPress={() => themeSheetRef.current?.present()}
-            last
           />
-        </List>
+        </SegmentedList>
 
-        <ListItem
-          titleKey="feat.tabsOrder.title"
-          description={t("feat.tabsOrder.brief")}
+        <SegmentedList.Item
+          labelTextKey="feat.tabsOrder.title"
+          supportingText={t("feat.tabsOrder.brief")}
           onPress={() => navigation.navigate("HomeTabsOrderSettings")}
-          first
-          last
         />
 
-        <List>
-          <ListItem
-            titleKey="feat.albumLengthFilter.title"
-            description={t("plural.track", { count: minAlbumLength })}
+        <SegmentedList>
+          <SegmentedList.Item
+            labelTextKey="feat.albumLengthFilter.title"
+            supportingText={t("plural.track", { count: minAlbumLength })}
             onPress={() => albumLengthFilterSheetRef.current?.present()}
-            first
           />
-          <ListItem
-            titleKey="feat.miniplayerGestures.title"
+          <SegmentedList.Item
+            labelTextKey="feat.miniplayerGestures.title"
             onPress={PreferenceTogglers.toggleMiniplayerGestures}
-            switchState={miniplayerGestures}
+            RightElement={<Switch enabled={miniplayerGestures} />}
           />
-          <ListItem
-            titleKey="feat.nowPlayingDesign.title"
-            description={t(`feat.nowPlayingDesign.extra.${nowPlayingDesign}`)}
+          <SegmentedList.Item
+            labelTextKey="feat.nowPlayingDesign.title"
+            supportingText={t(
+              `feat.nowPlayingDesign.extra.${nowPlayingDesign}`,
+            )}
             onPress={() => nowPlayingDesignSheetRef.current?.present()}
           />
-          <ListItem
-            titleKey="feat.quickScroll.title"
-            description={t("feat.quickScroll.brief")}
+          <SegmentedList.Item
+            labelTextKey="feat.quickScroll.title"
+            supportingText={t("feat.quickScroll.brief")}
             onPress={PreferenceTogglers.toggleQuickScroll}
-            switchState={quickScroll}
-            last
+            RightElement={<Switch enabled={quickScroll} />}
           />
-        </List>
+        </SegmentedList>
 
-        <ListItem
-          titleKey="feat.ignoreRTLLayout.title"
-          description={t("feat.ignoreRTLLayout.brief")}
+        <SegmentedList.Item
+          labelTextKey="feat.ignoreRTLLayout.title"
+          supportingText={t("feat.ignoreRTLLayout.brief")}
           onPress={PreferenceTogglers.toggleForceLTR}
-          switchState={forceLTR}
-          first
-          last
+          RightElement={<Switch enabled={forceLTR} />}
         />
       </StandardScrollLayout>
     </>
