@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { openBrowserAsync } from "expo-web-browser";
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
 
 import { OpenInNew } from "~/resources/icons/OpenInNew";
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -11,7 +12,6 @@ import { SettingsSheets } from "./Sheets";
 
 import { APP_VERSION } from "~/constants/Config";
 import * as LINKS from "~/constants/Links";
-import { Card } from "~/components/Containment/Card";
 import { List, ListItem } from "~/components/Containment/List";
 import { Divider } from "~/components/Divider";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
@@ -121,7 +121,7 @@ export default function Settings() {
             description={t("feat.thirdParty.brief")}
             onPress={() => navigation.navigate("ThirdParty")}
           />
-          <Card className="overflow-hidden rounded-t-sm p-0">
+          <View className="overflow-hidden rounded-md rounded-t-sm bg-surface">
             <ListItem
               titleKey="feat.version.title"
               description={APP_VERSION}
@@ -136,7 +136,7 @@ export default function Settings() {
               switchState={showRCNotification}
               className="rounded-none"
             />
-          </Card>
+          </View>
         </List>
       </StandardScrollLayout>
     </>

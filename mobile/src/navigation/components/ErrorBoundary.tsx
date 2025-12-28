@@ -11,7 +11,6 @@ import { AppProvider } from "../providers/AppProvider";
 
 import { GITHUB } from "~/constants/Links";
 import { SENTRY_ENABLED, Sentry } from "~/lib/sentry";
-import { Card } from "~/components/Containment/Card";
 import { ScrollView } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
 import { AccentText } from "~/components/Typography/AccentText";
@@ -80,9 +79,9 @@ function ErrorLayout({ error }: { error: Error }) {
             textKey="err.flow.generic.brief"
             className="text-base"
           />
-          <Card>
+          <View className="rounded-md bg-surface p-4">
             <StyledText>{error.message}</StyledText>
-          </Card>
+          </View>
           <StyledText dim className="text-sm">
             {error.stack}
           </StyledText>

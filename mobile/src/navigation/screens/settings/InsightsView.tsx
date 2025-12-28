@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { sum } from "drizzle-orm";
 import { Directory, Paths } from "expo-file-system/next";
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
 
 import { db } from "~/db";
 import { albums, artists, invalidTracks, playlists, tracks } from "~/db/schema";
@@ -14,7 +15,6 @@ import { Colors } from "~/constants/Styles";
 import { ImageDirectory, isFile } from "~/lib/file-system";
 import type { ExtractQueryData } from "~/lib/react-query";
 import { abbreviateSize, formatSeconds } from "~/utils/number";
-import { Card } from "~/components/Containment/Card";
 import { List, ListItem } from "~/components/Containment/List";
 import { Legend } from "~/components/UI/Legend";
 import { ProgressBar } from "~/components/UI/ProgressBar";
@@ -68,7 +68,7 @@ function StorageWidget() {
   };
 
   return (
-    <Card className="gap-4 rounded-b-sm">
+    <View className="gap-4 rounded-md rounded-b-sm bg-surface p-4">
       <ProgressBar
         entries={[
           { color: Colors.red, value: data?.images ?? 0 },
@@ -104,7 +104,7 @@ function StorageWidget() {
         labelTextKey="feat.insights.extra.total"
         value={getValue("total")}
       />
-    </Card>
+    </View>
   );
 }
 
@@ -147,7 +147,7 @@ function DBSummaryWidget() {
   };
 
   return (
-    <Card className="gap-4 rounded-t-sm">
+    <View className="gap-4 rounded-md rounded-t-sm bg-surface p-4">
       <Legend>
         <Legend.Item labelTextKey="term.albums" value={getValue("albums")} />
         <Legend.Item labelTextKey="term.artists" value={getValue("artists")} />
@@ -175,7 +175,7 @@ function DBSummaryWidget() {
         labelTextKey="feat.insights.extra.totalDuration"
         value={getValue("totalDuration")}
       />
-    </Card>
+    </View>
   );
 }
 
