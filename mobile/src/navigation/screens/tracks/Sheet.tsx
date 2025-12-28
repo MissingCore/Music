@@ -389,7 +389,7 @@ function TrackToPlaylistSheet({ id }: { id: string }) {
       snapTop
     >
       <LegendList
-        getEstimatedItemSize={(index) => (index === 0 ? 54 : 58)}
+        getEstimatedItemSize={(index) => (index === 0 ? 54 : 62)}
         data={data}
         keyExtractor={({ name }) => name}
         extraData={inList}
