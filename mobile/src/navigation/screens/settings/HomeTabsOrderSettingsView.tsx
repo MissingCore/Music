@@ -71,7 +71,7 @@ const RenderItem = memo(
           {
             "opacity-25": !info.isActive && info.isDragging,
             "bg-surface!": info.isActive,
-            "mt-1": info.index > 0,
+            "mt-2": info.index > 0,
           },
         )}
       >

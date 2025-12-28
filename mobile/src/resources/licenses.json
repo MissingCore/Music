@@ -305,7 +305,7 @@
   },
   "jotai": {
     "name": "jotai",
-    "version": "2.16.0",
+    "version": "2.16.1",
     "copyright": "Copyright (c) 2020 Poimandres",
     "source": "https://github.com/pmndrs/jotai",
     "license": "MIT",

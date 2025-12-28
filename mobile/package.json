@@ -2,7 +2,7 @@
   "name": "music",
   "private": true,
   "main": "index.ts",
-  "version": "2.8.1",
+  "version": "2.8.2",
   "description": "A Nothing inspired music player.",
   "license": "AGPL-3.0-only",
   "repository": {
@@ -59,7 +59,7 @@
     "expo-web-browser": "15.0.10",
     "i18next": "25.7.3",
     "intl-pluralrules": "2.0.1",
-    "jotai": "2.16.0",
+    "jotai": "2.16.1",
     "react": "19.1.0",
     "react-i18next": "16.5.0",
     "react-native": "0.81.5",

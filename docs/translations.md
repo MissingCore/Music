@@ -9,7 +9,7 @@ We use the following packages to display these translations:
 
 ## File Structure
 
-All translations live in the [`mobile/src/modules/i18n/translations`](https://github.com/MissingCore/Music/tree/dev/mobile/src/modules/i18n/translations) directory, with the filenames being `<language-code>.json`. Inside, there will be a `language` field, in which you will populate it with the name of the language in that given language (ie: English would have `"language": "English"` and Japanese would have `"language": "日本語"`).
+All translations live in the [`mobile/src/modules/i18n/translations`](https://github.com/MissingCore/Music/tree/main/mobile/src/modules/i18n/translations) directory, with the filenames being `<language-code>.json`. Inside, there will be a `language` field, in which you will populate it with the name of the language in that given language (ie: English would have `"language": "English"` and Japanese would have `"language": "日本語"`).
 
 `i18next` provides some special features such as handling interpolation (mixing untranslated text with translated text) and plurals.
 
@@ -44,6 +44,9 @@ This will require you to make a Crowdin account in order to suggest translations
 If the language you want to translation isn't available in the project, request it on Crowdin or create a GitHub issue using the `🔠 Crowdin/Translation` template.
 
 ### Contribution Through Pull Request
+
+> [!IMPORTANT]  
+> You should make these changes against the translations on the `main` branch and create a PR that merges into the `main` branch.
 
 1. Create a new file called `<your-language-code>.json` in `mobile/src/modules/i18n/translations`. A list of language codes can be found [here](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes).
 2. Copy the contents of `en.json` into this file.
