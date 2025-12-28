@@ -169,7 +169,7 @@ android {
         applicationId 'com.cyanchill.missingcore.music'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1053
+        versionCode 1054
         versionName "2.8.2"
     }
     /**
