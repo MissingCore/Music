@@ -49,7 +49,6 @@ export function Track({
           Icon={MoreVert}
           accessibilityLabel={t("template.entrySeeMore", { name: props.title })}
           onPress={() => presentTrackSheet(id)}
-          disabled={props.disabled}
         />
       }
       wrapperClassName={cn("bg-canvas", className)}
