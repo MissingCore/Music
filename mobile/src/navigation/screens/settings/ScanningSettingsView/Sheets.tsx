@@ -16,10 +16,10 @@ import {
 
 import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
-import { Marquee } from "~/components/Containment/Marquee";
 import { FlatList } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
+import { Marquee } from "~/components/Marquee";
 import { Sheet } from "~/components/Sheet";
 import { NumericSheet } from "~/components/Sheet/Numeric";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";

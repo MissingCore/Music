@@ -46,11 +46,11 @@ import {
   formatSeconds,
 } from "~/utils/number";
 import { Card } from "~/components/Containment/Card";
-import { Marquee } from "~/components/Containment/Marquee";
 import { LegendList, ScrollView, useIsScrollable } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { Button, IconButton } from "~/components/Form/Button";
 import { Checkbox } from "~/components/Form/Selection";
+import { Marquee } from "~/components/Marquee";
 import { Sheet } from "~/components/Sheet";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";

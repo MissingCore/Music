@@ -5,8 +5,8 @@ import { Pressable, View } from "react-native";
 
 import type { TextColor } from "~/lib/style";
 import { cn } from "~/lib/style";
-import { Switch } from "../Form/Switch";
 import { StyledText } from "../Typography/StyledText";
+import { Switch } from "../UI/Switch";
 
 //#region List
 /** Wrapper for list of `<ListItem />` for consistent gaps. */

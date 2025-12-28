@@ -10,9 +10,9 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { getMediaLinkContext } from "../../../utils/router";
 
 import { OnRTL } from "~/lib/react";
-import { Marquee } from "~/components/Containment/Marquee";
-import { SafeContainer } from "~/components/Containment/SafeContainer";
 import { IconButton } from "~/components/Form/Button";
+import { Marquee } from "~/components/Marquee";
+import { SafeContainer } from "~/components/SafeContainer";
 import { StyledText } from "~/components/Typography/StyledText";
 
 /**
