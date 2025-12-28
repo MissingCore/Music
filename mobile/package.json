@@ -116,6 +116,7 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "@miblanchard/react-native-slider",
+      "@sentry/cli",
       "@weights-ai/react-native-track-player",
       "react-native-draglist",
       "sharp"
