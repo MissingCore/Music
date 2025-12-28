@@ -2,7 +2,7 @@
   "name": "music",
   "private": true,
   "main": "index.ts",
-  "version": "2.8.1",
+  "version": "2.8.2",
   "description": "A Nothing inspired music player.",
   "license": "AGPL-3.0-only",
   "repository": {
