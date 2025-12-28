@@ -16,7 +16,7 @@ import {
 
 import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
-import { FlatList } from "~/components/Defaults";
+import { FlatList, useIsScrollable } from "~/components/Defaults";
 import { Button, IconButton } from "~/components/Form/Button";
 import { TextInput } from "~/components/Form/Input";
 import { Marquee } from "~/components/Marquee";
@@ -54,6 +54,7 @@ function ScanFilterListSheet(props: {
 }) {
   const { t } = useTranslation();
   const listEntries = usePreferenceStore((s) => s[props.listType]);
+  const { handlers, isScrollable } = useIsScrollable();
 
   return (
     <Sheet
@@ -92,7 +93,8 @@ function ScanFilterListSheet(props: {
         ListEmptyComponent={
           <ContentPlaceholder errMsgKey="err.msg.noFilters" />
         }
-        nestedScrollEnabled
+        {...handlers}
+        nestedScrollEnabled={isScrollable}
         contentContainerClassName="gap-2 pb-4"
       />
     </Sheet>

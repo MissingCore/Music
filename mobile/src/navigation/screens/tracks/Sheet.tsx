@@ -378,6 +378,7 @@ function TrackToPlaylistSheet({ id }: { id: string }) {
   const { data: inList } = useTrackPlaylists(id);
   const addToPlaylist = useAddToPlaylist(id);
   const removeFromPlaylist = useRemoveFromPlaylist(id);
+  const { handlers, isScrollable } = useIsScrollable();
 
   return (
     <Sheet
@@ -413,7 +414,8 @@ function TrackToPlaylistSheet({ id }: { id: string }) {
         ListEmptyComponent={
           <ContentPlaceholder errMsgKey="err.msg.noPlaylists" />
         }
-        nestedScrollEnabled
+        {...handlers}
+        nestedScrollEnabled={isScrollable}
         contentContainerClassName="pb-4"
       />
     </Sheet>
