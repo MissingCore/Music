@@ -25,7 +25,7 @@
   },
   "@legendapp/list": {
     "name": "@legendapp/list",
-    "version": "2.0.18",
+    "version": "2.0.19",
     "copyright": "Copyright (c) 2022 Moo.do LLC",
     "source": "https://github.com/LegendApp/legend-list",
     "license": "MIT",
@@ -305,7 +305,7 @@
   },
   "jotai": {
     "name": "jotai",
-    "version": "2.16.0",
+    "version": "2.16.1",
     "copyright": "Copyright (c) 2020 Poimandres",
     "source": "https://github.com/pmndrs/jotai",
     "license": "MIT",
@@ -401,7 +401,7 @@
   },
   "react-native-gesture-handler": {
     "name": "react-native-gesture-handler",
-    "version": "2.29.1",
+    "version": "2.30.0",
     "copyright": "Copyright (c) 2016 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-gesture-handler",
     "license": "MIT",
@@ -425,7 +425,7 @@
   },
   "react-native-nitro-modules": {
     "name": "react-native-nitro-modules",
-    "version": "0.31.10",
+    "version": "0.32.0",
     "copyright": "Copyright (c) 2024 Marc Rousavy",
     "source": "https://github.com/mrousavy/nitro",
     "license": "MIT",
@@ -449,7 +449,7 @@
   },
   "react-native-reanimated": {
     "name": "react-native-reanimated",
-    "version": "3.19.4",
+    "version": "3.19.5",
     "copyright": "Copyright (c) 2016 Software Mansion <swmansion.com>",
     "source": "https://github.com/software-mansion/react-native-reanimated",
     "license": "MIT",

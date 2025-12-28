@@ -96,6 +96,16 @@ export default (): ExpoConfig => ({
   },
   plugins: [
     [
+      "expo-build-properties",
+      {
+        android: {
+          enableBundleCompression: true,
+          enableProguardInReleaseBuilds: true,
+          enableShrinkResourcesInReleaseBuilds: true,
+        },
+      },
+    ],
+    [
       "expo-font",
       {
         fonts: [
