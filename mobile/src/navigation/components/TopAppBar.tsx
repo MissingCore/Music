@@ -12,10 +12,7 @@ import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { SafeContainer } from "~/components/SafeContainer";
 import { StyledText } from "~/components/Typography/StyledText";
 
-/**
- * Custom header bar for React Navigation. The "title" can span at most
- * 2 lines before it gets ellipsized.
- */
+/** Custom header bar for React Navigation. The "title" will get ellipsized. */
 export function TopAppBar({ options, route }: NativeStackHeaderProps) {
   const { t } = useTranslation();
   const navigation = useNavigation();
