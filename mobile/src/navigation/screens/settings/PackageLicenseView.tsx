@@ -2,15 +2,12 @@ import type { StaticScreenProps } from "@react-navigation/native";
 import { openBrowserAsync } from "expo-web-browser";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
 
 import { OpenInNew } from "~/resources/icons/OpenInNew";
 import LicensesList from "~/resources/licenses.json";
-import { useTheme } from "~/hooks/useTheme";
-import { StandardScrollLayout } from "../../layouts/StandardScroll";
 
-import { cn } from "~/lib/style";
-import { IconButton } from "~/components/Form/Button/Icon";
+import { FilledIconButton } from "~/components/Form/Button/Icon";
+import { SegmentedList } from "~/components/List/Segmented";
 import { AccentText } from "~/components/Typography/AccentText";
 import { StyledText } from "~/components/Typography/StyledText";
 import { ScreenOptions } from "../../components/ScreenOptions";
@@ -23,7 +20,6 @@ export default function PackageLicense({
   },
 }: Props) {
   const { t } = useTranslation();
-  const { theme } = useTheme();
 
   const licenseInfo = useMemo(
     () => LicensesList[id as keyof typeof LicensesList],
@@ -34,33 +30,31 @@ export default function PackageLicense({
     <>
       <ScreenOptions
         headerRight={() => (
-          <IconButton
+          <FilledIconButton
             Icon={OpenInNew}
             accessibilityLabel={t("template.entrySeeMore", {
               name: licenseInfo.name,
             })}
             onPress={() => openBrowserAsync(licenseInfo.source)}
+            size="sm"
           />
         )}
       />
-      <StandardScrollLayout contentContainerClassName="pt-2">
-        <AccentText className="text-4xl" originalText>
-          {licenseInfo.name}
-        </AccentText>
-
-        <View
-          className={cn("rounded-md bg-foreground/5 p-4", {
-            "bg-foreground/15": theme === "dark",
-          })}
-        >
+      <SegmentedList scrollEnabled contentContainerClassName="p-4">
+        <SegmentedList.CustomItem className="gap-4 p-4">
+          <AccentText className="text-xl" originalText>
+            {licenseInfo.name}
+          </AccentText>
           <StyledText dim>
             {`${licenseInfo.version}\n\n`}
             This component is licensed under the {licenseInfo.license} license.
             {`\n\n${licenseInfo.copyright}`}
           </StyledText>
-        </View>
-        <StyledText dim>{licenseInfo.licenseText}</StyledText>
-      </StandardScrollLayout>
+        </SegmentedList.CustomItem>
+        <SegmentedList.CustomItem className="p-4">
+          <StyledText className="text-xs">{licenseInfo.licenseText}</StyledText>
+        </SegmentedList.CustomItem>
+      </SegmentedList>
     </>
   );
 }
