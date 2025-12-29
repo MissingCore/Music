@@ -237,9 +237,8 @@
       "title": "Blokeringsliste",
       "description": "Blokeringslisten har højere prioritet end Tilladelseslisten."
     },
-    "ignoreDuration": {
-      "title": "Ignorér korte audiofiler",
-      "description": "Varighed i sekunder af audiofiler, der ikke skal gemmes."
+    "minTrackDuration": {
+      "title": "Ignorér korte audiofiler"
     },
     "experimental": {
       "title": null

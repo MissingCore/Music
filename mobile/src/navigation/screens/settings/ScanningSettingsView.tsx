@@ -65,7 +65,7 @@ export default function ScanningSettings() {
             onPress={() => blockListSheetRef.current?.present()}
           />
           <SegmentedList.Item
-            labelTextKey="feat.ignoreDuration.title"
+            labelTextKey="feat.minTrackDuration.title"
             supportingText={t("plural.second", { count: ignoreDuration })}
             onPress={() => minDurationSheetRef.current?.present()}
           />

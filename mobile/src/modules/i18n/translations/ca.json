@@ -237,9 +237,8 @@
       "title": "Llista de bloquejades",
       "description": "Té prioritat per sobre de les entrades de la llista de permeses."
     },
-    "ignoreDuration": {
-      "title": "Ignora àudios curts",
-      "description": "Durada en segons dels àudios que no vols guardar."
+    "minTrackDuration": {
+      "title": "Ignora àudios curts"
     },
     "experimental": {
       "title": null

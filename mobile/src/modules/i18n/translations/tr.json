@@ -237,9 +237,8 @@
       "title": "Engelleme Listesi",
       "description": "İzin listesindeki girdilere göre daha yüksek önceliğe sahiptir."
     },
-    "ignoreDuration": {
-      "title": "Kısa Sesleri Yoksay",
-      "description": "Kaydetmek istemediğimiz seslerin saniye cinsinden süresi."
+    "minTrackDuration": {
+      "title": "Kısa Sesleri Yoksay"
     },
     "experimental": {
       "title": "Deneysel Özellikler"

@@ -237,9 +237,8 @@
       "title": "Liste de blocage",
       "description": "Possède la priorité sur la liste d'autorisation."
     },
-    "ignoreDuration": {
-      "title": "Ignorer les audios courts",
-      "description": "Durée en seconde des audios à ignorer."
+    "minTrackDuration": {
+      "title": "Ignorer les audios courts"
     },
     "experimental": {
       "title": "Fonctionnalités Expérimentales"

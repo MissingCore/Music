@@ -237,9 +237,8 @@
       "title": null,
       "description": "Ha priorità maggiore rispetto alle voci nella \"$t(feat.listAllow.title)\"."
     },
-    "ignoreDuration": {
-      "title": "Ignora audio corti",
-      "description": "Durata (in secondi) degli audio da non salvare."
+    "minTrackDuration": {
+      "title": "Ignora audio corti"
     },
     "experimental": {
       "title": null

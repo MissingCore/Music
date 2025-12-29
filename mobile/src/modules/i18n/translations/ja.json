@@ -237,9 +237,8 @@
       "title": "ブロックリスト",
       "description": "許可リスト内のエントリよりも優先されます。"
     },
-    "ignoreDuration": {
-      "title": "再生時間が短い音楽を無視する",
-      "description": "保存をしない音楽の再生時間 (秒数)。"
+    "minTrackDuration": {
+      "title": "再生時間が短い音楽を無視する"
     },
     "experimental": {
       "title": "試験的な機能"

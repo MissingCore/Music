@@ -237,9 +237,8 @@
       "title": "Diblokir",
       "description": "Memiliki prioritas lebih tinggi terhadap entri dalam daftar perizinan."
     },
-    "ignoreDuration": {
-      "title": "Abaikan Audio Pendek",
-      "description": "Durasi audio dalam detik yang tidak ingin kami simpan."
+    "minTrackDuration": {
+      "title": "Abaikan Audio Pendek"
     },
     "experimental": {
       "title": null

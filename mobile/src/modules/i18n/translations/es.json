@@ -237,9 +237,8 @@
       "title": "Lista de bloqueados",
       "description": "Tiene prioridad sobre la lista de permitidos."
     },
-    "ignoreDuration": {
-      "title": "Ignorar audio corto",
-      "description": "Duración mínima para guardar una canción."
+    "minTrackDuration": {
+      "title": "Ignorar audio corto"
     },
     "experimental": {
       "title": "Funciones experimentales"

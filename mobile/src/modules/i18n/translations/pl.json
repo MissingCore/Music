@@ -237,9 +237,8 @@
       "title": "Czarna lista",
       "description": "Ma wyższy priorytet niż elementy na białej liście."
     },
-    "ignoreDuration": {
-      "title": "Ignoruj krótkie nagrania",
-      "description": "Nagrania krótsze niż poniższa ilość sekund nie będą zapisywane."
+    "minTrackDuration": {
+      "title": "Ignoruj krótkie nagrania"
     },
     "experimental": {
       "title": "Funkcje eksperymentalne"

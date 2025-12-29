@@ -11,7 +11,7 @@ import { StyledText, TStyledText } from "../Typography/StyledText";
 interface SheetProps {
   ref: TrueSheetRef;
   titleKey: ParseKeys;
-  descriptionKey: ParseKeys;
+  descriptionKey?: ParseKeys;
   /** We'll remove the interpolation string. */
   valueLabelKey: ParseKeys;
   value: number;
@@ -49,7 +49,9 @@ export function DetachedNumericSheet(props: SheetProps) {
 
   return (
     <DetachedSheet ref={props.ref} titleKey={props.titleKey}>
-      <TStyledText textKey={props.descriptionKey} dim className="text-sm" />
+      {props.descriptionKey ? (
+        <TStyledText textKey={props.descriptionKey} dim className="text-sm" />
+      ) : null}
       <View className="flex-row items-end gap-2 border-b border-b-foreground/10">
         <NumericInput
           defaultValue={`${props.value}`}

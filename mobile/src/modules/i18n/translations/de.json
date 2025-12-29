@@ -237,9 +237,8 @@
       "title": "Sperrliste",
       "description": "Hat höhere Priorität als die Einträge in der Zulassungsliste."
     },
-    "ignoreDuration": {
-      "title": "Ignoriere kurzes Audio",
-      "description": "Dauer in Sekunden des Audios, das wir nicht speichern möchten."
+    "minTrackDuration": {
+      "title": "Ignoriere kurzes Audio"
     },
     "experimental": {
       "title": "Experimentelle Funktionen"

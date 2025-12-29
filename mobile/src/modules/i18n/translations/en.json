@@ -255,9 +255,8 @@
       "title": "Blocklist",
       "description": "Has higher priority over the entries in the allowlist."
     },
-    "ignoreDuration": {
-      "title": "Ignore Short Audio",
-      "description": "Duration in seconds of audio we don't want to save."
+    "minTrackDuration": {
+      "title": "Minimum Track Duration"
     },
     "experimental": {
       "title": "Experimental Features"

@@ -237,9 +237,8 @@
       "title": "阻止列表",
       "description": "优先级高于允许列表中的条目。"
     },
-    "ignoreDuration": {
-      "title": "忽略较短的音频",
-      "description": "不想保存的音频时长（秒）。"
+    "minTrackDuration": {
+      "title": "忽略较短的音频"
     },
     "experimental": {
       "title": null
