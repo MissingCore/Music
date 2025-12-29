@@ -2,7 +2,7 @@ import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import { DragIndicator } from "~/resources/icons/DragIndicator";
+import { DragHandle } from "~/resources/icons/DragHandle";
 import { Home } from "~/resources/icons/Home";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { Tabs } from "~/stores/Preference/actions";
@@ -87,7 +87,7 @@ const RenderItem = memo(
           className="shrink grow px-2"
         />
         <IconButton
-          Icon={DragIndicator}
+          Icon={DragHandle}
           accessibilityLabel=""
           onPressIn={info.onInitDrag}
         />
