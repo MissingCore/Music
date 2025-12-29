@@ -8,7 +8,7 @@ import { View } from "react-native";
 import { ArrowBack } from "~/resources/icons/ArrowBack";
 
 import { OnRTL } from "~/lib/react";
-import { IconButton } from "~/components/Form/Button/Icon";
+import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { SafeContainer } from "~/components/SafeContainer";
 import { StyledText } from "~/components/Typography/StyledText";
 
@@ -23,23 +23,24 @@ export function TopAppBar({ options, route }: NativeStackHeaderProps) {
 
   return (
     <SafeContainer className="bg-canvas">
-      <View className="h-14 flex-row items-center justify-between gap-4 p-1">
-        <IconButton
+      <View className="h-14 flex-row items-center justify-between gap-4 px-2 py-1">
+        <FilledIconButton
           Icon={ArrowBack}
           accessibilityLabel={t("form.back")}
           onPress={() => navigation.goBack()}
           disabled={!!options.headerLeft}
           className={OnRTL._use("rotate-180")}
+          size="sm"
         />
 
-        <StyledText numberOfLines={2} className="shrink text-center text-xs">
-          {t(title).toLocaleUpperCase()}
+        <StyledText numberOfLines={1} bold className="shrink">
+          {t(title)}
         </StyledText>
 
         {options.headerRight ? (
           options.headerRight({ canGoBack: true })
         ) : (
-          <View className="size-12" />
+          <View className="size-10" />
         )}
       </View>
     </SafeContainer>
