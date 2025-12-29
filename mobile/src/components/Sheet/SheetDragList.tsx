@@ -69,11 +69,11 @@ export function SheetDragList<TData>({
 
   const onCleanup = useCallback(() => {
     setReactiveActiveIndex(INACTIVE);
-    activeIndex.value = INACTIVE;
-
-    pan.value = 0;
-    shifted.value = 0;
-
+    scheduleOnUI(() => {
+      activeIndex.value = INACTIVE;
+      pan.value = 0;
+      shifted.value = 0;
+    });
     setEnabled(true);
   }, [activeIndex, pan, shifted]);
 
