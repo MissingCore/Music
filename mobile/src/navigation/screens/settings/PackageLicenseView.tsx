@@ -41,14 +41,12 @@ export default function PackageLicense({
         )}
       />
       <SegmentedList scrollEnabled contentContainerClassName="p-4">
-        <SegmentedList.CustomItem className="gap-4 p-4">
+        <SegmentedList.CustomItem className="gap-2 p-4">
           <AccentText className="text-xl" originalText>
             {licenseInfo.name}
           </AccentText>
           <StyledText dim>
-            {`${licenseInfo.version}\n\n`}
-            This component is licensed under the {licenseInfo.license} license.
-            {`\n\n${licenseInfo.copyright}`}
+            {`${licenseInfo.license} (${licenseInfo.version})`}
           </StyledText>
         </SegmentedList.CustomItem>
         <SegmentedList.CustomItem className="p-4">

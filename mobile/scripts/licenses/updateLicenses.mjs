@@ -24,7 +24,7 @@ function styleText(color, text) {
 }
 
 /**
- * @typedef {{ name: string, version: string, copyright: string, repository: string, licenses: string, licenseText: string }} License
+ * @typedef {{ name: string, version: string, repository: string, licenses: string, licenseText: string }} License
  */
 
 let inputStr = "";
@@ -44,15 +44,16 @@ function updateLicensesJSON() {
 
   const updatedLicenseList = Object.fromEntries(
     Object.values(licenseReport)
-      .map(
-        ({ name, version, copyright, repository, licenses, licenseText }) => {
-          const content = {
-            ...{ name, version, copyright: copyright || null },
-            ...{ source: repository, license: licenses, licenseText },
-          };
-          return [name, content];
-        },
-      )
+      .map(({ name, version, repository, licenses, licenseText }) => {
+        const content = {
+          name,
+          version,
+          source: repository,
+          license: licenses,
+          licenseText,
+        };
+        return [name, content];
+      })
       .concat(
         Object.entries(nonNPMLicenses).map(([key, value]) => [key, value]),
       )
