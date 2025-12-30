@@ -25,10 +25,12 @@ function SegmentedList(props: {
   contentContainerClassName?: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
 }) {
-  const data: React.ReactNode[] = Array.isArray(props.children)
+  const unfilteredData: React.ReactNode[] = Array.isArray(props.children)
     ? props.children
     : // `flat(1)` is to handle fragments.
       React.Children.toArray(props.children).flat(1);
+  // Filter out rendering `false`, `null`, and `undefined`.
+  const data: React.ReactNode[] = unfilteredData.filter((node) => !!node);
 
   return (
     <ListItemPositionContext value={INIT_STATE}>
