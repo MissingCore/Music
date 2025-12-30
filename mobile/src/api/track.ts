@@ -5,6 +5,7 @@ import type { Album, Track } from "~/db/schema";
 import {
   invalidTracks,
   tracks,
+  tracksToArtists,
   tracksToPlaylists,
   waveformSamples,
 } from "~/db/schema";
@@ -142,7 +143,8 @@ export async function deleteTrack(
   errorInfo?: { errorName: string; errorMessage: string },
 ) {
   return db.transaction(async (tx) => {
-    // Remember to delete the track's playlist relations.
+    // Remember to delete the track's relations via junction tables.
+    await tx.delete(tracksToArtists).where(eq(tracksToArtists.trackId, id));
     await tx.delete(tracksToPlaylists).where(eq(tracksToPlaylists.trackId, id));
     // Remember to delete the cached waveform if it exists.
     await tx.delete(waveformSamples).where(eq(waveformSamples.trackId, id));

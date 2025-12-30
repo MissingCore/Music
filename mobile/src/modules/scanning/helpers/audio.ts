@@ -165,6 +165,9 @@ export async function cleanupDatabase(usedTrackIds: string[]) {
       db.delete(invalidTracks).where(inArray(invalidTracks.id, unusedTrackIds)),
       db.delete(tracks).where(inArray(tracks.id, unusedTrackIds)),
       db
+        .delete(tracksToArtists)
+        .where(inArray(tracksToArtists.trackId, unusedTrackIds)),
+      db
         .delete(tracksToPlaylists)
         .where(inArray(tracksToPlaylists.trackId, unusedTrackIds)),
       db
@@ -190,7 +193,7 @@ export async function removeUnusedCategories() {
   // Remove unused albums.
   const allAlbums = await db.query.albums.findMany({
     columns: { id: true },
-    with: { tracks: { columns: { id: true } } },
+    with: { tracks: { columns: { id: true }, limit: 1 } },
   });
   const unusedAlbumIds = allAlbums
     .filter(({ tracks }) => tracks.length === 0)
@@ -201,12 +204,14 @@ export async function removeUnusedCategories() {
   const allArtists = await db.query.artists.findMany({
     columns: { name: true },
     with: {
-      albums: { columns: { id: true } },
-      tracks: { columns: { id: true } },
+      albums: { columns: { id: true }, limit: 1 },
+      tracksToArtists: { columns: { trackId: true }, limit: 1 },
     },
   });
   const unusedArtistNames = allArtists
-    .filter(({ albums, tracks }) => albums.length === 0 && tracks.length === 0)
+    .filter(
+      (rel) => rel.albums.length === 0 && rel.tracksToArtists.length === 0,
+    )
     .map(({ name }) => name);
   await db.delete(artists).where(inArray(artists.name, unusedArtistNames));
 }
