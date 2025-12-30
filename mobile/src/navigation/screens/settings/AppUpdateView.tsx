@@ -76,7 +76,7 @@ export default function AppUpdate() {
               <SegmentedList.CustomItem
                 key={node.key}
                 style={{ backgroundColor: codeBg }}
-                className="gap-1 rounded-md p-2"
+                className="gap-1 p-2"
               >
                 <Info size={20} color={`${foreground}99`} />
                 {children}

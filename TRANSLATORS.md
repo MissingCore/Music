@@ -31,6 +31,7 @@
 
 - [@nin7o](https://www.github.com/nin7o)
 - [Julian Bouys (julian.bouys)](https://crowdin.com/profile/julian.bouys)
+- [Mickael81](https://crowdin.com/profile/mickael81)
 
 ## [简体中文] Chinese (Simplified)
 
