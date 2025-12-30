@@ -267,7 +267,7 @@
       "extra": {
         "start": "開始",
         "stopTime": "オーディオの再生は {{- time}} に停止します。",
-        "extend": null
+        "extend": "トラックが終了するまでタイマーを延長します。"
       }
     },
     "waveformSlider": {
@@ -397,8 +397,8 @@
         "playNext": "次に再生",
         "playLast": "最後に再生",
         "toast": "｢{{- name}}｣がキューに追加されました。",
-        "queueAwareNext": null,
-        "queueAwareNextBrief": null
+        "queueAwareNext": "キューの認識による次の再生",
+        "queueAwareNextBrief": "最後の「次に再生」するトラックの後にトラックを追加します。"
       }
     }
   }
