@@ -258,8 +258,8 @@
     "waveformSlider": {
       "title": "波形スライダー",
       "extra": {
-        "clearCache": "キャッシュされた波形を消去",
-        "cacheCleared": "波形キャッシュを消去しました。"
+        "clearCache": null,
+        "cacheCleared": null
       }
     },
     "code": {

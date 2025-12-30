@@ -258,8 +258,8 @@
     "waveformSlider": {
       "title": "Slider in Wellenform",
       "extra": {
-        "clearCache": "Zwischengespeicherte Wellenformen löschen",
-        "cacheCleared": "Wellenform-Cache gelöscht."
+        "clearCache": null,
+        "cacheCleared": null
       }
     },
     "code": {
