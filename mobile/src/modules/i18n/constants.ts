@@ -70,6 +70,7 @@ export const LANGUAGES = [
         display: "Julian Bouys",
         link: "https://crowdin.com/profile/julian.bouys",
       },
+      { display: "Mickael81", link: "https://crowdin.com/profile/mickael81" },
     ],
   },
   {
