@@ -261,11 +261,9 @@
     },
     "waveformSlider": {
       "title": "اسلایدر شکل موج",
-      "brief": null,
       "extra": {
-        "purgeCache": null,
-        "purgeCacheBrief": null,
-        "purgeCacheToast": null
+        "clearCache": null,
+        "cacheCleared": null
       }
     },
     "code": {

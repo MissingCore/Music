@@ -261,11 +261,9 @@
     },
     "waveformSlider": {
       "title": "Deslizador de forma de onda",
-      "brief": "Puede tardar un poco la primera vez mientras se genera la caché.",
       "extra": {
-        "purgeCache": "Borrar caché",
-        "purgeCacheBrief": "Libera espacio y regenera las formas de onda.",
-        "purgeCacheToast": "Caché eliminada."
+        "clearCache": "Borrar caché",
+        "cacheCleared": "Caché eliminada."
       }
     },
     "code": {

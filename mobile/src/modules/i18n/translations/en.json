@@ -279,11 +279,9 @@
     },
     "waveformSlider": {
       "title": "Waveform Slider",
-      "brief": "Playing tracks will be initially slow due to caching the waveform data.",
       "extra": {
-        "purgeCache": "Purge Cached Waveforms",
-        "purgeCacheBrief": "Frees up storage to recalculate the waveforms of played tracks.",
-        "purgeCacheToast": "Waveform cache cleared."
+        "clearCache": "Clear Cache",
+        "cacheCleared": "Cache cleared."
       }
     },
     "code": {

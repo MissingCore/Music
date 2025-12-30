@@ -261,11 +261,9 @@
     },
     "waveformSlider": {
       "title": "波形スライダー",
-      "brief": "波形データをキャッシュするため、トラックの再生開始時は一時的に動作が遅くなる場合があります。",
       "extra": {
-        "purgeCache": "キャッシュされた波形を消去",
-        "purgeCacheBrief": "ストレージを開放して再生したトラックの波形を再計算します。",
-        "purgeCacheToast": "波形キャッシュを消去しました。"
+        "clearCache": "キャッシュされた波形を消去",
+        "cacheCleared": "波形キャッシュを消去しました。"
       }
     },
     "code": {

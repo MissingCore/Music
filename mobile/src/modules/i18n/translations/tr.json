@@ -261,11 +261,9 @@
     },
     "waveformSlider": {
       "title": "Dalga Formu Kaydırıcısı",
-      "brief": "Dalga formu verileri önbelleğe alındığı için parçalar başlangıçta yavaş çalınacaktır.",
       "extra": {
-        "purgeCache": "Önbelleğe Alınan Dalga Formlarını Temizle",
-        "purgeCacheBrief": "Çalınan parçaların dalga formlarını yeniden hesaplamak için depolama alanında yer açar.",
-        "purgeCacheToast": "Dalga formu önbelleği temizlendi."
+        "clearCache": "Önbelleğe Alınan Dalga Formlarını Temizle",
+        "cacheCleared": "Dalga formu önbelleği temizlendi."
       }
     },
     "code": {

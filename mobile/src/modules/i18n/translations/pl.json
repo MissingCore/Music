@@ -261,11 +261,9 @@
     },
     "waveformSlider": {
       "title": "Pasek przewijania z falami dźwiękowymi",
-      "brief": "Odtwarzanie początkowo będzie opóźnione przez obliczenia dla wizualizacji.",
       "extra": {
-        "purgeCache": "Wyczyść dane dla wizualizacji",
-        "purgeCacheBrief": "Zwalnia pamięć i wymusza ponowne obliczenia dla wizualizacji fal dźwiękowych.",
-        "purgeCacheToast": "Dane wizualizacji fal dźwiękowych zostały wyczyszczone."
+        "clearCache": "Wyczyść dane dla wizualizacji",
+        "cacheCleared": "Dane wizualizacji fal dźwiękowych zostały wyczyszczone."
       }
     },
     "code": {
