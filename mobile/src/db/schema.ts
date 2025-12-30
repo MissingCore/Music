@@ -81,6 +81,7 @@ export const tracks = sqliteTable("tracks", {
   fetchedArt: integer({ mode: "boolean" }).notNull().default(false),
   // Use Epoch time instead of boolean to track when we did the action.
   editedMetadata: integer(),
+  /** @deprecated Use dedicated `hiddenTracks` table. */
   hiddenAt: integer(),
   lastPlayedAt: integer().notNull().default(-1),
 
@@ -100,6 +101,12 @@ export const tracksRelations = relations(tracks, ({ one, many }) => ({
   tracksToPlaylists: many(tracksToPlaylists),
   waveformSample: one(waveformSamples),
 }));
+
+export const hiddenTracks = sqliteTable("hidden_tracks", {
+  uri: text().primaryKey(),
+  name: text().notNull(),
+  hiddenAt: integer().notNull(),
+});
 
 export const invalidTracks = sqliteTable("invalid_tracks", {
   id: text().primaryKey(),
