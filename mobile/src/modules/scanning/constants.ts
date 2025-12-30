@@ -2,7 +2,8 @@ export type MigrationOption =
   | "fileNodes-adjustment"
   | "discover-time-field"
   | "recent-list-db-migration"
-  | "hide-home-tab";
+  | "hide-home-tab"
+  | "multi-artist";
 
 /**
  * History of data migrations due to "breaking" changes.
@@ -25,4 +26,5 @@ export const MigrationHistory: Record<
     changes: ["discover-time-field", "recent-list-db-migration"],
   },
   2: { version: "v2.6.0", changes: ["hide-home-tab"] },
+  3: { version: "v3.0.0-rc.0", changes: ["multi-artist"] },
 };

@@ -2,7 +2,12 @@ import { eq, inArray } from "drizzle-orm";
 import AsyncStorage from "expo-sqlite/kv-store";
 
 import { db } from "~/db";
-import { fileNodes, playedMediaLists, tracks } from "~/db/schema";
+import {
+  fileNodes,
+  playedMediaLists,
+  tracks,
+  tracksToArtists,
+} from "~/db/schema";
 
 import { preferenceStore } from "~/stores/Preference/store";
 import { onboardingStore } from "../services/Onboarding";
@@ -12,6 +17,8 @@ import type { Tab } from "~/stores/Preference/types";
 import { savePathComponents } from "./folder";
 import type { MigrationOption } from "../constants";
 import { MigrationHistory } from "../constants";
+
+import { chunkArray } from "~/utils/object";
 
 /**
  * Run code to change some values prior to indexing for any changes
@@ -104,5 +111,27 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
         tabsVisibility: updatedTabsVisibility,
       };
     });
+  },
+
+  "multi-artist": async () => {
+    const trackArtistNames = await db.query.tracks.findMany({
+      columns: { id: true, rawArtistName: true },
+    });
+
+    // `rawArtistName` should already exist in the Artists table, so only
+    // the junction table needs to be populated.
+    const trackBatches = chunkArray(trackArtistNames, 200);
+    for (const tBatch of trackBatches) {
+      const entries = tBatch
+        .map((relation) => {
+          if (!relation || !relation.rawArtistName) return undefined;
+          return { trackId: relation.id, artistName: relation.rawArtistName };
+        })
+        .filter((entry) => entry !== undefined);
+      if (entries.length > 0) {
+        // Populate junction table with old Artist Name values.
+        await db.insert(tracksToArtists).values(entries).onConflictDoNothing();
+      }
+    }
   },
 };
