@@ -26,12 +26,7 @@ export const queries = createQueryKeyStore({
       queryFn: () =>
         db.query.albums.findMany({
           columns: { id: true, name: true, artistName: true, artwork: true },
-          with: {
-            tracks: {
-              where: (fields, { isNull }) => isNull(fields.hiddenAt),
-              columns: { id: true },
-            },
-          },
+          with: { tracks: { columns: { id: true } } },
           orderBy: (fields) => [iAsc(fields.name), iAsc(fields.artistName)],
         }),
     },
@@ -47,13 +42,7 @@ export const queries = createQueryKeyStore({
       queryFn: () =>
         db.query.artists.findMany({
           columns: { name: true, artwork: true },
-          with: {
-            tracks: {
-              where: (fields, { isNull }) => isNull(fields.hiddenAt),
-              columns: { id: true },
-              limit: 1,
-            },
-          },
+          with: { tracks: { columns: { id: true }, limit: 1 } },
           orderBy: (fields) => iAsc(fields.name),
         }),
     },

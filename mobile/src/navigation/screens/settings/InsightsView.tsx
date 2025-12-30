@@ -5,7 +5,14 @@ import { Directory, Paths } from "expo-file-system";
 import { useTranslation } from "react-i18next";
 
 import { db } from "~/db";
-import { albums, artists, invalidTracks, playlists, tracks } from "~/db/schema";
+import {
+  albums,
+  artists,
+  hiddenTracks,
+  invalidTracks,
+  playlists,
+  tracks,
+} from "~/db/schema";
 
 import { useTheme } from "~/hooks/useTheme";
 import { StandardScrollLayout } from "../../layouts/StandardScroll";
@@ -182,12 +189,7 @@ async function getDatabaseSummary() {
     images: imgDir.exists ? (imgDir.info().files?.length ?? 0) : 0,
     playlists: await db.$count(playlists),
     tracks: await db.$count(tracks),
-    hiddenTracks: (
-      await db.query.tracks.findMany({
-        where: (fields, { isNotNull }) => isNotNull(fields.hiddenAt),
-        columns: { id: true },
-      })
-    ).length,
+    hiddenTracks: await db.$count(hiddenTracks),
     saveErrors: await db.$count(invalidTracks),
     totalDuration:
       Number(

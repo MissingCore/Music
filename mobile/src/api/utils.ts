@@ -1,4 +1,4 @@
-import type { SQL, asc, desc, sql } from "drizzle-orm";
+import type { asc, desc, sql } from "drizzle-orm";
 
 import type { Track } from "~/db/schema";
 
@@ -39,9 +39,7 @@ export function withTracks(
           ...withAlbum(albumOptions),
         },
       }
-    : {}) as unknown as {
-    tracks: { where: SQL<unknown>; with: { album: true } };
-  };
+    : {}) as unknown as { tracks: { with: { album: true } } };
 }
 
 type WithAlbumOptions = {
