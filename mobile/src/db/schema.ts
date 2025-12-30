@@ -20,6 +20,7 @@ export const artists = sqliteTable("artists", {
 
 export const artistsRelations = relations(artists, ({ many }) => ({
   albums: many(albums),
+  tracksToArtists: many(tracksToArtists),
 }));
 
 export const albums = sqliteTable(
@@ -96,9 +97,37 @@ export const tracks = sqliteTable("tracks", {
 
 export const tracksRelations = relations(tracks, ({ one, many }) => ({
   album: one(albums, { fields: [tracks.albumId], references: [albums.id] }),
+  tracksToArtists: many(tracksToArtists),
   tracksToPlaylists: many(tracksToPlaylists),
   waveformSample: one(waveformSamples),
 }));
+
+export const tracksToArtists = sqliteTable(
+  "tracks_to_artists",
+  {
+    trackId: text()
+      .notNull()
+      .references(() => tracks.id),
+    artistName: text()
+      .notNull()
+      .references(() => artists.name),
+  },
+  (t) => [primaryKey({ columns: [t.trackId, t.artistName] })],
+);
+
+export const tracksToArtistsRelations = relations(
+  tracksToArtists,
+  ({ one }) => ({
+    artist: one(artists, {
+      fields: [tracksToArtists.artistName],
+      references: [artists.name],
+    }),
+    track: one(tracks, {
+      fields: [tracksToArtists.trackId],
+      references: [tracks.id],
+    }),
+  }),
+);
 
 export const invalidTracks = sqliteTable("invalid_tracks", {
   id: text().primaryKey(),
