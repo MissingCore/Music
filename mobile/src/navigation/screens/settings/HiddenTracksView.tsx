@@ -92,7 +92,6 @@ async function getHiddenTracks() {
     where: [isNotNull(tracks.hiddenAt)],
     columns: ["id", "name", "artwork", "hiddenAt"],
     albumColumns: ["artwork"],
-    withHidden: true,
   });
 }
 
