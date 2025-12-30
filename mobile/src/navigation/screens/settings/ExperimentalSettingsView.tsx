@@ -59,13 +59,11 @@ export default function ExperimentalSettings() {
       <SegmentedList>
         <SegmentedList.Item
           labelTextKey="feat.waveformSlider.title"
-          supportingText={t("feat.waveformSlider.brief")}
           onPress={PreferenceTogglers.toggleWaveformSlider}
           RightElement={<Switch enabled={waveformSlider} />}
         />
         <SegmentedList.Item
-          labelTextKey="feat.waveformSlider.extra.purgeCache"
-          supportingText={t("feat.waveformSlider.extra.purgeCacheBrief")}
+          labelTextKey="feat.waveformSlider.extra.clearCache"
           onPress={purgeWaveformCache}
         />
       </SegmentedList>
@@ -78,6 +76,6 @@ async function purgeWaveformCache() {
   // eslint-disable-next-line drizzle/enforce-delete-with-where
   await db.delete(waveformSamples);
   sessionStore.setState({ activeWaveformContext: null });
-  toast(i18next.t("feat.waveformSlider.extra.purgeCacheToast"), ToastOptions);
+  toast(i18next.t("feat.waveformSlider.extra.cacheCleared"), ToastOptions);
 }
 //#endregion

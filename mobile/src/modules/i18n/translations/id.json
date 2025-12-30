@@ -99,8 +99,7 @@
       }
     },
     "appearance": {
-      "title": "Tampilan",
-      "brief": "Personalisasikan aplikasi."
+      "title": "Tampilan"
     },
     "font": {
       "extra": {
@@ -119,17 +118,12 @@
     "tabsOrder": {
       "title": "Urutan Tab Beranda",
       "brief": "Kustomisasikan urutan dan visibilitas tab.",
-      "description": {
-        "line1": "Urutkan lagi tab setelah tab \"Beranda\" dengan menarik dan melepaskan. Tombol visibilitas tab menggunakan ikon mata.",
-        "line2": "Peringatan: Perilaku tak terduga mungkin terjadi saat menavigasi ke tab yang disembunyikan."
-      },
       "extra": {
         "setHomeTab": null
       }
     },
-    "albumLengthFilter": {
-      "title": null,
-      "description": null
+    "minAlbumLength": {
+      "title": null
     },
     "miniplayerGestures": {
       "title": null
@@ -156,7 +150,6 @@
     },
     "backup": {
       "title": "Cadangkan",
-      "brief": "Pindahkan data antar perangkat.",
       "description": "Transfer data dari aplikasi ini antar perangkat melalui berkas `music_backup.json`.",
       "extra": {
         "export": "Ekspor",
@@ -167,7 +160,6 @@
     },
     "insights": {
       "title": "Insight",
-      "brief": "Penggunaan aplikasi & statistik.",
       "extra": {
         "cache": "Tembolok",
         "database": "Database",
@@ -199,16 +191,12 @@
     },
     "playback": {
       "title": "Pemutaran",
-      "brief": "Ubah perilaku pemutaran musik.",
       "extra": {
+        "delay": null,
         "options": "Opsi Pemutaran",
         "speed": "Kecepatan Pemutaran",
         "volume": "Volume Aplikasi"
       }
-    },
-    "playbackDelay": {
-      "title": null,
-      "description": null
     },
     "repeatOnSkip": {
       "title": "Tetap dalam Mode Mengulang saat Melewati",
@@ -218,8 +206,7 @@
       "title": null
     },
     "scanning": {
-      "title": "Memindai",
-      "brief": "Opsi jelajahi musik."
+      "title": "Memindai"
     },
     "rescan": {
       "title": "Memindai Ulang",
@@ -239,20 +226,17 @@
       "brief": null
     },
     "listAllow": {
-      "title": "Diizinkan",
-      "description": "Defaultnya adalah berikut jika kosong:"
+      "title": "Diizinkan"
     },
     "listBlock": {
       "title": "Diblokir",
       "description": "Memiliki prioritas lebih tinggi terhadap entri dalam daftar perizinan."
     },
-    "ignoreDuration": {
-      "title": "Abaikan Audio Pendek",
-      "description": "Durasi audio dalam detik yang tidak ingin kami simpan."
+    "minTrackDuration": {
+      "title": "Abaikan Audio Pendek"
     },
     "experimental": {
-      "title": null,
-      "brief": null
+      "title": null
     },
     "continuePlaybackOnDismiss": {
       "title": null,
@@ -273,11 +257,9 @@
     },
     "waveformSlider": {
       "title": null,
-      "brief": null,
       "extra": {
-        "purgeCache": null,
-        "purgeCacheBrief": null,
-        "purgeCacheToast": null
+        "clearCache": null,
+        "cacheCleared": null
       }
     },
     "code": {

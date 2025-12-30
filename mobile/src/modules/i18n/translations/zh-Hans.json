@@ -99,8 +99,7 @@
       }
     },
     "appearance": {
-      "title": "外观",
-      "brief": "个性化应用外观。"
+      "title": "外观"
     },
     "font": {
       "extra": {
@@ -119,17 +118,12 @@
     "tabsOrder": {
       "title": "主页标签顺序",
       "brief": "自定义标签的顺序和可见性。",
-      "description": {
-        "line1": "通过拖放来重新排列“主页”标签后的标签页。使用眼睛图标切换标签可见性。",
-        "line2": "注意：导航到隐藏标签时可能会发生意外行为。"
-      },
       "extra": {
         "setHomeTab": "应用启动时打开{{- name}} tab"
       }
     },
-    "albumLengthFilter": {
-      "title": null,
-      "description": null
+    "minAlbumLength": {
+      "title": null
     },
     "miniplayerGestures": {
       "title": null
@@ -156,7 +150,6 @@
     },
     "backup": {
       "title": "备份",
-      "brief": "在设备间迁移数据。",
       "description": "通过 `music_backup.json` 文件在设备间传输应用数据。",
       "extra": {
         "export": "导出",
@@ -167,7 +160,6 @@
     },
     "insights": {
       "title": "使用统计",
-      "brief": "应用使用情况与统计。",
       "extra": {
         "cache": "缓存",
         "database": "数据库",
@@ -199,16 +191,12 @@
     },
     "playback": {
       "title": "回放",
-      "brief": "更改播放音乐时的行为。",
       "extra": {
+        "delay": null,
         "options": "播放选项",
         "speed": "倍速",
         "volume": "应用音量"
       }
-    },
-    "playbackDelay": {
-      "title": null,
-      "description": null
     },
     "repeatOnSkip": {
       "title": "跳过时保持单曲循环",
@@ -218,8 +206,7 @@
       "title": null
     },
     "scanning": {
-      "title": "扫描",
-      "brief": "音乐发现选项。"
+      "title": "扫描"
     },
     "rescan": {
       "title": "重新扫描",
@@ -239,20 +226,17 @@
       "brief": null
     },
     "listAllow": {
-      "title": "允许列表",
-      "description": "为空时使用以下默认值："
+      "title": "允许列表"
     },
     "listBlock": {
       "title": "阻止列表",
       "description": "优先级高于允许列表中的条目。"
     },
-    "ignoreDuration": {
-      "title": "忽略较短的音频",
-      "description": "不想保存的音频时长（秒）。"
+    "minTrackDuration": {
+      "title": "忽略较短的音频"
     },
     "experimental": {
-      "title": null,
-      "brief": null
+      "title": null
     },
     "continuePlaybackOnDismiss": {
       "title": null,
@@ -273,11 +257,9 @@
     },
     "waveformSlider": {
       "title": null,
-      "brief": null,
       "extra": {
-        "purgeCache": null,
-        "purgeCacheBrief": null,
-        "purgeCacheToast": null
+        "clearCache": null,
+        "cacheCleared": null
       }
     },
     "code": {

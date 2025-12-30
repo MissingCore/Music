@@ -25,7 +25,7 @@ export function HorizontalRadioList<T extends string>(props: {
             onPress={() => props.onPress(item)}
             disabled={selected}
             className={cn(
-              "w-21 items-center gap-2 rounded-sm border border-transparent p-2",
+              "w-21 items-center gap-2 rounded-sm border border-transparent p-2 active:opacity-50",
               { "border-red": selected },
             )}
           >

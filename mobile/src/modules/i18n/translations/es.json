@@ -99,8 +99,7 @@
       }
     },
     "appearance": {
-      "title": "Apariencia",
-      "brief": "Personaliza cómo se ve la aplicación."
+      "title": "Apariencia"
     },
     "font": {
       "extra": {
@@ -119,17 +118,12 @@
     "tabsOrder": {
       "title": "Orden de pestañas",
       "brief": "Organiza y ajusta las pestañas visibles.",
-      "description": {
-        "line1": "Arrastra para reordenar. Usa el ojo para mostrar/ocultar y la casa para definir la pestaña de inicio.",
-        "line2": "Nota: Navegar a una pestaña oculta puede causar comportamientos inesperados."
-      },
       "extra": {
         "setHomeTab": "Abrir la pestaña {{- name}} al iniciar."
       }
     },
-    "albumLengthFilter": {
-      "title": "Filtro por tamaño de álbum",
-      "description": "Número mínimo de canciones para que un álbum sea visible."
+    "minAlbumLength": {
+      "title": "Filtro por tamaño de álbum"
     },
     "miniplayerGestures": {
       "title": "Gestos del mini reproductor"
@@ -156,7 +150,6 @@
     },
     "backup": {
       "title": "Copia de seguridad",
-      "brief": "Mover tus datos entre dispositivos.",
       "description": "Exporta o importa datos de esta app a otros dispositivos usando un archivo `music_backup.json`.",
       "extra": {
         "export": "Exportar",
@@ -167,7 +160,6 @@
     },
     "insights": {
       "title": "Estadísticas",
-      "brief": "Información de uso y almacenamiento.",
       "extra": {
         "cache": "Caché",
         "database": "Base de datos",
@@ -199,16 +191,12 @@
     },
     "playback": {
       "title": "Reproducción",
-      "brief": "Ajustes de reproducción.",
       "extra": {
+        "delay": "Retraso natural",
         "options": "Opciones",
         "speed": "Velocidad",
         "volume": "Volumen"
       }
-    },
-    "playbackDelay": {
-      "title": "Retraso natural",
-      "description": "Segundos de espera antes de que empiece la siguiente canción."
     },
     "repeatOnSkip": {
       "title": "Mantener repetición al saltar",
@@ -218,8 +206,7 @@
       "title": "Restaurar última posición"
     },
     "scanning": {
-      "title": "Escaneo",
-      "brief": "Opciones para detectar música."
+      "title": "Escaneo"
     },
     "rescan": {
       "title": "Reescaneo",
@@ -239,20 +226,17 @@
       "brief": "Si está desactivado, usa el reescaneo manual para detectar cambios."
     },
     "listAllow": {
-      "title": "Lista de permitidos",
-      "description": "Se usará como predeterminado si está vacía."
+      "title": "Lista de permitidos"
     },
     "listBlock": {
       "title": "Lista de bloqueados",
       "description": "Tiene prioridad sobre la lista de permitidos."
     },
-    "ignoreDuration": {
-      "title": "Ignorar audio corto",
-      "description": "Duración mínima para guardar una canción."
+    "minTrackDuration": {
+      "title": "Ignorar audio corto"
     },
     "experimental": {
-      "title": "Funciones experimentales",
-      "brief": "Podrían fallar o no recibir soporte."
+      "title": "Funciones experimentales"
     },
     "continuePlaybackOnDismiss": {
       "title": "Seguir reproduciendo al cerrar",
@@ -273,11 +257,9 @@
     },
     "waveformSlider": {
       "title": "Deslizador de forma de onda",
-      "brief": "Puede tardar un poco la primera vez mientras se genera la caché.",
       "extra": {
-        "purgeCache": "Borrar caché",
-        "purgeCacheBrief": "Libera espacio y regenera las formas de onda.",
-        "purgeCacheToast": "Caché eliminada."
+        "clearCache": "Borrar caché",
+        "cacheCleared": "Caché eliminada."
       }
     },
     "code": {

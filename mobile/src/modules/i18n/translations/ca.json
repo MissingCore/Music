@@ -99,8 +99,7 @@
       }
     },
     "appearance": {
-      "title": "Aparença",
-      "brief": "Personalitza l'aspecte de l'app."
+      "title": "Aparença"
     },
     "font": {
       "extra": {
@@ -119,17 +118,12 @@
     "tabsOrder": {
       "title": "Ordre de les pestanyes",
       "brief": "Personalitza l'ordre i visibilitat de les pestanyes.",
-      "description": {
-        "line1": "Reordena les pestanyes que segueixen a la pestanya de \"Inici\" arrossegant i deixant anar. Fes visible o invisible cada pestanya pressionant la icona de l'ull.",
-        "line2": "Precaució: al accedir a pestanyes ocultes es poden produir errors."
-      },
       "extra": {
         "setHomeTab": null
       }
     },
-    "albumLengthFilter": {
-      "title": null,
-      "description": null
+    "minAlbumLength": {
+      "title": null
     },
     "miniplayerGestures": {
       "title": null
@@ -156,7 +150,6 @@
     },
     "backup": {
       "title": "Copia de seguretat",
-      "brief": "Mou dades entre dispositius.",
       "description": "Transfereix dades d'aquesta aplicació entre dispositius a través del fitxer `music_backup.json`.",
       "extra": {
         "export": "Exporta",
@@ -167,7 +160,6 @@
     },
     "insights": {
       "title": "Estadístiques",
-      "brief": "Dades d'ús i estadístiques.",
       "extra": {
         "cache": "Cache",
         "database": "Base de dades",
@@ -199,16 +191,12 @@
     },
     "playback": {
       "title": "Reproduint",
-      "brief": "Canvia el comportament del reproductor.",
       "extra": {
+        "delay": null,
         "options": "Ajusts de reproducció",
         "speed": "Velocitat de reproducció",
         "volume": "Volum de l'aplicació"
       }
-    },
-    "playbackDelay": {
-      "title": null,
-      "description": null
     },
     "repeatOnSkip": {
       "title": "Mantenir el mode de repetició al saltar",
@@ -218,8 +206,7 @@
       "title": "Guardar l'última posició reproduïda"
     },
     "scanning": {
-      "title": "Escanejant",
-      "brief": "Ajusts del descobriment de música."
+      "title": "Escanejant"
     },
     "rescan": {
       "title": "Reescanejar",
@@ -239,20 +226,17 @@
       "brief": null
     },
     "listAllow": {
-      "title": "Llista de permeses",
-      "description": "Predeterminat al següent si està buit:"
+      "title": "Llista de permeses"
     },
     "listBlock": {
       "title": "Llista de bloquejades",
       "description": "Té prioritat per sobre de les entrades de la llista de permeses."
     },
-    "ignoreDuration": {
-      "title": "Ignora àudios curts",
-      "description": "Durada en segons dels àudios que no vols guardar."
+    "minTrackDuration": {
+      "title": "Ignora àudios curts"
     },
     "experimental": {
-      "title": null,
-      "brief": null
+      "title": null
     },
     "continuePlaybackOnDismiss": {
       "title": null,
@@ -273,11 +257,9 @@
     },
     "waveformSlider": {
       "title": null,
-      "brief": null,
       "extra": {
-        "purgeCache": null,
-        "purgeCacheBrief": null,
-        "purgeCacheToast": null
+        "clearCache": null,
+        "cacheCleared": null
       }
     },
     "code": {

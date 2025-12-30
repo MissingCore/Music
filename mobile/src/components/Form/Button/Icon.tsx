@@ -10,16 +10,14 @@ import type { PressProps } from "./types";
 type ButtonSize = "sm" | "md" | "lg";
 
 const ButtonConfig = {
-  sm: { buttonSize: "min-h-9 min-w-9", iconSize: 20 },
+  sm: { buttonSize: "min-h-10 min-w-10", iconSize: 24 },
   md: { buttonSize: "min-h-12 min-w-12", iconSize: 24 },
   lg: { buttonSize: "min-h-12 min-w-12", iconSize: 32 },
 } as const;
 
-type IconButtonProps = {
+type IconButtonProps = PressProps & {
   Icon: (props: Icon) => React.JSX.Element;
   accessibilityLabel: string;
-  onPress: PressProps["onPress"];
-  disabled?: boolean;
   /** Defaults to `md`. */
   size?: ButtonSize;
   /** Use the `filled` variant on the icon if available. */

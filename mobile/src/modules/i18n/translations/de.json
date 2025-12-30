@@ -99,8 +99,7 @@
       }
     },
     "appearance": {
-      "title": "Aussehen",
-      "brief": "Aussehen der App personalisieren."
+      "title": "Aussehen"
     },
     "font": {
       "extra": {
@@ -119,17 +118,12 @@
     "tabsOrder": {
       "title": "Menüleiste anpassen",
       "brief": "Reihenfolge und Sichtbarkeit der Tabs ändern.",
-      "description": {
-        "line1": "Ordnen die Registerkarten nach der Registerkarte \"Home\" durch Ziehen und Ablegen neu. Schalt die Registerkarte mit dem Augensymbol um.",
-        "line2": "Achtung: Unerwartetes Verhalten kann auftreten, wenn du zu einem versteckten Tab wechselst."
-      },
       "extra": {
         "setHomeTab": "{{- name}} Tab beim Start öffnen."
       }
     },
-    "albumLengthFilter": {
-      "title": "Albumlängen-Filter",
-      "description": "Mindestanzahl an Titeln, damit ein Album im Album-Bildschirm angezeigt wird."
+    "minAlbumLength": {
+      "title": "Albumlängen-Filter"
     },
     "miniplayerGestures": {
       "title": "Miniplayer Gesten"
@@ -156,7 +150,6 @@
     },
     "backup": {
       "title": "Sicherungskopie",
-      "brief": "Daten zwischen Handys verschieben.",
       "description": "Daten von dieser App geräteübergreifend als „music_backup.json“-Datei übertragen.",
       "extra": {
         "export": "Exportieren",
@@ -167,7 +160,6 @@
     },
     "insights": {
       "title": "Einsichten",
-      "brief": "App-Nutzung und Statistiken.",
       "extra": {
         "cache": "Cache",
         "database": "Datenbank",
@@ -199,16 +191,12 @@
     },
     "playback": {
       "title": "Wiedergabe",
-      "brief": "Musik-Abspielverhalten ändern.",
       "extra": {
+        "delay": "Wiedergabeverzögerung",
         "options": "Wiedergabeoptionen",
         "speed": "Wiedergabegeschwindigkeit",
         "volume": "App-Lautstärke"
       }
-    },
-    "playbackDelay": {
-      "title": "Wiedergabeverzögerung",
-      "description": "Verzögerung in Sekunden bevor der nächste Titel normalerweise anfängt."
     },
     "repeatOnSkip": {
       "title": "Wiederholungsmodus beim Überspringen behalten",
@@ -218,8 +206,7 @@
       "title": "Zuletzt gespielte Position speichern"
     },
     "scanning": {
-      "title": "Scannen",
-      "brief": "Möglichkeiten zur Musikentdeckung."
+      "title": "Scannen"
     },
     "rescan": {
       "title": "Erneut scannen",
@@ -239,20 +226,17 @@
       "brief": "Wenn deaktiviert, verwenden Sie die Scan-Funktion, um neue, aktualisierte und entfernte Titel zu erkennen."
     },
     "listAllow": {
-      "title": "Zulassungsliste",
-      "description": "Wenn es leer ist, wird standardmäßig Folgendes verwendet:"
+      "title": "Zulassungsliste"
     },
     "listBlock": {
       "title": "Sperrliste",
       "description": "Hat höhere Priorität als die Einträge in der Zulassungsliste."
     },
-    "ignoreDuration": {
-      "title": "Ignoriere kurzes Audio",
-      "description": "Dauer in Sekunden des Audios, das wir nicht speichern möchten."
+    "minTrackDuration": {
+      "title": "Ignoriere kurzes Audio"
     },
     "experimental": {
-      "title": "Experimentelle Funktionen",
-      "brief": "Funktionen, für die möglicherweise kein offizieller Support verfügbar ist oder die nicht wie erwartet funktionieren. Die Verwendung erfolgt auf eigene Gefahr."
+      "title": "Experimentelle Funktionen"
     },
     "continuePlaybackOnDismiss": {
       "title": "Wiedergabe beim Schließen fortsetzen",
@@ -273,11 +257,9 @@
     },
     "waveformSlider": {
       "title": "Slider in Wellenform",
-      "brief": "Die Wiedergabe von Titeln ist anfangs aufgrund des Zwischenspeicherns der Wellenformdaten langsam.",
       "extra": {
-        "purgeCache": "Zwischengespeicherte Wellenformen löschen",
-        "purgeCacheBrief": "Gibt Speicherplatz frei, um die Wellenformen der abgespielten Spuren neu zu berechnen.",
-        "purgeCacheToast": "Wellenform-Cache gelöscht."
+        "clearCache": null,
+        "cacheCleared": null
       }
     },
     "code": {

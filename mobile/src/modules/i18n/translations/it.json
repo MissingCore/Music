@@ -99,8 +99,7 @@
       }
     },
     "appearance": {
-      "title": "Aspetto",
-      "brief": "Personalizza l'aspetto dell'app."
+      "title": "Aspetto"
     },
     "font": {
       "extra": {
@@ -119,17 +118,12 @@
     "tabsOrder": {
       "title": "Ordine schede $t(term.home)",
       "brief": "Personalizza l'ordine e la visibilità delle schede.",
-      "description": {
-        "line1": "Riordina le schede dopo la scheda \"$t(term.home)\" trascinando e rilasciando. Cambia la visibilità utilizzando l'icona dell'occhio.",
-        "line2": "Attenzione: Potrebbero verificarsi comportamenti imprevisti navigando ad una scheda nascosta."
-      },
       "extra": {
         "setHomeTab": null
       }
     },
-    "albumLengthFilter": {
-      "title": null,
-      "description": null
+    "minAlbumLength": {
+      "title": null
     },
     "miniplayerGestures": {
       "title": null
@@ -156,7 +150,6 @@
     },
     "backup": {
       "title": "Backup",
-      "brief": "Trasferisci dati tra dispositivi.",
       "description": "Trasferisci dati da quest'app tra dispositivi utilizzando il file `music_backup.json`.",
       "extra": {
         "export": "Esporta",
@@ -167,7 +160,6 @@
     },
     "insights": {
       "title": "Analisi",
-      "brief": "Utilizzo & statistiche dell'app.",
       "extra": {
         "cache": "Cache",
         "database": "Database",
@@ -199,16 +191,12 @@
     },
     "playback": {
       "title": "Riproduzione",
-      "brief": "Modifica comportamento della riproduzione.",
       "extra": {
+        "delay": null,
         "options": "Opzioni di riproduzione",
         "speed": "Velocità di riproduzione",
         "volume": "Volume dell'app"
       }
-    },
-    "playbackDelay": {
-      "title": null,
-      "description": null
     },
     "repeatOnSkip": {
       "title": "Mantieni modalità \"$t(term.repeat)\" al cambio brano",
@@ -218,8 +206,7 @@
       "title": null
     },
     "scanning": {
-      "title": "Scansione in corso",
-      "brief": "Opzioni scansione musica."
+      "title": "Scansione in corso"
     },
     "rescan": {
       "title": "Ripeti scansione",
@@ -239,20 +226,17 @@
       "brief": null
     },
     "listAllow": {
-      "title": null,
-      "description": "Se non specificata assume il seguente valore:"
+      "title": null
     },
     "listBlock": {
       "title": null,
       "description": "Ha priorità maggiore rispetto alle voci nella \"$t(feat.listAllow.title)\"."
     },
-    "ignoreDuration": {
-      "title": "Ignora audio corti",
-      "description": "Durata (in secondi) degli audio da non salvare."
+    "minTrackDuration": {
+      "title": "Ignora audio corti"
     },
     "experimental": {
-      "title": null,
-      "brief": null
+      "title": null
     },
     "continuePlaybackOnDismiss": {
       "title": null,
@@ -273,11 +257,9 @@
     },
     "waveformSlider": {
       "title": null,
-      "brief": null,
       "extra": {
-        "purgeCache": null,
-        "purgeCacheBrief": null,
-        "purgeCacheToast": null
+        "clearCache": null,
+        "cacheCleared": null
       }
     },
     "code": {

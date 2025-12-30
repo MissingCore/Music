@@ -99,8 +99,7 @@
       }
     },
     "appearance": {
-      "title": "Wygląd",
-      "brief": "Spersonalizuj wygląd aplikacji."
+      "title": "Wygląd"
     },
     "font": {
       "extra": {
@@ -119,17 +118,12 @@
     "tabsOrder": {
       "title": "Kolejność zakładek",
       "brief": "Spersonalizuj kolejność i widoczność zakładek.",
-      "description": {
-        "line1": "Zmień kolejność zakładek przez przeciąganie i upuszczanie. Przełączaj ich widoczność, używając ikony oka. Ustaw startową zakładkę, używając ikony domu.",
-        "line2": "Ostrzeżenie: Mogą występować nieoczekiwane błędy podczas przechodzenia do ukrytych zakładek."
-      },
       "extra": {
         "setHomeTab": "Otwórz zakładkę {{- name}} przy uruchomieniu aplikacji."
       }
     },
-    "albumLengthFilter": {
-      "title": "Filtr długości albumu",
-      "description": "Minimalna liczba utworów w albumie, aby go wyświetlić w zakładce `Albumy`"
+    "minAlbumLength": {
+      "title": "Filtr długości albumu"
     },
     "miniplayerGestures": {
       "title": "Gesty w miniodtwarzaczu"
@@ -156,7 +150,6 @@
     },
     "backup": {
       "title": "Kopia zapasowa",
-      "brief": "Przenieś dane pomiędzy urządzeniami.",
       "description": "Przenieś dane z tej aplikacji na inne urządzenia przez plik `music_backup.json`.",
       "extra": {
         "export": "Eksportuj",
@@ -167,7 +160,6 @@
     },
     "insights": {
       "title": "Wgląd",
-      "brief": "Przeanalizuj dane i statystyki.",
       "extra": {
         "cache": "Pamięć podręczna",
         "database": "Baza danych",
@@ -199,16 +191,12 @@
     },
     "playback": {
       "title": "Odtwarzanie",
-      "brief": "Dostosuj zachowanie odtwarzacza.",
       "extra": {
+        "delay": "Opóźnenie pomiędzy utworami",
         "options": "Opcje odtwarzania",
         "speed": "Prędkość odtwarzania",
         "volume": "Głośność aplikacji"
       }
-    },
-    "playbackDelay": {
-      "title": "Opóźnenie pomiędzy utworami",
-      "description": "Odtwarzacz przed odtworzeniem następnego utworu odczeka poniższą ilość sekund."
     },
     "repeatOnSkip": {
       "title": "Zachowaj zapętlenie po pominięciu",
@@ -218,8 +206,7 @@
       "title": "Przywróć ostatnio odtwarzaną pozycję"
     },
     "scanning": {
-      "title": "Skanowanie",
-      "brief": "Ustaw opcje szukania muzyki."
+      "title": "Skanowanie"
     },
     "rescan": {
       "title": "Ponowne skanowanie",
@@ -239,20 +226,17 @@
       "brief": "Po wyłączeniu będziesz musieć ręcznie uruchamiać skanowanie, by wykryć nowe lub usunięte utwory."
     },
     "listAllow": {
-      "title": "Biała lista",
-      "description": "Jeżeli pusto, domyślnie przyjmie:"
+      "title": "Biała lista"
     },
     "listBlock": {
       "title": "Czarna lista",
       "description": "Ma wyższy priorytet niż elementy na białej liście."
     },
-    "ignoreDuration": {
-      "title": "Ignoruj krótkie nagrania",
-      "description": "Nagrania krótsze niż poniższa ilość sekund nie będą zapisywane."
+    "minTrackDuration": {
+      "title": "Ignoruj krótkie nagrania"
     },
     "experimental": {
-      "title": "Funkcje eksperymentalne",
-      "brief": "Te funkcje mogą nie mieć oficjalnego wsparcia i działać inaczej niż oczekiwano. Używasz na własne ryzyko."
+      "title": "Funkcje eksperymentalne"
     },
     "continuePlaybackOnDismiss": {
       "title": "Odtwarzanie po zamknięciu",
@@ -273,11 +257,9 @@
     },
     "waveformSlider": {
       "title": "Pasek przewijania z falami dźwiękowymi",
-      "brief": "Odtwarzanie początkowo będzie opóźnione przez obliczenia dla wizualizacji.",
       "extra": {
-        "purgeCache": "Wyczyść dane dla wizualizacji",
-        "purgeCacheBrief": "Zwalnia pamięć i wymusza ponowne obliczenia dla wizualizacji fal dźwiękowych.",
-        "purgeCacheToast": "Dane wizualizacji fal dźwiękowych zostały wyczyszczone."
+        "clearCache": null,
+        "cacheCleared": null
       }
     },
     "code": {

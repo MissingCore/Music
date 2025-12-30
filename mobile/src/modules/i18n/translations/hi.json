@@ -99,8 +99,7 @@
       }
     },
     "appearance": {
-      "title": "दिखावट",
-      "brief": "ऐप की दिखावट को व्यक्तिगत बनाएं।"
+      "title": "दिखावट"
     },
     "font": {
       "extra": {
@@ -119,17 +118,12 @@
     "tabsOrder": {
       "title": "होम टैब्स क्रम",
       "brief": "टैब्स के क्रम और दृश्यता को अनुकूलित करें।",
-      "description": {
-        "line1": "\"होम\" टैब के बाद टैब्स को खींचकर और छोड़कर पुनः क्रमबद्ध करें। आँख के आइकन का उपयोग करके टैब दृश्यता को टॉगल करें।",
-        "line2": "चेतावनी: छिपे हुए टैब पर नेविगेट करते समय अप्रत्याशित व्यवहार हो सकता है।"
-      },
       "extra": {
         "setHomeTab": null
       }
     },
-    "albumLengthFilter": {
-      "title": null,
-      "description": null
+    "minAlbumLength": {
+      "title": null
     },
     "miniplayerGestures": {
       "title": null
@@ -156,7 +150,6 @@
     },
     "backup": {
       "title": "बैकअप",
-      "brief": "डिवाइस के बीच डेटा स्थानांतरित करें।",
       "description": "एक `music_backup.json` फ़ाइल के माध्यम से इस ऐप के डेटा को डिवाइस के बीच स्थानांतरित करें।",
       "extra": {
         "export": "निर्यात करें",
@@ -167,7 +160,6 @@
     },
     "insights": {
       "title": "अंतर्दृष्टि",
-      "brief": "ऐप उपयोग और सांख्यिकी।",
       "extra": {
         "cache": "कैश",
         "database": "डेटाबेस",
@@ -199,16 +191,12 @@
     },
     "playback": {
       "title": null,
-      "brief": null,
       "extra": {
+        "delay": null,
         "options": null,
         "speed": null,
         "volume": null
       }
-    },
-    "playbackDelay": {
-      "title": null,
-      "description": null
     },
     "repeatOnSkip": {
       "title": null,
@@ -218,8 +206,7 @@
       "title": null
     },
     "scanning": {
-      "title": "स्कैनिंग",
-      "brief": "संगीत खोज विकल्प।"
+      "title": "स्कैनिंग"
     },
     "rescan": {
       "title": "पुनः स्कैन करें",
@@ -239,20 +226,17 @@
       "brief": null
     },
     "listAllow": {
-      "title": "अनुमति सूची",
-      "description": "यदि खाली हो, तो निम्नलिखित पर डिफ़ॉल्ट:"
+      "title": "अनुमति सूची"
     },
     "listBlock": {
       "title": "ब्लॉक सूची",
       "description": "अनुमति सूची में प्रविष्टियों पर उच्च प्राथमिकता है।"
     },
-    "ignoreDuration": {
-      "title": "छोटे ऑडियो को अनदेखा करें",
-      "description": "ऑडियो की अवधि (सेकंड में) जिसे हम सहेजना नहीं चाहते।"
+    "minTrackDuration": {
+      "title": "छोटे ऑडियो को अनदेखा करें"
     },
     "experimental": {
-      "title": null,
-      "brief": null
+      "title": null
     },
     "continuePlaybackOnDismiss": {
       "title": null,
@@ -273,11 +257,9 @@
     },
     "waveformSlider": {
       "title": null,
-      "brief": null,
       "extra": {
-        "purgeCache": null,
-        "purgeCacheBrief": null,
-        "purgeCacheToast": null
+        "clearCache": null,
+        "cacheCleared": null
       }
     },
     "code": {

@@ -99,8 +99,7 @@
       }
     },
     "appearance": {
-      "title": "المظهر",
-      "brief": "تخصيص مظهر التطبيق."
+      "title": "المظهر"
     },
     "font": {
       "extra": {
@@ -119,17 +118,12 @@
     "tabsOrder": {
       "title": "ترتيب علامات تبويب الرئيسية",
       "brief": "تخصيص ترتيب ووضوح علامات التبويب.",
-      "description": {
-        "line1": "أعد ترتيب علامات التبويب بعد علامة تبويب \"الرئيسية\" بالسحب والإفلات. يمكنك تبديل وضوح علامة التبويب باستخدام أيقونة العين.",
-        "line2": "تنبيه: قد يحدث سلوك غير متوقع عند الانتقال إلى علامة تبويب مخفية."
-      },
       "extra": {
         "setHomeTab": "فتح علامة تبويب {{- name}} عند تشغيل التطبيق."
       }
     },
-    "albumLengthFilter": {
-      "title": null,
-      "description": null
+    "minAlbumLength": {
+      "title": null
     },
     "miniplayerGestures": {
       "title": null
@@ -156,7 +150,6 @@
     },
     "backup": {
       "title": "النسخ الاحتياطي",
-      "brief": "نقل البيانات بين الأجهزة.",
       "description": "نقل البيانات من هذا التطبيق عبر الأجهزة من خلال ملف `music_backup.json`.",
       "extra": {
         "export": "تصدير",
@@ -167,7 +160,6 @@
     },
     "insights": {
       "title": "رؤى",
-      "brief": "استخدام التطبيق والإحصائيات.",
       "extra": {
         "cache": "الذاكرة المؤقتة",
         "database": "قاعدة البيانات",
@@ -199,16 +191,12 @@
     },
     "playback": {
       "title": "التشغيل",
-      "brief": "تغيير سلوك تشغيل الموسيقى.",
       "extra": {
+        "delay": null,
         "options": "خيارات التشغيل",
         "speed": "سرعة التشغيل",
         "volume": "مستوى صوت التطبيق"
       }
-    },
-    "playbackDelay": {
-      "title": null,
-      "description": null
     },
     "repeatOnSkip": {
       "title": "الاحتفاظ بوضع التكرار عند التخطي",
@@ -218,8 +206,7 @@
       "title": "حفظ آخر موضع تشغيل"
     },
     "scanning": {
-      "title": "المسح",
-      "brief": "خيارات اكتشاف الموسيقى."
+      "title": "المسح"
     },
     "rescan": {
       "title": "إعادة المسح",
@@ -239,20 +226,17 @@
       "brief": null
     },
     "listAllow": {
-      "title": "القائمة المسموحة",
-      "description": "افتراضيًا ما يلي إذا كانت فارغة:"
+      "title": "القائمة المسموحة"
     },
     "listBlock": {
       "title": "القائمة المحظورة",
       "description": "لها أولوية أعلى من الإدخالات في القائمة المسموحة."
     },
-    "ignoreDuration": {
-      "title": "تجاهل الصوت القصير",
-      "description": "مدة الصوت بالثواني التي لا نريد حفظها."
+    "minTrackDuration": {
+      "title": "تجاهل الصوت القصير"
     },
     "experimental": {
-      "title": "ميزات تجريبية",
-      "brief": "ميزات قد لا تحصل على دعم رسمي أو لا تعمل كما هو متوقع. استخدمها على مسؤوليتك الخاصة."
+      "title": "ميزات تجريبية"
     },
     "continuePlaybackOnDismiss": {
       "title": "متابعة التشغيل عند الإغلاق",
@@ -273,11 +257,9 @@
     },
     "waveformSlider": {
       "title": null,
-      "brief": null,
       "extra": {
-        "purgeCache": null,
-        "purgeCacheBrief": null,
-        "purgeCacheToast": null
+        "clearCache": null,
+        "cacheCleared": null
       }
     },
     "code": {

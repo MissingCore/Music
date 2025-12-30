@@ -117,8 +117,7 @@
       }
     },
     "appearance": {
-      "title": "Appearance",
-      "brief": "Personalize the app looks."
+      "title": "Appearance"
     },
     "font": {
       "extra": {
@@ -137,17 +136,12 @@
     "tabsOrder": {
       "title": "Tab Order",
       "brief": "Customize the order and visibility of the tabs.",
-      "description": {
-        "line1": "Reorder the tabs by dragging and dropping. Toggle tab visibility using the eye icon. Change the home tab using the house icon.",
-        "line2": "Caution: Unexpected behavior may occur when navigating to a hidden tab."
-      },
       "extra": {
         "setHomeTab": "Open {{- name}} tab on app launch."
       }
     },
-    "albumLengthFilter": {
-      "title": "Album Length Filter",
-      "description": "Minimum number of tracks for album to show up in the Albums screen."
+    "minAlbumLength": {
+      "title": "Minimum Album Length"
     },
     "miniplayerGestures": {
       "title": "Miniplayer Gestures"
@@ -174,7 +168,6 @@
     },
     "backup": {
       "title": "Backup",
-      "brief": "Move data across devices.",
       "description": "Transfer data from this app across devices through a `music_backup.json` file.",
       "extra": {
         "export": "Export",
@@ -185,7 +178,6 @@
     },
     "insights": {
       "title": "Insights",
-      "brief": "App usage & statistics.",
       "extra": {
         "cache": "Cache",
         "database": "Database",
@@ -217,16 +209,12 @@
     },
     "playback": {
       "title": "Playback",
-      "brief": "Change music playing behavior.",
       "extra": {
+        "delay": "Playback Delay",
         "options": "Playback Options",
         "speed": "Playback Speed",
         "volume": "App Volume"
       }
-    },
-    "playbackDelay": {
-      "title": "Natural Playback Delay",
-      "description": "Delay in seconds before the next track is naturally played."
     },
     "repeatOnSkip": {
       "title": "Keep Repeat Mode on Skip",
@@ -236,8 +224,7 @@
       "title": "Restore From Last Played Position"
     },
     "scanning": {
-      "title": "Scanning",
-      "brief": "Music discovery options."
+      "title": "Scanning"
     },
     "rescan": {
       "title": "Rescan",
@@ -257,20 +244,17 @@
       "brief": "If disabled, use the Rescan feature to detect new, updated, and removed tracks."
     },
     "listAllow": {
-      "title": "Allowlist",
-      "description": "Defaults to the following if empty:"
+      "title": "Allowlist"
     },
     "listBlock": {
       "title": "Blocklist",
       "description": "Has higher priority over the entries in the allowlist."
     },
-    "ignoreDuration": {
-      "title": "Ignore Short Audio",
-      "description": "Duration in seconds of audio we don't want to save."
+    "minTrackDuration": {
+      "title": "Minimum Track Duration"
     },
     "experimental": {
-      "title": "Experimental Features",
-      "brief": "Features that may not get official support or work as expected. Use at your own risk."
+      "title": "Experimental Features"
     },
     "continuePlaybackOnDismiss": {
       "title": "Continue Playback on Dismiss",
@@ -291,11 +275,9 @@
     },
     "waveformSlider": {
       "title": "Waveform Slider",
-      "brief": "Playing tracks will be initially slow due to caching the waveform data.",
       "extra": {
-        "purgeCache": "Purge Cached Waveforms",
-        "purgeCacheBrief": "Frees up storage to recalculate the waveforms of played tracks.",
-        "purgeCacheToast": "Waveform cache cleared."
+        "clearCache": "Clear Cache",
+        "cacheCleared": "Cache cleared."
       }
     },
     "code": {

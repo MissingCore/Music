@@ -99,8 +99,7 @@
       }
     },
     "appearance": {
-      "title": "Udseende",
-      "brief": "Tilpas appens udseende."
+      "title": "Udseende"
     },
     "font": {
       "extra": {
@@ -119,17 +118,12 @@
     "tabsOrder": {
       "title": "Rækkefølge af faner",
       "brief": "Tilpas rækkefølgen og synligheden af fanerne.",
-      "description": {
-        "line1": "Tilpas fanernes rækkefølge med Drag-and-Drop. Gem eller vis fanerne med øje-ikonet.",
-        "line2": "Bemærk: Uventet adfærd kan forekomme, når du navigerer til en gemt fane."
-      },
       "extra": {
         "setHomeTab": null
       }
     },
-    "albumLengthFilter": {
-      "title": null,
-      "description": null
+    "minAlbumLength": {
+      "title": null
     },
     "miniplayerGestures": {
       "title": null
@@ -156,7 +150,6 @@
     },
     "backup": {
       "title": "Backup",
-      "brief": "Flyt data på tværs af enheder.",
       "description": "Overfør data fra denne app til andre enheder via en `music_backup.json` fil.",
       "extra": {
         "export": "Eksportér",
@@ -167,7 +160,6 @@
     },
     "insights": {
       "title": "Indsigter",
-      "brief": "Dataforbrug og statistikker",
       "extra": {
         "cache": "Cache",
         "database": "Database",
@@ -199,16 +191,12 @@
     },
     "playback": {
       "title": "Afspilning",
-      "brief": "Tilpas musikafspilning.",
       "extra": {
+        "delay": null,
         "options": "Ekstra optioner til afspilning",
         "speed": "Afspilningshastighed",
         "volume": "Appens lydstyrke"
       }
-    },
-    "playbackDelay": {
-      "title": null,
-      "description": null
     },
     "repeatOnSkip": {
       "title": "Behold gentagelsesindstilling ved næste sang",
@@ -218,8 +206,7 @@
       "title": null
     },
     "scanning": {
-      "title": "Scanning",
-      "brief": "Tjek for musikfiler på din enhed."
+      "title": "Scanning"
     },
     "rescan": {
       "title": "Scan igen",
@@ -239,20 +226,17 @@
       "brief": null
     },
     "listAllow": {
-      "title": "Tilladelsesliste",
-      "description": "Bruger standardmæssigt følgende:"
+      "title": "Tilladelsesliste"
     },
     "listBlock": {
       "title": "Blokeringsliste",
       "description": "Blokeringslisten har højere prioritet end Tilladelseslisten."
     },
-    "ignoreDuration": {
-      "title": "Ignorér korte audiofiler",
-      "description": "Varighed i sekunder af audiofiler, der ikke skal gemmes."
+    "minTrackDuration": {
+      "title": "Ignorér korte audiofiler"
     },
     "experimental": {
-      "title": null,
-      "brief": null
+      "title": null
     },
     "continuePlaybackOnDismiss": {
       "title": null,
@@ -273,11 +257,9 @@
     },
     "waveformSlider": {
       "title": "Slider i bølgeform",
-      "brief": null,
       "extra": {
-        "purgeCache": null,
-        "purgeCacheBrief": null,
-        "purgeCacheToast": null
+        "clearCache": null,
+        "cacheCleared": null
       }
     },
     "code": {

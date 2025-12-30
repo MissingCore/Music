@@ -99,8 +99,7 @@
       }
     },
     "appearance": {
-      "title": "Görünüm",
-      "brief": "Uygulamanın görünümünü kişiselleştirin."
+      "title": "Görünüm"
     },
     "font": {
       "extra": {
@@ -119,17 +118,12 @@
     "tabsOrder": {
       "title": "Sekme Sırası",
       "brief": "Sekmelerin sırasını ve görünürlüğünü özelleştirin.",
-      "description": {
-        "line1": "Sekmeleri sürükleyip bırakarak yeniden sıralayın. Göz simgesini kullanarak sekme görünürlüğünü açıp kapatın. Ev simgesini kullanarak ana sekmeyi değiştirin.",
-        "line2": "Uyarı: Gizli bir sekmeye gidildiğinde beklenmedik davranışlar ortaya çıkabilir."
-      },
       "extra": {
         "setHomeTab": "Uygulama başlatıldığında {{- name}} sekmesini aç."
       }
     },
-    "albumLengthFilter": {
-      "title": "Albüm Süresi Filtresi",
-      "description": "Albümler ekranında görünmesi için albümde bulunması gereken minimum parça sayısı."
+    "minAlbumLength": {
+      "title": "Albüm Süresi Filtresi"
     },
     "miniplayerGestures": {
       "title": "Mini Oynatıcı Hareketleri"
@@ -156,7 +150,6 @@
     },
     "backup": {
       "title": "Yedekleme",
-      "brief": "Cihazlar arasında veri taşıyın.",
       "description": "Bu uygulamadaki verileri, bir `music_backup.json` dosyası aracılığıyla cihazlar arasında aktarın.",
       "extra": {
         "export": "Dışa Aktar",
@@ -167,7 +160,6 @@
     },
     "insights": {
       "title": "İstatistikler",
-      "brief": "Uygulama kullanımı ve istatistikler.",
       "extra": {
         "cache": "Önbellek",
         "database": "Veritabanı",
@@ -199,16 +191,12 @@
     },
     "playback": {
       "title": "Oynatma",
-      "brief": "Müzik çalma davranışını değiştirin.",
       "extra": {
+        "delay": "Doğal Oynatma Gecikmesi",
         "options": "Oynatma Seçenekleri",
         "speed": "Oynatma Hızı",
         "volume": "Uygulama Sesi"
       }
-    },
-    "playbackDelay": {
-      "title": "Doğal Oynatma Gecikmesi",
-      "description": "Bir sonraki parça doğal olarak çalınmadan önceki saniye cinsinden gecikme."
     },
     "repeatOnSkip": {
       "title": "Parça Atlandığında Tekrarlama Modunu Koru",
@@ -218,8 +206,7 @@
       "title": "Son Çalınan Konumdan Geri Yükle"
     },
     "scanning": {
-      "title": "Tarama",
-      "brief": "Müzik keşfetme seçenekleri."
+      "title": "Tarama"
     },
     "rescan": {
       "title": "Yeniden Tara",
@@ -239,20 +226,17 @@
       "brief": "Devre dışı bırakılırsa, yeni, güncellenmiş ve kaldırılmış parçaları tespit etmek için Yeniden Tara özelliğini kullanın."
     },
     "listAllow": {
-      "title": "İzin Listesi",
-      "description": "Boş bırakılırsa varsayılan olarak aşağıdakiler kullanılır:"
+      "title": "İzin Listesi"
     },
     "listBlock": {
       "title": "Engelleme Listesi",
       "description": "İzin listesindeki girdilere göre daha yüksek önceliğe sahiptir."
     },
-    "ignoreDuration": {
-      "title": "Kısa Sesleri Yoksay",
-      "description": "Kaydetmek istemediğimiz seslerin saniye cinsinden süresi."
+    "minTrackDuration": {
+      "title": "Kısa Sesleri Yoksay"
     },
     "experimental": {
-      "title": "Deneysel Özellikler",
-      "brief": "Resmi destek almayabilecek veya beklendiği gibi çalışmayabilecek özelliklerdir. Kendi sorumluluğunuzda kullanın."
+      "title": "Deneysel Özellikler"
     },
     "continuePlaybackOnDismiss": {
       "title": "Kapatıldığında Oynatmaya Devam Et",
@@ -273,11 +257,9 @@
     },
     "waveformSlider": {
       "title": "Dalga Formu Kaydırıcısı",
-      "brief": "Dalga formu verileri önbelleğe alındığı için parçalar başlangıçta yavaş çalınacaktır.",
       "extra": {
-        "purgeCache": "Önbelleğe Alınan Dalga Formlarını Temizle",
-        "purgeCacheBrief": "Çalınan parçaların dalga formlarını yeniden hesaplamak için depolama alanında yer açar.",
-        "purgeCacheToast": "Dalga formu önbelleği temizlendi."
+        "clearCache": null,
+        "cacheCleared": null
       }
     },
     "code": {

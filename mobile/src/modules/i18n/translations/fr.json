@@ -99,8 +99,7 @@
       }
     },
     "appearance": {
-      "title": "Apparence",
-      "brief": "Personnalisez l'apparence de l'application."
+      "title": "Apparence"
     },
     "font": {
       "extra": {
@@ -119,17 +118,12 @@
     "tabsOrder": {
       "title": "Ordre des onglets",
       "brief": "Personnalisez l'ordre et la visibilité des onglets.",
-      "description": {
-        "line1": "Réorganiser les onglets après l'onglet \"Accueil\" par glisser-déposer. Activez/désactivez la visibilité des onglets en utilisant l'icône d'œil.",
-        "line2": "Attention : Un comportement inattendu peut survenir lors de la navigation vers un onglet caché."
-      },
       "extra": {
         "setHomeTab": "Ouvrir l’onglet {{- name}} au lancement de l’application."
       }
     },
-    "albumLengthFilter": {
-      "title": "Filtre de Durée d'Album",
-      "description": "Nombre minimum de chansons de l'album pour être affiché dans la section \"Albums\"."
+    "minAlbumLength": {
+      "title": "Filtre de Durée d'Album"
     },
     "miniplayerGestures": {
       "title": "Gestes du mini-lecteur"
@@ -156,7 +150,6 @@
     },
     "backup": {
       "title": "Sauvegarde",
-      "brief": "Déplacez vos données entre appareils.",
       "description": "Transférez vos données entre appareils via un fichier `music_backup.json`.",
       "extra": {
         "export": "Exporter",
@@ -167,7 +160,6 @@
     },
     "insights": {
       "title": "Informations Approfondies",
-      "brief": "Utilisation de l'application & statistiques.",
       "extra": {
         "cache": "Cache",
         "database": "Base de données",
@@ -199,16 +191,12 @@
     },
     "playback": {
       "title": "Lecture",
-      "brief": "Changer le comportement de lecture de la musique.",
       "extra": {
+        "delay": null,
         "options": "Options de Lecture",
         "speed": "Vitesse de lecture",
         "volume": "Volume de l'application"
       }
-    },
-    "playbackDelay": {
-      "title": null,
-      "description": null
     },
     "repeatOnSkip": {
       "title": "Garder le mode Répéter lors du passage au titre suivant",
@@ -218,8 +206,7 @@
       "title": null
     },
     "scanning": {
-      "title": "Recherche de musique",
-      "brief": "Options de découverte de musique."
+      "title": "Recherche de musique"
     },
     "rescan": {
       "title": "Lancer une nouvelle recherche",
@@ -239,20 +226,17 @@
       "brief": null
     },
     "listAllow": {
-      "title": "Liste d'autorisation",
-      "description": "Prends le suivant par défaut si vide:"
+      "title": "Liste d'autorisation"
     },
     "listBlock": {
       "title": "Liste de blocage",
       "description": "Possède la priorité sur la liste d'autorisation."
     },
-    "ignoreDuration": {
-      "title": "Ignorer les audios courts",
-      "description": "Durée en seconde des audios à ignorer."
+    "minTrackDuration": {
+      "title": "Ignorer les audios courts"
     },
     "experimental": {
-      "title": "Fonctionnalités Expérimentales",
-      "brief": "Fonctionnalités qui peuvent ne pas obtenir de support officiel ou fonctionner comme prévu. À utiliser à vos propres risques."
+      "title": "Fonctionnalités Expérimentales"
     },
     "continuePlaybackOnDismiss": {
       "title": "Continuer la lecture à la fermeture",
@@ -273,11 +257,9 @@
     },
     "waveformSlider": {
       "title": null,
-      "brief": null,
       "extra": {
-        "purgeCache": null,
-        "purgeCacheBrief": null,
-        "purgeCacheToast": null
+        "clearCache": null,
+        "cacheCleared": null
       }
     },
     "code": {

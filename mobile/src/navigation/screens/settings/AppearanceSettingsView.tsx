@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -11,6 +10,7 @@ import {
 } from "~/navigation/sheets/FontSheet";
 import { MinAlbumLengthSheet } from "~/navigation/sheets/MinAlbumLengthSheet";
 import { NowPlayingDesignSheet } from "~/navigation/sheets/NowPlayingDesignSheet";
+import { TabOrderSheet } from "~/navigation/sheets/TabOrderSheet";
 import { ThemeSheet } from "~/navigation/sheets/ThemeSheet";
 
 import { SegmentedList } from "~/components/List/Segmented";
@@ -19,7 +19,6 @@ import { Switch } from "~/components/UI/Switch";
 
 export default function AppearanceSettings() {
   const { t } = useTranslation();
-  const navigation = useNavigation();
   const accentFont = usePreferenceStore((s) => s.accentFont);
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
   const theme = usePreferenceStore((s) => s.theme);
@@ -30,6 +29,7 @@ export default function AppearanceSettings() {
   const accentFontSheetRef = useSheetRef();
   const primaryFontSheetRef = useSheetRef();
   const themeSheetRef = useSheetRef();
+  const tabOrderSheetRef = useSheetRef();
   const minAlbumLengthSheetRef = useSheetRef();
   const nowPlayingDesignSheetRef = useSheetRef();
 
@@ -38,6 +38,7 @@ export default function AppearanceSettings() {
       <AccentFontSheet ref={accentFontSheetRef} />
       <PrimaryFontSheet ref={primaryFontSheetRef} />
       <ThemeSheet ref={themeSheetRef} />
+      <TabOrderSheet ref={tabOrderSheetRef} />
       <MinAlbumLengthSheet ref={minAlbumLengthSheetRef} />
       <NowPlayingDesignSheet ref={nowPlayingDesignSheetRef} />
 
@@ -63,12 +64,12 @@ export default function AppearanceSettings() {
         <SegmentedList.Item
           labelTextKey="feat.tabsOrder.title"
           supportingText={t("feat.tabsOrder.brief")}
-          onPress={() => navigation.navigate("HomeTabsOrderSettings")}
+          onPress={() => tabOrderSheetRef.current?.present()}
         />
 
         <SegmentedList>
           <SegmentedList.Item
-            labelTextKey="feat.albumLengthFilter.title"
+            labelTextKey="feat.minAlbumLength.title"
             supportingText={t("plural.track", { count: minAlbumLength })}
             onPress={() => minAlbumLengthSheetRef.current?.present()}
           />
