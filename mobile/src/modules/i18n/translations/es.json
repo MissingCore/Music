@@ -122,9 +122,8 @@
         "setHomeTab": "Abrir la pestaña {{- name}} al iniciar."
       }
     },
-    "albumLengthFilter": {
-      "title": "Filtro por tamaño de álbum",
-      "description": "Número mínimo de canciones para que un álbum sea visible."
+    "minAlbumLength": {
+      "title": "Filtro por tamaño de álbum"
     },
     "miniplayerGestures": {
       "title": "Gestos del mini reproductor"

@@ -122,9 +122,8 @@
         "setHomeTab": "باز کردن تب {{- name}} هنگام اجرای برنامه."
       }
     },
-    "albumLengthFilter": {
-      "title": "فیتر اندازه آلبوم",
-      "description": "حداقل تعداد آهنگ های یک آلبوم, تا آن البوم در صفحه آلبوم ها نمایش داده شود."
+    "minAlbumLength": {
+      "title": "فیتر اندازه آلبوم"
     },
     "miniplayerGestures": {
       "title": "انیمیشن های مینی پلیر"

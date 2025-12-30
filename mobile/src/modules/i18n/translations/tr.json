@@ -122,9 +122,8 @@
         "setHomeTab": "Uygulama başlatıldığında {{- name}} sekmesini aç."
       }
     },
-    "albumLengthFilter": {
-      "title": "Albüm Süresi Filtresi",
-      "description": "Albümler ekranında görünmesi için albümde bulunması gereken minimum parça sayısı."
+    "minAlbumLength": {
+      "title": "Albüm Süresi Filtresi"
     },
     "miniplayerGestures": {
       "title": "Mini Oynatıcı Hareketleri"

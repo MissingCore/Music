@@ -122,9 +122,8 @@
         "setHomeTab": "Ouvrir l’onglet {{- name}} au lancement de l’application."
       }
     },
-    "albumLengthFilter": {
-      "title": "Filtre de Durée d'Album",
-      "description": "Nombre minimum de chansons de l'album pour être affiché dans la section \"Albums\"."
+    "minAlbumLength": {
+      "title": "Filtre de Durée d'Album"
     },
     "miniplayerGestures": {
       "title": "Gestes du mini-lecteur"

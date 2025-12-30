@@ -10,8 +10,7 @@ export function MinAlbumLengthSheet(props: { ref: TrueSheetRef }) {
   return (
     <DetachedNumericSheet
       ref={props.ref}
-      titleKey="feat.albumLengthFilter.title"
-      descriptionKey="feat.albumLengthFilter.description"
+      titleKey="feat.minAlbumLength.title"
       valueLabelKey="plural.track_other"
       value={minAlbumLength}
       setValue={PreferenceSetters.setMinAlbumLength}

@@ -122,9 +122,8 @@
         "setHomeTab": "アプリの起動時に「{{- name}}」のタブを開きます。"
       }
     },
-    "albumLengthFilter": {
-      "title": "アルバムの再生時間でフィルター",
-      "description": "アルバムの画面に表示されるアルバムのトラックの最小数を設定します。"
+    "minAlbumLength": {
+      "title": "アルバムの再生時間でフィルター"
     },
     "miniplayerGestures": {
       "title": "ミニプレーヤージェスチャー"

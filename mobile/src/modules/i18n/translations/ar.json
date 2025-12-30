@@ -122,9 +122,8 @@
         "setHomeTab": "فتح علامة تبويب {{- name}} عند تشغيل التطبيق."
       }
     },
-    "albumLengthFilter": {
-      "title": null,
-      "description": null
+    "minAlbumLength": {
+      "title": null
     },
     "miniplayerGestures": {
       "title": null

@@ -122,9 +122,8 @@
         "setHomeTab": "Otwórz zakładkę {{- name}} przy uruchomieniu aplikacji."
       }
     },
-    "albumLengthFilter": {
-      "title": "Filtr długości albumu",
-      "description": "Minimalna liczba utworów w albumie, aby go wyświetlić w zakładce `Albumy`"
+    "minAlbumLength": {
+      "title": "Filtr długości albumu"
     },
     "miniplayerGestures": {
       "title": "Gesty w miniodtwarzaczu"

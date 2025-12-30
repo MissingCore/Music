@@ -69,7 +69,7 @@ export default function AppearanceSettings() {
 
         <SegmentedList>
           <SegmentedList.Item
-            labelTextKey="feat.albumLengthFilter.title"
+            labelTextKey="feat.minAlbumLength.title"
             supportingText={t("plural.track", { count: minAlbumLength })}
             onPress={() => minAlbumLengthSheetRef.current?.present()}
           />

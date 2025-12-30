@@ -122,9 +122,8 @@
         "setHomeTab": "{{- name}} Tab beim Start öffnen."
       }
     },
-    "albumLengthFilter": {
-      "title": "Albumlängen-Filter",
-      "description": "Mindestanzahl an Titeln, damit ein Album im Album-Bildschirm angezeigt wird."
+    "minAlbumLength": {
+      "title": "Albumlängen-Filter"
     },
     "miniplayerGestures": {
       "title": "Miniplayer Gesten"

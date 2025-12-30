@@ -140,9 +140,8 @@
         "setHomeTab": "Open {{- name}} tab on app launch."
       }
     },
-    "albumLengthFilter": {
-      "title": "Album Length Filter",
-      "description": "Minimum number of tracks for album to show up in the Albums screen."
+    "minAlbumLength": {
+      "title": "Minimum Album Length"
     },
     "miniplayerGestures": {
       "title": "Miniplayer Gestures"
