@@ -230,8 +230,7 @@
       "brief": "Devre dışı bırakılırsa, yeni, güncellenmiş ve kaldırılmış parçaları tespit etmek için Yeniden Tara özelliğini kullanın."
     },
     "listAllow": {
-      "title": "İzin Listesi",
-      "description": "Boş bırakılırsa varsayılan olarak aşağıdakiler kullanılır:"
+      "title": "İzin Listesi"
     },
     "listBlock": {
       "title": "Engelleme Listesi",

@@ -230,8 +230,7 @@
       "brief": null
     },
     "listAllow": {
-      "title": "允许列表",
-      "description": "为空时使用以下默认值："
+      "title": "允许列表"
     },
     "listBlock": {
       "title": "阻止列表",

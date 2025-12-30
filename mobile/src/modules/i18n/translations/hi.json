@@ -230,8 +230,7 @@
       "brief": null
     },
     "listAllow": {
-      "title": "अनुमति सूची",
-      "description": "यदि खाली हो, तो निम्नलिखित पर डिफ़ॉल्ट:"
+      "title": "अनुमति सूची"
     },
     "listBlock": {
       "title": "ब्लॉक सूची",

@@ -230,8 +230,7 @@
       "brief": null
     },
     "listAllow": {
-      "title": "Diizinkan",
-      "description": "Defaultnya adalah berikut jika kosong:"
+      "title": "Diizinkan"
     },
     "listBlock": {
       "title": "Diblokir",

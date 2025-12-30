@@ -230,8 +230,7 @@
       "brief": null
     },
     "listAllow": {
-      "title": "Liste d'autorisation",
-      "description": "Prends le suivant par défaut si vide:"
+      "title": "Liste d'autorisation"
     },
     "listBlock": {
       "title": "Liste de blocage",

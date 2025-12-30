@@ -230,8 +230,7 @@
       "brief": null
     },
     "listAllow": {
-      "title": "Белый список",
-      "description": "По умолчанию, если пусто:"
+      "title": "Белый список"
     },
     "listBlock": {
       "title": "Черный список",

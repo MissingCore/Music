@@ -230,8 +230,7 @@
       "brief": "Wenn deaktiviert, verwenden Sie die Scan-Funktion, um neue, aktualisierte und entfernte Titel zu erkennen."
     },
     "listAllow": {
-      "title": "Zulassungsliste",
-      "description": "Wenn es leer ist, wird standardmäßig Folgendes verwendet:"
+      "title": "Zulassungsliste"
     },
     "listBlock": {
       "title": "Sperrliste",

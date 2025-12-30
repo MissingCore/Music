@@ -230,8 +230,7 @@
       "brief": null
     },
     "listAllow": {
-      "title": "Llista de permeses",
-      "description": "Predeterminat al següent si està buit:"
+      "title": "Llista de permeses"
     },
     "listBlock": {
       "title": "Llista de bloquejades",

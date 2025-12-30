@@ -230,8 +230,7 @@
       "brief": null
     },
     "listAllow": {
-      "title": null,
-      "description": "Se non specificata assume il seguente valore:"
+      "title": null
     },
     "listBlock": {
       "title": null,

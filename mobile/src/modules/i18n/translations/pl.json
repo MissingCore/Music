@@ -230,8 +230,7 @@
       "brief": "Po wyłączeniu będziesz musieć ręcznie uruchamiać skanowanie, by wykryć nowe lub usunięte utwory."
     },
     "listAllow": {
-      "title": "Biała lista",
-      "description": "Jeżeli pusto, domyślnie przyjmie:"
+      "title": "Biała lista"
     },
     "listBlock": {
       "title": "Czarna lista",

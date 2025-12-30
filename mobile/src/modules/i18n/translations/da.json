@@ -230,8 +230,7 @@
       "brief": null
     },
     "listAllow": {
-      "title": "Tilladelsesliste",
-      "description": "Bruger standardmæssigt følgende:"
+      "title": "Tilladelsesliste"
     },
     "listBlock": {
       "title": "Blokeringsliste",

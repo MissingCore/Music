@@ -230,8 +230,7 @@
       "brief": "Si está desactivado, usa el reescaneo manual para detectar cambios."
     },
     "listAllow": {
-      "title": "Lista de permitidos",
-      "description": "Se usará como predeterminado si está vacía."
+      "title": "Lista de permitidos"
     },
     "listBlock": {
       "title": "Lista de bloqueados",
