@@ -2,7 +2,15 @@ import { eq, inArray } from "drizzle-orm";
 import AsyncStorage from "expo-sqlite/kv-store";
 
 import { db } from "~/db";
-import { fileNodes, playedMediaLists, tracks } from "~/db/schema";
+import type { HiddenTrack } from "~/db/schema";
+import {
+  fileNodes,
+  hiddenTracks,
+  playedMediaLists,
+  tracks,
+  tracksToPlaylists,
+  waveformSamples,
+} from "~/db/schema";
 
 import { preferenceStore } from "~/stores/Preference/store";
 import { onboardingStore } from "../services/Onboarding";
@@ -104,5 +112,34 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
         tabsVisibility: updatedTabsVisibility,
       };
     });
+  },
+
+  "hidden-tracks": async () => {
+    const prevHiddenTracks = await db.query.tracks.findMany({
+      columns: { id: true, name: true, uri: true, hiddenAt: true },
+      where: (fields, { isNotNull }) => isNotNull(fields.hiddenAt),
+    });
+    if (prevHiddenTracks.length > 0) {
+      const hiddenTrackIds: string[] = [];
+      const hiddenTrackEntries: HiddenTrack[] = [];
+      for (const { id, ...rest } of prevHiddenTracks) {
+        hiddenTrackIds.push(id);
+        hiddenTrackEntries.push(rest as HiddenTrack);
+      }
+      await db
+        .insert(hiddenTracks)
+        .values(hiddenTrackEntries)
+        .onConflictDoNothing();
+      // Delete relations from hidden tracks.
+      await Promise.allSettled([
+        db.delete(tracks).where(inArray(tracks.id, hiddenTrackIds)),
+        db
+          .delete(tracksToPlaylists)
+          .where(inArray(tracksToPlaylists.trackId, hiddenTrackIds)),
+        db
+          .delete(waveformSamples)
+          .where(inArray(waveformSamples.trackId, hiddenTrackIds)),
+      ]);
+    }
   },
 };

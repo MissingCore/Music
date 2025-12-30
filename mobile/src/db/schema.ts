@@ -209,6 +209,8 @@ export type AlbumWithTracks = Prettify<Album & { tracks: Track[] }>;
 export type Track = InferSelectModel<typeof tracks>;
 export type TrackWithAlbum = Prettify<Track & { album: Album | null }>;
 
+export type HiddenTrack = InferSelectModel<typeof hiddenTracks>;
+
 export type InvalidTrack = InferSelectModel<typeof invalidTracks>;
 
 export type Playlist = InferSelectModel<typeof playlists>;
