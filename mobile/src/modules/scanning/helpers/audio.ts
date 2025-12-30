@@ -15,6 +15,7 @@ import {
   invalidTracks,
   playedMediaLists,
   tracks,
+  tracksToArtists,
   tracksToPlaylists,
   waveformSamples,
 } from "~/db/schema";
@@ -91,11 +92,16 @@ export async function findAndSaveAudio() {
 
     // Save artists & albums that haven't been inserted yet.
     const newArtists: string[] = [];
+    const newArtistRelations: Array<{ trackId: string; artistName: string }> =
+      [];
     const newAlbums: Record<string, string[]> = {};
-    results.forEach(({ artistName, album }) => {
-      addArtist({ artistName, insertedArtists, newArtists });
+    results.forEach(({ id, rawArtistName, album }) => {
+      addArtist({ artistName: rawArtistName, insertedArtists, newArtists });
       addArtist({ artistName: album?.artistName, insertedArtists, newArtists });
       addAlbum({ album, insertedAlbums, newAlbums });
+      if (rawArtistName) {
+        newArtistRelations.push({ trackId: id, artistName: rawArtistName });
+      }
     });
 
     const newArtistEntries = newArtists.map((name) => ({ name }));
@@ -120,6 +126,12 @@ export async function findAndSaveAudio() {
     });
     const newIds = newTracks.map(({ id }) => id);
     await upsertTracks(newTracks);
+    if (newArtistRelations.length > 0) {
+      await db
+        .insert(tracksToArtists)
+        .values(newArtistRelations)
+        .onConflictDoNothing();
+    }
     await db.delete(invalidTracks).where(inArray(invalidTracks.id, newIds));
   }
 
@@ -336,7 +348,7 @@ async function getTrackMetadata(asset: MediaLibraryAsset) {
   return {
     id,
     name: t.title?.trim() || removeFileExtension(filename),
-    artistName: t.artist?.trim() || null,
+    rawArtistName: t.artist?.trim() || null,
     album: newAlbum,
     track: t.trackNumber,
     disc: t.discNumber,
