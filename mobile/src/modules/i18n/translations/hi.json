@@ -192,14 +192,11 @@
     "playback": {
       "title": null,
       "extra": {
+        "delay": null,
         "options": null,
         "speed": null,
         "volume": null
       }
-    },
-    "playbackDelay": {
-      "title": null,
-      "description": null
     },
     "repeatOnSkip": {
       "title": null,

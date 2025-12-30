@@ -192,14 +192,11 @@
     "playback": {
       "title": "Afspilning",
       "extra": {
+        "delay": null,
         "options": "Ekstra optioner til afspilning",
         "speed": "Afspilningshastighed",
         "volume": "Appens lydstyrke"
       }
-    },
-    "playbackDelay": {
-      "title": null,
-      "description": null
     },
     "repeatOnSkip": {
       "title": "Behold gentagelsesindstilling ved næste sang",

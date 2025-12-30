@@ -192,14 +192,11 @@
     "playback": {
       "title": "Oynatma",
       "extra": {
+        "delay": "Doğal Oynatma Gecikmesi",
         "options": "Oynatma Seçenekleri",
         "speed": "Oynatma Hızı",
         "volume": "Uygulama Sesi"
       }
-    },
-    "playbackDelay": {
-      "title": "Doğal Oynatma Gecikmesi",
-      "description": "Bir sonraki parça doğal olarak çalınmadan önceki saniye cinsinden gecikme."
     },
     "repeatOnSkip": {
       "title": "Parça Atlandığında Tekrarlama Modunu Koru",

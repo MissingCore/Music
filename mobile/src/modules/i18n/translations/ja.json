@@ -192,14 +192,11 @@
     "playback": {
       "title": "再生中",
       "extra": {
+        "delay": "自然な再生遅延",
         "options": "再生オプション",
         "speed": "再生速度",
         "volume": "アプリの音量"
       }
-    },
-    "playbackDelay": {
-      "title": "自然な再生遅延",
-      "description": "次のトラックが自然に再生されるまでの遅延を秒単位で設定します。"
     },
     "repeatOnSkip": {
       "title": "スキップ時にリピートモードを維持する",

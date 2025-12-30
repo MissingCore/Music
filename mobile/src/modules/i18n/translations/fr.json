@@ -192,14 +192,11 @@
     "playback": {
       "title": "Lecture",
       "extra": {
+        "delay": null,
         "options": "Options de Lecture",
         "speed": "Vitesse de lecture",
         "volume": "Volume de l'application"
       }
-    },
-    "playbackDelay": {
-      "title": null,
-      "description": null
     },
     "repeatOnSkip": {
       "title": "Garder le mode Répéter lors du passage au titre suivant",

@@ -192,14 +192,11 @@
     "playback": {
       "title": "Pemutaran",
       "extra": {
+        "delay": null,
         "options": "Opsi Pemutaran",
         "speed": "Kecepatan Pemutaran",
         "volume": "Volume Aplikasi"
       }
-    },
-    "playbackDelay": {
-      "title": null,
-      "description": null
     },
     "repeatOnSkip": {
       "title": "Tetap dalam Mode Mengulang saat Melewati",

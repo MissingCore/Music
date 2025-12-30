@@ -192,14 +192,11 @@
     "playback": {
       "title": "Odtwarzanie",
       "extra": {
+        "delay": "Opóźnenie pomiędzy utworami",
         "options": "Opcje odtwarzania",
         "speed": "Prędkość odtwarzania",
         "volume": "Głośność aplikacji"
       }
-    },
-    "playbackDelay": {
-      "title": "Opóźnenie pomiędzy utworami",
-      "description": "Odtwarzacz przed odtworzeniem następnego utworu odczeka poniższą ilość sekund."
     },
     "repeatOnSkip": {
       "title": "Zachowaj zapętlenie po pominięciu",

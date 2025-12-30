@@ -192,14 +192,11 @@
     "playback": {
       "title": "Riproduzione",
       "extra": {
+        "delay": null,
         "options": "Opzioni di riproduzione",
         "speed": "Velocità di riproduzione",
         "volume": "Volume dell'app"
       }
-    },
-    "playbackDelay": {
-      "title": null,
-      "description": null
     },
     "repeatOnSkip": {
       "title": "Mantieni modalità \"$t(term.repeat)\" al cambio brano",

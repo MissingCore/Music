@@ -192,14 +192,11 @@
     "playback": {
       "title": "التشغيل",
       "extra": {
+        "delay": null,
         "options": "خيارات التشغيل",
         "speed": "سرعة التشغيل",
         "volume": "مستوى صوت التطبيق"
       }
-    },
-    "playbackDelay": {
-      "title": null,
-      "description": null
     },
     "repeatOnSkip": {
       "title": "الاحتفاظ بوضع التكرار عند التخطي",

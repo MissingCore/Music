@@ -192,14 +192,11 @@
     "playback": {
       "title": "Воспроизведение",
       "extra": {
+        "delay": null,
         "options": "Параметры воспроизведения",
         "speed": "Скорость воспроизведения",
         "volume": "Громкость приложения"
       }
-    },
-    "playbackDelay": {
-      "title": null,
-      "description": null
     },
     "repeatOnSkip": {
       "title": "Не выключать режим повтора при пропуске",

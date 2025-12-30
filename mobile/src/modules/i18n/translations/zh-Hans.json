@@ -192,14 +192,11 @@
     "playback": {
       "title": "回放",
       "extra": {
+        "delay": null,
         "options": "播放选项",
         "speed": "倍速",
         "volume": "应用音量"
       }
-    },
-    "playbackDelay": {
-      "title": null,
-      "description": null
     },
     "repeatOnSkip": {
       "title": "跳过时保持单曲循环",

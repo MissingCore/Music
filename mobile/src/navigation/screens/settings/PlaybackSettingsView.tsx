@@ -23,7 +23,7 @@ export default function PlaybackSettings() {
 
       <StandardScrollLayout>
         <SegmentedList.Item
-          labelTextKey="feat.playbackDelay.title"
+          labelTextKey="feat.playback.extra.delay"
           supportingText={t("plural.second", { count: playbackDelay })}
           onPress={() => playbackDelaySheetRef.current?.present()}
         />

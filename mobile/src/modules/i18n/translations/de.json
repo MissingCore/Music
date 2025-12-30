@@ -192,14 +192,11 @@
     "playback": {
       "title": "Wiedergabe",
       "extra": {
+        "delay": "Wiedergabeverzögerung",
         "options": "Wiedergabeoptionen",
         "speed": "Wiedergabegeschwindigkeit",
         "volume": "App-Lautstärke"
       }
-    },
-    "playbackDelay": {
-      "title": "Wiedergabeverzögerung",
-      "description": "Verzögerung in Sekunden bevor der nächste Titel normalerweise anfängt."
     },
     "repeatOnSkip": {
       "title": "Wiederholungsmodus beim Überspringen behalten",

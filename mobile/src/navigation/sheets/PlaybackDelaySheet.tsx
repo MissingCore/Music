@@ -10,8 +10,7 @@ export function PlaybackDelaySheet(props: { ref: TrueSheetRef }) {
   return (
     <DetachedNumericSheet
       ref={props.ref}
-      titleKey="feat.playbackDelay.title"
-      descriptionKey="feat.playbackDelay.description"
+      titleKey="feat.playback.extra.delay"
       valueLabelKey="plural.second_other"
       value={playbackDelay}
       setValue={PreferenceSetters.setPlaybackDelay}

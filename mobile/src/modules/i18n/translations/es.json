@@ -192,14 +192,11 @@
     "playback": {
       "title": "Reproducción",
       "extra": {
+        "delay": "Retraso natural",
         "options": "Opciones",
         "speed": "Velocidad",
         "volume": "Volumen"
       }
-    },
-    "playbackDelay": {
-      "title": "Retraso natural",
-      "description": "Segundos de espera antes de que empiece la siguiente canción."
     },
     "repeatOnSkip": {
       "title": "Mantener repetición al saltar",

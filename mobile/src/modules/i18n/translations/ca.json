@@ -192,14 +192,11 @@
     "playback": {
       "title": "Reproduint",
       "extra": {
+        "delay": null,
         "options": "Ajusts de reproducció",
         "speed": "Velocitat de reproducció",
         "volume": "Volum de l'aplicació"
       }
-    },
-    "playbackDelay": {
-      "title": null,
-      "description": null
     },
     "repeatOnSkip": {
       "title": "Mantenir el mode de repetició al saltar",
