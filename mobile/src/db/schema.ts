@@ -20,7 +20,6 @@ export const artists = sqliteTable("artists", {
 
 export const artistsRelations = relations(artists, ({ many }) => ({
   albums: many(albums),
-  tracks: many(tracks),
 }));
 
 export const albums = sqliteTable(
@@ -55,7 +54,11 @@ export const albumsRelations = relations(albums, ({ one, many }) => ({
 export const tracks = sqliteTable("tracks", {
   id: text().primaryKey(),
   name: text().notNull(),
-  artistName: text().references(() => artists.name),
+  /**
+   * Stores the raw "Artist Name" value embedded in the file.
+   * @deprecated Access the artist name through the new junction table.
+   */
+  rawArtistName: text(),
   albumId: text().references(() => albums.id),
   // Album relations
   disc: integer(),
@@ -92,10 +95,6 @@ export const tracks = sqliteTable("tracks", {
 });
 
 export const tracksRelations = relations(tracks, ({ one, many }) => ({
-  artist: one(artists, {
-    fields: [tracks.artistName],
-    references: [artists.name],
-  }),
   album: one(albums, { fields: [tracks.albumId], references: [albums.id] }),
   tracksToPlaylists: many(tracksToPlaylists),
   waveformSample: one(waveformSamples),
