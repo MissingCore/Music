@@ -120,15 +120,10 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
       where: (fields, { isNotNull }) => isNotNull(fields.hiddenAt),
     });
     if (prevHiddenTracks.length > 0) {
-      const hiddenTrackIds: string[] = [];
-      const hiddenTrackEntries: HiddenTrack[] = [];
-      for (const { id, ...rest } of prevHiddenTracks) {
-        hiddenTrackIds.push(id);
-        hiddenTrackEntries.push(rest as HiddenTrack);
-      }
+      const hiddenTrackIds = prevHiddenTracks.map((t) => t.id);
       await db
         .insert(hiddenTracks)
-        .values(hiddenTrackEntries)
+        .values(prevHiddenTracks as HiddenTrack[])
         .onConflictDoNothing();
       // Delete relations from hidden tracks.
       await Promise.allSettled([

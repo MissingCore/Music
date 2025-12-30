@@ -103,7 +103,8 @@ export const tracksRelations = relations(tracks, ({ one, many }) => ({
 }));
 
 export const hiddenTracks = sqliteTable("hidden_tracks", {
-  uri: text().primaryKey(),
+  id: text().primaryKey(),
+  uri: text().notNull(),
   name: text().notNull(),
   hiddenAt: integer().notNull(),
 });

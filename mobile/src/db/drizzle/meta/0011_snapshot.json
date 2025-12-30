@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "1c7f6dd9-a548-4abb-8023-a49fbd440b76",
+  "id": "7daa7813-5161-4513-89c3-9b5f6209c1c6",
   "prevId": "be8c661e-2a43-432a-96d3-19ba45b9e642",
   "tables": {
     "albums": {
@@ -163,10 +163,17 @@
     "hidden_tracks": {
       "name": "hidden_tracks",
       "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
         "uri": {
           "name": "uri",
           "type": "text",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },

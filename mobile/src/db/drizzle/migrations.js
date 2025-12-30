@@ -12,7 +12,7 @@ import m0007 from "./0007_cooing_the_stranger.sql";
 import m0008 from "./0008_little_toad.sql";
 import m0009 from "./0009_ambitious_puppet_master.sql";
 import m0010 from "./0010_spooky_blue_marvel.sql";
-import m0011 from "./0011_quiet_sunspot.sql";
+import m0011 from "./0011_needy_amphibian.sql";
 
 export default {
   journal,
