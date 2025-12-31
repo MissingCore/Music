@@ -5,7 +5,7 @@ import { db } from "~/db";
 import { albums, playlists } from "~/db/schema";
 
 import { getAlbum, getAlbums } from "~/api/album";
-import { getArtist, getArtistAlbums } from "~/api/artist";
+import { getArtistAlbums } from "~/api/artist";
 import { getFolder } from "~/api/folder";
 import { getPlaylist, getPlaylists, getSpecialPlaylist } from "~/api/playlist";
 import {
@@ -14,7 +14,7 @@ import {
 } from "~/api/recent";
 import { getTrack, getTrackPlaylists, getTracks } from "~/api/track";
 
-import { iAsc } from "~/lib/drizzle";
+import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { ReservedPlaylists } from "~/modules/media/constants";
 
 /** All of the reusuable query keys. */
@@ -48,10 +48,31 @@ export const queries = createQueryKeyStore({
     },
     detail: (artistName: string) => ({
       queryKey: [artistName],
-      queryFn: async () => ({
-        ...(await getArtist(artistName)),
-        albums: await getArtistAlbums(artistName),
-      }),
+      queryFn: async () => {
+        const [artistData, artistAlbums] = await Promise.all([
+          throwIfNoResults(
+            db.query.artists.findFirst({
+              where: (fields, { eq }) => eq(fields.name, artistName),
+              with: {
+                tracksToArtists: {
+                  columns: {},
+                  with: { track: { with: { album: true } } },
+                },
+              },
+            }),
+          ),
+          getArtistAlbums(artistName),
+        ]);
+
+        return {
+          name: artistData.name,
+          artwork: artistData.artwork,
+          tracks: artistData.tracksToArtists
+            .map(({ track }) => track)
+            .sort((a, b) => a.name.localeCompare(b.name)),
+          albums: artistAlbums,
+        };
+      },
     }),
   },
   /** Query keys used in `useQuery` for favorite media. */

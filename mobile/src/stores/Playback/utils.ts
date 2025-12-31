@@ -1,15 +1,16 @@
 import type { AddTrack } from "@weights-ai/react-native-track-player";
 
+import { db } from "~/db";
 import type { TrackWithAlbum } from "~/db/schema";
 import { getTrackCover } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
 import { getAlbum } from "~/api/album";
-import { getArtist } from "~/api/artist";
 import { getFolderTracks } from "~/api/folder";
 import { getPlaylist, getSpecialPlaylist } from "~/api/playlist";
 import type { PlayFromSource } from "./types";
 
+import { throwIfNoResults } from "~/lib/drizzle";
 import { shuffleArray } from "~/utils/object";
 import { getSafeUri } from "~/utils/string";
 import type { ReservedPlaylistName } from "~/modules/media/constants";
@@ -77,12 +78,14 @@ export async function getTrackIdsList({ type, id }: PlayFromSource) {
       });
       trackIds = data.tracks.map(({ id }) => id);
     } else if (type === "artist") {
-      const data = await getArtist(id, {
-        columns: [],
-        trackColumns: ["id"],
-        withAlbum: false,
-      });
-      trackIds = data.tracks.map(({ id }) => id);
+      const data = await throwIfNoResults(
+        db.query.artists.findFirst({
+          where: (fields, { eq }) => eq(fields.name, id),
+          columns: {},
+          with: { tracksToArtists: { columns: { trackId: true } } },
+        }),
+      );
+      trackIds = data.tracksToArtists.map(({ trackId }) => trackId);
     } else if (type === "folder") {
       const data = await getFolderTracks(id); // `id` contains pathname.
       trackIds = data.map(({ id }) => id);
