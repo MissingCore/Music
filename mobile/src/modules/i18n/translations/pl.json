@@ -181,7 +181,6 @@
       "brief": "Utwory, które nie są wyświetlane w aplikacji.",
       "extra": {
         "hiddenAt": "Data ukrycia: {{- date}}.",
-        "hasHiddenTracks": "{{- name}} ma ukryte utwory.",
         "notFound": "Brak ukrytych utworów."
       }
     },

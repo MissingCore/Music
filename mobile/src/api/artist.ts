@@ -32,12 +32,7 @@ export const getArtist = _getArtist();
 export async function getArtistAlbums(id: string) {
   const allAlbums = await db.query.albums.findMany({
     where: (fields, { eq }) => eq(fields.artistName, id),
-    with: {
-      tracks: {
-        where: (fields, { isNull }) => isNull(fields.hiddenAt),
-        columns: { year: true },
-      },
-    },
+    with: { tracks: { columns: { year: true } } },
   });
   const albumWithYear = allAlbums
     .filter(({ tracks }) => tracks.length > 0)

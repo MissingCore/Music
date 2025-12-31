@@ -78,11 +78,8 @@ async function getTrackFromContentPath(path: string) {
   // 1. See if file uri is part of `path` (after removing `content://`).
   const [_referrer, ...uriSegments] = path.slice(10).split("/");
   const track = await db.query.tracks.findFirst({
-    where: (fields, { and, eq, isNull }) =>
-      and(
-        eq(fields.uri, `file:///${uriSegments.join("/")}`),
-        isNull(fields.hiddenAt),
-      ),
+    where: (fields, { eq }) =>
+      eq(fields.uri, `file:///${uriSegments.join("/")}`),
   });
   if (track) return track;
 
@@ -90,8 +87,7 @@ async function getTrackFromContentPath(path: string) {
   const derivedPath = await getActualPath(path);
   if (!derivedPath) return;
   return await db.query.tracks.findFirst({
-    where: (fields, { and, eq, isNull }) =>
-      and(eq(fields.uri, `file://${derivedPath}`), isNull(fields.hiddenAt)),
+    where: (fields, { eq }) => eq(fields.uri, `file://${derivedPath}`),
   });
 }
 //#endregion

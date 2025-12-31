@@ -1,9 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import { db } from "~/db";
+import type { TrackWithAlbum } from "~/db/schema";
+import { hiddenTracks } from "~/db/schema";
 import { formatForTrack } from "~/db/utils";
 
 import {
   addToPlaylist,
+  deleteTrack,
   favoriteTrack,
   removeFromPlaylist,
   updateTrack,
@@ -72,19 +76,21 @@ export function useFavoriteTrack(trackId: string) {
   });
 }
 
-/** Set the hidden status of a track. */
+/** Hide a track. */
 export function useHideTrack() {
   return useMutation({
-    mutationFn: async (args: { trackId: string; isHidden: boolean }) => {
+    mutationFn: async ({ track }: { track: TrackWithAlbum }) => {
+      const { id, uri, name } = track;
       await wait(1);
-      await updateTrack(args.trackId, {
-        hiddenAt: args.isHidden ? Date.now() : null,
-      });
+      await db
+        .insert(hiddenTracks)
+        .values({ id, uri, name, hiddenAt: Date.now() });
+      await deleteTrack(id);
     },
-    onSuccess: async (_, { trackId, isHidden }) => {
+    onSuccess: async (_, { track }) => {
       // There's a lot of places where this track may appear.
       clearAllQueries();
-      if (isHidden) await Queue.removeIds([trackId]);
+      await Queue.removeIds([track.id]);
     },
   });
 }

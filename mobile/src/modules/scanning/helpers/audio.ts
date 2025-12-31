@@ -12,6 +12,7 @@ import type { InvalidTrack } from "~/db/schema";
 import {
   albums,
   artists,
+  hiddenTracks,
   invalidTracks,
   playedMediaLists,
   tracks,
@@ -155,13 +156,16 @@ export async function cleanupDatabase(usedTrackIds: string[]) {
   // Remove any unused tracks.
   const unusedTrackIds = (
     await Promise.all(
-      [invalidTracks, tracks].map((sch) => db.select({ id: sch.id }).from(sch)),
+      [hiddenTracks, invalidTracks, tracks].map((sch) =>
+        db.select({ id: sch.id }).from(sch),
+      ),
     )
   )
     .flatMap((ids) => ids.map(({ id }) => id))
     .filter((id) => !usedTrackIds.includes(id));
   if (unusedTrackIds.length > 0) {
     await Promise.allSettled([
+      db.delete(hiddenTracks).where(inArray(hiddenTracks.id, unusedTrackIds)),
       db.delete(invalidTracks).where(inArray(invalidTracks.id, unusedTrackIds)),
       db.delete(tracks).where(inArray(tracks.id, unusedTrackIds)),
       db
@@ -268,15 +272,23 @@ async function getLibraryModifications(assets: MediaLibraryAsset[]) {
   const savedTracks = await db.query.tracks.findMany({
     columns: withColumns(["id", "modificationTime", "uri", "editedMetadata"]),
   });
+  const hiddenTracks = await db.query.hiddenTracks.findMany();
   const erroredTracks = await db.query.invalidTracks.findMany();
   // Format data as objects for faster reads inside a loop.
   const savedMap = Object.fromEntries(savedTracks.map((t) => [t.id, t]));
+  const hiddenMap = Object.fromEntries(hiddenTracks.map((t) => [t.id, t]));
   const erroredMap = Object.fromEntries(erroredTracks.map((t) => [t.id, t]));
 
   // Find the tracks we can skip indexing or need updating.
   const modified = new Set<string>();
   const unmodified = new Set<string>();
   assets.forEach(({ id, modificationTime, uri }) => {
+    // Skip if track is hidden.
+    if (hiddenMap[id]) {
+      unmodified.add(id);
+      return;
+    }
+
     const isSaved = savedMap[id];
     const isInvalid = erroredMap[id];
     if (!isSaved && !isInvalid) return; // If we have a new track.

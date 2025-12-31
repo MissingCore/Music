@@ -85,6 +85,7 @@ export const tracks = sqliteTable("tracks", {
   fetchedArt: integer({ mode: "boolean" }).notNull().default(false),
   // Use Epoch time instead of boolean to track when we did the action.
   editedMetadata: integer(),
+  /** @deprecated Use dedicated `hiddenTracks` table. */
   hiddenAt: integer(),
   lastPlayedAt: integer().notNull().default(-1),
 
@@ -128,6 +129,13 @@ export const tracksToArtistsRelations = relations(
     }),
   }),
 );
+
+export const hiddenTracks = sqliteTable("hidden_tracks", {
+  id: text().primaryKey(),
+  uri: text().notNull(),
+  name: text().notNull(),
+  hiddenAt: integer().notNull(),
+});
 
 export const invalidTracks = sqliteTable("invalid_tracks", {
   id: text().primaryKey(),
@@ -229,6 +237,8 @@ export type AlbumWithTracks = Prettify<Album & { tracks: Track[] }>;
 
 export type Track = InferSelectModel<typeof tracks>;
 export type TrackWithAlbum = Prettify<Track & { album: Album | null }>;
+
+export type HiddenTrack = InferSelectModel<typeof hiddenTracks>;
 
 export type InvalidTrack = InferSelectModel<typeof invalidTracks>;
 
