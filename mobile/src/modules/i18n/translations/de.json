@@ -181,7 +181,6 @@
       "brief": "Tracks nicht in der App angezeigt.",
       "extra": {
         "hiddenAt": "Versteckt an {{- date}}.",
-        "hasHiddenTracks": "{{- name}} hat versteckte Tracks.",
         "notFound": "Keine versteckten Tracks gefunden."
       }
     },

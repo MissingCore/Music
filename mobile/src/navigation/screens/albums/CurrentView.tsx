@@ -21,10 +21,7 @@ import {
   useTrackListPlayingIndication,
 } from "~/modules/media/components/Track";
 import { CurrentListMenu } from "../../components/CurrentListMenu";
-import {
-  ContentPlaceholder,
-  PagePlaceholder,
-} from "../../components/Placeholder";
+import { PagePlaceholder } from "../../components/Placeholder";
 import { ScreenOptions } from "../../components/ScreenOptions";
 
 type Props = StaticScreenProps<{ id: string }>;
@@ -119,13 +116,6 @@ export default function Album({
                 className={index > 0 ? "mt-2" : undefined}
               />
             )
-          }
-          ListEmptyComponent={
-            <ContentPlaceholder
-              errMsg={t("feat.hiddenTracks.extra.hasHiddenTracks", {
-                name: t("term.album"),
-              })}
-            />
           }
           contentContainerClassName="px-4 pt-4"
           contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}

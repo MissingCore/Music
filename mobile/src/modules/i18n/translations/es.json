@@ -181,7 +181,6 @@
       "brief": "Canciones que no se muestran en la aplicación.",
       "extra": {
         "hiddenAt": "Ocultada en {{- date}}.",
-        "hasHiddenTracks": "{{- name}} tiene canciones ocultas.",
         "notFound": "No se encontraron canciones ocultas."
       }
     },

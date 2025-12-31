@@ -1,7 +1,6 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
 
 import type { Album } from "~/db/schema";
 
@@ -18,10 +17,7 @@ import { TEm } from "~/components/Typography/StyledText";
 import { MediaCard } from "~/modules/media/components/MediaCard";
 import { useTrackListPreset } from "~/modules/media/components/Track";
 import { CurrentListMenu } from "../../components/CurrentListMenu";
-import {
-  ContentPlaceholder,
-  PagePlaceholder,
-} from "../../components/Placeholder";
+import { PagePlaceholder } from "../../components/Placeholder";
 import { ScreenOptions } from "../../components/ScreenOptions";
 
 type Props = StaticScreenProps<{ id: string }>;
@@ -33,7 +29,6 @@ export default function Artist({
     params: { id: artistName },
   },
 }: Props) {
-  const { t } = useTranslation();
   const bottomInset = useBottomActionsInset();
   const { isPending, error, data } = useArtistForScreen(artistName);
   const artworkSheetRef = useSheetRef();
@@ -63,13 +58,6 @@ export default function Artist({
         <LegendList
           {...presets}
           ListHeaderComponent={<ArtistAlbums albums={data.albums} />}
-          ListEmptyComponent={
-            <ContentPlaceholder
-              errMsg={t("feat.hiddenTracks.extra.hasHiddenTracks", {
-                name: t("term.artist"),
-              })}
-            />
-          }
           contentContainerClassName="px-4 pt-4"
           contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
         />

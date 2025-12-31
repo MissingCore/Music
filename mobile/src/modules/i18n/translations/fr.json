@@ -181,7 +181,6 @@
       "brief": "Pistes non affichées dans l'application.",
       "extra": {
         "hiddenAt": "Caché le {{- date}}.",
-        "hasHiddenTracks": "{{- name}} possède des pistes cachées.",
         "notFound": "Aucune piste masquée trouvée."
       }
     },
