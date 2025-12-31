@@ -5,10 +5,10 @@ import { db } from "~/db";
 import type { SlimFolder, SlimTrackWithAlbum } from "~/db/slimTypes";
 
 import { getAlbums } from "~/api/album";
-import { getArtists } from "~/api/artist";
 import { getPlaylists } from "~/api/playlist";
 import { getTracks } from "~/api/track";
 
+import { iAsc } from "~/lib/drizzle";
 import { addTrailingSlash } from "~/utils/string";
 import type { Prettify } from "~/utils/types";
 import type { SearchCategories, SearchResults } from "../types";
@@ -63,9 +63,10 @@ async function getAllMedia() {
       columns: ["id", "name", "artistName", "artwork"],
       trackColumns: ["id", "name", "artistName", "artwork"],
     }),
-    getArtists({
-      columns: ["name", "artwork"],
-      trackColumns: ["id"],
+    db.query.artists.findMany({
+      orderBy: (fields) => iAsc(fields.name),
+      //? We only use this to filter out artists with no tracks.
+      with: { tracksToArtists: { limit: 1 } },
     }),
     db.query.fileNodes.findMany({
       orderBy: (f, { asc }) => [asc(f.parentPath), asc(f.name)],
@@ -88,8 +89,8 @@ async function getAllMedia() {
   return {
     album: allAlbums.filter(({ tracks }) => tracks.length > 0),
     artist: allArtists
-      .filter(({ tracks }) => tracks.length > 0)
-      .map(({ tracks: _, ...artist }) => artist),
+      .filter(({ tracksToArtists }) => tracksToArtists.length > 0)
+      .map(({ tracksToArtists: _, ...artist }) => artist),
     folder: (allFolders as SlimFolder[])
       .map((f) => {
         f.tracks = groupedTracks[`file:///${addTrailingSlash(f.path)}`] ?? [];

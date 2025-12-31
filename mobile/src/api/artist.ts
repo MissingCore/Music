@@ -1,13 +1,8 @@
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 import { db } from "~/db";
-import type { Artist } from "~/db/schema";
 import { artists } from "~/db/schema";
 import { getYearRange } from "~/db/utils";
-
-import { iAsc } from "~/lib/drizzle";
-import type { QueryManyWithTracksFn } from "./types";
-import { getColumns, withTracks } from "./utils";
 
 //#region GET Methods
 /** Get the albums an artist has released in descending order. */
@@ -28,21 +23,6 @@ export async function getArtistAlbums(id: string) {
     return { ...album, releaseYear: year.range };
   });
 }
-
-const _getArtists: QueryManyWithTracksFn<Artist> = () => async (options) => {
-  return db.query.artists.findMany({
-    where: and(...(options?.where ?? [])),
-    columns: getColumns(options?.columns),
-    with: withTracks(
-      { ...options, orderBy: (fields) => iAsc(fields.name) },
-      { defaultWithAlbum: true, ...options },
-    ),
-    orderBy: (fields) => iAsc(fields.name),
-  });
-};
-
-/** Get multiple artists. */
-export const getArtists = _getArtists();
 //#endregion
 
 //#region POST Methods
