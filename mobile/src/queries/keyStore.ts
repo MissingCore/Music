@@ -42,9 +42,9 @@ export const queries = createQueryKeyStore({
       queryKey: null,
       queryFn: () =>
         db.query.artists.findMany({
-          columns: { name: true, artwork: true },
-          with: { tracks: { columns: { id: true }, limit: 1 } },
           orderBy: (fields) => iAsc(fields.name),
+          //? Relation used to filter out artists with no tracks.
+          with: { tracksToArtists: { columns: { trackId: true }, limit: 1 } },
         }),
     },
     detail: (artistName: string) => ({

@@ -31,8 +31,8 @@ export function useArtists() {
     ...q.artists.all,
     select: (data) =>
       data
-        .filter(({ tracks }) => tracks.length > 0)
-        .map(({ tracks: _, ...artist }) => artist)
+        .filter(({ tracksToArtists }) => tracksToArtists.length > 0)
+        .map(({ tracksToArtists: _, ...artist }) => artist)
         .sort((a, b) => a.name.localeCompare(b.name)),
   });
 }

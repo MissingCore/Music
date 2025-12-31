@@ -66,7 +66,7 @@ async function getAllMedia() {
     db.query.artists.findMany({
       orderBy: (fields) => iAsc(fields.name),
       //? Relation used to filter out artists with no tracks.
-      with: { tracksToArtists: { limit: 1 } },
+      with: { tracksToArtists: { columns: { trackId: true }, limit: 1 } },
     }),
     db.query.fileNodes.findMany({
       orderBy: (f, { asc }) => [asc(f.parentPath), asc(f.name)],
