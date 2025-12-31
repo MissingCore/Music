@@ -62,7 +62,6 @@ export async function readM3UPlaylist() {
     where: [inArray(tracks.uri, trackUris)],
     columns: ["id", "name", "artistName", "artwork", "uri"],
     albumColumns: ["name", "artwork"],
-    withHidden: true,
   });
 
   // Ensure found values are in order.

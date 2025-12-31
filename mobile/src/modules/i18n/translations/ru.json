@@ -181,7 +181,6 @@
       "brief": "Неотображаемые треки.",
       "extra": {
         "hiddenAt": "Скрыто с {{- date}}.",
-        "hasHiddenTracks": "{{- name}} скрыл трек.",
         "notFound": "Нет скрытых треков."
       }
     },

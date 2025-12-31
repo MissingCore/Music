@@ -1,8 +1,6 @@
-import type { SQL, asc, desc, sql } from "drizzle-orm";
-import { isNull } from "drizzle-orm";
+import type { asc, desc, sql } from "drizzle-orm";
 
 import type { Track } from "~/db/schema";
-import { tracks } from "~/db/schema";
 
 /** Get columns we want to select in the database schema. */
 export function getColumns(keys?: string[]) {
@@ -36,15 +34,12 @@ export function withTracks(
   return (trackOptions.withTracks !== false
     ? {
         tracks: {
-          where: isNull(tracks.hiddenAt),
           columns: getColumns(trackOptions?.trackColumns),
           orderBy: trackOptions.orderBy,
           ...withAlbum(albumOptions),
         },
       }
-    : {}) as unknown as {
-    tracks: { where: SQL<unknown>; with: { album: true } };
-  };
+    : {}) as unknown as { tracks: { with: { album: true } } };
 }
 
 type WithAlbumOptions = {

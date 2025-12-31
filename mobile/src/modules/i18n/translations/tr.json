@@ -181,7 +181,6 @@
       "brief": "Uygulamada gösterilmeyen parçalar.",
       "extra": {
         "hiddenAt": "{{- date}} tarihinde gizlendi.",
-        "hasHiddenTracks": "{{- name}} gizli parçalara sahip.",
         "notFound": "Gizli parça bulunamadı."
       }
     },

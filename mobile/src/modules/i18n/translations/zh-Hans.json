@@ -181,7 +181,6 @@
       "brief": "曲目未在应用中显示。",
       "extra": {
         "hiddenAt": null,
-        "hasHiddenTracks": null,
         "notFound": "未找到隐藏的曲目。"
       }
     },
