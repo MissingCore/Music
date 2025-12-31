@@ -136,10 +136,10 @@ async function getRecentListEntry({ id, type }: PlayFromSource) {
       const { tracksToArtists, ...rest } = await throwIfNoResults(
         db.query.artists.findFirst({
           where: (fields, { eq }) => eq(fields.name, id),
+          //? Relation used to count number of tracks.
           with: { tracksToArtists: { columns: { trackId: true } } },
         }),
       );
-      // We only care about the number of tracks read from the `tracks` property.
       const data = { ...rest, tracks: tracksToArtists };
       entry = formatForMediaCard({ type: "artist", data, t: i18next.t });
     } else if (type === "folder") {

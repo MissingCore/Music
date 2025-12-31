@@ -208,6 +208,7 @@ export async function removeUnusedCategories() {
   const allArtists = await db.query.artists.findMany({
     columns: { name: true },
     with: {
+      //? Relations used to filter out artists with no albums & tracks.
       albums: { columns: { id: true }, limit: 1 },
       tracksToArtists: { columns: { trackId: true }, limit: 1 },
     },
