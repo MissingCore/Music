@@ -6,7 +6,7 @@ import type {
   ArtistWithTracks,
   PlaylistWithTracks,
   Track,
-  TrackWithAlbum,
+  TrackWithRelations,
 } from "./schema";
 import type {
   Artwork,
@@ -160,8 +160,9 @@ export function formatForCurrentScreen({ type, data, t }: ScreenFormatter) {
     name: data.name,
     imageSource: imgSrc,
     metadata,
-    tracks: (data.tracks as TrackWithAlbum[]).map((track) => {
-      if (!isTrackWithAlbum(track)) (track as TrackWithAlbum).album = albumInfo;
+    tracks: (data.tracks as TrackWithRelations[]).map((track) => {
+      if (!isTrackWithAlbum(track))
+        (track as TrackWithRelations).album = albumInfo;
       const formattedTrack = formatForTrack(type, track) as ScreenTrack;
       formattedTrack.disc = track.disc;
       formattedTrack.track = track.track;
@@ -203,8 +204,8 @@ function getCollage(tracks: TrackArtwork[]) {
 
 /** Determines if a `Track` is actually an `TrackWithAlbum`. */
 function isTrackWithAlbum(
-  track: Track | TrackWithAlbum,
-): track is TrackWithAlbum {
+  track: Track | TrackWithRelations,
+): track is TrackWithRelations {
   return Object.hasOwn(track, "album");
 }
 //#endregion

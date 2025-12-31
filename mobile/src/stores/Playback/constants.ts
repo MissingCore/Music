@@ -1,4 +1,4 @@
-import type { TrackWithAlbum } from "~/db/schema";
+import type { TrackWithRelations } from "~/db/schema";
 
 import type { ObjectValues } from "~/utils/types";
 import type { PlayFromSource } from "./types";
@@ -21,7 +21,7 @@ export interface PlaybackStore {
   _init: (state: PlaybackStore) => Promise<void>;
 
   /** [Util] Find specified track. If track is not found, reset the store. */
-  getTrack: (trackKey: string) => Promise<TrackWithAlbum | undefined>;
+  getTrack: (trackKey: string) => Promise<TrackWithRelations | undefined>;
   /** [Util] Revert to default store settings (except for `repeat` & `shuffle`). */
   reset: () => Promise<void>;
   /** [Util] Run when we catch when the app crashes. */
@@ -57,7 +57,7 @@ export interface PlaybackStore {
    *  - `${track_id}__${unique_id}`
    */
   activeKey: string | undefined;
-  activeTrack: TrackWithAlbum | undefined;
+  activeTrack: TrackWithRelations | undefined;
   /** Index in current queue where `activeKey` is located. */
   queuePosition: number;
   /** Number of tracks queued next via "Play Next". */

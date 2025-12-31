@@ -16,7 +16,7 @@ import i18next from "~/modules/i18n";
 import { getExcludedColumns, iAsc } from "~/lib/drizzle";
 import type { BooleanPriority } from "~/utils/types";
 import type { DrizzleFilter, QueriedTrack } from "./types";
-import { getColumns, withAlbum } from "./utils";
+import { getColumns, withRelations } from "./utils";
 
 //#region GET Methods
 /** Get specified track. Throws error if nothing is found. */
@@ -35,7 +35,7 @@ export async function getTrack<
   const track = await db.query.tracks.findFirst({
     where: eq(tracks.id, id),
     columns: getColumns(options?.columns),
-    ...withAlbum({ defaultWithAlbum: true, ...options }),
+    ...withRelations({ defaultWithAlbum: true, ...options }),
   });
   if (!track) throw new Error(i18next.t("err.msg.noTracks"));
   const hasArtwork =
@@ -70,7 +70,7 @@ export async function getTracks<
   const allTracks = await db.query.tracks.findMany({
     where: and(...(options?.where ?? [])),
     columns: getColumns(options?.columns),
-    ...withAlbum({ defaultWithAlbum: true, ...options }),
+    ...withRelations({ defaultWithAlbum: true, ...options }),
     orderBy: (fields) => iAsc(fields.name),
   });
   const hasArtwork =

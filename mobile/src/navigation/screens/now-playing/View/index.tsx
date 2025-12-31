@@ -3,7 +3,7 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
 import { I18nManager, Pressable, View } from "react-native";
 
-import type { TrackWithAlbum } from "~/db/schema";
+import type { TrackWithRelations } from "~/db/schema";
 
 import { Favorite } from "~/resources/icons/Favorite";
 import { InstantMix } from "~/resources/icons/InstantMix";
@@ -58,7 +58,7 @@ export default function NowPlaying() {
 
 //#region Metadata
 /** Brief information and actions on the current playing track. */
-function Metadata({ track }: { track: TrackWithAlbum }) {
+function Metadata({ track }: { track: TrackWithRelations }) {
   const { t } = useTranslation();
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
 

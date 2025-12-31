@@ -3,7 +3,7 @@ import { createContext, use, useMemo, useRef } from "react";
 import type { StoreApi } from "zustand";
 import { createStore, useStore } from "zustand";
 
-import type { TrackWithAlbum } from "~/db/schema";
+import type { TrackWithRelations } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 import { upsertAlbums } from "~/api/album";
@@ -33,7 +33,7 @@ export type TrackMetadataForm = {
 };
 
 export type InitStoreProps = {
-  initialData: TrackWithAlbum;
+  initialData: TrackWithRelations;
 };
 
 type TrackMetadataStore = InitStoreProps &

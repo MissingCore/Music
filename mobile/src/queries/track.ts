@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { db } from "~/db";
-import type { TrackWithAlbum } from "~/db/schema";
+import type { TrackWithRelations } from "~/db/schema";
 import { hiddenTracks } from "~/db/schema";
 import { formatForTrack } from "~/db/utils";
 
@@ -79,7 +79,7 @@ export function useFavoriteTrack(trackId: string) {
 /** Hide a track. */
 export function useHideTrack() {
   return useMutation({
-    mutationFn: async ({ track }: { track: TrackWithAlbum }) => {
+    mutationFn: async ({ track }: { track: TrackWithRelations }) => {
       const { id, uri, name } = track;
       await wait(1);
       await db

@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useStore } from "zustand";
 
-import type { TrackWithAlbum } from "~/db/schema";
+import type { TrackWithRelations } from "~/db/schema";
 
 import { createPersistedSubscribedStore } from "~/lib/zustand";
 
@@ -70,7 +70,7 @@ export const useSortPreferencesStore = <T>(
 
 //#region Helpers
 type PartialTrack = Pick<
-  TrackWithAlbum,
+  TrackWithRelations,
   "name" | "discoverTime" | "modificationTime"
 >;
 

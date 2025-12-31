@@ -7,7 +7,7 @@ import { eq, inArray, isNotNull, or } from "drizzle-orm";
 import { Directory } from "expo-file-system";
 
 import { db } from "~/db";
-import type { TrackWithAlbum } from "~/db/schema";
+import type { TrackWithRelations } from "~/db/schema";
 import { albums, artists, playlists, tracks } from "~/db/schema";
 
 import { getAlbums, updateAlbum } from "~/api/album";
@@ -18,7 +18,7 @@ import { ImageDirectory, deleteImage } from "~/lib/file-system";
 import { Stopwatch } from "~/utils/debug";
 import { BATCH_PRESETS, batch } from "~/utils/promise";
 
-type PartialTrack = Pick<TrackWithAlbum, "id" | "name" | "albumId" | "uri">;
+type PartialTrack = Pick<TrackWithRelations, "id" | "name" | "albumId" | "uri">;
 
 //#region Saving Function
 /** Save artwork for albums & tracks. */

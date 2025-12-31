@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { z } from "zod/mini";
 
 import { db } from "~/db";
-import type { TrackWithAlbum } from "~/db/schema";
+import type { TrackWithRelations } from "~/db/schema";
 import { albums, playlists, tracks } from "~/db/schema";
 import { mergeTracks, sanitizePlaylistName } from "~/db/utils";
 
@@ -56,7 +56,7 @@ const MusicBackup = z.object({
 //#endregion
 
 //#region Helpers
-function getRawTrack({ name, artistName, album }: TrackWithAlbum) {
+function getRawTrack({ name, artistName, album }: TrackWithRelations) {
   return { name, artistName, albumName: album?.name };
 }
 

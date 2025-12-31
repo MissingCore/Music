@@ -230,13 +230,20 @@ export const trackToWaveformSampleRelations = relations(
 );
 
 export type Artist = InferSelectModel<typeof artists>;
-export type ArtistWithTracks = Prettify<Artist & { tracks: TrackWithAlbum[] }>;
+export type ArtistWithTracks = Prettify<
+  Artist & { tracks: TrackWithRelations[] }
+>;
 
 export type Album = InferSelectModel<typeof albums>;
 export type AlbumWithTracks = Prettify<Album & { tracks: Track[] }>;
 
 export type Track = InferSelectModel<typeof tracks>;
-export type TrackWithAlbum = Prettify<Track & { album: Album | null }>;
+export type TrackWithRelations = Prettify<
+  Track & {
+    album: Album | null;
+    tracksToArtists: Array<{ artistName: string }>;
+  }
+>;
 
 export type HiddenTrack = InferSelectModel<typeof hiddenTracks>;
 
@@ -244,10 +251,10 @@ export type InvalidTrack = InferSelectModel<typeof invalidTracks>;
 
 export type Playlist = InferSelectModel<typeof playlists>;
 export type PlaylistWithJunction = Prettify<
-  Playlist & { tracksToPlaylists: Array<{ track: TrackWithAlbum }> }
+  Playlist & { tracksToPlaylists: Array<{ track: TrackWithRelations }> }
 >;
 export type PlaylistWithTracks = Prettify<
-  Playlist & { tracks: TrackWithAlbum[] }
+  Playlist & { tracks: TrackWithRelations[] }
 >;
 
 export type TrackToPlaylist = InferSelectModel<typeof tracksToPlaylists>;

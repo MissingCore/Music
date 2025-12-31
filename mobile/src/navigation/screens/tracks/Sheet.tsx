@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import type { ViewStyle } from "react-native";
 import { Pressable, View } from "react-native";
 
-import type { TrackWithAlbum } from "~/db/schema";
+import type { TrackWithRelations } from "~/db/schema";
 
 import type { Icon } from "~/resources/icons/type";
 import { Delete } from "~/resources/icons/Delete";
@@ -93,7 +93,7 @@ export function TrackSheet() {
 }
 
 //#region Introduction
-function TrackIntro({ data }: { data: TrackWithAlbum }) {
+function TrackIntro({ data }: { data: TrackWithRelations }) {
   const [_, navigate] = useNavigationAction();
 
   const navLinks = [
@@ -145,7 +145,7 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
 //#endregion
 
 //#region Metadata
-function TrackMetadata({ data }: { data: TrackWithAlbum }) {
+function TrackMetadata({ data }: { data: TrackWithRelations }) {
   const { foreground } = useTheme();
   return (
     <View className="gap-4 rounded-md bg-surface p-4">

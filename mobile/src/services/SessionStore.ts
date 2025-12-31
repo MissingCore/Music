@@ -3,7 +3,7 @@ import { useStore } from "zustand";
 import { createStore } from "zustand/vanilla";
 
 import { db } from "~/db";
-import type { TrackWithAlbum, WaveformSample } from "~/db/schema";
+import type { TrackWithRelations, WaveformSample } from "~/db/schema";
 
 import { getTrack } from "~/api/track";
 
@@ -16,7 +16,7 @@ interface SessionStore {
   volume: number;
 
   /** Track displayed in global track sheet. */
-  displayedTrack: (TrackWithAlbum & { _checked: number }) | null;
+  displayedTrack: (TrackWithRelations & { _checked: number }) | null;
 
   /** Waveform data for the active track. */
   activeWaveformContext: WaveformSample | null;

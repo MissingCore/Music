@@ -23,8 +23,11 @@ export type QueriedTrack<
   ACols extends keyof Album,
 > = QueryOneResult<Track, TCols> &
   (true extends WithAlbum
-    ? { album: QueryOneResult<Album, ACols> | null }
-    : Record<never, never>);
+    ? {
+        album: QueryOneResult<Album, ACols> | null;
+        tracksToArtists: Array<{ artistName: string }>;
+      }
+    : { tracksToArtists: Array<{ artistName: string }> });
 
 /**
  * `QueryOneResult`, but also applies a couple more layers of depth with

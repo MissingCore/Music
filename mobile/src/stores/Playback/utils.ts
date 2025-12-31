@@ -1,7 +1,7 @@
 import type { AddTrack } from "@weights-ai/react-native-track-player";
 
 import { db } from "~/db";
-import type { TrackWithAlbum } from "~/db/schema";
+import type { TrackWithRelations } from "~/db/schema";
 import { getTrackCover } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
@@ -33,7 +33,7 @@ export function extractTrackId(key: string) {
 }
 
 /** Format track data to be used with the RNTP queue. */
-export function formatTrackforPlayer(track: TrackWithAlbum) {
+export function formatTrackforPlayer(track: TrackWithRelations) {
   return {
     url: getSafeUri(track.uri),
     artwork: getTrackCover(track) ?? undefined,
