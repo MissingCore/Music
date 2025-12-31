@@ -6,6 +6,7 @@ import { getTrackCover } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
 import { getAlbum } from "~/api/album";
+import { normalizeArtist } from "~/api/artist.utils";
 import { getFolderTracks } from "~/api/folder";
 import { getPlaylist, getSpecialPlaylist } from "~/api/playlist";
 import type { PlayFromSource } from "./types";
@@ -82,10 +83,15 @@ export async function getTrackIdsList({ type, id }: PlayFromSource) {
         db.query.artists.findFirst({
           where: (fields, { eq }) => eq(fields.name, id),
           columns: {},
-          with: { tracksToArtists: { columns: { trackId: true } } },
+          with: {
+            tracksToArtists: {
+              columns: {},
+              with: { track: { columns: { id: true, name: true } } },
+            },
+          },
         }),
       );
-      trackIds = data.tracksToArtists.map(({ trackId }) => trackId);
+      trackIds = normalizeArtist(data).tracks.map((t) => t.id);
     } else if (type === "folder") {
       const data = await getFolderTracks(id); // `id` contains pathname.
       trackIds = data.map(({ id }) => id);

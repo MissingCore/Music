@@ -6,6 +6,7 @@ import { albums, playlists } from "~/db/schema";
 
 import { getAlbum, getAlbums } from "~/api/album";
 import { getArtistAlbums } from "~/api/artist";
+import { normalizeArtist } from "~/api/artist.utils";
 import { getFolder } from "~/api/folder";
 import { getPlaylist, getPlaylists, getSpecialPlaylist } from "~/api/playlist";
 import {
@@ -63,15 +64,7 @@ export const queries = createQueryKeyStore({
           ),
           getArtistAlbums(artistName),
         ]);
-
-        return {
-          name: artistData.name,
-          artwork: artistData.artwork,
-          tracks: artistData.tracksToArtists
-            .map(({ track }) => track)
-            .sort((a, b) => a.name.localeCompare(b.name)),
-          albums: artistAlbums,
-        };
+        return { ...normalizeArtist(artistData), albums: artistAlbums };
       },
     }),
   },
