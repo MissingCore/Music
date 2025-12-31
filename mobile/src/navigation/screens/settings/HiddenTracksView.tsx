@@ -4,12 +4,11 @@ import { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { db } from "~/db";
-import { tracks } from "~/db/schema";
+import { hiddenTracks, tracks } from "~/db/schema";
 import { getTracks } from "~/api/track";
 
 import { VisibilityOff } from "~/resources/icons/VisibilityOff";
 
-import { clearAllQueries } from "~/lib/react-query";
 import { bgWait } from "~/utils/promise";
 import { LegendList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button/Icon";
@@ -42,14 +41,11 @@ function ScreenContents(props: {
       if (unHiddenTracks.current.length === 0) return;
       // Slight delay to allow navigation transition to finish as this
       // will block the thread.
-      bgWait(1)
-        .then(() =>
-          db
-            .update(tracks)
-            .set({ hiddenAt: null })
-            .where(inArray(tracks.id, unHiddenTracks.current)),
-        )
-        .then(() => clearAllQueries());
+      bgWait(1).then(() =>
+        db
+          .delete(hiddenTracks)
+          .where(inArray(hiddenTracks.id, unHiddenTracks.current)),
+      );
     };
   }, []);
 

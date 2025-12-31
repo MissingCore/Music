@@ -220,12 +220,9 @@ function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
       <IconButton
         Icon={Delete}
         accessibilityLabel={t("template.entryHide", { name: data?.name })}
-        onPress={sheetAction(() =>
-          mutateGuard(hideTrack, {
-            trackId: props.id,
-            isHidden: !data?.hiddenAt,
-          }),
-        )}
+        onPress={sheetAction(() => {
+          if (data) mutateGuard(hideTrack, { track: data });
+        })}
       />
     </View>
   );
