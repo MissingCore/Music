@@ -96,12 +96,12 @@ export async function findAndSaveAudio() {
     const newArtistRelations: Array<{ trackId: string; artistName: string }> =
       [];
     const newAlbums: Record<string, string[]> = {};
-    results.forEach(({ id, artistName, album }) => {
-      addArtist({ artistName, insertedArtists, newArtists });
+    results.forEach(({ id, rawArtistName, album }) => {
+      addArtist({ artistName: rawArtistName, insertedArtists, newArtists });
       addArtist({ artistName: album?.artistName, insertedArtists, newArtists });
       addAlbum({ album, insertedAlbums, newAlbums });
-      if (artistName) {
-        newArtistRelations.push({ trackId: id, artistName });
+      if (rawArtistName) {
+        newArtistRelations.push({ trackId: id, artistName: rawArtistName });
       }
     });
 
@@ -367,7 +367,7 @@ async function getTrackMetadata(asset: MediaLibraryAsset) {
     id,
     name: t.title?.trim() || removeFileExtension(filename),
     /** @deprecated Do not use this field directly. */
-    artistName: t.artist?.trim() || null,
+    rawArtistName: t.artist?.trim() || null,
     album: newAlbum,
     track: t.trackNumber,
     disc: t.discNumber,

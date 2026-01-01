@@ -94,7 +94,7 @@ export async function favoriteTrack(id: string, isFavorite: boolean) {
 /** Update specified track. */
 export async function updateTrack(
   id: string,
-  values: Partial<Omit<typeof tracks.$inferInsert, "artistName">>,
+  values: Partial<typeof tracks.$inferInsert>,
 ) {
   return db.update(tracks).set(values).where(eq(tracks.id, id));
 }
@@ -180,7 +180,7 @@ export async function removeFromPlaylist(
 //#region Internal Utils
 const UpsertFields = getExcludedColumns([
   "name",
-  "artistName", // ! This field is deprecated.
+  "rawArtistName", // ! This field is deprecated.
   "albumId",
   "track",
   "disc",

@@ -31,7 +31,7 @@ export function useSearch<TScope extends SearchCategories>(
             // Album's artist name starts with the query.
             // prettier-ignore
             // @ts-expect-error - We ensured the `artistName` field is present.
-            (mediaType === "album" && !!i.artistName && i.artistName.toLocaleLowerCase().startsWith(q)) ||
+            (!!i.artistName && i.artistName.toLocaleLowerCase().startsWith(q)) ||
             // One of track's artist names starts with the query.
             // prettier-ignore
             // @ts-expect-error - We ensured the `artistName` field is present.
