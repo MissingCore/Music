@@ -180,7 +180,7 @@ export async function removeFromPlaylist(
 //#region Internal Utils
 const UpsertFields = getExcludedColumns([
   "name",
-  "rawArtistName",
+  "artistName", // ! This field is deprecated.
   "albumId",
   "track",
   "disc",

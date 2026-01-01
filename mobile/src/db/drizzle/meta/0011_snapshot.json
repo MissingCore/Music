@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "bca75d14-df39-46c8-8411-245c240ae2cd",
+  "id": "a4d735b6-01e6-4889-a3de-82a6ad53f632",
   "prevId": "be8c661e-2a43-432a-96d3-19ba45b9e642",
   "tables": {
     "albums": {
@@ -331,8 +331,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "raw_artist_name": {
-          "name": "raw_artist_name",
+        "artist_name": {
+          "name": "artist_name",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -508,6 +508,19 @@
       },
       "indexes": {},
       "foreignKeys": {
+        "tracks_artist_name_artists_name_fk": {
+          "name": "tracks_artist_name_artists_name_fk",
+          "tableFrom": "tracks",
+          "tableTo": "artists",
+          "columnsFrom": [
+            "artist_name"
+          ],
+          "columnsTo": [
+            "name"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
         "tracks_album_id_albums_id_fk": {
           "name": "tracks_album_id_albums_id_fk",
           "tableFrom": "tracks",
@@ -697,9 +710,7 @@
   "_meta": {
     "schemas": {},
     "tables": {},
-    "columns": {
-      "\"tracks\".\"artist_name\"": "\"tracks\".\"raw_artist_name\""
-    }
+    "columns": {}
   },
   "internal": {
     "indexes": {}

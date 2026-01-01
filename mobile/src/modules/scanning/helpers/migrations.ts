@@ -143,17 +143,17 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
 
   "multi-artist": async () => {
     const trackArtistNames = await db.query.tracks.findMany({
-      columns: { id: true, rawArtistName: true },
+      columns: { id: true, artistName: true },
     });
 
-    // `rawArtistName` should already exist in the Artists table, so only
+    // `artistName` should already exist in the Artists table, so only
     // the junction table needs to be populated.
     const trackBatches = chunkArray(trackArtistNames, 200);
     for (const tBatch of trackBatches) {
       const entries = tBatch
         .map((relation) => {
-          if (!relation || !relation.rawArtistName) return undefined;
-          return { trackId: relation.id, artistName: relation.rawArtistName };
+          if (!relation || !relation.artistName) return undefined;
+          return { trackId: relation.id, artistName: relation.artistName };
         })
         .filter((entry) => entry !== undefined);
       if (entries.length > 0) {

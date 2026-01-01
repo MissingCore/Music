@@ -59,7 +59,7 @@ export const tracks = sqliteTable("tracks", {
    * Stores the raw "Artist Name" value embedded in the file.
    * @deprecated Access the artist name through the new junction table.
    */
-  rawArtistName: text(),
+  artistName: text().references(() => artists.name),
   albumId: text().references(() => albums.id),
   // Album relations
   disc: integer(),
@@ -237,7 +237,7 @@ export type ArtistWithTracks = Prettify<
 export type Album = InferSelectModel<typeof albums>;
 export type AlbumWithTracks = Prettify<Album & { tracks: Track[] }>;
 
-export type Track = InferSelectModel<typeof tracks>;
+export type Track = Omit<InferSelectModel<typeof tracks>, "artistName">;
 export type TrackWithRelations = Prettify<
   Track & {
     album: Album | null;
