@@ -1,8 +1,6 @@
 import { useCallback } from "react";
 import { useStore } from "zustand";
 
-import type { TrackWithRelations } from "~/db/schema";
-
 import { createPersistedSubscribedStore } from "~/lib/zustand";
 
 /** Options for how we can order tracks. */
@@ -69,10 +67,11 @@ export const useSortPreferencesStore = <T>(
 //#endregion
 
 //#region Helpers
-type PartialTrack = Pick<
-  TrackWithRelations,
-  "name" | "discoverTime" | "modificationTime"
->;
+type PartialTrack = {
+  name: string;
+  discoverTime: number;
+  modificationTime: number;
+};
 
 /** Sort tracks based on filters for `/track` screen. */
 export function sortTracks<TData extends PartialTrack>(
