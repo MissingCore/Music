@@ -102,22 +102,21 @@ export function formatForMediaCard({ type, data, t }: MediaCardFormatter) {
 /** Format data to be used in `<Track />`. */
 export function formatForTrack(
   type: MediaType,
-  track: AtLeast<
-    Track,
-    "id" | "name" | "artistName" | "duration" | "artwork"
-  > & {
+  track: AtLeast<Track, "id" | "name" | "duration" | "artwork"> & {
     album: AtLeast<Album, "name" | "artistName" | "artwork"> | null;
+    tracksToArtists: Array<{ artistName: string }>;
   },
 ) {
-  const { id, name, artistName, duration, album } = track;
+  const { id, name, duration, album, tracksToArtists } = track;
 
   const imageSource = type !== "album" ? getTrackCover(track) : null;
-  let description = artistName ?? "—";
+  const artistsString = tracksToArtists.join(" • ");
+  let description = artistsString ?? "—";
   if (type === "artist") description = album?.name ?? "—";
   else if (type === "album") {
     description = formatSeconds(duration);
-    if (artistName && album?.artistName !== artistName) {
-      description += ` • ${artistName}`;
+    if (artistsString && album?.artistName !== artistsString) {
+      description += ` • ${artistsString}`;
     }
   }
 

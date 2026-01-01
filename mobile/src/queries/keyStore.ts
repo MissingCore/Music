@@ -111,7 +111,6 @@ export const queries = createQueryKeyStore({
           columns: [
             "id",
             "name",
-            "artistName",
             "duration",
             "artwork",
             "discoverTime",

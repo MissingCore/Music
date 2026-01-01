@@ -46,15 +46,10 @@ export async function getRecentlyPlayedTracks() {
   const recentTracks = await db.query.tracks.findMany({
     where: (fields, { gt }) =>
       gt(fields.lastPlayedAt, Date.now() - RECENT_RANGE_MS),
-    columns: {
-      id: true,
-      name: true,
-      artistName: true,
-      duration: true,
-      artwork: true,
-    },
+    columns: { id: true, name: true, duration: true, artwork: true },
     with: {
       album: { columns: { name: true, artistName: true, artwork: true } },
+      tracksToArtists: { columns: { artistName: true } },
     },
     orderBy: (fields, { desc }) => desc(fields.lastPlayedAt),
   });

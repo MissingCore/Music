@@ -24,7 +24,9 @@ export type SlimPlaylist = Pick<Playlist, "name" | "artwork">;
 export type SlimPlaylistWithTracks = SlimPlaylist & { tracks: TrackArtwork[] };
 
 /** Minimum data typically used from `Track`. */
-export type SlimTrack = Pick<Track, "id" | "name" | "artistName" | "artwork">;
+export type SlimTrack = Pick<Track, "id" | "name" | "artwork"> & {
+  tracksToArtists: Array<{ artistName: string }>;
+};
 export type SlimTrackWithAlbum = SlimTrack & {
   album: { name: string; artwork: Artwork } | null;
 };
