@@ -82,15 +82,8 @@
     {
       "idx": 11,
       "version": "6",
-      "when": 1767249686427,
-      "tag": "0011_silky_black_queen",
-      "breakpoints": true
-    },
-    {
-      "idx": 12,
-      "version": "6",
-      "when": 1767298807651,
-      "tag": "0012_typical_vector",
+      "when": 1767300932244,
+      "tag": "0011_complete_sally_floyd",
       "breakpoints": true
     }
   ]
