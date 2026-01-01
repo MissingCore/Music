@@ -94,7 +94,7 @@ export async function favoriteTrack(id: string, isFavorite: boolean) {
 /** Update specified track. */
 export async function updateTrack(
   id: string,
-  values: Partial<typeof tracks.$inferInsert>,
+  values: Partial<Omit<typeof tracks.$inferInsert, "artistName">>,
 ) {
   return db.update(tracks).set(values).where(eq(tracks.id, id));
 }
