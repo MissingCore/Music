@@ -3,6 +3,8 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 
+import { getArtistsString } from "~/db/utils";
+
 import { Pause } from "~/resources/icons/Pause";
 import { PlayArrow } from "~/resources/icons/PlayArrow";
 import { usePlaybackStore } from "~/stores/Playback/store";
@@ -69,7 +71,9 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
             <StyledText>{track.name}</StyledText>
           </Marquee>
           <Marquee color="surface">
-            <StyledText dim>{track.artistName ?? "—"}</StyledText>
+            <StyledText dim>
+              {getArtistsString(track.tracksToArtists)}
+            </StyledText>
           </Marquee>
         </TextWrapper>
 

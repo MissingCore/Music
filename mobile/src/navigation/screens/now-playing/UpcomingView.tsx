@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
 import { tracks } from "~/db/schema";
-import { getTrackCover } from "~/db/utils";
+import { getArtistsString, getTrackCover } from "~/db/utils";
 
 import { Cached } from "~/resources/icons/Cached";
 import { Delete } from "~/resources/icons/Delete";
@@ -214,7 +214,7 @@ function TrackItem({
       button
       type="track"
       title={item.name}
-      description={item.artistName ?? "—"}
+      description={getArtistsString(item.tracksToArtists)}
       imageSource={getTrackCover(item)}
       poppyLabel={active}
       className={cn("pr-4", className)}
@@ -236,7 +236,7 @@ async function getQueueTracks() {
   const queueSet = new Set(queueTrackIds);
   const unorderedTracks = await getTracks({
     where: [inArray(tracks.id, [...queueSet])],
-    columns: ["id", "name", "artistName", "artwork"],
+    columns: ["id", "name", "artwork"],
     albumColumns: ["artwork"],
   });
 

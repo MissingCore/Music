@@ -1,4 +1,4 @@
-import { getTrackCover } from "~/db/utils";
+import { getArtistsString, getTrackCover } from "~/db/utils";
 
 import { playbackStore } from "~/stores/Playback/store";
 
@@ -13,7 +13,7 @@ export function getWidgetData(): PlayerWidgetData {
     if (activeTrack) {
       track = {
         title: activeTrack.name,
-        artist: activeTrack.artistName,
+        artist: getArtistsString(activeTrack.tracksToArtists, false),
         artwork: getTrackCover(activeTrack),
       };
     }

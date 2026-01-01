@@ -41,6 +41,24 @@ export function getTrackCover({ artwork, album }: TrackArtwork) {
 }
 //#endregion
 
+//#region Artist Junction Table Helpers
+export const ARTIST_STRING_FALLBACK = "—";
+
+/** Generate a string listing out all the artists. */
+export function getArtistsString<T extends boolean = true>(
+  data: Array<{ artistName: string }>,
+  withFallback?: T,
+) {
+  const _withFallback = withFallback === undefined ? true : withFallback;
+  return (
+    data.join(" • ") ||
+    ((_withFallback ? ARTIST_STRING_FALLBACK : null) as T extends true
+      ? string
+      : string | null)
+  );
+}
+//#endregion
+
 //#region Assorted Helpers
 /**
  * Merges 2 arrays of `TrackWithAlbum`. Tracks that appear in both arrays
@@ -110,7 +128,7 @@ export function formatForTrack(
   const { id, name, duration, album, tracksToArtists } = track;
 
   const imageSource = type !== "album" ? getTrackCover(track) : null;
-  const artistsString = tracksToArtists.join(" • ");
+  const artistsString = getArtistsString(tracksToArtists, false);
   let description = artistsString ?? "—";
   if (type === "artist") description = album?.name ?? "—";
   else if (type === "album") {
