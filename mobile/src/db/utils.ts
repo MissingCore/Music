@@ -49,7 +49,7 @@ export function getArtistsString<T extends boolean = true>(
 ) {
   const _withFallback = withFallback === undefined ? true : withFallback;
   return (
-    data.join(" • ") ||
+    data.map((t) => t.artistName).join(" • ") ||
     ((_withFallback ? "—" : null) as T extends true ? string : string | null)
   );
 }

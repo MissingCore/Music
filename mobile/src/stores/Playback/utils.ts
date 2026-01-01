@@ -38,7 +38,8 @@ export function formatTrackforPlayer(track: TrackWithRelations) {
     url: getSafeUri(track.uri),
     artwork: getTrackCover(track) ?? undefined,
     title: track.name,
-    artist: track.tracksToArtists.join(", ") || "No Artist",
+    artist:
+      track.tracksToArtists.map((t) => t.artistName).join(", ") || "No Artist",
     album: track.album?.name ?? undefined,
     duration: track.duration,
     id: track.id,
