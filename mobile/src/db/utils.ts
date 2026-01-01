@@ -3,7 +3,6 @@ import type { TFunction } from "i18next";
 import type {
   Album,
   AlbumWithTracks,
-  ArtistWithTracks,
   PlaylistWithTracks,
   Track,
   TrackWithRelations,
@@ -115,9 +114,9 @@ export function formatForMediaCard({ type, data, t }: MediaCardFormatter) {
 
 /** Format data to be used in `<Track />`. */
 export function formatForTrack(
-  type: MediaType,
+  type: Exclude<MediaType, "artist">,
   track: AtLeast<Track, "id" | "name" | "duration" | "artwork"> & {
-    album: AtLeast<Album, "name" | "artistName" | "artwork"> | null;
+    album: AtLeast<Album, "artistName" | "artwork"> | null;
     tracksToArtists: Array<{ artistName: string }>;
   },
 ) {
@@ -126,8 +125,7 @@ export function formatForTrack(
   const imageSource = type !== "album" ? getTrackCover(track) : null;
   const artistsString = getArtistsString(tracksToArtists, false);
   let description = artistsString ?? "—";
-  if (type === "artist") description = album?.name ?? "—";
-  else if (type === "album") {
+  if (type === "album") {
     description = formatSeconds(duration);
     if (artistsString && album?.artistName !== artistsString) {
       description += ` • ${artistsString}`;
@@ -141,7 +139,6 @@ export function formatForTrack(
 //#region Format for Screen
 type ScreenFormatter = Prettify<
   { t: TFunction } & (
-    | { type: "artist"; data: ArtistWithTracks }
     | { type: "album"; data: AlbumWithTracks }
     | { type: "playlist"; data: PlaylistWithTracks }
   )

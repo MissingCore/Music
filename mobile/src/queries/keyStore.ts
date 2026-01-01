@@ -2,11 +2,10 @@ import { createQueryKeyStore } from "@lukemorales/query-key-factory";
 import { eq } from "drizzle-orm";
 
 import { db } from "~/db";
-import { albums, playlists } from "~/db/schema";
+import { albums, playlists, tracks, tracksToArtists } from "~/db/schema";
 
 import { getAlbum, getAlbums } from "~/api/album";
 import { getArtistAlbums } from "~/api/artist";
-import { normalizeArtist } from "~/api/artist.utils";
 import { getFolder } from "~/api/folder";
 import { getPlaylist, getPlaylists, getSpecialPlaylist } from "~/api/playlist";
 import {
@@ -50,28 +49,29 @@ export const queries = createQueryKeyStore({
     detail: (artistName: string) => ({
       queryKey: [artistName],
       queryFn: async () => {
-        const [artistData, artistAlbums] = await Promise.all([
+        const [artistData, artistTracks, artistAlbums] = await Promise.all([
           throwIfNoResults(
             db.query.artists.findFirst({
               where: (fields, { eq }) => eq(fields.name, artistName),
-              with: {
-                tracksToArtists: {
-                  columns: {},
-                  with: {
-                    track: {
-                      with: {
-                        album: true,
-                        tracksToArtists: { columns: { artistName: true } },
-                      },
-                    },
-                  },
-                },
-              },
             }),
           ),
+          //? Get the tracks associated with the artist in alphabetical order.
+          db
+            .select({
+              id: tracks.id,
+              name: tracks.name,
+              artwork: tracks.artwork,
+              duration: tracks.duration,
+              album: { name: albums.name, artwork: albums.artwork },
+            })
+            .from(tracksToArtists)
+            .where(eq(tracksToArtists.artistName, artistName))
+            .innerJoin(tracks, eq(tracksToArtists.trackId, tracks.id))
+            .leftJoin(albums, eq(tracks.albumId, albums.id))
+            .orderBy(iAsc(tracks.name)),
           getArtistAlbums(artistName),
         ]);
-        return { ...normalizeArtist(artistData), albums: artistAlbums };
+        return { ...artistData, tracks: artistTracks, albums: artistAlbums };
       },
     }),
   },
