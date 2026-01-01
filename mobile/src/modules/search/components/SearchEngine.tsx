@@ -10,7 +10,7 @@ import type {
   SlimPlaylistWithTracks,
   SlimTrackWithAlbum,
 } from "~/db/slimTypes";
-import { getPlaylistCover, getTrackCover } from "~/db/utils";
+import { getArtistsString, getPlaylistCover, getTrackCover } from "~/db/utils";
 
 import { Close } from "~/resources/icons/Close";
 import { Search } from "~/resources/icons/Search";
@@ -214,9 +214,6 @@ function SearchFilters(props: {
 }
 
 //#region Helpers
-/** Media items with an `artistName` field. */
-const withArtistName = ["album", "track"];
-
 /**
  * Flatten results to be used in a list that functions like a `<SectionList />`.
  * Ensure the "sections" are in alphabetical order and remove any groups with
@@ -233,8 +230,12 @@ function formatResults(results: Partial<SearchResults>, tab: SearchTab) {
       ...(tab === "all" ? [key as SearchCategories[number]] : []),
       ...data.map((item) => {
         let description: string | undefined;
-        // @ts-expect-error - `artistName` should be present in these cases.
-        if (withArtistName.includes(key)) description = item.artistName ?? "—";
+        // @ts-expect-error - Album items have an `artistName` field.
+        if (key === "album") description = item.artistName ?? "—";
+        else if (key === "track") {
+          // @ts-expect-error - Tracks store their artists in this new field.
+          description = getArtistsString(item.tracksToArtists);
+        }
         // @ts-expect-error - `path` should be present in these cases.
         else if (item.path) description = item.path;
 
