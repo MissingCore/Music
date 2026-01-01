@@ -42,8 +42,6 @@ export function getTrackCover({ artwork, album }: TrackArtwork) {
 //#endregion
 
 //#region Artist Junction Table Helpers
-export const ARTIST_STRING_FALLBACK = "—";
-
 /** Generate a string listing out all the artists. */
 export function getArtistsString<T extends boolean = true>(
   data: Array<{ artistName: string }>,
@@ -52,9 +50,7 @@ export function getArtistsString<T extends boolean = true>(
   const _withFallback = withFallback === undefined ? true : withFallback;
   return (
     data.join(" • ") ||
-    ((_withFallback ? ARTIST_STRING_FALLBACK : null) as T extends true
-      ? string
-      : string | null)
+    ((_withFallback ? "—" : null) as T extends true ? string : string | null)
   );
 }
 //#endregion

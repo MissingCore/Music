@@ -5,6 +5,7 @@ import { File, Paths } from "expo-file-system";
 
 import { db } from "~/db";
 import { tracks } from "~/db/schema";
+
 import { getPlaylist } from "~/api/playlist";
 import { getTracks } from "~/api/track";
 
@@ -60,7 +61,7 @@ export async function readM3UPlaylist() {
 
   const playlistTracks = await getTracks({
     where: [inArray(tracks.uri, trackUris)],
-    columns: ["id", "name", "artistName", "artwork", "uri"],
+    columns: ["id", "name", "artwork", "uri"],
     albumColumns: ["name", "artwork"],
   });
 
@@ -102,7 +103,8 @@ export async function exportPlaylistAsM3U(id: string, absolute?: boolean) {
   const fileContent = ["#EXTM3U"];
   // Generate content structure for file.
   //  - https://en.wikipedia.org/wiki/M3U#Extended_M3U
-  playlist.tracks.forEach(({ name, artistName, duration }, idx) => {
+  playlist.tracks.forEach(({ name, duration, tracksToArtists }, idx) => {
+    const artistName = tracksToArtists.join(" & ");
     fileContent.push(`#EXTINF:${Math.round(duration)},${artistName} - ${name}`);
     fileContent.push(filePaths[idx]!);
   });
