@@ -58,24 +58,30 @@ export function useSearch<TScope extends SearchCategories>(
 async function getAllMedia() {
   // Maybe manually building the query would be faster, but would be a bit
   // too complicated to read.
-  const [allAlbums, allArtists, allFolders, allTracks] = await Promise.all([
-    getAlbums({
-      columns: ["id", "name", "artistName", "artwork"],
-      trackColumns: ["id", "name", "artistName", "artwork"],
-    }),
-    db.query.artists.findMany({
-      orderBy: (fields) => iAsc(fields.name),
-      //? Relation used to filter out artists with no tracks.
-      with: { tracksToArtists: { columns: { trackId: true }, limit: 1 } },
-    }),
-    db.query.fileNodes.findMany({
-      orderBy: (f, { asc }) => [asc(f.parentPath), asc(f.name)],
-    }),
-    getTracks({
-      columns: ["id", "name", "artistName", "artwork", "parentFolder"],
-      albumColumns: ["name", "artwork"],
-    }),
-  ]);
+  const [allAlbums, allArtists, allFolders, allPlaylists, allTracks] =
+    await Promise.all([
+      getAlbums({
+        columns: ["id", "name", "artistName", "artwork"],
+        trackColumns: ["id", "name", "artwork"],
+      }),
+      db.query.artists.findMany({
+        orderBy: (fields) => iAsc(fields.name),
+        //? Relation used to filter out artists with no tracks.
+        with: { tracksToArtists: { columns: { trackId: true }, limit: 1 } },
+      }),
+      db.query.fileNodes.findMany({
+        orderBy: (f, { asc }) => [asc(f.parentPath), asc(f.name)],
+      }),
+      getPlaylists({
+        columns: ["name", "artwork"],
+        trackColumns: ["artwork"],
+        albumColumns: ["artwork"],
+      }),
+      getTracks({
+        columns: ["id", "name", "artwork", "parentFolder"],
+        albumColumns: ["name", "artwork"],
+      }),
+    ]);
 
   // Pre-group the tracks by their `parentFolder` to make things a lot faster.
   const groupedTracks: Record<string, SlimTrackWithAlbum[]> = {};
@@ -97,11 +103,10 @@ async function getAllMedia() {
         return f;
       })
       .filter(({ tracks }) => tracks.length > 0),
-    playlist: await getPlaylists({
-      columns: ["name", "artwork"],
-      trackColumns: ["artwork"],
-      albumColumns: ["artwork"],
-    }),
+    playlist: allPlaylists.map(({ tracks, ...playlist }) => ({
+      ...playlist,
+      tracks: tracks.map(({ tracksToArtists: _, ...track }) => track),
+    })),
     track: allTracks.map(({ parentFolder: _, ...t }) => t),
   } satisfies SearchResults;
 }
