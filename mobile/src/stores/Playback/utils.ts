@@ -1,17 +1,18 @@
 import type { AddTrack } from "@weights-ai/react-native-track-player";
+import { eq } from "drizzle-orm";
 
 import { db } from "~/db";
 import type { TrackWithRelations } from "~/db/schema";
+import { tracks, tracksToArtists } from "~/db/schema";
 import { getTrackCover } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
 import { getAlbum } from "~/api/album";
-import { normalizeArtist } from "~/api/artist.utils";
 import { getFolderTracks } from "~/api/folder";
 import { getPlaylist, getSpecialPlaylist } from "~/api/playlist";
 import type { PlayFromSource } from "./types";
 
-import { throwIfNoResults } from "~/lib/drizzle";
+import { iAsc } from "~/lib/drizzle";
 import { shuffleArray } from "~/utils/object";
 import { getSafeUri } from "~/utils/string";
 import type { ReservedPlaylistName } from "~/modules/media/constants";
@@ -80,19 +81,13 @@ export async function getTrackIdsList({ type, id }: PlayFromSource) {
       });
       trackIds = data.tracks.map(({ id }) => id);
     } else if (type === "artist") {
-      const data = await throwIfNoResults(
-        db.query.artists.findFirst({
-          where: (fields, { eq }) => eq(fields.name, id),
-          columns: {},
-          with: {
-            tracksToArtists: {
-              columns: {},
-              with: { track: { columns: { id: true, name: true } } },
-            },
-          },
-        }),
-      );
-      trackIds = normalizeArtist(data).tracks.map((t) => t.id);
+      const data = await db
+        .select({ id: tracks.id })
+        .from(tracksToArtists)
+        .where(eq(tracksToArtists.artistName, id))
+        .innerJoin(tracks, eq(tracksToArtists.trackId, tracks.id))
+        .orderBy(iAsc(tracks.name));
+      trackIds = data.map((t) => t.id);
     } else if (type === "folder") {
       const data = await getFolderTracks(id); // `id` contains pathname.
       trackIds = data.map(({ id }) => id);
