@@ -57,7 +57,14 @@ export const queries = createQueryKeyStore({
               with: {
                 tracksToArtists: {
                   columns: {},
-                  with: { track: { with: { album: true } } },
+                  with: {
+                    track: {
+                      with: {
+                        album: true,
+                        tracksToArtists: { columns: { artistName: true } },
+                      },
+                    },
+                  },
                 },
               },
             }),
