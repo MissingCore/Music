@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "edd1c9f6-f677-4e3c-8f4e-e613e3476d0e",
+  "id": "bca75d14-df39-46c8-8411-245c240ae2cd",
   "prevId": "be8c661e-2a43-432a-96d3-19ba45b9e642",
   "tables": {
     "albums": {
@@ -156,6 +156,44 @@
           "onUpdate": "no action"
         }
       },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "hidden_tracks": {
+      "name": "hidden_tracks",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "uri": {
+          "name": "uri",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "hidden_at": {
+          "name": "hidden_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
@@ -485,6 +523,65 @@
         }
       },
       "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "tracks_to_artists": {
+      "name": "tracks_to_artists",
+      "columns": {
+        "track_id": {
+          "name": "track_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "artist_name": {
+          "name": "artist_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "tracks_to_artists_track_id_tracks_id_fk": {
+          "name": "tracks_to_artists_track_id_tracks_id_fk",
+          "tableFrom": "tracks_to_artists",
+          "tableTo": "tracks",
+          "columnsFrom": [
+            "track_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "tracks_to_artists_artist_name_artists_name_fk": {
+          "name": "tracks_to_artists_artist_name_artists_name_fk",
+          "tableFrom": "tracks_to_artists",
+          "tableTo": "artists",
+          "columnsFrom": [
+            "artist_name"
+          ],
+          "columnsTo": [
+            "name"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "tracks_to_artists_track_id_artist_name_pk": {
+          "columns": [
+            "track_id",
+            "artist_name"
+          ],
+          "name": "tracks_to_artists_track_id_artist_name_pk"
+        }
+      },
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
