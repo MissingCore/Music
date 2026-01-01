@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { I18nManager, Pressable, View } from "react-native";
 
@@ -68,14 +69,9 @@ function Metadata({ track }: { track: TrackWithRelations }) {
         <Marquee>
           <StyledText className="text-xl/[1.125]">{track.name}</StyledText>
         </Marquee>
-        <MarqueeLink
-          onPress={() =>
-            navigation.popTo("Artist", { id: track.artistName ?? "" })
-          }
-          className="text-red"
-        >
-          {track.artistName}
-        </MarqueeLink>
+        <ArtistsLink
+          artistNames={track.tracksToArtists.map((rel) => rel.artistName)}
+        />
         <MarqueeLink
           onPress={() =>
             navigation.popTo("Album", { id: track.album?.id ?? "" })
@@ -109,6 +105,23 @@ function Metadata({ track }: { track: TrackWithRelations }) {
         <StyledText className="text-sm/[1.125]"> </StyledText>
       </View>
     </View>
+  );
+}
+
+function ArtistsLink(props: { artistNames: string[] }) {
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  if (props.artistNames.length === 0) return null;
+  return (
+    <Marquee contentContainerClassName="gap-1">
+      {props.artistNames.map((name, index) => (
+        <Fragment key={name}>
+          {index > 1 ? <StyledText className="text-xs">|</StyledText> : null}
+          <Pressable onPress={() => navigation.popTo("Artist", { id: name })}>
+            <StyledText className="text-sm/[1.125] text-red">{name}</StyledText>
+          </Pressable>
+        </Fragment>
+      ))}
+    </Marquee>
   );
 }
 

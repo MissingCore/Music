@@ -101,10 +101,10 @@ function TrackIntro({ data }: { data: TrackWithRelations }) {
       linkInfo: ["Album", { id: data.albumId }] as const,
       value: data.album?.name,
     },
-    {
-      linkInfo: ["Artist", { id: data.artistName }] as const,
-      value: data.artistName,
-    },
+    ...data.tracksToArtists.map(({ artistName }) => ({
+      linkInfo: ["Artist", { id: artistName }] as const,
+      value: artistName,
+    })),
   ].filter(({ value }) => typeof value === "string");
 
   return (
@@ -121,9 +121,9 @@ function TrackIntro({ data }: { data: TrackWithRelations }) {
         </Marquee>
         {navLinks.length > 0 ? (
           <Marquee color="canvasAlt">
-            {navLinks.map(({ linkInfo, value }, idx) => (
-              <Fragment key={idx}>
-                {idx === 1 ? (
+            {navLinks.map(({ linkInfo, value }, index) => (
+              <Fragment key={index}>
+                {index > 0 ? (
                   <StyledText className="text-xs">|</StyledText>
                 ) : null}
                 <Pressable onPress={sheetAction(() => navigate(...linkInfo))}>
