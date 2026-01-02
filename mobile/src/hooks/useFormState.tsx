@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import type { Dispatch, SetStateAction } from "react";
 import {
   createContext,
@@ -13,6 +14,7 @@ import type { ZodMiniObject, z } from "zod/mini";
 
 import { wait } from "~/utils/promise";
 import { isNumber, isString } from "~/utils/validation";
+import { ModalTemplate } from "~/components/Modal";
 
 type InitialArguments<TSchema extends ZodMiniObject> = {
   schema: TSchema;
@@ -33,24 +35,25 @@ type FormState<TData extends Record<string, any>> = {
 
   isSubmitting: boolean;
   setIsSubmitting: Dispatch<SetStateAction<boolean>>;
-  showConfirmation: boolean;
-  setShowConfirmation: Dispatch<SetStateAction<boolean>>;
 };
 
 const FormStateContext = createContext<FormState<any>>(null as never);
 
 //#region Provider
+/** Handles data validation, back prevention, and more. */
 export function FormStateProvider<TSchema extends ZodMiniObject>(
   props: InitialArguments<TSchema> & { children: React.ReactNode },
 ) {
+  const navigation = useNavigation();
+
+  const initData = useRef(props.initData);
   const schemaRef = useRef(props.schema);
   const onSubmitRef = useRef(props.onSubmit);
   const onConstraintsRef = useRef(props.onConstraints);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
-  const initData = useRef(props.initData);
   const [data, setData] = useState(props.initData);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const hasChanged = useMemo(() => {
     const safeData = schemaRef.current.safeParse(data).data;
@@ -60,6 +63,7 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
       if (isString(value) || isNumber(value) || value === null) {
         return initData.current[field] !== value;
       } else if (Array.isArray(value)) {
+        // FIXME: We need to better handle arrays of any type.
         const fieldData = initData.current[field] as any[];
         return (
           fieldData.length !== value.length ||
@@ -112,11 +116,21 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
         onSubmit,
         isSubmitting,
         setIsSubmitting,
-        showConfirmation,
-        setShowConfirmation,
       }}
     >
       {props.children}
+      <ModalTemplate
+        visible={showConfirmation}
+        titleKey="form.unsaved"
+        topAction={{
+          textKey: "form.leave",
+          onPress: () => navigation.goBack(),
+        }}
+        bottomAction={{
+          textKey: "form.stay",
+          onPress: () => setShowConfirmation(false),
+        }}
+      />
     </FormStateContext>
   );
 }

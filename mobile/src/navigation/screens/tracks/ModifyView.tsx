@@ -4,7 +4,6 @@ import {
   getMetadata,
 } from "@missingcore/react-native-metadata-retriever";
 import type { StaticScreenProps } from "@react-navigation/native";
-import { useNavigation } from "@react-navigation/native";
 import { eq } from "drizzle-orm";
 import type { ParseKeys } from "i18next";
 import { useTranslation } from "react-i18next";
@@ -46,7 +45,6 @@ import { Divider } from "~/components/Divider";
 import { ExtendedTButton } from "~/components/Form/Button";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";
-import { ModalTemplate } from "~/components/Modal";
 import { StyledText, TEm } from "~/components/Typography/StyledText";
 
 type Props = StaticScreenProps<{ id: string }>;
@@ -79,13 +77,34 @@ export default function ModifyTrack({
         artists.length === new Set(artists.map((artist) => artist.trim())).size
       }
     >
-      <TopAppBar />
+      <ScreenConfig />
       <MetadataForm bottomOffset={offset} />
-      <ConfirmationModal />
       <ResetWorkflow {...rest} uri={data.uri} />
     </FormStateProvider>
   );
 }
+
+//#region Screen Configuration
+function ScreenConfig() {
+  const { t } = useTranslation();
+  const { canSubmit, isSubmitting, onSubmit } = useFormState();
+  return (
+    <ScreenOptions
+      title="feat.trackMetadata.title"
+      // Hacky solution to disable the back button when submitting.
+      headerLeft={isSubmitting ? () => undefined : undefined}
+      headerRight={() => (
+        <IconButton
+          Icon={Check}
+          accessibilityLabel={t("form.apply")}
+          onPress={onSubmit}
+          disabled={!canSubmit || isSubmitting}
+        />
+      )}
+    />
+  );
+}
+//#endregion
 
 //#region Metadata Form
 function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
@@ -131,28 +150,6 @@ function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
         numeric
       />
     </KeyboardAwareScrollView>
-  );
-}
-//#endregion
-
-//#region Top App Bar
-function TopAppBar() {
-  const { t } = useTranslation();
-  const { canSubmit, isSubmitting, onSubmit } = useFormState();
-  return (
-    <ScreenOptions
-      title="feat.trackMetadata.title"
-      // Hacky solution to disable the back button when submitting.
-      headerLeft={isSubmitting ? () => undefined : undefined}
-      headerRight={() => (
-        <IconButton
-          Icon={Check}
-          accessibilityLabel={t("form.apply")}
-          onPress={onSubmit}
-          disabled={!canSubmit || isSubmitting}
-        />
-      )}
-    />
   );
 }
 //#endregion
@@ -205,70 +202,49 @@ function ArrayFormInput(props: {
   return (
     <View>
       <TEm textKey={props.labelKey} dim />
-      <View className="gap-2">
-        {value.map((value, row) => (
-          <View key={row} className="flex-row items-center">
-            <TextInput
-              editable={!isSubmitting}
-              value={value}
-              onChangeText={(text) =>
-                setField((prev) => ({
-                  ...prev,
-                  [field]: prev[field].map((val, idx) =>
-                    idx === row ? text : val,
-                  ),
-                }))
-              }
-              className="shrink grow border-b border-foreground/60"
-            />
-            <IconButton
-              Icon={Close}
-              accessibilityLabel={t("template.entryRemove", { name: value })}
-              onPress={() =>
-                setField((prev) => ({
-                  ...prev,
-                  [field]: prev[field].filter((_, idx) => idx !== row),
-                }))
-              }
-              disabled={isSubmitting}
-              className="shrink-0"
-            />
-          </View>
-        ))}
-        <FilledIconButton
-          Icon={Add}
-          accessibilityLabel=""
-          onPress={() =>
-            setField((prev) => ({ ...prev, [field]: [...prev[field], ""] }))
-          }
-          disabled={isSubmitting}
-          className={cn("rounded-md bg-yellow", { "mt-2": value.length === 0 })}
-          _iconColor={Colors.neutral0}
-        />
-      </View>
+      {value.map((value, row) => (
+        <View
+          key={row}
+          className={cn("flex-row items-center", { "mt-2": row > 0 })}
+        >
+          <TextInput
+            editable={!isSubmitting}
+            value={value}
+            onChangeText={(text) =>
+              setField((prev) => ({
+                ...prev,
+                [field]: prev[field].map((val, idx) =>
+                  idx === row ? text : val,
+                ),
+              }))
+            }
+            className="shrink grow border-b border-foreground/60"
+          />
+          <IconButton
+            Icon={Close}
+            accessibilityLabel={t("template.entryRemove", { name: value })}
+            onPress={() =>
+              setField((prev) => ({
+                ...prev,
+                [field]: prev[field].filter((_, idx) => idx !== row),
+              }))
+            }
+            disabled={isSubmitting}
+            className="shrink-0"
+          />
+        </View>
+      ))}
+      <FilledIconButton
+        Icon={Add}
+        accessibilityLabel=""
+        onPress={() =>
+          setField((prev) => ({ ...prev, [field]: [...prev[field], ""] }))
+        }
+        disabled={isSubmitting}
+        className="mt-2 rounded-md bg-yellow"
+        _iconColor={Colors.neutral0}
+      />
     </View>
-  );
-}
-//#endregion
-
-//#region Confirmation Modal
-/** Modal that's rendered if we have unsaved changes. */
-function ConfirmationModal() {
-  const navigation = useNavigation();
-  const { showConfirmation, setShowConfirmation } = useFormState();
-  return (
-    <ModalTemplate
-      visible={showConfirmation}
-      titleKey="form.unsaved"
-      topAction={{
-        textKey: "form.leave",
-        onPress: () => navigation.goBack(),
-      }}
-      bottomAction={{
-        textKey: "form.stay",
-        onPress: () => setShowConfirmation(false),
-      }}
-    />
   );
 }
 //#endregion
