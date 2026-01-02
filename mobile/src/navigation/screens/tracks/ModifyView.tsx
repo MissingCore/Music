@@ -1,9 +1,11 @@
+import { toast } from "@backpackapp-io/react-native-toast";
 import {
   MetadataPresets,
   getMetadata,
 } from "@missingcore/react-native-metadata-retriever";
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
+import { eq } from "drizzle-orm";
 import type { ParseKeys } from "i18next";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -11,12 +13,23 @@ import { BackHandler, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { z } from "zod/mini";
 
+import { db } from "~/db";
 import type { TrackWithRelations } from "~/db/schema";
+import { tracksToArtists } from "~/db/schema";
 
 import { Add } from "~/resources/icons/Add";
 import { Check } from "~/resources/icons/Check";
 import { Close } from "~/resources/icons/Close";
+import { upsertAlbums } from "~/api/album";
+import { createArtists } from "~/api/artist";
+import { updateTrack } from "~/api/track";
 import { useTrack } from "~/queries/track";
+import { Resynchronize } from "~/stores/Playback/actions";
+import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
+import {
+  cleanupImages,
+  getArtworkUri,
+} from "~/modules/scanning/helpers/artwork";
 import { useFormState } from "~/hooks/useFormState";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
@@ -24,7 +37,10 @@ import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 
 import { Colors } from "~/constants/Styles";
+import { clearAllQueries } from "~/lib/react-query";
 import { cn } from "~/lib/style";
+import { ToastOptions } from "~/lib/toast";
+import { wait } from "~/utils/promise";
 import { ScrollablePresets } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { ExtendedTButton } from "~/components/Form/Button";
@@ -49,6 +65,7 @@ export default function ModifyTrack({
 //#region Context Delegate
 function FormContextDelegate({ initData }: { initData: TrackWithRelations }) {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const formState = useFormState({
@@ -67,9 +84,68 @@ function FormContextDelegate({ initData }: { initData: TrackWithRelations }) {
   });
   const { offset, ...rest } = useFloatingContent();
 
-  const onSubmit = useCallback(() => {
-    console.log(TrackMetadataSchema.safeParse(formState.data).data);
-  }, [formState.data]);
+  const onSubmit = useCallback(async () => {
+    if (!formState.canSubmit) return;
+    setIsSubmitting(true);
+    // Slight buffer before running heavy async task.
+    await wait(1);
+    try {
+      const { id, uri } = initData;
+      const { album, albumArtist, artists, ...trackBase } =
+        TrackMetadataSchema.parse(formState.data);
+
+      const updatedTrack = {
+        ...trackBase,
+        embeddedArtwork: null as string | null,
+        modificationTime: Date.now(),
+        editedMetadata: Date.now(),
+      };
+      const updatedAlbum = { name: album, artistName: albumArtist };
+
+      // Add new artists to the database.
+      await Promise.allSettled(
+        [...artists, updatedAlbum.artistName]
+          .filter((name) => name !== null)
+          .map((name) => createArtists([{ name }])),
+      );
+
+      const { uri: artworkUri } = await getArtworkUri(uri);
+
+      // Add new album to the database.
+      let albumId: string | null = null;
+      if (updatedAlbum.name && updatedAlbum.artistName) {
+        const [newAlbum] = await upsertAlbums([
+          {
+            name: updatedAlbum.name,
+            artistName: updatedAlbum.artistName,
+            embeddedArtwork: artworkUri,
+          },
+        ]);
+        if (newAlbum) albumId = newAlbum.id;
+      }
+      if (!albumId) updatedTrack.embeddedArtwork = artworkUri;
+
+      // Replace old artist relations.
+      await db.delete(tracksToArtists).where(eq(tracksToArtists.trackId, id));
+      if (artists.length > 0) {
+        await db
+          .insert(tracksToArtists)
+          .values(artists.map((artistName) => ({ trackId: id, artistName })));
+      }
+
+      await updateTrack(id, { ...updatedTrack, albumId });
+
+      // Revalidate `activeTrack` in Playback store if needed.
+      await Resynchronize.onActiveTrack({ type: "track", id });
+      await cleanupImages();
+      await removeUnusedCategories();
+      clearAllQueries();
+      navigation.goBack();
+    } catch {
+      toast.error(t("err.flow.generic.title"), ToastOptions);
+    }
+    setIsSubmitting(false);
+  }, [t, navigation, initData, formState.canSubmit, formState.data]);
 
   useEffect(() => {
     const subscription = BackHandler.addEventListener(
@@ -255,6 +331,7 @@ function ArrayFormInput(props: {
               onPress={() =>
                 props.setValue(props.value.filter((_, idx) => idx !== index))
               }
+              disabled={!props.enabled}
               className="shrink-0"
             />
           </View>
@@ -263,6 +340,7 @@ function ArrayFormInput(props: {
           Icon={Add}
           accessibilityLabel=""
           onPress={() => props.setValue([...props.value, ""])}
+          disabled={!props.enabled}
           className={cn("rounded-md bg-yellow", {
             "mt-2": props.value.length === 0,
           })}
