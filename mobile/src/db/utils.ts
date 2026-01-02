@@ -48,7 +48,7 @@ export function getArtistsString<T extends boolean = true>(
 ) {
   const _withFallback = withFallback === undefined ? true : withFallback;
   return (
-    data.map((t) => t.artistName).join(" • ") ||
+    data.map((t) => t.artistName).join(", ") ||
     ((_withFallback ? "—" : null) as T extends true ? string : string | null)
   );
 }
@@ -127,9 +127,10 @@ export function formatForTrack(
   let description = artistsString ?? "—";
   if (type === "album") {
     description = formatSeconds(duration);
-    if (artistsString && album?.artistName !== artistsString) {
-      description += ` • ${artistsString}`;
-    }
+    const artistNames = tracksToArtists
+      .map((rel) => rel.artistName)
+      .filter((name) => name !== album?.artistName);
+    if (artistNames.length > 0) description += ` • ${artistNames.join(", ")}`;
   }
 
   return { id, imageSource, title: name, description } satisfies TrackContent;

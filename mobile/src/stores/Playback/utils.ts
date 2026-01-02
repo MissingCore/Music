@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 import { db } from "~/db";
 import type { TrackWithRelations } from "~/db/schema";
 import { tracks, tracksToArtists } from "~/db/schema";
-import { getTrackCover } from "~/db/utils";
+import { getArtistsString, getTrackCover } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
 import { getAlbum } from "~/api/album";
@@ -39,8 +39,7 @@ export function formatTrackforPlayer(track: TrackWithRelations) {
     url: getSafeUri(track.uri),
     artwork: getTrackCover(track) ?? undefined,
     title: track.name,
-    artist:
-      track.tracksToArtists.map((t) => t.artistName).join(", ") || "No Artist",
+    artist: getArtistsString(track.tracksToArtists, false) || "No Artist",
     album: track.album?.name ?? undefined,
     duration: track.duration,
     id: track.id,
