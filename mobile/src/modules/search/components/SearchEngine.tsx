@@ -53,6 +53,7 @@ export function SearchEngine<TScope extends SearchCategories>(
           onChangeText={(text) => setQuery(text)}
           placeholder={t("feat.search.extra.searchMedia")}
           className="shrink grow"
+          forSheet
         />
         <IconButton
           Icon={Close}

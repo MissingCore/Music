@@ -57,6 +57,7 @@ export function DetachedNumericSheet(props: SheetProps) {
           defaultValue={`${props.value}`}
           onChangeText={(text) => setNewValue(text)}
           className="shrink grow"
+          forSheet
         />
         <StyledText dim className="text-sm">
           {valueLabel}
