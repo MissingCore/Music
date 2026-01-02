@@ -1,7 +1,6 @@
 import { useMemo, useRef } from "react";
 import type { TextInputProps } from "react-native";
 import { TextInput as RNTextInput } from "react-native";
-
 import { TextInput as RNGHTextInput } from "react-native-gesture-handler";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
