@@ -13,7 +13,9 @@ import { z } from "zod/mini";
 
 import type { TrackWithRelations } from "~/db/schema";
 
+import { Add } from "~/resources/icons/Add";
 import { Check } from "~/resources/icons/Check";
+import { Close } from "~/resources/icons/Close";
 import { useTrack } from "~/queries/track";
 import { useFormState } from "~/hooks/useFormState";
 
@@ -21,12 +23,15 @@ import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 
+import { Colors } from "~/constants/Styles";
+import { cn } from "~/lib/style";
 import { ScrollablePresets } from "~/components/Defaults";
+import { Divider } from "~/components/Divider";
 import { ExtendedTButton } from "~/components/Form/Button";
-import { IconButton } from "~/components/Form/Button/Icon";
+import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";
 import { ModalTemplate } from "~/components/Modal";
-import { TEm } from "~/components/Typography/StyledText";
+import { StyledText, TEm } from "~/components/Typography/StyledText";
 
 type Props = StaticScreenProps<{ id: string }>;
 
@@ -43,6 +48,7 @@ export default function ModifyTrack({
 
 //#region Context Delegate
 function FormContextDelegate({ initData }: { initData: TrackWithRelations }) {
+  const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const formState = useFormState({
@@ -56,10 +62,14 @@ function FormContextDelegate({ initData }: { initData: TrackWithRelations }) {
       disc: initData.disc,
       track: initData.track,
     },
+    onConstraints: ({ artists }) =>
+      artists.length === new Set(artists.map((artist) => artist.trim())).size,
   });
   const { offset, ...rest } = useFloatingContent();
 
-  const onSubmit = useCallback(() => {}, []);
+  const onSubmit = useCallback(() => {
+    console.log(TrackMetadataSchema.safeParse(formState.data).data);
+  }, [formState.data]);
 
   useEffect(() => {
     const subscription = BackHandler.addEventListener(
@@ -89,10 +99,23 @@ function FormContextDelegate({ initData }: { initData: TrackWithRelations }) {
         contentContainerStyle={{ paddingBottom: offset - 24 }}
         contentContainerClassName="gap-6 p-4"
       >
+        <StyledText dim className="text-sm">
+          {t("feat.trackMetadata.description.line1")}
+          {"\n\n"}
+          {t("feat.trackMetadata.description.line2")}
+        </StyledText>
+        <Divider />
+
         <FormInput
           labelKey="feat.trackMetadata.extra.name"
           value={formState.data.name}
           setValue={(name) => formState.setField("name", name)}
+          enabled={!isSubmitting}
+        />
+        <ArrayFormInput
+          labelKey="term.artists"
+          value={formState.data.artists}
+          setValue={(artists) => formState.setField("artists", artists)}
           enabled={!isSubmitting}
         />
         <FormInput
@@ -199,6 +222,53 @@ function FormInput<TData>(props: {
         onChangeText={props.setValue}
         className="w-full border-b border-foreground/60"
       />
+    </View>
+  );
+}
+
+function ArrayFormInput(props: {
+  labelKey: ParseKeys;
+  value: string[];
+  setValue: (value: string[]) => void;
+  enabled?: boolean;
+}) {
+  const { t } = useTranslation();
+  return (
+    <View>
+      <TEm textKey={props.labelKey} dim />
+      <View className="gap-2">
+        {props.value.map((value, index) => (
+          <View key={index} className="flex-row items-center">
+            <TextInput
+              editable={props.enabled}
+              value={value}
+              onChangeText={(text) =>
+                props.setValue(
+                  props.value.map((val, idx) => (idx === index ? text : val)),
+                )
+              }
+              className="shrink grow border-b border-foreground/60"
+            />
+            <IconButton
+              Icon={Close}
+              accessibilityLabel={t("template.entryRemove", { name: value })}
+              onPress={() =>
+                props.setValue(props.value.filter((_, idx) => idx !== index))
+              }
+              className="shrink-0"
+            />
+          </View>
+        ))}
+        <FilledIconButton
+          Icon={Add}
+          accessibilityLabel=""
+          onPress={() => props.setValue([...props.value, ""])}
+          className={cn("rounded-md bg-yellow", {
+            "mt-2": props.value.length === 0,
+          })}
+          _iconColor={Colors.neutral0}
+        />
+      </View>
     </View>
   );
 }
