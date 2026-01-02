@@ -7,7 +7,6 @@ import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { eq } from "drizzle-orm";
 import type { ParseKeys } from "i18next";
-import { use } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
@@ -30,8 +29,7 @@ import {
   cleanupImages,
   getArtworkUri,
 } from "~/modules/scanning/helpers/artwork";
-import type { FormState } from "~/hooks/useFormState";
-import { FormStateContext, FormStateProvider } from "~/hooks/useFormState";
+import { FormStateProvider, useFormStateContext } from "~/hooks/useFormState";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 import { router } from "~/navigation/utils/router";
@@ -140,7 +138,7 @@ function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
 //#region Top App Bar
 function TopAppBar() {
   const { t } = useTranslation();
-  const { canSubmit, isSubmitting, onSubmit } = useFormStateContext();
+  const { canSubmit, isSubmitting, onSubmit } = useFormState();
   return (
     <ScreenOptions
       title="feat.trackMetadata.title"
@@ -165,17 +163,19 @@ function FormInput(props: {
   field: keyof TrackMetadata;
   numeric?: boolean;
 }) {
-  const { data, setField, isSubmitting } = useFormStateContext();
+  const { data, setField, isSubmitting } = useFormState();
 
   const value = data[props.field];
   const onChange = (text: string) => {
-    if (!props.numeric) setField((prev) => ({ ...prev, [props.field]: text }));
-    else {
-      setField((prev) => ({
-        ...prev,
-        [props.field]: text.trim() === "" ? null : +text,
-      }));
-    }
+    const realNum = text.trim() === "" ? null : +text;
+    setField((prev) => ({
+      ...prev,
+      [props.field]: props.numeric
+        ? Number.isNaN(realNum)
+          ? prev[props.field] // Use prior value if we get `NaN`.
+          : realNum
+        : text,
+    }));
   };
 
   return (
@@ -197,7 +197,7 @@ function ArrayFormInput(props: {
   field: ArrayObjectKeys<TrackMetadata>;
 }) {
   const { t } = useTranslation();
-  const { data, setField, isSubmitting } = useFormStateContext();
+  const { data, setField, isSubmitting } = useFormState();
 
   const field = props.field;
   const value = data[field];
@@ -255,8 +255,7 @@ function ArrayFormInput(props: {
 /** Modal that's rendered if we have unsaved changes. */
 function ConfirmationModal() {
   const navigation = useNavigation();
-  const { showConfirmation, setShowConfirmation } = useFormStateContext();
-
+  const { showConfirmation, setShowConfirmation } = useFormState();
   return (
     <ModalTemplate
       visible={showConfirmation}
@@ -281,7 +280,7 @@ function ResetWorkflow(
     uri: string;
   },
 ) {
-  const { setField, isSubmitting, setIsSubmitting } = useFormStateContext();
+  const { setField, isSubmitting, setIsSubmitting } = useFormState();
 
   const onReset = async () => {
     setIsSubmitting(true);
@@ -320,14 +319,13 @@ function ResetWorkflow(
 
 //#region Schema
 const NonEmptyStringSchema = z.string().check(z.trim(), z.minLength(1));
-const NullableStringSchema = z.pipe(
-  z.string().check(z.trim()),
-  z.transform((str) => {
-    const trimmedStr = str.trim();
-    return trimmedStr === "" ? null : trimmedStr;
-  }),
+const NullableStringSchema = z.nullable(
+  z.pipe(
+    z.string().check(z.trim()), // String will get trimmed.
+    z.transform((str) => (str === "" ? null : str)),
+  ),
 );
-const RealNumber = z.number().check(z.int(), z.gt(0));
+const NullableRealNumber = z.nullable(z.number().check(z.int(), z.gt(0)));
 const TrackMetadataSchema = z.object({
   // Additional context:
   id: z.string(),
@@ -335,22 +333,17 @@ const TrackMetadataSchema = z.object({
   // Actual form fields:
   name: NonEmptyStringSchema,
   artists: z.array(NonEmptyStringSchema),
-  album: z.nullable(NullableStringSchema),
-  albumArtist: z.nullable(NullableStringSchema),
-  year: z.nullable(RealNumber),
-  disc: z.nullable(RealNumber),
-  track: z.nullable(RealNumber),
+  album: NullableStringSchema,
+  albumArtist: NullableStringSchema,
+  year: NullableRealNumber,
+  disc: NullableRealNumber,
+  track: NullableRealNumber,
 });
 
 type TrackMetadata = z.infer<typeof TrackMetadataSchema>;
 
-function useFormStateContext() {
-  const context = use(FormStateContext);
-  if (!context)
-    throw new Error(
-      "`useFormStateContext` must be used in a `FormStateProvider`.",
-    );
-  return context as FormState<TrackMetadata>;
+function useFormState() {
+  return useFormStateContext<TrackMetadata>();
 }
 //#endregion
 

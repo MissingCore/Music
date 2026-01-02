@@ -1,6 +1,7 @@
 import type { Dispatch, SetStateAction } from "react";
 import {
   createContext,
+  use,
   useCallback,
   useEffect,
   useMemo,
@@ -22,7 +23,7 @@ type InitialArguments<TSchema extends ZodMiniObject> = {
   onConstraints?: (data: z.infer<TSchema>) => boolean;
 };
 
-export type FormState<TData extends Record<string, any>> = {
+type FormState<TData extends Record<string, any>> = {
   data: TData;
   setField: Dispatch<SetStateAction<TData>>;
 
@@ -36,8 +37,9 @@ export type FormState<TData extends Record<string, any>> = {
   setShowConfirmation: Dispatch<SetStateAction<boolean>>;
 };
 
-export const FormStateContext = createContext<FormState<any>>(null as never);
+const FormStateContext = createContext<FormState<any>>(null as never);
 
+//#region Provider
 export function FormStateProvider<TSchema extends ZodMiniObject>(
   props: InitialArguments<TSchema> & { children: React.ReactNode },
 ) {
@@ -118,3 +120,16 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
     </FormStateContext>
   );
 }
+//#endregion
+
+//#region Hook
+/** Wrap this with another hook to type the return data. */
+export function useFormStateContext<TData extends Record<string, any>>() {
+  const context = use(FormStateContext);
+  if (!context)
+    throw new Error(
+      "`useFormStateContext` must be used in a `FormStateProvider`.",
+    );
+  return context as FormState<TData>;
+}
+//#endregion
