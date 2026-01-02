@@ -56,8 +56,8 @@ const MusicBackup = z.object({
 //#endregion
 
 //#region Helpers
-function getRawTrack({ name, artistName, album }: TrackWithRelations) {
-  return { name, artistName, albumName: album?.name };
+function getRawTrack({ name, rawArtistName, album }: TrackWithRelations) {
+  return { name, artistName: rawArtistName, albumName: album?.name };
 }
 
 /** Creates a factory function that finds albums associated to `RawAlbum`. */
@@ -83,7 +83,7 @@ async function findExistingTracksFactory() {
         allTracks.find(
           (t) =>
             t.name === entry.name &&
-            t.artistName === entry.artistName &&
+            t.rawArtistName === entry.artistName &&
             t.album?.name === entry.albumName,
         ),
       )
