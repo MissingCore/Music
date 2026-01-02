@@ -274,12 +274,19 @@ function ResetWorkflow(
 
 //#region Schema
 const NonEmptyStringSchema = z.string().check(z.trim(), z.minLength(1));
+const NullableStringSchema = z.pipe(
+  z.string().check(z.trim()),
+  z.transform((str) => {
+    const trimmedStr = str.trim();
+    return trimmedStr === "" ? null : trimmedStr;
+  }),
+);
 const RealNumber = z.number().check(z.int(), z.gt(0));
 const TrackMetadataSchema = z.object({
   name: NonEmptyStringSchema,
   artists: z.array(NonEmptyStringSchema),
-  album: z.nullable(NonEmptyStringSchema),
-  albumArtist: z.nullable(NonEmptyStringSchema),
+  album: NullableStringSchema,
+  albumArtist: NullableStringSchema,
   year: z.nullable(RealNumber),
   disc: z.nullable(RealNumber),
   track: z.nullable(RealNumber),

@@ -15,13 +15,17 @@ export function useFormState<
   TSchema extends ZodMiniObject,
   TData extends z.infer<TSchema>,
 >(args: UseFormStateArgs<TSchema>) {
+  const schemaRef = useRef(args.schema);
   const onConstraintsRef = useRef(args.onConstraints);
 
   const initData = useRef(args.initData);
   const [data, setData] = useState(args.initData);
 
   const hasChanged = useMemo(() => {
-    return Object.entries(data).some(([field, value]) => {
+    const safeData = schemaRef.current.safeParse(data).data;
+    // Use the sanitized fields as much as possible.
+    const refData = { ...data, ...(safeData ?? {}) };
+    return Object.entries(refData).some(([field, value]) => {
       if (isString(value) || isNumber(value) || value === null) {
         return initData.current[field] !== value;
       } else if (Array.isArray(value)) {
@@ -41,8 +45,8 @@ export function useFormState<
   const canSubmit = useMemo(() => {
     let addCheck = true;
     if (onConstraintsRef.current) addCheck = onConstraintsRef.current(data);
-    return hasChanged && addCheck && args.schema.safeParse(data).success;
-  }, [args.schema, data, hasChanged]);
+    return hasChanged && addCheck && schemaRef.current.safeParse(data).success;
+  }, [data, hasChanged]);
 
   const setField = useCallback(
     <TKey extends keyof TData>(field: TKey, value: TData[TKey]) => {
