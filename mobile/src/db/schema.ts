@@ -238,7 +238,7 @@ export type Album = InferSelectModel<typeof albums>;
 export type AlbumWithTracks = Prettify<Album & { tracks: Track[] }>;
 
 export type Track = Omit<InferSelectModel<typeof tracks>, "rawArtistName"> & {
-  /** @deprecated */
+  /** @deprecated Access the artist name through the new junction table. */
   rawArtistName: string | null;
 };
 export type TrackWithRelations = Prettify<
