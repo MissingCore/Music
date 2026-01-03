@@ -115,7 +115,7 @@ function ArtistsLink(props: { artistNames: string[] }) {
     <Marquee contentContainerClassName="gap-1">
       {props.artistNames.map((name, index) => (
         <Fragment key={name}>
-          {index > 1 ? <StyledText className="text-xs">|</StyledText> : null}
+          {index > 0 ? <StyledText className="text-xs">|</StyledText> : null}
           <Pressable onPress={() => navigation.popTo("Artist", { id: name })}>
             <StyledText className="text-sm/[1.125] text-red">{name}</StyledText>
           </Pressable>
