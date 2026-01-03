@@ -123,8 +123,7 @@ export function formatForTrack(
   const { id, name, duration, album, tracksToArtists } = track;
 
   const imageSource = type !== "album" ? getTrackCover(track) : null;
-  const artistsString = getArtistsString(tracksToArtists, false);
-  let description = artistsString ?? "—";
+  let description = getArtistsString(tracksToArtists);
   if (type === "album") {
     description = formatSeconds(duration);
     const artistNames = tracksToArtists
@@ -172,8 +171,9 @@ export function formatForCurrentScreen({ type, data, t }: ScreenFormatter) {
     imageSource: imgSrc,
     metadata,
     tracks: (data.tracks as TrackWithRelations[]).map((track) => {
-      if (!isTrackWithAlbum(track))
+      if (!isTrackWithAlbum(track)) {
         (track as TrackWithRelations).album = albumInfo;
+      }
       const formattedTrack = formatForTrack(type, track) as ScreenTrack;
       formattedTrack.disc = track.disc;
       formattedTrack.track = track.track;
