@@ -47,7 +47,7 @@ export async function getFolderTracks(path: Maybe<string>) {
   return db.query.tracks.findMany({
     where: (fields, { eq }) =>
       eq(fields.parentFolder, `file:///${addTrailingSlash(path)}`),
-    with: { album: true },
+    with: { album: true, tracksToArtists: { columns: { artistName: true } } },
     orderBy: (fields) => iAsc(fields.name),
   });
 }

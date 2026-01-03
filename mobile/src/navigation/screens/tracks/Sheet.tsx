@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import type { ViewStyle } from "react-native";
 import { Pressable, View } from "react-native";
 
-import type { TrackWithAlbum } from "~/db/schema";
+import type { TrackWithRelations } from "~/db/schema";
 
 import type { Icon } from "~/resources/icons/type";
 import { Delete } from "~/resources/icons/Delete";
@@ -93,7 +93,7 @@ export function TrackSheet() {
 }
 
 //#region Introduction
-function TrackIntro({ data }: { data: TrackWithAlbum }) {
+function TrackIntro({ data }: { data: TrackWithRelations }) {
   const [_, navigate] = useNavigationAction();
 
   const navLinks = [
@@ -101,10 +101,10 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
       linkInfo: ["Album", { id: data.albumId }] as const,
       value: data.album?.name,
     },
-    {
-      linkInfo: ["Artist", { id: data.artistName }] as const,
-      value: data.artistName,
-    },
+    ...data.tracksToArtists.map(({ artistName }) => ({
+      linkInfo: ["Artist", { id: artistName }] as const,
+      value: artistName,
+    })),
   ].filter(({ value }) => typeof value === "string");
 
   return (
@@ -121,9 +121,9 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
         </Marquee>
         {navLinks.length > 0 ? (
           <Marquee color="canvasAlt">
-            {navLinks.map(({ linkInfo, value }, idx) => (
-              <Fragment key={idx}>
-                {idx === 1 ? (
+            {navLinks.map(({ linkInfo, value }, index) => (
+              <Fragment key={index}>
+                {index > 0 ? (
                   <StyledText className="text-xs">|</StyledText>
                 ) : null}
                 <Pressable onPress={sheetAction(() => navigate(...linkInfo))}>
@@ -145,7 +145,7 @@ function TrackIntro({ data }: { data: TrackWithAlbum }) {
 //#endregion
 
 //#region Metadata
-function TrackMetadata({ data }: { data: TrackWithAlbum }) {
+function TrackMetadata({ data }: { data: TrackWithRelations }) {
   const { foreground } = useTheme();
   return (
     <View className="gap-4 rounded-md bg-surface p-4">

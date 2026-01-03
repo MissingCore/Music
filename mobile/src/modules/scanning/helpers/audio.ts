@@ -16,6 +16,7 @@ import {
   invalidTracks,
   playedMediaLists,
   tracks,
+  tracksToArtists,
   tracksToPlaylists,
   waveformSamples,
 } from "~/db/schema";
@@ -92,11 +93,16 @@ export async function findAndSaveAudio() {
 
     // Save artists & albums that haven't been inserted yet.
     const newArtists: string[] = [];
+    const newArtistRelations: Array<{ trackId: string; artistName: string }> =
+      [];
     const newAlbums: Record<string, string[]> = {};
-    results.forEach(({ artistName, album }) => {
-      addArtist({ artistName, insertedArtists, newArtists });
+    results.forEach(({ id, rawArtistName, album }) => {
+      addArtist({ artistName: rawArtistName, insertedArtists, newArtists });
       addArtist({ artistName: album?.artistName, insertedArtists, newArtists });
       addAlbum({ album, insertedAlbums, newAlbums });
+      if (rawArtistName) {
+        newArtistRelations.push({ trackId: id, artistName: rawArtistName });
+      }
     });
 
     const newArtistEntries = newArtists.map((name) => ({ name }));
@@ -121,6 +127,12 @@ export async function findAndSaveAudio() {
     });
     const newIds = newTracks.map(({ id }) => id);
     await upsertTracks(newTracks);
+    if (newArtistRelations.length > 0) {
+      await db
+        .insert(tracksToArtists)
+        .values(newArtistRelations)
+        .onConflictDoNothing();
+    }
     await db.delete(invalidTracks).where(inArray(invalidTracks.id, newIds));
   }
 
@@ -157,6 +169,9 @@ export async function cleanupDatabase(usedTrackIds: string[]) {
       db.delete(invalidTracks).where(inArray(invalidTracks.id, unusedTrackIds)),
       db.delete(tracks).where(inArray(tracks.id, unusedTrackIds)),
       db
+        .delete(tracksToArtists)
+        .where(inArray(tracksToArtists.trackId, unusedTrackIds)),
+      db
         .delete(tracksToPlaylists)
         .where(inArray(tracksToPlaylists.trackId, unusedTrackIds)),
       db
@@ -182,7 +197,7 @@ export async function removeUnusedCategories() {
   // Remove unused albums.
   const allAlbums = await db.query.albums.findMany({
     columns: { id: true },
-    with: { tracks: { columns: { id: true } } },
+    with: { tracks: { columns: { id: true }, limit: 1 } },
   });
   const unusedAlbumIds = allAlbums
     .filter(({ tracks }) => tracks.length === 0)
@@ -193,12 +208,15 @@ export async function removeUnusedCategories() {
   const allArtists = await db.query.artists.findMany({
     columns: { name: true },
     with: {
-      albums: { columns: { id: true } },
-      tracks: { columns: { id: true } },
+      //? Relations used to filter out artists with no albums & tracks.
+      albums: { columns: { id: true }, limit: 1 },
+      tracksToArtists: { columns: { trackId: true }, limit: 1 },
     },
   });
   const unusedArtistNames = allArtists
-    .filter(({ albums, tracks }) => albums.length === 0 && tracks.length === 0)
+    .filter(
+      (rel) => rel.albums.length === 0 && rel.tracksToArtists.length === 0,
+    )
     .map(({ name }) => name);
   await db.delete(artists).where(inArray(artists.name, unusedArtistNames));
 }
@@ -348,7 +366,8 @@ async function getTrackMetadata(asset: MediaLibraryAsset) {
   return {
     id,
     name: t.title?.trim() || removeFileExtension(filename),
-    artistName: t.artist?.trim() || null,
+    /** @deprecated Do not use this field directly. */
+    rawArtistName: t.artist?.trim() || null,
     album: newAlbum,
     track: t.trackNumber,
     disc: t.discNumber,

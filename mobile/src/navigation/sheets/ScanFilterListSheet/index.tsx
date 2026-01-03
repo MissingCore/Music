@@ -103,6 +103,7 @@ function FilterForm(props: {
           onChangeText={(text) => setNewPath(text)}
           placeholder="/storage/emulated/0"
           className="shrink grow"
+          forSheet
         />
         <IconButton
           Icon={CreateNewFolder}

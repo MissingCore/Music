@@ -1,9 +1,51 @@
+import { toast } from "@backpackapp-io/react-native-toast";
+import {
+  MetadataPresets,
+  getMetadata,
+} from "@missingcore/react-native-metadata-retriever";
 import type { StaticScreenProps } from "@react-navigation/native";
+import { eq } from "drizzle-orm";
+import type { ParseKeys } from "i18next";
+import { useTranslation } from "react-i18next";
+import { View } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import { z } from "zod/mini";
 
+import { db } from "~/db";
+import { tracksToArtists } from "~/db/schema";
+
+import i18next from "~/modules/i18n";
+import { Add } from "~/resources/icons/Add";
+import { Check } from "~/resources/icons/Check";
+import { Close } from "~/resources/icons/Close";
+import { upsertAlbums } from "~/api/album";
+import { createArtists } from "~/api/artist";
+import { updateTrack } from "~/api/track";
 import { useTrack } from "~/queries/track";
-import { ModifyTrackBase } from "./ModifyViewBase";
+import { Resynchronize } from "~/stores/Playback/actions";
+import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
+import {
+  cleanupImages,
+  getArtworkUri,
+} from "~/modules/scanning/helpers/artwork";
+import { FormStateProvider, useFormStateContext } from "~/hooks/useFormState";
 
-import { PagePlaceholder } from "../../components/Placeholder";
+import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
+import { router } from "~/navigation/utils/router";
+import { PagePlaceholder } from "~/navigation/components/Placeholder";
+import { ScreenOptions } from "~/navigation/components/ScreenOptions";
+
+import { Colors } from "~/constants/Styles";
+import { clearAllQueries } from "~/lib/react-query";
+import { cn } from "~/lib/style";
+import { ToastOptions } from "~/lib/toast";
+import type { ArrayObjectKeys } from "~/utils/types";
+import { ScrollablePresets } from "~/components/Defaults";
+import { Divider } from "~/components/Divider";
+import { ExtendedTButton } from "~/components/Form/Button";
+import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
+import { TextInput } from "~/components/Form/Input";
+import { StyledText, TEm } from "~/components/Typography/StyledText";
 
 type Props = StaticScreenProps<{ id: string }>;
 
@@ -13,7 +55,328 @@ export default function ModifyTrack({
   },
 }: Props) {
   const { isPending, error, data } = useTrack(id);
+  const { offset, ...rest } = useFloatingContent();
 
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
-  return <ModifyTrackBase initialData={data} />;
+  return (
+    <FormStateProvider
+      schema={TrackMetadataSchema}
+      initData={{
+        id: data.id,
+        uri: data.uri,
+        name: data.name,
+        artists: data.tracksToArtists.map(({ artistName }) => artistName),
+        album: data.album ? data.album.name : null,
+        albumArtist: data.album ? data.album.artistName : null,
+        year: data.year,
+        disc: data.disc,
+        track: data.track,
+      }}
+      onSubmit={onEditTrack}
+      onConstraints={({ artists }) =>
+        artists.length === new Set(artists.map((artist) => artist.trim())).size
+      }
+    >
+      <ScreenConfig />
+      <MetadataForm bottomOffset={offset} />
+      <ResetWorkflow {...rest} uri={data.uri} />
+    </FormStateProvider>
+  );
 }
+
+//#region Screen Configuration
+function ScreenConfig() {
+  const { t } = useTranslation();
+  const { canSubmit, isSubmitting, onSubmit } = useFormState();
+  return (
+    <ScreenOptions
+      title="feat.trackMetadata.title"
+      // Hacky solution to disable the back button when submitting.
+      headerLeft={isSubmitting ? () => undefined : undefined}
+      headerRight={() => (
+        <IconButton
+          Icon={Check}
+          accessibilityLabel={t("form.apply")}
+          onPress={onSubmit}
+          disabled={!canSubmit || isSubmitting}
+        />
+      )}
+    />
+  );
+}
+//#endregion
+
+//#region Metadata Form
+function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
+  const { t } = useTranslation();
+  return (
+    <KeyboardAwareScrollView
+      bottomOffset={16}
+      {...ScrollablePresets}
+      // Remove 24px as `KeyboardAwareScrollView` adds an element at the
+      // end of the ScrollView, causing an additional application of `gap`.
+      contentContainerStyle={{ paddingBottom: bottomOffset - 24 }}
+      contentContainerClassName="gap-6 p-4"
+    >
+      <StyledText dim className="text-sm">
+        {t("feat.trackMetadata.description.line1")}
+        {"\n\n"}
+        {t("feat.trackMetadata.description.line2")}
+      </StyledText>
+      <Divider />
+
+      <FormInput labelKey="feat.trackMetadata.extra.name" field="name" />
+      <ArrayFormInput labelKey="term.artists" field="artists" />
+      <FormInput labelKey="term.album" field="album" />
+      <FormInput
+        labelKey="feat.trackMetadata.extra.albumArtist"
+        field="albumArtist"
+      />
+      <View className="flex-row items-end gap-6">
+        <FormInput
+          labelKey="feat.trackMetadata.extra.year"
+          field="year"
+          numeric
+        />
+        <FormInput
+          labelKey="feat.trackMetadata.extra.trackNumber"
+          field="track"
+          numeric
+        />
+      </View>
+      <FormInput
+        labelKey="feat.trackMetadata.extra.disc"
+        field="disc"
+        numeric
+      />
+    </KeyboardAwareScrollView>
+  );
+}
+//#endregion
+
+//#region Form Input
+function FormInput(props: {
+  labelKey: ParseKeys;
+  field: keyof TrackMetadata;
+  numeric?: boolean;
+}) {
+  const { data, setField, isSubmitting } = useFormState();
+
+  const value = data[props.field];
+  const onChange = (text: string) => {
+    const realNum = text.trim() === "" ? null : +text;
+    setField((prev) => ({
+      ...prev,
+      [props.field]: props.numeric
+        ? Number.isNaN(realNum)
+          ? prev[props.field] // Use prior value if we get `NaN`.
+          : realNum
+        : text,
+    }));
+  };
+
+  return (
+    <View className="flex-1">
+      <TEm textKey={props.labelKey} dim />
+      <TextInput
+        inputMode={props.numeric ? "numeric" : undefined}
+        editable={!isSubmitting}
+        value={value !== null ? String(value) : ""}
+        onChangeText={onChange}
+        className="w-full border-b border-foreground/60"
+      />
+    </View>
+  );
+}
+
+function ArrayFormInput(props: {
+  labelKey: ParseKeys;
+  field: ArrayObjectKeys<TrackMetadata>;
+}) {
+  const { t } = useTranslation();
+  const { data, setField, isSubmitting } = useFormState();
+
+  const field = props.field;
+  const value = data[field];
+
+  return (
+    <View>
+      <TEm textKey={props.labelKey} dim />
+      {value.map((value, row) => (
+        <View
+          key={row}
+          className={cn("flex-row items-center", { "mt-2": row > 0 })}
+        >
+          <TextInput
+            editable={!isSubmitting}
+            value={value}
+            onChangeText={(text) =>
+              setField((prev) => ({
+                ...prev,
+                [field]: prev[field].map((val, idx) =>
+                  idx === row ? text : val,
+                ),
+              }))
+            }
+            className="shrink grow border-b border-foreground/60"
+          />
+          <IconButton
+            Icon={Close}
+            accessibilityLabel={t("template.entryRemove", { name: value })}
+            onPress={() =>
+              setField((prev) => ({
+                ...prev,
+                [field]: prev[field].filter((_, idx) => idx !== row),
+              }))
+            }
+            disabled={isSubmitting}
+            className="shrink-0"
+          />
+        </View>
+      ))}
+      <FilledIconButton
+        Icon={Add}
+        accessibilityLabel=""
+        onPress={() =>
+          setField((prev) => ({ ...prev, [field]: [...prev[field], ""] }))
+        }
+        disabled={isSubmitting}
+        className="mt-2 rounded-md bg-yellow"
+        _iconColor={Colors.neutral0}
+      />
+    </View>
+  );
+}
+//#endregion
+
+//#region Reset Workflow
+/** Logic to set the form fields to the embedded metadata from the track. */
+function ResetWorkflow(
+  props: Omit<ReturnType<typeof useFloatingContent>, "offset"> & {
+    uri: string;
+  },
+) {
+  const { setField, isSubmitting, setIsSubmitting } = useFormState();
+
+  const onReset = async () => {
+    setIsSubmitting(true);
+    try {
+      const trackMetadata = await getMetadata(props.uri, [
+        ...MetadataPresets.standard,
+        "discNumber",
+      ]);
+      setField((prev) => ({
+        ...prev,
+        name: trackMetadata.title ?? "",
+        artists: trackMetadata.artist ? [trackMetadata.artist] : [],
+        album: trackMetadata.albumTitle,
+        albumArtist: trackMetadata.albumArtist,
+        year: trackMetadata.year,
+        disc: trackMetadata.discNumber,
+        track: trackMetadata.trackNumber,
+      }));
+    } catch {}
+    setIsSubmitting(false);
+  };
+
+  return (
+    <View ref={props.floatingRef} {...props.wrapperStyling}>
+      <ExtendedTButton
+        textKey="form.reset"
+        onPress={onReset}
+        disabled={isSubmitting}
+        className="bg-red"
+        textClassName="text-neutral100"
+      />
+    </View>
+  );
+}
+//#endregion
+
+//#region Schema
+const NonEmptyStringSchema = z.string().check(z.trim(), z.minLength(1));
+const NullableStringSchema = z.nullable(
+  z.pipe(
+    z.string().check(z.trim()), // String will get trimmed.
+    z.transform((str) => (str === "" ? null : str)),
+  ),
+);
+const NullableRealNumber = z.nullable(z.number().check(z.int(), z.gt(0)));
+const TrackMetadataSchema = z.object({
+  // Additional context:
+  id: z.string(),
+  uri: z.string(),
+  // Actual form fields:
+  name: NonEmptyStringSchema,
+  artists: z.array(NonEmptyStringSchema),
+  album: NullableStringSchema,
+  albumArtist: NullableStringSchema,
+  year: NullableRealNumber,
+  disc: NullableRealNumber,
+  track: NullableRealNumber,
+});
+
+type TrackMetadata = z.infer<typeof TrackMetadataSchema>;
+
+function useFormState() {
+  return useFormStateContext<TrackMetadata>();
+}
+//#endregion
+
+//#region Submit Handler
+async function onEditTrack(data: TrackMetadata) {
+  try {
+    const { id, uri, album, albumArtist, artists, ...trackBase } = data;
+
+    const updatedTrack = {
+      ...trackBase,
+      embeddedArtwork: null as string | null,
+      modificationTime: Date.now(),
+      editedMetadata: Date.now(),
+    };
+    const updatedAlbum = { name: album, artistName: albumArtist };
+
+    // Add new artists to the database.
+    await Promise.allSettled(
+      [...artists, updatedAlbum.artistName]
+        .filter((name) => name !== null)
+        .map((name) => createArtists([{ name }])),
+    );
+
+    const { uri: artworkUri } = await getArtworkUri(uri);
+
+    // Add new album to the database.
+    let albumId: string | null = null;
+    if (updatedAlbum.name && updatedAlbum.artistName) {
+      const [newAlbum] = await upsertAlbums([
+        {
+          name: updatedAlbum.name,
+          artistName: updatedAlbum.artistName,
+          embeddedArtwork: artworkUri,
+        },
+      ]);
+      if (newAlbum) albumId = newAlbum.id;
+    }
+    if (!albumId) updatedTrack.embeddedArtwork = artworkUri;
+
+    // Replace old artist relations.
+    await db.delete(tracksToArtists).where(eq(tracksToArtists.trackId, id));
+    if (artists.length > 0) {
+      await db
+        .insert(tracksToArtists)
+        .values(artists.map((artistName) => ({ trackId: id, artistName })));
+    }
+
+    await updateTrack(id, { ...updatedTrack, albumId });
+
+    // Revalidate `activeTrack` in Playback store if needed.
+    await Resynchronize.onActiveTrack({ type: "track", id });
+    await cleanupImages();
+    await removeUnusedCategories();
+    clearAllQueries();
+    router.back();
+  } catch {
+    toast.error(i18next.t("err.flow.generic.title"), ToastOptions);
+  }
+}
+//#endregion

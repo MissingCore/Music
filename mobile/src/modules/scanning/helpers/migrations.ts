@@ -8,6 +8,7 @@ import {
   hiddenTracks,
   playedMediaLists,
   tracks,
+  tracksToArtists,
   tracksToPlaylists,
   waveformSamples,
 } from "~/db/schema";
@@ -20,6 +21,8 @@ import type { Tab } from "~/stores/Preference/types";
 import { savePathComponents } from "./folder";
 import type { MigrationOption } from "../constants";
 import { MigrationHistory } from "../constants";
+
+import { chunkArray } from "~/utils/object";
 
 /**
  * Run code to change some values prior to indexing for any changes
@@ -135,6 +138,28 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
           .delete(waveformSamples)
           .where(inArray(waveformSamples.trackId, hiddenTrackIds)),
       ]);
+    }
+  },
+
+  "multi-artist": async () => {
+    const trackArtistNames = await db.query.tracks.findMany({
+      columns: { id: true, rawArtistName: true },
+    });
+
+    // `rawArtistName` should already exist in the Artists table, so only
+    // the junction table needs to be populated.
+    const trackBatches = chunkArray(trackArtistNames, 200);
+    for (const tBatch of trackBatches) {
+      const entries = tBatch
+        .map((relation) => {
+          if (!relation || !relation.rawArtistName) return undefined;
+          return { trackId: relation.id, artistName: relation.rawArtistName };
+        })
+        .filter((entry) => entry !== undefined);
+      if (entries.length > 0) {
+        // Populate junction table with old Artist Name values.
+        await db.insert(tracksToArtists).values(entries).onConflictDoNothing();
+      }
     }
   },
 };

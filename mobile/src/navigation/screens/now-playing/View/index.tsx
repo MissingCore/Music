@@ -1,9 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { I18nManager, Pressable, View } from "react-native";
 
-import type { TrackWithAlbum } from "~/db/schema";
+import type { TrackWithRelations } from "~/db/schema";
 
 import { Favorite } from "~/resources/icons/Favorite";
 import { InstantMix } from "~/resources/icons/InstantMix";
@@ -58,7 +59,7 @@ export default function NowPlaying() {
 
 //#region Metadata
 /** Brief information and actions on the current playing track. */
-function Metadata({ track }: { track: TrackWithAlbum }) {
+function Metadata({ track }: { track: TrackWithRelations }) {
   const { t } = useTranslation();
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
@@ -68,14 +69,9 @@ function Metadata({ track }: { track: TrackWithAlbum }) {
         <Marquee>
           <StyledText className="text-xl/[1.125]">{track.name}</StyledText>
         </Marquee>
-        <MarqueeLink
-          onPress={() =>
-            navigation.popTo("Artist", { id: track.artistName ?? "" })
-          }
-          className="text-red"
-        >
-          {track.artistName}
-        </MarqueeLink>
+        <ArtistsLink
+          artistNames={track.tracksToArtists.map((rel) => rel.artistName)}
+        />
         <MarqueeLink
           onPress={() =>
             navigation.popTo("Album", { id: track.album?.id ?? "" })
@@ -109,6 +105,23 @@ function Metadata({ track }: { track: TrackWithAlbum }) {
         <StyledText className="text-sm/[1.125]"> </StyledText>
       </View>
     </View>
+  );
+}
+
+function ArtistsLink(props: { artistNames: string[] }) {
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  if (props.artistNames.length === 0) return null;
+  return (
+    <Marquee contentContainerClassName="gap-1">
+      {props.artistNames.map((name, index) => (
+        <Fragment key={name}>
+          {index > 0 ? <StyledText className="text-xs">|</StyledText> : null}
+          <Pressable onPress={() => navigation.popTo("Artist", { id: name })}>
+            <StyledText className="text-sm/[1.125] text-red">{name}</StyledText>
+          </Pressable>
+        </Fragment>
+      ))}
+    </Marquee>
   );
 }
 

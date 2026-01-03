@@ -6,6 +6,7 @@ import { BackHandler, View } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
 import type { SlimTrackWithAlbum } from "~/db/slimTypes";
+import { getArtistsString } from "~/db/utils";
 
 import { Add } from "~/resources/icons/Add";
 import { Cancel } from "~/resources/icons/Cancel";
@@ -167,7 +168,7 @@ const RenderItem = memo(
           button
           type="track"
           title={item.name}
-          description={item.artistName ?? "—"}
+          description={getArtistsString(item.tracksToArtists)}
           imageSource={item.artwork}
           delayLongPress={250}
           onLongPress={info.onDragStart}

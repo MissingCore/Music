@@ -17,7 +17,7 @@ import { pickKeys } from "~/utils/object";
 import type { ReservedPlaylistName } from "~/modules/media/constants";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import type { QueryManyWithTracksFn, QueryOneWithTracksFn } from "./types";
-import { getColumns, withAlbum } from "./utils";
+import { getColumns, withRelations } from "./utils";
 
 //#region GET Methods
 const _getPlaylist: QueryOneWithTracksFn<Playlist> =
@@ -32,7 +32,7 @@ const _getPlaylist: QueryOneWithTracksFn<Playlist> =
           with: {
             track: {
               columns: getColumns(options?.trackColumns),
-              ...withAlbum({ defaultWithAlbum: true, ...options }),
+              ...withRelations({ defaultWithAlbum: true, ...options }),
             },
           },
           orderBy: (fields, { asc }) => asc(fields.position),
@@ -62,7 +62,7 @@ const _getPlaylists: QueryManyWithTracksFn<Playlist> =
           with: {
             track: {
               columns: getColumns(options?.trackColumns),
-              ...withAlbum({ defaultWithAlbum: true, ...options }),
+              ...withRelations({ defaultWithAlbum: true, ...options }),
             },
           },
           orderBy: (fields, { asc }) => asc(fields.position),
@@ -93,7 +93,7 @@ const _getSpecialPlaylist: QueryOneWithTracksFn<
   const { isAsc, orderedBy } = sortPreferencesStore.getState();
   const playlistTracks = await db.query.tracks.findMany({
     columns: getColumns(options?.trackColumns),
-    ...withAlbum({ defaultWithAlbum: true, ...options }),
+    ...withRelations({ defaultWithAlbum: true, ...options }),
     ...(ReservedPlaylists.favorites === id
       ? {
           where: (fields, { eq }) => eq(fields.isFavorite, true),

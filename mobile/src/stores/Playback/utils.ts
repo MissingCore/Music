@@ -1,15 +1,18 @@
 import type { AddTrack } from "@weights-ai/react-native-track-player";
+import { eq } from "drizzle-orm";
 
-import type { TrackWithAlbum } from "~/db/schema";
-import { getTrackCover } from "~/db/utils";
+import { db } from "~/db";
+import type { TrackWithRelations } from "~/db/schema";
+import { tracks, tracksToArtists } from "~/db/schema";
+import { getArtistsString, getTrackCover } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
 import { getAlbum } from "~/api/album";
-import { getArtist } from "~/api/artist";
 import { getFolderTracks } from "~/api/folder";
 import { getPlaylist, getSpecialPlaylist } from "~/api/playlist";
 import type { PlayFromSource } from "./types";
 
+import { iAsc } from "~/lib/drizzle";
 import { shuffleArray } from "~/utils/object";
 import { getSafeUri } from "~/utils/string";
 import type { ReservedPlaylistName } from "~/modules/media/constants";
@@ -31,12 +34,12 @@ export function extractTrackId(key: string) {
 }
 
 /** Format track data to be used with the RNTP queue. */
-export function formatTrackforPlayer(track: TrackWithAlbum) {
+export function formatTrackforPlayer(track: TrackWithRelations) {
   return {
     url: getSafeUri(track.uri),
     artwork: getTrackCover(track) ?? undefined,
     title: track.name,
-    artist: track.artistName ?? "No Artist",
+    artist: getArtistsString(track.tracksToArtists, false) || "No Artist",
     album: track.album?.name ?? undefined,
     duration: track.duration,
     id: track.id,
@@ -77,12 +80,13 @@ export async function getTrackIdsList({ type, id }: PlayFromSource) {
       });
       trackIds = data.tracks.map(({ id }) => id);
     } else if (type === "artist") {
-      const data = await getArtist(id, {
-        columns: [],
-        trackColumns: ["id"],
-        withAlbum: false,
-      });
-      trackIds = data.tracks.map(({ id }) => id);
+      const data = await db
+        .select({ id: tracks.id })
+        .from(tracksToArtists)
+        .where(eq(tracksToArtists.artistName, id))
+        .innerJoin(tracks, eq(tracksToArtists.trackId, tracks.id))
+        .orderBy(iAsc(tracks.name));
+      trackIds = data.map((t) => t.id);
     } else if (type === "folder") {
       const data = await getFolderTracks(id); // `id` contains pathname.
       trackIds = data.map(({ id }) => id);

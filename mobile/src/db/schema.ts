@@ -20,7 +20,7 @@ export const artists = sqliteTable("artists", {
 
 export const artistsRelations = relations(artists, ({ many }) => ({
   albums: many(albums),
-  tracks: many(tracks),
+  tracksToArtists: many(tracksToArtists),
 }));
 
 export const albums = sqliteTable(
@@ -55,7 +55,11 @@ export const albumsRelations = relations(albums, ({ one, many }) => ({
 export const tracks = sqliteTable("tracks", {
   id: text().primaryKey(),
   name: text().notNull(),
-  artistName: text().references(() => artists.name),
+  /**
+   * Stores the raw "Artist Name" value embedded in the file.
+   * @deprecated Access the artist name through the new junction table.
+   */
+  rawArtistName: text(),
   albumId: text().references(() => albums.id),
   // Album relations
   disc: integer(),
@@ -93,14 +97,38 @@ export const tracks = sqliteTable("tracks", {
 });
 
 export const tracksRelations = relations(tracks, ({ one, many }) => ({
-  artist: one(artists, {
-    fields: [tracks.artistName],
-    references: [artists.name],
-  }),
   album: one(albums, { fields: [tracks.albumId], references: [albums.id] }),
+  tracksToArtists: many(tracksToArtists),
   tracksToPlaylists: many(tracksToPlaylists),
   waveformSample: one(waveformSamples),
 }));
+
+export const tracksToArtists = sqliteTable(
+  "tracks_to_artists",
+  {
+    trackId: text()
+      .notNull()
+      .references(() => tracks.id),
+    artistName: text()
+      .notNull()
+      .references(() => artists.name),
+  },
+  (t) => [primaryKey({ columns: [t.trackId, t.artistName] })],
+);
+
+export const tracksToArtistsRelations = relations(
+  tracksToArtists,
+  ({ one }) => ({
+    artist: one(artists, {
+      fields: [tracksToArtists.artistName],
+      references: [artists.name],
+    }),
+    track: one(tracks, {
+      fields: [tracksToArtists.trackId],
+      references: [tracks.id],
+    }),
+  }),
+);
 
 export const hiddenTracks = sqliteTable("hidden_tracks", {
   id: text().primaryKey(),
@@ -202,13 +230,23 @@ export const trackToWaveformSampleRelations = relations(
 );
 
 export type Artist = InferSelectModel<typeof artists>;
-export type ArtistWithTracks = Prettify<Artist & { tracks: TrackWithAlbum[] }>;
+export type ArtistWithTracks = Prettify<
+  Artist & { tracks: TrackWithRelations[] }
+>;
 
 export type Album = InferSelectModel<typeof albums>;
 export type AlbumWithTracks = Prettify<Album & { tracks: Track[] }>;
 
-export type Track = InferSelectModel<typeof tracks>;
-export type TrackWithAlbum = Prettify<Track & { album: Album | null }>;
+export type Track = Omit<InferSelectModel<typeof tracks>, "rawArtistName"> & {
+  /** @deprecated Access the artist name through the new junction table. */
+  rawArtistName: string | null;
+};
+export type TrackWithRelations = Prettify<
+  Track & {
+    album: Album | null;
+    tracksToArtists: Array<{ artistName: string }>;
+  }
+>;
 
 export type HiddenTrack = InferSelectModel<typeof hiddenTracks>;
 
@@ -216,10 +254,10 @@ export type InvalidTrack = InferSelectModel<typeof invalidTracks>;
 
 export type Playlist = InferSelectModel<typeof playlists>;
 export type PlaylistWithJunction = Prettify<
-  Playlist & { tracksToPlaylists: Array<{ track: TrackWithAlbum }> }
+  Playlist & { tracksToPlaylists: Array<{ track: TrackWithRelations }> }
 >;
 export type PlaylistWithTracks = Prettify<
-  Playlist & { tracks: TrackWithAlbum[] }
+  Playlist & { tracks: TrackWithRelations[] }
 >;
 
 export type TrackToPlaylist = InferSelectModel<typeof tracksToPlaylists>;

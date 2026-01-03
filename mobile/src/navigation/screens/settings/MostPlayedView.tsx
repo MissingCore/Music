@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { db } from "~/db";
+import { getArtistsString } from "~/db/utils";
 
 import { iAsc } from "~/lib/drizzle";
 import { FlatList } from "~/components/Defaults";
@@ -47,15 +48,15 @@ function PlayCountList({ tracks }: { tracks: TrackData[] }) {
       data={tracks}
       keyExtractor={({ id }) => id}
       renderItem={({
-        item: { name, artistName, albumName, playCount },
+        item: { name, artistsString, albumName, playCount },
         index,
       }) => (
         <View className="gap-2">
           <View>
             <StyledText className="text-sm">{name}</StyledText>
-            {artistName ? (
+            {artistsString ? (
               <StyledText dim className="text-foreground/80">
-                {artistName}
+                {artistsString}
               </StyledText>
             ) : null}
             {albumName ? <StyledText dim>{albumName}</StyledText> : null}
@@ -79,7 +80,7 @@ type TrackData = {
   id: string;
   name: string;
   playCount: number;
-  artistName: string | null;
+  artistsString: string | null;
   albumName: string | null;
 };
 
@@ -88,16 +89,23 @@ type MostPlayedPlacement = { placement: number; tracks: TrackData[] };
 async function getMostPlayedTracks() {
   const mostPlayedTracks = await db.query.tracks.findMany({
     where: (fields, { gt }) => gt(fields.playCount, 0),
-    columns: { id: true, name: true, artistName: true, playCount: true },
-    with: { album: { columns: { name: true } } },
+    columns: { id: true, name: true, playCount: true },
+    with: {
+      album: { columns: { name: true } },
+      tracksToArtists: { columns: { artistName: true } },
+    },
     orderBy: (fields, { desc }) => [desc(fields.playCount), iAsc(fields.name)],
     limit: 100,
   });
 
   const groupedPlacement: MostPlayedPlacement[] = [];
   let recentPlacement: MostPlayedPlacement | undefined;
-  mostPlayedTracks.forEach(({ album, ...track }) => {
-    const formattedTrack = { ...track, albumName: album?.name ?? null };
+  mostPlayedTracks.forEach(({ album, tracksToArtists, ...track }) => {
+    const formattedTrack = {
+      ...track,
+      albumName: album?.name ?? null,
+      artistsString: getArtistsString(tracksToArtists, false),
+    };
 
     if (!recentPlacement) {
       recentPlacement = { placement: 1, tracks: [formattedTrack] };

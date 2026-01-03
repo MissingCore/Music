@@ -2,10 +2,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
 import type { artists } from "~/db/schema";
-import { formatForCurrentScreen } from "~/db/utils";
+import { getTrackCover } from "~/db/utils";
 
 import { updateArtist } from "~/api/artist";
 import { queries as q } from "./keyStore";
+
+import { formatSeconds } from "~/utils/number";
 
 //#region Queries
 /** Get specified artist. */
@@ -18,9 +20,20 @@ export function useArtistForScreen(artistName: string) {
   const { t } = useTranslation();
   return useQuery({
     ...q.artists.detail(artistName),
-    select: ({ albums, ...artist }) => ({
-      ...formatForCurrentScreen({ type: "artist", data: artist, t }),
+    select: ({ name, artwork, albums, tracks }) => ({
+      name,
+      imageSource: artwork,
+      metadata: [
+        t("plural.track", { count: tracks.length }),
+        formatSeconds(tracks.reduce((total, curr) => total + curr.duration, 0)),
+      ],
       albums: albums.length > 0 ? albums : null,
+      tracks: tracks.map((track) => ({
+        id: track.id,
+        title: track.name,
+        description: track.album?.name ?? "—",
+        imageSource: getTrackCover(track),
+      })),
     }),
   });
 }
@@ -31,8 +44,8 @@ export function useArtists() {
     ...q.artists.all,
     select: (data) =>
       data
-        .filter(({ tracks }) => tracks.length > 0)
-        .map(({ tracks: _, ...artist }) => artist)
+        .filter(({ tracksToArtists }) => tracksToArtists.length > 0)
+        .map(({ tracksToArtists: _, ...artist }) => artist)
         .sort((a, b) => a.name.localeCompare(b.name)),
   });
 }

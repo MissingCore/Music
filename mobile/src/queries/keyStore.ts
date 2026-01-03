@@ -2,10 +2,10 @@ import { createQueryKeyStore } from "@lukemorales/query-key-factory";
 import { eq } from "drizzle-orm";
 
 import { db } from "~/db";
-import { albums, playlists } from "~/db/schema";
+import { albums, playlists, tracks, tracksToArtists } from "~/db/schema";
 
 import { getAlbum, getAlbums } from "~/api/album";
-import { getArtist, getArtistAlbums } from "~/api/artist";
+import { getArtistAlbums } from "~/api/artist";
 import { getFolder } from "~/api/folder";
 import { getPlaylist, getPlaylists, getSpecialPlaylist } from "~/api/playlist";
 import {
@@ -14,7 +14,7 @@ import {
 } from "~/api/recent";
 import { getTrack, getTrackPlaylists, getTracks } from "~/api/track";
 
-import { iAsc } from "~/lib/drizzle";
+import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { ReservedPlaylists } from "~/modules/media/constants";
 
 /** All of the reusuable query keys. */
@@ -41,17 +41,38 @@ export const queries = createQueryKeyStore({
       queryKey: null,
       queryFn: () =>
         db.query.artists.findMany({
-          columns: { name: true, artwork: true },
-          with: { tracks: { columns: { id: true }, limit: 1 } },
           orderBy: (fields) => iAsc(fields.name),
+          //? Relation used to filter out artists with no tracks.
+          with: { tracksToArtists: { columns: { trackId: true }, limit: 1 } },
         }),
     },
     detail: (artistName: string) => ({
       queryKey: [artistName],
-      queryFn: async () => ({
-        ...(await getArtist(artistName)),
-        albums: await getArtistAlbums(artistName),
-      }),
+      queryFn: async () => {
+        const [artistData, artistTracks, artistAlbums] = await Promise.all([
+          throwIfNoResults(
+            db.query.artists.findFirst({
+              where: (fields, { eq }) => eq(fields.name, artistName),
+            }),
+          ),
+          //? Get the tracks associated with the artist in alphabetical order.
+          db
+            .select({
+              id: tracks.id,
+              name: tracks.name,
+              artwork: tracks.artwork,
+              duration: tracks.duration,
+              album: { name: albums.name, artwork: albums.artwork },
+            })
+            .from(tracksToArtists)
+            .where(eq(tracksToArtists.artistName, artistName))
+            .innerJoin(tracks, eq(tracksToArtists.trackId, tracks.id))
+            .leftJoin(albums, eq(tracks.albumId, albums.id))
+            .orderBy(iAsc(tracks.name)),
+          getArtistAlbums(artistName),
+        ]);
+        return { ...artistData, tracks: artistTracks, albums: artistAlbums };
+      },
     }),
   },
   /** Query keys used in `useQuery` for favorite media. */
@@ -97,7 +118,6 @@ export const queries = createQueryKeyStore({
           columns: [
             "id",
             "name",
-            "artistName",
             "duration",
             "artwork",
             "discoverTime",

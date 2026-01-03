@@ -10,6 +10,7 @@ import { hiddenTracks } from "~/db/schema";
 
 import { VisibilityOff } from "~/resources/icons/VisibilityOff";
 
+import { cn } from "~/lib/style";
 import { bgWait } from "~/utils/promise";
 import { FlashList, FlatList } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
@@ -94,8 +95,8 @@ function ScreenContents(props: { data: HiddenTrack[] }) {
       ref={handleOnUnmount}
       data={groupedHiddenTracks}
       keyExtractor={({ monthYearStr }) => monthYearStr}
-      renderItem={({ item }) => (
-        <View className="gap-2">
+      renderItem={({ item, index }) => (
+        <View className={cn("gap-2", { "mt-4": index > 0 })}>
           <Em className="text-xs">{item.monthYearStr}</Em>
           <SegmentedList>
             {item.dayEntries.map(({ day, tracks }) => (

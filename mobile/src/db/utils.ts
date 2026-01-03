@@ -3,10 +3,9 @@ import type { TFunction } from "i18next";
 import type {
   Album,
   AlbumWithTracks,
-  ArtistWithTracks,
   PlaylistWithTracks,
   Track,
-  TrackWithAlbum,
+  TrackWithRelations,
 } from "./schema";
 import type {
   Artwork,
@@ -38,6 +37,20 @@ export function getPlaylistCover(playlist: {
 /** Get the cover of a track. */
 export function getTrackCover({ artwork, album }: TrackArtwork) {
   return artwork ?? album?.artwork ?? null;
+}
+//#endregion
+
+//#region Artist Junction Table Helpers
+/** Generate a string listing out all the artists. */
+export function getArtistsString<T extends boolean = true>(
+  data: Array<{ artistName: string }>,
+  withFallback?: T,
+) {
+  const _withFallback = withFallback === undefined ? true : withFallback;
+  return (
+    data.map((t) => t.artistName).join(", ") ||
+    ((_withFallback ? "—" : null) as T extends true ? string : string | null)
+  );
 }
 //#endregion
 
@@ -101,24 +114,22 @@ export function formatForMediaCard({ type, data, t }: MediaCardFormatter) {
 
 /** Format data to be used in `<Track />`. */
 export function formatForTrack(
-  type: MediaType,
-  track: AtLeast<
-    Track,
-    "id" | "name" | "artistName" | "duration" | "artwork"
-  > & {
-    album: AtLeast<Album, "name" | "artistName" | "artwork"> | null;
+  type: Exclude<MediaType, "artist">,
+  track: AtLeast<Track, "id" | "name" | "duration" | "artwork"> & {
+    album: AtLeast<Album, "artistName" | "artwork"> | null;
+    tracksToArtists: Array<{ artistName: string }>;
   },
 ) {
-  const { id, name, artistName, duration, album } = track;
+  const { id, name, duration, album, tracksToArtists } = track;
 
   const imageSource = type !== "album" ? getTrackCover(track) : null;
-  let description = artistName ?? "—";
-  if (type === "artist") description = album?.name ?? "—";
-  else if (type === "album") {
+  let description = getArtistsString(tracksToArtists);
+  if (type === "album") {
     description = formatSeconds(duration);
-    if (artistName && album?.artistName !== artistName) {
-      description += ` • ${artistName}`;
-    }
+    const artistNames = tracksToArtists
+      .map((rel) => rel.artistName)
+      .filter((name) => name !== album?.artistName);
+    if (artistNames.length > 0) description += ` • ${artistNames.join(", ")}`;
   }
 
   return { id, imageSource, title: name, description } satisfies TrackContent;
@@ -128,7 +139,6 @@ export function formatForTrack(
 //#region Format for Screen
 type ScreenFormatter = Prettify<
   { t: TFunction } & (
-    | { type: "artist"; data: ArtistWithTracks }
     | { type: "album"; data: AlbumWithTracks }
     | { type: "playlist"; data: PlaylistWithTracks }
   )
@@ -160,8 +170,10 @@ export function formatForCurrentScreen({ type, data, t }: ScreenFormatter) {
     name: data.name,
     imageSource: imgSrc,
     metadata,
-    tracks: (data.tracks as TrackWithAlbum[]).map((track) => {
-      if (!isTrackWithAlbum(track)) (track as TrackWithAlbum).album = albumInfo;
+    tracks: (data.tracks as TrackWithRelations[]).map((track) => {
+      if (!isTrackWithAlbum(track)) {
+        (track as TrackWithRelations).album = albumInfo;
+      }
       const formattedTrack = formatForTrack(type, track) as ScreenTrack;
       formattedTrack.disc = track.disc;
       formattedTrack.track = track.track;
@@ -203,8 +215,8 @@ function getCollage(tracks: TrackArtwork[]) {
 
 /** Determines if a `Track` is actually an `TrackWithAlbum`. */
 function isTrackWithAlbum(
-  track: Track | TrackWithAlbum,
-): track is TrackWithAlbum {
+  track: Track | TrackWithRelations,
+): track is TrackWithRelations {
   return Object.hasOwn(track, "album");
 }
 //#endregion

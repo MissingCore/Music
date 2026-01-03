@@ -7,10 +7,10 @@ import { formatForMediaCard, formatForTrack } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
 import { getAlbum } from "./album";
-import { getArtist } from "./artist";
 import { getFolderTracks } from "./folder";
 import { getPlaylist, getSpecialPlaylist } from "./playlist";
 
+import { throwIfNoResults } from "~/lib/drizzle";
 import type { ReservedPlaylistName } from "~/modules/media/constants";
 import { ReservedNames, ReservedPlaylists } from "~/modules/media/constants";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
@@ -46,15 +46,10 @@ export async function getRecentlyPlayedTracks() {
   const recentTracks = await db.query.tracks.findMany({
     where: (fields, { gt }) =>
       gt(fields.lastPlayedAt, Date.now() - RECENT_RANGE_MS),
-    columns: {
-      id: true,
-      name: true,
-      artistName: true,
-      duration: true,
-      artwork: true,
-    },
+    columns: { id: true, name: true, duration: true, artwork: true },
     with: {
       album: { columns: { name: true, artistName: true, artwork: true } },
+      tracksToArtists: { columns: { artistName: true } },
     },
     orderBy: (fields, { desc }) => desc(fields.lastPlayedAt),
   });
@@ -133,11 +128,14 @@ async function getRecentListEntry({ id, type }: PlayFromSource) {
       data.tracks = [];
       entry = formatForMediaCard({ type: "album", data, t: i18next.t });
     } else if (type === "artist") {
-      const data = await getArtist(id, {
-        columns: ["name", "artwork"],
-        trackColumns: ["id"],
-        withAlbum: false,
-      });
+      const { tracksToArtists, ...rest } = await throwIfNoResults(
+        db.query.artists.findFirst({
+          where: (fields, { eq }) => eq(fields.name, id),
+          //? Relation used to count number of tracks.
+          with: { tracksToArtists: { columns: { trackId: true } } },
+        }),
+      );
+      const data = { ...rest, tracks: tracksToArtists };
       entry = formatForMediaCard({ type: "artist", data, t: i18next.t });
     } else if (type === "folder") {
       const numTracks = (await getFolderTracks(id)).length;
