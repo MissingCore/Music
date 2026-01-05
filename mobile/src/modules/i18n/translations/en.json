@@ -252,6 +252,13 @@
     "minTrackDuration": {
       "title": "Minimum Track Duration"
     },
+    "separator": {
+      "title": "Multi-Value Separator",
+      "description": {
+        "line1": "Applies to new tracks. Use the Deep Rescan feature otherwise.",
+        "line2": "Warning: This may result in some tags being incorrectly interpreted as having multiple values."
+      }
+    },
     "experimental": {
       "title": "Experimental Features"
     },
