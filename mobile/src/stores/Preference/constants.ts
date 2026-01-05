@@ -82,6 +82,8 @@ export interface PreferenceStore {
   listBlock: string[];
   /** Minimum number of seconds a track needs to have to be saved. */
   minSeconds: number;
+  /** Strings used to determine multi-value items. */
+  separators: string[];
 
   /** If the user should be notified about `-rc` versions. */
   rcNotification: boolean;

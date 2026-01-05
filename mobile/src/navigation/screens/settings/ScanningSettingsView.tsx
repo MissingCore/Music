@@ -19,6 +19,7 @@ export default function ScanningSettings() {
   const allowList = usePreferenceStore((s) => s.listAllow);
   const blockList = usePreferenceStore((s) => s.listBlock);
   const ignoreDuration = usePreferenceStore((s) => s.minSeconds);
+  const delimiters = usePreferenceStore((s) => s.separators);
   const rescan = useRescanForTracks();
   const allowListSheetRef = useSheetRef();
   const blockListSheetRef = useSheetRef();
@@ -70,6 +71,11 @@ export default function ScanningSettings() {
             onPress={() => minDurationSheetRef.current?.present()}
           />
         </SegmentedList>
+
+        <SegmentedList.Item
+          labelTextKey="feat.separators.title"
+          supportingText={t("plural.entry", { count: delimiters.length })}
+        />
       </StandardScrollLayout>
     </>
   );
