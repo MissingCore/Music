@@ -43,13 +43,7 @@ export function useInputForm(args: {
   }, [value, canSubmit]);
 
   return useMemo(
-    () => ({
-      value,
-      onChange: (text: string) => setValue(text),
-      canSubmit,
-      isSubmitting,
-      onSubmit,
-    }),
+    () => ({ value, onChange: setValue, canSubmit, isSubmitting, onSubmit }),
     [value, canSubmit, isSubmitting, onSubmit],
   );
 }
