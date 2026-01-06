@@ -65,13 +65,13 @@ export const albumsToArtists = sqliteTable(
 export const albumsToArtistsRelations = relations(
   albumsToArtists,
   ({ one }) => ({
+    album: one(albums, {
+      fields: [albumsToArtists.albumId],
+      references: [albums.id],
+    }),
     artist: one(artists, {
       fields: [albumsToArtists.artistName],
       references: [artists.name],
-    }),
-    track: one(albums, {
-      fields: [albumsToArtists.albumId],
-      references: [albums.id],
     }),
   }),
 );
