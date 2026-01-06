@@ -37,6 +37,7 @@
   },
 
   "template": {
+    "entryAdd": "Add `{{- name}}`.",
     "entryAdded": "`{{- name}}` added.",
     "entryRemove": "Remove `{{- name}}`.",
     "entryRemoved": "Removed `{{- name}}`.",
