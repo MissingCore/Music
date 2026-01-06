@@ -81,9 +81,7 @@ function SeparatorForm() {
         separators: [...prev.separators, trimmedSeparator],
       }));
     },
-    onConstraints: (trimmedSeparator) => {
-      return trimmedSeparator !== "" && !delimiters.includes(trimmedSeparator);
-    },
+    onConstraints: (trimmedSeparator) => !delimiters.includes(trimmedSeparator),
   });
 
   return (
@@ -97,7 +95,7 @@ function SeparatorForm() {
       />
       <FilledIconButton
         Icon={Add}
-        accessibilityLabel={t("template.entryAdd", { name: "" })}
+        accessibilityLabel={t("template.entryAdd", { name: inputForm.value })}
         onPress={async () => {
           Keyboard.dismiss();
           await inputForm.onSubmit();
