@@ -42,7 +42,7 @@ interface SheetProps extends Pick<
 /** Distance between the bottom of the sheet & the navbar / bottom of screen. */
 const EDGE_SPACER = 16;
 const ESTIMATED_TOPAPPBAR_HEIGHT = 56;
-const MAX_SHEET_HEIGHT = 640;
+const MAX_SHEET_HEIGHT = 576;
 
 /**
  * Get the max height of the detached sheet.
