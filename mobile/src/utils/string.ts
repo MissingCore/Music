@@ -54,5 +54,5 @@ export function splitOn(str: string, separators: string[]) {
     splittedStr = updatedSplittedStr;
   }
 
-  return splittedStr;
+  return splittedStr.filter((part) => part.length > 0);
 }
