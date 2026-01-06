@@ -256,8 +256,8 @@
     "separators": {
       "title": "Multi-Value Separators",
       "description": {
-        "line1": "Applies to new tracks. Use the Deep Rescan feature otherwise.",
-        "line2": "Warning: This may result in some tags being incorrectly interpreted as having multiple values."
+        "line1": "Applies to new tracks. Use the Deep Rescan feature to update existing tracks.",
+        "line2": "Warning: This may result in some tags being incorrectly identified as having multiple values."
       }
     },
     "experimental": {
