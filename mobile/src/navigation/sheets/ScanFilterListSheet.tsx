@@ -89,14 +89,16 @@ function FilterForm(props: { listType: FilterList; listEntries: string[] }) {
         [props.listType]: [...prev[props.listType], trimmedPath],
       }));
     },
-    onError: (value) => {
-      toast.error(t("template.notFound", { name: value.trim() }), ToastOptions);
+    onError: (trimmedPath) => {
+      toast.error(t("template.notFound", { name: trimmedPath }), ToastOptions);
     },
-    onConstraints: (path) => {
-      const trimmed = path.trim();
-      const isValid =
-        trimmed !== "/" && trimmed.startsWith("/") && !trimmed.includes("//");
-      return isValid && !props.listEntries.includes(trimmed);
+    onConstraints: (trimmedPath) => {
+      return (
+        trimmedPath !== "/" &&
+        trimmedPath.startsWith("/") &&
+        !trimmedPath.includes("//") &&
+        !props.listEntries.includes(trimmedPath)
+      );
     },
   });
 

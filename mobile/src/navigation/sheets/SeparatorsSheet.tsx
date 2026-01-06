@@ -81,9 +81,8 @@ function SeparatorForm() {
         separators: [...prev.separators, trimmedSeparator],
       }));
     },
-    onConstraints: (separator) => {
-      const trimmed = separator.trim();
-      return trimmed !== "" && !delimiters.includes(trimmed);
+    onConstraints: (trimmedSeparator) => {
+      return trimmedSeparator !== "" && !delimiters.includes(trimmedSeparator);
     },
   });
 

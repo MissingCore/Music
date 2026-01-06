@@ -5,15 +5,14 @@ import { wait } from "~/utils/promise";
 /** Utilize if our form is a single input. */
 export function useInputForm(args: {
   onSubmit: (trimmedValue: string) => void | Promise<void>;
-  onError?: (value: string) => void;
+  onError?: (trimmedValue: string) => void;
   /** Additional validation to check whether we can submit. */
-  onConstraints?: (value: string) => boolean;
+  onConstraints?: (trimmedValue: string) => boolean;
 }) {
   const onConstraintsRef = useRef(args.onConstraints);
   onConstraintsRef.current = args.onConstraints;
   const onSubmitRef = useRef(args.onSubmit);
   onSubmitRef.current = args.onSubmit;
-  onConstraintsRef.current = args.onConstraints;
   const onErrorRef = useRef(args.onError);
   onErrorRef.current = args.onError;
 
@@ -34,10 +33,10 @@ export function useInputForm(args: {
 
     try {
       await wait(1); // Slight bufffer to let state updates run.
-      await onSubmitRef.current(value);
+      await onSubmitRef.current(value.trim());
       setValue("");
     } catch {
-      if (onErrorRef.current) onErrorRef.current(value);
+      if (onErrorRef.current) onErrorRef.current(value.trim());
     }
 
     setIsSubmitting(false);
