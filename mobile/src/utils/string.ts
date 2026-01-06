@@ -34,3 +34,25 @@ export function getSafeUri(uri: string) {
     .replaceAll("[", "%5B")
     .replaceAll("]", "%5D");
 }
+
+/** Recursively split string by specified separators. */
+export function splitOn(str: string, separators: string[]) {
+  const usedSeparators = separators.filter((separator) =>
+    str.includes(separator),
+  );
+  if (usedSeparators.length === 0) return [str];
+
+  let splittedStr = [str];
+
+  for (const separator of usedSeparators) {
+    const updatedSplittedStr: string[] = [];
+    for (const chunk of splittedStr) {
+      for (const segment of chunk.split(separator)) {
+        updatedSplittedStr.push(segment);
+      }
+    }
+    splittedStr = updatedSplittedStr;
+  }
+
+  return splittedStr;
+}
