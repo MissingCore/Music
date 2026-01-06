@@ -29,7 +29,6 @@ export function SeparatorsSheet(props: { ref: TrueSheetRef }) {
     <DetachedSheet
       ref={props.ref}
       titleKey="feat.separators.title"
-      keyboardAndToast
       snapTop
       contentContainerClassName="pb-4"
     >
