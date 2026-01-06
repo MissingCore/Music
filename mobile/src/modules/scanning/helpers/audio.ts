@@ -37,6 +37,7 @@ import {
   addTrailingSlash,
   getSafeUri,
   removeFileExtension,
+  splitOn,
 } from "~/utils/string";
 import { savePathComponents } from "./folder";
 
@@ -97,11 +98,18 @@ export async function findAndSaveAudio() {
       [];
     const newAlbums: Record<string, string[]> = {};
     results.forEach(({ id, rawArtistName, album }) => {
-      addArtist({ artistName: rawArtistName, insertedArtists, newArtists });
       addArtist({ artistName: album?.artistName, insertedArtists, newArtists });
       addAlbum({ album, insertedAlbums, newAlbums });
-      if (rawArtistName) {
-        newArtistRelations.push({ trackId: id, artistName: rawArtistName });
+
+      // Handle case if separators are provided.
+      const splittedArtistName = rawArtistName
+        ? splitOn(rawArtistName, preferenceStore.getState().separators)
+        : [];
+      if (splittedArtistName.length > 0) {
+        splittedArtistName.forEach((artistName) => {
+          addArtist({ artistName, insertedArtists, newArtists });
+          newArtistRelations.push({ trackId: id, artistName });
+        });
       }
     });
 
@@ -127,6 +135,10 @@ export async function findAndSaveAudio() {
     });
     const newIds = newTracks.map(({ id }) => id);
     await upsertTracks(newTracks);
+    // Replace old artist relations.
+    await db
+      .delete(tracksToArtists)
+      .where(inArray(tracksToArtists.trackId, newIds));
     if (newArtistRelations.length > 0) {
       await db
         .insert(tracksToArtists)

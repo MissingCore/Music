@@ -64,6 +64,7 @@ export const preferenceStore = createPersistedSubscribedStore<PreferenceStore>(
     listAllow: [],
     listBlock: [],
     minSeconds: 15,
+    separators: [],
 
     rcNotification: false,
 

@@ -7,6 +7,7 @@ import { useRescanForTracks } from "~/modules/scanning/helpers/rescan";
 import { StandardScrollLayout } from "~/navigation/layouts/StandardScroll";
 import { MinDurationSheet } from "~/navigation/sheets/MinDurationSheet";
 import { ScanFilterListSheet } from "~/navigation/sheets/ScanFilterListSheet";
+import { SeparatorsSheet } from "~/navigation/sheets/SeparatorsSheet";
 
 import { mutateGuard } from "~/lib/react-query";
 import { SegmentedList } from "~/components/List/Segmented";
@@ -19,16 +20,19 @@ export default function ScanningSettings() {
   const allowList = usePreferenceStore((s) => s.listAllow);
   const blockList = usePreferenceStore((s) => s.listBlock);
   const ignoreDuration = usePreferenceStore((s) => s.minSeconds);
+  const delimiters = usePreferenceStore((s) => s.separators);
   const rescan = useRescanForTracks();
   const allowListSheetRef = useSheetRef();
   const blockListSheetRef = useSheetRef();
   const minDurationSheetRef = useSheetRef();
+  const separatorsSheetRef = useSheetRef();
 
   return (
     <>
       <ScanFilterListSheet ref={allowListSheetRef} listType="listAllow" />
       <ScanFilterListSheet ref={blockListSheetRef} listType="listBlock" />
       <MinDurationSheet ref={minDurationSheetRef} />
+      <SeparatorsSheet ref={separatorsSheetRef} />
 
       <StandardScrollLayout>
         <SegmentedList>
@@ -70,6 +74,12 @@ export default function ScanningSettings() {
             onPress={() => minDurationSheetRef.current?.present()}
           />
         </SegmentedList>
+
+        <SegmentedList.Item
+          labelTextKey="feat.separators.title"
+          supportingText={t("plural.entry", { count: delimiters.length })}
+          onPress={() => separatorsSheetRef.current?.present()}
+        />
       </StandardScrollLayout>
     </>
   );
