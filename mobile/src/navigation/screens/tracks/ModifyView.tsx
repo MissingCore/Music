@@ -30,6 +30,7 @@ import {
 } from "~/modules/scanning/helpers/artwork";
 import { FormStateProvider, useFormStateContext } from "~/hooks/useFormState";
 
+import { preferenceStore } from "~/stores/Preference/store";
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 import { router } from "~/navigation/utils/router";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
@@ -39,6 +40,7 @@ import { Colors } from "~/constants/Styles";
 import { clearAllQueries } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { ToastOptions } from "~/lib/toast";
+import { splitOn } from "~/utils/string";
 import type { ArrayObjectKeys } from "~/utils/types";
 import { ScrollablePresets } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
@@ -268,7 +270,9 @@ function ResetWorkflow(
       setField((prev) => ({
         ...prev,
         name: trackMetadata.title ?? "",
-        artists: trackMetadata.artist ? [trackMetadata.artist] : [],
+        artists: trackMetadata.artist
+          ? splitOn(trackMetadata.artist, preferenceStore.getState().separators)
+          : [],
         album: trackMetadata.albumTitle,
         albumArtist: trackMetadata.albumArtist,
         year: trackMetadata.year,
