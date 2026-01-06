@@ -19,7 +19,7 @@ export const artists = sqliteTable("artists", {
 });
 
 export const artistsRelations = relations(artists, ({ many }) => ({
-  albums: many(albums),
+  albumsToArtists: many(albumsToArtists),
   tracksToArtists: many(tracksToArtists),
 }));
 
@@ -44,13 +44,37 @@ export const albums = sqliteTable(
   (t) => [unique().on(t.name, t.artistName)],
 );
 
-export const albumsRelations = relations(albums, ({ one, many }) => ({
-  artist: one(artists, {
-    fields: [albums.artistName],
-    references: [artists.name],
-  }),
+export const albumsRelations = relations(albums, ({ many }) => ({
+  albumsToArtists: many(albumsToArtists),
   tracks: many(tracks),
 }));
+
+export const albumsToArtists = sqliteTable(
+  "albums_to_artists",
+  {
+    albumId: text()
+      .notNull()
+      .references(() => albums.id),
+    artistName: text()
+      .notNull()
+      .references(() => artists.name),
+  },
+  (t) => [primaryKey({ columns: [t.albumId, t.artistName] })],
+);
+
+export const albumsToArtistsRelations = relations(
+  albumsToArtists,
+  ({ one }) => ({
+    artist: one(artists, {
+      fields: [albumsToArtists.artistName],
+      references: [artists.name],
+    }),
+    track: one(albums, {
+      fields: [albumsToArtists.albumId],
+      references: [albums.id],
+    }),
+  }),
+);
 
 export const tracks = sqliteTable("tracks", {
   id: text().primaryKey(),
