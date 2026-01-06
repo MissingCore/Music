@@ -55,11 +55,12 @@ export function SeparatorsSheet(props: { ref: TrueSheetRef }) {
           </View>
         )}
         {...sheetListHandlers}
-        contentContainerClassName="gap-2"
+        className="-my-6"
+        contentContainerClassName="gap-2 pt-6 pb-4"
       />
 
       <Divider />
-      <View className="flex-row gap-2">
+      <View className="flex-row gap-2 pb-2">
         <Info size={16} color={`${foreground}99`} />
         <TStyledText
           textKey="feat.separators.description.line2"
@@ -88,12 +89,11 @@ function SeparatorForm() {
 
   return (
     <View className="flex-row gap-2">
-      {/* FIXME: Noticed w/ RN 0.79, but having a border seems to contribute to the height when it shouldn't. */}
       <TextInput
         editable={!inputForm.isSubmitting}
         value={inputForm.value}
         onChangeText={inputForm.onChange}
-        className="h-12 shrink grow border-b border-foreground/10"
+        className="shrink grow border-b border-foreground/10"
         forSheet
       />
       <FilledIconButton

@@ -23,7 +23,6 @@ import { DetachedSheet } from "~/components/Sheet/Detached";
 import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
-import { ContentPlaceholder } from "../components/Placeholder";
 
 type FilterList = "listAllow" | "listBlock";
 
@@ -51,7 +50,6 @@ export function ScanFilterListSheet(props: {
         />
       ) : null}
       <FilterForm listType={props.listType} listEntries={listEntries} />
-
       <FlatList
         data={listEntries}
         keyExtractor={(item) => item}
@@ -67,17 +65,15 @@ export function ScanFilterListSheet(props: {
             />
           </View>
         )}
-        ListEmptyComponent={
-          <ContentPlaceholder errMsgKey="err.msg.noFilters" />
-        }
         {...sheetListHandlers}
-        contentContainerClassName="gap-2 pb-4"
+        className="-mt-6"
+        contentContainerClassName="gap-2 pt-6 pb-4"
       />
     </DetachedSheet>
   );
 }
 
-/** Form for adding filters to the list. */
+//#region Form
 function FilterForm(props: { listType: FilterList; listEntries: string[] }) {
   const { t } = useTranslation();
   const inputForm = useInputForm({
@@ -144,6 +140,7 @@ function FilterForm(props: { listType: FilterList; listEntries: string[] }) {
     </View>
   );
 }
+//#endregion
 
 //#region Helpers
 async function pickPath() {
