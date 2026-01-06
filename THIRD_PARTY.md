@@ -60,7 +60,7 @@
 | react-native-screens | MIT | https://github.com/software-mansion/react-native-screens |
 | react-native-svg | MIT | https://github.com/software-mansion/react-native-svg |
 | react-native-worklets | MIT | https://github.com/software-mansion/react-native-reanimated/tree/main/packages/react-native-worklets |
-| Roboto Font | Apache-2.0 | https://github.com/googlefonts/roboto |
+| Roboto Font | OFL-1.1 | https://github.com/googlefonts/roboto-3-classic |
 | tailwind-merge | MIT | https://github.com/dcastil/tailwind-merge |
 | uniwind | MIT | https://github.com/uni-stack/uniwind |
 | zod | MIT | https://github.com/colinhacks/zod |
