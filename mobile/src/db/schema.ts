@@ -30,10 +30,10 @@ export const albums = sqliteTable(
       .primaryKey()
       .$defaultFn(() => createId()),
     name: text().notNull(),
-    // The `artistName` is the album artist.
-    artistName: text("artist_name")
-      .notNull()
-      .references(() => artists.name),
+    // Used to uniquely identify an album based on the arbitrary number of artists
+    // it can have.
+    //  - Created by sorting the `artistName` in it's relation and joining with `__`.
+    artistsKey: text().notNull(),
     artwork: text().generatedAlwaysAs(
       (): SQL => sql`coalesce(${albums.altArtwork}, ${albums.embeddedArtwork})`,
     ),
@@ -41,7 +41,7 @@ export const albums = sqliteTable(
     altArtwork: text(),
     isFavorite: integer({ mode: "boolean" }).notNull().default(false),
   },
-  (t) => [unique().on(t.name, t.artistName)],
+  (t) => [unique().on(t.name, t.artistsKey)],
 );
 
 export const albumsRelations = relations(albums, ({ many }) => ({
