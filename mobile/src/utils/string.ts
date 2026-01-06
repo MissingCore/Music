@@ -48,7 +48,7 @@ export function splitOn(str: string, separators: string[]) {
     const updatedSplittedStr: string[] = [];
     for (const chunk of splittedStr) {
       for (const segment of chunk.split(separator)) {
-        updatedSplittedStr.push(segment);
+        updatedSplittedStr.push(segment.trim());
       }
     }
     splittedStr = updatedSplittedStr;
