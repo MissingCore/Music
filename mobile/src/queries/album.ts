@@ -51,7 +51,7 @@ export function useAlbumForScreen(albumId: string) {
               description += ` • ${artistNames.join(", ")}`;
             }
 
-            return { id, title, description, disc, track };
+            return { id, title, description, imageSource: null, disc, track };
           },
         ),
 

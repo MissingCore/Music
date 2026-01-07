@@ -93,7 +93,7 @@ export default function Album({
       />
       <CurrentListLayout
         title={data.name}
-        artist={data.artistName}
+        artists={data.artistNames}
         metadata={data.metadata}
         imageSource={data.imageSource}
         mediaSource={trackSource}
