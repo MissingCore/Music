@@ -96,10 +96,14 @@ export async function upsertAlbums(entries: Array<typeof albums.$inferInsert>) {
     if (newArtists.size > 0) {
       await tx
         .insert(artists)
-        .values([...newArtists].map((name) => ({ name })));
+        .values([...newArtists].map((name) => ({ name })))
+        .onConflictDoNothing();
     }
     if (newAlbumArtistRel.length > 0) {
-      await tx.insert(albumsToArtists).values(newAlbumArtistRel);
+      await tx
+        .insert(albumsToArtists)
+        .values(newAlbumArtistRel)
+        .onConflictDoNothing();
     }
 
     return results;
