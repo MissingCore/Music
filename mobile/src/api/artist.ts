@@ -7,13 +7,22 @@ import { getYearRange } from "~/db/utils";
 //#region GET Methods
 /** Get the albums an artist has released in descending order. */
 export async function getArtistAlbums(id: string) {
-  const allAlbums = await db.query.albums.findMany({
+  const allAlbums = await db.query.albumsToArtists.findMany({
     where: (fields, { eq }) => eq(fields.artistName, id),
-    with: { tracks: { columns: { year: true } } },
+    columns: {},
+    with: {
+      album: {
+        with: {
+          tracks: { columns: { year: true } },
+        },
+      },
+    },
   });
   const albumWithYear = allAlbums
-    .filter(({ tracks }) => tracks.length > 0)
-    .map(({ tracks, ...album }) => ({ ...album, year: getYearRange(tracks) }));
+    .filter(({ album }) => album.tracks.length > 0)
+    .map(({ album: { tracks, ...album } }) => {
+      return { ...album, year: getYearRange(tracks) };
+    });
   // FIXME: Once Hermes supports `toSorted`, use it instead.
   albumWithYear.sort(
     (a, b) =>

@@ -14,6 +14,7 @@ import { getArtistsString, getPlaylistCover, getTrackCover } from "~/db/utils";
 
 import { Close } from "~/resources/icons/Close";
 import { Search } from "~/resources/icons/Search";
+import { AlbumArtistsKey } from "~/api/album.utils";
 import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
@@ -231,9 +232,10 @@ function formatResults(results: Partial<SearchResults>, tab: SearchTab) {
       ...(tab === "all" ? [key as SearchCategories[number]] : []),
       ...data.map((item) => {
         let description: string | undefined;
-        // @ts-expect-error - Album items have an `artistName` field.
-        if (key === "album") description = item.artistName ?? "—";
-        else if (key === "track") {
+        if (key === "album") {
+          // @ts-expect-error - Album items have an `artistsKey` field.
+          description = AlbumArtistsKey.toString(item.artistsKey);
+        } else if (key === "track") {
           // @ts-expect-error - Tracks store their artists in this new field.
           description = getArtistsString(item.tracksToArtists);
         }

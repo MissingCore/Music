@@ -11,7 +11,7 @@ export function useFolderContent(folderPath?: string) {
     ...q.folders.detail(folderPath),
     select: ({ subDirectories, tracks }) => ({
       subDirectories,
-      tracks: tracks.map((track) => formatForTrack("track", track)),
+      tracks: tracks.map((track) => formatForTrack(track)),
     }),
   });
 }

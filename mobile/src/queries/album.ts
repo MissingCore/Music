@@ -1,15 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import { formatForCurrentScreen, formatForMediaCard } from "~/db/utils";
+import { formatForMediaCard, getYearRange } from "~/db/utils";
 
 import { favoriteAlbum, updateAlbum } from "~/api/album";
+import { AlbumArtistsKey } from "~/api/album.utils";
 import { Resynchronize } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { queries as q } from "./keyStore";
 
 import { clearAllQueries } from "~/lib/react-query";
-import { pickKeys } from "~/utils/object";
+import { formatSeconds } from "~/utils/number";
 import { wait } from "~/utils/promise";
 
 //#region Queries
@@ -23,10 +24,38 @@ export function useAlbumForScreen(albumId: string) {
   const { t } = useTranslation();
   return useQuery({
     ...q.albums.detail(albumId),
-    select: (data) => ({
-      ...formatForCurrentScreen({ type: "album", data, t }),
-      ...pickKeys(data, ["artistName", "isFavorite"]),
-    }),
+    select: ({ name, artistsKey, artwork, isFavorite, tracks }) => {
+      const albumArtists = AlbumArtistsKey.deconstruct(artistsKey);
+      const { range } = getYearRange(tracks);
+
+      return {
+        name,
+        imageSource: artwork,
+        metadata: [
+          t("plural.track", { count: tracks.length }),
+          formatSeconds(
+            tracks.reduce((total, curr) => total + curr.duration, 0),
+          ),
+          ...(range !== null ? [range] : []),
+        ],
+        tracks: tracks.map(
+          ({ id, name: title, disc, track, duration, tracksToArtists }) => {
+            let description = formatSeconds(duration);
+            const artistNames = tracksToArtists
+              .map((rel) => rel.artistName)
+              .filter((name) => !albumArtists.includes(name));
+            if (artistNames.length > 0) {
+              description += ` • ${artistNames.join(", ")}`;
+            }
+
+            return { id, title, description, imageSource: null, disc, track };
+          },
+        ),
+
+        artistNames: albumArtists,
+        isFavorite,
+      };
+    },
   });
 }
 

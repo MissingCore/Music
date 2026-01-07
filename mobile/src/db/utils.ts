@@ -1,12 +1,6 @@
 import type { TFunction } from "i18next";
 
-import type {
-  Album,
-  AlbumWithTracks,
-  PlaylistWithTracks,
-  Track,
-  TrackWithRelations,
-} from "./schema";
+import type { Album, PlaylistWithTracks, Track } from "./schema";
 import type {
   Artwork,
   SlimAlbum,
@@ -16,14 +10,13 @@ import type {
 } from "./slimTypes";
 
 import i18next from "~/modules/i18n";
+import { AlbumArtistsKey } from "~/api/album.utils";
 
 import { formatSeconds } from "~/utils/number";
-import { omitKeys } from "~/utils/object";
 import type { AtLeast, Prettify } from "~/utils/types";
 import { ReservedNames } from "~/modules/media/constants";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
 import type { TrackContent } from "~/modules/media/components/Track.type";
-import type { MediaType } from "~/stores/Playback/types";
 
 //#region Artwork Formatters
 /** Get the cover of a playlist. */
@@ -98,7 +91,7 @@ export function formatForMediaCard({ type, data, t }: MediaCardFormatter) {
   let description = t("plural.track", { count: data.tracks.length });
   if (type === "album") {
     id = data.id;
-    description = data.artistName;
+    description = AlbumArtistsKey.toString(data.artistsKey);
   } else if (type === "playlist") {
     source = getPlaylistCover(data);
   }
@@ -114,71 +107,34 @@ export function formatForMediaCard({ type, data, t }: MediaCardFormatter) {
 
 /** Format data to be used in `<Track />`. */
 export function formatForTrack(
-  type: Exclude<MediaType, "artist">,
-  track: AtLeast<Track, "id" | "name" | "duration" | "artwork"> & {
-    album: AtLeast<Album, "artistName" | "artwork"> | null;
+  track: AtLeast<Track, "id" | "name" | "artwork"> & {
+    album: AtLeast<Album, "artwork"> | null;
     tracksToArtists: Array<{ artistName: string }>;
   },
 ) {
-  const { id, name, duration, album, tracksToArtists } = track;
-
-  const imageSource = type !== "album" ? getTrackCover(track) : null;
-  let description = getArtistsString(tracksToArtists);
-  if (type === "album") {
-    description = formatSeconds(duration);
-    const artistNames = tracksToArtists
-      .map((rel) => rel.artistName)
-      .filter((name) => name !== album?.artistName);
-    if (artistNames.length > 0) description += ` • ${artistNames.join(", ")}`;
-  }
+  const { id, name, tracksToArtists } = track;
+  const imageSource = getTrackCover(track);
+  const description = getArtistsString(tracksToArtists);
 
   return { id, imageSource, title: name, description } satisfies TrackContent;
 }
 //#endregion
 
 //#region Format for Screen
-type ScreenFormatter = Prettify<
-  { t: TFunction } & (
-    | { type: "album"; data: AlbumWithTracks }
-    | { type: "playlist"; data: PlaylistWithTracks }
-  )
->;
-
-type ScreenTrack = TrackContent & {
-  disc: number | null;
-  track: number | null;
-};
+type ScreenFormatter = { t: TFunction; data: PlaylistWithTracks };
 
 /** Format data to be used in the `(current)` routes. */
-export function formatForCurrentScreen({ type, data, t }: ScreenFormatter) {
-  const metadata = [
-    t("plural.track", { count: data.tracks.length }),
-    formatSeconds(
-      data.tracks.reduce((total, curr) => total + curr.duration, 0),
-    ),
-  ];
-  if (type === "album") {
-    const { range } = getYearRange(data.tracks);
-    if (range !== null) metadata.unshift(range);
-  }
-
-  const albumInfo = type === "album" ? omitKeys(data, ["tracks"]) : null;
-  let imgSrc: string | string[] | null = data.artwork;
-  if (type === "playlist") imgSrc = getPlaylistCover(data);
-
+export function formatForCurrentScreen({ data, t }: ScreenFormatter) {
   return {
     name: data.name,
-    imageSource: imgSrc,
-    metadata,
-    tracks: (data.tracks as TrackWithRelations[]).map((track) => {
-      if (!isTrackWithAlbum(track)) {
-        (track as TrackWithRelations).album = albumInfo;
-      }
-      const formattedTrack = formatForTrack(type, track) as ScreenTrack;
-      formattedTrack.disc = track.disc;
-      formattedTrack.track = track.track;
-      return formattedTrack;
-    }),
+    imageSource: getPlaylistCover(data),
+    metadata: [
+      t("plural.track", { count: data.tracks.length }),
+      formatSeconds(
+        data.tracks.reduce((total, curr) => total + curr.duration, 0),
+      ),
+    ],
+    tracks: data.tracks.map((track) => formatForTrack(track)),
   };
 }
 //#endregion
@@ -211,12 +167,5 @@ function getCollage(tracks: TrackArtwork[]) {
     .map((track) => getTrackCover(track))
     .filter((artwork) => artwork !== null)
     .slice(0, 4);
-}
-
-/** Determines if a `Track` is actually an `TrackWithAlbum`. */
-function isTrackWithAlbum(
-  track: Track | TrackWithRelations,
-): track is TrackWithRelations {
-  return Object.hasOwn(track, "album");
 }
 //#endregion

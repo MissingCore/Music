@@ -10,7 +10,7 @@ export type TrackArtwork = {
 };
 
 /** Minimum data typically used from `Album`. */
-export type SlimAlbum = Pick<Album, "id" | "name" | "artistName" | "artwork">;
+export type SlimAlbum = Pick<Album, "id" | "name" | "artistsKey" | "artwork">;
 export type SlimAlbumWithTracks = SlimAlbum & { tracks: SlimTrack[] };
 
 /** Minimum data typically used from `Artist`. */

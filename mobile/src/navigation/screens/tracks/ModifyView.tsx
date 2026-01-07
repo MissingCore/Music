@@ -19,10 +19,12 @@ import { Add } from "~/resources/icons/Add";
 import { Check } from "~/resources/icons/Check";
 import { Close } from "~/resources/icons/Close";
 import { upsertAlbums } from "~/api/album";
+import { AlbumArtistsKey } from "~/api/album.utils";
 import { createArtists } from "~/api/artist";
 import { updateTrack } from "~/api/track";
 import { useTrack } from "~/queries/track";
 import { Resynchronize } from "~/stores/Playback/actions";
+import { usePreferenceStore } from "~/stores/Preference/store";
 import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
 import {
   cleanupImages,
@@ -30,7 +32,6 @@ import {
 } from "~/modules/scanning/helpers/artwork";
 import { FormStateProvider, useFormStateContext } from "~/hooks/useFormState";
 
-import { preferenceStore } from "~/stores/Preference/store";
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 import { router } from "~/navigation/utils/router";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
@@ -68,8 +69,10 @@ export default function ModifyTrack({
         uri: data.uri,
         name: data.name,
         artists: data.tracksToArtists.map(({ artistName }) => artistName),
-        album: data.album ? data.album.name : null,
-        albumArtist: data.album ? data.album.artistName : null,
+        album: data.album?.name ?? null,
+        albumArtists: data.album
+          ? AlbumArtistsKey.deconstruct(data.album.artistsKey)
+          : [],
         year: data.year,
         disc: data.disc,
         track: data.track,
@@ -130,9 +133,9 @@ function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
       <FormInput labelKey="feat.trackMetadata.extra.name" field="name" />
       <ArrayFormInput labelKey="term.artists" field="artists" />
       <FormInput labelKey="term.album" field="album" />
-      <FormInput
+      <ArrayFormInput
         labelKey="feat.trackMetadata.extra.albumArtist"
-        field="albumArtist"
+        field="albumArtists"
       />
       <View className="flex-row items-end gap-6">
         <FormInput
@@ -258,6 +261,7 @@ function ResetWorkflow(
     uri: string;
   },
 ) {
+  const delimiters = usePreferenceStore((s) => s.separators);
   const { setField, isSubmitting, setIsSubmitting } = useFormState();
 
   const onReset = async () => {
@@ -271,10 +275,12 @@ function ResetWorkflow(
         ...prev,
         name: trackMetadata.title ?? "",
         artists: trackMetadata.artist
-          ? splitOn(trackMetadata.artist, preferenceStore.getState().separators)
+          ? splitOn(trackMetadata.artist, delimiters)
           : [],
         album: trackMetadata.albumTitle,
-        albumArtist: trackMetadata.albumArtist,
+        albumArtists: trackMetadata.albumArtist
+          ? splitOn(trackMetadata.albumArtist, delimiters)
+          : [],
         year: trackMetadata.year,
         disc: trackMetadata.discNumber,
         track: trackMetadata.trackNumber,
@@ -314,7 +320,7 @@ const TrackMetadataSchema = z.object({
   name: NonEmptyStringSchema,
   artists: z.array(NonEmptyStringSchema),
   album: NullableStringSchema,
-  albumArtist: NullableStringSchema,
+  albumArtists: z.array(NonEmptyStringSchema),
   year: NullableRealNumber,
   disc: NullableRealNumber,
   track: NullableRealNumber,
@@ -330,7 +336,7 @@ function useFormState() {
 //#region Submit Handler
 async function onEditTrack(data: TrackMetadata) {
   try {
-    const { id, uri, album, albumArtist, artists, ...trackBase } = data;
+    const { id, uri, album, albumArtists, artists, ...trackBase } = data;
 
     const updatedTrack = {
       ...trackBase,
@@ -338,11 +344,14 @@ async function onEditTrack(data: TrackMetadata) {
       modificationTime: Date.now(),
       editedMetadata: Date.now(),
     };
-    const updatedAlbum = { name: album, artistName: albumArtist };
+    const updatedAlbum = {
+      name: album,
+      artistsKey: AlbumArtistsKey.from(albumArtists),
+    };
 
     // Add new artists to the database.
     await Promise.allSettled(
-      [...artists, updatedAlbum.artistName]
+      [...artists, ...albumArtists]
         .filter((name) => name !== null)
         .map((name) => createArtists([{ name }])),
     );
@@ -351,11 +360,11 @@ async function onEditTrack(data: TrackMetadata) {
 
     // Add new album to the database.
     let albumId: string | null = null;
-    if (updatedAlbum.name && updatedAlbum.artistName) {
+    if (updatedAlbum.name && updatedAlbum.artistsKey) {
       const [newAlbum] = await upsertAlbums([
         {
           name: updatedAlbum.name,
-          artistName: updatedAlbum.artistName,
+          artistsKey: updatedAlbum.artistsKey,
           embeddedArtwork: artworkUri,
         },
       ]);

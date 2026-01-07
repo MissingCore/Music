@@ -5,6 +5,7 @@ import { db } from "~/db";
 import type { SlimFolder, SlimTrackWithAlbum } from "~/db/slimTypes";
 
 import { getAlbums } from "~/api/album";
+import { AlbumArtistsKey } from "~/api/album.utils";
 import { getPlaylists } from "~/api/playlist";
 import { getTracks } from "~/api/track";
 
@@ -30,8 +31,8 @@ export function useSearch<TScope extends SearchCategories>(
             i.name.toLocaleLowerCase().includes(q) ||
             // Album's artist name starts with the query.
             // prettier-ignore
-            // @ts-expect-error - We ensured the `artistName` field is present.
-            (!!i.artistName && i.artistName.toLocaleLowerCase().startsWith(q)) ||
+            // @ts-expect-error - We ensured the `artistsKey` field is present.
+            (!!i.artistsKey && AlbumArtistsKey.deconstruct(i.artistsKey).some((artistName) => artistName.toLocaleLowerCase().startsWith(q))) ||
             // One of track's artist names starts with the query.
             // prettier-ignore
             // @ts-expect-error - We ensured the `tracksToArtists` field is present.
@@ -65,7 +66,7 @@ async function getAllMedia() {
   const [allAlbums, allArtists, allFolders, allPlaylists, allTracks] =
     await Promise.all([
       getAlbums({
-        columns: ["id", "name", "artistName", "artwork"],
+        columns: ["id", "name", "artistsKey", "artwork"],
         trackColumns: ["id", "name", "artwork"],
       }),
       db.query.artists.findMany({

@@ -19,7 +19,7 @@ export const artists = sqliteTable("artists", {
 });
 
 export const artistsRelations = relations(artists, ({ many }) => ({
-  albums: many(albums),
+  albumsToArtists: many(albumsToArtists),
   tracksToArtists: many(tracksToArtists),
 }));
 
@@ -30,10 +30,10 @@ export const albums = sqliteTable(
       .primaryKey()
       .$defaultFn(() => createId()),
     name: text().notNull(),
-    // The `artistName` is the album artist.
-    artistName: text("artist_name")
-      .notNull()
-      .references(() => artists.name),
+    // Used to uniquely identify an album based on the arbitrary number of artists
+    // it can have.
+    //  - Created from `AlbumArtistsKey.from()` function.
+    artistsKey: text().notNull(),
     artwork: text().generatedAlwaysAs(
       (): SQL => sql`coalesce(${albums.altArtwork}, ${albums.embeddedArtwork})`,
     ),
@@ -41,16 +41,40 @@ export const albums = sqliteTable(
     altArtwork: text(),
     isFavorite: integer({ mode: "boolean" }).notNull().default(false),
   },
-  (t) => [unique().on(t.name, t.artistName)],
+  (t) => [unique().on(t.name, t.artistsKey)],
 );
 
-export const albumsRelations = relations(albums, ({ one, many }) => ({
-  artist: one(artists, {
-    fields: [albums.artistName],
-    references: [artists.name],
-  }),
+export const albumsRelations = relations(albums, ({ many }) => ({
+  albumsToArtists: many(albumsToArtists),
   tracks: many(tracks),
 }));
+
+export const albumsToArtists = sqliteTable(
+  "albums_to_artists",
+  {
+    albumId: text()
+      .notNull()
+      .references(() => albums.id),
+    artistName: text()
+      .notNull()
+      .references(() => artists.name),
+  },
+  (t) => [primaryKey({ columns: [t.albumId, t.artistName] })],
+);
+
+export const albumsToArtistsRelations = relations(
+  albumsToArtists,
+  ({ one }) => ({
+    album: one(albums, {
+      fields: [albumsToArtists.albumId],
+      references: [albums.id],
+    }),
+    artist: one(artists, {
+      fields: [albumsToArtists.artistName],
+      references: [artists.name],
+    }),
+  }),
+);
 
 export const tracks = sqliteTable("tracks", {
   id: text().primaryKey(),

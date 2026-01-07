@@ -4,6 +4,7 @@ import AsyncStorage from "expo-sqlite/kv-store";
 import { db } from "~/db";
 import type { HiddenTrack } from "~/db/schema";
 import {
+  albumsToArtists,
   fileNodes,
   hiddenTracks,
   playedMediaLists,
@@ -142,6 +143,7 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
   },
 
   "multi-artist": async () => {
+    //? 1. Create track-artist relations.
     const trackArtistNames = await db.query.tracks.findMany({
       columns: { id: true, rawArtistName: true },
     });
@@ -160,6 +162,24 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
         // Populate junction table with old Artist Name values.
         await db.insert(tracksToArtists).values(entries).onConflictDoNothing();
       }
+    }
+
+    //? 2. Create album-artist relations.
+    const albumArtistNames = await db.query.albums.findMany({
+      columns: { id: true, artistsKey: true },
+    });
+
+    // `artistsKey` should already exist in the Artists table, so only
+    // the junction table needs to be populated.
+    const albumBatches = chunkArray(albumArtistNames, 200);
+    for (const aBatch of albumBatches) {
+      // Populate junction table with old Artist Name values.
+      await db
+        .insert(albumsToArtists)
+        .values(
+          aBatch.map((a) => ({ albumId: a.id, artistName: a.artistsKey })),
+        )
+        .onConflictDoNothing();
     }
   },
 };

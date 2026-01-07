@@ -1,3 +1,11 @@
+CREATE TABLE `albums_to_artists` (
+	`album_id` text NOT NULL,
+	`artist_name` text NOT NULL,
+	PRIMARY KEY(`album_id`, `artist_name`),
+	FOREIGN KEY (`album_id`) REFERENCES `albums`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`artist_name`) REFERENCES `artists`(`name`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
 CREATE TABLE `hidden_tracks` (
 	`id` text PRIMARY KEY NOT NULL,
 	`uri` text NOT NULL,
@@ -14,6 +22,20 @@ CREATE TABLE `tracks_to_artists` (
 );
 --> statement-breakpoint
 PRAGMA foreign_keys=OFF;--> statement-breakpoint
+CREATE TABLE `__new_albums` (
+	`id` text PRIMARY KEY NOT NULL,
+	`name` text NOT NULL,
+	`artists_key` text NOT NULL,
+	`artwork` text GENERATED ALWAYS AS (coalesce("alt_artwork", "embedded_artwork")) VIRTUAL,
+	`embedded_artwork` text,
+	`alt_artwork` text,
+	`is_favorite` integer DEFAULT false NOT NULL
+);
+--> statement-breakpoint
+INSERT INTO `__new_albums`("id", "name", "artists_key", "embedded_artwork", "alt_artwork", "is_favorite") SELECT "id", "name", "artist_name", "embedded_artwork", "alt_artwork", "is_favorite" FROM `albums`;--> statement-breakpoint
+DROP TABLE `albums`;--> statement-breakpoint
+ALTER TABLE `__new_albums` RENAME TO `albums`;--> statement-breakpoint
+CREATE UNIQUE INDEX `albums_name_artistsKey_unique` ON `albums` (`name`,`artists_key`);--> statement-breakpoint
 CREATE TABLE `__new_tracks` (
 	`id` text PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,

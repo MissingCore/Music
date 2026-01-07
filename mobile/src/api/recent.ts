@@ -48,13 +48,13 @@ export async function getRecentlyPlayedTracks() {
       gt(fields.lastPlayedAt, Date.now() - RECENT_RANGE_MS),
     columns: { id: true, name: true, duration: true, artwork: true },
     with: {
-      album: { columns: { name: true, artistName: true, artwork: true } },
+      album: { columns: { name: true, artistsKey: true, artwork: true } },
       tracksToArtists: { columns: { artistName: true } },
     },
     orderBy: (fields, { desc }) => desc(fields.lastPlayedAt),
   });
 
-  return recentTracks.map((track) => formatForTrack("track", track));
+  return recentTracks.map((track) => formatForTrack(track));
 }
 //#endregion
 
@@ -122,7 +122,7 @@ async function getRecentListEntry({ id, type }: PlayFromSource) {
     let entry: MediaCardContent;
     if (type === "album") {
       const data = (await getAlbum(id, {
-        columns: ["id", "name", "artistName", "artwork"],
+        columns: ["id", "name", "artistsKey", "artwork"],
         withTracks: false,
       })) as AlbumWithTracks;
       data.tracks = [];

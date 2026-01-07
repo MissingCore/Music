@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 import Animated, {
@@ -37,8 +37,8 @@ type ImageSource = MediaImage.ImageSource | MediaImage.ImageSource[];
 export function CurrentListLayout(
   props: {
     title: string;
-    /** If we want to have a link to the artist underneath the title. */
-    artist?: string;
+    /** If we want to have a link to the artists underneath the title. */
+    artists?: string[];
     /** Strings describing the media (last string indicates total playtime). */
     metadata: string[];
     children: React.ReactNode;
@@ -69,24 +69,31 @@ export function CurrentListLayout(
               {isFavorite ? t("term.favoriteTracks") : props.title}
             </StyledText>
           </Marquee>
-          {props.artist ? (
+          {props.artists ? (
             <Marquee>
-              <Pressable
-                onPress={() =>
-                  navigation.navigate(
-                    "Artist",
-                    { id: props.artist! },
-                    { pop: true },
-                  )
-                }
-              >
-                <Text
-                  style={{ fontFamily: getFont(primaryFont) }}
-                  className="text-left text-xs text-red"
-                >
-                  {props.artist}
-                </Text>
-              </Pressable>
+              {props.artists.map((artistName, index) => (
+                <Fragment key={artistName}>
+                  {index > 0 ? (
+                    <StyledText className="text-xs">•</StyledText>
+                  ) : null}
+                  <Pressable
+                    onPress={() =>
+                      navigation.navigate(
+                        "Artist",
+                        { id: artistName },
+                        { pop: true },
+                      )
+                    }
+                  >
+                    <Text
+                      style={{ fontFamily: getFont(primaryFont) }}
+                      className="text-left text-xs text-red"
+                    >
+                      {artistName}
+                    </Text>
+                  </Pressable>
+                </Fragment>
+              ))}
             </Marquee>
           ) : null}
           <Marquee wrapperClassName="my-1">

@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "0fdf0701-29e9-4e5d-88bc-aab4d07fbed1",
+  "id": "7cd7e707-4468-4965-8f5f-37ea641e1d41",
   "prevId": "be8c661e-2a43-432a-96d3-19ba45b9e642",
   "tables": {
     "albums": {
@@ -21,8 +21,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "artist_name": {
-          "name": "artist_name",
+        "artists_key": {
+          "name": "artists_key",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -63,19 +63,56 @@
         }
       },
       "indexes": {
-        "albums_name_artist_name_unique": {
-          "name": "albums_name_artist_name_unique",
+        "albums_name_artistsKey_unique": {
+          "name": "albums_name_artistsKey_unique",
           "columns": [
             "name",
-            "artist_name"
+            "artists_key"
           ],
           "isUnique": true
         }
       },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "albums_to_artists": {
+      "name": "albums_to_artists",
+      "columns": {
+        "album_id": {
+          "name": "album_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "artist_name": {
+          "name": "artist_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
       "foreignKeys": {
-        "albums_artist_name_artists_name_fk": {
-          "name": "albums_artist_name_artists_name_fk",
-          "tableFrom": "albums",
+        "albums_to_artists_album_id_albums_id_fk": {
+          "name": "albums_to_artists_album_id_albums_id_fk",
+          "tableFrom": "albums_to_artists",
+          "tableTo": "albums",
+          "columnsFrom": [
+            "album_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "albums_to_artists_artist_name_artists_name_fk": {
+          "name": "albums_to_artists_artist_name_artists_name_fk",
+          "tableFrom": "albums_to_artists",
           "tableTo": "artists",
           "columnsFrom": [
             "artist_name"
@@ -87,7 +124,15 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "albums_to_artists_album_id_artist_name_pk": {
+          "columns": [
+            "album_id",
+            "artist_name"
+          ],
+          "name": "albums_to_artists_album_id_artist_name_pk"
+        }
+      },
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
@@ -698,6 +743,7 @@
     "schemas": {},
     "tables": {},
     "columns": {
+      "\"albums\".\"artist_name\"": "\"albums\".\"artists_key\"",
       "\"tracks\".\"artist_name\"": "\"tracks\".\"raw_artist_name\""
     }
   },
