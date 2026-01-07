@@ -14,7 +14,7 @@ import m0009 from "./0009_ambitious_puppet_master.sql";
 import m0010 from "./0010_spooky_blue_marvel.sql";
 import m0011 from "./0011_complete_sally_floyd.sql";
 import m0012 from "./0012_public_master_mold.sql";
-import m0013 from "./0013_curved_whirlwind.sql";
+import m0013 from "./0013_tiresome_warpath.sql";
 
 export default {
   journal,
