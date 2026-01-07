@@ -2,7 +2,8 @@ import { and, eq, sql } from "drizzle-orm";
 
 import { db } from "~/db";
 import type { Album } from "~/db/schema";
-import { albums } from "~/db/schema";
+import { albums, albumsToArtists, artists } from "~/db/schema";
+import { getArtistsFromArtistsKey } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
 
@@ -43,7 +44,7 @@ const _getAlbums: QueryManyWithTracksFn<Album, false> =
         },
         { defaultWithAlbum: false, ...options },
       ),
-      orderBy: (fields) => [iAsc(fields.name), iAsc(fields.artistName)],
+      orderBy: (fields) => [iAsc(fields.name), iAsc(fields.artistsKey)],
     });
   };
 
@@ -69,15 +70,39 @@ export async function updateAlbum(
 //#region PUT Methods
 /** Create new album entries, or update existing ones. Returns the created albums. */
 export async function upsertAlbums(entries: Array<typeof albums.$inferInsert>) {
-  return db
-    .insert(albums)
-    .values(entries)
-    .onConflictDoUpdate({
-      target: [albums.name, albums.artistName],
-      // Set `name` to the `name` from the row that wasn't inserted. This
-      // allows `.returning()` to return a value.
-      set: { name: sql`excluded.name` },
-    })
-    .returning();
+  return db.transaction(async (tx) => {
+    const results = await tx
+      .insert(albums)
+      .values(entries)
+      .onConflictDoUpdate({
+        target: [albums.name, albums.artistsKey],
+        // Set `name` to the `name` from the row that wasn't inserted. This
+        // allows `.returning()` to return a value.
+        set: { name: sql`excluded.name` },
+      })
+      .returning();
+
+    // Create artists if they don't exist and the new album-artist relations.
+    const newArtists = new Set<string>();
+    const newAlbumArtistRel: Array<{ albumId: string; artistName: string }> =
+      [];
+    results.forEach(({ id, artistsKey }) => {
+      const artistNames = getArtistsFromArtistsKey(artistsKey);
+      artistNames.forEach((artistName) => {
+        newArtists.add(artistName);
+        newAlbumArtistRel.push({ albumId: id, artistName });
+      });
+    });
+    if (newArtists.size > 0) {
+      await tx
+        .insert(artists)
+        .values([...newArtists].map((name) => ({ name })));
+    }
+    if (newAlbumArtistRel.length > 0) {
+      await tx.insert(albumsToArtists).values(newAlbumArtistRel);
+    }
+
+    return results;
+  });
 }
 //#endregion

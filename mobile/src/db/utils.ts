@@ -40,6 +40,25 @@ export function getTrackCover({ artwork, album }: TrackArtwork) {
 }
 //#endregion
 
+//#region Album Junction Table Helpers
+export const ARTIST_NAME_JOINER_STRING = "[joiner]";
+
+/** Generate the key for the `artistsKey` field on an Album. */
+export function getAlbumArtistsKey(artistNames: string[]) {
+  // Do case-insensitive sorting.
+  return artistNames
+    .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }))
+    .join(ARTIST_NAME_JOINER_STRING);
+}
+
+/** Get the artist names from the `artistsKey` field. */
+export function getArtistsFromArtistsKey(artistsKey: string) {
+  return artistsKey
+    .split(ARTIST_NAME_JOINER_STRING)
+    .filter((str) => str.length > 0);
+}
+//#endregion
+
 //#region Artist Junction Table Helpers
 /** Generate a string listing out all the artists. */
 export function getArtistsString<T extends boolean = true>(

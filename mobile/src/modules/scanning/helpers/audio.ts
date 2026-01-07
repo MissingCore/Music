@@ -20,6 +20,7 @@ import {
   tracksToPlaylists,
   waveformSamples,
 } from "~/db/schema";
+import { getAlbumArtistsKey } from "~/db/utils";
 
 import { upsertAlbums } from "~/api/album";
 import { createArtists } from "~/api/artist";
@@ -97,11 +98,8 @@ export async function findAndSaveAudio() {
     const newArtistRelations: Array<{ trackId: string; artistName: string }> =
       [];
     const newAlbums: Record<string, string[]> = {};
-    results.forEach(({ id, rawArtistName, album }) => {
-      addArtist({ artistName: album?.artistName, insertedArtists, newArtists });
-      addAlbum({ album, insertedAlbums, newAlbums });
-
-      // Handle case if separators are provided.
+    results.forEach(({ id, rawArtistName, album, albumArtistNames }) => {
+      // Handle case if separators are provided for track artists.
       const splittedArtistName = rawArtistName
         ? splitOn(rawArtistName, preferenceStore.getState().separators)
         : [];
@@ -111,26 +109,33 @@ export async function findAndSaveAudio() {
           newArtistRelations.push({ trackId: id, artistName });
         });
       }
+
+      // Handle case if separators are provided for album artists.
+      addAlbum({ album, insertedAlbums, newAlbums });
+      albumArtistNames.forEach((artistName) => {
+        addArtist({ artistName, insertedArtists, newArtists });
+      });
     });
 
     const newArtistEntries = newArtists.map((name) => ({ name }));
     const newAlbumEntries = Object.entries(newAlbums).flatMap(
-      ([artistName, names]) => names.map((name) => ({ name, artistName })),
+      ([artistsKey, names]) => names.map((name) => ({ name, artistsKey })),
     );
 
     if (newArtistEntries.length > 0) await createArtists(newArtistEntries);
     if (newAlbumEntries.length > 0) {
+      // Upserting album will also create the album-artist relations.
       const createdAlbums = await upsertAlbums(newAlbumEntries);
-      createdAlbums.map(({ id, name, artistName }) => {
-        if (albumIdMap[artistName]) albumIdMap[artistName][name] = id;
-        else albumIdMap[artistName] = { [name]: id };
+      createdAlbums.map(({ id, name, artistsKey }) => {
+        if (albumIdMap[artistsKey]) albumIdMap[artistsKey][name] = id;
+        else albumIdMap[artistsKey] = { [name]: id };
       });
     }
 
     // Create or update tracks.
     const newTracks = results.map(({ album, ...t }) => {
       let albumId: string | null = null;
-      if (album) albumId = albumIdMap[album.artistName]?.[album.name] || null;
+      if (album) albumId = albumIdMap[album.artistsKey]?.[album.name] || null;
       return { ...t, albumId, discoverTime: Date.now() };
     });
     const newIds = newTracks.map(({ id }) => id);
@@ -370,9 +375,17 @@ async function getTrackMetadata(asset: MediaLibraryAsset) {
     console.log(err);
   }
 
-  let newAlbum: { name: string; artistName: string } | undefined;
+  let newAlbum: { name: string; artistsKey: string } | undefined;
+  let albumArtistNames: string[] = [];
   if (!!t.albumTitle?.trim() && !!t.albumArtist?.trim()) {
-    newAlbum = { name: t.albumTitle.trim(), artistName: t.albumArtist.trim() };
+    albumArtistNames = splitOn(
+      t.albumArtist.trim(),
+      preferenceStore.getState().separators,
+    );
+    newAlbum = {
+      name: t.albumTitle.trim(),
+      artistsKey: getAlbumArtistsKey(albumArtistNames),
+    };
   }
 
   return {
@@ -381,6 +394,7 @@ async function getTrackMetadata(asset: MediaLibraryAsset) {
     /** @deprecated Do not use this field directly. */
     rawArtistName: t.artist?.trim() || null,
     album: newAlbum,
+    albumArtistNames,
     track: t.trackNumber,
     disc: t.discNumber,
     year: t.year,
@@ -435,20 +449,20 @@ function addArtist(args: {
 
 /** Mark this album as a new value if it hasn't been inserted before. */
 function addAlbum(args: {
-  album: { name: string; artistName: string } | undefined;
+  album: { name: string; artistsKey: string } | undefined;
   newAlbums: Record<string, string[]>;
   insertedAlbums: Record<string, Set<string>>;
 }) {
   const { album, newAlbums, insertedAlbums } = args;
   if (!album) return;
-  const { name, artistName } = album;
-  if (insertedAlbums[artistName]?.has(name)) return;
+  const { name, artistsKey } = album;
+  if (insertedAlbums[artistsKey]?.has(name)) return;
 
-  if (insertedAlbums[artistName]) insertedAlbums[artistName].add(name);
-  else insertedAlbums[artistName] = new Set([name]);
+  if (insertedAlbums[artistsKey]) insertedAlbums[artistsKey].add(name);
+  else insertedAlbums[artistsKey] = new Set([name]);
 
-  if (newAlbums[artistName]) newAlbums[artistName].push(name);
-  else newAlbums[artistName] = [name];
+  if (newAlbums[artistsKey]) newAlbums[artistsKey].push(name);
+  else newAlbums[artistsKey] = [name];
 
   return album;
 }
