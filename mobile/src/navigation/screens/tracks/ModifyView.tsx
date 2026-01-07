@@ -69,7 +69,8 @@ export default function ModifyTrack({
         uri: data.uri,
         name: data.name,
         artists: data.tracksToArtists.map(({ artistName }) => artistName),
-        album: data.album ? data.album.name : null,
+        album: data.album?.name ?? null,
+        rawAlbumArtistName: data.album?.rawArtistName ?? null,
         albumArtists: data.album
           ? getArtistsFromArtistsKey(data.album.artistsKey)
           : [],
@@ -278,6 +279,7 @@ function ResetWorkflow(
           ? splitOn(trackMetadata.artist, delimiters)
           : [],
         album: trackMetadata.albumTitle,
+        rawAlbumArtistName: trackMetadata.albumArtist,
         albumArtists: trackMetadata.albumArtist
           ? splitOn(trackMetadata.albumArtist, delimiters)
           : [],
@@ -320,6 +322,8 @@ const TrackMetadataSchema = z.object({
   name: NonEmptyStringSchema,
   artists: z.array(NonEmptyStringSchema),
   album: NullableStringSchema,
+  /** @deprecated - Currently a compatibility layer thing. */
+  rawAlbumArtistName: NullableStringSchema,
   albumArtists: z.array(NonEmptyStringSchema),
   year: NullableRealNumber,
   disc: NullableRealNumber,
@@ -336,7 +340,15 @@ function useFormState() {
 //#region Submit Handler
 async function onEditTrack(data: TrackMetadata) {
   try {
-    const { id, uri, album, albumArtists, artists, ...trackBase } = data;
+    const {
+      id,
+      uri,
+      album,
+      rawAlbumArtistName,
+      albumArtists,
+      artists,
+      ...trackBase
+    } = data;
 
     const updatedTrack = {
       ...trackBase,
@@ -346,6 +358,7 @@ async function onEditTrack(data: TrackMetadata) {
     };
     const updatedAlbum = {
       name: album,
+      rawArtistName: rawAlbumArtistName,
       artistsKey: getAlbumArtistsKey(albumArtists),
     };
 
@@ -364,6 +377,11 @@ async function onEditTrack(data: TrackMetadata) {
       const [newAlbum] = await upsertAlbums([
         {
           name: updatedAlbum.name,
+          // Fallback to joined artists string if the file doesn't have an
+          // embedded album artist.
+          rawArtistName:
+            updatedAlbum.rawArtistName ??
+            getArtistsFromArtistsKey(updatedAlbum.artistsKey).join(", "),
           artistsKey: updatedAlbum.artistsKey,
           embeddedArtwork: artworkUri,
         },
