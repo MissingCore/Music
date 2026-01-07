@@ -41,7 +41,7 @@ export function useFavoriteTracksForScreen() {
   return useQuery({
     ...q.favorites.tracks,
     select: (data) => ({
-      ...formatForCurrentScreen({ type: "playlist", data, t }),
+      ...formatForCurrentScreen({ data, t }),
       imageSource: ReservedPlaylists.favorites,
     }),
   });

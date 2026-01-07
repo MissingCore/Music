@@ -35,7 +35,7 @@ export function usePlaylistForScreen(playlistName: string) {
   return useQuery({
     ...q.playlists.detail(playlistName),
     select: (data) => ({
-      ...formatForCurrentScreen({ type: "playlist", data, t }),
+      ...formatForCurrentScreen({ data, t }),
       isFavorite: data.isFavorite,
     }),
   });

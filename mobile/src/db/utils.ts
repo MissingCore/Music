@@ -1,11 +1,6 @@
 import type { TFunction } from "i18next";
 
-import type {
-  Album,
-  PlaylistWithTracks,
-  Track,
-  TrackWithRelations,
-} from "./schema";
+import type { Album, PlaylistWithTracks, Track } from "./schema";
 import type {
   Artwork,
   SlimAlbum,
@@ -126,29 +121,20 @@ export function formatForTrack(
 //#endregion
 
 //#region Format for Screen
-type ScreenFormatter = Prettify<
-  { t: TFunction } & { type: "playlist"; data: PlaylistWithTracks }
->;
+type ScreenFormatter = { t: TFunction; data: PlaylistWithTracks };
 
 /** Format data to be used in the `(current)` routes. */
-export function formatForCurrentScreen({ type, data, t }: ScreenFormatter) {
-  const metadata = [
-    t("plural.track", { count: data.tracks.length }),
-    formatSeconds(
-      data.tracks.reduce((total, curr) => total + curr.duration, 0),
-    ),
-  ];
-
-  let imgSrc: string | string[] | null = data.artwork;
-  if (type === "playlist") imgSrc = getPlaylistCover(data);
-
+export function formatForCurrentScreen({ data, t }: ScreenFormatter) {
   return {
     name: data.name,
-    imageSource: imgSrc,
-    metadata,
-    tracks: (data.tracks as TrackWithRelations[]).map((track) =>
-      formatForTrack(track),
-    ),
+    imageSource: getPlaylistCover(data),
+    metadata: [
+      t("plural.track", { count: data.tracks.length }),
+      formatSeconds(
+        data.tracks.reduce((total, curr) => total + curr.duration, 0),
+      ),
+    ],
+    tracks: data.tracks.map((track) => formatForTrack(track)),
   };
 }
 //#endregion
