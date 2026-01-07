@@ -1,4 +1,4 @@
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq, inArray, sql } from "drizzle-orm";
 
 import { db } from "~/db";
 import type { Album } from "~/db/schema";
@@ -68,7 +68,7 @@ export async function updateAlbum(
 //#endregion
 
 //#region PUT Methods
-/** Create new album entries, or update existing ones. Returns the created albums. */
+/** Create new album entries & its relations, or update existing ones. Returns the created albums. */
 export async function upsertAlbums(entries: Array<typeof albums.$inferInsert>) {
   return db.transaction(async (tx) => {
     const results = await tx
@@ -82,28 +82,26 @@ export async function upsertAlbums(entries: Array<typeof albums.$inferInsert>) {
       })
       .returning();
 
-    // Create artists if they don't exist and the new album-artist relations.
-    const newArtists = new Set<string>();
-    const newAlbumArtistRel: Array<{ albumId: string; artistName: string }> =
-      [];
+    // Create artists if they don't exist and the new/updated album-artist relations.
+    const usedArtists = new Set<string>();
+    const albumArtistRels: Array<{ albumId: string; artistName: string }> = [];
     results.forEach(({ id, artistsKey }) => {
-      const artistNames = getArtistsFromArtistsKey(artistsKey);
-      artistNames.forEach((artistName) => {
-        newArtists.add(artistName);
-        newAlbumArtistRel.push({ albumId: id, artistName });
+      getArtistsFromArtistsKey(artistsKey).forEach((artistName) => {
+        usedArtists.add(artistName);
+        albumArtistRels.push({ albumId: id, artistName });
       });
     });
-    if (newArtists.size > 0) {
+    if (albumArtistRels.length > 0) {
       await tx
         .insert(artists)
-        .values([...newArtists].map((name) => ({ name })))
+        .values([...usedArtists].map((name) => ({ name })))
         .onConflictDoNothing();
-    }
-    if (newAlbumArtistRel.length > 0) {
+      // Delete old album-artist relations if the album just got updated.
+      const albumIds = results.map(({ id }) => id);
       await tx
-        .insert(albumsToArtists)
-        .values(newAlbumArtistRel)
-        .onConflictDoNothing();
+        .delete(albumsToArtists)
+        .where(inArray(albumsToArtists.albumId, albumIds));
+      await tx.insert(albumsToArtists).values(albumArtistRels);
     }
 
     return results;
