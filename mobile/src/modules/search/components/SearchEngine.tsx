@@ -10,7 +10,12 @@ import type {
   SlimPlaylistWithTracks,
   SlimTrackWithAlbum,
 } from "~/db/slimTypes";
-import { getArtistsString, getPlaylistCover, getTrackCover } from "~/db/utils";
+import {
+  getAlbumArtistsString,
+  getArtistsString,
+  getPlaylistCover,
+  getTrackCover,
+} from "~/db/utils";
 
 import { Close } from "~/resources/icons/Close";
 import { Search } from "~/resources/icons/Search";
@@ -231,9 +236,10 @@ function formatResults(results: Partial<SearchResults>, tab: SearchTab) {
       ...(tab === "all" ? [key as SearchCategories[number]] : []),
       ...data.map((item) => {
         let description: string | undefined;
-        // @ts-expect-error - Album items have an `artistName` field.
-        if (key === "album") description = item.artistName ?? "—";
-        else if (key === "track") {
+        if (key === "album") {
+          // @ts-expect-error - Album items have an `artistsKey` field.
+          description = getAlbumArtistsString(item.artistsKey);
+        } else if (key === "track") {
           // @ts-expect-error - Tracks store their artists in this new field.
           description = getArtistsString(item.tracksToArtists);
         }
