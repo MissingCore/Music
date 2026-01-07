@@ -3,11 +3,11 @@ import { and, eq, inArray, sql } from "drizzle-orm";
 import { db } from "~/db";
 import type { Album } from "~/db/schema";
 import { albums, albumsToArtists, artists } from "~/db/schema";
-import { getArtistsFromArtistsKey } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
 
 import { iAsc } from "~/lib/drizzle";
+import { AlbumArtistsKey } from "./album.utils";
 import type { QueryManyWithTracksFn, QueryOneWithTracksFn } from "./types";
 import { getColumns, withTracks } from "./utils";
 
@@ -86,7 +86,7 @@ export async function upsertAlbums(entries: Array<typeof albums.$inferInsert>) {
     const usedArtists = new Set<string>();
     const albumArtistRels: Array<{ albumId: string; artistName: string }> = [];
     results.forEach(({ id, artistsKey }) => {
-      getArtistsFromArtistsKey(artistsKey).forEach((artistName) => {
+      AlbumArtistsKey.deconstruct(artistsKey).forEach((artistName) => {
         usedArtists.add(artistName);
         albumArtistRels.push({ albumId: id, artistName });
       });

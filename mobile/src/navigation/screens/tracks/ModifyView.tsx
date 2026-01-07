@@ -13,13 +13,13 @@ import { z } from "zod/mini";
 
 import { db } from "~/db";
 import { tracksToArtists } from "~/db/schema";
-import { getAlbumArtistsKey, getArtistsFromArtistsKey } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
 import { Add } from "~/resources/icons/Add";
 import { Check } from "~/resources/icons/Check";
 import { Close } from "~/resources/icons/Close";
 import { upsertAlbums } from "~/api/album";
+import { AlbumArtistsKey } from "~/api/album.utils";
 import { createArtists } from "~/api/artist";
 import { updateTrack } from "~/api/track";
 import { useTrack } from "~/queries/track";
@@ -72,7 +72,7 @@ export default function ModifyTrack({
         album: data.album?.name ?? null,
         rawAlbumArtistName: data.album?.rawArtistName ?? null,
         albumArtists: data.album
-          ? getArtistsFromArtistsKey(data.album.artistsKey)
+          ? AlbumArtistsKey.deconstruct(data.album.artistsKey)
           : [],
         year: data.year,
         disc: data.disc,
@@ -359,7 +359,7 @@ async function onEditTrack(data: TrackMetadata) {
     const updatedAlbum = {
       name: album,
       rawArtistName: rawAlbumArtistName,
-      artistsKey: getAlbumArtistsKey(albumArtists),
+      artistsKey: AlbumArtistsKey.from(albumArtists),
     };
 
     // Add new artists to the database.
@@ -381,7 +381,7 @@ async function onEditTrack(data: TrackMetadata) {
           // embedded album artist.
           rawArtistName:
             updatedAlbum.rawArtistName ??
-            getArtistsFromArtistsKey(updatedAlbum.artistsKey).join(", "),
+            AlbumArtistsKey.toString(updatedAlbum.artistsKey),
           artistsKey: updatedAlbum.artistsKey,
           embeddedArtwork: artworkUri,
         },

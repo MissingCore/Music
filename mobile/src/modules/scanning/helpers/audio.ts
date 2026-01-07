@@ -21,9 +21,9 @@ import {
   tracksToPlaylists,
   waveformSamples,
 } from "~/db/schema";
-import { getAlbumArtistsKey } from "~/db/utils";
 
 import { upsertAlbums } from "~/api/album";
+import { AlbumArtistsKey } from "~/api/album.utils";
 import { createArtists } from "~/api/artist";
 import { RECENT_RANGE_MS } from "~/api/recent";
 import { upsertTracks } from "~/api/track";
@@ -122,14 +122,15 @@ export async function findAndSaveAudio() {
     });
 
     const newArtistEntries = newArtists.map((name) => ({ name }));
-    const newAlbumEntries = Object.entries(newAlbums).flatMap(
-      ([rawArtistName, names]) =>
-        names.map((name) => ({
-          name,
-          rawArtistName,
-          artistsKey: getAlbumArtistsKey(splitOn(rawArtistName, delimiters)),
-        })),
-    );
+    const newAlbumEntries = Object.entries(newAlbums)
+      .flatMap(([rawArtistName, names]) =>
+        names.map((name) => {
+          const key = AlbumArtistsKey.from(splitOn(rawArtistName, delimiters));
+          if (!key) return undefined;
+          return { name, rawArtistName, artistsKey: key };
+        }),
+      )
+      .filter((entry) => entry !== undefined);
 
     if (newArtistEntries.length > 0) await createArtists(newArtistEntries);
     if (newAlbumEntries.length > 0) {

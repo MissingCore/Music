@@ -1,13 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import {
-  getArtistsFromArtistsKey,
-  formatForMediaCard,
-  getYearRange,
-} from "~/db/utils";
+import { formatForMediaCard, getYearRange } from "~/db/utils";
 
 import { favoriteAlbum, updateAlbum } from "~/api/album";
+import { AlbumArtistsKey } from "~/api/album.utils";
 import { Resynchronize } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { queries as q } from "./keyStore";
@@ -28,7 +25,7 @@ export function useAlbumForScreen(albumId: string) {
   return useQuery({
     ...q.albums.detail(albumId),
     select: ({ name, artistsKey, artwork, isFavorite, tracks }) => {
-      const albumArtists = getArtistsFromArtistsKey(artistsKey);
+      const albumArtists = AlbumArtistsKey.deconstruct(artistsKey);
       const { range } = getYearRange(tracks);
 
       return {

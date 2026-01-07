@@ -15,6 +15,7 @@ import type {
 } from "./slimTypes";
 
 import i18next from "~/modules/i18n";
+import { AlbumArtistsKey } from "~/api/album.utils";
 
 import { formatSeconds } from "~/utils/number";
 import type { AtLeast, Prettify } from "~/utils/types";
@@ -34,30 +35,6 @@ export function getPlaylistCover(playlist: {
 /** Get the cover of a track. */
 export function getTrackCover({ artwork, album }: TrackArtwork) {
   return artwork ?? album?.artwork ?? null;
-}
-//#endregion
-
-//#region Album Junction Table Helpers
-export const ARTIST_NAME_JOINER_STRING = "[joiner]";
-
-/** Generate the key for the `artistsKey` field on an Album. */
-export function getAlbumArtistsKey(artistNames: string[]) {
-  // Do case-insensitive sorting.
-  return artistNames
-    .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }))
-    .join(ARTIST_NAME_JOINER_STRING);
-}
-
-/** Get the artist names from the `artistsKey` field. */
-export function getArtistsFromArtistsKey(artistsKey: string) {
-  return artistsKey
-    .split(ARTIST_NAME_JOINER_STRING)
-    .filter((str) => str.length > 0);
-}
-
-/** Generate a string listing out all the album artists. */
-export function getAlbumArtistsString(artistsKey: string) {
-  return getArtistsFromArtistsKey(artistsKey).join(", ");
 }
 //#endregion
 
@@ -119,7 +96,7 @@ export function formatForMediaCard({ type, data, t }: MediaCardFormatter) {
   let description = t("plural.track", { count: data.tracks.length });
   if (type === "album") {
     id = data.id;
-    description = getAlbumArtistsString(data.artistsKey);
+    description = AlbumArtistsKey.toString(data.artistsKey);
   } else if (type === "playlist") {
     source = getPlaylistCover(data);
   }

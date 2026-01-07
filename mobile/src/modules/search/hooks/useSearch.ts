@@ -3,9 +3,9 @@ import { useMemo } from "react";
 
 import { db } from "~/db";
 import type { SlimFolder, SlimTrackWithAlbum } from "~/db/slimTypes";
-import { getArtistsFromArtistsKey } from "~/db/utils";
 
 import { getAlbums } from "~/api/album";
+import { AlbumArtistsKey } from "~/api/album.utils";
 import { getPlaylists } from "~/api/playlist";
 import { getTracks } from "~/api/track";
 
@@ -32,7 +32,7 @@ export function useSearch<TScope extends SearchCategories>(
             // Album's artist name starts with the query.
             // prettier-ignore
             // @ts-expect-error - We ensured the `artistsKey` field is present.
-            (!!i.artistsKey && getArtistsFromArtistsKey(i.artistsKey).some((artistName) => artistName.toLocaleLowerCase().startsWith(q))) ||
+            (!!i.artistsKey && AlbumArtistsKey.deconstruct(i.artistsKey).some((artistName) => artistName.toLocaleLowerCase().startsWith(q))) ||
             // One of track's artist names starts with the query.
             // prettier-ignore
             // @ts-expect-error - We ensured the `tracksToArtists` field is present.
