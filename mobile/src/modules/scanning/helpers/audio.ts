@@ -114,31 +114,33 @@ export async function findAndSaveAudio() {
 
       // Handle case if separators are provided for album artists.
       if (album) {
-        addAlbum({ album, insertedAlbums, newAlbums });
-        splitOn(album.rawArtistName, delimiters).forEach((artistName) => {
+        const albumArtists = splitOn(album.rawArtistName, delimiters);
+        const albumArtistsKey = AlbumArtistsKey.from(albumArtists);
+        if (albumArtistsKey) {
+          addAlbum({
+            album: { name: album.name, artistsKey: albumArtistsKey },
+            insertedAlbums,
+            newAlbums,
+          });
+        }
+        albumArtists.forEach((artistName) => {
           addArtist({ artistName, insertedArtists, newArtists });
         });
       }
     });
 
     const newArtistEntries = newArtists.map((name) => ({ name }));
-    const newAlbumEntries = Object.entries(newAlbums)
-      .flatMap(([rawArtistName, names]) =>
-        names.map((name) => {
-          const key = AlbumArtistsKey.from(splitOn(rawArtistName, delimiters));
-          if (!key) return undefined;
-          return { name, rawArtistName, artistsKey: key };
-        }),
-      )
-      .filter((entry) => entry !== undefined);
+    const newAlbumEntries = Object.entries(newAlbums).flatMap(
+      ([artistsKey, names]) => names.map((name) => ({ name, artistsKey })),
+    );
 
     if (newArtistEntries.length > 0) await createArtists(newArtistEntries);
     if (newAlbumEntries.length > 0) {
       // Upserting album will also create the album-artist relations.
       const createdAlbums = await upsertAlbums(newAlbumEntries);
-      createdAlbums.map(({ id, name, rawArtistName }) => {
-        if (albumIdMap[rawArtistName]) albumIdMap[rawArtistName][name] = id;
-        else albumIdMap[rawArtistName] = { [name]: id };
+      createdAlbums.map(({ id, name, artistsKey }) => {
+        if (albumIdMap[artistsKey]) albumIdMap[artistsKey][name] = id;
+        else albumIdMap[artistsKey] = { [name]: id };
       });
     }
 
@@ -146,7 +148,11 @@ export async function findAndSaveAudio() {
     const newTracks = results.map(({ album, ...t }) => {
       let albumId: string | null = null;
       if (album) {
-        albumId = albumIdMap[album.rawArtistName]?.[album.name] || null;
+        const albumArtists = splitOn(album.rawArtistName, delimiters);
+        const albumArtistsKey = AlbumArtistsKey.from(albumArtists);
+        if (albumArtistsKey) {
+          albumId = albumIdMap[albumArtistsKey]?.[album.name] || null;
+        }
       }
       return { ...t, albumId, discoverTime: Date.now() };
     });
@@ -459,20 +465,20 @@ function addArtist(args: {
 
 /** Mark this album as a new value if it hasn't been inserted before. */
 function addAlbum(args: {
-  album: { name: string; rawArtistName: string } | undefined;
+  album: { name: string; artistsKey: string } | undefined;
   newAlbums: Record<string, string[]>;
   insertedAlbums: Record<string, Set<string>>;
 }) {
   const { album, newAlbums, insertedAlbums } = args;
   if (!album) return;
-  const { name, rawArtistName } = album;
-  if (insertedAlbums[rawArtistName]?.has(name)) return;
+  const { name, artistsKey } = album;
+  if (insertedAlbums[artistsKey]?.has(name)) return;
 
-  if (insertedAlbums[rawArtistName]) insertedAlbums[rawArtistName].add(name);
-  else insertedAlbums[rawArtistName] = new Set([name]);
+  if (insertedAlbums[artistsKey]) insertedAlbums[artistsKey].add(name);
+  else insertedAlbums[artistsKey] = new Set([name]);
 
-  if (newAlbums[rawArtistName]) newAlbums[rawArtistName].push(name);
-  else newAlbums[rawArtistName] = [name];
+  if (newAlbums[artistsKey]) newAlbums[artistsKey].push(name);
+  else newAlbums[artistsKey] = [name];
 
   return album;
 }

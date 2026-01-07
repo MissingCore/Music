@@ -70,7 +70,6 @@ export default function ModifyTrack({
         name: data.name,
         artists: data.tracksToArtists.map(({ artistName }) => artistName),
         album: data.album?.name ?? null,
-        rawAlbumArtistName: data.album?.rawArtistName ?? null,
         albumArtists: data.album
           ? AlbumArtistsKey.deconstruct(data.album.artistsKey)
           : [],
@@ -322,8 +321,6 @@ const TrackMetadataSchema = z.object({
   name: NonEmptyStringSchema,
   artists: z.array(NonEmptyStringSchema),
   album: NullableStringSchema,
-  /** @deprecated - Currently a compatibility layer thing. */
-  rawAlbumArtistName: NullableStringSchema,
   albumArtists: z.array(NonEmptyStringSchema),
   year: NullableRealNumber,
   disc: NullableRealNumber,
@@ -340,15 +337,7 @@ function useFormState() {
 //#region Submit Handler
 async function onEditTrack(data: TrackMetadata) {
   try {
-    const {
-      id,
-      uri,
-      album,
-      rawAlbumArtistName,
-      albumArtists,
-      artists,
-      ...trackBase
-    } = data;
+    const { id, uri, album, albumArtists, artists, ...trackBase } = data;
 
     const updatedTrack = {
       ...trackBase,
@@ -358,7 +347,6 @@ async function onEditTrack(data: TrackMetadata) {
     };
     const updatedAlbum = {
       name: album,
-      rawArtistName: rawAlbumArtistName,
       artistsKey: AlbumArtistsKey.from(albumArtists),
     };
 
@@ -377,11 +365,6 @@ async function onEditTrack(data: TrackMetadata) {
       const [newAlbum] = await upsertAlbums([
         {
           name: updatedAlbum.name,
-          // Fallback to joined artists string if the file doesn't have an
-          // embedded album artist.
-          rawArtistName:
-            updatedAlbum.rawArtistName ??
-            AlbumArtistsKey.toString(updatedAlbum.artistsKey),
           artistsKey: updatedAlbum.artistsKey,
           embeddedArtwork: artworkUri,
         },

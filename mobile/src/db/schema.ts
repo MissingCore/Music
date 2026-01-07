@@ -30,11 +30,6 @@ export const albums = sqliteTable(
       .primaryKey()
       .$defaultFn(() => createId()),
     name: text().notNull(),
-    /**
-     * Stores the raw "Album Artist Name" value embedded in the file.
-     * @deprecated Derive the artist name from the `artistsKey` field or through the new junction table.
-     */
-    rawArtistName: text().notNull(),
     // Used to uniquely identify an album based on the arbitrary number of artists
     // it can have.
     //  - Created by sorting the `artistName` in it's relation and joining with `[joiner]`.

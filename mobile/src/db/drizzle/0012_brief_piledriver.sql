@@ -1,0 +1,1 @@
+ALTER TABLE `albums` DROP COLUMN `raw_artist_name`;

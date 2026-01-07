@@ -19,7 +19,6 @@ import { getTracks } from "~/api/track";
 import { pickDirectory } from "~/lib/file-system";
 import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
-import { pickKeys } from "~/utils/object";
 
 //#region Schemas
 const NonEmptyStringSchema = z.string().check(z.trim(), z.minLength(1));
@@ -67,7 +66,9 @@ async function findExistingAlbumsFactory() {
     return entries
       .map((entry) =>
         allAlbums.find(
-          (t) => t.name === entry.name && t.rawArtistName === entry.artistName,
+          // `artistsKey` will initially be the old `artistName` value until
+          // separators are applied via "Deep Rescan".
+          (t) => t.name === entry.name && t.artistsKey === entry.artistName,
         ),
       )
       .filter((entry) => entry !== undefined);
@@ -116,7 +117,9 @@ async function exportBackup() {
     JSON.stringify({
       favorites: {
         playlists: favPlaylists.map(({ name }) => name),
-        albums: favAlbums.map((al) => pickKeys(al, ["name", "rawArtistName"])),
+        albums: favAlbums.map(({ name, artistsKey }) => {
+          return { name, artistName: artistsKey };
+        }),
         tracks: favTracks.map(getRawTrack),
       },
       playlists: allPlaylists.map(({ name, tracks }) => {
