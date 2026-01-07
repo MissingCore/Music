@@ -25,9 +25,9 @@ export const queries = createQueryKeyStore({
       queryKey: null,
       queryFn: () =>
         db.query.albums.findMany({
-          columns: { id: true, name: true, artistName: true, artwork: true },
+          columns: { id: true, name: true, artistsKey: true, artwork: true },
           with: { tracks: { columns: { id: true } } },
-          orderBy: (fields) => [iAsc(fields.name), iAsc(fields.artistName)],
+          orderBy: (fields) => [iAsc(fields.name), iAsc(fields.artistsKey)],
         }),
     },
     detail: (albumId: string) => ({
@@ -123,7 +123,7 @@ export const queries = createQueryKeyStore({
             "discoverTime",
             "modificationTime",
           ],
-          albumColumns: ["name", "artistName", "artwork"],
+          albumColumns: ["name", "artistsKey", "artwork"],
         }),
     },
     detail: (trackId: string) => ({
@@ -157,7 +157,7 @@ async function getFavoriteLists() {
   const [favAlbums, favPlaylists] = await Promise.all([
     getAlbums({
       where: [eq(albums.isFavorite, true)],
-      columns: ["id", "name", "artistName", "artwork"],
+      columns: ["id", "name", "artistsKey", "artwork"],
       withTracks: false,
     }),
     getPlaylists({

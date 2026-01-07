@@ -35,8 +35,7 @@ export function useTracksForTrackCard() {
   const sortTracksFn = useSortTracks();
   return useQuery({
     ...q.tracks.all,
-    select: (data) =>
-      sortTracksFn(data).map((track) => formatForTrack("track", track)),
+    select: (data) => sortTracksFn(data).map((track) => formatForTrack(track)),
   });
 }
 //#endregion

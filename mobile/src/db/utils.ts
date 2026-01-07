@@ -119,7 +119,7 @@ export function formatForMediaCard({ type, data, t }: MediaCardFormatter) {
   let description = t("plural.track", { count: data.tracks.length });
   if (type === "album") {
     id = data.id;
-    description = data.artistName;
+    description = getAlbumArtistsString(data.artistsKey);
   } else if (type === "playlist") {
     source = getPlaylistCover(data);
   }

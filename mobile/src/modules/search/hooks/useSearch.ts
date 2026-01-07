@@ -65,7 +65,7 @@ async function getAllMedia() {
   const [allAlbums, allArtists, allFolders, allPlaylists, allTracks] =
     await Promise.all([
       getAlbums({
-        columns: ["id", "name", "artistName", "artwork"],
+        columns: ["id", "name", "artistsKey", "artwork"],
         trackColumns: ["id", "name", "artwork"],
       }),
       db.query.artists.findMany({
