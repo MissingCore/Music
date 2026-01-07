@@ -71,6 +71,7 @@ export async function findAndSaveAudio() {
   const insertedAlbums: Record<string, Set<string>> = {};
   const albumIdMap: Record<string, Record<string, string>> = {};
 
+  const delimiters = preferenceStore.getState().separators;
   // Save tracks in batches of 50 (a good number if the user leaves midway
   // as we would have saved at least some tracks).
   const trackBatches = chunkArray(unstagedTracks, 50);
@@ -99,10 +100,10 @@ export async function findAndSaveAudio() {
     const newArtistRelations: Array<{ trackId: string; artistName: string }> =
       [];
     const newAlbums: Record<string, string[]> = {};
-    results.forEach(({ id, rawArtistName, album, albumArtistNames }) => {
+    results.forEach(({ id, rawArtistName, album }) => {
       // Handle case if separators are provided for track artists.
       const splittedArtistName = rawArtistName
-        ? splitOn(rawArtistName, preferenceStore.getState().separators)
+        ? splitOn(rawArtistName, delimiters)
         : [];
       if (splittedArtistName.length > 0) {
         splittedArtistName.forEach((artistName) => {
@@ -112,31 +113,40 @@ export async function findAndSaveAudio() {
       }
 
       // Handle case if separators are provided for album artists.
-      addAlbum({ album, insertedAlbums, newAlbums });
-      albumArtistNames.forEach((artistName) => {
-        addArtist({ artistName, insertedArtists, newArtists });
-      });
+      if (album) {
+        addAlbum({ album, insertedAlbums, newAlbums });
+        splitOn(album.rawArtistName, delimiters).forEach((artistName) => {
+          addArtist({ artistName, insertedArtists, newArtists });
+        });
+      }
     });
 
     const newArtistEntries = newArtists.map((name) => ({ name }));
     const newAlbumEntries = Object.entries(newAlbums).flatMap(
-      ([artistsKey, names]) => names.map((name) => ({ name, artistsKey })),
+      ([rawArtistName, names]) =>
+        names.map((name) => ({
+          name,
+          rawArtistName,
+          artistsKey: getAlbumArtistsKey(splitOn(rawArtistName, delimiters)),
+        })),
     );
 
     if (newArtistEntries.length > 0) await createArtists(newArtistEntries);
     if (newAlbumEntries.length > 0) {
       // Upserting album will also create the album-artist relations.
       const createdAlbums = await upsertAlbums(newAlbumEntries);
-      createdAlbums.map(({ id, name, artistsKey }) => {
-        if (albumIdMap[artistsKey]) albumIdMap[artistsKey][name] = id;
-        else albumIdMap[artistsKey] = { [name]: id };
+      createdAlbums.map(({ id, name, rawArtistName }) => {
+        if (albumIdMap[rawArtistName]) albumIdMap[rawArtistName][name] = id;
+        else albumIdMap[rawArtistName] = { [name]: id };
       });
     }
 
     // Create or update tracks.
     const newTracks = results.map(({ album, ...t }) => {
       let albumId: string | null = null;
-      if (album) albumId = albumIdMap[album.artistsKey]?.[album.name] || null;
+      if (album) {
+        albumId = albumIdMap[album.rawArtistName]?.[album.name] || null;
+      }
       return { ...t, albumId, discoverTime: Date.now() };
     });
     const newIds = newTracks.map(({ id }) => id);
@@ -380,16 +390,11 @@ async function getTrackMetadata(asset: MediaLibraryAsset) {
     console.log(err);
   }
 
-  let newAlbum: { name: string; artistsKey: string } | undefined;
-  let albumArtistNames: string[] = [];
+  let newAlbum: { name: string; rawArtistName: string } | undefined;
   if (!!t.albumTitle?.trim() && !!t.albumArtist?.trim()) {
-    albumArtistNames = splitOn(
-      t.albumArtist.trim(),
-      preferenceStore.getState().separators,
-    );
     newAlbum = {
       name: t.albumTitle.trim(),
-      artistsKey: getAlbumArtistsKey(albumArtistNames),
+      rawArtistName: t.albumArtist.trim(),
     };
   }
 
@@ -399,7 +404,6 @@ async function getTrackMetadata(asset: MediaLibraryAsset) {
     /** @deprecated Do not use this field directly. */
     rawArtistName: t.artist?.trim() || null,
     album: newAlbum,
-    albumArtistNames,
     track: t.trackNumber,
     disc: t.discNumber,
     year: t.year,
@@ -454,20 +458,20 @@ function addArtist(args: {
 
 /** Mark this album as a new value if it hasn't been inserted before. */
 function addAlbum(args: {
-  album: { name: string; artistsKey: string } | undefined;
+  album: { name: string; rawArtistName: string } | undefined;
   newAlbums: Record<string, string[]>;
   insertedAlbums: Record<string, Set<string>>;
 }) {
   const { album, newAlbums, insertedAlbums } = args;
   if (!album) return;
-  const { name, artistsKey } = album;
-  if (insertedAlbums[artistsKey]?.has(name)) return;
+  const { name, rawArtistName } = album;
+  if (insertedAlbums[rawArtistName]?.has(name)) return;
 
-  if (insertedAlbums[artistsKey]) insertedAlbums[artistsKey].add(name);
-  else insertedAlbums[artistsKey] = new Set([name]);
+  if (insertedAlbums[rawArtistName]) insertedAlbums[rawArtistName].add(name);
+  else insertedAlbums[rawArtistName] = new Set([name]);
 
-  if (newAlbums[artistsKey]) newAlbums[artistsKey].push(name);
-  else newAlbums[artistsKey] = [name];
+  if (newAlbums[rawArtistName]) newAlbums[rawArtistName].push(name);
+  else newAlbums[rawArtistName] = [name];
 
   return album;
 }
