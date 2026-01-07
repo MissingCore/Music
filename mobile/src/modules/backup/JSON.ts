@@ -67,7 +67,7 @@ async function findExistingAlbumsFactory() {
     return entries
       .map((entry) =>
         allAlbums.find(
-          (t) => t.name === entry.name && t.artistName === entry.artistName,
+          (t) => t.name === entry.name && t.rawArtistName === entry.artistName,
         ),
       )
       .filter((entry) => entry !== undefined);
@@ -112,7 +112,7 @@ async function exportBackup() {
     JSON.stringify({
       favorites: {
         playlists: favPlaylists.map(({ name }) => name),
-        albums: favAlbums.map((al) => pickKeys(al, ["name", "artistName"])),
+        albums: favAlbums.map((al) => pickKeys(al, ["name", "rawArtistName"])),
         tracks: favTracks.map(getRawTrack),
       },
       playlists: allPlaylists.map(({ name, tracks }) => {
