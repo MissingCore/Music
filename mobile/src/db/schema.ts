@@ -32,7 +32,7 @@ export const albums = sqliteTable(
     name: text().notNull(),
     // Used to uniquely identify an album based on the arbitrary number of artists
     // it can have.
-    //  - Created by sorting the `artistName` in it's relation and joining with `[joiner]`.
+    //  - Created from `AlbumArtistsKey.from()` function.
     artistsKey: text().notNull(),
     artwork: text().generatedAlwaysAs(
       (): SQL => sql`coalesce(${albums.altArtwork}, ${albums.embeddedArtwork})`,

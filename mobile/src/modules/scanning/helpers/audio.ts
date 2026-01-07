@@ -237,10 +237,10 @@ export async function removeUnusedCategories() {
   const unusedAlbumIds = allAlbums
     .filter(({ tracks }) => tracks.length === 0)
     .map(({ id }) => id);
-  await db.delete(albums).where(inArray(albums.id, unusedAlbumIds));
   await db
     .delete(albumsToArtists)
     .where(inArray(albumsToArtists.albumId, unusedAlbumIds));
+  await db.delete(albums).where(inArray(albums.id, unusedAlbumIds));
 
   // Remove unused artists.
   const allArtists = await db.query.artists.findMany({

@@ -173,13 +173,13 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
     // the junction table needs to be populated.
     const albumBatches = chunkArray(albumArtistNames, 200);
     for (const aBatch of albumBatches) {
-      const entries = aBatch.map((relation) => {
-        return { albumId: relation.id, artistName: relation.artistsKey };
-      });
-      if (entries.length > 0) {
-        // Populate junction table with old Artist Name values.
-        await db.insert(albumsToArtists).values(entries).onConflictDoNothing();
-      }
+      // Populate junction table with old Artist Name values.
+      await db
+        .insert(albumsToArtists)
+        .values(
+          aBatch.map((a) => ({ albumId: a.id, artistName: a.artistsKey })),
+        )
+        .onConflictDoNothing();
     }
   },
 };

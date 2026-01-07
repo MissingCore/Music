@@ -278,7 +278,6 @@ function ResetWorkflow(
           ? splitOn(trackMetadata.artist, delimiters)
           : [],
         album: trackMetadata.albumTitle,
-        rawAlbumArtistName: trackMetadata.albumArtist,
         albumArtists: trackMetadata.albumArtist
           ? splitOn(trackMetadata.albumArtist, delimiters)
           : [],
