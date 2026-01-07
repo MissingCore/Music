@@ -93,6 +93,10 @@ async function findExistingTracksFactory() {
 //#endregion
 
 //#region Export
+/**
+ * @deprecated We plan on updating the backup schema, so this old export
+ * code will be replaced while the old import code will stay for a while.
+ */
 async function exportBackup() {
   // Get favorited values.
   const [favAlbums, favPlaylists, favTracks] = await Promise.all([
