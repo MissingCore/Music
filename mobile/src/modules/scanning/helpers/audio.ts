@@ -11,6 +11,7 @@ import { db } from "~/db";
 import type { InvalidTrack } from "~/db/schema";
 import {
   albums,
+  albumsToArtists,
   artists,
   hiddenTracks,
   invalidTracks,
@@ -220,19 +221,23 @@ export async function removeUnusedCategories() {
     .filter(({ tracks }) => tracks.length === 0)
     .map(({ id }) => id);
   await db.delete(albums).where(inArray(albums.id, unusedAlbumIds));
+  await db
+    .delete(albumsToArtists)
+    .where(inArray(albumsToArtists.albumId, unusedAlbumIds));
 
   // Remove unused artists.
   const allArtists = await db.query.artists.findMany({
     columns: { name: true },
     with: {
       //? Relations used to filter out artists with no albums & tracks.
-      albums: { columns: { id: true }, limit: 1 },
+      albumsToArtists: { columns: { albumId: true }, limit: 1 },
       tracksToArtists: { columns: { trackId: true }, limit: 1 },
     },
   });
   const unusedArtistNames = allArtists
     .filter(
-      (rel) => rel.albums.length === 0 && rel.tracksToArtists.length === 0,
+      ({ albumsToArtists, tracksToArtists }) =>
+        albumsToArtists.length === 0 && tracksToArtists.length === 0,
     )
     .map(({ name }) => name);
   await db.delete(artists).where(inArray(artists.name, unusedArtistNames));
