@@ -33,7 +33,7 @@ CREATE TABLE `__new_albums` (
 	`is_favorite` integer DEFAULT false NOT NULL
 );
 --> statement-breakpoint
-INSERT INTO `__new_albums`("id", "name", "raw_artist_name", "artists_key", "artwork", "embedded_artwork", "alt_artwork", "is_favorite") SELECT "id", "name", "artist_name", "artist_name", "artwork", "embedded_artwork", "alt_artwork", "is_favorite" FROM `albums`;--> statement-breakpoint
+INSERT INTO `__new_albums`("id", "name", "raw_artist_name", "artists_key", "embedded_artwork", "alt_artwork", "is_favorite") SELECT "id", "name", "artist_name", "artist_name", "embedded_artwork", "alt_artwork", "is_favorite" FROM `albums`;--> statement-breakpoint
 DROP TABLE `albums`;--> statement-breakpoint
 ALTER TABLE `__new_albums` RENAME TO `albums`;--> statement-breakpoint
 CREATE UNIQUE INDEX `albums_name_artistsKey_unique` ON `albums` (`name`,`artists_key`);--> statement-breakpoint
