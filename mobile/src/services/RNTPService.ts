@@ -11,7 +11,7 @@ import { deleteTrack } from "~/api/track";
 import { playbackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import { preferenceStore } from "~/stores/Preference/store";
-import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
+import { removeUnusedCategories } from "~/modules/scanning/helpers/cleanup";
 import { router } from "~/navigation/utils/router";
 import { sessionStore } from "./SessionStore";
 

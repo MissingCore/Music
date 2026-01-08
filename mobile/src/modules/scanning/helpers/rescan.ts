@@ -12,8 +12,8 @@ import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
 import { wait } from "~/utils/promise";
 import { findAndSaveArtwork } from "./artwork";
-import { cleanupDatabase, findAndSaveAudio } from "./audio";
-import { cleanupImages } from "./cleanup";
+import { findAndSaveAudio } from "./audio";
+import { cleanupDatabase, cleanupImages } from "./cleanup";
 import { savePathComponents } from "./folder";
 
 /** Look through our library for any new or updated tracks. */

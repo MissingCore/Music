@@ -5,12 +5,12 @@ import { Resynchronize } from "~/stores/Playback/actions";
 import { preferenceStore } from "~/stores/Preference/store";
 import { useSetup } from "~/hooks/useSetup";
 import { findAndSaveArtwork } from "../helpers/artwork";
+import { findAndSaveAudio } from "../helpers/audio";
 import {
-  findAndSaveAudio,
   cleanupDatabase,
+  cleanupImages,
   removeUnusedCategories,
-} from "../helpers/audio";
-import { cleanupImages } from "../helpers/cleanup";
+} from "../helpers/cleanup";
 import { checkForMigrations } from "../helpers/migrations";
 
 import { createImageDirectory } from "~/lib/file-system";
