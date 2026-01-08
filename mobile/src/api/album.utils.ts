@@ -1,6 +1,6 @@
 export const KEY_SEPARATOR = "[joiner]";
 
-/** Helper function for generating & using `artistsKey`. */
+/** Helper functions for generating & using `artistsKey`. */
 export const AlbumArtistsKey = {
   /** Generate `artistsKey` from list of artist names. */
   from(artistNames: string[]) {

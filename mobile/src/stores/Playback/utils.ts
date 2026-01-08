@@ -4,12 +4,13 @@ import { eq } from "drizzle-orm";
 import { db } from "~/db";
 import type { TrackWithRelations } from "~/db/schema";
 import { tracks, tracksToArtists } from "~/db/schema";
-import { getArtistsString, getTrackCover } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
 import { getAlbum } from "~/api/album";
+import { getArtistsString } from "~/api/artist.utils";
 import { getFolderTracks } from "~/api/folder";
 import { getPlaylist, getSpecialPlaylist } from "~/api/playlist";
+import { getTrackArtwork } from "~/api/track.utils";
 import type { PlayFromSource } from "./types";
 
 import { iAsc } from "~/lib/drizzle";
@@ -37,7 +38,7 @@ export function extractTrackId(key: string) {
 export function formatTrackforPlayer(track: TrackWithRelations) {
   return {
     url: getSafeUri(track.uri),
-    artwork: getTrackCover(track) ?? undefined,
+    artwork: getTrackArtwork(track) ?? undefined,
     title: track.name,
     artist: getArtistsString(track.tracksToArtists, false) || "No Artist",
     album: track.album?.name ?? undefined,

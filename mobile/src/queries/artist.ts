@@ -2,9 +2,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
 import type { artists } from "~/db/schema";
-import { getTrackCover } from "~/db/utils";
 
 import { updateArtist } from "~/api/artist";
+import { getTrackArtwork } from "~/api/track.utils";
 import { queries as q } from "./keyStore";
 
 import { formatSeconds } from "~/utils/number";
@@ -32,7 +32,7 @@ export function useArtistForScreen(artistName: string) {
         id: track.id,
         title: track.name,
         description: track.album?.name ?? "—",
-        imageSource: getTrackCover(track),
+        imageSource: getTrackArtwork(track),
       })),
     }),
   });

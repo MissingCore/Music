@@ -10,11 +10,13 @@ import type {
   SlimPlaylistWithTracks,
   SlimTrackWithAlbum,
 } from "~/db/slimTypes";
-import { getArtistsString, getPlaylistCover, getTrackCover } from "~/db/utils";
 
 import { Close } from "~/resources/icons/Close";
 import { Search } from "~/resources/icons/Search";
 import { AlbumArtistsKey } from "~/api/album.utils";
+import { getArtistsString } from "~/api/artist.utils";
+import { getPlaylistArtwork } from "~/api/playlist.utils";
+import { getTrackArtwork } from "~/api/track.utils";
 import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
@@ -264,7 +266,7 @@ type MediaRelations =
 /** Get the artwork of the media that'll be displayed. */
 function getArtwork({ type, data }: MediaRelations) {
   if (type === "album" || type === "artist") return data.artwork;
-  if (type === "playlist") return getPlaylistCover(data);
-  return getTrackCover(data);
+  if (type === "playlist") return getPlaylistArtwork(data);
+  return getTrackArtwork(data);
 }
 //#endregion

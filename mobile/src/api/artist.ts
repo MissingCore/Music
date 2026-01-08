@@ -2,7 +2,8 @@ import { eq } from "drizzle-orm";
 
 import { db } from "~/db";
 import { artists } from "~/db/schema";
-import { getYearRange } from "~/db/utils";
+
+import { TrackList } from "./track.utils";
 
 //#region GET Methods
 /** Get the albums an artist has released in descending order. */
@@ -21,7 +22,7 @@ export async function getArtistAlbums(id: string) {
   const albumWithYear = allAlbums
     .filter(({ album }) => album.tracks.length > 0)
     .map(({ album: { tracks, ...album } }) => {
-      return { ...album, year: getYearRange(tracks) };
+      return { ...album, year: TrackList.yearRange(tracks) };
     });
   // FIXME: Once Hermes supports `toSorted`, use it instead.
   albumWithYear.sort(

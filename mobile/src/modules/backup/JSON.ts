@@ -9,12 +9,13 @@ import { z } from "zod/mini";
 import { db } from "~/db";
 import type { TrackWithRelations } from "~/db/schema";
 import { albums, playlists, tracks } from "~/db/schema";
-import { mergeTracks, sanitizePlaylistName } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
 import { getAlbums } from "~/api/album";
 import { createPlaylist, getPlaylists, updatePlaylist } from "~/api/playlist";
+import { sanitizePlaylistName } from "~/api/playlist.utils";
 import { getTracks } from "~/api/track";
+import { TrackList } from "~/api/track.utils";
 
 import { pickDirectory } from "~/lib/file-system";
 import { clearAllQueries } from "~/lib/react-query";
@@ -165,7 +166,7 @@ async function importBackup() {
       // Create or update playlist to have the current track order.
       if (exists) {
         await updatePlaylist(name, {
-          tracks: mergeTracks(exists.tracks, playlistTracks),
+          tracks: TrackList.merge(exists.tracks, playlistTracks),
         });
       } else await createPlaylist({ name, tracks: playlistTracks });
     }),

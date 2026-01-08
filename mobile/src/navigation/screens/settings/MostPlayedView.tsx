@@ -3,7 +3,8 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { db } from "~/db";
-import { getArtistsString } from "~/db/utils";
+
+import { getArtistsString } from "~/api/artist.utils";
 
 import { iAsc } from "~/lib/drizzle";
 import { FlatList } from "~/components/Defaults";

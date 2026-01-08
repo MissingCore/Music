@@ -7,7 +7,6 @@ import type {
   PlaylistWithTracks,
 } from "~/db/schema";
 import { playlists, tracksToPlaylists } from "~/db/schema";
-import { sanitizePlaylistName } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
 import { sortPreferencesStore } from "~/modules/media/services/SortPreferences";
@@ -16,6 +15,7 @@ import { iAsc, iDesc } from "~/lib/drizzle";
 import { pickKeys } from "~/utils/object";
 import type { ReservedPlaylistName } from "~/modules/media/constants";
 import { ReservedPlaylists } from "~/modules/media/constants";
+import { sanitizePlaylistName } from "./playlist.utils";
 import type { QueryManyWithTracksFn, QueryOneWithTracksFn } from "./types";
 import { getColumns, withRelations } from "./utils";
 

@@ -6,13 +6,13 @@ import { BackHandler, View } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
 import type { SlimTrackWithAlbum } from "~/db/slimTypes";
-import { getArtistsString } from "~/db/utils";
 
 import { Add } from "~/resources/icons/Add";
 import { Cancel } from "~/resources/icons/Cancel";
 import { CheckCircle } from "~/resources/icons/CheckCircle";
 import { Check } from "~/resources/icons/Check";
 import { Delete } from "~/resources/icons/Delete";
+import { getArtistsString } from "~/api/artist.utils";
 import { useDeletePlaylist } from "~/queries/playlist";
 import { useFloatingContent } from "../../../hooks/useFloatingContent";
 import type { InitStoreProps } from "./store";

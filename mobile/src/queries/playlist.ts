@@ -2,12 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
 import type { playlists } from "~/db/schema";
-import {
-  getPlaylistCover,
-  formatForCurrentScreen,
-  formatForMediaCard,
-  sanitizePlaylistName,
-} from "~/db/utils";
+import { formatForCurrentScreen, formatForMediaCard } from "~/db/utils";
 
 import {
   createPlaylist,
@@ -15,6 +10,7 @@ import {
   favoritePlaylist,
   updatePlaylist,
 } from "~/api/playlist";
+import { getPlaylistArtwork, sanitizePlaylistName } from "~/api/playlist.utils";
 import { Resynchronize } from "~/stores/Playback/actions";
 import { queries as q } from "./keyStore";
 
@@ -25,7 +21,7 @@ import { wait } from "~/utils/promise";
 export function usePlaylist(playlistName: string) {
   return useQuery({
     ...q.playlists.detail(playlistName),
-    select: (data) => ({ ...data, imageSource: getPlaylistCover(data) }),
+    select: (data) => ({ ...data, imageSource: getPlaylistArtwork(data) }),
   });
 }
 

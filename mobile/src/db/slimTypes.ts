@@ -1,13 +1,6 @@
 import type { Album, Artist, FileNode, Playlist, Track } from "~/db/schema";
 
-/** What the `artwork` field typically holds. */
-export type Artwork = string | null;
-
-/** Minimum fields required to get `artwork` from tracks. */
-export type TrackArtwork = {
-  artwork: Artwork;
-  album?: { artwork: Artwork } | null;
-};
+import type { Artwork, TrackArtwork } from "~/api/track.utils";
 
 /** Minimum data typically used from `Album`. */
 export type SlimAlbum = Pick<Album, "id" | "name" | "artistsKey" | "artwork">;

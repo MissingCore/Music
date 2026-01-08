@@ -5,8 +5,7 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
-import { getTrackCover } from "~/db/utils";
-
+import { getTrackArtwork } from "~/api/track.utils";
 import {
   usePlaylist,
   usePlaylists,
@@ -33,7 +32,7 @@ export default function ModifyPlaylist({
   const initialTracks = useMemo(() => {
     if (!data?.tracks) return [];
     return data.tracks.map((t) => {
-      t.artwork = getTrackCover(t);
+      t.artwork = getTrackArtwork(t);
       return t;
     });
   }, [data?.tracks]);

@@ -4,9 +4,10 @@ import type { StoreApi } from "zustand";
 import { createStore, useStore } from "zustand";
 
 import type { SlimTrackWithAlbum } from "~/db/slimTypes";
-import { getTrackCover, mergeTracks, sanitizePlaylistName } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
+import { sanitizePlaylistName } from "~/api/playlist.utils";
+import { TrackList, getTrackArtwork } from "~/api/track.utils";
 
 import { ToastOptions } from "~/lib/toast";
 import { moveArray } from "~/utils/object";
@@ -87,11 +88,11 @@ export function PlaylistStoreProvider({
       SearchCallbacks: {
         album: ({ tracks, ...album }) => {
           set((prev) => ({
-            tracks: mergeTracks(
+            tracks: TrackList.merge(
               prev.tracks,
               (tracks as SlimTrackWithAlbum[]).map((t) => {
                 t.album = album;
-                t.artwork = getTrackCover(t);
+                t.artwork = getTrackArtwork(t);
                 return t;
               }),
             ),
@@ -102,7 +103,7 @@ export function PlaylistStoreProvider({
           );
         },
         folder: ({ name, tracks }) => {
-          set((prev) => ({ tracks: mergeTracks(prev.tracks, tracks) }));
+          set((prev) => ({ tracks: TrackList.merge(prev.tracks, tracks) }));
           toast(i18next.t("template.entryAdded", { name }), ToastOptions);
         },
         track: (track) => {

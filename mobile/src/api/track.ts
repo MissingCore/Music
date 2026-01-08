@@ -9,12 +9,12 @@ import {
   tracksToPlaylists,
   waveformSamples,
 } from "~/db/schema";
-import { getTrackCover } from "~/db/utils";
 
 import i18next from "~/modules/i18n";
 
 import { getExcludedColumns, iAsc } from "~/lib/drizzle";
 import type { BooleanPriority } from "~/utils/types";
+import { getTrackArtwork } from "./track.utils";
 import type { DrizzleFilter, QueriedTrack } from "./types";
 import { getColumns, withRelations } from "./utils";
 
@@ -43,7 +43,7 @@ export async function getTrack<
     options?.columns.includes("artwork" as TCols);
   return {
     ...track,
-    ...(hasArtwork ? { artwork: getTrackCover(track) } : {}),
+    ...(hasArtwork ? { artwork: getTrackArtwork(track) } : {}),
   } as QueriedTrack<BooleanPriority<WithAlbum_User, true>, TCols, ACols>;
 }
 
@@ -77,7 +77,7 @@ export async function getTracks<
     options?.columns === undefined ||
     options?.columns.includes("artwork" as TCols);
   return allTracks.map((t) => {
-    if (hasArtwork) t.artwork = getTrackCover(t);
+    if (hasArtwork) t.artwork = getTrackArtwork(t);
     return t;
   }) as Array<
     QueriedTrack<BooleanPriority<WithAlbum_User, true>, TCols, ACols>

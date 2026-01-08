@@ -6,11 +6,12 @@ import { useTranslation } from "react-i18next";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
 import { tracks } from "~/db/schema";
-import { getArtistsString, getTrackCover } from "~/db/utils";
 
 import { Cached } from "~/resources/icons/Cached";
 import { Delete } from "~/resources/icons/Delete";
+import { getArtistsString } from "~/api/artist.utils";
 import { getTracks } from "~/api/track";
+import { getTrackArtwork } from "~/api/track.utils";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 
@@ -215,7 +216,7 @@ function TrackItem({
       type="track"
       title={item.name}
       description={getArtistsString(item.tracksToArtists)}
-      imageSource={getTrackCover(item)}
+      imageSource={getTrackArtwork(item)}
       poppyLabel={active}
       className={cn("pr-4", className)}
       {...props}
