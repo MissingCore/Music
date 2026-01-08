@@ -1,0 +1,36 @@
+diff --git a/lib/commonjs/components/Menu/Menu.js b/lib/commonjs/components/Menu/Menu.js
+index 0b9a9df882cafc489b5f87c30e461da7f3eac107..aed4895c4b776807185b20bf542cd5cc326f4fde 100644
+--- a/lib/commonjs/components/Menu/Menu.js
++++ b/lib/commonjs/components/Menu/Menu.js
+@@ -230,6 +230,7 @@ const Menu = ({
+     const {
+       animation
+     } = theme;
++    await new Promise((resolve) => setTimeout(resolve, 1));
+     _reactNative.Animated.parallel([_reactNative.Animated.timing(scaleAnimationRef.current, {
+       toValue: {
+         x: menuLayoutResult.width,
+diff --git a/lib/module/components/Menu/Menu.js b/lib/module/components/Menu/Menu.js
+index 46a45f468db95f6a2c150d266de2d2cce0482b1d..7be02c01494c60f56371dd47b0e593e1968ad44f 100644
+--- a/lib/module/components/Menu/Menu.js
++++ b/lib/module/components/Menu/Menu.js
+@@ -222,6 +222,7 @@ const Menu = ({
+     const {
+       animation
+     } = theme;
++    await new Promise((resolve) => setTimeout(resolve, 1));
+     Animated.parallel([Animated.timing(scaleAnimationRef.current, {
+       toValue: {
+         x: menuLayoutResult.width,
+diff --git a/src/components/Menu/Menu.tsx b/src/components/Menu/Menu.tsx
+index 55922c1fc27003eea00c77c4dbef180f9016b938..570071f31023c09195b0daebcb06d4eb1323eb20 100644
+--- a/src/components/Menu/Menu.tsx
++++ b/src/components/Menu/Menu.tsx
+@@ -346,6 +346,7 @@ const Menu = ({
+ 
+     attachListeners();
+     const { animation } = theme;
++    await new Promise((resolve) => setTimeout(resolve, 1));
+     Animated.parallel([
+       Animated.timing(scaleAnimationRef.current, {
+         toValue: { x: menuLayoutResult.width, y: menuLayoutResult.height },
