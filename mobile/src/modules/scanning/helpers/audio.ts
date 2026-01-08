@@ -30,27 +30,115 @@ import {
 } from "~/utils/string";
 import { savePathComponents } from "./folder";
 
-//#region Saving Function
+/**
+ * Difference in `modificiationTime` to trigger a refetch. This is due to
+ * Android sometimes changing `modificationTime` with a delta of ~2s even
+ * though the file itself hasn't been touched.
+ *  - Use the "Deep Rescan" feature if there's an actual update within 5
+ *  minutes.
+ *
+ * Ref:
+ *  - https://stackoverflow.com/a/8354791
+ *  - https://stackoverflow.com/a/11547476
+ */
+const CHANGE_DELTA = 5 * 60 * 1000;
+
 /** Index tracks with their metadata into our database. */
 export async function findAndSaveAudio() {
   // Reset tracked values when saving/updating tracks in onboarding store.
   onboardingStore.setState({ staged: 0, saveErrors: 0 });
   const stopwatch = new Stopwatch();
 
-  // Find the tracks that we should show in the app.
-  const { _all: foundAssets, valid: discoveredTracks } = await discoverTracks();
+  //#region Media Discovery
+  const {
+    listAllow: _listAllow,
+    listBlock: _listBlock,
+    minSeconds,
+  } = preferenceStore.getState();
+  const listAllow = _listAllow.map((p) => `file://${addTrailingSlash(p)}`);
+  const listBlock = _listBlock.map((p) => `file://${addTrailingSlash(p)}`);
+
+  // Get all audio files discoverable by `expo-media-library`.
+  const foundAssets: MediaLibraryAsset[] = [];
+  let isComplete = false;
+  let lastRead: string | undefined;
+  do {
+    const { assets, endCursor, hasNextPage } = await getAssetsAsync({
+      after: lastRead,
+      first: BATCH_PRESETS.LIGHT,
+      mediaType: "audio",
+    });
+    foundAssets.push(...assets);
+    lastRead = endCursor;
+    isComplete = !hasNextPage;
+  } while (!isComplete);
+
+  const discoveredTracks = foundAssets.filter(
+    (a) =>
+      // Ensure track is in the allowlist if it's non-empty.
+      (listAllow.length === 0 || listAllow.some((p) => a.uri.startsWith(p))) &&
+      // Ensure track isn't in the blocklist.
+      !listBlock.some((p) => a.uri.startsWith(p)) &&
+      // Ensure track meets the minimum duration requirement.
+      a.duration > minSeconds,
+  );
   console.log(
     `Found ${foundAssets.length} tracks, filtered down to ${discoveredTracks.length} in ${stopwatch.lapTime()}.`,
   );
+  //#endregion
 
-  // Figure out which tracks are new or have changes.
-  const { stats, unstagedTracks } =
-    await getLibraryModifications(discoveredTracks);
+  //#region Change Detection
+  const savedTracks = await db.query.tracks.findMany({
+    columns: withColumns(["id", "modificationTime", "uri", "editedMetadata"]),
+  });
+  const hiddenTracks = await db.query.hiddenTracks.findMany();
+  const erroredTracks = await db.query.invalidTracks.findMany();
+  // Format data as objects for faster reads inside a loop.
+  const savedMap = Object.fromEntries(savedTracks.map((t) => [t.id, t]));
+  const hiddenMap = Object.fromEntries(hiddenTracks.map((t) => [t.id, t]));
+  const erroredMap = Object.fromEntries(erroredTracks.map((t) => [t.id, t]));
+
+  // Find the tracks we can skip indexing or need updating.
+  const modified = new Set<string>();
+  const unmodified = new Set<string>();
+  discoveredTracks.forEach(({ id, modificationTime, uri }) => {
+    // Skip if track is hidden.
+    if (hiddenMap[id]) return unmodified.add(id);
+
+    // Skip if track is new.
+    const isSaved = savedMap[id];
+    const isInvalid = erroredMap[id];
+    if (!isSaved && !isInvalid) return;
+
+    // Get context for determining if track has been modified.
+    const isMaybeModified =
+      Math.abs(modificationTime - (isSaved ?? isInvalid)!.modificationTime) >
+      CHANGE_DELTA;
+    const hasEdited = typeof isSaved?.editedMetadata === "number";
+    let isDifferentUri = (isSaved ?? isInvalid)!.uri !== uri;
+
+    // A track which has been moved may be detected twice by `expo-media-library`
+    // in its new & old location with the same `id`. This logic helps mark the
+    // track as modified.
+    if (isDifferentUri && unmodified.has(id)) unmodified.delete(id);
+    else if (!isDifferentUri && modified.has(id)) isDifferentUri = true; // Encountered old location.
+
+    // Retry indexing if modification time or uri is different.
+    if ((!hasEdited && isMaybeModified) || isDifferentUri) modified.add(id);
+    else unmodified.add(id);
+  });
+
+  const unstagedTracks = discoveredTracks.filter(
+    ({ id }) => !unmodified.has(id),
+  );
+
   onboardingStore.setState((prev) => ({
-    ...stats,
+    prevSaved: savedTracks.length,
+    unstaged: discoveredTracks.length - unmodified.size,
     phase: unstagedTracks.length > 0 ? "tracks" : prev.phase,
   }));
   console.log(`Determined unstaged content in ${stopwatch.lapTime()}.`);
+  //#endregion
 
   // Track what albums & artists has been previously saved so that we don't
   // waste time inserting unnecessary values.
@@ -167,123 +255,11 @@ export async function findAndSaveAudio() {
   return {
     foundFiles: discoveredTracks,
     unstagedFiles: unstagedTracks,
-    changed: stats.unstaged,
+    changed: discoveredTracks.length - unmodified.size,
   };
 }
-//#endregion
 
 //#region Internal Helpers
-/** Return references to tracks that fit our criteria. */
-async function discoverTracks() {
-  const {
-    listAllow: _listAllow,
-    listBlock: _listBlock,
-    minSeconds,
-  } = preferenceStore.getState();
-  const listAllow = _listAllow.map((p) => `file://${addTrailingSlash(p)}`);
-  const listBlock = _listBlock.map((p) => `file://${addTrailingSlash(p)}`);
-
-  // Get all audio files discoverable by `expo-media-library`.
-  const incomingData: MediaLibraryAsset[] = [];
-  let isComplete = false;
-  let lastRead: string | undefined;
-  do {
-    const { assets, endCursor, hasNextPage } = await getAssetsAsync({
-      after: lastRead,
-      first: BATCH_PRESETS.LIGHT,
-      mediaType: "audio",
-    });
-    incomingData.push(...assets);
-    lastRead = endCursor;
-    isComplete = !hasNextPage;
-  } while (!isComplete);
-
-  const validTracks = incomingData.filter(
-    (a) =>
-      // Ensure track is in the allowlist if it's non-empty.
-      (listAllow.length === 0 || listAllow.some((p) => a.uri.startsWith(p))) &&
-      // Ensure track isn't in the blocklist.
-      !listBlock.some((p) => a.uri.startsWith(p)) &&
-      // Ensure track meets the minimum duration requirement.
-      a.duration > minSeconds,
-  );
-
-  return { _all: incomingData, valid: validTracks };
-}
-
-/**
- * Difference in `modificiationTime` to trigger a refetch.
- *  - Use the "Deep Rescan" feature if there's an actual update within 5
- *  minutes.
- */
-const CHANGE_DELTA = 5 * 60 * 1000;
-
-/** Figure out whether we have new or modified tracks. */
-async function getLibraryModifications(assets: MediaLibraryAsset[]) {
-  const savedTracks = await db.query.tracks.findMany({
-    columns: withColumns(["id", "modificationTime", "uri", "editedMetadata"]),
-  });
-  const hiddenTracks = await db.query.hiddenTracks.findMany();
-  const erroredTracks = await db.query.invalidTracks.findMany();
-  // Format data as objects for faster reads inside a loop.
-  const savedMap = Object.fromEntries(savedTracks.map((t) => [t.id, t]));
-  const hiddenMap = Object.fromEntries(hiddenTracks.map((t) => [t.id, t]));
-  const erroredMap = Object.fromEntries(erroredTracks.map((t) => [t.id, t]));
-
-  // Find the tracks we can skip indexing or need updating.
-  const modified = new Set<string>();
-  const unmodified = new Set<string>();
-  assets.forEach(({ id, modificationTime, uri }) => {
-    // Skip if track is hidden.
-    if (hiddenMap[id]) {
-      unmodified.add(id);
-      return;
-    }
-
-    const isSaved = savedMap[id];
-    const isInvalid = erroredMap[id];
-    if (!isSaved && !isInvalid) return; // If we have a new track.
-
-    const lastModified = (isSaved ?? isInvalid)!.modificationTime;
-    const hasEdited = typeof isSaved?.editedMetadata === "number";
-    let isDifferentUri = (isSaved ?? isInvalid)!.uri !== uri;
-
-    // Moving folders in Android is kind of weird; sometimes, the URI of
-    // the file after being moved is still being displayed in its original
-    // location in addition to its new location.
-    //
-    // The logic below makes sure that if the file has the same id and is
-    // detected in 2 different locations, we make sure the track is marked
-    // as being "modified".
-    if (isDifferentUri && unmodified.has(id)) unmodified.delete(id);
-    else if (!isDifferentUri && modified.has(id)) isDifferentUri = true;
-
-    // Retry indexing if modification time or uri is different.
-    //  - Android will sometimes change the `lastModified` value even
-    //  when we don't touch the file.
-    //  - Ref:
-    //    - https://stackoverflow.com/a/8354791
-    //    - https://stackoverflow.com/a/11547476
-    if (
-      (!hasEdited &&
-        Math.abs(modificationTime - lastModified) > CHANGE_DELTA) ||
-      isDifferentUri
-    ) {
-      modified.add(id);
-    } else {
-      unmodified.add(id);
-    }
-  });
-
-  return {
-    stats: {
-      prevSaved: savedTracks.length,
-      unstaged: assets.length - unmodified.size,
-    },
-    unstagedTracks: assets.filter(({ id }) => !unmodified.has(id)),
-  };
-}
-
 const wantedMetadata = [
   ...MetadataPresets.standard,
   ...["discNumber", "bitrate", "sampleMimeType", "sampleRate"],
