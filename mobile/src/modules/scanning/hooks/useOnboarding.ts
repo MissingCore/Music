@@ -4,12 +4,13 @@ import { useCallback, useEffect, useState } from "react";
 import { Resynchronize } from "~/stores/Playback/actions";
 import { preferenceStore } from "~/stores/Preference/store";
 import { useSetup } from "~/hooks/useSetup";
-import { findAndSaveArtwork, cleanupImages } from "../helpers/artwork";
+import { findAndSaveArtwork } from "../helpers/artwork";
 import {
   findAndSaveAudio,
   cleanupDatabase,
   removeUnusedCategories,
 } from "../helpers/audio";
+import { cleanupImages } from "../helpers/cleanup";
 import { checkForMigrations } from "../helpers/migrations";
 
 import { createImageDirectory } from "~/lib/file-system";

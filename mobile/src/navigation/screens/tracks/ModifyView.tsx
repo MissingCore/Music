@@ -26,10 +26,8 @@ import { useTrack } from "~/queries/track";
 import { Resynchronize } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
-import {
-  cleanupImages,
-  getArtworkUri,
-} from "~/modules/scanning/helpers/artwork";
+import { getArtworkUri } from "~/modules/scanning/helpers/artwork";
+import { cleanupImages } from "~/modules/scanning/helpers/cleanup";
 import { FormStateProvider, useFormStateContext } from "~/hooks/useFormState";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
