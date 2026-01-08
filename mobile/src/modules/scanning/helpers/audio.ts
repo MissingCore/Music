@@ -140,13 +140,13 @@ export async function findAndSaveAudio() {
   console.log(`Determined unstaged content in ${stopwatch.lapTime()}.`);
   //#endregion
 
+  //#region Indexing
   // Track what albums & artists has been previously saved so that we don't
   // waste time inserting unnecessary values.
-  const insertedArtists = new Set<string>();
-  const insertedAlbums: Record<string, Set<string>> = {};
   const albumIdMap: Record<string, Record<string, string>> = {};
 
   const delimiters = preferenceStore.getState().separators;
+  const safeRetrieveMetadata = safeRetrieveMetadataFactory(delimiters);
   // Save tracks in batches of 50 (a good number if the user leaves midway
   // as we would have saved at least some tracks).
   const trackBatches = chunkArray(unstagedTracks, 50);
@@ -171,48 +171,34 @@ export async function findAndSaveAudio() {
     await savePathComponents(results.map(({ uri }) => uri));
 
     // Save artists & albums that haven't been inserted yet.
-    const newArtists: string[] = [];
-    const newArtistRelations: Array<{ trackId: string; artistName: string }> =
-      [];
-    const newAlbums: Record<string, string[]> = {};
-    results.forEach(({ id, rawArtistName, album }) => {
-      // Handle case if separators are provided for track artists.
-      const splittedArtistName = rawArtistName
-        ? splitOn(rawArtistName, delimiters)
-        : [];
-      if (splittedArtistName.length > 0) {
-        splittedArtistName.forEach((artistName) => {
-          addArtist({ artistName, insertedArtists, newArtists });
-          newArtistRelations.push({ trackId: id, artistName });
-        });
-      }
+    const usedArtists = new Set<string>();
+    const trackArtistRels: Array<{ trackId: string; artistName: string }> = [];
+    const usedAlbums: Record<string, Set<string>> = {};
+    results.forEach(({ id, artistNames, album }) => {
+      // Handle track-artist relations.
+      artistNames.forEach((artistName) => {
+        usedArtists.add(artistName);
+        trackArtistRels.push({ trackId: id, artistName });
+      });
 
-      // Handle case if separators are provided for album artists.
+      // Handle album-artist relations.
       if (album) {
-        const albumArtists = splitOn(album.rawArtistName, delimiters);
-        const albumArtistsKey = AlbumArtistsKey.from(albumArtists);
-        if (albumArtistsKey) {
-          addAlbum({
-            album: { name: album.name, artistsKey: albumArtistsKey },
-            insertedAlbums,
-            newAlbums,
-          });
-        }
-        albumArtists.forEach((artistName) => {
-          addArtist({ artistName, insertedArtists, newArtists });
-        });
+        album.albumArtists.forEach((name) => usedArtists.add(name));
+        if (usedAlbums[album.artistsKey]) {
+          usedAlbums[album.artistsKey]?.add(album.name);
+        } else usedAlbums[album.artistsKey] = new Set([album.name]);
       }
     });
 
-    const newArtistEntries = newArtists.map((name) => ({ name }));
-    const newAlbumEntries = Object.entries(newAlbums).flatMap(
-      ([artistsKey, names]) => names.map((name) => ({ name, artistsKey })),
-    );
+    const artistEntries = [...usedArtists].map((name) => ({ name }));
+    if (artistEntries.length > 0) await createArtists(artistEntries);
 
-    if (newArtistEntries.length > 0) await createArtists(newArtistEntries);
-    if (newAlbumEntries.length > 0) {
+    const albumEntries = Object.entries(usedAlbums).flatMap(
+      ([artistsKey, names]) => [...names].map((name) => ({ name, artistsKey })),
+    );
+    if (albumEntries.length > 0) {
       // Upserting album will also create the album-artist relations.
-      const createdAlbums = await upsertAlbums(newAlbumEntries);
+      const createdAlbums = await upsertAlbums(albumEntries);
       createdAlbums.map(({ id, name, artistsKey }) => {
         if (albumIdMap[artistsKey]) albumIdMap[artistsKey][name] = id;
         else albumIdMap[artistsKey] = { [name]: id };
@@ -222,13 +208,7 @@ export async function findAndSaveAudio() {
     // Create or update tracks.
     const newTracks = results.map(({ album, ...t }) => {
       let albumId: string | null = null;
-      if (album) {
-        const albumArtists = splitOn(album.rawArtistName, delimiters);
-        const albumArtistsKey = AlbumArtistsKey.from(albumArtists);
-        if (albumArtistsKey) {
-          albumId = albumIdMap[albumArtistsKey]?.[album.name] || null;
-        }
-      }
+      if (album) albumId = albumIdMap[album.artistsKey]?.[album.name] || null;
       return { ...t, albumId, discoverTime: Date.now() };
     });
     const newIds = newTracks.map(({ id }) => id);
@@ -237,14 +217,15 @@ export async function findAndSaveAudio() {
     await db
       .delete(tracksToArtists)
       .where(inArray(tracksToArtists.trackId, newIds));
-    if (newArtistRelations.length > 0) {
+    if (trackArtistRels.length > 0) {
       await db
         .insert(tracksToArtists)
-        .values(newArtistRelations)
+        .values(trackArtistRels)
         .onConflictDoNothing();
     }
     await db.delete(invalidTracks).where(inArray(invalidTracks.id, newIds));
   }
+  //#endregion
 
   const { staged, saveErrors } = onboardingStore.getState();
   console.log(
@@ -271,7 +252,10 @@ const wantedMetadata = [
  * **Note:** We return `album`, which is non-standard and should be used
  * to create an Album and then swapped out with the created `albumId`.
  */
-async function getTrackMetadata(asset: MediaLibraryAsset) {
+async function getTrackMetadata(
+  asset: MediaLibraryAsset,
+  delimiters: string[],
+) {
   const { id, uri, duration, modificationTime, filename } = asset;
   const { bitrate, sampleRate, ...t } = await getMetadata(uri, wantedMetadata);
   let fileSize = 0;
@@ -284,19 +268,25 @@ async function getTrackMetadata(asset: MediaLibraryAsset) {
     console.log(err);
   }
 
-  let newAlbum: { name: string; rawArtistName: string } | undefined;
+  const trimmedArtistName = t.artist?.trim() || null;
+
+  let newAlbum;
   if (!!t.albumTitle?.trim() && !!t.albumArtist?.trim()) {
-    newAlbum = {
-      name: t.albumTitle.trim(),
-      rawArtistName: t.albumArtist.trim(),
-    };
+    const albumArtists = splitOn(t.albumArtist.trim(), delimiters);
+    const artistsKey = AlbumArtistsKey.from(albumArtists);
+    if (artistsKey) {
+      newAlbum = { name: t.albumTitle.trim(), artistsKey, albumArtists };
+    }
   }
 
   return {
     id,
     name: t.title?.trim() || removeFileExtension(filename),
     /** @deprecated Do not use this field directly. */
-    rawArtistName: t.artist?.trim() || null,
+    rawArtistName: trimmedArtistName,
+    artistNames: trimmedArtistName
+      ? splitOn(trimmedArtistName, delimiters)
+      : [],
     album: newAlbum,
     track: t.trackNumber,
     disc: t.discNumber,
@@ -313,21 +303,23 @@ async function getTrackMetadata(asset: MediaLibraryAsset) {
 }
 
 /** Returns `TrackMetadata` or `InvalidTrack`. */
-async function safeRetrieveMetadata(asset: MediaLibraryAsset) {
-  const { id, uri, modificationTime } = asset;
-  try {
-    const trackEntry = await getTrackMetadata(asset);
-    return Promise.resolve(trackEntry);
-  } catch (err) {
-    const isError = err instanceof Error;
-    const errorInfo = {
-      errorName: isError ? err.name : "UnknownError",
-      errorMessage: isError ? err.message : "Rejected for unknown reasons.",
-    };
-    // We may end up here if the track at the given uri doesn't exist anymore.
-    console.log(`[Track ${id}] ${errorInfo.errorMessage}`);
-    return Promise.reject({ id, uri, modificationTime, ...errorInfo });
-  }
+function safeRetrieveMetadataFactory(delimiters: string[]) {
+  return async (asset: MediaLibraryAsset) => {
+    const { id, uri, modificationTime } = asset;
+    try {
+      const trackEntry = await getTrackMetadata(asset, delimiters);
+      return Promise.resolve(trackEntry);
+    } catch (err) {
+      const isError = err instanceof Error;
+      const errorInfo = {
+        errorName: isError ? err.name : "UnknownError",
+        errorMessage: isError ? err.message : "Rejected for unknown reasons.",
+      };
+      // We may end up here if the track at the given uri doesn't exist anymore.
+      console.log(`[Track ${id}] ${errorInfo.errorMessage}`);
+      return Promise.reject({ id, uri, modificationTime, ...errorInfo });
+    }
+  };
 }
 
 const UpsertInvalidTrackFields = getExcludedColumns([
@@ -336,37 +328,4 @@ const UpsertInvalidTrackFields = getExcludedColumns([
   "errorMessage",
   "modificationTime",
 ]);
-
-/** Mark this artist as a new value if it hasn't been inserted before. */
-function addArtist(args: {
-  artistName: string | null | undefined;
-  newArtists: string[];
-  insertedArtists: Set<string>;
-}) {
-  const { artistName, newArtists, insertedArtists } = args;
-  if (artistName && !insertedArtists.has(artistName)) {
-    insertedArtists.add(artistName);
-    newArtists.push(artistName);
-  }
-}
-
-/** Mark this album as a new value if it hasn't been inserted before. */
-function addAlbum(args: {
-  album: { name: string; artistsKey: string } | undefined;
-  newAlbums: Record<string, string[]>;
-  insertedAlbums: Record<string, Set<string>>;
-}) {
-  const { album, newAlbums, insertedAlbums } = args;
-  if (!album) return;
-  const { name, artistsKey } = album;
-  if (insertedAlbums[artistsKey]?.has(name)) return;
-
-  if (insertedAlbums[artistsKey]) insertedAlbums[artistsKey].add(name);
-  else insertedAlbums[artistsKey] = new Set([name]);
-
-  if (newAlbums[artistsKey]) newAlbums[artistsKey].push(name);
-  else newAlbums[artistsKey] = [name];
-
-  return album;
-}
 //#endregion
