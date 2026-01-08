@@ -6,11 +6,7 @@ import { preferenceStore } from "~/stores/Preference/store";
 import { useSetup } from "~/hooks/useSetup";
 import { findAndSaveArtwork } from "../helpers/artwork";
 import { findAndSaveAudio } from "../helpers/audio";
-import {
-  cleanupDatabase,
-  cleanupImages,
-  removeUnusedCategories,
-} from "../helpers/cleanup";
+import { AppCleanUp } from "../helpers/cleanup";
 import { checkForMigrations } from "../helpers/migrations";
 
 import { createImageDirectory } from "~/lib/file-system";
@@ -51,7 +47,7 @@ export function useOnboarding() {
     if (preferenceStore.getState().rescanOnLaunch) {
       // Find and save any audio files to the database.
       const { foundFiles, unstagedFiles } = await findAndSaveAudio();
-      await cleanupDatabase(foundFiles.map(({ id }) => id));
+      await AppCleanUp.tracks(foundFiles.map(({ id }) => id));
       // Make sure any modified tracks isn't being played.
       await Resynchronize.onModifiedTracks(unstagedFiles.map(({ id }) => id));
 
@@ -62,9 +58,9 @@ export function useOnboarding() {
       createImageDirectory();
       await findAndSaveArtwork();
     } else {
-      await removeUnusedCategories();
+      await AppCleanUp.media();
     }
-    await cleanupImages();
+    await AppCleanUp.images();
 
     console.log(`Finished overall in ${stopwatch.stop()}.`);
     setStatus("complete");

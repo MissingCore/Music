@@ -11,7 +11,7 @@ import { deleteTrack } from "~/api/track";
 import { playbackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import { preferenceStore } from "~/stores/Preference/store";
-import { removeUnusedCategories } from "~/modules/scanning/helpers/cleanup";
+import { AppCleanUp } from "~/modules/scanning/helpers/cleanup";
 import { router } from "~/navigation/utils/router";
 import { sessionStore } from "./SessionStore";
 
@@ -226,7 +226,7 @@ export async function PlaybackService() {
         await deleteTrack(erroredTrack.id, { errorName: e.code, errorMessage });
         // Attempt to play the next track.
         await Queue.removeIds([erroredTrack.id]);
-        await removeUnusedCategories();
+        await AppCleanUp.media();
         clearAllQueries();
 
         // If the queue is empty as a result of `Queue.removeIds()`, `reset()`
