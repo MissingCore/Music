@@ -11,9 +11,10 @@ import Animated, {
 import { useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
 
-import { useTheme } from "~/hooks/useTheme";
+import { useColor } from "~/hooks/useTheme";
 
 import { OnRTLWorklet } from "~/lib/react";
+import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
 
 /** Used to progressively display long content. */
@@ -22,8 +23,8 @@ export function Marquee({
   ...props
 }: {
   children: React.ReactNode;
-  /** Color of the container this `<Marquee />` will be on. Defaults to `canvas`. */
-  color?: Exclude<keyof ReturnType<typeof useTheme>, "theme">;
+  /** Color of the container this `<Marquee />` will be on. Defaults to `surface`. */
+  color?: ColorRole;
   center?: boolean;
   /**
    * Styles the `<View />` wrapping the `<Animated.ScrollView />` containing
@@ -33,11 +34,7 @@ export function Marquee({
   /** Styles the `<View />` wrapping `children`. */
   contentContainerClassName?: string;
 }) {
-  const themeColors = useTheme();
-  const shadowColor = useMemo(
-    () => themeColors[color ?? "canvas"],
-    [themeColors, color],
-  );
+  const shadowColor = useColor({ color, fallback: "surface" });
   // This will enable support of hexadecimal colors with opacity.
   const startColor = useMemo(() => `${shadowColor}00`, [shadowColor]);
   const endColor = useMemo(() => `${shadowColor}E6`, [shadowColor]);

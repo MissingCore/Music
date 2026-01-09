@@ -65,10 +65,10 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
           wrapperClassName="shrink grow justify-center overflow-hidden"
           className={gestureUI ? "bg-surface px-2" : "mx-2 shrink grow"}
         >
-          <Marquee color="surface">
+          <Marquee color="surfaceContainerLowest">
             <StyledText>{track.name}</StyledText>
           </Marquee>
-          <Marquee color="surface">
+          <Marquee color="surfaceContainerLowest">
             <StyledText dim>
               {getArtistsString(track.tracksToArtists)}
             </StyledText>

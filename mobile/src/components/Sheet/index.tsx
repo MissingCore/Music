@@ -71,7 +71,7 @@ export function Sheet(props: SheetProps) {
       >
         <View className="mx-auto my-2.5 h-1 w-8 rounded-full bg-onSurface" />
         {props.titleKey ? (
-          <Marquee color="canvasAlt" center>
+          <Marquee color="surfaceBright" center>
             <StyledText className="text-lg">{t(props.titleKey)}</StyledText>
           </Marquee>
         ) : null}

@@ -42,7 +42,7 @@ export function SeparatorsSheet(props: { ref: TrueSheetRef }) {
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
           <View className="flex-row items-center justify-between gap-2">
-            <Marquee color="canvasAlt">
+            <Marquee color="surfaceBright">
               <StyledText>{item}</StyledText>
             </Marquee>
             <IconButton

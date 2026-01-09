@@ -115,11 +115,11 @@ function TrackIntro({ data }: { data: TrackWithRelations }) {
         className="rounded-sm"
       />
       <View className="shrink py-2">
-        <Marquee color="canvasAlt">
+        <Marquee color="surfaceBright">
           <StyledText className="text-lg">{data.name}</StyledText>
         </Marquee>
         {navLinks.length > 0 ? (
-          <Marquee color="canvasAlt">
+          <Marquee color="surfaceBright">
             {navLinks.map(({ linkInfo, value }, index) => (
               <Fragment key={index}>
                 {index > 0 ? (
@@ -165,7 +165,7 @@ function TrackMetadata({ data }: { data: TrackWithRelations }) {
       </Marquee>
       <Divider />
       <View className="flex-row items-center justify-between gap-4">
-        <Marquee color="surface">
+        <Marquee color="surfaceContainerLowest">
           <MetadataText>{data.uri}</MetadataText>
         </Marquee>
         <View className="flex-row gap-2">
@@ -402,7 +402,7 @@ function TrackToPlaylistSheet({ id }: { id: string }) {
               }
               className={index > 0 ? "mt-2" : undefined}
             >
-              <Marquee color="canvasAlt">
+              <Marquee color="surfaceBright">
                 <StyledText>{item.name}</StyledText>
               </Marquee>
             </CheckboxField>
