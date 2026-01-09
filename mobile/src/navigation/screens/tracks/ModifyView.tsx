@@ -25,11 +25,8 @@ import { updateTrack } from "~/api/track";
 import { useTrack } from "~/queries/track";
 import { Resynchronize } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { removeUnusedCategories } from "~/modules/scanning/helpers/audio";
-import {
-  cleanupImages,
-  getArtworkUri,
-} from "~/modules/scanning/helpers/artwork";
+import { getArtworkUri } from "~/modules/scanning/helpers/artwork";
+import { AppCleanUp } from "~/modules/scanning/helpers/cleanup";
 import { FormStateProvider, useFormStateContext } from "~/hooks/useFormState";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
@@ -384,8 +381,8 @@ async function onEditTrack(data: TrackMetadata) {
 
     // Revalidate `activeTrack` in Playback store if needed.
     await Resynchronize.onActiveTrack({ type: "track", id });
-    await cleanupImages();
-    await removeUnusedCategories();
+    await AppCleanUp.images();
+    await AppCleanUp.media();
     clearAllQueries();
     router.back();
   } catch {

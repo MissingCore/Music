@@ -2,32 +2,19 @@ import {
   MetadataPresets,
   getMetadata,
 } from "@missingcore/react-native-metadata-retriever";
-import { inArray, lt } from "drizzle-orm";
+import { inArray } from "drizzle-orm";
 import { File } from "expo-file-system";
 import type { Asset as MediaLibraryAsset } from "expo-media-library";
 import { getAssetsAsync } from "expo-media-library";
 
 import { db } from "~/db";
 import type { InvalidTrack } from "~/db/schema";
-import {
-  albums,
-  albumsToArtists,
-  artists,
-  hiddenTracks,
-  invalidTracks,
-  playedMediaLists,
-  tracks,
-  tracksToArtists,
-  tracksToPlaylists,
-  waveformSamples,
-} from "~/db/schema";
+import { invalidTracks, tracks, tracksToArtists } from "~/db/schema";
 
 import { upsertAlbums } from "~/api/album";
 import { AlbumArtistsKey } from "~/api/album.utils";
 import { createArtists } from "~/api/artist";
-import { RECENT_RANGE_MS } from "~/api/recent";
 import { upsertTracks } from "~/api/track";
-import { Queue } from "~/stores/Playback/actions";
 import { preferenceStore } from "~/stores/Preference/store";
 import { onboardingStore } from "../services/Onboarding";
 
@@ -43,35 +30,122 @@ import {
 } from "~/utils/string";
 import { savePathComponents } from "./folder";
 
-//#region Saving Function
+/**
+ * Difference in `modificiationTime` to trigger a refetch. This is due to
+ * Android sometimes changing `modificationTime` with a delta of ~2s even
+ * though the file itself hasn't been touched.
+ *  - Use the "Deep Rescan" feature if there's an actual update within 5
+ *  minutes.
+ *
+ * Ref:
+ *  - https://stackoverflow.com/a/8354791
+ *  - https://stackoverflow.com/a/11547476
+ */
+const CHANGE_DELTA = 5 * 60 * 1000;
+
 /** Index tracks with their metadata into our database. */
 export async function findAndSaveAudio() {
   // Reset tracked values when saving/updating tracks in onboarding store.
   onboardingStore.setState({ staged: 0, saveErrors: 0 });
   const stopwatch = new Stopwatch();
 
-  // Find the tracks that we should show in the app.
-  const { _all: foundAssets, valid: discoveredTracks } = await discoverTracks();
+  //#region Media Discovery
+  const {
+    listAllow: _listAllow,
+    listBlock: _listBlock,
+    minSeconds,
+  } = preferenceStore.getState();
+  const listAllow = _listAllow.map((p) => `file://${addTrailingSlash(p)}`);
+  const listBlock = _listBlock.map((p) => `file://${addTrailingSlash(p)}`);
+
+  // Get all audio files discoverable by `expo-media-library`.
+  const foundAssets: MediaLibraryAsset[] = [];
+  let isComplete = false;
+  let lastRead: string | undefined;
+  do {
+    const { assets, endCursor, hasNextPage } = await getAssetsAsync({
+      after: lastRead,
+      first: BATCH_PRESETS.LIGHT,
+      mediaType: "audio",
+    });
+    foundAssets.push(...assets);
+    lastRead = endCursor;
+    isComplete = !hasNextPage;
+  } while (!isComplete);
+
+  const discoveredTracks = foundAssets.filter(
+    (a) =>
+      // Ensure track is in the allowlist if it's non-empty.
+      (listAllow.length === 0 || listAllow.some((p) => a.uri.startsWith(p))) &&
+      // Ensure track isn't in the blocklist.
+      !listBlock.some((p) => a.uri.startsWith(p)) &&
+      // Ensure track meets the minimum duration requirement.
+      a.duration > minSeconds,
+  );
   console.log(
     `Found ${foundAssets.length} tracks, filtered down to ${discoveredTracks.length} in ${stopwatch.lapTime()}.`,
   );
+  //#endregion
 
-  // Figure out which tracks are new or have changes.
-  const { stats, unstagedTracks } =
-    await getLibraryModifications(discoveredTracks);
+  //#region Change Detection
+  const savedTracks = await db.query.tracks.findMany({
+    columns: withColumns(["id", "modificationTime", "uri", "editedMetadata"]),
+  });
+  const hiddenTracks = await db.query.hiddenTracks.findMany();
+  const erroredTracks = await db.query.invalidTracks.findMany();
+  // Format data as objects for faster reads inside a loop.
+  const savedMap = Object.fromEntries(savedTracks.map((t) => [t.id, t]));
+  const hiddenMap = Object.fromEntries(hiddenTracks.map((t) => [t.id, t]));
+  const erroredMap = Object.fromEntries(erroredTracks.map((t) => [t.id, t]));
+
+  // Find the tracks we can skip indexing or need updating.
+  const modified = new Set<string>();
+  const unmodified = new Set<string>();
+  discoveredTracks.forEach(({ id, modificationTime, uri }) => {
+    // Skip if track is hidden.
+    if (hiddenMap[id]) return unmodified.add(id);
+
+    // Skip if track is new.
+    const isSaved = savedMap[id];
+    const isInvalid = erroredMap[id];
+    if (!isSaved && !isInvalid) return;
+
+    // Get context for determining if track has been modified.
+    const isMaybeModified =
+      Math.abs(modificationTime - (isSaved ?? isInvalid)!.modificationTime) >
+      CHANGE_DELTA;
+    const hasEdited = typeof isSaved?.editedMetadata === "number";
+    let isDifferentUri = (isSaved ?? isInvalid)!.uri !== uri;
+
+    // A track which has been moved may be detected twice by `expo-media-library`
+    // in its new & old location with the same `id`. This logic helps mark the
+    // track as modified.
+    if (isDifferentUri && unmodified.has(id)) unmodified.delete(id);
+    else if (!isDifferentUri && modified.has(id)) isDifferentUri = true; // Encountered old location.
+
+    // Retry indexing if modification time or uri is different.
+    if ((!hasEdited && isMaybeModified) || isDifferentUri) modified.add(id);
+    else unmodified.add(id);
+  });
+
+  const unstagedTracks = discoveredTracks.filter(
+    ({ id }) => !unmodified.has(id),
+  );
+
   onboardingStore.setState((prev) => ({
-    ...stats,
+    prevSaved: savedTracks.length,
+    unstaged: discoveredTracks.length - unmodified.size,
     phase: unstagedTracks.length > 0 ? "tracks" : prev.phase,
   }));
   console.log(`Determined unstaged content in ${stopwatch.lapTime()}.`);
+  //#endregion
 
-  // Track what albums & artists has been previously saved so that we don't
-  // waste time inserting unnecessary values.
-  const insertedArtists = new Set<string>();
-  const insertedAlbums: Record<string, Set<string>> = {};
+  //#region Indexing
+  // Keep tracks of album ids from reading `artistsKey` & the album name.
   const albumIdMap: Record<string, Record<string, string>> = {};
 
   const delimiters = preferenceStore.getState().separators;
+  const safeRetrieveMetadata = safeRetrieveMetadataFactory(delimiters);
   // Save tracks in batches of 50 (a good number if the user leaves midway
   // as we would have saved at least some tracks).
   const trackBatches = chunkArray(unstagedTracks, 50);
@@ -95,81 +169,64 @@ export async function findAndSaveAudio() {
     if (results.length === 0) continue;
     await savePathComponents(results.map(({ uri }) => uri));
 
-    // Save artists & albums that haven't been inserted yet.
-    const newArtists: string[] = [];
-    const newArtistRelations: Array<{ trackId: string; artistName: string }> =
-      [];
-    const newAlbums: Record<string, string[]> = {};
-    results.forEach(({ id, rawArtistName, album }) => {
-      // Handle case if separators are provided for track artists.
-      const splittedArtistName = rawArtistName
-        ? splitOn(rawArtistName, delimiters)
-        : [];
-      if (splittedArtistName.length > 0) {
-        splittedArtistName.forEach((artistName) => {
-          addArtist({ artistName, insertedArtists, newArtists });
-          newArtistRelations.push({ trackId: id, artistName });
-        });
-      }
+    //#region Album & Artist Creation
+    const usedArtists = new Set<string>();
+    const usedAlbums: Record<string, Set<string>> = {};
+    const trackArtistRels: Array<{ trackId: string; artistName: string }> = [];
+    results.forEach(({ id, artistNames, album }) => {
+      // Handle track-artist relations.
+      artistNames.forEach((artistName) => {
+        usedArtists.add(artistName);
+        trackArtistRels.push({ trackId: id, artistName });
+      });
 
-      // Handle case if separators are provided for album artists.
+      // Handle album-artist relations.
       if (album) {
-        const albumArtists = splitOn(album.rawArtistName, delimiters);
-        const albumArtistsKey = AlbumArtistsKey.from(albumArtists);
-        if (albumArtistsKey) {
-          addAlbum({
-            album: { name: album.name, artistsKey: albumArtistsKey },
-            insertedAlbums,
-            newAlbums,
-          });
-        }
-        albumArtists.forEach((artistName) => {
-          addArtist({ artistName, insertedArtists, newArtists });
-        });
+        album.albumArtists.forEach((name) => usedArtists.add(name));
+        if (usedAlbums[album.artistsKey]) {
+          usedAlbums[album.artistsKey]?.add(album.name);
+        } else usedAlbums[album.artistsKey] = new Set([album.name]);
       }
     });
 
-    const newArtistEntries = newArtists.map((name) => ({ name }));
-    const newAlbumEntries = Object.entries(newAlbums).flatMap(
-      ([artistsKey, names]) => names.map((name) => ({ name, artistsKey })),
-    );
+    const artistEntries = [...usedArtists].map((name) => ({ name }));
+    if (artistEntries.length > 0) await createArtists(artistEntries);
 
-    if (newArtistEntries.length > 0) await createArtists(newArtistEntries);
-    if (newAlbumEntries.length > 0) {
+    const albumEntries = Object.entries(usedAlbums).flatMap(
+      ([artistsKey, names]) => [...names].map((name) => ({ name, artistsKey })),
+    );
+    if (albumEntries.length > 0) {
       // Upserting album will also create the album-artist relations.
-      const createdAlbums = await upsertAlbums(newAlbumEntries);
+      const createdAlbums = await upsertAlbums(albumEntries);
       createdAlbums.map(({ id, name, artistsKey }) => {
         if (albumIdMap[artistsKey]) albumIdMap[artistsKey][name] = id;
         else albumIdMap[artistsKey] = { [name]: id };
       });
     }
+    //#endregion
 
-    // Create or update tracks.
-    const newTracks = results.map(({ album, ...t }) => {
+    //#region Upsert Tracks
+    const trackEntries = results.map(({ artistNames: _, album, ...t }) => {
       let albumId: string | null = null;
-      if (album) {
-        const albumArtists = splitOn(album.rawArtistName, delimiters);
-        const albumArtistsKey = AlbumArtistsKey.from(albumArtists);
-        if (albumArtistsKey) {
-          albumId = albumIdMap[albumArtistsKey]?.[album.name] || null;
-        }
-      }
+      if (album) albumId = albumIdMap[album.artistsKey]?.[album.name] || null;
       return { ...t, albumId, discoverTime: Date.now() };
     });
-    const newIds = newTracks.map(({ id }) => id);
-    await upsertTracks(newTracks);
+    const trackIds = trackEntries.map(({ id }) => id);
+    await upsertTracks(trackEntries);
     // Replace old artist relations.
     await db
       .delete(tracksToArtists)
-      .where(inArray(tracksToArtists.trackId, newIds));
-    if (newArtistRelations.length > 0) {
+      .where(inArray(tracksToArtists.trackId, trackIds));
+    if (trackArtistRels.length > 0) {
       await db
         .insert(tracksToArtists)
-        .values(newArtistRelations)
+        .values(trackArtistRels)
         .onConflictDoNothing();
     }
-    await db.delete(invalidTracks).where(inArray(invalidTracks.id, newIds));
+    await db.delete(invalidTracks).where(inArray(invalidTracks.id, trackIds));
+    //#endregion
   }
+  //#endregion
 
   const { staged, saveErrors } = onboardingStore.getState();
   console.log(
@@ -180,199 +237,11 @@ export async function findAndSaveAudio() {
   return {
     foundFiles: discoveredTracks,
     unstagedFiles: unstagedTracks,
-    changed: stats.unstaged,
+    changed: discoveredTracks.length - unmodified.size,
   };
 }
-//#endregion
-
-//#region Cleanup Functions
-/** Clean up all unused content from a validated list of found content. */
-export async function cleanupDatabase(usedTrackIds: string[]) {
-  // Remove any unused tracks.
-  const unusedTrackIds = (
-    await Promise.all(
-      [hiddenTracks, invalidTracks, tracks].map((sch) =>
-        db.select({ id: sch.id }).from(sch),
-      ),
-    )
-  )
-    .flatMap((ids) => ids.map(({ id }) => id))
-    .filter((id) => !usedTrackIds.includes(id));
-  if (unusedTrackIds.length > 0) {
-    await Promise.allSettled([
-      db.delete(hiddenTracks).where(inArray(hiddenTracks.id, unusedTrackIds)),
-      db.delete(invalidTracks).where(inArray(invalidTracks.id, unusedTrackIds)),
-      db.delete(tracks).where(inArray(tracks.id, unusedTrackIds)),
-      db
-        .delete(tracksToArtists)
-        .where(inArray(tracksToArtists.trackId, unusedTrackIds)),
-      db
-        .delete(tracksToPlaylists)
-        .where(inArray(tracksToPlaylists.trackId, unusedTrackIds)),
-      db
-        .delete(waveformSamples)
-        .where(inArray(waveformSamples.trackId, unusedTrackIds)),
-    ]);
-  }
-
-  // Clear the queue of deleted tracks.
-  await Queue.removeIds(unusedTrackIds);
-
-  // Remove anything else that's unused.
-  await removeUnusedCategories();
-}
-
-/** Remove any albums or artists that aren't used. */
-export async function removeUnusedCategories() {
-  // Remove recently played media that's beyond what we display.
-  await db
-    .delete(playedMediaLists)
-    .where(lt(playedMediaLists.lastPlayedAt, Date.now() - RECENT_RANGE_MS));
-
-  // Remove unused albums.
-  const allAlbums = await db.query.albums.findMany({
-    columns: { id: true },
-    with: { tracks: { columns: { id: true }, limit: 1 } },
-  });
-  const unusedAlbumIds = allAlbums
-    .filter(({ tracks }) => tracks.length === 0)
-    .map(({ id }) => id);
-  await db
-    .delete(albumsToArtists)
-    .where(inArray(albumsToArtists.albumId, unusedAlbumIds));
-  await db.delete(albums).where(inArray(albums.id, unusedAlbumIds));
-
-  // Remove unused artists.
-  const allArtists = await db.query.artists.findMany({
-    columns: { name: true },
-    with: {
-      //? Relations used to filter out artists with no albums & tracks.
-      albumsToArtists: { columns: { albumId: true }, limit: 1 },
-      tracksToArtists: { columns: { trackId: true }, limit: 1 },
-    },
-  });
-  const unusedArtistNames = allArtists
-    .filter(
-      ({ albumsToArtists, tracksToArtists }) =>
-        albumsToArtists.length === 0 && tracksToArtists.length === 0,
-    )
-    .map(({ name }) => name);
-  await db.delete(artists).where(inArray(artists.name, unusedArtistNames));
-}
-//#endregion
 
 //#region Internal Helpers
-/** Return references to tracks that fit our criteria. */
-async function discoverTracks() {
-  const {
-    listAllow: _listAllow,
-    listBlock: _listBlock,
-    minSeconds,
-  } = preferenceStore.getState();
-  const listAllow = _listAllow.map((p) => `file://${addTrailingSlash(p)}`);
-  const listBlock = _listBlock.map((p) => `file://${addTrailingSlash(p)}`);
-
-  // Get all audio files discoverable by `expo-media-library`.
-  const incomingData: MediaLibraryAsset[] = [];
-  let isComplete = false;
-  let lastRead: string | undefined;
-  do {
-    const { assets, endCursor, hasNextPage } = await getAssetsAsync({
-      after: lastRead,
-      first: BATCH_PRESETS.LIGHT,
-      mediaType: "audio",
-    });
-    incomingData.push(...assets);
-    lastRead = endCursor;
-    isComplete = !hasNextPage;
-  } while (!isComplete);
-
-  const validTracks = incomingData.filter(
-    (a) =>
-      // Ensure track is in the allowlist if it's non-empty.
-      (listAllow.length === 0 || listAllow.some((p) => a.uri.startsWith(p))) &&
-      // Ensure track isn't in the blocklist.
-      !listBlock.some((p) => a.uri.startsWith(p)) &&
-      // Ensure track meets the minimum duration requirement.
-      a.duration > minSeconds,
-  );
-
-  return { _all: incomingData, valid: validTracks };
-}
-
-/**
- * Difference in `modificiationTime` to trigger a refetch.
- *  - Use the "Deep Rescan" feature if there's an actual update within 5
- *  minutes.
- */
-const CHANGE_DELTA = 5 * 60 * 1000;
-
-/** Figure out whether we have new or modified tracks. */
-async function getLibraryModifications(assets: MediaLibraryAsset[]) {
-  const savedTracks = await db.query.tracks.findMany({
-    columns: withColumns(["id", "modificationTime", "uri", "editedMetadata"]),
-  });
-  const hiddenTracks = await db.query.hiddenTracks.findMany();
-  const erroredTracks = await db.query.invalidTracks.findMany();
-  // Format data as objects for faster reads inside a loop.
-  const savedMap = Object.fromEntries(savedTracks.map((t) => [t.id, t]));
-  const hiddenMap = Object.fromEntries(hiddenTracks.map((t) => [t.id, t]));
-  const erroredMap = Object.fromEntries(erroredTracks.map((t) => [t.id, t]));
-
-  // Find the tracks we can skip indexing or need updating.
-  const modified = new Set<string>();
-  const unmodified = new Set<string>();
-  assets.forEach(({ id, modificationTime, uri }) => {
-    // Skip if track is hidden.
-    if (hiddenMap[id]) {
-      unmodified.add(id);
-      return;
-    }
-
-    const isSaved = savedMap[id];
-    const isInvalid = erroredMap[id];
-    if (!isSaved && !isInvalid) return; // If we have a new track.
-
-    const lastModified = (isSaved ?? isInvalid)!.modificationTime;
-    const hasEdited = typeof isSaved?.editedMetadata === "number";
-    let isDifferentUri = (isSaved ?? isInvalid)!.uri !== uri;
-
-    // Moving folders in Android is kind of weird; sometimes, the URI of
-    // the file after being moved is still being displayed in its original
-    // location in addition to its new location.
-    //
-    // The logic below makes sure that if the file has the same id and is
-    // detected in 2 different locations, we make sure the track is marked
-    // as being "modified".
-    if (isDifferentUri && unmodified.has(id)) unmodified.delete(id);
-    else if (!isDifferentUri && modified.has(id)) isDifferentUri = true;
-
-    // Retry indexing if modification time or uri is different.
-    //  - Android will sometimes change the `lastModified` value even
-    //  when we don't touch the file.
-    //  - Ref:
-    //    - https://stackoverflow.com/a/8354791
-    //    - https://stackoverflow.com/a/11547476
-    if (
-      (!hasEdited &&
-        Math.abs(modificationTime - lastModified) > CHANGE_DELTA) ||
-      isDifferentUri
-    ) {
-      modified.add(id);
-    } else {
-      unmodified.add(id);
-    }
-  });
-
-  return {
-    stats: {
-      prevSaved: savedTracks.length,
-      unstaged: assets.length - unmodified.size,
-    },
-    unstagedTracks: assets.filter(({ id }) => !unmodified.has(id)),
-  };
-}
-
 const wantedMetadata = [
   ...MetadataPresets.standard,
   ...["discNumber", "bitrate", "sampleMimeType", "sampleRate"],
@@ -384,7 +253,10 @@ const wantedMetadata = [
  * **Note:** We return `album`, which is non-standard and should be used
  * to create an Album and then swapped out with the created `albumId`.
  */
-async function getTrackMetadata(asset: MediaLibraryAsset) {
+async function getTrackMetadata(
+  asset: MediaLibraryAsset,
+  delimiters: string[],
+) {
   const { id, uri, duration, modificationTime, filename } = asset;
   const { bitrate, sampleRate, ...t } = await getMetadata(uri, wantedMetadata);
   let fileSize = 0;
@@ -397,19 +269,25 @@ async function getTrackMetadata(asset: MediaLibraryAsset) {
     console.log(err);
   }
 
-  let newAlbum: { name: string; rawArtistName: string } | undefined;
+  const trimmedArtistName = t.artist?.trim() || null;
+
+  let newAlbum;
   if (!!t.albumTitle?.trim() && !!t.albumArtist?.trim()) {
-    newAlbum = {
-      name: t.albumTitle.trim(),
-      rawArtistName: t.albumArtist.trim(),
-    };
+    const albumArtists = splitOn(t.albumArtist.trim(), delimiters);
+    const artistsKey = AlbumArtistsKey.from(albumArtists);
+    if (artistsKey) {
+      newAlbum = { name: t.albumTitle.trim(), artistsKey, albumArtists };
+    }
   }
 
   return {
     id,
     name: t.title?.trim() || removeFileExtension(filename),
     /** @deprecated Do not use this field directly. */
-    rawArtistName: t.artist?.trim() || null,
+    rawArtistName: trimmedArtistName,
+    artistNames: trimmedArtistName
+      ? splitOn(trimmedArtistName, delimiters)
+      : [],
     album: newAlbum,
     track: t.trackNumber,
     disc: t.discNumber,
@@ -426,21 +304,23 @@ async function getTrackMetadata(asset: MediaLibraryAsset) {
 }
 
 /** Returns `TrackMetadata` or `InvalidTrack`. */
-async function safeRetrieveMetadata(asset: MediaLibraryAsset) {
-  const { id, uri, modificationTime } = asset;
-  try {
-    const trackEntry = await getTrackMetadata(asset);
-    return Promise.resolve(trackEntry);
-  } catch (err) {
-    const isError = err instanceof Error;
-    const errorInfo = {
-      errorName: isError ? err.name : "UnknownError",
-      errorMessage: isError ? err.message : "Rejected for unknown reasons.",
-    };
-    // We may end up here if the track at the given uri doesn't exist anymore.
-    console.log(`[Track ${id}] ${errorInfo.errorMessage}`);
-    return Promise.reject({ id, uri, modificationTime, ...errorInfo });
-  }
+function safeRetrieveMetadataFactory(delimiters: string[]) {
+  return async (asset: MediaLibraryAsset) => {
+    const { id, uri, modificationTime } = asset;
+    try {
+      const trackEntry = await getTrackMetadata(asset, delimiters);
+      return Promise.resolve(trackEntry);
+    } catch (err) {
+      const isError = err instanceof Error;
+      const errorInfo = {
+        errorName: isError ? err.name : "UnknownError",
+        errorMessage: isError ? err.message : "Rejected for unknown reasons.",
+      };
+      // We may end up here if the track at the given uri doesn't exist anymore.
+      console.log(`[Track ${id}] ${errorInfo.errorMessage}`);
+      return Promise.reject({ id, uri, modificationTime, ...errorInfo });
+    }
+  };
 }
 
 const UpsertInvalidTrackFields = getExcludedColumns([
@@ -449,37 +329,4 @@ const UpsertInvalidTrackFields = getExcludedColumns([
   "errorMessage",
   "modificationTime",
 ]);
-
-/** Mark this artist as a new value if it hasn't been inserted before. */
-function addArtist(args: {
-  artistName: string | null | undefined;
-  newArtists: string[];
-  insertedArtists: Set<string>;
-}) {
-  const { artistName, newArtists, insertedArtists } = args;
-  if (artistName && !insertedArtists.has(artistName)) {
-    insertedArtists.add(artistName);
-    newArtists.push(artistName);
-  }
-}
-
-/** Mark this album as a new value if it hasn't been inserted before. */
-function addAlbum(args: {
-  album: { name: string; artistsKey: string } | undefined;
-  newAlbums: Record<string, string[]>;
-  insertedAlbums: Record<string, Set<string>>;
-}) {
-  const { album, newAlbums, insertedAlbums } = args;
-  if (!album) return;
-  const { name, artistsKey } = album;
-  if (insertedAlbums[artistsKey]?.has(name)) return;
-
-  if (insertedAlbums[artistsKey]) insertedAlbums[artistsKey].add(name);
-  else insertedAlbums[artistsKey] = new Set([name]);
-
-  if (newAlbums[artistsKey]) newAlbums[artistsKey].push(name);
-  else newAlbums[artistsKey] = [name];
-
-  return album;
-}
 //#endregion

@@ -11,8 +11,9 @@ import { Resynchronize } from "~/stores/Playback/actions";
 import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
 import { wait } from "~/utils/promise";
-import { findAndSaveArtwork, cleanupImages } from "./artwork";
-import { cleanupDatabase, findAndSaveAudio } from "./audio";
+import { findAndSaveArtwork } from "./artwork";
+import { findAndSaveAudio } from "./audio";
+import { AppCleanUp } from "./cleanup";
 import { savePathComponents } from "./folder";
 
 /** Look through our library for any new or updated tracks. */
@@ -60,13 +61,13 @@ export async function rescanForTracks(deepScan = false) {
 
     // Rescan library for any new tracks and delete any old ones.
     const { foundFiles, unstagedFiles } = await findAndSaveAudio();
-    await cleanupDatabase(foundFiles.map(({ id }) => id));
+    await AppCleanUp.tracks(foundFiles.map(({ id }) => id));
     // Make sure any modified tracks isn't being played.
     await Resynchronize.onModifiedTracks(unstagedFiles.map(({ id }) => id));
 
     // Find and save any images.
     await findAndSaveArtwork();
-    await cleanupImages();
+    await AppCleanUp.images();
 
     // Ensure queries are all up-to-date.
     clearAllQueries();
