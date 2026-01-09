@@ -13,7 +13,6 @@ function replaceDefault<T extends string>(arr: T[]) {
 }
 
 const ColorRoles = [
-  ...["red", "yellow", "blue", "green"],
   ...["primary", "primaryDim", "onPrimary", "onPrimaryVariant"],
   ...["secondary", "secondaryDim", "onSecondary", "onSecondaryVariant"],
   ...["error", "onError"],
@@ -26,12 +25,16 @@ const ColorRoles = [
   ],
   ...["onSurface", "onSurfaceVariant", "outline", "outlineVariant"],
   ...["inverseSurface", "inverseOnSurface"],
-];
+] as const;
+
+export type ColorRole = (typeof ColorRoles)[number];
+
+const AvailableColors = [...["red", "yellow", "blue", "green"], ...ColorRoles];
 
 const customTwMerge = extendTailwindMerge({
   override: {
     theme: {
-      color: ColorRoles,
+      color: AvailableColors,
       radius: replaceDefault(Object.keys(BorderRadius)),
     },
     classGroups: {
