@@ -6,22 +6,63 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { Colors } from "~/constants/Styles";
 
+export const FixedTheme = {
+  primary: Colors.red50,
+  primaryDim: Colors.red40,
+  onPrimary: Colors.neutral100,
+  onPrimaryVariant: Colors.neutral90,
+
+  secondary: Colors.yellow60,
+  secondaryDim: Colors.yellow50,
+  onSecondary: Colors.neutral0,
+  onSecondaryVariant: Colors.neutral20,
+
+  error: Colors.red40,
+  onError: Colors.neutral100,
+} as const;
+
 export const Themes = {
   light: {
-    theme: "light",
-    canvas: Colors.neutral95,
-    canvasAlt: Colors.neutral95,
-    surface: Colors.neutral100,
-    onSurface: Colors.neutral80,
-    foreground: Colors.neutral0,
+    scheme: "light",
+    ...FixedTheme,
+
+    surfaceDim: Colors.neutral85,
+    surface: Colors.neutral95,
+    surfaceBright: Colors.neutral95,
+
+    surfaceContainerLowest: Colors.neutral100,
+    surfaceContainerLow: Colors.neutral98,
+    surfaceContainer: Colors.neutral92,
+    surfaceContainerHigh: Colors.neutral90,
+
+    onSurface: Colors.neutral0,
+    onSurfaceVariant: Colors.neutral20,
+    outline: Colors.neutral40,
+    outlineVariant: Colors.neutral70,
+
+    inverseSurface: Colors.neutral0,
+    inverseOnSurface: Colors.neutral100,
   },
   dark: {
-    theme: "dark",
-    canvas: Colors.neutral0,
-    canvasAlt: Colors.neutral7,
-    surface: Colors.neutral10,
-    onSurface: Colors.neutral20,
-    foreground: Colors.neutral100,
+    scheme: "dark",
+    ...FixedTheme,
+
+    surfaceDim: Colors.neutral0,
+    surface: Colors.neutral0,
+    surfaceBright: Colors.neutral5,
+
+    surfaceContainerLowest: Colors.neutral10,
+    surfaceContainerLow: Colors.neutral13,
+    surfaceContainer: Colors.neutral15,
+    surfaceContainerHigh: Colors.neutral20,
+
+    onSurface: Colors.neutral100,
+    onSurfaceVariant: Colors.neutral90,
+    outline: Colors.neutral70,
+    outlineVariant: Colors.neutral40,
+
+    inverseSurface: Colors.neutral100,
+    inverseOnSurface: Colors.neutral0,
   },
 } as const;
 
