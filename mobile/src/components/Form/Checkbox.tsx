@@ -3,14 +3,12 @@ import { memo } from "react";
 import { Pressable, View } from "react-native";
 
 import { Check } from "~/resources/icons/Check";
-import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
 import { TStyledText } from "../Typography/StyledText";
 
 //#region Base
 function Checkbox({ checked, size = 20 }: { checked: boolean; size?: number }) {
-  const { canvas } = useTheme();
   return (
     <View
       style={{ height: size, width: size }}
@@ -19,7 +17,7 @@ function Checkbox({ checked, size = 20 }: { checked: boolean; size?: number }) {
         { "border-0 bg-foreground": checked },
       )}
     >
-      {checked ? <Check size={size} color={canvas} /> : null}
+      {checked ? <Check size={size} color="surface" /> : null}
     </View>
   );
 }

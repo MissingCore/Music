@@ -15,7 +15,6 @@ import { getTrackArtwork } from "~/api/track.utils";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 
-import { Colors } from "~/constants/Styles";
 import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import { cn } from "~/lib/style";
 import { debounceWithAccumulation } from "~/utils/debounce";
@@ -173,7 +172,7 @@ const RenderItem = memo(
         disabled={info.isDragging}
         fireCallbackBeforeCompletion
         onSwipeLeft={() => onRemoveTrack(item.key)}
-        RightIcon={<Delete color={Colors.neutral100} />}
+        RightIcon={<Delete color="onPrimary" />}
         rightIconContainerClassName="rounded-xs bg-red"
         wrapperClassName={cn("mx-4", { "mt-2": index > 0 })}
         className={cn("rounded-xs bg-canvas", { "bg-surface": info.isActive })}

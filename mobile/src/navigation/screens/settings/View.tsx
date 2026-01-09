@@ -21,7 +21,6 @@ import { LanguageSheet } from "~/navigation/sheets/LanguageSheet";
 
 import { APP_VERSION } from "~/constants/Config";
 import * as LINKS from "~/constants/Links";
-import { Colors } from "~/constants/Styles";
 import { Divider } from "~/components/Divider";
 import { SegmentedList } from "~/components/List/Segmented";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
@@ -46,7 +45,7 @@ export default function Settings() {
             labelTextKey="feat.appUpdate.title"
             supportingText={t("feat.appUpdate.brief")}
             onPress={() => navigation.navigate("AppUpdate")}
-            LeftElement={<MobileArrowDown color={Colors.neutral0} />}
+            LeftElement={<MobileArrowDown color="onSecondary" />}
             className="gap-4 rounded-full bg-yellow"
             _textColor="text-neutral0"
           />

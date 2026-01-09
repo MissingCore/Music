@@ -8,7 +8,6 @@ import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { useInputForm } from "~/hooks/useInputForm";
 import { useTheme } from "~/hooks/useTheme";
 
-import { Colors } from "~/constants/Styles";
 import { FlatList } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
@@ -21,7 +20,7 @@ import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
 export function SeparatorsSheet(props: { ref: TrueSheetRef }) {
   const { t } = useTranslation();
-  const { foreground } = useTheme();
+  const { onSurface } = useTheme();
   const delimiters = usePreferenceStore((s) => s.separators);
   const sheetListHandlers = useEnableSheetScroll();
 
@@ -60,7 +59,7 @@ export function SeparatorsSheet(props: { ref: TrueSheetRef }) {
 
       <Divider />
       <View className="flex-row gap-2 pb-2">
-        <Info size={16} color={`${foreground}99`} />
+        <Info size={16} color={`${onSurface}99`} />
         <TStyledText
           textKey="feat.separators.description.line2"
           dim
@@ -102,7 +101,7 @@ function SeparatorForm() {
         }}
         disabled={!inputForm.canSubmit || inputForm.isSubmitting}
         className="rounded-md bg-red"
-        _iconColor={Colors.neutral100}
+        _iconColor="onPrimary"
       />
     </View>
   );

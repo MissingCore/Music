@@ -34,7 +34,6 @@ import { router } from "~/navigation/utils/router";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 
-import { Colors } from "~/constants/Styles";
 import { clearAllQueries } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { ToastOptions } from "~/lib/toast";
@@ -244,7 +243,7 @@ function ArrayFormInput(props: {
         }
         disabled={isSubmitting}
         className="mt-2 rounded-md bg-yellow"
-        _iconColor={Colors.neutral0}
+        _iconColor="onSecondary"
       />
     </View>
   );

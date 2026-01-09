@@ -4,7 +4,6 @@ import { Animated, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 
 import { NothingArrowRight } from "~/resources/icons/NothingArrowRight";
-import { useTheme } from "~/hooks/useTheme";
 
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
@@ -275,10 +274,9 @@ function SwipeIconWrapper(props: {
 }
 
 function SwipeIcon({ rotate = false }) {
-  const { foreground } = useTheme();
   return (
     <View className={rotate ? "rotate-180" : undefined}>
-      <NothingArrowRight size={32} color={foreground} />
+      <NothingArrowRight size={32} />
     </View>
   );
 }

@@ -6,7 +6,6 @@ import { Add } from "~/resources/icons/Add";
 import { usePlaylistsForCards } from "~/queries/playlist";
 import { StickyActionListLayout } from "../../layouts/StickyActionScroll";
 
-import { Colors } from "~/constants/Styles";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { useMediaCardListPreset } from "~/modules/media/components/MediaCard";
 
@@ -41,7 +40,7 @@ function PlaylistActions() {
         accessibilityLabel={t("feat.playlist.extra.create")}
         onPress={() => navigation.navigate("CreatePlaylist")}
         className="rounded-md bg-red"
-        _iconColor={Colors.neutral100}
+        _iconColor="onPrimary"
       />
     </View>
   );

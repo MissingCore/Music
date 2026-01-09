@@ -19,7 +19,7 @@ import { AccentText } from "~/components/Typography/AccentText";
 
 export default function AppUpdate() {
   const { release, isRC } = useHasNewUpdate();
-  const { theme, foreground } = useTheme();
+  const { scheme, onSurface } = useTheme();
   const accentFont = usePreferenceStore((s) => s.accentFont);
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
 
@@ -35,7 +35,7 @@ export default function AppUpdate() {
   if (!release) return null;
 
   // Light: 5% Opacity; Dark: 15% Opacity
-  const codeBg = `${foreground}${theme === "dark" ? "26" : "0D"}`;
+  const codeBg = `${onSurface}${scheme === "dark" ? "26" : "0D"}`;
 
   return (
     <StandardScrollLayout>
@@ -50,21 +50,21 @@ export default function AppUpdate() {
               gap: 12,
               fontFamily: getFont(primaryFont),
               fontSize: 12,
-              color: `${foreground}99`,
+              color: `${onSurface}99`,
             },
             heading2: {
-              color: foreground,
+              color: onSurface,
               fontFamily: getFont(accentFont),
               fontSize: FontSize.base,
             },
             fence: {
               padding: 16,
-              backgroundColor: `${foreground}0D`, // 5% Opacity
+              backgroundColor: `${onSurface}0D`, // 5% Opacity
               borderRadius: 12,
               borderLeftWidth: 0,
             },
             hr: {
-              backgroundColor: `${foreground}1A`, // 10% Opacity
+              backgroundColor: `${onSurface}1A`, // 10% Opacity
             },
             paragraph: {
               marginTop: 0,
@@ -78,7 +78,7 @@ export default function AppUpdate() {
                 style={{ backgroundColor: codeBg }}
                 className="gap-1 p-2"
               >
-                <Info size={20} color={`${foreground}99`} />
+                <Info size={20} color={`${onSurface}99`} />
                 {children}
               </SegmentedList.CustomItem>
             ),

@@ -5,7 +5,6 @@ import { withUniwind } from "uniwind";
 
 import { Folder } from "~/resources/icons/Folder";
 
-import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
 import type { MediaType } from "~/stores/Playback/types";
 import { ReservedNames, ReservedPlaylists } from "../constants";
@@ -62,7 +61,7 @@ export function MediaImage({
   } else if (type === "folder") {
     return (
       <View style={{ padding: size / 4 }} className={usedClasses}>
-        <Folder size={size / 2} color={Colors.neutral100} />
+        <Folder size={size / 2} color="onPrimary" />
       </View>
     );
   }

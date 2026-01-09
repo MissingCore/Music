@@ -6,9 +6,7 @@ import Animated, {
 } from "react-native-reanimated";
 
 import type { Icon } from "~/resources/icons/type";
-import { useTheme } from "~/hooks/useTheme";
 
-import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
 import { Button } from "./Button";
 import { StyledText } from "../Typography/StyledText";
@@ -28,7 +26,6 @@ export function SegmentedPicker({
   selectedIndex: number;
   onOptionSelected: (index: number) => void;
 }) {
-  const { theme } = useTheme();
   const pickerWidth = useSharedValue(0);
 
   const selectedIndicatorStyle = useAnimatedStyle(() => ({
@@ -64,13 +61,7 @@ export function SegmentedPicker({
             >
               <Icon
                 size={20}
-                color={
-                  selectedIndex === idx
-                    ? theme === "dark"
-                      ? Colors.neutral0
-                      : Colors.neutral100
-                    : undefined
-                }
+                color={selectedIndex === idx ? "inverseOnSurface" : undefined}
               />
             </Button>
           ))}

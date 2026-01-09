@@ -10,7 +10,6 @@ import { SkipPrevious } from "~/resources/icons/SkipPrevious";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, PlaybackSettings } from "~/stores/Playback/actions";
 
-import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 
@@ -27,7 +26,7 @@ export function RepeatButton({ large = true }) {
       )}
       onPress={PlaybackSettings.cycleRepeat}
       size={large ? "lg" : undefined}
-      _iconColor={repeatMode !== "no-repeat" ? Colors.red : undefined}
+      _iconColor={repeatMode !== "no-repeat" ? "primaryDim" : undefined}
     />
   );
 }
@@ -42,7 +41,7 @@ export function ShuffleButton({ large = true }) {
       accessibilityLabel={t("term.shuffle")}
       onPress={PlaybackSettings.toggleShuffle}
       size={large ? "lg" : undefined}
-      _iconColor={isActive ? Colors.red : undefined}
+      _iconColor={isActive ? "primaryDim" : undefined}
     />
   );
 }
@@ -58,7 +57,7 @@ export function PlayToggleButton() {
       onPress={() => PlaybackControls.playToggle()}
       size="lg"
       className={cn("bg-red px-6 py-2", { "bg-onSurface": isPlaying })}
-      _iconColor={Colors.neutral100}
+      _iconColor="onPrimary"
     />
   );
 }

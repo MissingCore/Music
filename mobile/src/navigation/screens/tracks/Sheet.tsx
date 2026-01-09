@@ -36,7 +36,6 @@ import { useTheme } from "~/hooks/useTheme";
 import { getMediaLinkContext } from "../../utils/router";
 import { TrackArtworkSheet } from "../ArtworkSheet";
 
-import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import {
@@ -146,7 +145,6 @@ function TrackIntro({ data }: { data: TrackWithRelations }) {
 
 //#region Metadata
 function TrackMetadata({ data }: { data: TrackWithRelations }) {
-  const { foreground } = useTheme();
   return (
     <View className="gap-4 rounded-md bg-surface p-4">
       <Marquee
@@ -161,7 +159,7 @@ function TrackMetadata({ data }: { data: TrackWithRelations }) {
         </MetadataText>
         <MetadataText>{abbreviateSize(data.size)}</MetadataText>
         <View className="flex-row items-center gap-1">
-          <Edit size={14} color={foreground} />
+          <Edit size={14} />
           <MetadataText>{formatEpoch(data.modificationTime)}</MetadataText>
         </View>
       </Marquee>
@@ -291,7 +289,7 @@ function Badge(props: {
         { "bg-neutral70": theme === "dark" },
       )}
     >
-      {props.Icon ? <props.Icon size={14} color={Colors.neutral0} /> : null}
+      {props.Icon ? <props.Icon size={14} color="onSecondary" /> : null}
       <MetadataText className="text-neutral0">{props.children}</MetadataText>
     </View>
   );

@@ -46,7 +46,7 @@ export function CurrentListLayout(
 ) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const { foreground } = useTheme();
+  const { onSurface } = useTheme();
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
 
   const isFavorite = getIsFavoritePlaylist(props.mediaSource);
@@ -105,7 +105,7 @@ export function CurrentListLayout(
               <StyledText dim className="text-xxs">
                 {" • "}
               </StyledText>
-              <Schedule size={12} color={`${foreground}99`} />
+              <Schedule size={12} color={`${onSurface}99`} />
               <StyledText dim className="text-xxs">
                 {` ${props.metadata.at(-1)!}`}
               </StyledText>

@@ -11,7 +11,6 @@ import { CreateNewFolder } from "~/resources/icons/CreateNewFolder";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { useInputForm } from "~/hooks/useInputForm";
 
-import { Colors } from "~/constants/Styles";
 import { pickDirectory } from "~/lib/file-system";
 import { ToastOptions } from "~/lib/toast";
 import { addTrailingSlash, getSafeUri } from "~/utils/string";
@@ -135,7 +134,7 @@ function FilterForm(props: { listType: FilterList; listEntries: string[] }) {
         }}
         disabled={!inputForm.canSubmit || inputForm.isSubmitting}
         className="rounded-md bg-red"
-        _iconColor={Colors.neutral100}
+        _iconColor="onPrimary"
       />
     </View>
   );

@@ -24,7 +24,6 @@ import {
 } from "./store";
 import { AddMusicSheet } from "./AddMusicSheet";
 
-import { Colors } from "~/constants/Styles";
 import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
@@ -159,7 +158,7 @@ const RenderItem = memo(
       <Swipeable
         disabled={info.isDragging}
         onSwipeLeft={() => onRemove(item.id)}
-        RightIcon={<Delete color={Colors.neutral100} />}
+        RightIcon={<Delete color="onPrimary" />}
         rightIconContainerClassName="rounded-xs bg-red"
         wrapperClassName={cn("mx-4", { "mt-2": info.index > 0 })}
         className="overflow-hidden rounded-xs bg-canvas"

@@ -6,7 +6,6 @@ import { PlayArrow } from "~/resources/icons/PlayArrow";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 
-import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import type { PlayFromSource } from "~/stores/Playback/types";
@@ -50,7 +49,7 @@ function PlayMediaListButton({ trackSource }: { trackSource: PlayFromSource }) {
           : PlaybackControls.playFromList({ source: trackSource })
       }
       className={cn("rounded-md bg-red", { "bg-onSurface": displayPause })}
-      _iconColor={Colors.neutral100}
+      _iconColor="onPrimary"
     />
   );
 }
