@@ -141,8 +141,7 @@ export async function findAndSaveAudio() {
   //#endregion
 
   //#region Indexing
-  // Track what albums & artists has been previously saved so that we don't
-  // waste time inserting unnecessary values.
+  // Keep tracks of album ids from reading `artistsKey` & the album name.
   const albumIdMap: Record<string, Record<string, string>> = {};
 
   const delimiters = preferenceStore.getState().separators;
@@ -170,10 +169,10 @@ export async function findAndSaveAudio() {
     if (results.length === 0) continue;
     await savePathComponents(results.map(({ uri }) => uri));
 
-    // Save artists & albums that haven't been inserted yet.
+    //#region Album & Artist Creation
     const usedArtists = new Set<string>();
-    const trackArtistRels: Array<{ trackId: string; artistName: string }> = [];
     const usedAlbums: Record<string, Set<string>> = {};
+    const trackArtistRels: Array<{ trackId: string; artistName: string }> = [];
     results.forEach(({ id, artistNames, album }) => {
       // Handle track-artist relations.
       artistNames.forEach((artistName) => {
@@ -204,26 +203,28 @@ export async function findAndSaveAudio() {
         else albumIdMap[artistsKey] = { [name]: id };
       });
     }
+    //#endregion
 
-    // Create or update tracks.
-    const newTracks = results.map(({ album, ...t }) => {
+    //#region Upsert Tracks
+    const trackEntries = results.map(({ artistNames: _, album, ...t }) => {
       let albumId: string | null = null;
       if (album) albumId = albumIdMap[album.artistsKey]?.[album.name] || null;
       return { ...t, albumId, discoverTime: Date.now() };
     });
-    const newIds = newTracks.map(({ id }) => id);
-    await upsertTracks(newTracks);
+    const trackIds = trackEntries.map(({ id }) => id);
+    await upsertTracks(trackEntries);
     // Replace old artist relations.
     await db
       .delete(tracksToArtists)
-      .where(inArray(tracksToArtists.trackId, newIds));
+      .where(inArray(tracksToArtists.trackId, trackIds));
     if (trackArtistRels.length > 0) {
       await db
         .insert(tracksToArtists)
         .values(trackArtistRels)
         .onConflictDoNothing();
     }
-    await db.delete(invalidTracks).where(inArray(invalidTracks.id, newIds));
+    await db.delete(invalidTracks).where(inArray(invalidTracks.id, trackIds));
+    //#endregion
   }
   //#endregion
 
