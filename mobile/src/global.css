@@ -3,21 +3,6 @@
 
 @theme {
   /** Color */
-  --color-neutral0: hsl(0 0% 0%);
-  --color-neutral7: hsl(0 0% 7%);
-  --color-neutral10: hsl(0 0% 11%);
-  --color-neutral15: hsl(0 0% 16%);
-  --color-neutral20: hsl(0 0% 20%);
-  --color-neutral30: hsl(0 0% 28%);
-  --color-neutral40: hsl(0 0% 38%);
-  --color-neutral50: hsl(0 0% 47%);
-  --color-neutral60: hsl(0 0% 57%);
-  --color-neutral70: hsl(0 0% 68%);
-  --color-neutral80: hsl(0 0% 78%);
-  --color-neutral90: hsl(0 0% 89%);
-  --color-neutral95: hsl(0 0% 95%);
-  --color-neutral100: hsl(0 0% 100%);
-
   --color-red: hsl(350 85% 42%);
   --color-yellow: hsl(47 100% 50%);
   --color-blue: hsl(240 49% 50%);
@@ -69,12 +54,6 @@
   /** Themes */
   :root {
     @variant light {
-      --color-canvas: var(--color-neutral95);
-      --color-canvasAlt: var(--color-neutral95);
-      --color-surface: var(--color-neutral100);
-      --color-onSurface: var(--color-neutral80);
-      --color-foreground: var(--color-neutral0);
-
       --color-surfaceDim: hsl(0 0% 85%);
       --color-surface: hsl(0 0% 95%);
       --color-surfaceBright: hsl(0 0% 95%);
@@ -94,12 +73,6 @@
     }
 
     @variant dark {
-      --color-canvas: var(--color-neutral0);
-      --color-canvasAlt: var(--color-neutral7);
-      --color-surface: var(--color-neutral10);
-      --color-onSurface: var(--color-neutral20);
-      --color-foreground: var(--color-neutral100);
-
       --color-surfaceDim: hsl(0 0% 0%);
       --color-surface: hsl(0 0% 0%);
       --color-surfaceBright: hsl(0 0% 6%);
