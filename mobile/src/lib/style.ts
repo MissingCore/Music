@@ -2,8 +2,7 @@ import type { ClassValue } from "clsx";
 import { clsx } from "clsx";
 import { extendTailwindMerge } from "tailwind-merge";
 
-import { TailwindTheme } from "~/constants/TailwindTheme";
-import { FontFamily } from "~/constants/Styles";
+import { BorderRadius, FontFamily, FontSize } from "~/constants/Styles";
 import { toLowerCase } from "~/utils/string";
 import type { AccentFont } from "~/stores/Preference/constants";
 
@@ -13,15 +12,31 @@ function replaceDefault<T extends string>(arr: T[]) {
   return arr.map((val) => (val === "DEFAULT" ? "" : val));
 }
 
+const ColorRoles = [
+  ...["red", "yellow", "blue", "green"],
+  ...["primary", "primaryDim", "onPrimary", "onPrimaryVariant"],
+  ...["secondary", "secondaryDim", "onSecondary", "onSecondaryVariant"],
+  ...["error", "onError"],
+  ...["surfaceDim", "surface", "surfaceBright"],
+  ...[
+    "surfaceContainerLowest",
+    "surfaceContainerLow",
+    "surfaceContainer",
+    "surfaceContainerHigh",
+  ],
+  ...["onSurface", "onSurfaceVariant", "outline", "outlineVariant"],
+  ...["inverseSurface", "inverseOnSurface"],
+];
+
 const customTwMerge = extendTailwindMerge({
   override: {
     theme: {
-      color: Object.keys(TailwindTheme.colors),
-      radius: replaceDefault(Object.keys(TailwindTheme.borderRadius)),
+      color: ColorRoles,
+      radius: replaceDefault(Object.keys(BorderRadius)),
     },
     classGroups: {
-      "font-family": Object.keys(TailwindTheme.fontFamily),
-      "font-size": [{ text: Object.keys(TailwindTheme.fontSize) }],
+      "font-family": Object.keys(FontFamily),
+      "font-size": [{ text: Object.keys(FontSize) }],
     },
   },
 });

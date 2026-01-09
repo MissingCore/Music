@@ -10,6 +10,7 @@ export const BorderRadius = {
   full: 9999,
 } as const;
 
+/** @deprecated Use the new M3 theme variables. */
 export const Colors = {
   transparent: colors.transparent,
 
