@@ -23,6 +23,20 @@
   --color-blue: hsl(240 49% 50%);
   --color-green: hsl(144 72% 40%);
 
+  /** "Fixed" Color Scheme */
+  --color-primary: hsl(350 85% 47%);
+  --color-primaryDim: hsl(350 85% 42%);
+  --color-onPrimary: hsl(0 0% 100%);
+  --color-onPrimaryVariant: hsl(0 0% 89%);
+
+  --color-secondary: hsl(47 100% 57%);
+  --color-secondaryDim: hsl(47 100% 50%);
+  --color-onSecondary: hsl(0 0% 0%);
+  --color-onSecondaryVariant: hsl(0 0% 20%);
+
+  --color-error: hsl(350 85% 42%);
+  --color-onError: hsl(0 0% 100%);
+
   /** Font Family */
   --font-roboto: "Roboto-Regular";
   --font-robotoMedium: "Roboto-Medium";
@@ -60,6 +74,23 @@
       --color-surface: var(--color-neutral100);
       --color-onSurface: var(--color-neutral80);
       --color-foreground: var(--color-neutral0);
+
+      --color-surfaceDim: hsl(0 0% 85%);
+      --color-surface: hsl(0 0% 95%);
+      --color-surfaceBright: hsl(0 0% 95%);
+
+      --color-surfaceContainerLowest: hsl(0 0% 100%);
+      --color-surfaceContainerLow: hsl(0 0% 98%);
+      --color-surfaceContainer: hsl(0 0% 92%);
+      --color-surfaceContainerHigh: hsl(0 0% 89%);
+
+      --color-onSurface: hsl(0 0% 0%);
+      --color-onSurfaceVariant: hsl(0 0% 20%);
+      --color-outline: hsl(0 0% 38%);
+      --color-outlineVariant: hsl(0 0% 68%);
+
+      --color-inverseSurface: hsl(0 0% 0%);
+      --color-inverseOnSurface: hsl(0 0% 100%);
     }
 
     @variant dark {
@@ -68,6 +99,23 @@
       --color-surface: var(--color-neutral10);
       --color-onSurface: var(--color-neutral20);
       --color-foreground: var(--color-neutral100);
+
+      --color-surfaceDim: hsl(0 0% 0%);
+      --color-surface: hsl(0 0% 0%);
+      --color-surfaceBright: hsl(0 0% 6%);
+
+      --color-surfaceContainerLowest: hsl(0 0% 11%);
+      --color-surfaceContainerLow: hsl(0 0% 13%);
+      --color-surfaceContainer: hsl(0 0% 16%);
+      --color-surfaceContainerHigh: hsl(0 0% 20%);
+
+      --color-onSurface: hsl(0 0% 100%);
+      --color-onSurfaceVariant: hsl(0 0% 89%);
+      --color-outline: hsl(0 0% 68%);
+      --color-outlineVariant: hsl(0 0% 38%);
+
+      --color-inverseSurface: hsl(0 0% 100%);
+      --color-inverseOnSurface: hsl(0 0% 0%);
     }
   }
 }
