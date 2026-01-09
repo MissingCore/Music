@@ -28,6 +28,7 @@ const ColorRoles = [
 ] as const;
 
 export type ColorRole = (typeof ColorRoles)[number];
+export type HexColor = `#${string}`;
 
 const AvailableColors = [...["red", "yellow", "blue", "green"], ...ColorRoles];
 
@@ -62,4 +63,9 @@ export function getFont(font: AccentFont, bold = false) {
     return FontFamily[`${fontCode}Medium`];
   }
   return FontFamily[fontCode];
+}
+
+/** Determines if a string is a hex color. */
+export function isHexColor(color?: string): color is HexColor {
+  return color !== undefined && color.startsWith("#");
 }

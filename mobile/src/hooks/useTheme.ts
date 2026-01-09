@@ -5,7 +5,10 @@ import { isSystemDarkMode } from "react-native-bootsplash";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { Colors } from "~/constants/Styles";
+import type { ColorRole, HexColor } from "~/lib/style";
+import { isHexColor } from "~/lib/style";
 
+//#region Theme
 export const FixedTheme = {
   primary: Colors.red50,
   primaryDim: Colors.red40,
@@ -68,7 +71,9 @@ export const Themes = {
 
 /** Returns theme colors based on the system theme on app launch. */
 export const SystemTheme = Themes[isSystemDarkMode ? "dark" : "light"];
+//#endregion
 
+//#region Hooks
 /** Returns if we're using light or dark theme. */
 export function useCurrentTheme() {
   const deviceTheme = useColorScheme();
@@ -85,3 +90,15 @@ export function useTheme() {
   const currentTheme = useCurrentTheme();
   return useMemo(() => Themes[currentTheme], [currentTheme]);
 }
+
+type Color = ColorRole | HexColor;
+
+/** Returns a singular color. */
+export function useColor(args: { color?: Color; fallback: Color }) {
+  const theme = useTheme();
+  let color = isHexColor(args.fallback) ? args.fallback : theme[args.fallback];
+  if (args.color)
+    color = isHexColor(args.color) ? args.color : theme[args.color];
+  return color;
+}
+//#endregion

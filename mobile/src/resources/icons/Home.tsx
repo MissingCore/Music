@@ -1,11 +1,10 @@
 import Svg, { Path } from "react-native-svg";
 
-import { useTheme } from "~/hooks/useTheme";
+import { useColor } from "~/hooks/useTheme";
 import type { Icon } from "./type";
 
 export function Home({ size = 24, filled = false, color }: Icon) {
-  const { foreground } = useTheme();
-  const usedColor = color ?? foreground;
+  const usedColor = useColor({ color, fallback: "onSurface" });
   return (
     <Svg width={size} height={size} viewBox="0 -960 960 960" fill={usedColor}>
       <Path
