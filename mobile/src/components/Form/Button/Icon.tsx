@@ -4,7 +4,7 @@ import { Pressable, View } from "react-native";
 import type { Icon } from "~/resources/icons/type";
 import { useTheme } from "~/hooks/useTheme";
 
-import type { ColorRole, HexColor } from "~/lib/style";
+import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
 import type { PressProps } from "./types";
 
@@ -24,7 +24,7 @@ type IconButtonProps = PressProps & {
   /** Use the `filled` variant on the icon if available. */
   filled?: boolean;
   className?: string;
-  _iconColor?: ColorRole | HexColor;
+  _iconColor?: ColorRole;
 };
 
 //#region Default

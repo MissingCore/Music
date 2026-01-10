@@ -5,7 +5,7 @@ import { isSystemDarkMode } from "react-native-bootsplash";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { Colors } from "~/constants/Styles";
-import type { ColorRole, HexColor } from "~/lib/style";
+import type { AppColor } from "~/lib/style";
 import { isHexColor } from "~/lib/style";
 
 //#region Theme
@@ -91,10 +91,8 @@ export function useTheme() {
   return useMemo(() => Themes[currentTheme], [currentTheme]);
 }
 
-type Color = ColorRole | HexColor;
-
 /** Returns a singular color. */
-export function useColor(args: { color?: Color; fallback: Color }) {
+export function useColor(args: { color?: AppColor; fallback: AppColor }) {
   const theme = useTheme();
   let color = isHexColor(args.fallback) ? args.fallback : theme[args.fallback];
   if (args.color)

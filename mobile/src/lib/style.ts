@@ -29,6 +29,7 @@ const ColorRoles = [
 
 export type ColorRole = (typeof ColorRoles)[number];
 export type HexColor = `#${string}`;
+export type AppColor = ColorRole | HexColor;
 
 const AvailableColors = [...["red", "yellow", "blue", "green"], ...ColorRoles];
 
