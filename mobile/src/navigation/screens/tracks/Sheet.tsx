@@ -32,7 +32,6 @@ import { usePlaybackStore } from "~/stores/Playback/store";
 import { Queue } from "~/stores/Playback/actions";
 import { useSessionStore } from "~/services/SessionStore";
 import { useGetColumn } from "~/hooks/useGetColumn";
-import { useTheme } from "~/hooks/useTheme";
 import { getMediaLinkContext } from "../../utils/router";
 import { TrackArtworkSheet } from "../ArtworkSheet";
 
@@ -281,16 +280,14 @@ function Badge(props: {
   Icon?: (props: Icon) => React.JSX.Element;
   children: string;
 }) {
-  const { scheme } = useTheme();
   return (
     <View
       className={cn(
-        "flex-row items-center gap-1 rounded-[6px] bg-neutral90 px-2 py-1",
-        { "bg-neutral70": scheme === "dark" },
+        "flex-row items-center gap-1 rounded-[6px] bg-surfaceContainerHigh px-2 py-1",
       )}
     >
-      {props.Icon ? <props.Icon size={14} color="onSecondary" /> : null}
-      <MetadataText className="text-neutral0">{props.children}</MetadataText>
+      {props.Icon ? <props.Icon size={14} /> : null}
+      <MetadataText>{props.children}</MetadataText>
     </View>
   );
 }

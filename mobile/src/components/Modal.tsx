@@ -16,7 +16,7 @@ export function Modal(props: { visible: boolean; children: React.ReactNode }) {
       statusBarTranslucent
       transparent
     >
-      <View className="flex-1 items-center justify-center bg-neutral0/50 px-4">
+      <View className="flex-1 items-center justify-center bg-black/50 px-4">
         <View className="w-full gap-8 rounded-xl bg-surfaceContainerLowest p-4 pt-6">
           {props.children}
         </View>
