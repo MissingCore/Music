@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { Pressable, View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -8,7 +8,6 @@ import Animated, {
 import type { Icon } from "~/resources/icons/type";
 
 import { cn } from "~/lib/style";
-import { Button } from "./Button";
 import { StyledText } from "../Typography/StyledText";
 
 export type PickerOption = {
@@ -54,16 +53,16 @@ export function SegmentedPicker({
             className="absolute top-0 left-0 h-full rounded-full bg-onSurface"
           />
           {options.map(({ Icon }, idx) => (
-            <Button
+            <Pressable
               key={idx}
               onPress={() => onOptionSelected(idx)}
-              className="flex-1 rounded-full bg-transparent p-0"
+              className="min-h-12 flex-1 items-center justify-center rounded-full active:opacity-50"
             >
               <Icon
                 size={20}
                 color={selectedIndex === idx ? "inverseOnSurface" : undefined}
               />
-            </Button>
+            </Pressable>
           ))}
         </View>
       </View>

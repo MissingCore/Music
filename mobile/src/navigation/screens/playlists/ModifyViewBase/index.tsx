@@ -289,7 +289,7 @@ function DeleteWorkflow({
           textKey="feat.playlist.extra.delete"
           onPress={() => setLastChance(true)}
           disabled={lastChance || isSubmitting}
-          className="bg-error"
+          className="bg-error active:bg-errorDim"
           textClassName="text-onError"
         />
       </View>
@@ -344,7 +344,7 @@ function ImportM3UWorkflow({
         textKey="feat.playlist.extra.m3uImport"
         onPress={onImport}
         disabled={isSubmitting}
-        className="bg-secondary"
+        className="bg-secondary active:bg-secondaryDim"
         textClassName="text-onSecondary"
       />
     </View>

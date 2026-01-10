@@ -3,7 +3,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import type { ParseKeys } from "i18next";
 import { useTranslation } from "react-i18next";
 import { useEffect, useMemo, useState } from "react";
-import { View } from "react-native";
+import { Pressable, View } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
 
 import { Search } from "~/resources/icons/Search";
@@ -18,7 +18,6 @@ import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { capitalize } from "~/utils/string";
 import { FlatList, useFlatListRef } from "~/components/Defaults";
-import { Button } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { StyledText } from "~/components/Typography/StyledText";
 import type { Tab } from "~/stores/Preference/types";
@@ -134,17 +133,17 @@ function NavigationList() {
         data={NavRoutes}
         keyExtractor={({ key }) => key}
         renderItem={({ item: { key, name } }) => (
-          <Button
+          <Pressable
             onPress={() => navigation.navigate("HomeScreens", { screen: name })}
             disabled={routeName === name}
-            className="bg-transparent px-2 disabled:opacity-100"
+            className="min-h-12 items-center justify-center px-2 py-4 active:opacity-50"
           >
             <StyledText
               className={cn("text-sm", { "text-primary": routeName === name })}
             >
               {t(key).toLocaleUpperCase()}
             </StyledText>
-          </Button>
+          </Pressable>
         )}
         // Suppresses error from `scrollToIndex` when we remount this layout
         // as a result of using the `push` navigation on the `/search` screen.

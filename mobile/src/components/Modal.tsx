@@ -2,8 +2,6 @@ import type { ParseKeys } from "i18next";
 import type { PressableProps } from "react-native";
 import { Modal as RNModal, View } from "react-native";
 
-import { useTheme } from "~/hooks/useTheme";
-
 import { cn } from "~/lib/style";
 import { ExtendedTButton } from "./Form/Button";
 import { TStyledText } from "./Typography/StyledText";
@@ -53,14 +51,12 @@ type ModalActionsProp = {
 };
 
 export function ModalActions(props: ModalActionsProp) {
-  const { scheme } = useTheme();
   return (
     <View className="gap-0.75">
       <ExtendedTButton
         {...props.topAction}
         className={cn(
-          "rounded-b-xs bg-surface",
-          { "bg-surfaceContainerHigh": scheme === "dark" },
+          "rounded-b-xs bg-surfaceContainer active:bg-surfaceContainerHigh",
           props.topAction.className,
         )}
         textClassName={cn({ "text-error": props.topAction.danger ?? true })}
@@ -68,8 +64,7 @@ export function ModalActions(props: ModalActionsProp) {
       <ExtendedTButton
         {...props.bottomAction}
         className={cn(
-          "rounded-t-xs bg-surface",
-          { "bg-surfaceContainerHigh": scheme === "dark" },
+          "rounded-t-xs bg-surfaceContainer active:bg-surfaceContainerHigh",
           props.bottomAction.className,
         )}
       />

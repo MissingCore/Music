@@ -70,7 +70,10 @@ function FavoriteTracks(props: { size: number; className: string }) {
     <Button
       onPress={() => navigation.navigate("FavoriteTracks")}
       style={{ width: props.size, height: props.size }}
-      className={cn("gap-0 rounded-lg bg-primary", props.className)}
+      className={cn(
+        "gap-0 rounded-lg bg-primary active:bg-primaryDim",
+        props.className,
+      )}
     >
       <AccentText className="text-5xl text-onPrimary">{trackCount}</AccentText>
       <TStyledText textKey="term.tracks" className="text-onPrimary" />

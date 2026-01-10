@@ -34,8 +34,11 @@ export const Colors = {
   neutral98: "#FAFAFA",
   neutral100: "#FFFFFF",
 
-  red40: "#AE141B",
-  red50: "#D71921",
+  red35: "#AF0E28",
+  red40: "#C8102E",
+
+  nRed40: "#AE141B",
+  nRed50: "#D71921",
 
   yellow45: "#E5B300",
   yellow50: "#FFC700",

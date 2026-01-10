@@ -14,6 +14,7 @@
   --color-onSecondaryVariant: hsl(0 0% 20%);
 
   --color-error: hsl(350 85% 42%);
+  --color-errorDim: hsl(350 85% 37%);
   --color-onError: hsl(0 0% 100%);
   --color-onErrorVariant: hsl(0 0% 89%);
 
