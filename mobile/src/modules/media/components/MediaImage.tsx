@@ -61,7 +61,7 @@ export function MediaImage({
   } else if (type === "folder") {
     return (
       <View style={{ padding: size / 4 }} className={usedClasses}>
-        <Folder size={size / 2} color="onPrimary" />
+        <Folder size={size / 2} color="#FFFFFF" />
       </View>
     );
   }

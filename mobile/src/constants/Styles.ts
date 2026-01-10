@@ -15,7 +15,7 @@ export const Colors = {
   transparent: colors.transparent,
 
   neutral0: "#000000",
-  neutral5: "#0F0F0F",
+  neutral7: "#121212",
   neutral10: "#1C1C1C",
   neutral13: "#212121",
   neutral15: "#292929",

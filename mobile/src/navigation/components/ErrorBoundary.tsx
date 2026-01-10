@@ -97,7 +97,7 @@ function ErrorLayout({ error }: { error: Error }) {
             />
             <TStyledText
               textKey="err.flow.report.brief"
-              className="text-center text-xs text-onError/80"
+              className="text-center text-xs text-onErrorVariant"
             />
           </Button>
         </View>

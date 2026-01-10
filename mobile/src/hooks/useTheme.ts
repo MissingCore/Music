@@ -22,6 +22,7 @@ export const FixedTheme = {
 
   error: Colors.red40,
   onError: Colors.neutral100,
+  onErrorVariant: Colors.neutral90,
 } as const;
 
 export const Themes = {
@@ -29,14 +30,14 @@ export const Themes = {
     scheme: "light",
     ...FixedTheme,
 
-    surfaceDim: Colors.neutral85,
+    surfaceDim: Colors.neutral80,
     surface: Colors.neutral95,
     surfaceBright: Colors.neutral95,
 
     surfaceContainerLowest: Colors.neutral100,
     surfaceContainerLow: Colors.neutral98,
     surfaceContainer: Colors.neutral92,
-    surfaceContainerHigh: Colors.neutral90,
+    surfaceContainerHigh: Colors.neutral85,
 
     onSurface: Colors.neutral0,
     onSurfaceVariant: Colors.neutral20,
@@ -52,7 +53,7 @@ export const Themes = {
 
     surfaceDim: Colors.neutral0,
     surface: Colors.neutral0,
-    surfaceBright: Colors.neutral5,
+    surfaceBright: Colors.neutral7,
 
     surfaceContainerLowest: Colors.neutral10,
     surfaceContainerLow: Colors.neutral13,

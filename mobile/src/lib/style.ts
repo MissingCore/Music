@@ -15,7 +15,7 @@ function replaceDefault<T extends string>(arr: T[]) {
 const ColorRoles = [
   ...["primary", "primaryDim", "onPrimary", "onPrimaryVariant"],
   ...["secondary", "secondaryDim", "onSecondary", "onSecondaryVariant"],
-  ...["error", "onError"],
+  ...["error", "onError", "onErrorVariant"],
   ...["surfaceDim", "surface", "surfaceBright"],
   ...[
     "surfaceContainerLowest",
