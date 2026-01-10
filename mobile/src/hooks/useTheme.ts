@@ -10,13 +10,13 @@ import { isHexColor } from "~/lib/style";
 
 //#region Theme
 export const FixedTheme = {
-  primary: Colors.red50,
-  primaryDim: Colors.red40,
+  primary: Colors.red40,
+  primaryDim: Colors.red35,
   onPrimary: Colors.neutral100,
   onPrimaryVariant: Colors.neutral90,
 
-  secondary: Colors.yellow60,
-  secondaryDim: Colors.yellow50,
+  secondary: Colors.yellow50,
+  secondaryDim: Colors.yellow45,
   onSecondary: Colors.neutral0,
   onSecondaryVariant: Colors.neutral20,
 

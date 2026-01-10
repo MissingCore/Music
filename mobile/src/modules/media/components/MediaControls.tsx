@@ -26,7 +26,7 @@ export function RepeatButton({ large = true }) {
       )}
       onPress={PlaybackSettings.cycleRepeat}
       size={large ? "lg" : undefined}
-      _iconColor={repeatMode !== "no-repeat" ? "primaryDim" : undefined}
+      _iconColor={repeatMode !== "no-repeat" ? "primary" : undefined}
     />
   );
 }
@@ -41,7 +41,7 @@ export function ShuffleButton({ large = true }) {
       accessibilityLabel={t("term.shuffle")}
       onPress={PlaybackSettings.toggleShuffle}
       size={large ? "lg" : undefined}
-      _iconColor={isActive ? "primaryDim" : undefined}
+      _iconColor={isActive ? "primary" : undefined}
     />
   );
 }

@@ -85,7 +85,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
             accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
             onPress={() => PlaybackControls.playToggle()}
             size="lg"
-            _iconColor="primaryDim"
+            _iconColor="primary"
           />
           {!gestureUI ? <NextButton /> : null}
         </View>
