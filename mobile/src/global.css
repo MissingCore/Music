@@ -4,8 +4,6 @@
 @theme {
   /** Color */
   --color-red: hsl(350 85% 42%);
-  --color-blue: hsl(240 49% 50%);
-  --color-green: hsl(144 72% 40%);
 
   /** "Fixed" Color Scheme */
   --color-primary: hsl(350 85% 42%);
