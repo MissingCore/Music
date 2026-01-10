@@ -17,8 +17,9 @@ import { AlbumArtistsKey } from "~/api/album.utils";
 import { getArtistsString } from "~/api/artist.utils";
 import { getPlaylistArtwork } from "~/api/playlist.utils";
 import { getTrackArtwork } from "~/api/track.utils";
-import { useTheme } from "~/hooks/useTheme";
+import { useColor } from "~/hooks/useTheme";
 
+import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
 import { isString } from "~/utils/validation";
 import { FlashList, FlatList } from "~/components/Defaults";
@@ -77,14 +78,14 @@ export function SearchEngine<TScope extends SearchCategories>(
 type SearchResultsListProps<TScope extends SearchCategories> = {
   searchScope: TScope;
   callbacks: Pick<SearchCallbacks, TScope[number]>;
-  bgColor?: string;
+  bgColor?: ColorRole;
   forSheets?: boolean;
 };
 
 function SearchResultsList<TScope extends SearchCategories>(
   props: SearchResultsListProps<TScope> & { query: string },
 ) {
-  const { surface } = useTheme();
+  const shadowColor = useColor({ color: props.bgColor, fallback: "surface" });
   const results = useSearch(props.searchScope, props.query);
   const [selectedTab, setSelectedTab] = useState<TScope[number] | "all">("all");
   const [filterHeight, setFilterHeight] = useState(53); // Height will be ~53px
@@ -114,11 +115,6 @@ function SearchResultsList<TScope extends SearchCategories>(
   const data = useMemo(
     () => (results ? formatResults(results, selectedTab) : undefined),
     [results, selectedTab],
-  );
-
-  const shadowColor = useMemo(
-    () => props.bgColor ?? surface,
-    [props.bgColor, surface],
   );
 
   return (
