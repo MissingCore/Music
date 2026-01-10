@@ -58,7 +58,7 @@ export function NSlider(
   return (
     <View
       onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
-      className="relative overflow-hidden rounded-full bg-surface"
+      className="relative overflow-hidden rounded-full bg-surfaceContainerLowest"
     >
       <View
         accessible

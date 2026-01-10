@@ -68,7 +68,7 @@ function SegmentedListItem(props: ListItemProps) {
     <ListItem
       {...props}
       className={cn(
-        "rounded-md bg-surface p-4",
+        "rounded-md bg-surfaceContainerLowest p-4",
         { "rounded-t-xs": !first, "rounded-b-xs": !last },
         props.className,
       )}
@@ -93,7 +93,7 @@ function SegmentedListCustomItem(props: {
     <View
       {...props}
       className={cn(
-        "overflow-hidden rounded-md bg-surface",
+        "overflow-hidden rounded-md bg-surfaceContainerLowest",
         { "rounded-t-xs": !first, "rounded-b-xs": !last },
         props.className,
       )}

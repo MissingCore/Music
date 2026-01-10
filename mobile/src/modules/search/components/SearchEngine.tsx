@@ -49,7 +49,7 @@ export function SearchEngine<TScope extends SearchCategories>(
   return (
     <View className="shrink grow">
       {/* Search input. */}
-      <View className="flex-row items-center gap-2 rounded-full bg-surface pl-4">
+      <View className="flex-row items-center gap-2 rounded-full bg-surfaceContainerLowest pl-4">
         <Search />
         <TextInput
           ref={inputRef}

@@ -161,7 +161,7 @@ const RenderItem = memo(
           LeftElement={<PlayingIndicator />}
           className={cn("mx-4", {
             "mt-2": index > 0,
-            "bg-surface": info.isActive,
+            "bg-surfaceContainerLowest": info.isActive,
           })}
         />
       );
@@ -175,7 +175,9 @@ const RenderItem = memo(
         RightIcon={<Delete color="onPrimary" />}
         rightIconContainerClassName="rounded-xs bg-red"
         wrapperClassName={cn("mx-4", { "mt-2": index > 0 })}
-        className={cn("rounded-xs bg-canvas", { "bg-surface": info.isActive })}
+        className={cn("rounded-xs bg-canvas", {
+          "bg-surfaceContainerLowest": info.isActive,
+        })}
       >
         <TrackItem
           item={item}

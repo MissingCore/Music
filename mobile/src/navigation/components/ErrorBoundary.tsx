@@ -79,7 +79,7 @@ function ErrorLayout({ error }: { error: Error }) {
             textKey="err.flow.generic.brief"
             className="text-base"
           />
-          <View className="rounded-md bg-surface p-4">
+          <View className="rounded-md bg-surfaceContainerLowest p-4">
             <StyledText>{error.message}</StyledText>
           </View>
           <StyledText dim className="text-sm">

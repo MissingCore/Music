@@ -175,8 +175,9 @@ const RenderItem = memo(
           className={cn("pr-4", {
             // The `active:` variant is to override the default active style
             // as `!important` isn't enough to change the background color
-            // (it'll only change to `bg-surface ` one we drag the item).
-            "bg-surface active:bg-surface": info.isActive,
+            // (it'll only change to `bg-surfaceContainerLowest ` one we drag the item).
+            "bg-surfaceContainerLowest active:bg-surfaceContainerLowest":
+              info.isActive,
           })}
         />
       </Swipeable>

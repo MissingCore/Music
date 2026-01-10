@@ -42,7 +42,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
   if (!track || hidden) return null;
   return (
     <View
-      className={cn("overflow-hidden rounded-md bg-surface", {
+      className={cn("overflow-hidden rounded-md bg-surfaceContainerLowest", {
         "rounded-b-xs": stacked,
       })}
     >
@@ -63,7 +63,9 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
           onSwipeLeft={PlaybackControls.next}
           onSwipeRight={PlaybackControls.prev}
           wrapperClassName="shrink grow justify-center overflow-hidden"
-          className={gestureUI ? "bg-surface px-2" : "mx-2 shrink grow"}
+          className={
+            gestureUI ? "bg-surfaceContainerLowest px-2" : "mx-2 shrink grow"
+          }
         >
           <Marquee color="surfaceContainerLowest">
             <StyledText>{track.name}</StyledText>

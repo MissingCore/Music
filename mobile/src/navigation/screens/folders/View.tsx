@@ -181,7 +181,7 @@ function Breadcrumbs({
       horizontal
       showsHorizontalScrollIndicator={false}
       style={{ width: screenWidth - 32 }}
-      className="rounded-md bg-surface"
+      className="rounded-md bg-surfaceContainerLowest"
       contentContainerClassName="px-4"
     >
       <Animated.View

@@ -14,7 +14,7 @@ export const Button = memo(function Button({
   return (
     <Pressable
       className={cn(
-        "min-h-12 items-center justify-center gap-2 rounded-md bg-surface p-4",
+        "min-h-12 items-center justify-center gap-2 rounded-md bg-surfaceContainerLowest p-4",
         "active:opacity-75 disabled:opacity-25",
         className,
       )}

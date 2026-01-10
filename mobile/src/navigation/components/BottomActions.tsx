@@ -54,7 +54,7 @@ function Navbar({ stacked = false, hidden = false }) {
   return (
     <View
       className={cn(
-        "flex-row items-center overflow-hidden rounded-md bg-surface py-1",
+        "flex-row items-center overflow-hidden rounded-md bg-surfaceContainerLowest py-1",
         { "rounded-t-xs": stacked, "hidden opacity-0": hidden },
       )}
     >

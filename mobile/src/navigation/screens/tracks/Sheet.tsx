@@ -146,7 +146,7 @@ function TrackIntro({ data }: { data: TrackWithRelations }) {
 //#region Metadata
 function TrackMetadata({ data }: { data: TrackWithRelations }) {
   return (
-    <View className="gap-4 rounded-md bg-surface p-4">
+    <View className="gap-4 rounded-md bg-surfaceContainerLowest p-4">
       <Marquee
         color="surface"
         contentContainerClassName="grow justify-between gap-4"
@@ -191,7 +191,7 @@ function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
   const isFav = favoriteTrack.isPending ? !favStatus : favStatus;
 
   return (
-    <View className="flex-row justify-between gap-1 rounded-md bg-surface px-4 py-1">
+    <View className="flex-row justify-between gap-1 rounded-md bg-surfaceContainerLowest px-4 py-1">
       <IconButton
         Icon={Favorite}
         accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}

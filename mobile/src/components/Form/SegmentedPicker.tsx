@@ -42,7 +42,7 @@ export function SegmentedPicker({
 
   return (
     <View className="gap-2">
-      <View className="rounded-full bg-surface p-1">
+      <View className="rounded-full bg-surfaceContainerLowest p-1">
         <View
           onLayout={(e) => {
             pickerWidth.value = e.nativeEvent.layout.width;
