@@ -69,7 +69,7 @@ export function Sheet(props: SheetProps) {
         onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}
         className={cn("gap-2 px-4 pb-2", { "pb-6": !!props.titleKey })}
       >
-        <View className="mx-auto my-2.5 h-1 w-8 rounded-full bg-onSurface" />
+        <View className="mx-auto my-2.5 h-1 w-8 rounded-full bg-surfaceContainerHigh" />
         {props.titleKey ? (
           <Marquee color="surfaceBright" center>
             <StyledText className="text-lg">{t(props.titleKey)}</StyledText>

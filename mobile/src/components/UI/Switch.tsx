@@ -14,9 +14,10 @@ export function Switch({ enabled }: { enabled: boolean }) {
   }));
   return (
     <Animated.View
-      className={cn("relative h-6 w-11 rounded-full bg-onSurface p-0.5", {
-        "bg-red": enabled,
-      })}
+      className={cn(
+        "relative h-6 w-11 rounded-full bg-surfaceContainerHigh p-0.5",
+        { "bg-red": enabled },
+      )}
     >
       <Animated.View
         style={[{ [OnRTL.decide("right", "left")]: 2 }, thumbStyle]}

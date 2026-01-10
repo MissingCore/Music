@@ -38,7 +38,7 @@ export function MediaImage({
   className,
   noPlaceholder,
 }: MediaImage.Props) {
-  const usedClasses = cn("rounded-lg bg-onSurface", className);
+  const usedClasses = cn("rounded-lg bg-surfaceContainerHigh", className);
 
   const [RenderedEl, additionalProps] = useMemo(() => {
     const imgSource = getUsedImage({ source, type, noPlaceholder });

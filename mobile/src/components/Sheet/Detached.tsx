@@ -115,7 +115,7 @@ export function DetachedSheet(props: SheetProps) {
           )}
         >
           <View className="gap-2">
-            <View className="mx-auto my-2.5 h-1 w-8 rounded-full bg-onSurface" />
+            <View className="mx-auto my-2.5 h-1 w-8 rounded-full bg-surfaceContainerHigh" />
             {props.titleKey ? (
               <Marquee color="surfaceBright">
                 <TStyledText

@@ -60,7 +60,7 @@ export function ModalActions(props: ModalActionsProp) {
         {...props.topAction}
         className={cn(
           "rounded-b-xs bg-canvas",
-          { "bg-onSurface": scheme === "dark" },
+          { "bg-surfaceContainerHigh": scheme === "dark" },
           props.topAction.className,
         )}
         textClassName={cn({ "text-red": props.topAction.danger ?? true })}
@@ -69,7 +69,7 @@ export function ModalActions(props: ModalActionsProp) {
         {...props.bottomAction}
         className={cn(
           "rounded-t-xs bg-canvas",
-          { "bg-onSurface": scheme === "dark" },
+          { "bg-surfaceContainerHigh": scheme === "dark" },
           props.bottomAction.className,
         )}
       />
