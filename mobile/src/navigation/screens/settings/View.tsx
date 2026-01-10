@@ -47,6 +47,7 @@ export default function Settings() {
             onPress={() => navigation.navigate("AppUpdate")}
             LeftElement={<MobileArrowDown color="onSecondary" />}
             className="gap-4 rounded-full bg-secondary"
+            _psuedoClassName="active:bg-secondaryDim"
             _textColor="onSecondary"
           />
         )}
@@ -131,7 +132,6 @@ export default function Settings() {
             onPress={() => openBrowserAsync(LINKS.VERSION_CHANGELOG)}
             RightElement={<OpenInNew />}
             className="rounded-none"
-            _psuedoClassName="active:bg-surface/30"
           />
           <Divider className="mx-4" />
           <SegmentedList.Item
@@ -139,7 +139,6 @@ export default function Settings() {
             onPress={PreferenceTogglers.toggleRCNotification}
             RightElement={<Switch enabled={showRCNotification} />}
             className="rounded-none"
-            _psuedoClassName="active:bg-surface/30"
           />
         </SegmentedList.CustomItem>
       </StandardScrollLayout>
