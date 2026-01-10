@@ -31,7 +31,7 @@ function CustomToast({ type, message, height, width }: Toast) {
         })}
       >
         <Text
-          className={cn("text-center font-roboto text-sm text-foreground", {
+          className={cn("text-center font-roboto text-sm text-onSurface", {
             "text-neutral100": type === "error",
           })}
         >

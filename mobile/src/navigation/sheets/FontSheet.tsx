@@ -59,7 +59,7 @@ function FontSheet<T extends AccentFont>(props: {
         renderPreview={(font) => (
           <Text
             style={{ fontFamily: getFont(font) }}
-            className="text-center text-5xl text-foreground"
+            className="text-center text-5xl text-onSurface"
           >
             Aa
           </Text>
@@ -67,7 +67,7 @@ function FontSheet<T extends AccentFont>(props: {
         renderLabel={(font) => (
           <Text
             style={{ fontFamily: getFont(font) }}
-            className="text-center text-xs leading-tight text-foreground"
+            className="text-center text-xs leading-tight text-onSurface"
           >
             {font}
           </Text>

@@ -51,7 +51,7 @@ export function SegmentedPicker({
         >
           <Animated.View
             style={selectedIndicatorStyle}
-            className="absolute top-0 left-0 h-full rounded-full bg-foreground"
+            className="absolute top-0 left-0 h-full rounded-full bg-onSurface"
           />
           {options.map(({ Icon }, idx) => (
             <Button
@@ -74,7 +74,7 @@ export function SegmentedPicker({
             dim
             bold={selectedIndex === idx}
             className={cn("flex-1 px-2 text-center", {
-              "text-foreground": selectedIndex === idx,
+              "text-onSurface": selectedIndex === idx,
             })}
           >
             {label.toLocaleUpperCase()}

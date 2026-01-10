@@ -56,7 +56,7 @@ function PlayCountList({ tracks }: { tracks: TrackData[] }) {
           <View>
             <StyledText className="text-sm">{name}</StyledText>
             {artistsString ? (
-              <StyledText dim className="text-foreground/80">
+              <StyledText dim className="text-onSurface/80">
                 {artistsString}
               </StyledText>
             ) : null}

@@ -91,7 +91,7 @@ export default function AppUpdate() {
               >
                 <Text
                   style={{ fontFamily: "monospace" }}
-                  className="text-left text-xxs text-foreground/60"
+                  className="text-left text-xxs text-onSurface/60"
                 >
                   {node.content}
                 </Text>

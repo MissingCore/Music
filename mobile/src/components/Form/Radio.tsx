@@ -10,8 +10,8 @@ function Radio({ selected }: { selected: boolean }) {
   return (
     <View
       className={cn(
-        "size-5 items-center justify-center rounded-full border border-foreground",
-        { "border-0 bg-foreground": selected },
+        "size-5 items-center justify-center rounded-full border border-onSurface",
+        { "border-0 bg-onSurface": selected },
       )}
     >
       {selected ? <Check size={18} color="surface" /> : null}

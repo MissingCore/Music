@@ -111,7 +111,7 @@ function NSliderMarks({ min, max, ...rest }: NMarkProps & { width: number }) {
         key={val}
         pointerEvents="none"
         style={{ left: ((val - min) / (max - min)) * rest.width }}
-        className={cn("bg-foreground/5", markClass)}
+        className={cn("bg-onSurface/5", markClass)}
       />
     ) : (
       <Pressable

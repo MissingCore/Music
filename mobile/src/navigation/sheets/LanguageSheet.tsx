@@ -42,7 +42,7 @@ export function LanguageSheet(props: { ref: TrueSheetRef }) {
       <DetachedSheet ref={props.ref} titleKey="feat.language.title">
         <Pressable
           onPress={() => languageSelectionSheetRef.current?.present()}
-          className="min-h-10 flex-row items-center justify-between gap-1 border-b border-foreground/10 active:opacity-50"
+          className="min-h-10 flex-row items-center justify-between gap-1 border-b border-onSurface/10 active:opacity-50"
         >
           <StyledText>{selectedLanguage?.name}</StyledText>
           <View className={OnRTL.decide("rotate-90", "-rotate-90")}>

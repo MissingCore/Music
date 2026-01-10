@@ -183,7 +183,7 @@ export function Scrollbar({
           <Animated.View
             pointerEvents="none"
             style={thumbStyle}
-            className="rounded-full bg-foreground"
+            className="rounded-full bg-onSurface"
           />
         </Animated.View>
       </GestureDetector>

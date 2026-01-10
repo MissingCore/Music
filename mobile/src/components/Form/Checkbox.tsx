@@ -13,8 +13,8 @@ function Checkbox({ checked, size = 20 }: { checked: boolean; size?: number }) {
     <View
       style={{ height: size, width: size }}
       className={cn(
-        "items-center justify-center rounded-xs border border-foreground",
-        { "border-0 bg-foreground": checked },
+        "items-center justify-center rounded-xs border border-onSurface",
+        { "border-0 bg-onSurface": checked },
       )}
     >
       {checked ? <Check size={size} color="surface" /> : null}
