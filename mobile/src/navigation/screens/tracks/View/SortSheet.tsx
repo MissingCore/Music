@@ -29,7 +29,7 @@ export const TrackSortSheet = deferInitialRender(
       >
         <Pressable
           onPress={toggleIsAsc}
-          className="flex-row items-center justify-between gap-4 rounded-md bg-surfaceContainerLowest p-4 active:opacity-75"
+          className="flex-row items-center justify-between gap-4 rounded-md bg-surfaceContainerLowest p-4 active:bg-surfaceContainerLow"
         >
           <TStyledText textKey="feat.modalSort.extra.asc" />
           <Switch enabled={isAsc} />

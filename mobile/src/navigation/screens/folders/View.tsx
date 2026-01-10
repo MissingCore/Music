@@ -209,7 +209,7 @@ function Breadcrumbs({
                 // `pathSegments.length` instead of `pathSegments.length - 1`
                 // due to us prepending an extra entry to denote the "Root".
                 disabled={idx === dirSegments.length}
-                className="min-h-12 min-w-6 items-center justify-center active:opacity-75"
+                className="min-h-12 min-w-6 items-center justify-center active:opacity-50"
               >
                 <StyledText
                   className={cn("text-xs", {
