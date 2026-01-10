@@ -45,7 +45,7 @@ export function SearchResult(props: SearchResult.Props) {
         )
       }
       _asView={!props.button}
-      _textColor={props.poppyLabel ? "primary" : undefined}
+      _labelTextClassName={props.poppyLabel ? "text-primary" : undefined}
     />
   );
 }

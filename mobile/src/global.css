@@ -5,7 +5,6 @@
   /** "Fixed" Color Scheme */
   --color-primary: hsl(357 79% 47%);
   --color-primaryDim: hsl(357 79% 38%);
-  --color-primaryVariant: hsl(357 79% 38%); /** Alias for `primaryDim`. */
   --color-onPrimary: hsl(0 0% 100%);
   --color-onPrimaryVariant: hsl(0 0% 89%);
 

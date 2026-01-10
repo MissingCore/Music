@@ -12,7 +12,6 @@ import { isHexColor } from "~/lib/style";
 export const FixedTheme = {
   primary: Colors.red50,
   primaryDim: Colors.red40,
-  primaryVariant: Colors.red40, // Alias for `primaryDim`.
   onPrimary: Colors.neutral100,
   onPrimaryVariant: Colors.neutral90,
 
