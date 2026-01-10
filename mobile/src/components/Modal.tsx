@@ -59,7 +59,7 @@ export function ModalActions(props: ModalActionsProp) {
       <ExtendedTButton
         {...props.topAction}
         className={cn(
-          "rounded-b-xs bg-canvas",
+          "rounded-b-xs bg-surface",
           { "bg-surfaceContainerHigh": scheme === "dark" },
           props.topAction.className,
         )}
@@ -68,7 +68,7 @@ export function ModalActions(props: ModalActionsProp) {
       <ExtendedTButton
         {...props.bottomAction}
         className={cn(
-          "rounded-t-xs bg-canvas",
+          "rounded-t-xs bg-surface",
           { "bg-surfaceContainerHigh": scheme === "dark" },
           props.bottomAction.className,
         )}

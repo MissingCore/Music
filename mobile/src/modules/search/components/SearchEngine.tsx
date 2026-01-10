@@ -191,7 +191,7 @@ function SearchFilters(props: {
       renderItem={({ item: tab }) => {
         const selected = props.selectedTab === tab;
         return (
-          <View className="rounded-sm bg-canvas">
+          <View className="rounded-sm bg-surface">
             <Button
               onPress={() => props.onSelectTab(tab)}
               className={cn("min-h-0 rounded-sm px-3 py-1.5", {

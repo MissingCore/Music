@@ -141,7 +141,7 @@ SegmentedList.Item = memo(SegmentedListItem);
 /**
  * Wraps non-standard content while having the benefit of the automatic styling
  * while in `<SegmentedList />`.
- *  - Set `_psuedoClassName = "active:bg-canvas/30"` for color-matching on pressed state.
+ *  - Set `_psuedoClassName = "active:bg-surface/30"` for color-matching on pressed state.
  */
 SegmentedList.CustomItem = memo(SegmentedListCustomItem);
 

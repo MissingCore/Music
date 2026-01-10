@@ -34,7 +34,7 @@ function PlaylistActions() {
   const navigation = useNavigation();
 
   return (
-    <View className="rounded-md bg-canvas">
+    <View className="rounded-md bg-surface">
       <FilledIconButton
         Icon={Add}
         accessibilityLabel={t("feat.playlist.extra.create")}

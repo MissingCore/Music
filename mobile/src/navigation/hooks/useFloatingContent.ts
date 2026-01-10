@@ -26,7 +26,7 @@ export function useFloatingContent(): UseFloatingContentResult {
 
   const wrapperStyling = useMemo(
     () => ({
-      className: "absolute bottom-4 left-4 w-full rounded-md bg-canvas",
+      className: "absolute bottom-4 left-4 w-full rounded-md bg-surface",
       style: { maxWidth: width - 32 },
     }),
     [width],

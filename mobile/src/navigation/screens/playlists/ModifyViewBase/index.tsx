@@ -161,7 +161,7 @@ const RenderItem = memo(
         RightIcon={<Delete color="onPrimary" />}
         rightIconContainerClassName="rounded-xs bg-red"
         wrapperClassName={cn("mx-4", { "mt-2": info.index > 0 })}
-        className="overflow-hidden rounded-xs bg-canvas"
+        className="overflow-hidden rounded-xs bg-surface"
       >
         <SearchResult
           button
