@@ -50,7 +50,7 @@ export function NSlider(
     step?: number;
   },
 ) {
-  const { primary, surface } = useTheme();
+  const { primary, surfaceContainerLowest } = useTheme();
   const [width, setWidth] = useState<number>();
 
   const formattedValue = props.formatValue(props.value);
@@ -78,7 +78,7 @@ export function NSlider(
         step={props.step}
         onValueChange={props.onChange as (val: number) => void}
         minimumTrackTintColor={`${primary}33`} // 20% Opacity
-        maximumTrackTintColor={surface}
+        maximumTrackTintColor={surfaceContainerLowest}
         thumbSize={
           props.value === props.min || props.value === props.max ? 0 : 2
         }
