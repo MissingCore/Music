@@ -31,7 +31,7 @@ export type ColorRole = (typeof ColorRoles)[number];
 export type HexColor = `#${string}`;
 export type AppColor = ColorRole | HexColor;
 
-const AvailableColors = [...["red", "yellow", "blue", "green"], ...ColorRoles];
+const AvailableColors = [...["red", "blue", "green"], ...ColorRoles];
 
 const customTwMerge = extendTailwindMerge({
   override: {

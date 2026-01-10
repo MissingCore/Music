@@ -344,8 +344,8 @@ function ImportM3UWorkflow({
         textKey="feat.playlist.extra.m3uImport"
         onPress={onImport}
         disabled={isSubmitting}
-        className="bg-yellow"
-        textClassName="text-neutral0"
+        className="bg-secondary"
+        textClassName="text-onSecondary"
       />
     </View>
   );

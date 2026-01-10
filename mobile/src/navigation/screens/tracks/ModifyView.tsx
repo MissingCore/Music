@@ -242,7 +242,7 @@ function ArrayFormInput(props: {
           setField((prev) => ({ ...prev, [field]: [...prev[field], ""] }))
         }
         disabled={isSubmitting}
-        className="mt-2 rounded-md bg-yellow"
+        className="mt-2 rounded-md bg-secondary"
         _iconColor="onSecondary"
       />
     </View>
