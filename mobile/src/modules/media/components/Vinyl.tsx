@@ -27,7 +27,7 @@ export function Vinyl(props: {
   size: number;
   source: MediaImage.ImageSource | MediaImage.ImageSource[];
 }) {
-  const { canvas } = useTheme();
+  const { surface } = useTheme();
 
   const renderIndicator = useMemo(() => {
     if (Array.isArray(props.source) && props.source.length > 0) return false;
@@ -84,7 +84,7 @@ export function Vinyl(props: {
           pointerEvents="none"
           {...CENTER}
           r={12}
-          fill={canvas}
+          fill={surface}
           stroke={Colors.neutral80}
           strokeWidth={6}
         />

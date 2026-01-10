@@ -35,7 +35,7 @@ export const IconButton = memo(function IconButton({
   _iconColor,
   ...props
 }: IconButtonProps) {
-  const { onSurface } = useTheme();
+  const { surfaceContainerHigh } = useTheme();
   const { buttonSize, iconSize } = ButtonConfig[size];
 
   return (
@@ -50,7 +50,7 @@ export const IconButton = memo(function IconButton({
       {({ pressed }) => (
         <View
           collapsable={false} // Prevents view flattening.
-          style={[pressed && { backgroundColor: `${onSurface}80` }]}
+          style={[pressed && { backgroundColor: `${surfaceContainerHigh}80` }]}
           className="rounded-full p-1.5"
         >
           <Icon size={iconSize} color={_iconColor} filled={filled} />

@@ -39,7 +39,7 @@ interface SheetProps {
 
 export function Sheet(props: SheetProps) {
   const { t } = useTranslation();
-  const { canvasAlt } = useTheme();
+  const { surfaceBright } = useTheme();
   const [disableToastAnim, setDisableToastAnim] = useState(true);
   const [sheetHeight, setSheetHeight] = useState(0);
   const [headerHeight, setHeaderHeight] = useState(0);
@@ -52,7 +52,7 @@ export function Sheet(props: SheetProps) {
       onLayout={(e) => setSheetHeight(e.nativeEvent.layout.height)}
       name={props.globalKey}
       detents={[props.snapTop ? 1 : "auto"]}
-      backgroundColor={canvasAlt}
+      backgroundColor={surfaceBright}
       cornerRadius={BorderRadius.lg}
       // Sheet max height will be just before the `<TopAppBar />`.
       maxHeight={trueScreenHeight - 56}

@@ -14,7 +14,7 @@ export const AddMusicSheet = deferInitialRender(function AddMusicSheet(props: {
   ref: TrueSheetRef;
   callbacks: Pick<SearchCallbacks, (typeof searchScope)[number]>;
 }) {
-  const { canvasAlt } = useTheme();
+  const { surfaceBright } = useTheme();
   return (
     <Sheet
       ref={props.ref}
@@ -25,7 +25,7 @@ export const AddMusicSheet = deferInitialRender(function AddMusicSheet(props: {
       <SearchEngine
         searchScope={searchScope}
         callbacks={props.callbacks}
-        bgColor={canvasAlt}
+        bgColor={surfaceBright}
         forSheets
       />
     </Sheet>

@@ -60,7 +60,7 @@ export default function Insights() {
 
 //#region Storage Summary
 function StorageWidget() {
-  const { foreground } = useTheme();
+  const { onSurface } = useTheme();
   const { data } = useStorageSummary();
 
   const getValue = (
@@ -76,7 +76,7 @@ function StorageWidget() {
           { color: Colors.red, value: data?.images ?? 0 },
           { color: Colors.yellow, value: data?.database ?? 0 },
           { color: Colors.blue, value: data?.other ?? 0 },
-          { color: `${foreground}40`, value: data?.cache ?? 0 },
+          { color: `${onSurface}40`, value: data?.cache ?? 0 },
         ]}
         total={data?.total ?? 0}
       />
@@ -99,7 +99,7 @@ function StorageWidget() {
         <Legend.Item
           labelTextKey="feat.insights.extra.cache"
           value={getValue("cache")}
-          color={`${foreground}40`} // 25% Opacity
+          color={`${onSurface}40`} // 25% Opacity
         />
       </Legend>
       <Legend.Item

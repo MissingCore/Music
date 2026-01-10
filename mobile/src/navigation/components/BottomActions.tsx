@@ -80,7 +80,7 @@ function Navbar({ stacked = false, hidden = false }) {
 
 function NavigationList() {
   const { t, i18n } = useTranslation();
-  const { surface } = useTheme();
+  const { surfaceContainerLowest } = useTheme();
   const navigation = useNavigation();
   const currNavRoutes = useNavigationState((s) => s.routes);
   const homeTab = usePreferenceStore((s) => s.homeTab);
@@ -154,14 +154,14 @@ function NavigationList() {
       {/* Scroll Shadow */}
       <LinearGradient
         pointerEvents="none"
-        colors={[`${surface}E6`, `${surface}00`]}
+        colors={[`${surfaceContainerLowest}E6`, `${surfaceContainerLowest}00`]}
         {...ShadowProps}
         style={{ [OnRTL.decide("right", "left")]: 0 }}
         className="absolute h-full w-4"
       />
       <LinearGradient
         pointerEvents="none"
-        colors={[`${surface}00`, `${surface}E6`]}
+        colors={[`${surfaceContainerLowest}00`, `${surfaceContainerLowest}E6`]}
         {...ShadowProps}
         style={{ [OnRTL.decide("left", "right")]: 0 }}
         className="absolute h-full w-4"

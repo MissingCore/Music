@@ -30,7 +30,7 @@ const BAR_WIDTH = 2;
 const BAR_GAP = 1.75;
 
 export function Waveform(props: WaveformProps) {
-  const { onSurface } = useTheme();
+  const { surfaceContainerHigh } = useTheme();
   return (
     <AudioWaveView
       samples={props.amplitudes.map((s) => s * props.height)}
@@ -40,7 +40,7 @@ export function Waveform(props: WaveformProps) {
       waveWidth={BAR_WIDTH * 3}
       waveGap={4}
       waveCornerRadius={8}
-      waveBackgroundColor={onSurface}
+      waveBackgroundColor={surfaceContainerHigh}
       waveProgressColor={Colors.red}
       style={{ width: "100%", height: "100%" }}
     />

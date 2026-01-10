@@ -19,7 +19,7 @@ export function Slider(props: {
   onComplete?: (value: number) => void | Promise<void>;
   inverted?: boolean;
 }) {
-  const { onSurface } = useTheme();
+  const { surfaceContainerHigh } = useTheme();
   return (
     <RNSlider
       value={props.value}
@@ -30,7 +30,7 @@ export function Slider(props: {
       }}
       onValueChange={async ([newPos]) => await props.onChange(newPos!)}
       minimumTrackTintColor={Colors.red}
-      maximumTrackTintColor={onSurface}
+      maximumTrackTintColor={surfaceContainerHigh}
       thumbTintColor={Colors.red}
       thumbStyle={{ height: props.thumbSize, width: props.thumbSize }}
       trackStyle={{ height: props.thumbSize / 2, borderRadius: 999 }}

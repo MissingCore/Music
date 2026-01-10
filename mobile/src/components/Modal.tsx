@@ -53,14 +53,14 @@ type ModalActionsProp = {
 };
 
 export function ModalActions(props: ModalActionsProp) {
-  const { theme } = useTheme();
+  const { scheme } = useTheme();
   return (
     <View className="gap-0.75">
       <ExtendedTButton
         {...props.topAction}
         className={cn(
           "rounded-b-xs bg-canvas",
-          { "bg-onSurface": theme === "dark" },
+          { "bg-onSurface": scheme === "dark" },
           props.topAction.className,
         )}
         textClassName={cn({ "text-red": props.topAction.danger ?? true })}
@@ -69,7 +69,7 @@ export function ModalActions(props: ModalActionsProp) {
         {...props.bottomAction}
         className={cn(
           "rounded-t-xs bg-canvas",
-          { "bg-onSurface": theme === "dark" },
+          { "bg-onSurface": scheme === "dark" },
           props.bottomAction.className,
         )}
       />

@@ -84,7 +84,7 @@ type SearchResultsListProps<TScope extends SearchCategories> = {
 function SearchResultsList<TScope extends SearchCategories>(
   props: SearchResultsListProps<TScope> & { query: string },
 ) {
-  const { canvas } = useTheme();
+  const { surface } = useTheme();
   const results = useSearch(props.searchScope, props.query);
   const [selectedTab, setSelectedTab] = useState<TScope[number] | "all">("all");
   const [filterHeight, setFilterHeight] = useState(53); // Height will be ~53px
@@ -117,8 +117,8 @@ function SearchResultsList<TScope extends SearchCategories>(
   );
 
   const shadowColor = useMemo(
-    () => props.bgColor ?? canvas,
-    [props.bgColor, canvas],
+    () => props.bgColor ?? surface,
+    [props.bgColor, surface],
   );
 
   return (

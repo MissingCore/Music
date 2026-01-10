@@ -281,12 +281,12 @@ function Badge(props: {
   Icon?: (props: Icon) => React.JSX.Element;
   children: string;
 }) {
-  const { theme } = useTheme();
+  const { scheme } = useTheme();
   return (
     <View
       className={cn(
         "flex-row items-center gap-1 rounded-[6px] bg-neutral90 px-2 py-1",
-        { "bg-neutral70": theme === "dark" },
+        { "bg-neutral70": scheme === "dark" },
       )}
     >
       {props.Icon ? <props.Icon size={14} color="onSecondary" /> : null}
