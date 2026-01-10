@@ -57,6 +57,7 @@
       --color-surfaceContainerLow: hsl(0 0% 98%);
       --color-surfaceContainer: hsl(0 0% 92%);
       --color-surfaceContainerHigh: hsl(0 0% 85%);
+      --color-surfaceContainerHighest: hsl(0 0% 82%);
 
       --color-onSurface: hsl(0 0% 0%);
       --color-onSurfaceVariant: hsl(0 0% 38%);
@@ -76,6 +77,7 @@
       --color-surfaceContainerLow: hsl(0 0% 13%);
       --color-surfaceContainer: hsl(0 0% 16%);
       --color-surfaceContainerHigh: hsl(0 0% 20%);
+      --color-surfaceContainerHighest: hsl(0 0% 23%);
 
       --color-onSurface: hsl(0 0% 100%);
       --color-onSurfaceVariant: hsl(0 0% 68%);

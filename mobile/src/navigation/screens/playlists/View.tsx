@@ -1,6 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
 
 import { Add } from "~/resources/icons/Add";
 import { usePlaylistsForCards } from "~/queries/playlist";
@@ -32,17 +31,14 @@ export default function Playlists() {
 function PlaylistActions() {
   const { t } = useTranslation();
   const navigation = useNavigation();
-
   return (
-    <View className="rounded-md bg-surface">
-      <FilledIconButton
-        Icon={Add}
-        accessibilityLabel={t("feat.playlist.extra.create")}
-        onPress={() => navigation.navigate("CreatePlaylist")}
-        className="rounded-md bg-primary"
-        _iconColor="onPrimary"
-      />
-    </View>
+    <FilledIconButton
+      Icon={Add}
+      accessibilityLabel={t("feat.playlist.extra.create")}
+      onPress={() => navigation.navigate("CreatePlaylist")}
+      className="rounded-md bg-primary active:bg-primaryDim"
+      _iconColor="onPrimary"
+    />
   );
 }
 //#endregion

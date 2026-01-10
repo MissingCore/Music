@@ -38,6 +38,7 @@ export const Themes = {
     surfaceContainerLow: Colors.neutral98,
     surfaceContainer: Colors.neutral92,
     surfaceContainerHigh: Colors.neutral85,
+    surfaceContainerHighest: Colors.neutral83,
 
     onSurface: Colors.neutral0,
     onSurfaceVariant: Colors.neutral40,
@@ -59,6 +60,7 @@ export const Themes = {
     surfaceContainerLow: Colors.neutral13,
     surfaceContainer: Colors.neutral15,
     surfaceContainerHigh: Colors.neutral20,
+    surfaceContainerHighest: Colors.neutral23,
 
     onSurface: Colors.neutral100,
     onSurfaceVariant: Colors.neutral70,

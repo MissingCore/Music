@@ -20,6 +20,7 @@ const ColorRoles = [
     "surfaceContainerLow",
     "surfaceContainer",
     "surfaceContainerHigh",
+    "surfaceContainerHighest",
   ],
   ...["onSurface", "onSurfaceVariant", "outline", "outlineVariant"],
   ...["inverseSurface", "inverseOnSurface"],
