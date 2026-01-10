@@ -213,7 +213,7 @@ function Breadcrumbs({
               >
                 <StyledText
                   className={cn("text-xs", {
-                    "text-red": idx === dirSegments.length,
+                    "text-primary": idx === dirSegments.length,
                   })}
                 >
                   {dirName ?? "Root"}

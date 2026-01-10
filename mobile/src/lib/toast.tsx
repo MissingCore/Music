@@ -26,13 +26,13 @@ function CustomToast({ type, message, height, width }: Toast) {
     >
       <View
         className={cn("rounded-sm bg-surfaceContainerLowest p-2", {
-          "bg-red": type === "error",
+          "bg-error": type === "error",
           "border border-surfaceContainerHigh": type !== "error",
         })}
       >
         <Text
           className={cn("text-center font-roboto text-sm text-onSurface", {
-            "text-neutral100": type === "error",
+            "text-onError": type === "error",
           })}
         >
           {message as string}

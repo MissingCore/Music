@@ -73,7 +73,7 @@ export function MediaImage({
       style={{ width: size, height: size }}
       className={cn(usedClasses, {
         "rounded-full": type === "artist",
-        "bg-red": source === ReservedPlaylists.favorites,
+        "bg-primary": source === ReservedPlaylists.favorites,
       })}
     />
   );

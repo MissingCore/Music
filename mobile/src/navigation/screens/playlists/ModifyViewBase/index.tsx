@@ -158,8 +158,8 @@ const RenderItem = memo(
       <Swipeable
         disabled={info.isDragging}
         onSwipeLeft={() => onRemove(item.id)}
-        RightIcon={<Delete color="onPrimary" />}
-        rightIconContainerClassName="rounded-xs bg-red"
+        RightIcon={<Delete color="onError" />}
+        rightIconContainerClassName="rounded-xs bg-error"
         wrapperClassName={cn("mx-4", { "mt-2": info.index > 0 })}
         className="overflow-hidden rounded-xs bg-surface"
       >
@@ -289,8 +289,8 @@ function DeleteWorkflow({
           textKey="feat.playlist.extra.delete"
           onPress={() => setLastChance(true)}
           disabled={lastChance || isSubmitting}
-          className="bg-red"
-          textClassName="text-neutral100"
+          className="bg-error"
+          textClassName="text-onError"
         />
       </View>
       <ModalTemplate

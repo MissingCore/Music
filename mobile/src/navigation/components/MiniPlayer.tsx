@@ -106,7 +106,7 @@ function TrackProgress({ duration }: { duration: number }) {
       <View className="h-0.5 w-full rounded-full bg-surfaceContainerHigh">
         <View
           style={{ width: progressPercent }}
-          className="h-full rounded-full bg-red"
+          className="h-full rounded-full bg-primary"
         />
       </View>
     </View>

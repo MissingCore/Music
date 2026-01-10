@@ -172,8 +172,8 @@ const RenderItem = memo(
         disabled={info.isDragging}
         fireCallbackBeforeCompletion
         onSwipeLeft={() => onRemoveTrack(item.key)}
-        RightIcon={<Delete color="onPrimary" />}
-        rightIconContainerClassName="rounded-xs bg-red"
+        RightIcon={<Delete color="onError" />}
+        rightIconContainerClassName="rounded-xs bg-error"
         wrapperClassName={cn("mx-4", { "mt-2": index > 0 })}
         className={cn("rounded-xs bg-surface", {
           "bg-surfaceContainerLowest": info.isActive,

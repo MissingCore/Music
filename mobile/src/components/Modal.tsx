@@ -63,7 +63,7 @@ export function ModalActions(props: ModalActionsProp) {
           { "bg-surfaceContainerHigh": scheme === "dark" },
           props.topAction.className,
         )}
-        textClassName={cn({ "text-red": props.topAction.danger ?? true })}
+        textClassName={cn({ "text-error": props.topAction.danger ?? true })}
       />
       <ExtendedTButton
         {...props.bottomAction}

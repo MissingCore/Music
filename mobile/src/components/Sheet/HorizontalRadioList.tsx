@@ -26,7 +26,7 @@ export function HorizontalRadioList<T extends string>(props: {
             disabled={selected}
             className={cn(
               "w-21 items-center gap-2 rounded-sm border border-transparent p-2 active:opacity-50",
-              { "border-red": selected },
+              { "border-primary": selected },
             )}
           >
             <View className="size-16 items-center justify-center overflow-hidden rounded-sm">

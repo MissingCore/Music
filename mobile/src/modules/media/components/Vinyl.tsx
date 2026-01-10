@@ -46,7 +46,7 @@ export function Vinyl(props: {
         type="playlist"
         source={props.source}
         size={props.size / 2}
-        className="absolute rounded-full bg-red"
+        className="absolute rounded-full bg-primary"
         noPlaceholder
       />
       <Svg width={props.size} height={props.size} viewBox="0 0 768 768">

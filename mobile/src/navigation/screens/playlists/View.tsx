@@ -39,7 +39,7 @@ function PlaylistActions() {
         Icon={Add}
         accessibilityLabel={t("feat.playlist.extra.create")}
         onPress={() => navigation.navigate("CreatePlaylist")}
-        className="rounded-md bg-red"
+        className="rounded-md bg-primary"
         _iconColor="onPrimary"
       />
     </View>

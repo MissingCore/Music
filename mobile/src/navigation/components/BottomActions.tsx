@@ -71,7 +71,7 @@ function Navbar({ stacked = false, hidden = false }) {
           onPress={() => navigation.navigate("Settings")}
         />
         {hasNewUpdate && (
-          <View className="absolute top-3 right-3 size-2 rounded-full bg-red" />
+          <View className="absolute top-3 right-3 size-2 rounded-full bg-primary" />
         )}
       </View>
     </View>
@@ -140,7 +140,7 @@ function NavigationList() {
             className="bg-transparent px-2 disabled:opacity-100"
           >
             <StyledText
-              className={cn("text-sm", { "text-red": routeName === name })}
+              className={cn("text-sm", { "text-primary": routeName === name })}
             >
               {t(key).toLocaleUpperCase()}
             </StyledText>

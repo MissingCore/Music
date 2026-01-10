@@ -87,5 +87,5 @@ function AnimatedBar(props: {
     width: props.width,
   }));
 
-  return <Animated.View style={animatedStyles} className="bg-red" />;
+  return <Animated.View style={animatedStyles} className="bg-primary" />;
 }

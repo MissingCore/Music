@@ -195,12 +195,12 @@ function SearchFilters(props: {
             <Button
               onPress={() => props.onSelectTab(tab)}
               className={cn("min-h-0 rounded-sm px-3 py-1.5", {
-                "bg-red": selected,
+                "bg-primary": selected,
               })}
             >
               <TEm
                 textKey={`term.${tab}`}
-                className={cn("text-xs", { "text-neutral100": selected })}
+                className={cn("text-xs", { "text-onPrimary": selected })}
                 bold={false}
               />
             </Button>

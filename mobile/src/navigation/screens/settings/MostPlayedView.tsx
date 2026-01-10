@@ -64,7 +64,7 @@ function PlayCountList({ tracks }: { tracks: TrackData[] }) {
           </View>
           <Divider />
           {tracks.length - 1 === index ? (
-            <StyledText numberOfLines={1} className="text-xs text-red">
+            <StyledText numberOfLines={1} className="text-xs text-primary">
               {t("feat.mostPlayed.extra.playCount", { count: playCount })}
             </StyledText>
           ) : null}

@@ -48,7 +48,7 @@ function PlayMediaListButton({ trackSource }: { trackSource: PlayFromSource }) {
           ? PlaybackControls.pause()
           : PlaybackControls.playFromList({ source: trackSource })
       }
-      className={cn("rounded-md bg-red", {
+      className={cn("rounded-md bg-primary", {
         "bg-surfaceContainerHigh": displayPause,
       })}
       _iconColor="onPrimary"

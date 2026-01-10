@@ -89,15 +89,15 @@ function ErrorLayout({ error }: { error: Error }) {
         <View ref={floatingRef} {...wrapperStyling}>
           <Button
             onPress={() => openBrowserAsync(`${GITHUB}/issues`)}
-            className="w-full bg-red"
+            className="w-full bg-error"
           >
             <TStyledText
               textKey="err.flow.report.title"
-              className="text-center text-neutral100"
+              className="text-center text-onError"
             />
             <TStyledText
               textKey="err.flow.report.brief"
-              className="text-center text-xs text-neutral100/80"
+              className="text-center text-xs text-onError/80"
             />
           </Button>
         </View>

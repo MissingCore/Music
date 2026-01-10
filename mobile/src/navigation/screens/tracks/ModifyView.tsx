@@ -291,8 +291,8 @@ function ResetWorkflow(
         textKey="form.reset"
         onPress={onReset}
         disabled={isSubmitting}
-        className="bg-red"
-        textClassName="text-neutral100"
+        className="bg-error"
+        textClassName="text-onError"
       />
     </View>
   );

@@ -128,7 +128,7 @@ function TrackIntro({ data }: { data: TrackWithRelations }) {
                 <Pressable onPress={sheetAction(() => navigate(...linkInfo))}>
                   <StyledText
                     dim
-                    className={cn({ "text-red": linkInfo[0] === "Artist" })}
+                    className={cn({ "text-primary": linkInfo[0] === "Artist" })}
                   >
                     {value}
                   </StyledText>
