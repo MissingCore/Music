@@ -5,6 +5,7 @@
   /** "Fixed" Color Scheme */
   --color-primary: hsl(357 79% 47%);
   --color-primaryDim: hsl(357 79% 38%);
+  --color-primaryVariant: hsl(357 79% 38%); /** Alias for `primaryDim`. */
   --color-onPrimary: hsl(0 0% 100%);
   --color-onPrimaryVariant: hsl(0 0% 89%);
 
@@ -59,8 +60,8 @@
       --color-surfaceContainerHigh: hsl(0 0% 85%);
 
       --color-onSurface: hsl(0 0% 0%);
-      --color-onSurfaceVariant: hsl(0 0% 20%);
-      --color-outline: hsl(0 0% 38%);
+      --color-onSurfaceVariant: hsl(0 0% 38%);
+      --color-outline: hsl(0 0% 47%);
       --color-outlineVariant: hsl(0 0% 68%);
 
       --color-inverseSurface: hsl(0 0% 0%);
@@ -78,8 +79,8 @@
       --color-surfaceContainerHigh: hsl(0 0% 20%);
 
       --color-onSurface: hsl(0 0% 100%);
-      --color-onSurfaceVariant: hsl(0 0% 89%);
-      --color-outline: hsl(0 0% 68%);
+      --color-onSurfaceVariant: hsl(0 0% 68%);
+      --color-outline: hsl(0 0% 57%);
       --color-outlineVariant: hsl(0 0% 38%);
 
       --color-inverseSurface: hsl(0 0% 100%);

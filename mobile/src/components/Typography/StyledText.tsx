@@ -23,7 +23,7 @@ export function StyledText({
         "text-left text-base text-onSurface",
         {
           "text-center": center,
-          "text-xs text-onSurface/60": dim,
+          "text-xs text-onSurfaceVariant": dim,
         },
         className,
       )}

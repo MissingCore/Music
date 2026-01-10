@@ -3,7 +3,9 @@ import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
-import type { TextColor } from "~/lib/style";
+import { useTheme } from "~/hooks/useTheme";
+
+import type { VariantColor } from "~/lib/style";
 import { cn } from "~/lib/style";
 import { StyledText } from "../Typography/StyledText";
 
@@ -17,8 +19,8 @@ export type ListItemContentProps = (
   RightElement?: React.ReactNode;
   /** If the text shouldn't be truncated to a line. */
   _overflow?: boolean;
-  /** Use a fixed text color instead of one that changes based on the theme. */
-  _textColor?: TextColor;
+  /** Use a different color with a `Variant` type for the text. */
+  _textColor?: VariantColor;
   _labelTextClassName?: string;
   _supportingTextClassName?: string;
 };
@@ -27,17 +29,20 @@ export const ListItemContent = memo(function ListItemContent(
   props: ListItemContentProps,
 ) {
   const { t } = useTranslation();
+  const theme = useTheme();
   return (
     <>
       {props.LeftElement}
       <View className="shrink grow gap-0.5">
         <StyledText
           numberOfLines={props._overflow ? undefined : 1}
+          style={
+            props._textColor ? { color: theme[props._textColor] } : undefined
+          }
           className={cn(
             "text-sm",
             { "text-base": !!props.LeftElement && !props.supportingText },
             props._labelTextClassName,
-            props._textColor,
           )}
         >
           {props.labelTextKey ? t(props.labelTextKey) : props.labelText}
@@ -45,11 +50,13 @@ export const ListItemContent = memo(function ListItemContent(
         {props.supportingText ? (
           <StyledText
             numberOfLines={props._overflow ? undefined : 1}
-            className={cn(
-              "text-xs opacity-60",
-              props._supportingTextClassName,
-              props._textColor,
-            )}
+            dim
+            style={
+              props._textColor
+                ? { color: theme[`${props._textColor}Variant`] }
+                : undefined
+            }
+            className={props._supportingTextClassName}
           >
             {props.supportingText}
           </StyledText>

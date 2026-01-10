@@ -47,7 +47,7 @@ export default function Settings() {
             onPress={() => navigation.navigate("AppUpdate")}
             LeftElement={<MobileArrowDown color="onSecondary" />}
             className="gap-4 rounded-full bg-secondary"
-            _textColor="text-onSecondary"
+            _textColor="onSecondary"
           />
         )}
 

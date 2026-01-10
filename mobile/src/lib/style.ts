@@ -6,14 +6,18 @@ import { BorderRadius, FontFamily, FontSize } from "~/constants/Styles";
 import { toLowerCase } from "~/utils/string";
 import type { AccentFont } from "~/stores/Preference/constants";
 
-export type TextColor = `text-${string}` | `text-[${string}]`;
-
 function replaceDefault<T extends string>(arr: T[]) {
   return arr.map((val) => (val === "DEFAULT" ? "" : val));
 }
 
 const ColorRoles = [
-  ...["primary", "primaryDim", "onPrimary", "onPrimaryVariant"],
+  ...[
+    "primary",
+    "primaryDim",
+    "primaryVariant",
+    "onPrimary",
+    "onPrimaryVariant",
+  ],
   ...["secondary", "secondaryDim", "onSecondary", "onSecondaryVariant"],
   ...["error", "onError", "onErrorVariant"],
   ...["surfaceDim", "surface", "surfaceBright"],
@@ -30,6 +34,11 @@ const ColorRoles = [
 export type ColorRole = (typeof ColorRoles)[number];
 export type HexColor = `#${string}`;
 export type AppColor = ColorRole | HexColor;
+/** List of colors which also has a `Variant` color. */
+export type VariantColor =
+  Extract<ColorRole, `${string}Variant`> extends `${infer Prefix}Variant`
+    ? Prefix
+    : never;
 
 const AvailableColors = ["transparent", ...ColorRoles] as const;
 

@@ -12,6 +12,7 @@ import { isHexColor } from "~/lib/style";
 export const FixedTheme = {
   primary: Colors.red50,
   primaryDim: Colors.red40,
+  primaryVariant: Colors.red40, // Alias for `primaryDim`.
   onPrimary: Colors.neutral100,
   onPrimaryVariant: Colors.neutral90,
 
@@ -40,8 +41,8 @@ export const Themes = {
     surfaceContainerHigh: Colors.neutral85,
 
     onSurface: Colors.neutral0,
-    onSurfaceVariant: Colors.neutral20,
-    outline: Colors.neutral40,
+    onSurfaceVariant: Colors.neutral40,
+    outline: Colors.neutral50,
     outlineVariant: Colors.neutral70,
 
     inverseSurface: Colors.neutral0,
@@ -61,8 +62,8 @@ export const Themes = {
     surfaceContainerHigh: Colors.neutral20,
 
     onSurface: Colors.neutral100,
-    onSurfaceVariant: Colors.neutral90,
-    outline: Colors.neutral70,
+    onSurfaceVariant: Colors.neutral70,
+    outline: Colors.neutral60,
     outlineVariant: Colors.neutral40,
 
     inverseSurface: Colors.neutral100,
