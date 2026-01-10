@@ -10,8 +10,8 @@ import { isHexColor } from "~/lib/style";
 
 //#region Theme
 export const FixedTheme = {
-  primary: Colors.red40,
-  primaryDim: Colors.red35,
+  primary: Colors.red50,
+  primaryDim: Colors.red40,
   onPrimary: Colors.neutral100,
   onPrimaryVariant: Colors.neutral90,
 
@@ -20,7 +20,7 @@ export const FixedTheme = {
   onSecondary: Colors.neutral0,
   onSecondaryVariant: Colors.neutral20,
 
-  error: Colors.red40,
+  error: Colors.red,
   onError: Colors.neutral100,
   onErrorVariant: Colors.neutral90,
 } as const;

@@ -2,12 +2,9 @@
 @import "uniwind";
 
 @theme {
-  /** Color */
-  --color-red: hsl(350 85% 42%);
-
   /** "Fixed" Color Scheme */
-  --color-primary: hsl(350 85% 42%);
-  --color-primaryDim: hsl(350 85% 35%);
+  --color-primary: hsl(357 79% 47%);
+  --color-primaryDim: hsl(357 79% 38%);
   --color-onPrimary: hsl(0 0% 100%);
   --color-onPrimaryVariant: hsl(0 0% 89%);
 

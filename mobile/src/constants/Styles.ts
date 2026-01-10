@@ -30,8 +30,8 @@ export const Colors = {
   neutral98: "#FAFAFA",
   neutral100: "#FFFFFF",
 
-  red35: "#A50D26",
-  red40: "#C8102E",
+  red40: "#AE141B",
+  red50: "#D71921",
 
   yellow45: "#E5B300",
   yellow50: "#FFC700",
