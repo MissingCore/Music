@@ -15,7 +15,6 @@ import Animated, {
 import { Schedule } from "~/resources/icons/Schedule";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { useTheme } from "~/hooks/useTheme";
 
 import { OnRTLWorklet } from "~/lib/react";
 import { getFont } from "~/lib/style";
@@ -46,7 +45,6 @@ export function CurrentListLayout(
 ) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const { onSurface } = useTheme();
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
 
   const isFavorite = getIsFavoritePlaylist(props.mediaSource);
@@ -105,7 +103,7 @@ export function CurrentListLayout(
               <StyledText dim className="text-xxs">
                 {" • "}
               </StyledText>
-              <Schedule size={12} color={`${onSurface}99`} />
+              <Schedule size={12} color="onSurfaceVariant" />
               <StyledText dim className="text-xxs">
                 {` ${props.metadata.at(-1)!}`}
               </StyledText>

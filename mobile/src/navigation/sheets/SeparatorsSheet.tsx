@@ -6,7 +6,6 @@ import { Close } from "~/resources/icons/Close";
 import { Info } from "~/resources/icons/Info";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { useInputForm } from "~/hooks/useInputForm";
-import { useTheme } from "~/hooks/useTheme";
 
 import { FlatList } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
@@ -20,7 +19,6 @@ import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
 export function SeparatorsSheet(props: { ref: TrueSheetRef }) {
   const { t } = useTranslation();
-  const { onSurface } = useTheme();
   const delimiters = usePreferenceStore((s) => s.separators);
   const sheetListHandlers = useEnableSheetScroll();
 
@@ -59,7 +57,7 @@ export function SeparatorsSheet(props: { ref: TrueSheetRef }) {
 
       <Divider />
       <View className="flex-row gap-2 pb-2">
-        <Info size={16} color={`${onSurface}99`} />
+        <Info size={16} color="onSurfaceVariant" />
         <TStyledText
           textKey="feat.separators.description.line2"
           dim

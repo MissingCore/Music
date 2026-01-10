@@ -19,7 +19,7 @@ import { AccentText } from "~/components/Typography/AccentText";
 
 export default function AppUpdate() {
   const { release, isRC } = useHasNewUpdate();
-  const { scheme, onSurface } = useTheme();
+  const { scheme, onSurface, onSurfaceVariant } = useTheme();
   const accentFont = usePreferenceStore((s) => s.accentFont);
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
 
@@ -50,7 +50,7 @@ export default function AppUpdate() {
               gap: 12,
               fontFamily: getFont(primaryFont),
               fontSize: 12,
-              color: `${onSurface}99`,
+              color: onSurfaceVariant,
             },
             heading2: {
               color: onSurface,
@@ -78,7 +78,7 @@ export default function AppUpdate() {
                 style={{ backgroundColor: codeBg }}
                 className="gap-1 p-2"
               >
-                <Info size={20} color={`${onSurface}99`} />
+                <Info size={20} color="onSurfaceVariant" />
                 {children}
               </SegmentedList.CustomItem>
             ),
