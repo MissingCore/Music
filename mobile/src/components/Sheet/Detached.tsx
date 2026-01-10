@@ -99,7 +99,7 @@ export function DetachedSheet(props: SheetProps) {
           // if the sheet isn't at max height.
           marginBottom: EDGE_SPACER - (keyboardVisible ? bottom : 0),
         }}
-        className={cn("overflow-hidden rounded-xl bg-canvasAlt", {
+        className={cn("overflow-hidden rounded-xl bg-surfaceBright", {
           "h-full": props.snapTop,
         })}
       >
