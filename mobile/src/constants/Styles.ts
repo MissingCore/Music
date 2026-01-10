@@ -10,7 +10,7 @@ export const BorderRadius = {
   full: 9999,
 } as const;
 
-/** @deprecated Use the new M3 theme variables. */
+/** @deprecated Use colors from `useTheme` if possible instead. */
 export const Colors = {
   transparent: colors.transparent,
 
@@ -22,6 +22,7 @@ export const Colors = {
   neutral20: "#323232",
   neutral40: "#606060",
   neutral70: "#ADADAD",
+  neutral80: "#C8C8C8",
   neutral85: "#D9D9D9",
   neutral90: "#E3E3E3",
   neutral92: "#EBEBEB",

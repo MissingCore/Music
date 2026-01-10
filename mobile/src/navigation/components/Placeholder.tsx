@@ -2,7 +2,8 @@ import type { ParseKeys } from "i18next";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
 
-import { Colors } from "~/constants/Styles";
+import { useTheme } from "~/hooks/useTheme";
+
 import { cn } from "~/lib/style";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
@@ -13,10 +14,9 @@ type ErrorMsgProps = {
   errMsg?: string;
 };
 
-const { neutral10, neutral40, neutral80 } = Colors;
-
 /** Nothing loading animation. */
 export function Loading() {
+  const { onSurfaceVariant, outline, outlineVariant } = useTheme();
   const [idx, setIdx] = useState(0);
 
   useEffect(() => {
@@ -31,16 +31,18 @@ export function Loading() {
       <View
         style={{
           backgroundColor:
-            idx === 0 ? neutral80 : idx === 1 ? neutral40 : neutral10,
+            idx === 0 ? outlineVariant : idx === 1 ? outline : onSurfaceVariant,
         }}
         className="size-4 rounded-full"
       />
       <View
-        style={{ backgroundColor: idx === 1 ? neutral80 : neutral40 }}
+        style={{ backgroundColor: idx === 1 ? outlineVariant : outline }}
         className="size-4 rounded-full"
       />
       <View
-        style={{ backgroundColor: idx === 2 ? neutral80 : neutral10 }}
+        style={{
+          backgroundColor: idx === 2 ? outlineVariant : onSurfaceVariant,
+        }}
         className="size-4 rounded-full"
       />
     </View>

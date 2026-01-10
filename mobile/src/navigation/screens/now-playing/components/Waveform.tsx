@@ -14,8 +14,6 @@ import {
 } from "~/services/SessionStore";
 import { useTheme } from "~/hooks/useTheme";
 
-import { Colors } from "~/constants/Styles";
-
 //#region Waveform
 interface WaveformProps {
   amplitudes: number[];
@@ -30,7 +28,7 @@ const BAR_WIDTH = 2;
 const BAR_GAP = 1.75;
 
 export function Waveform(props: WaveformProps) {
-  const { surfaceContainerHigh } = useTheme();
+  const { primary, surfaceContainerHigh } = useTheme();
   return (
     <AudioWaveView
       samples={props.amplitudes.map((s) => s * props.height)}
@@ -41,7 +39,7 @@ export function Waveform(props: WaveformProps) {
       waveGap={4}
       waveCornerRadius={8}
       waveBackgroundColor={surfaceContainerHigh}
-      waveProgressColor={Colors.red}
+      waveProgressColor={primary}
       style={{ width: "100%", height: "100%" }}
     />
   );
