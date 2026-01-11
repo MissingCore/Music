@@ -52,7 +52,7 @@ export function DetachedNumericSheet(props: SheetProps) {
       {props.descriptionKey ? (
         <TStyledText textKey={props.descriptionKey} dim className="text-sm" />
       ) : null}
-      <View className="flex-row items-end gap-2 border-b border-b-outlineVariant">
+      <View className="flex-row items-end gap-2 border-b border-outline">
         <NumericInput
           defaultValue={`${props.value}`}
           onChangeText={(text) => setNewValue(text)}

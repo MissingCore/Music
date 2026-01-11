@@ -87,7 +87,7 @@ function SeparatorForm() {
         editable={!inputForm.isSubmitting}
         value={inputForm.value}
         onChangeText={inputForm.onChange}
-        className="shrink grow border-b border-outlineVariant"
+        className="shrink grow border-b border-outline"
         forSheet
       />
       <FilledIconButton

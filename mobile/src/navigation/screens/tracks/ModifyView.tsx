@@ -184,7 +184,7 @@ function FormInput(props: {
         editable={!isSubmitting}
         value={value !== null ? String(value) : ""}
         onChangeText={onChange}
-        className="w-full border-b border-onSurfaceVariant"
+        className="w-full border-b border-outline"
       />
     </View>
   );
@@ -219,7 +219,7 @@ function ArrayFormInput(props: {
                 ),
               }))
             }
-            className="shrink grow border-b border-onSurfaceVariant"
+            className="shrink grow border-b border-outline"
           />
           <IconButton
             Icon={Close}
