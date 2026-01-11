@@ -34,7 +34,7 @@ export function Marquee({
   /** Styles the `<View />` wrapping `children`. */
   contentContainerClassName?: string;
 }) {
-  const shadowColor = useColor({ color, fallback: "surface" });
+  const shadowColor = useColor(color, "surface");
   // This will enable support of hexadecimal colors with opacity.
   const startColor = useMemo(() => `${shadowColor}00`, [shadowColor]);
   const endColor = useMemo(() => `${shadowColor}E6`, [shadowColor]);

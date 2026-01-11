@@ -5,7 +5,7 @@ import type { Icon } from "./type";
 
 // Custom icon based on ionicons' "Repeat" and "Calendar Number".
 export function RepeatOne({ size = 24, color }: Icon) {
-  const usedColor = useColor({ color, fallback: "onSurface" });
+  const usedColor = useColor(color, "onSurface");
   return (
     <Svg width={size} height={size} viewBox="0 0 512 512">
       <Path

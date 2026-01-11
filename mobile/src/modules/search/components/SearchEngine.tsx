@@ -85,7 +85,7 @@ type SearchResultsListProps<TScope extends SearchCategories> = {
 function SearchResultsList<TScope extends SearchCategories>(
   props: SearchResultsListProps<TScope> & { query: string },
 ) {
-  const shadowColor = useColor({ color: props.bgColor, fallback: "surface" });
+  const shadowColor = useColor(props.bgColor, "surface");
   const results = useSearch(props.searchScope, props.query);
   const [selectedTab, setSelectedTab] = useState<TScope[number] | "all">("all");
   const [filterHeight, setFilterHeight] = useState(53); // Height will be ~53px

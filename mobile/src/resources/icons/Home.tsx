@@ -4,7 +4,7 @@ import { useColor } from "~/hooks/useTheme";
 import type { Icon } from "./type";
 
 export function Home({ size = 24, filled = false, color }: Icon) {
-  const usedColor = useColor({ color, fallback: "onSurface" });
+  const usedColor = useColor(color, "onSurface");
   return (
     <Svg width={size} height={size} viewBox="0 -960 960 960" fill={usedColor}>
       <Path

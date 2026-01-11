@@ -5,7 +5,7 @@ import type { Icon } from "./type";
 
 // Custom SVG made in Figma.
 export function NothingArrowRight({ size = 24, color }: Icon) {
-  const usedColor = useColor({ color, fallback: "onSurface" });
+  const usedColor = useColor(color, "onSurface");
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill={usedColor}>
       <Circle cx="9" cy="18" r="1" />

@@ -99,11 +99,16 @@ export function useTheme() {
 }
 
 /** Returns a singular color. */
-export function useColor(args: { color?: AppColor; fallback: AppColor }) {
+export function useColor(
+  wantedColor: AppColor | undefined,
+  fallback: AppColor,
+) {
   const theme = useTheme();
-  let color = isHexColor(args.fallback) ? args.fallback : theme[args.fallback];
-  if (args.color)
-    color = isHexColor(args.color) ? args.color : theme[args.color];
-  return color;
+  return useMemo(() => {
+    let color = isHexColor(fallback) ? fallback : theme[fallback];
+    if (wantedColor)
+      color = isHexColor(wantedColor) ? wantedColor : theme[wantedColor];
+    return color;
+  }, [theme, wantedColor, fallback]);
 }
 //#endregion
