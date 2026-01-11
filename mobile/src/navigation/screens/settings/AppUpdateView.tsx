@@ -19,7 +19,7 @@ import { AccentText } from "~/components/Typography/AccentText";
 
 export default function AppUpdate() {
   const { release, isRC } = useHasNewUpdate();
-  const { scheme, onSurface, onSurfaceVariant } = useTheme();
+  const { scheme, onSurface, onSurfaceVariant, outlineVariant } = useTheme();
   const accentFont = usePreferenceStore((s) => s.accentFont);
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
 
@@ -64,7 +64,7 @@ export default function AppUpdate() {
               borderLeftWidth: 0,
             },
             hr: {
-              backgroundColor: `${onSurface}1A`, // 10% Opacity
+              backgroundColor: outlineVariant,
             },
             paragraph: {
               marginTop: 0,
