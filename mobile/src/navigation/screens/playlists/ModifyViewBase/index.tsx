@@ -205,7 +205,7 @@ function ListHeaderComponent(props: { showSheet: VoidFunction }) {
           value={playlistName}
           onChangeText={setPlaylistName}
           placeholder={t("feat.playlist.extra.name")}
-          className="shrink grow border-b border-onSurface/60"
+          className="shrink grow border-b border-onSurfaceVariant"
         />
         <View
           className={cn("shrink flex-row items-center gap-0.5", {

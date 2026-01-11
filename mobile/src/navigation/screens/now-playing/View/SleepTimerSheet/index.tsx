@@ -56,7 +56,7 @@ export const SleepTimerSheet = deferInitialRender(
             defaultValue={`${sleepTimerLength}`}
             editable={!hasTimer}
             onChangeText={(text) => setMinutes(text)}
-            className="mx-auto w-full max-w-1/2 border-b border-onSurface/60 text-center"
+            className="mx-auto w-full max-w-1/2 border-b border-onSurfaceVariant text-center"
             forSheet
           />
         </View>
