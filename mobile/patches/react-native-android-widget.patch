@@ -1,5 +1,5 @@
 diff --git a/android/src/main/java/com/reactnativeandroidwidget/AndroidWidgetModule.java b/android/src/main/java/com/reactnativeandroidwidget/AndroidWidgetModule.java
-index 55ba4fd01e0ee8dbee6e1adc687cd0a0d572a050..08ee5595b6c0266678341182eed7272081325ec5 100644
+index 55ba4fd01e0ee8dbee6e1adc687cd0a0d572a050..4b7c3882a5c185e180bfdef021b0564c156ff959 100644
 --- a/android/src/main/java/com/reactnativeandroidwidget/AndroidWidgetModule.java
 +++ b/android/src/main/java/com/reactnativeandroidwidget/AndroidWidgetModule.java
 @@ -2,6 +2,7 @@ package com.reactnativeandroidwidget;
@@ -28,8 +28,68 @@ index 55ba4fd01e0ee8dbee6e1adc687cd0a0d572a050..08ee5595b6c0266678341182eed72720
      @ReactMethod
      public void drawWidget(ReadableMap config, String widgetName) {
          try {
+diff --git a/android/src/main/java/com/reactnativeandroidwidget/oss/HeadlessJsTaskWorker.java b/android/src/main/java/com/reactnativeandroidwidget/oss/HeadlessJsTaskWorker.java
+index 813eac4bcf19f84a1939b049efc2d36cae1eb94b..14b2c7ba8a6597e8422411e4926b5a1d6de5381c 100644
+--- a/android/src/main/java/com/reactnativeandroidwidget/oss/HeadlessJsTaskWorker.java
++++ b/android/src/main/java/com/reactnativeandroidwidget/oss/HeadlessJsTaskWorker.java
+@@ -33,9 +33,8 @@ import androidx.work.ListenableWorker;
+ import androidx.work.WorkerParameters;
+ 
+ import com.facebook.react.ReactApplication;
++import com.facebook.react.ReactHost;
+ import com.facebook.react.ReactInstanceEventListener;
+-import com.facebook.react.ReactInstanceManager;
+-import com.facebook.react.ReactNativeHost;
+ import com.facebook.react.bridge.ReactContext;
+ import com.facebook.react.bridge.UiThreadUtil;
+ import com.facebook.react.jstasks.HeadlessJsTaskConfig;
+@@ -72,16 +71,16 @@ public abstract class HeadlessJsTaskWorker extends ListenableWorker implements H
+     protected abstract HeadlessJsTaskConfig getTaskConfig(Data data);
+ 
+     protected void startTask(final HeadlessJsTaskConfig taskConfig) {
+-        final ReactInstanceManager reactInstanceManager = this.getReactNativeHost().getReactInstanceManager();
+-        ReactContext reactContext = reactInstanceManager.getCurrentReactContext();
++        ReactHost reactHost = this.getReactHost();
++        ReactContext reactContext = reactHost.getCurrentReactContext();
+         if (reactContext == null) {
+-            reactInstanceManager.addReactInstanceEventListener(new ReactInstanceEventListener() {
++            reactHost.addReactInstanceEventListener(new ReactInstanceEventListener() {
+                 public void onReactContextInitialized(ReactContext reactContext) {
+                     HeadlessJsTaskWorker.this.invokeStartTask(reactContext, taskConfig);
+-                    reactInstanceManager.removeReactInstanceEventListener(this);
++                    reactHost.removeReactInstanceEventListener(this);
+                 }
+             });
+-            reactInstanceManager.createReactContextInBackground();
++            reactHost.start();
+         } else {
+             this.invokeStartTask(reactContext, taskConfig);
+         }
+@@ -94,9 +93,9 @@ public abstract class HeadlessJsTaskWorker extends ListenableWorker implements H
+     }
+ 
+     private void cleanUpTask() {
+-        if (this.getReactNativeHost().hasInstance()) {
+-            ReactInstanceManager reactInstanceManager = this.getReactNativeHost().getReactInstanceManager();
+-            ReactContext reactContext = reactInstanceManager.getCurrentReactContext();
++        ReactHost reactNativeHost = this.getReactHost();
++        if (reactNativeHost != null) {
++            ReactContext reactContext = reactNativeHost.getCurrentReactContext();
+             if (reactContext != null) {
+                 HeadlessJsTaskContext headlessJsTaskContext = HeadlessJsTaskContext.getInstance(reactContext);
+                 headlessJsTaskContext.removeTaskEventListener(this);
+@@ -125,7 +124,7 @@ public abstract class HeadlessJsTaskWorker extends ListenableWorker implements H
+         }
+     }
+ 
+-    protected ReactNativeHost getReactNativeHost() {
+-        return ((ReactApplication) this.getApplicationContext()).getReactNativeHost();
++    private ReactHost getReactHost() {
++        return ((ReactApplication) this.getApplicationContext()).getReactHost();
+     }
+ }
 diff --git a/android/src/oldarch/AndroidWidgetSpec.java b/android/src/oldarch/AndroidWidgetSpec.java
-index 09e70c4412d411e6137bfd6a1aed09e45474c4c1..d8fab875b137fbf4b2d9d4a1dbee7989b4ff4f33 100644
+index 09e70c4412d411e6137bfd6a1aed09e45474c4c1..644f39e87dc4778b3546b53fe875bbe9f1a357cd 100644
 --- a/android/src/oldarch/AndroidWidgetSpec.java
 +++ b/android/src/oldarch/AndroidWidgetSpec.java
 @@ -12,6 +12,8 @@ abstract class AndroidWidgetSpec extends ReactContextBaseJavaModule {
@@ -42,7 +102,7 @@ index 09e70c4412d411e6137bfd6a1aed09e45474c4c1..d8fab875b137fbf4b2d9d4a1dbee7989
  
      public abstract void drawWidgetById(ReadableMap config, String widgetName, double widgetId);
 diff --git a/src/AndroidWidget.ts b/src/AndroidWidget.ts
-index f0d225d2f4e50e6e005cc478fd65f5e35202d8d9..4df69224e293c90c5a690aed5b0be646c37b70f9 100644
+index f0d225d2f4e50e6e005cc478fd65f5e35202d8d9..376b833159c3d18414f9879542ee4fd4fb9ac028 100644
 --- a/src/AndroidWidget.ts
 +++ b/src/AndroidWidget.ts
 @@ -10,6 +10,7 @@ const LINKING_ERROR =
@@ -54,7 +114,7 @@ index f0d225d2f4e50e6e005cc478fd65f5e35202d8d9..4df69224e293c90c5a690aed5b0be646
    drawWidgetById: () => null,
    createPreview: () =>
 diff --git a/src/NativeAndroidWidget.ts b/src/NativeAndroidWidget.ts
-index fabefa3658481fefaf5832e9e3359def47055b21..098941d6649e4642166960de6de9bd0d7cebf005 100644
+index fabefa3658481fefaf5832e9e3359def47055b21..9bf0b27c350f7cae1322104e8b82ec9deaa2edcd 100644
 --- a/src/NativeAndroidWidget.ts
 +++ b/src/NativeAndroidWidget.ts
 @@ -4,6 +4,7 @@ import type { WidgetPreviewData } from './api/private.types';
@@ -80,7 +140,7 @@ index 0000000000000000000000000000000000000000..f007f020282b2795fae08e3a78abc279
 +  return AndroidWidget.openApp();
 +}
 diff --git a/src/index.ts b/src/index.ts
-index 31ff37c23ee2b9b9bac693842642df8036a7cd5a..95e30e457acedeaee13d9fd71b624b4c6039ce50 100644
+index 31ff37c23ee2b9b9bac693842642df8036a7cd5a..33d18a7dc0f91caf5e00aa664d519a5ba7e497a6 100644
 --- a/src/index.ts
 +++ b/src/index.ts
 @@ -1,5 +1,6 @@
