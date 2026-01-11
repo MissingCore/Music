@@ -4,17 +4,14 @@
 @theme {
   /** "Fixed" Color Scheme */
   --color-primary: hsl(357 79% 47%);
-  --color-primaryDim: hsl(357 79% 38%);
   --color-onPrimary: hsl(0 0% 100%);
   --color-onPrimaryVariant: hsl(0 0% 89%);
 
   --color-secondary: hsl(47 100% 50%);
-  --color-secondaryDim: hsl(47 100% 45%);
   --color-onSecondary: hsl(0 0% 0%);
   --color-onSecondaryVariant: hsl(0 0% 20%);
 
   --color-error: hsl(350 85% 42%);
-  --color-errorDim: hsl(350 85% 37%);
   --color-onError: hsl(0 0% 100%);
   --color-onErrorVariant: hsl(0 0% 89%);
 
@@ -50,6 +47,10 @@
   /** Themes */
   :root {
     @variant light {
+      --color-primaryDim: hsl(357 79% 43%);
+      --color-secondaryDim: hsl(47 100% 47%);
+      --color-errorDim: hsl(350 85% 39%);
+
       --color-surfaceDim: hsl(0 0% 78%);
       --color-surface: hsl(0 0% 95%);
       --color-surfaceBright: hsl(0 0% 95%);
@@ -70,6 +71,10 @@
     }
 
     @variant dark {
+      --color-primaryDim: hsl(357 79% 38%);
+      --color-secondaryDim: hsl(47 100% 45%);
+      --color-errorDim: hsl(350 85% 37%);
+
       --color-surfaceDim: hsl(0 0% 0%);
       --color-surface: hsl(0 0% 0%);
       --color-surfaceBright: hsl(0 0% 7%);

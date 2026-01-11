@@ -11,17 +11,14 @@ import { isHexColor } from "~/lib/style";
 //#region Theme
 export const FixedTheme = {
   primary: Colors.nRed50,
-  primaryDim: Colors.nRed40,
   onPrimary: Colors.neutral100,
   onPrimaryVariant: Colors.neutral90,
 
   secondary: Colors.yellow50,
-  secondaryDim: Colors.yellow45,
   onSecondary: Colors.neutral0,
   onSecondaryVariant: Colors.neutral20,
 
   error: Colors.red40,
-  errorDim: Colors.red35,
   onError: Colors.neutral100,
   onErrorVariant: Colors.neutral90,
 } as const;
@@ -30,6 +27,9 @@ export const Themes = {
   light: {
     scheme: "light",
     ...FixedTheme,
+    primaryDim: Colors.nRed45,
+    secondaryDim: Colors.yellow47,
+    errorDim: Colors.red37,
 
     surfaceDim: Colors.neutral80,
     surface: Colors.neutral95,
@@ -52,6 +52,9 @@ export const Themes = {
   dark: {
     scheme: "dark",
     ...FixedTheme,
+    primaryDim: Colors.nRed40,
+    secondaryDim: Colors.yellow45,
+    errorDim: Colors.red35,
 
     surfaceDim: Colors.neutral0,
     surface: Colors.neutral0,
