@@ -78,7 +78,7 @@ export function TextInput({
     // @ts-expect-error - Ref is compatible.
     <Input
       textAlign={OnRTL.decide("right", "left")}
-      placeholderTextColorClassName="accent-onSurface/60"
+      placeholderTextColorClassName="accent-onSurfaceVariant"
       // FIXME: For some random reason, inputs have a default vertical padding
       // in React Native 0.79. Might be related to:
       //  - https://github.com/facebook/react-native/pull/48523

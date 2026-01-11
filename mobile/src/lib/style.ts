@@ -10,9 +10,10 @@ function replaceDefault<T extends string>(arr: T[]) {
   return arr.map((val) => (val === "DEFAULT" ? "" : val));
 }
 
-// We haev some non-standard color roles:
-//  - `primaryDim`, `onPrimaryVariant`, `secondaryDim`, `onSecondaryVariant`,
-//  `errorDim`, `onErrorVariant`
+// We have some non-standard color roles:
+//  - `errorDim`, `onErrorVariant`
+//  - If we treat these as "fixed" colors, they're "standard" names:
+//    - `primaryDim`, `onPrimaryVariant`, `secondaryDim`, `onSecondaryVariant`
 const ColorRoles = [
   ...["primary", "primaryDim", "onPrimary", "onPrimaryVariant"],
   ...["secondary", "secondaryDim", "onSecondary", "onSecondaryVariant"],
