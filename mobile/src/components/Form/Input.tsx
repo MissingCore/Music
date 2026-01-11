@@ -40,13 +40,13 @@ export function NumericInput({
       //? Uniwind. For example, `text-align` styles don't get applied if
       //? the `textAlign` prop is defined after `className` & `style`.
       textAlign={OnRTL.decide("right", "left")}
-      placeholderTextColorClassName="accent-foreground/60"
+      placeholderTextColorClassName="accent-onSurfaceVariant"
       // FIXME: For some random reason, inputs have a default vertical padding
       // in React Native 0.79. Might be related to:
       //  - https://github.com/facebook/react-native/pull/48523
       //  - https://github.com/facebook/react-native/issues/50692
       className={cn(
-        "min-h-12 py-0 text-foreground",
+        "min-h-12 py-0 text-onSurface",
         { "opacity-25": props.editable === false },
         className,
       )}
@@ -78,13 +78,13 @@ export function TextInput({
     // @ts-expect-error - Ref is compatible.
     <Input
       textAlign={OnRTL.decide("right", "left")}
-      placeholderTextColorClassName="accent-foreground/60"
+      placeholderTextColorClassName="accent-onSurfaceVariant"
       // FIXME: For some random reason, inputs have a default vertical padding
       // in React Native 0.79. Might be related to:
       //  - https://github.com/facebook/react-native/pull/48523
       //  - https://github.com/facebook/react-native/issues/50692
       className={cn(
-        "min-h-12 py-0 text-base text-foreground",
+        "min-h-12 py-0 text-base text-onSurface",
         { "opacity-25": props.editable === false },
         className,
       )}

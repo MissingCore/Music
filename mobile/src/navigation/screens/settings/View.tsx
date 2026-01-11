@@ -21,7 +21,6 @@ import { LanguageSheet } from "~/navigation/sheets/LanguageSheet";
 
 import { APP_VERSION } from "~/constants/Config";
 import * as LINKS from "~/constants/Links";
-import { Colors } from "~/constants/Styles";
 import { Divider } from "~/components/Divider";
 import { SegmentedList } from "~/components/List/Segmented";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
@@ -46,9 +45,10 @@ export default function Settings() {
             labelTextKey="feat.appUpdate.title"
             supportingText={t("feat.appUpdate.brief")}
             onPress={() => navigation.navigate("AppUpdate")}
-            LeftElement={<MobileArrowDown color={Colors.neutral0} />}
-            className="gap-4 rounded-full bg-yellow"
-            _textColor="text-neutral0"
+            LeftElement={<MobileArrowDown color="onSecondary" />}
+            className="gap-4 rounded-full bg-secondary"
+            _psuedoClassName="active:bg-secondaryDim"
+            _textColor="onSecondary"
           />
         )}
 
@@ -132,7 +132,6 @@ export default function Settings() {
             onPress={() => openBrowserAsync(LINKS.VERSION_CHANGELOG)}
             RightElement={<OpenInNew />}
             className="rounded-none"
-            _psuedoClassName="active:bg-canvas/30"
           />
           <Divider className="mx-4" />
           <SegmentedList.Item
@@ -140,7 +139,6 @@ export default function Settings() {
             onPress={PreferenceTogglers.toggleRCNotification}
             RightElement={<Switch enabled={showRCNotification} />}
             className="rounded-none"
-            _psuedoClassName="active:bg-canvas/30"
           />
         </SegmentedList.CustomItem>
       </StandardScrollLayout>

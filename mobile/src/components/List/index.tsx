@@ -18,7 +18,7 @@ export type ListItemProps = ListItemContentProps &
   };
 
 export const ListItem = memo(function StandardListItem({
-  _psuedoClassName = "active:bg-surface/50",
+  _psuedoClassName = "active:bg-surfaceContainerLowest/50",
   _asView = false,
   ...props
 }: ListItemProps) {

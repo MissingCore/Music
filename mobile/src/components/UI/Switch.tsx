@@ -14,13 +14,14 @@ export function Switch({ enabled }: { enabled: boolean }) {
   }));
   return (
     <Animated.View
-      className={cn("relative h-6 w-11 rounded-full bg-onSurface p-0.5", {
-        "bg-red": enabled,
-      })}
+      className={cn(
+        "relative h-6 w-11 rounded-full bg-surfaceContainerHigh p-0.5",
+        { "bg-primary": enabled },
+      )}
     >
       <Animated.View
         style={[{ [OnRTL.decide("right", "left")]: 2 }, thumbStyle]}
-        className="absolute top-0.5 size-5 rounded-full bg-neutral100"
+        className="absolute top-0.5 size-5 rounded-full bg-onPrimary"
       />
     </Animated.View>
   );

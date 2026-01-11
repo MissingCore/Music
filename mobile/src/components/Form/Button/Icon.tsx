@@ -4,6 +4,7 @@ import { Pressable, View } from "react-native";
 import type { Icon } from "~/resources/icons/type";
 import { useTheme } from "~/hooks/useTheme";
 
+import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
 import type { PressProps } from "./types";
 
@@ -23,7 +24,7 @@ type IconButtonProps = PressProps & {
   /** Use the `filled` variant on the icon if available. */
   filled?: boolean;
   className?: string;
-  _iconColor?: string;
+  _iconColor?: ColorRole;
 };
 
 //#region Default
@@ -34,7 +35,7 @@ export const IconButton = memo(function IconButton({
   _iconColor,
   ...props
 }: IconButtonProps) {
-  const { onSurface } = useTheme();
+  const { surfaceContainerHigh } = useTheme();
   const { buttonSize, iconSize } = ButtonConfig[size];
 
   return (
@@ -49,7 +50,7 @@ export const IconButton = memo(function IconButton({
       {({ pressed }) => (
         <View
           collapsable={false} // Prevents view flattening.
-          style={[pressed && { backgroundColor: `${onSurface}80` }]}
+          style={[pressed && { backgroundColor: `${surfaceContainerHigh}80` }]}
           className="rounded-full p-1.5"
         >
           <Icon size={iconSize} color={_iconColor} filled={filled} />
@@ -73,7 +74,7 @@ export const FilledIconButton = memo(function FilledIconButton({
     <Pressable
       {...props}
       className={cn(
-        "items-center justify-center rounded-full bg-surface active:opacity-75 disabled:opacity-25",
+        "items-center justify-center rounded-full bg-surfaceContainerLowest active:bg-surfaceContainerLow disabled:opacity-25",
         buttonSize,
         props.className,
       )}

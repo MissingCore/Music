@@ -5,7 +5,6 @@ import { Pressable, View } from "react-native";
 
 import { useTheme } from "~/hooks/useTheme";
 
-import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
 import { StyledText } from "../Typography/StyledText";
 
@@ -19,7 +18,7 @@ export function Slider(props: {
   onComplete?: (value: number) => void | Promise<void>;
   inverted?: boolean;
 }) {
-  const { onSurface } = useTheme();
+  const { primary, surfaceContainerHigh } = useTheme();
   return (
     <RNSlider
       value={props.value}
@@ -29,9 +28,9 @@ export function Slider(props: {
         if (props.onComplete) await props.onComplete(newPos!);
       }}
       onValueChange={async ([newPos]) => await props.onChange(newPos!)}
-      minimumTrackTintColor={Colors.red}
-      maximumTrackTintColor={onSurface}
-      thumbTintColor={Colors.red}
+      minimumTrackTintColor={primary}
+      maximumTrackTintColor={surfaceContainerHigh}
+      thumbTintColor={primary}
       thumbStyle={{ height: props.thumbSize, width: props.thumbSize }}
       trackStyle={{ height: props.thumbSize / 2, borderRadius: 999 }}
       containerStyle={{ height: props.thumbSize + 16 }}
@@ -51,7 +50,7 @@ export function NSlider(
     step?: number;
   },
 ) {
-  const { surface } = useTheme();
+  const { primary, surfaceContainerLowest } = useTheme();
   const [width, setWidth] = useState<number>();
 
   const formattedValue = props.formatValue(props.value);
@@ -59,7 +58,7 @@ export function NSlider(
   return (
     <View
       onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
-      className="relative overflow-hidden rounded-full bg-surface"
+      className="relative overflow-hidden rounded-full bg-surfaceContainerLowest"
     >
       <View
         accessible
@@ -78,13 +77,13 @@ export function NSlider(
         maximumValue={props.max}
         step={props.step}
         onValueChange={props.onChange as (val: number) => void}
-        minimumTrackTintColor={`${Colors.red}33`} // 20% Opacity
-        maximumTrackTintColor={surface}
+        minimumTrackTintColor={`${primary}33`} // 20% Opacity
+        maximumTrackTintColor={surfaceContainerLowest}
         thumbSize={
           props.value === props.min || props.value === props.max ? 0 : 2
         }
         trackHeight={64}
-        thumbStyle={{ height: 64, backgroundColor: Colors.red }}
+        thumbStyle={{ height: 64, backgroundColor: primary }}
         // The wrapper adds some extra padding, which this will negate.
         style={{ height: 64 }}
       />
@@ -112,7 +111,7 @@ function NSliderMarks({ min, max, ...rest }: NMarkProps & { width: number }) {
         key={val}
         pointerEvents="none"
         style={{ left: ((val - min) / (max - min)) * rest.width }}
-        className={cn("bg-foreground/5", markClass)}
+        className={cn("bg-onSurface/5", markClass)}
       />
     ) : (
       <Pressable

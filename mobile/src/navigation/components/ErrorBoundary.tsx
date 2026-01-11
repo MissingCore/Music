@@ -79,7 +79,7 @@ function ErrorLayout({ error }: { error: Error }) {
             textKey="err.flow.generic.brief"
             className="text-base"
           />
-          <View className="rounded-md bg-surface p-4">
+          <View className="rounded-md bg-surfaceContainerLowest p-4">
             <StyledText>{error.message}</StyledText>
           </View>
           <StyledText dim className="text-sm">
@@ -89,15 +89,15 @@ function ErrorLayout({ error }: { error: Error }) {
         <View ref={floatingRef} {...wrapperStyling}>
           <Button
             onPress={() => openBrowserAsync(`${GITHUB}/issues`)}
-            className="w-full bg-red"
+            className="w-full bg-error active:bg-errorDim"
           >
             <TStyledText
               textKey="err.flow.report.title"
-              className="text-center text-neutral100"
+              className="text-center text-onError"
             />
             <TStyledText
               textKey="err.flow.report.brief"
-              className="text-center text-xs text-neutral100/80"
+              className="text-center text-xs text-onErrorVariant"
             />
           </Button>
         </View>

@@ -2,26 +2,18 @@
 @import "uniwind";
 
 @theme {
-  /** Color */
-  --color-neutral0: hsl(0 0% 0%);
-  --color-neutral7: hsl(0 0% 7%);
-  --color-neutral10: hsl(0 0% 11%);
-  --color-neutral15: hsl(0 0% 16%);
-  --color-neutral20: hsl(0 0% 20%);
-  --color-neutral30: hsl(0 0% 28%);
-  --color-neutral40: hsl(0 0% 38%);
-  --color-neutral50: hsl(0 0% 47%);
-  --color-neutral60: hsl(0 0% 57%);
-  --color-neutral70: hsl(0 0% 68%);
-  --color-neutral80: hsl(0 0% 78%);
-  --color-neutral90: hsl(0 0% 89%);
-  --color-neutral95: hsl(0 0% 95%);
-  --color-neutral100: hsl(0 0% 100%);
+  /** "Fixed" Color Scheme */
+  --color-primary: hsl(357 79% 47%);
+  --color-onPrimary: hsl(0 0% 100%);
+  --color-onPrimaryVariant: hsl(0 0% 89%);
 
-  --color-red: hsl(350 85% 42%);
-  --color-yellow: hsl(47 100% 50%);
-  --color-blue: hsl(240 49% 50%);
-  --color-green: hsl(144 72% 40%);
+  --color-secondary: hsl(47 100% 50%);
+  --color-onSecondary: hsl(0 0% 0%);
+  --color-onSecondaryVariant: hsl(0 0% 28%);
+
+  --color-error: hsl(350 85% 42%);
+  --color-onError: hsl(0 0% 100%);
+  --color-onErrorVariant: hsl(0 0% 89%);
 
   /** Font Family */
   --font-roboto: "Roboto-Regular";
@@ -55,19 +47,51 @@
   /** Themes */
   :root {
     @variant light {
-      --color-canvas: var(--color-neutral95);
-      --color-canvasAlt: var(--color-neutral95);
-      --color-surface: var(--color-neutral100);
-      --color-onSurface: var(--color-neutral80);
-      --color-foreground: var(--color-neutral0);
+      --color-primaryDim: hsl(357 79% 43%);
+      --color-secondaryDim: hsl(47 100% 47%);
+      --color-errorDim: hsl(350 85% 39%);
+
+      --color-surfaceDim: hsl(0 0% 78%);
+      --color-surface: hsl(0 0% 95%);
+      --color-surfaceBright: hsl(0 0% 95%);
+
+      --color-surfaceContainerLowest: hsl(0 0% 100%);
+      --color-surfaceContainerLow: hsl(0 0% 98%);
+      --color-surfaceContainer: hsl(0 0% 92%);
+      --color-surfaceContainerHigh: hsl(0 0% 85%);
+      --color-surfaceContainerHighest: hsl(0 0% 82%);
+
+      --color-onSurface: hsl(0 0% 0%);
+      --color-onSurfaceVariant: hsl(0 0% 38%);
+      --color-outline: hsl(0 0% 68%);
+      --color-outlineVariant: hsl(0 0% 85%);
+
+      --color-inverseSurface: hsl(0 0% 0%);
+      --color-inverseOnSurface: hsl(0 0% 100%);
     }
 
     @variant dark {
-      --color-canvas: var(--color-neutral0);
-      --color-canvasAlt: var(--color-neutral7);
-      --color-surface: var(--color-neutral10);
-      --color-onSurface: var(--color-neutral20);
-      --color-foreground: var(--color-neutral100);
+      --color-primaryDim: hsl(357 79% 38%);
+      --color-secondaryDim: hsl(47 100% 45%);
+      --color-errorDim: hsl(350 85% 37%);
+
+      --color-surfaceDim: hsl(0 0% 0%);
+      --color-surface: hsl(0 0% 0%);
+      --color-surfaceBright: hsl(0 0% 7%);
+
+      --color-surfaceContainerLowest: hsl(0 0% 11%);
+      --color-surfaceContainerLow: hsl(0 0% 13%);
+      --color-surfaceContainer: hsl(0 0% 16%);
+      --color-surfaceContainerHigh: hsl(0 0% 20%);
+      --color-surfaceContainerHighest: hsl(0 0% 23%);
+
+      --color-onSurface: hsl(0 0% 100%);
+      --color-onSurfaceVariant: hsl(0 0% 68%);
+      --color-outline: hsl(0 0% 38%);
+      --color-outlineVariant: hsl(0 0% 20%);
+
+      --color-inverseSurface: hsl(0 0% 100%);
+      --color-inverseOnSurface: hsl(0 0% 0%);
     }
   }
 }

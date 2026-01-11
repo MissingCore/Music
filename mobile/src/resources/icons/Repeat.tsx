@@ -1,12 +1,11 @@
 import Svg, { Path } from "react-native-svg";
 
-import { useTheme } from "~/hooks/useTheme";
+import { useColor } from "~/hooks/useTheme";
 import type { Icon } from "./type";
 
 // From ionicons.
 export function Repeat({ size = 24, color }: Icon) {
-  const { foreground } = useTheme();
-  const usedColor = color ?? foreground;
+  const usedColor = useColor(color, "onSurface");
   return (
     <Svg width={size} height={size} viewBox="0 0 512 512">
       <Path

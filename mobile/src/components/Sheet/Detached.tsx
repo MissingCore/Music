@@ -99,7 +99,7 @@ export function DetachedSheet(props: SheetProps) {
           // if the sheet isn't at max height.
           marginBottom: EDGE_SPACER - (keyboardVisible ? bottom : 0),
         }}
-        className={cn("overflow-hidden rounded-xl bg-canvasAlt", {
+        className={cn("overflow-hidden rounded-xl bg-surfaceBright", {
           "h-full": props.snapTop,
         })}
       >
@@ -115,9 +115,9 @@ export function DetachedSheet(props: SheetProps) {
           )}
         >
           <View className="gap-2">
-            <View className="mx-auto my-2.5 h-1 w-8 rounded-full bg-onSurface" />
+            <View className="mx-auto my-2.5 h-1 w-8 rounded-full bg-surfaceContainerHigh" />
             {props.titleKey ? (
-              <Marquee color="canvasAlt">
+              <Marquee color="surfaceBright">
                 <TStyledText
                   textKey={props.titleKey}
                   bold

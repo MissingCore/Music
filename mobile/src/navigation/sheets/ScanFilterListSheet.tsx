@@ -11,7 +11,6 @@ import { CreateNewFolder } from "~/resources/icons/CreateNewFolder";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { useInputForm } from "~/hooks/useInputForm";
 
-import { Colors } from "~/constants/Styles";
 import { pickDirectory } from "~/lib/file-system";
 import { ToastOptions } from "~/lib/toast";
 import { addTrailingSlash, getSafeUri } from "~/utils/string";
@@ -55,7 +54,7 @@ export function ScanFilterListSheet(props: {
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
           <View className="flex-row items-center justify-between gap-2">
-            <Marquee color="canvasAlt">
+            <Marquee color="surfaceBright">
               <StyledText>{item}</StyledText>
             </Marquee>
             <IconButton
@@ -110,7 +109,7 @@ function FilterForm(props: { listType: FilterList; listEntries: string[] }) {
   return (
     <View className="flex-row gap-2">
       {/* FIXME: Noticed w/ RN 0.79, but having a border seems to contribute to the height when it shouldn't. */}
-      <View className="h-12 shrink grow flex-row items-center gap-2 border-b border-foreground/10">
+      <View className="h-12 shrink grow flex-row items-center gap-2 border-b border-outline">
         <TextInput
           editable={!inputForm.isSubmitting}
           value={inputForm.value}
@@ -134,8 +133,8 @@ function FilterForm(props: { listType: FilterList; listEntries: string[] }) {
           await inputForm.onSubmit();
         }}
         disabled={!inputForm.canSubmit || inputForm.isSubmitting}
-        className="rounded-md bg-red"
-        _iconColor={Colors.neutral100}
+        className="rounded-md bg-primary active:bg-primaryDim"
+        _iconColor="onPrimary"
       />
     </View>
   );

@@ -1,5 +1,3 @@
-import { useTheme } from "~/hooks/useTheme";
-
 import { Sheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { SearchEngine } from "~/modules/search/components/SearchEngine";
@@ -14,7 +12,6 @@ export const AddMusicSheet = deferInitialRender(function AddMusicSheet(props: {
   ref: TrueSheetRef;
   callbacks: Pick<SearchCallbacks, (typeof searchScope)[number]>;
 }) {
-  const { canvasAlt } = useTheme();
   return (
     <Sheet
       ref={props.ref}
@@ -25,7 +22,7 @@ export const AddMusicSheet = deferInitialRender(function AddMusicSheet(props: {
       <SearchEngine
         searchScope={searchScope}
         callbacks={props.callbacks}
-        bgColor={canvasAlt}
+        bgColor="surfaceBright"
         forSheets
       />
     </Sheet>

@@ -34,7 +34,6 @@ import { router } from "~/navigation/utils/router";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 
-import { Colors } from "~/constants/Styles";
 import { clearAllQueries } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { ToastOptions } from "~/lib/toast";
@@ -185,7 +184,7 @@ function FormInput(props: {
         editable={!isSubmitting}
         value={value !== null ? String(value) : ""}
         onChangeText={onChange}
-        className="w-full border-b border-foreground/60"
+        className="w-full border-b border-outline"
       />
     </View>
   );
@@ -220,7 +219,7 @@ function ArrayFormInput(props: {
                 ),
               }))
             }
-            className="shrink grow border-b border-foreground/60"
+            className="shrink grow border-b border-outline"
           />
           <IconButton
             Icon={Close}
@@ -243,8 +242,8 @@ function ArrayFormInput(props: {
           setField((prev) => ({ ...prev, [field]: [...prev[field], ""] }))
         }
         disabled={isSubmitting}
-        className="mt-2 rounded-md bg-yellow"
-        _iconColor={Colors.neutral0}
+        className="mt-2 rounded-md bg-secondary active:bg-secondaryDim"
+        _iconColor="onSecondary"
       />
     </View>
   );
@@ -292,8 +291,8 @@ function ResetWorkflow(
         textKey="form.reset"
         onPress={onReset}
         disabled={isSubmitting}
-        className="bg-red"
-        textClassName="text-neutral100"
+        className="bg-error active:bg-errorDim"
+        textClassName="text-onError"
       />
     </View>
   );

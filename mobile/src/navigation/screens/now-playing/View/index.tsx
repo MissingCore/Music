@@ -117,7 +117,9 @@ function ArtistsLink(props: { artistNames: string[] }) {
         <Fragment key={name}>
           {index > 0 ? <StyledText className="text-xs">|</StyledText> : null}
           <Pressable onPress={() => navigation.popTo("Artist", { id: name })}>
-            <StyledText className="text-sm/[1.125] text-red">{name}</StyledText>
+            <StyledText className="text-sm/[1.125] text-primary">
+              {name}
+            </StyledText>
           </Pressable>
         </Fragment>
       ))}
@@ -245,7 +247,7 @@ function BottomAppBar() {
               size="lg"
             />
             {sleepTimerActive && (
-              <View className="absolute top-2 right-2 size-2 rounded-full bg-red" />
+              <View className="absolute top-2 right-2 size-2 rounded-full bg-primary" />
             )}
           </View>
           <IconButton

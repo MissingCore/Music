@@ -2,8 +2,6 @@ import type { ParseKeys } from "i18next";
 import type { PressableProps } from "react-native";
 import { Modal as RNModal, View } from "react-native";
 
-import { useTheme } from "~/hooks/useTheme";
-
 import { cn } from "~/lib/style";
 import { ExtendedTButton } from "./Form/Button";
 import { TStyledText } from "./Typography/StyledText";
@@ -16,8 +14,8 @@ export function Modal(props: { visible: boolean; children: React.ReactNode }) {
       statusBarTranslucent
       transparent
     >
-      <View className="flex-1 items-center justify-center bg-neutral0/50 px-4">
-        <View className="w-full gap-8 rounded-xl bg-surface p-4 pt-6">
+      <View className="flex-1 items-center justify-center bg-black/50 px-4">
+        <View className="w-full gap-8 rounded-xl bg-surfaceContainerLowest p-4 pt-6">
           {props.children}
         </View>
       </View>
@@ -53,23 +51,20 @@ type ModalActionsProp = {
 };
 
 export function ModalActions(props: ModalActionsProp) {
-  const { theme } = useTheme();
   return (
     <View className="gap-0.75">
       <ExtendedTButton
         {...props.topAction}
         className={cn(
-          "rounded-b-xs bg-canvas",
-          { "bg-onSurface": theme === "dark" },
+          "rounded-b-xs bg-surfaceContainer active:bg-surfaceContainerHigh",
           props.topAction.className,
         )}
-        textClassName={cn({ "text-red": props.topAction.danger ?? true })}
+        textClassName={cn({ "text-error": props.topAction.danger ?? true })}
       />
       <ExtendedTButton
         {...props.bottomAction}
         className={cn(
-          "rounded-t-xs bg-canvas",
-          { "bg-onSurface": theme === "dark" },
+          "rounded-t-xs bg-surfaceContainer active:bg-surfaceContainerHigh",
           props.bottomAction.className,
         )}
       />

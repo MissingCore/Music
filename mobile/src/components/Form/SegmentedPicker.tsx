@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { Pressable, View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -6,11 +6,8 @@ import Animated, {
 } from "react-native-reanimated";
 
 import type { Icon } from "~/resources/icons/type";
-import { useTheme } from "~/hooks/useTheme";
 
-import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
-import { Button } from "./Button";
 import { StyledText } from "../Typography/StyledText";
 
 export type PickerOption = {
@@ -28,7 +25,6 @@ export function SegmentedPicker({
   selectedIndex: number;
   onOptionSelected: (index: number) => void;
 }) {
-  const { theme } = useTheme();
   const pickerWidth = useSharedValue(0);
 
   const selectedIndicatorStyle = useAnimatedStyle(() => ({
@@ -45,7 +41,7 @@ export function SegmentedPicker({
 
   return (
     <View className="gap-2">
-      <View className="rounded-full bg-surface p-1">
+      <View className="rounded-full bg-surfaceContainerLowest p-1">
         <View
           onLayout={(e) => {
             pickerWidth.value = e.nativeEvent.layout.width;
@@ -54,25 +50,19 @@ export function SegmentedPicker({
         >
           <Animated.View
             style={selectedIndicatorStyle}
-            className="absolute top-0 left-0 h-full rounded-full bg-foreground"
+            className="absolute top-0 left-0 h-full rounded-full bg-onSurface"
           />
           {options.map(({ Icon }, idx) => (
-            <Button
+            <Pressable
               key={idx}
               onPress={() => onOptionSelected(idx)}
-              className="flex-1 rounded-full bg-transparent p-0"
+              className="min-h-12 flex-1 items-center justify-center rounded-full active:opacity-50"
             >
               <Icon
                 size={20}
-                color={
-                  selectedIndex === idx
-                    ? theme === "dark"
-                      ? Colors.neutral0
-                      : Colors.neutral100
-                    : undefined
-                }
+                color={selectedIndex === idx ? "inverseOnSurface" : undefined}
               />
-            </Button>
+            </Pressable>
           ))}
         </View>
       </View>
@@ -83,7 +73,7 @@ export function SegmentedPicker({
             dim
             bold={selectedIndex === idx}
             className={cn("flex-1 px-2 text-center", {
-              "text-foreground": selectedIndex === idx,
+              "text-onSurface": selectedIndex === idx,
             })}
           >
             {label.toLocaleUpperCase()}

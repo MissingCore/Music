@@ -20,10 +20,10 @@ export function StyledText({
   return (
     <Text
       className={cn(
-        "text-left text-base text-foreground",
+        "text-left text-base text-onSurface",
         {
           "text-center": center,
-          "text-xs text-foreground/60": dim,
+          "text-xs text-onSurfaceVariant": dim,
         },
         className,
       )}

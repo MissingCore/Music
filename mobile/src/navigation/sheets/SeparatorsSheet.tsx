@@ -6,9 +6,7 @@ import { Close } from "~/resources/icons/Close";
 import { Info } from "~/resources/icons/Info";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { useInputForm } from "~/hooks/useInputForm";
-import { useTheme } from "~/hooks/useTheme";
 
-import { Colors } from "~/constants/Styles";
 import { FlatList } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
@@ -21,7 +19,6 @@ import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
 export function SeparatorsSheet(props: { ref: TrueSheetRef }) {
   const { t } = useTranslation();
-  const { foreground } = useTheme();
   const delimiters = usePreferenceStore((s) => s.separators);
   const sheetListHandlers = useEnableSheetScroll();
 
@@ -43,7 +40,7 @@ export function SeparatorsSheet(props: { ref: TrueSheetRef }) {
         keyExtractor={(item) => item}
         renderItem={({ item }) => (
           <View className="flex-row items-center justify-between gap-2">
-            <Marquee color="canvasAlt">
+            <Marquee color="surfaceBright">
               <StyledText>{item}</StyledText>
             </Marquee>
             <IconButton
@@ -60,7 +57,7 @@ export function SeparatorsSheet(props: { ref: TrueSheetRef }) {
 
       <Divider />
       <View className="flex-row gap-2 pb-2">
-        <Info size={16} color={`${foreground}99`} />
+        <Info size={16} color="onSurfaceVariant" />
         <TStyledText
           textKey="feat.separators.description.line2"
           dim
@@ -90,7 +87,7 @@ function SeparatorForm() {
         editable={!inputForm.isSubmitting}
         value={inputForm.value}
         onChangeText={inputForm.onChange}
-        className="shrink grow border-b border-foreground/10"
+        className="shrink grow border-b border-outline"
         forSheet
       />
       <FilledIconButton
@@ -101,8 +98,8 @@ function SeparatorForm() {
           await inputForm.onSubmit();
         }}
         disabled={!inputForm.canSubmit || inputForm.isSubmitting}
-        className="rounded-md bg-red"
-        _iconColor={Colors.neutral100}
+        className="rounded-md bg-primary active:bg-primaryDim"
+        _iconColor="onPrimary"
       />
     </View>
   );

@@ -39,7 +39,7 @@ interface SheetProps {
 
 export function Sheet(props: SheetProps) {
   const { t } = useTranslation();
-  const { canvasAlt } = useTheme();
+  const { surfaceBright } = useTheme();
   const [disableToastAnim, setDisableToastAnim] = useState(true);
   const [sheetHeight, setSheetHeight] = useState(0);
   const [headerHeight, setHeaderHeight] = useState(0);
@@ -52,7 +52,7 @@ export function Sheet(props: SheetProps) {
       onLayout={(e) => setSheetHeight(e.nativeEvent.layout.height)}
       name={props.globalKey}
       detents={[props.snapTop ? 1 : "auto"]}
-      backgroundColor={canvasAlt}
+      backgroundColor={surfaceBright}
       cornerRadius={BorderRadius.lg}
       // Sheet max height will be just before the `<TopAppBar />`.
       maxHeight={trueScreenHeight - 56}
@@ -69,9 +69,9 @@ export function Sheet(props: SheetProps) {
         onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}
         className={cn("gap-2 px-4 pb-2", { "pb-6": !!props.titleKey })}
       >
-        <View className="mx-auto my-2.5 h-1 w-8 rounded-full bg-onSurface" />
+        <View className="mx-auto my-2.5 h-1 w-8 rounded-full bg-surfaceContainerHigh" />
         {props.titleKey ? (
-          <Marquee color="canvasAlt" center>
+          <Marquee color="surfaceBright" center>
             <StyledText className="text-lg">{t(props.titleKey)}</StyledText>
           </Marquee>
         ) : null}

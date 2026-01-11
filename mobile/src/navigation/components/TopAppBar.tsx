@@ -19,7 +19,7 @@ export function TopAppBar({ options, route }: NativeStackHeaderProps) {
   const title = getHeaderTitle(options, route.name) as ParseKeys;
 
   return (
-    <SafeContainer className="bg-canvas">
+    <SafeContainer className="bg-surface">
       <View className="h-14 flex-row items-center justify-between gap-4 px-2 py-1">
         <FilledIconButton
           Icon={ArrowBack}

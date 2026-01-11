@@ -2,21 +2,19 @@ import { memo } from "react";
 import { Pressable, View } from "react-native";
 
 import { Check } from "~/resources/icons/Check";
-import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
 
 //#region Base
 function Radio({ selected }: { selected: boolean }) {
-  const { canvas } = useTheme();
   return (
     <View
       className={cn(
-        "size-5 items-center justify-center rounded-full border border-foreground",
-        { "border-0 bg-foreground": selected },
+        "size-5 items-center justify-center rounded-full border border-onSurface",
+        { "border-0 bg-onSurface": selected },
       )}
     >
-      {selected ? <Check size={18} color={canvas} /> : null}
+      {selected ? <Check size={18} color="surface" /> : null}
     </View>
   );
 }

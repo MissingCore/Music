@@ -2,26 +2,55 @@ import type { ClassValue } from "clsx";
 import { clsx } from "clsx";
 import { extendTailwindMerge } from "tailwind-merge";
 
-import { TailwindTheme } from "~/constants/TailwindTheme";
-import { FontFamily } from "~/constants/Styles";
+import { BorderRadius, FontFamily, FontSize } from "~/constants/Styles";
 import { toLowerCase } from "~/utils/string";
 import type { AccentFont } from "~/stores/Preference/constants";
-
-export type TextColor = `text-${string}` | `text-[${string}]`;
 
 function replaceDefault<T extends string>(arr: T[]) {
   return arr.map((val) => (val === "DEFAULT" ? "" : val));
 }
 
+// We have some non-standard color roles:
+//  - `errorDim`, `onErrorVariant`
+//  - If we treat these as "fixed" colors, they're "standard" names:
+//    - `primaryDim`, `onPrimaryVariant`, `secondaryDim`, `onSecondaryVariant`
+const ColorRoles = [
+  ...["primary", "primaryDim", "onPrimary", "onPrimaryVariant"],
+  ...["secondary", "secondaryDim", "onSecondary", "onSecondaryVariant"],
+  ...["error", "errorDim", "onError", "onErrorVariant"],
+  ...["surfaceDim", "surface", "surfaceBright"],
+  ...[
+    "surfaceContainerLowest",
+    "surfaceContainerLow",
+    "surfaceContainer",
+    "surfaceContainerHigh",
+    "surfaceContainerHighest",
+  ],
+  ...["onSurface", "onSurfaceVariant", "outline", "outlineVariant"],
+  ...["inverseSurface", "inverseOnSurface"],
+] as const;
+
+export type ColorRole = (typeof ColorRoles)[number];
+export type HexColor = `#${string}`;
+export type AppColor = ColorRole | HexColor;
+/** List of colors which also has a `Variant` color. */
+export type VariantColor =
+  Extract<ColorRole, `${string}Variant`> extends `${infer Prefix}Variant`
+    ? Prefix
+    : never;
+
+// Need to include `transparent` as otherwise, things will get merged incorrectly.
+const AvailableColors = ["transparent", ...ColorRoles] as const;
+
 const customTwMerge = extendTailwindMerge({
   override: {
     theme: {
-      color: Object.keys(TailwindTheme.colors),
-      radius: replaceDefault(Object.keys(TailwindTheme.borderRadius)),
+      color: AvailableColors,
+      radius: replaceDefault(Object.keys(BorderRadius)),
     },
     classGroups: {
-      "font-family": Object.keys(TailwindTheme.fontFamily),
-      "font-size": [{ text: Object.keys(TailwindTheme.fontSize) }],
+      "font-family": Object.keys(FontFamily),
+      "font-size": [{ text: Object.keys(FontSize) }],
     },
   },
 });
@@ -44,4 +73,9 @@ export function getFont(font: AccentFont, bold = false) {
     return FontFamily[`${fontCode}Medium`];
   }
   return FontFamily[fontCode];
+}
+
+/** Determines if a string is a hex color. */
+export function isHexColor(color?: string): color is HexColor {
+  return color !== undefined && color.startsWith("#");
 }

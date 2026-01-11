@@ -68,12 +68,12 @@ function SegmentedListItem(props: ListItemProps) {
     <ListItem
       {...props}
       className={cn(
-        "rounded-md bg-surface p-4",
+        "rounded-md bg-surfaceContainerLowest p-4",
         { "rounded-t-xs": !first, "rounded-b-xs": !last },
         props.className,
       )}
       _psuedoClassName={cn(
-        "active:opacity-75 disabled:opacity-25",
+        "active:bg-surfaceContainerLow disabled:opacity-25",
         props._psuedoClassName,
       )}
       _overflow
@@ -93,7 +93,7 @@ function SegmentedListCustomItem(props: {
     <View
       {...props}
       className={cn(
-        "overflow-hidden rounded-md bg-surface",
+        "overflow-hidden rounded-md bg-surfaceContainerLowest",
         { "rounded-t-xs": !first, "rounded-b-xs": !last },
         props.className,
       )}
@@ -141,7 +141,6 @@ SegmentedList.Item = memo(SegmentedListItem);
 /**
  * Wraps non-standard content while having the benefit of the automatic styling
  * while in `<SegmentedList />`.
- *  - Set `_psuedoClassName = "active:bg-canvas/30"` for color-matching on pressed state.
  */
 SegmentedList.CustomItem = memo(SegmentedListCustomItem);
 

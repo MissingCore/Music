@@ -57,7 +57,7 @@ const RenderItem = memo(
         collapsable={false}
         className={cn("h-14 flex-row items-center rounded-md", {
           "opacity-25": !info.active && info.isDragging,
-          "bg-surface!": info.active,
+          "bg-surfaceContainerLowest!": info.active,
         })}
       >
         <CheckboxField

@@ -3,7 +3,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import type { ParseKeys } from "i18next";
 import { useTranslation } from "react-i18next";
 import { useEffect, useMemo, useState } from "react";
-import { View } from "react-native";
+import { Pressable, View } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
 
 import { Search } from "~/resources/icons/Search";
@@ -18,7 +18,6 @@ import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { capitalize } from "~/utils/string";
 import { FlatList, useFlatListRef } from "~/components/Defaults";
-import { Button } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { StyledText } from "~/components/Typography/StyledText";
 import type { Tab } from "~/stores/Preference/types";
@@ -54,7 +53,7 @@ function Navbar({ stacked = false, hidden = false }) {
   return (
     <View
       className={cn(
-        "flex-row items-center overflow-hidden rounded-md bg-surface py-1",
+        "flex-row items-center overflow-hidden rounded-md bg-surfaceContainerLowest py-1",
         { "rounded-t-xs": stacked, "hidden opacity-0": hidden },
       )}
     >
@@ -71,7 +70,7 @@ function Navbar({ stacked = false, hidden = false }) {
           onPress={() => navigation.navigate("Settings")}
         />
         {hasNewUpdate && (
-          <View className="absolute top-3 right-3 size-2 rounded-full bg-red" />
+          <View className="absolute top-3 right-3 size-2 rounded-full bg-primary" />
         )}
       </View>
     </View>
@@ -80,7 +79,7 @@ function Navbar({ stacked = false, hidden = false }) {
 
 function NavigationList() {
   const { t, i18n } = useTranslation();
-  const { surface } = useTheme();
+  const { surfaceContainerLowest } = useTheme();
   const navigation = useNavigation();
   const currNavRoutes = useNavigationState((s) => s.routes);
   const homeTab = usePreferenceStore((s) => s.homeTab);
@@ -134,17 +133,17 @@ function NavigationList() {
         data={NavRoutes}
         keyExtractor={({ key }) => key}
         renderItem={({ item: { key, name } }) => (
-          <Button
+          <Pressable
             onPress={() => navigation.navigate("HomeScreens", { screen: name })}
             disabled={routeName === name}
-            className="bg-transparent px-2 disabled:opacity-100"
+            className="min-h-12 items-center justify-center px-2 py-4 active:opacity-50"
           >
             <StyledText
-              className={cn("text-sm", { "text-red": routeName === name })}
+              className={cn("text-sm", { "text-primary": routeName === name })}
             >
               {t(key).toLocaleUpperCase()}
             </StyledText>
-          </Button>
+          </Pressable>
         )}
         // Suppresses error from `scrollToIndex` when we remount this layout
         // as a result of using the `push` navigation on the `/search` screen.
@@ -154,14 +153,14 @@ function NavigationList() {
       {/* Scroll Shadow */}
       <LinearGradient
         pointerEvents="none"
-        colors={[`${surface}E6`, `${surface}00`]}
+        colors={[`${surfaceContainerLowest}E6`, `${surfaceContainerLowest}00`]}
         {...ShadowProps}
         style={{ [OnRTL.decide("right", "left")]: 0 }}
         className="absolute h-full w-4"
       />
       <LinearGradient
         pointerEvents="none"
-        colors={[`${surface}00`, `${surface}E6`]}
+        colors={[`${surfaceContainerLowest}00`, `${surfaceContainerLowest}E6`]}
         {...ShadowProps}
         style={{ [OnRTL.decide("left", "right")]: 0 }}
         className="absolute h-full w-4"

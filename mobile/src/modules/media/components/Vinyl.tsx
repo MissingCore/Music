@@ -27,7 +27,7 @@ export function Vinyl(props: {
   size: number;
   source: MediaImage.ImageSource | MediaImage.ImageSource[];
 }) {
-  const { canvas } = useTheme();
+  const { surface } = useTheme();
 
   const renderIndicator = useMemo(() => {
     if (Array.isArray(props.source) && props.source.length > 0) return false;
@@ -46,7 +46,7 @@ export function Vinyl(props: {
         type="playlist"
         source={props.source}
         size={props.size / 2}
-        className="absolute rounded-full bg-red"
+        className="absolute rounded-full bg-primary"
         noPlaceholder
       />
       <Svg width={props.size} height={props.size} viewBox="0 0 768 768">
@@ -84,7 +84,7 @@ export function Vinyl(props: {
           pointerEvents="none"
           {...CENTER}
           r={12}
-          fill={canvas}
+          fill={surface}
           stroke={Colors.neutral80}
           strokeWidth={6}
         />

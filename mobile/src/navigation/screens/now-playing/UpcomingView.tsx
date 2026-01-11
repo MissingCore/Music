@@ -15,7 +15,6 @@ import { getTrackArtwork } from "~/api/track.utils";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 
-import { Colors } from "~/constants/Styles";
 import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import { cn } from "~/lib/style";
 import { debounceWithAccumulation } from "~/utils/debounce";
@@ -162,7 +161,7 @@ const RenderItem = memo(
           LeftElement={<PlayingIndicator />}
           className={cn("mx-4", {
             "mt-2": index > 0,
-            "bg-surface": info.isActive,
+            "bg-surfaceContainerLowest": info.isActive,
           })}
         />
       );
@@ -173,10 +172,12 @@ const RenderItem = memo(
         disabled={info.isDragging}
         fireCallbackBeforeCompletion
         onSwipeLeft={() => onRemoveTrack(item.key)}
-        RightIcon={<Delete color={Colors.neutral100} />}
-        rightIconContainerClassName="rounded-xs bg-red"
+        RightIcon={<Delete color="onError" />}
+        rightIconContainerClassName="rounded-xs bg-error"
         wrapperClassName={cn("mx-4", { "mt-2": index > 0 })}
-        className={cn("rounded-xs bg-canvas", { "bg-surface": info.isActive })}
+        className={cn("rounded-xs bg-surface", {
+          "bg-surfaceContainerLowest": info.isActive,
+        })}
       >
         <TrackItem
           item={item}

@@ -45,7 +45,7 @@ export default function Tracks() {
 function TrackActions(props: { showSheet: VoidFunction }) {
   const { t } = useTranslation();
   return (
-    <View className="w-full flex-row items-center justify-between rounded-md bg-surface">
+    <View className="w-full flex-row items-center justify-between rounded-md bg-surfaceContainerLowest">
       <IconButton
         Icon={Sort}
         accessibilityLabel={t("feat.modalSort.title")}

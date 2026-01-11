@@ -54,7 +54,7 @@ export function Onboarding() {
           {
             width: Dimensions.get("window").width - 32,
             bottom: bottom + 16,
-            backgroundColor: SystemTheme.surface,
+            backgroundColor: SystemTheme.surfaceContainerLowest,
           },
           opacity,
         ]}
@@ -77,12 +77,12 @@ function OnboardingPhase() {
       <>
         <TStyledText
           textKey="feat.onboardPreprocess.title"
-          style={{ color: SystemTheme.foreground }}
+          style={{ color: SystemTheme.onSurface }}
         />
         <TStyledText
           dim
           textKey="feat.onboardPreprocess.brief"
-          style={{ color: `${SystemTheme.foreground}99` }} // foreground/60
+          style={{ color: SystemTheme.onSurfaceVariant }}
         />
       </>
     );
@@ -91,9 +91,9 @@ function OnboardingPhase() {
       <>
         <TStyledText
           textKey="feat.onboardTracks.title"
-          style={{ color: SystemTheme.foreground }}
+          style={{ color: SystemTheme.onSurface }}
         />
-        <StyledText dim style={{ color: `${SystemTheme.foreground}99` }}>
+        <StyledText dim style={{ color: SystemTheme.onSurfaceVariant }}>
           {`${t("feat.onboardTracks.extra.prevSaved", { amount: store.prevSaved })}\n\n`}
           {`${t("feat.onboardTracks.extra.saved", { amount: store.staged, total: store.unstaged })}\n`}
           {`${t("feat.onboardTracks.extra.errors", { amount: store.saveErrors })}`}
@@ -106,9 +106,9 @@ function OnboardingPhase() {
     <>
       <TStyledText
         textKey="feat.onboardImages.title"
-        style={{ color: SystemTheme.foreground }}
+        style={{ color: SystemTheme.onSurface }}
       />
-      <StyledText dim style={{ color: `${SystemTheme.foreground}99` }}>
+      <StyledText dim style={{ color: SystemTheme.onSurfaceVariant }}>
         {`${t("feat.onboardImages.extra.checked", { amount: store.checked, total: store.unchecked })}\n`}
         {`${t("feat.onboardImages.extra.found", { amount: store.found })}`}
       </StyledText>

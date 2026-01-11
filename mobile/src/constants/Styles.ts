@@ -10,23 +10,40 @@ export const BorderRadius = {
   full: 9999,
 } as const;
 
+/** @deprecated Use colors from `useTheme` if possible instead. */
 export const Colors = {
   transparent: colors.transparent,
 
   neutral0: "#000000",
   neutral7: "#121212",
   neutral10: "#1C1C1C",
+  neutral13: "#212121",
   neutral15: "#292929",
   neutral20: "#323232",
+  neutral23: "#3B3B3B",
   neutral30: "#484848",
   neutral40: "#606060",
-  neutral50: "#777777",
-  neutral60: "#929292",
   neutral70: "#ADADAD",
   neutral80: "#C8C8C8",
+  neutral83: "#D1D1D1",
+  neutral85: "#D9D9D9",
   neutral90: "#E3E3E3",
+  neutral92: "#EBEBEB",
   neutral95: "#F2F2F2",
+  neutral98: "#FAFAFA",
   neutral100: "#FFFFFF",
+
+  red35: "#AF0E28",
+  red37: "#B80F2A",
+  red40: "#C8102E",
+
+  nRed40: "#AE141B",
+  nRed45: "#C5171F",
+  nRed50: "#D71921",
+
+  yellow45: "#E5B300",
+  yellow47: "#F0BB00",
+  yellow50: "#FFC700",
 
   red: "#C8102E",
   yellow: "#FFC700",

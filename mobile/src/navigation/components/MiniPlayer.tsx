@@ -10,7 +10,6 @@ import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
-import { Colors } from "~/constants/Styles";
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
 import { IconButton } from "~/components/Form/Button/Icon";
@@ -43,7 +42,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
   if (!track || hidden) return null;
   return (
     <View
-      className={cn("overflow-hidden rounded-md bg-surface", {
+      className={cn("overflow-hidden rounded-md bg-surfaceContainerLowest", {
         "rounded-b-xs": stacked,
       })}
     >
@@ -64,12 +63,14 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
           onSwipeLeft={PlaybackControls.next}
           onSwipeRight={PlaybackControls.prev}
           wrapperClassName="shrink grow justify-center overflow-hidden"
-          className={gestureUI ? "bg-surface px-2" : "mx-2 shrink grow"}
+          className={
+            gestureUI ? "bg-surfaceContainerLowest px-2" : "mx-2 shrink grow"
+          }
         >
-          <Marquee color="surface">
+          <Marquee color="surfaceContainerLowest">
             <StyledText>{track.name}</StyledText>
           </Marquee>
-          <Marquee color="surface">
+          <Marquee color="surfaceContainerLowest">
             <StyledText dim>
               {getArtistsString(track.tracksToArtists)}
             </StyledText>
@@ -86,7 +87,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
             accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
             onPress={() => PlaybackControls.playToggle()}
             size="lg"
-            _iconColor={Colors.red}
+            _iconColor="primary"
           />
           {!gestureUI ? <NextButton /> : null}
         </View>
@@ -102,10 +103,10 @@ function TrackProgress({ duration }: { duration: number }) {
 
   return (
     <View className="px-2">
-      <View className="h-0.5 w-full rounded-full bg-onSurface">
+      <View className="h-0.5 w-full rounded-full bg-surfaceContainerHigh">
         <View
           style={{ width: progressPercent }}
-          className="h-full rounded-full bg-red"
+          className="h-full rounded-full bg-primary"
         />
       </View>
     </View>

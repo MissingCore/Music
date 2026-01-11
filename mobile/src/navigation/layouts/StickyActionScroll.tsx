@@ -59,7 +59,7 @@ export function StickyActionListLayout<TData>({
   const { top } = useSafeAreaInsets();
   const { width: ScreenWidth } = useWindowDimensions();
   const bottomInset = useBottomActionsInset();
-  const { canvas } = useTheme();
+  const { surface } = useTheme();
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const internalListRef = useAnimatedLegendListRef();
   // @ts-expect-error - Should be able to synchronize refs.
@@ -145,7 +145,7 @@ export function StickyActionListLayout<TData>({
         className="absolute top-0 right-0 left-0"
       >
         <LinearGradient
-          colors={[`${canvas}FF`, `${canvas}00`]}
+          colors={[`${surface}FF`, `${surface}00`]}
           locations={[top / (top + 56), 1]}
           pointerEvents="none"
           className="h-full"

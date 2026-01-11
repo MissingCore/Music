@@ -23,7 +23,7 @@ export function Menu(props: {
   actions: MenuAction[];
 }) {
   const { t } = useTranslation();
-  const { surface, onSurface, foreground } = useTheme();
+  const theme = useTheme();
   const [visible, setVisible] = useState(false);
   const primaryFont = usePreferenceStore((s) => s.primaryFont);
 
@@ -46,7 +46,7 @@ export function Menu(props: {
       contentStyle={{
         overflow: "hidden",
         paddingVertical: 0,
-        backgroundColor: surface,
+        backgroundColor: theme.surfaceContainerLowest,
         borderRadius: BorderRadius.md,
       }}
     >
@@ -60,9 +60,9 @@ export function Menu(props: {
             onPress();
             setVisible(false);
           }}
-          background={{ color: onSurface, foreground: true }}
+          background={{ color: theme.surfaceContainerHigh, foreground: true }}
           titleStyle={{
-            color: foreground,
+            color: theme.onSurface,
             fontFamily: getFont(primaryFont),
             fontSize: FontSize.sm,
           }}

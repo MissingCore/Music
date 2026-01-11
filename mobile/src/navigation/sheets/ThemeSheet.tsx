@@ -12,9 +12,9 @@ import { TStyledText } from "~/components/Typography/StyledText";
 import { ThemeOptions } from "~/stores/Preference/constants";
 
 const ThemePreviewColor = {
-  light: Themes.light.surface,
-  dark: Themes.dark.surface,
-  system: SystemTheme.surface,
+  light: Themes.light.surfaceContainerLowest,
+  dark: Themes.dark.surfaceContainerLowest,
+  system: SystemTheme.surfaceContainerLowest,
 } as const;
 
 export function ThemeSheet(props: { ref: TrueSheetRef }) {

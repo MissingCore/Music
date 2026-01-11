@@ -24,7 +24,6 @@ import {
 } from "./store";
 import { AddMusicSheet } from "./AddMusicSheet";
 
-import { Colors } from "~/constants/Styles";
 import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
@@ -159,10 +158,10 @@ const RenderItem = memo(
       <Swipeable
         disabled={info.isDragging}
         onSwipeLeft={() => onRemove(item.id)}
-        RightIcon={<Delete color={Colors.neutral100} />}
-        rightIconContainerClassName="rounded-xs bg-red"
+        RightIcon={<Delete color="onError" />}
+        rightIconContainerClassName="rounded-xs bg-error"
         wrapperClassName={cn("mx-4", { "mt-2": info.index > 0 })}
-        className="overflow-hidden rounded-xs bg-canvas"
+        className="overflow-hidden rounded-xs bg-surface"
       >
         <SearchResult
           button
@@ -176,8 +175,9 @@ const RenderItem = memo(
           className={cn("pr-4", {
             // The `active:` variant is to override the default active style
             // as `!important` isn't enough to change the background color
-            // (it'll only change to `bg-surface ` one we drag the item).
-            "bg-surface active:bg-surface": info.isActive,
+            // (it'll only change to `bg-surfaceContainerLowest ` one we drag the item).
+            "bg-surfaceContainerLowest active:bg-surfaceContainerLowest":
+              info.isActive,
           })}
         />
       </Swipeable>
@@ -205,7 +205,7 @@ function ListHeaderComponent(props: { showSheet: VoidFunction }) {
           value={playlistName}
           onChangeText={setPlaylistName}
           placeholder={t("feat.playlist.extra.name")}
-          className="shrink grow border-b border-foreground/60"
+          className="shrink grow border-b border-outline"
         />
         <View
           className={cn("shrink flex-row items-center gap-0.5", {
@@ -289,8 +289,8 @@ function DeleteWorkflow({
           textKey="feat.playlist.extra.delete"
           onPress={() => setLastChance(true)}
           disabled={lastChance || isSubmitting}
-          className="bg-red"
-          textClassName="text-neutral100"
+          className="bg-error active:bg-errorDim"
+          textClassName="text-onError"
         />
       </View>
       <ModalTemplate
@@ -344,8 +344,8 @@ function ImportM3UWorkflow({
         textKey="feat.playlist.extra.m3uImport"
         onPress={onImport}
         disabled={isSubmitting}
-        className="bg-yellow"
-        textClassName="text-neutral0"
+        className="bg-secondary active:bg-secondaryDim"
+        textClassName="text-onSecondary"
       />
     </View>
   );

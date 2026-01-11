@@ -17,8 +17,9 @@ import { AlbumArtistsKey } from "~/api/album.utils";
 import { getArtistsString } from "~/api/artist.utils";
 import { getPlaylistArtwork } from "~/api/playlist.utils";
 import { getTrackArtwork } from "~/api/track.utils";
-import { useTheme } from "~/hooks/useTheme";
+import { useColor } from "~/hooks/useTheme";
 
+import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
 import { isString } from "~/utils/validation";
 import { FlashList, FlatList } from "~/components/Defaults";
@@ -48,7 +49,7 @@ export function SearchEngine<TScope extends SearchCategories>(
   return (
     <View className="shrink grow">
       {/* Search input. */}
-      <View className="flex-row items-center gap-2 rounded-full bg-surface pl-4">
+      <View className="flex-row items-center gap-2 rounded-full bg-surfaceContainerLowest pl-4">
         <Search />
         <TextInput
           ref={inputRef}
@@ -77,14 +78,14 @@ export function SearchEngine<TScope extends SearchCategories>(
 type SearchResultsListProps<TScope extends SearchCategories> = {
   searchScope: TScope;
   callbacks: Pick<SearchCallbacks, TScope[number]>;
-  bgColor?: string;
+  bgColor?: ColorRole;
   forSheets?: boolean;
 };
 
 function SearchResultsList<TScope extends SearchCategories>(
   props: SearchResultsListProps<TScope> & { query: string },
 ) {
-  const { canvas } = useTheme();
+  const shadowColor = useColor(props.bgColor, "surface");
   const results = useSearch(props.searchScope, props.query);
   const [selectedTab, setSelectedTab] = useState<TScope[number] | "all">("all");
   const [filterHeight, setFilterHeight] = useState(53); // Height will be ~53px
@@ -114,11 +115,6 @@ function SearchResultsList<TScope extends SearchCategories>(
   const data = useMemo(
     () => (results ? formatResults(results, selectedTab) : undefined),
     [results, selectedTab],
-  );
-
-  const shadowColor = useMemo(
-    () => props.bgColor ?? canvas,
-    [props.bgColor, canvas],
   );
 
   return (
@@ -195,16 +191,16 @@ function SearchFilters(props: {
       renderItem={({ item: tab }) => {
         const selected = props.selectedTab === tab;
         return (
-          <View className="rounded-sm bg-canvas">
+          <View className="rounded-sm bg-surface">
             <Button
               onPress={() => props.onSelectTab(tab)}
               className={cn("min-h-0 rounded-sm px-3 py-1.5", {
-                "bg-red": selected,
+                "bg-primary active:bg-primaryDim": selected,
               })}
             >
               <TEm
                 textKey={`term.${tab}`}
-                className={cn("text-xs", { "text-neutral100": selected })}
+                className={cn("text-xs", { "text-onPrimary": selected })}
                 bold={false}
               />
             </Button>

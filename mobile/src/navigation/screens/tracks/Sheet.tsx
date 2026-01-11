@@ -32,11 +32,9 @@ import { usePlaybackStore } from "~/stores/Playback/store";
 import { Queue } from "~/stores/Playback/actions";
 import { useSessionStore } from "~/services/SessionStore";
 import { useGetColumn } from "~/hooks/useGetColumn";
-import { useTheme } from "~/hooks/useTheme";
 import { getMediaLinkContext } from "../../utils/router";
 import { TrackArtworkSheet } from "../ArtworkSheet";
 
-import { Colors } from "~/constants/Styles";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import {
@@ -116,11 +114,11 @@ function TrackIntro({ data }: { data: TrackWithRelations }) {
         className="rounded-sm"
       />
       <View className="shrink py-2">
-        <Marquee color="canvasAlt">
+        <Marquee color="surfaceBright">
           <StyledText className="text-lg">{data.name}</StyledText>
         </Marquee>
         {navLinks.length > 0 ? (
-          <Marquee color="canvasAlt">
+          <Marquee color="surfaceBright">
             {navLinks.map(({ linkInfo, value }, index) => (
               <Fragment key={index}>
                 {index > 0 ? (
@@ -129,7 +127,7 @@ function TrackIntro({ data }: { data: TrackWithRelations }) {
                 <Pressable onPress={sheetAction(() => navigate(...linkInfo))}>
                   <StyledText
                     dim
-                    className={cn({ "text-red": linkInfo[0] === "Artist" })}
+                    className={cn({ "text-primary": linkInfo[0] === "Artist" })}
                   >
                     {value}
                   </StyledText>
@@ -146,9 +144,8 @@ function TrackIntro({ data }: { data: TrackWithRelations }) {
 
 //#region Metadata
 function TrackMetadata({ data }: { data: TrackWithRelations }) {
-  const { foreground } = useTheme();
   return (
-    <View className="gap-4 rounded-md bg-surface p-4">
+    <View className="gap-4 rounded-md bg-surfaceContainerLowest p-4">
       <Marquee
         color="surface"
         contentContainerClassName="grow justify-between gap-4"
@@ -161,13 +158,13 @@ function TrackMetadata({ data }: { data: TrackWithRelations }) {
         </MetadataText>
         <MetadataText>{abbreviateSize(data.size)}</MetadataText>
         <View className="flex-row items-center gap-1">
-          <Edit size={14} color={foreground} />
+          <Edit size={14} />
           <MetadataText>{formatEpoch(data.modificationTime)}</MetadataText>
         </View>
       </Marquee>
       <Divider />
       <View className="flex-row items-center justify-between gap-4">
-        <Marquee color="surface">
+        <Marquee color="surfaceContainerLowest">
           <MetadataText>{data.uri}</MetadataText>
         </Marquee>
         <View className="flex-row gap-2">
@@ -193,7 +190,7 @@ function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
   const isFav = favoriteTrack.isPending ? !favStatus : favStatus;
 
   return (
-    <View className="flex-row justify-between gap-1 rounded-md bg-surface px-4 py-1">
+    <View className="flex-row justify-between gap-1 rounded-md bg-surfaceContainerLowest px-4 py-1">
       <IconButton
         Icon={Favorite}
         accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
@@ -283,16 +280,14 @@ function Badge(props: {
   Icon?: (props: Icon) => React.JSX.Element;
   children: string;
 }) {
-  const { theme } = useTheme();
   return (
     <View
       className={cn(
-        "flex-row items-center gap-1 rounded-[6px] bg-neutral90 px-2 py-1",
-        { "bg-neutral70": theme === "dark" },
+        "flex-row items-center gap-1 rounded-[6px] bg-surfaceContainerHigh px-2 py-1",
       )}
     >
-      {props.Icon ? <props.Icon size={14} color={Colors.neutral0} /> : null}
-      <MetadataText className="text-neutral0">{props.children}</MetadataText>
+      {props.Icon ? <props.Icon size={14} /> : null}
+      <MetadataText>{props.children}</MetadataText>
     </View>
   );
 }
@@ -404,7 +399,7 @@ function TrackToPlaylistSheet({ id }: { id: string }) {
               }
               className={index > 0 ? "mt-2" : undefined}
             >
-              <Marquee color="canvasAlt">
+              <Marquee color="surfaceBright">
                 <StyledText>{item.name}</StyledText>
               </Marquee>
             </CheckboxField>

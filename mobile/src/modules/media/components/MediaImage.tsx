@@ -5,7 +5,6 @@ import { withUniwind } from "uniwind";
 
 import { Folder } from "~/resources/icons/Folder";
 
-import { Colors } from "~/constants/Styles";
 import { cn } from "~/lib/style";
 import type { MediaType } from "~/stores/Playback/types";
 import { ReservedNames, ReservedPlaylists } from "../constants";
@@ -39,7 +38,7 @@ export function MediaImage({
   className,
   noPlaceholder,
 }: MediaImage.Props) {
-  const usedClasses = cn("rounded-lg bg-onSurface", className);
+  const usedClasses = cn("rounded-lg bg-surfaceContainerHigh", className);
 
   const [RenderedEl, additionalProps] = useMemo(() => {
     const imgSource = getUsedImage({ source, type, noPlaceholder });
@@ -62,7 +61,7 @@ export function MediaImage({
   } else if (type === "folder") {
     return (
       <View style={{ padding: size / 4 }} className={usedClasses}>
-        <Folder size={size / 2} color={Colors.neutral100} />
+        <Folder size={size / 2} color="#FFFFFF" />
       </View>
     );
   }
@@ -74,7 +73,7 @@ export function MediaImage({
       style={{ width: size, height: size }}
       className={cn(usedClasses, {
         "rounded-full": type === "artist",
-        "bg-red": source === ReservedPlaylists.favorites,
+        "bg-primary": source === ReservedPlaylists.favorites,
       })}
     />
   );

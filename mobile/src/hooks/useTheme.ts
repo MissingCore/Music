@@ -5,29 +5,82 @@ import { isSystemDarkMode } from "react-native-bootsplash";
 import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { Colors } from "~/constants/Styles";
+import type { AppColor } from "~/lib/style";
+import { isHexColor } from "~/lib/style";
+
+//#region Theme
+export const FixedTheme = {
+  primary: Colors.nRed50,
+  onPrimary: Colors.neutral100,
+  onPrimaryVariant: Colors.neutral90,
+
+  secondary: Colors.yellow50,
+  onSecondary: Colors.neutral0,
+  onSecondaryVariant: Colors.neutral30,
+
+  error: Colors.red40,
+  onError: Colors.neutral100,
+  onErrorVariant: Colors.neutral90,
+} as const;
 
 export const Themes = {
   light: {
-    theme: "light",
-    canvas: Colors.neutral95,
-    canvasAlt: Colors.neutral95,
-    surface: Colors.neutral100,
-    onSurface: Colors.neutral80,
-    foreground: Colors.neutral0,
+    scheme: "light",
+    ...FixedTheme,
+    primaryDim: Colors.nRed45,
+    secondaryDim: Colors.yellow47,
+    errorDim: Colors.red37,
+
+    surfaceDim: Colors.neutral80,
+    surface: Colors.neutral95,
+    surfaceBright: Colors.neutral95,
+
+    surfaceContainerLowest: Colors.neutral100,
+    surfaceContainerLow: Colors.neutral98,
+    surfaceContainer: Colors.neutral92,
+    surfaceContainerHigh: Colors.neutral85,
+    surfaceContainerHighest: Colors.neutral83,
+
+    onSurface: Colors.neutral0,
+    onSurfaceVariant: Colors.neutral40,
+    outline: Colors.neutral70,
+    outlineVariant: Colors.neutral85,
+
+    inverseSurface: Colors.neutral0,
+    inverseOnSurface: Colors.neutral100,
   },
   dark: {
-    theme: "dark",
-    canvas: Colors.neutral0,
-    canvasAlt: Colors.neutral7,
-    surface: Colors.neutral10,
-    onSurface: Colors.neutral20,
-    foreground: Colors.neutral100,
+    scheme: "dark",
+    ...FixedTheme,
+    primaryDim: Colors.nRed40,
+    secondaryDim: Colors.yellow45,
+    errorDim: Colors.red35,
+
+    surfaceDim: Colors.neutral0,
+    surface: Colors.neutral0,
+    surfaceBright: Colors.neutral7,
+
+    surfaceContainerLowest: Colors.neutral10,
+    surfaceContainerLow: Colors.neutral13,
+    surfaceContainer: Colors.neutral15,
+    surfaceContainerHigh: Colors.neutral20,
+    surfaceContainerHighest: Colors.neutral23,
+
+    onSurface: Colors.neutral100,
+    onSurfaceVariant: Colors.neutral70,
+    outline: Colors.neutral40,
+    outlineVariant: Colors.neutral20,
+
+    inverseSurface: Colors.neutral100,
+    inverseOnSurface: Colors.neutral0,
   },
 } as const;
 
 /** Returns theme colors based on the system theme on app launch. */
 export const SystemTheme = Themes[isSystemDarkMode ? "dark" : "light"];
+//#endregion
 
+//#region Hooks
 /** Returns if we're using light or dark theme. */
 export function useCurrentTheme() {
   const deviceTheme = useColorScheme();
@@ -44,3 +97,18 @@ export function useTheme() {
   const currentTheme = useCurrentTheme();
   return useMemo(() => Themes[currentTheme], [currentTheme]);
 }
+
+/** Returns a singular color. */
+export function useColor(
+  wantedColor: AppColor | undefined,
+  fallback: AppColor,
+) {
+  const theme = useTheme();
+  return useMemo(() => {
+    let color = isHexColor(fallback) ? fallback : theme[fallback];
+    if (wantedColor)
+      color = isHexColor(wantedColor) ? wantedColor : theme[wantedColor];
+    return color;
+  }, [theme, wantedColor, fallback]);
+}
+//#endregion
