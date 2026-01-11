@@ -62,8 +62,8 @@
 
       --color-onSurface: hsl(0 0% 0%);
       --color-onSurfaceVariant: hsl(0 0% 38%);
-      --color-outline: hsl(0 0% 47%);
-      --color-outlineVariant: hsl(0 0% 68%);
+      --color-outline: hsl(0 0% 57%);
+      --color-outlineVariant: hsl(0 0% 78%);
 
       --color-inverseSurface: hsl(0 0% 0%);
       --color-inverseOnSurface: hsl(0 0% 100%);
@@ -82,8 +82,8 @@
 
       --color-onSurface: hsl(0 0% 100%);
       --color-onSurfaceVariant: hsl(0 0% 68%);
-      --color-outline: hsl(0 0% 57%);
-      --color-outlineVariant: hsl(0 0% 38%);
+      --color-outline: hsl(0 0% 38%);
+      --color-outlineVariant: hsl(0 0% 20%);
 
       --color-inverseSurface: hsl(0 0% 100%);
       --color-inverseOnSurface: hsl(0 0% 0%);

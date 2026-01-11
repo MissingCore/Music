@@ -43,8 +43,8 @@ export const Themes = {
 
     onSurface: Colors.neutral0,
     onSurfaceVariant: Colors.neutral40,
-    outline: Colors.neutral50,
-    outlineVariant: Colors.neutral70,
+    outline: Colors.neutral60,
+    outlineVariant: Colors.neutral80,
 
     inverseSurface: Colors.neutral0,
     inverseOnSurface: Colors.neutral100,
@@ -65,8 +65,8 @@ export const Themes = {
 
     onSurface: Colors.neutral100,
     onSurfaceVariant: Colors.neutral70,
-    outline: Colors.neutral60,
-    outlineVariant: Colors.neutral40,
+    outline: Colors.neutral40,
+    outlineVariant: Colors.neutral20,
 
     inverseSurface: Colors.neutral100,
     inverseOnSurface: Colors.neutral0,
