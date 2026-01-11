@@ -10,6 +10,9 @@ function replaceDefault<T extends string>(arr: T[]) {
   return arr.map((val) => (val === "DEFAULT" ? "" : val));
 }
 
+// We haev some non-standard color roles:
+//  - `primaryDim`, `onPrimaryVariant`, `secondaryDim`, `onSecondaryVariant`,
+//  `errorDim`, `onErrorVariant`
 const ColorRoles = [
   ...["primary", "primaryDim", "onPrimary", "onPrimaryVariant"],
   ...["secondary", "secondaryDim", "onSecondary", "onSecondaryVariant"],
@@ -35,6 +38,7 @@ export type VariantColor =
     ? Prefix
     : never;
 
+// Need to include `transparent` as otherwise, things will get merged incorrectly.
 const AvailableColors = ["transparent", ...ColorRoles] as const;
 
 const customTwMerge = extendTailwindMerge({
