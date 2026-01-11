@@ -16,7 +16,7 @@ export const FixedTheme = {
 
   secondary: Colors.yellow50,
   onSecondary: Colors.neutral0,
-  onSecondaryVariant: Colors.neutral20,
+  onSecondaryVariant: Colors.neutral30,
 
   error: Colors.red40,
   onError: Colors.neutral100,

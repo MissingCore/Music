@@ -21,6 +21,7 @@ export const Colors = {
   neutral15: "#292929",
   neutral20: "#323232",
   neutral23: "#3B3B3B",
+  neutral30: "#484848",
   neutral40: "#606060",
   neutral70: "#ADADAD",
   neutral80: "#C8C8C8",
