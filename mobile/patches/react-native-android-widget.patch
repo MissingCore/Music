@@ -29,7 +29,7 @@ index 55ba4fd01e0ee8dbee6e1adc687cd0a0d572a050..4b7c3882a5c185e180bfdef021b0564c
      public void drawWidget(ReadableMap config, String widgetName) {
          try {
 diff --git a/android/src/main/java/com/reactnativeandroidwidget/oss/HeadlessJsTaskWorker.java b/android/src/main/java/com/reactnativeandroidwidget/oss/HeadlessJsTaskWorker.java
-index 813eac4bcf19f84a1939b049efc2d36cae1eb94b..14b2c7ba8a6597e8422411e4926b5a1d6de5381c 100644
+index 813eac4bcf19f84a1939b049efc2d36cae1eb94b..ec18fe0844dac6967a12a19dfcb9a3aad9c4e832 100644
 --- a/android/src/main/java/com/reactnativeandroidwidget/oss/HeadlessJsTaskWorker.java
 +++ b/android/src/main/java/com/reactnativeandroidwidget/oss/HeadlessJsTaskWorker.java
 @@ -33,9 +33,8 @@ import androidx.work.ListenableWorker;
@@ -43,7 +43,7 @@ index 813eac4bcf19f84a1939b049efc2d36cae1eb94b..14b2c7ba8a6597e8422411e4926b5a1d
  import com.facebook.react.bridge.ReactContext;
  import com.facebook.react.bridge.UiThreadUtil;
  import com.facebook.react.jstasks.HeadlessJsTaskConfig;
-@@ -72,16 +71,16 @@ public abstract class HeadlessJsTaskWorker extends ListenableWorker implements H
+@@ -72,16 +71,30 @@ public abstract class HeadlessJsTaskWorker extends ListenableWorker implements H
      protected abstract HeadlessJsTaskConfig getTaskConfig(Data data);
  
      protected void startTask(final HeadlessJsTaskConfig taskConfig) {
@@ -53,19 +53,37 @@ index 813eac4bcf19f84a1939b049efc2d36cae1eb94b..14b2c7ba8a6597e8422411e4926b5a1d
 +        ReactContext reactContext = reactHost.getCurrentReactContext();
          if (reactContext == null) {
 -            reactInstanceManager.addReactInstanceEventListener(new ReactInstanceEventListener() {
-+            reactHost.addReactInstanceEventListener(new ReactInstanceEventListener() {
-                 public void onReactContextInitialized(ReactContext reactContext) {
-                     HeadlessJsTaskWorker.this.invokeStartTask(reactContext, taskConfig);
+-                public void onReactContextInitialized(ReactContext reactContext) {
+-                    HeadlessJsTaskWorker.this.invokeStartTask(reactContext, taskConfig);
 -                    reactInstanceManager.removeReactInstanceEventListener(this);
-+                    reactHost.removeReactInstanceEventListener(this);
-                 }
-             });
+-                }
+-            });
 -            reactInstanceManager.createReactContextInBackground();
-+            reactHost.start();
++            //! For some weird reason, `startWork` fires even after we close the app
++            //! (when the work should be completed already), causing `startTask` to fire.
++            //! Since the React Native instance doesn't exist since the app has been closed,
++            //! we enter this block and re-initialize the React Native instance, causing all
++            //! the on-start-up logic to fire (RNTP service setup, widget setup).
++            //!
++            //! THIS RESULTS IN THE APP TO ESSENTIALLY INFINITELY SPIN BACK UP WHEN WE DON'T
++            //! WANT IT TO (ie: in dev mode, we'll see `Android Bundled` in the console
++            //! AFTER WE CLOSED THE APP, and then the console spammed by `android_cannot_setup_player_in_background`).
++            //!
++            //! This might be caused to also having a `HeadlessJsTaskEventListener` for
++            //! RNTP.
++            //!
++            //! Commenting out the below code seems to fix the issue.
++            // reactHost.addReactInstanceEventListener(new ReactInstanceEventListener() {
++            //     public void onReactContextInitialized(ReactContext reactContext) {
++            //         HeadlessJsTaskWorker.this.invokeStartTask(reactContext, taskConfig);
++            //         reactHost.removeReactInstanceEventListener(this);
++            //     }
++            // });
++            // reactHost.start();
          } else {
              this.invokeStartTask(reactContext, taskConfig);
          }
-@@ -94,9 +93,9 @@ public abstract class HeadlessJsTaskWorker extends ListenableWorker implements H
+@@ -94,9 +107,9 @@ public abstract class HeadlessJsTaskWorker extends ListenableWorker implements H
      }
  
      private void cleanUpTask() {
@@ -78,7 +96,7 @@ index 813eac4bcf19f84a1939b049efc2d36cae1eb94b..14b2c7ba8a6597e8422411e4926b5a1d
              if (reactContext != null) {
                  HeadlessJsTaskContext headlessJsTaskContext = HeadlessJsTaskContext.getInstance(reactContext);
                  headlessJsTaskContext.removeTaskEventListener(this);
-@@ -125,7 +124,7 @@ public abstract class HeadlessJsTaskWorker extends ListenableWorker implements H
+@@ -125,7 +138,7 @@ public abstract class HeadlessJsTaskWorker extends ListenableWorker implements H
          }
      }
  
