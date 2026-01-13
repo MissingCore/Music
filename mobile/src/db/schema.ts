@@ -128,6 +128,7 @@ export const tracks = sqliteTable("tracks", {
 export const tracksRelations = relations(tracks, ({ one, many }) => ({
   album: one(albums, { fields: [tracks.albumId], references: [albums.id] }),
   tracksToArtists: many(tracksToArtists),
+  tracksToLyrics: one(tracksToLyrics),
   tracksToPlaylists: many(tracksToPlaylists),
   waveformSample: one(waveformSamples),
 }));
@@ -249,7 +250,6 @@ export const playedMediaLists = sqliteTable(
 //#region Waveform
 export const waveformSamples = sqliteTable("waveform_sample", {
   trackId: text()
-    .notNull()
     .references(() => tracks.id)
     .primaryKey(),
   samples: text({ mode: "json" })
@@ -267,6 +267,40 @@ export const trackToWaveformSampleRelations = relations(
     }),
   }),
 );
+//#endregion
+
+//#region Lyric
+export const lyrics = sqliteTable("lyrics", {
+  id: text()
+    .primaryKey()
+    .$defaultFn(() => createId()),
+  name: text().notNull(),
+  lyrics: text().notNull(),
+});
+
+export const lyricsRelations = relations(lyrics, ({ many }) => ({
+  tracksToLyrics: many(tracksToLyrics),
+}));
+
+export const tracksToLyrics = sqliteTable("tracks_to_lyrics", {
+  trackId: text()
+    .references(() => tracks.id)
+    .primaryKey(),
+  lyricId: text()
+    .notNull()
+    .references(() => lyrics.id),
+});
+
+export const tracksToLyricsRelations = relations(tracksToLyrics, ({ one }) => ({
+  lyric: one(lyrics, {
+    fields: [tracksToLyrics.lyricId],
+    references: [lyrics.id],
+  }),
+  track: one(tracks, {
+    fields: [tracksToLyrics.trackId],
+    references: [tracks.id],
+  }),
+}));
 //#endregion
 
 //#region Types
