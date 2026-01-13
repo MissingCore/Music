@@ -12,6 +12,7 @@ import {
   playlists,
   tracks,
   tracksToArtists,
+  tracksToLyrics,
   tracksToPlaylists,
   waveformSamples,
 } from "~/db/schema";
@@ -123,20 +124,17 @@ export const AppCleanUp = {
 
     if (unusedTrackIds.length > 0) {
       await Promise.allSettled([
-        db.delete(hiddenTracks).where(inArray(hiddenTracks.id, unusedTrackIds)),
-        db
-          .delete(invalidTracks)
-          .where(inArray(invalidTracks.id, unusedTrackIds)),
-        db.delete(tracks).where(inArray(tracks.id, unusedTrackIds)),
-        db
-          .delete(tracksToArtists)
-          .where(inArray(tracksToArtists.trackId, unusedTrackIds)),
-        db
-          .delete(tracksToPlaylists)
-          .where(inArray(tracksToPlaylists.trackId, unusedTrackIds)),
-        db
-          .delete(waveformSamples)
-          .where(inArray(waveformSamples.trackId, unusedTrackIds)),
+        ...[hiddenTracks, invalidTracks, tracks].map((sch) =>
+          db.delete(sch).where(inArray(sch.id, unusedTrackIds)),
+        ),
+        ...[
+          tracksToArtists,
+          tracksToLyrics,
+          tracksToPlaylists,
+          waveformSamples,
+        ].map((sch) =>
+          db.delete(sch).where(inArray(sch.trackId, unusedTrackIds)),
+        ),
       ]);
     }
 
