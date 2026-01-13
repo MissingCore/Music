@@ -9,12 +9,12 @@ import { getAssetsAsync } from "expo-media-library";
 
 import { db } from "~/db";
 import type { InvalidTrack } from "~/db/schema";
-import { invalidTracks, tracks, tracksToArtists } from "~/db/schema";
+import { invalidTracks, tracksToArtists } from "~/db/schema";
 
 import { upsertAlbums } from "~/api/album";
 import { AlbumArtistsKey } from "~/api/album.utils";
 import { createArtists } from "~/api/artist";
-import { upsertTracks } from "~/api/track";
+import { deleteTracks, upsertTracks } from "~/api/track";
 import { preferenceStore } from "~/stores/Preference/store";
 import { onboardingStore } from "../services/Onboarding";
 
@@ -159,8 +159,8 @@ export async function findAndSaveAudio() {
     }));
 
     if (errors.length > 0) {
-      const erroredIds = errors.map(({ id }) => id);
-      await db.delete(tracks).where(inArray(tracks.id, erroredIds));
+      // Use `deleteTracks` to also delete associated relations.
+      await deleteTracks(errors.map(({ id }) => ({ id })));
       await db.insert(invalidTracks).values(errors).onConflictDoUpdate({
         target: invalidTracks.id,
         set: UpsertInvalidTrackFields,

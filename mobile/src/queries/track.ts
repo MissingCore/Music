@@ -7,7 +7,7 @@ import { formatForTrack } from "~/db/utils";
 
 import {
   addToPlaylist,
-  deleteTrack,
+  deleteTracks,
   favoriteTrack,
   removeFromPlaylist,
   updateTrack,
@@ -84,7 +84,7 @@ export function useHideTrack() {
       await db
         .insert(hiddenTracks)
         .values({ id, uri, name, hiddenAt: Date.now() });
-      await deleteTrack(id);
+      await deleteTracks([{ id }]);
     },
     onSuccess: async (_, { track }) => {
       // There's a lot of places where this track may appear.
