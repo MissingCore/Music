@@ -13,6 +13,7 @@ import {
 import type { Prettify } from "~/utils/types";
 import type { PlayFromSource } from "~/stores/Playback/types";
 
+//#region Artist
 export const artists = sqliteTable("artists", {
   name: text().primaryKey(),
   artwork: text(),
@@ -22,7 +23,9 @@ export const artistsRelations = relations(artists, ({ many }) => ({
   albumsToArtists: many(albumsToArtists),
   tracksToArtists: many(tracksToArtists),
 }));
+//#endregion
 
+//#region Album
 export const albums = sqliteTable(
   "albums",
   {
@@ -75,7 +78,9 @@ export const albumsToArtistsRelations = relations(
     }),
   }),
 );
+//#endregion
 
+//#region Track
 export const tracks = sqliteTable("tracks", {
   id: text().primaryKey(),
   name: text().notNull(),
@@ -153,7 +158,9 @@ export const tracksToArtistsRelations = relations(
     }),
   }),
 );
+//#endregion
 
+//#region Other Track States
 export const hiddenTracks = sqliteTable("hidden_tracks", {
   id: text().primaryKey(),
   uri: text().notNull(),
@@ -168,7 +175,9 @@ export const invalidTracks = sqliteTable("invalid_tracks", {
   errorMessage: text(),
   modificationTime: integer().notNull(),
 });
+//#endregion
 
+//#region Playlist
 export const playlists = sqliteTable("playlists", {
   name: text().primaryKey(),
   artwork: text(),
@@ -206,7 +215,9 @@ export const tracksToPlaylistsRelations = relations(
     }),
   }),
 );
+//#endregion
 
+//#region Folder
 export const fileNodes = sqliteTable("file_node", {
   // Excludes the `file:///` at the beginning. Ends with a trailing `/`.
   path: text().primaryKey(),
@@ -221,7 +232,9 @@ export const fileNodesRelations = relations(fileNodes, ({ one }) => ({
     references: [fileNodes.path],
   }),
 }));
+//#endregion
 
+//#region Recent List
 export const playedMediaLists = sqliteTable(
   "played_media_list",
   {
@@ -231,7 +244,9 @@ export const playedMediaLists = sqliteTable(
   },
   (t) => [primaryKey({ columns: [t.id, t.type] })],
 );
+//#endregion
 
+//#region Waveform
 export const waveformSamples = sqliteTable("waveform_sample", {
   trackId: text()
     .notNull()
@@ -252,7 +267,9 @@ export const trackToWaveformSampleRelations = relations(
     }),
   }),
 );
+//#endregion
 
+//#region Types
 export type Artist = InferSelectModel<typeof artists>;
 export type ArtistWithTracks = Prettify<
   Artist & { tracks: TrackWithRelations[] }
@@ -296,3 +313,4 @@ export type PlayedMediaList = Prettify<
 >;
 
 export type WaveformSample = InferSelectModel<typeof waveformSamples>;
+//#endregion
