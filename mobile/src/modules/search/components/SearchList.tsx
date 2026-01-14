@@ -29,6 +29,8 @@ interface SearchListProps<TData> extends Omit<
   onFilterData: (query: string, data: TData[]) => TData[];
   emptyMsgKey?: ParseKeys;
   shadowTransitionConfig?: { gap?: number; color?: ColorRole };
+  /** If content should be rendered only when a query is specified. */
+  renderOnQuery?: boolean;
   wrapperStyle?: StyleProp<ViewStyle>;
   wrapperClassName?: string;
 }
@@ -41,6 +43,7 @@ export function SearchList<TData>({
   onFilterData,
   emptyMsgKey,
   shadowTransitionConfig,
+  renderOnQuery = false,
   wrapperStyle,
   wrapperClassName,
   ...props
@@ -49,10 +52,15 @@ export function SearchList<TData>({
   const shadowColor = useColor(shadowTransitionConfig?.color, "surface");
   const [query, setQuery] = useState("");
 
-  const filteredData = useMemo(
-    () => onFilterData(query, data ?? []),
-    [data, onFilterData, query],
+  const stopRender = useMemo(
+    () => renderOnQuery && !query.trim(),
+    [renderOnQuery, query],
   );
+
+  const filteredData = useMemo(() => {
+    if (stopRender) return [];
+    return onFilterData(query, data ?? []);
+  }, [stopRender, data, onFilterData, query]);
 
   const dataSize = useMemo(() => filteredData.length, [filteredData]);
 
@@ -80,7 +88,9 @@ export function SearchList<TData>({
           keyExtractor={keyExtractor}
           renderItem={renderItem}
           maintainVisibleContentPosition={{ disabled: true }}
-          ListEmptyComponent={<ContentPlaceholder errMsgKey={emptyMsgKey} />}
+          ListEmptyComponent={
+            !stopRender ? <ContentPlaceholder errMsgKey={emptyMsgKey} /> : null
+          }
           {...props}
           contentContainerStyle={[
             props.contentContainerStyle,
