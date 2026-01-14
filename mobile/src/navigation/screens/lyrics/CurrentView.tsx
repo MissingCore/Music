@@ -1,4 +1,5 @@
 import type { StaticScreenProps } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
 import { Add } from "~/resources/icons/Add";
@@ -23,6 +24,7 @@ export default function Lyric({
   },
 }: Props) {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const { isPending, error, data } = useLyric(id);
 
   if (isPending || error) return <PagePlaceholder isPending={isPending} />;
@@ -34,7 +36,7 @@ export default function Lyric({
           <FilledIconButton
             Icon={Edit}
             accessibilityLabel={t("form.edit")}
-            onPress={() => console.log("Navigating to Edit Lyric screen...")}
+            onPress={() => navigation.navigate("ModifyLyric", { id })}
             size="sm"
           />
         )}
