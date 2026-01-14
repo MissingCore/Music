@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
 import { Add } from "~/resources/icons/Add";
@@ -17,6 +18,7 @@ type PartialLyric = ExtractQueryData<typeof useLyrics>[number];
 
 export default function Lyrics() {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const { isPending, data } = useLyrics();
 
   if (isPending) return <PagePlaceholder isPending={isPending} />;
@@ -27,9 +29,7 @@ export default function Lyrics() {
           <FilledIconButton
             Icon={Add}
             accessibilityLabel={t("form.create")}
-            onPress={() =>
-              console.log('Navigating to "Create Lyrics" screen...')
-            }
+            onPress={() => navigation.navigate("CreateLyric")}
             size="sm"
           />
         )}

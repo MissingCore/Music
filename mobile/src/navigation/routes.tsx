@@ -24,6 +24,7 @@ import Artist from "./screens/artists/CurrentView";
 import Artists from "./screens/artists/View";
 import Folders from "./screens/folders/View";
 import Lyrics from "./screens/lyrics/View";
+import CreateLyric from "./screens/lyrics/CreateView";
 import Upcoming from "./screens/now-playing/UpcomingView";
 import NowPlaying from "./screens/now-playing/View";
 import CreatePlaylist from "./screens/playlists/CreateView";
@@ -273,6 +274,7 @@ export const RootStack = createNativeStackNavigator({
           screen: Lyrics,
           options: { title: "feat.lyrics.title" },
         },
+        CreateLyric,
       },
     },
     Setting: {
