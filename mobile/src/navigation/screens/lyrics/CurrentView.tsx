@@ -22,7 +22,6 @@ import { Divider } from "~/components/Divider";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { SegmentedList } from "~/components/List/Segmented";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { AccentText } from "~/components/Typography/AccentText";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { LinkTracksSheet } from "./sheets/LinkTracksSheet";
 
@@ -68,7 +67,9 @@ export default function Lyric({
 
       <ScrollView contentContainerClassName="grow gap-6 p-4">
         <SegmentedList.CustomItem className="p-4">
-          <AccentText className="text-xl">{data.name}</AccentText>
+          <StyledText bold className="text-xl">
+            {data.name}
+          </StyledText>
         </SegmentedList.CustomItem>
 
         <SegmentedList>
