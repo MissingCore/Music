@@ -62,9 +62,7 @@ export default function Lyrics() {
               count: item.tracksToLyrics.length,
             })}
             RightElement={<Edit />}
-            onPress={() =>
-              console.log(`Navigating to lyrics screen for: ${item.id}`)
-            }
+            onPress={() => navigation.navigate("Lyric", { id: item.id })}
             className={cn({
               "mt-0.75 rounded-t-xs": index > 0,
               "rounded-b-xs": index < listSize - 1,

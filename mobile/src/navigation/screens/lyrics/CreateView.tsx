@@ -1,5 +1,6 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
@@ -13,7 +14,7 @@ import { ModifyLyricBase } from "./ModifyViewBase";
 
 export default function CreateLyric() {
   const { t } = useTranslation();
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const queryClient = useQueryClient();
 
   return (
@@ -21,11 +22,11 @@ export default function CreateLyric() {
       onSubmit={async (data) => {
         try {
           const entry = { name: data.name, lyrics: data.lyrics };
-          await db.insert(lyrics).values(entry);
+          const [newLyric] = await db.insert(lyrics).values(entry).returning();
+          if (!newLyric) throw new Error("Lyric not returned after insertion.");
 
           queryClient.invalidateQueries({ queryKey: q.lyrics._def });
-          // TODO: Navigate to "Current Lyric" screen.
-          navigation.goBack();
+          navigation.replace("Lyric", { id: newLyric.id });
         } catch {
           toast.error(t("err.flow.generic.title"), ToastOptions);
         }
