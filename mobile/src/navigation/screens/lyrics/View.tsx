@@ -1,18 +1,19 @@
-import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-
-import { db } from "~/db";
 
 import { Add } from "~/resources/icons/Add";
 import { Edit } from "~/resources/icons/Edit";
+import { useLyrics } from "~/queries/lyric";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 
+import type { ExtractQueryData } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { SegmentedList } from "~/components/List/Segmented";
 import { SearchList } from "~/modules/search/components/SearchList";
+
+type PartialLyric = ExtractQueryData<typeof useLyrics>[number];
 
 export default function Lyrics() {
   const { t } = useTranslation();
@@ -76,21 +77,3 @@ export default function Lyrics() {
     </>
   );
 }
-
-//#region Data Query
-type PartialLyric = { id: string; name: string; tracksToLyrics: any[] };
-
-async function getLyrics() {
-  return db.query.lyrics.findMany({
-    columns: { lyrics: false },
-    with: { tracksToLyrics: true },
-    orderBy: (fields, { desc }) => desc(fields.name),
-  });
-}
-
-const queryKey = ["lyrics"];
-
-function useLyrics() {
-  return useQuery({ queryKey, queryFn: getLyrics });
-}
-//#endregion
