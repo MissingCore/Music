@@ -101,7 +101,7 @@ export const queries = createQueryKeyStore({
         db.query.lyrics.findMany({
           columns: { lyrics: false },
           with: { tracksToLyrics: true },
-          orderBy: (fields, { desc }) => desc(fields.name),
+          orderBy: (fields) => iAsc(fields.name),
         }),
     },
     detail: (lyricId: string) => ({
