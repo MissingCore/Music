@@ -347,4 +347,6 @@ export type PlayedMediaList = Prettify<
 >;
 
 export type WaveformSample = InferSelectModel<typeof waveformSamples>;
+
+export type Lyric = InferSelectModel<typeof lyrics>;
 //#endregion

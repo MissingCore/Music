@@ -70,6 +70,8 @@
     "stay": "Stay",
     "leave": "Leave",
 
+    "create": "Create",
+    "edit": "Edit",
     "clear": "Clear",
     "reset": "Reset",
 
@@ -222,6 +224,10 @@
     },
     "restoreLastPosition": {
       "title": "Restore From Last Played Position"
+    },
+    "lyrics": {
+      "title": "Lyrics",
+      "brief": "Manage lyrics associated with tracks."
     },
     "scanning": {
       "title": "Scanning"
