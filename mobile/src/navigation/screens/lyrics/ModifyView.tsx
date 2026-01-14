@@ -15,7 +15,7 @@ import { useLyric } from "~/queries/lyric";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
 import { ToastOptions } from "~/lib/toast";
-import { ModifyLyricBase } from "./ModifyViewBase";
+import { ModifyLyricBase } from "./components/ModifyViewBase";
 
 type Props = StaticScreenProps<{ id: string }>;
 

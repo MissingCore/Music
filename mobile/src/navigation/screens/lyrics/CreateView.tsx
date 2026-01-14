@@ -10,7 +10,7 @@ import { lyrics } from "~/db/schema";
 import { queries as q } from "~/queries/keyStore";
 
 import { ToastOptions } from "~/lib/toast";
-import { ModifyLyricBase } from "./ModifyViewBase";
+import { ModifyLyricBase } from "./components/ModifyViewBase";
 
 export default function CreateLyric() {
   const { t } = useTranslation();
