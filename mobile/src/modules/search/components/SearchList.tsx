@@ -19,13 +19,14 @@ const DEFAULT_GAP = 24;
 
 interface SearchListProps<TData> extends Omit<
   FlashListProps<TData>,
-  "keyExtractor" | "renderItem"
+  "data" | "keyExtractor" | "renderItem"
 > {
+  data?: TData[];
   keyExtractor: NonNullable<FlashListProps<TData>["keyExtractor"]>;
   renderItem: (
     info: ListRenderItemInfo<TData> & { listSize: number },
   ) => React.ReactElement;
-  onFilterData: (query: string, data: readonly TData[]) => TData[];
+  onFilterData: (query: string, data: TData[]) => TData[];
   emptyMsgKey?: ParseKeys;
   shadowTransitionConfig?: { gap?: number; color?: ColorRole };
   wrapperStyle?: StyleProp<ViewStyle>;
