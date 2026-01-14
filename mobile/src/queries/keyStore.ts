@@ -120,6 +120,16 @@ export const queries = createQueryKeyStore({
           }),
         ),
     }),
+    forTrack: (trackId: string) => ({
+      queryKey: [trackId],
+      queryFn: async () => {
+        const data = await db.query.tracksToLyrics.findFirst({
+          where: (fields, { eq }) => eq(fields.trackId, trackId),
+          with: { lyric: true },
+        });
+        return data?.lyric ?? null;
+      },
+    }),
   },
   /** Query keys used in `useQuery` for playlists. */
   playlists: {

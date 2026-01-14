@@ -10,6 +10,7 @@ import { Favorite } from "~/resources/icons/Favorite";
 import { InstantMix } from "~/resources/icons/InstantMix";
 import { KeyboardArrowDown } from "~/resources/icons/KeyboardArrowDown";
 import { LibraryMusic } from "~/resources/icons/LibraryMusic";
+import { Lyrics } from "~/resources/icons/Lyrics";
 import { MoreVert } from "~/resources/icons/MoreVert";
 import { Timer } from "~/resources/icons/Timer";
 import { useFavoriteTrack, useTrack } from "~/queries/track";
@@ -19,6 +20,7 @@ import { presentTrackSheet } from "~/services/SessionStore";
 import { usePlayerProgress } from "../helpers/usePlayerProgress";
 import { NowPlayingArtwork } from "../components/Artwork";
 import { ProgressBar } from "../components/ProgressBar";
+import { LyricSheet } from "../sheets/LyricSheet";
 import { PlaybackOptionsSheet } from "./PlaybackOptionsSheet";
 import { SleepTimerSheet } from "./SleepTimerSheet";
 import { useSleepTimerStore } from "./SleepTimerSheet/store";
@@ -52,7 +54,7 @@ export default function NowPlaying() {
         <SeekBar duration={track.duration} id={track.id} uri={track.uri} />
         <PlaybackControls />
       </View>
-      <BottomAppBar />
+      <BottomAppBar trackId={track.id} />
     </SafeContainer>
   );
 }
@@ -225,20 +227,29 @@ function PlaybackControls() {
 
 //#region Bottom App Bar
 /** Actions rendered on the bottom of the screen. */
-function BottomAppBar() {
+function BottomAppBar({ trackId }: { trackId: string }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const lyricSheetRef = useSheetRef();
   const playbackOptionsSheetRef = useSheetRef();
   const sleepTimerSheetRef = useSheetRef();
   const sleepTimerActive = useSleepTimerStore((s) => s.endAt) !== null;
 
   return (
     <>
+      <LyricSheet ref={lyricSheetRef} trackId={trackId} />
       <PlaybackOptionsSheet ref={playbackOptionsSheetRef} />
       <SleepTimerSheet ref={sleepTimerSheetRef} />
+
       <View className="flex-row items-center justify-between gap-4 p-4">
         <BackButton />
         <View className="flex-row items-center gap-4">
+          <IconButton
+            Icon={Lyrics}
+            accessibilityLabel={t("feat.lyrics.title")}
+            onPress={() => lyricSheetRef.current?.present()}
+            size="lg"
+          />
           <View className="relative">
             <IconButton
               Icon={Timer}

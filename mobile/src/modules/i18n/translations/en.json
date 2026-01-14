@@ -42,6 +42,7 @@
     "entryRemove": "Remove `{{- name}}`.",
     "entryRemoved": "Removed `{{- name}}`.",
 
+    "entryManage": "Manage {{- name}}",
     "entrySeeMore": "See more about `{{- name}}`.",
     "notFound": "`{{- name}}` doesn't exist.",
 
@@ -228,7 +229,10 @@
     },
     "lyrics": {
       "title": "Lyrics",
-      "brief": "Manage lyrics associated with tracks."
+      "brief": "Manage lyrics associated with tracks.",
+      "extra": {
+        "notFound": "Lyrics Not Found"
+      }
     },
     "scanning": {
       "title": "Scanning"
