@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "7cd7e707-4468-4965-8f5f-37ea641e1d41",
+  "id": "f1f83f76-4669-4104-9668-2207def4afc4",
   "prevId": "be8c661e-2a43-432a-96d3-19ba45b9e642",
   "tables": {
     "albums": {
@@ -277,6 +277,37 @@
         "modification_time": {
           "name": "modification_time",
           "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "lyrics": {
+      "name": "lyrics",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "lyrics": {
+          "name": "lyrics",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -627,6 +658,57 @@
           "name": "tracks_to_artists_track_id_artist_name_pk"
         }
       },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "tracks_to_lyrics": {
+      "name": "tracks_to_lyrics",
+      "columns": {
+        "track_id": {
+          "name": "track_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "lyric_id": {
+          "name": "lyric_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "tracks_to_lyrics_track_id_tracks_id_fk": {
+          "name": "tracks_to_lyrics_track_id_tracks_id_fk",
+          "tableFrom": "tracks_to_lyrics",
+          "tableTo": "tracks",
+          "columnsFrom": [
+            "track_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "tracks_to_lyrics_lyric_id_lyrics_id_fk": {
+          "name": "tracks_to_lyrics_lyric_id_lyrics_id_fk",
+          "tableFrom": "tracks_to_lyrics",
+          "tableTo": "lyrics",
+          "columnsFrom": [
+            "lyric_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
     },
