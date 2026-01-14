@@ -1,5 +1,6 @@
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
+import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Add } from "~/resources/icons/Add";
@@ -11,6 +12,7 @@ import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 
 import { ScrollView } from "~/components/Defaults";
+import { Divider } from "~/components/Divider";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { SegmentedList } from "~/components/List/Segmented";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
@@ -65,25 +67,27 @@ export default function Lyric({
           </SegmentedList.CustomItem>
           {data.tracksToLyrics.length > 0 ? (
             <SegmentedList.CustomItem>
-              {data.tracksToLyrics.map(({ track }) => (
-                <SegmentedList.Item
-                  key={track.id}
-                  labelText={track.name}
-                  supportingText={track.uri}
-                  RightElement={
-                    <IconButton
-                      Icon={LinkOff}
-                      accessibilityLabel={t("template.entryRemove", {
-                        name: track.name,
-                      })}
-                      onPress={() =>
-                        console.log(`Unlinking ${track.name} from lyrics...`)
-                      }
-                    />
-                  }
-                  className="rounded-none"
-                  _asView
-                />
+              {data.tracksToLyrics.map(({ track }, index) => (
+                <Fragment key={track.id}>
+                  {index > 0 ? <Divider className="mx-4" /> : null}
+                  <SegmentedList.Item
+                    labelText={track.name}
+                    supportingText={track.uri}
+                    RightElement={
+                      <IconButton
+                        Icon={LinkOff}
+                        accessibilityLabel={t("template.entryRemove", {
+                          name: track.name,
+                        })}
+                        onPress={() =>
+                          console.log(`Unlinking ${track.name} from lyrics...`)
+                        }
+                      />
+                    }
+                    className="rounded-none pr-1"
+                    _asView
+                  />
+                </Fragment>
               ))}
             </SegmentedList.CustomItem>
           ) : null}
