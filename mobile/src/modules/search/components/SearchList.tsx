@@ -1,4 +1,4 @@
-import type { FlashListProps } from "@shopify/flash-list";
+import type { FlashListProps, ListRenderItemInfo } from "@shopify/flash-list";
 import type { ParseKeys } from "i18next";
 import { LinearGradient } from "expo-linear-gradient";
 import { useCallback, useMemo, useState } from "react";
@@ -17,8 +17,14 @@ import { SearchBar } from "./SearchBar";
 
 const DEFAULT_GAP = 24;
 
-interface SearchListProps<TData> extends FlashListProps<TData> {
+interface SearchListProps<TData> extends Omit<
+  FlashListProps<TData>,
+  "keyExtractor" | "renderItem"
+> {
   keyExtractor: NonNullable<FlashListProps<TData>["keyExtractor"]>;
+  renderItem: (
+    info: ListRenderItemInfo<TData> & { listSize: number },
+  ) => React.ReactElement;
   onFilterData: (query: string, data: readonly TData[]) => TData[];
   emptyMsgKey?: ParseKeys;
   shadowTransitionConfig?: { gap?: number; color?: ColorRole };
@@ -29,7 +35,8 @@ interface SearchListProps<TData> extends FlashListProps<TData> {
 /** Resuable list with filtering capabilities. */
 export function SearchList<TData>({
   data,
-  keyExtractor,
+  keyExtractor: _keyExtractor,
+  renderItem: _renderItem,
   onFilterData,
   emptyMsgKey,
   shadowTransitionConfig,
@@ -41,17 +48,23 @@ export function SearchList<TData>({
   const shadowColor = useColor(shadowTransitionConfig?.color, "surface");
   const [query, setQuery] = useState("");
 
-  const revisedKeyExtractor: NonNullable<
-    FlashListProps<TData>["keyExtractor"]
-  > = useCallback(
-    (item, index) => `${keyExtractor(item, index)}__${index}`,
-    [keyExtractor],
-  );
-
   const filteredData = useMemo(
     () => onFilterData(query, data ?? []),
     [data, onFilterData, query],
   );
+
+  const dataSize = useMemo(() => filteredData.length, [filteredData]);
+
+  const keyExtractor: SearchListProps<TData>["keyExtractor"] = useCallback(
+    (item, index) => `${_keyExtractor(item, index)}__${index}`,
+    [_keyExtractor],
+  );
+
+  const renderItem: NonNullable<FlashListProps<TData>["renderItem"]> =
+    useCallback(
+      (args) => _renderItem({ ...args, listSize: dataSize }),
+      [_renderItem, dataSize],
+    );
 
   return (
     <View style={wrapperStyle} className={cn("shrink grow", wrapperClassName)}>
@@ -63,7 +76,8 @@ export function SearchList<TData>({
       <View className="relative shrink grow">
         <FlashList
           data={filteredData}
-          keyExtractor={revisedKeyExtractor}
+          keyExtractor={keyExtractor}
+          renderItem={renderItem}
           maintainVisibleContentPosition={{ disabled: true }}
           ListEmptyComponent={<ContentPlaceholder errMsgKey={emptyMsgKey} />}
           {...props}
