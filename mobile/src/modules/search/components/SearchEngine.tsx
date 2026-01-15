@@ -46,8 +46,8 @@ export function SearchEngine<TScope extends SearchCategories>(
     <View className="shrink grow">
       <SearchBar
         searchPlaceholder={t("feat.search.extra.searchMedia")}
-        query={query}
         setQuery={setQuery}
+        isEmpty={query === ""}
         autoFocus={!props.forSheets}
       />
       <SearchResultsList {...props} query={query} />

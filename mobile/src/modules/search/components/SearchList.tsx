@@ -79,8 +79,8 @@ export function SearchList<TData>({
     <View style={wrapperStyle} className={cn("shrink grow", wrapperClassName)}>
       <SearchBar
         searchPlaceholder={t("feat.search.title")}
-        query={query}
         setQuery={setQuery}
+        isEmpty={query === ""}
       />
       <View className="relative shrink grow">
         <FlashList

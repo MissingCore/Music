@@ -9,8 +9,8 @@ import { TextInput, useInputRef } from "~/components/Form/Input";
 
 export function SearchBar(props: {
   searchPlaceholder: string;
-  query: string;
   setQuery: (query: string) => void;
+  isEmpty: boolean;
   autoFocus?: boolean;
 }) {
   const { t } = useTranslation();
@@ -34,7 +34,7 @@ export function SearchBar(props: {
           inputRef.current?.clear();
           props.setQuery("");
         }}
-        disabled={props.query === ""}
+        disabled={props.isEmpty}
         className="mr-1 disabled:invisible"
       />
     </View>
