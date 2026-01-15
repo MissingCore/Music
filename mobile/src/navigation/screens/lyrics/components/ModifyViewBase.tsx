@@ -25,13 +25,11 @@ import { TextInput } from "~/components/Form/Input";
 import { ModalTemplate } from "~/components/Modal";
 import { TEm } from "~/components/Typography/StyledText";
 
-type ModifyLyricBaseProps = {
+export function ModifyLyricBase(props: {
   onSubmit: (data: LyricEntry) => void | Promise<void>;
   mode?: "create" | "edit";
   initialData?: Omit<LyricEntry, "mode">;
-};
-
-export function ModifyLyricBase(props: ModifyLyricBaseProps) {
+}) {
   const { offset, ...rest } = useFloatingContent();
 
   const RenderedWorkflow = useMemo(
@@ -43,7 +41,7 @@ export function ModifyLyricBase(props: ModifyLyricBaseProps) {
     <FormStateProvider
       schema={LyricEntrySchema}
       initData={{
-        mode: props.mode === "edit" ? "edit" : "create",
+        mode: props.mode ?? "create",
         id: props.initialData?.id ?? null,
         name: props.initialData?.name ?? "",
         lyrics: props.initialData?.lyrics ?? "",
