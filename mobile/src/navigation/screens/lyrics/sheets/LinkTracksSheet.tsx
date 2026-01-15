@@ -75,6 +75,7 @@ export function LinkTracksSheet(props: { ref: TrueSheetRef; lyricId: string }) {
           />
         )}
         nestedScrollEnabled
+        shadowTransitionConfig={{ color: "surfaceBright" }}
         renderOnQuery
         contentContainerClassName="pb-4"
       />
