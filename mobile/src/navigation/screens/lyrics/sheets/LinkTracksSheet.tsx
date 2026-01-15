@@ -20,14 +20,7 @@ import { getTrackArtwork } from "~/api/track.utils";
 export function LinkTracksSheet(props: { ref: TrueSheetRef; lyricId: string }) {
   const { data } = useAllMedia();
   return (
-    <DetachedSheet
-      ref={props.ref}
-      onCleanup={() => {
-        queryClient.invalidateQueries({ queryKey: q.lyrics._def });
-      }}
-      keyboardAndToast
-      snapTop
-    >
+    <DetachedSheet ref={props.ref} keyboardAndToast snapTop>
       <SearchList
         data={data?.track ?? []}
         keyExtractor={({ id }) => id}
