@@ -93,6 +93,44 @@ export const queries = createQueryKeyStore({
       queryFn: () => getFolder(folderPath),
     }),
   },
+  /** Query keys used in `useQuery` for lyrics. */
+  lyrics: {
+    all: {
+      queryKey: null,
+      queryFn: () =>
+        db.query.lyrics.findMany({
+          columns: { lyrics: false },
+          with: { tracksToLyrics: true },
+          orderBy: (fields) => iAsc(fields.name),
+        }),
+    },
+    detail: (lyricId: string) => ({
+      queryKey: [lyricId],
+      queryFn: () =>
+        throwIfNoResults(
+          db.query.lyrics.findFirst({
+            where: (fields, { eq }) => eq(fields.id, lyricId),
+            with: {
+              tracksToLyrics: {
+                with: {
+                  track: { columns: { id: true, name: true, uri: true } },
+                },
+              },
+            },
+          }),
+        ),
+    }),
+    forTrack: (trackId: string) => ({
+      queryKey: [trackId],
+      queryFn: async () => {
+        const data = await db.query.tracksToLyrics.findFirst({
+          where: (fields, { eq }) => eq(fields.trackId, trackId),
+          with: { lyric: true },
+        });
+        return data?.lyric ?? null;
+      },
+    }),
+  },
   /** Query keys used in `useQuery` for playlists. */
   playlists: {
     all: {

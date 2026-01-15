@@ -11,8 +11,6 @@ import type {
   SlimTrackWithAlbum,
 } from "~/db/slimTypes";
 
-import { Close } from "~/resources/icons/Close";
-import { Search } from "~/resources/icons/Search";
 import { AlbumArtistsKey } from "~/api/album.utils";
 import { getArtistsString } from "~/api/artist.utils";
 import { getPlaylistArtwork } from "~/api/playlist.utils";
@@ -24,10 +22,9 @@ import { cn } from "~/lib/style";
 import { isString } from "~/utils/validation";
 import { FlashList, FlatList } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
-import { IconButton } from "~/components/Form/Button/Icon";
-import { TextInput, useInputRef } from "~/components/Form/Input";
 import { TEm } from "~/components/Typography/StyledText";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
+import { SearchBar } from "./SearchBar";
 import { SearchResult } from "./SearchResult";
 import { useSearch } from "../hooks/useSearch";
 import type {
@@ -43,33 +40,16 @@ export function SearchEngine<TScope extends SearchCategories>(
   props: SearchResultsListProps<TScope>,
 ) {
   const { t } = useTranslation();
-  const inputRef = useInputRef();
   const [query, setQuery] = useState("");
 
   return (
     <View className="shrink grow">
-      {/* Search input. */}
-      <View className="flex-row items-center gap-2 rounded-full bg-surfaceContainerLowest pl-4">
-        <Search />
-        <TextInput
-          ref={inputRef}
-          autoFocus={!props.forSheets}
-          onChangeText={(text) => setQuery(text)}
-          placeholder={t("feat.search.extra.searchMedia")}
-          className="shrink grow"
-          forSheet
-        />
-        <IconButton
-          Icon={Close}
-          accessibilityLabel={t("form.clear")}
-          onPress={() => {
-            inputRef?.current?.clear();
-            setQuery("");
-          }}
-          disabled={query === ""}
-          className="mr-1 disabled:invisible"
-        />
-      </View>
+      <SearchBar
+        searchPlaceholder={t("feat.search.extra.searchMedia")}
+        setQuery={setQuery}
+        isEmpty={query === ""}
+        autoFocus={!props.forSheets}
+      />
       <SearchResultsList {...props} query={query} />
     </View>
   );

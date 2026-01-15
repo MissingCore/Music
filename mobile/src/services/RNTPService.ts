@@ -7,7 +7,7 @@ import TrackPlayer, {
 
 import i18next from "~/modules/i18n";
 import { addPlayedTrack } from "~/api/recent";
-import { deleteTrack } from "~/api/track";
+import { deleteTracks } from "~/api/track";
 import { playbackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 import { preferenceStore } from "~/stores/Preference/store";
@@ -229,7 +229,12 @@ export async function PlaybackService() {
           errorMessage =
             "Unexpected runtime error. For example, this may happen if the file has a sample rate greater than or equal to 352.8kHz.";
 
-        await deleteTrack(erroredTrack.id, { errorName: e.code, errorMessage });
+        await deleteTracks([
+          {
+            id: erroredTrack.id,
+            errorInfo: { errorName: e.code, errorMessage },
+          },
+        ]);
         // Attempt to play the next track.
         await Queue.removeIds([erroredTrack.id]);
         await AppCleanUp.media();

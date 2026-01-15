@@ -118,7 +118,7 @@ async function getAllMedia() {
 
 const queryKey = ["search"];
 
-function useAllMedia() {
+export function useAllMedia() {
   return useQuery({ queryKey, queryFn: getAllMedia });
 }
 //#endregion

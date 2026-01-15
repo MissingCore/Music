@@ -42,6 +42,7 @@
     "entryRemove": "Remove `{{- name}}`.",
     "entryRemoved": "Removed `{{- name}}`.",
 
+    "entryManage": "Manage {{- name}}",
     "entrySeeMore": "See more about `{{- name}}`.",
     "notFound": "`{{- name}}` doesn't exist.",
 
@@ -70,6 +71,9 @@
     "stay": "Stay",
     "leave": "Leave",
 
+    "create": "Create",
+    "delete": "Delete",
+    "edit": "Edit",
     "clear": "Clear",
     "reset": "Reset",
 
@@ -222,6 +226,13 @@
     },
     "restoreLastPosition": {
       "title": "Restore From Last Played Position"
+    },
+    "lyrics": {
+      "title": "Lyrics",
+      "brief": "Manage lyrics associated with tracks.",
+      "extra": {
+        "notFound": "Lyrics Not Found"
+      }
     },
     "scanning": {
       "title": "Scanning"
