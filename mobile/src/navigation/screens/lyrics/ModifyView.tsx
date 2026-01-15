@@ -1,7 +1,6 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import type { StaticScreenProps } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useQueryClient } from "@tanstack/react-query";
 import { eq } from "drizzle-orm";
 import { useTranslation } from "react-i18next";
@@ -21,32 +20,29 @@ type Props = StaticScreenProps<{ id: string }>;
 
 export default function ModifyLyric({
   route: {
-    params: { id },
+    params: { id: lyricId },
   },
 }: Props) {
   const { t } = useTranslation();
-  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const navigation = useNavigation();
   const queryClient = useQueryClient();
-  const { isPending, error, data } = useLyric(id);
+  const { isPending, error, data } = useLyric(lyricId);
 
   if (isPending || error || !data)
     return <PagePlaceholder isPending={isPending} />;
 
-  const initData = { id, name: data.name, lyrics: data.lyrics };
+  const initData = { id: lyricId, name: data.name, lyrics: data.lyrics };
 
   return (
     <ModifyLyricBase
       mode="edit"
       initialData={initData}
-      onSubmit={async (data) => {
+      onSubmit={async ({ mode: _mode, id: _id, ...entry }) => {
         try {
-          const entry = { name: data.name, lyrics: data.lyrics };
-          await db.update(lyrics).set(entry).where(eq(lyrics.id, id));
+          await db.update(lyrics).set(entry).where(eq(lyrics.id, lyricId));
 
           queryClient.resetQueries({ queryKey: q.lyrics._def });
           navigation.goBack();
-          // If lyric name changed, see the new lyric page.
-          if (initData.name !== data.name) navigation.replace("Lyric", { id });
         } catch {
           toast.error(t("err.flow.generic.title"), ToastOptions);
         }
