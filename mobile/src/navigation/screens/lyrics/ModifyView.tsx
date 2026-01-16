@@ -37,7 +37,7 @@ export default function ModifyLyric({
     <ModifyLyricBase
       mode="edit"
       initialData={initData}
-      onSubmit={async ({ mode: _mode, id: _id, ...entry }) => {
+      onSubmit={async ({ id: _, ...entry }) => {
         try {
           await db.update(lyrics).set(entry).where(eq(lyrics.id, lyricId));
 

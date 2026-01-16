@@ -263,7 +263,10 @@ export const RootStack = createNativeStackNavigator({
           screen: RecentlyPlayed,
           options: { title: "feat.playedRecent.title" },
         },
-        ModifyTrack,
+        ModifyTrack: {
+          screen: ModifyTrack,
+          options: { title: "feat.trackMetadata.title" },
+        },
       },
     },
     Lyric: {
@@ -276,8 +279,14 @@ export const RootStack = createNativeStackNavigator({
           screen: Lyrics,
           options: { title: "feat.lyrics.title" },
         },
-        CreateLyric,
-        ModifyLyric,
+        CreateLyric: {
+          screen: CreateLyric,
+          options: { title: "form.create" },
+        },
+        ModifyLyric: {
+          screen: ModifyLyric,
+          options: { title: "form.edit" },
+        },
         Lyric,
       },
     },

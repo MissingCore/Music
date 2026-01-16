@@ -16,7 +16,6 @@ import { tracksToArtists } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 import { Add } from "~/resources/icons/Add";
-import { Check } from "~/resources/icons/Check";
 import { Close } from "~/resources/icons/Close";
 import { upsertAlbums } from "~/api/album";
 import { AlbumArtistsKey } from "~/api/album.utils";
@@ -32,7 +31,6 @@ import { FormStateProvider, useFormStateContext } from "~/hooks/useFormState";
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 import { router } from "~/navigation/utils/router";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
-import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { cn } from "~/lib/style";
@@ -81,34 +79,11 @@ export default function ModifyTrack({
           new Set(albumArtists.map((artist) => artist.trim())).size
       }
     >
-      <ScreenConfig />
       <MetadataForm bottomOffset={offset} />
       <ResetWorkflow {...rest} uri={data.uri} />
     </FormStateProvider>
   );
 }
-
-//#region Screen Configuration
-function ScreenConfig() {
-  const { t } = useTranslation();
-  const { canSubmit, isSubmitting, onSubmit } = useFormState();
-  return (
-    <ScreenOptions
-      title="feat.trackMetadata.title"
-      // Hacky solution to disable the back button when submitting.
-      headerLeft={isSubmitting ? () => undefined : undefined}
-      headerRight={() => (
-        <IconButton
-          Icon={Check}
-          accessibilityLabel={t("form.apply")}
-          onPress={onSubmit}
-          disabled={!canSubmit || isSubmitting}
-        />
-      )}
-    />
-  );
-}
-//#endregion
 
 //#region Metadata Form
 function MetadataForm({ bottomOffset }: { bottomOffset: number }) {

@@ -19,7 +19,7 @@ export default function CreateLyric() {
 
   return (
     <ModifyLyricBase
-      onSubmit={async ({ mode: _mode, id: _id, ...entry }) => {
+      onSubmit={async ({ id: _, ...entry }) => {
         try {
           const [newLyric] = await db.insert(lyrics).values(entry).returning();
           if (!newLyric) throw new Error("Lyric not returned after insertion.");

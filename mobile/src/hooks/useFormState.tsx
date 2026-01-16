@@ -9,11 +9,17 @@ import {
   useRef,
   useState,
 } from "react";
+import { useTranslation } from "react-i18next";
 import { BackHandler } from "react-native";
 import type { ZodMiniObject, z } from "zod/mini";
 
+import { Check } from "~/resources/icons/Check";
+
+import { ScreenOptions } from "~/navigation/components/ScreenOptions";
+
 import { wait } from "~/utils/promise";
 import { isNumber, isString } from "~/utils/validation";
+import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { ModalTemplate } from "~/components/Modal";
 
 type InitialArguments<TSchema extends ZodMiniObject> = {
@@ -44,13 +50,10 @@ const FormStateContext = createContext<FormState<any>>(null as never);
 export function FormStateProvider<TSchema extends ZodMiniObject>(
   props: InitialArguments<TSchema> & { children: React.ReactNode },
 ) {
-  const navigation = useNavigation();
-
   const initData = useRef(props.initData);
   const schemaRef = useRef(props.schema);
   const onSubmitRef = useRef(props.onSubmit);
   const onConstraintsRef = useRef(props.onConstraints);
-  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const [data, setData] = useState(props.initData);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -94,18 +97,6 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
     setIsSubmitting(false);
   }, [canSubmit, data]);
 
-  useEffect(() => {
-    const subscription = BackHandler.addEventListener(
-      "hardwareBackPress",
-      () => {
-        if (!hasChanged) return false;
-        if (!isSubmitting) setShowConfirmation(true);
-        return true;
-      },
-    );
-    return () => subscription.remove();
-  }, [hasChanged, isSubmitting]);
-
   return (
     <FormStateContext
       value={{
@@ -118,19 +109,9 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
         setIsSubmitting,
       }}
     >
+      <TopAppBar />
       {props.children}
-      <ModalTemplate
-        visible={showConfirmation}
-        titleKey="form.unsaved"
-        topAction={{
-          textKey: "form.leave",
-          onPress: () => navigation.goBack(),
-        }}
-        bottomAction={{
-          textKey: "form.stay",
-          onPress: () => setShowConfirmation(false),
-        }}
-      />
+      <UnsavedChangesPrompt />
     </FormStateContext>
   );
 }
@@ -145,5 +126,60 @@ export function useFormStateContext<TData extends Record<string, any>>() {
       "`useFormStateContext` must be used in a `FormStateProvider`.",
     );
   return context as FormState<TData>;
+}
+//#endregion
+
+//#region Internal
+function TopAppBar() {
+  const { t } = useTranslation();
+  const { canSubmit, isSubmitting, onSubmit } = useFormStateContext();
+  return (
+    <ScreenOptions
+      // Hacky solution to disable the back button when submitting.
+      headerLeft={isSubmitting ? () => undefined : undefined}
+      headerRight={() => (
+        <FilledIconButton
+          Icon={Check}
+          accessibilityLabel={t("form.apply")}
+          onPress={onSubmit}
+          disabled={!canSubmit || isSubmitting}
+          size="sm"
+        />
+      )}
+    />
+  );
+}
+
+function UnsavedChangesPrompt() {
+  const navigation = useNavigation();
+  const { hasChanged, isSubmitting } = useFormStateContext();
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
+  useEffect(() => {
+    const subscription = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        if (!hasChanged) return false;
+        if (!isSubmitting) setShowConfirmation(true);
+        return true;
+      },
+    );
+    return () => subscription.remove();
+  }, [hasChanged, isSubmitting]);
+
+  return (
+    <ModalTemplate
+      visible={showConfirmation}
+      titleKey="form.unsaved"
+      topAction={{
+        textKey: "form.leave",
+        onPress: () => navigation.goBack(),
+      }}
+      bottomAction={{
+        textKey: "form.stay",
+        onPress: () => setShowConfirmation(false),
+      }}
+    />
+  );
 }
 //#endregion

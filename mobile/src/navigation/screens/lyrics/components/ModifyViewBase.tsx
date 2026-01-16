@@ -2,7 +2,6 @@ import { useNavigation } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 import { eq } from "drizzle-orm";
 import { Fragment, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { z } from "zod/mini";
@@ -10,17 +9,14 @@ import { z } from "zod/mini";
 import { db } from "~/db";
 import { lyrics } from "~/db/schema";
 
-import { Check } from "~/resources/icons/Check";
 import { queries as q } from "~/queries/keyStore";
 import { FormStateProvider, useFormStateContext } from "~/hooks/useFormState";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
-import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 
 import { wait } from "~/utils/promise";
 import { ScrollablePresets } from "~/components/Defaults";
 import { ExtendedTButton } from "~/components/Form/Button";
-import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";
 import { ModalTemplate } from "~/components/Modal";
 import { TEm } from "~/components/Typography/StyledText";
@@ -28,7 +24,7 @@ import { TEm } from "~/components/Typography/StyledText";
 export function ModifyLyricBase(props: {
   onSubmit: (data: LyricEntry) => void | Promise<void>;
   mode?: "create" | "edit";
-  initialData?: Omit<LyricEntry, "mode">;
+  initialData?: LyricEntry;
 }) {
   const { offset, ...rest } = useFloatingContent();
 
@@ -41,42 +37,17 @@ export function ModifyLyricBase(props: {
     <FormStateProvider
       schema={LyricEntrySchema}
       initData={{
-        mode: props.mode ?? "create",
         id: props.initialData?.id ?? null,
         name: props.initialData?.name ?? "",
         lyrics: props.initialData?.lyrics ?? "",
       }}
       onSubmit={props.onSubmit}
     >
-      <ScreenConfig />
       <LyricForm bottomOffset={offset} />
       <RenderedWorkflow {...rest} />
     </FormStateProvider>
   );
 }
-
-//#region Screen Configuration
-function ScreenConfig() {
-  const { t } = useTranslation();
-  const { data, canSubmit, isSubmitting, onSubmit } = useFormState();
-  return (
-    <ScreenOptions
-      title={`form.${data.mode}`}
-      // Hacky solution to disable the back button when submitting.
-      headerLeft={isSubmitting ? () => undefined : undefined}
-      headerRight={() => (
-        <FilledIconButton
-          Icon={Check}
-          accessibilityLabel={t("form.apply")}
-          onPress={onSubmit}
-          disabled={!canSubmit || isSubmitting}
-          size="sm"
-        />
-      )}
-    />
-  );
-}
-//#endregion
 
 //#region Lyric Form
 function LyricForm({ bottomOffset }: { bottomOffset: number }) {
@@ -179,7 +150,6 @@ const NonEmptyStringSchema = z.string().check(z.trim(), z.minLength(1));
 
 const LyricEntrySchema = z.object({
   // Additional context:
-  mode: z.enum(["create", "edit"]),
   id: z.nullable(z.string()),
   // Actual form fields:
   name: NonEmptyStringSchema,
