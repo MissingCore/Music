@@ -8,7 +8,8 @@ import i18next from "~/modules/i18n";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { sessionStore } from "~/services/SessionStore";
-import { StandardScrollLayout } from "../../layouts/StandardScroll";
+
+import { ListLayout } from "~/navigation/layouts/ListLayout";
 
 import { ToastOptions } from "~/lib/toast";
 import { SegmentedList } from "~/components/List/Segmented";
@@ -27,7 +28,7 @@ export default function ExperimentalSettings() {
   const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
 
   return (
-    <StandardScrollLayout>
+    <ListLayout>
       <SegmentedList>
         <SegmentedList.Item
           labelTextKey="feat.continuePlaybackOnDismiss.title"
@@ -67,7 +68,7 @@ export default function ExperimentalSettings() {
           onPress={purgeWaveformCache}
         />
       </SegmentedList>
-    </StandardScrollLayout>
+    </ListLayout>
   );
 }
 

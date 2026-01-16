@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 
-import { StandardScrollLayout } from "~/navigation/layouts/StandardScroll";
+import { ListLayout } from "~/navigation/layouts/ListLayout";
 import {
   AccentFontSheet,
   PrimaryFontSheet,
@@ -42,7 +42,7 @@ export default function AppearanceSettings() {
       <MinAlbumLengthSheet ref={minAlbumLengthSheetRef} />
       <NowPlayingDesignSheet ref={nowPlayingDesignSheetRef} />
 
-      <StandardScrollLayout>
+      <ListLayout>
         <SegmentedList>
           <SegmentedList.Item
             labelTextKey="feat.font.extra.accent"
@@ -92,7 +92,7 @@ export default function AppearanceSettings() {
             RightElement={<Switch enabled={quickScroll} />}
           />
         </SegmentedList>
-      </StandardScrollLayout>
+      </ListLayout>
     </>
   );
 }

@@ -15,7 +15,8 @@ import {
 } from "~/db/schema";
 
 import { useTheme } from "~/hooks/useTheme";
-import { StandardScrollLayout } from "../../layouts/StandardScroll";
+
+import { ListLayout } from "~/navigation/layouts/ListLayout";
 
 import { Colors } from "~/constants/Styles";
 import { ImageDirectory } from "~/lib/file-system";
@@ -30,7 +31,7 @@ export default function Insights() {
   const navigation = useNavigation();
 
   return (
-    <StandardScrollLayout>
+    <ListLayout>
       <SegmentedList>
         <StorageWidget />
         <DBSummaryWidget />
@@ -54,7 +55,7 @@ export default function Insights() {
           onPress={() => navigation.navigate("SaveErrors")}
         />
       </SegmentedList>
-    </StandardScrollLayout>
+    </ListLayout>
   );
 }
 

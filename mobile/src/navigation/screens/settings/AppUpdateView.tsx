@@ -8,8 +8,9 @@ import { LogoGitHub } from "~/resources/icons/LogoGitHub";
 import { LogoPlayStore } from "~/resources/icons/LogoPlayStore";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { useTheme } from "~/hooks/useTheme";
-import { useHasNewUpdate } from "../../hooks/useHasNewUpdate";
-import { StandardScrollLayout } from "../../layouts/StandardScroll";
+
+import { useHasNewUpdate } from "~/navigation/hooks/useHasNewUpdate";
+import { ListLayout } from "~/navigation/layouts/ListLayout";
 
 import * as LINKS from "~/constants/Links";
 import { FontSize } from "~/constants/Styles";
@@ -38,7 +39,7 @@ export default function AppUpdate() {
   const codeBg = `${onSurface}${scheme === "dark" ? "26" : "0D"}`;
 
   return (
-    <StandardScrollLayout>
+    <ListLayout>
       <SegmentedList.CustomItem className="gap-4 p-4">
         <AccentText className="text-xl" originalText>
           {release.version}
@@ -130,6 +131,6 @@ export default function AppUpdate() {
           />
         ) : null}
       </SegmentedList>
-    </StandardScrollLayout>
+    </ListLayout>
   );
 }

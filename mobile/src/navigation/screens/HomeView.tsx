@@ -6,7 +6,8 @@ import {
   useFavoriteListsForCards,
   useFavoriteTracksCount,
 } from "~/queries/favorite";
-import { StandardScrollLayout } from "../layouts/StandardScroll";
+
+import { HomeScrollListLayout } from "../layouts/HomeScrollListLayout";
 
 import { cn } from "~/lib/style";
 import { abbreviateNum } from "~/utils/number";
@@ -25,7 +26,7 @@ export default function Home() {
   const navigation = useNavigation();
 
   return (
-    <StandardScrollLayout
+    <HomeScrollListLayout
       titleKey="term.home"
       titleAction={
         <IconButton
@@ -35,12 +36,10 @@ export default function Home() {
           size="lg"
         />
       }
-      showScrollbar
-      showStatusBarShadow
     >
       <TEm textKey="term.favorites" className="-mb-4" />
       <Favorites />
-    </StandardScrollLayout>
+    </HomeScrollListLayout>
   );
 }
 

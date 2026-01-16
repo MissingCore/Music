@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 
-import { StandardScrollLayout } from "~/navigation/layouts/StandardScroll";
+import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { PlaybackDelaySheet } from "~/navigation/sheets/PlaybackDelaySheet";
 
 import { SegmentedList } from "~/components/List/Segmented";
@@ -23,7 +23,7 @@ export default function PlaybackSettings() {
     <>
       <PlaybackDelaySheet ref={playbackDelaySheetRef} />
 
-      <StandardScrollLayout>
+      <ListLayout>
         <SegmentedList.Item
           labelTextKey="feat.playback.extra.delay"
           supportingText={t("plural.second", { count: playbackDelay })}
@@ -49,7 +49,7 @@ export default function PlaybackSettings() {
           supportingText={t("feat.lyrics.brief")}
           onPress={() => navigation.navigate("Lyrics")}
         />
-      </StandardScrollLayout>
+      </ListLayout>
     </>
   );
 }

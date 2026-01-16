@@ -15,7 +15,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 
 import { useHasNewUpdate } from "~/navigation/hooks/useHasNewUpdate";
-import { StandardScrollLayout } from "~/navigation/layouts/StandardScroll";
+import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { BackupSheet } from "~/navigation/sheets/BackupSheet";
 import { LanguageSheet } from "~/navigation/sheets/LanguageSheet";
 
@@ -39,7 +39,7 @@ export default function Settings() {
       <LanguageSheet ref={languageSheetRef} />
       <BackupSheet ref={backupSheetRef} />
 
-      <StandardScrollLayout>
+      <ListLayout>
         {hasNewUpdate && (
           <SegmentedList.Item
             labelTextKey="feat.appUpdate.title"
@@ -141,7 +141,7 @@ export default function Settings() {
             className="rounded-none"
           />
         </SegmentedList.CustomItem>
-      </StandardScrollLayout>
+      </ListLayout>
     </>
   );
 }

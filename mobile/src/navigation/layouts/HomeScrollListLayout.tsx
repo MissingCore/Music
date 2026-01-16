@@ -16,23 +16,17 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { useTheme } from "~/hooks/useTheme";
 import { useBottomActionsInset } from "../hooks/useBottomActions";
 
-import { cn } from "~/lib/style";
 import { AnimatedScrollView } from "~/components/Defaults";
 import { Scrollbar, useScrollbarContext } from "~/components/NScrollbar";
 import { AccentText } from "~/components/Typography/AccentText";
 
-/** Standard scrollable layout with an option to display a title. */
-export function StandardScrollLayout(props: {
-  children: React.ReactNode;
-  contentContainerClassName?: string;
+/** Layout with a title, interactive scrollbar, and renders content with standardized spacing. */
+export function HomeScrollListLayout(props: {
   /** Key to title in translations. */
-  titleKey?: ParseKeys;
+  titleKey: ParseKeys;
   /** Action rendered adjacent to the title. */
   titleAction?: React.ReactNode;
-  /** Only takes effect if this is `true` & `titleKey` is provided. */
-  showStatusBarShadow?: boolean;
-  /** Whether the scrollbar should appear on scroll. */
-  showScrollbar?: boolean;
+  children: React.ReactNode;
 }) {
   const { top } = useSafeAreaInsets();
   const bottomInset = useBottomActionsInset();
@@ -52,12 +46,9 @@ export function StandardScrollLayout(props: {
     },
   });
 
-  const statusBarShadowVisibility = useAnimatedStyle(() => {
-    if (!props.titleKey || !props.showStatusBarShadow) return { opacity: 0 };
-    return {
-      opacity: clamp(scrollAmount.value / headerHeight || 0, 0, 1),
-    };
-  });
+  const statusBarShadowVisibility = useAnimatedStyle(() => ({
+    opacity: clamp(scrollAmount.value / headerHeight || 0, 0, 1),
+  }));
 
   return (
     <>
@@ -66,23 +57,14 @@ export function StandardScrollLayout(props: {
         ref={scrollRef}
         {...layoutHandlers}
         onScroll={scrollHandler}
-        contentContainerStyle={
-          props.titleKey
-            ? { paddingBottom: bottomInset.withNav + 16 }
-            : undefined
-        }
-        contentContainerClassName={cn(
-          "grow gap-6 p-4",
-          props.contentContainerClassName,
-        )}
+        contentContainerStyle={{ paddingBottom: bottomInset.withNav + 16 }}
+        contentContainerClassName="grow gap-6 p-4"
       >
-        {props.titleKey ? (
-          <LayoutHeader
-            titleKey={props.titleKey}
-            titleAction={props.titleAction}
-            getHeaderHeight={setHeaderHeight}
-          />
-        ) : undefined}
+        <LayoutHeader
+          titleKey={props.titleKey}
+          titleAction={props.titleAction}
+          getHeaderHeight={setHeaderHeight}
+        />
         {props.children}
       </AnimatedScrollView>
       <Scrollbar
@@ -92,7 +74,7 @@ export function StandardScrollLayout(props: {
           top: 16 + headerHeight + 24,
           bottom: bottomInset.withNav + 16,
         }}
-        isVisible={(props.showScrollbar ?? false) && quickScroll}
+        isVisible={quickScroll}
         {...layoutInfo}
       />
 

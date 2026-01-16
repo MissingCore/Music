@@ -4,7 +4,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { useRescanForTracks } from "~/modules/scanning/helpers/rescan";
 
-import { StandardScrollLayout } from "~/navigation/layouts/StandardScroll";
+import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { MinDurationSheet } from "~/navigation/sheets/MinDurationSheet";
 import { ScanFilterListSheet } from "~/navigation/sheets/ScanFilterListSheet";
 import { SeparatorsSheet } from "~/navigation/sheets/SeparatorsSheet";
@@ -34,7 +34,7 @@ export default function ScanningSettings() {
       <MinDurationSheet ref={minDurationSheetRef} />
       <SeparatorsSheet ref={separatorsSheetRef} />
 
-      <StandardScrollLayout>
+      <ListLayout>
         <SegmentedList>
           <SegmentedList.Item
             labelTextKey="feat.rescan.title"
@@ -80,7 +80,7 @@ export default function ScanningSettings() {
           supportingText={t("plural.entry", { count: delimiters.length })}
           onPress={() => separatorsSheetRef.current?.present()}
         />
-      </StandardScrollLayout>
+      </ListLayout>
     </>
   );
 }

@@ -7,11 +7,11 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { playbackStore } from "~/stores/Playback/store";
 import { useFloatingContent } from "../hooks/useFloatingContent";
+import { ListLayout } from "../layouts/ListLayout";
 import { AppProvider } from "../providers/AppProvider";
 
 import { GITHUB } from "~/constants/Links";
 import { SENTRY_ENABLED, Sentry } from "~/lib/sentry";
-import { ScrollView } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
 import { AccentText } from "~/components/Typography/AccentText";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
@@ -67,10 +67,7 @@ function ErrorLayout({ error }: { error: Error }) {
     <>
       <View ref={onError} />
       <View className="relative flex-1">
-        <ScrollView
-          contentContainerStyle={{ paddingBottom: offset }}
-          contentContainerClassName="grow gap-6 p-4"
-        >
+        <ListLayout contentContainerStyle={{ paddingBottom: offset }}>
           <AccentText style={{ paddingTop: top + 16 }} className="text-4xl">
             {t("err.flow.generic.title")}
           </AccentText>
@@ -85,7 +82,7 @@ function ErrorLayout({ error }: { error: Error }) {
           <StyledText dim className="text-sm">
             {error.stack}
           </StyledText>
-        </ScrollView>
+        </ListLayout>
         <View ref={floatingRef} {...wrapperStyling}>
           <Button
             onPress={() => openBrowserAsync(`${GITHUB}/issues`)}

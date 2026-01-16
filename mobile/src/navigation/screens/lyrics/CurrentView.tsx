@@ -13,11 +13,11 @@ import { LinkOff } from "~/resources/icons/LinkOff";
 import { queries as q } from "~/queries/keyStore";
 import { useLyric } from "~/queries/lyric";
 
+import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 
 import { queryClient } from "~/lib/react-query";
-import { ScrollView } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { SegmentedList } from "~/components/List/Segmented";
@@ -65,7 +65,7 @@ export default function Lyric({
       />
       <LinkTracksSheet ref={linkTracksSheetRef} lyricId={lyricId} />
 
-      <ScrollView contentContainerClassName="grow gap-6 p-4">
+      <ListLayout>
         <SegmentedList.CustomItem className="p-4">
           <StyledText bold className="text-xl">
             {data.name}
@@ -111,7 +111,7 @@ export default function Lyric({
         <SegmentedList.CustomItem className="p-4">
           <StyledText className="text-xs">{data.lyrics}</StyledText>
         </SegmentedList.CustomItem>
-      </ScrollView>
+      </ListLayout>
     </>
   );
 }
