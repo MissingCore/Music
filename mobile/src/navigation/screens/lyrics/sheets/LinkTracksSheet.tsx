@@ -27,21 +27,9 @@ export function LinkTracksSheet(props: { ref: TrueSheetRef; lyricId: string }) {
         keyExtractor={({ id }) => id}
         onFilterData={(_query, data) => {
           const query = _query.toLocaleLowerCase();
-
-          // Copy over filtering strategy from `useSearch`.
-          const filteredResults = data.filter(
-            (i) =>
-              i.name.toLocaleLowerCase().includes(query) ||
-              // One of track's artist names starts with query.
-              i.tracksToArtists.some(({ artistName }) =>
-                artistName.toLocaleLowerCase().startsWith(query),
-              ) ||
-              // Track's album starts with query.
-              i.album?.name.toLocaleLowerCase().startsWith(query),
-          );
-
-          return matchSort(filteredResults, (i) =>
-            i.name.toLocaleLowerCase().startsWith(query),
+          return matchSort(
+            data.filter((i) => i.name.toLocaleLowerCase().includes(query)),
+            (i) => i.name.toLocaleLowerCase().startsWith(query),
           );
         }}
         renderItem={({ item, index }) => (

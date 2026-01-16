@@ -229,7 +229,6 @@
     },
     "lyrics": {
       "title": "Lyrics",
-      "brief": "Manage lyrics associated with tracks.",
       "extra": {
         "notFound": "Lyrics Not Found"
       }
