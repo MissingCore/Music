@@ -5,9 +5,9 @@ import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { useRescanForTracks } from "~/modules/scanning/helpers/rescan";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
-import { MinDurationSheet } from "~/navigation/sheets/MinDurationSheet";
-import { ScanFilterListSheet } from "~/navigation/sheets/ScanFilterListSheet";
-import { SeparatorsSheet } from "~/navigation/sheets/SeparatorsSheet";
+import { MinDurationSheet } from "./sheets/MinDurationSheet";
+import { ScanFilterListSheet } from "./sheets/ScanFilterListSheet";
+import { SeparatorsSheet } from "./sheets/SeparatorsSheet";
 
 import { mutateGuard } from "~/lib/react-query";
 import { SegmentedList } from "~/components/List/Segmented";

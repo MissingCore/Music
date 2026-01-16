@@ -16,8 +16,8 @@ import { PreferenceTogglers } from "~/stores/Preference/actions";
 
 import { useHasNewUpdate } from "~/navigation/hooks/useHasNewUpdate";
 import { ListLayout } from "~/navigation/layouts/ListLayout";
-import { BackupSheet } from "~/navigation/sheets/BackupSheet";
-import { LanguageSheet } from "~/navigation/sheets/LanguageSheet";
+import { BackupSheet } from "./sheets/BackupSheet";
+import { LanguageSheet } from "./sheets/LanguageSheet";
 
 import { APP_VERSION } from "~/constants/Config";
 import * as LINKS from "~/constants/Links";
