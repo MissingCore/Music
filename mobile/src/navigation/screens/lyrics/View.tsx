@@ -12,7 +12,7 @@ import { cn } from "~/lib/style";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { SegmentedList } from "~/components/List/Segmented";
 import { SearchList } from "~/modules/search/components/SearchList";
-import { matchSort } from "~/modules/search/utils";
+import { containSorter } from "~/modules/search/utils";
 
 export default function Lyrics() {
   const { t } = useTranslation();
@@ -35,13 +35,7 @@ export default function Lyrics() {
       <SearchList
         data={data}
         keyExtractor={({ id }) => id}
-        onFilterData={(_query, data) => {
-          const query = _query.toLocaleLowerCase();
-          return matchSort(
-            data.filter((i) => i.name.toLocaleLowerCase().includes(query)),
-            (i) => i.name.toLocaleLowerCase().startsWith(query),
-          );
-        }}
+        onFilterData={(query, data) => containSorter(data, query, "name")}
         renderItem={({ item, index, listSize }) => (
           <SegmentedList.Item
             labelText={item.name}

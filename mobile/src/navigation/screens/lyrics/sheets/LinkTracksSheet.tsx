@@ -16,7 +16,7 @@ import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useAllMedia } from "~/modules/search/hooks/useSearch";
 import { SearchList } from "~/modules/search/components/SearchList";
 import { SearchResult } from "~/modules/search/components/SearchResult";
-import { matchSort } from "~/modules/search/utils";
+import { containSorter } from "~/modules/search/utils";
 
 export function LinkTracksSheet(props: { ref: TrueSheetRef; lyricId: string }) {
   const { data } = useAllMedia();
@@ -25,13 +25,7 @@ export function LinkTracksSheet(props: { ref: TrueSheetRef; lyricId: string }) {
       <SearchList
         data={data?.track ?? []}
         keyExtractor={({ id }) => id}
-        onFilterData={(_query, data) => {
-          const query = _query.toLocaleLowerCase();
-          return matchSort(
-            data.filter((i) => i.name.toLocaleLowerCase().includes(query)),
-            (i) => i.name.toLocaleLowerCase().startsWith(query),
-          );
-        }}
+        onFilterData={(query, data) => containSorter(data, query, "name")}
         renderItem={({ item, index }) => (
           <SearchResult
             button

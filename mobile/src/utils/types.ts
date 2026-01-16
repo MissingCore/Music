@@ -27,7 +27,13 @@ export type UniformObject<TObj extends Record<any, any>, TData> = {
 /** Get the values of an object. */
 export type ObjectValues<T> = T[keyof T];
 
-/** Get the keys of fields that are arrays. */
-export type ArrayObjectKeys<T extends Record<string, any>> = {
-  [K in keyof T]: T[K] extends any[] ? K : never;
+/** Return the keys of an object based on it's value type. */
+export type KeysOfValue<T extends Record<string, any>, TData> = {
+  [K in keyof T]: T[K] extends TData ? K : never;
 }[keyof T];
+
+/** Get the keys of fields that are arrays. */
+export type ArrayObjectKeys<T extends Record<string, any>> = KeysOfValue<
+  T,
+  any[]
+>;
