@@ -74,8 +74,11 @@ export default function ModifyTrack({
         track: data.track,
       }}
       onSubmit={onEditTrack}
-      onConstraints={({ artists }) =>
-        artists.length === new Set(artists.map((artist) => artist.trim())).size
+      onConstraints={({ artists, albumArtists }) =>
+        artists.length ===
+          new Set(artists.map((artist) => artist.trim())).size &&
+        albumArtists.length ===
+          new Set(albumArtists.map((artist) => artist.trim())).size
       }
     >
       <ScreenConfig />
