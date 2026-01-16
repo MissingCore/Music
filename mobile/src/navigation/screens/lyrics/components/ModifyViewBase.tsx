@@ -10,16 +10,21 @@ import { db } from "~/db";
 import { lyrics } from "~/db/schema";
 
 import { queries as q } from "~/queries/keyStore";
-import { FormStateProvider, useFormStateContext } from "~/hooks/useFormState";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 
 import { wait } from "~/utils/promise";
 import { ScrollablePresets } from "~/components/Defaults";
 import { ExtendedTButton } from "~/components/Form/Button";
-import { TextInput } from "~/components/Form/Input";
 import { ModalTemplate } from "~/components/Modal";
-import { TEm } from "~/components/Typography/StyledText";
+import {
+  FormStateProvider,
+  useFormStateContext,
+} from "~/modules/form/FormState";
+import {
+  FormInputImpl,
+  TextareaImpl,
+} from "~/modules/form/FormState/FormInput";
 
 export function ModifyLyricBase(props: {
   onSubmit: (data: LyricEntry) => void | Promise<void>;
@@ -50,9 +55,10 @@ export function ModifyLyricBase(props: {
 }
 
 //#region Lyric Form
-function LyricForm({ bottomOffset }: { bottomOffset: number }) {
-  const { data, setField, isSubmitting } = useFormState();
+const FormInput = FormInputImpl<LyricEntry>();
+const Textarea = TextareaImpl<LyricEntry>();
 
+function LyricForm({ bottomOffset }: { bottomOffset: number }) {
   return (
     <KeyboardAwareScrollView
       bottomOffset={16}
@@ -62,30 +68,8 @@ function LyricForm({ bottomOffset }: { bottomOffset: number }) {
       contentContainerStyle={{ paddingBottom: bottomOffset - 24 }}
       contentContainerClassName="gap-6 p-4"
     >
-      <View className="flex-1">
-        <TEm textKey="feat.trackMetadata.extra.name" dim />
-        <TextInput
-          editable={!isSubmitting}
-          value={data.name}
-          onChangeText={(text) => setField((prev) => ({ ...prev, name: text }))}
-          className="w-full border-b border-outline"
-        />
-      </View>
-
-      <View className="flex-1">
-        <TEm textKey="feat.lyrics.title" dim />
-        <TextInput
-          editable={!isSubmitting}
-          value={data.lyrics}
-          onChangeText={(text) =>
-            setField((prev) => ({ ...prev, lyrics: text }))
-          }
-          multiline
-          numberOfLines={16}
-          textAlignVertical="top"
-          className="min-h-64 w-full border-b border-outline py-3"
-        />
-      </View>
+      <FormInput labelKey="feat.trackMetadata.extra.name" field="name" />
+      <Textarea labelKey="feat.lyrics.title" field="lyrics" />
     </KeyboardAwareScrollView>
   );
 }

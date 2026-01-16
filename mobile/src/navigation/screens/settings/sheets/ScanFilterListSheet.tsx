@@ -9,7 +9,6 @@ import { Add } from "~/resources/icons/Add";
 import { Close } from "~/resources/icons/Close";
 import { CreateNewFolder } from "~/resources/icons/CreateNewFolder";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
-import { useInputForm } from "~/hooks/useInputForm";
 
 import { pickDirectory } from "~/lib/file-system";
 import { ToastOptions } from "~/lib/toast";
@@ -22,6 +21,7 @@ import { DetachedSheet } from "~/components/Sheet/Detached";
 import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
+import { useInputForm } from "~/modules/form/useInputForm";
 
 type FilterList = "listAllow" | "listBlock";
 

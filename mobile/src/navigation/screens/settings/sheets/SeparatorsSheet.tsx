@@ -5,7 +5,6 @@ import { Add } from "~/resources/icons/Add";
 import { Close } from "~/resources/icons/Close";
 import { Info } from "~/resources/icons/Info";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
-import { useInputForm } from "~/hooks/useInputForm";
 
 import { FlatList } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
@@ -16,6 +15,7 @@ import { DetachedSheet } from "~/components/Sheet/Detached";
 import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
+import { useInputForm } from "~/modules/form/useInputForm";
 
 export function SeparatorsSheet(props: { ref: TrueSheetRef }) {
   const { t } = useTranslation();

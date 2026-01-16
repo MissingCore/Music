@@ -5,7 +5,6 @@ import {
 } from "@missingcore/react-native-metadata-retriever";
 import type { StaticScreenProps } from "@react-navigation/native";
 import { eq } from "drizzle-orm";
-import type { ParseKeys } from "i18next";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
@@ -15,8 +14,6 @@ import { db } from "~/db";
 import { tracksToArtists } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
-import { Add } from "~/resources/icons/Add";
-import { Close } from "~/resources/icons/Close";
 import { upsertAlbums } from "~/api/album";
 import { AlbumArtistsKey } from "~/api/album.utils";
 import { createArtists } from "~/api/artist";
@@ -26,23 +23,26 @@ import { Resynchronize } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { getArtworkUri } from "~/modules/scanning/helpers/artwork";
 import { AppCleanUp } from "~/modules/scanning/helpers/cleanup";
-import { FormStateProvider, useFormStateContext } from "~/hooks/useFormState";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 import { router } from "~/navigation/utils/router";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 
 import { clearAllQueries } from "~/lib/react-query";
-import { cn } from "~/lib/style";
 import { ToastOptions } from "~/lib/toast";
 import { splitOn } from "~/utils/string";
-import type { ArrayObjectKeys } from "~/utils/types";
 import { ScrollablePresets } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { ExtendedTButton } from "~/components/Form/Button";
-import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
-import { TextInput } from "~/components/Form/Input";
-import { StyledText, TEm } from "~/components/Typography/StyledText";
+import { StyledText } from "~/components/Typography/StyledText";
+import {
+  FormStateProvider,
+  useFormStateContext,
+} from "~/modules/form/FormState";
+import {
+  ArrayFormInputImpl,
+  FormInputImpl,
+} from "~/modules/form/FormState/FormInput";
 
 type Props = StaticScreenProps<{ id: string }>;
 
@@ -86,6 +86,9 @@ export default function ModifyTrack({
 }
 
 //#region Metadata Form
+const FormInput = FormInputImpl<TrackMetadata>();
+const ArrayFormInput = ArrayFormInputImpl<TrackMetadata>();
+
 function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
   const { t } = useTranslation();
   return (
@@ -129,101 +132,6 @@ function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
         numeric
       />
     </KeyboardAwareScrollView>
-  );
-}
-//#endregion
-
-//#region Form Input
-function FormInput(props: {
-  labelKey: ParseKeys;
-  field: keyof TrackMetadata;
-  numeric?: boolean;
-}) {
-  const { data, setField, isSubmitting } = useFormState();
-
-  const value = data[props.field];
-  const onChange = (text: string) => {
-    const realNum = text.trim() === "" ? null : +text;
-    setField((prev) => ({
-      ...prev,
-      [props.field]: props.numeric
-        ? Number.isNaN(realNum)
-          ? prev[props.field] // Use prior value if we get `NaN`.
-          : realNum
-        : text,
-    }));
-  };
-
-  return (
-    <View className="flex-1">
-      <TEm textKey={props.labelKey} dim />
-      <TextInput
-        inputMode={props.numeric ? "numeric" : undefined}
-        editable={!isSubmitting}
-        value={value !== null ? String(value) : ""}
-        onChangeText={onChange}
-        className="w-full border-b border-outline"
-      />
-    </View>
-  );
-}
-
-function ArrayFormInput(props: {
-  labelKey: ParseKeys;
-  field: ArrayObjectKeys<TrackMetadata>;
-}) {
-  const { t } = useTranslation();
-  const { data, setField, isSubmitting } = useFormState();
-
-  const field = props.field;
-  const value = data[field];
-
-  return (
-    <View>
-      <TEm textKey={props.labelKey} dim />
-      {value.map((value, row) => (
-        <View
-          key={row}
-          className={cn("flex-row items-center", { "mt-2": row > 0 })}
-        >
-          <TextInput
-            editable={!isSubmitting}
-            value={value}
-            onChangeText={(text) =>
-              setField((prev) => ({
-                ...prev,
-                [field]: prev[field].map((val, idx) =>
-                  idx === row ? text : val,
-                ),
-              }))
-            }
-            className="shrink grow border-b border-outline"
-          />
-          <IconButton
-            Icon={Close}
-            accessibilityLabel={t("template.entryRemove", { name: value })}
-            onPress={() =>
-              setField((prev) => ({
-                ...prev,
-                [field]: prev[field].filter((_, idx) => idx !== row),
-              }))
-            }
-            disabled={isSubmitting}
-            className="shrink-0"
-          />
-        </View>
-      ))}
-      <FilledIconButton
-        Icon={Add}
-        accessibilityLabel=""
-        onPress={() =>
-          setField((prev) => ({ ...prev, [field]: [...prev[field], ""] }))
-        }
-        disabled={isSubmitting}
-        className="mt-2 rounded-md bg-secondary active:bg-secondaryDim"
-        _iconColor="onSecondary"
-      />
-    </View>
   );
 }
 //#endregion
