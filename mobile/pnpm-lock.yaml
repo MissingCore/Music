@@ -21,7 +21,7 @@ patchedDependencies:
     hash: bef4d8e9c3b580bf43a5dbf74b663476625186715ae2cb4141e7a4ae7bd05d46
     path: patches/@react-native-assets__slider.patch
   react-native-android-widget:
-    hash: 536770fafc04b2fbe96450219371ecd618a45fe380166b0705a922cb9daad08e
+    hash: 612349d05d946966a7f49236c37a061e59dd32969228949cf20d46a0d25e8a7c
     path: patches/react-native-android-widget.patch
   react-native-bootsplash:
     hash: f1925439605b77f30b038b828717080c64dc11a6b2938c7489b364fe99bd6e53
@@ -152,8 +152,8 @@ importers:
         specifier: 0.81.5
         version: 0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0)
       react-native-android-widget:
-        specifier: 0.17.2
-        version: 0.17.2(patch_hash=536770fafc04b2fbe96450219371ecd618a45fe380166b0705a922cb9daad08e)(expo@54.0.31(@babel/core@7.28.6)(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+        specifier: 0.20.1
+        version: 0.20.1(patch_hash=612349d05d946966a7f49236c37a061e59dd32969228949cf20d46a0d25e8a7c)(expo@54.0.31(@babel/core@7.28.6)(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       react-native-audio-analyzer:
         specifier: 3.1.0
         version: 3.1.0(react-native-nitro-modules@0.33.1(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
@@ -4647,10 +4647,10 @@ packages:
   react-is@19.2.3:
     resolution: {integrity: sha512-qJNJfu81ByyabuG7hPFEbXqNcWSU3+eVus+KJs+0ncpGfMyYdvSmxiJxbWR65lYi1I+/0HBcliO029gc4F+PnA==}
 
-  react-native-android-widget@0.17.2:
-    resolution: {integrity: sha512-GsSkpy3oTfekyX2gExxnVPB+qMy2M27vljWJoRkJfVz9XixZ0SDlo+C5mvyeNmtkE3KjMjucqDTbgheVmEmQnw==}
+  react-native-android-widget@0.20.1:
+    resolution: {integrity: sha512-m3akQCyoG6XUH8OLHOyL3/Xxx/XXTXf9ZyFYmWvSQrv1YUaZ7kVjmeLIYnaNz+qQ9VrTAS9OygCxZQptqCGzjQ==}
     peerDependencies:
-      expo: '>=47.0.0'
+      expo: '>=54.0.0'
       react: '*'
       react-native: '*'
     peerDependenciesMeta:
@@ -10560,7 +10560,7 @@ snapshots:
 
   react-is@19.2.3: {}
 
-  react-native-android-widget@0.17.2(patch_hash=536770fafc04b2fbe96450219371ecd618a45fe380166b0705a922cb9daad08e)(expo@54.0.31(@babel/core@7.28.6)(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
+  react-native-android-widget@0.20.1(patch_hash=612349d05d946966a7f49236c37a061e59dd32969228949cf20d46a0d25e8a7c)(expo@54.0.31(@babel/core@7.28.6)(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
     dependencies:
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0)
