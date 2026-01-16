@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { db } from "~/db";
 import type { SlimFolder, SlimTrackWithAlbum } from "~/db/slimTypes";
@@ -13,7 +13,7 @@ import { iAsc } from "~/lib/drizzle";
 import { addTrailingSlash } from "~/utils/string";
 import type { Prettify } from "~/utils/types";
 import type { SearchCategories, SearchResults } from "../types";
-import { matchSort } from "../utils";
+import { lowerHas, lowerStart, matchSort } from "../utils";
 
 /** Returns media specified by query in the given scope. */
 export function useSearch<TScope extends SearchCategories>(
@@ -21,40 +21,68 @@ export function useSearch<TScope extends SearchCategories>(
   query?: string,
 ): Prettify<Pick<SearchResults, TScope[number]>> | undefined {
   const { data } = useAllMedia();
-  return useMemo(() => {
-    if (!data || !query) return undefined;
-    const q = query.toLocaleLowerCase();
-    return Object.fromEntries(
-      scope.map((mediaType) => {
-        const filteredResults = data[mediaType].filter(
-          (i) =>
-            // Partial match with the `name` field.
-            i.name.toLocaleLowerCase().includes(q) ||
-            // Album's artist name starts with the query.
-            // prettier-ignore
-            // @ts-expect-error - We ensured the `artistsKey` field is present.
-            (!!i.artistsKey && AlbumArtistsKey.deconstruct(i.artistsKey).some((artistName) => artistName.toLocaleLowerCase().startsWith(q))) ||
-            // One of track's artist names starts with the query.
-            // prettier-ignore
-            // @ts-expect-error - We ensured the `tracksToArtists` field is present.
-            (!!i.tracksToArtists && i.tracksToArtists.some(({ artistName }) => artistName.toLocaleLowerCase().startsWith(q))) ||
-            // Track's album starts with the query.
-            // @ts-expect-error - We ensured the `album` field is present.
-            (!!i.album && i.album.name.toLocaleLowerCase().startsWith(q)) ||
-            // Folder's path includes the query.
-            // @ts-expect-error - We ensured the `path` field is present.
-            (!!i.path && i.path.toLocaleLowerCase().includes(q)),
-        );
+  const scopeRef = useRef(scope); // Scope shouldn't be dynamically changed.
+  const [cache, setCache] = useState<Record<string, Pick<SearchResults, any>>>(
+    {},
+  );
+  const prevDefinedValueRef = useRef<Pick<SearchResults, any>>({});
 
-        return [
-          mediaType,
-          matchSort(filteredResults, (i) =>
-            i.name.toLocaleLowerCase().startsWith(q),
-          ),
-        ];
-      }),
-    ) as Pick<SearchResults, TScope[number]>;
-  }, [data, query, scope]);
+  useEffect(() => {
+    if (!data || !query) return;
+
+    const q = query.toLocaleLowerCase();
+    if (cache[q]) return;
+
+    setCache((prev) => ({
+      ...prev,
+      [q]: Object.fromEntries(
+        scopeRef.current.map((mediaType) => {
+          let results: Array<{ name: string }> = [];
+
+          if (mediaType === "album") {
+            results = data[mediaType].filter(
+              (i) =>
+                lowerHas(i.name, q) ||
+                // Album's artist name starts with the query.
+                AlbumArtistsKey.deconstruct(i.artistsKey).some((artistName) =>
+                  lowerStart(artistName, q),
+                ),
+            );
+          } else if (mediaType === "folder") {
+            results = data[mediaType].filter(
+              // Folder's path includes the query.
+              (i) => lowerHas(i.name, q) || lowerHas(i.path, q),
+            );
+          } else if (mediaType === "track") {
+            results = data[mediaType].filter(
+              ({ name, tracksToArtists, album }) =>
+                lowerHas(name, q) ||
+                // One of track's artist names starts with the query.
+                tracksToArtists.some((i) => lowerStart(i.artistName, q)) ||
+                // Track's album starts with the query.
+                lowerStart(album?.name, q),
+            );
+          } else {
+            results = data[mediaType].filter((i) => lowerHas(i.name, q));
+          }
+
+          return [mediaType, matchSort(results, (i) => lowerStart(i.name, q))];
+        }),
+      ),
+    }));
+  }, [data, query, cache]);
+
+  if (query) {
+    const result = cache[query.toLocaleLowerCase()];
+    // Stores last shown value to prevent flashing.
+    if (result) prevDefinedValueRef.current = result;
+    else if (result === undefined) {
+      // Keep showing the prior results while computation is still ongoing to prevent flashing.
+      return prevDefinedValueRef.current as Pick<SearchResults, TScope[number]>;
+    }
+    return result as Pick<SearchResults, TScope[number]>;
+  }
+  return undefined;
 }
 
 //#region Helpers

@@ -11,8 +11,8 @@ export function containSorter<TData extends Record<string, any>>(
 ) {
   const _query = query.toLocaleLowerCase();
   return matchSort(
-    sortedList.filter((i) => i[key].toLocaleLowerCase().includes(_query)),
-    (i) => i[key].toLocaleLowerCase().startsWith(_query),
+    sortedList.filter((i) => lowerHas(i[key], _query)),
+    (i) => lowerStart(i[key], _query),
   );
 }
 
@@ -28,4 +28,14 @@ export function matchSort<TData extends Record<string, any>>(
     else partialMatch.push(item);
   });
   return goodMatch.concat(partialMatch);
+}
+
+/** Returns if the lowercased string contains another string. */
+export function lowerHas(str: string, containStr: string) {
+  return str.toLocaleLowerCase().includes(containStr);
+}
+
+/** Returns if the lowercased string starts with another string. */
+export function lowerStart(str = "", startStr: string) {
+  return str.toLocaleLowerCase().startsWith(startStr);
 }
