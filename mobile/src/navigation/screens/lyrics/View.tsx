@@ -8,13 +8,11 @@ import { useLyrics } from "~/queries/lyric";
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 
-import type { ExtractQueryData } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { SegmentedList } from "~/components/List/Segmented";
 import { SearchList } from "~/modules/search/components/SearchList";
-
-type PartialLyric = ExtractQueryData<typeof useLyrics>[number];
+import { matchSort } from "~/modules/search/utils";
 
 export default function Lyrics() {
   const { t } = useTranslation();
@@ -39,21 +37,10 @@ export default function Lyrics() {
         keyExtractor={({ id }) => id}
         onFilterData={(_query, data) => {
           const query = _query.toLocaleLowerCase();
-
-          const filteredResults = data.filter(({ name }) =>
-            name.toLocaleLowerCase().includes(query),
+          return matchSort(
+            data.filter((i) => i.name.toLocaleLowerCase().includes(query)),
+            (i) => i.name.toLocaleLowerCase().startsWith(query),
           );
-
-          // Have results that start with the query first.
-          const goodMatch: PartialLyric[] = [];
-          const partialMatch: PartialLyric[] = [];
-          filteredResults.forEach((data) => {
-            if (data.name.toLocaleLowerCase().startsWith(query))
-              goodMatch.push(data);
-            else partialMatch.push(data);
-          });
-
-          return goodMatch.concat(partialMatch);
         }}
         renderItem={({ item, index, listSize }) => (
           <SegmentedList.Item

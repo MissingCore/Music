@@ -13,6 +13,7 @@ import { iAsc } from "~/lib/drizzle";
 import { addTrailingSlash } from "~/utils/string";
 import type { Prettify } from "~/utils/types";
 import type { SearchCategories, SearchResults } from "../types";
+import { matchSort } from "../utils";
 
 /** Returns media specified by query in the given scope. */
 export function useSearch<TScope extends SearchCategories>(
@@ -45,15 +46,12 @@ export function useSearch<TScope extends SearchCategories>(
             (!!i.path && i.path.toLocaleLowerCase().includes(q)),
         );
 
-        // Have results that start with the query first.
-        const goodMatch = Array<(typeof filteredResults)[number]>();
-        const partialMatch = Array<(typeof filteredResults)[number]>();
-        filteredResults.forEach((data) => {
-          if (data.name.toLocaleLowerCase().startsWith(q)) goodMatch.push(data);
-          else partialMatch.push(data);
-        });
-
-        return [mediaType, goodMatch.concat(partialMatch)];
+        return [
+          mediaType,
+          matchSort(filteredResults, (i) =>
+            i.name.toLocaleLowerCase().startsWith(q),
+          ),
+        ];
       }),
     ) as Pick<SearchResults, TScope[number]>;
   }, [data, query, scope]);

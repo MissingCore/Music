@@ -4,6 +4,8 @@ import { db } from "~/db";
 import { tracksToLyrics } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
+import { getArtistsString } from "~/api/artist.utils";
+import { getTrackArtwork } from "~/api/track.utils";
 import { queries as q } from "~/queries/keyStore";
 
 import { queryClient } from "~/lib/react-query";
@@ -14,8 +16,7 @@ import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useAllMedia } from "~/modules/search/hooks/useSearch";
 import { SearchList } from "~/modules/search/components/SearchList";
 import { SearchResult } from "~/modules/search/components/SearchResult";
-import { getArtistsString } from "~/api/artist.utils";
-import { getTrackArtwork } from "~/api/track.utils";
+import { matchSort } from "~/modules/search/utils";
 
 export function LinkTracksSheet(props: { ref: TrueSheetRef; lyricId: string }) {
   const { data } = useAllMedia();
@@ -39,16 +40,9 @@ export function LinkTracksSheet(props: { ref: TrueSheetRef; lyricId: string }) {
               i.album?.name.toLocaleLowerCase().startsWith(query),
           );
 
-          // Have results that start with the query first.
-          const goodMatch: typeof data = [];
-          const partialMatch: typeof data = [];
-          filteredResults.forEach((data) => {
-            if (data.name.toLocaleLowerCase().startsWith(query))
-              goodMatch.push(data);
-            else partialMatch.push(data);
-          });
-
-          return goodMatch.concat(partialMatch);
+          return matchSort(filteredResults, (i) =>
+            i.name.toLocaleLowerCase().startsWith(query),
+          );
         }}
         renderItem={({ item, index }) => (
           <SearchResult
