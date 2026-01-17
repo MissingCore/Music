@@ -21,7 +21,7 @@ patchedDependencies:
     hash: bef4d8e9c3b580bf43a5dbf74b663476625186715ae2cb4141e7a4ae7bd05d46
     path: patches/@react-native-assets__slider.patch
   react-native-android-widget:
-    hash: 612349d05d946966a7f49236c37a061e59dd32969228949cf20d46a0d25e8a7c
+    hash: 96926d4b630574ce4e917c35b2bb92ad922bca996cd126d0b5c181372ba6bffe
     path: patches/react-native-android-widget.patch
   react-native-bootsplash:
     hash: f1925439605b77f30b038b828717080c64dc11a6b2938c7489b364fe99bd6e53
@@ -153,7 +153,7 @@ importers:
         version: 0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0)
       react-native-android-widget:
         specifier: 0.20.1
-        version: 0.20.1(patch_hash=612349d05d946966a7f49236c37a061e59dd32969228949cf20d46a0d25e8a7c)(expo@54.0.31(@babel/core@7.28.6)(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+        version: 0.20.1(patch_hash=96926d4b630574ce4e917c35b2bb92ad922bca996cd126d0b5c181372ba6bffe)(expo@54.0.31(@babel/core@7.28.6)(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       react-native-audio-analyzer:
         specifier: 3.1.0
         version: 3.1.0(react-native-nitro-modules@0.33.1(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
@@ -10560,7 +10560,7 @@ snapshots:
 
   react-is@19.2.3: {}
 
-  react-native-android-widget@0.20.1(patch_hash=612349d05d946966a7f49236c37a061e59dd32969228949cf20d46a0d25e8a7c)(expo@54.0.31(@babel/core@7.28.6)(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
+  react-native-android-widget@0.20.1(patch_hash=96926d4b630574ce4e917c35b2bb92ad922bca996cd126d0b5c181372ba6bffe)(expo@54.0.31(@babel/core@7.28.6)(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
     dependencies:
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0)

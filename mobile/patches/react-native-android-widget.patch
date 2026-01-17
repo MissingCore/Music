@@ -28,45 +28,6 @@ index 55ba4fd01e0ee8dbee6e1adc687cd0a0d572a050..08ee5595b6c0266678341182eed72720
      @ReactMethod
      public void drawWidget(ReadableMap config, String widgetName) {
          try {
-diff --git a/android/src/main/java/com/reactnativeandroidwidget/oss/HeadlessJsTaskWorker.java b/android/src/main/java/com/reactnativeandroidwidget/oss/HeadlessJsTaskWorker.java
-index 269a75de7774450083a5c545f4d7d8efc16c424a..2e61fd10d48ed11dc317ee2d82bc2e36f979295a 100644
---- a/android/src/main/java/com/reactnativeandroidwidget/oss/HeadlessJsTaskWorker.java
-+++ b/android/src/main/java/com/reactnativeandroidwidget/oss/HeadlessJsTaskWorker.java
-@@ -75,13 +75,27 @@ public abstract class HeadlessJsTaskWorker extends ListenableWorker implements H
-         ReactContext reactContext = reactHost.getCurrentReactContext();
- 
-         if (reactContext == null) {
--            reactHost.addReactInstanceEventListener(new ReactInstanceEventListener() {
--                public void onReactContextInitialized(ReactContext reactContext) {
--                    HeadlessJsTaskWorker.this.invokeStartTask(reactContext, taskConfig);
--                    reactHost.removeReactInstanceEventListener(this);
--                }
--            });
--            reactHost.start();
-+            //! For some weird reason, `startWork` fires even after we close the app
-+            //! (when the work should be completed already), causing `startTask` to fire.
-+            //! Since the React Native instance doesn't exist since the app has been closed,
-+            //! we enter this block and re-initialize the React Native instance, causing all
-+            //! the on-start-up logic to fire (RNTP service setup, widget setup).
-+            //!
-+            //! THIS RESULTS IN THE APP TO ESSENTIALLY INFINITELY SPIN BACK UP WHEN WE DON'T
-+            //! WANT IT TO (ie: in dev mode, we'll see `Android Bundled` in the console
-+            //! AFTER WE CLOSED THE APP, and then the console spammed by `android_cannot_setup_player_in_background`).
-+            //!
-+            //! This might be caused to also having a `HeadlessJsTaskEventListener` for
-+            //! RNTP.
-+            //!
-+            //! Commenting out the below code seems to fix the issue.
-+            // reactHost.addReactInstanceEventListener(new ReactInstanceEventListener() {
-+            //     public void onReactContextInitialized(ReactContext reactContext) {
-+            //         HeadlessJsTaskWorker.this.invokeStartTask(reactContext, taskConfig);
-+            //         reactHost.removeReactInstanceEventListener(this);
-+            //     }
-+            // });
-+            // reactHost.start();
-         } else {
-             this.invokeStartTask(reactContext, taskConfig);
-         }
 diff --git a/android/src/oldarch/AndroidWidgetSpec.java b/android/src/oldarch/AndroidWidgetSpec.java
 index 09e70c4412d411e6137bfd6a1aed09e45474c4c1..d8fab875b137fbf4b2d9d4a1dbee7989b4ff4f33 100644
 --- a/android/src/oldarch/AndroidWidgetSpec.java
