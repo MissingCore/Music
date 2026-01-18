@@ -25,7 +25,6 @@ export default function ExperimentalSettings() {
     (s) => s.smoothPlaybackTransition,
   );
   const queueAwareNext = usePreferenceStore((s) => s.queueAwareNext);
-  const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
 
   return (
     <ListLayout>
@@ -57,18 +56,11 @@ export default function ExperimentalSettings() {
         RightElement={<Switch enabled={queueAwareNext} />}
       />
 
-      <SegmentedList>
-        <SegmentedList.Item
-          labelTextKey="feat.waveformSlider.title"
-          onPress={PreferenceTogglers.toggleWaveformSlider}
-          RightElement={<Switch enabled={waveformSlider} />}
-        />
-        <SegmentedList.Item
-          labelTextKey="feat.waveformSlider.extra.purgeCache"
-          supportingText={t("feat.waveformSlider.extra.purgeCacheBrief")}
-          onPress={purgeWaveformCache}
-        />
-      </SegmentedList>
+      <SegmentedList.Item
+        labelTextKey="feat.waveformSlider.extra.purgeCache"
+        supportingText={t("feat.waveformSlider.extra.purgeCacheBrief")}
+        onPress={purgeWaveformCache}
+      />
     </ListLayout>
   );
 }
