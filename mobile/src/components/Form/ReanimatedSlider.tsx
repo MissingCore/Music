@@ -41,6 +41,8 @@ export const CachedSlider = memo(function CachedSlider(props: {
    * with tall sliders.
    */
   overlay?: SliderOverlayProps;
+  /** Add additional styles to the slider wrapper. */
+  _className?: string;
 }) {
   const currVal = useSharedValue(props.initVal);
   const moveableDistance = useRef(props.max - props.min);
@@ -120,6 +122,10 @@ export const CachedSlider = memo(function CachedSlider(props: {
     () => ({ backgroundColor: trackColor, height: props.height ?? 12 }),
     [trackColor, props.height],
   );
+  const sliderWrappeClassName = useMemo(
+    () => cn("relative w-full overflow-hidden rounded-full", props._className),
+    [props._className],
+  );
 
   const progressStyle = useAnimatedStyle(() => ({
     backgroundColor: progressColor,
@@ -139,7 +145,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
       <View
         onLayout={onLayout}
         style={sliderWrapperStyle}
-        className="relative w-full overflow-hidden rounded-full"
+        className={sliderWrappeClassName}
       >
         {props.overlay ? (
           <SliderOverlay {...props.overlay} value={currVal} />
