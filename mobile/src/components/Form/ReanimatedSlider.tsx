@@ -163,7 +163,7 @@ function SliderOverlay(
   props: SliderOverlayProps & { value: SharedValue<number> },
 ) {
   const { t } = useTranslation();
-  const [currentValue, setCurrentValue] = useState(props.value.value);
+  const [currentValue, setCurrentValue] = useState(() => props.value.value);
 
   useEffect(() => {
     scheduleOnUI(() =>
