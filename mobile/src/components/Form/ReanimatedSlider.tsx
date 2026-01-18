@@ -30,9 +30,11 @@ export const CachedSlider = memo(function CachedSlider(props: {
   max: number;
   /** Helper to prevent dragging when used inside a sheet. */
   dragPrevention?: Dispatch<SetStateAction<boolean>>;
-  onChange?: (value: number) => void | Promise<void>;
-  /** Fallsback to `onChange` for Tap gesture. */
+  /** Function call is debounced, which is based on `5 * step`. */
+  onChange: (value: number) => void | Promise<void>;
+  /** Fallsback to `onChange`. */
   onComplete?: (value: number) => void | Promise<void>;
+  /** Defaults to `1`. */
   step?: number;
   height?: number;
   trackColor?: ColorRole;
@@ -64,7 +66,21 @@ export const CachedSlider = memo(function CachedSlider(props: {
   //#region Handlers
   const setDraggableRef = useRef(props.dragPrevention);
   const onChangeRef = useRef(props.onChange);
-  const onCompleteRef = useRef(props.onComplete);
+  const onCompleteRef = useRef(props.onComplete ?? props.onChange);
+
+  const debounceFrom = useSharedValue(0);
+  const debouncedOnChange = useCallback(
+    (value: number, velocity: number) => {
+      "worklet";
+      // If velocity is greater than 500 (ie: abnormal use), don't do anything.
+      if (Math.abs(velocity) > 500) return;
+      // Don't immediately call `onChange` if we haven't moved 5 steps.
+      if (Math.abs(debounceFrom.value - value) < step.current * 5) return;
+      debounceFrom.value = value;
+      scheduleOnRN(onChangeRef.current, value);
+    },
+    [debounceFrom],
+  );
 
   const setDraggable = useCallback((draggable: boolean) => {
     "worklet";
@@ -96,12 +112,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
           setDraggable(true);
           const finalizedValue = calculateNextValue(x);
           currVal.value = finalizedValue;
-          if (onCompleteRef.current) {
-            scheduleOnRN(onCompleteRef.current, finalizedValue);
-          } else if (onChangeRef.current) {
-            // Use this handler if it exists instead.
-            scheduleOnRN(onChangeRef.current, finalizedValue);
-          }
+          scheduleOnRN(onCompleteRef.current, finalizedValue);
         }),
     [calculateNextValue, setDraggable, currVal],
   );
@@ -109,22 +120,28 @@ export const CachedSlider = memo(function CachedSlider(props: {
   const panGesture = useMemo(
     () =>
       Gesture.Pan()
-        .onStart(() => {
+        .onStart(({ x }) => {
           setDraggable(false);
+          debounceFrom.value = x;
         })
-        .onUpdate(({ x }) => {
+        .onUpdate(({ x, velocityX }) => {
           const nextValue = calculateNextValue(x);
           currVal.value = nextValue;
-          if (onChangeRef.current) scheduleOnRN(onChangeRef.current, nextValue);
+          debouncedOnChange(nextValue, velocityX);
         })
         .onEnd(({ x }) => {
           setDraggable(true);
           const finalizedValue = calculateNextValue(x);
           currVal.value = finalizedValue;
-          if (onCompleteRef.current)
-            scheduleOnRN(onCompleteRef.current, finalizedValue);
+          scheduleOnRN(onCompleteRef.current, finalizedValue);
         }),
-    [calculateNextValue, setDraggable, currVal],
+    [
+      calculateNextValue,
+      setDraggable,
+      currVal,
+      debounceFrom,
+      debouncedOnChange,
+    ],
   );
 
   const gestures = useMemo(
@@ -184,7 +201,7 @@ type SliderOverlayProps = {
 
 const LISTENER_ID = 987654321;
 
-function SliderOverlay(
+const SliderOverlay = memo(function SliderOverlay(
   props: SliderOverlayProps & { value: SharedValue<number> },
 ) {
   const { t } = useTranslation();
@@ -216,7 +233,7 @@ function SliderOverlay(
       </StyledText>
     </View>
   );
-}
+});
 //#endregion
 
 //#region Utils
