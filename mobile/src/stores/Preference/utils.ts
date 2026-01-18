@@ -11,3 +11,7 @@ export async function resolveLanguageConfigs(
   I18nManager.allowRTL(forceLTR ? false : i18next.dir() === "rtl");
   I18nManager.forceRTL(forceLTR ? false : i18next.dir() === "rtl");
 }
+
+export function clampPlaybackDelay(value: number) {
+  return Math.min(Math.max(value, 0), 10);
+}

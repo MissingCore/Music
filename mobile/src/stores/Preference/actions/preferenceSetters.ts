@@ -5,7 +5,7 @@ import type {
   PrimaryFont,
   Theme,
 } from "../constants";
-import { resolveLanguageConfigs } from "../utils";
+import { clampPlaybackDelay, resolveLanguageConfigs } from "../utils";
 import { playbackStore } from "../../Playback/store";
 import { getSourceName } from "../../Playback/utils";
 
@@ -45,8 +45,10 @@ export function setNowPlayingDesign(nowPlayingDesign: NowPlayingDesign) {
   preferenceStore.setState({ nowPlayingDesign });
 }
 
-export function setPlaybackDelay(playbackDelay: number) {
-  preferenceStore.setState({ playbackDelay });
+export function updatePlaybackDelayByDelta(delta: number) {
+  preferenceStore.setState((prev) => ({
+    playbackDelay: clampPlaybackDelay(prev.playbackDelay + delta),
+  }));
 }
 
 export function setPrimaryFont(primaryFont: PrimaryFont) {
