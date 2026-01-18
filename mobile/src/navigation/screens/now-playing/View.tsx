@@ -17,13 +17,13 @@ import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/services/SessionStore";
-import { usePlayerProgress } from "../helpers/usePlayerProgress";
-import { NowPlayingArtwork } from "../components/Artwork";
-import { ProgressBar } from "../components/ProgressBar";
-import { LyricSheet } from "../sheets/LyricSheet";
-import { PlaybackOptionsSheet } from "./PlaybackOptionsSheet";
-import { SleepTimerSheet } from "./SleepTimerSheet";
-import { useSleepTimerStore } from "./SleepTimerSheet/store";
+import { usePlayerProgress } from "./helpers/usePlayerProgress";
+import { NowPlayingArtwork } from "./components/Artwork";
+import { ProgressBar } from "./components/ProgressBar";
+import { LyricSheet } from "./sheets/LyricSheet";
+import { PlaybackOptionsSheet } from "./sheets/PlaybackOptionsSheet";
+import { SleepTimerSheet } from "./sheets/SleepTimerSheet";
+import { useSleepTimerStore } from "./sheets/SleepTimerSheet/store";
 
 import { OnRTL } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
@@ -41,7 +41,7 @@ import {
   RepeatButton,
   ShuffleButton,
 } from "~/modules/media/components/MediaControls";
-import { Back } from "../../../components/Back";
+import { Back } from "../../components/Back";
 
 export default function NowPlaying() {
   const track = usePlaybackStore((s) => s.activeTrack);
