@@ -8,11 +8,10 @@ import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { TStyledText } from "~/components/Typography/StyledText";
 import { NowPlayingDesignOptions } from "~/stores/Preference/constants";
 
-/** @deprecated We plan on integrating this setting in a different sheet. */
-export function NowPlayingDesignSheet(props: { ref: TrueSheetRef }) {
+export function AppearanceSheet(props: { ref: TrueSheetRef }) {
   const nowPlayingDesign = usePreferenceStore((s) => s.nowPlayingDesign);
   return (
-    <DetachedSheet ref={props.ref} titleKey="feat.nowPlayingDesign.title">
+    <DetachedSheet ref={props.ref} titleKey="feat.appearance.title">
       <FlatList
         accessibilityRole="radiogroup"
         data={NowPlayingDesignOptions}

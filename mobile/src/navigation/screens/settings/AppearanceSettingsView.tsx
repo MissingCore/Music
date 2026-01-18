@@ -6,7 +6,6 @@ import { PreferenceTogglers } from "~/stores/Preference/actions";
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 import { AccentFontSheet, PrimaryFontSheet } from "./sheets/FontSheet";
 import { MinAlbumLengthSheet } from "./sheets/MinAlbumLengthSheet";
-import { NowPlayingDesignSheet } from "./sheets/NowPlayingDesignSheet";
 import { TabOrderSheet } from "./sheets/TabOrderSheet";
 import { ThemeSheet } from "./sheets/ThemeSheet";
 
@@ -21,14 +20,12 @@ export default function AppearanceSettings() {
   const theme = usePreferenceStore((s) => s.theme);
   const minAlbumLength = usePreferenceStore((s) => s.minAlbumLength);
   const miniplayerGestures = usePreferenceStore((s) => s.miniplayerGestures);
-  const nowPlayingDesign = usePreferenceStore((s) => s.nowPlayingDesign);
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const accentFontSheetRef = useSheetRef();
   const primaryFontSheetRef = useSheetRef();
   const themeSheetRef = useSheetRef();
   const tabOrderSheetRef = useSheetRef();
   const minAlbumLengthSheetRef = useSheetRef();
-  const nowPlayingDesignSheetRef = useSheetRef();
 
   return (
     <>
@@ -37,7 +34,6 @@ export default function AppearanceSettings() {
       <ThemeSheet ref={themeSheetRef} />
       <TabOrderSheet ref={tabOrderSheetRef} />
       <MinAlbumLengthSheet ref={minAlbumLengthSheetRef} />
-      <NowPlayingDesignSheet ref={nowPlayingDesignSheetRef} />
 
       <ListLayout>
         <SegmentedList>
@@ -74,13 +70,6 @@ export default function AppearanceSettings() {
             labelTextKey="feat.miniplayerGestures.title"
             onPress={PreferenceTogglers.toggleMiniplayerGestures}
             RightElement={<Switch enabled={miniplayerGestures} />}
-          />
-          <SegmentedList.Item
-            labelTextKey="feat.nowPlayingDesign.title"
-            supportingText={t(
-              `feat.nowPlayingDesign.extra.${nowPlayingDesign}`,
-            )}
-            onPress={() => nowPlayingDesignSheetRef.current?.present()}
           />
           <SegmentedList.Item
             labelTextKey="feat.quickScroll.title"

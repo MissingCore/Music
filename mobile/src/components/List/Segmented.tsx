@@ -76,7 +76,7 @@ function SegmentedListItem(props: ListItemProps) {
         "active:bg-surfaceContainerLow disabled:opacity-25",
         props._psuedoClassName,
       )}
-      _overflow
+      _overflow={props._overflow !== undefined ? props._overflow : true}
     />
   );
 }

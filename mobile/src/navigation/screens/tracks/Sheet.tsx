@@ -14,7 +14,6 @@ import { Delete } from "~/resources/icons/Delete";
 import { Edit } from "~/resources/icons/Edit";
 import { Favorite } from "~/resources/icons/Favorite";
 import { Image } from "~/resources/icons/Image";
-import { List } from "~/resources/icons/List";
 import { LowPriority } from "~/resources/icons/LowPriority";
 import { PlaylistAdd } from "~/resources/icons/PlaylistAdd";
 import { QueueMusic } from "~/resources/icons/QueueMusic";
@@ -28,11 +27,9 @@ import {
   useTrack,
   useTrackPlaylists,
 } from "~/queries/track";
-import { usePlaybackStore } from "~/stores/Playback/store";
 import { Queue } from "~/stores/Playback/actions";
 import { useSessionStore } from "~/services/SessionStore";
 import { useGetColumn } from "~/hooks/useGetColumn";
-import { getMediaLinkContext } from "../../utils/router";
 import { TrackArtworkSheet } from "../ArtworkSheet";
 
 import { mutateGuard } from "~/lib/react-query";
@@ -227,16 +224,7 @@ function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
 
 /** Actions that require a visual description. */
 function TrackTextActions({ id, name }: Record<"id" | "name", string>) {
-  const [onNowPlayingScreen, navigate] = useNavigationAction();
   const { width } = useGetColumn({ cols: 2, gap: 3, gutters: 32 });
-  const playingSource = usePlaybackStore((s) => s.playingFrom);
-  const sourceName = usePlaybackStore((s) => s.playingFromName);
-
-  const listLinkInfo = useMemo(
-    () => (playingSource ? getMediaLinkContext(playingSource) : undefined),
-    [playingSource],
-  );
-
   return (
     <View className="gap-0.75">
       <View className="flex-row gap-0.75">
@@ -245,31 +233,16 @@ function TrackTextActions({ id, name }: Record<"id" | "name", string>) {
           textKey="feat.queue.extra.playNext"
           onPress={sheetAction(() => Queue.add({ id, name }))}
           style={{ width }}
-          className={cn("rounded-tl-md", {
-            "rounded-bl-md": !onNowPlayingScreen,
-          })}
+          className="rounded-l-md"
         />
         <ListButton
           Icon={LowPriority}
           textKey="feat.queue.extra.playLast"
           onPress={sheetAction(() => Queue.addToEnd({ id, name }))}
           style={{ width }}
-          className={cn("rounded-tr-md", {
-            "rounded-br-md": !onNowPlayingScreen,
-          })}
+          className="rounded-r-md"
         />
       </View>
-      {onNowPlayingScreen ? (
-        <ListButton
-          Icon={List}
-          textKey="term.playingFrom"
-          description={sourceName}
-          onPress={sheetAction(() =>
-            listLinkInfo ? navigate(...listLinkInfo) : undefined,
-          )}
-          className="grow rounded-b-md"
-        />
-      ) : null}
     </View>
   );
 }
