@@ -1,18 +1,23 @@
-import { memo, useCallback, useMemo, useRef } from "react";
+import type { ParseKeys } from "i18next";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import type { LayoutChangeEvent, ViewStyle } from "react-native";
 import { View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import type { SharedValue } from "react-native-reanimated";
 import Animated, {
   clamp,
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
-import { scheduleOnRN } from "react-native-worklets";
+import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
 
+import type { Icon } from "~/resources/icons/type";
 import { useColor } from "~/hooks/useTheme";
 
 import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
+import { StyledText } from "../Typography/StyledText";
 
 /**
  * Reanimated slider whose render value is handled internally and is
@@ -31,6 +36,11 @@ export const CachedSlider = memo(function CachedSlider(props: {
   progressColor?: ColorRole;
   /** If the progress indicator will have a rounded end stop. */
   roundedEndStop?: boolean;
+  /**
+   * Optionally display an overlay on top of the slider. Should be used
+   * with tall sliders.
+   */
+  overlay?: SliderOverlayProps;
 }) {
   const currVal = useSharedValue(props.initVal);
   const moveableDistance = useRef(props.max - props.min);
@@ -129,13 +139,60 @@ export const CachedSlider = memo(function CachedSlider(props: {
       <View
         onLayout={onLayout}
         style={sliderWrapperStyle}
-        className="w-full overflow-hidden rounded-full"
+        className="relative w-full overflow-hidden rounded-full"
       >
+        {props.overlay ? (
+          <SliderOverlay {...props.overlay} value={currVal} />
+        ) : null}
         <Animated.View style={progressStyle} className={progressClassName} />
       </View>
     </GestureDetector>
   );
 });
+
+//#region Overlay
+type SliderOverlayProps = {
+  accessibilityLabelKey: ParseKeys;
+  Icon: (props: Icon) => React.ReactNode;
+  formatValue: (val: number) => string;
+};
+
+const LISTENER_ID = 987654321;
+
+function SliderOverlay(
+  props: SliderOverlayProps & { value: SharedValue<number> },
+) {
+  const { t } = useTranslation();
+  const [currentValue, setCurrentValue] = useState(props.value.value);
+
+  useEffect(() => {
+    scheduleOnUI(() =>
+      props.value.addListener(LISTENER_ID, (value) =>
+        scheduleOnRN(setCurrentValue, value),
+      ),
+    );
+    return () => {
+      scheduleOnUI(() => props.value.removeListener(LISTENER_ID));
+    };
+  }, [props.value]);
+
+  const formattedValue = props.formatValue(currentValue);
+
+  return (
+    <View
+      accessible
+      accessibilityLabel={`${t(props.accessibilityLabelKey)}: ${formattedValue}`}
+      pointerEvents="none"
+      className="absolute top-1/2 z-10 w-full -translate-y-1/2 flex-row items-center justify-center gap-1"
+    >
+      <props.Icon size={16} />
+      <StyledText className="min-w-8 text-xs" bold>
+        {formattedValue}
+      </StyledText>
+    </View>
+  );
+}
+//#endregion
 
 //#region Utils
 /** Round number to nearest step. */
