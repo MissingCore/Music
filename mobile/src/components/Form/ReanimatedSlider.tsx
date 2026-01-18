@@ -23,6 +23,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
   min: number;
   max: number;
   onChange?: (value: number) => void | Promise<void>;
+  /** Fallsback to `onChange` for Tap gesture. */
   onComplete?: (value: number) => void | Promise<void>;
   step?: number;
   height?: number;
@@ -68,8 +69,12 @@ export const CachedSlider = memo(function CachedSlider(props: {
       Gesture.Tap().onEnd(({ x }) => {
         const finalizedValue = calculateNextValue(x);
         currVal.value = finalizedValue;
-        if (onCompleteRef.current)
+        if (onCompleteRef.current) {
           scheduleOnRN(onCompleteRef.current, finalizedValue);
+        } else if (onChangeRef.current) {
+          // Use this handler if it exists instead.
+          scheduleOnRN(onChangeRef.current, finalizedValue);
+        }
       }),
     [calculateNextValue, currVal],
   );
@@ -78,9 +83,9 @@ export const CachedSlider = memo(function CachedSlider(props: {
     () =>
       Gesture.Pan()
         .onUpdate(({ x }) => {
-          const nextvalue = calculateNextValue(x);
-          currVal.value = nextvalue;
-          if (onChangeRef.current) scheduleOnRN(onChangeRef.current, nextvalue);
+          const nextValue = calculateNextValue(x);
+          currVal.value = nextValue;
+          if (onChangeRef.current) scheduleOnRN(onChangeRef.current, nextValue);
         })
         .onEnd(({ x }) => {
           const finalizedValue = calculateNextValue(x);
