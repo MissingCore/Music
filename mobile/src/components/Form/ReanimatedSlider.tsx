@@ -109,23 +109,21 @@ export const CachedSlider = memo(function CachedSlider(props: {
   const tapGesure = useMemo(
     () =>
       Gesture.Tap()
-        .onStart(() => {
-          setDraggable(false);
-        })
+        .onBegin(() => setDraggable(false))
         .onEnd(({ x }) => {
-          setDraggable(true);
           const finalizedValue = calculateNextValue(x);
           currVal.value = finalizedValue;
           scheduleOnRN(onCompleteRef.current, finalizedValue);
-        }),
+        })
+        .onFinalize(() => setDraggable(true)),
     [calculateNextValue, setDraggable, currVal],
   );
 
   const panGesture = useMemo(
     () =>
       Gesture.Pan()
+        .onBegin(() => setDraggable(false))
         .onStart(({ x }) => {
-          setDraggable(false);
           debounceFrom.value = x;
         })
         .onUpdate(({ x, velocityX }) => {
@@ -134,11 +132,11 @@ export const CachedSlider = memo(function CachedSlider(props: {
           debouncedOnChange(nextValue, velocityX);
         })
         .onEnd(({ x }) => {
-          setDraggable(true);
           const finalizedValue = calculateNextValue(x);
           currVal.value = finalizedValue;
           scheduleOnRN(onCompleteRef.current, finalizedValue);
-        }),
+        })
+        .onFinalize(() => setDraggable(true)),
     [
       calculateNextValue,
       setDraggable,
