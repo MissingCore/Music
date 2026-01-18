@@ -10,9 +10,7 @@ import { Favorite } from "~/resources/icons/Favorite";
 import { InstantMix } from "~/resources/icons/InstantMix";
 import { KeyboardArrowDown } from "~/resources/icons/KeyboardArrowDown";
 import { LibraryMusic } from "~/resources/icons/LibraryMusic";
-import { Lyrics } from "~/resources/icons/Lyrics";
 import { MoreVert } from "~/resources/icons/MoreVert";
-import { Timer } from "~/resources/icons/Timer";
 import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -20,10 +18,7 @@ import { presentTrackSheet } from "~/services/SessionStore";
 import { usePlayerProgress } from "./helpers/usePlayerProgress";
 import { NowPlayingArtwork } from "./components/Artwork";
 import { ProgressBar } from "./components/ProgressBar";
-import { LyricSheet } from "./sheets/LyricSheet";
 import { PlaybackOptionsSheet } from "./sheets/PlaybackOptionsSheet";
-import { SleepTimerSheet } from "./sheets/SleepTimerSheet";
-import { useSleepTimerStore } from "./sheets/SleepTimerSheet/store";
 
 import { OnRTL } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
@@ -230,37 +225,15 @@ function PlaybackControls() {
 function BottomAppBar({ trackId }: { trackId: string }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const lyricSheetRef = useSheetRef();
   const playbackOptionsSheetRef = useSheetRef();
-  const sleepTimerSheetRef = useSheetRef();
-  const sleepTimerActive = useSleepTimerStore((s) => s.endAt) !== null;
 
   return (
     <>
-      <LyricSheet ref={lyricSheetRef} trackId={trackId} />
-      <PlaybackOptionsSheet ref={playbackOptionsSheetRef} />
-      <SleepTimerSheet ref={sleepTimerSheetRef} />
+      <PlaybackOptionsSheet ref={playbackOptionsSheetRef} trackId={trackId} />
 
       <View className="flex-row items-center justify-between gap-4 p-4">
         <BackButton />
         <View className="flex-row items-center gap-4">
-          <IconButton
-            Icon={Lyrics}
-            accessibilityLabel={t("feat.lyrics.title")}
-            onPress={() => lyricSheetRef.current?.present()}
-            size="lg"
-          />
-          <View className="relative">
-            <IconButton
-              Icon={Timer}
-              accessibilityLabel={t("feat.sleepTimer.title")}
-              onPress={() => sleepTimerSheetRef.current?.present()}
-              size="lg"
-            />
-            {sleepTimerActive && (
-              <View className="absolute top-2 right-2 size-2 rounded-full bg-primary" />
-            )}
-          </View>
           <IconButton
             Icon={InstantMix}
             accessibilityLabel={t("feat.playback.extra.options")}
