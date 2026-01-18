@@ -1,4 +1,5 @@
 import type { ParseKeys } from "i18next";
+import type { Dispatch, SetStateAction } from "react";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { LayoutChangeEvent, ViewStyle } from "react-native";
@@ -27,6 +28,8 @@ export const CachedSlider = memo(function CachedSlider(props: {
   initVal: number;
   min: number;
   max: number;
+  /** Helper to prevent dragging when used inside a sheet. */
+  dragPrevention?: Dispatch<SetStateAction<boolean>>;
   onChange?: (value: number) => void | Promise<void>;
   /** Fallsback to `onChange` for Tap gesture. */
   onComplete?: (value: number) => void | Promise<void>;
@@ -59,8 +62,15 @@ export const CachedSlider = memo(function CachedSlider(props: {
   //#endregion
 
   //#region Handlers
+  const setDraggableRef = useRef(props.dragPrevention);
   const onChangeRef = useRef(props.onChange);
   const onCompleteRef = useRef(props.onComplete);
+
+  const setDraggable = useCallback((draggable: boolean) => {
+    "worklet";
+    if (setDraggableRef.current)
+      scheduleOnRN(setDraggableRef.current, draggable);
+  }, []);
 
   const calculateNextValue = useCallback(
     (x: number) => {
@@ -78,34 +88,43 @@ export const CachedSlider = memo(function CachedSlider(props: {
   //#region Gestures
   const tapGesure = useMemo(
     () =>
-      Gesture.Tap().onEnd(({ x }) => {
-        const finalizedValue = calculateNextValue(x);
-        currVal.value = finalizedValue;
-        if (onCompleteRef.current) {
-          scheduleOnRN(onCompleteRef.current, finalizedValue);
-        } else if (onChangeRef.current) {
-          // Use this handler if it exists instead.
-          scheduleOnRN(onChangeRef.current, finalizedValue);
-        }
-      }),
-    [calculateNextValue, currVal],
+      Gesture.Tap()
+        .onStart(() => {
+          setDraggable(false);
+        })
+        .onEnd(({ x }) => {
+          setDraggable(true);
+          const finalizedValue = calculateNextValue(x);
+          currVal.value = finalizedValue;
+          if (onCompleteRef.current) {
+            scheduleOnRN(onCompleteRef.current, finalizedValue);
+          } else if (onChangeRef.current) {
+            // Use this handler if it exists instead.
+            scheduleOnRN(onChangeRef.current, finalizedValue);
+          }
+        }),
+    [calculateNextValue, setDraggable, currVal],
   );
 
   const panGesture = useMemo(
     () =>
       Gesture.Pan()
+        .onStart(() => {
+          setDraggable(false);
+        })
         .onUpdate(({ x }) => {
           const nextValue = calculateNextValue(x);
           currVal.value = nextValue;
           if (onChangeRef.current) scheduleOnRN(onChangeRef.current, nextValue);
         })
         .onEnd(({ x }) => {
+          setDraggable(true);
           const finalizedValue = calculateNextValue(x);
           currVal.value = finalizedValue;
           if (onCompleteRef.current)
             scheduleOnRN(onCompleteRef.current, finalizedValue);
         }),
-    [calculateNextValue, currVal],
+    [calculateNextValue, setDraggable, currVal],
   );
 
   const gestures = useMemo(

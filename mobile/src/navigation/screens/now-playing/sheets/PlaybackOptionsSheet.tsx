@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import TrackPlayer from "@weights-ai/react-native-track-player";
 import type { ParseKeys } from "i18next";
-import { useCallback, useImperativeHandle } from "react";
+import { useCallback, useImperativeHandle, useState } from "react";
 import { Pressable, View } from "react-native";
 
 import { ActivityZone } from "~/resources/icons/ActivityZone";
@@ -39,6 +39,7 @@ export function PlaybackOptionsSheet(props: {
   trackId: string;
 }) {
   const navigation = useNavigation();
+  const [canDrag, setCanDrag] = useState(true);
   const playingSource = usePlaybackStore((s) => s.playingFrom);
   const sourceName = usePlaybackStore((s) => s.playingFromName);
   const playbackDelay = usePreferenceStore((s) => s.playbackDelay);
@@ -61,6 +62,7 @@ export function PlaybackOptionsSheet(props: {
     navigation.navigate(...getMediaLinkContext(playingSource));
   }, [navigation, internalSheetRef, playingSource]);
 
+  //#region Sheet Presenters
   const presentAppearanceSheet = useCallback(async () => {
     await internalSheetRef.current?.dismiss();
     appearanceSheetRef.current?.present();
@@ -75,6 +77,7 @@ export function PlaybackOptionsSheet(props: {
     await internalSheetRef.current?.dismiss();
     sleepTimerSheetRef.current?.present();
   }, [sleepTimerSheetRef, internalSheetRef]);
+  //#endregion
 
   return (
     <>
@@ -82,8 +85,12 @@ export function PlaybackOptionsSheet(props: {
       <LyricSheet ref={lyricSheetRef} trackId={props.trackId} />
       <SleepTimerSheet ref={sleepTimerSheetRef} />
 
-      <DetachedSheet ref={internalSheetRef}>
-        <ScrollView contentContainerClassName="gap-6">
+      <DetachedSheet
+        ref={internalSheetRef}
+        draggable={canDrag}
+        contentContainerClassName="pb-0"
+      >
+        <ScrollView contentContainerClassName="gap-6 pb-4">
           <SegmentedList.Item
             labelTextKey="term.playingFrom"
             supportingText={sourceName || "—"}
@@ -96,9 +103,14 @@ export function PlaybackOptionsSheet(props: {
           <View className="flex-row gap-4">
             <CachedSlider
               initVal={playbackSpeed}
+              dragPrevention={setCanDrag}
               {...PlaybackSpeedSliderOptions}
             />
-            <CachedSlider initVal={volume} {...VolumeSliderOptions} />
+            <CachedSlider
+              initVal={volume}
+              dragPrevention={setCanDrag}
+              {...VolumeSliderOptions}
+            />
           </View>
 
           <PreferenceRow
