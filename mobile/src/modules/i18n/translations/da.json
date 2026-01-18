@@ -257,8 +257,9 @@
     "waveformSlider": {
       "title": "Slider i bølgeform",
       "extra": {
-        "clearCache": null,
-        "cacheCleared": null
+        "purgeCache": null,
+        "purgeCacheBrief": null,
+        "purgeCacheToast": null
       }
     },
     "code": {

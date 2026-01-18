@@ -257,8 +257,9 @@
     "waveformSlider": {
       "title": "Deslizador de forma de onda",
       "extra": {
-        "clearCache": "Borrar caché",
-        "cacheCleared": "Caché eliminada."
+        "purgeCache": "Borrar caché",
+        "purgeCacheBrief": "Libera espacio y regenera las formas de onda.",
+        "purgeCacheToast": "Caché eliminada."
       }
     },
     "code": {

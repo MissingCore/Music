@@ -257,8 +257,9 @@
     "waveformSlider": {
       "title": "Curseur de forme d'onde",
       "extra": {
-        "clearCache": null,
-        "cacheCleared": null
+        "purgeCache": "Purger les formes d'onde mises en cache",
+        "purgeCacheBrief": "Libère de l'espace de stockage pour recalculer les formes d'onde des titres lus.",
+        "purgeCacheToast": "Cache de formes d'onde effacé."
       }
     },
     "code": {

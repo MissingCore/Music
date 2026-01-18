@@ -293,8 +293,9 @@
     "waveformSlider": {
       "title": "Waveform Slider",
       "extra": {
-        "clearCache": "Clear Cache",
-        "cacheCleared": "Cache cleared."
+        "purgeCache": "Purge Cached Waveforms",
+        "purgeCacheBrief": "Frees up storage to recalculate the waveforms of played tracks.",
+        "purgeCacheToast": "Waveform cache cleared."
       }
     },
     "code": {

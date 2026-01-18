@@ -257,8 +257,9 @@
     "waveformSlider": {
       "title": "Pasek przewijania z falami dźwiękowymi",
       "extra": {
-        "clearCache": null,
-        "cacheCleared": null
+        "purgeCache": "Wyczyść dane dla wizualizacji",
+        "purgeCacheBrief": "Zwalnia pamięć i wymusza ponowne obliczenia dla wizualizacji fal dźwiękowych.",
+        "purgeCacheToast": "Dane wizualizacji fal dźwiękowych zostały wyczyszczone."
       }
     },
     "code": {

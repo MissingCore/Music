@@ -257,8 +257,9 @@
     "waveformSlider": {
       "title": "Dalga Formu Kaydırıcısı",
       "extra": {
-        "clearCache": null,
-        "cacheCleared": null
+        "purgeCache": "Önbelleğe Alınan Dalga Formlarını Temizle",
+        "purgeCacheBrief": "Çalınan parçaların dalga formlarını yeniden hesaplamak için depolama alanında yer açar.",
+        "purgeCacheToast": "Dalga formu önbelleği temizlendi."
       }
     },
     "code": {
