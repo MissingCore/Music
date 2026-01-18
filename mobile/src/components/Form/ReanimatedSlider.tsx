@@ -3,7 +3,7 @@ import type { Dispatch, SetStateAction } from "react";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { LayoutChangeEvent, ViewStyle } from "react-native";
-import { View } from "react-native";
+import { I18nManager, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import type { SharedValue } from "react-native-reanimated";
 import Animated, {
@@ -36,6 +36,8 @@ export const CachedSlider = memo(function CachedSlider(props: {
   onComplete?: (value: number) => void | Promise<void>;
   /** Defaults to `1`. */
   step?: number;
+  /** Invert appearance & functionality given `I18nManager` is enabled.  */
+  inverted?: boolean;
   height?: number;
   trackColor?: ColorRole;
   progressColor?: ColorRole;
@@ -91,13 +93,15 @@ export const CachedSlider = memo(function CachedSlider(props: {
   const calculateNextValue = useCallback(
     (x: number) => {
       "worklet";
-      const clampedValue = clamp(0, x, sliderWidth.value);
+      const i18nAdjustedX =
+        I18nManager.isRTL && !props.inverted ? sliderWidth.value - x : x;
+      const clampedValue = clamp(0, i18nAdjustedX, sliderWidth.value);
       const progressPrecent = clampedValue / sliderWidth.value;
       const rawVal = progressPrecent * moveableDistance.current + props.min;
       // Round based on the step.
       return roundToStep(rawVal, step.current);
     },
-    [sliderWidth, moveableDistance, props.min],
+    [sliderWidth, moveableDistance, props.min, props.inverted],
   );
   //#endregion
 
@@ -154,13 +158,23 @@ export const CachedSlider = memo(function CachedSlider(props: {
   const progressColor = useColor(props.progressColor, "primary");
   const trackColor = useColor(props.trackColor, "surfaceContainerLowest");
 
+  const shouldInvertStyle = useMemo(
+    () => I18nManager.isRTL && props.inverted,
+    [props.inverted],
+  );
+
   const sliderWrapperStyle: ViewStyle = useMemo(
     () => ({ backgroundColor: trackColor, height: props.height ?? 12 }),
     [trackColor, props.height],
   );
   const sliderWrappeClassName = useMemo(
-    () => cn("relative w-full overflow-hidden rounded-full", props._className),
-    [props._className],
+    () =>
+      cn(
+        "relative w-full overflow-hidden rounded-full",
+        { "flex-row-reverse": shouldInvertStyle },
+        props._className,
+      ),
+    [shouldInvertStyle, props._className],
   );
 
   const progressStyle = useAnimatedStyle(() => ({
@@ -184,7 +198,11 @@ export const CachedSlider = memo(function CachedSlider(props: {
         className={sliderWrappeClassName}
       >
         {props.overlay ? (
-          <SliderOverlay {...props.overlay} value={currVal} />
+          <SliderOverlay
+            {...props.overlay}
+            value={currVal}
+            inverted={shouldInvertStyle}
+          />
         ) : null}
         <Animated.View style={progressStyle} className={progressClassName} />
       </View>
@@ -202,7 +220,10 @@ type SliderOverlayProps = {
 const LISTENER_ID = 987654321;
 
 const SliderOverlay = memo(function SliderOverlay(
-  props: SliderOverlayProps & { value: SharedValue<number> },
+  props: SliderOverlayProps & {
+    value: SharedValue<number>;
+    inverted?: boolean;
+  },
 ) {
   const { t } = useTranslation();
   const [currentValue, setCurrentValue] = useState(() => props.value.value);
@@ -225,10 +246,16 @@ const SliderOverlay = memo(function SliderOverlay(
       accessible
       accessibilityLabel={`${t(props.accessibilityLabelKey)}: ${formattedValue}`}
       pointerEvents="none"
-      className="absolute top-1/2 z-10 w-full -translate-y-1/2 flex-row items-center justify-center gap-1"
+      className={cn(
+        "absolute top-1/2 z-10 w-full -translate-y-1/2 flex-row items-center justify-center gap-1",
+        { "flex-row-reverse": props.inverted },
+      )}
     >
       <props.Icon size={16} />
-      <StyledText className="min-w-8 text-xs" bold>
+      <StyledText
+        bold
+        className={cn("min-w-8 text-xs", { "text-right": props.inverted })}
+      >
         {formattedValue}
       </StyledText>
     </View>
