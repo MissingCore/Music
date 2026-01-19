@@ -10,7 +10,7 @@ export function MinDurationSheet(props: { ref: TrueSheetRef }) {
     <DetachedNumericSheet
       ref={props.ref}
       titleKey="feat.minTrackDuration.title"
-      valueLabelKey="plural.second_other"
+      descriptionKey="feat.minTrackDuration.description"
       value={minSeconds}
       setValue={PreferenceSetters.setMinSeconds}
     />

@@ -260,7 +260,8 @@
       "description": "Has higher priority over the entries in the allowlist."
     },
     "minTrackDuration": {
-      "title": "Minimum Track Duration"
+      "title": "Minimum Track Duration",
+      "description": "Minimum duration in seconds a track needs to be saved."
     },
     "separators": {
       "title": "Multi-Value Separators",
