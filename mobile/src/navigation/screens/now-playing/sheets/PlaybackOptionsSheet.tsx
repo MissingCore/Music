@@ -20,6 +20,7 @@ import { sessionStore, useSessionStore } from "~/services/SessionStore";
 import { getMediaLinkContext } from "~/navigation/utils/router";
 import { AppearanceSheet } from "./AppearanceSheet";
 import { LyricSheet } from "./LyricSheet";
+import { PlaybackSpeedSheet } from "./PlaybackSpeedSheet";
 import { SleepTimerSheet } from "./SleepTimerSheet";
 
 import { ScrollView } from "~/components/Defaults";
@@ -44,13 +45,13 @@ export function PlaybackOptionsSheet(props: {
   const sourceName = usePlaybackStore((s) => s.playingFromName);
   const playbackDelay = usePreferenceStore((s) => s.playbackDelay);
   const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
-  const playbackSpeed = useSessionStore((s) => s.playbackSpeed);
   const volume = useSessionStore((s) => s.volume);
   const internalSheetRef = useSheetRef();
   // @ts-expect-error - Should be able to synchronize refs.
   useImperativeHandle(props.ref, () => internalSheetRef.current);
   const appearanceSheetRef = useSheetRef();
   const lyricSheetRef = useSheetRef();
+  const playbackSpeedRef = useSheetRef();
   const sleepTimerSheetRef = useSheetRef();
 
   const navigateToList = useCallback(async () => {
@@ -73,6 +74,11 @@ export function PlaybackOptionsSheet(props: {
     lyricSheetRef.current?.present();
   }, [lyricSheetRef, internalSheetRef]);
 
+  const presentPlaybackSheet = useCallback(async () => {
+    await internalSheetRef.current?.dismiss();
+    playbackSpeedRef.current?.present();
+  }, [playbackSpeedRef, internalSheetRef]);
+
   const presentSleepTimerSheet = useCallback(async () => {
     await internalSheetRef.current?.dismiss();
     sleepTimerSheetRef.current?.present();
@@ -83,6 +89,7 @@ export function PlaybackOptionsSheet(props: {
     <>
       <AppearanceSheet ref={appearanceSheetRef} />
       <LyricSheet ref={lyricSheetRef} trackId={props.trackId} />
+      <PlaybackSpeedSheet ref={playbackSpeedRef} />
       <SleepTimerSheet ref={sleepTimerSheetRef} />
 
       <DetachedSheet
@@ -100,18 +107,11 @@ export function PlaybackOptionsSheet(props: {
             className="py-2 pl-2"
             _overflow={false}
           />
-          <View className="flex-row gap-4">
-            <CachedSlider
-              initVal={playbackSpeed}
-              dragPrevention={setCanDrag}
-              {...PlaybackSpeedSliderOptions}
-            />
-            <CachedSlider
-              initVal={volume}
-              dragPrevention={setCanDrag}
-              {...VolumeSliderOptions}
-            />
-          </View>
+          <CachedSlider
+            initVal={volume}
+            dragPrevention={setCanDrag}
+            {...VolumeSliderOptions}
+          />
 
           <PreferenceRow
             labelKey="feat.playback.extra.delay"
@@ -151,6 +151,12 @@ export function PlaybackOptionsSheet(props: {
               className="gap-4"
             />
             <SegmentedList.Item
+              labelTextKey="feat.playback.extra.speed"
+              onPress={presentPlaybackSheet}
+              LeftElement={<SlowMotionVideo />}
+              className="gap-4"
+            />
+            <SegmentedList.Item
               labelTextKey="feat.sleepTimer.title"
               onPress={presentSleepTimerSheet}
               LeftElement={<Timer />}
@@ -180,28 +186,6 @@ function PreferenceRow(props: {
 //#endregion
 
 //#region Slider Configs
-const rateFormatter = new Intl.NumberFormat("en-US", {
-  notation: "compact",
-  maximumFractionDigits: 2,
-});
-
-const PlaybackSpeedSliderOptions = {
-  min: 0.25,
-  max: 2,
-  step: 0.05,
-  height: 48,
-  onChange: async (playbackSpeed: number) => {
-    sessionStore.setState({ playbackSpeed });
-    await TrackPlayer.setRate(playbackSpeed).catch();
-  },
-  overlay: {
-    accessibilityLabelKey: "feat.playback.extra.speed" as const,
-    Icon: SlowMotionVideo,
-    formatValue: (val: number) => `${rateFormatter.format(val)}x`,
-  },
-  _className: "flex-1",
-};
-
 const VolumeSliderOptions = {
   min: 0,
   max: 1,
@@ -216,6 +200,5 @@ const VolumeSliderOptions = {
     Icon: VolumeUp,
     formatValue: (val: number) => `${Math.round(val * 100)}%`,
   },
-  _className: "flex-1",
 };
 //#endregion
