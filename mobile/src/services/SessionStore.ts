@@ -17,7 +17,7 @@ interface SessionStore {
   volume: number;
 
   /** Track displayed in global track sheet. */
-  displayedTrack: (TrackWithRelations & { _checked: number }) | null;
+  displayedTrack: TrackWithRelations | null;
   /** Artists displayed in global artist sheet. */
   displayedArtists: { artists: Artist[]; popScreen: boolean } | null;
 
@@ -43,9 +43,7 @@ export const useSessionStore = <T>(selector: (state: SessionStore) => T): T =>
 export async function presentTrackSheet(trackId: string) {
   try {
     const sheetTrack = await getTrack(trackId);
-    sessionStore.setState({
-      displayedTrack: { ...sheetTrack, _checked: Date.now() },
-    });
+    sessionStore.setState({ displayedTrack: sheetTrack });
     await wait(1);
     TrueSheet.present("TrackSheet");
   } catch {
