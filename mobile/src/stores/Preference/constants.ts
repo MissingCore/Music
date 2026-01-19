@@ -25,7 +25,7 @@ export type AccentFont = (typeof AccentFontOptions)[number];
 //#endregion
 
 //#region Now Playing Design
-export const NowPlayingDesignOptions = ["vinyl", "vinylOld", "plain"] as const;
+export const NowPlayingDesignOptions = ["plain", "vinyl", "vinylOld"] as const;
 
 export type NowPlayingDesign = (typeof NowPlayingDesignOptions)[number];
 //#endregion
