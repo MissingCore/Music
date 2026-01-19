@@ -1,6 +1,8 @@
 import TrackPlayer from "@weights-ai/react-native-track-player";
 import { useState } from "react";
 import { View } from "react-native";
+import type { SharedValue } from "react-native-reanimated";
+import { useSharedValue } from "react-native-reanimated";
 
 import { SlowMotionVideo } from "~/resources/icons/SlowMotionVideo";
 import { sessionStore, useSessionStore } from "~/services/SessionStore";
@@ -14,33 +16,41 @@ import { StyledText } from "~/components/Typography/StyledText";
 export function PlaybackSpeedSheet(props: { ref: TrueSheetRef }) {
   const [canDrag, setCanDrag] = useState(true);
   const playbackSpeed = useSessionStore((s) => s.playbackSpeed);
+  const cachedPlaybackSpeed = useSharedValue(playbackSpeed);
 
   return (
     <DetachedSheet ref={props.ref} draggable={canDrag}>
       <CachedSlider
-        initVal={playbackSpeed}
+        initValue={playbackSpeed}
+        liveValue={cachedPlaybackSpeed}
         dragPrevention={setCanDrag}
         {...PlaybackSpeedSliderOptions}
       />
       <View className="flex-row items-center gap-4">
-        <PlaybackSpeedPreset preset={1} />
-        <PlaybackSpeedPreset preset={1.25} />
-        <PlaybackSpeedPreset preset={1.5} />
-        <PlaybackSpeedPreset preset={2} />
+        <PlaybackSpeedPreset preset={1} value={cachedPlaybackSpeed} />
+        <PlaybackSpeedPreset preset={1.25} value={cachedPlaybackSpeed} />
+        <PlaybackSpeedPreset preset={1.5} value={cachedPlaybackSpeed} />
+        <PlaybackSpeedPreset preset={2} value={cachedPlaybackSpeed} />
       </View>
     </DetachedSheet>
   );
 }
 
 //#region Preset Button
-function PlaybackSpeedPreset({ preset }: { preset: number }) {
+function PlaybackSpeedPreset(props: {
+  preset: number;
+  value: SharedValue<number>;
+}) {
   return (
     <Button
-      onPress={() => setPlaybackSpeed(preset)}
+      onPress={() => {
+        setPlaybackSpeed(props.preset);
+        props.value.value = props.preset;
+      }}
       className="min-h-8 flex-1 rounded-full py-2"
     >
       <StyledText bold className="text-xs">
-        {formatValue(preset)}
+        {formatValue(props.preset)}
       </StyledText>
     </Button>
   );

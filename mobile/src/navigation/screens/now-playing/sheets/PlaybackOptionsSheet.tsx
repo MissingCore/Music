@@ -108,7 +108,7 @@ export function PlaybackOptionsSheet(props: {
             _overflow={false}
           />
           <CachedSlider
-            initVal={volume}
+            initValue={volume}
             dragPrevention={setCanDrag}
             {...VolumeSliderOptions}
           />

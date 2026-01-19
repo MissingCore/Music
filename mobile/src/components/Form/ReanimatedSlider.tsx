@@ -9,6 +9,7 @@ import type { SharedValue } from "react-native-reanimated";
 import Animated, {
   clamp,
   useAnimatedStyle,
+  useDerivedValue,
   useSharedValue,
 } from "react-native-reanimated";
 import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
@@ -25,7 +26,8 @@ import { StyledText } from "../Typography/StyledText";
  * instantiated on mount.
  */
 export const CachedSlider = memo(function CachedSlider(props: {
-  initVal: number;
+  initValue: number;
+  liveValue?: SharedValue<number>;
   min: number;
   max: number;
   /** Helper to prevent dragging when used inside a sheet. */
@@ -51,9 +53,29 @@ export const CachedSlider = memo(function CachedSlider(props: {
   /** Add additional styles to the slider wrapper. */
   _className?: string;
 }) {
-  const currVal = useSharedValue(props.initVal);
+  const currVal = useSharedValue(props.initValue);
   const moveableDistance = useRef(props.max - props.min);
   const step = useRef(props.step ?? 1);
+
+  //#region Synchronization
+  const setCurrVal = useCallback(
+    (val: number) => {
+      "worklet";
+      currVal.value = val;
+      if (props.liveValue !== undefined) props.liveValue.value = val;
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [props.liveValue],
+  );
+
+  //? Synchronize internal value with external value.
+  useDerivedValue(() => {
+    if (props.liveValue === undefined) return;
+    if (props.liveValue.value === currVal.value) return;
+    //? If values are different, it means `liveValue` was changed.
+    currVal.value = props.liveValue.value;
+  });
+  //#endregion
 
   //#region Layout Context
   const sliderWidth = useSharedValue(0);
@@ -112,11 +134,11 @@ export const CachedSlider = memo(function CachedSlider(props: {
         .onBegin(() => setDraggable(false))
         .onEnd(({ x }) => {
           const finalizedValue = calculateNextValue(x);
-          currVal.value = finalizedValue;
+          setCurrVal(finalizedValue);
           scheduleOnRN(onCompleteRef.current, finalizedValue);
         })
         .onFinalize(() => setDraggable(true)),
-    [calculateNextValue, setDraggable, currVal],
+    [calculateNextValue, setDraggable, setCurrVal],
   );
 
   const panGesture = useMemo(
@@ -128,19 +150,19 @@ export const CachedSlider = memo(function CachedSlider(props: {
         })
         .onUpdate(({ x, velocityX }) => {
           const nextValue = calculateNextValue(x);
-          currVal.value = nextValue;
+          setCurrVal(nextValue);
           debouncedOnChange(nextValue, velocityX);
         })
         .onEnd(({ x }) => {
           const finalizedValue = calculateNextValue(x);
-          currVal.value = finalizedValue;
+          setCurrVal(finalizedValue);
           scheduleOnRN(onCompleteRef.current, finalizedValue);
         })
         .onFinalize(() => setDraggable(true)),
     [
       calculateNextValue,
       setDraggable,
-      currVal,
+      setCurrVal,
       debounceFrom,
       debouncedOnChange,
     ],
@@ -249,10 +271,10 @@ const SliderOverlay = memo(function SliderOverlay(
         { "flex-row-reverse": props.inverted },
       )}
     >
-      <props.Icon size={16} />
+      <props.Icon size={20} />
       <StyledText
         bold
-        className={cn("min-w-8 text-xs", { "text-right": props.inverted })}
+        className={cn("min-w-10 text-sm", { "text-right": props.inverted })}
       >
         {formattedValue}
       </StyledText>
