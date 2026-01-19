@@ -34,7 +34,6 @@
     "@missingcore/react-native-actual-path": "0.1.0",
     "@missingcore/react-native-metadata-retriever": "2.2.1",
     "@paralleldrive/cuid2": "3.0.6",
-    "@react-native-assets/slider": "11.0.12",
     "@react-navigation/material-top-tabs": "7.4.12",
     "@react-navigation/native": "7.1.27",
     "@react-navigation/native-stack": "7.9.1",
@@ -125,7 +124,6 @@
       "markdown-it": "14.1.0"
     },
     "patchedDependencies": {
-      "@react-native-assets/slider": "patches/@react-native-assets__slider.patch",
       "@backpackapp-io/react-native-toast": "patches/@backpackapp-io__react-native-toast.patch",
       "react-native-android-widget": "patches/react-native-android-widget.patch",
       "react-native-bootsplash": "patches/react-native-bootsplash.patch",
