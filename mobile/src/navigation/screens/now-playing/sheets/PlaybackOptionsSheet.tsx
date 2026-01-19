@@ -7,7 +7,6 @@ import { Pressable, View } from "react-native";
 import { ActivityZone } from "~/resources/icons/ActivityZone";
 import { Lyrics } from "~/resources/icons/Lyrics";
 import { SlowMotionVideo } from "~/resources/icons/SlowMotionVideo";
-import { Timer } from "~/resources/icons/Timer";
 import { VolumeUp } from "~/resources/icons/VolumeUp";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -21,7 +20,6 @@ import { getMediaLinkContext } from "~/navigation/utils/router";
 import { AppearanceSheet } from "./AppearanceSheet";
 import { LyricSheet } from "./LyricSheet";
 import { PlaybackSpeedSheet } from "./PlaybackSpeedSheet";
-import { SleepTimerSheet } from "./SleepTimerSheet";
 
 import { ScrollView } from "~/components/Defaults";
 import { NumberStepper } from "~/components/Form/NumberStepper";
@@ -52,7 +50,6 @@ export function PlaybackOptionsSheet(props: {
   const appearanceSheetRef = useSheetRef();
   const lyricSheetRef = useSheetRef();
   const playbackSpeedRef = useSheetRef();
-  const sleepTimerSheetRef = useSheetRef();
 
   const navigateToList = useCallback(async () => {
     if (!playingSource) return;
@@ -78,11 +75,6 @@ export function PlaybackOptionsSheet(props: {
     await internalSheetRef.current?.dismiss();
     playbackSpeedRef.current?.present();
   }, [playbackSpeedRef, internalSheetRef]);
-
-  const presentSleepTimerSheet = useCallback(async () => {
-    await internalSheetRef.current?.dismiss();
-    sleepTimerSheetRef.current?.present();
-  }, [sleepTimerSheetRef, internalSheetRef]);
   //#endregion
 
   return (
@@ -90,7 +82,6 @@ export function PlaybackOptionsSheet(props: {
       <AppearanceSheet ref={appearanceSheetRef} />
       <LyricSheet ref={lyricSheetRef} trackId={props.trackId} />
       <PlaybackSpeedSheet ref={playbackSpeedRef} />
-      <SleepTimerSheet ref={sleepTimerSheetRef} />
 
       <DetachedSheet
         ref={internalSheetRef}
@@ -154,12 +145,6 @@ export function PlaybackOptionsSheet(props: {
               labelTextKey="feat.playback.extra.speed"
               onPress={presentPlaybackSheet}
               LeftElement={<SlowMotionVideo />}
-              className="gap-4"
-            />
-            <SegmentedList.Item
-              labelTextKey="feat.sleepTimer.title"
-              onPress={presentSleepTimerSheet}
-              LeftElement={<Timer />}
               className="gap-4"
             />
           </SegmentedList>

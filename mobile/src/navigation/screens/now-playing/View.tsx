@@ -7,10 +7,11 @@ import { I18nManager, Pressable, View } from "react-native";
 import type { TrackWithRelations } from "~/db/schema";
 
 import { Favorite } from "~/resources/icons/Favorite";
-import { InstantMix } from "~/resources/icons/InstantMix";
 import { KeyboardArrowDown } from "~/resources/icons/KeyboardArrowDown";
-import { LibraryMusic } from "~/resources/icons/LibraryMusic";
+import { MoreHoriz } from "~/resources/icons/MoreHoriz";
 import { MoreVert } from "~/resources/icons/MoreVert";
+import { Timer } from "~/resources/icons/Timer";
+import { ViewAgenda } from "~/resources/icons/ViewAgenda";
 import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -19,12 +20,14 @@ import { usePlayerProgress } from "./helpers/usePlayerProgress";
 import { NowPlayingArtwork } from "./components/Artwork";
 import { ProgressBar } from "./components/ProgressBar";
 import { PlaybackOptionsSheet } from "./sheets/PlaybackOptionsSheet";
+import { SleepTimerSheet } from "./sheets/SleepTimerSheet";
+import { useSleepTimerStore } from "./sheets/SleepTimerSheet/store";
 
 import { OnRTL } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { formatSeconds } from "~/utils/number";
-import { IconButton } from "~/components/Form/Button/Icon";
+import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { Marquee } from "~/components/Marquee";
 import { SafeContainer } from "~/components/SafeContainer";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
@@ -203,12 +206,11 @@ function SeekBar({
 //#endregion
 
 //#region Playback Controls
-/** Playback controls for the current track. */
 function PlaybackControls() {
   return (
     <View
       style={{ flexDirection: OnRTL.decide("row-reverse", "row") }}
-      className="items-center justify-center gap-2"
+      className="mx-auto w-full max-w-96 items-center justify-between gap-2"
     >
       <ShuffleButton />
       <PreviousButton />
@@ -221,34 +223,56 @@ function PlaybackControls() {
 //#endregion
 
 //#region Bottom App Bar
-/** Actions rendered on the bottom of the screen. */
 function BottomAppBar({ trackId }: { trackId: string }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const sleepTimerSheetRef = useSheetRef();
   const playbackOptionsSheetRef = useSheetRef();
 
   return (
     <>
+      <SleepTimerSheet ref={sleepTimerSheetRef} />
       <PlaybackOptionsSheet ref={playbackOptionsSheetRef} trackId={trackId} />
 
       <View className="flex-row items-center justify-between gap-4 p-4">
         <BackButton />
-        <View className="flex-row items-center gap-4">
+        <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
+          <SleepTimerButton
+            present={() => sleepTimerSheetRef.current?.present()}
+          />
           <IconButton
-            Icon={InstantMix}
-            accessibilityLabel={t("feat.playback.extra.options")}
-            onPress={() => playbackOptionsSheetRef.current?.present()}
+            Icon={ViewAgenda}
+            accessibilityLabel={t("term.upcoming")}
+            onPress={() => navigation.navigate("Upcoming")}
             size="lg"
           />
           <IconButton
-            Icon={LibraryMusic}
-            accessibilityLabel={t("term.upcoming")}
-            onPress={() => navigation.navigate("Upcoming")}
+            Icon={MoreHoriz}
+            accessibilityLabel={t("feat.playback.extra.options")}
+            onPress={() => playbackOptionsSheetRef.current?.present()}
             size="lg"
           />
         </View>
       </View>
     </>
+  );
+}
+
+function SleepTimerButton(props: { present: VoidFunction }) {
+  const { t } = useTranslation();
+  const sleepTimerActive = useSleepTimerStore((s) => s.endAt) !== null;
+  return (
+    <View className="relative">
+      <IconButton
+        Icon={Timer}
+        accessibilityLabel={t("feat.sleepTimer.title")}
+        onPress={props.present}
+        size="lg"
+      />
+      {sleepTimerActive && (
+        <View className="absolute top-2 right-2 size-2 rounded-full bg-primary" />
+      )}
+    </View>
   );
 }
 
@@ -263,7 +287,7 @@ function BackButton() {
 
   if (usedDesign !== "vinylOld") return <View />;
   return (
-    <IconButton
+    <FilledIconButton
       Icon={KeyboardArrowDown}
       accessibilityLabel={t("form.back")}
       onPress={() => navigation.goBack()}
