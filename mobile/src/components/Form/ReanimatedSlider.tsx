@@ -32,9 +32,9 @@ export const CachedSlider = memo(function CachedSlider(props: {
   max: number;
   /** Helper to prevent dragging when used inside a sheet. */
   dragPrevention?: Dispatch<SetStateAction<boolean>>;
-  /** Function call is debounced, which is based on `5 * step`. */
+  /** Function call is debounced, which is based on `_debounceMultiplier * step`. */
   onChange: (value: number) => void | Promise<void>;
-  /** Fallsback to `onChange`. */
+  /** Fallsback to `onChange` as `onChange` might not get the final value due to the debounce logic. */
   onComplete?: (value: number) => void | Promise<void>;
   /** Defaults to `1`. */
   step?: number;
@@ -50,6 +50,8 @@ export const CachedSlider = memo(function CachedSlider(props: {
    * with tall sliders.
    */
   overlay?: SliderOverlayProps;
+  /** How much we should debounce calling `onChange` based on `step`. Defaults to `5`. */
+  _debounceMultiplier?: number;
   /** Add additional styles to the slider wrapper. */
   _className?: string;
 }) {
@@ -59,6 +61,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
     [props.min, props.max],
   );
   const step = useRef(props.step ?? 1);
+  const debounceMultiplier = useRef(props._debounceMultiplier ?? 5);
 
   //#region Synchronization
   const setCurrVal = useCallback(
@@ -101,8 +104,13 @@ export const CachedSlider = memo(function CachedSlider(props: {
       "worklet";
       // If velocity is greater than 500 (ie: abnormal use), don't do anything.
       if (Math.abs(velocity) > 500) return;
-      // Don't immediately call `onChange` if we haven't moved 5 steps.
-      if (Math.abs(debounceFrom.value - value) < step.current * 5) return;
+      // Don't immediately call `onChange` if we haven't moved `debounceMultipler * step`.
+      if (
+        Math.abs(debounceFrom.value - value) <
+        step.current * debounceMultiplier.current
+      ) {
+        return;
+      }
       debounceFrom.value = value;
       scheduleOnRN(onChangeRef.current, value);
     },
