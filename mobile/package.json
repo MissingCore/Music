@@ -112,6 +112,11 @@
       ]
     }
   },
+  "reanimated": {
+    "staticFeatureFlags": {
+      "ANDROID_SYNCHRONOUSLY_UPDATE_UI_PROPS": true
+    }
+  },
   "pnpm": {
     "onlyBuiltDependencies": [
       "@miblanchard/react-native-slider",
