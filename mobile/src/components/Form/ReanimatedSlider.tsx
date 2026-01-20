@@ -147,8 +147,8 @@ export const CachedSlider = memo(function CachedSlider(props: {
           const finalizedValue = calculateNextValue(x);
           setCurrVal(finalizedValue);
           scheduleOnRN(onCompleteRef.current, finalizedValue);
-        })
-        .onFinalize(() => setDraggable(true)),
+          setDraggable(true);
+        }),
     [calculateNextValue, setDraggable, setCurrVal],
   );
 
