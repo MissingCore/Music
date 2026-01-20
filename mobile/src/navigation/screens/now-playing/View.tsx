@@ -1,6 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { I18nManager, Pressable, View } from "react-native";
 
@@ -25,13 +24,13 @@ import { useSleepTimerStore } from "./sheets/SleepTimerSheet/store";
 
 import { OnRTL } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
-import { cn } from "~/lib/style";
 import { formatSeconds } from "~/utils/number";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { Marquee } from "~/components/Marquee";
 import { SafeContainer } from "~/components/SafeContainer";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
+import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
 import {
   NextButton,
   PlayToggleButton,
@@ -58,7 +57,6 @@ export default function NowPlaying() {
 }
 
 //#region Metadata
-/** Brief information and actions on the current playing track. */
 function Metadata({ track }: { track: TrackWithRelations }) {
   const { t } = useTranslation();
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
@@ -71,17 +69,22 @@ function Metadata({ track }: { track: TrackWithRelations }) {
         </Marquee>
         <ArtistsLink
           artistNames={track.tracksToArtists.map((rel) => rel.artistName)}
+          popScreen
+          className="text-sm/[1.125]"
         />
-        <MarqueeLink
-          onPress={() =>
-            navigation.popTo("Album", { id: track.album?.id ?? "" })
-          }
-          dim
-        >
-          {track.album?.name}
-        </MarqueeLink>
+        {track.album ? (
+          <Marquee>
+            <Pressable
+              onPress={() => navigation.popTo("Album", { id: track.album!.id })}
+            >
+              <StyledText dim className="text-sm/[1.125]">
+                {track.album.name}
+              </StyledText>
+            </Pressable>
+          </Marquee>
+        ) : null}
       </View>
-      <View className="flex-row items-center gap-2">
+      <View className="flex-row items-center gap-1">
         <FavoriteButton trackId={track.id} />
         <IconButton
           Icon={MoreVert}
@@ -95,35 +98,12 @@ function Metadata({ track }: { track: TrackWithRelations }) {
         There needs to be some content within the text to have the line height
         take effect.
       */}
-      <View
-        aria-hidden
-        pointerEvents="none"
-        className="invisible -ml-4 w-0 gap-1"
-      >
+      <View aria-hidden pointerEvents="none" className="-ml-4 w-0 gap-1">
         <StyledText className="text-xl/[1.125]"> </StyledText>
         <StyledText className="text-sm/[1.125]"> </StyledText>
         <StyledText className="text-sm/[1.125]"> </StyledText>
       </View>
     </View>
-  );
-}
-
-function ArtistsLink(props: { artistNames: string[] }) {
-  const navigation = useNavigation<NativeStackNavigationProp<any>>();
-  if (props.artistNames.length === 0) return null;
-  return (
-    <Marquee contentContainerClassName="gap-1">
-      {props.artistNames.map((name, index) => (
-        <Fragment key={name}>
-          {index > 0 ? <StyledText className="text-xs">|</StyledText> : null}
-          <Pressable onPress={() => navigation.popTo("Artist", { id: name })}>
-            <StyledText className="text-sm/[1.125] text-primary">
-              {name}
-            </StyledText>
-          </Pressable>
-        </Fragment>
-      ))}
-    </Marquee>
   );
 }
 
@@ -145,24 +125,6 @@ function FavoriteButton(props: { trackId: string }) {
       filled={isFav}
       size="lg"
     />
-  );
-}
-
-function MarqueeLink({
-  onPress,
-  className,
-  children,
-  ...rest
-}: React.ComponentProps<typeof StyledText> & { onPress: VoidFunction }) {
-  if (!children) return null;
-  return (
-    <Marquee>
-      <Pressable onPress={onPress}>
-        <StyledText className={cn("text-sm/[1.125]", className)} {...rest}>
-          {children}
-        </StyledText>
-      </Pressable>
-    </Marquee>
   );
 }
 //#endregion
