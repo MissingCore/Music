@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
-import { I18nManager, Pressable, View } from "react-native";
+import { Pressable, View } from "react-native";
 
 import type { TrackWithRelations } from "~/db/schema";
 
@@ -15,16 +15,14 @@ import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/services/SessionStore";
-import { usePlayerProgress } from "./helpers/usePlayerProgress";
 import { NowPlayingArtwork } from "./components/Artwork";
-import { ProgressBar } from "./components/ProgressBar";
+import { SeekBar } from "./components/SeekBar";
 import { PlaybackOptionsSheet } from "./sheets/PlaybackOptionsSheet";
 import { SleepTimerSheet } from "./sheets/SleepTimerSheet";
 import { useSleepTimerStore } from "./sheets/SleepTimerSheet/store";
 
 import { OnRTL } from "~/lib/react";
 import { mutateGuard } from "~/lib/react-query";
-import { formatSeconds } from "~/utils/number";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { Marquee } from "~/components/Marquee";
 import { SafeContainer } from "~/components/SafeContainer";
@@ -48,7 +46,7 @@ export default function NowPlaying() {
       <NowPlayingArtwork artwork={track.artwork} />
       <View className="gap-6 px-4">
         <Metadata track={track} />
-        <SeekBar duration={track.duration} id={track.id} uri={track.uri} />
+        <SeekBar id={track.id} uri={track.uri} trackLength={track.duration} />
         <PlaybackControls />
       </View>
       <BottomAppBar trackId={track.id} />
@@ -125,44 +123,6 @@ function FavoriteButton(props: { trackId: string }) {
       filled={isFav}
       size="lg"
     />
-  );
-}
-//#endregion
-
-//#region Seek Bar
-/** Allows us to change the current positon of the playing track. */
-function SeekBar({
-  duration,
-  id,
-  uri,
-}: {
-  duration: number;
-  id: string;
-  uri: string;
-}) {
-  const { position, setPosition, seekToPosition } = usePlayerProgress();
-
-  const clampedPos = position > duration ? duration : position;
-
-  return (
-    <View>
-      <ProgressBar
-        trackId={id}
-        trackPath={uri}
-        value={clampedPos}
-        max={duration}
-        onChange={setPosition}
-        onComplete={seekToPosition}
-        inverted={I18nManager.isRTL}
-      />
-      <View
-        style={{ flexDirection: OnRTL.decide("row-reverse", "row") }}
-        className="justify-between"
-      >
-        <StyledText className="text-sm">{formatSeconds(clampedPos)}</StyledText>
-        <StyledText className="text-sm">{formatSeconds(duration)}</StyledText>
-      </View>
-    </View>
   );
 }
 //#endregion
