@@ -54,7 +54,10 @@ export const CachedSlider = memo(function CachedSlider(props: {
   _className?: string;
 }) {
   const currVal = useSharedValue(props.initValue);
-  const moveableDistance = useRef(props.max - props.min);
+  const moveableDistance = useMemo(
+    () => props.max - props.min,
+    [props.min, props.max],
+  );
   const step = useRef(props.step ?? 1);
 
   //#region Synchronization
@@ -119,7 +122,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
         I18nManager.isRTL && !props.inverted ? sliderWidth.value - x : x;
       const clampedValue = clamp(0, i18nAdjustedX, sliderWidth.value);
       const progressPrecent = clampedValue / sliderWidth.value;
-      const rawVal = progressPrecent * moveableDistance.current + props.min;
+      const rawVal = progressPrecent * moveableDistance + props.min;
       // Round based on the step.
       return roundToStep(rawVal, step.current);
     },
@@ -199,9 +202,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
 
   const progressStyle = useAnimatedStyle(() => ({
     backgroundColor: progressColor,
-    width:
-      ((currVal.value - props.min) / moveableDistance.current) *
-      sliderWidth.value,
+    width: ((currVal.value - props.min) / moveableDistance) * sliderWidth.value,
   }));
 
   const progressClassName = useMemo(
