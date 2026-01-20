@@ -7,7 +7,7 @@ import { usePlayerProgress } from "../helpers/usePlayerProgress";
 
 import { Colors } from "~/constants/Styles";
 import { OnRTL } from "~/lib/react";
-import { formatSeconds } from "~/utils/number";
+import { clamp, formatSeconds } from "~/utils/number";
 import { Slider } from "~/components/Form/Slider";
 import { StyledText } from "~/components/Typography/StyledText";
 
@@ -20,8 +20,7 @@ interface SeekBarProps {
 export function SeekBar(props: SeekBarProps) {
   const { position, setPosition, seekToPosition } = usePlayerProgress();
 
-  const clampedPos =
-    position > props.trackLength ? props.trackLength : position;
+  const clampedPos = clamp(0, position, props.trackLength);
 
   return (
     <View>

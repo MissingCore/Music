@@ -7,6 +7,7 @@ import { NothingArrowRight } from "~/resources/icons/NothingArrowRight";
 
 import { OnRTL } from "~/lib/react";
 import { cn } from "~/lib/style";
+import { clamp } from "~/utils/number";
 
 const DRAG_TOSS = 0.02;
 
@@ -279,11 +280,5 @@ function SwipeIcon({ rotate = false }) {
       <NothingArrowRight size={32} />
     </View>
   );
-}
-//#endregion
-
-//#region Helpers
-function clamp(value: number, min: number, max: number) {
-  return Math.min(Math.max(value, min), max);
 }
 //#endregion

@@ -2,6 +2,8 @@ import { I18nManager } from "react-native";
 
 import i18next from "~/modules/i18n";
 
+import { clamp } from "~/utils/number";
+
 /** Ensure `i18next` & React Native is aware of the current app language. */
 export async function resolveLanguageConfigs(
   language: string,
@@ -13,5 +15,5 @@ export async function resolveLanguageConfigs(
 }
 
 export function clampPlaybackDelay(value: number) {
-  return Math.min(Math.max(value, 0), 10);
+  return clamp(0, value, 10);
 }
