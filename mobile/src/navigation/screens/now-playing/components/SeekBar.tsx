@@ -1,5 +1,5 @@
 import { Slider as RNSlider } from "@miblanchard/react-native-slider";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { I18nManager, View } from "react-native";
 import { Easing, useSharedValue, withTiming } from "react-native-reanimated";
 import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
@@ -29,6 +29,8 @@ const LISTENER_ID = 24680;
 export function SeekBar(props: SeekBarProps) {
   const isPlaying = usePlaybackStore((s) => s.isPlaying);
   const lastPosition = usePlaybackStore((s) => s.lastPosition);
+  const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
+  const samples = useWaveformSamples(props.id, props.uri);
   const playbackSpeed = useSessionStore((s) => s.playbackSpeed);
   const timedPosition = useSharedValue(lastPosition);
   const [isSeeking, setIsSeeking] = useState(true);
@@ -46,6 +48,19 @@ export function SeekBar(props: SeekBarProps) {
       });
     },
     [timedPosition, playbackSpeed, props.trackLength],
+  );
+
+  const sharedSliderOptions = useMemo(
+    () => ({
+      initValue: 0,
+      liveValue: timedPosition,
+      min: 0,
+      max: props.trackLength,
+      getInteractionStatus: setIsSeeking,
+      onComplete: PlaybackControls.seekTo,
+      inverted: I18nManager.isRTL,
+    }),
+    [timedPosition, props.trackLength],
   );
 
   useEffect(() => {
@@ -70,18 +85,29 @@ export function SeekBar(props: SeekBarProps) {
 
   return (
     <View>
-      <CachedSlider
-        initValue={0}
-        liveValue={timedPosition}
-        min={0}
-        max={props.trackLength}
-        height={12}
-        vHitSlop={8}
-        getInteractionStatus={setIsSeeking}
-        onComplete={PlaybackControls.seekTo}
-        trackColor="surfaceContainerHigh"
-        roundedEndStop
-      />
+      {waveformSlider ? (
+        <View className="relative h-12">
+          <Waveform
+            amplitudes={samples}
+            height={48}
+            progress={clampedPos}
+            maxProgress={props.trackLength}
+          />
+          <CachedSlider
+            {...sharedSliderOptions}
+            height={48}
+            transparent
+            _className="absolute top-0 left-0 w-full"
+          />
+        </View>
+      ) : (
+        <CachedSlider
+          {...sharedSliderOptions}
+          vHitSlop={8}
+          trackColor="surfaceContainerHigh"
+          roundedEndStop
+        />
+      )}
       <View
         style={{ flexDirection: OnRTL.decide("row-reverse", "row") }}
         className="justify-between"

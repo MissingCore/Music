@@ -17,6 +17,7 @@ import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
 import type { Icon } from "~/resources/icons/type";
 import { useColor } from "~/hooks/useTheme";
 
+import { Colors } from "~/constants/Styles";
 import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
 import { StyledText } from "../Typography/StyledText";
@@ -43,6 +44,8 @@ export const CachedSlider = memo(function CachedSlider(props: {
   height?: number;
   /** Vertical hitslop. Will change the component's height. */
   vHitSlop?: number;
+  /** If the slider should be transparent. */
+  transparent?: boolean;
   trackColor?: ColorRole;
   progressColor?: ColorRole;
   /** If the progress indicator will have a rounded end stop. */
@@ -204,21 +207,22 @@ export const CachedSlider = memo(function CachedSlider(props: {
   );
 
   const sliderWrapperStyle: ViewStyle = useMemo(
-    () => ({ backgroundColor: trackColor, height: props.height ?? 12 }),
-    [trackColor, props.height],
+    () => ({
+      backgroundColor: props.transparent ? Colors.transparent : trackColor,
+      height: props.height ?? 12,
+    }),
+    [trackColor, props.height, props.transparent],
   );
   const sliderWrappeClassName = useMemo(
     () =>
-      cn(
-        "relative w-full overflow-hidden rounded-full",
-        { "flex-row-reverse": shouldInvertStyle },
-        props._className,
-      ),
-    [shouldInvertStyle, props._className],
+      cn("relative w-full overflow-hidden rounded-full", {
+        "flex-row-reverse": shouldInvertStyle,
+      }),
+    [shouldInvertStyle],
   );
 
   const progressStyle = useAnimatedStyle(() => ({
-    backgroundColor: progressColor,
+    backgroundColor: props.transparent ? Colors.transparent : progressColor,
     width: ((currVal.value - props.min) / moveableDistance) * sliderWidth.value,
   }));
 
@@ -230,7 +234,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
 
   return (
     <GestureDetector gesture={gestures}>
-      <View style={hitSlopViewStyle}>
+      <View style={hitSlopViewStyle} className={props._className}>
         <View
           onLayout={onLayout}
           style={sliderWrapperStyle}
