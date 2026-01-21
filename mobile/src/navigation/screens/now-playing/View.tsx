@@ -156,7 +156,7 @@ function BottomAppBar({ trackId }: { trackId: string }) {
       <SleepTimerSheet ref={sleepTimerSheetRef} />
       <PlaybackOptionsSheet ref={playbackOptionsSheetRef} trackId={trackId} />
 
-      <View className="flex-row items-center justify-between gap-4 p-4">
+      <View className="flex-row items-center justify-between gap-4 p-4 pt-2">
         <BackButton />
         <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
           <SleepTimerButton
