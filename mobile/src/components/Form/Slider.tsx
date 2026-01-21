@@ -75,8 +75,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
       currVal.value = val;
       if (props.liveValue !== undefined) props.liveValue.value = val;
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [props.liveValue],
+    [currVal, props.liveValue],
   );
 
   //? Synchronize internal value with external value.

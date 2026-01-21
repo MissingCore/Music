@@ -29,7 +29,7 @@ export function SeekBar(props: SeekBarProps) {
   const samples = useWaveformSamples(props.id, props.uri);
   const playbackSpeed = useSessionStore((s) => s.playbackSpeed);
   const timedPosition = useSharedValue(lastPosition);
-  const [isSeeking, setIsSeeking] = useState(true);
+  const [isSeeking, setIsSeeking] = useState(false);
   const [renderedPos, setRenderedPos] = useState(lastPosition);
 
   const animateSlider = useCallback(
