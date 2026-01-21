@@ -11,7 +11,7 @@ import { Waveform, useWaveformSamples } from "./Waveform";
 
 import { OnRTL } from "~/lib/react";
 import { clamp, formatSeconds } from "~/utils/number";
-import { CachedSlider } from "~/components/Form/ReanimatedSlider";
+import { CachedSlider } from "~/components/Form/Slider";
 import { StyledText } from "~/components/Typography/StyledText";
 
 interface SeekBarProps {

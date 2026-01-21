@@ -23,7 +23,7 @@ import { PlaybackSpeedSheet } from "./PlaybackSpeedSheet";
 
 import { ScrollView } from "~/components/Defaults";
 import { NumberStepper } from "~/components/Form/NumberStepper";
-import { CachedSlider } from "~/components/Form/ReanimatedSlider";
+import { CachedSlider } from "~/components/Form/Slider";
 import { SegmentedList } from "~/components/List/Segmented";
 import { Marquee } from "~/components/Marquee";
 import { DetachedSheet } from "~/components/Sheet/Detached";

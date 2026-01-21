@@ -8,7 +8,7 @@ import { SlowMotionVideo } from "~/resources/icons/SlowMotionVideo";
 import { sessionStore, useSessionStore } from "~/services/SessionStore";
 
 import { Button } from "~/components/Form/Button";
-import { CachedSlider } from "~/components/Form/ReanimatedSlider";
+import { CachedSlider } from "~/components/Form/Slider";
 import { DetachedSheet } from "~/components/Sheet/Detached";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
