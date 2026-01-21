@@ -1,13 +1,15 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { AppState, I18nManager, View } from "react-native";
-import { Easing, useSharedValue, withTiming } from "react-native-reanimated";
-import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
+import { useAtomValue, useSetAtom } from "jotai";
+import { useMemo } from "react";
+import { I18nManager, View } from "react-native";
 
-import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { useSessionStore } from "~/services/SessionStore";
 import { Waveform, useWaveformSamples } from "./Waveform";
+import {
+  animatedPositionAtom,
+  isSeekingAtom,
+  renderedPositionAtom,
+} from "../helpers/Seekbar.context";
 
 import { OnRTL } from "~/lib/react";
 import { clamp, formatSeconds } from "~/utils/number";
@@ -20,31 +22,12 @@ interface SeekBarProps {
   trackLength: number;
 }
 
-const LISTENER_ID = 24680;
-
 export function SeekBar(props: SeekBarProps) {
-  const isPlaying = usePlaybackStore((s) => s.isPlaying);
-  const lastPosition = usePlaybackStore((s) => s.lastPosition);
   const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
   const samples = useWaveformSamples(props.id, props.uri);
-  const playbackSpeed = useSessionStore((s) => s.playbackSpeed);
-  const timedPosition = useSharedValue(lastPosition);
-  const [isSeeking, setIsSeeking] = useState(false);
-  const [renderedPos, setRenderedPos] = useState(lastPosition);
-
-  const animateSlider = useCallback(
-    (fromPos: number) => {
-      const remainingSeconds = props.trackLength - fromPos;
-      const estimatedAnimationDuration =
-        (remainingSeconds * 1000) / playbackSpeed;
-
-      timedPosition.value = withTiming(props.trackLength, {
-        duration: estimatedAnimationDuration,
-        easing: Easing.linear,
-      });
-    },
-    [timedPosition, playbackSpeed, props.trackLength],
-  );
+  const timedPosition = useAtomValue(animatedPositionAtom);
+  const setIsSeeking = useSetAtom(isSeekingAtom);
+  const renderedPos = useAtomValue(renderedPositionAtom);
 
   const sharedSliderOptions = useMemo(
     () => ({
@@ -56,26 +39,8 @@ export function SeekBar(props: SeekBarProps) {
       onComplete: PlaybackControls.seekTo,
       inverted: I18nManager.isRTL,
     }),
-    [timedPosition, props.trackLength],
+    [timedPosition, setIsSeeking, props.trackLength],
   );
-
-  useEffect(() => {
-    if (isSeeking) return;
-    timedPosition.value = lastPosition;
-    if (!isPlaying || AppState.currentState !== "active") return;
-    animateSlider(lastPosition);
-  }, [animateSlider, timedPosition, isPlaying, isSeeking, lastPosition]);
-
-  useEffect(() => {
-    scheduleOnUI(() =>
-      timedPosition.addListener(LISTENER_ID, (value) =>
-        scheduleOnRN(setRenderedPos, value),
-      ),
-    );
-    return () => {
-      scheduleOnUI(() => timedPosition.removeListener(LISTENER_ID));
-    };
-  }, [timedPosition]);
 
   const clampedPos = clamp(0, renderedPos, props.trackLength);
 

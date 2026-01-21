@@ -15,6 +15,7 @@ import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/services/SessionStore";
+import { SeekbarContext } from "./helpers/Seekbar.context";
 import { NowPlayingArtwork } from "./components/Artwork";
 import { SeekBar } from "./components/SeekBar";
 import { PlaybackOptionsSheet } from "./sheets/PlaybackOptionsSheet";
@@ -42,15 +43,17 @@ export default function NowPlaying() {
   const track = usePlaybackStore((s) => s.activeTrack);
   if (!track) return <Back />;
   return (
-    <SafeContainer additionalTopOffset={56} className="flex-1 gap-8">
-      <NowPlayingArtwork artwork={track.artwork} />
-      <View className="gap-6 px-4">
-        <Metadata track={track} />
-        <SeekBar id={track.id} uri={track.uri} trackLength={track.duration} />
-        <PlaybackControls />
-      </View>
-      <BottomAppBar trackId={track.id} />
-    </SafeContainer>
+    <SeekbarContext>
+      <SafeContainer additionalTopOffset={56} className="flex-1 gap-8">
+        <NowPlayingArtwork artwork={track.artwork} />
+        <View className="gap-6 px-4">
+          <Metadata track={track} />
+          <SeekBar id={track.id} uri={track.uri} trackLength={track.duration} />
+          <PlaybackControls />
+        </View>
+        <BottomAppBar trackId={track.id} />
+      </SafeContainer>
+    </SeekbarContext>
   );
 }
 
