@@ -33,7 +33,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
   /** Helper to prevent dragging when used inside a sheet. */
   dragPrevention?: Dispatch<SetStateAction<boolean>>;
   /** Function call is debounced, which is based on `_debounceMultiplier * step`. */
-  onChange: (value: number) => void | Promise<void>;
+  onChange?: (value: number) => void | Promise<void>;
   /** Fallsback to `onChange` as `onChange` might not get the final value due to the debounce logic. */
   onComplete?: (value: number) => void | Promise<void>;
   /** Defaults to `1`. */
@@ -112,7 +112,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
         return;
       }
       debounceFrom.value = value;
-      scheduleOnRN(onChangeRef.current, value);
+      if (onChangeRef.current) scheduleOnRN(onChangeRef.current, value);
     },
     [debounceFrom],
   );
@@ -146,8 +146,9 @@ export const CachedSlider = memo(function CachedSlider(props: {
         .onEnd(({ x }) => {
           const finalizedValue = calculateNextValue(x);
           setCurrVal(finalizedValue);
-          scheduleOnRN(onCompleteRef.current, finalizedValue);
           setDraggable(true);
+          if (onCompleteRef.current)
+            scheduleOnRN(onCompleteRef.current, finalizedValue);
         }),
     [calculateNextValue, setDraggable, setCurrVal],
   );
@@ -167,7 +168,8 @@ export const CachedSlider = memo(function CachedSlider(props: {
         .onEnd(({ x }) => {
           const finalizedValue = calculateNextValue(x);
           setCurrVal(finalizedValue);
-          scheduleOnRN(onCompleteRef.current, finalizedValue);
+          if (onCompleteRef.current)
+            scheduleOnRN(onCompleteRef.current, finalizedValue);
         })
         .onFinalize(() => setDraggable(true)),
     [
