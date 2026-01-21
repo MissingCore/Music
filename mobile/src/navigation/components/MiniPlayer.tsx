@@ -21,7 +21,6 @@ import {
   PreviousButton,
 } from "~/modules/media/components/MediaControls";
 import { MediaImage } from "~/modules/media/components/MediaImage";
-import { usePlayerProgress } from "../screens/now-playing/helpers/usePlayerProgress";
 
 /**
  * Displays a player that appears at the bottom of the screen if we have
@@ -98,7 +97,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
 }
 
 function TrackProgress({ duration }: { duration: number }) {
-  const { position } = usePlayerProgress();
+  const position = usePlaybackStore((s) => s.lastPosition);
   const progressPercent = `${(position / duration) * 100}%` as const;
 
   return (
