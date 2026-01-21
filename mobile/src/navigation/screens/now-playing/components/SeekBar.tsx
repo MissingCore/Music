@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { I18nManager, View } from "react-native";
+import { AppState, I18nManager, View } from "react-native";
 import { Easing, useSharedValue, withTiming } from "react-native-reanimated";
 import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
 
@@ -62,7 +62,7 @@ export function SeekBar(props: SeekBarProps) {
   useEffect(() => {
     if (isSeeking) return;
     timedPosition.value = lastPosition;
-    if (!isPlaying) return;
+    if (!isPlaying || AppState.currentState !== "active") return;
     animateSlider(lastPosition);
   }, [animateSlider, timedPosition, isPlaying, isSeeking, lastPosition]);
 
