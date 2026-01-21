@@ -38,7 +38,7 @@ export function PlaybackOptionsSheet(props: {
   trackId: string;
 }) {
   const navigation = useNavigation();
-  const [canDrag, setCanDrag] = useState(true);
+  const [stopDrag, setStopDrag] = useState(false);
   const playingSource = usePlaybackStore((s) => s.playingFrom);
   const sourceName = usePlaybackStore((s) => s.playingFromName);
   const playbackDelay = usePreferenceStore((s) => s.playbackDelay);
@@ -85,7 +85,7 @@ export function PlaybackOptionsSheet(props: {
 
       <DetachedSheet
         ref={internalSheetRef}
-        draggable={canDrag}
+        draggable={!stopDrag}
         contentContainerClassName="pb-0"
       >
         <ScrollView contentContainerClassName="gap-6 pb-4">
@@ -100,7 +100,7 @@ export function PlaybackOptionsSheet(props: {
           />
           <CachedSlider
             initValue={volume}
-            dragPrevention={setCanDrag}
+            getInteractionStatus={setStopDrag}
             {...VolumeSliderOptions}
           />
 

@@ -14,16 +14,16 @@ import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
 
 export function PlaybackSpeedSheet(props: { ref: TrueSheetRef }) {
-  const [canDrag, setCanDrag] = useState(true);
+  const [stopDrag, setStopDrag] = useState(false);
   const playbackSpeed = useSessionStore((s) => s.playbackSpeed);
   const cachedPlaybackSpeed = useSharedValue(playbackSpeed);
 
   return (
-    <DetachedSheet ref={props.ref} draggable={canDrag}>
+    <DetachedSheet ref={props.ref} draggable={!stopDrag}>
       <CachedSlider
         initValue={playbackSpeed}
         liveValue={cachedPlaybackSpeed}
-        dragPrevention={setCanDrag}
+        getInteractionStatus={setStopDrag}
         {...PlaybackSpeedSliderOptions}
       />
       <View className="flex-row items-center gap-4">

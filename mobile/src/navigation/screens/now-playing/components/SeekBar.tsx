@@ -31,7 +31,7 @@ export function SeekBar(props: SeekBarProps) {
   const lastPosition = usePlaybackStore((s) => s.lastPosition);
   const playbackSpeed = useSessionStore((s) => s.playbackSpeed);
   const timedPosition = useSharedValue(lastPosition);
-  const [finishedSeeking, setFinishedSeeking] = useState(true);
+  const [isSeeking, setIsSeeking] = useState(true);
   const [renderedPos, setRenderedPos] = useState(lastPosition);
 
   const animateSlider = useCallback(
@@ -49,11 +49,11 @@ export function SeekBar(props: SeekBarProps) {
   );
 
   useEffect(() => {
-    if (!finishedSeeking) return;
+    if (isSeeking) return;
     timedPosition.value = lastPosition;
     if (!isPlaying) return;
     animateSlider(lastPosition);
-  }, [animateSlider, timedPosition, isPlaying, finishedSeeking, lastPosition]);
+  }, [animateSlider, timedPosition, isPlaying, isSeeking, lastPosition]);
 
   useEffect(() => {
     scheduleOnUI(() =>
@@ -69,14 +69,15 @@ export function SeekBar(props: SeekBarProps) {
   const clampedPos = clamp(0, renderedPos, props.trackLength);
 
   return (
-    <View className="gap-2 pt-2">
+    <View>
       <CachedSlider
         initValue={0}
         liveValue={timedPosition}
         min={0}
         max={props.trackLength}
         height={12}
-        dragPrevention={setFinishedSeeking}
+        vHitSlop={8}
+        getInteractionStatus={setIsSeeking}
         onComplete={PlaybackControls.seekTo}
         trackColor="surfaceContainerHigh"
         roundedEndStop

@@ -30,8 +30,8 @@ export const CachedSlider = memo(function CachedSlider(props: {
   liveValue?: SharedValue<number>;
   min: number;
   max: number;
-  /** Helper to prevent dragging when used inside a sheet. */
-  dragPrevention?: Dispatch<SetStateAction<boolean>>;
+  /** Notify the parent if the slider recognized interactions. */
+  getInteractionStatus?: Dispatch<SetStateAction<boolean>>;
   /** Function call is debounced, which is based on `_debounceMultiplier * step`. */
   onChange?: (value: number) => void | Promise<void>;
   /** Fallsback to `onChange` as `onChange` might not get the final value due to the debounce logic. */
@@ -41,6 +41,8 @@ export const CachedSlider = memo(function CachedSlider(props: {
   /** Invert appearance & functionality given `I18nManager` is enabled.  */
   inverted?: boolean;
   height?: number;
+  /** Vertical hitslop. Will change the component's height. */
+  vHitSlop?: number;
   trackColor?: ColorRole;
   progressColor?: ColorRole;
   /** If the progress indicator will have a rounded end stop. */
@@ -94,7 +96,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
   //#endregion
 
   //#region Handlers
-  const setDraggableRef = useRef(props.dragPrevention);
+  const setIsInteractingRef = useRef(props.getInteractionStatus);
   const onChangeRef = useRef(props.onChange);
   const onCompleteRef = useRef(props.onComplete ?? props.onChange);
 
@@ -117,10 +119,10 @@ export const CachedSlider = memo(function CachedSlider(props: {
     [debounceFrom],
   );
 
-  const setDraggable = useCallback((draggable: boolean) => {
+  const setIsInteracting = useCallback((isInteracted: boolean) => {
     "worklet";
-    if (setDraggableRef.current)
-      scheduleOnRN(setDraggableRef.current, draggable);
+    if (setIsInteractingRef.current)
+      scheduleOnRN(setIsInteractingRef.current, isInteracted);
   }, []);
 
   const calculateNextValue = useCallback(
@@ -142,21 +144,21 @@ export const CachedSlider = memo(function CachedSlider(props: {
   const tapGesure = useMemo(
     () =>
       Gesture.Tap()
-        .onBegin(() => setDraggable(false))
+        .onBegin(() => setIsInteracting(true))
         .onEnd(({ x }) => {
           const finalizedValue = calculateNextValue(x);
           setCurrVal(finalizedValue);
-          setDraggable(true);
+          setIsInteracting(false);
           if (onCompleteRef.current)
             scheduleOnRN(onCompleteRef.current, finalizedValue);
         }),
-    [calculateNextValue, setDraggable, setCurrVal],
+    [calculateNextValue, setIsInteracting, setCurrVal],
   );
 
   const panGesture = useMemo(
     () =>
       Gesture.Pan()
-        .onBegin(() => setDraggable(false))
+        .onBegin(() => setIsInteracting(true))
         .onStart(({ x }) => {
           debounceFrom.value = x;
         })
@@ -171,10 +173,10 @@ export const CachedSlider = memo(function CachedSlider(props: {
           if (onCompleteRef.current)
             scheduleOnRN(onCompleteRef.current, finalizedValue);
         })
-        .onFinalize(() => setDraggable(true)),
+        .onFinalize(() => setIsInteracting(false)),
     [
       calculateNextValue,
-      setDraggable,
+      setIsInteracting,
       setCurrVal,
       debounceFrom,
       debouncedOnChange,
@@ -194,6 +196,11 @@ export const CachedSlider = memo(function CachedSlider(props: {
   const shouldInvertStyle = useMemo(
     () => I18nManager.isRTL && props.inverted,
     [props.inverted],
+  );
+
+  const hitSlopViewStyle: ViewStyle = useMemo(
+    () => ({ paddingVertical: props.vHitSlop ?? 0 }),
+    [props.vHitSlop],
   );
 
   const sliderWrapperStyle: ViewStyle = useMemo(
@@ -223,19 +230,21 @@ export const CachedSlider = memo(function CachedSlider(props: {
 
   return (
     <GestureDetector gesture={gestures}>
-      <View
-        onLayout={onLayout}
-        style={sliderWrapperStyle}
-        className={sliderWrappeClassName}
-      >
-        {props.overlay ? (
-          <SliderOverlay
-            {...props.overlay}
-            value={currVal}
-            inverted={shouldInvertStyle}
-          />
-        ) : null}
-        <Animated.View style={progressStyle} className={progressClassName} />
+      <View style={hitSlopViewStyle}>
+        <View
+          onLayout={onLayout}
+          style={sliderWrapperStyle}
+          className={sliderWrappeClassName}
+        >
+          {props.overlay ? (
+            <SliderOverlay
+              {...props.overlay}
+              value={currVal}
+              inverted={shouldInvertStyle}
+            />
+          ) : null}
+          <Animated.View style={progressStyle} className={progressClassName} />
+        </View>
       </View>
     </GestureDetector>
   );
