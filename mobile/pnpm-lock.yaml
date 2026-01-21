@@ -49,9 +49,6 @@ importers:
       '@lukemorales/query-key-factory':
         specifier: 1.3.4
         version: 1.3.4(@tanstack/query-core@5.90.17)(@tanstack/react-query@5.90.17(react@19.1.0))
-      '@miblanchard/react-native-slider':
-        specifier: github:MissingCore/react-native-slider#4fa4f2097bdabaf4bc3866202debc84482020d5f
-        version: https://codeload.github.com/MissingCore/react-native-slider/tar.gz/4fa4f2097bdabaf4bc3866202debc84482020d5f(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       '@missingcore/react-native-actual-path':
         specifier: 0.1.0
         version: 0.1.0(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
@@ -1423,13 +1420,6 @@ packages:
     peerDependencies:
       '@tanstack/query-core': '>= 4.0.0'
       '@tanstack/react-query': '>= 4.0.0'
-
-  '@miblanchard/react-native-slider@https://codeload.github.com/MissingCore/react-native-slider/tar.gz/4fa4f2097bdabaf4bc3866202debc84482020d5f':
-    resolution: {tarball: https://codeload.github.com/MissingCore/react-native-slider/tar.gz/4fa4f2097bdabaf4bc3866202debc84482020d5f}
-    version: 2.6.0
-    peerDependencies:
-      react: '>=16.8'
-      react-native: '>=0.59'
 
   '@missingcore/react-native-actual-path@0.1.0':
     resolution: {integrity: sha512-XbOZJsT8J9t8i2sFDw1GgTGnStxxtSQxiowj86M8a2kRb0sOX6V8F/kb5A3r8Ws6khWpQQooFD/JVZEztt/Qdw==}
@@ -7012,11 +7002,6 @@ snapshots:
     dependencies:
       '@tanstack/query-core': 5.90.17
       '@tanstack/react-query': 5.90.17(react@19.1.0)
-
-  '@miblanchard/react-native-slider@https://codeload.github.com/MissingCore/react-native-slider/tar.gz/4fa4f2097bdabaf4bc3866202debc84482020d5f(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
-    dependencies:
-      react: 19.1.0
-      react-native: 0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0)
 
   '@missingcore/react-native-actual-path@0.1.0(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
     dependencies:
