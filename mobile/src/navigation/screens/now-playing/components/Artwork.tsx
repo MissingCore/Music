@@ -1,3 +1,4 @@
+import { useAtomValue } from "jotai";
 import { useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
@@ -12,7 +13,8 @@ import Animated, {
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { useVinylSeekbar } from "../helpers/useVinylSeekbar";
+import { isSeekingAtom } from "../helpers/Seekbar.context";
+import { useVinylSeekbar } from "../helpers/useVinylSeekbarNext";
 
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import { Vinyl } from "~/modules/media/components/Vinyl";
@@ -68,17 +70,15 @@ function PlainArtwork(props: ArtworkProps) {
 
 /** Seekbar variant that uses the vinyl artwork. */
 function VinylSeekBar(props: ArtworkProps) {
-  const { wrapperRef, isActive, initCenter, vinylStyle, seekGesture } =
-    useVinylSeekbar();
+  const isSeeking = useAtomValue(isSeekingAtom);
+  const { vinylWrapperArgs } = useVinylSeekbar();
   return (
-    <GestureDetector gesture={seekGesture}>
-      <Animated.View ref={wrapperRef} onLayout={initCenter} style={vinylStyle}>
-        <Vinyl
-          onPress={!isActive ? PlaybackControls.playToggle : undefined}
-          {...props}
-        />
-      </Animated.View>
-    </GestureDetector>
+    <Animated.View {...vinylWrapperArgs}>
+      <Vinyl
+        onPress={!isSeeking ? PlaybackControls.playToggle : undefined}
+        {...props}
+      />
+    </Animated.View>
   );
 }
 
