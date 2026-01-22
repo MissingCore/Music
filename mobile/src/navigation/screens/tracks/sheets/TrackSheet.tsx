@@ -1,10 +1,6 @@
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
-import { useNavigation, useNavigationState } from "@react-navigation/native";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import type { ParseKeys } from "i18next";
-import { Fragment, useMemo } from "react";
+import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-import type { ViewStyle } from "react-native";
 import { Pressable, View } from "react-native";
 
 import type { TrackWithRelations } from "~/db/schema";
@@ -21,55 +17,49 @@ import { Schedule } from "~/resources/icons/Schedule";
 import { useFavoriteTrack, useHideTrack, useTrack } from "~/queries/track";
 import { Queue } from "~/stores/Playback/actions";
 import { useSessionStore } from "~/services/SessionStore";
-import { useGetColumn } from "~/hooks/useGetColumn";
 
 import { TrackToPlaylistsSheet } from "./TrackToPlaylistsSheet";
 import { TrackArtworkSheet } from "../../ArtworkSheet";
 
 import { mutateGuard } from "~/lib/react-query";
-import { cn } from "~/lib/style";
 import {
   abbreviateBitRate,
   abbreviateSize,
   formatEpoch,
   formatSeconds,
 } from "~/utils/number";
-import { ScrollView, useIsScrollable } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
-import { Button } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { Marquee } from "~/components/Marquee";
-import { Sheet } from "~/components/Sheet";
+import { DetachedSheet } from "~/components/Sheet/Detached";
+import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { StyledText, TStyledText } from "~/components/Typography/StyledText";
+import { StyledText } from "~/components/Typography/StyledText";
+import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 
-//#region Track Sheet
+const GLOBAL_SHEET_KEY = "TrackSheet";
+
 /** Displays information about a track and enables adding it to playlists. */
 export function TrackSheet() {
   const data = useSessionStore((s) => s.displayedTrack);
   const trackArtworkSheetRef = useSheetRef();
-  const { handlers, isScrollable } = useIsScrollable();
 
   return (
     <>
-      <Sheet globalKey="TrackSheet">
+      <DetachedSheet globalKey={GLOBAL_SHEET_KEY} gap={16}>
         {data !== null ? (
-          <ScrollView
-            {...handlers}
-            nestedScrollEnabled={isScrollable}
-            contentContainerClassName="gap-4"
-          >
+          <>
             <TrackIntro data={data} />
             <TrackMetadata data={data} />
-            <TrackIconActions
+            <IconActions
               id={data.id}
               editArtwork={() => trackArtworkSheetRef.current?.present()}
             />
-            <TrackTextActions id={data.id} name={data.name} />
-          </ScrollView>
+            <QueueActions id={data.id} name={data.name} />
+          </>
         ) : null}
-      </Sheet>
+      </DetachedSheet>
       <TrackToPlaylistsSheet key={data?.id} id={data?.id ?? ""} />
       {data !== null && (
         <TrackArtworkSheet ref={trackArtworkSheetRef} id={data.id} />
@@ -80,48 +70,37 @@ export function TrackSheet() {
 
 //#region Introduction
 function TrackIntro({ data }: { data: TrackWithRelations }) {
-  const [_, navigate] = useNavigationAction();
-
-  const navLinks = [
-    {
-      linkInfo: ["Album", { id: data.albumId }] as const,
-      value: data.album?.name,
-    },
-    ...data.tracksToArtists.map(({ artistName }) => ({
-      linkInfo: ["Artist", { id: artistName }] as const,
-      value: artistName,
-    })),
-  ].filter(({ value }) => typeof value === "string");
-
+  const navigation = useNavigation();
   return (
-    <View className="mb-2 flex-row items-end gap-3">
+    <View className="flex-row items-end gap-2">
       <MediaImage
         type="track"
         size={64}
         source={data.artwork}
         className="rounded-sm"
       />
-      <View className="shrink py-2">
+      <View className="shrink py-1">
         <Marquee color="surfaceBright">
-          <StyledText className="text-lg">{data.name}</StyledText>
+          <StyledText style={{ fontSize: 18 }} className="leading-tight">
+            {data.name}
+          </StyledText>
         </Marquee>
-        {navLinks.length > 0 ? (
+        <ArtistsLink
+          artistNames={data.tracksToArtists.map((rel) => rel.artistName)}
+          beforeNavigation={() => TrueSheet.dismiss(GLOBAL_SHEET_KEY)}
+          popScreen
+          marqueeShadowColor="surfaceBright"
+        />
+        {data.album ? (
           <Marquee color="surfaceBright">
-            {navLinks.map(({ linkInfo, value }, index) => (
-              <Fragment key={index}>
-                {index > 0 ? (
-                  <StyledText className="text-xs">|</StyledText>
-                ) : null}
-                <Pressable onPress={sheetAction(() => navigate(...linkInfo))}>
-                  <StyledText
-                    dim
-                    className={cn({ "text-primary": linkInfo[0] === "Artist" })}
-                  >
-                    {value}
-                  </StyledText>
-                </Pressable>
-              </Fragment>
-            ))}
+            <Pressable
+              onPress={sheetAction(() => {
+                navigation.goBack();
+                navigation.navigate("Album", { id: data.album!.id });
+              })}
+            >
+              <StyledText dim>{data.album.name}</StyledText>
+            </Pressable>
           </Marquee>
         ) : null}
       </View>
@@ -135,25 +114,29 @@ function TrackMetadata({ data }: { data: TrackWithRelations }) {
   return (
     <View className="gap-4 rounded-md bg-surfaceContainerLowest p-4">
       <Marquee
-        color="surface"
+        color="surfaceContainerLowest"
         contentContainerClassName="grow justify-between gap-4"
       >
-        <MetadataText>
+        <StyledText className="text-xxs/tight">
           {data.bitrate !== null ? abbreviateBitRate(data.bitrate) : "—"}
-        </MetadataText>
-        <MetadataText>
+        </StyledText>
+        <StyledText className="text-xxs/tight">
           {data.sampleRate !== null ? `${data.sampleRate} Hz` : "—"}
-        </MetadataText>
-        <MetadataText>{abbreviateSize(data.size)}</MetadataText>
+        </StyledText>
+        <StyledText className="text-xxs/tight">
+          {abbreviateSize(data.size)}
+        </StyledText>
         <View className="flex-row items-center gap-1">
           <Edit size={14} />
-          <MetadataText>{formatEpoch(data.modificationTime)}</MetadataText>
+          <StyledText className="text-xxs/tight">
+            {formatEpoch(data.modificationTime)}
+          </StyledText>
         </View>
       </Marquee>
       <Divider />
       <View className="flex-row items-center justify-between gap-4">
         <Marquee color="surfaceContainerLowest">
-          <MetadataText>{data.uri}</MetadataText>
+          <StyledText className="text-xxs/tight">{data.uri}</StyledText>
         </Marquee>
         <View className="flex-row gap-2">
           {data.format ? <Badge>{data.format.toUpperCase()}</Badge> : null}
@@ -167,9 +150,9 @@ function TrackMetadata({ data }: { data: TrackWithRelations }) {
 
 //#region Actions
 /** Actions that can be understood with just an icon. */
-function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
+function IconActions(props: { id: string; editArtwork: VoidFunction }) {
   const { t } = useTranslation();
-  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const navigation = useNavigation();
   const { data } = useTrack(props.id);
   const favoriteTrack = useFavoriteTrack(props.id);
   const hideTrack = useHideTrack();
@@ -178,7 +161,7 @@ function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
   const isFav = favoriteTrack.isPending ? !favStatus : favStatus;
 
   return (
-    <View className="flex-row justify-between gap-1 rounded-md bg-surfaceContainerLowest px-4 py-1">
+    <View className="flex-row justify-between gap-1 rounded-md bg-surfaceContainerLowest px-1">
       <IconButton
         Icon={Favorite}
         accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
@@ -213,28 +196,21 @@ function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
   );
 }
 
-/** Actions that require a visual description. */
-function TrackTextActions({ id, name }: Record<"id" | "name", string>) {
-  const { width } = useGetColumn({ cols: 2, gap: 3, gutters: 32 });
+/** Buttons to add the track to the queue. */
+function QueueActions({ id, name }: Record<"id" | "name", string>) {
   return (
-    <View className="gap-0.75">
-      <View className="flex-row gap-0.75">
-        <ListButton
-          Icon={QueueMusic}
-          textKey="feat.queue.extra.playNext"
-          onPress={sheetAction(() => Queue.add({ id, name }))}
-          style={{ width }}
-          className="rounded-l-md"
-        />
-        <ListButton
-          Icon={LowPriority}
-          textKey="feat.queue.extra.playLast"
-          onPress={sheetAction(() => Queue.addToEnd({ id, name }))}
-          style={{ width }}
-          className="rounded-r-md"
-        />
-      </View>
-    </View>
+    <SheetButtonGroup
+      leftButton={{
+        textKey: "feat.queue.extra.playNext",
+        onPress: sheetAction(() => Queue.add({ id, name })),
+        LeftElement: <QueueMusic />,
+      }}
+      rightButton={{
+        textKey: "feat.queue.extra.playLast",
+        onPress: sheetAction(() => Queue.addToEnd({ id, name })),
+        LeftElement: <LowPriority />,
+      }}
+    />
   );
 }
 //#endregion
@@ -245,86 +221,18 @@ function Badge(props: {
   children: string;
 }) {
   return (
-    <View
-      className={cn(
-        "flex-row items-center gap-1 rounded-[6px] bg-surfaceContainerHigh px-2 py-1",
-      )}
-    >
+    <View className="flex-row items-center gap-1 rounded-[6px] bg-surfaceContainerHigh px-2 py-1">
       {props.Icon ? <props.Icon size={14} /> : null}
-      <MetadataText>{props.children}</MetadataText>
+      <StyledText className="text-xxs/tight">{props.children}</StyledText>
     </View>
   );
 }
 
-function MetadataText({
-  className,
-  ...props
-}: React.ComponentProps<typeof StyledText>) {
-  return (
-    <StyledText className={cn("text-xs leading-tight", className)} {...props} />
-  );
-}
-
-function ListButton(props: {
-  Icon: (props: Icon) => React.JSX.Element;
-  onPress: VoidFunction;
-  textKey: ParseKeys;
-  description?: string;
-  style?: ViewStyle;
-  className?: string;
-}) {
-  return (
-    <Button
-      onPress={props.onPress}
-      style={props.style}
-      className={cn(
-        "flex-1 flex-row justify-start gap-3 rounded-xs",
-        props.className,
-      )}
-    >
-      <props.Icon />
-      <View className="shrink gap-0.5">
-        <TStyledText textKey={props.textKey} className="text-sm" />
-        {props.description ? (
-          <StyledText numberOfLines={1} dim className="text-xxs">
-            {props.description}
-          </StyledText>
-        ) : null}
-      </View>
-    </Button>
-  );
-}
-
+/** Calls action after dismissing sheet. */
 function sheetAction(onPress: VoidFunction) {
   return () => {
-    TrueSheet.dismiss("TrackSheet");
+    TrueSheet.dismiss(GLOBAL_SHEET_KEY);
     onPress();
   };
 }
-
-function useNavigationAction() {
-  const navigation = useNavigation();
-  const currNavRoutes = useNavigationState((s) => s.routes);
-
-  const onNowPlaying = useMemo(
-    () => currNavRoutes.at(-1)?.name === "NowPlaying",
-    [currNavRoutes],
-  );
-
-  return useMemo(
-    () =>
-      [
-        onNowPlaying,
-        (...args: any[]) => {
-          // Call `goBack()` to mimic `popTo` since we don't have access
-          // to that function in the sheet.
-          if (onNowPlaying) navigation.goBack();
-          // @ts-expect-error - Arguments should be compatible.
-          navigation.navigate(...args);
-        },
-      ] as const,
-    [navigation, onNowPlaying],
-  );
-}
-//#endregion
 //#endregion

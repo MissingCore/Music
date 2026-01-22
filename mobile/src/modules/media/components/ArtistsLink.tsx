@@ -11,6 +11,8 @@ import { StyledText } from "~/components/Typography/StyledText";
 /** Renders display string for artists, with different onPress actions based on the number of artists. */
 export function ArtistsLink(props: {
   artistNames: string[];
+  /** Function called before we navigate away from the current screen. */
+  beforeNavigation?: VoidFunction;
   /** Calls `goBack` on current screen before navigating to artist screen. */
   popScreen?: boolean;
   marqueeShadowColor?: ColorRole;
@@ -23,6 +25,7 @@ export function ArtistsLink(props: {
     <Marquee color={props.marqueeShadowColor}>
       <Pressable
         onPress={() => {
+          if (props.beforeNavigation) props.beforeNavigation();
           if (props.artistNames.length === 1) {
             // Pops current screen before navigating to artist screen.
             // Useful when used on "Now Playing" screen.

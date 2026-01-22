@@ -15,6 +15,8 @@ import { DetachedSheet } from "~/components/Sheet/Detached";
 import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
 import { StyledText } from "~/components/Typography/StyledText";
 
+const GLOBAL_SHEET_KEY = "TrackToPlaylistsSheet";
+
 export function TrackToPlaylistsSheet({ id }: { id: string }) {
   const { data } = usePlaylists();
   const { data: inList } = useTrackPlaylists(id);
@@ -24,7 +26,7 @@ export function TrackToPlaylistsSheet({ id }: { id: string }) {
 
   return (
     <DetachedSheet
-      globalKey="TrackToPlaylistsSheet"
+      globalKey={GLOBAL_SHEET_KEY}
       titleKey="feat.modalTrack.extra.addToPlaylist"
       snapTop
     >
