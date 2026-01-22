@@ -1,15 +1,12 @@
-import type { ParseKeys } from "i18next";
-import type { PressableProps } from "react-native";
 import { View } from "react-native";
 
 import { cn } from "~/lib/style";
+import type { ExtendTButtonProps } from "../Form/Button";
 import { ExtendedTButton } from "../Form/Button";
 
-type ButtonOptions = Omit<PressableProps, "children"> & { textKey: ParseKeys };
-
 export function SheetButtonGroup(props: {
-  leftButton: ButtonOptions;
-  rightButton: ButtonOptions;
+  leftButton: ExtendTButtonProps;
+  rightButton: ExtendTButtonProps;
   className?: string;
 }) {
   return (

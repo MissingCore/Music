@@ -25,14 +25,16 @@ export const Button = memo(function Button({
 //#endregion
 
 //#region Extended Translated
+export type ExtendTButtonProps = Omit<PressableProps, "children"> & {
+  textKey: ParseKeys;
+  /** **Note:** Text will be left-aligned if provided. */
+  LeftElement?: React.ReactNode;
+  RightElement?: React.ReactNode;
+  textClassName?: string;
+};
+
 export const ExtendedTButton = memo(function ExtendedTButton(
-  props: PressableProps & {
-    textKey: ParseKeys;
-    /** **Note:** Text will be left-aligned if provided. */
-    LeftElement?: React.ReactNode;
-    RightElement?: React.ReactNode;
-    textClassName?: string;
-  },
+  props: ExtendTButtonProps,
 ) {
   return (
     <Button
