@@ -1,12 +1,20 @@
-import { useAtomValue } from "jotai";
-import { useMemo, useRef } from "react";
+import { useAtomValue, useSetAtom } from "jotai";
+import { useCallback, useMemo, useRef, useState } from "react";
+import { Gesture } from "react-native-gesture-handler";
 import type Animated from "react-native-reanimated";
+import { scheduleOnRN } from "react-native-worklets";
 
-import { animatedPositionAtom } from "./Seekbar.context";
+import { usePlaybackStore } from "~/stores/Playback/store";
+import { PlaybackControls } from "~/stores/Playback/actions";
+
+import { animatedPositionAtom, isSeekingAtom } from "./Seekbar.context";
 import { useAnimatedStyle, useSharedValue } from "react-native-reanimated";
+
+type Position = { absoluteX: number; absoluteY: number };
 
 export function useVinylSeekbar() {
   const timedPosition = useAtomValue(animatedPositionAtom);
+  const setIsSeeking = useSetAtom(isSeekingAtom);
 
   //#region Layout Calculation + Vinyl Styling
   const wrapperRef = useRef<Animated.View>(null);
@@ -14,9 +22,7 @@ export function useVinylSeekbar() {
   const radius = useSharedValue(0);
 
   const vinylStyle = useAnimatedStyle(() => ({
-    transform: [
-      { rotate: `${convertUnit(timedPosition.value, "seconds")}deg` },
-    ],
+    transform: [{ rotate: `${convertUnit(timedPosition.value)}deg` }],
   }));
 
   const vinylWrapperArgs = useMemo(
@@ -34,7 +40,93 @@ export function useVinylSeekbar() {
   );
   //#endregion
 
-  return useMemo(() => ({ vinylWrapperArgs }), [vinylWrapperArgs]);
+  //#region Movement Range
+  const activeTrack = usePlaybackStore((s) => s.activeTrack);
+
+  const duration = useMemo(() => activeTrack?.duration ?? 0, [activeTrack]);
+  //#endregion
+
+  //#region Handlers
+  const isWithinBound = useCallback(
+    ({ absoluteX, absoluteY }: Position) => {
+      "worklet";
+      const a = center.value.x - absoluteX;
+      const b = center.value.y - absoluteY;
+      const c = Math.sqrt(a ** 2 + b ** 2);
+      return c <= radius.value;
+    },
+    [center, radius],
+  );
+
+  const getAngle = useCallback(
+    ({ absoluteX, absoluteY }: Position) => {
+      "worklet";
+      return Math.atan2(absoluteY - center.value.y, absoluteX - center.value.x);
+    },
+    [center],
+  );
+  //#endregion
+
+  //#region Gesture
+  const [gestureInBound, setGestureInBound] = useState(true);
+  const prevAngle = useSharedValue(0);
+
+  const seekGesture = useMemo(
+    () =>
+      Gesture.Pan()
+        .shouldCancelWhenOutside(true)
+        .enabled(gestureInBound)
+        .onBegin(() => scheduleOnRN(setIsSeeking, true))
+        .onStart(({ absoluteX, absoluteY }) => {
+          if (isWithinBound({ absoluteX, absoluteY })) {
+            prevAngle.value = getAngle({ absoluteX, absoluteY });
+          } else {
+            scheduleOnRN(setGestureInBound, false);
+          }
+        })
+        .onUpdate(({ absoluteX, absoluteY }) => {
+          if (isWithinBound({ absoluteX, absoluteY })) {
+            let currAngle = getAngle({ absoluteX, absoluteY });
+            // Ensure arctan calculation is continuous.
+            while (currAngle < prevAngle.value - Math.PI)
+              currAngle += 2 * Math.PI;
+            while (currAngle > prevAngle.value + Math.PI)
+              currAngle -= 2 * Math.PI;
+            // Calculate new position.
+            const rotateAmount =
+              ((currAngle - prevAngle.value) * 180) / Math.PI;
+            const changeDelta = convertUnit(rotateAmount, "degrees");
+            const newPosition = timedPosition.value + changeDelta;
+            if (newPosition < 0) timedPosition.value = 0;
+            else if (newPosition > duration) timedPosition.value = duration;
+            else timedPosition.value = newPosition;
+
+            prevAngle.value = currAngle;
+          } else {
+            scheduleOnRN(setGestureInBound, false);
+          }
+        })
+        .onFinalize(() => {
+          scheduleOnRN(setIsSeeking, false);
+          scheduleOnRN(setGestureInBound, true);
+          scheduleOnRN(PlaybackControls.seekTo, timedPosition.value);
+        }),
+    [
+      isWithinBound,
+      getAngle,
+      setIsSeeking,
+      timedPosition,
+      duration,
+      prevAngle,
+      gestureInBound,
+    ],
+  );
+  //#endregion
+
+  return useMemo(
+    () => ({ seekGesture, vinylWrapperArgs }),
+    [seekGesture, vinylWrapperArgs],
+  );
 }
 
 //#region Utils
