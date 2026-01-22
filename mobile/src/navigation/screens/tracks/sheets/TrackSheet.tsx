@@ -1,5 +1,6 @@
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useNavigationState } from "@react-navigation/native";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 
@@ -71,6 +72,13 @@ export function TrackSheet() {
 //#region Introduction
 function TrackIntro({ data }: { data: TrackWithRelations }) {
   const navigation = useNavigation();
+  const currNavRoutes = useNavigationState((s) => s.routes);
+
+  const onNowPlaying = useMemo(
+    () => currNavRoutes.at(-1)?.name === "NowPlaying",
+    [currNavRoutes],
+  );
+
   return (
     <View className="flex-row items-end gap-2">
       <MediaImage
@@ -88,14 +96,14 @@ function TrackIntro({ data }: { data: TrackWithRelations }) {
         <ArtistsLink
           artistNames={data.tracksToArtists.map((rel) => rel.artistName)}
           beforeNavigation={() => TrueSheet.dismiss(GLOBAL_SHEET_KEY)}
-          popScreen
+          popScreen={onNowPlaying}
           marqueeShadowColor="surfaceBright"
         />
         {data.album ? (
           <Marquee color="surfaceBright">
             <Pressable
               onPress={sheetAction(() => {
-                navigation.goBack();
+                if (onNowPlaying) navigation.goBack();
                 navigation.navigate("Album", { id: data.album!.id });
               })}
             >
