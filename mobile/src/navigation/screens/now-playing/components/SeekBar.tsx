@@ -47,16 +47,16 @@ export function SeekBar(props: SeekBarProps) {
   return (
     <View>
       {waveformSlider ? (
-        <View className="relative h-12">
+        <View className="relative mb-2 h-10">
           <Waveform
             amplitudes={samples}
-            height={48}
+            height={40}
             progress={clampedPos}
             maxProgress={props.trackLength}
           />
           <CachedSlider
             {...sharedSliderOptions}
-            height={48}
+            height={40}
             transparent
             _className="absolute top-0 left-0 w-full"
           />
@@ -73,8 +73,10 @@ export function SeekBar(props: SeekBarProps) {
         style={{ flexDirection: OnRTL.decide("row-reverse", "row") }}
         className="justify-between"
       >
-        <StyledText className="text-sm">{formatSeconds(clampedPos)}</StyledText>
-        <StyledText className="text-sm">
+        <StyledText bold className="text-xs">
+          {formatSeconds(clampedPos)}
+        </StyledText>
+        <StyledText bold className="text-xs">
           {formatSeconds(props.trackLength)}
         </StyledText>
       </View>

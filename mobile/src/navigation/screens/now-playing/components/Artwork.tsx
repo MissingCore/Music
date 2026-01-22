@@ -31,7 +31,7 @@ export function NowPlayingArtwork(props: { artwork: string | null }) {
   useLayoutEffect(() => {
     containerRef.current?.measure((_x, _y, width, height) => {
       // Exclude the padding around the image depending on which measurement is used.
-      setSize((height > width ? width : height) - 32);
+      setSize(Math.min(height, width) - 32);
     });
   }, []);
 
