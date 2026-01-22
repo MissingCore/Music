@@ -13,6 +13,9 @@ import { useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 type Position = { absoluteX: number; absoluteY: number };
 
 export function useVinylSeekbar() {
+  const activeTrack = usePlaybackStore((s) => s.activeTrack);
+  const duration = useMemo(() => activeTrack?.duration ?? 0, [activeTrack]);
+
   const timedPosition = useAtomValue(animatedPositionAtom);
   const setIsSeeking = useSetAtom(isSeekingAtom);
 
@@ -38,12 +41,6 @@ export function useVinylSeekbar() {
     }),
     [center, radius, vinylStyle],
   );
-  //#endregion
-
-  //#region Movement Range
-  const activeTrack = usePlaybackStore((s) => s.activeTrack);
-
-  const duration = useMemo(() => activeTrack?.duration ?? 0, [activeTrack]);
   //#endregion
 
   //#region Handlers
@@ -92,24 +89,25 @@ export function useVinylSeekbar() {
               currAngle += 2 * Math.PI;
             while (currAngle > prevAngle.value + Math.PI)
               currAngle -= 2 * Math.PI;
-            // Calculate new position.
             const rotateAmount =
               ((currAngle - prevAngle.value) * 180) / Math.PI;
+
+            prevAngle.value = currAngle;
+
+            // Calculate new position.
             const changeDelta = convertUnit(rotateAmount, "degrees");
             const newPosition = timedPosition.value + changeDelta;
             if (newPosition < 0) timedPosition.value = 0;
             else if (newPosition > duration) timedPosition.value = duration;
             else timedPosition.value = newPosition;
-
-            prevAngle.value = currAngle;
           } else {
             scheduleOnRN(setGestureInBound, false);
           }
         })
+        .onEnd(() => scheduleOnRN(PlaybackControls.seekTo, timedPosition.value))
         .onFinalize(() => {
           scheduleOnRN(setIsSeeking, false);
           scheduleOnRN(setGestureInBound, true);
-          scheduleOnRN(PlaybackControls.seekTo, timedPosition.value);
         }),
     [
       isWithinBound,
@@ -141,5 +139,4 @@ function convertUnit(value: number, from?: "seconds" | "degrees") {
   if (from === "degrees") return value * (24 / 360);
   return value * (360 / 24);
 }
-
 //#endregion
