@@ -11,7 +11,7 @@ import { NowPlayingDesignOptions } from "~/stores/Preference/constants";
 export function AppearanceSheet(props: { ref: TrueSheetRef }) {
   const nowPlayingDesign = usePreferenceStore((s) => s.nowPlayingDesign);
   return (
-    <DetachedSheet ref={props.ref} titleKey="feat.appearance.title">
+    <DetachedSheet ref={props.ref}>
       <FlatList
         accessibilityRole="radiogroup"
         data={NowPlayingDesignOptions}
