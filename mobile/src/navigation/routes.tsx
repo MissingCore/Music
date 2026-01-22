@@ -47,8 +47,8 @@ import ThirdParty from "./screens/settings/ThirdPartyView";
 import Settings from "./screens/settings/View";
 import FavoriteTracks from "./screens/tracks/FavoritesView";
 import ModifyTrack from "./screens/tracks/ModifyView";
-import { TrackSheet } from "./screens/tracks/Sheet";
 import Tracks from "./screens/tracks/View";
+import { TrackSheet } from "./screens/tracks/sheets/TrackSheet";
 import { ArtistsSheet } from "./sheets/ArtistsSheet";
 
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";

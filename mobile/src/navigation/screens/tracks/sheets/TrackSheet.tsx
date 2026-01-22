@@ -18,19 +18,13 @@ import { LowPriority } from "~/resources/icons/LowPriority";
 import { PlaylistAdd } from "~/resources/icons/PlaylistAdd";
 import { QueueMusic } from "~/resources/icons/QueueMusic";
 import { Schedule } from "~/resources/icons/Schedule";
-import { usePlaylists } from "~/queries/playlist";
-import {
-  useAddToPlaylist,
-  useFavoriteTrack,
-  useRemoveFromPlaylist,
-  useHideTrack,
-  useTrack,
-  useTrackPlaylists,
-} from "~/queries/track";
+import { useFavoriteTrack, useHideTrack, useTrack } from "~/queries/track";
 import { Queue } from "~/stores/Playback/actions";
 import { useSessionStore } from "~/services/SessionStore";
 import { useGetColumn } from "~/hooks/useGetColumn";
-import { TrackArtworkSheet } from "../ArtworkSheet";
+
+import { TrackToPlaylistsSheet } from "./TrackToPlaylistsSheet";
+import { TrackArtworkSheet } from "../../ArtworkSheet";
 
 import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
@@ -40,18 +34,15 @@ import {
   formatEpoch,
   formatSeconds,
 } from "~/utils/number";
-import { LegendList, ScrollView, useIsScrollable } from "~/components/Defaults";
+import { ScrollView, useIsScrollable } from "~/components/Defaults";
 import { Divider } from "~/components/Divider";
 import { Button } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button/Icon";
-import { CheckboxField } from "~/components/Form/Checkbox";
 import { Marquee } from "~/components/Marquee";
 import { Sheet } from "~/components/Sheet";
-import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 import { MediaImage } from "~/modules/media/components/MediaImage";
-import { ContentPlaceholder } from "../../components/Placeholder";
 
 //#region Track Sheet
 /** Displays information about a track and enables adding it to playlists. */
@@ -79,7 +70,7 @@ export function TrackSheet() {
           </ScrollView>
         ) : null}
       </Sheet>
-      <TrackToPlaylistSheet key={data?.id} id={data?.id ?? ""} />
+      <TrackToPlaylistsSheet key={data?.id} id={data?.id ?? ""} />
       {data !== null && (
         <TrackArtworkSheet ref={trackArtworkSheetRef} id={data.id} />
       )}
@@ -197,7 +188,7 @@ function TrackIconActions(props: { id: string; editArtwork: VoidFunction }) {
       <IconButton
         Icon={PlaylistAdd}
         accessibilityLabel={t("feat.modalTrack.extra.addToPlaylist")}
-        onPress={sheetAction(() => TrueSheet.present("TrackToPlaylistSheet"))}
+        onPress={sheetAction(() => TrueSheet.present("TrackToPlaylistsSheet"))}
       />
       <IconButton
         Icon={Edit}
@@ -336,55 +327,4 @@ function useNavigationAction() {
   );
 }
 //#endregion
-//#endregion
-
-//#region Track To Playlist Sheet
-/** Enables us to select which playlists the track belongs to. */
-function TrackToPlaylistSheet({ id }: { id: string }) {
-  const { data } = usePlaylists();
-  const { data: inList } = useTrackPlaylists(id);
-  const addToPlaylist = useAddToPlaylist(id);
-  const removeFromPlaylist = useRemoveFromPlaylist(id);
-  const sheetListHandlers = useEnableSheetScroll();
-
-  return (
-    <Sheet
-      globalKey="TrackToPlaylistSheet"
-      titleKey="feat.modalTrack.extra.addToPlaylist"
-      snapTop
-    >
-      <LegendList
-        getEstimatedItemSize={(index) => (index === 0 ? 54 : 62)}
-        data={data}
-        keyExtractor={({ name }) => name}
-        extraData={inList}
-        renderItem={({ item, index }) => {
-          const selected = inList?.includes(item.name) ?? false;
-          return (
-            <CheckboxField
-              checked={selected}
-              onCheck={() =>
-                mutateGuard(
-                  // @ts-expect-error - We don't care about return type.
-                  selected ? removeFromPlaylist : addToPlaylist,
-                  item.name,
-                )
-              }
-              className={index > 0 ? "mt-2" : undefined}
-            >
-              <Marquee color="surfaceBright">
-                <StyledText>{item.name}</StyledText>
-              </Marquee>
-            </CheckboxField>
-          );
-        }}
-        ListEmptyComponent={
-          <ContentPlaceholder errMsgKey="err.msg.noPlaylists" />
-        }
-        {...sheetListHandlers}
-        contentContainerClassName="pb-4"
-      />
-    </Sheet>
-  );
-}
 //#endregion
