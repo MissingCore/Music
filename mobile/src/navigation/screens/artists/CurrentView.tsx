@@ -9,7 +9,7 @@ import { useGetColumn } from "~/hooks/useGetColumn";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { useBottomActionsInset } from "../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../layouts/CurrentList";
-import { ArtistArtworkSheet } from "../ArtworkSheet";
+import { ArtistArtworkSheet } from "../../sheets/ArtworkSheet";
 
 import { FlashList, LegendList } from "~/components/Defaults";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";

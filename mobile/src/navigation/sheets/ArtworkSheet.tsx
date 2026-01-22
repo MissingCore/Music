@@ -10,69 +10,62 @@ import { useTrack, useUpdateTrackArtwork } from "~/queries/track";
 import { pickImage } from "~/lib/file-system";
 import { mutateGuard } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
-import { Sheet } from "~/components/Sheet";
+import { DetachedSheet } from "~/components/Sheet/Detached";
 import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import type { MediaType } from "~/stores/Playback/types";
-import { deferInitialRender } from "../components/DeferredRender";
 
 type ArtworkSheetProps = { id: string; ref: TrueSheetRef };
 
 /** Sheet allowing us to change the artwork of an album. */
-export const AlbumArtworkSheet = deferInitialRender(function AlbumArtworkSheet(
-  props: ArtworkSheetProps,
-) {
+export function AlbumArtworkSheet(props: ArtworkSheetProps) {
   const { data } = useAlbum(props.id);
   const updateAlbumArtwork = useUpdateAlbumArtwork(props.id);
 
   return (
-    <Sheet ref={props.ref} contentContainerClassName="items-center">
+    <DetachedSheet ref={props.ref} contentContainerClassName="items-center">
       <BaseArtworkSheetContent
         type="album"
         imageSource={data?.artwork ?? null}
         mutationResult={updateAlbumArtwork}
         disabled={data?.altArtwork === null}
       />
-    </Sheet>
+    </DetachedSheet>
   );
-});
+}
 
 /** Sheet allowing us to change the artwork of an artist. */
-export const ArtistArtworkSheet = deferInitialRender(
-  function ArtistArtworkSheet(props: ArtworkSheetProps) {
-    const { data } = useArtist(props.id);
-    const updateArtist = useUpdateArtist(props.id);
+export function ArtistArtworkSheet(props: ArtworkSheetProps) {
+  const { data } = useArtist(props.id);
+  const updateArtist = useUpdateArtist(props.id);
 
-    return (
-      <Sheet ref={props.ref} contentContainerClassName="items-center">
-        <BaseArtworkSheetContent
-          type="artist"
-          imageSource={data?.artwork ?? null}
-          mutationResult={updateArtist}
-        />
-      </Sheet>
-    );
-  },
-);
+  return (
+    <DetachedSheet ref={props.ref} contentContainerClassName="items-center">
+      <BaseArtworkSheetContent
+        type="artist"
+        imageSource={data?.artwork ?? null}
+        mutationResult={updateArtist}
+      />
+    </DetachedSheet>
+  );
+}
 
 /** Sheet allowing us to change the artwork of a playlist. */
-export const PlaylistArtworkSheet = deferInitialRender(
-  function PlaylistArtworkSheet(props: ArtworkSheetProps) {
-    const { data } = usePlaylist(props.id);
-    const updatePlaylist = useUpdatePlaylist(props.id);
+export function PlaylistArtworkSheet(props: ArtworkSheetProps) {
+  const { data } = usePlaylist(props.id);
+  const updatePlaylist = useUpdatePlaylist(props.id);
 
-    return (
-      <Sheet ref={props.ref} contentContainerClassName="items-center">
-        <BaseArtworkSheetContent
-          type="playlist"
-          imageSource={data?.imageSource ?? null}
-          mutationResult={updatePlaylist}
-        />
-      </Sheet>
-    );
-  },
-);
+  return (
+    <DetachedSheet ref={props.ref} contentContainerClassName="items-center">
+      <BaseArtworkSheetContent
+        type="playlist"
+        imageSource={data?.imageSource ?? null}
+        mutationResult={updatePlaylist}
+      />
+    </DetachedSheet>
+  );
+}
 
 /** Sheet allowing us to change the artwork of a track. */
 export function TrackArtworkSheet(props: ArtworkSheetProps) {
@@ -80,14 +73,14 @@ export function TrackArtworkSheet(props: ArtworkSheetProps) {
   const updateTrackArtwork = useUpdateTrackArtwork(props.id);
 
   return (
-    <Sheet ref={props.ref} contentContainerClassName="items-center">
+    <DetachedSheet ref={props.ref} contentContainerClassName="items-center">
       <BaseArtworkSheetContent
         type="track"
         imageSource={data?.artwork ?? null}
         mutationResult={updateTrackArtwork}
         disabled={data?.altArtwork === null}
       />
-    </Sheet>
+    </DetachedSheet>
   );
 }
 

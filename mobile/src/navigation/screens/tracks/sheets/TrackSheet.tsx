@@ -19,8 +19,8 @@ import { useFavoriteTrack, useHideTrack, useTrack } from "~/queries/track";
 import { Queue } from "~/stores/Playback/actions";
 import { useSessionStore } from "~/services/SessionStore";
 
+import { TrackArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { TrackToPlaylistsSheet } from "./TrackToPlaylistsSheet";
-import { TrackArtworkSheet } from "../../ArtworkSheet";
 
 import { mutateGuard } from "~/lib/react-query";
 import {

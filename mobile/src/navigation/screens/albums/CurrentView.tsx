@@ -8,7 +8,7 @@ import { useAlbumForScreen, useFavoriteAlbum } from "~/queries/album";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { useBottomActionsInset } from "../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../layouts/CurrentList";
-import { AlbumArtworkSheet } from "../ArtworkSheet";
+import { AlbumArtworkSheet } from "../../sheets/ArtworkSheet";
 
 import { mutateGuard } from "~/lib/react-query";
 import { isNumber } from "~/utils/validation";
