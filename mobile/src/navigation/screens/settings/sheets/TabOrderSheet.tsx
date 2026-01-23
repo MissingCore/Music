@@ -51,6 +51,7 @@ const RenderItem = memo(
     const isHomeTab = homeTab === item;
     const tabNameKey =
       item === "home" ? "term.home" : (`term.${item}s` as const);
+    const tabName = t(tabNameKey);
 
     return (
       <View
@@ -63,7 +64,7 @@ const RenderItem = memo(
         <CheckboxField
           accessibilityLabel={t(
             isVisible ? "template.entryHide" : "template.entryShow",
-            { name: t(tabNameKey) },
+            { name: tabName },
           )}
           checked={isVisible}
           onCheck={() => Tabs.toggleVisibility(item)}
@@ -72,7 +73,7 @@ const RenderItem = memo(
         <IconButton
           Icon={Home}
           accessibilityLabel={t("feat.tabsOrder.extra.setHomeTab", {
-            name: t(tabNameKey),
+            name: tabName,
           })}
           onPress={() => Tabs.setHome(item)}
           disabled={info.isDragging || !isVisible || isHomeTab}
@@ -88,7 +89,7 @@ const RenderItem = memo(
         />
         <IconButton
           Icon={DragHandle}
-          accessibilityLabel=""
+          accessibilityLabel={t("template.entryMove", { name: tabName })}
           onPressIn={info.onInitDrag}
         />
       </View>
