@@ -3,36 +3,34 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { inArray } from "drizzle-orm";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Pressable, View } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
 import { tracks } from "~/db/schema";
 
 import { Cached } from "~/resources/icons/Cached";
-import { Delete } from "~/resources/icons/Delete";
+import { Close } from "~/resources/icons/Close";
+import { DragHandle } from "~/resources/icons/DragHandle";
 import { getArtistsString } from "~/api/artist.utils";
 import { getTracks } from "~/api/track";
 import { getTrackArtwork } from "~/api/track.utils";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 
-import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
+import { PagePlaceholder } from "~/navigation/components/Placeholder";
+import { ScreenOptions } from "~/navigation/components/ScreenOptions";
+
 import { cn } from "~/lib/style";
 import { debounceWithAccumulation } from "~/utils/debounce";
 import { moveArray } from "~/utils/object";
 import { wait } from "~/utils/promise";
 import { FlashDragList } from "~/components/Defaults";
-import { IconButton } from "~/components/Form/Button/Icon";
-import type { PressProps } from "~/components/Form/Button/types";
-import { Swipeable } from "~/components/Swipeable";
+import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
+import { StyledText } from "~/components/Typography/StyledText";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
-import { SearchResult } from "~/modules/search/components/SearchResult";
+import { MediaImage } from "~/modules/media/components/MediaImage";
 import { RepeatModes } from "~/stores/Playback/constants";
 import { extractTrackId } from "~/stores/Playback/utils";
-import {
-  ContentPlaceholder,
-  PagePlaceholder,
-} from "../../components/Placeholder";
-import { ScreenOptions } from "../../components/ScreenOptions";
 
 export default function Upcoming() {
   const { t } = useTranslation();
@@ -99,7 +97,9 @@ export default function Upcoming() {
     setRestoredInitPos(true);
   }, [data, listIndex, restoredInitPos]);
 
-  if (isPending || error) return <PagePlaceholder isPending={isPending} />;
+  if (isPending || error || data.length === 0) {
+    return <PagePlaceholder isPending={isPending || data?.length === 0} />;
+  }
 
   // Index where the tracks won't be played.
   const disableIndex = repeat === RepeatModes.NO_REPEAT ? listIndex : 0;
@@ -108,11 +108,12 @@ export default function Upcoming() {
     <>
       <ScreenOptions
         headerRight={() => (
-          <IconButton
+          <FilledIconButton
             Icon={Cached}
             accessibilityLabel={t("form.reset")}
             onPress={onSynchronizeQueue}
             disabled={isSynchronizing}
+            size="sm"
           />
         )}
       />
@@ -123,6 +124,8 @@ export default function Upcoming() {
         onContentSizeChange={scrollToActiveTrack}
         data={modifiedData}
         keyExtractor={(item) => item.key}
+        estimatedItemSize={48}
+        gap={8}
         renderItem={(args) => (
           <RenderItem
             disableAfter={disableIndex}
@@ -131,9 +134,6 @@ export default function Upcoming() {
           />
         )}
         onReordered={onMove}
-        ListEmptyComponent={
-          <ContentPlaceholder isPending={data.length === 0} />
-        }
         contentContainerClassName="py-4"
       />
     </>
@@ -154,79 +154,78 @@ const RenderItem = memo(
     onRemoveTrack,
     ...info
   }: RenderItemProps) {
-    if (item.active) {
-      return (
-        <TrackItem
-          item={item}
-          onPress={() => PlaybackControls.playToggle()}
-          onLongPress={info.onDragStart}
-          onPressOut={info.onDragEnd}
-          LeftElement={<PlayingIndicator />}
-          className={cn("mx-4", {
-            "mt-2": index > 0,
-            "bg-surfaceContainerLowest": info.isActive,
-          })}
-        />
-      );
-    }
-
+    const { t } = useTranslation();
     return (
-      <Swipeable
-        disabled={info.isDragging}
-        fireCallbackBeforeCompletion
-        onSwipeLeft={() => onRemoveTrack(item.key)}
-        RightIcon={<Delete color="onError" />}
-        rightIconContainerClassName="rounded-xs bg-error"
-        wrapperClassName={cn("mx-4", { "mt-2": index > 0 })}
-        className={cn("rounded-xs bg-surface", {
-          "bg-surfaceContainerLowest": info.isActive,
-        })}
-      >
-        <TrackItem
-          item={item}
-          onPress={() => PlaybackControls.playAtIndex(index)}
-          onLongPress={info.onDragStart}
-          onPressOut={info.onDragEnd}
-          className={cn({
+      <Pressable
+        onPress={() => PlaybackControls.playAtIndex(index)}
+        className={cn(
+          "mx-2 flex-row items-center gap-1 rounded-xs active:bg-surfaceContainerLowest/50",
+          {
+            "mt-2": index > 0,
+            "bg-surfaceContainerLowest!": info.isActive,
             "opacity-25 active:opacity-100":
               index < disableAfter && !info.isActive,
-          })}
+          },
+        )}
+      >
+        <IconButton
+          Icon={DragHandle}
+          accessibilityLabel={t("template.entryMove", { name: item.name })}
+          onPressIn={info.onDragStart}
+          onPressOut={info.onDragEnd}
+          disabled={info.isDragging && !info.isActive}
+          size="sm"
         />
-      </Swipeable>
+        <View className="shrink grow flex-row items-center gap-2">
+          {item.active ? (
+            <PlayingIndicator />
+          ) : (
+            <MediaImage
+              type="track"
+              size={48}
+              source={getTrackArtwork(item)}
+              className="rounded-xs"
+            />
+          )}
+          <View className="shrink grow gap-0.5 pr-2">
+            <StyledText
+              numberOfLines={1}
+              className={cn("text-sm", { "text-primary": item.active })}
+            >
+              {item.name}
+            </StyledText>
+            <StyledText
+              numberOfLines={1}
+              className="text-xs text-onSurfaceVariant"
+            >
+              {getArtistsString(item.tracksToArtists)}
+            </StyledText>
+          </View>
+        </View>
+        {item.active ? (
+          <View className="size-10" />
+        ) : (
+          <IconButton
+            Icon={Close}
+            accessibilityLabel={t("template.entryRemove", { name: item.name })}
+            onPress={() => onRemoveTrack(item.key)}
+            disabled={info.isDragging}
+            size="sm"
+          />
+        )}
+      </Pressable>
     );
   },
-  areRenderItemPropsEqual(
-    (o, n) =>
-      o.item.key === n.item.key &&
-      o.item.active === n.item.active &&
-      // @ts-expect-error - Field exists on data.
-      o.disableAfter === n.disableAfter,
-  ),
+  (oldProps, newProps) => {
+    return (
+      (["index", "isActive", "isDragging", "disableAfter"] as const).every(
+        (key) => oldProps[key] === newProps[key],
+      ) &&
+      oldProps.item.key === newProps.item.key &&
+      oldProps.item.active === newProps.item.active
+    );
+  },
 );
-
-function TrackItem({
-  item: { active, ...item },
-  className,
-  ...props
-}: {
-  item: TrackData;
-  /** If we have a `LeftElement`, it means this track is active. */
-  LeftElement?: SearchResult.Props["LeftElement"];
-  className: string;
-} & PressProps) {
-  return (
-    <SearchResult
-      button
-      type="track"
-      title={item.name}
-      description={getArtistsString(item.tracksToArtists)}
-      imageSource={getTrackArtwork(item)}
-      poppyLabel={active}
-      className={cn("pr-4", className)}
-      {...props}
-    />
-  );
-}
 //#endregion
 
 //#region Data Query
