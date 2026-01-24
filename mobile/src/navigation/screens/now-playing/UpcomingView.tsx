@@ -84,10 +84,7 @@ export default function Upcoming() {
   const scrollToActiveTrack = useCallback(() => {
     if (restoredInitPos) return;
     if (data?.length === 0 || listIndex >= (data?.length || -1)) return;
-    //! We need to animate the `scrollToIndex` as otherwise, we dragging an item
-    //! will be against an unscrolled list as `react-native-draglist` has calculations
-    //! based on how much we scrolled, which setting `animated = false` will hide.
-    listRef.current?.scrollToIndex({ index: listIndex, animated: true });
+    listRef.current?.scrollToIndex({ index: listIndex, animated: false });
     setRestoredInitPos(true);
   }, [data, listIndex, restoredInitPos]);
 
