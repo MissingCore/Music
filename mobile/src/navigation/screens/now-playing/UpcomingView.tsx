@@ -21,7 +21,6 @@ import { PagePlaceholder } from "~/navigation/components/Placeholder";
 import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 
 import { cn } from "~/lib/style";
-import { debounceWithAccumulation } from "~/utils/debounce";
 import { moveArray } from "~/utils/object";
 import { wait } from "~/utils/promise";
 import { FlashDragList } from "~/components/Defaults";
@@ -62,15 +61,10 @@ export default function Upcoming() {
     setCachedData((prev) => moveArray(prev, { fromIndex, toIndex }));
   }, []);
 
-  const onRemoveTrack = useMemo(
-    () =>
-      debounceWithAccumulation((tKeys: string[]) => {
-        const keySet = new Set(tKeys);
-        Queue.removeKeys(keySet);
-        setCachedData((prev) => prev.filter((t) => !keySet.has(t.key)));
-      }),
-    [],
-  );
+  const onRemoveTrack = useCallback((key: string) => {
+    Queue.removeKey(key);
+    setCachedData((prev) => prev.filter((t) => t.key !== key));
+  }, []);
 
   const onSynchronizeQueue = useCallback(async () => {
     setIsSynchronizing(true);
@@ -157,7 +151,11 @@ const RenderItem = memo(
     const { t } = useTranslation();
     return (
       <Pressable
-        onPress={() => PlaybackControls.playAtIndex(index)}
+        onPress={() =>
+          item.active
+            ? PlaybackControls.playToggle()
+            : PlaybackControls.playAtIndex(index)
+        }
         className={cn(
           "mx-2 flex-row items-center gap-1 rounded-xs active:bg-surfaceContainerLowest/50",
           {
