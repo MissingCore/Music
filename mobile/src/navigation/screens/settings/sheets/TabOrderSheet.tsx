@@ -57,8 +57,8 @@ const RenderItem = memo(
       <View
         collapsable={false}
         className={cn("h-14 flex-row items-center rounded-md", {
-          "opacity-25": !info.active && info.isDragging,
-          "bg-surfaceContainerLowest!": info.active,
+          "opacity-25": !info.isActive && info.isDragging,
+          "bg-surfaceContainerLowest!": info.isActive,
         })}
       >
         <CheckboxField
@@ -98,7 +98,7 @@ const RenderItem = memo(
   (oldProps, newProps) => {
     return (
       oldProps.item === newProps.item &&
-      (["index", "active", "isDragging"] as const).every(
+      (["index", "isActive", "isDragging"] as const).every(
         (k) => oldProps[k] === newProps[k],
       )
     );
