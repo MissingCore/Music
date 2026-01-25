@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { LayoutChangeEvent } from "react-native";
@@ -6,8 +7,9 @@ import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useLyricForTrack } from "~/queries/lyric";
+import { usePreferenceStore } from "~/stores/Preference/store";
 import { useSessionStore } from "~/services/SessionStore";
-import { useCurrentTheme } from "~/hooks/useTheme";
+import { useTheme } from "~/hooks/useTheme";
 
 import { ArtworkPicker } from "./Artwork";
 
@@ -40,24 +42,45 @@ export function ArtworkSlot(props: {
 }
 
 //#region Lyrics Overlay
+const SCROLL_OFFSET = 64;
+
 function LyricsOverlay(props: LyricsContentProps) {
-  const insets = useSafeAreaInsets();
-  const currTheme = useCurrentTheme();
+  const { top } = useSafeAreaInsets();
+  const { scheme, surface } = useTheme();
+  const screenDesign = usePreferenceStore((s) => s.nowPlayingDesign);
 
   // Estimated offset to get overlay to go behind the `TopAppBar`.
-  const topOffset = insets.top + 57;
+  const topOffset = top + 57;
+  const lyricsOffset = topOffset + SCROLL_OFFSET;
 
   return (
     <View
       style={{ top: -topOffset, bottom: 0 }}
       className={cn(
-        "absolute z-50 w-full items-center justify-center bg-surface/85",
-        { "bg-surface/60": currTheme === "dark" },
+        "absolute w-full items-center justify-center bg-surface/85",
+        { "bg-surface/60": scheme === "dark" },
       )}
     >
-      <View style={{ width: props.size }} className="px-4">
-        <LyricsContent {...props} offset={topOffset} />
+      <View style={{ width: props.size }} className="px-2">
+        <LyricsContent {...props} offset={lyricsOffset} />
       </View>
+
+      <LinearGradient
+        colors={[`${surface}FF`, `${surface}00`]}
+        locations={[
+          (screenDesign === "vinylOld" ? top : topOffset) / lyricsOffset,
+          1,
+        ]}
+        pointerEvents="none"
+        style={{ height: lyricsOffset }}
+        className="absolute top-0 left-0 w-full"
+      />
+      <LinearGradient
+        colors={[`${surface}00`, `${surface}E6`]}
+        pointerEvents="none"
+        style={{ height: SCROLL_OFFSET }}
+        className="absolute bottom-0 left-0 w-full"
+      />
     </View>
   );
 }
@@ -94,7 +117,12 @@ function LyricsContent(props: LyricsContentProps & { offset: number }) {
   }
 
   return (
-    <ScrollView contentContainerStyle={{ paddingTop: props.offset }}>
+    <ScrollView
+      contentContainerStyle={{
+        paddingTop: props.offset,
+        paddingBottom: SCROLL_OFFSET,
+      }}
+    >
       <StyledText bold className="text-xl">
         {data.lyrics}
       </StyledText>
