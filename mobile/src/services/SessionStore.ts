@@ -21,6 +21,8 @@ interface SessionStore {
   /** Artists displayed in global artist sheet. */
   displayedArtists: { artists: Artist[]; popScreen: boolean } | null;
 
+  /** If lyrics will be displyad over the artwork on the Now Playing screen. */
+  showLyrics: boolean;
   /** Waveform data for the active track. */
   activeWaveformContext: WaveformSample | null;
 }
@@ -32,6 +34,7 @@ export const sessionStore = createStore<SessionStore>()(() => ({
   displayedTrack: null,
   displayedArtists: null,
 
+  showLyrics: false,
   activeWaveformContext: null,
 }));
 

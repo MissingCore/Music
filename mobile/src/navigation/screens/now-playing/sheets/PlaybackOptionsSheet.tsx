@@ -5,7 +5,6 @@ import { useCallback, useImperativeHandle, useState } from "react";
 import { Pressable, View } from "react-native";
 
 import { ActivityZone } from "~/resources/icons/ActivityZone";
-import { Lyrics } from "~/resources/icons/Lyrics";
 import { SlowMotionVideo } from "~/resources/icons/SlowMotionVideo";
 import { VolumeUp } from "~/resources/icons/VolumeUp";
 import { usePlaybackStore } from "~/stores/Playback/store";
@@ -18,7 +17,6 @@ import { sessionStore, useSessionStore } from "~/services/SessionStore";
 
 import { getMediaLinkContext } from "~/navigation/utils/router";
 import { AppearanceSheet } from "./AppearanceSheet";
-import { LyricSheet } from "./LyricSheet";
 import { PlaybackSpeedSheet } from "./PlaybackSpeedSheet";
 
 import { ScrollView } from "~/components/Defaults";
@@ -43,12 +41,12 @@ export function PlaybackOptionsSheet(props: {
   const sourceName = usePlaybackStore((s) => s.playingFromName);
   const playbackDelay = usePreferenceStore((s) => s.playbackDelay);
   const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
+  const showLyrics = useSessionStore((s) => s.showLyrics);
   const volume = useSessionStore((s) => s.volume);
   const internalSheetRef = useSheetRef();
   // @ts-expect-error - Should be able to synchronize refs.
   useImperativeHandle(props.ref, () => internalSheetRef.current);
   const appearanceSheetRef = useSheetRef();
-  const lyricSheetRef = useSheetRef();
   const playbackSpeedRef = useSheetRef();
 
   const navigateToList = useCallback(async () => {
@@ -66,11 +64,6 @@ export function PlaybackOptionsSheet(props: {
     appearanceSheetRef.current?.present();
   }, [appearanceSheetRef, internalSheetRef]);
 
-  const presentLyricSheet = useCallback(async () => {
-    await internalSheetRef.current?.dismiss();
-    lyricSheetRef.current?.present();
-  }, [lyricSheetRef, internalSheetRef]);
-
   const presentPlaybackSheet = useCallback(async () => {
     await internalSheetRef.current?.dismiss();
     playbackSpeedRef.current?.present();
@@ -80,7 +73,6 @@ export function PlaybackOptionsSheet(props: {
   return (
     <>
       <AppearanceSheet ref={appearanceSheetRef} />
-      <LyricSheet ref={lyricSheetRef} trackId={props.trackId} />
       <PlaybackSpeedSheet ref={playbackSpeedRef} />
 
       <DetachedSheet
@@ -117,6 +109,17 @@ export function PlaybackOptionsSheet(props: {
             }
           />
           <PreferenceRow
+            labelKey="feat.lyrics.title"
+            RightElement={
+              <Pressable
+                onPress={toggleLyricsView}
+                className="h-8 justify-center"
+              >
+                <Switch enabled={showLyrics} />
+              </Pressable>
+            }
+          />
+          <PreferenceRow
             labelKey="feat.waveformSlider.title"
             RightElement={
               <Pressable
@@ -133,12 +136,6 @@ export function PlaybackOptionsSheet(props: {
               labelTextKey="feat.appearance.title"
               onPress={presentAppearanceSheet}
               LeftElement={<ActivityZone />}
-              className="gap-4"
-            />
-            <SegmentedList.Item
-              labelTextKey="feat.lyrics.title"
-              onPress={presentLyricSheet}
-              LeftElement={<Lyrics />}
               className="gap-4"
             />
             <SegmentedList.Item
@@ -186,4 +183,10 @@ const VolumeSliderOptions = {
     formatValue: (val: number) => `${Math.round(val * 100)}%`,
   },
 };
+//#endregion
+
+//#region Helpers
+function toggleLyricsView() {
+  sessionStore.setState((prev) => ({ showLyrics: !prev.showLyrics }));
+}
 //#endregion
