@@ -1,7 +1,6 @@
-import type { FlashListRef } from "@shopify/flash-list";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { inArray } from "drizzle-orm";
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
@@ -40,9 +39,6 @@ export default function Upcoming() {
   const [cachedData, setCachedData] = useState<TrackData[]>([]);
   const [isSynchronizing, setIsSynchronizing] = useState(false);
 
-  const [restoredInitPos, setRestoredInitPos] = useState(false);
-  const listRef = useRef<FlashListRef<any>>(null);
-
   // Sync our local state with the store data (this should be called twice
   // since we won't revalidate the query on changes).
   useEffect(() => {
@@ -68,25 +64,15 @@ export default function Upcoming() {
 
   const onSynchronizeQueue = useCallback(async () => {
     setIsSynchronizing(true);
+    // Clear the cache before we resynchronize the queue to prevent the potential
+    // of removing the active track in the split frame where you could.
+    setCachedData([]);
     await wait(1);
     await Queue.synchronize();
     // `removeQueries` will reset the `isPending` state unlike `resetQueries`.
     queryClient.removeQueries({ queryKey });
     setIsSynchronizing(false);
-    setRestoredInitPos(false);
   }, [queryClient]);
-
-  //! Manually scroll to active track as `initialScrollIndex` can throw
-  //! the `index out of bounds, not enough layouts` error in the following
-  //! conditions:
-  //! - Some tracks have been removed, the last track is active, and we
-  //!   trigger a reset.
-  const scrollToActiveTrack = useCallback(() => {
-    if (restoredInitPos) return;
-    if (data?.length === 0 || listIndex >= (data?.length || -1)) return;
-    listRef.current?.scrollToIndex({ index: listIndex, animated: false });
-    setRestoredInitPos(true);
-  }, [data, listIndex, restoredInitPos]);
 
   if (isPending || error || data.length === 0) {
     return <PagePlaceholder isPending={isPending || data?.length === 0} />;
@@ -109,10 +95,7 @@ export default function Upcoming() {
         )}
       />
       <FlashDragList
-        // @ts-expect-error - Ref is compatible.
-        ref={listRef}
-        //? Reliable method of triggering function when items are rendered.
-        onContentSizeChange={scrollToActiveTrack}
+        initialScrollIndex={listIndex}
         data={modifiedData}
         keyExtractor={(item) => item.key}
         estimatedItemSize={48}
