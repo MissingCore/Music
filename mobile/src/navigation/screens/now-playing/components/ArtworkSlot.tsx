@@ -1,6 +1,7 @@
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useSessionStore } from "~/services/SessionStore";
 
@@ -19,9 +20,23 @@ export function ArtworkSlot(props: { artwork: string | null }) {
       >
         <ArtworkPicker source={props.artwork} size={size} />
       </View>
+      {showLyrics ? <LyricsOverlay /> : null}
     </View>
   );
 }
+
+//#region Lyrics Overlay
+function LyricsOverlay() {
+  const insets = useSafeAreaInsets();
+  return (
+    <View
+      // Estimated offset to get overlay to go behind the `TopAppBar`.
+      style={{ top: -(insets.top + 57), bottom: 0 }}
+      className="absolute z-50 w-full bg-surface/75"
+    ></View>
+  );
+}
+//#endregion
 
 //#region Helpers
 function useArtworkSize() {
