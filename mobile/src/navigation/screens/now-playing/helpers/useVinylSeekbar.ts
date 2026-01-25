@@ -67,15 +67,16 @@ export function useVinylSeekbar() {
   //#region Gesture
   const [gestureInBound, setGestureInBound] = useState(true);
   const prevAngle = useSharedValue(0);
+  const hasUpdatedPosition = useSharedValue(false);
 
   const seekGesture = useMemo(
     () =>
       Gesture.Pan()
         .shouldCancelWhenOutside(true)
         .enabled(gestureInBound)
-        .onBegin(() => scheduleOnRN(setIsSeeking, true))
         .onStart(({ absoluteX, absoluteY }) => {
           if (isWithinBound({ absoluteX, absoluteY })) {
+            scheduleOnRN(setIsSeeking, true);
             prevAngle.value = getAngle({ absoluteX, absoluteY });
           } else {
             scheduleOnRN(setGestureInBound, false);
@@ -100,14 +101,20 @@ export function useVinylSeekbar() {
             if (newPosition < 0) timedPosition.value = 0;
             else if (newPosition > duration) timedPosition.value = duration;
             else timedPosition.value = newPosition;
+
+            hasUpdatedPosition.value = true;
           } else {
             scheduleOnRN(setGestureInBound, false);
           }
         })
-        .onEnd(() => scheduleOnRN(PlaybackControls.seekTo, timedPosition.value))
+        .onEnd(() => {
+          if (hasUpdatedPosition.value)
+            scheduleOnRN(PlaybackControls.seekTo, timedPosition.value);
+        })
         .onFinalize(() => {
           scheduleOnRN(setIsSeeking, false);
           scheduleOnRN(setGestureInBound, true);
+          hasUpdatedPosition.value = false;
         }),
     [
       isWithinBound,
@@ -116,6 +123,7 @@ export function useVinylSeekbar() {
       timedPosition,
       duration,
       prevAngle,
+      hasUpdatedPosition,
       gestureInBound,
     ],
   );
