@@ -18,7 +18,7 @@ import { presentTrackSheet } from "~/services/SessionStore";
 
 import { Back } from "~/navigation/components/Back";
 import { SeekbarContext } from "./helpers/Seekbar.context";
-import { NowPlayingArtwork } from "./components/Artwork";
+import { ArtworkSlot } from "./components/ArtworkSlot";
 import { SeekBar } from "./components/SeekBar";
 import { PlaybackOptionsSheet } from "./sheets/PlaybackOptionsSheet";
 import { SleepTimerSheet } from "./sheets/SleepTimerSheet";
@@ -46,7 +46,7 @@ export default function NowPlaying() {
   return (
     <SeekbarContext>
       <SafeContainer additionalTopOffset={56} className="flex-1 gap-8">
-        <NowPlayingArtwork artwork={track.artwork} />
+        <ArtworkSlot artwork={track.artwork} />
         <View className="gap-6 px-4">
           <Metadata track={track} />
           <SeekBar id={track.id} uri={track.uri} trackLength={track.duration} />
