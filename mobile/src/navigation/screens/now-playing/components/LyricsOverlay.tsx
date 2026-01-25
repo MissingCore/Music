@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -9,11 +10,12 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
-import { ScrollView } from "~/components/Defaults";
+import { FlatList } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
 const SCROLL_OFFSET = 64;
+const LINE_GAP = 16;
 
 export function LyricsOverlay(props: LyricsContentProps) {
   const { top } = useSafeAreaInsets();
@@ -63,6 +65,11 @@ function LyricsContent(props: LyricsContentProps & { offset: number }) {
   const navigation = useNavigation();
   const { isPending, data, error } = useLyricForTrack(props.trackId);
 
+  const lyricsLines = useMemo(() => {
+    if (!data?.lyrics) return "";
+    return data.lyrics.split("\n");
+  }, [data?.lyrics]);
+
   if (isPending) return null;
   if (error || !data) {
     return (
@@ -88,15 +95,19 @@ function LyricsContent(props: LyricsContentProps & { offset: number }) {
   }
 
   return (
-    <ScrollView
+    <FlatList
+      data={lyricsLines}
+      keyExtractor={(_, index) => `${index}`}
+      renderItem={({ item }) => (
+        <StyledText bold className="text-xl">
+          {item}
+        </StyledText>
+      )}
       contentContainerStyle={{
         paddingTop: props.offset,
         paddingBottom: SCROLL_OFFSET,
+        gap: LINE_GAP,
       }}
-    >
-      <StyledText bold className="text-xl">
-        {data.lyrics}
-      </StyledText>
-    </ScrollView>
+    />
   );
 }
