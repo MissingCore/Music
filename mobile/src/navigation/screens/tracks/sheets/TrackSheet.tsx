@@ -62,9 +62,9 @@ export function TrackSheet() {
         ) : null}
       </DetachedSheet>
       <TrackToPlaylistsSheet key={data?.id} id={data?.id ?? ""} />
-      {data !== null && (
+      {data !== null ? (
         <TrackArtworkSheet ref={trackArtworkSheetRef} id={data.id} />
-      )}
+      ) : null}
     </>
   );
 }
