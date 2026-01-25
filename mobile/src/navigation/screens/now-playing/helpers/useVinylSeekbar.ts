@@ -2,13 +2,13 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { Gesture } from "react-native-gesture-handler";
 import type Animated from "react-native-reanimated";
+import { useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 
 import { animatedPositionAtom, isSeekingAtom } from "./Seekbar.context";
-import { useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 
 type Position = { absoluteX: number; absoluteY: number };
 

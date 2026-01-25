@@ -4,6 +4,7 @@ import { I18nManager, View } from "react-native";
 
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
+
 import { Waveform, useWaveformSamples } from "./Waveform";
 import {
   animatedPositionAtom,

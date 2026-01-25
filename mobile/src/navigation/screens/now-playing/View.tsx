@@ -15,6 +15,8 @@ import { useFavoriteTrack, useTrack } from "~/queries/track";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/services/SessionStore";
+
+import { Back } from "~/navigation/components/Back";
 import { SeekbarContext } from "./helpers/Seekbar.context";
 import { NowPlayingArtwork } from "./components/Artwork";
 import { SeekBar } from "./components/SeekBar";
@@ -37,7 +39,6 @@ import {
   RepeatButton,
   ShuffleButton,
 } from "~/modules/media/components/MediaControls";
-import { Back } from "../../components/Back";
 
 export default function NowPlaying() {
   const track = usePlaybackStore((s) => s.activeTrack);
