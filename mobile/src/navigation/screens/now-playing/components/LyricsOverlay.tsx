@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -11,7 +11,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { useTheme } from "~/hooks/useTheme";
 
 import { cn } from "~/lib/style";
-import { FlatList } from "~/components/Defaults";
+import { FlatList, useFlatListRef } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
@@ -120,21 +120,49 @@ function LyricsContent(props: { trackId: string; offset: number }) {
 //#region Synchronized Lyrics
 function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
   const position = usePlaybackStore((s) => s.lastPosition);
+  const listRef = useFlatListRef();
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const [autoScroll, setAutoScroll] = useState(true);
 
   const parsedLines = useMemo(() => parseLines(props.lines), [props.lines]);
 
-  const activeIndex = useMemo(() => {
+  useEffect(() => {
+    // Calculate active index.
     const positionMS = position * 1000;
     const numLines = parsedLines.length;
+    let newIndex = -1;
     for (let i = 0; i < numLines; i++) {
-      if (parsedLines[i]!.timeMS < positionMS) continue;
-      return Math.max(i - 1, 0);
+      if (parsedLines[i]!.timeMS > positionMS) break;
+      newIndex += 1;
     }
-    return numLines - 1;
-  }, [parsedLines, position]);
+    setActiveIndex(newIndex);
+
+    // Scroll to active index.
+    if (!listRef.current || !autoScroll) return;
+    if (newIndex === -1) {
+      listRef.current.scrollToOffset({ offset: 0 });
+      return;
+    }
+    listRef.current.scrollToIndex({
+      index: newIndex,
+      viewOffset: (SCROLL_OFFSET + LINE_GAP) / 2,
+      viewPosition: 0.5,
+    });
+  }, [listRef, parsedLines, position, autoScroll]);
+
+  const debouncedScrollEnd = useMemo(() => {
+    let timeout: ReturnType<typeof setTimeout>;
+    return () => {
+      if (timeout) clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        setAutoScroll(true);
+      }, 500);
+    };
+  }, []);
 
   return (
     <FlatList
+      ref={listRef}
       data={parsedLines}
       keyExtractor={(_, index) => `${index}`}
       renderItem={({ item, index }) => (
@@ -147,6 +175,10 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
           {item.lyric}
         </StyledText>
       )}
+      onMomentumScrollBegin={() => setAutoScroll(false)}
+      onMomentumScrollEnd={debouncedScrollEnd}
+      // Suppresses error when `scrollToIndex` fails.
+      onScrollToIndexFailed={() => {}}
       contentContainerStyle={{
         paddingTop: props.offset,
         paddingBottom: SCROLL_OFFSET,
@@ -179,7 +211,7 @@ function parseLines(lines: string[]): SynchronizedLine[] {
         Number.parseInt(min) * 60 * 1000 +
         Number.parseInt(sec) * 1000 +
         Number.parseInt(ms),
-      lyric: lyricLine,
+      lyric: lyricLine.trim(),
     });
   }
 
