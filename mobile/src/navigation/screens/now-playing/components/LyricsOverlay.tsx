@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -121,10 +121,17 @@ function LyricsContent(props: { trackId: string; offset: number }) {
 function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
   const position = usePlaybackStore((s) => s.lastPosition);
   const listRef = useFlatListRef();
+  const [mounted, setMounted] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const [autoScroll, setAutoScroll] = useState(true);
 
   const parsedLines = useMemo(() => parseLines(props.lines), [props.lines]);
+
+  // Call `mounted` after a delay as for some weird reason, `scrollToIndex`
+  // doesn't initially work when called.
+  const onLayout = useCallback(() => {
+    setTimeout(() => setMounted(true), 250);
+  }, []);
 
   useEffect(() => {
     // Calculate active index.
@@ -138,7 +145,7 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
     setActiveIndex(newIndex);
 
     // Scroll to active index.
-    if (!listRef.current || !autoScroll) return;
+    if (!listRef.current || !mounted || !autoScroll) return;
     if (newIndex === -1) {
       listRef.current.scrollToOffset({ offset: 0 });
       return;
@@ -148,21 +155,20 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
       viewOffset: (SCROLL_OFFSET + LINE_GAP) / 2,
       viewPosition: 0.5,
     });
-  }, [listRef, parsedLines, position, autoScroll]);
+  }, [listRef, parsedLines, position, mounted, autoScroll]);
 
   const debouncedScrollEnd = useMemo(() => {
     let timeout: ReturnType<typeof setTimeout>;
     return () => {
       if (timeout) clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        setAutoScroll(true);
-      }, 1000);
+      timeout = setTimeout(() => setAutoScroll(true), 1000);
     };
   }, []);
 
   return (
     <FlatList
       ref={listRef}
+      onLayout={onLayout}
       data={parsedLines}
       keyExtractor={(_, index) => `${index}`}
       renderItem={({ item, index }) => (
