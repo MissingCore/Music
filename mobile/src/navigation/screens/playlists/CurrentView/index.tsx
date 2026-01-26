@@ -11,7 +11,7 @@ import { useFavoritePlaylist, usePlaylistForScreen } from "~/queries/playlist";
 import { useBottomActionsInset } from "../../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../../layouts/CurrentList";
 import { ExportM3USheet } from "./ExportM3USheet";
-import { PlaylistArtworkSheet } from "../../ArtworkSheet";
+import { PlaylistArtworkSheet } from "../../../sheets/ArtworkSheet";
 
 import { mutateGuard } from "~/lib/react-query";
 import { LegendList } from "~/components/Defaults";

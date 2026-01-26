@@ -1,130 +1,324 @@
-import { Slider as RNSlider } from "@miblanchard/react-native-slider";
-import SheetSlider from "@react-native-assets/slider";
-import { useState } from "react";
-import { Pressable, View } from "react-native";
+import type { ParseKeys } from "i18next";
+import type { Dispatch, SetStateAction } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import type { LayoutChangeEvent, ViewStyle } from "react-native";
+import { I18nManager, View } from "react-native";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import type { SharedValue } from "react-native-reanimated";
+import Animated, {
+  clamp,
+  useAnimatedStyle,
+  useDerivedValue,
+  useSharedValue,
+} from "react-native-reanimated";
+import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
 
-import { useTheme } from "~/hooks/useTheme";
+import type { Icon } from "~/resources/icons/type";
+import { useColor } from "~/hooks/useTheme";
 
+import { Colors } from "~/constants/Styles";
+import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
 import { StyledText } from "../Typography/StyledText";
 
-//#region Regular
-/** Slider with default styling. */
-export function Slider(props: {
-  value: number;
+/**
+ * Reanimated slider whose render value is handled internally and is
+ * instantiated on mount.
+ */
+export const CachedSlider = memo(function CachedSlider(props: {
+  initValue: number;
+  liveValue?: SharedValue<number>;
+  min: number;
   max: number;
-  thumbSize: number;
-  onChange: (value: number) => void | Promise<void>;
+  /** Notify the parent if the slider recognized interactions. */
+  getInteractionStatus?: Dispatch<SetStateAction<boolean>>;
+  /** Function call is debounced, which is based on `_debounceMultiplier * step`. */
+  onChange?: (value: number) => void | Promise<void>;
+  /** Fallsback to `onChange` as `onChange` might not get the final value due to the debounce logic. */
   onComplete?: (value: number) => void | Promise<void>;
+  /** Defaults to `1`. */
+  step?: number;
+  /** Invert appearance & functionality given `I18nManager` is enabled.  */
   inverted?: boolean;
+  height?: number;
+  /** Vertical hitslop. Will change the component's height. */
+  vHitSlop?: number;
+  /** If the slider should be transparent. */
+  transparent?: boolean;
+  trackColor?: ColorRole;
+  progressColor?: ColorRole;
+  /** If the progress indicator will have a rounded end stop. */
+  roundedEndStop?: boolean;
+  /**
+   * Optionally display an overlay on top of the slider. Should be used
+   * with tall sliders.
+   */
+  overlay?: SliderOverlayProps;
+  /** How much we should debounce calling `onChange` based on `step`. Defaults to `5`. */
+  _debounceMultiplier?: number;
+  /** Add additional styles to the slider wrapper. */
+  _className?: string;
 }) {
-  const { primary, surfaceContainerHigh } = useTheme();
-  return (
-    <RNSlider
-      value={props.value}
-      minimumValue={0}
-      maximumValue={props.max}
-      onSlidingComplete={async ([newPos]) => {
-        if (props.onComplete) await props.onComplete(newPos!);
-      }}
-      onValueChange={async ([newPos]) => await props.onChange(newPos!)}
-      minimumTrackTintColor={primary}
-      maximumTrackTintColor={surfaceContainerHigh}
-      thumbTintColor={primary}
-      thumbStyle={{ height: props.thumbSize, width: props.thumbSize }}
-      trackStyle={{ height: props.thumbSize / 2, borderRadius: 999 }}
-      containerStyle={{ height: props.thumbSize + 16 }}
-      inverted={props.inverted}
-    />
+  const currVal = useSharedValue(props.initValue);
+  const moveableDistance = useMemo(
+    () => props.max - props.min,
+    [props.min, props.max],
   );
-}
-//#endregion
+  const step = useRef(props.step ?? 1);
+  const debounceMultiplier = useRef(props._debounceMultiplier ?? 5);
 
-//#region Nothing Slider
-/** Custom slider design to match the one in the Nothing X app. */
-export function NSlider(
-  props: NMarkProps & {
-    label: string;
-    icon: React.ReactNode;
-    formatValue: (value: number) => string;
-    step?: number;
+  //#region Synchronization
+  const setCurrVal = useCallback(
+    (val: number) => {
+      "worklet";
+      currVal.value = val;
+      if (props.liveValue !== undefined) props.liveValue.value = val;
+    },
+    [currVal, props.liveValue],
+  );
+
+  //? Synchronize internal value with external value.
+  useDerivedValue(() => {
+    if (props.liveValue === undefined) return;
+    if (props.liveValue.value === currVal.value) return;
+    //? If values are different, it means `liveValue` was changed.
+    currVal.value = props.liveValue.value;
+  });
+  //#endregion
+
+  //#region Layout Context
+  const sliderWidth = useSharedValue(0);
+  const onLayout = useCallback(
+    (e: LayoutChangeEvent) => {
+      sliderWidth.value = e.nativeEvent.layout.width;
+    },
+    [sliderWidth],
+  );
+  //#endregion
+
+  //#region Handlers
+  const setIsInteractingRef = useRef(props.getInteractionStatus);
+  const onChangeRef = useRef(props.onChange);
+  const onCompleteRef = useRef(props.onComplete ?? props.onChange);
+
+  const debounceFrom = useSharedValue(0);
+  const debouncedOnChange = useCallback(
+    (value: number, velocity: number) => {
+      "worklet";
+      // If velocity is greater than 500 (ie: abnormal use), don't do anything.
+      if (Math.abs(velocity) > 500) return;
+      // Don't immediately call `onChange` if we haven't moved `debounceMultipler * step`.
+      if (
+        Math.abs(debounceFrom.value - value) <
+        step.current * debounceMultiplier.current
+      ) {
+        return;
+      }
+      debounceFrom.value = value;
+      if (onChangeRef.current) scheduleOnRN(onChangeRef.current, value);
+    },
+    [debounceFrom],
+  );
+
+  const setIsInteracting = useCallback((isInteracted: boolean) => {
+    "worklet";
+    if (setIsInteractingRef.current)
+      scheduleOnRN(setIsInteractingRef.current, isInteracted);
+  }, []);
+
+  const calculateNextValue = useCallback(
+    (x: number) => {
+      "worklet";
+      const i18nAdjustedX =
+        I18nManager.isRTL && !props.inverted ? sliderWidth.value - x : x;
+      const clampedValue = clamp(0, i18nAdjustedX, sliderWidth.value);
+      const progressPrecent = clampedValue / sliderWidth.value;
+      const rawVal = progressPrecent * moveableDistance + props.min;
+      // Round based on the step.
+      return roundToStep(rawVal, step.current);
+    },
+    [sliderWidth, moveableDistance, props.min, props.inverted],
+  );
+  //#endregion
+
+  //#region Gestures
+  const tapGesure = useMemo(
+    () =>
+      Gesture.Tap()
+        .onBegin(() => setIsInteracting(true))
+        .onEnd(({ x }) => {
+          const finalizedValue = calculateNextValue(x);
+          setCurrVal(finalizedValue);
+          setIsInteracting(false);
+          if (onCompleteRef.current)
+            scheduleOnRN(onCompleteRef.current, finalizedValue);
+        }),
+    [calculateNextValue, setIsInteracting, setCurrVal],
+  );
+
+  const panGesture = useMemo(
+    () =>
+      Gesture.Pan()
+        .onBegin(() => setIsInteracting(true))
+        .onStart(({ x }) => {
+          debounceFrom.value = x;
+        })
+        .onUpdate(({ x, velocityX }) => {
+          const nextValue = calculateNextValue(x);
+          setCurrVal(nextValue);
+          debouncedOnChange(nextValue, velocityX);
+        })
+        .onEnd(({ x }) => {
+          const finalizedValue = calculateNextValue(x);
+          setCurrVal(finalizedValue);
+          if (onCompleteRef.current)
+            scheduleOnRN(onCompleteRef.current, finalizedValue);
+        })
+        .onFinalize(() => setIsInteracting(false)),
+    [
+      calculateNextValue,
+      setIsInteracting,
+      setCurrVal,
+      debounceFrom,
+      debouncedOnChange,
+    ],
+  );
+
+  const gestures = useMemo(
+    () => Gesture.Race(tapGesure, panGesture),
+    [tapGesure, panGesture],
+  );
+  //#endregion
+
+  //#region Styling
+  const progressColor = useColor(props.progressColor, "primary");
+  const trackColor = useColor(props.trackColor, "surfaceContainerLowest");
+
+  const shouldInvertStyle = useMemo(
+    () => I18nManager.isRTL && props.inverted,
+    [props.inverted],
+  );
+
+  const hitSlopViewStyle: ViewStyle = useMemo(
+    () => ({ paddingVertical: props.vHitSlop ?? 0 }),
+    [props.vHitSlop],
+  );
+
+  const sliderWrapperStyle: ViewStyle = useMemo(
+    () => ({
+      backgroundColor: props.transparent ? Colors.transparent : trackColor,
+      height: props.height ?? 12,
+    }),
+    [trackColor, props.height, props.transparent],
+  );
+  const sliderWrappeClassName = useMemo(
+    () =>
+      cn("relative w-full overflow-hidden rounded-full", {
+        "flex-row-reverse": shouldInvertStyle,
+      }),
+    [shouldInvertStyle],
+  );
+
+  const progressStyle = useAnimatedStyle(() => ({
+    backgroundColor: props.transparent ? Colors.transparent : progressColor,
+    width: ((currVal.value - props.min) / moveableDistance) * sliderWidth.value,
+  }));
+
+  const progressClassName = useMemo(
+    () => cn("h-full", { "rounded-r-full": props.roundedEndStop }),
+    [props.roundedEndStop],
+  );
+  //#endregion
+
+  return (
+    <GestureDetector gesture={gestures}>
+      <View style={hitSlopViewStyle} className={props._className}>
+        <View
+          onLayout={onLayout}
+          style={sliderWrapperStyle}
+          className={sliderWrappeClassName}
+        >
+          {props.overlay ? (
+            <SliderOverlay
+              {...props.overlay}
+              value={currVal}
+              inverted={shouldInvertStyle}
+            />
+          ) : null}
+          <Animated.View style={progressStyle} className={progressClassName} />
+        </View>
+      </View>
+    </GestureDetector>
+  );
+});
+
+//#region Overlay
+type SliderOverlayProps = {
+  accessibilityLabelKey: ParseKeys;
+  Icon: (props: Icon) => React.ReactNode;
+  formatValue: (val: number) => string;
+};
+
+const LISTENER_ID = 987654321;
+
+const SliderOverlay = memo(function SliderOverlay(
+  props: SliderOverlayProps & {
+    value: SharedValue<number>;
+    inverted?: boolean;
   },
 ) {
-  const { primary, surfaceContainerLowest } = useTheme();
-  const [width, setWidth] = useState<number>();
+  const { t } = useTranslation();
+  const [currentValue, setCurrentValue] = useState(() => props.value.value);
 
-  const formattedValue = props.formatValue(props.value);
+  useEffect(() => {
+    scheduleOnUI(() =>
+      props.value.addListener(LISTENER_ID, (value) =>
+        scheduleOnRN(setCurrentValue, value),
+      ),
+    );
+    return () => {
+      scheduleOnUI(() => props.value.removeListener(LISTENER_ID));
+    };
+  }, [props.value]);
+
+  const formattedValue = props.formatValue(currentValue);
 
   return (
     <View
-      onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
-      className="relative overflow-hidden rounded-full bg-surfaceContainerLowest"
+      accessible
+      accessibilityLabel={`${t(props.accessibilityLabelKey)}: ${formattedValue}`}
+      pointerEvents="none"
+      className={cn(
+        "absolute top-1/2 z-10 w-full -translate-y-1/2 flex-row items-center justify-center gap-1",
+        { "flex-row-reverse": props.inverted },
+      )}
     >
-      <View
-        accessible
-        accessibilityLabel={`${props.label}: ${formattedValue}`}
-        pointerEvents="none"
-        className="absolute top-1/2 z-10 w-full -translate-y-1/2 flex-row items-center justify-center gap-2"
+      <props.Icon size={20} />
+      <StyledText
+        bold
+        className={cn("min-w-10 text-sm", { "text-right": props.inverted })}
       >
-        {props.icon}
-        <StyledText className="min-w-12 text-sm" bold>
-          {formattedValue}
-        </StyledText>
-      </View>
-      <SheetSlider
-        value={props.value}
-        minimumValue={props.min}
-        maximumValue={props.max}
-        step={props.step}
-        onValueChange={props.onChange as (val: number) => void}
-        minimumTrackTintColor={`${primary}33`} // 20% Opacity
-        maximumTrackTintColor={surfaceContainerLowest}
-        thumbSize={
-          props.value === props.min || props.value === props.max ? 0 : 2
-        }
-        trackHeight={64}
-        thumbStyle={{ height: 64, backgroundColor: primary }}
-        // The wrapper adds some extra padding, which this will negate.
-        style={{ height: 64 }}
-      />
-      {width !== undefined ? <NSliderMarks width={width} {...props} /> : null}
+        {formattedValue}
+      </StyledText>
     </View>
   );
-}
+});
+//#endregion
 
-type NMarkProps = {
-  value: number;
-  min: number;
-  max: number;
-  trackMarks?: number[];
-  onChange: (value: number) => void | Promise<void>;
-};
+//#region Utils
+/** Round number to nearest step. */
+function roundToStep(rawNum: number, step: number) {
+  "worklet";
+  const roundedVal = Math.round(rawNum / step) * step;
 
-const markClass =
-  "absolute top-1/2 h-4 w-0.5 -translate-x-1/2 -translate-y-1/2";
+  // Figure out number of decimal places we round to.
+  let decimalPlaces = 0;
+  const stepStr = step.toString();
+  const decimalIndex = stepStr.indexOf(".");
+  if (decimalIndex !== -1) decimalPlaces = stepStr.length - decimalIndex - 1;
 
-function NSliderMarks({ min, max, ...rest }: NMarkProps & { width: number }) {
-  if (!rest.trackMarks) return null;
-  return rest.trackMarks.map((val) =>
-    val !== min && val !== max ? (
-      <View
-        key={val}
-        pointerEvents="none"
-        style={{ left: ((val - min) / (max - min)) * rest.width }}
-        className={cn("bg-onSurface/5", markClass)}
-      />
-    ) : (
-      <Pressable
-        key={val}
-        accessible={false}
-        hitSlop={{ left: 16, right: 16, top: 24, bottom: 24 }}
-        onPress={() => rest.onChange(val)}
-        disabled={rest.value === val}
-        pointerEvents={rest.value === val ? "none" : "auto"}
-        style={{ left: ((val - min) / (max - min)) * rest.width }}
-        className={markClass}
-      />
-    ),
-  );
+  if (decimalPlaces === 0) return roundedVal;
+  return parseFloat(roundedVal.toFixed(decimalPlaces));
 }
 //#endregion

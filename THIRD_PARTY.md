@@ -6,11 +6,9 @@
 | @legendapp/list | MIT | https://github.com/LegendApp/legend-list |
 | @lodev09/react-native-true-sheet | MIT | https://github.com/lodev09/react-native-true-sheet |
 | @lukemorales/query-key-factory | MIT | https://github.com/lukemorales/query-key-factory |
-| @miblanchard/react-native-slider | MIT | https://github.com/miblanchard/react-native-slider |
 | @missingcore/react-native-actual-path | MIT | https://github.com/MissingCore/react-native-actual-path |
 | @missingcore/react-native-metadata-retriever | MIT | https://github.com/MissingCore/react-native-metadata-retriever |
 | @paralleldrive/cuid2 | MIT | https://github.com/paralleldrive/cuid2 |
-| @react-native-assets/slider | ISC | https://github.com/Sharcoux/slider |
 | @react-navigation/material-top-tabs | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/material-top-tabs |
 | @react-navigation/native | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/native |
 | @react-navigation/native-stack | MIT | https://github.com/react-navigation/react-navigation/tree/main/packages/native-stack |

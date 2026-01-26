@@ -257,8 +257,9 @@
     "waveformSlider": {
       "title": null,
       "extra": {
-        "clearCache": null,
-        "cacheCleared": null
+        "purgeCache": null,
+        "purgeCacheBrief": null,
+        "purgeCacheToast": null
       }
     },
     "code": {

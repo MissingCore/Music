@@ -1,20 +1,18 @@
 import { useNavigation } from "@react-navigation/native";
-import { Fragment, useEffect } from "react";
+import { Fragment, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 import Animated, {
-  Easing,
-  cancelAnimation,
   useAnimatedStyle,
   useSharedValue,
   withDelay,
-  withRepeat,
   withTiming,
 } from "react-native-reanimated";
 
 import { Schedule } from "~/resources/icons/Schedule";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
+import { useInForeground } from "~/stores/AppState";
 
 import { OnRTLWorklet } from "~/lib/react";
 import { getFont } from "~/lib/style";
@@ -144,28 +142,19 @@ type AnimatedVinylProps = {
 
 /** Have the vinyl spin if the playing media list is this source. */
 function AnimatedVinyl(props: AnimatedVinylProps) {
+  const inForeground = useInForeground();
   const isPlaying = usePlaybackStore((s) => s.isPlaying);
   const playingSource = usePlaybackStore((s) => s.playingFrom);
   const coverPosition = useSharedValue(0);
-  const rotationProgress = useSharedValue(0);
   const _discOpacity = useSharedValue(0);
 
-  useEffect(() => {
-    if (isPlaying && arePlaybackSourceEqual(playingSource, props.mediaSource)) {
-      // `rotationProgress.value` becomes the new starting point when we
-      // cancel the animation (hence the `+ 360`).
-      rotationProgress.value = withRepeat(
-        withTiming(rotationProgress.value + 360, {
-          duration: 24000,
-          easing: Easing.linear,
-        }),
-        -1,
-        false,
-      );
-    } else {
-      cancelAnimation(rotationProgress);
-    }
-  }, [props.mediaSource, isPlaying, playingSource, rotationProgress]);
+  const onMount = useCallback(() => {
+    coverPosition.value = withDelay(50, withTiming(-64, { duration: 500 }));
+    _discOpacity.value = withTiming(1, { duration: 50 });
+  }, [coverPosition, _discOpacity]);
+
+  const canAnimate =
+    isPlaying && arePlaybackSourceEqual(playingSource, props.mediaSource);
 
   // Since the cover size is fixed, we know how much to translate.
   const coverStyle = useAnimatedStyle(() => ({
@@ -175,19 +164,27 @@ function AnimatedVinyl(props: AnimatedVinylProps) {
   const diskStyle = useAnimatedStyle(() => ({
     // The SVG flashes in on 1st mount, so the opacity is there to combat it.
     opacity: _discOpacity.value,
-    transform: [{ rotate: `${rotationProgress.value}deg` }],
   }));
 
   return (
-    <Animated.View
-      onLayout={() => {
-        coverPosition.value = withDelay(50, withTiming(-64, { duration: 500 }));
-        _discOpacity.value = withTiming(1, { duration: 50 });
-      }}
-      className="ml-4"
-    >
+    <Animated.View onLayout={onMount} className="ml-4">
       <View needsOffscreenAlphaCompositing>
-        <Animated.View style={diskStyle}>
+        <Animated.View
+          style={[
+            diskStyle,
+            {
+              animationName: {
+                from: { transform: [{ rotate: "0deg" }] },
+                to: { transform: [{ rotate: "360deg" }] },
+              },
+              animationDuration: 24000,
+              animationTimingFunction: "linear",
+              animationIterationCount: "infinite",
+              animationPlayState:
+                canAnimate && inForeground ? "running" : "paused",
+            },
+          ]}
+        >
           <Vinyl source={props.imageSource} size={128} />
         </Animated.View>
       </View>

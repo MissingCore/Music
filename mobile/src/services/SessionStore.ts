@@ -3,10 +3,11 @@ import { useStore } from "zustand";
 import { createStore } from "zustand/vanilla";
 
 import { db } from "~/db";
-import type { TrackWithRelations, WaveformSample } from "~/db/schema";
+import type { Artist, TrackWithRelations, WaveformSample } from "~/db/schema";
 
 import { getTrack } from "~/api/track";
 
+import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { wait } from "~/utils/promise";
 
 interface SessionStore {
@@ -16,8 +17,12 @@ interface SessionStore {
   volume: number;
 
   /** Track displayed in global track sheet. */
-  displayedTrack: (TrackWithRelations & { _checked: number }) | null;
+  displayedTrack: TrackWithRelations | null;
+  /** Artists displayed in global artist sheet. */
+  displayedArtists: { artists: Artist[]; popScreen: boolean } | null;
 
+  /** If lyrics will be displyad over the artwork on the Now Playing screen. */
+  showLyrics: boolean;
   /** Waveform data for the active track. */
   activeWaveformContext: WaveformSample | null;
 }
@@ -27,20 +32,21 @@ export const sessionStore = createStore<SessionStore>()(() => ({
   volume: 1,
 
   displayedTrack: null,
+  displayedArtists: null,
 
+  showLyrics: false,
   activeWaveformContext: null,
 }));
 
 export const useSessionStore = <T>(selector: (state: SessionStore) => T): T =>
   useStore(sessionStore, selector);
 
+//#region Track Sheet
 /** Displays the global track sheet. */
 export async function presentTrackSheet(trackId: string) {
   try {
     const sheetTrack = await getTrack(trackId);
-    sessionStore.setState({
-      displayedTrack: { ...sheetTrack, _checked: Date.now() },
-    });
+    sessionStore.setState({ displayedTrack: sheetTrack });
     await wait(1);
     TrueSheet.present("TrackSheet");
   } catch {
@@ -48,7 +54,34 @@ export async function presentTrackSheet(trackId: string) {
     sessionStore.setState({ displayedTrack: null });
   }
 }
+//#endregion
 
+//#region Artist Sheet
+/** Displays the global artist sheet. */
+export async function presentArtistsSheet(
+  artistNames: string[],
+  /** Calls `goBack` on current screen before navigating to artist screen. */
+  popScreen = false,
+) {
+  try {
+    const sheetArtists = await throwIfNoResults(
+      db.query.artists.findMany({
+        where: (fields, { inArray }) => inArray(fields.name, artistNames),
+        orderBy: (fields) => iAsc(fields.name),
+      }),
+    );
+    sessionStore.setState({
+      displayedArtists: { artists: sheetArtists, popScreen },
+    });
+    await wait(1);
+    TrueSheet.present("ArtistsSheet");
+  } catch {
+    sessionStore.setState({ displayedArtists: null });
+  }
+}
+//#endregion
+
+//#region Waveform
 /** Find, return, and set the cached waveform data in the Session store. */
 export async function findAndSetCachedWaveform(trackId: string) {
   const cachedWaveform = await db.query.waveformSamples.findFirst({
@@ -57,3 +90,4 @@ export async function findAndSetCachedWaveform(trackId: string) {
   sessionStore.setState({ activeWaveformContext: cachedWaveform || null });
   return cachedWaveform;
 }
+//#endregion

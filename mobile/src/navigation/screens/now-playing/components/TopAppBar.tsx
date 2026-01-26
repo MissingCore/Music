@@ -7,7 +7,8 @@ import { Pressable, View } from "react-native";
 import { ArrowBack } from "~/resources/icons/ArrowBack";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { getMediaLinkContext } from "../../../utils/router";
+
+import { getMediaLinkContext } from "~/navigation/utils/router";
 
 import { OnRTL } from "~/lib/react";
 import { IconButton } from "~/components/Form/Button/Icon";

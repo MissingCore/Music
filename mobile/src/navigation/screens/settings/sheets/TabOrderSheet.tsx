@@ -51,19 +51,20 @@ const RenderItem = memo(
     const isHomeTab = homeTab === item;
     const tabNameKey =
       item === "home" ? "term.home" : (`term.${item}s` as const);
+    const tabName = t(tabNameKey);
 
     return (
       <View
         collapsable={false}
         className={cn("h-14 flex-row items-center rounded-md", {
-          "opacity-25": !info.active && info.isDragging,
-          "bg-surfaceContainerLowest!": info.active,
+          "opacity-25": !info.isActive && info.isDragging,
+          "bg-surfaceContainerLowest!": info.isActive,
         })}
       >
         <CheckboxField
           accessibilityLabel={t(
             isVisible ? "template.entryHide" : "template.entryShow",
-            { name: t(tabNameKey) },
+            { name: tabName },
           )}
           checked={isVisible}
           onCheck={() => Tabs.toggleVisibility(item)}
@@ -72,7 +73,7 @@ const RenderItem = memo(
         <IconButton
           Icon={Home}
           accessibilityLabel={t("feat.tabsOrder.extra.setHomeTab", {
-            name: t(tabNameKey),
+            name: tabName,
           })}
           onPress={() => Tabs.setHome(item)}
           disabled={info.isDragging || !isVisible || isHomeTab}
@@ -88,7 +89,7 @@ const RenderItem = memo(
         />
         <IconButton
           Icon={DragHandle}
-          accessibilityLabel=""
+          accessibilityLabel={t("template.entryMove", { name: tabName })}
           onPressIn={info.onInitDrag}
         />
       </View>
@@ -97,7 +98,7 @@ const RenderItem = memo(
   (oldProps, newProps) => {
     return (
       oldProps.item === newProps.item &&
-      (["index", "active", "isDragging"] as const).every(
+      (["index", "isActive", "isDragging"] as const).every(
         (k) => oldProps[k] === newProps[k],
       )
     );

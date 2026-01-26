@@ -129,18 +129,15 @@ export async function removeIds(ids: string[]) {
 }
 
 /**
- * Remove multiple keys in the `queue`. Different than `Queue.removeIds()`,
+ * Remove key in the `queue`. Different than `Queue.removeIds()`,
  * which removes tracks with the underlying id.
- *
- * **Note:** This should be used with debouncing.
  */
-export function removeKeys(keys: Set<string>) {
+export function removeKey(key: string) {
   const { queue, activeKey, queuePosition, numQueuedNext } =
     playbackStore.getState();
 
-  if (!activeKey) return;
   // You shouldn't be able to remove the active track with this method.
-  keys.delete(activeKey);
+  if (!activeKey || key === activeKey) return;
 
   // If we removed a track before the active track, decremenet `queuePosition`.
   let newQueuePosition = queuePosition;
@@ -148,7 +145,7 @@ export function removeKeys(keys: Set<string>) {
   let newNumQueuedNext = numQueuedNext;
 
   const updatedQueue = queue.filter((tKey, index) => {
-    const isRemoved = keys.has(tKey);
+    const isRemoved = tKey === key;
     if (isRemoved) {
       if (index < queuePosition) newQueuePosition -= 1;
       // Remember that we'll never encounter `index === queuePosition`.

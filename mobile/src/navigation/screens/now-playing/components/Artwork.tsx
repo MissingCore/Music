@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useAtomValue } from "jotai";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import { GestureDetector } from "react-native-gesture-handler";
@@ -12,38 +12,17 @@ import Animated, {
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 import { usePreferenceStore } from "~/stores/Preference/store";
+
+import { isSeekingAtom } from "../helpers/Seekbar.context";
 import { useVinylSeekbar } from "../helpers/useVinylSeekbar";
 
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import { Vinyl } from "~/modules/media/components/Vinyl";
 
-/**
- * Renders the artwork of the current playing track (with a minimum 16px
- * of padding around the artwork).
- */
-export function NowPlayingArtwork(props: { artwork: string | null }) {
-  const [size, setSize] = useState(0);
-  const containerRef = useRef<View>(null);
-
-  /* Calculate the size of the artwork that maximizes the space. */
-  useLayoutEffect(() => {
-    containerRef.current?.measure((_x, _y, width, height) => {
-      // Exclude the padding around the image depending on which measurement is used.
-      setSize((height > width ? width : height) - 32);
-    });
-  }, []);
-
-  return (
-    <View ref={containerRef} className="flex-1 items-center justify-center">
-      <ArtworkPicker source={props.artwork} size={size} />
-    </View>
-  );
-}
-
 type ArtworkProps = { source: string | null; size: number };
 
 /** Determines which artwork is rendered. */
-function ArtworkPicker(props: ArtworkProps) {
+export function ArtworkPicker(props: ArtworkProps) {
   const usedDesign = usePreferenceStore((s) => s.nowPlayingDesign);
 
   if (usedDesign === "plain") return <PlainArtwork {...props} />;
@@ -68,13 +47,13 @@ function PlainArtwork(props: ArtworkProps) {
 
 /** Seekbar variant that uses the vinyl artwork. */
 function VinylSeekBar(props: ArtworkProps) {
-  const { wrapperRef, isActive, initCenter, vinylStyle, seekGesture } =
-    useVinylSeekbar();
+  const isSeeking = useAtomValue(isSeekingAtom);
+  const { seekGesture, vinylWrapperArgs } = useVinylSeekbar();
   return (
     <GestureDetector gesture={seekGesture}>
-      <Animated.View ref={wrapperRef} onLayout={initCenter} style={vinylStyle}>
+      <Animated.View {...vinylWrapperArgs}>
         <Vinyl
-          onPress={!isActive ? PlaybackControls.playToggle : undefined}
+          onPress={!isSeeking ? PlaybackControls.playToggle : undefined}
           {...props}
         />
       </Animated.View>

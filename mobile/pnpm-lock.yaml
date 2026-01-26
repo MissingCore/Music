@@ -17,9 +17,6 @@ patchedDependencies:
   '@lodev09/react-native-true-sheet':
     hash: a236b9bf74e9f29d81327ec6e984d46977a4805373593e38f4fb1bdad56ef9c9
     path: patches/@lodev09__react-native-true-sheet.patch
-  '@react-native-assets/slider':
-    hash: bef4d8e9c3b580bf43a5dbf74b663476625186715ae2cb4141e7a4ae7bd05d46
-    path: patches/@react-native-assets__slider.patch
   react-native-android-widget:
     hash: 96926d4b630574ce4e917c35b2bb92ad922bca996cd126d0b5c181372ba6bffe
     path: patches/react-native-android-widget.patch
@@ -52,9 +49,6 @@ importers:
       '@lukemorales/query-key-factory':
         specifier: 1.3.4
         version: 1.3.4(@tanstack/query-core@5.90.17)(@tanstack/react-query@5.90.17(react@19.1.0))
-      '@miblanchard/react-native-slider':
-        specifier: github:MissingCore/react-native-slider#4fa4f2097bdabaf4bc3866202debc84482020d5f
-        version: https://codeload.github.com/MissingCore/react-native-slider/tar.gz/4fa4f2097bdabaf4bc3866202debc84482020d5f(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       '@missingcore/react-native-actual-path':
         specifier: 0.1.0
         version: 0.1.0(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
@@ -64,9 +58,6 @@ importers:
       '@paralleldrive/cuid2':
         specifier: 3.0.6
         version: 3.0.6
-      '@react-native-assets/slider':
-        specifier: 11.0.12
-        version: 11.0.12(patch_hash=bef4d8e9c3b580bf43a5dbf74b663476625186715ae2cb4141e7a4ae7bd05d46)(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       '@react-navigation/material-top-tabs':
         specifier: 7.4.12
         version: 7.4.12(@react-navigation/native@7.1.27(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-pager-view@8.0.0(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-safe-area-context@5.6.2(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
@@ -161,8 +152,8 @@ importers:
         specifier: 6.3.12
         version: 6.3.12(patch_hash=f1925439605b77f30b038b828717080c64dc11a6b2938c7489b364fe99bd6e53)(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       react-native-draglist:
-        specifier: github:MissingCore/react-native-draglist#a675f18395876c72498597650a105b94e97a1439
-        version: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a675f18395876c72498597650a105b94e97a1439(@shopify/flash-list@2.2.0(@babel/runtime@7.28.6)(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+        specifier: github:MissingCore/react-native-draglist#7471bc8c12544e6eef7b39be63fd268bc36430e1
+        version: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/7471bc8c12544e6eef7b39be63fd268bc36430e1(@shopify/flash-list@2.2.0(@babel/runtime@7.28.6)(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       react-native-edge-to-edge:
         specifier: 1.7.0
         version: 1.7.0(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
@@ -1430,13 +1421,6 @@ packages:
       '@tanstack/query-core': '>= 4.0.0'
       '@tanstack/react-query': '>= 4.0.0'
 
-  '@miblanchard/react-native-slider@https://codeload.github.com/MissingCore/react-native-slider/tar.gz/4fa4f2097bdabaf4bc3866202debc84482020d5f':
-    resolution: {tarball: https://codeload.github.com/MissingCore/react-native-slider/tar.gz/4fa4f2097bdabaf4bc3866202debc84482020d5f}
-    version: 2.6.0
-    peerDependencies:
-      react: '>=16.8'
-      react-native: '>=0.59'
-
   '@missingcore/react-native-actual-path@0.1.0':
     resolution: {integrity: sha512-XbOZJsT8J9t8i2sFDw1GgTGnStxxtSQxiowj86M8a2kRb0sOX6V8F/kb5A3r8Ws6khWpQQooFD/JVZEztt/Qdw==}
     peerDependencies:
@@ -1487,12 +1471,6 @@ packages:
   '@pkgr/core@0.2.9':
     resolution: {integrity: sha512-QNqXyfVS2wm9hweSYD2O7F0G06uurj9kZ96TRQE5Y9hU7+tgdZwIkbAKc5Ocy1HxEY2kuDQa6cQ1WRs/O5LFKA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
-
-  '@react-native-assets/slider@11.0.12':
-    resolution: {integrity: sha512-ZszYcJgI68STqFnkIOHzcutrRo7RSm2Bl2BIB2cuCX95hrh/GFGRZwBmenNuaAno+x0SSuCE0yXo6julUsxUbQ==}
-    peerDependencies:
-      react: '>=16.13.1'
-      react-native: '>=0.61.4'
 
   '@react-native-community/cli-config-android@18.0.1':
     resolution: {integrity: sha512-1wzmGLfS7qgzm0ZfwX/f6Lat/af8/UYdjwtb3ap6RfKNclvIoap0wN6uBeiANmLfk0/BhoG8K1vKtIPwlU/V1A==}
@@ -4671,8 +4649,8 @@ packages:
       react: '*'
       react-native: '*'
 
-  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a675f18395876c72498597650a105b94e97a1439:
-    resolution: {tarball: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a675f18395876c72498597650a105b94e97a1439}
+  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/7471bc8c12544e6eef7b39be63fd268bc36430e1:
+    resolution: {tarball: https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/7471bc8c12544e6eef7b39be63fd268bc36430e1}
     version: 3.10.0
     peerDependencies:
       '@shopify/flash-list': '>=2.0.0'
@@ -7025,11 +7003,6 @@ snapshots:
       '@tanstack/query-core': 5.90.17
       '@tanstack/react-query': 5.90.17(react@19.1.0)
 
-  '@miblanchard/react-native-slider@https://codeload.github.com/MissingCore/react-native-slider/tar.gz/4fa4f2097bdabaf4bc3866202debc84482020d5f(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
-    dependencies:
-      react: 19.1.0
-      react-native: 0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0)
-
   '@missingcore/react-native-actual-path@0.1.0(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
     dependencies:
       react: 19.1.0
@@ -7077,11 +7050,6 @@ snapshots:
     optional: true
 
   '@pkgr/core@0.2.9': {}
-
-  '@react-native-assets/slider@11.0.12(patch_hash=bef4d8e9c3b580bf43a5dbf74b663476625186715ae2cb4141e7a4ae7bd05d46)(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
-    dependencies:
-      react: 19.1.0
-      react-native: 0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0)
 
   '@react-native-community/cli-config-android@18.0.1':
     dependencies:
@@ -10597,7 +10565,7 @@ snapshots:
       - react-native-b4a
       - supports-color
 
-  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/a675f18395876c72498597650a105b94e97a1439(@shopify/flash-list@2.2.0(@babel/runtime@7.28.6)(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
+  react-native-draglist@https://codeload.github.com/MissingCore/react-native-draglist/tar.gz/7471bc8c12544e6eef7b39be63fd268bc36430e1(@shopify/flash-list@2.2.0(@babel/runtime@7.28.6)(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
     dependencies:
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0)

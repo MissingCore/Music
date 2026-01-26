@@ -182,6 +182,7 @@ export async function playFromList({
         // If it doesn't exist, then reset the current queue.
         if (listIndex === -1) break handleSameSource;
         playbackStore.setState({
+          lastPosition: 0,
           activeKey: queue[listIndex],
           activeTrack: (await getTrack(trackId))!,
           queuePosition: listIndex,
@@ -212,6 +213,7 @@ export async function playFromList({
   // 5. Update the persistent storage.
   playbackStore.setState({
     isPlaying: true,
+    lastPosition: 0,
     ...newListInfo,
     playingFrom: source,
     playingFromName: await getSourceName(source),

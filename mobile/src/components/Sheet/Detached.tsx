@@ -34,6 +34,8 @@ interface SheetProps extends Pick<
   snapTop?: boolean;
   /** Indicates a sheet can display keyboard & toast. */
   keyboardAndToast?: boolean;
+  /** Gap between content in sheet. Defaults to `24`. */
+  gap?: number;
   /** Styles applied to the internal `GestureHandlerRootView`. */
   contentContainerClassName?: string;
   contentContainerStyle?: StyleProp<ViewStyle>;
@@ -68,6 +70,8 @@ export function DetachedSheet(props: SheetProps) {
   const maxHeight = useMaxDetachedSheetHeight();
   const [sheetHeight, setSheetHeight] = useState(0);
   const [disableToastAnim, setDisableToastAnim] = useState(true);
+
+  const gap = useMemo(() => props.gap ?? 24, [props.gap]);
 
   return (
     <TrueSheet
@@ -105,16 +109,20 @@ export function DetachedSheet(props: SheetProps) {
       >
         <WrappedGestureHandlerRootView
           style={[
-            { maxHeight: maxHeight - (EDGE_SPACER + bottom) },
+            { maxHeight: maxHeight - (EDGE_SPACER + bottom), gap },
             props.contentContainerStyle,
           ]}
           className={cn(
-            "relative gap-6 p-4 pt-0",
+            "relative p-4 pt-0",
             { "h-full pb-0": props.snapTop },
             props.contentContainerClassName,
           )}
         >
-          <View className="gap-2">
+          <View
+            // If we have no title, have a `8px` gap between the "header" & content.
+            style={[!props.titleKey && { marginBottom: -gap + 8 }]}
+            className="gap-1"
+          >
             <View className="mx-auto my-2.5 h-1 w-8 rounded-full bg-surfaceContainerHigh" />
             {props.titleKey ? (
               <Marquee color="surfaceBright">

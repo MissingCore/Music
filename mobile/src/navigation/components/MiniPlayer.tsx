@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 
@@ -21,7 +21,6 @@ import {
   PreviousButton,
 } from "~/modules/media/components/MediaControls";
 import { MediaImage } from "~/modules/media/components/MediaImage";
-import { usePlayerProgress } from "../screens/now-playing/helpers/usePlayerProgress";
 
 /**
  * Displays a player that appears at the bottom of the screen if we have
@@ -33,21 +32,28 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
   const isPlaying = usePlaybackStore((s) => s.isPlaying);
   const track = usePlaybackStore((s) => s.activeTrack);
   const gestureUI = usePreferenceStore((s) => s.miniplayerGestures);
+  const [isPressed, setIsPressed] = useState(false);
 
   const TextWrapper = useMemo(
     () => (gestureUI ? Swipeable : View),
     [gestureUI],
   );
 
-  if (!track || hidden) return null;
+  if (!track || hidden) {
+    if (isPressed) setIsPressed(false); // Since `onPressOut` won't get called if this gets hidden.
+    return null;
+  }
   return (
     <View
       className={cn("overflow-hidden rounded-md bg-surfaceContainerLowest", {
         "rounded-b-xs": stacked,
+        "bg-surfaceContainerLow": isPressed,
       })}
     >
       <Pressable
+        onPressIn={() => setIsPressed(true)}
         onPress={() => navigation.navigate("NowPlaying")}
+        onPressOut={() => setIsPressed(false)}
         className="flex-row items-center px-2"
       >
         <MediaImage
@@ -63,9 +69,11 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
           onSwipeLeft={PlaybackControls.next}
           onSwipeRight={PlaybackControls.prev}
           wrapperClassName="shrink grow justify-center overflow-hidden"
-          className={
-            gestureUI ? "bg-surfaceContainerLowest px-2" : "mx-2 shrink grow"
-          }
+          className={cn({
+            "mx-2 shrink grow": !gestureUI,
+            "bg-surfaceContainerLowest px-2": gestureUI,
+            "bg-surfaceContainerLow": gestureUI && isPressed,
+          })}
         >
           <Marquee color="surfaceContainerLowest">
             <StyledText>{track.name}</StyledText>
@@ -98,7 +106,7 @@ export function MiniPlayer({ hidden = false, stacked = false }) {
 }
 
 function TrackProgress({ duration }: { duration: number }) {
-  const { position } = usePlayerProgress();
+  const position = usePlaybackStore((s) => s.lastPosition);
   const progressPercent = `${(position / duration) * 100}%` as const;
 
   return (

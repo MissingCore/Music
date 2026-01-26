@@ -24,6 +24,11 @@ export function abbreviateSize(size: number) {
   }
 }
 
+/** Clamp value between 2 other values. */
+export function clamp(min: number, value: number, max: number) {
+  return Math.min(Math.max(value, min), max);
+}
+
 /** Convert epoch time to `YYYY-MM-DD` */
 export function formatEpoch(ms: number) {
   const date = new Date(ms);

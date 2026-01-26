@@ -257,8 +257,9 @@
     "waveformSlider": {
       "title": "Slider in Wellenform",
       "extra": {
-        "clearCache": null,
-        "cacheCleared": null
+        "purgeCache": "Zwischengespeicherte Wellenformen löschen",
+        "purgeCacheBrief": "Gibt Speicherplatz frei, um die Wellenformen der abgespielten Spuren neu zu berechnen.",
+        "purgeCacheToast": "Wellenform-Cache gelöscht."
       }
     },
     "code": {

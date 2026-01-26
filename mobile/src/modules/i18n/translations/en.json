@@ -46,6 +46,7 @@
     "entrySeeMore": "See more about `{{- name}}`.",
     "notFound": "`{{- name}}` doesn't exist.",
 
+    "entryMove": "Move `{{- name}}`",
     "entryShow": "Show `{{- name}}`",
     "entryHide": "Hide `{{- name}}`",
     "entryEnable": "Enable `{{- name}}`",
@@ -152,7 +153,6 @@
       "title": "Miniplayer Gestures"
     },
     "nowPlayingDesign": {
-      "title": "Now Playing Screen Design",
       "extra": {
         "plain": "Plain",
         "vinyl": "Vinyl",
@@ -261,7 +261,8 @@
       "description": "Has higher priority over the entries in the allowlist."
     },
     "minTrackDuration": {
-      "title": "Minimum Track Duration"
+      "title": "Minimum Track Duration",
+      "description": "Minimum duration in seconds a track needs to be saved."
     },
     "separators": {
       "title": "Multi-Value Separators",
@@ -293,8 +294,9 @@
     "waveformSlider": {
       "title": "Waveform Slider",
       "extra": {
-        "clearCache": "Clear Cache",
-        "cacheCleared": "Cache cleared."
+        "purgeCache": "Purge Cached Waveforms",
+        "purgeCacheBrief": "Frees up storage to recalculate the waveforms of played tracks.",
+        "purgeCacheToast": "Waveform cache cleared."
       }
     },
     "code": {

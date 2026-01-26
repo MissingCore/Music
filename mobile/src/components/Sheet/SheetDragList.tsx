@@ -20,7 +20,7 @@ import { ScrollablePresets } from "../Defaults";
 export type SheetDragListRenderItemInfo<TData> = {
   item: TData;
   index: number;
-  active: boolean;
+  isActive: boolean;
   isDragging: boolean;
   onInitDrag: VoidFunction;
 };
@@ -133,7 +133,7 @@ export function SheetDragList<TData>({
       >
         {renderItem({
           ...info,
-          active: reactiveActiveIndex === info.index,
+          isActive: reactiveActiveIndex === info.index,
           isDragging: reactiveActiveIndex !== INACTIVE,
           onInitDrag: () => {
             if (onDragBegin) onDragBegin(info.item, info.index);

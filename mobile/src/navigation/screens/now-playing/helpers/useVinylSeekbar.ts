@@ -1,172 +1,141 @@
-import { useIsFocused } from "@react-navigation/native";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { AppState } from "react-native";
+import { useAtomValue, useSetAtom } from "jotai";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { Gesture } from "react-native-gesture-handler";
 import type Animated from "react-native-reanimated";
-import {
-  cancelAnimation,
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
+import { useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 
 import { usePlaybackStore } from "~/stores/Playback/store";
-import { usePlayerProgress } from "./usePlayerProgress";
+import { PlaybackControls } from "~/stores/Playback/actions";
 
-/** Controls the rotation of the vinyl on the "Now Playing" screen. */
+import { animatedPositionAtom, isSeekingAtom } from "./Seekbar.context";
+
+type Position = { absoluteX: number; absoluteY: number };
+
 export function useVinylSeekbar() {
-  const isFocused = useIsFocused();
-  const { position, setPosition, seekToPosition } = usePlayerProgress();
   const activeTrack = usePlaybackStore((s) => s.activeTrack);
-
-  const wrapperRef = useRef<Animated.View>(null);
-  const hasMounted = useRef(false);
-  const [isActive, setIsActive] = useState(false);
-  const [isCancelled, setIsCancelled] = useState(false);
-  const radius = useSharedValue(0);
-  // Coordinates pointing to the center of the vinyl.
-  const centerX = useSharedValue(0);
-  const centerY = useSharedValue(0);
-
-  // The position we've backgrounded the app at.
-  const [bgPosition, setBgPosition] = useState<number | null>(null);
-  // Rotation progress based on `position`.
-  const trueProgress = useSharedValue(0);
-  // Rotation progress based on "seeking" on vinyl.
-  const seekProgress = useSharedValue<number | null>(null);
-  const prevAngle = useSharedValue(0);
-  // Angle to debounce `scheduleOnRN`.
-  const debounceAngle = useSharedValue<number | null>(null);
-
   const duration = useMemo(() => activeTrack?.duration ?? 0, [activeTrack]);
-  const maxDegrees = useMemo(() => convertUnit(duration), [duration]);
 
-  /**
-   * Obtain the center coordinate of the vinyl which is used to calculate
-   * the angles used to determine seek progress.
-   */
-  const initCenter = () => {
-    wrapperRef.current?.measure((_x, _y, width, height, pageX, pageY) => {
-      centerX.value = pageX + width / 2;
-      centerY.value = pageY + height / 2;
-      radius.value = Math.min(width, height) / 2;
-    });
-  };
+  const timedPosition = useAtomValue(animatedPositionAtom);
+  const setIsSeeking = useSetAtom(isSeekingAtom);
 
-  const gestureWithinArea = ({
-    absoluteX,
-    absoluteY,
-  }: {
-    absoluteX: number;
-    absoluteY: number;
-  }) => {
-    "worklet";
-    const a = centerX.value - absoluteX;
-    const b = centerY.value - absoluteY;
-    const c = Math.sqrt(a ** 2 + b ** 2);
-    return c <= radius.value;
-  };
+  //#region Layout Calculation + Vinyl Styling
+  const wrapperRef = useRef<Animated.View>(null);
+  const center = useSharedValue({ x: 0, y: 0 });
+  const radius = useSharedValue(0);
 
-  const onEnd = async (seconds: number) => {
-    await seekToPosition(seconds);
-    trueProgress.value = convertUnit(seconds);
-    debounceAngle.value = seekProgress.value = null;
-  };
+  const vinylStyle = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${convertUnit(timedPosition.value)}deg` }],
+  }));
 
-  // To help ensure the vinyl doesn't spin fast to its new position afer
-  // opening the app from backgrounding on the "Now Playing" screen.
-  if (AppState.currentState !== "active" && bgPosition === null) {
-    setBgPosition(position);
-  }
+  const vinylWrapperArgs = useMemo(
+    () => ({
+      ref: wrapperRef,
+      onLayout: () => {
+        wrapperRef.current?.measure((_x, _y, width, height, pageX, pageY) => {
+          center.value = { x: pageX + width / 2, y: pageY + height / 2 };
+          radius.value = Math.min(width, height) / 2;
+        });
+      },
+      style: vinylStyle,
+    }),
+    [center, radius, vinylStyle],
+  );
+  //#endregion
 
-  useEffect(() => {
-    if (position === 0) {
-      // Reset animation when position goes back to 0s.
-      cancelAnimation(trueProgress);
-      trueProgress.value = 0;
-    } else if (position < duration - 1) {
-      const resumedFromBackground =
-        bgPosition !== null ? Math.abs(position - bgPosition) > 2 : false;
-      // Prevent vinyl rotation on mount.
-      const animateSpin = hasMounted.current && !resumedFromBackground;
-      trueProgress.value = isFocused
-        ? withTiming(convertUnit(position), {
-            duration: animateSpin ? 500 : 0,
-            easing: Easing.linear,
-          })
-        : convertUnit(position);
-      if (!hasMounted.current) hasMounted.current = true;
-    } else {
-      // Cancel animation ~1s before the end due to weird behaviors if
-      // the following image is large in size (ie: "animation spike").
-      cancelAnimation(trueProgress);
-    }
+  //#region Handlers
+  const isWithinBound = useCallback(
+    ({ absoluteX, absoluteY }: Position) => {
+      "worklet";
+      const a = center.value.x - absoluteX;
+      const b = center.value.y - absoluteY;
+      const c = Math.sqrt(a ** 2 + b ** 2);
+      return c <= radius.value;
+    },
+    [center, radius],
+  );
 
-    if (bgPosition !== null) setBgPosition(null);
-  }, [isFocused, duration, position, bgPosition, trueProgress]);
+  const getAngle = useCallback(
+    ({ absoluteX, absoluteY }: Position) => {
+      "worklet";
+      return Math.atan2(absoluteY - center.value.y, absoluteX - center.value.x);
+    },
+    [center],
+  );
+  //#endregion
 
-  const seekGesture = Gesture.Pan()
-    .shouldCancelWhenOutside(true)
-    .enabled(!isCancelled)
-    .onStart(({ absoluteX, absoluteY }) => {
-      if (gestureWithinArea({ absoluteX, absoluteY })) {
-        scheduleOnRN(setIsActive, true);
-        scheduleOnRN(setPosition, position);
-        debounceAngle.value = seekProgress.value = convertUnit(position);
-        prevAngle.value = Math.atan2(
-          absoluteY - centerY.value,
-          absoluteX - centerX.value,
-        );
-      } else {
-        scheduleOnRN(setIsCancelled, true);
-      }
-    })
-    .onUpdate(({ absoluteX, absoluteY }) => {
-      if (gestureWithinArea({ absoluteX, absoluteY })) {
-        let currAngle = Math.atan2(
-          absoluteY - centerY.value,
-          absoluteX - centerX.value,
-        );
-        // Ensure arctan calculation is continuous.
-        while (currAngle < prevAngle.value - Math.PI) currAngle += 2 * Math.PI;
-        while (currAngle > prevAngle.value + Math.PI) currAngle -= 2 * Math.PI;
-        // Calculate new rotation position.
-        const rotateAmount = ((currAngle - prevAngle.value) * 180) / Math.PI;
-        const newPosition = (seekProgress.value ?? 0) + rotateAmount;
-        if (newPosition < 0) seekProgress.value = 0;
-        else if (newPosition > maxDegrees) seekProgress.value = maxDegrees;
-        else seekProgress.value = newPosition;
+  //#region Gesture
+  const [gestureInBound, setGestureInBound] = useState(true);
+  const prevAngle = useSharedValue(0);
+  const hasUpdatedPosition = useSharedValue(false);
 
-        // Only run `setSliderPos` when we've rotated ~15deg (which is ~1s).
-        if (Math.abs((debounceAngle.value ?? 0) - seekProgress.value) > 15) {
-          scheduleOnRN(setPosition, convertUnit(seekProgress.value, "degrees"));
-          debounceAngle.value = seekProgress.value;
-        }
-        prevAngle.value = currAngle;
-      } else {
-        scheduleOnRN(setIsCancelled, true);
-      }
-    })
-    .onEnd(() => {
-      scheduleOnRN(setIsActive, false);
-      scheduleOnRN(setIsCancelled, false);
-      // Check to prevent going to 0s if we initiated the gesture outside
-      // of our range.
-      if (seekProgress.value !== null) {
-        scheduleOnRN(onEnd, convertUnit(seekProgress.value ?? 0, "degrees"));
-      }
-    });
+  const seekGesture = useMemo(
+    () =>
+      Gesture.Pan()
+        .shouldCancelWhenOutside(true)
+        .enabled(gestureInBound)
+        .onStart(({ absoluteX, absoluteY }) => {
+          if (isWithinBound({ absoluteX, absoluteY })) {
+            scheduleOnRN(setIsSeeking, true);
+            prevAngle.value = getAngle({ absoluteX, absoluteY });
+          } else {
+            scheduleOnRN(setGestureInBound, false);
+          }
+        })
+        .onUpdate(({ absoluteX, absoluteY }) => {
+          if (isWithinBound({ absoluteX, absoluteY })) {
+            let currAngle = getAngle({ absoluteX, absoluteY });
+            // Ensure arctan calculation is continuous.
+            while (currAngle < prevAngle.value - Math.PI)
+              currAngle += 2 * Math.PI;
+            while (currAngle > prevAngle.value + Math.PI)
+              currAngle -= 2 * Math.PI;
+            const rotateAmount =
+              ((currAngle - prevAngle.value) * 180) / Math.PI;
 
-  const vinylStyle = useAnimatedStyle(() => {
-    const rotateAmount = seekProgress.value ?? trueProgress.value;
-    return { transform: [{ rotate: `${rotateAmount}deg` }] };
-  });
+            prevAngle.value = currAngle;
 
-  return { wrapperRef, isActive, initCenter, vinylStyle, seekGesture };
+            // Calculate new position.
+            const changeDelta = convertUnit(rotateAmount, "degrees");
+            const newPosition = timedPosition.value + changeDelta;
+            if (newPosition < 0) timedPosition.value = 0;
+            else if (newPosition > duration) timedPosition.value = duration;
+            else timedPosition.value = newPosition;
+
+            hasUpdatedPosition.value = true;
+          } else {
+            scheduleOnRN(setGestureInBound, false);
+          }
+        })
+        .onEnd(() => {
+          if (hasUpdatedPosition.value)
+            scheduleOnRN(PlaybackControls.seekTo, timedPosition.value);
+        })
+        .onFinalize(() => {
+          scheduleOnRN(setIsSeeking, false);
+          scheduleOnRN(setGestureInBound, true);
+          hasUpdatedPosition.value = false;
+        }),
+    [
+      isWithinBound,
+      getAngle,
+      setIsSeeking,
+      timedPosition,
+      duration,
+      prevAngle,
+      hasUpdatedPosition,
+      gestureInBound,
+    ],
+  );
+  //#endregion
+
+  return useMemo(
+    () => ({ seekGesture, vinylWrapperArgs }),
+    [seekGesture, vinylWrapperArgs],
+  );
 }
 
+//#region Utils
 /**
  * Convert between seconds and the degrees representing the rotated state
  * of the vinyl. 1 full revolution (360deg) is 24s.
@@ -178,3 +147,4 @@ function convertUnit(value: number, from?: "seconds" | "degrees") {
   if (from === "degrees") return value * (24 / 360);
   return value * (360 / 24);
 }
+//#endregion
