@@ -64,7 +64,7 @@
     "react-native-android-widget": "0.20.1",
     "react-native-audio-analyzer": "3.1.0",
     "react-native-bootsplash": "6.3.12",
-    "react-native-draglist": "github:MissingCore/react-native-draglist#e4f23e749ded38e9d3ac1e583909de788c8e4b19",
+    "react-native-draglist": "github:MissingCore/react-native-draglist#7471bc8c12544e6eef7b39be63fd268bc36430e1",
     "react-native-edge-to-edge": "1.7.0",
     "react-native-gesture-handler": "2.30.0",
     "react-native-keyboard-controller": "1.20.6",
