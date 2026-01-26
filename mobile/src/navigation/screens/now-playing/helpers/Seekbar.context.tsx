@@ -4,7 +4,7 @@ import { AppState } from "react-native";
 import { Easing, makeMutable, withTiming } from "react-native-reanimated";
 import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
 
-import { usePlaybackStore } from "~/stores/Playback/store";
+import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { useSessionStore } from "~/services/SessionStore";
 
 export const animatedPositionAtom = atom(makeMutable(0));
@@ -49,7 +49,17 @@ export function SeekbarContext(props: { children: React.ReactNode }) {
   // Synchronize with `lastPosition`.
   useEffect(() => {
     if (isSeeking) return;
+    const priorPos = Number(animatedPosition.value);
     animatedPosition.value = lastPosition;
+    // Prevent slight rubberbanding when pausing as `animatedPosition` will be
+    // ahead of whatever is reported by the `PlaybackProgressUpdated` event.
+    if (!isPlaying && priorPos !== 0) {
+      setLastPosition(priorPos);
+      animatedPosition.value = priorPos;
+      return;
+    }
+    // Don't animate slider as it'll cause the app to freeze on return due
+    // to pending timers?
     if (!isPlaying || AppState.currentState !== "active") return;
     animateSlider(lastPosition);
   }, [animateSlider, animatedPosition, isPlaying, isSeeking, lastPosition]);
@@ -68,3 +78,10 @@ export function SeekbarContext(props: { children: React.ReactNode }) {
 
   return props.children;
 }
+
+//#region Helpers
+/** Update `lastPosition` to be the value in the shared value. */
+function setLastPosition(position: number) {
+  playbackStore.setState({ lastPosition: position });
+}
+//#endregion
