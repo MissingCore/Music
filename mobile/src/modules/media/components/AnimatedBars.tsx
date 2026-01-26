@@ -2,6 +2,7 @@ import { memo } from "react";
 import { View } from "react-native";
 import Animated from "react-native-reanimated";
 
+import { useInForeground } from "~/stores/AppState";
 import { usePlaybackStore } from "~/stores/Playback/store";
 
 export function PlayingIndicator() {
@@ -44,6 +45,7 @@ const AnimatedBar = memo(function AnimatedBar(props: {
   startingPercent: number;
   active: boolean;
 }) {
+  const inForeground = useInForeground();
   return (
     <Animated.View
       style={{
@@ -59,7 +61,7 @@ const AnimatedBar = memo(function AnimatedBar(props: {
         animationTimingFunction: "ease-in-out",
         animationDirection: "alternate",
         animationIterationCount: "infinite",
-        animationPlayState: props.active ? "running" : "paused",
+        animationPlayState: props.active && inForeground ? "running" : "paused",
       }}
       className="bg-primary"
     />
