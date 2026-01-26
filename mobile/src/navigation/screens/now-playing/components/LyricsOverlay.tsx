@@ -156,7 +156,7 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
       if (timeout) clearTimeout(timeout);
       timeout = setTimeout(() => {
         setAutoScroll(true);
-      }, 500);
+      }, 1000);
     };
   }, []);
 
@@ -175,8 +175,8 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
           {item.lyric}
         </StyledText>
       )}
-      onMomentumScrollBegin={() => setAutoScroll(false)}
-      onMomentumScrollEnd={debouncedScrollEnd}
+      onScrollBeginDrag={() => setAutoScroll(false)}
+      onScrollEndDrag={debouncedScrollEnd}
       // Suppresses error when `scrollToIndex` fails.
       onScrollToIndexFailed={() => {}}
       contentContainerStyle={{
