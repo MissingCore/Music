@@ -53,8 +53,8 @@ importers:
         specifier: 0.1.0
         version: 0.1.0(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       '@missingcore/react-native-metadata-retriever':
-        specifier: 2.2.1
-        version: 2.2.1(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+        specifier: 2.3.0
+        version: 2.3.0(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       '@paralleldrive/cuid2':
         specifier: 3.0.6
         version: 3.0.6
@@ -1427,8 +1427,8 @@ packages:
       react: '*'
       react-native: '*'
 
-  '@missingcore/react-native-metadata-retriever@2.2.1':
-    resolution: {integrity: sha512-HFOMvZgGfnnf0MvR2kAgpMi1YzqNwNjzTQ/E3o3j5/OkCp12ZwVe8qJzXyr8kcYwly8CePh5NoosmXP2zS7a+g==}
+  '@missingcore/react-native-metadata-retriever@2.3.0':
+    resolution: {integrity: sha512-6tGeG2MqJa2QO7AzbSeW+vCwAcCeCPE2YQCoj1/xB3AtIk7VD7dOVRocRTZbBR2jZ0fhHhtN0tNhjwLzC6nUVg==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -7008,7 +7008,7 @@ snapshots:
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0)
 
-  '@missingcore/react-native-metadata-retriever@2.2.1(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
+  '@missingcore/react-native-metadata-retriever@2.3.0(react-native@0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
     dependencies:
       react: 19.1.0
       react-native: 0.81.5(@babel/core@7.28.6)(@types/react@19.1.17)(react@19.1.0)
