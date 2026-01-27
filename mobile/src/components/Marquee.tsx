@@ -11,6 +11,7 @@ import Animated, {
 import { useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
 
+import { useInForeground } from "~/stores/AppState";
 import { useColor } from "~/hooks/useTheme";
 
 import { OnRTLWorklet } from "~/lib/react";
@@ -34,6 +35,7 @@ export function Marquee({
   /** Styles the `<View />` wrapping `children`. */
   contentContainerClassName?: string;
 }) {
+  const inForeground = useInForeground();
   const shadowColor = useColor(color, "surface");
   // This will enable support of hexadecimal colors with opacity.
   const startColor = useMemo(() => `${shadowColor}00`, [shadowColor]);
@@ -51,6 +53,9 @@ export function Marquee({
     // Make sure we reset whenever the children changes size.
     offset.value = 0;
     if (contentWidth <= containerWidth) return;
+    // Don't run animations when app is in background to prevent slight
+    // freeze on return to foreground.
+    if (!inForeground) return;
 
     const scrollRoom = contentWidth - containerWidth;
     // Make sure we translate `24px` a second.
@@ -73,7 +78,7 @@ export function Marquee({
       ),
       -1,
     );
-  }, [containerWidth, contentWidth, offset]);
+  }, [containerWidth, contentWidth, offset, inForeground]);
 
   const contentStyles = useAnimatedStyle(() => ({
     transform: [{ translateX: OnRTLWorklet.flipSign(-offset.value) }],
