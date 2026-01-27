@@ -47,6 +47,7 @@ const INACTIVE = -1;
 
 /**
  * Drag list that can be used inside a sheet.
+ * - **Should only be used for short lists.**
  * - **Does not have auto-scrolling support.**
  */
 export function SheetDragList<TData>({
