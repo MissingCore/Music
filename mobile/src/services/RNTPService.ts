@@ -20,7 +20,7 @@ import { ToastOptions } from "~/lib/toast";
 import { bgWait } from "~/utils/promise";
 import { revalidateWidgets } from "~/modules/widget/utils";
 import { RepeatModes } from "~/stores/Playback/constants";
-import { extractTrackId, formatTrackforPlayer } from "~/stores/Playback/utils";
+import { formatTrackforPlayer } from "~/stores/Playback/utils";
 
 /** Context to whether we should resume playback after ducking. */
 let resumeAfterDuck: boolean = false;
@@ -145,23 +145,6 @@ export async function PlaybackService() {
   TrackPlayer.addEventListener(Event.PlaybackActiveTrackChanged, async (e) => {
     if (e.index === undefined || e.track === undefined) return;
 
-    // When this triggers for the 1st time, we want to see if we should seek
-    // to the last played position.
-    const { _hasRestoredPosition, _restoredTrackKey, lastPosition } =
-      playbackStore.getState();
-
-    //* Restore Last Played Position
-    if (!_hasRestoredPosition) {
-      playbackStore.setState({ _hasRestoredPosition: true });
-      if (
-        _restoredTrackKey !== undefined &&
-        extractTrackId(_restoredTrackKey) === e.track.id
-      ) {
-        // Fallback to `0` to support legacy behavior where we could store `undefined`.
-        await PlaybackControls.seekTo(lastPosition ?? 0);
-      }
-    }
-
     //* 🧪 Smooth Playback Transition
     const { smoothPlaybackTransition } = preferenceStore.getState();
     let isNaturalPlayback = false;
@@ -191,6 +174,8 @@ export async function PlaybackService() {
     nextTrackInfo = undefined;
 
     //* Play Count Tracking
+    const { lastPosition } = playbackStore.getState();
+
     if (playbackCountUpdator !== null) {
       BackgroundTimer.clearTimeout(playbackCountUpdator);
     }

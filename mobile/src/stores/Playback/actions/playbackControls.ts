@@ -20,9 +20,22 @@ import { revalidateWidgets } from "~/modules/widget/utils";
 //#region Loaders
 /** Loads the track specified by `activeTrack`. Track will start at `0s`. */
 export async function loadCurrentTrack() {
-  const { activeTrack } = playbackStore.getState();
+  const { _hasRestoredPosition, _restoredTrackKey, lastPosition, activeTrack } =
+    playbackStore.getState();
   if (!activeTrack) return;
   await TrackPlayer.load(formatTrackforPlayer(activeTrack));
+
+  //* Restore Last Played Position
+  if (!_hasRestoredPosition) {
+    playbackStore.setState({ _hasRestoredPosition: true });
+    if (
+      _restoredTrackKey !== undefined &&
+      extractTrackId(_restoredTrackKey) === activeTrack.id
+    ) {
+      // Fallback to `0` to support legacy behavior where we could store `undefined`.
+      await seekTo(lastPosition ?? 0);
+    }
+  }
 }
 
 /** Initialize the RNTP queue. */
