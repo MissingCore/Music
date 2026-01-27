@@ -176,5 +176,9 @@ function removePath(filterList: FilterList, removedPath: string) {
   preferenceStore.setState((prev) => ({
     [filterList]: prev[filterList].filter((path) => path !== removedPath),
   }));
+  toast(
+    i18next.t("template.entryRemoved", { name: removedPath }),
+    ToastOptions,
+  );
 }
 //#endregion
