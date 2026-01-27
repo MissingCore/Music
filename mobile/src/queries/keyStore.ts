@@ -113,7 +113,16 @@ export const queries = createQueryKeyStore({
             with: {
               tracksToLyrics: {
                 with: {
-                  track: { columns: { id: true, name: true, uri: true } },
+                  track: {
+                    columns: { id: true, name: true },
+                    with: {
+                      album: { columns: { name: true } },
+                      tracksToArtists: {
+                        orderBy: (fields) => iAsc(fields.artistName),
+                        columns: { artistName: true },
+                      },
+                    },
+                  },
                 },
               },
             },

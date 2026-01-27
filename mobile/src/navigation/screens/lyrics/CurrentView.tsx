@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { eq } from "drizzle-orm";
 import { Fragment, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
 
 import { db } from "~/db";
 import { tracksToLyrics } from "~/db/schema";
@@ -10,6 +11,7 @@ import { tracksToLyrics } from "~/db/schema";
 import { Add } from "~/resources/icons/Add";
 import { Edit } from "~/resources/icons/Edit";
 import { LinkOff } from "~/resources/icons/LinkOff";
+import { getArtistsString } from "~/api/artist.utils";
 import { queries as q } from "~/queries/keyStore";
 import { useLyric } from "~/queries/lyric";
 
@@ -86,24 +88,36 @@ export default function Lyric({
           </SegmentedList.CustomItem>
           {linkedTracks.length > 0 ? (
             <SegmentedList.CustomItem>
-              {linkedTracks.map(({ id, name, uri }, index) => (
-                <Fragment key={id}>
-                  {index > 0 ? <Divider className="mx-4" /> : null}
-                  <SegmentedList.Item
-                    labelText={name}
-                    supportingText={uri}
-                    RightElement={
+              {linkedTracks.map(({ id, name, ...meta }, index) => {
+                const albumName = meta.album?.name;
+                const artistsString = getArtistsString(
+                  meta.tracksToArtists,
+                  false,
+                );
+                return (
+                  <Fragment key={id}>
+                    {index > 0 ? <Divider className="mx-4" /> : null}
+                    <View className="flex-row gap-2 p-4 pr-1">
+                      <View className="shrink grow">
+                        <StyledText className="text-sm">{name}</StyledText>
+                        {artistsString ? (
+                          <StyledText dim className="text-onSurface/80">
+                            {artistsString}
+                          </StyledText>
+                        ) : null}
+                        {albumName ? (
+                          <StyledText dim>{albumName}</StyledText>
+                        ) : null}
+                      </View>
                       <IconButton
                         Icon={LinkOff}
                         accessibilityLabel={t("template.entryRemove", { name })}
                         onPress={() => unlinkTrack({ trackId: id, lyricId })}
                       />
-                    }
-                    className="rounded-none pr-1"
-                    _asView
-                  />
-                </Fragment>
-              ))}
+                    </View>
+                  </Fragment>
+                );
+              })}
             </SegmentedList.CustomItem>
           ) : null}
         </SegmentedList>
