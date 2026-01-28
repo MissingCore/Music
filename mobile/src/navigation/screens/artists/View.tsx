@@ -18,7 +18,7 @@ export default function Artists() {
   return (
     <>
       <NScrollListHeader
-        titleKey="term.artist"
+        titleKey="term.artists"
         OptionsSheet={ArtistsViewOptionsSheet}
       />
       <NScrollListLayout

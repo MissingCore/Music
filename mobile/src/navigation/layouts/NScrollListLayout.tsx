@@ -1,4 +1,5 @@
 import type { LegendListProps } from "@legendapp/list";
+import { LinearGradient } from "expo-linear-gradient";
 import type { ParseKeys } from "i18next";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -7,7 +8,9 @@ import { useAnimatedScrollHandler } from "react-native-reanimated";
 
 import { MoreHoriz } from "~/resources/icons/MoreHoriz";
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { useBottomActionsInset } from "../hooks/useBottomActions";
+import { useTheme } from "~/hooks/useTheme";
+
+import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
 
 import {
   AnimatedLegendList,
@@ -21,9 +24,14 @@ import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { AccentText } from "~/components/Typography/AccentText";
 
-export function NScrollListLayout<TData>(
-  props: Omit<LegendListProps<TData>, "onContentSizeChange" | "onLayout">,
-) {
+export function NScrollListLayout<TData>({
+  topShadow = 24,
+  ...props
+}: Omit<LegendListProps<TData>, "onContentSizeChange" | "onLayout"> & {
+  /** How tall of a transition we want when scrolling up. This will become `paddingTop`. */
+  topShadow?: number;
+}) {
+  const { surface } = useTheme();
   const bottomInset = useBottomActionsInset();
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const internalListRef = useAnimatedLegendListRef();
@@ -40,13 +48,20 @@ export function NScrollListLayout<TData>(
         maintainVisibleContentPosition={false}
         {...props}
         contentContainerStyle={{
-          padding: 16,
+          paddingHorizontal: 16,
+          paddingTop: topShadow,
           paddingBottom: bottomInset.withNav + 16,
         }}
       />
+      <LinearGradient
+        colors={[`${surface}E6`, `${surface}00`]}
+        pointerEvents="none"
+        style={{ height: topShadow }}
+        className="absolute top-0 left-0 w-full"
+      />
       <Scrollbar
         listRef={internalListRef}
-        scrollbarOffset={{ top: 0, bottom: bottomInset.withNav + 16 }}
+        scrollbarOffset={{ top: topShadow, bottom: bottomInset.withNav + 16 }}
         isVisible={quickScroll}
         {...layoutInfo}
       />
@@ -73,8 +88,8 @@ export function NScrollListHeader(props: {
     <>
       <props.OptionsSheet ref={sheetRef} />
       <SafeContainer
-        additionalTopOffset={16}
-        className="flex-row items-center justify-between gap-4 p-4"
+        additionalTopOffset={24}
+        className="flex-row items-center justify-between gap-4 px-4"
       >
         <Marquee>
           <AccentText className="text-4xl">{t(props.titleKey)}</AccentText>
