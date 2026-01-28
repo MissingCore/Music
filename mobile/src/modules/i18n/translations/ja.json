@@ -352,7 +352,7 @@
         "year": "年"
       }
     },
-    "modalSort": {
+    "modalViewPreference": {
       "title": "並べ替え順",
       "extra": {
         "asc": "昇順",

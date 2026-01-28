@@ -352,7 +352,7 @@
         "year": "Год"
       }
     },
-    "modalSort": {
+    "modalViewPreference": {
       "title": "Порядок сортировки",
       "extra": {
         "asc": "По возрастанию",

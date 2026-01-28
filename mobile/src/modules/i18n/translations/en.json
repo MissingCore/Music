@@ -394,7 +394,7 @@
       }
     },
 
-    "modalSort": {
+    "modalViewPreference": {
       "title": "Sort Order",
       "extra": {
         "asc": "Ascending Order",

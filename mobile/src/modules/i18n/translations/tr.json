@@ -352,7 +352,7 @@
         "year": "Yıl"
       }
     },
-    "modalSort": {
+    "modalViewPreference": {
       "title": "Sıralama Düzeni",
       "extra": {
         "asc": "Artan Sıralama",

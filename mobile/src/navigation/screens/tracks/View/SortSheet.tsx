@@ -24,14 +24,14 @@ export const TrackSortSheet = deferInitialRender(
     return (
       <Sheet
         ref={props.ref}
-        titleKey="feat.modalSort.title"
+        titleKey="feat.modalViewPreference.title"
         contentContainerClassName="gap-4"
       >
         <Pressable
           onPress={toggleIsAsc}
           className="flex-row items-center justify-between gap-4 rounded-md bg-surfaceContainerLowest p-4 active:bg-surfaceContainerLow"
         >
-          <TStyledText textKey="feat.modalSort.extra.asc" />
+          <TStyledText textKey="feat.modalViewPreference.extra.asc" />
           <Switch enabled={isAsc} />
         </Pressable>
         <FlatList
@@ -43,7 +43,9 @@ export const TrackSortSheet = deferInitialRender(
               selected={orderedBy === sortOption}
               onSelect={() => setOrderedBy(sortOption)}
             >
-              <TStyledText textKey={`feat.modalSort.extra.${sortOption}`} />
+              <TStyledText
+                textKey={`feat.modalViewPreference.extra.${sortOption}`}
+              />
             </RadioField>
           )}
           contentContainerClassName="gap-2"

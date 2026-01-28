@@ -352,7 +352,7 @@
         "year": "Année"
       }
     },
-    "modalSort": {
+    "modalViewPreference": {
       "title": "Ordre de tri",
       "extra": {
         "asc": "Ordre croissant",

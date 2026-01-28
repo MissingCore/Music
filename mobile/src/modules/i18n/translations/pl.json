@@ -352,7 +352,7 @@
         "year": "Rok"
       }
     },
-    "modalSort": {
+    "modalViewPreference": {
       "title": "Kolejność sortowania",
       "extra": {
         "asc": "Rosnąco",

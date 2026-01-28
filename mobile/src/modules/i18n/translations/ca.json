@@ -352,7 +352,7 @@
         "year": null
       }
     },
-    "modalSort": {
+    "modalViewPreference": {
       "title": "Ordre",
       "extra": {
         "asc": "Ordre ascendent",
