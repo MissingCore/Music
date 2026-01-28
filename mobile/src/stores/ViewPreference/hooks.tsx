@@ -17,13 +17,13 @@ const gridLayoutOptions: GCWProps = {
   cols: 2,
   gap: 12,
   gutters: 32,
-  minWidth: 175,
+  minWidth: 144,
 };
 const compactGridLayoutOptions: GCWProps = {
   cols: 3,
   gap: 12,
   gutters: 32,
-  minWidth: 100,
+  minWidth: 72,
 };
 
 /** Formats data to pass into `LegendList`. */
