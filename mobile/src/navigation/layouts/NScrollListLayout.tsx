@@ -60,6 +60,7 @@ export function NScrollListLayout<TData>({
         className="absolute top-0 left-0 w-full"
       />
       <Scrollbar
+        key={props.numColumns}
         listRef={internalListRef}
         scrollbarOffset={{ top: topShadow, bottom: bottomInset.withNav + 16 }}
         isVisible={quickScroll}
