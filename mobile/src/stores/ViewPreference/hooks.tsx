@@ -4,7 +4,7 @@ import { useMemo } from "react";
 
 import type { GCWProps } from "~/hooks/useGetColumn";
 import { useGetColumn } from "~/hooks/useGetColumn";
-import { useHomeViewPreferenceStore } from "./store";
+import { useViewPreferenceStore } from "./store";
 import type { LayoutItem, MutableLayout } from "./types";
 
 import { getMediaLinkContext } from "~/navigation/utils/router";
@@ -27,7 +27,7 @@ const compactGridLayoutOptions: GCWProps = {
 };
 
 /** Formats data to pass into `LegendList`. */
-export function useHomeViewLayout<TData extends Record<string, any>>(
+export function useViewLayout<TData extends Record<string, any>>(
   screen: MutableLayout,
   data: TData[] = [],
   formatData: (data: TData) => LayoutItem,
@@ -39,7 +39,7 @@ export function useHomeViewLayout<TData extends Record<string, any>>(
   //#region Layout Configs
   const gridLayout = useGetColumn(gridLayoutOptions);
   const compactGridLayout = useGetColumn(compactGridLayoutOptions);
-  const layoutOption = useHomeViewPreferenceStore((s) => s[`${screen}Layout`]);
+  const layoutOption = useViewPreferenceStore((s) => s[`${screen}Layout`]);
 
   const listLayoutArgs = useMemo(
     () =>

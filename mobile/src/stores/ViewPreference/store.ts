@@ -1,11 +1,11 @@
 import { useStore } from "zustand";
 
 import { createPersistedSubscribedStore } from "~/lib/zustand";
-import type { HomeViewPreferenceStore } from "./constants";
+import type { ViewPreferenceStore } from "./constants";
 import { OmittedFields } from "./constants";
 
-export const homeViewPreferenceStore =
-  createPersistedSubscribedStore<HomeViewPreferenceStore>(
+export const viewPreferenceStore =
+  createPersistedSubscribedStore<ViewPreferenceStore>(
     (set) => ({
       _hasHydrated: false,
       _init: async () => {
@@ -15,7 +15,7 @@ export const homeViewPreferenceStore =
       artistLayout: "list",
     }),
     {
-      name: "music::home-view-preferences",
+      name: "music::view-preferences",
       // Only store some fields in AsyncStorage.
       partialize: (state) =>
         Object.fromEntries(
@@ -24,15 +24,15 @@ export const homeViewPreferenceStore =
       // Listen to when the store is hydrated.
       onRehydrateStorage: () => {
         return (state, error) => {
-          if (error) console.log("[Home View Preference Store]", error);
+          if (error) console.log("[View Preference Store]", error);
           else state?._init(state);
         };
       },
     },
   );
 
-export function useHomeViewPreferenceStore<T>(
-  selector: (s: HomeViewPreferenceStore) => T,
+export function useViewPreferenceStore<T>(
+  selector: (s: ViewPreferenceStore) => T,
 ): T {
-  return useStore(homeViewPreferenceStore, selector);
+  return useStore(viewPreferenceStore, selector);
 }

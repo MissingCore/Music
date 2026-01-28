@@ -4,20 +4,20 @@ import { GridView } from "~/resources/icons/GridView";
 import { ViewAgenda } from "~/resources/icons/ViewAgenda";
 import { ViewModule } from "~/resources/icons/ViewModule";
 import { useArtists } from "~/queries/artist";
-import { useHomeViewPreferenceStore } from "~/stores/HomeViewPreference/store";
-import { HomeViewPreferenceSetters } from "~/stores/HomeViewPreference/actions";
-import { useHomeViewLayout } from "~/stores/HomeViewPreference/hooks";
+import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
+import { ViewPreferenceSetters } from "~/stores/ViewPreference/actions";
+import { useViewLayout } from "~/stores/ViewPreference/hooks";
 
 import { StickyActionListLayout } from "~/navigation/layouts/StickyActionScroll";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import type { ExtractQueryData } from "~/lib/react-query";
 import { IconButton } from "~/components/Form/Button/Icon";
-import type { LayoutItem } from "~/stores/HomeViewPreference/types";
+import type { LayoutItem } from "~/stores/ViewPreference/types";
 
 export default function Artists() {
   const { isPending, data } = useArtists();
-  const presets = useHomeViewLayout("artist", data, formatData);
+  const presets = useViewLayout("artist", data, formatData);
 
   return (
     <StickyActionListLayout
@@ -37,27 +37,25 @@ export default function Artists() {
 
 //#region Actions
 function ArtistActions() {
-  const layoutOption = useHomeViewPreferenceStore((s) => s.artistLayout);
+  const layoutOption = useViewPreferenceStore((s) => s.artistLayout);
   return (
     <View className="w-full flex-row items-center justify-between gap-2 rounded-md bg-surfaceContainerLowest">
       <IconButton
         Icon={ViewAgenda}
         accessibilityLabel=""
-        onPress={() => HomeViewPreferenceSetters.setLayout("artist", "list")}
+        onPress={() => ViewPreferenceSetters.setLayout("artist", "list")}
         _iconColor={layoutOption === "list" ? "primary" : undefined}
       />
       <IconButton
         Icon={GridView}
         accessibilityLabel=""
-        onPress={() => HomeViewPreferenceSetters.setLayout("artist", "grid")}
+        onPress={() => ViewPreferenceSetters.setLayout("artist", "grid")}
         _iconColor={layoutOption === "grid" ? "primary" : undefined}
       />
       <IconButton
         Icon={ViewModule}
         accessibilityLabel=""
-        onPress={() =>
-          HomeViewPreferenceSetters.setLayout("artist", "compactGrid")
-        }
+        onPress={() => ViewPreferenceSetters.setLayout("artist", "compactGrid")}
         _iconColor={layoutOption === "compactGrid" ? "primary" : undefined}
       />
     </View>
