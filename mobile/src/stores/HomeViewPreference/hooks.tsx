@@ -67,6 +67,7 @@ export function useHomeViewLayout<TData extends Record<string, any>>(
   const gridLayoutArgs = useMemo(() => {
     const gridOpts = layoutOption === "grid" ? gridLayout : compactGridLayout;
     return {
+      numColumns: gridOpts.count,
       // ~40px for text content under `<MediaImage />` + 12px Margin Bottom
       estimatedItemSize: gridOpts.width + 40 + 12,
       renderItem: ({ item }) => (
