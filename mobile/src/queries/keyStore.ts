@@ -53,11 +53,11 @@ export const queries = createQueryKeyStore({
             numTracks: count(tracks.id),
           })
           .from(artists)
-          .leftJoin(
+          .innerJoin(
             tracksToArtists,
             eq(artists.name, tracksToArtists.artistName),
           )
-          .leftJoin(tracks, eq(tracksToArtists.trackId, tracks.id))
+          .innerJoin(tracks, eq(tracksToArtists.trackId, tracks.id))
           .groupBy(artists.name)
           .orderBy(iAsc(artists.name));
       },
