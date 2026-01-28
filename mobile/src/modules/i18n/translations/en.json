@@ -395,8 +395,12 @@
     },
 
     "modalViewPreference": {
-      "title": "Sort Order",
+      "title": "Screen Options",
       "extra": {
+        "list": "List",
+        "grid": "Grid",
+        "compactGrid": "Compact Grid",
+
         "asc": "Ascending Order",
         "alphabetical": "Alphabetical",
         "discover": "Discover Time",

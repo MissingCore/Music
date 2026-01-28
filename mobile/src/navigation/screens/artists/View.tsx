@@ -1,67 +1,57 @@
-import { View } from "react-native";
+import { useTranslation } from "react-i18next";
 
-import { GridView } from "~/resources/icons/GridView";
-import { ViewAgenda } from "~/resources/icons/ViewAgenda";
-import { ViewModule } from "~/resources/icons/ViewModule";
+import { MoreHoriz } from "~/resources/icons/MoreHoriz";
 import { useArtists } from "~/queries/artist";
-import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
-import { ViewPreferenceSetters } from "~/stores/ViewPreference/actions";
 import { useViewLayout } from "~/stores/ViewPreference/hooks";
 
-import { StickyActionListLayout } from "~/navigation/layouts/StickyActionScroll";
+import { NScrollListLayout } from "~/navigation/layouts/NScrollListLayout";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
+import { ArtistsViewOptionsSheet } from "./sheets/ViewOptionsSheet";
 
 import type { ExtractQueryData } from "~/lib/react-query";
-import { IconButton } from "~/components/Form/Button/Icon";
+import { FilledIconButton } from "~/components/Form/Button/Icon";
+import { Marquee } from "~/components/Marquee";
+import { SafeContainer } from "~/components/SafeContainer";
+import { useSheetRef } from "~/components/Sheet/useSheetRef";
+import { AccentText } from "~/components/Typography/AccentText";
 import type { LayoutItem } from "~/stores/ViewPreference/types";
 
 export default function Artists() {
+  const { t } = useTranslation();
   const { isPending, data } = useArtists();
   const presets = useViewLayout("artist", data, formatData);
+  const artistsViewOptionsSheetRef = useSheetRef();
 
   return (
-    <StickyActionListLayout
-      titleKey="term.artists"
-      StickyAction={<ArtistActions />}
-      estimatedActionSize={48}
-      ListEmptyComponent={
-        <ContentPlaceholder
-          isPending={isPending}
-          errMsgKey="err.msg.noArtists"
+    <>
+      <ArtistsViewOptionsSheet ref={artistsViewOptionsSheetRef} />
+
+      <SafeContainer
+        additionalTopOffset={16}
+        className="flex-row items-center justify-between gap-2 p-4"
+      >
+        <Marquee>
+          <AccentText className="text-4xl">{t("term.artists")}</AccentText>
+        </Marquee>
+        <FilledIconButton
+          Icon={MoreHoriz}
+          accessibilityLabel={t("feat.modalViewPreference.title")}
+          onPress={() => artistsViewOptionsSheetRef.current?.present()}
+          size="sm"
         />
-      }
-      {...presets}
-    />
+      </SafeContainer>
+      <NScrollListLayout
+        ListEmptyComponent={
+          <ContentPlaceholder
+            isPending={isPending}
+            errMsgKey="err.msg.noArtists"
+          />
+        }
+        {...presets}
+      />
+    </>
   );
 }
-
-//#region Actions
-function ArtistActions() {
-  const layoutOption = useViewPreferenceStore((s) => s.artistLayout);
-  return (
-    <View className="w-full flex-row items-center justify-between gap-2 rounded-md bg-surfaceContainerLowest">
-      <IconButton
-        Icon={ViewAgenda}
-        accessibilityLabel=""
-        onPress={() => ViewPreferenceSetters.setLayout("artist", "list")}
-        _iconColor={layoutOption === "list" ? "primary" : undefined}
-      />
-      <IconButton
-        Icon={GridView}
-        accessibilityLabel=""
-        onPress={() => ViewPreferenceSetters.setLayout("artist", "grid")}
-        _iconColor={layoutOption === "grid" ? "primary" : undefined}
-      />
-      <IconButton
-        Icon={ViewModule}
-        accessibilityLabel=""
-        onPress={() => ViewPreferenceSetters.setLayout("artist", "compactGrid")}
-        _iconColor={layoutOption === "compactGrid" ? "primary" : undefined}
-      />
-    </View>
-  );
-}
-//#endregion
 
 //#region Utils
 function formatData(
