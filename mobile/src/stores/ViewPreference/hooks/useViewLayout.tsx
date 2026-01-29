@@ -4,8 +4,8 @@ import { useMemo } from "react";
 
 import type { GCWProps } from "~/hooks/useGetColumn";
 import { useGetColumn } from "~/hooks/useGetColumn";
-import { useViewPreferenceStore } from "./store";
-import type { LayoutItem, MutableLayout } from "./types";
+import { useViewPreferenceStore } from "../store";
+import type { LayoutItem, MutableLayout } from "../types";
 
 import { getMediaLinkContext } from "~/navigation/utils/router";
 

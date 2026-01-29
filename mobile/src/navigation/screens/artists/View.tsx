@@ -2,7 +2,8 @@ import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useArtists } from "~/queries/artist";
-import { useViewLayout } from "~/stores/ViewPreference/hooks";
+import { useViewLayout } from "~/stores/ViewPreference/hooks/useViewLayout";
+import { useViewOrder } from "~/stores/ViewPreference/hooks/useViewOrder";
 
 import { ArtistsViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
 import {
@@ -17,8 +18,9 @@ export default function Artists() {
   const { t } = useTranslation();
   const { isPending, data } = useArtists();
 
+  const sortedData = useViewOrder("artist", data, ArtistSortStrategies);
   const formatData = useCallback(
-    (item: ExtractQueryData<typeof useArtists>[number]) => ({
+    (item: ArtistData) => ({
       id: item.name,
       title: item.name,
       description: t("plural.track", { count: item.trackCount }),
@@ -26,7 +28,7 @@ export default function Artists() {
     }),
     [t],
   );
-  const presets = useViewLayout("artist", data, formatData);
+  const presets = useViewLayout("artist", sortedData, formatData);
 
   return (
     <>
@@ -46,3 +48,13 @@ export default function Artists() {
     </>
   );
 }
+
+//#region Utils
+type ArtistData = ExtractQueryData<typeof useArtists>[number];
+
+const ArtistSortStrategies = {
+  name: null,
+  duration: (a: ArtistData, b: ArtistData) => a.duration - b.duration,
+  trackCount: (a: ArtistData, b: ArtistData) => a.trackCount - b.trackCount,
+};
+//#endregion
