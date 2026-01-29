@@ -12,11 +12,10 @@ import { SortSheet } from "~/navigation/sheets/SortSheet";
 
 import { IconButton } from "~/components/Form/Button/Icon";
 import { SegmentedList } from "~/components/List/Segmented";
-import { Marquee } from "~/components/Marquee";
 import { DetachedSheet } from "~/components/Sheet/Detached";
+import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { TStyledText } from "~/components/Typography/StyledText";
 import { LayoutOptions } from "~/stores/ViewPreference/constants";
 import type { MutableLayout } from "~/stores/ViewPreference/types";
 
@@ -80,27 +79,23 @@ function ScreenLayoutSetting({ screen }: { screen: MutableLayout }) {
   const layoutOption = useViewPreferenceStore((s) => s[`${screen}Layout`]);
 
   return (
-    <View className="min-h-8 flex-row items-center justify-between gap-2">
-      <Marquee color="surfaceBright">
-        <TStyledText
-          textKey="feat.modalViewPreference.extra.layout"
-          bold
-          className="text-sm"
-        />
-      </Marquee>
-      <View className="flex-row gap-2 rounded-full bg-surfaceContainerLowest p-0.5">
-        {LayoutOptions.map((layout) => (
-          <IconButton
-            key={layout}
-            Icon={LayoutIconMap[layout]}
-            accessibilityLabel={t(`feat.modalViewPreference.extra.${layout}`)}
-            onPress={() => ViewPreferenceSetters.setLayout(screen, layout)}
-            _iconColor={layoutOption === layout ? "primary" : undefined}
-            size="xs"
-          />
-        ))}
-      </View>
-    </View>
+    <SheetLabelAction
+      labelKey="feat.modalViewPreference.extra.layout"
+      RightElement={
+        <View className="flex-row gap-2 rounded-full bg-surfaceContainerLowest p-0.5">
+          {LayoutOptions.map((layout) => (
+            <IconButton
+              key={layout}
+              Icon={LayoutIconMap[layout]}
+              accessibilityLabel={t(`feat.modalViewPreference.extra.${layout}`)}
+              onPress={() => ViewPreferenceSetters.setLayout(screen, layout)}
+              _iconColor={layoutOption === layout ? "primary" : undefined}
+              size="xs"
+            />
+          ))}
+        </View>
+      }
+    />
   );
 }
 //#endregion
