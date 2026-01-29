@@ -5,12 +5,15 @@ import { GridView } from "~/resources/icons/GridView";
 import { Sort } from "~/resources/icons/Sort";
 import { ViewAgenda } from "~/resources/icons/ViewAgenda";
 import { ViewModule } from "~/resources/icons/ViewModule";
+import { usePreferenceStore } from "~/stores/Preference/store";
+import { PreferenceSetters } from "~/stores/Preference/actions";
 import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { ViewPreferenceSetters } from "~/stores/ViewPreference/actions";
 
 import { SortSheet } from "~/navigation/sheets/SortSheet";
 
 import { IconButton } from "~/components/Form/Button/Icon";
+import { NumberStepper } from "~/components/Form/NumberStepper";
 import { SegmentedList } from "~/components/List/Segmented";
 import { DetachedSheet } from "~/components/Sheet/Detached";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
@@ -21,11 +24,24 @@ import type { MutableLayout } from "~/stores/ViewPreference/types";
 
 //#region Albums
 export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
+  const minAlbumLength = usePreferenceStore((s) => s.minAlbumLength);
   const sortOrderSheetRef = useSheetRef();
+
   return (
     <>
       <DetachedSheet ref={props.ref}>
         <ScreenLayoutSetting screen="album" />
+        <SheetLabelAction
+          labelKey="feat.minAlbumLength.title"
+          RightElement={
+            <NumberStepper
+              value={minAlbumLength}
+              onChange={PreferenceSetters.updateMinAlbumLengthByDelta}
+              min={1}
+              max={20}
+            />
+          }
+        />
 
         <SegmentedList.Item
           labelTextKey="feat.modalViewPreference.extra.sort"

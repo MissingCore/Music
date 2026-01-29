@@ -14,6 +14,10 @@ export async function resolveLanguageConfigs(
   I18nManager.forceRTL(forceLTR ? false : i18next.dir() === "rtl");
 }
 
+export function clampMinAlbumLength(value: number) {
+  return clamp(1, value, 20);
+}
+
 export function clampPlaybackDelay(value: number) {
   return clamp(0, value, 10);
 }
