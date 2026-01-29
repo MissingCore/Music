@@ -1,37 +1,36 @@
 import { useStore } from "zustand";
 
-import { createPersistedSubscribedStore } from "~/lib/zustand";
+import { createPersistedStore } from "~/lib/zustand";
 import type { ViewPreferenceStore } from "./constants";
 import { OmittedFields } from "./constants";
 
-export const viewPreferenceStore =
-  createPersistedSubscribedStore<ViewPreferenceStore>(
-    (set) => ({
-      _hasHydrated: false,
-      _init: async () => {
-        set({ _hasHydrated: true });
-      },
-
-      artistLayout: "list",
-      artistIsAsc: true,
-      artistOrder: "name",
-    }),
-    {
-      name: "music::view-preferences",
-      // Only store some fields in AsyncStorage.
-      partialize: (state) =>
-        Object.fromEntries(
-          Object.entries(state).filter(([key]) => !OmittedFields.includes(key)),
-        ),
-      // Listen to when the store is hydrated.
-      onRehydrateStorage: () => {
-        return (state, error) => {
-          if (error) console.log("[View Preference Store]", error);
-          else state?._init(state);
-        };
-      },
+export const viewPreferenceStore = createPersistedStore<ViewPreferenceStore>(
+  (set) => ({
+    _hasHydrated: false,
+    _init: async () => {
+      set({ _hasHydrated: true });
     },
-  );
+
+    artistLayout: "list",
+    artistIsAsc: true,
+    artistOrder: "name",
+  }),
+  {
+    name: "music::view-preferences",
+    // Only store some fields in AsyncStorage.
+    partialize: (state) =>
+      Object.fromEntries(
+        Object.entries(state).filter(([key]) => !OmittedFields.includes(key)),
+      ),
+    // Listen to when the store is hydrated.
+    onRehydrateStorage: () => {
+      return (state, error) => {
+        if (error) console.log("[View Preference Store]", error);
+        else state?._init(state);
+      };
+    },
+  },
+);
 
 export function useViewPreferenceStore<T>(
   selector: (s: ViewPreferenceStore) => T,

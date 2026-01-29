@@ -5,12 +5,12 @@ import { useStore } from "zustand";
 import i18next from "~/modules/i18n";
 import { LANGUAGES } from "~/modules/i18n/constants";
 
-import { createPersistedSubscribedStore } from "~/lib/zustand";
+import { createPersistedStore } from "~/lib/zustand";
 import type { PreferenceStore } from "./constants";
 import { OmittedFields } from "./constants";
 import { resolveLanguageConfigs } from "./utils";
 
-export const preferenceStore = createPersistedSubscribedStore<PreferenceStore>(
+export const preferenceStore = createPersistedStore<PreferenceStore>(
   (set) => ({
     _hasHydrated: false,
     _init: async (state) => {

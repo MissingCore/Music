@@ -4,8 +4,8 @@ import type { PersistOptions } from "zustand/middleware";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { createStore } from "zustand/vanilla";
 
-/** Creates a Zustand store that's persisted and supports subscriptions. */
-export function createPersistedSubscribedStore<TStore extends object>(
+/** Creates a Zustand store that's persisted. */
+export function createPersistedStore<TStore extends object>(
   initialState: StateCreator<TStore>,
   options: Omit<PersistOptions<TStore>, "partialize" | "storage"> & {
     partialize?: (state: TStore) => Partial<TStore>;

@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useStore } from "zustand";
 
-import { createPersistedSubscribedStore } from "~/lib/zustand";
+import { createPersistedStore } from "~/lib/zustand";
 
 /** Options for how we can order tracks. */
 export const OrderedByOptions = [
@@ -31,35 +31,34 @@ interface SortPreferencesStore {
   setOrderedBy: (sortType: SortPreferencesStore["orderedBy"]) => void;
 }
 
-export const sortPreferencesStore =
-  createPersistedSubscribedStore<SortPreferencesStore>(
-    (set) => ({
-      _hasHydrated: false,
-      _init: () => {
-        set({ _hasHydrated: true });
-      },
-
-      isAsc: true,
-      toggleIsAsc: () => set((prev) => ({ isAsc: !prev.isAsc })),
-      orderedBy: "alphabetical",
-      setOrderedBy: (sortType) => set({ orderedBy: sortType }),
-    }),
-    {
-      name: "music::sort-preferences-store",
-      // Only store some fields in AsyncStorage.
-      partialize: (state) => ({
-        isAsc: state.isAsc,
-        orderedBy: state.orderedBy,
-      }),
-      // Listen to when the store is hydrated.
-      onRehydrateStorage: () => {
-        return (state, error) => {
-          if (error) console.log("[Sort Preferences Store]", error);
-          else state?._init(state);
-        };
-      },
+export const sortPreferencesStore = createPersistedStore<SortPreferencesStore>(
+  (set) => ({
+    _hasHydrated: false,
+    _init: () => {
+      set({ _hasHydrated: true });
     },
-  );
+
+    isAsc: true,
+    toggleIsAsc: () => set((prev) => ({ isAsc: !prev.isAsc })),
+    orderedBy: "alphabetical",
+    setOrderedBy: (sortType) => set({ orderedBy: sortType }),
+  }),
+  {
+    name: "music::sort-preferences-store",
+    // Only store some fields in AsyncStorage.
+    partialize: (state) => ({
+      isAsc: state.isAsc,
+      orderedBy: state.orderedBy,
+    }),
+    // Listen to when the store is hydrated.
+    onRehydrateStorage: () => {
+      return (state, error) => {
+        if (error) console.log("[Sort Preferences Store]", error);
+        else state?._init(state);
+      };
+    },
+  },
+);
 
 export const useSortPreferencesStore = <T>(
   selector: (state: SortPreferencesStore) => T,

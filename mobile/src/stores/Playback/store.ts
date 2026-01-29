@@ -8,13 +8,13 @@ import { db } from "~/db";
 import { tracksToPlaylists } from "~/db/schema";
 import { getTrack } from "~/api/track";
 
-import { createPersistedSubscribedStore } from "~/lib/zustand";
+import { createPersistedStore } from "~/lib/zustand";
 import { resetWidgets } from "~/modules/widget/utils/update";
 import type { PlaybackStore } from "./constants";
 import { PersistedFields, RepeatModes } from "./constants";
 import { extractTrackId } from "./utils";
 
-export const playbackStore = createPersistedSubscribedStore<PlaybackStore>(
+export const playbackStore = createPersistedStore<PlaybackStore>(
   (set, get) => ({
     _hasHydrated: false,
     _init: async ({ activeKey }) => {
