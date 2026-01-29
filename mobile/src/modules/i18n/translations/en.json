@@ -397,6 +397,7 @@
     "modalViewPreference": {
       "title": "Screen Options",
       "extra": {
+        "layout": "Layout",
         "list": "List",
         "grid": "Grid",
         "compactGrid": "Compact Grid",

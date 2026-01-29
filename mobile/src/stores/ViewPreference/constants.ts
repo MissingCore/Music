@@ -1,5 +1,7 @@
 import type { ParseKeys } from "i18next";
 
+import type { MutableOrder } from "./types";
+
 //#region Layout
 export const LayoutOptions = ["list", "grid", "compactGrid"] as const;
 
@@ -7,14 +9,28 @@ export type LayoutOption = (typeof LayoutOptions)[number];
 //#endregion
 
 //#region Sort
-export const ArtistSortOptions = ["name", "duration", "trackCount"] as const;
+type SortOption =
+  | "name"
+  | "artistName"
+  | "duration"
+  | "trackCount"
+  | "albumName"
+  | "discoverTime"
+  | "lastModified";
 
-export type ArtistSortOption = (typeof ArtistSortOptions)[number];
+export const SortOptions = {
+  artist: ["name", "duration", "trackCount"],
+} as const satisfies Record<MutableOrder, SortOption[]>;
 
-export type SortOption = ArtistSortOption;
+export type ScreenSortOptions<TScreen extends MutableOrder> =
+  (typeof SortOptions)[TScreen][number];
 
 export const SortOptionTranslation = {
+  albumName: "term.album",
+  artistName: "term.artist",
+  discoverTime: "feat.modalViewPreference.extra.discover",
   duration: "feat.modalViewPreference.extra.duration",
+  lastModified: "feat.modalViewPreference.extra.modified",
   name: "feat.trackMetadata.extra.name",
   trackCount: "feat.modalViewPreference.extra.trackCount",
 } as const satisfies Record<SortOption, ParseKeys>;
@@ -29,7 +45,7 @@ export interface ViewPreferenceStore {
 
   artistLayout: LayoutOption;
   artistIsAsc: boolean;
-  artistOrder: ArtistSortOption;
+  artistOrder: ScreenSortOptions<"artist">;
 }
 
 export const OmittedFields: string[] = [
