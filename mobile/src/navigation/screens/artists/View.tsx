@@ -21,7 +21,7 @@ export default function Artists() {
     (item: ExtractQueryData<typeof useArtists>[number]) => ({
       id: item.name,
       title: item.name,
-      description: t("plural.track", { count: item.numTracks }),
+      description: t("plural.track", { count: item.trackCount }),
       imageSource: item.artwork,
     }),
     [t],

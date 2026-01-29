@@ -50,7 +50,7 @@ export const queries = createQueryKeyStore({
           .select({
             ...getTableColumns(artists),
             duration: sum(tracks.duration),
-            numTracks: count(tracks.id),
+            trackCount: count(tracks.id),
           })
           .from(artists)
           .innerJoin(
