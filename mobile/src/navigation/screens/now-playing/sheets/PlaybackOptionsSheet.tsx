@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import TrackPlayer from "@weights-ai/react-native-track-player";
 import type { ParseKeys } from "i18next";
-import { useCallback, useImperativeHandle, useState } from "react";
+import { useCallback, useState } from "react";
 import { Pressable, View } from "react-native";
 
 import { ActivityZone } from "~/resources/icons/ActivityZone";
@@ -43,31 +43,28 @@ export function PlaybackOptionsSheet(props: {
   const waveformSlider = usePreferenceStore((s) => s.waveformSlider);
   const showLyrics = useSessionStore((s) => s.showLyrics);
   const volume = useSessionStore((s) => s.volume);
-  const internalSheetRef = useSheetRef();
-  // @ts-expect-error - Should be able to synchronize refs.
-  useImperativeHandle(props.ref, () => internalSheetRef.current);
   const appearanceSheetRef = useSheetRef();
   const playbackSpeedRef = useSheetRef();
 
   const navigateToList = useCallback(async () => {
     if (!playingSource) return;
-    await internalSheetRef.current?.dismiss();
+    await props.ref.current?.dismiss();
     // Call `goBack()` to mimic `popTo` since we don't have access
     // to that function in the sheet.
     navigation.goBack();
     navigation.navigate(...getMediaLinkContext(playingSource));
-  }, [navigation, internalSheetRef, playingSource]);
+  }, [navigation, props.ref, playingSource]);
 
   //#region Sheet Presenters
   const presentAppearanceSheet = useCallback(async () => {
-    await internalSheetRef.current?.dismiss();
+    await props.ref.current?.dismiss();
     appearanceSheetRef.current?.present();
-  }, [appearanceSheetRef, internalSheetRef]);
+  }, [appearanceSheetRef, props.ref]);
 
   const presentPlaybackSheet = useCallback(async () => {
-    await internalSheetRef.current?.dismiss();
+    await props.ref.current?.dismiss();
     playbackSpeedRef.current?.present();
-  }, [playbackSpeedRef, internalSheetRef]);
+  }, [playbackSpeedRef, props.ref]);
   //#endregion
 
   return (
@@ -76,7 +73,7 @@ export function PlaybackOptionsSheet(props: {
       <PlaybackSpeedSheet ref={playbackSpeedRef} />
 
       <DetachedSheet
-        ref={internalSheetRef}
+        ref={props.ref}
         draggable={!stopDrag}
         contentContainerClassName="pb-0"
       >
