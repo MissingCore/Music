@@ -13,6 +13,8 @@ export const viewPreferenceStore =
       },
 
       artistLayout: "list",
+      artistIsAsc: true,
+      artistOrder: "name",
     }),
     {
       name: "music::view-preferences",

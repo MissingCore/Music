@@ -4,6 +4,12 @@ export const LayoutOptions = ["list", "grid", "compactGrid"] as const;
 export type LayoutOption = (typeof LayoutOptions)[number];
 //#endregion
 
+//#region Sort
+export const ArtistSortOptions = ["name", "duration", "trackCount"] as const;
+
+export type ArtistSortOption = (typeof ArtistSortOptions)[number];
+//#endregion
+
 //#region Store
 export interface ViewPreferenceStore {
   /** Determines if the store has been hydrated from AsyncStorage. */
@@ -12,6 +18,8 @@ export interface ViewPreferenceStore {
   _init: (state: ViewPreferenceStore) => Promise<void>;
 
   artistLayout: LayoutOption;
+  artistIsAsc: boolean;
+  artistOrder: ArtistSortOption;
 }
 
 export const OmittedFields: string[] = [
