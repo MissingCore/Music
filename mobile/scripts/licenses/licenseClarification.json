@@ -1,5 +1,5 @@
 {
-  "@paralleldrive/cuid2@3.0.6": {
+  "@paralleldrive/cuid2@3.3.0": {
     "repository": "https://github.com/paralleldrive/cuid2"
   },
   "@react-navigation/material-top-tabs@7.4.13": {
