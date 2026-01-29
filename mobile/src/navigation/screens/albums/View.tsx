@@ -5,7 +5,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { useViewLayout } from "~/stores/ViewPreference/hooks/useViewLayout";
 import { useViewOrder } from "~/stores/ViewPreference/hooks/useViewOrder";
 
-import { ArtistsViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
+import { AlbumsViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
 import {
   NScrollListHeader,
   NScrollListLayout,
@@ -30,7 +30,7 @@ export default function Albums() {
     <>
       <NScrollListHeader
         titleKey="term.albums"
-        OptionsSheet={ArtistsViewOptionsSheet}
+        OptionsSheet={AlbumsViewOptionsSheet}
       />
       <NScrollListLayout
         ListEmptyComponent={

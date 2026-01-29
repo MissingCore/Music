@@ -20,6 +20,31 @@ import { TStyledText } from "~/components/Typography/StyledText";
 import { LayoutOptions } from "~/stores/ViewPreference/constants";
 import type { MutableLayout } from "~/stores/ViewPreference/types";
 
+//#region Albums
+export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
+  const sortOrderSheetRef = useSheetRef();
+  return (
+    <>
+      <DetachedSheet ref={props.ref}>
+        <ScreenLayoutSetting screen="album" />
+
+        <SegmentedList.Item
+          labelTextKey="feat.modalViewPreference.extra.sort"
+          onPress={() => {
+            props.ref.current?.dismiss();
+            sortOrderSheetRef.current?.present();
+          }}
+          LeftElement={<Sort />}
+          className="gap-4"
+        />
+      </DetachedSheet>
+      <SortSheet ref={sortOrderSheetRef} screen="album" />
+    </>
+  );
+}
+//#endregion
+
+//#region Artists
 export function ArtistsViewOptionsSheet(props: { ref: TrueSheetRef }) {
   const sortOrderSheetRef = useSheetRef();
   return (
@@ -41,6 +66,7 @@ export function ArtistsViewOptionsSheet(props: { ref: TrueSheetRef }) {
     </>
   );
 }
+//#endregion
 
 //#region Screen Layout
 const LayoutIconMap = {
