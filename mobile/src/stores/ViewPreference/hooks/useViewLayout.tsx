@@ -53,9 +53,9 @@ export function useViewLayout<TData extends Record<string, any>>(
             onPress={() =>
               navigation.navigate(...getMediaLinkContext({ id, type: screen }))
             }
-            className={cn({
+            className={cn("pr-4", {
               "mt-2": index > 0,
-              "rounded-full pr-4": screen === "artist",
+              "rounded-full": screen === "artist",
             })}
           />
         ),
