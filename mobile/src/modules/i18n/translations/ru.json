@@ -353,8 +353,9 @@
       }
     },
     "modalViewPreference": {
-      "title": "Порядок сортировки",
+      "title": null,
       "extra": {
+        "sort": "Порядок сортировки",
         "asc": "По возрастанию",
         "alphabetical": "Алфавитный",
         "discover": "Время на прослушивание музыки",

@@ -353,8 +353,9 @@
       }
     },
     "modalViewPreference": {
-      "title": "Sortierreihenfolge",
+      "title": null,
       "extra": {
+        "sort": "Sortierreihenfolge",
         "asc": "Aufsteigende Reihenfolge",
         "alphabetical": "Alphabetische Reihenfolge",
         "discover": "Zuletzt Hinzugefügt",

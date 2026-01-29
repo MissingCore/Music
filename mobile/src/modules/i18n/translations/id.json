@@ -353,8 +353,9 @@
       }
     },
     "modalViewPreference": {
-      "title": "urutan penyortiran",
+      "title": null,
       "extra": {
+        "sort": "urutan penyortiran",
         "asc": "Urutan Naik",
         "alphabetical": "Alfabet",
         "discover": null,

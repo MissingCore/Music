@@ -353,8 +353,9 @@
       }
     },
     "modalViewPreference": {
-      "title": "क्रम",
+      "title": null,
       "extra": {
+        "sort": "क्रम",
         "asc": "आरोही क्रम",
         "alphabetical": "वर्णमाला क्रम",
         "discover": null,

@@ -353,8 +353,9 @@
       }
     },
     "modalViewPreference": {
-      "title": "Kolejność sortowania",
+      "title": null,
       "extra": {
+        "sort": "Kolejność sortowania",
         "asc": "Rosnąco",
         "alphabetical": "Alfabetycznie",
         "discover": "Data wydania",

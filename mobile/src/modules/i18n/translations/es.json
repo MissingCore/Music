@@ -353,8 +353,9 @@
       }
     },
     "modalViewPreference": {
-      "title": "Ordenar",
+      "title": null,
       "extra": {
+        "sort": "Ordenar",
         "asc": "Ascendente",
         "alphabetical": "Alfabético",
         "discover": "Descubrir",

@@ -353,8 +353,9 @@
       }
     },
     "modalViewPreference": {
-      "title": "ترتیب مرتب سازی",
+      "title": null,
       "extra": {
+        "sort": "ترتیب مرتب سازی",
         "asc": "ترتیب صعودی",
         "alphabetical": "الفبایی",
         "discover": "زمان پیداشدن",

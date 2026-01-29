@@ -353,8 +353,9 @@
       }
     },
     "modalViewPreference": {
-      "title": "ترتيب الفرز",
+      "title": null,
       "extra": {
+        "sort": "ترتيب الفرز",
         "asc": "ترتيب تصاعدي",
         "alphabetical": "أبجدي",
         "discover": "وقت الاكتشاف",

@@ -353,8 +353,9 @@
       }
     },
     "modalViewPreference": {
-      "title": "排序方式",
+      "title": null,
       "extra": {
+        "sort": "排序方式",
         "asc": "升序",
         "alphabetical": "字母顺序",
         "discover": null,

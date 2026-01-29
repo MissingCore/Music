@@ -353,8 +353,9 @@
       }
     },
     "modalViewPreference": {
-      "title": "Ordre de tri",
+      "title": null,
       "extra": {
+        "sort": "Ordre de tri",
         "asc": "Ordre croissant",
         "alphabetical": "Alphabétique",
         "discover": "Découvrez le temps",

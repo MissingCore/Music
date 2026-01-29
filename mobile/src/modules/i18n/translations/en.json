@@ -401,6 +401,7 @@
         "grid": "Grid",
         "compactGrid": "Compact Grid",
 
+        "sort": "Sort Order",
         "asc": "Ascending Order",
         "alphabetical": "Alphabetical",
         "discover": "Discover Time",
