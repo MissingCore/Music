@@ -12,9 +12,9 @@ export type LayoutOption = (typeof LayoutOptions)[number];
 type SortOption =
   | "name"
   | "artistName"
+  | "albumName"
   | "duration"
   | "trackCount"
-  | "albumName"
   | "discoverTime"
   | "lastModified";
 
