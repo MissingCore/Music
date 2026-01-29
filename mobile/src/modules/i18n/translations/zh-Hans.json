@@ -352,9 +352,10 @@
         "year": "年份"
       }
     },
-    "modalSort": {
-      "title": "排序方式",
+    "modalViewPreference": {
+      "title": null,
       "extra": {
+        "sort": "排序方式",
         "asc": "升序",
         "alphabetical": "字母顺序",
         "discover": null,

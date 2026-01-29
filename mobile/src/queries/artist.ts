@@ -44,8 +44,8 @@ export function useArtists() {
     ...q.artists.all,
     select: (data) =>
       data
-        .filter(({ tracksToArtists }) => tracksToArtists.length > 0)
-        .map(({ tracksToArtists: _, ...artist }) => artist)
+        .filter(({ trackCount }) => trackCount > 0)
+        .map((a) => ({ ...a, duration: Number(a.duration) || 0 }))
         .sort((a, b) => a.name.localeCompare(b.name)),
   });
 }

@@ -352,9 +352,10 @@
         "year": "سال"
       }
     },
-    "modalSort": {
-      "title": "ترتیب مرتب سازی",
+    "modalViewPreference": {
+      "title": null,
       "extra": {
+        "sort": "ترتیب مرتب سازی",
         "asc": "ترتیب صعودی",
         "alphabetical": "الفبایی",
         "discover": "زمان پیداشدن",

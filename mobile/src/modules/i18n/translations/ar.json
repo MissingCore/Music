@@ -352,9 +352,10 @@
         "year": "السنة"
       }
     },
-    "modalSort": {
-      "title": "ترتيب الفرز",
+    "modalViewPreference": {
+      "title": null,
       "extra": {
+        "sort": "ترتيب الفرز",
         "asc": "ترتيب تصاعدي",
         "alphabetical": "أبجدي",
         "discover": "وقت الاكتشاف",

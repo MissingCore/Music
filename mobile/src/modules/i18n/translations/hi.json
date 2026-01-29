@@ -352,9 +352,10 @@
         "year": null
       }
     },
-    "modalSort": {
-      "title": "क्रम",
+    "modalViewPreference": {
+      "title": null,
       "extra": {
+        "sort": "क्रम",
         "asc": "आरोही क्रम",
         "alphabetical": "वर्णमाला क्रम",
         "discover": null,

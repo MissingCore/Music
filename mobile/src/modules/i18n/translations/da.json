@@ -352,9 +352,10 @@
         "year": null
       }
     },
-    "modalSort": {
-      "title": "Sortering",
+    "modalViewPreference": {
+      "title": null,
       "extra": {
+        "sort": "Sortering",
         "asc": "Stigende rækkefølge",
         "alphabetical": "Alfabetisk",
         "discover": null,

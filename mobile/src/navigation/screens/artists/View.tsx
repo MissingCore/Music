@@ -1,38 +1,60 @@
-import { useNavigation } from "@react-navigation/native";
+import { useCallback } from "react";
+import { useTranslation } from "react-i18next";
 
 import { useArtists } from "~/queries/artist";
-import { StickyActionListLayout } from "../../layouts/StickyActionScroll";
+import { useViewLayout } from "~/stores/ViewPreference/hooks/useViewLayout";
+import { useViewOrder } from "~/stores/ViewPreference/hooks/useViewOrder";
 
-import { cn } from "~/lib/style";
-import { SearchResult } from "~/modules/search/components/SearchResult";
-import { ContentPlaceholder } from "../../components/Placeholder";
+import { ArtistsViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
+import {
+  NScrollListHeader,
+  NScrollListLayout,
+} from "~/navigation/layouts/NScrollListLayout";
+import { ContentPlaceholder } from "~/navigation/components/Placeholder";
+
+import type { ExtractQueryData } from "~/lib/react-query";
 
 export default function Artists() {
-  const navigation = useNavigation();
+  const { t } = useTranslation();
   const { isPending, data } = useArtists();
 
+  const sortedData = useViewOrder("artist", data, ArtistSortStrategies);
+  const formatData = useCallback(
+    (item: ArtistData) => ({
+      id: item.name,
+      title: item.name,
+      description: t("plural.track", { count: item.trackCount }),
+      imageSource: item.artwork,
+    }),
+    [t],
+  );
+  const presets = useViewLayout("artist", sortedData, formatData);
+
   return (
-    <StickyActionListLayout
-      titleKey="term.artists"
-      estimatedItemSize={56} // 48px Height + 8px Margin Top
-      data={data}
-      keyExtractor={({ name }) => name}
-      renderItem={({ item, index }) => (
-        <SearchResult
-          button
-          type="artist"
-          title={item.name}
-          imageSource={item.artwork}
-          onPress={() => navigation.navigate("Artist", { id: item.name })}
-          className={cn("rounded-full pr-4", { "mt-2": index > 0 })}
-        />
-      )}
-      ListEmptyComponent={
-        <ContentPlaceholder
-          isPending={isPending}
-          errMsgKey="err.msg.noArtists"
-        />
-      }
-    />
+    <>
+      <NScrollListHeader
+        titleKey="term.artists"
+        OptionsSheet={ArtistsViewOptionsSheet}
+      />
+      <NScrollListLayout
+        ListEmptyComponent={
+          <ContentPlaceholder
+            isPending={isPending}
+            errMsgKey="err.msg.noArtists"
+          />
+        }
+        {...presets}
+      />
+    </>
   );
 }
+
+//#region Utils
+type ArtistData = ExtractQueryData<typeof useArtists>[number];
+
+const ArtistSortStrategies = {
+  name: null,
+  duration: (a: ArtistData, b: ArtistData) => a.duration - b.duration,
+  trackCount: (a: ArtistData, b: ArtistData) => a.trackCount - b.trackCount,
+};
+//#endregion

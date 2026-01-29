@@ -352,9 +352,10 @@
         "year": "Année"
       }
     },
-    "modalSort": {
-      "title": "Ordre de tri",
+    "modalViewPreference": {
+      "title": null,
       "extra": {
+        "sort": "Ordre de tri",
         "asc": "Ordre croissant",
         "alphabetical": "Alphabétique",
         "discover": "Découvrez le temps",

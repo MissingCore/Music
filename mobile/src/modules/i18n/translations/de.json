@@ -352,9 +352,10 @@
         "year": "Jahr"
       }
     },
-    "modalSort": {
-      "title": "Sortierreihenfolge",
+    "modalViewPreference": {
+      "title": null,
       "extra": {
+        "sort": "Sortierreihenfolge",
         "asc": "Aufsteigende Reihenfolge",
         "alphabetical": "Alphabetische Reihenfolge",
         "discover": "Zuletzt Hinzugefügt",

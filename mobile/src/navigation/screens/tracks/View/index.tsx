@@ -48,7 +48,7 @@ function TrackActions(props: { showSheet: VoidFunction }) {
     <View className="w-full flex-row items-center justify-between rounded-md bg-surfaceContainerLowest">
       <IconButton
         Icon={Sort}
-        accessibilityLabel={t("feat.modalSort.title")}
+        accessibilityLabel={t("feat.modalViewPreference.title")}
         onPress={props.showSheet}
       />
       <MediaListControls trackSource={trackSource} />

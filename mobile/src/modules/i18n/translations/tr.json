@@ -352,9 +352,10 @@
         "year": "Yıl"
       }
     },
-    "modalSort": {
-      "title": "Sıralama Düzeni",
+    "modalViewPreference": {
+      "title": null,
       "extra": {
+        "sort": "Sıralama Düzeni",
         "asc": "Artan Sıralama",
         "alphabetical": "Alfabetik",
         "discover": "Keşif Zamanı",

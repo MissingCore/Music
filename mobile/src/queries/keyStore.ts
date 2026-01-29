@@ -1,8 +1,14 @@
 import { createQueryKeyStore } from "@lukemorales/query-key-factory";
-import { eq } from "drizzle-orm";
+import { count, eq, getTableColumns, sum } from "drizzle-orm";
 
 import { db } from "~/db";
-import { albums, playlists, tracks, tracksToArtists } from "~/db/schema";
+import {
+  albums,
+  artists,
+  playlists,
+  tracks,
+  tracksToArtists,
+} from "~/db/schema";
 
 import { getAlbum, getAlbums } from "~/api/album";
 import { getArtistAlbums } from "~/api/artist";
@@ -39,12 +45,22 @@ export const queries = createQueryKeyStore({
   artists: {
     all: {
       queryKey: null,
-      queryFn: () =>
-        db.query.artists.findMany({
-          orderBy: (fields) => iAsc(fields.name),
-          //? Relation used to filter out artists with no tracks.
-          with: { tracksToArtists: { columns: { trackId: true }, limit: 1 } },
-        }),
+      queryFn: () => {
+        return db
+          .select({
+            ...getTableColumns(artists),
+            duration: sum(tracks.duration),
+            trackCount: count(tracks.id),
+          })
+          .from(artists)
+          .innerJoin(
+            tracksToArtists,
+            eq(artists.name, tracksToArtists.artistName),
+          )
+          .innerJoin(tracks, eq(tracksToArtists.trackId, tracks.id))
+          .groupBy(artists.name)
+          .orderBy(iAsc(artists.name));
+      },
     },
     detail: (artistName: string) => ({
       queryKey: [artistName],

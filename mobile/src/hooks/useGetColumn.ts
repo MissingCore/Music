@@ -1,6 +1,6 @@
 import { useWindowDimensions } from "react-native";
 
-type GCWProps = {
+export type GCWProps = {
   /**
    * Number of columns we want — if `minWidth` is provided, this becomes
    * the minimum number of columns (ie: CSS Grid `auto-fill` behavior).

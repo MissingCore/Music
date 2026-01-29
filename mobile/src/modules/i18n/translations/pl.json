@@ -352,9 +352,10 @@
         "year": "Rok"
       }
     },
-    "modalSort": {
-      "title": "Kolejność sortowania",
+    "modalViewPreference": {
+      "title": null,
       "extra": {
+        "sort": "Kolejność sortowania",
         "asc": "Rosnąco",
         "alphabetical": "Alfabetycznie",
         "discover": "Data wydania",

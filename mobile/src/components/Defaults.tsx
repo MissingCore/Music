@@ -130,14 +130,26 @@ const WrappedAnimatedLegendList = withUniwind(
 ) as typeof RawAnimatedLegendList;
 
 export function LegendList<T>(props: LegendListProps<T>) {
-  // @ts-expect-error - List internally handles recieving `undefined`.
-  return <WrappedLegendList recycleItems {...ScrollablePresets} {...props} />;
+  return (
+    // @ts-expect-error - List internally handles recieving `undefined`.
+    <WrappedLegendList
+      key={`list-with-${props.numColumns}-cols`}
+      recycleItems
+      {...ScrollablePresets}
+      {...props}
+    />
+  );
 }
 
 export function AnimatedLegendList<T>(props: LegendListProps<T>) {
   return (
     // @ts-expect-error - List internally handles recieving `undefined`.
-    <WrappedAnimatedLegendList recycleItems {...ScrollablePresets} {...props} />
+    <WrappedAnimatedLegendList
+      key={`list-with-${props.numColumns}-cols`}
+      recycleItems
+      {...ScrollablePresets}
+      {...props}
+    />
   );
 }
 

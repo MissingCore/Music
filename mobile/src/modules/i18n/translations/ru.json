@@ -352,9 +352,10 @@
         "year": "Год"
       }
     },
-    "modalSort": {
-      "title": "Порядок сортировки",
+    "modalViewPreference": {
+      "title": null,
       "extra": {
+        "sort": "Порядок сортировки",
         "asc": "По возрастанию",
         "alphabetical": "Алфавитный",
         "discover": "Время на прослушивание музыки",
