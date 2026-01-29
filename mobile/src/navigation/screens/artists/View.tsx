@@ -4,12 +4,12 @@ import { useTranslation } from "react-i18next";
 import { useArtists } from "~/queries/artist";
 import { useViewLayout } from "~/stores/ViewPreference/hooks";
 
+import { ArtistsViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
 import {
   NScrollListHeader,
   NScrollListLayout,
 } from "~/navigation/layouts/NScrollListLayout";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
-import { ArtistsViewOptionsSheet } from "./sheets/ViewOptionsSheet";
 
 import type { ExtractQueryData } from "~/lib/react-query";
 

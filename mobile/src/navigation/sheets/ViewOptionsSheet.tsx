@@ -18,40 +18,14 @@ import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { TStyledText } from "~/components/Typography/StyledText";
 import { LayoutOptions } from "~/stores/ViewPreference/constants";
+import type { MutableLayout } from "~/stores/ViewPreference/types";
 
 export function ArtistsViewOptionsSheet(props: { ref: TrueSheetRef }) {
-  const { t } = useTranslation();
-  const layoutOption = useViewPreferenceStore((s) => s.artistLayout);
   const sortOrderSheetRef = useSheetRef();
-
   return (
     <>
       <DetachedSheet ref={props.ref}>
-        <View className="min-h-8 flex-row items-center justify-between gap-2">
-          <Marquee color="surfaceBright">
-            <TStyledText
-              textKey="feat.modalViewPreference.extra.layout"
-              bold
-              className="text-sm"
-            />
-          </Marquee>
-          <View className="flex-row gap-2 rounded-full bg-surfaceContainerLowest p-0.5">
-            {LayoutOptions.map((layout) => (
-              <IconButton
-                key={layout}
-                Icon={LayoutIconMap[layout]}
-                accessibilityLabel={t(
-                  `feat.modalViewPreference.extra.${layout}`,
-                )}
-                onPress={() =>
-                  ViewPreferenceSetters.setLayout("artist", layout)
-                }
-                _iconColor={layoutOption === layout ? "primary" : undefined}
-                size="xs"
-              />
-            ))}
-          </View>
-        </View>
+        <ScreenLayoutSetting screen="artist" />
 
         <SegmentedList.Item
           labelTextKey="feat.modalViewPreference.extra.sort"
@@ -68,10 +42,39 @@ export function ArtistsViewOptionsSheet(props: { ref: TrueSheetRef }) {
   );
 }
 
-//#region Utils
+//#region Screen Layout
 const LayoutIconMap = {
   list: ViewAgenda,
   grid: GridView,
   compactGrid: ViewModule,
 } as const;
+
+function ScreenLayoutSetting({ screen }: { screen: MutableLayout }) {
+  const { t } = useTranslation();
+  const layoutOption = useViewPreferenceStore((s) => s[`${screen}Layout`]);
+
+  return (
+    <View className="min-h-8 flex-row items-center justify-between gap-2">
+      <Marquee color="surfaceBright">
+        <TStyledText
+          textKey="feat.modalViewPreference.extra.layout"
+          bold
+          className="text-sm"
+        />
+      </Marquee>
+      <View className="flex-row gap-2 rounded-full bg-surfaceContainerLowest p-0.5">
+        {LayoutOptions.map((layout) => (
+          <IconButton
+            key={layout}
+            Icon={LayoutIconMap[layout]}
+            accessibilityLabel={t(`feat.modalViewPreference.extra.${layout}`)}
+            onPress={() => ViewPreferenceSetters.setLayout(screen, layout)}
+            _iconColor={layoutOption === layout ? "primary" : undefined}
+            size="xs"
+          />
+        ))}
+      </View>
+    </View>
+  );
+}
 //#endregion
