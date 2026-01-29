@@ -19,6 +19,7 @@ type SortOption =
   | "lastModified";
 
 export const SortOptions = {
+  album: ["name", "artistName", "duration", "trackCount"],
   artist: ["name", "duration", "trackCount"],
 } as const satisfies Record<MutableOrder, SortOption[]>;
 
@@ -42,6 +43,10 @@ export interface ViewPreferenceStore {
   _hasHydrated: boolean;
   /** Get a more accurate initial state. */
   _init: (state: ViewPreferenceStore) => Promise<void>;
+
+  albumLayout: LayoutOption;
+  albumIsAsc: boolean;
+  albumOrder: ScreenSortOptions<"album">;
 
   artistLayout: LayoutOption;
   artistIsAsc: boolean;
