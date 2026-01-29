@@ -405,7 +405,9 @@
         "asc": "Ascending Order",
         "alphabetical": "Alphabetical",
         "discover": "Discover Time",
-        "modified": "Last Modified"
+        "duration": "Duration",
+        "modified": "Last Modified",
+        "trackCount": "Track Count"
       }
     },
     "modalTrack": {

@@ -1,3 +1,5 @@
+import type { ParseKeys } from "i18next";
+
 //#region Layout
 export const LayoutOptions = ["list", "grid", "compactGrid"] as const;
 
@@ -8,6 +10,14 @@ export type LayoutOption = (typeof LayoutOptions)[number];
 export const ArtistSortOptions = ["name", "duration", "trackCount"] as const;
 
 export type ArtistSortOption = (typeof ArtistSortOptions)[number];
+
+export type SortOption = ArtistSortOption;
+
+export const SortOptionTranslation = {
+  duration: "feat.modalViewPreference.extra.duration",
+  name: "feat.trackMetadata.extra.name",
+  trackCount: "feat.modalViewPreference.extra.trackCount",
+} as const satisfies Record<SortOption, ParseKeys>;
 //#endregion
 
 //#region Store
