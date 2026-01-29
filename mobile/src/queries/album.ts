@@ -1,13 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import { formatForMediaCard } from "~/db/utils";
-
 import { favoriteAlbum, updateAlbum } from "~/api/album";
 import { AlbumArtistsKey } from "~/api/album.utils";
 import { TrackList } from "~/api/track.utils";
 import { Resynchronize } from "~/stores/Playback/actions";
-import { usePreferenceStore } from "~/stores/Preference/store";
 import { queries as q } from "./keyStore";
 
 import { clearAllQueries } from "~/lib/react-query";
@@ -60,16 +57,18 @@ export function useAlbumForScreen(albumId: string) {
   });
 }
 
-/** Return list of `MediaCardContent` from albums. */
-export function useAlbumsForCards() {
-  const { t } = useTranslation();
-  const minAlbumLength = usePreferenceStore((s) => s.minAlbumLength);
+export function useAlbums() {
   return useQuery({
     ...q.albums.all,
     select: (data) =>
       data
-        .filter(({ tracks }) => tracks.length > minAlbumLength)
-        .map((album) => formatForMediaCard({ type: "album", data: album, t })),
+        .filter(({ trackCount }) => trackCount > 0)
+        .map(({ artistsKey, ...album }) => ({
+          ...album,
+          artistName: AlbumArtistsKey.toString(artistsKey),
+          duration: Number(album.duration) || 0,
+        }))
+        .sort((a, b) => a.name.localeCompare(b.name)),
   });
 }
 //#endregion
