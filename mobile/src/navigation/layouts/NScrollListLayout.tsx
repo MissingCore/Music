@@ -1,5 +1,4 @@
 import type { LegendListProps } from "@legendapp/list";
-import { LinearGradient } from "expo-linear-gradient";
 import type { ParseKeys } from "i18next";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -15,7 +14,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { MoreHoriz } from "~/resources/icons/MoreHoriz";
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { useTheme } from "~/hooks/useTheme";
 
 import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
 
@@ -24,6 +22,7 @@ import {
   useAnimatedLegendListRef,
 } from "~/components/Defaults";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
+import { TopDownGradient } from "~/components/Gradient";
 import { Marquee } from "~/components/Marquee";
 import { Scrollbar, useScrollbarContext } from "~/components/NScrollbar";
 import { SafeContainer } from "~/components/SafeContainer";
@@ -49,7 +48,6 @@ export function NScrollListLayout<TData>({
   Actions?: React.ReactNode;
 }) {
   const { t } = useTranslation();
-  const { surface } = useTheme();
   const insets = useSafeAreaInsets();
   const bottomInset = useBottomActionsInset();
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
@@ -138,12 +136,7 @@ export function NScrollListLayout<TData>({
             </View>
           </View>
         </SafeContainer>
-        <LinearGradient
-          colors={[`${surface}E6`, `${surface}00`]}
-          pointerEvents="none"
-          style={{ height: SHADOW_HEIGHT }}
-          className="w-full"
-        />
+        <TopDownGradient height={SHADOW_HEIGHT} />
       </Animated.View>
 
       <AnimatedLegendList
@@ -158,12 +151,10 @@ export function NScrollListLayout<TData>({
           paddingBottom: bottomOffset,
         }}
       />
-      <LinearGradient
-        colors={[`${surface}FF`, `${surface}00`]}
-        locations={[insets.top / topOffset, 1]}
-        pointerEvents="none"
-        style={{ height: topOffset }}
-        className="absolute top-0 left-0 w-full"
+      <TopDownGradient
+        height={topOffset}
+        startFrom={insets.top}
+        className="absolute top-0 left-0"
       />
       <Scrollbar
         key={props.numColumns}
