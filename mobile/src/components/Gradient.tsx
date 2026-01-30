@@ -6,7 +6,7 @@ import { useColor } from "~/hooks/useTheme";
 import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
 
-/** Gradient where the "solid" portion is on the top. */
+/** Gradient where the darkest portion is on the top. */
 export function TopDownGradient(props: {
   height: number;
   color?: ColorRole;
@@ -16,11 +16,6 @@ export function TopDownGradient(props: {
 }) {
   const color = useColor(props.color, "surface");
 
-  const gradient = useMemo(
-    () => [`${color}FF`, `${color}00`] as const,
-    [color],
-  );
-
   const locations = useMemo(() => {
     if (!props.startFrom) return undefined;
     return [props.startFrom / props.height, 1] as const;
@@ -28,7 +23,7 @@ export function TopDownGradient(props: {
 
   return (
     <LinearGradient
-      colors={gradient}
+      colors={[`${color}FF`, `${color}00`]}
       locations={locations}
       pointerEvents="none"
       style={{ height: props.height }}
