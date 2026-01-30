@@ -123,6 +123,7 @@ export function NScrollListLayout<TData>({
       <OptionsSheet ref={sheetRef} />
       <Animated.View
         onLayout={(e) => setTopBarHeight(e.nativeEvent.layout.height)}
+        pointerEvents="box-none"
         style={headerStyle}
         className="absolute top-0 left-0 z-50 w-full"
       >
