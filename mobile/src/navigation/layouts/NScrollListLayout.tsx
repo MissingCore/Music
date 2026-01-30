@@ -100,6 +100,7 @@ export function NScrollListLayout<TData>({
   });
 
   const topOffset = SHADOW_HEIGHT + headerHeight;
+  const bottomOffset = bottomInset.withNav + 16;
 
   const headerStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: -headerTranslation.value }],
@@ -154,12 +155,12 @@ export function NScrollListLayout<TData>({
         contentContainerStyle={{
           paddingHorizontal: 16,
           paddingTop: topOffset,
-          paddingBottom: bottomInset.withNav + 16,
+          paddingBottom: bottomOffset,
         }}
       />
       <LinearGradient
         colors={[`${surface}FF`, `${surface}00`]}
-        locations={[insets.top / headerHeight, 1]}
+        locations={[insets.top / topOffset, 1]}
         pointerEvents="none"
         style={{ height: topOffset }}
         className="absolute top-0 left-0 w-full"
@@ -167,7 +168,7 @@ export function NScrollListLayout<TData>({
       <Scrollbar
         key={props.numColumns}
         listRef={internalListRef}
-        scrollbarOffset={{ top: topOffset, bottom: bottomInset.withNav + 16 }}
+        scrollbarOffset={{ top: topOffset, bottom: bottomOffset }}
         isVisible={quickScroll}
         {...layoutInfo}
       />
