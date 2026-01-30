@@ -30,7 +30,7 @@ import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { AccentText } from "~/components/Typography/AccentText";
 
 const INVALID_STATE = -1;
-const SNAP_PERCENT = 0.2;
+const SNAP_PERCENT = 0.25;
 const VELOCITY_FACTOR = 5;
 
 const SHADOW_HEIGHT = 48;
@@ -83,6 +83,7 @@ export function NScrollListLayout<TData>({
   //#endregion
 
   //#region Scroll Animations
+  const wasSnapped = useSharedValue(false);
   const dragOffsetYStart = useSharedValue(INVALID_STATE);
   const prevOffsetY = useSharedValue(0);
 
@@ -105,20 +106,31 @@ export function NScrollListLayout<TData>({
       prevOffsetY.value = e.contentOffset.y;
     },
     onBeginDrag: (e) => {
+      //? `withSpring` might make `headerTranslation` briefly not `0`.
+      wasSnapped.value = headerTranslation.value < 1;
       dragOffsetYStart.value = e.contentOffset.y;
     },
     onMomentumEnd: (e) => {
       //? Snap the header to a position after scrolling has stopped.
       const changeDelta = dragOffsetYStart.value - e.contentOffset.y;
+      const snapThreshold = headerHeight * SNAP_PERCENT;
       dragOffsetYStart.value = INVALID_STATE;
 
-      if (changeDelta > headerHeight * SNAP_PERCENT) {
-        // Snap header open if we scroll up a bit.
-        headerTranslation.value = withSpring(0);
-      } else if (e.contentOffset.y > headerHeight) {
-        // Only snap "close" if header can be fully out of view.
-        headerTranslation.value = withSpring(headerHeight);
+      // Only snap when not at the beginning of the list where the header
+      // should be fully visible.
+      if (e.contentOffset.y > headerHeight) {
+        if (wasSnapped.value && Math.abs(changeDelta) <= snapThreshold) {
+          // Keep header snapped if already snapped and didn't meet the threshold.
+          headerTranslation.value = withSpring(0);
+        } else if (changeDelta > snapThreshold) {
+          // Snap header open if we meet the threshold.
+          headerTranslation.value = withSpring(0);
+        } else {
+          headerTranslation.value = withSpring(headerHeight);
+        }
       }
+
+      wasSnapped.value = false;
     },
   });
   //#endregion
@@ -164,6 +176,7 @@ export function NScrollListLayout<TData>({
           paddingBottom: bottomOffset,
         }}
       />
+
       <TopDownGradient
         height={topBarHeight}
         startFrom={insets.top}
