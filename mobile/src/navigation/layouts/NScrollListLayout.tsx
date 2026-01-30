@@ -25,7 +25,6 @@ import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
 import { TopDownGradient } from "~/components/Gradient";
 import { Marquee } from "~/components/Marquee";
 import { Scrollbar, useScrollbarContext } from "~/components/NScrollbar";
-import { SafeContainer } from "~/components/SafeContainer";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { AccentText } from "~/components/Typography/AccentText";
@@ -34,7 +33,7 @@ const INVALID_STATE = -1;
 const SNAP_PERCENT = 0.2;
 const VELOCITY_FACTOR = 5;
 
-const SHADOW_HEIGHT = 24;
+const SHADOW_HEIGHT = 48;
 
 export function NScrollListLayout<TData>({
   titleKey,
@@ -50,16 +49,37 @@ export function NScrollListLayout<TData>({
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const bottomInset = useBottomActionsInset();
-  const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const internalListRef = useAnimatedLegendListRef();
   const sheetRef = useSheetRef();
 
+  //#region NScrollbar
+  const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const { layoutHandlers, layoutInfo, onScroll } = useScrollbarContext();
 
-  const [headerHeight, setHeaderHeight] = useState(0);
+  const bottomOffset = bottomInset.withNav + 16;
+  //#endregion
+
+  //#region Header Components
+  const [topBarHeight, setTopBarHeight] = useState(0); //? Includes the shadow underneath the header.
+  const headerHeight = useMemo(
+    () => topBarHeight - SHADOW_HEIGHT,
+    [topBarHeight],
+  );
+
+  const headerTranslation = useSharedValue(0);
+  const headerStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: -headerTranslation.value }],
+  }));
+
+  const IconButtonComponent = useMemo(
+    () => (Actions ? IconButton : FilledIconButton),
+    [Actions],
+  );
+  //#endregion
+
+  //#region Scroll Animations
   const dragOffsetYStart = useSharedValue(INVALID_STATE);
   const prevOffsetY = useSharedValue(0);
-  const headerTranslation = useSharedValue(0);
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (e) => {
@@ -96,46 +116,33 @@ export function NScrollListLayout<TData>({
       }
     },
   });
-
-  const topOffset = SHADOW_HEIGHT + headerHeight;
-  const bottomOffset = bottomInset.withNav + 16;
-
-  const headerStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: -headerTranslation.value }],
-  }));
-
-  const IconButtonComponent = useMemo(
-    () => (Actions ? IconButton : FilledIconButton),
-    [Actions],
-  );
+  //#endregion
 
   return (
     <View className="relative flex-1">
       <OptionsSheet ref={sheetRef} />
       <Animated.View
+        onLayout={(e) => setTopBarHeight(e.nativeEvent.layout.height)}
         style={headerStyle}
         className="absolute top-0 left-0 z-50 w-full"
       >
-        <SafeContainer
-          additionalTopOffset={24}
-          onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}
-          className="bg-surface p-4 pb-0"
+        <View
+          style={{ paddingTop: insets.top + 32 }}
+          className="flex-row items-center justify-between gap-4 bg-surface px-4"
         >
-          <View className="flex-row items-center justify-between gap-4">
-            <Marquee>
-              <AccentText className="text-4xl">{t(titleKey)}</AccentText>
-            </Marquee>
-            <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
-              {Actions}
-              <IconButtonComponent
-                Icon={MoreHoriz}
-                accessibilityLabel={t("feat.modalViewPreference.title")}
-                onPress={() => sheetRef.current?.present()}
-                size="sm"
-              />
-            </View>
+          <Marquee>
+            <AccentText className="text-4xl">{t(titleKey)}</AccentText>
+          </Marquee>
+          <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
+            {Actions}
+            <IconButtonComponent
+              Icon={MoreHoriz}
+              accessibilityLabel={t("feat.modalViewPreference.title")}
+              onPress={() => sheetRef.current?.present()}
+              size="sm"
+            />
           </View>
-        </SafeContainer>
+        </View>
         <TopDownGradient height={SHADOW_HEIGHT} />
       </Animated.View>
 
@@ -147,19 +154,19 @@ export function NScrollListLayout<TData>({
         {...props}
         contentContainerStyle={{
           paddingHorizontal: 16,
-          paddingTop: topOffset,
+          paddingTop: topBarHeight,
           paddingBottom: bottomOffset,
         }}
       />
       <TopDownGradient
-        height={topOffset}
+        height={topBarHeight}
         startFrom={insets.top}
         className="absolute top-0 left-0"
       />
       <Scrollbar
         key={props.numColumns}
         listRef={internalListRef}
-        scrollbarOffset={{ top: topOffset, bottom: bottomOffset }}
+        scrollbarOffset={{ top: topBarHeight, bottom: bottomOffset }}
         isVisible={quickScroll}
         {...layoutInfo}
       />
