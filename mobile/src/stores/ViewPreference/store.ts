@@ -11,6 +11,10 @@ export const viewPreferenceStore = createPersistedStore<ViewPreferenceStore>(
       set({ _hasHydrated: true });
     },
 
+    albumLayout: "grid",
+    albumIsAsc: true,
+    albumOrder: "name",
+
     artistLayout: "list",
     artistIsAsc: true,
     artistOrder: "name",

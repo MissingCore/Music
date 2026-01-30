@@ -5,7 +5,11 @@ import type {
   PrimaryFont,
   Theme,
 } from "../constants";
-import { clampPlaybackDelay, resolveLanguageConfigs } from "../utils";
+import {
+  clampMinAlbumLength,
+  clampPlaybackDelay,
+  resolveLanguageConfigs,
+} from "../utils";
 import { playbackStore } from "../../Playback/store";
 import { getSourceName } from "../../Playback/utils";
 
@@ -33,10 +37,6 @@ export async function setLanguage(languageCode: string) {
   }
 }
 
-export function setMinAlbumLength(minAlbumLength: number) {
-  preferenceStore.setState({ minAlbumLength });
-}
-
 export function setMinSeconds(minSeconds: number) {
   preferenceStore.setState({ minSeconds });
 }
@@ -45,16 +45,22 @@ export function setNowPlayingDesign(nowPlayingDesign: NowPlayingDesign) {
   preferenceStore.setState({ nowPlayingDesign });
 }
 
-export function updatePlaybackDelayByDelta(delta: number) {
-  preferenceStore.setState((prev) => ({
-    playbackDelay: clampPlaybackDelay(prev.playbackDelay + delta),
-  }));
-}
-
 export function setPrimaryFont(primaryFont: PrimaryFont) {
   preferenceStore.setState({ primaryFont });
 }
 
 export function setTheme(theme: Theme) {
   preferenceStore.setState({ theme });
+}
+
+export function updateMinAlbumLengthByDelta(delta: number) {
+  preferenceStore.setState((prev) => ({
+    minAlbumLength: clampMinAlbumLength(prev.minAlbumLength + delta),
+  }));
+}
+
+export function updatePlaybackDelayByDelta(delta: number) {
+  preferenceStore.setState((prev) => ({
+    playbackDelay: clampPlaybackDelay(prev.playbackDelay + delta),
+  }));
 }

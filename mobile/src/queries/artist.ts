@@ -38,7 +38,6 @@ export function useArtistForScreen(artistName: string) {
   });
 }
 
-/** Sort artists by their name using `localeCompare`. */
 export function useArtists() {
   return useQuery({
     ...q.artists.all,

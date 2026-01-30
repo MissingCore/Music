@@ -29,12 +29,21 @@ export const queries = createQueryKeyStore({
   albums: {
     all: {
       queryKey: null,
-      queryFn: () =>
-        db.query.albums.findMany({
-          columns: { id: true, name: true, artistsKey: true, artwork: true },
-          with: { tracks: { columns: { id: true } } },
-          orderBy: (fields) => [iAsc(fields.name), iAsc(fields.artistsKey)],
-        }),
+      queryFn: () => {
+        return db
+          .select({
+            id: albums.id,
+            name: albums.name,
+            artistsKey: albums.artistsKey,
+            artwork: albums.artwork,
+            duration: sum(tracks.duration),
+            trackCount: count(tracks.id),
+          })
+          .from(albums)
+          .innerJoin(tracks, eq(albums.id, tracks.albumId))
+          .groupBy(albums.name)
+          .orderBy(iAsc(albums.name), iAsc(albums.artistsKey));
+      },
     },
     detail: (albumId: string) => ({
       queryKey: [albumId],

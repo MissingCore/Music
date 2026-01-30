@@ -1,8 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import TrackPlayer from "@weights-ai/react-native-track-player";
-import type { ParseKeys } from "i18next";
 import { useCallback, useState } from "react";
-import { Pressable, View } from "react-native";
+import { Pressable } from "react-native";
 
 import { ActivityZone } from "~/resources/icons/ActivityZone";
 import { SlowMotionVideo } from "~/resources/icons/SlowMotionVideo";
@@ -23,11 +22,10 @@ import { ScrollView } from "~/components/Defaults";
 import { NumberStepper } from "~/components/Form/NumberStepper";
 import { CachedSlider } from "~/components/Form/Slider";
 import { SegmentedList } from "~/components/List/Segmented";
-import { Marquee } from "~/components/Marquee";
 import { DetachedSheet } from "~/components/Sheet/Detached";
+import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { TStyledText } from "~/components/Typography/StyledText";
 import { Switch } from "~/components/UI/Switch";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
 
@@ -93,7 +91,7 @@ export function PlaybackOptionsSheet(props: {
             {...VolumeSliderOptions}
           />
 
-          <PreferenceRow
+          <SheetLabelAction
             labelKey="feat.playback.extra.delay"
             RightElement={
               <NumberStepper
@@ -105,7 +103,7 @@ export function PlaybackOptionsSheet(props: {
               />
             }
           />
-          <PreferenceRow
+          <SheetLabelAction
             labelKey="feat.lyrics.title"
             RightElement={
               <Pressable
@@ -116,7 +114,7 @@ export function PlaybackOptionsSheet(props: {
               </Pressable>
             }
           />
-          <PreferenceRow
+          <SheetLabelAction
             labelKey="feat.waveformSlider.title"
             RightElement={
               <Pressable
@@ -147,22 +145,6 @@ export function PlaybackOptionsSheet(props: {
     </>
   );
 }
-
-//#region Preference Row
-function PreferenceRow(props: {
-  labelKey: ParseKeys;
-  RightElement: React.ReactNode;
-}) {
-  return (
-    <View className="min-h-8 flex-row items-center justify-between gap-2">
-      <Marquee color="surfaceBright">
-        <TStyledText textKey={props.labelKey} bold className="text-sm" />
-      </Marquee>
-      {props.RightElement}
-    </View>
-  );
-}
-//#endregion
 
 //#region Slider Configs
 const VolumeSliderOptions = {
