@@ -10,18 +10,15 @@ import { cn } from "~/lib/style";
 export function TopDownGradient(props: {
   height: number;
   color?: ColorRole;
-  /**
-   * Position in gradient we want the fade to start from. Will start
-   * gradient at 100% opacity instead of 90%.
-   */
+  /** Position in gradient we want the fade to start from. */
   startFrom?: number;
   className?: string;
 }) {
   const color = useColor(props.color, "surface");
 
   const gradient = useMemo(
-    () => [`${color}${props.startFrom ? "FF" : "E6"}`, `${color}00`] as const,
-    [color, props.startFrom],
+    () => [`${color}FF`, `${color}00`] as const,
+    [color],
   );
 
   const locations = useMemo(() => {
