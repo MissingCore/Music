@@ -6,13 +6,14 @@ import { useTranslation } from "react-i18next";
 import type { LayoutChangeEvent, ViewStyle } from "react-native";
 import { View } from "react-native";
 import type { AnimatedStyle } from "react-native-reanimated";
-import {
+import Animated, {
   clamp,
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { MoreHoriz } from "~/resources/icons/MoreHoriz";
 import { usePreferenceStore } from "~/stores/Preference/store";
@@ -37,21 +38,23 @@ const INVALID_STATE = -1;
 const SNAP_PERCENT = 0.2;
 const VELOCITY_FACTOR = 5;
 
+const SHADOW_HEIGHT = 24;
+
 export function NScrollListLayout<TData>({
   titleKey,
   OptionsSheet,
-  topShadow = 24,
   ...props
 }: Omit<LegendListProps<TData>, "onContentSizeChange" | "onLayout"> & {
   titleKey?: ParseKeys;
   OptionsSheet?: (props: { ref: TrueSheetRef }) => React.JSX.Element;
-  /** How tall of a transition we want when scrolling up. This will become `paddingTop`. */
-  topShadow?: number;
 }) {
   const { surface } = useTheme();
+  const insets = useSafeAreaInsets();
   const bottomInset = useBottomActionsInset();
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const internalListRef = useAnimatedLegendListRef();
+
+  const { layoutHandlers, layoutInfo, onScroll } = useScrollbarContext();
 
   const [headerHeight, setHeaderHeight] = useState(0);
   const dragOffsetYStart = useSharedValue(INVALID_STATE);
@@ -62,7 +65,6 @@ export function NScrollListLayout<TData>({
     setHeaderHeight(e.nativeEvent.layout.height);
   }, []);
 
-  const { layoutHandlers, layoutInfo, onScroll } = useScrollbarContext();
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (e) => {
       onScroll(e);
@@ -90,16 +92,16 @@ export function NScrollListLayout<TData>({
       dragOffsetYStart.value = INVALID_STATE;
 
       if (changeDelta > headerHeight * SNAP_PERCENT) {
-        // Snap header open if we scroll down a bit.
+        // Snap header open if we scroll up a bit.
         headerTranslation.value = withSpring(0);
       } else if (e.contentOffset.y > headerHeight) {
-        // Snap header "close" otherwise when outside of initial position.
+        // Only snap "close" if header can be fully out of view.
         headerTranslation.value = withSpring(headerHeight);
       }
     },
   });
 
-  const topOffset = topShadow + headerHeight;
+  const topOffset = SHADOW_HEIGHT + headerHeight;
 
   const headerStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: -headerTranslation.value }],
@@ -113,7 +115,7 @@ export function NScrollListLayout<TData>({
           OptionsSheet={OptionsSheet}
           onLayout={measureHeader}
           style={headerStyle}
-          className="absolute top-0 left-0 z-50 w-full bg-surface"
+          className="absolute top-0 left-0 z-50 w-full"
         />
       ) : null}
 
@@ -130,7 +132,8 @@ export function NScrollListLayout<TData>({
         }}
       />
       <LinearGradient
-        colors={[`${surface}E6`, `${surface}00`]}
+        colors={[`${surface}FF`, `${surface}00`]}
+        locations={[insets.top / headerHeight, 1]}
         pointerEvents="none"
         style={{ height: topOffset }}
         className="absolute top-0 left-0 w-full"
@@ -157,6 +160,7 @@ export function NScrollListHeader(props: {
   children?: React.ReactNode;
 }) {
   const { t } = useTranslation();
+  const { surface } = useTheme();
   const sheetRef = useSheetRef();
 
   const IconButtonComponent = useMemo(
@@ -167,29 +171,34 @@ export function NScrollListHeader(props: {
   return (
     <>
       <props.OptionsSheet ref={sheetRef} />
-      <SafeContainer
-        animated
-        onLayout={props.onLayout}
-        additionalTopOffset={24}
-        style={props.style}
-        className={cn(
-          "flex-row items-center justify-between gap-4 p-4",
-          props.className,
-        )}
-      >
-        <Marquee>
-          <AccentText className="text-4xl">{t(props.titleKey)}</AccentText>
-        </Marquee>
-        <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
-          {props.children}
-          <IconButtonComponent
-            Icon={MoreHoriz}
-            accessibilityLabel={t("feat.modalViewPreference.title")}
-            onPress={() => sheetRef.current?.present()}
-            size="sm"
-          />
-        </View>
-      </SafeContainer>
+      <Animated.View style={props.style} className={props.className}>
+        <SafeContainer
+          additionalTopOffset={24}
+          onLayout={props.onLayout}
+          className="bg-surface p-4 pb-0"
+        >
+          <View className="flex-row items-center justify-between gap-4">
+            <Marquee>
+              <AccentText className="text-4xl">{t(props.titleKey)}</AccentText>
+            </Marquee>
+            <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
+              {props.children}
+              <IconButtonComponent
+                Icon={MoreHoriz}
+                accessibilityLabel={t("feat.modalViewPreference.title")}
+                onPress={() => sheetRef.current?.present()}
+                size="sm"
+              />
+            </View>
+          </View>
+        </SafeContainer>
+        <LinearGradient
+          colors={[`${surface}E6`, `${surface}00`]}
+          pointerEvents="none"
+          style={{ height: SHADOW_HEIGHT }}
+          className="w-full"
+        />
+      </Animated.View>
     </>
   );
 }
