@@ -1,6 +1,6 @@
 import type { LegendListProps } from "@legendapp/list";
 import type { ParseKeys } from "i18next";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import Animated, {
@@ -70,6 +70,11 @@ export function NScrollListLayout<TData>({
   const headerStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: -headerTranslation.value }],
   }));
+
+  // Reset `headerTranslation` when the layout changes.
+  useEffect(() => {
+    headerTranslation.value = 0;
+  }, [headerTranslation, props.numColumns]);
 
   const IconButtonComponent = useMemo(
     () => (Actions ? IconButton : FilledIconButton),
