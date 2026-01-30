@@ -1,5 +1,4 @@
 import type { FlashListRef } from "@shopify/flash-list";
-import { LinearGradient } from "expo-linear-gradient";
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -15,13 +14,13 @@ import { AlbumArtistsKey } from "~/api/album.utils";
 import { getArtistsString } from "~/api/artist.utils";
 import { getPlaylistArtwork } from "~/api/playlist.utils";
 import { getTrackArtwork } from "~/api/track.utils";
-import { useColor } from "~/hooks/useTheme";
 
 import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
 import { isString } from "~/utils/validation";
 import { FlashList, FlatList } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
+import { TopDownGradient } from "~/components/Gradient";
 import { TEm } from "~/components/Typography/StyledText";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { SearchBar } from "./SearchBar";
@@ -65,7 +64,6 @@ type SearchResultsListProps<TScope extends SearchCategories> = {
 function SearchResultsList<TScope extends SearchCategories>(
   props: SearchResultsListProps<TScope> & { query: string },
 ) {
-  const shadowColor = useColor(props.bgColor, "surface");
   const results = useSearch(props.searchScope, props.query);
   const [selectedTab, setSelectedTab] = useState<TScope[number] | "all">("all");
   const [filterHeight, setFilterHeight] = useState(53); // Height will be ~53px
@@ -144,12 +142,10 @@ function SearchResultsList<TScope extends SearchCategories>(
         }}
       />
 
-      <LinearGradient
-        colors={[`${shadowColor}FF`, `${shadowColor}00`]}
-        start={{ x: 0.0, y: 0.0 }}
-        end={{ x: 0.0, y: 1.0 }}
-        style={{ height: filterHeight }}
-        className="absolute top-0 left-0 w-full"
+      <TopDownGradient
+        height={filterHeight}
+        color={props.bgColor}
+        className="absolute top-0 left-0"
       />
     </View>
   );

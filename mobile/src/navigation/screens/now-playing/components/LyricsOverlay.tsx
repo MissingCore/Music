@@ -1,5 +1,4 @@
 import { useNavigation } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -13,6 +12,7 @@ import { useTheme } from "~/hooks/useTheme";
 import { cn } from "~/lib/style";
 import { FlatList, useFlatListRef } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
+import { TopDownGradient } from "~/components/Gradient";
 import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
 const SCROLL_OFFSET = 64;
@@ -20,7 +20,7 @@ const LINE_GAP = 16;
 
 export function LyricsOverlay(props: { size: number; trackId: string }) {
   const { top } = useSafeAreaInsets();
-  const { scheme, surface } = useTheme();
+  const { scheme } = useTheme();
   const screenDesign = usePreferenceStore((s) => s.nowPlayingDesign);
 
   // Estimated offset to get overlay to go behind the `TopAppBar`.
@@ -39,21 +39,14 @@ export function LyricsOverlay(props: { size: number; trackId: string }) {
         <LyricsContent trackId={props.trackId} offset={lyricsOffset} />
       </View>
 
-      <LinearGradient
-        colors={[`${surface}FF`, `${surface}00`]}
-        locations={[
-          (screenDesign === "vinylOld" ? top : topOffset) / lyricsOffset,
-          1,
-        ]}
-        pointerEvents="none"
-        style={{ height: lyricsOffset }}
-        className="absolute top-0 left-0 w-full"
+      <TopDownGradient
+        height={lyricsOffset}
+        startFrom={screenDesign === "vinylOld" ? top : topOffset}
+        className="absolute top-0 left-0"
       />
-      <LinearGradient
-        colors={[`${surface}00`, `${surface}E6`]}
-        pointerEvents="none"
-        style={{ height: SCROLL_OFFSET }}
-        className="absolute bottom-0 left-0 w-full"
+      <TopDownGradient
+        height={SCROLL_OFFSET}
+        className="absolute bottom-0 left-0 rotate-180"
       />
     </View>
   );

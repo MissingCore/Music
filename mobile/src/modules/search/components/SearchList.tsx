@@ -1,18 +1,16 @@
 import type { FlashListProps, ListRenderItemInfo } from "@shopify/flash-list";
 import type { ParseKeys } from "i18next";
-import { LinearGradient } from "expo-linear-gradient";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { StyleProp, ViewStyle } from "react-native";
 import { View } from "react-native";
-
-import { useColor } from "~/hooks/useTheme";
 
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
 import { FlashList } from "~/components/Defaults";
+import { TopDownGradient } from "~/components/Gradient";
 import { SearchBar } from "./SearchBar";
 
 const DEFAULT_GAP = 24;
@@ -49,7 +47,6 @@ export function SearchList<TData>({
   ...props
 }: SearchListProps<TData>) {
   const { t } = useTranslation();
-  const shadowColor = useColor(shadowTransitionConfig?.color, "surface");
   const [query, setQuery] = useState("");
 
   const stopRender = useMemo(
@@ -97,12 +94,11 @@ export function SearchList<TData>({
             { paddingTop: shadowTransitionConfig?.gap ?? DEFAULT_GAP },
           ]}
         />
-        <LinearGradient
-          colors={[`${shadowColor}E6`, `${shadowColor}00`]}
-          start={{ x: 0.0, y: 0.0 }}
-          end={{ x: 0.0, y: 1.0 }}
-          style={{ height: shadowTransitionConfig?.gap ?? DEFAULT_GAP }}
-          className="absolute top-0 left-0 w-full"
+
+        <TopDownGradient
+          height={shadowTransitionConfig?.gap ?? DEFAULT_GAP}
+          color={shadowTransitionConfig?.color}
+          className="absolute top-0 left-0"
         />
       </View>
     </View>
