@@ -1,11 +1,9 @@
 import type { LegendListProps } from "@legendapp/list";
 import { LinearGradient } from "expo-linear-gradient";
 import type { ParseKeys } from "i18next";
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { LayoutChangeEvent, ViewStyle } from "react-native";
 import { View } from "react-native";
-import type { AnimatedStyle } from "react-native-reanimated";
 import Animated, {
   clamp,
   useAnimatedScrollHandler,
@@ -21,7 +19,6 @@ import { useTheme } from "~/hooks/useTheme";
 
 import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
 
-import { cn } from "~/lib/style";
 import {
   AnimatedLegendList,
   useAnimatedLegendListRef,
@@ -43,16 +40,21 @@ const SHADOW_HEIGHT = 24;
 export function NScrollListLayout<TData>({
   titleKey,
   OptionsSheet,
+  Actions,
   ...props
 }: Omit<LegendListProps<TData>, "onContentSizeChange" | "onLayout"> & {
-  titleKey?: ParseKeys;
-  OptionsSheet?: (props: { ref: TrueSheetRef }) => React.JSX.Element;
+  titleKey: ParseKeys;
+  OptionsSheet: (props: { ref: TrueSheetRef }) => React.JSX.Element;
+  /** Additional "actions" which will appear before the "Screen Options" button. */
+  Actions?: React.ReactNode;
 }) {
+  const { t } = useTranslation();
   const { surface } = useTheme();
   const insets = useSafeAreaInsets();
   const bottomInset = useBottomActionsInset();
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
   const internalListRef = useAnimatedLegendListRef();
+  const sheetRef = useSheetRef();
 
   const { layoutHandlers, layoutInfo, onScroll } = useScrollbarContext();
 
@@ -60,10 +62,6 @@ export function NScrollListLayout<TData>({
   const dragOffsetYStart = useSharedValue(INVALID_STATE);
   const prevOffsetY = useSharedValue(0);
   const headerTranslation = useSharedValue(0);
-
-  const measureHeader = useCallback((e: LayoutChangeEvent) => {
-    setHeaderHeight(e.nativeEvent.layout.height);
-  }, []);
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (e) => {
@@ -107,17 +105,45 @@ export function NScrollListLayout<TData>({
     transform: [{ translateY: -headerTranslation.value }],
   }));
 
+  const IconButtonComponent = useMemo(
+    () => (Actions ? IconButton : FilledIconButton),
+    [Actions],
+  );
+
   return (
     <View className="relative flex-1">
-      {titleKey && OptionsSheet ? (
-        <NScrollListHeader
-          titleKey={titleKey}
-          OptionsSheet={OptionsSheet}
-          onLayout={measureHeader}
-          style={headerStyle}
-          className="absolute top-0 left-0 z-50 w-full"
+      <OptionsSheet ref={sheetRef} />
+      <Animated.View
+        style={headerStyle}
+        className="absolute top-0 left-0 z-50 w-full"
+      >
+        <SafeContainer
+          additionalTopOffset={24}
+          onLayout={(e) => setHeaderHeight(e.nativeEvent.layout.height)}
+          className="bg-surface p-4 pb-0"
+        >
+          <View className="flex-row items-center justify-between gap-4">
+            <Marquee>
+              <AccentText className="text-4xl">{t(titleKey)}</AccentText>
+            </Marquee>
+            <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
+              {Actions}
+              <IconButtonComponent
+                Icon={MoreHoriz}
+                accessibilityLabel={t("feat.modalViewPreference.title")}
+                onPress={() => sheetRef.current?.present()}
+                size="sm"
+              />
+            </View>
+          </View>
+        </SafeContainer>
+        <LinearGradient
+          colors={[`${surface}E6`, `${surface}00`]}
+          pointerEvents="none"
+          style={{ height: SHADOW_HEIGHT }}
+          className="w-full"
         />
-      ) : null}
+      </Animated.View>
 
       <AnimatedLegendList
         ref={internalListRef}
@@ -146,59 +172,5 @@ export function NScrollListLayout<TData>({
         {...layoutInfo}
       />
     </View>
-  );
-}
-
-/** Accompanying header for `NScrollListLayout`. */
-export function NScrollListHeader(props: {
-  titleKey: ParseKeys;
-  OptionsSheet: (props: { ref: TrueSheetRef }) => React.JSX.Element;
-  onLayout?: (e: LayoutChangeEvent) => void;
-  style?: AnimatedStyle<ViewStyle>;
-  className?: string;
-  /** Wrap additional "actions" which will appear before the "Screen Options" button. */
-  children?: React.ReactNode;
-}) {
-  const { t } = useTranslation();
-  const { surface } = useTheme();
-  const sheetRef = useSheetRef();
-
-  const IconButtonComponent = useMemo(
-    () => (props.children ? IconButton : FilledIconButton),
-    [props.children],
-  );
-
-  return (
-    <>
-      <props.OptionsSheet ref={sheetRef} />
-      <Animated.View style={props.style} className={props.className}>
-        <SafeContainer
-          additionalTopOffset={24}
-          onLayout={props.onLayout}
-          className="bg-surface p-4 pb-0"
-        >
-          <View className="flex-row items-center justify-between gap-4">
-            <Marquee>
-              <AccentText className="text-4xl">{t(props.titleKey)}</AccentText>
-            </Marquee>
-            <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
-              {props.children}
-              <IconButtonComponent
-                Icon={MoreHoriz}
-                accessibilityLabel={t("feat.modalViewPreference.title")}
-                onPress={() => sheetRef.current?.present()}
-                size="sm"
-              />
-            </View>
-          </View>
-        </SafeContainer>
-        <LinearGradient
-          colors={[`${surface}E6`, `${surface}00`]}
-          pointerEvents="none"
-          style={{ height: SHADOW_HEIGHT }}
-          className="w-full"
-        />
-      </Animated.View>
-    </>
   );
 }

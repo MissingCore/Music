@@ -6,10 +6,7 @@ import { useViewLayout } from "~/stores/ViewPreference/hooks/useViewLayout";
 import { useViewOrder } from "~/stores/ViewPreference/hooks/useViewOrder";
 
 import { AlbumsViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
-import {
-  NScrollListHeader,
-  NScrollListLayout,
-} from "~/navigation/layouts/NScrollListLayout";
+import { NScrollListLayout } from "~/navigation/layouts/NScrollListLayout";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import type { ExtractQueryData } from "~/lib/react-query";
@@ -27,21 +24,17 @@ export default function Albums() {
   const presets = useViewLayout("album", sortedData, formatData);
 
   return (
-    <>
-      <NScrollListHeader
-        titleKey="term.albums"
-        OptionsSheet={AlbumsViewOptionsSheet}
-      />
-      <NScrollListLayout
-        ListEmptyComponent={
-          <ContentPlaceholder
-            isPending={isPending}
-            errMsgKey="err.msg.noAlbums"
-          />
-        }
-        {...presets}
-      />
-    </>
+    <NScrollListLayout
+      titleKey="term.albums"
+      OptionsSheet={AlbumsViewOptionsSheet}
+      ListEmptyComponent={
+        <ContentPlaceholder
+          isPending={isPending}
+          errMsgKey="err.msg.noAlbums"
+        />
+      }
+      {...presets}
+    />
   );
 }
 
