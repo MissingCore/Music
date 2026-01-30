@@ -6,10 +6,7 @@ import { useViewLayout } from "~/stores/ViewPreference/hooks/useViewLayout";
 import { useViewOrder } from "~/stores/ViewPreference/hooks/useViewOrder";
 
 import { ArtistsViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
-import {
-  NScrollListHeader,
-  NScrollListLayout,
-} from "~/navigation/layouts/NScrollListLayout";
+import { NScrollListLayout } from "~/navigation/layouts/NScrollListLayout";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import type { ExtractQueryData } from "~/lib/react-query";
@@ -31,21 +28,17 @@ export default function Artists() {
   const presets = useViewLayout("artist", sortedData, formatData);
 
   return (
-    <>
-      <NScrollListHeader
-        titleKey="term.artists"
-        OptionsSheet={ArtistsViewOptionsSheet}
-      />
-      <NScrollListLayout
-        ListEmptyComponent={
-          <ContentPlaceholder
-            isPending={isPending}
-            errMsgKey="err.msg.noArtists"
-          />
-        }
-        {...presets}
-      />
-    </>
+    <NScrollListLayout
+      titleKey="term.artists"
+      OptionsSheet={ArtistsViewOptionsSheet}
+      ListEmptyComponent={
+        <ContentPlaceholder
+          isPending={isPending}
+          errMsgKey="err.msg.noArtists"
+        />
+      }
+      {...presets}
+    />
   );
 }
 
