@@ -198,13 +198,14 @@ function ListHeaderComponent(props: { showSheet: VoidFunction }) {
 
   const isUnique = useIsPlaylistUnique();
   const isSubmitting = usePlaylistStore((s) => s.isSubmitting);
+  const initialName = usePlaylistStore((s) => s.initialName);
   const playlistName = usePlaylistStore((s) => s.playlistName);
   const setPlaylistName = usePlaylistStore((s) => s.setPlaylistName);
 
   return (
     <>
       <View className="gap-2 px-4">
-        {playlistName === FavoritesPlaylistKey ? (
+        {initialName === FavoritesPlaylistKey ? (
           <View className="min-h-12 justify-center border-b border-outline px-1 opacity-25">
             <TStyledText textKey="term.favoriteTracks" numberOfLines={1} />
           </View>
