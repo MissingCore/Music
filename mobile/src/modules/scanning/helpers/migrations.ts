@@ -8,6 +8,7 @@ import {
   fileNodes,
   hiddenTracks,
   playedMediaLists,
+  playlists,
   tracks,
   tracksToArtists,
   tracksToPlaylists,
@@ -24,6 +25,7 @@ import type { MigrationOption } from "../constants";
 import { MigrationHistory } from "../constants";
 
 import { chunkArray } from "~/utils/object";
+import { ReservedPlaylists } from "~/modules/media/constants";
 
 /**
  * Run code to change some values prior to indexing for any changes
@@ -32,6 +34,12 @@ import { chunkArray } from "~/utils/object";
 export async function checkForMigrations() {
   const value = await AsyncStorage.getItem("last-adjustment");
   const lastMigrationCode = value !== null ? Number(value) : -1;
+
+  //? Ensure the "Favorite Tracks" playlist exist.
+  await db
+    .insert(playlists)
+    .values({ name: ReservedPlaylists.favorites })
+    .onConflictDoNothing();
 
   // Exit early if we don't need to do any migrations.
   const lastestMigrationCode = Object.keys(MigrationHistory).length - 1;

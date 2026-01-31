@@ -1,6 +1,6 @@
 /** Names of playlists a user can't create. */
 export const ReservedPlaylists = {
-  favorites: "Favorite Tracks",
+  favorites: "favorites",
   tracks: "Tracks",
   // Special utility route names.
   create: "create",
