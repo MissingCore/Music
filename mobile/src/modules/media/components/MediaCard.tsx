@@ -45,33 +45,11 @@ export function MediaCard({
 }
 //#endregion
 
-//#region Placeholder Data
-/**
- * Placeholder content — useful in `<FlatList />` if we want to do
- * something special for the first item.
- */
-export const MediaCardPlaceholderContent: MediaCardContent = {
-  id: "",
-  source: null,
-  title: "",
-  description: "",
-  type: "album",
-};
-//#endregion
-
 //#region useMediaCardListPreset
 /** Presets used to render a list of `<MediaCard />`. */
 export function useMediaCardListPreset(
   args: Omit<React.ComponentProps<typeof ContentPlaceholder>, "className"> & {
     data?: readonly MediaCardContent[];
-    /**
-     * Renders a special entry before all other data. This assumes at `data[0]`,
-     * we have a `MediaCardPlaceholderContent`.
-     */
-    RenderFirst?: (props: {
-      size: number;
-      className: string;
-    }) => React.JSX.Element;
   },
 ) {
   const navigation = useNavigation();
@@ -93,17 +71,14 @@ export function useMediaCardListPreset(
         Utilized janky margin method to implement gaps in FlashList with columns.
           - https://github.com/shopify/flash-list/discussions/804#discussioncomment-5509022
       */
-      renderItem: ({ item, index }) =>
-        args.RenderFirst && index === 0 ? (
-          <args.RenderFirst size={width} className="mx-1.5 mb-3" />
-        ) : (
-          <MediaCard
-            {...item}
-            size={width}
-            onPress={() => navigation.navigate(...getMediaLinkContext(item))}
-            className="mx-1.5 mb-3"
-          />
-        ),
+      renderItem: ({ item }) => (
+        <MediaCard
+          {...item}
+          size={width}
+          onPress={() => navigation.navigate(...getMediaLinkContext(item))}
+          className="mx-1.5 mb-3"
+        />
+      ),
       ListEmptyComponent: (
         <ContentPlaceholder
           isPending={args.isPending}

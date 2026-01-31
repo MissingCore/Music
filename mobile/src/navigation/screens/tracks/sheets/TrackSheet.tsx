@@ -15,7 +15,12 @@ import { LowPriority } from "~/resources/icons/LowPriority";
 import { PlaylistAdd } from "~/resources/icons/PlaylistAdd";
 import { QueueMusic } from "~/resources/icons/QueueMusic";
 import { Schedule } from "~/resources/icons/Schedule";
-import { useFavoriteTrack, useHideTrack, useTrack } from "~/queries/track";
+import {
+  useAddToPlaylist,
+  useHideTrack,
+  useRemoveFromPlaylist,
+  useTrackFavoriteStatus,
+} from "~/queries/track";
 import { Queue } from "~/stores/Playback/actions";
 import { useSessionStore } from "~/services/SessionStore";
 
@@ -36,6 +41,7 @@ import { DetachedSheet } from "~/components/Sheet/Detached";
 import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 
@@ -54,7 +60,7 @@ export function TrackSheet() {
             <TrackIntro data={data} />
             <TrackMetadata data={data} />
             <IconActions
-              id={data.id}
+              data={data}
               editArtwork={() => trackArtworkSheetRef.current?.present()}
             />
             <QueueActions id={data.id} name={data.name} />
@@ -158,22 +164,35 @@ function TrackMetadata({ data }: { data: TrackWithRelations }) {
 
 //#region Actions
 /** Actions that can be understood with just an icon. */
-function IconActions(props: { id: string; editArtwork: VoidFunction }) {
+function IconActions(props: {
+  data: TrackWithRelations;
+  editArtwork: VoidFunction;
+}) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const { data } = useTrack(props.id);
-  const favoriteTrack = useFavoriteTrack(props.id);
+  const { data: favoriteStatus } = useTrackFavoriteStatus(props.data.id);
+  const addToPlaylist = useAddToPlaylist(props.data.id);
+  const removeFromPlaylist = useRemoveFromPlaylist(props.data.id);
   const hideTrack = useHideTrack();
 
-  const favStatus = data?.isFavorite ?? false;
-  const isFav = favoriteTrack.isPending ? !favStatus : favStatus;
+  const favStatus = favoriteStatus ?? false;
+  const isFav =
+    addToPlaylist.isPending || removeFromPlaylist.isPending
+      ? !favStatus
+      : favStatus;
 
   return (
     <View className="flex-row justify-between gap-1 rounded-md bg-surfaceContainerLowest px-1">
       <IconButton
         Icon={Favorite}
         accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
-        onPress={() => mutateGuard(favoriteTrack, !favStatus)}
+        onPress={() =>
+          mutateGuard(
+            // @ts-expect-error - We don't care about return type.
+            isFav ? removeFromPlaylist : addToPlaylist,
+            FavoritesPlaylistKey,
+          )
+        }
         filled={isFav}
       />
       <IconButton
@@ -185,7 +204,7 @@ function IconActions(props: { id: string; editArtwork: VoidFunction }) {
         Icon={Edit}
         accessibilityLabel={t("feat.trackMetadata.title")}
         onPress={sheetAction(() =>
-          navigation.navigate("ModifyTrack", { id: props.id }),
+          navigation.navigate("ModifyTrack", { id: props.data.id }),
         )}
       />
       <IconButton
@@ -195,10 +214,10 @@ function IconActions(props: { id: string; editArtwork: VoidFunction }) {
       />
       <IconButton
         Icon={Delete}
-        accessibilityLabel={t("template.entryHide", { name: data?.name })}
-        onPress={sheetAction(() => {
-          if (data) mutateGuard(hideTrack, { track: data });
-        })}
+        accessibilityLabel={t("template.entryHide", { name: props.data.name })}
+        onPress={sheetAction(() =>
+          mutateGuard(hideTrack, { track: props.data }),
+        )}
       />
     </View>
   );

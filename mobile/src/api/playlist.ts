@@ -14,7 +14,6 @@ import { sortPreferencesStore } from "~/modules/media/services/SortPreferences";
 import { iAsc, iDesc } from "~/lib/drizzle";
 import { pickKeys } from "~/utils/object";
 import type { ReservedPlaylistName } from "~/modules/media/constants";
-import { ReservedPlaylists } from "~/modules/media/constants";
 import { sanitizePlaylistName } from "./playlist.utils";
 import type { QueryManyWithTracksFn, QueryOneWithTracksFn } from "./types";
 import { getColumns, withRelations } from "./utils";
@@ -94,29 +93,15 @@ const _getSpecialPlaylist: QueryOneWithTracksFn<
   const playlistTracks = await db.query.tracks.findMany({
     columns: getColumns(options?.trackColumns),
     ...withRelations({ defaultWithAlbum: true, ...options }),
-    ...(ReservedPlaylists.favorites === id
-      ? {
-          where: (fields, { eq }) => eq(fields.isFavorite, true),
-          orderBy: (fields) => iAsc(fields.name),
-        }
-      : {
-          orderBy: (fields) =>
-            isAsc
-              ? iAsc(
-                  orderedBy === "alphabetical"
-                    ? fields.name
-                    : orderedBy === "discover"
-                      ? fields.discoverTime
-                      : fields.modificationTime,
-                )
-              : iDesc(
-                  orderedBy === "alphabetical"
-                    ? fields.name
-                    : orderedBy === "discover"
-                      ? fields.discoverTime
-                      : fields.modificationTime,
-                ),
-        }),
+    orderBy: (fields) => {
+      const field =
+        orderedBy === "alphabetical"
+          ? fields.name
+          : orderedBy === "discover"
+            ? fields.discoverTime
+            : fields.modificationTime;
+      return isAsc ? iAsc(field) : iDesc(field);
+    },
   });
 
   return { ...mainFields, tracks: playlistTracks };

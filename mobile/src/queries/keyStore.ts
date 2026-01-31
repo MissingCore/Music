@@ -1,5 +1,5 @@
 import { createQueryKeyStore } from "@lukemorales/query-key-factory";
-import { count, eq, getTableColumns, sum } from "drizzle-orm";
+import { count, eq, getTableColumns, ne, sum } from "drizzle-orm";
 
 import { db } from "~/db";
 import {
@@ -13,7 +13,7 @@ import {
 import { getAlbum, getAlbums } from "~/api/album";
 import { getArtistAlbums } from "~/api/artist";
 import { getFolder } from "~/api/folder";
-import { getPlaylist, getPlaylists, getSpecialPlaylist } from "~/api/playlist";
+import { getPlaylist, getPlaylists } from "~/api/playlist";
 import {
   getRecentlyPlayedMediaLists,
   getRecentlyPlayedTracks,
@@ -21,7 +21,7 @@ import {
 import { getTrack, getTrackPlaylists, getTracks } from "~/api/track";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
-import { ReservedPlaylists } from "~/modules/media/constants";
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
 /** All of the reusuable query keys. */
 export const queries = createQueryKeyStore({
@@ -106,10 +106,6 @@ export const queries = createQueryKeyStore({
       queryKey: null,
       queryFn: () => getFavoriteLists(),
     },
-    tracks: {
-      queryKey: [ReservedPlaylists.favorites],
-      queryFn: () => getSpecialPlaylist(ReservedPlaylists.favorites),
-    },
   },
   /** Query keys used in `useQuery` for folders. */
   folders: {
@@ -171,6 +167,7 @@ export const queries = createQueryKeyStore({
       queryKey: null,
       queryFn: () =>
         getPlaylists({
+          where: [ne(playlists.name, FavoritesPlaylistKey)],
           columns: ["name", "artwork"],
           trackColumns: ["artwork"],
           albumColumns: ["artwork"],
@@ -202,6 +199,19 @@ export const queries = createQueryKeyStore({
       queryKey: [trackId],
       queryFn: () => getTrack(trackId),
       contextQueries: {
+        isFavorite: {
+          queryKey: null,
+          queryFn: async () => {
+            const isFavorited = await db.query.tracksToPlaylists.findFirst({
+              where: (fields, { and, eq }) =>
+                and(
+                  eq(fields.playlistName, FavoritesPlaylistKey),
+                  eq(fields.trackId, trackId),
+                ),
+            });
+            return isFavorited ? true : false;
+          },
+        },
         playlists: {
           // eslint-disable-next-line @tanstack/query/exhaustive-deps
           queryKey: null,

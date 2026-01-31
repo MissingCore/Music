@@ -2,11 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
 import type { AlbumWithTracks } from "~/db/schema";
-import { formatForCurrentScreen, formatForMediaCard } from "~/db/utils";
+import { formatForMediaCard } from "~/db/utils";
 
 import { queries as q } from "./keyStore";
 
-import { ReservedPlaylists } from "~/modules/media/constants";
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
 //#region Queries
 /** Return list of `MediaCardContent` of favorited albums & playlists. */
@@ -23,27 +23,16 @@ export function useFavoriteListsForCards() {
         ...data.playlists.map((playlist) =>
           formatForMediaCard({ type: "playlist", data: playlist, t }),
         ),
-      ].sort((a, b) => a.title.localeCompare(b.title)),
-  });
-}
+      ].sort((a, b) => {
+        // Have "Favorites Tracks" playlist appear first in the list.
+        if (a.type === "playlist" && a.id === FavoritesPlaylistKey) {
+          return -1;
+        } else if (b.type === "playlist" && b.id === FavoritesPlaylistKey) {
+          return 1;
+        }
 
-/** Get the number of favorited tracks. */
-export function useFavoriteTracksCount() {
-  return useQuery({
-    ...q.favorites.tracks,
-    select: (data) => data.tracks.length,
-  });
-}
-
-/** Format list of favorited tracks for playlist's `(current)` screen. */
-export function useFavoriteTracksForScreen() {
-  const { t } = useTranslation();
-  return useQuery({
-    ...q.favorites.tracks,
-    select: (data) => ({
-      ...formatForCurrentScreen({ data, t }),
-      imageSource: ReservedPlaylists.favorites,
-    }),
+        return a.title.localeCompare(b.title);
+      }),
   });
 }
 //#endregion

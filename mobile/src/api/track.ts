@@ -87,11 +87,6 @@ export async function getTracks<
 //#endregion
 
 //#region PATCH Methods
-/** Update the `favorite` status of a track. */
-export async function favoriteTrack(id: string, isFavorite: boolean) {
-  return updateTrack(id, { isFavorite });
-}
-
 /** Update specified track. */
 export async function updateTrack(
   id: string,

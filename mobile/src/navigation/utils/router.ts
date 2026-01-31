@@ -30,8 +30,7 @@ export function getMediaLinkContext({
       { screen: "Folders", params: { path: id } },
     ] as const;
   } else if (type === "playlist") {
-    if (id === ReservedPlaylists.favorites) return ["FavoriteTracks"] as const;
-    else if (id === ReservedPlaylists.tracks) {
+    if (id === ReservedPlaylists.tracks) {
       return ["HomeScreens", { screen: "Tracks" }] as const;
     }
     return ["Playlist", { id }] as const;

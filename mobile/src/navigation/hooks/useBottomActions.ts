@@ -12,7 +12,6 @@ const miniPlayerRoutes = [
   "Albums-",
   "Artists-",
   "RecentlyPlayed-",
-  "FavoriteTracks-",
   "Album-",
   "Artist-",
   "Playlist-",

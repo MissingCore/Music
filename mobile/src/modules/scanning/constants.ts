@@ -4,7 +4,8 @@ export type MigrationOption =
   | "recent-list-db-migration"
   | "hide-home-tab"
   | "hidden-tracks"
-  | "multi-artist";
+  | "multi-artist"
+  | "favorites";
 
 /**
  * History of data migrations due to "breaking" changes.
@@ -27,5 +28,8 @@ export const MigrationHistory: Record<
     changes: ["discover-time-field", "recent-list-db-migration"],
   },
   2: { version: "v2.6.0", changes: ["hide-home-tab"] },
-  3: { version: "v3.0.0-rc.0", changes: ["hidden-tracks", "multi-artist"] },
+  3: {
+    version: "v3.0.0-rc.0",
+    changes: ["hidden-tracks", "multi-artist", "favorites"],
+  },
 };

@@ -8,7 +8,6 @@ import { formatForTrack } from "~/db/utils";
 import {
   addToPlaylist,
   deleteTracks,
-  favoriteTrack,
   removeFromPlaylist,
   updateTrack,
 } from "~/api/track";
@@ -18,11 +17,17 @@ import { queries as q } from "./keyStore";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
 //#region Queries
 /** Get specified track. */
 export function useTrack(trackId: string) {
   return useQuery({ ...q.tracks.detail(trackId) });
+}
+
+/** Returns if the track is favorited. */
+export function useTrackFavoriteStatus(trackId: string) {
+  return useQuery({ ...q.tracks.detail(trackId)._ctx.isFavorite });
 }
 
 /** Return the names of the playlists this track is in. */
@@ -47,30 +52,17 @@ export function useAddToPlaylist(trackId: string) {
   return useMutation({
     mutationFn: (playlistName: string) =>
       addToPlaylist({ trackId, playlistName }),
-    onSuccess: () => {
+    onSuccess: (_, playlistName) => {
+      if (playlistName === FavoritesPlaylistKey) {
+        queryClient.invalidateQueries({
+          queryKey: q.tracks.detail(trackId)._ctx.isFavorite.queryKey,
+        });
+      }
       queryClient.invalidateQueries({
         queryKey: q.tracks.detail(trackId)._ctx.playlists.queryKey,
       });
       queryClient.invalidateQueries({ queryKey: q.playlists._def });
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
-    },
-  });
-}
-
-/** Set the favorite status of a track. */
-export function useFavoriteTrack(trackId: string) {
-  const queryClient = useQueryClient();
-  return useMutation({
-    /** Pass the new favorite status of the track. */
-    mutationFn: async (isFavorite: boolean) => {
-      await wait(1);
-      await favoriteTrack(trackId, isFavorite);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: q.tracks.detail(trackId).queryKey,
-      });
-      queryClient.invalidateQueries({ queryKey: q.favorites.tracks.queryKey });
     },
   });
 }
@@ -100,7 +92,12 @@ export function useRemoveFromPlaylist(trackId: string) {
   return useMutation({
     mutationFn: (playlistName: string) =>
       removeFromPlaylist({ trackId, playlistName }),
-    onSuccess: () => {
+    onSuccess: (_, playlistName) => {
+      if (playlistName === FavoritesPlaylistKey) {
+        queryClient.invalidateQueries({
+          queryKey: q.tracks.detail(trackId)._ctx.isFavorite.queryKey,
+        });
+      }
       queryClient.invalidateQueries({
         queryKey: q.tracks.detail(trackId)._ctx.playlists.queryKey,
       });

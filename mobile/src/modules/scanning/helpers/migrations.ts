@@ -8,12 +8,15 @@ import {
   fileNodes,
   hiddenTracks,
   playedMediaLists,
+  playlists,
   tracks,
   tracksToArtists,
   tracksToPlaylists,
   waveformSamples,
 } from "~/db/schema";
 
+import { updatePlaylist } from "~/api/playlist";
+import { playbackStore } from "~/stores/Playback/store";
 import { preferenceStore } from "~/stores/Preference/store";
 import { onboardingStore } from "../services/Onboarding";
 
@@ -23,7 +26,9 @@ import { savePathComponents } from "./folder";
 import type { MigrationOption } from "../constants";
 import { MigrationHistory } from "../constants";
 
+import { iAsc } from "~/lib/drizzle";
 import { chunkArray } from "~/utils/object";
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
 /**
  * Run code to change some values prior to indexing for any changes
@@ -32,6 +37,16 @@ import { chunkArray } from "~/utils/object";
 export async function checkForMigrations() {
   const value = await AsyncStorage.getItem("last-adjustment");
   const lastMigrationCode = value !== null ? Number(value) : -1;
+
+  //? Ensure the "Favorite Tracks" playlist exist.
+  await db
+    .insert(playlists)
+    .values({ name: FavoritesPlaylistKey, isFavorite: true })
+    .onConflictDoUpdate({
+      target: [playlists.name],
+      // Keep the "Favorite Tracks" playlist as favorited.
+      set: { isFavorite: true },
+    });
 
   // Exit early if we don't need to do any migrations.
   const lastestMigrationCode = Object.keys(MigrationHistory).length - 1;
@@ -180,6 +195,30 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
           aBatch.map((a) => ({ albumId: a.id, artistName: a.artistsKey })),
         )
         .onConflictDoNothing();
+    }
+  },
+
+  favorites: async () => {
+    //? 1. Fix `playingFrom` if we last played from the "Favorite Tracks" list.
+    const { playingFrom } = playbackStore.getState();
+    if (playingFrom?.id === "Favorite Tracks") {
+      playbackStore.setState({
+        playingFrom: { type: "playlist", id: FavoritesPlaylistKey },
+      });
+    }
+
+    //? 2. Migrate tracks over.
+    const favTracks = await db.query.tracks.findMany({
+      columns: { id: true },
+      where: (fields, { eq }) => eq(fields.isFavorite, true),
+      orderBy: (fields) => iAsc(fields.name),
+    });
+
+    try {
+      if (favTracks.length === 0) return;
+      await updatePlaylist(FavoritesPlaylistKey, { tracks: favTracks });
+    } catch (err) {
+      console.log("[Failed to migrate favorite tracks]", err);
     }
   },
 };

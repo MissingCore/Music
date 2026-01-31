@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import { usePlaylists } from "~/queries/playlist";
 import {
   useAddToPlaylist,
@@ -14,10 +16,12 @@ import { Marquee } from "~/components/Marquee";
 import { DetachedSheet } from "~/components/Sheet/Detached";
 import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
 import { StyledText } from "~/components/Typography/StyledText";
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
 const GLOBAL_SHEET_KEY = "TrackToPlaylistsSheet";
 
 export function TrackToPlaylistsSheet({ id }: { id: string }) {
+  const { t } = useTranslation();
   const { data } = usePlaylists();
   const { data: inList } = useTrackPlaylists(id);
   const addToPlaylist = useAddToPlaylist(id);
@@ -50,7 +54,11 @@ export function TrackToPlaylistsSheet({ id }: { id: string }) {
               className={index > 0 ? "mt-2" : undefined}
             >
               <Marquee color="surfaceBright">
-                <StyledText>{item.name}</StyledText>
+                <StyledText>
+                  {item.name === FavoritesPlaylistKey
+                    ? t("term.favoriteTracks")
+                    : item.name}
+                </StyledText>
               </Marquee>
             </CheckboxField>
           );
