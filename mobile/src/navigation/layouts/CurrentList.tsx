@@ -20,7 +20,7 @@ import { toLowerCase } from "~/utils/string";
 import { Divider } from "~/components/Divider";
 import { Marquee } from "~/components/Marquee";
 import { StyledText, TEm } from "~/components/Typography/StyledText";
-import { ReservedPlaylists } from "~/modules/media/constants";
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import { MediaListControls } from "~/modules/media/components/MediaListControls";
 import { Vinyl } from "~/modules/media/components/Vinyl";
@@ -202,5 +202,5 @@ function AnimatedVinyl(props: AnimatedVinylProps) {
 
 /** Determine if whether this layout is for the "Favorite Playlists" page. */
 function getIsFavoritePlaylist({ type, id }: MediaListSource) {
-  return id === ReservedPlaylists.favorites && type === "playlist";
+  return id === FavoritesPlaylistKey && type === "playlist";
 }

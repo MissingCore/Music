@@ -6,8 +6,6 @@ import { formatForCurrentScreen, formatForMediaCard } from "~/db/utils";
 
 import { queries as q } from "./keyStore";
 
-import { ReservedPlaylists } from "~/modules/media/constants";
-
 //#region Queries
 /** Return list of `MediaCardContent` of favorited albums & playlists. */
 export function useFavoriteListsForCards() {
@@ -42,7 +40,7 @@ export function useFavoriteTracksForScreen() {
     ...q.favorites.tracks,
     select: (data) => ({
       ...formatForCurrentScreen({ data, t }),
-      imageSource: ReservedPlaylists.favorites,
+      imageSource: null,
     }),
   });
 }

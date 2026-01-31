@@ -7,7 +7,7 @@ import { Folder } from "~/resources/icons/Folder";
 
 import { cn } from "~/lib/style";
 import type { MediaType } from "~/stores/Playback/types";
-import { ReservedNames, ReservedPlaylists } from "../constants";
+import { FavoritesPlaylistKey, ReservedNames } from "../constants";
 
 const Image = withUniwind(ExpoImage);
 
@@ -73,7 +73,7 @@ export function MediaImage({
       style={{ width: size, height: size }}
       className={cn(usedClasses, {
         "rounded-full": type === "artist",
-        "bg-primary": source === ReservedPlaylists.favorites,
+        "bg-primary": source === FavoritesPlaylistKey,
       })}
     />
   );

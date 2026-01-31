@@ -1,6 +1,7 @@
+export const FavoritesPlaylistKey = "favorites";
+
 /** Names of playlists a user can't create. */
 export const ReservedPlaylists = {
-  favorites: "favorites",
   tracks: "Tracks",
   // Special utility route names.
   create: "create",

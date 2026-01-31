@@ -5,7 +5,7 @@ import { useBottomActionsInset } from "../../hooks/useBottomActions";
 import { CurrentListLayout } from "../../layouts/CurrentList";
 
 import { LegendList } from "~/components/Defaults";
-import { ReservedPlaylists } from "~/modules/media/constants";
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { useTrackListPreset } from "~/modules/media/components/Track";
 import { CurrentListMenu } from "../../components/CurrentListMenu";
 import { PagePlaceholder } from "../../components/Placeholder";
@@ -14,7 +14,7 @@ import { ScreenOptions } from "../../components/ScreenOptions";
 // Information about this track list.
 const trackSource = {
   type: "playlist",
-  id: ReservedPlaylists.favorites,
+  id: FavoritesPlaylistKey,
 } as const;
 
 export default function FavoriteTracks() {

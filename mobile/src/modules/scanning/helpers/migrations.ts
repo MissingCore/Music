@@ -28,7 +28,7 @@ import { MigrationHistory } from "../constants";
 
 import { iAsc } from "~/lib/drizzle";
 import { chunkArray } from "~/utils/object";
-import { ReservedPlaylists } from "~/modules/media/constants";
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
 /**
  * Run code to change some values prior to indexing for any changes
@@ -41,7 +41,7 @@ export async function checkForMigrations() {
   //? Ensure the "Favorite Tracks" playlist exist.
   await db
     .insert(playlists)
-    .values({ name: ReservedPlaylists.favorites })
+    .values({ name: FavoritesPlaylistKey })
     .onConflictDoNothing();
 
   // Exit early if we don't need to do any migrations.
@@ -199,7 +199,7 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
     const { playingFrom } = playbackStore.getState();
     if (playingFrom?.id === "Favorite Tracks") {
       playbackStore.setState({
-        playingFrom: { type: "playlist", id: ReservedPlaylists.favorites },
+        playingFrom: { type: "playlist", id: FavoritesPlaylistKey },
       });
     }
 
@@ -212,7 +212,7 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
 
     try {
       if (favTracks.length === 0) return;
-      await updatePlaylist(ReservedPlaylists.favorites, { tracks: favTracks });
+      await updatePlaylist(FavoritesPlaylistKey, { tracks: favTracks });
     } catch (err) {
       console.log("[Failed to migrate favorite tracks]", err);
     }
