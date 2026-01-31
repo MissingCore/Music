@@ -21,6 +21,7 @@ import {
 import { getTrack, getTrackPlaylists, getTracks } from "~/api/track";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
 /** All of the reusuable query keys. */
 export const queries = createQueryKeyStore({
@@ -197,6 +198,19 @@ export const queries = createQueryKeyStore({
       queryKey: [trackId],
       queryFn: () => getTrack(trackId),
       contextQueries: {
+        isFavorite: {
+          queryKey: null,
+          queryFn: async () => {
+            const isFavorited = await db.query.tracksToPlaylists.findFirst({
+              where: (fields, { and, eq }) =>
+                and(
+                  eq(fields.playlistName, FavoritesPlaylistKey),
+                  eq(fields.trackId, trackId),
+                ),
+            });
+            return isFavorited ? true : false;
+          },
+        },
         playlists: {
           // eslint-disable-next-line @tanstack/query/exhaustive-deps
           queryKey: null,

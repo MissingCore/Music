@@ -18,11 +18,17 @@ import { queries as q } from "./keyStore";
 
 import { clearAllQueries } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
 //#region Queries
 /** Get specified track. */
 export function useTrack(trackId: string) {
   return useQuery({ ...q.tracks.detail(trackId) });
+}
+
+/** Returns if the track is favorited. */
+export function useTrackFavoriteStatus(trackId: string) {
+  return useQuery({ ...q.tracks.detail(trackId)._ctx.isFavorite });
 }
 
 /** Return the names of the playlists this track is in. */
@@ -47,7 +53,12 @@ export function useAddToPlaylist(trackId: string) {
   return useMutation({
     mutationFn: (playlistName: string) =>
       addToPlaylist({ trackId, playlistName }),
-    onSuccess: () => {
+    onSuccess: (_, playlistName) => {
+      if (playlistName === FavoritesPlaylistKey) {
+        queryClient.invalidateQueries({
+          queryKey: q.tracks.detail(trackId)._ctx.isFavorite.queryKey,
+        });
+      }
       queryClient.invalidateQueries({
         queryKey: q.tracks.detail(trackId)._ctx.playlists.queryKey,
       });
@@ -100,7 +111,12 @@ export function useRemoveFromPlaylist(trackId: string) {
   return useMutation({
     mutationFn: (playlistName: string) =>
       removeFromPlaylist({ trackId, playlistName }),
-    onSuccess: () => {
+    onSuccess: (_, playlistName) => {
+      if (playlistName === FavoritesPlaylistKey) {
+        queryClient.invalidateQueries({
+          queryKey: q.tracks.detail(trackId)._ctx.isFavorite.queryKey,
+        });
+      }
       queryClient.invalidateQueries({
         queryKey: q.tracks.detail(trackId)._ctx.playlists.queryKey,
       });
