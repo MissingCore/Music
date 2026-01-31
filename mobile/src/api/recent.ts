@@ -171,9 +171,8 @@ async function getRecentListEntry({ id, type }: PlayFromSource) {
       entry = formatForMediaCard({ type: "playlist", data, t: i18next.t });
 
       // Translate the names of these special playlists.
-      if (entry && ReservedNames.has(id)) {
-        const tKey = id === ReservedPlaylists.tracks ? "t" : "favoriteT";
-        entry.title = i18next.t(`term.${tKey}racks`);
+      if (entry && id === ReservedPlaylists.tracks) {
+        entry.title = i18next.t("term.tracks");
       }
     }
     return { data: entry, error: false } as const;
