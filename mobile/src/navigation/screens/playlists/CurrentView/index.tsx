@@ -81,7 +81,11 @@ export default function Playlist({
             ) : null}
             <CurrentListMenu
               actions={menuActions}
-              name={data.name}
+              name={
+                data.name === FavoritesPlaylistKey
+                  ? t("term.favoriteTracks")
+                  : data.name
+              }
               trackIds={data.tracks.map(({ id }) => id)}
               presentArtworkSheet={() => artworkSheetRef.current?.present()}
             />
