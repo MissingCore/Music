@@ -1,7 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
+import { ne } from "drizzle-orm";
 import { useEffect, useRef, useState } from "react";
 
 import { db } from "~/db";
+import { playlists } from "~/db/schema";
 import type { SlimFolder, SlimTrackWithAlbum } from "~/db/slimTypes";
 
 import { getAlbums } from "~/api/album";
@@ -12,6 +14,7 @@ import { getTracks } from "~/api/track";
 import { iAsc } from "~/lib/drizzle";
 import { addTrailingSlash } from "~/utils/string";
 import type { Prettify } from "~/utils/types";
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import type { SearchCategories, SearchResults } from "../types";
 import { lowerHas, lowerStart, matchSort } from "../utils";
 
@@ -104,6 +107,7 @@ async function getAllMedia() {
         orderBy: (f, { asc }) => [asc(f.parentPath), asc(f.name)],
       }),
       getPlaylists({
+        where: [ne(playlists.name, FavoritesPlaylistKey)],
         columns: ["name", "artwork"],
         trackColumns: ["artwork"],
         albumColumns: ["artwork"],

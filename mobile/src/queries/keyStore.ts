@@ -1,5 +1,5 @@
 import { createQueryKeyStore } from "@lukemorales/query-key-factory";
-import { count, eq, getTableColumns, sum } from "drizzle-orm";
+import { count, eq, getTableColumns, ne, sum } from "drizzle-orm";
 
 import { db } from "~/db";
 import {
@@ -167,6 +167,7 @@ export const queries = createQueryKeyStore({
       queryKey: null,
       queryFn: () =>
         getPlaylists({
+          where: [ne(playlists.name, FavoritesPlaylistKey)],
           columns: ["name", "artwork"],
           trackColumns: ["artwork"],
           albumColumns: ["artwork"],
