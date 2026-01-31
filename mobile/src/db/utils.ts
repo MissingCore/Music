@@ -16,6 +16,7 @@ import { formatSeconds } from "~/utils/number";
 import type { AtLeast, Prettify } from "~/utils/types";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
 import type { TrackContent } from "~/modules/media/components/Track.type";
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
 //#region Format for Component
 type MediaCardFormatter = Prettify<
@@ -30,21 +31,17 @@ type MediaCardFormatter = Prettify<
 export function formatForMediaCard({ type, data, t }: MediaCardFormatter) {
   let source: string | string[] | null = data.artwork;
   let id = data.name;
+  let title = data.name;
   let description = t("plural.track", { count: data.tracks.length });
   if (type === "album") {
     id = data.id;
     description = AlbumArtistsKey.toString(data.artistsKey);
   } else if (type === "playlist") {
+    if (data.name === FavoritesPlaylistKey) title = t("term.favoriteTracks");
     source = getPlaylistArtwork(data);
   }
 
-  return {
-    type,
-    source,
-    id,
-    title: data.name,
-    description,
-  } as MediaCardContent;
+  return { type, source, id, title, description } as MediaCardContent;
 }
 
 /** Format data to be used in `<Track />`. */
