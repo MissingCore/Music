@@ -2,25 +2,14 @@ import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 
 import { History } from "~/resources/icons/History";
-import {
-  useFavoriteListsForCards,
-  useFavoriteTracksCount,
-} from "~/queries/favorite";
+import { useFavoriteListsForCards } from "~/queries/favorite";
 
 import { HomeScrollListLayout } from "../layouts/HomeScrollListLayout";
 
-import { cn } from "~/lib/style";
-import { abbreviateNum } from "~/utils/number";
 import { LegendList } from "~/components/Defaults";
-import { Button } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button/Icon";
-import { AccentText } from "~/components/Typography/AccentText";
-import { TEm, TStyledText } from "~/components/Typography/StyledText";
-import { FavoritesPlaylistKey } from "~/modules/media/constants";
-import {
-  MediaCardPlaceholderContent,
-  useMediaCardListPreset,
-} from "~/modules/media/components/MediaCard";
+import { TEm } from "~/components/Typography/StyledText";
+import { useMediaCardListPreset } from "~/modules/media/components/MediaCard";
 
 export default function Home() {
   const { t } = useTranslation();
@@ -48,38 +37,7 @@ export default function Home() {
 /** Display list of content we've favorited. */
 function Favorites() {
   const { data } = useFavoriteListsForCards();
-  const presets = useMediaCardListPreset({
-    data: [MediaCardPlaceholderContent, ...(data ?? [])],
-    RenderFirst: FavoriteTracks,
-  });
-
+  const presets = useMediaCardListPreset({ data });
   return <LegendList {...presets} />;
-}
-
-/**
- * Displays the number of favorited tracks and opens up the playlist of
- * favorited tracks.
- */
-function FavoriteTracks(props: { size: number; className: string }) {
-  const navigation = useNavigation();
-  const { isPending, error, data } = useFavoriteTracksCount();
-
-  const trackCount = isPending || error ? "" : abbreviateNum(data);
-
-  return (
-    <Button
-      onPress={() =>
-        navigation.navigate("Playlist", { id: FavoritesPlaylistKey })
-      }
-      style={{ width: props.size, height: props.size }}
-      className={cn(
-        "gap-0 rounded-lg bg-primary active:bg-primaryDim",
-        props.className,
-      )}
-    >
-      <AccentText className="text-5xl text-onPrimary">{trackCount}</AccentText>
-      <TStyledText textKey="term.tracks" className="text-onPrimary" />
-    </Button>
-  );
 }
 //#endregion

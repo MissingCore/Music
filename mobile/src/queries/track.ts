@@ -70,7 +70,7 @@ export function useFavoriteTrack(trackId: string) {
       queryClient.invalidateQueries({
         queryKey: q.tracks.detail(trackId).queryKey,
       });
-      queryClient.invalidateQueries({ queryKey: q.favorites.tracks.queryKey });
+      queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
     },
   });
 }
