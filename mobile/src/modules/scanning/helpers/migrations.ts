@@ -41,8 +41,12 @@ export async function checkForMigrations() {
   //? Ensure the "Favorite Tracks" playlist exist.
   await db
     .insert(playlists)
-    .values({ name: FavoritesPlaylistKey })
-    .onConflictDoNothing();
+    .values({ name: FavoritesPlaylistKey, isFavorite: true })
+    .onConflictDoUpdate({
+      target: [playlists.name],
+      // Keep the "Favorite Tracks" playlist as favorited.
+      set: { isFavorite: true },
+    });
 
   // Exit early if we don't need to do any migrations.
   const lastestMigrationCode = Object.keys(MigrationHistory).length - 1;
