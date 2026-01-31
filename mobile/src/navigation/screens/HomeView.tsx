@@ -16,6 +16,7 @@ import { Button } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { AccentText } from "~/components/Typography/AccentText";
 import { TEm, TStyledText } from "~/components/Typography/StyledText";
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import {
   MediaCardPlaceholderContent,
   useMediaCardListPreset,
@@ -67,7 +68,9 @@ function FavoriteTracks(props: { size: number; className: string }) {
 
   return (
     <Button
-      onPress={() => navigation.navigate("FavoriteTracks")}
+      onPress={() =>
+        navigation.navigate("Playlist", { id: FavoritesPlaylistKey })
+      }
       style={{ width: props.size, height: props.size }}
       className={cn(
         "gap-0 rounded-lg bg-primary active:bg-primaryDim",

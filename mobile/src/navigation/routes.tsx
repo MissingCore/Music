@@ -45,7 +45,6 @@ import SaveErrors from "./screens/settings/SaveErrorsView";
 import ScanningSettings from "./screens/settings/ScanningSettingsView";
 import ThirdParty from "./screens/settings/ThirdPartyView";
 import Settings from "./screens/settings/View";
-import FavoriteTracks from "./screens/tracks/FavoritesView";
 import ModifyTrack from "./screens/tracks/ModifyView";
 import Tracks from "./screens/tracks/View";
 import { TrackSheet } from "./screens/tracks/sheets/TrackSheet";
@@ -252,7 +251,6 @@ export const RootStack = createNativeStackNavigator({
   groups: {
     Current: {
       screens: {
-        FavoriteTracks,
         CreatePlaylist,
         ModifyPlaylist: {
           screen: ModifyPlaylist,

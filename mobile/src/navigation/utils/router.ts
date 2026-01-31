@@ -1,9 +1,6 @@
 import { createNavigationContainerRef } from "@react-navigation/native";
 
-import {
-  FavoritesPlaylistKey,
-  ReservedPlaylists,
-} from "~/modules/media/constants";
+import { ReservedPlaylists } from "~/modules/media/constants";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
 import type { PlayFromSource } from "~/stores/Playback/types";
 
@@ -33,8 +30,7 @@ export function getMediaLinkContext({
       { screen: "Folders", params: { path: id } },
     ] as const;
   } else if (type === "playlist") {
-    if (id === FavoritesPlaylistKey) return ["FavoriteTracks"] as const;
-    else if (id === ReservedPlaylists.tracks) {
+    if (id === ReservedPlaylists.tracks) {
       return ["HomeScreens", { screen: "Tracks" }] as const;
     }
     return ["Playlist", { id }] as const;
