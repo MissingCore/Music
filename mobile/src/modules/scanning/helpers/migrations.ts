@@ -15,6 +15,8 @@ import {
   waveformSamples,
 } from "~/db/schema";
 
+import { updatePlaylist } from "~/api/playlist";
+import { playbackStore } from "~/stores/Playback/store";
 import { preferenceStore } from "~/stores/Preference/store";
 import { onboardingStore } from "../services/Onboarding";
 
@@ -24,6 +26,7 @@ import { savePathComponents } from "./folder";
 import type { MigrationOption } from "../constants";
 import { MigrationHistory } from "../constants";
 
+import { iAsc } from "~/lib/drizzle";
 import { chunkArray } from "~/utils/object";
 import { ReservedPlaylists } from "~/modules/media/constants";
 
@@ -188,6 +191,30 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
           aBatch.map((a) => ({ albumId: a.id, artistName: a.artistsKey })),
         )
         .onConflictDoNothing();
+    }
+  },
+
+  favorites: async () => {
+    //? 1. Fix `playingFrom` if we last played from the "Favorite Tracks" list.
+    const { playingFrom } = playbackStore.getState();
+    if (playingFrom?.id === "Favorite Tracks") {
+      playbackStore.setState({
+        playingFrom: { type: "playlist", id: ReservedPlaylists.favorites },
+      });
+    }
+
+    //? 2. Migrate tracks over.
+    const favTracks = await db.query.tracks.findMany({
+      columns: { id: true },
+      where: (fields, { eq }) => eq(fields.isFavorite, true),
+      orderBy: (fields) => iAsc(fields.name),
+    });
+
+    try {
+      if (favTracks.length === 0) return;
+      await updatePlaylist(ReservedPlaylists.favorites, { tracks: favTracks });
+    } catch (err) {
+      console.log("[Failed to migrate favorite tracks]", err);
     }
   },
 };

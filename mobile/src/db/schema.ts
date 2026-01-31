@@ -110,6 +110,7 @@ export const tracks = sqliteTable("tracks", {
   embeddedArtwork: text(),
   altArtwork: text(),
   // Data checking fields.
+  /** @deprecated Switching to using a dedicated playlist. */
   isFavorite: integer({ mode: "boolean" }).notNull().default(false),
   fetchedArt: integer({ mode: "boolean" }).notNull().default(false),
   // Use Epoch time instead of boolean to track when we did the action.
