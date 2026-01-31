@@ -170,12 +170,12 @@ function IconActions(props: {
 }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const { data } = useTrackFavoriteStatus(props.data.id);
+  const { data: favoriteStatus } = useTrackFavoriteStatus(props.data.id);
   const addToPlaylist = useAddToPlaylist(props.data.id);
   const removeFromPlaylist = useRemoveFromPlaylist(props.data.id);
   const hideTrack = useHideTrack();
 
-  const favStatus = data ?? false;
+  const favStatus = favoriteStatus ?? false;
   const isFav =
     addToPlaylist.isPending || removeFromPlaylist.isPending
       ? !favStatus
