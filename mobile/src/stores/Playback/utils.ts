@@ -17,7 +17,11 @@ import { iAsc } from "~/lib/drizzle";
 import { shuffleArray } from "~/utils/object";
 import { getSafeUri } from "~/utils/string";
 import type { ReservedPlaylistName } from "~/modules/media/constants";
-import { ReservedNames, ReservedPlaylists } from "~/modules/media/constants";
+import {
+  FavoritesPlaylistKey,
+  ReservedNames,
+  ReservedPlaylists,
+} from "~/modules/media/constants";
 
 /** Check if 2 `PlayFromSource` are equivalent. */
 export function arePlaybackSourceEqual(
@@ -51,11 +55,12 @@ export function formatTrackforPlayer(track: TrackWithRelations) {
 export async function getSourceName({ type, id }: PlayFromSource) {
   let name = "";
   try {
-    if (ReservedNames.has(id)) {
-      const tKey = id === ReservedPlaylists.tracks ? "t" : "favoriteT";
-      name = i18next.t(`term.${tKey}racks`);
-    } else if (type === "artist" || type === "playlist") {
+    if (type === "artist") {
       name = id;
+    } else if (type === "playlist") {
+      name = id;
+      if (id === FavoritesPlaylistKey) name = i18next.t("term.favoriteTracks");
+      else if (id === ReservedPlaylists.tracks) name = i18next.t("term.tracks");
     } else if (type === "folder") {
       // FIXME: At `-2` index due to the folder path (in `id`) ending with
       // a trailing slash.
