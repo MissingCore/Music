@@ -6,6 +6,8 @@ import { formatForMediaCard } from "~/db/utils";
 
 import { queries as q } from "./keyStore";
 
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
+
 //#region Queries
 /** Return list of `MediaCardContent` of favorited albums & playlists. */
 export function useFavoriteListsForCards() {
@@ -21,7 +23,16 @@ export function useFavoriteListsForCards() {
         ...data.playlists.map((playlist) =>
           formatForMediaCard({ type: "playlist", data: playlist, t }),
         ),
-      ].sort((a, b) => a.title.localeCompare(b.title)),
+      ].sort((a, b) => {
+        // Have "Favorites Tracks" playlist appear first in the list.
+        if (a.type === "playlist" && a.id === FavoritesPlaylistKey) {
+          return -1;
+        } else if (b.type === "playlist" && b.id === FavoritesPlaylistKey) {
+          return 1;
+        }
+
+        return a.title.localeCompare(b.title);
+      }),
   });
 }
 //#endregion
