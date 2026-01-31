@@ -93,22 +93,15 @@ const _getSpecialPlaylist: QueryOneWithTracksFn<
   const playlistTracks = await db.query.tracks.findMany({
     columns: getColumns(options?.trackColumns),
     ...withRelations({ defaultWithAlbum: true, ...options }),
-    orderBy: (fields) =>
-      isAsc
-        ? iAsc(
-            orderedBy === "alphabetical"
-              ? fields.name
-              : orderedBy === "discover"
-                ? fields.discoverTime
-                : fields.modificationTime,
-          )
-        : iDesc(
-            orderedBy === "alphabetical"
-              ? fields.name
-              : orderedBy === "discover"
-                ? fields.discoverTime
-                : fields.modificationTime,
-          ),
+    orderBy: (fields) => {
+      const field =
+        orderedBy === "alphabetical"
+          ? fields.name
+          : orderedBy === "discover"
+            ? fields.discoverTime
+            : fields.modificationTime;
+      return isAsc ? iAsc(field) : iDesc(field);
+    },
   });
 
   return { ...mainFields, tracks: playlistTracks };
