@@ -8,20 +8,22 @@ import { Edit } from "~/resources/icons/Edit";
 import { Favorite } from "~/resources/icons/Favorite";
 import { FileSave } from "~/resources/icons/FileSave";
 import { useFavoritePlaylist, usePlaylistForScreen } from "~/queries/playlist";
-import { useBottomActionsInset } from "../../../hooks/useBottomActions";
-import { CurrentListLayout } from "../../../layouts/CurrentList";
+
+import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
+import { PlaylistArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
+import { CurrentListLayout } from "~/navigation/layouts/CurrentList";
+import { CurrentListMenu } from "~/navigation/components/CurrentListMenu";
+import { PagePlaceholder } from "~/navigation/components/Placeholder";
+import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 import { ExportM3USheet } from "./ExportM3USheet";
-import { PlaylistArtworkSheet } from "../../../sheets/ArtworkSheet";
 
 import { mutateGuard } from "~/lib/react-query";
 import { LegendList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button/Icon";
 import type { MenuAction } from "~/components/Menu";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { useTrackListPreset } from "~/modules/media/components/Track";
-import { CurrentListMenu } from "../../../components/CurrentListMenu";
-import { PagePlaceholder } from "../../../components/Placeholder";
-import { ScreenOptions } from "../../../components/ScreenOptions";
 
 type Props = StaticScreenProps<{ id: string }>;
 
@@ -69,12 +71,14 @@ export default function Playlist({
       <ScreenOptions
         headerRight={() => (
           <View className="flex-row gap-1">
-            <IconButton
-              Icon={Favorite}
-              accessibilityLabel={t(`term.${isToggled ? "unF" : "f"}avorite`)}
-              onPress={() => mutateGuard(favoritePlaylist, !data.isFavorite)}
-              filled={isToggled}
-            />
+            {id !== FavoritesPlaylistKey ? (
+              <IconButton
+                Icon={Favorite}
+                accessibilityLabel={t(`term.${isToggled ? "unF" : "f"}avorite`)}
+                onPress={() => mutateGuard(favoritePlaylist, !data.isFavorite)}
+                filled={isToggled}
+              />
+            ) : null}
             <CurrentListMenu
               actions={menuActions}
               name={data.name}
