@@ -8,7 +8,6 @@ import { formatForTrack } from "~/db/utils";
 import {
   addToPlaylist,
   deleteTracks,
-  favoriteTrack,
   removeFromPlaylist,
   updateTrack,
 } from "~/api/track";
@@ -63,24 +62,6 @@ export function useAddToPlaylist(trackId: string) {
         queryKey: q.tracks.detail(trackId)._ctx.playlists.queryKey,
       });
       queryClient.invalidateQueries({ queryKey: q.playlists._def });
-      queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
-    },
-  });
-}
-
-/** Set the favorite status of a track. */
-export function useFavoriteTrack(trackId: string) {
-  const queryClient = useQueryClient();
-  return useMutation({
-    /** Pass the new favorite status of the track. */
-    mutationFn: async (isFavorite: boolean) => {
-      await wait(1);
-      await favoriteTrack(trackId, isFavorite);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: q.tracks.detail(trackId).queryKey,
-      });
       queryClient.invalidateQueries({ queryKey: q.favorites.lists.queryKey });
     },
   });

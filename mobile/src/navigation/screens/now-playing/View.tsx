@@ -11,7 +11,11 @@ import { MoreHoriz } from "~/resources/icons/MoreHoriz";
 import { MoreVert } from "~/resources/icons/MoreVert";
 import { Timer } from "~/resources/icons/Timer";
 import { ViewAgenda } from "~/resources/icons/ViewAgenda";
-import { useFavoriteTrack, useTrack } from "~/queries/track";
+import {
+  useAddToPlaylist,
+  useRemoveFromPlaylist,
+  useTrackFavoriteStatus,
+} from "~/queries/track";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { presentTrackSheet } from "~/services/SessionStore";
@@ -31,6 +35,7 @@ import { Marquee } from "~/components/Marquee";
 import { SafeContainer } from "~/components/SafeContainer";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
 import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
 import {
   NextButton,
@@ -112,18 +117,27 @@ function Metadata({ track }: { track: TrackWithRelations }) {
 /** Quick action to favorite/unfavorite a track. */
 function FavoriteButton(props: { trackId: string }) {
   const { t } = useTranslation();
-  const { data } = useTrack(props.trackId); // Since we don't revalidate the Zustand store.
-  const favoriteTrack = useFavoriteTrack(props.trackId);
+  const { data: favoriteStatus } = useTrackFavoriteStatus(props.trackId); // Since we don't revalidate the Zustand store.
+  const addToPlaylist = useAddToPlaylist(props.trackId);
+  const removeFromPlaylist = useRemoveFromPlaylist(props.trackId);
 
-  const isFav = favoriteTrack.isPending
-    ? !data?.isFavorite
-    : (data?.isFavorite ?? false);
+  const favStatus = favoriteStatus ?? false;
+  const isFav =
+    addToPlaylist.isPending || removeFromPlaylist.isPending
+      ? !favStatus
+      : favStatus;
 
   return (
     <IconButton
       Icon={Favorite}
       accessibilityLabel={t(`term.${isFav ? "unF" : "f"}avorite`)}
-      onPress={() => mutateGuard(favoriteTrack, !data?.isFavorite)}
+      onPress={() =>
+        mutateGuard(
+          // @ts-expect-error - We don't care about return type.
+          isFav ? removeFromPlaylist : addToPlaylist,
+          FavoritesPlaylistKey,
+        )
+      }
       filled={isFav}
       size="lg"
     />
