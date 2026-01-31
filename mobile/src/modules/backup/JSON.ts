@@ -8,7 +8,7 @@ import { z } from "zod/mini";
 
 import { db } from "~/db";
 import type { TrackWithRelations } from "~/db/schema";
-import { albums, playlists, tracks } from "~/db/schema";
+import { albums, playlists } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
 import { getAlbums } from "~/api/album";
@@ -20,6 +20,7 @@ import { TrackList } from "~/api/track.utils";
 import { pickDirectory } from "~/lib/file-system";
 import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
+import { FavoritesPlaylistKey } from "../media/constants";
 
 //#region Schemas
 const NonEmptyStringSchema = z.string().check(z.trim(), z.minLength(1));
@@ -44,6 +45,7 @@ const MusicBackup = z.object({
   favorites: z.object({
     albums: z.array(RawAlbum),
     playlists: z.array(PlaylistNameSchema),
+    /** @deprecated For backwards compatibility. */
     tracks: z.array(RawTrack),
   }),
   playlists: z.array(
@@ -56,7 +58,11 @@ const MusicBackup = z.object({
 //#endregion
 
 //#region Helpers
-function getRawTrack({ name, rawArtistName, album }: TrackWithRelations) {
+function getRawTrack({
+  name,
+  rawArtistName,
+  album,
+}: Pick<TrackWithRelations, "name" | "rawArtistName" | "album">) {
   return { name, artistName: rawArtistName, albumName: album?.name };
 }
 
@@ -101,10 +107,9 @@ async function findExistingTracksFactory() {
  */
 async function exportBackup() {
   // Get favorited values.
-  const [favAlbums, favPlaylists, favTracks] = await Promise.all([
+  const [favAlbums, favPlaylists] = await Promise.all([
     getAlbums({ where: [eq(albums.isFavorite, true)] }),
     getPlaylists({ where: [eq(playlists.isFavorite, true)] }),
-    getTracks({ where: [eq(tracks.isFavorite, true)] }),
   ]);
   // Get all user-generated playlists.
   const allPlaylists = await getPlaylists();
@@ -121,7 +126,8 @@ async function exportBackup() {
         albums: favAlbums.map(({ name, artistsKey }) => {
           return { name, artistName: artistsKey };
         }),
-        tracks: favTracks.map(getRawTrack),
+        //! [Deprecated] For backwards compatibility.
+        tracks: [],
       },
       playlists: allPlaylists.map(({ name, tracks }) => {
         return { name, tracks: tracks.map(getRawTrack) };
@@ -159,8 +165,13 @@ async function importBackup() {
   const findExistingTracks = await findExistingTracksFactory();
 
   // Import playlists.
+  //! [Deprecated] For backwards compatibility, add `favorites.tracks` as a
+  //! "Favorite Tracks" playlist.
+  const importedPlaylists = backupContents.playlists.concat([
+    { name: FavoritesPlaylistKey, tracks: backupContents.favorites.tracks },
+  ]);
   await Promise.allSettled(
-    backupContents.playlists.map(async ({ name, tracks: plTracks }) => {
+    importedPlaylists.map(async ({ name, tracks: plTracks }) => {
       const exists = allPlaylists.find((pl) => pl.name === name);
       const playlistTracks = findExistingTracks(plTracks);
       // Create or update playlist to have the current track order.
@@ -187,16 +198,6 @@ async function importBackup() {
         inArray(
           albums.id,
           findExistingAlbums(backupContents.favorites.albums).map((a) => a.id),
-        ),
-      ),
-    // Tracks
-    db
-      .update(tracks)
-      .set({ isFavorite: true })
-      .where(
-        inArray(
-          tracks.id,
-          findExistingTracks(backupContents.favorites.tracks).map((t) => t.id),
         ),
       ),
   ]);
