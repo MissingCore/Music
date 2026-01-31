@@ -14,7 +14,10 @@ import { Check } from "~/resources/icons/Check";
 import { Delete } from "~/resources/icons/Delete";
 import { getArtistsString } from "~/api/artist.utils";
 import { useDeletePlaylist } from "~/queries/playlist";
-import { useFloatingContent } from "../../../hooks/useFloatingContent";
+
+import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
+import { ContentPlaceholder } from "~/navigation/components/Placeholder";
+import { ScreenOptions } from "~/navigation/components/ScreenOptions";
 import type { InitStoreProps } from "./store";
 import {
   PlaylistStoreProvider,
@@ -39,8 +42,7 @@ import { Swipeable } from "~/components/Swipeable";
 import { TStyledText } from "~/components/Typography/StyledText";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { readM3UPlaylist } from "~/modules/backup/M3U";
-import { ContentPlaceholder } from "../../../components/Placeholder";
-import { ScreenOptions } from "../../../components/ScreenOptions";
+import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
 /** Resuable screen to modify (create or edit) a playlist. */
 export function ModifyPlaylistBase(props: InitStoreProps) {
@@ -55,7 +57,9 @@ export function ModifyPlaylistBase(props: InitStoreProps) {
     <PlaylistStoreProvider {...props}>
       <ScreenConfig />
       <PageContent bottomOffset={offset} />
-      <RenderedWorkflow {...rest} />
+      {props.initialName !== FavoritesPlaylistKey ? (
+        <RenderedWorkflow {...rest} />
+      ) : null}
       <ConfirmationModal />
     </PlaylistStoreProvider>
   );
@@ -200,13 +204,19 @@ function ListHeaderComponent(props: { showSheet: VoidFunction }) {
   return (
     <>
       <View className="gap-2 px-4">
-        <TextInput
-          editable={!isSubmitting}
-          value={playlistName}
-          onChangeText={setPlaylistName}
-          placeholder={t("feat.playlist.extra.name")}
-          className="shrink grow border-b border-outline"
-        />
+        {playlistName === FavoritesPlaylistKey ? (
+          <View className="min-h-12 justify-center border-b border-outline px-1 opacity-25">
+            <TStyledText textKey="term.favoriteTracks" numberOfLines={1} />
+          </View>
+        ) : (
+          <TextInput
+            editable={!isSubmitting}
+            value={playlistName}
+            onChangeText={setPlaylistName}
+            placeholder={t("feat.playlist.extra.name")}
+            className="shrink grow border-b border-outline"
+          />
+        )}
         <View
           className={cn("shrink flex-row items-center gap-0.5", {
             "opacity-60": !isUnique,
