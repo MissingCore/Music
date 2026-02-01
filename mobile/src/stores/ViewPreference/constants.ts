@@ -21,6 +21,7 @@ type SortOption =
 export const SortOptions = {
   album: ["name", "artistName", "duration", "trackCount"],
   artist: ["name", "duration", "trackCount"],
+  playlist: ["name", "duration", "trackCount"],
 } as const satisfies Record<MutableOrder, SortOption[]>;
 
 export type ScreenSortOptions<TScreen extends MutableOrder> =
@@ -51,6 +52,10 @@ export interface ViewPreferenceStore {
   artistLayout: LayoutOption;
   artistIsAsc: boolean;
   artistOrder: ScreenSortOptions<"artist">;
+
+  playlistLayout: LayoutOption;
+  playlistIsAsc: boolean;
+  playlistOrder: ScreenSortOptions<"album">;
 }
 
 export const OmittedFields: string[] = [
