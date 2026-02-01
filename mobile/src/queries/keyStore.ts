@@ -175,9 +175,7 @@ export const queries = createQueryKeyStore({
               duration: sum(tracks.duration),
               trackCount: count(tracks.id),
               /** We need to unencode this string. */
-              collageArtwork: sql<
-                Array<string | null>
-              >`json_group_array(coalesce(${tracks.artwork}, ${albums.artwork}))`,
+              collageArtwork: sql<string>`json_group_array(coalesce(${tracks.artwork}, ${albums.artwork}))`,
             })
             .from(playlists)
             .leftJoin(
