@@ -61,12 +61,26 @@ export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
 
 //#region Artists
 export function ArtistsViewOptionsSheet(props: { ref: TrueSheetRef }) {
+  return <ViewOptionsSheetTemplate ref={props.ref} screen="artist" />;
+}
+//#endregion
+
+//#region Playlists
+export function PlaylistsViewOptionsSheet(props: { ref: TrueSheetRef }) {
+  return <ViewOptionsSheetTemplate ref={props.ref} screen="playlist" />;
+}
+//#endregion
+
+//#region Sheet Template
+function ViewOptionsSheetTemplate(props: {
+  ref: TrueSheetRef;
+  screen: MutableViewLayout;
+}) {
   const sortOrderSheetRef = useSheetRef();
   return (
     <>
       <DetachedSheet ref={props.ref}>
-        <ScreenLayoutSetting screen="artist" />
-
+        <ScreenLayoutSetting screen={props.screen} />
         <SegmentedList.Item
           labelTextKey="feat.modalViewPreference.extra.sort"
           onPress={() => {
@@ -77,7 +91,7 @@ export function ArtistsViewOptionsSheet(props: { ref: TrueSheetRef }) {
           className="gap-4"
         />
       </DetachedSheet>
-      <SortSheet ref={sortOrderSheetRef} screen="artist" />
+      <SortSheet ref={sortOrderSheetRef} screen={props.screen} />
     </>
   );
 }
