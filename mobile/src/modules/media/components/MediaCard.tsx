@@ -57,7 +57,7 @@ export function useMediaCardListPreset(
     cols: 2,
     gap: 12,
     gutters: 32,
-    minWidth: 175,
+    minWidth: 144,
   });
 
   return useMemo(
@@ -66,6 +66,7 @@ export function useMediaCardListPreset(
       // ~40px for text content under `<MediaImage />` + 12px Margin Bottom
       estimatedItemSize: width + 40 + 12,
       data: args.data,
+      // Use this as the key instead of just `id` in case `data` is mixed.
       keyExtractor: ({ id, type }) => `${type}_${id}`,
       /*
         Utilized janky margin method to implement gaps in FlashList with columns.
