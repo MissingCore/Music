@@ -22,6 +22,8 @@ interface ScrollbarProps {
   scrollbarOffset: { top: number; bottom: number };
 
   isVisible?: boolean;
+  /** Worklet function that's called when the gesture has ended. */
+  onEnd?: VoidFunction;
 }
 
 const THUMB_SIZE = 48;
@@ -38,6 +40,7 @@ export function Scrollbar({
   listScrollAmount,
   scrollbarOffset: { top, bottom },
   isVisible = true,
+  onEnd,
 }: ScrollbarProps) {
   const scrollbarHeight = useSharedValue(0);
 
@@ -142,6 +145,9 @@ export function Scrollbar({
       dismissScrollbar();
       nextScrollPosition.value = -1;
       prevY.value = -1;
+    })
+    .onFinalize(() => {
+      if (onEnd) onEnd();
     });
 
   const gestures = Gesture.Simultaneous(pressGesture, scrollGesture);
