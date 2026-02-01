@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import type { GCWProps } from "~/hooks/useGetColumn";
 import { useGetColumn } from "~/hooks/useGetColumn";
 import { useViewPreferenceStore } from "../store";
-import type { LayoutItem, MutableLayout } from "../types";
+import type { LayoutItem, MutableViewLayout } from "../types";
 
 import { getMediaLinkContext } from "~/navigation/utils/router";
 
@@ -28,7 +28,7 @@ const compactGridLayoutOptions: GCWProps = {
 
 /** Formats data to pass into `LegendList`. */
 export function useViewLayout<TData extends Record<string, any>>(
-  screen: MutableLayout,
+  screen: MutableViewLayout,
   data: TData[] = [],
   formatData: (data: TData) => LayoutItem,
 ) {

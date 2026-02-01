@@ -20,7 +20,7 @@ import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { LayoutOptions } from "~/stores/ViewPreference/constants";
-import type { MutableLayout } from "~/stores/ViewPreference/types";
+import type { MutableViewLayout } from "~/stores/ViewPreference/types";
 
 //#region Albums
 export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
@@ -90,7 +90,7 @@ const LayoutIconMap = {
   compactGrid: ViewModule,
 } as const;
 
-function ScreenLayoutSetting({ screen }: { screen: MutableLayout }) {
+function ScreenLayoutSetting({ screen }: { screen: MutableViewLayout }) {
   const { t } = useTranslation();
   const layoutOption = useViewPreferenceStore((s) => s[`${screen}Layout`]);
 

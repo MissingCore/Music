@@ -1,5 +1,5 @@
 /** Screens where the layout of the content can be change. */
-export type MutableLayout = "album" | "artist" | "playlist";
+export type MutableViewLayout = "album" | "artist" | "playlist";
 
 /** Fields that get rendered in our mutable layout. */
 export type LayoutItem = {
@@ -10,4 +10,4 @@ export type LayoutItem = {
 };
 
 /** Screens where the order of the content can be change. */
-export type MutableOrder = "album" | "artist" | "playlist";
+export type MutableViewOrder = "album" | "artist" | "playlist";

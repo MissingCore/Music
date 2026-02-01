@@ -16,9 +16,12 @@ import {
   SortOptions,
   SortOptionTranslation,
 } from "~/stores/ViewPreference/constants";
-import type { MutableOrder } from "~/stores/ViewPreference/types";
+import type { MutableViewOrder } from "~/stores/ViewPreference/types";
 
-export function SortSheet(props: { ref: TrueSheetRef; screen: MutableOrder }) {
+export function SortSheet(props: {
+  ref: TrueSheetRef;
+  screen: MutableViewOrder;
+}) {
   const isAsc = useViewPreferenceStore((s) => s[`${props.screen}IsAsc`]);
   const orderedBy = useViewPreferenceStore((s) => s[`${props.screen}Order`]);
 

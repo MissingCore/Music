@@ -1,6 +1,6 @@
 import type { ParseKeys } from "i18next";
 
-import type { MutableOrder } from "./types";
+import type { MutableViewOrder } from "./types";
 
 //#region Layout
 export const LayoutOptions = ["list", "grid", "compactGrid"] as const;
@@ -22,9 +22,9 @@ export const SortOptions = {
   album: ["name", "artistName", "duration", "trackCount"],
   artist: ["name", "duration", "trackCount"],
   playlist: ["name", "duration", "trackCount"],
-} as const satisfies Record<MutableOrder, SortOption[]>;
+} as const satisfies Record<MutableViewOrder, SortOption[]>;
 
-export type ScreenSortOptions<TScreen extends MutableOrder> =
+export type ScreenSortOptions<TScreen extends MutableViewOrder> =
   (typeof SortOptions)[TScreen][number];
 
 export const SortOptionTranslation = {

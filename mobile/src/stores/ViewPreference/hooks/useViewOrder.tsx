@@ -2,11 +2,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useViewPreferenceStore } from "../store";
 import type { ScreenSortOptions } from "../constants";
-import type { MutableOrder } from "../types";
+import type { MutableViewOrder } from "../types";
 
 /** Orders the data based on the screen. */
 export function useViewOrder<
-  TScreen extends MutableOrder,
+  TScreen extends MutableViewOrder,
   TData extends Record<string, any>,
 >(
   screen: TScreen,
