@@ -1,4 +1,4 @@
-import { usePlaylists } from "~/queries/playlist";
+import { usePlaylistsNames } from "~/queries/playlist";
 import {
   useAddToPlaylist,
   useRemoveFromPlaylist,
@@ -18,7 +18,7 @@ import { StyledText } from "~/components/Typography/StyledText";
 const GLOBAL_SHEET_KEY = "TrackToPlaylistsSheet";
 
 export function TrackToPlaylistsSheet({ id }: { id: string }) {
-  const { data } = usePlaylists();
+  const { data: playlistsNames } = usePlaylistsNames();
   const { data: inList } = useTrackPlaylists(id);
   const addToPlaylist = useAddToPlaylist(id);
   const removeFromPlaylist = useRemoveFromPlaylist(id);
@@ -32,11 +32,11 @@ export function TrackToPlaylistsSheet({ id }: { id: string }) {
     >
       <LegendList
         getEstimatedItemSize={(index) => (index === 0 ? 54 : 62)}
-        data={data}
-        keyExtractor={({ name }) => name}
+        data={playlistsNames}
+        keyExtractor={(name) => name}
         extraData={inList}
-        renderItem={({ item, index }) => {
-          const selected = inList?.includes(item.name) ?? false;
+        renderItem={({ item: name, index }) => {
+          const selected = inList?.includes(name) ?? false;
           return (
             <CheckboxField
               checked={selected}
@@ -44,13 +44,13 @@ export function TrackToPlaylistsSheet({ id }: { id: string }) {
                 mutateGuard(
                   // @ts-expect-error - We don't care about return type.
                   selected ? removeFromPlaylist : addToPlaylist,
-                  item.name,
+                  name,
                 )
               }
               className={index > 0 ? "mt-2" : undefined}
             >
               <Marquee color="surfaceBright">
-                <StyledText>{item.name}</StyledText>
+                <StyledText>{name}</StyledText>
               </Marquee>
             </CheckboxField>
           );

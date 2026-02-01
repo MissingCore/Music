@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { getTrackArtwork } from "~/api/track.utils";
 import {
   usePlaylist,
-  usePlaylists,
+  usePlaylistsNames,
   useUpdatePlaylist,
 } from "~/queries/playlist";
 import { ModifyPlaylistBase } from "./ModifyViewBase";
@@ -25,7 +25,7 @@ export default function ModifyPlaylist({
 }: Props) {
   const { t } = useTranslation();
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
-  const { data: allPlaylists } = usePlaylists();
+  const { data: playlistsNames } = usePlaylistsNames();
   const { data } = usePlaylist(id);
   const updatePlaylist = useUpdatePlaylist(id);
 
@@ -40,7 +40,7 @@ export default function ModifyPlaylist({
   return (
     <ModifyPlaylistBase
       mode="edit"
-      usedNames={allPlaylists?.map(({ name }) => name) ?? []}
+      usedNames={playlistsNames ?? []}
       initialName={id}
       initialTracks={initialTracks}
       onSubmit={async (playlistName, tracks) => {

@@ -37,9 +37,12 @@ export function usePlaylistForScreen(playlistName: string) {
   });
 }
 
-/** Get all playlists. */
-export function usePlaylists() {
-  return useQuery({ ...q.playlists.all });
+/** Get the names of all playlists. */
+export function usePlaylistsNames() {
+  return useQuery({
+    ...q.playlists.all,
+    select: (data) => data.map(({ name }) => name),
+  });
 }
 
 /** Return list of `MediaCardContent` from playlists. */
