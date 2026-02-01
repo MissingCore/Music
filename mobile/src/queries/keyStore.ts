@@ -1,5 +1,5 @@
 import { createQueryKeyStore } from "@lukemorales/query-key-factory";
-import { count, eq, getTableColumns, ne, sum } from "drizzle-orm";
+import { count, eq, getTableColumns, ne, sql, sum } from "drizzle-orm";
 
 import { db } from "~/db";
 import {
@@ -8,6 +8,7 @@ import {
   playlists,
   tracks,
   tracksToArtists,
+  tracksToPlaylists,
 } from "~/db/schema";
 
 import { getAlbum, getAlbums } from "~/api/album";
@@ -165,13 +166,33 @@ export const queries = createQueryKeyStore({
   playlists: {
     all: {
       queryKey: null,
-      queryFn: () =>
-        getPlaylists({
-          where: [ne(playlists.name, FavoritesPlaylistKey)],
-          columns: ["name", "artwork"],
-          trackColumns: ["artwork"],
-          albumColumns: ["artwork"],
-        }),
+      queryFn: () => {
+        return (
+          db
+            .select({
+              name: playlists.name,
+              artwork: playlists.artwork,
+              duration: sum(tracks.duration),
+              trackCount: count(tracks.id),
+              /** We need to unencode this string. */
+              collageArtwork: sql<
+                Array<string | null>
+              >`json_group_array(coalesce(${tracks.artwork}, ${albums.artwork}))`,
+            })
+            .from(playlists)
+            .leftJoin(
+              tracksToPlaylists,
+              eq(tracksToPlaylists.playlistName, playlists.name),
+            )
+            //? Needs to be a `leftJoin` instead of `innerJoin` as if a playlist
+            //? is empty, it'll get removed by this.
+            .leftJoin(tracks, eq(tracks.id, tracksToPlaylists.trackId))
+            .leftJoin(albums, eq(tracks.albumId, albums.id))
+            .groupBy(playlists.name)
+            .where(ne(playlists.name, FavoritesPlaylistKey))
+            .orderBy(iAsc(playlists.name), iAsc(tracksToPlaylists.position))
+        );
+      },
     },
     detail: (playlistName: string) => ({
       queryKey: [playlistName],
