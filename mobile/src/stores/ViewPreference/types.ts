@@ -6,7 +6,7 @@ export type LayoutItem = {
   id: string;
   title: string;
   description: string;
-  imageSource: string | null;
+  imageSource: string | null | Array<string | null>;
 };
 
 /** Screens where the order of the content can be change. */
