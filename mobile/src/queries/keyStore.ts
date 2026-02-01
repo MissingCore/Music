@@ -167,29 +167,45 @@ export const queries = createQueryKeyStore({
     all: {
       queryKey: null,
       queryFn: () => {
-        return (
-          db
-            .select({
-              name: playlists.name,
-              artwork: playlists.artwork,
-              duration: sum(tracks.duration),
-              trackCount: count(tracks.id),
-              /** We need to unencode this string. */
-              collageArtwork: sql<string>`json_group_array(coalesce(${tracks.artwork}, ${albums.artwork}))`,
-            })
-            .from(playlists)
-            .leftJoin(
-              tracksToPlaylists,
-              eq(tracksToPlaylists.playlistName, playlists.name),
-            )
-            //? Needs to be a `leftJoin` instead of `innerJoin` as if a playlist
-            //? is empty, it'll get removed by this.
-            .leftJoin(tracks, eq(tracks.id, tracksToPlaylists.trackId))
-            .leftJoin(albums, eq(tracks.albumId, albums.id))
-            .groupBy(playlists.name)
-            .where(ne(playlists.name, FavoritesPlaylistKey))
-            .orderBy(iAsc(playlists.name), iAsc(tracksToPlaylists.position))
-        );
+        //? Create a subquery which orders the tracks as `json_group_array` doesn't
+        //? guarantee respecting the order from `orderBy`.
+        const ordered = db
+          .select({
+            playlistName: tracksToPlaylists.playlistName,
+            position: tracksToPlaylists.position,
+            //! For some weird reason, defining this between `playlistName` &
+            //! `position` with `tracksToPlaylists.trackId` results in the
+            //! incorrect order of tracks.
+            trackId: tracks.id,
+            trackDuration: tracks.duration,
+            derivedArtwork: sql<
+              string | null
+            >`coalesce(${tracks.artwork}, ${albums.artwork})`.as(
+              "derived_artwork",
+            ),
+          })
+          .from(tracksToPlaylists)
+          .innerJoin(tracks, eq(tracks.id, tracksToPlaylists.trackId))
+          .leftJoin(albums, eq(tracks.albumId, albums.id))
+          .orderBy(
+            iAsc(tracksToPlaylists.playlistName),
+            iAsc(tracksToPlaylists.position),
+          )
+          .as("ordered");
+        return db
+          .select({
+            name: playlists.name,
+            artwork: playlists.artwork,
+            duration: sum(ordered.trackDuration),
+            trackCount: count(ordered.trackId),
+            /** We need to unencode this string. */
+            collageArtwork: sql<string>`json_group_array(${ordered.derivedArtwork})`,
+          })
+          .from(playlists)
+          .leftJoin(ordered, eq(ordered.playlistName, playlists.name))
+          .groupBy(playlists.name)
+          .where(ne(playlists.name, FavoritesPlaylistKey))
+          .orderBy(iAsc(playlists.name));
       },
     },
     detail: (playlistName: string) => ({

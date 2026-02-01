@@ -49,19 +49,21 @@ export function usePlaylists() {
   return useQuery({
     ...q.playlists.all,
     select: (data) =>
-      data.map(({ collageArtwork, ...playlist }) => {
-        let collage: string[] = [];
-        try {
-          const asArr: Array<string | null> = JSON.parse(collageArtwork);
-          collage = asArr.filter((artwork) => artwork !== null).slice(0, 4);
-        } catch {}
+      data
+        .map(({ collageArtwork, ...playlist }) => {
+          let collage: string[] = [];
+          try {
+            const asArr: Array<string | null> = JSON.parse(collageArtwork);
+            collage = asArr.filter((artwork) => artwork !== null).slice(0, 4);
+          } catch {}
 
-        return {
-          ...playlist,
-          duration: Number(playlist.duration) || 0,
-          artwork: playlist.artwork ?? collage,
-        };
-      }),
+          return {
+            ...playlist,
+            duration: Number(playlist.duration) || 0,
+            artwork: playlist.artwork ?? collage,
+          };
+        })
+        .sort((a, b) => a.name.localeCompare(b.name)),
   });
 }
 //#endregion
