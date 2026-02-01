@@ -61,7 +61,7 @@ export function NScrollListLayout<TData>({
   //#endregion
 
   //#region Header Components
-  const [topBarHeight, setTopBarHeight] = useState(0); //? Includes the shadow underneath the header.
+  const [topBarHeight, setTopBarHeight] = useState(154); //? Includes the shadow underneath the header.
   const headerHeight = useMemo(
     () => topBarHeight - SHADOW_HEIGHT,
     [topBarHeight],
