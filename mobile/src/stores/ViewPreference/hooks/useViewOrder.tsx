@@ -22,7 +22,7 @@ export function useViewOrder<
 
     const sortedResults = [...dataCache.current];
     //? By default, data should be sorted by the `name` field.
-    if (orderBy !== "name" && sortedResults.length > 0) {
+    if (orderBy !== "name") {
       sortedResults.sort((a, b) => {
         if (orderBy === "artistName") {
           // Put `null` values at the start of the array.
