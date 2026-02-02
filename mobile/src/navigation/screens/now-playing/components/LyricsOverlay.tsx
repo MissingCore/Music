@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -116,9 +116,30 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
   const listRef = useFlatListRef();
   const [mounted, setMounted] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
-  const [autoScroll, setAutoScroll] = useState(true);
 
   const parsedLines = useMemo(() => parseLines(props.lines), [props.lines]);
+
+  //#region Auto Scroll
+  const autoScrollResumeTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
+  const [autoScroll, setAutoScroll] = useState(true);
+
+  const onPauseAutoScroll = useCallback(() => {
+    if (autoScrollResumeTimerRef.current)
+      clearTimeout(autoScrollResumeTimerRef.current);
+    setAutoScroll(false);
+  }, []);
+
+  const debouncedResumeAutoScroll = useMemo(() => {
+    return () => {
+      if (autoScrollResumeTimerRef.current)
+        clearTimeout(autoScrollResumeTimerRef.current);
+      autoScrollResumeTimerRef.current = setTimeout(
+        () => setAutoScroll(true),
+        500,
+      );
+    };
+  }, []);
+  //#endregion
 
   // Call `mounted` after a delay as for some weird reason, `scrollToIndex`
   // doesn't initially work when called.
@@ -137,8 +158,9 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
     }
     setActiveIndex(newIndex);
 
-    // Scroll to active index.
+    // Checks to see if we should auto-scroll.
     if (!listRef.current || !mounted || !autoScroll) return;
+    // Scroll to active index.
     if (newIndex === -1) {
       listRef.current.scrollToOffset({ offset: 0 });
       return;
@@ -149,14 +171,6 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
       viewPosition: 0.5,
     });
   }, [listRef, parsedLines, position, mounted, autoScroll]);
-
-  const debouncedScrollEnd = useMemo(() => {
-    let timeout: ReturnType<typeof setTimeout>;
-    return () => {
-      if (timeout) clearTimeout(timeout);
-      timeout = setTimeout(() => setAutoScroll(true), 1000);
-    };
-  }, []);
 
   return (
     <FlatList
@@ -174,8 +188,8 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
           {item.lyric}
         </StyledText>
       )}
-      onScrollBeginDrag={() => setAutoScroll(false)}
-      onScrollEndDrag={debouncedScrollEnd}
+      onScrollBeginDrag={onPauseAutoScroll}
+      onScrollEndDrag={debouncedResumeAutoScroll}
       // Suppresses error when `scrollToIndex` fails.
       onScrollToIndexFailed={() => {}}
       contentContainerStyle={{

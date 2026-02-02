@@ -49,7 +49,7 @@ export const NumberStepper = memo(function NumberStepper({
         accessibilityLabel={decrementLabel}
         onPress={decrementOnChange}
         disabled={props.min !== undefined ? value <= props.min : undefined}
-        className="rounded-xs"
+        className="rounded-sm"
         size="xs"
       />
       <StyledText bold className="min-w-8 text-center text-sm">
@@ -61,7 +61,7 @@ export const NumberStepper = memo(function NumberStepper({
         accessibilityLabel={incrementLabel}
         onPress={incrementOnChange}
         disabled={props.max !== undefined ? value >= props.max : undefined}
-        className="rounded-xs"
+        className="rounded-sm"
         size="xs"
       />
     </View>

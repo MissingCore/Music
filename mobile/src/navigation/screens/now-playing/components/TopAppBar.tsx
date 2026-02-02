@@ -11,7 +11,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 import { getMediaLinkContext } from "~/navigation/utils/router";
 
 import { OnRTL } from "~/lib/react";
-import { IconButton } from "~/components/Form/Button/Icon";
+import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { Marquee } from "~/components/Marquee";
 import { SafeContainer } from "~/components/SafeContainer";
 import { StyledText } from "~/components/Typography/StyledText";
@@ -22,8 +22,8 @@ import { StyledText } from "~/components/Typography/StyledText";
  */
 export function NowPlayingTopAppBar() {
   return (
-    <SafeContainer className="relative">
-      <View className="h-14 flex-row items-center justify-between gap-4 p-1">
+    <SafeContainer>
+      <View className="h-14 flex-row items-center justify-between gap-4 px-2 py-1">
         <AppBarContent />
       </View>
     </SafeContainer>
@@ -44,14 +44,14 @@ function AppBarContent() {
   );
 
   if (usedDesign === "vinylOld") return null;
-
   return (
     <>
-      <IconButton
+      <FilledIconButton
         Icon={ArrowBack}
         accessibilityLabel={t("form.back")}
         onPress={() => navigation.goBack()}
         className={OnRTL._use("rotate-180")}
+        size="sm"
       />
       <Pressable
         onPress={() =>
@@ -61,7 +61,7 @@ function AppBarContent() {
         className="shrink gap-0.5"
       >
         <Marquee center>
-          <StyledText className="text-xxs/[1.125]" dim>
+          <StyledText dim className="text-xxs/[1.125]">
             {t("term.playingFrom")}
           </StyledText>
         </Marquee>
@@ -69,7 +69,7 @@ function AppBarContent() {
           <StyledText className="text-xs/[1.125]">{listName}</StyledText>
         </Marquee>
       </Pressable>
-      <View className="size-12" />
+      <View className="size-10" />
     </>
   );
 }

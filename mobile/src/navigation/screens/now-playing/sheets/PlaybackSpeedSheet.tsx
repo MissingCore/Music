@@ -47,7 +47,7 @@ function PlaybackSpeedPreset(props: {
         setPlaybackSpeed(props.preset);
         props.value.value = props.preset;
       }}
-      className="min-h-8 flex-1 rounded-full py-2"
+      className="min-h-8 flex-1 rounded-full py-2 active:bg-surfaceContainer"
     >
       <StyledText bold className="text-xs">
         {formatValue(props.preset)}
