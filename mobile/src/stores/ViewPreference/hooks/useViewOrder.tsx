@@ -7,16 +7,8 @@ import type { MutableViewOrder } from "../types";
 /** Orders the data based on the screen. */
 export function useViewOrder<
   TScreen extends MutableViewOrder,
-  TData extends Record<string, any>,
->(
-  screen: TScreen,
-  data: TData[] = [],
-  /** `null` strategy should only be used for the default order. */
-  sortStrategies: Record<
-    ScreenSortOptions<TScreen>,
-    ((a: TData, b: TData) => number) | null
-  >,
-) {
+  TData extends Record<ScreenSortOptions<TScreen>, any>,
+>(screen: TScreen, data: TData[] = []) {
   const isAsc = useViewPreferenceStore((s) => s[`${screen}IsAsc`]);
   const orderBy = useViewPreferenceStore((s) => s[`${screen}Order`]);
   const [cachedComputation, setCachedComputation] = useState<
@@ -29,14 +21,21 @@ export function useViewOrder<
     if (cachedComputation[cacheKey]) return cachedComputation[cacheKey];
 
     const sortedResults = [...dataCache.current];
-    if (sortStrategies[orderBy] !== null) {
-      sortedResults.sort(sortStrategies[orderBy]);
+    //? By default, data should be sorted by the `name` field.
+    if (orderBy !== "name" && sortedResults.length > 0) {
+      const dataType = typeof sortedResults[0]?.[orderBy];
+      if (dataType === "number" || dataType === "string") {
+        sortedResults.sort((a, b) => {
+          if (dataType === "number") return a[orderBy] - b[orderBy];
+          return a[orderBy].localeCompare(b[orderBy]);
+        });
+      }
     }
     if (!isAsc) sortedResults.reverse();
 
     setCachedComputation((prev) => ({ ...prev, [cacheKey]: sortedResults }));
     return sortedResults;
-  }, [isAsc, orderBy, sortStrategies, cachedComputation]);
+  }, [isAsc, orderBy, cachedComputation]);
 
   useEffect(() => {
     if (data !== dataCache.current) {

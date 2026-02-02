@@ -20,7 +20,7 @@ export default function Albums() {
     [data, minAlbumLength],
   );
 
-  const sortedData = useViewOrder("album", filteredData, AlbumSortStrategies);
+  const sortedData = useViewOrder("album", filteredData);
   const presets = useViewLayout("album", sortedData, formatData);
 
   return (
@@ -40,14 +40,6 @@ export default function Albums() {
 
 //#region Utils
 type AlbumData = ExtractQueryData<typeof useAlbums>[number];
-
-const AlbumSortStrategies = {
-  name: null,
-  artistName: (a: AlbumData, b: AlbumData) =>
-    a.artistName.localeCompare(b.artistName),
-  duration: (a: AlbumData, b: AlbumData) => a.duration - b.duration,
-  trackCount: (a: AlbumData, b: AlbumData) => a.trackCount - b.trackCount,
-};
 
 function formatData({ id, name, artistName, artwork }: AlbumData) {
   return { id, title: name, description: artistName, imageSource: artwork };

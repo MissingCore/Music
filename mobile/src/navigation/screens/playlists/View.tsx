@@ -14,11 +14,13 @@ import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import type { ExtractQueryData } from "~/lib/react-query";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 
+type PlaylistData = ExtractQueryData<typeof usePlaylists>[number];
+
 export default function Playlists() {
   const { t } = useTranslation();
   const { isPending, data } = usePlaylists();
 
-  const sortedData = useViewOrder("playlist", data, PlaylistSortStrategies);
+  const sortedData = useViewOrder("playlist", data);
   const formatData = useCallback(
     (item: PlaylistData) => ({
       id: item.name,
@@ -62,14 +64,4 @@ function PlaylistActions() {
     />
   );
 }
-//#endregion
-
-//#region Utils
-type PlaylistData = ExtractQueryData<typeof usePlaylists>[number];
-
-const PlaylistSortStrategies = {
-  name: null,
-  duration: (a: PlaylistData, b: PlaylistData) => a.duration - b.duration,
-  trackCount: (a: PlaylistData, b: PlaylistData) => a.trackCount - b.trackCount,
-};
 //#endregion
