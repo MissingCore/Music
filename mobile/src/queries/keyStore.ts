@@ -185,7 +185,7 @@ export const queries = createQueryKeyStore({
             ),
           })
           .from(tracksToPlaylists)
-          .innerJoin(tracks, eq(tracks.id, tracksToPlaylists.trackId))
+          .innerJoin(tracks, eq(tracksToPlaylists.trackId, tracks.id))
           .leftJoin(albums, eq(tracks.albumId, albums.id))
           .orderBy(
             iAsc(tracksToPlaylists.playlistName),
@@ -202,7 +202,7 @@ export const queries = createQueryKeyStore({
             collageArtwork: sql<string>`json_group_array(${ordered.derivedArtwork})`,
           })
           .from(playlists)
-          .leftJoin(ordered, eq(ordered.playlistName, playlists.name))
+          .leftJoin(ordered, eq(playlists.name, ordered.playlistName))
           .groupBy(playlists.name)
           .where(ne(playlists.name, FavoritesPlaylistKey))
           .orderBy(iAsc(playlists.name));
