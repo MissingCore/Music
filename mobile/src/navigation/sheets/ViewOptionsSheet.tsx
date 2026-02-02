@@ -12,7 +12,7 @@ import { ViewPreferenceSetters } from "~/stores/ViewPreference/actions";
 
 import { SortSheet } from "~/navigation/sheets/SortSheet";
 
-import { IconButton } from "~/components/Form/Button/Icon";
+import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { NumberStepper } from "~/components/Form/NumberStepper";
 import { SegmentedList } from "~/components/List/Segmented";
 import { DetachedSheet } from "~/components/Sheet/Detached";
@@ -112,9 +112,9 @@ function ScreenLayoutSetting({ screen }: { screen: MutableViewLayout }) {
     <SheetLabelAction
       labelKey="feat.modalViewPreference.extra.layout"
       RightElement={
-        <View className="flex-row gap-2 rounded-full bg-surfaceContainerLowest p-0.5">
+        <View className="flex-row gap-2 rounded-full bg-surfaceContainerLowest">
           {LayoutOptions.map((layout) => (
-            <IconButton
+            <FilledIconButton
               key={layout}
               Icon={LayoutIconMap[layout]}
               accessibilityLabel={t(`feat.modalViewPreference.extra.${layout}`)}

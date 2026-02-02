@@ -23,7 +23,7 @@ import {
   AnimatedLegendList,
   useAnimatedLegendListRef,
 } from "~/components/Defaults";
-import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
+import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { TopDownGradient } from "~/components/Gradient";
 import { Marquee } from "~/components/Marquee";
 import { Scrollbar, useScrollbarContext } from "~/components/NScrollbar";
@@ -79,11 +79,6 @@ export function NScrollListLayout<TData>({
     cancelAnimation(translationTimer);
     translationTimer.value = 0;
   }, [headerTranslation, translationTimer, props.numColumns]);
-
-  const IconButtonComponent = useMemo(
-    () => (Actions ? IconButton : FilledIconButton),
-    [Actions],
-  );
   //#endregion
 
   //#region Scroll Animations
@@ -197,7 +192,7 @@ export function NScrollListLayout<TData>({
           </Marquee>
           <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
             {Actions}
-            <IconButtonComponent
+            <FilledIconButton
               Icon={MoreHoriz}
               accessibilityLabel={t("feat.modalViewPreference.title")}
               onPress={() => sheetRef.current?.present()}

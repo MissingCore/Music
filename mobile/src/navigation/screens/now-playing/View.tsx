@@ -180,13 +180,13 @@ function BottomAppBar({ trackId }: { trackId: string }) {
           <SleepTimerButton
             present={() => sleepTimerSheetRef.current?.present()}
           />
-          <IconButton
+          <FilledIconButton
             Icon={ViewAgenda}
             accessibilityLabel={t("term.upcoming")}
             onPress={() => navigation.navigate("Upcoming")}
             size="lg"
           />
-          <IconButton
+          <FilledIconButton
             Icon={MoreHoriz}
             accessibilityLabel={t("feat.playback.extra.options")}
             onPress={() => playbackOptionsSheetRef.current?.present()}
@@ -203,7 +203,7 @@ function SleepTimerButton(props: { present: VoidFunction }) {
   const sleepTimerActive = useSleepTimerStore((s) => s.endAt) !== null;
   return (
     <View className="relative">
-      <IconButton
+      <FilledIconButton
         Icon={Timer}
         accessibilityLabel={t("feat.sleepTimer.title")}
         onPress={props.present}
