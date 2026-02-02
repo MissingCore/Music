@@ -21,7 +21,7 @@ const gridLayoutOptions: GCWProps = {
 };
 const compactGridLayoutOptions: GCWProps = {
   cols: 3,
-  gap: 12,
+  gap: 8,
   gutters: 32,
   minWidth: 72,
 };
@@ -44,8 +44,8 @@ export function useViewLayout<TData extends Record<string, any>>(
   const listLayoutArgs = useMemo(
     () =>
       ({
-        estimatedItemSize: 56, // 48px Height + 8px Margin Top
-        renderItem: ({ item: { id, ...item }, index }) => (
+        estimatedItemSize: 56, // 48px Height + 8px Margin Bottom
+        renderItem: ({ item: { id, ...item } }) => (
           <SearchResult
             button
             type={screen}
@@ -53,23 +53,23 @@ export function useViewLayout<TData extends Record<string, any>>(
             onPress={() =>
               navigation.navigate(...getMediaLinkContext({ id, type: screen }))
             }
-            className={cn("pr-4", {
-              "mt-2": index > 0,
-              "rounded-full": screen === "artist",
-            })}
+            className={cn("mb-2 pr-4", { "rounded-full": screen === "artist" })}
           />
         ),
+        className: "-mb-2",
       }) satisfies Omit<LegendListProps<LayoutItem>, "data">,
     [navigation, screen],
   );
 
   // Handle both `grid` & `compactGrid` options.
   const gridLayoutArgs = useMemo(() => {
-    const gridOpts = layoutOption === "grid" ? gridLayout : compactGridLayout;
+    const isGrid = layoutOption === "grid";
+    const gridOpts = isGrid ? gridLayout : compactGridLayout;
+    const usedGap = isGrid ? 12 : 8;
     return {
       numColumns: gridOpts.count,
-      // ~40px for text content under `<MediaImage />` + 12px Margin Bottom
-      estimatedItemSize: gridOpts.width + 40 + 12,
+      // ~40px for text content under `<MediaImage />` + 8/12px Margin Bottom
+      estimatedItemSize: gridOpts.width + 40 + usedGap,
       renderItem: ({ item }) => (
         <MediaCard
           type={screen}
@@ -83,10 +83,10 @@ export function useViewLayout<TData extends Record<string, any>>(
               ...getMediaLinkContext({ id: item.id, type: screen }),
             )
           }
-          className="mx-1.5 mb-3"
+          className={cn("mx-1.5 mb-3", { "mx-1 mb-2": !isGrid })}
         />
       ),
-      className: "-mx-1.5 -mb-3",
+      className: isGrid ? "-mx-1.5 -mb-3" : "-mx-1 -mb-2",
     } satisfies Omit<LegendListProps<LayoutItem>, "data">;
   }, [navigation, layoutOption, screen, gridLayout, compactGridLayout]);
   //#endregion
