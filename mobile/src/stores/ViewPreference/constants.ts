@@ -12,11 +12,11 @@ export type LayoutOption = (typeof LayoutOptions)[number];
 type SortOption =
   | "name"
   | "artistName"
-  | "albumName"
+  // | "albumName"
   | "duration"
-  | "trackCount"
-  | "discoverTime"
-  | "lastModified";
+  | "trackCount";
+// | "discoverTime"
+// | "modificationTime";
 
 export const SortOptions = {
   album: ["name", "artistName", "duration", "trackCount"],
@@ -27,12 +27,22 @@ export const SortOptions = {
 export type ScreenSortOptions<TScreen extends MutableViewOrder> =
   (typeof SortOptions)[TScreen][number];
 
+export type SortOptionTypeMap = {
+  name: string;
+  artistName: string | null;
+  // albumName: string | null;
+  duration: number;
+  trackCount: number;
+  // discoverTime: number;
+  // modificationTime: number;
+};
+
 export const SortOptionTranslation = {
-  albumName: "term.album",
+  // albumName: "term.album",
   artistName: "term.artist",
-  discoverTime: "feat.modalViewPreference.extra.discover",
+  // discoverTime: "feat.modalViewPreference.extra.discover",
   duration: "feat.modalViewPreference.extra.duration",
-  lastModified: "feat.modalViewPreference.extra.modified",
+  // modificationTime: "feat.modalViewPreference.extra.modified",
   name: "feat.trackMetadata.extra.name",
   trackCount: "feat.modalViewPreference.extra.trackCount",
 } as const satisfies Record<SortOption, ParseKeys>;

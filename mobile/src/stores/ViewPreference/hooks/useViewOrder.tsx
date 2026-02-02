@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useViewPreferenceStore } from "../store";
-import type { ScreenSortOptions } from "../constants";
+import type { ScreenSortOptions, SortOptionTypeMap } from "../constants";
 import type { MutableViewOrder } from "../types";
 
 /** Orders the data based on the screen. */
 export function useViewOrder<
   TScreen extends MutableViewOrder,
-  TData extends Record<ScreenSortOptions<TScreen>, any>,
+  TData extends Pick<SortOptionTypeMap, ScreenSortOptions<TScreen>>,
 >(screen: TScreen, data: TData[] = []) {
   const isAsc = useViewPreferenceStore((s) => s[`${screen}IsAsc`]);
   const orderBy = useViewPreferenceStore((s) => s[`${screen}Order`]);
@@ -23,13 +23,16 @@ export function useViewOrder<
     const sortedResults = [...dataCache.current];
     //? By default, data should be sorted by the `name` field.
     if (orderBy !== "name" && sortedResults.length > 0) {
-      const dataType = typeof sortedResults[0]?.[orderBy];
-      if (dataType === "number" || dataType === "string") {
-        sortedResults.sort((a, b) => {
-          if (dataType === "number") return a[orderBy] - b[orderBy];
-          return a[orderBy].localeCompare(b[orderBy]);
-        });
-      }
+      sortedResults.sort((a, b) => {
+        if (orderBy === "artistName") {
+          // Put `null` values at the start of the array.
+          if (a[orderBy] === null) return -1;
+          else if (b[orderBy] === null) return 1;
+          return (a[orderBy] as string).localeCompare(b[orderBy] as string);
+        } else {
+          return (a[orderBy] as number) - (b[orderBy] as number);
+        }
+      });
     }
     if (!isAsc) sortedResults.reverse();
 
