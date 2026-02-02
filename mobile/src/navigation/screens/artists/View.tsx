@@ -11,11 +11,13 @@ import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import type { ExtractQueryData } from "~/lib/react-query";
 
+type ArtistData = ExtractQueryData<typeof useArtists>[number];
+
 export default function Artists() {
   const { t } = useTranslation();
   const { isPending, data } = useArtists();
 
-  const sortedData = useViewOrder("artist", data, ArtistSortStrategies);
+  const sortedData = useViewOrder("artist", data);
   const formatData = useCallback(
     (item: ArtistData) => ({
       id: item.name,
@@ -41,13 +43,3 @@ export default function Artists() {
     />
   );
 }
-
-//#region Utils
-type ArtistData = ExtractQueryData<typeof useArtists>[number];
-
-const ArtistSortStrategies = {
-  name: null,
-  duration: (a: ArtistData, b: ArtistData) => a.duration - b.duration,
-  trackCount: (a: ArtistData, b: ArtistData) => a.trackCount - b.trackCount,
-};
-//#endregion

@@ -1,13 +1,13 @@
 /** Screens where the layout of the content can be change. */
-export type MutableLayout = "album" | "artist";
+export type MutableViewLayout = "album" | "artist" | "playlist";
 
 /** Fields that get rendered in our mutable layout. */
 export type LayoutItem = {
   id: string;
   title: string;
   description: string;
-  imageSource: string | null;
+  imageSource: string | null | Array<string | null>;
 };
 
 /** Screens where the order of the content can be change. */
-export type MutableOrder = "album" | "artist";
+export type MutableViewOrder = "album" | "artist" | "playlist";

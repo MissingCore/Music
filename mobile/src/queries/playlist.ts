@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
 import type { playlists } from "~/db/schema";
-import { formatForCurrentScreen, formatForMediaCard } from "~/db/utils";
+import { formatForCurrentScreen } from "~/db/utils";
 
 import {
   createPlaylist,
@@ -37,20 +37,33 @@ export function usePlaylistForScreen(playlistName: string) {
   });
 }
 
-/** Get all playlists. */
-export function usePlaylists() {
-  return useQuery({ ...q.playlists.all });
+/** Get the names of all playlists. */
+export function usePlaylistsNames() {
+  return useQuery({
+    ...q.playlists.all,
+    select: (data) => data.map(({ name }) => name),
+  });
 }
 
-/** Return list of `MediaCardContent` from playlists. */
-export function usePlaylistsForCards() {
-  const { t } = useTranslation();
+export function usePlaylists() {
   return useQuery({
     ...q.playlists.all,
     select: (data) =>
-      data.map((playlist) =>
-        formatForMediaCard({ type: "playlist", data: playlist, t }),
-      ),
+      data
+        .map(({ collageArtwork, ...playlist }) => {
+          let collage: string[] = [];
+          try {
+            const asArr: Array<string | null> = JSON.parse(collageArtwork);
+            collage = asArr.filter((artwork) => artwork !== null).slice(0, 4);
+          } catch {}
+
+          return {
+            ...playlist,
+            duration: Number(playlist.duration) || 0,
+            artwork: playlist.artwork ?? collage,
+          };
+        })
+        .sort((a, b) => a.name.localeCompare(b.name)),
   });
 }
 //#endregion

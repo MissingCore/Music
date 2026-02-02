@@ -75,7 +75,7 @@ export const FilledIconButton = memo(function FilledIconButton({
     <Pressable
       {...props}
       className={cn(
-        "items-center justify-center rounded-full bg-surfaceContainerLowest active:bg-surfaceContainerLow disabled:opacity-25",
+        "items-center justify-center rounded-full bg-surfaceContainerLowest active:bg-surfaceContainer disabled:opacity-25",
         buttonSize,
         props.className,
       )}

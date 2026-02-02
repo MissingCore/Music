@@ -12,7 +12,7 @@ import { ViewPreferenceSetters } from "~/stores/ViewPreference/actions";
 
 import { SortSheet } from "~/navigation/sheets/SortSheet";
 
-import { IconButton } from "~/components/Form/Button/Icon";
+import { FilledIconButton } from "~/components/Form/Button/Icon";
 import { NumberStepper } from "~/components/Form/NumberStepper";
 import { SegmentedList } from "~/components/List/Segmented";
 import { DetachedSheet } from "~/components/Sheet/Detached";
@@ -20,7 +20,7 @@ import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { LayoutOptions } from "~/stores/ViewPreference/constants";
-import type { MutableLayout } from "~/stores/ViewPreference/types";
+import type { MutableViewLayout } from "~/stores/ViewPreference/types";
 
 //#region Albums
 export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
@@ -61,12 +61,26 @@ export function AlbumsViewOptionsSheet(props: { ref: TrueSheetRef }) {
 
 //#region Artists
 export function ArtistsViewOptionsSheet(props: { ref: TrueSheetRef }) {
+  return <ViewOptionsSheetTemplate ref={props.ref} screen="artist" />;
+}
+//#endregion
+
+//#region Playlists
+export function PlaylistsViewOptionsSheet(props: { ref: TrueSheetRef }) {
+  return <ViewOptionsSheetTemplate ref={props.ref} screen="playlist" />;
+}
+//#endregion
+
+//#region Sheet Template
+function ViewOptionsSheetTemplate(props: {
+  ref: TrueSheetRef;
+  screen: MutableViewLayout;
+}) {
   const sortOrderSheetRef = useSheetRef();
   return (
     <>
       <DetachedSheet ref={props.ref}>
-        <ScreenLayoutSetting screen="artist" />
-
+        <ScreenLayoutSetting screen={props.screen} />
         <SegmentedList.Item
           labelTextKey="feat.modalViewPreference.extra.sort"
           onPress={() => {
@@ -77,7 +91,7 @@ export function ArtistsViewOptionsSheet(props: { ref: TrueSheetRef }) {
           className="gap-4"
         />
       </DetachedSheet>
-      <SortSheet ref={sortOrderSheetRef} screen="artist" />
+      <SortSheet ref={sortOrderSheetRef} screen={props.screen} />
     </>
   );
 }
@@ -90,7 +104,7 @@ const LayoutIconMap = {
   compactGrid: ViewModule,
 } as const;
 
-function ScreenLayoutSetting({ screen }: { screen: MutableLayout }) {
+function ScreenLayoutSetting({ screen }: { screen: MutableViewLayout }) {
   const { t } = useTranslation();
   const layoutOption = useViewPreferenceStore((s) => s[`${screen}Layout`]);
 
@@ -98,9 +112,9 @@ function ScreenLayoutSetting({ screen }: { screen: MutableLayout }) {
     <SheetLabelAction
       labelKey="feat.modalViewPreference.extra.layout"
       RightElement={
-        <View className="flex-row gap-2 rounded-full bg-surfaceContainerLowest p-0.5">
+        <View className="flex-row gap-2 rounded-full bg-surfaceContainerLowest">
           {LayoutOptions.map((layout) => (
-            <IconButton
+            <FilledIconButton
               key={layout}
               Icon={LayoutIconMap[layout]}
               accessibilityLabel={t(`feat.modalViewPreference.extra.${layout}`)}
