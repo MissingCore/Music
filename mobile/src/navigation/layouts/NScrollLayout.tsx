@@ -2,11 +2,15 @@ import type { LegendListProps } from "@legendapp/list";
 import type { ParseKeys } from "i18next";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import type { ViewStyle } from "react-native";
 import { View } from "react-native";
+
+import type { AnimatedStyle, ScrollHandler } from "react-native-reanimated";
 import Animated, {
   cancelAnimation,
   clamp,
   useAnimatedScrollHandler,
+  useAnimatedRef,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
@@ -21,6 +25,7 @@ import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
 
 import {
   AnimatedLegendList,
+  AnimatedScrollView,
   useAnimatedLegendListRef,
 } from "~/components/Defaults";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
@@ -36,6 +41,79 @@ const SNAP_PERCENT = 0.35;
 
 const SHADOW_HEIGHT = 48;
 
+//#region NScrollLayout
+/** ScrollView with "shy header" and `NScrollbar`. */
+export function NScrollLayout(props: {
+  titleKey: ParseKeys;
+  Actions: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  const insets = useSafeAreaInsets();
+  const bottomInset = useBottomActionsInset();
+  const scrollRef = useAnimatedRef();
+
+  // NScrollbar
+  const quickScroll = usePreferenceStore((s) => s.quickScroll);
+  const scrollBarContext = useScrollbarContext();
+
+  const bottomOffset = bottomInset.withNav + 16;
+
+  // Shy Header
+  const [topBarHeight, setTopBarHeight] = useState(154); //? Includes the shadow underneath the header.
+  const headerHeight = useMemo(
+    () => topBarHeight - SHADOW_HEIGHT,
+    [topBarHeight],
+  );
+
+  const shyHeaderContext = useShyHeaderContext({
+    headerHeight,
+    NScrollBarOnScroll: scrollBarContext.onScroll,
+  });
+
+  return (
+    <View className="relative flex-1">
+      <ShyHeader
+        titleKey={props.titleKey}
+        getTrueHeight={setTopBarHeight}
+        style={shyHeaderContext.headerStyle}
+      >
+        {props.Actions}
+      </ShyHeader>
+
+      <AnimatedScrollView
+        // @ts-expect-error - We can pass refs since React 19.
+        ref={scrollRef}
+        {...scrollBarContext.layoutHandlers}
+        onScroll={shyHeaderContext.scrollHandler}
+        contentContainerStyle={{
+          paddingHorizontal: 16,
+          paddingTop: topBarHeight,
+          paddingBottom: bottomOffset,
+        }}
+        contentContainerClassName="grow gap-6"
+      >
+        {props.children}
+      </AnimatedScrollView>
+
+      <TopDownGradient
+        height={topBarHeight}
+        startFrom={insets.top}
+        className="absolute top-0 left-0"
+      />
+      <Scrollbar
+        listRef={scrollRef}
+        scrollbarOffset={{ top: topBarHeight, bottom: bottomOffset }}
+        isVisible={quickScroll}
+        {...scrollBarContext.layoutInfo}
+        onEnd={shyHeaderContext.onNScrollGestureEnd}
+      />
+    </View>
+  );
+}
+//#endregion
+
+//#region NScrollListLayout
+/** LegendList with "shy header" and `NScrollbar`. */
 export function NScrollListLayout<TData>({
   titleKey,
   OptionsSheet,
@@ -53,20 +131,118 @@ export function NScrollListLayout<TData>({
   const internalListRef = useAnimatedLegendListRef();
   const sheetRef = useSheetRef();
 
-  //#region NScrollbar
+  // NScrollbar
   const quickScroll = usePreferenceStore((s) => s.quickScroll);
-  const { layoutHandlers, layoutInfo, onScroll } = useScrollbarContext();
+  const scrollBarContext = useScrollbarContext();
 
   const bottomOffset = bottomInset.withNav + 16;
-  //#endregion
 
-  //#region Header Components
+  // Shy Header
   const [topBarHeight, setTopBarHeight] = useState(154); //? Includes the shadow underneath the header.
   const headerHeight = useMemo(
     () => topBarHeight - SHADOW_HEIGHT,
     [topBarHeight],
   );
 
+  const shyHeaderContext = useShyHeaderContext({
+    headerHeight,
+    NScrollBarOnScroll: scrollBarContext.onScroll,
+    resetOn: props.numColumns,
+  });
+
+  return (
+    <View className="relative flex-1">
+      <OptionsSheet ref={sheetRef} />
+      <ShyHeader
+        titleKey={titleKey}
+        getTrueHeight={setTopBarHeight}
+        style={shyHeaderContext.headerStyle}
+      >
+        {Actions}
+        <FilledIconButton
+          Icon={MoreHoriz}
+          accessibilityLabel={t("feat.modalViewPreference.title")}
+          onPress={() => sheetRef.current?.present()}
+          size="sm"
+        />
+      </ShyHeader>
+
+      <AnimatedLegendList
+        ref={internalListRef}
+        {...scrollBarContext.layoutHandlers}
+        onScroll={shyHeaderContext.scrollHandler}
+        maintainVisibleContentPosition={false}
+        {...props}
+        contentContainerStyle={{
+          paddingHorizontal: 16,
+          paddingTop: topBarHeight,
+          paddingBottom: bottomOffset,
+        }}
+      />
+
+      <TopDownGradient
+        height={topBarHeight}
+        startFrom={insets.top}
+        className="absolute top-0 left-0"
+      />
+      <Scrollbar
+        key={props.numColumns}
+        listRef={internalListRef}
+        scrollbarOffset={{ top: topBarHeight, bottom: bottomOffset }}
+        isVisible={quickScroll}
+        {...scrollBarContext.layoutInfo}
+        onEnd={shyHeaderContext.onNScrollGestureEnd}
+      />
+    </View>
+  );
+}
+//#endregion
+
+//#region "Shy" Header
+function ShyHeader(props: {
+  titleKey: ParseKeys;
+  getTrueHeight: (height: number) => void;
+  style: AnimatedStyle<ViewStyle>;
+  /** These are the "actions" that get rendered next to the title. */
+  children?: React.ReactNode;
+}) {
+  const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
+  return (
+    <Animated.View
+      onLayout={(e) => props.getTrueHeight(e.nativeEvent.layout.height)}
+      pointerEvents="box-none"
+      style={props.style}
+      className="absolute top-0 left-0 z-50 w-full"
+    >
+      <View
+        style={{ paddingTop: insets.top + 32 }}
+        className="flex-row items-center justify-between gap-4 bg-surface px-4"
+      >
+        <Marquee>
+          <AccentText className="text-4xl">{t(props.titleKey)}</AccentText>
+        </Marquee>
+        {props.children ? (
+          <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
+            {props.children}
+          </View>
+        ) : null}
+      </View>
+      <TopDownGradient height={SHADOW_HEIGHT} />
+    </Animated.View>
+  );
+}
+//#endregion
+
+//#region useShyHeaderContext
+function useShyHeaderContext(args: {
+  headerHeight: number;
+  /** The `onScroll` function returned by `useScrollbarContext()`. */
+  NScrollBarOnScroll: ScrollHandler;
+  /** Value to trigger a reset in our logic. */
+  resetOn?: any;
+}) {
+  //#region Header Components
   const headerTranslation = useSharedValue(0);
   const translationTimer = useSharedValue(0);
   const headerStyle = useAnimatedStyle(() => ({
@@ -78,7 +254,7 @@ export function NScrollListLayout<TData>({
     headerTranslation.value = 0;
     cancelAnimation(translationTimer);
     translationTimer.value = 0;
-  }, [headerTranslation, translationTimer, props.numColumns]);
+  }, [headerTranslation, translationTimer, args.resetOn]);
   //#endregion
 
   //#region Scroll Animations
@@ -103,12 +279,12 @@ export function NScrollListLayout<TData>({
         translationTimer.value = 0;
         //? Snap the header to a position after scrolling has stopped.
         const changeDelta = dragOffsetYStart.value - offsetY;
-        const snapThreshold = headerHeight * SNAP_PERCENT;
+        const snapThreshold = args.headerHeight * SNAP_PERCENT;
         dragOffsetYStart.value = INVALID_STATE;
 
         // Only snap when not at the beginning of the list where the header
         // should be fully visible.
-        if (offsetY > headerHeight) {
+        if (offsetY > args.headerHeight) {
           if (wasSnapped.value && Math.abs(changeDelta) <= snapThreshold) {
             // Keep header snapped if already snapped and didn't meet the threshold.
             headerTranslation.value = withSpring(0);
@@ -116,7 +292,7 @@ export function NScrollListLayout<TData>({
             // Snap header open if we meet the threshold.
             headerTranslation.value = withSpring(0);
           } else {
-            headerTranslation.value = withSpring(headerHeight);
+            headerTranslation.value = withSpring(args.headerHeight);
           }
         }
 
@@ -124,7 +300,7 @@ export function NScrollListLayout<TData>({
       },
     }),
     [
-      headerHeight,
+      args.headerHeight,
       headerTranslation,
       translationTimer,
       wasSnapped,
@@ -141,8 +317,8 @@ export function NScrollListLayout<TData>({
   }, [snapHandlers, translationTimer, prevOffsetY]);
 
   const scrollHandler = useAnimatedScrollHandler({
-    onScroll: (e) => {
-      onScroll(e);
+    onScroll: (e, _ctx) => {
+      args.NScrollBarOnScroll(e, _ctx);
 
       //? Handle situation where we scroll via `NScrollbar` (as `onBeginDrag`
       //? doesn't get fired).
@@ -155,7 +331,7 @@ export function NScrollListLayout<TData>({
       headerTranslation.value = clamp(
         0,
         headerTranslation.value + changeDelta,
-        headerHeight,
+        args.headerHeight,
       );
 
       prevOffsetY.value = e.contentOffset.y;
@@ -174,61 +350,9 @@ export function NScrollListLayout<TData>({
   });
   //#endregion
 
-  return (
-    <View className="relative flex-1">
-      <OptionsSheet ref={sheetRef} />
-      <Animated.View
-        onLayout={(e) => setTopBarHeight(e.nativeEvent.layout.height)}
-        pointerEvents="box-none"
-        style={headerStyle}
-        className="absolute top-0 left-0 z-50 w-full"
-      >
-        <View
-          style={{ paddingTop: insets.top + 32 }}
-          className="flex-row items-center justify-between gap-4 bg-surface px-4"
-        >
-          <Marquee>
-            <AccentText className="text-4xl">{t(titleKey)}</AccentText>
-          </Marquee>
-          <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
-            {Actions}
-            <FilledIconButton
-              Icon={MoreHoriz}
-              accessibilityLabel={t("feat.modalViewPreference.title")}
-              onPress={() => sheetRef.current?.present()}
-              size="sm"
-            />
-          </View>
-        </View>
-        <TopDownGradient height={SHADOW_HEIGHT} />
-      </Animated.View>
-
-      <AnimatedLegendList
-        ref={internalListRef}
-        {...layoutHandlers}
-        onScroll={scrollHandler}
-        maintainVisibleContentPosition={false}
-        {...props}
-        contentContainerStyle={{
-          paddingHorizontal: 16,
-          paddingTop: topBarHeight,
-          paddingBottom: bottomOffset,
-        }}
-      />
-
-      <TopDownGradient
-        height={topBarHeight}
-        startFrom={insets.top}
-        className="absolute top-0 left-0"
-      />
-      <Scrollbar
-        key={props.numColumns}
-        listRef={internalListRef}
-        scrollbarOffset={{ top: topBarHeight, bottom: bottomOffset }}
-        isVisible={quickScroll}
-        {...layoutInfo}
-        onEnd={onNScrollGestureEnd}
-      />
-    </View>
+  return useMemo(
+    () => ({ headerStyle, scrollHandler, onNScrollGestureEnd }),
+    [headerStyle, scrollHandler, onNScrollGestureEnd],
   );
 }
+//#endregion

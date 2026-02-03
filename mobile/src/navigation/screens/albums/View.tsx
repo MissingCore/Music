@@ -6,7 +6,7 @@ import { useViewLayout } from "~/stores/ViewPreference/hooks/useViewLayout";
 import { useViewOrder } from "~/stores/ViewPreference/hooks/useViewOrder";
 
 import { AlbumsViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
-import { NScrollListLayout } from "~/navigation/layouts/NScrollListLayout";
+import { NScrollListLayout } from "~/navigation/layouts/NScrollLayout";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import type { ExtractQueryData } from "~/lib/react-query";
