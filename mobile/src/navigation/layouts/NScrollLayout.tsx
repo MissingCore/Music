@@ -39,7 +39,7 @@ import { AccentText } from "~/components/Typography/AccentText";
 const INVALID_STATE = -1;
 const SNAP_PERCENT = 0.35;
 
-const SHADOW_HEIGHT = 48;
+const SHADOW_HEIGHT = 24;
 
 //#region NScrollLayout
 /** ScrollView with "shy header" and `NScrollbar`. */
@@ -59,7 +59,7 @@ export function NScrollLayout(props: {
   const bottomOffset = bottomInset.withNav + 16;
 
   // Shy Header
-  const [topBarHeight, setTopBarHeight] = useState(154); //? Includes the shadow underneath the header.
+  const [topBarHeight, setTopBarHeight] = useState(130); //? Includes the shadow underneath the header.
   const headerHeight = useMemo(
     () => topBarHeight - SHADOW_HEIGHT,
     [topBarHeight],
@@ -247,6 +247,11 @@ function useShyHeaderContext(args: {
   const translationTimer = useSharedValue(0);
   const headerStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: -headerTranslation.value }],
+    opacity: clamp(
+      0,
+      (args.headerHeight - headerTranslation.value) / args.headerHeight,
+      1,
+    ),
   }));
 
   // Reset `headerTranslation` when the layout changes.
