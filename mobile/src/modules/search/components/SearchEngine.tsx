@@ -116,14 +116,14 @@ function SearchResultsList<TScope extends SearchCategories>(
           isString(item) ? (
             <TEm
               textKey={`term.${item}`}
-              className={index > 0 ? "mt-4" : undefined}
+              className={cn("mb-2", { "mt-2": index > 0 })}
             />
           ) : (
             <SearchResult
               button
               /* @ts-expect-error - `type` should be limited to our scope. */
               onPress={() => props.callbacks[item.type](item.entry)}
-              className={cn("mt-2 pr-4", {
+              className={cn("mb-2 pr-4", {
                 "rounded-full": item.type === "artist",
               })}
               {...item}
@@ -136,6 +136,8 @@ function SearchResultsList<TScope extends SearchCategories>(
           ) : undefined
         }
         nestedScrollEnabled={props.forSheets}
+        // FIXME: For some weird reason, we get double the margin bottom (should be `-mb-2`).
+        className="-mb-1"
         contentContainerClassName="pb-4"
         contentContainerStyle={{
           paddingTop: tabsWithData.length > 0 ? filterHeight : 24,

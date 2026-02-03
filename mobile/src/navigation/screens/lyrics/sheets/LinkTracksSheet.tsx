@@ -9,7 +9,6 @@ import { getTrackArtwork } from "~/api/track.utils";
 import { queries as q } from "~/queries/keyStore";
 
 import { queryClient } from "~/lib/react-query";
-import { cn } from "~/lib/style";
 import { ToastOptions } from "~/lib/toast";
 import { DetachedSheet } from "~/components/Sheet/Detached";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
@@ -26,7 +25,7 @@ export function LinkTracksSheet(props: { ref: TrueSheetRef; lyricId: string }) {
         data={data?.track ?? []}
         keyExtractor={({ id }) => id}
         onFilterData={(query, data) => containSorter(data, query, "name")}
-        renderItem={({ item, index }) => (
+        renderItem={({ item }) => (
           <SearchResult
             button
             type="track"
@@ -40,12 +39,14 @@ export function LinkTracksSheet(props: { ref: TrueSheetRef; lyricId: string }) {
                 lyricId: props.lyricId,
               })
             }
-            className={cn("pr-4", { "mt-2": index > 0 })}
+            className="mb-2 pr-4"
           />
         )}
         nestedScrollEnabled
         shadowTransitionConfig={{ color: "surfaceBright" }}
         renderOnQuery
+        // FIXME: For some weird reason, we get double the margin bottom (should be `-mb-2`).
+        className="-mb-1"
         contentContainerClassName="pb-4"
       />
     </DetachedSheet>

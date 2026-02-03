@@ -91,15 +91,11 @@ export function useTrackListPreset(args: {
   const data = useTrackListPlayingIndication(args.trackSource, args.data);
   return useMemo(
     () => ({
-      getEstimatedItemSize: (index) => (index === 0 ? 48 : 56),
+      estimatedItemSize: 56, // 48px Height + 8px Margin Bottom
       data,
       keyExtractor: ({ id }) => id,
-      renderItem: ({ item, index }) => (
-        <Track
-          {...item}
-          trackSource={args.trackSource}
-          className={index > 0 ? "mt-2" : undefined}
-        />
+      renderItem: ({ item }) => (
+        <Track {...item} trackSource={args.trackSource} className="mb-2" />
       ),
       ListEmptyComponent: (
         <ContentPlaceholder
@@ -107,6 +103,7 @@ export function useTrackListPreset(args: {
           errMsgKey="err.msg.noTracks"
         />
       ),
+      className: "-mb-2",
     }),
     [args, data],
   ) satisfies Omit<LegendListProps<TrackContent>, "data"> & {

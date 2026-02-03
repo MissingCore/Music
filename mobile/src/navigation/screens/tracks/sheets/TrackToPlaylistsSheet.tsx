@@ -31,11 +31,11 @@ export function TrackToPlaylistsSheet({ id }: { id: string }) {
       snapTop
     >
       <LegendList
-        getEstimatedItemSize={(index) => (index === 0 ? 54 : 62)}
+        estimatedItemSize={62} // 54px Height + 8px Margin Bottom
         data={playlistsNames}
         keyExtractor={(name) => name}
         extraData={inList}
-        renderItem={({ item: name, index }) => {
+        renderItem={({ item: name }) => {
           const selected = inList?.includes(name) ?? false;
           return (
             <CheckboxField
@@ -47,7 +47,7 @@ export function TrackToPlaylistsSheet({ id }: { id: string }) {
                   name,
                 )
               }
-              className={index > 0 ? "mt-2" : undefined}
+              className="mb-2"
             >
               <Marquee color="surfaceBright">
                 <StyledText>{name}</StyledText>
@@ -59,6 +59,7 @@ export function TrackToPlaylistsSheet({ id }: { id: string }) {
           <ContentPlaceholder errMsgKey="err.msg.noPlaylists" />
         }
         {...sheetListHandlers}
+        className="-mb-2"
         contentContainerClassName="pb-4"
       />
     </DetachedSheet>

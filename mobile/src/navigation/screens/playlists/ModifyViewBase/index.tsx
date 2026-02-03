@@ -142,6 +142,8 @@ function PageContent({ bottomOffset }: { bottomOffset: number }) {
           ListEmptyComponent={
             <ContentPlaceholder errMsgKey="err.msg.noTracks" />
           }
+          // FIXME: For some weird reason, we get double the margin bottom (should be `-mb-2`).
+          className="-mb-1"
           contentContainerStyle={{ paddingBottom: bottomOffset }}
           contentContainerClassName="pt-4" // Applies to the internal `<FlashList />`.
         />
@@ -164,7 +166,7 @@ const RenderItem = memo(
         onSwipeLeft={() => onRemove(item.id)}
         RightIcon={<Delete color="onError" />}
         rightIconContainerClassName="rounded-xs bg-error"
-        wrapperClassName={cn("mx-4", { "mt-2": info.index > 0 })}
+        wrapperClassName="mx-4 mb-2"
         className="overflow-hidden rounded-xs bg-surface"
       >
         <SearchResult

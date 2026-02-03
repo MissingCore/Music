@@ -11,6 +11,7 @@ import { CurrentListLayout } from "../../layouts/CurrentList";
 import { AlbumArtworkSheet } from "../../sheets/ArtworkSheet";
 
 import { mutateGuard } from "~/lib/react-query";
+import { cn } from "~/lib/style";
 import { isNumber } from "~/utils/validation";
 import { LegendList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button/Icon";
@@ -59,8 +60,8 @@ export default function Album({
 
   const guessItemSize = useCallback(
     (index: number, item: any) => {
-      if (!isNumber(item)) return index === 0 ? 48 : 56;
-      return (primaryFont === "Inter" ? 15 : 14) + (index === 0 ? 0 : 8);
+      if (!isNumber(item)) return 56; // 48px Height + 8px Margin Bottom
+      return (primaryFont === "Inter" ? 15 : 14) + (index === 0 ? 8 : 16);
     },
     [primaryFont],
   );
@@ -105,7 +106,7 @@ export default function Album({
           getItemType={(item) => (isNumber(item) ? "label" : "row")}
           renderItem={({ item, index }) =>
             isNumber(item) ? (
-              <Em dim className={index > 0 ? "mt-4" : undefined}>
+              <Em dim className={cn("mb-2", { "mt-2": index > 0 })}>
                 {t("term.disc", { count: item })}
               </Em>
             ) : (
@@ -113,10 +114,11 @@ export default function Album({
                 {...item}
                 trackSource={trackSource}
                 LeftElement={<TrackNumber track={item.track} />}
-                className={index > 0 ? "mt-2" : undefined}
+                className="mb-2"
               />
             )
           }
+          className="-mb-2"
           contentContainerClassName="px-4 pt-4"
           contentContainerStyle={{ paddingBottom: bottomInset.onlyPlayer + 16 }}
         />

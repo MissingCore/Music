@@ -98,8 +98,7 @@ export default function Upcoming() {
         initialScrollIndex={listIndex}
         data={modifiedData}
         keyExtractor={(item) => item.key}
-        estimatedItemSize={48}
-        gap={8}
+        estimatedItemSize={56}
         renderItem={(args) => (
           <RenderItem
             disableAfter={disableIndex}
@@ -108,6 +107,8 @@ export default function Upcoming() {
           />
         )}
         onReordered={onMove}
+        // FIXME: For some weird reason, we get double the margin bottom (should be `-mb-2`).
+        className="-mb-1"
         contentContainerClassName="py-4"
       />
     </>
@@ -137,9 +138,8 @@ const RenderItem = memo(
             : PlaybackControls.playAtIndex(index)
         }
         className={cn(
-          "mx-2 flex-row items-center gap-1 rounded-xs active:bg-surfaceContainerLowest/50",
+          "mx-2 mb-2 flex-row items-center gap-1 rounded-xs active:bg-surfaceContainerLowest/50",
           {
-            "mt-2": index > 0,
             "bg-surfaceContainerLowest!": info.isActive,
             "opacity-25 active:opacity-100":
               index < disableAfter && !info.isActive,
