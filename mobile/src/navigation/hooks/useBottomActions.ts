@@ -1,5 +1,6 @@
 import type { NavigationRoute, ParamListBase } from "@react-navigation/native";
 import { useNavigationState } from "@react-navigation/native";
+import { useMemo } from "react";
 
 import { usePlaybackStore } from "~/stores/Playback/store";
 
@@ -52,12 +53,13 @@ export function useBottomActionsInset() {
   //? if the miniplayer is rendered.
   const isMiniPlayerRendered = !!activeTrack;
 
-  // Bottom inset on home screen.
-  let withNav = 76; // 60px Navbar Height + 16px Bottom Padding
-  if (isMiniPlayerRendered) withNav += 67; // 64px MiniPlayer Height + 3px Gap
-  // Bottom inset on screens with only MiniPlayer.
-  let onlyPlayer = 0;
-  if (isMiniPlayerRendered) onlyPlayer += 80; // 64px MiniPlayer Height + 16px Bottom Padding
-
-  return { withNav, onlyPlayer };
+  return useMemo(() => {
+    // Bottom inset on home screen.
+    let withNav = 76; // 60px Navbar Height + 16px Bottom Padding
+    if (isMiniPlayerRendered) withNav += 67; // 64px MiniPlayer Height + 3px Gap
+    // Bottom inset on screens with only MiniPlayer.
+    let onlyPlayer = 0;
+    if (isMiniPlayerRendered) onlyPlayer += 80; // 64px MiniPlayer Height + 16px Bottom Padding
+    return { withNav, onlyPlayer };
+  }, [isMiniPlayerRendered]);
 }
