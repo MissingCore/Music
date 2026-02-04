@@ -238,20 +238,19 @@ function ShyHeader(props: {
       style={props.style}
       className="absolute top-0 left-0 z-50 w-full"
     >
-      <View
-        style={{ paddingTop: insets.top + 32 }}
-        className="flex-row items-center justify-between gap-4 bg-surface px-4"
-      >
-        <Marquee>
-          <AccentText className="text-4xl">{t(props.titleKey)}</AccentText>
-        </Marquee>
-        {props.Actions ? (
-          <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
-            {props.Actions}
-          </View>
-        ) : null}
+      <View style={{ paddingTop: insets.top + 32 }} className="bg-surface px-4">
+        <View className="flex-row items-center justify-between gap-4">
+          <Marquee>
+            <AccentText className="text-4xl">{t(props.titleKey)}</AccentText>
+          </Marquee>
+          {props.Actions ? (
+            <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
+              {props.Actions}
+            </View>
+          ) : null}
+        </View>
+        {props.children}
       </View>
-      {props.children}
       <TopDownGradient height={SHADOW_HEIGHT} />
     </Animated.View>
   );
