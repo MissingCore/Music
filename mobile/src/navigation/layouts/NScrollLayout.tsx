@@ -121,7 +121,7 @@ export function NScrollListLayout<TData>({
   ...props
 }: Omit<LegendListProps<TData>, "onContentSizeChange" | "onLayout"> & {
   titleKey: ParseKeys;
-  OptionsSheet: (props: { ref: TrueSheetRef }) => React.JSX.Element;
+  OptionsSheet?: (props: { ref: TrueSheetRef }) => React.JSX.Element;
   /** Additional "actions" which will appear before the "Screen Options" button. */
   Actions?: React.ReactNode;
 }) {
@@ -150,14 +150,10 @@ export function NScrollListLayout<TData>({
     resetOn: props.numColumns,
   });
 
-  return (
-    <View className="relative flex-1">
-      <OptionsSheet ref={sheetRef} />
-      <ShyHeader
-        titleKey={titleKey}
-        getTrueHeight={setTopBarHeight}
-        style={shyHeaderContext.headerStyle}
-      >
+  const RenderedHeaderActions = useMemo(() => {
+    if (!Actions && !OptionsSheet) return null;
+    return (
+      <>
         {Actions}
         <FilledIconButton
           Icon={MoreHoriz}
@@ -165,6 +161,19 @@ export function NScrollListLayout<TData>({
           onPress={() => sheetRef.current?.present()}
           size="sm"
         />
+      </>
+    );
+  }, [t, Actions, OptionsSheet, sheetRef]);
+
+  return (
+    <View className="relative flex-1">
+      {OptionsSheet ? <OptionsSheet ref={sheetRef} /> : null}
+      <ShyHeader
+        titleKey={titleKey}
+        getTrueHeight={setTopBarHeight}
+        style={shyHeaderContext.headerStyle}
+      >
+        {RenderedHeaderActions}
       </ShyHeader>
 
       <AnimatedLegendList
