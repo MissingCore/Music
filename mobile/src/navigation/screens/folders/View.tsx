@@ -17,8 +17,12 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
+import type { FileNode } from "~/db/schema";
+
 import { useFolderContent } from "~/queries/folder";
-import { StickyActionListLayout } from "../../layouts/StickyActionScroll";
+
+import { NScrollListLayout } from "~/navigation/layouts/NScrollLayout";
+import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import { OnRTL, OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";
@@ -31,10 +35,6 @@ import {
 } from "~/modules/media/components/Track";
 import type { TrackContent } from "~/modules/media/components/Track.type";
 import { SearchResult } from "~/modules/search/components/SearchResult";
-import { ContentPlaceholder } from "../../components/Placeholder";
-
-/** Animated scrollview supporting gestures. */
-const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
 type Props = StaticScreenProps<{ path?: string }>;
 
@@ -43,22 +43,12 @@ export default function Folders({
     params: { path },
   },
 }: Props) {
+  //#region Directory Management
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const listRef = useAnimatedLegendListRef();
+
   const [dirSegments, _setDirSegments] = useState<string[]>([]);
-
-  const fullPath = dirSegments.join("/");
-  const trackSource = { type: "folder", id: `${fullPath}/` } as const;
-
-  const { isPending, data } = useFolderContent(fullPath);
-  const listData = useTrackListPlayingIndication(trackSource, data?.tracks);
-
-  const renderedData = useMemo(
-    () => [...(data?.subDirectories ?? []), ...(listData ?? [])],
-    [data, listData],
-  );
-
   /** Modified state setter that scrolls to the top of the page. */
   const setDirSegments: React.Dispatch<React.SetStateAction<string[]>> =
     useCallback(
@@ -70,7 +60,7 @@ export default function Folders({
       [listRef],
     );
 
-  // Enable the ability to navigate to a specific folder programmatically.
+  //? Enable the ability to navigate to a specific folder programmatically.
   useEffect(() => {
     if (!isFocused || !path) return;
     // Exclude the `/` at the end of the path.
@@ -79,9 +69,8 @@ export default function Folders({
     navigation.setParams({ path: undefined });
   }, [navigation, isFocused, path, setDirSegments]);
 
-  // Enables our "fake tabs" be affected by the navigation back gesture.
+  //? Treat each directory as part of the stack which gets popped when a back gesture is detected.
   useEffect(() => {
-    // Prevent event from working when this screen isn't focused.
     if (!isFocused) return;
     const subscription = BackHandler.addEventListener(
       "hardwareBackPress",
@@ -94,48 +83,80 @@ export default function Folders({
     );
     return () => subscription.remove();
   }, [dirSegments, isFocused, setDirSegments]);
+  //#endregion
+
+  //#region Data Fetching
+  const fullPath = dirSegments.join("/");
+  const trackSource = useMemo(
+    () => ({ type: "folder", id: `${fullPath}/` }) as const,
+    [fullPath],
+  );
+
+  const { isPending, data } = useFolderContent(fullPath);
+  const listData = useTrackListPlayingIndication(trackSource, data?.tracks);
+
+  const renderedData = useMemo(
+    () => [...(data?.subDirectories ?? []), ...(listData ?? [])],
+    [data, listData],
+  );
+  //#endregion
+
+  const renderItem = useCallback(
+    ({ item }: { item: MergedData }) =>
+      isTrackContent(item) ? (
+        <Track {...item} trackSource={trackSource} className="mb-2" />
+      ) : (
+        <SearchResult
+          button
+          type="folder"
+          title={item.name}
+          onPress={() => setDirSegments((prev) => [...prev, item.name])}
+          className="mb-2 pr-4"
+        />
+      ),
+    [trackSource, setDirSegments],
+  );
 
   return (
-    <StickyActionListLayout
+    <NScrollListLayout
       listRef={listRef}
       titleKey="term.folders"
-      insetDelta={8}
-      estimatedItemSize={56} // 48px Height + 8px Margin Top
+      estimatedItemSize={56} // 48px Height + 8px Margin Bottom
       data={renderedData}
-      keyExtractor={(item) => (isTrackContent(item) ? item.id : item.path)}
-      renderItem={({ item }) =>
-        isTrackContent(item) ? (
-          <Track {...item} trackSource={trackSource} className="mb-2" />
-        ) : (
-          <SearchResult
-            button
-            type="folder"
-            title={item.name}
-            onPress={() => setDirSegments((prev) => [...prev, item.name])}
-            className="mb-2 pr-4"
-          />
-        )
-      }
-      ListEmptyComponent={
-        <ContentPlaceholder isPending={isPending} className="h-screen" />
-      }
+      keyExtractor={keyExtractor}
+      renderItem={renderItem}
+      ListEmptyComponent={<ContentPlaceholder isPending={isPending} />}
       scrollEnabled={!isPending}
-      StickyAction={
+      Subheader={
         <Breadcrumbs
           dirSegments={dirSegments}
           setDirSegments={setDirSegments}
         />
       }
-      estimatedActionSize={48}
+      estimatedSubheaderHeight={56}
+      className="-mb-2"
     />
   );
 }
+
+//#region List Utils
+type MergedData = FileNode | TrackContent;
 
 function isTrackContent(data: unknown): data is TrackContent {
   return Object.hasOwn(data as TrackContent, "id");
 }
 
+function keyExtractor(item: MergedData) {
+  return isTrackContent(item) ? item.id : item.path;
+}
+//#endregion
+
 //#region Breadcrumbs
+/** Animated scrollview supporting gestures. */
+const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
+
+const RemoveAnimation = OnRTL.decide(FadeOutLeft, FadeOutRight);
+
 function Breadcrumbs({
   dirSegments,
   setDirSegments,
@@ -180,8 +201,7 @@ function Breadcrumbs({
       ref={breadcrumbsRef}
       horizontal
       showsHorizontalScrollIndicator={false}
-      style={{ width: screenWidth - 32 }}
-      className="rounded-md bg-surfaceContainerLowest"
+      className="mt-2 w-full rounded-md bg-surfaceContainerLowest"
       contentContainerClassName="px-4"
     >
       <Animated.View
@@ -191,17 +211,11 @@ function Breadcrumbs({
         {[undefined, ...dirSegments].map((dirName, idx) => (
           <Fragment key={idx}>
             {idx > 0 ? (
-              <Animated.View
-                entering={FadeInLeft}
-                exiting={OnRTL.decide(FadeOutLeft, FadeOutRight)}
-              >
+              <Animated.View entering={FadeInLeft} exiting={RemoveAnimation}>
                 <StyledText className="px-1 text-xs">/</StyledText>
               </Animated.View>
             ) : null}
-            <Animated.View
-              entering={FadeInLeft}
-              exiting={OnRTL.decide(FadeOutLeft, FadeOutRight)}
-            >
+            <Animated.View entering={FadeInLeft} exiting={RemoveAnimation}>
               <Pressable
                 // Pop the segments we pushed onto the stack and update
                 // the path segments atom accordingly.

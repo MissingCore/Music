@@ -1,6 +1,12 @@
 import type { LegendListProps } from "@legendapp/list";
 import type { ParseKeys } from "i18next";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import type { ViewStyle } from "react-native";
 import { View } from "react-native";
@@ -23,6 +29,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
 
+import type { AnimatedLegendListRef } from "~/components/Defaults";
 import {
   AnimatedLegendList,
   AnimatedScrollView,
@@ -39,7 +46,7 @@ import { AccentText } from "~/components/Typography/AccentText";
 const INVALID_STATE = -1;
 const SNAP_PERCENT = 0.35;
 
-const SHADOW_HEIGHT = 48;
+const SHADOW_HEIGHT = 24;
 
 //#region NScrollLayout
 /** ScrollView with "shy header" and `NScrollbar`. */
@@ -59,7 +66,7 @@ export function NScrollLayout(props: {
   const bottomOffset = bottomInset.withNav + 16;
 
   // Shy Header
-  const [topBarHeight, setTopBarHeight] = useState(154); //? Includes the shadow underneath the header.
+  const [topBarHeight, setTopBarHeight] = useState(130); //? Includes the shadow underneath the header.
   const headerHeight = useMemo(
     () => topBarHeight - SHADOW_HEIGHT,
     [topBarHeight],
@@ -76,9 +83,8 @@ export function NScrollLayout(props: {
         titleKey={props.titleKey}
         getTrueHeight={setTopBarHeight}
         style={shyHeaderContext.headerStyle}
-      >
-        {props.Actions}
-      </ShyHeader>
+        Actions={props.Actions}
+      />
 
       <AnimatedScrollView
         // @ts-expect-error - We can pass refs since React 19.
@@ -116,19 +122,29 @@ export function NScrollLayout(props: {
 /** LegendList with "shy header" and `NScrollbar`. */
 export function NScrollListLayout<TData>({
   titleKey,
+  listRef,
   OptionsSheet,
   Actions,
+  Subheader,
+  estimatedSubheaderHeight = 0,
   ...props
 }: Omit<LegendListProps<TData>, "onContentSizeChange" | "onLayout"> & {
   titleKey: ParseKeys;
-  OptionsSheet: (props: { ref: TrueSheetRef }) => React.JSX.Element;
+  listRef?: AnimatedLegendListRef;
+  OptionsSheet?: (props: { ref: TrueSheetRef }) => React.JSX.Element;
   /** Additional "actions" which will appear before the "Screen Options" button. */
   Actions?: React.ReactNode;
+  /** Component rendered after the header but before the shadow. */
+  Subheader?: React.ReactNode;
+  /** Estimated height of subheader to improve "initial" height calculations. */
+  estimatedSubheaderHeight?: number;
 }) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const bottomInset = useBottomActionsInset();
   const internalListRef = useAnimatedLegendListRef();
+  // @ts-expect-error - Should be able to synchronize refs.
+  useImperativeHandle(listRef, () => internalListRef.current);
   const sheetRef = useSheetRef();
 
   // NScrollbar
@@ -138,7 +154,9 @@ export function NScrollListLayout<TData>({
   const bottomOffset = bottomInset.withNav + 16;
 
   // Shy Header
-  const [topBarHeight, setTopBarHeight] = useState(154); //? Includes the shadow underneath the header.
+  const [topBarHeight, setTopBarHeight] = useState(
+    130 + estimatedSubheaderHeight,
+  ); //? Includes the shadow underneath the header.
   const headerHeight = useMemo(
     () => topBarHeight - SHADOW_HEIGHT,
     [topBarHeight],
@@ -150,14 +168,10 @@ export function NScrollListLayout<TData>({
     resetOn: props.numColumns,
   });
 
-  return (
-    <View className="relative flex-1">
-      <OptionsSheet ref={sheetRef} />
-      <ShyHeader
-        titleKey={titleKey}
-        getTrueHeight={setTopBarHeight}
-        style={shyHeaderContext.headerStyle}
-      >
+  const RenderedHeaderActions = useMemo(() => {
+    if (!Actions && !OptionsSheet) return null;
+    return (
+      <>
         {Actions}
         <FilledIconButton
           Icon={MoreHoriz}
@@ -165,6 +179,20 @@ export function NScrollListLayout<TData>({
           onPress={() => sheetRef.current?.present()}
           size="sm"
         />
+      </>
+    );
+  }, [t, Actions, OptionsSheet, sheetRef]);
+
+  return (
+    <View className="relative flex-1">
+      {OptionsSheet ? <OptionsSheet ref={sheetRef} /> : null}
+      <ShyHeader
+        titleKey={titleKey}
+        getTrueHeight={setTopBarHeight}
+        style={shyHeaderContext.headerStyle}
+        Actions={RenderedHeaderActions}
+      >
+        {Subheader}
       </ShyHeader>
 
       <AnimatedLegendList
@@ -203,7 +231,7 @@ function ShyHeader(props: {
   titleKey: ParseKeys;
   getTrueHeight: (height: number) => void;
   style: AnimatedStyle<ViewStyle>;
-  /** These are the "actions" that get rendered next to the title. */
+  Actions?: React.ReactNode;
   children?: React.ReactNode;
 }) {
   const { t } = useTranslation();
@@ -215,18 +243,18 @@ function ShyHeader(props: {
       style={props.style}
       className="absolute top-0 left-0 z-50 w-full"
     >
-      <View
-        style={{ paddingTop: insets.top + 32 }}
-        className="flex-row items-center justify-between gap-4 bg-surface px-4"
-      >
-        <Marquee>
-          <AccentText className="text-4xl">{t(props.titleKey)}</AccentText>
-        </Marquee>
-        {props.children ? (
-          <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
-            {props.children}
-          </View>
-        ) : null}
+      <View style={{ paddingTop: insets.top + 32 }} className="bg-surface px-4">
+        <View className="flex-row items-center justify-between gap-4">
+          <Marquee>
+            <AccentText className="text-4xl">{t(props.titleKey)}</AccentText>
+          </Marquee>
+          {props.Actions ? (
+            <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
+              {props.Actions}
+            </View>
+          ) : null}
+        </View>
+        {props.children}
       </View>
       <TopDownGradient height={SHADOW_HEIGHT} />
     </Animated.View>
@@ -247,6 +275,11 @@ function useShyHeaderContext(args: {
   const translationTimer = useSharedValue(0);
   const headerStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: -headerTranslation.value }],
+    opacity: clamp(
+      0,
+      (args.headerHeight - headerTranslation.value) / args.headerHeight,
+      1,
+    ),
   }));
 
   // Reset `headerTranslation` when the layout changes.
