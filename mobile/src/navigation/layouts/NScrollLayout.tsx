@@ -126,6 +126,7 @@ export function NScrollListLayout<TData>({
   OptionsSheet,
   Actions,
   Subheader,
+  estimatedSubheaderHeight = 0,
   ...props
 }: Omit<LegendListProps<TData>, "onContentSizeChange" | "onLayout"> & {
   titleKey: ParseKeys;
@@ -135,6 +136,8 @@ export function NScrollListLayout<TData>({
   Actions?: React.ReactNode;
   /** Component rendered after the header but before the shadow. */
   Subheader?: React.ReactNode;
+  /** Estimated height of subheader to improve "initial" height calculations. */
+  estimatedSubheaderHeight?: number;
 }) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
@@ -151,7 +154,9 @@ export function NScrollListLayout<TData>({
   const bottomOffset = bottomInset.withNav + 16;
 
   // Shy Header
-  const [topBarHeight, setTopBarHeight] = useState(154); //? Includes the shadow underneath the header.
+  const [topBarHeight, setTopBarHeight] = useState(
+    130 + estimatedSubheaderHeight,
+  ); //? Includes the shadow underneath the header.
   const headerHeight = useMemo(
     () => topBarHeight - SHADOW_HEIGHT,
     [topBarHeight],

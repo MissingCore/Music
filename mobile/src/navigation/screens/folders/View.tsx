@@ -125,14 +125,15 @@ export default function Folders({
       data={renderedData}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
+      ListEmptyComponent={<ContentPlaceholder isPending={isPending} />}
+      scrollEnabled={!isPending}
       Subheader={
         <Breadcrumbs
           dirSegments={dirSegments}
           setDirSegments={setDirSegments}
         />
       }
-      ListEmptyComponent={<ContentPlaceholder isPending={isPending} />}
-      scrollEnabled={!isPending}
+      estimatedSubheaderHeight={56}
       className="-mb-2"
     />
   );
