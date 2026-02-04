@@ -36,9 +36,6 @@ import {
 import type { TrackContent } from "~/modules/media/components/Track.type";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 
-/** Animated scrollview supporting gestures. */
-const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
-
 type Props = StaticScreenProps<{ path?: string }>;
 
 export default function Folders({
@@ -154,6 +151,11 @@ function keyExtractor(item: MergedData) {
 //#endregion
 
 //#region Breadcrumbs
+/** Animated scrollview supporting gestures. */
+const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
+
+const RemoveAnimation = OnRTL.decide(FadeOutLeft, FadeOutRight);
+
 function Breadcrumbs({
   dirSegments,
   setDirSegments,
@@ -198,7 +200,7 @@ function Breadcrumbs({
       ref={breadcrumbsRef}
       horizontal
       showsHorizontalScrollIndicator={false}
-      className="w-full rounded-md bg-surfaceContainerLowest"
+      className="mt-2 w-full rounded-md bg-surfaceContainerLowest"
       contentContainerClassName="px-4"
     >
       <Animated.View
@@ -208,17 +210,11 @@ function Breadcrumbs({
         {[undefined, ...dirSegments].map((dirName, idx) => (
           <Fragment key={idx}>
             {idx > 0 ? (
-              <Animated.View
-                entering={FadeInLeft}
-                exiting={OnRTL.decide(FadeOutLeft, FadeOutRight)}
-              >
+              <Animated.View entering={FadeInLeft} exiting={RemoveAnimation}>
                 <StyledText className="px-1 text-xs">/</StyledText>
               </Animated.View>
             ) : null}
-            <Animated.View
-              entering={FadeInLeft}
-              exiting={OnRTL.decide(FadeOutLeft, FadeOutRight)}
-            >
+            <Animated.View entering={FadeInLeft} exiting={RemoveAnimation}>
               <Pressable
                 // Pop the segments we pushed onto the stack and update
                 // the path segments atom accordingly.
