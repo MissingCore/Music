@@ -1,6 +1,12 @@
 import type { LegendListProps } from "@legendapp/list";
 import type { ParseKeys } from "i18next";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import type { ViewStyle } from "react-native";
 import { View } from "react-native";
@@ -23,6 +29,7 @@ import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { useBottomActionsInset } from "~/navigation/hooks/useBottomActions";
 
+import type { AnimatedLegendListRef } from "~/components/Defaults";
 import {
   AnimatedLegendList,
   AnimatedScrollView,
@@ -115,12 +122,14 @@ export function NScrollLayout(props: {
 /** LegendList with "shy header" and `NScrollbar`. */
 export function NScrollListLayout<TData>({
   titleKey,
+  listRef,
   OptionsSheet,
   Actions,
   Subheader,
   ...props
 }: Omit<LegendListProps<TData>, "onContentSizeChange" | "onLayout"> & {
   titleKey: ParseKeys;
+  listRef?: AnimatedLegendListRef;
   OptionsSheet?: (props: { ref: TrueSheetRef }) => React.JSX.Element;
   /** Additional "actions" which will appear before the "Screen Options" button. */
   Actions?: React.ReactNode;
@@ -131,6 +140,8 @@ export function NScrollListLayout<TData>({
   const insets = useSafeAreaInsets();
   const bottomInset = useBottomActionsInset();
   const internalListRef = useAnimatedLegendListRef();
+  // @ts-expect-error - Should be able to synchronize refs.
+  useImperativeHandle(listRef, () => internalListRef.current);
   const sheetRef = useSheetRef();
 
   // NScrollbar

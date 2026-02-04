@@ -18,7 +18,9 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { useFolderContent } from "~/queries/folder";
-import { StickyActionListLayout } from "../../layouts/StickyActionScroll";
+
+import { NScrollListLayout } from "~/navigation/layouts/NScrollLayout";
+import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 
 import { OnRTL, OnRTLWorklet } from "~/lib/react";
 import { cn } from "~/lib/style";
@@ -31,7 +33,6 @@ import {
 } from "~/modules/media/components/Track";
 import type { TrackContent } from "~/modules/media/components/Track.type";
 import { SearchResult } from "~/modules/search/components/SearchResult";
-import { ContentPlaceholder } from "../../components/Placeholder";
 
 /** Animated scrollview supporting gestures. */
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
@@ -96,11 +97,10 @@ export default function Folders({
   }, [dirSegments, isFocused, setDirSegments]);
 
   return (
-    <StickyActionListLayout
+    <NScrollListLayout
       listRef={listRef}
       titleKey="term.folders"
-      insetDelta={8}
-      estimatedItemSize={56} // 48px Height + 8px Margin Top
+      estimatedItemSize={56} // 48px Height + 8px Margin Bottom
       data={renderedData}
       keyExtractor={(item) => (isTrackContent(item) ? item.id : item.path)}
       renderItem={({ item }) =>
@@ -116,17 +116,15 @@ export default function Folders({
           />
         )
       }
-      ListEmptyComponent={
-        <ContentPlaceholder isPending={isPending} className="h-screen" />
-      }
-      scrollEnabled={!isPending}
-      StickyAction={
+      Subheader={
         <Breadcrumbs
           dirSegments={dirSegments}
           setDirSegments={setDirSegments}
         />
       }
-      estimatedActionSize={48}
+      ListEmptyComponent={<ContentPlaceholder isPending={isPending} />}
+      scrollEnabled={!isPending}
+      className="-mb-2"
     />
   );
 }
@@ -181,7 +179,7 @@ function Breadcrumbs({
       horizontal
       showsHorizontalScrollIndicator={false}
       style={{ width: screenWidth - 32 }}
-      className="rounded-md bg-surfaceContainerLowest"
+      className="mx-4 rounded-md bg-surfaceContainerLowest"
       contentContainerClassName="px-4"
     >
       <Animated.View
