@@ -17,6 +17,8 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 
+import type { FileNode } from "~/db/schema";
+
 import { useFolderContent } from "~/queries/folder";
 
 import { NScrollListLayout } from "~/navigation/layouts/NScrollLayout";
@@ -44,22 +46,12 @@ export default function Folders({
     params: { path },
   },
 }: Props) {
+  //#region Directory Management
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const listRef = useAnimatedLegendListRef();
+
   const [dirSegments, _setDirSegments] = useState<string[]>([]);
-
-  const fullPath = dirSegments.join("/");
-  const trackSource = { type: "folder", id: `${fullPath}/` } as const;
-
-  const { isPending, data } = useFolderContent(fullPath);
-  const listData = useTrackListPlayingIndication(trackSource, data?.tracks);
-
-  const renderedData = useMemo(
-    () => [...(data?.subDirectories ?? []), ...(listData ?? [])],
-    [data, listData],
-  );
-
   /** Modified state setter that scrolls to the top of the page. */
   const setDirSegments: React.Dispatch<React.SetStateAction<string[]>> =
     useCallback(
@@ -71,7 +63,7 @@ export default function Folders({
       [listRef],
     );
 
-  // Enable the ability to navigate to a specific folder programmatically.
+  //? Enable the ability to navigate to a specific folder programmatically.
   useEffect(() => {
     if (!isFocused || !path) return;
     // Exclude the `/` at the end of the path.
@@ -80,9 +72,8 @@ export default function Folders({
     navigation.setParams({ path: undefined });
   }, [navigation, isFocused, path, setDirSegments]);
 
-  // Enables our "fake tabs" be affected by the navigation back gesture.
+  //? Treat each directory as part of the stack which gets popped when a back gesture is detected.
   useEffect(() => {
-    // Prevent event from working when this screen isn't focused.
     if (!isFocused) return;
     const subscription = BackHandler.addEventListener(
       "hardwareBackPress",
@@ -95,6 +86,39 @@ export default function Folders({
     );
     return () => subscription.remove();
   }, [dirSegments, isFocused, setDirSegments]);
+  //#endregion
+
+  //#region Data Fetching
+  const fullPath = dirSegments.join("/");
+  const trackSource = useMemo(
+    () => ({ type: "folder", id: `${fullPath}/` }) as const,
+    [fullPath],
+  );
+
+  const { isPending, data } = useFolderContent(fullPath);
+  const listData = useTrackListPlayingIndication(trackSource, data?.tracks);
+
+  const renderedData = useMemo(
+    () => [...(data?.subDirectories ?? []), ...(listData ?? [])],
+    [data, listData],
+  );
+  //#endregion
+
+  const renderItem = useCallback(
+    ({ item }: { item: MergedData }) =>
+      isTrackContent(item) ? (
+        <Track {...item} trackSource={trackSource} className="mb-2" />
+      ) : (
+        <SearchResult
+          button
+          type="folder"
+          title={item.name}
+          onPress={() => setDirSegments((prev) => [...prev, item.name])}
+          className="mb-2 pr-4"
+        />
+      ),
+    [trackSource, setDirSegments],
+  );
 
   return (
     <NScrollListLayout
@@ -102,20 +126,8 @@ export default function Folders({
       titleKey="term.folders"
       estimatedItemSize={56} // 48px Height + 8px Margin Bottom
       data={renderedData}
-      keyExtractor={(item) => (isTrackContent(item) ? item.id : item.path)}
-      renderItem={({ item }) =>
-        isTrackContent(item) ? (
-          <Track {...item} trackSource={trackSource} className="mb-2" />
-        ) : (
-          <SearchResult
-            button
-            type="folder"
-            title={item.name}
-            onPress={() => setDirSegments((prev) => [...prev, item.name])}
-            className="mb-2 pr-4"
-          />
-        )
-      }
+      keyExtractor={keyExtractor}
+      renderItem={renderItem}
       Subheader={
         <Breadcrumbs
           dirSegments={dirSegments}
@@ -129,9 +141,17 @@ export default function Folders({
   );
 }
 
+//#region List Utils
+type MergedData = FileNode | TrackContent;
+
 function isTrackContent(data: unknown): data is TrackContent {
   return Object.hasOwn(data as TrackContent, "id");
 }
+
+function keyExtractor(item: MergedData) {
+  return isTrackContent(item) ? item.id : item.path;
+}
+//#endregion
 
 //#region Breadcrumbs
 function Breadcrumbs({
