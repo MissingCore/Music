@@ -76,9 +76,8 @@ export function NScrollLayout(props: {
         titleKey={props.titleKey}
         getTrueHeight={setTopBarHeight}
         style={shyHeaderContext.headerStyle}
-      >
-        {props.Actions}
-      </ShyHeader>
+        Actions={props.Actions}
+      />
 
       <AnimatedScrollView
         // @ts-expect-error - We can pass refs since React 19.
@@ -118,12 +117,15 @@ export function NScrollListLayout<TData>({
   titleKey,
   OptionsSheet,
   Actions,
+  Subheader,
   ...props
 }: Omit<LegendListProps<TData>, "onContentSizeChange" | "onLayout"> & {
   titleKey: ParseKeys;
   OptionsSheet?: (props: { ref: TrueSheetRef }) => React.JSX.Element;
   /** Additional "actions" which will appear before the "Screen Options" button. */
   Actions?: React.ReactNode;
+  /** Component rendered after the header but before the shadow. */
+  Subheader?: React.ReactNode;
 }) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
@@ -172,8 +174,9 @@ export function NScrollListLayout<TData>({
         titleKey={titleKey}
         getTrueHeight={setTopBarHeight}
         style={shyHeaderContext.headerStyle}
+        Actions={RenderedHeaderActions}
       >
-        {RenderedHeaderActions}
+        {Subheader}
       </ShyHeader>
 
       <AnimatedLegendList
@@ -212,7 +215,7 @@ function ShyHeader(props: {
   titleKey: ParseKeys;
   getTrueHeight: (height: number) => void;
   style: AnimatedStyle<ViewStyle>;
-  /** These are the "actions" that get rendered next to the title. */
+  Actions?: React.ReactNode;
   children?: React.ReactNode;
 }) {
   const { t } = useTranslation();
@@ -231,12 +234,13 @@ function ShyHeader(props: {
         <Marquee>
           <AccentText className="text-4xl">{t(props.titleKey)}</AccentText>
         </Marquee>
-        {props.children ? (
+        {props.Actions ? (
           <View className="flex-row items-center gap-1 rounded-full bg-surfaceContainerLowest">
-            {props.children}
+            {props.Actions}
           </View>
         ) : null}
       </View>
+      {props.children}
       <TopDownGradient height={SHADOW_HEIGHT} />
     </Animated.View>
   );
