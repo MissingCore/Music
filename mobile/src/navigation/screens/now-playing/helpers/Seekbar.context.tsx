@@ -4,6 +4,7 @@ import { AppState } from "react-native";
 import { Easing, makeMutable, withTiming } from "react-native-reanimated";
 import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
 
+import { useInForeground } from "~/stores/AppState";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { useSessionStore } from "~/services/SessionStore";
 
@@ -15,6 +16,7 @@ const LISTENER_ID = 24680;
 
 /** Lift shared logic for tracking the current playback progress in a shared value. */
 export function SeekbarContext(props: { children: React.ReactNode }) {
+  const inForeground = useInForeground();
   const activeTrack = usePlaybackStore((s) => s.activeTrack);
   const isPlaying = usePlaybackStore((s) => s.isPlaying);
   const lastPosition = usePlaybackStore((s) => s.lastPosition);
@@ -73,6 +75,7 @@ export function SeekbarContext(props: { children: React.ReactNode }) {
 
   // Synchronize JS state with shared value.
   useEffect(() => {
+    if (!inForeground) return;
     scheduleOnUI(() =>
       animatedPosition.addListener(LISTENER_ID, (value) =>
         scheduleOnRN(setRenderedPos, value),
@@ -81,7 +84,7 @@ export function SeekbarContext(props: { children: React.ReactNode }) {
     return () => {
       scheduleOnUI(() => animatedPosition.removeListener(LISTENER_ID));
     };
-  }, [animatedPosition, setRenderedPos]);
+  }, [animatedPosition, setRenderedPos, inForeground]);
 
   return props.children;
 }
