@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useLyricForTrack } from "~/queries/lyric";
@@ -178,16 +178,25 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
       onLayout={onLayout}
       data={parsedLines}
       keyExtractor={(_, index) => `${index}`}
-      renderItem={({ item, index }) => (
-        <StyledText
-          bold
-          className={cn("text-xl", {
-            "text-onSurfaceVariant/50": index !== activeIndex,
-          })}
-        >
-          {item.lyric}
-        </StyledText>
-      )}
+      renderItem={({ item, index }) => {
+        const isLineActive = index === activeIndex;
+        const positionMS = position * 1000;
+        return (
+          <StyledText bold className="text-xl text-onSurfaceVariant/50">
+            {item.words.map((syncWord, wordIndex) => (
+              <Text
+                key={`${index}__${wordIndex}`}
+                className={cn({
+                  "text-onSurface":
+                    isLineActive && syncWord.timeMS <= positionMS,
+                })}
+              >
+                {syncWord.word}
+              </Text>
+            ))}
+          </StyledText>
+        );
+      }}
       onScrollBeginDrag={onPauseAutoScroll}
       onScrollEndDrag={debouncedResumeAutoScroll}
       // Suppresses error when `scrollToIndex` fails.
@@ -201,33 +210,70 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
   );
 }
 
-const LRC_LINE = /^(\[[0-9]+:[0-9]+(\.[0-9]+)?\])+.*/;
-const LRC_TIMESTAMP_WITH_BRACKET = /\[[0-9]+:[0-9]+(\.[0-9]+)?\]/g;
+//#region Lyric Parsing
+const LRC_LINE = /^(\[[0-9]+:[0-9]+(?:\.[0-9]+)?\])+.*/;
+const LRC_LINE_TIMESTAMP = /\[[0-9]+:[0-9]+(?:\.[0-9]+)?\]/g;
+const LRC_WORD_LINE = /^(\<[0-9]+:[0-9]+(?:\.[0-9]+)?\>)+.*/;
+const LRC_WORD_TIMESTAMP = /\<[0-9]+:[0-9]+(?:\.[0-9]+)?\>/g;
 const LRC_TIMESTAMP = /[0-9]+/g;
 
-type SynchronizedLine = { timeMS: number; lyric: string };
+type Timestamp = [string, string, ...string[]];
+
+type SynchronizedWord = { timeMS: number; word: string };
+type SynchronizedLine = { timeMS: number; words: SynchronizedWord[] };
 
 function parseLines(lines: string[]): SynchronizedLine[] {
   const results: SynchronizedLine[] = [];
   for (const line of lines) {
     if (!line) continue;
-    const timeString = line.match(LRC_TIMESTAMP_WITH_BRACKET);
-    if (!timeString || timeString.length === 0) continue;
-    const lyricLine = line.replace(LRC_TIMESTAMP_WITH_BRACKET, "");
-    const [min, sec, ms = "0"] = timeString[0]!.match(LRC_TIMESTAMP) as [
-      string,
-      string,
-      ...string[],
-    ];
-    results.push({
-      timeMS:
-        Number.parseInt(min) * 60 * 1000 +
-        Number.parseInt(sec) * 1000 +
-        Number.parseInt(ms),
-      lyric: lyricLine.trim(),
-    });
+    const lyricLineTimestampStr = line.match(LRC_LINE_TIMESTAMP);
+    if (!lyricLineTimestampStr || lyricLineTimestampStr.length === 0) continue;
+
+    // Get the time when the line will start.
+    const lineTimeMS = getTimestampInMS(lyricLineTimestampStr[0]);
+    const lyricLine = line.replace(LRC_LINE_TIMESTAMP, "").trim();
+
+    // See if this has word-by-word synchronization.
+    if (LRC_WORD_LINE.test(lyricLine)) {
+      const wordTimestampStrs = lyricLine.match(LRC_WORD_TIMESTAMP);
+      if (!wordTimestampStrs || wordTimestampStrs.length === 0) continue;
+      // Get the words after each timestamp. In general, `wordTimestampStrs` &
+      // `words` should have the same length.
+      //  - Remove the 1st entry as it'll be an empty string.
+      const words = line.split(LRC_WORD_TIMESTAMP).slice(1);
+
+      const synchronizedWords: SynchronizedWord[] = wordTimestampStrs
+        .map((wordTimestamp, index) => {
+          const syncWord = words[index];
+          if (syncWord === undefined) return;
+          return {
+            timeMS: getTimestampInMS(wordTimestamp),
+            word: syncWord.trimStart(),
+          };
+        })
+        .filter((syncWord) => syncWord !== undefined);
+
+      results.push({ timeMS: lineTimeMS, words: synchronizedWords });
+    } else {
+      results.push({
+        timeMS: lineTimeMS,
+        words: [{ timeMS: lineTimeMS, word: lyricLine }],
+      });
+    }
   }
 
   return results;
 }
+//#endregion
+
+//#region Helpers
+function getTimestampInMS(timeString: string) {
+  const [min, sec, ms = "0"] = timeString.match(LRC_TIMESTAMP) as Timestamp;
+  return (
+    Number.parseInt(min) * 60 * 1000 +
+    Number.parseInt(sec) * 1000 +
+    Number.parseInt(ms)
+  );
+}
+//#endregion
 //#endregion
