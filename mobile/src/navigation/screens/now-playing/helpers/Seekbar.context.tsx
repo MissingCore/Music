@@ -1,5 +1,5 @@
 import { atom, useAtomValue, useSetAtom } from "jotai";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { AppState } from "react-native";
 import { Easing, makeMutable, withTiming } from "react-native-reanimated";
 import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
@@ -22,6 +22,7 @@ export function SeekbarContext(props: { children: React.ReactNode }) {
   const animatedPosition = useAtomValue(animatedPositionAtom);
   const isSeeking = useAtomValue(isSeekingAtom);
   const setRenderedPos = useSetAtom(renderedPositionAtom);
+  const pausedPositionRef = useRef(-1);
 
   /** Helper to smoothly animate `animatedPosition`. */
   const animateSlider = useCallback(
@@ -49,13 +50,19 @@ export function SeekbarContext(props: { children: React.ReactNode }) {
   // Synchronize with `lastPosition`.
   useEffect(() => {
     if (isSeeking) return;
-    const priorPos = Number(animatedPosition.value);
+    const priorPos = Number(String(animatedPosition.value));
     animatedPosition.value = lastPosition;
     // Prevent slight rubberbanding when pausing as `animatedPosition` will be
     // ahead of whatever is reported by the `PlaybackProgressUpdated` event.
     if (!isPlaying && priorPos !== 0) {
+      //! Prevents an infinite loop caused by `animatedPosition.value` for some
+      //! reason not equaling `priorPos` after setting it in this block.
+      if (lastPosition === pausedPositionRef.current) {
+        animatedPosition.value = pausedPositionRef.current;
+        return;
+      }
+      pausedPositionRef.current = priorPos;
       setLastPosition(priorPos);
-      animatedPosition.value = priorPos;
       return;
     }
     // Don't animate slider as it'll cause the app to freeze on return due
