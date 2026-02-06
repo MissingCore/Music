@@ -120,11 +120,12 @@ export async function getSortedTracks<
     .groupBy(tracksToArtists.trackId)
     .as("ordered_track_artists");
   //? Determine field we'll sort by.
-  let sortField = tracks.name;
-  if (trackOrder === "albumName") sortField = albums.name;
-  else if (trackOrder === "artistName")
-    sortField = orderedTrackArtists.artistName;
-  else sortField = tracks[trackOrder];
+  const sortField =
+    trackOrder === "albumName"
+      ? albums.name
+      : trackOrder === "artistName"
+        ? orderedTrackArtists.artistName
+        : tracks[trackOrder];
 
   return db
     .select(

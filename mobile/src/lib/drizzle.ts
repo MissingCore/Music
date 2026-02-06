@@ -1,6 +1,7 @@
-import type { SQLiteColumn } from "drizzle-orm/sqlite-core";
+import type { SQLWrapper } from "drizzle-orm";
 import { sql } from "drizzle-orm";
 import { toSnakeCase } from "drizzle-orm/casing";
+import type { AnySQLiteColumn, SQLiteColumn } from "drizzle-orm/sqlite-core";
 import type { ParseKeys } from "i18next";
 
 import i18next from "~/modules/i18n";
@@ -14,14 +15,14 @@ import i18next from "~/modules/i18n";
  * Case-insensitive `asc` function. If 2 values are the "same", the
  * uppercase one comes first.
  */
-export const iAsc = (column: SQLiteColumn) =>
+export const iAsc = (column: AnySQLiteColumn | SQLiteColumn | SQLWrapper) =>
   sql`${column} COLLATE NOCASE ASC, ${column} ASC`;
 
 /**
  * Case-insensitive `desc` function. If 2 values are the "same", the
  * lowercase one comes first.
  */
-export const iDesc = (column: SQLiteColumn) =>
+export const iDesc = (column: AnySQLiteColumn | SQLiteColumn | SQLWrapper) =>
   sql`${column} COLLATE NOCASE DESC, ${column} DESC`;
 
 /**
