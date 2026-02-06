@@ -25,6 +25,8 @@ import { extractTrackId, formatTrackforPlayer } from "~/stores/Playback/utils";
 /** Context to whether we should resume playback after ducking. */
 let resumeAfterDuck: boolean = false;
 
+/** Simple method of tracking whether a different track is being played. */
+let prevTrackId = "";
 /** Increase playback count after a certain duration of play time. */
 let playbackCountUpdator: ReturnType<typeof BackgroundTimer.setTimeout> | null =
   null;
@@ -192,19 +194,23 @@ export async function PlaybackService() {
     if (playbackCountUpdator !== null) {
       BackgroundTimer.clearTimeout(playbackCountUpdator);
     }
-    // Only mark a track as played after we play 10s of it. This prevents
+    // When switching tracks, `lastPosition` will show the value from the prior
+    // track. This prevents updating the new track's play count if we manaully
+    // swapped tracks or naturally play the next track when `lastPosition > 10`.
+    const startAt =
+      isNaturalPlayback || prevTrackId !== e.track.id ? 0 : lastPosition;
+    // Only mark a track as played after we pass the 10s mark. This prevents
     // the track being marked as "played" if we skip it.
-    //  - Also when natural playback occurs as `lastPosition` is outdated.
-    if (isNaturalPlayback || lastPosition < 10) {
+    if (startAt < 10) {
       const activeTrackId: string = e.track.id;
-      const lastPos = isNaturalPlayback ? 0 : lastPosition;
       playbackCountUpdator = BackgroundTimer.setTimeout(
         async () => await addPlayedTrack(activeTrackId),
-        (Math.min(e.track.duration!, 10) - lastPos) * 1000,
+        (Math.min(e.track.duration!, 10) - startAt) * 1000,
       );
     }
 
     await revalidateWidgets();
+    prevTrackId = e.track.id;
   });
 
   TrackPlayer.addEventListener(Event.PlaybackError, async (e) => {
