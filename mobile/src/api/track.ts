@@ -1,8 +1,9 @@
-import { and, eq, inArray } from "drizzle-orm";
+import { and, eq, inArray, sql } from "drizzle-orm";
 
 import { db } from "~/db";
 import type { Album, InvalidTrack, Track } from "~/db/schema";
 import {
+  albums,
   invalidTracks,
   tracks,
   tracksToArtists,
@@ -12,8 +13,9 @@ import {
 } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
+import { viewPreferenceStore } from "~/stores/ViewPreference/store";
 
-import { getExcludedColumns, iAsc } from "~/lib/drizzle";
+import { getExcludedColumns, iAsc, iDesc } from "~/lib/drizzle";
 import type { BooleanPriority } from "~/utils/types";
 import { getTrackArtwork } from "./track.utils";
 import type { DrizzleFilter, QueriedTrack } from "./types";
@@ -82,6 +84,71 @@ export async function getTracks<
     return t;
   }) as Array<
     QueriedTrack<BooleanPriority<WithAlbum_User, true>, TCols, ACols>
+  >;
+}
+
+export type SortedTrack = {
+  id: string;
+  name: string;
+  artistName: string | null;
+  albumName: string | null;
+  duration: number;
+  discoverTime: number;
+  modificationTime: number;
+  artwork: string | null;
+};
+
+/** Return the tracks sorted by the View Preferences. */
+export async function getSortedTracks<TOnlyIds extends boolean = false>(
+  onlyIds?: TOnlyIds,
+) {
+  const { trackIsAsc, trackOrder } = viewPreferenceStore.getState();
+
+  //? Subquery to order the track artists before we use `GROUP_CONCAT` on them.
+  const orderedTrackArtists = db
+    .select({
+      trackId: tracksToArtists.trackId,
+      artistName:
+        sql<string>`GROUP_CONCAT(${tracksToArtists.artistName}, ', ')`.as(
+          "joined_artistname",
+        ),
+    })
+    .from(tracksToArtists)
+    .orderBy(iAsc(tracksToArtists.trackId), iAsc(tracksToArtists.artistName))
+    .groupBy(tracksToArtists.trackId)
+    .as("ordered_track_artists");
+  //? Determine field we'll sort by.
+  let sortField = tracks.name;
+  if (trackOrder === "albumName") sortField = albums.name;
+  else if (trackOrder === "artistName")
+    sortField = orderedTrackArtists.artistName;
+  else sortField = tracks[trackOrder];
+
+  return db
+    .select(
+      onlyIds
+        ? { id: tracks.id }
+        : {
+            id: tracks.id,
+            name: tracks.name,
+            artistName: orderedTrackArtists.artistName,
+            albumName: albums.name,
+            duration: tracks.duration,
+            discoverTime: tracks.discoverTime,
+            modificationTime: tracks.modificationTime,
+            artwork: sql<
+              string | null
+            >`coalesce(${tracks.artwork}, ${albums.artwork})`,
+          },
+    )
+    .from(tracks)
+    .leftJoin(orderedTrackArtists, eq(tracks.id, orderedTrackArtists.trackId))
+    .leftJoin(albums, eq(tracks.albumId, albums.id))
+    .groupBy(tracks.id)
+    .orderBy(
+      trackIsAsc ? iAsc(sortField) : iDesc(sortField),
+    ) as unknown as Promise<
+    true extends TOnlyIds ? Array<{ id: string }> : SortedTrack[]
   >;
 }
 //#endregion
