@@ -19,7 +19,7 @@ import {
   getRecentlyPlayedMediaLists,
   getRecentlyPlayedTracks,
 } from "~/api/recent";
-import { getTrack, getTrackPlaylists, getTracks } from "~/api/track";
+import { getSortedTracks, getTrack, getTrackPlaylists } from "~/api/track";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
@@ -217,18 +217,7 @@ export const queries = createQueryKeyStore({
   tracks: {
     all: {
       queryKey: null,
-      queryFn: () =>
-        getTracks({
-          columns: [
-            "id",
-            "name",
-            "duration",
-            "artwork",
-            "discoverTime",
-            "modificationTime",
-          ],
-          albumColumns: ["name", "artistsKey", "artwork"],
-        }),
+      queryFn: () => getSortedTracks(),
     },
     detail: (trackId: string) => ({
       queryKey: [trackId],
