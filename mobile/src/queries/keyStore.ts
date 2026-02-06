@@ -215,10 +215,11 @@ export const queries = createQueryKeyStore({
   },
   /** Query keys used in `useQuery` for tracks. */
   tracks: {
-    all: {
-      queryKey: null,
+    sorted: (order: string, isAsc: boolean) => ({
+      queryKey: [order, isAsc],
+      //? Internally, `getSortedTracks` reads the live `order` & `isAsc` values.
       queryFn: () => getSortedTracks(),
-    },
+    }),
     detail: (trackId: string) => ({
       queryKey: [trackId],
       queryFn: () => getTrack(trackId),

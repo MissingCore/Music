@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 
-import { useTracks } from "~/queries/track";
-import { useViewOrder } from "~/stores/ViewPreference/hooks/useViewOrder";
+import { useSortedTracks } from "~/queries/track";
 
 import { NScrollListLayout } from "~/navigation/layouts/NScrollLayout";
 import { TracksViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
@@ -21,18 +20,17 @@ const trackSource = {
 } as const;
 
 export default function Tracks() {
-  const { isPending, data } = useTracks();
+  const { isPending, data } = useSortedTracks();
 
-  const sortedData = useViewOrder("track", data);
   const formattedData = useMemo(
     () =>
-      sortedData.map((t) => ({
+      data?.map((t) => ({
         id: t.id,
         imageSource: t.artwork,
         title: t.name,
         description: t.artistName ?? "—",
       })),
-    [sortedData],
+    [data],
   );
 
   const presets = useTrackListPreset({

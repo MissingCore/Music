@@ -10,6 +10,7 @@ import {
   removeFromPlaylist,
   updateTrack,
 } from "~/api/track";
+import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { Queue, Resynchronize } from "~/stores/Playback/actions";
 import { queries as q } from "./keyStore";
 
@@ -33,8 +34,10 @@ export function useTrackPlaylists(trackId: string) {
   return useQuery({ ...q.tracks.detail(trackId)._ctx.playlists });
 }
 
-export function useTracks() {
-  return useQuery({ ...q.tracks.all });
+export function useSortedTracks() {
+  const trackIsAsc = useViewPreferenceStore((s) => s.trackIsAsc);
+  const trackOrder = useViewPreferenceStore((s) => s.trackOrder);
+  return useQuery({ ...q.tracks.sorted(trackOrder, trackIsAsc) });
 }
 //#endregion
 

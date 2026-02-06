@@ -87,7 +87,7 @@ export async function getTracks<
   >;
 }
 
-export type SortedTracksMode = "sortedIds" | "tracks";
+export type SortedTracksMode = "sortedIds" | "sortedTracks";
 
 export type PreSortedTrack = {
   id: string;
@@ -102,7 +102,7 @@ export type PreSortedTrack = {
 
 /** Return the tracks sorted by the View Preferences. */
 export async function getSortedTracks<
-  TMode extends SortedTracksMode = "tracks",
+  TMode extends SortedTracksMode = "sortedTracks",
 >(mode?: TMode) {
   const { trackIsAsc, trackOrder } = viewPreferenceStore.getState();
 
@@ -149,11 +149,7 @@ export async function getSortedTracks<
     .leftJoin(albums, eq(tracks.albumId, albums.id))
     .groupBy(tracks.id)
     .orderBy(
-      mode === "sortedIds"
-        ? trackIsAsc
-          ? iAsc(sortField)
-          : iDesc(sortField)
-        : iAsc(tracks.name),
+      trackIsAsc ? iAsc(sortField) : iDesc(sortField),
     ) as unknown as Promise<
     TMode extends "sortedIds" ? Array<{ id: string }> : PreSortedTrack[]
   >;
