@@ -153,9 +153,9 @@
       "description": "｢music_backup.json｣ファイルを通じて、このアプリからデバイス間でデータを転送します。",
       "extra": {
         "export": "エクスポート",
-        "exportSuccess": "バックアップの作成に成功しました。",
+        "exportSuccess": "エクスポートが完了しました。",
         "import": "インポート",
-        "importSuccess": "バックアップのインポートが完了しました。"
+        "importSuccess": "インポートが成功しました。"
       }
     },
     "insights": {
@@ -202,7 +202,7 @@
       "brief": "スキップ時に「1 回リピート」を「リピート」に切り替えないようにします。"
     },
     "restoreLastPosition": {
-      "title": "最後に再生した位置を保存"
+      "title": "最後に再生した位置を復元"
     },
     "scanning": {
       "title": "音楽のスキャン"
