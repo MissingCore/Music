@@ -98,7 +98,7 @@ export async function getTrackIdsList({ type, id }: PlayFromSource) {
       trackIds = data.map(({ id }) => id);
     } else {
       if (ReservedNames.has(id)) {
-        const sortedTracks = await getSortedTracks(true);
+        const sortedTracks = await getSortedTracks("sortedIds");
         trackIds = sortedTracks.map(({ id }) => id);
       } else {
         const data = await getPlaylist(id, {

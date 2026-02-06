@@ -87,7 +87,9 @@ export async function getTracks<
   >;
 }
 
-export type SortedTrack = {
+export type SortedTracksMode = "sortedIds" | "tracks";
+
+export type PreSortedTrack = {
   id: string;
   name: string;
   artistName: string | null;
@@ -99,9 +101,9 @@ export type SortedTrack = {
 };
 
 /** Return the tracks sorted by the View Preferences. */
-export async function getSortedTracks<TOnlyIds extends boolean = false>(
-  onlyIds?: TOnlyIds,
-) {
+export async function getSortedTracks<
+  TMode extends SortedTracksMode = "tracks",
+>(mode?: TMode) {
   const { trackIsAsc, trackOrder } = viewPreferenceStore.getState();
 
   //? Subquery to order the track artists before we use `GROUP_CONCAT` on them.
@@ -126,7 +128,7 @@ export async function getSortedTracks<TOnlyIds extends boolean = false>(
 
   return db
     .select(
-      onlyIds
+      mode === "sortedIds"
         ? { id: tracks.id }
         : {
             id: tracks.id,
@@ -146,9 +148,13 @@ export async function getSortedTracks<TOnlyIds extends boolean = false>(
     .leftJoin(albums, eq(tracks.albumId, albums.id))
     .groupBy(tracks.id)
     .orderBy(
-      trackIsAsc ? iAsc(sortField) : iDesc(sortField),
+      mode === "sortedIds"
+        ? trackIsAsc
+          ? iAsc(sortField)
+          : iDesc(sortField)
+        : iAsc(tracks.name),
     ) as unknown as Promise<
-    true extends TOnlyIds ? Array<{ id: string }> : SortedTrack[]
+    TMode extends "sortedIds" ? Array<{ id: string }> : PreSortedTrack[]
   >;
 }
 //#endregion
