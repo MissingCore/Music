@@ -19,8 +19,8 @@ export function MediaListControls(props: {
 }) {
   return (
     <View className={cn("flex-row items-center gap-1", props.className)}>
-      <RepeatButton large={false} />
-      <ShuffleButton large={false} />
+      <RepeatButton size="md" />
+      <ShuffleButton size="md" />
       <PlayMediaListButton trackSource={props.trackSource} />
     </View>
   );

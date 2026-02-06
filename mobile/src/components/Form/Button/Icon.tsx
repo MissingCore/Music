@@ -8,7 +8,7 @@ import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
 import type { PressProps } from "./types";
 
-type ButtonSize = "xs" | "sm" | "md" | "lg";
+export type ButtonSize = "xs" | "sm" | "md" | "lg";
 
 const ButtonConfig = {
   xs: { buttonSize: "min-h-8 min-w-8", iconSize: 20 },
