@@ -7,6 +7,7 @@ import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
 
 import { cn } from "~/lib/style";
+import type { ButtonSize } from "~/components/Form/Button/Icon";
 import { FilledIconButton } from "~/components/Form/Button/Icon";
 import type { PlayFromSource } from "~/stores/Playback/types";
 import { arePlaybackSourceEqual } from "~/stores/Playback/utils";
@@ -31,12 +32,16 @@ export function MediaListControls(props: {
  * currently playing (ie: show play button if we're not playing a track
  * from this media list).
  */
-function PlayMediaListButton({ trackSource }: { trackSource: PlayFromSource }) {
+export function PlayMediaListButton(props: {
+  trackSource: PlayFromSource;
+  size?: ButtonSize;
+  className?: string;
+}) {
   const { t } = useTranslation();
   const currSource = usePlaybackStore((s) => s.playingFrom);
   const isPlaying = usePlaybackStore((s) => s.isPlaying);
 
-  const isThisSource = arePlaybackSourceEqual(currSource, trackSource);
+  const isThisSource = arePlaybackSourceEqual(currSource, props.trackSource);
   const displayPause = isThisSource && isPlaying;
 
   return (
@@ -46,12 +51,17 @@ function PlayMediaListButton({ trackSource }: { trackSource: PlayFromSource }) {
       onPress={() =>
         displayPause
           ? PlaybackControls.pause()
-          : PlaybackControls.playFromList({ source: trackSource })
+          : PlaybackControls.playFromList({ source: props.trackSource })
       }
-      className={cn("rounded-md bg-primary active:bg-primaryDim", {
-        "bg-surfaceContainerHigh active:bg-surfaceContainerHighest":
-          displayPause,
-      })}
+      className={cn(
+        "rounded-md bg-primary active:bg-primaryDim",
+        {
+          "bg-surfaceContainerHigh active:bg-surfaceContainerHighest":
+            displayPause,
+        },
+        props.className,
+      )}
+      size={props.size}
       _iconColor="onPrimary"
     />
   );

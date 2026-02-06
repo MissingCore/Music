@@ -48,13 +48,7 @@ export function ShuffleButton({ size = "lg" }: { size?: ButtonSize }) {
 }
 
 /** Toggles whether we're playing or not. */
-export function PlayToggleButton({
-  size = "lg",
-  className,
-}: {
-  size?: ButtonSize;
-  className?: string;
-}) {
+export function PlayToggleButton() {
   const { t } = useTranslation();
   const isPlaying = usePlaybackStore((s) => s.isPlaying);
   return (
@@ -62,15 +56,10 @@ export function PlayToggleButton({
       Icon={isPlaying ? Pause : PlayArrow}
       accessibilityLabel={t(`term.${isPlaying ? "pause" : "play"}`)}
       onPress={() => PlaybackControls.playToggle()}
-      size={size}
-      className={cn(
-        "bg-primary px-6 py-2 active:bg-primaryDim",
-        {
-          "bg-surfaceContainerHigh active:bg-surfaceContainerHighest":
-            isPlaying,
-        },
-        className,
-      )}
+      size="lg"
+      className={cn("bg-primary px-6 py-2 active:bg-primaryDim", {
+        "bg-surfaceContainerHigh active:bg-surfaceContainerHighest": isPlaying,
+      })}
       _iconColor="onPrimary"
     />
   );
