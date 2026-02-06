@@ -17,6 +17,7 @@ import { viewPreferenceStore } from "~/stores/ViewPreference/store";
 
 import { getExcludedColumns, iAsc, iDesc } from "~/lib/drizzle";
 import type { BooleanPriority } from "~/utils/types";
+import type { ScreenSortOptions } from "~/stores/ViewPreference/constants";
 import { getTrackArtwork } from "./track.utils";
 import type { DrizzleFilter, QueriedTrack } from "./types";
 import { getColumns, withRelations } from "./utils";
@@ -103,8 +104,14 @@ export type PreSortedTrack = {
 /** Return the tracks sorted by the View Preferences. */
 export async function getSortedTracks<
   TMode extends SortedTracksMode = "sortedTracks",
->(mode?: TMode) {
+>(
+  mode?: TMode,
+  sortOptions?: { isAsc: boolean; order: ScreenSortOptions<"track"> },
+) {
   const { trackIsAsc, trackOrder } = viewPreferenceStore.getState();
+
+  const isAsc = sortOptions?.isAsc ?? trackIsAsc;
+  const order = sortOptions?.order ?? trackOrder;
 
   //? Subquery to order the track artists before we use `GROUP_CONCAT` on them.
   const orderedTrackArtists = db
@@ -121,11 +128,11 @@ export async function getSortedTracks<
     .as("ordered_track_artists");
   //? Determine field we'll sort by.
   const sortField =
-    trackOrder === "albumName"
+    order === "albumName"
       ? albums.name
-      : trackOrder === "artistName"
+      : order === "artistName"
         ? orderedTrackArtists.artistName
-        : tracks[trackOrder];
+        : tracks[order];
 
   return db
     .select(
@@ -148,9 +155,7 @@ export async function getSortedTracks<
     .leftJoin(orderedTrackArtists, eq(tracks.id, orderedTrackArtists.trackId))
     .leftJoin(albums, eq(tracks.albumId, albums.id))
     .groupBy(tracks.id)
-    .orderBy(
-      trackIsAsc ? iAsc(sortField) : iDesc(sortField),
-    ) as unknown as Promise<
+    .orderBy(isAsc ? iAsc(sortField) : iDesc(sortField)) as unknown as Promise<
     TMode extends "sortedIds" ? Array<{ id: string }> : PreSortedTrack[]
   >;
 }

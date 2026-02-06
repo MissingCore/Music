@@ -23,6 +23,7 @@ import { getSortedTracks, getTrack, getTrackPlaylists } from "~/api/track";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
+import type { ScreenSortOptions } from "~/stores/ViewPreference/constants";
 
 /** All of the reusuable query keys. */
 export const queries = createQueryKeyStore({
@@ -215,10 +216,9 @@ export const queries = createQueryKeyStore({
   },
   /** Query keys used in `useQuery` for tracks. */
   tracks: {
-    sorted: (order: string, isAsc: boolean) => ({
+    sorted: (order: ScreenSortOptions<"track">, isAsc: boolean) => ({
       queryKey: [order, isAsc],
-      //? Internally, `getSortedTracks` reads the live `order` & `isAsc` values.
-      queryFn: () => getSortedTracks(),
+      queryFn: () => getSortedTracks("sortedTracks", { order, isAsc }),
     }),
     detail: (trackId: string) => ({
       queryKey: [trackId],
