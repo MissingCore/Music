@@ -98,6 +98,7 @@ export default function Upcoming() {
       />
       <FlashDragList
         estimatedItemSize={56} // 48px Height + 8px Margin Top
+        gap={8}
         initialScrollIndex={listIndex}
         estimatedFirstItemOffset={8}
         data={modifiedData}
