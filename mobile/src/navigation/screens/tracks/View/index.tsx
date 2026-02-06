@@ -1,13 +1,15 @@
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { Sort } from "~/resources/icons/Sort";
-import { useTracksForTrackCard } from "~/queries/track";
-import { StickyActionListLayout } from "../../../layouts/StickyActionScroll";
-import { TrackSortSheet } from "./SortSheet";
+import { useTracks } from "~/queries/track";
+import { useViewOrder } from "~/stores/ViewPreference/hooks/useViewOrder";
+
+import { NScrollListLayout } from "~/navigation/layouts/NScrollLayout";
+import { TracksViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
 
 import { IconButton } from "~/components/Form/Button/Icon";
-import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { ReservedPlaylists } from "~/modules/media/constants";
 import { MediaListControls } from "~/modules/media/components/MediaListControls";
 import { useTrackListPreset } from "~/modules/media/components/Track";
@@ -19,24 +21,32 @@ const trackSource = {
 } as const;
 
 export default function Tracks() {
-  const { isPending, data } = useTracksForTrackCard();
-  const presets = useTrackListPreset({ data, isPending, trackSource });
-  const trackSortSheetRef = useSheetRef();
+  const { isPending, data } = useTracks();
+
+  const sortedData = useViewOrder("track", data);
+  const formattedData = useMemo(
+    () =>
+      sortedData.map((t) => ({
+        id: t.id,
+        imageSource: t.artwork,
+        title: t.name,
+        description: t.artistName ?? "—",
+      })),
+    [sortedData],
+  );
+
+  const presets = useTrackListPreset({
+    data: formattedData,
+    isPending,
+    trackSource,
+  });
 
   return (
-    <>
-      <TrackSortSheet ref={trackSortSheetRef} />
-      <StickyActionListLayout
-        titleKey="term.tracks"
-        StickyAction={
-          <TrackActions
-            showSheet={() => trackSortSheetRef.current?.present()}
-          />
-        }
-        estimatedActionSize={48}
-        {...presets}
-      />
-    </>
+    <NScrollListLayout
+      titleKey="term.tracks"
+      OptionsSheet={TracksViewOptionsSheet}
+      {...presets}
+    />
   );
 }
 

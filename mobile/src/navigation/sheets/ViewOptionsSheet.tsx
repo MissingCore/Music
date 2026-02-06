@@ -71,6 +71,12 @@ export function PlaylistsViewOptionsSheet(props: { ref: TrueSheetRef }) {
 }
 //#endregion
 
+//#region Tracks
+export function TracksViewOptionsSheet(props: { ref: TrueSheetRef }) {
+  return <SortSheet ref={props.ref} screen="track" />;
+}
+//#endregion
+
 //#region Sheet Template
 function ViewOptionsSheetTemplate(props: {
   ref: TrueSheetRef;
