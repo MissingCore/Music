@@ -10,7 +10,6 @@ import Animated, {
 } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 
-import { AppStateStoreProvider } from "~/stores/AppState";
 import { preferenceStore } from "~/stores/Preference/store";
 import { useLoadResources } from "~/hooks/useLoadResources";
 import NavigationContainer from "~/navigation";
@@ -52,7 +51,6 @@ export default function App() {
     <AppProvider>
       <ErrorBoundary>
         <View ref={handleAppLifeCycle} />
-        <AppStateStoreProvider />
         {isLoaded && <NavigationContainer />}
 
         <FakeLayoutTransition unmount={isLoaded}>

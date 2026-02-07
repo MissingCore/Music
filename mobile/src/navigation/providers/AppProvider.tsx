@@ -13,6 +13,8 @@ import {
 } from "react-native-safe-area-context";
 
 import "../../global.css";
+import { AppStateStoreProvider } from "~/stores/AppState";
+import { KeyboardVisibilityStoreProvider } from "~/stores/KeyboardVisibility";
 import { useCurrentTheme } from "~/hooks/useTheme";
 
 import { queryClient } from "~/lib/react-query";
@@ -26,6 +28,8 @@ export function AppProvider(props: { children: React.ReactNode }) {
           <GestureHandlerRootView>
             <QueryClientProvider client={queryClient}>
               <SystemBars />
+              <AppStateStoreProvider />
+              <KeyboardVisibilityStoreProvider />
               <ChildrenWrapper {...props} />
               <ToastProvider />
             </QueryClientProvider>

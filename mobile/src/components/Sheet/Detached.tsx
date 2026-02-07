@@ -9,7 +9,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { withUniwind } from "uniwind";
 
-import { useIsKeyboardVisible } from "~/hooks/useIsKeyboardVisible";
+import { useIsKeyboardVisible } from "~/stores/KeyboardVisibility";
 import { useSafeAreaHeight } from "~/hooks/useSafeAreaHeight";
 
 import { cn } from "~/lib/style";
