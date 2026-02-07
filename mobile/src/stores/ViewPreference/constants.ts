@@ -12,16 +12,24 @@ export type LayoutOption = (typeof LayoutOptions)[number];
 type SortOption =
   | "name"
   | "artistName"
-  // | "albumName"
+  | "albumName"
   | "duration"
-  | "trackCount";
-// | "discoverTime"
-// | "modificationTime";
+  | "trackCount"
+  | "discoverTime"
+  | "modificationTime";
 
 export const SortOptions = {
   album: ["name", "artistName", "duration", "trackCount"],
   artist: ["name", "duration", "trackCount"],
   playlist: ["name", "duration", "trackCount"],
+  track: [
+    "name",
+    "artistName",
+    "albumName",
+    "duration",
+    "discoverTime",
+    "modificationTime",
+  ],
 } as const satisfies Record<MutableViewOrder, SortOption[]>;
 
 export type ScreenSortOptions<TScreen extends MutableViewOrder> =
@@ -30,19 +38,19 @@ export type ScreenSortOptions<TScreen extends MutableViewOrder> =
 export type SortOptionTypeMap = {
   name: string;
   artistName: string | null;
-  // albumName: string | null;
+  albumName: string | null;
   duration: number;
   trackCount: number;
-  // discoverTime: number;
-  // modificationTime: number;
+  discoverTime: number;
+  modificationTime: number;
 };
 
 export const SortOptionTranslation = {
-  // albumName: "term.album",
+  albumName: "term.album",
   artistName: "term.artist",
-  // discoverTime: "feat.modalViewPreference.extra.discover",
+  discoverTime: "feat.modalViewPreference.extra.discover",
   duration: "feat.modalViewPreference.extra.duration",
-  // modificationTime: "feat.modalViewPreference.extra.modified",
+  modificationTime: "feat.modalViewPreference.extra.modified",
   name: "feat.trackMetadata.extra.name",
   trackCount: "feat.modalViewPreference.extra.trackCount",
 } as const satisfies Record<SortOption, ParseKeys>;
@@ -65,7 +73,10 @@ export interface ViewPreferenceStore {
 
   playlistLayout: LayoutOption;
   playlistIsAsc: boolean;
-  playlistOrder: ScreenSortOptions<"album">;
+  playlistOrder: ScreenSortOptions<"playlist">;
+
+  trackIsAsc: boolean;
+  trackOrder: ScreenSortOptions<"track">;
 }
 
 export const OmittedFields: string[] = [

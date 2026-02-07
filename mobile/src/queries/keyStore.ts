@@ -19,10 +19,11 @@ import {
   getRecentlyPlayedMediaLists,
   getRecentlyPlayedTracks,
 } from "~/api/recent";
-import { getTrack, getTrackPlaylists, getTracks } from "~/api/track";
+import { getSortedTracks, getTrack, getTrackPlaylists } from "~/api/track";
 
 import { iAsc, throwIfNoResults } from "~/lib/drizzle";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
+import type { ScreenSortOptions } from "~/stores/ViewPreference/constants";
 
 /** All of the reusuable query keys. */
 export const queries = createQueryKeyStore({
@@ -215,21 +216,10 @@ export const queries = createQueryKeyStore({
   },
   /** Query keys used in `useQuery` for tracks. */
   tracks: {
-    all: {
-      queryKey: null,
-      queryFn: () =>
-        getTracks({
-          columns: [
-            "id",
-            "name",
-            "duration",
-            "artwork",
-            "discoverTime",
-            "modificationTime",
-          ],
-          albumColumns: ["name", "artistsKey", "artwork"],
-        }),
-    },
+    sorted: (order: ScreenSortOptions<"track">, isAsc: boolean) => ({
+      queryKey: [order, isAsc],
+      queryFn: () => getSortedTracks("sortedTracks", { order, isAsc }),
+    }),
     detail: (trackId: string) => ({
       queryKey: [trackId],
       queryFn: () => getTrack(trackId),

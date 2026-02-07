@@ -9,14 +9,14 @@ import i18next from "~/modules/i18n";
 import { getAlbum } from "~/api/album";
 import { getArtistsString } from "~/api/artist.utils";
 import { getFolderTracks } from "~/api/folder";
-import { getPlaylist, getSpecialPlaylist } from "~/api/playlist";
+import { getPlaylist } from "~/api/playlist";
+import { getSortedTracks } from "~/api/track";
 import { getTrackArtwork } from "~/api/track.utils";
 import type { PlayFromSource } from "./types";
 
 import { iAsc } from "~/lib/drizzle";
 import { shuffleArray } from "~/utils/object";
 import { getSafeUri } from "~/utils/string";
-import type { ReservedPlaylistName } from "~/modules/media/constants";
 import {
   FavoritesPlaylistKey,
   ReservedNames,
@@ -98,12 +98,8 @@ export async function getTrackIdsList({ type, id }: PlayFromSource) {
       trackIds = data.map(({ id }) => id);
     } else {
       if (ReservedNames.has(id)) {
-        const data = await getSpecialPlaylist(id as ReservedPlaylistName, {
-          columns: [],
-          trackColumns: ["id"],
-          withAlbum: false,
-        });
-        trackIds = data.tracks.map(({ id }) => id);
+        const sortedTracks = await getSortedTracks("sortedIds");
+        trackIds = sortedTracks.map(({ id }) => id);
       } else {
         const data = await getPlaylist(id, {
           columns: [],

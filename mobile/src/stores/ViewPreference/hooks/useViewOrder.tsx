@@ -24,7 +24,7 @@ export function useViewOrder<
     //? By default, data should be sorted by the `name` field.
     if (orderBy !== "name") {
       sortedResults.sort((a, b) => {
-        if (orderBy === "artistName") {
+        if (orderBy === "artistName" || orderBy === "albumName") {
           // Put `null` values at the start of the array.
           if (a[orderBy] === null) return -1;
           else if (b[orderBy] === null) return 1;

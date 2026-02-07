@@ -46,6 +46,7 @@ import { AccentText } from "~/components/Typography/AccentText";
 const INVALID_STATE = -1;
 const SNAP_PERCENT = 0.35;
 
+const ESTIMATE_HEADER_HEIGHT = 130; //? Includes the shadow underneath the header.
 const SHADOW_HEIGHT = 24;
 
 //#region NScrollLayout
@@ -66,7 +67,7 @@ export function NScrollLayout(props: {
   const bottomOffset = bottomInset.withNav + 16;
 
   // Shy Header
-  const [topBarHeight, setTopBarHeight] = useState(130); //? Includes the shadow underneath the header.
+  const [topBarHeight, setTopBarHeight] = useState(ESTIMATE_HEADER_HEIGHT);
   const headerHeight = useMemo(
     () => topBarHeight - SHADOW_HEIGHT,
     [topBarHeight],
@@ -155,8 +156,8 @@ export function NScrollListLayout<TData>({
 
   // Shy Header
   const [topBarHeight, setTopBarHeight] = useState(
-    130 + estimatedSubheaderHeight,
-  ); //? Includes the shadow underneath the header.
+    ESTIMATE_HEADER_HEIGHT + estimatedSubheaderHeight,
+  );
   const headerHeight = useMemo(
     () => topBarHeight - SHADOW_HEIGHT,
     [topBarHeight],
@@ -236,14 +237,35 @@ function ShyHeader(props: {
 }) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
+  const [containerHeight, setContainerHeight] = useState(
+    ESTIMATE_HEADER_HEIGHT,
+  );
+
   return (
     <Animated.View
-      onLayout={(e) => props.getTrueHeight(e.nativeEvent.layout.height)}
+      onLayout={(e) => {
+        props.getTrueHeight(e.nativeEvent.layout.height);
+        setContainerHeight(e.nativeEvent.layout.height);
+      }}
       pointerEvents="box-none"
       style={props.style}
       className="absolute top-0 left-0 z-50 w-full"
     >
-      <View style={{ paddingTop: insets.top + 32 }} className="bg-surface px-4">
+      {/*
+        We previously had the shadow after the main header content, but we
+        encountered a problem where you can see a seam between the content &
+        shadow when the header animated down.
+      */}
+      <View className="absolute top-0 left-0 w-full">
+        <TopDownGradient
+          height={containerHeight}
+          startFrom={containerHeight - SHADOW_HEIGHT}
+        />
+      </View>
+      <View
+        style={{ paddingTop: insets.top + 32, paddingBottom: SHADOW_HEIGHT }}
+        className="px-4"
+      >
         <View className="flex-row items-center justify-between gap-4">
           <Marquee>
             <AccentText className="text-4xl">{t(props.titleKey)}</AccentText>
@@ -256,7 +278,6 @@ function ShyHeader(props: {
         </View>
         {props.children}
       </View>
-      <TopDownGradient height={SHADOW_HEIGHT} />
     </Animated.View>
   );
 }

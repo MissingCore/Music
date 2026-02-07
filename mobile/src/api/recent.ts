@@ -8,11 +8,10 @@ import { formatForMediaCard, formatForTrack } from "~/db/utils";
 import i18next from "~/modules/i18n";
 import { getAlbum } from "./album";
 import { getFolderTracks } from "./folder";
-import { getPlaylist, getSpecialPlaylist } from "./playlist";
+import { getPlaylist } from "./playlist";
 
 import { throwIfNoResults } from "~/lib/drizzle";
-import type { ReservedPlaylistName } from "~/modules/media/constants";
-import { ReservedNames, ReservedPlaylists } from "~/modules/media/constants";
+import { ReservedPlaylists } from "~/modules/media/constants";
 import type { MediaCardContent } from "~/modules/media/components/MediaCard.type";
 import type { PlayFromSource } from "~/stores/Playback/types";
 
@@ -149,14 +148,12 @@ async function getRecentListEntry({ id, type }: PlayFromSource) {
       };
     } else {
       let data = null;
-      if (ReservedNames.has(id)) {
-        const specialList = await getSpecialPlaylist(
-          id as ReservedPlaylistName,
-          { trackColumns: ["id"], withAlbum: false },
-        );
+      if (id === ReservedPlaylists.tracks) {
+        const numTracks = await db.$count(tracks);
         data = {
-          ...specialList,
-          tracks: specialList.tracks.map(() => ({
+          name: id,
+          artwork: id,
+          tracks: Array.from({ length: numTracks }, () => ({
             artwork: null,
             album: null,
           })),

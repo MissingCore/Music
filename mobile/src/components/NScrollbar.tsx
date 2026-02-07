@@ -182,7 +182,7 @@ export function Scrollbar({
         scrollbarHeight.value = e.nativeEvent.layout.height - THUMB_SIZE;
       }}
       style={{ right: 8, top: top - THUMB_SIZE / 2, bottom }}
-      className="absolute"
+      className="absolute z-50"
     >
       <GestureDetector gesture={gestures}>
         <Animated.View style={thumbWrapperStyle} className="justify-center">

@@ -3,7 +3,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { db } from "~/db";
 import type { TrackWithRelations } from "~/db/schema";
 import { hiddenTracks } from "~/db/schema";
-import { formatForTrack } from "~/db/utils";
 
 import {
   addToPlaylist,
@@ -11,8 +10,8 @@ import {
   removeFromPlaylist,
   updateTrack,
 } from "~/api/track";
+import { useViewPreferenceStore } from "~/stores/ViewPreference/store";
 import { Queue, Resynchronize } from "~/stores/Playback/actions";
-import { useSortTracks } from "~/modules/media/services/SortPreferences";
 import { queries as q } from "./keyStore";
 
 import { clearAllQueries } from "~/lib/react-query";
@@ -35,12 +34,12 @@ export function useTrackPlaylists(trackId: string) {
   return useQuery({ ...q.tracks.detail(trackId)._ctx.playlists });
 }
 
-/** Return list of `TrackContent` from tracks. */
-export function useTracksForTrackCard() {
-  const sortTracksFn = useSortTracks();
+export function useSortedTracks(isReady = true) {
+  const trackIsAsc = useViewPreferenceStore((s) => s.trackIsAsc);
+  const trackOrder = useViewPreferenceStore((s) => s.trackOrder);
   return useQuery({
-    ...q.tracks.all,
-    select: (data) => sortTracksFn(data).map((track) => formatForTrack(track)),
+    ...q.tracks.sorted(trackOrder, trackIsAsc),
+    enabled: isReady,
   });
 }
 //#endregion

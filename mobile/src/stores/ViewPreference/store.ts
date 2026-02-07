@@ -22,6 +22,9 @@ export const viewPreferenceStore = createPersistedStore<ViewPreferenceStore>(
     playlistLayout: "grid",
     playlistIsAsc: true,
     playlistOrder: "name",
+
+    trackIsAsc: true,
+    trackOrder: "name",
   }),
   {
     name: "music::view-preferences",

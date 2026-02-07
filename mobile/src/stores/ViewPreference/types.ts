@@ -10,4 +10,4 @@ export type LayoutItem = {
 };
 
 /** Screens where the order of the content can be change. */
-export type MutableViewOrder = "album" | "artist" | "playlist";
+export type MutableViewOrder = "album" | "artist" | "playlist" | "track";

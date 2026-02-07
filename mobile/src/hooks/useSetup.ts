@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { addPlayedMediaList } from "~/api/recent";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
-import { useSortPreferencesStore } from "~/modules/media/services/SortPreferences";
 
 import {
   getTrackPlayerOptions,
@@ -23,18 +22,10 @@ type SetupState = "idle" | "pending" | "ready";
 export function useSetup() {
   const [setupState, setSetupState] = useState<SetupState>("idle");
   const playbackHydrated = usePlaybackStore((s) => s._hasHydrated);
-  const sortPreferencesHydrated = useSortPreferencesStore(
-    (s) => s._hasHydrated,
-  );
   const preferenceHydrated = usePreferenceStore((s) => s._hasHydrated);
 
   useEffect(() => {
-    if (
-      !playbackHydrated ||
-      !sortPreferencesHydrated ||
-      !preferenceHydrated ||
-      setupState !== "idle"
-    ) {
+    if (!playbackHydrated || !preferenceHydrated || setupState !== "idle") {
       return;
     }
 
@@ -66,12 +57,7 @@ export function useSetup() {
 
       setSetupState("ready");
     })();
-  }, [
-    playbackHydrated,
-    sortPreferencesHydrated,
-    preferenceHydrated,
-    setupState,
-  ]);
+  }, [playbackHydrated, preferenceHydrated, setupState]);
 
   return setupState === "ready";
 }

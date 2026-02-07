@@ -9,11 +9,8 @@ import type {
 import { playlists, tracksToPlaylists } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
-import { sortPreferencesStore } from "~/modules/media/services/SortPreferences";
 
-import { iAsc, iDesc } from "~/lib/drizzle";
-import { pickKeys } from "~/utils/object";
-import type { ReservedPlaylistName } from "~/modules/media/constants";
+import { iAsc } from "~/lib/drizzle";
 import { sanitizePlaylistName } from "./playlist.utils";
 import type { QueryManyWithTracksFn, QueryOneWithTracksFn } from "./types";
 import { getColumns, withRelations } from "./utils";
@@ -78,41 +75,6 @@ const _getPlaylists: QueryManyWithTracksFn<Playlist> =
  * **Note:** Do not use the `withTracks` option with this function.
  */
 export const getPlaylists = _getPlaylists();
-
-const _getSpecialPlaylist: QueryOneWithTracksFn<
-  Playlist,
-  true,
-  ReservedPlaylistName
-> = () => async (id, options) => {
-  let mainFields = { name: id, artwork: id, isFavorite: false };
-  // @ts-expect-error - `mainFields` should match based on `options.columns`.
-  if (options?.columns) mainFields = pickKeys(mainFields, options.columns);
-
-  // FIXME: Sorting is handling in the SQL instead of the `sortTracks()` function.
-  const { isAsc, orderedBy } = sortPreferencesStore.getState();
-  const playlistTracks = await db.query.tracks.findMany({
-    columns: getColumns(options?.trackColumns),
-    ...withRelations({ defaultWithAlbum: true, ...options }),
-    orderBy: (fields) => {
-      const field =
-        orderedBy === "alphabetical"
-          ? fields.name
-          : orderedBy === "discover"
-            ? fields.discoverTime
-            : fields.modificationTime;
-      return isAsc ? iAsc(field) : iDesc(field);
-    },
-  });
-
-  return { ...mainFields, tracks: playlistTracks };
-};
-
-/**
- * Get one of the "reserved" playlists. Tracks are sorted.
- *
- * **Note:** Do not use the `withTracks` option with this function.
- */
-export const getSpecialPlaylist = _getSpecialPlaylist();
 //#endregion
 
 //#region POST Methods
