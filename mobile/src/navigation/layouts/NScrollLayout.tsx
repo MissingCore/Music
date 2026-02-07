@@ -252,18 +252,18 @@ function ShyHeader(props: {
       className="absolute top-0 left-0 z-50 w-full"
     >
       {/*
-        We previously had the shadow after the main header content, but we
-        encountered a problem where you can see a seam between the content &
-        shadow when the header animated down.
-      */}
-      <View className="absolute top-0 left-0 w-full">
-        <TopDownGradient
-          height={containerHeight}
-          startFrom={containerHeight - SHADOW_HEIGHT}
-        />
-      </View>
+          We previously had the shadow after the main header content, but we
+          encountered a problem where you can see a seam between the content &
+          shadow when the header animated down.
+        */}
+      <TopDownGradient
+        height={containerHeight}
+        startFrom={containerHeight - SHADOW_HEIGHT}
+        className="absolute top-0 left-0"
+      />
       <View
-        style={{ paddingTop: insets.top + 32, paddingBottom: SHADOW_HEIGHT }}
+        collapsable={false}
+        style={{ paddingTop: insets.top + 32, marginBottom: SHADOW_HEIGHT }}
         className="px-4"
       >
         <View className="flex-row items-center justify-between gap-4">
