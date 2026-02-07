@@ -11,7 +11,7 @@ import Animated, {
 import { useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
 
-import { useInForeground } from "~/stores/AppState";
+import { useInForeground } from "~/stores/ListenerState";
 import { useColor } from "~/hooks/useTheme";
 
 import { OnRTLWorklet } from "~/lib/react";

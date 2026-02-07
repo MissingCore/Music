@@ -10,9 +10,9 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { Schedule } from "~/resources/icons/Schedule";
+import { useInForeground } from "~/stores/ListenerState";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { useInForeground } from "~/stores/AppState";
 
 import { OnRTLWorklet } from "~/lib/react";
 import { getFont } from "~/lib/style";

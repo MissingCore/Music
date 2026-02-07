@@ -4,7 +4,7 @@ import { AppState } from "react-native";
 import { Easing, makeMutable, withTiming } from "react-native-reanimated";
 import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
 
-import { useInForeground } from "~/stores/AppState";
+import { useInForeground } from "~/stores/ListenerState";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { useSessionStore } from "~/services/SessionStore";
 
