@@ -34,10 +34,13 @@ export function useTrackPlaylists(trackId: string) {
   return useQuery({ ...q.tracks.detail(trackId)._ctx.playlists });
 }
 
-export function useSortedTracks() {
+export function useSortedTracks(isReady = true) {
   const trackIsAsc = useViewPreferenceStore((s) => s.trackIsAsc);
   const trackOrder = useViewPreferenceStore((s) => s.trackOrder);
-  return useQuery({ ...q.tracks.sorted(trackOrder, trackIsAsc) });
+  return useQuery({
+    ...q.tracks.sorted(trackOrder, trackIsAsc),
+    enabled: isReady,
+  });
 }
 //#endregion
 

@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 
 import { useSortedTracks } from "~/queries/track";
+import { useDelayedReady } from "~/hooks/useDelayedReady";
 
 import { NScrollListLayout } from "~/navigation/layouts/NScrollLayout";
 import { TracksViewOptionsSheet } from "~/navigation/sheets/ViewOptionsSheet";
@@ -20,7 +21,10 @@ const trackSource = {
 } as const;
 
 export default function Tracks() {
-  const { isPending, data } = useSortedTracks();
+  //? Defer query to enable the header to mount (as the query will block
+  //? the JS thread if the user has lots of tracks).
+  const isReady = useDelayedReady(1);
+  const { isPending, data } = useSortedTracks(isReady);
 
   const formattedData = useMemo(
     () =>
