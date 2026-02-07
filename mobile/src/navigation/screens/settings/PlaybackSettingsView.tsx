@@ -10,6 +10,9 @@ import { Switch } from "~/components/UI/Switch";
 
 export default function PlaybackSettings() {
   const { t } = useTranslation();
+  const continuePlaybackOnDismiss = usePreferenceStore(
+    (s) => s.continuePlaybackOnDismiss,
+  );
   const repeatOnSkip = usePreferenceStore((s) => s.repeatOnSkip);
   const restoreLastPosition = usePreferenceStore((s) => s.restoreLastPosition);
 
@@ -17,10 +20,10 @@ export default function PlaybackSettings() {
     <ListLayout>
       <SegmentedList>
         <SegmentedList.Item
-          labelTextKey="feat.repeatOnSkip.title"
-          supportingText={t("feat.repeatOnSkip.brief")}
-          onPress={PreferenceTogglers.toggleRepeatOnSkip}
-          RightElement={<Switch enabled={repeatOnSkip} />}
+          labelTextKey="feat.continuePlaybackOnDismiss.title"
+          supportingText={t("feat.continuePlaybackOnDismiss.description")}
+          onPress={PreferenceTogglers.toggleContinuePlaybackOnDismiss}
+          RightElement={<Switch enabled={continuePlaybackOnDismiss} />}
         />
         <SegmentedList.Item
           labelTextKey="feat.restoreLastPosition.title"
@@ -28,6 +31,13 @@ export default function PlaybackSettings() {
           RightElement={<Switch enabled={restoreLastPosition} />}
         />
       </SegmentedList>
+
+      <SegmentedList.Item
+        labelTextKey="feat.repeatOnSkip.title"
+        supportingText={t("feat.repeatOnSkip.brief")}
+        onPress={PreferenceTogglers.toggleRepeatOnSkip}
+        RightElement={<Switch enabled={repeatOnSkip} />}
+      />
     </ListLayout>
   );
 }

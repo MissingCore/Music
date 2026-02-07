@@ -56,6 +56,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
 
     playbackDelay: 0,
 
+    continuePlaybackOnDismiss: false,
     repeatOnSkip: false,
     restoreLastPosition: true,
 
@@ -69,7 +70,6 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     rcNotification: false,
 
     //! Experimental Features
-    continuePlaybackOnDismiss: false,
     ignoreInterrupt: false,
     smoothPlaybackTransition: true,
     queueAwareNext: false,

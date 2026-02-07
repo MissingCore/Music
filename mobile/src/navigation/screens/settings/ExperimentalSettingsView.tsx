@@ -17,9 +17,6 @@ import { Switch } from "~/components/UI/Switch";
 
 export default function ExperimentalSettings() {
   const { t } = useTranslation();
-  const continuePlaybackOnDismiss = usePreferenceStore(
-    (s) => s.continuePlaybackOnDismiss,
-  );
   const ignoreInterrupt = usePreferenceStore((s) => s.ignoreInterrupt);
   const smoothPlaybackTransition = usePreferenceStore(
     (s) => s.smoothPlaybackTransition,
@@ -29,12 +26,6 @@ export default function ExperimentalSettings() {
   return (
     <ListLayout>
       <SegmentedList>
-        <SegmentedList.Item
-          labelTextKey="feat.continuePlaybackOnDismiss.title"
-          supportingText={t("feat.continuePlaybackOnDismiss.description")}
-          onPress={PreferenceTogglers.toggleContinuePlaybackOnDismiss}
-          RightElement={<Switch enabled={continuePlaybackOnDismiss} />}
-        />
         <SegmentedList.Item
           labelTextKey="feat.ignoreInterrupt.title"
           supportingText={t("feat.ignoreInterrupt.brief")}

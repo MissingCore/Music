@@ -68,6 +68,8 @@ export interface PreferenceStore {
   /** Delay before next track is naturally played. */
   playbackDelay: number;
 
+  /** If playback will continue when we dismiss the app. */
+  continuePlaybackOnDismiss: boolean;
   /** Whether we stay on "Repeat One" mode when we skip. */
   repeatOnSkip: boolean;
   /** Whether we'll restore the track to the last played position. */
@@ -89,8 +91,6 @@ export interface PreferenceStore {
   rcNotification: boolean;
 
   //! Experimental Features
-  /** If playback will continue when we dismiss the app. */
-  continuePlaybackOnDismiss: boolean;
   /** Whether we'll continue playback through any interruptions. */
   ignoreInterrupt: boolean;
   /**

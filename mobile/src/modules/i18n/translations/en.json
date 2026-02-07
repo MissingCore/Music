@@ -220,6 +220,10 @@
         "volume": "App Volume"
       }
     },
+    "continuePlaybackOnDismiss": {
+      "title": "Continue Playback on Dismiss",
+      "description": "Let music playback continue when you dismiss the app from recent tasks. Force stop the app to stop playback."
+    },
     "repeatOnSkip": {
       "title": "Keep Repeat Mode on Skip",
       "brief": "Don't switch mode to \"Repeat\" from \"Repeat One\" on skip."
@@ -273,10 +277,6 @@
     },
     "experimental": {
       "title": "Experimental Features"
-    },
-    "continuePlaybackOnDismiss": {
-      "title": "Continue Playback on Dismiss",
-      "description": "Let music playback continue when you dismiss the app from recent tasks. Force stop the app to stop playback."
     },
     "ignoreInterrupt": {
       "title": "Ignore Interruptions",

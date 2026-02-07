@@ -2,13 +2,6 @@
 
 Most experimental features require you to enable it in the "Experimental Features" screen (`Settings > Experimental Features`).
 
-## Continue Playback on Dismiss
-
-This enables playback to continue after removing the app from "Recent Tasks".
-
-> [!NOTE]
-> You may need to force-stop the app to stop playback in the situation where the media notification disappears when this experimental feature is enabled.
-
 ## Ignore Interruptions
 
 This enables playback to continue when an interruption (ie: call, notification, timer) occurs.
