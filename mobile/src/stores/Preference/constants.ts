@@ -37,7 +37,7 @@ export interface PreferenceStore {
   /** Get a more accurate initial state. */
   _init: (state: PreferenceStore) => Promise<void>;
 
-  /** If the user has clicked "Start Scanning" in the onboarding flow. */
+  /** If the user has clicked "Start Scanning Tracks" in the onboarding flow. */
   completedOnboarding: boolean;
 
   /** Language code of the displayed content. */
