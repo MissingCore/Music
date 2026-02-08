@@ -69,7 +69,7 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
     minSeconds: 15,
     separators: [],
 
-    checkForUpdates: true,
+    checkForUpdates: false,
     rcNotification: false,
 
     //! Experimental Features

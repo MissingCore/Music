@@ -223,11 +223,13 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
     const lastMigrationCode = value !== null ? Number(value) : -1;
 
     //? Ensure we skip the onboarding screen if `lastMigrationCode !== -1`.
-    if (
-      lastMigrationCode !== -1 &&
-      !preferenceStore.getState().completedOnboarding
-    ) {
-      preferenceStore.setState({ completedOnboarding: true });
+    if (lastMigrationCode !== -1) {
+      preferenceStore.setState({
+        completedOnboarding: true,
+        //? Enable `checkForUpdates` for existing users as it's off by default
+        //? for new users due to now having a proper onboarding screen.
+        checkForUpdates: true,
+      });
     }
   },
 };
