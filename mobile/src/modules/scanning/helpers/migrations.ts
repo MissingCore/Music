@@ -47,14 +47,6 @@ export async function checkForMigrations() {
       set: { isFavorite: true },
     });
 
-  //? Ensure we skip the onboarding screen if `lastMigrationCode !== -1`.
-  if (
-    lastMigrationCode !== -1 &&
-    !preferenceStore.getState().completedOnboarding
-  ) {
-    preferenceStore.setState({ completedOnboarding: true });
-  }
-
   // Exit early if we don't need to do any migrations.
   const lastestMigrationCode = Object.keys(MigrationHistory).length - 1;
   if (lastMigrationCode === lastestMigrationCode) return;
@@ -223,6 +215,19 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
       await updatePlaylist(FavoritesPlaylistKey, { tracks: favTracks });
     } catch (err) {
       console.log("[Failed to migrate favorite tracks]", err);
+    }
+  },
+
+  "onboarding-flow": async () => {
+    const value = await AsyncStorage.getItem("last-adjustment");
+    const lastMigrationCode = value !== null ? Number(value) : -1;
+
+    //? Ensure we skip the onboarding screen if `lastMigrationCode !== -1`.
+    if (
+      lastMigrationCode !== -1 &&
+      !preferenceStore.getState().completedOnboarding
+    ) {
+      preferenceStore.setState({ completedOnboarding: true });
     }
   },
 };
