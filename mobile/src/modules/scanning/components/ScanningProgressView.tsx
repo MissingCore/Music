@@ -11,6 +11,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Save } from "~/resources/icons/Save";
 import { Warning } from "~/resources/icons/Warning";
+import { SystemTheme } from "~/hooks/useTheme";
 import { useScanningProgressStore } from "../ScanningProgress";
 
 import { CachedSlider } from "~/components/Form/Slider";
@@ -117,20 +118,31 @@ const SliderConfig = {
   initValue: 0,
   min: 0,
   disabled: true,
+  trackColor: SystemTheme.surfaceContainerLowest,
   roundedEndStop: true,
 };
 
 function ProgressLabel({ textKey }: { textKey: ParseKeys }) {
   return (
-    <TStyledText textKey={textKey} numberOfLines={1} bold className="text-xs" />
+    <TStyledText
+      textKey={textKey}
+      numberOfLines={1}
+      bold
+      style={{ color: SystemTheme.onSurface }}
+      className="text-xs"
+    />
   );
 }
 
 function IconStatus(props: { Icon: typeof Save; value: string | number }) {
   return (
     <View className="flex-row items-center gap-1">
-      <props.Icon size={14} />
-      <StyledText bold className="text-xxs">
+      <props.Icon size={14} color={SystemTheme.onSurface} />
+      <StyledText
+        bold
+        style={{ color: SystemTheme.onSurface }}
+        className="text-xxs"
+      >
         {props.value}
       </StyledText>
     </View>

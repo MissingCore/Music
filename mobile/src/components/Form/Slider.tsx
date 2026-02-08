@@ -18,7 +18,7 @@ import type { Icon } from "~/resources/icons/type";
 import { useColor } from "~/hooks/useTheme";
 
 import { Colors } from "~/constants/Styles";
-import type { ColorRole } from "~/lib/style";
+import type { AppColor } from "~/lib/style";
 import { cn } from "~/lib/style";
 import { StyledText } from "../Typography/StyledText";
 
@@ -47,8 +47,8 @@ export const CachedSlider = memo(function CachedSlider(props: {
   vHitSlop?: number;
   /** If the slider should be transparent. */
   transparent?: boolean;
-  trackColor?: ColorRole;
-  progressColor?: ColorRole;
+  trackColor?: AppColor;
+  progressColor?: AppColor;
   /** If the progress indicator will have a rounded end stop. */
   roundedEndStop?: boolean;
   /**
