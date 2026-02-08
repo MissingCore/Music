@@ -48,6 +48,14 @@ export async function checkForMigrations() {
       set: { isFavorite: true },
     });
 
+  //? Ensure we skip the onboarding screen if `lastMigrationCode !== -1`.
+  if (
+    lastMigrationCode !== -1 &&
+    !preferenceStore.getState().completedOnboarding
+  ) {
+    preferenceStore.setState({ completedOnboarding: true });
+  }
+
   // Exit early if we don't need to do any migrations.
   const lastestMigrationCode = Object.keys(MigrationHistory).length - 1;
   if (lastMigrationCode === lastestMigrationCode) return;
