@@ -130,7 +130,7 @@ function IconStatus(props: { Icon: typeof Save; value: string | number }) {
   return (
     <View className="flex-row items-center gap-1">
       <props.Icon size={14} />
-      <StyledText bold className="text-xs">
+      <StyledText bold className="text-xxs">
         {props.value}
       </StyledText>
     </View>
