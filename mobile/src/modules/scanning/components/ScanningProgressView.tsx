@@ -113,7 +113,12 @@ function ArtworkSavingProgress() {
 
 //#region Helpers
 const SpringConfig = { mass: 2, stiffness: 50, damping: 20 };
-const SliderConfig = { initValue: 0, min: 0, roundedEndStop: true };
+const SliderConfig = {
+  initValue: 0,
+  min: 0,
+  disabled: true,
+  roundedEndStop: true,
+};
 
 function ProgressLabel({ textKey }: { textKey: ParseKeys }) {
   return (

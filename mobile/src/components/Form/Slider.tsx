@@ -31,6 +31,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
   liveValue?: SharedValue<number>;
   min: number;
   max: number;
+  disabled?: boolean;
   /** Notify the parent if the slider recognized interactions. */
   getInteractionStatus?: Dispatch<SetStateAction<boolean>>;
   /** Function call is debounced, which is based on `_debounceMultiplier * step`. */
@@ -146,6 +147,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
   const tapGesure = useMemo(
     () =>
       Gesture.Tap()
+        .enabled(!props.disabled)
         .onBegin(() => setIsInteracting(true))
         .onEnd(({ x }) => {
           const finalizedValue = calculateNextValue(x);
@@ -154,12 +156,13 @@ export const CachedSlider = memo(function CachedSlider(props: {
           if (onCompleteRef.current)
             scheduleOnRN(onCompleteRef.current, finalizedValue);
         }),
-    [calculateNextValue, setIsInteracting, setCurrVal],
+    [calculateNextValue, setIsInteracting, setCurrVal, props.disabled],
   );
 
   const panGesture = useMemo(
     () =>
       Gesture.Pan()
+        .enabled(!props.disabled)
         .onBegin(() => setIsInteracting(true))
         .onStart(({ x }) => {
           debounceFrom.value = x;
@@ -182,6 +185,7 @@ export const CachedSlider = memo(function CachedSlider(props: {
       setCurrVal,
       debounceFrom,
       debouncedOnChange,
+      props.disabled,
     ],
   );
 
