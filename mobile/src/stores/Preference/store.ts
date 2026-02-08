@@ -30,6 +30,8 @@ export const preferenceStore = createPersistedStore<PreferenceStore>(
       set({ _hasHydrated: true });
     },
 
+    completedOnboarding: false,
+
     language: "",
     forceLTR: false,
 

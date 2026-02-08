@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { usePreferenceStore } from "~/stores/Preference/store";
+import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
@@ -35,7 +35,9 @@ export function OnboardingConfiguration() {
 
         <ExtendedTButton
           textKey="feat.onboarding.extra.startScan"
-          onPress={() => console.log("Starting scan...")}
+          onPress={() =>
+            preferenceStore.setState({ completedOnboarding: true })
+          }
           className="mt-auto rounded-full bg-secondary active:bg-secondaryDim"
           textClassName="text-onSecondary"
         />
