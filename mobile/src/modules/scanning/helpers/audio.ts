@@ -16,7 +16,7 @@ import { AlbumArtistsKey } from "~/api/album.utils";
 import { createArtists } from "~/api/artist";
 import { deleteTracks, upsertTracks } from "~/api/track";
 import { preferenceStore } from "~/stores/Preference/store";
-import { onboardingStore } from "../services/Onboarding";
+import { scanningProgressStore } from "../ScanningProgress";
 
 import { getExcludedColumns, withColumns } from "~/lib/drizzle";
 import { Stopwatch } from "~/utils/debug";
@@ -45,8 +45,6 @@ const CHANGE_DELTA = 5 * 60 * 1000;
 
 /** Index tracks with their metadata into our database. */
 export async function findAndSaveAudio() {
-  // Reset tracked values when saving/updating tracks in onboarding store.
-  onboardingStore.setState({ staged: 0, saveErrors: 0 });
   const stopwatch = new Stopwatch();
 
   //#region Media Discovery
@@ -132,11 +130,11 @@ export async function findAndSaveAudio() {
     ({ id }) => !unmodified.has(id),
   );
 
-  onboardingStore.setState((prev) => ({
-    prevSaved: savedTracks.length,
-    unstaged: discoveredTracks.length - unmodified.size,
-    phase: unstagedTracks.length > 0 ? "tracks" : prev.phase,
-  }));
+  scanningProgressStore.setState({
+    scannedTracks: 0,
+    modifiedTracks: discoveredTracks.length - unmodified.size,
+    failedTrackScans: 0,
+  });
   console.log(`Determined unstaged content in ${stopwatch.lapTime()}.`);
   //#endregion
 
@@ -153,9 +151,9 @@ export async function findAndSaveAudio() {
     const res = await Promise.allSettled(tBatch.map(safeRetrieveMetadata));
     const results = res.filter(isFulfilled).map((r) => r.value);
     const errors: InvalidTrack[] = res.filter(isRejected).map((r) => r.reason);
-    onboardingStore.setState((prev) => ({
-      staged: prev.staged + results.length,
-      saveErrors: prev.saveErrors + errors.length,
+    scanningProgressStore.setState((prev) => ({
+      scannedTracks: prev.scannedTracks + results.length,
+      failedTrackScans: prev.failedTrackScans + errors.length,
     }));
 
     if (errors.length > 0) {
@@ -228,9 +226,9 @@ export async function findAndSaveAudio() {
   }
   //#endregion
 
-  const { staged, saveErrors } = onboardingStore.getState();
+  const { scannedTracks, failedTrackScans } = scanningProgressStore.getState();
   console.log(
-    `Found/updated ${staged} tracks & encountered ${saveErrors} errors in ${stopwatch.lapTime()}.` +
+    `Found/updated ${scannedTracks} tracks & encountered ${failedTrackScans} errors in ${stopwatch.lapTime()}.` +
       `\nCompleted finding & saving audio in ${stopwatch.stop()}`,
   );
 

@@ -18,7 +18,6 @@ import {
 import { updatePlaylist } from "~/api/playlist";
 import { playbackStore } from "~/stores/Playback/store";
 import { preferenceStore } from "~/stores/Preference/store";
-import { onboardingStore } from "../services/Onboarding";
 
 import type { PlayFromSource } from "~/stores/Playback/types";
 import type { Tab } from "~/stores/Preference/types";
@@ -59,9 +58,6 @@ export async function checkForMigrations() {
   // Exit early if we don't need to do any migrations.
   const lastestMigrationCode = Object.keys(MigrationHistory).length - 1;
   if (lastMigrationCode === lastestMigrationCode) return;
-
-  // Set the current phase to `preprocess` as we have to run some migrations.
-  onboardingStore.setState({ phase: "preprocess" });
 
   // Get the list of migrations we need to make.
   const pendingMigrations: MigrationOption[] = [];

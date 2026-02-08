@@ -10,7 +10,7 @@ import { albums, tracks } from "~/db/schema";
 
 import { getAlbums, updateAlbum } from "~/api/album";
 import { getTracks, updateTrack } from "~/api/track";
-import { onboardingStore } from "../services/Onboarding";
+import { scanningProgressStore } from "../ScanningProgress";
 
 import { ImageDirectory } from "~/lib/file-system";
 import { Stopwatch } from "~/utils/debug";
@@ -57,11 +57,9 @@ export async function findAndSaveArtwork() {
   });
 
   // Initiate the image saving phase.
-  onboardingStore.setState({
-    phase: "image",
-    checked: 0,
-    unchecked: uncheckedTracks.length,
-    found: 0,
+  scanningProgressStore.setState({
+    checkedArtwork: 0,
+    uncheckedArtwork: uncheckedTracks.length,
   });
 
   let newArtworkCount = 0;
@@ -83,7 +81,7 @@ export async function findAndSaveArtwork() {
     prevRemainder = checkedFiles % BATCH_PRESETS.PROGRESS;
     checkedFiles += values.length;
     if (checkedFiles % BATCH_PRESETS.PROGRESS < prevRemainder) {
-      onboardingStore.setState({ checked: checkedFiles });
+      scanningProgressStore.setState({ checkedArtwork: checkedFiles });
     }
   }
 
@@ -98,7 +96,7 @@ export async function findAndSaveArtwork() {
       onEndIteration: () => {
         checkedFiles++;
         if (checkedFiles % BATCH_PRESETS.PROGRESS === 0) {
-          onboardingStore.setState({ checked: checkedFiles });
+          scanningProgressStore.setState({ checkedArtwork: checkedFiles });
         }
       },
     },
@@ -144,7 +142,6 @@ async function saveSinglesArtwork(
     const { uri: artworkUri } = await getArtworkUri(uri);
     if (artworkUri) {
       await onSave({ artworkUri, trackId });
-      onboardingStore.setState((prev) => ({ found: prev.found + 1 }));
       if (options?.endEarly) return;
     }
     if (options?.onEndIteration) options.onEndIteration();
