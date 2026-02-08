@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import Animated, { FadeIn } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
@@ -20,10 +21,15 @@ export function OnboardingConfiguration() {
   const sheetRefs = ScanningConfigurations.useScanningSheetRefs();
 
   return (
-    <>
+    <Animated.View entering={FadeIn} className="flex-1">
       <ScanningConfigurations.Sheets {...sheetRefs} />
 
-      <ListLayout contentContainerStyle={{ paddingTop: insets.top + 64 }}>
+      <ListLayout
+        contentContainerStyle={{
+          paddingTop: insets.top + 64,
+          paddingBottom: insets.bottom + 16,
+        }}
+      >
         <AccentText className="text-4xl">
           {t("feat.onboarding.extra.configureSettings")}
         </AccentText>
@@ -42,7 +48,7 @@ export function OnboardingConfiguration() {
           textClassName="text-onSecondary"
         />
       </ListLayout>
-    </>
+    </Animated.View>
   );
 }
 

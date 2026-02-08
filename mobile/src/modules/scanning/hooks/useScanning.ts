@@ -3,24 +3,21 @@ import { useCallback, useEffect, useState } from "react";
 
 import { Resynchronize } from "~/stores/Playback/actions";
 import { preferenceStore } from "~/stores/Preference/store";
-import { useSetup } from "~/hooks/useSetup";
+
 import { findAndSaveArtwork } from "../helpers/artwork";
 import { findAndSaveAudio } from "../helpers/audio";
 import { AppCleanUp } from "../helpers/cleanup";
-import { checkForMigrations } from "../helpers/migrations";
 
-import { createImageDirectory } from "~/lib/file-system";
 import { Stopwatch } from "~/utils/debug";
 
 /**
  * Reads our music library on load and index all supported files in the
  * SQLite database.
  */
-export function useOnboarding() {
+export function useScanning(canStart: boolean) {
   const [permissionResponse, requestPermission] = useMediaLibraryPermissions({
     granularPermissions: ["audio"],
   });
-  const isReady = useSetup();
   const [status, setStatus] = useState<"in-progress" | "complete" | undefined>(
     undefined,
   );
@@ -39,10 +36,6 @@ export function useOnboarding() {
     }
     setStatus("in-progress");
 
-    // Fix database entries if we make any "breaking" changes.
-    await checkForMigrations();
-    console.log(`Completed migrations in ${stopwatch.lapTime()}.`);
-
     // Only rescan on app launch if the setting is enabled.
     if (preferenceStore.getState().rescanOnLaunch) {
       // Find and save any audio files to the database.
@@ -55,7 +48,6 @@ export function useOnboarding() {
       // however it caused some weird bugs due to the lag generated. Since this
       // process rarely occurs, it should be fine to have the user stay on the
       // onboarding screen longer.
-      createImageDirectory();
       await findAndSaveArtwork();
     } else {
       await AppCleanUp.media();
@@ -67,15 +59,14 @@ export function useOnboarding() {
   }, [permissionResponse, requestPermission]);
 
   useEffect(() => {
-    // Make sure the Zustand store is hydrated before we do anything.
-    if (!isReady) return;
+    if (!canStart) return;
 
     if (permissionResponse && status === undefined) {
       readMusicLibrary().catch((err) => {
         setError(err);
       });
     }
-  }, [isReady, permissionResponse, readMusicLibrary, status]);
+  }, [canStart, permissionResponse, readMusicLibrary, status]);
 
-  return { success: status === "complete", error };
+  return { completed: status === "complete", error };
 }
