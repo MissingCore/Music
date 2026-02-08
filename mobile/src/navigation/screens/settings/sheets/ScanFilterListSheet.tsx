@@ -41,13 +41,11 @@ export function ScanFilterListSheet(props: {
       keyboardAndToast
       snapTop
     >
-      {props.listType === "listBlock" ? (
-        <TStyledText
-          textKey="feat.listBlock.description"
-          dim
-          className="text-sm"
-        />
-      ) : null}
+      <TStyledText
+        textKey={`feat.${props.listType}.description`}
+        dim
+        className="text-sm"
+      />
       <FilterForm listType={props.listType} listEntries={listEntries} />
       <FlatList
         data={listEntries}

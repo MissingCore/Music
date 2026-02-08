@@ -262,7 +262,8 @@
       "brief": "If disabled, use the Rescan feature to detect new, updated, and removed tracks."
     },
     "listAllow": {
-      "title": "Allowlist"
+      "title": "Allowlist",
+      "description": "Specify where tracks can be found."
     },
     "listBlock": {
       "title": "Blocklist",
