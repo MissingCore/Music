@@ -59,7 +59,7 @@ export async function checkForMigrations() {
 
   // Apply migrations.
   for (const migration of pendingMigrations) {
-    await MigrationFunctionMap[migration]();
+    await MigrationFunctionMap[migration](lastMigrationCode);
   }
 
   // Make sure we don't do this logic all over again.
@@ -67,7 +67,10 @@ export async function checkForMigrations() {
 }
 
 /** Logic we want to run depending on what migrations we need to do. */
-const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
+const MigrationFunctionMap: Record<
+  MigrationOption,
+  (lastMigrationCode: number) => Promise<void>
+> = {
   "fileNodes-adjustment": async () => {
     const oldRootNodes = await db.query.fileNodes.findMany({
       where: (fields, { isNull }) => isNull(fields.parentPath),
@@ -218,10 +221,7 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
     }
   },
 
-  "onboarding-flow": async () => {
-    const value = await AsyncStorage.getItem("last-adjustment");
-    const lastMigrationCode = value !== null ? Number(value) : -1;
-
+  "onboarding-flow": async (lastMigrationCode) => {
     //? Ensure we skip the onboarding screen if `lastMigrationCode !== -1`.
     if (lastMigrationCode !== -1) {
       preferenceStore.setState({
