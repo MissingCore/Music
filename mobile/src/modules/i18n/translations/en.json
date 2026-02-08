@@ -322,7 +322,7 @@
     "onboarding": {
       "extra": {
         "configureSettings": "Configure Settings",
-        "startScan": "Start Scanning",
+        "startScan": "Start Scanning Tracks",
         "saveTracks": "Saving Tracks",
         "saveImages": "Saving Images"
       }
