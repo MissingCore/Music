@@ -287,25 +287,6 @@
         "saveImages": "保存图片"
       }
     },
-    "onboardPreprocess": {
-      "title": "预处理",
-      "brief": "确保现有数据符合所有更改。"
-    },
-    "onboardTracks": {
-      "title": "保存歌曲",
-      "extra": {
-        "prevSaved": "已保存 {{amount}} 首",
-        "saved": "已保存/更新 {{amount}}/{{total}} 首",
-        "errors": "{{amount}} 个错误"
-      }
-    },
-    "onboardImages": {
-      "title": "保存图片",
-      "extra": {
-        "checked": "已检查 {{amount}}/{{total}}",
-        "found": "找到 {{amount}} 个"
-      }
-    },
     "playedRecent": {
       "title": "最近播放",
       "extra": {

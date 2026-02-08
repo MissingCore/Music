@@ -287,25 +287,6 @@
         "saveImages": "Sauvegarde des images"
       }
     },
-    "onboardPreprocess": {
-      "title": "Prétraitement",
-      "brief": "S'assure que les données existantes sont conformes à toutes les modifications."
-    },
-    "onboardTracks": {
-      "title": "Sauvegarde des titres",
-      "extra": {
-        "prevSaved": "{{amount}} Enregistrés précédemment",
-        "saved": "{{amount}}/{{total}} Sauvegardés/Actualisés",
-        "errors": "{{amount}} Erreurs"
-      }
-    },
-    "onboardImages": {
-      "title": "Sauvegarde des images",
-      "extra": {
-        "checked": "{{amount}}/{{total}} Vérifiées",
-        "found": "{{amount}} Trouvées"
-      }
-    },
     "playedRecent": {
       "title": "Écouté récemment",
       "extra": {

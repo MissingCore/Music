@@ -287,25 +287,6 @@
         "saveImages": "Dodawanie obrazów..."
       }
     },
-    "onboardPreprocess": {
-      "title": "Przeprocesuj",
-      "brief": "Upewnij się, że wszystkie dane są aktualne."
-    },
-    "onboardTracks": {
-      "title": "Dodawanie utworów...",
-      "extra": {
-        "prevSaved": "Wcześniej dodano: {{amount}}",
-        "saved": "Dodano lub zaktualizowano: {{amount}}/{{total}}",
-        "errors": "Liczba błędów: {{amount}}"
-      }
-    },
-    "onboardImages": {
-      "title": "Dodawanie obrazów...",
-      "extra": {
-        "checked": "Sprawdzono: {{amount}}/{{total}}",
-        "found": "Znaleziono: {{amount}}"
-      }
-    },
     "playedRecent": {
       "title": "Ostatnio odtwarzane",
       "extra": {

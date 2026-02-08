@@ -287,25 +287,6 @@
         "saveImages": "Gemmer billeder"
       }
     },
-    "onboardPreprocess": {
-      "title": "Forudberegninger",
-      "brief": "Sikrer, at eksisterende data er i overenstemmelse med eventuelle ændringer."
-    },
-    "onboardTracks": {
-      "title": "Gemmer sange",
-      "extra": {
-        "prevSaved": "{{amount}} tidligere gemt",
-        "saved": "{{amount}}/{{total}} gemt/opdateret",
-        "errors": "{{amount}} fejl"
-      }
-    },
-    "onboardImages": {
-      "title": "Gemmer billeder",
-      "extra": {
-        "checked": "{{amount}}/{{total}} tjekket",
-        "found": "{{amount}} fundet"
-      }
-    },
     "playedRecent": {
       "title": "Nyligt afspillet",
       "extra": {

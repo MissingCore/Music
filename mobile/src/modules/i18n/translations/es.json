@@ -287,25 +287,6 @@
         "saveImages": "Guardando imágenes"
       }
     },
-    "onboardPreprocess": {
-      "title": "Preprocesar",
-      "brief": "Preparando tus datos para la configuración inicial."
-    },
-    "onboardTracks": {
-      "title": "Guardando canciones",
-      "extra": {
-        "prevSaved": "{{amount}} guardadas previamente",
-        "saved": "{{amount}}/{{total}} completadas",
-        "errors": "{{amount}} errores"
-      }
-    },
-    "onboardImages": {
-      "title": "Guardando imágenes",
-      "extra": {
-        "checked": "{{amount}}/{{total}} revisadas",
-        "found": "{{amount}} encontradas"
-      }
-    },
     "playedRecent": {
       "title": "Reproducido recientemente",
       "extra": {

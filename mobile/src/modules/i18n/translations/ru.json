@@ -287,25 +287,6 @@
         "saveImages": "Сохранение изображений"
       }
     },
-    "onboardPreprocess": {
-      "title": "Предварительная обработка",
-      "brief": "Обеспечение того, чтобы существующие данные соответствовали любым изменениям."
-    },
-    "onboardTracks": {
-      "title": "Сохранённые треки",
-      "extra": {
-        "prevSaved": "{{amount}} уже сохранено",
-        "saved": "{{amount}}/{{total}} сохранено/обновлено",
-        "errors": "{{amount}} ошибок"
-      }
-    },
-    "onboardImages": {
-      "title": "Сохранение изображений",
-      "extra": {
-        "checked": "{{amount}}/{{total}} проверено",
-        "found": "{{amount}} найдено"
-      }
-    },
     "playedRecent": {
       "title": "Недавно сыграно",
       "extra": {

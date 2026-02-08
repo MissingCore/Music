@@ -287,25 +287,6 @@
         "saveImages": "حفظ الصور"
       }
     },
-    "onboardPreprocess": {
-      "title": "المعالجة المسبقة",
-      "brief": "التأكد من أن البيانات الموجودة تتوافق مع أي تغييرات."
-    },
-    "onboardTracks": {
-      "title": "حفظ الأغاني",
-      "extra": {
-        "prevSaved": "{{amount}} تم حفظها مسبقاً",
-        "saved": "{{amount}}/{{total}} تم حفظها/تحديثها",
-        "errors": "{{amount}} أخطاء"
-      }
-    },
-    "onboardImages": {
-      "title": "حفظ الصور",
-      "extra": {
-        "checked": "{{amount}}/{{total}} تم التحقق منها",
-        "found": "{{amount}} تم العثور عليها"
-      }
-    },
     "playedRecent": {
       "title": "تم التشغيل مؤخراً",
       "extra": {

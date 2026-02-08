@@ -287,25 +287,6 @@
         "saveImages": "Speicher Bilder"
       }
     },
-    "onboardPreprocess": {
-      "title": "Vorverarbeitung",
-      "brief": "Bestätigt, dass die vorhandenen Daten allen Änderungen entsprechen."
-    },
-    "onboardTracks": {
-      "title": "Speichert Lieder",
-      "extra": {
-        "prevSaved": "{{amount}} Zuvor gespeichert",
-        "saved": "{{amount}}/{{total}} Gespeichert/Aktualisiert",
-        "errors": "{{amount}} Fehlen"
-      }
-    },
-    "onboardImages": {
-      "title": "Speicher Bilder",
-      "extra": {
-        "checked": "{{amount}}/{{total}} überprüft",
-        "found": "{{amount}} gefunden"
-      }
-    },
     "playedRecent": {
       "title": "Kürzlich gehört",
       "extra": {

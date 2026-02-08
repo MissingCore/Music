@@ -287,25 +287,6 @@
         "saveImages": "Menyimpan Gambar"
       }
     },
-    "onboardPreprocess": {
-      "title": "Praproses",
-      "brief": "Memastikan data yang ada sesuai dengan perubahan apa pun."
-    },
-    "onboardTracks": {
-      "title": "Menyimpan Trek",
-      "extra": {
-        "prevSaved": "{{amount}} Disimpan Sebelumnya",
-        "saved": "{{amount}}/{{total}} Disimpan/Diperbarui",
-        "errors": "{{amount}} Kesalahan"
-      }
-    },
-    "onboardImages": {
-      "title": "Menyimpan Gambar",
-      "extra": {
-        "checked": "{{amount}}/{{total}} Telah diperiksa",
-        "found": "{{amount}} Ditemukan"
-      }
-    },
     "playedRecent": {
       "title": "Baru Saja Diputar",
       "extra": {

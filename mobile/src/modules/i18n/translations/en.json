@@ -328,26 +328,6 @@
       }
     },
 
-    "onboardPreprocess": {
-      "title": "Preprocess",
-      "brief": "Making sure existing data complies with any changes."
-    },
-    "onboardTracks": {
-      "title": "Saving Tracks",
-      "extra": {
-        "prevSaved": "{{amount}} Previously Saved",
-        "saved": "{{amount}}/{{total}} Saved/Updated",
-        "errors": "{{amount}} Errors"
-      }
-    },
-    "onboardImages": {
-      "title": "Saving Images",
-      "extra": {
-        "checked": "{{amount}}/{{total}} Checked",
-        "found": "{{amount}} Found"
-      }
-    },
-
     "playedRecent": {
       "title": "Recently Played",
       "extra": {

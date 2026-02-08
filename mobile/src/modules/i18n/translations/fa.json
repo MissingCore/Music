@@ -287,25 +287,6 @@
         "saveImages": "ذخیره تصاویر"
       }
     },
-    "onboardPreprocess": {
-      "title": "پیش پردازش",
-      "brief": "اطمینان حاصل کنید که داده های موجود با تغییرات مطابقت دارند."
-    },
-    "onboardTracks": {
-      "title": "ذخیره آهنگ ها",
-      "extra": {
-        "prevSaved": "{{amount}} قبلاً ذخیره شده",
-        "saved": "{{amount}}/{{total}} ذخیره/به‌روزرسانی شده",
-        "errors": "{{amount}} خطا"
-      }
-    },
-    "onboardImages": {
-      "title": "ذخیره تصاویر",
-      "extra": {
-        "checked": "{{amount}}/{{total}} بررسی شد",
-        "found": "{{amount}} یافت شد"
-      }
-    },
     "playedRecent": {
       "title": "اخیراً پخش شده",
       "extra": {

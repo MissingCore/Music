@@ -287,25 +287,6 @@
         "saveImages": "Salvataggio immagini in corso"
       }
     },
-    "onboardPreprocess": {
-      "title": null,
-      "brief": "Controllando che i dati esistenti siano conformi a eventuali modifiche."
-    },
-    "onboardTracks": {
-      "title": "Salvataggio $t(term.tracks) in corso",
-      "extra": {
-        "prevSaved": "{{amount}} precedentemente salvati",
-        "saved": "{{amount}}/{{total}} salvati/aggiornati",
-        "errors": "{{amount}} errori"
-      }
-    },
-    "onboardImages": {
-      "title": "Salvataggio immagini in corso",
-      "extra": {
-        "checked": "{{amount}}/{{total}} controllate",
-        "found": "{{amount}} trovate"
-      }
-    },
     "playedRecent": {
       "title": "Riprodotti di recente",
       "extra": {

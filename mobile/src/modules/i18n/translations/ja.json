@@ -287,25 +287,6 @@
         "saveImages": "画像を保存"
       }
     },
-    "onboardPreprocess": {
-      "title": "事前処理",
-      "brief": "既存のデータが変更に対応しているか確認します。"
-    },
-    "onboardTracks": {
-      "title": "トラックを保存",
-      "extra": {
-        "prevSaved": "{{amount}} 以前に保存",
-        "saved": "{{amount}}/{{total}} を保存/更新",
-        "errors": "{{amount}} 件のエラー"
-      }
-    },
-    "onboardImages": {
-      "title": "画像を保存",
-      "extra": {
-        "checked": "{{amount}}/{{total}} を確認済み",
-        "found": "{{amount}} 件を検出"
-      }
-    },
     "playedRecent": {
       "title": "最近に再生",
       "extra": {

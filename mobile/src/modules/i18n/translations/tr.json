@@ -287,25 +287,6 @@
         "saveImages": "Görseller Kaydediliyor"
       }
     },
-    "onboardPreprocess": {
-      "title": "Ön İşleme",
-      "brief": "Mevcut verilerin herhangi bir değişikliğe uyduğundan emin olma."
-    },
-    "onboardTracks": {
-      "title": "Parçalar Kaydediliyor",
-      "extra": {
-        "prevSaved": "{{amount}} Önceki Kayıt",
-        "saved": "{{amount}}/{{total}} Kaydedildi/Güncellendi",
-        "errors": "{{amount}} Hata"
-      }
-    },
-    "onboardImages": {
-      "title": "Görseller Kaydediliyor",
-      "extra": {
-        "checked": "{{amount}}/{{total}} Kontrol Edildi",
-        "found": "{{amount}} Bulundu"
-      }
-    },
     "playedRecent": {
       "title": "Son Çalınanlar",
       "extra": {

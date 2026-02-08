@@ -287,25 +287,6 @@
         "saveImages": "Desant imatges"
       }
     },
-    "onboardPreprocess": {
-      "title": "Preprocessar",
-      "brief": "Assegurar-se que les dades existents compleixin els canvis."
-    },
-    "onboardTracks": {
-      "title": "Desant pistes",
-      "extra": {
-        "prevSaved": "{{amount}} prèviament desades",
-        "saved": "{{amount}}/{{total}} desades/actualitzades",
-        "errors": "{{amount}} Errors"
-      }
-    },
-    "onboardImages": {
-      "title": "Desant imatges",
-      "extra": {
-        "checked": "{{amount}}/{{total}} comprovades",
-        "found": "{{amount}} Trobades"
-      }
-    },
     "playedRecent": {
       "title": "Reproduït fa poc",
       "extra": {
