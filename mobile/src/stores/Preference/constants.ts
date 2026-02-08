@@ -87,6 +87,8 @@ export interface PreferenceStore {
   /** Strings used to determine multi-value items. */
   separators: string[];
 
+  /** If we should check for updates on app launch. */
+  checkForUpdates: boolean;
   /** If the user should be notified about `-rc` versions. */
   rcNotification: boolean;
 

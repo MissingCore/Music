@@ -55,9 +55,11 @@ async function getLatestRelease() {
 const queryKey = ["settings", "release-notes"];
 
 function useLatestRelease() {
+  const checkForUpdates = usePreferenceStore((s) => s.checkForUpdates);
   return useQuery({
     queryKey,
     queryFn: getLatestRelease,
+    enabled: checkForUpdates,
     gcTime: Infinity,
     retry: false,
   });

@@ -31,6 +31,7 @@ export default function Settings() {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { hasNewUpdate } = useHasNewUpdate();
+  const checkForUpdates = usePreferenceStore((s) => s.checkForUpdates);
   const showRCNotification = usePreferenceStore((s) => s.rcNotification);
   const backupSheetRef = useSheetRef();
   const languageSheetRef = useSheetRef();
@@ -142,8 +143,16 @@ export default function Settings() {
           />
           <Divider className="mx-4" />
           <SegmentedList.Item
+            labelTextKey="feat.appUpdate.extra.checkUpdates"
+            onPress={PreferenceTogglers.toggleCheckForUpdates}
+            RightElement={<Switch enabled={checkForUpdates} />}
+            className="rounded-none"
+          />
+          <Divider className="mx-4" />
+          <SegmentedList.Item
             labelTextKey="feat.appUpdate.extra.rcNotification"
             onPress={PreferenceTogglers.toggleRCNotification}
+            disabled={!checkForUpdates}
             RightElement={<Switch enabled={showRCNotification} />}
             className="rounded-none"
           />
