@@ -95,7 +95,10 @@
       "brief": "Ein neues Update ist verfügbar!",
       "extra": {
         "downloadAPK": "Die neueste APK herunterladen",
-        "updateGoogle": "Update über Play Store"
+        "updateGoogle": "Update über Play Store",
+        "version": "Version",
+        "checkUpdates": null,
+        "rcNotification": "Benachrichtigung für Vorabversion"
       }
     },
     "appearance": {
@@ -276,10 +279,12 @@
       "title": "Software von Drittanbietern",
       "brief": "Was macht diese App möglich."
     },
-    "version": {
-      "title": "Version",
+    "onboarding": {
       "extra": {
-        "rcNotification": "Benachrichtigung für Vorabversion"
+        "configureSettings": null,
+        "startScan": null,
+        "saveTracks": "Speichert Lieder",
+        "saveImages": "Speicher Bilder"
       }
     },
     "onboardPreprocess": {

@@ -95,7 +95,10 @@
       "brief": "最新のバージョンが公開されています！",
       "extra": {
         "downloadAPK": "最新の APK をダウンロード",
-        "updateGoogle": "Play ストアで更新"
+        "updateGoogle": "Play ストアで更新",
+        "version": "バージョン",
+        "checkUpdates": null,
+        "rcNotification": "プレリリースの通知"
       }
     },
     "appearance": {
@@ -276,10 +279,12 @@
       "title": "サードパーティーソフトウェア",
       "brief": "このアプリを可能にした物の一覧です。"
     },
-    "version": {
-      "title": "バージョン",
+    "onboarding": {
       "extra": {
-        "rcNotification": "プレリリースの通知"
+        "configureSettings": null,
+        "startScan": null,
+        "saveTracks": "トラックを保存",
+        "saveImages": "画像を保存"
       }
     },
     "onboardPreprocess": {

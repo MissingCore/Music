@@ -134,7 +134,7 @@ export default function Settings() {
 
         <SegmentedList.CustomItem>
           <SegmentedList.Item
-            labelTextKey="feat.version.title"
+            labelTextKey="feat.appUpdate.extra.version"
             supportingText={APP_VERSION}
             onPress={() => openBrowserAsync(LINKS.VERSION_CHANGELOG)}
             RightElement={<OpenInNew />}
@@ -142,7 +142,7 @@ export default function Settings() {
           />
           <Divider className="mx-4" />
           <SegmentedList.Item
-            labelTextKey="feat.version.extra.rcNotification"
+            labelTextKey="feat.appUpdate.extra.rcNotification"
             onPress={PreferenceTogglers.toggleRCNotification}
             RightElement={<Switch enabled={showRCNotification} />}
             className="rounded-none"

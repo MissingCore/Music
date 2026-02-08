@@ -95,7 +95,10 @@
       "brief": "يتوفر تحديث جديد!",
       "extra": {
         "downloadAPK": "تنزيل أحدث ملف APK",
-        "updateGoogle": "التحديث عبر متجر Play"
+        "updateGoogle": "التحديث عبر متجر Play",
+        "version": "الإصدار",
+        "checkUpdates": null,
+        "rcNotification": "إشعار الإصدار الأولي"
       }
     },
     "appearance": {
@@ -276,10 +279,12 @@
       "title": "برامج الطرف الثالث",
       "brief": "ما يجعل هذا التطبيق ممكناً."
     },
-    "version": {
-      "title": "الإصدار",
+    "onboarding": {
       "extra": {
-        "rcNotification": "إشعار الإصدار الأولي"
+        "configureSettings": null,
+        "startScan": null,
+        "saveTracks": "حفظ الأغاني",
+        "saveImages": "حفظ الصور"
       }
     },
     "onboardPreprocess": {

@@ -119,7 +119,11 @@
       "brief": "A new update is available!",
       "extra": {
         "downloadAPK": "Download the latest APK",
-        "updateGoogle": "Update via Play Store"
+        "updateGoogle": "Update via Play Store",
+
+        "version": "Version",
+        "checkUpdates": "Check for Updates",
+        "rcNotification": "Pre-Release Notification"
       }
     },
     "appearance": {
@@ -313,10 +317,13 @@
       "title": "Third-Party Software",
       "brief": "What makes this app possible."
     },
-    "version": {
-      "title": "Version",
+
+    "onboarding": {
       "extra": {
-        "rcNotification": "Pre-Release Notification"
+        "configureSettings": "Configure Settings",
+        "startScan": "Start Scanning",
+        "saveTracks": "Saving Tracks",
+        "saveImages": "Saving Images"
       }
     },
 

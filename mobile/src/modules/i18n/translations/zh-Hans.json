@@ -95,7 +95,10 @@
       "brief": "有新的更新可用！",
       "extra": {
         "downloadAPK": "下载最新版本的 APK",
-        "updateGoogle": "从 Play Store 更新"
+        "updateGoogle": "从 Play Store 更新",
+        "version": "版本",
+        "checkUpdates": null,
+        "rcNotification": null
       }
     },
     "appearance": {
@@ -276,10 +279,12 @@
       "title": "第三方软件",
       "brief": "感谢这些让应用成为可能的开源项目"
     },
-    "version": {
-      "title": "版本",
+    "onboarding": {
       "extra": {
-        "rcNotification": null
+        "configureSettings": null,
+        "startScan": null,
+        "saveTracks": "保存歌曲",
+        "saveImages": "保存图片"
       }
     },
     "onboardPreprocess": {

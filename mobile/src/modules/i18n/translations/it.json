@@ -95,7 +95,10 @@
       "brief": "È disponibile un nuovo aggiornamento!",
       "extra": {
         "downloadAPK": "Scarica l'ultimo APK",
-        "updateGoogle": "Aggiorna tramite Play Store"
+        "updateGoogle": "Aggiorna tramite Play Store",
+        "version": "Versione",
+        "checkUpdates": null,
+        "rcNotification": null
       }
     },
     "appearance": {
@@ -276,10 +279,12 @@
       "title": "Software di terze parti",
       "brief": "Ciò che rende quest'app possibile."
     },
-    "version": {
-      "title": "Versione",
+    "onboarding": {
       "extra": {
-        "rcNotification": null
+        "configureSettings": null,
+        "startScan": null,
+        "saveTracks": "Salvataggio $t(term.tracks) in corso",
+        "saveImages": "Salvataggio immagini in corso"
       }
     },
     "onboardPreprocess": {

@@ -95,7 +95,10 @@
       "brief": "Новое обновление уже вышло!",
       "extra": {
         "downloadAPK": "Скачать последний APK",
-        "updateGoogle": "Обновить через Play Store"
+        "updateGoogle": "Обновить через Play Store",
+        "version": "Версия",
+        "checkUpdates": null,
+        "rcNotification": "Предрелизные уведомления"
       }
     },
     "appearance": {
@@ -276,10 +279,12 @@
       "title": "Программное обеспечение сторонних производителей",
       "brief": "Что делает это приложение возможным."
     },
-    "version": {
-      "title": "Версия",
+    "onboarding": {
       "extra": {
-        "rcNotification": "Предрелизные уведомления"
+        "configureSettings": null,
+        "startScan": null,
+        "saveTracks": "Сохранённые треки",
+        "saveImages": "Сохранение изображений"
       }
     },
     "onboardPreprocess": {

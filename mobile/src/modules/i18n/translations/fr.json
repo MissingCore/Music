@@ -95,7 +95,10 @@
       "brief": "Une nouvelle mise à jour est disponible!",
       "extra": {
         "downloadAPK": "Télécharger le dernier APK",
-        "updateGoogle": "Mettre à jour via le Play Store"
+        "updateGoogle": "Mettre à jour via le Play Store",
+        "version": "Version",
+        "checkUpdates": null,
+        "rcNotification": "Notification de pré-version"
       }
     },
     "appearance": {
@@ -276,10 +279,12 @@
       "title": "Logiciel tiers",
       "brief": "Ce qui rend cette application possible."
     },
-    "version": {
-      "title": "Version",
+    "onboarding": {
       "extra": {
-        "rcNotification": "Notification de pré-version"
+        "configureSettings": null,
+        "startScan": null,
+        "saveTracks": "Sauvegarde des titres",
+        "saveImages": "Sauvegarde des images"
       }
     },
     "onboardPreprocess": {

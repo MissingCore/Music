@@ -95,7 +95,10 @@
       "brief": "Versi terbaru sudah tersedia!",
       "extra": {
         "downloadAPK": "Unduh APK saat ini",
-        "updateGoogle": "Perbarui melalui Play Store"
+        "updateGoogle": "Perbarui melalui Play Store",
+        "version": "Versi",
+        "checkUpdates": null,
+        "rcNotification": null
       }
     },
     "appearance": {
@@ -276,10 +279,12 @@
       "title": "Perangkat Lunak Pihak Ketiga",
       "brief": "Apa yang membuat aplikasi ini memungkinkan."
     },
-    "version": {
-      "title": "Versi",
+    "onboarding": {
       "extra": {
-        "rcNotification": null
+        "configureSettings": null,
+        "startScan": null,
+        "saveTracks": "Menyimpan Trek",
+        "saveImages": "Menyimpan Gambar"
       }
     },
     "onboardPreprocess": {

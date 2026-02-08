@@ -95,7 +95,10 @@
       "brief": "به‌روزرسانی جدید موجود است!",
       "extra": {
         "downloadAPK": "دانلود APK جدید",
-        "updateGoogle": "به‌روزرسانی از طریق پلی استور"
+        "updateGoogle": "به‌روزرسانی از طریق پلی استور",
+        "version": "نسخه",
+        "checkUpdates": null,
+        "rcNotification": "اعلان پیش انتشار"
       }
     },
     "appearance": {
@@ -276,10 +279,12 @@
       "title": "نرم افزار شخص سوم",
       "brief": "آنچه این برنامه را ممکن می سازد."
     },
-    "version": {
-      "title": "نسخه",
+    "onboarding": {
       "extra": {
-        "rcNotification": "اعلان پیش انتشار"
+        "configureSettings": null,
+        "startScan": null,
+        "saveTracks": "ذخیره آهنگ ها",
+        "saveImages": "ذخیره تصاویر"
       }
     },
     "onboardPreprocess": {

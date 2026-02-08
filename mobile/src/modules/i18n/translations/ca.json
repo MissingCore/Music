@@ -95,7 +95,10 @@
       "brief": "Nova actualització disponible!",
       "extra": {
         "downloadAPK": "Descarrega l'última APK",
-        "updateGoogle": "Actualitza vía Play Store"
+        "updateGoogle": "Actualitza vía Play Store",
+        "version": "Versió",
+        "checkUpdates": null,
+        "rcNotification": null
       }
     },
     "appearance": {
@@ -276,10 +279,12 @@
       "title": "Software de tercers",
       "brief": "Què fa possible aquesta aplicació."
     },
-    "version": {
-      "title": "Versió",
+    "onboarding": {
       "extra": {
-        "rcNotification": null
+        "configureSettings": null,
+        "startScan": null,
+        "saveTracks": "Desant pistes",
+        "saveImages": "Desant imatges"
       }
     },
     "onboardPreprocess": {
