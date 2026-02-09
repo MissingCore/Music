@@ -63,7 +63,10 @@ function LyricsContent(props: { trackId: string; offset: number }) {
   }, [data?.lyrics]);
 
   const isSynchronized = useMemo(
-    () => lyricsLines.every((line) => (!line ? true : LRC_LINE.test(line))),
+    () =>
+      lyricsLines.every((line) =>
+        !line ? true : LRC_LINE_START_TIMESTAMP.test(line),
+      ),
     [lyricsLines],
   );
 
@@ -211,10 +214,9 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
 }
 
 //#region Lyric Parsing
-const LRC_LINE = /^(\[[0-9]+:[0-9]+(?:\.[0-9]+)?\])+.*/;
-const LRC_LINE_TIMESTAMP = /\[[0-9]+:[0-9]+(?:\.[0-9]+)?\]/g;
-const LRC_WORD_LINE = /^(\<[0-9]+:[0-9]+(?:\.[0-9]+)?\>)+.*/;
-const LRC_WORD_TIMESTAMP = /\<[0-9]+:[0-9]+(?:\.[0-9]+)?\>/g;
+const LRC_LINE_START_TIMESTAMP = /^\[[0-9]+:[0-9]+(?:\.[0-9]+)?\]/;
+/** Supports both square & angle bracket format. */
+const LRC_WORD_TIMESTAMP = /(?:\[|<)[0-9]+:[0-9]+(?:\.[0-9]+)?(?:\]|>)/g;
 const LRC_TIMESTAMP = /[0-9]+/g;
 
 type Timestamp = [string, string, ...string[]];
@@ -226,21 +228,20 @@ function parseLines(lines: string[]): SynchronizedLine[] {
   const results: SynchronizedLine[] = [];
   for (const line of lines) {
     if (!line) continue;
-    const lyricLineTimestampStr = line.match(LRC_LINE_TIMESTAMP);
+    const lyricLineTimestampStr = line.match(LRC_LINE_START_TIMESTAMP);
     if (!lyricLineTimestampStr || lyricLineTimestampStr.length === 0) continue;
 
     // Get the time when the line will start.
     const lineTimeMS = getTimestampInMS(lyricLineTimestampStr[0]);
-    const lyricLine = line.replace(LRC_LINE_TIMESTAMP, "").trim();
+    const lyricLine = line.replace(LRC_LINE_START_TIMESTAMP, "").trim();
 
     // See if this has word-by-word synchronization.
-    if (LRC_WORD_LINE.test(lyricLine)) {
+    if (LRC_WORD_TIMESTAMP.test(lyricLine)) {
       const wordTimestampStrs = lyricLine.match(LRC_WORD_TIMESTAMP);
       if (!wordTimestampStrs || wordTimestampStrs.length === 0) continue;
       // Get the words after each timestamp. In general, `wordTimestampStrs` &
       // `words` should have the same length.
-      //  - Remove the 1st entry as it'll be an empty string.
-      const words = line.split(LRC_WORD_TIMESTAMP).slice(1);
+      const [lineFirstWord, ...words] = lyricLine.split(LRC_WORD_TIMESTAMP);
 
       const synchronizedWords: SynchronizedWord[] = wordTimestampStrs
         .map((wordTimestamp, index) => {
@@ -252,6 +253,11 @@ function parseLines(lines: string[]): SynchronizedLine[] {
           };
         })
         .filter((syncWord) => syncWord !== undefined);
+
+      // Assign the first word (could be an empty string) the line's timestamp.
+      if (typeof lineFirstWord === "string") {
+        synchronizedWords.unshift({ timeMS: lineTimeMS, word: lineFirstWord });
+      }
 
       results.push({ timeMS: lineTimeMS, words: synchronizedWords });
     } else {
