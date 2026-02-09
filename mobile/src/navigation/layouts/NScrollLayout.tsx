@@ -252,10 +252,10 @@ function ShyHeader(props: {
       className="absolute top-0 left-0 z-50 w-full"
     >
       {/*
-          We previously had the shadow after the main header content, but we
-          encountered a problem where you can see a seam between the content &
-          shadow when the header animated down.
-        */}
+        We previously had the shadow after the main header content, but we
+        encountered a problem where you can see a seam between the content &
+        shadow when the header animated down.
+      */}
       <TopDownGradient
         height={containerHeight}
         startFrom={containerHeight - SHADOW_HEIGHT}
@@ -338,7 +338,11 @@ function useShyHeaderContext(args: {
 
         // Only snap when not at the beginning of the list where the header
         // should be fully visible.
-        if (offsetY > args.headerHeight) {
+        if (
+          offsetY > args.headerHeight ||
+          // For the case where we scroll enough to snap, but stopped within the beginning of the list.
+          offsetY + changeDelta > args.headerHeight
+        ) {
           if (wasSnapped.value && Math.abs(changeDelta) <= snapThreshold) {
             // Keep header snapped if already snapped and didn't meet the threshold.
             headerTranslation.value = withSpring(0);
@@ -346,8 +350,13 @@ function useShyHeaderContext(args: {
             // Snap header open if we meet the threshold.
             headerTranslation.value = withSpring(0);
           } else {
-            headerTranslation.value = withSpring(args.headerHeight);
+            headerTranslation.value = withSpring(
+              Math.min(args.headerHeight, offsetY),
+            );
           }
+        } else if (changeDelta < 0) {
+          // Snap header to `offset` when scrolling down if within the header height.
+          headerTranslation.value = withSpring(offsetY);
         }
 
         wasSnapped.value = false;
