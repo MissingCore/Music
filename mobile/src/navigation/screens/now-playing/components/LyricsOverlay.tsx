@@ -1,11 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useProgress } from "@weights-ai/react-native-track-player";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import type { FlatList as RNFlatList, FlatListProps } from "react-native";
 import { Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useLyricForTrack } from "~/queries/lyric";
-import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { useTheme } from "~/hooks/useTheme";
 
@@ -115,10 +116,12 @@ function LyricsContent(props: { trackId: string; offset: number }) {
 
 //#region Synchronized Lyrics
 function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
-  const position = usePlaybackStore((s) => s.lastPosition);
+  // Use `useProgress` as `Event.PlaybackProgressUpdated` fires once a second.
+  const { position } = useProgress(50, false);
   const listRef = useFlatListRef();
   const [mounted, setMounted] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(-1);
+  const [activeLineIndex, setActiveLineIndex] = useState(-1);
+  const [inActiveWordStartIndex, setInActiveWordStartIndex] = useState(0);
 
   const parsedLines = useMemo(() => parseLines(props.lines), [props.lines]);
 
@@ -159,7 +162,14 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
       if (parsedLines[i]!.timeMS > positionMS) break;
       newIndex += 1;
     }
-    setActiveIndex(newIndex);
+    setActiveLineIndex(newIndex);
+    if (newIndex !== -1) {
+      setInActiveWordStartIndex(
+        parsedLines[newIndex]!.words.findIndex(
+          ({ timeMS }) => timeMS > positionMS,
+        ),
+      );
+    }
 
     // Checks to see if we should auto-scroll.
     if (!listRef.current || !mounted || !autoScroll) return;
@@ -175,43 +185,89 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
     });
   }, [listRef, parsedLines, position, mounted, autoScroll]);
 
+  // Pre-format the rendered content so that we don't recalculate this
+  // on every render.
+  const renderedLines = useMemo(
+    () =>
+      parsedLines.map(({ words }, index) => {
+        if (index !== activeLineIndex) {
+          return words.reduce((prev, { word }) => prev + word, "");
+        } else {
+          return words.reduce(
+            (prev, { word }, index) => {
+              if (
+                inActiveWordStartIndex === -1 ||
+                index < inActiveWordStartIndex
+              ) {
+                prev[0] += word;
+              } else prev[1] += word;
+              return prev;
+            },
+            ["", ""] as [string, string],
+          );
+        }
+      }),
+    [parsedLines, activeLineIndex, inActiveWordStartIndex],
+  );
+
   return (
-    <FlatList
+    <MemoLyricList
       ref={listRef}
       onLayout={onLayout}
-      data={parsedLines}
-      keyExtractor={(_, index) => `${index}`}
-      renderItem={({ item, index }) => {
-        const isLineActive = index === activeIndex;
-        const positionMS = position * 1000;
-        return (
-          <StyledText bold className="text-xl text-onSurfaceVariant/50">
-            {item.words.map((syncWord, wordIndex) => (
-              <Text
-                key={`${index}__${wordIndex}`}
-                className={cn({
-                  "text-onSurface":
-                    isLineActive && syncWord.timeMS <= positionMS,
-                })}
-              >
-                {syncWord.word}
-              </Text>
-            ))}
-          </StyledText>
-        );
-      }}
+      data={renderedLines}
       onScrollBeginDrag={onPauseAutoScroll}
       onScrollEndDrag={debouncedResumeAutoScroll}
-      // Suppresses error when `scrollToIndex` fails.
-      onScrollToIndexFailed={() => {}}
-      contentContainerStyle={{
-        paddingTop: props.offset,
-        paddingBottom: SCROLL_OFFSET,
-        gap: LINE_GAP,
-      }}
+      offset={props.offset}
     />
   );
 }
+
+//#region Memoized Lyric List
+const MemoLyricList = memo(
+  function MemoLyricList(
+    props: Omit<FlatListProps<string | [string, string]>, "renderItem"> & {
+      ref: React.RefObject<RNFlatList<string | [string, string]> | null>;
+      offset: number;
+    },
+  ) {
+    return (
+      <FlatList
+        {...props}
+        keyExtractor={(_, index) => `${index}`}
+        renderItem={({ item }) => {
+          if (typeof item === "string") {
+            return (
+              <StyledText bold className="text-xl text-onSurfaceVariant/50">
+                {item}
+              </StyledText>
+            );
+          } else {
+            return (
+              <StyledText bold className="text-xl">
+                {item[0]}
+                {item[1].length > 0 && (
+                  <Text className="text-onSurfaceVariant/50">{item[1]}</Text>
+                )}
+              </StyledText>
+            );
+          }
+        }}
+        // Suppresses error when `scrollToIndex` fails.
+        onScrollToIndexFailed={() => {}}
+        contentContainerStyle={{
+          paddingTop: props.offset,
+          paddingBottom: SCROLL_OFFSET,
+          gap: LINE_GAP,
+        }}
+      />
+    );
+  },
+  // We should only re-render the list when `data` or `offset` changes.
+  (prevProps, nextProps) =>
+    JSON.stringify(prevProps.data) === JSON.stringify(nextProps.data) &&
+    prevProps.offset === nextProps.offset,
+);
+//#endregion
 
 //#region Lyric Parsing
 const LRC_LINE_START_TIMESTAMP = /^\[[0-9]+:[0-9]+(?:\.[0-9]+)?\]/;
