@@ -121,6 +121,7 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
   const listRef = useFlatListRef();
   const [mounted, setMounted] = useState(false);
   const [activeLineIndex, setActiveLineIndex] = useState(-1);
+  const prevActiveLineIndex = useRef(-1);
   const [inActiveWordStartIndex, setInActiveWordStartIndex] = useState(0);
 
   const parsedLines = useMemo(() => parseLines(props.lines), [props.lines]);
@@ -178,6 +179,10 @@ function SynchronizedLyrics(props: { lines: string[]; offset: number }) {
       listRef.current.scrollToOffset({ offset: 0 });
       return;
     }
+    // Prevent spamming `scrollToOffset` due to having a significantly
+    // smaller update interval.
+    if (newIndex === prevActiveLineIndex.current) return;
+    prevActiveLineIndex.current = newIndex;
     listRef.current.scrollToIndex({
       index: newIndex,
       viewOffset: (SCROLL_OFFSET + LINE_GAP) / 2,
