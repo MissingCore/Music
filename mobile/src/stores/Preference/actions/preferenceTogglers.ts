@@ -9,6 +9,12 @@ import { playbackStore } from "../../Playback/store";
 
 import { getTrackPlayerOptions } from "~/lib/react-native-track-player";
 
+export function toggleCheckForUpdates() {
+  preferenceStore.setState((prev) => ({
+    checkForUpdates: !prev.checkForUpdates,
+  }));
+}
+
 export async function toggleContinuePlaybackOnDismiss() {
   const nextState = !preferenceStore.getState().continuePlaybackOnDismiss;
   preferenceStore.setState({ continuePlaybackOnDismiss: nextState });

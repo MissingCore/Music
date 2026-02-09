@@ -18,7 +18,6 @@ import {
 import { updatePlaylist } from "~/api/playlist";
 import { playbackStore } from "~/stores/Playback/store";
 import { preferenceStore } from "~/stores/Preference/store";
-import { onboardingStore } from "../services/Onboarding";
 
 import type { PlayFromSource } from "~/stores/Playback/types";
 import type { Tab } from "~/stores/Preference/types";
@@ -52,9 +51,6 @@ export async function checkForMigrations() {
   const lastestMigrationCode = Object.keys(MigrationHistory).length - 1;
   if (lastMigrationCode === lastestMigrationCode) return;
 
-  // Set the current phase to `preprocess` as we have to run some migrations.
-  onboardingStore.setState({ phase: "preprocess" });
-
   // Get the list of migrations we need to make.
   const pendingMigrations: MigrationOption[] = [];
   for (let i = lastMigrationCode; i < lastestMigrationCode; i++) {
@@ -63,7 +59,7 @@ export async function checkForMigrations() {
 
   // Apply migrations.
   for (const migration of pendingMigrations) {
-    await MigrationFunctionMap[migration]();
+    await MigrationFunctionMap[migration](lastMigrationCode);
   }
 
   // Make sure we don't do this logic all over again.
@@ -71,7 +67,10 @@ export async function checkForMigrations() {
 }
 
 /** Logic we want to run depending on what migrations we need to do. */
-const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
+const MigrationFunctionMap: Record<
+  MigrationOption,
+  (lastMigrationCode: number) => Promise<void>
+> = {
   "fileNodes-adjustment": async () => {
     const oldRootNodes = await db.query.fileNodes.findMany({
       where: (fields, { isNull }) => isNull(fields.parentPath),
@@ -219,6 +218,18 @@ const MigrationFunctionMap: Record<MigrationOption, () => Promise<void>> = {
       await updatePlaylist(FavoritesPlaylistKey, { tracks: favTracks });
     } catch (err) {
       console.log("[Failed to migrate favorite tracks]", err);
+    }
+  },
+
+  "onboarding-flow": async (lastMigrationCode) => {
+    //? Ensure we skip the onboarding screen if `lastMigrationCode !== -1`.
+    if (lastMigrationCode !== -1) {
+      preferenceStore.setState({
+        completedOnboarding: true,
+        //? Enable `checkForUpdates` for existing users as it's off by default
+        //? for new users due to now having a proper onboarding screen.
+        checkForUpdates: true,
+      });
     }
   },
 };

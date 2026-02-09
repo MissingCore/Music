@@ -95,7 +95,10 @@
       "brief": "يتوفر تحديث جديد!",
       "extra": {
         "downloadAPK": "تنزيل أحدث ملف APK",
-        "updateGoogle": "التحديث عبر متجر Play"
+        "updateGoogle": "التحديث عبر متجر Play",
+        "version": "الإصدار",
+        "checkUpdates": null,
+        "rcNotification": "إشعار الإصدار الأولي"
       }
     },
     "appearance": {
@@ -276,29 +279,12 @@
       "title": "برامج الطرف الثالث",
       "brief": "ما يجعل هذا التطبيق ممكناً."
     },
-    "version": {
-      "title": "الإصدار",
+    "onboarding": {
       "extra": {
-        "rcNotification": "إشعار الإصدار الأولي"
-      }
-    },
-    "onboardPreprocess": {
-      "title": "المعالجة المسبقة",
-      "brief": "التأكد من أن البيانات الموجودة تتوافق مع أي تغييرات."
-    },
-    "onboardTracks": {
-      "title": "حفظ الأغاني",
-      "extra": {
-        "prevSaved": "{{amount}} تم حفظها مسبقاً",
-        "saved": "{{amount}}/{{total}} تم حفظها/تحديثها",
-        "errors": "{{amount}} أخطاء"
-      }
-    },
-    "onboardImages": {
-      "title": "حفظ الصور",
-      "extra": {
-        "checked": "{{amount}}/{{total}} تم التحقق منها",
-        "found": "{{amount}} تم العثور عليها"
+        "configureSettings": null,
+        "startScan": null,
+        "saveTracks": "حفظ الأغاني",
+        "saveImages": "حفظ الصور"
       }
     },
     "playedRecent": {

@@ -1,5 +1,5 @@
 import TrackPlayer from "@weights-ai/react-native-track-player";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
 import Bootsplash from "react-native-bootsplash";
 import Animated, {
@@ -10,12 +10,15 @@ import Animated, {
 } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
 
-import { preferenceStore } from "~/stores/Preference/store";
-import { useLoadResources } from "~/hooks/useLoadResources";
+import { preferenceStore, usePreferenceStore } from "~/stores/Preference/store";
+import { useLoadResources } from "~/modules/scanning/hooks/useLoadResources";
+import { useScanning } from "~/modules/scanning/hooks/useScanning";
+
 import NavigationContainer from "~/navigation";
 import { AppProvider } from "~/navigation/providers/AppProvider";
 import { ErrorBoundary } from "~/navigation/components/ErrorBoundary";
-import { Onboarding } from "~/navigation/screens/OnboardingView";
+import { OnboardingConfiguration } from "~/modules/scanning/components/OnboardingConfigurationView";
+import { ScanningProgress } from "~/modules/scanning/components/ScanningProgressView";
 
 import "~/modules/i18n"; // Make sure translations are bundled.
 import { SENTRY_ENABLED, Sentry } from "~/lib/sentry";
@@ -37,12 +40,22 @@ if (SENTRY_ENABLED) {
 
 export default function App() {
   const { isLoaded, error } = useLoadResources();
+  const completedOnboarding = usePreferenceStore((s) => s.completedOnboarding);
+  const { completed, error: scanningError } = useScanning(
+    isLoaded && completedOnboarding,
+  );
 
-  if (error) {
+  const OnboardingScreen = useMemo(() => {
+    // Prevent flashing in `OnboardingConfiguration` when we're waiting for hydration.
+    if (!isLoaded || completedOnboarding) return ScanningProgress;
+    return OnboardingConfiguration;
+  }, [completedOnboarding, isLoaded]);
+
+  if (error || scanningError) {
     return (
       <>
         <View ref={handleAppLifeCycle} />
-        <ErrorBoundary error={error} />
+        <ErrorBoundary error={error || scanningError} />
       </>
     );
   }
@@ -51,10 +64,10 @@ export default function App() {
     <AppProvider>
       <ErrorBoundary>
         <View ref={handleAppLifeCycle} />
-        {isLoaded && <NavigationContainer />}
+        {completed && <NavigationContainer />}
 
-        <FakeLayoutTransition unmount={isLoaded}>
-          <Onboarding />
+        <FakeLayoutTransition unmount={completed}>
+          <OnboardingScreen />
         </FakeLayoutTransition>
       </ErrorBoundary>
     </AppProvider>

@@ -95,7 +95,10 @@
       "brief": "Nowa wersja jest dostępna do zainstalowania!",
       "extra": {
         "downloadAPK": "Pobierz najnowszy plik APK",
-        "updateGoogle": "Zaktualizuj przez Sklep Play"
+        "updateGoogle": "Zaktualizuj przez Sklep Play",
+        "version": "Wersja",
+        "checkUpdates": null,
+        "rcNotification": "Powiadomienia o wersjach Pre-Release"
       }
     },
     "appearance": {
@@ -276,29 +279,12 @@
       "title": "Zewnętrzne oprogramowanie",
       "brief": "Komponenty, dzięki którym ta aplikacja działa."
     },
-    "version": {
-      "title": "Wersja",
+    "onboarding": {
       "extra": {
-        "rcNotification": "Powiadomienia o wersjach Pre-Release"
-      }
-    },
-    "onboardPreprocess": {
-      "title": "Przeprocesuj",
-      "brief": "Upewnij się, że wszystkie dane są aktualne."
-    },
-    "onboardTracks": {
-      "title": "Dodawanie utworów...",
-      "extra": {
-        "prevSaved": "Wcześniej dodano: {{amount}}",
-        "saved": "Dodano lub zaktualizowano: {{amount}}/{{total}}",
-        "errors": "Liczba błędów: {{amount}}"
-      }
-    },
-    "onboardImages": {
-      "title": "Dodawanie obrazów...",
-      "extra": {
-        "checked": "Sprawdzono: {{amount}}/{{total}}",
-        "found": "Znaleziono: {{amount}}"
+        "configureSettings": null,
+        "startScan": null,
+        "saveTracks": "Dodawanie utworów...",
+        "saveImages": "Dodawanie obrazów..."
       }
     },
     "playedRecent": {

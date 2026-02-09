@@ -95,7 +95,10 @@
       "brief": "Yeni bir güncelleme mevcut!",
       "extra": {
         "downloadAPK": "En son APK'yi indir",
-        "updateGoogle": "Play Store üzerinden güncelle"
+        "updateGoogle": "Play Store üzerinden güncelle",
+        "version": "Sürüm",
+        "checkUpdates": null,
+        "rcNotification": "Ön Sürüm Bildirimi"
       }
     },
     "appearance": {
@@ -276,29 +279,12 @@
       "title": "Üçüncü Taraf Yazılımlar",
       "brief": "Bu uygulamayı mümkün kılanlar."
     },
-    "version": {
-      "title": "Sürüm",
+    "onboarding": {
       "extra": {
-        "rcNotification": "Ön Sürüm Bildirimi"
-      }
-    },
-    "onboardPreprocess": {
-      "title": "Ön İşleme",
-      "brief": "Mevcut verilerin herhangi bir değişikliğe uyduğundan emin olma."
-    },
-    "onboardTracks": {
-      "title": "Parçalar Kaydediliyor",
-      "extra": {
-        "prevSaved": "{{amount}} Önceki Kayıt",
-        "saved": "{{amount}}/{{total}} Kaydedildi/Güncellendi",
-        "errors": "{{amount}} Hata"
-      }
-    },
-    "onboardImages": {
-      "title": "Görseller Kaydediliyor",
-      "extra": {
-        "checked": "{{amount}}/{{total}} Kontrol Edildi",
-        "found": "{{amount}} Bulundu"
+        "configureSettings": null,
+        "startScan": null,
+        "saveTracks": "Parçalar Kaydediliyor",
+        "saveImages": "Görseller Kaydediliyor"
       }
     },
     "playedRecent": {

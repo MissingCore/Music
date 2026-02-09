@@ -95,7 +95,10 @@
       "brief": "Новое обновление уже вышло!",
       "extra": {
         "downloadAPK": "Скачать последний APK",
-        "updateGoogle": "Обновить через Play Store"
+        "updateGoogle": "Обновить через Play Store",
+        "version": "Версия",
+        "checkUpdates": null,
+        "rcNotification": "Предрелизные уведомления"
       }
     },
     "appearance": {
@@ -276,29 +279,12 @@
       "title": "Программное обеспечение сторонних производителей",
       "brief": "Что делает это приложение возможным."
     },
-    "version": {
-      "title": "Версия",
+    "onboarding": {
       "extra": {
-        "rcNotification": "Предрелизные уведомления"
-      }
-    },
-    "onboardPreprocess": {
-      "title": "Предварительная обработка",
-      "brief": "Обеспечение того, чтобы существующие данные соответствовали любым изменениям."
-    },
-    "onboardTracks": {
-      "title": "Сохранённые треки",
-      "extra": {
-        "prevSaved": "{{amount}} уже сохранено",
-        "saved": "{{amount}}/{{total}} сохранено/обновлено",
-        "errors": "{{amount}} ошибок"
-      }
-    },
-    "onboardImages": {
-      "title": "Сохранение изображений",
-      "extra": {
-        "checked": "{{amount}}/{{total}} проверено",
-        "found": "{{amount}} найдено"
+        "configureSettings": null,
+        "startScan": null,
+        "saveTracks": "Сохранённые треки",
+        "saveImages": "Сохранение изображений"
       }
     },
     "playedRecent": {

@@ -95,7 +95,10 @@
       "brief": "En ny opdatering er tilgængelig!",
       "extra": {
         "downloadAPK": "Download den nyeste APK",
-        "updateGoogle": "Opdatér via Play Store"
+        "updateGoogle": "Opdatér via Play Store",
+        "version": "App-Version",
+        "checkUpdates": null,
+        "rcNotification": null
       }
     },
     "appearance": {
@@ -276,29 +279,12 @@
       "title": "Tredjepartssoftware",
       "brief": "Hvad der gør denne app muligt."
     },
-    "version": {
-      "title": "App-Version",
+    "onboarding": {
       "extra": {
-        "rcNotification": null
-      }
-    },
-    "onboardPreprocess": {
-      "title": "Forudberegninger",
-      "brief": "Sikrer, at eksisterende data er i overenstemmelse med eventuelle ændringer."
-    },
-    "onboardTracks": {
-      "title": "Gemmer sange",
-      "extra": {
-        "prevSaved": "{{amount}} tidligere gemt",
-        "saved": "{{amount}}/{{total}} gemt/opdateret",
-        "errors": "{{amount}} fejl"
-      }
-    },
-    "onboardImages": {
-      "title": "Gemmer billeder",
-      "extra": {
-        "checked": "{{amount}}/{{total}} tjekket",
-        "found": "{{amount}} fundet"
+        "configureSettings": null,
+        "startScan": null,
+        "saveTracks": "Gemmer sange",
+        "saveImages": "Gemmer billeder"
       }
     },
     "playedRecent": {

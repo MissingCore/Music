@@ -95,7 +95,10 @@
       "brief": "Versi terbaru sudah tersedia!",
       "extra": {
         "downloadAPK": "Unduh APK saat ini",
-        "updateGoogle": "Perbarui melalui Play Store"
+        "updateGoogle": "Perbarui melalui Play Store",
+        "version": "Versi",
+        "checkUpdates": null,
+        "rcNotification": null
       }
     },
     "appearance": {
@@ -276,29 +279,12 @@
       "title": "Perangkat Lunak Pihak Ketiga",
       "brief": "Apa yang membuat aplikasi ini memungkinkan."
     },
-    "version": {
-      "title": "Versi",
+    "onboarding": {
       "extra": {
-        "rcNotification": null
-      }
-    },
-    "onboardPreprocess": {
-      "title": "Praproses",
-      "brief": "Memastikan data yang ada sesuai dengan perubahan apa pun."
-    },
-    "onboardTracks": {
-      "title": "Menyimpan Trek",
-      "extra": {
-        "prevSaved": "{{amount}} Disimpan Sebelumnya",
-        "saved": "{{amount}}/{{total}} Disimpan/Diperbarui",
-        "errors": "{{amount}} Kesalahan"
-      }
-    },
-    "onboardImages": {
-      "title": "Menyimpan Gambar",
-      "extra": {
-        "checked": "{{amount}}/{{total}} Telah diperiksa",
-        "found": "{{amount}} Ditemukan"
+        "configureSettings": null,
+        "startScan": null,
+        "saveTracks": "Menyimpan Trek",
+        "saveImages": "Menyimpan Gambar"
       }
     },
     "playedRecent": {

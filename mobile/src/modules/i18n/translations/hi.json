@@ -95,7 +95,10 @@
       "brief": "एक नया अपडेट उपलब्ध है!",
       "extra": {
         "downloadAPK": "नवीनतम APK डाउनलोड करें",
-        "updateGoogle": "Play Store के माध्यम से अपडेट करें"
+        "updateGoogle": "Play Store के माध्यम से अपडेट करें",
+        "version": "संस्करण",
+        "checkUpdates": null,
+        "rcNotification": null
       }
     },
     "appearance": {
@@ -276,29 +279,12 @@
       "title": "थर्ड-पार्टी सॉफ्टवेयर",
       "brief": "ऐप को संभव बनाने वाला क्या है।"
     },
-    "version": {
-      "title": "संस्करण",
+    "onboarding": {
       "extra": {
-        "rcNotification": null
-      }
-    },
-    "onboardPreprocess": {
-      "title": "पूर्व-प्रसंस्करण",
-      "brief": "सुनिश्चित कर रहा है कि मौजूदा डेटा किसी भी परिवर्तन के साथ अनुपालन में है।"
-    },
-    "onboardTracks": {
-      "title": "ट्रैक्स सहेज रहा है",
-      "extra": {
-        "prevSaved": "{{amount}} पहले से सहेजा गया",
-        "saved": "{{amount}}/{{total}} सहेजा/अपडेट किया गया",
-        "errors": "{{amount}} त्रुटियाँ"
-      }
-    },
-    "onboardImages": {
-      "title": "छवियाँ सहेज रहा है",
-      "extra": {
-        "checked": "{{amount}}/{{total}} जाँचा गया",
-        "found": "{{amount}} पाया गया"
+        "configureSettings": null,
+        "startScan": null,
+        "saveTracks": "ट्रैक्स सहेज रहा है",
+        "saveImages": "छवियाँ सहेज रहा है"
       }
     },
     "playedRecent": {

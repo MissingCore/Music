@@ -95,7 +95,10 @@
       "brief": "Une nouvelle mise à jour est disponible!",
       "extra": {
         "downloadAPK": "Télécharger le dernier APK",
-        "updateGoogle": "Mettre à jour via le Play Store"
+        "updateGoogle": "Mettre à jour via le Play Store",
+        "version": "Version",
+        "checkUpdates": null,
+        "rcNotification": "Notification de pré-version"
       }
     },
     "appearance": {
@@ -276,29 +279,12 @@
       "title": "Logiciel tiers",
       "brief": "Ce qui rend cette application possible."
     },
-    "version": {
-      "title": "Version",
+    "onboarding": {
       "extra": {
-        "rcNotification": "Notification de pré-version"
-      }
-    },
-    "onboardPreprocess": {
-      "title": "Prétraitement",
-      "brief": "S'assure que les données existantes sont conformes à toutes les modifications."
-    },
-    "onboardTracks": {
-      "title": "Sauvegarde des titres",
-      "extra": {
-        "prevSaved": "{{amount}} Enregistrés précédemment",
-        "saved": "{{amount}}/{{total}} Sauvegardés/Actualisés",
-        "errors": "{{amount}} Erreurs"
-      }
-    },
-    "onboardImages": {
-      "title": "Sauvegarde des images",
-      "extra": {
-        "checked": "{{amount}}/{{total}} Vérifiées",
-        "found": "{{amount}} Trouvées"
+        "configureSettings": null,
+        "startScan": null,
+        "saveTracks": "Sauvegarde des titres",
+        "saveImages": "Sauvegarde des images"
       }
     },
     "playedRecent": {

@@ -95,7 +95,10 @@
       "brief": "Hay una nueva versión lista para instalar.",
       "extra": {
         "downloadAPK": "Descargar APK más reciente",
-        "updateGoogle": "Actualizar desde Play Store"
+        "updateGoogle": "Actualizar desde Play Store",
+        "version": "Versión",
+        "checkUpdates": null,
+        "rcNotification": "Notificación de versión preliminar"
       }
     },
     "appearance": {
@@ -276,29 +279,12 @@
       "title": "Software de terceros",
       "brief": "Tecnologías usadas en esta app."
     },
-    "version": {
-      "title": "Versión",
+    "onboarding": {
       "extra": {
-        "rcNotification": "Notificación de versión preliminar"
-      }
-    },
-    "onboardPreprocess": {
-      "title": "Preprocesar",
-      "brief": "Preparando tus datos para la configuración inicial."
-    },
-    "onboardTracks": {
-      "title": "Guardando canciones",
-      "extra": {
-        "prevSaved": "{{amount}} guardadas previamente",
-        "saved": "{{amount}}/{{total}} completadas",
-        "errors": "{{amount}} errores"
-      }
-    },
-    "onboardImages": {
-      "title": "Guardando imágenes",
-      "extra": {
-        "checked": "{{amount}}/{{total}} revisadas",
-        "found": "{{amount}} encontradas"
+        "configureSettings": null,
+        "startScan": null,
+        "saveTracks": "Guardando canciones",
+        "saveImages": "Guardando imágenes"
       }
     },
     "playedRecent": {

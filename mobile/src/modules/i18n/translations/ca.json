@@ -95,7 +95,10 @@
       "brief": "Nova actualització disponible!",
       "extra": {
         "downloadAPK": "Descarrega l'última APK",
-        "updateGoogle": "Actualitza vía Play Store"
+        "updateGoogle": "Actualitza vía Play Store",
+        "version": "Versió",
+        "checkUpdates": null,
+        "rcNotification": null
       }
     },
     "appearance": {
@@ -276,29 +279,12 @@
       "title": "Software de tercers",
       "brief": "Què fa possible aquesta aplicació."
     },
-    "version": {
-      "title": "Versió",
+    "onboarding": {
       "extra": {
-        "rcNotification": null
-      }
-    },
-    "onboardPreprocess": {
-      "title": "Preprocessar",
-      "brief": "Assegurar-se que les dades existents compleixin els canvis."
-    },
-    "onboardTracks": {
-      "title": "Desant pistes",
-      "extra": {
-        "prevSaved": "{{amount}} prèviament desades",
-        "saved": "{{amount}}/{{total}} desades/actualitzades",
-        "errors": "{{amount}} Errors"
-      }
-    },
-    "onboardImages": {
-      "title": "Desant imatges",
-      "extra": {
-        "checked": "{{amount}}/{{total}} comprovades",
-        "found": "{{amount}} Trobades"
+        "configureSettings": null,
+        "startScan": null,
+        "saveTracks": "Desant pistes",
+        "saveImages": "Desant imatges"
       }
     },
     "playedRecent": {

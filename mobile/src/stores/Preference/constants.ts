@@ -37,6 +37,9 @@ export interface PreferenceStore {
   /** Get a more accurate initial state. */
   _init: (state: PreferenceStore) => Promise<void>;
 
+  /** If the user has clicked "Start Scanning Tracks" in the onboarding flow. */
+  completedOnboarding: boolean;
+
   /** Language code of the displayed content. */
   language: string;
   /** If we should use LTR layout with a RTL language. */
@@ -87,6 +90,8 @@ export interface PreferenceStore {
   /** Strings used to determine multi-value items. */
   separators: string[];
 
+  /** If we should check for updates on app launch. */
+  checkForUpdates: boolean;
   /** If the user should be notified about `-rc` versions. */
   rcNotification: boolean;
 
