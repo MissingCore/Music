@@ -128,7 +128,7 @@ export default (): ExpoConfig => ({
       {
         logo: `./assets/${BUILD_THEME}/splash-icon.png`,
         background: BACKGROUND_COLOR,
-        assetsOutput: `assets/${BUILD_THEME}/bootsplash`,
+        assetsOutput: `./assets/${BUILD_THEME}/bootsplash`,
       },
     ],
     [
