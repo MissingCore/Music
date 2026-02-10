@@ -1,13 +1,16 @@
 import { useNavigation } from "@react-navigation/native";
 import { Pressable } from "react-native";
 
-import type { PopStrategy } from "~/services/SessionStore";
-import { navigateToArtist, presentArtistsSheet } from "~/services/SessionStore";
+import {
+  navigateToArtist,
+  presentArtistsSheet,
+} from "~/stores/Session/actions";
 
 import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
 import { Marquee } from "~/components/Marquee";
 import { StyledText } from "~/components/Typography/StyledText";
+import type { PopStrategy } from "~/stores/Session/types";
 
 /** Renders display string for artists, with different onPress actions based on the number of artists. */
 export function ArtistsLink(props: {

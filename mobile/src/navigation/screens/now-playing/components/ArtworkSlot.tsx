@@ -2,7 +2,7 @@ import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { LayoutChangeEvent } from "react-native";
 import { View } from "react-native";
 
-import { useSessionStore } from "~/services/SessionStore";
+import { useSessionStore } from "~/stores/Session/store";
 
 import { ArtworkPicker } from "./Artwork";
 import { LyricsOverlay } from "./LyricsOverlay";

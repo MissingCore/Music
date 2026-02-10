@@ -6,7 +6,7 @@ import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
 
 import { useInForeground } from "~/stores/ListenerState";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
-import { useSessionStore } from "~/services/SessionStore";
+import { useSessionStore } from "~/stores/Session/store";
 
 export const animatedPositionAtom = atom(makeMutable(0));
 export const isSeekingAtom = atom(false);

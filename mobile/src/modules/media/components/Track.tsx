@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { MoreVert } from "~/resources/icons/MoreVert";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls } from "~/stores/Playback/actions";
-import { presentTrackSheet } from "~/services/SessionStore";
+import { presentTrackSheet } from "~/stores/Session/actions";
 
 import { IconButton } from "~/components/Form/Button/Icon";
 import { SearchResult } from "~/modules/search/components/SearchResult";

@@ -3,9 +3,9 @@ import { I18nManager } from "react-native";
 
 import i18next from "~/modules/i18n";
 
-import { findAndSetCachedWaveform } from "~/services/SessionStore";
 import { preferenceStore } from "../store";
 import { playbackStore } from "../../Playback/store";
+import { findAndSetCachedWaveform } from "../../Session/actions";
 
 import { getTrackPlayerOptions } from "~/lib/react-native-track-player";
 

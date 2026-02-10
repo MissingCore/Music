@@ -22,7 +22,7 @@ import {
   useTrackFavoriteStatus,
 } from "~/queries/track";
 import { Queue } from "~/stores/Playback/actions";
-import { useSessionStore } from "~/services/SessionStore";
+import { useSessionStore } from "~/stores/Session/store";
 
 import { TrackArtworkSheet } from "~/navigation/sheets/ArtworkSheet";
 import { TrackToPlaylistsSheet } from "./TrackToPlaylistsSheet";

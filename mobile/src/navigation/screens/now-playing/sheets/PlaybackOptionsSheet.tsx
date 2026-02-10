@@ -12,7 +12,7 @@ import {
   PreferenceSetters,
   PreferenceTogglers,
 } from "~/stores/Preference/actions";
-import { sessionStore, useSessionStore } from "~/services/SessionStore";
+import { sessionStore, useSessionStore } from "~/stores/Session/store";
 
 import { getMediaLinkContext } from "~/navigation/utils/router";
 import { AppearanceSheet } from "./AppearanceSheet";

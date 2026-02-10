@@ -15,7 +15,7 @@ import { AlbumArtistsKey } from "~/api/album.utils";
 import { getArtistsString } from "~/api/artist.utils";
 import { getPlaylistArtwork } from "~/api/playlist.utils";
 import { getTrackArtwork } from "~/api/track.utils";
-import { presentTrackSheet } from "~/services/SessionStore";
+import { presentTrackSheet } from "~/stores/Session/actions";
 
 import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";

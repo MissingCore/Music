@@ -7,7 +7,7 @@ import { waveformSamples } from "~/db/schema";
 import i18next from "~/modules/i18n";
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceTogglers } from "~/stores/Preference/actions";
-import { sessionStore } from "~/services/SessionStore";
+import { sessionStore } from "~/stores/Session/store";
 
 import { ListLayout } from "~/navigation/layouts/ListLayout";
 

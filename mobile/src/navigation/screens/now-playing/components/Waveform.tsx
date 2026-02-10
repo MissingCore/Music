@@ -7,11 +7,8 @@ import { db } from "~/db";
 import { waveformSamples } from "~/db/schema";
 
 import { usePreferenceStore } from "~/stores/Preference/store";
-import {
-  findAndSetCachedWaveform,
-  sessionStore,
-  useSessionStore,
-} from "~/services/SessionStore";
+import { sessionStore, useSessionStore } from "~/stores/Session/store";
+import { findAndSetCachedWaveform } from "~/stores/Session/actions";
 import { useTheme } from "~/hooks/useTheme";
 
 //#region Waveform

@@ -1,7 +1,8 @@
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { useNavigation } from "@react-navigation/native";
 
-import { navigateToArtist, useSessionStore } from "~/services/SessionStore";
+import { useSessionStore } from "~/stores/Session/store";
+import { navigateToArtist } from "~/stores/Session/actions";
 
 import { FlatList } from "~/components/Defaults";
 import { DetachedSheet } from "~/components/Sheet/Detached";

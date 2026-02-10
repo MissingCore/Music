@@ -5,7 +5,7 @@ import type { SharedValue } from "react-native-reanimated";
 import { useSharedValue } from "react-native-reanimated";
 
 import { SlowMotionVideo } from "~/resources/icons/SlowMotionVideo";
-import { sessionStore, useSessionStore } from "~/services/SessionStore";
+import { sessionStore, useSessionStore } from "~/stores/Session/store";
 
 import { Button } from "~/components/Form/Button";
 import { CachedSlider } from "~/components/Form/Slider";

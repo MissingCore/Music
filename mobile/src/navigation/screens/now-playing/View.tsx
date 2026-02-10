@@ -18,7 +18,7 @@ import {
 } from "~/queries/track";
 import { usePlaybackStore } from "~/stores/Playback/store";
 import { usePreferenceStore } from "~/stores/Preference/store";
-import { presentTrackSheet } from "~/services/SessionStore";
+import { presentTrackSheet } from "~/stores/Session/actions";
 
 import { Back } from "~/navigation/components/Back";
 import { SeekbarContext } from "./helpers/Seekbar.context";
