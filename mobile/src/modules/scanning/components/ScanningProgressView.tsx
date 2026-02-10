@@ -19,9 +19,9 @@ import { StyledText, TStyledText } from "~/components/Typography/StyledText";
 
 export function ScanningProgress() {
   const { container, logo } = BootSplash.useHideAnimation({
-    manifest: require("../../../../assets/bootsplash/manifest.json"),
-    logo: require("../../../../assets/bootsplash/light-logo.png"),
-    darkLogo: require("../../../../assets/bootsplash/logo.png"),
+    manifest: require("../../../../assets/dark/bootsplash/manifest.json"),
+    logo: require("../../../../assets/light/bootsplash/logo.png"),
+    darkLogo: require("../../../../assets/dark/bootsplash/logo.png"),
 
     animate: () => {},
   });

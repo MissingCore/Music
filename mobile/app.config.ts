@@ -38,6 +38,10 @@ const widgetConfig: WithAndroidWidgetsParams = {
   ],
 };
 
+const BUILD_THEME: "light" | "dark" = "light";
+const BACKGROUND_COLOR = BUILD_THEME === "light" ? "#F2F2F2" : "#000000";
+const ICON_BACKGROUND_COLOR = BUILD_THEME === "light" ? "#FFFFFF" : "#000000";
+
 export default (): ExpoConfig => ({
   name: "Music",
   slug: "Music",
@@ -47,18 +51,18 @@ export default (): ExpoConfig => ({
   githubUrl: "https://github.com/MissingCore/Music",
   orientation: "portrait",
   primaryColor: "#C8102E",
-  icon: "./assets/icon.png",
+  icon: `./assets/${BUILD_THEME}/icon.png`,
   scheme: ["com.cyanchill.missingcore.music"],
-  backgroundColor: "#F2F2F2",
+  backgroundColor: BACKGROUND_COLOR,
   userInterfaceStyle: "automatic",
   assetBundlePatterns: ["**/*"],
   android: {
     package: "com.cyanchill.missingcore.music",
     versionCode: 1057,
     adaptiveIcon: {
-      foregroundImage: "./assets/adaptive-icon.png",
-      monochromeImage: "./assets/adaptive-icon-monochrome.png",
-      backgroundColor: "#000000",
+      foregroundImage: `./assets/${BUILD_THEME}/adaptive-icon.png`,
+      monochromeImage: `./assets/${BUILD_THEME}/adaptive-icon-monochrome.png`,
+      backgroundColor: ICON_BACKGROUND_COLOR,
     },
     blockedPermissions: [
       // Optional permissions that Expo adds.
@@ -123,8 +127,9 @@ export default (): ExpoConfig => ({
     [
       "react-native-bootsplash",
       {
-        assetsDir: "assets/bootsplash",
-        android: { parentTheme: "EdgeToEdge" },
+        logo: `./assets/${BUILD_THEME}/splash-icon.png`,
+        background: BACKGROUND_COLOR,
+        assetsOutput: `./assets/${BUILD_THEME}/bootsplash`,
       },
     ],
     [

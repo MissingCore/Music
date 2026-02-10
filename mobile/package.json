@@ -19,7 +19,6 @@
     "lint": "expo lint",
     "circular-dep": "npx dpdm ./src/* --circular --exit-code circular:1 --warning=false",
     "db:generate": "drizzle-kit generate",
-    "gen:splashscreen": "npx react-native-bootsplash generate --platforms android --background #F2F2F2 ./assets/splash-icon.png",
     "sync:licenses": "license-checker-rseidelsohn --production --depth=0 --excludePrivatePackages --clarificationsFile ./scripts/licenses/licenseClarification.json --customPath ./scripts/licenses/customLicenseFormat.json --json | node ./scripts/licenses/updateLicenses.mjs",
     "release": "git pull && python ./scripts/release/release_bump.py"
   },
@@ -63,7 +62,7 @@
     "react-native": "0.81.5",
     "react-native-android-widget": "0.20.1",
     "react-native-audio-analyzer": "3.1.0",
-    "react-native-bootsplash": "6.3.12",
+    "react-native-bootsplash": "7.0.2",
     "react-native-draglist": "github:MissingCore/react-native-draglist#7471bc8c12544e6eef7b39be63fd268bc36430e1",
     "react-native-edge-to-edge": "1.7.0",
     "react-native-gesture-handler": "2.30.0",
