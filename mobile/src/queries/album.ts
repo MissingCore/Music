@@ -30,11 +30,11 @@ export function useAlbumForScreen(albumId: string) {
         name,
         imageSource: artwork,
         metadata: [
+          ...(range !== null ? [range] : []),
           t("plural.track", { count: tracks.length }),
           formatSeconds(
             tracks.reduce((total, curr) => total + curr.duration, 0),
           ),
-          ...(range !== null ? [range] : []),
         ],
         tracks: tracks.map(
           ({ id, name: title, disc, track, duration, tracksToArtists }) => {

@@ -76,7 +76,7 @@ function Metadata({ track }: { track: TrackWithRelations }) {
         </Marquee>
         <ArtistsLink
           artistNames={track.tracksToArtists.map((rel) => rel.artistName)}
-          popScreen
+          popStrategy="popScreen"
           className="text-sm/[1.125]"
         />
         {track.album ? (

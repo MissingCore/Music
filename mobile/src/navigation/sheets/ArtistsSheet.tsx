@@ -1,7 +1,7 @@
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import { useNavigation } from "@react-navigation/native";
 
-import { useSessionStore } from "~/services/SessionStore";
+import { navigateToArtist, useSessionStore } from "~/services/SessionStore";
 
 import { FlatList } from "~/components/Defaults";
 import { DetachedSheet } from "~/components/Sheet/Detached";
@@ -27,10 +27,7 @@ export function ArtistsSheet() {
             imageSource={artwork}
             onPress={() => {
               TrueSheet.dismiss(GLOBAL_SHEET_KEY);
-              // Pops current screen before navigating to artist screen.
-              // Useful when used on "Now Playing" screen.
-              if (artistsInfo.popScreen) navigation.goBack();
-              navigation.navigate("Artist", { id: name });
+              navigateToArtist(navigation, name, artistsInfo.popStrategy);
             }}
             className="rounded-full pr-4"
           />

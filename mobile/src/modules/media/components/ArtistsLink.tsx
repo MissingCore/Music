@@ -1,7 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import { Pressable } from "react-native";
 
-import { presentArtistsSheet } from "~/services/SessionStore";
+import type { PopStrategy } from "~/services/SessionStore";
+import { navigateToArtist, presentArtistsSheet } from "~/services/SessionStore";
 
 import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
@@ -13,8 +14,8 @@ export function ArtistsLink(props: {
   artistNames: string[];
   /** Function called before we navigate away from the current screen. */
   beforeNavigation?: VoidFunction;
-  /** Calls `goBack` on current screen before navigating to artist screen. */
-  popScreen?: boolean;
+  /** Optional screen popping strategy to navigate to the artist screen. */
+  popStrategy?: PopStrategy;
   marqueeShadowColor?: ColorRole;
   className?: string;
 }) {
@@ -27,12 +28,13 @@ export function ArtistsLink(props: {
         onPress={() => {
           if (props.beforeNavigation) props.beforeNavigation();
           if (props.artistNames.length === 1) {
-            // Pops current screen before navigating to artist screen.
-            // Useful when used on "Now Playing" screen.
-            if (props.popScreen) navigation.goBack();
-            navigation.navigate("Artist", { id: props.artistNames[0]! });
+            navigateToArtist(
+              navigation,
+              props.artistNames[0]!,
+              props.popStrategy,
+            );
           } else {
-            presentArtistsSheet(props.artistNames, props.popScreen);
+            presentArtistsSheet(props.artistNames, props.popStrategy);
           }
         }}
       >

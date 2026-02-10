@@ -102,7 +102,7 @@ function TrackIntro({ data }: { data: TrackWithRelations }) {
         <ArtistsLink
           artistNames={data.tracksToArtists.map((rel) => rel.artistName)}
           beforeNavigation={() => TrueSheet.dismiss(GLOBAL_SHEET_KEY)}
-          popScreen={onNowPlaying}
+          popStrategy={onNowPlaying ? "popScreen" : undefined}
           marqueeShadowColor="surfaceBright"
         />
         {data.album ? (

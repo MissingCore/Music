@@ -1,4 +1,5 @@
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
+import type { NavigationProp } from "@react-navigation/native";
 import { useStore } from "zustand";
 import { createStore } from "zustand/vanilla";
 
@@ -19,7 +20,7 @@ interface SessionStore {
   /** Track displayed in global track sheet. */
   displayedTrack: TrackWithRelations | null;
   /** Artists displayed in global artist sheet. */
-  displayedArtists: { artists: Artist[]; popScreen: boolean } | null;
+  displayedArtists: { artists: Artist[]; popStrategy?: PopStrategy } | null;
 
   /** If lyrics will be displyad over the artwork on the Now Playing screen. */
   showLyrics: boolean;
@@ -57,11 +58,18 @@ export async function presentTrackSheet(trackId: string) {
 //#endregion
 
 //#region Artist Sheet
+/**
+ * The screen popping strategies offered when navigating to the artist screen.
+ * - `popTo`: Uses the `pop` option in `navigate()`.
+ * - `popScreen`: Calls `goBack()` on current screen before navigating.
+ */
+export type PopStrategy = "popTo" | "popScreen";
+
 /** Displays the global artist sheet. */
 export async function presentArtistsSheet(
   artistNames: string[],
-  /** Calls `goBack` on current screen before navigating to artist screen. */
-  popScreen = false,
+  /** Optional screen popping strategy to navigate to the artist screen. */
+  popStrategy?: PopStrategy,
 ) {
   try {
     const sheetArtists = await throwIfNoResults(
@@ -71,13 +79,26 @@ export async function presentArtistsSheet(
       }),
     );
     sessionStore.setState({
-      displayedArtists: { artists: sheetArtists, popScreen },
+      displayedArtists: { artists: sheetArtists, popStrategy },
     });
     await wait(1);
     TrueSheet.present("ArtistsSheet");
   } catch {
     sessionStore.setState({ displayedArtists: null });
   }
+}
+
+export function navigateToArtist(
+  navigation: Omit<NavigationProp<ReactNavigation.RootParamList>, "getState">,
+  id: string,
+  popStrategy?: PopStrategy,
+) {
+  // Pops current screen before navigating to artist screen.
+  // Useful when used on "Now Playing" screen.
+  if (popStrategy === "popScreen") navigation.goBack();
+  // `pop` option is useful in the following navigation scenario:
+  // "Artist" -> "Album" -> "Artist".
+  navigation.navigate("Artist", { id }, { pop: popStrategy === "popTo" });
 }
 //#endregion
 

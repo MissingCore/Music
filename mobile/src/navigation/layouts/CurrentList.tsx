@@ -1,7 +1,6 @@
-import { useNavigation } from "@react-navigation/native";
 import { Fragment, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, Text, View } from "react-native";
+import { View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -12,15 +11,14 @@ import Animated, {
 import { Schedule } from "~/resources/icons/Schedule";
 import { useInForeground } from "~/stores/ListenerState";
 import { usePlaybackStore } from "~/stores/Playback/store";
-import { usePreferenceStore } from "~/stores/Preference/store";
 
 import { OnRTLWorklet } from "~/lib/react";
-import { getFont } from "~/lib/style";
 import { toLowerCase } from "~/utils/string";
 import { Divider } from "~/components/Divider";
 import { Marquee } from "~/components/Marquee";
 import { StyledText, TEm } from "~/components/Typography/StyledText";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
+import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
 import { MediaImage } from "~/modules/media/components/MediaImage";
 import { MediaListControls } from "~/modules/media/components/MediaListControls";
 import { Vinyl } from "~/modules/media/components/Vinyl";
@@ -42,8 +40,6 @@ export function CurrentListLayout(
   } & AnimatedVinylProps,
 ) {
   const { t } = useTranslation();
-  const navigation = useNavigation();
-  const primaryFont = usePreferenceStore((s) => s.primaryFont);
 
   const isFavorite = getIsFavoritePlaylist(props.mediaSource);
 
@@ -66,31 +62,7 @@ export function CurrentListLayout(
             </StyledText>
           </Marquee>
           {props.artists ? (
-            <Marquee>
-              {props.artists.map((artistName, index) => (
-                <Fragment key={artistName}>
-                  {index > 0 ? (
-                    <StyledText className="text-xs">•</StyledText>
-                  ) : null}
-                  <Pressable
-                    onPress={() =>
-                      navigation.navigate(
-                        "Artist",
-                        { id: artistName },
-                        { pop: true },
-                      )
-                    }
-                  >
-                    <Text
-                      style={{ fontFamily: getFont(primaryFont) }}
-                      className="text-left text-xs text-primary"
-                    >
-                      {artistName}
-                    </Text>
-                  </Pressable>
-                </Fragment>
-              ))}
-            </Marquee>
+            <ArtistsLink artistNames={props.artists} popStrategy="popTo" />
           ) : null}
           <Marquee wrapperClassName="my-1">
             <View className="flex-row items-center">
