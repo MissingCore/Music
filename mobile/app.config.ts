@@ -123,8 +123,10 @@ export default (): ExpoConfig => ({
     [
       "react-native-bootsplash",
       {
-        assetsDir: "assets/bootsplash",
-        android: { parentTheme: "EdgeToEdge" },
+        logo: "./assets/light-splash-icon.png",
+        background: "#000000",
+        // logo: "./assets/splash-icon.png",
+        // background: "#F2F2F2",
       },
     ],
     [
