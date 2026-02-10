@@ -40,6 +40,7 @@ const widgetConfig: WithAndroidWidgetsParams = {
 
 const BUILD_THEME: "light" | "dark" = "light";
 const BACKGROUND_COLOR = BUILD_THEME === "light" ? "#F2F2F2" : "#000000";
+const ICON_BACKGROUND_COLOR = BUILD_THEME === "light" ? "#FFFFFF" : "#000000";
 
 export default (): ExpoConfig => ({
   name: "Music",
@@ -61,7 +62,7 @@ export default (): ExpoConfig => ({
     adaptiveIcon: {
       foregroundImage: `./assets/${BUILD_THEME}/adaptive-icon.png`,
       monochromeImage: `./assets/${BUILD_THEME}/adaptive-icon-monochrome.png`,
-      backgroundColor: BACKGROUND_COLOR,
+      backgroundColor: ICON_BACKGROUND_COLOR,
     },
     blockedPermissions: [
       // Optional permissions that Expo adds.
