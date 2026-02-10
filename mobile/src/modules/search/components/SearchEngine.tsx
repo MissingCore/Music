@@ -10,16 +10,19 @@ import type {
   SlimTrackWithAlbum,
 } from "~/db/slimTypes";
 
+import { MoreVert } from "~/resources/icons/MoreVert";
 import { AlbumArtistsKey } from "~/api/album.utils";
 import { getArtistsString } from "~/api/artist.utils";
 import { getPlaylistArtwork } from "~/api/playlist.utils";
 import { getTrackArtwork } from "~/api/track.utils";
+import { presentTrackSheet } from "~/services/SessionStore";
 
 import type { ColorRole } from "~/lib/style";
 import { cn } from "~/lib/style";
 import { isString } from "~/utils/validation";
 import { FlashList, FlatList } from "~/components/Defaults";
 import { Button } from "~/components/Form/Button";
+import { IconButton } from "~/components/Form/Button/Icon";
 import { TopDownGradient } from "~/components/Gradient";
 import { TEm } from "~/components/Typography/StyledText";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
@@ -59,11 +62,14 @@ type SearchResultsListProps<TScope extends SearchCategories> = {
   callbacks: Pick<SearchCallbacks, TScope[number]>;
   bgColor?: ColorRole;
   forSheets?: boolean;
+  /** If we should render the track actions via the results. */
+  withTrackActions?: boolean;
 };
 
 function SearchResultsList<TScope extends SearchCategories>(
   props: SearchResultsListProps<TScope> & { query: string },
 ) {
+  const { t } = useTranslation();
   const results = useSearch(props.searchScope, props.query);
   const [selectedTab, setSelectedTab] = useState<TScope[number] | "all">("all");
   const [filterHeight, setFilterHeight] = useState(53); // Height will be ~53px
@@ -121,12 +127,26 @@ function SearchResultsList<TScope extends SearchCategories>(
           ) : (
             <SearchResult
               button
+              {...item}
               /* @ts-expect-error - `type` should be limited to our scope. */
               onPress={() => props.callbacks[item.type](item.entry)}
-              className={cn("mb-2 pr-4", {
+              RightElement={
+                props.withTrackActions && item.type === "track" ? (
+                  <IconButton
+                    Icon={MoreVert}
+                    accessibilityLabel={t("template.entrySeeMore", {
+                      name: item.title,
+                    })}
+                    onPress={() =>
+                      presentTrackSheet((item.entry as SlimTrackWithAlbum).id)
+                    }
+                  />
+                ) : undefined
+              }
+              className={cn("mb-2", {
+                "pr-4": !props.withTrackActions || item.type !== "track",
                 "rounded-full": item.type === "artist",
               })}
-              {...item}
             />
           )
         }

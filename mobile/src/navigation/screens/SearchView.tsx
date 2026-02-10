@@ -22,9 +22,9 @@ export default function Search() {
   const searchCallbacks: SearchCallbacks = useMemo(
     () => ({
       /* Visit the media's page. */
-      album: ({ id }) => navigation.push("Album", { id }),
-      artist: ({ name }) => navigation.push("Artist", { id: name }),
-      playlist: ({ name }) => navigation.push("Playlist", { id: name }),
+      album: ({ id }) => navigation.navigate("Album", { id }),
+      artist: ({ name }) => navigation.navigate("Artist", { id: name }),
+      playlist: ({ name }) => navigation.navigate("Playlist", { id: name }),
       /* Play the specified track. */
       track: ({ id }) =>
         PlaybackControls.playFromList({
@@ -53,7 +53,11 @@ export default function Search() {
   return (
     <View className="shrink grow gap-6 px-4 pt-2">
       <AccentText className="text-4xl">{t("feat.search.title")}</AccentText>
-      <SearchEngine searchScope={searchScope} callbacks={searchCallbacks} />
+      <SearchEngine
+        searchScope={searchScope}
+        callbacks={searchCallbacks}
+        withTrackActions
+      />
     </View>
   );
 }
