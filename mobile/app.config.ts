@@ -39,7 +39,7 @@ const widgetConfig: WithAndroidWidgetsParams = {
 };
 
 const BUILD_THEME: "light" | "dark" = "light";
-const BACKGROUND_COLOR = BUILD_THEME === "light" ? "#000000" : "#F2F2F2";
+const BACKGROUND_COLOR = BUILD_THEME === "light" ? "#F2F2F2" : "#000000";
 
 export default (): ExpoConfig => ({
   name: "Music",
