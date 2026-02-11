@@ -31,15 +31,19 @@ export function useRenderBottomActions() {
   const availableRoutes = useNavigationState((s) => s.routes);
   const activeTrack = usePlaybackStore((s) => s.activeTrack);
 
+  const canRenderMiniPlayer = !!activeTrack;
+  const isMiniPlayerShown = showMiniPlayerOnRoute(availableRoutes);
   // Show navbar when displaying `HomeScreens` navigator. This is only
   // true when the returned routes only contain this entry.
   const onHomeScreen = availableRoutes.at(-1)?.key.startsWith("HomeScreens-");
 
-  return {
-    miniPlayer:
-      !!activeTrack && (onHomeScreen || showMiniPlayerOnRoute(availableRoutes)),
-    navBar: onHomeScreen,
-  };
+  return useMemo(
+    () => ({
+      miniPlayer: canRenderMiniPlayer && (onHomeScreen || isMiniPlayerShown),
+      navBar: onHomeScreen,
+    }),
+    [canRenderMiniPlayer, isMiniPlayerShown, onHomeScreen],
+  );
 }
 
 /** Returns the inset we need to apply to account for the bottom actions. */

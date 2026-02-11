@@ -221,10 +221,7 @@ export const RootStack = createNativeStackNavigator({
     HomeScreens: {
       screen: RootScreens,
       layout: ({ children }) => children,
-      options: {
-        headerShown: false,
-        freezeOnBlur: true,
-      },
+      options: { headerShown: false },
     },
     NowPlaying: {
       screen: NowPlaying,
