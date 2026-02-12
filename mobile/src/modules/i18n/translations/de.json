@@ -331,7 +331,7 @@
         "line2": "Beachten Sie, dass Ihre Änderungen möglicherweise zurückgesetzt werden, wenn sich diese Datei ändert."
       },
       "extra": {
-        "albumArtist": "Album Künstler",
+        "albumArtists": "Album Künstler",
         "disc": "CD Nummer",
         "name": "Name",
         "trackNumber": "Titelnummer",

@@ -331,7 +331,7 @@
         "line2": "Not: Bu dosya değişirse yaptığınız değişiklikler sıfırlanabilir."
       },
       "extra": {
-        "albumArtist": "Albüm Sanatçısı",
+        "albumArtists": "Albüm Sanatçısı",
         "disc": "Disk",
         "name": "Ad",
         "trackNumber": "Parça Numarası",

@@ -331,7 +331,7 @@
         "line2": "Uwaga: Twoje zmiany mogą zostać odrzucone po modyfikacji pliku."
       },
       "extra": {
-        "albumArtist": "Wykonawca albumu",
+        "albumArtists": "Wykonawca albumu",
         "disc": "CD",
         "name": "Tytuł",
         "trackNumber": "Numer ścieżki",

@@ -331,7 +331,7 @@
         "line2": null
       },
       "extra": {
-        "albumArtist": "专辑艺人",
+        "albumArtists": "专辑艺人",
         "disc": "唱片",
         "name": "名称",
         "trackNumber": "曲目编号",

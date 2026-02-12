@@ -331,7 +331,7 @@
         "line2": "Nota: Los cambios pueden revertirse si el archivo es modificado."
       },
       "extra": {
-        "albumArtist": "Artista del álbum",
+        "albumArtists": "Artista del álbum",
         "disc": "Disco",
         "name": "Nombre",
         "trackNumber": "Número de canción",

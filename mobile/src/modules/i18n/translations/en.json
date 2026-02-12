@@ -374,7 +374,7 @@
         "line2": "Note: Your changes may get reset if this file changes."
       },
       "extra": {
-        "albumArtist": "Album Artist",
+        "albumArtists": "Album Artists",
         "disc": "Disc",
         "name": "Name",
         "trackNumber": "Track Number",

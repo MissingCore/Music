@@ -331,7 +331,7 @@
         "line2": "Remarque : vos modifications peuvent être réinitialisées si ce fichier est modifié."
       },
       "extra": {
-        "albumArtist": "Artiste de l'album",
+        "albumArtists": "Artiste de l'album",
         "disc": "Disque",
         "name": "Nom",
         "trackNumber": "Numéro de Piste",
