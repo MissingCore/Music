@@ -25,7 +25,7 @@ import {
   useIsPlaylistUnique,
   usePlaylistStore,
 } from "./store";
-import { AddMusicSheet } from "./AddMusicSheet";
+import { AddMusicSheet } from "../sheets/AddMusicSheet";
 
 import { areRenderItemPropsEqual } from "~/lib/react-native-draglist";
 import { mutateGuard } from "~/lib/react-query";
