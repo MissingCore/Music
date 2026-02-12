@@ -36,6 +36,7 @@ type FormState<TData extends Record<string, any>> = {
   setField: Dispatch<SetStateAction<TData>>;
 
   hasChanged: boolean;
+  passedConstraints: boolean;
   canSubmit: boolean;
   onSubmit: () => Promise<void>;
 
@@ -80,11 +81,18 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
     });
   }, [data]);
 
+  const passedConstraints = useMemo(() => {
+    if (!onConstraintsRef.current) return true;
+    return onConstraintsRef.current(data);
+  }, [data]);
+
   const canSubmit = useMemo(() => {
-    let addCheck = true;
-    if (onConstraintsRef.current) addCheck = onConstraintsRef.current(data);
-    return hasChanged && addCheck && schemaRef.current.safeParse(data).success;
-  }, [data, hasChanged]);
+    return (
+      hasChanged &&
+      passedConstraints &&
+      schemaRef.current.safeParse(data).success
+    );
+  }, [data, hasChanged, passedConstraints]);
 
   const onSubmit = useCallback(async () => {
     if (!canSubmit) return;
@@ -103,6 +111,7 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
         data,
         setField: setData,
         hasChanged,
+        passedConstraints,
         canSubmit,
         onSubmit,
         isSubmitting,
