@@ -202,7 +202,7 @@ function IconActions(props: {
       />
       <IconButton
         Icon={Edit}
-        accessibilityLabel={t("feat.trackMetadata.title")}
+        accessibilityLabel={t("form.edit")}
         onPress={sheetAction(() =>
           navigation.navigate("ModifyTrack", { id: props.data.id }),
         )}

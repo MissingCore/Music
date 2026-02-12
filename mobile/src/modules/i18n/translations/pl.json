@@ -325,7 +325,6 @@
       }
     },
     "trackMetadata": {
-      "title": "Edytuj metadane",
       "description": {
         "line1": "Zmień sposób wyświetlania utworów w aplikacji. To nie modyfikuje plików.",
         "line2": "Uwaga: Twoje zmiany mogą zostać odrzucone po modyfikacji pliku."

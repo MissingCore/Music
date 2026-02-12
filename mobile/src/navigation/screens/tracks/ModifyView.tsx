@@ -14,6 +14,7 @@ import { db } from "~/db";
 import { tracksToArtists } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
+import { Info } from "~/resources/icons/Info";
 import { upsertAlbums } from "~/api/album";
 import { AlbumArtistsKey } from "~/api/album.utils";
 import { createArtists } from "~/api/artist";
@@ -32,7 +33,6 @@ import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
 import { splitOn } from "~/utils/string";
 import { ScrollablePresets } from "~/components/Defaults";
-import { Divider } from "~/components/Divider";
 import { ExtendedTButton } from "~/components/Form/Button";
 import { StyledText } from "~/components/Typography/StyledText";
 import {
@@ -95,29 +95,31 @@ function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
     <KeyboardAwareScrollView
       bottomOffset={16}
       {...ScrollablePresets}
-      // Remove 24px as `KeyboardAwareScrollView` adds an element at the
+      // Remove 16px as `KeyboardAwareScrollView` adds an element at the
       // end of the ScrollView, causing an additional application of `gap`.
-      contentContainerStyle={{ paddingBottom: bottomOffset - 24 }}
-      contentContainerClassName="gap-6 p-4"
+      contentContainerStyle={{ paddingBottom: bottomOffset - 16 }}
+      contentContainerClassName="gap-4 p-4"
     >
-      <StyledText dim className="text-sm">
-        {t("feat.trackMetadata.description.line1")}
-        {"\n\n"}
-        {t("feat.trackMetadata.description.line2")}
-      </StyledText>
-      <Divider />
+      <View className="flex-row gap-2 rounded-md bg-surfaceContainerLowest p-4 pl-2">
+        <Info size={20} color="onSurfaceVariant" />
+        <StyledText dim className="text-sm">
+          {t("feat.trackMetadata.description.line1")}
+          {"\n\n"}
+          {t("feat.trackMetadata.description.line2")}
+        </StyledText>
+      </View>
 
       <FormInput labelKey="feat.trackMetadata.extra.name" field="name" />
       <ArrayFormInput labelKey="term.artists" field="artists" />
       <FormInput labelKey="term.album" field="album" />
       <ArrayFormInput
-        labelKey="feat.trackMetadata.extra.albumArtist"
+        labelKey="feat.trackMetadata.extra.albumArtists"
         field="albumArtists"
       />
-      <View className="flex-row items-end gap-6">
+      <View className="flex-row items-end gap-4">
         <FormInput
-          labelKey="feat.trackMetadata.extra.year"
-          field="year"
+          labelKey="feat.trackMetadata.extra.disc"
+          field="disc"
           numeric
         />
         <FormInput
@@ -127,8 +129,8 @@ function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
         />
       </View>
       <FormInput
-        labelKey="feat.trackMetadata.extra.disc"
-        field="disc"
+        labelKey="feat.trackMetadata.extra.year"
+        field="year"
         numeric
       />
     </KeyboardAwareScrollView>

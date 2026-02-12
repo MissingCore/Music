@@ -262,7 +262,7 @@ export const RootStack = createNativeStackNavigator({
         },
         ModifyTrack: {
           screen: ModifyTrack,
-          options: { title: "feat.trackMetadata.title" },
+          options: { title: "form.edit" },
         },
       },
     },

@@ -325,7 +325,6 @@
       }
     },
     "trackMetadata": {
-      "title": "Meta Verileri Düzenle",
       "description": {
         "line1": "Parçanın bu uygulamada nasıl görüneceğini düzenleyin. Bu, dosyanın kendisini değiştirmez.",
         "line2": "Not: Bu dosya değişirse yaptığınız değişiklikler sıfırlanabilir."

@@ -325,7 +325,6 @@
       }
     },
     "trackMetadata": {
-      "title": "Editar metadatos",
       "description": {
         "line1": "Modifica cómo se muestra la canción en la app. No afecta el archivo original.",
         "line2": "Nota: Los cambios pueden revertirse si el archivo es modificado."

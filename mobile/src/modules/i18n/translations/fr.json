@@ -325,7 +325,6 @@
       }
     },
     "trackMetadata": {
-      "title": "Modifier les Métadonnées",
       "description": {
         "line1": "Modifiez l'apparence de la piste pour cette application. Cela ne modifie pas le fichier lui-même.",
         "line2": "Remarque : vos modifications peuvent être réinitialisées si ce fichier est modifié."
