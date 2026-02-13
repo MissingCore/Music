@@ -351,8 +351,10 @@ function ImportM3UWorkflow({
     try {
       const { name, tracks: playlistTracks } = await readM3UPlaylist();
       toast(t("feat.backup.extra.importSuccess"), ToastOptions);
+      const formattedTracks = playlistTracks.map(formatTrackForForm);
       const updatedFields: Partial<PlaylistEntry> = {
-        tracks: playlistTracks.map(formatTrackForForm),
+        tracks: formattedTracks,
+        trackIds: formattedTracks.map((t) => t.id),
       };
       if (!data.name && !!name) updatedFields.name = name;
       setField((prev) => ({ ...prev, ...updatedFields }));
