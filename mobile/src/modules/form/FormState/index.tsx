@@ -87,7 +87,8 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
         const fieldData = initData.current[field] as any[];
         return (
           fieldData.length !== value.length ||
-          fieldData.some((val) => !value.includes(val))
+          //? Order matters.
+          fieldData.some((val, index) => val !== value[index])
         );
       }
       console.warn(
