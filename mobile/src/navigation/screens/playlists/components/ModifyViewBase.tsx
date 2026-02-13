@@ -11,7 +11,8 @@ import i18next from "~/modules/i18n";
 import { Add } from "~/resources/icons/Add";
 import { Cancel } from "~/resources/icons/Cancel";
 import { CheckCircle } from "~/resources/icons/CheckCircle";
-import { Delete } from "~/resources/icons/Delete";
+import { DoNotDisturbOn } from "~/resources/icons/DoNotDisturbOn";
+import { DragHandle } from "~/resources/icons/DragHandle";
 import { getArtistsString } from "~/api/artist.utils";
 import { sanitizePlaylistName } from "~/api/playlist.utils";
 import { TrackList, getTrackArtwork } from "~/api/track.utils";
@@ -25,7 +26,6 @@ import { FlashDragList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button/Icon";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { Swipeable } from "~/components/Swipeable";
 import { TStyledText } from "~/components/Typography/StyledText";
 import {
   FormStateProvider,
@@ -33,6 +33,7 @@ import {
 } from "~/modules/form/FormState";
 import { FormInputImpl, InputLabel } from "~/modules/form/FormState/FormInput";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
+import { MediaImage } from "~/modules/media/components/MediaImage";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import type { SearchCallbacks } from "~/modules/search/types";
 
@@ -100,6 +101,8 @@ function PlaylistForm({ bottomOffset }: { bottomOffset: number }) {
           />
         }
         ListEmptyComponent={<View></View>}
+        // FIXME: For some weird reason, we get double the margin bottom (should be `-mb-2`).
+        className="-mb-1"
         contentContainerStyle={{ paddingBottom: bottomOffset }}
         contentContainerClassName="p-4"
       />
@@ -227,39 +230,49 @@ function ListHeaderComponent(props: { showSheet: VoidFunction }) {
 //#region Rendered Item
 type RenderItemProps = DragListRenderItemInfo<PlaylistEntry["tracks"][number]>;
 
-/** @deprecated VERY TEMPORARY */
 const RenderItem = memo(function RenderItem({
   item,
   onRemove,
   ...info
 }: RenderItemProps & { onRemove: (id: string) => void }) {
+  const { t } = useTranslation();
   return (
-    <Swipeable
-      disabled={info.isDragging}
-      onSwipeLeft={() => onRemove(item.id)}
-      RightIcon={<Delete color="onError" />}
-      rightIconContainerClassName="rounded-xs bg-error"
-      wrapperClassName="mx-4 mb-2"
-      className="overflow-hidden rounded-xs bg-surface"
-    >
-      <SearchResult
-        button
-        type="track"
-        title={item.name}
-        description={item.artists}
-        imageSource={item.artwork}
-        delayLongPress={250}
-        onLongPress={info.onDragStart}
-        onPressOut={info.onDragEnd}
-        className={cn("pr-4", {
-          // The `active:` variant is to override the default active style
-          // as `!important` isn't enough to change the background color
-          // (it'll only change to `bg-surfaceContainerLowest ` one we drag the item).
-          "bg-surfaceContainerLowest active:bg-surfaceContainerLowest":
-            info.isActive,
-        })}
-      />
-    </Swipeable>
+    <SearchResult
+      type="track"
+      title={item.name}
+      description={item.artists}
+      imageSource={item.artwork}
+      LeftElement={
+        <View className="flex-row items-center gap-1">
+          <IconButton
+            Icon={DoNotDisturbOn}
+            accessibilityLabel={t("template.entryRemove", { name: item.name })}
+            onPress={() => onRemove(item.id)}
+            disabled={info.isDragging}
+            size="xs"
+          />
+          <MediaImage
+            type="track"
+            size={48}
+            source={item.artwork}
+            className="rounded-xs"
+          />
+        </View>
+      }
+      RightElement={
+        <IconButton
+          Icon={DragHandle}
+          accessibilityLabel={t("template.entryMove", { name: item.name })}
+          onPressIn={info.onDragStart}
+          onPressOut={info.onDragEnd}
+          size="xs"
+        />
+      }
+      //! `bg-surface` is there to prevent collapsing the View.
+      className={cn("mb-2 bg-surface pr-0", {
+        "bg-surfaceContainerLowest": info.isActive,
+      })}
+    />
   );
 });
 //#endregion
