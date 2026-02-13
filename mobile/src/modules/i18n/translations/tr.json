@@ -314,10 +314,6 @@
     },
     "playlist": {
       "extra": {
-        "create": "Çalma Listesi Oluştur",
-        "delete": "Çalma Listesini Sil",
-        "edit": "Çalma Listesini Düzenle",
-        "name": "Çalma Listesi Adı",
         "m3uImport": "M3U Çalma Listesini İçe Aktar",
         "m3uExport": "M3U Olarak Dışa Aktar",
         "absolute": "Mutlak",

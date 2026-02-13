@@ -314,10 +314,6 @@
     },
     "playlist": {
       "extra": {
-        "create": "プレイリストを作成",
-        "delete": "プレイリストを削除",
-        "edit": "プレイリストを編集",
-        "name": "プレイリスト名",
         "m3uImport": "M3U プレイリストをインポート",
         "m3uExport": "M3U としてエクスポート",
         "absolute": "絶対",

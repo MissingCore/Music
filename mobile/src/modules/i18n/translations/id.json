@@ -314,10 +314,6 @@
     },
     "playlist": {
       "extra": {
-        "create": "Buat Daftar Putar",
-        "delete": "Hapus Daftar Putar",
-        "edit": "Sunting Daftar Putar",
-        "name": "Nama Daftar Putar",
         "m3uImport": null,
         "m3uExport": null,
         "absolute": null,

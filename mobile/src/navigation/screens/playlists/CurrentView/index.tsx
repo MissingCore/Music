@@ -47,7 +47,7 @@ export default function Playlist({
     () => [
       {
         Icon: Edit,
-        labelKey: "feat.playlist.extra.edit",
+        labelKey: "form.edit",
         onPress: () => navigation.navigate("ModifyPlaylist", { id }),
       },
       {

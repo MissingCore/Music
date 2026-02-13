@@ -314,10 +314,6 @@
     },
     "playlist": {
       "extra": {
-        "create": "إنشاء قائمة تشغيل",
-        "delete": "حذف قائمة تشغيل",
-        "edit": "تعديل قائمة تشغيل",
-        "name": "اسم قائمة التشغيل",
         "m3uImport": null,
         "m3uExport": null,
         "absolute": null,

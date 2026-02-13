@@ -314,10 +314,6 @@
     },
     "playlist": {
       "extra": {
-        "create": "创建播放列表",
-        "delete": "删除播放列表",
-        "edit": "编辑播放列表",
-        "name": "播放列表名称",
         "m3uImport": null,
         "m3uExport": null,
         "absolute": null,

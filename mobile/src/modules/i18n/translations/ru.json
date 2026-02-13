@@ -314,10 +314,6 @@
     },
     "playlist": {
       "extra": {
-        "create": "Создать плейлист",
-        "delete": "Удалить плейлист",
-        "edit": "Изменить плейлист",
-        "name": "Название плейлиста",
         "m3uImport": null,
         "m3uExport": null,
         "absolute": null,

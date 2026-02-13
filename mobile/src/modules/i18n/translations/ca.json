@@ -314,10 +314,6 @@
     },
     "playlist": {
       "extra": {
-        "create": "Crea llista",
-        "delete": "Esborra llista",
-        "edit": "Edita llista",
-        "name": "Títol de la Llista",
         "m3uImport": null,
         "m3uExport": null,
         "absolute": null,

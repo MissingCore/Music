@@ -314,10 +314,6 @@
     },
     "playlist": {
       "extra": {
-        "create": "Crear lista de reproducción",
-        "delete": "Eliminar lista de reproducción",
-        "edit": "Editar lista de reproducción",
-        "name": "Nombre de la playlist",
         "m3uImport": "Importar M3U",
         "m3uExport": "Exportar como M3U",
         "absolute": "Absoluto",

@@ -356,11 +356,6 @@
     },
     "playlist": {
       "extra": {
-        "create": "Create Playlist",
-        "delete": "Delete Playlist",
-        "edit": "Edit Playlist",
-        "name": "Playlist Name",
-
         "m3uImport": "Import M3U Playlist",
         "m3uExport": "Export as M3U",
         "absolute": "Absolute",

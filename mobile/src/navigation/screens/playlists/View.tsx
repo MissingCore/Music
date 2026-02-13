@@ -56,7 +56,7 @@ function PlaylistActions() {
   return (
     <FilledIconButton
       Icon={Add}
-      accessibilityLabel={t("feat.playlist.extra.create")}
+      accessibilityLabel={t("form.create")}
       onPress={() => navigation.navigate("CreatePlaylist")}
       className="bg-primary active:bg-primaryDim"
       size="sm"

@@ -314,10 +314,6 @@
     },
     "playlist": {
       "extra": {
-        "create": "Lav ny playliste",
-        "delete": "Slet playliste",
-        "edit": "Tilpas playliste",
-        "name": "Playlistens navn",
         "m3uImport": null,
         "m3uExport": null,
         "absolute": null,
