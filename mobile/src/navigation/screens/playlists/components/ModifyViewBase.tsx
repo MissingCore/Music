@@ -105,22 +105,20 @@ function PlaylistForm({ bottomOffset }: { bottomOffset: number }) {
 
   const removeTrack = useCallback(
     (id: string) => {
-      setField((prev) => {
-        const updatedList = prev.tracks.filter((t) => t.id !== id);
-        const newTrackIds = updatedList.map((t) => t.id);
-        return { ...prev, tracks: updatedList, trackIds: newTrackIds };
-      });
+      setField((prev) => ({
+        ...prev,
+        ...getTracksFields(prev.tracks.filter((t) => t.id !== id)),
+      }));
     },
     [setField],
   );
 
   const reorderTrack = useCallback(
     (fromIndex: number, toIndex: number) => {
-      setField((prev) => {
-        const updatedList = moveArray(prev.tracks, { fromIndex, toIndex });
-        const newTrackIds = updatedList.map((t) => t.id);
-        return { ...prev, tracks: updatedList, trackIds: newTrackIds };
-      });
+      setField((prev) => ({
+        ...prev,
+        ...getTracksFields(moveArray(prev.tracks, { fromIndex, toIndex })),
+      }));
     },
     [setField],
   );
@@ -164,40 +162,40 @@ function AddTracksSheet(props: { ref: TrueSheetRef }) {
     useMemo(
       () => ({
         album: ({ tracks, ...album }) => {
-          setField((prev) => {
-            const updatedList = TrackList.merge(
-              prev.tracks,
-              (tracks as SlimTrackWithAlbum[]).map((t) =>
-                formatTrackForForm({ ...t, album }),
+          setField((prev) => ({
+            ...prev,
+            ...getTracksFields(
+              TrackList.merge(
+                prev.tracks,
+                (tracks as SlimTrackWithAlbum[]).map((t) =>
+                  formatTrackForForm({ ...t, album }),
+                ),
               ),
-            );
-            const newTrackIds = updatedList.map((t) => t.id);
-            return { ...prev, tracks: updatedList, trackIds: newTrackIds };
-          });
+            ),
+          }));
           toast(
             i18next.t("template.entryAdded", { name: album.name }),
             ToastOptions,
           );
         },
         folder: ({ name, tracks }) => {
-          setField((prev) => {
-            const updatedList = TrackList.merge(
-              prev.tracks,
-              tracks.map(formatTrackForForm),
-            );
-            const newTrackIds = updatedList.map((t) => t.id);
-            return { ...prev, tracks: updatedList, trackIds: newTrackIds };
-          });
+          setField((prev) => ({
+            ...prev,
+            ...getTracksFields(
+              TrackList.merge(prev.tracks, tracks.map(formatTrackForForm)),
+            ),
+          }));
           toast(i18next.t("template.entryAdded", { name }), ToastOptions);
         },
         track: (track) => {
-          setField((prev) => {
-            const updatedList = prev.tracks
-              .filter(({ id }) => track.id !== id)
-              .concat(formatTrackForForm(track));
-            const newTrackIds = updatedList.map((t) => t.id);
-            return { ...prev, tracks: updatedList, trackIds: newTrackIds };
-          });
+          setField((prev) => ({
+            ...prev,
+            ...getTracksFields(
+              prev.tracks
+                .filter(({ id }) => track.id !== id)
+                .concat(formatTrackForForm(track)),
+            ),
+          }));
           toast(
             i18next.t("template.entryAdded", { name: track.name }),
             ToastOptions,
@@ -276,7 +274,7 @@ function ListHeaderComponent(props: { showSheet: VoidFunction }) {
 //#endregion
 
 //#region Rendered Item
-type RenderItemProps = DragListRenderItemInfo<PlaylistEntry["tracks"][number]>;
+type RenderItemProps = DragListRenderItemInfo<SlimTrackEntry>;
 
 const RenderItem = memo(
   function RenderItem({
@@ -351,11 +349,9 @@ function ImportM3UWorkflow({
     try {
       const { name, tracks: playlistTracks } = await readM3UPlaylist();
       toast(t("feat.backup.extra.importSuccess"), ToastOptions);
-      const formattedTracks = playlistTracks.map(formatTrackForForm);
-      const updatedFields: Partial<PlaylistEntry> = {
-        tracks: formattedTracks,
-        trackIds: formattedTracks.map((t) => t.id),
-      };
+      const updatedFields: Partial<PlaylistEntry> = getTracksFields(
+        playlistTracks.map(formatTrackForForm),
+      );
       if (!data.name && !!name) updatedFields.name = name;
       setField((prev) => ({ ...prev, ...updatedFields }));
     } catch (err) {
@@ -466,6 +462,7 @@ const PlaylistEntrySchema = z.object({
 });
 
 type PlaylistEntry = z.infer<typeof PlaylistEntrySchema>;
+type SlimTrackEntry = z.infer<typeof SlimTrackSchema>;
 
 function useFormState() {
   return useFormStateContext<PlaylistEntry>();
@@ -480,5 +477,10 @@ export function formatTrackForForm(t: SlimTrackWithAlbum) {
     artists: getArtistsString(t.tracksToArtists),
     artwork: getTrackArtwork(t),
   };
+}
+
+/** Return `tracks` & the derived `trackIds` field. */
+function getTracksFields(tracks: SlimTrackEntry[]) {
+  return { tracks, trackIds: tracks.map((t) => t.id) };
 }
 //#endregion
