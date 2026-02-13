@@ -1,5 +1,6 @@
 import { toast } from "@backpackapp-io/react-native-toast";
-import { memo, useCallback, useMemo } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { memo, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
@@ -14,6 +15,7 @@ import { CheckCircle } from "~/resources/icons/CheckCircle";
 import { DoNotDisturbOn } from "~/resources/icons/DoNotDisturbOn";
 import { DragHandle } from "~/resources/icons/DragHandle";
 import { getArtistsString } from "~/api/artist.utils";
+import { useDeletePlaylist } from "~/queries/playlist";
 import { sanitizePlaylistName } from "~/api/playlist.utils";
 import { TrackList, getTrackArtwork } from "~/api/track.utils";
 
@@ -21,14 +23,19 @@ import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { AddMusicSheet } from "../sheets/AddMusicSheet";
 
+import { mutateGuard } from "~/lib/react-query";
 import { cn } from "~/lib/style";
 import { ToastOptions } from "~/lib/toast";
 import { moveArray } from "~/utils/object";
+import { wait } from "~/utils/promise";
 import { FlashDragList } from "~/components/Defaults";
+import { ExtendedTButton } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button/Icon";
+import { ModalTemplate } from "~/components/Modal";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { TStyledText } from "~/components/Typography/StyledText";
+import { readM3UPlaylist } from "~/modules/backup/M3U";
 import {
   FormStateProvider,
   useFormStateContext,
@@ -45,7 +52,12 @@ export function ModifyPlaylistBase(props: {
   initialData?: Omit<PlaylistEntry, "trackIds">;
   usedNames: string[];
 }) {
-  const { offset } = useFloatingContent();
+  const { offset, ...rest } = useFloatingContent();
+
+  const RenderedWorkflow = useMemo(
+    () => (props.mode === "edit" ? DeleteWorkflow : ImportM3UWorkflow),
+    [props.mode],
+  );
 
   // Exclude `FavoritesPlaylistKey` as we don't return it when fetching all
   // playlists & don't check it in `sanitizePlaylistName`.
@@ -78,6 +90,7 @@ export function ModifyPlaylistBase(props: {
       }}
     >
       <PlaylistForm bottomOffset={offset} />
+      <RenderedWorkflow {...rest} />
     </FormStateProvider>
   );
 }
@@ -308,6 +321,96 @@ const RenderItem = memo(function RenderItem({
   );
 });
 //#endregion
+//#endregion
+
+//#region Import M3U Workflow
+function ImportM3UWorkflow({
+  floatingRef,
+  wrapperStyling,
+}: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
+  const { t } = useTranslation();
+  const { data, setField, isSubmitting, setIsSubmitting } = useFormState();
+
+  const onImport = async () => {
+    setIsSubmitting(true);
+    try {
+      const { name, tracks: playlistTracks } = await readM3UPlaylist();
+      toast(t("feat.backup.extra.importSuccess"), ToastOptions);
+      const updatedFields: Partial<PlaylistEntry> = {
+        tracks: playlistTracks.map(formatTrack),
+      };
+      if (!data.name && !!name) updatedFields.name = name;
+      setField((prev) => ({ ...prev, ...updatedFields }));
+    } catch (err) {
+      toast.error((err as Error).message, ToastOptions);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <View ref={floatingRef} {...wrapperStyling}>
+      <ExtendedTButton
+        textKey="feat.playlist.extra.m3uImport"
+        onPress={onImport}
+        disabled={isSubmitting}
+        className="bg-secondary active:bg-secondaryDim"
+        textClassName="text-onSecondary"
+      />
+    </View>
+  );
+}
+//#endregion
+
+//#region Delete Workflow
+function DeleteWorkflow({
+  floatingRef,
+  wrapperStyling,
+}: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
+  const navigation = useNavigation();
+  const [lastChance, setLastChance] = useState(false);
+  const { data, isSubmitting, setIsSubmitting } = useFormState();
+  const deletePlaylist = useDeletePlaylist(data.name);
+
+  const onDelete = async () => {
+    setLastChance(false);
+    setIsSubmitting(true);
+    // Slight buffer before running mutation.
+    await wait(1);
+    mutateGuard(deletePlaylist, undefined, {
+      onSuccess: () => {
+        navigation.goBack();
+        navigation.goBack();
+      },
+    });
+  };
+
+  return (
+    <>
+      <View ref={floatingRef} {...wrapperStyling}>
+        <ExtendedTButton
+          textKey="form.delete"
+          onPress={() => setLastChance(true)}
+          disabled={lastChance || isSubmitting}
+          className="bg-error active:bg-errorDim"
+          textClassName="text-onError"
+        />
+      </View>
+      <ModalTemplate
+        visible={lastChance}
+        titleKey="form.delete"
+        topAction={{
+          textKey: "form.confirm",
+          onPress: onDelete,
+        }}
+        bottomAction={{
+          textKey: "form.cancel",
+          onPress: () => setLastChance(false),
+        }}
+      />
+    </>
+  );
+}
 //#endregion
 
 //#region Schema
