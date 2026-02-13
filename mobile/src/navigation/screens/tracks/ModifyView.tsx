@@ -103,7 +103,7 @@ function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
     >
       <View className="flex-row gap-2 rounded-md bg-surfaceContainerLowest p-4 pl-2">
         <Info size={20} color="onSurfaceVariant" />
-        <StyledText dim className="text-sm">
+        <StyledText dim className="shrink grow text-sm">
           {t("feat.trackMetadata.description.line1")}
           {"\n\n"}
           {t("feat.trackMetadata.description.line2")}
