@@ -252,6 +252,7 @@ export const RootStack = createNativeStackNavigator({
         ModifyPlaylist: {
           screen: ModifyPlaylist,
           layout: ({ children }) => children,
+          options: { title: "form.edit" },
         },
         Playlist,
         Album,
