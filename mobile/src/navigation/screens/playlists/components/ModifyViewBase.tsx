@@ -122,30 +122,30 @@ function PlaylistForm({ bottomOffset }: { bottomOffset: number }) {
   return (
     <>
       <AddTracksSheet ref={addTracksSheetRef} />
-      <View
+      <FlashDragList
         pointerEvents={isSubmitting ? "none" : "auto"}
         needsOffscreenAlphaCompositing
-        className={cn("flex-1", { "opacity-25": isSubmitting })}
-      >
-        <FlashDragList
-          data={data.tracks}
-          keyExtractor={({ id }) => id}
-          renderItem={(args) => <RenderItem {...args} onRemove={removeTrack} />}
-          onReordered={reorderTrack}
-          ListHeaderComponent={
-            <ListHeaderComponent
-              showSheet={() => addTracksSheetRef.current?.present()}
-            />
-          }
-          ListEmptyComponent={
-            <ContentPlaceholder errMsgKey="err.msg.noTracks" />
-          }
-          // FIXME: For some weird reason, we get double the margin bottom (should be `-mb-2`).
-          className="-mb-1"
-          contentContainerStyle={{ paddingBottom: bottomOffset }}
-          contentContainerClassName="p-4"
-        />
-      </View>
+        data={data.tracks}
+        keyExtractor={({ id }) => id}
+        renderItem={(args) => (
+          <RenderItem
+            {...args}
+            isSubmitting={isSubmitting}
+            onRemove={removeTrack}
+          />
+        )}
+        onReordered={reorderTrack}
+        ListHeaderComponent={
+          <ListHeaderComponent
+            showSheet={() => addTracksSheetRef.current?.present()}
+          />
+        }
+        ListEmptyComponent={<ContentPlaceholder errMsgKey="err.msg.noTracks" />}
+        // FIXME: For some weird reason, we get double the margin bottom (should be `-mb-2`).
+        className="-mb-1"
+        contentContainerStyle={{ paddingBottom: bottomOffset }}
+        contentContainerClassName="p-4"
+      />
     </>
   );
 }
@@ -274,7 +274,10 @@ const RenderItem = memo(
     item,
     onRemove,
     ...info
-  }: RenderItemProps & { onRemove: (id: string) => void }) {
+  }: RenderItemProps & {
+    isSubmitting: boolean;
+    onRemove: (id: string) => void;
+  }) {
     const { t } = useTranslation();
     return (
       <SearchResult
@@ -313,6 +316,7 @@ const RenderItem = memo(
         //! `bg-surface` is there to prevent collapsing the View.
         className={cn("mb-2 bg-surface pr-0", {
           "bg-surfaceContainerLowest": info.isActive,
+          "opacity-25": info.isSubmitting,
         })}
       />
     );
@@ -320,7 +324,7 @@ const RenderItem = memo(
   (oldProps, newProps) => {
     return (
       oldProps.item.id === newProps.item.id &&
-      (["index", "isActive", "isDragging"] as const).every(
+      (["isSubmitting", "index", "isActive", "isDragging"] as const).every(
         (k) => oldProps[k] === newProps[k],
       )
     );
