@@ -100,27 +100,23 @@ export function ModifyPlaylistBase(props: {
 const FormInput = FormInputImpl<PlaylistEntry>();
 
 function PlaylistForm({ bottomOffset }: { bottomOffset: number }) {
-  const { data, setField, isSubmitting } = useFormState();
+  const { data, setFields, isSubmitting } = useFormState();
   const addTracksSheetRef = useSheetRef();
 
   const removeTrack = useCallback(
-    (id: string) => {
-      setField((prev) => ({
-        ...prev,
-        ...getTracksFields(prev.tracks.filter((t) => t.id !== id)),
-      }));
-    },
-    [setField],
+    (id: string) =>
+      setFields((prev) =>
+        getTracksFields(prev.tracks.filter((t) => t.id !== id)),
+      ),
+    [setFields],
   );
 
   const reorderTrack = useCallback(
-    (fromIndex: number, toIndex: number) => {
-      setField((prev) => ({
-        ...prev,
-        ...getTracksFields(moveArray(prev.tracks, { fromIndex, toIndex })),
-      }));
-    },
-    [setField],
+    (fromIndex: number, toIndex: number) =>
+      setFields((prev) =>
+        getTracksFields(moveArray(prev.tracks, { fromIndex, toIndex })),
+      ),
+    [setFields],
   );
 
   return (
@@ -156,15 +152,14 @@ function PlaylistForm({ bottomOffset }: { bottomOffset: number }) {
 
 //#region Add Tracks Sheet
 function AddTracksSheet(props: { ref: TrueSheetRef }) {
-  const { setField } = useFormState();
+  const { setFields } = useFormState();
 
   const searchCallbacks: Pick<SearchCallbacks, "album" | "folder" | "track"> =
     useMemo(
       () => ({
         album: ({ tracks, ...album }) => {
-          setField((prev) => ({
-            ...prev,
-            ...getTracksFields(
+          setFields((prev) =>
+            getTracksFields(
               TrackList.merge(
                 prev.tracks,
                 (tracks as SlimTrackWithAlbum[]).map((t) =>
@@ -172,37 +167,35 @@ function AddTracksSheet(props: { ref: TrueSheetRef }) {
                 ),
               ),
             ),
-          }));
+          );
           toast(
             i18next.t("template.entryAdded", { name: album.name }),
             ToastOptions,
           );
         },
         folder: ({ name, tracks }) => {
-          setField((prev) => ({
-            ...prev,
-            ...getTracksFields(
+          setFields((prev) =>
+            getTracksFields(
               TrackList.merge(prev.tracks, tracks.map(formatTrackForForm)),
             ),
-          }));
+          );
           toast(i18next.t("template.entryAdded", { name }), ToastOptions);
         },
         track: (track) => {
-          setField((prev) => ({
-            ...prev,
-            ...getTracksFields(
+          setFields((prev) =>
+            getTracksFields(
               prev.tracks
                 .filter(({ id }) => track.id !== id)
                 .concat(formatTrackForForm(track)),
             ),
-          }));
+          );
           toast(
             i18next.t("template.entryAdded", { name: track.name }),
             ToastOptions,
           );
         },
       }),
-      [setField],
+      [setFields],
     );
 
   return <AddMusicSheet ref={props.ref} callbacks={searchCallbacks} />;
@@ -342,7 +335,7 @@ function ImportM3UWorkflow({
   wrapperStyling,
 }: Omit<ReturnType<typeof useFloatingContent>, "offset">) {
   const { t } = useTranslation();
-  const { data, setField, isSubmitting, setIsSubmitting } = useFormState();
+  const { data, setFields, isSubmitting, setIsSubmitting } = useFormState();
 
   const onImport = async () => {
     setIsSubmitting(true);
@@ -353,7 +346,7 @@ function ImportM3UWorkflow({
         playlistTracks.map(formatTrackForForm),
       );
       if (!data.name && !!name) updatedFields.name = name;
-      setField((prev) => ({ ...prev, ...updatedFields }));
+      setFields(updatedFields);
     } catch (err) {
       toast.error((err as Error).message, ToastOptions);
     } finally {

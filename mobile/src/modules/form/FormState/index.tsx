@@ -38,6 +38,7 @@ type FormState<TData extends Record<string, any>> = {
   data: TData;
   /** @deprecated Use `setFields`. */
   setField: Dispatch<SetStateAction<TData>>;
+  /** Partially update some fields in `data`. Under the hood, the previous state is spread. */
   setFields: Dispatch<Partial<TData> | ((prevState: TData) => Partial<TData>)>;
 
   hasChanged: boolean;
@@ -74,7 +75,7 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
   const [data, setData] = useState(props.initData);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  /** Partially update some fields. Under the hood, the previous state is spread. */
+  /** Partially update some fields in `data`. Under the hood, the previous state is spread. */
   const setFields: Dispatch<
     | Partial<z.infer<TSchema>>
     | ((prevState: z.infer<TSchema>) => Partial<z.infer<TSchema>>)

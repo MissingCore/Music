@@ -147,7 +147,7 @@ function ResetWorkflow(
   },
 ) {
   const delimiters = usePreferenceStore((s) => s.separators);
-  const { setField, isSubmitting, setIsSubmitting } = useFormState();
+  const { setFields, isSubmitting, setIsSubmitting } = useFormState();
 
   const onReset = async () => {
     setIsSubmitting(true);
@@ -156,8 +156,7 @@ function ResetWorkflow(
         ...MetadataPresets.standard,
         "discNumber",
       ]);
-      setField((prev) => ({
-        ...prev,
+      setFields({
         name: trackMetadata.title ?? "",
         artists: trackMetadata.artist
           ? splitOn(trackMetadata.artist, delimiters)
@@ -169,7 +168,7 @@ function ResetWorkflow(
         year: trackMetadata.year,
         disc: trackMetadata.discNumber,
         track: trackMetadata.trackNumber,
-      }));
+      });
     } catch {}
     setIsSubmitting(false);
   };
