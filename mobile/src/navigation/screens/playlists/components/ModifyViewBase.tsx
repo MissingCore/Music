@@ -100,7 +100,7 @@ export function ModifyPlaylistBase(props: {
 const FormInput = FormInputImpl<PlaylistEntry>();
 
 function PlaylistForm({ bottomOffset }: { bottomOffset: number }) {
-  const { data, setField } = useFormState();
+  const { data, setField, isSubmitting } = useFormState();
   const addTracksSheetRef = useSheetRef();
 
   const removeTrack = useCallback(
@@ -128,22 +128,30 @@ function PlaylistForm({ bottomOffset }: { bottomOffset: number }) {
   return (
     <>
       <AddTracksSheet ref={addTracksSheetRef} />
-      <FlashDragList
-        data={data.tracks}
-        keyExtractor={({ id }) => id}
-        renderItem={(args) => <RenderItem {...args} onRemove={removeTrack} />}
-        onReordered={reorderTrack}
-        ListHeaderComponent={
-          <ListHeaderComponent
-            showSheet={() => addTracksSheetRef.current?.present()}
-          />
-        }
-        ListEmptyComponent={<ContentPlaceholder errMsgKey="err.msg.noTracks" />}
-        // FIXME: For some weird reason, we get double the margin bottom (should be `-mb-2`).
-        className="-mb-1"
-        contentContainerStyle={{ paddingBottom: bottomOffset }}
-        contentContainerClassName="p-4"
-      />
+      <View
+        pointerEvents={isSubmitting ? "none" : "auto"}
+        needsOffscreenAlphaCompositing
+        className={cn("flex-1", { "opacity-25": isSubmitting })}
+      >
+        <FlashDragList
+          data={data.tracks}
+          keyExtractor={({ id }) => id}
+          renderItem={(args) => <RenderItem {...args} onRemove={removeTrack} />}
+          onReordered={reorderTrack}
+          ListHeaderComponent={
+            <ListHeaderComponent
+              showSheet={() => addTracksSheetRef.current?.present()}
+            />
+          }
+          ListEmptyComponent={
+            <ContentPlaceholder errMsgKey="err.msg.noTracks" />
+          }
+          // FIXME: For some weird reason, we get double the margin bottom (should be `-mb-2`).
+          className="-mb-1"
+          contentContainerStyle={{ paddingBottom: bottomOffset }}
+          contentContainerClassName="p-4"
+        />
+      </View>
     </>
   );
 }
@@ -416,11 +424,28 @@ const SlimTrackSchema = z.object({
   artwork: ZSchema.NullableString,
 });
 
+const PlaylistNameSchema = z.pipe(
+  ZSchema.NonEmptyString,
+  z.transform((str, ctx) => {
+    try {
+      return sanitizePlaylistName(str);
+    } catch (err) {
+      ctx.issues.push({
+        code: "invalid_value",
+        input: str,
+        values: [str],
+        message: (err as Error).message,
+      });
+      return z.NEVER;
+    }
+  }),
+);
+
 const PlaylistEntrySchema = z.object({
   // Additional context:
   isFavoritesList: z.boolean(),
   // Actual form fields:
-  name: ZSchema.NonEmptyString,
+  name: PlaylistNameSchema,
   tracks: z.array(SlimTrackSchema),
   //? Field derived from `tracks`.
   trackIds: z.array(ZSchema.NonEmptyString),
