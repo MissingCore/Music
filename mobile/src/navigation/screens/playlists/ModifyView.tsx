@@ -60,7 +60,7 @@ export default function ModifyPlaylist({
   return (
     <ModifyPlaylistBase
       mode="edit"
-      invalidNames={playlistNamesQuery.data}
+      usedNames={playlistNamesQuery.data}
       initialData={initData}
       onSubmit={async ({ name: playlistName, tracks }) => {
         // Don't update playlist name if it hasn't changed.

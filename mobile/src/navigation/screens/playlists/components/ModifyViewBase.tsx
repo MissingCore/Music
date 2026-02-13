@@ -2,8 +2,8 @@ import { toast } from "@backpackapp-io/react-native-toast";
 import { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { z } from "zod/mini";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
+import { z } from "zod/mini";
 
 import type { SlimTrackWithAlbum } from "~/db/slimTypes";
 
@@ -25,6 +25,7 @@ import { FlashDragList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button/Icon";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
+import { Swipeable } from "~/components/Swipeable";
 import { TStyledText } from "~/components/Typography/StyledText";
 import {
   FormStateProvider,
@@ -32,17 +33,23 @@ import {
 } from "~/modules/form/FormState";
 import { FormInputImpl, InputLabel } from "~/modules/form/FormState/FormInput";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
-import type { SearchCallbacks } from "~/modules/search/types";
-import { Swipeable } from "~/components/Swipeable";
 import { SearchResult } from "~/modules/search/components/SearchResult";
+import type { SearchCallbacks } from "~/modules/search/types";
 
 export function ModifyPlaylistBase(props: {
   onSubmit: (data: PlaylistEntry) => void | Promise<void>;
   mode?: "create" | "edit";
   initialData?: PlaylistEntry;
-  invalidNames: string[];
+  usedNames: string[];
 }) {
   const { offset } = useFloatingContent();
+
+  // Exclude `FavoritesPlaylistKey` as we don't return it when fetching all
+  // playlists & don't check it in `sanitizePlaylistName`.
+  const usedNames = useMemo(
+    () => [...props.usedNames, FavoritesPlaylistKey],
+    [props.usedNames],
+  );
 
   return (
     <FormStateProvider
@@ -60,7 +67,7 @@ export function ModifyPlaylistBase(props: {
           const sanitized = sanitizePlaylistName(name);
           isUnique =
             props.initialData?.name === sanitized ||
-            !props.invalidNames.includes(sanitized);
+            !usedNames.includes(sanitized);
         } catch {}
         return isUnique;
       }}
