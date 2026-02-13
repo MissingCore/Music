@@ -17,6 +17,7 @@ import { wait } from "~/utils/promise";
 import { ScrollablePresets } from "~/components/Defaults";
 import { ExtendedTButton } from "~/components/Form/Button";
 import { ModalTemplate } from "~/components/Modal";
+import { ZSchema } from "~/modules/form/utils";
 import {
   FormStateProvider,
   useFormStateContext,
@@ -130,14 +131,12 @@ function DeleteWorkflow({
 //#endregion
 
 //#region Schema
-const NonEmptyStringSchema = z.string().check(z.trim(), z.minLength(1));
-
 const LyricEntrySchema = z.object({
   // Additional context:
   id: z.nullable(z.string()),
   // Actual form fields:
-  name: NonEmptyStringSchema,
-  lyrics: NonEmptyStringSchema,
+  name: ZSchema.NonEmptyString,
+  lyrics: ZSchema.NonEmptyString,
 });
 
 type LyricEntry = z.infer<typeof LyricEntrySchema>;

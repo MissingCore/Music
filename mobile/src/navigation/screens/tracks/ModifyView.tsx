@@ -35,6 +35,7 @@ import { splitOn } from "~/utils/string";
 import { ScrollablePresets } from "~/components/Defaults";
 import { ExtendedTButton } from "~/components/Form/Button";
 import { StyledText } from "~/components/Typography/StyledText";
+import { ZSchema } from "~/modules/form/utils";
 import {
   FormStateProvider,
   useFormStateContext,
@@ -188,26 +189,18 @@ function ResetWorkflow(
 //#endregion
 
 //#region Schema
-const NonEmptyStringSchema = z.string().check(z.trim(), z.minLength(1));
-const NullableStringSchema = z.nullable(
-  z.pipe(
-    z.string().check(z.trim()), // String will get trimmed.
-    z.transform((str) => (str === "" ? null : str)),
-  ),
-);
-const NullableRealNumber = z.nullable(z.number().check(z.int(), z.gt(0)));
 const TrackMetadataSchema = z.object({
   // Additional context:
   id: z.string(),
   uri: z.string(),
   // Actual form fields:
-  name: NonEmptyStringSchema,
-  artists: z.array(NonEmptyStringSchema),
-  album: NullableStringSchema,
-  albumArtists: z.array(NonEmptyStringSchema),
-  year: NullableRealNumber,
-  disc: NullableRealNumber,
-  track: NullableRealNumber,
+  name: ZSchema.NonEmptyString,
+  artists: z.array(ZSchema.NonEmptyString),
+  album: ZSchema.NullableString,
+  albumArtists: z.array(ZSchema.NonEmptyString),
+  year: ZSchema.NullableRealNumber,
+  disc: ZSchema.NullableRealNumber,
+  track: ZSchema.NullableRealNumber,
 });
 
 type TrackMetadata = z.infer<typeof TrackMetadataSchema>;

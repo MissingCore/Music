@@ -20,23 +20,23 @@ import { TrackList } from "~/api/track.utils";
 import { pickDirectory } from "~/lib/file-system";
 import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
+import { ZSchema } from "../form/utils";
 import { FavoritesPlaylistKey } from "../media/constants";
 
 //#region Schemas
-const NonEmptyStringSchema = z.string().check(z.trim(), z.minLength(1));
-const NullableNonEmptyStringSchema = z.nullish(NonEmptyStringSchema);
+const NullableNonEmptyStringSchema = z.nullish(ZSchema.NonEmptyString);
 const PlaylistNameSchema = z.pipe(
   z.string(),
   z.transform(sanitizePlaylistName),
 );
 
 const RawAlbum = z.object({
-  name: NonEmptyStringSchema,
-  artistName: NonEmptyStringSchema,
+  name: ZSchema.NonEmptyString,
+  artistName: ZSchema.NonEmptyString,
 });
 
 const RawTrack = z.object({
-  name: NonEmptyStringSchema,
+  name: ZSchema.NonEmptyString,
   artistName: NullableNonEmptyStringSchema,
   albumName: NullableNonEmptyStringSchema,
 });

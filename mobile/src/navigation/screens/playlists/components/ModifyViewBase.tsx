@@ -36,6 +36,7 @@ import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
 import { TStyledText } from "~/components/Typography/StyledText";
 import { readM3UPlaylist } from "~/modules/backup/M3U";
+import { ZSchema } from "~/modules/form/utils";
 import {
   FormStateProvider,
   useFormStateContext,
@@ -408,24 +409,21 @@ function DeleteWorkflow({
 //#endregion
 
 //#region Schema
-const NullableString = z.nullable(z.string());
-const NonEmptyStringSchema = z.string().check(z.trim(), z.minLength(1));
-
 const SlimTrackSchema = z.object({
-  id: NonEmptyStringSchema,
-  name: NonEmptyStringSchema,
-  artists: NonEmptyStringSchema,
-  artwork: NullableString,
+  id: ZSchema.NonEmptyString,
+  name: ZSchema.NonEmptyString,
+  artists: ZSchema.NonEmptyString,
+  artwork: ZSchema.NullableString,
 });
 
 const PlaylistEntrySchema = z.object({
   // Additional context:
   isFavoritesList: z.boolean(),
   // Actual form fields:
-  name: NonEmptyStringSchema,
+  name: ZSchema.NonEmptyString,
   tracks: z.array(SlimTrackSchema),
   //? Field derived from `tracks`.
-  trackIds: z.array(NonEmptyStringSchema),
+  trackIds: z.array(ZSchema.NonEmptyString),
 });
 
 type PlaylistEntry = z.infer<typeof PlaylistEntrySchema>;
