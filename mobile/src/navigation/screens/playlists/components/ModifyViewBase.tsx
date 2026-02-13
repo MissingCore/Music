@@ -278,51 +278,63 @@ function ListHeaderComponent(props: { showSheet: VoidFunction }) {
 //#region Rendered Item
 type RenderItemProps = DragListRenderItemInfo<PlaylistEntry["tracks"][number]>;
 
-const RenderItem = memo(function RenderItem({
-  item,
-  onRemove,
-  ...info
-}: RenderItemProps & { onRemove: (id: string) => void }) {
-  const { t } = useTranslation();
-  return (
-    <SearchResult
-      type="track"
-      title={item.name}
-      description={item.artists}
-      imageSource={item.artwork}
-      LeftElement={
-        <View className="flex-row items-center gap-1">
+const RenderItem = memo(
+  function RenderItem({
+    item,
+    onRemove,
+    ...info
+  }: RenderItemProps & { onRemove: (id: string) => void }) {
+    const { t } = useTranslation();
+    return (
+      <SearchResult
+        type="track"
+        title={item.name}
+        description={item.artists}
+        imageSource={item.artwork}
+        LeftElement={
+          <View className="flex-row items-center gap-1">
+            <IconButton
+              Icon={DoNotDisturbOn}
+              accessibilityLabel={t("template.entryRemove", {
+                name: item.name,
+              })}
+              onPress={() => onRemove(item.id)}
+              disabled={info.isDragging}
+              size="xs"
+            />
+            <MediaImage
+              type="track"
+              size={48}
+              source={item.artwork}
+              className="rounded-xs"
+            />
+          </View>
+        }
+        RightElement={
           <IconButton
-            Icon={DoNotDisturbOn}
-            accessibilityLabel={t("template.entryRemove", { name: item.name })}
-            onPress={() => onRemove(item.id)}
-            disabled={info.isDragging}
+            Icon={DragHandle}
+            accessibilityLabel={t("template.entryMove", { name: item.name })}
+            onPressIn={info.onDragStart}
+            onPressOut={info.onDragEnd}
             size="xs"
           />
-          <MediaImage
-            type="track"
-            size={48}
-            source={item.artwork}
-            className="rounded-xs"
-          />
-        </View>
-      }
-      RightElement={
-        <IconButton
-          Icon={DragHandle}
-          accessibilityLabel={t("template.entryMove", { name: item.name })}
-          onPressIn={info.onDragStart}
-          onPressOut={info.onDragEnd}
-          size="xs"
-        />
-      }
-      //! `bg-surface` is there to prevent collapsing the View.
-      className={cn("mb-2 bg-surface pr-0", {
-        "bg-surfaceContainerLowest": info.isActive,
-      })}
-    />
-  );
-});
+        }
+        //! `bg-surface` is there to prevent collapsing the View.
+        className={cn("mb-2 bg-surface pr-0", {
+          "bg-surfaceContainerLowest": info.isActive,
+        })}
+      />
+    );
+  },
+  (oldProps, newProps) => {
+    return (
+      oldProps.item.id === newProps.item.id &&
+      (["index", "isActive", "isDragging"] as const).every(
+        (k) => oldProps[k] === newProps[k],
+      )
+    );
+  },
+);
 //#endregion
 //#endregion
 

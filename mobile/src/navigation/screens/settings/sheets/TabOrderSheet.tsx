@@ -96,11 +96,8 @@ const RenderItem = memo(
     );
   },
   (oldProps, newProps) => {
-    return (
-      oldProps.item === newProps.item &&
-      (["index", "isActive", "isDragging"] as const).every(
-        (k) => oldProps[k] === newProps[k],
-      )
+    return (["item", "index", "isActive", "isDragging"] as const).every(
+      (k) => oldProps[k] === newProps[k],
     );
   },
 );
