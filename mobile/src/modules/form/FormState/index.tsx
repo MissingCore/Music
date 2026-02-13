@@ -75,7 +75,7 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
         );
       }
       console.warn(
-        `\`useForm\` doesn't support the type of value in \`${field}\`.`,
+        `\`useForm\` doesn't support (${typeof value}) type values found in \`${field}\`.`,
       );
       return false;
     });
