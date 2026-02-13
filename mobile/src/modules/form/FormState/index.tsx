@@ -36,7 +36,9 @@ type InitialArguments<TSchema extends ZodMiniObject> = {
 
 type FormState<TData extends Record<string, any>> = {
   data: TData;
+  /** @deprecated Use `setFields`. */
   setField: Dispatch<SetStateAction<TData>>;
+  setFields: Dispatch<Partial<TData> | ((prevState: TData) => Partial<TData>)>;
 
   hasChanged: boolean;
   passedConstraints: boolean;
@@ -71,6 +73,17 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
 
   const [data, setData] = useState(props.initData);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  /** Partially update some fields. Under the hood, the previous state is spread. */
+  const setFields: Dispatch<
+    | Partial<z.infer<TSchema>>
+    | ((prevState: z.infer<TSchema>) => Partial<z.infer<TSchema>>)
+  > = useCallback((value) => {
+    setData((prevState) => ({
+      ...prevState,
+      ...(typeof value === "function" ? value(prevState) : value),
+    }));
+  }, []);
 
   const hasChanged = useMemo(() => {
     const safeData = partialSchemaRef.current.safeParse(data).data;
@@ -127,6 +140,7 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
       value={{
         data,
         setField: setData,
+        setFields,
         hasChanged,
         passedConstraints,
         canSubmit,
