@@ -4,7 +4,9 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
 
 import { useCreatePlaylist, usePlaylistsNames } from "~/queries/playlist";
-import { ModifyPlaylistBase } from "./ModifyViewBase";
+
+import { PagePlaceholder } from "~/navigation/components/Placeholder";
+import { ModifyPlaylistBase } from "./components/ModifyViewBase";
 
 import { mutateGuardAsync } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
@@ -12,13 +14,14 @@ import { ToastOptions } from "~/lib/toast";
 export default function CreatePlaylist() {
   const { t } = useTranslation();
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
-  const { data: playlistsNames } = usePlaylistsNames();
+  const { isPending, error, data: playlistsNames } = usePlaylistsNames();
   const createPlaylist = useCreatePlaylist();
 
+  if (isPending || error) return <PagePlaceholder isPending={isPending} />;
   return (
     <ModifyPlaylistBase
-      usedNames={playlistsNames ?? []}
-      onSubmit={async (playlistName, tracks) => {
+      usedNames={playlistsNames}
+      onSubmit={async ({ name: playlistName, tracks }) => {
         await mutateGuardAsync(
           createPlaylist,
           { playlistName, tracks },

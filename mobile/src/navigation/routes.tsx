@@ -248,7 +248,10 @@ export const RootStack = createNativeStackNavigator({
   groups: {
     Current: {
       screens: {
-        CreatePlaylist,
+        CreatePlaylist: {
+          screen: CreatePlaylist,
+          options: { title: "form.create" },
+        },
         ModifyPlaylist: {
           screen: ModifyPlaylist,
           layout: ({ children }) => children,
