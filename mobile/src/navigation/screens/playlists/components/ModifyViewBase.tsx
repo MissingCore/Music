@@ -124,7 +124,6 @@ function PlaylistForm({ bottomOffset }: { bottomOffset: number }) {
       <AddTracksSheet ref={addTracksSheetRef} />
       <FlashDragList
         pointerEvents={isSubmitting ? "none" : "auto"}
-        needsOffscreenAlphaCompositing
         data={data.tracks}
         keyExtractor={({ id }) => id}
         renderItem={(args) => (
