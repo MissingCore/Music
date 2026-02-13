@@ -18,10 +18,12 @@ import { sanitizePlaylistName } from "~/api/playlist.utils";
 import { TrackList, getTrackArtwork } from "~/api/track.utils";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
+import { ContentPlaceholder } from "~/navigation/components/Placeholder";
 import { AddMusicSheet } from "../sheets/AddMusicSheet";
 
 import { cn } from "~/lib/style";
 import { ToastOptions } from "~/lib/toast";
+import { moveArray } from "~/utils/object";
 import { FlashDragList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button/Icon";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
@@ -82,10 +84,28 @@ export function ModifyPlaylistBase(props: {
 const FormInput = FormInputImpl<PlaylistEntry>();
 
 function PlaylistForm({ bottomOffset }: { bottomOffset: number }) {
-  const { data } = useFormState();
+  const { data, setField } = useFormState();
   const addTracksSheetRef = useSheetRef();
 
-  const removeTrack = useCallback((id: string) => {}, []);
+  const removeTrack = useCallback(
+    (id: string) => {
+      setField((prev) => ({
+        ...prev,
+        tracks: prev.tracks.filter((t) => t.id !== id),
+      }));
+    },
+    [setField],
+  );
+
+  const reorderTrack = useCallback(
+    (fromIndex: number, toIndex: number) => {
+      setField((prev) => ({
+        ...prev,
+        tracks: moveArray(prev.tracks, { fromIndex, toIndex }),
+      }));
+    },
+    [setField],
+  );
 
   return (
     <>
@@ -94,13 +114,13 @@ function PlaylistForm({ bottomOffset }: { bottomOffset: number }) {
         data={data.tracks}
         keyExtractor={({ id }) => id}
         renderItem={(args) => <RenderItem {...args} onRemove={removeTrack} />}
-        onReordered={console.log}
+        onReordered={reorderTrack}
         ListHeaderComponent={
           <ListHeaderComponent
             showSheet={() => addTracksSheetRef.current?.present()}
           />
         }
-        ListEmptyComponent={<View></View>}
+        ListEmptyComponent={<ContentPlaceholder errMsgKey="err.msg.noTracks" />}
         // FIXME: For some weird reason, we get double the margin bottom (should be `-mb-2`).
         className="-mb-1"
         contentContainerStyle={{ paddingBottom: bottomOffset }}
@@ -122,7 +142,9 @@ function AddTracksSheet(props: { ref: TrueSheetRef }) {
             ...prev,
             tracks: TrackList.merge(
               prev.tracks,
-              (tracks as SlimTrackWithAlbum[]).map(formatTrack),
+              (tracks as SlimTrackWithAlbum[]).map((t) =>
+                formatTrack({ ...t, album }),
+              ),
             ),
           }));
           toast(
