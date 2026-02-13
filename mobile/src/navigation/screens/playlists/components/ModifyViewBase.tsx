@@ -62,6 +62,7 @@ export function ModifyPlaylistBase(props: {
         name: props.initialData?.name ?? "",
         tracks: props.initialData?.tracks ?? [],
       }}
+      omittedFields={["tracks"]}
       onSubmit={props.onSubmit}
       onConstraints={({ name }) => {
         // Checks to see if playlist name is unique.

@@ -11,7 +11,8 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler } from "react-native";
-import type { ZodMiniObject, z } from "zod/mini";
+import type { ZodMiniObject } from "zod/mini";
+import { z } from "zod/mini";
 
 import { Check } from "~/resources/icons/Check";
 
@@ -25,6 +26,8 @@ import { ModalTemplate } from "~/components/Modal";
 type InitialArguments<TSchema extends ZodMiniObject> = {
   schema: TSchema;
   initData: z.infer<TSchema>;
+  /** Fields omitted during normal validation. Will be checked in `onSubmit`. */
+  omittedFields?: Array<keyof z.infer<TSchema>>;
   onSubmit: (data: z.infer<TSchema>) => void | Promise<void>;
 
   /** Additional validation to check whether we can submit. */
@@ -53,6 +56,16 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
 ) {
   const initData = useRef(props.initData);
   const schemaRef = useRef(props.schema);
+  const partialSchemaRef = useRef(
+    props.omittedFields
+      ? z.omit(
+          props.schema,
+          // @ts-expect-error - Created object will omit keys in schema.
+          Object.fromEntries(props.omittedFields.map((key) => [key, true])),
+        )
+      : props.schema,
+  );
+  const omittedFieldsRef = useRef(props.omittedFields ?? []);
   const onSubmitRef = useRef(props.onSubmit);
   const onConstraintsRef = useRef(props.onConstraints);
 
@@ -60,10 +73,13 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const hasChanged = useMemo(() => {
-    const safeData = schemaRef.current.safeParse(data).data;
+    const safeData = partialSchemaRef.current.safeParse(data).data;
     // Use the sanitized fields as much as possible.
     const refData = { ...data, ...(safeData ?? {}) };
     return Object.entries(refData).some(([field, value]) => {
+      // Skip check if field is omitted.
+      if (omittedFieldsRef.current.includes(field)) return false;
+
       if (isString(value) || isNumber(value) || value === null) {
         return initData.current[field] !== value;
       } else if (Array.isArray(value)) {
@@ -90,7 +106,7 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
     return (
       hasChanged &&
       passedConstraints &&
-      schemaRef.current.safeParse(data).success
+      partialSchemaRef.current.safeParse(data).success
     );
   }, [data, hasChanged, passedConstraints]);
 
