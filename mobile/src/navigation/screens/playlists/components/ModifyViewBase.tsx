@@ -42,7 +42,7 @@ import type { SearchCallbacks } from "~/modules/search/types";
 export function ModifyPlaylistBase(props: {
   onSubmit: (data: PlaylistEntry) => void | Promise<void>;
   mode?: "create" | "edit";
-  initialData?: PlaylistEntry;
+  initialData?: Omit<PlaylistEntry, "trackIds">;
   usedNames: string[];
 }) {
   const { offset } = useFloatingContent();
@@ -61,6 +61,7 @@ export function ModifyPlaylistBase(props: {
         isFavoritesList: props.initialData?.name === FavoritesPlaylistKey,
         name: props.initialData?.name ?? "",
         tracks: props.initialData?.tracks ?? [],
+        trackIds: props.initialData?.tracks.map((t) => t.id) ?? [],
       }}
       omittedFields={["tracks"]}
       onSubmit={props.onSubmit}
@@ -90,20 +91,22 @@ function PlaylistForm({ bottomOffset }: { bottomOffset: number }) {
 
   const removeTrack = useCallback(
     (id: string) => {
-      setField((prev) => ({
-        ...prev,
-        tracks: prev.tracks.filter((t) => t.id !== id),
-      }));
+      setField((prev) => {
+        const updatedList = prev.tracks.filter((t) => t.id !== id);
+        const newTrackIds = updatedList.map((t) => t.id);
+        return { ...prev, tracks: updatedList, trackIds: newTrackIds };
+      });
     },
     [setField],
   );
 
   const reorderTrack = useCallback(
     (fromIndex: number, toIndex: number) => {
-      setField((prev) => ({
-        ...prev,
-        tracks: moveArray(prev.tracks, { fromIndex, toIndex }),
-      }));
+      setField((prev) => {
+        const updatedList = moveArray(prev.tracks, { fromIndex, toIndex });
+        const newTrackIds = updatedList.map((t) => t.id);
+        return { ...prev, tracks: updatedList, trackIds: newTrackIds };
+      });
     },
     [setField],
   );
@@ -139,34 +142,40 @@ function AddTracksSheet(props: { ref: TrueSheetRef }) {
     useMemo(
       () => ({
         album: ({ tracks, ...album }) => {
-          setField((prev) => ({
-            ...prev,
-            tracks: TrackList.merge(
+          setField((prev) => {
+            const updatedList = TrackList.merge(
               prev.tracks,
               (tracks as SlimTrackWithAlbum[]).map((t) =>
                 formatTrack({ ...t, album }),
               ),
-            ),
-          }));
+            );
+            const newTrackIds = updatedList.map((t) => t.id);
+            return { ...prev, tracks: updatedList, trackIds: newTrackIds };
+          });
           toast(
             i18next.t("template.entryAdded", { name: album.name }),
             ToastOptions,
           );
         },
         folder: ({ name, tracks }) => {
-          setField((prev) => ({
-            ...prev,
-            tracks: TrackList.merge(prev.tracks, tracks.map(formatTrack)),
-          }));
+          setField((prev) => {
+            const updatedList = TrackList.merge(
+              prev.tracks,
+              tracks.map(formatTrack),
+            );
+            const newTrackIds = updatedList.map((t) => t.id);
+            return { ...prev, tracks: updatedList, trackIds: newTrackIds };
+          });
           toast(i18next.t("template.entryAdded", { name }), ToastOptions);
         },
         track: (track) => {
-          setField((prev) => ({
-            ...prev,
-            tracks: prev.tracks
+          setField((prev) => {
+            const updatedList = prev.tracks
               .filter(({ id }) => track.id !== id)
-              .concat(formatTrack(track)),
-          }));
+              .concat(formatTrack(track));
+            const newTrackIds = updatedList.map((t) => t.id);
+            return { ...prev, tracks: updatedList, trackIds: newTrackIds };
+          });
           toast(
             i18next.t("template.entryAdded", { name: track.name }),
             ToastOptions,
@@ -318,6 +327,8 @@ const PlaylistEntrySchema = z.object({
   // Actual form fields:
   name: NonEmptyStringSchema,
   tracks: z.array(SlimTrackSchema),
+  //? Field derived from `tracks`.
+  trackIds: z.array(NonEmptyStringSchema),
 });
 
 type PlaylistEntry = z.infer<typeof PlaylistEntrySchema>;
