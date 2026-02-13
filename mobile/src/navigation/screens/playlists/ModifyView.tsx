@@ -4,8 +4,6 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
 
-import { getArtistsString } from "~/api/artist.utils";
-import { getTrackArtwork } from "~/api/track.utils";
 import {
   usePlaylist,
   usePlaylistsNames,
@@ -13,7 +11,10 @@ import {
 } from "~/queries/playlist";
 
 import { PagePlaceholder } from "~/navigation/components/Placeholder";
-import { ModifyPlaylistBase } from "./components/ModifyViewBase";
+import {
+  ModifyPlaylistBase,
+  formatTrackForForm,
+} from "./components/ModifyViewBase";
 
 import { mutateGuardAsync } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
@@ -49,12 +50,7 @@ export default function ModifyPlaylist({
   const initData = {
     isFavoritesList: id === FavoritesPlaylistKey,
     name: id,
-    tracks: playlistQuery.data.tracks.map((t) => ({
-      id: t.id,
-      name: t.name,
-      artists: getArtistsString(t.tracksToArtists),
-      artwork: getTrackArtwork(t),
-    })),
+    tracks: playlistQuery.data.tracks.map(formatTrackForForm),
   };
 
   return (

@@ -75,7 +75,7 @@ export function ModifyPlaylistBase(props: {
         tracks: props.initialData?.tracks ?? [],
         trackIds: props.initialData?.tracks.map((t) => t.id) ?? [],
       }}
-      omittedFields={["tracks"]}
+      omittedFields={["isFavoritesList", "tracks"]}
       onSubmit={props.onSubmit}
       onConstraints={({ name }) => {
         // Checks to see if playlist name is unique.
@@ -159,7 +159,7 @@ function AddTracksSheet(props: { ref: TrueSheetRef }) {
             const updatedList = TrackList.merge(
               prev.tracks,
               (tracks as SlimTrackWithAlbum[]).map((t) =>
-                formatTrack({ ...t, album }),
+                formatTrackForForm({ ...t, album }),
               ),
             );
             const newTrackIds = updatedList.map((t) => t.id);
@@ -174,7 +174,7 @@ function AddTracksSheet(props: { ref: TrueSheetRef }) {
           setField((prev) => {
             const updatedList = TrackList.merge(
               prev.tracks,
-              tracks.map(formatTrack),
+              tracks.map(formatTrackForForm),
             );
             const newTrackIds = updatedList.map((t) => t.id);
             return { ...prev, tracks: updatedList, trackIds: newTrackIds };
@@ -185,7 +185,7 @@ function AddTracksSheet(props: { ref: TrueSheetRef }) {
           setField((prev) => {
             const updatedList = prev.tracks
               .filter(({ id }) => track.id !== id)
-              .concat(formatTrack(track));
+              .concat(formatTrackForForm(track));
             const newTrackIds = updatedList.map((t) => t.id);
             return { ...prev, tracks: updatedList, trackIds: newTrackIds };
           });
@@ -199,15 +199,6 @@ function AddTracksSheet(props: { ref: TrueSheetRef }) {
     );
 
   return <AddMusicSheet ref={props.ref} callbacks={searchCallbacks} />;
-}
-
-function formatTrack(t: SlimTrackWithAlbum) {
-  return {
-    id: t.id,
-    name: t.name,
-    artists: getArtistsString(t.tracksToArtists),
-    artwork: getTrackArtwork(t),
-  };
 }
 //#endregion
 
@@ -227,8 +218,11 @@ function PlaylistNameField() {
   return (
     <View className="gap-1">
       {isFavoritesList ? (
-        <View className="h-8 w-full justify-center rounded-sm border border-outline p-2 opacity-25">
-          <TStyledText textKey="term.favoriteTracks" numberOfLines={1} />
+        <View>
+          <InputLabel labelKey="feat.trackMetadata.extra.name" />
+          <View className="min-h-12 w-full justify-center rounded-sm border border-outline p-2 opacity-25">
+            <TStyledText textKey="term.favoriteTracks" numberOfLines={1} />
+          </View>
         </View>
       ) : (
         <FormInput labelKey="feat.trackMetadata.extra.name" field="name" />
@@ -337,7 +331,7 @@ function ImportM3UWorkflow({
       const { name, tracks: playlistTracks } = await readM3UPlaylist();
       toast(t("feat.backup.extra.importSuccess"), ToastOptions);
       const updatedFields: Partial<PlaylistEntry> = {
-        tracks: playlistTracks.map(formatTrack),
+        tracks: playlistTracks.map(formatTrackForForm),
       };
       if (!data.name && !!name) updatedFields.name = name;
       setField((prev) => ({ ...prev, ...updatedFields }));
@@ -438,5 +432,16 @@ type PlaylistEntry = z.infer<typeof PlaylistEntrySchema>;
 
 function useFormState() {
   return useFormStateContext<PlaylistEntry>();
+}
+//#endregion
+
+//#region Utils
+export function formatTrackForForm(t: SlimTrackWithAlbum) {
+  return {
+    id: t.id,
+    name: t.name,
+    artists: getArtistsString(t.tracksToArtists),
+    artwork: getTrackArtwork(t),
+  };
 }
 //#endregion
