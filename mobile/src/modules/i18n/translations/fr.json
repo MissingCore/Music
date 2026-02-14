@@ -296,7 +296,6 @@
     "search": {
       "title": "Rechercher",
       "extra": {
-        "musicAdd": "Ajouter de la musique",
         "searchMedia": "Recherchez des médias"
       }
     },
@@ -314,10 +313,6 @@
     },
     "playlist": {
       "extra": {
-        "create": "Créer playlist",
-        "delete": "Supprimer playlist",
-        "edit": "Modifier playlist",
-        "name": "Nom de la Playlist",
         "m3uImport": "Importer une playlist M3U",
         "m3uExport": "Exporter au format M3U",
         "absolute": "Absolu",
@@ -325,13 +320,12 @@
       }
     },
     "trackMetadata": {
-      "title": "Modifier les Métadonnées",
       "description": {
         "line1": "Modifiez l'apparence de la piste pour cette application. Cela ne modifie pas le fichier lui-même.",
         "line2": "Remarque : vos modifications peuvent être réinitialisées si ce fichier est modifié."
       },
       "extra": {
-        "albumArtist": "Artiste de l'album",
+        "albumArtists": "Artiste de l'album",
         "disc": "Disque",
         "name": "Nom",
         "trackNumber": "Numéro de Piste",

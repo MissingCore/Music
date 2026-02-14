@@ -296,7 +296,6 @@
     "search": {
       "title": "Szukaj",
       "extra": {
-        "musicAdd": "Dodaj muzykę",
         "searchMedia": "Szukaj mediów"
       }
     },
@@ -314,10 +313,6 @@
     },
     "playlist": {
       "extra": {
-        "create": "Utwórz playlistę",
-        "delete": "Usuń playlistę",
-        "edit": "Edytuj playlistę",
-        "name": "Nazwa dla playlisty",
         "m3uImport": "Importuj z pliku M3U",
         "m3uExport": "Eksportuj do pliku M3U",
         "absolute": "Absolutne",
@@ -325,13 +320,12 @@
       }
     },
     "trackMetadata": {
-      "title": "Edytuj metadane",
       "description": {
         "line1": "Zmień sposób wyświetlania utworów w aplikacji. To nie modyfikuje plików.",
         "line2": "Uwaga: Twoje zmiany mogą zostać odrzucone po modyfikacji pliku."
       },
       "extra": {
-        "albumArtist": "Wykonawca albumu",
+        "albumArtists": "Wykonawca albumu",
         "disc": "CD",
         "name": "Tytuł",
         "trackNumber": "Numer ścieżki",

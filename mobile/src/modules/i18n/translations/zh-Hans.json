@@ -296,7 +296,6 @@
     "search": {
       "title": "搜索",
       "extra": {
-        "musicAdd": "添加音乐",
         "searchMedia": "搜索媒体"
       }
     },
@@ -314,10 +313,6 @@
     },
     "playlist": {
       "extra": {
-        "create": "创建播放列表",
-        "delete": "删除播放列表",
-        "edit": "编辑播放列表",
-        "name": "播放列表名称",
         "m3uImport": null,
         "m3uExport": null,
         "absolute": null,
@@ -325,13 +320,12 @@
       }
     },
     "trackMetadata": {
-      "title": null,
       "description": {
         "line1": null,
         "line2": null
       },
       "extra": {
-        "albumArtist": "专辑艺人",
+        "albumArtists": "专辑艺人",
         "disc": "唱片",
         "name": "名称",
         "trackNumber": "曲目编号",

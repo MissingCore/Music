@@ -296,7 +296,6 @@
     "search": {
       "title": "Suchen",
       "extra": {
-        "musicAdd": "Musik hinzufügen",
         "searchMedia": "Medien suchen"
       }
     },
@@ -314,10 +313,6 @@
     },
     "playlist": {
       "extra": {
-        "create": "Playlist erstellen",
-        "delete": "Playlist löschen",
-        "edit": "Playlist bearbeiten",
-        "name": "Playlistname",
         "m3uImport": "M3U Wiedergabeliste importieren",
         "m3uExport": "Als M3U exportieren",
         "absolute": "Absoluter Pfad",
@@ -325,13 +320,12 @@
       }
     },
     "trackMetadata": {
-      "title": "Metadaten bearbeiten",
       "description": {
         "line1": "Bearbeiten Sie die Darstellung der Tonspur in dieser App. Die Datei selbst wird dadurch nicht verändert.",
         "line2": "Beachten Sie, dass Ihre Änderungen möglicherweise zurückgesetzt werden, wenn sich diese Datei ändert."
       },
       "extra": {
-        "albumArtist": "Album Künstler",
+        "albumArtists": "Album Künstler",
         "disc": "CD Nummer",
         "name": "Name",
         "trackNumber": "Titelnummer",

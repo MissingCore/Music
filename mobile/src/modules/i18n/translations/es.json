@@ -296,7 +296,6 @@
     "search": {
       "title": "Buscar",
       "extra": {
-        "musicAdd": "Añadir música",
         "searchMedia": "Buscar archivos multimedia"
       }
     },
@@ -314,10 +313,6 @@
     },
     "playlist": {
       "extra": {
-        "create": "Crear lista de reproducción",
-        "delete": "Eliminar lista de reproducción",
-        "edit": "Editar lista de reproducción",
-        "name": "Nombre de la playlist",
         "m3uImport": "Importar M3U",
         "m3uExport": "Exportar como M3U",
         "absolute": "Absoluto",
@@ -325,13 +320,12 @@
       }
     },
     "trackMetadata": {
-      "title": "Editar metadatos",
       "description": {
         "line1": "Modifica cómo se muestra la canción en la app. No afecta el archivo original.",
         "line2": "Nota: Los cambios pueden revertirse si el archivo es modificado."
       },
       "extra": {
-        "albumArtist": "Artista del álbum",
+        "albumArtists": "Artista del álbum",
         "disc": "Disco",
         "name": "Nombre",
         "trackNumber": "Número de canción",

@@ -11,7 +11,8 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { BackHandler } from "react-native";
-import type { ZodMiniObject, z } from "zod/mini";
+import type { ZodMiniObject } from "zod/mini";
+import { z } from "zod/mini";
 
 import { Check } from "~/resources/icons/Check";
 
@@ -25,6 +26,8 @@ import { ModalTemplate } from "~/components/Modal";
 type InitialArguments<TSchema extends ZodMiniObject> = {
   schema: TSchema;
   initData: z.infer<TSchema>;
+  /** Fields omitted during normal validation. Will be checked in `onSubmit`. */
+  omittedFields?: Array<keyof z.infer<TSchema>>;
   onSubmit: (data: z.infer<TSchema>) => void | Promise<void>;
 
   /** Additional validation to check whether we can submit. */
@@ -33,9 +36,13 @@ type InitialArguments<TSchema extends ZodMiniObject> = {
 
 type FormState<TData extends Record<string, any>> = {
   data: TData;
+  /** @deprecated For internal use. Use `setFields` instead. */
   setField: Dispatch<SetStateAction<TData>>;
+  /** Partially update some fields in `data`. Under the hood, the previous state is spread. */
+  setFields: Dispatch<Partial<TData> | ((prevState: TData) => Partial<TData>)>;
 
   hasChanged: boolean;
+  passedConstraints: boolean;
   canSubmit: boolean;
   onSubmit: () => Promise<void>;
 
@@ -52,17 +59,40 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
 ) {
   const initData = useRef(props.initData);
   const schemaRef = useRef(props.schema);
+  const partialSchemaRef = useRef(
+    props.omittedFields
+      ? z.omit(
+          props.schema,
+          // @ts-expect-error - Created object will omit keys in schema.
+          Object.fromEntries(props.omittedFields.map((key) => [key, true])),
+        )
+      : props.schema,
+  );
+  const omittedFieldsRef = useRef(props.omittedFields ?? []);
   const onSubmitRef = useRef(props.onSubmit);
   const onConstraintsRef = useRef(props.onConstraints);
 
   const [data, setData] = useState(props.initData);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const setFields: Dispatch<
+    | Partial<z.infer<TSchema>>
+    | ((prevState: z.infer<TSchema>) => Partial<z.infer<TSchema>>)
+  > = useCallback((value) => {
+    setData((prevState) => ({
+      ...prevState,
+      ...(typeof value === "function" ? value(prevState) : value),
+    }));
+  }, []);
+
   const hasChanged = useMemo(() => {
-    const safeData = schemaRef.current.safeParse(data).data;
+    const safeData = partialSchemaRef.current.safeParse(data).data;
     // Use the sanitized fields as much as possible.
     const refData = { ...data, ...(safeData ?? {}) };
     return Object.entries(refData).some(([field, value]) => {
+      // Skip check if field is omitted.
+      if (omittedFieldsRef.current.includes(field)) return false;
+
       if (isString(value) || isNumber(value) || value === null) {
         return initData.current[field] !== value;
       } else if (Array.isArray(value)) {
@@ -70,21 +100,29 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
         const fieldData = initData.current[field] as any[];
         return (
           fieldData.length !== value.length ||
-          fieldData.some((val) => !value.includes(val))
+          //? Order matters.
+          fieldData.some((val, index) => val !== value[index])
         );
       }
       console.warn(
-        `\`useForm\` doesn't support the type of value in \`${field}\`.`,
+        `\`useForm\` doesn't support (${typeof value}) type values found in \`${field}\`.`,
       );
       return false;
     });
   }, [data]);
 
+  const passedConstraints = useMemo(() => {
+    if (!onConstraintsRef.current) return true;
+    return onConstraintsRef.current(data);
+  }, [data]);
+
   const canSubmit = useMemo(() => {
-    let addCheck = true;
-    if (onConstraintsRef.current) addCheck = onConstraintsRef.current(data);
-    return hasChanged && addCheck && schemaRef.current.safeParse(data).success;
-  }, [data, hasChanged]);
+    return (
+      hasChanged &&
+      passedConstraints &&
+      partialSchemaRef.current.safeParse(data).success
+    );
+  }, [data, hasChanged, passedConstraints]);
 
   const onSubmit = useCallback(async () => {
     if (!canSubmit) return;
@@ -102,7 +140,9 @@ export function FormStateProvider<TSchema extends ZodMiniObject>(
       value={{
         data,
         setField: setData,
+        setFields,
         hasChanged,
+        passedConstraints,
         canSubmit,
         onSubmit,
         isSubmitting,

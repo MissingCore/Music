@@ -296,7 +296,6 @@
     "search": {
       "title": "खोज",
       "extra": {
-        "musicAdd": "संगीत जोड़ें",
         "searchMedia": "मीडिया खोजें"
       }
     },
@@ -314,10 +313,6 @@
     },
     "playlist": {
       "extra": {
-        "create": "प्लेलिस्ट बनाएँ",
-        "delete": "प्लेलिस्ट हटाएँ",
-        "edit": "प्लेलिस्ट संपादित करें",
-        "name": "प्लेलिस्ट नाम",
         "m3uImport": null,
         "m3uExport": null,
         "absolute": null,
@@ -325,13 +320,12 @@
       }
     },
     "trackMetadata": {
-      "title": null,
       "description": {
         "line1": null,
         "line2": null
       },
       "extra": {
-        "albumArtist": null,
+        "albumArtists": null,
         "disc": null,
         "name": null,
         "trackNumber": null,

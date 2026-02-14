@@ -3,14 +3,28 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { Add } from "~/resources/icons/Add";
-import { Close } from "~/resources/icons/Close";
+import { DoNotDisturbOn } from "~/resources/icons/DoNotDisturbOn";
 import { useFormStateContext } from ".";
 
-import { cn } from "~/lib/style";
 import type { KeysOfValue } from "~/utils/types";
-import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
+import { FlatList } from "~/components/Defaults";
+import { IconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";
-import { TEm } from "~/components/Typography/StyledText";
+import { TStyledText } from "~/components/Typography/StyledText";
+
+//#region Label
+export function InputLabel(props: {
+  labelKey: ParseKeys;
+  RightElement?: React.ReactNode;
+}) {
+  return (
+    <View className="mb-1 min-h-8 flex-row items-center justify-between gap-4">
+      <TStyledText textKey={props.labelKey} bold className="text-xs" />
+      {props.RightElement}
+    </View>
+  );
+}
+//#endregion
 
 //#region Text/Numeric Input
 export function FormInputImpl<TData extends Record<string, any>>() {
@@ -36,13 +50,13 @@ export function FormInputImpl<TData extends Record<string, any>>() {
 
     return (
       <View className="flex-1">
-        <TEm textKey={props.labelKey} dim />
+        <InputLabel labelKey={props.labelKey} />
         <TextInput
           inputMode={props.numeric ? "numeric" : undefined}
           editable={!isSubmitting}
           value={value !== null ? String(value) : ""}
           onChangeText={onChange}
-          className="w-full border-b border-outline"
+          className="w-full rounded-sm border border-outline p-2"
         />
       </View>
     );
@@ -60,54 +74,62 @@ export function ArrayFormInputImpl<TData extends Record<string, any>>() {
     const { data, setField, isSubmitting } = useFormState<TData>();
 
     const field = props.field;
-    const value: string[] = data[field];
+    const values: string[] = data[field];
 
     return (
       <View>
-        <TEm textKey={props.labelKey} dim />
-        {value.map((value, row) => (
-          <View
-            key={row}
-            className={cn("flex-row items-center", { "mt-2": row > 0 })}
-          >
-            <TextInput
-              editable={!isSubmitting}
-              value={value}
-              onChangeText={(text) =>
-                setField((prev) => ({
-                  ...prev,
-                  [field]: (prev[field] as string[]).map((val, idx) =>
-                    idx === row ? text : val,
-                  ),
-                }))
-              }
-              className="shrink grow border-b border-outline"
-            />
+        <InputLabel
+          labelKey={props.labelKey}
+          RightElement={
             <IconButton
-              Icon={Close}
-              accessibilityLabel={t("template.entryRemove", { name: value })}
+              Icon={Add}
+              accessibilityLabel={t("template.entryAdd", {
+                name: t(props.labelKey),
+              })}
               onPress={() =>
-                setField((prev) => ({
-                  ...prev,
-                  [field]: (prev[field] as string[]).filter(
-                    (_, idx) => idx !== row,
-                  ),
-                }))
+                setField((prev) => ({ ...prev, [field]: [...prev[field], ""] }))
               }
               disabled={isSubmitting}
-              className="shrink-0"
+              size="xs"
             />
-          </View>
-        ))}
-        <FilledIconButton
-          Icon={Add}
-          accessibilityLabel=""
-          onPress={() =>
-            setField((prev) => ({ ...prev, [field]: [...prev[field], ""] }))
           }
-          disabled={isSubmitting}
-          className="mt-2 rounded-md bg-secondary active:bg-secondaryDim"
-          _iconColor="onSecondary"
+        />
+        <FlatList
+          data={values}
+          keyExtractor={(_, index) => `${index}`}
+          renderItem={({ item: value, index: row }) => (
+            <View className="flex-row items-center gap-1">
+              <IconButton
+                Icon={DoNotDisturbOn}
+                accessibilityLabel={t("template.entryRemove", { name: value })}
+                onPress={() =>
+                  setField((prev) => ({
+                    ...prev,
+                    [field]: (prev[field] as string[]).filter(
+                      (_, idx) => idx !== row,
+                    ),
+                  }))
+                }
+                disabled={isSubmitting}
+                size="xs"
+              />
+              <TextInput
+                editable={!isSubmitting}
+                value={value}
+                onChangeText={(text) =>
+                  setField((prev) => ({
+                    ...prev,
+                    [field]: (prev[field] as string[]).map((val, idx) =>
+                      idx === row ? text : val,
+                    ),
+                  }))
+                }
+                className="shrink grow rounded-sm border border-outline p-2"
+              />
+            </View>
+          )}
+          scrollEnabled={false}
+          contentContainerClassName="gap-2"
         />
       </View>
     );
@@ -124,7 +146,7 @@ export function TextareaImpl<TData extends Record<string, any>>() {
     const { data, setField, isSubmitting } = useFormState<TData>();
     return (
       <View className="flex-1">
-        <TEm textKey={props.labelKey} dim />
+        <InputLabel labelKey={props.labelKey} />
         <TextInput
           editable={!isSubmitting}
           value={data[props.field]}
@@ -134,7 +156,7 @@ export function TextareaImpl<TData extends Record<string, any>>() {
           multiline
           numberOfLines={16}
           textAlignVertical="top"
-          className="min-h-64 w-full border-b border-outline py-3"
+          className="min-h-64 w-full rounded-sm border border-outline px-2 py-3"
         />
       </View>
     );

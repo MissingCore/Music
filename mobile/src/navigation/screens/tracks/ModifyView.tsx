@@ -14,6 +14,7 @@ import { db } from "~/db";
 import { tracksToArtists } from "~/db/schema";
 
 import i18next from "~/modules/i18n";
+import { Info } from "~/resources/icons/Info";
 import { upsertAlbums } from "~/api/album";
 import { AlbumArtistsKey } from "~/api/album.utils";
 import { createArtists } from "~/api/artist";
@@ -32,9 +33,9 @@ import { clearAllQueries } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
 import { splitOn } from "~/utils/string";
 import { ScrollablePresets } from "~/components/Defaults";
-import { Divider } from "~/components/Divider";
 import { ExtendedTButton } from "~/components/Form/Button";
 import { StyledText } from "~/components/Typography/StyledText";
+import { ZSchema } from "~/modules/form/utils";
 import {
   FormStateProvider,
   useFormStateContext,
@@ -95,29 +96,31 @@ function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
     <KeyboardAwareScrollView
       bottomOffset={16}
       {...ScrollablePresets}
-      // Remove 24px as `KeyboardAwareScrollView` adds an element at the
+      // Remove 16px as `KeyboardAwareScrollView` adds an element at the
       // end of the ScrollView, causing an additional application of `gap`.
-      contentContainerStyle={{ paddingBottom: bottomOffset - 24 }}
-      contentContainerClassName="gap-6 p-4"
+      contentContainerStyle={{ paddingBottom: bottomOffset - 16 }}
+      contentContainerClassName="gap-4 p-4"
     >
-      <StyledText dim className="text-sm">
-        {t("feat.trackMetadata.description.line1")}
-        {"\n\n"}
-        {t("feat.trackMetadata.description.line2")}
-      </StyledText>
-      <Divider />
+      <View className="flex-row gap-2 rounded-md bg-surfaceContainerLowest p-4 pl-2">
+        <Info size={20} color="onSurfaceVariant" />
+        <StyledText dim className="shrink grow text-sm">
+          {t("feat.trackMetadata.description.line1")}
+          {"\n\n"}
+          {t("feat.trackMetadata.description.line2")}
+        </StyledText>
+      </View>
 
       <FormInput labelKey="feat.trackMetadata.extra.name" field="name" />
       <ArrayFormInput labelKey="term.artists" field="artists" />
       <FormInput labelKey="term.album" field="album" />
       <ArrayFormInput
-        labelKey="feat.trackMetadata.extra.albumArtist"
+        labelKey="feat.trackMetadata.extra.albumArtists"
         field="albumArtists"
       />
-      <View className="flex-row items-end gap-6">
+      <View className="flex-row items-end gap-4">
         <FormInput
-          labelKey="feat.trackMetadata.extra.year"
-          field="year"
+          labelKey="feat.trackMetadata.extra.disc"
+          field="disc"
           numeric
         />
         <FormInput
@@ -127,8 +130,8 @@ function MetadataForm({ bottomOffset }: { bottomOffset: number }) {
         />
       </View>
       <FormInput
-        labelKey="feat.trackMetadata.extra.disc"
-        field="disc"
+        labelKey="feat.trackMetadata.extra.year"
+        field="year"
         numeric
       />
     </KeyboardAwareScrollView>
@@ -144,7 +147,7 @@ function ResetWorkflow(
   },
 ) {
   const delimiters = usePreferenceStore((s) => s.separators);
-  const { setField, isSubmitting, setIsSubmitting } = useFormState();
+  const { setFields, isSubmitting, setIsSubmitting } = useFormState();
 
   const onReset = async () => {
     setIsSubmitting(true);
@@ -153,8 +156,7 @@ function ResetWorkflow(
         ...MetadataPresets.standard,
         "discNumber",
       ]);
-      setField((prev) => ({
-        ...prev,
+      setFields({
         name: trackMetadata.title ?? "",
         artists: trackMetadata.artist
           ? splitOn(trackMetadata.artist, delimiters)
@@ -166,7 +168,7 @@ function ResetWorkflow(
         year: trackMetadata.year,
         disc: trackMetadata.discNumber,
         track: trackMetadata.trackNumber,
-      }));
+      });
     } catch {}
     setIsSubmitting(false);
   };
@@ -186,26 +188,18 @@ function ResetWorkflow(
 //#endregion
 
 //#region Schema
-const NonEmptyStringSchema = z.string().check(z.trim(), z.minLength(1));
-const NullableStringSchema = z.nullable(
-  z.pipe(
-    z.string().check(z.trim()), // String will get trimmed.
-    z.transform((str) => (str === "" ? null : str)),
-  ),
-);
-const NullableRealNumber = z.nullable(z.number().check(z.int(), z.gt(0)));
 const TrackMetadataSchema = z.object({
   // Additional context:
   id: z.string(),
   uri: z.string(),
   // Actual form fields:
-  name: NonEmptyStringSchema,
-  artists: z.array(NonEmptyStringSchema),
-  album: NullableStringSchema,
-  albumArtists: z.array(NonEmptyStringSchema),
-  year: NullableRealNumber,
-  disc: NullableRealNumber,
-  track: NullableRealNumber,
+  name: ZSchema.NonEmptyString,
+  artists: z.array(ZSchema.NonEmptyString),
+  album: ZSchema.NullableString,
+  albumArtists: z.array(ZSchema.NonEmptyString),
+  year: ZSchema.NullableRealNumber,
+  disc: ZSchema.NullableRealNumber,
+  track: ZSchema.NullableRealNumber,
 });
 
 type TrackMetadata = z.infer<typeof TrackMetadataSchema>;

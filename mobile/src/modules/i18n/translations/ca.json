@@ -296,7 +296,6 @@
     "search": {
       "title": "Cerca",
       "extra": {
-        "musicAdd": "Afegir",
         "searchMedia": "Cerca fitxers de mèdia"
       }
     },
@@ -314,10 +313,6 @@
     },
     "playlist": {
       "extra": {
-        "create": "Crea llista",
-        "delete": "Esborra llista",
-        "edit": "Edita llista",
-        "name": "Títol de la Llista",
         "m3uImport": null,
         "m3uExport": null,
         "absolute": null,
@@ -325,13 +320,12 @@
       }
     },
     "trackMetadata": {
-      "title": null,
       "description": {
         "line1": null,
         "line2": null
       },
       "extra": {
-        "albumArtist": null,
+        "albumArtists": null,
         "disc": null,
         "name": null,
         "trackNumber": null,

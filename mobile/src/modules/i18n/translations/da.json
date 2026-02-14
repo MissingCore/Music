@@ -296,7 +296,6 @@
     "search": {
       "title": "Søg",
       "extra": {
-        "musicAdd": "Tilføj musik",
         "searchMedia": "Søg i medier"
       }
     },
@@ -314,10 +313,6 @@
     },
     "playlist": {
       "extra": {
-        "create": "Lav ny playliste",
-        "delete": "Slet playliste",
-        "edit": "Tilpas playliste",
-        "name": "Playlistens navn",
         "m3uImport": null,
         "m3uExport": null,
         "absolute": null,
@@ -325,13 +320,12 @@
       }
     },
     "trackMetadata": {
-      "title": null,
       "description": {
         "line1": null,
         "line2": null
       },
       "extra": {
-        "albumArtist": null,
+        "albumArtists": null,
         "disc": null,
         "name": null,
         "trackNumber": null,

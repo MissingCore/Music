@@ -296,7 +296,6 @@
     "search": {
       "title": "Ara",
       "extra": {
-        "musicAdd": "Müzik Ekle",
         "searchMedia": "Medyada Ara"
       }
     },
@@ -314,10 +313,6 @@
     },
     "playlist": {
       "extra": {
-        "create": "Çalma Listesi Oluştur",
-        "delete": "Çalma Listesini Sil",
-        "edit": "Çalma Listesini Düzenle",
-        "name": "Çalma Listesi Adı",
         "m3uImport": "M3U Çalma Listesini İçe Aktar",
         "m3uExport": "M3U Olarak Dışa Aktar",
         "absolute": "Mutlak",
@@ -325,13 +320,12 @@
       }
     },
     "trackMetadata": {
-      "title": "Meta Verileri Düzenle",
       "description": {
         "line1": "Parçanın bu uygulamada nasıl görüneceğini düzenleyin. Bu, dosyanın kendisini değiştirmez.",
         "line2": "Not: Bu dosya değişirse yaptığınız değişiklikler sıfırlanabilir."
       },
       "extra": {
-        "albumArtist": "Albüm Sanatçısı",
+        "albumArtists": "Albüm Sanatçısı",
         "disc": "Disk",
         "name": "Ad",
         "trackNumber": "Parça Numarası",

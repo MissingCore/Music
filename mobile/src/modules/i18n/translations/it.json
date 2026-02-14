@@ -296,7 +296,6 @@
     "search": {
       "title": "Ricerca",
       "extra": {
-        "musicAdd": "Aggiungi musica",
         "searchMedia": "Cerca file"
       }
     },
@@ -314,10 +313,6 @@
     },
     "playlist": {
       "extra": {
-        "create": "Crea $t(term.playlist)",
-        "delete": "Elimina $t(term.playlist)",
-        "edit": "Modifica $t(term.playlist)",
-        "name": "Nome $t(term.playlist)",
         "m3uImport": null,
         "m3uExport": null,
         "absolute": null,
@@ -325,13 +320,12 @@
       }
     },
     "trackMetadata": {
-      "title": null,
       "description": {
         "line1": null,
         "line2": null
       },
       "extra": {
-        "albumArtist": null,
+        "albumArtists": null,
         "disc": null,
         "name": null,
         "trackNumber": null,

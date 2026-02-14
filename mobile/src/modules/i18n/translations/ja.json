@@ -296,7 +296,6 @@
     "search": {
       "title": "検索",
       "extra": {
-        "musicAdd": "音楽を追加",
         "searchMedia": "メディアを検索"
       }
     },
@@ -314,10 +313,6 @@
     },
     "playlist": {
       "extra": {
-        "create": "プレイリストを作成",
-        "delete": "プレイリストを削除",
-        "edit": "プレイリストを編集",
-        "name": "プレイリスト名",
         "m3uImport": "M3U プレイリストをインポート",
         "m3uExport": "M3U としてエクスポート",
         "absolute": "絶対",
@@ -325,13 +320,12 @@
       }
     },
     "trackMetadata": {
-      "title": "メタデータを編集",
       "description": {
         "line1": "このアプリでのトラックの表示方法を編集します。ファイル自体は変更されません。",
         "line2": "注意: このファイルが変更されると、変更内容がリセットされる可能性があります。"
       },
       "extra": {
-        "albumArtist": "アルバムアーティスト",
+        "albumArtists": "アルバムアーティスト",
         "disc": "ディスク",
         "name": "名前",
         "trackNumber": "トラック番号",
