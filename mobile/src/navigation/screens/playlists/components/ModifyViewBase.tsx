@@ -15,9 +15,9 @@ import { CheckCircle } from "~/resources/icons/CheckCircle";
 import { DoNotDisturbOn } from "~/resources/icons/DoNotDisturbOn";
 import { DragHandle } from "~/resources/icons/DragHandle";
 import { getArtistsString } from "~/api/artist.utils";
-import { useDeletePlaylist } from "~/queries/playlist";
 import { sanitizePlaylistName } from "~/api/playlist.utils";
 import { TrackList, getTrackArtwork } from "~/api/track.utils";
+import { useDeletePlaylist } from "~/queries/playlist";
 
 import { useFloatingContent } from "~/navigation/hooks/useFloatingContent";
 import { ContentPlaceholder } from "~/navigation/components/Placeholder";
@@ -163,9 +163,7 @@ function AddTracksSheet(props: { ref: TrueSheetRef }) {
             getTracksFields(
               TrackList.merge(
                 prev.tracks,
-                (tracks as SlimTrackWithAlbum[]).map((t) =>
-                  formatTrackForForm({ ...t, album }),
-                ),
+                tracks.map((t) => formatTrackForForm({ ...t, album })),
               ),
             ),
           );
@@ -478,7 +476,9 @@ export function formatTrackForForm(t: SlimTrackWithAlbum) {
 }
 
 /** Return `tracks` & the derived `trackIds` field. */
-function getTracksFields(tracks: SlimTrackEntry[]) {
+function getTracksFields(
+  tracks: SlimTrackEntry[],
+): Pick<PlaylistEntry, "tracks" | "trackIds"> {
   return { tracks, trackIds: tracks.map((t) => t.id) };
 }
 //#endregion
