@@ -12,7 +12,6 @@ import i18next from "~/modules/i18n";
 import { Add } from "~/resources/icons/Add";
 import { Cancel } from "~/resources/icons/Cancel";
 import { CheckCircle } from "~/resources/icons/CheckCircle";
-import { DoNotDisturbOn } from "~/resources/icons/DoNotDisturbOn";
 import { DragHandle } from "~/resources/icons/DragHandle";
 import { getArtistsString } from "~/api/artist.utils";
 import { sanitizePlaylistName } from "~/api/playlist.utils";
@@ -31,6 +30,7 @@ import { wait } from "~/utils/promise";
 import { FlashDragList } from "~/components/Defaults";
 import { ExtendedTButton } from "~/components/Form/Button";
 import { IconButton } from "~/components/Form/Button/Icon";
+import { RemovableItem } from "~/components/List/RemovableItem";
 import { ModalTemplate } from "~/components/Modal";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
@@ -43,7 +43,6 @@ import {
 } from "~/modules/form/FormState";
 import { FormInputImpl, InputLabel } from "~/modules/form/FormState/FormInput";
 import { FavoritesPlaylistKey } from "~/modules/media/constants";
-import { MediaImage } from "~/modules/media/components/MediaImage";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import type { SearchCallbacks } from "~/modules/search/types";
 
@@ -279,45 +278,34 @@ const RenderItem = memo(
   }) {
     const { t } = useTranslation();
     return (
-      <SearchResult
-        type="track"
-        title={item.name}
-        description={item.artists}
-        imageSource={item.artwork}
-        LeftElement={
-          <View className="flex-row items-center gap-1">
-            <IconButton
-              Icon={DoNotDisturbOn}
-              accessibilityLabel={t("template.entryRemove", {
-                name: item.name,
-              })}
-              onPress={() => onRemove(item.id)}
-              disabled={info.isDragging}
-              size="xs"
-            />
-            <MediaImage
-              type="track"
-              size={48}
-              source={item.artwork}
-              className="rounded-xs"
-            />
-          </View>
-        }
-        RightElement={
-          <IconButton
-            Icon={DragHandle}
-            accessibilityLabel={t("template.entryMove", { name: item.name })}
-            onPressIn={info.onDragStart}
-            onPressOut={info.onDragEnd}
-            size="xs"
-          />
-        }
+      <RemovableItem
+        label={item.name}
+        onRemove={() => onRemove(item.id)}
+        disabled={info.isDragging}
         //! `bg-surface` is there to prevent collapsing the View.
-        className={cn("mb-2 bg-surface pr-0", {
+        className={cn("mb-2 rounded-xs bg-surface", {
           "bg-surfaceContainerLowest": info.isActive,
           "opacity-25": info.isSubmitting,
         })}
-      />
+      >
+        <SearchResult
+          type="track"
+          title={item.name}
+          description={item.artists}
+          imageSource={item.artwork}
+          RightElement={
+            <IconButton
+              Icon={DragHandle}
+              accessibilityLabel={t("template.entryMove", { name: item.name })}
+              onPressIn={info.onDragStart}
+              onPressOut={info.onDragEnd}
+              disabled={info.isDragging && !info.isActive}
+              size="xs"
+            />
+          }
+          className="shrink grow"
+        />
+      </RemovableItem>
     );
   },
   (oldProps, newProps) => {

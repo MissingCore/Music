@@ -3,13 +3,13 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 import { Add } from "~/resources/icons/Add";
-import { DoNotDisturbOn } from "~/resources/icons/DoNotDisturbOn";
 import { useFormStateContext } from ".";
 
 import type { KeysOfValue } from "~/utils/types";
 import { FlatList } from "~/components/Defaults";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { TextInput } from "~/components/Form/Input";
+import { RemovableItem } from "~/components/List/RemovableItem";
 import { TStyledText } from "~/components/Typography/StyledText";
 
 //#region Label
@@ -98,21 +98,18 @@ export function ArrayFormInputImpl<TData extends Record<string, any>>() {
           data={values}
           keyExtractor={(_, index) => `${index}`}
           renderItem={({ item: value, index: row }) => (
-            <View className="flex-row items-center gap-1">
-              <IconButton
-                Icon={DoNotDisturbOn}
-                accessibilityLabel={t("template.entryRemove", { name: value })}
-                onPress={() =>
-                  setField((prev) => ({
-                    ...prev,
-                    [field]: (prev[field] as string[]).filter(
-                      (_, idx) => idx !== row,
-                    ),
-                  }))
-                }
-                disabled={isSubmitting}
-                size="xs"
-              />
+            <RemovableItem
+              label={value}
+              onRemove={() =>
+                setField((prev) => ({
+                  ...prev,
+                  [field]: (prev[field] as string[]).filter(
+                    (_, idx) => idx !== row,
+                  ),
+                }))
+              }
+              disabled={isSubmitting}
+            >
               <TextInput
                 editable={!isSubmitting}
                 value={value}
@@ -126,7 +123,7 @@ export function ArrayFormInputImpl<TData extends Record<string, any>>() {
                 }
                 className="shrink grow rounded-sm border border-outline p-2"
               />
-            </View>
+            </RemovableItem>
           )}
           scrollEnabled={false}
           contentContainerClassName="gap-2"

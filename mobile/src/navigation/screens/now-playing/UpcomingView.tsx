@@ -2,17 +2,16 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { inArray } from "drizzle-orm";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, View } from "react-native";
+import { Pressable } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
 import { tracks } from "~/db/schema";
 
 import { Cached } from "~/resources/icons/Cached";
-import { Close } from "~/resources/icons/Close";
+import { DoNotDisturbOn } from "~/resources/icons/DoNotDisturbOn";
 import { DragHandle } from "~/resources/icons/DragHandle";
 import { getArtistsString } from "~/api/artist.utils";
 import { getTracks } from "~/api/track";
-import { getTrackArtwork } from "~/api/track.utils";
 import { playbackStore, usePlaybackStore } from "~/stores/Playback/store";
 import { PlaybackControls, Queue } from "~/stores/Playback/actions";
 
@@ -24,9 +23,8 @@ import { moveArray } from "~/utils/object";
 import { wait } from "~/utils/promise";
 import { FlashDragList } from "~/components/Defaults";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
-import { StyledText } from "~/components/Typography/StyledText";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
-import { MediaImage } from "~/modules/media/components/MediaImage";
+import { SearchResult } from "~/modules/search/components/SearchResult";
 import { RepeatModes } from "~/stores/Playback/constants";
 import { extractTrackId } from "~/stores/Playback/utils";
 
@@ -138,7 +136,7 @@ const RenderItem = memo(
             : PlaybackControls.playAtIndex(index)
         }
         className={cn(
-          "mx-2 mb-2 flex-row items-center gap-1 rounded-xs active:bg-surfaceContainerLowest/50",
+          "mx-3 mb-2 flex-row items-center gap-1 rounded-xs active:bg-surfaceContainerLowest/50",
           {
             "bg-surfaceContainerLowest!": info.isActive,
             "opacity-25 active:opacity-100":
@@ -147,50 +145,31 @@ const RenderItem = memo(
         )}
       >
         <IconButton
-          Icon={DragHandle}
-          accessibilityLabel={t("template.entryMove", { name: item.name })}
-          onPressIn={info.onDragStart}
-          onPressOut={info.onDragEnd}
-          disabled={info.isDragging && !info.isActive}
-          size="sm"
+          Icon={DoNotDisturbOn}
+          accessibilityLabel={t("template.entryRemove", { name: item.name })}
+          onPress={() => onRemoveTrack(item.key)}
+          disabled={item.active || info.isDragging}
+          size="xs"
         />
-        <View className="shrink grow flex-row items-center gap-2">
-          {item.active ? (
-            <PlayingIndicator />
-          ) : (
-            <MediaImage
-              type="track"
-              size={48}
-              source={getTrackArtwork(item)}
-              className="rounded-xs"
+        <SearchResult
+          type="track"
+          title={item.name}
+          description={getArtistsString(item.tracksToArtists)}
+          imageSource={item.artwork}
+          LeftElement={item.active ? <PlayingIndicator /> : undefined}
+          RightElement={
+            <IconButton
+              Icon={DragHandle}
+              accessibilityLabel={t("template.entryMove", { name: item.name })}
+              onPressIn={info.onDragStart}
+              onPressOut={info.onDragEnd}
+              disabled={info.isDragging && !info.isActive}
+              size="xs"
             />
-          )}
-          <View className="shrink grow gap-0.5 pr-2">
-            <StyledText
-              numberOfLines={1}
-              className={cn("text-sm", { "text-primary": item.active })}
-            >
-              {item.name}
-            </StyledText>
-            <StyledText
-              numberOfLines={1}
-              className="text-xs text-onSurfaceVariant"
-            >
-              {getArtistsString(item.tracksToArtists)}
-            </StyledText>
-          </View>
-        </View>
-        {item.active ? (
-          <View className="size-10" />
-        ) : (
-          <IconButton
-            Icon={Close}
-            accessibilityLabel={t("template.entryRemove", { name: item.name })}
-            onPress={() => onRemoveTrack(item.key)}
-            disabled={info.isDragging}
-            size="sm"
-          />
-        )}
+          }
+          poppyLabel={item.active}
+          className="shrink grow"
+        />
       </Pressable>
     );
   },
