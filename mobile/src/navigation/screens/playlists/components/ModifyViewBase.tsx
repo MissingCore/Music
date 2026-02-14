@@ -55,6 +55,8 @@ export function ModifyPlaylistBase(props: {
 }) {
   const { offset, ...rest } = useFloatingContent();
 
+  const isFavoritesList = props.initialData?.name === FavoritesPlaylistKey;
+
   const RenderedWorkflow = useMemo(
     () => (props.mode === "edit" ? DeleteWorkflow : ImportM3UWorkflow),
     [props.mode],
@@ -71,7 +73,7 @@ export function ModifyPlaylistBase(props: {
     <FormStateProvider
       schema={PlaylistEntrySchema}
       initData={{
-        isFavoritesList: props.initialData?.name === FavoritesPlaylistKey,
+        isFavoritesList,
         name: props.initialData?.name ?? "",
         tracks: props.initialData?.tracks ?? [],
         trackIds: props.initialData?.tracks.map((t) => t.id) ?? [],
@@ -91,7 +93,7 @@ export function ModifyPlaylistBase(props: {
       }}
     >
       <PlaylistForm bottomOffset={offset} />
-      <RenderedWorkflow {...rest} />
+      {!isFavoritesList ? <RenderedWorkflow {...rest} /> : null}
     </FormStateProvider>
   );
 }
