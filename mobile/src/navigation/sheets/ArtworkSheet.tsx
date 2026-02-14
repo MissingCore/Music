@@ -10,7 +10,7 @@ import { useTrack, useUpdateTrackArtwork } from "~/queries/track";
 import { pickImage } from "~/lib/file-system";
 import { mutateGuard } from "~/lib/react-query";
 import { wait } from "~/utils/promise";
-import { DetachedSheet } from "~/components/Sheet/Detached";
+import { DetachedSheet } from "~/components/Sheet";
 import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { MediaImage } from "~/modules/media/components/MediaImage";

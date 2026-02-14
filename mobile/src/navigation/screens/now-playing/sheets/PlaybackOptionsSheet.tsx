@@ -22,7 +22,7 @@ import { ScrollView } from "~/components/Defaults";
 import { NumberStepper } from "~/components/Form/NumberStepper";
 import { CachedSlider } from "~/components/Form/Slider";
 import { SegmentedList } from "~/components/List/Segmented";
-import { DetachedSheet } from "~/components/Sheet/Detached";
+import { DetachedSheet } from "~/components/Sheet";
 import { SheetLabelAction } from "~/components/Sheet/SheetLabelAction";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";

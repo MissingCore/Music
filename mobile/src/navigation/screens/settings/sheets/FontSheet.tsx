@@ -5,7 +5,7 @@ import { PreferenceSetters } from "~/stores/Preference/actions";
 
 import { getFont } from "~/lib/style";
 import { toLowerCase } from "~/utils/string";
-import { DetachedSheet } from "~/components/Sheet/Detached";
+import { DetachedSheet } from "~/components/Sheet";
 import { HorizontalRadioList } from "~/components/Sheet/HorizontalRadioList";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import type { AccentFont } from "~/stores/Preference/constants";

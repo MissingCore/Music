@@ -9,7 +9,7 @@ import { ToastOptions } from "~/lib/toast";
 import { ExtendedTButton } from "~/components/Form/Button";
 import type { PickerOption } from "~/components/Form/SegmentedPicker";
 import { SegmentedPicker } from "~/components/Form/SegmentedPicker";
-import { DetachedSheet } from "~/components/Sheet/Detached";
+import { DetachedSheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { exportPlaylistAsM3U } from "~/modules/backup/M3U";
 

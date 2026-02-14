@@ -9,7 +9,7 @@ import { sessionStore, useSessionStore } from "~/stores/Session/store";
 
 import { Button } from "~/components/Form/Button";
 import { CachedSlider } from "~/components/Form/Slider";
-import { DetachedSheet } from "~/components/Sheet/Detached";
+import { DetachedSheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { StyledText } from "~/components/Typography/StyledText";
 

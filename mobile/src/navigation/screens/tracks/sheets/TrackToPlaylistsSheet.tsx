@@ -11,7 +11,7 @@ import { mutateGuard } from "~/lib/react-query";
 import { LegendList } from "~/components/Defaults";
 import { CheckboxField } from "~/components/Form/Checkbox";
 import { Marquee } from "~/components/Marquee";
-import { DetachedSheet } from "~/components/Sheet/Detached";
+import { DetachedSheet } from "~/components/Sheet";
 import { useEnableSheetScroll } from "~/components/Sheet/useEnableSheetScroll";
 import { StyledText } from "~/components/Typography/StyledText";
 

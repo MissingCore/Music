@@ -18,7 +18,7 @@ import { RadioField } from "~/components/Form/Radio";
 import { Marquee } from "~/components/Marquee";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useSheetRef } from "~/components/Sheet/useSheetRef";
-import { DetachedSheet } from "~/components/Sheet/Detached";
+import { DetachedSheet } from "~/components/Sheet";
 import {
   DetachedDimView,
   useDetachedDimViewContext,

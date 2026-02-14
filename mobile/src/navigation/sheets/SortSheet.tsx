@@ -8,7 +8,7 @@ import {
 
 import { FlatList } from "~/components/Defaults";
 import { RadioField } from "~/components/Form/Radio";
-import { DetachedSheet } from "~/components/Sheet/Detached";
+import { DetachedSheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { TStyledText } from "~/components/Typography/StyledText";
 import { Switch } from "~/components/UI/Switch";

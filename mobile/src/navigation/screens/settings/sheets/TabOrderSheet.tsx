@@ -10,7 +10,7 @@ import { Tabs } from "~/stores/Preference/actions";
 import { cn } from "~/lib/style";
 import { IconButton } from "~/components/Form/Button/Icon";
 import { CheckboxField } from "~/components/Form/Checkbox";
-import { DetachedSheet } from "~/components/Sheet/Detached";
+import { DetachedSheet } from "~/components/Sheet";
 import type { SheetDragListRenderItemInfo } from "~/components/Sheet/SheetDragList";
 import { SheetDragList } from "~/components/Sheet/SheetDragList";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";

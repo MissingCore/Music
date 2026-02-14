@@ -5,7 +5,7 @@ import { useSessionStore } from "~/stores/Session/store";
 import { navigateToArtist } from "~/stores/Session/actions";
 
 import { FlatList } from "~/components/Defaults";
-import { DetachedSheet } from "~/components/Sheet/Detached";
+import { DetachedSheet } from "~/components/Sheet";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 
 const GLOBAL_SHEET_KEY = "ArtistsSheet";

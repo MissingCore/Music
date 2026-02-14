@@ -10,7 +10,7 @@ import { queries as q } from "~/queries/keyStore";
 
 import { queryClient } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
-import { DetachedSheet } from "~/components/Sheet/Detached";
+import { DetachedSheet } from "~/components/Sheet";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { useAllMedia } from "~/modules/search/hooks/useSearch";
 import { SearchList } from "~/modules/search/components/SearchList";

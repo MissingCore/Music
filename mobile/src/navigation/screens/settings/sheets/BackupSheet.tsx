@@ -1,7 +1,7 @@
 import { useExportBackup, useImportBackup } from "~/modules/backup/JSON";
 
 import { mutateGuard } from "~/lib/react-query";
-import { DetachedSheet } from "~/components/Sheet/Detached";
+import { DetachedSheet } from "~/components/Sheet";
 import { SheetButtonGroup } from "~/components/Sheet/SheetButtonGroup";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 import { TStyledText } from "~/components/Typography/StyledText";

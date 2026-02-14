@@ -2,7 +2,7 @@ import type { ParseKeys } from "i18next";
 import { useCallback, useEffect, useState } from "react";
 import { Keyboard } from "react-native";
 
-import { DetachedSheet } from "./Detached";
+import { DetachedSheet } from ".";
 import type { TrueSheetRef } from "./useSheetRef";
 import { NumericInput } from "../Form/Input";
 import { TStyledText } from "../Typography/StyledText";

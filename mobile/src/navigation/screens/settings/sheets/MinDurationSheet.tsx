@@ -1,7 +1,7 @@
 import { usePreferenceStore } from "~/stores/Preference/store";
 import { PreferenceSetters } from "~/stores/Preference/actions";
 
-import { DetachedNumericSheet } from "~/components/Sheet/DetachedNumeric";
+import { DetachedNumericSheet } from "~/components/Sheet/Numeric";
 import type { TrueSheetRef } from "~/components/Sheet/useSheetRef";
 
 export function MinDurationSheet(props: { ref: TrueSheetRef }) {
