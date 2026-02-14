@@ -18,7 +18,6 @@ import {
 
 import { mutateGuardAsync } from "~/lib/react-query";
 import { ToastOptions } from "~/lib/toast";
-import { FavoritesPlaylistKey } from "~/modules/media/constants";
 
 type Props = StaticScreenProps<{ id: string }>;
 
@@ -48,7 +47,6 @@ export default function ModifyPlaylist({
   }
 
   const initData = {
-    isFavoritesList: id === FavoritesPlaylistKey,
     name: id,
     tracks: playlistQuery.data.tracks.map(formatTrackForForm),
   };

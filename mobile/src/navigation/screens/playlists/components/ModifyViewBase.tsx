@@ -50,7 +50,7 @@ import type { SearchCallbacks } from "~/modules/search/types";
 export function ModifyPlaylistBase(props: {
   onSubmit: (data: PlaylistEntry) => void | Promise<void>;
   mode?: "create" | "edit";
-  initialData?: Omit<PlaylistEntry, "trackIds">;
+  initialData?: Omit<PlaylistEntry, "isFavoritesList" | "trackIds">;
   usedNames: string[];
 }) {
   const { offset, ...rest } = useFloatingContent();
