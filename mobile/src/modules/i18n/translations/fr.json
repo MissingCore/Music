@@ -296,7 +296,6 @@
     "search": {
       "title": "Rechercher",
       "extra": {
-        "musicAdd": "Ajouter de la musique",
         "searchMedia": "Recherchez des médias"
       }
     },
