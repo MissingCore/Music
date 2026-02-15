@@ -108,7 +108,7 @@ export function ArrayFormInputImpl<TData extends Record<string, any>>() {
                   ),
                 }))
               }
-              disabled={isSubmitting}
+              disableRemove={isSubmitting}
             >
               <TextInput
                 editable={!isSubmitting}

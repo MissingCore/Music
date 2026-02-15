@@ -281,7 +281,7 @@ const RenderItem = memo(
       <RemovableItem
         label={item.name}
         onRemove={() => onRemove(item.id)}
-        disabled={info.isDragging}
+        disableRemove={info.isDragging}
         //! `bg-surface` is there to prevent collapsing the View.
         className={cn("mb-2 rounded-xs bg-surface", {
           "bg-surfaceContainerLowest": info.isActive,

@@ -2,13 +2,11 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { inArray } from "drizzle-orm";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable } from "react-native";
 import type { DragListRenderItemInfo } from "react-native-draglist/dist/FlashList";
 
 import { tracks } from "~/db/schema";
 
 import { Cached } from "~/resources/icons/Cached";
-import { DoNotDisturbOn } from "~/resources/icons/DoNotDisturbOn";
 import { DragHandle } from "~/resources/icons/DragHandle";
 import { getArtistsString } from "~/api/artist.utils";
 import { getTracks } from "~/api/track";
@@ -23,6 +21,7 @@ import { moveArray } from "~/utils/object";
 import { wait } from "~/utils/promise";
 import { FlashDragList } from "~/components/Defaults";
 import { FilledIconButton, IconButton } from "~/components/Form/Button/Icon";
+import { RemovableItem } from "~/components/List/RemovableItem";
 import { PlayingIndicator } from "~/modules/media/components/AnimatedBars";
 import { SearchResult } from "~/modules/search/components/SearchResult";
 import { RepeatModes } from "~/stores/Playback/constants";
@@ -129,12 +128,16 @@ const RenderItem = memo(
   }: RenderItemProps) {
     const { t } = useTranslation();
     return (
-      <Pressable
+      <RemovableItem
+        label={item.name}
+        onRemove={() => onRemoveTrack(item.key)}
+        disableRemove={item.active || info.isDragging}
         onPress={() =>
           item.active
             ? PlaybackControls.playToggle()
             : PlaybackControls.playAtIndex(index)
         }
+        disabled={info.isDragging}
         className={cn(
           "mx-3 mb-2 flex-row items-center gap-1 rounded-xs active:bg-surfaceContainerLowest/50",
           {
@@ -144,13 +147,6 @@ const RenderItem = memo(
           },
         )}
       >
-        <IconButton
-          Icon={DoNotDisturbOn}
-          accessibilityLabel={t("template.entryRemove", { name: item.name })}
-          onPress={() => onRemoveTrack(item.key)}
-          disabled={item.active || info.isDragging}
-          size="xs"
-        />
         <SearchResult
           type="track"
           title={item.name}
@@ -170,7 +166,7 @@ const RenderItem = memo(
           poppyLabel={item.active}
           className="shrink grow"
         />
-      </Pressable>
+      </RemovableItem>
     );
   },
   (oldProps, newProps) => {
