@@ -6,6 +6,7 @@ import Animated, {
   withDelay,
   withTiming,
 } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Schedule } from "~/resources/icons/Schedule";
 import { useInForeground } from "~/stores/ListenerState";
@@ -16,56 +17,73 @@ import { Marquee } from "~/components/Marquee";
 import { Em, StyledText } from "~/components/Typography/StyledText";
 import { ArtistsLink } from "~/modules/media/components/ArtistsLink";
 import { MediaImage } from "~/modules/media/components/MediaImage";
+import { MediaListControls } from "~/modules/media/components/MediaListControls";
 import { Vinyl } from "~/modules/media/components/Vinyl";
 import { arePlaybackSourceEqual } from "~/stores/Playback/utils";
 
 type SupportedMedia = "album" | "artist" | "playlist";
+type MediaListSource = { type: SupportedMedia; id: string };
 
-//#region List Info
-type ListInfoProps = {
+const ESTIMATED_TOPAPPBAR_HEIGHT = 56;
+
+//#region List Header
+type ListHeaderProps = {
   title: string;
   artists?: string[];
   metadata: string[];
   Actions: React.ReactNode;
-};
+} & ListArtworkProps;
 
-function ListInfo(props: ListInfoProps) {
+export function CurrentListHeader(props: ListHeaderProps) {
+  const insets = useSafeAreaInsets();
   return (
-    <View className="flex-row items-center gap-4">
-      <View className="shrink grow gap-1">
-        <Marquee>
-          <Em className="text-lg">{props.title}</Em>
-        </Marquee>
-        {props.artists ? (
-          <ArtistsLink
-            artistNames={props.artists}
-            popStrategy="popTo"
-            className="text-sm"
-          />
-        ) : null}
-        <Marquee contentContainerClassName="gap-0">
-          <StyledText dim className="text-xxs">
-            {props.metadata.toSpliced(-1).join(" • ")}
-          </StyledText>
-          {/* Work around for RTL languages. */}
-          <StyledText dim className="text-xxs">
-            {" • "}
-          </StyledText>
-          <Schedule size={12} color="onSurfaceVariant" />
-          <StyledText dim className="text-xxs">
-            {` ${props.metadata.at(-1)!}`}
-          </StyledText>
-        </Marquee>
+    <View
+      style={{ paddingTop: insets.top + ESTIMATED_TOPAPPBAR_HEIGHT }}
+      className="gap-6"
+    >
+      <ListArtwork
+        listSource={props.listSource}
+        imageSource={props.imageSource}
+      />
+      <View className="flex-row items-center gap-4">
+        <View className="shrink grow gap-1">
+          <Marquee>
+            <Em className="text-lg">{props.title}</Em>
+          </Marquee>
+          {props.artists ? (
+            <ArtistsLink
+              artistNames={props.artists}
+              popStrategy="popTo"
+              className="text-sm"
+            />
+          ) : null}
+          <Marquee contentContainerClassName="gap-0">
+            <StyledText dim className="text-xxs">
+              {props.metadata.toSpliced(-1).join(" • ")}
+            </StyledText>
+            {/* Work around for RTL languages. */}
+            <StyledText dim className="text-xxs">
+              {" • "}
+            </StyledText>
+            <Schedule size={12} color="onSurfaceVariant" />
+            <StyledText dim className="text-xxs">
+              {` ${props.metadata.at(-1)!}`}
+            </StyledText>
+          </Marquee>
+        </View>
+        {props.Actions}
       </View>
-      {props.Actions}
+      <MediaListControls
+        trackSource={props.listSource}
+        className="-mt-2 ml-auto"
+      />
     </View>
   );
 }
-//#endregion
 
 //#region Artwork Preview
 type ListArtworkProps = {
-  listSource: { type: SupportedMedia; id: string };
+  listSource: MediaListSource;
   imageSource: MediaImage.ImageSource | MediaImage.ImageSource[];
 };
 
@@ -159,4 +177,5 @@ function AnimatedVinyl(props: ListArtworkProps & { size: number }) {
     </Animated.View>
   );
 }
+//#endregion
 //#endregion
