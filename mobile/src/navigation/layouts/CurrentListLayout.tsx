@@ -150,10 +150,9 @@ function AnimatedVinyl(props: ListArtworkProps & { size: number }) {
 
   return (
     <Animated.View onLayout={onMount} style={coverStyle} className="relative">
-      <Animated.View
-        style={[
-          discStyle,
-          {
+      <Animated.View style={discStyle} className="absolute inset-0">
+        <Animated.View
+          style={{
             animationName: {
               from: { transform: [{ rotate: "0deg" }] },
               to: { transform: [{ rotate: "360deg" }] },
@@ -163,11 +162,10 @@ function AnimatedVinyl(props: ListArtworkProps & { size: number }) {
             animationIterationCount: "infinite",
             animationPlayState:
               canAnimate && inForeground ? "running" : "paused",
-          },
-        ]}
-        className="absolute inset-0"
-      >
-        <Vinyl source={props.imageSource} size={props.size} />
+          }}
+        >
+          <Vinyl source={props.imageSource} size={props.size} />
+        </Animated.View>
       </Animated.View>
       <MediaImage
         type={props.listSource.type}
